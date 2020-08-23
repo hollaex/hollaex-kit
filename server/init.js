@@ -128,13 +128,12 @@ const checkStatus = () => {
 					url: activation.url,
 					is_trial: activation.is_trial,
 					created_at: activation.created_at,
-					expiry: activation.expiry
+					expiry: activation.expiry,
+					coins: activation.coins,
+					pairs: activation.pairs,
+					status: true
 				}
 			});
-			return getCoinsPairs();
-		})
-		.then((coinsPairs) => {
-			setConfiguration({ ...coinsPairs, status: true });
 			return User.findAll({
 				where: {
 					activated: false

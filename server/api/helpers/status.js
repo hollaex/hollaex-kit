@@ -10,23 +10,6 @@ const getStatus = (query = {}) => {
 	return Status.findOne(query);
 };
 
-const getCoinsPairs = () => {
-	return all([Coin.findAll(), Pair.findAll()]).then(([coinlist, pairList]) => {
-		const coins = {};
-		coinlist.forEach((c) => {
-			coins[c.symbol] = c.dataValues;
-		});
-		let pairs = {};
-		pairList.forEach((p) => {
-			pairs[p.name] = p.dataValues;
-		});
-		return {
-			coins,
-			pairs
-		};
-	});
-};
-
 const joinConstants = (statusConstants = {}, newConstants = {}, role) => {
 	const joinedConstants = {
 		secrets: {}
@@ -123,7 +106,6 @@ const maskSecrets = (secrets) => {
 
 module.exports = {
 	getStatus,
-	getCoinsPairs,
 	updateConstants,
 	maskSecrets
 };
