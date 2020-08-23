@@ -5,12 +5,12 @@ import classnames from "classnames";
 
 class ControlledScrollbar extends React.PureComponent {
 
+  scrollbar = React.createRef()
+
   state = {
     isUpButtonDisabled: true,
     isDownButtonDisabled: true,
   }
-
-  scrollbar = React.createRef()
 
   onUpdate = ({ top }) => {
     if(top === 0) {
@@ -31,14 +31,18 @@ class ControlledScrollbar extends React.PureComponent {
     }
   }
 
+  relativeScrollTo = (relativeValue) => {
+    const value = this.scrollbar.current.getScrollTop() + relativeValue
+    this.scrollbar.current.scrollTop(value);
+  }
+
   scrollUp = () => {
     const { isUpButtonDisabled } = this.state;
     const { scrollingStep } = this.props;
 
     if (isUpButtonDisabled) return;
 
-    const val = this.scrollbar.current.getScrollTop() - scrollingStep;
-    this.scrollbar.current.scrollTop(val);
+    this.relativeScrollTo(-scrollingStep)
   }
 
   scrollDown = () => {
@@ -47,8 +51,7 @@ class ControlledScrollbar extends React.PureComponent {
 
     if (isDownButtonDisabled) return;
 
-    const val = this.scrollbar.current.getScrollTop() + scrollingStep;
-    this.scrollbar.current.scrollTop(val);
+    this.relativeScrollTo(scrollingStep)
   }
 
   render() {
