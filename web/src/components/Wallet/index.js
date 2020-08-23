@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
-import ControlledScrollbar from './ControlledScrollbar';
 
-import { Accordion } from '../';
+import { Accordion, ControlledScrollbar } from 'components';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from '../../config/constants';
 import {
 	calculateBalancePrice,
