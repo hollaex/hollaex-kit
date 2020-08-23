@@ -66,7 +66,14 @@
       }
 
       .table-row {
+        color: $colors-deactivate-color2;
         height: 2.5rem;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $app-light-background;
+          color: $colors-black;
+        }
       }
 
       .table-bottom-border td,
@@ -153,6 +160,14 @@
         .table-bottom-border td,
         th {
           border-bottom-color: $dark-border-main;
+        }
+
+        .table-row {
+
+          &:hover {
+            background-color: $dark-app-bar-tab-active-menu-list-background;
+            color: $dark-font-main-text-color;
+          }
         }
       }
     }

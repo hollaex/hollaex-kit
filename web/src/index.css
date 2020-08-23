@@ -3168,7 +3168,12 @@ table th {
     height: 3.5rem;
     vertical-align: bottom; }
   .market-list__container .market-list__block .market-list__block-table .table-row {
-    height: 2.5rem; }
+    color: var(--colors-deactivate-color2);
+    height: 2.5rem;
+    cursor: pointer; }
+    .market-list__container .market-list__block .market-list__block-table .table-row:hover {
+      background-color: var(--app-light-background);
+      color: var(--colors-black); }
   .market-list__container .market-list__block .market-list__block-table .table-bottom-border td,
   .market-list__container .market-list__block .market-list__block-table th {
     position: relative;
@@ -3216,6 +3221,9 @@ table th {
   .dark-theme .market-list__container .market-list__block .market-list__block-table .table-bottom-border td,
   .dark-theme .market-list__container .market-list__block .market-list__block-table th {
     border-bottom-color: var(--dark-border-main); }
+  .dark-theme .market-list__container .market-list__block .market-list__block-table .table-row:hover {
+    background-color: var(--dark-app-bar-tab-active-menu-list-background);
+    color: var(--dark-font-main-text-color); }
 
 .dark-theme .trade_tabs-container {
   color: var(--dark-font-sub-text-1-color); }
