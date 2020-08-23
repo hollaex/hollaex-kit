@@ -4506,7 +4506,7 @@ table th {
       font-weight: bold; }
 
 .app-bar-tab-menu {
-  background-color: var(--dark-app-bar-background-color) !important; }
+  background-color: var(--colors-black) !important; }
 
 .app_bar-mobile {
   padding: 1rem 0; }
@@ -9377,6 +9377,9 @@ foreignObject {
   .slider__arrow.left {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg); }
+  .slider__arrow.small {
+    height: 1rem;
+    width: 1rem; }
 
 .dark-theme .slider__button {
   color: var(--dark-link); }
