@@ -23,6 +23,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: true
 			},
+			constants: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
+			},
 			api_key: {
 				type: DataTypes.STRING,
 				allowNull: true

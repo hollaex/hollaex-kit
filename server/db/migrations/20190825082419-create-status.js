@@ -30,6 +30,10 @@ module.exports = {
 					type: Sequelize.STRING,
 					allowNull: true
 				},
+				constants: {
+					type: Sequelize.JSONB,
+					defaultValue: {}
+				},
 				api_key: {
 					type: Sequelize.STRING,
 					allowNull: true
