@@ -1,14 +1,19 @@
 'use strict';
 
+const Kit = require('hollaex-node-lib');
+const all = require('bluebird');
 const rp = require('request-promise');
 const cron = require('node-cron');
 const { getStatus } = require('./api/helpers/status');
 const { loggerGeneral } = require('./config/logger');
 const { User } = require('./db/models');
 
-const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network/v2';
-
+const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
+const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
+
+let kit; // kit object based on hollaex node lib
+
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
 const { omit, each } = require('lodash');
@@ -87,6 +92,7 @@ const getPairs = () => {
 
 const checkStatus = () => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
+
 	return getStatus()
 		.then((status) => {
 			loggerGeneral.info('init/checkStatus');
@@ -99,6 +105,9 @@ const checkStatus = () => {
 			} else if (!status.activation_code) {
 				stop();
 				throw new Error('Exchange activation code is not set');
+			} else if (!status.api_key || !status.api_secret) {
+				stop();
+				throw new Error('Exchange keys are not set.');
 			} else if (!status.activated) {
 				stop();
 				throw new Error('Exchange is expired');
@@ -108,15 +117,18 @@ const checkStatus = () => {
 				setConfiguration({
 					constants
 				});
-				return checkActivation(
-					status.name,
-					status.url,
-					status.activation_code,
-					status.constants
-				);
+				return all([
+					checkActivation(
+						status.name,
+						status.url,
+						status.activation_code,
+						status.constants
+					),
+					status
+				]);
 			}
 		})
-		.then((activation) => {
+		.then(([activation, status]) => {
 			loggerGeneral.info('init/checkStatus/activation', activation.name, activation.active);
 			setConfiguration({
 				info: {
@@ -131,6 +143,19 @@ const checkStatus = () => {
 					status: true
 				}
 			});
+			kit = new Kit({
+				apiURL: HE_NETWORK_ENDPOINT ,
+				baseURL: HE_NETWORK_BASE_URL,
+				apiKey: status.api_key,
+				apiSecret: status.secret,
+				exchange_id: activation.id
+			});
+
+			return kit.init();
+
+		})
+		.then((kit) => {
+			loggerGeneral.info('init/checkStatus/kit init', kit);
 			return User.findAll({
 				where: {
 					activated: false
@@ -176,7 +201,7 @@ const checkActivation = (name, url, activation_code, constants = {}) => {
 			activation_code,
 			constants
 		},
-		uri: `${HE_NETWORK_ENDPOINT}${PATH_ACTIVATE}`,
+		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
 		json: true
 	};
 	return rp(options);
@@ -248,5 +273,6 @@ module.exports = {
 	getPairs,
 	getCoin,
 	getSecrets,
-	getFrozenUsers
+	getFrozenUsers,
+	kit
 };
