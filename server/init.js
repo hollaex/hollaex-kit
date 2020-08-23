@@ -2,7 +2,7 @@
 
 const rp = require('request-promise');
 const cron = require('node-cron');
-const { getStatus, getCoinsPairs } = require('./api/helpers/status');
+const { getStatus } = require('./api/helpers/status');
 const { loggerGeneral } = require('./config/logger');
 const { User } = require('./db/models');
 
