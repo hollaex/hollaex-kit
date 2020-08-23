@@ -6,7 +6,7 @@ const { getStatus } = require('./api/helpers/status');
 const { loggerGeneral } = require('./config/logger');
 const { User } = require('./db/models');
 
-const BRIDGE_ENDPOINT = 'https://api.bitholla.com/v1';
+const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network/v2';
 
 const PATH_ACTIVATE = '/exchange/activate';
 const { subscriber, publisher } = require('./db/pubsub');
@@ -179,7 +179,7 @@ const checkActivation = (name, url, activation_code, constants = {}) => {
 			activation_code,
 			constants
 		},
-		uri: `${BRIDGE_ENDPOINT}${PATH_ACTIVATE}`,
+		uri: `${HE_NETWORK_ENDPOINT}${PATH_ACTIVATE}`,
 		json: true
 	};
 	return rp(options);
