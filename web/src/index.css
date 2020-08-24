@@ -4656,7 +4656,8 @@ table th {
     color: var(--app-bar-menu-list-color);
     font-size: .8rem;
     height: 2.5rem;
-    padding: .5rem .8rem; }
+    padding: .5rem .8rem;
+    width: 3.2rem; }
   .app-bar-add-tab-menu .active-tab {
     background-color: var(--app-background-color);
     color: var(--app-bar-menu-list-color);
@@ -4785,6 +4786,8 @@ table th {
       width: 12rem; }
   .app-bar-add-tab-menu {
     width: 24rem; }
+    .app-bar-add-tab-menu .app-bar-tab-menu-list {
+      width: 3.6rem; }
     .app-bar-add-tab-menu .app-bar-add-tab-content,
     .app-bar-add-tab-menu .app-bar-tab-menu-list,
     .app-bar-add-tab-menu .app-bar-tab-overflow-content {

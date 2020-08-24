@@ -11,6 +11,13 @@ class Slider extends React.PureComponent {
     isLeftButtonDisabled: true,
     isRightButtonDisabled: true,
     isArrowVisible: true,
+    step: 0,
+  }
+
+  componentDidMount() {
+    const { steps } = this.props;
+    const step = this.slider.current.getClientWidth() / steps
+    this.setState({ step })
   }
 
   onUpdate = ({ left, scrollWidth, clientWidth }) => {
@@ -51,26 +58,24 @@ class Slider extends React.PureComponent {
   }
 
   scrollLeft = () => {
-    const { isLeftButtonDisabled } = this.state;
-    const { scrollingStep } = this.props;
+    const { isLeftButtonDisabled, step } = this.state;
 
     if (isLeftButtonDisabled) return;
 
-    this.relativeScrollTo(-scrollingStep)
+    this.relativeScrollTo(-step)
   }
 
   scrollRight = () => {
-    const { isRightButtonDisabled } = this.state;
-    const { scrollingStep } = this.props;
+    const { isRightButtonDisabled, step } = this.state;
 
     if (isRightButtonDisabled) return;
 
-    this.relativeScrollTo(scrollingStep)
+    this.relativeScrollTo(step)
   }
 
   render() {
     const { isRightButtonDisabled, isLeftButtonDisabled, isArrowVisible } = this.state;
-    const { autoHideArrows, scrollingStep, small, ...restProps } = this.props;
+    const { autoHideArrows, steps, small, ...restProps } = this.props;
     const { onUpdate, scrollLeft, scrollRight, slider } = this;
 
     return (
@@ -112,13 +117,13 @@ class Slider extends React.PureComponent {
 
 Slider.propTypes = {
   autoHideArrows: bool,
-  scrollingStep: number,
+  steps: number,
   small: bool,
 }
 
 Slider.defaultProps = {
   autoHideArrows: false,
-  scrollingStep: 35,
+  steps: 1,
   small: false,
 }
 

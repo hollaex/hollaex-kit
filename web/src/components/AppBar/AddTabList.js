@@ -123,7 +123,7 @@ class AddTabList extends Component {
         return (
             <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": selectedtabPairs.length <= 1 })}>
                 <div className="app-bar-tab-menu">
-                    <Slider small>
+                    <Slider small steps={5}>
                       {this.tabListMenuItems()}
                     </Slider>
                     {/*<div className="d-flex align-items-center mr-2">*/}
