@@ -398,7 +398,7 @@ class PairTabs extends Component {
             selectedToRemove
         } = this.state;
 
-        const { pairs, tickers, location, coins } = this.props;
+        const { pairs, tickers, location, coins, prices } = this.props;
 
         const symbols = ['all', ...this.getSymbols(pairs)];
         
@@ -440,6 +440,7 @@ class PairTabs extends Component {
                             pairs={pairs}
                             tickers={tickers}
                             coins={coins}
+                            prices={prices}
                             selectedTabs={selectedTabs}
                             activeTabs={activeTabs}
                             selectedTabMenu={selectedAddTab || symbols[0]}
@@ -458,11 +459,12 @@ class PairTabs extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { language: activeLanguage, pairs, tickers, coins }}) => ({
+const mapStateToProps = ({ app: { language: activeLanguage, pairs, tickers, coins }, orderbook: { prices }}) => ({
     activeLanguage,
     pairs,
     tickers,
     coins,
+    prices,
 });
 
 export default connect(mapStateToProps)(PairTabs);
