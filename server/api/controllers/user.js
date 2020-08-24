@@ -11,7 +11,7 @@ const {
 	findVerificationCodeByUserEmail,
 	findUserEmailByVerificationCode
 } = require('../helpers/auth');
-const { signFreshdesk, signZendesk } = require('../helpers/freshdesk');
+const { signFreshdesk, signZendesk } = require('../helpers/support');
 const { checkCaptcha, issueToken } = require('../helpers/security');
 const {
 	findUser,

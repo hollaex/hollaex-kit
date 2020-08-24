@@ -65,7 +65,7 @@ const requestWithdrawal = (req, res) => {
 			.json({ message: 'Invalid amount' });
 	}
 
-	return all([checkCaptcha(captcha, ip), validateWithdraw(currency, address, amount)])
+	return checkCaptcha(captcha, ip)
 		.then(() => verifyOtpBeforeAction(id, otp_code))
 		.then((validOtp) => {
 			if (!validOtp) {

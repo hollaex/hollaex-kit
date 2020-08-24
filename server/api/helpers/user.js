@@ -1,7 +1,6 @@
 'use strict';
 
 const { all } = require('bluebird');
-const { pick, omit, each } = require('lodash');
 const {
 	User,
 	Balance,
@@ -13,7 +12,6 @@ const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
 const { Op } = require('sequelize');
 const { convertSequelizeCountAndRows } = require('./general');
 const cache = require('./cache');
-const { findUserPairFees } = require('./limit');
 const {
 	USER_NOT_FOUND,
 	USENAME_IS_TAKEN
@@ -113,7 +111,8 @@ const getUserValuesByEmail = (email, include) => {
 		.then((data) => {
 			return all([
 				data.dataValues,
-				findUserPairFees(data.verification_level)
+				// findUserPairFees(data.verification_level)
+				// TODO
 			]);
 		})
 		.then(([userData, fees]) => {

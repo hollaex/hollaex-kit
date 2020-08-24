@@ -38,6 +38,7 @@ services:
       - ./api:/app/api
       - ./config:/app/config
       - ./db:/app/db
+      - ./plugins:/app/plugins
       - ./mail:/app/mail
       - ./ws:/app/ws
       - ./app.js:/app/app.js

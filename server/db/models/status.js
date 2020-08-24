@@ -4,10 +4,6 @@ module.exports = function(sequelize, DataTypes) {
 	const Status = sequelize.define(
 		'Status',
 		{
-			name: {
-				type: DataTypes.STRING,
-				allowNull: true
-			},
 			activated: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
@@ -27,13 +23,17 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: true
 			},
-			url: {
-				type: DataTypes.STRING,
-				allowNull: true
-			},
 			constants: {
 				type: DataTypes.JSONB,
 				defaultValue: {}
+			},
+			api_key: {
+				type: DataTypes.STRING,
+				allowNull: true
+			},
+			api_secret: {
+				type: DataTypes.STRING,
+				allowNull: true
 			}
 		},
 		{

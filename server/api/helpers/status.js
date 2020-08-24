@@ -1,30 +1,12 @@
 'use strict';
 
-const { all } = require('bluebird');
-const { Status, Coin, Pair } = require('../../db/models');
+const { Status } = require('../../db/models');
 const { INIT_CHANNEL, CONSTANTS_KEYS, SECRETS_KEYS, SECRET_MASK} = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const { omit, each } = require('lodash');
 
 const getStatus = (query = {}) => {
 	return Status.findOne(query);
-};
-
-const getCoinsPairs = () => {
-	return all([Coin.findAll(), Pair.findAll()]).then(([coinlist, pairList]) => {
-		const coins = {};
-		coinlist.forEach((c) => {
-			coins[c.symbol] = c.dataValues;
-		});
-		let pairs = {};
-		pairList.forEach((p) => {
-			pairs[p.name] = p.dataValues;
-		});
-		return {
-			coins,
-			pairs
-		};
-	});
 };
 
 const joinConstants = (statusConstants = {}, newConstants = {}, role) => {
@@ -123,7 +105,6 @@ const maskSecrets = (secrets) => {
 
 module.exports = {
 	getStatus,
-	getCoinsPairs,
 	updateConstants,
 	maskSecrets
 };

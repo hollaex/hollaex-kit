@@ -7,7 +7,6 @@ const { loggerWithdrawals } = require('../../config/logger');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { WITHDRAWALS_REQUEST_KEY } = require('../../constants');
-const { handler } = require('../handlers');
 
 const getFees = (currency) => {
 	return new Promise((resolve) => {
@@ -50,12 +49,7 @@ const withdrawRequestEmail = (user, data, domain, ip) => {
 		});
 };
 
-const validateWithdraw = (currency, address, amount) => {
-	return handler(currency).validateWithdraw(address, amount);
-};
-
 module.exports = {
 	getFees,
-	withdrawRequestEmail,
-	validateWithdraw
+	withdrawRequestEmail
 };

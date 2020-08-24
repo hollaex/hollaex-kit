@@ -151,6 +151,18 @@ const ACCOUNTS = [
 		password: process.env.ADMIN_PASSWORD,
 		is_admin: true,
 		verification_level: exports.DEFAULT_TIER
+	},
+	{
+		email: process.env.HOLLAEX_EMAIL,
+		password: process.env.HOLLAEX_PASSWORD,
+		is_admin: true,
+		verification_level: exports.DEFAULT_TIER
+	},
+	{
+		email: process.env.TECH_EMAIL,
+		password: process.env.TECH_PASSWORD,
+		is_admin: true,
+		verification_level: exports.DEFAULT_TIER
 	}
 ];
 
@@ -177,8 +189,6 @@ exports.ISSUER = process.env.ISSUER || 'hollaex.com';
 
 exports.HMAC_TOKEN_EXPIRY = 5 * 12 * 30 * 24 * 60 * 60 * 1000; // 5 years
 
-exports.QUICK_TRADE_SECRET =
-	process.env.QUICK_TRADE_SECRET || 'secret';
 
 exports.ROLES = ROLES;
 exports.BASE_SCOPES = [ROLES.USER, ROLES.HMAC];
