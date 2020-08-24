@@ -7,8 +7,6 @@ ENV NODE_ENV=production
 
 COPY ./server /app
 
-COPY ./plugins /app/plugins
-
 WORKDIR /app
 
 RUN npm install --loglevel=error && \
