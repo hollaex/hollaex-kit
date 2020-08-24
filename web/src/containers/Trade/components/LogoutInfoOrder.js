@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 
-import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 const LogoutInfoOrder = ({ activeTheme }) => {
@@ -12,9 +10,7 @@ const LogoutInfoOrder = ({ activeTheme }) => {
     </Link>
     return (
         <div className='text-center'>
-            <div className={'flex-row d-flex justify-content-center'}>
-                <ReactSVG path={ICONS.XHT_ICON_DARK} wrapperClassName="xht-logo" />
-            </div>
+            
             <div className="xht-order-heading">
                 {STRINGS.TERMS_OF_SERVICES.XHT_ORDER_TXT_1}
             </div>
