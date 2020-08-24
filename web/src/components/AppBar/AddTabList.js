@@ -187,7 +187,7 @@ class AddTabList extends Component {
                             No data...
                         </div>
                     }
-                    <div className="d-flex justify-content-center app_bar-link">
+                    <div className="d-flex justify-content-center app_bar-link blue-link">
                         <Link to="/trade/add/tabs" onClick={() => closeAddTabMenu()}>
                           {`view markets`}
                         </Link>

@@ -180,10 +180,6 @@ $app-bar-add-tab-red: #ff0000;
 		color: $dark-font-main-text-color;
 	}
 
-	.app_bar-link {
-		color: $dark-link
-	}
-
 	.app-bar_add-tab-price {
 		color: $dark-font-main-text-color;
 	}
@@ -1148,7 +1144,6 @@ $app-bar-add-tab-red: #ff0000;
 }
 
 .app_bar-link {
-	color: $link;
 	margin: .5rem 0;
 	padding: 0 .5rem;
 	text-transform: uppercase;

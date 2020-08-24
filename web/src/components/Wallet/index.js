@@ -136,7 +136,7 @@ class Wallet extends Component {
 					autoHeightMax={hasScrollbar ? 175 : 350}
 				>
 					<Accordion sections={sections} />
-					<div className="d-flex justify-content-center app_bar-link">
+					<div className="d-flex justify-content-center wallet_link blue-link">
 						<Link to="/wallet">
               {`view all`}
 						</Link>

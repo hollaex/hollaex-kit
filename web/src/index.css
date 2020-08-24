@@ -3986,9 +3986,6 @@ table th {
   background-color: var(--dark-app-background-color);
   color: var(--dark-font-main-text-color); }
 
-.dark-theme .app_bar-link {
-  color: var(--dark-link); }
-
 .dark-theme .app-bar_add-tab-price {
   color: var(--dark-font-main-text-color); }
 
@@ -4757,7 +4754,6 @@ table th {
     color: var(--buy); }
 
 .app_bar-link {
-  color: var(--link);
   margin: .5rem 0;
   padding: 0 .5rem;
   text-transform: uppercase; }
@@ -5122,6 +5118,11 @@ table th {
     margin-bottom: 0; }
   .wallet_section-total_asset:last-child {
     margin-top: 0; }
+
+.wallet_link {
+  margin: .5rem 0;
+  padding: 0 .5rem;
+  text-transform: uppercase; }
 
 .direction_ltr .sidebar_section-container .wallet-wrapper .accordion_section_title .wallet_section-title:after {
   content: "";
