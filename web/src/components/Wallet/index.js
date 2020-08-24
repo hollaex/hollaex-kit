@@ -90,9 +90,13 @@ class Wallet extends Component {
 				balanceFormat: formatToCurrency(currencyBalance, min),
 				balancePercentage: donutFormatPercentage(balancePercent)
 			});
-			sections.push(
-				this.generateSection(symbol, price, balance, orders, coins)
-			);
+
+      // Hide zero balances
+      if (balancePercent !== 0) {
+        sections.push(
+          this.generateSection(symbol, price, balance, orders, coins)
+        );
+			}
 		});
 
 		this.setState({
