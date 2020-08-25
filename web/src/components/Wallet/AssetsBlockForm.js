@@ -24,6 +24,5 @@ class AssetsBlockForm extends React.Component {
 }
 
 export default reduxForm({
-  form: 'AssetsBlockForm',
-  initialValues: { ZeroBalance: true },
+  form: 'AssetsBlockForm'
 })(AssetsBlockForm);

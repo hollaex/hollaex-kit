@@ -95,7 +95,7 @@ class Wallet extends Component {
 	};
 
 	getSearchResult = (coins, balance) => {
-		const { searchValue = '', isZeroBalanceHidden = true } = this.state;
+		const { searchValue = '', isZeroBalanceHidden = false } = this.state;
 
     const result = {};
     const searchTerm = searchValue.toLowerCase().trim();
