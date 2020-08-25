@@ -17,7 +17,7 @@ class Carousel extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.setState({ currentIndex: 0 })
+    this.setState({ currentIndex: 0 }, this.slidePrev)
   }
 
   onInitialized = ({ item: currentIndex, isPrevSlideDisabled, isNextSlideDisabled }) =>
@@ -59,10 +59,10 @@ class Carousel extends React.PureComponent {
     return (
       <div style={containerStyle} className={classnames("carousel__container", { containerClass: !!containerClass  })} >
         <div
-          className={classnames("carousel__button", { disabled: isPrevSlideDisabled })}
+          className={classnames("slider__button", { disabled: isPrevSlideDisabled })}
           onClick={slidePrev}
         >
-          Prev
+          <i className="slider__arrow left"/>
         </div>
 
         <div
@@ -81,10 +81,10 @@ class Carousel extends React.PureComponent {
         </div>
 
         <div
-          className={classnames("carousel__button", { disabled: isNextSlideDisabled })}
+          className={classnames("slider__button", { disabled: isNextSlideDisabled })}
           onClick={slideNext}
         >
-          Next
+          <i className="slider__arrow right"/>
         </div>
       </div>
     )
