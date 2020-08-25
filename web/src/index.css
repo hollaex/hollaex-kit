@@ -4657,7 +4657,9 @@ table th {
     font-size: .8rem;
     height: 2.5rem;
     padding: .5rem .8rem;
-    width: 3.2rem; }
+    width: 3.2rem;
+    max-width: 3.2rem;
+    /* (22 -6) / 5 */ }
   .app-bar-add-tab-menu .active-tab {
     background-color: var(--app-background-color);
     color: var(--app-bar-menu-list-color);
@@ -4787,7 +4789,9 @@ table th {
   .app-bar-add-tab-menu {
     width: 24rem; }
     .app-bar-add-tab-menu .app-bar-tab-menu-list {
-      width: 3.6rem; }
+      width: 3.6rem;
+      max-width: 3.6rem;
+      /* (24 -6) / 5 */ }
     .app-bar-add-tab-menu .app-bar-add-tab-content,
     .app-bar-add-tab-menu .app-bar-tab-menu-list,
     .app-bar-add-tab-menu .app-bar-tab-overflow-content {
@@ -9350,7 +9354,8 @@ foreignObject {
   width: 100%; }
 
 .slider__slides-wrapper {
-  width: calc(100% - 6rem); }
+  width: calc(100% - 6rem);
+  max-width: calc(100% - 6rem); }
 
 .slider__view {
   display: flex; }

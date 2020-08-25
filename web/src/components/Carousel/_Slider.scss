@@ -7,6 +7,7 @@
 
 .slider__slides-wrapper {
   width: calc(100% - 6rem);
+  max-width: calc(100% - 6rem);
 }
 
 .slider__view {

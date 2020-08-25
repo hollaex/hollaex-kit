@@ -1026,7 +1026,8 @@ $app-bar-add-tab-red: #ff0000;
 		font-size: .8rem;
 		height: 2.5rem;
 		padding: .5rem .8rem;
-		width: 3.2rem
+		width: 3.2rem;
+		max-width: 3.2rem;
 		/* (22 -6) / 5 */
 	}
 
@@ -1193,7 +1194,8 @@ $app-bar-add-tab-red: #ff0000;
 		width: 24rem;
 
 		.app-bar-tab-menu-list {
-			width: 3.6rem
+			width: 3.6rem;
+			max-width: 3.6rem;
 			/* (24 -6) / 5 */
 		}
 		
