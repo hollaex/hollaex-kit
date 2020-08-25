@@ -1,7 +1,7 @@
 'use strict';
 
 const Kit = require('hollaex-node-lib');
-const all = require('bluebird');
+const { all } = require('bluebird');
 const rp = require('request-promise');
 const cron = require('node-cron');
 const { getStatus } = require('./api/helpers/status');
@@ -124,7 +124,7 @@ const checkStatus = () => {
 						status.activation_code,
 						status.constants
 					),
-					status
+					status.dataValues
 				]);
 			}
 		})
@@ -151,11 +151,6 @@ const checkStatus = () => {
 				exchange_id: activation.id
 			});
 
-			return kit.init();
-
-		})
-		.then((kit) => {
-			loggerGeneral.info('init/checkStatus/kit init', kit);
 			return User.findAll({
 				where: {
 					activated: false
