@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 const moment = require('moment');
 const { each } = require('lodash');
 const { createRequest, createSignature, generateHeaders, checkKit } = require('./utils');
-const HOLLAEX_NETWORK_URL = 'http://localhost';
+const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
 
 class HollaEx {
