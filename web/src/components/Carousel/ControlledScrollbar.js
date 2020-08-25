@@ -10,23 +10,38 @@ class ControlledScrollbar extends React.PureComponent {
   state = {
     isUpButtonDisabled: true,
     isDownButtonDisabled: true,
+    isArrowVisible: true,
+    step: 0,
   }
 
-  onUpdate = ({ top }) => {
-    if(top === 0) {
+  onUpdate = ({ top, scrollHeight, clientHeight }) => {
+    const { autoHideArrows, steps } = this.props;
+    const step = this.scrollbar.current.getClientHeight() / steps
+    this.setState({ step })
+
+    if (scrollHeight === clientHeight) {
+      this.setState({
+        isUpButtonDisabled: true,
+        isDownButtonDisabled: true,
+        isArrowVisible: !autoHideArrows,
+      })
+    } else if(top === 0) {
       this.setState({
         isUpButtonDisabled: true,
         isDownButtonDisabled: false,
+        isArrowVisible: true,
       })
     } else if (top === 1) {
       this.setState({
         isUpButtonDisabled: false,
         isDownButtonDisabled: true,
+        isArrowVisible: true,
       })
     } else {
       this.setState({
         isUpButtonDisabled: false,
         isDownButtonDisabled: false,
+        isArrowVisible: true,
       })
     }
   }
@@ -40,32 +55,30 @@ class ControlledScrollbar extends React.PureComponent {
   }
 
   scrollUp = () => {
-    const { isUpButtonDisabled } = this.state;
-    const { scrollingStep } = this.props;
+    const { isUpButtonDisabled, step } = this.state;
 
     if (isUpButtonDisabled) return;
 
-    this.relativeScrollTo(-scrollingStep)
+    this.relativeScrollTo(-step)
   }
 
   scrollDown = () => {
-    const { isDownButtonDisabled } = this.state;
-    const { scrollingStep } = this.props;
+    const { isDownButtonDisabled, step } = this.state;
 
     if (isDownButtonDisabled) return;
 
-    this.relativeScrollTo(scrollingStep)
+    this.relativeScrollTo(step)
   }
 
   render() {
-    const { isDownButtonDisabled, isUpButtonDisabled } = this.state;
-    const { showButtons, scrollingStep, ...restProps } = this.props;
+    const { isDownButtonDisabled, isUpButtonDisabled, isArrowVisible } = this.state;
+    const { autoHideArrows, steps, ...restProps } = this.props;
     const { onUpdate, scrollUp, scrollDown, scrollbar } = this;
 
     return (
       <Fragment>
         {
-          showButtons && (
+          isArrowVisible && (
             <div
               className={classnames("controlled-scrollbar__button", { disabled: isUpButtonDisabled })}
               onClick={scrollUp}
@@ -82,7 +95,7 @@ class ControlledScrollbar extends React.PureComponent {
         />
 
         {
-          showButtons && (
+          isArrowVisible && (
             <div
               className={classnames("controlled-scrollbar__button", { disabled: isDownButtonDisabled })}
               onClick={scrollDown}
@@ -97,13 +110,13 @@ class ControlledScrollbar extends React.PureComponent {
 }
 
 ControlledScrollbar.propTypes = {
-  showButtons: bool,
-  scrollingStep: number,
+  autoHideArrows: bool,
+  steps: number,
 }
 
 ControlledScrollbar.defaultProps = {
-  showButtons: true,
-  scrollingStep: 35,
+  autoHideArrows: false,
+  steps: 1,
 }
 
 export default ControlledScrollbar;

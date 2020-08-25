@@ -131,7 +131,7 @@ class Wallet extends Component {
 					}
 				</div>
 				<ControlledScrollbar
-					showButtons={hasScrollbar}
+					autoHideArrows={true}
 					autoHeight={true}
 					autoHeightMax={hasScrollbar ? 175 : 350}
 				>
