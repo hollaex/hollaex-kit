@@ -38,6 +38,62 @@ const AssetsBlock = ({
       return price_a < price_b ? 1 : -1 // descending order
     })
 
+	const findPair = (key) => {
+    let tempPair
+		const defaultPair = `${key.toLowerCase()}-${BASE_CURRENCY.toLowerCase()}`
+		if (isMarketAvailable(defaultPair)) {
+			return defaultPair;
+    }
+
+    tempPair = findPairByPairBase(key);
+		if (tempPair) return tempPair;
+
+		tempPair = findPairByPair2(key);
+		if (tempPair) return tempPair;
+	}
+
+	const isMarketAvailable = (pair) => {
+		return pair && pairs[pair] && pairs[pair].active
+	}
+
+	const findPairByPairBase = (key) => {
+    const availableMarketsArray = [];
+
+    Object.keys(pairs).map(pairKey => {
+			const pairObject = pairs[pairKey];
+
+      if (pairObject && pairObject.pair_base === key && isMarketAvailable(pairKey)) {
+        availableMarketsArray.push(pairKey)
+      }
+
+      return pairKey;
+    });
+
+    return availableMarketsArray[0];
+	}
+
+  const findPairByPair2 = (key) => {
+    const availableMarketsArray = [];
+
+    Object.keys(pairs).map(pairKey => {
+      const pairObject = pairs[pairKey];
+
+      if (pairObject && pairObject.pair_2 === key && isMarketAvailable(pairKey)) {
+        availableMarketsArray.push(pairKey)
+      }
+
+      return pairKey;
+    });
+
+    return availableMarketsArray[0];
+  }
+
+  const goToTrade = (pair) => {
+		if (pair) {
+      return navigate(`/trade/${pair}`)
+		}
+	}
+
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
@@ -83,7 +139,7 @@ const AssetsBlock = ({
 				<tbody>
         {sortedSearchResults.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
             const balanceValue = balance[`${key}_balance`];
-            const pair = `${key.toLowerCase()}-${BASE_CURRENCY.toLowerCase()}`
+            const pair = findPair(key);
             const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
             const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
             const balanceText =
@@ -168,11 +224,11 @@ const AssetsBlock = ({
 									<ActionNotification
 										text={STRINGS.TRADE_TAB_TRADE}
 										iconPath={ICONS.BLUE_PLUS}
-										onClick={() => navigate(`/trade/${pair}`)}
+										onClick={() => goToTrade(pair)}
 										useSvg={true}
 										className="csv-action"
 										showActionText={isMobile}
-										disable={!pairs[pair] || !pairs[pair].active}
+										disable={!isMarketAvailable(pair)}
 									/>
 								</td>
 								}
