@@ -2,6 +2,7 @@ import math from 'mathjs';
 import numbro from 'numbro';
 import STRINGS from '../config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../config/constants';
+import { findPath, convertPathToPairNames } from './data';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -291,3 +292,18 @@ export const toFixed = (exponential) => {
 	}
 	return exponential;
 };
+
+export const estimatePrice = (key, pairsArray = [], tickers = {}) => {
+	const path = findPath(pairsArray, key)[0];
+	let estimatedPrice = 1;
+	if(path) {
+		convertPathToPairNames(path).forEach((pairKey) => {
+			const { close = 0 } = tickers[pairKey] || {}
+			estimatedPrice *= close;
+		})
+	} else {
+		estimatedPrice = 0
+	}
+
+	return estimatedPrice
+}
