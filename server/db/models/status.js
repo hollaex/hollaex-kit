@@ -27,6 +27,14 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.JSONB,
 				defaultValue: {}
 			},
+			secrets: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
+			},
+			kit: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
+			},
 			api_key: {
 				type: DataTypes.STRING,
 				allowNull: true
@@ -34,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
 			api_secret: {
 				type: DataTypes.STRING,
 				allowNull: true
-			}
+			},
 		},
 		{
 			underscored: true

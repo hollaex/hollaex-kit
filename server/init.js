@@ -1,7 +1,7 @@
 'use strict';
 
 const Kit = require('hollaex-node-lib');
-const all = require('bluebird');
+const { all } = require('bluebird');
 const rp = require('request-promise');
 const cron = require('node-cron');
 const { getStatus } = require('./api/helpers/status');
@@ -124,22 +124,22 @@ const checkStatus = () => {
 						status.activation_code,
 						status.constants
 					),
-					status
+					status.dataValues
 				]);
 			}
 		})
-		.then(([activation, status]) => {
-			loggerGeneral.info('init/checkStatus/activation', activation.name, activation.active);
+		.then(([exchange, status]) => {
+			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
 			setConfiguration({
 				info: {
-					name: activation.name,
-					active: activation.active,
-					url: activation.url,
-					is_trial: activation.is_trial,
-					created_at: activation.created_at,
-					expiry: activation.expiry,
-					coins: activation.coins,
-					pairs: activation.pairs,
+					name: exchange.name,
+					active: exchange.active,
+					url: exchange.url,
+					is_trial: exchange.is_trial,
+					created_at: exchange.created_at,
+					expiry: exchange.expiry,
+					coins: exchange.coins,
+					pairs: exchange.pairs,
 					status: true
 				}
 			});
@@ -148,14 +148,10 @@ const checkStatus = () => {
 				baseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
 				apiSecret: status.secret,
-				exchange_id: activation.id
+				exchange_id: exchange.id,
+				activation_code: exchange.activation_code
 			});
 
-			return kit.init();
-
-		})
-		.then((kit) => {
-			loggerGeneral.info('init/checkStatus/kit init', kit);
 			return User.findAll({
 				where: {
 					activated: false
