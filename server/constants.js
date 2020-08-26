@@ -229,6 +229,21 @@ exports.CONFIRMATION = {
 	xrp: 0
 };
 
+// PLUGIN VALUES
+exports.AVAILABLE_PLUGINS = [
+	'xht_fee',
+	'kyc',
+	'sms',
+	'vault',
+	'freshdesk',
+	'chat',
+	'bank',
+	'announcement',
+	'zendesk'
+]
+
+exports.REQUIRED_XHT = 100;
+
 exports.CONSTANTS_KEYS = [
 	'emails',
 	'captcha',

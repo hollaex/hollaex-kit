@@ -536,8 +536,199 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  # Plugin Endpoints
+  /plugins:
+    x-swagger-router-controller: plugins
+    get:
+      operationId: getPlugins
+      description: Get all plugins constants
+      tags:
+        - Plugin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitionsObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /plugins/activate-xht-fee:
+    get:
+      operationId: activeXhtFee
+      description: Activate xht fee
+      tags:
+        - Plugin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /plugins/bank/user:
+    post:
+      operationId: postBankUser
+      description: Add a new bank for a user
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Bank information
+          schema:
+            $ref: "#/definitions/BankObject"
+      tags:
+        - Plugin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /plugins/bank/admin:
+    post:
+      operationId: postBankAdmin
+      description: Update a user's bank information
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: User id to add bank to
+          type: number
+          format: int32
+        - name: data
+          in: body
+          required: true
+          description: Bank information
+          schema:
+            type: object
+            required:
+              - bank_account
+            properties:
+              bank_account:
+                $ref: "#/definitions/BankArray"
+      tags:
+        - Plugin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /plugins/bank/verify:
+    post:
+      operationId: bankVerify
+      description: Verify a user's bank information
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: User and bank id
+          schema:
+            type: object
+            required:
+              - user_id
+              - bank_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              bank_id:
+                type: number
+                format: int32
+      tags:
+        - Plugin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              bank_account:
+                $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /plugins/bank/revoke:
+    post:
+      operationId: bankRevoke
+      description: Revoke a user's bank information
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: User and bank id
+          schema:
+            type: object
+            required:
+              - user_id
+              - bank_id
+              - message
+            properties:
+              user_id:
+                type: number
+                format: int32
+              bank_id:
+                type: number
+                format: int32
+              message:
+                type: string
+      tags:
+        - Plugin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              bank_account:
+                $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
 
 definitions:
+  ObjectResponse:
+    type: object
   MessageResponse:
     required:
       - message
@@ -615,17 +806,7 @@ definitions:
           verified:
             type: boolean
       bank_account:
-        type: array
-        items:
-          type: object
-          properties:
-            bank_name:
-              type: string
-            account_number:
-              type: string
-              maxLength: 50
-            card_number:
-              type: string
+        $ref: "#/definitions/BankArray"
       crypto_wallet:
         type: object
       verification_level:
@@ -752,3 +933,17 @@ definitions:
     properties:
       code:
         type: string
+  BankObject:
+    type: object
+    properties:
+      bank_name:
+        type: string
+      account_number:
+        type: string
+        maxLength: 50
+      card_number:
+        type: string
+  BankArray:
+    type: array
+      items:
+        $ref: "#/definitions/BankObject"
