@@ -54,8 +54,9 @@ const { generateOtp } = require('../helpers/otp');
 const getPlugins = (req, res) => {
 	try {
 		const response = {
+			...GET_CONFIGURATION().constants.plugins,
 			available: AVAILABLE_PLUGINS,
-			...GET_CONFIGURATION().constants.plugins
+			enabled: GET_CONFIGURATION().constants.plugins.enabled.split(',')
 		};
 		return res.json(response);
 	} catch (err) {

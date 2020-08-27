@@ -16,7 +16,7 @@ let kit; // kit object based on hollaex node lib
 
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
-const { omit, each } = require('lodash');
+const { each } = require('lodash');
 const redis = require('./db/redis').duplicate();
 
 subscriber.on('message', (channel, message) => {
@@ -112,10 +112,9 @@ const checkStatus = () => {
 				stop();
 				throw new Error('Exchange is expired');
 			} else {
-				Object.assign(secrets, status.constants.secrets);
-				const constants = omit(status.constants, 'secrets');
+				setSecret(status.secrets);
 				setConfiguration({
-					constants
+					constants: status.constants
 				});
 				return all([
 					checkActivation(
@@ -222,6 +221,10 @@ const updateSecrets = (newSecrets) => {
 const setConfiguration = (config) => {
 	Object.assign(configuration, config);
 	return configuration;
+};
+
+const setSecret = (data) => {
+	Object.assign(secrets, data);
 };
 
 const addFrozenUser = (userId) => {
