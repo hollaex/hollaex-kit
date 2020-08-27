@@ -56,7 +56,6 @@ class AddTabList extends Component {
             handleSearch,
             addTradePairTab,
             closeAddTabMenu,
-            prices,
         } = this.props;
 
         let tabMenu = {};
