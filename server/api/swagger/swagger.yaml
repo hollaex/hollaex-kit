@@ -543,7 +543,7 @@ paths:
       operationId: getPlugins
       description: Get all plugins constants
       tags:
-        - Plugin
+        - Plugins
       responses:
         200:
           description: Success
@@ -554,11 +554,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /plugins/activate-xht-fee:
+    x-swagger-router-controller: plugins
     get:
       operationId: activeXhtFee
       description: Activate xht fee
       tags:
-        - Plugin
+        - Plugins
       responses:
         200:
           description: Success
@@ -573,6 +574,7 @@ paths:
       x-security-scopes:
         - user
   /plugins/bank/user:
+    x-swagger-router-controller: plugins
     post:
       operationId: postBankUser
       description: Add a new bank for a user
@@ -584,7 +586,7 @@ paths:
           schema:
             $ref: "#/definitions/BankObject"
       tags:
-        - Plugin
+        - Plugins
       responses:
         200:
           description: Success
@@ -599,6 +601,7 @@ paths:
       x-security-scopes:
         - user
   /plugins/bank/admin:
+    x-swagger-router-controller: plugins
     post:
       operationId: postBankAdmin
       description: Update a user's bank information
@@ -621,7 +624,7 @@ paths:
               bank_account:
                 $ref: "#/definitions/BankArray"
       tags:
-        - Plugin
+        - Plugins
       responses:
         200:
           description: Success
@@ -639,6 +642,7 @@ paths:
         - support
         - kyc
   /plugins/bank/verify:
+    x-swagger-router-controller: plugins
     post:
       operationId: bankVerify
       description: Verify a user's bank information
@@ -660,7 +664,7 @@ paths:
                 type: number
                 format: int32
       tags:
-        - Plugin
+        - Plugins
       responses:
         200:
           description: Success
@@ -681,6 +685,7 @@ paths:
         - support
         - kyc
   /plugins/bank/revoke:
+    x-swagger-router-controller: plugins
     post:
       operationId: bankRevoke
       description: Revoke a user's bank information
@@ -705,7 +710,7 @@ paths:
               message:
                 type: string
       tags:
-        - Plugin
+        - Plugins
       responses:
         200:
           description: Success
@@ -725,6 +730,32 @@ paths:
         - supervisor
         - support
         - kyc
+  /plugins/kyc/user:
+    x-swagger-router-controller: plugins
+    put:
+      operationId: putKycUser
+      description: Update user kyc info
+      tags:
+        - Plugins
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
 
 definitions:
   ObjectResponse:
@@ -865,6 +896,36 @@ definitions:
             type: boolean
           popup_order_partially_filled:
             type: boolean
+  UserPut:
+    type: object
+    properties:
+      full_name:
+        type: string
+      gender:
+        type: boolean
+      nationality:
+        type: string
+      dob:
+        type: string
+        format: date-time
+      address:
+        type: object
+        required:
+          - country
+          - address
+          - postal_code
+          - city
+        properties:
+          country:
+            type: string
+          address:
+            type: string
+          postal_code:
+            type: string
+          city:
+            type: string
+      phone_number:
+        type: string
   ChangePassword:
     type: object
     required:

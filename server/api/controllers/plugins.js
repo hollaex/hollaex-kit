@@ -3,13 +3,23 @@
 const {
 	AVAILABLE_PLUGINS,
 	GET_CONFIGURATION,
-	REQUIRED_XHT
+	REQUIRED_XHT,
+	ROLES
 } = require('../../constants');
 const { Balance } = require('../../db/models');
 const { findUser, getUserValuesByEmail, getUserValuesById } = require('../helpers/user');
 const { loggerPlugin } = require('../../config/logger');
-const { addBankAccount, rejectBankAccount, approveBankAccount, adminAddUserBanks } = require('../helpers/plugins');
-const { DEFAULT_REJECTION_NOTE, USER_NOT_FOUND } = require('../../messages');
+const {
+	addBankAccount,
+	rejectBankAccount,
+	approveBankAccount,
+	adminAddUserBanks,
+	updateUserData
+} = require('../helpers/plugins');
+const {
+	DEFAULT_REJECTION_NOTE,
+	USER_NOT_FOUND
+} = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 
@@ -220,11 +230,53 @@ const bankRevoke = (req, res) => {
 		});
 };
 
+const putKycUser = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/putKycUser auth',
+		req.auth.sub
+	);
+
+	const newData = req.swagger.params.data.value;
+	const { email } = req.auth.sub ;
+
+	findUser({
+		where: { email },
+		attributes: {
+			exclude: [
+				'password',
+				'created_at',
+				'updated_at',
+				'email',
+				'balance',
+				'crypto_wallet',
+				'verification_level',
+				'otp_enabled',
+				'is_admin',
+				'is_supervisor',
+				'is_support',
+				'is_kyc',
+				'is_tech',
+				'flagged',
+				'affiliation_code'
+			]
+		}
+	})
+		.then(updateUserData(newData, ROLES.USER))
+		.then(() => getUserValuesByEmail(email))
+		.then((user) => res.json(user))
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/putKycUser err', err);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
 	postBankUser,
 	postBankAdmin,
 	bankVerify,
-	bankRevoke
+	bankRevoke,
+	putKycUser
 };

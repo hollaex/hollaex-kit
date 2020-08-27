@@ -2,8 +2,15 @@
 
 const crypto = require('crypto');
 const { pick, each } = require('lodash');
-const { VERIFY_STATUS } = require('../../constants');
-const { USER_NOT_FOUND, MAX_BANKS_EXCEEDED } = require('../../message');
+const {
+	VERIFY_STATUS,
+	ROLES
+} = require('../../constants');
+const {
+	USER_NOT_FOUND,
+	MAX_BANKS_EXCEEDED,
+	ERROR_CHANGE_USER_INFO
+} = require('../../message');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -92,46 +99,52 @@ const rejectBankAccount = (id = 0) => (user, options = {}) => {
 	);
 };
 
-/**
-	* Function to find a user by the id, it will exclude the password.
-	* @param {string} id - User id.
-	* @param {array} include - Keys of fields for the query.
-	* @return {promise} - Promise with the user. If the dob of the user is not set, function will not return it.
-*/
-const getUserValuesById = (id, include) => {
-	return findUser({
-		where: { id },
-		attributes: include || {
-			exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc']
-		},
-		include: [
-			{
-				model: Balance,
-				as: 'balance',
-				attributes: {
-					exclude: ['id', 'user_id', 'created_at']
-				}
-			},
-			{
-				model: VerificationImage,
-				as: 'images',
-				attributes: ['id']
+const updateUserData = (
+	{ id_data = {}, ...rest },
+	role = ROLES.USER
+) => (user, options = {}) => {
+	const updateData = {
+		...rest
+	};
+	if (Object.keys(id_data).length > 0) {
+		if (role === ROLES.USER) {
+			if (user.dataValues.status === VERIFY_STATUS.COMPLETED) {
+				throw new Error(ERROR_CHANGE_USER_INFO);
+			} else {
+				updateData.id_data = id_data;
+				updateData.id_data.status = VERIFY_STATUS.PENDING;
 			}
-		]
-	})
-		.then((data) => {
-			return all([
-				data.dataValues,
-				findUserPairFees(data.verification_level)
-			]);
-		})
-		.then(([userData, fees]) => {
-			return {
-				...userData,
-				fees
-			};
-		})
-		.then(cleanUserFromDb);
+		} else {
+			updateData.id_data = id_data;
+		}
+	}
+	if (
+		updateData.full_name ||
+		updateData.gender ||
+		updateData.dob ||
+		updateData.address ||
+		updateData.nationality
+	) {
+		if (user.dataValues.id_data === VERIFY_STATUS.COMPLETED) {
+			throw new Error(ERROR_CHANGE_USER_INFO);
+		}
+	}
+	// User is not allowed to update his phone number through this. User has to verify phone number through a whole different process
+	if (updateData.phone_number && role === ROLES.USER) {
+		throw new Error(ERROR_CHANGE_USER_INFO);
+	}
+	return user.update(updateData, {
+		fields: [
+			'full_name',
+			'gender',
+			'nationality',
+			'dob',
+			'address',
+			'phone_number',
+			'id_data'
+		],
+		...options
+	});
 };
 
 module.exports = {
@@ -139,4 +152,5 @@ module.exports = {
 	approveBankAccount,
 	adminAddUserBanks,
 	rejectBankAccount,
+	updateUserData
 };
