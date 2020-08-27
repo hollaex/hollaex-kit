@@ -1,19 +1,23 @@
 'use strict';
 
 const crypto = require('crypto');
-const { pick, each } = require('lodash');
+const { VerificationImage, sequelize } = require('../../db/models');
+const { findUser } = require('../helpers/user');
+const { pick, each, differenceWith, isEqual } = require('lodash');
 const {
 	VERIFY_STATUS,
 	ROLES,
 	USER_FIELD_ADMIN_LOG,
 	ID_FIELDS,
-	ADDRESS_FIELDS
+	ADDRESS_FIELDS,
+	GET_SECRETS
 } = require('../../constants');
 const {
 	USER_NOT_FOUND,
 	MAX_BANKS_EXCEEDED,
 	ERROR_CHANGE_USER_INFO
 } = require('../../message');
+const aws = require('aws-sdk');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -157,6 +161,29 @@ const updateUserPhoneNumber = (user, phone_number, options = {}) => {
 	);
 };
 
+const bankComparison = (bank1, bank2, description) => {
+	let difference = [];
+	let note = '';
+	if (bank1.length === bank2.length) {
+		note = 'bank info updated';
+		difference = differenceWith(bank1, bank2, isEqual);
+	} else if (bank1.length > bank2.length) {
+		note = 'bank removed';
+		difference = differenceWith(bank1, bank2, isEqual);
+	} else if (bank1.length < bank2.length) {
+		note = 'bank added';
+		difference = differenceWith(bank2, bank1, isEqual);
+	}
+
+	// bank data is changed
+	if (difference.length > 0) {
+		description.note = note;
+		description.new.bank_account = bank2;
+		description.old.bank_account = bank1;
+	}
+	return description;
+};
+
 const userUpdateLog = (user_id, prevData = {}, newData = {}) => {
 	let description = {
 		user_id,
@@ -199,6 +226,120 @@ const userUpdateLog = (user_id, prevData = {}, newData = {}) => {
 	return description;
 };
 
+const getType = (type = '') => {
+	return type.replace('image/', '');
+};
+
+const storeFilesDataOnDb = (
+	user_id,
+	data,
+	front = '',
+	back = '',
+	proof_of_residency = ''
+) => {
+	return sequelize.transaction((transaction) => {
+		const options = { transaction };
+		return VerificationImage.findOrCreate(
+			{
+				where: { user_id },
+				defaults: {
+					user_id,
+					front,
+					back,
+					proof_of_residency
+				},
+				options
+			}
+		)
+			.then(([image, created]) => {
+				if(!created) {
+					return image.update({
+						front,
+						back,
+						proof_of_residency
+					}, { options } );
+				} else {
+					return image;
+				}
+			})
+			.then(() => {
+				return findUser({
+					where: { id: user_id },
+					attributes: ['id', 'id_data'],
+					transaction
+				});
+			})
+			.then((user) => {
+				return updateUserData(data, 'user')(user, {
+					...options,
+					returning: true
+				});
+			});
+	});
+};
+
+const S3_BUCKET_NAME = () => {
+	return (GET_SECRETS().plugins.s3.id_docs_bucket).split(':')[0];
+};
+
+const generateBuckets = (bucketsString = '') => {
+	const bucketsSplit = bucketsString
+		.split(',')
+		.map((bucketString) => bucketString.split(':'));
+	const buckets = {};
+
+	bucketsSplit.forEach(([bucketName, bucketRegion]) => {
+		buckets[bucketName] = {
+			region: bucketRegion,
+			signatureVersion: 'v4'
+		};
+	});
+
+	return buckets;
+};
+
+const credentials = () => {
+	return {
+		write: {
+			accessKeyId: GET_SECRETS().plugins.s3.key.write,
+			secretAccessKey: GET_SECRETS().plugins.s3.secret.write
+		},
+		read: {
+			accessKeyId: GET_SECRETS().plugins.s3.key.read,
+			secretAccessKey: GET_SECRETS().plugins.s3.secret.read
+		},
+		buckets: generateBuckets(GET_SECRETS().plugins.s3.id_docs_bucket)
+	};
+};
+
+const s3Write = (bucketName = S3_BUCKET_NAME()) => {
+	aws.config.update(credentials().write);
+	return new aws.S3(credentials().buckets[bucketName]);
+}
+
+const s3Read = (bucketName = S3_BUCKET_NAME()) => {
+	aws.config.update(credentials().read);
+	return new aws.S3(credentials().buckets[bucketName]);
+};
+
+const uploadFile = (name, file) => {
+	return new Promise((resolve, reject) => {
+		const params = {
+			Bucket: S3_BUCKET_NAME(),
+			Key: name,
+			Body: file.buffer,
+			ContentType: file.mimetype,
+			ACL: 'authenticated-read'
+		};
+		s3Write().upload(params, (err, data) => {
+			if (err) {
+				reject(err);
+			}
+			resolve(data);
+		});
+	});
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -206,5 +347,8 @@ module.exports = {
 	rejectBankAccount,
 	updateUserData,
 	updateUserPhoneNumber,
-	userUpdateLog
+	userUpdateLog,
+	getType,
+	storeFilesDataOnDb,
+	uploadFile
 };

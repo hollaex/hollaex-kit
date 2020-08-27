@@ -16,7 +16,10 @@ const {
 	adminAddUserBanks,
 	updateUserData,
 	updateUserPhoneNumber,
-	userUpdateLog
+	userUpdateLog,
+	getType,
+	storeFilesDataOnDb,
+	uploadFile
 } = require('../helpers/plugins');
 const {
 	DEFAULT_REJECTION_NOTE,
@@ -29,6 +32,7 @@ const PhoneNumber = require('awesome-phonenumber');
 const { omit, cloneDeep, has } = require('lodash');
 const { all } = require('bluebird');
 const { createAudit } = require('../helpers/audit');
+const { validMimeType } = require('../../plugins/kyc/helpers');
 
 const getPlugins = (req, res) => {
 	try {
@@ -395,6 +399,106 @@ const putKycAdmin = (req, res) => {
 		});
 };
 
+const kycUserUpload = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/kycUserUpload auth',
+		req.auth.sub
+	);
+
+	const { id, email } = req.auth.sub;
+	let { front, back, proof_of_residency, ...otherData } = req.swagger.params;
+
+	let invalidType = '';
+	if (!validMimeType(front.value.mimetype)) {
+		invalidType = 'front';
+	} else if (back && !validMimeType(back.value.mimetype)) {
+		invalidType = 'back';
+	} else if (
+		proof_of_residency &&
+		!validMimeType(proof_of_residency.value.mimetype)
+	) {
+		invalidType = 'proof_of_residency';
+	}
+	if (invalidType) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload invalid', invalidType);
+		return res.status(400).json({ message: `Invalid type: ${invalidType} field.` });
+	}
+
+	const data = { id_data: {} };
+
+	Object.entries(otherData).forEach(([key, field]) => {
+		if (field) {
+			if (
+				key === 'type' ||
+				key === 'number' ||
+				key === 'issued_date' ||
+				key === 'expiration_date'
+			) {
+				data.id_data[key] = field;
+			}
+		}
+	});
+
+	const ts = Date.now();
+	findUser({
+		where: {
+			id
+		},
+		attributes: [
+			'id',
+			'id_data'
+		]
+	})
+		.then((user) => {
+			let { status } = user.dataValues.id_data || 0;
+			if (status === 3) {
+				throw new Error(
+					'You are not allowed to upload a document while its pending or approved.'
+				);
+			}
+			return all([
+				uploadFile(
+					`${id}/${ts}-front.${getType(front.value.mimetype)}`,
+					front.value
+				),
+				back.value
+					? uploadFile(
+						`${id}/${ts}-back.${getType(back.value.mimetype)}`,
+						back.value
+					)
+					: undefined,
+				proof_of_residency.value
+					? uploadFile(
+						`${id}/${ts}-proof_of_residency.${getType(
+							proof_of_residency.value.mimetype
+						)}`,
+						proof_of_residency.value
+					)
+					: undefined
+			]);
+		})
+		.then((results) => {
+			loggerPlugin.verbose(req.uuid, 'controllers/plugins/kycUserUpload results', results);
+			return storeFilesDataOnDb(
+				id,
+				data,
+				results[0].Location,
+				results[1] ? results[1].Location : '',
+				results[2] ? results[2].Location : ''
+			);
+		})
+		.then(() => {
+			loggerPlugin.verbose(req.uuid, 'controllers/plugins/kycUserUpload then');
+			sendEmail(MAILTYPE.USER_VERIFICATION, email, {}, {});
+			res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload error', err);
+			res.status(400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -403,5 +507,6 @@ module.exports = {
 	bankVerify,
 	bankRevoke,
 	putKycUser,
-	putKycAdmin
+	putKycAdmin,
+	kycUserUpload
 };
