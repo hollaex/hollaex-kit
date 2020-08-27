@@ -20,6 +20,7 @@ const {
 	IMAGE_NOT_FOUND
 } = require('../../message');
 const aws = require('aws-sdk');
+const { all } = require('bluebird');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -402,6 +403,46 @@ const findUserImages = (where) => {
 		});
 };
 
+const validMimeType = (type = '') => {
+	return type.indexOf('image/') === 0;
+};
+
+const approveDocuments = (user) => {
+	return updateUserData(
+		{
+			id_data: { ...user.id_data, status: VERIFY_STATUS.COMPLETED, note: '' }
+		},
+		ROLES.SUPPORT
+	)(user, { returning: true }).then((user) => {
+		return user;
+	});
+};
+
+const revokeDocuments = (user, message = '') => {
+	return sequelize
+		.transaction((transaction) => {
+			return all([
+				updateUserData(
+					{
+						id_data: {
+							...user.id_data,
+							status: VERIFY_STATUS.REJECTED,
+							note: message
+						}
+					},
+					ROLES.SUPPORT
+				)(user, { transaction, returning: true }),
+				VerificationImage.destroy({
+					where: { user_id: user.id },
+					transaction
+				})
+			]);
+		})
+		.then(([ user ]) => {
+			return user;
+		});
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -414,5 +455,8 @@ module.exports = {
 	storeFilesDataOnDb,
 	uploadFile,
 	getImagesData,
-	findUserImages
+	findUserImages,
+	validMimeType,
+	approveDocuments,
+	revokeDocuments
 };

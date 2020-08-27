@@ -958,6 +958,42 @@ paths:
         - supervisor
         - support
         - kyc
+  /plugins/kyc/id/verify:
+    x-swagger-router-controller: plugins
+    post:
+      operationId: kycIdVerify
+      description: Verify a user's id documents
+      tags:
+        - Plugins
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+
 
 definitions:
   ObjectResponse:

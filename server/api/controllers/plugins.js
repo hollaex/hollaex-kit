@@ -21,7 +21,10 @@ const {
 	storeFilesDataOnDb,
 	uploadFile,
 	getImagesData,
-	findUserImages
+	findUserImages,
+	validMimeType,
+	approveDocuments,
+	revokeDocuments
 } = require('../helpers/plugins');
 const {
 	DEFAULT_REJECTION_NOTE,
@@ -35,7 +38,6 @@ const PhoneNumber = require('awesome-phonenumber');
 const { omit, cloneDeep, has } = require('lodash');
 const { all } = require('bluebird');
 const { createAudit } = require('../helpers/audit');
-const { validMimeType } = require('../../plugins/kyc/helpers');
 
 const getPlugins = (req, res) => {
 	try {
@@ -513,7 +515,7 @@ const kycAdminUpload = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	let { front, back, proof_of_residency, ...otherData } = req.swagger.params;
 
-	loggerPlugin.verbose(
+	loggerPlugin.info(
 		req.uuid,
 		'controllers/plugins/kycAdminUpload user_id',
 		user_id
@@ -637,7 +639,7 @@ const getKycId = (req, res) => {
 		return res.status(400).json({ message: ID_EMAIL_REQUIRED });
 	}
 
-	loggerPlugin.debug(req.uuid, 'controllers/plugins/getKycId', 'user id', id, 'email', email);
+	loggerPlugin.info(req.uuid, 'controllers/plugins/getKycId', 'user id', id, 'email', email);
 
 	findUserImages(where)
 		.then(({ data }) => {
@@ -645,6 +647,41 @@ const getKycId = (req, res) => {
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/getKycId err', err.message);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const kycIdVerify = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/kycIdVerify auth',
+		req.auth.sub
+	);
+
+	const { user_id } = req.swagger.params.data.value;
+
+	loggerPlugin.info(
+		req.uuid,
+		'controllers/plugins/kycIdVerify user_id',
+		user_id
+	);
+
+	findUser({
+		where: {
+			id: user_id
+		},
+		attributes: ['id', 'id_data']
+	})
+		.then((user) => {
+			return approveDocuments(user);
+		})
+		.then((user) => {
+			const data = {};
+			data.id_data = user.id_data;
+			res.json(data);
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdVerify err', err.message);
 			res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -660,5 +697,6 @@ module.exports = {
 	putKycAdmin,
 	kycUserUpload,
 	kycAdminUpload,
-	getKycId
+	getKycId,
+	kycIdVerify
 };
