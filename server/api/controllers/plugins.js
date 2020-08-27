@@ -6,17 +6,19 @@ const {
 	REQUIRED_XHT
 } = require('../../constants');
 const { Balance } = require('../../db/models');
-const { findUser, getUserValuesByEmail } = require('../helpers/user');
+const { findUser, getUserValuesByEmail, getUserValuesById } = require('../helpers/user');
 const { loggerPlugin } = require('../../config/logger');
-const { addBankAccount, rejectBankAccount } = require('../../plugins/bank/helpers');
-const { DEFAULT_REJECTION_NOTE } = require('../../messages');
+const { addBankAccount, rejectBankAccount, approveBankAccount, adminAddUserBanks } = require('../helpers/plugins');
+const { DEFAULT_REJECTION_NOTE, USER_NOT_FOUND } = require('../../messages');
+const { sendEmail } = require('../../mail');
+const { MAILTYPE } = require('../../mail/strings');
 
 const getPlugins = (req, res) => {
 	try {
 		const response = {
 			available: AVAILABLE_PLUGINS,
 			...GET_CONFIGURATION().constants.plugins
-		}
+		};
 		res.json(response);
 	} catch (err) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/getPlugins err', err);
@@ -54,9 +56,9 @@ const activateXhtFee = (req, res) => {
 			if (user.balance_xht < REQUIRED_XHT) {
 				throw new Error('Require minimum 100 XHT in your wallet for activating this service');
 			}
-			return user.update({ custom_fee: true }, { fields: ['custom_fee'], returning: true });
+			return user.update({ custom_fee: true }, { fields: ['custom_fee'] });
 		})
-		.then((user) => {
+		.then(() => {
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -84,7 +86,7 @@ const postBankUser = (req, res) => {
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankUser err', err);
-			res.status(err.status || 400).json({ message: err.message })
+			res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -113,9 +115,9 @@ const postBankAdmin = (req, res) => {
 		.then(adminAddUserBanks(bank_account))
 		.then(() => getUserValuesById(id))
 		.then((user) => res.json(user.bank_account))
-		.catch((error) => {
+		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankAdmin err', err);
-			res.status(error.status || 400).json({ message: error.message })
+			res.status(err.status || 400).json({ message: err.message });
 		});
 };
 

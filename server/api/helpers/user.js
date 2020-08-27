@@ -153,6 +153,48 @@ const findUserByEmail = (userEmail) => {
 	});
 };
 
+/**
+	* Function to find a user by the id, it will exclude the password.
+	* @param {string} id - User id.
+	* @param {array} include - Keys of fields for the query.
+	* @return {promise} - Promise with the user. If the dob of the user is not set, function will not return it.
+*/
+const getUserValuesById = (id, include) => {
+	return findUser({
+		where: { id },
+		attributes: include || {
+			exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc']
+		},
+		include: [
+			{
+				model: Balance,
+				as: 'balance',
+				attributes: {
+					exclude: ['id', 'user_id', 'created_at']
+				}
+			},
+			{
+				model: VerificationImage,
+				as: 'images',
+				attributes: ['id']
+			}
+		]
+	})
+		.then((data) => {
+			return all([
+				data.dataValues,
+				// findUserPairFees(data.verification_level)
+			]);
+		})
+		.then(([userData, fees]) => {
+			return {
+				...userData,
+				fees
+			};
+		})
+		.then(cleanUserFromDb);
+};
+
 const checkUsernameIsTaken = (username = '') =>
 	findUsers({
 		where: { username },
@@ -297,5 +339,6 @@ module.exports = {
 	INITIAL_SETTINGS,
 	registerLogin,
 	findUserLogins,
-	findUsersByCryptoAddress
+	findUsersByCryptoAddress,
+	getUserValuesById
 };

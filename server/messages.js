@@ -106,3 +106,6 @@ exports.API_KEY_EXPIRED = 'Access Denied: API Key is expired';
 exports.API_KEY_INACTIVE = 'Access Denied: API Key is frozen';
 exports.API_SIGNATURE_INVALID = 'Access Denied: Invalid API Signature';
 exports.INVALID_VERIFICATION_LEVEL = 'User can not create token. Upgrade user level to create tokens.';
+
+// PLUGINS
+exports.MAX_BANKS_EXCEEDED = 'User can have a maximum of three banks';
