@@ -30,7 +30,9 @@ const {
 	destroyAnnouncement,
 	getAllAnnouncements,
 	sendSMS,
-	storeSMSCode
+	storeSMSCode,
+	checkSMSCode,
+	deleteSMSCode
 } = require('../helpers/plugins');
 const { getTimeframe, getPagination, getOrdering } = require('../helpers/general');
 const {
@@ -38,7 +40,8 @@ const {
 	USER_NOT_FOUND,
 	SMS_INVALID_PHONE,
 	ID_EMAIL_REQUIRED,
-	SMS_SUCCESS
+	SMS_SUCCESS,
+	PHONE_VERIFIED
 } = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE, languageFile } = require('../../mail/strings');
@@ -54,10 +57,10 @@ const getPlugins = (req, res) => {
 			available: AVAILABLE_PLUGINS,
 			...GET_CONFIGURATION().constants.plugins
 		};
-		res.json(response);
+		return res.json(response);
 	} catch (err) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/getPlugins err', err);
-		res.status(err.status || 400).json({ message: err.message });
+		return res.status(err.status || 400).json({ message: err.message });
 	}
 };
 
@@ -98,7 +101,7 @@ const activateXhtFee = (req, res) => {
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/activateXhtFee err', err);
-			res.status(400).json({ message: err.message });
+			return res.status(400).json({ message: err.message });
 		});
 };
 
@@ -121,7 +124,7 @@ const postBankUser = (req, res) => {
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankUser err', err);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -152,7 +155,7 @@ const postBankAdmin = (req, res) => {
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankAdmin err', err);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -192,11 +195,11 @@ const bankVerify = (req, res) => {
 				'controllers/plugins/bankVerify data',
 				data
 			);
-			res.json(data);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/bankVerify err', err);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -247,11 +250,11 @@ const bankRevoke = (req, res) => {
 				'controllers/plugins/bankRevoke data',
 				data
 			);
-			res.json(data);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/bankRevoke err', err);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -292,7 +295,7 @@ const putKycUser = (req, res) => {
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/putKycUser err', err);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -401,7 +404,7 @@ const putKycAdmin = (req, res) => {
 				'is_kyc',
 				'is_supervisor'
 			]);
-			res.json(user);
+			return res.json(user);
 		})
 		.catch((err) => {
 			loggerPlugin.error(
@@ -409,7 +412,7 @@ const putKycAdmin = (req, res) => {
 				'controllers/plugins/putKycAdmin err',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -506,11 +509,11 @@ const kycUserUpload = (req, res) => {
 		.then(() => {
 			loggerPlugin.verbose(req.uuid, 'controllers/plugins/kycUserUpload then');
 			sendEmail(MAILTYPE.USER_VERIFICATION, email, {}, {});
-			res.json({ message: 'Success' });
+			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload error', err);
-			res.status(400).json({ message: err.message });
+			return res.status(400).json({ message: err.message });
 		});
 };
 
@@ -620,12 +623,12 @@ const kycAdminUpload = (req, res) => {
 		})
 		.then((data) => {
 			loggerPlugin.debug(req.uuid, 'controllers/plugins/kycAdminUpload then', data);
-			res.json({ message: 'Success', data });
+			return res.json({ message: 'Success', data });
 		})
 		.catch((err) => {
 			console.log(err);
 			loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload err', err.message);
-			res.status(400).json({ message: err.message });
+			return res.status(400).json({ message: err.message });
 		});
 };
 
@@ -652,11 +655,11 @@ const getKycId = (req, res) => {
 
 	findUserImages(where)
 		.then(({ data }) => {
-			res.json(data);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/getKycId err', err.message);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -687,11 +690,11 @@ const kycIdVerify = (req, res) => {
 		.then((user) => {
 			const data = {};
 			data.id_data = user.id_data;
-			res.json(data);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdVerify err', err.message);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -733,11 +736,11 @@ const kycIdRevoke = (req, res) => {
 				emailData,
 				user.settings
 			);
-			res.json(data);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdRevoke err', err.message);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -760,7 +763,7 @@ const postAnnouncement = (req, res) => {
 
 	createAnnouncement(req.auth.sub.id, title, message, type)
 		.then((announcement) => {
-			res.json(announcement);
+			return res.json(announcement);
 		})
 		.catch((err) => {
 			loggerPlugin.error(
@@ -768,7 +771,7 @@ const postAnnouncement = (req, res) => {
 				'controllers/plugins/postAnnouncement err',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -796,7 +799,7 @@ const deleteAnnouncement = (req, res) => {
 			}
 		})
 		.then(() => {
-			res.json({ message: `Announcement ${id} successfully deleted` });
+			return res.json({ message: `Announcement ${id} successfully deleted` });
 		})
 		.catch((err) => {
 			loggerPlugin.error(
@@ -804,7 +807,7 @@ const deleteAnnouncement = (req, res) => {
 				'controllers/plugins/deleteAnnouncement err',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -839,11 +842,11 @@ const getAnnouncements = (req, res) => {
 				'controllers/plugins/getAnnouncements err',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
-const smsVerify = (req, res) => {
+const sendSmsVerify = (req, res) => {
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/smsVerify auth',
@@ -881,12 +884,68 @@ const smsVerify = (req, res) => {
 			return storeSMSCode(id, phone, code);
 		})
 		.then(() => {
-			res.json({ message: SMS_SUCCESS });
+			return res.json({ message: SMS_SUCCESS });
 		})
 		.catch((err) => {
 			loggerPlugin.error(
 				req.uuid,
 				'controllers/plugins/smsVerify err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: err.message });
+		});
+};
+
+const checkSmsVerify = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/checkSmsVerify auth',
+		req.auth.sub
+	);
+
+	const { id } = req.auth.sub;
+	const { code, phone } = req.swagger.params.data.value;
+
+	loggerPlugin.info(
+		req.uuid,
+		'controllers/plugins/checkSmsVerify code',
+		code,
+		'phone',
+		phone
+	);
+
+	const phoneNumber = new PhoneNumber(phone);
+
+	if (!phoneNumber.isValid()) {
+		loggerPlugin.error(
+			req.uuid,
+			'controllers/plugins/checkSmsVerify',
+			SMS_INVALID_PHONE
+		);
+		return res.status(400).json({ message: SMS_INVALID_PHONE });
+	}
+
+	const formattedNumber =phoneNumber.getNumber();
+
+	checkSMSCode(id, formattedNumber, code)
+		.then(() => {
+			return findUser({
+				where: { id }, attributes: ['id', 'phone_number']
+			});
+		})
+		.then((user) => {
+			return updateUserPhoneNumber(user, phone);
+		})
+		.then(() => {
+			return deleteSMSCode(id);
+		})
+		.then(() => {
+			return res.json({ message: PHONE_VERIFIED });
+		})
+		.catch((err) => {
+			loggerPlugin.error(
+				req.uuid,
+				'controllers/plugins/checkSmsVerify err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: err.message });
@@ -910,5 +969,6 @@ module.exports = {
 	postAnnouncement,
 	deleteAnnouncement,
 	getAnnouncements,
-	smsVerify
+	sendSmsVerify,
+	checkSmsVerify
 };

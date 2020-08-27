@@ -1078,7 +1078,7 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/CountResponse"
-      default:
+        default:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -1108,7 +1108,7 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/AnnouncementObject"
-      default:
+        default:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -1133,7 +1133,7 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
-      default:
+        default:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -1144,14 +1144,14 @@ paths:
   /plugins/sms/verify:
     x-swagger-router-controller: plugins
     get:
-      operationId: smsVerify
-      description: Verify an sms phone number
+      operationId: sendSmsVerify
+      description: Send sms verification code to phone number
       tags:
         - Plugins
       parameters:
         - in: query
           name: phone
-          description: Phone number to verify
+          description: Phone number to send to
           required: true
           type: string
       responses:
@@ -1159,7 +1159,38 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
-      default:
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+    post:
+      operationId: checkSmsVerify
+      description: Check and verify code sent by user
+      tags:
+        - Plugins
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - code
+              - phone
+            code:
+              type: string
+            phone:
+              type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"

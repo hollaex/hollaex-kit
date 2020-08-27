@@ -21,7 +21,10 @@ const {
 	ERROR_CHANGE_USER_INFO,
 	IMAGE_NOT_FOUND,
 	INVALID_PHONE_NUMBER,
-	SMS_ERROR
+	SMS_ERROR,
+	SMS_CODE_EXPIRED,
+	SMS_PHONE_DONT_MATCH,
+	SMS_CODE_INVALID
 } = require('../../message');
 const aws = require('aws-sdk');
 const { all } = require('bluebird');
@@ -546,6 +549,31 @@ const storeSMSCode = (user_id, phone, code) => {
 	);
 };
 
+const checkSMSCode = (user_id, phone, code) => {
+	const userKey = generateUserKey(user_id);
+	return redis
+		.getAsync(userKey)
+		.then((data) => {
+			if (!data) {
+				throw new Error(SMS_CODE_EXPIRED);
+			}
+			return JSON.parse(data);
+		})
+		.then((data) => {
+			if (data.phone !== phone) {
+				throw new Error(SMS_PHONE_DONT_MATCH);
+			} else if (data.code !== code) {
+				throw new Error(SMS_CODE_INVALID);
+			}
+			return data;
+		});
+};
+
+const deleteSMSCode = (user_id) => {
+	const userKey = generateUserKey(user_id);
+	return redis.delAsync(userKey);
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -567,5 +595,7 @@ module.exports = {
 	destroyAnnouncement,
 	getAllAnnouncements,
 	sendSMS,
-	storeSMSCode
+	storeSMSCode,
+	checkSMSCode,
+	deleteSMSCode
 };
