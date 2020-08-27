@@ -574,19 +574,19 @@ const kycAdminUpload = (req, res) => {
 			return all([
 				front.value
 					? uploadFile(
-						`${id}/${ts}-front.${getType(front.value.mimetype)}`,
+						`${user_id}/${ts}-front.${getType(front.value.mimetype)}`,
 						front.value
 					)
 					: { Location: data.front },
 				back.value
 					? uploadFile(
-						`${id}/${ts}-back.${getType(back.value.mimetype)}`,
+						`${user_id}/${ts}-back.${getType(back.value.mimetype)}`,
 						back.value
 					)
 					: { Location: data.back },
 				proof_of_residency.value
 					? uploadFile(
-						`${id}/${ts}-proof_of_residency.${getType(
+						`${user_id}/${ts}-proof_of_residency.${getType(
 							proof_of_residency.value.mimetype
 						)}`,
 						proof_of_residency.value
