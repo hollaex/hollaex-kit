@@ -19,7 +19,9 @@ const {
 	userUpdateLog,
 	getType,
 	storeFilesDataOnDb,
-	uploadFile
+	uploadFile,
+	getImagesData,
+	findUserImages
 } = require('../helpers/plugins');
 const {
 	DEFAULT_REJECTION_NOTE,
@@ -441,6 +443,7 @@ const kycUserUpload = (req, res) => {
 	});
 
 	const ts = Date.now();
+
 	findUser({
 		where: {
 			id
@@ -499,6 +502,121 @@ const kycUserUpload = (req, res) => {
 		});
 };
 
+const kycAdminUpload = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/kycAdminUpload auth',
+		req.auth.sub
+	);
+
+	const { user_id } = req.swagger.params.user_id.value;
+	let { front, back, proof_of_residency, ...otherData } = req.swagger.params;
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/kycAdminUpload user_id',
+		user_id
+	);
+
+	if (
+		!front.value &&
+		!back.value &&
+		!proof_of_residency.value &&
+		Object.keys(otherData).length === 0
+	) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload Missing Fields');
+		return res.status(400).json({ message: 'Missing fields' });
+	}
+
+	let invalidType = '';
+	if (!validMimeType(front.value.mimetype)) {
+		invalidType = 'front';
+	} else if (back && !validMimeType(back.value.mimetype)) {
+		invalidType = 'back';
+	} else if (
+		proof_of_residency &&
+		!validMimeType(proof_of_residency.value.mimetype)
+	) {
+		invalidType = 'proof_of_residency';
+	}
+	if (invalidType) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload invalid', invalidType);
+		return res.status(400).json({ message: `Invalid type: ${invalidType} field.` });
+	}
+
+	const data = { id_data: { provided: true } };
+
+	Object.entries(otherData).forEach(([key, field]) => {
+		if (field) {
+			if (
+				key === 'type' ||
+				key === 'number' ||
+				key === 'issued_date' ||
+				key === 'expiration_date'
+			) {
+				data.id_data[key] = field;
+			}
+		}
+	});
+
+	const ts = Date.now();
+
+	findUser({
+		where: {
+			id: user_id
+		},
+		attributes: [
+			'id'
+		]
+	})
+		.then((user) => getImagesData(user.id, 'admin'))
+		.then((data) => {
+			return all([
+				front.value
+					? uploadFile(
+						`${id}/${ts}-front.${getType(front.value.mimetype)}`,
+						front.value
+					)
+					: { Location: data.front },
+				back.value
+					? uploadFile(
+						`${id}/${ts}-back.${getType(back.value.mimetype)}`,
+						back.value
+					)
+					: { Location: data.back },
+				proof_of_residency.value
+					? uploadFile(
+						`${id}/${ts}-proof_of_residency.${getType(
+							proof_of_residency.value.mimetype
+						)}`,
+						proof_of_residency.value
+					)
+					: { Location: data.proof_of_residency }
+			]);
+		})
+		.then((results) => {
+			return storeFilesDataOnDb(
+				user_id,
+				data,
+				results[0] ? results[0].Location : '',
+				results[1] ? results[1].Location : '',
+				results[2] ? results[2].Location : ''
+			);
+		})
+		.then(() => {
+			return findUserImages({ id: user_id });
+		})
+		.then((data) => {
+			loggerPlugin.debug(req.uuid, 'controllers/plugins/kycAdminUpload then', data);
+			res.json({ message: 'Success', data });
+		})
+		.catch((err) => {
+			console.log(err);
+			loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload err', err.message);
+			res.status(400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -508,5 +626,6 @@ module.exports = {
 	bankRevoke,
 	putKycUser,
 	putKycAdmin,
-	kycUserUpload
+	kycUserUpload,
+	kycAdminUpload
 };

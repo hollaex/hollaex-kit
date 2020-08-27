@@ -247,6 +247,8 @@ exports.REQUIRED_XHT = 100;
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
 
+exports.S3_LINK_EXPIRATION_TIME = 300; // seconds
+
 exports.ID_FIELDS = [
 	'type',
 	'number',

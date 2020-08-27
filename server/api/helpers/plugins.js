@@ -10,12 +10,14 @@ const {
 	USER_FIELD_ADMIN_LOG,
 	ID_FIELDS,
 	ADDRESS_FIELDS,
-	GET_SECRETS
+	GET_SECRETS,
+	S3_LINK_EXPIRATION_TIME
 } = require('../../constants');
 const {
 	USER_NOT_FOUND,
 	MAX_BANKS_EXCEEDED,
-	ERROR_CHANGE_USER_INFO
+	ERROR_CHANGE_USER_INFO,
+	IMAGE_NOT_FOUND
 } = require('../../message');
 const aws = require('aws-sdk');
 
@@ -340,6 +342,66 @@ const uploadFile = (name, file) => {
 	});
 };
 
+const getImagesData = (user_id, type = undefined) => {
+	return VerificationImage.findOne({
+		where: { user_id },
+		order: [['created_at', 'DESC']],
+		attributes: ['front', 'back', 'proof_of_residency']
+	}).then((verificationImages) => {
+		if (!verificationImages) {
+			if (type === 'admin') {
+				return { front: undefined, back: undefined, proof_of_residency: undefined };
+			}
+			throw new Error(IMAGE_NOT_FOUND);
+		}
+		return verificationImages.dataValues;
+	});
+};
+
+const getKeyFromLink = (link) => {
+	const AWS_SE = 'amazonaws.com/';
+	const indexOfService = link.indexOf(AWS_SE);
+	if (indexOfService > 0) {
+		return link.substring(indexOfService + AWS_SE.length);
+	}
+	// if not amazon.com link, return same link
+	return link;
+};
+
+const getPublicLink = (privateLink) => {
+	const params = {
+		Bucket: S3_BUCKET_NAME(),
+		Key: getKeyFromLink(privateLink),
+		Expires: S3_LINK_EXPIRATION_TIME
+	};
+
+	return s3Read().getSignedUrl('getObject', params);
+};
+
+const getLinks = ({ front, back, proof_of_residency }) => {
+	const data = {
+		front: front ? getPublicLink(front) : '',
+		back: back ? getPublicLink(back) : '',
+		proof_of_residency: proof_of_residency
+			? getPublicLink(proof_of_residency)
+			: ''
+	};
+	return data;
+};
+
+const findUserImages = (where) => {
+	return findUser({ where, attributes: ['id', 'id_data'] })
+		.then((user) => {
+			return Promise.all([
+				user.dataValues,
+				getImagesData(user.id).then(getLinks)
+			]);
+		})
+		.then(([user, links]) => {
+			return { user, data: links };
+		});
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -350,5 +412,7 @@ module.exports = {
 	userUpdateLog,
 	getType,
 	storeFilesDataOnDb,
-	uploadFile
+	uploadFile,
+	getImagesData,
+	findUserImages
 };

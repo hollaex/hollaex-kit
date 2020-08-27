@@ -850,6 +850,77 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /plugins/kyc/admin/upload:
+    x-swagger-router-controller: plugins
+    post:
+      operationId: kycAdminUpload
+      description: Admin upload user id images. They must have a mime type of image. The max size of the 3 files together is 10 MB. If the call excedes the size, nginx will return a 413 error.
+      tags:
+        - Plugins
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: user_id
+          in: query
+          description: Id of user to upload document for
+          required: true
+          type: number
+          format: int32
+        - name: front
+          description: Image of the front of user's id
+          in: formData
+          required: true
+          type: files
+        - name: back
+          description: Image of the back of user's id
+          in: formData
+          required: false
+          type: file
+        - name: proof_of_residency
+          description: Image of the user's proof of residency
+          in: formData
+          required: false
+          type: file
+        - name: type
+          description: Type of the id document
+          in: formData
+          required: false
+          type: string
+        - name: number
+          description: Number of the id document
+          in: formData
+          required: false
+          format: string
+        - name: expiration_date
+          description: Expiration date of the document
+          in: formData
+          required: false
+          type: string
+          format: date-time
+        - name: issued_date
+          description: Issue date of the document
+          in: formData
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        413:
+          description: Entity too large
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
 
 definitions:
   ObjectResponse:
