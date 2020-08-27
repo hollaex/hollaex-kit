@@ -686,6 +686,52 @@ const kycIdVerify = (req, res) => {
 		});
 };
 
+const kycIdRevoke = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/kycIdRevoke auth',
+		req.auth.sub
+	);
+
+	const { user_id } = req.swagger.params.data.value;
+	let { message } = req.swagger.params.data.value || DEFAULT_REJECTION_NOTE;
+
+	loggerPlugin.info(
+		req.uuid,
+		'controllers/plugins/kycIdRevoke user_id',
+		user_id,
+		'message',
+		message
+	);
+
+	findUser({
+		where: {
+			id: user_id
+		},
+		attributes: ['id', 'id_data', 'email', 'settings']
+	})
+		.then((user) => {
+			return revokeDocuments(user, message);
+		})
+		.then((user) => {
+			const { email } = user.dataValues;
+			const emailData = { type: 'id', message };
+			const data = {};
+			data.id_data = user.id_data;
+			sendEmail(
+				MAILTYPE.USER_VERIFICATION_REJECT,
+				email,
+				emailData,
+				user.settings
+			);
+			res.json(data);
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdRevoke err', err.message);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -698,5 +744,6 @@ module.exports = {
 	kycUserUpload,
 	kycAdminUpload,
 	getKycId,
-	kycIdVerify
+	kycIdVerify,
+	kycIdRevoke
 };
