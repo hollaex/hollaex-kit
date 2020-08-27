@@ -33,8 +33,8 @@ const AssetsBlock = ({
 	const sortedSearchResults = Object.entries(searchResult)
     .filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
     .sort(([key_a], [key_b]) => {
-      const price_a = calculatePrice(balance[`${key_a}_balance`], prices[key_a]);
-      const price_b = calculatePrice(balance[`${key_b}_balance`], prices[key_b]);
+      const price_a = calculatePrice(balance[`${key_a}_balance`], key_a);
+      const price_b = calculatePrice(balance[`${key_b}_balance`], key_b);
       return price_a < price_b ? 1 : -1 // descending order
     })
 
@@ -146,7 +146,7 @@ const AssetsBlock = ({
               key === BASE_CURRENCY
                 ? formatToCurrency(balanceValue, min)
                 : formatToCurrency(
-                calculatePrice(balanceValue, prices[key]),
+                calculatePrice(balanceValue, key),
                 baseCoin.min
                 );
             return (

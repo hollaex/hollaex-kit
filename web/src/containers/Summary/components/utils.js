@@ -116,7 +116,7 @@ export const getTradeVolumeTotal = (tradeData, prices, pairs) => {
 				let volumeObj = trade[pair] || {};
 				let pairPrice = calculatePrice(
 					volumeObj.volume,
-					prices[pairValue.pair_base]
+          pairValue.pair_base
 				);
 				total += pairPrice;
 				return total;
@@ -140,7 +140,7 @@ export const getLastMonthVolume = (tradeData = {}, prices = {}, pairs = {}) => {
 			let volumeObj = trade[pair] || {};
 			let pairPrice = calculatePrice(
 				volumeObj.volume,
-				prices[pairValue.pair_base]
+        pairValue.pair_base
 			);
 			total += pairPrice;
 			return total;

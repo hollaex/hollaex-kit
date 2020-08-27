@@ -63,7 +63,7 @@ class CurrencySlider extends Component {
 		const balanceValue = balance[`${currentCurrency}_balance`];
 		const baseBalance =
 			currentCurrency !== BASE_CURRENCY
-				&& calculatePrice(balanceValue, prices[currentCurrency]);
+				&& calculatePrice(balanceValue, currentCurrency);
 		const { fullname } = coins[currentCurrency] || DEFAULT_COIN_DATA;
 
 		return (

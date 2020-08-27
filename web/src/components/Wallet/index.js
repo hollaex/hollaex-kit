@@ -78,7 +78,7 @@ class Wallet extends Component {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculatePrice(
 				balance[`${symbol}_balance`],
-				prices[currency]
+        currency
 			);
 			const balancePercent = calculatePricePercentage(
 				currencyBalance,
