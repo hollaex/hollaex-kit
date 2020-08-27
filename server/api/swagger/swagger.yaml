@@ -1198,8 +1198,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
-
-
 definitions:
   ObjectResponse:
     type: object
