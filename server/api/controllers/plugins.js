@@ -26,7 +26,8 @@ const {
 const {
 	DEFAULT_REJECTION_NOTE,
 	USER_NOT_FOUND,
-	SMS_INVALID_PHONE
+	SMS_INVALID_PHONE,
+	ID_EMAIL_REQUIRED
 } = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -509,7 +510,7 @@ const kycAdminUpload = (req, res) => {
 		req.auth.sub
 	);
 
-	const { user_id } = req.swagger.params.user_id.value;
+	const user_id = req.swagger.params.user_id.value;
 	let { front, back, proof_of_residency, ...otherData } = req.swagger.params;
 
 	loggerPlugin.verbose(
@@ -617,6 +618,37 @@ const kycAdminUpload = (req, res) => {
 		});
 };
 
+const getKycId = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/getKycId auth',
+		req.auth.sub
+	);
+
+	const email = req.swagger.params.email.value;
+	const id = req.swagger.params.id.value;
+	const where = {};
+	if (id) {
+		where.id = id;
+	} else if (email) {
+		where.email = email;
+	} else {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/getKycId', ID_EMAIL_REQUIRED);
+		return res.status(400).json({ message: ID_EMAIL_REQUIRED });
+	}
+
+	loggerPlugin.debug(req.uuid, 'controllers/plugins/getKycId', 'user id', id, 'email', email);
+
+	findUserImages(where)
+		.then(({ data }) => {
+			res.json(data);
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/getKycId err', err.message);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -627,5 +659,6 @@ module.exports = {
 	putKycUser,
 	putKycAdmin,
 	kycUserUpload,
-	kycAdminUpload
+	kycAdminUpload,
+	getKycId
 };

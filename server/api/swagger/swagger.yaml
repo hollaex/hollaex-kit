@@ -786,6 +786,8 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
+        - support
   /plugins/kyc/user/upload:
     x-swagger-router-controller: plugins
     post:
@@ -921,6 +923,41 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /plugins/kyc/id:
+    x-swagger-router-controller: plugins
+    get:
+      operationId: getKycId
+      description: Admin upload user id images. They must have a mime type of image. The max size of the 3 files together is 10 MB. If the call excedes the size, nginx will return a 413 error.
+      tags:
+        - Plugins
+      parameters:
+        - name: email
+          in: query
+          description: Email of user to get image for
+          required: false
+          type: string
+        - name: id
+          in: query
+          description: Id of user to get image for
+          required: false
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/VerificationId"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
 
 definitions:
   ObjectResponse:
@@ -1173,3 +1210,14 @@ definitions:
     type: array
       items:
         $ref: "#/definitions/BankObject"
+  VerificationId:
+    type: object
+    required:
+      - front
+    properties:
+      front:
+        type: string
+      back:
+        type: string
+      proof_of_residency:
+        type: string
