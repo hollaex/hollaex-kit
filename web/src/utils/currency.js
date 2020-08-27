@@ -294,7 +294,7 @@ export const toFixed = (exponential) => {
 };
 
 export const estimatePrice = (key, pairs = {}, tickers = {}) => {
-	const pairsArray = object.entries(pairs).map(([, pairObj]) => pairObj)
+	const pairsArray = Object.entries(pairs).map(([, pairObj]) => pairObj)
 	const path = findPath(pairsArray, key)[0];
 	let estimatedPrice = 1;
 
