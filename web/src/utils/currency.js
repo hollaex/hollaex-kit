@@ -134,13 +134,13 @@ export const formatNumber = (number, round = 0) => {
 export const formatAverage = (amount = 0) =>
 	numbro(amount).format(AVERAGE_FORMAT);
 
-export const calculatePrice = (value = 0, price = 1) =>
+export const calculatePrice = (value = 0, price = 0) =>
 	math.number(math.multiply(math.fraction(value), math.fraction(price)));
 
-export const calculateBalancePrice = (balance, prices, coins = {}) => {
+export const calculateBalancePrice = (balance, prices = {}, coins = {}, pairs = {}, tickers = {}) => {
 	let accumulated = math.fraction(0);
 	Object.keys(coins).forEach((key) => {
-		let price = prices[key] ? prices[key] : 1;
+		const price = estimatePrice(key, prices, pairs, tickers);
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(
 				math.multiply(
@@ -293,7 +293,10 @@ export const toFixed = (exponential) => {
 	return exponential;
 };
 
-export const estimatePrice = (key, pairs = {}, tickers = {}) => {
+export const estimatePrice = (key, prices = {},pairs = {}, tickers = {}) => {
+
+  if(prices[key]) return prices[key];
+
 	const pairsArray = Object.entries(pairs).map(([, pairObj]) => pairObj)
 	const path = findPath(pairsArray, key)[0];
 	let estimatedPrice = 1;
