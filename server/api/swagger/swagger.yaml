@@ -1030,6 +1030,43 @@ paths:
         - supervisor
         - support
         - kyc
+  /plugins/announcement:
+    x-swagger-router-controller: plugins
+    post:
+      operationId: postAnnouncement
+      description: Post an announcement
+      tags:
+        - Plugins
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - title
+              - message
+              - type
+            properties:
+              title:
+                type: string
+              message:
+                type: string
+              type:
+              type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/AnnouncementObject"
+      default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
 
 
 definitions:
@@ -1293,4 +1330,19 @@ definitions:
       back:
         type: string
       proof_of_residency:
+        type: string
+  AnnouncementObject:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      created_by:
+        type: number
+        format: int32
+      title:
+        type: string
+      message:
+        type: string
+      type:
         type: string

@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const { VerificationImage, sequelize } = require('../../db/models');
+const { VerificationImage, Announcement, sequelize } = require('../../db/models');
 const { findUser } = require('../helpers/user');
 const { pick, each, differenceWith, isEqual } = require('lodash');
 const {
@@ -443,6 +443,15 @@ const revokeDocuments = (user, message = '') => {
 		});
 };
 
+const createAnnouncement = (created_by, title, message, type) => {
+	return Announcement.create({
+		created_by,
+		title,
+		message,
+		type
+	});
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -458,5 +467,6 @@ module.exports = {
 	findUserImages,
 	validMimeType,
 	approveDocuments,
-	revokeDocuments
+	revokeDocuments,
+	createAnnouncement
 };

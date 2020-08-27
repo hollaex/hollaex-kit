@@ -24,13 +24,18 @@ const {
 	findUserImages,
 	validMimeType,
 	approveDocuments,
-	revokeDocuments
+	revokeDocuments,
+	createAnnouncement
 } = require('../helpers/plugins');
 const {
 	DEFAULT_REJECTION_NOTE,
 	USER_NOT_FOUND,
 	SMS_INVALID_PHONE,
-	ID_EMAIL_REQUIRED
+	ID_EMAIL_REQUIRED,
+	WRONG_TITLE,
+	WRONG_MESSAGE,
+	WRONG_TYPE,
+	WRONG_ID
 } = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -398,7 +403,7 @@ const putKycAdmin = (req, res) => {
 			loggerPlugin.error(
 				req.uuid,
 				'controllers/plugins/putKycAdmin err',
-				err.messsage
+				err.message
 			);
 			res.status(err.status || 400).json({ message: err.message });
 		});
@@ -732,6 +737,61 @@ const kycIdRevoke = (req, res) => {
 		});
 };
 
+const postAnnouncement = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/postAnnouncement auth',
+		req.auth.sub
+	);
+
+	let { title, message, type } = req.swagger.params.data.value;
+
+	if (!title || typeof title !== 'string') {
+		loggerPlugin.error(
+			req.uuid,
+			'controllers/plugins/postAnnouncement',
+			WRONG_TITLE
+		);
+		return res.status(400).json({ message: WRONG_TITLE });
+	} else if (!message || typeof message !== 'string') {
+		loggerPlugin.error(
+			req.uuid,
+			'controllers/plugins/postAnnouncement',
+			WRONG_MESSAGE
+		);
+		return res.status(400).json({ message: WRONG_MESSAGE });
+	} else if (type && typeof type !== 'string') {
+		loggerPlugin.error(
+			req.uuid,
+			'controllers/plugins/postAnnouncement',
+			WRONG_TYPE
+		);
+		return res.status(400).json({ message: WRONG_TYPE });
+	}
+
+	if (!type) type = 'info';
+
+	loggerPlugin.info(
+		req.uuid,
+		'controllers/plugins/postAnnouncement announcement',
+		title,
+		type
+	);
+
+	createAnnouncement(req.auth.sub.id, title, message, type)
+		.then((announcement) => {
+			res.json(announcement);
+		})
+		.catch((err) => {
+			loggerPlugin.error(
+				req.uuid,
+				'controllers/plugins/postAnnouncement err',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -745,5 +805,6 @@ module.exports = {
 	kycAdminUpload,
 	getKycId,
 	kycIdVerify,
-	kycIdRevoke
+	kycIdRevoke,
+	postAnnouncement
 };

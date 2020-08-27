@@ -114,3 +114,8 @@ exports.SMS_INVALID_PHONE = 'Invalid mobile phone number';
 exports.ID_EMAIL_REQUIRED = 'Missing parameters. ID and email required';
 exports.PENDING_APPROVAL_DENY = 'You are not allowed to upload a document while its pending or approved';
 exports.IMAGE_NOT_FOUND = 'ID image not found';
+
+exports.WRONG_TITLE = 'Value \'title\' is required and must be a string';
+exports.WRONG_MESSAGE = 'Value \'message\' is required and must be a string';
+exports.WRONG_TYPE = 'Value \'type\' must be a string';
+exports.WRONG_ID = 'Value \'id\' is required and must be an integer';
