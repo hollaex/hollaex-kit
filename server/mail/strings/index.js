@@ -32,7 +32,7 @@ const languageFile = (lang) => {
 		}
 	}
 	return langFile;
-}
+};
 
 module.exports = {
 	FORMATDATE,

@@ -11,17 +11,23 @@ const {
 	ID_FIELDS,
 	ADDRESS_FIELDS,
 	GET_SECRETS,
-	S3_LINK_EXPIRATION_TIME
+	S3_LINK_EXPIRATION_TIME,
+	SMS_CODE_EXPIRATION_TIME,
+	SMS_CODE_KEY
 } = require('../../constants');
 const {
 	USER_NOT_FOUND,
 	MAX_BANKS_EXCEEDED,
 	ERROR_CHANGE_USER_INFO,
-	IMAGE_NOT_FOUND
+	IMAGE_NOT_FOUND,
+	INVALID_PHONE_NUMBER,
+	SMS_ERROR
 } = require('../../message');
 const aws = require('aws-sdk');
 const { all } = require('bluebird');
 const { convertSequelizeCountAndRows } = require('./general');
+const PhoneNumber = require('awesome-phonenumber');
+const redis = require('../../db/redis').duplicate();
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -302,7 +308,7 @@ const generateBuckets = (bucketsString = '') => {
 	return buckets;
 };
 
-const credentials = () => {
+const s3Credentials = () => {
 	return {
 		write: {
 			accessKeyId: GET_SECRETS().plugins.s3.key.write,
@@ -317,13 +323,13 @@ const credentials = () => {
 };
 
 const s3Write = (bucketName = S3_BUCKET_NAME()) => {
-	aws.config.update(credentials().write);
-	return new aws.S3(credentials().buckets[bucketName]);
+	aws.config.update(s3Credentials().write);
+	return new aws.S3(s3Credentials().buckets[bucketName]);
 }
 
 const s3Read = (bucketName = S3_BUCKET_NAME()) => {
-	aws.config.update(credentials().read);
-	return new aws.S3(credentials().buckets[bucketName]);
+	aws.config.update(s3Credentials().read);
+	return new aws.S3(s3Credentials().buckets[bucketName]);
 };
 
 const uploadFile = (name, file) => {
@@ -480,6 +486,66 @@ const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
 		.then(convertSequelizeCountAndRows);
 };
 
+const snsCredentials = () => {
+	return {
+		accessKeyId: GET_SECRETS().plugins.sns.key,
+		secretAccessKey: GET_SECRETS().plugins.sns.secret,
+		region: GET_SECRETS().plugins.sns.region
+	};
+};
+
+const sns = () => {
+	aws.config.update(snsCredentials());
+	return new aws.SNS();
+};
+
+const sendAwsSMS = (phoneNumber, message) => {
+	const params = {
+		Message: message,
+		MessageStructure: 'string',
+		PhoneNumber: phoneNumber
+	};
+
+	return new Promise((resolve, reject) => {
+		sns().publish(params, (err, data) => {
+			if (err) {
+				const error = new Error(SMS_ERROR);
+				error.statusCode = 400;
+				return reject(error);
+			}
+			return resolve(data);
+		});
+	});
+};
+
+const sendSMS = (number = '', data = {}) => {
+	const phoneNumber = new PhoneNumber(number);
+
+	if (!phoneNumber.isValid()) {
+		return Promise.resolve(INVALID_PHONE_NUMBER);
+	} else {
+		const message = data.message;
+		return sendAwsSMS(phoneNumber.getNumber(), message);
+	}
+};
+
+const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;
+
+const storeSMSCode = (user_id, phone, code) => {
+	const userKey = generateUserKey(user_id);
+	const data = {
+		phone,
+		code
+	};
+
+	return redis.setAsync(
+		userKey,
+		JSON.stringify(data),
+		'EX',
+		SMS_CODE_EXPIRATION_TIME
+	);
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -499,5 +565,7 @@ module.exports = {
 	createAnnouncement,
 	findAnnouncement,
 	destroyAnnouncement,
-	getAllAnnouncements
+	getAllAnnouncements,
+	sendSMS,
+	storeSMSCode
 };

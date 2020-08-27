@@ -28,21 +28,25 @@ const {
 	createAnnouncement,
 	findAnnouncement,
 	destroyAnnouncement,
-	getAllAnnouncements
+	getAllAnnouncements,
+	sendSMS,
+	storeSMSCode
 } = require('../helpers/plugins');
 const { getTimeframe, getPagination, getOrdering } = require('../helpers/general');
 const {
 	DEFAULT_REJECTION_NOTE,
 	USER_NOT_FOUND,
 	SMS_INVALID_PHONE,
-	ID_EMAIL_REQUIRED
+	ID_EMAIL_REQUIRED,
+	SMS_SUCCESS
 } = require('../../messages');
 const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
+const { MAILTYPE, languageFile } = require('../../mail/strings');
 const PhoneNumber = require('awesome-phonenumber');
 const { omit, cloneDeep, has } = require('lodash');
 const { all } = require('bluebird');
 const { createAudit } = require('../helpers/audit');
+const { generateOtp } = require('../helpers/otp');
 
 const getPlugins = (req, res) => {
 	try {
@@ -839,6 +843,56 @@ const getAnnouncements = (req, res) => {
 		});
 };
 
+const smsVerify = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/smsVerify auth',
+		req.auth.sub
+	);
+
+	const number = req.swagger.params.phone.value;
+	const { id } = req.auth.sub;
+
+	loggerPlugin.info(
+		req.uuid,
+		'controllers/plugins/smsVerify phoneNumber',
+		number
+	);
+
+	const phoneNumber = new PhoneNumber(number);
+
+	if (!phoneNumber.isValid()) {
+		loggerPlugin.error(
+			req.uuid,
+			'controllers/plugins/smsVerify',
+			SMS_INVALID_PHONE
+		);
+		return res.status(400).json({ message: SMS_INVALID_PHONE });
+	}
+
+	const phone = phoneNumber.getNumber();
+	const code = generateOtp();
+	const SMS = languageFile(GET_CONFIGURATION().constants.defaults.language).SMS;
+
+	sendSMS(phone, {
+		message: SMS.verificationCode(code)
+	})
+		.then(() => {
+			return storeSMSCode(id, phone, code);
+		})
+		.then(() => {
+			res.json({ message: SMS_SUCCESS });
+		})
+		.catch((err) => {
+			loggerPlugin.error(
+				req.uuid,
+				'controllers/plugins/smsVerify err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -855,5 +909,6 @@ module.exports = {
 	kycIdRevoke,
 	postAnnouncement,
 	deleteAnnouncement,
-	getAnnouncements
+	getAnnouncements,
+	smsVerify
 };

@@ -1141,6 +1141,32 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /plugins/sms/verify:
+    x-swagger-router-controller: plugins
+    get:
+      operationId: smsVerify
+      description: Verify an sms phone number
+      tags:
+        - Plugins
+      parameters:
+        - in: query
+          name: phone
+          description: Phone number to verify
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
 
 
 definitions:
