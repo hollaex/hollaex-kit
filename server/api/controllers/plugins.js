@@ -6,7 +6,7 @@ const {
 	REQUIRED_XHT,
 	ROLES
 } = require('../../constants');
-const { Balance } = require('../../db/models');
+const { Balance, sequelize } = require('../../db/models');
 const { findUser, getUserValuesByEmail, getUserValuesById } = require('../helpers/user');
 const { loggerPlugin } = require('../../config/logger');
 const {
@@ -14,14 +14,21 @@ const {
 	rejectBankAccount,
 	approveBankAccount,
 	adminAddUserBanks,
-	updateUserData
+	updateUserData,
+	updateUserPhoneNumber,
+	userUpdateLog
 } = require('../helpers/plugins');
 const {
 	DEFAULT_REJECTION_NOTE,
-	USER_NOT_FOUND
+	USER_NOT_FOUND,
+	SMS_INVALID_PHONE
 } = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
+const PhoneNumber = require('awesome-phonenumber');
+const { omit, cloneDeep, has } = require('lodash');
+const { all } = require('bluebird');
+const { createAudit } = require('../helpers/audit');
 
 const getPlugins = (req, res) => {
 	try {
@@ -238,7 +245,7 @@ const putKycUser = (req, res) => {
 	);
 
 	const newData = req.swagger.params.data.value;
-	const { email } = req.auth.sub ;
+	const { email } = req.auth.sub;
 
 	findUser({
 		where: { email },
@@ -271,6 +278,123 @@ const putKycUser = (req, res) => {
 		});
 };
 
+const putKycAdmin = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/putKycAdmin auth',
+		req.auth.sub
+	);
+
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+	const admin_id = req.auth.sub.id;
+	const id = req.swagger.params.user_id.value;
+	const data = req.swagger.params.data.value;
+
+	const REMOVE_PROPS = [
+		'id_data',
+		'bank_account',
+		'crypto_wallet',
+		'verification_level',
+		'otp_enabled',
+		'activated',
+		'username',
+		'settings'
+	];
+
+	REMOVE_PROPS.forEach((key) => {
+		if (has(data, key)) {
+			delete data[key];
+		}
+	});
+
+	let phoneNumber;
+	if (data.phone_number) {
+		phoneNumber = new PhoneNumber(data.phone_number);
+		if (data.phone_number && !phoneNumber.isValid()) {
+			loggerPlugin.error(
+				req.uuid,
+				'controllers/plugins/putKycAdmin err',
+				SMS_INVALID_PHONE
+			);
+			return res.status(400).json({ message: SMS_INVALID_PHONE });
+		}
+	}
+
+	sequelize
+		.transaction((transaction) => {
+			const options = { transaction, returning: true };
+			let prevUserData = {}; // for audit
+			return findUser({ where: { id } })
+				.then((user) => {
+					prevUserData = cloneDeep(user.dataValues);
+					loggerPlugin.debug(
+						req.uuid,
+						'controllers/plugins/putKycAdmin user',
+						prevUserData
+					);
+					return updateUserData(data, ROLES.SUPPORT)(user, options);
+				})
+				.then((user) => {
+					loggerPlugin.debug(
+						req.uuid,
+						'controllers/plugins/putKycAdmin user then',
+						user.dataValues,
+						user.previous('bank_account')
+					);
+					if (data.phone_number) {
+						return updateUserPhoneNumber(
+							user,
+							phoneNumber.getNumber(),
+							options
+						);
+					}
+					return user;
+				})
+				.then((user) => {
+					loggerPlugin.debug(
+						req.uuid,
+						'controllers/plugins/putKycAdmin user then then',
+						prevUserData.dataValues,
+						user
+					);
+					const description = userUpdateLog(
+						user.id,
+						prevUserData,
+						user.dataValues
+					);
+					return all([
+						user,
+						createAudit(admin_id, 'userUpdate', description, ip, domain)
+					]);
+				});
+		})
+		.then(([user, audit]) => {
+			loggerPlugin.info(
+				req.uuid,
+				'controllers/plugins/putKycAdmin user_end audit',
+				user.dataValues,
+				audit
+			);
+			user = omit(user.dataValues, [
+				'password',
+				'is_admin',
+				'is_support',
+				'is_kyc',
+				'is_supervisor'
+			]);
+			res.json(user);
+		})
+		.catch((err) => {
+			loggerPlugin.error(
+				req.uuid,
+				'controllers/plugins/putKycAdmin err',
+				err.messsage
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -278,5 +402,6 @@ module.exports = {
 	postBankAdmin,
 	bankVerify,
 	bankRevoke,
-	putKycUser
+	putKycUser,
+	putKycAdmin
 };

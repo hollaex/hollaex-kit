@@ -756,6 +756,36 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /plugins/kyc/admin:
+    x-swagger-router-controller: plugins
+    put:
+      operationId: putKycAdmin
+      description: Admin update user kyc info
+      tags:
+        - Plugins
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          description: User Id to update info for
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
 
 definitions:
   ObjectResponse:

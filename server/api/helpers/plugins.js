@@ -4,7 +4,10 @@ const crypto = require('crypto');
 const { pick, each } = require('lodash');
 const {
 	VERIFY_STATUS,
-	ROLES
+	ROLES,
+	USER_FIELD_ADMIN_LOG,
+	ID_FIELDS,
+	ADDRESS_FIELDS
 } = require('../../constants');
 const {
 	USER_NOT_FOUND,
@@ -58,7 +61,7 @@ const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 			'bank_name',
 			'card_number',
 			'account_number'
-		)
+		);
 	});
 
 	return user.update(
@@ -85,7 +88,7 @@ const approveBankAccount = (id = 0) => (user, options = {}) => {
 			...options
 		}
 	);
-}
+};
 
 const rejectBankAccount = (id = 0) => (user, options = {}) => {
 	const newBanks = user.bank_account.filter((bank) => bank.id !== id);
@@ -147,10 +150,61 @@ const updateUserData = (
 	});
 };
 
+const updateUserPhoneNumber = (user, phone_number, options = {}) => {
+	return user.update(
+		{ phone_number },
+		{ fields: ['phone_number'], ...options }
+	);
+};
+
+const userUpdateLog = (user_id, prevData = {}, newData = {}) => {
+	let description = {
+		user_id,
+		note: `Change in user ${user_id} information`,
+		old: {},
+		new: {}
+	};
+	for (const key in newData) {
+		if (USER_FIELD_ADMIN_LOG.includes(key)) {
+			let prevRecord = prevData[key] || 'empty';
+			let newRecord = newData[key] || 'empty';
+			if (key === 'bank_account') {
+				description = bankComparison(
+					prevData.bank_account,
+					newData.bank_account,
+					description
+				);
+			} else if (key === 'id_data') {
+				ID_FIELDS.forEach((field) => {
+					if (newRecord[field] != prevRecord[field]) {
+						description.old[field] = prevRecord[field];
+						description.new[field] = newRecord[field];
+					}
+				});
+			} else if (key === 'address') {
+				ADDRESS_FIELDS.forEach((field) => {
+					if (prevRecord[field] != newRecord[field]) {
+						description.old[field] = prevRecord[field];
+						description.new[field] = newRecord[field];
+					}
+				});
+			} else {
+				if (prevRecord.toString() != newRecord.toString()) {
+					description.old[key] = prevRecord;
+					description.new[key] = newRecord;
+				}
+			}
+		}
+	}
+	return description;
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
 	adminAddUserBanks,
 	rejectBankAccount,
-	updateUserData
+	updateUserData,
+	updateUserPhoneNumber,
+	userUpdateLog
 };

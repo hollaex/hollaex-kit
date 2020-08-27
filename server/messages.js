@@ -109,3 +109,8 @@ exports.INVALID_VERIFICATION_LEVEL = 'User can not create token. Upgrade user le
 
 // PLUGINS
 exports.MAX_BANKS_EXCEEDED = 'User can have a maximum of three banks';
+
+exports.SMS_INVALID_PHONE = 'Invalid mobile phone number';
+exports.ID_EMAIL_REQUIRED = 'Missing parameters. ID and email required';
+exports.PENDING_APPROVAL_DENY = 'You are not allowed to upload a document while its pending or approved';
+exports.IMAGE_NOT_FOUND = 'ID image not found';
