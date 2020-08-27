@@ -135,8 +135,15 @@ export const formatNumber = (number, round = 0) => {
 export const formatAverage = (amount = 0) =>
 	numbro(amount).format(AVERAGE_FORMAT);
 
-export const calculatePrice = (value = 0, price = 0) =>
-	math.number(math.multiply(math.fraction(value), math.fraction(price)));
+export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
+	let price
+	if(key === BASE_CURRENCY) {
+		price = 1
+	} else {
+		price = estimatePrice(key)
+	}
+	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
+}
 
 export const calculateBalancePrice = (balance, prices = {}, coins = {}) => {
 	let accumulated = math.fraction(0);
