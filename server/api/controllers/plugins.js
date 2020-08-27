@@ -25,17 +25,15 @@ const {
 	validMimeType,
 	approveDocuments,
 	revokeDocuments,
-	createAnnouncement
+	createAnnouncement,
+	findAnnouncement,
+	destroyAnnouncement
 } = require('../helpers/plugins');
 const {
 	DEFAULT_REJECTION_NOTE,
 	USER_NOT_FOUND,
 	SMS_INVALID_PHONE,
-	ID_EMAIL_REQUIRED,
-	WRONG_TITLE,
-	WRONG_MESSAGE,
-	WRONG_TYPE,
-	WRONG_ID
+	ID_EMAIL_REQUIRED
 } = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -745,30 +743,6 @@ const postAnnouncement = (req, res) => {
 	);
 
 	let { title, message, type } = req.swagger.params.data.value;
-
-	if (!title || typeof title !== 'string') {
-		loggerPlugin.error(
-			req.uuid,
-			'controllers/plugins/postAnnouncement',
-			WRONG_TITLE
-		);
-		return res.status(400).json({ message: WRONG_TITLE });
-	} else if (!message || typeof message !== 'string') {
-		loggerPlugin.error(
-			req.uuid,
-			'controllers/plugins/postAnnouncement',
-			WRONG_MESSAGE
-		);
-		return res.status(400).json({ message: WRONG_MESSAGE });
-	} else if (type && typeof type !== 'string') {
-		loggerPlugin.error(
-			req.uuid,
-			'controllers/plugins/postAnnouncement',
-			WRONG_TYPE
-		);
-		return res.status(400).json({ message: WRONG_TYPE });
-	}
-
 	if (!type) type = 'info';
 
 	loggerPlugin.info(
@@ -792,6 +766,42 @@ const postAnnouncement = (req, res) => {
 		});
 };
 
+const deleteAnnouncement = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/deleteAnnouncement auth',
+		req.auth.sub
+	);
+
+	const id = req.swagger.params.id.value;
+
+	loggerPlugin.info(
+		req.uuid,
+		'controllers/plugins/deleteAnnouncement id',
+		id
+	);
+
+	findAnnouncement(id)
+		.then((announcement) => {
+			if (!announcement) {
+				throw new Error(`Announcement with id ${id} not found`);
+			} else {
+				return destroyAnnouncement(id);
+			}
+		})
+		.then(() => {
+			res.json({ message: `Announcement ${id} successfully deleted` });
+		})
+		.catch((err) => {
+			loggerPlugin.error(
+				req.uuid,
+				'controllers/plugins/deleteAnnouncement err',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -806,5 +816,6 @@ module.exports = {
 	getKycId,
 	kycIdVerify,
 	kycIdRevoke,
-	postAnnouncement
+	postAnnouncement,
+	deleteAnnouncement
 };

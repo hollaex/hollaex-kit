@@ -1046,19 +1046,43 @@ paths:
             required:
               - title
               - message
-              - type
             properties:
               title:
                 type: string
               message:
                 type: string
               type:
-              type: string
+                type: string
       responses:
         200:
           description: Success
           schema:
             $ref: "#/definitions/AnnouncementObject"
+      default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    delete:
+      operationId: deleteAnnouncement
+      description: Delete an announcement
+      tags:
+        - Plugins
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Id of announcement to delete
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
       default:
           description: Error
           schema:

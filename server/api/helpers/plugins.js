@@ -452,6 +452,14 @@ const createAnnouncement = (created_by, title, message, type) => {
 	});
 };
 
+const findAnnouncement = (id) => {
+	return Announcement.findOne({ where: { id }});
+};
+
+const destroyAnnouncement = (id) => {
+	return Announcement.destroy({ where: { id } });
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -468,5 +476,7 @@ module.exports = {
 	validMimeType,
 	approveDocuments,
 	revokeDocuments,
-	createAnnouncement
+	createAnnouncement,
+	findAnnouncement,
+	destroyAnnouncement
 };
