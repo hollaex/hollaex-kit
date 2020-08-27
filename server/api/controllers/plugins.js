@@ -27,8 +27,10 @@ const {
 	revokeDocuments,
 	createAnnouncement,
 	findAnnouncement,
-	destroyAnnouncement
+	destroyAnnouncement,
+	getAllAnnouncements
 } = require('../helpers/plugins');
+const { getTimeframe, getPagination, getOrdering } = require('../helpers/general');
 const {
 	DEFAULT_REJECTION_NOTE,
 	USER_NOT_FOUND,
@@ -802,6 +804,41 @@ const deleteAnnouncement = (req, res) => {
 		});
 };
 
+const getAnnouncements = (req, res) => {
+	const {
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date
+	} = req.swagger.params;
+
+	loggerPlugin.info(
+		req.uuid,
+		'controllers/plugins/getAnnouncements query',
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date
+	);
+
+	getAllAnnouncements(getPagination(limit, page), getTimeframe(start_date, end_date), getOrdering(order_by, order))
+		.then((announcements) => {
+			return res.json(announcements);
+		})
+		.catch((err) => {
+			loggerPlugin.error(
+				req.uuid,
+				'controllers/plugins/getAnnouncements err',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getPlugins,
 	activateXhtFee,
@@ -817,5 +854,6 @@ module.exports = {
 	kycIdVerify,
 	kycIdRevoke,
 	postAnnouncement,
-	deleteAnnouncement
+	deleteAnnouncement,
+	getAnnouncements
 };

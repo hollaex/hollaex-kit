@@ -21,6 +21,7 @@ const {
 } = require('../../message');
 const aws = require('aws-sdk');
 const { all } = require('bluebird');
+const { convertSequelizeCountAndRows } = require('./general');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -460,6 +461,25 @@ const destroyAnnouncement = (id) => {
 	return Announcement.destroy({ where: { id } });
 };
 
+const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
+	const order = [];
+	if (!ordering) {
+		order.push(['created_at', 'desc']);
+	} else {
+		order.push(ordering);
+	}
+	let query = {
+		order,
+		attributes: {
+			exclude: ['created_by']
+		},
+		...pagination
+	};
+	if (timeframe) query.where.created_at = timeframe;
+	return Announcement.findAndCountAll(query)
+		.then(convertSequelizeCountAndRows);
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -478,5 +498,6 @@ module.exports = {
 	revokeDocuments,
 	createAnnouncement,
 	findAnnouncement,
-	destroyAnnouncement
+	destroyAnnouncement,
+	getAllAnnouncements
 };

@@ -1,6 +1,5 @@
 'use strict';
 
-const { logger } = require('../../config/logger');
 const { getPairs } = require('../../init');
 
 /*
@@ -15,7 +14,7 @@ const { getPairs } = require('../../init');
 const getPagination = (limit = { value: 50 }, page = { value: 1 }) => {
 	let _limit = 50;
 	let _page = 1;
-	logger.debug('helpers/general/getPagination', _limit, _page);
+
 	if (limit.value) {
 		if (limit.value > 50) {
 			_limit = 50;
@@ -29,7 +28,7 @@ const getPagination = (limit = { value: 50 }, page = { value: 1 }) => {
 	if (page.value && page.value >= 0) {
 		_page = page.value;
 	}
-	logger.debug('helpers/general/getPagination', _limit, _page);
+
 	return {
 		limit: _limit,
 		offset: _limit * (_page - 1)
@@ -56,18 +55,19 @@ const convertSequelizeCountAndRows = (data) => {
 };
 
 const getTimeframe = (start_date = { value: undefined }, end_date = { value: undefined }) => {
-	logger.debug(
-		'helpers/general/getTimeframe',
-		'stat_date: ',
-		start_date.value,
-		'end_date: ',
-		end_date.value
-	);
 	let timestamp = {};
 	if (start_date.value) timestamp['$gte'] = start_date.value;
 	if (end_date.value) timestamp['$lte'] = end_date.value;
 	if (Object.entries(timestamp).length === 0) return undefined;
 	return timestamp;
+};
+
+const getOrdering = (order_by = undefined, order = undefined) => {
+	if (!order_by) {
+		return undefined;
+	} else {
+		return [order_by, order || 'desc'];
+	}
 };
 
 const checkPair = (symbol) => {
@@ -78,5 +78,6 @@ module.exports = {
 	getPagination,
 	convertSequelizeCountAndRows,
 	getTimeframe,
-	checkPair
+	checkPair,
+	getOrdering
 };
