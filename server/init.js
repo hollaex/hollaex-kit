@@ -12,7 +12,7 @@ const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 
-let kit; // kit object based on hollaex node lib
+let kitLib; // kit object based on hollaex node lib
 
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
@@ -24,22 +24,22 @@ subscriber.on('message', (channel, message) => {
 		const { type, data } = JSON.parse(message);
 		switch(type) {
 			case 'coins':
-				updateConfiguration(type, data, data.symbol);
+				updateCoinsPairs(type, data.symbol, data);
 				break;
 			case 'pairs':
-				updateConfiguration(type, data, data.name);
+				updateCoinsPairs(type, data.name, data);
 				break;
 			case 'kit':
-				updateConfiguration(type, data.constants);
+				updateKit(type, data.kit);
 				break;
 			case 'secret':
 				updateSecrets(data.key, data.secrets);
 				break;
 			case 'freezeUser':
-				addFrozenUser(data);
+				updateFrozenUser(data, 'add');
 				break;
 			case 'unfreezeUser':
-				removeFrozenUser(data);
+				updateFrozenUser(data, 'remove');
 				break;
 			default:
 				break;
@@ -143,7 +143,7 @@ const checkStatus = () => {
 				expiry: exchange.expiry,
 				status: true
 			};
-			kit = new Kit({
+			kitLib = new Kit({
 				apiURL: HE_NETWORK_ENDPOINT ,
 				baseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
@@ -161,7 +161,7 @@ const checkStatus = () => {
 		.then((users) => {
 			loggerGeneral.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
-				addFrozenUser(user.dataValues.id);
+				updateFrozenUser(user.dataValues.id, 'add');
 			});
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration, secrets, frozenUsers }));
 			return redis.setAsync(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
@@ -231,31 +231,35 @@ const checkActivation = (name, url, activation_code, constants = {}) => {
 	return rp(options);
 };
 
-const updateConfiguration = (type, config, value = undefined) => {
-	if (value) {
-		Object.assign(configuration[type][value], config);
-	} else {
-		Object.assign(configuration[type], config);
-	}
+const updateKit = (key, config) => {
+	Object.assign(configuration.kit[key], config);
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration }));
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+	setRedisData();
 };
 
-const updateSecrets = (newSecrets) => {
-	Object.assign(secrets, newSecrets);
+const updateCoinsPairs = (type, symbol, config) => {
+	Object.assign(configuration[type][symbol], config);
+	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration }));
+	setRedisData();
+};
+
+const updateSecrets = (key, config) => {
+	Object.assign(secrets[key], config);
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ secrets }));
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+	setRedisData();
 };
 
-const addFrozenUser = (userId) => {
-	frozenUsers[userId] = true;
+const updateFrozenUser = (action, userId) => {
+	if (action === 'add') {
+		frozenUsers[userId] = true;
+	} else if (action === 'remove') {
+		delete frozenUsers[userId];
+	}
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ frozenUsers }));
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+	setRedisData();
 };
 
-const removeFrozenUser = (userId) => {
-	delete frozenUsers[userId];
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ frozenUsers }));
+const setRedisData = () => {
 	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
@@ -297,6 +301,6 @@ module.exports = {
 	getCoins,
 	getSecrets,
 	getFrozenUsers,
-	kit,
+	kitLib,
 	getKit
 };
