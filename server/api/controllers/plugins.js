@@ -4,7 +4,6 @@ const {
 	REQUIRED_XHT,
 	ROLES
 } = require('../../constants');
-const { getKit } = require('../../init');
 const { Balance, sequelize } = require('../../db/models');
 const { findUser, getUserValuesByEmail, getUserValuesById } = require('../helpers/user');
 const { loggerPlugin } = require('../../config/logger');
@@ -1028,7 +1027,7 @@ const sendSmsVerify = (req, res) => {
 
 	const phone = phoneNumber.getNumber();
 	const code = generateOtp();
-	const SMS = languageFile(getKit().defaults.language).SMS;
+	const SMS = languageFile(toolsLib.getKitConfig().defaults.language).SMS;
 
 	sendSMS(phone, {
 		message: SMS.verificationCode(code)
