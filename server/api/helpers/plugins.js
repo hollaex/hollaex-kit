@@ -331,7 +331,7 @@ const s3Credentials = () => {
 const s3Write = (bucketName = S3_BUCKET_NAME()) => {
 	aws.config.update(s3Credentials().write);
 	return new aws.S3(s3Credentials().buckets[bucketName]);
-}
+};
 
 const s3Read = (bucketName = S3_BUCKET_NAME()) => {
 	aws.config.update(s3Credentials().read);
