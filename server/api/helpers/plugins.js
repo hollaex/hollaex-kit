@@ -1,20 +1,22 @@
 'use strict';
 
 const crypto = require('crypto');
-const { VerificationImage, Announcement, sequelize } = require('../../db/models');
+const { VerificationImage, Announcement, sequelize, Status } = require('../../db/models');
 const { findUser } = require('../helpers/user');
 const { pick, each, differenceWith, isEqual } = require('lodash');
+const { publisher } = require('../../db/pubsub');
 const {
 	VERIFY_STATUS,
 	ROLES,
 	USER_FIELD_ADMIN_LOG,
 	ID_FIELDS,
 	ADDRESS_FIELDS,
-	GET_SECRETS,
 	S3_LINK_EXPIRATION_TIME,
 	SMS_CODE_EXPIRATION_TIME,
-	SMS_CODE_KEY
+	SMS_CODE_KEY,
+	INIT_CHANNEL
 } = require('../../constants');
+const { getSecrets } = require('../../init');
 const {
 	USER_NOT_FOUND,
 	MAX_BANKS_EXCEEDED,
@@ -292,7 +294,7 @@ const storeFilesDataOnDb = (
 };
 
 const S3_BUCKET_NAME = () => {
-	return (GET_SECRETS().plugins.s3.id_docs_bucket).split(':')[0];
+	return (getSecrets().plugins.s3.id_docs_bucket).split(':')[0];
 };
 
 const generateBuckets = (bucketsString = '') => {
@@ -314,14 +316,14 @@ const generateBuckets = (bucketsString = '') => {
 const s3Credentials = () => {
 	return {
 		write: {
-			accessKeyId: GET_SECRETS().plugins.s3.key.write,
-			secretAccessKey: GET_SECRETS().plugins.s3.secret.write
+			accessKeyId: getSecrets().plugins.s3.key.write,
+			secretAccessKey: getSecrets().plugins.s3.secret.write
 		},
 		read: {
-			accessKeyId: GET_SECRETS().plugins.s3.key.read,
-			secretAccessKey: GET_SECRETS().plugins.s3.secret.read
+			accessKeyId: getSecrets().plugins.s3.key.read,
+			secretAccessKey: getSecrets().plugins.s3.secret.read
 		},
-		buckets: generateBuckets(GET_SECRETS().plugins.s3.id_docs_bucket)
+		buckets: generateBuckets(getSecrets().plugins.s3.id_docs_bucket)
 	};
 };
 
@@ -491,9 +493,9 @@ const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
 
 const snsCredentials = () => {
 	return {
-		accessKeyId: GET_SECRETS().plugins.sns.key,
-		secretAccessKey: GET_SECRETS().plugins.sns.secret,
-		region: GET_SECRETS().plugins.sns.region
+		accessKeyId: getSecrets().plugins.sns.key,
+		secretAccessKey: getSecrets().plugins.sns.secret,
+		region: getSecrets().plugins.sns.region
 	};
 };
 
@@ -574,6 +576,32 @@ const deleteSMSCode = (user_id) => {
 	return redis.delAsync(userKey);
 };
 
+const updatePluginConstant = (plugin, data) => {
+	return Status.findOne({
+		attributes: ['id', 'kit']
+	})
+		.then((status) => {
+			const kit = status.kit;
+			kit.plugins[plugin] = { ...kit.plugins[plugin], ...data };
+			return status.update({ kit }, {
+				fields: [
+					'kit'
+				],
+				returning: true
+			});
+		})
+		.then((data) => {
+			publisher.publish(
+				INIT_CHANNEL,
+				JSON.stringify({
+					type: 'kit', data: data.kit
+				})
+			);
+			return data.kit.plugins;
+			// return maskSecrets(plugin, plugin === 'vault' ? secrets.vault : secrets.plugins[plugin]);
+		});
+};
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
@@ -597,5 +625,6 @@ module.exports = {
 	sendSMS,
 	storeSMSCode,
 	checkSMSCode,
-	deleteSMSCode
+	deleteSMSCode,
+	updatePluginConstant
 };

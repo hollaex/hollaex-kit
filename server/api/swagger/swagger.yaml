@@ -553,6 +553,40 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+    put:
+      operationId: putPlugins
+      description: Update plugin configuration
+      tags:
+        - Plugins
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: key and data of plugin
+          schema:
+            type: object
+            required:
+              - plugin
+              - data
+            properties:
+              plugin:
+                type: string
+              data:
+                type: object
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PluginsObject"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - tech
   /plugins/activate-xht-fee:
     x-swagger-router-controller: plugins
     get:
@@ -1478,3 +1512,10 @@ definitions:
         type: string
       type:
         type: string
+  PluginsObject:
+    type: object
+    properties:
+      enabled:
+        type: string
+      configuration:
+        type: object

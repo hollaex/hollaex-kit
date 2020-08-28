@@ -2,10 +2,10 @@
 
 const {
 	AVAILABLE_PLUGINS,
-	GET_CONFIGURATION,
 	REQUIRED_XHT,
 	ROLES
 } = require('../../constants');
+const { getKit } = require('../../init');
 const { Balance, sequelize } = require('../../db/models');
 const { findUser, getUserValuesByEmail, getUserValuesById } = require('../helpers/user');
 const { loggerPlugin } = require('../../config/logger');
@@ -32,7 +32,8 @@ const {
 	sendSMS,
 	storeSMSCode,
 	checkSMSCode,
-	deleteSMSCode
+	deleteSMSCode,
+	updatePluginConstant
 } = require('../helpers/plugins');
 const { getTimeframe, getPagination, getOrdering } = require('../helpers/general');
 const {
@@ -54,15 +55,40 @@ const { generateOtp } = require('../helpers/otp');
 const getPlugins = (req, res) => {
 	try {
 		const response = {
-			...GET_CONFIGURATION().constants.plugins,
+			...getKit().plugins,
 			available: AVAILABLE_PLUGINS,
-			enabled: GET_CONFIGURATION().constants.plugins.enabled.split(',')
+			enabled: getKit().plugins.enabled.split(',')
 		};
 		return res.json(response);
 	} catch (err) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/getPlugins err', err);
 		return res.status(err.status || 400).json({ message: err.message });
 	}
+};
+
+const putPlugins = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/putPlugins auth',
+		req.auth.sub
+	);
+
+	const { plugin, data } = req.swagger.params.data.value;
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/putPlugins plugin',
+		plugin
+	);
+
+	updatePluginConstant(plugin, data)
+		.then((data) => {
+			res.json(data);
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/putPlugins err', err);
+			res.status(400).json({ message: err.message });
+		});
 };
 
 // XHT_FEE
@@ -876,7 +902,7 @@ const sendSmsVerify = (req, res) => {
 
 	const phone = phoneNumber.getNumber();
 	const code = generateOtp();
-	const SMS = languageFile(GET_CONFIGURATION().constants.defaults.language).SMS;
+	const SMS = languageFile(getKit().defaults.language).SMS;
 
 	sendSMS(phone, {
 		message: SMS.verificationCode(code)
@@ -955,6 +981,7 @@ const checkSmsVerify = (req, res) => {
 
 module.exports = {
 	getPlugins,
+	putPlugins,
 	activateXhtFee,
 	postBankUser,
 	postBankAdmin,
