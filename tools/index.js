@@ -13,5 +13,8 @@ module.exports = {
 	// Constants/Secrets
 
 	// logger
-	logger: require('./logger')
+	logger: require('./logger'),
+
+	// plugins
+	plugins: require('./plugins')
 };
