@@ -622,7 +622,7 @@ const updatePluginConfiguration = (key, data) => {
 				})
 			);
 			if (key === 'enable' || key === 'disable') {
-				return status.kit.plugins.enabled.split(',');
+				return data.kit.plugins.enabled.split(',');
 			} else {
 				return data.kit.plugins.configuration[key];
 			}
