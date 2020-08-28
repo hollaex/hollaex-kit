@@ -595,7 +595,7 @@ paths:
       tags:
         - Plugins
       parameters:
-        - name: id
+        - name: plugin
           in: query
           required: true
           description: Plugin to enable
@@ -625,7 +625,7 @@ paths:
       tags:
         - Plugins
       parameters:
-        - name: id
+        - name: plugin
           in: query
           required: true
           description: Plugin to disable
