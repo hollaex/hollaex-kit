@@ -548,7 +548,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitionsObjectResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -577,7 +577,67 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/PluginsObject"
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - tech
+  /plugins/enable:
+    x-swagger-router-controller: plugins
+    get:
+      operationId: enablePlugin
+      description: Enable a plugin
+      tags:
+        - Plugins
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Plugin to enable
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              enabled:
+                type: array
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - tech
+  /plugins/disable:
+    x-swagger-router-controller: plugins
+    get:
+      operationId: disablePlugin
+      description: Disable a plugin
+      tags:
+        - Plugins
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Plugin to disable
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            properties:
+              enabled:
+                type: array
         default:
           description: Error
           schema:
@@ -1512,10 +1572,3 @@ definitions:
         type: string
       type:
         type: string
-  PluginsObject:
-    type: object
-    properties:
-      enabled:
-        type: string
-      configuration:
-        type: object

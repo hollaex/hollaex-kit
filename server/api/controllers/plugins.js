@@ -33,7 +33,7 @@ const {
 	storeSMSCode,
 	checkSMSCode,
 	deleteSMSCode,
-	updatePluginConstant
+	updatePluginConfiguration
 } = require('../helpers/plugins');
 const { getTimeframe, getPagination, getOrdering } = require('../helpers/general');
 const {
@@ -81,12 +81,62 @@ const putPlugins = (req, res) => {
 		plugin
 	);
 
-	updatePluginConstant(plugin, data)
+	updatePluginConfiguration(plugin, data)
 		.then((data) => {
 			res.json(data);
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/putPlugins err', err);
+			res.status(400).json({ message: err.message });
+		});
+};
+
+const enablePlugin = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/enablePlugin auth',
+		req.auth.sub
+	);
+
+	const plugin = req.swagger.params.plugin.value;
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/enablePlugin plugin',
+		plugin
+	);
+
+	updatePluginConfiguration('enable', plugin)
+		.then((data) => {
+			res.json(data);
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/enablePlugin err', err);
+			res.status(400).json({ message: err.message });
+		});
+};
+
+const disablePlugin = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/disablePlugin auth',
+		req.auth.sub
+	);
+
+	const plugin = req.swagger.params.plugin.value;
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/disablePlugin plugin',
+		plugin
+	);
+
+	updatePluginConfiguration('disable', plugin)
+		.then((data) => {
+			res.json(data);
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'controllers/plugins/disablePlugin err', err);
 			res.status(400).json({ message: err.message });
 		});
 };
@@ -982,6 +1032,8 @@ const checkSmsVerify = (req, res) => {
 module.exports = {
 	getPlugins,
 	putPlugins,
+	enablePlugin,
+	disablePlugin,
 	activateXhtFee,
 	postBankUser,
 	postBankAdmin,

@@ -14,7 +14,8 @@ const {
 	S3_LINK_EXPIRATION_TIME,
 	SMS_CODE_EXPIRATION_TIME,
 	SMS_CODE_KEY,
-	INIT_CHANNEL
+	INIT_CHANNEL,
+	AVAILABLE_PLUGINS
 } = require('../../constants');
 const { getSecrets } = require('../../init');
 const {
@@ -576,13 +577,36 @@ const deleteSMSCode = (user_id) => {
 	return redis.delAsync(userKey);
 };
 
-const updatePluginConstant = (plugin, data) => {
+const updatePluginConfiguration = (key, data) => {
 	return Status.findOne({
 		attributes: ['id', 'kit']
 	})
 		.then((status) => {
 			const kit = status.kit;
-			kit.plugins[plugin] = { ...kit.plugins[plugin], ...data };
+			if (key === 'enable' || key === 'disable') {
+				if (!AVAILABLE_PLUGINS.includes(data)) {
+					throw new Error(`Plugin ${data} does not exist`);
+				} else {
+					let enabledPlugins = kit.plugins.enabled.split(',');
+					if (key === 'enable') {
+						if (enabledPlugins.includes(data)) {
+							throw new Error (`Plugin ${data} is already enabled`);
+						} else {
+							enabledPlugins.push(data);
+							kit.plugins.enabled = enabledPlugins.join(',');
+						}
+					} else if (key === 'disable') {
+						if (!enabledPlugins.includes(data)) {
+							throw new Error(`Plugin ${data} is already disabled`);
+						} else {
+							enabledPlugins = enabledPlugins.filter((plugin) => plugin !== data);
+							kit.plugins.enabled = enabledPlugins.join(',');
+						}
+					}
+				}
+			} else {
+				kit.plugins[key] = { ...kit.plugins.configuration[key], ...data };
+			}
 			return status.update({ kit }, {
 				fields: [
 					'kit'
@@ -597,7 +621,11 @@ const updatePluginConstant = (plugin, data) => {
 					type: 'kit', data: data.kit
 				})
 			);
-			return data.kit.plugins;
+			if (key === 'enable' || key === 'disable') {
+				return status.kit.plugins.enabled.split(',');
+			} else {
+				return data.kit.plugins.configuration[key];
+			}
 			// return maskSecrets(plugin, plugin === 'vault' ? secrets.vault : secrets.plugins[plugin]);
 		});
 };
@@ -626,5 +654,5 @@ module.exports = {
 	storeSMSCode,
 	checkSMSCode,
 	deleteSMSCode,
-	updatePluginConstant
+	updatePluginConfiguration
 };
