@@ -1,11 +1,10 @@
 'use strict';
 
 module.exports = {
+	...require('./common'),
+
 	// auth
 	auth: require('./auth'),
-
-	// common
-	common: require('./common'),
 
 	// database
 	database: require('./database'),

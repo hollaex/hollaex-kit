@@ -1,7 +1,7 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constant');
-const { getKit, getSecrets } = require(`${SERVER_PATH}/init`);
+const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
 
 /**
  * Checks if url given is a valid url.
@@ -14,9 +14,25 @@ const isUrl = (url) => {
 };
 
 const getKitConfig = () => {
+	return getKit();
+};
 
+const getKitSecrets = () => {
+	return getSecrets();
+};
+
+const getKitCoins = () => {
+	return getCoins();
+};
+
+const getKitPairs = () => {
+	return getPairs();
 };
 
 module.exports = {
-	isUrl
+	isUrl,
+	getKitConfig,
+	getKitSecrets,
+	getKitCoins,
+	getKitPairs
 };
