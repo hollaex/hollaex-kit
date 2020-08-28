@@ -634,7 +634,7 @@ paths:
         200:
           description: Success
           schema:
-            type: array
+            type: object
             properties:
               enabled:
                 type: array
