@@ -17,7 +17,6 @@ const {
 	INIT_CHANNEL,
 	AVAILABLE_PLUGINS
 } = require('../../constants');
-const { getSecrets } = require('../../init');
 const {
 	USER_NOT_FOUND,
 	MAX_BANKS_EXCEEDED,
@@ -34,6 +33,7 @@ const { all } = require('bluebird');
 const { convertSequelizeCountAndRows } = require('./general');
 const PhoneNumber = require('awesome-phonenumber');
 const redis = require('../../db/redis').duplicate();
+const kitTools = require('hollaex-tools-lib');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -295,7 +295,7 @@ const storeFilesDataOnDb = (
 };
 
 const S3_BUCKET_NAME = () => {
-	return (getSecrets().plugins.s3.id_docs_bucket).split(':')[0];
+	return (kitTools.getKitSecrets().plugins.s3.id_docs_bucket).split(':')[0];
 };
 
 const generateBuckets = (bucketsString = '') => {
@@ -317,14 +317,14 @@ const generateBuckets = (bucketsString = '') => {
 const s3Credentials = () => {
 	return {
 		write: {
-			accessKeyId: getSecrets().plugins.s3.key.write,
-			secretAccessKey: getSecrets().plugins.s3.secret.write
+			accessKeyId: kitTools.getKitSecrets().plugins.s3.key.write,
+			secretAccessKey: kitTools.getKitSecrets().plugins.s3.secret.write
 		},
 		read: {
-			accessKeyId: getSecrets().plugins.s3.key.read,
-			secretAccessKey: getSecrets().plugins.s3.secret.read
+			accessKeyId: kitTools.getKitSecrets().plugins.s3.key.read,
+			secretAccessKey: kitTools.getKitSecrets().plugins.s3.secret.read
 		},
-		buckets: generateBuckets(getSecrets().plugins.s3.id_docs_bucket)
+		buckets: generateBuckets(kitTools.getKitSecrets().plugins.s3.id_docs_bucket)
 	};
 };
 
@@ -494,9 +494,9 @@ const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
 
 const snsCredentials = () => {
 	return {
-		accessKeyId: getSecrets().plugins.sns.key,
-		secretAccessKey: getSecrets().plugins.sns.secret,
-		region: getSecrets().plugins.sns.region
+		accessKeyId: kitTools.getKitSecrets().plugins.sns.key,
+		secretAccessKey: kitTools.getKitSecrets().plugins.sns.secret,
+		region: kitTools.getKitSecrets().plugins.sns.region
 	};
 };
 
