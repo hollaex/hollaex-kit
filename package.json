@@ -16,7 +16,8 @@
 	},
 	"dependencies": {
 		"jsonwebtoken": "8.5.1",
-		"lodash": "4.17.15"
+		"lodash": "4.17.15",
+		"validator": "13.1.1"
 	},
 	"devDependencies": {
 		"eslint": "7.0.0",

@@ -1,7 +1,6 @@
 'use strict';
 
-const path = require('path');
-const DB_MODELS_PATH = path.resolve(__dirname, '../../db/models');
+const { SERVER_PATH } = require('../../constant');
 
 /**
  * Get sequelize model of table.
@@ -15,7 +14,7 @@ const getModel = (table = '') => {
 
 	table.toLowerCase();
 	table[0].toUpperCase();
-	const model = require(DB_MODELS_PATH)[table];
+	const model = require(`${SERVER_PATH}/db/models`)[table];
 	return model;
 };
 
