@@ -29,9 +29,11 @@ subscriber.on('message', (channel, message) => {
 			case 'pairs':
 				updateConfiguration(type, data, data.name);
 				break;
-			case 'constants':
+			case 'kit':
 				updateConfiguration(type, data.constants);
-				updateSecrets(data.secrets);
+				break;
+			case 'secret':
+				updateSecrets(data.key, data.secrets);
 				break;
 			case 'freezeUser':
 				addFrozenUser(data);
@@ -49,25 +51,28 @@ subscriber.on('message', (channel, message) => {
 subscriber.subscribe(INIT_CHANNEL);
 
 let configuration = {
-	coins: {},
-	pairs: {},
-	info: {},
-	constants: {
+	coins: {}, // network variable, admin cant change
+	pairs: {}, // network variable, admin cant chgange
+	kit: { // kit endpoint, status.kit in db
+		info: {}, // kit endpoint
 		captcha: {},
-		accounts: {},
 		defaults: {},
-		emails: {},
 		plugins: {
 			configuration: {}
-		}
-	},
-	status: false
+		},
+		status: false
+	}
 };
+
+// /kit endpoint with constants, info values above
+// /constant endpoint only sending coins and pairs
 
 let secrets = {
 	broker: {},
 	security: {},
+	accounts: {},
 	captcha: {},
+	emails: {},
 	smtp: {},
 	vault: {},
 	plugins: {
@@ -112,10 +117,8 @@ const checkStatus = () => {
 				stop();
 				throw new Error('Exchange is expired');
 			} else {
-				setSecret(status.secrets);
-				setConfiguration({
-					constants: status.constants
-				});
+				secrets = status.secrets;
+				configuration.kit = status.kit;
 				return all([
 					checkActivation(
 						status.name,
@@ -129,19 +132,17 @@ const checkStatus = () => {
 		})
 		.then(([exchange, status]) => {
 			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
-			setConfiguration({
-				info: {
-					name: exchange.name,
-					active: exchange.active,
-					url: exchange.url,
-					is_trial: exchange.is_trial,
-					created_at: exchange.created_at,
-					expiry: exchange.expiry,
-					coins: exchange.coins,
-					pairs: exchange.pairs,
-					status: true
-				}
-			});
+			configuration.coins = exchange.coins;
+			configuration.pairs = exchange.pairs;
+			configuration.kit.info = {
+				name: exchange.name,
+				active: exchange.active,
+				url: exchange.url,
+				is_trial: exchange.is_trial,
+				created_at: exchange.created_at,
+				expiry: exchange.expiry,
+				status: true
+			};
 			kit = new Kit({
 				apiURL: HE_NETWORK_ENDPOINT ,
 				baseURL: HE_NETWORK_BASE_URL,
@@ -183,8 +184,36 @@ const checkStatus = () => {
 
 const stop = () => {
 	frozenUsers = {};
-	secrets = {};
-	setConfiguration({ coins: {}, pairs: {}, status: false, info: {}, constants: {} });
+	secrets = {
+		broker: {},
+		security: {},
+		accounts: {},
+		captcha: {},
+		emails: {},
+		smtp: {},
+		vault: {},
+		plugins: {
+			s3: {
+				key: {},
+				secret: {}
+			},
+			sns: {},
+			freshdesk: {}
+		}
+	};
+	configuration = {
+		coins: {},
+		pairs: {},
+		kit: {
+			info: {},
+			captcha: {},
+			defaults: {},
+			plugins: {
+				configuration: {}
+			},
+			status: false
+		}
+	};
 };
 
 const checkActivation = (name, url, activation_code, constants = {}) => {
@@ -218,15 +247,6 @@ const updateSecrets = (newSecrets) => {
 	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
-const setConfiguration = (config) => {
-	Object.assign(configuration, config);
-	return configuration;
-};
-
-const setSecret = (data) => {
-	Object.assign(secrets, data);
-};
-
 const addFrozenUser = (userId) => {
 	frozenUsers[userId] = true;
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ frozenUsers }));
@@ -239,12 +259,16 @@ const removeFrozenUser = (userId) => {
 	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
-const getConfiguration = () => {
-	return configuration;
+const getKit = () => {
+	return configuration.kit;
 };
 
 const getCoin = (coin) => {
 	return configuration.coins[coin];
+};
+
+const getCoins = () => {
+	return configuration.coins;
 };
 
 const getSecrets = () => {
@@ -267,11 +291,12 @@ task.start();
 module.exports = {
 	checkStatus,
 	checkActivation,
-	getConfiguration,
 	getCurrencies,
 	getPairs,
 	getCoin,
+	getCoins,
 	getSecrets,
 	getFrozenUsers,
-	kit
+	kit,
+	getKit
 };
