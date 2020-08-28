@@ -108,6 +108,7 @@ exports.API_SIGNATURE_INVALID = 'Access Denied: Invalid API Signature';
 exports.INVALID_VERIFICATION_LEVEL = 'User can not create token. Upgrade user level to create tokens.';
 
 // PLUGINS
+exports.PLUGIN_NOT_ENABLED = (plugin) => `Plugin ${plugin} not enabled`;
 exports.MAX_BANKS_EXCEEDED = 'User can have a maximum of three banks';
 
 exports.SMS_INVALID_PHONE = 'Invalid mobile phone number';
