@@ -219,7 +219,6 @@ class UserVerification extends Component {
 			return otpActivate(values)
 				.then((res) => {
 					this.props.otpSetActivated(true);
-					//this.accordion.closeAll();
 					this.setState({
 						dialogIsOpen: true,
 						modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS
@@ -239,7 +238,6 @@ class UserVerification extends Component {
 				new_password: values.new_password
 			})
 				.then((res) => {
-				//	this.accordion.closeAll();
 					this.setState({
 						dialogIsOpen: true,
 						modalText:
@@ -266,24 +264,11 @@ class UserVerification extends Component {
 				.catch(errorHandler);
 		};
 
-		/*setRef = (el) => {
-			this.accordion = el;
-		};
-*/
 		openOtp = () => {
-			/*this.accordion.openSection(2, false);
-			setTimeout(() => {
-				this.accordion.openSection(1);
-			}, 250);
-			*/
 			this.setActiveTab(0);
 		};
 
 		openDevelopers = () => {
-			/*setTimeout(() => {
-				this.accordion.openSection(2);
-			}, 250);
-			*/
 			this.setActiveTab(2);
 		};
 
