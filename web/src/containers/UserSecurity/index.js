@@ -75,7 +75,7 @@ class UserVerification extends Component {
 	componentWillUpdate(nextProps, nextState) {
 		if (
 			this.state.activeTab !== nextState.activeTab &&
-			this.state.activeTab !== -1
+			nextState.activeTab !== 0
 		) {
 			this.calculateSections(nextProps, nextState.activeTab);
 		}
