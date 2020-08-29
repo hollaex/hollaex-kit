@@ -2,11 +2,13 @@ import React from 'react';
 import { CheckboxButton, IconTitle } from '../../components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
+import OTPSecretForm from './OTPSecretForm';
+import { Button } from '../../components';
 import { ICONS } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
-export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
+export const renderOTPCheckForm = (secret, email, constants = {}) => {
 	const app_name = constants.api_name.replace(' ', '').trim() || '';
 	return (
 		<div className="otp_form-wrapper">
@@ -44,12 +46,64 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 				</div>
 				<div className="otp_form-section-content otp_secret">{secret}</div>
 			</div>
-			<div className="otp_form-section-wrapper">
-				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT}</span>
-				</div>
-				<OTPForm onSubmit={activateOTP} />
-			</div>
+			<Button
+			label={'NEXT'}
+			/>
+		</div>
+	);
+}
+
+export const renderOTPSecretForm = (activateOTP) => {
+	return (
+		<div className="otp_form-wrapper">
+		  <IconTitle
+		    text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.SECRET_1}
+		    iconPath={ICONS.OTP_KEYS}
+		    className="w-100"
+		    textType="title"
+		    useSvg={true}
+		  />
+		  <div className="otp_form-section-wrapper">
+		    <div className="otp_form-section-text">
+		      {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.SECRET_2}
+					<br />
+					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.SECRET_3}
+		      <br />
+		      <br />
+		    </div>
+		    <div className="otp_form-section-title">
+		      <span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT_2}</span>
+		    </div>
+		    <OTPSecretForm onSubmit={activateOTP} />
+		  </div>
+			<Button
+			label={'NEXT'}
+			/>
+		</div>
+	);
+}
+
+export const renderOTPForm = (activateOTP) => {
+	return (
+		<div className="otp_form-wrapper">
+		  <IconTitle
+		    text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.TITLE_2}
+		    iconPath={ICONS.OTP_KEYS}
+		    className="w-100"
+		    textType="title"
+		    useSvg={true}
+		  />
+		  <div className="otp_form-section-wrapper">
+		    <div className="otp_form-section-text">
+		      {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_6}
+		      <br />
+		      <br />
+		    </div>
+		    <div className="otp_form-section-title">
+		      <span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT_2}</span>
+		    </div>
+		    <OTPForm onSubmit={activateOTP} />
+		  </div>
 		</div>
 	);
 }

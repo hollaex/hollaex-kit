@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SubmissionError } from 'redux-form';
+import { bindActionCreators } from 'redux';
+import { SubmissionError} from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
 import { ICONS } from '../../config/constants';
+import {openContactForm} from '../../actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -12,29 +14,35 @@ import {
 	otpRevoke
 } from '../../actions/userAction';
 import {
-	Accordion,
+	CustomTabs,
+	CustomMobileTabs,
+	CustomTabBar,
+	MobileTabBar,
 	Dialog,
 	SuccessDisplay,
 	OtpForm,
 	IconTitle,
-	Loader
+	Loader,
+	HeaderSection
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
-import { OTP, renderOTPForm } from './OTP';
+import { OTP , renderOTPCheckForm , renderOTPForm , renderOTPSecretForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
 
 import STRINGS from '../../config/localizedStrings';
 
 class UserVerification extends Component {
 	state = {
+		tabs: [],
 		sections: [],
 		dialogIsOpen: false,
-		modalText: ''
+		modalText: '',
+		activeTab: 0
 	};
 
 	componentDidMount() {
-		this.calculateSections(this.props.user);
+		this.calculateSections(this.props.user,this.state.activeTab);
 		if (this.props.openApiKey) {
 			this.openDevelopers();
 		}
@@ -45,10 +53,10 @@ class UserVerification extends Component {
 			nextProps.user.otp.requested !== this.props.user.otp.requested ||
 			nextProps.user.otp.requesting !== this.props.user.otp.requesting ||
 			nextProps.user.otp.activated !== this.props.user.otp.activated ||
-			nextProps.user.otp_enabled !== this.props.user.otp_enabled ||
+			nextProps.user.otp_enabled === this.props.user.otp_enabled ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
-			this.calculateSections(nextProps.user);
+			this.calculateSections(nextProps.user,this.state.activeTab);
 		}
 
 		if (
@@ -64,14 +72,33 @@ class UserVerification extends Component {
 		}
 	}
 
-	calculateSections = (user) => {
+	componentWillUpdate(nextProps, nextState) {
+		if (
+			this.state.activeTab !== nextState.activeTab &&
+			this.state.activeTab !== -1
+		) {
+			this.calculateSections(nextProps, nextState.activeTab);
+		}
+	}
+
+	calculateSections = (user , activeTab) => {
 		const formValues = generateFormValues();
 		const { otp_enabled, otp, verification_level } = user;
 
-		const sections = [
+		const tabs = [
 			{
-				title: STRINGS.ACCOUNT_SECURITY.OTP.TITLE,
-				content: (
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS.ACCOUNT_SECURITY.OTP.TITLE}
+						icon={ICONS.SETTING_NOTIFICATION_ICON}
+					/>
+				) : (
+					<CustomTabs
+						title={STRINGS.ACCOUNT_SECURITY.OTP.TITLE}
+						icon={ICONS.SETTING_NOTIFICATION_ICON}
+					/>
+				),
+				content: activeTab === 0 && (
 					<OTP
 						requestOTP={this.handleOTPCheckbox}
 						data={otp}
@@ -100,9 +127,20 @@ class UserVerification extends Component {
 					allowClick: !otp_enabled
 				}
 			},
+
 			{
-				title: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE,
-				content: (
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE}
+						icon={ICONS.SETTING_INTERFACE_ICON}
+					/>
+				) : (
+					<CustomTabs
+						title={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE}
+						icon={ICONS.SETTING_INTERFACE_ICON}
+					/>
+				),
+				content: activeTab === 1 && (
 					<ChangePasswordForm
 						onSubmit={this.onSubmitChangePassword}
 						formFields={formValues}
@@ -116,9 +154,20 @@ class UserVerification extends Component {
 					allowClick: true
 				}
 			},
+
 			{
-				title: STRINGS.DEVELOPER_SECTION.TITLE,
-				content: (
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS.DEVELOPER_SECTION.TITLE}
+						icon={ICONS.SETTING_LANGUAGE_ICON}
+					/>
+				) : (
+					<CustomTabs
+						title={STRINGS.DEVELOPER_SECTION.TITLE}
+						icon={ICONS.SETTING_LANGUAGE_ICON}
+					/>
+				),
+				content: activeTab === 2 && (
 					<DeveloperSection
 						otp_enabled={otp_enabled}
 						openOtp={this.openOtp}
@@ -135,183 +184,232 @@ class UserVerification extends Component {
 					allowClick: true
 				}
 			}
+
 		];
 
-		this.setState({ sections });
+		this.setState({ tabs });
+	};
+
+	renderContent = (tabs, activeTab) =>
+		tabs[activeTab] && tabs[activeTab].content ? (
+			tabs[activeTab].content
+		) : (
+			<div />
+		);
+
+	setActiveTab = (activeTab) => {
+		this.setState({ activeTab });
+	};
+
+	openContactForm = () => {
+		const { links = {} } = this.props.constants;
+		this.props.openContactForm({ helpdesk: links.helpdesk });
 	};
 
 	handleOTPCheckbox = (checked = false) => {
-		if (checked) {
-			this.props.requestOTP();
-		} else {
-			// TODO cancel otp
-			this.setState({ dialogIsOpen: true, modalText: '' });
-		}
-	};
+			if (checked) {
+				this.props.requestOTP();
+			} else {
+				// TODO cancel otp
+				this.setState({ dialogIsOpen: true, modalText: ''});
+			}
+		};
 
-	onSubmitActivateOtp = (values) => {
-		return otpActivate(values)
-			.then((res) => {
-				this.props.otpSetActivated(true);
-				this.accordion.closeAll();
-				this.setState({
-					dialogIsOpen: true,
-					modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS
+		onSubmitActivateOtp = (values) => {
+			return otpActivate(values)
+				.then((res) => {
+					this.props.otpSetActivated(true);
+					//this.accordion.closeAll();
+					this.setState({
+						dialogIsOpen: true,
+						modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS
+					});
+				})
+				.catch((err) => {
+					const _error = err.response.data
+						? err.response.data.message
+						: err.message;
+					throw new SubmissionError({ code: _error });
 				});
-			})
-			.catch((err) => {
-				const _error = err.response.data
-					? err.response.data.message
-					: err.message;
-				throw new SubmissionError({ code: _error });
-			});
-	};
+		};
 
-	onSubmitChangePassword = (values) => {
-		return resetPassword({
-			old_password: values.old_password,
-			new_password: values.new_password
-		})
-			.then((res) => {
-				this.accordion.closeAll();
-				this.setState({
-					dialogIsOpen: true,
-					modalText:
-						STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS
+		onSubmitChangePassword = (values) => {
+			return resetPassword({
+				old_password: values.old_password,
+				new_password: values.new_password
+			})
+				.then((res) => {
+				//	this.accordion.closeAll();
+					this.setState({
+						dialogIsOpen: true,
+						modalText:
+							STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS
+					});
+				})
+				.catch((err) => {
+					const _error = err.response.data
+						? err.response.data.message
+						: err.message;
+					throw new SubmissionError({ _error });
 				});
-			})
-			.catch((err) => {
-				const _error = err.response.data
-					? err.response.data.message
-					: err.message;
-				throw new SubmissionError({ _error });
-			});
-	};
+		};
 
-	onSubmitCancelOTP = (values) => {
-		return otpRevoke({ code: values.otp_code })
-			.then(() => {
-				this.props.otpSetActivated(false);
-				this.setState({
-					dialogIsOpen: true,
-					modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.REVOKE
-				});
-			})
-			.catch(errorHandler);
-	};
+		onSubmitCancelOTP = (values) => {
+			return otpRevoke({ code: values.otp_code })
+				.then(() => {
+					this.props.otpSetActivated(false);
+					this.setState({
+						dialogIsOpen: true,
+						modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.REVOKE
+					});
+				})
+				.catch(errorHandler);
+		};
 
-	setRef = (el) => {
-		this.accordion = el;
-	};
+		/*setRef = (el) => {
+			this.accordion = el;
+		};
+*/
+		openOtp = () => {
+			/*this.accordion.openSection(2, false);
+			setTimeout(() => {
+				this.accordion.openSection(1);
+			}, 250);
+			*/
+			this.setActiveTab(0);
+		};
 
-	openOtp = () => {
-		this.accordion.openSection(2, false);
-		setTimeout(() => {
-			this.accordion.openSection(0);
-		}, 250);
-	};
+		openDevelopers = () => {
+			/*setTimeout(() => {
+				this.accordion.openSection(2);
+			}, 250);
+			*/
+			this.setActiveTab(2);
+		};
 
-	openDevelopers = () => {
-		setTimeout(() => {
-			this.accordion.openSection(2);
-		}, 250);
-	};
-
-	renderModalContent = () => {
-		return (
-			<SuccessDisplay
-				onClick={this.onCloseDialog}
-				text={this.state.modalText}
-			/>
-		);
-	};
-
-	onCloseDialog = () => {
-		this.setState({ dialogIsOpen: false });
-	};
-
-	renderModalContent = (
-		{ requested, activated, secret, error },
-		otp_enabled,
-		email,
-		modalText,
-		constants
-	) => {
-		if (error) {
+		renderModalContent = () => {
 			return (
 				<SuccessDisplay
 					onClick={this.onCloseDialog}
-					text={error}
-					success={false}
+					text={this.state.modalText}
 				/>
 			);
-		} else if (otp_enabled && !modalText) {
-			return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
-		} else if (requested && !activated) {
-			return renderOTPForm(secret, email, this.onSubmitActivateOtp, constants);
-		} else {
-			return (
-				<SuccessDisplay
-					onClick={this.onCloseDialog}
-					text={modalText}
-					success={!error}
-				/>
-			);
-		}
-	};
+		};
 
-	render() {
-		if (this.props.user.verification_level === 0) {
-			return <Loader />;
-		}
-		const { sections, dialogIsOpen, modalText } = this.state;
-		const { otp, email, otp_enabled } = this.props.user;
-		return (
-			<div>
-				{!isMobile && (
-					<IconTitle
-						text={STRINGS.ACCOUNTS.TAB_SECURITY}
-						textType="title"
+		onCloseDialog = () => {
+			this.setState({ dialogIsOpen: false });
+		};
+
+		renderModalContent = (
+			{ requested, activated, secret, error },
+			otp_enabled,
+			email,
+			modalText,
+			constants
+		) => {
+			if (error) {
+				return (
+					<SuccessDisplay
+						onClick={this.onCloseDialog}
+						text={error}
+						success={false}
+					/>
+				);
+			} else if (otp_enabled && !modalText) {
+				return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
+			} else if (requested && !activated) {
+				return renderOTPCheckForm(secret, email, constants);
+				//return renderOTPForm(this.onSubmitActivateOtp);
+			} else {
+				return (
+					<SuccessDisplay
+						onClick={this.onCloseDialog}
+						text={modalText}
+						success={!error}
+					/>
+				);
+			}
+		};
+
+		render() {
+			if (this.props.user.verification_level === 0) {
+				return <Loader />;
+			}
+			const {dialogIsOpen, modalText , activeTab , tabs } = this.state;
+			const { otp, email, otp_enabled } = this.props.user;
+			return (
+				<div>
+					{!isMobile && (
+						<IconTitle
+							text={STRINGS.ACCOUNTS.TAB_SECURITY}
+							textType="title"
+						/>
+					)}
+					<HeaderSection
+					title={STRINGS.ACCOUNTS.TAB_SETTINGS}
+					openContactForm={this.openContactForm}
+				>
+					<div className="header-content">
+						<div>{STRINGS.ACCOUNT_SECURITY.TITLE_TEXT}</div>
+					</div>
+				</HeaderSection>
+
+					<Dialog
+						isOpen={dialogIsOpen && !otp.requesting}
+						label="security-modal"
+						onCloseDialog={this.onCloseDialog}
+						showCloseText={!(otp.error || modalText)}
+						theme={this.props.activeTheme}
+					>
+						{dialogIsOpen && !otp.requesting ? (
+							this.renderModalContent(
+								otp,
+								otp_enabled,
+								email,
+								modalText,
+								this.props.constants
+							)
+						) : (
+
+							<div />
+						)}
+					</Dialog>
+
+					{!isMobile ? (
+					<CustomTabBar
+						activeTab={activeTab}
+						setActiveTab={this.setActiveTab}
+						tabs={tabs}
+					/>
+				) : (
+					<MobileTabBar
+						activeTab={activeTab}
+						renderContent={this.renderContent}
+						setActiveTab={this.setActiveTab}
+						tabs={tabs}
 					/>
 				)}
-				<Accordion sections={sections} ref={this.setRef} />
-				<Dialog
-					isOpen={dialogIsOpen && !otp.requesting}
-					label="security-modal"
-					onCloseDialog={this.onCloseDialog}
-					showCloseText={!(otp.error || modalText)}
-					theme={this.props.activeTheme}
-				>
-					{dialogIsOpen && !otp.requesting ? (
-						this.renderModalContent(
-							otp,
-							otp_enabled,
-							email,
-							modalText,
-							this.props.constants
-						)
-					) : (
-						<div />
-					)}
-				</Dialog>
-			</div>
-		);
+				{!isMobile ? this.renderContent(tabs, activeTab) : null}
+
+				</div>
+			);
+		}
 	}
-}
 
-const mapStateToProps = (state) => ({
-	user: state.user,
-	activeLanguage: state.app.language,
-	activeTheme: state.app.theme,
-	constants: state.app.constants
-});
+	const mapStateToProps = (state) => ({
+		user: state.user,
+		activeLanguage: state.app.language,
+		activeTheme: state.app.theme,
+		constants: state.app.constants
+	});
 
-const mapDispatchToProps = (dispatch) => ({
-	requestOTP: () => dispatch(otpRequest()),
-	otpSetActivated: (active) => dispatch(otpSetActivated(active))
-});
+	const mapDispatchToProps = (dispatch) => ({
+		requestOTP: () => dispatch(otpRequest()),
+		otpSetActivated: (active) => dispatch(otpSetActivated(active)),
+		openContactForm: bindActionCreators(openContactForm, dispatch)
+	});
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(UserVerification);
+	export default connect(
+		mapStateToProps,
+		mapDispatchToProps
+	)(UserVerification);

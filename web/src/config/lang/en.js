@@ -283,7 +283,8 @@ export default {
 		OTP_TITLE: 'Authenticator Code',
 		OTP_HELP: 'help',
 		OTP_BUTTON: 'submit',
-		ERROR_INVALID: 'Invalid OTP Code'
+		ERROR_INVALID: 'Invalid OTP Code',
+		ERROR_INVALID_SECRET : 'Entered secret key do not match!'
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Quick',
@@ -674,8 +675,9 @@ export default {
 		WITHDRAWALS: 'Withdrawals'
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
-			TITLE: 'Two-Factor Authentication',
+			TITLE: '2FA',
 			OTP_ENABLED: 'otp enabled',
 			OTP_DISABLED: 'PLEASE TURN ON 2FA',
 			ENABLED_TEXTS: {
@@ -694,21 +696,35 @@ export default {
 				MESSAGE_3:
 					'If you have problems scanning this, you can manually enter the code below',
 				MESSAGE_4:
-					'You can store this code securely to recover your 2FA in case you change or lose your mobile phone in future.',
+					'You must store this code securely to recover your 2FA in case you change or lose your mobile phone in future.',
 				MESSAGE_5: 'Manual',
-				INPUT: 'Enter One-Time Password (OTP)',
 				WARNING:
 					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
-				ENABLE: 'Enable Two-Factor Authentication',
-				DISABLE: 'Disable Two-Factor Authentication'
+				ENABLE: 'Enable Two-factorctor Authentication',
+				DISABLE: 'Disable Two-Factor Authentication',
+
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'Enter One-Time Password (OTP)',
+				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
+				INPUT_2: 'One-Time Password (OTP)',
+
 			},
 			FORM: {
 				PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
-				BUTTON: 'Enable 2FA'
+				BUTTON: 'NEXT'
+			},
+			CHECK_FORM: {
+				PLACEHOLDER: 'Enter your secret key',
+				BUTTON: 'NEXT'	
 			}
+
 		},
 		CHANGE_PASSWORD: {
-			TITLE: 'Change Password',
+			TITLE: 'Password',
 			ACTIVE: 'ACTIVE',
 			DIALOG: {
 				SUCCESS: 'You have successfully changed your password'
