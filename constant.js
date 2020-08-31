@@ -2,6 +2,8 @@
 
 const path = require('path');
 
+console.log('DIR', __dirname);
+
 const SERVER_PATH = path.resolve(__dirname, '../../');
 exports.SERVER_PATH = SERVER_PATH;
 
