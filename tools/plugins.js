@@ -5,7 +5,7 @@ const { getKit, getSecrets } = require(`${SERVER_PATH}/init`);
 const {
 	AVAILABLE_PLUGINS,
 	INIT_CHANNEL
-} = require(`${SERVER_PATH}/constant`);
+} = require(`${SERVER_PATH}/constants`);
 const dbQuery = require('./database').query;
 const { publisher } = require('./database/redis');
 

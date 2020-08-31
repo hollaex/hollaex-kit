@@ -8,7 +8,7 @@ const { SERVER_PATH, SETTING_KEYS, OMITTED_USER_FIELDS, DEFAULT_ORDER_RISK_PERCE
 const { SIGNUP_NOT_AVAILABLE, PROVIDE_VALID_EMAIL, USER_EXISTS, INVALID_PASSWORD, INVALID_VERIFICATION_CODE } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
-const { INIT_CHANNEL } = require(`${SERVER_PATH}/constant`);
+const { INIT_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
