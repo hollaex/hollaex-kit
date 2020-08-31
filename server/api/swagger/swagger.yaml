@@ -608,6 +608,8 @@ paths:
             properties:
               enabled:
                 type: array
+                items:
+                  type: string
         default:
           description: Error
           schema:
@@ -638,6 +640,8 @@ paths:
             properties:
               enabled:
                 type: array
+                items:
+                  type: string
         default:
           description: Error
           schema:
@@ -859,6 +863,8 @@ paths:
         - Plugins
       parameters:
         - name: user_id
+          type: number
+          format: int32
           in: query
           required: true
           description: User Id to update info for
@@ -896,7 +902,7 @@ paths:
           description: Image of the front of user's id
           in: formData
           required: true
-          type: files
+          type: file
         - name: back
           description: Image of the back of user's id
           in: formData
@@ -913,6 +919,7 @@ paths:
           required: false
           type: string
         - name: number
+          type: string
           description: Number of the id document
           in: formData
           required: false
@@ -966,7 +973,7 @@ paths:
           description: Image of the front of user's id
           in: formData
           required: true
-          type: files
+          type: file
         - name: back
           description: Image of the back of user's id
           in: formData
@@ -983,6 +990,7 @@ paths:
           required: false
           type: string
         - name: number
+          type: string
           description: Number of the id document
           in: formData
           required: false
@@ -1275,10 +1283,11 @@ paths:
             required:
               - code
               - phone
-            code:
-              type: string
-            phone:
-              type: string
+            properties:
+              code:
+                type: string
+              phone:
+                type: string
       responses:
         200:
           description: Success
@@ -1492,14 +1501,18 @@ definitions:
               type: string
               format: date-time
   CountResponse:
+    type: object
     required:
       - count
       - data
     properties:
       count:
         type: number
+        format: int32
       data:
         type: array
+        items:
+          type: object
   WithdrawalRequest:
     type: object
     required:
@@ -1532,6 +1545,10 @@ definitions:
     properties:
       code:
         type: string
+  BankArray:
+    type: array
+    items:
+      $ref: "#/definitions/BankObject"
   BankObject:
     type: object
     properties:
@@ -1542,10 +1559,6 @@ definitions:
         maxLength: 50
       card_number:
         type: string
-  BankArray:
-    type: array
-      items:
-        $ref: "#/definitions/BankObject"
   VerificationId:
     type: object
     required:
