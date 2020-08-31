@@ -13,7 +13,7 @@ const {
 } = require('../messages');
 const { SERVER_PATH } = require('../constant');
 const { NODE_ENV, CAPTCHA_ENDPOINT } = require(`${SERVER_PATH}/constants`);
-const rp = require('request-promse');
+const rp = require('request-promise');
 const { getKitSecrets } = require('./common');
 
 /**
