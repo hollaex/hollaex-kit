@@ -1,6 +1,6 @@
 'use strict';
 
-const { SERVER_PATH } = require('../../constant');
+const { SERVER_PATH } = require('../../constants');
 
 module.exports = {
 	publisher: require(`${SERVER_PATH}/db/pubsub`).publisher,

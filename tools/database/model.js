@@ -1,6 +1,6 @@
 'use strict';
 
-const { SERVER_PATH } = require('../../constant');
+const { SERVER_PATH } = require('../../constants');
 const { each } = require('lodash');
 
 /**

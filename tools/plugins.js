@@ -1,6 +1,6 @@
 'use strict';
 
-const { SERVER_PATH } = require('../constant');
+const { SERVER_PATH } = require('../constants');
 const { getKit, getSecrets } = require(`${SERVER_PATH}/init`);
 const {
 	AVAILABLE_PLUGINS,

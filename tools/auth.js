@@ -11,7 +11,7 @@ const {
 	DEACTIVATED_USER,
 	INVALID_CAPTCHA
 } = require('../messages');
-const { SERVER_PATH } = require('../constant');
+const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
 const { getKitSecrets } = require('./common');
