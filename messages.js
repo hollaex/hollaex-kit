@@ -16,3 +16,4 @@ exports.INVALID_PASSWORD = 'Invalid password. It has to contain at least 8 chara
 exports.PROVIDE_VALID_EMAIL = 'Please provide a valid email';
 exports.USER_EXISTS = 'User already exists';
 exports.INVALID_VERIFICATION_CODE = 'Invalid verification code';
+exports.INVALID_CAPTCHA = 'Invalid captcha';

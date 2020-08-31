@@ -15,7 +15,7 @@ const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`
 const { all } = require('bluebird');
 const { nodeLib } = require('./utils');
 
-const signUpUser = (email, password, domain, referral) => {
+const signUpUser = (email, password, referral) => {
 	if (!getKit().new_user_is_activated) {
 		throw new Error(SIGNUP_NOT_AVAILABLE);
 	}
@@ -53,8 +53,7 @@ const signUpUser = (email, password, domain, referral) => {
 				MAILTYPE.SIGNUP,
 				email,
 				verificationCode.code,
-				{},
-				domain
+				{}
 			);
 			if (referral) {
 				checkAffiliation(referral, user.id);

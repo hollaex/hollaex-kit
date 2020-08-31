@@ -19,7 +19,9 @@
 		"hollaex-node-lib": "github:bitholla/hollaex-node-lib#2.0",
 		"jsonwebtoken": "8.5.1",
 		"lodash": "4.17.15",
-		"validator": "13.1.1"
+		"validator": "13.1.1",
+		"request": "2.83.0",
+		"request-promise": "4.2.2"
 	},
 	"devDependencies": {
 		"eslint": "7.0.0",

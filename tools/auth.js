@@ -8,8 +8,13 @@ const {
 	TOKEN_EXPIRED,
 	INVALID_TOKEN,
 	MISSING_HEADER,
-	DEACTIVATED_USER
+	DEACTIVATED_USER,
+	INVALID_CAPTCHA
 } = require('../messages');
+const { SERVER_PATH } = require('../constant');
+const { NODE_ENV, CAPTCHA_ENDPOINT } = require(`${SERVER_PATH}/constants`);
+const rp = require('request-promse');
+const { getKitSecrets } = require('./common');
 
 /**
  * Express middleware function that checks validity of bearer token.
@@ -90,8 +95,40 @@ const userIsDeactivated = (deactivatedUsers, userId) => {
 	}
 };
 
+const checkCaptcha = (captcha = '', remoteip = '') => {
+	if (!captcha) {
+		if (NODE_ENV === 'development') {
+			return new Promise((resolve) => resolve());
+		} else {
+			throw new Error(INVALID_CAPTCHA);
+		}
+	} else if (!getKitSecrets().captcha.secret_key) {
+		return new Promise((resolve) => resolve());
+	}
+
+	const options = {
+		method: 'POST',
+		form: {
+			secret: getKitSecrets().catpcha.secret_key,
+			response: captcha,
+			remoteip
+		},
+		uri: CAPTCHA_ENDPOINT
+	};
+
+	return rp(options)
+		.then((response) => JSON.parse(response))
+		.then((response) => {
+			if (!response.success) {
+				throw new Error(INVALID_CAPTCHA);
+			}
+			return;
+		});
+};
+
 module.exports = {
 	verifyBearerToken,
 	userScopeIsValid,
-	userIsDeactivated
+	userIsDeactivated,
+	checkCaptcha
 };
