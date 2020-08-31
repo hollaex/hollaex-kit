@@ -12,8 +12,11 @@ const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 
-let kitLib; // kit object based on hollaex node lib
+let kitLib;
 let toolsLib;
+
+const getKitLib = () => kitLib;
+const getToolsLib = () => toolsLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
@@ -52,10 +55,12 @@ subscriber.on('message', (channel, message) => {
 subscriber.subscribe(INIT_CHANNEL);
 
 let configuration = {
-	coins: {}, // network variable, admin cant change
-	pairs: {}, // network variable, admin cant chgange
-	kit: { // kit endpoint, status.kit in db
-		info: {}, // kit endpoint
+	coins: {},
+	pairs: {},
+	kit: {
+		info: {},
+		color: {},
+		links: {},
 		captcha: {},
 		defaults: {},
 		plugins: {
@@ -65,9 +70,6 @@ let configuration = {
 	}
 };
 
-// /kit endpoint with constants, info values above
-// /constant endpoint only sending coins and pairs
-
 let secrets = {
 	broker: {},
 	security: {},
@@ -75,7 +77,6 @@ let secrets = {
 	captcha: {},
 	emails: {},
 	smtp: {},
-	vault: {},
 	plugins: {
 		s3: {},
 		sns: {},
@@ -301,7 +302,7 @@ module.exports = {
 	getCoins,
 	getSecrets,
 	getFrozenUsers,
-	kitLib,
-	toolsLib,
+	getKitLib,
+	getToolsLib,
 	getKit
 };

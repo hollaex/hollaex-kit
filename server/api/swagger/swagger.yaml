@@ -58,6 +58,22 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /kit:
+    x-swagger-router-controller: general
+    get:
+      operationId: getKitConfigurations
+      description: Get kit configurations
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /signup:
     x-swagger-router-controller: user
     post:
