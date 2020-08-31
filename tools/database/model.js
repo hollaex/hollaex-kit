@@ -1,6 +1,7 @@
 'use strict';
 
 const { SERVER_PATH } = require('../../constant');
+const { each } = require('lodash');
 
 /**
  * Get sequelize model of table.
@@ -12,8 +13,14 @@ const getModel = (table = '') => {
 		throw new Error('Please give a table name');
 	}
 
-	table.toLowerCase();
-	table[0].toUpperCase();
+	const words = table.split(' ');
+
+	each(words, (word => {
+		word.toLowerCase();
+		word[0].toUpperCase();
+	}));
+
+	table = words.join('');
 	const model = require(`${SERVER_PATH}/db/models`)[table];
 	return model;
 };

@@ -1,16 +1,149 @@
 'use strict';
 
-// const model = require('./database').model;
+const dbModel = require('./database').model;
 const dbQuery = require('./database').query;
 const { has, omit } = require('lodash');
 const { isEmail } = require('validator');
-const { SERVER_PATH, SETTING_KEYS, OMITTED_USER_FIELDS } = require('../constant');
+const { SERVER_PATH, SETTING_KEYS, OMITTED_USER_FIELDS, DEFAULT_ORDER_RISK_PERCENTAGE } = require('../constant');
+const { SIGNUP_NOT_AVAILABLE, PROVIDE_VALID_EMAIL, USER_EXISTS, INVALID_PASSWORD, INVALID_VERIFICATION_CODE } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
 const { INIT_CHANNEL } = require(`${SERVER_PATH}/constant`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
+const { all } = require('bluebird');
+
+const signUpUser = (email, password, domain, referral) => {
+	if (!getKit().new_user_is_activated) {
+		throw new Error(SIGNUP_NOT_AVAILABLE);
+	}
+
+	if (!email || isEmail(email)) {
+		throw new Error(PROVIDE_VALID_EMAIL);
+	}
+
+	if (!isValidPassword(password)) {
+		throw new Error(INVALID_PASSWORD);
+	}
+
+	return dbQuery.findOne('user', {
+		where: { email: email.toLowerCase() },
+		attributes: ['email']
+	})
+		.then((user) => {
+			if (user) {
+				throw new Error(USER_EXISTS);
+			}
+			return dbModel('user').create({
+				email,
+				password,
+				settings: INITIAL_SETTINGS()
+			});
+		})
+		.then((user) => {
+			return all([
+				findVerificationCodeByUserId(user.id),
+				user
+			]);
+		})
+		.then(([ verificationCode, user ]) => {
+			sendEmail(
+				MAILTYPE.SIGNUP,
+				email,
+				verificationCode.code,
+				{},
+				domain
+			);
+			if (referral) {
+				checkAffiliation(referral, user.id);
+			}
+			return user;
+		});
+};
+
+const verifyUser = (email, verificationCode) => {
+	return findVerificationCodeByUserEmail(email)
+		.then((code) => {
+			if (verificationCode !== code) {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+			return verificationCode.update({ verified: true }, { returning: true });
+		})
+		.then((verificationCode) => {
+			return dbQuery.findOne('user', {
+				where: { id: verificationCode.user_id },
+				attributes: ['email', 'settings']
+			});
+		})
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				user.settings
+			);
+			return user;
+		});
+};
+
+const isValidPassword = (value) => {
+	return /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(value);
+};
+
+const findVerificationCodeByUserEmail = (email) => {
+	return getUserByEmail(email)
+		.then((user) => {
+			return findVerificationCodeByUserId(user.id);
+		});
+};
+
+const findVerificationCodeByUserId = (user_id) => {
+	return dbQuery.findOne('verification code', {
+		where: { user_id },
+		attributes: ['id', 'code', 'verified', 'user_id']
+	}).then((verificationCode) => {
+		if (verificationCode.verified) {
+			throw new Error('User is verified');
+		}
+		return verificationCode;
+	});
+};
+
+const findUserByAffiliationCode = (affiliationCode) => {
+	const code = affiliationCode.toUpperCase().trim();
+	return dbQuery.finOne('user', {
+		where: { affiliation_code: code },
+		attributes: ['id', 'email', 'affiliation_code']
+	});
+};
+
+const checkAffiliation = (affiliationCode, user_id) => {
+	let discount = 0; // default discount rate in percentage
+	return findUserByAffiliationCode(affiliationCode)
+		.then((referrer) => {
+			if (getSecrets().plugins.affiliation && getSecrets().plugins.affiliation.discount) {
+				discount = getSecrets().plugins.affiliation.discount;
+			}
+
+			return dbModel('affiliation').create({
+				user_id,
+				referer_id: referrer.id
+			});
+		})
+		.then((affiliation) => {
+			return dbModel('user').update(
+				{
+					discount
+				},
+				{
+					where: {
+						id: affiliation.user_id
+					},
+					fields: ['discount']
+				}
+			);
+		});
+};
 
 /**
  *
@@ -187,6 +320,32 @@ const updateUserSettings = (opts = {}, settings = {}, rawData = true) => {
 		});
 };
 
+const INITIAL_SETTINGS = () => {
+	return {
+		notification: {
+			popup_order_confirmation: true,
+			popup_order_completed: true,
+			popup_order_partially_filled: true
+		},
+		interface: {
+			order_book_levels: 10,
+			theme: getKit().defaults.theme
+		},
+		language: getKit().defaults.language,
+		audio: {
+			order_completed: true,
+			order_partially_completed: true,
+			public_trade: false
+		},
+		risk: {
+			order_portfolio_percentage: DEFAULT_ORDER_RISK_PERCENTAGE
+		},
+		chat: {
+			set_username: false
+		}
+	};
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -198,5 +357,7 @@ module.exports = {
 	getAllUsers,
 	getUserRole,
 	updateUserSettings,
-	omitUserFields
+	omitUserFields,
+	signUpUser,
+	verifyUser
 };

@@ -15,6 +15,7 @@
 		"url": "https://github.com/bitholla/hollaex-tools-lib"
 	},
 	"dependencies": {
+		"bluebird": "3.7.2",
 		"jsonwebtoken": "8.5.1",
 		"lodash": "4.17.15",
 		"validator": "13.1.1"

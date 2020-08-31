@@ -22,3 +22,5 @@ exports.OMITTED_USER_FIELDS = [
 	'is_tech',
 	'flagged'
 ];
+
+exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
