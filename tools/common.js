@@ -1,6 +1,7 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constant');
+console.log(SERVER_PATH)
 const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
 
 /**

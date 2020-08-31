@@ -2,7 +2,10 @@
 
 const path = require('path');
 
-exports.SERVER_PATH = path.resolve(__dirname, '../');
+const SERVER_PATH = path.resolve(__dirname, '../../');
+exports.SERVER_PATH = SERVER_PATH;
+
+console.log(SERVER_PATH);
 
 exports.SETTING_KEYS = [
 	'language',
