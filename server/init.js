@@ -77,10 +77,7 @@ let secrets = {
 	smtp: {},
 	vault: {},
 	plugins: {
-		s3: {
-			key: {},
-			secret: {}
-		},
+		s3: {},
 		sns: {},
 		freshdesk: {}
 	}
@@ -176,7 +173,6 @@ const checkStatus = () => {
 			loggerGeneral.info('init/checkStatus/activation complete');
 		})
 		.catch((err) => {
-			console.log(err)
 			let message = 'Initialization failed';
 			if (err.message) {
 				message = err.message;
@@ -200,10 +196,7 @@ const stop = () => {
 		smtp: {},
 		vault: {},
 		plugins: {
-			s3: {
-				key: {},
-				secret: {}
-			},
+			s3: {},
 			sns: {},
 			freshdesk: {}
 		}
