@@ -316,25 +316,16 @@ const generateBuckets = (bucketsString = '') => {
 
 const s3Credentials = () => {
 	return {
-		write: {
-			accessKeyId: kitTools.getKitSecrets().plugins.s3.key.write,
-			secretAccessKey: kitTools.getKitSecrets().plugins.s3.secret.write
-		},
-		read: {
-			accessKeyId: kitTools.getKitSecrets().plugins.s3.key.read,
-			secretAccessKey: kitTools.getKitSecrets().plugins.s3.secret.read
+		auth: {
+			accessKeyId: kitTools.getKitSecrets().plugins.s3.key,
+			secretAccessKey: kitTools.getKitSecrets().plugins.s3.secret
 		},
 		buckets: generateBuckets(kitTools.getKitSecrets().plugins.s3.id_docs_bucket)
 	};
 };
 
-const s3Write = (bucketName = S3_BUCKET_NAME()) => {
-	aws.config.update(s3Credentials().write);
-	return new aws.S3(s3Credentials().buckets[bucketName]);
-};
-
-const s3Read = (bucketName = S3_BUCKET_NAME()) => {
-	aws.config.update(s3Credentials().read);
+const s3 = (bucketName = S3_BUCKET_NAME()) => {
+	aws.config.update(s3Credentials().auth);
 	return new aws.S3(s3Credentials().buckets[bucketName]);
 };
 
@@ -347,7 +338,7 @@ const uploadFile = (name, file) => {
 			ContentType: file.mimetype,
 			ACL: 'authenticated-read'
 		};
-		s3Write().upload(params, (err, data) => {
+		s3().upload(params, (err, data) => {
 			if (err) {
 				reject(err);
 			}
@@ -389,7 +380,7 @@ const getPublicLink = (privateLink) => {
 		Expires: S3_LINK_EXPIRATION_TIME
 	};
 
-	return s3Read().getSignedUrl('getObject', params);
+	return s3().getSignedUrl('getObject', params);
 };
 
 const getLinks = ({ front, back, proof_of_residency }) => {
