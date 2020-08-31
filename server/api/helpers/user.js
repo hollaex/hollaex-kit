@@ -16,7 +16,7 @@ const {
 	USER_NOT_FOUND,
 	USENAME_IS_TAKEN
 } = require('../../messages');
-const { getCurrencies, getConfiguration } = require('../../init');
+const { getCurrencies, getKit } = require('../../init');
 const { loggerLogin } = require('../../config/logger');
 
 /*
@@ -221,7 +221,7 @@ const SETTING_KEYS = [
 ];
 
 const DEFAULT_SETTINGS = {
-	language: getConfiguration().constants.defaults.language,
+	language: getKit().defaults.language,
 	orderConfirmationPopup: true
 };
 
@@ -260,9 +260,9 @@ const INITIAL_SETTINGS = () => {
 		},
 		interface: {
 			order_book_levels: 10,
-			theme: getConfiguration().constants.defaults.theme
+			theme: getKit().defaults.theme
 		},
-		language: getConfiguration().constants.defaults.language,
+		language: getKit().defaults.language,
 		audio: {
 			order_completed: true,
 			order_partially_completed: true,

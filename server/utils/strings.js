@@ -1,7 +1,7 @@
 'use strict';
-const { getConfiguration } = require('../init');
-const DEFAULT_LANGUAGE = () => getConfiguration().constants.defaults.language;
-const VALID_LANGUAGES = () => getConfiguration().constants.valid_languages;
+const { getKit } = require('../init');
+const DEFAULT_LANGUAGE = () => getKit().defaults.language;
+const VALID_LANGUAGES = () => getKit().valid_languages;
 
 const getValidLanguage = (language = DEFAULT_LANGUAGE()) => {
 	if (VALID_LANGUAGES().indexOf(language) > -1) {

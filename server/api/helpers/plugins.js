@@ -27,7 +27,7 @@ const {
 	SMS_CODE_EXPIRED,
 	SMS_PHONE_DONT_MATCH,
 	SMS_CODE_INVALID
-} = require('../../message');
+} = require('../../messages');
 const aws = require('aws-sdk');
 const { all } = require('bluebird');
 const { convertSequelizeCountAndRows } = require('./general');

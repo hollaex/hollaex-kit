@@ -3,7 +3,7 @@ info:
   version: "2.0.0"
   title: HollaEx Kit
 host: api.hollaex.com
-basePath: /v1
+basePath: /v2
 schemes:
   - http
   - https

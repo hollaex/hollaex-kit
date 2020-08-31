@@ -27,7 +27,7 @@
 		"geoip-lite": "1.4.1",
 		"helmet": "3.12.0",
 		"hollaex-node-lib": "github:bitholla/hollaex-node-lib#2.0",
-		"hollaex-tools-lib": "github:bitholla/hollaex-tools-lib",
+		"hollaex-tools-lib": "github:bitholla/hollaex-tools-lib#develop",
 		"http": "0.0.0",
 		"install": "0.10.4",
 		"json2csv": "4.5.4",

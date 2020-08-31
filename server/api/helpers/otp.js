@@ -3,9 +3,9 @@
 const otp = require('otp');
 const { loggerOtp } = require('../../config/logger');
 const { OtpCode, User, sequelize } = require('../../db/models');
-const { getConfiguration } = require('../../init');
+const { getKit } = require('../../init');
 const { INVALID_OTP_CODE } = require('../../messages');
-const OTP_NAME = () => getConfiguration().constants.api_name;
+const OTP_NAME = () => getKit().api_name;
 
 /*
 	Function generate the otp totp code, should take one parameter:

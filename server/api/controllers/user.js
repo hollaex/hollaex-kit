@@ -30,7 +30,7 @@ const {
 } = require('../helpers/affiliation');
 const { getPagination, getTimeframe } = require('../helpers/general');
 const { verifyOtpBeforeAction } = require('../helpers/otp');
-const { getConfiguration } = require('../../init');
+const { getKit, kitTools } = require('../../init');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { User } = require('../../db/models');
@@ -40,13 +40,10 @@ const {
 	INVALID_VERIFICATION_CODE,
 	PROVIDE_VALID_EMAIL_CODE,
 	USER_REGISTERED,
-	PROVIDE_VALID_EMAIL,
-	USER_EXISTS,
 	INVALID_USERNAME,
 	USER_NOT_FOUND,
 	USERNAME_CANNOT_BE_CHANGED,
 	SERVICE_NOT_SUPPORTED,
-	SIGNUP_NOT_AVAILABLE,
 	USER_NOT_VERIFIED,
 	USER_NOT_ACTIVATED,
 	INVALID_CREDENTIALS,
@@ -63,7 +60,6 @@ const signUpUser = (req, res) => {
 		referral
 	} = req.swagger.params.signup.value;
 	const ip = req.headers['x-real-ip'];
-	const domain = req.headers['x-real-origin'];
 	loggerUser.debug(
 		req.uuid,
 		'controllers/user/signUpUser',
@@ -71,59 +67,12 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	if (!getConfiguration().constants.new_user_is_activated) {
-		return res.status(400).json({ message: SIGNUP_NOT_AVAILABLE });
-	}
-
-	if (!email || isEmail(email)) {
-		return res.status(400).json({ message: PROVIDE_VALID_EMAIL });
-	}
-
-	checkCaptcha(captcha, ip)
+	kitTools.auth.checkCaptcha(captcha, ip)
 		.then(() => {
-			return User.findOne({
-				where: { email: email.toLowerCase() },
-				attributes: ['email']
-			});
+			return kitTools.users.signUpUser(email, password, referral);
 		})
-		.then((user) => {
-			if (user) {
-				loggerUser.error(
-					req.uuid,
-					'controllers/user/signUpUser',
-					USER_EXISTS,
-					user.dataValues
-				);
-				const err = new Error(USER_EXISTS);
-				err.status = 409;
-				throw err;
-			} else if (!isValidPassword(password)) {
-				loggerUser.error(
-					req.uuid,
-					'controllers/user/signUpUser',
-					INVALID_PASSWORD
-				);
-				throw new Error(INVALID_PASSWORD);
-			}
-			return User.create({
-				email,
-				password,
-				settings: INITIAL_SETTINGS()
-			});
-		})
-		.then((user) => {
-			return all([ findVerificationCodeByUserId(user.id), user ]);
-		})
-		.then(([ verificationCode, user ]) => {
-			sendEmail(
-				MAILTYPE.SIGNUP,
-				email,
-				verificationCode.code,
-				{},
-				domain
-			);
-			checkAffiliation(referral, user.id);
-			res.status(201).json({ message: USER_REGISTERED });
+		.then(() => {
+			return res.status(201).json({ message: USER_REGISTERED });
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
@@ -132,7 +81,7 @@ const signUpUser = (req, res) => {
 			if (err.name === 'SequelizeValidationError') {
 				message = err.errors[0].message;
 			}
-			res.status(status).json({ message });
+			return res.status(status).json({ message });
 		});
 };
 

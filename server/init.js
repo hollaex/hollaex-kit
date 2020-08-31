@@ -13,6 +13,7 @@ const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 
 let kitLib; // kit object based on hollaex node lib
+let toolsLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
@@ -151,6 +152,11 @@ const checkStatus = () => {
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
+			toolsLib = require('hollaex-tools-lib')({
+				apiKey: status.api_key,
+				apiSecrets: status.api_secret,
+				exchangeId: exchange.id
+			});
 
 			return User.findAll({
 				where: {
@@ -170,6 +176,7 @@ const checkStatus = () => {
 			loggerGeneral.info('init/checkStatus/activation complete');
 		})
 		.catch((err) => {
+			console.log(err)
 			let message = 'Initialization failed';
 			if (err.message) {
 				message = err.message;
@@ -302,5 +309,6 @@ module.exports = {
 	getSecrets,
 	getFrozenUsers,
 	kitLib,
+	toolsLib,
 	getKit
 };

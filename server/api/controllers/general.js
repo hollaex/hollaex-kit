@@ -1,22 +1,25 @@
 'use strict';
 
 const packageJson = require('../../package.json');
-const { getConfiguration } = require('../../init');
+const { getKit, getCoins, getPairs } = require('../../init');
 const { API_HOST } = require('../../constants');
 
 const getHealth = (req, res) => {
 	res.json({
-		name: getConfiguration().constants.api_name || packageJson.name,
+		name: getKit().api_name || packageJson.name,
 		version: packageJson.version,
 		host: API_HOST,
 		basePath: req.swagger.swaggerObject.basePath,
-		status: getConfiguration().status
+		status: getKit().status
 	});
 };
 
 const getConstants = (req, res) => {
 	try {
-		res.json(getConfiguration());
+		res.json({
+			coins: getCoins(),
+			pairs: getPairs()
+		});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

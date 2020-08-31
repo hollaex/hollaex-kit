@@ -9,6 +9,8 @@ web/coverage
 # production
 build
 
+server/tools/hollaex-kt.env.local
+
 # misc
 web/.DS_Store
 web/.env
