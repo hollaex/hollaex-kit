@@ -13,6 +13,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
+const { nodeLib } = require('./utils');
 
 const signUpUser = (email, password, domain, referral) => {
 	if (!getKit().new_user_is_activated) {
@@ -75,6 +76,9 @@ const verifyUser = (email, verificationCode) => {
 				where: { id: verificationCode.user_id },
 				attributes: ['email', 'settings']
 			});
+		})
+		.then((user) => {
+			return all([user, nodeLib.createUser(email)]);
 		})
 		.then((user) => {
 			sendEmail(

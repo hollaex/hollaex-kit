@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"bluebird": "3.7.2",
+		"hollaex-node-lib": "github:bitholla/hollaex-node-lib#2.0",
 		"jsonwebtoken": "8.5.1",
 		"lodash": "4.17.15",
 		"validator": "13.1.1"
