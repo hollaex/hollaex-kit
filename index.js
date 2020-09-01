@@ -381,7 +381,7 @@ class HollaEx {
 	createKitWithdrawal(user_id, address, currency, amount, fee, otp_code) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
 		const data = {
 			address,
 			currency,
