@@ -331,7 +331,7 @@ class HollaEx {
 	}
 
 	// TODO (comments)
-	createUser(email) {
+	createKitUser(email) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/signup`;
@@ -365,7 +365,7 @@ class HollaEx {
 		);
 	}
 
-	getUsers() {
+	getKitUsers() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`;
@@ -373,8 +373,29 @@ class HollaEx {
 
 		return createRequest(
 			verb,
-			` ${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`,
 			headers
+		);
+	}
+
+	createKitWithdrawal(user_id, address, currency, amount, fee, otp_code) {
+		checkKit(this.exchange_id);
+		const verb = 'POST';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw`;
+		const data = {
+			address,
+			currency,
+			amount,
+			fee,
+			otp_code
+		};
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw`,
+			headers,
+			data
 		);
 	}
 }
