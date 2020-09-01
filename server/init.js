@@ -143,8 +143,8 @@ const checkStatus = () => {
 				status: true
 			};
 			kitLib = new Kit({
-				apiURL: HE_NETWORK_ENDPOINT,
-				baseURL: HE_NETWORK_BASE_URL,
+				networkURL: HE_NETWORK_ENDPOINT,
+				networkBaseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
 				apiSecret: status.secret,
 				exchange_id: exchange.id,
