@@ -3,27 +3,28 @@ const EventEmitter = require('events');
 const moment = require('moment');
 const { each } = require('lodash');
 const { createRequest, createSignature, generateHeaders, checkKit } = require('./utils');
-const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
-const HOLLAEX_NETWORK_VERSION = '/v2';
 
 class HollaEx {
 	constructor(
 		opts = {
 			apiURL: 'https://api.hollaex.com',
-			baseURL: '/v1',
+			baseURL: '/v2',
+			networkURL: 'https://api.testnet.hollaex.network',
+			networkBaseURL: '/v2',
 			apiKey: '',
 			apiSecret: '',
 			apiExpiresAfter: 60,
 			activation_code: undefined // kit activation code used only for exchange operators to initialize the exchange
 		}
 	) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
-		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
-		this._baseUrl = opts.baseURL || '/v1';
+		this.apiUrl = opts.apiURL || 'https://api.hollaex.com';
+		this.baseUrl = opts.baseURL || '/v2';
+		this.networkUrl = opts.networkURL || 'https://api.testnet.hollaex.network';
+		this.networkBaseUrl = opts.networkBaseURL || '/v2';
 		this.apiKey = opts.apiKey;
 		this.apiSecret = opts.apiSecret;
 		this.apiExpiresAfter = opts.apiExpiresAfter || 60;
-		this._headers = {
+		this.headers = {
 			'content-type': 'application/json',
 			Accept: 'application/json',
 			'api-key': opts.apiKey,
@@ -43,8 +44,8 @@ class HollaEx {
 	getTicker(symbol) {
 		return createRequest(
 			'GET',
-			`${this._url}/ticker?symbol=${symbol}`,
-			this._headers
+			`${this.apiUrl}${this.baseUrl}/ticker?symbol=${symbol}`,
+			this.headers
 		);
 	}
 
@@ -56,8 +57,8 @@ class HollaEx {
 	getOrderbook(symbol = '') {
 		return createRequest(
 			'GET',
-			`${this._url}/orderbooks?symbol=${symbol}`,
-			this._headers
+			`${this.apiUrl}${this.baseUrl}/orderbooks?symbol=${symbol}`,
+			this.headers
 		);
 	}
 
@@ -69,8 +70,8 @@ class HollaEx {
 	getTrade(symbol = '') {
 		return createRequest(
 			'GET',
-			`${this._url}/trades?symbol=${symbol}`,
-			this._headers
+			`${this.apiUrl}${this.baseUrl}/trades?symbol=${symbol}`,
+			this.headers
 		);
 	}
 
@@ -79,7 +80,7 @@ class HollaEx {
 	 * @return {string} A stringified JSON object with the keys pairs(information on each symbol-pair such as tick_size, min/max price, and min/max size) and currencies(array of all currencies involved in hollaEx)
 	 */
 	getConstant() {
-		return createRequest('GET', `${this._url}/constant`, this._headers);
+		return createRequest('GET', `${this.apiUrl}${this.baseUrl}/constant`, this.headers);
 	}
 
 	/*********************************************************************************************************
@@ -93,11 +94,11 @@ class HollaEx {
 	 */
 	getUser() {
 		const verb = 'GET';
-		const path = this._baseUrl + '/user';
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${this._url}/user`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -108,11 +109,11 @@ class HollaEx {
 	 */
 	getBalance() {
 		const verb = 'GET';
-		const path = this._baseUrl + '/user/balance';
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/balance`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${this._url}/user/balance`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -128,13 +129,11 @@ class HollaEx {
 	 */
 	getDeposit(currency, limit = 50, page = 1, orderBy, order = 'asc') {
 		const verb = 'GET';
-		const path = this._baseUrl + `/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${
-				this._url
-			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -151,32 +150,14 @@ class HollaEx {
 	 */
 	getWithdrawal(currency, limit = 50, page = 1, orderBy, order = 'asc') {
 		const verb = 'GET';
-		const path = this._baseUrl + `/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${
-				this._url
-			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
-
-	// /**
-	//  * Retrieve the withdrawal/transaction fee for a certain currency
-	//  * @param {string} currency - The currency to find a fee for
-	//  * @return {string} A stringified JSON object with the key fee(number)
-	//  */
-	// getWithdrawalFee(currency) {
-	// 	if (currency === '') {
-	// 		currency = undefined;
-	// 	}
-	// 	return createRequest(
-	// 		'GET',
-	// 		`${this._url}/user/withdraw/${currency}/fee`,
-	// 		this._headers
-	// 	);
-	// }
 
 	/**
 	 * Make a withdrawal request
@@ -187,12 +168,12 @@ class HollaEx {
 	 */
 	requestWithdrawal(currency, amount, address) {
 		const verb = 'POST';
-		const path = this._baseUrl + '/user/request-withdrawal';
+		const path = `${this.baseUrl}/user/request-withdrawal`;
 		const data = { currency, amount, address, fee: 0 };
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 		return createRequest(
 			verb,
-			`${this._url}/user/request-withdrawal`,
+			`${this.apiUrl}${path}`,
 			headers,
 			data
 		);
@@ -211,11 +192,11 @@ class HollaEx {
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
 		}
-		const path = this._baseUrl + `/user/trades${queryString}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/trades${queryString}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${this._url}/user/trades${queryString}`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -228,11 +209,11 @@ class HollaEx {
 	 */
 	getOrder(orderId) {
 		const verb = 'GET';
-		const path = this._baseUrl + `/user/orders/${orderId}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/orders/${orderId}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${this._url}/user/orders/${orderId}`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -244,11 +225,11 @@ class HollaEx {
 	 */
 	getAllOrder(symbol = '') {
 		const verb = 'GET';
-		const path = this._baseUrl + `/user/orders?symbol=${symbol}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/orders?symbol=${symbol}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${this._url}/user/orders?symbol=${symbol}`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -264,10 +245,10 @@ class HollaEx {
 	 */
 	createOrder(symbol, side, size, type, price) {
 		const verb = 'POST';
-		const path = this._baseUrl + '/order';
+		const path = `${this.baseUrl}/order`;
 		const data = { symbol, side, size, type, price };
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
-		return createRequest(verb, `${this._url}/order`, headers, data);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
 	/**
@@ -277,11 +258,11 @@ class HollaEx {
 	 */
 	cancelOrder(orderId) {
 		const verb = 'DELETE';
-		const path = this._baseUrl + `/user/orders/${orderId}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/orders/${orderId}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${this._url}/user/orders/${orderId}`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -293,11 +274,11 @@ class HollaEx {
 	 */
 	cancelAllOrder(symbol = '') {
 		const verb = 'DELETE';
-		const path = this._baseUrl + `/user/orders?symbol=${symbol}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.baseUrl}/user/orders?symbol=${symbol}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${this._url}/user/orders?symbol=${symbol}`,
+			`${this.apiUrl}${path}`,
 			headers
 		);
 	}
@@ -310,7 +291,7 @@ class HollaEx {
 	connect(events) {
 		const apiExpires = moment().unix() + this.apiExpiresAfter;
 		const signature = createSignature(this.apiSecret, 'CONNECT', '/socket', apiExpires);
-		return new Socket(events, this._wsUrl, this.apiKey, signature, apiExpires);
+		return new Socket(events, this.apiUrl, this.apiKey, signature, apiExpires);
 	}
 
 	/****** Kit operator endpoints ******/
@@ -318,12 +299,12 @@ class HollaEx {
 	async init() {
 		checkKit(this.activation_code);
 		const verb = 'GET';
-		const path = HOLLAEX_NETWORK_VERSION + `/kit/init/${this.activation_code}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.networkBaseUrl}/kit/init/${this.activation_code}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		let exchange = await createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 		this.exchange_id = exchange.id;
@@ -334,13 +315,13 @@ class HollaEx {
 	createKitUser(email) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/signup`;
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/signup`;
 		const data = { email };
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers,
 			data
 		);
@@ -358,12 +339,12 @@ class HollaEx {
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
 		}
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades${queryString}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/trades${queryString}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -371,12 +352,12 @@ class HollaEx {
 	getKitUsers() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/users`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -384,7 +365,7 @@ class HollaEx {
 	createKitWithdrawal(user_id, address, currency, amount, fee, otp_code) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
 		const data = {
 			address,
 			currency,
@@ -392,11 +373,11 @@ class HollaEx {
 			fee,
 			otp_code
 		};
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers,
 			data
 		);
@@ -414,12 +395,12 @@ class HollaEx {
 			queryString += `&currency=${currency}`;
 		}
 
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits${queryString}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/deposits${queryString}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -436,12 +417,12 @@ class HollaEx {
 			queryString += `&currency=${currency}`;
 		}
 
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals${queryString}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/withdrawals${queryString}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -450,15 +431,15 @@ class HollaEx {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/balance`;
+		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/balance`;
 		if (user_id) {
 			path += `?user_id=${user_id}`;
 		}
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -466,12 +447,12 @@ class HollaEx {
 	getKitOrder(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -479,7 +460,7 @@ class HollaEx {
 	createKitOrder(user_id, symbol, side, size, type, price = 0) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}`;
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}`;
 		const data = {
 			symbol,
 			side,
@@ -487,11 +468,11 @@ class HollaEx {
 			type,
 			price
 		};
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers,
 			data
 		);
@@ -500,11 +481,11 @@ class HollaEx {
 	cancelKitOrder(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -512,7 +493,7 @@ class HollaEx {
 	getKitOrders(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders`;
+		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/orders`;
 		if (user_id && symbol) {
 			path += `?user_id=${user_id}&symbol=${symbol}`;
 		} else if (user_id && !symbol) {
@@ -520,10 +501,10 @@ class HollaEx {
 		} else if (symbol && !user_id) {
 			path += `?symbol=${symbol}`;
 		}
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
@@ -531,14 +512,14 @@ class HollaEx {
 	cancelKitOrders(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?user_id=${user_id}`;
+		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/orders?user_id=${user_id}`;
 		if (symbol) {
 			path += `&symbol=${symbol}`;
 		}
-		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
+			`${this.networkUrl}${path}`,
 			headers
 		);
 	}
