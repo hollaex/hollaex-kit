@@ -434,6 +434,24 @@ class HollaEx {
 			headers
 		);
 	}
+
+	getKitBalance(user_id) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/balance`;
+		if (user_id) {
+			path = `${path}?user_id=${user_id}`;
+		}
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
 }
 
 /**************************************
