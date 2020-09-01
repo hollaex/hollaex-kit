@@ -339,6 +339,7 @@ class HollaEx {
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
 		}
+
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/trades${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
@@ -366,13 +367,7 @@ class HollaEx {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
-		const data = {
-			address,
-			currency,
-			amount,
-			fee,
-			otp_code
-		};
+		const data = { address, currency, amount, fee, otp_code };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
@@ -435,6 +430,7 @@ class HollaEx {
 		if (user_id) {
 			path += `?user_id=${user_id}`;
 		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -461,13 +457,7 @@ class HollaEx {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}`;
-		const data = {
-			symbol,
-			side,
-			size,
-			type,
-			price
-		};
+		const data = { symbol, side, size, type, price };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
@@ -483,6 +473,7 @@ class HollaEx {
 		const verb = 'DELETE';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
 		return createRequest(
 			verb,
 			`${this.networkUrl}${path}`,
@@ -493,6 +484,7 @@ class HollaEx {
 	getKitOrders(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
+
 		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/orders`;
 		if (user_id && symbol) {
 			path += `?user_id=${user_id}&symbol=${symbol}`;
@@ -501,7 +493,9 @@ class HollaEx {
 		} else if (symbol && !user_id) {
 			path += `?symbol=${symbol}`;
 		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
 		return createRequest(
 			verb,
 			`${this.networkUrl}${path}`,
@@ -512,11 +506,14 @@ class HollaEx {
 	cancelKitOrders(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
+
 		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/orders?user_id=${user_id}`;
 		if (symbol) {
 			path += `&symbol=${symbol}`;
 		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
 		return createRequest(
 			verb,
 			`${this.networkUrl}${path}`,
