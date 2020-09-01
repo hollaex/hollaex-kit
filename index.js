@@ -296,7 +296,7 @@ class HollaEx {
 
 	/****** Kit operator endpoints ******/
 	// TODO (comments)
-	async init() {
+	async initNetwork() {
 		checkKit(this.activation_code);
 		const verb = 'GET';
 		const path = `${this.networkBaseUrl}/kit/init/${this.activation_code}`;
@@ -312,7 +312,7 @@ class HollaEx {
 	}
 
 	// TODO (comments)
-	createKitUser(email) {
+	createUserNetwork(email) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/signup`;
@@ -328,7 +328,7 @@ class HollaEx {
 	}
 
 	// TODO (comments)
-	getKitTrades(user_id, symbol, limit = 50, page = 1) {
+	getAllTradeNetwork(user_id, symbol, limit = 50, page = 1) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -350,7 +350,7 @@ class HollaEx {
 		);
 	}
 
-	getKitUsers() {
+	getAllUserNetwork() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/users`;
@@ -363,7 +363,7 @@ class HollaEx {
 		);
 	}
 
-	createKitWithdrawal(user_id, address, currency, amount, fee, otp_code) {
+	createWithdrawalNetwork(user_id, address, currency, amount, fee, otp_code) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
@@ -378,7 +378,7 @@ class HollaEx {
 		);
 	}
 
-	getKitDeposits(user_id, currency, limit = 50, page = 1) {
+	getAllDepositNetwork(user_id, currency, limit = 50, page = 1) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -400,7 +400,7 @@ class HollaEx {
 		);
 	}
 
-	getKitWithdrawals(user_id, currency, limit = 50, page = 1) {
+	getAllWithdrawalNetwork(user_id, currency, limit = 50, page = 1) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -422,7 +422,7 @@ class HollaEx {
 		);
 	}
 
-	getKitBalance(user_id) {
+	getBalanceNetwork(user_id) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -440,7 +440,7 @@ class HollaEx {
 		);
 	}
 
-	getKitOrder(user_id, order_id) {
+	getOrderNetwork(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
@@ -453,7 +453,7 @@ class HollaEx {
 		);
 	}
 
-	createKitOrder(user_id, symbol, side, size, type, price = 0) {
+	createOrderNetwork(user_id, symbol, side, size, type, price = 0) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}`;
@@ -468,7 +468,7 @@ class HollaEx {
 		);
 	}
 
-	cancelKitOrder(user_id, order_id) {
+	cancelOrderNetwork(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
 		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
@@ -481,7 +481,7 @@ class HollaEx {
 		);
 	}
 
-	getKitOrders(user_id, symbol) {
+	getAllOrderNetwork(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -503,7 +503,7 @@ class HollaEx {
 		);
 	}
 
-	cancelKitOrders(user_id, symbol) {
+	cancelAllOrderNetwork(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
 
