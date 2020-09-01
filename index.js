@@ -508,6 +508,40 @@ class HollaEx {
 			headers
 		);
 	}
+
+	getKitOrders(user_id, symbol) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders`;
+		if (user_id && symbol) {
+			path += `?user_id=${user_id}&symbol=${symbol}`;
+		} else if (user_id && !symbol) {
+			path += `?user_id=${user_id}`;
+		} else if (symbol && !user_id) {
+			path += `?symbol=${symbol}`;
+		}
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	cancelKitOrders(user_id, symbol) {
+		checkKit(this.exchange_id);
+		const verb = 'DELETE';
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?user_id=${user_id}`;
+		if (symbol) {
+			path += `&symbol=${symbol}`;
+		}
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
 }
 
 /**************************************
