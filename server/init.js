@@ -143,7 +143,7 @@ const checkStatus = () => {
 				status: true
 			};
 			kitLib = new Kit({
-				apiURL: HE_NETWORK_ENDPOINT ,
+				apiURL: HE_NETWORK_ENDPOINT,
 				baseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
 				apiSecret: status.secret,
@@ -151,6 +151,8 @@ const checkStatus = () => {
 				activation_code: exchange.activation_code
 			});
 			toolsLib = require('hollaex-tools-lib')({
+				apiURL: HE_NETWORK_ENDPOINT,
+				baseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
 				apiSecrets: status.api_secret,
 				exchangeId: exchange.id

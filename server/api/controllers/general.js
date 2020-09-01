@@ -19,7 +19,6 @@ const getHealth = (req, res) => {
 };
 
 const getConstants = (req, res) => {
-	console.log(hollaexToolsLib)
 	try {
 		res.json({
 			coins: hollaexToolsLib.getKitCoins(),
