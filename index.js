@@ -475,6 +475,39 @@ class HollaEx {
 			headers
 		);
 	}
+
+	createKitOrder(user_id, symbol, side, size, type, price = 0) {
+		checkKit(this.exchange_id);
+		const verb = 'POST';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}`;
+		const data = {
+			symbol,
+			side,
+			size,
+			type,
+			price
+		};
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers,
+			data
+		);
+	}
+
+	cancelKitOrder(user_id, order_id) {
+		checkKit(this.exchange_id);
+		const verb = 'DELETE';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
 }
 
 /**************************************
