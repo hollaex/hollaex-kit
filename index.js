@@ -398,6 +398,24 @@ class HollaEx {
 			data
 		);
 	}
+
+	getKitDeposits(user_id, currency, limit = 50, page = 1) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		let queryString = `?user_id=${user_id}&limit=${limit}&page=${page}`;
+		if (currency) {
+			queryString += `&currency=${currency}`;
+		}
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits${queryString}`;
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits${queryString}`,
+			headers
+		);
+	}
 }
 
 /**************************************
