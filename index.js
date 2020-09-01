@@ -463,6 +463,18 @@ class HollaEx {
 		);
 	}
 
+	getKitOrder(user_id, order_id) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
 }
 
 /**************************************
