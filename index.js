@@ -320,7 +320,7 @@ class HollaEx {
 		const verb = 'GET';
 		const path = HOLLAEX_NETWORK_VERSION + `/kit/init/${this.activation_code}`;
 		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		
+
 		let exchange = await createRequest(
 			verb,
 			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/init/${this.activation_code}`,
@@ -334,10 +334,10 @@ class HollaEx {
 	createUser(email) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.exchange_id}/signup`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/signup`;
 		const data = { email };
 		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
-		
+
 		return createRequest(
 			verb,
 			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/signup`,
@@ -355,13 +355,26 @@ class HollaEx {
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
 		}
-		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.exchange_id}/trades${queryString}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades${queryString}`;
 		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		
+
 		return createRequest(
 			verb,
 			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades${queryString}`,
-			headers,
+			headers
+		);
+	}
+
+	getUsers() {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`;
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			` ${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`,
+			headers
 		);
 	}
 }
