@@ -295,7 +295,10 @@ class HollaEx {
 	}
 
 	/****** Kit operator endpoints ******/
-	// TODO (comments)
+	/**
+	 * Initialize your Kit for HollaEx Network. Must have passed activation_code in constructor
+	 * @return {object} Your exchange values
+	 */
 	async initNetwork() {
 		checkKit(this.activation_code);
 		const verb = 'GET';
@@ -311,7 +314,11 @@ class HollaEx {
 		return exchange;
 	}
 
-	// TODO (comments)
+	/**
+	 * Create a user for the exchange on the network
+	 * @param {string} email - Email of new user
+	 * @return {object} Created user's values on network
+	 */
 	createUserNetwork(email) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
@@ -327,7 +334,14 @@ class HollaEx {
 		);
 	}
 
-	// TODO (comments)
+	/**
+	 * Get all trades for the exchange on the network
+	 * @param {number} user_id - User id on network. Leave blank to get all trades for the exchange
+	 * @param {string} symbol - Symbol of trades. Leave blank to get trades for all symbols
+	 * @param {number} limit - Amount of trades per page. Maximum: 50
+	 * @param {number} page - Page of trades data
+	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
+	 */
 	getAllTradeNetwork(user_id, symbol, limit = 50, page = 1) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -350,6 +364,10 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get all users for the exchange on the network
+	 * @return {object} Fields: Count, Data. Count is the number of users for the exchange on the network. Data is an array of users
+	 */
 	getAllUserNetwork() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -363,6 +381,16 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Create a withdrawal for an exchange's user on the network
+	 * @param {number} user_id - User id on network
+	 * @param {string} address - Address to send withdrawal to
+	 * @param {string} currency - Curreny to withdraw
+	 * @param {number} amount - Amount to withdraw
+	 * @param {number} fee - The withdrawal fee
+	 * @param {string} otp_code - OTP code from the network to verify withdrawal request
+	 * @return {object} Withdrawal made on the network
+	 */
 	createWithdrawalNetwork(user_id, address, currency, amount, fee, otp_code) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
@@ -378,6 +406,14 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get all deposits for the exchange on the network
+	 * @param {number} user_id - User id on network. Leave blank to get all deposits for the exchange
+	 * @param {string} currency - Currency of deposits. Leave blank to get deposits for all currencies
+	 * @param {number} limit - Amount of trades per page. Maximum: 50
+	 * @param {number} page - Page of trades data
+	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
+	 */
 	getAllDepositNetwork(user_id, currency, limit = 50, page = 1) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -400,6 +436,14 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get all withdrawals for the exchange on the network
+	 * @param {number} user_id - User id on network. Leave blank to get all withdrawals for the exchange
+	 * @param {string} currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
+	 * @param {number} limit - Amount of trades per page. Maximum: 50
+	 * @param {number} page - Page of trades data
+	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
+	 */
 	getAllWithdrawalNetwork(user_id, currency, limit = 50, page = 1) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -422,6 +466,11 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get the balance for the exchange or exchange's user on the network
+	 * @param {number} user_id - User id on network. Leave blank to get balance for exchange
+	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
+	 */
 	getBalanceNetwork(user_id) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -440,6 +489,12 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get an order for the exchange on the network
+	 * @param {number} user_id - Id of order's user
+	 * @param {number} order_id - Order id
+	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
+	 */
 	getOrderNetwork(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -453,6 +508,16 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Create a new order for the exchange on the network
+	 * @param {number} user_id - User id on the network
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
+	 * @param {string} side - The side of the order e.g. 'buy', 'sell'
+	 * @param {number} size - The amount of currency to order
+	 * @param {string} type - The type of order to create e.g. 'market', 'limit'
+	 * @param {number} price - The price at which to order (only required if type is 'limit')
+	 * @return {object} Newly created order values e.g. symbol, id, side, status, etc.
+	 */
 	createOrderNetwork(user_id, symbol, side, size, type, price = 0) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
@@ -468,6 +533,12 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Cancel an order for the exchange on the network
+	 * @param {number} user_id - Id of order's user
+	 * @param {number} order_id - Order id
+	 * @return {object} Value of canceled order on the network with values side, size, filled, etc.
+	 */
 	cancelOrderNetwork(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
@@ -481,6 +552,12 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get all orders for the exchange on the network
+	 * @param {number} user_id - User id on network. Leave blank to get all orders for the exchange
+	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
+	 * @return {array} Array of queried orders
+	 */
 	getAllOrderNetwork(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -503,6 +580,12 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Cancel all orders for an exchange's user on the network
+	 * @param {number} user_id - User id on network
+	 * @param {string} symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
+	 * @return {array} Array of canceled orders
+	 */
 	cancelAllOrderNetwork(user_id, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
