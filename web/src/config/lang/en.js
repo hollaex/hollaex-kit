@@ -286,11 +286,10 @@ export default {
 		ERROR_INVALID: 'Invalid OTP Code'
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'Quick',
+		TITLE: 'Quick Trade', // updated
 		TOTAL_COST: 'Total cost',
-		BUTTON: 'Review {0} order',
+		BUTTON: 'Review Order', // updated
 		INPUT: '{0} to {1}',
-		TRADE_TITLE: '{0} {1}' // quick buy
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',

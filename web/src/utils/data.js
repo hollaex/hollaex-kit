@@ -24,3 +24,5 @@ export const findPath = (connections = [], start, end = BASE_CURRENCY, source_ke
 
 export const convertPathToPairNames = (path = [], from_key = 'pair_base', to_key = 'pair_2', separator = '-') =>
   path.map(({ [from_key]: from, [to_key]: to}) => `${from}${separator}${to}`);
+
+export const unique = arr => [...new Set(arr)]; //remove duplicates in array

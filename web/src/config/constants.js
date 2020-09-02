@@ -120,6 +120,8 @@ export const ICONS = {
 	QUICK_TRADE: '/assets/images/quick-trade.svg',
 	QUICK_TRADE_TAB: '/assets/images/quick-trade-tab.svg',
 	QUICK_TRADE_TAB_ACTIVE: '/assets/images/quick-trade-tab-active.svg',
+	QUICK_TRADE_INSUFFICIENT_FUND: '/assets/icons/quick-trade-insufficient-funds.svg',
+	QUICK_TRADE_SUCCESSFUL: '/assets/icons/quick-trade-success-coin-pile.svg',
 	SECURE: '/assets/images/secure.svg',
 	SECURITY_BLACK: '/assets/images/security.svg',
 	SECURITY_GREY: '/assets/images/security-grey.svg',
