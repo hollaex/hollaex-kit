@@ -16,7 +16,6 @@ const { all } = require('bluebird');
 const { nodeLib } = require('./utils');
 
 const signUpUser = (email, password, referral) => {
-	console.log(dbModel, dbQuery)
 	if (!getKit().new_user_is_activated) {
 		throw new Error(SIGNUP_NOT_AVAILABLE);
 	}
@@ -50,17 +49,21 @@ const signUpUser = (email, password, referral) => {
 			]);
 		})
 		.then(([ verificationCode, user ]) => {
-			sendEmail(
-				MAILTYPE.SIGNUP,
-				email,
-				verificationCode.code,
-				{}
-			);
+			// sendEmail(
+			// 	MAILTYPE.SIGNUP,
+			// 	email,
+			// 	verificationCode.code,
+			// 	{}
+			// );
 			if (referral) {
 				checkAffiliation(referral, user.id);
 			}
 			return user;
-		});
+		})
+		.catch((err) => {
+			console.log(err);
+			throw new Error(err)
+		})
 };
 
 const verifyUser = (email, verificationCode) => {
