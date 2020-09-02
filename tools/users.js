@@ -16,6 +16,7 @@ const { all } = require('bluebird');
 const { nodeLib } = require('./utils');
 
 const signUpUser = (email, password, referral) => {
+	console.log(dbModel, dbQuery)
 	if (!getKit().new_user_is_activated) {
 		throw new Error(SIGNUP_NOT_AVAILABLE);
 	}
