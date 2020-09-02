@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Layout, Menu, Icon, Row, Col, Spin } from 'antd';
+import { DownloadOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Layout, Menu, Row, Col, Spin } from 'antd';
 import io from 'socket.io-client';
 import { debounce } from 'lodash';
 
@@ -311,13 +312,13 @@ class AppWrapper extends React.Component {
 								).map(this.renderMenuItem)}
 								<Menu.Item>
 									<Link to="/summary">
-										<Icon type="home" />
+										<HomeOutlined />
 										Go To HollaEx-WEB
 									</Link>
 								</Menu.Item>
 								<Menu.Item key="logout">
 									<div onClick={logout}>
-										<Icon type="logout" />
+										<LogoutOutlined />
 										LOGOUT
 									</div>
 								</Menu.Item>
@@ -333,7 +334,7 @@ class AppWrapper extends React.Component {
 										href={ADMIN_GUIDE_DOWNLOAD_LINK}
 										target="blank"
 									>
-										<Icon type="download" />
+										<DownloadOutlined />
 										Admin Panel Guide
 									</Link>
 								</Menu.Item>

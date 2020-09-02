@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SyncOutlined } from '@ant-design/icons';
 import { Table, Spin, Button, Input, Select, Alert } from 'antd';
 import moment from 'moment';
 
@@ -341,7 +342,7 @@ class Deposits extends Component {
 									<Button
 										onClick={this.onRefresh}
 										type="primary"
-										icon="sync"
+										icon={<SyncOutlined />}
 										disabled={!searchValue}
 									>
 										Refresh Data

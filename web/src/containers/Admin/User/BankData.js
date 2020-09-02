@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { addBankData, approveBank, rejectBank } from './actions';
-import { Card, Button, Input, Popconfirm, Icon, message, Col, Row } from 'antd';
+import { CheckOutlined, CloseOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Card, Button, Input, Popconfirm, message, Col, Row } from 'antd';
 import { ModalForm } from '../../../components';
 
 const Form = ModalForm('BANK_DATA', 'bank_data');
@@ -156,7 +157,7 @@ class BankData extends Component {
 					disabled={disabled}
 					onClick={() => this.showModal()}
 					type="primary"
-					icon="plus-circle"
+					icon={<PlusCircleOutlined />}
 					size="small"
 				>
 					Add bank
@@ -187,7 +188,7 @@ class BankData extends Component {
 															})
 														}
 														type="primary"
-														icon="check"
+														icon={<CheckOutlined />}
 														// size={10}
 													>
 														Accept
@@ -203,7 +204,7 @@ class BankData extends Component {
 															})
 														}
 														type="danger"
-														icon="close"
+														icon={<CloseOutlined />}
 														// size={10}
 													>
 														Reject
@@ -222,13 +223,11 @@ class BankData extends Component {
 												okText="Yes"
 												cancelText="No"
 											>
-												<Icon
-													type="delete"
-													style={{
+												<DeleteOutlined
+                          style={{
 														fontSize: '20px',
 														color: '#08c'
 													}}
-													theme="outlined"
 												/>
 											</Popconfirm>
 										)

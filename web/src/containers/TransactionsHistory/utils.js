@@ -1,5 +1,6 @@
 import React from 'react';
-import { notification, Icon } from 'antd';
+import { InfoCircleTwoTone } from '@ant-design/icons';
+import { notification } from 'antd';
 import classnames from 'classnames';
 import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
@@ -478,11 +479,7 @@ export const generateWithdrawalsHeaders = (
 									message: 'Transaction ID',
 									description: transaction_id,
 									icon: (
-										<Icon
-											type="info-circle"
-											theme="twoTone"
-											style={{ color: '#0000ff' }}
-										/>
+										<InfoCircleTwoTone style={{ color: '#0000ff' }} />
 									)
 								});
 							}}
@@ -511,11 +508,7 @@ export const generateWithdrawalsHeaders = (
 									message: 'Transaction ID',
 									description: transaction_id,
 									icon: (
-										<Icon
-											type="info-circle"
-											theme="twoTone"
-											style={{ color: '#0000ff' }}
-										/>
+										<InfoCircleTwoTone style={{ color: '#0000ff' }} />
 									)
 								});
 							}}
