@@ -193,6 +193,9 @@ table th {
 .content-center {
   justify-content: center !important; }
 
+.bold {
+  font-weight: bold; }
+
 .dark-app-body {
   background: var(--dark-app-background-color) !important; }
 
