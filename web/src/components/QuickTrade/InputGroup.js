@@ -42,6 +42,8 @@ class InputGroup extends React.PureComponent {
             onSelect={onSelect}
             onDropdownVisibleChange={this.onDropdownVisibleChange}
             bordered={false}
+            listItemHeight={35}
+            listHeight={35 * 6}
           >
             {options.map((symbol, index) => (
               <Option name="selectedPairBase" value={symbol} key={index} className="d-flex">
