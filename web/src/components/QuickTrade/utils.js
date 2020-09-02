@@ -9,6 +9,7 @@ const QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED =
 	'The order with the current size can not be filled';
 const QUICK_TRADE_ORDER_NOT_FILLED = 'Order is not filled';
 const QUICK_TRADE_NO_BALANCE = 'Insufficient balance to perform the order';
+export const QUICK_TRADE_INSUFFICIENT_BALANCE = 'Insufficent balance.';
 
 export const translateError = (error) => {
 	switch (error) {
@@ -27,6 +28,7 @@ export const translateError = (error) => {
 		case QUICK_TRADE_ORDER_NOT_FILLED:
 			return STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		case QUICK_TRADE_NO_BALANCE:
+		case QUICK_TRADE_INSUFFICIENT_BALANCE:
 			return STRINGS.QUICK_TRADE_NO_BALANCE;
 		default:
 			return error;

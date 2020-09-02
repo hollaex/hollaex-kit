@@ -744,6 +744,10 @@ export default {
 		buy: 'buy',
 		sell: 'sell'
 	},
+	SIDES_VERBS: {
+		buy: 'bought',
+		sell: 'sold'
+	},
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
@@ -936,6 +940,9 @@ export default {
 		'The order with the current size can not be filled',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
 	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
+	QUICK_TRADE_SUCCESS: 'Success!',
+  QUICK_TRADE_INSUFFICIENT_FUND: 'Insufficient funds',
+  QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE: 'You have insufficient funds in your wallet to complete this transaction.',
 	YES: 'Yes',
 	NO: 'No',
 	NEXT: 'Next',
