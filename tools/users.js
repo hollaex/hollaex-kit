@@ -77,15 +77,10 @@ const verifyUser = (email, verificationCode) => {
 			});
 		})
 		.then((user) => {
-			return all([user, nodeLib.createUser(email)]);
+			return all([user, nodeLib.createUserNetwork(email)]);
 		})
-		.then((user) => {
-			sendEmail(
-				MAILTYPE.WELCOME,
-				user.email,
-				user.settings
-			);
-			return user;
+		.then((data) => {
+			return data;
 		});
 };
 
