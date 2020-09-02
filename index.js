@@ -3,14 +3,14 @@ const EventEmitter = require('events');
 const moment = require('moment');
 const { each } = require('lodash');
 const { createRequest, createSignature, generateHeaders, checkKit } = require('./utils');
+const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
+const HOLLAEX_NETWORK_VERSION = '/v2';
 
 class HollaEx {
 	constructor(
 		opts = {
 			apiURL: 'https://api.hollaex.com',
 			baseURL: '/v2',
-			networkURL: 'https://api.testnet.hollaex.network',
-			networkBaseURL: '/v2',
 			apiKey: '',
 			apiSecret: '',
 			apiExpiresAfter: 60,
@@ -19,8 +19,6 @@ class HollaEx {
 	) {
 		this.apiUrl = opts.apiURL || 'https://api.hollaex.com';
 		this.baseUrl = opts.baseURL || '/v2';
-		this.networkUrl = opts.networkURL || 'https://api.testnet.hollaex.network';
-		this.networkBaseUrl = opts.networkBaseURL || '/v2';
 		this.apiKey = opts.apiKey;
 		this.apiSecret = opts.apiSecret;
 		this.apiExpiresAfter = opts.apiExpiresAfter || 60;
@@ -302,12 +300,12 @@ class HollaEx {
 	async initNetwork() {
 		checkKit(this.activation_code);
 		const verb = 'GET';
-		const path = `${this.networkBaseUrl}/kit/init/${this.activation_code}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/init/${this.activation_code}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		let exchange = await createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 		this.exchange_id = exchange.id;
@@ -322,13 +320,13 @@ class HollaEx {
 	createUserNetwork(email) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/signup`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/signup`;
 		const data = { email };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers,
 			data
 		);
@@ -354,12 +352,12 @@ class HollaEx {
 			queryString += `&symbol=${symbol}`;
 		}
 
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/trades${queryString}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -371,12 +369,12 @@ class HollaEx {
 	getAllUserNetwork() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/users`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -394,13 +392,13 @@ class HollaEx {
 	createWithdrawalNetwork(user_id, address, currency, amount, fee, otp_code) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
 		const data = { address, currency, amount, fee, otp_code };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers,
 			data
 		);
@@ -426,12 +424,12 @@ class HollaEx {
 			queryString += `&currency=${currency}`;
 		}
 
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/deposits${queryString}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -456,12 +454,12 @@ class HollaEx {
 			queryString += `&currency=${currency}`;
 		}
 
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/withdrawals${queryString}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -475,7 +473,7 @@ class HollaEx {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/balance`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/balance`;
 		if (user_id) {
 			path += `?user_id=${user_id}`;
 		}
@@ -484,7 +482,7 @@ class HollaEx {
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -498,12 +496,12 @@ class HollaEx {
 	getOrderNetwork(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -521,13 +519,13 @@ class HollaEx {
 	createOrderNetwork(user_id, symbol, side, size, type, price = 0) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}`;
 		const data = { symbol, side, size, type, price };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers,
 			data
 		);
@@ -542,12 +540,12 @@ class HollaEx {
 	cancelOrderNetwork(user_id, order_id) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
-		const path = `${this.networkBaseUrl}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -562,7 +560,7 @@ class HollaEx {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/orders`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders`;
 		if (user_id && symbol) {
 			path += `?user_id=${user_id}&symbol=${symbol}`;
 		} else if (user_id && !symbol) {
@@ -575,7 +573,7 @@ class HollaEx {
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
@@ -590,7 +588,7 @@ class HollaEx {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
 
-		let path = `${this.networkBaseUrl}/kit/${this.exchange_id}/orders?user_id=${user_id}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?user_id=${user_id}`;
 		if (symbol) {
 			path += `&symbol=${symbol}`;
 		}
@@ -599,7 +597,7 @@ class HollaEx {
 
 		return createRequest(
 			verb,
-			`${this.networkUrl}${path}`,
+			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
 	}
