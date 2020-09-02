@@ -27,7 +27,7 @@ class InputGroup extends React.PureComponent {
 
     return (
       <div className="py-2">
-        <label>{name}</label>
+        <label className="bold">{name}</label>
         <Group
           compact
           className="input-group__container"
