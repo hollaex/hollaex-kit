@@ -15,5 +15,7 @@ module.exports = {
 	logger: require('./logger'),
 
 	// plugins
-	plugins: require('./plugins')
+	plugins: require('./plugins'),
+
+	users: require('./users')
 };
