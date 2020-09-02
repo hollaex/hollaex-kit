@@ -117,44 +117,49 @@ class QuickTradeContainer extends PureComponent {
 	};
 
   onExecuteTrade = () => {
-    const { side, targetAmount, selectedTarget, selectedSource, pair } = this.state;
+    const { side, targetAmount, pair, sourceAmount } = this.state;
     const { pairs } = this.props;
     const pairData = pairs[pair] || {}
     const { increment_size } = pairData
 
-    const values = {
-      type: 'market',
-      side,
-      size: targetAmount,
-			symbol: `${selectedTarget}-${selectedSource}`
+    let size
+		let price;
+		if(side === "buy") {
+			[size, price] = [targetAmount, sourceAmount]
+		} else {
+      [price, size] = [targetAmount, sourceAmount]
 		}
 
-    const order = {
-      ...values,
+    const orderData = {
+      type: 'market',
+      side,
       size: formatNumber(
-        values.size,
+        size,
         getDecimals(increment_size)
       ),
-      symbol: pair
-    };
+			symbol: pair,
+		}
 
 		this.setState({
 			order: {
         completed: false,
 				fetching: true,
 				error: false,
-				data: order,
+				data: orderData,
 			}
 		})
 
-    submitOrder(order)
+    submitOrder(orderData)
       .then(({ data }) => {
         this.setState({
           order: {
           	completed: true,
             fetching: false,
             error: false,
-            data,
+            data: {
+							...data,
+							price,
+						},
           }
         })
 			})
@@ -169,7 +174,7 @@ class QuickTradeContainer extends PureComponent {
             completed: true,
             fetching: false,
             error: _error,
-            data: order,
+            data: orderData,
           }
 				})
       });
@@ -292,6 +297,10 @@ class QuickTradeContainer extends PureComponent {
 		});
 	}
 
+	goToWallet = () => {
+  	this.props.router.push('/wallet');
+	}
+
 	render() {
 		const {
 			pairData = {},
@@ -389,9 +398,8 @@ class QuickTradeContainer extends PureComponent {
 								<QuoteResult
 									pairData={pairData}
 									data={order}
-									name={selectedTarget}
-									coins={coins}
 									onClose={this.onCloseDialog}
+									onConfirm={this.goToWallet}
 								/>
               )
             ) : (
