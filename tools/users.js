@@ -349,6 +349,27 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
+const findUserEmailByVerificationCode = (code) => {
+	return dbQuery.findOne('verification code', {
+		where: { code },
+		attributes: ['id', 'code', 'verified', 'user_id']
+	})
+		.then((verificationCode) => {
+			if (!verificationCode) {
+				throw new Error('Verification Code invalid');
+			} else if (verificationCode.verified) {
+				throw new Error('Verification Code used');
+			}
+			return dbQuery.findOne('user', {
+				where: { id: verificationCode.user_id },
+				attributes: ['email']
+			});
+		})
+		.then((user) => {
+			return user.email;
+		});
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -362,5 +383,7 @@ module.exports = {
 	updateUserSettings,
 	omitUserFields,
 	signUpUser,
-	verifyUser
+	verifyUser,
+	findVerificationCodeByUserEmail,
+	findUserEmailByVerificationCode
 };
