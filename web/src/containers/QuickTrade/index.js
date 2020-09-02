@@ -353,7 +353,7 @@ class QuickTradeContainer extends PureComponent {
 						label="quick-trade-modal"
 						onCloseDialog={this.onCloseDialog}
 						shouldCloseOnOverlayClick={false}
-						showCloseText={!order.fetching && !order.completed}
+						showCloseText={false}
 						theme={activeTheme}
 						style={{ 'z-index': 100 }}
 					>
@@ -371,7 +371,7 @@ class QuickTradeContainer extends PureComponent {
 											text={"Estimated Recieving Amount"}
 											amount={targetAmount}
 										/>
-										<footer className="d-flex">
+										<footer className="d-flex pt-4">
 											<Button
 												label={STRINGS.CLOSE_TEXT}
 												onClick={this.onCloseDialog}
