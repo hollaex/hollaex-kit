@@ -1,6 +1,6 @@
 'use strict';
 
-const dbModel = require('./database').model;
+const { getModel } = require('./database').model;
 const dbQuery = require('./database').query;
 const { has, omit } = require('lodash');
 const { isEmail } = require('validator');
@@ -36,7 +36,7 @@ const signUpUser = (email, password, referral) => {
 			if (user) {
 				throw new Error(USER_EXISTS);
 			}
-			return dbModel('user').create({
+			return getModel('user').create({
 				email,
 				password,
 				settings: INITIAL_SETTINGS()
@@ -49,21 +49,17 @@ const signUpUser = (email, password, referral) => {
 			]);
 		})
 		.then(([ verificationCode, user ]) => {
-			// sendEmail(
-			// 	MAILTYPE.SIGNUP,
-			// 	email,
-			// 	verificationCode.code,
-			// 	{}
-			// );
+			sendEmail(
+				MAILTYPE.SIGNUP,
+				email,
+				verificationCode.code,
+				{}
+			);
 			if (referral) {
 				checkAffiliation(referral, user.id);
 			}
 			return user;
-		})
-		.catch((err) => {
-			console.log(err);
-			throw new Error(err)
-		})
+		});
 };
 
 const verifyUser = (email, verificationCode) => {
@@ -132,13 +128,13 @@ const checkAffiliation = (affiliationCode, user_id) => {
 				discount = getSecrets().plugins.affiliation.discount;
 			}
 
-			return dbModel('affiliation').create({
+			return getModel('affiliation').create({
 				user_id,
 				referer_id: referrer.id
 			});
 		})
 		.then((affiliation) => {
-			return dbModel('user').update(
+			return getModel('user').update(
 				{
 					discount
 				},
