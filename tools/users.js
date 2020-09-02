@@ -68,7 +68,7 @@ const verifyUser = (email, verificationCode) => {
 			if (verificationCode !== code) {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
-			return verificationCode.update({ verified: true }, { returning: true });
+			return code.update({ verified: true }, { returning: true });
 		})
 		.then((verificationCode) => {
 			return dbQuery.findOne('user', {
