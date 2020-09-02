@@ -20,7 +20,7 @@ const signUpUser = (email, password, referral) => {
 		throw new Error(SIGNUP_NOT_AVAILABLE);
 	}
 
-	if (!email || isEmail(email)) {
+	if (!email || !isEmail(email)) {
 		throw new Error(PROVIDE_VALID_EMAIL);
 	}
 
