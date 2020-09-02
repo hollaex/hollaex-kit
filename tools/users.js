@@ -187,10 +187,10 @@ const getUser = (opts = {}, rawData = true) => {
 	} else {
 		where.network_id = opts.network_id;
 	}
-	where.raw = rawData;
 
 	return dbQuery.findOne('user', {
-		where
+		where,
+		raw: rawData
 	})
 		.then((user) => {
 			if (!user) {
