@@ -1,5 +1,5 @@
 import React from 'react';
-import { oneOfType, arrayOf, shape, array, object, number, string } from 'prop-types';
+import { oneOfType, arrayOf, shape, array, object, number, string, func } from 'prop-types';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
 import ReactSVG from 'react-svg';
 
@@ -7,7 +7,7 @@ import { ICONS, THEME_DEFAULT } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
 
-const MarketList = ({ markets, handleClick }) => {
+const MarketList = ({ markets, handleClick, chartData }) => {
 
     const stroke = THEME_DEFAULT === 'dark' ? '#0066B4' : '#0000ff';
 
@@ -82,7 +82,7 @@ const MarketList = ({ markets, handleClick }) => {
                   </td>
                   <td>
                     <div className="m-2">
-                      <Sparklines data={[5, 10, 5, 20, 18, 21]}>
+                      <Sparklines data={chartData[key]}>
                         <SparklinesLine style={{ strokeWidth: 2, stroke, fill: "none",  }}/>
                       </Sparklines>
                     </div>
@@ -110,7 +110,9 @@ MarketList.propTypes = {
       priceDifferencePercent: string,
     })),
     array
-  ]).isRequired
+  ]).isRequired,
+  chartData: object.isRequired,
+  handleClick: func.isRequired,
 };
 
 export default MarketList;

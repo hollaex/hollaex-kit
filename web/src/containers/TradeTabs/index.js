@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { getSparklines } from 'actions/chartAction';
 
 import MarketCards from './components/MarketCards';
 import MarketList from './components/MarketList';
@@ -22,15 +23,19 @@ class AddTradeTab extends Component {
 		searchValue: '',
 		selected: 'Card',
     options: [{ value: 'List' }, { value: 'Card' }],
+		chartData: {}
 	};
 
 	componentDidMount() {
+		const { pairs, tickers } = this.props;
 		this.goToPage(
-			this.props.pairs,
-			this.props.tickers,
+			pairs,
+			tickers,
 			this.state.page,
 			this.state.searchValue
 		);
+
+		getSparklines(Object.keys(pairs)).then(hash => this.setState({ chartData: hash }))
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -144,7 +149,7 @@ class AddTradeTab extends Component {
 			coins,
 			constants = {}
 		} = this.props;
-		const { page, pageSize, count, data, selected, options } = this.state;
+		const { page, pageSize, count, data, selected, options, chartData } = this.state;
 		const { handleClick, goToPreviousPage, goToNextPage } = this;
 
 		let quickPair = this.props.pair || '';
@@ -238,6 +243,7 @@ class AddTradeTab extends Component {
 						{ selected === 'List'
 							? <MarketList
 								markets={processedData}
+								chartData={chartData}
 								handleClick={handleClick}
 							/>
 							: <MarketCards
