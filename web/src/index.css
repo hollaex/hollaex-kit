@@ -196,6 +196,9 @@ table th {
 .bold {
   font-weight: bold; }
 
+.justify-content-end {
+  justify-content: flex-end; }
+
 .dark-app-body {
   background: var(--dark-app-background-color) !important; }
 
@@ -2458,7 +2461,8 @@ table th {
     min-width: 100vw;
     max-width: 100vw; }
 
-.layout-mobile .success-review {
+.layout-mobile .success-review,
+.layout-mobile .quote-review-wrapper {
   margin: auto; }
 
 .contact_form-wrapper {

@@ -359,8 +359,8 @@ class QuickTradeContainer extends PureComponent {
 					>
             {showQuickTradeModal ? (
               !order.fetching && !order.completed ? (
-								<div>
-									<div className="quote-review-wrapper">
+								<div className="quote-review-wrapper">
+									<div>
 										<ReviewBlock
 											symbol={selectedSource}
 											text={"Spend Amount"}
@@ -371,19 +371,19 @@ class QuickTradeContainer extends PureComponent {
 											text={"Estimated Recieving Amount"}
 											amount={targetAmount}
 										/>
+										<footer className="d-flex">
+											<Button
+												label={STRINGS.CLOSE_TEXT}
+												onClick={this.onCloseDialog}
+												className="mr-2"
+											/>
+											<Button
+												label={"Confirm"}
+												onClick={this.onExecuteTrade}
+												className="ml-2"
+											/>
+										</footer>
 									</div>
-									<footer className="d-flex">
-										<Button
-											label={STRINGS.CLOSE_TEXT}
-											onClick={this.onCloseDialog}
-											className="mr-2"
-										/>
-										<Button
-											label={"Confirm"}
-											onClick={this.onExecuteTrade}
-											className="ml-2"
-										/>
-									</footer>
 								</div>
               ) : (
 								<QuoteResult
