@@ -8,11 +8,11 @@ const ReviewBlock = ({ text, amount, symbol }) => {
 	return (
 		<div className={classnames('review-block-wrapper', 'd-flex', 'flex-column')}>
 			{ text && (
-				<div className="input_block-title text-center">
+				<div className="input_block-title text-left">
           {text}
 				</div>
 			)}
-			<div className="d-flex currency-wrapper">
+			<div className="d-flex justify-content-end currency-wrapper">
 				<CurrencyBallWithPrice symbol={symbol} amount={amount} />
 			</div>
 		</div>
