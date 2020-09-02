@@ -3,6 +3,7 @@
 	"version": "1.5.7",
 	"private": true,
 	"dependencies": {
+		"@ant-design/icons": "4.2.2",
 		"@material/button": "0.7.0",
 		"antd": "3.26.18",
 		"antd-mobile": "2.2.3",
