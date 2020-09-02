@@ -28,11 +28,15 @@ class InputGroup extends React.PureComponent {
     return (
       <Fragment>
         <label>{name}</label>
-        <Group compact>
+        <Group
+          compact
+          className="input-group__container"
+        >
           <Select
             size="default"
             showSearch
             filterOption={true}
+            className="input-group__select"
             value={selectValue}
             style={isOpen ? { width: '100%' } : { width: '33%' }}
             onSelect={onSelect}
@@ -60,6 +64,7 @@ class InputGroup extends React.PureComponent {
             type="number"
             placeholder="Amount"
             style={isOpen ? { display: 'none' } : { width: '67%' }}
+            className="input-grioup__input"
             value={inputValue}
             onChange={this.handleInputChange}
           />

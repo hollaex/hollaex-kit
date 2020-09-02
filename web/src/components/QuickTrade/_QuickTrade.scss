@@ -13,6 +13,8 @@ $input-bottom_line--animation--width: 100px;
 
 $title-icon--height: 10rem;
 
+@import './_InputGroup.scss';
+
 .language_rtl {
 	.quick_trade-wrapper {
 		font-family: inherit;

@@ -1,0 +1,17 @@
+.input-group__container {
+  .ant-input {
+    text-align: right;
+  }
+}
+
+.dark-theme {
+  .input-group__container {
+    .ant-select-selection,
+    .ant-input,
+    .ant-select-arrow
+    {
+      background-color: $dark-quick-trade-container !important;
+      color: $dark-font-main-text-color !important;
+    }
+  }
+}

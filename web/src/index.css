@@ -7852,6 +7852,15 @@ table th {
 foreignObject {
   overflow: visible; }
 
+.input-group__container .ant-input {
+  text-align: right; }
+
+.dark-theme .input-group__container .ant-select-selection,
+.dark-theme .input-group__container .ant-input,
+.dark-theme .input-group__container .ant-select-arrow {
+  background-color: var(--dark-quick-trade-container) !important;
+  color: var(--dark-font-main-text-color) !important; }
+
 .language_rtl .quick_trade-wrapper {
   font-family: inherit; }
   .language_rtl .quick_trade-wrapper .input_block-title {
