@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 
 import { submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
-import { ICONS, BALANCE_ERROR, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+// import { ICONS, BALANCE_ERROR, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
 import {
 	QuickTrade,
@@ -21,7 +21,7 @@ import { changeSymbol } from 'actions/orderbookAction';
 import {
   formatNumber,
 	calculateBalancePrice,
-	formatToCurrency
+	// formatToCurrency
 } from 'utils/currency';
 import { isLoggedIn } from 'utils/token';
 import { unique } from 'utils/data';
@@ -29,7 +29,7 @@ import { getDecimals } from 'utils/utils';
 import {
 	changePair,
 	setNotification,
-	RISKY_ORDER
+	// RISKY_ORDER
 } from 'actions/appActions';
 
 import QuoteResult from './QuoteResult';
