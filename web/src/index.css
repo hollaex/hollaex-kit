@@ -2431,7 +2431,8 @@ table th {
   overflow-y: scroll; }
 
 .quote-review-wrapper {
-  margin: 1rem 0; }
+  margin: 1rem 0;
+  width: 30rem; }
 
 .quote-countdown-wrapper {
   display: flex;
@@ -8080,6 +8081,9 @@ foreignObject {
       background: var(--dark-quick-trade-background);
       color: var(--colors-deactivate-color2); }
 
+.dark-theme .review-block-wrapper {
+  border-top: var(--colors-white) solid 1px; }
+
 .dark-theme svg .quick-trade-1 {
   stroke: var(--dark-icon-color); }
 
@@ -8143,6 +8147,9 @@ foreignObject {
     fill: var(--coin-xlm); }
   .market-list__coin-icons svg .default-icon {
     fill: var(--colors-black) !important; }
+
+.review-block-wrapper {
+  border-top: var(--colors-black) solid 1px; }
 
 .legal-container {
   width: 100%; }

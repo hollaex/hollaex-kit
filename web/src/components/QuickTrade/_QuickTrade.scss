@@ -343,6 +343,10 @@ $title-icon--height: 10rem;
 		}
 	}
 
+	.review-block-wrapper {
+		border-top: $colors-white solid 1px;
+	}
+
 	svg {
 		.quick-trade-1 {
 			stroke: $dark-main-title-icon-color-3;
@@ -440,4 +444,8 @@ $title-icon--height: 10rem;
 			fill: $colors-black !important;
 		}
 	}
+}
+
+.review-block-wrapper {
+	border-top: $colors-black solid 1px;
 }
