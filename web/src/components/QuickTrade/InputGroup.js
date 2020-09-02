@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { oneOfType, array, string, func, number } from 'prop-types';
 import { Select, Input } from 'antd';
 import ReactSVG from 'react-svg';
@@ -26,7 +26,7 @@ class InputGroup extends React.PureComponent {
     const { name, options, inputValue, selectValue, onSelect } = this.props;
 
     return (
-      <Fragment>
+      <div className="py-2">
         <label>{name}</label>
         <Group
           compact
@@ -41,6 +41,7 @@ class InputGroup extends React.PureComponent {
             style={isOpen ? { width: '100%' } : { width: '33%' }}
             onSelect={onSelect}
             onDropdownVisibleChange={this.onDropdownVisibleChange}
+            bordered={false}
           >
             {options.map((symbol, index) => (
               <Option name="selectedPairBase" value={symbol} key={index} className="d-flex">
@@ -64,12 +65,13 @@ class InputGroup extends React.PureComponent {
             type="number"
             placeholder="Amount"
             style={isOpen ? { display: 'none' } : { width: '67%' }}
-            className="input-grioup__input"
+            className="input-group__input"
             value={inputValue}
             onChange={this.handleInputChange}
+            bordered={false}
           />
         </Group>
-      </Fragment>
+      </div>
     );
   }
 }

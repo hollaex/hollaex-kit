@@ -7852,14 +7852,20 @@ table th {
 foreignObject {
   overflow: visible; }
 
-.input-group__container .ant-input {
-  text-align: right; }
+.input-group__container {
+  border-radius: 4px;
+  border: var(--colors-black) solid 1px; }
+  .input-group__container .ant-input {
+    text-align: right; }
 
-.dark-theme .input-group__container .ant-select-selection,
-.dark-theme .input-group__container .ant-input,
-.dark-theme .input-group__container .ant-select-arrow {
-  background-color: var(--dark-quick-trade-container) !important;
-  color: var(--dark-font-main-text-color) !important; }
+.dark-theme .input-group__container {
+  border: var(--colors-white) solid 1px; }
+  .dark-theme .input-group__container .ant-select-selection,
+  .dark-theme .input-group__container .ant-input,
+  .dark-theme .input-group__container .ant-select-arrow,
+  .dark-theme .input-group__container .ant-select-selector {
+    background-color: var(--dark-quick-trade-container) !important;
+    color: var(--dark-font-main-text-color) !important; }
 
 .language_rtl .quick_trade-wrapper {
   font-family: inherit; }
