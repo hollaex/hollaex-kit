@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { getSparklines } from 'actions/chartAction';
+import { isMobile } from 'react-device-detect';
 
 import MarketCards from './components/MarketCards';
 import MarketList from './components/MarketList';
@@ -125,11 +126,14 @@ class AddTradeTab extends Component {
 	};
 
 	handleClick = (pair) => {
+		const { onRouteChange = () => {} } = this.props;
 		let tabs = localStorage.getItem('tabs');
 		tabs = tabs ? JSON.parse(tabs) : [];
 		tabs.push(pair);
 		localStorage.setItem('tabs', JSON.stringify(tabs));
 		this.props.router.push(`/trade/${pair}`);
+    // called to change the active tab in mobile version (temporary)
+    onRouteChange();
 	};
 
   onToggle = () => {
@@ -194,33 +198,37 @@ class AddTradeTab extends Component {
 
 		return (
 			<div className="trade_tabs-container">
-				<div className="mb-5">
-					<div
-						style={{ backgroundImage: `url(${path})` }}
-						className="app-icon d-flex"
-					>
+				{ !isMobile && (
+					<div className="mb-5">
+						<div
+							style={{ backgroundImage: `url(${path})` }}
+							className="app-icon d-flex"
+						>
+						</div>
+						<div className="text-center trade-tab-app-title">
+              {STRINGS.APP_SUB_TITLE.toUpperCase()}
+						</div>
 					</div>
-					<div className="text-center trade-tab-app-title">
-						{STRINGS.APP_SUB_TITLE.toUpperCase()}
-					</div>
-				</div>
+				)}
 				<div className="trade_tabs-content">
-					<div className="d-flex justify-content-end">
-						{constants.broker_enabled
-							? <span className="trade_tabs-link link-separator">
+					{ !isMobile && (
+						<div className="d-flex justify-content-end">
+              {constants.broker_enabled
+                ? <span className="trade_tabs-link link-separator">
 								<Link to={`/quick-trade/${quickPair}`}>
 									{STRINGS.QUICK_TRADE}
 								</Link>
 							</span>
-							: null
-						}
-						<span className="trade_tabs-link link-separator">
+                : null
+              }
+							<span className="trade_tabs-link link-separator">
 							<Link to="/account">{STRINGS.ACCOUNTS.TITLE}</Link>
 						</span>
-						<span className="trade_tabs-link">
+							<span className="trade_tabs-link">
 							<Link to="/wallet">{STRINGS.WALLET_TITLE}</Link>
 						</span>
-					</div>
+						</div>
+					)}
 					<div className="d-flex align-items-center justify-content-between">
 						<div className="w-50">
 							<SearchBox

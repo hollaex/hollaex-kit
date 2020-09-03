@@ -29,6 +29,7 @@ import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import TVChartContainer from './ChartContainer';
 import OrdersWrapper from './components/OrdersWrapper';
+import { AddTradeTabs } from 'containers';
 
 import { Loader, MobileBarTabs } from '../../components';
 
@@ -245,7 +246,16 @@ class Trade extends PureComponent {
 						activeTheme={activeTheme}
 					/>
 				)
-			}
+			},
+      {
+        title: 'Market',
+        content: (
+					<AddTradeTabs
+						router={this.props.router}
+						onRouteChange={() => this.setActiveTab(0)}
+					/>
+        )
+      },
 		];
 		return (
 			<div className={classnames('trade-container', 'd-flex')}>
