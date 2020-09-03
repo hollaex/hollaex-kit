@@ -398,7 +398,7 @@ class PairTabs extends Component {
             selectedToRemove
         } = this.state;
 
-        const { pairs, tickers, location, coins, prices } = this.props;
+        const { pairs, tickers, location, coins } = this.props;
 
         const symbols = ['all', ...this.getSymbols(pairs)];
         
@@ -440,14 +440,11 @@ class PairTabs extends Component {
                             pairs={pairs}
                             tickers={tickers}
                             coins={coins}
-                            prices={prices}
                             selectedTabs={selectedTabs}
-                            activeTabs={activeTabs}
                             selectedTabMenu={selectedAddTab || symbols[0]}
                             searchValue={searchValue}
                             searchResult={searchResult}
                             onAddTabClick={this.onAddTabClick}
-                            onTabChange={this.onTabChange}
                             closeAddTabMenu={this.closeAddTabMenu}
                             handleSearch={this.handleSearch}
                             addTradePairTab={this.addTradePairTab}
