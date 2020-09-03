@@ -3488,6 +3488,13 @@ table th {
     font-size: 1rem;
     width: 13rem; } }
 
+@media screen and (max-width: 575px) {
+  .trade_tabs-container .trade_tab-icons {
+    width: 3.5rem; }
+  .trade_tabs-container .tabs-pair-details {
+    font-size: 1rem;
+    width: 11rem; } }
+
 .toggle-wrapper {
   border-top: 1px solid var(--colors-deactivate-color1);
   border-bottom: 1px solid var(--colors-deactivate-color1); }

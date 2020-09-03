@@ -326,3 +326,15 @@ $trade-tab-active-dark-title: #b7b5cd;
         }
     }
 }
+
+@media screen and (max-width: $bp-xs) {
+    .trade_tabs-container {
+        .trade_tab-icons {
+            width: 3.5rem;
+        }
+        .tabs-pair-details {
+            font-size: 1rem;
+            width: 11rem;
+        }
+    }
+}
