@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { object, string, func, array } from 'prop-types';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 import { Link } from 'react-router';
@@ -195,6 +196,33 @@ class AddTabList extends Component {
             </div>
         );
     }
-};
+}
+
+AddTabList.propTypes = {
+  pairs: object.isRequired,
+  coins: object.isRequired,
+  tickers: object.isRequired,
+  selectedTabs: object,
+  selectedTabMenu: string,
+  searchValue: string,
+  searchResult: object,
+  handleSearch: func,
+  addTradePairTab: func,
+  closeAddTabMenu: func,
+  onAddTabClick: func,
+  symbols: array,
+}
+
+AddTabList.deafultProps = {
+  selectedTabs: {},
+  selectedTabMenu: 'all',
+  searchValue: '',
+  searchResult: {},
+  handleSearch: () => {},
+  addTradePairTab: () => {},
+  closeAddTabMenu: () => {},
+  onAddTabClick: () => {},
+  symbols: ['all'],
+}
 
 export default AddTabList;
