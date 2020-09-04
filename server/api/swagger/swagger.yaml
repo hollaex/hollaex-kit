@@ -612,7 +612,7 @@ paths:
         - hmac
     delete:
       operationId: cancelAllUserOrders
-      description: "Cancel all orders of authenticated user"
+      description: Cancel all orders of authenticated user
       tags:
         - User
       parameters:
@@ -1821,3 +1821,7 @@ definitions:
       status:
         type: string
         description: Status of the order, ex. queued
+  OrdersResponse:
+    type: array
+    items:
+      $ref: "#/definitions/OrderResponse"
