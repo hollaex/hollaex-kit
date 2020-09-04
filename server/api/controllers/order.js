@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerOrders } = require('../../config/logger');
-const { getKitLib, getToolsLib } = require('../../init');
+const { getToolsLib } = require('../../init');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -23,10 +23,7 @@ const createOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order = req.swagger.params.order.value;
 
-	getToolsLib().users.getUserByKitId(user_id)
-		.then((user) => {
-			return getKitLib().createOrderNetwork(user.network_id, order.symbol, order.side, order.size, order.type, order.price);
-		})
+	getToolsLib().order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price)
 		.then((order) => {
 			return res.json(order);
 		})
@@ -36,7 +33,7 @@ const createOrder = (req, res) => {
 				'controllers/order/createOrder error',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
