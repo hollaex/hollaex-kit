@@ -64,7 +64,7 @@ const signUpUser = (req, res) => {
 			let status = err.status || 400;
 			let message = err.message;
 			if (err.name === 'SequelizeValidationError') {
-				message = err.errors[0].message;
+				message = err.errs[0].message;
 			}
 			return res.status(status).json({ message });
 		});
@@ -165,7 +165,7 @@ const loginPost = (req, res) => {
 		ip
 	);
 
-	kitTools.users.getUserValuesByEmail(email.toLowerCase())
+	kitTools.users.getUserByEmail(email.toLowerCase())
 		.then((user) => {
 			loggerUser.verbose(
 				req.uuid,
@@ -272,11 +272,11 @@ const requestResetPassword = (req, res) => {
 			);
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
-		.catch((error) => {
-			if (error.message === USER_NOT_FOUND) {
+		.catch((err) => {
+			if (err.message === USER_NOT_FOUND) {
 				return res.json({ message: `Password request sent to: ${email}` });
 			}
-			return res.status(error.status || 400).json({ message: error.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -290,8 +290,8 @@ const resetPassword = (req, res) => {
 		.then(() => {
 			return res.json({ message: 'Password updated.' });
 		})
-		.catch((error) => {
-			return res.status(error.status || 400).json({ message: 'Invalid code' });
+		.catch((err) => {
+			return res.status(err.status || 400).json({ message: 'Invalid code' });
 		});
 };
 
@@ -299,11 +299,11 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	kitTools.users.getUserValuesByEmail(email)
+	kitTools.users.getUserByEmail(email)
 		.then((user) => res.json(user))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUser', error);
-			return res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUser', err);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -319,9 +319,9 @@ const updateSettings = (req, res) => {
 
 	kitTools.users.updateUserSettings({ email }, data)
 		.then((user) => res.json(user))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/updateSettings', error);
-			return res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -351,7 +351,7 @@ const changePassword = (req, res) => {
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
-	kitTools.users.getUserValuesByEmail(email, false)
+	kitTools.users.getUserByEmail(email, false)
 		.then((user) => {
 			return kitTools.auth.validatePassword(user.password, old_password).then(
 				(isPasswordValid) => {
@@ -366,9 +366,9 @@ const changePassword = (req, res) => {
 			return user.update({ password: new_password });
 		})
 		.then(() => res.json({ message: 'Success' }))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/changePassword', error);
-			return res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/changePassword', err);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -386,7 +386,7 @@ const setUsername = (req, res) => {
 		return res.status(400).json({ message: INVALID_USERNAME });
 	}
 
-	kitTools.users.getUserValuesById(id, false)
+	kitTools.users.getUserByKitId(id, false)
 		.then((user) => {
 			loggerUser.debug(
 				req.uuid,
@@ -411,9 +411,9 @@ const setUsername = (req, res) => {
 			);
 		})
 		.then(() => res.json({ message: 'Username successfully changed' }))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/setUsername', error);
-			return res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/setUsername', err);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -425,11 +425,11 @@ const getUserLogins = (req, res) => {
 		.then((logins) => {
 			return res.json(logins);
 		})
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', error);
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err);
 			return res
-				.status(error.status || 400)
-				.json({ message: error.message });
+				.status(err.status || 400)
+				.json({ message: err.message });
 		});
 };
 
@@ -440,11 +440,11 @@ const affiliationCount = (req, res) => {
 			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', num);
 			return res.json({ count: num });
 		})
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', error);
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err);
 			return res
-				.status(error.status || 400)
-				.json({ message: error.message });
+				.status(err.status || 400)
+				.json({ message: err.message });
 		});
 };
 
@@ -452,13 +452,13 @@ const getUserBalance = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
 	const user_id = req.auth.sub.id;
 
-	findUserBalance(user_id, ['updated_at'].concat(BALANCE_KEYS))
+	kitTools.users.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			res.json(balance);
 		})
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', error);
-			res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err);
+			res.status(err.status || 400).json({ message: err.message });
 		});
 }
 
@@ -475,5 +475,6 @@ module.exports = {
 	changePassword,
 	setUsername,
 	getUserLogins,
-	affiliationCount
+	affiliationCount,
+	getUserBalance
 };
