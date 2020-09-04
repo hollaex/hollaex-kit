@@ -60,6 +60,20 @@ const getAllUserOrdersByEmail = (email, symbol) => {
 		});
 };
 
+const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			return getKitLib().cancelAllOrderNetwork(user.network_id, symbol);
+		});
+};
+
+const cancelAllUserOrdersByEmail = (email, symbol) => {
+	return getUserByEmail(email)
+		.then((user) => {
+			return getKitLib().cancelAllOrderNetwork(user.network_id, symbol);
+		});
+};
+
 module.exports = {
 	createUserOrderByKitId,
 	createUserOrderByEmail,
@@ -68,5 +82,7 @@ module.exports = {
 	cancelUserOrderByKitId,
 	cancelUserOrderByEmail,
 	getAllUserOrdersByKitId,
-	getAllUserOrdersByEmail
+	getAllUserOrdersByEmail,
+	cancelAllUserOrdersByKitId,
+	cancelAllUserOrdersByEmail
 };
