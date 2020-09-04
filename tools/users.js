@@ -11,9 +11,8 @@ const { publisher } = require('./database/redis');
 const { INIT_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
+const { getKit, getSecrets, getCoins, getPairs, getKitLib } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
-const { nodeLib } = require('./utils');
 
 const signUpUser = (email, password, referral) => {
 	if (!getKit().new_user_is_activated) {
@@ -77,7 +76,7 @@ const verifyUser = (email, verificationCode) => {
 			});
 		})
 		.then((user) => {
-			return all([user, nodeLib.createUserNetwork(email)]);
+			return all([user, getKitLib().createUserNetwork(email)]);
 		})
 		.then((data) => {
 			return data;
