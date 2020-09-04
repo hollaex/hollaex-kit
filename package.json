@@ -21,7 +21,9 @@
 		"lodash": "4.17.15",
 		"validator": "13.1.1",
 		"request": "2.83.0",
-		"request-promise": "4.2.2"
+		"request-promise": "4.2.2",
+		"otp": "0.1.3",
+		"bcryptjs": "2.4.3"
 	},
 	"devDependencies": {
 		"eslint": "7.0.0",

@@ -9,12 +9,16 @@ const {
 	INVALID_TOKEN,
 	MISSING_HEADER,
 	DEACTIVATED_USER,
-	INVALID_CAPTCHA
+	INVALID_CAPTCHA,
+	INVALID_OTP_CODE
 } = require('../messages');
 const { SERVER_PATH } = require('../constants');
-const { NODE_ENV, CAPTCHA_ENDPOINT } = require(`${SERVER_PATH}/constants`);
+const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
-const { getKitSecrets } = require('./common');
+const { getKitSecrets, getKitConfig } = require('./common');
+const dbQuery = require('./database').query;
+const otp = require('otp');
+const bcrypt = require('bcryptjs');
 
 /**
  * Express middleware function that checks validity of bearer token.
@@ -126,9 +130,127 @@ const checkCaptcha = (captcha = '', remoteip = '') => {
 		});
 };
 
+const generateOtp = (secret, epoch = 0) => {
+	const options = {
+		name: getKitConfig().api_name,
+		secret,
+		epoch
+	};
+	const totp = otp(options).totp();
+	return totp;
+};
+
+const verifyOtp = (userSecret, userDigits) => {
+	const serverDigits = [generateOtp(userSecret, 30), generateOtp(userSecret), generateOtp(userSecret, -30)];
+	return serverDigits.includes(userDigits);
+};
+
+const hasUserOtpEnabled = (id) => {
+	return dbQuery.findOne('user', {
+		where: { id },
+		attributes: ['otp_enabled']
+	}).then((user) => {
+		return user.otp_enabled;
+	});
+};
+
+const verifyUserOtpCode = (user_id, otp_code) => {
+	return dbQuery.findOne('otp code', {
+		where: {
+			used: true,
+			user_id
+		},
+		attributes: ['id', 'secret'],
+		order: [['updated_at', 'DESC']]
+	})
+		.then((otpCode) => {
+			return verifyOtp(otpCode.secret, otp_code);
+		})
+		.then((validOtp) => {
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+			return true;
+		});
+};
+
+const verifyOtpBeforeAction = (user_id, otp_code) => {
+	return hasUserOtpEnabled(user_id).then((otp_enabled) => {
+		if (otp_enabled) {
+			return verifyUserOtpCode(user_id, otp_code);
+		} else {
+			return true;
+		}
+	});
+};
+
+const checkAdminIp = (whiteListedIps = [], ip = '') => {
+	if (whiteListedIps.length === 0) {
+		return true; // no ip restriction for admin
+	} else {
+		return whiteListedIps.includes(ip);
+	}
+};
+
+const issueToken = (
+	id,
+	email,
+	ip,
+	isAdmin = false,
+	isSupport = false,
+	isSupervisor = false,
+	isKYC = false,
+	isTech = false
+) => {
+	// Default scope is ['user']
+	let scopes = [].concat(BASE_SCOPES);
+
+	if (checkAdminIp(getKitSecrets().admin_whitelist, ip)) {
+		if (isAdmin) {
+			scopes = scopes.concat(ROLES.ADMIN);
+		}
+		if (isSupport) {
+			scopes = scopes.concat(ROLES.SUPPORT);
+		}
+		if (isSupervisor) {
+			scopes = scopes.concat(ROLES.SUPERVISOR);
+		}
+		if (isKYC) {
+			scopes = scopes.concat(ROLES.KYC);
+		}
+		if (isTech) {
+			scopes = scopes.concat(ROLES.TECH);
+		}
+	}
+
+	const token = jwt.sign(
+		{
+			sub: {
+				id,
+				email
+			},
+			scopes,
+			ip,
+			iss: ISSUER
+		},
+		SECRET,
+		{
+			expiresIn: getKitSecrets().security.token_time
+		}
+	);
+	return token;
+};
+
+const validatePassword = (userPassword, inputPassword) => {
+	return bcrypt.compare(inputPassword, userPassword);
+};
+
 module.exports = {
 	verifyBearerToken,
 	userScopeIsValid,
 	userIsDeactivated,
-	checkCaptcha
+	checkCaptcha,
+	verifyOtpBeforeAction,
+	issueToken,
+	validatePassword
 };

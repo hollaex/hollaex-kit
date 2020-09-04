@@ -396,5 +396,6 @@ module.exports = {
 	signUpUser,
 	verifyUser,
 	findVerificationCodeByUserEmail,
-	findUserEmailByVerificationCode
+	findUserEmailByVerificationCode,
+	validatePassword
 };
