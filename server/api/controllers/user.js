@@ -9,7 +9,6 @@ const {
 const { signFreshdesk, signZendesk } = require('../helpers/support');
 const {
 	isValidUsername,
-	findUserByEmail,
 	checkUsernameIsTaken,
 	registerLogin,
 	findUserLogins
@@ -79,7 +78,7 @@ const getVerifyUser = (req, res) => {
 	let promiseQuery;
 
 	if (email && isEmail(email)) {
-		promiseQuery = kitTools.users.findVerificationCodeByUserEmail(email)
+		promiseQuery = kitTools.users.getVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
 				if (resendEmail) {
 					sendEmail(
@@ -97,7 +96,7 @@ const getVerifyUser = (req, res) => {
 				});
 			});
 	} else if (verification_code && isUUID(verification_code)) {
-		promiseQuery = kitTools.users.findUserEmailByVerificationCode(verification_code)
+		promiseQuery = kitTools.users.getUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
 				return res.json({
 					email: userEmail,
@@ -181,7 +180,7 @@ const loginPost = (req, res) => {
 			}
 			return all([
 				user,
-				kitTools.users.validatePassword(user.password, password)
+				kitTools.auth.validatePassword(user.password, password)
 			]);
 		})
 		.then(([user, isPasswordValid]) => {
@@ -259,7 +258,7 @@ const requestResetPassword = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	const captcha = req.swagger.params.captcha.value;
 
-	findUserByEmail(email)
+	kitTools.dbs.getUserValuesByEmail(email)
 		.then((user) => {
 			return all([createResetPasswordCode(user.id), user, kitTools.auth.checkCaptcha(captcha, ip)]);
 		})
@@ -448,6 +447,20 @@ const affiliationCount = (req, res) => {
 				.json({ message: error.message });
 		});
 };
+
+const getUserBalance = (req, res) => {
+	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
+	const user_id = req.auth.sub.id;
+
+	findUserBalance(user_id, ['updated_at'].concat(BALANCE_KEYS))
+		.then((balance) => {
+			res.json(balance);
+		})
+		.catch((error) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', error);
+			res.status(error.status || 400).json({ message: error.message });
+		});
+}
 
 module.exports = {
 	signUpUser,
