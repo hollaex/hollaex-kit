@@ -8,9 +8,6 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0) 
 	getUserByKitId(userKitId)
 		.then((user) => {
 			return getKitLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
-		})
-		.then((order) => {
-			return order;
 		});
 };
 
@@ -18,13 +15,18 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0) => {
 	getUserByEmail(email)
 		.then((user) => {
 			return getKitLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
-		})
-		.then((order) => {
-			return order;
+		});
+};
+
+const getUserOrderByKitId = (userKitId, orderId) => {
+	getUserByKitId(userKitId)
+		.then((user) => {
+			return getKitLib().getOrderNetwork(user.network_id, orderId);
 		});
 };
 
 module.exports = {
 	createUserOrderByKitId,
-	createUserOrderByEmail
+	createUserOrderByEmail,
+	getUserOrderByKitId
 };
