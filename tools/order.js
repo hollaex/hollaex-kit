@@ -5,21 +5,28 @@ const { SERVER_PATH } = require('../constants');
 const { getKit, getSecrets, getCoins, getPairs, getKitLib } = require(`${SERVER_PATH}/init`);
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0) => {
-	getUserByKitId(userKitId)
+	return getUserByKitId(userKitId)
 		.then((user) => {
 			return getKitLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
 		});
 };
 
 const createUserOrderByEmail = (email, symbol, side, size, type, price = 0) => {
-	getUserByEmail(email)
+	return getUserByEmail(email)
 		.then((user) => {
 			return getKitLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
 		});
 };
 
 const getUserOrderByKitId = (userKitId, orderId) => {
-	getUserByKitId(userKitId)
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			return getKitLib().getOrderNetwork(user.network_id, orderId);
+		});
+};
+
+const getUserOrderByEmail = (email, orderId) => {
+	return getUserByEmail(email)
 		.then((user) => {
 			return getKitLib().getOrderNetwork(user.network_id, orderId);
 		});
@@ -28,5 +35,6 @@ const getUserOrderByKitId = (userKitId, orderId) => {
 module.exports = {
 	createUserOrderByKitId,
 	createUserOrderByEmail,
-	getUserOrderByKitId
+	getUserOrderByKitId,
+	getUserOrderByEmail
 };
