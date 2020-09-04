@@ -3,11 +3,10 @@ const crypto = require('crypto');
 const moment = require('moment');
 
 const createRequest = (verb, url, headers, data) => {
-	const body = JSON.stringify(data);
 	const requestObj = {
 		headers,
 		url,
-		body,
+		body: data,
 		json: true
 	};
 	return rp[verb.toLowerCase()](requestObj);
