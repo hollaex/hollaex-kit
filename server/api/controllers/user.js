@@ -127,10 +127,11 @@ const getVerifyUser = (req, res) => {
 
 	promiseQuery
 		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getVerifyUser', err.message);
 			if (err.message === USER_NOT_FOUND) {
 				return res.json({ message: VERIFICATION_EMAIL_MESSAGE });
 			}
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -138,19 +139,7 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	findVerificationCodeByUserEmail(email)
-		.then((verificationCode) => {
-			if (verification_code !== verificationCode) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			}
-			return verificationCode.update({ verified: true }, { returning: true });
-		})
-		.then((verificationCode) => {
-			return findUser({
-				where: { id: verificationCode.user_id },
-				attributes: ['email', 'settings']
-			});
-		})
+	kitTools.auth.verifyUser(email, verification_code)
 		.then((user) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
@@ -161,6 +150,7 @@ const verifyUser = (req, res) => {
 			res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/verifyUser', err.message);
 			res.status(err.status || 400).json({ message: err.message });
 		});
 };
