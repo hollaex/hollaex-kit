@@ -32,9 +32,25 @@ const getUserOrderByEmail = (email, orderId) => {
 		});
 };
 
+const cancelUserOrderByKitId = (userKitId, orderId) => {
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			return getKitLib().cancelOrderNetwork(user.network_id, orderId);
+		});
+};
+
+const cancelUserOrderByEmail = (email, orderId) => {
+	return getUserByEmail(email)
+		.then((user) => {
+			return getKitLib().cancelOrderNetwork(user.network_id, orderId);
+		});
+};
+
 module.exports = {
 	createUserOrderByKitId,
 	createUserOrderByEmail,
 	getUserOrderByKitId,
-	getUserOrderByEmail
+	getUserOrderByEmail,
+	cancelUserOrderByKitId,
+	cancelUserOrderByEmail
 };
