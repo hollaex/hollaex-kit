@@ -52,11 +52,28 @@ const getUserOrder = (req, res) => {
 		});
 };
 
-const cancelUserOrder = () => {
+const cancelUserOrder = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/order/cancelUserOrder auth', req.auth);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/cancelUserOrder order_id',
+		req.swagger.params.order_id.value
+	);
+	const user_id = req.auth.sub.id;
+	const order_id = req.swagger.params.order_id.value;
 
+	getToolsLib().order.cancelUserOrderByKitId(user_id, order_id)
+		.then((order) => {
+			return res.json(order);
+		})
+		.catch((err) => {
+			loggerOrders.error(req.uuid, 'controllers/order/cancelUserOrder error', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
 };
 
 module.exports = {
 	createOrder,
-	getUserOrder
+	getUserOrder,
+	cancelUserOrder
 };
