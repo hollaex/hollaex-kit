@@ -104,7 +104,7 @@ const getVerifyUser = (req, res) => {
 						domain
 					);
 				}
-				res.json({
+				return res.json({
 					email,
 					verification_code: verificationCode.code,
 					message: VERIFICATION_EMAIL_MESSAGE
@@ -113,7 +113,7 @@ const getVerifyUser = (req, res) => {
 	} else if (verification_code && isUUID(verification_code)) {
 		promiseQuery = findUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
-				res.json({
+				return res.json({
 					email: userEmail,
 					verification_code,
 					message: VERIFICATION_EMAIL_MESSAGE
@@ -147,11 +147,11 @@ const verifyUser = (req, res) => {
 				user.settings,
 				domain
 			);
-			res.json({ message: USER_VERIFIED });
+			return res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/verifyUser', err.message);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -274,13 +274,13 @@ const loginPost = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err);
-			res.status(403).json({ message: err.message });
+			return res.status(403).json({ message: err.message });
 		});
 };
 
 const verifyToken = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/verifyToken', req.auth.sub);
-	res.json({ message: 'Valid Token' });
+	return res.json({ message: 'Valid Token' });
 };
 
 const requestResetPassword = (req, res) => {
@@ -301,13 +301,13 @@ const requestResetPassword = (req, res) => {
 				user.settings,
 				domain
 			);
-			res.json({ message: `Password request sent to: ${email}` });
+			return res.json({ message: `Password request sent to: ${email}` });
 		})
 		.catch((error) => {
 			if (error.message === USER_NOT_FOUND) {
 				return res.json({ message: `Password request sent to: ${email}` });
 			}
-			res.status(error.status || 400).json({ message: error.message });
+			return res.status(error.status || 400).json({ message: error.message });
 		});
 };
 
@@ -319,10 +319,10 @@ const resetPassword = (req, res) => {
 
 	setUsedResetPasswordCode(code, new_password)
 		.then(() => {
-			res.json({ message: 'Password updated.' });
+			return res.json({ message: 'Password updated.' });
 		})
 		.catch((error) => {
-			res.status(error.status || 400).json({ message: 'Invalid code' });
+			return res.status(error.status || 400).json({ message: 'Invalid code' });
 		});
 };
 
@@ -334,7 +334,7 @@ const getUser = (req, res) => {
 		.then((user) => res.json(user))
 		.catch((error) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', error);
-			res.status(error.status || 400).json({ message: error.message });
+			return res.status(error.status || 400).json({ message: error.message });
 		});
 };
 
@@ -357,7 +357,7 @@ const updateSettings = (req, res) => {
 		.then((user) => res.json(user))
 		.catch((error) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateSettings', error);
-			res.status(error.status || 400).json({ message: error.message });
+			return res.status(error.status || 400).json({ message: error.message });
 		});
 };
 
@@ -407,7 +407,7 @@ const changePassword = (req, res) => {
 		.then(() => res.json({ message: 'Success' }))
 		.catch((error) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', error);
-			res.status(error.status || 400).json({ message: error.message });
+			return res.status(error.status || 400).json({ message: error.message });
 		});
 };
 
@@ -455,7 +455,7 @@ const setUsername = (req, res) => {
 		.then(() => res.json({ message: 'Username successfully changed' }))
 		.catch((error) => {
 			loggerUser.error(req.uuid, 'controllers/user/setUsername', error);
-			res.status(error.status || 400).json({ message: error.message });
+			return res.status(error.status || 400).json({ message: error.message });
 		});
 };
 
