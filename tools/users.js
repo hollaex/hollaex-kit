@@ -61,26 +61,43 @@ const signUpUser = (email, password, referral) => {
 		});
 };
 
-const verifyUser = (email, verificationCode) => {
-	return findVerificationCodeByUserEmail(email)
-		.then((code) => {
-			if (verificationCode !== code) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			}
-			return verificationCode.update({ verified: true }, { returning: true });
-		})
-		.then((verificationCode) => {
-			return dbQuery.findOne('user', {
-				where: { id: verificationCode.user_id },
-				attributes: ['email', 'settings']
+const verifyUser = (email, code) => {
+	return getModel('sequelize').transaction((transaction) => {
+		return dbQuery.findOne('user',
+			{ where: { email } },
+			{ transaction }
+		)
+			.then((user) => {
+				return all([
+					dbQuery.findOne('verification code',
+						{
+							where: { user_id: user.id },
+							attributes: ['id', 'code', 'verified', 'user_id']
+						},
+						{ transaction }
+					),
+					user
+				]);
+			})
+			.then(([ verificationCode, user ]) => {
+				if (verificationCode.verified) {
+					throw new Error('User is verified');
+				}
+				if (code !== verificationCode.code) {
+					throw new Error(INVALID_VERIFICATION_CODE);
+				}
+				return all([
+					user,
+					getKitLib().createUserNetwork(email),
+					code.update({ verified: true }, { returning: true, transaction })
+				]);
+			})
+			.then(([ user, networkUser ]) => {
+				return user.update({
+					network_id: networkUser.id
+				}, { returning: true, transaction });
 			});
-		})
-		.then((user) => {
-			return all([user, getKitLib().createUserNetwork(email)]);
-		})
-		.then((data) => {
-			return data;
-		});
+	});
 };
 
 const isValidPassword = (value) => {

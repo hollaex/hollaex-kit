@@ -12,10 +12,12 @@ const getModel = (table = '') => {
 		throw new Error('Please give a table name');
 	}
 
-	table = table
-		.split(' ')
-		.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
-		.join('');
+	if (table !== 'sequelize') {
+		table = table
+			.split(' ')
+			.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
+			.join('');
+	}
 
 	const model = require(`${SERVER_PATH}/db/models`)[table];
 	return model;
