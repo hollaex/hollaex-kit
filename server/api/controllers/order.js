@@ -6,17 +6,12 @@ const { getToolsLib } = require('../../init');
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
 		req.uuid,
-		'controllers/order/createOrder/auth',
+		'controllers/order/createOrder auth',
 		req.auth
 	);
 	loggerOrders.verbose(
 		req.uuid,
-		'controllers/order/createOrder/body',
-		req.body
-	);
-	loggerOrders.verbose(
-		req.uuid,
-		'controllers/order/createOrder/swagger',
+		'controllers/order/createOrder order',
 		req.swagger.params.order.value
 	);
 
@@ -37,6 +32,31 @@ const createOrder = (req, res) => {
 		});
 };
 
+const getUserOrder = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/order/getUserOrder auth', req.auth);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/getUserOrder order_id',
+		req.swagger.params.order_id.value
+	);
+	const user_id = req.auth.sub.id;
+	const order_id = req.swagger.params.order_id.value;
+
+	getToolsLib().order.getUserOrderByKitId(user_id, order_id)
+		.then((order) => {
+			return res.json(order);
+		})
+		.catch((err) => {
+			loggerOrders.error(req.uuid, 'controllers/order/getUserOrder error', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const cancelUserOrder = () => {
+
+};
+
 module.exports = {
-	createOrder
+	createOrder,
+	getUserOrder
 };

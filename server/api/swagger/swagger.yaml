@@ -582,6 +582,80 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /user/order:
+    x-swagger-router-controller: order
+    get:
+      operationId: getUserOrder
+      description: Get order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+    delete:
+      operationId: cancelUserOrder
+      description: Cancel order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/balance:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUserBalance
+      description: "Balance of authenticated user"
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BalanceResponse"
+        403:
+          description: "Access Denied"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+      - user
+      - hmac
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
