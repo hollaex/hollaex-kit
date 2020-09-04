@@ -3,41 +3,27 @@
 const { all } = require('bluebird');
 const { isEmail, isUUID } = require('validator');
 const {
-	isValidPassword,
-	validatePassword,
 	createResetPasswordCode,
 	setUsedResetPasswordCode,
-	findVerificationCodeByUserId,
-	findVerificationCodeByUserEmail,
-	findUserEmailByVerificationCode
 } = require('../helpers/auth');
 const { signFreshdesk, signZendesk } = require('../helpers/support');
-const { checkCaptcha, issueToken } = require('../helpers/security');
 const {
-	findUser,
-	getUserValuesByEmail,
 	isValidUsername,
-	updateUserSettings,
 	findUserByEmail,
 	checkUsernameIsTaken,
-	INITIAL_SETTINGS,
 	registerLogin,
 	findUserLogins
 } = require('../helpers/user');
 const {
-	checkAffiliation,
 	getAffiliationCount
 } = require('../helpers/affiliation');
 const { getPagination, getTimeframe } = require('../helpers/general');
-const { verifyOtpBeforeAction } = require('../helpers/otp');
-const { getKit, kitTools } = require('../../init');
+const { kitTools } = require('../../init');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
-const { User } = require('../../db/models');
 const { loggerUser } = require('../../config/logger');
 const {
 	USER_VERIFIED,
-	INVALID_VERIFICATION_CODE,
 	PROVIDE_VALID_EMAIL_CODE,
 	USER_REGISTERED,
 	INVALID_USERNAME,
@@ -93,7 +79,7 @@ const getVerifyUser = (req, res) => {
 	let promiseQuery;
 
 	if (email && isEmail(email)) {
-		promiseQuery = findVerificationCodeByUserEmail(email)
+		promiseQuery = kitTools.users.findVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
 				if (resendEmail) {
 					sendEmail(
@@ -111,7 +97,7 @@ const getVerifyUser = (req, res) => {
 				});
 			});
 	} else if (verification_code && isUUID(verification_code)) {
-		promiseQuery = findUserEmailByVerificationCode(verification_code)
+		promiseQuery = kitTools.users.findUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
 				return res.json({
 					email: userEmail,
@@ -180,23 +166,7 @@ const loginPost = (req, res) => {
 		ip
 	);
 
-	findUser({
-		where: { email: email.toLowerCase() },
-		attributes: [
-			'id',
-			'email',
-			'password',
-			'verification_level',
-			'otp_enabled',
-			'activated',
-			'is_admin',
-			'is_support',
-			'is_supervisor',
-			'is_kyc',
-			'is_tech',
-			'settings'
-		]
-	})
+	kitTools.users.getUserValuesByEmail(email.toLowerCase())
 		.then((user) => {
 			loggerUser.verbose(
 				req.uuid,
@@ -210,8 +180,8 @@ const loginPost = (req, res) => {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 			return all([
-				user.dataValues,
-				validatePassword(user.password, password)
+				user,
+				kitTools.users.validatePassword(user.password, password)
 			]);
 		})
 		.then(([user, isPasswordValid]) => {
@@ -220,15 +190,15 @@ const loginPost = (req, res) => {
 			}
 
 			if (!user.otp_enabled) {
-				return all([user, checkCaptcha(captcha, ip)]);
+				return all([user, kitTools.auth.checkCaptcha(captcha, ip)]);
 			} else {
 				return all([
 					user,
-					verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+					kitTools.auth.verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
-							return all([checkCaptcha(captcha, ip)]);
+							return all([kitTools.auth.checkCaptcha(captcha, ip)]);
 						}
 					})
 				]);
@@ -260,7 +230,7 @@ const loginPost = (req, res) => {
 				}
 			}
 			return res.status(201).json({
-				token: issueToken(
+				token: kitTools.auth.issueToken(
 					user.id,
 					email,
 					ip,
@@ -291,7 +261,7 @@ const requestResetPassword = (req, res) => {
 
 	findUserByEmail(email)
 		.then((user) => {
-			return Promise.all([createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip)]);
+			return all([createResetPasswordCode(user.id), user, kitTools.auth.checkCaptcha(captcha, ip)]);
 		})
 		.then(([code, user]) => {
 			sendEmail(
@@ -313,7 +283,7 @@ const requestResetPassword = (req, res) => {
 
 const resetPassword = (req, res) => {
 	const { code, new_password } = req.swagger.params.data.value;
-	if (!isValidPassword(new_password)) {
+	if (!kitTools.auth.isValidPassword(new_password)) {
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
@@ -330,7 +300,7 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	getUserValuesByEmail(email)
+	kitTools.users.getUserValuesByEmail(email)
 		.then((user) => res.json(user))
 		.catch((error) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', error);
@@ -348,12 +318,7 @@ const updateSettings = (req, res) => {
 	);
 	const data = req.swagger.params.data.value;
 
-	findUser({
-		where: { email },
-		attributes: ['id', 'settings']
-	})
-		.then(updateUserSettings(data))
-		.then(() => getUserValuesByEmail(email))
+	kitTools.users.updateUserSettings({ email }, data)
 		.then((user) => res.json(user))
 		.catch((error) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateSettings', error);
@@ -378,7 +343,7 @@ const changePassword = (req, res) => {
 			'Passwords must be different'
 		);
 		return res.status(400).json({ message: 'Passwords must be different' });
-	} else if (!isValidPassword(new_password)) {
+	} else if (!kitTools.auth.isValidPassword(new_password)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/changePassword',
@@ -387,12 +352,9 @@ const changePassword = (req, res) => {
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
-	findUser({
-		where: { email },
-		attributes: ['id', 'password']
-	})
+	kitTools.users.getUserValuesByEmail(email, false)
 		.then((user) => {
-			return validatePassword(user.password, old_password).then(
+			return kitTools.auth.validatePassword(user.password, old_password).then(
 				(isPasswordValid) => {
 					if (!isPasswordValid) {
 						throw new Error('Invalid password');
@@ -425,10 +387,7 @@ const setUsername = (req, res) => {
 		return res.status(400).json({ message: INVALID_USERNAME });
 	}
 
-	findUser({
-		where: { id },
-		attributes: ['id', 'username', 'settings']
-	})
+	kitTools.users.getUserValuesById(id, false)
 		.then((user) => {
 			loggerUser.debug(
 				req.uuid,
