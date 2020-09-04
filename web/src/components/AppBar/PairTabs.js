@@ -3,10 +3,11 @@ import ReactSVG from 'react-svg';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { SortableContainer } from 'react-sortable-hoc';
+import { browserHistory } from 'react-router';
 
 import Tab from './Tab';
-import AddTabList from './AddTabList';
-import { DEFAULT_TRADING_PAIRS, DEFAULT_COIN_DATA } from 'config/constants';
+import MarketSelector from './MarketSelector';
+import { DEFAULT_TRADING_PAIRS } from 'config/constants';
 import { ICONS } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 
@@ -54,9 +55,6 @@ class PairTabs extends Component {
         activeItems: [],
         activePairTab: '',
         isAddTab: false,
-        selectedAddTab: '',
-        searchValue: '',
-        searchResult: {},
         selectedToRemove: '',
         selectedToOpen: ''
     };
@@ -188,13 +186,7 @@ class PairTabs extends Component {
       }));
     };
 
-    onAddTabClick = pair => {
-        this.setState({ selectedAddTab: pair });
-    };
-
-
-
-  addTradePairTab = pair => {
+    addTradePairTab = pair => {
     const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
     const { pairs, tabCount } = this.props;
     let localTabs = {};
@@ -325,30 +317,7 @@ class PairTabs extends Component {
     };
 
     closeAddTabMenu = () => {
-        this.setState({ isAddTab: false, searchValue: '', searchResult: {} });
-    };
-
-    handleSearch = (_, value) => {
-        const { pairs, coins } = this.props;
-        if (value) {
-            const result = {};
-            const searchValue = value.toLowerCase().trim();
-            Object.keys(pairs).map(key => {
-                const temp = pairs[key];
-                const { fullname } = coins[temp.pair_base.toLowerCase()] || DEFAULT_COIN_DATA;
-                const cashName = fullname ? fullname.toLowerCase() : '';
-                if (key.indexOf(searchValue) !== -1 ||
-                    temp.pair_base.indexOf(searchValue) !== -1 ||
-                    temp.pair_2.indexOf(searchValue) !== -1 ||
-                    cashName.indexOf(searchValue) !== -1) {
-                        result[key] = temp;
-                }
-                return key;
-            });
-            this.setState({ searchResult: { ...result }, searchValue: value });
-        } else {
-            this.setState({ searchResult: {}, searchValue: '' });
-        }
+        this.setState({ isAddTab: false });
     };
 
     setTabsLocal = tabs => {
@@ -376,31 +345,17 @@ class PairTabs extends Component {
         });
     };
 
-    getSymbols = (pairs) => {
-      const obj = {};
-      Object.entries(pairs).forEach(([key, pair]) => {
-        obj[pair.pair_2] = '';
-      });
-
-      return Object.keys(obj).map((key) => key);
-    }
-
     render() {
         const {
             selectedTabs,
             isAddTab,
-            selectedAddTab,
             activePairTab,
             activeTabs,
-            searchValue,
-            searchResult,
             selectedToOpen,
             selectedToRemove
         } = this.state;
 
-        const { pairs, tickers, location, coins } = this.props;
-
-        const symbols = ['all', ...this.getSymbols(pairs)];
+        const { tickers, location, coins } = this.props;
         
         return (
             <div className="d-flex h-100">
@@ -435,18 +390,11 @@ class PairTabs extends Component {
                         <span onClick={this.openAddTabMenu}>{STRINGS.ADD_TRADING_PAIR}</span>
                     : '' }
                     {isAddTab &&
-                        <AddTabList
-                            symbols={symbols}
-                            pairs={pairs}
-                            tickers={tickers}
-                            coins={coins}
-                            selectedTabs={selectedTabs}
-                            selectedTabMenu={selectedAddTab || symbols[0]}
-                            searchValue={searchValue}
-                            searchResult={searchResult}
-                            onAddTabClick={this.onAddTabClick}
+                        <MarketSelector
+                            triggerId="add-tab-list-menu"
+                            wrapperClassName={classnames({ "tab-menu-left": Object.keys(selectedTabs).length <= 1 })}
+                            onViewMarketsClick={() => browserHistory.push('/trade/add/tabs')}
                             closeAddTabMenu={this.closeAddTabMenu}
-                            handleSearch={this.handleSearch}
                             addTradePairTab={this.addTradePairTab}
                         />
                     }

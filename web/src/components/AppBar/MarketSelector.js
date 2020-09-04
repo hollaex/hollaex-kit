@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { object, string, func, array } from 'prop-types';
+import { connect } from 'react-redux';
+import { object, string, func } from 'prop-types';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
-import { Link } from 'react-router';
 
 import { Slider } from 'components';
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
@@ -10,18 +10,47 @@ import STRINGS from 'config/localizedStrings';
 import { donutFormatPercentage, formatToCurrency, calculatePrice } from 'utils/currency';
 import SearchBox from './SearchBox';
 
-class AddTabList extends Component {
+class MarketSelector extends Component {
+
+    constructor(props) {
+        super(props);
+
+        const { pairs } = this.props;
+        const symbols = ['all', ...this.getSymbols(pairs)];
+        const selectedTabMenu = symbols[0];
+
+        this.state = {
+            symbols,
+            selectedTabMenu,
+            searchValue: '',
+            searchResult: {},
+        };
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        const { pairs } = this.props;
+
+        if (
+          JSON.stringify(pairs) !==
+          JSON.stringify(nextProps.pairs)
+        ) {
+          const symbols = ['all', ...this.getSymbols(pairs)];
+          const selectedTabMenu = symbols[0];
+          this.setState({ symbols, selectedTabMenu })
+        }
+    }
 
     componentDidMount() {
         document.addEventListener('click', this.onOutsideClick);
     }
 
-    onOutsideClick = event => {
-        const element = document.getElementById('add-tab-list-menu');
+    onOutsideClick = ({ target }) => {
+      const { triggerId } = this.props;
+        const element = document.getElementById(triggerId);
         if (element &&
-            event.target !== element &&
-            !element.contains(event.target)) {
-                this.props.closeAddTabMenu();
+            target !== element &&
+            !element.contains(target)) {
+                this.closeAddTabMenu();
         }
     };
 
@@ -30,7 +59,8 @@ class AddTabList extends Component {
     }
 
     tabListMenuItems = () => {
-      const { symbols, selectedTabMenu, onAddTabClick } = this.props;
+      const { symbols, selectedTabMenu } = this.state;
+
       return symbols.map((symbol, index) =>
       <div
         key={index}
@@ -39,25 +69,73 @@ class AddTabList extends Component {
           "d-flex",
           "align-items-center",
           { 'active-tab': symbol === selectedTabMenu })}
-        onClick={() => onAddTabClick(symbol)}
+        onClick={() => this.onAddTabClick(symbol)}
       >
         {symbol.toUpperCase()}
       </div>
     )}
 
+    getSymbols = (pairs) => {
+        const obj = {};
+        Object.entries(pairs).forEach(([key, pair]) => {
+            obj[pair.pair_2] = '';
+        });
+
+        return Object.keys(obj).map((key) => key);
+    }
+
+    onAddTabClick = (symbol) => {
+        this.setState({ selectedTabMenu: symbol });
+    }
+
+    handleSearch = (_, value) => {
+        const { pairs, coins } = this.props;
+        if (value) {
+            const result = {};
+            const searchValue = value.toLowerCase().trim();
+            Object.keys(pairs).map(key => {
+                const temp = pairs[key];
+                const { fullname } = coins[temp.pair_base.toLowerCase()] || DEFAULT_COIN_DATA;
+                const cashName = fullname ? fullname.toLowerCase() : '';
+                if (key.indexOf(searchValue) !== -1 ||
+                    temp.pair_base.indexOf(searchValue) !== -1 ||
+                    temp.pair_2.indexOf(searchValue) !== -1 ||
+                    cashName.indexOf(searchValue) !== -1) {
+                    result[key] = temp;
+                }
+                return key;
+            });
+            this.setState({ searchResult: { ...result }, searchValue: value });
+        } else {
+            this.setState({ searchResult: {}, searchValue: '' });
+        }
+    };
+
+    onViewMarketsClick = () => {
+      this.props.onViewMarketsClick();
+      this.closeAddTabMenu()
+    }
+
+    closeAddTabMenu = () => {
+      this.props.closeAddTabMenu()
+      this.setState({
+        searchValue: '',
+        searchResult: {},
+      })
+    }
+
     render() {
         const {
             pairs,
             coins = {},
-            selectedTabs,
-            selectedTabMenu,
-            searchValue,
-            searchResult,
             tickers = {},
-            handleSearch,
             addTradePairTab,
-            closeAddTabMenu,
+            triggerId,
+            wrapperClassName
         } = this.props;
+
+        const { selectedTabMenu, searchValue, searchResult } = this.state;
+        const { handleSearch } = this;
 
         let tabMenu = {};
         if (searchValue) {
@@ -118,10 +196,14 @@ class AddTabList extends Component {
             .slice(0, Math.min(tabMenuLength, 10))
         }
 
-        const selectedtabPairs = Object.keys(selectedTabs);
-
         return (
-            <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": selectedtabPairs.length <= 1 })}>
+            <div
+              id={triggerId}
+              className={classnames(
+                "app-bar-add-tab-menu",
+                wrapperClassName
+              )}
+            >
                 <div className="app-bar-tab-menu">
                     <Slider small>
                       {this.tabListMenuItems()}
@@ -188,9 +270,9 @@ class AddTabList extends Component {
                         </div>
                     }
                     <div className="d-flex justify-content-center app_bar-link blue-link">
-                        <Link to="/trade/add/tabs" onClick={() => closeAddTabMenu()}>
+                        <div onClick={this.onViewMarketsClick}>
                           {`view markets`}
-                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,31 +280,29 @@ class AddTabList extends Component {
     }
 }
 
-AddTabList.propTypes = {
+MarketSelector.propTypes = {
+  triggerId: string.isRequired,
   pairs: object.isRequired,
   coins: object.isRequired,
   tickers: object.isRequired,
-  selectedTabs: object,
-  selectedTabMenu: string,
-  searchValue: string,
-  searchResult: object,
-  handleSearch: func,
+  onViewMarketsClick: func,
   addTradePairTab: func,
   closeAddTabMenu: func,
-  onAddTabClick: func,
-  symbols: array,
+  wrapperClassName: string,
 }
 
-AddTabList.deafultProps = {
-  selectedTabs: {},
-  selectedTabMenu: 'all',
-  searchValue: '',
-  searchResult: {},
-  handleSearch: () => {},
+MarketSelector.defaultProps = {
   addTradePairTab: () => {},
   closeAddTabMenu: () => {},
-  onAddTabClick: () => {},
-  symbols: ['all'],
+  onViewMarketsClick: () => {},
+  wrapperClassName: '',
 }
 
-export default AddTabList;
+
+const mapStateToProps = ({ app: { pairs, tickers, coins } }) => ({
+  pairs,
+  tickers,
+  coins,
+});
+
+export default connect(mapStateToProps)(MarketSelector);

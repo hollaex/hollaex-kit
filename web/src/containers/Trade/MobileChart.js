@@ -6,13 +6,14 @@ import TradeBlock from './components/TradeBlock';
 // import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
 import TradeHistory from './components/TradeHistory';
-import MobileDropdownWrapper from './components/MobileDropdownWrapper';
 import TVChartContainer from './ChartContainer';
+import MarketSelector from 'components/AppBar/MarketSelector';
 
 class MobileChart extends Component {
 	state = {
 		chartWidth: 0,
-		chartHeight: 0
+		chartHeight: 0,
+	  	isMarketSelectorOpen: false,
 	};
 
 	setChartRef = (el) => {
@@ -24,6 +25,19 @@ class MobileChart extends Component {
 		}
 	};
 
+	toggleMarketSelector = () => {
+		this.setState((prevState) => ({
+		  ...prevState,
+          isMarketSelectorOpen: !prevState.isMarketSelectorOpen,
+        }))
+	}
+
+	closeAddTabMenu = () => {
+		this.setState({
+		  isMarketSelectorOpen: false
+		})
+	}
+
 	render() {
 		const {
 			pair,
@@ -32,9 +46,10 @@ class MobileChart extends Component {
 			activeLanguage,
 			goToPair,
 			symbol,
-			constants
+			constants,
+          	goToMarkets
 		} = this.props;
-		const { chartHeight } = this.state;
+		const { chartHeight, isMarketSelectorOpen } = this.state;
 		const pairValue = pair || 'xht-usdt';
 		return (
 			<div
@@ -50,7 +65,32 @@ class MobileChart extends Component {
 					title={
 						<div className="d-flex justify-content-start align-items-center flex-row">
 							{/* {STRINGS.CHART} */}
-							<MobileDropdownWrapper goToPair={goToPair} className="ml-3" />
+							<div
+								className={classnames(
+                                  'app_bar-pair-content',
+                                  'd-flex',
+                                  'justify-content-between',
+                                  'px-2',
+                                )}
+							>
+								<div
+									className="d-flex align-items-center"
+									onClick={this.toggleMarketSelector}
+								>
+									<span className="pt-2">{pair}</span>
+									<i className={classnames('arrow small ml-3', (isMarketSelectorOpen ? 'up' : 'down'))}/>
+								</div>
+							  	{
+							  		isMarketSelectorOpen && (
+										<MarketSelector
+											triggerId="market-selector"
+											onViewMarketsClick={goToMarkets}
+											closeAddTabMenu={this.closeAddTabMenu}
+											addTradePairTab={goToPair}
+										/>
+									)
+								}
+							</div>
 						</div>
 					}
 					setRef={this.setChartRef}

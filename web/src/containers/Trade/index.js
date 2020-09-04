@@ -208,6 +208,7 @@ class Trade extends PureComponent {
 						activeTheme={activeTheme}
 						symbol={symbol}
 						goToPair={this.goToPair}
+						goToMarkets={() => this.setActiveTab(3)}
 						orderLimits={orderLimits}
 					/>
 				)

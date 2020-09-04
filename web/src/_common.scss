@@ -119,6 +119,21 @@ table th {
 		transform: rotate(135deg);
 		-webkit-transform: rotate(135deg);
 	}
+
+	&.up {
+		transform: rotate(-135deg) translate(-1px, 0);
+		-webkit-transform: rotate(-135deg) translate(-1px, 0);
+	}
+
+	&.down {
+		transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
+	}
+
+	&.small {
+		height: 1rem;
+		width: 1rem;
+	}
 }
 
 .caps {

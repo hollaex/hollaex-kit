@@ -1231,6 +1231,33 @@ $app-bar-add-tab-red: #ff0000;
 		fill: #ffffff;
 		stroke-miterlimit: 10;
 	}
+	.app-bar-add-tab-menu {
+		width: 36rem;
+		position: fixed;
+		top: 13.7rem;
+		left: 2.2rem;
+
+		.app-bar-add-tab-content,
+		.app-bar-tab-menu-list,
+		.app-bar-tab-overflow-content {
+			font-size: 1.3rem;
+		}
+
+		.app-bar-tab-menu-list {
+			height: 3.5rem;
+			width: 6rem;
+			max-width: 6rem;
+			/* (40 -6) / 5 */
+		}
+
+		.app-bar-add-tab-icons {
+			width: 1.5rem !important;
+		}
+
+		.app-bar-add-tab-content-list {
+			height: 4rem;
+		}
+	}
 }
 
 .direction_rtl {
