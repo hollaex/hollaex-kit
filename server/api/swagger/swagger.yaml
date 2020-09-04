@@ -552,6 +552,36 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /order:
+    x-swagger-router-controller: order
+    post:
+      description: Create a new order
+      operationId: createOrder
+      tags:
+        - User
+        - order
+      parameters:
+        - in: body
+          name: order
+          required: true
+          description: order data
+          schema:
+            $ref: "#/definitions/OrderRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
@@ -1601,3 +1631,65 @@ definitions:
         type: string
       type:
         type: string
+  OrderRequest:
+    type: object
+    required:
+      - side
+      - size
+      - type
+      - symbol
+    properties:
+      symbol:
+        type: string
+        description: Currency symbol of the order e.g. btc-eur
+      side:
+        type: string
+        enum:
+          - buy
+          - sell
+      size:
+        description: "Size of the orders. Should have 4 decimal, if it has more than 4 it will be rounded to 4 decimal. Min: 0.0001, Max: 21000000"
+        type: number
+        format: double
+      type:
+        type: string
+        enum:
+          - market
+          - limit
+      price:
+        type: number
+        format: double
+        description: Price of the order
+  OrderResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      side:
+        type: string
+        enum:
+          - buy
+          - sell
+      symbol:
+        type: string
+        description: Currency symbol
+      size:
+        type: number
+        format: double
+        description: "Size of the order. Min: 0.0001, Max: 21000000"
+      filled:
+        type: number
+        format: double
+        description: "Size of the order filled. Min: 0.0001, Max: 21000000"
+      type:
+        type: string
+        enum:
+          - market
+          - limit
+      price:
+        type: number
+        format: double
+        description: "Price of the order. Min: 500000, Max: 100000000"
+      status:
+        type: string
+        description: Status of the order, ex. queued
