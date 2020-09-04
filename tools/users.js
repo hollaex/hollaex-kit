@@ -43,7 +43,7 @@ const signUpUser = (email, password, referral) => {
 		})
 		.then((user) => {
 			return all([
-				findVerificationCodeByUserId(user.id),
+				getVerificationCodeByUserId(user.id),
 				user
 			]);
 		})
@@ -133,7 +133,7 @@ const getUserByAffiliationCode = (affiliationCode) => {
 
 const checkAffiliation = (affiliationCode, user_id) => {
 	let discount = 0; // default discount rate in percentage
-	return findUserByAffiliationCode(affiliationCode)
+	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
 			if (getSecrets().plugins.affiliation && getSecrets().plugins.affiliation.discount) {
 				discount = getSecrets().plugins.affiliation.discount;
@@ -381,7 +381,12 @@ const getUserEmailByVerificationCode = (code) => {
 		});
 };
 
-const get
+const getUserBalanceByKitId = (userKitId) => {
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			return getKitLib().getBalanceNetwork(user.network_id);
+		});
+};
 
 module.exports = {
 	getUserByEmail,
@@ -397,6 +402,7 @@ module.exports = {
 	omitUserFields,
 	signUpUser,
 	verifyUser,
-	findVerificationCodeByUserEmail,
-	findUserEmailByVerificationCode
+	getVerificationCodeByUserEmail,
+	getUserEmailByVerificationCode,
+	getUserBalanceByKitId
 };
