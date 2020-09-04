@@ -104,14 +104,14 @@ const isValidPassword = (value) => {
 	return /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(value);
 };
 
-const findVerificationCodeByUserEmail = (email) => {
+const getVerificationCodeByUserEmail = (email) => {
 	return getUserByEmail(email)
 		.then((user) => {
-			return findVerificationCodeByUserId(user.id);
+			return getVerificationCodeByUserId(user.id);
 		});
 };
 
-const findVerificationCodeByUserId = (user_id) => {
+const getVerificationCodeByUserId = (user_id) => {
 	return dbQuery.findOne('verification code', {
 		where: { user_id },
 		attributes: ['id', 'code', 'verified', 'user_id']
@@ -123,7 +123,7 @@ const findVerificationCodeByUserId = (user_id) => {
 	});
 };
 
-const findUserByAffiliationCode = (affiliationCode) => {
+const getUserByAffiliationCode = (affiliationCode) => {
 	const code = affiliationCode.toUpperCase().trim();
 	return dbQuery.finOne('user', {
 		where: { affiliation_code: code },
@@ -360,7 +360,7 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
-const findUserEmailByVerificationCode = (code) => {
+const getUserEmailByVerificationCode = (code) => {
 	return dbQuery.findOne('verification code', {
 		where: { code },
 		attributes: ['id', 'code', 'verified', 'user_id']
@@ -381,6 +381,8 @@ const findUserEmailByVerificationCode = (code) => {
 		});
 };
 
+const get
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -396,6 +398,5 @@ module.exports = {
 	signUpUser,
 	verifyUser,
 	findVerificationCodeByUserEmail,
-	findUserEmailByVerificationCode,
-	validatePassword
+	findUserEmailByVerificationCode
 };
