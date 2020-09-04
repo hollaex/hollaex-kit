@@ -582,6 +582,60 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /user/orders:
+    x-swagger-router-controller: order
+    get:
+      operationId: getAllUserOrders
+      description: List orders of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrdersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+    delete:
+      operationId: cancelAllUserOrders
+      description: "Cancel all orders of authenticated user"
+      tags:
+        - User
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrdersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
   /user/order:
     x-swagger-router-controller: order
     get:
@@ -638,7 +692,7 @@ paths:
     x-swagger-router-controller: user
     get:
       operationId: getUserBalance
-      description: "Balance of authenticated user"
+      description: Balance of authenticated user
       tags:
         - User
       responses:
@@ -647,7 +701,7 @@ paths:
           schema:
             $ref: "#/definitions/BalanceResponse"
         403:
-          description: "Access Denied"
+          description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
