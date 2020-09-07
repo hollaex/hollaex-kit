@@ -19,6 +19,7 @@ const { getKitSecrets, getKitConfig } = require('./common');
 const dbQuery = require('./database').query;
 const otp = require('otp');
 const bcrypt = require('bcryptjs');
+const { getModel } = require('./database/model');
 
 /**
  * Express middleware function that checks validity of bearer token.
@@ -241,8 +242,89 @@ const issueToken = (
 	return token;
 };
 
+/*
+	Function generate the otp secret.
+	Return the otp secret.
+ */
+const generateOtpSecret = () => {
+	const seed = otp({
+		name: getKitConfig().api_name
+	});
+	return seed.secret;
+};
+
+/*
+	Function to find the user otp code, should take one parameter:
+	Param 1(integer): user id
+	Return a promise with the otp code row from the db.
+ */
+const findUserOtp = (user_id) => {
+	return dbQuery.findOne('otp code', {
+		where: {
+			used: false,
+			user_id
+		},
+		attributes: ['id', 'secret']
+	});
+};
+
+/*
+	Function to create a user otp code, should take one parameter:
+	Param 1(integer): user id
+	Return a promise with the otp secret created.
+ */
+const createOtp = (user_id) => {
+	const secret = generateOtpSecret();
+	return getModel('otp code').create({
+		user_id,
+		secret
+	})
+		.then((otpCode) => otpCode.secret);
+};
+
 const validatePassword = (userPassword, inputPassword) => {
 	return bcrypt.compare(inputPassword, userPassword);
+};
+
+/*
+  Function to find update the uset otp_enabled field,
+  should take two parameter:
+
+  Param 1(integer): user id
+  Param 2(boolean): otp_enabled
+
+  Return a promise with the updated user.
+ */
+const updateUserOtpEnabled = (id, otp_enabled = false, transaction) => {
+	return dbQuery.findOne('user', {
+		where: { id },
+		attributes: ['id', 'otp_enabled']
+	}).then((user) => {
+		return user.update(
+			{ otp_enabled },
+			{ fields: ['otp_enabled'], transaction }
+		);
+	});
+};
+
+/*
+	Function to set used to true in the user otp code and update the user and set otp_enabled to true, should take one parameter:
+	Param 1(integer): user id
+	Return a promise with the user updated.
+ */
+const setActiveUserOtp = (user_id) => {
+	return getModel('sequelize').transaction((transaction) => {
+		return findUserOtp(user_id)
+			.then((otp) => {
+				return otp.update(
+					{ used: true },
+					{ fields: ['used'], transaction }
+				);
+			})
+			.then(() => {
+				return updateUserOtpEnabled(user_id, true, transaction);
+			});
+	});
 };
 
 module.exports = {
@@ -251,6 +333,13 @@ module.exports = {
 	userIsDeactivated,
 	checkCaptcha,
 	verifyOtpBeforeAction,
+	verifyOtp,
 	issueToken,
-	validatePassword
+	validatePassword,
+	generateOtp,
+	generateOtpSecret,
+	findUserOtp,
+	setActiveUserOtp,
+	updateUserOtpEnabled,
+	createOtp
 };
