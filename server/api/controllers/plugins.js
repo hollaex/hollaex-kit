@@ -4,8 +4,6 @@ const {
 	REQUIRED_XHT,
 	ROLES
 } = require('../../constants');
-const { Balance, sequelize } = require('../../db/models');
-const { findUser, getUserValuesByEmail, getUserValuesById } = require('../helpers/user');
 const { loggerPlugin } = require('../../config/logger');
 const {
 	addBankAccount,
@@ -48,12 +46,11 @@ const PhoneNumber = require('awesome-phonenumber');
 const { omit, cloneDeep, has } = require('lodash');
 const { all } = require('bluebird');
 const { createAudit } = require('../helpers/audit');
-const { generateOtp } = require('../helpers/otp');
-const kitTools = require('hollaex-tools-lib');
+const toolsLib = require('hollaex-tools-lib');
 
 const getPlugins = (req, res) => {
 	try {
-		const response = kitTools.plugins.getPluginsConfig();
+		const response = toolsLib.plugins.getPluginsConfig();
 		return res.json(response);
 	} catch (err) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/getPlugins err', err);
@@ -76,7 +73,7 @@ const putPlugins = (req, res) => {
 		plugin
 	);
 
-	kitTools.plugins.updatePluginConfig(plugin, data)
+	toolsLib.plugins.updatePluginConfig(plugin, data)
 		.then((data) => {
 			res.json(data);
 		})
@@ -101,7 +98,7 @@ const enablePlugin = (req, res) => {
 		plugin
 	);
 
-	kitTools.plugins.enablePlugin(plugin)
+	toolsLib.plugins.enablePlugin(plugin)
 		.then((data) => {
 			res.json(data);
 		})
@@ -126,7 +123,7 @@ const disablePlugin = (req, res) => {
 		plugin
 	);
 
-	kitTools.plugins.disablePlugin(plugin)
+	toolsLib.plugins.disablePlugin(plugin)
 		.then((data) => {
 			res.json(data);
 		})
@@ -138,7 +135,7 @@ const disablePlugin = (req, res) => {
 
 // XHT_FEE
 const activateXhtFee = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('xht_fee')) {
+	if (!toolsLib.plugins.pluginIsEnabled('xht_fee')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/activateXhtFee', PLUGIN_NOT_ENABLED('xht_fee'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('xht_fee') });
 	}
@@ -152,11 +149,11 @@ const activateXhtFee = (req, res) => {
 		email
 	);
 
-	findUser({
+	toolsLib.database.query.findOne('user', {
 		where: { id },
 		include: [
 			{
-				model: Balance,
+				model: toolsLib.database.model.getModel('balance'),
 				as: 'balance',
 				attributes: {
 					exclude: ['id', 'user_id', 'created_at']
@@ -184,7 +181,7 @@ const activateXhtFee = (req, res) => {
 
 // BANK
 const postBankUser = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('bank')) {
+	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/postBankUser', PLUGIN_NOT_ENABLED('bank'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
 	}
@@ -198,11 +195,9 @@ const postBankUser = (req, res) => {
 		email
 	);
 
-	findUser({
-		where: { email }
-	})
+	toolsLib.users.getUserValuesByEmail(email, false)
 		.then(addBankAccount(bank_account))
-		.then(() => getUserValuesByEmail(email))
+		.then(() => toolsLib.users.getUserValuesByEmail(email))
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankUser err', err);
@@ -211,7 +206,7 @@ const postBankUser = (req, res) => {
 };
 
 const postBankAdmin = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('bank')) {
+	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/postBankAdmin', PLUGIN_NOT_ENABLED('bank'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
 	}
@@ -232,13 +227,9 @@ const postBankAdmin = (req, res) => {
 		bank_account
 	);
 
-	findUser({
-		where: {
-			id
-		}
-	})
+	toolsLib.users.getUserValuesById(id, false)
 		.then(adminAddUserBanks(bank_account))
-		.then(() => getUserValuesById(id))
+		.then(() => toolsLib.users.getUserValuesById(id))
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankAdmin err', err);
@@ -247,7 +238,7 @@ const postBankAdmin = (req, res) => {
 };
 
 const bankVerify = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('bank')) {
+	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/bankVerify', PLUGIN_NOT_ENABLED('bank'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
 	}
@@ -269,12 +260,7 @@ const bankVerify = (req, res) => {
 		bank_id
 	);
 
-	findUser({
-		where: {
-			id: user_id
-		},
-		attributes: ['id', 'bank_account']
-	})
+	toolsLib.users.getUserValuesById(user_id, false)
 		.then((user) => {
 			if (!user) throw new Error(USER_NOT_FOUND);
 			return approveBankAccount(bank_id)(user);
@@ -296,7 +282,7 @@ const bankVerify = (req, res) => {
 };
 
 const bankRevoke = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('bank')) {
+	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/bankRevoke', PLUGIN_NOT_ENABLED('bank'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
 	}
@@ -321,12 +307,7 @@ const bankRevoke = (req, res) => {
 		message
 	);
 
-	findUser({
-		where: {
-			id: user_id
-		},
-		attributes: ['id', 'bank_account', 'bank_account', 'settings']
-	})
+	toolsLib.users.getUserValuesById(user_id, false)
 		.then((user) => {
 			if (!user) throw new Error(USER_NOT_FOUND);
 			return rejectBankAccount(bank_id)(user);
@@ -356,7 +337,7 @@ const bankRevoke = (req, res) => {
 };
 
 const putKycUser = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('kyc')) {
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/putKycUser', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
 	}
@@ -370,30 +351,9 @@ const putKycUser = (req, res) => {
 	const newData = req.swagger.params.data.value;
 	const { email } = req.auth.sub;
 
-	findUser({
-		where: { email },
-		attributes: {
-			exclude: [
-				'password',
-				'created_at',
-				'updated_at',
-				'email',
-				'balance',
-				'crypto_wallet',
-				'verification_level',
-				'otp_enabled',
-				'is_admin',
-				'is_supervisor',
-				'is_support',
-				'is_kyc',
-				'is_tech',
-				'flagged',
-				'affiliation_code'
-			]
-		}
-	})
+	toolsLib.users.getUserValuesByEmail(email, false)
 		.then(updateUserData(newData, ROLES.USER))
-		.then(() => getUserValuesByEmail(email))
+		.then(() => toolsLib.users.getUserValuesByEmail(email))
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/putKycUser err', err);
@@ -402,7 +362,7 @@ const putKycUser = (req, res) => {
 };
 
 const putKycAdmin = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('kyc')) {
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/putKycAdmin', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
 	}
@@ -449,11 +409,11 @@ const putKycAdmin = (req, res) => {
 		}
 	}
 
-	sequelize
+	toolsLib.database.model.getModel('sequelize')
 		.transaction((transaction) => {
 			const options = { transaction, returning: true };
 			let prevUserData = {}; // for audit
-			return findUser({ where: { id } })
+			return toolsLib.users.getUserValuesById(id, false)
 				.then((user) => {
 					prevUserData = cloneDeep(user.dataValues);
 					loggerPlugin.debug(
@@ -524,7 +484,7 @@ const putKycAdmin = (req, res) => {
 };
 
 const kycUserUpload = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('kyc')) {
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
 	}
@@ -571,15 +531,7 @@ const kycUserUpload = (req, res) => {
 
 	const ts = Date.now();
 
-	findUser({
-		where: {
-			id
-		},
-		attributes: [
-			'id',
-			'id_data'
-		]
-	})
+	toolsLib.users.getUserValuesById(id, false)
 		.then((user) => {
 			let { status } = user.dataValues.id_data || 0;
 			if (status === 3) {
@@ -630,7 +582,7 @@ const kycUserUpload = (req, res) => {
 };
 
 const kycAdminUpload = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('kyc')) {
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
 	}
@@ -693,14 +645,7 @@ const kycAdminUpload = (req, res) => {
 
 	const ts = Date.now();
 
-	findUser({
-		where: {
-			id: user_id
-		},
-		attributes: [
-			'id'
-		]
-	})
+	toolsLib.users.getUserValuesById(user_id, false)
 		.then((user) => getImagesData(user.id, 'admin'))
 		.then((data) => {
 			return all([
@@ -743,14 +688,13 @@ const kycAdminUpload = (req, res) => {
 			return res.json({ message: 'Success', data });
 		})
 		.catch((err) => {
-			console.log(err);
 			loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload err', err.message);
 			return res.status(400).json({ message: err.message });
 		});
 };
 
 const getKycId = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('kyc')) {
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/getKycId', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
 	}
@@ -786,7 +730,7 @@ const getKycId = (req, res) => {
 };
 
 const kycIdVerify = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('kyc')) {
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdVerify', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
 	}
@@ -805,12 +749,7 @@ const kycIdVerify = (req, res) => {
 		user_id
 	);
 
-	findUser({
-		where: {
-			id: user_id
-		},
-		attributes: ['id', 'id_data']
-	})
+	toolsLib.users.getUserValuesById(user_id, false)
 		.then((user) => {
 			return approveDocuments(user);
 		})
@@ -826,7 +765,7 @@ const kycIdVerify = (req, res) => {
 };
 
 const kycIdRevoke = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('kyc')) {
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdRevoke', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
 	}
@@ -848,12 +787,7 @@ const kycIdRevoke = (req, res) => {
 		message
 	);
 
-	findUser({
-		where: {
-			id: user_id
-		},
-		attributes: ['id', 'id_data', 'email', 'settings']
-	})
+	toolsLib.users.getUserValuesById(user_id, false)
 		.then((user) => {
 			return revokeDocuments(user, message);
 		})
@@ -877,7 +811,7 @@ const kycIdRevoke = (req, res) => {
 };
 
 const postAnnouncement = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('announcement')) {
+	if (!toolsLib.plugins.pluginIsEnabled('announcement')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/postAnnouncement', PLUGIN_NOT_ENABLED('announcement'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('announcement') });
 	}
@@ -913,7 +847,7 @@ const postAnnouncement = (req, res) => {
 };
 
 const deleteAnnouncement = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('announcement')) {
+	if (!toolsLib.plugins.pluginIsEnabled('announcement')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/deleteAnnouncement', PLUGIN_NOT_ENABLED('announcement'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('announcement') });
 	}
@@ -954,7 +888,7 @@ const deleteAnnouncement = (req, res) => {
 };
 
 const getAnnouncements = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('announcement')) {
+	if (!toolsLib.plugins.pluginIsEnabled('announcement')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/getAnnouncements', PLUGIN_NOT_ENABLED('announcement'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('announcement') });
 	}
@@ -994,7 +928,7 @@ const getAnnouncements = (req, res) => {
 };
 
 const sendSmsVerify = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('sms')) {
+	if (!toolsLib.plugins.pluginIsEnabled('sms')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/sendSmsVerify', PLUGIN_NOT_ENABLED('sms'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('sms') });
 	}
@@ -1026,8 +960,8 @@ const sendSmsVerify = (req, res) => {
 	}
 
 	const phone = phoneNumber.getNumber();
-	const code = generateOtp();
-	const SMS = languageFile(kitTools.getKitConfig().defaults.language).SMS;
+	const code = toolsLib.auth.generateOtp();
+	const SMS = languageFile(toolsLib.getKitConfig().defaults.language).SMS;
 
 	sendSMS(phone, {
 		message: SMS.verificationCode(code)
@@ -1049,7 +983,7 @@ const sendSmsVerify = (req, res) => {
 };
 
 const checkSmsVerify = (req, res) => {
-	if (!kitTools.plugins.pluginIsEnabled('sms')) {
+	if (!toolsLib.plugins.pluginIsEnabled('sms')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/checkSmsVerify', PLUGIN_NOT_ENABLED('sms'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('sms') });
 	}
@@ -1086,9 +1020,7 @@ const checkSmsVerify = (req, res) => {
 
 	checkSMSCode(id, formattedNumber, code)
 		.then(() => {
-			return findUser({
-				where: { id }, attributes: ['id', 'phone_number']
-			});
+			return 	toolsLib.users.getUserValuesById(id, false);
 		})
 		.then((user) => {
 			return updateUserPhoneNumber(user, phone);

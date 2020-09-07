@@ -1,8 +1,6 @@
 'use strict';
 
 const crypto = require('crypto');
-const { VerificationImage, Announcement, sequelize, Status } = require('../../db/models');
-const { findUser } = require('../helpers/user');
 const { pick, each, differenceWith, isEqual } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const {
@@ -33,7 +31,7 @@ const { all } = require('bluebird');
 const { convertSequelizeCountAndRows } = require('./general');
 const PhoneNumber = require('awesome-phonenumber');
 const redis = require('../../db/redis').duplicate();
-const kitTools = require('hollaex-tools-lib');
+const toolsLib = require('hollaex-tools-lib');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -253,9 +251,9 @@ const storeFilesDataOnDb = (
 	back = '',
 	proof_of_residency = ''
 ) => {
-	return sequelize.transaction((transaction) => {
+	return toolsLib.database.model.getModel('sequelize').transaction((transaction) => {
 		const options = { transaction };
-		return VerificationImage.findOrCreate(
+		return toolsLib.database.model.getModel('verification image').findOrCreate(
 			{
 				where: { user_id },
 				defaults: {
@@ -279,7 +277,7 @@ const storeFilesDataOnDb = (
 				}
 			})
 			.then(() => {
-				return findUser({
+				return toolsLib.database.query.findOne('user', {
 					where: { id: user_id },
 					attributes: ['id', 'id_data'],
 					transaction
@@ -295,7 +293,7 @@ const storeFilesDataOnDb = (
 };
 
 const S3_BUCKET_NAME = () => {
-	return (kitTools.getKitSecrets().plugins.s3.id_docs_bucket).split(':')[0];
+	return (toolsLib.getKitSecrets().plugins.s3.id_docs_bucket).split(':')[0];
 };
 
 const generateBuckets = (bucketsString = '') => {
@@ -317,10 +315,10 @@ const generateBuckets = (bucketsString = '') => {
 const s3Credentials = () => {
 	return {
 		auth: {
-			accessKeyId: kitTools.getKitSecrets().plugins.s3.key,
-			secretAccessKey: kitTools.getKitSecrets().plugins.s3.secret
+			accessKeyId: toolsLib.getKitSecrets().plugins.s3.key,
+			secretAccessKey: toolsLib.getKitSecrets().plugins.s3.secret
 		},
-		buckets: generateBuckets(kitTools.getKitSecrets().plugins.s3.id_docs_bucket)
+		buckets: generateBuckets(toolsLib.getKitSecrets().plugins.s3.id_docs_bucket)
 	};
 };
 
@@ -348,7 +346,7 @@ const uploadFile = (name, file) => {
 };
 
 const getImagesData = (user_id, type = undefined) => {
-	return VerificationImage.findOne({
+	return toolsLib.database.query.findOne('verification image', {
 		where: { user_id },
 		order: [['created_at', 'DESC']],
 		attributes: ['front', 'back', 'proof_of_residency']
@@ -395,9 +393,9 @@ const getLinks = ({ front, back, proof_of_residency }) => {
 };
 
 const findUserImages = (where) => {
-	return findUser({ where, attributes: ['id', 'id_data'] })
+	return toolsLib.query.findOne('user', { where, attributes: ['id', 'id_data'] })
 		.then((user) => {
-			return Promise.all([
+			return all([
 				user.dataValues,
 				getImagesData(user.id).then(getLinks)
 			]);
@@ -423,7 +421,7 @@ const approveDocuments = (user) => {
 };
 
 const revokeDocuments = (user, message = '') => {
-	return sequelize
+	return toolsLib.database.model.getModel('sequelize')
 		.transaction((transaction) => {
 			return all([
 				updateUserData(
@@ -436,7 +434,7 @@ const revokeDocuments = (user, message = '') => {
 					},
 					ROLES.SUPPORT
 				)(user, { transaction, returning: true }),
-				VerificationImage.destroy({
+				toolsLib.database.model.getModel('verification image').destroy({
 					where: { user_id: user.id },
 					transaction
 				})
@@ -448,7 +446,7 @@ const revokeDocuments = (user, message = '') => {
 };
 
 const createAnnouncement = (created_by, title, message, type) => {
-	return Announcement.create({
+	return toolsLib.database.model.getModel('announcement').create({
 		created_by,
 		title,
 		message,
@@ -457,11 +455,11 @@ const createAnnouncement = (created_by, title, message, type) => {
 };
 
 const findAnnouncement = (id) => {
-	return Announcement.findOne({ where: { id }});
+	return toolsLib.database.query.findOne('announcement', { where: { id }});
 };
 
 const destroyAnnouncement = (id) => {
-	return Announcement.destroy({ where: { id } });
+	return toolsLib.database.model.getModel('announcement').destroy({ where: { id } });
 };
 
 const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
@@ -479,15 +477,15 @@ const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
 		...pagination
 	};
 	if (timeframe) query.where.created_at = timeframe;
-	return Announcement.findAndCountAll(query)
+	return toolsLib.database.model.getModel('announcement').findAndCountAll(query)
 		.then(convertSequelizeCountAndRows);
 };
 
 const snsCredentials = () => {
 	return {
-		accessKeyId: kitTools.getKitSecrets().plugins.sns.key,
-		secretAccessKey: kitTools.getKitSecrets().plugins.sns.secret,
-		region: kitTools.getKitSecrets().plugins.sns.region
+		accessKeyId: toolsLib.getKitSecrets().plugins.sns.key,
+		secretAccessKey: toolsLib.getKitSecrets().plugins.sns.secret,
+		region: toolsLib.getKitSecrets().plugins.sns.region
 	};
 };
 
@@ -569,7 +567,7 @@ const deleteSMSCode = (user_id) => {
 };
 
 const updatePluginConfiguration = (key, data) => {
-	return Status.findOne({
+	return toolsLib.database.query.findOne('status', {
 		attributes: ['id', 'kit']
 	})
 		.then((status) => {
