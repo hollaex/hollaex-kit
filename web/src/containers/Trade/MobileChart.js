@@ -84,6 +84,7 @@ class MobileChart extends Component {
 							  		isMarketSelectorOpen && (
 										<MarketSelector
 											triggerId="market-selector"
+											wrapperClassName="mobile-chart__market-selector-wrapper"
 											onViewMarketsClick={goToMarkets}
 											closeAddTabMenu={this.closeAddTabMenu}
 											addTradePairTab={goToPair}

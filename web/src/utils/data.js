@@ -13,7 +13,7 @@ export const findPath = (connections = [], start, end = BASE_CURRENCY, source_ke
   const paths = [];
 
   connectionsFromStart.forEach(intermediaryNode => {
-    const connectionsFromIntermediaryToEnd = findPath(intermediaryNode[target_key], end, connections);
+    const connectionsFromIntermediaryToEnd = findPath(connections, intermediaryNode[target_key], end);
     connectionsFromIntermediaryToEnd.forEach( intermediaryConnections => {
       paths.push([intermediaryNode, ...intermediaryConnections])
     })

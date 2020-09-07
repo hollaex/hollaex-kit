@@ -205,7 +205,7 @@ const AssetsBlock = ({
 											/>
 										</div>
                   ) : (
-										<div className="d-flex justify-content-center">
+										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
 												text={STRINGS.GENERATE_WALLET}
 												status="information"

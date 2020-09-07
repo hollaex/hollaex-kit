@@ -27,7 +27,7 @@ class InputGroup extends React.PureComponent {
 
     return (
       <div className="py-2">
-        <label className="bold">{name}</label>
+        <label className="bold caps-first">{name}</label>
         <Group
           compact
           className="input-group__container"
@@ -56,9 +56,9 @@ class InputGroup extends React.PureComponent {
                     }
                     wrapperClassName="market-list__coin-icons"
                   />
-                  <span>
-										{symbol.toUpperCase()}
-									</span>
+                  <span className="pl-1">
+                    {symbol.toUpperCase()}
+                  </span>
                 </div>
               </Option>
             ))}

@@ -193,6 +193,9 @@ table th {
 .caps {
   text-transform: uppercase; }
 
+.caps-first {
+  text-transform: capitalize; }
+
 .d-inline {
   display: inline; }
 
@@ -2434,6 +2437,16 @@ table th {
 
 .dark-theme .quick-trade-tab {
   border: 1px solid grey; }
+
+.trade-tab__market-selector {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.75rem;
+  font-family: "Raleway Extrabold"; }
+
+.mobile-chart__market-selector-wrapper {
+  font-family: "Open Sans" !important;
+  font-weight: normal; }
 
 .quote-container {
   background-color: var(--quick-trade-background);
@@ -8153,35 +8166,38 @@ foreignObject {
 
 .market-list__coin-icons {
   width: 2rem;
-  margin: .3rem .3rem 0 .3rem; }
-  .market-list__coin-icons svg .btc0, .market-list__coin-icons svg .btc1 {
-    fill: var(--coin-btc); }
-  .market-list__coin-icons svg .eth0, .market-list__coin-icons svg .eth1 {
-    fill: var(--coin-eth); }
-  .market-list__coin-icons svg .bch-icon {
-    fill: var(--coin-bch); }
-  .market-list__coin-icons svg .xrp-icon {
-    fill: var(--coin-xrp); }
-  .market-list__coin-icons svg .xmr-icon {
-    fill: var(--coin-xmr); }
-  .market-list__coin-icons svg .ada-icon {
-    fill: var(--coin-ada); }
-  .market-list__coin-icons svg .bnb-icon {
-    fill: var(--coin-bnb); }
-  .market-list__coin-icons svg .dai-icon {
-    fill: var(--coin-dai); }
-  .market-list__coin-icons svg .eos-icon {
-    fill: var(--coin-eos); }
-  .market-list__coin-icons svg .ltc-icon {
-    fill: var(--coin-ltc); }
-  .market-list__coin-icons svg .trx-icon {
-    fill: var(--coin-trx); }
-  .market-list__coin-icons svg .tusd-icon {
-    fill: var(--coin-tusd); }
-  .market-list__coin-icons svg .xlm-icon {
-    fill: var(--coin-xlm); }
-  .market-list__coin-icons svg .default-icon {
-    fill: var(--colors-black) !important; }
+  height: 100%; }
+  .market-list__coin-icons svg {
+    margin: 0 auto;
+    display: block; }
+    .market-list__coin-icons svg .btc0, .market-list__coin-icons svg .btc1 {
+      fill: var(--coin-btc); }
+    .market-list__coin-icons svg .eth0, .market-list__coin-icons svg .eth1 {
+      fill: var(--coin-eth); }
+    .market-list__coin-icons svg .bch-icon {
+      fill: var(--coin-bch); }
+    .market-list__coin-icons svg .xrp-icon {
+      fill: var(--coin-xrp); }
+    .market-list__coin-icons svg .xmr-icon {
+      fill: var(--coin-xmr); }
+    .market-list__coin-icons svg .ada-icon {
+      fill: var(--coin-ada); }
+    .market-list__coin-icons svg .bnb-icon {
+      fill: var(--coin-bnb); }
+    .market-list__coin-icons svg .dai-icon {
+      fill: var(--coin-dai); }
+    .market-list__coin-icons svg .eos-icon {
+      fill: var(--coin-eos); }
+    .market-list__coin-icons svg .ltc-icon {
+      fill: var(--coin-ltc); }
+    .market-list__coin-icons svg .trx-icon {
+      fill: var(--coin-trx); }
+    .market-list__coin-icons svg .tusd-icon {
+      fill: var(--coin-tusd); }
+    .market-list__coin-icons svg .xlm-icon {
+      fill: var(--coin-xlm); }
+    .market-list__coin-icons svg .default-icon {
+      fill: var(--colors-black) !important; }
 
 .review-block-wrapper {
   border-top: var(--colors-black) solid 1px; }

@@ -227,6 +227,7 @@ class Trade extends PureComponent {
 						onRiskyTrade={this.onRiskyTrade}
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
+						goToMarkets={() => this.setActiveTab(3)}
 						pair={pair}
 						setPriceRef={this.setPriceRef}
 						setSizeRef={this.setSizeRef}

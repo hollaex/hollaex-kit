@@ -116,7 +116,7 @@ class Wallet extends Component {
 			return <div />;
 		}
 		const { symbol = '' } = coins[BASE_CURRENCY] || {};
-		const hasScrollbar = sections.length > 5;
+		const hasScrollbar = sections.length > 7;
 
 		return (
 			<div className="wallet-wrapper">
@@ -133,7 +133,7 @@ class Wallet extends Component {
 				<ControlledScrollbar
 					autoHideArrows={true}
 					autoHeight={true}
-					autoHeightMax={hasScrollbar ? 175 : 350}
+					autoHeightMax={hasScrollbar ? 245 : 350}
 				>
 					<Accordion sections={sections} />
 					<div className="d-flex justify-content-center wallet_link blue-link">
