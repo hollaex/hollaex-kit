@@ -1,36 +1,19 @@
 'use strict';
 
-const {
-	createOtp,
-	findUserOtp,
-	verifyOtp,
-	setActiveUserOtp,
-	verifyOtpBeforeAction,
-	hasUserOtpEnabled,
-	updateUserOtpEnabled
-} = require('../helpers/otp');
 const { INVALID_OTP_CODE } = require('../../messages');
 const { loggerOtp } = require('../../config/logger');
-
-const checkOtp = (user_id) => {
-	return hasUserOtpEnabled(user_id).then((otp_enabled) => {
-		if (otp_enabled) {
-			throw new Error('OTP is already enabled');
-		}
-		return findUserOtp(user_id);
-	});
-};
+const { getToolsLib } = require('../../init');
 
 const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
 	const { id } = req.auth.sub;
 
-	checkOtp(id)
+	getToolsLib.auth.checkOtp(id)
 		.then((otpCode) => {
 			if (otpCode) {
 				return otpCode.secret;
 			}
-			return createOtp(id);
+			return getToolsLib.auth.createOtp(id);
 		})
 		.then((secret) => {
 			loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', secret);
@@ -52,16 +35,16 @@ const activateOtp = (req, res) => {
 		req.swagger.params.data
 	);
 
-	checkOtp(id)
+	getToolsLib.auth.checkOtp(id)
 		.then((otpCode) => {
-			return verifyOtp(otpCode.secret, code);
+			return getToolsLib.auth.verifyOtp(otpCode.secret, code);
 		})
 		.then((validOtp) => {
 			loggerOtp.verbose(req.uuid, 'controllers/otp/activateOtp', validOtp);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
-			return setActiveUserOtp(id);
+			return getToolsLib.auth.setActiveUserOtp(id);
 		})
 		.then((user) => {
 			loggerOtp.verbose(
@@ -87,15 +70,15 @@ const deactivateOtp = (req, res) => {
 		req.swagger.params.data
 	);
 
-	hasUserOtpEnabled(id)
+	getToolsLib.auth.hasUserOtpEnabled(id)
 		.then((otp_enabled) => {
 			if (!otp_enabled) {
 				throw new Error('OTP is not enabled');
 			}
-			return verifyOtpBeforeAction(id, code);
+			return getToolsLib.auth.verifyOtpBeforeAction(id, code);
 		})
 		.then(() => {
-			return updateUserOtpEnabled(id, false);
+			return getToolsLib.auth.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
 			res.json({ message: 'OTP disabled' });
