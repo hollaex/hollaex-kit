@@ -1825,3 +1825,18 @@ definitions:
     type: array
     items:
       $ref: "#/definitions/OrderResponse"
+  BalanceResponse:
+    type: object
+    properties:
+      btc_balance:
+        type: number
+        format: double
+      btc_available:
+        type: number
+        format: double
+      btc_pending:
+        type: number
+        format: double
+      updated_at:
+        type: string
+        format: date-time
