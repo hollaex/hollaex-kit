@@ -7923,6 +7923,41 @@ foreignObject {
     background-color: var(--dark-quick-trade-container) !important;
     color: var(--dark-font-main-text-color) !important; }
 
+.input-group__coin-icons {
+  width: 2rem;
+  height: 100%; }
+  .input-group__coin-icons svg {
+    margin: 0 auto;
+    display: block; }
+    .input-group__coin-icons svg .btc0, .input-group__coin-icons svg .btc1 {
+      fill: var(--coin-btc); }
+    .input-group__coin-icons svg .eth0, .input-group__coin-icons svg .eth1 {
+      fill: var(--coin-eth); }
+    .input-group__coin-icons svg .bch-icon {
+      fill: var(--coin-bch); }
+    .input-group__coin-icons svg .xrp-icon {
+      fill: var(--coin-xrp); }
+    .input-group__coin-icons svg .xmr-icon {
+      fill: var(--coin-xmr); }
+    .input-group__coin-icons svg .ada-icon {
+      fill: var(--coin-ada); }
+    .input-group__coin-icons svg .bnb-icon {
+      fill: var(--coin-bnb); }
+    .input-group__coin-icons svg .dai-icon {
+      fill: var(--coin-dai); }
+    .input-group__coin-icons svg .eos-icon {
+      fill: var(--coin-eos); }
+    .input-group__coin-icons svg .ltc-icon {
+      fill: var(--coin-ltc); }
+    .input-group__coin-icons svg .trx-icon {
+      fill: var(--coin-trx); }
+    .input-group__coin-icons svg .tusd-icon {
+      fill: var(--coin-tusd); }
+    .input-group__coin-icons svg .xlm-icon {
+      fill: var(--coin-xlm); }
+    .input-group__coin-icons svg .default-icon {
+      fill: var(--colors-black) !important; }
+
 .language_rtl .quick_trade-wrapper {
   font-family: inherit; }
   .language_rtl .quick_trade-wrapper .input_block-title {
@@ -8163,41 +8198,6 @@ foreignObject {
 
 .mobile_dropdown-section {
   border-top: solid; }
-
-.market-list__coin-icons {
-  width: 2rem;
-  height: 100%; }
-  .market-list__coin-icons svg {
-    margin: 0 auto;
-    display: block; }
-    .market-list__coin-icons svg .btc0, .market-list__coin-icons svg .btc1 {
-      fill: var(--coin-btc); }
-    .market-list__coin-icons svg .eth0, .market-list__coin-icons svg .eth1 {
-      fill: var(--coin-eth); }
-    .market-list__coin-icons svg .bch-icon {
-      fill: var(--coin-bch); }
-    .market-list__coin-icons svg .xrp-icon {
-      fill: var(--coin-xrp); }
-    .market-list__coin-icons svg .xmr-icon {
-      fill: var(--coin-xmr); }
-    .market-list__coin-icons svg .ada-icon {
-      fill: var(--coin-ada); }
-    .market-list__coin-icons svg .bnb-icon {
-      fill: var(--coin-bnb); }
-    .market-list__coin-icons svg .dai-icon {
-      fill: var(--coin-dai); }
-    .market-list__coin-icons svg .eos-icon {
-      fill: var(--coin-eos); }
-    .market-list__coin-icons svg .ltc-icon {
-      fill: var(--coin-ltc); }
-    .market-list__coin-icons svg .trx-icon {
-      fill: var(--coin-trx); }
-    .market-list__coin-icons svg .tusd-icon {
-      fill: var(--coin-tusd); }
-    .market-list__coin-icons svg .xlm-icon {
-      fill: var(--coin-xlm); }
-    .market-list__coin-icons svg .default-icon {
-      fill: var(--colors-black) !important; }
 
 .review-block-wrapper {
   border-top: var(--colors-black) solid 1px; }
