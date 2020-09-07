@@ -12,9 +12,9 @@ const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 
-let kitLib;
+let nodeLib;
 
-const getKitLib = () => kitLib;
+const getNodeLib = () => nodeLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
@@ -140,7 +140,7 @@ const checkStatus = () => {
 				expiry: exchange.expiry,
 				status: true
 			};
-			kitLib = new Kit({
+			nodeLib = new Kit({
 				networkURL: HE_NETWORK_ENDPOINT,
 				networkBaseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
@@ -294,6 +294,6 @@ module.exports = {
 	getCoins,
 	getSecrets,
 	getFrozenUsers,
-	getKitLib,
+	getNodeLib,
 	getKit
 };
