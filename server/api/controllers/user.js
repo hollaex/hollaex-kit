@@ -17,7 +17,7 @@ const {
 	getAffiliationCount
 } = require('../helpers/affiliation');
 const { getPagination, getTimeframe } = require('../helpers/general');
-const { kitTools } = require('../../init');
+const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { loggerUser } = require('../../config/logger');
@@ -52,9 +52,9 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	kitTools.auth.checkCaptcha(captcha, ip)
+	toolsLib.auth.checkCaptcha(captcha, ip)
 		.then(() => {
-			return kitTools.users.signUpUser(email, password, referral);
+			return toolsLib.users.signUpUser(email, password, referral);
 		})
 		.then(() => {
 			return res.status(201).json({ message: USER_REGISTERED });
@@ -78,7 +78,7 @@ const getVerifyUser = (req, res) => {
 	let promiseQuery;
 
 	if (email && isEmail(email)) {
-		promiseQuery = kitTools.users.getVerificationCodeByUserEmail(email)
+		promiseQuery = toolsLib.users.getVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
 				if (resendEmail) {
 					sendEmail(
@@ -96,7 +96,7 @@ const getVerifyUser = (req, res) => {
 				});
 			});
 	} else if (verification_code && isUUID(verification_code)) {
-		promiseQuery = kitTools.users.getUserEmailByVerificationCode(verification_code)
+		promiseQuery = toolsLib.users.getUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
 				return res.json({
 					email: userEmail,
@@ -124,7 +124,7 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	kitTools.auth.verifyUser(email, verification_code)
+	toolsLib.auth.verifyUser(email, verification_code)
 		.then((user) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
@@ -165,7 +165,7 @@ const loginPost = (req, res) => {
 		ip
 	);
 
-	kitTools.users.getUserByEmail(email.toLowerCase())
+	toolsLib.users.getUserByEmail(email.toLowerCase())
 		.then((user) => {
 			loggerUser.verbose(
 				req.uuid,
@@ -180,7 +180,7 @@ const loginPost = (req, res) => {
 			}
 			return all([
 				user,
-				kitTools.auth.validatePassword(user.password, password)
+				toolsLib.auth.validatePassword(user.password, password)
 			]);
 		})
 		.then(([user, isPasswordValid]) => {
@@ -189,15 +189,15 @@ const loginPost = (req, res) => {
 			}
 
 			if (!user.otp_enabled) {
-				return all([user, kitTools.auth.checkCaptcha(captcha, ip)]);
+				return all([user, toolsLib.auth.checkCaptcha(captcha, ip)]);
 			} else {
 				return all([
 					user,
-					kitTools.auth.verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+					toolsLib.auth.verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
-							return all([kitTools.auth.checkCaptcha(captcha, ip)]);
+							return all([toolsLib.auth.checkCaptcha(captcha, ip)]);
 						}
 					})
 				]);
@@ -229,7 +229,7 @@ const loginPost = (req, res) => {
 				}
 			}
 			return res.status(201).json({
-				token: kitTools.auth.issueToken(
+				token: toolsLib.auth.issueToken(
 					user.id,
 					email,
 					ip,
@@ -258,9 +258,9 @@ const requestResetPassword = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	const captcha = req.swagger.params.captcha.value;
 
-	kitTools.dbs.getUserValuesByEmail(email)
+	toolsLib.dbs.getUserValuesByEmail(email)
 		.then((user) => {
-			return all([createResetPasswordCode(user.id), user, kitTools.auth.checkCaptcha(captcha, ip)]);
+			return all([createResetPasswordCode(user.id), user, toolsLib.auth.checkCaptcha(captcha, ip)]);
 		})
 		.then(([code, user]) => {
 			sendEmail(
@@ -282,7 +282,7 @@ const requestResetPassword = (req, res) => {
 
 const resetPassword = (req, res) => {
 	const { code, new_password } = req.swagger.params.data.value;
-	if (!kitTools.auth.isValidPassword(new_password)) {
+	if (!toolsLib.auth.isValidPassword(new_password)) {
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
@@ -299,7 +299,7 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	kitTools.users.getUserByEmail(email)
+	toolsLib.users.getUserByEmail(email)
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', err);
@@ -317,7 +317,7 @@ const updateSettings = (req, res) => {
 	);
 	const data = req.swagger.params.data.value;
 
-	kitTools.users.updateUserSettings({ email }, data)
+	toolsLib.users.updateUserSettings({ email }, data)
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err);
@@ -342,7 +342,7 @@ const changePassword = (req, res) => {
 			'Passwords must be different'
 		);
 		return res.status(400).json({ message: 'Passwords must be different' });
-	} else if (!kitTools.auth.isValidPassword(new_password)) {
+	} else if (!toolsLib.auth.isValidPassword(new_password)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/changePassword',
@@ -351,9 +351,9 @@ const changePassword = (req, res) => {
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
-	kitTools.users.getUserByEmail(email, false)
+	toolsLib.users.getUserByEmail(email, false)
 		.then((user) => {
-			return kitTools.auth.validatePassword(user.password, old_password).then(
+			return toolsLib.auth.validatePassword(user.password, old_password).then(
 				(isPasswordValid) => {
 					if (!isPasswordValid) {
 						throw new Error('Invalid password');
@@ -386,7 +386,7 @@ const setUsername = (req, res) => {
 		return res.status(400).json({ message: INVALID_USERNAME });
 	}
 
-	kitTools.users.getUserByKitId(id, false)
+	toolsLib.users.getUserByKitId(id, false)
 		.then((user) => {
 			loggerUser.debug(
 				req.uuid,
@@ -452,7 +452,7 @@ const getUserBalance = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
 	const user_id = req.auth.sub.id;
 
-	kitTools.users.getUserBalanceByKitId(user_id)
+	toolsLib.users.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			res.json(balance);
 		})
@@ -460,7 +460,7 @@ const getUserBalance = (req, res) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err);
 			res.status(err.status || 400).json({ message: err.message });
 		});
-}
+};
 
 module.exports = {
 	signUpUser,

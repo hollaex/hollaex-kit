@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerOrders } = require('../../config/logger');
-const { getToolsLib } = require('../../init');
+const toolsLib = require('hollaex-tools-lib');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -18,7 +18,7 @@ const createOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order = req.swagger.params.order.value;
 
-	getToolsLib().order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price)
+	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price)
 		.then((order) => {
 			return res.json(order);
 		})
@@ -42,7 +42,7 @@ const getUserOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order_id = req.swagger.params.order_id.value;
 
-	getToolsLib().order.getUserOrderByKitId(user_id, order_id)
+	toolsLib.order.getUserOrderByKitId(user_id, order_id)
 		.then((order) => {
 			return res.json(order);
 		})
@@ -62,7 +62,7 @@ const cancelUserOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order_id = req.swagger.params.order_id.value;
 
-	getToolsLib().order.cancelUserOrderByKitId(user_id, order_id)
+	toolsLib.order.cancelUserOrderByKitId(user_id, order_id)
 		.then((order) => {
 			return res.json(order);
 		})
@@ -77,7 +77,7 @@ const getAllUserOrders = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const symbol = req.swagger.params.symbol.value;
 
-	getToolsLib().order.getAllUserOrdersByKitId(user_id, symbol)
+	toolsLib.order.getAllUserOrdersByKitId(user_id, symbol)
 		.then((order) => {
 			return res.json(order);
 		})
@@ -92,7 +92,7 @@ const cancelAllUserOrders = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const symbol = req.swagger.params.symbol.value;
 
-	getToolsLib().order.cancelAllUserOrdersByKitId(user_id, symbol)
+	toolsLib.order.cancelAllUserOrdersByKitId(user_id, symbol)
 		.then((order) => {
 			return res.json(order);
 		})
