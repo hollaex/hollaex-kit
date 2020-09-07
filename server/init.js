@@ -13,10 +13,8 @@ const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 
 let kitLib;
-let toolsLib;
 
 const getKitLib = () => kitLib;
-const getToolsLib = () => toolsLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
@@ -150,14 +148,6 @@ const checkStatus = () => {
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
-			toolsLib = require('hollaex-tools-lib')({
-				apiURL: HE_NETWORK_ENDPOINT,
-				baseURL: HE_NETWORK_BASE_URL,
-				apiKey: status.api_key,
-				apiSecrets: status.api_secret,
-				exchangeId: exchange.id
-			});
-
 			return User.findAll({
 				where: {
 					activated: false
@@ -305,6 +295,5 @@ module.exports = {
 	getSecrets,
 	getFrozenUsers,
 	getKitLib,
-	getToolsLib,
 	getKit
 };
