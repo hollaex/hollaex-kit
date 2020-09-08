@@ -169,6 +169,26 @@ const getAdminUserOrders = (req, res) => {
 		});
 };
 
+const adminCancelOrder = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/adminCancelOrder auth', req.auth);
+
+	const userId = req.swagger.params.user_id.value;
+	const orderId = req.swagger.params.order_id.value;
+
+	toolsLib.order.cancelUserOrderByKitId(userId, orderId)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/adminCancelOrder',
+				err
+			);
+			return res.status(400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -176,5 +196,6 @@ module.exports = {
 	putUserRole,
 	putUserNote,
 	getAdminUserBalance,
-	getAdminUserOrders
+	getAdminUserOrders,
+	adminCancelOrder
 };

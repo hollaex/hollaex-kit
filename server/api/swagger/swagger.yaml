@@ -1002,6 +1002,37 @@ paths:
         - admin
         - supervisor
         - support
+  /admin/order:
+    x-swagger-router-controller: order
+    delete:
+      operationId: adminCancelOrder
+      description: Admin Cancel order
+      tags:
+        - Admin
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+        - name: user_id
+          in: query
+          required: true
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
