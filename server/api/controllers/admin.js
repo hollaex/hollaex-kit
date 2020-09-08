@@ -3,9 +3,7 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { parse } = require('json2csv');
-const flatten = require('flat');
-
+const { ADMIN_ACCOUNT_ID } = require('../../constants');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -75,8 +73,37 @@ const getUsersAdmin = (req, res) => {
 		});
 };
 
+const putUserRole = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putUserRole/auth',
+		req.auth
+	);
+
+	const user_id = req.swagger.params.user_id.value;
+	const { role } = req.swagger.params.data.value;
+
+	if (user_id === ADMIN_ACCOUNT_ID) {
+		throw new Error('Cannot change main admin account role');
+	}
+
+	toolsLib.users.updateUserRole(user_id, role)
+		.then((user) => {
+			res.json(user);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putUserRole',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
-	getUsersAdmin
+	getUsersAdmin,
+	putUserRole
 };
