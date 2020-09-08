@@ -708,8 +708,29 @@ paths:
         - Bearer: []
         - HmacKey: []
       x-security-scopes:
-      - user
-      - hmac
+        - user
+        - hmac
+  /admin/kit:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getAdminKit
+      description: Get exchange kit configurations and secrets for admin
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - tech
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
