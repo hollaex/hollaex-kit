@@ -374,13 +374,16 @@ const getUserByNetworkId = (network_id, rawData = true) => {
 	return getUser({ network_id }, rawData);
 };
 
-const freezeUser = (opts = {}, rawData = true) => {
-	return getUser(opts, false)
+const freezeUserById = (userId) => {
+	if (userId === ADMIN_ACCOUNT_ID) {
+		throw new Error('Admin account cannot be deactivated');
+	}
+	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user.activated) {
 				throw new Error('User account is already frozen');
 			}
-			return user.update({ activated: false }, { fields: ['activated'], returning: true, raw: rawData });
+			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
@@ -396,13 +399,60 @@ const freezeUser = (opts = {}, rawData = true) => {
 		});
 };
 
-const unfreezeUser = (opts = {}, rawData = true) => {
-	return getUser(opts, false)
+const freezeUserByEmail = (email) => {
+	return getUserByEmail(email, false)
+		.then((user) => {
+			if (user.id === ADMIN_ACCOUNT_ID) {
+				throw new Error('Admin account cannot be deactivated');
+			}
+			if (!user.activated) {
+				throw new Error('User account is already frozen');
+			}
+			return user.update({ activated: false }, { fields: ['activated'], returning: true });
+		})
+		.then((user) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
+			sendEmail(
+				MAILTYPE.USER_DEACTIVATED,
+				user.email,
+				{
+					type: 'deactivated'
+				},
+				user.settings
+			);
+			return user;
+		});
+};
+
+const unfreezeUserById = (userId) => {
+	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (user.activated) {
 				throw new Error('User account is not frozen');
 			}
-			return user.update({ activated: true }, { fields: ['activated'], returning: true, raw: rawData });
+			return user.update({ activated: true }, { fields: ['activated'], returning: true });
+		})
+		.then((user) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
+			sendEmail(
+				MAILTYPE.USER_DEACTIVATED,
+				user.email,
+				{
+					type: 'activated'
+				},
+				user.settings
+			);
+			return user;
+		});
+};
+
+const unfreezeUserByEmail = (email) => {
+	return getUserByEmail(email, false)
+		.then((user) => {
+			if (user.activated) {
+				throw new Error('User account is not frozen');
+			}
+			return user.update({ activated: true }, { fields: ['activated'], returning: true  });
 		})
 		.then((user) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
@@ -606,8 +656,10 @@ module.exports = {
 	getUserByNetworkId,
 	getUserByCryptoAddress,
 	getFrozenUsers,
-	freezeUser,
-	unfreezeUser,
+	freezeUserById,
+	freezeUserByEmail,
+	unfreezeUserById,
+	unfreezeUserByEmail,
 	getAllUsers,
 	getUserRole,
 	updateUserSettings,
