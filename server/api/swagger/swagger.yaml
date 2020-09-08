@@ -1112,6 +1112,44 @@ paths:
         - admin
         - supervisor
         - support
+  /admin/user/activate:
+    x-swagger-router-controller: admin
+    post:
+      operationId: activateUser
+      description: Activate or deactivate a user account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - activated
+            properties:
+              user_id:
+                type: number
+                format: int32
+              activated:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins

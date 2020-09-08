@@ -222,6 +222,39 @@ const getAdminUserTrades = (req, res) => {
 		});
 };
 
+const activateUser = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/activateUser auth',
+		req.auth
+	);
+	const { user_id, activated } = req.swagger.params.data.value;
+
+	let promiseQuery;
+
+	if (activated === true) {
+		promiseQuery = toolsLib.users.unfreezeUserById(user_id);
+	} else if (activated === false) {
+		promiseQuery = toolsLib.users.freezeUserById(user_id);
+	}
+
+	promiseQuery
+		.then((user) => {
+			const message = `Account ${user.email} has been ${
+				activated ? 'activated' : 'deactivated'
+			}`;
+			res.json({ message });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/activateUser',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -231,5 +264,6 @@ module.exports = {
 	getAdminUserBalance,
 	getAdminUserOrders,
 	adminCancelOrder,
-	getAdminUserTrades
+	getAdminUserTrades,
+	activateUser
 };
