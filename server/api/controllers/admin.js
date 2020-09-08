@@ -89,7 +89,7 @@ const putUserRole = (req, res) => {
 
 	toolsLib.users.updateUserRole(user_id, role)
 		.then((user) => {
-			res.json(user);
+			return res.json(user);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -97,7 +97,7 @@ const putUserRole = (req, res) => {
 				'controllers/admin/putUserRole',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -113,7 +113,7 @@ const putUserNote = (req, res) => {
 
 	toolsLib.users.updateUserNote(user_id, note)
 		.then(() => {
-			res.json({ message: 'Success' });
+			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -121,7 +121,7 @@ const putUserNote = (req, res) => {
 				'controllers/admin/userNote',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -135,7 +135,7 @@ const getAdminUserBalance = (req, res) => {
 
 	toolsLib.users.getUserBalanceByKitId(user_id)
 		.then((balance) => {
-			res.json(balance);
+			return res.json(balance);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -143,7 +143,29 @@ const getAdminUserBalance = (req, res) => {
 				'controllers/admin/getAdminUserBalance',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getAdminUserOrders = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminUserOrders/auth', req.auth);
+	const user_id = req.swagger.params.user_id.value;
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const symbol = req.swagger.params.symbol.value;
+	const side = req.swagger.params.side.value;
+
+	if (symbol && !toolsLib.subscribedToPair(symbol)) {
+		loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', error);
+		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
+	toolsLib.order.getAllUserOrdersByKitId(user_id, symbol)
+		.then((orders) => {
+			return res.json(orders);
+		})
+		.catch((error) => {
+			loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', error);
+			return res.status(error.status || 400).json({ message: error.message });
 		});
 };
 
@@ -153,5 +175,6 @@ module.exports = {
 	getUsersAdmin,
 	putUserRole,
 	putUserNote,
-	getAdminUserBalance
+	getAdminUserBalance,
+	getAdminUserOrders
 };

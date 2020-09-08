@@ -927,6 +927,81 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /admin/orders:
+    x-swagger-router-controller: admin
+    get:
+      description: Get user orders for admin
+      operationId: getAdminUserOrders
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: side
+          description: buy or sell
+          required: false
+          enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/AdminOrdersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
@@ -2224,3 +2299,50 @@ definitions:
     properties:
       note:
         type: string
+  AdminOrdersResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            side:
+              type: string
+              enum:
+                - buy
+                - sell
+            symbol:
+              type: string
+              description: Currency symbol
+            size:
+              type: number
+              format: double
+              description: "Size of the order. Min: 0.0001, Max: 21000000"
+            filled:
+              type: number
+              format: double
+              description: "Size of the order filled. Min: 0.0001, Max: 21000000"
+            type:
+              type: string
+              enum:
+                - market
+                - limit
+            price:
+              type: number
+              format: double
+              description: "Price of the order. Min: 500000, Max: 100000000"
+            created_by:
+              type: number
+              format: int32
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
