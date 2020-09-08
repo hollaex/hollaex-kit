@@ -31,6 +31,10 @@ subscriber.on('message', (channel, message) => {
 			case 'pairs':
 				updateCoinsPairs(type, data.name, data);
 				break;
+			case 'config':
+				updateKit(type, data.kit);
+				updateSecrets(data.key, data.secrets);
+				break;
 			case 'kit':
 				updateKit(type, data.kit);
 				break;

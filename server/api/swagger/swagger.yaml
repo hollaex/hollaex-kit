@@ -731,6 +731,31 @@ paths:
       x-security-scopes:
         - admin
         - tech
+    put:
+      operationId: putAdminKit
+      description: Update exchange constants and secrets
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/KitPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - tech
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
@@ -1861,3 +1886,111 @@ definitions:
       updated_at:
         type: string
         format: date-time
+  KitPut:
+    type: object
+    properties:
+      kit:
+        type: object
+        properties:
+          captcha:
+            type: object
+            required:
+              - site_key
+            properties:
+              site_key:
+                type: string
+          plugins:
+            type: object
+            properties:
+              enabled:
+                type: string
+              configuration:
+                type: object
+          defaults:
+            type: object
+            properties:
+              theme:
+                type: string
+              language:
+                type: string
+          color:
+            type: object
+          links:
+            type: object
+          description:
+            type: string
+          title:
+            type: string
+          api_name:
+            type: string
+          logo_path:
+            type: string
+          logo_black_path:
+            type: string
+          valid_languages:
+            type: string
+          user_level_number:
+            type: number
+          new_user_is_activated:
+            type: boolean
+          broker_enabled:
+            type: boolean
+      secrets:
+        type: object
+        properties:
+          emails:
+            type: object
+            properties:
+              audit:
+                type: string
+              sender:
+                type: string
+              timezone:
+                type: string
+              send_email_to_support:
+                type: boolean
+          allowed_domains:
+            type: array
+            items:
+              type: string
+          admin_whitelist:
+            type: array
+            items:
+              type: string
+          broker:
+            type: object
+            properties:
+              quick_trade_rate:
+                type: number
+                format: double
+              quick_trade_expiration_time:
+                type: number
+              trade_master_account_id:
+                type: number
+          security:
+            type: object
+            properties:
+              token_time:
+                type: string
+              withdrawal_token_expiry:
+                type: number
+          captcha:
+            type: object
+            required:
+              - secret_key
+            properties:
+              secret_key:
+                type: string
+          smtp:
+            type: object
+            properties:
+              port:
+                type: number
+              user:
+                type: string
+              server:
+                type: string
+              password:
+                type: string
+          plugins:
+            type: object

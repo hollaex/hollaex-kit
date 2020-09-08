@@ -290,11 +290,9 @@ exports.ERC_TOKENS = [
 	'busd'
 ];
 
-exports.CONSTANTS_KEYS = [
-	'emails',
+exports.KIT_CONFIG_KEYS = [
 	'captcha',
 	'plugins',
-	'accounts',
 	'api_name',
 	'description',
 	'color',
@@ -310,9 +308,10 @@ exports.CONSTANTS_KEYS = [
 	'secrets'
 ];
 
-exports.SECRETS_KEYS = [
+exports.KIT_SECRETS_KEYS = [
 	'allowed_domains',
 	'admin_whitelist',
+	'emails',
 	'broker',
 	'security',
 	'captcha',
@@ -335,15 +334,15 @@ exports.AUDIT_KEYS = [
 	'timestamp'
 ];
 
-exports.TECH_AUTHORIZED_CONSTANTS = [
-	'emails',
+exports.TECH_AUTHORIZED_KIT_CONFIG = [
 	'captcha',
 	'plugins',
 	'secrets'
 ];
 
-exports.TECH_AUTHORIZED_SECRETS = [
+exports.TECH_AUTHORIZED_KIT_SECRETS = [
 	'allowed_domains',
+	'emails',
 	'admin_whitelist',
 	'captcha',
 	'smtp',
