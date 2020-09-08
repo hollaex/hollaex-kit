@@ -340,11 +340,17 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
-	getAllTradeNetwork(user_id, symbol, limit = 50, page = 1) {
+	getAllTradeNetwork(user_id, symbol, limit = 50, page = 1, order_by = 'id', order = 'desc', start_date, end_date) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}`;
+		let queryString = `?limit=${limit}&page=${page}&order_by=${order_by}&order=${order}`;
+		if (start_date) {
+			queryString += `&start_date=${start_date}`;
+		}
+		if (end_date) {
+			queryString += `&start_date=${end_date}`;
+		}
 		if (user_id) {
 			queryString += `&user_id=${user_id}`;
 		}
@@ -412,11 +418,17 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
-	getAllDepositNetwork(user_id, currency, limit = 50, page = 1) {
+	getAllDepositNetwork(user_id, currency, limit = 50, page = 1, order_by = 'id', order = 'desc', start_date, end_date) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}`;
+		let queryString = `?limit=${limit}&page=${page}&order_by=${order_by}&order=${order}`;
+		if (start_date) {
+			queryString += `&start_date=${start_date}`;
+		}
+		if (end_date) {
+			queryString += `&start_date=${end_date}`;
+		}
 		if (user_id) {
 			queryString += `&user_id=${user_id}`;
 		}
@@ -442,11 +454,17 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
-	getAllWithdrawalNetwork(user_id, currency, limit = 50, page = 1) {
+	getAllWithdrawalNetwork(user_id, currency, limit = 50, page = 1, order_by = 'id', order = 'desc', start_date, end_date) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}`;
+		let queryString = `?limit=${limit}&page=${page}&order_by=${order_by}&order=${order}`;
+		if (start_date) {
+			queryString += `&start_date=${start_date}`;
+		}
+		if (end_date) {
+			queryString += `&start_date=${end_date}`;
+		}
 		if (user_id) {
 			queryString += `&user_id=${user_id}`;
 		}
