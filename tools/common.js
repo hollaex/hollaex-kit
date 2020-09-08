@@ -33,8 +33,20 @@ const getKitSecrets = () => {
 	return getSecrets();
 };
 
-const getKitCoins = () => {
+const getKitCoin = (coin) => {
+	if (!getCoins()[coin]) {
+		throw new Error(`You exchange is not subscribed to coin ${coin}`);
+	} else {
+		return getCoins()[coin];
+	}
+};
+
+const getKitCoinsConfig = () => {
 	return getCoins();
+};
+
+const getKitCoins = () => {
+	return Object.keys(getCoins());
 };
 
 const getKitPairs = () => {
@@ -169,7 +181,9 @@ module.exports = {
 	isUrl,
 	getKitConfig,
 	getKitSecrets,
+	getKitCoin,
 	getKitCoins,
+	getKitCoinsConfig,
 	getKitPairs,
 	maskSecrets,
 	updateKitConfig,

@@ -2,17 +2,21 @@
 
 const { getModel } = require('./database').model;
 const dbQuery = require('./database').query;
-const { has, omit } = require('lodash');
+const { has, omit, pick, each } = require('lodash');
 const { isEmail } = require('validator');
 const { SERVER_PATH, SETTING_KEYS, OMITTED_USER_FIELDS, DEFAULT_ORDER_RISK_PERCENTAGE } = require('../constants');
-const { SIGNUP_NOT_AVAILABLE, PROVIDE_VALID_EMAIL, USER_EXISTS, INVALID_PASSWORD, INVALID_VERIFICATION_CODE } = require('../messages');
+const { SIGNUP_NOT_AVAILABLE, PROVIDE_VALID_EMAIL, USER_EXISTS, INVALID_PASSWORD, INVALID_VERIFICATION_CODE, USER_NOT_FOUND } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
-const { INIT_CHANNEL } = require(`${SERVER_PATH}/constants`);
+const { INIT_CHANNEL, ADMIN_ACCOUNT_ID } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKit, getSecrets, getCoins, getPairs, getNodeLib } = require(`${SERVER_PATH}/init`);
+const { getKit, getSecrets, getKitCoinsConfig, getKitCoins, getKitCoin, getPairs, getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
+const { Op } = require('sequelize');
+const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
+const { parse } = require('json2csv');
+const flatten = require('flat');
 
 const signUpUser = (email, password, referral) => {
 	if (!getKit().new_user_is_activated) {
@@ -169,11 +173,148 @@ const omitUserFields = (user) => {
 };
 
 const getAllUsers = () => {
-	return dbQuery.findAndCountAllWithRows('user', {
+	return dbQuery.findAll('user', {
 		attributes: {
 			exclude: OMITTED_USER_FIELDS
 		}
 	});
+};
+
+const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, start_date, end_date, format) => {
+	const pagination = paginationQuery(limit, page);
+	const timeframe = timeframeQuery(start_date, end_date);
+	const ordering = orderingQuery(order_by, order);
+	let query = {
+		where: {}
+	};
+	if (id || search) {
+		query.attributes = {
+			exclude: ['balance', 'password', 'updated_at']
+		};
+		if (id) {
+			query.where.id = id;
+		} else {
+			query.where = {
+				$or: [
+					{
+						email: {
+							[Op.like]: `%${search}%`
+						}
+					},
+					{
+						username: {
+							[Op.like]: `%${search}%`
+						}
+					},
+					{
+						full_name: {
+							[Op.like]: `%${search}%`
+						}
+					},
+					{
+						phone_number: {
+							[Op.like]: `%${search}%`
+						}
+					},
+					getModel('sequelize').literal(`id_data ->> 'number'='${search}'`),
+					...getKitCoins().map((coin) => getModel('sequelize').literal(`crypto_wallet ->> '${coin}'='${search}'`))
+				]
+			};
+		}
+	} else if (pending) {
+		query = {
+			where: {
+				$or: [
+					getModel('sequelize').literal('bank_account @> \'[{"status":1}]\''),
+					{
+						id_data: {
+							status: 1
+						}
+					},
+					{
+						activated: false
+					}
+				]
+			},
+			attributes: [
+				'id',
+				'email',
+				'verification_level',
+				'id_data',
+				'bank_account',
+				'activated'
+			],
+			order: ordering ? [ordering] : [['updated_at', 'desc']]
+		};
+	} else {
+		query = {
+			where: {},
+			attributes: {
+				exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_tech']
+			},
+			include: [
+				{
+					model: getModel('balance'),
+					as: 'balance',
+					attributes: {
+						exclude: ['id', 'user_id', 'created_at']
+					}
+				}
+			],
+			order: ordering ? [ordering] : [['id', 'desc']]
+		};
+	}
+	if (timeframe) query.where.created_at = timeframe;
+	if (!format) {
+		query = {...query, ...pagination};
+	} else if (!pending) {
+		query.attributes.exclude.push('settings');
+	}
+	return dbQuery.findAndCountAllWithRows('user', query)
+		.then(({ count, data }) => {
+			if ((id || search) && count === 0) {
+				if (count === 0) {
+					// Need to throw error if query was for one user and the user is not found
+					const error = new Error(USER_NOT_FOUND);
+					error.status = 404;
+					throw error;
+				}
+			}
+
+			return { count, data };
+		})
+		.then((users) => {
+			if (format.value) {
+				if (users.data.length === 0) {
+					throw new Error('No data found');
+				}
+				const flatData = users.data.map((user) => {
+					let crypto_wallet;
+					let id_data;
+					if (user.balance) {
+						user.balance = user.balance.dataValues;
+					} else {
+						delete user.balance;
+					}
+					if (user.crypto_wallet) {
+						crypto_wallet = user.crypto_wallet;
+						user.crypto_wallet = {};
+					}
+					if (user.id_data) {
+						id_data = user.id_data;
+						user.id_data = {};
+					}
+					const result = flatten(user, { safe: true });
+					if (crypto_wallet) result.crypto_wallet = crypto_wallet;
+					if (id_data) result.id_data = id_data;
+					return result;
+				});
+				const csv = parse(flatData, Object.keys(flatData[0]));
+				return csv;
+			} else {
+				return users;
+			}
+		});
 };
 
 const getUserByCryptoAddress = (currency, address) => {
@@ -296,6 +437,70 @@ const getUserRole = (opts = {}) => {
 		});
 };
 
+const updateUserRole = (user_id, role) => {
+	if (user_id === ADMIN_ACCOUNT_ID) {
+		throw new Error('Cannot change main admin account role');
+	}
+	return dbQuery.findOne('user', {
+		where: {
+			id: user_id
+		},
+		attributes: [
+			'id',
+			'is_admin',
+			'is_support',
+			'is_supervisor',
+			'is_kyc',
+			'is_tech'
+		]
+	})
+		.then((user) => {
+			const roles = pick(
+				user.dataValues,
+				'is_admin',
+				'is_supervisor',
+				'is_support',
+				'is_kyc',
+				'is_tech'
+			);
+
+			const roleChange = 'is_' + role.toLowerCase();
+
+			if (roles[roleChange]) {
+				throw new Error (`User already has role ${role}`);
+			}
+
+			each(roles, (value, key) => {
+				if (key === roleChange) {
+					roles[key] = true;
+				} else {
+					roles[key] = false;
+				}
+			});
+
+			return all([user, roles]);
+		})
+		.then(([user, roles]) => {
+			return user.update(
+				roles,
+				{ fields: ['is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_tech'], returning: true }
+			);
+		})
+		.then((user) => {
+			const result = pick(
+				user,
+				'id',
+				'email',
+				'is_admin',
+				'is_support',
+				'is_supervisor',
+				'is_kyc',
+				'is_tech'
+			);
+			return result;
+		});
+};
+
 const DEFAULT_SETTINGS = {
 	language: getKit().defaults.language,
 	orderConfirmationPopup: true
@@ -404,5 +609,7 @@ module.exports = {
 	verifyUser,
 	getVerificationCodeByUserEmail,
 	getUserEmailByVerificationCode,
-	getUserBalanceByKitId
+	getUserBalanceByKitId,
+	getAllUsersAdmin,
+	updateUserRole
 };
