@@ -4,6 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
 const { ADMIN_ACCOUNT_ID } = require('../../constants');
+const { parse } = require('json2csv');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -155,7 +156,7 @@ const getAdminUserOrders = (req, res) => {
 	const side = req.swagger.params.side.value;
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', error);
+		loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', 'Invalid symbol');
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
@@ -163,9 +164,9 @@ const getAdminUserOrders = (req, res) => {
 		.then((orders) => {
 			return res.json(orders);
 		})
-		.catch((error) => {
-			loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', error);
-			return res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -183,9 +184,41 @@ const adminCancelOrder = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/adminCancelOrder',
-				err
+				err.message
 			);
 			return res.status(400).json({ message: err.message });
+		});
+};
+
+const getAdminUserTrades = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminUserTrades auth', req.auth);
+
+	const user_id = req.swagger.params.user_id.value;
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const symbol = req.swagger.params.symbol.value;
+
+	if (symbol && !toolsLib.subscribedToPair(symbol)) {
+		loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserTrades', 'Invalid symbol');
+		return res.status(400).json({ message: 'Invalid symbol=' });
+	}
+
+	toolsLib.order.getAllUserTradesNetworkByKidId(user_id, symbol, limit, page, order_by, order, start_date, end_date)
+		.then((trades) => {
+			if (format.value) {
+				if (trades.data.length === 0) {
+					throw new Error('No data found');
+				}
+				const csv = parse(trades.data, Object.keys(trades.data[0]));
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-trades.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(csv);
+			} else {
+				return res.json(trades);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserTrades', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -197,5 +230,6 @@ module.exports = {
 	putUserNote,
 	getAdminUserBalance,
 	getAdminUserOrders,
-	adminCancelOrder
+	adminCancelOrder,
+	getAdminUserTrades
 };
