@@ -25,6 +25,14 @@ const isUrl = (url) => {
 	return pattern.test(url);
 };
 
+const subscribedToCoin = (coin) => {
+	return getKitCoins().includes(coin);
+};
+
+const subscribedToPair = (pair) => {
+	return getKitPairs().includes(pair);
+};
+
 const getKitConfig = () => {
 	return getKit();
 };
@@ -34,10 +42,10 @@ const getKitSecrets = () => {
 };
 
 const getKitCoin = (coin) => {
-	if (!getCoins()[coin]) {
+	if (!getKitCoins()[coin]) {
 		throw new Error(`You exchange is not subscribed to coin ${coin}`);
 	} else {
-		return getCoins()[coin];
+		return getKitCoinsConfig()[coin];
 	}
 };
 
@@ -46,11 +54,23 @@ const getKitCoinsConfig = () => {
 };
 
 const getKitCoins = () => {
-	return Object.keys(getCoins());
+	return Object.keys(getKitCoinsConfig());
+};
+
+const getKitPair = (pair) => {
+	if (!getKitPairs()[pair]) {
+		throw new Error(`You exchange is not subscribed to pair ${pair}`);
+	} else {
+		return getKitPairsConfig()[pair];
+	}
+};
+
+const getKitPairsConfig = () => {
+	return getPairs();
 };
 
 const getKitPairs = () => {
-	return getPairs();
+	return Object.keys(getKitPairsConfig());
 };
 
 const maskSecrets = (secrets) => {
@@ -181,10 +201,14 @@ module.exports = {
 	isUrl,
 	getKitConfig,
 	getKitSecrets,
+	subscribedToCoin,
 	getKitCoin,
 	getKitCoins,
 	getKitCoinsConfig,
+	subscribedToPair,
+	getKitPair,
 	getKitPairs,
+	getKitPairsConfig,
 	maskSecrets,
 	updateKitConfig,
 	updateKitSecrets,
