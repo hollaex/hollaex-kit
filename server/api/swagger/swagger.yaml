@@ -900,6 +900,33 @@ paths:
         - supervisor
         - kyc
         - support
+  /admin/user/balance:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getAdminUserBalance
+      description: Get balance of given user
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BalanceResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins

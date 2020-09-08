@@ -125,10 +125,33 @@ const putUserNote = (req, res) => {
 		});
 };
 
+const getAdminUserBalance = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getAdminUserBalance/auth',
+		req.auth
+	);
+	const user_id = req.swagger.params.user_id.value;
+
+	toolsLib.users.getUserBalanceByKitId(user_id)
+		.then((balance) => {
+			res.json(balance);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getAdminUserBalance',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
 	getUsersAdmin,
 	putUserRole,
-	putUserNote
+	putUserNote,
+	getAdminUserBalance
 };
