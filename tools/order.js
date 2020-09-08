@@ -46,6 +46,10 @@ const cancelUserOrderByEmail = (email, orderId) => {
 		});
 };
 
+const getAllExchangeOrders = (symbol) => {
+	return getNodeLib().getAllOrderNetwork(undefined, symbol);
+};
+
 const getAllUserOrdersByKitId = (userKitId, symbol) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
@@ -74,7 +78,19 @@ const cancelAllUserOrdersByEmail = (email, symbol) => {
 		});
 };
 
+const getAllTradesNetwork = (symbol, limit, page, order_by, order, start_date, end_date) => {
+	return getNodeLib().getAllTradeNetwork(undefined, symbol, limit, page, order_by, order, start_date, end_date);
+};
+
+const getAllUserTradesNetworkByKidId = (userKitId, symbol, limit, page, order_by, order, start_date, end_date) => {
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			return getNodeLib().getAllTradeNetwork(user.network_id, symbol, limit, page, order_by, order, start_date, end_date);
+		});
+};
+
 module.exports = {
+	getAllExchangeOrders,
 	createUserOrderByKitId,
 	createUserOrderByEmail,
 	getUserOrderByKitId,
@@ -84,5 +100,7 @@ module.exports = {
 	getAllUserOrdersByKitId,
 	getAllUserOrdersByEmail,
 	cancelAllUserOrdersByKitId,
-	cancelAllUserOrdersByEmail
+	cancelAllUserOrdersByEmail,
+	getAllTradesNetwork,
+	getAllUserTradesNetworkByKidId
 };
