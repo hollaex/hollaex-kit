@@ -101,9 +101,34 @@ const putUserRole = (req, res) => {
 		});
 };
 
+const putUserNote = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/userNote/auth',
+		req.auth
+	);
+	const user_id = req.swagger.params.user_id.value;
+	const { note } = req.swagger.params.data.value;
+
+
+	toolsLib.users.updateUserNote(user_id, note)
+		.then(() => {
+			res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/userNote',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
 	getUsersAdmin,
-	putUserRole
+	putUserRole,
+	putUserNote
 };

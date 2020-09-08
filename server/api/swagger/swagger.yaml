@@ -867,6 +867,39 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/user/note:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserNote
+      description: Update a user note
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserNotePut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - kyc
+        - support
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
@@ -2157,3 +2190,10 @@ definitions:
         type: boolean
       is_tech:
         type: boolean
+  UserNotePut:
+    type: object
+    required:
+      - note
+    properties:
+      note:
+        type: string
