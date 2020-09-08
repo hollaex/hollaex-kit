@@ -593,6 +593,13 @@ const getUserBalanceByKitId = (userKitId) => {
 		});
 };
 
+const updateUserNote = (userId, note) => {
+	return getUserByKitId(userId, false)
+		.then((user) => {
+			return user.update({ note }, { fields: ['note']});
+		});
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -611,5 +618,6 @@ module.exports = {
 	getUserEmailByVerificationCode,
 	getUserBalanceByKitId,
 	getAllUsersAdmin,
-	updateUserRole
+	updateUserRole,
+	updateUserNote
 };
