@@ -3,7 +3,7 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { ADMIN_ACCOUNT_ID } = require('../../constants');
+const { ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL } = require('../../constants');
 const { parse } = require('json2csv');
 const { SERVICE_NOT_AVAILABLE } = require('../../messages');
 
@@ -266,6 +266,31 @@ const getAdminBalance = (req, res) => {
 	return res.status(400).json({ message: SERVICE_NOT_AVAILABLE });
 };
 
+const upgradeUser = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/upgradeUser auth',
+		req.auth
+	);
+
+	const domain = req.headers['x-real-origin'];
+
+	const { user_id, verification_level } = req.swagger.params.data.value;
+
+	toolsLib.users.changeUserVerificationLevelById(user_id, verification_level, domain)
+		.then(() => {
+			res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/upgradeUser',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -277,5 +302,6 @@ module.exports = {
 	adminCancelOrder,
 	getAdminUserTrades,
 	activateUser,
-	getAdminBalance
+	getAdminBalance,
+	upgradeUser
 };

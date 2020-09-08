@@ -1173,6 +1173,34 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/upgrade-user:
+    x-swagger-router-controller: admin
+    post:
+      description: "Update verification level of a user. 1: email verified. 2: id verified. 3: bank verified. 4: loyal member. 5: VIP. 6: VVIP"
+      operationId: upgradeUser
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: Upgrade data
+          schema:
+            $ref: "#/definitions/UpgradeUserRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - kyc
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
@@ -2547,3 +2575,12 @@ definitions:
             timestamp:
               type: string
               format: date-time
+  UpgradeUserRequest:
+    type: object
+    properties:
+      user_id:
+        type: integer
+      veification_level:
+        type: integer
+        minimum: 1
+        maximum: 5
