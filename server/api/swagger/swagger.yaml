@@ -756,6 +756,87 @@ paths:
       x-security-scopes:
         - admin
         - tech
+  /admin/users:
+    x-swagger-router-controller: admin
+    get:
+      description: Get exchange users for admin
+      operationId: getUsersAdmin
+      tags:
+        - Admin
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: number
+        - name: search
+          in: query
+          required: false
+          type: string
+        - name: pending
+          in: query
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: Direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/AdminUsersResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
@@ -1994,3 +2075,16 @@ definitions:
                 type: string
           plugins:
             type: object
+  AdminUsersResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: number
