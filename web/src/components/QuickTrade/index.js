@@ -24,7 +24,11 @@ class QuickTrade extends Component {
 			targetOptions,
 			sourceOptions,
 			selectedSource,
-			selectedTarget
+			selectedTarget,
+          	forwardSourceError,
+            forwardTargetError,
+          	orderLimits: { SIZE, PRICE },
+			side,
 		} = this.props;
 
 		return (
@@ -48,6 +52,8 @@ class QuickTrade extends Component {
 					selectValue={selectedSource}
 					onSelect={onSelectSource}
 					onInputChange={onChangeSourceAmount}
+					forwardError={forwardSourceError}
+					limits={side === "buy" ? PRICE : SIZE}
 				/>
 				<InputGroup
 					name="to"
@@ -56,6 +62,8 @@ class QuickTrade extends Component {
 					selectValue={selectedTarget}
 					onSelect={onSelectTarget}
 					onInputChange={onChangeTargetAmount}
+					forwardError={forwardTargetError}
+					limits={side === "buy" ? SIZE : PRICE}
 				/>
 				<div
 					className={classnames(

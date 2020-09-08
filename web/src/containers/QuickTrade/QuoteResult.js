@@ -1,6 +1,7 @@
 import React from 'react';
+import ReactSVG from 'react-svg';
 import { object, func } from 'prop-types';
-import { Loader, IconTitle, Button } from 'components';
+import { Loader, Button } from 'components';
 import { formatToCurrency } from 'utils/currency';
 import { translateError, QUICK_TRADE_INSUFFICIENT_BALANCE } from 'components/QuickTrade/utils';
 
@@ -14,14 +15,16 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 	} else if (error === QUICK_TRADE_INSUFFICIENT_BALANCE) {
 		return (
 			<div className="base_negative_balance">
-				<IconTitle
-					iconPath={ICONS.QUICK_TRADE_INSUFFICIENT_FUND}
-					text={STRINGS.QUICK_TRADE_INSUFFICIENT_FUND}
-					underline={false}
-					className="w-100"
-					useSvg={true}
+				<ReactSVG
+					path={ICONS.QUICK_TRADE_INSUFFICIENT_FUND}
+					wrapperClassName="quick-trade__icon"
 				/>
-				<div className="quote-success-review-text">{STRINGS.QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE}</div>
+				<div className="quote-success__title" >
+                  {STRINGS.QUICK_TRADE_INSUFFICIENT_FUND}
+				</div>
+				<div className="quote-success-review-text">
+				  {STRINGS.QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE}
+			  	</div>
 				<footer className="d-flex pt-4">
 					<Button
 						className="mr-2"
@@ -48,13 +51,13 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 
 		return (
 			<div className='success-review'>
-				<IconTitle
-					iconPath={ICONS.QUICK_TRADE_SUCCESSFUL}
-					text={STRINGS.QUICK_TRADE_SUCCESS}
-					underline={false}
-					className="w-100"
-					useSvg={true}
+				<ReactSVG
+					path={ICONS.QUICK_TRADE_SUCCESSFUL}
+					wrapperClassName="quick-trade__icon"
 				/>
+				<div className="quote-success__title" >
+                  {STRINGS.QUICK_TRADE_SUCCESS}
+				</div>
 				<div className="quote-success-review-text">
 					{STRINGS.formatString(
 						STRINGS.QUOTE_SUCCESS_REVIEW_MESSAGE,

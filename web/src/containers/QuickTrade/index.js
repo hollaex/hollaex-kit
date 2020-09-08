@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
+import math from 'mathjs';
 
 import { submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
@@ -34,6 +35,8 @@ import {
 
 import QuoteResult from './QuoteResult';
 
+const DECIMALS = 4;
+
 class QuickTradeContainer extends PureComponent {
   constructor(props) {
     super(props);
@@ -41,7 +44,7 @@ class QuickTradeContainer extends PureComponent {
     const [, selectedSource = sourceOptions[0] ] = pair.split("-");
     const targetOptions = this.getTargetOptions(selectedSource);
     const [ selectedTarget = targetOptions[0] ] = pair.split("-");
-		const { close: tickerClose } = tickers[pair];
+	const { close: tickerClose } = tickers[pair];
 
     this.state = {
       pair,
@@ -52,13 +55,15 @@ class QuickTradeContainer extends PureComponent {
       targetOptions,
       selectedSource,
       selectedTarget,
-			targetAmount: undefined,
-			sourceAmount: undefined,
-			order: {
+	  targetAmount: undefined,
+	  sourceAmount: undefined,
+	  order: {
         fetching: false,
         error: false,
-				data: {},
-			}
+		data: {},
+	  },
+	  sourceError: '',
+	  targetError: '',
     };
   }
 
@@ -112,8 +117,7 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onReviewQuickTrade = () => {
-		console.log('review called');
-    this.onOpenDialog();
+    	this.onOpenDialog();
 	};
 
   onExecuteTrade = () => {
@@ -197,7 +201,7 @@ class QuickTradeContainer extends PureComponent {
     if(tickers[pairName]) {
       const { close } = tickers[pairName];
       tickerClose = close;
-			side = 'buy';
+	  side = 'buy';
       pair = pairName;
     } else if(tickers[reversePairName]) {
       const { close } = tickers[reversePairName];
@@ -209,9 +213,9 @@ class QuickTradeContainer extends PureComponent {
     this.setState({
       tickerClose,
       side,
-			selectedTarget,
-			targetAmount: undefined,
-			sourceAmount: undefined,
+	  selectedTarget,
+	  targetAmount: undefined,
+	  sourceAmount: undefined,
     })
     this.goToPair(pair);
 	}
@@ -243,9 +247,9 @@ class QuickTradeContainer extends PureComponent {
       tickerClose,
       side,
       // pair,
-			selectedSource,
-			selectedTarget,
-			targetOptions: targetOptions,
+	  selectedSource,
+	  selectedTarget,
+	  targetOptions: targetOptions,
       targetAmount: undefined,
       sourceAmount: undefined,
     })
@@ -260,7 +264,7 @@ class QuickTradeContainer extends PureComponent {
 
   onChangeTargetAmount = (targetAmount) => {
   	const { tickerClose } = this.state;
-		const sourceAmount = targetAmount * tickerClose;
+		const sourceAmount = math.round(targetAmount * tickerClose, DECIMALS);
 
 		this.setState({
 			targetAmount,
@@ -270,7 +274,7 @@ class QuickTradeContainer extends PureComponent {
 
 	onChangeSourceAmount = (sourceAmount) => {
     const { tickerClose } = this.state;
-    const targetAmount = sourceAmount / tickerClose;
+    const targetAmount = math.round(sourceAmount / tickerClose, DECIMALS);
 
     this.setState({
       sourceAmount,
@@ -279,8 +283,8 @@ class QuickTradeContainer extends PureComponent {
 	}
 
 	isReviewDisabled = () => {
-  	const { targetAmount, sourceAmount, selectedTarget, selectedSource } = this.state;
-  	return !isLoggedIn() || !selectedTarget || !selectedSource || !targetAmount || !sourceAmount;
+  	const { targetAmount, sourceAmount, selectedTarget, selectedSource, sourceError, targetError } = this.state;
+  	return !isLoggedIn() || !selectedTarget || !selectedSource || !targetAmount || !sourceAmount || sourceError || targetError;
 	}
 
   goToPair = (pair) => {
@@ -301,6 +305,14 @@ class QuickTradeContainer extends PureComponent {
   	this.props.router.push('/wallet');
 	}
 
+	forwardSourceError = (sourceError) => {
+  		this.setState({ sourceError });
+	}
+
+	forwardTargetError = (targetError) => {
+  		this.setState({ targetError });
+	}
+
 	render() {
 		const {
 			pairData = {},
@@ -318,7 +330,8 @@ class QuickTradeContainer extends PureComponent {
 			selectedSource,
 			showQuickTradeModal,
 			pair,
-			targetOptions
+			targetOptions,
+          	side
 		} = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
@@ -342,10 +355,11 @@ class QuickTradeContainer extends PureComponent {
 						onReviewQuickTrade={this.onReviewQuickTrade}
 						onSelectTarget={this.onSelectTarget}
 						onSelectSource={this.onSelectSource}
+						side={side}
 						symbol={pair}
 						theme={activeTheme}
 						disabled={this.isReviewDisabled()}
-						orderLimits={orderLimits}
+						orderLimits={orderLimits[pair]}
 						pairs={pairs}
 						coins={coins}
 						sourceOptions={sourceOptions}
@@ -356,6 +370,8 @@ class QuickTradeContainer extends PureComponent {
 						sourceAmount={sourceAmount}
 						onChangeTargetAmount={this.onChangeTargetAmount}
 						onChangeSourceAmount={this.onChangeSourceAmount}
+						forwardSourceError={this.forwardSourceError}
+						forwardTargetError={this.forwardTargetError}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}

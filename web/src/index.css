@@ -2468,10 +2468,28 @@ table th {
 
 .quote-success-review-text {
   margin: 1rem 0 2rem;
-  font-size: 1rem; }
+  font-size: 1rem;
+  text-align: center; }
+
+.quote-success__title {
+  text-transform: uppercase;
+  font-family: Raleway;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center; }
+
+.quick-trade__icon {
+  height: 7rem;
+  width: 7rem;
+  margin-bottom: 2rem;
+  margin-right: auto;
+  margin-left: auto; }
 
 .dark-theme .quote-container {
   background-color: var(--dark-quick-trade-background); }
+
+.dark-theme .quick-trade__icon svg {
+  fill: var(--dark-font-main-text-color); }
 
 .layout-mobile .quote-container {
   background-color: transparent;
@@ -8053,9 +8071,10 @@ foreignObject {
       margin-right: 0.5rem; }
   .quick_trade-wrapper .review-block-wrapper .with_price-block_amount {
     margin: 0; }
-  .quick_trade-wrapper .input_block-error-wrapper {
+  .quick_trade-wrapper .input-group__error-wrapper {
     color: red;
-    margin-top: 0.5rem; }
+    margin-top: 0.5rem;
+    float: right; }
   .quick_trade-wrapper .input_block-wrapper {
     margin-bottom: 0; }
   .quick_trade-wrapper .input_block-title {

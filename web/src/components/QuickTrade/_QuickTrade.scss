@@ -155,9 +155,10 @@ $title-icon--height: 10rem;
 		}
 	}
 
-	.input_block-error-wrapper {
+	.input-group__error-wrapper {
 		color: red;
 		margin-top: 0.5rem;
+		float: right;
 	}
 
 	.input_block-wrapper {
