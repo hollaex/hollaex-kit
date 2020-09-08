@@ -2,8 +2,18 @@
 
 const { SERVER_PATH } = require('../constants');
 const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
-const { SECRET_MASK } = require(`${SERVER_PATH}/constants`);
-const { each } = require('lodash');
+const dbQuery = require('./database/query');
+const {
+	SECRET_MASK,
+	KIT_CONFIG_KEYS,
+	KIT_SECRETS_KEYS,
+	TECH_AUTHORIZED_KIT_CONFIG,
+	TECH_AUTHORIZED_KIT_SECRETS,
+	ROLES,
+	INIT_CHANNEL
+} = require(`${SERVER_PATH}/constants`);
+const { each, difference } = require('lodash');
+const { publisher } = require('./database/redis');
 
 /**
  * Checks if url given is a valid url.
@@ -55,11 +65,114 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
+const updateKitConfigSecrets = (data = {}, scopes) => {
+	let role = 'admin';
+
+	if (!data.kit && !data.secrets) {
+		throw new Error('No new data given');
+	}
+
+	if (scopes.indexOf(ROLES.TECH) > -1) {
+		role = 'tech';
+		let unauthorizedKeys = [];
+		if (data.kit) {
+			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.kit), TECH_AUTHORIZED_KIT_CONFIG));
+		}
+		if (data.secrets) {
+			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.secrets), TECH_AUTHORIZED_KIT_SECRETS));
+		}
+		if (unauthorizedKeys.length > 0) {
+			throw new Error(`Tech users cannot update these values: ${unauthorizedKeys}`);
+		}
+	}
+
+	return dbQuery.findOne('status', {
+		attributes: ['id', 'kit'],
+		raw: true
+	})
+		.then((status) => {
+			if (Object.keys(data.kit).length > 0) {
+				data.kit = joinKitConfig(status.kit, data.kit, role);
+			}
+			if (Object.keys(data.secrets).length > 0) {
+				data.secrets = joinKitSecrets(status.secrets, data.secrets, role);
+			}
+			return status.update(data, {
+				fields: [
+					'kit',
+					'secrets'
+				],
+				returning: true
+			});
+		})
+		.then((status) => {
+			publisher.publish(
+				INIT_CHANNEL,
+				JSON.stringify({
+					type: 'config', data: { kit: status.kit, secrets: status.secrets }
+				})
+			);
+			return {
+				kit: status.kit,
+				secrets: maskSecrets(status.secrets)
+			};
+		});
+};
+
+const updateKitConfig = (kit, scopes) => {
+	return updateKitConfigSecrets({ kit }, scopes);
+};
+
+const updateKitSecrets = (secrets, scopes) => {
+	return updateKitConfigSecrets({ secrets }, scopes);
+};
+
+const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
+	const joinedKitConfig = {};
+	KIT_CONFIG_KEYS.forEach((key) => {
+		if (newKitConfig[key]) {
+			if (!Array.isArray(existingKitConfig[key]) && typeof existingKitConfig[key] === 'object') {
+				joinedKitConfig[key] = { ...existingKitConfig[key], ...newKitConfig[key] };
+			} else {
+				joinedKitConfig[key] = newKitConfig[key];
+			}
+		} else {
+			joinedKitConfig[key] = existingKitConfig[key];
+		}
+	});
+	return joinedKitConfig;
+};
+
+const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
+	const joinedKitSecrets = {};
+	KIT_SECRETS_KEYS.forEach((key) => {
+		if (newKitSecrets[key]) {
+			if (role === 'tech' && key === 'emails' && newKitSecrets[key] && newKitSecrets[key].send_email_to_support !== existingKitSecrets[key].send_email_to_support) {
+				throw new Error('Tech users cannot update the value of send_email_copy');
+			}
+			if (!Array.isArray(existingKitSecrets[key]) && typeof existingKitSecrets[key] === 'object') {
+				if (Object.values(newKitSecrets[key]).includes(SECRET_MASK)) {
+					throw new Error('Masked value given');
+				}
+				joinedKitSecrets[key] = { ...existingKitSecrets[key], ...newKitSecrets[key] };
+			} else {
+				joinedKitSecrets[key] = newKitSecrets[key];
+			}
+		} else {
+			joinedKitSecrets[key] = existingKitSecrets[key];
+		}
+	});
+	return joinedKitSecrets;
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
 	getKitSecrets,
 	getKitCoins,
 	getKitPairs,
-	maskSecrets
+	maskSecrets,
+	updateKitConfig,
+	updateKitSecrets,
+	updateKitConfigSecrets
 };
