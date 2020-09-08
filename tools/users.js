@@ -8,10 +8,11 @@ const { SERVER_PATH, SETTING_KEYS, OMITTED_USER_FIELDS, DEFAULT_ORDER_RISK_PERCE
 const { SIGNUP_NOT_AVAILABLE, PROVIDE_VALID_EMAIL, USER_EXISTS, INVALID_PASSWORD, INVALID_VERIFICATION_CODE, USER_NOT_FOUND } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
-const { INIT_CHANNEL, ADMIN_ACCOUNT_ID } = require(`${SERVER_PATH}/constants`);
+const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKit, getSecrets, getKitCoinsConfig, getKitCoins, getKitCoin, getPairs, getNodeLib } = require(`${SERVER_PATH}/init`);
+const { getKitConfig, getKitSecrets, getKitCoins } = require('./common');
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
 const { Op } = require('sequelize');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
@@ -19,7 +20,7 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 
 const signUpUser = (email, password, referral) => {
-	if (!getKit().new_user_is_activated) {
+	if (!getKitConfig().new_user_is_activated) {
 		throw new Error(SIGNUP_NOT_AVAILABLE);
 	}
 
@@ -139,8 +140,8 @@ const checkAffiliation = (affiliationCode, user_id) => {
 	let discount = 0; // default discount rate in percentage
 	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
-			if (getSecrets().plugins.affiliation && getSecrets().plugins.affiliation.discount) {
-				discount = getSecrets().plugins.affiliation.discount;
+			if (getKitSecrets().plugins.affiliation && getKitSecrets().plugins.affiliation.discount) {
+				discount = getKitSecrets().plugins.affiliation.discount;
 			}
 
 			return getModel('affiliation').create({
@@ -552,7 +553,7 @@ const updateUserRole = (user_id, role) => {
 };
 
 const DEFAULT_SETTINGS = {
-	language: getKit().defaults.language,
+	language: getKitConfig().defaults.language,
 	orderConfirmationPopup: true
 };
 
@@ -598,9 +599,9 @@ const INITIAL_SETTINGS = () => {
 		},
 		interface: {
 			order_book_levels: 10,
-			theme: getKit().defaults.theme
+			theme: getKitConfig().defaults.theme
 		},
-		language: getKit().defaults.language,
+		language: getKitConfig().defaults.language,
 		audio: {
 			order_completed: true,
 			order_partially_completed: true,
@@ -650,6 +651,51 @@ const updateUserNote = (userId, note) => {
 		});
 };
 
+const changeUserVerificationLevelById = (userId, newLevel, domain) => {
+	if (
+		newLevel < MIN_VERIFICATION_LEVEL ||
+		newLevel > getKitConfig().user_level_number
+	) {
+		throw new Error('Invalid verification level');
+	}
+
+	let currentVerificationLevel = 0;
+	getUserByKitId(userId, false)
+		.then((user) => {
+			if (user.verification_level === 0) {
+				throw new Error('User has not verified the email');
+			}
+			currentVerificationLevel = user.verification_level;
+			return user.update(
+				{ verification_level: newLevel },
+				{ fields: ['verification_level'], returning: true }
+			);
+		})
+		.then((user) => {
+			if (currentVerificationLevel === 1 && user.verification_level === 2) {
+				sendEmail(
+					MAILTYPE.ACCOUNT_VERIFY,
+					user.email,
+					undefined,
+					user.settings,
+					domain
+				);
+			} else if (
+				currentVerificationLevel < user.verification_level &&
+				currentVerificationLevel > 1
+			) {
+				sendEmail(
+					MAILTYPE.ACCOUNT_UPGRADE,
+					user.email,
+					user.verification_level,
+					user.settings,
+					domain
+				);
+			}
+			return;
+		});
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -671,5 +717,6 @@ module.exports = {
 	getUserBalanceByKitId,
 	getAllUsersAdmin,
 	updateUserRole,
-	updateUserNote
+	updateUserNote,
+	changeUserVerificationLevelById
 };
