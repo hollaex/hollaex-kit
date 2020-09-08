@@ -1150,6 +1150,29 @@ paths:
         - supervisor
         - support
         - kyc
+  /admin/balance:
+    x-swagger-router-controller: admin
+    get:
+      description: Get Admin bank balance
+      operationId: getAdminBalance
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              balance:
+                type: number
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins

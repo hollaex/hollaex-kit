@@ -5,6 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
 const { ADMIN_ACCOUNT_ID } = require('../../constants');
 const { parse } = require('json2csv');
+const { SERVICE_NOT_AVAILABLE } = require('../../messages');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -243,7 +244,7 @@ const activateUser = (req, res) => {
 			const message = `Account ${user.email} has been ${
 				activated ? 'activated' : 'deactivated'
 			}`;
-			res.json({ message });
+			return res.json({ message });
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -251,8 +252,18 @@ const activateUser = (req, res) => {
 				'controllers/admin/activateUser',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
+};
+
+const getAdminBalance = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getAdminUserBalance/auth',
+		req.auth
+	);
+	// TODO
+	return res.status(400).json({ message: SERVICE_NOT_AVAILABLE });
 };
 
 module.exports = {
@@ -265,5 +276,6 @@ module.exports = {
 	getAdminUserOrders,
 	adminCancelOrder,
 	getAdminUserTrades,
-	activateUser
+	activateUser,
+	getAdminBalance
 };
