@@ -779,6 +779,49 @@ const getUserAudits = (userId, limit, page, startDate, endDate, format) => {
 		});
 };
 
+const getTransactions = (type, kitId, currency, limit, page, orderBy, order, startDate, endDate, format) => {
+	let promiseQuery;
+	if (kitId) {
+		if (type === 'deposit') {
+			promiseQuery = getUserByKitId(kitId, false)
+				.then((user) => {
+					return getNodeLib().getAllDepositNetwork(user.network_id, currency, limit, page, orderBy, order, startDate, endDate);
+				});
+		} else if (type === 'withdrawal') {
+			promiseQuery = getUserByKitId(kitId, false)
+				.then((user) => {
+					return getNodeLib().getAllWithdrawalNetwork(user.network_id, currency, limit, page, orderBy, order, startDate, endDate);
+				});
+		}
+	} else {
+		if (type === 'deposit') {
+			promiseQuery = getNodeLib().getAllDepositNetwork(undefined, currency, limit, page, orderBy, order, startDate, endDate);
+		} else if (type === 'withdrawal') {
+			promiseQuery = getNodeLib().getAllWithdrawalNetwork(undefined, currency, limit, page, orderBy, order, startDate, endDate);
+		}
+	}
+	return promiseQuery
+		.then((transactions) => {
+			if (format) {
+				if (transactions.data.length === 0) {
+					throw new Error('No data found');
+				}
+				const csv = parse(transactions.data, Object.keys(transactions.data[0]));
+				return csv;
+			} else {
+				return transactions;
+			}
+		});
+};
+
+const getUserDepositsByKitId = (kitId, currency, limit, page, orderBy, order, startDate, endDate, format) => {
+	return getTransactions('deposit', kitId, currency, limit, page, orderBy, order, startDate, endDate, format);
+};
+
+const getUserWithdrawalsByKitId = (kitId, currency, limit, page, orderBy, order, startDate, endDate, format) => {
+	return getTransactions('withdrawal', kitId, currency, limit, page, orderBy, order, startDate, endDate, format);
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -805,5 +848,7 @@ module.exports = {
 	deactivateUserOtpById,
 	toggleFlaggedUserById,
 	getUserLogins,
-	getUserAudits
+	getUserAudits,
+	getUserDepositsByKitId,
+	getUserWithdrawalsByKitId
 };
