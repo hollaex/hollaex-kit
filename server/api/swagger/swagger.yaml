@@ -1390,6 +1390,236 @@ paths:
         - supervisor
         - support
         - kyc
+  /admin/deposits:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getDeposits
+      description: Obtain a list of deposits.
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the deposit
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the deposit. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the deposit.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the deposit.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            items:
+              $ref: "#/definitions/TransactionResponse"
+        202:
+          description: Success
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/withdrawals:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getWithdrawals
+      description: Obtain a list of withdrawals.
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            items:
+              $ref: "#/definitions/TransactionResponse"
+        202:
+          description: Success
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
@@ -2828,3 +3058,40 @@ definitions:
             timestamp:
               type: string
               format: date-time
+  TransactionResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      transaction_id:
+        type: string
+      user_id:
+        description: User that receives the deposit
+        type: number
+        format: int64
+      currency:
+        type: string
+      amount:
+        type: number
+        format: double
+      type:
+        type: string
+        enum:
+          - deposit
+          - withdrawal
+      fee:
+        type: number
+        format: double
+      status:
+        type: boolean
+        description: Status of the deposit. False = "Pending"; True = "Completed"
+      dissmissed:
+        type: boolean
+        description: Transaction has been dissmissed, it means canceled
+      rejected:
+        type: boolean
+        description: Transaction has been rejected by payment service
+      description:
+        type: string
+        maxLength: 255
+        description: Transaction description
