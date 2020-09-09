@@ -66,7 +66,7 @@ const signUpUser = (email, password, referral) => {
 		});
 };
 
-const verifyUser = (email, code) => {
+const verifyUser = (email, code, domain) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return dbQuery.findOne('user',
 			{ where: { email } },
@@ -101,6 +101,15 @@ const verifyUser = (email, code) => {
 				return user.update({
 					network_id: networkUser.id
 				}, { returning: true, transaction });
+			})
+			.then((user) => {
+				sendEmail(
+					MAILTYPE.WELCOME,
+					user.email,
+					user.settings,
+					domain
+				);
+				return;
 			});
 	});
 };
