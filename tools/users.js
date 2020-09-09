@@ -8,7 +8,7 @@ const { SERVER_PATH, SETTING_KEYS, OMITTED_USER_FIELDS, DEFAULT_ORDER_RISK_PERCE
 const { SIGNUP_NOT_AVAILABLE, PROVIDE_VALID_EMAIL, USER_EXISTS, INVALID_PASSWORD, INVALID_VERIFICATION_CODE, USER_NOT_FOUND } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
-const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL } = require(`${SERVER_PATH}/constants`);
+const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins } = require('./common');
@@ -285,7 +285,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 			return { count, data };
 		})
 		.then((users) => {
-			if (format.value) {
+			if (format) {
 				if (users.data.length === 0) {
 					throw new Error('No data found');
 				}
@@ -736,7 +736,7 @@ const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
 
 	return dbQuery.findAndCountAllWithRows('login', options)
 		.then((logins) => {
-			if (format.value) {
+			if (format) {
 				if (logins.data.length === 0) {
 					throw new Error('No data found');
 				}
@@ -744,6 +744,37 @@ const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
 				return csv;
 			} else {
 				return logins;
+			}
+		});
+};
+
+const getUserAudits = (userId, limit, page, startDate, endDate, format) => {
+	const pagination = paginationQuery(limit, page);
+	const timeframe = timeframeQuery(startDate, endDate);
+	let options = {
+		where: {},
+		order:[['timestamp', 'desc']]
+	};
+
+	if (!format) {
+		options = { ...options, ...pagination };
+	}
+
+	if (userId) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${userId}'`);
+
+	if (timeframe) options.where.timestamp = timeframe;
+
+	return dbQuery.findAndCountAllWithRows('audit', options)
+		.then((audits) => {
+			if (format) {
+				if (audits.data.length === 0) {
+					throw new Error('No data found');
+				}
+				const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
+				const csv = parse(flatData, AUDIT_KEYS);
+				return csv;
+			} else {
+				return audits;
 			}
 		});
 };
@@ -773,5 +804,6 @@ module.exports = {
 	changeUserVerificationLevelById,
 	deactivateUserOtpById,
 	toggleFlaggedUserById,
-	getUserLogins
+	getUserLogins,
+	getUserAudits
 };
