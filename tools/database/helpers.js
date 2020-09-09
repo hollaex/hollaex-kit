@@ -38,7 +38,6 @@ const timeframeQuery = (startDate = undefined, endDate = undefined) => {
 	let timestamp = {};
 	if (startDate) timestamp['$gte'] = startDate;
 	if (endDate) timestamp['$lte'] = endDate;
-	if (Object.entries(timestamp).length === 0) return undefined;
 	return timestamp;
 };
 
