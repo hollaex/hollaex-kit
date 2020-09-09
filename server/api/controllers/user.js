@@ -1,21 +1,6 @@
 'use strict';
 
-const { all } = require('bluebird');
 const { isEmail, isUUID } = require('validator');
-const {
-	createResetPasswordCode,
-	setUsedResetPasswordCode,
-} = require('../helpers/auth');
-const {
-	isValidUsername,
-	checkUsernameIsTaken,
-	registerLogin,
-	findUserLogins
-} = require('../helpers/user');
-const {
-	getAffiliationCount
-} = require('../helpers/affiliation');
-const { getPagination, getTimeframe } = require('../helpers/general');
 const { signFreshdesk, signZendesk } = require('../helpers/plugins');
 const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
@@ -27,12 +12,7 @@ const {
 	USER_REGISTERED,
 	INVALID_USERNAME,
 	USER_NOT_FOUND,
-	USERNAME_CANNOT_BE_CHANGED,
 	SERVICE_NOT_SUPPORTED,
-	USER_NOT_VERIFIED,
-	USER_NOT_ACTIVATED,
-	INVALID_CREDENTIALS,
-	INVALID_OTP_CODE,
 	INVALID_PASSWORD,
 	VERIFICATION_EMAIL_MESSAGE
 } = require('../../messages');
@@ -302,7 +282,7 @@ const setUsername = (req, res) => {
 	const { id } = req.auth.sub;
 	const { username } = req.swagger.params.data.value;
 
-	if (!isValidUsername(username)) {
+	if (!toolsLib.users.isValidUsername(username)) {
 		loggerUser.error(req.uuid, 'controllers/user/setUsername', INVALID_USERNAME);
 		return res.status(400).json({ message: INVALID_USERNAME });
 	}
