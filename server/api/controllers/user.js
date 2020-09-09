@@ -297,7 +297,7 @@ const changePassword = (req, res) => {
 };
 
 const setUsername = (req, res) => {
-	loggerUser.debug(req.uuid, 'controllers/user/setUsername', req.auth.sub);
+	loggerUser.debug(req.uuid, 'controllers/user/setUsername auth', req.auth.sub);
 
 	const { id } = req.auth.sub;
 	const { username } = req.swagger.params.data.value;
@@ -316,33 +316,33 @@ const setUsername = (req, res) => {
 };
 
 const getUserLogins = (req, res) => {
+	loggerUser.debug(req.uuid, 'controllers/user/getUserLogins auth', req.auth.sub);
+
 	const user_id = req.auth.sub.id;
 	const { limit, page, start_date, end_date } = req.swagger.params;
 
-	findUserLogins(user_id, getPagination(limit, page), getTimeframe(start_date, end_date))
+	toolsLib.getUserLogins(user_id, limit.value, page.value, start_date.value, end_date.value)
 		.then((logins) => {
 			return res.json(logins);
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err);
-			return res
-				.status(err.status || 400)
-				.json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 const affiliationCount = (req, res) => {
+	loggerUser.debug(req.uuid, 'controllers/user/affiliationCount auth', req.auth.sub);
+
 	const user_id = req.auth.sub.id;
-	getAffiliationCount(user_id)
+	toolsLib.users.getAffiliationCount(user_id)
 		.then((num) => {
 			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', num);
 			return res.json({ count: num });
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err);
-			return res
-				.status(err.status || 400)
-				.json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
