@@ -298,42 +298,16 @@ const changePassword = (req, res) => {
 
 const setUsername = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/setUsername', req.auth.sub);
-	loggerUser.debug(
-		req.uuid,
-		'controllers/user/setUsername',
-		req.swagger.params.data.value
-	);
+
 	const { id } = req.auth.sub;
 	const { username } = req.swagger.params.data.value;
 
 	if (!isValidUsername(username)) {
+		loggerUser.error(req.uuid, 'controllers/user/setUsername', INVALID_USERNAME);
 		return res.status(400).json({ message: INVALID_USERNAME });
 	}
 
-	toolsLib.users.getUserByKitId(id, false)
-		.then((user) => {
-			loggerUser.debug(
-				req.uuid,
-				'controllers/user/setUsername',
-				user.dataValues
-			);
-			if (user.settings.usernameIsSet) {
-				throw new Error(USERNAME_CANNOT_BE_CHANGED);
-			}
-			return all([user, checkUsernameIsTaken(username)]);
-		})
-		.then(([ user ]) => {
-			return user.update(
-				{
-					username,
-					settings: {
-						...user.settings,
-						usernameIsSet: true
-					}
-				},
-				{ fields: ['username', 'settings'] }
-			);
-		})
+	toolsLib.users.setUsernameById(id, username)
 		.then(() => res.json({ message: 'Username successfully changed' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/setUsername', err);
