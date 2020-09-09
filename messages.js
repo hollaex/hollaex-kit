@@ -25,3 +25,6 @@ exports.INVALID_OTP_CODE = 'Invalid OTP Code';
 exports.SERVICE_NOT_SUPPORTED = 'This service is not supported';
 exports.USERNAME_CANNOT_BE_CHANGED = 'Username can not be changed';
 exports.USERNAME_IS_TAKEN = 'Username is already taken. Select a different username';
+exports.TOKEN_OTP_MUST_BE_ENABLED = 'OTP must be enabled to create a token';
+exports.TOKEN_NOT_FOUND = 'Token not found';
+exports.TOKEN_REVOKED = 'Token is already revoked';

@@ -1,5 +1,6 @@
 'use strict';
 
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { intersection } = require('lodash');
 const {
@@ -11,10 +12,13 @@ const {
 	DEACTIVATED_USER,
 	INVALID_CAPTCHA,
 	INVALID_OTP_CODE,
-	INVALID_PASSWORD
+	INVALID_PASSWORD,
+	TOKEN_OTP_MUST_BE_ENABLED,
+	TOKEN_NOT_FOUND,
+	TOKEN_REVOKED
 } = require('../messages');
 const { SERVER_PATH } = require('../constants');
-const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET } = require(`${SERVER_PATH}/constants`);
+const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET, TOKEN_TYPES, HMAC_TOKEN_EXPIRY } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
 const { getKitSecrets, getKitConfig } = require('./common');
 const { getUserByEmail, getUserByKitId } = require('./users');
@@ -408,6 +412,127 @@ const changeUserPassword = (email, oldPassword, newPassword) => {
 		});
 };
 
+const userHasOtpEnabled = (userId) => {
+	return getUserByKitId(userId)
+		.then((user) => {
+			return user.otp_enabled;
+		});
+};
+
+const checkUserOtpActive = (userId, otpCode) => {
+	return all([
+		getUserByKitId(userId),
+		verifyOtpBeforeAction(userId, otpCode)
+	]).then(([user, validOtp]) => {
+		if (!user.otp_enabled) {
+			throw new Error(TOKEN_OTP_MUST_BE_ENABLED);
+		} else if (!validOtp) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+		return;
+	});
+};
+
+const maskToken = (token = '') => {
+	return token.substr(0, 3) + '********';
+};
+/*
+  Function that transform the token object from the db to a formated object
+  Takes one parameter:
+
+  Parameter 1(object): token object from the db
+
+  Retuns a json objecet
+*/
+const formatTokenObject = (tokenData) => ({
+	id: tokenData.id,
+	name: tokenData.name,
+	apiKey: tokenData.key,
+	secret: maskToken(tokenData.secret),
+	active: tokenData.active,
+	revoked: tokenData.revoked,
+	expiry: tokenData.expiry,
+	created: tokenData.created_at
+});
+
+const getUserKitHmacTokens = (userId) => {
+	return dbQuery.findAndCountAllWithRows('token', {
+		where: {
+			user_id: userId,
+			role: TOKEN_TYPES.HMAC
+		},
+		attributes: {
+			exclude: ['user_id', 'updated_at']
+		},
+		order: [['created_at', 'DESC'], ['id', 'ASC']],
+	})
+		.then(({ count, data }) => {
+			const result = {
+				count: count,
+				data: data.map(formatTokenObject)
+			};
+			return result;
+		});
+};
+
+const createUserKitHmacToken = (userId, otpCode, ip, name) => {
+	const key = crypto.randomBytes(20).toString('hex');
+	const secret = crypto.randomBytes(25).toString('hex');
+	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
+
+	return checkUserOtpActive(userId, otpCode)
+		.then(() => {
+			return getModel('token').create({
+				user_id: userId,
+				ip,
+				key,
+				secret,
+				expiry,
+				role: ROLES.USER,
+				type: TOKEN_TYPES.HMAC,
+				name,
+				active: true,
+			});
+		})
+		.then(() => {
+			return {
+				id: userId,
+				key: {
+					apiKey: key,
+					secret
+				}
+			};
+		});
+};
+
+const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
+	return checkUserOtpActive(userId, otpCode)
+		.then(() => {
+			return dbQuery.findOne('token', {
+				where: {
+					id: tokenId,
+					user_id: userId
+				},
+				raw: true
+			});
+		})
+		.then((token) => {
+			if (!token) {
+				throw new Error(TOKEN_NOT_FOUND);
+			} else if (token.revoked) {
+				throw new Error(TOKEN_REVOKED);
+			}
+			return token.update(
+				{
+					active: false,
+					revoked: true
+				},
+				{ fields: ['active', 'revoked'], returning: true }
+			);
+		})
+		.then(formatTokenObject);
+};
+
 module.exports = {
 	verifyBearerToken,
 	userScopeIsValid,
@@ -425,5 +550,9 @@ module.exports = {
 	createOtp,
 	sendResetPasswordCode,
 	resetUserPassword,
-	changeUserPassword
+	changeUserPassword,
+	getUserKitHmacTokens,
+	userHasOtpEnabled,
+	createUserKitHmacToken,
+	deleteUserKitHmacToken
 };
