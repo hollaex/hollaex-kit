@@ -124,14 +124,8 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	toolsLib.auth.verifyUser(email, verification_code)
-		.then((user) => {
-			sendEmail(
-				MAILTYPE.WELCOME,
-				user.email,
-				user.settings,
-				domain
-			);
+	toolsLib.auth.verifyUser(email, verification_code, domain)
+		.then(() => {
 			return res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {
