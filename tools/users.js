@@ -706,6 +706,16 @@ const deactivateUserOtpById = (userId) => {
 		});
 };
 
+const toggleFlaggedUserById = (userId) => {
+	return getUserByKitId(userId, false)
+		.then((user) => {
+			return user.update(
+				{ flagged: !user.flagged },
+				{ fields: ['flagged'] }
+			);
+		});
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -729,5 +739,6 @@ module.exports = {
 	updateUserRole,
 	updateUserNote,
 	changeUserVerificationLevelById,
-	deactivateUserOtpById
+	deactivateUserOtpById,
+	toggleFlaggedUserById
 };
