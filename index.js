@@ -368,6 +368,19 @@ class HollaEx {
 		);
 	}
 
+	getUserNetwork(userId) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/user?user_id=${userId}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
 	/**
 	 * Get all users for the exchange on the network
 	 * @return {object} Fields: Count, Data. Count is the number of users for the exchange on the network. Data is an array of users
@@ -382,6 +395,21 @@ class HollaEx {
 			verb,
 			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
+		);
+	}
+
+	createUserCryptoAddress(userId, crypto) {
+		checkKit(this.exchange_id);
+		const verb = 'POST';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/create-address?user_id=${userId}&crypto=${crypto}`;
+		const data = {};
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers,
+			data
 		);
 	}
 
