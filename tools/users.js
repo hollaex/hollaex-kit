@@ -716,6 +716,38 @@ const toggleFlaggedUserById = (userId) => {
 		});
 };
 
+const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
+	const pagination = paginationQuery(limit, page);
+	const timeframe = timeframeQuery(startDate, endDate);
+	let options = {
+		where: {},
+		attributes: {
+			exclude: ['id', 'origin', 'referer']
+		},
+		order: [['timestamp', 'desc']]
+	};
+	if (!format) {
+		options = { ...options, ...pagination};
+	}
+
+	if (userId) options.where.user_id = userId;
+
+	if (timeframe) options.where.timestamp = timeframe;
+
+	return dbQuery.findAndCountAllWithRows('login', options)
+		.then((logins) => {
+			if (format.value) {
+				if (logins.data.length === 0) {
+					throw new Error('No data found');
+				}
+				const csv = parse(logins.data, Object.keys(logins.data[0]));
+				return csv;
+			} else {
+				return logins;
+			}
+		});
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -740,5 +772,6 @@ module.exports = {
 	updateUserNote,
 	changeUserVerificationLevelById,
 	deactivateUserOtpById,
-	toggleFlaggedUserById
+	toggleFlaggedUserById,
+	getUserLogins
 };
