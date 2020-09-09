@@ -242,6 +242,14 @@ const checkAffiliation = (affiliationCode, user_id) => {
 		});
 };
 
+const getAffiliationCount = (userId) => {
+	return getModel('affiliation').count({
+		where: {
+			referer_id: userId
+		}
+	});
+};
+
 /**
  *
  * @param {object} user - User object
@@ -901,11 +909,9 @@ const getUserWithdrawalsByKitId = (kitId, currency, limit, page, orderBy, order,
 };
 
 const checkUsernameIsTaken = (username) => {
-	return dbQuery.findAll('user', {
-		where: { username }
-	})
-		.then((users) => {
-			if (users.length > 0) {
+	return getModel('user').count({ where: { username }})
+		.then((count) => {
+			if (count > 0) {
 				throw new Error(USERNAME_IS_TAKEN);
 			} else {
 				return true;
@@ -965,5 +971,6 @@ module.exports = {
 	getUserAudits,
 	getUserDepositsByKitId,
 	getUserWithdrawalsByKitId,
-	setUsernameById
+	setUsernameById,
+	getAffiliationCount
 };
