@@ -332,11 +332,33 @@ const getUserBalance = (req, res) => {
 
 	toolsLib.users.getUserBalanceByKitId(user_id)
 		.then((balance) => {
-			res.json(balance);
+			return res.json(balance);
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const deactivateUser = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/deactivateUser/auth',
+		req.auth
+	);
+	const { id, email } = req.auth.sub;
+
+	toolsLib.users.freezeUserById(id)
+		.then(() => {
+			return res.json({ message: `Account ${email} deactivated` });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/deactivateUser',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -354,5 +376,6 @@ module.exports = {
 	setUsername,
 	getUserLogins,
 	affiliationCount,
-	getUserBalance
+	getUserBalance,
+	deactivateUser
 };

@@ -423,41 +423,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
-  /user/request-withdrawal:
-    x-swagger-router-controller: withdrawals
-    post:
-      operationId: requestWithdrawal
-      description: This will send a confirmation email to the email address on record, if activate OTP, it will require OTP as well.
-      tags:
-        - User
-        - Withdraw
-      parameters:
-        - name: data
-          description: withdrawal information
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/WithdrawalRequest"
-      responses:
-        200:
-          description: Success
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-              transaction_id:
-                type: string
-              fee:
-                type: string
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - user
   /user/request-otp:
     x-swagger-router-controller: otp
     get:
@@ -542,6 +507,26 @@ paths:
             $ref: "#/definitions/MessageResponse"
         403:
           description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/deactivate:
+    x-swagger-router-controller: user
+    get:
+      operationId: deactivateUser
+      description: Deactivate the user account
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
         default:
