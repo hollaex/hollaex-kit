@@ -660,7 +660,7 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 	}
 
 	let currentVerificationLevel = 0;
-	getUserByKitId(userId, false)
+	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (user.verification_level === 0) {
 				throw new Error('User has not verified the email');
@@ -696,6 +696,16 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 		});
 };
 
+const deactivateUserOtpById = (userId) => {
+	return getUserByKitId(userId, false)
+		.then((user) => {
+			return user.update(
+				{ otp_enabled: false },
+				{ fields: [ 'otp_enabled' ]}
+			);
+		});
+};
+
 module.exports = {
 	getUserByEmail,
 	getUserByKitId,
@@ -718,5 +728,6 @@ module.exports = {
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
-	changeUserVerificationLevelById
+	changeUserVerificationLevelById,
+	deactivateUserOtpById
 };
