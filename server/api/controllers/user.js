@@ -210,6 +210,7 @@ const requestResetPassword = (req, res) => {
 			if (err.message === USER_NOT_FOUND) {
 				return res.json({ message: `Password request sent to: ${email}` });
 			}
+			loggerUser.error(req.uuid, 'controllers/user/requestResetPassword', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -217,6 +218,7 @@ const requestResetPassword = (req, res) => {
 const resetPassword = (req, res) => {
 	const { code, new_password } = req.swagger.params.data.value;
 	if (!toolsLib.auth.isValidPassword(new_password)) {
+		loggerUser.error(req.uuid, 'controllers/user/resetPassword', INVALID_PASSWORD);
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
@@ -225,6 +227,7 @@ const resetPassword = (req, res) => {
 			return res.json({ message: 'Password updated.' });
 		})
 		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/resetPassword', err);
 			return res.status(err.status || 400).json({ message: 'Invalid code' });
 		});
 };
@@ -285,20 +288,7 @@ const changePassword = (req, res) => {
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
-	toolsLib.users.getUserByEmail(email, false)
-		.then((user) => {
-			return toolsLib.auth.validatePassword(user.password, old_password).then(
-				(isPasswordValid) => {
-					if (!isPasswordValid) {
-						throw new Error('Invalid password');
-					}
-					return user;
-				}
-			);
-		})
-		.then((user) => {
-			return user.update({ password: new_password });
-		})
+	toolsLib.users.changeUserPassword(email, old_password, new_password)
 		.then(() => res.json({ message: 'Success' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err);
