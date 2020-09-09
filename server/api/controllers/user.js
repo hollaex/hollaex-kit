@@ -202,18 +202,8 @@ const requestResetPassword = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	const captcha = req.swagger.params.captcha.value;
 
-	toolsLib.dbs.getUserValuesByEmail(email)
-		.then((user) => {
-			return all([createResetPasswordCode(user.id), user, toolsLib.auth.checkCaptcha(captcha, ip)]);
-		})
-		.then(([code, user]) => {
-			sendEmail(
-				MAILTYPE.RESET_PASSWORD,
-				email,
-				{ code, ip },
-				user.settings,
-				domain
-			);
+	toolsLib.auth.sendResetPasswordCode(email, captcha, ip, domain)
+		.then(() => {
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
 		.catch((err) => {
