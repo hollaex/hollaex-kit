@@ -18,3 +18,9 @@ exports.USER_EXISTS = 'User already exists';
 exports.INVALID_VERIFICATION_CODE = 'Invalid verification code';
 exports.INVALID_CAPTCHA = 'Invalid captcha';
 exports.INVALID_OTP_CODE = 'Invalid OTP Code';
+exports.USER_NOT_VERIFIED = 'User is not verified';
+exports.USER_NOT_ACTIVATED = 'User is not activated';
+exports.INVALID_CREDENTIALS = 'Credentials incorrect';
+exports.INVALID_OTP_CODE = 'Invalid OTP Code';
+exports.SERVICE_NOT_SUPPORTED = 'This service is not supported';
+

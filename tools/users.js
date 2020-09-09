@@ -4,8 +4,24 @@ const { getModel } = require('./database').model;
 const dbQuery = require('./database').query;
 const { has, omit, pick, each } = require('lodash');
 const { isEmail } = require('validator');
-const { SERVER_PATH, SETTING_KEYS, OMITTED_USER_FIELDS, DEFAULT_ORDER_RISK_PERCENTAGE } = require('../constants');
-const { SIGNUP_NOT_AVAILABLE, PROVIDE_VALID_EMAIL, USER_EXISTS, INVALID_PASSWORD, INVALID_VERIFICATION_CODE, USER_NOT_FOUND } = require('../messages');
+const {
+	SERVER_PATH,
+	SETTING_KEYS,
+	OMITTED_USER_FIELDS,
+	DEFAULT_ORDER_RISK_PERCENTAGE
+} = require('../constants');
+const {
+	SIGNUP_NOT_AVAILABLE,
+	PROVIDE_VALID_EMAIL,
+	USER_EXISTS,
+	INVALID_PASSWORD,
+	INVALID_VERIFICATION_CODE,
+	USER_NOT_FOUND,
+	USER_NOT_VERIFIED,
+	USER_NOT_ACTIVATED,
+	INVALID_CREDENTIALS,
+	INVALID_OTP_CODE
+} = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
 const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS } = require(`${SERVER_PATH}/constants`);
@@ -16,6 +32,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
 const { Op } = require('sequelize');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
+const { validatePassword, checkCaptcha, verifyOtpBeforeAction } = require('./auth');
 const { parse } = require('json2csv');
 const flatten = require('flat');
 
@@ -94,7 +111,7 @@ const verifyUser = (email, code, domain) => {
 				return all([
 					user,
 					getNodeLib().createUserNetwork(email),
-					code.update({ verified: true }, { returning: true, transaction })
+					code.update({ verified: true }, { transaction })
 				]);
 			})
 			.then(([ user, networkUser ]) => {
@@ -111,6 +128,56 @@ const verifyUser = (email, code, domain) => {
 				);
 				return;
 			});
+	});
+};
+
+const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer) => {
+	return getUserByEmail(email.toLowerCase())
+		.then((user) => {
+			if (user.verification_level === 0) {
+				throw new Error(USER_NOT_VERIFIED);
+			} else if (!user.activated) {
+				throw new Error(USER_NOT_ACTIVATED);
+			}
+			return all([
+				user,
+				validatePassword(user.password, password)
+			]);
+		})
+		.then(([ user, passwordIsValid ]) => {
+			if (!passwordIsValid) {
+				throw new Error(INVALID_CREDENTIALS);
+			}
+
+			if (!user.otp_enabled) {
+				return all([ user, checkCaptcha(captcha, ip) ]);
+			} else {
+				return all([
+					user,
+					verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+						if (!validOtp) {
+							throw new Error(INVALID_OTP_CODE);
+						} else {
+							return checkCaptcha(captcha, ip);
+						}
+					})
+				]);
+			}
+		})
+		.then(([ user ]) => {
+			registerUserLogin(user.id, ip, device, domain, origin, referer);
+			return user;
+		});
+};
+
+const registerUserLogin = (userId, ip, device = '', domain = '', origin = '', referer = '') => {
+	return getModel('login').create({
+		user_id: userId,
+		ip,
+		device,
+		domain,
+		origin,
+		referer
 	});
 };
 
@@ -832,6 +899,7 @@ const getUserWithdrawalsByKitId = (kitId, currency, limit, page, orderBy, order,
 };
 
 module.exports = {
+	loginUser,
 	getUserByEmail,
 	getUserByKitId,
 	getUserByNetworkId,
