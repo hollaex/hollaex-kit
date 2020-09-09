@@ -16,7 +16,7 @@ const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
 const { getKitSecrets, getKitConfig } = require('./common');
-const { getUserValuesByEmail } = require('./users');
+const { getUserValuesByEmail, getUserByKitId } = require('./users');
 const dbQuery = require('./database').query;
 const otp = require('otp');
 const bcrypt = require('bcryptjs');
@@ -332,6 +332,18 @@ const setActiveUserOtp = (user_id) => {
 	});
 };
 
+const getResetPasswordCode = (code) => {
+	return dbQuery.findOne('reset password code', { where: { code } })
+		.then((code) => {
+			if (!code) {
+				const error = new Error('Code not found');
+				error.status = 404;
+				throw error;
+			}
+			return code;
+		});
+};
+
 const createResetPasswordCode = (userId) => {
 	return dbQuery.findOne('reset password code', {
 		where: { user_id: userId, used: false },
@@ -366,6 +378,18 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 		});
 };
 
+const resetUserPassword = (resetPasswordCode, password) => {
+	return getResetPasswordCode(resetPasswordCode)
+		.then((code) => {
+			if (code.used) {
+				throw new Error('Code is already used');
+			}
+			return code.update({ used: true }, { fields: ['used'] });
+		})
+		.then((code) => getUserByKitId(code.user_id, false))
+		.then((user) => user.update({ password }, { fields: ['password'] }));
+};
+
 module.exports = {
 	verifyBearerToken,
 	userScopeIsValid,
@@ -381,5 +405,6 @@ module.exports = {
 	setActiveUserOtp,
 	updateUserOtpEnabled,
 	createOtp,
-	sendResetPasswordCode
+	sendResetPasswordCode,
+	resetUserPassword
 };
