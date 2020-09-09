@@ -423,7 +423,7 @@ const getUser = (opts = {}, rawData = true) => {
 	})
 		.then((user) => {
 			if (!user) {
-				throw new Error('User does not exist');
+				throw new Error(USER_NOT_FOUND);
 			} else {
 				return user;
 			}

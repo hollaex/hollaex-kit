@@ -16,10 +16,15 @@ const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
 const { getKitSecrets, getKitConfig } = require('./common');
+const { getUserValuesByEmail } = require('./users');
 const dbQuery = require('./database').query;
 const otp = require('otp');
 const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
+const uuid = require('uuid/v4');
+const { all } = require('bluebird');
+const { sendEmail } = require(`${SERVER_PATH}/mail`);
+const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 
 /**
  * Express middleware function that checks validity of bearer token.
@@ -327,6 +332,40 @@ const setActiveUserOtp = (user_id) => {
 	});
 };
 
+const createResetPasswordCode = (userId) => {
+	return dbQuery.findOne('reset password code', {
+		where: { user_id: userId, used: false },
+		attributes: ['code']
+	})
+		.then((code) => {
+			if (code) {
+				return code;
+			}
+			return getModel('reset password code').create({
+				user_id: userId,
+				code: uuid()
+			});
+		})
+		.then((code) => code.code);
+};
+
+const sendResetPasswordCode = (email, captcha, ip, domain) => {
+	return getUserValuesByEmail(email)
+		.then((user) => {
+			return all([ createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip) ]);
+		})
+		.then(([ code, user ]) => {
+			sendEmail(
+				MAILTYPE.RESET_PASSWORD,
+				email,
+				{ code, ip },
+				user.settings,
+				domain
+			);
+			return;
+		});
+};
+
 module.exports = {
 	verifyBearerToken,
 	userScopeIsValid,
@@ -341,5 +380,6 @@ module.exports = {
 	findUserOtp,
 	setActiveUserOtp,
 	updateUserOtpEnabled,
-	createOtp
+	createOtp,
+	sendResetPasswordCode
 };
