@@ -203,18 +203,14 @@ const getAdminUserTrades = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol=' });
 	}
 
-	toolsLib.order.getAllUserTradesNetworkByKidId(user_id, symbol, limit, page, order_by, order, start_date, end_date)
-		.then((trades) => {
+	toolsLib.order.getAllUserTradesNetworkByKidId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+		.then((data) => {
 			if (format.value) {
-				if (trades.data.length === 0) {
-					throw new Error('No data found');
-				}
-				const csv = parse(trades.data, Object.keys(trades.data[0]));
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-trades.csv`);
 				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(csv);
+				return res.status(202).send(data);
 			} else {
-				return res.json(trades);
+				return res.json(data);
 			}
 		})
 		.catch((err) => {
@@ -319,11 +315,40 @@ const flagUser = (req, res) => {
 
 	toolsLib.users.toggleFlaggedUserById(user_id)
 		.then(() => {
-			res.json({ message: 'Success' });
+			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/flagUser', err.message);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getAdminUserLogins = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getAdminUserLogins/auth',
+		req.auth
+	);
+	const user_id = req.swagger.params.user_id.value;
+	const { limit, page, start_date, end_date, format } = req.swagger.params;
+
+	toolsLib.users.getUserLogins(user_id.value, limit.value, page.value, start_date.value, end_date.value, format.value)
+		.then((data) => {
+			if (format.value) {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getAdminUserLogins/catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -341,5 +366,6 @@ module.exports = {
 	getAdminBalance,
 	upgradeUser,
 	deactivateOtpAdmin,
-	flagUser
+	flagUser,
+	getAdminUserLogins
 };
