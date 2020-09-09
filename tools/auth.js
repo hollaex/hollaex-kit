@@ -16,7 +16,7 @@ const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
 const { getKitSecrets, getKitConfig } = require('./common');
-const { getUserValuesByEmail, getUserByKitId } = require('./users');
+const { getUserByEmail, getUserByKitId } = require('./users');
 const dbQuery = require('./database').query;
 const otp = require('otp');
 const bcrypt = require('bcryptjs');
@@ -362,7 +362,7 @@ const createResetPasswordCode = (userId) => {
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
-	return getUserValuesByEmail(email)
+	return getUserByEmail(email)
 		.then((user) => {
 			return all([ createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip) ]);
 		})
