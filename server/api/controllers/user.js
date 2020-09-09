@@ -6,7 +6,6 @@ const {
 	createResetPasswordCode,
 	setUsedResetPasswordCode,
 } = require('../helpers/auth');
-const { signFreshdesk, signZendesk } = require('../helpers/support');
 const {
 	isValidUsername,
 	checkUsernameIsTaken,
@@ -17,6 +16,7 @@ const {
 	getAffiliationCount
 } = require('../helpers/affiliation');
 const { getPagination, getTimeframe } = require('../helpers/general');
+const { signFreshdesk, signZendesk } = require('../helpers/plugins');
 const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -149,63 +149,13 @@ const loginPost = (req, res) => {
 	const referer = req.headers.referer;
 	const time = new Date();
 
-	loggerUser.verbose(
-		req.uuid,
-		'controllers/user/loginPost',
-		email,
-		otp_code,
-		captcha,
-		service,
-		ip
-	);
-
-	toolsLib.users.getUserByEmail(email.toLowerCase())
+	toolsLib.users.loginUser(email, password, otp_code, captcha, ip, device, domain, origin, referer)
 		.then((user) => {
-			loggerUser.verbose(
-				req.uuid,
-				'controllers/user/loginPost',
-				'successful credentials',
-				user.dataValues
-			);
-			if (user.verification_level === 0) {
-				throw new Error(USER_NOT_VERIFIED);
-			} else if (!user.activated) {
-				throw new Error(USER_NOT_ACTIVATED);
-			}
-			return all([
-				user,
-				toolsLib.auth.validatePassword(user.password, password)
-			]);
-		})
-		.then(([user, isPasswordValid]) => {
-			if (!isPasswordValid) {
-				throw new Error(INVALID_CREDENTIALS);
-			}
-
-			if (!user.otp_enabled) {
-				return all([user, toolsLib.auth.checkCaptcha(captcha, ip)]);
-			} else {
-				return all([
-					user,
-					toolsLib.auth.verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
-						if (!validOtp) {
-							throw new Error(INVALID_OTP_CODE);
-						} else {
-							return all([toolsLib.auth.checkCaptcha(captcha, ip)]);
-						}
-					})
-				]);
-			}
-		})
-		.then(([user]) => {
-			loggerUser.debug(req.uuid, 'controllers/user/loginPost', ip);
 			const data = {
 				ip,
 				time,
 				device
 			};
-
-			registerLogin(user.id, ip, device, domain, origin, referer);
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			} else {
