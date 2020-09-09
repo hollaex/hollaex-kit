@@ -220,7 +220,7 @@ const resetPassword = (req, res) => {
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
 
-	setUsedResetPasswordCode(code, new_password)
+	toolsLib.auth.resetUserPassword(code, new_password)
 		.then(() => {
 			return res.json({ message: 'Password updated.' });
 		})
