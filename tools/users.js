@@ -945,6 +945,13 @@ const setUsernameById = (userId, username) => {
 		});
 };
 
+const createUserCryptoAddressByKitId = (kitId, crypto) => {
+	return getUserByKitId(kitId)
+		.then((user) => {
+			return getNodeLib().createUserCryptoAddress(user.network_id, crypto);
+		});
+};
+
 module.exports = {
 	loginUser,
 	getUserByEmail,
@@ -977,5 +984,6 @@ module.exports = {
 	getUserWithdrawalsByKitId,
 	setUsernameById,
 	getAffiliationCount,
-	isValidUsername
+	isValidUsername,
+	createUserCryptoAddressByKitId
 };
