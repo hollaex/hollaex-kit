@@ -279,7 +279,7 @@ const upgradeUser = (req, res) => {
 
 	toolsLib.users.changeUserVerificationLevelById(user_id, verification_level, domain)
 		.then(() => {
-			res.json({ message: 'Success' });
+			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -287,7 +287,7 @@ const upgradeUser = (req, res) => {
 				'controllers/admin/upgradeUser',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -301,7 +301,7 @@ const deactivateOtpAdmin = (req, res) => {
 
 	toolsLib.users.deactivateUserOtpById(user_id)
 		.then(() => {
-			res.json({ message: 'Success' });
+			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -309,6 +309,20 @@ const deactivateOtpAdmin = (req, res) => {
 				'controllers/admin/deactivateOtpAdmin',
 				err.message
 			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const flagUser = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/flagUser/auth', req.auth);
+	const { user_id } = req.swagger.params.data.value;
+
+	toolsLib.users.toggleFlaggedUserById(user_id)
+		.then(() => {
+			res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/flagUser', err.message);
 			res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -326,5 +340,6 @@ module.exports = {
 	activateUser,
 	getAdminBalance,
 	upgradeUser,
-	deactivateOtpAdmin
+	deactivateOtpAdmin,
+	flagUser
 };

@@ -1219,7 +1219,7 @@ paths:
               user_id:
                 type: number
       responses:
-        "200":
+        200:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -1232,6 +1232,39 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /admin/flag-user:
+    x-swagger-router-controller: admin
+    post:
+      description: Flag a user
+      operationId: flagUser
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: user id for flagging
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: number
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins
