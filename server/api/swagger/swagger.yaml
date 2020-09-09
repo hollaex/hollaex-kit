@@ -991,6 +991,67 @@ paths:
         - supervisor
         - support
         - kyc
+  /admin/audits:
+    x-swagger-router-controller: admin
+    get:
+      description: Get the user audits for admin
+      operationId: getUserAudits
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/AuditsResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/orders:
     x-swagger-router-controller: admin
     get:
@@ -2726,6 +2787,41 @@ definitions:
             ip:
               type: string
             device:
+              type: string
+            domain:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+  AuditsResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          required:
+            - admin_id
+            - event
+            - description
+            - ip
+            - domain
+            - timestamp
+          properties:
+            admin_id:
+              type: number
+              format: int32
+            event:
+              type: string
+            description:
+              type: object
+              properties:
+                note:
+                  type: string
+            ip:
               type: string
             domain:
               type: string
