@@ -14,7 +14,8 @@ const {
 	USER_NOT_FOUND,
 	SERVICE_NOT_SUPPORTED,
 	INVALID_PASSWORD,
-	VERIFICATION_EMAIL_MESSAGE
+	VERIFICATION_EMAIL_MESSAGE,
+	TOKEN_REMOVED
 } = require('../../messages');
 
 const signUpUser = (req, res) => {
@@ -395,6 +396,74 @@ const createCryptoAddress = (req, res) => {
 		});
 };
 
+const getHmacToken = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/getHmacToken auth', req.auth.sub);
+
+	const { id } = req.auth.sub;
+
+	toolsLib.auth.getUserKitHmacTokens(id)
+		.then((tokens) => {
+			return res.json(tokens);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/getHmacToken err',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const createHmacToken = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/createHmacToken auth',
+		req.auth.sub
+	);
+
+	const { id } = req.auth.sub;
+	const ip = req.headers['x-real-ip'];
+	const { name, otp_code } = req.swagger.params.data.value;
+
+	toolsLib.auth.createUserKitHmacToken(id, otp_code, ip, name)
+		.then((token) => {
+			return res.json(token);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/createHmacToken',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const deleteHmacToken = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/deleteHmacToken auth',
+		req.auth.sub
+	);
+
+	const { id } = req.auth.sub;
+	const { token_id, otp_code } = req.swagger.params.data.value;
+
+	toolsLib.auth.deleteUserKitHmacToken(id, otp_code, token_id)
+		.then(() => {
+			return res.json({ message: TOKEN_REMOVED });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/deleteHmacToken',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -411,5 +480,8 @@ module.exports = {
 	affiliationCount,
 	getUserBalance,
 	deactivateUser,
-	createCryptoAddress
+	createCryptoAddress,
+	getHmacToken,
+	createHmacToken,
+	deleteHmacToken
 };

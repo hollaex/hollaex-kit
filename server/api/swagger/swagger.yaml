@@ -723,6 +723,94 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /user/tokens:
+    x-swagger-router-controller: user
+    get:
+      operationId: getHmacToken
+      description: Get user active HMAC tokens
+      tags:
+        - User
+        - Token
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TokensResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+    post:
+      operationId: createHmacToken
+      description: "Create an HMAC token. It requires OTP to create a token"
+      tags:
+        - User
+        - Token
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - otp_code
+            properties:
+              name:
+                type: string
+              otp_code:
+                type: string
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+    delete:
+      operationId: deleteHmacToken
+      description: Revoke an issued token. It requires otp.
+      tags:
+        - User
+        - Token
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - token_id
+              - otp_code
+            properties:
+              token_id:
+                type: number
+                format: int32
+              otp_code:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /admin/kit:
     x-swagger-router-controller: admin
     get:
@@ -3120,3 +3208,33 @@ definitions:
         type: string
       crypto:
         type: string
+  TokensResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: number
+              format: int32
+            name:
+              type: string
+            apiKey:
+              type: string
+            secret:
+              type: string
+            active:
+              type: boolean
+            revoked:
+              type: boolean
+            expiry:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
