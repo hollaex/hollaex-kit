@@ -10,7 +10,8 @@ const {
 	MISSING_HEADER,
 	DEACTIVATED_USER,
 	INVALID_CAPTCHA,
-	INVALID_OTP_CODE
+	INVALID_OTP_CODE,
+	INVALID_PASSWORD
 } = require('../messages');
 const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET } = require(`${SERVER_PATH}/constants`);
@@ -378,7 +379,7 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 		});
 };
 
-const resetUserPassword = (resetPasswordCode, password) => {
+const resetUserPassword = (resetPasswordCode, newPassword) => {
 	return getResetPasswordCode(resetPasswordCode)
 		.then((code) => {
 			if (code.used) {
@@ -387,7 +388,24 @@ const resetUserPassword = (resetPasswordCode, password) => {
 			return code.update({ used: true }, { fields: ['used'] });
 		})
 		.then((code) => getUserByKitId(code.user_id, false))
-		.then((user) => user.update({ password }, { fields: ['password'] }));
+		.then((user) => user.update({ password: newPassword }, { fields: ['password'] }));
+};
+
+const changeUserPassword = (email, oldPassword, newPassword) => {
+	return getUserByEmail(email, false)
+		.then((user) => {
+			return all([ user, validatePassword(user.password, oldPassword) ]);
+		})
+		.then(([ user, passwordIsValid ]) => {
+			if (!passwordIsValid) {
+				throw new Error(INVALID_PASSWORD);
+			} else {
+				return user;
+			}
+		})
+		.then((user) => {
+			return user.update({ password: newPassword });
+		});
 };
 
 module.exports = {
@@ -406,5 +424,6 @@ module.exports = {
 	updateUserOtpEnabled,
 	createOtp,
 	sendResetPasswordCode,
-	resetUserPassword
+	resetUserPassword,
+	changeUserPassword
 };
