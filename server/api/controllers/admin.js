@@ -6,6 +6,7 @@ const { cloneDeep } = require('lodash');
 const { ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL } = require('../../constants');
 const { parse } = require('json2csv');
 const { SERVICE_NOT_AVAILABLE } = require('../../messages');
+const tools = require('hollaex-tools-lib/tools');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -352,6 +353,35 @@ const getAdminUserLogins = (req, res) => {
 		});
 };
 
+const getUserAudits = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getUserAudits/auth',
+		req.auth
+	);
+	const user_id = req.swagger.params.user_id.value;
+	const { limit, page, start_date, end_date, format } = req.swagger.params;
+
+	toolsLib.users.getUserAudits(user_id, limit.value, page.value, start_date.value, end_date.value, format.value)
+		.then((data) => {
+			if (format.value) {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getUserAudits',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -367,5 +397,6 @@ module.exports = {
 	upgradeUser,
 	deactivateOtpAdmin,
 	flagUser,
-	getAdminUserLogins
+	getAdminUserLogins,
+	getUserAudits
 };
