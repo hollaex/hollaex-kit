@@ -1201,6 +1201,37 @@ paths:
         - admin
         - supervisor
         - kyc
+  /admin/deactivate-otp:
+    x-swagger-router-controller: admin
+    post:
+      description: Deactivate otp for a user
+      operationId: deactivateOtpAdmin
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: Upgrade data
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: number
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
   # Plugin Endpoints
   /plugins:
     x-swagger-router-controller: plugins

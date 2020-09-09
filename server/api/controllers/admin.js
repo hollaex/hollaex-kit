@@ -291,6 +291,28 @@ const upgradeUser = (req, res) => {
 		});
 };
 
+const deactivateOtpAdmin = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/deactivateOtpAdmin/auth',
+		req.auth
+	);
+	const { user_id } = req.swagger.params.data.value;
+
+	toolsLib.users.deactivateUserOtpById(user_id)
+		.then(() => {
+			res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/deactivateOtpAdmin',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -303,5 +325,6 @@ module.exports = {
 	getAdminUserTrades,
 	activateUser,
 	getAdminBalance,
-	upgradeUser
+	upgradeUser,
+	deactivateOtpAdmin
 };
