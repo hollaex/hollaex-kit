@@ -23,4 +23,5 @@ exports.USER_NOT_ACTIVATED = 'User is not activated';
 exports.INVALID_CREDENTIALS = 'Credentials incorrect';
 exports.INVALID_OTP_CODE = 'Invalid OTP Code';
 exports.SERVICE_NOT_SUPPORTED = 'This service is not supported';
-
+exports.USERNAME_CANNOT_BE_CHANGED = 'Username can not be changed';
+exports.USERNAME_IS_TAKEN = 'Username is already taken. Select a different username';

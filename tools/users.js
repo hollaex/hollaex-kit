@@ -20,7 +20,9 @@ const {
 	USER_NOT_VERIFIED,
 	USER_NOT_ACTIVATED,
 	INVALID_CREDENTIALS,
-	INVALID_OTP_CODE
+	INVALID_OTP_CODE,
+	USERNAME_CANNOT_BE_CHANGED,
+	USERNAME_IS_TAKEN
 } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
@@ -898,6 +900,41 @@ const getUserWithdrawalsByKitId = (kitId, currency, limit, page, orderBy, order,
 	return getTransactions('withdrawal', kitId, currency, limit, page, orderBy, order, startDate, endDate, format);
 };
 
+const checkUsernameIsTaken = (username) => {
+	return dbQuery.findAll('user', {
+		where: { username }
+	})
+		.then((users) => {
+			if (users.length > 0) {
+				throw new Error(USERNAME_IS_TAKEN);
+			} else {
+				return true;
+			}
+		});
+};
+
+const setUsernameById = (userId, username) => {
+	return getUserByKitId(userId, false)
+		.then((user) =>{
+			if (user.settings.usernameIsSet) {
+				throw new Error(USERNAME_CANNOT_BE_CHANGED);
+			}
+			return all([ user, checkUsernameIsTaken(username) ]);
+		})
+		.then(([ user ]) => {
+			return user.update(
+				{
+					username,
+					settings: {
+						...user.settings,
+						usernameIsSet: true
+					}
+				},
+				{ fields: ['username', 'settings'] }
+			);
+		});
+};
+
 module.exports = {
 	loginUser,
 	getUserByEmail,
@@ -927,5 +964,6 @@ module.exports = {
 	getUserLogins,
 	getUserAudits,
 	getUserDepositsByKitId,
-	getUserWithdrawalsByKitId
+	getUserWithdrawalsByKitId,
+	setUsernameById
 };
