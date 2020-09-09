@@ -200,11 +200,11 @@ const getAdminUserTrades = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserTrades', 'Invalid symbol');
+		loggerAdmin.error(req.uuid, 'controllers/admin/getAdminUserTrades', 'Invalid symbol');
 		return res.status(400).json({ message: 'Invalid symbol=' });
 	}
 
-	toolsLib.order.getAllUserTradesNetworkByKidId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.order.getAllUserTradesNetworkByKidId(user_id, symbol, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-trades.csv`);
@@ -215,7 +215,7 @@ const getAdminUserTrades = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserTrades', err.message);
+			loggerAdmin.error(req.uuid, 'controllers/admin/getAdminUserTrades', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
