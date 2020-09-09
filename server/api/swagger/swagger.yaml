@@ -695,6 +695,34 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /user/create-address:
+    x-swagger-router-controller: user
+    get:
+      operationId: createCryptoAddress
+      description: Create a crypto address for the user
+      tags:
+        - User
+        - Wallet
+      parameters:
+        - name: crypto
+          in: query
+          required: true
+          type: string
+          minLength: 3
+          maxLength: 15
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/UsersAddressResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /admin/kit:
     x-swagger-router-controller: admin
     get:
@@ -3080,3 +3108,15 @@ definitions:
         type: string
         maxLength: 255
         description: Transaction description
+  UsersAddressResponse:
+    required:
+      - message
+      - address
+      - crypto
+    properties:
+      message:
+        type: string
+      address:
+        type: string
+      crypto:
+        type: string

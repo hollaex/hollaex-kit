@@ -362,6 +362,39 @@ const deactivateUser = (req, res) => {
 		});
 };
 
+const createCryptoAddress = (req, res) => {
+	loggerUser.debug(
+		req.uuid,
+		'controllers/user/createCryptoAddress',
+		req.auth.sub
+	);
+
+	const { id } = req.auth.sub;
+	const crypto = req.swagger.params.crypto.value;
+
+	if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/createCryptoAddress',
+			`Invalid crypto: "${crypto}"`
+		);
+		return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
+	}
+
+	toolsLib.users.createUserCryptoAddressByKitId(id, crypto)
+		.then((data) => {
+			return res.status(201).json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/createCryptoAddress',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -377,5 +410,6 @@ module.exports = {
 	getUserLogins,
 	affiliationCount,
 	getUserBalance,
-	deactivateUser
+	deactivateUser,
+	createCryptoAddress
 };
