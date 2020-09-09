@@ -250,6 +250,10 @@ const getAffiliationCount = (userId) => {
 	});
 };
 
+const isValidUsername = (username) => {
+	return /^[a-z0-9_]{3,15}$/.test(username);
+};
+
 /**
  *
  * @param {object} user - User object
@@ -972,5 +976,6 @@ module.exports = {
 	getUserDepositsByKitId,
 	getUserWithdrawalsByKitId,
 	setUsernameById,
-	getAffiliationCount
+	getAffiliationCount,
+	isValidUsername
 };
