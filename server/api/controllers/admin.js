@@ -3,10 +3,8 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL } = require('../../constants');
-const { parse } = require('json2csv');
+const { ADMIN_ACCOUNT_ID } = require('../../constants');
 const { SERVICE_NOT_AVAILABLE } = require('../../messages');
-const tools = require('hollaex-tools-lib/tools');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -397,10 +395,9 @@ const getDeposits = (req, res) => {
 				if (data.data.length === 0) {
 					throw new Error('No data found');
 				}
-				const csv = parse(data.data, Object.keys(data.data[0]));
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(csv);
+				return res.status(202).send(data);
 			} else {
 				return res.json(data);
 			}
@@ -430,10 +427,9 @@ const getWithdrawals = (req, res) => {
 				if (data.data.length === 0) {
 					throw new Error('No data found');
 				}
-				const csv = parse(data.data, Object.keys(data.data[0]));
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(csv);
+				return res.status(202).send(data);
 			} else {
 				return res.json(data);
 			}
