@@ -74,6 +74,49 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /support:
+    x-swagger-router-controller: general
+    post:
+      operationId: sendSupportEmail
+      description: Send email to support
+      tags:
+        - Public
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: email
+          description: user email to contact
+          in: formData
+          required: true
+          type: string
+          format: email
+        - name: category
+          description: Category of the ticket
+          in: formData
+          required: true
+          type: string
+          maxLength: 64
+        - name: subject
+          description: Ticket issue subject
+          in: formData
+          required: true
+          type: string
+          maxLength: 256
+        - name: description
+          description: Description on the issue for ticket
+          in: formData
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /signup:
     x-swagger-router-controller: user
     post:
@@ -253,6 +296,35 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  # /deposit:
+  #   x-swagger-router-controller: transaction
+  #   post:
+  #     operationId: handleCurrencyDeposit
+  #     description: Deposit notification
+  #     tags:
+  #       - Admin
+  #       - Deposit
+  #     parameters:
+  #       - name: currency
+  #         description: currency name
+  #         in: query
+  #         required: true
+  #         type: string
+  #       - name: data
+  #         description: Deposit transaction info
+  #         in: body
+  #         required: true
+  #         schema:
+  #           $ref: "#/definitions/ExternalDepositRequest"
+  #     responses:
+  #       200:
+  #         description: Success
+  #         schema:
+  #           $ref: "#/definitions/MessageResponse"
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/MessageResponse"
   /user:
     x-swagger-router-controller: user
     get:
@@ -423,6 +495,74 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /user/request-withdrawal:
+    x-swagger-router-controller: transaction
+    post:
+      operationId: requestWithdrawal
+      description: This will send a confirmation email to the email address on record, if activate OTP, it will require OTP as well.
+      tags:
+        - User
+        - Withdraw
+      parameters:
+        - name: data
+          description: withdrawal information
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/WithdrawalRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              transaction_id:
+                type: string
+              fee:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/confirm-withdrawal:
+    x-swagger-router-controller: transaction
+    post:
+      operationId: performWithdraw
+      description: confirm a withdrawal request
+      tags:
+        - User
+        - Withdraw
+      parameters:
+        - name: data
+          description: Tansfer information
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/WithdrawalConfirmation"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              transaction_id:
+                type: string
+              fee:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user/request-otp:
     x-swagger-router-controller: otp
     get:
@@ -3471,3 +3611,11 @@ definitions:
             created:
               type: string
               format: date-time
+  WithdrawalConfirmation:
+    type: object
+    required:
+      - token
+    properties:
+      token:
+        type: string
+        description: withdrawal confirmation token

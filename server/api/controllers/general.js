@@ -1,11 +1,8 @@
 'use strict';
 
 const packageJson = require('../../package.json');
-const { API_HOST, SEND_CONTACT_US_EMAIL } = require('../../constants');
+const { API_HOST } = require('../../constants');
 const toolsLib = require('hollaex-tools-lib');
-const { pick } = require('lodash');
-const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
 
 const getHealth = (req, res) => {
 	try {

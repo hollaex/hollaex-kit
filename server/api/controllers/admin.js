@@ -84,10 +84,6 @@ const putUserRole = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	const { role } = req.swagger.params.data.value;
 
-	if (user_id === ADMIN_ACCOUNT_ID) {
-		throw new Error('Cannot change main admin account role');
-	}
-
 	toolsLib.users.updateUserRole(user_id, role)
 		.then((user) => {
 			return res.json(user);
