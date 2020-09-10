@@ -9,7 +9,7 @@ module.exports = {
 	// database
 	database: require('./database'),
 
-	// Constants/Secrets
+	order: require('./order'),
 
 	// logger
 	logger: require('./logger'),
