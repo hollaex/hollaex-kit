@@ -10,10 +10,13 @@ const {
 	TECH_AUTHORIZED_KIT_CONFIG,
 	TECH_AUTHORIZED_KIT_SECRETS,
 	ROLES,
-	INIT_CHANNEL
+	INIT_CHANNEL,
+	SEND_CONTACT_US_EMAIL
 } = require(`${SERVER_PATH}/constants`);
 const { each, difference } = require('lodash');
 const { publisher } = require('./database/redis');
+const { sendEmail } = require(`${SERVER_PATH}/mail`);
+const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 
 /**
  * Checks if url given is a valid url.
@@ -197,6 +200,20 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 	return joinedKitSecrets;
 };
 
+const sendEmailToSupport = (email, category, subject, description) => {
+	if (!SEND_CONTACT_US_EMAIL) {
+		return new Promise((resolve, reject) => reject('Cannot send email to support at this time'));
+	}
+
+	const emailData = {
+		email,
+		category,
+		subject,
+		description
+	};
+	return sendEmail(MAILTYPE.CONTACT_FORM, email, emailData, {});
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -212,5 +229,6 @@ module.exports = {
 	maskSecrets,
 	updateKitConfig,
 	updateKitSecrets,
-	updateKitConfigSecrets
+	updateKitConfigSecrets,
+	sendEmailToSupport
 };
