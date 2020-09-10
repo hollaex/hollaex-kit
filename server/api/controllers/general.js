@@ -1,8 +1,11 @@
 'use strict';
 
 const packageJson = require('../../package.json');
-const { API_HOST } = require('../../constants');
+const { API_HOST, SEND_CONTACT_US_EMAIL } = require('../../constants');
 const toolsLib = require('hollaex-tools-lib');
+const { pick } = require('lodash');
+const { sendEmail } = require('../../mail');
+const { MAILTYPE } = require('../../mail/strings');
 
 const getHealth = (req, res) => {
 	try {
@@ -20,25 +23,37 @@ const getHealth = (req, res) => {
 
 const getConstants = (req, res) => {
 	try {
-		res.json({
+		return res.json({
 			coins: toolsLib.getKitCoins(),
 			pairs: toolsLib.getKitPairs()
 		});
 	} catch (err) {
-		res.status(400).json({ message: err.message });
+		return res.status(400).json({ message: err.message });
 	}
 };
 
 const getKitConfigurations = (req, res) => {
 	try {
-		res.json(toolsLib.getKitConfig());
+		return res.json(toolsLib.getKitConfig());
 	} catch (err) {
-		res.status(400).json({ message: err.message });
+		return res.status(400).json({ message: err.message });
 	}
+};
+
+const sendSupportEmail = (req, res) => {
+	const { email, category, subject, description }  = req.swagger.params;
+	return toolsLib.sendEmailToSupport(email.value, category.value, subject.value, description.value)
+		.then(() => {
+			return res.json({ message: 'Email was sent to support' });
+		})
+		.catch((err) => {
+			return res.status(400).json({ message: err.message });
+		});
 };
 
 module.exports = {
 	getHealth,
 	getConstants,
-	getKitConfigurations
+	getKitConfigurations,
+	sendSupportEmail
 };
