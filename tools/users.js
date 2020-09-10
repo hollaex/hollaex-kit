@@ -167,7 +167,9 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 		})
 		.then(([ user ]) => {
-			registerUserLogin(user.id, ip, device, domain, origin, referer);
+			if (ip) {
+				registerUserLogin(user.id, ip, device, domain, origin, referer);
+			}
 			return user;
 		});
 };
