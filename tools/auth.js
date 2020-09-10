@@ -115,7 +115,7 @@ const checkCaptcha = (captcha = '', remoteip = '') => {
 		if (NODE_ENV === 'development') {
 			return new Promise((resolve) => resolve());
 		} else {
-			throw new Error(INVALID_CAPTCHA);
+			return new Promise((resolve, reject) => reject(INVALID_CAPTCHA));
 		}
 	} else if (!getKitSecrets().captcha.secret_key) {
 		return new Promise((resolve) => resolve());

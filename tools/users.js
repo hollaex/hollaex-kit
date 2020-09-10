@@ -40,15 +40,15 @@ const flatten = require('flat');
 
 const signUpUser = (email, password, referral) => {
 	if (!getKitConfig().new_user_is_activated) {
-		throw new Error(SIGNUP_NOT_AVAILABLE);
+		return new Promise((resolve, reject) => reject(SIGNUP_NOT_AVAILABLE));
 	}
 
 	if (!email || !isEmail(email)) {
-		throw new Error(PROVIDE_VALID_EMAIL);
+		return new Promise((resolve, reject) => reject(PROVIDE_VALID_EMAIL));
 	}
 
 	if (!isValidPassword(password)) {
-		throw new Error(INVALID_PASSWORD);
+		return new Promise((resolve, reject) => reject(INVALID_PASSWORD));
 	}
 
 	return dbQuery.findOne('user', {
@@ -410,7 +410,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 
 const getUserByCryptoAddress = (currency, address) => {
 	if (!currency || !address) {
-		throw new Error('Please provide the user\'s currency and crypto address');
+		return new Promise((resolve, reject) => reject('Please provide the user\'s currency and crypto address'));
 	}
 	return dbQuery.findOne('user', {
 		where: { crypto_wallet: { [currency]: address } }
@@ -419,7 +419,7 @@ const getUserByCryptoAddress = (currency, address) => {
 
 const getUser = (opts = {}, rawData = true) => {
 	if (!opts.email && !opts.kit_id && !opts.network_id) {
-		throw new Error('Please provide the user\'s kit id, network id, or email');
+		return new Promise((resolve, reject) => reject('Please provide the user\'s kit id, network id, or email'));
 	}
 
 	const where = {};
@@ -446,28 +446,28 @@ const getUser = (opts = {}, rawData = true) => {
 
 const getUserByEmail = (email, rawData = true) => {
 	if (!email || !isEmail(email)) {
-		throw new Error('Please provide a valid email address');
+		return new Promise((resolve, reject) => reject('Please provide a valid email address'));
 	}
 	return getUser({ email }, rawData);
 };
 
 const getUserByKitId = (kit_id, rawData = true) => {
 	if (!kit_id) {
-		throw new Error('Please provide a kit id');
+		return new Promise((resolve, reject) => reject('Please provide a kit id'));
 	}
 	return getUser({ kit_id }, rawData);
 };
 
 const getUserByNetworkId = (network_id, rawData = true) => {
 	if (!network_id) {
-		throw new Error('Please provide a network id');
+		return new Promise((resolve, reject) => reject('Please provide a network id'));
 	}
 	return getUser({ network_id }, rawData);
 };
 
 const freezeUserById = (userId) => {
 	if (userId === ADMIN_ACCOUNT_ID) {
-		throw new Error('Admin account cannot be deactivated');
+		return new Promise((resolve, reject) => reject('Admin account cannot be deactivated'));
 	}
 	return getUserByKitId(userId, false)
 		.then((user) => {
@@ -580,7 +580,7 @@ const getUserRole = (opts = {}) => {
 
 const updateUserRole = (user_id, role) => {
 	if (user_id === ADMIN_ACCOUNT_ID) {
-		throw new Error('Cannot change main admin account role');
+		return new Promise((resolve, reject) => reject('Cannot change main admin account role'));
 	}
 	return dbQuery.findOne('user', {
 		where: {
@@ -746,7 +746,7 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 		newLevel < MIN_VERIFICATION_LEVEL ||
 		newLevel > getKitConfig().user_level_number
 	) {
-		throw new Error('Invalid verification level');
+		return new Promise((resolve, reject) => reject('Invalid verification level'));
 	}
 
 	let currentVerificationLevel = 0;

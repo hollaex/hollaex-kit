@@ -45,11 +45,7 @@ const getKitSecrets = () => {
 };
 
 const getKitCoin = (coin) => {
-	if (!getKitCoins()[coin]) {
-		throw new Error(`You exchange is not subscribed to coin ${coin}`);
-	} else {
-		return getKitCoinsConfig()[coin];
-	}
+	return getKitCoinsConfig()[coin];
 };
 
 const getKitCoinsConfig = () => {
@@ -61,11 +57,7 @@ const getKitCoins = () => {
 };
 
 const getKitPair = (pair) => {
-	if (!getKitPairs()[pair]) {
-		throw new Error(`You exchange is not subscribed to pair ${pair}`);
-	} else {
-		return getKitPairsConfig()[pair];
-	}
+	return getKitPairsConfig()[pair];
 };
 
 const getKitPairsConfig = () => {
@@ -104,7 +96,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
-		throw new Error('No new data given');
+		return new Promise((resolve, reject) => reject('No new data given'));
 	}
 
 	if (scopes.indexOf(ROLES.TECH) > -1) {
@@ -117,7 +109,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.secrets), TECH_AUTHORIZED_KIT_SECRETS));
 		}
 		if (unauthorizedKeys.length > 0) {
-			throw new Error(`Tech users cannot update these values: ${unauthorizedKeys}`);
+			return new Promise((resolve, reject) => reject(`Tech users cannot update these values: ${unauthorizedKeys}`));
 		}
 	}
 
@@ -183,11 +175,11 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 	KIT_SECRETS_KEYS.forEach((key) => {
 		if (newKitSecrets[key]) {
 			if (role === 'tech' && key === 'emails' && newKitSecrets[key] && newKitSecrets[key].send_email_to_support !== existingKitSecrets[key].send_email_to_support) {
-				throw new Error('Tech users cannot update the value of send_email_copy');
+				return new Promise((resolve, reject) => reject('Tech users cannot update the value of send_email_copy'));
 			}
 			if (!Array.isArray(existingKitSecrets[key]) && typeof existingKitSecrets[key] === 'object') {
 				if (Object.values(newKitSecrets[key]).includes(SECRET_MASK)) {
-					throw new Error('Masked value given');
+					return new Promise((resolve, reject) => reject('Masked value given'));
 				}
 				joinedKitSecrets[key] = { ...existingKitSecrets[key], ...newKitSecrets[key] };
 			} else {
