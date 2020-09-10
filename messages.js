@@ -28,3 +28,5 @@ exports.USERNAME_IS_TAKEN = 'Username is already taken. Select a different usern
 exports.TOKEN_OTP_MUST_BE_ENABLED = 'OTP must be enabled to create a token';
 exports.TOKEN_NOT_FOUND = 'Token not found';
 exports.TOKEN_REVOKED = 'Token is already revoked';
+exports.INVALID_WITHDRAWAL_TOKEN = 'Withdrawal token is incorrect';
+exports.EXPIRED_WITHDRAWAL_TOKEN = 'Expired withdrawal token';
