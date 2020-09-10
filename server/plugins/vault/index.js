@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const { logger, isUrl, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const { updateVaultValues, crossCheckCoins, createOrUpdateWallets, cronTask } = require('./helpers');
 const { API_HOST } = require('../../constants');
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 
 cronTask.start();
 
@@ -21,7 +21,7 @@ app.get('/plugins/vault/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('vault', GET_SECRETS().vault) || {});
+		res.json(maskSecrets('vault', GET_KIT_SECRETS().vault) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

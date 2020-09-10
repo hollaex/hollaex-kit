@@ -12,10 +12,10 @@ const {
 	SMS_SUCCESS,
 	PHONE_VERIFIED
 } = require('./messages');
-const { GET_CONFIGURATION } = require('../../constants');
-const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
+const { GET_KIT_CONFIG } = require('../../constants');
+const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().constants.defaults.language;
 const SMS = () => require('../../mail/strings').languageFile(DEFAULT_LANGUAGE()).SMS;
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 
 app.get('/plugins/sms/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
@@ -28,7 +28,7 @@ app.get('/plugins/sms/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('sns', GET_SECRETS().plugins.sns) || {});
+		res.json(maskSecrets('sns', GET_KIT_SECRETS().plugins.sns) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

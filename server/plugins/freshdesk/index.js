@@ -2,7 +2,7 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const bodyParser = require('body-parser');
 
@@ -17,7 +17,7 @@ app.get('/plugins/freshdesk/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('freshdesk', GET_SECRETS().plugins.freshdesk) || {});
+		res.json(maskSecrets('freshdesk', GET_KIT_SECRETS().plugins.freshdesk) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

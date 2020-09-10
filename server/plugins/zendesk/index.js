@@ -2,7 +2,7 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const bodyParser = require('body-parser');
 
@@ -17,7 +17,7 @@ app.get('/plugins/zendesk/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('zendesk', GET_SECRETS().plugins.zendesk) || {});
+		res.json(maskSecrets('zendesk', GET_KIT_SECRETS().plugins.zendesk) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

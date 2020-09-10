@@ -1,6 +1,6 @@
 'use strict';
 
-const { VAULT_ENDPOINT, API_HOST, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
+const { VAULT_ENDPOINT, API_HOST, GET_KIT_CONFIG, GET_KIT_SECRETS } = require('../../constants');
 const rp = require('request-promise');
 const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
@@ -13,7 +13,7 @@ const { lockWithdrawals } = require('./crons/lockWithdrawals');
 // const { checkWithdrawals } = require('./crons/checkWithdrawals');
 
 const withdrawalCron = async () => {
-	const enabledPlugins = GET_CONFIGURATION().constants.plugins.enabled;
+	const enabledPlugins = GET_KIT_CONFIG().constants.plugins.enabled;
 	try {
 		if (enabledPlugins !== undefined && enabledPlugins.indexOf('vault') !== -1) {
 			// await checkWithdrawals();
@@ -41,7 +41,7 @@ const updateVaultValues = (name, key, secret, connect = true) => {
 				name,
 				key,
 				secret,
-				connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
+				connected_coins: connect ? GET_KIT_SECRETS().vault.connected_coins : []
 			}
 		}
 	});
@@ -57,7 +57,7 @@ const crossCheckCoins = (coins) => {
 	return rp(options)
 		.then((vaultCoins) => {
 			vaultCoins = JSON.parse(vaultCoins);
-			const exchangeCoins = coins || Object.keys(GET_CONFIGURATION().coins);
+			const exchangeCoins = coins || Object.keys(GET_KIT_CONFIG().coins);
 			const validCoins = intersection(exchangeCoins, vaultCoins);
 
 			if (validCoins.length === 0) {
@@ -70,7 +70,7 @@ const crossCheckCoins = (coins) => {
 
 const createOrUpdateWallets = (coins) => {
 	logger.debug('/plugins/vault/helpers createOrUpdateWallets', coins);
-	const vaultConfig = GET_SECRETS().vault;
+	const vaultConfig = GET_KIT_SECRETS().vault;
 	return all(
 		coins.map((coin, i) => {
 			const options = {

@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const { logger, getPagination, getTimeframe, getOrdering, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const { WRONG_TITLE, WRONG_MESSAGE, WRONG_TYPE, WRONG_ID } = require('./messages');
 const { WRONG_LIMIT, WRONG_PAGE, WRONG_ORDER_BY, WRONG_ORDER } = require('../helpers/messages');
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 
 app.get('/plugins/announcement/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
@@ -20,7 +20,7 @@ app.get('/plugins/announcement/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('announcement', GET_SECRETS().plugins.announcement) || {});
+		res.json(maskSecrets('announcement', GET_KIT_SECRETS().plugins.announcement) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

@@ -10,14 +10,14 @@ const { sendSMSDeposit } = require('../plugins/sms/helpers');
 const getStatusText = (status) => {
 	return status ? 'COMPLETED' : 'PENDING';
 };
-const { GET_CONFIGURATION, DOMAIN } = require('../constants');
-const AUDIT_EMAIL = () => GET_CONFIGURATION().constants.accounts.admin;
-const SENDER_EMAIL = () => GET_CONFIGURATION().constants.emails.sender;
-const SEND_EMAIL_COPY = () => GET_CONFIGURATION().constants.emails.send_email_to_support;
-const API_NAME = () => GET_CONFIGURATION().constants.api_name;
+const { GET_KIT_CONFIG, GET_KIT_SECRETS, DOMAIN } = require('../constants');
+const AUDIT_EMAIL = () => GET_KIT_CONFIG().accounts.admin;
+const SENDER_EMAIL = () => GET_KIT_SECRETS().emails.sender;
+const SEND_EMAIL_COPY = () => GET_KIT_SECRETS().emails.send_email_to_support;
+const API_NAME = () => GET_KIT_CONFIG().api_name;
 const SUPPORT_SOURCE = () => `'${API_NAME()} Support <${SENDER_EMAIL()}>'`;
 const BCC_ADDRESSES = () => SEND_EMAIL_COPY() ? [AUDIT_EMAIL()] : [];
-const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
+const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
 
 const sendEmail = (
 	type,

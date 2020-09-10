@@ -2,7 +2,7 @@
 
 const { findUser } = require('../helpers/user');
 const { VerificationImage, sequelize } = require('../../db/models');
-const { ROLES, GET_SECRETS } = require('../../constants');
+const { ROLES, GET_KIT_SECRETS } = require('../../constants');
 const {
 	USER_FIELD_ADMIN_LOG,
 	ID_FIELDS,
@@ -16,7 +16,7 @@ const { all } = require('bluebird');
 const { ERROR_CHANGE_USER_INFO, IMAGE_NOT_FOUND } = require('./messages');
 
 const S3_BUCKET_NAME = () => {
-	return (GET_SECRETS().plugins.s3.id_docs_bucket).split(':')[0];
+	return (GET_KIT_SECRETS().plugins.s3.id_docs_bucket).split(':')[0];
 };
 const s3Write = () => require('./s3').write(S3_BUCKET_NAME());
 const s3Read = () => require('./s3').read(S3_BUCKET_NAME());

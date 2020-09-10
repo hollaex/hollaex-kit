@@ -28,7 +28,7 @@ const { cloneDeep, omit } = require('lodash');
 const { ROLES } = require('../../constants');
 const { all } = require('bluebird');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 
 app.get('/plugins/kyc/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
@@ -41,7 +41,7 @@ app.get('/plugins/kyc/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('s3', GET_SECRETS().plugins.s3) || {});
+		res.json(maskSecrets('s3', GET_KIT_SECRETS().plugins.s3) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

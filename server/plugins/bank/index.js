@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 
 app.get('/plugins/bank/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
@@ -22,7 +22,7 @@ app.get('/plugins/bank/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('bank', GET_SECRETS().plugins.bank) || {});
+		res.json(maskSecrets('bank', GET_KIT_SECRETS().plugins.bank) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

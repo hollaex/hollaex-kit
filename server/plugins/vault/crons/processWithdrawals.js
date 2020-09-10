@@ -4,14 +4,14 @@ const { Deposit, sequelize, User, Sequelize } = require('../../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
-const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const { VAULT_ENDPOINT, GET_KIT_CONFIG, GET_KIT_SECRETS } = require('../../../constants');
 const { ERC_TOKENS } = require('../../constants');
 const moment = require('moment');
 const { loggerDeposits } = require('../../../config/logger');
 const mathjs = require('mathjs');
-const VAULT_NAME = () => GET_SECRETS().vault.name;
-const VAULT_KEY = () => GET_SECRETS().vault.key;
-const VAULT_SECRET = () => GET_SECRETS().vault.secret;
+const VAULT_NAME = () => GET_KIT_SECRETS().vault.name;
+const VAULT_KEY = () => GET_KIT_SECRETS().vault.key;
+const VAULT_SECRET = () => GET_KIT_SECRETS().vault.secret;
 const VAULT_WALLET = (coin) => {
 	return `${VAULT_NAME()}-${coin}`;
 };
@@ -31,7 +31,7 @@ const processWithdrawals = () => {
 		const vaultCoins = [];
 		loggerDeposits.info('/plugins/vault/crons/processWithdrawals starting');
 		const currentMinute = parseInt(moment().format('mm'));
-		each(GET_SECRETS().vault.connected_coins, (coin) => {
+		each(GET_KIT_SECRETS().vault.connected_coins, (coin) => {
 			if (coin === 'xrp' || coin === 'xlm' || isErc(coin)) {
 				// XRP style/ERC20 tokens are processed every minute
 				vaultCoins.push({
@@ -369,7 +369,7 @@ const processWithdrawals = () => {
 					if (result.success === false && result.send === true) {
 						sendEmail(
 							MAILTYPE.ALERT,
-							GET_CONFIGURATION().constants.accounts.admin,
+							GET_KIT_CONFIG().constants.accounts.admin,
 							result.info,
 							{}
 						);

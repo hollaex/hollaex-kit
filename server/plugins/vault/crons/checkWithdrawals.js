@@ -4,12 +4,12 @@ const { Deposit, User, sequelize } = require('../../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
-const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const { VAULT_ENDPOINT, GET_KIT_CONFIG, GET_KIT_SECRETS } = require('../../../constants');
 const mathjs = require('mathjs');
 const { loggerDeposits } = require('../../../config/logger');
-const VAULT_NAME = () => GET_SECRETS().vault.name;
-const VAULT_KEY = () => GET_SECRETS().vault.key;
-const VAULT_SECRET = () => GET_SECRETS().vault.secret;
+const VAULT_NAME = () => GET_KIT_SECRETS().vault.name;
+const VAULT_KEY = () => GET_KIT_SECRETS().vault.key;
+const VAULT_SECRET = () => GET_KIT_SECRETS().vault.secret;
 const VAULT_WALLET = (coin) => {
 	return `${VAULT_NAME()}-${coin}`;
 };
@@ -24,7 +24,7 @@ const checkWithdrawals = () => {
 	return new Promise((resolve, reject) => {
 		const vaultCoins = [];
 		loggerDeposits.info('/plugins/vault/crons/checkWithdrawals starting');
-		each(GET_SECRETS().vault.connected_coins, (coin) => {
+		each(GET_KIT_SECRETS().vault.connected_coins, (coin) => {
 			vaultCoins.push({
 				currency: coin
 			});
@@ -153,7 +153,7 @@ const checkWithdrawals = () => {
 							} else if (data.success === true && data.status === false) {
 								return sendEmail(
 									MAILTYPE.ALERT,
-									GET_CONFIGURATION().constants.accounts.admin,
+									GET_KIT_CONFIG().constants.accounts.admin,
 									data.info,
 									{}
 								);
@@ -162,7 +162,7 @@ const checkWithdrawals = () => {
 					} else if (result.success === false) {
 						return sendEmail(
 							MAILTYPE.ALERT,
-							GET_CONFIGURATION().constants.accounts.admin,
+							GET_KIT_CONFIG().constants.accounts.admin,
 							result.info,
 							{}
 						);

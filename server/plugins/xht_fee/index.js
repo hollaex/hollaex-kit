@@ -9,7 +9,7 @@ const { Balance } = require('../../db/models');
 
 const REQUIRED_XHT = 100;
 
-const { GET_SECRETS } = require('../../constants');
+const { GET_KIT_SECRETS } = require('../../constants');
 
 app.get('/plugins/xht_fee/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
@@ -22,7 +22,7 @@ app.get('/plugins/xht_fee/constant', verifyToken, (req, res) => {
 	);
 
 	try {
-		res.json(maskSecrets('xht_fee', GET_SECRETS().plugins.xht_fee) || {});
+		res.json(maskSecrets('xht_fee', GET_KIT_SECRETS().plugins.xht_fee) || {});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}

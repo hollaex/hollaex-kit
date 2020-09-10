@@ -8,7 +8,7 @@ const {
 	SMS_CODE_KEY,
 	SMS_CODE_EXPIRATION_TIME
 } = require('../constants');
-const { GET_CONFIGURATION } = require('../../constants');
+const { GET_KIT_CONFIG } = require('../../constants');
 const {
 	SMS_ERROR,
 	SMS_PHONE_DONT_MATCH,
@@ -17,8 +17,8 @@ const {
 	INVALID_PHONE_NUMBER
 } = require('./messages');
 
-const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
-const OTP_NAME = () => GET_CONFIGURATION().constants.api_name;
+const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().constants.defaults.language;
+const OTP_NAME = () => GET_KIT_CONFIG().constants.api_name;
 const sns = () => require('./sns')();
 
 const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;

@@ -4,9 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const { PLUGIN_PORT, AVAILABLE_PLUGINS } = require('./constants');
-const { GET_CONFIGURATION } = require('../constants');
+const { GET_KIT_CONFIG } = require('../constants');
 
-const PLUGINS = () => GET_CONFIGURATION().constants.plugins.enabled || process.env.PLUGINS || '';
+const PLUGINS = () => GET_KIT_CONFIG().constants.plugins.enabled || process.env.PLUGINS || '';
 
 const PORT = PLUGIN_PORT;
 

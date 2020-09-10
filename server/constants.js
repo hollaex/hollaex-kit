@@ -54,33 +54,30 @@ const client = redis.createClient(redisConfig.client);
 let configuration = {
 	coins: {},
 	pairs: {},
-	info: {},
-	constants: {
+	kit: {
+		info: {},
+		color: {},
+		links: {},
 		captcha: {},
-		accounts: {},
 		defaults: {},
-		emails: {},
 		plugins: {
 			configuration: {}
-		}
-	},
-	status: false
+		},
+		status: false
+	}
 };
 
 let secrets = {
 	broker: {},
 	security: {},
+	accounts: {},
 	captcha: {},
+	emails: {},
 	smtp: {},
-	vault: {},
 	plugins: {
-		s3: {
-			key: {},
-			secret: {}
-		},
+		s3: {},
 		sns: {},
-		freshdesk: {},
-		zendesk: {}
+		freshdesk: {}
 	}
 };
 
@@ -107,8 +104,8 @@ subscriber.on('message', (channel, data) => {
 	}
 });
 
-exports.GET_CONFIGURATION = () => configuration;
-exports.GET_SECRETS = () => secrets;
+exports.GET_KIT_CONFIG = () => configuration.kit;
+exports.GET_KIT_SECRETS = () => secrets;
 exports.GET_FROZEN_USERS = () => frozenUsers;
 
 exports.MAX_TRADES = process.env.MAX_TRADES
