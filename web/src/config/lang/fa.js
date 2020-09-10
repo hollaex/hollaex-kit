@@ -323,6 +323,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		REQUEST_EMAIL: 'درخواست مجدد',
 		HAVE_ACCOUNT: 'در حال حاضر حساب کاربری دارید؟',
 		GOTO_LOGIN: 'به صفحه ورود بروید',
+		AFFILIATION_CODE: 'کد رفرال (اختیاری)',
+		AFFILIATION_CODE_PLACEHOLDER:'کد رفرال را وارد کنید',
 		TERMS: {
 			terms: 'شرایط عمومی',
 			policy: 'حریم خصوصی',

@@ -317,6 +317,8 @@ export default {
 		REQUEST_EMAIL: '이메일 재요청하기',
 		HAVE_ACCOUNT: '이미 계정이 있으신가요?',
 		GOTO_LOGIN: '로그인 페이지로 이동',
+		AFFILIATION_CODE: '추천인코드(선택)',
+		AFFILIATION_CODE_PLACEHOLDER:'추천인코드입력',
 		TERMS: {
 			terms: '이용약관',
 			policy: '개인정보 처리방침',
