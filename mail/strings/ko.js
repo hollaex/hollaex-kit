@@ -71,7 +71,7 @@ const LOGIN = {
 		3: (country) => COMMON.COUNTRY(country),
 		4: (device) => COMMON.DEVICE(device),
 		5: (ip) => COMMON.IP_ADDRESS(ip),
-		6: '본인이 아닌 경우, HollEx에 방문하여 비밀번호 변경 및 이중인증 보안을 설정하시고 즉시, 회신하여 저희에게 문의해주시기 바랍니다.'
+		6: `본인이 아닌 경우, ${API_NAME()}에 방문하여 비밀번호 변경 및 이중인증 보안을 설정하시고 즉시, 회신하여 저희에게 문의해주시기 바랍니다.`
 	},
 	CLOSING: COMMON.CLOSING
 };
