@@ -6,6 +6,30 @@ const { MAILTYPE } = require('../../mail/strings');
 const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
 
+const getWithdrawalFee = (req, res) => {
+	const currency = req.swagger.params.currency.value;
+
+	if (!toolsLib.subscribeToCoin(currency)) {
+		loggerDeposits.error(
+			req.uuid,
+			'controller/transaction/getWithdrawalFee err',
+			`Invalid currency: "${currency}"`
+		);
+		return res.status(400).json({ message: `Invalid currency: "${currency}"` });
+	}
+
+	try {
+		return res.json({ fee: toolsLib.getKitCoin(currency).withdrawal_fee });
+	} catch (err) {
+		loggerDeposits.error(
+			req.uuid,
+			'controller/transaction/getWithdrawalFee err',
+			err
+		);
+		return res.status(400).json({ message: err.message });
+	}
+};
+
 // const handleCurrencyDeposit = (req, res) => {
 // 	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
 // 	const apiKey = req.headers ? req.headers['key'] : undefined;
@@ -234,5 +258,6 @@ const performWithdraw = (req, res) => {
 
 module.exports = {
 	// handleCurrencyDeposit,
-	requestWithdrawal
+	requestWithdrawal,
+	getWithdrawalFee
 };

@@ -563,6 +563,32 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /user/withdrawal/fee:
+    x-swagger-router-controller: transaction
+    get:
+      description: Returns the withdrawal fees for a specific coin
+      operationId: getWithdrawalFee
+      tags:
+        - User
+        - Withdrawal
+      parameters:
+        - name: currency
+          description: currency to perform the withdrawal
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              fee:
+                type: number
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user/request-otp:
     x-swagger-router-controller: otp
     get:
