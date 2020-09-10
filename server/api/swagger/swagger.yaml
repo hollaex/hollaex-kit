@@ -1246,6 +1246,57 @@ paths:
       x-security-scopes:
         - admin
         - tech
+  /admin/pairs:
+    x-swagger-router-controller: admin
+    get:
+      description: Get pairs
+      operationId: getPairs
+      parameters:
+        - name: pair
+          in: query
+          required: false
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/coins:
+    x-swagger-router-controller: admin
+    get:
+      description: View coins
+      operationId: getCoins
+      tags:
+        - Admin
+      parameters:
+        - name: currency
+          in: query
+          required: false
+          type: string
+          description: Leave blank to get all coins
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/users:
     x-swagger-router-controller: admin
     get:

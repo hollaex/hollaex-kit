@@ -3,7 +3,6 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { ADMIN_ACCOUNT_ID } = require('../../constants');
 const { SERVICE_NOT_AVAILABLE } = require('../../messages');
 
 const getAdminKit = (req, res) => {
@@ -440,6 +439,74 @@ const getWithdrawals = (req, res) => {
 		});
 };
 
+const getCoins = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/coin/getCoins/auth',
+		req.auth
+	);
+
+	const currency = req.swagger.params.currency.value;
+
+	if (currency && !toolsLib.subscribedToCoin(currency)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/coin/getCoins',
+			`Invalid currency: "${currency}"`
+		);
+		return res.status(400).json({ message: `Invalid currency: "${currency}"` });
+	}
+
+	try {
+		if (currency) {
+			return res.json(toolsLib.getKitCoin(currency));
+		} else {
+			return res.json(toolsLib.getKitCoinsConfig());
+		}
+	} catch (err) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/coin/getCoins',
+			err.message
+		);
+		return res.status(400).json({ message: err.message });
+	}
+};
+
+const getPairs = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/coin/getPairs/auth',
+		req.auth
+	);
+
+	const pair = req.swagger.params.pair.value;
+
+	if (pair && !toolsLib.subscribedToPair(pair)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/coin/getPairs',
+			`Invalid pair: "${pair}"`
+		);
+		return res.status(400).json({ message: `Invalid pair: "${pair}"` });
+	}
+
+	try {
+		if (pair) {
+			return res.json(toolsLib.getKitPair(pair));
+		} else {
+			return res.json(toolsLib.getKitPairsConfig());
+		}
+	} catch (err) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/coin/getPairs',
+			err.message
+		);
+		return res.status(400).json({ message: err.message });
+	}
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -458,5 +525,7 @@ module.exports = {
 	getAdminUserLogins,
 	getUserAudits,
 	getDeposits,
-	getWithdrawals
+	getWithdrawals,
+	getCoins,
+	getPairs
 };
