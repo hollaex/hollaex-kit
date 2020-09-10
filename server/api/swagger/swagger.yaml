@@ -3544,26 +3544,6 @@ definitions:
         type: integer
         minimum: 1
         maximum: 5
-  LoginsResponse:
-    type: object
-    properties:
-      count:
-        type: number
-        format: int32
-      data:
-        type: array
-        items:
-          type: object
-          properties:
-            ip:
-              type: string
-            device:
-              type: string
-            domain:
-              type: string
-            timestamp:
-              type: string
-              format: date-time
   AuditsResponse:
     type: object
     properties:
