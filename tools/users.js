@@ -34,7 +34,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
 const { Op } = require('sequelize');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
-const { validatePassword, checkCaptcha, verifyOtpBeforeAction } = require('./auth');
+// const { validatePassword, checkCaptcha, verifyOtpBeforeAction } = require('./auth');
 const { parse } = require('json2csv');
 const flatten = require('flat');
 
@@ -143,7 +143,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 			return all([
 				user,
-				validatePassword(user.password, password)
+				require('./auth').validatePassword(user.password, password)
 			]);
 		})
 		.then(([ user, passwordIsValid ]) => {
@@ -152,15 +152,15 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 
 			if (!user.otp_enabled) {
-				return all([ user, checkCaptcha(captcha, ip) ]);
+				return all([ user, require('./auth').checkCaptcha(captcha, ip) ]);
 			} else {
 				return all([
 					user,
-					verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+					require('./auth').verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
-							return checkCaptcha(captcha, ip);
+							return require('./auth').checkCaptcha(captcha, ip);
 						}
 					})
 				]);
