@@ -148,7 +148,7 @@ const checkStatus = () => {
 				networkURL: HE_NETWORK_ENDPOINT,
 				networkBaseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
-				apiSecret: status.secret,
+				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
