@@ -451,6 +451,17 @@ paths:
           type: number
           format: int32
         - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
           name: start_date
           description: Starting date of queried data
           required: false
@@ -462,11 +473,21 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
       responses:
         200:
           description: Success
           schema:
             $ref: "#/definitions/LoginsResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
         default:
           description: Error
           schema:
@@ -1493,6 +1514,17 @@ paths:
           type: number
           format: int32
         - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
           name: start_date
           description: Starting date of queried data
           required: false
@@ -1556,6 +1588,17 @@ paths:
           required: false
           type: number
           format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
         - in: query
           name: start_date
           description: Starting date of queried data

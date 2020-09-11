@@ -300,11 +300,17 @@ const getUserLogins = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserLogins auth', req.auth.sub);
 
 	const user_id = req.auth.sub.id;
-	const { limit, page, start_date, end_date } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.getUserLogins(user_id, limit.value, page.value, start_date.value, end_date.value)
-		.then((logins) => {
-			return res.json(logins);
+	toolsLib.getUserLogins(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+		.then((data) => {
+			if (format.value) {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err);

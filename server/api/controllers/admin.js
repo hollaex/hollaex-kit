@@ -324,12 +324,12 @@ const getAdminUserLogins = (req, res) => {
 		req.auth
 	);
 	const user_id = req.swagger.params.user_id.value;
-	const { limit, page, start_date, end_date, format } = req.swagger.params;
+	const { limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
-	toolsLib.users.getUserLogins(user_id.value, limit.value, page.value, start_date.value, end_date.value, format.value)
+	toolsLib.users.getUserLogins(user_id.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
 			} else {
@@ -353,9 +353,9 @@ const getUserAudits = (req, res) => {
 		req.auth
 	);
 	const user_id = req.swagger.params.user_id.value;
-	const { limit, page, start_date, end_date, format } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.users.getUserAudits(user_id, limit.value, page.value, start_date.value, end_date.value, format.value)
+	toolsLib.users.getUserAudits(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
