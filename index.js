@@ -334,25 +334,19 @@ class HollaEx {
 
 	/**
 	 * Get all trades for the exchange on the network
-	 * @param {number} user_id - User id on network. Leave blank to get all trades for the exchange
+	 * @param {number} userId - User id on network. Leave blank to get all trades for the exchange
 	 * @param {string} symbol - Symbol of trades. Leave blank to get trades for all symbols
 	 * @param {number} limit - Amount of trades per page. Maximum: 50
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
-	getAllTradeNetwork(user_id, symbol, limit = 50, page = 1, order_by = 'id', order = 'desc', start_date, end_date) {
+	getAllTradeNetwork(userId, symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}&order_by=${order_by}&order=${order}`;
-		if (start_date) {
-			queryString += `&start_date=${start_date}`;
-		}
-		if (end_date) {
-			queryString += `&start_date=${end_date}`;
-		}
-		if (user_id) {
-			queryString += `&user_id=${user_id}`;
+		let queryString = `?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		if (userId) {
+			queryString += `&user_id=${userId}`;
 		}
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
@@ -415,7 +409,7 @@ class HollaEx {
 
 	/**
 	 * Create a withdrawal for an exchange's user on the network
-	 * @param {number} user_id - User id on network
+	 * @param {number} userId - User id on network
 	 * @param {string} address - Address to send withdrawal to
 	 * @param {string} currency - Curreny to withdraw
 	 * @param {number} amount - Amount to withdraw
@@ -423,10 +417,10 @@ class HollaEx {
 	 * @param {string} otp_code - OTP code from the network to verify withdrawal request
 	 * @return {object} Withdrawal made on the network
 	 */
-	createWithdrawalNetwork(user_id, address, currency, amount, fee, otp_code) {
+	createWithdrawalNetwork(userId, address, currency, amount, fee, otp_code) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${user_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${userId}`;
 		const data = { address, currency, amount, fee, otp_code };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
@@ -440,25 +434,19 @@ class HollaEx {
 
 	/**
 	 * Get all deposits for the exchange on the network
-	 * @param {number} user_id - User id on network. Leave blank to get all deposits for the exchange
+	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
 	 * @param {string} currency - Currency of deposits. Leave blank to get deposits for all currencies
 	 * @param {number} limit - Amount of trades per page. Maximum: 50
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
-	getAllDepositNetwork(user_id, currency, limit = 50, page = 1, order_by = 'id', order = 'desc', start_date, end_date) {
+	getAllDepositNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}&order_by=${order_by}&order=${order}`;
-		if (start_date) {
-			queryString += `&start_date=${start_date}`;
-		}
-		if (end_date) {
-			queryString += `&start_date=${end_date}`;
-		}
-		if (user_id) {
-			queryString += `&user_id=${user_id}`;
+		let queryString = `?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		if (userId) {
+			queryString += `&user_id=${userId}`;
 		}
 		if (currency) {
 			queryString += `&currency=${currency}`;
@@ -476,25 +464,19 @@ class HollaEx {
 
 	/**
 	 * Get all withdrawals for the exchange on the network
-	 * @param {number} user_id - User id on network. Leave blank to get all withdrawals for the exchange
+	 * @param {number} userId - User id on network. Leave blank to get all withdrawals for the exchange
 	 * @param {string} currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
 	 * @param {number} limit - Amount of trades per page. Maximum: 50
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
-	getAllWithdrawalNetwork(user_id, currency, limit = 50, page = 1, order_by = 'id', order = 'desc', start_date, end_date) {
+	getAllWithdrawalNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}&order_by=${order_by}&order=${order}`;
-		if (start_date) {
-			queryString += `&start_date=${start_date}`;
-		}
-		if (end_date) {
-			queryString += `&start_date=${end_date}`;
-		}
-		if (user_id) {
-			queryString += `&user_id=${user_id}`;
+		let queryString = `?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		if (userId) {
+			queryString += `&user_id=${userId}`;
 		}
 		if (currency) {
 			queryString += `&currency=${currency}`;
@@ -512,16 +494,16 @@ class HollaEx {
 
 	/**
 	 * Get the balance for the exchange or exchange's user on the network
-	 * @param {number} user_id - User id on network. Leave blank to get balance for exchange
+	 * @param {number} userId - User id on network. Leave blank to get balance for exchange
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
-	getBalanceNetwork(user_id) {
+	getBalanceNetwork(userId) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/balance`;
-		if (user_id) {
-			path += `?user_id=${user_id}`;
+		if (userId) {
+			path += `?user_id=${userId}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -535,14 +517,14 @@ class HollaEx {
 
 	/**
 	 * Get an order for the exchange on the network
-	 * @param {number} user_id - Id of order's user
-	 * @param {number} order_id - Order id
+	 * @param {number} userId - Id of order's user
+	 * @param {number} orderId - Order id
 	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
 	 */
-	getOrderNetwork(user_id, order_id) {
+	getOrderNetwork(userId, orderId) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -554,7 +536,7 @@ class HollaEx {
 
 	/**
 	 * Create a new order for the exchange on the network
-	 * @param {number} user_id - User id on the network
+	 * @param {number} userId - User id on the network
 	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @param {string} side - The side of the order e.g. 'buy', 'sell'
 	 * @param {number} size - The amount of currency to order
@@ -562,10 +544,10 @@ class HollaEx {
 	 * @param {number} price - The price at which to order (only required if type is 'limit')
 	 * @return {object} Newly created order values e.g. symbol, id, side, status, etc.
 	 */
-	createOrderNetwork(user_id, symbol, side, size, type, price = 0) {
+	createOrderNetwork(userId, symbol, side, size, type, price = 0) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}`;
 		const data = { symbol, side, size, type, price };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
@@ -579,14 +561,14 @@ class HollaEx {
 
 	/**
 	 * Cancel an order for the exchange on the network
-	 * @param {number} user_id - Id of order's user
-	 * @param {number} order_id - Order id
+	 * @param {number} userId - Id of order's user
+	 * @param {number} orderId - Order id
 	 * @return {object} Value of canceled order on the network with values side, size, filled, etc.
 	 */
-	cancelOrderNetwork(user_id, order_id) {
+	cancelOrderNetwork(userId, orderId) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${user_id}&order_id=${order_id}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -598,21 +580,23 @@ class HollaEx {
 
 	/**
 	 * Get all orders for the exchange on the network
-	 * @param {number} user_id - User id on network. Leave blank to get all orders for the exchange
+	 * @param {number} userId - User id on network. Leave blank to get all orders for the exchange
 	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
 	 * @return {array} Array of queried orders
 	 */
-	getAllOrderNetwork(user_id, symbol) {
+	getAllOrderNetwork(userId, symbol, side, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders`;
-		if (user_id && symbol) {
-			path += `?user_id=${user_id}&symbol=${symbol}`;
-		} else if (user_id && !symbol) {
-			path += `?user_id=${user_id}`;
-		} else if (symbol && !user_id) {
-			path += `?symbol=${symbol}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		if (userId) {
+			path += `&user_id=${userId}`;
+		}
+		if (symbol) {
+			path += `&symbol=${symbol}`;
+		}
+		if (side) {
+			path += `&side=${side}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -626,15 +610,15 @@ class HollaEx {
 
 	/**
 	 * Cancel all orders for an exchange's user on the network
-	 * @param {number} user_id - User id on network
+	 * @param {number} userId - User id on network
 	 * @param {string} symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
 	 * @return {array} Array of canceled orders
 	 */
-	cancelAllOrderNetwork(user_id, symbol) {
+	cancelAllOrderNetwork(userId, symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?user_id=${user_id}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?user_id=${userId}`;
 		if (symbol) {
 			path += `&symbol=${symbol}`;
 		}
