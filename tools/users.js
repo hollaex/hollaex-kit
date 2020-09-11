@@ -809,9 +809,10 @@ const toggleFlaggedUserById = (userId) => {
 		});
 };
 
-const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
+const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, format) => {
 	const pagination = paginationQuery(limit, page);
 	const timeframe = timeframeQuery(startDate, endDate);
+	const ordering = orderingQuery(orderBy, order);
 	let options = {
 		where: {
 			created_at: timeframe
@@ -819,7 +820,7 @@ const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
 		attributes: {
 			exclude: ['id', 'origin', 'referer']
 		},
-		order: [['timestamp', 'desc']]
+		order: [ordering]
 	};
 	if (!format) {
 		options = { ...options, ...pagination};
@@ -841,14 +842,15 @@ const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
 		});
 };
 
-const getUserAudits = (userId, limit, page, startDate, endDate, format) => {
+const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, format) => {
 	const pagination = paginationQuery(limit, page);
 	const timeframe = timeframeQuery(startDate, endDate);
+	const ordering = orderingQuery(orderBy, order);
 	let options = {
 		where: {
 			created_at: timeframe
 		},
-		order:[['timestamp', 'desc']]
+		order: [ordering]
 	};
 
 	if (!format) {
