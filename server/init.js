@@ -133,8 +133,15 @@ const checkStatus = () => {
 		})
 		.then(([exchange, status]) => {
 			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
-			configuration.coins = exchange.coins;
-			configuration.pairs = exchange.pairs;
+			each(exchange.coins, (coin) => {
+				console.log(coin)
+				configuration.coins[coin.name] = coin;
+			});
+			each(exchange.pairs, (pair) => {
+				console.log(pair);
+				configuration.pairs[pair.name] = pair;
+			});
+			console.log(configuration)
 			configuration.kit.info = {
 				name: exchange.name,
 				active: exchange.active,
