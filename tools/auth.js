@@ -28,6 +28,8 @@ const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
 const uuid = require('uuid/v4');
 const { all } = require('bluebird');
+const { sendEmail } = require(`${SERVER_PATH}/mail`);
+const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 
 /**
  * Express middleware function that checks validity of bearer token.
@@ -365,8 +367,6 @@ const createResetPasswordCode = (userId) => {
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
-	const { sendEmail } = require(`${SERVER_PATH}/mail`);
-	const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 	return require('./users').getUserByEmail(email)
 		.then((user) => {
 			return all([ createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip) ]);

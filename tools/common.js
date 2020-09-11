@@ -15,6 +15,8 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { each, difference } = require('lodash');
 const { publisher } = require('./database/redis');
+const { sendEmail } = require(`${SERVER_PATH}/mail`);
+const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 
 /**
  * Checks if url given is a valid url.
@@ -191,9 +193,6 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 };
 
 const sendEmailToSupport = (email, category, subject, description) => {
-	const { sendEmail } = require(`${SERVER_PATH}/mail`);
-	const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-
 	if (!SEND_CONTACT_US_EMAIL) {
 		return new Promise((resolve, reject) => reject('Cannot send email to support at this time'));
 	}
