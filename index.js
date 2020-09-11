@@ -125,9 +125,12 @@ class HollaEx {
 	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposit(currency, limit = 50, page = 1, orderBy, order = 'asc') {
+	getDeposit(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
 		const verb = 'GET';
-		const path = `${this.baseUrl}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
+		let path = `${this.baseUrl}/user/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		if (currency) {
+			path += `&currency=${currency}`;
+		}
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -146,9 +149,12 @@ class HollaEx {
 	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getWithdrawal(currency, limit = 50, page = 1, orderBy, order = 'asc') {
+	getWithdrawal(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
 		const verb = 'GET';
-		const path = `${this.baseUrl}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
+		let path = `${this.baseUrl}/user/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		if (currency) {
+			path += `&currency=${currency}`;
+		}
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -184,13 +190,12 @@ class HollaEx {
 	 * @param {number} page The page of data to receive
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
-	getUserTrade(symbol, limit = 50, page = 1) {
+	getUserTrade(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
 		const verb = 'GET';
-		let queryString = `?limit=${limit}&page=${page}`;
+		let path = `${this.baseUrl}/user/trades?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
 		if (symbol) {
-			queryString += `&symbol=${symbol}`;
+			path += `&symbol=${symbol}`;
 		}
-		const path = `${this.baseUrl}/user/trades${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -221,9 +226,12 @@ class HollaEx {
 	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
-	getAllOrder(symbol = '') {
+	getAllOrder(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
 		const verb = 'GET';
-		const path = `${this.baseUrl}/user/orders?symbol=${symbol}`;
+		let path = `${this.baseUrl}/user/orders?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
+		if (symbol) {
+			path += `&symbol=${symbol}`;
+		}
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -270,9 +278,12 @@ class HollaEx {
 	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to cancel orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the cancelled orders
 	 */
-	cancelAllOrder(symbol = '') {
+	cancelAllOrder(symbol) {
 		const verb = 'DELETE';
-		const path = `${this.baseUrl}/user/orders?symbol=${symbol}`;
+		let path = `${this.baseUrl}/user/orders`;
+		if (symbol) {
+			path += `?symbol=${symbol}`;
+		}
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -344,15 +355,14 @@ class HollaEx {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (userId) {
-			queryString += `&user_id=${userId}`;
+			path += `&user_id=${userId}`;
 		}
 		if (symbol) {
-			queryString += `&symbol=${symbol}`;
+			path += `&symbol=${symbol}`;
 		}
 
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -440,19 +450,18 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
-	getAllDepositNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
+	getAllDepositNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (userId) {
-			queryString += `&user_id=${userId}`;
+			path += `&user_id=${userId}`;
 		}
 		if (currency) {
-			queryString += `&currency=${currency}`;
+			path += `&currency=${currency}`;
 		}
 
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -470,19 +479,18 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
-	getAllWithdrawalNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
+	getAllWithdrawalNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let queryString = `?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (userId) {
-			queryString += `&user_id=${userId}`;
+			path += `&user_id=${userId}`;
 		}
 		if (currency) {
-			queryString += `&currency=${currency}`;
+			path += `&currency=${currency}`;
 		}
 
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals${queryString}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
