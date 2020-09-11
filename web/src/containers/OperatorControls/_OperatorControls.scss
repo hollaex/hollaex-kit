@@ -1,0 +1,36 @@
+$operator-controls__panel-main-color: #0000FF;
+$operator-controls__panel-text-color: #FFFFFF;
+$operator-controls__panel-border-color: #A7A7A7;
+
+
+.operator-controls__wrapper {
+  position: fixed;
+  bottom: -106px;
+  width: 100vw;
+  transition: all 0.25s ease-out 0s;
+  color: $operator-controls__panel-text-color;
+
+  &.open {
+    bottom: 0;
+    z-index: 1000000;
+  }
+}
+
+.operator-controls__button {
+  height: 30px;
+  font-size: 16px;
+  background-color: $operator-controls__panel-main-color;
+  width: 162px;
+  margin-left: 57px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.operator-controls__panel {
+  height: 106px;
+  width: 100%;
+  border-top: solid $operator-controls__panel-border-color 1px;
+  background-color: $operator-controls__panel-main-color;
+}

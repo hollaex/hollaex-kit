@@ -56,6 +56,7 @@ import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
 import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
+import OperatorControls from 'containers/OperatorControls';
 
 import {
 	getClasesForLanguage,
@@ -703,6 +704,7 @@ class App extends Component {
 						{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 					</div>
 				</div>
+				<OperatorControls />
 			</ThemeProvider>
 		);
 	}

@@ -3726,6 +3726,33 @@ table th {
     color: var(--dark-font-sub-text-color);
     font-size: 12px; }
 
+.operator-controls__wrapper {
+  position: fixed;
+  bottom: -106px;
+  width: 100vw;
+  transition: all 0.25s ease-out 0s;
+  color: #FFFFFF; }
+  .operator-controls__wrapper.open {
+    bottom: 0;
+    z-index: 1000000; }
+
+.operator-controls__button {
+  height: 30px;
+  font-size: 16px;
+  background-color: #0000FF;
+  width: 162px;
+  margin-left: 57px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.operator-controls__panel {
+  height: 106px;
+  width: 100%;
+  border-top: solid #A7A7A7 1px;
+  background-color: #0000FF; }
+
 .sidebar-fit-to-screen {
   height: 100vh !important; }
 
