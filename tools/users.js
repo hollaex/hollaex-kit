@@ -278,7 +278,9 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 	const timeframe = timeframeQuery(start_date, end_date);
 	const ordering = orderingQuery(order_by, order);
 	let query = {
-		where: {}
+		where: {
+			created_at: timeframe
+		}
 	};
 	if (id || search) {
 		query.attributes = {
@@ -337,7 +339,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 				'bank_account',
 				'activated'
 			],
-			order: ordering ? [ordering] : [['updated_at', 'desc']]
+			order: [ordering]
 		};
 	} else {
 		query = {
@@ -354,10 +356,9 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 					}
 				}
 			],
-			order: ordering ? [ordering] : [['id', 'desc']]
+			order: [ordering]
 		};
 	}
-	if (timeframe) query.where.created_at = timeframe;
 	if (!format) {
 		query = {...query, ...pagination};
 	} else if (!pending) {
@@ -812,7 +813,9 @@ const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
 	const pagination = paginationQuery(limit, page);
 	const timeframe = timeframeQuery(startDate, endDate);
 	let options = {
-		where: {},
+		where: {
+			created_at: timeframe
+		},
 		attributes: {
 			exclude: ['id', 'origin', 'referer']
 		},
@@ -823,8 +826,6 @@ const getUserLogins = (userId, limit, page, startDate, endDate, format) => {
 	}
 
 	if (userId) options.where.user_id = userId;
-
-	if (timeframe) options.where.timestamp = timeframe;
 
 	return dbQuery.findAndCountAllWithRows('login', options)
 		.then((logins) => {
@@ -844,7 +845,9 @@ const getUserAudits = (userId, limit, page, startDate, endDate, format) => {
 	const pagination = paginationQuery(limit, page);
 	const timeframe = timeframeQuery(startDate, endDate);
 	let options = {
-		where: {},
+		where: {
+			created_at: timeframe
+		},
 		order:[['timestamp', 'desc']]
 	};
 
@@ -853,8 +856,6 @@ const getUserAudits = (userId, limit, page, startDate, endDate, format) => {
 	}
 
 	if (userId) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${userId}'`);
-
-	if (timeframe) options.where.timestamp = timeframe;
 
 	return dbQuery.findAndCountAllWithRows('audit', options)
 		.then((audits) => {
