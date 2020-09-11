@@ -347,15 +347,6 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 			attributes: {
 				exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_tech']
 			},
-			include: [
-				{
-					model: getModel('balance'),
-					as: 'balance',
-					attributes: {
-						exclude: ['id', 'user_id', 'created_at']
-					}
-				}
-			],
 			order: [ordering]
 		};
 	}
