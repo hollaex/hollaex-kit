@@ -217,7 +217,7 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	toolsLib.users.getUserByEmail(email)
+	toolsLib.users.getUserByEmail(email, true, true)
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', err);
