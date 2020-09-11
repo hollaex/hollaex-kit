@@ -27,8 +27,6 @@ const {
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
 const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS } = require(`${SERVER_PATH}/constants`);
-const { sendEmail } = require(`${SERVER_PATH}/mail`);
-const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins } = require('./common');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
@@ -72,8 +70,8 @@ const signUpUser = (email, password, referral) => {
 			]);
 		})
 		.then(([ verificationCode, user ]) => {
-			sendEmail(
-				MAILTYPE.SIGNUP,
+			require(`${SERVER_PATH}/mail`).sendEmail(
+				require(`${SERVER_PATH}/mail/strings`).MAILTYPE.SIGNUP,
 				email,
 				verificationCode.code,
 				{}
@@ -122,8 +120,8 @@ const verifyUser = (email, code, domain) => {
 				}, { returning: true, transaction });
 			})
 			.then((user) => {
-				sendEmail(
-					MAILTYPE.WELCOME,
+				require(`${SERVER_PATH}/mail`).sendEmail(
+					require(`${SERVER_PATH}/mail/strings`).MAILTYPE.WELCOME,
 					user.email,
 					user.settings,
 					domain
@@ -481,8 +479,8 @@ const freezeUserById = (userId) => {
 		})
 		.then((user) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
-			sendEmail(
-				MAILTYPE.USER_DEACTIVATED,
+			require(`${SERVER_PATH}/mail`).sendEmail(
+				require(`${SERVER_PATH}/mail/strings`).MAILTYPE.USER_DEACTIVATED,
 				user.email,
 				{
 					type: 'deactivated'
@@ -506,8 +504,8 @@ const freezeUserByEmail = (email) => {
 		})
 		.then((user) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
-			sendEmail(
-				MAILTYPE.USER_DEACTIVATED,
+			require(`${SERVER_PATH}/mail`).sendEmail(
+				require(`${SERVER_PATH}/mail/strings`).MAILTYPE.USER_DEACTIVATED,
 				user.email,
 				{
 					type: 'deactivated'
@@ -528,8 +526,8 @@ const unfreezeUserById = (userId) => {
 		})
 		.then((user) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
-			sendEmail(
-				MAILTYPE.USER_DEACTIVATED,
+			require(`${SERVER_PATH}/mail`).sendEmail(
+				require(`${SERVER_PATH}/mail/strings`).MAILTYPE.USER_DEACTIVATED,
 				user.email,
 				{
 					type: 'activated'
@@ -550,8 +548,8 @@ const unfreezeUserByEmail = (email) => {
 		})
 		.then((user) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
-			sendEmail(
-				MAILTYPE.USER_DEACTIVATED,
+			require(`${SERVER_PATH}/mail`).sendEmail(
+				require(`${SERVER_PATH}/mail/strings`).MAILTYPE.USER_DEACTIVATED,
 				user.email,
 				{
 					type: 'activated'
@@ -766,8 +764,8 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 		})
 		.then((user) => {
 			if (currentVerificationLevel === 1 && user.verification_level === 2) {
-				sendEmail(
-					MAILTYPE.ACCOUNT_VERIFY,
+				require(`${SERVER_PATH}/mail`).sendEmail(
+					require(`${SERVER_PATH}/mail/strings`).MAILTYPE.ACCOUNT_VERIFY,
 					user.email,
 					undefined,
 					user.settings,
@@ -777,8 +775,8 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 				currentVerificationLevel < user.verification_level &&
 				currentVerificationLevel > 1
 			) {
-				sendEmail(
-					MAILTYPE.ACCOUNT_UPGRADE,
+				require(`${SERVER_PATH}/mail`).sendEmail(
+					require(`${SERVER_PATH}/mail/strings`).MAILTYPE.ACCOUNT_UPGRADE,
 					user.email,
 					user.verification_level,
 					user.settings,
