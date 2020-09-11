@@ -356,19 +356,23 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 		query.attributes.exclude.push('settings');
 	}
 	return dbQuery.findAndCountAllWithRows('user', query)
-		.then(({ count, data }) => {
-			if ((id || search) && count === 0) {
+		.then(async ({ count, data }) => {
+			if (id || search) {
 				if (count === 0) {
 					// Need to throw error if query was for one user and the user is not found
 					const error = new Error(USER_NOT_FOUND);
 					error.status = 404;
 					throw error;
+				} else {
+					const userNetworkData = await getNodeLib().getUserNetwork(data[0].network_id);
+					data[0].balance = userNetworkData.balance;
+					data[0].crypto_wallet = userNetworkData.crypto_wallet;
+					return { count, data };
 				}
 			}
-
 			return { count, data };
 		})
-		.then((users) => {
+		.then(async (users) => {
 			if (format) {
 				if (users.data.length === 0) {
 					throw new Error('No data found');
@@ -376,11 +380,6 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 				const flatData = users.data.map((user) => {
 					let crypto_wallet;
 					let id_data;
-					if (user.balance) {
-						user.balance = user.balance.dataValues;
-					} else {
-						delete user.balance;
-					}
 					if (user.crypto_wallet) {
 						crypto_wallet = user.crypto_wallet;
 						user.crypto_wallet = {};
@@ -411,7 +410,7 @@ const getUserByCryptoAddress = (currency, address) => {
 	});
 };
 
-const getUser = (opts = {}, rawData = true) => {
+const getUser = (opts = {}, rawData = true, networkData = false) => {
 	if (!opts.email && !opts.kit_id && !opts.network_id) {
 		return new Promise((resolve, reject) => reject('Please provide the user\'s kit id, network id, or email'));
 	}
@@ -429,34 +428,45 @@ const getUser = (opts = {}, rawData = true) => {
 		where,
 		raw: rawData
 	})
-		.then((user) => {
+		.then(async (user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			} else {
+				if (networkData) {
+					if (rawData) {
+						const networkData = await getNodeLib().getUserNetwork(user.network_id);
+						user.balance = networkData.balance;
+						user.crypto_wallet = networkData.crypto_wallet;
+					} else {
+						const networkData = await getNodeLib().getUserNetwork(user.network_id);
+						user.dataValues.balance = networkData.balance;
+						user.dataValues.crypto_wallet = networkData.crypto_wallet;
+					}
+				}
 				return user;
 			}
 		});
 };
 
-const getUserByEmail = (email, rawData = true) => {
+const getUserByEmail = (email, rawData = true, networkData = false) => {
 	if (!email || !isEmail(email)) {
 		return new Promise((resolve, reject) => reject('Please provide a valid email address'));
 	}
-	return getUser({ email }, rawData);
+	return getUser({ email }, rawData, networkData);
 };
 
-const getUserByKitId = (kit_id, rawData = true) => {
+const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
 	if (!kit_id) {
 		return new Promise((resolve, reject) => reject('Please provide a kit id'));
 	}
-	return getUser({ kit_id }, rawData);
+	return getUser({ kit_id }, rawData, networkData);
 };
 
-const getUserByNetworkId = (network_id, rawData = true) => {
+const getUserByNetworkId = (network_id, rawData = true, networkData = false) => {
 	if (!network_id) {
 		return new Promise((resolve, reject) => reject('Please provide a network id'));
 	}
-	return getUser({ network_id }, rawData);
+	return getUser({ network_id }, rawData, networkData);
 };
 
 const freezeUserById = (userId) => {
