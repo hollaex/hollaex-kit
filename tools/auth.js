@@ -2,7 +2,7 @@
 
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { intersection } = require('lodash');
+const { intersection, has } = require('lodash');
 const {
 	ACCESS_DENIED,
 	NOT_AUTHORIZED,
@@ -28,59 +28,148 @@ const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
 const uuid = require('uuid/v4');
 const { all } = require('bluebird');
+const { getFrozenUsers } = require('./users');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
+const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 
-/**
- * Express middleware function that checks validity of bearer token.
- * @param {string} secret - Secret used to generate token.
- * @param {string} issuer - Issuer of valid tokens.
- * @param {array} frozenUsers - (OPTIONAL) User ids that are deactivated.
- * @param {array} endpointScopes - (OPTIONAL) Valid user scopes for the endpoint.
- */
-const verifyBearerToken = (secret, issuer, frozenUsers, endpointScopes) => (
-	req,
-	res,
-	next
-) => {
+//Here we setup the security checks for the endpoints
+//that need it (in our case, only /protected). This
+//function will be called every time a request to a protected
+//endpoint is received
+const verifyBearerToken = (req, authOrSecDef, token, cb, isSocket = false) => {
 	const sendError = (msg) => {
-		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+		if (isSocket) {
+			return new Error(msg);
+		} else {
+			return req.res.status(403).json({ message: msg });
+		}
 	};
 
-	const token = req.headers['authorization'];
+	if (!has(req.headers, 'api-key') && !has(req.headers, 'authorization')) {
+		return sendError('Bearer or api-key authentication required');
+	}
 
-	if (token && token.indexOf('Bearer ') === 0) {
-		let tokenString = token.split(' ')[1];
+	if (has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
+		return sendError();
+	} else if (!has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 
-		jwt.verify(tokenString, secret, (verificationError, decodedToken) => {
-			if (!verificationError && decodedToken) {
-				const issuerMatch = decodedToken.iss == issuer;
+		// Swagger endpoint scopes
+		const endpointScopes = req.swagger
+			? req.swagger.operation['x-security-scopes']
+			: BASE_SCOPES;
+		const ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
-				if (!issuerMatch) {
-					return sendError(TOKEN_EXPIRED);
+		//validate the 'Authorization' header. it should have the following format:
+		//'Bearer tokenString'
+		if (token && token.indexOf('Bearer ') === 0) {
+			const tokenString = token.split(' ')[1];
+
+			jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+				//check if the JWT was verified correctly
+				if (!verificationError && decodedToken) {
+					loggerAuth.verbose(
+						'helpers/auth/verifyToken verified_token',
+						ip,
+						decodedToken.ip,
+						decodedToken.sub
+					);
+
+					// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
+					if (intersection(decodedToken.scopes, endpointScopes).length === 0) {
+						loggerAuth.error(
+							'verifyToken',
+							'not permission',
+							decodedToken.sub.email,
+							decodedToken.scopes,
+							endpointScopes
+						);
+
+						return sendError('User does not have permission to access this service');
+					}
+
+					if (decodedToken.iss !== ISSUER) {
+						loggerAuth.error(
+							'helpers/auth/verifyToken unverified_token',
+							ip
+						);
+						//return the error in the callback if there is one
+						return sendError('Token is expired');
+					}
+
+					if (getFrozenUsers()[decodedToken.sub.id]) {
+						loggerAuth.error(
+							'helpers/auth/verifyToken deactivated account',
+							decodedToken.sub.email
+						);
+						//return the error in the callback if there is one
+						return sendError('This account is deactivated');
+					}
+
+					req.auth = decodedToken;
+					return cb(null);
+				} else {
+					//return the error in the callback if the JWT was not verified
+					return sendError('Invalid token');
 				}
-
-				if (frozenUsers && frozenUsers[decodedToken.sub.id]) {
-					return sendError(DEACTIVATED_USER);
-				}
-
-				if (
-					endpointScopes &&
-					intersection(endpointScopes, decodedToken.scopes).length === 0
-				) {
-					return sendError(NOT_AUTHORIZED);
-				}
-
-				req.auth = decodedToken;
-				return next();
-			} else {
-				return sendError(INVALID_TOKEN);
-			}
-		});
-	} else {
-		return sendError(MISSING_HEADER);
+			});
+		} else {
+			//return the error in the callback if the Authorization header doesn't have the correct format
+			return sendError('Missing header');
+		}
 	}
 };
+
+// /**
+//  * Express middleware function that checks validity of bearer token.
+//  * @param {string} secret - Secret used to generate token.
+//  * @param {string} issuer - Issuer of valid tokens.
+//  * @param {array} frozenUsers - (OPTIONAL) User ids that are deactivated.
+//  * @param {array} endpointScopes - (OPTIONAL) Valid user scopes for the endpoint.
+//  */
+// const verifyBearerToken = (secret, issuer, frozenUsers, endpointScopes) => (
+// 	req,
+// 	res,
+// 	next
+// ) => {
+// 	const sendError = (msg) => {
+// 		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+// 	};
+
+// 	const token = req.headers['authorization'];
+
+// 	if (token && token.indexOf('Bearer ') === 0) {
+// 		let tokenString = token.split(' ')[1];
+
+// 		jwt.verify(tokenString, secret, (verificationError, decodedToken) => {
+// 			if (!verificationError && decodedToken) {
+// 				const issuerMatch = decodedToken.iss == issuer;
+
+// 				if (!issuerMatch) {
+// 					return sendError(TOKEN_EXPIRED);
+// 				}
+
+// 				if (frozenUsers && frozenUsers[decodedToken.sub.id]) {
+// 					return sendError(DEACTIVATED_USER);
+// 				}
+
+// 				if (
+// 					endpointScopes &&
+// 					intersection(endpointScopes, decodedToken.scopes).length === 0
+// 				) {
+// 					return sendError(NOT_AUTHORIZED);
+// 				}
+
+// 				req.auth = decodedToken;
+// 				return next();
+// 			} else {
+// 				return sendError(INVALID_TOKEN);
+// 			}
+// 		});
+// 	} else {
+// 		return sendError(MISSING_HEADER);
+// 	}
+// };
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.
@@ -533,6 +622,31 @@ const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
 		.then(formatTokenObject);
 };
 
+const findToken = (query) => {
+	return dbQuery.findOne('token', query);
+};
+
+const findTokenByApiKey = (apiKey) => {
+	return dbQuery.findOne('token', {
+		where: {
+			key: apiKey,
+			active: true
+		},
+		include: [
+			{
+				model: getModel('user'),
+				as: 'user',
+				attributes: ['id', 'email']
+			}
+		]
+	});
+};
+
+const checkToken = (token) => {
+	return findTokenByApiKey(token);
+};
+
+
 module.exports = {
 	verifyBearerToken,
 	userScopeIsValid,
@@ -540,6 +654,8 @@ module.exports = {
 	checkCaptcha,
 	verifyOtpBeforeAction,
 	verifyOtp,
+	findToken,
+	checkToken,
 	issueToken,
 	validatePassword,
 	generateOtp,

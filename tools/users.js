@@ -2,7 +2,7 @@
 
 const { getModel } = require('./database').model;
 const dbQuery = require('./database').query;
-const { has, omit, pick, each } = require('lodash');
+const { has, omit, pick, each, differenceWith, isEqual } = require('lodash');
 const { isEmail } = require('validator');
 const {
 	SERVER_PATH,
@@ -26,7 +26,7 @@ const {
 } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
-const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS } = require(`${SERVER_PATH}/constants`);
+const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins } = require('./common');
@@ -843,6 +843,81 @@ const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, 
 		});
 };
 
+const bankComparison = (bank1, bank2, description) => {
+	let difference = [];
+	let note = '';
+	if (bank1.length === bank2.length) {
+		note = 'bank info updated';
+		difference = differenceWith(bank1, bank2, isEqual);
+	} else if (bank1.length > bank2.length) {
+		note = 'bank removed';
+		difference = differenceWith(bank1, bank2, isEqual);
+	} else if (bank1.length < bank2.length) {
+		note = 'bank added';
+		difference = differenceWith(bank2, bank1, isEqual);
+	}
+
+	// bank data is changed
+	if (difference.length > 0) {
+		description.note = note;
+		description.new.bank_account = bank2;
+		description.old.bank_account = bank1;
+	}
+	return description;
+};
+
+const createAuditDescription = (userId, prevData = {}, newData = {}) => {
+	let description = {
+		userId,
+		note: `Change in user ${userId} information`,
+		old: {},
+		new: {}
+	};
+	for (const key in newData) {
+		if (USER_FIELD_ADMIN_LOG.includes(key)) {
+			let prevRecord = prevData[key] || 'empty';
+			let newRecord = newData[key] || 'empty';
+			if (key === 'bank_account') {
+				description = bankComparison(
+					prevData.bank_account,
+					newData.bank_account,
+					description
+				);
+			} else if (key === 'id_data') {
+				ID_FIELDS.forEach((field) => {
+					if (newRecord[field] != prevRecord[field]) {
+						description.old[field] = prevRecord[field];
+						description.new[field] = newRecord[field];
+					}
+				});
+			} else if (key === 'address') {
+				ADDRESS_FIELDS.forEach((field) => {
+					if (prevRecord[field] != newRecord[field]) {
+						description.old[field] = prevRecord[field];
+						description.new[field] = newRecord[field];
+					}
+				});
+			} else {
+				if (prevRecord.toString() != newRecord.toString()) {
+					description.old[key] = prevRecord;
+					description.new[key] = newRecord;
+				}
+			}
+		}
+	}
+	return description;
+};
+
+const createAudit = (adminId, userId, event, prevUserData, newUserData, ip, domain) => {
+	return getModel('audit').create({
+		admin_id: adminId,
+		event,
+		description: createAuditDescription(userId, prevUserData, newUserData),
+		ip,
+		domain
+	});
+};
+
 const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, format) => {
 	const pagination = paginationQuery(limit, page);
 	const timeframe = timeframeQuery(startDate, endDate);
@@ -991,5 +1066,6 @@ module.exports = {
 	setUsernameById,
 	getAffiliationCount,
 	isValidUsername,
-	createUserCryptoAddressByKitId
+	createUserCryptoAddressByKitId,
+	createAudit
 };
