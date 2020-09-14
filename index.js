@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
 const moment = require('moment');
-const { each } = require('lodash');
+const { each, isBoolean } = require('lodash');
 const { createRequest, createSignature, generateHeaders, checkKit } = require('./utils');
 const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
@@ -125,7 +125,7 @@ class HollaEx {
 	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposit(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
+	getDeposit(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (currency) {
@@ -149,7 +149,7 @@ class HollaEx {
 	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getWithdrawal(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
+	getWithdrawal(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (currency) {
@@ -190,7 +190,7 @@ class HollaEx {
 	 * @param {number} page The page of data to receive
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
-	getUserTrade(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
+	getUserTrade(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/trades?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
 		if (symbol) {
@@ -226,7 +226,7 @@ class HollaEx {
 	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
-	getAllOrder(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
+	getAllOrder(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/orders?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
 		if (symbol) {
@@ -298,7 +298,7 @@ class HollaEx {
 	 * @return {class} A new socket class that listens to the hollaEx websocket server and emits the event being passed
 	 */
 	connect(events) {
-		const apiExpires = moment().unix() + this.apiExpiresAfter;
+		const apiExpires = moment().toISOString() + this.apiExpiresAfter;
 		const signature = createSignature(this.apiSecret, 'CONNECT', '/socket', apiExpires);
 		return new Socket(events, this.apiUrl, this.apiKey, signature, apiExpires);
 	}
@@ -351,7 +351,7 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
-	getAllTradeNetwork(userId, symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
+	getAllTradeNetwork(userId, symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -442,6 +442,21 @@ class HollaEx {
 		);
 	}
 
+	cancelWithdrawalNetwork(userId, transactionId) {
+		checkKit(this.exchange_id);
+		const verb = 'DELETE';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${userId}`;
+		const data = { transaction_id: transactionId };
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers,
+			data
+		);
+	}
+
 	/**
 	 * Get all deposits for the exchange on the network
 	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
@@ -450,16 +465,46 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
-	getAllDepositNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
+	getAllDepositNetwork(
+		userId,
+		currency,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		limit = 50,
+		page = 1,
+		orderBy = 'created_at',
+		order = 'asc',
+		startDate = 0,
+		endDate = moment().toISOString()
+	) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+
 		if (userId) {
 			path += `&user_id=${userId}`;
 		}
 		if (currency) {
 			path += `&currency=${currency}`;
+		}
+		if (isBoolean(status)) {
+			path += `$status=${status}`;
+		}
+		if (isBoolean(dismissed)) {
+			path += `$dismissed=${dismissed}`;
+		}
+		if (isBoolean(rejected)) {
+			path += `$rejected=${rejected}`;
+		}
+		if (isBoolean(processing)) {
+			path += `$processing=${processing}`;
+		}
+		if (isBoolean(waiting)) {
+			path += `$waiting=${waiting}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -479,16 +524,46 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
-	getAllWithdrawalNetwork(userId, currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().valueOf()) {
+	getAllWithdrawalNetwork(
+		userId,
+		currency,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		limit = 50,
+		page = 1,
+		orderBy = 'created_at',
+		order = 'asc',
+		startDate = 0,
+		endDate = moment().toISOString()
+	) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+
 		if (userId) {
 			path += `&user_id=${userId}`;
 		}
 		if (currency) {
 			path += `&currency=${currency}`;
+		}
+		if (isBoolean(status)) {
+			path += `$status=${status}`;
+		}
+		if (isBoolean(dismissed)) {
+			path += `$dismissed=${dismissed}`;
+		}
+		if (isBoolean(rejected)) {
+			path += `$rejected=${rejected}`;
+		}
+		if (isBoolean(processing)) {
+			path += `$processing=${processing}`;
+		}
+		if (isBoolean(waiting)) {
+			path += `$waiting=${waiting}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -592,7 +667,7 @@ class HollaEx {
 	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
 	 * @return {array} Array of queried orders
 	 */
-	getAllOrderNetwork(userId, symbol, side, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().valueOf()) {
+	getAllOrderNetwork(userId, symbol, side, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -631,6 +706,147 @@ class HollaEx {
 			path += `&symbol=${symbol}`;
 		}
 
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getUserStatsNetwork(userId) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/user/stats?user_id=${userId}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	transferAssets(senderId, receiverId, currency, amount, description = '') {
+		checkKit(this.exchange_id);
+		const verb = 'POST';
+		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/transfer`;
+		const data = {
+			sender_id: senderId,
+			receiver_id: receiverId,
+			currency,
+			description,
+			amount
+		};
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers,
+			data
+		);
+	}
+
+	// ENGINE ENDPOINTS
+	getTradesEngine(symbol) {
+		const verb = 'GET';
+		let path = `${HOLLAEX_NETWORK_VERSION}/trades`;
+
+		if (symbol) {
+			path += `?symbol=${symbol}`;
+		}
+
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getOrderbooksEngine(symbol) {
+		const verb = 'GET';
+		let path = `${HOLLAEX_NETWORK_VERSION}/orderbooks`;
+
+		if (symbol) {
+			path += `?symbol=${symbol}`;
+		}
+
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getChartEngine(from, to, symbol, resolution) {
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getUdfConfigEngine() {
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/udf/config`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getUdfHistoryEngine(from, to, symbol, resolution) {
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getUdfSymbolsEngine(symbol) {
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/udf/symbols?symbol=${symbol}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getTickerEngine(symbol) {
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/ticker?symbol=${symbol}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getAllTickersEngine() {
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/ticker/all`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
