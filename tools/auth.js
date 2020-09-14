@@ -646,6 +646,32 @@ const checkToken = (token) => {
 	return findTokenByApiKey(token);
 };
 
+const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
+	const stringData = typeof data === 'string' ? data : JSON.stringify(data);
+
+	const signature = crypto
+		.createHmac('sha256', secret)
+		.update(verb + path + nonce + stringData)
+		.digest('hex');
+	return signature;
+};
+
+const checkHmacSignature = (
+	secret,
+	{ body, headers, method, originalUrl }
+) => {
+	const signature = headers['api-signature'];
+	const expires = headers['api-expires'];
+
+	const calculatedSignature = calculateSignature(
+		secret,
+		method,
+		originalUrl,
+		expires,
+		body
+	);
+	return calculatedSignature === signature;
+};
 
 module.exports = {
 	verifyBearerToken,
@@ -670,5 +696,6 @@ module.exports = {
 	getUserKitHmacTokens,
 	userHasOtpEnabled,
 	createUserKitHmacToken,
-	deleteUserKitHmacToken
+	deleteUserKitHmacToken,
+	checkHmacSignature
 };
