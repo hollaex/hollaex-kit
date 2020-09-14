@@ -84,3 +84,21 @@ export const getFontClassForLanguage = (language = '') => {
 export const maskToken = (token = '') => {
 	return token.substr(0, 5) + '**********' + token.substr(-5);
 };
+
+export const setContent = (content) => {
+  STRINGS.setContent(content);
+};
+
+export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
+	const content = STRINGS._props;
+
+	const mergedContent = {
+		...content,
+		[key]: {
+      ...(content[key] ? content[key] : {}),
+      ...overwrites
+		}
+  }
+
+  setContent(mergedContent)
+}
