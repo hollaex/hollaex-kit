@@ -985,12 +985,12 @@ const getTransactions = (type, kitId, currency, limit, page, orderBy, order, sta
 		});
 };
 
-const getUserDepositsByKitId = (kitId, currency, limit, page, orderBy, order, startDate, endDate, format) => {
-	return getTransactions('deposit', kitId, currency, limit, page, orderBy, order, startDate, endDate, format);
+const getUserDepositsByKitId = (kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format) => {
+	return getTransactions('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
 };
 
-const getUserWithdrawalsByKitId = (kitId, currency, limit, page, orderBy, order, startDate, endDate, format) => {
-	return getTransactions('withdrawal', kitId, currency, limit, page, orderBy, order, startDate, endDate, format);
+const getUserWithdrawalsByKitId = (kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format) => {
+	return getTransactions('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
 };
 
 const checkUsernameIsTaken = (username) => {
