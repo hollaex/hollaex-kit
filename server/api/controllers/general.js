@@ -21,8 +21,8 @@ const getHealth = (req, res) => {
 const getConstants = (req, res) => {
 	try {
 		return res.json({
-			coins: toolsLib.getKitCoins(),
-			pairs: toolsLib.getKitPairs()
+			coins: toolsLib.getKitCoinsConfig(),
+			pairs: toolsLib.getKitPairsConfig()
 		});
 	} catch (err) {
 		return res.status(400).json({ message: err.message });

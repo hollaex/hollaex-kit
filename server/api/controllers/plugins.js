@@ -45,7 +45,6 @@ const { MAILTYPE, languageFile } = require('../../mail/strings');
 const PhoneNumber = require('awesome-phonenumber');
 const { omit, cloneDeep, has } = require('lodash');
 const { all } = require('bluebird');
-const { createAudit } = require('../helpers/audit');
 const toolsLib = require('hollaex-tools-lib');
 
 const getPlugins = (req, res) => {
@@ -92,12 +91,6 @@ const enablePlugin = (req, res) => {
 
 	const plugin = req.swagger.params.plugin.value;
 
-	loggerPlugin.verbose(
-		req.uuid,
-		'controllers/plugins/enablePlugin plugin',
-		plugin
-	);
-
 	toolsLib.plugins.enablePlugin(plugin)
 		.then((data) => {
 			res.json(data);
@@ -135,13 +128,6 @@ const disablePlugin = (req, res) => {
 
 // XHT_FEE
 const activateXhtFee = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('xht_fee')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/activateXhtFee', PLUGIN_NOT_ENABLED('xht_fee'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('xht_fee') });
-	}
-
-	const { email, id } = req.auth.sub;
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/activateXhtFee auth',
@@ -149,23 +135,19 @@ const activateXhtFee = (req, res) => {
 		email
 	);
 
-	toolsLib.database.query.findOne('user', {
-		where: { id },
-		include: [
-			{
-				model: toolsLib.database.model.getModel('balance'),
-				as: 'balance',
-				attributes: {
-					exclude: ['id', 'user_id', 'created_at']
-				}
-			}
-		]
-	})
+	if (!toolsLib.plugins.pluginIsEnabled('xht_fee')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/activateXhtFee', PLUGIN_NOT_ENABLED('xht_fee'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('xht_fee') });
+	}
+
+	const { email, id } = req.auth.sub;
+
+	toolsLib.users.getUserByKitId(id, false, true)
 		.then((user) => {
-			if (user.custom_fee) {
+			if (user.dataValues.custom_fee) {
 				throw new Error('XHT fee is already activated');
 			}
-			if (user.balance_xht < REQUIRED_XHT) {
+			if (user.dataValues.balance.xht_available < REQUIRED_XHT) {
 				throw new Error('Require minimum 100 XHT in your wallet for activating this service');
 			}
 			return user.update({ custom_fee: true }, { fields: ['custom_fee'] });
@@ -195,9 +177,9 @@ const postBankUser = (req, res) => {
 		email
 	);
 
-	toolsLib.users.getUserValuesByEmail(email, false)
+	toolsLib.users.getUserByEmail(email, false)
 		.then(addBankAccount(bank_account))
-		.then(() => toolsLib.users.getUserValuesByEmail(email))
+		.then(() => toolsLib.users.getUserByEmail(email))
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankUser err', err);
@@ -227,9 +209,9 @@ const postBankAdmin = (req, res) => {
 		bank_account
 	);
 
-	toolsLib.users.getUserValuesById(id, false)
+	toolsLib.users.getUserByKitId(id, false)
 		.then(adminAddUserBanks(bank_account))
-		.then(() => toolsLib.users.getUserValuesById(id))
+		.then(() => toolsLib.users.getUserByKitId(id))
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/postBankAdmin err', err);
@@ -260,7 +242,7 @@ const bankVerify = (req, res) => {
 		bank_id
 	);
 
-	toolsLib.users.getUserValuesById(user_id, false)
+	toolsLib.users.getUserByKitId(user_id, false)
 		.then((user) => {
 			if (!user) throw new Error(USER_NOT_FOUND);
 			return approveBankAccount(bank_id)(user);
@@ -296,18 +278,7 @@ const bankRevoke = (req, res) => {
 	const { user_id, bank_id } = req.swagger.params.data.value;
 	let { message } = req.swagger.params.data.value || DEFAULT_REJECTION_NOTE;
 
-	loggerPlugin.info(
-		req.uuid,
-		'controllers/plugins/bankRevoke params',
-		'user_id',
-		user_id,
-		'bank_id',
-		bank_id,
-		'message',
-		message
-	);
-
-	toolsLib.users.getUserValuesById(user_id, false)
+	toolsLib.users.getUserByKitId(user_id, false)
 		.then((user) => {
 			if (!user) throw new Error(USER_NOT_FOUND);
 			return rejectBankAccount(bank_id)(user);
@@ -351,9 +322,9 @@ const putKycUser = (req, res) => {
 	const newData = req.swagger.params.data.value;
 	const { email } = req.auth.sub;
 
-	toolsLib.users.getUserValuesByEmail(email, false)
+	toolsLib.users.getUserByEmail(email, false)
 		.then(updateUserData(newData, ROLES.USER))
-		.then(() => toolsLib.users.getUserValuesByEmail(email))
+		.then(() => toolsLib.users.getUserByEmail(email))
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'controllers/plugins/putKycUser err', err);
@@ -413,7 +384,7 @@ const putKycAdmin = (req, res) => {
 		.transaction((transaction) => {
 			const options = { transaction, returning: true };
 			let prevUserData = {}; // for audit
-			return toolsLib.users.getUserValuesById(id, false)
+			return toolsLib.users.getUserByKitId(id, false)
 				.then((user) => {
 					prevUserData = cloneDeep(user.dataValues);
 					loggerPlugin.debug(
@@ -446,14 +417,9 @@ const putKycAdmin = (req, res) => {
 						prevUserData.dataValues,
 						user
 					);
-					const description = userUpdateLog(
-						user.id,
-						prevUserData,
-						user.dataValues
-					);
 					return all([
 						user,
-						createAudit(admin_id, 'userUpdate', description, ip, domain)
+						toolsLib.users.createAudit(admin_id, user.id, 'userUpdate', prevUserData, user.dataValues, ip, domain)
 					]);
 				});
 		})
@@ -531,7 +497,7 @@ const kycUserUpload = (req, res) => {
 
 	const ts = Date.now();
 
-	toolsLib.users.getUserValuesById(id, false)
+	toolsLib.users.getUserByKitId(id, false)
 		.then((user) => {
 			let { status } = user.dataValues.id_data || 0;
 			if (status === 3) {
@@ -645,7 +611,7 @@ const kycAdminUpload = (req, res) => {
 
 	const ts = Date.now();
 
-	toolsLib.users.getUserValuesById(user_id, false)
+	toolsLib.users.getUserByKitId(user_id, false)
 		.then((user) => getImagesData(user.id, 'admin'))
 		.then((data) => {
 			return all([
@@ -749,7 +715,7 @@ const kycIdVerify = (req, res) => {
 		user_id
 	);
 
-	toolsLib.users.getUserValuesById(user_id, false)
+	toolsLib.users.getUserByKitId(user_id, false)
 		.then((user) => {
 			return approveDocuments(user);
 		})
@@ -787,7 +753,7 @@ const kycIdRevoke = (req, res) => {
 		message
 	);
 
-	toolsLib.users.getUserValuesById(user_id, false)
+	toolsLib.users.getUserByKitId(user_id, false)
 		.then((user) => {
 			return revokeDocuments(user, message);
 		})

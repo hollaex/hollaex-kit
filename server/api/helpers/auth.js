@@ -1,15 +1,9 @@
 'use strict';
 
 const { intersection } = require('lodash');
-const uuid = require('uuid/v4');
-const bcrypt = require('bcryptjs');
-const { ResetPasswordCode, User, VerificationCode } = require('../../db/models');
-const { findUserByEmail, findUser } = require('../helpers/user');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const { loggerAuth } = require('../../config/logger');
-const { checkToken } = require('./token');
-const { checkHmacSignature } = require('./security');
 const { getFrozenUsers } = require('../../init');
 const {
 	SECRET,
@@ -27,69 +21,7 @@ const {
 	API_KEY_INACTIVE,
 	API_SIGNATURE_INVALID
 } = require('../../messages');
-const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
-
-/*
-	Function that check if a value matches the regular expression for a password. Takes one parameters
-	Param 1(string): value to check
-	Return a boolean with the result of the match
-*/
-const isValidPassword = (value) => {
-	return passwordRegEx.test(value);
-};
-
-/*
-	Functions to verify the password with the hash stored in the DB, should take two parameters:
-	Param 1(String): hash value stored in the DB
-	Param 2(String): password provided by the user
-	Return a promise with one parameter(boolean) that indicates if the password matches the hash stored.
- */
-const validatePassword = (userPassword, inputPassword) => {
-	return bcrypt.compare(inputPassword, userPassword);
-};
-
-const createResetPasswordCode = (user_id) => {
-	return ResetPasswordCode.findOne({
-		where: { user_id, used: false },
-		attributes: ['code']
-	})
-		.then((code) => {
-			if (code) {
-				return code;
-			}
-			return ResetPasswordCode.create({
-				user_id,
-				code: uuid()
-			});
-		})
-		.then((code) => code.code);
-};
-
-const findResetPasswordCode = (options) => {
-	return ResetPasswordCode.findOne(options).then((code) => {
-		if (!code) {
-			const error = new Error('Code not found.');
-			error.status = 404;
-			throw error;
-		}
-		return code;
-	});
-};
-
-const setUsedResetPasswordCode = (resetPasswordCode, password) => {
-	return findResetPasswordCode({
-		where: { code: resetPasswordCode },
-		attributes: ['id', 'user_id', 'code', 'used']
-	})
-		.then((code) => {
-			if (code.used) {
-				throw new Error('Code is already used.');
-			}
-			return code.update({ used: true }, { fields: ['used'] });
-		})
-		.then((code) => User.findById(code.user_id))
-		.then((user) => user.update({ password }, { fields: ['password'] }));
-};
+const toolsLib = require('hollaex-tools-lib');
 
 //Here we setup the security checks for the endpoints
 //that need it (in our case, only /protected). This
@@ -211,7 +143,7 @@ const checkHmacKey = (req, definition, apiKey, cb, isSocket = false) => {
 			loggerAuth.error('helpers/auth/checkHmacKey null secret', apiKey);
 			return sendError(API_SIGNATURE_NULL);
 		} else {
-			checkToken(apiKey)
+			toolsLib.auth.checkToken(apiKey)
 				.then((token) => {
 					if (!token) {
 						loggerAuth.error(
@@ -239,7 +171,7 @@ const checkHmacKey = (req, definition, apiKey, cb, isSocket = false) => {
 						);
 						return sendError(API_KEY_INACTIVE);
 					} else {
-						const isSignatureValid = checkHmacSignature(
+						const isSignatureValid = toolsLib.auth.checkHmacSignature(
 							token.secret,
 							req
 						);
@@ -261,74 +193,7 @@ const checkHmacKey = (req, definition, apiKey, cb, isSocket = false) => {
 	}
 };
 
-/*
-  Function to query the DB to find a verification code by the user email, should take one parameter:
-
-  Param 1(string): user email
-
-  Return a promise with verification code(object).
- */
-const findVerificationCodeByUserEmail = (email) => {
-	return findUserByEmail(email).then((user) =>
-		findVerificationCodeByUserId(user.id)
-	);
-};
-
-/*
-  Function to query the DB to find a verification code by the user id, should take one parameter:
-
-  Param 1(integer): user email
-
-  Return a promise with verification code(object).
- */
-const findVerificationCodeByUserId = (user_id) => {
-	return VerificationCode.findOne({
-		where: { user_id },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	}).then((verificationCode) => {
-		if (verificationCode.verified) {
-			throw new Error('User is verified');
-		}
-		return verificationCode;
-	});
-};
-
-/*
-  Function to query the DB to find the email of a verificationCode, should take one parameter:
-
-  Param 1(string): verification code
-
-  Return a promise with (string) user emal.
- */
-const findUserEmailByVerificationCode = (code) => {
-	return VerificationCode.findOne({
-		where: { code },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	})
-		.then((verificationCode) => {
-			if (!verificationCode) {
-				throw new Error('Verification Code invalid');
-			} else if (verificationCode.verified) {
-				throw new Error('Verification Code used');
-			}
-			return findUser({
-				where: { id: verificationCode.user_id },
-				attributes: ['email']
-			});
-		})
-		.then((user) => {
-			return user.email;
-		});
-};
-
 module.exports = {
-	isValidPassword,
-	validatePassword,
-	createResetPasswordCode,
-	setUsedResetPasswordCode,
 	verifyToken,
-	checkHmacKey,
-	findVerificationCodeByUserEmail,
-	findVerificationCodeByUserId,
-	findUserEmailByVerificationCode
+	checkHmacKey
 };

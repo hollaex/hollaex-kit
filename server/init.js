@@ -4,9 +4,8 @@ const Kit = require('hollaex-node-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
 const cron = require('node-cron');
-const { getStatus } = require('./api/helpers/status');
 const { loggerGeneral } = require('./config/logger');
-const { User } = require('./db/models');
+const { User, Status } = require('./db/models');
 
 const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
@@ -99,7 +98,7 @@ const getPairs = () => {
 const checkStatus = () => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
 
-	return getStatus()
+	return Status.findOne({})
 		.then((status) => {
 			loggerGeneral.info('init/checkStatus');
 			if (!status) {
@@ -134,14 +133,11 @@ const checkStatus = () => {
 		.then(([exchange, status]) => {
 			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
 			each(exchange.coins, (coin) => {
-				console.log(coin)
-				configuration.coins[coin.name] = coin;
+				configuration.coins[coin.symbol] = coin;
 			});
 			each(exchange.pairs, (pair) => {
-				console.log(pair);
 				configuration.pairs[pair.name] = pair;
 			});
-			console.log(configuration)
 			configuration.kit.info = {
 				name: exchange.name,
 				active: exchange.active,

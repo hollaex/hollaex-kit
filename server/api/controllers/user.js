@@ -560,6 +560,24 @@ const getUserWithdrawals = (req, res) => {
 		});
 };
 
+const getUserStats = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/getUserStats',
+		req.auth.sub
+	);
+	const user_id = req.auth.sub.id;
+
+	toolsLib.users.getUserStats(user_id)
+		.then((stats) => {
+			return res.json({ data: stats, updatedAt: new Date() });
+		})
+		.catch((err) => {
+			loggerUser.error('controllers/user/getUserStats', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -582,5 +600,6 @@ module.exports = {
 	deleteHmacToken,
 	getUserTrades,
 	getUserDeposits,
-	getUserWithdrawals
+	getUserWithdrawals,
+	getUserStats
 };

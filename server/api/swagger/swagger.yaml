@@ -345,6 +345,26 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /user/stats:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUserStats
+      description: Sum of user trades and its stats
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/StatsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /user/settings:
     x-swagger-router-controller: user
     put:
@@ -3770,3 +3790,11 @@ definitions:
       token:
         type: string
         description: withdrawal confirmation token
+  StatsResponse:
+    type: object
+    properties:
+      data:
+        type: object
+      updatedAt:
+        type: string
+        format: date-time
