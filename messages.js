@@ -1,10 +1,11 @@
 'use strict';
 
 exports.ACCESS_DENIED = (msg) => `Access denied: ${msg}`;
-exports.NOT_AUTHORIZED = 'You are not authorized to access this endpoint';
+exports.NOT_AUTHORIZED = 'User is not authorized to access this endpoint';
 exports.TOKEN_EXPIRED = 'Token is expired';
 exports.INVALID_TOKEN = 'Token is invalid';
-exports.MISSING_HEADER = 'Authorization header is missing';
+exports.MISSING_HEADER = 'Bearer or api-key authentication required';
+exports.MULTIPLE_API_KEY = 'Multiple API Key method is provided';
 exports.DEACTIVATED_USER = 'This account is deactivated';
 exports.WRONG_LIMIT = 'Value "limit" must be an integer';
 exports.WRONG_PAGE = 'Value "page" must be an integer';
@@ -30,3 +31,12 @@ exports.TOKEN_NOT_FOUND = 'Token not found';
 exports.TOKEN_REVOKED = 'Token is already revoked';
 exports.INVALID_WITHDRAWAL_TOKEN = 'Withdrawal token is incorrect';
 exports.EXPIRED_WITHDRAWAL_TOKEN = 'Expired withdrawal token';
+exports.MULTIPLE_API_KEY = 'Multiple API Key method is provided';
+exports.API_KEY_NULL = 'Access Denied: API Key is not provided';
+exports.API_REQUEST_EXPIRED = 'Access Denied: API request is expired';
+exports.API_SIGNATURE_NULL = 'Access Denied: API Signature is not provided';
+exports.API_KEY_INVALID = 'Access Denied: Invalid API Key';
+exports.API_KEY_OUT_OF_SCOPE = 'Unauthorized Access. You are not allowed to access this service with this key';
+exports.API_KEY_EXPIRED = 'Access Denied: API Key is expired';
+exports.API_KEY_INACTIVE = 'Access Denied: API Key is frozen';
+exports.API_SIGNATURE_INVALID = 'Access Denied: Invalid API Signature';

@@ -1033,6 +1033,13 @@ const createUserCryptoAddressByKitId = (kitId, crypto) => {
 		});
 };
 
+const getUserStats = (userId) => {
+	return getUserByKitId(userId)
+		.then((user) => {
+			return getNodeLib().getUserStatsNetwork(user.network_id);
+		});
+};
+
 module.exports = {
 	loginUser,
 	getUserByEmail,
@@ -1067,5 +1074,6 @@ module.exports = {
 	getAffiliationCount,
 	isValidUsername,
 	createUserCryptoAddressByKitId,
-	createAudit
+	createAudit,
+	getUserStats
 };

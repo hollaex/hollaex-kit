@@ -15,7 +15,16 @@ const {
 	INVALID_PASSWORD,
 	TOKEN_OTP_MUST_BE_ENABLED,
 	TOKEN_NOT_FOUND,
-	TOKEN_REVOKED
+	TOKEN_REVOKED,
+	MULTIPLE_API_KEY,
+	API_KEY_NULL,
+	API_REQUEST_EXPIRED,
+	API_SIGNATURE_NULL,
+	API_KEY_INACTIVE,
+	API_KEY_INVALID,
+	API_KEY_EXPIRED,
+	API_KEY_OUT_OF_SCOPE,
+	API_SIGNATURE_INVALID
 } = require('../messages');
 const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET, TOKEN_TYPES, HMAC_TOKEN_EXPIRY } = require(`${SERVER_PATH}/constants`);
@@ -32,6 +41,7 @@ const { getFrozenUsers } = require('./users');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
+const moment = require('moment');
 
 //Here we setup the security checks for the endpoints
 //that need it (in our case, only /protected). This
@@ -40,18 +50,18 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const verifyBearerToken = (req, authOrSecDef, token, cb, isSocket = false) => {
 	const sendError = (msg) => {
 		if (isSocket) {
-			return new Error(msg);
+			return new Error(ACCESS_DENIED(msg));
 		} else {
-			return req.res.status(403).json({ message: msg });
+			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 
 	if (!has(req.headers, 'api-key') && !has(req.headers, 'authorization')) {
-		return sendError('Bearer or api-key authentication required');
+		return sendError(MISSING_HEADER);
 	}
 
 	if (has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
-		return sendError();
+		return sendError(MULTIPLE_API_KEY);
 	} else if (!has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 
 		// Swagger endpoint scopes
@@ -85,7 +95,7 @@ const verifyBearerToken = (req, authOrSecDef, token, cb, isSocket = false) => {
 							endpointScopes
 						);
 
-						return sendError('User does not have permission to access this service');
+						return sendError(NOT_AUTHORIZED);
 					}
 
 					if (decodedToken.iss !== ISSUER) {
@@ -94,7 +104,7 @@ const verifyBearerToken = (req, authOrSecDef, token, cb, isSocket = false) => {
 							ip
 						);
 						//return the error in the callback if there is one
-						return sendError('Token is expired');
+						return sendError(TOKEN_EXPIRED);
 					}
 
 					if (getFrozenUsers()[decodedToken.sub.id]) {
@@ -103,73 +113,103 @@ const verifyBearerToken = (req, authOrSecDef, token, cb, isSocket = false) => {
 							decodedToken.sub.email
 						);
 						//return the error in the callback if there is one
-						return sendError('This account is deactivated');
+						return sendError(DEACTIVATED_USER);
 					}
 
 					req.auth = decodedToken;
 					return cb(null);
 				} else {
 					//return the error in the callback if the JWT was not verified
-					return sendError('Invalid token');
+					return sendError(INVALID_TOKEN);
 				}
 			});
 		} else {
 			//return the error in the callback if the Authorization header doesn't have the correct format
-			return sendError('Missing header');
+			return sendError(MISSING_HEADER);
 		}
 	}
 };
 
-// /**
-//  * Express middleware function that checks validity of bearer token.
-//  * @param {string} secret - Secret used to generate token.
-//  * @param {string} issuer - Issuer of valid tokens.
-//  * @param {array} frozenUsers - (OPTIONAL) User ids that are deactivated.
-//  * @param {array} endpointScopes - (OPTIONAL) Valid user scopes for the endpoint.
-//  */
-// const verifyBearerToken = (secret, issuer, frozenUsers, endpointScopes) => (
-// 	req,
-// 	res,
-// 	next
-// ) => {
-// 	const sendError = (msg) => {
-// 		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
-// 	};
+const verifyHmacToken = (req, definition, apiKey, cb, isSocket = false) => {
+	const sendError = (msg) => {
+		if (isSocket) {
+			return new Error(ACCESS_DENIED(msg));
+		} else {
+			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+		}
+	};
 
-// 	const token = req.headers['authorization'];
+	// Swagger endpoint scopes
+	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
 
-// 	if (token && token.indexOf('Bearer ') === 0) {
-// 		let tokenString = token.split(' ')[1];
+	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
+	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
+	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
 
-// 		jwt.verify(tokenString, secret, (verificationError, decodedToken) => {
-// 			if (!verificationError && decodedToken) {
-// 				const issuerMatch = decodedToken.iss == issuer;
+	loggerAuth.verbose('helpers/auth/checkHmacKey ip', ip);
 
-// 				if (!issuerMatch) {
-// 					return sendError(TOKEN_EXPIRED);
-// 				}
-
-// 				if (frozenUsers && frozenUsers[decodedToken.sub.id]) {
-// 					return sendError(DEACTIVATED_USER);
-// 				}
-
-// 				if (
-// 					endpointScopes &&
-// 					intersection(endpointScopes, decodedToken.scopes).length === 0
-// 				) {
-// 					return sendError(NOT_AUTHORIZED);
-// 				}
-
-// 				req.auth = decodedToken;
-// 				return next();
-// 			} else {
-// 				return sendError(INVALID_TOKEN);
-// 			}
-// 		});
-// 	} else {
-// 		return sendError(MISSING_HEADER);
-// 	}
-// };
+	if (has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
+		return sendError(MULTIPLE_API_KEY);
+	} else if (has(req.headers, 'api-key') && !has(req.headers, 'authorization')) {
+		if (!apiKey) {
+			loggerAuth.error('helpers/auth/checkHmacKey null key', apiKey);
+			return sendError(API_KEY_NULL);
+		} else if (moment().unix() > apiExpires) {
+			loggerAuth.error('helpers/auth/checkHmacKey expired', apiExpires);
+			return sendError(API_REQUEST_EXPIRED);
+		} else if (!apiSignature) {
+			loggerAuth.error('helpers/auth/checkHmacKey null secret', apiKey);
+			return sendError(API_SIGNATURE_NULL);
+		} else {
+			checkToken(apiKey)
+				.then((token) => {
+					if (!token) {
+						loggerAuth.error(
+							'helpers/auth/checkApiKey/checkToken invalid key',
+							apiKey
+						);
+						return sendError(API_KEY_INVALID);
+					} else if (!endpointScopes.includes(token.type)) {
+						loggerAuth.error(
+							'helpers/auth/checkApiKey/checkToken out of scope',
+							apiKey,
+							token.type
+						);
+						return sendError(API_KEY_OUT_OF_SCOPE);
+					} else if (new Date(token.expiry) < new Date()) {
+						loggerAuth.error(
+							'helpers/auth/checkApiKey/checkToken expired key',
+							apiKey
+						);
+						return sendError(API_KEY_EXPIRED);
+					} else if (!token.active) {
+						loggerAuth.error(
+							'helpers/auth/checkApiKey/checkToken inactive',
+							apiKey
+						);
+						return sendError(API_KEY_INACTIVE);
+					} else {
+						const isSignatureValid = checkHmacSignature(
+							token.secret,
+							req
+						);
+						if (!isSignatureValid) {
+							return sendError(API_SIGNATURE_INVALID);
+						} else {
+							req.auth = {
+								sub: { id: token.user.id, email: token.user.email }
+							};
+							cb();
+						}
+					}
+				})
+				.catch((err) => {
+					loggerAuth.error('helpers/auth/checkApiKey catch', err);
+					return sendError(err);
+				});
+		}
+	}
+};
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.
@@ -675,6 +715,7 @@ const checkHmacSignature = (
 
 module.exports = {
 	verifyBearerToken,
+	verifyHmacToken,
 	userScopeIsValid,
 	userIsDeactivated,
 	checkCaptcha,

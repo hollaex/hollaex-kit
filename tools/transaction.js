@@ -16,6 +16,7 @@ const { client } = require('./database/redis');
 const crypto = require('crypto');
 const uuid = require('uuid/v4');
 const { all } = require('bluebird');
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 
 // const validateWithdraw = (currency, address, amount) => {
 
@@ -108,7 +109,15 @@ const validateWithdrawalToken = (token) => {
 		});
 };
 
+const cancelUserWithdrawal = (userId, transactionId) => {
+	return getUserByKitId(userId)
+		.then((user) => {
+			return getNodeLib().cancelWithdrawalNetwork(user.network_id, transactionId);
+		});
+};
+
 module.exports = {
 	sendRequestWithdrawalEmail,
-	validateWithdrawalToken
+	validateWithdrawalToken,
+	cancelUserWithdrawal
 };
