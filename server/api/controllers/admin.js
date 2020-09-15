@@ -507,6 +507,29 @@ const getPairs = (req, res) => {
 	}
 };
 
+const transferFund = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/transferFund auth',
+		req.auth
+	);
+
+	const data = req.swagger.params.data.value;
+
+	toolsLib.users.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/transferFund',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -527,5 +550,6 @@ module.exports = {
 	getDeposits,
 	getWithdrawals,
 	getCoins,
-	getPairs
+	getPairs,
+	transferFund
 };

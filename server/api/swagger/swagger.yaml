@@ -2254,6 +2254,33 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /admin/transfer:
+    x-swagger-router-controller: admin
+    post:
+      operationId: transferFund
+      description: Transfer fund between two user accounts
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          description: Transfer information
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TransferRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   # /admin/fees:
   #   x-swagger-router-controller: admin
   #   get:
@@ -3828,3 +3855,24 @@ definitions:
       updatedAt:
         type: string
         format: date-time
+  TransferRequest:
+    type: object
+    required:
+      - sender_id
+      - receiver_id
+      - currency
+      - amount
+    properties:
+      sender_id:
+        description: Transfer source user id
+        type: number
+      receiver_id:
+        description: Transfer receiver user id
+        type: number
+      currency:
+        type: string
+      description:
+        type: string
+      amount:
+        type: number
+        format: double
