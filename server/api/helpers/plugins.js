@@ -28,7 +28,6 @@ const {
 } = require('../../messages');
 const aws = require('aws-sdk');
 const { all } = require('bluebird');
-const { convertSequelizeCountAndRows } = require('./general');
 const PhoneNumber = require('awesome-phonenumber');
 const redis = require('../../db/redis').duplicate();
 const toolsLib = require('hollaex-tools-lib');
@@ -480,8 +479,7 @@ const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
 		...pagination
 	};
 	if (timeframe) query.where.created_at = timeframe;
-	return toolsLib.database.model.getModel('announcement').findAndCountAll(query)
-		.then(convertSequelizeCountAndRows);
+	return toolsLib.database.model.getModel('announcement').findAndCountAllWithRows(query)
 };
 
 const snsCredentials = () => {

@@ -12,7 +12,6 @@ const {
 	adminAddUserBanks,
 	updateUserData,
 	updateUserPhoneNumber,
-	userUpdateLog,
 	getType,
 	storeFilesDataOnDb,
 	uploadFile,
@@ -30,7 +29,6 @@ const {
 	checkSMSCode,
 	deleteSMSCode
 } = require('../helpers/plugins');
-const { getTimeframe, getPagination, getOrdering } = require('../helpers/general');
 const {
 	DEFAULT_REJECTION_NOTE,
 	USER_NOT_FOUND,
@@ -879,7 +877,7 @@ const getAnnouncements = (req, res) => {
 		end_date
 	);
 
-	getAllAnnouncements(getPagination(limit, page), getTimeframe(start_date, end_date), getOrdering(order_by, order))
+	getAllAnnouncements(toolsLib.database.helpers.paginationQuery(limit.value, page.value), toolsLib.database.helpers.timeframeQuery(start_date.value, end_date.value), toolsLib.database.helpers.orderingQuery(order_by.value, order.value))
 		.then((announcements) => {
 			return res.json(announcements);
 		})
