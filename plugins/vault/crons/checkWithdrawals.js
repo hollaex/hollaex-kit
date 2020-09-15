@@ -67,7 +67,7 @@ const checkWithdrawals = () => {
 						qs: {
 							txid
 						},
-						uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
+						uri: `${VAULT_ENDPOINT}/wallet/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
 						json: true
 					};
 					return delay(500 * i)

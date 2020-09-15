@@ -151,7 +151,7 @@ const checkWebhook = (wallet, vaultConfig) => {
 			body: {
 				url: WEBHOOK_URL(wallet.currency)
 			},
-			uri: `${VAULT_ENDPOINT}/${wallet.name}/webhook`,
+			uri: `${VAULT_ENDPOINT}/wallet/${wallet.name}/webhook`,
 			json: true
 		};
 		return rp(options);

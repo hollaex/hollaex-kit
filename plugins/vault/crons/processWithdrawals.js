@@ -134,7 +134,7 @@ const processWithdrawals = () => {
 										amount: getAmount(withdrawal.amount, withdrawal.fee)
 									}
 								},
-								uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.currency)}/withdraw/simple`,
+								uri: `${VAULT_ENDPOINT}/wallet/${VAULT_WALLET(withdrawal.currency)}/withdraw/simple`,
 								json: true
 							},
 							dbWithdrawals: [withdrawal]
@@ -167,7 +167,7 @@ const processWithdrawals = () => {
 									};
 								})
 							},
-							uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('btc')}/withdraw/batch`,
+							uri: `${VAULT_ENDPOINT}/wallet/${VAULT_WALLET('btc')}/withdraw/batch`,
 							json: true,
 						},
 						dbWithdrawals: btcWithdrawals
@@ -189,7 +189,7 @@ const processWithdrawals = () => {
 									};
 								})
 							},
-							uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('bch')}/withdraw/batch`,
+							uri: `${VAULT_ENDPOINT}/wallet/${VAULT_WALLET('bch')}/withdraw/batch`,
 							json: true
 						},
 						dbWithdrawals: bchWithdrawals
