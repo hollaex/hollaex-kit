@@ -654,6 +654,74 @@ const signZendesk = (user) => {
 	return url;
 };
 
+// const generateTicketData = ({
+// 	email = '',
+// 	subject = '',
+// 	description = '',
+// 	category = ''
+// }) => ({
+// 	name: `${subject} ${category}`,
+// 	email,
+// 	subject,
+// 	description,
+// 	status: 2,
+// 	priority: 1
+// });
+
+// const createTicket = (data = {}) => {
+// 	loggerFreshdesk.info('helpers/freshdesk/createTicket data', data);
+// 	const FRESHDESK_ENDPOINT = `https://${getSecrets().plugins.freshdesk.host}`;
+// 	const PATH_TICKET = '/api/v2/tickets';
+
+// 	const auth = 'Basic ' + new Buffer.from(getSecrets().plugins.freshdesk.key + ':' + 'X').toString('base64');
+
+// 	const freshdeskData = generateTicketData(data);
+// 	// ticket with attachment
+// 	if (data.attachment) {
+// 		loggerFreshdesk.verbose(
+// 			'helpers/freshdesk/createTicket/attachment',
+// 			data.attachment
+// 		);
+// 		data.attachment.fieldname = 'attachments[]';
+// 		loggerFreshdesk.verbose(
+// 			'helpers/freshdesk/createTicket withAttachment',
+// 			data
+// 		);
+// 		const options = {
+// 			method: 'POST',
+// 			headers: {
+// 				Authorization: auth,
+// 				'Content-Type': 'multipart/form-data'
+// 			},
+// 			formData: {
+// 				email: JSON.stringify(freshdeskData.email),
+// 				subject: JSON.stringify(freshdeskData.subject),
+// 				description: JSON.stringify(freshdeskData.description),
+// 				status: JSON.stringify(freshdeskData.status),
+// 				priority: JSON.stringify(freshdeskData.priority),
+// 				'attachments[]': JSON.stringify(data.attachment)
+// 			},
+// 			uri: `${FRESHDESK_ENDPOINT}${PATH_TICKET}`
+// 		};
+// 		return rp(options);
+// 	} else {
+// 		loggerFreshdesk.verbose(
+// 			'helpers/freshdesk/createTicket freshdeskData',
+// 			freshdeskData
+// 		);
+// 		const options = {
+// 			method: 'POST',
+// 			headers: {
+// 				Authorization: auth,
+// 				'Content-Type': 'application/json'
+// 			},
+// 			body: JSON.stringify(freshdeskData),
+// 			uri: `${FRESHDESK_ENDPOINT}${PATH_TICKET}`
+// 		};
+// 		return rp(options);
+// 	}
+// };
+
 module.exports = {
 	addBankAccount,
 	approveBankAccount,

@@ -6,11 +6,10 @@ const morgan = require('morgan');
 const { logEntryRequest, stream, logger } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
 var app = require('express')();
+const toolsLib = require('hollaex-tools-lib');
 // listen through pubsub for configuration/init
 
 //init runs, populates configuration/secrets
-
-const { verifyToken, checkHmacKey } = require('./api/helpers/auth');
 
 const PORT = process.env.PORT || 10010;
 
@@ -29,8 +28,8 @@ app.use(morgan(morganType, { stream }));
 var config = {
 	appRoot: './', // required config
 	swaggerSecurityHandlers: {
-		Bearer: verifyToken,
-		HmacKey: checkHmacKey
+		Bearer: toolsLib.auth.verifyBearerToken,
+		HmacKey: toolsLib.auth.verifyHmacToken
 	}
 };
 
