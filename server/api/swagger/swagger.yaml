@@ -1239,6 +1239,36 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  delete:
+    operationId: cancelWithdrawal
+    description: Cancel a user's withdrawal which is pending
+    tags:
+      - User
+    parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - transaction_id
+          properties:
+            transaction_id:
+              type: number
+              description: Transaction Id to be cancelled.
+    responses:
+      200:
+        description: Success
+        schema:
+          $ref: "#/definitions/TransactionsResponse"
+      default:
+        description: Error
+        schema:
+          $ref: "#/definitions/MessageResponse"
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - user
 
 # ADMIN ENDPOINTS
   /admin/kit:
