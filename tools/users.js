@@ -29,7 +29,7 @@ const { publisher } = require('./database/redis');
 const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins } = require('./common');
+const { getKitConfig, getKitSecrets, getKitCoins, subscribedToCoin } = require('./common');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all } = require('bluebird');
 const { Op } = require('sequelize');
@@ -1040,6 +1040,52 @@ const getUserStats = (userId) => {
 		});
 };
 
+const transferUserFunds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
+	if (subscribedToCoin(currency)) {
+		return new Promise((resolve, reject) => reject(`Invalid currency: "${currency}"`));
+	}
+
+	if (amount <= 0) {
+		return new Promise((resolve, reject) => reject('Invalid amount'));
+	}
+
+	return all([
+		getNodeLib().transferAssets(senderId, receiverId, currency, amount, description),
+		getUserByKitId(senderId),
+		getUserByKitId(receiverId)
+	])
+		.then(([ transaction, sender, receiver ]) => {
+			sendEmail(
+				MAILTYPE.WITHDRAWAL,
+				sender.email,
+				{
+					amount: amount,
+					fee: 0,
+					currency: currency,
+					status: true,
+					transaction_id: transaction.transaction_id,
+					// address: deposit.address,
+					phoneNumber: sender.phone_number
+				},
+				sender.settings
+			);
+			sendEmail(
+				MAILTYPE.DEPOSIT,
+				receiver.email,
+				{
+					amount: amount,
+					currency: currency,
+					status: true,
+					transaction_id: transaction.transaction_id,
+					// address: address,
+					phoneNumber: receiver.phone_number
+				},
+				receiver.settings,
+			);
+			return;
+		});
+};
+
 module.exports = {
 	loginUser,
 	getUserByEmail,
@@ -1075,5 +1121,6 @@ module.exports = {
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
-	getUserStats
+	getUserStats,
+	transferUserFunds
 };
