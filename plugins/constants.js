@@ -60,3 +60,5 @@ exports.ERC_TOKENS = [
 	'xaut',
 	'busd'
 ];
+
+exports.VAULT_ENDPOINT = 'https://api.vault.bitholla.com/v1';
