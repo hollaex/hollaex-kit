@@ -3748,10 +3748,39 @@ table th {
   align-items: center; }
 
 .operator-controls__panel {
+  display: flex;
+  justify-content: space-between;
   height: 106px;
   width: 100%;
   border-top: solid #A7A7A7 1px;
   background-color: #0000FF; }
+
+.operator-controls__publish-button {
+  cursor: pointer;
+  background-color: #FF0000;
+  border: 1px solid #FF0000;
+  border-radius: 10px;
+  height: 50px;
+  width: 145px;
+  margin-right: 37px;
+  text-transform: uppercase; }
+
+.operator-controls__save-button {
+  cursor: pointer;
+  background-color: #288500;
+  border: 1px solid #288500;
+  border-radius: 10px;
+  height: 50px;
+  width: 232px;
+  text-transform: uppercase; }
+
+.operator-controls__modal .ReactModal__Content {
+  background-color: #0000FF !important;
+  color: #FFFFFF !important; }
+
+.operator-controls__modal .ReactModal__Overlay {
+  background-color: #0000FF00 !important;
+  color: #FFFFFF !important; }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }

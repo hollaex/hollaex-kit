@@ -1,4 +1,5 @@
 $operator-controls__panel-main-color: #0000FF;
+$operator-controls__modal-overlay: #0000FF00;
 $operator-controls__panel-text-color: #FFFFFF;
 $operator-controls__panel-border-color: #A7A7A7;
 
@@ -29,8 +30,42 @@ $operator-controls__panel-border-color: #A7A7A7;
 }
 
 .operator-controls__panel {
+  display: flex;
+  justify-content: space-between;
   height: 106px;
   width: 100%;
   border-top: solid $operator-controls__panel-border-color 1px;
   background-color: $operator-controls__panel-main-color;
+}
+
+.operator-controls__publish-button {
+  cursor: pointer;
+  background-color: #FF0000;
+  border: 1px solid #FF0000 ;
+  border-radius: 10px;
+  height: 50px;
+  width: 145px;
+  margin-right: 37px;
+  text-transform: uppercase;
+}
+
+.operator-controls__save-button {
+  cursor: pointer;
+  background-color: #288500;
+  border: 1px solid #288500;
+  border-radius: 10px;
+  height: 50px;
+  width: 232px;
+  text-transform: uppercase;
+}
+
+.operator-controls__modal {
+  .ReactModal__Content {
+    background-color: $operator-controls__panel-main-color !important;
+    color: $operator-controls__panel-text-color !important;
+  }
+  .ReactModal__Overlay {
+    background-color: $operator-controls__modal-overlay !important;
+    color: $operator-controls__panel-text-color !important;
+  }
 }
