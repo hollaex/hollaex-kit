@@ -1,6 +1,7 @@
 'use strict';
 
-const { VAULT_ENDPOINT, API_HOST, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
+const { API_HOST, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
+const { VAULT_ENDPOINT } = require('../constants');
 const rp = require('request-promise');
 const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
