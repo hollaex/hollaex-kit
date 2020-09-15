@@ -22,7 +22,8 @@ const {
 	INVALID_CREDENTIALS,
 	INVALID_OTP_CODE,
 	USERNAME_CANNOT_BE_CHANGED,
-	USERNAME_IS_TAKEN
+	USERNAME_IS_TAKEN,
+	INVALID_USERNAME
 } = require('../messages');
 const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
@@ -1005,6 +1006,9 @@ const checkUsernameIsTaken = (username) => {
 };
 
 const setUsernameById = (userId, username) => {
+	if (!isValidUsername(username)) {
+		return new Promise((resolve, reject) => reject(INVALID_USERNAME));
+	}
 	return getUserByKitId(userId, false)
 		.then((user) =>{
 			if (user.settings.usernameIsSet) {
@@ -1122,5 +1126,6 @@ module.exports = {
 	createUserCryptoAddressByKitId,
 	createAudit,
 	getUserStats,
-	transferUserFunds
+	transferUserFunds,
+	isValidPassword
 };

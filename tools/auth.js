@@ -37,7 +37,7 @@ const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
 const uuid = require('uuid/v4');
 const { all } = require('bluebird');
-const { getFrozenUsers } = require('./users');
+const { getFrozenUsers, isValidPassword } = require('./users');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
@@ -525,6 +525,12 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 };
 
 const changeUserPassword = (email, oldPassword, newPassword) => {
+	if (oldPassword === newPassword) {
+		return new Promise((resolve, reject) => reject('Passwords must be different'));
+	}
+	if (!isValidPassword(newPassword)) {
+		return new Promise((resolve, reject) => reject(INVALID_PASSWORD));
+	}
 	return require('./users').getUserByEmail(email, false)
 		.then((user) => {
 			return all([ user, validatePassword(user.password, oldPassword) ]);
