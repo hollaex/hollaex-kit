@@ -1,7 +1,0 @@
-{
-	"name": "plugins",
-	"version": "0.1.0",
-	"dependencies": {
-		"cors": "2.8.5"
-	}
-}
