@@ -9586,6 +9586,9 @@ foreignObject {
   display: inline-block; }
 
 .edit-wrapper__icon-wrapper {
+  display: none; }
+
+.layout-edit .edit-wrapper__icon-wrapper {
   display: inline-block;
   padding: 2px;
   width: 17px !important;
