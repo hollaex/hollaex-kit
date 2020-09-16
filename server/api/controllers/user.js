@@ -167,7 +167,7 @@ const loginPost = (req, res) => {
 			});
 		})
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err);
+			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);
 			return res.status(403).json({ message: err.message });
 		});
 };
@@ -198,7 +198,7 @@ const requestResetPassword = (req, res) => {
 
 const resetPassword = (req, res) => {
 	const { code, new_password } = req.swagger.params.data.value;
-	if (!toolsLib.auth.isValidPassword(new_password)) {
+	if (!toolsLib.users.isValidPassword(new_password)) {
 		loggerUser.error(req.uuid, 'controllers/user/resetPassword', INVALID_PASSWORD);
 		return res.status(400).json({ message: INVALID_PASSWORD });
 	}
@@ -208,7 +208,7 @@ const resetPassword = (req, res) => {
 			return res.json({ message: 'Password updated.' });
 		})
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/resetPassword', err);
+			loggerUser.error(req.uuid, 'controllers/user/resetPassword', err.message);
 			return res.status(err.status || 400).json({ message: 'Invalid code' });
 		});
 };
@@ -220,7 +220,7 @@ const getUser = (req, res) => {
 	toolsLib.users.getUserByEmail(email, true, true)
 		.then((user) => res.json(user))
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUser', err);
+			loggerUser.error(req.uuid, 'controllers/user/getUser', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -238,7 +238,7 @@ const updateSettings = (req, res) => {
 	toolsLib.users.updateUserSettings({ email }, data)
 		.then((user) => res.json(user))
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err);
+			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -253,26 +253,10 @@ const changePassword = (req, res) => {
 		req.swagger.params.data.value
 	);
 
-	if (old_password === new_password) {
-		loggerUser.error(
-			req.uuid,
-			'controllers/user/changePassword',
-			'Passwords must be different'
-		);
-		return res.status(400).json({ message: 'Passwords must be different' });
-	} else if (!toolsLib.auth.isValidPassword(new_password)) {
-		loggerUser.error(
-			req.uuid,
-			'controllers/user/changePassword',
-			INVALID_PASSWORD
-		);
-		return res.status(400).json({ message: INVALID_PASSWORD });
-	}
-
-	toolsLib.users.changeUserPassword(email, old_password, new_password)
+	toolsLib.auth.changeUserPassword(email, old_password, new_password)
 		.then(() => res.json({ message: 'Success' }))
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/changePassword', err);
+			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -283,15 +267,10 @@ const setUsername = (req, res) => {
 	const { id } = req.auth.sub;
 	const { username } = req.swagger.params.data.value;
 
-	if (!toolsLib.users.isValidUsername(username)) {
-		loggerUser.error(req.uuid, 'controllers/user/setUsername', INVALID_USERNAME);
-		return res.status(400).json({ message: INVALID_USERNAME });
-	}
-
 	toolsLib.users.setUsernameById(id, username)
 		.then(() => res.json({ message: 'Username successfully changed' }))
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/setUsername', err);
+			loggerUser.error(req.uuid, 'controllers/user/setUsername', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -313,7 +292,7 @@ const getUserLogins = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err);
+			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -328,7 +307,7 @@ const affiliationCount = (req, res) => {
 			return res.json({ count: num });
 		})
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err);
+			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -342,7 +321,7 @@ const getUserBalance = (req, res) => {
 			return res.json(balance);
 		})
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err);
+			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
