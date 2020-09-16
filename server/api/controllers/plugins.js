@@ -161,6 +161,12 @@ const activateXhtFee = (req, res) => {
 
 // BANK
 const postBankUser = (req, res) => {
+	loggerPlugin.verbose(
+		req.uuid,
+		'controllers/plugins/postBankUser auth',
+		email
+	);
+
 	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/postBankUser', PLUGIN_NOT_ENABLED('bank'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
@@ -168,12 +174,6 @@ const postBankUser = (req, res) => {
 
 	const { email } = req.auth.sub;
 	const bank_account = req.swagger.params.data.value;
-
-	loggerPlugin.verbose(
-		req.uuid,
-		'controllers/plugins/postBankUser auth',
-		email
-	);
 
 	toolsLib.users.getUserByEmail(email, false)
 		.then(addBankAccount(bank_account))
@@ -186,16 +186,16 @@ const postBankUser = (req, res) => {
 };
 
 const postBankAdmin = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/postBankAdmin', PLUGIN_NOT_ENABLED('bank'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/postBankAdmin auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/postBankAdmin', PLUGIN_NOT_ENABLED('bank'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
+	}
 
 	const id = req.swagger.params.id.value;
 	const { bank_account } = req.swagger.params.data.value;
@@ -218,16 +218,16 @@ const postBankAdmin = (req, res) => {
 };
 
 const bankVerify = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/bankVerify', PLUGIN_NOT_ENABLED('bank'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/bankVerify auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/bankVerify', PLUGIN_NOT_ENABLED('bank'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
+	}
 
 	const { user_id, bank_id } = req.swagger.params.data.value;
 
@@ -262,16 +262,16 @@ const bankVerify = (req, res) => {
 };
 
 const bankRevoke = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/bankRevoke', PLUGIN_NOT_ENABLED('bank'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/bankRevoke auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('bank')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/bankRevoke', PLUGIN_NOT_ENABLED('bank'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('bank') });
+	}
 
 	const { user_id, bank_id } = req.swagger.params.data.value;
 	let { message } = req.swagger.params.data.value || DEFAULT_REJECTION_NOTE;
@@ -306,16 +306,16 @@ const bankRevoke = (req, res) => {
 };
 
 const putKycUser = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/putKycUser', PLUGIN_NOT_ENABLED('kyc'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/putKycUser auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/putKycUser', PLUGIN_NOT_ENABLED('kyc'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	}
 
 	const newData = req.swagger.params.data.value;
 	const { email } = req.auth.sub;
@@ -331,16 +331,16 @@ const putKycUser = (req, res) => {
 };
 
 const putKycAdmin = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/putKycAdmin', PLUGIN_NOT_ENABLED('kyc'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/putKycAdmin auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/putKycAdmin', PLUGIN_NOT_ENABLED('kyc'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	}
 
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
@@ -448,16 +448,16 @@ const putKycAdmin = (req, res) => {
 };
 
 const kycUserUpload = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload', PLUGIN_NOT_ENABLED('kyc'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/kycUserUpload auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload', PLUGIN_NOT_ENABLED('kyc'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	}
 
 	const { id, email } = req.auth.sub;
 	let { front, back, proof_of_residency, ...otherData } = req.swagger.params;
@@ -546,16 +546,16 @@ const kycUserUpload = (req, res) => {
 };
 
 const kycAdminUpload = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload', PLUGIN_NOT_ENABLED('kyc'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/kycAdminUpload auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload', PLUGIN_NOT_ENABLED('kyc'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	}
 
 	const user_id = req.swagger.params.user_id.value;
 	let { front, back, proof_of_residency, ...otherData } = req.swagger.params;
@@ -658,16 +658,16 @@ const kycAdminUpload = (req, res) => {
 };
 
 const getKycId = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/getKycId', PLUGIN_NOT_ENABLED('kyc'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/getKycId auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/getKycId', PLUGIN_NOT_ENABLED('kyc'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	}
 
 	const email = req.swagger.params.email.value;
 	const id = req.swagger.params.id.value;
@@ -694,16 +694,16 @@ const getKycId = (req, res) => {
 };
 
 const kycIdVerify = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdVerify', PLUGIN_NOT_ENABLED('kyc'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/kycIdVerify auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdVerify', PLUGIN_NOT_ENABLED('kyc'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	}
 
 	const { user_id } = req.swagger.params.data.value;
 
@@ -729,16 +729,16 @@ const kycIdVerify = (req, res) => {
 };
 
 const kycIdRevoke = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdRevoke', PLUGIN_NOT_ENABLED('kyc'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/kycIdRevoke auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('kyc')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycIdRevoke', PLUGIN_NOT_ENABLED('kyc'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	}
 
 	const { user_id } = req.swagger.params.data.value;
 	let { message } = req.swagger.params.data.value || DEFAULT_REJECTION_NOTE;
@@ -775,16 +775,16 @@ const kycIdRevoke = (req, res) => {
 };
 
 const postAnnouncement = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('announcement')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/postAnnouncement', PLUGIN_NOT_ENABLED('announcement'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('announcement') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/postAnnouncement auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('announcement')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/postAnnouncement', PLUGIN_NOT_ENABLED('announcement'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('announcement') });
+	}
 
 	let { title, message, type } = req.swagger.params.data.value;
 	if (!type) type = 'info';
@@ -811,16 +811,16 @@ const postAnnouncement = (req, res) => {
 };
 
 const deleteAnnouncement = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('announcement')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/deleteAnnouncement', PLUGIN_NOT_ENABLED('announcement'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('announcement') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/deleteAnnouncement auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('announcement')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/deleteAnnouncement', PLUGIN_NOT_ENABLED('announcement'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('announcement') });
+	}
 
 	const id = req.swagger.params.id.value;
 
@@ -892,16 +892,16 @@ const getAnnouncements = (req, res) => {
 };
 
 const sendSmsVerify = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('sms')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/sendSmsVerify', PLUGIN_NOT_ENABLED('sms'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('sms') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/smsVerify auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('sms')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/sendSmsVerify', PLUGIN_NOT_ENABLED('sms'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('sms') });
+	}
 
 	const number = req.swagger.params.phone.value;
 	const { id } = req.auth.sub;
@@ -947,16 +947,16 @@ const sendSmsVerify = (req, res) => {
 };
 
 const checkSmsVerify = (req, res) => {
-	if (!toolsLib.plugins.pluginIsEnabled('sms')) {
-		loggerPlugin.error(req.uuid, 'controllers/plugins/checkSmsVerify', PLUGIN_NOT_ENABLED('sms'));
-		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('sms') });
-	}
-
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/checkSmsVerify auth',
 		req.auth.sub
 	);
+
+	if (!toolsLib.plugins.pluginIsEnabled('sms')) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/checkSmsVerify', PLUGIN_NOT_ENABLED('sms'));
+		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('sms') });
+	}
 
 	const { id } = req.auth.sub;
 	const { code, phone } = req.swagger.params.data.value;
