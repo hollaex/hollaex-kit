@@ -17,7 +17,6 @@ class OperatorControls extends Component {
     this.state = {
       isPublishEnabled: false,
       isSaveEnabled: false,
-      isEditModeOn: false,
       isEditModalOpen: false,
       editType: null,
       editableElementIds: [],
@@ -54,10 +53,11 @@ class OperatorControls extends Component {
   }
 
   handleEditButton = ({ target: { dataset = {} } }) => {
-    const { isEditModeOn, isEditModalOpen } = this.state;
+    const { isEditModalOpen } = this.state;
+    const { editMode } = this.props;
     const { stringId } = dataset;
 
-    if(isEditModeOn && !isEditModalOpen) {
+    if(editMode && !isEditModalOpen) {
       const string_ids_array = stringId ? stringId.split(',') : []
       this.setState({
         editableElementIds: string_ids_array,
@@ -150,18 +150,17 @@ class OperatorControls extends Component {
   }
 
   toggleEditMode = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      isEditModeOn: !prevState.isEditModeOn,
-    }))
+    const { onChangeEditMode } = this.props;
+    onChangeEditMode();
   }
 
   render() {
-    const { isEditModeOn, isPublishEnabled, isEditModalOpen, editData, languageKeys, editableElementIds, isSaveEnabled } = this.state;
+    const { isPublishEnabled, isEditModalOpen, editData, languageKeys, editableElementIds, isSaveEnabled } = this.state;
+    const { editMode } = this.props;
 
     return (
       <div
-        className={classnames("operator-controls__wrapper", { open: isEditModeOn })}
+        className={classnames("operator-controls__wrapper", { open: editMode })}
       >
         <div
           className="operator-controls__button"
@@ -169,7 +168,7 @@ class OperatorControls extends Component {
         >
           <EditFilled />
           <span className="pl-1">
-            {`${ isEditModeOn ? 'Exit' : 'Enter' } edit mode`}
+            {`${ editMode ? 'Exit' : 'Enter' } edit mode`}
           </span>
         </div>
         <div className="operator-controls__panel">
@@ -186,7 +185,7 @@ class OperatorControls extends Component {
           </div>
         </div>
         <Modal
-          isOpen={isEditModeOn && isEditModalOpen}
+          isOpen={editMode && isEditModalOpen}
           label="operator-controls-modal"
           className="operator-controls__modal"
           disableTheme={true}
@@ -195,7 +194,7 @@ class OperatorControls extends Component {
           showCloseText={true}
         >
           {
-            isEditModeOn && isEditModalOpen &&
+            editMode && isEditModalOpen &&
             editableElementIds.map((key) => {
               return (
                 <div>
