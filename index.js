@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
 const moment = require('moment');
-const { each, isBoolean } = require('lodash');
+const { each, isBoolean, create } = require('lodash');
 const { createRequest, createSignature, generateHeaders, checkKit } = require('./utils');
 const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
@@ -728,7 +728,20 @@ class HollaEx {
 		);
 	}
 
-	transferAssets(senderId, receiverId, currency, amount, description = '') {
+	checkTransactionNetwork(currency, transactionId, address, isTestnet = false) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/check-transaction?currency=${currency}&transaction_id=${transactionId}&address=${address}&is_testnet=${isTestnet}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	transferAssetsNetwork(senderId, receiverId, currency, amount, description = '') {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/transfer`;
@@ -751,8 +764,9 @@ class HollaEx {
 
 	// ENGINE ENDPOINTS
 	getTradesEngine(symbol) {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		let path = `${HOLLAEX_NETWORK_VERSION}/trades`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/trades`;
 
 		if (symbol) {
 			path += `?symbol=${symbol}`;
@@ -768,8 +782,9 @@ class HollaEx {
 	}
 
 	getOrderbooksEngine(symbol) {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		let path = `${HOLLAEX_NETWORK_VERSION}/orderbooks`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/orderbooks`;
 
 		if (symbol) {
 			path += `?symbol=${symbol}`;
@@ -785,8 +800,9 @@ class HollaEx {
 	}
 
 	getChartEngine(from, to, symbol, resolution) {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -797,8 +813,9 @@ class HollaEx {
 	}
 
 	getUdfConfigEngine() {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/udf/config`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/config`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -809,8 +826,9 @@ class HollaEx {
 	}
 
 	getUdfHistoryEngine(from, to, symbol, resolution) {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -821,8 +839,9 @@ class HollaEx {
 	}
 
 	getUdfSymbolsEngine(symbol) {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/udf/symbols?symbol=${symbol}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}udf/symbols?symbol=${symbol}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -833,8 +852,9 @@ class HollaEx {
 	}
 
 	getTickerEngine(symbol) {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/ticker?symbol=${symbol}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/ticker?symbol=${symbol}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -845,8 +865,9 @@ class HollaEx {
 	}
 
 	getAllTickersEngine() {
+		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/ticker/all`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/ticker/all`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
