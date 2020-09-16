@@ -802,7 +802,7 @@ class HollaEx {
 	getChartEngine(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -828,7 +828,7 @@ class HollaEx {
 	getUdfHistoryEngine(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution${resolution}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -841,7 +841,7 @@ class HollaEx {
 	getUdfSymbolsEngine(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}udf/symbols?symbol=${symbol}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/symbols?symbol=${symbol}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
