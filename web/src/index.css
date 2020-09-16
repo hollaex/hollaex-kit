@@ -9582,6 +9582,20 @@ foreignObject {
   .dark-theme .slider__button.disabled {
     color: var(--colors-deactivate-color2); }
 
+.edit-wrapper__container {
+  display: inline-block; }
+
+.edit-wrapper__icon-wrapper {
+  display: inline-block;
+  padding: 2px;
+  width: 17px !important;
+  height: 17px !important;
+  text-align: center;
+  border-radius: 2px;
+  color: #FFFFFF;
+  background-color: #0000FF;
+  cursor: pointer; }
+
 html {
   font-size: 12px !important;
   height: 100%; }
