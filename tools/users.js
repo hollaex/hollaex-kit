@@ -1054,7 +1054,7 @@ const transferUserFunds = (senderId, receiverId, currency, amount, description =
 	}
 
 	return all([
-		getNodeLib().transferAssets(senderId, receiverId, currency, amount, description),
+		getNodeLib().transferAssetsNetwork(senderId, receiverId, currency, amount, description),
 		getUserByKitId(senderId),
 		getUserByKitId(receiverId)
 	])
