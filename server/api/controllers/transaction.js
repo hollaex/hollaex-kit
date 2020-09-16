@@ -256,8 +256,35 @@ const performWithdraw = (req, res) => {
 		});
 };
 
+
+const adminCheckTransaction = (req, res) => {
+	loggerDeposits.verbose(
+		req.uuid,
+		'controllers/transaction/adminCheckTransaction auth',
+		req.auth
+	);
+	const transactionId = req.swagger.params.transaction_id.value;
+	const address = req.swagger.params.address.value;
+	const currency = req.swagger.params.currency.value;
+	const isTestnet = req.swagger.params.is_testnet.value;
+
+	toolsLib.transaction.checkTransaction(currency, transactionId, address, isTestnet)
+		.then((transaction) => {
+			return res.json({ message: 'Success', transaction });
+		})
+		.catch((err) => {
+			loggerDeposits.error(
+				req.uuid,
+				'controllers/transaction/adminCheckTransaction catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	// handleCurrencyDeposit,
 	requestWithdrawal,
-	getWithdrawalFee
+	getWithdrawalFee,
+	adminCheckTransaction
 };

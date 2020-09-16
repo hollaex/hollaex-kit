@@ -1368,6 +1368,51 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/check-transaction:
+    x-swagger-router-controller: transaction
+    get:
+      operationId: adminCheckTransaction
+      description: Check a blockchain transaction to add create/update deposit
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: currency
+          description: Currency of the transaction
+          required: true
+          type: string
+        - in: query
+          name: transaction_id
+          description: Blockchain transaction id
+          required: true
+          type: string
+        - in: query
+          name: address
+          description: crypto address receiving the deposit
+          required: true
+          type: string
+        - in: query
+          name: is_testnet
+          description: specify whether or not transaction was on tesntet
+          required: false
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
   /admin/users:
     x-swagger-router-controller: admin
     get:
