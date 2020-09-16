@@ -1,4 +1,5 @@
 import React from 'react';
+import { string, array } from 'prop-types';
 
 const EditWrapper = ({ children, stringId, position = [] }) => {
 
@@ -23,6 +24,11 @@ const EditWrapper = ({ children, stringId, position = [] }) => {
       }
     </div>
   )
+}
+
+EditWrapper.propTypes = {
+  stringId: string.isRequired,
+  position: array,
 }
 
 export default EditWrapper;
