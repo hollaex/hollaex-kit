@@ -192,6 +192,7 @@ class OperatorControls extends Component {
           onCloseDialog={this.closeEditModal}
           shouldCloseOnOverlayClick={true}
           showCloseText={true}
+          bodyOpenClassName="operator-controls__modal-open"
         >
           {
             editMode && isEditModalOpen &&

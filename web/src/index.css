@@ -3779,8 +3779,12 @@ table th {
   color: #FFFFFF !important; }
 
 .operator-controls__modal .ReactModal__Overlay {
-  background-color: #0000FF00 !important;
+  background-color: transparent !important;
   color: #FFFFFF !important; }
+
+.operator-controls__modal-open #root {
+  filter: none !important;
+  background-color: transparent !important; }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }

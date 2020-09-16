@@ -1,5 +1,4 @@
 $operator-controls__panel-main-color: #0000FF;
-$operator-controls__modal-overlay: #0000FF00;
 $operator-controls__panel-text-color: #FFFFFF;
 $operator-controls__panel-border-color: #A7A7A7;
 
@@ -65,7 +64,12 @@ $operator-controls__panel-border-color: #A7A7A7;
     color: $operator-controls__panel-text-color !important;
   }
   .ReactModal__Overlay {
-    background-color: $operator-controls__modal-overlay !important;
+    background-color: transparent !important;
     color: $operator-controls__panel-text-color !important;
   }
+}
+
+.operator-controls__modal-open #root {
+  filter: none !important;
+  background-color: transparent !important;
 }

@@ -37,6 +37,7 @@ class Dialog extends PureComponent {
 			theme,
 			className,
 			disableTheme,
+      bodyOpenClassName,
 		} = this.props;
 		
 		return (
@@ -47,6 +48,7 @@ class Dialog extends PureComponent {
 				onRequestClose={this.onRequestClose}
 				shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 				portalClassName={classnames(className, languageClasses, (disableTheme ? '' : getThemeClass(theme)))}
+				bodyOpenClassName={bodyOpenClassName}
 			>
 				{showCloseText &&
 					!closeButton && (
