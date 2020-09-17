@@ -116,8 +116,17 @@ const cancelUserWithdrawal = (userId, transactionId) => {
 		});
 };
 
+const checkTransaction = (currency, transactionId, address, isTestnet = false) => {
+	if (!subscribedToCoin(currency)) {
+		return new Promise((resolve, reject) => reject('Invalid currency'));
+	}
+
+	return getNodeLib().checkTransactionNetwork(currency, transactionId, address, isTestnet);
+};
+
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawalToken,
-	cancelUserWithdrawal
+	cancelUserWithdrawal,
+	checkTransaction
 };
