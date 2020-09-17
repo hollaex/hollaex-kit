@@ -525,6 +525,30 @@ const sendSMS = (number = '', data = {}) => {
 	}
 };
 
+const sendSMSDeposit = (
+	type,
+	currency,
+	phoneNumber,
+	amount,
+	timestamp,
+	language = toolsLib.getKitConfig().defaults.language
+) => {
+	const { SMS } = require(`../../mail/strings/${language}`);
+	let message;
+	if (type === 'deposit' || type === 'withdrawal') {
+		message = SMS[type](currency, amount);
+	} else {
+		throw new Error(`Invalid type ${type}`);
+	}
+
+	const data = {
+		message
+	};
+	return sendSMS(phoneNumber, data).catch((err) => {
+		return;
+	});
+};
+
 const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;
 
 const storeSMSCode = (user_id, phone, code) => {
@@ -746,5 +770,6 @@ module.exports = {
 	deleteSMSCode,
 	updatePluginConfiguration,
 	signFreshdesk,
-	signZendesk
+	signZendesk,
+	sendSMSDeposit
 };

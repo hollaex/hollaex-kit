@@ -6,7 +6,7 @@ const { loggerEmail } = require('../config/logger');
 const { getValidLanguage } = require('./utils');
 const { MAILTYPE } = require('./strings');
 const generateMessageContent = require('./templates');
-const { sendSMSDeposit } = require('../plugins/sms/helpers');
+const { sendSMSDeposit } = require('../api/helpers/plugins');
 const getStatusText = (status) => {
 	return status ? 'COMPLETED' : 'PENDING';
 };
