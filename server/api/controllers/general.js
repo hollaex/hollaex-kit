@@ -3,6 +3,7 @@
 const packageJson = require('../../package.json');
 const { API_HOST } = require('../../constants');
 const toolsLib = require('hollaex-tools-lib');
+const { loggerGeneral } = require('../../config/logger');
 
 const getHealth = (req, res) => {
 	try {
@@ -14,7 +15,8 @@ const getHealth = (req, res) => {
 			status: toolsLib.getKitConfig().status
 		});
 	} catch (err) {
-		return res.status(400).json({ message: err.message });
+		loggerGeneral.verbose('controller/general/getHealth', err.message);
+		return res.status(err.status || 400).json({ message: err.message });
 	}
 };
 
@@ -25,7 +27,8 @@ const getConstants = (req, res) => {
 			pairs: toolsLib.getKitPairsConfig()
 		});
 	} catch (err) {
-		return res.status(400).json({ message: err.message });
+		loggerGeneral.verbose('controller/general/getConstants', err.message);
+		return res.status(err.status || 400).json({ message: err.message });
 	}
 };
 
@@ -33,7 +36,8 @@ const getKitConfigurations = (req, res) => {
 	try {
 		return res.json(toolsLib.getKitConfig());
 	} catch (err) {
-		return res.status(400).json({ message: err.message });
+		loggerGeneral.verbose('controller/general/getKitConfigurations', err.message);
+		return res.status(err.status || 400).json({ message: err.message });
 	}
 };
 
@@ -44,7 +48,24 @@ const sendSupportEmail = (req, res) => {
 			return res.json({ message: 'Email was sent to support' });
 		})
 		.catch((err) => {
-			return res.status(400).json({ message: err.message });
+			loggerGeneral.verbose('controller/general/sendSupportEmail', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const applyKitChanges = (req, res) => {
+	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
+	const domain = req.headers['x-real-origin'];
+	loggerGeneral.verbose('controller/transaction/handleCurrencyDeposit ip domain', ip, domain);
+
+	toolsLib.auth.verifyHmacToken(req)
+		.then(() => {
+			// TODO
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerGeneral.verbose('controller/general/applyKitChanges', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -52,5 +73,6 @@ module.exports = {
 	getHealth,
 	getConstants,
 	getKitConfigurations,
-	sendSupportEmail
+	sendSupportEmail,
+	applyKitChanges
 };

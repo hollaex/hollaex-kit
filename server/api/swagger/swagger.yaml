@@ -302,8 +302,7 @@ paths:
       operationId: handleCurrencyDeposit
       description: Deposit notification
       tags:
-        - Admin
-        - Deposit
+        - Network
       parameters:
         - name: currency
           description: currency name
@@ -316,6 +315,22 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/ExternalDepositRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /apply:
+    x-swagger-router-controller: general
+    get:
+      operationId: applyKitChanges
+      description: Reset kit to apply changes
+      tags:
+        - Network
       responses:
         200:
           description: Success

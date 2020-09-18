@@ -32,9 +32,9 @@ const getWithdrawalFee = (req, res) => {
 
 const handleCurrencyDeposit = (req, res) => {
 	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
-	loggerDeposits.verbose('controller/transaction/handleCurrencyDeposit ip', ip);
-
 	const domain = req.headers['x-real-origin'];
+	loggerDeposits.verbose('controller/transaction/handleCurrencyDeposit ip domain', ip, domain);
+
 	const currency = req.swagger.params.currency.value;
 	const { user_id, amount, txid, address, is_confirmed } = req.swagger.params.data.value;
 
