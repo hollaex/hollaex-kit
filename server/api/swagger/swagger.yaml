@@ -591,7 +591,7 @@ paths:
   /user/confirm-withdrawal:
     x-swagger-router-controller: transaction
     post:
-      operationId: performWithdraw
+      operationId: performWithdrawal
       description: confirm a withdrawal request
       tags:
         - User
@@ -3907,6 +3907,11 @@ definitions:
       token:
         type: string
         description: withdrawal confirmation token
+      otp_code:
+        type: string
+        description: OTP code when otp is enabled
+        minLength: 6
+        maxLength: 6
   StatsResponse:
     type: object
     properties:

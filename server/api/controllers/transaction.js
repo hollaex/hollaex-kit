@@ -104,15 +104,14 @@ const requestWithdrawal = (req, res) => {
 		});
 };
 
-const performWithdraw = (req, res) => {
+const performWithdrawal = (req, res) => {
 	loggerDeposits.verbose(
 		req.uuid,
 		'controller/withdrawals/performWithdraw body',
 		req.swagger.params.data.value
 	);
 
-	const { token } = req.swagger.params.data.value;
-	const domain = req.headers['x-real-origin'];
+	const { token, otp_code } = req.swagger.params.data.value;
 
 	loggerDeposits.verbose(
 		req.uuid,
@@ -122,90 +121,28 @@ const performWithdraw = (req, res) => {
 
 	toolsLib.transaction.validateWithdrawalToken(token)
 		.then((withdrawal) => {
-			// todo
-		// 	let { currency, address } = withdrawal;
-		// 	return all([
-		// 		findUserByCryptoAddress(currency, address),
-		// 		findUser({
-		// 			where: { id: withdrawal.user_id },
-		// 			attributes: ['crypto_wallet', 'verification_level']
-		// 		}),
-		// 		withdrawal
-		// 	]);
-		// })
-		// .then(([ receiver, sender, deposit ]) => {
-		// 	if (sender.verification_level < 1) {
-		// 		throw new Error('Upgrade verification level');
-		// 	}
-		// 	let transactionPromise;
-		// 	if (!receiver) {
-		// 		loggerWithdraws.debug(
-		// 			req.uuid,
-		// 			'controller/withdrawals/performWithdraw',
-		// 			deposit.currency,
-		// 			'external_transfer',
-		// 			deposit.address
-		// 		);
-		// 		// External transaction
-		// 		transactionPromise = performExternalTransaction(
-		// 			deposit.currency,
-		// 			req.uuid,
-		// 			deposit.email,
-		// 			deposit.address,
-		// 			deposit.amount,
-		// 			deposit.fee
-		// 		);
-		// 	} else {
-		// 		// internal transaction
-		// 		loggerWithdraws.debug(
-		// 			req.uuid,
-		// 			'controller/withdrawals/performWithdraw',
-		// 			deposit.currency,
-		// 			'internal_transfer',
-		// 			deposit.address
-		// 		);
-		// 		transactionPromise = performIntenalTransaction(
-		// 			deposit.currency,
-		// 			req.uuid,
-		// 			deposit.email,
-		// 			receiver,
-		// 			deposit.amount,
-		// 			domain
-		// 		);
-		// 	}
-		// 	return transactionPromise;
-		// })
-		// .then((userDeposit) => {
-		// 	loggerWithdraws.debug(
-		// 		req.uuid,
-		// 		'controller/withdrawals/performWithdraw',
-		// 		'user_deposit',
-		// 		userDeposit
-		// 	);
-		// 	const responseObject = {
-		// 		message: 'Withdrawal successfull'
-		// 	};
-		// 	if (userDeposit.fee === 0) {
-		// 		responseObject.fee = 'Fee was not applied';
-		// 	}
-		// 	responseObject.transaction_id = userDeposit.transaction_id;
-
-		// 	loggerWithdraws.debug(
-		// 		req.uuid,
-		// 		'controller/withdrawals/performWithdraw',
-		// 		'response_object',
-		// 		responseObject
-		// 	);
-		// 	res.json(responseObject);
-		// })
-		// .catch((err) => {
-		// 	loggerWithdraws.error(
-		// 		req.uuid,
-		// 		'controller/withdrawals/performWithdraw error_data',
-		// 		err.code,
-		// 		err.message
-		// 	);
-		// 	res.status(400).json({ message: err.message });
+			return all([ withdrawal, toolsLib.getUserByKitId(withdrawal.user_id) ]);
+		})
+		.then(([ withdrawal, user ]) => {
+			if (user.verification_level < 1) {
+				throw new Error('User must upgrade verification level to perform a withdrawal');
+			}
+			return all([ toolsLib.transaction.performWithdrawal(withdrawal.user_id, withdrawal.address, withdrawal.currency, withdrawal.amount, withdrawal.fee, otp_code), withdrawal ]);
+		})
+		.then(([ { transaction_id }, { fee } ]) => {
+			return res.json({
+				message: 'Withdrawal successful',
+				fee,
+				transaction_id
+			});
+		})
+		.catch((err) => {
+			loggerDeposits.error(
+				req.uuid,
+				'controller/withdrawals/performWithdrawal',
+				err.message
+			);
+			return res.status(400).json({ message: err.message });
 		});
 };
 
@@ -239,5 +176,6 @@ module.exports = {
 	handleCurrencyDeposit,
 	requestWithdrawal,
 	getWithdrawalFee,
-	adminCheckTransaction
+	adminCheckTransaction,
+	performWithdrawal
 };
