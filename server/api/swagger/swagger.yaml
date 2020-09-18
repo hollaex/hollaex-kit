@@ -296,35 +296,35 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  # /deposit:
-  #   x-swagger-router-controller: transaction
-  #   post:
-  #     operationId: handleCurrencyDeposit
-  #     description: Deposit notification
-  #     tags:
-  #       - Admin
-  #       - Deposit
-  #     parameters:
-  #       - name: currency
-  #         description: currency name
-  #         in: query
-  #         required: true
-  #         type: string
-  #       - name: data
-  #         description: Deposit transaction info
-  #         in: body
-  #         required: true
-  #         schema:
-  #           $ref: "#/definitions/ExternalDepositRequest"
-  #     responses:
-  #       200:
-  #         description: Success
-  #         schema:
-  #           $ref: "#/definitions/MessageResponse"
-  #       default:
-  #         description: Error
-  #         schema:
-  #           $ref: "#/definitions/MessageResponse"
+  /deposit:
+    x-swagger-router-controller: transaction
+    post:
+      operationId: handleCurrencyDeposit
+      description: Deposit notification
+      tags:
+        - Admin
+        - Deposit
+      parameters:
+        - name: currency
+          description: currency name
+          in: query
+          required: true
+          type: string
+        - name: data
+          description: Deposit transaction info
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ExternalDepositRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user:
     x-swagger-router-controller: user
     get:
@@ -3921,3 +3921,22 @@ definitions:
       amount:
         type: number
         format: double
+  ExternalDepositRequest:
+    type: object
+    required:
+      - txid
+      - amount
+      - address
+      - is_confirmed
+      - user_id
+    properties:
+      amount:
+        type: number
+      txid:
+        type: string
+      address:
+        type: string
+      is_confirmed:
+        type: boolean
+      user_id:
+        type: number

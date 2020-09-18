@@ -30,94 +30,47 @@ const getWithdrawalFee = (req, res) => {
 	}
 };
 
-// const handleCurrencyDeposit = (req, res) => {
-// 	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
-// 	const apiKey = req.headers ? req.headers['key'] : undefined;
-// 	const apiSecret = req.headers ? req.headers['secret'] : undefined;
+const handleCurrencyDeposit = (req, res) => {
+	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
+	loggerDeposits.verbose('controller/transaction/handleCurrencyDeposit ip', ip);
 
-// 	loggerDeposits.verbose('contorller/notification/handleCurrencyDeposit ip', ip);
+	const domain = req.headers['x-real-origin'];
+	const currency = req.swagger.params.currency.value;
+	const { user_id, amount, txid, address, is_confirmed } = req.swagger.params.data.value;
 
-// 	if (!apiKey || !apiSecret) {
-// 		throw new Error('Missing Headers');
-// 	} else if (apiKey !== VAULT_KEY()) {
-// 		loggerDeposits.error('contorller/notification/handleCurrencyDeposit null key', apiKey);
-// 		throw new Error('Invalid API key');
-// 	} else if (apiSecret !== VAULT_SECRET()) {
-// 		loggerDeposits.error(
-// 			'contorller/notification/handleCurrencyDeposit null secret',
-// 			apiKey
-// 		);
-// 		throw new Error('Invalid API secret');
-// 	}
-
-// 	loggerDeposits.verbose(
-// 		req.uuid,
-// 		'controller/notification/handleCurrencyDeposit',
-// 		'data_recevied',
-// 		req.swagger.params.data.value
-// 	);
-// 	const domain = req.headers['x-real-origin'];
-// 	const currency = req.swagger.params.currency.value;
-// 	loggerDeposits.verbose(
-// 		req.uuid,
-// 		'controller/notification/handleCurrencyDeposit',
-// 		'currency',
-// 		currency,
-// 		domain
-// 	);
-
-// 	if (getCurrencies().indexOf(currency) === -1) {
-// 		loggerDeposits.error(
-// 			req.uuid,
-// 			'controller/notification/performDeposit',
-// 			'Invalid currency',
-// 			currency
-// 		);
-// 		return res.status(400).json({ message: 'Invalid currency.' });
-// 	}
-
-// 	const data = req.swagger.params.data.value;
-
-// 	handler(currency)
-// 		.deposit(data)
-// 		.then(([deposit, user, userSendEmail]) => {
-// 			loggerDeposits.info(
-// 				req.uuid,
-// 				'controller/notification/handleCurrencyDeposit after_creation',
-// 				user.email,
-// 				deposit.amount,
-// 				currency,
-// 				deposit.status,
-// 				deposit.transaction_id,
-// 				userSendEmail
-// 			);
-// 			if (userSendEmail) {
-// 				sendEmail(
-// 					MAILTYPE.DEPOSIT,
-// 					user.email,
-// 					{
-// 						amount: deposit.amount,
-// 						currency: currency,
-// 						status: deposit.status,
-// 						address: deposit.address,
-// 						transaction_id: deposit.transaction_id,
-// 						phoneNumber: user.phone_number
-// 					},
-// 					user.settings,
-// 					domain
-// 				);
-// 			}
-// 			res.json({ message: 'Success' });
-// 		})
-// 		.catch((err) => {
-// 			loggerDeposits.error(
-// 				req.uuid,
-// 				'controller/transaction/handleCurrencyDeposit',
-// 				err
-// 			);
-// 			res.status(400).json({ message: `Fail - ${err.message}` });
-// 		});
-// };
+	toolsLib.auth.verifyHmacToken(req)
+		.then(() => {
+			if (!toolsLib.subscribeToCoin(currency)) {
+				throw new Error('Invalid currency');
+			}
+			return toolsLib.users.getUserByNetworkId(user_id);
+		})
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.DEPOSIT,
+				user.email,
+				{
+					amount,
+					currency,
+					status: is_confirmed ? 'COMPLETED' : 'PENDING',
+					address,
+					transaction_id: txid,
+					phoneNumber: user.phone_number
+				},
+				user.settings,
+				domain
+			);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerDeposits.error(
+				req.uuid,
+				'controller/transaction/handleCurrencyDeposit',
+				err
+			);
+			return res.status(400).json({ message: `Fail - ${err.message}` });
+		});
+};
 
 const requestWithdrawal = (req, res) => {
 	loggerDeposits.verbose(
@@ -283,7 +236,7 @@ const adminCheckTransaction = (req, res) => {
 };
 
 module.exports = {
-	// handleCurrencyDeposit,
+	handleCurrencyDeposit,
 	requestWithdrawal,
 	getWithdrawalFee,
 	adminCheckTransaction

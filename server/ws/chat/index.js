@@ -16,7 +16,7 @@ const initializeChatWS = (chat) => {
 		if (!token) {
 			return next();
 		} else {
-			toolsLib.auth.verifyToken(socket, null, token, (err) => {
+			toolsLib.auth.verifyBearerTokenMiddleware(socket, null, token, (err) => {
 				if (err) {
 					socket.err = err.message;
 					next(err);
