@@ -146,13 +146,10 @@ class OperatorControls extends Component {
     const configs = { strings };
 
     publish(configs)
-      .then(() => {
-        console.log('Published')
-        this.setState({
-          isPublishEnabled: false,
-        })
-      })
+      .then(this.reload)
   }
+
+  reload = () => window.location.reload(false)
 
   toggleEditMode = () => {
     const { onChangeEditMode } = this.props;
