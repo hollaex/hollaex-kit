@@ -414,6 +414,46 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /ticker:
+    x-swagger-router-controller: engine
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getTicker
+      tags:
+        - Public
+        - Engine
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /ticker/all:
+    x-swagger-router-controller: engine
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getAllTicker
+      tags:
+        - Public
+        - Engine
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user:
     x-swagger-router-controller: user
     get:
