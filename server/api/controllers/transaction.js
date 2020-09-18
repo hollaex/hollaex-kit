@@ -72,6 +72,49 @@ const handleCurrencyDeposit = (req, res) => {
 		});
 };
 
+const handleCurrencyWithdrawal = (req, res) => {
+	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
+	const domain = req.headers['x-real-origin'];
+	loggerDeposits.verbose('controller/transaction/handleCurrencyWithdrawal ip domain', ip, domain);
+
+	const currency = req.swagger.params.currency.value;
+	const { user_id, amount, txid, address, is_confirmed, fee } = req.swagger.params.data.value;
+
+	toolsLib.auth.verifyHmacToken(req)
+		.then(() => {
+			if (!toolsLib.subscribeToCoin(currency)) {
+				throw new Error('Invalid currency');
+			}
+			return toolsLib.users.getUserByNetworkId(user_id);
+		})
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.WITHDRAWAL,
+				user.email,
+				{
+					amount,
+					currency,
+					status: is_confirmed ? 'COMPLETED' : 'PENDING',
+					address,
+					fee,
+					transaction_id: txid,
+					phoneNumber: user.phone_number
+				},
+				user.settings,
+				domain
+			);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerDeposits.error(
+				req.uuid,
+				'controller/transaction/handleCurrencyWithdrawal',
+				err
+			);
+			return res.status(400).json({ message: `Fail - ${err.message}` });
+		});
+};
+
 const requestWithdrawal = (req, res) => {
 	loggerDeposits.verbose(
 		req.uuid,
@@ -177,5 +220,6 @@ module.exports = {
 	requestWithdrawal,
 	getWithdrawalFee,
 	adminCheckTransaction,
-	performWithdrawal
+	performWithdrawal,
+	handleCurrencyWithdrawal
 };

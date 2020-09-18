@@ -324,6 +324,34 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /withdrawal:
+    x-swagger-router-controller: transaction
+    post:
+      operationId: handleCurrencyWithdrawal
+      description: Withdrawal notification
+      tags:
+        - Network
+      parameters:
+        - name: currency
+          description: currency name
+          in: query
+          required: true
+          type: string
+        - name: data
+          description: Withdrawal transaction info
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ExternalWithdrawalRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /apply:
     x-swagger-router-controller: general
     get:
@@ -3951,6 +3979,28 @@ definitions:
       - user_id
     properties:
       amount:
+        type: number
+      txid:
+        type: string
+      address:
+        type: string
+      is_confirmed:
+        type: boolean
+      user_id:
+        type: number
+  ExternalWithdrawalRequest:
+    type: object
+    required:
+      - txid
+      - amount
+      - address
+      - is_confirmed
+      - user_id
+      - fee
+    properties:
+      amount:
+        type: number
+      fee:
         type: number
       txid:
         type: string
