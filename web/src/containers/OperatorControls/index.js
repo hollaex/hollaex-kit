@@ -5,6 +5,7 @@ import { getStringByKey } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input } from 'antd';
 import { initializeStrings } from 'utils/initialize';
+import { publish } from 'actions/operatorActions';
 
 class OperatorControls extends Component {
 
@@ -141,12 +142,16 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites } = this.state;
-    localStorage.setItem('strings', JSON.stringify(overwrites))
-    initializeStrings();
-    this.setState({
-      isPublishEnabled: false,
-    })
+    const { overwrites: strings } = this.state;
+    const configs = { strings };
+
+    publish(configs)
+      .then(() => {
+        console.log('Published')
+        this.setState({
+          isPublishEnabled: false,
+        })
+      })
   }
 
   toggleEditMode = () => {

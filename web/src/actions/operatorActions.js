@@ -1,13 +1,19 @@
 import axios from 'axios';
 import { requestAuthenticated } from 'utils';
 
-export const updateConfig = async (key, values) => {
+export const updateConfigs = async (configs) => {
 
   const oldConstants = await getConstants();
+  const versionedConfigs = await pushVersions(configs)
+
+  oldConstants.user_level_number = parseInt(oldConstants.user_level_number, 10);
 
   const constants = {
     ...oldConstants,
-    [key]: values,
+    color: {
+      ...oldConstants.color,
+      ...versionedConfigs,
+    },
   }
 
   const options = {
@@ -23,7 +29,7 @@ export const getConstants = async () => {
 }
 
 export const getConfig = async (key) => {
-  const { data: { constants: { [key]: config } } } = axios.get('/constant')
+  const { data: { constants: { color: { [key]: config } } } } = await axios.get('/constant')
   return config;
 }
 
@@ -33,6 +39,20 @@ export const getValidLanguages = async () => {
 }
 
 export const getVersions = async () => {
-  const { data: { constants: { versions = {} } } } = await axios.get('/constant')
+  const { data: { constants: { color: { versions = {} } } } } = await axios.get('/constant')
   return versions
+}
+
+export const publish = async (configs) => {
+  updateConfigs(configs)
+    .then(() => console.log('published successfully'))
+}
+
+export const pushVersions = async (configs) => {
+  const versions = await getVersions()
+  const uniqid = Date.now();
+  Object.keys(configs).forEach(key => {
+    versions[key] = `${key}-${uniqid}`
+  })
+  return {...configs, versions}
 }

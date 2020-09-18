@@ -1,15 +1,12 @@
 import { overwriteLocale } from './string';
+import { getVersions } from 'actions/operatorActions';
 
 export const getRemoteVersion = async () => {
-  const remoteVersions = await new Promise((resolve, reject) => {
-    setTimeout(() => resolve({ strings: "randomVersion" }), 1000);
-  });
-
-  return remoteVersions;
+  return await getVersions()
 }
 
 export const getLocalVersions = () => {
-  const versions = localStorage.getItem('versions') || JSON.stringify({});
+  const versions = localStorage.getItem('versions') || '{}';
   return JSON.parse(versions);
 }
 
@@ -18,7 +15,7 @@ export const setLocalVersions = (versions) => {
 }
 
 export const initializeStrings = () => {
-  const stringsJson = localStorage.getItem('strings');
+  const stringsJson = localStorage.getItem('strings') || '{}';
   const strings = JSON.parse(stringsJson);
   Object.entries(strings).forEach(([key, overwrites]) => {
     overwriteLocale(key, overwrites);

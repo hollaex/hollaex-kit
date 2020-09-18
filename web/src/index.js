@@ -24,20 +24,18 @@ import {
   initializeStrings,
 } from 'utils/initialize';
 
+import { getConfig } from 'actions/operatorActions';
+
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
 console.log(name, version);
 console.log(API_URL);
 
 const generateRequest = async (key) => {
-  const data = await new Promise((resolve, reject) => {
-    setTimeout(() => resolve({ en: { ADD_TRADING_PAIR: 'test title' }}), 1000);
-  });
-
-	return data;
+	return await getConfig(key);
 }
 
-const getConfig = async () => {
+const getConfigs = async () => {
   const localVersions = getLocalVersions();
   const remoteVersions = await getRemoteVersion();
 
@@ -60,8 +58,8 @@ const getConfig = async () => {
   return remoteConfigs;
 }
 
-const bootstrapApp = ({ strings }) => {
-  initializeStrings(strings)
+const bootstrapApp = () => {
+  initializeStrings()
 
   render(
 		<Provider store={store}>
@@ -71,7 +69,7 @@ const bootstrapApp = ({ strings }) => {
   );
 }
 
-getConfig()
+getConfigs()
 	.then(bootstrapApp)
 	.catch((err) => console.error(err))
 
