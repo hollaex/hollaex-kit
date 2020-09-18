@@ -375,7 +375,7 @@ paths:
       operationId: getTopOrderbooks
       tags:
         - Public
-        - Orderbook
+        - Engine
       parameters:
         - name: symbol
           in: query
@@ -391,7 +391,29 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-    
+  /trades:
+    x-swagger-router-controller: engine
+    get:
+      description: Returns the trades
+      operationId: getTrades
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      tags:
+        - Public
+        - Engine
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PublicTradesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user:
     x-swagger-router-controller: user
     get:
@@ -4036,4 +4058,7 @@ definitions:
         type: number
   OrderbooksResponse:
     type: object
-    description: "Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask."
+    description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
+  PublicTradesResponse:
+    type: object
+    description: Top trades, where key is the symbol(currency) and the values is an arra with the top trades for that symbol.
