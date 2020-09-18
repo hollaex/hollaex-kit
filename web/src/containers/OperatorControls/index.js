@@ -7,6 +7,7 @@ import { Input } from 'antd';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
+import { content as CONTENT } from 'config/localizedStrings';
 
 class OperatorControls extends Component {
 
@@ -97,9 +98,12 @@ class OperatorControls extends Component {
   }
 
   handleInputChange = ({ target: { value, name } }) => {
-    const { editData } = this.state;
-    const [key, lang] = name.split('-')
+    const [key, lang] = name.split('-');
+    this.updateEditData(value, key, lang)
+  }
 
+  updateEditData = (value, key, lang) => {
+    const { editData } = this.state;
     this.setState(prevState => ({
       ...prevState,
       isSaveEnabled: true,
@@ -117,20 +121,20 @@ class OperatorControls extends Component {
     const { editData, overwrites, languageKeys } = this.state;
     const processedData = { ...editData }
 
-    languageKeys.forEach((lang) => {
-      Object.entries(processedData[lang]).forEach(([key, string]) => {
-        if (string === getStringByKey(key, lang)) {
-          delete processedData[lang][key];
-        }
-      })
-    })
-
     const saveData = {};
     languageKeys.forEach((lang) => {
       saveData[lang] = {
         ...overwrites[lang],
         ...processedData[lang],
       }
+    })
+
+    languageKeys.forEach((lang) => {
+      Object.entries(saveData[lang]).forEach(([key, string]) => {
+        if (string === getStringByKey(key, lang, CONTENT)) {
+          delete saveData[lang][key];
+        }
+      })
     })
 
     this.setState({
@@ -161,6 +165,11 @@ class OperatorControls extends Component {
   getLanguageLabel = (key) => {
     const { label } = LANGUAGES.find(({ value }) => value === key)
     return label
+  }
+
+  getDefaultString = (key, lang) => {
+    const defaultString = getStringByKey(key, lang, CONTENT)
+    this.updateEditData(defaultString, key, lang);
   }
 
   render() {
@@ -207,26 +216,31 @@ class OperatorControls extends Component {
             editMode && isEditModalOpen &&
             editableElementIds.map((key) => {
               return (
-                <div className="pt-3">
+                <div className="pt-3" key={key}>
                   {
                     languageKeys.map((lang) => {
 
                       return (
-                        <div className="d-flex">
-                          <span>
+                        <div className="p-1" key={lang}>
+                          <label>
                             {this.getLanguageLabel(lang)}:
+                          </label>
+                          <div className="d-flex align-items-center">
+                            <Input
+                              type="text"
+                              name={`${key}-${lang}`}
+                              placeholder="text"
+                              className="operator-controls__input"
+                              value={editData[lang][key]}
+                              onChange={this.handleInputChange}
+                            />
+                            <span
+                              className="pointer"
+                              onClick={() => this.getDefaultString(key, lang)}
+                            >
+                            Reset
                           </span>
-                          <Input
-                            type="text"
-                            name={`${key}-${lang}`}
-                            placeholder="text"
-                            className="operator-controls__input"
-                            value={editData[lang][key]}
-                            onChange={this.handleInputChange}
-                          />
-                          <span>
-                            Default
-                          </span>
+                          </div>
                         </div>
                       )
                     })
@@ -235,7 +249,7 @@ class OperatorControls extends Component {
               )
             })
           }
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center pt-5">
             <button
               type="submit"
               onClick={this.handleSave}

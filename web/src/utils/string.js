@@ -103,6 +103,6 @@ export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
   setContent(mergedContent)
 }
 
-export const getStringByKey = (key, lang = DEFAULT_LANGUAGE) => {
-  return STRINGS._props[lang] && STRINGS._props[lang][key]
+export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._props) => {
+  return content[lang] && content[lang][key]
 }

@@ -3763,7 +3763,8 @@ table th {
   height: 50px;
   width: 145px;
   margin-right: 37px;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  font-weight: bold; }
 
 .operator-controls__save-button {
   cursor: pointer;
@@ -3772,7 +3773,8 @@ table th {
   border-radius: 10px;
   height: 50px;
   width: 232px;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  font-weight: bold; }
 
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
