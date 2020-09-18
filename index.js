@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
 const moment = require('moment');
-const { each, isBoolean, create } = require('lodash');
+const { each, isBoolean } = require('lodash');
 const { createRequest, createSignature, generateHeaders, checkKit } = require('./utils');
 const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
@@ -121,11 +121,11 @@ class HollaEx {
 	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
 	 * @param {number} limit The upper limit of deposits to return, max = 100
 	 * @param {number} page The page of data to receive
-	 * @param {string} orderBy The field to order data by e.g. amount, created_at
+	 * @param {string} orderBy The field to order data by e.g. amount, id
 	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposit(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
+	getDeposit(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (currency) {
@@ -145,11 +145,11 @@ class HollaEx {
 	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
 	 * @param {number} limit The upper limit of withdrawals to return, max = 100
 	 * @param {number} page The page of data to receive
-	 * @param {string} orderBy The field to order data by e.g. amount, created_at
+	 * @param {string} orderBy The field to order data by e.g. amount, id
 	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getWithdrawal(currency, limit = 50, page = 1, orderBy = 'created_at', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
+	getWithdrawal(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (currency) {
@@ -190,7 +190,7 @@ class HollaEx {
 	 * @param {number} page The page of data to receive
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
-	getUserTrade(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getUserTrade(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/trades?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
 		if (symbol) {
@@ -226,7 +226,7 @@ class HollaEx {
 	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
-	getAllOrder(symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getAllOrder(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/orders?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
 		if (symbol) {
@@ -351,7 +351,7 @@ class HollaEx {
 	 * @param {number} page - Page of trades data
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
-	getAllTradeNetwork(userId, symbol, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getAllTradeNetwork(userId, symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -404,16 +404,14 @@ class HollaEx {
 
 	createUserCryptoAddress(userId, crypto) {
 		checkKit(this.exchange_id);
-		const verb = 'POST';
+		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/create-address?user_id=${userId}&crypto=${crypto}`;
-		const data = {};
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
 			`${HOLLAEX_NETWORK_URL}${path}`,
-			headers,
-			data
+			headers
 		);
 	}
 
@@ -475,7 +473,7 @@ class HollaEx {
 		waiting,
 		limit = 50,
 		page = 1,
-		orderBy = 'created_at',
+		orderBy = 'id',
 		order = 'asc',
 		startDate = 0,
 		endDate = moment().toISOString()
@@ -534,7 +532,7 @@ class HollaEx {
 		waiting,
 		limit = 50,
 		page = 1,
-		orderBy = 'created_at',
+		orderBy = 'id',
 		order = 'asc',
 		startDate = 0,
 		endDate = moment().toISOString()
@@ -667,7 +665,7 @@ class HollaEx {
 	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
 	 * @return {array} Array of queried orders
 	 */
-	getAllOrderNetwork(userId, symbol, side, limit = 50, page = 1, orderBy = 'created_at', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getAllOrderNetwork(userId, symbol, side, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
