@@ -44,8 +44,8 @@ export const getVersions = async () => {
 }
 
 export const publish = async (configs) => {
-  updateConfigs(configs)
-    .then(() => console.log('published successfully'))
+  await updateConfigs(configs)
+  console.log('published Successfully');
 }
 
 export const pushVersions = async (configs) => {

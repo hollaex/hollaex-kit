@@ -14,9 +14,7 @@ export const setLocalVersions = (versions) => {
   localStorage.setItem('versions', JSON.stringify(versions));
 }
 
-export const initializeStrings = () => {
-  const stringsJson = localStorage.getItem('strings') || '{}';
-  const strings = JSON.parse(stringsJson);
+export const initializeStrings = (strings = JSON.parse(localStorage.getItem('strings') || '{}')) => {
   Object.entries(strings).forEach(([key, overwrites]) => {
     overwriteLocale(key, overwrites);
   })
