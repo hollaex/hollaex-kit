@@ -97,9 +97,106 @@ const getAllTicker = (req, res) => {
 		});
 };
 
+const getChart = (req, res) => {
+	const { from, to, symbol, resolution } = req.swagger.params;
+
+	if (!toolsLib.subscribedToPair(symbol.value)) {
+		loggerOrderbook.error(
+			req.uuid,
+			'controller/engine/getChart',
+			'Invalid symbol'
+		);
+		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
+	getNodeLib().getChartEngine(from.value, to.value, symbol.value, resolution.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrderbook.error(
+				req.uuid,
+				'controller/engine/getChart',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getConfig = (req, res) => {
+	getNodeLib().getUdfConfigEngine()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrderbook.error(
+				req.uuid,
+				'controller/engine/getConfig',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getHistory = (req, res) => {
+	const { symbol, from, to, resolution } = req.swagger.params;
+
+	if (!toolsLib.subscribedToPair(symbol.value)) {
+		loggerOrderbook.error(
+			req.uuid,
+			'controller/engine/getHistory',
+			'Invalid symbol'
+		);
+		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
+	getNodeLib().getUdfHistoryEngine(from.value, to.value, symbol.value, resolution.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrderbook.error(
+				req.uuid,
+				'controller/engine/getHistory',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getSymbols = (req, res) => {
+	const symbol = req.swagger.params.symbol.value;
+
+	if (!toolsLib.subscribedToPair(symbol.value)) {
+		loggerOrderbook.error(
+			req.uuid,
+			'controller/engine/getSymbols',
+			'Invalid symbol'
+		);
+		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
+	getNodeLib().getUdfSymbolsEngine(symbol)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrderbook.error(
+				req.uuid,
+				'controller/engine/getSymbols',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getTopOrderbooks,
 	getTrades,
 	getTicker,
-	getAllTicker
+	getAllTicker,
+	getChart,
+	getConfig,
+	getHistory,
+	getSymbols
 };

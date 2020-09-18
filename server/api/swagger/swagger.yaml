@@ -454,6 +454,122 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /chart:
+    x-swagger-router-controller: engine
+    get:
+      description: Get trade history HOLCV
+      operationId: getChart
+      tags:
+        - Engine
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: symbol
+          description: trading pair symbol
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TradeDataResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/config:
+    x-swagger-router-controller: chart
+    get:
+      description: Get tradingview udf config
+      operationId: getConfig
+      tags:
+        - Engine
+        - Chart
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/history:
+    x-swagger-router-controller: chart
+    get:
+      description: Get tradingview udf history HOLCV
+      operationId: getHistory
+      tags:
+        - Engine
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: symbol
+          description: trading pair symbol
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/symbols:
+    x-swagger-router-controller: chart
+    get:
+      description: Get tradingview udf symbols
+      operationId: getSymbols
+      tags:
+        - Engine
+        - Chart
+      parameters:
+        - in: query
+          name: symbol
+          description: Trading pair symbol e.g. btc-eur
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user:
     x-swagger-router-controller: user
     get:
@@ -4102,3 +4218,18 @@ definitions:
   PublicTradesResponse:
     type: object
     description: Top trades, where key is the symbol(currency) and the values is an arra with the top trades for that symbol.
+  TradeDataResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        date:
+          type: string
+        open:
+          type: number
+        close:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
