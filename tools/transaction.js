@@ -124,9 +124,20 @@ const checkTransaction = (currency, transactionId, address, isTestnet = false) =
 	return getNodeLib().checkTransactionNetwork(currency, transactionId, address, isTestnet);
 };
 
+const performWithdrawal = (userId, address, currency, amount, fee, otpCode) => {
+	if (!subscribedToCoin(currency)) {
+		return new Promise((resolve, reject) => reject('Invalid currency'));
+	}
+	return getUserByKitId(userId)
+		.then((user) => {
+			return getNodeLib().createWithdrawalNetwork(user.network_id, address, currency, amount, fee, otpCode);
+		});
+};
+
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawalToken,
 	cancelUserWithdrawal,
-	checkTransaction
+	checkTransaction,
+	performWithdrawal
 };
