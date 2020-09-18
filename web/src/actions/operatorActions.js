@@ -34,8 +34,8 @@ export const getConfig = async (key) => {
 }
 
 export const getValidLanguages = async () => {
-  const { data: { constants: { valid_languages = [] } } } = await axios.get('/constant')
-  return valid_languages.split(',')
+  const { data: { constants: { valid_languages = '' } } } = await axios.get('/constant')
+  return valid_languages;
 }
 
 export const getVersions = async () => {

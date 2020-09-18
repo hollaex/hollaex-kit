@@ -4,8 +4,9 @@ import { EditFilled } from '@ant-design/icons';
 import { getStringByKey } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input } from 'antd';
-import { initializeStrings } from 'utils/initialize';
+import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
+import LANGUAGES from 'config/languages';
 
 class OperatorControls extends Component {
 
@@ -14,6 +15,7 @@ class OperatorControls extends Component {
 
     const strings = localStorage.getItem('strings') || "{}";
     const overwrites = JSON.parse(strings);
+    const languageKeys = getValidLanguages();
 
     this.state = {
       isPublishEnabled: false,
@@ -21,7 +23,7 @@ class OperatorControls extends Component {
       isEditModalOpen: false,
       editType: null,
       editableElementIds: [],
-      languageKeys: ['en', 'fa'],
+      languageKeys,
       overwrites,
     }
   }
@@ -156,6 +158,11 @@ class OperatorControls extends Component {
     onChangeEditMode();
   }
 
+  getLanguageLabel = (key) => {
+    const { label } = LANGUAGES.find(({ value }) => value === key)
+    return label
+  }
+
   render() {
     const { isPublishEnabled, isEditModalOpen, editData, languageKeys, editableElementIds, isSaveEnabled } = this.state;
     const { editMode } = this.props;
@@ -200,19 +207,27 @@ class OperatorControls extends Component {
             editMode && isEditModalOpen &&
             editableElementIds.map((key) => {
               return (
-                <div>
+                <div className="pt-3">
                   {
                     languageKeys.map((lang) => {
 
                       return (
-                        <Input
-                          type="text"
-                          name={`${key}-${lang}`}
-                          placeholder="text"
-                          className="operator-controls__input"
-                          value={editData[lang][key]}
-                          onChange={this.handleInputChange}
-                        />
+                        <div className="d-flex">
+                          <span>
+                            {this.getLanguageLabel(lang)}:
+                          </span>
+                          <Input
+                            type="text"
+                            name={`${key}-${lang}`}
+                            placeholder="text"
+                            className="operator-controls__input"
+                            value={editData[lang][key]}
+                            onChange={this.handleInputChange}
+                          />
+                          <span>
+                            Default
+                          </span>
+                        </div>
                       )
                     })
                   }

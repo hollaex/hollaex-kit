@@ -22,9 +22,10 @@ import {
   getLocalVersions,
   getRemoteVersion,
   initializeStrings,
+  setValidLanguages,
 } from 'utils/initialize';
 
-import { getConfig } from 'actions/operatorActions';
+import { getConfig, getValidLanguages } from 'actions/operatorActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
@@ -38,6 +39,7 @@ const generateRequest = async (key) => {
 const getConfigs = async () => {
   const localVersions = getLocalVersions();
   const remoteVersions = await getRemoteVersion();
+  const validLanguages = await getValidLanguages();
 
   const promises = {};
   Object.entries(remoteVersions).forEach(([key]) => {
@@ -55,6 +57,7 @@ const getConfigs = async () => {
   })
 
   setLocalVersions(remoteVersions);
+  setValidLanguages(validLanguages);
   return remoteConfigs;
 }
 
