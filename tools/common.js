@@ -1,7 +1,7 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constants');
-const { getKit, getSecrets, getCoins, getPairs } = require(`${SERVER_PATH}/init`);
+const { getCoins, getPairs } = require(`${SERVER_PATH}/init`);
 const dbQuery = require('./database/query');
 const {
 	SECRET_MASK,
@@ -11,7 +11,10 @@ const {
 	TECH_AUTHORIZED_KIT_SECRETS,
 	ROLES,
 	INIT_CHANNEL,
-	SEND_CONTACT_US_EMAIL
+	SEND_CONTACT_US_EMAIL,
+	GET_KIT_CONFIG,
+	GET_KIT_SECRETS,
+	GET_FROZEN_USERS
 } = require(`${SERVER_PATH}/constants`);
 const { each, difference } = require('lodash');
 const { publisher } = require('./database/redis');
@@ -37,11 +40,11 @@ const subscribedToPair = (pair) => {
 };
 
 const getKitConfig = () => {
-	return getKit();
+	return GET_KIT_CONFIG();
 };
 
 const getKitSecrets = () => {
-	return getSecrets();
+	return GET_KIT_SECRETS();
 };
 
 const getKitCoin = (coin) => {
@@ -66,6 +69,10 @@ const getKitPairsConfig = () => {
 
 const getKitPairs = () => {
 	return Object.keys(getKitPairsConfig());
+};
+
+const getFrozenUsers = () => {
+	return GET_FROZEN_USERS();
 };
 
 const maskSecrets = (secrets) => {
@@ -216,6 +223,7 @@ module.exports = {
 	getKitCoinsConfig,
 	subscribedToPair,
 	getKitPair,
+	getFrozenUsers,
 	getKitPairs,
 	getKitPairsConfig,
 	maskSecrets,

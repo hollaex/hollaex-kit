@@ -29,15 +29,14 @@ const {
 const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET, TOKEN_TYPES, HMAC_TOKEN_EXPIRY } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
-const { getKitSecrets, getKitConfig } = require('./common');
-// const { getUserByEmail, getUserByKitId } = require('./users');
+const { getKitSecrets, getKitConfig, getFrozenUsers } = require('./common');
 const dbQuery = require('./database').query;
 const otp = require('otp');
 const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
 const uuid = require('uuid/v4');
 const { all } = require('bluebird');
-const { getFrozenUsers, isValidPassword } = require('./users');
+const { isValidPassword } = require('./users');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);

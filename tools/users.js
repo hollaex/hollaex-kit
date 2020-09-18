@@ -25,7 +25,6 @@ const {
 	USERNAME_IS_TAKEN,
 	INVALID_USERNAME
 } = require('../messages');
-const { getFrozenUsers } = require(`${SERVER_PATH}/init`);
 const { publisher } = require('./database/redis');
 const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
@@ -1096,7 +1095,6 @@ module.exports = {
 	getUserByKitId,
 	getUserByNetworkId,
 	getUserByCryptoAddress,
-	getFrozenUsers,
 	freezeUserById,
 	freezeUserByEmail,
 	unfreezeUserById,
