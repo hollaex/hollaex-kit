@@ -47,7 +47,7 @@ const moment = require('moment');
 //that need it (in our case, only /protected). This
 //function will be called every time a request to a protected
 //endpoint is received
-const verifyBearerToken = (req, authOrSecDef, token, cb, isSocket = false) => {
+const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
 	const sendError = (msg) => {
 		if (isSocket) {
 			return new Error(ACCESS_DENIED(msg));
@@ -130,7 +130,7 @@ const verifyBearerToken = (req, authOrSecDef, token, cb, isSocket = false) => {
 	}
 };
 
-const verifyHmacToken = (req, definition, apiKey, cb, isSocket = false) => {
+const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false) => {
 	const sendError = (msg) => {
 		if (isSocket) {
 			return new Error(ACCESS_DENIED(msg));
@@ -161,30 +161,30 @@ const verifyHmacToken = (req, definition, apiKey, cb, isSocket = false) => {
 			loggerAuth.error('helpers/auth/checkHmacKey null secret', apiKey);
 			return sendError(API_SIGNATURE_NULL);
 		} else {
-			checkToken(apiKey)
+			findTokenByApiKey(apiKey)
 				.then((token) => {
 					if (!token) {
 						loggerAuth.error(
-							'helpers/auth/checkApiKey/checkToken invalid key',
+							'helpers/auth/checkApiKey/findTokenByApiKey invalid key',
 							apiKey
 						);
 						return sendError(API_KEY_INVALID);
 					} else if (!endpointScopes.includes(token.type)) {
 						loggerAuth.error(
-							'helpers/auth/checkApiKey/checkToken out of scope',
+							'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
 							apiKey,
 							token.type
 						);
 						return sendError(API_KEY_OUT_OF_SCOPE);
 					} else if (new Date(token.expiry) < new Date()) {
 						loggerAuth.error(
-							'helpers/auth/checkApiKey/checkToken expired key',
+							'helpers/auth/checkApiKey/findTokenByApiKey expired key',
 							apiKey
 						);
 						return sendError(API_KEY_EXPIRED);
 					} else if (!token.active) {
 						loggerAuth.error(
-							'helpers/auth/checkApiKey/checkToken inactive',
+							'helpers/auth/checkApiKey/findTokenByApiKey inactive',
 							apiKey
 						);
 						return sendError(API_KEY_INACTIVE);
@@ -209,6 +209,44 @@ const verifyHmacToken = (req, definition, apiKey, cb, isSocket = false) => {
 				});
 		}
 	}
+};
+
+const getApiKeySecret = () => {
+	return dbQuery.findOne('status', { raw: true })
+		.then((status) => {
+			return {
+				apiKey: status.api_key,
+				apiSecret: status.api_secret
+			};
+		});
+};
+
+const verifyHmacToken = (req) => {
+	return new Promise((resolve, reject) => {
+		const apiKey = req.headers ? req.headers['api-key'] : undefined;
+		const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
+		const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
+
+		const systemKeySecret = getApiKeySecret();
+
+		if (!apiKey) {
+			reject(API_KEY_NULL);
+		} else if (!apiSignature) {
+			reject(API_SIGNATURE_NULL);
+		} else if (moment().unix() > apiExpires) {
+			reject(API_REQUEST_EXPIRED);
+		} else {
+			const isSignatureValid = checkHmacSignature(
+				systemKeySecret.apiSecret,
+				req
+			);
+			if (!isSignatureValid) {
+				reject(API_SIGNATURE_INVALID);
+			}
+		}
+
+		resolve();
+	});
 };
 
 /**
@@ -688,10 +726,6 @@ const findTokenByApiKey = (apiKey) => {
 	});
 };
 
-const checkToken = (token) => {
-	return findTokenByApiKey(token);
-};
-
 const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
 	const stringData = typeof data === 'string' ? data : JSON.stringify(data);
 
@@ -720,7 +754,8 @@ const checkHmacSignature = (
 };
 
 module.exports = {
-	verifyBearerToken,
+	verifyBearerTokenMiddleware,
+	verifyHmacTokenMiddleware,
 	verifyHmacToken,
 	userScopeIsValid,
 	userIsDeactivated,
@@ -728,7 +763,6 @@ module.exports = {
 	verifyOtpBeforeAction,
 	verifyOtp,
 	findToken,
-	checkToken,
 	issueToken,
 	validatePassword,
 	generateOtp,
