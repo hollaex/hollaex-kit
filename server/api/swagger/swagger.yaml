@@ -368,6 +368,30 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /orderbooks:
+    x-swagger-router-controller: engine
+    get:
+      description: Returns the top orderbooks
+      operationId: getTopOrderbooks
+      tags:
+        - Public
+        - Orderbook
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderbooksResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    
   /user:
     x-swagger-router-controller: user
     get:
@@ -4010,3 +4034,6 @@ definitions:
         type: boolean
       user_id:
         type: number
+  OrderbooksResponse:
+    type: object
+    description: "Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask."

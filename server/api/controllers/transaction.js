@@ -24,7 +24,7 @@ const getWithdrawalFee = (req, res) => {
 		loggerDeposits.error(
 			req.uuid,
 			'controller/transaction/getWithdrawalFee err',
-			err
+			err.message
 		);
 		return res.status(400).json({ message: err.message });
 	}
@@ -66,7 +66,7 @@ const handleCurrencyDeposit = (req, res) => {
 			loggerDeposits.error(
 				req.uuid,
 				'controller/transaction/handleCurrencyDeposit',
-				err
+				err.message
 			);
 			return res.status(400).json({ message: `Fail - ${err.message}` });
 		});
@@ -109,7 +109,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 			loggerDeposits.error(
 				req.uuid,
 				'controller/transaction/handleCurrencyWithdrawal',
-				err
+				err.message
 			);
 			return res.status(400).json({ message: `Fail - ${err.message}` });
 		});
