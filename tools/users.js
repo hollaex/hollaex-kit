@@ -1105,10 +1105,16 @@ const transferUserFunds = (senderId, receiverId, currency, amount, description =
 	}
 
 	return all([
-		getNodeLib().transferAssetsNetwork(senderId, receiverId, currency, amount, description),
 		getUserByKitId(senderId),
 		getUserByKitId(receiverId)
 	])
+		.then(([ sender, receiver ]) => {
+			return all([
+				getNodeLib().transferAssetsNetwork(sender.network_id, receiver.network_id, currency, amount, description),
+				sender,
+				receiver
+			]);
+		})
 		.then(([ transaction, sender, receiver ]) => {
 			sendEmail(
 				MAILTYPE.WITHDRAWAL,
