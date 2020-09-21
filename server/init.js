@@ -16,36 +16,13 @@ let nodeLib;
 const getNodeLib = () => nodeLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
-const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
+const { INIT_CHANNEL, CONFIGURATION_CHANNEL } = require('./constants');
 const { each } = require('lodash');
-const redis = require('./db/redis').duplicate();
 
 subscriber.on('message', (channel, message) => {
 	if (channel === INIT_CHANNEL) {
-		const { type, data } = JSON.parse(message);
+		const { type } = JSON.parse(message);
 		switch(type) {
-			case 'coins':
-				updateCoinsPairs(type, data.symbol, data);
-				break;
-			case 'pairs':
-				updateCoinsPairs(type, data.name, data);
-				break;
-			case 'config':
-				updateKit(type, data.kit);
-				updateSecrets(data.key, data.secrets);
-				break;
-			case 'kit':
-				updateKit(type, data.kit);
-				break;
-			case 'secret':
-				updateSecrets(data.key, data.secrets);
-				break;
-			case 'freezeUser':
-				updateFrozenUser(data, 'add');
-				break;
-			case 'unfreezeUser':
-				updateFrozenUser(data, 'remove');
-				break;
 			case 'refreshInit':
 				checkStatus();
 				break;
@@ -58,40 +35,40 @@ subscriber.on('message', (channel, message) => {
 
 subscriber.subscribe(INIT_CHANNEL);
 
-let configuration = {
-	coins: {},
-	pairs: {},
-	kit: {
-		info: {},
-		color: {},
-		links: {},
-		captcha: {},
-		defaults: {},
-		plugins: {
-			configuration: {}
-		},
-		status: false
-	}
-};
-
-let secrets = {
-	broker: {},
-	security: {},
-	accounts: {},
-	captcha: {},
-	emails: {},
-	smtp: {},
-	plugins: {
-		s3: {},
-		sns: {},
-		freshdesk: {}
-	}
-};
-
-let frozenUsers = {};
-
 const checkStatus = () => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
+
+	let configuration = {
+		coins: {},
+		pairs: {},
+		kit: {
+			info: {},
+			color: {},
+			links: {},
+			captcha: {},
+			defaults: {},
+			plugins: {
+				configuration: {}
+			},
+			status: false
+		}
+	};
+
+	let secrets = {
+		broker: {},
+		security: {},
+		accounts: {},
+		captcha: {},
+		emails: {},
+		smtp: {},
+		plugins: {
+			s3: {},
+			sns: {},
+			freshdesk: {}
+		}
+	};
+
+	let frozenUsers = {};
 
 	return Status.findOne({})
 		.then((status) => {
@@ -159,10 +136,15 @@ const checkStatus = () => {
 		.then((users) => {
 			loggerGeneral.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
-				updateFrozenUser(user.dataValues.id, 'add');
+				frozenUsers[user.dataValues.id] = true;
 			});
-			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration, secrets, frozenUsers }));
-			return redis.setAsync(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'initial',
+					data: { configuration, secrets, frozenUsers }
+				})
+			);
 		})
 		.then(() => {
 			loggerGeneral.info('init/checkStatus/activation complete');
@@ -181,36 +163,7 @@ const checkStatus = () => {
 };
 
 const stop = () => {
-	frozenUsers = {};
-	secrets = {
-		broker: {},
-		security: {},
-		accounts: {},
-		captcha: {},
-		emails: {},
-		smtp: {},
-		vault: {},
-		plugins: {
-			s3: {},
-			sns: {},
-			freshdesk: {}
-		}
-	};
-	configuration = {
-		coins: {},
-		pairs: {},
-		kit: {
-			info: {},
-			captcha: {},
-			defaults: {},
-			plugins: {
-				configuration: {}
-			},
-			status: false
-		}
-	};
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration, secrets, frozenUsers }));
-	redis.setAsync(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
 const checkActivation = (name, url, activation_code, constants = {}) => {
@@ -226,38 +179,6 @@ const checkActivation = (name, url, activation_code, constants = {}) => {
 		json: true
 	};
 	return rp(options);
-};
-
-const updateKit = (key, config) => {
-	Object.assign(configuration.kit[key], config);
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration }));
-	setRedisData();
-};
-
-const updateCoinsPairs = (type, symbol, config) => {
-	Object.assign(configuration[type][symbol], config);
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration }));
-	setRedisData();
-};
-
-const updateSecrets = (key, config) => {
-	Object.assign(secrets[key], config);
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ secrets }));
-	setRedisData();
-};
-
-const updateFrozenUser = (action, userId) => {
-	if (action === 'add') {
-		frozenUsers[userId] = true;
-	} else if (action === 'remove') {
-		delete frozenUsers[userId];
-	}
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ frozenUsers }));
-	setRedisData();
-};
-
-const setRedisData = () => {
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
 checkStatus();

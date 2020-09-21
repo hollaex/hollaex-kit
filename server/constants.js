@@ -95,14 +95,111 @@ client.getAsync(STATUS_FROZENUSERS_DATA)
 
 subscriber.subscribe(CONFIGURATION_CHANNEL);
 
-subscriber.on('message', (channel, data) => {
+subscriber.on('message', (channel, message) => {
 	if (channel === CONFIGURATION_CHANNEL) {
-		data = JSON.parse(data);
-		if (data.configuration) configuration = data.configuration;
-		if (data.secrets) secrets = data.secrets;
-		if (data.frozenUsers) frozenUsers = data.frozenUsers;
+		const { type, data } = JSON.parse(message);
+
+		switch(type) {
+			case 'initial':
+				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
+				break;
+			case 'coins':
+				updateCoinsPairs(type, data.symbol, data);
+				break;
+			case 'pairs':
+				updateCoinsPairs(type, data.name, data);
+				break;
+			case 'config':
+				updateKit(type, data.kit);
+				updateSecrets(data.key, data.secrets);
+				break;
+			case 'kit':
+				updateKit(type, data.kit);
+				break;
+			case 'secret':
+				updateSecrets(data.key, data.secrets);
+				break;
+			case 'freezeUser':
+				updateFrozenUser(data, 'add');
+				break;
+			case 'unfreezeUser':
+				updateFrozenUser(data, 'remove');
+				break;
+			case 'stop':
+				resetAllConfig();
+				break;
+			default:
+				break;
+		}
 	}
 });
+
+const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
+	configuration = newConfigurations;
+	secrets = newSecrets;
+	frozenUsers = newFrozenUsers;
+	setRedisData();
+};
+
+const resetAllConfig = () => {
+	frozenUsers = {};
+	secrets = {
+		broker: {},
+		security: {},
+		accounts: {},
+		captcha: {},
+		emails: {},
+		smtp: {},
+		vault: {},
+		plugins: {
+			s3: {},
+			sns: {},
+			freshdesk: {}
+		}
+	};
+	configuration = {
+		coins: {},
+		pairs: {},
+		kit: {
+			info: {},
+			captcha: {},
+			defaults: {},
+			plugins: {
+				configuration: {}
+			},
+			status: false
+		}
+	};
+	setRedisData();
+};
+
+const updateKit = (key, config) => {
+	Object.assign(configuration.kit[key], config);
+	setRedisData();
+};
+
+const updateCoinsPairs = (type, symbol, config) => {
+	Object.assign(configuration[type][symbol], config);
+	setRedisData();
+};
+
+const updateSecrets = (key, config) => {
+	Object.assign(secrets[key], config);
+	setRedisData();
+};
+
+const updateFrozenUser = (action, userId) => {
+	if (action === 'add') {
+		frozenUsers[userId] = true;
+	} else if (action === 'remove') {
+		delete frozenUsers[userId];
+	}
+	setRedisData();
+};
+
+const setRedisData = () => {
+	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+};
 
 exports.GET_COINS = () => configuration.coins;
 exports.GET_PAIRS = () => configuration.pairs;

@@ -12,7 +12,7 @@ const {
 	S3_LINK_EXPIRATION_TIME,
 	SMS_CODE_EXPIRATION_TIME,
 	SMS_CODE_KEY,
-	INIT_CHANNEL,
+	CONFIGURATION_CHANNEL,
 	AVAILABLE_PLUGINS
 } = require('../../constants');
 const {
@@ -630,7 +630,7 @@ const updatePluginConfiguration = (key, data) => {
 		})
 		.then((data) => {
 			publisher.publish(
-				INIT_CHANNEL,
+				CONFIGURATION_CHANNEL,
 				JSON.stringify({
 					type: 'kit', data: data.kit
 				})
