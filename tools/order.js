@@ -4,8 +4,12 @@ const { getUserByKitId, getUserByEmail } = require('./users');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { parse } = require('json2csv');
+const { subscribedToPair } = require('./common');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
@@ -13,6 +17,9 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0) 
 };
 
 const createUserOrderByEmail = (email, symbol, side, size, type, price = 0) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getUserByEmail(email)
 		.then((user) => {
 			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
@@ -47,25 +54,37 @@ const cancelUserOrderByEmail = (email, orderId) => {
 		});
 };
 
-const getAllExchangeOrders = (symbol) => {
-	return getNodeLib().getAllOrderNetwork(undefined, symbol);
+const getAllExchangeOrders = (symbol, side, limit, page, orderBy, order, startDate, endDate) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
+	return getNodeLib().getAllOrderNetwork(undefined, symbol, side, limit, page, orderBy, order, startDate, endDate);
 };
 
-const getAllUserOrdersByKitId = (userKitId, symbol) => {
+const getAllUserOrdersByKitId = (userKitId, symbol, side, limit, page, orderBy, order, startDate, endDate) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().getAllOrderNetwork(user.network_id, symbol);
+			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, limit, page, orderBy, order, startDate, endDate);
 		});
 };
 
-const getAllUserOrdersByEmail = (email, symbol) => {
+const getAllUserOrdersByEmail = (email, symbol, side, limit, page, orderBy, order, startDate, endDate) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getUserByEmail(email)
 		.then((user) => {
-			return getNodeLib().getAllOrderNetwork(user.network_id, symbol);
+			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, limit, page, orderBy, order, startDate, endDate);
 		});
 };
 
 const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			return getNodeLib().cancelAllOrderNetwork(user.network_id, symbol);
@@ -73,6 +92,9 @@ const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
 };
 
 const cancelAllUserOrdersByEmail = (email, symbol) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getUserByEmail(email)
 		.then((user) => {
 			return getNodeLib().cancelAllOrderNetwork(user.network_id, symbol);
@@ -80,10 +102,16 @@ const cancelAllUserOrdersByEmail = (email, symbol) => {
 };
 
 const getAllTradesNetwork = (symbol, limit, page, order_by, order, start_date, end_date) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getNodeLib().getAllTradeNetwork(undefined, symbol, limit, page, order_by, order, start_date, end_date);
 };
 
 const getAllUserTradesNetworkByKidId = (userKitId, symbol, limit, page, order_by, order, start_date, end_date, format) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return new Promise((resolve, reject) => reject('Invalid symbol'));
+	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			return getNodeLib().getAllTradeNetwork(user.network_id, symbol, limit, page, order_by, order, start_date, end_date);
