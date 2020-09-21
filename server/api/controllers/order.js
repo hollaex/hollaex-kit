@@ -75,9 +75,19 @@ const cancelUserOrder = (req, res) => {
 const getAllUserOrders = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/getAllUserOrders auth', req.auth);
 	const user_id = req.auth.sub.id;
-	const symbol = req.swagger.params.symbol.value;
+	const { symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-	toolsLib.order.getAllUserOrdersByKitId(user_id, symbol)
+	toolsLib.order.getAllUserOrdersByKitId(
+		user_id,
+		symbol.value,
+		side.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		start_date.value,
+		end_date.value
+	)
 		.then((order) => {
 			return res.json(order);
 		})

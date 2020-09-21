@@ -145,17 +145,19 @@ const getAdminUserBalance = (req, res) => {
 
 const getAdminUserOrders = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminUserOrders/auth', req.auth);
-	const user_id = req.swagger.params.user_id.value;
-	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
-	const symbol = req.swagger.params.symbol.value;
-	const side = req.swagger.params.side.value;
+	const { user_id, symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', 'Invalid symbol');
-		return res.status(400).json({ message: 'Invalid symbol' });
-	}
-
-	toolsLib.order.getAllUserOrdersByKitId(user_id, symbol)
+	toolsLib.order.getAllUserOrdersByKitId(
+		user_id.value,
+		symbol.value,
+		side.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		start_date.value,
+		end_date.valuef
+	)
 		.then((orders) => {
 			return res.json(orders);
 		})
