@@ -1,7 +1,6 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constants');
-const { getCoins, getPairs } = require(`${SERVER_PATH}/init`);
 const dbQuery = require('./database/query');
 const {
 	SECRET_MASK,
@@ -12,6 +11,8 @@ const {
 	ROLES,
 	INIT_CHANNEL,
 	SEND_CONTACT_US_EMAIL,
+	GET_COINS,
+	GET_PAIRS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
 	GET_FROZEN_USERS
@@ -52,7 +53,7 @@ const getKitCoin = (coin) => {
 };
 
 const getKitCoinsConfig = () => {
-	return getCoins();
+	return GET_COINS();
 };
 
 const getKitCoins = () => {
@@ -64,7 +65,7 @@ const getKitPair = (pair) => {
 };
 
 const getKitPairsConfig = () => {
-	return getPairs();
+	return GET_PAIRS();
 };
 
 const getKitPairs = () => {
