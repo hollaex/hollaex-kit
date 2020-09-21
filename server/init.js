@@ -90,14 +90,6 @@ let secrets = {
 
 let frozenUsers = {};
 
-const getCurrencies = () => {
-	return Object.keys(configuration.coins);
-};
-
-const getPairs = () => {
-	return configuration.pairs;
-};
-
 const checkStatus = () => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
 
@@ -217,6 +209,8 @@ const stop = () => {
 			status: false
 		}
 	};
+	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration, secrets, frozenUsers }));
+	redis.setAsync(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
 const checkActivation = (name, url, activation_code, constants = {}) => {
@@ -266,26 +260,6 @@ const setRedisData = () => {
 	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
-const getKit = () => {
-	return configuration.kit;
-};
-
-const getCoin = (coin) => {
-	return configuration.coins[coin];
-};
-
-const getCoins = () => {
-	return configuration.coins;
-};
-
-const getSecrets = () => {
-	return secrets;
-};
-
-const getFrozenUsers = () => {
-	return frozenUsers;
-};
-
 checkStatus();
 const task = cron.schedule('0 15 * * *', () => {
 	checkStatus();
@@ -298,12 +272,5 @@ task.start();
 module.exports = {
 	checkStatus,
 	checkActivation,
-	getCurrencies,
-	getPairs,
-	getCoin,
-	getCoins,
-	getSecrets,
-	getFrozenUsers,
-	getNodeLib,
-	getKit
+	getNodeLib
 };

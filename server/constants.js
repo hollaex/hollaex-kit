@@ -104,6 +104,8 @@ subscriber.on('message', (channel, data) => {
 	}
 });
 
+exports.GET_COINS = () => configuration.coins;
+exports.GET_PAIRS = () => configuration.pairs;
 exports.GET_KIT_CONFIG = () => configuration.kit;
 exports.GET_KIT_SECRETS = () => secrets;
 exports.GET_FROZEN_USERS = () => frozenUsers;
