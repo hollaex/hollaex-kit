@@ -46,6 +46,9 @@ subscriber.on('message', (channel, message) => {
 			case 'unfreezeUser':
 				updateFrozenUser(data, 'remove');
 				break;
+			case 'refreshInit':
+				checkStatus();
+				break;
 			default:
 				break;
 		}

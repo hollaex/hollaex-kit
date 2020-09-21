@@ -4,6 +4,8 @@ const { loggerGeneral } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
+const { publisher } = require('../../db/pubsub');
+const { INIT_CHANNEL } = require('../../constants');
 
 const applyKitChanges = (req, res) => {
 	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
@@ -12,8 +14,9 @@ const applyKitChanges = (req, res) => {
 
 	toolsLib.auth.verifyNetworkHmacToken(req)
 		.then(() => {
-			// run init checkStatus
-			// TODO
+			return publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+		})
+		.then(() => {
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
