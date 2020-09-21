@@ -735,6 +735,12 @@ const getUserBalanceByKitId = (userKitId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			return getNodeLib().getBalanceNetwork(user.network_id);
+		})
+		.then((data) => {
+			return {
+				user_id: userKitId,
+				...data
+			};
 		});
 };
 
