@@ -31,7 +31,7 @@ export const generateFormFields = (theme) => ({
 });
 
 const Form = (props) => (
-	<AuthForm {...props} buttonLabel={STRINGS.REQUEST_RESET_PASSWORD.BUTTON} />
+	<AuthForm {...props} buttonLabel={STRINGS["REQUEST_RESET_PASSWORD.BUTTON"]} />
 );
 
 export default reduxForm({

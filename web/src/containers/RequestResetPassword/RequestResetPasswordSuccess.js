@@ -8,13 +8,13 @@ const RequestResetPasswordSuccess = ({ onLoginClick, onContactUs }) => (
 	<div className="auth_wrapper d-flex justify-content-center align-items-center flex-column">
 		<IconTitle
 			iconPath={ICONS.PASSWORD_RESET}
-			text={STRINGS.REQUEST_RESET_PASSWORD_SUCCESS.TITLE}
+			text={STRINGS["REQUEST_RESET_PASSWORD_SUCCESS.TITLE"]}
 			textType="title"
 			className="w-100"
 			useSvg={true}
 		/>
 		<div className="text-center">
-			{STRINGS.REQUEST_RESET_PASSWORD_SUCCESS.TEXT}
+			{STRINGS["REQUEST_RESET_PASSWORD_SUCCESS.TEXT"]}
 		</div>
 		<div className="button-margin d-flex">
 			<Button label={STRINGS.LOGIN_TEXT} onClick={onLoginClick} />

@@ -33,7 +33,7 @@ const generateHeaders = (pairData = {}, onCancel) => [
 			return (
 				<td key={index} className={classnames('cell_box-type')}>
 					<div className={classnames(side)}>
-						{STRINGS.SIDES_VALUES[side]}
+						{STRINGS[`SIDES_VALUES.${side}`]}
 					</div>
 				</td>
 			);

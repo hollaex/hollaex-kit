@@ -222,7 +222,7 @@ class AddTradeTab extends Component {
                 : null
               }
 							<span className="trade_tabs-link link-separator">
-							<Link to="/account">{STRINGS.ACCOUNTS.TITLE}</Link>
+							<Link to="/account">{STRINGS["ACCOUNTS.TITLE"]}</Link>
 						</span>
 							<span className="trade_tabs-link">
 							<Link to="/wallet">{STRINGS.WALLET_TITLE}</Link>

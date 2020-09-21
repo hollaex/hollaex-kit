@@ -41,7 +41,7 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPl
 				{enabledPlugins.includes('chat')
 					? <SidebarButton
 						path={`/chat`}
-						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
+						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
 						iconPath={ICONS.CHAT}
 						active={activePath === 'chat'}
 					/>

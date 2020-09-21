@@ -94,7 +94,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 				return (
 					<td key={index} className={classnames('cell_box-type')}>
 						<div className={classnames(side)}>
-							{STRINGS.SIDES_VALUES[side]}
+							{STRINGS[`SIDES_VALUES.${side}`]}
 						</div>
 					</td>
 				);

@@ -227,7 +227,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 											className="blue-link pointer"
 										>
 											{' '}
-											{STRINGS.FOOTER.CLICK_HERE}{' '}
+											{STRINGS["FOOTER.CLICK_HERE"]}{' '}
 										</a>,
 										<a
 											href={'https://bitholla.com/hollaex-kit/'}
@@ -235,7 +235,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 											rel="noopener noreferrer"
 											className="blue-link pointer"
 										>
-											{STRINGS.FOOTER.VISIT_HERE}
+											{STRINGS["FOOTER.VISIT_HERE"]}
 										</a>
 									)} */}
 								</div>
@@ -247,7 +247,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 			<div className={classnames('footer-row-bottom')}>
 				<div className="d-flex my-2" />
 				<div>
-					{STRINGS.FOOTER.FOOTER_COPYRIGHT}
+					{STRINGS["FOOTER.FOOTER_COPYRIGHT"]}
 				</div>
 			</div>
 		</div>

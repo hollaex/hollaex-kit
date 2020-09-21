@@ -115,7 +115,7 @@ export const PORSection = () => (
 		}
 		importantContent={
 			<div className="id-warning">
-				{STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.POR.WARNING}
+				{STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.POR.WARNING"]}
 			</div>
 		}
 	/>

@@ -81,7 +81,7 @@ const MarketCards = ({ page, pageSize, count, handleClick, goToPreviousPage, goT
                         {`(${priceDifferencePercent})`}
                       </div>
                     </div>
-                    <div>{`${STRINGS.CHART_TEXTS.v}: ${
+                    <div>{`${STRINGS["CHART_TEXTS.v"]}: ${
                       ticker.volume
                       } ${symbol.toUpperCase()}`}</div>
                   </div>

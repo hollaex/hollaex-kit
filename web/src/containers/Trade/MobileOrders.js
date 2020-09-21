@@ -64,7 +64,7 @@ const MobileOrders = ({
 			active={true}
 			action={ isLoggedIn ? 
 				<ActionNotification
-					text={STRINGS.TRANSACTION_HISTORY.TITLE}
+					text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
 					iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 					onClick={goToTransactionsHistory}
 					status=""

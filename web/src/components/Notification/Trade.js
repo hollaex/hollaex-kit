@@ -24,14 +24,14 @@ export const getTitleAndIcon = (side, type) => {
 		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
-			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,
+			<span className="text-capitalize">{STRINGS[`TYPES_VALUES.${type}`]}</span>,
 			STRINGS.SIDES_VALUES[SIDE_BUY]
 		);
 	} else if (side === SIDE_SELL) {
 		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
-			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,
+			<span className="text-capitalize">{STRINGS[`TYPES_VALUES.${type}`]}</span>,
 			STRINGS.SIDES_VALUES[SIDE_SELL]
 		);
 	}

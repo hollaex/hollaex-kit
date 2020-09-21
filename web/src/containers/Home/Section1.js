@@ -23,11 +23,11 @@ const Section1 = ({
 	>
 		<div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
 			<div className="home-title text-capitalize">
-				{STRINGS.HOME.SECTION_1_TITLE}
+				{STRINGS["HOME.SECTION_1_TITLE"]}
 			</div>
 			<div className="text-section text-center">
-				<div>{STRINGS.HOME.SECTION_1_TEXT_1}</div>
-				<div>{STRINGS.HOME.SECTION_1_TEXT_2}</div>
+				<div>{STRINGS["HOME.SECTION_1_TEXT_1"]}</div>
+				<div>{STRINGS["HOME.SECTION_1_TEXT_2"]}</div>
 			</div>
 			<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
 				<div
@@ -36,7 +36,7 @@ const Section1 = ({
 					})}
 					onClick={onClickLearnMore}
 				>
-					{STRINGS.HOME.SECTION_1_BUTTON_1}
+					{STRINGS["HOME.SECTION_1_BUTTON_1"]}
 				</div>
 				{/*!token && (
 					<div

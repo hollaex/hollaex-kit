@@ -59,7 +59,7 @@ const TraderAccounts = ({
                     <span
                         className="pointer"
                         onClick={() => onFeesAndLimits(account)}>
-                        {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+                        {STRINGS["SUMMARY.VIEW_FEE_STRUCTURE"].toUpperCase()}
                     </span>
                 </div>} */}
 				{!isAccountDetails && (
@@ -77,7 +77,7 @@ const TraderAccounts = ({
 								className="pointer"
 								onClick={() => onFeesAndLimits(level, user.discount)}
 							>
-								{STRINGS.SUMMARY.MY_FEES_LIMITS.toUpperCase()}
+								{STRINGS["SUMMARY.MY_FEES_LIMITS"].toUpperCase()}
 							</span>
 						</div>
 					</Fragment>
@@ -88,7 +88,7 @@ const TraderAccounts = ({
 							className="pointer"
 							onClick={() => onFeesAndLimits(level, user.discount)}
 						>
-							{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+							{STRINGS["SUMMARY.VIEW_FEE_STRUCTURE"].toUpperCase()}
 						</span>
 					</div>
 				) : null}
@@ -98,7 +98,7 @@ const TraderAccounts = ({
 					verification_level.level < 4 && (
 						<div className="trade-account-link mb-2">
 							<span className="pointer" onClick={onUpgradeAccount}>
-								{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
+								{STRINGS["SUMMARY.UPGRADE_ACCOUNT"].toUpperCase()}
 							</span>
 						</div>
 					)}

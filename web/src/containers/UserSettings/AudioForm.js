@@ -126,7 +126,7 @@ class AudioCueForm extends Component {
             description: 'This is the description',
             content: (
                 <div>
-                    <p>{STRINGS.USER_SETTINGS.DESC_AUDIO_CUE}</p>
+                    <p>{STRINGS["USER_SETTINGS.DESC_AUDIO_CUE"]}</p>
                     <Form {...this.props} callback={this.callback} formFields={this.state.formFields} />
                 </div>
             ),

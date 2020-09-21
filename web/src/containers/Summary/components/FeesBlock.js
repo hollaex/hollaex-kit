@@ -51,7 +51,7 @@ const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 // 	return (
 // 		<tr key={`${index}_1`}>
 // 			<td className="account-limits-taker account-limits-status">
-// 				{STRINGS.SUMMARY.TAKER}:
+// 				{STRINGS["SUMMARY.TAKER"]}:
 // 			</td>
 // 			<td className="account-limits-taker account-limits-value">
 // 				{formatPercentage(feeData)}
@@ -76,13 +76,13 @@ const FeesBlock = ({ pairs, coins, level, discount }) => {
 				<thead>
 					<tr>
 						<th className="content-title limit-head-currency" colSpan={3}>
-							{STRINGS.SUMMARY.TRADING_FEE_STRUCTURE}
+							{STRINGS["SUMMARY.TRADING_FEE_STRUCTURE"]}
 						</th>
 					</tr>
 					<tr>
 						<th className="limit-head-currency">{STRINGS.CURRENCY}</th>
-						<th className="limit-head-currency">{STRINGS.SUMMARY.MAKER}</th>
-						<th className="limit-head-currency">{STRINGS.SUMMARY.TAKER}</th>
+						<th className="limit-head-currency">{STRINGS["SUMMARY.MAKER"]}</th>
+						<th className="limit-head-currency">{STRINGS["SUMMARY.TAKER"]}</th>
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">

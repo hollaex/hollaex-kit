@@ -13,7 +13,7 @@ const LogoutConfirmation = ({ onClose, onConfirm, ...rest }) => {
 				<Button label={STRINGS.BACK_TEXT} onClick={onClose} />
 				<div className="mx-2" />
 				<Button
-					label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
+					label={STRINGS["NOTIFICATIONS.BUTTONS.OKAY"]}
 					onClick={onConfirm}
 				/>
 			</div>

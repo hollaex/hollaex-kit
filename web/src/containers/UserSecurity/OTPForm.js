@@ -22,7 +22,7 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 				{error && <div className="warning_text">{error}</div>}
 			</div>
 			<Button
-				label={STRINGS.ACCOUNT_SECURITY.OTP.FORM.BUTTON}
+				label={STRINGS["ACCOUNT_SECURITY.OTP.FORM.BUTTON"]}
 				className="mb-5"
 				disabled={pristine || submitting || !valid}
 			/>

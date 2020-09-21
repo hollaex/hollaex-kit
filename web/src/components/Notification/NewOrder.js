@@ -23,8 +23,8 @@ const generateRows = ({ order, pairData }, coins) => {
 			<div className="text-capitalize">
 				{STRINGS.formatString(
 					STRINGS.CHECK_ORDER_TYPE,
-					STRINGS.TYPES_VALUES[type],
-					STRINGS.SIDES_VALUES[side]
+					STRINGS[`TYPES_VALUES.${type}`],
+					STRINGS[`SIDES_VALUES.${side}`]
 				)}
 			</div>
 		)

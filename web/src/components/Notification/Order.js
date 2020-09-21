@@ -36,7 +36,7 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 					: ICONS.TRADE_PARTIALLY_FILLED;
 			data.title = STRINGS.formatString(
 				STRINGS.ORDER_TITLE_PARTIALLY_FILLED,
-				<span className="text-capitalize">{STRINGS.SIDES_VALUES[side]}</span>
+				<span className="text-capitalize">{STRINGS[`SIDES_VALUES.${side}`]}</span>
 			);
 		}
 	} else if (type === 'order_filled' || type === 'order_partialy_filled') {
@@ -46,7 +46,7 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 				: ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_FULLY_FILLED,
-			<span className="text-capitalize">{STRINGS.SIDES_VALUES[side]}</span>
+			<span className="text-capitalize">{STRINGS[`SIDES_VALUES.${side}`]}</span>
 		);
 	}
 

@@ -192,13 +192,13 @@ class DocumentsVerification extends Component {
 		const { formFields } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS.USER_VERIFICATION.DOCUMENT_VERIFICATION} textType="title" />
+				<IconTitle text={STRINGS["USER_VERIFICATION.DOCUMENT_VERIFICATION"]} textType="title" />
 				<form
 					className="d-flex flex-column w-100 verification_content-form-wrapper"
 					onSubmit={this.handleSubmit}
 				>
 					<HeaderSection
-						title={STRINGS.USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION}
+						title={STRINGS["USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"]}
 						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
 						openContactForm={openContactForm}
 					>
@@ -250,7 +250,7 @@ class DocumentsVerification extends Component {
 							<Button
 								type="button"
 								onClick={this.onGoBack}
-								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								disabled={submitting}
 							/>
 						</div>
@@ -263,7 +263,7 @@ class DocumentsVerification extends Component {
 								disabled={pristine || submitting || !valid || !!error}
 							/>
 							{idData.status !== 0 &&
-								<span className="content-text">{STRINGS.USER_VERIFICATION.SUBMISSION_PENDING_TXT}</span>
+								<span className="content-text">{STRINGS["USER_VERIFICATION.SUBMISSION_PENDING_TXT"]}</span>
 							}
 						</div>
 					</div>

@@ -23,9 +23,9 @@ let errorTimeOut = null;
 
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
-		{STRINGS.LOGIN.NO_ACCOUNT}
+		{STRINGS["LOGIN.NO_ACCOUNT"]}
 		<Link to="/signup" className={classnames('blue-link')}>
-			{STRINGS.LOGIN.CREATE_ACCOUNT}
+			{STRINGS["LOGIN.CREATE_ACCOUNT"]}
 		</Link>
 	</div>
 );
@@ -238,7 +238,7 @@ class Login extends Component {
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
-							STRINGS.LOGIN.LOGIN_TO,
+							STRINGS["LOGIN.LOGIN_TO"],
 							constants.api_name || ''
 						)}
 						actionProps={{

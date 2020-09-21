@@ -51,7 +51,7 @@ const Form = ({
 		{renderFields(formFields)}
 		{error && <div className="warning_text">{error}</div>}
 		<Button
-			label={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON}
+			label={STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON"]}
 			disabled={pristine || submitting || !valid}
 		/>
 	</form>

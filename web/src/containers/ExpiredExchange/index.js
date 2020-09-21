@@ -83,7 +83,7 @@ class Expired extends Component {
 						className="blue-link pointer"
 						onClick={() => this.props.logout('Exchange expired')}
 					>
-						{STRINGS.SIGN_UP.GOTO_LOGIN}
+						{STRINGS["SIGN_UP.GOTO_LOGIN"]}
 					</div>
 				</div>
 			</div>

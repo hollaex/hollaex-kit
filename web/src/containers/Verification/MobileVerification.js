@@ -189,20 +189,20 @@ class MobileVerification extends Component {
 		const { formFields, codeRequested, isTimer } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS.USER_VERIFICATION.PHONE_VERIFICATION} textType="title" />
+				<IconTitle text={STRINGS["USER_VERIFICATION.PHONE_VERIFICATION"]} textType="title" />
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
-						title={STRINGS.USER_VERIFICATION.PHONE_DETAILS}
+						title={STRINGS["USER_VERIFICATION.PHONE_DETAILS"]}
 						openContactForm={openContactForm}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 					>
-						<div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT}</div>
-						<div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1}</div>
-						<div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2}</div>
+						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT"]}</div>
+						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1"]}</div>
+						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2"]}</div>
 					</HeaderSection>
 					{renderFields(formFields)}
 					<ElapsedTimer
-						timerText={STRINGS.USER_VERIFICATION.CODE_EXPIRES_IN}
+						timerText={STRINGS["USER_VERIFICATION.CODE_EXPIRES_IN"]}
 						isLoading={isTimer}
 						timeoutCallback={this.onClearTimer} />
 					{error && (
@@ -211,7 +211,7 @@ class MobileVerification extends Component {
 					<div className="d-flex">
 						<div className="w-50">
 							<Button
-								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
 							/>
 						</div>

@@ -42,7 +42,7 @@ class QuickTrade extends Component {
 				>
 					<ReactSVG path={ isMobile ? ICONS.SIDEBAR_QUICK_TRADING_INACTIVE: ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
 					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
-						{STRINGS.QUICK_TRADE_COMPONENT.TITLE}
+						{STRINGS["QUICK_TRADE_COMPONENT.TITLE"]}
 					</div>
 				</div>
 				<InputGroup
@@ -74,7 +74,7 @@ class QuickTrade extends Component {
 					)}
 				>
 					<Button
-						label={STRINGS.QUICK_TRADE_COMPONENT.BUTTON}
+						label={STRINGS["QUICK_TRADE_COMPONENT.BUTTON"]}
 						onClick={onReviewQuickTrade}
 						disabled={disabled}
 						type="button"

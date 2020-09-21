@@ -13,7 +13,7 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	return (
 		<div>
 			{STRINGS.formatString(
-				STRINGS.WALLET.HOLD_ORDERS,
+				STRINGS["WALLET.HOLD_ORDERS"],
 				ordersOfSymbol,
 				ordersText,
 				hold,
@@ -47,7 +47,7 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 		<div className="wallet_section-content-wrapper">
 			<div className="wallet_section-content d-flex flex-column">
 				<div className="d-flex flex-column">
-					<div>{STRINGS.WALLET.TOTAL_ASSETS}:</div>
+					<div>{STRINGS["WALLET.TOTAL_ASSETS"]}:</div>
 					<div>
 						{STRINGS.formatString(
 							amountFormat,
@@ -65,7 +65,7 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 					/>
 				)}
 				<div className="d-flex flex-column">
-					<div>{STRINGS.WALLET.AVAILABLE_WITHDRAWAL}:</div>
+					<div>{STRINGS["WALLET.AVAILABLE_WITHDRAWAL"]}:</div>
 					<div>
 						{STRINGS.formatString(
 							amountFormat,

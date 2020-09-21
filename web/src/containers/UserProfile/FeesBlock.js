@@ -17,7 +17,7 @@ const FeeRow = ({ data = {}, headers = [], isUserLevel = false, row }) => {
 				</div>
 			</td>
 			<td className="td-name td-amount">
-				{STRINGS.LEVELS[`LABEL_LEVEL_${verification_level}`]}
+				{STRINGS[`LEVELS.LABEL_LEVEL_${verification_level}]`]}
 			</td>
 			{headers.map((headerKey, index) => (
 				<td className="td-name td-amount" key={`row-${index}-${row}`}>

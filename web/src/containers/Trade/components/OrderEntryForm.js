@@ -70,7 +70,7 @@ const Form = ({
 					onClick={onReview}
 					label={STRINGS.formatString(
 						STRINGS.ORDER_ENTRY_BUTTON,
-						STRINGS.SIDES_VALUES[side] || '',
+						STRINGS[`SIDES_VALUES.${side}`] || '',
 						currencyName
 					).join(' ')}
 					disabled={submitting || !valid || !!errorText || !isLoggedIn()}

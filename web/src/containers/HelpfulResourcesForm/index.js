@@ -94,7 +94,7 @@ class HelpfulResourcesForm extends Component {
 					<div className='w-100 buttons-wrapper d-flex' >
 						<Button label={STRINGS.BACK_TEXT} onClick={onClose}/>
 						<div className='separator' />
-						<Button label={STRINGS.REQUEST_RESET_PASSWORD.SUPPORT} onClick={this.openNewForm}/>
+						<Button label={STRINGS["REQUEST_RESET_PASSWORD.SUPPORT"]} onClick={this.openNewForm}/>
 					</div>
 				</div>
 			</div>

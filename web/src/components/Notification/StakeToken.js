@@ -8,7 +8,7 @@ const StakeToken = ({ onBack }) => {
     return (
         <div className='invite_friends_wrapper'>
             <IconTitle
-                text={STRINGS.STAKE_TOKEN.TITLE}
+                text={STRINGS["STAKE_TOKEN.TITLE"]}
                 iconPath={ICONS.STAKETOKEN_ICON}
                 textType="title"
                 useSvg={true}
@@ -16,9 +16,9 @@ const StakeToken = ({ onBack }) => {
             />
             <div>
                 <div className='my-2 stake_txt'>
-                    <div className="mt-3">{STRINGS.STAKE_TOKEN.INFO_TXT1}</div>
-                    <div className="mt-3">{STRINGS.STAKE_TOKEN.INFO_TXT2}</div>
-                    <div className="mt-3">{STRINGS.STAKE_TOKEN.INFO_TXT3}</div>
+                    <div className="mt-3">{STRINGS["STAKE_TOKEN.INFO_TXT1"]}</div>
+                    <div className="mt-3">{STRINGS["STAKE_TOKEN.INFO_TXT2"]}</div>
+                    <div className="mt-3">{STRINGS["STAKE_TOKEN.INFO_TXT3"]}</div>
                 </div>
                 <div className="d-flex my-5 mt-5">
                     <Button
@@ -31,7 +31,7 @@ const StakeToken = ({ onBack }) => {
                         href="https://info.hollaex.com/hc/en-us/articles/360040097453-How-can-I-stake-collateralize-HollaEx-Token-XHT"
                         target='blank'>
                         <Button
-                            label={STRINGS.STAKE_TOKEN.BUTTON_TXT}
+                            label={STRINGS["STAKE_TOKEN.BUTTON_TXT"]}
                             onClick={() => { }}
                         />
                     </a>

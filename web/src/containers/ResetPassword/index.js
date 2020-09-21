@@ -79,11 +79,11 @@ class ResetPassword extends Component {
 				>
 					<IconTitle
 						iconPath={ICONS.SET_NEW_PASSWORD}
-						text={STRINGS.RESET_PASSWORD.TITLE}
+						text={STRINGS["RESET_PASSWORD.TITLE"]}
 						textType="title"
 						underline={true}
 						className="w-100"
-						subtitle={STRINGS.RESET_PASSWORD.SUBTITLE}
+						subtitle={STRINGS["RESET_PASSWORD.SUBTITLE"]}
 						useSvg={true}
 						actionProps={{
 							text: STRINGS.HELP_TEXT,

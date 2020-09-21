@@ -61,12 +61,12 @@ const renderBTCContent = (
 					<div className="qr-code-bg d-flex justify-content-center align-items-center">
 						<QRCode value={address} />
 					</div>
-					<div className="qr-text">{STRINGS.DEPOSIT.QR_CODE}</div>
+					<div className="qr-text">{STRINGS["DEPOSIT.QR_CODE"]}</div>
 				</div>
 			</div>
 		</div>
 	) : (
-		<div>{STRINGS.DEPOSIT.NO_DATA}</div>
+		<div>{STRINGS["DEPOSIT.NO_DATA"]}</div>
 	);
 
 export const renderContent = (
@@ -84,10 +84,10 @@ export const renderContent = (
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
-		const additionalText = (symbol === 'xlm') ? STRINGS.DEPOSIT.CRYPTO_LABELS.MEMO : STRINGS.DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG;
+		const additionalText = (symbol === 'xlm') ? STRINGS["DEPOSIT.CRYPTO_LABELS.MEMO"] : STRINGS["DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG"];
 
 		return renderBTCContent(
-			STRINGS.formatString(STRINGS.DEPOSIT.CRYPTO_LABELS.ADDRESS, fullname),
+			STRINGS.formatString(STRINGS["DEPOSIT.CRYPTO_LABELS.ADDRESS"], fullname),
 			address,
 			onCopy,
 			true,
@@ -98,6 +98,6 @@ export const renderContent = (
 			)
 		);
 	} else {
-		return <div>{STRINGS.DEPOSIT.NO_DATA}</div>;
+		return <div>{STRINGS["DEPOSIT.NO_DATA"]}</div>;
 	}
 };

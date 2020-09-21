@@ -96,10 +96,10 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 						STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE
 					) : (
 						<Tooltip
-							text={STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE_TOOLTIP}
+							text={STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKE_TOOLTIP"]}
 							className="light-theme"
 						>
-							<div>{STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE}</div>
+							<div>{STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKE"]}</div>
 						</Tooltip>
 					)}
 				</td>

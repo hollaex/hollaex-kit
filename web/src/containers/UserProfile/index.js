@@ -108,7 +108,7 @@ class UserProfile extends Component {
 
 	renderGoToVerification = () => (
 		<InformationSection
-			onChangeText={STRINGS.USER_VERIFICATION.GOTO_VERIFICATION}
+			onChangeText={STRINGS["USER_VERIFICATION.GOTO_VERIFICATION"]}
 			onChangeValue={this.goToVerification}
 		/>
 	);

@@ -69,7 +69,7 @@ const WaveNotification = ({ type, data, coins, pairs, onBack, onConfirm }) => {
 
 	return (
 		<NotificationWraper
-			title={STRINGS.WAVES.TITLE}
+			title={STRINGS["WAVES.TITLE"]}
 			icon={ICONS.INCOMING_WAVE}
 			className="new-order-notification"
 		>

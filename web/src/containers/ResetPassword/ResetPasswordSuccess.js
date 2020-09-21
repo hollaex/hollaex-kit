@@ -14,9 +14,9 @@ const ResetPasswordSuccess = ({ onClick, ...rest }) => {
 				useSvg={true}
 			/>
 			<div className="text-center">
-				{STRINGS.RESET_PASSWORD_SUCCESS.TEXT_1}
+				{STRINGS["RESET_PASSWORD_SUCCESS.TEXT_1"]}
 				<br />
-				{STRINGS.RESET_PASSWORD_SUCCESS.TEXT_2}
+				{STRINGS["RESET_PASSWORD_SUCCESS.TEXT_2"]}
 			</div>
 			<Button
 				label={STRINGS.LOGIN_TEXT}

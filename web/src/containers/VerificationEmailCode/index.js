@@ -67,8 +67,8 @@ class VerifyEmailCode extends Component {
 				},
 				child: (
 					<div className="text-center w-100">
-						<div>{STRINGS.VERIFICATION_EMAIL.TEXT_1}</div>
-						<div>{STRINGS.VERIFICATION_EMAIL.TEXT_2}</div>
+						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_1"]}</div>
+						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_2"]}</div>
 						<Button
 							label={STRINGS.LOGIN_TEXT}
 							className="button-margin"

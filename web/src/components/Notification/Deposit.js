@@ -52,7 +52,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 				/>
 			</div>
 			<div className="notification-buttons-wrapper d-flex">
-				<Button label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY} onClick={onClose} />
+				<Button label={STRINGS["NOTIFICATIONS.BUTTONS.OKAY"]} onClick={onClose} />
 				{/* <div className="separator" />
 				<Button
 					className={classnames(

@@ -16,7 +16,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
 			<IconTitle
 				text={
 					<label>{STRINGS.formatString(
-						STRINGS.SUMMARY.FEES_AND_LIMIT,
+						STRINGS["SUMMARY.FEES_AND_LIMIT"],
 						LEVEL_OF_ACCOUNT
 					)} {Discount_percentage}
 					</label>
@@ -30,9 +30,9 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
 			/>
 			<div className="content-txt">
 				<div className="my-3">
-					<div>{STRINGS.SUMMARY.FEES_AND_LIMIT_TXT_1}</div>
+					<div>{STRINGS["SUMMARY.FEES_AND_LIMIT_TXT_1"]}</div>
 					<div className="mt-3">
-						{STRINGS.SUMMARY.FEES_AND_LIMIT_TXT_2}				
+						{STRINGS["SUMMARY.FEES_AND_LIMIT_TXT_2"]}				
 					</div>
 				</div>
 				<div>

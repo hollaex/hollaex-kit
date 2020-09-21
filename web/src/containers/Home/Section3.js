@@ -73,7 +73,7 @@ const Section = ({ style, onClickDemo, token }) => (
 		style={style}
 	>
 		<div className="text-center features-title">
-			{STRINGS.HOME.SECTION_3_TITLE}
+			{STRINGS["HOME.SECTION_3_TITLE"]}
 		</div>
 		<div className="features-card_container d-flex flex-wrap justify-content-center">
 			{generateCardsContentFromStrings(STRINGS).map((card, index) => (
@@ -86,7 +86,7 @@ const Section = ({ style, onClickDemo, token }) => (
 					className={classnames(...BUTTONS_CLASSES, { pointer: onClickDemo })}
 					onClick={onClickDemo}
 				>
-					{STRINGS.HOME.SECTION_3_BUTTON_1}
+					{STRINGS["HOME.SECTION_3_BUTTON_1"]}
 				</div>
 			}
 			{/*!token && (

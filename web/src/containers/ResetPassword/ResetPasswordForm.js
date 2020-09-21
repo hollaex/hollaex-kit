@@ -36,7 +36,7 @@ const Form = (props) => (
 	<AuthForm
 		{...props}
 		formFields={generateFormFields()}
-		buttonLabel={STRINGS.RESET_PASSWORD.BUTTON}
+		buttonLabel={STRINGS["RESET_PASSWORD.BUTTON"]}
 	/>
 );
 

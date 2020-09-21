@@ -193,11 +193,11 @@ class TradingVolume extends Component {
 					<div className="summary-content-txt">
 						<div>
 							{STRINGS.formatString(
-								STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
+								STRINGS["SUMMARY.TRADING_VOLUME_TXT_1"],
 								fullname
 							)}
 						</div>
-						<div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
+						<div>{STRINGS["SUMMARY.TRADING_VOLUME_TXT_2"]}</div>
 					</div>
 					<BarChart
 						loading={tradeVolumes.fetching && !tradeVolumes.fetched}

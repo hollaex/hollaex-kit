@@ -32,7 +32,7 @@ class InviteFriends extends Component {
         return (
             <div className='invite_friends_wrapper mx-auto'>
                 <IconTitle
-                    text={STRINGS.REFERRAL_LINK.TITLE}
+                    text={STRINGS["REFERRAL_LINK.TITLE"]}
                     iconPath={ICONS.REFER_ICON}
                     textType="title"
                     useSvg={true}
@@ -40,11 +40,11 @@ class InviteFriends extends Component {
                 />
                 <div>
                     <div className='my-2'>
-                        <div>{STRINGS.REFERRAL_LINK.INFO_TEXT}</div>
+                        <div>{STRINGS["REFERRAL_LINK.INFO_TEXT"]}</div>
                     </div>
                     <div className='my-4'>
                         <RenderDumbField
-                            label={STRINGS.REFERRAL_LINK.COPY_FIELD_LABEL}
+                            label={STRINGS["REFERRAL_LINK.COPY_FIELD_LABEL"]}
                             value={referralLink}
                             fullWidth={true}
                             allowCopy={true}
@@ -55,7 +55,7 @@ class InviteFriends extends Component {
                     </div>
                     <div className="user_refer_info p-4 d-flex align-items-center">
                         {STRINGS.formatString(
-                            STRINGS.REFERRAL_LINK.REFERRED_USER_COUT,
+                            STRINGS["REFERRAL_LINK.REFERRED_USER_COUT"],
                             affiliationCount
                         )}
                     </div>

@@ -108,7 +108,7 @@ class RequestForm extends Component {
             <div className="contact_form-wrapper">
                 <IconTitle
                     iconPath={ICONS.XHT_COIN_STACK}
-                    text={STRINGS.REQUEST_XHT_ACCESS.REQUEST_TITLE}
+                    text={STRINGS["REQUEST_XHT_ACCESS.REQUEST_TITLE"]}
                     textType="title"
                     underline={true}
                     className="w-100"

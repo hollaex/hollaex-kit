@@ -183,7 +183,7 @@ class IdentityVerification extends Component {
 		const { formFields } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS.USER_VERIFICATION.IDENTITY_VERIFICATION} textType="title" />
+				<IconTitle text={STRINGS["USER_VERIFICATION.IDENTITY_VERIFICATION"]} textType="title" />
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
 						title={
@@ -193,7 +193,7 @@ class IdentityVerification extends Component {
 						icon={ICONS.VERIFICATION_ID_NEW}
 						openContactForm={openContactForm}
 					>
-						<div className="my-1 verification-info-txt">{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT}</div>
+						<div className="my-1 verification-info-txt">{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT"]}</div>
 					</HeaderSection>
 					{renderFields(formFields)}
 					{error && (
@@ -202,7 +202,7 @@ class IdentityVerification extends Component {
 					<div className="d-flex">
 						<div className="w-50">
 							<Button
-								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
 							/>
 						</div>

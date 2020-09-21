@@ -21,15 +21,15 @@ let errorTimeOut = null;
 const BottomLinks = () => (
 	<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
 		<div>
-			{STRINGS.SIGN_UP.HAVE_ACCOUNT}
+			{STRINGS["SIGN_UP.HAVE_ACCOUNT"]}
 			<Link to="/login" className="blue-link">
-				{STRINGS.SIGN_UP.GOTO_LOGIN}
+				{STRINGS["SIGN_UP.GOTO_LOGIN"]}
 			</Link>
 		</div>
 		<div>
-			{STRINGS.SIGN_UP.NO_EMAIL}
+			{STRINGS["SIGN_UP.NO_EMAIL"]}
 			<Link to="/verify" className="blue-link">
-				{STRINGS.SIGN_UP.REQUEST_EMAIL}
+				{STRINGS["SIGN_UP.REQUEST_EMAIL"]}
 			</Link>
 		</div>
 	</div>
@@ -159,7 +159,7 @@ class Signup extends Component {
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
-							STRINGS.SIGN_UP.SIGNUP_TO,
+							STRINGS["SIGN_UP.SIGNUP_TO"],
 							constants.api_name || ''
 						)}
 						actionProps={{

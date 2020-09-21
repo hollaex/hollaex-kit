@@ -30,7 +30,7 @@ export const generateHeaders = onAdjustPortfolio => {
 								percentage.popupWarning ? onAdjustPortfolio : () => { }
 							}
 						>
-							{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ADJUST}
+							{STRINGS["USER_SETTINGS.RISK_MANAGEMENT.ADJUST"]}
 						</span>
 					</span>
 				</td>
@@ -127,11 +127,11 @@ class RiskForm extends Component {
 				title: STRINGS.USER_SETTINGS.CREATE_ORDER_WARING,
 				content: (
 					<div>
-						<p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
+						<p>{STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT"]}</p>
 						{!IS_XHT
 							? <p>
 								{STRINGS.formatString(
-									STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1,
+									STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1"],
 									fullname,
 									totalAssets
 								).join("")}

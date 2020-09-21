@@ -60,13 +60,13 @@ class Form extends Component {
 		return (
 			<div className="otp_form-wrapper">
 				<IconTitle
-					text={STRINGS.OTP_FORM.OTP_TITLE}
+					text={STRINGS["OTP_FORM.OTP_TITLE"]}
 					iconPath={ICONS.OTP_CODE}
 					useSvg={true}
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">
-						{STRINGS.OTP_FORM.OTP_FORM_TITLE}
+						{STRINGS["OTP_FORM.OTP_FORM_TITLE"]}
 					</span>
 					{onClickHelp && (
 						<ActionNotification
@@ -84,7 +84,7 @@ class Form extends Component {
 						{error && <div className="warning_text">{error}</div>}
 					</div>
 					<Button
-						label={STRINGS.OTP_FORM.OTP_BUTTON}
+						label={STRINGS["OTP_FORM.OTP_BUTTON"]}
 						disabled={pristine || submitting || !valid}
 					/>
 				</form>

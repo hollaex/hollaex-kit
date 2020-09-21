@@ -41,9 +41,9 @@ class Home extends Component {
 								/>
 							</div>
 							<div className="text-center">
-								{STRINGS.SIGN_UP.HAVE_ACCOUNT}
+								{STRINGS["SIGN_UP.HAVE_ACCOUNT"]}
 								<Link to="/login" className="blue-link">
-									&nbsp;{STRINGS.SIGN_UP.GOTO_LOGIN}
+									&nbsp;{STRINGS["SIGN_UP.GOTO_LOGIN"]}
 								</Link>
 							</div>
 						</div>
@@ -63,7 +63,7 @@ class Home extends Component {
 										link={'/account'}
 										type="button"
 										className="market-button"
-										label={STRINGS.ACCOUNTS.TITLE}
+										label={STRINGS["ACCOUNTS.TITLE"]}
 									/>
 								</div>
 								<div className="w-50" >

@@ -37,7 +37,7 @@ const ReadMore = ({ onClick }) => (
 	<div className="d-inline">
 		<span>...</span>
 		<span className="toggle-content" onClick={onClick}>
-			<span>{STRINGS.CHAT.READ_MORE}</span>
+			<span>{STRINGS["CHAT.READ_MORE"]}</span>
 		</span>
 	</div>
 );

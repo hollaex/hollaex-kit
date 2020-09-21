@@ -33,7 +33,7 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 					/>
 					<Button
 						className="ml-2"
-						label={STRINGS.USER_VERIFICATION.GOTO_WALLET}
+						label={STRINGS["USER_VERIFICATION.GOTO_WALLET"]}
 						onClick={onConfirm}
 					/>
 				</footer>
@@ -61,7 +61,7 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 				<div className="quote-success-review-text">
 					{STRINGS.formatString(
 						STRINGS.QUOTE_SUCCESS_REVIEW_MESSAGE,
-						STRINGS.SIDES_VERBS[data.side],
+						STRINGS[`SIDES_VERBS.${data.side}`],
 						formatToCurrency(data.size, pairData.increment_size),
             pair_base,
 						formatToCurrency(data.price, pairData.increment_price),
@@ -76,7 +76,7 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 					/>
 					<Button
 						className="ml-2"
-						label={STRINGS.USER_VERIFICATION.GOTO_WALLET}
+						label={STRINGS["USER_VERIFICATION.GOTO_WALLET"]}
 						onClick={onConfirm} />
 				</footer>
 			</div>

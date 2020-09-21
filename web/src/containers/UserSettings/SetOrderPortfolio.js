@@ -40,7 +40,7 @@ const Form = ({
             <div className="d-flex mt-3">
                 <Button label={STRINGS.BACK_TEXT} onClick={onClose} />
                 <div className="mx-2"></div>
-                <Button label={STRINGS.USER_SETTINGS.SET_TXT} disabled={pristine || submitting || !valid} />
+                <Button label={STRINGS["USER_SETTINGS.SET_TXT"]} disabled={pristine || submitting || !valid} />
             </div>
         </form>
     );
@@ -56,13 +56,13 @@ const SetOrderPortfolio = ({ data, ...rest }) => {
     return (
         <div className="portfolio-wrapper">
             <IconTitle
-                text={STRINGS.USER_SETTINGS.CREATE_ORDER_WARING}
+                text={STRINGS["USER_SETTINGS.CREATE_ORDER_WARING"]}
                 iconPath={ICONS.SETTING_RISK_ADJUST_ICON}
                 textType="title"
                 useSvg={true}
                 underline={true}
             />
-            <div className="mt-1">{STRINGS.formatString(STRINGS.USER_SETTINGS.CREATE_ORDER_WARING_TEXT, portfolioPercent).join('')}</div>
+            <div className="mt-1">{STRINGS.formatString(STRINGS["USER_SETTINGS.CREATE_ORDER_WARING_TEXT"], portfolioPercent).join('')}</div>
             <OrderPortfolioForm {...data} {...rest} />
         </div>
     );

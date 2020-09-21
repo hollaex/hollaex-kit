@@ -97,19 +97,19 @@ class BankVerification extends Component {
 		const { formFields } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS.USER_VERIFICATION.BANK_VERIFICATION} textType="title" />
+				<IconTitle text={STRINGS["USER_VERIFICATION.BANK_VERIFICATION"]} textType="title" />
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT}
+						title={STRINGS["USER_VERIFICATION.TITLE_BANK_ACCOUNT"]}
 						icon={icon}
 						openContactForm={openContactForm}
 					>
-					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_1}</div>
-					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_2}</div>
+					<div className="my-2">{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_1"]}</div>
+					<div className="my-2">{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_2"]}</div>
 					<ul className="pl-4">
-						<li className="my-1">{STRINGS.USER_VERIFICATION.BASE_WITHDRAWAL}</li>
-						<li className="my-1">{STRINGS.USER_VERIFICATION.BASE_DEPOSITS}</li>
-						<li className="my-1">{STRINGS.USER_VERIFICATION.WARNING.LIST_ITEM_3}</li>
+						<li className="my-1">{STRINGS["USER_VERIFICATION.BASE_WITHDRAWAL"]}</li>
+						<li className="my-1">{STRINGS["USER_VERIFICATION.BASE_DEPOSITS"]}</li>
+						<li className="my-1">{STRINGS["USER_VERIFICATION.WARNING.LIST_ITEM_3"]}</li>
 					</ul>
 					</HeaderSection>
 					{renderFields(formFields)}
@@ -119,7 +119,7 @@ class BankVerification extends Component {
 					<div className="d-flex">
 						<div className="w-50">
 							<Button 
-								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
 							/>
 						</div>

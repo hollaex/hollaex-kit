@@ -25,7 +25,7 @@ export const generateFormFields = () => ({
 const Form = (props) => (
 	<AuthForm
 		{...props}
-		buttonLabel={STRINGS.VERIFICATION_EMAIL_REQUEST.BUTTON}
+		buttonLabel={STRINGS["VERIFICATION_EMAIL_REQUEST.BUTTON"]}
 	/>
 );
 

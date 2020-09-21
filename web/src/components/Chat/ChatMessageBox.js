@@ -24,7 +24,7 @@ export const ChatMessageBox = ({
 			rows="1"
 			maxLength={MAX_LENGTH}
 			className="chat-message-box"
-			placeholder={STRINGS.CHAT.CHAT_MESSAGE_BOX_PLACEHOLDER}
+			placeholder={STRINGS["CHAT.CHAT_MESSAGE_BOX_PLACEHOLDER"]}
 			onKeyPress={sendMessage}
 		/>
 		<div

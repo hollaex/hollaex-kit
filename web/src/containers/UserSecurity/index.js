@@ -80,11 +80,11 @@ class UserVerification extends Component {
 						{/*otp_enabled && (
 							<div className="d-flex flex-column">
 								<CheckboxButton
-									label={STRINGS.ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_1}
+									label={STRINGS["ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_1"]}
 									checked={true}
 								/>
 								<CheckboxButton
-									label={STRINGS.ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_2}
+									label={STRINGS["ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_2"]}
 									checked={true}
 								/>
 							</div>
@@ -270,7 +270,7 @@ class UserVerification extends Component {
 			<div>
 				{!isMobile && (
 					<IconTitle
-						text={STRINGS.ACCOUNTS.TAB_SECURITY}
+						text={STRINGS["ACCOUNTS.TAB_SECURITY"]}
 						textType="title"
 					/>
 				)}

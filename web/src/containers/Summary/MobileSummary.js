@@ -69,7 +69,7 @@ const MobileSummary = ({
 			</div>*/}
 			{/*<div className="summary-section_1 requirement-wrapper d-flex w-100">
 				<SummaryBlock
-					title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
+					title={STRINGS["SUMMARY.URGENT_REQUIREMENTS"]}
 					wrapperClassname="w-100"
 				>
 					<RewardsBonus
@@ -85,7 +85,7 @@ const MobileSummary = ({
 			</div> */}
 			<div className="assets-wrapper w-100">
 				<SummaryBlock
-					title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
+					title={STRINGS["SUMMARY.ACCOUNT_ASSETS"]}
 					secondaryTitle={
 						SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (
 							<span>
@@ -121,7 +121,7 @@ const MobileSummary = ({
 									{` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
 								</span>
 								{` ${fullname} ${STRINGS.formatString(
-									STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH,
+									STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"],
 									moment()
 										.subtract(1, 'month')
 										.startOf('month')
@@ -139,7 +139,7 @@ const MobileSummary = ({
 				</SummaryBlock>
 			</div>*/}
 			{/*<SummaryBlock
-				title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
+				title={STRINGS["SUMMARY.ACCOUNT_DETAILS"]}
 				secondaryTitle={traderAccTitle}
 				wrapperClassname="w-100"
 			>

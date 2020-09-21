@@ -37,9 +37,9 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 	return (
 		<div className="summary-section_2">
 			<div className="summary-content-txt assets-description">
-				<div>{STRINGS.SUMMARY.ACCOUNT_ASSETS_TXT_1}</div>
+				<div>{STRINGS["SUMMARY.ACCOUNT_ASSETS_TXT_1"]}</div>
 				{SHOW_SUMMARY_ACCOUNT_DETAILS
-					? <div>{STRINGS.SUMMARY.ACCOUNT_ASSETS_TXT_2}</div>
+					? <div>{STRINGS["SUMMARY.ACCOUNT_ASSETS_TXT_2"]}</div>
 					: null
 				}
 			</div>

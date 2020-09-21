@@ -18,7 +18,7 @@ export const generateBaseInformation = (currency, limits = {}) => {
 	const { currencySymbol, shortName, formatToCurrency } = currency;
 	return (
 		<div className="text">
-			<p>{STRINGS.WITHDRAW_PAGE.BASE_MESSAGE_1}</p>
+			<p>{STRINGS["WITHDRAW_PAGE.BASE_MESSAGE_1"]}</p>
 			<p>{`${
 				STRINGS.WITHDRAW_PAGE.BASE_MESSAGE_2
 			}: ${currencySymbol}${formatToCurrency(minAmount)} ${shortName}`}</p>

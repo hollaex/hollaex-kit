@@ -126,7 +126,7 @@ class Wallet extends Component {
 						|| !(Object.keys(prices).length)
 						|| !chartData.length
 						|| fetching)
-						? <div className="text-center mt-3">{STRINGS.WALLET.LOADING_ASSETS}</div>
+						? <div className="text-center mt-3">{STRINGS["WALLET.LOADING_ASSETS"]}</div>
 						: <DonutChart id="side-bar-donut" coins={coins} chartData={chartData} />
 					}
 				</div>
@@ -145,7 +145,7 @@ class Wallet extends Component {
 				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
-							{STRINGS.WALLET.TOTAL_ASSETS}
+							{STRINGS["WALLET.TOTAL_ASSETS"]}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
 							{symbol.toUpperCase()}

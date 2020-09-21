@@ -186,7 +186,7 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
-				props.title = `${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
+				props.title = `${STRINGS["TRANSACTION_HISTORY.TITLE_TRADES"]}`;
 				props.headers = headers.trades;
 				props.data = trades;
 				props.filename = `trade-history-${moment().unix()}`;
@@ -240,7 +240,7 @@ class TransactionsHistory extends Component {
 			>
 				{!isMobile && (
 					<IconTitle
-						text={STRINGS.TRANSACTION_HISTORY.TITLE}
+						text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
 						iconPath={ICONS.TRANSACTION_HISTORY}
 						textType="title"
 						useSvg={true}
@@ -253,7 +253,7 @@ class TransactionsHistory extends Component {
 								STRINGS.TRANSACTION_HISTORY.TRADES
 							) : (
 									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.TRADES}
+										title={STRINGS["TRANSACTION_HISTORY.TRADES"]}
 										icon={ICONS.TRADE_HISTORY}
 									/>
 								)
@@ -263,7 +263,7 @@ class TransactionsHistory extends Component {
 								STRINGS.TRANSACTION_HISTORY.DEPOSITS
 							) : (
 									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
+										title={STRINGS["TRANSACTION_HISTORY.DEPOSITS"]}
 										icon={ICONS.DEPOSIT_HISTORY}
 									/>
 								)
@@ -273,7 +273,7 @@ class TransactionsHistory extends Component {
 								STRINGS.TRANSACTION_HISTORY.WITHDRAWALS
 							) : (
 									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
+										title={STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]}
 										icon={ICONS.WITHDRAW_HISTORY}
 									/>
 								)
