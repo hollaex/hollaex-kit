@@ -924,7 +924,7 @@ const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, 
 	const ordering = orderingQuery(orderBy, order);
 	let options = {
 		where: {
-			created_at: timeframe
+			timestamp: timeframe
 		},
 		order: [ordering]
 	};
