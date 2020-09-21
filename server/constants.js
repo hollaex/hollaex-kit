@@ -198,7 +198,7 @@ const updateFrozenUser = (action, userId) => {
 };
 
 const setRedisData = () => {
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+	client.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
 exports.GET_COINS = () => configuration.coins;
