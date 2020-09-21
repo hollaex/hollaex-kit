@@ -950,25 +950,41 @@ const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, 
 		});
 };
 
-const getTransactions = (type, kitId, currency, limit, page, orderBy, order, startDate, endDate, format) => {
+const getTransactions = (
+	type,
+	kitId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+	format
+) => {
 	let promiseQuery;
 	if (kitId) {
 		if (type === 'deposit') {
 			promiseQuery = getUserByKitId(kitId, false)
 				.then((user) => {
-					return getNodeLib().getAllDepositNetwork(user.network_id, currency, limit, page, orderBy, order, startDate, endDate);
+					return getNodeLib().getAllDepositNetwork(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 				});
 		} else if (type === 'withdrawal') {
 			promiseQuery = getUserByKitId(kitId, false)
 				.then((user) => {
-					return getNodeLib().getAllWithdrawalNetwork(user.network_id, currency, limit, page, orderBy, order, startDate, endDate);
+					return getNodeLib().getAllWithdrawalNetwork(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 				});
 		}
 	} else {
 		if (type === 'deposit') {
-			promiseQuery = getNodeLib().getAllDepositNetwork(undefined, currency, limit, page, orderBy, order, startDate, endDate);
+			promiseQuery = getNodeLib().getAllDepositNetwork(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 		} else if (type === 'withdrawal') {
-			promiseQuery = getNodeLib().getAllWithdrawalNetwork(undefined, currency, limit, page, orderBy, order, startDate, endDate);
+			promiseQuery = getNodeLib().getAllWithdrawalNetwork(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 		}
 	}
 	return promiseQuery
@@ -985,11 +1001,41 @@ const getTransactions = (type, kitId, currency, limit, page, orderBy, order, sta
 		});
 };
 
-const getUserDepositsByKitId = (kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format) => {
+const getUserDepositsByKitId = (
+	kitId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+	format
+) => {
 	return getTransactions('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
 };
 
-const getUserWithdrawalsByKitId = (kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format) => {
+const getUserWithdrawalsByKitId = (
+	kitId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+	format
+) => {
 	return getTransactions('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
 };
 
