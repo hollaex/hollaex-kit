@@ -1,7 +1,7 @@
 'use strict';
-const { getKit } = require('../init');
-const DEFAULT_LANGUAGE = () => getKit().defaults.language;
-const VALID_LANGUAGES = () => getKit().valid_languages;
+const toolsLib = require('hollaex-tools-lib');
+const DEFAULT_LANGUAGE = () => toolsLib.getKitConfig().defaults.language;
+const VALID_LANGUAGES = () => toolsLib.getKitConfig().valid_languages;
 
 const getValidLanguage = (language = DEFAULT_LANGUAGE()) => {
 	if (VALID_LANGUAGES().indexOf(language) > -1) {

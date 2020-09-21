@@ -278,7 +278,7 @@ paths:
             $ref: "#/definitions/MessageResponse"
     post:
       operationId: resetPassword
-      description: "Reset password of a user"
+      description: Reset password of a user
       tags:
         - Public
       parameters:
