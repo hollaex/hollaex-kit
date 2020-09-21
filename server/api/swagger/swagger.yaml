@@ -296,13 +296,13 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /deposit:
-    x-swagger-router-controller: transaction
+  /notification/deposit:
+    x-swagger-router-controller: notification
     post:
       operationId: handleCurrencyDeposit
       description: Deposit notification
       tags:
-        - Network
+        - Notification
       parameters:
         - name: currency
           description: currency name
@@ -324,13 +324,13 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /withdrawal:
-    x-swagger-router-controller: transaction
+  /notification/withdrawal:
+    x-swagger-router-controller: notification
     post:
       operationId: handleCurrencyWithdrawal
       description: Withdrawal notification
       tags:
-        - Network
+        - Notification
       parameters:
         - name: currency
           description: currency name
@@ -352,13 +352,13 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /apply:
-    x-swagger-router-controller: general
+  /notification/apply:
+    x-swagger-router-controller: notification
     get:
       operationId: applyKitChanges
       description: Reset kit to apply changes
       tags:
-        - Network
+        - Notification
       responses:
         200:
           description: Success

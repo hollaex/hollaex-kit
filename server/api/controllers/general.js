@@ -53,26 +53,9 @@ const sendSupportEmail = (req, res) => {
 		});
 };
 
-const applyKitChanges = (req, res) => {
-	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
-	const domain = req.headers['x-real-origin'];
-	loggerGeneral.verbose('controller/transaction/handleCurrencyDeposit ip domain', ip, domain);
-
-	toolsLib.auth.verifyHmacToken(req)
-		.then(() => {
-			// TODO
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerGeneral.verbose('controller/general/applyKitChanges', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
 module.exports = {
 	getHealth,
 	getConstants,
 	getKitConfigurations,
-	sendSupportEmail,
-	applyKitChanges
+	sendSupportEmail
 };

@@ -1,8 +1,6 @@
 'use strict';
 
 const { loggerDeposits } = require('../../config/logger');
-const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
 const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
 
@@ -28,91 +26,6 @@ const getWithdrawalFee = (req, res) => {
 		);
 		return res.status(400).json({ message: err.message });
 	}
-};
-
-const handleCurrencyDeposit = (req, res) => {
-	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
-	const domain = req.headers['x-real-origin'];
-	loggerDeposits.verbose('controller/transaction/handleCurrencyDeposit ip domain', ip, domain);
-
-	const currency = req.swagger.params.currency.value;
-	const { user_id, amount, txid, address, is_confirmed } = req.swagger.params.data.value;
-
-	toolsLib.auth.verifyHmacToken(req)
-		.then(() => {
-			if (!toolsLib.subscribeToCoin(currency)) {
-				throw new Error('Invalid currency');
-			}
-			return toolsLib.users.getUserByNetworkId(user_id);
-		})
-		.then((user) => {
-			sendEmail(
-				MAILTYPE.DEPOSIT,
-				user.email,
-				{
-					amount,
-					currency,
-					status: is_confirmed ? 'COMPLETED' : 'PENDING',
-					address,
-					transaction_id: txid,
-					phoneNumber: user.phone_number
-				},
-				user.settings,
-				domain
-			);
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerDeposits.error(
-				req.uuid,
-				'controller/transaction/handleCurrencyDeposit',
-				err.message
-			);
-			return res.status(400).json({ message: `Fail - ${err.message}` });
-		});
-};
-
-const handleCurrencyWithdrawal = (req, res) => {
-	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
-	const domain = req.headers['x-real-origin'];
-	loggerDeposits.verbose('controller/transaction/handleCurrencyWithdrawal ip domain', ip, domain);
-
-	const currency = req.swagger.params.currency.value;
-	const { user_id, amount, txid, address, is_confirmed, fee } = req.swagger.params.data.value;
-
-	toolsLib.auth.verifyHmacToken(req)
-		.then(() => {
-			if (!toolsLib.subscribeToCoin(currency)) {
-				throw new Error('Invalid currency');
-			}
-			return toolsLib.users.getUserByNetworkId(user_id);
-		})
-		.then((user) => {
-			sendEmail(
-				MAILTYPE.WITHDRAWAL,
-				user.email,
-				{
-					amount,
-					currency,
-					status: is_confirmed ? 'COMPLETED' : 'PENDING',
-					address,
-					fee,
-					transaction_id: txid,
-					phoneNumber: user.phone_number
-				},
-				user.settings,
-				domain
-			);
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerDeposits.error(
-				req.uuid,
-				'controller/transaction/handleCurrencyWithdrawal',
-				err.message
-			);
-			return res.status(400).json({ message: `Fail - ${err.message}` });
-		});
 };
 
 const requestWithdrawal = (req, res) => {
@@ -216,10 +129,8 @@ const adminCheckTransaction = (req, res) => {
 };
 
 module.exports = {
-	handleCurrencyDeposit,
 	requestWithdrawal,
 	getWithdrawalFee,
 	adminCheckTransaction,
-	performWithdrawal,
-	handleCurrencyWithdrawal
+	performWithdrawal
 };
