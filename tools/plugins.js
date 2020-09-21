@@ -1,24 +1,24 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constants');
-const { getKit, getSecrets } = require(`${SERVER_PATH}/init`);
 const {
 	AVAILABLE_PLUGINS,
 	INIT_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
+const { getKitConfig, getKitSecrets } = require('./common');
 const dbQuery = require('./database').query;
 const { publisher } = require('./database/redis');
 
 const getPluginsConfig = () => {
 	return {
-		...getKit().plugins,
+		...getKitConfig().plugins,
 		available: AVAILABLE_PLUGINS,
-		enabled: getKit().plugins.enabled.split(',')
+		enabled: getKitConfig().plugins.enabled.split(',')
 	};
 };
 
 const getPluginsSecrets = () => {
-	return getSecrets().plugins;
+	return getKitSecrets().plugins;
 };
 
 const pluginIsEnabled = (plugin) => {
@@ -26,7 +26,7 @@ const pluginIsEnabled = (plugin) => {
 		throw new Error('Parameter must be a string');
 	}
 
-	const enabledPlugins = getKit().plugins.enabled;
+	const enabledPlugins = getKitConfig().plugins.enabled;
 	if (!enabledPlugins.includes(plugin)) {
 		return false;
 	} else {

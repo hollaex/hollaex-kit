@@ -220,7 +220,7 @@ const getApiKeySecret = () => {
 		});
 };
 
-const verifyHmacToken = (req) => {
+const verifyNetworkHmacToken = (req) => {
 	return new Promise((resolve, reject) => {
 		const apiKey = req.headers ? req.headers['api-key'] : undefined;
 		const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
@@ -755,7 +755,7 @@ const checkHmacSignature = (
 module.exports = {
 	verifyBearerTokenMiddleware,
 	verifyHmacTokenMiddleware,
-	verifyHmacToken,
+	verifyNetworkHmacToken,
 	userScopeIsValid,
 	userIsDeactivated,
 	checkCaptcha,
