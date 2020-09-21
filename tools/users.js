@@ -816,7 +816,7 @@ const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, 
 	const ordering = orderingQuery(orderBy, order);
 	let options = {
 		where: {
-			created_at: timeframe
+			timestamp: timeframe
 		},
 		attributes: {
 			exclude: ['id', 'origin', 'referer']
