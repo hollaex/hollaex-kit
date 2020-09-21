@@ -852,7 +852,12 @@ class HollaEx {
 	getTickerEngine(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/ticker?symbol=${symbol}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/ticker`;
+
+		if (symbol) {
+			path += `?symbol=${symbol}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
