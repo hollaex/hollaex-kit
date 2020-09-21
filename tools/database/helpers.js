@@ -50,7 +50,7 @@ const timeframeQuery = (startDate = 0, endDate = moment().valueOf()) => {
  * @param {string} order - Order to put query. Can be desc (descending) or asc (ascending).
  * @returns {array} Sequelize ordering array.
  */
-const orderingQuery = (orderBy = 'created_at', order = 'desc') => {
+const orderingQuery = (orderBy = 'id', order = 'desc') => {
 	return [orderBy, order === 'asc' || order === 'desc' ? order : 'desc'];
 };
 
