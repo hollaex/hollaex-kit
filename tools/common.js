@@ -9,7 +9,7 @@ const {
 	TECH_AUTHORIZED_KIT_CONFIG,
 	TECH_AUTHORIZED_KIT_SECRETS,
 	ROLES,
-	INIT_CHANNEL,
+	CONFIGURATION_CHANNEL,
 	SEND_CONTACT_US_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
@@ -142,7 +142,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 		})
 		.then((status) => {
 			publisher.publish(
-				INIT_CHANNEL,
+				CONFIGURATION_CHANNEL,
 				JSON.stringify({
 					type: 'config', data: { kit: status.kit, secrets: status.secrets }
 				})

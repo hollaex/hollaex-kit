@@ -26,7 +26,7 @@ const {
 	INVALID_USERNAME
 } = require('../messages');
 const { publisher } = require('./database/redis');
-const { INIT_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
+const { CONFIGURATION_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins, subscribedToCoin } = require('./common');
@@ -481,7 +481,7 @@ const freezeUserById = (userId) => {
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,
@@ -506,7 +506,7 @@ const freezeUserByEmail = (email) => {
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,
@@ -528,7 +528,7 @@ const unfreezeUserById = (userId) => {
 			return user.update({ activated: true }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,
@@ -550,7 +550,7 @@ const unfreezeUserByEmail = (email) => {
 			return user.update({ activated: true }, { fields: ['activated'], returning: true  });
 		})
 		.then((user) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,

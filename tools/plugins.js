@@ -3,7 +3,7 @@
 const { SERVER_PATH } = require('../constants');
 const {
 	AVAILABLE_PLUGINS,
-	INIT_CHANNEL
+	CONFIGURATION_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
 const { getKitConfig, getKitSecrets } = require('./common');
 const dbQuery = require('./database').query;
@@ -51,7 +51,7 @@ const updatePluginConfig = (key, data) => {
 		})
 		.then((data) => {
 			publisher.publish(
-				INIT_CHANNEL,
+				CONFIGURATION_CHANNEL,
 				JSON.stringify({
 					type: 'kit', data: data.kit
 				})
@@ -96,7 +96,7 @@ const enableOrDisablePlugin = (type, plugin) => {
 		})
 		.then((data) => {
 			publisher.publish(
-				INIT_CHANNEL,
+				CONFIGURATION_CHANNEL,
 				JSON.stringify({
 					type: 'kit', data: data.kit
 				})
