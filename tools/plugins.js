@@ -1,6 +1,7 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constants');
+const { INVALID_PLUGIN, PLUGIN_ALREADY_ENABELD, PLUGIN_ALREADY_DISABLED } = require('../messages');
 const {
 	AVAILABLE_PLUGINS,
 	CONFIGURATION_CHANNEL
@@ -22,10 +23,6 @@ const getPluginsSecrets = () => {
 };
 
 const pluginIsEnabled = (plugin) => {
-	if (!plugin || typeof plugin !== 'string') {
-		throw new Error('Parameter must be a string');
-	}
-
 	const enabledPlugins = getKitConfig().plugins.enabled;
 	if (!enabledPlugins.includes(plugin)) {
 		return false;
@@ -68,19 +65,19 @@ const enableOrDisablePlugin = (type, plugin) => {
 		.then((status) => {
 			const kit = status.kit;
 			if (!AVAILABLE_PLUGINS.includes(plugin)) {
-				throw new Error(`Plugin ${plugin} does not exist`);
+				throw new Error(INVALID_PLUGIN(plugin));
 			} else {
 				let enabledPlugins = kit.plugins.enabled.split(',');
 				if (type === 'enable') {
 					if (enabledPlugins.includes(plugin)) {
-						throw new Error (`Plugin ${plugin} is already enabled`);
+						throw new Error (PLUGIN_ALREADY_ENABELD(plugin));
 					} else {
 						enabledPlugins.push(plugin);
 						kit.plugins.enabled = enabledPlugins.join(',');
 					}
 				} else if (type === 'disable') {
 					if (!enabledPlugins.includes(plugin)) {
-						throw new Error(`Plugin ${plugin} is already disabled`);
+						throw new Error(PLUGIN_ALREADY_DISABLED(plugin));
 					} else {
 						enabledPlugins = enabledPlugins.filter((p) => p !== plugin);
 						kit.plugins.enabled = enabledPlugins.join(',');

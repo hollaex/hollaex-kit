@@ -1,6 +1,7 @@
 'use strict';
 
 const { SERVER_PATH } = require('../../constants');
+const { PROVIDE_TABLE_NAME } = require('../../messages');
 
 /**
  * Get sequelize model of table.
@@ -9,7 +10,7 @@ const { SERVER_PATH } = require('../../constants');
  */
 const getModel = (table = '') => {
 	if (table.length === 0) {
-		throw new Error('Please give a table name');
+		throw new Error(PROVIDE_TABLE_NAME);
 	}
 
 	if (table !== 'sequelize') {

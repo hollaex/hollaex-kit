@@ -17,6 +17,7 @@ const crypto = require('crypto');
 const uuid = require('uuid/v4');
 const { all, reject } = require('bluebird');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { INVALID_COIN, INVALID_AMOUNT, WITHDRAWAL_DISABLED_FOR_COIN, UPGRADE_VERIFICATION_LEVEL } = require('../messages');
 
 // const validateWithdraw = (currency, address, amount) => {
 
@@ -24,15 +25,15 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 
 const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, captcha, ip, domain) => {
 	if (!subscribedToCoin(currency)) {
-		return reject(new Error(`Invalid currency: "${currency}"`));
+		return reject(new Error(INVALID_COIN(currency)));
 	}
 
 	if (amount <= 0) {
-		return reject(new Error('Invalid amount'));
+		return reject(new Error(INVALID_AMOUNT(amount)));
 	}
 
 	if (!getKitCoin(currency).allow_withdrawal) {
-		return reject(new Error(`Withdrawals are disabled for ${currency}`));
+		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
 	}
 
 	return checkCaptcha(captcha, ip)
@@ -45,7 +46,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 		})
 		.then((user) => {
 			if (user.verification_level < 1) {
-				throw new Error('Upgrade verification levle');
+				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
 			return withdrawRequestEmail(
 				user,
@@ -118,7 +119,7 @@ const cancelUserWithdrawal = (userId, transactionId) => {
 
 const checkTransaction = (currency, transactionId, address, isTestnet = false) => {
 	if (!subscribedToCoin(currency)) {
-		return reject(new Error('Invalid currency'));
+		return reject(new Error(INVALID_COIN(currency)));
 	}
 
 	return getNodeLib().checkTransactionNetwork(currency, transactionId, address, isTestnet);
@@ -126,7 +127,7 @@ const checkTransaction = (currency, transactionId, address, isTestnet = false) =
 
 const performWithdrawal = (userId, address, currency, amount, fee, otpCode) => {
 	if (!subscribedToCoin(currency)) {
-		return reject(new Error('Invalid currency'));
+		return reject(new Error(INVALID_COIN(currency)));
 	}
 	return getUserByKitId(userId)
 		.then((user) => {

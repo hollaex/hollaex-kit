@@ -24,7 +24,10 @@ const {
 	API_KEY_INVALID,
 	API_KEY_EXPIRED,
 	API_KEY_OUT_OF_SCOPE,
-	API_SIGNATURE_INVALID
+	API_SIGNATURE_INVALID,
+	CODE_NOT_FOUND,
+	CODE_USED,
+	SAME_PASSWORD
 } = require('../messages');
 const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET, TOKEN_TYPES, HMAC_TOKEN_EXPIRY } = require(`${SERVER_PATH}/constants`);
@@ -505,7 +508,7 @@ const getResetPasswordCode = (code) => {
 	return dbQuery.findOne('reset password code', { where: { code } })
 		.then((code) => {
 			if (!code) {
-				const error = new Error('Code not found');
+				const error = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
 			}
@@ -551,7 +554,7 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 	return getResetPasswordCode(resetPasswordCode)
 		.then((code) => {
 			if (code.used) {
-				throw new Error('Code is already used');
+				throw new Error(CODE_USED);
 			}
 			return code.update({ used: true }, { fields: ['used'] });
 		})
@@ -561,7 +564,7 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 
 const changeUserPassword = (email, oldPassword, newPassword) => {
 	if (oldPassword === newPassword) {
-		return reject(new Error('Passwords must be different'));
+		return reject(new Error(SAME_PASSWORD));
 	}
 	if (!isValidPassword(newPassword)) {
 		return reject(new Error(INVALID_PASSWORD));

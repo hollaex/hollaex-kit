@@ -22,6 +22,7 @@ const { publisher } = require('./database/redis');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject } = require('bluebird');
+const { NO_NEW_DATA, SUPPORT_DISABLED, TECH_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
 
 /**
  * Checks if url given is a valid url.
@@ -105,7 +106,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
-		return reject(new Error('No new data given'));
+		return reject(new Error(NO_NEW_DATA));
 	}
 
 	if (scopes.indexOf(ROLES.TECH) > -1) {
@@ -118,7 +119,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.secrets), TECH_AUTHORIZED_KIT_SECRETS));
 		}
 		if (unauthorizedKeys.length > 0) {
-			return reject(new Error(`Tech users cannot update these values: ${unauthorizedKeys}`));
+			return reject(new Error(TECH_CANNOT_UPDATE(unauthorizedKeys)));
 		}
 	}
 
@@ -184,11 +185,11 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 	KIT_SECRETS_KEYS.forEach((key) => {
 		if (newKitSecrets[key]) {
 			if (role === 'tech' && key === 'emails' && newKitSecrets[key] && newKitSecrets[key].send_email_to_support !== existingKitSecrets[key].send_email_to_support) {
-				return reject(new Error('Tech users cannot update the value of send_email_copy'));
+				return reject(new Error(TECH_CANNOT_UPDATE('send_email_copy')));
 			}
 			if (!Array.isArray(existingKitSecrets[key]) && typeof existingKitSecrets[key] === 'object') {
 				if (Object.values(newKitSecrets[key]).includes(SECRET_MASK)) {
-					return reject(new Error('Masked value given'));
+					return reject(new Error(MASK_VALUE_GIVEN));
 				}
 				joinedKitSecrets[key] = { ...existingKitSecrets[key], ...newKitSecrets[key] };
 			} else {
@@ -203,7 +204,7 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 
 const sendEmailToSupport = (email, category, subject, description) => {
 	if (!SEND_CONTACT_US_EMAIL) {
-		return reject(new Error('Cannot send email to support at this time'));
+		return reject(new Error(SUPPORT_DISABLED));
 	}
 
 	const emailData = {

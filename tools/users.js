@@ -23,7 +23,21 @@ const {
 	INVALID_OTP_CODE,
 	USERNAME_CANNOT_BE_CHANGED,
 	USERNAME_IS_TAKEN,
-	INVALID_USERNAME
+	INVALID_USERNAME,
+	ACCOUNT_NOT_VERIFIED,
+	INVALID_AMOUNT,
+	INVALID_VERIFICATION_LEVEL,
+	INVALID_COIN,
+	USER_IS_VERIFIED,
+	NO_DATA_FOR_CSV,
+	PROVIDE_USER_CREDENTIALS,
+	PROVIDE_KIT_ID,
+	PROVIDE_NETWORK_ID,
+	CANNOT_DEACTIVATE_ADMIN,
+	USER_ALREADY_DEACTIVATED,
+	USER_NOT_DEACTIVATED,
+	CANNOT_CHANGE_ADMIN_ROLE,
+	VERIFICATION_CODE_USED
 } = require('../messages');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
@@ -104,7 +118,7 @@ const verifyUser = (email, code, domain) => {
 			})
 			.then(([ verificationCode, user ]) => {
 				if (verificationCode.verified) {
-					throw new Error('User is verified');
+					throw new Error(USER_IS_VERIFIED);
 				}
 				if (code !== verificationCode.code) {
 					throw new Error(INVALID_VERIFICATION_CODE);
@@ -201,7 +215,7 @@ const getVerificationCodeByUserId = (user_id) => {
 		attributes: ['id', 'code', 'verified', 'user_id']
 	}).then((verificationCode) => {
 		if (verificationCode.verified) {
-			throw new Error('User is verified');
+			throw new Error(USER_IS_VERIFIED);
 		}
 		return verificationCode;
 	});
@@ -374,7 +388,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 		.then(async (users) => {
 			if (format) {
 				if (users.data.length === 0) {
-					throw new Error('No data found');
+					throw new Error(NO_DATA_FOR_CSV);
 				}
 				const flatData = users.data.map((user) => {
 					let crypto_wallet;
@@ -400,18 +414,9 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 		});
 };
 
-const getUserByCryptoAddress = (currency, address) => {
-	if (!currency || !address) {
-		return reject(new Error('Please provide the user\'s currency and crypto address'));
-	}
-	return dbQuery.findOne('user', {
-		where: { crypto_wallet: { [currency]: address } }
-	});
-};
-
 const getUser = (opts = {}, rawData = true, networkData = false) => {
 	if (!opts.email && !opts.kit_id && !opts.network_id) {
-		return reject(new Error('Please provide the user\'s kit id, network id, or email'));
+		return reject(new Error(PROVIDE_USER_CREDENTIALS));
 	}
 
 	const where = {};
@@ -449,33 +454,33 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 
 const getUserByEmail = (email, rawData = true, networkData = false) => {
 	if (!email || !isEmail(email)) {
-		return reject(new Error('Please provide a valid email address'));
+		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
 	return getUser({ email }, rawData, networkData);
 };
 
 const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
 	if (!kit_id) {
-		return reject(new Error('Please provide a kit id'));
+		return reject(new Error(PROVIDE_KIT_ID));
 	}
 	return getUser({ kit_id }, rawData, networkData);
 };
 
 const getUserByNetworkId = (network_id, rawData = true, networkData = false) => {
 	if (!network_id) {
-		return reject(new Error('Please provide a network id'));
+		return reject(new Error(PROVIDE_NETWORK_ID));
 	}
 	return getUser({ network_id }, rawData, networkData);
 };
 
 const freezeUserById = (userId) => {
 	if (userId === ADMIN_ACCOUNT_ID) {
-		return reject(new Error('Admin account cannot be deactivated'));
+		return reject(new Error(CANNOT_DEACTIVATE_ADMIN));
 	}
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user.activated) {
-				throw new Error('User account is already frozen');
+				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
@@ -497,10 +502,10 @@ const freezeUserByEmail = (email) => {
 	return getUserByEmail(email, false)
 		.then((user) => {
 			if (user.id === ADMIN_ACCOUNT_ID) {
-				throw new Error('Admin account cannot be deactivated');
+				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
-				throw new Error('User account is already frozen');
+				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
@@ -522,7 +527,7 @@ const unfreezeUserById = (userId) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (user.activated) {
-				throw new Error('User account is not frozen');
+				throw new Error(USER_NOT_DEACTIVATED);
 			}
 			return user.update({ activated: true }, { fields: ['activated'], returning: true });
 		})
@@ -544,7 +549,7 @@ const unfreezeUserByEmail = (email) => {
 	return getUserByEmail(email, false)
 		.then((user) => {
 			if (user.activated) {
-				throw new Error('User account is not frozen');
+				throw new Error(USER_NOT_DEACTIVATED);
 			}
 			return user.update({ activated: true }, { fields: ['activated'], returning: true  });
 		})
@@ -583,7 +588,7 @@ const getUserRole = (opts = {}) => {
 
 const updateUserRole = (user_id, role) => {
 	if (user_id === ADMIN_ACCOUNT_ID) {
-		return reject(new Error('Cannot change main admin account role'));
+		return reject(new Error(CANNOT_CHANGE_ADMIN_ROLE));
 	}
 	return dbQuery.findOne('user', {
 		where: {
@@ -716,9 +721,9 @@ const getUserEmailByVerificationCode = (code) => {
 	})
 		.then((verificationCode) => {
 			if (!verificationCode) {
-				throw new Error('Verification Code invalid');
+				throw new Error(INVALID_VERIFICATION_CODE);
 			} else if (verificationCode.verified) {
-				throw new Error('Verification Code used');
+				throw new Error(VERIFICATION_CODE_USED);
 			}
 			return dbQuery.findOne('user', {
 				where: { id: verificationCode.user_id },
@@ -755,14 +760,14 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 		newLevel < MIN_VERIFICATION_LEVEL ||
 		newLevel > getKitConfig().user_level_number
 	) {
-		return reject(new Error('Invalid verification level'));
+		return reject(new Error(INVALID_VERIFICATION_LEVEL(newLevel)));
 	}
 
 	let currentVerificationLevel = 0;
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (user.verification_level === 0) {
-				throw new Error('User has not verified the email');
+				throw new Error(ACCOUNT_NOT_VERIFIED);
 			}
 			currentVerificationLevel = user.verification_level;
 			return user.update(
@@ -838,7 +843,7 @@ const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, 
 		.then((logins) => {
 			if (format) {
 				if (logins.data.length === 0) {
-					throw new Error('No data found');
+					throw new Error(NO_DATA_FOR_CSV);
 				}
 				const csv = parse(logins.data, Object.keys(logins.data[0]));
 				return csv;
@@ -944,7 +949,7 @@ const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, 
 		.then((audits) => {
 			if (format) {
 				if (audits.data.length === 0) {
-					throw new Error('No data found');
+					throw new Error(NO_DATA_FOR_CSV);
 				}
 				const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
 				const csv = parse(flatData, AUDIT_KEYS);
@@ -996,7 +1001,7 @@ const getTransactions = (
 		.then((transactions) => {
 			if (format) {
 				if (transactions.data.length === 0) {
-					throw new Error('No data found');
+					throw new Error(NO_DATA_FOR_CSV);
 				}
 				const csv = parse(transactions.data, Object.keys(transactions.data[0]));
 				return csv;
@@ -1096,11 +1101,11 @@ const getUserStats = (userId) => {
 
 const transferUserFunds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
 	if (subscribedToCoin(currency)) {
-		return reject(new Error(`Invalid currency: "${currency}"`));
+		return reject(new Error(INVALID_COIN(currency)));
 	}
 
 	if (amount <= 0) {
-		return reject(new Error('Invalid amount'));
+		return reject(new Error(INVALID_AMOUNT(amount)));
 	}
 
 	return all([
@@ -1151,7 +1156,6 @@ module.exports = {
 	getUserByEmail,
 	getUserByKitId,
 	getUserByNetworkId,
-	getUserByCryptoAddress,
 	freezeUserById,
 	freezeUserByEmail,
 	unfreezeUserById,
