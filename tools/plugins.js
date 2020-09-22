@@ -14,7 +14,7 @@ const getPluginsConfig = () => {
 	return {
 		...getKitConfig().plugins,
 		available: AVAILABLE_PLUGINS,
-		enabled: getKitConfig().plugins.enabled.split(',')
+		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : []
 	};
 };
 
@@ -67,8 +67,10 @@ const enableOrDisablePlugin = (type, plugin) => {
 			if (!AVAILABLE_PLUGINS.includes(plugin)) {
 				throw new Error(INVALID_PLUGIN(plugin));
 			} else {
-				let enabledPlugins = kit.plugins.enabled.split(',');
-				enabledPlugins = enabledPlugins.filter((plugin) => plugin !== '');
+				let enabledPlugins = [];
+				if (kit.plugins.enabled.length !== 0) {
+					enabledPlugins = kit.plugins.enabled.split(',');
+				}
 				if (type === 'enable') {
 					if (enabledPlugins.includes(plugin)) {
 						throw new Error (PLUGIN_ALREADY_ENABELD(plugin));
