@@ -1100,7 +1100,7 @@ const getUserStats = (userId) => {
 };
 
 const transferUserFunds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
-	if (subscribedToCoin(currency)) {
+	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
 
