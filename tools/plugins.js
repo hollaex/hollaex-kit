@@ -68,6 +68,7 @@ const enableOrDisablePlugin = (type, plugin) => {
 				throw new Error(INVALID_PLUGIN(plugin));
 			} else {
 				let enabledPlugins = kit.plugins.enabled.split(',');
+				enabledPlugins = enabledPlugins.filter((plugin) => plugin !== '');
 				if (type === 'enable') {
 					if (enabledPlugins.includes(plugin)) {
 						throw new Error (PLUGIN_ALREADY_ENABELD(plugin));
