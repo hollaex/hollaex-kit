@@ -2836,8 +2836,7 @@ paths:
                 type: number
                 format: int32
               bank_id:
-                type: number
-                format: int32
+                type: string
       tags:
         - Plugins
       responses:
@@ -2880,8 +2879,7 @@ paths:
                 type: number
                 format: int32
               bank_id:
-                type: number
-                format: int32
+                type: string
               message:
                 type: string
       tags:

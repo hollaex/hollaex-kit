@@ -116,6 +116,7 @@ const disablePlugin = (req, res) => {
 
 	toolsLib.plugins.disablePlugin(plugin)
 		.then((data) => {
+			console.log(data)
 			res.json(data);
 		})
 		.catch((err) => {
@@ -242,7 +243,6 @@ const bankVerify = (req, res) => {
 
 	toolsLib.users.getUserByKitId(user_id, false)
 		.then((user) => {
-			if (!user) throw new Error(USER_NOT_FOUND);
 			return approveBankAccount(bank_id)(user);
 		})
 		.then((user) => {

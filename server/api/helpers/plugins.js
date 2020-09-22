@@ -24,10 +24,12 @@ const {
 	SMS_ERROR,
 	SMS_CODE_EXPIRED,
 	SMS_PHONE_DONT_MATCH,
-	SMS_CODE_INVALID
+	SMS_CODE_INVALID,
+	BANK_NOT_FOUND,
+	BANK_ALREADY_VERIFIED
 } = require('../../messages');
 const aws = require('aws-sdk');
-const { all } = require('bluebird');
+const { all, reject } = require('bluebird');
 const PhoneNumber = require('awesome-phonenumber');
 const redis = require('../../db/redis').duplicate();
 const toolsLib = require('hollaex-tools-lib');
@@ -94,7 +96,15 @@ const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 };
 
 const approveBankAccount = (id = 0) => (user, options = {}) => {
-	const banks = user.dataValues.bank_account.map((bank) => {
+	const bank = user.bank_account.filter((bank) => bank.id === id);
+
+	if (bank.length === 0) {
+		return reject(new Error(BANK_NOT_FOUND));
+	} else if (bank[0].status === VERIFY_STATUS.COMPLETED) {
+		return reject(new Error(BANK_ALREADY_VERIFIED));
+	}
+
+	const banks = user.bank_account.map((bank) => {
 		if (bank.id === id) {
 			bank.status = VERIFY_STATUS.COMPLETED;
 		}
@@ -111,6 +121,12 @@ const approveBankAccount = (id = 0) => (user, options = {}) => {
 };
 
 const rejectBankAccount = (id = 0) => (user, options = {}) => {
+	const bank = user.bank_account.filter((bank) => bank.id === id);
+
+	if (bank.length === 0) {
+		return reject(new Error(BANK_NOT_FOUND));
+	}
+
 	const newBanks = user.bank_account.filter((bank) => bank.id !== id);
 
 	return user.update(

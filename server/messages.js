@@ -110,6 +110,8 @@ exports.INVALID_VERIFICATION_LEVEL = 'User can not create token. Upgrade user le
 // PLUGINS
 exports.PLUGIN_NOT_ENABLED = (plugin) => `Plugin ${plugin} not enabled`;
 exports.MAX_BANKS_EXCEEDED = 'User can have a maximum of three banks';
+exports.BANK_NOT_FOUND = 'Bank account not found';
+exports.BANK_ALREADY_VERIFIED = 'Bank account is already verified';
 
 exports.SMS_INVALID_PHONE = 'Invalid mobile phone number';
 exports.ID_EMAIL_REQUIRED = 'Missing parameters. ID and email required';
