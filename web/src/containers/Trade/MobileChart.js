@@ -64,7 +64,7 @@ class MobileChart extends Component {
 				<TradeBlock
 					title={
 						<div className="d-flex justify-content-start align-items-center flex-row">
-							{/* {STRINGS.CHART} */}
+							{/* {STRINGS["CHART"]} */}
 							<div
 								className={classnames(
                                   'app_bar-pair-content',
@@ -101,7 +101,7 @@ class MobileChart extends Component {
 						constants.broker_enabled
 							? <div className="quick-trade-tab p-1 mt-1">
 								<Link to={`/quick-trade/${pairValue}`}>
-									{STRINGS.QUICK_TRADE}
+									{STRINGS["QUICK_TRADE"]}
 								</Link>
 							</div>
 							: <Fragment />
@@ -112,7 +112,7 @@ class MobileChart extends Component {
 							<TVChartContainer activeTheme={activeTheme} symbol={symbol} pairData={pairData} />
 						)}
 				</TradeBlock>
-				<TradeBlock title={STRINGS.PUBLIC_SALES} className="f-1">
+				<TradeBlock title={STRINGS["PUBLIC_SALES"]} className="f-1">
 					<TradeHistory language={activeLanguage} />
 				</TradeBlock>
 			</div>

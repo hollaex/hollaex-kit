@@ -39,11 +39,11 @@ const MobileOrders = ({
 	>
 		<MobileDropdownWrapper className='' goToPair={goToPair}  />
 		<TradeBlock
-			title={STRINGS.ORDERS}
+			title={STRINGS["ORDERS"]}
 			action={
 				isLoggedIn ?
 				<ActionNotification
-					text={STRINGS.CANCEL_ALL}
+					text={STRINGS["CANCEL_ALL"]}
 					iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 					onClick={cancelAllOrders}
 					status=""
@@ -60,7 +60,7 @@ const MobileOrders = ({
 			}
 		</TradeBlock>
 		<TradeBlock
-			title={STRINGS.RECENT_TRADES}
+			title={STRINGS["RECENT_TRADES"]}
 			active={true}
 			action={ isLoggedIn ? 
 				<ActionNotification

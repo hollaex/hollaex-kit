@@ -190,7 +190,7 @@ class DonutChart extends Component {
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<tspan>{STRINGS.ZERO_ASSET}</tspan>
+						<tspan>{STRINGS["ZERO_ASSET"]}</tspan>
 					</text>
 					<text
 						transform={translate(0, 10)}
@@ -199,7 +199,7 @@ class DonutChart extends Component {
 						textAnchor="middle"
 					>
 						<Link to="/wallet" className="deposit-asset">
-							{STRINGS.DEPOSIT_ASSETS.toUpperCase()}
+							{STRINGS["DEPOSIT_ASSETS"].toUpperCase()}
 						</Link>
 					</text>
 				</g>
@@ -236,7 +236,7 @@ class DonutChart extends Component {
 							</text>
 							<text dy="5px" textAnchor="middle" className="donut-label-link">
 								<Link to="/wallet" className="deposit-asset">
-									{STRINGS.OPEN_WALLET.toUpperCase()}
+									{STRINGS["OPEN_WALLET"].toUpperCase()}
 								</Link>
 							</text>
 						</Fragment>

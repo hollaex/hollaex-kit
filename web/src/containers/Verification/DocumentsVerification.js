@@ -42,12 +42,12 @@ class DocumentsVerification extends Component {
 				number: {
 					type: 'text',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL"],
 					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER"],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER
+							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER"]
 						)
 					],
 					fullWidth: isMobile
@@ -55,11 +55,10 @@ class DocumentsVerification extends Component {
 				issued_date: {
 					type: 'date-dropdown',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-							.ISSUED_DATE_LABEL,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL"],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE
+							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE"]
 						),
 						isBefore()
 					],
@@ -70,12 +69,10 @@ class DocumentsVerification extends Component {
 				expiration_date: {
 					type: 'date-dropdown',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-							.EXPIRATION_DATE_LABEL,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL"],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-								.EXPIRATION_DATE
+							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE"]
 						),
 						isBefore(moment().add(15, 'years'))
 					],
@@ -93,12 +90,12 @@ class DocumentsVerification extends Component {
 				front: {
 					type: 'file',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL"],
 					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER"],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT
+							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT"]
 						)
 					],
 					fullWidth: isMobile
@@ -111,14 +108,12 @@ class DocumentsVerification extends Component {
 				back: {
 					type: 'file',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL"],
 					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-							.POR_PLACEHOLDER,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_PLACEHOLDER"],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-								.PROOF_OF_RESIDENCY
+							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.PROOF_OF_RESIDENCY"]
 						)
 					],
 					fullWidth: isMobile
@@ -131,14 +126,12 @@ class DocumentsVerification extends Component {
 				proof_of_residency: {
 					type: 'file',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL"],
 					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-							.SELFIE_PHOTO_ID_PLACEHOLDER,
+						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_PLACEHOLDER"],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-								.SELFIE_PHOTO_ID
+							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.SELFIE_PHOTO_ID"]
 						)
 					],
 					fullWidth: isMobile
@@ -212,8 +205,7 @@ class DocumentsVerification extends Component {
 						<div>
 							<HeaderSection
 								title={
-									STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
-										.PROOF_OF_RESIDENCY
+									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"]
 								}
 							>
 								<PORSection />
@@ -226,8 +218,7 @@ class DocumentsVerification extends Component {
 						<div>
 							<HeaderSection
 								title={
-									STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
-										.SELFIE.TITLE
+									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"]
 								}
 							>
 								<SelfieWithPhotoId />
@@ -259,7 +250,7 @@ class DocumentsVerification extends Component {
 							<Button
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
-								label={idData.status === 0 ? STRINGS.SUBMIT : `${STRINGS.RESUBMIT}*`}
+								label={idData.status === 0 ? STRINGS["SUBMIT"] : `${STRINGS["RESUBMIT"]}*`}
 								disabled={pristine || submitting || !valid || !!error}
 							/>
 							{idData.status !== 0 &&

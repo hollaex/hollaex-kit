@@ -18,7 +18,7 @@ const MarketList = ({ markets, handleClick, chartData }) => {
             <thead>
             <tr className="table-bottom-border">
               <th>Amount</th>
-              <th>{STRINGS.PRICE}</th>
+              <th>{STRINGS["PRICE"]}</th>
               <th>24h Change</th>
               <th>24h Volume</th>
               <th>24 Price Graph</th>

@@ -49,7 +49,7 @@ const ReferralSuccess = (props) => {
                     <ReactSVG path={ICONS.XHT_WAVES} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
-                            STRINGS.TERMS_OF_SERVICES.READ_WAVES,
+                            STRINGS["TERMS_OF_SERVICES.READ_WAVES"],
                             <BlueLink
                                 href="https://hollaex.com/docs/whitepaper.html"
                                 text={STRINGS["TERMS_OF_SERVICES.PUBLIC_SALES"]}
@@ -64,7 +64,7 @@ const ReferralSuccess = (props) => {
                             STRINGS["TERMS_OF_SERVICES.VISUAL_STEP"],
                             <BlueLink
                                 href="https://hollaex.com/docs/guideline.pdf"
-                                text={STRINGS.TERMS_OF_SERVICES.HOW_TO_BUY}
+                                text={STRINGS["TERMS_OF_SERVICES.HOW_TO_BUY"]}
                             />
                         )}
                     </div>

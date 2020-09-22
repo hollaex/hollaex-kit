@@ -50,7 +50,7 @@ class ConfirmWithdrawal extends Component {
             childProps = {
                 titleSection: {
                     iconPath: ICONS.RED_WARNING,
-                    text: STRINGS.ERROR_TEXT
+                    text: STRINGS["ERROR_TEXT"]
                 },
                 child: <div className='text-center mb-4'>
                         <div>{error_txt}</div>
@@ -60,7 +60,7 @@ class ConfirmWithdrawal extends Component {
             childProps = {
                 titleSection: {
                     iconPath: ICONS.GREEN_CHECK,
-                    text: STRINGS.SUCCESS_TEXT
+                    text: STRINGS["SUCCESS_TEXT"]
                 },
                 useSvg: true,
                 child: <div className='text-center mb-4'>

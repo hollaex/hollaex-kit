@@ -218,8 +218,8 @@ class MarketSelector extends Component {
                 <div className="app-bar-add-tab-content">
                     <div className="app-bar-add-tab-search">
                         <SearchBox
-                            name={STRINGS.SEARCH_TXT}
-                            placeHolder={`${STRINGS.SEARCH_TXT}...`}
+                            name={STRINGS["SEARCH_TXT"]}
+                            placeHolder={`${STRINGS["SEARCH_TXT"]}...`}
                             className='app-bar-search-field'
                             handleSearch={handleSearch} />
                     </div>

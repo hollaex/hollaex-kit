@@ -80,7 +80,7 @@ const FeesBlock = ({ pairs, coins, level, discount }) => {
 						</th>
 					</tr>
 					<tr>
-						<th className="limit-head-currency">{STRINGS.CURRENCY}</th>
+						<th className="limit-head-currency">{STRINGS["CURRENCY"]}</th>
 						<th className="limit-head-currency">{STRINGS["SUMMARY.MAKER"]}</th>
 						<th className="limit-head-currency">{STRINGS["SUMMARY.TAKER"]}</th>
 					</tr>

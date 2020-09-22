@@ -8,7 +8,7 @@ import STRINGS from '../../../config/localizedStrings';
 
 const LogoutInfoOrder = ({ activeTheme }) => {
     const SIGN_IN = <Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
-        {STRINGS.SIGNUP_TEXT}
+        {STRINGS["SIGNUP_TEXT"]}
     </Link>
     return (
         <div className='text-center'>

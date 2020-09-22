@@ -8,7 +8,7 @@ const ResetPasswordSuccess = ({ onClick, ...rest }) => {
 		<div className="auth_wrapper">
 			<IconTitle
 				iconPath={ICONS.SUCCESS_BLACK}
-				text={STRINGS.SUCCESS_TEXT}
+				text={STRINGS["SUCCESS_TEXT"]}
 				textType="title"
 				className="w-100"
 				useSvg={true}
@@ -19,7 +19,7 @@ const ResetPasswordSuccess = ({ onClick, ...rest }) => {
 				{STRINGS["RESET_PASSWORD_SUCCESS.TEXT_2"]}
 			</div>
 			<Button
-				label={STRINGS.LOGIN_TEXT}
+				label={STRINGS["LOGIN_TEXT"]}
 				onClick={onClick}
 				className="button-margin"
 			/>

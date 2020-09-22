@@ -20,15 +20,15 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 					wrapperClassName="quick-trade__icon"
 				/>
 				<div className="quote-success__title" >
-                  {STRINGS.QUICK_TRADE_INSUFFICIENT_FUND}
+                  {STRINGS["QUICK_TRADE_INSUFFICIENT_FUND"]}
 				</div>
 				<div className="quote-success-review-text">
-				  {STRINGS.QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE}
+				  {STRINGS["QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE"]}
 			  	</div>
 				<footer className="d-flex pt-4">
 					<Button
 						className="mr-2"
-						label={STRINGS.CLOSE_TEXT}
+						label={STRINGS["CLOSE_TEXT"]}
 						onClick={onClose}
 					/>
 					<Button
@@ -43,7 +43,7 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
     return (
 			<div className="base_negative_balance">
 				<div className="quote-success-review-text">{translateError(error)}</div>
-				<Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />
+				<Button label={STRINGS["CLOSE_TEXT"]} onClick={onClose} />
 			</div>
     );
 	} else {
@@ -56,11 +56,11 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 					wrapperClassName="quick-trade__icon"
 				/>
 				<div className="quote-success__title" >
-                  {STRINGS.QUICK_TRADE_SUCCESS}
+                  {STRINGS["QUICK_TRADE_SUCCESS"]}
 				</div>
 				<div className="quote-success-review-text">
 					{STRINGS.formatString(
-						STRINGS.QUOTE_SUCCESS_REVIEW_MESSAGE,
+						STRINGS["QUOTE_SUCCESS_REVIEW_MESSAGE"],
 						STRINGS[`SIDES_VERBS.${data.side}`],
 						formatToCurrency(data.size, pairData.increment_size),
             pair_base,
@@ -71,7 +71,7 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 				<footer className="d-flex pt-4">
 					<Button
 						className="mr-2"
-						label={STRINGS.CLOSE_TEXT}
+						label={STRINGS["CLOSE_TEXT"]}
 						onClick={onClose}
 					/>
 					<Button

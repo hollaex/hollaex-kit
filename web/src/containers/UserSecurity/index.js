@@ -70,7 +70,7 @@ class UserVerification extends Component {
 
 		const sections = [
 			{
-				title: STRINGS.ACCOUNT_SECURITY.OTP.TITLE,
+				title: STRINGS["ACCOUNT_SECURITY.OTP.TITLE"],
 				content: (
 					<OTP
 						requestOTP={this.handleOTPCheckbox}
@@ -93,15 +93,15 @@ class UserVerification extends Component {
 				),
 				notification: {
 					text: otp_enabled
-						? STRINGS.ACCOUNT_SECURITY.OTP.OTP_ENABLED
-						: STRINGS.ACCOUNT_SECURITY.OTP.OTP_DISABLED,
+						? STRINGS["ACCOUNT_SECURITY.OTP.OTP_ENABLED"]
+						: STRINGS["ACCOUNT_SECURITY.OTP.OTP_DISABLED"],
 					status: otp_enabled ? 'success' : 'warning',
 					iconPath: otp_enabled ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
 					allowClick: !otp_enabled
 				}
 			},
 			{
-				title: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE,
+				title: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE"],
 				content: (
 					<ChangePasswordForm
 						onSubmit={this.onSubmitChangePassword}
@@ -110,14 +110,14 @@ class UserVerification extends Component {
 				),
 				disabled: false,
 				notification: {
-					text: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE,
+					text: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE"],
 					status: 'success',
 					iconPath: ICONS.GREEN_CHECK,
 					allowClick: true
 				}
 			},
 			{
-				title: STRINGS.DEVELOPER_SECTION.TITLE,
+				title: STRINGS["DEVELOPER_SECTION.TITLE"],
 				content: (
 					<DeveloperSection
 						otp_enabled={otp_enabled}
@@ -127,7 +127,7 @@ class UserVerification extends Component {
 				),
 				disabled: false,
 				notification: {
-					// text: STRINGS.DEVELOPER_SECTION[otp_enabled ? 'ACTIVE' : 'INACTIVE'],
+					// text: STRINGS[`DEVELOPER_SECTION.${otp_enabled ? 'ACTIVE' : 'INACTIVE'}`],
 					status: otp_enabled ? 'success' : 'disabled',
 					iconPath: otp_enabled
 						? ICONS.TOKENS_ACTIVE
@@ -156,7 +156,7 @@ class UserVerification extends Component {
 				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS
+					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS"]
 				});
 			})
 			.catch((err) => {
@@ -177,7 +177,7 @@ class UserVerification extends Component {
 				this.setState({
 					dialogIsOpen: true,
 					modalText:
-						STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS
+						STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS"]
 				});
 			})
 			.catch((err) => {
@@ -194,7 +194,7 @@ class UserVerification extends Component {
 				this.props.otpSetActivated(false);
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.REVOKE
+					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.REVOKE"]
 				});
 			})
 			.catch(errorHandler);

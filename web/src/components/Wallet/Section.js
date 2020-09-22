@@ -7,8 +7,8 @@ import { formatToCurrency } from '../../utils/currency';
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	const ordersText =
 		ordersOfSymbol > 1
-			? STRINGS.WALLET.ORDERS_PLURAL
-			: STRINGS.WALLET.ORDERS_SINGULAR;
+			? STRINGS["WALLET.ORDERS_PLURAL"]
+			: STRINGS["WALLET.ORDERS_SINGULAR"];
 	const symbolComponent = <span className="text-uppercase">{name}</span>;
 	return (
 		<div>
@@ -38,7 +38,7 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 	// const amountFormat =
 	// 	symbol === BASE_CURRENCY
 	// 		? STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`]
-	// 		: STRINGS.BTC_PRICE_FORMAT;
+	// 		: STRINGS["BTC_PRICE_FORMAT"];
 	const total = balance[`${symbol}_balance`] || 0;
 	const available = balance[`${symbol}_available`] || 0;
 	const hold = math.subtract(math.fraction(total), math.fraction(available));

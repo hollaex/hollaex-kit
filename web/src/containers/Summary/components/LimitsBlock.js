@@ -9,9 +9,9 @@ const getLimitValue = (limit, increment_unit) => {
     if (limit === undefined || limit === null || limit === '') {
         return 'N/A';
     } else if (limit === 0) {
-        return STRINGS.LEVELS.UNLIMITED;
+        return STRINGS["LEVELS.UNLIMITED"];
     } else if (limit === -1) {
-        return STRINGS.LEVELS.BLOCKED;
+        return STRINGS["LEVELS.BLOCKED"];
     } else {
         return increment_unit ? formatToCurrency(limit, increment_unit) : limit;
     }
@@ -64,7 +64,7 @@ const LimitsBlock = ({ level, coins }) => {
                         </th>
                     </tr>
                     <tr>
-                        <th className="limit-head-currency">{STRINGS.CURRENCY}</th>
+                        <th className="limit-head-currency">{STRINGS["CURRENCY"]}</th>
                         <th className="limit-head-currency">{STRINGS["SUMMARY.DEPOSIT"]}</th>
                         <th className="limit-head-currency">{STRINGS["SUMMARY.WITHDRAWAL"]}</th>
                     </tr>

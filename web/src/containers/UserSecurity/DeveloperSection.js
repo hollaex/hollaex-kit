@@ -54,14 +54,14 @@ export const PopupInfo = ({ type }) => {
 
 export const TokenCreatedInfo = ({ token }) => {
 	const props_api_key = {
-		label: STRINGS.DEVELOPERS_TOKENS_POPUP.API_KEY_LABEL,
+		label: STRINGS["DEVELOPERS_TOKENS_POPUP.API_KEY_LABEL"],
 		className: 'token-value-input',
 		value: token.tokenKey,
 		fullWidth: true,
 		allowCopy: true
 	};
 	const props_secret_key = {
-		label: STRINGS.DEVELOPERS_TOKENS_POPUP.SECRET_KEY_LABEL,
+		label: STRINGS["DEVELOPERS_TOKENS_POPUP.SECRET_KEY_LABEL"],
 		className: 'token-value-input',
 		value: token.secret,
 		fullWidth: true,

@@ -8,14 +8,14 @@ const formFields = {
     agreeTerms: {
         type: 'checkbox',
         fullWidth: true,
-        validate: [requiredWithCustomMessage(STRINGS.VALIDATIONS.ACCEPT_TERMS)],
-        label: STRINGS.TERMS_OF_SERVICES.AGREE_TERMS_LABEL
+        validate: [requiredWithCustomMessage(STRINGS["VALIDATIONS.ACCEPT_TERMS"])],
+        label: STRINGS["TERMS_OF_SERVICES.AGREE_TERMS_LABEL"]
     },
     agreeRisk: {
         type: 'checkbox',
         fullWidth: true,
-        validate: [requiredWithCustomMessage(STRINGS.VALIDATIONS.ACCEPT_RISKS)],
-        label: STRINGS.TERMS_OF_SERVICES.RISK_INVOLVED_LABEL
+        validate: [requiredWithCustomMessage(STRINGS["VALIDATIONS.ACCEPT_RISKS"])],
+        label: STRINGS["TERMS_OF_SERVICES.RISK_INVOLVED_LABEL"]
     }
 };
 

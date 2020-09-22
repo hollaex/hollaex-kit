@@ -22,7 +22,7 @@ const StakeToken = ({ onBack }) => {
                 </div>
                 <div className="d-flex my-5 mt-5">
                     <Button
-                        label={STRINGS.BACK_TEXT}
+                        label={STRINGS["BACK_TEXT"]}
                         className="mr-5"
                         onClick={onBack}
                     />

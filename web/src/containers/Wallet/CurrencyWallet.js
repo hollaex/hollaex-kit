@@ -47,11 +47,11 @@ class Wallet extends Component {
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
 					{STRINGS.formatString(
-						STRINGS.CURRENCY_BALANCE_TEXT,
+						STRINGS["CURRENCY_BALANCE_TEXT"],
 						fullname
 					)}
 					<ActionNotification
-						text={STRINGS.TRADE_HISTORY}
+						text={STRINGS["TRADE_HISTORY"]}
 						status="information"
 						iconPath={ICONS.BLUE_CLIP}
 						useSvg={true}
@@ -88,7 +88,7 @@ class Wallet extends Component {
 				</MobileBarBack> }
 				<div className="presentation_container apply_rtl">
 					<IconTitle
-						text={STRINGS.WALLET_TITLE}
+						text={STRINGS["WALLET_TITLE"]}
 						iconPath={ICONS.BITCOIN_WALLET}
 						useSvg={true}
 						textType="title"

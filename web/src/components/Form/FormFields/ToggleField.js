@@ -100,7 +100,7 @@ const Toggle = ({ options, selected, onToogle, disabled, name }) => (
 );
 
 ToggleField.defaultProps = {
-    options: STRINGS.DEFAULT_TOGGLE_OPTIONS,
+    options: STRINGS["DEFAULT_TOGGLE_OPTIONS"],
     onChange: () => {},
     toggleOnly: false
 };

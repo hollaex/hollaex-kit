@@ -45,7 +45,7 @@ const Section1 = ({
 						})}
 						onClick={onClickRegister}
 					>
-						{STRINGS.REGISTER_TEXT}
+						{STRINGS["REGISTER_TEXT"]}
 					</div>
 				)*/}
 			</div>

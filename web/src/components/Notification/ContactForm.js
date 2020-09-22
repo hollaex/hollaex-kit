@@ -17,7 +17,7 @@ const LogoutNotification = ({ onClose }) => {
 				<br />
 				{STRINGS["CONTACT_FORM.SUCCESS_MESSAGE_2"]}
 			</NotificationContent>
-			<Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />
+			<Button label={STRINGS["CLOSE_TEXT"]} onClick={onClose} />
 		</NotificationWraper>
 	);
 };

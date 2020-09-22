@@ -45,7 +45,7 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
 					icon: ICONS.CLOSE_CROSS,
-					content: STRINGS.CANCEL_SUCCESS_TEXT
+					content: STRINGS["CANCEL_SUCCESS_TEXT"]
 				}
 			});
 		})
@@ -65,7 +65,7 @@ export const cancelAllOrders = (symbol = '', settings) => dispatch => {
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
 					icon: ICONS.CLOSE_CROSS,
-					content: STRINGS.CANCEL_SUCCESS_TEXT
+					content: STRINGS["CANCEL_SUCCESS_TEXT"]
 				}
 			});
 		})

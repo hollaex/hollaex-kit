@@ -69,7 +69,7 @@ const Form = ({
 					type="button"
 					onClick={onReview}
 					label={STRINGS.formatString(
-						STRINGS.ORDER_ENTRY_BUTTON,
+						STRINGS["ORDER_ENTRY_BUTTON"],
 						STRINGS[`SIDES_VALUES.${side}`] || '',
 						currencyName
 					).join(' ')}

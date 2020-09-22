@@ -49,11 +49,11 @@ export const Chat = ({
 	const text =
 		unreadMessages > 0
 			? STRINGS.formatString(
-					STRINGS.CHAT.CHAT_UNREAD,
-					STRINGS.CHAT.MARKET_CHAT,
+					STRINGS["CHAT.CHAT_UNREAD"],
+					STRINGS["CHAT.MARKET_CHAT"],
 					unreadMessages
 				)
-			: STRINGS.CHAT.MARKET_CHAT;
+			: STRINGS["CHAT.MARKET_CHAT"];
 
 	return <Cell
 		onClick={onMinimize}

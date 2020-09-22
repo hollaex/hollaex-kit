@@ -387,7 +387,7 @@ class PairTabs extends Component {
                         <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-close" />
                     </div>
                     {Object.keys(selectedTabs).length <= 0 ?
-                        <span onClick={this.openAddTabMenu}>{STRINGS.ADD_TRADING_PAIR}</span>
+                        <span onClick={this.openAddTabMenu}>{STRINGS["ADD_TRADING_PAIR"]}</span>
                     : '' }
                     {isAddTab &&
                         <MarketSelector

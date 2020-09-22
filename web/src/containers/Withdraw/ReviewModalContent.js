@@ -11,7 +11,7 @@ const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 	return (
 		<div className="d-flex">
 			<Button
-				label={STRINGS.CANCEL}
+				label={STRINGS["CANCEL"]}
 				onClick={onClickCancel}
 				className="button-fail"
 			/>

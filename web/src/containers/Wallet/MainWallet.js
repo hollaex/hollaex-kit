@@ -140,7 +140,7 @@ class Wallet extends Component {
 
 		const sections = [
 			{
-				title: STRINGS.WALLET_ALL_ASSETS,
+				title: STRINGS["WALLET_ALL_ASSETS"],
 				content: (
 					<AssetsBlock
 						balance={balance}
@@ -163,7 +163,7 @@ class Wallet extends Component {
 				isOpen: true,
 				allowClose: false,
 				notification: !isMobile && {
-					text: STRINGS.TRADE_HISTORY,
+					text: STRINGS["TRADE_HISTORY"],
 					status: 'information',
 					iconPath: ICONS.BLUE_CLIP,
 					allowClick: true,
@@ -177,7 +177,7 @@ class Wallet extends Component {
 		];
 		const mobileTabs = [
 			{
-				title: STRINGS.WALLET_TAB_WALLET,
+				title: STRINGS["WALLET_TAB_WALLET"],
 				content: (
 					<MobileWallet
 						sections={sections}
@@ -190,7 +190,7 @@ class Wallet extends Component {
 				)
 			},
 			{
-				title: STRINGS.WALLET_TAB_TRANSACTIONS,
+				title: STRINGS["WALLET_TAB_TRANSACTIONS"],
 				content: <TransactionsHistory />
 			}
 		];
@@ -256,7 +256,7 @@ class Wallet extends Component {
 				) : (
 					<div className="presentation_container apply_rtl">
 						<IconTitle
-							text={STRINGS.WALLET_TITLE}
+							text={STRINGS["WALLET_TITLE"]}
 							// iconPath={ICONS.BITCOIN_WALLET}
 							useSvg={true}
 							textType="title"

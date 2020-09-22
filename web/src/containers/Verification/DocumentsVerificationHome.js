@@ -11,11 +11,11 @@ const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTi
     const { id_data } = user;
     let note = '';
     if (id_data.status === 1) {
-        note = STRINGS.USER_VERIFICATION.DOCUMENT_PENDING_NOTE;
+        note = STRINGS["USER_VERIFICATION.DOCUMENT_PENDING_NOTE"];
     } else if (id_data.status === 2) {
         note = id_data.note;
     } else {
-        note = STRINGS.USER_VERIFICATION.DOCUMENT_VERIFIED_NOTE;
+        note = STRINGS["USER_VERIFICATION.DOCUMENT_VERIFIED_NOTE"];
     }
     return (
         <div>
@@ -56,8 +56,8 @@ const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTi
             {id_data.status !== 3 && <div className="my-2">
                 <Button
                     label={id_data.status === 0
-                        ? STRINGS.USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION
-                        : STRINGS.USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION
+                        ? STRINGS["USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION"]
+                        : STRINGS["USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION"]
                     }
                     onClick={() => setActivePageContent('document')} />
             </div>}

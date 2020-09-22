@@ -17,27 +17,27 @@ const generateRows = ({ wave, pair }, pairs, coins) => {
 	const rows = [];
 
 	rows.push({
-		label: STRINGS.WAVES.NEXT_WAVE,
+		label: STRINGS["WAVES.NEXT_WAVE"],
 		value: no
 	});
 
 	rows.push({
-		label: STRINGS.WAVES.WAVE_AMOUNT,
+		label: STRINGS["WAVES.WAVE_AMOUNT"],
 		value: `${amount} XHT`
 	});
 
 	rows.push({
-		label: STRINGS.WAVES.FLOOR,
+		label: STRINGS["WAVES.FLOOR"],
 		value: floor
 	});
 
 	rows.push({
-		label: STRINGS.FILLED,
+		label: STRINGS["FILLED"],
 		value: filled
 	});
 
 	// rows.push({
-	//     label: STRINGS.WAVES.LAST_WAVE,
+	//     label: STRINGS["WAVES.LAST_WAVE"],
 	//     value: filled
 	// });
 
@@ -76,9 +76,9 @@ const WaveNotification = ({ type, data, coins, pairs, onBack, onConfirm }) => {
 			<EventListener target="document" onKeydown={onKeydown} />
 			<OrderDisplay rows={rows} />
 			<div className="d-flex">
-				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
+				<Button label={STRINGS["BACK_TEXT"]} onClick={onBack} />
 				<div className="separator" />
-				<Button label={STRINGS.GOTO_XHT_MARKET} onClick={onConfirmClick} />
+				<Button label={STRINGS["GOTO_XHT_MARKET"]} onClick={onConfirmClick} />
 			</div>
 		</NotificationWraper>
 	);

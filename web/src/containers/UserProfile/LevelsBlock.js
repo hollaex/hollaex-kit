@@ -5,9 +5,9 @@ import { formatBaseAmount, formatBtcAmount } from '../../utils/currency';
 
 const getLimitValue = (limit = -1, format) => {
 	if (limit === 0) {
-		return STRINGS.LEVELS.UNLIMITED;
+		return STRINGS["LEVELS.UNLIMITED"];
 	} else if (limit === -1) {
-		return STRINGS.LEVELS.BLOCKED;
+		return STRINGS["LEVELS.BLOCKED"];
 	} else {
 		return format ? format(limit) : limit;
 	}

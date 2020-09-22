@@ -6,7 +6,7 @@ import ReactSVG from 'react-svg';
 const MessageDisplay = ({
 	text,
 	onClick,
-	buttonLabel = STRINGS.CLOSE_TEXT,
+	buttonLabel = STRINGS["CLOSE_TEXT"],
 	iconPath
 }) => (
 	<div className="success_display-wrapper d-flex align-content-between flex-wrap flex-column">

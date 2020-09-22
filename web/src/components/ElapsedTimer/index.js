@@ -60,7 +60,7 @@ class ElapsedTimer extends Component {
             <div className="elapsed-timer-wrapper mb-4 d-flex align-items-center">
                 <div className="timer-text">
                     {timerText}
-                    <span className="timer-time mx-1">{this.state.seconds} {STRINGS.SECONDS}</span>
+                    <span className="timer-time mx-1">{this.state.seconds} {STRINGS["SECONDS"]}</span>
                 </div>
                 <div>
                     <ReactSVG path={ICONS.PENDING_TIMER} wrapperClassName="timer-svg" />

@@ -67,7 +67,7 @@ class Dialog extends PureComponent {
 				{children}
 				{closeButton && (
 					<div>
-						<Button onClick={closeButton} label={STRINGS.CLOSE_TEXT} />
+						<Button onClick={closeButton} label={STRINGS["CLOSE_TEXT"]} />
 					</div>
 				)}
 			</Modal>

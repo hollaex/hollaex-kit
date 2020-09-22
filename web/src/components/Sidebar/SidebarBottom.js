@@ -22,19 +22,19 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPl
 			<div className="sidebar-bottom-wrapper d-flex justify-content-between">
 				<SidebarButton
 					path={"/account"}
-					title={STRINGS.ACCOUNT_TEXT}
+					title={STRINGS["ACCOUNT_TEXT"]}
 					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
 					active={activePath === 'account'}
 				/>
 				{/* <SidebarButton
 					path={`/quick-trade/${pair}`}
-					title={STRINGS.QUICK_TRADE}
+					title={STRINGS["QUICK_TRADE"]}
 					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
 					active={activePath === 'quick-trade'}
 				/> */}
 				<SidebarButton
 					path={`/trade/${pair}`}
-					title={STRINGS.PRO_TRADE}
+					title={STRINGS["PRO_TRADE"]}
 					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
 					active={activePath === 'trade'}
 				/>
@@ -49,13 +49,13 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPl
 				}
 				<SidebarButton
 					path="/wallet"
-					title={STRINGS.WALLET_TITLE}
+					title={STRINGS["WALLET_TITLE"]}
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
 				/>
 				<SidebarButton
 					path={"/home"}
-					title={STRINGS.TRADE_TAB_POSTS}
+					title={STRINGS["TRADE_TAB_POSTS"]}
 					iconPath={ICONS.SIDEBAR_POST_ACTIVE}
 					active={activePath === 'home'}
 				/>
@@ -65,7 +65,7 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPl
 					<ButtonLink
 						link={'/signup'}
 						type="button"
-						label={STRINGS.SIGNUP_TEXT}
+						label={STRINGS["SIGNUP_TEXT"]}
 					/>
 				</div>
 				<div className="separator" />
@@ -73,7 +73,7 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPl
 					<ButtonLink
 						link={'/login'}
 						type="button"
-						label={STRINGS.LOGIN_TEXT}
+						label={STRINGS["LOGIN_TEXT"]}
 					/>
 				</div>
 			</div>

@@ -61,7 +61,7 @@ class InviteFriends extends Component {
                     </div>
                     <div className="d-flex my-5">
                         <Button
-                            label={STRINGS.BACK_TEXT}
+                            label={STRINGS["BACK_TEXT"]}
                             className="mr-5"
                             onClick={this.props.onBack}
                         />
@@ -69,7 +69,7 @@ class InviteFriends extends Component {
                                 text={referralLink}
                                 onCopy={this.handleCopy}>
                                 <Button
-                                    label={this.state.copied ? STRINGS.SUCCESFUL_COPY : STRINGS.REFERRAL_LINK.COPY_LINK_BUTTON}
+                                    label={this.state.copied ? STRINGS["SUCCESFUL_COPY"] : STRINGS["REFERRAL_LINK.COPY_LINK_BUTTON"]}
                                     onClick={() => { }}
                                 />
                             </CopyToClipboard>

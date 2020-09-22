@@ -11,7 +11,7 @@ export const generateBaseInformation = (id = '') => (
 	<div className="text">
 		{id && (
 			<p>
-				{STRINGS.formatString(STRINGS.DEPOSIT_BANK_REFERENCE, id).join(' ')}
+				{STRINGS.formatString(STRINGS["DEPOSIT_BANK_REFERENCE"], id).join(' ')}
 			</p>
 		)}
 	</div>

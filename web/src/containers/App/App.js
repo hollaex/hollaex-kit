@@ -587,7 +587,7 @@ class App extends Component {
 										)}
 									>
 										{STRINGS.formatString(
-											STRINGS.TRIAL_EXCHANGE_MSG,
+											STRINGS["TRIAL_EXCHANGE_MSG"],
 											constants.api_name || '',
 											expiryData.daysLeft
 										)}

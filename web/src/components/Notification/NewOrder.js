@@ -18,11 +18,11 @@ const generateRows = ({ order, pairData }, coins) => {
 	const rows = [];
 
 	rows.push({
-		label: STRINGS.TYPE,
+		label: STRINGS["TYPE"],
 		value: (
 			<div className="text-capitalize">
 				{STRINGS.formatString(
-					STRINGS.CHECK_ORDER_TYPE,
+					STRINGS["CHECK_ORDER_TYPE"],
 					STRINGS[`TYPES_VALUES.${type}`],
 					STRINGS[`SIDES_VALUES.${side}`]
 				)}
@@ -31,7 +31,7 @@ const generateRows = ({ order, pairData }, coins) => {
 	});
 
 	rows.push({
-		label: STRINGS.SIZE,
+		label: STRINGS["SIZE"],
 		value: STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
 			formatToCurrency(size, pairData.increment_size),
@@ -41,7 +41,7 @@ const generateRows = ({ order, pairData }, coins) => {
 
 	if (type === 'limit') {
 		rows.push({
-			label: STRINGS.PRICE,
+			label: STRINGS["PRICE"],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(price, pairData.increment_price),
@@ -76,16 +76,16 @@ const NewOrderNotification = ({ type, data, coins, onBack, onConfirm }) => {
 
 	return (
 		<NotificationWraper
-			title={STRINGS.CHECK_ORDER}
+			title={STRINGS["CHECK_ORDER"]}
 			icon={ICONS.CHECK_ORDER}
 			className="new-order-notification"
 		>
 			<EventListener target="document" onKeydown={onKeydown} />
 			<OrderDisplay rows={rows} />
 			<div className="d-flex">
-				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
+				<Button label={STRINGS["BACK_TEXT"]} onClick={onBack} />
 				<div className="separator" />
-				<Button label={STRINGS.CONFIRM_TEXT} onClick={onConfirmClick} />
+				<Button label={STRINGS["CONFIRM_TEXT"]} onClick={onConfirmClick} />
 			</div>
 		</NotificationWraper>
 	);

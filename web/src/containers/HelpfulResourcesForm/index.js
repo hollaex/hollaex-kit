@@ -62,7 +62,7 @@ class HelpfulResourcesForm extends Component {
 			<div className="help-wrapper">
 				<IconTitle
 					iconPath={activeTheme==='white' ? ICONS.QUESTION_MARK : ICONS.QUESTION_MARK_COLOR}
-					text={STRINGS.HELPFUL_RESOURCES_TEXT}
+					text={STRINGS["HELPFUL_RESOURCES_TEXT"]}
 					textType="title"
 					underline={true}
 					className="w-100"
@@ -72,10 +72,10 @@ class HelpfulResourcesForm extends Component {
 					<div className='d-flex mt-5'>
 						<ReactSVG path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
 						<div className='text' >
-							{STRINGS.HELP_RESOURCE_GUIDE_TEXT}
+							{STRINGS["HELP_RESOURCE_GUIDE_TEXT"]}
 							<BlueLink
-								href={STRINGS.HELP_EXIR_TUTORIAL_LINK}
-								text={STRINGS.HELP_EXIR_TUTORIAL_LINK}
+								href={STRINGS["HELP_EXIR_TUTORIAL_LINK"]}
+								text={STRINGS["HELP_EXIR_TUTORIAL_LINK"]}
 							/>
 						</div>
 						<div className="w-25" />
@@ -83,16 +83,16 @@ class HelpfulResourcesForm extends Component {
 					<div className='d-flex mt-5 mb-5'>
 						<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
 						<div className='text' >
-							{STRINGS.HELP_TELEGRAM_TEXT} 
+							{STRINGS["HELP_TELEGRAM_TEXT"]} 
 							<BlueLink
-								href={STRINGS.HELP_TELEGRAM_LINK}
-								text={STRINGS.HELP_TELEGRAM_LINK}
+								href={STRINGS["HELP_TELEGRAM_LINK"]}
+								text={STRINGS["HELP_TELEGRAM_LINK"]}
 							/>
 						</div>
 						<div className="w-25" />
 					</div>
 					<div className='w-100 buttons-wrapper d-flex' >
-						<Button label={STRINGS.BACK_TEXT} onClick={onClose}/>
+						<Button label={STRINGS["BACK_TEXT"]} onClick={onClose}/>
 						<div className='separator' />
 						<Button label={STRINGS["REQUEST_RESET_PASSWORD.SUPPORT"]} onClick={this.openNewForm}/>
 					</div>

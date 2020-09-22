@@ -73,7 +73,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 				? <div className="text-center my-3 title-font">
 					<span className="total-assets">
 						{STRINGS.formatString(
-							STRINGS.TOTAL_ASSETS_VALUE,
+							STRINGS["TOTAL_ASSETS_VALUE"],
 							baseValue.fullname,
 							totalAssets
 						)}

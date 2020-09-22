@@ -8,7 +8,7 @@ import STRINGS from '../../config/localizedStrings';
 const WithdrawNotification = ({ data, onClose }) => {
 	const notificationProps = {
 		icon: ICONS[`COIN_WITHDRAW_BTC`] || ICONS.COIN_WITHDRAW_BASE,
-		title: STRINGS.SUCCESS_TEXT
+		title: STRINGS["SUCCESS_TEXT"]
 	};
 
 	return (
@@ -19,7 +19,7 @@ const WithdrawNotification = ({ data, onClose }) => {
 			<NotificationContent>
 				{data.transaction_id && (
 					<div>
-						<span>{STRINGS.WITHDRAW_NOTIFICATION_TRANSACTION_ID}</span>
+						<span>{STRINGS["WITHDRAW_NOTIFICATION_TRANSACTION_ID"]}</span>
 						<div className="notification-link-wrapper">
 							<a
 								href={
@@ -36,7 +36,7 @@ const WithdrawNotification = ({ data, onClose }) => {
 					</div>
 				)}
 			</NotificationContent>
-			<Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />
+			<Button label={STRINGS["CLOSE_TEXT"]} onClick={onClose} />
 		</NotificationWraper>
 	);
 };

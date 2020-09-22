@@ -86,12 +86,12 @@ class Signup extends Component {
 				}, 5000);
 
 				if (error.response.status === 409) {
-					errors.email = STRINGS.VALIDATIONS.USER_EXIST;
+					errors.email = STRINGS["VALIDATIONS.USER_EXIST"];
 				} else if (error.response) {
 					const { message = '' } = error.response.data;
 					if (message.toLowerCase().indexOf('password') > -1) {
 						// TODO set error in constants for language
-						errors.password = STRINGS.VALIDATIONS.INVALID_PASSWORD;
+						errors.password = STRINGS["VALIDATIONS.INVALID_PASSWORD"];
 					} else {
 						errors._error = message || error.message;
 					}
@@ -151,7 +151,7 @@ class Signup extends Component {
 				>
 					<IconTitle
 						iconPath={path}
-						text={STRINGS.SIGNUP_TEXT}
+						text={STRINGS["SIGNUP_TEXT"]}
 						textType="title"
 						underline={true}
 						useSvg={false}
@@ -163,7 +163,7 @@ class Signup extends Component {
 							constants.api_name || ''
 						)}
 						actionProps={{
-							text: STRINGS.HELP_TEXT,
+							text: STRINGS["HELP_TEXT"],
 							iconPath: ICONS.BLUE_QUESTION,
 							onClick: this.onOpenDialog,
 							useSvg: true,

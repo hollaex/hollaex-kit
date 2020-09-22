@@ -9,8 +9,8 @@ import STRINGS from "../../../config/localizedStrings";
 
 const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
 	const { verification_level, discount = 0 } = data;
-	const LEVEL_OF_ACCOUNT = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
-	const Discount_percentage = discount > 0 ? STRINGS.formatString(STRINGS.SUMMARY.DISCOUNT, discount) : null
+	const LEVEL_OF_ACCOUNT = STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"], verification_level);
+	const Discount_percentage = discount > 0 ? STRINGS.formatString(STRINGS["SUMMARY.DISCOUNT"], discount) : null
 	return (
 		<div className="fee-limits-wrapper">
 			<IconTitle
@@ -47,7 +47,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
 					/>
 				</div>
 			</div>
-			<Button className="mt-4" label={STRINGS.BACK_TEXT} onClick={onClose} />
+			<Button className="mt-4" label={STRINGS["BACK_TEXT"]} onClick={onClose} />
 		</div>
 	);
 };

@@ -206,7 +206,7 @@ class AddTradeTab extends Component {
 						>
 						</div>
 						<div className="text-center trade-tab-app-title">
-              {STRINGS.APP_SUB_TITLE.toUpperCase()}
+              {STRINGS["APP_SUB_TITLE"].toUpperCase()}
 						</div>
 					</div>
 				)}
@@ -216,7 +216,7 @@ class AddTradeTab extends Component {
               {constants.broker_enabled
                 ? <span className="trade_tabs-link link-separator">
 								<Link to={`/quick-trade/${quickPair}`}>
-									{STRINGS.QUICK_TRADE}
+									{STRINGS["QUICK_TRADE"]}
 								</Link>
 							</span>
                 : null
@@ -225,17 +225,17 @@ class AddTradeTab extends Component {
 							<Link to="/account">{STRINGS["ACCOUNTS.TITLE"]}</Link>
 						</span>
 							<span className="trade_tabs-link">
-							<Link to="/wallet">{STRINGS.WALLET_TITLE}</Link>
+							<Link to="/wallet">{STRINGS["WALLET_TITLE"]}</Link>
 						</span>
 						</div>
 					)}
 					<div className="d-flex align-items-center justify-content-between">
 						<div className="w-50">
 							<SearchBox
-								name={STRINGS.SEARCH_ASSETS}
+								name={STRINGS["SEARCH_ASSETS"]}
 								className="trade_tabs-search-field"
 								outlineClassName="trade_tabs-search-outline"
-								placeHolder={`${STRINGS.SEARCH_ASSETS}...`}
+								placeHolder={`${STRINGS["SEARCH_ASSETS"]}...`}
 								handleSearch={this.handleTabSearch}
 							/>
 						</div>

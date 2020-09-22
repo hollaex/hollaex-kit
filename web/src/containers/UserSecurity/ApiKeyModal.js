@@ -112,8 +112,8 @@ class ApiKeyModal extends Component {
 					  ];
 			const nextLabel =
 				notificationType === TYPE_REVOKE
-					? STRINGS.DEVELOPERS_TOKENS_POPUP.DELETE
-					: STRINGS.DEVELOPERS_TOKENS_POPUP.GENERATE;
+					? STRINGS["DEVELOPERS_TOKENS_POPUP.DELETE"]
+					: STRINGS["DEVELOPERS_TOKENS_POPUP.GENERATE"];
 			return (
 				<Notification
 					icon={icon}

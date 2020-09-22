@@ -68,15 +68,15 @@ class Expired extends Component {
 							wrapperClassName="expired_img_icon"
 						/>
 					</div>
-					<div className="expired_text mt-5">{STRINGS.EXPIRED_INFO_1}</div>
-					<div className="expired_text">{STRINGS.EXPIRED_INFO_2}</div>
+					<div className="expired_text mt-5">{STRINGS["EXPIRED_INFO_1"]}</div>
+					<div className="expired_text">{STRINGS["EXPIRED_INFO_2"]}</div>
 					<div className="expired_button">
 						<a
 							href={EXCHANGE_URL}
 							target="blank"
 							className="exir-button mdc-button mdc-button--unelevated exir-button-font"
 						>
-							<Button label={STRINGS.EXPIRED_BUTTON_TXT} />
+							<Button label={STRINGS["EXPIRED_BUTTON_TXT"]} />
 						</a>
 					</div>
 					<div

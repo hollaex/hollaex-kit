@@ -63,7 +63,7 @@ export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
 		)}
 		<CheckboxButton
 			label={
-				STRINGS.ACCOUNT_SECURITY.OTP.CONTENT[otp_enabled ? 'DISABLE' : 'ENABLE']
+				STRINGS[`ACCOUNT_SECURITY.OTP.CONTENT.${otp_enabled ? 'DISABLE' : 'ENABLE'}`]
 			}
 			onClick={requestOTP}
 			disabled={data.requesting}

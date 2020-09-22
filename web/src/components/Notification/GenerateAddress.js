@@ -15,7 +15,7 @@ const GenerateAddressNotification = ({
 	const { fetching, error } = data;
 	const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 	const title = STRINGS.formatString(
-		STRINGS.WALLET_ADDRESS_TITLE,
+		STRINGS["WALLET_ADDRESS_TITLE"],
 		fullname
 	);
 	if (fetching) {
@@ -35,19 +35,19 @@ const GenerateAddressNotification = ({
 			<NotificationContent>
 				{!error ? (
 					<div className="notification-content-header">
-						{STRINGS.WALLET_ADDRESS_MESSAGE}
+						{STRINGS["WALLET_ADDRESS_MESSAGE"]}
 					</div>
 				) : (
 					<div className="notification-content-header warning_text">
-						{STRINGS.WALLET_ADDRESS_ERROR}
+						{STRINGS["WALLET_ADDRESS_ERROR"]}
 					</div>
 				)}
 			</NotificationContent>
 			<div className="d-flex mt-4">
-				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
+				<Button label={STRINGS["BACK_TEXT"]} onClick={onBack} />
 				<div className="separator" />
 				<Button
-					label={STRINGS.WALLET_ADDRESS_GENERATE}
+					label={STRINGS["WALLET_ADDRESS_GENERATE"]}
 					onClick={onGenerate}
 					disabled={!!error}
 				/>

@@ -95,7 +95,7 @@ class TradingVolume extends Component {
 					limitContent.push({
 						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
 						text: STRINGS.formatString(
-							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							3
 						)
 					});
@@ -103,7 +103,7 @@ class TradingVolume extends Component {
 					limitContent.push({
 						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
 						text: STRINGS.formatString(
-							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							4
 						)
 					});
@@ -156,7 +156,7 @@ class TradingVolume extends Component {
 						limitContent.push({
 							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
 							text: STRINGS.formatString(
-								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								3
 							).join('')
 						});
@@ -164,7 +164,7 @@ class TradingVolume extends Component {
 						limitContent.push({
 							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
 							text: STRINGS.formatString(
-								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								4
 							).join('')
 						});

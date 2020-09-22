@@ -86,7 +86,7 @@ class ResetPassword extends Component {
 						subtitle={STRINGS["RESET_PASSWORD.SUBTITLE"]}
 						useSvg={true}
 						actionProps={{
-							text: STRINGS.HELP_TEXT,
+							text: STRINGS["HELP_TEXT"],
 							iconPath: ICONS.BLUE_QUESTION,
 							onClick: this.onOpenDialog,
 							useSvg: true

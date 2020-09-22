@@ -150,12 +150,12 @@ class Login extends Component {
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });
-					error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
+					error._error = STRINGS["VALIDATIONS.OTP_LOGIN"];
 				} else {
 					if (_error === 'User is not activated') {
-						error._error = (STRINGS.VALIDATIONS.FROZEN_ACCOUNT);
+						error._error = (STRINGS["VALIDATIONS.FROZEN_ACCOUNT"]);
 					} else if (_error.indexOf('captcha') > -1) {
-						error._error = (STRINGS.VALIDATIONS.CAPTCHA);
+						error._error = (STRINGS["VALIDATIONS.CAPTCHA"]);
 					} else {
 						error._error = _error;
 					}
@@ -230,7 +230,7 @@ class Login extends Component {
 				>
 					<IconTitle
 						iconPath={path}
-						text={STRINGS.LOGIN_TEXT}
+						text={STRINGS["LOGIN_TEXT"]}
 						textType="title"
 						underline={true}
 						useSvg={false}
@@ -242,7 +242,7 @@ class Login extends Component {
 							constants.api_name || ''
 						)}
 						actionProps={{
-							text: STRINGS.LOGIN.CANT_LOGIN,
+							text: STRINGS["LOGIN.CANT_LOGIN"],
 							iconPath: ICONS.BLUE_ARROW_RIGHT,
 							onClick: this.redirectToResetPassword,
 							useSvg: true,

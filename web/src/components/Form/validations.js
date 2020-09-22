@@ -11,9 +11,9 @@ const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 const usernameRegEx = /^[a-z0-9_]{3,15}$/;
 
 export const required = (value) =>
-	!value ? STRINGS.VALIDATIONS.REQUIRED : undefined;
+	!value ? STRINGS["VALIDATIONS.REQUIRED"] : undefined;
 export const requiredBoolean = (value) =>
-	value === undefined ? STRINGS.VALIDATIONS.REQUIRED : undefined;
+	value === undefined ? STRINGS["VALIDATIONS.REQUIRED"] : undefined;
 export const requiredWithCustomMessage = (message) => (value) =>
 	!value ? message : undefined;
 
@@ -22,17 +22,17 @@ export const maxLength = (length, message) => (value = '') =>
 export const exactLength = (length, message) => (value = '') =>
 	value.length !== length ? message : undefined;
 export const onlyNumbers = (value = '') =>
-	validator.isNumeric(value) ? undefined : STRINGS.VALIDATIONS.ONLY_NUMBERS;
+	validator.isNumeric(value) ? undefined : STRINGS["VALIDATIONS.ONLY_NUMBERS"];
 export const email = (value = '') =>
-	!validator.isEmail(value) ? STRINGS.VALIDATIONS.INVALID_EMAIL : undefined;
+	!validator.isEmail(value) ? STRINGS["VALIDATIONS.INVALID_EMAIL"] : undefined;
 
 export const password = (value = '') =>
 	!passwordRegEx.test(value)
-		? STRINGS.VALIDATIONS.INVALID_PASSWORD_2
+		? STRINGS["VALIDATIONS.INVALID_PASSWORD_2"]
 		: undefined;
 
 export const username = (value = '') =>
-	!usernameRegEx.test(value) ? STRINGS.INVALID_USERNAME : undefined;
+	!usernameRegEx.test(value) ? STRINGS["INVALID_USERNAME"] : undefined;
 
 export const validAddress = (symbol = '', message) => {
 	let currency = symbol.toUpperCase();
@@ -70,7 +70,7 @@ export const validAddress = (symbol = '', message) => {
 		return !valid
 			? message ||
 					STRINGS.formatString(
-						STRINGS.VALIDATIONS.INVALID_CURRENCY,
+						STRINGS["VALIDATIONS.INVALID_CURRENCY"],
 						currency,
 						address
 					)
@@ -80,15 +80,15 @@ export const validAddress = (symbol = '', message) => {
 
 export const minValue = (minValue, message) => (value = 0) =>
 	value < minValue
-		? message || STRINGS.formatString(STRINGS.VALIDATIONS.MIN_VALUE, minValue)
+		? message || STRINGS.formatString(STRINGS["VALIDATIONS.MIN_VALUE"], minValue)
 		: undefined;
 export const maxValue = (maxValue, message) => (value = 0) =>
 	value > maxValue
-		? message || STRINGS.formatString(STRINGS.VALIDATIONS.MAX_VALUE, maxValue)
+		? message || STRINGS.formatString(STRINGS["VALIDATIONS.MAX_VALUE"], maxValue)
 		: undefined;
 export const step = (step, message) => (value = 0) =>
 	math.larger(math.mod(math.bignumber(value), math.bignumber(step)), 0)
-		? message || STRINGS.formatString(STRINGS.VALIDATIONS.STEP, step)
+		? message || STRINGS.formatString(STRINGS["VALIDATIONS.STEP"], step)
 		: undefined;
 export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 	const operation =
@@ -105,7 +105,7 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 		const errorMessage =
 			message ||
 			STRINGS.formatString(
-				STRINGS.VALIDATIONS.INVALID_BALANCE,
+				STRINGS["VALIDATIONS.INVALID_BALANCE"],
 				available,
 				operation
 			);
@@ -143,7 +143,7 @@ export const evaluateOrder = (
 	}
 
 	if (available < orderPrice) {
-		return STRINGS.VALIDATIONS.INSUFFICIENT_BALANCE;
+		return STRINGS["VALIDATIONS.INSUFFICIENT_BALANCE"];
 	}
 	return '';
 };
@@ -192,7 +192,7 @@ export const checkMarketPrice = (
 
 export const isBefore = (
 	before = '',
-	message = STRINGS.VALIDATIONS.INVALID_DATE
+	message = STRINGS["VALIDATIONS.INVALID_DATE"]
 ) => {
 	const beforeDate = before ? new Date(before) : new Date();
 	const beforeValue = beforeDate.toString();
@@ -225,7 +225,7 @@ export const normalizeBTC = (value = 0) => (value ? roundNumber(value, 8) : '');
 export const normalizeBTCFee = (value = 0) =>
 	value ? roundNumber(value, 4) : '';
 
-export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
+export const validateOtp = (message = STRINGS["OTP_FORM.ERROR_INVALID"]) => (
 	value = ''
 ) => {
 	let error = undefined;

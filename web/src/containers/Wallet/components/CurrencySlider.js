@@ -92,14 +92,14 @@ class CurrencySlider extends Component {
 							<Button
 								className="mr-4"
 								label={STRINGS.formatString(
-									STRINGS.RECEIVE_CURRENCY,
+									STRINGS["RECEIVE_CURRENCY"],
 									fullname
 								).join('')}
 								onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
 							/>
 							<Button
 								label={STRINGS.formatString(
-									STRINGS.SEND_CURRENCY,
+									STRINGS["SEND_CURRENCY"],
 									fullname
 								).join('')}
 								onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}

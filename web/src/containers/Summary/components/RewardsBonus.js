@@ -44,7 +44,7 @@ const RewardsBonus = ({
                 <div>
                     {STRINGS["SUMMARY.TASKS"]}
                 </div>
-                <div className="status-header">{STRINGS.STATUS}</div>
+                <div className="status-header">{STRINGS["STATUS"]}</div>
             </div>
             <div>
                 <SummaryRequirements

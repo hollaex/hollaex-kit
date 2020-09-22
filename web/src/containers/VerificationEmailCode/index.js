@@ -23,7 +23,7 @@ class VerifyEmailCode extends Component {
 		if (isUUID(code)) {
 			this.props.checkVerificationData({ verification_code: code });
 		} else {
-			this.setError(STRINGS.VERIFICATION_EMAIL.INVALID_UUID);
+			this.setError(STRINGS["VERIFICATION_EMAIL.INVALID_UUID"]);
 		}
 	}
 
@@ -55,7 +55,7 @@ class VerifyEmailCode extends Component {
 			childProps = {
 				titleSection: {
 					iconPath: ICONS.LETTER,
-					text: STRINGS.ERROR_TEXT
+					text: STRINGS["ERROR_TEXT"]
 				},
 				child: <div>{error || errorMessage}</div>
 			};
@@ -63,14 +63,14 @@ class VerifyEmailCode extends Component {
 			childProps = {
 				titleSection: {
 					iconPath: ICONS.SUCCESS_BLACK,
-					text: STRINGS.SUCCESS_TEXT
+					text: STRINGS["SUCCESS_TEXT"]
 				},
 				child: (
 					<div className="text-center w-100">
 						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_1"]}</div>
 						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_2"]}</div>
 						<Button
-							label={STRINGS.LOGIN_TEXT}
+							label={STRINGS["LOGIN_TEXT"]}
 							className="button-margin"
 							onClick={this.onClickLogin}
 						/>

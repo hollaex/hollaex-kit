@@ -244,8 +244,7 @@ class Verification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-								.TITLE_PHONE
+							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE"]
 						}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
@@ -253,8 +252,7 @@ class Verification extends Component {
 				) : (
 					<CustomTabs
 						title={
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-								.TITLE_PHONE
+							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE"]
 						}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
@@ -472,7 +470,7 @@ class Verification extends Component {
 		const fontClass = getFontClassForLanguage(activeLanguage);
 		const tabProps = {
 			tabs: activeTab < tabs.length ? tabs : [],
-			title: STRINGS.ACCOUNTS.TAB_VERIFICATION,
+			title: STRINGS["ACCOUNTS.TAB_VERIFICATION"],
 			titleIcon: ICONS.ID_GREY
 		};
 		return (

@@ -110,7 +110,7 @@ class Account extends Component {
 		const tabs = [
 			{
 				title: isMobile ? (
-					STRINGS.SUMMARY.TITLE
+					STRINGS["SUMMARY.TITLE"]
 				) : (
 						<CheckTitle
 							title={STRINGS["SUMMARY.TITLE"]}
@@ -121,7 +121,7 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_SECURITY
+					STRINGS["ACCOUNTS.TAB_SECURITY"]
 				) : (
 					<CheckTitle
 						title={STRINGS["ACCOUNTS.TAB_SECURITY"]}
@@ -134,7 +134,7 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_VERIFICATION
+					STRINGS["ACCOUNTS.TAB_VERIFICATION"]
 				) : (
 						<CheckTitle
 							title={STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
@@ -146,7 +146,7 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_SETTINGS
+					STRINGS["ACCOUNTS.TAB_SETTINGS"]
 				) : (
 					<CheckTitle
 						title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}

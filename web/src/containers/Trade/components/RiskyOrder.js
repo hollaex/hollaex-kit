@@ -33,21 +33,21 @@ const RiskyOrder = ({ data, onConfirm, onClose }) => {
                 {STRINGS["USER_SETTINGS.GO_TO_RISK_MANAGMENT"]}
             </Link>
             <div className="mb-2 mt-2">
-                {STRINGS.TYPE}: {data.order.type} {data.order.side}
+                {STRINGS["TYPE"]}: {data.order.type} {data.order.side}
             </div>
             {data.order.price && data.order.size
                 ? <div className="mb-2" >
-                    {STRINGS.AMOUNT}: {(data.order.price * data.order.size)} {symbol.toUpperCase()}
+                    {STRINGS["AMOUNT"]}: {(data.order.price * data.order.size)} {symbol.toUpperCase()}
                 </div>
                 : null
             }
             <div className="d-flex mt-3">
                 <Button
-                    label={STRINGS.BACK_TEXT}
+                    label={STRINGS["BACK_TEXT"]}
                     onClick={onClose} />
                 <div className="mx-2"></div>
                 <Button
-                    label={STRINGS.PROCEED}
+                    label={STRINGS["PROCEED"]}
                     onClick={() => {
                         onConfirm();
                         onClose();

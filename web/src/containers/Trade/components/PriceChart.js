@@ -168,7 +168,7 @@ class ChartComponent extends Component {
 						orderLimits={orderLimits}
 					/>
 				) : (
-					<div>{ready ? STRINGS.NO_DATA : STRINGS.LOADING}</div>
+					<div>{ready ? STRINGS["NO_DATA"] : STRINGS["LOADING"]}</div>
 				)}
 			</div>
 		);

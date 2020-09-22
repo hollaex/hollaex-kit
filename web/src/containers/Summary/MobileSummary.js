@@ -41,7 +41,7 @@ const MobileSummary = ({
 	affiliation
 }) => {
 	const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	// const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,verification_level);
+	// const Title = STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"],verification_level);
 	return (
 		<div
 			className={classnames(
@@ -109,8 +109,8 @@ const MobileSummary = ({
 				<SummaryBlock
 					title={
 						IS_XHT
-							? STRINGS.SUMMARY.XHT_WAVE_AUCTION
-							: STRINGS.SUMMARY.TRADING_VOLUME
+							? STRINGS["SUMMARY.XHT_WAVE_AUCTION"]
+							: STRINGS["SUMMARY.TRADING_VOLUME"]
 					}
 					secondaryTitle={
 						IS_XHT ? (

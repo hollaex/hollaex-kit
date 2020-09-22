@@ -199,7 +199,7 @@ class Trade extends PureComponent {
 
 		const mobileTabs = [
 			{
-				title: STRINGS.TRADE_TAB_CHART,
+				title: STRINGS["TRADE_TAB_CHART"],
 				content: (
 					<MobileChart
 						pair={pair}
@@ -214,7 +214,7 @@ class Trade extends PureComponent {
 				)
 			},
 			{
-				title: STRINGS.TRADE_TAB_TRADE,
+				title: STRINGS["TRADE_TAB_TRADE"],
 				content: (
 					<MobileTrade
 						orderbookProps={orderbookProps}
@@ -235,7 +235,7 @@ class Trade extends PureComponent {
 				)
 			},
 			{
-				title: STRINGS.TRADE_TAB_ORDERS,
+				title: STRINGS["TRADE_TAB_ORDERS"],
 				content: (
 					<OrdersWrapper
 						isLoggedIn={isLoggedIn()}
@@ -285,7 +285,7 @@ class Trade extends PureComponent {
 							>
 								<TradeBlock
 									isLoggedIn={isLoggedIn()}
-									title={STRINGS.ORDERBOOK}
+									title={STRINGS["ORDERBOOK"]}
 									pairData={pairData}
 									pair={pair}
 								>
@@ -317,7 +317,7 @@ class Trade extends PureComponent {
 										)}
 									>
 										<TradeBlock
-											title={STRINGS.ORDER_ENTRY}
+											title={STRINGS["ORDER_ENTRY"]}
 											pairData={pairData}
 											pair={pair}
 										>
@@ -338,7 +338,7 @@ class Trade extends PureComponent {
 										</TradeBlock>
 									</div>
 									<TradeBlock
-										title={STRINGS.CHART}
+										title={STRINGS["CHART"]}
 										setRef={this.setChartRef}
 										className="f-1 overflow-x"
 										pairData={pairData}
@@ -384,7 +384,7 @@ class Trade extends PureComponent {
 								)}
 							>
 								<TradeBlock
-									title={STRINGS.PUBLIC_SALES}
+									title={STRINGS["PUBLIC_SALES"]}
 									pairData={pairData}
 									pair={pair}>
 									<TradeHistory

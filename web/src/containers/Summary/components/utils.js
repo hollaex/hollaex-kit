@@ -23,12 +23,12 @@ export const getXhtRequirements = (user, coins) => {
 	}
 	const verificationObj = {
 		'1': {
-			title: STRINGS.USER_VERIFICATION.MAKE_FIRST_DEPOSIT,
+			title: STRINGS["USER_VERIFICATION.MAKE_FIRST_DEPOSIT"],
 			completed: walletDeposit,
 			status: walletDeposit ? 3 : 0
 		},
 		'2': {
-			title: STRINGS.USER_VERIFICATION.OBTAIN_XHT,
+			title: STRINGS["USER_VERIFICATION.OBTAIN_XHT"],
 			completed: xhtDeposit,
 			status: xhtDeposit ? 3 : 0
 		}
@@ -77,27 +77,27 @@ export const getBonusRequirements = (user, coins, affiliation = {}) => {
 	}
 	const verificationObj = {
 		'1': {
-			title: STRINGS.SUMMARY.MAKE_FIRST_DEPOSIT,
+			title: STRINGS["SUMMARY.MAKE_FIRST_DEPOSIT"],
 			completed: walletDeposit,
 			status: walletDeposit ? 3 : 0
 		},
 		'2': {
-			title: STRINGS.SUMMARY.COMPLETE_ACC_VERIFICATION,
+			title: STRINGS["SUMMARY.COMPLETE_ACC_VERIFICATION"],
 			completed: accVerified,
 			status: accVerified ? 3 : 0
 		},
 		'3': {
-			title: STRINGS.SUMMARY.INVITE_USER,
+			title: STRINGS["SUMMARY.INVITE_USER"],
 			completed: !!affiliation.count,
 			status: affiliation.count ? 3 : 0
 		},
 		'4': {
-			title: STRINGS.SUMMARY.JOIN_HAP,
+			title: STRINGS["SUMMARY.JOIN_HAP"],
 			completed: user.is_hap,
 			status: user.is_hap ? 3 : 0
 		},
 		'5': {
-			title: STRINGS.SUMMARY.EARN_RUNNING_EXCHANGE,
+			title: STRINGS["SUMMARY.EARN_RUNNING_EXCHANGE"],
 			completed: false,
 			status: 0
 		}
@@ -151,7 +151,7 @@ export const getLastMonthVolume = (tradeData = {}, prices = {}, pairs = {}) => {
 
 export const generateWaveHeaders = (onCancel) => [
 	{
-		label: STRINGS.SUMMARY.WAVE_NUMBER,
+		label: STRINGS["SUMMARY.WAVE_NUMBER"],
 		key: 'id',
 		renderCell: ({ no = 0, status = '' }, key, index) => {
 			return (
@@ -174,7 +174,7 @@ export const generateWaveHeaders = (onCancel) => [
 		}
 	},
 	{
-		label: STRINGS.AMOUNT,
+		label: STRINGS["AMOUNT"],
 		key: 'amount',
 		renderCell: ({ amount = '', status = '' }, key, index) => {
 			return (
@@ -191,7 +191,7 @@ export const generateWaveHeaders = (onCancel) => [
 		}
 	},
 	{
-		label: STRINGS.FILLED,
+		label: STRINGS["FILLED"],
 		key: 'filled',
 		renderCell: ({ filled = 0, status = '' }, key, index) => {
 			return (
@@ -209,7 +209,7 @@ export const generateWaveHeaders = (onCancel) => [
 	},
 	{
 		label: STRINGS.formatString(
-			STRINGS.LOWEST_PRICE,
+			STRINGS["LOWEST_PRICE"],
 			BASE_CURRENCY.toUpperCase()
 		).join(''),
 		key: 'low',
@@ -222,13 +222,13 @@ export const generateWaveHeaders = (onCancel) => [
 				</td>
 			) : (
 				<td key={index} className="wave-phase-pending">
-					{STRINGS.PENDING}
+					{STRINGS["PENDING"]}
 				</td>
 			);
 		}
 	},
 	{
-		label: STRINGS.PHASE,
+		label: STRINGS["PHASE"],
 		key: 'phase',
 		renderCell: ({ phase = 0, status = '' }, key, index) => {
 			return (
@@ -245,19 +245,19 @@ export const generateWaveHeaders = (onCancel) => [
 		}
 	},
 	{
-		label: STRINGS.STATUS,
+		label: STRINGS["STATUS"],
 		key: 'status',
 		renderCell: ({ status = '', updated_at = '' }, key, index) => {
 			let statusTxt =
 				status === true
-					? STRINGS.USER_VERIFICATION.COMPLETED
-					: STRINGS.INCOMING;
+					? STRINGS["USER_VERIFICATION.COMPLETED"]
+					: STRINGS["INCOMING"];
 			let updated =
 				status === true ? (
 					`(${moment(updated_at).format('MMMM Do YYYY, hh:mm:ss')})`
 				) : (
 					<Link className="blue-link" to="/trade/xht-usdt">
-						({STRINGS.GO_TRADE})
+						({STRINGS["GO_TRADE"]})
 					</Link>
 				);
 			return status === 'TBA' ? (

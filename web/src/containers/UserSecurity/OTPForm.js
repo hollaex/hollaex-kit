@@ -9,7 +9,7 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 	const formFields = {
 		code: {
 			type: 'number',
-			placeholder: STRINGS.ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER,
+			placeholder: STRINGS["ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER"],
 			validate: [required],
 			fullWidth: true
 		}

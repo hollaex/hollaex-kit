@@ -9,15 +9,15 @@ export const generateFormFields = () => ({
 		type: 'password',
 		validate: [required, password],
 		fullWidth: true,
-		label: STRINGS.FORM_FIELDS.PASSWORD_LABEL,
-		placeholder: STRINGS.FORM_FIELDS.PASSWORD_PLACEHOLDER
+		label: STRINGS["FORM_FIELDS.PASSWORD_LABEL"],
+		placeholder: STRINGS["FORM_FIELDS.PASSWORD_PLACEHOLDER"]
 	},
 	password_repeat: {
 		type: 'password',
 		validate: [required],
 		fullWidth: true,
-		label: STRINGS.FORM_FIELDS.PASSWORD_REPEAT_LABEL,
-		placeholder: STRINGS.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER
+		label: STRINGS["FORM_FIELDS.PASSWORD_REPEAT_LABEL"],
+		placeholder: STRINGS["FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER"]
 	}
 });
 
@@ -26,7 +26,7 @@ const validate = (values) => {
 	const errors = {};
 
 	if (password && password_repeat && password !== password_repeat) {
-		errors.password_repeat = STRINGS.VALIDATIONS.PASSWORDS_DONT_MATCH;
+		errors.password_repeat = STRINGS["VALIDATIONS.PASSWORDS_DONT_MATCH"];
 	}
 
 	return errors;

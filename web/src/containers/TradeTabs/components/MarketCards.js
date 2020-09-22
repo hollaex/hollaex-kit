@@ -56,7 +56,7 @@ const MarketCards = ({ page, pageSize, count, handleClick, goToPreviousPage, goT
                       {fullname}/{pairTwo.fullname}
                     </div>
                     <div>
-                      {STRINGS.PRICE}:
+                      {STRINGS["PRICE"]}:
                       <span className="title-font ml-1">
 												{formatToCurrency(ticker.close, increment_price)}
 											</span>

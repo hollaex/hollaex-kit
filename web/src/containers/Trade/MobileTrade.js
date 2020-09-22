@@ -76,7 +76,7 @@ const MobileTrade = ({
                   }
 				</div>
               {/* <Link className={classnames('blue-link', 'mb-2', 'caps')} to={`/quick-trade/${pair}`}>
-				{STRINGS.QUICK_TRADE_MODE}
+				{STRINGS["QUICK_TRADE_MODE"]}
 			</Link> */}
 				<OrderEntry
 					submitOrder={onSubmitOrder}
@@ -90,7 +90,7 @@ const MobileTrade = ({
 					setSizeRef={setSizeRef}
 				/>
 			</TradeBlock>
-			<TradeBlock title={STRINGS.ORDERBOOK} className="order-entry">
+			<TradeBlock title={STRINGS["ORDERBOOK"]} className="order-entry">
               {orderbookReady && <Orderbook {...orderbookProps} />}
 			</TradeBlock>
 		</div>

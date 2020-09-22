@@ -138,7 +138,7 @@ class OrderEntry extends Component {
 			orderPrice === 0 &&
 			size >= orderLimits[this.props.pair].SIZE.MIN
 		) {
-			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
+			outsideFormError = STRINGS["QUICK_TRADE_ORDER_NOT_FILLED"];
 		} else if (type === 'market' && side === 'buy') {
 			const values = {
 				size,
@@ -284,13 +284,13 @@ class OrderEntry extends Component {
 			type: {
 				name: 'type',
 				type: 'tab',
-				options: STRINGS.TYPES,
+				options: STRINGS["TYPES"],
 				validate: [required]
 			},
 			side: {
 				name: 'side',
 				type: 'select',
-				options: STRINGS.SIDES,
+				options: STRINGS["SIDES"],
 				validate: [required]
 			},
 			size: {
@@ -298,13 +298,13 @@ class OrderEntry extends Component {
 				label: (
 					<div style={{ display: 'flex' }}>
 						{STRINGS.formatString(
-							STRINGS.STRING_WITH_PARENTHESIS,
-							STRINGS.SIZE,
+							STRINGS["STRING_WITH_PARENTHESIS"],
+							STRINGS["SIZE"],
 							<div
 								className="pointer text-uppercase blue-link"
 								onClick={this.setMax}
 							>
-								{STRINGS.CALCULATE_MAX}
+								{STRINGS["CALCULATE_MAX"]}
 							</div>
 						)}
 					</div>
@@ -336,7 +336,7 @@ class OrderEntry extends Component {
 			},
 			price: {
 				name: 'price',
-				label: STRINGS.PRICE,
+				label: STRINGS["PRICE"],
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeFloat,

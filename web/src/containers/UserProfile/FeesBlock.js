@@ -29,21 +29,21 @@ const FeeRow = ({ data = {}, headers = [], isUserLevel = false, row }) => {
 };
 
 const generateRowsData = (pairsFees) => {
-	const headers = [STRINGS.LEVELS.LABEL_LEVEL];
+	const headers = [STRINGS["LEVELS.LABEL_LEVEL"]];
 	const keys = [];
 	const temporalData = {};
 	Object.entries(pairsFees).forEach(
 		([pairName, { maker_fees, taker_fees }]) => {
 			headers.push(
 				STRINGS.formatString(
-					STRINGS.LEVELS.LABEL_PAIR_MAKER_FEE,
+					STRINGS["LEVELS.LABEL_PAIR_MAKER_FEE"],
 					pairName.toUpperCase()
 				)
 			);
 			keys.push(`${pairName}_maker_fee`);
 			headers.push(
 				STRINGS.formatString(
-					STRINGS.LEVELS.LABEL_PAIR_TAKER_FEE,
+					STRINGS["LEVELS.LABEL_PAIR_TAKER_FEE"],
 					pairName.toUpperCase()
 				)
 			);

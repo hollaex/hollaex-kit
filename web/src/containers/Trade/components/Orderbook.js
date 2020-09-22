@@ -105,14 +105,14 @@ class Orderbook extends Component {
 				<EventListener target="window" onResize={this.scrollTop} />
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS.PRICE_CURRENCY, symbol.toUpperCase())}
+						{STRINGS.formatString(STRINGS["PRICE_CURRENCY"], symbol.toUpperCase())}
 					</div>
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, pairBase)}
+						{STRINGS.formatString(STRINGS["AMOUNT_SYMBOL"], pairBase)}
 					</div>
 				</div>
 				<div className="trade_asks-limit_bar">
-					<LimitBar text={STRINGS.ORDERBOOK_SELLERS} />
+					<LimitBar text={STRINGS["ORDERBOOK_SELLERS"]} />
 				</div>
 				<div
 					ref={this.setRefs('wrapper')}
@@ -142,10 +142,10 @@ class Orderbook extends Component {
 						ref={this.setRefs('spreadWrapper')}
 					>
 						{STRINGS.formatString(
-							STRINGS.ORDERBOOK_SPREAD,
+							STRINGS["ORDERBOOK_SPREAD"],
 							<div className="trade_orderbook-spread-text">
 								{STRINGS.formatString(
-									STRINGS.ORDERBOOK_SPREAD_PRICE,
+									STRINGS["ORDERBOOK_SPREAD_PRICE"],
 									calculateSpread(asks, bids, pair, pairData),
 									symbol.toUpperCase()
 								)}
@@ -173,7 +173,7 @@ class Orderbook extends Component {
 					</div>
 				</div>
 				<div className="trade_bids-limit_bar">
-					<LimitBar text={STRINGS.ORDERBOOK_BUYERS} />
+					<LimitBar text={STRINGS["ORDERBOOK_BUYERS"]} />
 				</div>
 			</div>
 		);

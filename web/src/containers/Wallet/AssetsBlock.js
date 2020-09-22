@@ -102,8 +102,8 @@ const AssetsBlock = ({
 						BASE_CURRENCY && IS_XHT
 						? <div>
                 {STRINGS.formatString(
-                  STRINGS.WALLET_DEPOSIT_USD,
-									<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
+                  STRINGS["WALLET_DEPOSIT_USD"],
+									<span className="blue-link pointer" onClick={openContactUs}>{STRINGS["CONTACT_US_TEXT"]}</span>
                 )}
 							</div>
 							: BASE_CURRENCY && isValidBase ?
@@ -116,8 +116,8 @@ const AssetsBlock = ({
 				</div>
 				<div className="d-flex justify-content-between">
 					<SearchBox
-						name={`${STRINGS.WALLET_ALL_ASSETS}_${STRINGS.SEARCH_TXT}`}
-						placeHolder={`${STRINGS.SEARCH_TXT}...`}
+						name={`${STRINGS["WALLET_ALL_ASSETS"]}_${STRINGS["SEARCH_TXT"]}`}
+						placeHolder={`${STRINGS["SEARCH_TXT"]}...`}
 						handleSearch={handleSearch}
 					/>
 					<AssetsBlockForm
@@ -129,11 +129,11 @@ const AssetsBlock = ({
 				<thead>
 				<tr className="table-bottom-border">
 					<th />
-					<th>{STRINGS.CURRENCY}</th>
-					<th>{STRINGS.AMOUNT}</th>
+					<th>{STRINGS["CURRENCY"]}</th>
+					<th>{STRINGS["AMOUNT"]}</th>
 					<th className="td-amount" />
-					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
-					{!isMobile && <th>{STRINGS.TRADE_TAB_TRADE}</th>}
+					<th>{STRINGS["DEPOSIT_WITHDRAW"]}</th>
+					{!isMobile && <th>{STRINGS["TRADE_TAB_TRADE"]}</th>}
 				</tr>
 				</thead>
 				<tbody>
@@ -186,7 +186,7 @@ const AssetsBlock = ({
                   {wallets[key] ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
-												text={STRINGS.WALLET_BUTTON_BASE_DEPOSIT}
+												text={STRINGS["WALLET_BUTTON_BASE_DEPOSIT"]}
 												iconPath={ICONS.BLUE_PLUS}
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												useSvg={true}
@@ -195,7 +195,7 @@ const AssetsBlock = ({
 												disable={!allow_deposit}
 											/>
 											<ActionNotification
-												text={STRINGS.WALLET_BUTTON_BASE_WITHDRAW}
+												text={STRINGS["WALLET_BUTTON_BASE_WITHDRAW"]}
 												iconPath={ICONS.BLUE_PLUS}
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
 												useSvg={true}
@@ -207,7 +207,7 @@ const AssetsBlock = ({
                   ) : (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
-												text={STRINGS.GENERATE_WALLET}
+												text={STRINGS["GENERATE_WALLET"]}
 												status="information"
 												iconPath={ICONS.BLUE_PLUS}
 												onClick={() => onOpenDialog(key)}
@@ -222,7 +222,7 @@ const AssetsBlock = ({
 								{
 									!isMobile && <td>
 									<ActionNotification
-										text={STRINGS.TRADE_TAB_TRADE}
+										text={STRINGS["TRADE_TAB_TRADE"]}
 										iconPath={ICONS.BLUE_PLUS}
 										onClick={() => goToTrade(pair)}
 										useSvg={true}

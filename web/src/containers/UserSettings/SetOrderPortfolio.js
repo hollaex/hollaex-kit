@@ -11,7 +11,7 @@ import STRINGS from '../../config/localizedStrings';
 const fields = {
     order_portfolio_percentage: {
         type: 'number',
-        label: STRINGS.USER_SETTINGS.ORDER_PORTFOLIO_LABEL,
+        label: STRINGS["USER_SETTINGS.ORDER_PORTFOLIO_LABEL"],
         validate: [
             required,
             minValue(1),
@@ -38,7 +38,7 @@ const Form = ({
             </div>
             {error && <div className="warning_text">{getErrorLocalized(error)}</div>}
             <div className="d-flex mt-3">
-                <Button label={STRINGS.BACK_TEXT} onClick={onClose} />
+                <Button label={STRINGS["BACK_TEXT"]} onClick={onClose} />
                 <div className="mx-2"></div>
                 <Button label={STRINGS["USER_SETTINGS.SET_TXT"]} disabled={pristine || submitting || !valid} />
             </div>

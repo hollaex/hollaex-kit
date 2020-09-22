@@ -31,28 +31,23 @@ class BankVerification extends Component {
 		formFields.bank_name = {
 			type: 'text',
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.BANK_NAME_LABEL,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL"],
 			placeholder:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.BANK_NAME_PLACEHOLDER,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_PLACEHOLDER"],
 			validate: [required],
 			fullWidth: isMobile
 		};
 		formFields.account_number = {
 			type: 'text',
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_NUMBER_LABEL,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL"],
 			placeholder:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_NUMBER_PLACEHOLDER,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER"],
 			validate: [
 				required,
 				maxLength(
 					50,
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS
-						.ACCOUNT_NUMBER_MAX_LENGTH
+					STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH"]
 				)
 			],
 			maxLength: 50,
@@ -126,7 +121,7 @@ class BankVerification extends Component {
 						<div className="separator" />
 						<div className="w-50">
 							<Button
-								label={STRINGS.SUBMIT}
+								label={STRINGS["SUBMIT"]}
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
 								disabled={pristine || submitting || !valid || !!error}

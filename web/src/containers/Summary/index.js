@@ -190,7 +190,7 @@ class Summary extends Component {
 		} = this.state;
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		let traderAccTitle = STRINGS.formatString(
-			STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,
+			STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"],
 			verification_level
 		);
 		return (

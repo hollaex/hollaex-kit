@@ -15,7 +15,7 @@ import STRINGS from '../../../config/localizedStrings';
 
 const generateHeaders = (pairData = {}, onCancel) => [
 	{
-		label: STRINGS.PAIR,
+		label: STRINGS["PAIR"],
 		key: 'pair',
 		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 		renderCell: ({ symbol }, key, index) => {
@@ -27,7 +27,7 @@ const generateHeaders = (pairData = {}, onCancel) => [
 		}
 	},
 	{
-		label: STRINGS.SIDE,
+		label: STRINGS["SIDE"],
 		key: 'side',
 		renderCell: ({ side = '' }, key, index) => {
 			return (
@@ -49,21 +49,21 @@ const generateHeaders = (pairData = {}, onCancel) => [
 	//   },
 	// },
 	{
-		label: STRINGS.TIME,
+		label: STRINGS["TIME"],
 		key: 'created_At',
 		renderCell: ({ created_at = '' }, key, index) => {
 			return <td key={index}>{getFormatTimestamp(created_at)}</td>;
 		}
 	},
 	{
-		label: STRINGS.PRICE,
+		label: STRINGS["PRICE"],
 		key: 'price',
 		renderCell: ({ price = 0 }, key, index) => {
 			return <td key={index}>{formatToCurrency(price, pairData.increment_price)}</td>;
 		}
 	},
 	{
-		label: STRINGS.AMOUNT,
+		label: STRINGS["AMOUNT"],
 		key: 'size',
 		exportToCsv: ({ size = 0 }) => size,
 		renderCell: ({ size = 0, ...rest }, key, index) => {
@@ -71,14 +71,14 @@ const generateHeaders = (pairData = {}, onCancel) => [
 		}
 	},
 	{
-		label: STRINGS.REMAINING,
+		label: STRINGS["REMAINING"],
 		key: 'remaining',
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {
 			return <td key={index}>{formatToCurrency(subtract(size, filled), pairData.increment_price)}</td>;
 		}
 	},
 	!isMobile && {
-		label: STRINGS.STATUS,
+		label: STRINGS["STATUS"],
 		key: 'status',
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {
 			const fullfilled = formatBaseAmount(
@@ -95,7 +95,7 @@ const generateHeaders = (pairData = {}, onCancel) => [
 				>
 					<div className="cell-wrapper">
 						<div className="cell_value-wrapper text_overflow">
-							{STRINGS.formatString(STRINGS.FULLFILLED, fullfilled)}
+							{STRINGS.formatString(STRINGS["FULLFILLED"], fullfilled)}
 							<span
 								className="cell_value-bar"
 								style={{ width: `${fullfilled}%` }}
@@ -107,13 +107,13 @@ const generateHeaders = (pairData = {}, onCancel) => [
 		}
 	},
 	{
-		label: STRINGS.CANCEL,
+		label: STRINGS["CANCEL"],
 		key: 'cancel',
 		renderCell: ({ size = 0, filled = 0, id }, key, index) => {
 			return (
 				<td key={index} style={{ position: 'relative' }}>
 					<ActionNotification
-						text={STRINGS.CANCEL}
+						text={STRINGS["CANCEL"]}
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={() => onCancel(id)}
 						className="relative"

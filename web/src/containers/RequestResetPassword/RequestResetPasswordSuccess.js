@@ -17,9 +17,9 @@ const RequestResetPasswordSuccess = ({ onLoginClick, onContactUs }) => (
 			{STRINGS["REQUEST_RESET_PASSWORD_SUCCESS.TEXT"]}
 		</div>
 		<div className="button-margin d-flex">
-			<Button label={STRINGS.LOGIN_TEXT} onClick={onLoginClick} />
+			<Button label={STRINGS["LOGIN_TEXT"]} onClick={onLoginClick} />
 			<div className="separator" />
-			<Button label={STRINGS.CONTACT_US_TEXT} onClick={onContactUs} />
+			<Button label={STRINGS["CONTACT_US_TEXT"]} onClick={onContactUs} />
 		</div>
 	</div>
 );

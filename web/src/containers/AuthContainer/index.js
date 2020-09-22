@@ -121,9 +121,9 @@ class AuthContainer extends Component {
 							}
 						)}>
 							{expiryData.is_expired
-								? STRINGS.EXPIRY_EXCHANGE_MSG
+								? STRINGS["EXPIRY_EXCHANGE_MSG"]
 								: STRINGS.formatString(
-									STRINGS.TRIAL_EXCHANGE_MSG,
+									STRINGS["TRIAL_EXCHANGE_MSG"],
 									constants.api_name || '',
 									expiryData.daysLeft
 								)

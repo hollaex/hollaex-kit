@@ -16,7 +16,7 @@ const EmailRequestSuccess = ({ onClick, ...rest }) => {
 			<div className="signup_success-content">
 				<p>{STRINGS["VERIFICATION_EMAIL_REQUEST_SUCCESS.TEXT_1"]}</p>
 			</div>
-			<Button label={STRINGS.CONTACT_US_TEXT} onClick={onClick} />
+			<Button label={STRINGS["CONTACT_US_TEXT"]} onClick={onClick} />
 		</div>
 	);
 };

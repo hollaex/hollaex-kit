@@ -15,7 +15,7 @@ export const renderBankInformation = (
 	const fields = [
 		{
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL"],
 			value: bank_name,
 			key: 'bank_name',
 			allowCopy,
@@ -23,8 +23,7 @@ export const renderBankInformation = (
 		},
 		{
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_OWNER_LABEL,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_OWNER_LABEL"],
 			value: account_owner,
 			key: 'account_owner',
 			allowCopy,
@@ -32,8 +31,7 @@ export const renderBankInformation = (
 		},
 		{
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_NUMBER_LABEL,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL"],
 			value: account_number,
 			key: 'account_number',
 			allowCopy,
@@ -66,7 +64,7 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 		<div className="text">
 			<p>
 				{STRINGS.formatString(
-					STRINGS.AVAILABLE_BALANCE_TEXT,
+					STRINGS["AVAILABLE_BALANCE_TEXT"],
 					fullname,
 					available,
 					shortName
@@ -78,7 +76,7 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 
 export const renderNeedHelpAction = (openContactForm, links = {}) => (
 	<ActionNotification
-		text={STRINGS.NEED_HELP_TEXT}
+		text={STRINGS["NEED_HELP_TEXT"]}
 		status="information"
 		iconPath={ICONS.BLUE_QUESTION}
 		onClick={() => openContactForm({ helpdesk: links.helpdesk })}

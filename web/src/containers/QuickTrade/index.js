@@ -398,7 +398,7 @@ class QuickTradeContainer extends PureComponent {
 										/>
 										<footer className="d-flex pt-4">
 											<Button
-												label={STRINGS.CLOSE_TEXT}
+												label={STRINGS["CLOSE_TEXT"]}
 												onClick={this.onCloseDialog}
 												className="mr-2"
 											/>

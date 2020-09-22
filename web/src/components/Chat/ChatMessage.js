@@ -45,7 +45,7 @@ const ReadMore = ({ onClick }) => (
 const Timestamp = ({ timestamp }) => (
 	<div className="timestamp">
 		{Math.abs(moment().diff(timestamp)) < TIME_LIMIT
-			? STRINGS.JUST_NOW
+			? STRINGS["JUST_NOW"]
 			: moment(timestamp).fromNow(true)}
 	</div>
 );
@@ -168,7 +168,7 @@ class ChatMessageWithImage extends Component {
 						onClick={() => this.toggleImage(!hideImage)}
 					>
 						<span className="toggle-content">
-							{hideImage ? STRINGS.CHAT.SHOW_IMAGE : STRINGS.CHAT.HIDE_IMAGE}
+							{hideImage ? STRINGS["CHAT.SHOW_IMAGE"] : STRINGS["CHAT.HIDE_IMAGE"]}
 						</span>
 					</div>
 				</div>

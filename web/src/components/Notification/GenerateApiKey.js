@@ -11,7 +11,7 @@ export const GenerateApiKey = (props) => {
 		<NotificationWraper icon={icon} className="new-order-notification">
 			<NotificationContent>{children}</NotificationContent>
 			<div className="d-flex">
-				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
+				<Button label={STRINGS["BACK_TEXT"]} onClick={onBack} />
 				<div className="separator" />
 				<Button label={nextLabel} onClick={onNext} disabled={disabledNext} />
 			</div>
@@ -26,7 +26,7 @@ export const CreatedApiKey = (props) => {
 		<NotificationWraper icon={icon} iconType="svg" className="new-order-notification">
 			<NotificationContent>{children}</NotificationContent>
 			<div className="d-flex">
-				<Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />
+				<Button label={STRINGS["CLOSE_TEXT"]} onClick={onClose} />
 			</div>
 		</NotificationWraper>
 	);

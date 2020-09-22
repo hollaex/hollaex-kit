@@ -29,9 +29,9 @@ class Form extends Component {
 		const formValues = {
 			otp_code: {
 				type: 'number',
-				label: STRINGS.OTP_FORM.OTP_LABEL,
-				placeholder: STRINGS.OTP_FORM.OTP_PLACEHOLDER,
-				validate: [required, validateOtp(STRINGS.OTP_FORM.ERROR_INVALID)],
+				label: STRINGS["OTP_FORM.OTP_LABEL"],
+				placeholder: STRINGS["OTP_FORM.OTP_PLACEHOLDER"],
+				validate: [required, validateOtp(STRINGS["OTP_FORM.ERROR_INVALID"])],
 				fullWidth: true
 			}
 		};
@@ -70,7 +70,7 @@ class Form extends Component {
 					</span>
 					{onClickHelp && (
 						<ActionNotification
-							text={STRINGS.NEED_HELP_TEXT}
+							text={STRINGS["NEED_HELP_TEXT"]}
 							onClick={onClickHelp}
 							iconPath={ICONS.BLUE_QUESTION}
 							status="information"
