@@ -101,7 +101,9 @@ const enableOrDisablePlugin = (type, plugin) => {
 					type: 'update', data: { kit: data.kit }
 				})
 			);
-			return data.kit.plugins.enabled.length !== 0 ? data.kit.plugins.enabled.split(',') : [];
+			return {
+				enabled: data.kit.plugins.enabled.length !== 0 ? data.kit.plugins.enabled.split(',') : []
+			};
 		});
 };
 
