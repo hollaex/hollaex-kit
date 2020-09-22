@@ -15,7 +15,7 @@ const { getUserByKitId } = require('./users');
 const { client } = require('./database/redis');
 const crypto = require('crypto');
 const uuid = require('uuid/v4');
-const { all } = require('bluebird');
+const { all, reject } = require('bluebird');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 
 // const validateWithdraw = (currency, address, amount) => {
@@ -24,15 +24,15 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 
 const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, captcha, ip, domain) => {
 	if (!subscribedToCoin(currency)) {
-		return new Promise((resolve, reject) => reject(`Invalid currency: "${currency}"`));
+		return reject(new Error(`Invalid currency: "${currency}"`));
 	}
 
 	if (amount <= 0) {
-		return new Promise((resolve, reject) => reject('Invalid amount'));
+		return reject(new Error('Invalid amount'));
 	}
 
 	if (!getKitCoin(currency).allow_withdrawal) {
-		return new Promise((resolve, reject) => reject(`Withdrawals are disabled for ${currency}`));
+		return reject(new Error(`Withdrawals are disabled for ${currency}`));
 	}
 
 	return checkCaptcha(captcha, ip)
@@ -118,7 +118,7 @@ const cancelUserWithdrawal = (userId, transactionId) => {
 
 const checkTransaction = (currency, transactionId, address, isTestnet = false) => {
 	if (!subscribedToCoin(currency)) {
-		return new Promise((resolve, reject) => reject('Invalid currency'));
+		return reject(new Error('Invalid currency'));
 	}
 
 	return getNodeLib().checkTransactionNetwork(currency, transactionId, address, isTestnet);
@@ -126,7 +126,7 @@ const checkTransaction = (currency, transactionId, address, isTestnet = false) =
 
 const performWithdrawal = (userId, address, currency, amount, fee, otpCode) => {
 	if (!subscribedToCoin(currency)) {
-		return new Promise((resolve, reject) => reject('Invalid currency'));
+		return reject(new Error('Invalid currency'));
 	}
 	return getUserByKitId(userId)
 		.then((user) => {

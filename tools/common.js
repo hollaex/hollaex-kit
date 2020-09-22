@@ -21,6 +21,7 @@ const { each, difference } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
+const { reject } = require('bluebird');
 
 /**
  * Checks if url given is a valid url.
@@ -104,7 +105,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
-		return new Promise((resolve, reject) => reject('No new data given'));
+		return reject(new Error('No new data given'));
 	}
 
 	if (scopes.indexOf(ROLES.TECH) > -1) {
@@ -117,7 +118,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.secrets), TECH_AUTHORIZED_KIT_SECRETS));
 		}
 		if (unauthorizedKeys.length > 0) {
-			return new Promise((resolve, reject) => reject(`Tech users cannot update these values: ${unauthorizedKeys}`));
+			return reject(new Error(`Tech users cannot update these values: ${unauthorizedKeys}`));
 		}
 	}
 
@@ -183,11 +184,11 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 	KIT_SECRETS_KEYS.forEach((key) => {
 		if (newKitSecrets[key]) {
 			if (role === 'tech' && key === 'emails' && newKitSecrets[key] && newKitSecrets[key].send_email_to_support !== existingKitSecrets[key].send_email_to_support) {
-				return new Promise((resolve, reject) => reject('Tech users cannot update the value of send_email_copy'));
+				return reject(new Error('Tech users cannot update the value of send_email_copy'));
 			}
 			if (!Array.isArray(existingKitSecrets[key]) && typeof existingKitSecrets[key] === 'object') {
 				if (Object.values(newKitSecrets[key]).includes(SECRET_MASK)) {
-					return new Promise((resolve, reject) => reject('Masked value given'));
+					return reject(new Error('Masked value given'));
 				}
 				joinedKitSecrets[key] = { ...existingKitSecrets[key], ...newKitSecrets[key] };
 			} else {
@@ -202,7 +203,7 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 
 const sendEmailToSupport = (email, category, subject, description) => {
 	if (!SEND_CONTACT_US_EMAIL) {
-		return new Promise((resolve, reject) => reject('Cannot send email to support at this time'));
+		return reject(new Error('Cannot send email to support at this time'));
 	}
 
 	const emailData = {

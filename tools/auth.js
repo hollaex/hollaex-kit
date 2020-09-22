@@ -35,7 +35,7 @@ const otp = require('otp');
 const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
 const uuid = require('uuid/v4');
-const { all } = require('bluebird');
+const { all, resolve, reject } = require('bluebird');
 const { isValidPassword } = require('./users');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -221,31 +221,29 @@ const getApiKeySecret = () => {
 };
 
 const verifyNetworkHmacToken = (req) => {
-	return new Promise((resolve, reject) => {
-		const apiKey = req.headers ? req.headers['api-key'] : undefined;
-		const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
-		const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
+	const apiKey = req.headers ? req.headers['api-key'] : undefined;
+	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
+	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
 
-		const systemKeySecret = getApiKeySecret();
+	const systemKeySecret = getApiKeySecret();
 
-		if (!apiKey) {
-			reject(API_KEY_NULL);
-		} else if (!apiSignature) {
-			reject(API_SIGNATURE_NULL);
-		} else if (moment().unix() > apiExpires) {
-			reject(API_REQUEST_EXPIRED);
-		} else {
-			const isSignatureValid = checkHmacSignature(
-				systemKeySecret.apiSecret,
-				req
-			);
-			if (!isSignatureValid) {
-				reject(API_SIGNATURE_INVALID);
-			}
+	if (!apiKey) {
+		return reject(new Error(API_KEY_NULL));
+	} else if (!apiSignature) {
+		return reject(new Error(API_SIGNATURE_NULL));
+	} else if (moment().unix() > apiExpires) {
+		return reject(new Error(API_REQUEST_EXPIRED));
+	} else {
+		const isSignatureValid = checkHmacSignature(
+			systemKeySecret.apiSecret,
+			req
+		);
+		if (!isSignatureValid) {
+			return reject(new Error(API_SIGNATURE_INVALID));
 		}
+	}
 
-		resolve();
-	});
+	return resolve();
 };
 
 /**
@@ -279,12 +277,12 @@ const userIsDeactivated = (deactivatedUsers, userId) => {
 const checkCaptcha = (captcha = '', remoteip = '') => {
 	if (!captcha) {
 		if (NODE_ENV === 'development') {
-			return new Promise((resolve) => resolve());
+			return resolve();
 		} else {
-			return new Promise((resolve, reject) => reject(INVALID_CAPTCHA));
+			return reject(new Error(INVALID_CAPTCHA));
 		}
 	} else if (!getKitSecrets().captcha.secret_key) {
-		return new Promise((resolve) => resolve());
+		return resolve();
 	}
 
 	const options = {
@@ -563,10 +561,10 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 
 const changeUserPassword = (email, oldPassword, newPassword) => {
 	if (oldPassword === newPassword) {
-		return new Promise((resolve, reject) => reject('Passwords must be different'));
+		return reject(new Error('Passwords must be different'));
 	}
 	if (!isValidPassword(newPassword)) {
-		return new Promise((resolve, reject) => reject(INVALID_PASSWORD));
+		return reject(new Error(INVALID_PASSWORD));
 	}
 	return require('./users').getUserByEmail(email, false)
 		.then((user) => {

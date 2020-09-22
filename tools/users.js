@@ -31,24 +31,23 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins, subscribedToCoin } = require('./common');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { all } = require('bluebird');
+const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
-// const { validatePassword, checkCaptcha, verifyOtpBeforeAction } = require('./auth');
 const { parse } = require('json2csv');
 const flatten = require('flat');
 
 const signUpUser = (email, password, referral) => {
 	if (!getKitConfig().new_user_is_activated) {
-		return new Promise((resolve, reject) => reject(SIGNUP_NOT_AVAILABLE));
+		return reject(new Error(SIGNUP_NOT_AVAILABLE));
 	}
 
 	if (!email || !isEmail(email)) {
-		return new Promise((resolve, reject) => reject(PROVIDE_VALID_EMAIL));
+		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
 
 	if (!isValidPassword(password)) {
-		return new Promise((resolve, reject) => reject(INVALID_PASSWORD));
+		return reject(new Error(INVALID_PASSWORD));
 	}
 
 	return dbQuery.findOne('user', {
@@ -403,7 +402,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 
 const getUserByCryptoAddress = (currency, address) => {
 	if (!currency || !address) {
-		return new Promise((resolve, reject) => reject('Please provide the user\'s currency and crypto address'));
+		return reject(new Error('Please provide the user\'s currency and crypto address'));
 	}
 	return dbQuery.findOne('user', {
 		where: { crypto_wallet: { [currency]: address } }
@@ -412,7 +411,7 @@ const getUserByCryptoAddress = (currency, address) => {
 
 const getUser = (opts = {}, rawData = true, networkData = false) => {
 	if (!opts.email && !opts.kit_id && !opts.network_id) {
-		return new Promise((resolve, reject) => reject('Please provide the user\'s kit id, network id, or email'));
+		return reject(new Error('Please provide the user\'s kit id, network id, or email'));
 	}
 
 	const where = {};
@@ -450,28 +449,28 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 
 const getUserByEmail = (email, rawData = true, networkData = false) => {
 	if (!email || !isEmail(email)) {
-		return new Promise((resolve, reject) => reject('Please provide a valid email address'));
+		return reject(new Error('Please provide a valid email address'));
 	}
 	return getUser({ email }, rawData, networkData);
 };
 
 const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
 	if (!kit_id) {
-		return new Promise((resolve, reject) => reject('Please provide a kit id'));
+		return reject(new Error('Please provide a kit id'));
 	}
 	return getUser({ kit_id }, rawData, networkData);
 };
 
 const getUserByNetworkId = (network_id, rawData = true, networkData = false) => {
 	if (!network_id) {
-		return new Promise((resolve, reject) => reject('Please provide a network id'));
+		return reject(new Error('Please provide a network id'));
 	}
 	return getUser({ network_id }, rawData, networkData);
 };
 
 const freezeUserById = (userId) => {
 	if (userId === ADMIN_ACCOUNT_ID) {
-		return new Promise((resolve, reject) => reject('Admin account cannot be deactivated'));
+		return reject(new Error('Admin account cannot be deactivated'));
 	}
 	return getUserByKitId(userId, false)
 		.then((user) => {
@@ -584,7 +583,7 @@ const getUserRole = (opts = {}) => {
 
 const updateUserRole = (user_id, role) => {
 	if (user_id === ADMIN_ACCOUNT_ID) {
-		return new Promise((resolve, reject) => reject('Cannot change main admin account role'));
+		return reject(new Error('Cannot change main admin account role'));
 	}
 	return dbQuery.findOne('user', {
 		where: {
@@ -756,7 +755,7 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 		newLevel < MIN_VERIFICATION_LEVEL ||
 		newLevel > getKitConfig().user_level_number
 	) {
-		return new Promise((resolve, reject) => reject('Invalid verification level'));
+		return reject(new Error('Invalid verification level'));
 	}
 
 	let currentVerificationLevel = 0;
@@ -1058,7 +1057,7 @@ const checkUsernameIsTaken = (username) => {
 
 const setUsernameById = (userId, username) => {
 	if (!isValidUsername(username)) {
-		return new Promise((resolve, reject) => reject(INVALID_USERNAME));
+		return reject(new Error(INVALID_USERNAME));
 	}
 	return getUserByKitId(userId, false)
 		.then((user) =>{
@@ -1097,11 +1096,11 @@ const getUserStats = (userId) => {
 
 const transferUserFunds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
 	if (subscribedToCoin(currency)) {
-		return new Promise((resolve, reject) => reject(`Invalid currency: "${currency}"`));
+		return reject(new Error(`Invalid currency: "${currency}"`));
 	}
 
 	if (amount <= 0) {
-		return new Promise((resolve, reject) => reject('Invalid amount'));
+		return reject(new Error('Invalid amount'));
 	}
 
 	return all([

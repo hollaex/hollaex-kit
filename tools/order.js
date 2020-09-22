@@ -5,10 +5,11 @@ const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { parse } = require('json2csv');
 const { subscribedToPair } = require('./common');
+const { reject } = require('bluebird');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
@@ -18,7 +19,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0) 
 
 const createUserOrderByEmail = (email, symbol, side, size, type, price = 0) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getUserByEmail(email)
 		.then((user) => {
@@ -56,14 +57,14 @@ const cancelUserOrderByEmail = (email, orderId) => {
 
 const getAllExchangeOrders = (symbol, side, limit, page, orderBy, order, startDate, endDate) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getNodeLib().getAllOrderNetwork(undefined, symbol, side, limit, page, orderBy, order, startDate, endDate);
 };
 
 const getAllUserOrdersByKitId = (userKitId, symbol, side, limit, page, orderBy, order, startDate, endDate) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
@@ -73,7 +74,7 @@ const getAllUserOrdersByKitId = (userKitId, symbol, side, limit, page, orderBy, 
 
 const getAllUserOrdersByEmail = (email, symbol, side, limit, page, orderBy, order, startDate, endDate) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getUserByEmail(email)
 		.then((user) => {
@@ -83,7 +84,7 @@ const getAllUserOrdersByEmail = (email, symbol, side, limit, page, orderBy, orde
 
 const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
@@ -93,7 +94,7 @@ const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
 
 const cancelAllUserOrdersByEmail = (email, symbol) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getUserByEmail(email)
 		.then((user) => {
@@ -103,14 +104,14 @@ const cancelAllUserOrdersByEmail = (email, symbol) => {
 
 const getAllTradesNetwork = (symbol, limit, page, order_by, order, start_date, end_date) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getNodeLib().getAllTradeNetwork(undefined, symbol, limit, page, order_by, order, start_date, end_date);
 };
 
 const getAllUserTradesNetworkByKidId = (userKitId, symbol, limit, page, order_by, order, start_date, end_date, format) => {
 	if (symbol && !subscribedToPair(symbol)) {
-		return new Promise((resolve, reject) => reject('Invalid symbol'));
+		return reject(new Error('Invalid symbol'));
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {

@@ -40,3 +40,5 @@ exports.API_KEY_OUT_OF_SCOPE = 'Unauthorized Access. You are not allowed to acce
 exports.API_KEY_EXPIRED = 'Access Denied: API Key is expired';
 exports.API_KEY_INACTIVE = 'Access Denied: API Key is frozen';
 exports.API_SIGNATURE_INVALID = 'Access Denied: Invalid API Signature';
+exports.INVALID_SYMBOL = (symbol) => `Invalid symbol: '${symbol}`;
+exports.INVALID_COIN = (coin) => `Invalid coin: '${coin}`;
