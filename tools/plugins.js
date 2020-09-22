@@ -50,7 +50,7 @@ const updatePluginConfig = (key, data) => {
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
-					type: 'kit', data: data.kit
+					type: 'update', data: { kit: data.kit }
 				})
 			);
 			return data.kit.plugins.configuration[key];
@@ -95,7 +95,7 @@ const enableOrDisablePlugin = (type, plugin) => {
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
-					type: 'kit', data: data.kit
+					type: 'update', data: { kit: data.kit }
 				})
 			);
 			return data.kit.plugins.enabled.split(',');

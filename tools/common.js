@@ -146,7 +146,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
-					type: 'config', data: { kit: status.kit, secrets: status.secrets }
+					type: 'update', data: { kit: status.kit, secrets: status.secrets }
 				})
 			);
 			return {
