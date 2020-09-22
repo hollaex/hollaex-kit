@@ -3581,7 +3581,6 @@ definitions:
     type: object
     required:
       - count
-      - data
     properties:
       count:
         type: number
