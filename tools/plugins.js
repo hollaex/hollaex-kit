@@ -60,10 +60,15 @@ const updatePluginConfig = (key, data) => {
 					type: 'update', data: { kit: data.kit, secrets: data.secrets }
 				})
 			);
+			let maskedSecret = {
+				plugins: {
+					[key]: data.secrets.plugins[key]
+				}
+			};
 			return {
 				plugin: key,
 				kit: data.kit.plugins.configuration[key],
-				secrets: maskSecrets({ plugin: data.secrets.plugins[key] })[key]
+				secrets: maskSecrets(maskedSecret).plugins[key]
 			};
 		});
 };
