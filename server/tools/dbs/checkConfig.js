@@ -1,6 +1,8 @@
 'use strict';
 
 const { Status } = require('../../db/models');
+const { publisher } = require('../../db/pubsub');
+const { CONFIGURATION_CHANNEL } = require('../../constants');
 
 Status.findOne({ raw: true })
 	.then((status) => {
@@ -104,11 +106,18 @@ Status.findOne({ raw: true })
 			{ fields: ['kit', 'secrets'] }
 		);
 	})
-	.then(() => {
-		console.log('tools/dbs/checkConstants successfully checked/updated');
+	.then((data) => {
+		publisher.publish(
+			CONFIGURATION_CHANNEL,
+			JSON.stringify({
+				type: 'update',
+				data: { kit: data.kit, secrets: data.secrets }
+			})
+		);
+		console.log('tools/dbs/checkConfig successfully checked/updated');
 		process.exit(0);
 	})
 	.catch((err) => {
-		console.error('tools/dbs/checkConstants err', err);
+		console.error('tools/dbs/checkConfig err', err);
 		process.exit(1);
 	});

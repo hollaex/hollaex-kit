@@ -1,4 +1,6 @@
 const { Status } = require('../../db/models');
+const { publisher } = require('../../db/pubsub');
+const { CONFIGURATION_CHANNEL } = require('../../constants');
 
 const {
 	API_NAME,
@@ -128,8 +130,15 @@ const secrets = {
 
 Status.findOne({}).then((status) => {
 	status.update({ kit, secrets }, { fields: ['kit', 'secrets'], returning: true })
-		.then(() => {
-			console.log('Constants are updated');
+		.then((data) => {
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update',
+					data: { kit: data.dataValues.kit, secrets: data.dataValues.secrets }
+				})
+			);
+			console.log('Kit and Secrets are updated');
 			process.exit(0);
 		})
 		.catch((err) => {
