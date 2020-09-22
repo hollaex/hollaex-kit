@@ -34,14 +34,21 @@ const pluginIsEnabled = (plugin) => {
 const updatePluginConfig = (key, data) => {
 	return dbQuery.findOne(
 		'status',
-		{ attributes: ['id', 'kit'] }
+		{ attributes: ['id', 'kit', 'secrets'] }
 	)
 		.then((status) => {
 			const kit = status.kit;
-			kit.plugins[key] = { ...kit.plugins.configuration[key], ...data };
-			return status.update({ kit }, {
+			const secrets = status.secrets;
+			if (data.configuration) {
+				kit.plugins[key] = {...kit.plugins.configuration[key], ...data.kit};
+			}
+			if (data.secrets) {
+				secrets.plugins[key] = {...secrets.plugins[key], ...data.secrets};
+			}
+			return status.update({ kit, secrets }, {
 				fields: [
-					'kit'
+					'kit',
+					'secrets'
 				],
 				returning: true
 			});
@@ -50,10 +57,14 @@ const updatePluginConfig = (key, data) => {
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
-					type: 'update', data: { kit: data.kit }
+					type: 'update', data: { kit: data.kit, secrets: data.secrets }
 				})
 			);
-			return data.kit.plugins.configuration[key];
+			return {
+				plugin: key,
+				kit: data.kit.plugins.configuration[key],
+				secets: data.secrets.plugins[key]
+			};
 		});
 };
 
