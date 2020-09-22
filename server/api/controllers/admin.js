@@ -147,17 +147,34 @@ const getAdminUserOrders = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminUserOrders/auth', req.auth);
 	const { user_id, symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-	toolsLib.order.getAllUserOrdersByKitId(
-		user_id.value,
-		symbol.value,
-		side.value,
-		limit.value,
-		page.value,
-		order_by.value,
-		order.value,
-		start_date.value,
-		end_date.valuef
-	)
+	let promiseQuery;
+
+	if (user_id.value) {
+		promiseQuery = toolsLib.order.getAllUserOrdersByKitId(
+			user_id.value,
+			symbol.value,
+			side.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value
+		);
+	} else {
+		promiseQuery = toolsLib.order.getAllExchangeOrders(
+			symbol.value,
+			side.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value
+		);
+	}
+
+	promiseQuery
 		.then((orders) => {
 			return res.json(orders);
 		})
@@ -190,16 +207,17 @@ const adminCancelOrder = (req, res) => {
 const getAdminUserTrades = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminUserTrades auth', req.auth);
 
-	const user_id = req.swagger.params.user_id.value;
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
-	const symbol = req.swagger.params.symbol.value;
+	const { user_id, symbol, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerAdmin.error(req.uuid, 'controllers/admin/getAdminUserTrades', 'Invalid symbol');
-		return res.status(400).json({ message: 'Invalid symbol=' });
+	let promiseQuery;
+
+	if (user_id.value) {
+		promiseQuery = toolsLib.order.getAllUserTradesNetworkByKidId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
+	} else {
+		promiseQuery = 	toolsLib.order.getAllTradesNetwork(symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
 	}
 
-	toolsLib.order.getAllUserTradesNetworkByKidId(user_id, symbol, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	promiseQuery
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-trades.csv`);
@@ -325,8 +343,7 @@ const getAdminUserLogins = (req, res) => {
 		'controllers/admin/getAdminUserLogins/auth',
 		req.auth
 	);
-	const user_id = req.swagger.params.user_id.value;
-	const { limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
+	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
 	toolsLib.users.getUserLogins(user_id.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
@@ -388,6 +405,7 @@ const getDeposits = (req, res) => {
 
 	toolsLib.users.getUserDepositsByKitId(user_id.value, currency.value, status.value, dismissed.value, rejected.value, processing.value, waiting.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
+			console.log('alskjdhflakshdf;lkajsdf;lj')
 			if (format.value) {
 				if (data.data.length === 0) {
 					throw new Error('No data found');

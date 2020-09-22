@@ -164,7 +164,7 @@ const postBankUser = (req, res) => {
 	loggerPlugin.verbose(
 		req.uuid,
 		'controllers/plugins/postBankUser auth',
-		email
+		req.auth.sub
 	);
 
 	if (!toolsLib.plugins.pluginIsEnabled('bank')) {

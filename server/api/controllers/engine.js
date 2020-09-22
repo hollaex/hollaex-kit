@@ -167,7 +167,7 @@ const getHistory = (req, res) => {
 const getSymbols = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
-	if (!toolsLib.subscribedToPair(symbol.value)) {
+	if (!toolsLib.subscribedToPair(symbol)) {
 		loggerOrderbook.error(
 			req.uuid,
 			'controller/engine/getSymbols',

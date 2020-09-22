@@ -103,21 +103,9 @@ subscriber.on('message', (channel, message) => {
 			case 'initial':
 				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
 				break;
-			case 'coins':
-				updateCoinsPairs(type, data.symbol, data);
-				break;
-			case 'pairs':
-				updateCoinsPairs(type, data.name, data);
-				break;
-			case 'config':
-				updateKit(type, data.kit);
-				updateSecrets(data.key, data.secrets);
-				break;
-			case 'kit':
-				updateKit(type, data.kit);
-				break;
-			case 'secret':
-				updateSecrets(data.key, data.secrets);
+			case 'update':
+				if (data.kit) updateKit(data.kit);
+				if (data.secrets) updateSecrets(data.secrets);
 				break;
 			case 'freezeUser':
 				updateFrozenUser(data, 'add');
@@ -173,8 +161,8 @@ const resetAllConfig = () => {
 	setRedisData();
 };
 
-const updateKit = (key, config) => {
-	Object.assign(configuration.kit[key], config);
+const updateKit = (newKitConfig) => {
+	Object.assign(configuration.kit, newKitConfig);
 	setRedisData();
 };
 
@@ -183,8 +171,8 @@ const updateCoinsPairs = (type, symbol, config) => {
 	setRedisData();
 };
 
-const updateSecrets = (key, config) => {
-	Object.assign(secrets[key], config);
+const updateSecrets = (newSecretsConfig) => {
+	Object.assign(secrets, newSecretsConfig);
 	setRedisData();
 };
 

@@ -493,7 +493,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/config:
-    x-swagger-router-controller: chart
+    x-swagger-router-controller: engine
     get:
       description: Get tradingview udf config
       operationId: getConfig
@@ -510,7 +510,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/history:
-    x-swagger-router-controller: chart
+    x-swagger-router-controller: engine
     get:
       description: Get tradingview udf history HOLCV
       operationId: getHistory
@@ -548,7 +548,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/symbols:
-    x-swagger-router-controller: chart
+    x-swagger-router-controller: engine
     get:
       description: Get tradingview udf symbols
       operationId: getSymbols
@@ -1305,7 +1305,7 @@ paths:
       x-security-scopes:
         - user
   /user/trades:
-    x-swagger-router-controller: trade
+    x-swagger-router-controller: user
     get:
       operationId: getUserTrades
       description: List trades of authenticated user
@@ -3740,7 +3740,9 @@ definitions:
         type: number
         format: int32
       data:
-        $ref: "#/definitions/OrderResponse"
+        type: array
+        items:
+          $ref: "#/definitions/OrderResponse"
   BalanceResponse:
     type: object
     properties:

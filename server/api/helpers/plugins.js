@@ -632,7 +632,7 @@ const updatePluginConfiguration = (key, data) => {
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
-					type: 'kit', data: data.kit
+					type: 'update', data: { kit: data.kit }
 				})
 			);
 			if (key === 'enable' || key === 'disable') {
