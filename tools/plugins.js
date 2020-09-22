@@ -6,7 +6,7 @@ const {
 	AVAILABLE_PLUGINS,
 	CONFIGURATION_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
-const { getKitConfig, getKitSecrets } = require('./common');
+const { getKitConfig, getKitSecrets, maskSecrets } = require('./common');
 const dbQuery = require('./database').query;
 const { publisher } = require('./database/redis');
 
@@ -63,7 +63,7 @@ const updatePluginConfig = (key, data) => {
 			return {
 				plugin: key,
 				kit: data.kit.plugins.configuration[key],
-				secets: data.secrets.plugins[key]
+				secrets: maskSecrets({ plugin: data.secrets.plugins[key] })[key]
 			};
 		});
 };
