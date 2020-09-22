@@ -11,7 +11,7 @@ const getStatusText = (status) => {
 	return status ? 'COMPLETED' : 'PENDING';
 };
 const { GET_KIT_CONFIG, GET_KIT_SECRETS, DOMAIN } = require('../constants');
-const AUDIT_EMAIL = () => GET_KIT_CONFIG().accounts.admin;
+const AUDIT_EMAIL = () => GET_KIT_SECRETS().emails.audit;
 const SENDER_EMAIL = () => GET_KIT_SECRETS().emails.sender;
 const SEND_EMAIL_COPY = () => GET_KIT_SECRETS().emails.send_email_to_support;
 const API_NAME = () => GET_KIT_CONFIG().api_name;

@@ -62,7 +62,8 @@ const putPlugins = (req, res) => {
 		req.auth.sub
 	);
 
-	const { plugin, data } = req.swagger.params.data.value;
+	const plugin = req.swagger.params.plugin.value;
+	const data = req.swagger.params.data.value;
 
 	loggerPlugin.verbose(
 		req.uuid,
@@ -116,7 +117,6 @@ const disablePlugin = (req, res) => {
 
 	toolsLib.plugins.disablePlugin(plugin)
 		.then((data) => {
-			console.log(data)
 			res.json(data);
 		})
 		.catch((err) => {
@@ -488,7 +488,7 @@ const kycUserUpload = (req, res) => {
 				key === 'issued_date' ||
 				key === 'expiration_date'
 			) {
-				data.id_data[key] = field;
+				data.id_data[key] = field.value;
 			}
 		}
 	});
@@ -602,7 +602,7 @@ const kycAdminUpload = (req, res) => {
 				key === 'issued_date' ||
 				key === 'expiration_date'
 			) {
-				data.id_data[key] = field;
+				data.id_data[key] = field.value;
 			}
 		}
 	});
@@ -894,7 +894,7 @@ const getAnnouncements = (req, res) => {
 const sendSmsVerify = (req, res) => {
 	loggerPlugin.verbose(
 		req.uuid,
-		'controllers/plugins/smsVerify auth',
+		'controllers/plugins/sendSmsVerify auth',
 		req.auth.sub
 	);
 
@@ -917,7 +917,7 @@ const sendSmsVerify = (req, res) => {
 	if (!phoneNumber.isValid()) {
 		loggerPlugin.error(
 			req.uuid,
-			'controllers/plugins/smsVerify',
+			'controllers/plugins/sendSmsVerify',
 			SMS_INVALID_PHONE
 		);
 		return res.status(400).json({ message: SMS_INVALID_PHONE });

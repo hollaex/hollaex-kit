@@ -32,7 +32,7 @@ const aws = require('aws-sdk');
 const { all, reject } = require('bluebird');
 const PhoneNumber = require('awesome-phonenumber');
 const redis = require('../../db/redis').duplicate();
-const toolsLib = require('hollaex-tools-lib');
+const toolsLib = () => require('hollaex-tools-lib');
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid/v4');
@@ -269,9 +269,9 @@ const storeFilesDataOnDb = (
 	back = '',
 	proof_of_residency = ''
 ) => {
-	return toolsLib.database.model.getModel('sequelize').transaction((transaction) => {
+	return toolsLib().database.model.getModel('sequelize').transaction((transaction) => {
 		const options = { transaction };
-		return toolsLib.database.model.getModel('verification image').findOrCreate(
+		return toolsLib().database.model.getModel('verification image').findOrCreate(
 			{
 				where: { user_id },
 				defaults: {
@@ -295,7 +295,7 @@ const storeFilesDataOnDb = (
 				}
 			})
 			.then(() => {
-				return toolsLib.database.query.findOne('user', {
+				return toolsLib().database.query.findOne('user', {
 					where: { id: user_id },
 					attributes: ['id', 'id_data'],
 					transaction
@@ -311,7 +311,7 @@ const storeFilesDataOnDb = (
 };
 
 const S3_BUCKET_NAME = () => {
-	return (toolsLib.getKitSecrets().plugins.s3.id_docs_bucket).split(':')[0];
+	return (toolsLib().getKitSecrets().plugins.s3.id_docs_bucket).split(':')[0];
 };
 
 const generateBuckets = (bucketsString = '') => {
@@ -333,10 +333,10 @@ const generateBuckets = (bucketsString = '') => {
 const s3Credentials = () => {
 	return {
 		auth: {
-			accessKeyId: toolsLib.getKitSecrets().plugins.s3.key,
-			secretAccessKey: toolsLib.getKitSecrets().plugins.s3.secret
+			accessKeyId: toolsLib().getKitSecrets().plugins.s3.key,
+			secretAccessKey: toolsLib().getKitSecrets().plugins.s3.secret
 		},
-		buckets: generateBuckets(toolsLib.getKitSecrets().plugins.s3.id_docs_bucket)
+		buckets: generateBuckets(toolsLib().getKitSecrets().plugins.s3.id_docs_bucket)
 	};
 };
 
@@ -364,7 +364,7 @@ const uploadFile = (name, file) => {
 };
 
 const getImagesData = (user_id, type = undefined) => {
-	return toolsLib.database.query.findOne('verification image', {
+	return toolsLib().database.query.findOne('verification image', {
 		where: { user_id },
 		order: [['created_at', 'DESC']],
 		attributes: ['front', 'back', 'proof_of_residency']
@@ -411,7 +411,7 @@ const getLinks = ({ front, back, proof_of_residency }) => {
 };
 
 const findUserImages = (where) => {
-	return toolsLib.query.findOne('user', { where, attributes: ['id', 'id_data'] })
+	return toolsLib().database.query.findOne('user', { where, attributes: ['id', 'id_data'] })
 		.then((user) => {
 			return all([
 				user.dataValues,
@@ -439,7 +439,7 @@ const approveDocuments = (user) => {
 };
 
 const revokeDocuments = (user, message = '') => {
-	return toolsLib.database.model.getModel('sequelize')
+	return toolsLib().database.model.getModel('sequelize')
 		.transaction((transaction) => {
 			return all([
 				updateUserData(
@@ -452,7 +452,7 @@ const revokeDocuments = (user, message = '') => {
 					},
 					ROLES.SUPPORT
 				)(user, { transaction, returning: true }),
-				toolsLib.database.model.getModel('verification image').destroy({
+				toolsLib().database.model.getModel('verification image').destroy({
 					where: { user_id: user.id },
 					transaction
 				})
@@ -464,7 +464,7 @@ const revokeDocuments = (user, message = '') => {
 };
 
 const createAnnouncement = (created_by, title, message, type) => {
-	return toolsLib.database.model.getModel('announcement').create({
+	return toolsLib().database.model.getModel('announcement').create({
 		created_by,
 		title,
 		message,
@@ -473,36 +473,33 @@ const createAnnouncement = (created_by, title, message, type) => {
 };
 
 const findAnnouncement = (id) => {
-	return toolsLib.database.query.findOne('announcement', { where: { id }});
+	return toolsLib().database.query.findOne('announcement', { where: { id }});
 };
 
 const destroyAnnouncement = (id) => {
-	return toolsLib.database.model.getModel('announcement').destroy({ where: { id } });
+	return toolsLib().database.model.getModel('announcement').destroy({ where: { id } });
 };
 
-const getAllAnnouncements = (pagination = {}, timeframe, ordering) => {
-	const order = [];
-	if (!ordering) {
-		order.push(['created_at', 'desc']);
-	} else {
-		order.push(ordering);
-	}
+const getAllAnnouncements = (pagination, timeframe, ordering) => {
 	let query = {
-		order,
+		where: {
+			created_at: timeframe
+		},
+		order: [ordering],
 		attributes: {
 			exclude: ['created_by']
 		},
 		...pagination
 	};
 	if (timeframe) query.where.created_at = timeframe;
-	return toolsLib.database.model.getModel('announcement').findAndCountAllWithRows(query)
+	return toolsLib().database.query.findAndCountAllWithRows('announcement', query);
 };
 
 const snsCredentials = () => {
 	return {
-		accessKeyId: toolsLib.getKitSecrets().plugins.sns.key,
-		secretAccessKey: toolsLib.getKitSecrets().plugins.sns.secret,
-		region: toolsLib.getKitSecrets().plugins.sns.region
+		accessKeyId: toolsLib().getKitSecrets().plugins.sns.key,
+		secretAccessKey: toolsLib().getKitSecrets().plugins.sns.secret,
+		region: toolsLib().getKitSecrets().plugins.sns.region
 	};
 };
 
@@ -547,7 +544,7 @@ const sendSMSDeposit = (
 	phoneNumber,
 	amount,
 	timestamp,
-	language = toolsLib.getKitConfig().defaults.language
+	language = toolsLib().getKitConfig().defaults.language
 ) => {
 	const { SMS } = require(`../../mail/strings/${language}`);
 	let message;
@@ -608,7 +605,7 @@ const deleteSMSCode = (user_id) => {
 };
 
 const updatePluginConfiguration = (key, data) => {
-	return toolsLib.database.query.findOne('status', {
+	return toolsLib().database.query.findOne('status', {
 		attributes: ['id', 'kit']
 	})
 		.then((status) => {
@@ -665,10 +662,10 @@ const signFreshdesk = (user) => {
 	const email = user.email;
 	const timestamp = Math.floor(new Date().getTime() / 1000);
 	const signature = crypto
-		.createHmac('MD5', toolsLib.getKitSecrets().plugins.freshdesk.auth)
-		.update(name + toolsLib.getKitSecrets().plugins.freshdesk.auth + email + timestamp)
+		.createHmac('MD5', toolsLib().getKitSecrets().plugins.freshdesk.auth)
+		.update(name + toolsLib().getKitSecrets().plugins.freshdesk.auth + email + timestamp)
 		.digest('hex');
-	const url = `${toolsLib.getKitSecrets().plugins.freshdesk.host}/login/sso?name=${name}&email=${email}&timestamp=${timestamp}&hash=${signature}`;
+	const url = `${toolsLib().getKitSecrets().plugins.freshdesk.host}/login/sso?name=${name}&email=${email}&timestamp=${timestamp}&hash=${signature}`;
 	return url;
 };
 
@@ -685,10 +682,10 @@ const signZendesk = (user) => {
 			jti: uuid(),
 			external_id: user.id
 		},
-		toolsLib.getKitSecrets().plugins.zendesk.key
+		toolsLib().getKitSecrets().plugins.zendesk.key
 	);
 
-	const url = `${toolsLib.getKitSecrets().plugins.zendesk.host}/access/jwt?jwt=${token}`;
+	const url = `${toolsLib().getKitSecrets().plugins.zendesk.host}/access/jwt?jwt=${token}`;
 	return url;
 };
 

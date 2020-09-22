@@ -2636,19 +2636,21 @@ paths:
       tags:
         - Plugins
       parameters:
+        - name: plugin
+          in: query
+          type: string
+          required: true
+          description: Plugin to update
         - name: data
           in: body
           required: true
           description: key and data of plugin
           schema:
             type: object
-            required:
-              - plugin
-              - data
             properties:
-              plugin:
-                type: string
-              data:
+              kit:
+                type: object
+              secrets:
                 type: object
       responses:
         200:

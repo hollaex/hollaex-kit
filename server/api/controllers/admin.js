@@ -405,7 +405,6 @@ const getDeposits = (req, res) => {
 
 	toolsLib.users.getUserDepositsByKitId(user_id.value, currency.value, status.value, dismissed.value, rejected.value, processing.value, waiting.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
-			console.log('alskjdhflakshdf;lkajsdf;lj')
 			if (format.value) {
 				if (data.data.length === 0) {
 					throw new Error('No data found');
