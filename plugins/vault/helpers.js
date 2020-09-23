@@ -11,6 +11,7 @@ const { updatePluginConstant, logger, sleep } = require('../helpers/common');
 const cron = require('node-cron');
 const { processWithdrawals } = require('./crons/processWithdrawals');
 const { lockWithdrawals } = require('./crons/lockWithdrawals');
+const { resolve } = require('bluebird');
 // const { checkWithdrawals } = require('./crons/checkWithdrawals');
 
 const withdrawalCron = async () => {
@@ -36,12 +37,16 @@ const cronTask = cron.schedule('* * * * *', () => {
 
 const updateVaultValues = (name, key, secret, connect = true) => {
 	logger.debug('/plugins/vault/helpers updateVaultValues');
-	return updatePluginConstant('vault', {
-		name: name === undefined ? GET_SECRETS().vault.name : name,
-		key: key === undefined ? GET_SECRETS().vault.key : key,
-		secret: secret === undefined ? GET_SECRETS().vault.secret : secret,
-		connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
-	});
+	if (name === undefined && key === undefined && secret === undefined) {
+		return resolve();
+	} else {
+		return updatePluginConstant('vault', {
+			name: name === undefined ? GET_SECRETS().vault.name : name,
+			key: key === undefined ? GET_SECRETS().vault.key : key,
+			secret: secret === undefined ? GET_SECRETS().vault.secret : secret,
+			connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
+		});
+	}
 };
 
 const crossCheckCoins = (coins) => {
