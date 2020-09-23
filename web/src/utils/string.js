@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import { LANGUAGE_KEY, DEFAULT_LANGUAGE } from '../config/constants';
 import STRINGS from '../config/localizedStrings';
+import { getValidLanguages } from 'utils/initialize';
 export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
 
 export const getFormattedDate = (value) => {
@@ -104,5 +105,27 @@ export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
 }
 
 export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._props) => {
-  return content[lang] && content[lang][key]
+
+	if (!content[lang]) {
+		return;
+	}
+
+	const string = content[lang][key];
+  if (typeof string === 'string') {
+		return string;
+	}
+}
+
+export const getAllStrings = (content = STRINGS._props) => {
+	const validLanguages = getValidLanguages();
+	const allStrings = {};
+
+  Object.entries(content['en']).forEach(([key]) => {
+    allStrings[key] = {};
+		validLanguages.forEach((lang) => {
+			allStrings[key][lang] = getStringByKey(key, lang, content)
+		})
+	})
+
+	return allStrings;
 }

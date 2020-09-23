@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { EditFilled } from '@ant-design/icons';
-import { getStringByKey } from 'utils/string';
+import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input } from 'antd';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
@@ -174,7 +174,10 @@ class OperatorControls extends Component {
   }
 
   openAllStringsModal = () => {
+    const allStrings = getAllStrings()
+
     this.setState({
+      allStrings,
       isAllStringsModalOpen: true,
     });
   }
@@ -186,7 +189,16 @@ class OperatorControls extends Component {
   }
 
   render() {
-    const { isPublishEnabled, isEditModalOpen, editData, languageKeys, editableElementIds, isSaveEnabled, isAllStringsModalOpen } = this.state;
+    const {
+      isPublishEnabled,
+      isEditModalOpen,
+      editData,
+      languageKeys,
+      editableElementIds,
+      isSaveEnabled,
+      isAllStringsModalOpen,
+      allStrings
+    } = this.state;
     const { editMode } = this.props;
 
     return (
@@ -292,7 +304,26 @@ class OperatorControls extends Component {
         >
           {
             editMode && isAllStringsModalOpen &&
-            'All Strings'
+            (
+              <table>
+                <thead>
+                <tr>
+                  {languageKeys.map((lang) => (<th>{this.getLanguageLabel(lang)}</th>))}
+                </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(allStrings).map(([, stringObject]) => (
+                    <tr>
+                      {languageKeys.map((lang) => (
+                        <td>
+                          {stringObject[lang]}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )
           }
           <div className="d-flex align-items-center pt-5">
             <button
