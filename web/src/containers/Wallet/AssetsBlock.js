@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 
-import { CurrencyBall, ActionNotification, SearchBox, AssetsBlockForm } from 'components';
+import { CurrencyBall, ActionNotification, SearchBox, AssetsBlockForm, EditWrapper } from 'components';
 import { calculatePrice, formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import {
@@ -97,43 +97,68 @@ const AssetsBlock = ({
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
-				<div className="wallet-search-improvement">
-					{
-						BASE_CURRENCY && IS_XHT
-						? <div>
-                {STRINGS.formatString(
-                  STRINGS["WALLET_DEPOSIT_USD"],
-									<span className="blue-link pointer" onClick={openContactUs}>{STRINGS["CONTACT_US_TEXT"]}</span>
-                )}
-							</div>
-							: BASE_CURRENCY && isValidBase ?
-							<div>
-								<div>Estimated Total Balance</div>
-								<div className="font-title">{totalAssets}</div>
-							</div>
-							: null
-					}
-				</div>
+				<EditWrapper stringId="WALLET_DEPOSIT_USD,CONTACT_US_TEXT,WALLET_ESTIMATED_TOTAL_BALANCE">
+					<div className="wallet-search-improvement">
+            {
+              BASE_CURRENCY && IS_XHT
+                ? <div>
+                  {STRINGS.formatString(
+                    STRINGS["WALLET_DEPOSIT_USD"],
+										<span className="blue-link pointer" onClick={openContactUs}>{STRINGS["CONTACT_US_TEXT"]}</span>
+                  )}
+								</div>
+                : BASE_CURRENCY && isValidBase ?
+								<div>
+									<div>{STRINGS["WALLET_ESTIMATED_TOTAL_BALANCE"]}</div>
+									<div className="font-title">{totalAssets}</div>
+								</div>
+                : null
+            }
+					</div>
+				</EditWrapper>
 				<div className="d-flex justify-content-between">
-					<SearchBox
-						name={`${STRINGS["WALLET_ALL_ASSETS"]}_${STRINGS["SEARCH_TXT"]}`}
-						placeHolder={`${STRINGS["SEARCH_TXT"]}...`}
-						handleSearch={handleSearch}
-					/>
-					<AssetsBlockForm
-						handleCheck={handleCheck}
-					/>
+					<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
+						<SearchBox
+							name="search-assets"
+							placeHolder={`${STRINGS["WALLET_ASSETS_SEARCH_TXT"]}...`}
+							handleSearch={handleSearch}
+						/>
+					</EditWrapper>
+					<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+						<AssetsBlockForm
+							label={STRINGS["WALLET_HIDE_ZERO_BALANCE"]}
+							handleCheck={handleCheck}
+						/>
+					</EditWrapper>
 				</div>
 			</section>
 			<table className="wallet-assets_block-table">
 				<thead>
 				<tr className="table-bottom-border">
 					<th />
-					<th>{STRINGS["CURRENCY"]}</th>
-					<th>{STRINGS["AMOUNT"]}</th>
+					<th>
+						<EditWrapper stringId="CURRENCY">
+              {STRINGS["CURRENCY"]}
+						</EditWrapper>
+					</th>
+					<th>
+						<EditWrapper stringId="AMOUNT">
+              {STRINGS["AMOUNT"]}
+						</EditWrapper>
+					</th>
 					<th className="td-amount" />
-					<th>{STRINGS["DEPOSIT_WITHDRAW"]}</th>
-					{!isMobile && <th>{STRINGS["TRADE_TAB_TRADE"]}</th>}
+					<th>
+						<EditWrapper stringId="DEPOSIT_WITHDRAW,WALLET_BUTTON_BASE_DEPOSIT,WALLET_BUTTON_BASE_WITHDRAW,GENERATE_WALLET">
+              {STRINGS["DEPOSIT_WITHDRAW"]}
+						</EditWrapper>
+					</th>
+					{!isMobile && (
+						<th>
+							<EditWrapper stringId="TRADE_TAB_TRADE">
+                {STRINGS["TRADE_TAB_TRADE"]}
+							</EditWrapper>
+						</th>
+					)}
 				</tr>
 				</thead>
 				<tbody>
