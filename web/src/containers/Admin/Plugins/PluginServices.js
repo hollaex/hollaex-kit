@@ -316,7 +316,9 @@ class PluginServices extends Component {
 
 	connectCoinToVault = (formProps = { connected_coins: [] }, coin) => {
 		// let formValues = { ...formProps };
-		let formValues = {};
+		let formValues = {
+			connected_coins: formProps.connected_coins || []
+		};
 		if (!formValues.connected_coins.includes(coin)) {
 			formValues.connected_coins = [
 				...formProps.connected_coins,
