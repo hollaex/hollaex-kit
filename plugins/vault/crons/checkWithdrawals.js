@@ -4,7 +4,8 @@ const { Deposit, User, sequelize } = require('../../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
-const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const { GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const { VAULT_ENDPOINT } = require('../../constants');
 const mathjs = require('mathjs');
 const { loggerDeposits } = require('../../../config/logger');
 const VAULT_NAME = () => GET_SECRETS().vault.name;
@@ -67,7 +68,7 @@ const checkWithdrawals = () => {
 						qs: {
 							txid
 						},
-						uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
+						uri: `${VAULT_ENDPOINT}/wallet/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
 						json: true
 					};
 					return delay(500 * i)

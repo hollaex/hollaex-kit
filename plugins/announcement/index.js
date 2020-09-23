@@ -6,18 +6,22 @@ const { postAnnouncement, deleteAnnouncement, getAnnouncements, findAnnouncement
 const bodyParser = require('body-parser');
 const { logger, getPagination, getTimeframe, getOrdering, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const { WRONG_TITLE, WRONG_MESSAGE, WRONG_TYPE, WRONG_ID } = require('./messages');
-const { WRONG_LIMIT, WRONG_PAGE, WRONG_ORDER_BY, WRONG_ORDER } = require('../helpers/messages');
+const { WRONG_LIMIT, WRONG_PAGE, WRONG_ORDER_BY, WRONG_ORDER, NOT_AUTHORIZED } = require('../helpers/messages');
 const { GET_SECRETS } = require('../../constants');
 
 app.get('/plugins/announcement/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /plugins/announcement/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/announcement/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	try {
 		res.json(maskSecrets('announcement', GET_SECRETS().plugins.announcement) || {});
@@ -29,12 +33,16 @@ app.get('/plugins/announcement/constant', verifyToken, (req, res) => {
 app.put('/plugins/announcement/constant', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/announcement/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/announcement/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	if (req.body.length === 0) {
 		logger.error('PUT /plugins/announcement/constant error', 'Must provide key to update');
@@ -58,12 +66,16 @@ app.put('/plugins/announcement/constant', [verifyToken, bodyParser.json()], (req
 app.post('/plugins/announcement', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /plugins/announcement auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/announcement error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	let { title, message, type } = req.body;
 
@@ -100,12 +112,16 @@ app.post('/plugins/announcement', [verifyToken, bodyParser.json()], (req, res) =
 app.delete('/plugins/announcement', verifyToken, (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'DELETE /plugins/announcement auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('DELETE /plugins/announcement error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const id = parseInt(req.query.id);
 

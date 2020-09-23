@@ -1,15 +1,17 @@
 'use strict';
 
-const { VAULT_ENDPOINT, API_HOST, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
+const { API_HOST, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
+const { VAULT_ENDPOINT } = require('../constants');
 const rp = require('request-promise');
 const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
-const { updateConstants, logger, sleep } = require('../helpers/common');
+const { updatePluginConstant, logger, sleep } = require('../helpers/common');
 const cron = require('node-cron');
 const { processWithdrawals } = require('./crons/processWithdrawals');
 const { lockWithdrawals } = require('./crons/lockWithdrawals');
+const { resolve } = require('bluebird');
 // const { checkWithdrawals } = require('./crons/checkWithdrawals');
 
 const withdrawalCron = async () => {
@@ -35,16 +37,16 @@ const cronTask = cron.schedule('* * * * *', () => {
 
 const updateVaultValues = (name, key, secret, connect = true) => {
 	logger.debug('/plugins/vault/helpers updateVaultValues');
-	return updateConstants({
-		secrets: {
-			vault: {
-				name,
-				key,
-				secret,
-				connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
-			}
-		}
-	});
+	if (name === undefined && key === undefined && secret === undefined) {
+		return resolve();
+	} else {
+		return updatePluginConstant('vault', {
+			name: name === undefined ? GET_SECRETS().vault.name : name,
+			key: key === undefined ? GET_SECRETS().vault.key : key,
+			secret: secret === undefined ? GET_SECRETS().vault.secret : secret,
+			connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
+		});
+	}
 };
 
 const crossCheckCoins = (coins) => {
@@ -151,7 +153,7 @@ const checkWebhook = (wallet, vaultConfig) => {
 			body: {
 				url: WEBHOOK_URL(wallet.currency)
 			},
-			uri: `${VAULT_ENDPOINT}/${wallet.name}/webhook`,
+			uri: `${VAULT_ENDPOINT}/wallet/${wallet.name}/webhook`,
 			json: true
 		};
 		return rp(options);
@@ -162,13 +164,9 @@ const checkWebhook = (wallet, vaultConfig) => {
 
 const addVaultCoinConnection = (coins, vaultConfig) => {
 	logger.debug('/plugins/vault/helpers addVaultCoinConnection', coins);
-	return updateConstants({
-		secrets: {
-			vault: {
-				...vaultConfig,
-				connected_coins: union(vaultConfig.connected_coins, coins)
-			}
-		}
+	return updatePluginConstant('vault', {
+		...vaultConfig,
+		connected_coins: union(vaultConfig.connected_coins, coins)
 	});
 };
 
