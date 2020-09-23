@@ -388,8 +388,7 @@ exports.KIT_CONFIG_KEYS = [
 	'valid_languages',
 	'user_level_number',
 	'new_user_is_activated',
-	'broker_enabled',
-	'secrets'
+	'broker_enabled'
 ];
 
 exports.KIT_SECRETS_KEYS = [

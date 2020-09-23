@@ -1103,7 +1103,9 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/OrdersResponse"
+            type: array
+            items:
+              $ref: "#/definitions/OrdersResponse"
         default:
           description: Error
           schema:
