@@ -4,6 +4,7 @@ const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const bodyParser = require('body-parser');
 const { logger, isUrl, updatePluginConstant, maskSecrets } = require('../helpers/common');
+const { NOT_AUTHORIZED } = require('../helpers/messages');
 const { updateVaultValues, crossCheckCoins, createOrUpdateWallets, cronTask } = require('./helpers');
 const { API_HOST } = require('../../constants');
 const { GET_SECRETS } = require('../../constants');
@@ -13,12 +14,16 @@ cronTask.start();
 app.get('/plugins/vault/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /plugins/vault/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/vault/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	try {
 		res.json(maskSecrets('vault', GET_SECRETS().vault) || {});
@@ -30,12 +35,16 @@ app.get('/plugins/vault/constant', verifyToken, (req, res) => {
 app.put('/plugins/vault/constant', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/vault/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/vault/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	if (req.body.length === 0) {
 		logger.error('PUT /plugins/vault/constant error', 'Must provide key to update');
@@ -62,12 +71,16 @@ app.put('/plugins/vault/constant', [verifyToken, bodyParser.json()], (req, res) 
 app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /plugins/vault/connect',
 		req.auth.email
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/vault/connect error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	if (!isUrl(API_HOST)) {
 		return res.status(400).json({ message: `Server URL ${API_HOST} is not a valid URL` });
@@ -97,12 +110,16 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 app.get('/plugins/vault/disconnect', verifyToken, (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /plugins/vault/disconnect',
 		req.auth.email
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/vault/disconnect error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	updateVaultValues('', '', '', false)
 		.then(() => {
