@@ -7,7 +7,7 @@ const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
-const { updateConstants, logger, sleep } = require('../helpers/common');
+const { updatePluginConstant, logger, sleep } = require('../helpers/common');
 const cron = require('node-cron');
 const { processWithdrawals } = require('./crons/processWithdrawals');
 const { lockWithdrawals } = require('./crons/lockWithdrawals');
@@ -36,15 +36,11 @@ const cronTask = cron.schedule('* * * * *', () => {
 
 const updateVaultValues = (name, key, secret, connect = true) => {
 	logger.debug('/plugins/vault/helpers updateVaultValues');
-	return updateConstants({
-		secrets: {
-			vault: {
-				name: name === undefined ? GET_SECRETS().vault.name : name,
-				key: key === undefined ? GET_SECRETS().vault.key : key,
-				secret: secret === undefined ? GET_SECRETS().vault.secret : secret,
-				connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
-			}
-		}
+	return updatePluginConstant('vault', {
+		name: name === undefined ? GET_SECRETS().vault.name : name,
+		key: key === undefined ? GET_SECRETS().vault.key : key,
+		secret: secret === undefined ? GET_SECRETS().vault.secret : secret,
+		connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
 	});
 };
 
@@ -163,13 +159,9 @@ const checkWebhook = (wallet, vaultConfig) => {
 
 const addVaultCoinConnection = (coins, vaultConfig) => {
 	logger.debug('/plugins/vault/helpers addVaultCoinConnection', coins);
-	return updateConstants({
-		secrets: {
-			vault: {
-				...vaultConfig,
-				connected_coins: union(vaultConfig.connected_coins, coins)
-			}
-		}
+	return updatePluginConstant('vault', {
+		...vaultConfig,
+		connected_coins: union(vaultConfig.connected_coins, coins)
 	});
 };
 

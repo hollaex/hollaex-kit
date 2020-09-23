@@ -4,6 +4,7 @@ const { Status, Deposit } = require('../../db/models');
 const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS, SECRET_MASK } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const { omit, each } = require('lodash');
+const flatten = require('flat');
 
 // Winston logger
 const logger = require('../../config/logger').loggerPlugin;
@@ -156,6 +157,13 @@ const updatePluginConstant = (plugin, newValues) => {
 	})
 		.then((status) => {
 			const constants = status.dataValues.constants;
+			if (!Array.isArray(newValues) && typeof newValues === 'object') {
+				const flattenedValues = flatten(newValues);
+				if (Object.values(flattenedValues).includes(SECRET_MASK)) {
+					throw new Error('Masked value given');
+				}
+			}
+
 			if (plugin === 'vault') {
 				constants.secrets.vault = { ...constants.secrets.vault, ...newValues };
 				return status.update({ constants }, {
