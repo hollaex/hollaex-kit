@@ -124,21 +124,21 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 	}
 
 	return dbQuery.findOne('status', {
-		attributes: ['id', 'kit'],
-		raw: true
+		attributes: ['id', 'kit']
 	})
 		.then((status) => {
 			if (data.kit && Object.keys(data.kit).length > 0) {
-				data.kit = joinKitConfig(status.kit, data.kit, role);
+				data.kit = joinKitConfig(status.dataValues.kit, data.kit, role);
 			}
 			if (data.secrets && Object.keys(data.secrets).length > 0) {
-				data.secrets = joinKitSecrets(status.secrets, data.secrets, role);
+				data.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, role);
 			}
 			return status.update(data, {
 				fields: [
 					'kit',
 					'secrets'
 				],
+				raw: true,
 				returning: true
 			});
 		})
