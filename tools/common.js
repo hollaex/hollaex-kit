@@ -166,8 +166,10 @@ const updateKitSecrets = (secrets, scopes) => {
 
 const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	const joinedKitConfig = {};
-	KIT_CONFIG_KEYS.forEach((key) => {
-		if (newKitConfig[key]) {
+	const existingKeys = Object.keys(existingKitConfig);
+
+	existingKeys.forEach((key) => {
+		if (newKitConfig[key] !== undefined) {
 			if (!Array.isArray(existingKitConfig[key]) && typeof existingKitConfig[key] === 'object') {
 				joinedKitConfig[key] = { ...existingKitConfig[key], ...newKitConfig[key] };
 			} else {
@@ -177,6 +179,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			joinedKitConfig[key] = existingKitConfig[key];
 		}
 	});
+
 	return joinedKitConfig;
 };
 
