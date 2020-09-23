@@ -39,9 +39,9 @@ const updateVaultValues = (name, key, secret, connect = true) => {
 	return updateConstants({
 		secrets: {
 			vault: {
-				name,
-				key,
-				secret,
+				name: name === undefined ? GET_SECRETS().vault.name : name,
+				key: key === undefined ? GET_SECRETS().vault.key : key,
+				secret: secret === undefined ? GET_SECRETS().vault.secret : secret,
 				connected_coins: connect ? GET_SECRETS().vault.connected_coins : []
 			}
 		}

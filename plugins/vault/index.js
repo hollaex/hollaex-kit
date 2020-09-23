@@ -70,7 +70,7 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 	);
 
 	if (!isUrl(API_HOST)) {
-		return res.status(400).json({ message: `Server URL ${API_HOST} is not a valid URL`});
+		return res.status(400).json({ message: `Server URL ${API_HOST} is not a valid URL` });
 	}
 
 	const { name, key, secret, coins } = req.body;

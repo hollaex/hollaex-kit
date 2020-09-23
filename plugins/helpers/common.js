@@ -1,26 +1,48 @@
 'use strict';
 
 const { Status, Deposit } = require('../../db/models');
-const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS } = require('../../constants');
+const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS, SECRET_MASK } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const { omit, each } = require('lodash');
-const SECRET_MASK = '************************';
 
 // Winston logger
 const logger = require('../../config/logger').loggerPlugin;
 
-const joinConstants = (statusConstants = {}, newConstants = {}) => {
+const joinConstants = (statusConstants = {}, newConstants = {}, role) => {
 	const joinedConstants = {
 		secrets: {}
 	};
 	CONSTANTS_KEYS.forEach((key) => {
 		if (key === 'secrets' && newConstants[key]) {
 			SECRETS_KEYS.forEach((secretKey) => {
-				joinedConstants[key][secretKey] = newConstants[key][secretKey] || statusConstants[key][secretKey];
+				if (newConstants[key][secretKey]) {
+					if (!Array.isArray(statusConstants[key][secretKey]) && typeof statusConstants[key][secretKey] === 'object') {
+						if (Object.values(newConstants[key][secretKey]).includes(SECRET_MASK)) {
+							throw new Error('Masked value given');
+						}
+						joinedConstants[key][secretKey] = { ...statusConstants[key][secretKey], ...newConstants[key][secretKey] };
+					} else {
+						if (newConstants[key][secretKey] === SECRET_MASK) {
+							throw new Error('Masked value given');
+						}
+						joinedConstants[key][secretKey] = newConstants[key][secretKey];
+					}
+				} else {
+					joinedConstants[key][secretKey] = statusConstants[key][secretKey];
+				}
 			});
 		}
-		else {
-			joinedConstants[key] = newConstants[key] === undefined ? statusConstants[key] : newConstants[key];
+		else if (newConstants[key]) {
+			if (role === 'tech' && key === 'emails' && newConstants[key] && newConstants[key].send_email_to_support !== statusConstants[key].send_email_to_support) {
+				throw new Error('Tech users cannot update the value of send_email_copy');
+			}
+			if (!Array.isArray(statusConstants[key]) && typeof statusConstants[key] === 'object') {
+				joinedConstants[key] = { ...statusConstants[key], ...newConstants[key] };
+			} else {
+				joinedConstants[key] = newConstants[key];
+			}
+		} else {
+			joinedConstants[key] = statusConstants[key];
 		}
 	});
 	return joinedConstants;
