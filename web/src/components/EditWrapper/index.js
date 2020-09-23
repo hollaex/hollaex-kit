@@ -1,22 +1,22 @@
 import React from 'react';
-import { string, array } from 'prop-types';
+import { string, array, object } from 'prop-types';
 
-const EditWrapper = ({ children, stringId, position = [] }) => {
+const EditWrapper = ({ children, stringId, position, style }) => {
 
   const [x = 5, y = 0] = position;
-  const styles = {
+  const triggerStyles = {
     transform: `translate(${x}px, ${y}px)`
   };
 
   return (
-    <div className="edit-wrapper__container">
+    <div className="edit-wrapper__container" style={style}>
       {children}
       {
         stringId && (
           <div
             className="edit-wrapper__icon-wrapper"
             data-string-id={stringId}
-            style={styles}
+            style={triggerStyles}
           >
             E
           </div>
@@ -29,6 +29,12 @@ const EditWrapper = ({ children, stringId, position = [] }) => {
 EditWrapper.propTypes = {
   stringId: string.isRequired,
   position: array,
+  style: object,
+}
+
+EditWrapper.defaultProps = {
+  position: [],
+  style: {},
 }
 
 export default EditWrapper;

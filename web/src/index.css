@@ -9589,7 +9589,7 @@ foreignObject {
     color: var(--colors-deactivate-color2); }
 
 .edit-wrapper__container {
-  display: inline-block; }
+  display: inline-flex; }
 
 .edit-wrapper__icon-wrapper {
   display: none; }
