@@ -906,6 +906,9 @@ const nestedContent = {
   WALLET_ALL_ASSETS: 'All Assets',
   WALLET_DEPOSIT_USD:
     'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
+  WALLET_HIDE_ZERO_BALANCE: 'Hide zero balance',
+  WALLET_ESTIMATED_TOTAL_BALANCE: 'Estimated Total Balance',
+  WALLET_ASSETS_SEARCH_TXT: 'Search',
   HIDE_TEXT: 'Hide',
   PAGINATOR_FORMAT: '{0} / {1}',
   ORDERBOOK_SELLERS: 'Sellers',
