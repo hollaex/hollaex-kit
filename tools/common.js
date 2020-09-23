@@ -128,10 +128,10 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 		raw: true
 	})
 		.then((status) => {
-			if (Object.keys(data.kit).length > 0) {
+			if (data.kit && Object.keys(data.kit).length > 0) {
 				data.kit = joinKitConfig(status.kit, data.kit, role);
 			}
-			if (Object.keys(data.secrets).length > 0) {
+			if (data.secrets && Object.keys(data.secrets).length > 0) {
 				data.secrets = joinKitSecrets(status.secrets, data.secrets, role);
 			}
 			return status.update(data, {
