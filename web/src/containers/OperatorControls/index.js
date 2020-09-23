@@ -23,6 +23,7 @@ class OperatorControls extends Component {
       isSaveEnabled: false,
       isEditModalOpen: false,
       editType: null,
+      isAllStringsModalOpen: false,
       editableElementIds: [],
       languageKeys,
       overwrites,
@@ -172,8 +173,20 @@ class OperatorControls extends Component {
     this.updateEditData(defaultString, key, lang);
   }
 
+  openAllStringsModal = () => {
+    this.setState({
+      isAllStringsModalOpen: true,
+    });
+  }
+
+  closeAllStringsModal = () => {
+    this.setState({
+      isAllStringsModalOpen: false,
+    });
+  }
+
   render() {
-    const { isPublishEnabled, isEditModalOpen, editData, languageKeys, editableElementIds, isSaveEnabled } = this.state;
+    const { isPublishEnabled, isEditModalOpen, editData, languageKeys, editableElementIds, isSaveEnabled, isAllStringsModalOpen } = this.state;
     const { editMode } = this.props;
 
     return (
@@ -190,7 +203,14 @@ class OperatorControls extends Component {
           </span>
         </div>
         <div className="operator-controls__panel">
-          <div />
+          <div className="operator-controls__panel-list">
+            <div
+              className="operator-controls__panel-item"
+              onClick={this.openAllStringsModal}
+            >
+              All strings
+            </div>
+          </div>
           <div className="d-flex align-items-center">
             <button
               type="submit"
@@ -248,6 +268,31 @@ class OperatorControls extends Component {
                 </div>
               )
             })
+          }
+          <div className="d-flex align-items-center pt-5">
+            <button
+              type="submit"
+              onClick={this.handleSave}
+              className="operator-controls__save-button"
+              disabled={!isSaveEnabled}
+            >
+              Save
+            </button>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={editMode && isAllStringsModalOpen}
+          label="operator-controls-modal"
+          className="operator-controls__modal"
+          disableTheme={true}
+          onCloseDialog={this.closeAllStringsModal}
+          shouldCloseOnOverlayClick={true}
+          showCloseText={true}
+          bodyOpenClassName="operator-controls__modal-open"
+        >
+          {
+            editMode && isAllStringsModalOpen &&
+            'All Strings'
           }
           <div className="d-flex align-items-center pt-5">
             <button

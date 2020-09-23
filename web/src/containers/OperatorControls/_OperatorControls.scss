@@ -37,6 +37,21 @@ $operator-controls__panel-border-color: #A7A7A7;
   background-color: $operator-controls__panel-main-color;
 }
 
+.operator-controls__panel-list {
+  display: flex;
+  margin: 0 35px;
+}
+
+.operator-controls__panel-item {
+  display: flex;
+  font-size: 21px;
+  font-family: Neue Haas Grotesk Display Pro;
+  text-align: center;
+  cursor: pointer;
+  align-items: center;
+  margin: 0 35px;
+}
+
 .operator-controls__publish-button {
   cursor: pointer;
   background-color: #FF0000;
