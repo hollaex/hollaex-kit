@@ -308,14 +308,14 @@ class OperatorControls extends Component {
               <table>
                 <thead>
                 <tr>
-                  {languageKeys.map((lang) => (<th>{this.getLanguageLabel(lang)}</th>))}
+                  {languageKeys.map((lang) => (<th key={lang}>{this.getLanguageLabel(lang)}</th>))}
                 </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(allStrings).map(([, stringObject]) => (
-                    <tr>
+                  {Object.entries(allStrings).map(([key, stringObject]) => (
+                    <tr key={key}>
                       {languageKeys.map((lang) => (
-                        <td>
+                        <td key={lang}>
                           {stringObject[lang]}
                         </td>
                       ))}
