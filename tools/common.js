@@ -124,7 +124,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 	}
 
 	return dbQuery.findOne('status', {
-		attributes: ['id', 'kit']
+		attributes: ['id', 'kit', 'secrets']
 	})
 		.then((status) => {
 			if (data.kit && Object.keys(data.kit).length > 0) {
@@ -138,7 +138,6 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 					'kit',
 					'secrets'
 				],
-				raw: true,
 				returning: true
 			});
 		})
@@ -146,12 +145,12 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
-					type: 'update', data: { kit: status.kit, secrets: status.secrets }
+					type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
 				})
 			);
 			return {
-				kit: status.kit,
-				secrets: maskSecrets(status.secrets)
+				kit: status.dataValues.kit,
+				secrets: maskSecrets(status.dataValues.secrets)
 			};
 		});
 };
@@ -169,15 +168,21 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	const existingKeys = Object.keys(existingKitConfig);
 
 	existingKeys.forEach((key) => {
-		if (newKitConfig[key] !== undefined) {
+		if (newKitConfig[key] === undefined) {
+			joinedKitConfig[key] = existingKitConfig[key];
+		} else {
 			if (!Array.isArray(existingKitConfig[key]) && typeof existingKitConfig[key] === 'object') {
 				joinedKitConfig[key] = { ...existingKitConfig[key], ...newKitConfig[key] };
 			} else {
 				joinedKitConfig[key] = newKitConfig[key];
 			}
-		} else {
-			joinedKitConfig[key] = existingKitConfig[key];
 		}
+	});
+
+	const newKeys = difference(Object.keys(newKitConfig), existingKeys);
+
+	newKeys.forEach((key) => {
+		joinedKitConfig[key] = newKitConfig[key];
 	});
 
 	return joinedKitConfig;
