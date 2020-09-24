@@ -25,9 +25,7 @@ const {
 	USERNAME_IS_TAKEN,
 	INVALID_USERNAME,
 	ACCOUNT_NOT_VERIFIED,
-	INVALID_AMOUNT,
 	INVALID_VERIFICATION_LEVEL,
-	INVALID_COIN,
 	USER_IS_VERIFIED,
 	NO_DATA_FOR_CSV,
 	PROVIDE_USER_CREDENTIALS,
@@ -43,7 +41,7 @@ const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins, subscribedToCoin } = require('./common');
+const { getKitConfig, getKitSecrets, getKitCoins } = require('./common');
 const { isValidPassword } = require('./auth');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -51,6 +49,8 @@ const { Op } = require('sequelize');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const { parse } = require('json2csv');
 const flatten = require('flat');
+
+	/* Onboarding*/
 
 const signUpUser = (email, password, referral) => {
 	if (!getKitConfig().new_user_is_activated) {
@@ -199,6 +199,9 @@ const registerUserLogin = (userId, ip, device = '', domain = '', origin = '', re
 	});
 };
 
+	/* Public Endpoints*/
+
+
 const getVerificationCodeByUserEmail = (email) => {
 	return getUserByEmail(email)
 		.then((user) => {
@@ -220,7 +223,7 @@ const getVerificationCodeByUserId = (user_id) => {
 
 const getUserByAffiliationCode = (affiliationCode) => {
 	const code = affiliationCode.toUpperCase().trim();
-	return dbQuery.finOne('user', {
+	return dbQuery.findOne('user', {
 		where: { affiliation_code: code },
 		attributes: ['id', 'email', 'affiliation_code']
 	});
@@ -732,19 +735,6 @@ const getUserEmailByVerificationCode = (code) => {
 		});
 };
 
-const getUserBalanceByKitId = (userKitId) => {
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			return getNodeLib().getBalanceNetwork(user.network_id);
-		})
-		.then((data) => {
-			return {
-				user_id: userKitId,
-				...data
-			};
-		});
-};
-
 const updateUserNote = (userId, note) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
@@ -1096,58 +1086,6 @@ const getUserStats = (userId) => {
 		});
 };
 
-const transferUserFunds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
-	if (!subscribedToCoin(currency)) {
-		return reject(new Error(INVALID_COIN(currency)));
-	}
-
-	if (amount <= 0) {
-		return reject(new Error(INVALID_AMOUNT(amount)));
-	}
-
-	return all([
-		getUserByKitId(senderId),
-		getUserByKitId(receiverId)
-	])
-		.then(([ sender, receiver ]) => {
-			return all([
-				getNodeLib().transferAssetsNetwork(sender.network_id, receiver.network_id, currency, amount, description),
-				sender,
-				receiver
-			]);
-		})
-		.then(([ transaction, sender, receiver ]) => {
-			sendEmail(
-				MAILTYPE.WITHDRAWAL,
-				sender.email,
-				{
-					amount: amount,
-					fee: 0,
-					currency: currency,
-					status: true,
-					transaction_id: transaction.transaction_id,
-					// address: deposit.address,
-					phoneNumber: sender.phone_number
-				},
-				sender.settings
-			);
-			sendEmail(
-				MAILTYPE.DEPOSIT,
-				receiver.email,
-				{
-					amount: amount,
-					currency: currency,
-					status: true,
-					transaction_id: transaction.transaction_id,
-					// address: address,
-					phoneNumber: receiver.phone_number
-				},
-				receiver.settings,
-			);
-			return;
-		});
-};
-
 module.exports = {
 	loginUser,
 	getUserByEmail,
@@ -1165,7 +1103,6 @@ module.exports = {
 	verifyUser,
 	getVerificationCodeByUserEmail,
 	getUserEmailByVerificationCode,
-	getUserBalanceByKitId,
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
@@ -1181,6 +1118,5 @@ module.exports = {
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
-	getUserStats,
-	transferUserFunds
+	getUserStats
 };

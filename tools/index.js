@@ -6,5 +6,6 @@ module.exports = {
 	database: require('./database'),
 	order: require('./order'),
 	plugin: require('./plugin'),
-	user: require('./user')
+	user: require('./user'),
+	balance: require('./balance')
 };
