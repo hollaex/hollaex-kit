@@ -31,8 +31,7 @@ class HollaEx {
 		this.exchange_id = opts.exchange_id;
 	}
 
-	/* Public */
-	/* events: ticker, orderbooks, trades, constant */
+	/* Public Endpoints*/
 
 	/**
 	 * Retrieve last, high, low, open and close price and volume within last 24 hours
@@ -81,10 +80,7 @@ class HollaEx {
 		return createRequest('GET', `${this.apiUrl}${this.baseUrl}/constant`, this.headers);
 	}
 
-	/*********************************************************************************************************
-
-	/* Private */
-	/* events: user, balance, deposits, withdrawals, trades */
+	/* Private Endpoints*/
 
 	/**
 	 * Retrieve user's personal information
@@ -119,10 +115,12 @@ class HollaEx {
 	/**
 	 * Retrieve list of the user's deposits
 	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
-	 * @param {number} limit The upper limit of deposits to return, max = 100
-	 * @param {number} page The page of data to receive
-	 * @param {string} orderBy The field to order data by e.g. amount, id
-	 * @param {string} order asc or desc
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
 	getDeposit(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
@@ -143,10 +141,12 @@ class HollaEx {
 	/**
 	 * Retrieve list of the user's withdrawals
 	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
-	 * @param {number} limit The upper limit of withdrawals to return, max = 100
-	 * @param {number} page The page of data to receive
-	 * @param {string} orderBy The field to order data by e.g. amount, id
-	 * @param {string} order asc or desc
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
 	getWithdrawal(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
@@ -186,8 +186,12 @@ class HollaEx {
 	/**
 	 * Retrieve list of the user's completed trades
 	 * @param {string} symbol The symbol-pair to filter by, pass undefined to receive data on all currencies
-	 * @param {number} limit The upper limit of completed trades to return, max = 100
-	 * @param {number} page The page of data to receive
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
 	getUserTrade(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
@@ -224,6 +228,12 @@ class HollaEx {
 	/**
 	 * Retrieve information of all the user's active orders
 	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
 	getAllOrder(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
@@ -303,7 +313,8 @@ class HollaEx {
 		return new Socket(events, this.apiUrl, this.apiKey, signature, apiExpires);
 	}
 
-	/****** Kit operator endpoints ******/
+	/* Kit Operator Network Endpoints*/
+
 	/**
 	 * Initialize your Kit for HollaEx Network. Must have passed activation_code in constructor
 	 * @return {object} Your exchange values
@@ -347,8 +358,12 @@ class HollaEx {
 	 * Get all trades for the exchange on the network
 	 * @param {number} userId - User id on network. Leave blank to get all trades for the exchange
 	 * @param {string} symbol - Symbol of trades. Leave blank to get trades for all symbols
-	 * @param {number} limit - Amount of trades per page. Maximum: 50
-	 * @param {number} page - Page of trades data
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getAllTradeNetwork(userId, symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
@@ -459,8 +474,17 @@ class HollaEx {
 	 * Get all deposits for the exchange on the network
 	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
 	 * @param {string} currency - Currency of deposits. Leave blank to get deposits for all currencies
-	 * @param {number} limit - Amount of trades per page. Maximum: 50
-	 * @param {number} page - Page of trades data
+	 * @param {boolean} status - Confirmed status of the deposits to get. Leave blank to get all confirmed and unconfirmed deposits
+	 * @param {boolean} dismissed - Dismissed status of the deposits to get. Leave blank to get all dismissed and undismissed deposits
+	 * @param {boolean} rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
+	 * @param {boolean} processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
+	 * @param {boolean} waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
 	getAllDepositNetwork(
@@ -518,8 +542,17 @@ class HollaEx {
 	 * Get all withdrawals for the exchange on the network
 	 * @param {number} userId - User id on network. Leave blank to get all withdrawals for the exchange
 	 * @param {string} currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
-	 * @param {number} limit - Amount of trades per page. Maximum: 50
-	 * @param {number} page - Page of trades data
+	 * @param {boolean} status - Confirmed status of the depowithdrawalssits to get. Leave blank to get all confirmed and unconfirmed withdrawals
+	 * @param {boolean} dismissed - Dismissed status of the withdrawals to get. Leave blank to get all dismissed and undismissed withdrawals
+	 * @param {boolean} rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
+	 * @param {boolean} processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
+	 * @param {boolean} waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
 	getAllWithdrawalNetwork(
@@ -663,6 +696,12 @@ class HollaEx {
 	 * Get all orders for the exchange on the network
 	 * @param {number} userId - User id on network. Leave blank to get all orders for the exchange
 	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {array} Array of queried orders
 	 */
 	getAllOrderNetwork(userId, symbol, side, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
@@ -713,6 +752,11 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get sum of user trades and its stats
+	 * @param {number} userId - User id on network
+	 * @return {object} Object with field data that contains stats info
+	 */
 	getUserStatsNetwork(userId) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -726,6 +770,14 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Check transaction in network. Will update transaction status on Kit accordingly
+	 * @param {string} currency; - Currency of transaction
+	 * @param {string} transactionId - Transaction id
+	 * @param {string} address - Transaction receiving address
+	 * @param {boolean} isTestnet - Network transaction was made on. Default: false
+	 * @return {object} Success or failed message
+	 */
 	checkTransactionNetwork(currency, transactionId, address, isTestnet = false) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -739,6 +791,15 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Transfer funds between two users
+	 * @param {number} senderId; - Network id of user that is sending funds
+	 * @param {number} receiverId - Network id of user that is receiving funds
+	 * @param {string} currency - Currency to transfer
+	 * @param {number} amount - Amount to transfer
+	 * @param {string} description - Description of transfer. Default: Empty string
+	 * @return {object} Object with field transaction_id
+	 */
 	transferAssetsNetwork(senderId, receiverId, currency, amount, description = '') {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
@@ -760,7 +821,13 @@ class HollaEx {
 		);
 	}
 
-	// ENGINE ENDPOINTS
+	/* Network Engine Endpoints*/
+
+	/**
+	 * Get time and sales on Nework engine
+	 * @param {string} symbol - Symbol to get trades for. Leave blank to get trades of all symbols
+	 * @return {object} Object with trades
+	 */
 	getTradesEngine(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -779,6 +846,11 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get top orderbooks
+	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
+	 * @return {object} Object with orderbook
+	 */
 	getOrderbooksEngine(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -797,6 +869,14 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get TradingView trade history HOLCV
+	 * @param {string} from - Starting date of trade history in UNIX timestamp format
+	 * @param {string} to - Ending date of trade history in UNIX timestamp format
+	 * @param {string} symbol - Symbol to get trade history for
+	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
+	 * @return {object} Object with trade history info
+	 */
 	getChartEngine(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -810,6 +890,10 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get TradingView udf config
+	 * @return {object} Object with TradingView udf config
+	 */
 	getUdfConfigEngine() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -823,6 +907,14 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get TradingView udf history HOLCV
+	 * @param {string} from - Starting date in UNIX timestamp format
+	 * @param {string} to - Ending date in UNIX timestamp format
+	 * @param {string} symbol - Symbol to get
+	 * @param {string} resolution - Resolution of query. 1d, 1W, etc
+	 * @return {object} Object with TradingView udf history HOLCV
+	 */
 	getUdfHistoryEngine(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -836,6 +928,11 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get TradingView udf symbols
+	 * @param {string} symbol - Symbol to get
+	 * @return {object} Object with TradingView udf symbols
+	 */
 	getUdfSymbolsEngine(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -849,6 +946,11 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get historical data, time interval is 5 minutes
+	 * @param {string} symbol - Symbol to get
+	 * @return {object} Object with historical data
+	 */
 	getTickerEngine(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -862,6 +964,10 @@ class HollaEx {
 		);
 	}
 
+	/**
+	 * Get historical data for all symbols, time interval is 5 minutes
+	 * @return {object} Object with historical data for all symbols
+	 */
 	getAllTickersEngine() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
