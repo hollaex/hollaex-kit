@@ -8,6 +8,7 @@ import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
 import { content as CONTENT } from 'config/localizedStrings';
+import AllStringsModal from './components/AllStringsModal';
 
 class OperatorControls extends Component {
 
@@ -17,6 +18,19 @@ class OperatorControls extends Component {
     const strings = localStorage.getItem('strings') || "{}";
     const overwrites = JSON.parse(strings);
     const languageKeys = getValidLanguages();
+    const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value));
+    const isENAvailable = !!languageKeys.find(lang => lang === "en");
+    const hasMultipleLanguages = languageKeys.length > 1;
+    let selectedLanguages = [];
+
+    if (isENAvailable && hasMultipleLanguages) {
+      selectedLanguages[0] = 'en'
+      selectedLanguages[1] = languageKeys.filter(lang => lang !== "en")[0]
+    } else if (hasMultipleLanguages) {
+      selectedLanguages = languageKeys.slice(0,2);
+    } else {
+      selectedLanguages = new Array(2).fill(languageKeys[0])
+    }
 
     this.state = {
       isPublishEnabled: false,
@@ -26,7 +40,12 @@ class OperatorControls extends Component {
       isAllStringsModalOpen: false,
       editableElementIds: [],
       languageKeys,
+      languageOptions,
+      selectedLanguages,
       overwrites,
+      allStrings: [],
+      searchValue: '',
+      searchResults: {},
     }
   }
 
@@ -188,6 +207,24 @@ class OperatorControls extends Component {
     });
   }
 
+  handleSearch = (value) => {
+    console.log('Search', value);
+    this.setState({ searchValue: value.trim()})
+  }
+
+  setSelectedLanguages = (value, index) => {
+
+    this.setState(prevState => {
+      let selection = prevState.selectedLanguages;
+      selection[index] = value;
+
+      return ({
+        ...prevState,
+        selectedLanguages: selection,
+      })
+    });
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -197,7 +234,10 @@ class OperatorControls extends Component {
       editableElementIds,
       isSaveEnabled,
       isAllStringsModalOpen,
-      allStrings
+      allStrings,
+      searchValue,
+      languageOptions,
+      selectedLanguages,
     } = this.state;
     const { editMode } = this.props;
 
@@ -292,50 +332,17 @@ class OperatorControls extends Component {
             </button>
           </div>
         </Modal>
-        <Modal
+        <AllStringsModal
           isOpen={editMode && isAllStringsModalOpen}
-          label="operator-controls-modal"
-          className="operator-controls__modal"
-          disableTheme={true}
+          allStrings={allStrings}
+          languageKeys={languageKeys}
           onCloseDialog={this.closeAllStringsModal}
-          shouldCloseOnOverlayClick={true}
-          showCloseText={true}
-          bodyOpenClassName="operator-controls__modal-open"
-        >
-          {
-            editMode && isAllStringsModalOpen &&
-            (
-              <table>
-                <thead>
-                <tr>
-                  {languageKeys.map((lang) => (<th key={lang}>{this.getLanguageLabel(lang)}</th>))}
-                </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(allStrings).map(([key, stringObject]) => (
-                    <tr key={key}>
-                      {languageKeys.map((lang) => (
-                        <td key={lang}>
-                          {stringObject[lang]}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )
-          }
-          <div className="d-flex align-items-center pt-5">
-            <button
-              type="submit"
-              onClick={this.handleSave}
-              className="operator-controls__save-button"
-              disabled={!isSaveEnabled}
-            >
-              Save
-            </button>
-          </div>
-        </Modal>
+          onSearch={this.handleSearch}
+          searchValue={searchValue}
+          languageOptions={languageOptions}
+          onSelect={this.setSelectedLanguages}
+          selectedLanguages={selectedLanguages}
+        />
       </div>
     );
   }

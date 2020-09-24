@@ -118,13 +118,14 @@ export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._
 
 export const getAllStrings = (content = STRINGS._props) => {
 	const validLanguages = getValidLanguages();
-	const allStrings = {};
+	const allStrings = [];
 
   Object.entries(content['en']).forEach(([key]) => {
-    allStrings[key] = {};
+    const stringObject = { key };
 		validLanguages.forEach((lang) => {
-			allStrings[key][lang] = getStringByKey(key, lang, content)
+      stringObject[lang] = getStringByKey(key, lang, content)
 		})
+    allStrings.push(stringObject)
 	})
 
 	return allStrings;

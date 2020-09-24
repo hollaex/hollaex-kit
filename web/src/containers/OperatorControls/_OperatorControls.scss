@@ -79,6 +79,7 @@ $operator-controls__panel-border-color: #A7A7A7;
   .ReactModal__Content {
     background-color: $operator-controls__panel-main-color !important;
     color: $operator-controls__panel-text-color !important;
+    padding-top: 20px !important;
   }
   .ReactModal__Overlay {
     background-color: transparent !important;
@@ -89,4 +90,15 @@ $operator-controls__panel-border-color: #A7A7A7;
 .operator-controls__modal-open #root {
   filter: none !important;
   background-color: transparent !important;
+}
+
+.operator-controls__all-strings-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.operator-controls__all-strings-settings-button {
+  color: $operator-controls__panel-text-color !important;
+  border-color: $operator-controls__panel-text-color !important;
 }

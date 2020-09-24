@@ -3791,7 +3791,8 @@ table th {
 
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
-  color: #FFFFFF !important; }
+  color: #FFFFFF !important;
+  padding-top: 20px !important; }
 
 .operator-controls__modal .ReactModal__Overlay {
   background-color: transparent !important;
@@ -3800,6 +3801,15 @@ table th {
 .operator-controls__modal-open #root {
   filter: none !important;
   background-color: transparent !important; }
+
+.operator-controls__all-strings-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; }
+
+.operator-controls__all-strings-settings-button {
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important; }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
