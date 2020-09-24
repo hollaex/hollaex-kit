@@ -1,6 +1,6 @@
 'use strict';
 
-const { loggerOrderbook } = require('../../config/logger');
+const { loggerEngine } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { getNodeLib } = require('../../init');
 
@@ -8,7 +8,7 @@ const getTopOrderbooks = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerOrderbook.error(
+		loggerEngine.error(
 			req.uuid,
 			'controller/engine/getTopOrderbooks',
 			'Invalid symbol'
@@ -21,7 +21,7 @@ const getTopOrderbooks = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getTopOrderbooks',
 				err.message
@@ -34,7 +34,7 @@ const getTrades = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerOrderbook.error(
+		loggerEngine.error(
 			req.uuid,
 			'controller/engine/getTopOrderbooks',
 			'Invalid symbol'
@@ -47,7 +47,7 @@ const getTrades = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getTrades',
 				err.message
@@ -60,7 +60,7 @@ const getTicker = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (!toolsLib.subscribedToPair(symbol)) {
-		loggerOrderbook.error(
+		loggerEngine.error(
 			req.uuid,
 			'controller/engine/getTopOrderbooks',
 			'Invalid symbol'
@@ -73,7 +73,7 @@ const getTicker = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getTicker',
 				err.message
@@ -88,7 +88,7 @@ const getAllTicker = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getAllTicker',
 				err.message
@@ -101,7 +101,7 @@ const getChart = (req, res) => {
 	const { from, to, symbol, resolution } = req.swagger.params;
 
 	if (!toolsLib.subscribedToPair(symbol.value)) {
-		loggerOrderbook.error(
+		loggerEngine.error(
 			req.uuid,
 			'controller/engine/getChart',
 			'Invalid symbol'
@@ -114,7 +114,7 @@ const getChart = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getChart',
 				err.message
@@ -129,7 +129,7 @@ const getConfig = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getConfig',
 				err.message
@@ -142,7 +142,7 @@ const getHistory = (req, res) => {
 	const { symbol, from, to, resolution } = req.swagger.params;
 
 	if (!toolsLib.subscribedToPair(symbol.value)) {
-		loggerOrderbook.error(
+		loggerEngine.error(
 			req.uuid,
 			'controller/engine/getHistory',
 			'Invalid symbol'
@@ -155,7 +155,7 @@ const getHistory = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getHistory',
 				err.message
@@ -168,7 +168,7 @@ const getSymbols = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (!toolsLib.subscribedToPair(symbol)) {
-		loggerOrderbook.error(
+		loggerEngine.error(
 			req.uuid,
 			'controller/engine/getSymbols',
 			'Invalid symbol'
@@ -181,7 +181,7 @@ const getSymbols = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerOrderbook.error(
+			loggerEngine.error(
 				req.uuid,
 				'controller/engine/getSymbols',
 				err.message

@@ -113,7 +113,7 @@ const cancelAllUserOrders = (req, res) => {
 };
 
 const getAdminUserOrders = (req, res) => {
-	loggerOrders.verbose(req.uuid, 'controllers/admin/getAdminUserOrders/auth', req.auth);
+	loggerOrders.verbose(req.uuid, 'controllers/order/getAdminUserOrders/auth', req.auth);
 	const { user_id, symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	let promiseQuery;
@@ -148,13 +148,13 @@ const getAdminUserOrders = (req, res) => {
 			return res.json(orders);
 		})
 		.catch((err) => {
-			loggerOrders.debug(req.uuid, 'controllers/admin/getAdminUserOrder', err.message);
+			loggerOrders.debug(req.uuid, 'controllers/order/getAdminUserOrder', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 const adminCancelOrder = (req, res) => {
-	loggerOrders.verbose(req.uuid, 'controllers/admin/adminCancelOrder auth', req.auth);
+	loggerOrders.verbose(req.uuid, 'controllers/order/adminCancelOrder auth', req.auth);
 
 	const userId = req.swagger.params.user_id.value;
 	const orderId = req.swagger.params.order_id.value;
@@ -166,7 +166,7 @@ const adminCancelOrder = (req, res) => {
 		.catch((err) => {
 			loggerOrders.error(
 				req.uuid,
-				'controllers/admin/adminCancelOrder',
+				'controllers/order/adminCancelOrder',
 				err.message
 			);
 			return res.status(400).json({ message: err.message });

@@ -96,7 +96,7 @@ const deactivateOtp = (req, res) => {
 const deactivateOtpAdmin = (req, res) => {
 	loggerOtp.verbose(
 		req.uuid,
-		'controllers/admin/deactivateOtpAdmin/auth',
+		'controllers/otp/deactivateOtpAdmin/auth',
 		req.auth
 	);
 	const { user_id } = req.swagger.params.data.value;
@@ -108,7 +108,7 @@ const deactivateOtpAdmin = (req, res) => {
 		.catch((err) => {
 			loggerOtp.error(
 				req.uuid,
-				'controllers/admin/deactivateOtpAdmin',
+				'controllers/otp/deactivateOtpAdmin',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });

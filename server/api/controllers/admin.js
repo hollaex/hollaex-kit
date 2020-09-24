@@ -373,6 +373,31 @@ const transferFund = (req, res) => {
 		});
 };
 
+const adminCheckTransaction = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/adminCheckTransaction auth',
+		req.auth
+	);
+	const transactionId = req.swagger.params.transaction_id.value;
+	const address = req.swagger.params.address.value;
+	const currency = req.swagger.params.currency.value;
+	const isTestnet = req.swagger.params.is_testnet.value;
+
+	toolsLib.transaction.checkTransaction(currency, transactionId, address, isTestnet)
+		.then((transaction) => {
+			return res.json({ message: 'Success', transaction });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/adminCheckTransaction catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getAdminKit,
 	putAdminKit,
@@ -388,5 +413,6 @@ module.exports = {
 	getUserAudits,
 	getCoins,
 	getPairs,
-	transferFund
+	transferFund,
+	adminCheckTransaction
 };

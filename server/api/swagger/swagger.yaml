@@ -782,7 +782,7 @@ paths:
       x-security-scopes:
         - user
   /user/request-withdrawal:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: withdrawal
     post:
       operationId: requestWithdrawal
       description: This will send a confirmation email to the email address on record, if activate OTP, it will require OTP as well.
@@ -819,7 +819,7 @@ paths:
         - user
         - hmac
   /user/confirm-withdrawal:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: withdrawal
     post:
       operationId: performWithdrawal
       description: confirm a withdrawal request
@@ -850,7 +850,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /user/withdrawal/fee:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: withdrawal
     get:
       description: Returns the withdrawal fees for a specific coin
       operationId: getWithdrawalFee
@@ -1382,7 +1382,7 @@ paths:
         - user
         - hmac
   /user/deposits:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: deposit
     get:
       operationId: getUserDeposits
       description: List deposit of authenticated user
@@ -1455,7 +1455,7 @@ paths:
         - user
         - hmac
   /user/withdrawals:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: withdrawal
     get:
       operationId: getUserWithdrawals
       description: List withdrawals of authenticated user
@@ -1657,7 +1657,7 @@ paths:
       x-security-scopes:
         - admin
   /admin/check-transaction:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: admin
     get:
       operationId: adminCheckTransaction
       description: Check a blockchain transaction to add create/update deposit
@@ -2358,7 +2358,7 @@ paths:
         - support
         - kyc
   /admin/deposits:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: deposit
     get:
       operationId: getAdminDeposits
       description: Obtain a list of deposits.
@@ -2473,7 +2473,7 @@ paths:
         - admin
         - supervisor
   /admin/withdrawals:
-    x-swagger-router-controller: transaction
+    x-swagger-router-controller: withdrawal
     get:
       operationId: getAdminWithdrawals
       description: Obtain a list of withdrawals.

@@ -6,7 +6,7 @@ const toolsLib = require('hollaex-tools-lib');
 const getUserTrades = (req, res) => {
 	loggerTrades.verbose(
 		req.uuid,
-		'controllers/user/getUserTrades auth',
+		'controllers/trade/getUserTrades auth',
 		req.auth.sub
 	);
 
@@ -15,7 +15,7 @@ const getUserTrades = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerTrades.error(req.uuid, 'controllers/user/getUserTrades', 'Invalid symbol');
+		loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', 'Invalid symbol');
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
@@ -30,13 +30,13 @@ const getUserTrades = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerTrades.error(req.uuid, 'controllers/user/getUserTrades', err.message);
+			loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 const getAdminUserTrades = (req, res) => {
-	loggerTrades.verbose(req.uuid, 'controllers/admin/getAdminUserTrades auth', req.auth);
+	loggerTrades.verbose(req.uuid, 'controllers/trade/getAdminUserTrades auth', req.auth);
 
 	const { user_id, symbol, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -59,7 +59,7 @@ const getAdminUserTrades = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerTrades.error(req.uuid, 'controllers/admin/getAdminUserTrades', err.message);
+			loggerTrades.error(req.uuid, 'controllers/trade/getAdminUserTrades', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
