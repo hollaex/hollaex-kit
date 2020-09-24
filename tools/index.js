@@ -17,5 +17,5 @@ module.exports = {
 	// plugins
 	plugins: require('./plugins'),
 
-	users: require('./users')
+	user: require('./user')
 };

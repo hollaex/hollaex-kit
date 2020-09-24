@@ -1,6 +1,6 @@
 'use strict';
 
-const { getUserByKitId, getUserByEmail } = require('./users');
+const { getUserByKitId, getUserByEmail } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { parse } = require('json2csv');

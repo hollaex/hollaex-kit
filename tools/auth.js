@@ -39,7 +39,6 @@ const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
 const uuid = require('uuid/v4');
 const { all, resolve, reject } = require('bluebird');
-const { isValidPassword } = require('./users');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
@@ -534,7 +533,7 @@ const createResetPasswordCode = (userId) => {
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
-	return require('./users').getUserByEmail(email)
+	return require('./user').getUserByEmail(email)
 		.then((user) => {
 			return all([ createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip) ]);
 		})
@@ -550,7 +549,14 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 		});
 };
 
+const isValidPassword = (value) => {
+	return /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(value);
+};
+
 const resetUserPassword = (resetPasswordCode, newPassword) => {
+	if (!isValidPassword(newPassword)) {
+		return reject(new Error(INVALID_PASSWORD));
+	}
 	return getResetPasswordCode(resetPasswordCode)
 		.then((code) => {
 			if (code.used) {
@@ -558,7 +564,7 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 			}
 			return code.update({ used: true }, { fields: ['used'] });
 		})
-		.then((code) => require('./users').getUserByKitId(code.user_id, false))
+		.then((code) => require('./user').getUserByKitId(code.user_id, false))
 		.then((user) => user.update({ password: newPassword }, { fields: ['password'] }));
 };
 
@@ -569,7 +575,7 @@ const changeUserPassword = (email, oldPassword, newPassword) => {
 	if (!isValidPassword(newPassword)) {
 		return reject(new Error(INVALID_PASSWORD));
 	}
-	return require('./users').getUserByEmail(email, false)
+	return require('./user').getUserByEmail(email, false)
 		.then((user) => {
 			return all([ user, validatePassword(user.password, oldPassword) ]);
 		})
@@ -586,7 +592,7 @@ const changeUserPassword = (email, oldPassword, newPassword) => {
 };
 
 const userHasOtpEnabled = (userId) => {
-	return require('./users').getUserByKitId(userId)
+	return require('./user').getUserByKitId(userId)
 		.then((user) => {
 			return user.otp_enabled;
 		});
@@ -594,7 +600,7 @@ const userHasOtpEnabled = (userId) => {
 
 const checkUserOtpActive = (userId, otpCode) => {
 	return all([
-		require('./users').getUserByKitId(userId),
+		require('./user').getUserByKitId(userId),
 		verifyOtpBeforeAction(userId, otpCode)
 	]).then(([user, validOtp]) => {
 		if (!user.otp_enabled) {

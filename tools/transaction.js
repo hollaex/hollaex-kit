@@ -11,7 +11,7 @@ const {
 	INVALID_WITHDRAWAL_TOKEN,
 	EXPIRED_WITHDRAWAL_TOKEN
 } = require('../messages');
-const { getUserByKitId } = require('./users');
+const { getUserByKitId } = require('./user');
 const { client } = require('./database/redis');
 const crypto = require('crypto');
 const uuid = require('uuid/v4');

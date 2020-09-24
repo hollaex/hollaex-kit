@@ -17,12 +17,13 @@ const {
 	GET_KIT_SECRETS,
 	GET_FROZEN_USERS
 } = require(`${SERVER_PATH}/constants`);
-const { each, difference } = require('lodash');
+const { each, difference, isPlainObject } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject } = require('bluebird');
 const { NO_NEW_DATA, SUPPORT_DISABLED, TECH_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
+const flatten = require('flat');
 
 /**
  * Checks if url given is a valid url.
@@ -171,7 +172,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (newKitConfig[key] === undefined) {
 			joinedKitConfig[key] = existingKitConfig[key];
 		} else {
-			if (!Array.isArray(existingKitConfig[key]) && typeof existingKitConfig[key] === 'object') {
+			if (isPlainObject(existingKitConfig[key])) {
 				joinedKitConfig[key] = { ...existingKitConfig[key], ...newKitConfig[key] };
 			} else {
 				joinedKitConfig[key] = newKitConfig[key];
@@ -189,16 +190,17 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 };
 
 const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
+	const flattenedNewKitSecrets = flatten(newKitSecrets);
+	if (Object.values(flattenedNewKitSecrets).includes(SECRET_MASK)) {
+		throw new Error(MASK_VALUE_GIVEN);
+	}
 	const joinedKitSecrets = {};
 	KIT_SECRETS_KEYS.forEach((key) => {
 		if (newKitSecrets[key]) {
 			if (role === 'tech' && key === 'emails' && newKitSecrets[key] && newKitSecrets[key].send_email_to_support !== existingKitSecrets[key].send_email_to_support) {
-				return reject(new Error(TECH_CANNOT_UPDATE('send_email_copy')));
+				throw new Error(TECH_CANNOT_UPDATE('send_email_copy'));
 			}
-			if (!Array.isArray(existingKitSecrets[key]) && typeof existingKitSecrets[key] === 'object') {
-				if (Object.values(newKitSecrets[key]).includes(SECRET_MASK)) {
-					return reject(new Error(MASK_VALUE_GIVEN));
-				}
+			if (isPlainObject(existingKitSecrets[key])) {
 				joinedKitSecrets[key] = { ...existingKitSecrets[key], ...newKitSecrets[key] };
 			} else {
 				joinedKitSecrets[key] = newKitSecrets[key];

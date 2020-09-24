@@ -44,6 +44,7 @@ const { CONFIGURATION_CHANNEL, ADMIN_ACCOUNT_ID, MIN_VERIFICATION_LEVEL, AUDIT_K
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins, subscribedToCoin } = require('./common');
+const { isValidPassword } = require('./auth');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
@@ -196,10 +197,6 @@ const registerUserLogin = (userId, ip, device = '', domain = '', origin = '', re
 		origin,
 		referer
 	});
-};
-
-const isValidPassword = (value) => {
-	return /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(value);
 };
 
 const getVerificationCodeByUserEmail = (email) => {
@@ -1185,6 +1182,5 @@ module.exports = {
 	createUserCryptoAddressByKitId,
 	createAudit,
 	getUserStats,
-	transferUserFunds,
-	isValidPassword
+	transferUserFunds
 };
