@@ -378,7 +378,7 @@ const putKycAdmin = (req, res) => {
 		}
 	}
 
-	toolsLib.database.model.getModel('sequelize')
+	toolsLib.database.getModel('sequelize')
 		.transaction((transaction) => {
 			const options = { transaction, returning: true };
 			let prevUserData = {}; // for audit
@@ -877,7 +877,7 @@ const getAnnouncements = (req, res) => {
 		end_date
 	);
 
-	getAllAnnouncements(toolsLib.database.helpers.paginationQuery(limit.value, page.value), toolsLib.database.helpers.timeframeQuery(start_date.value, end_date.value), toolsLib.database.helpers.orderingQuery(order_by.value, order.value))
+	getAllAnnouncements(toolsLib.database.paginationQuery(limit.value, page.value), toolsLib.database.timeframeQuery(start_date.value, end_date.value), toolsLib.database.orderingQuery(order_by.value, order.value))
 		.then((announcements) => {
 			return res.json(announcements);
 		})
