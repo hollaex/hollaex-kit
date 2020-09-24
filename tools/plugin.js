@@ -7,7 +7,7 @@ const {
 	CONFIGURATION_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
 const { getKitConfig, getKitSecrets, maskSecrets } = require('./common');
-const dbQuery = require('./database').query;
+const dbQuery = require('./database/query');
 const { publisher } = require('./database/redis');
 
 const getPluginsConfig = () => {

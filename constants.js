@@ -24,9 +24,3 @@ exports.OMITTED_USER_FIELDS = [
 ];
 
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
-
-exports.API_KEY = () => process.env.API_KEY;
-exports.API_SECRET = () => process.env.API_SECRET;
-exports.EXCHANGE_ID = () => process.env.EXCHANGE_ID;
-exports.NETWORK_URL = () => process.env.NETWORK_URL || 'https://api.testnet.hollaex.network';
-exports.NETWORK_BASE_URL = () => process.env.NETWORK_BASE_URL || '/v2';

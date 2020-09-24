@@ -1,7 +1,7 @@
 'use strict';
 
-const { getModel } = require('./database').model;
-const dbQuery = require('./database').query;
+const { getModel } = require('./database/model');
+const dbQuery = require('./database/query');
 const { has, omit, pick, each, differenceWith, isEqual } = require('lodash');
 const { isEmail } = require('validator');
 const {
