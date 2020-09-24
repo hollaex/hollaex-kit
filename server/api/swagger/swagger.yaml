@@ -1307,7 +1307,7 @@ paths:
       x-security-scopes:
         - user
   /user/trades:
-    x-swagger-router-controller: user
+    x-swagger-router-controller: trade
     get:
       operationId: getUserTrades
       description: List trades of authenticated user
@@ -1382,7 +1382,7 @@ paths:
         - user
         - hmac
   /user/deposits:
-    x-swagger-router-controller: user
+    x-swagger-router-controller: transaction
     get:
       operationId: getUserDeposits
       description: List deposit of authenticated user
@@ -1455,7 +1455,7 @@ paths:
         - user
         - hmac
   /user/withdrawals:
-    x-swagger-router-controller: user
+    x-swagger-router-controller: transaction
     get:
       operationId: getUserWithdrawals
       description: List withdrawals of authenticated user
@@ -2020,7 +2020,7 @@ paths:
       x-security-scopes:
         - admin
   /admin/orders:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: order
     get:
       description: Get user orders for admin
       operationId: getAdminUserOrders
@@ -2126,7 +2126,7 @@ paths:
         - admin
         - supervisor
   /admin/trades:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: trade
     get:
       description: Get user trades for admin
       operationId: getAdminUserTrades
@@ -2294,7 +2294,7 @@ paths:
         - supervisor
         - kyc
   /admin/deactivate-otp:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: otp
     post:
       description: Deactivate otp for a user
       operationId: deactivateOtpAdmin
@@ -2358,9 +2358,9 @@ paths:
         - support
         - kyc
   /admin/deposits:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: transaction
     get:
-      operationId: getDeposits
+      operationId: getAdminDeposits
       description: Obtain a list of deposits.
       tags:
         - Admin
@@ -2473,9 +2473,9 @@ paths:
         - admin
         - supervisor
   /admin/withdrawals:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: transaction
     get:
-      operationId: getWithdrawals
+      operationId: getAdminWithdrawals
       description: Obtain a list of withdrawals.
       tags:
         - Admin

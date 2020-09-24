@@ -93,8 +93,31 @@ const deactivateOtp = (req, res) => {
 		});
 };
 
+const deactivateOtpAdmin = (req, res) => {
+	loggerOtp.verbose(
+		req.uuid,
+		'controllers/admin/deactivateOtpAdmin/auth',
+		req.auth
+	);
+	const { user_id } = req.swagger.params.data.value;
+
+	toolsLib.users.deactivateUserOtpById(user_id)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerOtp.error(
+				req.uuid,
+				'controllers/admin/deactivateOtpAdmin',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	requestOtp,
 	activateOtp,
-	deactivateOtp
+	deactivateOtp,
+	deactivateOtpAdmin
 };

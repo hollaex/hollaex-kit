@@ -143,96 +143,6 @@ const getAdminUserBalance = (req, res) => {
 		});
 };
 
-const getAdminUserOrders = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminUserOrders/auth', req.auth);
-	const { user_id, symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
-
-	let promiseQuery;
-
-	if (user_id.value) {
-		promiseQuery = toolsLib.order.getAllUserOrdersByKitId(
-			user_id.value,
-			symbol.value,
-			side.value,
-			limit.value,
-			page.value,
-			order_by.value,
-			order.value,
-			start_date.value,
-			end_date.value
-		);
-	} else {
-		promiseQuery = toolsLib.order.getAllExchangeOrders(
-			symbol.value,
-			side.value,
-			limit.value,
-			page.value,
-			order_by.value,
-			order.value,
-			start_date.value,
-			end_date.value
-		);
-	}
-
-	promiseQuery
-		.then((orders) => {
-			return res.json(orders);
-		})
-		.catch((err) => {
-			loggerAdmin.debug(req.uuid, 'controllers/admin/getAdminUserOrder', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
-const adminCancelOrder = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/admin/adminCancelOrder auth', req.auth);
-
-	const userId = req.swagger.params.user_id.value;
-	const orderId = req.swagger.params.order_id.value;
-
-	toolsLib.order.cancelUserOrderByKitId(userId, orderId)
-		.then((data) => {
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/adminCancelOrder',
-				err.message
-			);
-			return res.status(400).json({ message: err.message });
-		});
-};
-
-const getAdminUserTrades = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminUserTrades auth', req.auth);
-
-	const { user_id, symbol, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
-
-	let promiseQuery;
-
-	if (user_id.value) {
-		promiseQuery = toolsLib.order.getAllUserTradesNetworkByKidId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
-	} else {
-		promiseQuery = 	toolsLib.order.getAllTradesNetwork(symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
-	}
-
-	promiseQuery
-		.then((data) => {
-			if (format.value) {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-trades.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
-		})
-		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/admin/getAdminUserTrades', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
 const activateUser = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
@@ -295,28 +205,6 @@ const upgradeUser = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/upgradeUser',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
-const deactivateOtpAdmin = (req, res) => {
-	loggerAdmin.verbose(
-		req.uuid,
-		'controllers/admin/deactivateOtpAdmin/auth',
-		req.auth
-	);
-	const { user_id } = req.swagger.params.data.value;
-
-	toolsLib.users.deactivateUserOtpById(user_id)
-		.then(() => {
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/deactivateOtpAdmin',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -388,70 +276,6 @@ const getUserAudits = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/getUserAudits',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
-const getDeposits = (req, res) => {
-	loggerAdmin.verbose(
-		req.uuid,
-		'controllers/admin/getDeposits/auth',
-		req.auth
-	);
-
-	const { user_id, currency, limit, page, order_by, order, start_date, end_date, status, dismissed, rejected, processing, waiting, format } = req.swagger.params;
-
-	toolsLib.users.getUserDepositsByKitId(user_id.value, currency.value, status.value, dismissed.value, rejected.value, processing.value, waiting.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
-		.then((data) => {
-			if (format.value) {
-				if (data.data.length === 0) {
-					throw new Error('No data found');
-				}
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/getDeposits',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
-const getWithdrawals = (req, res) => {
-	loggerAdmin.verbose(
-		req.uuid,
-		'controllers/admin/getWithdrawals/auth',
-		req.auth
-	);
-
-	const { user_id, currency, limit, page, order_by, order, start_date, end_date, status, dismissed, rejected, processing, waiting, format } = req.swagger.params;
-
-	toolsLib.users.getUserWithdrawalsByKitId(user_id.value, currency.value, status.value, dismissed.value, rejected.value, processing.value, waiting.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
-		.then((data) => {
-			if (format.value) {
-				if (data.data.length === 0) {
-					throw new Error('No data found');
-				}
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/getWithdrawals',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -556,18 +380,12 @@ module.exports = {
 	putUserRole,
 	putUserNote,
 	getAdminUserBalance,
-	getAdminUserOrders,
-	adminCancelOrder,
-	getAdminUserTrades,
 	activateUser,
 	getAdminBalance,
 	upgradeUser,
-	deactivateOtpAdmin,
 	flagUser,
 	getAdminUserLogins,
 	getUserAudits,
-	getDeposits,
-	getWithdrawals,
 	getCoins,
 	getPairs,
 	transferFund

@@ -112,10 +112,73 @@ const cancelAllUserOrders = (req, res) => {
 		});
 };
 
+const getAdminUserOrders = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/admin/getAdminUserOrders/auth', req.auth);
+	const { user_id, symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	let promiseQuery;
+
+	if (user_id.value) {
+		promiseQuery = toolsLib.order.getAllUserOrdersByKitId(
+			user_id.value,
+			symbol.value,
+			side.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value
+		);
+	} else {
+		promiseQuery = toolsLib.order.getAllExchangeOrders(
+			symbol.value,
+			side.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value
+		);
+	}
+
+	promiseQuery
+		.then((orders) => {
+			return res.json(orders);
+		})
+		.catch((err) => {
+			loggerOrders.debug(req.uuid, 'controllers/admin/getAdminUserOrder', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const adminCancelOrder = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/admin/adminCancelOrder auth', req.auth);
+
+	const userId = req.swagger.params.user_id.value;
+	const orderId = req.swagger.params.order_id.value;
+
+	toolsLib.order.cancelUserOrderByKitId(userId, orderId)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/admin/adminCancelOrder',
+				err.message
+			);
+			return res.status(400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createOrder,
 	getUserOrder,
 	cancelUserOrder,
 	getAllUserOrders,
-	cancelAllUserOrders
+	cancelAllUserOrders,
+	getAdminUserOrders,
+	adminCancelOrder
 };
