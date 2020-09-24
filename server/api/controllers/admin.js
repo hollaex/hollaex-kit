@@ -46,7 +46,7 @@ const getUsersAdmin = (req, res) => {
 
 	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.users.getAllUsersAdmin(
+	toolsLib.user.getAllUsersAdmin(
 		id.value,
 		search.value,
 		pending.value,
@@ -83,7 +83,7 @@ const putUserRole = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	const { role } = req.swagger.params.data.value;
 
-	toolsLib.users.updateUserRole(user_id, role)
+	toolsLib.user.updateUserRole(user_id, role)
 		.then((user) => {
 			return res.json(user);
 		})
@@ -107,7 +107,7 @@ const putUserNote = (req, res) => {
 	const { note } = req.swagger.params.data.value;
 
 
-	toolsLib.users.updateUserNote(user_id, note)
+	toolsLib.user.updateUserNote(user_id, note)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -129,7 +129,7 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.users.getUserBalanceByKitId(user_id)
+	toolsLib.user.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -154,9 +154,9 @@ const activateUser = (req, res) => {
 	let promiseQuery;
 
 	if (activated === true) {
-		promiseQuery = toolsLib.users.unfreezeUserById(user_id);
+		promiseQuery = toolsLib.user.unfreezeUserById(user_id);
 	} else if (activated === false) {
-		promiseQuery = toolsLib.users.freezeUserById(user_id);
+		promiseQuery = toolsLib.user.freezeUserById(user_id);
 	}
 
 	promiseQuery
@@ -197,7 +197,7 @@ const upgradeUser = (req, res) => {
 
 	const { user_id, verification_level } = req.swagger.params.data.value;
 
-	toolsLib.users.changeUserVerificationLevelById(user_id, verification_level, domain)
+	toolsLib.user.changeUserVerificationLevelById(user_id, verification_level, domain)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -215,7 +215,7 @@ const flagUser = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/flagUser/auth', req.auth);
 	const { user_id } = req.swagger.params.data.value;
 
-	toolsLib.users.toggleFlaggedUserById(user_id)
+	toolsLib.user.toggleFlaggedUserById(user_id)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -233,7 +233,7 @@ const getAdminUserLogins = (req, res) => {
 	);
 	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
-	toolsLib.users.getUserLogins(user_id.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.user.getUserLogins(user_id.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
@@ -262,7 +262,7 @@ const getUserAudits = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.users.getUserAudits(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.user.getUserAudits(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
@@ -359,7 +359,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.users.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.user.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})

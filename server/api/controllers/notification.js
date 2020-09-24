@@ -38,7 +38,7 @@ const handleCurrencyDeposit = (req, res) => {
 			if (!toolsLib.subscribeToCoin(currency)) {
 				throw new Error('Invalid currency');
 			}
-			return toolsLib.users.getUserByNetworkId(user_id);
+			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
 			sendEmail(
@@ -80,7 +80,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 			if (!toolsLib.subscribeToCoin(currency)) {
 				throw new Error('Invalid currency');
 			}
-			return toolsLib.users.getUserByNetworkId(user_id);
+			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
 			sendEmail(

@@ -101,7 +101,7 @@ const deactivateOtpAdmin = (req, res) => {
 	);
 	const { user_id } = req.swagger.params.data.value;
 
-	toolsLib.users.deactivateUserOtpById(user_id)
+	toolsLib.user.deactivateUserOtpById(user_id)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})

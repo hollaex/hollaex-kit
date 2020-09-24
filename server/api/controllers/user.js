@@ -12,7 +12,6 @@ const {
 	USER_REGISTERED,
 	USER_NOT_FOUND,
 	SERVICE_NOT_SUPPORTED,
-	INVALID_PASSWORD,
 	VERIFICATION_EMAIL_MESSAGE,
 	TOKEN_REMOVED
 } = require('../../messages');
@@ -34,7 +33,7 @@ const signUpUser = (req, res) => {
 
 	toolsLib.auth.checkCaptcha(captcha, ip)
 		.then(() => {
-			return toolsLib.users.signUpUser(email, password, referral);
+			return toolsLib.user.signUpUser(email, password, referral);
 		})
 		.then(() => {
 			return res.status(201).json({ message: USER_REGISTERED });
@@ -58,7 +57,7 @@ const getVerifyUser = (req, res) => {
 	let promiseQuery;
 
 	if (email && isEmail(email)) {
-		promiseQuery = toolsLib.users.getVerificationCodeByUserEmail(email)
+		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
 				if (resendEmail) {
 					sendEmail(
@@ -76,7 +75,7 @@ const getVerifyUser = (req, res) => {
 				});
 			});
 	} else if (verification_code && isUUID(verification_code)) {
-		promiseQuery = toolsLib.users.getUserEmailByVerificationCode(verification_code)
+		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
 				return res.json({
 					email: userEmail,
@@ -104,7 +103,7 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	toolsLib.users.verifyUser(email, verification_code, domain)
+	toolsLib.user.verifyUser(email, verification_code, domain)
 		.then(() => {
 			return res.json({ message: USER_VERIFIED });
 		})
@@ -129,7 +128,7 @@ const loginPost = (req, res) => {
 	const referer = req.headers.referer;
 	const time = new Date();
 
-	toolsLib.users.loginUser(email, password, otp_code, captcha, ip, device, domain, origin, referer)
+	toolsLib.user.loginUser(email, password, otp_code, captcha, ip, device, domain, origin, referer)
 		.then((user) => {
 			const data = {
 				ip,
@@ -197,10 +196,6 @@ const requestResetPassword = (req, res) => {
 
 const resetPassword = (req, res) => {
 	const { code, new_password } = req.swagger.params.data.value;
-	if (!toolsLib.users.isValidPassword(new_password)) {
-		loggerUser.error(req.uuid, 'controllers/user/resetPassword', INVALID_PASSWORD);
-		return res.status(400).json({ message: INVALID_PASSWORD });
-	}
 
 	toolsLib.auth.resetUserPassword(code, new_password)
 		.then(() => {
@@ -216,7 +211,7 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	toolsLib.users.getUserByEmail(email, true, true)
+	toolsLib.user.getUserByEmail(email, true, true)
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', err.message);
@@ -234,7 +229,7 @@ const updateSettings = (req, res) => {
 	);
 	const data = req.swagger.params.data.value;
 
-	toolsLib.users.updateUserSettings({ email }, data)
+	toolsLib.user.updateUserSettings({ email }, data)
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err.message);
@@ -266,7 +261,7 @@ const setUsername = (req, res) => {
 	const { id } = req.auth.sub;
 	const { username } = req.swagger.params.data.value;
 
-	toolsLib.users.setUsernameById(id, username)
+	toolsLib.user.setUsernameById(id, username)
 		.then(() => res.json({ message: 'Username successfully changed' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/setUsername', err.message);
@@ -280,7 +275,7 @@ const getUserLogins = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.users.getUserLogins(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.user.getUserLogins(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
@@ -300,7 +295,7 @@ const affiliationCount = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/affiliationCount auth', req.auth.sub);
 
 	const user_id = req.auth.sub.id;
-	toolsLib.users.getAffiliationCount(user_id)
+	toolsLib.user.getAffiliationCount(user_id)
 		.then((num) => {
 			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', num);
 			return res.json({ count: num });
@@ -315,7 +310,7 @@ const getUserBalance = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.users.getUserBalanceByKitId(user_id)
+	toolsLib.user.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -333,7 +328,7 @@ const deactivateUser = (req, res) => {
 	);
 	const { id, email } = req.auth.sub;
 
-	toolsLib.users.freezeUserById(id)
+	toolsLib.user.freezeUserById(id)
 		.then(() => {
 			return res.json({ message: `Account ${email} deactivated` });
 		})
@@ -366,7 +361,7 @@ const createCryptoAddress = (req, res) => {
 		return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
 	}
 
-	toolsLib.users.createUserCryptoAddressByKitId(id, crypto)
+	toolsLib.user.createUserCryptoAddressByKitId(id, crypto)
 		.then((data) => {
 			return res.status(201).json(data);
 		})
@@ -456,7 +451,7 @@ const getUserStats = (req, res) => {
 	);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.users.getUserStats(user_id)
+	toolsLib.user.getUserStats(user_id)
 		.then((stats) => {
 			return res.json({ data: stats, updatedAt: new Date() });
 		})
