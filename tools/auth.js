@@ -309,7 +309,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 		//return the error in the callback if the Authorization header doesn't have the correct format
 		return reject(new Error(MISSING_HEADER));
 	}
-}
+};
 
 const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES) => {
 	if (!apiKey) {
@@ -361,7 +361,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 				}
 			});
 	}
-}
+};
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.
