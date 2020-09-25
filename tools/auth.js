@@ -38,7 +38,7 @@ const otp = require('otp');
 const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
 const uuid = require('uuid/v4');
-const { all, resolve, reject } = require('bluebird');
+const { all, resolve, reject, promisify } = require('bluebird');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
@@ -49,7 +49,6 @@ const moment = require('moment');
 //function will be called every time a request to a protected
 //endpoint is received
 const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
-	console.log('hkalsdjflkasjdflkjasdlfkj')
 	const sendError = (msg) => {
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
@@ -260,6 +259,109 @@ const verifyNetworkHmacToken = (req) => {
 
 	return resolve();
 };
+
+const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
+	if (token && token.indexOf('Bearer ') === 0) {
+		const tokenString = token.split(' ')[1];
+		const jwtVerifyAsync = promisify(jwt.verify, jwt);
+
+		return jwtVerifyAsync(tokenString, SECRET)
+			.then((decodedToken) => {
+				loggerAuth.verbose(
+					'helpers/auth/verifyToken verified_token',
+					ip,
+					decodedToken.ip,
+					decodedToken.sub
+				);
+
+				// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
+				if (intersection(decodedToken.scopes, scopes).length === 0) {
+					loggerAuth.error(
+						'verifyToken',
+						'not permission',
+						decodedToken.sub.email,
+						decodedToken.scopes,
+						scopes
+					);
+
+					throw new Error(NOT_AUTHORIZED);
+				}
+
+				if (decodedToken.iss !== ISSUER) {
+					loggerAuth.error(
+						'helpers/auth/verifyToken unverified_token',
+						ip
+					);
+					//return the error in the callback if there is one
+					throw new Error(TOKEN_EXPIRED);
+				}
+
+				if (getFrozenUsers()[decodedToken.sub.id]) {
+					loggerAuth.error(
+						'helpers/auth/verifyToken deactivated account',
+						decodedToken.sub.email
+					);
+					throw new Error(DEACTIVATED_USER);
+				}
+				return resolve(decodedToken);
+			});
+	} else {
+		//return the error in the callback if the Authorization header doesn't have the correct format
+		return reject(new Error(MISSING_HEADER));
+	}
+}
+
+const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES) => {
+	if (!apiKey) {
+		return reject(new Error(API_KEY_NULL));
+	} else if (!apiSignature) {
+		return reject(new Error(API_SIGNATURE_NULL));
+	} else if (moment().unix() > apiExpires) {
+		return reject(new Error(API_REQUEST_EXPIRED));
+	} else {
+		return findTokenByApiKey(apiKey)
+			.then((token) => {
+				if (!token) {
+					loggerAuth.error(
+						'helpers/auth/checkApiKey/findTokenByApiKey invalid key',
+						apiKey
+					);
+					throw new Error(API_KEY_INVALID);
+				} else if (!scopes.includes(token.type)) {
+					loggerAuth.error(
+						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
+						apiKey,
+						token.type
+					);
+					throw new Error(API_KEY_OUT_OF_SCOPE);
+				} else if (new Date(token.expiry) < new Date()) {
+					loggerAuth.error(
+						'helpers/auth/checkApiKey/findTokenByApiKey expired key',
+						apiKey
+					);
+					throw new Error(API_KEY_EXPIRED);
+				} else if (!token.active) {
+					loggerAuth.error(
+						'helpers/auth/checkApiKey/findTokenByApiKey inactive',
+						apiKey
+					);
+					throw new Error(API_KEY_INACTIVE);
+				} else {
+					const isSignatureValid = checkHmacSignature(
+						token.secret,
+						{ body, headers: { 'api-signature': apiSignature, 'api-expires': apiExpires }, method, originalUrl }
+					);
+					if (!isSignatureValid) {
+						throw new Error(API_SIGNATURE_INVALID);
+					} else {
+						return {
+							sub: { id: token.user.id, email: token.user.email }
+						};
+					}
+				}
+			});
+	}
+}
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.
@@ -773,6 +875,8 @@ const checkHmacSignature = (
 };
 
 module.exports = {
+	verifyBearerTokenPromise,
+	verifyHmacTokenPromise,
 	verifyBearerTokenMiddleware,
 	verifyHmacTokenMiddleware,
 	verifyNetworkHmacToken,
