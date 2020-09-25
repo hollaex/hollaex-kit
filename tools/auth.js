@@ -49,9 +49,10 @@ const moment = require('moment');
 //function will be called every time a request to a protected
 //endpoint is received
 const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
+	console.log('hkalsdjflkasjdflkjasdlfkj')
 	const sendError = (msg) => {
 		if (isSocket) {
-			return new Error(ACCESS_DENIED(msg));
+			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
 			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
 		}
@@ -69,7 +70,13 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		const endpointScopes = req.swagger
 			? req.swagger.operation['x-security-scopes']
 			: BASE_SCOPES;
-		const ip = req.headers ? req.headers['x-real-ip'] : undefined;
+
+		let ip;
+		if (isSocket) {
+			ip = req.socket ? req.socket.remoteAddress : undefined;
+		} else {
+			ip = req.headers ? req.headers['x-real-ip'] : undefined;
+		}
 
 		//validate the 'Authorization' header. it should have the following format:
 		//'Bearer tokenString'
@@ -134,7 +141,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false) => {
 	const sendError = (msg) => {
 		if (isSocket) {
-			return new Error(ACCESS_DENIED(msg));
+			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
 			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
 		}
@@ -143,9 +150,15 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	// Swagger endpoint scopes
 	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
 
-	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
+
+	let ip;
+	if (isSocket) {
+		ip = req.socket ? req.socket.remoteAddress : undefined;
+	} else {
+		ip = req.headers ? req.headers['x-real-ip'] : undefined;
+	}
 
 	loggerAuth.verbose('helpers/auth/checkHmacKey ip', ip);
 
