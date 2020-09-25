@@ -34,9 +34,9 @@ class AllStringsModal extends Component {
   }
 
   handleRowClick = (key) => {
-    const { onRowClick, onCloseDialog } = this.props;
+    const { onRowClick } = this.props;
     const clickEvent = { target: { dataset: { stringId: key } } }
-    onRowClick(clickEvent, onCloseDialog)
+    onRowClick(clickEvent, true)
   }
 
   render() {

@@ -47,6 +47,7 @@ class OperatorControls extends Component {
       allStrings: [],
       searchValue: '',
       searchResults: [],
+      source: false,
     }
   }
 
@@ -77,7 +78,7 @@ class OperatorControls extends Component {
     return true
   }
 
-  handleEditButton = ({ target: { dataset = {} } }, cb) => {
+  handleEditButton = ({ target: { dataset = {} } }, source) => {
     const { isEditModalOpen } = this.state;
     const { editMode } = this.props;
     const { stringId } = dataset;
@@ -87,15 +88,17 @@ class OperatorControls extends Component {
       this.setState({
         editableElementIds: string_ids_array,
       }, () => {
-        if (typeof cb === "function") {
-          cb();
-        }
+        if (source) {
+          this.closeAllStringsModal();
+          this.openEditModal(source);
+        } else {
         this.openEditModal();
+        }
       })
     }
   }
 
-  openEditModal = () => {
+  openEditModal = (source = false) => {
     const { editableElementIds, languageKeys } = this.state;
     const editData = {};
 
@@ -108,6 +111,7 @@ class OperatorControls extends Component {
       })
 
       this.setState({
+        source,
         editData,
         isEditModalOpen: true,
       })
@@ -115,11 +119,16 @@ class OperatorControls extends Component {
   }
 
   closeEditModal = () => {
+    const { source } = this.state;
     this.setState({
       editableElementIds: [],
       editData: {},
       isEditModalOpen: false,
       isSaveEnabled: false,
+    }, () => {
+      if (source) {
+        this.openAllStringsModal();
+      }
     });
   }
 
@@ -144,7 +153,7 @@ class OperatorControls extends Component {
   }
 
   handleSave = () => {
-    const { editData, overwrites, languageKeys } = this.state;
+    const { editData, overwrites, languageKeys, source } = this.state;
     const processedData = { ...editData }
 
     const saveData = {};
@@ -170,7 +179,12 @@ class OperatorControls extends Component {
       isSaveEnabled: false,
       editData: {},
       editableElementIds: [],
-    }, () => initializeStrings(saveData))
+    }, () => () => {
+      initializeStrings(saveData)
+      if (source) {
+        this.openAllStringsModal();
+      }
+    })
   }
 
   handlePublish = () => {
