@@ -3,7 +3,7 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { SERVICE_NOT_AVAILABLE } = require('../../messages');
+const { getNodeLib } = require('../../init');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -182,8 +182,14 @@ const getAdminBalance = (req, res) => {
 		'controllers/admin/getAdminUserBalance/auth',
 		req.auth
 	);
-	// TODO
-	return res.status(400).json({ message: SERVICE_NOT_AVAILABLE });
+
+	getNodeLib().getBalanceNetwork()
+		.then((balance) => {
+			return res.json(balance);
+		})
+		.catch((err) => {
+			return res.status(err.status || 400).json({ message: err.message });
+		});
 };
 
 const upgradeUser = (req, res) => {
