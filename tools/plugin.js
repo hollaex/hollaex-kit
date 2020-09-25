@@ -14,7 +14,7 @@ const getPluginsConfig = () => {
 	return {
 		available: AVAILABLE_PLUGINS,
 		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : [],
-		kit: getKitConfig().plugins,
+		configurations: getKitConfig().plugins.configurations,
 		secrets: maskSecrets(getKitSecrets().plugins)
 	};
 };
