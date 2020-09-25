@@ -96,7 +96,7 @@ exports.SAME_ADDRESS_REUSED = 'More than one user is using this address';
 exports.SERVICE_NOT_SUPPORTED = 'This service is not supported';
 exports.DEFAULT_REJECTION_NOTE = 'Unspecified';
 
-exports.MULTIPLE_API_KEY = 'Multiple API Key method is provided';
+exports.MULTIPLE_API_KEY = 'Multiple API Key methods are provided';
 exports.API_KEY_NULL = 'Access Denied: API Key is not provided';
 exports.API_REQUEST_EXPIRED = 'Access Denied: API request is expired';
 exports.API_SIGNATURE_NULL = 'Access Denied: API Signature is not provided';

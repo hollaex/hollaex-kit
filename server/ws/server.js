@@ -41,32 +41,42 @@
 'use strict';
 
 const WebSocket = require('ws');
-const url = require('url');
-const { set } = require('lodash');
 const { loggerWebsocket } = require('../config/logger');
-const { checkHmacKey } = require('../api/helpers/auth');
+const toolsLib = require('hollaex-tools-lib');
+const { MULTIPLE_API_KEY } = require('../messages');
 
 const PORT = process.env.WEBSOCKET_PORT || 10080;
 
 const wss = new WebSocket.Server({
 	port: PORT,
-	// check for beaerer/hmac, if so, authenticate
 	verifyClient: (info, next) => {
 		try {
-			const key = info.req.headers['api-key'];
-			info.req.method = 'CONNECT';
-			info.req.originalUrl = '/stream';
-			if (!key) {
-				return next(false, 403, 'Unauthorized');
-			}
-			// check type
-			checkHmacKey(info.req, null, key, (err) => {
-				if (err) {
-					loggerWebsocket.error('ws/server', err);
-					return next(false, 400, err.message);
-				}
+			const bearerToken = info.req.headers.authorization;
+			const hmacKey = info.req.headers['api-key'];
+			if (bearerToken && hmacKey) {
+				loggerWebsocket.error('ws/server', MULTIPLE_API_KEY);
+				return next(false, 400, MULTIPLE_API_KEY);
+			} else if (bearerToken) {
+				toolsLib.auth.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
+					if (err) {
+						loggerWebsocket.error('ws/server', err);
+						return next(false, 403, err.message);
+					}
+				}, true);
 				return next(true);
-			}, true);
+			} else if (hmacKey) {
+				info.req.method = 'CONNECT';
+				info.req.originalUrl = '/stream';
+				toolsLib.auth.verifyHmacTokenMiddleware(info.req, null, hmacKey, (err) => {
+					if (err) {
+						loggerWebsocket.error('ws/server', err);
+						return next(false, 403, err.message);
+					}
+				}, true);
+				return next(true);
+			} else {
+				return next(true);
+			}
 		} catch (err) {
 			loggerWebsocket.error('ws/server/catch', err);
 			return next(false, 400, 'Wrong format. Follow /stream?exchange_id=<exchangeId> format');
