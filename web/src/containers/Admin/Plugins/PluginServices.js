@@ -292,6 +292,7 @@ class PluginServices extends Component {
 					loading: false
 				});
 				this.getConstantData();
+				this.getPluginsData(this.props.params.services);
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
