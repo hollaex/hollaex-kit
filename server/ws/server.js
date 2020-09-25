@@ -51,6 +51,7 @@ const wss = new WebSocket.Server({
 	port: PORT,
 	verifyClient: (info, next) => {
 		try {
+			info.req.auth = {};
 			const bearerToken = info.req.headers.authorization;
 			const hmacKey = info.req.headers['api-key'];
 			if (bearerToken && hmacKey) {
