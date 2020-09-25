@@ -76,7 +76,7 @@ class OperatorControls extends Component {
     return true
   }
 
-  handleEditButton = ({ target: { dataset = {} } }) => {
+  handleEditButton = ({ target: { dataset = {} } }, cb) => {
     const { isEditModalOpen } = this.state;
     const { editMode } = this.props;
     const { stringId } = dataset;
@@ -85,7 +85,12 @@ class OperatorControls extends Component {
       const string_ids_array = stringId ? stringId.split(',') : []
       this.setState({
         editableElementIds: string_ids_array,
-      }, this.openEditModal)
+      }, () => {
+        if (typeof cb === "function") {
+          cb();
+        }
+        this.openEditModal();
+      })
     }
   }
 
@@ -342,6 +347,7 @@ class OperatorControls extends Component {
           languageOptions={languageOptions}
           onSelect={this.setSelectedLanguages}
           selectedLanguages={selectedLanguages}
+          onRowClick={this.handleEditButton}
         />
       </div>
     );

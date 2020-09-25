@@ -33,8 +33,21 @@ class AllStringsModal extends Component {
     }))
   }
 
+  handleRowClick = (key) => {
+    const { onRowClick, onCloseDialog } = this.props;
+    const clickEvent = { target: { dataset: { stringId: key } } }
+    onRowClick(clickEvent, onCloseDialog)
+  }
+
   render() {
-    const { isOpen, allStrings, onCloseDialog, onSearch, searchValue } = this.props;
+    const {
+      isOpen,
+      allStrings,
+      onCloseDialog,
+      onSearch,
+      searchValue,
+    } = this.props;
+
     return (
       <Modal
         isOpen={isOpen}
@@ -79,6 +92,11 @@ class AllStringsModal extends Component {
                 showTotal: false,
               }}
               scroll={{ y: 240 }}
+              onRow={({ key }) => {
+                return {
+                  onClick: () => this.handleRowClick(key)
+                };
+              }}
             />
           </div>)
         }
