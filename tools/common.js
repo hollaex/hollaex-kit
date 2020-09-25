@@ -80,6 +80,7 @@ const getFrozenUsers = () => {
 };
 
 const maskSecrets = (secrets) => {
+	secrets = JSON.parse(JSON.stringify(secrets));
 	each(secrets, (secret, secretKey) => {
 		if (secretKey === 'captcha') {
 			secret.secret_key = SECRET_MASK;

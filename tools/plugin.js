@@ -12,9 +12,10 @@ const { publisher } = require('./database/redis');
 
 const getPluginsConfig = () => {
 	return {
-		...getKitConfig().plugins,
 		available: AVAILABLE_PLUGINS,
-		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : []
+		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : [],
+		kit: getKitConfig().plugins,
+		secrets: maskSecrets(getKitSecrets().plugins)
 	};
 };
 
