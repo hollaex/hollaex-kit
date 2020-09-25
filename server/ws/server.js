@@ -55,9 +55,11 @@ const wss = new WebSocket.Server({
 			const bearerToken = info.req.headers.authorization;
 			const hmacKey = info.req.headers['api-key'];
 			if (bearerToken && hmacKey) {
+				// throw error if both bearer and hmac authentication methods are given
 				loggerWebsocket.error('ws/server', MULTIPLE_API_KEY);
 				return next(false, 400, MULTIPLE_API_KEY);
 			} else if (bearerToken) {
+				// Function will set req.auth to authenticated token object if successful
 				toolsLib.auth.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
@@ -69,6 +71,7 @@ const wss = new WebSocket.Server({
 			} else if (hmacKey) {
 				info.req.method = 'CONNECT';
 				info.req.originalUrl = '/stream';
+				// Function will set req.auth to authenticated token object if successful
 				toolsLib.auth.verifyHmacTokenMiddleware(info.req, null, hmacKey, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
@@ -78,6 +81,7 @@ const wss = new WebSocket.Server({
 					}
 				}, true);
 			} else {
+				// No authentication given so req.auth is empty
 				return next(true);
 			}
 		} catch (err) {
