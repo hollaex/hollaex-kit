@@ -303,7 +303,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 					);
 					throw new Error(DEACTIVATED_USER);
 				}
-				return resolve(decodedToken);
+				return decodedToken;
 			});
 	} else {
 		//return the error in the callback if the Authorization header doesn't have the correct format
