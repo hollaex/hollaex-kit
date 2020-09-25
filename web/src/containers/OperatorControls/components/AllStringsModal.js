@@ -42,7 +42,7 @@ class AllStringsModal extends Component {
   render() {
     const {
       isOpen,
-      allStrings,
+      strings,
       onCloseDialog,
       onSearch,
       searchValue,
@@ -66,7 +66,9 @@ class AllStringsModal extends Component {
               <Search
                 style={{ width: '25%' }}
                 defaultValue={searchValue}
-                onSearch={onSearch}
+                onChange={onSearch}
+                enterButton={false}
+                bordered={false}
               />
               <Button
                 className="operator-controls__all-strings-settings-button mx-4"
@@ -80,7 +82,7 @@ class AllStringsModal extends Component {
             </div>
             <Table
               columns={this.getColumns()}
-              dataSource={allStrings}
+              dataSource={strings}
               size="small"
               sticky={true}
               pagination={{
@@ -117,7 +119,7 @@ class AllStringsModal extends Component {
 
 AllStringsModal.propTypes = {
   isOpen: bool.isRequired,
-  allStrings: array.isRequired,
+  strings: array.isRequired,
   onCloseDialog: func.isRequired,
   selectedLanguages: array.isRequired,
   onSearch: func.isRequired,

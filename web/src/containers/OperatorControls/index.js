@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import debounce from 'lodash.debounce';
 import classnames from 'classnames';
 import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
@@ -45,7 +46,7 @@ class OperatorControls extends Component {
       overwrites,
       allStrings: [],
       searchValue: '',
-      searchResults: {},
+      searchResults: [],
     }
   }
 
@@ -203,7 +204,7 @@ class OperatorControls extends Component {
     this.setState({
       allStrings,
       isAllStringsModalOpen: true,
-    });
+    }, this._doSearch);
   }
 
   closeAllStringsModal = () => {
@@ -211,10 +212,31 @@ class OperatorControls extends Component {
       isAllStringsModalOpen: false,
     });
   }
+  
+  doSearch = debounce(() => this._doSearch(), 300)
 
-  handleSearch = (value) => {
-    console.log('Search', value);
-    this.setState({ searchValue: value.trim()})
+  _doSearch = () => {
+    const { searchValue, allStrings, selectedLanguages } = this.state;
+    const [l1, l2] = selectedLanguages;
+    const searchTerm = searchValue.toLowerCase().trim();
+    const searchResults = []
+    allStrings.forEach((stringObject) => {
+      if(stringObject[l1] && stringObject[l1].toLowerCase().includes(searchTerm)) {
+        searchResults.push(stringObject)
+      } else if (stringObject[l2] && stringObject[l2].toLowerCase().includes(searchTerm)) {
+        searchResults.push(stringObject)
+      } else if (stringObject.key.toLowerCase().includes(searchTerm)) {
+        searchResults.push(stringObject)
+      }
+    })
+
+    this.setState({ searchResults });
+  }
+  
+  handleSearch = ({ target: { value: searchValue }}) => {
+    this.setState({ searchValue }, () => {
+      this.doSearch();
+    })
   }
 
   setSelectedLanguages = (value, index) => {
@@ -239,7 +261,7 @@ class OperatorControls extends Component {
       editableElementIds,
       isSaveEnabled,
       isAllStringsModalOpen,
-      allStrings,
+      searchResults,
       searchValue,
       languageOptions,
       selectedLanguages,
@@ -339,7 +361,7 @@ class OperatorControls extends Component {
         </Modal>
         <AllStringsModal
           isOpen={editMode && isAllStringsModalOpen}
-          allStrings={allStrings}
+          strings={searchResults}
           languageKeys={languageKeys}
           onCloseDialog={this.closeAllStringsModal}
           onSearch={this.handleSearch}
