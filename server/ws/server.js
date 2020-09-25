@@ -61,9 +61,10 @@ const wss = new WebSocket.Server({
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
 						return next(false, 403, err.message);
+					} else {
+						return next(true);
 					}
 				}, true);
-				return next(true);
 			} else if (hmacKey) {
 				info.req.method = 'CONNECT';
 				info.req.originalUrl = '/stream';
@@ -71,9 +72,10 @@ const wss = new WebSocket.Server({
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
 						return next(false, 403, err.message);
+					} else {
+						return next(true);
 					}
 				}, true);
-				return next(true);
 			} else {
 				return next(true);
 			}
