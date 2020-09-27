@@ -10,6 +10,7 @@ import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
 import { content as CONTENT } from 'config/localizedStrings';
 import AllStringsModal from './components/AllStringsModal';
+import StringSettingsModal from './components/StringSettings';
 
 class OperatorControls extends Component {
 
@@ -48,6 +49,7 @@ class OperatorControls extends Component {
       searchValue: '',
       searchResults: [],
       source: false,
+      isStringsSettingsOpen: false,
     }
   }
 
@@ -226,6 +228,23 @@ class OperatorControls extends Component {
       isAllStringsModalOpen: false,
     });
   }
+
+  openStringSettingsModal = () => {
+    this.closeAllStringsModal();
+    this.setState({
+      isStringsSettingsOpen: true,
+    });
+  }
+
+  closeStringSettingsModal = (source) => {
+    this.setState({
+      isStringsSettingsOpen: false,
+    }, () => {
+      if(source) {
+        this.openAllStringsModal()
+      }
+    });
+  }
   
   doSearch = debounce(() => this._doSearch(), 300)
 
@@ -279,6 +298,7 @@ class OperatorControls extends Component {
       searchValue,
       languageOptions,
       selectedLanguages,
+      isStringsSettingsOpen,
     } = this.state;
     const { editMode } = this.props;
 
@@ -376,7 +396,6 @@ class OperatorControls extends Component {
         <AllStringsModal
           isOpen={editMode && isAllStringsModalOpen}
           strings={searchResults}
-          languageKeys={languageKeys}
           onCloseDialog={this.closeAllStringsModal}
           onSearch={this.handleSearch}
           searchValue={searchValue}
@@ -384,6 +403,12 @@ class OperatorControls extends Component {
           onSelect={this.setSelectedLanguages}
           selectedLanguages={selectedLanguages}
           onRowClick={this.handleEditButton}
+          onSettingsClick={this.openStringSettingsModal}
+        />
+        <StringSettingsModal
+          isOpen={editMode && isStringsSettingsOpen}
+          onCloseDialog={this.closeStringSettingsModal}
+          languages={languageOptions}
         />
       </div>
     );

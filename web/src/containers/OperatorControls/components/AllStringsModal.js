@@ -46,6 +46,7 @@ class AllStringsModal extends Component {
       onCloseDialog,
       onSearch,
       searchValue,
+      onSettingsClick,
     } = this.props;
 
     return (
@@ -71,6 +72,7 @@ class AllStringsModal extends Component {
                 bordered={false}
               />
               <Button
+                onClick={onSettingsClick}
                 className="operator-controls__all-strings-settings-button mx-4"
                 type="primary"
                 shape="round"
@@ -122,6 +124,7 @@ AllStringsModal.propTypes = {
   strings: array.isRequired,
   onCloseDialog: func.isRequired,
   selectedLanguages: array.isRequired,
+  onSettingsClick: func.isRequired,
   onSearch: func.isRequired,
   searchValue: string,
 }
