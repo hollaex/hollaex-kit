@@ -11,6 +11,7 @@ import LANGUAGES from 'config/languages';
 import { content as CONTENT } from 'config/localizedStrings';
 import AllStringsModal from './components/AllStringsModal';
 import StringSettingsModal from './components/StringSettings';
+import AddLanguageModal from './components/AddLanguageModal';
 
 class OperatorControls extends Component {
 
@@ -50,6 +51,7 @@ class OperatorControls extends Component {
       searchResults: [],
       source: false,
       isStringsSettingsOpen: false,
+      isAddLanguageModalOpen: false,
     }
   }
 
@@ -245,6 +247,21 @@ class OperatorControls extends Component {
       }
     });
   }
+
+  openAddLanguageModal = () => {
+    this.closeStringSettingsModal();
+    this.setState({
+      isAddLanguageModalOpen: true,
+    });
+  }
+
+  closeAddLanguageModal = () => {
+    this.setState({
+      isAddLanguageModalOpen: false,
+    }, () => {
+      this.openStringSettingsModal()
+    });
+  }
   
   doSearch = debounce(() => this._doSearch(), 300)
 
@@ -299,6 +316,7 @@ class OperatorControls extends Component {
       languageOptions,
       selectedLanguages,
       isStringsSettingsOpen,
+      isAddLanguageModalOpen,
     } = this.state;
     const { editMode } = this.props;
 
@@ -409,6 +427,12 @@ class OperatorControls extends Component {
           isOpen={editMode && isStringsSettingsOpen}
           onCloseDialog={this.closeStringSettingsModal}
           languages={languageOptions}
+          onAddLanguageClick={this.openAddLanguageModal}
+        />
+        <AddLanguageModal
+          isOpen={editMode && isAddLanguageModalOpen}
+          onCloseDialog={this.closeAddLanguageModal}
+          languages={LANGUAGES.filter(({ value }) => !languageKeys.includes(value))}
         />
       </div>
     );

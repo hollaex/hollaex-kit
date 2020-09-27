@@ -45,7 +45,7 @@ class StringSettingsModal extends Component {
   ]
 
   render() {
-    const { isOpen, onCloseDialog, languages } = this.props;
+    const { isOpen, onCloseDialog, languages, onAddLanguageClick } = this.props;
     return (
       <Modal
         isOpen={isOpen}
@@ -77,6 +77,16 @@ class StringSettingsModal extends Component {
             };
           }}
         />
+        <Button
+          onClick={onAddLanguageClick}
+          className="operator-controls__all-strings-settings-button mx-4"
+          type="primary"
+          shape="round"
+          size="small"
+          ghost
+        >
+          Add language
+        </Button>
       </Modal>
     );
   }
@@ -86,6 +96,7 @@ StringSettingsModal.propTypes = {
   isOpen: bool.isRequired,
   onCloseDialog: func.isRequired,
   languages: array.isRequired,
+  onAddLanguageClick: func.isRequired,
 }
 
 export default StringSettingsModal;
