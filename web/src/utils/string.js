@@ -128,5 +128,17 @@ export const getAllStrings = (content = STRINGS._props) => {
     allStrings.push(stringObject)
 	})
 
-	return allStrings;
+	return allStrings.filter(({key}) => !EXCLUSIONS.includes(key));
 }
+
+const EXCLUSIONS = [
+	"FOOTER.FOOTER_LEGAL",
+	"LEGAL.PRIVACY_POLICY.TEXTS",
+	"LEGAL.GENERAL_TERMS.TEXTS",
+	"TYPES",
+	"SIDES",
+	"DEFAULT_TOGGLE_OPTIONS",
+	"SETTINGS_LANGUAGE_OPTIONS",
+	"SETTINGS_ORDERPOPUP_OPTIONS",
+	"SETTINGS_THEME_OPTIONS",
+];
