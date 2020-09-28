@@ -727,6 +727,16 @@ const checkUserOtpActive = (userId, otpCode) => {
 	});
 };
 
+const createHmacSignature = (secret, verb, path, expires, data = '') => {
+	const stringData = typeof data === 'string' ? data : JSON.stringify(data);
+
+	const signature = crypto
+		.createHmac('sha256', secret)
+		.update(verb + path + expires + stringData)
+		.digest('hex');
+	return signature;
+};
+
 const maskToken = (token = '') => {
 	return token.substr(0, 3) + '********';
 };
@@ -901,5 +911,6 @@ module.exports = {
 	userHasOtpEnabled,
 	createUserKitHmacToken,
 	deleteUserKitHmacToken,
-	checkHmacSignature
+	checkHmacSignature,
+	createHmacSignature
 };
