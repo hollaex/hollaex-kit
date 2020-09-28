@@ -333,6 +333,13 @@ class OperatorControls extends Component {
     })
   }
 
+  removeLanguage = (keys = []) => {
+    this.setState(prevState => ({
+      ...prevState,
+      languageKeys: prevState.languageKeys.filter((key) => !keys.includes(key))
+    }));
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -459,6 +466,7 @@ class OperatorControls extends Component {
           onCloseDialog={this.closeStringSettingsModal}
           languages={languageOptions}
           onAddLanguageClick={this.openAddLanguageModal}
+          onConfirm={this.removeLanguage}
         />
         <AddLanguageModal
           isOpen={editMode && isAddLanguageModalOpen}

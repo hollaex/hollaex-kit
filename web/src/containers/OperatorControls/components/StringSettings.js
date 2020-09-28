@@ -2,11 +2,14 @@ import React, { Component, Fragment } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, array, func } from 'prop-types';
 import { Button, Table } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, UndoOutlined } from '@ant-design/icons';
 import { DEFAULT_LANGUAGE } from 'config/constants';
 
 
 class StringSettingsModal extends Component {
+  state = {
+    removedLanguages: []
+  }
 
   columns = [
     {
@@ -19,7 +22,7 @@ class StringSettingsModal extends Component {
       title: "Default Language",
       dataIndex: "value",
       key: "value",
-      render: (_, { value }) => value === DEFAULT_LANGUAGE ? "Default" : "",
+      render: (_, { value }) => this.isDefault(value) ? "Default" : "",
     },
     {
       title: "Action",
@@ -32,20 +35,46 @@ class StringSettingsModal extends Component {
             shape="circle"
             size="small"
             ghost
-            icon={<CloseOutlined />}
+            icon={!this.isRemoved(value) ? <CloseOutlined /> : <UndoOutlined />}
+            disabled={this.isDefault(value)}
+            onClick={() => {
+              !this.isRemoved(value) ? this.removeLanguage(value) : this.revert(value);
+            }}
           />
           <span
             className="ml-2"
           >
-            Remove
+            {!this.isRemoved(value) ? "Remove" : "Removed"}
           </span>
         </Fragment>
       ),
     }
   ]
 
+  removeLanguage = (lang) => {
+    this.setState(prevState => ({
+      ...prevState,
+      removedLanguages: [...prevState.removedLanguages, lang],
+    }));
+  }
+
+  revert = (lang) => {
+    this.setState(prevState => ({
+      ...prevState,
+      removedLanguages: prevState.removedLanguages.filter((key) => key !== lang),
+    }));
+  }
+
+  isRemoved = (lang) => {
+    const { removedLanguages } = this.state;
+    return removedLanguages.includes(lang)
+  }
+
+  isDefault = (lang) => DEFAULT_LANGUAGE === lang
+
   render() {
-    const { isOpen, onCloseDialog, languages, onAddLanguageClick } = this.props;
+    const { isOpen, onCloseDialog, languages, onAddLanguageClick, onConfirm } = this.props;
+    const { removedLanguages } = this.state;
     return (
       <Modal
         isOpen={isOpen}
@@ -71,11 +100,6 @@ class StringSettingsModal extends Component {
             showTotal: false,
           }}
           scroll={{ y: 240 }}
-          onRow={({ key }) => {
-            return {
-              onClick: () => console.log('clicked', key)
-            };
-          }}
           rowKey={({ value }) => value}
         />
         <Button
@@ -87,6 +111,11 @@ class StringSettingsModal extends Component {
           ghost
         >
           Add language
+        </Button>
+        <Button
+          onClick={() => onConfirm(removedLanguages)}
+        >
+          Confirm
         </Button>
       </Modal>
     );
