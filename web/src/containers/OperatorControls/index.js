@@ -183,7 +183,7 @@ class OperatorControls extends Component {
       isSaveEnabled: false,
       editData: {},
       editableElementIds: [],
-    }, () => () => {
+    }, () => {
       initializeStrings(saveData)
       if (source) {
         this.openAllStringsModal();
