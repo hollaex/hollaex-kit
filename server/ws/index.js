@@ -22,16 +22,7 @@ const {
 	WS_USER_AUTHENTICATED,
 	WS_MISSING_HEADER
 } = require('../messages');
-
-// // PUBLIC SOCKET
-// const publicSocket = io.of(WEBSOCKET_PUBLIC_CHANNEL);
-// initializePublicWS(publicSocket);
-
-// // USER PRIVATE SOCKET
-// const user = io.of(WEBSOCKET_USER_CHANNEL);
-// initializeUserWS(user);
-
-// message: {'op; 'subscribe/unsubscribe', args: []}
+const { initializeOrderbook, initializeTrade } = require('./sub');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -65,11 +56,11 @@ wss.on('connection', (ws, req) => {
 						let [topic, symbol] = arg.split(':');
 						switch(topic) {
 							case 'orderbook':
-								// initializeOrderbook(ws, symbol);
+								initializeOrderbook(ws, symbol);
 								ws.send(JSON.stringify({ message: 'Subscribed to orderbook' }));
 								break;
 							case 'trade':
-								// initializeTrade(ws, symbol);
+								initializeTrade(ws, symbol);
 								ws.send(JSON.stringify({ message: 'Subscribed to trade' }));
 								break;
 							case 'wallet':

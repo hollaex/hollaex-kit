@@ -13,8 +13,15 @@ const addSubscriber = (channel, ws) => {
 	if (!channels[channel]) {
 		channels[channel] = [];
 	}
-	channels[channel].push(ws);
-	loggerWebsocket.verbose('ws/channel/addSubscriber', channel, ws.id);
+
+	const index = findIndex(channels[channel], socket => {
+		return socket.id == ws.id;
+	});
+
+	if (index === -1) {
+		channels[channel].push(ws);
+		loggerWebsocket.verbose('ws/channel/addSubscriber', channel, ws.id);
+	}
 };
 
 const removeSubscriber = (channel, ws) => {

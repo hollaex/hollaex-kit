@@ -14,6 +14,12 @@ exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 
 
 // CHANNEL CONSTANTS -----------------------------
 
+exports.WS_ORDERBOOK_CHANNEL = (symbol) => `orderbook:${symbol}`;
+exports.WS_TRADES_CHANNEL = (symbol) => `trades:${symbol}`;
+exports.WS_ORDER_CHANNEL = (userId) => `order:${userId}`;
+exports.WS_WALLET_CHANNEL = (userId) => `wallet:${userId}`;
+exports.WS_USER_TRADE_CHANNEL = (userId) => `userTrade:${userId}`;
+
 exports.WEBSOCKET_CHAT_CHANNEL = '/chat';
 exports.WEBSOCKET_CHAT_PUBLIC_ROOM = 'public';
 exports.CHAT_MAX_MESSAGES = 50;
@@ -163,11 +169,6 @@ const resetAllConfig = () => {
 
 const updateKit = (newKitConfig) => {
 	Object.assign(configuration.kit, newKitConfig);
-	setRedisData();
-};
-
-const updateCoinsPairs = (type, symbol, config) => {
-	Object.assign(configuration[type][symbol], config);
 	setRedisData();
 };
 
