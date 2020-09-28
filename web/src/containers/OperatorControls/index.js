@@ -170,7 +170,11 @@ class OperatorControls extends Component {
 
     languageKeys.forEach((lang) => {
       Object.entries(saveData[lang]).forEach(([key, string]) => {
-        if (string === getStringByKey(key, lang, CONTENT) || !this.validateString(key, lang)) {
+        if (
+          string === getStringByKey(key, lang, CONTENT) ||
+          string === getStringByKey(key, 'en', CONTENT) ||
+          !string || !this.validateString(key, lang)
+        ) {
           delete saveData[lang][key];
         }
       })
