@@ -116,8 +116,7 @@ export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._
 	}
 }
 
-export const getAllStrings = (content = STRINGS._props) => {
-	const validLanguages = getValidLanguages();
+export const getAllStrings = (validLanguages = getValidLanguages(), content = STRINGS._props) => {
 	const allStrings = [];
 
   Object.entries(content['en']).forEach(([key]) => {

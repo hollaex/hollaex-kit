@@ -230,7 +230,8 @@ class OperatorControls extends Component {
   }
 
   openAllStringsModal = () => {
-    const allStrings = getAllStrings()
+    const { languageKeys } = this.state;
+    const allStrings = getAllStrings(languageKeys);
 
     this.setState({
       allStrings,
