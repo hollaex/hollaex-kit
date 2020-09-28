@@ -1269,10 +1269,9 @@ export default {
 			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1:
 			'In the mean time you can familiarize yourself with the HollaEx network with the resources below', // new
-		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
-		XHT_ORDER_TXT_2:
-			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
-		XHT_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
+		XHT_ORDER_TXT_1: 'To start trading you must login', // new
+		XHT_ORDER_TXT_2: '', // new
+		XHT_ORDER_TXT_3: '{0} or {1}', // new
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
 		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
