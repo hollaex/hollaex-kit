@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
-import { bool, array, func, string } from 'prop-types';
+import { bool, array, func } from 'prop-types';
 import { Button, Table } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { DEFAULT_LANGUAGE } from 'config/constants';

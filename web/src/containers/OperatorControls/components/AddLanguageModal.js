@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
-import { bool, array, func, string } from 'prop-types';
+import { bool, array, func } from 'prop-types';
 import { Select, Button } from 'antd';
 
 
@@ -34,6 +34,7 @@ class AddLanguageModal extends Component {
             ))
           }
         </Select>
+
       </Modal>
     );
   }
