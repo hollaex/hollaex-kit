@@ -7,8 +7,30 @@ import { Select, Button } from 'antd';
 const { Option } = Select;
 
 class AddLanguageModal extends Component {
+  constructor(props) {
+    super(props);
+
+    const { languages } = this.props;
+
+    this.state = {
+      selectedLanguage: languages[0].value
+    }
+  }
+
+  handleSelect = (selectedLanguage) => {
+    this.setState({ selectedLanguage });
+  }
+
+  addLanguage = () => {
+    const { selectedLanguage } = this.state;
+    const { onSave } = this.props;
+
+    onSave(selectedLanguage);
+  }
+
   render() {
     const { isOpen, onCloseDialog, languages } = this.props;
+    const { selectedLanguage } = this.state;
     return (
       <Modal
         isOpen={isOpen}
@@ -21,10 +43,11 @@ class AddLanguageModal extends Component {
         bodyOpenClassName="operator-controls__modal-open"
       >
         <Select
-          style={{ width: '100px'}}
+          value={selectedLanguage}
+          style={{ width: 120 }}
           bordered={false}
           size="default"
-          onSelect={(value) => console.log('value', value)}
+          onSelect={this.handleSelect}
         >
           {
             languages.map(({ label, value }) => (
@@ -34,7 +57,11 @@ class AddLanguageModal extends Component {
             ))
           }
         </Select>
-
+        <Button
+          onClick={this.addLanguage}
+        >
+          Save
+        </Button>
       </Modal>
     );
   }

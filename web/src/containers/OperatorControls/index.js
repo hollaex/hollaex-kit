@@ -315,6 +315,19 @@ class OperatorControls extends Component {
     });
   }
 
+  addLanguage = (key) => {
+    const { languageKeys: prevLanguageKeys } = this.state;
+    const languageKeys = [...prevLanguageKeys, key];
+    const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value))
+
+    this.setState({
+      languageKeys,
+      languageOptions,
+    }, () => {
+      this.closeAddLanguageModal()
+    })
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -446,6 +459,7 @@ class OperatorControls extends Component {
           isOpen={editMode && isAddLanguageModalOpen}
           onCloseDialog={this.closeAddLanguageModal}
           languages={LANGUAGES.filter(({ value }) => !languageKeys.includes(value))}
+          onSave={this.addLanguage}
         />
       </div>
     );
