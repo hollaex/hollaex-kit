@@ -170,7 +170,7 @@ class OperatorControls extends Component {
 
     languageKeys.forEach((lang) => {
       Object.entries(saveData[lang]).forEach(([key, string]) => {
-        if (string === getStringByKey(key, lang, CONTENT)) {
+        if (string === getStringByKey(key, lang, CONTENT) || !this.validateString(key, lang)) {
           delete saveData[lang][key];
         }
       })
@@ -189,6 +189,19 @@ class OperatorControls extends Component {
         this.openAllStringsModal();
       }
     })
+  }
+
+  countPlaceholders = (string = '') => {
+    const matches = string.match(/{(.*?)}/);
+    return matches ? matches.length : 0;
+  }
+
+  validateString = (key, lang) => {
+    const { editData } = this.state;
+    const defaultPlaceholders = this.countPlaceholders(getStringByKey(key, lang, CONTENT));
+    const placeholders = this.countPlaceholders(editData[lang][key]);
+
+    return defaultPlaceholders === placeholders;
   }
 
   handlePublish = () => {
