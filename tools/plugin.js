@@ -11,11 +11,16 @@ const dbQuery = require('./database/query');
 const { publisher } = require('./database/redis');
 
 const getPluginsConfig = () => {
+	const secrets = {};
+	for (let plugin in getKitSecrets().plugins) {
+		secrets[plugin] = maskSecrets(getKitSecrets().plugins[plugin]);
+	}
+
 	return {
 		available: AVAILABLE_PLUGINS,
 		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : [],
-		configurations: getKitConfig().plugins.configurations,
-		secrets: maskSecrets(getKitSecrets().plugins)
+		configuration: getKitConfig().plugins.configuration,
+		secrets
 	};
 };
 
