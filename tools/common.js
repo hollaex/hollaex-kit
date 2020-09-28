@@ -227,6 +227,16 @@ const sendEmailToSupport = (email, category, subject, description) => {
 	return sendEmail(MAILTYPE.CONTACT_FORM, email, emailData, {});
 };
 
+const getNetworkKeySecret = () => {
+	dbQuery.findOne('status')
+		.then((status) => {
+			return {
+				apiKey: status.api_key,
+				apiSecret: status.api_secret
+			};
+		});
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -244,5 +254,6 @@ module.exports = {
 	updateKitConfig,
 	updateKitSecrets,
 	updateKitConfigSecrets,
-	sendEmailToSupport
+	sendEmailToSupport,
+	getNetworkKeySecret
 };
