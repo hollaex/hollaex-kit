@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import { LANGUAGE_KEY, DEFAULT_LANGUAGE } from '../config/constants';
-import STRINGS from '../config/localizedStrings';
+import STRINGS, { content as CONTENT } from 'config/localizedStrings';
 import { getValidLanguages } from 'utils/initialize';
 export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
 
@@ -107,7 +107,7 @@ export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
 export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._props) => {
 
 	if (!content[lang]) {
-		return;
+		return getStringByKey(key, 'en', CONTENT);
 	}
 
 	const string = content[lang][key];
