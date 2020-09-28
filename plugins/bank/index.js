@@ -7,6 +7,7 @@ const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount
 const { USER_NOT_FOUND, DEFAULT_REJECTION_NOTE } = require('./messages');
 const bodyParser = require('body-parser');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
+const { NOT_AUTHORIZED } = require('../helpers/messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { GET_SECRETS } = require('../../constants');
@@ -14,12 +15,16 @@ const { GET_SECRETS } = require('../../constants');
 app.get('/plugins/bank/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /plugins/bank/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/bank/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	try {
 		res.json(maskSecrets('bank', GET_SECRETS().plugins.bank) || {});
@@ -31,12 +36,16 @@ app.get('/plugins/bank/constant', verifyToken, (req, res) => {
 app.put('/plugins/bank/constant', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/bank/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/bank/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	if (req.body.length === 0) {
 		logger.error('PUT /plugins/bank/constant error', 'Must provide key to update');
@@ -60,12 +69,16 @@ app.put('/plugins/bank/constant', [verifyToken, bodyParser.json()], (req, res) =
 app.post('/plugins/bank/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /bank/user auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/bank/user error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const email = req.auth.sub.email;
 	const bank_account = req.body;
@@ -91,12 +104,16 @@ app.post('/plugins/bank/user', [verifyToken, bodyParser.json()], (req, res) => {
 app.post('/plugins/bank/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /bank/admin auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/bank/admin error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { bank_account } = req.body;
 	const id = req.query.user_id;
@@ -124,12 +141,16 @@ app.post('/plugins/bank/admin', [verifyToken, bodyParser.json()], (req, res) => 
 app.post('/plugins/bank/verify', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /bank/verify auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/bank/verify error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { user_id, bank_id } = req.body;
 
@@ -166,12 +187,16 @@ app.post('/plugins/bank/verify', [verifyToken, bodyParser.json()], (req, res) =>
 app.post('/plugins/bank/revoke', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /bank/revoke auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/bank/revoke error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { user_id, bank_id } = req.body;
 	let { message } = req.body || DEFAULT_REJECTION_NOTE;
