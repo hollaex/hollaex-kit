@@ -22,18 +22,7 @@ class OperatorControls extends Component {
     const overwrites = JSON.parse(strings);
     const languageKeys = getValidLanguages();
     const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value));
-    const isENAvailable = !!languageKeys.find(lang => lang === "en");
-    const hasMultipleLanguages = languageKeys.length > 1;
-    let selectedLanguages = [];
-
-    if (isENAvailable && hasMultipleLanguages) {
-      selectedLanguages[0] = 'en'
-      selectedLanguages[1] = languageKeys.filter(lang => lang !== "en")[0]
-    } else if (hasMultipleLanguages) {
-      selectedLanguages = languageKeys.slice(0,2);
-    } else {
-      selectedLanguages = new Array(2).fill(languageKeys[0])
-    }
+    const selectedLanguages = this.getSelectedLanguages(languageKeys);
 
     this.state = {
       isPublishEnabled: false,
@@ -63,6 +52,36 @@ class OperatorControls extends Component {
     this.removeAdminListeners()
   }
 
+  UNSAFE_componentWillUpdate(_, nextState) {
+    const { languageKeys } = this.state;
+    if (JSON.stringify(languageKeys) !== JSON.stringify(nextState.languageKeys)) {
+      const languageOptions = LANGUAGES.filter(({ value }) => nextState.languageKeys.includes(value));
+      const selectedLanguages = this.getSelectedLanguages(nextState.languageKeys);
+      this.setState({
+        languageOptions,
+        selectedLanguages,
+      })
+    }
+  }
+
+  getSelectedLanguages = (languageKeys) => {
+    const isENAvailable = !!languageKeys.find(lang => lang === "en");
+    const languageCount = languageKeys.length;
+    const hasMultipleLanguages = languageCount > 1;
+    let selectedLanguages = [];
+
+    if (isENAvailable && hasMultipleLanguages) {
+      selectedLanguages[0] = 'en'
+      selectedLanguages[1] = languageKeys.filter(lang => lang !== "en")[languageCount-2]
+    } else if (hasMultipleLanguages) {
+      selectedLanguages[0] = languageKeys[0];
+      selectedLanguages[1] = languageKeys[languageCount-1];
+    } else {
+      selectedLanguages = new Array(2).fill(languageKeys[0])
+    }
+
+    return selectedLanguages;
+  }
 
   setupAdminListeners = () => {
     const hasEditPermission = this.getEditPermission();
@@ -323,11 +342,9 @@ class OperatorControls extends Component {
   addLanguage = (key) => {
     const { languageKeys: prevLanguageKeys } = this.state;
     const languageKeys = [...prevLanguageKeys, key];
-    const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value))
 
     this.setState({
       languageKeys,
-      languageOptions,
     }, () => {
       this.closeAddLanguageModal()
     })
@@ -337,7 +354,7 @@ class OperatorControls extends Component {
     this.setState(prevState => ({
       ...prevState,
       languageKeys: prevState.languageKeys.filter((key) => !keys.includes(key))
-    }));
+    }), () => this.closeStringSettingsModal(true));
   }
 
   render() {
