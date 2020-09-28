@@ -7,6 +7,7 @@ const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
 const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, updateUserPhoneNumber } = require('./helpers');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
+const { NOT_AUTHORIZED } = require('../helpers/messages');
 const {
 	SMS_INVALID_PHONE,
 	SMS_SUCCESS,
@@ -20,12 +21,16 @@ const { GET_SECRETS } = require('../../constants');
 app.get('/plugins/sms/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /plugins/sms/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/sms/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	try {
 		res.json(maskSecrets('sns', GET_SECRETS().plugins.sns) || {});
@@ -37,12 +42,16 @@ app.get('/plugins/sms/constant', verifyToken, (req, res) => {
 app.put('/plugins/sms/constant', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/sms/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/sms/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	if (req.body.length === 0) {
 		logger.error('PUT /plugins/sms/constant error', 'Must provide key to update');
@@ -66,12 +75,16 @@ app.put('/plugins/sms/constant', [verifyToken, bodyParser.json()], (req, res) =>
 app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /sms/verify auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/sms/verify error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const phoneNumber = new PhoneNumber(req.query.phone);
 	const { id } = req.auth.sub;
@@ -119,12 +132,16 @@ app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 app.post('/plugins/sms/verify', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /sms/verify auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/sms/verify error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { id } = req.auth.sub;
 	const { code } = req.body;

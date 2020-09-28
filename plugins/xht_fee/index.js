@@ -4,6 +4,7 @@ const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const { findUser } = require('../helpers/user');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
+const { NOT_AUTHORIZED } = require('../helpers/messages');
 const bodyParser = require('body-parser');
 const { Balance } = require('../../db/models');
 
@@ -14,12 +15,16 @@ const { GET_SECRETS } = require('../../constants');
 app.get('/plugins/xht_fee/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /plugins/xht_fee/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/xht_fee/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	try {
 		res.json(maskSecrets('xht_fee', GET_SECRETS().plugins.xht_fee) || {});
@@ -31,12 +36,16 @@ app.get('/plugins/xht_fee/constant', verifyToken, (req, res) => {
 app.put('/plugins/xht_fee/constant', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/xht_fee/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/xht_fee/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	if (req.body.length === 0) {
 		logger.error('PUT /plugins/xht_fee/constant error', 'Must provide key to update');
@@ -60,7 +69,16 @@ app.put('/plugins/xht_fee/constant', [verifyToken, bodyParser.json()], (req, res
 app.get('/plugins/activate-xht-fee', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'GET /plugins/activate-xht-fee auth',
+		req.auth.sub
+	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/activate-xht-fee error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const email = req.auth.sub.email;
 	const id = req.auth.sub.id;

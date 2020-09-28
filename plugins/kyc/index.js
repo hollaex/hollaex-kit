@@ -28,17 +28,22 @@ const { cloneDeep, omit } = require('lodash');
 const { ROLES } = require('../../constants');
 const { all } = require('bluebird');
 const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
+const { NOT_AUTHORIZED } = require('../helpers/messages');
 const { GET_SECRETS } = require('../../constants');
 
 app.get('/plugins/kyc/constant', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'GET /plugins/kyc/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/kyc/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	try {
 		res.json(maskSecrets('s3', GET_SECRETS().plugins.s3) || {});
@@ -50,12 +55,16 @@ app.get('/plugins/kyc/constant', verifyToken, (req, res) => {
 app.put('/plugins/kyc/constant', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'tech'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/kyc/constant auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/kyc/constant error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	if (req.body.length === 0) {
 		logger.error('PUT /plugins/kyc/constant error', 'Must provide key to update');
@@ -79,12 +88,16 @@ app.put('/plugins/kyc/constant', [verifyToken, bodyParser.json()], (req, res) =>
 app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/kyc/user',
 		req.body
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/kyc/user error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const email = req.auth.sub.email;
 	const editUser = req.body;
@@ -123,12 +136,16 @@ app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'PUT /plugins/kyc/admin',
 		req.auth
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('PUT /plugins/kyc/admin error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
@@ -237,9 +254,13 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 app.post('/plugins/kyc/user/upload', [verifyToken, multerMiddleware], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose('POST /plugins/kyc/user/upload auth', req.auth.sub);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/kyc/user/upload error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { id, email } = req.auth.sub;
 	let { front, back, proof_of_residency } = req.files;
@@ -337,9 +358,13 @@ app.post('/plugins/kyc/user/upload', [verifyToken, multerMiddleware], (req, res)
 app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose('POST /plugins/kyc/admin/upload auth', req.auth.sub);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/kyc/admin/upload error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	let { front, back, proof_of_residency } = req.files;
 	if (front) front = front[0];
@@ -448,9 +473,13 @@ app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res
 app.get('/plugins/kyc/id', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose('GET /plugins/kyc/id auth', req.auth.sub);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('GET /plugins/kyc/id error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { email, id } = req.query;
 	const where = {};
@@ -478,12 +507,16 @@ app.get('/plugins/kyc/id', verifyToken, (req, res) => {
 app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /plugins/kyc/id/verify auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/kyc/id/verify error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { user_id } = req.body;
 
@@ -522,12 +555,16 @@ app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) 
 app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
-	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
 		'POST /plugins/kyc/id/revoke auth',
 		req.auth.sub
 	);
+
+	if (!checkScopes(endpointScopes, scopes)) {
+		logger.error('POST /plugins/kyc/id/revoke error', NOT_AUTHORIZED);
+		return res.status(400).json({ message: NOT_AUTHORIZED });
+	}
 
 	const { user_id } = req.body;
 	const { message } = req.body || DEFAULT_REJECTION_NOTE;

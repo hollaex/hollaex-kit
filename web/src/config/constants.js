@@ -522,7 +522,7 @@ export const EXCHANGE_EXPIRY_DAYS = 15;
 export const EXCHANGE_EXPIRY_SECONDS = EXCHANGE_EXPIRY_DAYS * 86400;
 export const SUPPORT_HELP_URL =
 	'https://info.hollaex.com/hc/en-us/requests/new';
-export const REQUEST_VAULT_SUPPORTED_COINS = 'https://api.bitholla.com/v1/vault/coins';
+export const REQUEST_VAULT_SUPPORTED_COINS = 'https://api.vault.bitholla.com/v1/coins';
 export const ADMIN_GUIDE_DOWNLOAD_LINK = 'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/Admin+panel+manual.pdf';
 	
 export const MAX_NUMBER_BANKS = 3;

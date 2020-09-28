@@ -44,9 +44,13 @@ class Signup extends Component {
 	
 	componentDidMount() {
 		const affiliation_code = this.getReferralCode();
+		const email = this.getEmail()
 		if (affiliation_code) {
 			this.props.change(FORM_NAME, 'referral', affiliation_code)
 			this.setState({ isReferral: true });
+		}
+		if (email) {
+			this.props.change(FORM_NAME, 'email', email)			
 		}
 	}
 
@@ -68,6 +72,19 @@ class Signup extends Component {
 			affiliation_code = window.location.search.split('?affiliation_code=')[1];
 		}
 		return affiliation_code;
+	}
+	getEmail = () => {
+		let email = '';
+		if (this.props.location
+			&& this.props.location.query
+			&& this.props.location.query.email) {
+			email = this.props.location.query.email;
+		} else if (window.location
+			&& window.location.search
+			&& window.location.search.includes('email')) {
+			email = window.location.search.split('?email')[1];
+		}
+		return email;
 	}
 
 	onSubmitSignup = (values) => {
