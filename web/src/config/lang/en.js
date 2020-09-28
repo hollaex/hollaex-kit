@@ -288,9 +288,9 @@ const nestedContent = {
 		ERROR_INVALID: 'Invalid OTP Code'
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'Quick',
+    TITLE: 'Quick Trade', // updated
 		TOTAL_COST: 'Total cost',
-		BUTTON: 'Review {0} order',
+    BUTTON: 'Review Order', // updated
 		INPUT: '{0} to {1}',
 		TRADE_TITLE: '{0} {1}' // quick buy
 	},
@@ -747,6 +747,10 @@ const nestedContent = {
 		buy: 'buy',
 		sell: 'sell'
 	},
+  SIDES_VERBS: {
+    buy: 'bought',
+    sell: 'sold'
+  },
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
@@ -903,6 +907,9 @@ const nestedContent = {
 	WALLET_ALL_ASSETS: 'All Assets',
 	WALLET_DEPOSIT_USD:
 		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
+  WALLET_HIDE_ZERO_BALANCE: 'Hide zero balance',
+  WALLET_ESTIMATED_TOTAL_BALANCE: 'Estimated Total Balance',
+  WALLET_ASSETS_SEARCH_TXT: 'Search',
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
@@ -939,6 +946,9 @@ const nestedContent = {
 		'The order with the current size can not be filled',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
 	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
+  QUICK_TRADE_SUCCESS: 'Success!',
+  QUICK_TRADE_INSUFFICIENT_FUND: 'Insufficient funds',
+  QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE: 'You have insufficient funds in your wallet to complete this transaction.',
 	YES: 'Yes',
 	NO: 'No',
 	NEXT: 'Next',
