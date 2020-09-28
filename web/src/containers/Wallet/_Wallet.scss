@@ -137,6 +137,7 @@ $header-margin: 2rem;
 		.wallet-assets_block-table {
 			width: 100%;
 			font-size: $font-size-subtext;
+			margin-bottom: 3rem;
 
 			thead,
 			tfoot {
@@ -299,4 +300,9 @@ $header-margin: 2rem;
 	svg {
 		@include size-important(1rem);
 	}
+}
+
+.wallet-search-improvement {
+	border-bottom: 1px solid $dark-app-line-divider;
+	color: $dark-font-sub-text-color !important;
 }

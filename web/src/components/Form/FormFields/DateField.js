@@ -32,7 +32,7 @@ class DateField extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.input.value !== this.props.input.value) {
 			this.onChangeInput(nextProps.input.value);
 		}

@@ -27,7 +27,7 @@ class ApiKey extends Component {
 		this.requestTokens();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			!nextProps.submitting &&
 			nextProps.submitting !== this.props.submitting

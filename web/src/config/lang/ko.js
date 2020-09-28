@@ -1,9 +1,11 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
+import flatten from 'flat';
 
-export default {
-	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
+const options = { safe: true };
+const nestedContent = {
+  APP_TITLE: 'HollaEx',
+  APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',
@@ -1274,3 +1276,7 @@ export default {
 	OPEN_WALLET: '오픈 지갑', // new
 	AGO: 'ago' // new
 };
+
+const content = flatten(nestedContent, options);
+
+export default content;

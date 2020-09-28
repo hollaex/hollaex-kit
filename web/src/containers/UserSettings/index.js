@@ -69,7 +69,7 @@ class UserSettings extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
@@ -94,7 +94,7 @@ class UserSettings extends Component {
 		}
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (
 			nextProps.user.id !== this.props.user.id ||
 			nextProps.price !== this.props.price ||
@@ -154,12 +154,12 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_NOTIFICATION}
+						title={STRINGS["USER_SETTINGS.TITLE_NOTIFICATION"]}
 						icon={ICONS.SETTING_NOTIFICATION_ICON}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_NOTIFICATION}
+						title={STRINGS["USER_SETTINGS.TITLE_NOTIFICATION"]}
 						icon={ICONS.SETTING_NOTIFICATION_ICON}
 					/>
 				),
@@ -176,12 +176,12 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_INTERFACE}
+						title={STRINGS["USER_SETTINGS.TITLE_INTERFACE"]}
 						icon={ICONS.SETTING_INTERFACE_ICON}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_INTERFACE}
+						title={STRINGS["USER_SETTINGS.TITLE_INTERFACE"]}
 						icon={ICONS.SETTING_INTERFACE_ICON}
 					/>
 				),
@@ -198,12 +198,12 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_LANGUAGE}
+						title={STRINGS["USER_SETTINGS.TITLE_LANGUAGE"]}
 						icon={ICONS.SETTING_LANGUAGE_ICON}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_LANGUAGE}
+						title={STRINGS["USER_SETTINGS.TITLE_LANGUAGE"]}
 						icon={ICONS.SETTING_LANGUAGE_ICON}
 					/>
 				),
@@ -220,12 +220,12 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
+						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
 						icon={ICONS.SETTING_CHAT_ICON}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
+						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
 						icon={ICONS.SETTING_CHAT_ICON}
 					/>
 				),
@@ -240,12 +240,12 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE}
+						title={STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"]}
 						icon={ICONS.SETTING_AUDIO_ICON}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE}
+						title={STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"]}
 						icon={ICONS.SETTING_AUDIO_ICON}
 					/>
 				),
@@ -262,12 +262,12 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
+						title={STRINGS["USER_SETTINGS.TITLE_MANAGE_RISK"]}
 						icon={ICONS.SETTING_RISK_ICON}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
+						title={STRINGS["USER_SETTINGS.TITLE_MANAGE_RISK"]}
 						icon={ICONS.SETTING_RISK_ICON}
 					/>
 				),
@@ -391,18 +391,18 @@ class UserSettings extends Component {
 			<div className="presentation_container apply_rtl verification_container">
 				{!isMobile && (
 					<IconTitle
-						text={STRINGS.ACCOUNTS.TAB_SETTINGS}
+						text={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 						textType="title"
 					/>
 				)}
 				<HeaderSection
-					title={STRINGS.ACCOUNTS.TAB_SETTINGS}
+					title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 					openContactForm={this.openContactForm}
 				>
 					<div className="header-content">
-						<div>{STRINGS.USER_SETTINGS.TITLE_TEXT_1}</div>
+						<div>{STRINGS["USER_SETTINGS.TITLE_TEXT_1"]}</div>
 						<div className="mb-3">
-							{STRINGS.USER_SETTINGS.TITLE_TEXT_2}
+							{STRINGS["USER_SETTINGS.TITLE_TEXT_2"]}
 						</div>
 					</div>
 				</HeaderSection>
@@ -423,7 +423,7 @@ class UserSettings extends Component {
 				{!isMobile ? this.renderContent(tabs, activeTab) : null}
 				{isMobile && (
 					<div className="my-4">
-						{/* <Button label={STRINGS.ACCOUNTS.TAB_SIGNOUT} onClick={this.logout} /> */}
+						{/* <Button label={STRINGS["ACCOUNTS.TAB_SIGNOUT"]} onClick={this.logout} /> */}
 					</div>
 				)}
 			</div>

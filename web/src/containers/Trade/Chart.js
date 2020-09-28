@@ -232,7 +232,7 @@ class TVChartContainer extends React.PureComponent {
 		this.updateChart(this.props);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			this.updateChart(nextProps);
 		} else if (

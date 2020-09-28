@@ -1,0 +1,104 @@
+$operator-controls__panel-main-color: #0000FF;
+$operator-controls__panel-text-color: #FFFFFF;
+$operator-controls__panel-border-color: #A7A7A7;
+
+
+.operator-controls__wrapper {
+  position: fixed;
+  bottom: -106px;
+  width: 100vw;
+  transition: all 0.25s ease-out 0s;
+  color: $operator-controls__panel-text-color;
+
+  &.open {
+    bottom: 0;
+    z-index: 1000000;
+  }
+}
+
+.operator-controls__button {
+  height: 30px;
+  font-size: 16px;
+  background-color: $operator-controls__panel-main-color;
+  width: 162px;
+  margin-left: 57px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.operator-controls__panel {
+  display: flex;
+  justify-content: space-between;
+  height: 106px;
+  width: 100%;
+  border-top: solid $operator-controls__panel-border-color 1px;
+  background-color: $operator-controls__panel-main-color;
+}
+
+.operator-controls__panel-list {
+  display: flex;
+  margin: 0 35px;
+}
+
+.operator-controls__panel-item {
+  display: flex;
+  font-size: 21px;
+  font-family: Neue Haas Grotesk Display Pro;
+  text-align: center;
+  cursor: pointer;
+  align-items: center;
+  margin: 0 35px;
+}
+
+.operator-controls__publish-button {
+  cursor: pointer;
+  background-color: #FF0000;
+  border: 1px solid #FF0000 ;
+  border-radius: 10px;
+  height: 50px;
+  width: 145px;
+  margin-right: 37px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.operator-controls__save-button {
+  cursor: pointer;
+  background-color: #288500;
+  border: 1px solid #288500;
+  border-radius: 10px;
+  height: 50px;
+  width: 232px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.operator-controls__modal {
+  .ReactModal__Content {
+    background-color: $operator-controls__panel-main-color !important;
+    color: $operator-controls__panel-text-color !important;
+    padding-top: 20px !important;
+  }
+  .ReactModal__Overlay {
+    background-color: transparent !important;
+    color: $operator-controls__panel-text-color !important;
+  }
+}
+
+.operator-controls__modal-open #root {
+  filter: none !important;
+  background-color: transparent !important;
+}
+
+.operator-controls__all-strings-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.operator-controls__all-strings-settings-button {
+  color: $operator-controls__panel-text-color !important;
+  border-color: $operator-controls__panel-text-color !important;
+}

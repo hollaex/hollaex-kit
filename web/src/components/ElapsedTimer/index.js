@@ -17,7 +17,7 @@ class ElapsedTimer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.isLoading !== nextProps.isLoading) {
             if (nextProps.isLoading) {
                 this.startTimer();
@@ -27,7 +27,7 @@ class ElapsedTimer extends Component {
         }
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
         if (nextState.seconds === 0) {
             this.props.timeoutCallback();
             this.endTimer();
@@ -60,7 +60,7 @@ class ElapsedTimer extends Component {
             <div className="elapsed-timer-wrapper mb-4 d-flex align-items-center">
                 <div className="timer-text">
                     {timerText}
-                    <span className="timer-time mx-1">{this.state.seconds} {STRINGS.SECONDS}</span>
+                    <span className="timer-time mx-1">{this.state.seconds} {STRINGS["SECONDS"]}</span>
                 </div>
                 <div>
                     <ReactSVG path={ICONS.PENDING_TIMER} wrapperClassName="timer-svg" />

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 // import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
 import { Link } from 'react-router';
-import { Table, Icon, Spin, Button, notification, Tabs } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { RightOutlined } from '@ant-design/icons';
+import { Table, Spin, Button, notification, Tabs } from 'antd';
 
 import './index.css';
 import { connect } from 'react-redux';
@@ -170,14 +172,14 @@ class App extends Component {
 		const { userInformation, userImages, userBalance, loading, userInformationList } = this.state;
 		const { coins, constants } = this.props;
 		const renderBoolean = (value) => (
-			<Icon type={value ? 'check-circle-o' : 'close-circle'} />
+			<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
 		);
 
 		const renderLink = (value) => (
 			<Button type="primary" onClick={() => this.requestUserData({ id: value })}>
 				<Link to={`/admin/user?id=${value}`}>
 					GO
-							<Icon type="right" />
+							<RightOutlined />
 				</Link>
 			</Button>
 		);

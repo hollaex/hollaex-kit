@@ -30,7 +30,7 @@ import {
 	setChatMinimized
 } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getTokenTimestamp, isLoggedIn } from '../../utils/token';
+import { getTokenTimestamp, isLoggedIn, isAdmin } from '../../utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -56,6 +56,7 @@ import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
 import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
+import OperatorControls from 'containers/OperatorControls';
 
 import {
 	getClasesForLanguage,
@@ -77,7 +78,8 @@ class App extends Component {
 		idleTimer: undefined,
 		ordersQueued: [],
 		limitFilledOnOrder: '',
-		sidebarFitHeight: false
+		sidebarFitHeight: false,
+		isEditMode: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -100,7 +102,7 @@ class App extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp
@@ -454,6 +456,13 @@ class App extends Component {
 		}
 	};
 
+	handleEditMode = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isEditMode: !prevState.isEditMode,
+    }))
+	}
+
 	render() {
 		const {
 			symbol,
@@ -471,15 +480,16 @@ class App extends Component {
 			location,
 			info,
 			enabledPlugins,
-			constants = { captcha: {} }
-			// user
+			constants = { captcha: {} },
+			// user,
 		} = this.props;
 		const {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
 			sidebarFitHeight,
-			isSocketDataReady
+			isSocketDataReady,
+      isEditMode,
 		} = this.state;
 		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
 		if (CAPTCHA_SITEKEY) {
@@ -523,7 +533,8 @@ class App extends Component {
 							languageClasses[0],
 							{
 								'layout-mobile': isMobile,
-								'layout-desktop': isBrowser
+								'layout-desktop': isBrowser,
+                'layout-edit': isEditMode && isBrowser,
 							}
 						)}
 					>
@@ -538,7 +549,8 @@ class App extends Component {
 								languageClasses[0],
 								{
 									'layout-mobile': isMobile,
-									'layout-desktop': isBrowser
+									'layout-desktop': isBrowser,
+									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
 						>
@@ -575,7 +587,7 @@ class App extends Component {
 										)}
 									>
 										{STRINGS.formatString(
-											STRINGS.TRIAL_EXCHANGE_MSG,
+											STRINGS["TRIAL_EXCHANGE_MSG"],
 											constants.api_name || '',
 											expiryData.daysLeft
 										)}
@@ -703,6 +715,7 @@ class App extends Component {
 						{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 					</div>
 				</div>
+				{ isAdmin() && isBrowser && <OperatorControls onChangeEditMode={this.handleEditMode} editMode={isEditMode}/>}
 			</ThemeProvider>
 		);
 	}

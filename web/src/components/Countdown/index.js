@@ -77,7 +77,7 @@ class Countdown extends Component {
 				)}
 				{countdown === 0 ? (
 					<div className="countdown-expiration-message">
-						{renderTimeout ? renderTimeout() : STRINGS.COUNTDOWN_ERROR_MESSAGE}
+						{renderTimeout ? renderTimeout() : STRINGS["COUNTDOWN_ERROR_MESSAGE"]}
 					</div>
 				) : (
 					<div

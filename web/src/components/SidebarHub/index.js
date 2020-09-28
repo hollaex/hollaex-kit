@@ -11,7 +11,7 @@ class SidebarHub extends Component {
 		const { activePath, isLogged, theme } = this.props;
 		const values = [{
 			accordionClassName: 'sidebar_hub-section-content f-1',
-			title: STRINGS.WALLET_TITLE,
+			title: STRINGS["WALLET_TITLE"],
 			icon: ICONS.SIDEBAR_WALLET_ACTIVE,
 			content: <Wallet />
 		}];
@@ -41,15 +41,15 @@ class SidebarHub extends Component {
 							/>
 
 							<ButtonLink
-								label={STRINGS.SIGN_IN.toUpperCase()}
+								label={STRINGS["SIGN_IN"].toUpperCase()}
 								className={'log_in-btn'}
 								disabled={isLogged}
 								link={`/login`}
 							/>
-							<div className="text-center mt-3 mb-3">{STRINGS.OR_TEXT}</div>
+							<div className="text-center mt-3 mb-3">{STRINGS["OR_TEXT"]}</div>
 
 							<ButtonLink
-								label={STRINGS.SIGNUP_TEXT.toUpperCase()}
+								label={STRINGS["SIGNUP_TEXT"].toUpperCase()}
 								className={'sign_up-btn mb-5'}
 								disabled={isLogged}
 								link={`/signup`}

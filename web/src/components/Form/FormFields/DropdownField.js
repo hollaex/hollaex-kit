@@ -22,7 +22,7 @@ class DropdownField extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.input.value !== this.props.input.value) {
 			this.setValue(nextProps.input.value);
 		}
@@ -100,7 +100,7 @@ class DropdownField extends Component {
 		<div className={classnames('dropdown-options-wrapper')}>
 			{options.length > 0
 				? options.map(this.renderOption)
-				: this.renderOption({ value: undefined, label: STRINGS.NO_OPTIONS }, 0)}
+				: this.renderOption({ value: undefined, label: STRINGS["NO_OPTIONS"] }, 0)}
 		</div>
 	);
 

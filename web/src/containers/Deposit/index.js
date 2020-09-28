@@ -42,7 +42,7 @@ class Deposit extends Component {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
 			this.setCurrency(nextProps.routeParams.currency);
 		} else if (!this.state.checked) {
@@ -82,7 +82,7 @@ class Deposit extends Component {
 	onCopy = () => {
 		this.props.setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
-			content: STRINGS.COPY_SUCCESS_TEXT
+			content: STRINGS["COPY_SUCCESS_TEXT"]
 		});
 	};
 
@@ -133,8 +133,8 @@ class Deposit extends Component {
 									onClick={this.onCopy}
 									label={
 										copied
-											? STRINGS.SUCCESFUL_COPY
-											: STRINGS.COPY_ADDRESS
+											? STRINGS["SUCCESFUL_COPY"]
+											: STRINGS["COPY_ADDRESS"]
 									}
 								/>
 							</CopyToClipboard>

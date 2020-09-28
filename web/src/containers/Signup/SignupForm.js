@@ -74,14 +74,14 @@ const validate = (values) => {
 	const errors = {};
 
 	if (password && password_repeat && password !== password_repeat) {
-		errors.password_repeat = STRINGS.VALIDATIONS.PASSWORDS_DONT_MATCH;
+		errors.password_repeat = STRINGS["VALIDATIONS.PASSWORDS_DONT_MATCH"];
 	}
 
 	return errors;
 };
 
 const Form = (props) => (
-	<AuthForm {...props} buttonLabel={STRINGS.SIGNUP_TEXT} />
+	<AuthForm {...props} buttonLabel={STRINGS["SIGNUP_TEXT"]} />
 );
 
 export default  reduxForm({

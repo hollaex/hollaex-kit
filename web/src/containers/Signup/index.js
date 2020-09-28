@@ -21,15 +21,15 @@ let errorTimeOut = null;
 const BottomLinks = () => (
 	<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
 		<div>
-			{STRINGS.SIGN_UP.HAVE_ACCOUNT}
+			{STRINGS["SIGN_UP.HAVE_ACCOUNT"]}
 			<Link to="/login" className="blue-link">
-				{STRINGS.SIGN_UP.GOTO_LOGIN}
+				{STRINGS["SIGN_UP.GOTO_LOGIN"]}
 			</Link>
 		</div>
 		<div>
-			{STRINGS.SIGN_UP.NO_EMAIL}
+			{STRINGS["SIGN_UP.NO_EMAIL"]}
 			<Link to="/verify" className="blue-link">
-				{STRINGS.SIGN_UP.REQUEST_EMAIL}
+				{STRINGS["SIGN_UP.REQUEST_EMAIL"]}
 			</Link>
 		</div>
 	</div>
@@ -103,12 +103,12 @@ class Signup extends Component {
 				}, 5000);
 
 				if (error.response.status === 409) {
-					errors.email = STRINGS.VALIDATIONS.USER_EXIST;
+					errors.email = STRINGS["VALIDATIONS.USER_EXIST"];
 				} else if (error.response) {
 					const { message = '' } = error.response.data;
 					if (message.toLowerCase().indexOf('password') > -1) {
 						// TODO set error in constants for language
-						errors.password = STRINGS.VALIDATIONS.INVALID_PASSWORD;
+						errors.password = STRINGS["VALIDATIONS.INVALID_PASSWORD"];
 					} else {
 						errors._error = message || error.message;
 					}
@@ -168,7 +168,7 @@ class Signup extends Component {
 				>
 					<IconTitle
 						iconPath={path}
-						text={STRINGS.SIGNUP_TEXT}
+						text={STRINGS["SIGNUP_TEXT"]}
 						textType="title"
 						underline={true}
 						useSvg={false}
@@ -176,11 +176,11 @@ class Signup extends Component {
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
-							STRINGS.SIGN_UP.SIGNUP_TO,
+							STRINGS["SIGN_UP.SIGNUP_TO"],
 							constants.api_name || ''
 						)}
 						actionProps={{
-							text: STRINGS.HELP_TEXT,
+							text: STRINGS["HELP_TEXT"],
 							iconPath: ICONS.BLUE_QUESTION,
 							onClick: this.onOpenDialog,
 							useSvg: true,

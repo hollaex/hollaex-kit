@@ -11,33 +11,33 @@ const generateCardsContentFromStrings = (strings) => {
 	return [
 		{
 			icon: FEATURES_ICONS.PRO_TRADING,
-			title: STRINGS.HOME.SECTION_3_CARD_1_TITLE,
-			text: STRINGS.HOME.SECTION_3_CARD_1_TEXT
+			title: STRINGS["HOME.SECTION_3_CARD_1_TITLE"],
+			text: STRINGS["HOME.SECTION_3_CARD_1_TEXT"]
 		},
 		{
 			icon: FEATURES_ICONS.PAYMENT,
-			title: STRINGS.HOME.SECTION_3_CARD_2_TITLE,
-			text: STRINGS.HOME.SECTION_3_CARD_2_TEXT
+			title: STRINGS["HOME.SECTION_3_CARD_2_TITLE"],
+			text: STRINGS["HOME.SECTION_3_CARD_2_TEXT"]
 		},
 		{
 			icon: FEATURES_ICONS.SECURITY,
-			title: STRINGS.HOME.SECTION_3_CARD_3_TITLE,
-			text: STRINGS.HOME.SECTION_3_CARD_3_TEXT
+			title: STRINGS["HOME.SECTION_3_CARD_3_TITLE"],
+			text: STRINGS["HOME.SECTION_3_CARD_3_TEXT"]
 		},
 		{
 			icon: FEATURES_ICONS.REPORTING,
-			title: STRINGS.HOME.SECTION_3_CARD_4_TITLE,
-			text: STRINGS.HOME.SECTION_3_CARD_4_TEXT
+			title: STRINGS["HOME.SECTION_3_CARD_4_TITLE"],
+			text: STRINGS["HOME.SECTION_3_CARD_4_TEXT"]
 		},
 		{
 			icon: FEATURES_ICONS.SUPPORT,
-			title: STRINGS.HOME.SECTION_3_CARD_5_TITLE,
-			text: STRINGS.HOME.SECTION_3_CARD_5_TEXT
+			title: STRINGS["HOME.SECTION_3_CARD_5_TITLE"],
+			text: STRINGS["HOME.SECTION_3_CARD_5_TEXT"]
 		},
 		{
 			icon: FEATURES_ICONS.LEGAL,
-			title: STRINGS.HOME.SECTION_3_CARD_6_TITLE,
-			text: STRINGS.HOME.SECTION_3_CARD_6_TEXT
+			title: STRINGS["HOME.SECTION_3_CARD_6_TITLE"],
+			text: STRINGS["HOME.SECTION_3_CARD_6_TEXT"]
 		}
 	];
 };
@@ -73,7 +73,7 @@ const Section = ({ style, onClickDemo, token }) => (
 		style={style}
 	>
 		<div className="text-center features-title">
-			{STRINGS.HOME.SECTION_3_TITLE}
+			{STRINGS["HOME.SECTION_3_TITLE"]}
 		</div>
 		<div className="features-card_container d-flex flex-wrap justify-content-center">
 			{generateCardsContentFromStrings(STRINGS).map((card, index) => (
@@ -86,7 +86,7 @@ const Section = ({ style, onClickDemo, token }) => (
 					className={classnames(...BUTTONS_CLASSES, { pointer: onClickDemo })}
 					onClick={onClickDemo}
 				>
-					{STRINGS.HOME.SECTION_3_BUTTON_1}
+					{STRINGS["HOME.SECTION_3_BUTTON_1"]}
 				</div>
 			}
 			{/*!token && (
@@ -96,7 +96,7 @@ const Section = ({ style, onClickDemo, token }) => (
 					})}
 					onClick={onClickRegister}
 				>
-					{STRINGS.REGISTER_TEXT}
+					{STRINGS["REGISTER_TEXT"]}
 				</div>
 			)*/}
 		</div>

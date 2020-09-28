@@ -19,8 +19,8 @@ const orderbook_level_max = 20;
 export const generateFormValues = () => ({
 	theme: {
 		type: 'select',
-		label: STRINGS.SETTINGS_THEME_LABEL,
-		options: STRINGS.SETTINGS_THEME_OPTIONS
+		label: STRINGS["SETTINGS_THEME_LABEL"],
+		options: STRINGS["SETTINGS_THEME_OPTIONS"]
 	},
 	order_book_levels: {
 		type: 'number',
@@ -30,7 +30,7 @@ export const generateFormValues = () => ({
 			maxValue(orderbook_level_max),
 			step(orderbook_level_step)
 		],
-		label: STRINGS.USER_SETTINGS.ORDERBOOK_LEVEL,
+		label: STRINGS["USER_SETTINGS.ORDERBOOK_LEVEL"],
 		step: orderbook_level_step,
 		min: orderbook_level_min,
 		max: orderbook_level_max,
@@ -71,7 +71,7 @@ class Form extends Component {
 					<div className="warning_text">{getErrorLocalized(error)}</div>
 				)}
 				<Button
-					label={STRINGS.SETTING_BUTTON}
+					label={STRINGS["SETTING_BUTTON"]}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>

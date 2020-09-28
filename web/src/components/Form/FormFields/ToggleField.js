@@ -17,7 +17,7 @@ class ToggleField extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.input.value !== nextProps.input.value
             && (nextProps.input.value || nextProps.input.value === false)) {
             this.setState({ selected: nextProps.input.value });
@@ -100,7 +100,7 @@ const Toggle = ({ options, selected, onToogle, disabled, name }) => (
 );
 
 ToggleField.defaultProps = {
-    options: STRINGS.DEFAULT_TOGGLE_OPTIONS,
+    options: STRINGS["DEFAULT_TOGGLE_OPTIONS"],
     onChange: () => {},
     toggleOnly: false
 };

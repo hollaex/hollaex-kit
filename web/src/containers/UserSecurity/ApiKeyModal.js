@@ -21,7 +21,7 @@ class ApiKeyModal extends Component {
 		secret: ''
 	};
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			!this.state.dialogOtpOpen &&
 			nextProps.tokenName !== this.props.tokenName
@@ -112,8 +112,8 @@ class ApiKeyModal extends Component {
 					  ];
 			const nextLabel =
 				notificationType === TYPE_REVOKE
-					? STRINGS.DEVELOPERS_TOKENS_POPUP.DELETE
-					: STRINGS.DEVELOPERS_TOKENS_POPUP.GENERATE;
+					? STRINGS["DEVELOPERS_TOKENS_POPUP.DELETE"]
+					: STRINGS["DEVELOPERS_TOKENS_POPUP.GENERATE"];
 			return (
 				<Notification
 					icon={icon}

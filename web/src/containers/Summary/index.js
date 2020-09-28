@@ -66,7 +66,7 @@ class Summary extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.user.id !== this.props.user.id ||
 			nextProps.price !== this.props.price ||
@@ -130,7 +130,7 @@ class Summary extends Component {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculatePrice(
 				balance[`${symbol}_balance`],
-				prices[currency]
+        currency
 			);
 			const balancePercent = calculatePricePercentage(
 				currencyBalance,
@@ -190,13 +190,13 @@ class Summary extends Component {
 		} = this.state;
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		let traderAccTitle = STRINGS.formatString(
-			STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,
+			STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"],
 			verification_level
 		);
 		return (
 			<div className="summary-container">
 				{!isMobile && (
-					<IconTitle text={`${STRINGS.SUMMARY.TITLE}`} textType="title" />
+					<IconTitle text={`${STRINGS["SUMMARY.TITLE"]}`} textType="title" />
 				)}
 				{isMobile ? (
 					<MobileSummary
@@ -239,7 +239,7 @@ class Summary extends Component {
 							</div>
 							<div className="summary-section_1 requirement-wrapper d-flex">
 								<SummaryBlock
-									title={STRINGS.SUMMARY.TASKS}
+									title={STRINGS["SUMMARY.TASKS"]}
 									wrapperClassname="w-100"
 								>
 									<SummaryRequirements
@@ -256,7 +256,7 @@ class Summary extends Component {
 								className={classnames('assets-wrapper', 'asset_wrapper_width')}
 							>
 								<SummaryBlock
-									title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
+									title={STRINGS["SUMMARY.ACCOUNT_ASSETS"]}
 									secondaryTitle={
 										SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (
 											<span>
@@ -279,12 +279,12 @@ class Summary extends Component {
 							</div>
 							{/*<div className="trading-volume-wrapper">
                                 <SummaryBlock
-                                    title={STRINGS.SUMMARY.TRADING_VOLUME}
+                                    title={STRINGS["SUMMARY.TRADING_VOLUME"]}
                                     // secondaryTitle={<span>
                                     //     <span className="title-font">
                                     //         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                     //     </span>
-                                    //     {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                    //     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     // </span>
                                     // }
                                 >

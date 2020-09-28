@@ -6,7 +6,7 @@ export const ENV = process.env.NODE_ENV || 'production';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 
 export const APP_TITLE =
-	process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
+	process.env.REACT_APP_EXCHANGE_NAME || STRINGS["APP_TITLE"];
 
 export const PUBLIC_URL =
 	process.env.REACT_APP_PUBLIC_URL || 'http://localhost:8080';
@@ -120,6 +120,8 @@ export const ICONS = {
 	QUICK_TRADE: '/assets/images/quick-trade.svg',
 	QUICK_TRADE_TAB: '/assets/images/quick-trade-tab.svg',
 	QUICK_TRADE_TAB_ACTIVE: '/assets/images/quick-trade-tab-active.svg',
+	QUICK_TRADE_INSUFFICIENT_FUND: '/assets/icons/quick-trade-insufficient-funds.svg',
+	QUICK_TRADE_SUCCESSFUL: '/assets/icons/quick-trade-success-coin-pile.svg',
 	SECURE: '/assets/images/secure.svg',
 	SECURITY_BLACK: '/assets/images/security.svg',
 	SECURITY_GREY: '/assets/images/security-grey.svg',
@@ -376,9 +378,9 @@ export const FLEX_CENTER_CLASSES = [
 	'align-items-center'
 ];
 
-export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
-export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
-export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/')
+export const TIMESTAMP_FORMAT = STRINGS["TIMESTAMP_FORMAT"];
+export const HOUR_FORMAT = STRINGS["HOUR_FORMAT"];
+export const TIMESTAMP_FORMAT_FA = STRINGS["TIMESTAMP_FORMAT"].split('/')
 	.map((s) => `j${s}`)
 	.join('/');
 

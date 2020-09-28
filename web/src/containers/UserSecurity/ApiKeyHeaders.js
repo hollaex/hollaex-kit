@@ -26,7 +26,7 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 			)
 		},
 		{
-			label: STRINGS.DEVELOPERS_TOKENS_TABLE.NAME,
+			label: STRINGS["DEVELOPERS_TOKENS_TABLE.NAME"],
 			key: 'name',
 			className: 'tokens-name',
 			renderCell: ({ id, name }, key, index) => (
@@ -36,7 +36,7 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 			)
 		},
 		{
-			label: STRINGS.DEVELOPERS_TOKENS_TABLE.API_KEY,
+			label: STRINGS["DEVELOPERS_TOKENS_TABLE.API_KEY"],
 			key: 'apiKey',
 			className: 'text-center tokens-tokenkey',
 			renderCell: ({ id, apiKey }, key, index) => (
@@ -49,7 +49,7 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 			)
 		},
 		{
-			label: STRINGS.DEVELOPERS_TOKENS_TABLE.SECRET,
+			label: STRINGS["DEVELOPERS_TOKENS_TABLE.SECRET"],
 			key: 'secret',
 			className: 'text-center tokens-tokenkey',
 			renderCell: ({ id, secret }, key, index) => (
@@ -62,7 +62,7 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 			)
 		},
 		{
-			label: STRINGS.DEVELOPERS_TOKENS_TABLE.CREATED,
+			label: STRINGS["DEVELOPERS_TOKENS_TABLE.CREATED"],
 			key: 'created',
 			className: 'tokens-cell tokens-date',
 			renderCell: ({ id, created }, key, index) => (
@@ -72,7 +72,7 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 			)
 		},
 		{
-			label: STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE,
+			label: STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKE"],
 			key: 'revoke',
 			className: 'text-center tokens-revoke',
 			renderCell: ({ id, revoked }, key, index) => (
@@ -91,15 +91,15 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 					}
 				>
 					{revoked ? (
-						STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKED
+						STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKED"]
 					) : otp_enabled ? (
-						STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE
+						STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKE"]
 					) : (
 						<Tooltip
-							text={STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE_TOOLTIP}
+							text={STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKE_TOOLTIP"]}
 							className="light-theme"
 						>
-							<div>{STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE}</div>
+							<div>{STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKE"]}</div>
 						</Tooltip>
 					)}
 				</td>

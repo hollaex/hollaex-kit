@@ -66,7 +66,7 @@ class AppBar extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			this.props.location &&
 			nextProps.location &&
@@ -272,13 +272,13 @@ class AppBar extends Component {
 						<div className="app-bar-account-notification">{totalPending}</div>
 					)}
 				</div>
-				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
+				<div className="d-flex align-items-center">{STRINGS["ACCOUNT_TEXT"]}</div>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
 				<LinkButton
 					path="/login"
-					text={STRINGS.LOGIN_TEXT}
+					text={STRINGS["LOGIN_TEXT"]}
 					buttonClassName="contrast"
 				/>
 			</div>
@@ -497,7 +497,7 @@ class AppBar extends Component {
 												wrapperClassName="quicktrade_icon mx-1"
 											/>
 											<div className="d-flex align-items-center">
-												{STRINGS.ADMIN_DASH}
+												{STRINGS["ADMIN_DASH"]}
 											</div>
 										</div>
 									</Link>
@@ -514,7 +514,7 @@ class AppBar extends Component {
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
 										<div className="d-flex align-items-center overflow">
-											{STRINGS.PRO_TRADE}
+											{STRINGS["PRO_TRADE"]}
 										</div>
 									</div>
 								</Link>
@@ -530,7 +530,7 @@ class AppBar extends Component {
 												wrapperClassName="quicktrade_icon"
 											/>
 											<div className="d-flex align-items-center overflow">
-												{STRINGS.QUICK_TRADE}
+												{STRINGS["QUICK_TRADE"]}
 											</div>
 										</div>
 									</Link>

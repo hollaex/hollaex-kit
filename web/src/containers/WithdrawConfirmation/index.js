@@ -50,7 +50,7 @@ class ConfirmWithdrawal extends Component {
             childProps = {
                 titleSection: {
                     iconPath: ICONS.RED_WARNING,
-                    text: STRINGS.ERROR_TEXT
+                    text: STRINGS["ERROR_TEXT"]
                 },
                 child: <div className='text-center mb-4'>
                         <div>{error_txt}</div>
@@ -60,12 +60,12 @@ class ConfirmWithdrawal extends Component {
             childProps = {
                 titleSection: {
                     iconPath: ICONS.GREEN_CHECK,
-                    text: STRINGS.SUCCESS_TEXT
+                    text: STRINGS["SUCCESS_TEXT"]
                 },
                 useSvg: true,
                 child: <div className='text-center mb-4'>
-                    <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1}</div>
-                    <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2}</div>
+                    <div>{STRINGS["WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1"]}</div>
+                    <div>{STRINGS["WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2"]}</div>
                 </div>
             }
         }
@@ -88,7 +88,7 @@ class ConfirmWithdrawal extends Component {
                     {!loading &&
                         <Button
                             className='w-50'
-                            label={STRINGS.WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY}
+                            label={STRINGS["WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY"]}
                             onClick={this.handleTransaction}
                         />
                     }

@@ -3,13 +3,13 @@ import ReactSVG from 'react-svg';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { SortableContainer } from 'react-sortable-hoc';
+import { browserHistory } from 'react-router';
 
 import Tab from './Tab';
-import AddTabList from './AddTabList';
-import TabOverflowList from './TabOverflowList';
-import { DEFAULT_TRADING_PAIRS, DEFAULT_COIN_DATA } from '../../config/constants';
-import { ICONS } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import MarketSelector from './MarketSelector';
+import { DEFAULT_TRADING_PAIRS } from 'config/constants';
+import { ICONS } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 
 let timeOut = '';
 
@@ -55,10 +55,6 @@ class PairTabs extends Component {
         activeItems: [],
         activePairTab: '',
         isAddTab: false,
-        selectedAddTab: '',
-        isTabOverflow: false,
-        searchValue: '',
-        searchResult: {},
         selectedToRemove: '',
         selectedToOpen: ''
     };
@@ -73,7 +69,7 @@ class PairTabs extends Component {
                 // this.setNoTabs();
             }
             active = router.params.pair;
-            this.setState({ activePairTab: router.params.pair, selectedToOpen: router.params.pair });
+            this.setState({ activePairTab: active, selectedToOpen: active });
         } else {
             active = '';
             this.setState({ activePairTab: '' });
@@ -81,15 +77,13 @@ class PairTabs extends Component {
         this.initTabs(pairs, active);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { activePath, pairs, router, location } = nextProps;
         let active = this.state.activePairTab;
         let selectedToOpen = '';
-        if (this.props.activePath !== activePath) {
-            if (activePath !== 'trade') {
-                active = "";
-                this.setState({ activePairTab: '', selectedToOpen: '' });
-            }
+        if (this.props.activePath !== activePath && activePath !== 'trade') {
+          active = '';
+          this.setState({ activePairTab: active, selectedToOpen: active });
         }
         if (JSON.stringify(this.props.pairs) !== JSON.stringify(pairs)) {
             this.initTabs(pairs, active);
@@ -101,7 +95,7 @@ class PairTabs extends Component {
                 if (!this.state.activeTabs[active]) {
                     selectedToOpen = active;
                 }
-                this.setState({ activePairTab: router.params.pair, selectedToOpen });
+                this.setState({ activePairTab: active, selectedToOpen });
                 let tabs = localStorage.getItem('tabs');
                 if (tabs !== null &&
                     tabs !== '' &&
@@ -110,7 +104,7 @@ class PairTabs extends Component {
                 }
             } else if (router && !router.params.pair) {
                 active = "";
-                this.setState({ activePairTab: '', selectedToOpen: '' });
+                this.setState({ activePairTab: active, selectedToOpen: active });
             }
             this.initTabs(pairs, active);
         }
@@ -120,12 +114,16 @@ class PairTabs extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.tabCount !== prevProps.tabCount) {
-            this.initTabs(this.props.pairs, this.state.activePairTab);
+        const { tabCount, pairs, calculateTabs } = this.props;
+        const { activePairTab, selectedTabs } = this.state;
+
+        if (tabCount !== prevProps.tabCount) {
+            this.initTabs(pairs, activePairTab);
         }
-        if (JSON.stringify(prevState.selectedTabs) !== JSON.stringify(this.state.selectedTabs)
+
+        if (JSON.stringify(prevState.selectedTabs) !== JSON.stringify(selectedTabs)
             && !Object.keys(prevState.selectedTabs).length) {
-            this.props.calculateTabs();
+            calculateTabs();
         }
     }
 
@@ -146,7 +144,6 @@ class PairTabs extends Component {
         }
         if (Object.keys(pairs).length) {
             const tempTabs = {};
-            const selected = {};
             if (activePair && !Object.keys(pairs).filter(value => value === activePair).length) {
                 this.props.router.push('/trade/add/tabs');
             }
@@ -154,7 +151,6 @@ class PairTabs extends Component {
                 if (pairs[key]) {
                     if (index <= this.props.tabCount - 1)
                         tempTabs[key] = pairs[key];
-                    selected[key] = pairs[key];
                 }
                 return key;
             });
@@ -167,16 +163,13 @@ class PairTabs extends Component {
                     delete tempTabs[pairKeys[pairKeys.length - 1]];
                     tempTabs[activePair] = temp;
                 }
-                if (!selected[activePair]) {
-                    selected[activePair] = temp;
-                }
             }
             this.setState({
-                selectedTabs: selected,
+                selectedTabs: tempTabs,
                 activeTabs: tempTabs,
                 activeItems: Object.keys(tempTabs)
             });
-            this.setTabsLocal(selected);
+            this.setTabsLocal(tempTabs);
         }
     };
 
@@ -187,26 +180,74 @@ class PairTabs extends Component {
         }
     };
 
-    openAddTabMenu = e => {
-        this.setState({ isAddTab: !this.state.isAddTab, isTabOverflow: false });
+    openAddTabMenu = () => {
+      this.setState(prevState => ({
+        isAddTab: !prevState.isAddTab,
+      }));
     };
 
-    onAddTabClick = pair => {
-        this.setState({ selectedAddTab: pair });
-    };
+    addTradePairTab = pair => {
+    const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
+    const { pairs, tabCount } = this.props;
+    let localTabs = {};
+    let tabPairs = [];
+
+    // if the pair is not in active tabs, add it to state and local storage
+    if (!selectedTabs[pair]) {
+      const temp = pairs[pair];
+      if (temp && temp.pair_base) {
+        localTabs = { ...selectedTabs, [pair]: temp };
+        tabPairs = Object.keys(localTabs);
+        this.setState({ selectedTabs: { ...localTabs }, selectedToOpen: pair, selectedToRemove: '' });
+      }
+      this.setTabsLocal(localTabs);
+      this.onTabClick(pair);
+    }
+    if (!activeTabs[pair]) {
+      let tempActive = activeTabs;
+      let activeKeys = Object.keys(activeTabs);
+      timeOut = setTimeout(() => {
+        if (tabPairs.length <= tabCount) {
+          this.setState({
+            activeTabs: { ...localTabs },
+            activeItems: Object.keys(localTabs)
+          });
+        } else {
+          delete tempActive[activeKeys[activeKeys.length - 1]];
+          tempActive[pair] = localTabs[pair];
+          this.setState({
+            activeTabs: { ...tempActive },
+            activeItems: Object.keys(tempActive)
+          });
+        }
+      }, 300);
+    }
+
+    if (activeTabs[pair]
+      && pair !== activePairTab
+      && selectedToOpen === activePairTab) {
+      this.setState({ selectedToOpen: '' });
+    }
+    // this.setTabsLocal(localTabs);
+    this.closeAddTabMenu();
+  };
 
     onTabChange = pair => {
         const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
-        const { activePath, pairs } = this.props;
+        const { pairs } = this.props;
         let localTabs = {};
         let tabPairs = [];
+
+        // if the pair is in active tabs, remove it from state and local storage
         if (selectedTabs[pair]) {
             localTabs = { ...selectedTabs };
             tabPairs = Object.keys(localTabs);
             delete localTabs[pair];
             this.setTabsLocal(localTabs);
-            if (activePairTab === pair || activePath !== 'trade') {
-                let index = tabPairs.indexOf(pair);
+
+            // if the tab is currently active Go to the next available one. if it is the last tab, go to previous one.
+            if (activePairTab === pair) {
+                const index = tabPairs.indexOf(pair);
                 let tabValue = '';
                 if (index < (tabPairs.length - 1)) {
                     tabValue = tabPairs[index + 1];
@@ -220,6 +261,7 @@ class PairTabs extends Component {
             tabPairs = Object.keys(localTabs);
             this.setState({ selectedTabs: { ...localTabs }, selectedToRemove: pair, selectedToOpen: '' });
         } else {
+            // if the pair is not in active tabs, add it to state and local storage
             const temp = pairs[pair];
             if (temp && temp.pair_base) {
                 localTabs = { ...selectedTabs, [pair]: temp };
@@ -274,55 +316,8 @@ class PairTabs extends Component {
         this.closeAddTabMenu();
     };
 
-    onOverflowClick = () => {
-        this.setState({ isTabOverflow: !this.state.isTabOverflow, isAddTab: false });
-    };
-
-    handleOverflow = pair => {
-        const { selectedTabs, activeTabs } = this.state;
-        if (!activeTabs[pair]) {
-            const tempTabs = { [pair]: selectedTabs[pair], ...activeTabs };
-            const pairs = Object.keys(tempTabs);
-            delete tempTabs[pairs[pairs.length - 1]];
-            this.setState({
-                activeTabs: { ...tempTabs },
-                selectedTabs: { ...tempTabs, ...this.state.selectedTabs }
-            });
-            this.setTabsLocal({ ...tempTabs, ...this.state.selectedTabs });
-        }
-        this.onTabClick(pair);
-        this.closeOverflowMenu();
-    };
-
     closeAddTabMenu = () => {
-        this.setState({ isAddTab: false, searchValue: '', searchResult: {} });
-    };
-
-    closeOverflowMenu = () => {
-        this.setState({ isTabOverflow: false });
-    };
-
-    handleSearch = (_, value) => {
-        const { pairs, coins } = this.props;
-        if (value) {
-            let result = {};
-            let searchValue = value.toLowerCase().trim();
-            Object.keys(pairs).map(key => {
-                let temp = pairs[key];
-                const { fullname } = coins[temp.pair_base.toLowerCase()] || DEFAULT_COIN_DATA;
-                let cashName = fullname ? fullname.toLowerCase() : '';
-                if (key.indexOf(searchValue) !== -1 ||
-                    temp.pair_base.indexOf(searchValue) !== -1 ||
-                    temp.pair_2.indexOf(searchValue) !== -1 ||
-                    cashName.indexOf(searchValue) !== -1) {
-                        result[key] = temp;
-                }
-                return key;
-            });
-            this.setState({ searchResult: { ...result }, searchValue: value });
-        } else {
-            this.setState({ searchResult: {}, searchValue: '' });
-        }
+        this.setState({ isAddTab: false });
     };
 
     setTabsLocal = tabs => {
@@ -334,18 +329,19 @@ class PairTabs extends Component {
     };
 
     onSortEnd = ({oldIndex, newIndex}) => {
-        const startIndex = newIndex < 0 ? this.state.activeItems.length + newIndex : newIndex;
-        const pairTemp = this.state.activeItems.filter((data, index) => index !== oldIndex);
-        pairTemp.splice(startIndex, 0, this.state.activeItems[oldIndex]);
+        const { activeItems, selectedTabs } = this.state;
+        const startIndex = newIndex < 0 ? activeItems.length + newIndex : newIndex;
+        const pairTemp = activeItems.filter((data, index) => index !== oldIndex);
+        pairTemp.splice(startIndex, 0, activeItems[oldIndex]);
         const sortedTabs = {};
         pairTemp.forEach(data => {
-            sortedTabs[data] = this.state.selectedTabs[data];
+            sortedTabs[data] = selectedTabs[data];
         });
-        this.setTabsLocal({ ...sortedTabs, ...this.state.selectedTabs });
+        this.setTabsLocal({ ...sortedTabs, ...selectedTabs });
         this.setState({
             activeItems: pairTemp,
             activeTabs: { ...sortedTabs },
-            selectedTabs: { ...sortedTabs, ...this.state.selectedTabs }
+            selectedTabs: { ...sortedTabs, ...selectedTabs }
         });
     };
 
@@ -353,29 +349,22 @@ class PairTabs extends Component {
         const {
             selectedTabs,
             isAddTab,
-            selectedAddTab,
             activePairTab,
-            isTabOverflow,
             activeTabs,
-            searchValue,
-            searchResult,
             selectedToOpen,
             selectedToRemove
         } = this.state;
-        const { pairs, tickers, location, coins, tabCount } = this.props;
-        const obj = {};
-        Object.entries(pairs).forEach(([key, pair]) => {
-            obj[pair.pair_2] = '';
-        });
-        const symbols = Object.keys(obj).map((key) => key);
+
+        const { tickers, location, coins } = this.props;
         
         return (
             <div className="d-flex h-100">
                 <TabList
+                    /*axis, pressDelay and onSortEnd are SortableContainer HOC properties*/
                     axis={'x'}
                     pressDelay={200}
-                    items={this.state.activeItems}
                     onSortEnd={this.onSortEnd}
+                    items={this.state.activeItems}
                     activeTabs={activeTabs}
                     tickers={tickers}
                     coins={coins}
@@ -398,54 +387,29 @@ class PairTabs extends Component {
                         <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-close" />
                     </div>
                     {Object.keys(selectedTabs).length <= 0 ?
-                        <span onClick={this.openAddTabMenu}>{STRINGS.ADD_TRADING_PAIR}</span>
+                        <span onClick={this.openAddTabMenu}>{STRINGS["ADD_TRADING_PAIR"]}</span>
                     : '' }
                     {isAddTab &&
-                        <AddTabList
-                            symbols={symbols}
-                            pairs={pairs}
-                            tickers={tickers}
-                            coins={coins}
-                            selectedTabs={selectedTabs}
-                            activeTabs={activeTabs}
-                            selectedTabMenu={selectedAddTab || symbols[0]}
-                            searchValue={searchValue}
-                            searchResult={searchResult}
-                            onAddTabClick={this.onAddTabClick}
-                            onTabChange={this.onTabChange}
+                        <MarketSelector
+                            triggerId="add-tab-list-menu"
+                            wrapperClassName={classnames({ "tab-menu-left": Object.keys(selectedTabs).length <= 1 })}
+                            onViewMarketsClick={() => browserHistory.push('/trade/add/tabs')}
                             closeAddTabMenu={this.closeAddTabMenu}
-                            handleSearch={this.handleSearch}
+                            addTradePairTab={this.addTradePairTab}
                         />
                     }
                 </div>
-                {Object.keys(selectedTabs).length > tabCount
-                    && <div
-                        className={classnames('app_bar-pair-overflow', 'd-flex', 'align-items-center', { 'active-tab-overflow': isTabOverflow })}>
-                        <div onClick={this.onOverflowClick}>
-                            <ReactSVG path={ICONS.DOUBLE_ARROW} wrapperClassName="app-bar-tab-close" />
-                        </div>
-                    {isTabOverflow
-                        && <TabOverflowList
-                            activeTabs={activeTabs}
-                            activePairTab={activePairTab}
-                            selectedTabs={selectedTabs}
-                            tickers={tickers}
-                            coins={coins}
-                            handleOverflow={this.handleOverflow}
-                            closeOverflowMenu={this.closeOverflowMenu}
-                        />
-                    }
-                </div>}
             </div>
         );
     }
 }
 
-const mapStateToProps = store => ({
-    activeLanguage: store.app.language,
-    pairs: store.app.pairs,
-    tickers: store.app.tickers,
-    coins: store.app.coins
+const mapStateToProps = ({ app: { language: activeLanguage, pairs, tickers, coins }, orderbook: { prices }}) => ({
+    activeLanguage,
+    pairs,
+    tickers,
+    coins,
+    prices,
 });
 
 export default connect(mapStateToProps)(PairTabs);

@@ -9,7 +9,7 @@ const renderPageCount = (currentPage, totalPages) => {
 		return (
 			<div>
 				{STRINGS.formatString(
-					STRINGS.PAGINATOR_FORMAT,
+					STRINGS["PAGINATOR_FORMAT"],
 					currentPage,
 					totalPages
 				)}
@@ -38,7 +38,7 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
-					text={STRINGS.PREVIOUS_PAGE}
+					text={STRINGS["PREVIOUS_PAGE"]}
 					status="information"
 					iconPath={ICONS.BLUE_ARROW_LEFT}
 					textPosition="left"
@@ -56,7 +56,7 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
-					text={STRINGS.NEXT_PAGE}
+					text={STRINGS["NEXT_PAGE"]}
 					status="information"
 					iconPath={ICONS.BLUE_ARROW_RIGHT}
 					rotateIfRtl={true}

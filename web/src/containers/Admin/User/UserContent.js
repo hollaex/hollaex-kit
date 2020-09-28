@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Tabs, Button, Tag, Icon } from 'antd';
+import { FlagOutlined } from '@ant-design/icons';
+import { Tabs, Button, Tag } from 'antd';
 
 import {
 	Balance,
@@ -75,7 +76,7 @@ class UserContent extends Component {
 						<Tag>{userInformation.email}</Tag>
 						{userInformation.flagged ? (
 							<Tag color="red" style={{ fontWeight: 'bold' }}>
-								<Icon type="flag" /> flagged user
+								<FlagOutlined /> flagged user
 							</Tag>
 						) : null}
 					</div>

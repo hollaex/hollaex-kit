@@ -29,7 +29,7 @@ class TradingVolume extends Component {
 		this.props.getTradeVolume();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			JSON.stringify(this.props.tradeVolumes) !==
 			JSON.stringify(nextProps.tradeVolumes)
@@ -67,7 +67,7 @@ class TradingVolume extends Component {
 						let volumeObj = trade[pair] || {};
 						let pairPrice = calculatePrice(
 							volumeObj.volume,
-							prices[pairValue.pair_base]
+              pairValue.pair_base
 						);
 						pairWisePrice[pairValue.pair_base] = pairPrice;
 						pairVolume[pairValue.pair_base] = volumeObj.volume;
@@ -95,7 +95,7 @@ class TradingVolume extends Component {
 					limitContent.push({
 						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
 						text: STRINGS.formatString(
-							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							3
 						)
 					});
@@ -103,7 +103,7 @@ class TradingVolume extends Component {
 					limitContent.push({
 						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
 						text: STRINGS.formatString(
-							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							4
 						)
 					});
@@ -128,7 +128,7 @@ class TradingVolume extends Component {
 							let volumeObj = trade[pair] || {};
 							let pairPrice = calculatePrice(
 								volumeObj.volume,
-								prices[pairValue.pair_base]
+                pairValue.pair_base
 							);
 							pairWisePrice[pairValue.pair_base] = pairPrice;
 							pairVolume[pairValue.pair_base] = volumeObj.volume;
@@ -156,7 +156,7 @@ class TradingVolume extends Component {
 						limitContent.push({
 							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
 							text: STRINGS.formatString(
-								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								3
 							).join('')
 						});
@@ -164,7 +164,7 @@ class TradingVolume extends Component {
 						limitContent.push({
 							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
 							text: STRINGS.formatString(
-								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								4
 							).join('')
 						});
@@ -193,11 +193,11 @@ class TradingVolume extends Component {
 					<div className="summary-content-txt">
 						<div>
 							{STRINGS.formatString(
-								STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
+								STRINGS["SUMMARY.TRADING_VOLUME_TXT_1"],
 								fullname
 							)}
 						</div>
-						<div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
+						<div>{STRINGS["SUMMARY.TRADING_VOLUME_TXT_2"]}</div>
 					</div>
 					<BarChart
 						loading={tradeVolumes.fetching && !tradeVolumes.fetched}

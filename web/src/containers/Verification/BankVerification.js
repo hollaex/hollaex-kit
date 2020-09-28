@@ -31,28 +31,23 @@ class BankVerification extends Component {
 		formFields.bank_name = {
 			type: 'text',
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.BANK_NAME_LABEL,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL"],
 			placeholder:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.BANK_NAME_PLACEHOLDER,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_PLACEHOLDER"],
 			validate: [required],
 			fullWidth: isMobile
 		};
 		formFields.account_number = {
 			type: 'text',
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_NUMBER_LABEL,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL"],
 			placeholder:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_NUMBER_PLACEHOLDER,
+				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER"],
 			validate: [
 				required,
 				maxLength(
 					50,
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS
-						.ACCOUNT_NUMBER_MAX_LENGTH
+					STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH"]
 				)
 			],
 			maxLength: 50,
@@ -97,19 +92,19 @@ class BankVerification extends Component {
 		const { formFields } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS.USER_VERIFICATION.BANK_VERIFICATION} textType="title" />
+				<IconTitle text={STRINGS["USER_VERIFICATION.BANK_VERIFICATION"]} textType="title" />
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT}
+						title={STRINGS["USER_VERIFICATION.TITLE_BANK_ACCOUNT"]}
 						icon={icon}
 						openContactForm={openContactForm}
 					>
-					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_1}</div>
-					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_2}</div>
+					<div className="my-2">{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_1"]}</div>
+					<div className="my-2">{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_2"]}</div>
 					<ul className="pl-4">
-						<li className="my-1">{STRINGS.USER_VERIFICATION.BASE_WITHDRAWAL}</li>
-						<li className="my-1">{STRINGS.USER_VERIFICATION.BASE_DEPOSITS}</li>
-						<li className="my-1">{STRINGS.USER_VERIFICATION.WARNING.LIST_ITEM_3}</li>
+						<li className="my-1">{STRINGS["USER_VERIFICATION.BASE_WITHDRAWAL"]}</li>
+						<li className="my-1">{STRINGS["USER_VERIFICATION.BASE_DEPOSITS"]}</li>
+						<li className="my-1">{STRINGS["USER_VERIFICATION.WARNING.LIST_ITEM_3"]}</li>
 					</ul>
 					</HeaderSection>
 					{renderFields(formFields)}
@@ -119,14 +114,14 @@ class BankVerification extends Component {
 					<div className="d-flex">
 						<div className="w-50">
 							<Button 
-								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
 							/>
 						</div>
 						<div className="separator" />
 						<div className="w-50">
 							<Button
-								label={STRINGS.SUBMIT}
+								label={STRINGS["SUBMIT"]}
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
 								disabled={pristine || submitting || !valid || !!error}

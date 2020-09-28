@@ -211,11 +211,11 @@ class UserFees extends Component {
 						/>
 						<div className="mb-3">
 							{STRINGS.formatString(
-								STRINGS.NOTE_FOR_EDIT_COIN,
-								STRINGS.PAIRS,
+								STRINGS["NOTE_FOR_EDIT_COIN"],
+								STRINGS["PAIRS"],
 								<BlueLink
 									href={API_DOCS_URL}
-									text={STRINGS.REFER_DOCS_LINK}
+									text={STRINGS["REFER_DOCS_LINK"]}
 								/>
 							)}
 						</div>

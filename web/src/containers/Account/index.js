@@ -48,7 +48,7 @@ class Account extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.id !== this.props.id ||
 			nextProps.verification_level !== this.props.verification_level ||
@@ -110,10 +110,10 @@ class Account extends Component {
 		const tabs = [
 			{
 				title: isMobile ? (
-					STRINGS.SUMMARY.TITLE
+					STRINGS["SUMMARY.TITLE"]
 				) : (
 						<CheckTitle
-							title={STRINGS.SUMMARY.TITLE}
+							title={STRINGS["SUMMARY.TITLE"]}
 							icon={ICONS.TAB_SUMMARY}
 						/>
 					),
@@ -121,10 +121,10 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_SECURITY
+					STRINGS["ACCOUNTS.TAB_SECURITY"]
 				) : (
 					<CheckTitle
-						title={STRINGS.ACCOUNTS.TAB_SECURITY}
+						title={STRINGS["ACCOUNTS.TAB_SECURITY"]}
 						icon={ICONS.SECURITY_GREY}
 						notifications={!otp_enabled ? '!' : ''}
 					/>
@@ -134,10 +134,10 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_VERIFICATION
+					STRINGS["ACCOUNTS.TAB_VERIFICATION"]
 				) : (
 						<CheckTitle
-							title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
+							title={STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
 							icon={ICONS.TAB_SUMMARY}
 						/>
 					),
@@ -146,10 +146,10 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_SETTINGS
+					STRINGS["ACCOUNTS.TAB_SETTINGS"]
 				) : (
 					<CheckTitle
-						title={STRINGS.ACCOUNTS.TAB_SETTINGS}
+						title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 						icon={ICONS.GEAR_GREY}
 					/>
 				),
@@ -197,7 +197,7 @@ class Account extends Component {
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
 					tabs={tabs}
-					title={STRINGS.ACCOUNTS.TITLE}
+					title={STRINGS["ACCOUNTS.TITLE"]}
 					titleIcon={ICONS.ACCOUNT_LINE}
 					className="account-tab"
 				/> */}

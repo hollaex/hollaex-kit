@@ -1,15 +1,17 @@
 import React from 'react';
-import { Icon, Button, Tooltip } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { BankOutlined, CloseSquareOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency, formatDate } from '../../../utils/index';
 
 import { isSupport } from '../../../utils/token';
 
 export const renderBoolean = (value) => (
-	<Icon type={value ? 'check-circle' : 'close-circle-o'} />
+	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
 );
 
-const ButtonNotAvailable = () => <Icon type="close-square" />;
+const ButtonNotAvailable = () => <CloseSquareOutlined />;
 export const renderValidation = ({
 	status,
 	dismissed,
@@ -25,7 +27,7 @@ export const renderValidation = ({
 				loading={updatingItem}
 				shape="circle"
 			>
-				{!updatingItem && <Icon type="bank" />}
+				{!updatingItem && <BankOutlined />}
 			</Button>
 		</Tooltip>
 	) : (
@@ -47,7 +49,7 @@ export const renderDismiss = ({
 				loading={dismissingItem}
 				shape="circle"
 			>
-				{!dismissingItem && <Icon type={dismissed ? 'eye' : 'eye-o'} />}
+				{!dismissingItem && <LegacyIcon type={dismissed ? 'eye' : 'eye-o'} />}
 			</Button>
 		</Tooltip>
 	) : (

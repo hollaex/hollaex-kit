@@ -15,7 +15,7 @@ const generateHeaders = (pairs) => {
 	return [
 		{
 			key: 'price',
-			label: STRINGS.PRICE,
+			label: STRINGS["PRICE"],
 			renderCell: ({ side, price = 0, isSameBefore, upDownRate, timestamp }, index) => {
 				const isArrow = upDownRate < 0;
 				return (
@@ -40,7 +40,7 @@ const generateHeaders = (pairs) => {
 		},
 		{
 			key: 'size',
-			label: STRINGS.SIZE,
+			label: STRINGS["SIZE"],
 			renderCell: ({ size = 0, side }, index) => { 
 				// const { increment_size } = pairs;
 				// const minSize = roundNumber(size, getDecimals(increment_size));
@@ -58,15 +58,15 @@ const generateHeaders = (pairs) => {
 		},
 		{
 			key: 'timestamp',
-			label: STRINGS.TIME,
+			label: STRINGS["TIME"],
 			renderCell: ({ timestamp, side }, index) => IS_XHT
 				? <div
 					className={classnames('trade_history-row', side)}
 					key={`timestamp-${index}`}
 				>
-					{getFormatTimestamp(timestamp, STRINGS.HOUR_FORMAT)}
+					{getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])}
 				</div>
-				: getFormatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
+				: getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])
 		}
 	];
 }
@@ -85,7 +85,7 @@ class TradeHistory extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.language !== this.props.language) {
 			this.calculateHeaders();
 		}

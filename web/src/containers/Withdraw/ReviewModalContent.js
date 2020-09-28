@@ -11,13 +11,13 @@ const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 	return (
 		<div className="d-flex">
 			<Button
-				label={STRINGS.CANCEL}
+				label={STRINGS["CANCEL"]}
 				onClick={onClickCancel}
 				className="button-fail"
 			/>
 			<div className="button-separator" />
 			<Button
-				label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
+				label={STRINGS["NOTIFICATIONS.BUTTONS.OKAY"]}
 				onClick={onClickAccept}
 				className="button-success"
 			/>
@@ -59,13 +59,13 @@ const ReviewModalContent = ({
 			{currency === BASE_CURRENCY ? (
 				<div className="d-flex flex-column align-items-center review-info_container">
 					<div className="review-info_message">
-						{STRINGS.WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW}
+						{STRINGS["WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW"]}
 					</div>
 					<div className="review-crypto-amount review-crypto-address">
 						<div>{cryptoAmountText}</div>
 						<div className="review-fee_message">
 							{STRINGS.formatString(
-								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE_BASE,
+								STRINGS["WITHDRAW_PAGE.MESSAGE_FEE_BASE"],
 								STRINGS.formatString(
 									CURRENCY_PRICE_FORMAT,
 									formatToCurrency(fee, baseCoin.min),
@@ -78,13 +78,13 @@ const ReviewModalContent = ({
 			) : (
 				<div className="d-flex flex-column align-items-center review-info_container">
 					<div className="review-info_message">
-						{STRINGS.WITHDRAW_PAGE.MESSAGE_ABOUT_SEND}
+						{STRINGS["WITHDRAW_PAGE.MESSAGE_ABOUT_SEND"]}
 					</div>
 					<div className="review-crypto-amount review-crypto-address">
 						<div>{cryptoAmountText}</div>
 						<div className="review-fee_message">
 							{STRINGS.formatString(
-								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE,
+								STRINGS["WITHDRAW_PAGE.MESSAGE_FEE"],
 								fee,
 								STRINGS.formatString(
 									CURRENCY_PRICE_FORMAT,
@@ -98,7 +98,7 @@ const ReviewModalContent = ({
 					<div className="review-crypto-address">{data.address}</div>
 					<div className="warning_text review-info_message">
 						{STRINGS.formatString(
-							STRINGS.WITHDRAW_PAGE.MESSAGE_BTC_WARNING,
+							STRINGS["WITHDRAW_PAGE.MESSAGE_BTC_WARNING"],
 							fullname
 						)}
 					</div>

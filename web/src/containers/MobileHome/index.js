@@ -30,20 +30,20 @@ class Home extends Component {
 									link={'/trade/xht-usdt'}
 									type="button"
 									className="market-button"
-									label={STRINGS.VIEW_MARKET.toUpperCase()}
+									label={STRINGS["VIEW_MARKET"].toUpperCase()}
 								/>
 							</div>
 							<div className="my-5">
 								<ButtonLink
 									link={'/signup'}
 									type="button"
-									label={STRINGS.SIGNUP_TEXT}
+									label={STRINGS["SIGNUP_TEXT"]}
 								/>
 							</div>
 							<div className="text-center">
-								{STRINGS.SIGN_UP.HAVE_ACCOUNT}
+								{STRINGS["SIGN_UP.HAVE_ACCOUNT"]}
 								<Link to="/login" className="blue-link">
-									&nbsp;{STRINGS.SIGN_UP.GOTO_LOGIN}
+									&nbsp;{STRINGS["SIGN_UP.GOTO_LOGIN"]}
 								</Link>
 							</div>
 						</div>
@@ -54,7 +54,7 @@ class Home extends Component {
 								<ButtonLink
 									link={'/trade/xht-usdt'}
 									type="button"
-									label={STRINGS.GO_TRADE.toUpperCase()}
+									label={STRINGS["GO_TRADE"].toUpperCase()}
 								/>
 							</div>
 							<div className='d-flex flex-row mt-5'>
@@ -63,7 +63,7 @@ class Home extends Component {
 										link={'/account'}
 										type="button"
 										className="market-button"
-										label={STRINGS.ACCOUNTS.TITLE}
+										label={STRINGS["ACCOUNTS.TITLE"]}
 									/>
 								</div>
 								<div className="w-50" >
@@ -71,20 +71,20 @@ class Home extends Component {
 										link={'/wallet'}
 										type="button"
 										className="market-button"
-										label={STRINGS.WALLET_TITLE}
+										label={STRINGS["WALLET_TITLE"]}
 									/>
 								</div>
 							</div>
 							<div className="text-center mt-5">
-								{STRINGS.NEED_HELP_TEXT}
+								{STRINGS["NEED_HELP_TEXT"]}
 								<a href="https://info.hollaex.com" target="_blank" className="blue-link" rel="noopener noreferrer">
-									&nbsp;{STRINGS.VIEW_INFO}
+									&nbsp;{STRINGS["VIEW_INFO"]}
 								</a>
 							</div>
 						</div>
 					} */}
 					<div className="post-wrapper mt-4 mx-3">
-						<div className="post-title mb-3">{STRINGS.TRADE_TAB_POSTS}</div>
+						<div className="post-title mb-3">{STRINGS["TRADE_TAB_POSTS"]}</div>
 						{
 							enabledPlugins.includes('announcement')
 								? <NotificationsList />

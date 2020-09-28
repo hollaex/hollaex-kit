@@ -89,11 +89,11 @@ class CurrencySlider extends Component {
 				<div className="mb-4 button-container">
 					{wallets[currentCurrency.toLowerCase()] && (
 						<div className="d-flex justify-content-between flew-row ">
-							{allow_deposit 
+							{allow_deposit
 								? <Button
 									className="mr-4"
 									label={STRINGS.formatString(
-										STRINGS.RECEIVE_CURRENCY,
+                    STRINGS["RECEIVE_CURRENCY"],
 										fullname
 									).join('')}
 									onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
@@ -103,7 +103,7 @@ class CurrencySlider extends Component {
 							{allow_withdrawal
 								? <Button
 									label={STRINGS.formatString(
-										STRINGS.SEND_CURRENCY,
+                    STRINGS["SEND_CURRENCY"],
 										fullname
 									).join('')}
 									onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}

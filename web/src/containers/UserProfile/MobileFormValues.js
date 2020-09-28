@@ -6,8 +6,7 @@ export const generateFormValues = () => ({
 	phone_country: {
 		type: 'autocomplete',
 		label:
-			STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-				.PHONE_NUMBER_LABEL,
+			STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL"],
 		options: PHONE_OPTIONS,
 		disabled: true,
 		fullWidth: isMobile
@@ -15,8 +14,7 @@ export const generateFormValues = () => ({
 	phone_number: {
 		type: 'text',
 		label:
-			STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-				.PHONE_NUMBER_LABEL,
+			STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL"],
 		disabled: true,
 		fullWidth: isMobile
 	}

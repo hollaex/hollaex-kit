@@ -48,7 +48,7 @@ class TransactionsHistory extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		// if (nextProps.symbol !== this.props.symbol) {
 		// this.requestData(nextProps.symbol);
 		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
@@ -186,7 +186,7 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
-				props.title = `${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
+				props.title = `${STRINGS["TRANSACTION_HISTORY.TITLE_TRADES"]}`;
 				props.headers = headers.trades;
 				props.data = trades;
 				props.filename = `trade-history-${moment().unix()}`;
@@ -196,7 +196,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = downloadUserTrades;
 				break;
 			case 1:
-				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;
+				props.title = STRINGS["TRANSACTION_HISTORY.TITLE_DEPOSITS"];
 				props.headers = headers.deposits;
 				props.data = deposits;
 				props.filename = `deposit-history-${moment().unix()}`;
@@ -205,7 +205,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = downloadUserDeposit;
 				break;
 			case 2:
-				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWALS;
+				props.title = STRINGS["TRANSACTION_HISTORY.TITLE_WITHDRAWALS"];
 				props.headers = headers.withdrawals;
 				props.data = withdrawals;
 				props.filename = `withdrawal-history-${moment().unix()}`;
@@ -240,7 +240,7 @@ class TransactionsHistory extends Component {
 			>
 				{!isMobile && (
 					<IconTitle
-						text={STRINGS.TRANSACTION_HISTORY.TITLE}
+						text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
 						iconPath={ICONS.TRANSACTION_HISTORY}
 						textType="title"
 						useSvg={true}
@@ -250,30 +250,30 @@ class TransactionsHistory extends Component {
 					tabs={[
 						{
 							title: isMobile ? (
-								STRINGS.TRANSACTION_HISTORY.TRADES
+								STRINGS["TRANSACTION_HISTORY.TRADES"]
 							) : (
 									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.TRADES}
+										title={STRINGS["TRANSACTION_HISTORY.TRADES"]}
 										icon={ICONS.TRADE_HISTORY}
 									/>
 								)
 						},
 						{
 							title: isMobile ? (
-								STRINGS.TRANSACTION_HISTORY.DEPOSITS
+								STRINGS["TRANSACTION_HISTORY.DEPOSITS"]
 							) : (
 									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
+										title={STRINGS["TRANSACTION_HISTORY.DEPOSITS"]}
 										icon={ICONS.DEPOSIT_HISTORY}
 									/>
 								)
 						},
 						{
 							title: isMobile ? (
-								STRINGS.TRANSACTION_HISTORY.WITHDRAWALS
+								STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]
 							) : (
 									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
+										title={STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]}
 										icon={ICONS.WITHDRAW_HISTORY}
 									/>
 								)
@@ -294,7 +294,7 @@ class TransactionsHistory extends Component {
 						<IconTitle
 							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
 							text={STRINGS.formatString(
-								STRINGS.CANCEL_BASE_WITHDRAWAL,
+								STRINGS["CANCEL_BASE_WITHDRAWAL"],
 								coins[currency].fullname
 							)}
 							textType="title"
@@ -303,15 +303,15 @@ class TransactionsHistory extends Component {
 						/>
 						<div>
 							<div className='text-center mt-5 mb-5'>
-								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div>
+								<div>{STRINGS["CANCEL_WITHDRAWAL_POPUP_CONFIRM"]}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
 									<CurrencyBallWithPrice symbol={coins[currency].symbol} amount={amount} price={1} />
 								</div>
 							</div>
 							<div className='w-100 buttons-wrapper d-flex' >
-								<Button label={STRINGS.BACK_TEXT} onClick={this.onClose} />
+								<Button label={STRINGS["BACK_TEXT"]} onClick={this.onClose} />
 								<div className='separator' />
-								<Button label={STRINGS.CANCEL_WITHDRAWAL} onClick={this.withdrawalCancel} />
+								<Button label={STRINGS["CANCEL_WITHDRAWAL"]} onClick={this.withdrawalCancel} />
 							</div>
 						</div>
 					</div>

@@ -26,8 +26,8 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 					? ICONS.TRADE_FILLED_SUCESSFUL
 					: ICONS.TRADE_FILLED_SUCESSFUL;
 			data.title = STRINGS.formatString(
-				STRINGS.ORDER_TITLE_CREATED,
-				STRINGS.SIDES_VALUES[side]
+				STRINGS["ORDER_TITLE_CREATED"],
+				STRINGS[`SIDES_VALUES.${side}`]
 			);
 		} else {
 			data.icon =
@@ -35,8 +35,8 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 					? ICONS.TRADE_PARTIALLY_FILLED
 					: ICONS.TRADE_PARTIALLY_FILLED;
 			data.title = STRINGS.formatString(
-				STRINGS.ORDER_TITLE_PARTIALLY_FILLED,
-				<span className="text-capitalize">{STRINGS.SIDES_VALUES[side]}</span>
+				STRINGS["ORDER_TITLE_PARTIALLY_FILLED"],
+				<span className="text-capitalize">{STRINGS[`SIDES_VALUES.${side}`]}</span>
 			);
 		}
 	} else if (type === 'order_filled' || type === 'order_partialy_filled') {
@@ -45,8 +45,8 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 				? ICONS.TRADE_FILLED_SUCESSFUL
 				: ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
-			STRINGS.ORDER_TITLE_FULLY_FILLED,
-			<span className="text-capitalize">{STRINGS.SIDES_VALUES[side]}</span>
+			STRINGS["ORDER_TITLE_FULLY_FILLED"],
+			<span className="text-capitalize">{STRINGS[`SIDES_VALUES.${side}`]}</span>
 		);
 	}
 
@@ -63,7 +63,7 @@ export const generateRows = (type, order, pairs, coins) => {
 
 	if (type === 'order_added' && order.filled === 0) {
 		rows.push({
-			label: STRINGS.SIZE,
+			label: STRINGS["SIZE"],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatBtcAmount(order.size),
@@ -71,7 +71,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			)
 		});
 		rows.push({
-			label: STRINGS.PRICE,
+			label: STRINGS["PRICE"],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(order.price, min),
@@ -86,7 +86,7 @@ export const generateRows = (type, order, pairs, coins) => {
 
 		rows.push({
 			label:
-				order.side === SIDE_BUY ? STRINGS.ORDER_BOUGHT : STRINGS.ORDER_SOLD,
+				order.side === SIDE_BUY ? STRINGS["ORDER_BOUGHT"] : STRINGS["ORDER_SOLD"],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatBtcAmount(order.filled),
@@ -94,7 +94,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			)
 		});
 		rows.push({
-			label: STRINGS.PRICE,
+			label: STRINGS["PRICE"],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(order.price, min),
@@ -103,7 +103,7 @@ export const generateRows = (type, order, pairs, coins) => {
 		});
 		rows.push({
 			label:
-				order.side === SIDE_BUY ? STRINGS.ORDER_SPENT : STRINGS.ORDER_RECEIVED,
+				order.side === SIDE_BUY ? STRINGS["ORDER_SPENT"] : STRINGS["ORDER_RECEIVED"],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(orderValue, min),
@@ -113,7 +113,7 @@ export const generateRows = (type, order, pairs, coins) => {
 
 		if (type === 'order_added') {
 			rows.push({
-				label: STRINGS.REMAINING,
+				label: STRINGS["REMAINING"],
 				value: STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					formatBtcAmount(remaining),

@@ -14,7 +14,8 @@ class Dialog extends PureComponent {
 		label: PropTypes.string.isRequired,
 		closeButton: PropTypes.func,
 		onCloseDialog: PropTypes.func,
-		children: PropTypes.node.isRequired
+		children: PropTypes.node.isRequired,
+		disableTheme: PropTypes.bool,
 	};
 
 	onRequestClose = (e) => {
@@ -34,7 +35,9 @@ class Dialog extends PureComponent {
 			showCloseText,
 			dialogId,
 			theme,
-			className
+			className,
+			disableTheme,
+      bodyOpenClassName,
 		} = this.props;
 		
 		return (
@@ -44,7 +47,8 @@ class Dialog extends PureComponent {
 				contentLabel={label}
 				onRequestClose={this.onRequestClose}
 				shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-				portalClassName={classnames(className, languageClasses, getThemeClass(theme))}
+				portalClassName={classnames(className, languageClasses, (disableTheme ? '' : getThemeClass(theme)))}
+				bodyOpenClassName={bodyOpenClassName}
 			>
 				{showCloseText &&
 					!closeButton && (
@@ -63,7 +67,7 @@ class Dialog extends PureComponent {
 				{children}
 				{closeButton && (
 					<div>
-						<Button onClick={closeButton} label={STRINGS.CLOSE_TEXT} />
+						<Button onClick={closeButton} label={STRINGS["CLOSE_TEXT"]} />
 					</div>
 				)}
 			</Modal>
@@ -74,6 +78,7 @@ class Dialog extends PureComponent {
 Modal.setAppElement('#root');
 
 Dialog.defaultProps = {
+	disableTheme: false,
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
 	theme: '',

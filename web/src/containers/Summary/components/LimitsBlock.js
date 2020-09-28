@@ -9,9 +9,9 @@ const getLimitValue = (limit, increment_unit) => {
     if (limit === undefined || limit === null || limit === '') {
         return 'N/A';
     } else if (limit === 0) {
-        return STRINGS.LEVELS.UNLIMITED;
+        return STRINGS["LEVELS.UNLIMITED"];
     } else if (limit === -1) {
-        return STRINGS.LEVELS.BLOCKED;
+        return STRINGS["LEVELS.BLOCKED"];
     } else {
         return increment_unit ? formatToCurrency(limit, increment_unit) : limit;
     }
@@ -39,7 +39,7 @@ const getDepositRow = (currency, index, coins, level) => {
 //     const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
 //     return (
 //         <tr key={`${index}_1`}>
-//             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.WITHDRAWAL}:</td>
+//             <td className="account-limits-taker account-limits-status">{STRINGS["SUMMARY.WITHDRAWAL"]}:</td>
 //             <td className="account-limits-taker account-limits-value">{getLimitValue(withdrawal_limits[level], format)}</td>
 //         </tr>
 //     );
@@ -60,13 +60,13 @@ const LimitsBlock = ({ level, coins }) => {
                 <thead>
                     <tr>
                         <th className="limit-head-currency content-title" colSpan={3}>
-                            {STRINGS.SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE}
+                            {STRINGS["SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE"]}
                         </th>
                     </tr>
                     <tr>
-                        <th className="limit-head-currency">{STRINGS.CURRENCY}</th>
-                        <th className="limit-head-currency">{STRINGS.SUMMARY.DEPOSIT}</th>
-                        <th className="limit-head-currency">{STRINGS.SUMMARY.WITHDRAWAL}</th>
+                        <th className="limit-head-currency">{STRINGS["CURRENCY"]}</th>
+                        <th className="limit-head-currency">{STRINGS["SUMMARY.DEPOSIT"]}</th>
+                        <th className="limit-head-currency">{STRINGS["SUMMARY.WITHDRAWAL"]}</th>
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">

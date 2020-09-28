@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Icon, Spin, Button } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Table, Spin, Button } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency } from '../../../utils/index';
 import moment from 'moment';
@@ -91,7 +93,7 @@ class FullListUsers extends Component {
 			<Button type="primary" onClick={() => this.requestUser(value)}>
 				<Link to={`/admin/user?id=${value}`}>
 					GO
-					<Icon type="right" />
+					<RightOutlined />
 				</Link>
 			</Button>
 		);
@@ -100,7 +102,7 @@ class FullListUsers extends Component {
 			if (value === true) {
 				return (
 					<div>
-						<Icon
+						<LegacyIcon
 							type={'flag'}
 							style={{ color: 'red', fontSize: '1.5em' }}
 						/>

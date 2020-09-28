@@ -14,7 +14,7 @@ class SnackNotification extends Component {
         closeSnack: false
     }
     
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.snackProps.showSnack !== nextProps.snackProps.showSnack
             && nextProps.snackProps.showSnack) {
                 this.setState({ closeSnack: false });

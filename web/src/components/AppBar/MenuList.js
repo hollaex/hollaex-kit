@@ -109,7 +109,7 @@ class MenuList extends Component {
 								path={ICONS.TAB_SUMMARY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SUMMARY}
+							{STRINGS["ACCOUNTS.TAB_SUMMARY"]}
 						</div>
 						<div
 							className={classnames(
@@ -144,7 +144,7 @@ class MenuList extends Component {
 								path={ICONS.TAB_WALLET}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_WALLET}
+							{STRINGS["ACCOUNTS.TAB_WALLET"]}
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -158,7 +158,7 @@ class MenuList extends Component {
 								path={ICONS.TAB_HISTORY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_HISTORY}
+							{STRINGS["ACCOUNTS.TAB_HISTORY"]}
 						</div>
 						<div
 							className={classnames(
@@ -193,7 +193,7 @@ class MenuList extends Component {
 								path={ICONS.TAB_SECURITY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SECURITY}
+							{STRINGS["ACCOUNTS.TAB_SECURITY"]}
 						</div>
 						<div
 							className={classnames(
@@ -230,7 +230,7 @@ class MenuList extends Component {
 								path={ICONS.TAB_VERIFY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_VERIFICATION}
+							{STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -244,7 +244,7 @@ class MenuList extends Component {
 								path={ICONS.TAB_SETTING}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SETTINGS}
+							{STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -258,7 +258,7 @@ class MenuList extends Component {
 								path={ICONS.SIDEBAR_HELP}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.LOGIN.HELP}
+							{STRINGS["LOGIN.HELP"]}
 						</div>
 
 						<div
@@ -270,7 +270,7 @@ class MenuList extends Component {
 								path={ICONS.TAB_SIGNOUT}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SIGNOUT}
+							{STRINGS["ACCOUNTS.TAB_SIGNOUT"]}
 						</div>
 					</div>
 				)}

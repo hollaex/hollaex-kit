@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, Spin, Alert, Table, Input } from 'antd';
+import { BarcodeOutlined } from '@ant-design/icons';
+import { Spin, Alert, Table, Input } from 'antd';
 
 import { HocForm } from '../../components';
 import { getTransactions } from './actions';
@@ -77,7 +78,7 @@ class BankTransactions extends Component {
 							type: 'string',
 							placeholder: 'Transaction ID',
 							validate: [],
-							prefix: <Icon type="barcode" />
+							prefix: <BarcodeOutlined />
 						}
 					}}
 				/>

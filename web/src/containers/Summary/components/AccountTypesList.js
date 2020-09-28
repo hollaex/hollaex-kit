@@ -40,12 +40,12 @@ const AccountTypesList = ({
                         </div>
 						<div className={classnames(FLEX_CENTER_CLASSES)}>
 							<div className={classnames(FLEX_CENTER_CLASSES)}>
-								{STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, key)}
+								{STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"], key)}
 							</div>
 							{key === verification_level && (
 								<div className="account-current summary-content-txt ml-2">
 									{' ('}
-									{STRINGS.SUMMARY.CURRENT_TXT}{')'}
+									{STRINGS["SUMMARY.CURRENT_TXT"]}{')'}
 								</div>
 							)}
 						</div>

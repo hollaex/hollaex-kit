@@ -15,7 +15,7 @@ import STRINGS from '../../../config/localizedStrings';
 // 	<div className="d-flex">
 // 		{isAccountDetails && (
 // 			<div className="requirement-verified mr-2">
-// 				{STRINGS.USER_VERIFICATION.COMPLETED.toUpperCase()}
+// 				{STRINGS["USER_VERIFICATION.COMPLETE"].toUpperCase()}
 // 			</div>
 // 		)}
 // 		<ReactSvg
@@ -29,7 +29,7 @@ import STRINGS from '../../../config/localizedStrings';
 // 	<div className="d-flex">
 // 		{isAccountDetails ? (
 // 			<div className="requirement-incomplete mr-2">
-// 				{STRINGS.USER_VERIFICATION.INCOMPLETED.toUpperCase()}
+// 				{STRINGS["USER_VERIFICATION.INCOMPLETED"].toUpperCase()}
 // 			</div>
 // 		) : (
 // 				<ReactSvg
@@ -76,7 +76,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 	const verificationObj = {
 		level_1: {
 			'1': {
-				title: STRINGS.SUMMARY.EMAIL_VERIFICATION,
+				title: STRINGS["SUMMARY.EMAIL_VERIFICATION"],
 				completed: user.email ? true : false,
 				status: user.email ? 3 : 0
 			}
@@ -84,14 +84,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_2: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					STRINGS["SUMMARY.TRADE_OVER_XHT"],
 					'$ 3,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.XHT_IN_WALLET,
+					STRINGS["SUMMARY.XHT_IN_WALLET"],
 					'5,000'
 				),
 				completed: xht_balance >= 5000
@@ -99,17 +99,17 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		},
 		level_3: {
 			'1': {
-				title: STRINGS.USER_VERIFICATION.TITLE_USER_DOCUMENTATION,
+				title: STRINGS["USER_VERIFICATION.TITLE_USER_DOCUMENTATION"],
 				completed: identity === 3 ? true : false,
 				status: identity
 			},
 			'2': {
-				title: STRINGS.SUMMARY.DOCUMENTS,
+				title: STRINGS["SUMMARY.DOCUMENTS"],
 				completed: id_data.status === 3,
 				status: id_data.status
 			},
 			'3': {
-				title: STRINGS.USER_VERIFICATION.TITLE_MOBILE,
+				title: STRINGS["USER_VERIFICATION.TITLE_MOBILE"],
 				completed: !!phone_number,
 				status: phone_number ? 3 : 0
 			}
@@ -117,14 +117,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_4: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					STRINGS["SUMMARY.TRADE_OVER_XHT"],
 					'$10,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.XHT_IN_WALLET,
+					STRINGS["SUMMARY.XHT_IN_WALLET"],
 					'10,000'
 				),
 				completed: xht_balance >= 10000
@@ -133,36 +133,36 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_5: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HAP_TEXT,
+					STRINGS["SUMMARY.HAP_TEXT"],
 					<a
 						className="blue-link pointer"
 						href="https://forms.gle/JsCjUqMEEkZmoDzj6"
 						target="blank">
-							{`(${STRINGS.APPLY_HERE})`}
+							{`(${STRINGS["APPLY_HERE"]})`}
 					</a>
 				),
 				completed: user.is_hap
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.LOCK_AN_EXCHANGE,
+					STRINGS["SUMMARY.LOCK_AN_EXCHANGE"],
 					<a
 						className="blue-link pointer"
 						href="https://info.hollaex.com/hc/en-us/articles/360040097453-How-can-I-stake-collateralize-HollaEx-Token-XHT"
 						target="blank">
-							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
+							{`(${STRINGS["TRADE_POSTS.LEARN_MORE"]})`}
 					</a>
 				),
 				completed: false
 			},
 			'3': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.WALLET_SUBSCRIPTION_USERS,
+					STRINGS["SUMMARY.WALLET_SUBSCRIPTION_USERS"],
 					<a
 						className="blue-link pointer"
 						href="https://info.hollaex.com/hc/en-us/articles/360041341013-Vault-subscription"
 						target="blank">
-							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
+							{`(${STRINGS["TRADE_POSTS.LEARN_MORE"]})`}
 					</a>
 				),
 				completed: false
@@ -171,14 +171,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_6: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					STRINGS["SUMMARY.TRADE_OVER_XHT"],
 					'$300,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.XHT_IN_WALLET,
+					STRINGS["SUMMARY.XHT_IN_WALLET"],
 					'100,000'
 				),
 				completed: xht_balance >= 100000
@@ -187,14 +187,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_7: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					STRINGS["SUMMARY.TRADE_OVER_XHT"],
 					'$500,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.XHT_IN_WALLET,
+					STRINGS["SUMMARY.XHT_IN_WALLET"],
 					'300,000'
 				),
 				completed: xht_balance >= 300000
@@ -203,14 +203,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_8: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					STRINGS["SUMMARY.TRADE_OVER_XHT"],
 					'$600,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.XHT_IN_WALLET,
+					STRINGS["SUMMARY.XHT_IN_WALLET"],
 					'400,000'
 				),
 				completed: xht_balance >= 400000
@@ -219,14 +219,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_9: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					STRINGS["SUMMARY.TRADE_OVER_XHT"],
 					'$2,000,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.XHT_IN_WALLET,
+					STRINGS["SUMMARY.XHT_IN_WALLET"],
 					'1,000,000'
 				),
 				completed: xht_balance >= 1000000
@@ -234,7 +234,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		},
 		level_10: {
 			'1': {
-				title: STRINGS.CONTACT_US_TEXT,
+				title: STRINGS["CONTACT_US_TEXT"],
 				completed: false
 			},
 		}
@@ -362,7 +362,7 @@ const SummaryRequirements = ({
 				{!isAccountDetails && !isBonusSection && !user.otp_enabled && (
 					<div className="trade-account-link mb-2">
 						<Link to="/security">
-							{STRINGS.SUMMARY.ACTIVE_2FA_SECURITY.toUpperCase()}
+							{STRINGS["SUMMARY.ACTIVE_2FA_SECURITY"].toUpperCase()}
 						</Link>
 					</div>
 				)}
@@ -373,7 +373,7 @@ const SummaryRequirements = ({
 						!bank_account.filter((acc) => acc.status === 3).length) ? (
 						<div className="trade-account-link mb-2">
 							<Link to="/verification">
-								{STRINGS.USER_VERIFICATION.GOTO_VERIFICATION.toUpperCase()}
+								{STRINGS["USER_VERIFICATION.GOTO_VERIFICATION"].toUpperCase()}
 							</Link>
 						</div>
 					) : null
@@ -381,7 +381,7 @@ const SummaryRequirements = ({
 				{IS_XHT && !isBonusSection && !isAccountDetails
 					? <div className="trade-account-link mb-2">
 						<Link to="/wallet">
-							{STRINGS.USER_VERIFICATION.GOTO_WALLET.toUpperCase()}
+							{STRINGS["USER_VERIFICATION.GOTO_WALLET"].toUpperCase()}
 						</Link>
 					</div>
 					: null
@@ -389,7 +389,7 @@ const SummaryRequirements = ({
 				{selectedLevel !== 1 && !isBonusSection && isAccountDetails ? (
 					<div className="mt-2">
 						<Button
-							label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}
+							label={STRINGS["SUMMARY.REQUEST_ACCOUNT_UPGRADE"]}
 							// disabled={!requirementResolved}
 							onClick={onUpgradeAccount}
 						/>

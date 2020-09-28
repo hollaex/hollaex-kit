@@ -62,7 +62,7 @@ class OrdersWrapper extends Component {
         } = this.state;
         const USER_TABS = [
             {
-                title: STRINGS.ORDERS,
+                title: STRINGS["ORDERS"],
                 children: isLoggedIn() ? (
                     <ActiveOrders
                         pairData={pairData}
@@ -76,7 +76,7 @@ class OrdersWrapper extends Component {
                 titleAction: isLoggedIn()
                     ? activeOrders.length > 0 && (
                         <ActionNotification
-                            text={STRINGS.CANCEL_ALL}
+                            text={STRINGS["CANCEL_ALL"]}
                             iconPath={ICONS.CANCEL_CROSS_ACTIVE}
                             onClick={this.cancelAllOrders}
                             status="information"
@@ -86,7 +86,7 @@ class OrdersWrapper extends Component {
                     : ''
             },
             {
-                title: STRINGS.RECENT_TRADES,
+                title: STRINGS["RECENT_TRADES"],
                 children: isLoggedIn() ? (
                     <UserTrades
                         pageSize={10}
@@ -102,7 +102,7 @@ class OrdersWrapper extends Component {
                     ),
                 titleAction: isLoggedIn() ? (
                     <ActionNotification
-                        text={STRINGS.TRANSACTION_HISTORY.TITLE}
+                        text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
                         iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
                         onClick={this.props.goToTransactionsHistory}
                         status="information"

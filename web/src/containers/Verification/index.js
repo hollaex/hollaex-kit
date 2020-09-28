@@ -62,7 +62,7 @@ class Verification extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.user.email !== this.props.user.email ||
 			nextProps.user.phone_number !== this.props.user.phone_number ||
 			JSON.stringify(nextProps.user.address) !== JSON.stringify(this.props.user.address) ||
@@ -74,7 +74,7 @@ class Verification extends Component {
 		}
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (
 			this.state.activeTab !== nextState.activeTab &&
 			this.state.activeTab !== -1
@@ -174,13 +174,13 @@ class Verification extends Component {
 			email: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
+						title={STRINGS["USER_VERIFICATION.TITLE_EMAIL"]}
 						icon={ICONS.VERIFICATION_EMAIL_NEW}
 						statusCode={email ? 3 : 0}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
+						title={STRINGS["USER_VERIFICATION.TITLE_EMAIL"]}
 						icon={ICONS.VERIFICATION_EMAIL_NEW}
 						statusCode={email ? 3 : 0}
 					/>
@@ -188,7 +188,7 @@ class Verification extends Component {
 				content: activeTab === 0 && (
 					<div>
 						<PanelInformationRow
-							label={STRINGS.USER_VERIFICATION.MY_EMAIL}
+							label={STRINGS["USER_VERIFICATION.MY_EMAIL"]}
 							information={email}
 							className={'title-font'}
 							disable
@@ -199,13 +199,13 @@ class Verification extends Component {
 			bank: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
+						title={STRINGS["USER_VERIFICATION.TITLE_BANK"]}
 						icon={ICONS.VERIFICATION_BANK_NEW}
 						statusCode={bank_status}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
+						title={STRINGS["USER_VERIFICATION.TITLE_BANK"]}
 						icon={ICONS.VERIFICATION_BANK_NEW}
 						statusCode={bank_status}
 					/>
@@ -220,13 +220,13 @@ class Verification extends Component {
 			kyc: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
+						title={STRINGS["USER_VERIFICATION.TITLE_IDENTITY"]}
 						icon={ICONS.VERIFICATION_ID_NEW}
 						statusCode={identity_status}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
+						title={STRINGS["USER_VERIFICATION.TITLE_IDENTITY"]}
 						icon={ICONS.VERIFICATION_ID_NEW}
 						statusCode={identity_status}
 					/>
@@ -244,8 +244,7 @@ class Verification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-								.TITLE_PHONE
+							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE"]
 						}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
@@ -253,8 +252,7 @@ class Verification extends Component {
 				) : (
 					<CustomTabs
 						title={
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-								.TITLE_PHONE
+							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE"]
 						}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
@@ -270,13 +268,13 @@ class Verification extends Component {
 			document: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
+						title={STRINGS["USER_VERIFICATION.TITLE_ID_DOCUMENTS"]}
 						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
 						statusCode={id_data.status}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
+						title={STRINGS["USER_VERIFICATION.TITLE_ID_DOCUMENTS"]}
 						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
 						statusCode={id_data.status}
 					/>
@@ -472,7 +470,7 @@ class Verification extends Component {
 		const fontClass = getFontClassForLanguage(activeLanguage);
 		const tabProps = {
 			tabs: activeTab < tabs.length ? tabs : [],
-			title: STRINGS.ACCOUNTS.TAB_VERIFICATION,
+			title: STRINGS["ACCOUNTS.TAB_VERIFICATION"],
 			titleIcon: ICONS.ID_GREY
 		};
 		return (

@@ -15,7 +15,7 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
 		return (
 			<div>
 				<Button
-					label={STRINGS.USER_VERIFICATION.START_BANK_VERIFICATION}
+					label={STRINGS["USER_VERIFICATION.START_BANK_VERIFICATION"]}
 					onClick={() => setActivePageContent('bank')}
 				/>
 			</div>
@@ -36,14 +36,14 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
 						)}
 						<div className="w-100">
 							<PanelInformationRow
-								label={STRINGS.USER_VERIFICATION.BANK_NAME}
+								label={STRINGS["USER_VERIFICATION.BANK_NAME"]}
 								information={account.bank_name}
 								className="title-font"
 								disable
 							/>
 							<div className="d-flex">
 								<PanelInformationRow
-									label={STRINGS.USER_VERIFICATION.ACCOUNT_NUMBER}
+									label={STRINGS["USER_VERIFICATION.ACCOUNT_NUMBER"]}
 									information={account.account_number}
 									className="mr-3 title-font"
 									disable
@@ -59,12 +59,12 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
 			<div>
 				<div className="font-weight-bold text-lowercase">
 					{STRINGS.formatString(
-						STRINGS.USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT,
+						STRINGS["USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT"],
 						<span
 							className="verification_link pointer"
 							onClick={(e) => handleBack('document', e)}
 						>
-							{STRINGS.USER_VERIFICATION.DOCUMENT_SUBMISSION}
+							{STRINGS["USER_VERIFICATION.DOCUMENT_SUBMISSION"]}
 						</span>
 					)}
 				</div>
@@ -72,7 +72,7 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
 				{lastVerified.status === 3 &&
 				MAX_NUMBER_BANKS > bank_account.length ? (
 					<Button
-						label={STRINGS.USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT}
+						label={STRINGS["USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT"]}
 						onClick={() => setActivePageContent('bank')}
 					/>
 				) : null}

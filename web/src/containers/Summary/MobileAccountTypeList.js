@@ -47,9 +47,9 @@ const MobileAccountTypeList = ({
                                     />
                                 </div>
                                 <div className={classnames(FLEX_CENTER_CLASSES)}>
-                                    {STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, key)}
+                                    {STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"], key)}
                                     {(key === verification_level) &&
-                                        <div className="account-current summary-content-txt ml-2"> {`(${STRINGS.SUMMARY.CURRENT_TXT})`} </div>
+                                        <div className="account-current summary-content-txt ml-2"> {`(${STRINGS["SUMMARY.CURRENT_TXT"]})`} </div>
                                     }
                                 </div>
                             </div>

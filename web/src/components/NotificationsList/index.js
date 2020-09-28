@@ -57,6 +57,8 @@ export const NotificationItem = ({
 const NotificationsList = ({ announcements, getAnnouncement }) => {
 	useEffect(() => {
 		getAnnouncement();
+    //  TODO: Fix react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	if (!announcements.length) {
 		return <div className="notifications_list-wrapper" >No data</div>

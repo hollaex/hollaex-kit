@@ -24,7 +24,7 @@ class AppMenuBar extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.location && nextProps.location
             && this.props.location.pathname !== nextProps.location.pathname) {
             this.setActiveMenu(nextProps.location.pathname);
@@ -135,7 +135,7 @@ class AppMenuBar extends Component {
                         onClick={() => this.handleMenuChange('summary')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS.ACCOUNTS.TAB_SUMMARY}
+                            {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
                         </div>
                     </div>
                     <div
@@ -156,7 +156,7 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS.ACCOUNTS.TAB_WALLET}
+                            {STRINGS["ACCOUNTS.TAB_WALLET"]}
                         </div>
                     </div>
                     <div
@@ -177,7 +177,7 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS.ACCOUNTS.TAB_SECURITY}
+                            {STRINGS["ACCOUNTS.TAB_SECURITY"]}
                         </div>
                     </div>
                     <div
@@ -198,7 +198,7 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS.ACCOUNTS.TAB_VERIFICATION}
+                            {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
                         </div>
                     </div>
                     <div
@@ -206,7 +206,7 @@ class AppMenuBar extends Component {
                         onClick={() => this.handleMenuChange('settings')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS.ACCOUNTS.TAB_SETTINGS}
+                            {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
                         </div>
                     </div>
                     {/* <div
@@ -214,7 +214,7 @@ class AppMenuBar extends Component {
                         onClick={() => this.handleMenuChange('api')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <ReactSVG path={ICONS.TAB_API} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS.ACCOUNTS.TAB_API}
+                            {STRINGS["ACCOUNTS.TAB_API"]}
                         </div>
                     </div> */}
                 </div>

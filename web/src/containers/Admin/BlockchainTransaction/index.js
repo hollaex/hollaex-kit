@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, Spin, Alert } from 'antd';
+import { AppstoreOutlined, QrcodeOutlined } from '@ant-design/icons';
+import { Spin, Alert } from 'antd';
 import { connect } from 'react-redux';
 
 import { AdminHocForm } from '../../../components';
@@ -65,12 +66,12 @@ class BlockchainTransaction extends Component {
 							type: 'input',
 							placeholder: 'Transaction Id',
 							validate: [validateRequired],
-							prefix: <Icon type="appstore-o" />
+							prefix: <AppstoreOutlined />
 						},
 						address: {
 							type: 'input',
 							placeholder: 'Address',
-							prefix: <Icon type="qrcode" />
+							prefix: <QrcodeOutlined />
 						},
 						is_testnet: {
 							type: 'select',

@@ -11,7 +11,7 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 	return (
 		<div className="otp_form-wrapper">
 			<IconTitle
-				text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.TITLE}
+				text={STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.TITLE"]}
 				iconPath={ICONS.OTP_KEYS}
 				className="w-100"
 				textType="title"
@@ -19,10 +19,10 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 			/>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1}</span>
+					<span>{STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1"]}</span>
 				</div>
 				<div className="otp_form-section-text">
-					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_2}
+					{STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_2"]}
 				</div>
 				<div className="d-flex justify-content-center otp_form-section-content">
 					<div className="qr-code-wrapper d-flex justify-content-center align-items-center">
@@ -35,18 +35,18 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 			</div>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5}</span>
+					<span>{STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5"]}</span>
 				</div>
 				<div className="otp_form-section-text">
-					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3}
+					{STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3"]}
 					<br />
-					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4}
+					{STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4"]}
 				</div>
 				<div className="otp_form-section-content otp_secret">{secret}</div>
 			</div>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT}</span>
+					<span>{STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.INPUT"]}</span>
 				</div>
 				<OTPForm onSubmit={activateOTP} />
 			</div>
@@ -58,12 +58,12 @@ export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
 	<div className="user_security-wrapper">
 		{!otp_enabled && (
 			<div className="warning_text">
-				{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.WARNING}
+				{STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.WARNING"]}
 			</div>
 		)}
 		<CheckboxButton
 			label={
-				STRINGS.ACCOUNT_SECURITY.OTP.CONTENT[otp_enabled ? 'DISABLE' : 'ENABLE']
+				STRINGS[`ACCOUNT_SECURITY.OTP.CONTENT.${otp_enabled ? 'DISABLE' : 'ENABLE'}`]
 			}
 			onClick={requestOTP}
 			disabled={data.requesting}

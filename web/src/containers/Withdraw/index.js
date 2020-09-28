@@ -61,7 +61,7 @@ class Withdraw extends Component {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.checked) {
 			if (nextProps.verification_level) {
 				this.validateRoute(

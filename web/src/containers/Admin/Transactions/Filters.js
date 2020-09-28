@@ -1,4 +1,5 @@
 import React from 'react';
+import { SearchOutlined } from '@ant-design/icons';
 import { Button, Alert } from 'antd';
 import { SelectValue } from './SelectValues';
 import { FilterInput } from './FilterInput';
@@ -96,7 +97,7 @@ export const Filters = ({
 					<Button
 						onClick={onClick}
 						type="primary"
-						icon="search"
+						icon={<SearchOutlined />}
 						className="filter-button"
 						disabled={!allowQuery}
 					>
