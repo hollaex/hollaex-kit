@@ -76,6 +76,7 @@ class StringSettingsModal extends Component {
               onClick: () => console.log('clicked', key)
             };
           }}
+          rowKey={({ value }) => value}
         />
         <Button
           onClick={onAddLanguageClick}
