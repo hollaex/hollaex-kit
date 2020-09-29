@@ -137,3 +137,4 @@ exports.WS_AUTHENTICATION_REQUIRED = 'Bearer or HMAC authentication required';
 exports.WS_ALREADY_AUTHENTICATED = 'Already authenticated';
 exports.WS_USER_AUTHENTICATED = (email) => `User ${email} authenticated`;
 exports.WS_MISSING_HEADER = 'Bearer or api-key authentication required';
+exports.WS_INVALID_TOPIC = (topic) => `Topic ${topic} is not supported`;

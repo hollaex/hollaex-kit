@@ -4,9 +4,15 @@ const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
-const { userNetworkSubscribe } = require('./hub');
-const { WS_AUTHENTICATION_REQUIRED, WS_USER_AUTHENTICATED, MULTIPLE_API_KEY, WS_ALREADY_AUTHENTICATED, WS_MISSING_HEADER } = require('../messages');
-// receives data from hub, parse for topic, look for channel, publish data back to client
+const { sendNetworkWsMessage } = require('./hub');
+const {
+	WS_AUTHENTICATION_REQUIRED,
+	WS_USER_AUTHENTICATED,
+	MULTIPLE_API_KEY,
+	WS_ALREADY_AUTHENTICATED,
+	WS_MISSING_HEADER,
+	WS_INVALID_TOPIC
+} = require('../messages');
 
 let publicData = {
 	orderbook: {},
@@ -34,10 +40,39 @@ const initializeTopic = (topic, ws, symbol) => {
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
-			userNetworkSubscribe(ws.auth.networkId, topic);
+			sendNetworkWsMessage('subscribe', topic, ws.auth.networkId,);
 			break;
 		default:
+			throw new Error(WS_INVALID_TOPIC(topic));
+	}
+};
+
+const terminateTopic = (topic, ws, symbol) => {
+	switch (topic) {
+		case 'orderbook':
+		case 'trades':
+			if (symbol) {
+				removeSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
+				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}`}));
+			} else {
+				each(toolsLib.getKitPairs(), (pair) => {
+					addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
+					ws.send(JSON.stringify(publicData[topic][pair]));
+				});
+				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
+			}
 			break;
+		case 'order':
+		case 'wallet':
+		case 'userTrade':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
+			sendNetworkWsMessage('unsubscribe', topic, ws.auth.networkId,);
+			break;
+		default:
+			throw new Error(WS_INVALID_TOPIC(topic));
 	}
 };
 
@@ -122,6 +157,7 @@ const handleHubData = (data) => {
 
 module.exports = {
 	initializeTopic,
+	terminateTopic,
 	handleHubData,
 	authorizeUser
 };

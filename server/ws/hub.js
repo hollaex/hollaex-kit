@@ -36,10 +36,10 @@ ws.on('message', (data) => {
 	// publish to sub
 });
 
-const userNetworkSubscribe = (networkId, topic) => {
-	ws.send(JSON.stringify({ op: 'subscribe', args: [`${topic}:${networkId}`] }));
+const sendNetworkWsMessage = (op, topic, networkId) => {
+	ws.send(JSON.stringify({ op, args: [`${topic}:${networkId}`] }));
 };
 
 module.exports = {
-	userNetworkSubscribe
+	sendNetworkWsMessage
 };

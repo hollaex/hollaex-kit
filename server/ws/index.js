@@ -4,16 +4,12 @@ const uuid = require('uuid/v4');
 const { loggerWebsocket } = require('../config/logger');
 const {
 	WS_EMPTY_MESSAGE,
-	WS_WRONG_CHANNEL_FROMAT,
-	WS_EXCHANGE_NOT_SUPPORTED,
-	WS_EVENT_NOT_SUPPORTED,
 	WS_WRONG_INPUT,
 	WS_WELCOME,
 	WS_UNSUPPORTED_OPERATION,
-	WS_AUTHENTICATION_REQUIRED,
 	WS_USER_AUTHENTICATED
 } = require('../messages');
-const { initializeTopic, authorizeUser } = require('./sub');
+const { initializeTopic, terminateTopic, authorizeUser } = require('./sub');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -50,34 +46,7 @@ wss.on('connection', (ws, req) => {
 				} else if (op === 'unsubscribe') {
 					args.forEach(arg => {
 						let [topic, symbol] = arg.split(':');
-						switch(topic) {
-							case 'orderbook':
-								ws.send(JSON.stringify({ message: 'Unsubscribed to orderbook' }));
-								break;
-							case 'trade':
-								ws.send(JSON.stringify({ message: 'Unsubscribed to trade' }));
-								break;
-							case 'wallet':
-								if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
-									throw new Error(WS_AUTHENTICATION_REQUIRED);
-								}
-								ws.send(JSON.stringify({ message: 'Unsubscribed to wallet' }));
-								break;
-							case 'order':
-								if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
-									throw new Error(WS_AUTHENTICATION_REQUIRED);
-								}
-								ws.send(JSON.stringify({ message: 'Unsubscribed to order' }));
-								break;
-							case 'userTrade':
-								if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
-									throw new Error(WS_AUTHENTICATION_REQUIRED);
-								}
-								ws.send(JSON.stringify({ message: 'Unsubscribed to userTrade' }));
-								break;
-							default:
-								break;
-						}
+						terminateTopic(topic, ws, symbol);
 					});
 				} else if (op === 'auth') {
 					const credentials = args[0];
