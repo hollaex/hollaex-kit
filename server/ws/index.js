@@ -9,7 +9,7 @@ const {
 	WS_UNSUPPORTED_OPERATION,
 	WS_USER_AUTHENTICATED
 } = require('../messages');
-const { initializeTopic, terminateTopic, authorizeUser } = require('./sub');
+const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels } = require('./sub');
 const { connect } = require('./hub');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
 
@@ -65,6 +65,10 @@ wss.on('connection', (ws, req) => {
 				ws.send(JSON.stringify({ error: WS_WRONG_INPUT }));
 			}
 		}
+	});
+
+	ws.on('close', () => {
+		terminateClosedChannels(ws);
 	});
 });
 

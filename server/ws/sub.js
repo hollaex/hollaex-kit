@@ -116,6 +116,14 @@ const authorizeUser = async (credentials, ws, ip) => {
 	}
 };
 
+const terminateClosedChannels = (ws) => {
+	if (ws.auth.sub) {
+		removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws);
+		removeSubscriber(WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId), ws);
+		removeSubscriber(WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId), ws);
+	}
+};
+
 const handleHubData = (data) => {
 	switch (data.topic) {
 		case 'orderbook':
@@ -153,5 +161,6 @@ module.exports = {
 	initializeTopic,
 	terminateTopic,
 	handleHubData,
-	authorizeUser
+	authorizeUser,
+	terminateClosedChannels
 };
