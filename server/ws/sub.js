@@ -33,50 +33,55 @@ const initializeTrade = (ws, symbol) => {
 	}
 };
 
-// const handleData = (data) => {
-// 	try {
-// 		data = JSON.parse(data);
-// 	} catch (err) {
-// 		console.log('err', err);
-// 	}
-// };
-
-const handleOrderbookData = (data) => {
+const handleHubData = (data) => {
 	try {
 		data = JSON.parse(data);
 	} catch (err) {
 		console.log('err', err);
 	}
 
-	orderbook[data.symbol] = { ...data, action: 'parital' };
+	switch (data.topic) {
+		case 'orderbook':
+			orderbook[data.symbol] = { ...data, action: 'parital' };
 
-	each(getChannels()[WS_ORDERBOOK_CHANNEL(data.symbol)], (ws) => {
-		ws.send(JSON.stringify(data));
-	});
-};
+			each(getChannels()[WS_ORDERBOOK_CHANNEL(data.symbol)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		case 'trades':
+			if (data.action === 'partial') {
+				trades[data.symbol] = data;
+			} else {
+				const updatedTrades = data[data.symbol].concat(trades[data.symbol][data.symbol]);
+				trades[data.symbol][data.symbol] = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
+			}
 
-const handleTradesData = (data) => {
-	try {
-		data = JSON.parse(data);
-	} catch (err) {
-		console.log('err', err);
+			each(getChannels()[WS_TRADES_CHANNEL(data.symbol)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		case 'order':
+			each(getChannels()[WS_ORDER_CHANNEL(data.userId)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		case 'wallet':
+			each(getChannels()[WS_WALLET_CHANNEL(data.userId)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		case 'userTrade':
+			each(getChannels()[WS_USER_TRADE_CHANNEL(data.userId)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		default:
+			break;
 	}
-
-	if (data.action === 'partial') {
-		trades[data.symbol] = data;
-	} else {
-		const updatedTrades = data[data.symbol].concat(trades[data.symbol][data.symbol]);
-		trades[data.symbol][data.symbol] = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
-	}
-
-	each(getChannels()[WS_TRADES_CHANNEL(data.symbol)], (ws) => {
-		ws.send(JSON.stringify(data));
-	});
 };
 
 module.exports = {
 	initializeOrderbook,
 	initializeTrade,
-	handleOrderbookData,
-	handleTradesData
+	handleHubData
 };

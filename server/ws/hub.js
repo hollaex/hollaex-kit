@@ -2,6 +2,7 @@
 
 const moment = require('moment');
 const toolsLib = require('hollaex-tools-lib');
+const { handleHubData } = require('./sub');
 
 const apiExpires = moment().toISOString() + 60;
 const signature = toolsLib.auth.createHmacSignature(toolsLib.getNetworkKeySecret().apiSecret, 'CONNECT', '/stream', apiExpires);
@@ -13,7 +14,7 @@ const ws = new WebSocket('ws://localhost/stream?exchange_id=1', {
 	}
 });
 
-ws.on('open', function open() {
+ws.on('open', () => {
 	ws.send(JSON.stringify({
 		op: 'subscribe',
 		args: ['orderbook', 'trade']
@@ -25,12 +26,13 @@ ws.on('error', (err) => {
 	console.log('err', err)
 });
 
-ws.on('message', function incoming(data) {
+ws.on('message', (data) => {
 	let data;
 	try {
 		data = JSON.parse(data);
 	} catch (err) {
 		console.log('err', err);
 	}
+	handleHubData(data);
 	// publish to sub
 });
