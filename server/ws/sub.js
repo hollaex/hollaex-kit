@@ -4,6 +4,7 @@ const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL } = require('../constants');
 const { each, size } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
+const { loggerWebsocket } = require('../config/logger');
 const {
 	WS_AUTHENTICATION_REQUIRED,
 	WS_USER_AUTHENTICATED,
@@ -23,6 +24,9 @@ const initializeTopic = (topic, ws, symbol) => {
 		case 'orderbook':
 		case 'trades':
 			if (symbol) {
+				if (!toolsLib.subscribedToPair(symbol)) {
+					throw new Error('Invalid symbol');
+				}
 				addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
 				ws.send(JSON.stringify(publicData[topic][symbol]));
 			} else {
@@ -55,6 +59,9 @@ const terminateTopic = (topic, ws, symbol) => {
 		case 'orderbook':
 		case 'trades':
 			if (symbol) {
+				if (!toolsLib.subscribedToPair(symbol)) {
+					throw new Error('Invalid symbol');
+				}
 				removeSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
 				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}`}));
 			} else {
@@ -124,19 +131,31 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 const terminateClosedChannels = (ws) => {
 	if (ws.auth.sub) {
-		removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws);
-		if (size(getChannels()[WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId)]) === 0) {
-			require('./hub').sendNetworkWsMessage('unsubscribe', 'order', ws.auth.sub.networkId);
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws);
+			if (size(getChannels()[WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId)]) === 0) {
+				require('./hub').sendNetworkWsMessage('unsubscribe', 'order', ws.auth.sub.networkId);
+			}
+		} catch (err) {
+			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
 
-		removeSubscriber(WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId), ws);
-		if (size(getChannels()[WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId)]) === 0) {
-			require('./hub').sendNetworkWsMessage('unsubscribe', 'wallet', ws.auth.sub.networkId);
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId), ws);
+			if (size(getChannels()[WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId)]) === 0) {
+				require('./hub').sendNetworkWsMessage('unsubscribe', 'wallet', ws.auth.sub.networkId);
+			}
+		} catch (err) {
+			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
 
-		removeSubscriber(WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId), ws);
-		if (size(getChannels()[WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId)]) === 0) {
-			require('./hub').sendNetworkWsMessage('unsubscribe', 'userTrade', ws.auth.sub.networkId);
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId), ws);
+			if (size(getChannels()[WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId)]) === 0) {
+				require('./hub').sendNetworkWsMessage('unsubscribe', 'userTrade', ws.auth.sub.networkId);
+			}
+		} catch (err) {
+			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
 	}
 };

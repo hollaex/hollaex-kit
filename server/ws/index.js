@@ -59,7 +59,7 @@ wss.on('connection', (ws, req) => {
 		} catch (err) {
 			if (err && err.message) {
 				loggerWebsocket.error('ws/index/message catch', err.message);
-				ws.send(JSON.stringify({ error: err.message}));
+				ws.send(JSON.stringify({ error: err.message }));
 			} else {
 				loggerWebsocket.error('ws/index/message catch', err);
 				ws.send(JSON.stringify({ error: WS_WRONG_INPUT }));

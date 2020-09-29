@@ -5,7 +5,6 @@ const moment = require('moment');
 const toolsLib = require('hollaex-tools-lib');
 const { handleHubData } = require('./sub');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
-const { isString } = require('lodash');
 
 const apiExpires = moment().toISOString() + 60;
 let ws;

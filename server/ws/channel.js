@@ -21,6 +21,8 @@ const addSubscriber = (channel, ws) => {
 	if (index === -1) {
 		channels[channel].push(ws);
 		loggerWebsocket.verbose('ws/channel/addSubscriber', channel, ws.id);
+	} else {
+		throw new Error(`Already subscribed to channel ${channel}`);
 	}
 };
 
@@ -32,6 +34,8 @@ const removeSubscriber = (channel, ws) => {
 	if (index > -1) {
 		channels[channel].splice(index, 1);
 		loggerWebsocket.verbose('ws/channel/removeSubscriber', channel, ws.id);
+	} else {
+		throw new Error(`Not subscribed to channel ${channel}`);
 	}
 };
 
