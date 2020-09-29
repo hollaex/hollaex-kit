@@ -26,13 +26,16 @@ const addSubscriber = (channel, ws) => {
 	}
 };
 
-const removeSubscriber = (channel, ws) => {
+const removeSubscriber = (channel, ws, type = undefined) => {
 	const index = findIndex(channels[channel], socket => {
 		return socket.id == ws.id;
 	});
 
 	if (index > -1) {
 		channels[channel].splice(index, 1);
+		if (type === 'private' && channels[channel].length === 0) {
+			delete channels[channel];
+		}
 		loggerWebsocket.verbose('ws/channel/removeSubscriber', channel, ws.id);
 	} else {
 		throw new Error(`Not subscribed to channel ${channel}`);
