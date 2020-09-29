@@ -4,6 +4,8 @@ const WebSocket = require('ws');
 const moment = require('moment');
 const toolsLib = require('hollaex-tools-lib');
 const { handleHubData } = require('./sub');
+const { setWsHeartbeat } = require('ws-heartbeat/client');
+const { isString } = require('lodash');
 
 const apiExpires = moment().toISOString() + 60;
 let ws;
@@ -38,13 +40,19 @@ const connect = () => {
 			});
 
 			ws.on('message', (data) => {
-				try {
-					data = JSON.parse(data);
-				} catch (err) {
-					console.log('err', err);
+				if (!isString(data)) {
+					try {
+						data = JSON.parse(data);
+					} catch (err) {
+						console.log('err', err);
+					}
+					handleHubData(data);
 				}
-				console.log(data);
-				handleHubData(data);
+			});
+
+			setWsHeartbeat(ws, 'ping', {
+				pingTimeout: 60000,
+				pingInterval: 25000,
 			});
 		});
 };

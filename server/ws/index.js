@@ -11,6 +11,7 @@ const {
 } = require('../messages');
 const { initializeTopic, terminateTopic, authorizeUser } = require('./sub');
 const { connect } = require('./hub');
+const { setWsHeartbeat } = require('ws-heartbeat/server');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -34,28 +35,26 @@ wss.on('connection', (ws, req) => {
 				throw new Error(WS_EMPTY_MESSAGE);
 			}
 
-			if (message === 'ping') {
-				ws.send('pong');
+			message = JSON.parse(message);
+			const { op, args } = message;
+			if (op === 'ping') {
+				ws.send(JSON.stringify({ message: 'pong' }));
+			} else if (op === 'subscribe') {
+				args.forEach(arg => {
+					let [topic, symbol] = arg.split(':');
+					initializeTopic(topic, ws, symbol);
+				});
+			} else if (op === 'unsubscribe') {
+				args.forEach(arg => {
+					let [topic, symbol] = arg.split(':');
+					terminateTopic(topic, ws, symbol);
+				});
+			} else if (op === 'auth') {
+				const credentials = args[0];
+				const ip = req.socket ? req.socket.remoteAddress : undefined;
+				authorizeUser(credentials, ws, ip);
 			} else {
-				message = JSON.parse(message);
-				const { op, args } = message;
-				if (op === 'subscribe') {
-					args.forEach(arg => {
-						let [topic, symbol] = arg.split(':');
-						initializeTopic(topic, ws, symbol);
-					});
-				} else if (op === 'unsubscribe') {
-					args.forEach(arg => {
-						let [topic, symbol] = arg.split(':');
-						terminateTopic(topic, ws, symbol);
-					});
-				} else if (op === 'auth') {
-					const credentials = args[0];
-					const ip = req.socket ? req.socket.remoteAddress : undefined;
-					authorizeUser(credentials, ws, ip);
-				} else {
-					throw new Error(WS_UNSUPPORTED_OPERATION);
-				}
+				throw new Error(WS_UNSUPPORTED_OPERATION);
 			}
 		} catch (err) {
 			if (err && err.message) {
@@ -63,10 +62,13 @@ wss.on('connection', (ws, req) => {
 				ws.send(JSON.stringify({ error: err.message}));
 			} else {
 				loggerWebsocket.error('ws/index/message catch', err);
-				ws.send(JSON.stringify({ error: WS_WRONG_INPUT}));
+				ws.send(JSON.stringify({ error: WS_WRONG_INPUT }));
 			}
 		}
 	});
 });
+
+// If no message received within a minute, close connection
+setWsHeartbeat(wss, () => {}, 60000);
 
 connect();
