@@ -38,7 +38,7 @@ const initializeTopic = (topic, ws, symbol) => {
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
-			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
+			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 			require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			break;
 		default:
@@ -67,7 +67,7 @@ const terminateTopic = (topic, ws, symbol) => {
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
-			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 			require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
 			break;
