@@ -4,7 +4,6 @@ const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
-const { sendNetworkWsMessage } = require('./hub');
 const {
 	WS_AUTHENTICATION_REQUIRED,
 	WS_USER_AUTHENTICATED,
@@ -40,7 +39,7 @@ const initializeTopic = (topic, ws, symbol) => {
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
-			sendNetworkWsMessage('subscribe', topic, ws.auth.networkId,);
+			require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
@@ -69,7 +68,7 @@ const terminateTopic = (topic, ws, symbol) => {
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
 			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
-			sendNetworkWsMessage('unsubscribe', topic, ws.auth.networkId,);
+			require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
 			break;
 		default:
@@ -118,12 +117,6 @@ const authorizeUser = async (credentials, ws, ip) => {
 };
 
 const handleHubData = (data) => {
-	try {
-		data = JSON.parse(data);
-	} catch (err) {
-		console.log('err', err);
-	}
-
 	switch (data.topic) {
 		case 'orderbook':
 			publicData[data.topic][data.symbol] = { ...data, action: 'parital' };

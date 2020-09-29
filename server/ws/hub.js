@@ -1,45 +1,61 @@
 'use strict';
 
+const WebSocket = require('ws');
 const moment = require('moment');
 const toolsLib = require('hollaex-tools-lib');
 const { handleHubData } = require('./sub');
 
 const apiExpires = moment().toISOString() + 60;
-const signature = toolsLib.auth.createHmacSignature(toolsLib.getNetworkKeySecret().apiSecret, 'CONNECT', '/stream', apiExpires);
-const ws = new WebSocket('ws://localhost/stream?exchange_id=1', {
-	headers : {
-		'api-key': toolsLib.getNetworkKeySecret().apiKey,
-		'api-signature': signature,
-		'api-expires': apiExpires
-	}
-});
+let ws;
 
-ws.on('open', () => {
-	ws.send(JSON.stringify({
-		op: 'subscribe',
-		args: ['orderbook', 'trade']
-	}));
-});
+const connect = () => {
+	toolsLib.database.findOne('status', { raw: true })
+		.then(({ api_key, api_secret }) => {
+			const signature = toolsLib.auth.createHmacSignature(api_secret, 'CONNECT', '/stream', apiExpires);
 
-ws.on('error', (err) => {
-	// ws.send('something');
-	console.log('err', err);
-});
+			ws = new WebSocket('wss://api.testnet.hollaex.network/stream?exchange_id=106', {
+				headers : {
+					'api-key': api_key,
+					'api-signature': signature,
+					'api-expires': apiExpires
+				}
+			});
 
-ws.on('message', (data) => {
-	try {
-		data = JSON.parse(data);
-	} catch (err) {
-		console.log('err', err);
-	}
-	handleHubData(data);
-	// publish to sub
-});
+			ws.on('open', () => {
+				ws.send(JSON.stringify({
+					op: 'subscribe',
+					args: ['orderbook', 'trade']
+				}));
+			});
+
+			ws.on('error', (err) => {
+				// ws.send('something');
+				console.log('err', err);
+			});
+
+			ws.on('close', () => {
+				console.log('close');
+			});
+
+			ws.on('message', (data) => {
+				try {
+					data = JSON.parse(data);
+				} catch (err) {
+					console.log('err', err);
+				}
+				console.log(data);
+				handleHubData(data);
+			});
+		});
+};
 
 const sendNetworkWsMessage = (op, topic, networkId) => {
-	ws.send(JSON.stringify({ op, args: [`${topic}:${networkId}`] }));
+	if (ws) {
+		ws.send(JSON.stringify({ op, args: [`${topic}:${networkId}`] }));
+	}
 };
 
 module.exports = {
-	sendNetworkWsMessage
+	sendNetworkWsMessage,
+	connect
 };

@@ -10,6 +10,7 @@ const {
 	WS_USER_AUTHENTICATED
 } = require('../messages');
 const { initializeTopic, terminateTopic, authorizeUser } = require('./sub');
+const { connect } = require('./hub');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -67,3 +68,5 @@ wss.on('connection', (ws, req) => {
 		}
 	});
 });
+
+connect();
