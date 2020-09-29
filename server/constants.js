@@ -14,11 +14,22 @@ exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 
 
 // CHANNEL CONSTANTS -----------------------------
 
-exports.WS_ORDERBOOK_CHANNEL = (symbol) => `orderbook:${symbol}`;
-exports.WS_TRADES_CHANNEL = (symbol) => `trades:${symbol}`;
-exports.WS_ORDER_CHANNEL = (userId) => `order:${userId}`;
-exports.WS_WALLET_CHANNEL = (userId) => `wallet:${userId}`;
-exports.WS_USER_TRADE_CHANNEL = (userId) => `userTrade:${userId}`;
+exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
+	switch(topic) {
+		case 'orderbook':
+			return `orderbook:${symbolOrUserId}`;
+		case 'trades':
+			return `trades:${symbolOrUserId}`;
+		case 'order':
+			return `order:${symbolOrUserId}`;
+		case 'wallet':
+			return `wallet:${symbolOrUserId}`;
+		case 'userTrade':
+			return `userTrade:${symbolOrUserId}`;
+		default:
+			return;
+	}
+};
 
 exports.WEBSOCKET_CHAT_CHANNEL = '/chat';
 exports.WEBSOCKET_CHAT_PUBLIC_ROOM = 'public';

@@ -1,35 +1,43 @@
 'use strict';
 
 const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
-const { WS_ORDERBOOK_CHANNEL, WS_TRADES_CHANNEL, WS_ORDER_CHANNEL, WS_WALLET_CHANNEL, WS_USER_TRADE_CHANNEL } = require('../constants');
+const { WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
+const { userNetworkSubscribe } = require('./hub');
+const { WS_AUTHENTICATION_REQUIRED } = require('../messages');
 // receives data from hub, parse for topic, look for channel, publish data back to client
 
-let orderbook = {};
-let trades = {};
-
-const initializeOrderbook = (ws, symbol) => {
-	if (symbol) {
-		addSubscriber(WS_ORDERBOOK_CHANNEL(symbol), ws);
-		ws.send(JSON.stringify(orderbook[symbol]));
-	} else {
-		each(toolsLib.getKitPairs(), (pair) => {
-			addSubscriber(WS_ORDERBOOK_CHANNEL(pair), ws);
-			ws.send(JSON.stringify(orderbook[pair]));
-		});
-	}
+let publicData = {
+	orderbook: {},
+	trades: {}
 };
 
-const initializeTrade = (ws, symbol) => {
-	if (symbol) {
-		addSubscriber(WS_TRADES_CHANNEL(symbol), ws);
-		ws.send(JSON.stringify(trades[symbol]));
-	} else {
-		each(toolsLib.getKitPairs(), (pair) => {
-			addSubscriber(WS_TRADES_CHANNEL(pair), ws);
-			ws.send(JSON.stringify(trades[pair]));
-		});
+const initializeTopic = (topic, ws, symbol) => {
+	switch (topic) {
+		case 'orderbook':
+		case 'trades':
+			if (symbol) {
+				addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
+				ws.send(JSON.stringify(publicData[topic][symbol]));
+			} else {
+				each(toolsLib.getKitPairs(), (pair) => {
+					addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
+					ws.send(JSON.stringify(publicData[topic][pair]));
+				});
+			}
+			break;
+		case 'order':
+		case 'wallet':
+		case 'userTrade':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
+			userNetworkSubscribe(ws.auth.networkId, topic);
+			break;
+		default:
+			break;
 	}
 };
 
@@ -42,36 +50,28 @@ const handleHubData = (data) => {
 
 	switch (data.topic) {
 		case 'orderbook':
-			orderbook[data.symbol] = { ...data, action: 'parital' };
+			publicData[data.topic][data.symbol] = { ...data, action: 'parital' };
 
-			each(getChannels()[WS_ORDERBOOK_CHANNEL(data.symbol)], (ws) => {
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
 			break;
 		case 'trades':
 			if (data.action === 'partial') {
-				trades[data.symbol] = data;
+				publicData[data.topic][data.symbol] = data;
 			} else {
-				const updatedTrades = data[data.symbol].concat(trades[data.symbol][data.symbol]);
-				trades[data.symbol][data.symbol] = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
+				const updatedTrades = data[data.symbol].concat(publicData[data.topic][data.symbol][data.symbol]);
+				publicData[data.topic][data.symbol][data.symbol] = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
 			}
 
-			each(getChannels()[WS_TRADES_CHANNEL(data.symbol)], (ws) => {
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
 			break;
 		case 'order':
-			each(getChannels()[WS_ORDER_CHANNEL(data.userId)], (ws) => {
-				ws.send(JSON.stringify(data));
-			});
-			break;
 		case 'wallet':
-			each(getChannels()[WS_WALLET_CHANNEL(data.userId)], (ws) => {
-				ws.send(JSON.stringify(data));
-			});
-			break;
 		case 'userTrade':
-			each(getChannels()[WS_USER_TRADE_CHANNEL(data.userId)], (ws) => {
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.userId)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
 			break;
@@ -81,7 +81,6 @@ const handleHubData = (data) => {
 };
 
 module.exports = {
-	initializeOrderbook,
-	initializeTrade,
+	initializeTopic,
 	handleHubData
 };

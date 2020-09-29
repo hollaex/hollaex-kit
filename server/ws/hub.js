@@ -23,11 +23,10 @@ ws.on('open', () => {
 
 ws.on('error', (err) => {
 	// ws.send('something');
-	console.log('err', err)
+	console.log('err', err);
 });
 
 ws.on('message', (data) => {
-	let data;
 	try {
 		data = JSON.parse(data);
 	} catch (err) {
@@ -36,3 +35,11 @@ ws.on('message', (data) => {
 	handleHubData(data);
 	// publish to sub
 });
+
+const userNetworkSubscribe = (networkId, topic) => {
+	ws.send(JSON.stringify({ op: 'subscribe', args: [`${topic}:${networkId}`] }));
+};
+
+module.exports = {
+	userNetworkSubscribe
+};

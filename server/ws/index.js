@@ -22,7 +22,7 @@ const {
 	WS_USER_AUTHENTICATED,
 	WS_MISSING_HEADER
 } = require('../messages');
-const { initializeOrderbook, initializeTrade } = require('./sub');
+const { initializeTopic } = require('./sub');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -54,36 +54,7 @@ wss.on('connection', (ws, req) => {
 				if (op === 'subscribe') {
 					args.forEach(arg => {
 						let [topic, symbol] = arg.split(':');
-						switch(topic) {
-							case 'orderbook':
-								initializeOrderbook(ws, symbol);
-								ws.send(JSON.stringify({ message: 'Subscribed to orderbook' }));
-								break;
-							case 'trade':
-								initializeTrade(ws, symbol);
-								ws.send(JSON.stringify({ message: 'Subscribed to trade' }));
-								break;
-							case 'wallet':
-								if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
-									throw new Error(WS_AUTHENTICATION_REQUIRED);
-								}
-								ws.send(JSON.stringify({ message: 'Subscribed to wallet' }));
-								break;
-							case 'order':
-								if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
-									throw new Error(WS_AUTHENTICATION_REQUIRED);
-								}
-								ws.send(JSON.stringify({ message: 'Subscribed to order' }));
-								break;
-							case 'userTrade':
-								if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
-									throw new Error(WS_AUTHENTICATION_REQUIRED);
-								}
-								ws.send(JSON.stringify({ message: 'Subscribed to userTrade' }));
-								break;
-							default:
-								break;
-						}
+						initializeTopic(topic, ws, symbol);
 					});
 				} else if (op === 'unsubscribe') {
 					args.forEach(arg => {
