@@ -140,7 +140,7 @@ const handleHubData = (data) => {
 		case 'order':
 		case 'wallet':
 		case 'userTrade':
-			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.userId)], (ws) => {
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
 			break;

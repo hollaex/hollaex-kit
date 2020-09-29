@@ -40,7 +40,7 @@ const connect = () => {
 			});
 
 			ws.on('message', (data) => {
-				if (!isString(data)) {
+				if (data !== 'pong') {
 					try {
 						data = JSON.parse(data);
 					} catch (err) {
