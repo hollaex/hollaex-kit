@@ -69,7 +69,7 @@ const terminateTopic = (topic, ws, symbol) => {
 				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}`}));
 			} else {
 				each(toolsLib.getKitPairs(), (pair) => {
-					addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
+					removeSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
 					ws.send(JSON.stringify(publicData[topic][pair]));
 				});
 				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
