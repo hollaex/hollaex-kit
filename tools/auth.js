@@ -210,7 +210,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 							return sendError(API_SIGNATURE_INVALID);
 						} else {
 							req.auth = {
-								sub: { id: token.user.id, email: token.user.email }
+								sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
 							};
 							cb();
 						}
@@ -486,6 +486,7 @@ const checkAdminIp = (whiteListedIps = [], ip = '') => {
 
 const issueToken = (
 	id,
+	networkId,
 	email,
 	ip,
 	isAdmin = false,
@@ -519,7 +520,8 @@ const issueToken = (
 		{
 			sub: {
 				id,
-				email
+				email,
+				networkId
 			},
 			scopes,
 			ip,
@@ -851,7 +853,7 @@ const findTokenByApiKey = (apiKey) => {
 			{
 				model: getModel('user'),
 				as: 'user',
-				attributes: ['id', 'email']
+				attributes: ['id', 'email', 'network_id']
 			}
 		]
 	});
