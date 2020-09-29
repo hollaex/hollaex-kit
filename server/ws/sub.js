@@ -31,8 +31,12 @@ const initializeTopic = (topic, ws, symbol) => {
 				ws.send(JSON.stringify(publicData[topic][symbol]));
 			} else {
 				each(toolsLib.getKitPairs(), (pair) => {
-					addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
-					ws.send(JSON.stringify(publicData[topic][pair]));
+					try {
+						addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
+						ws.send(JSON.stringify(publicData[topic][pair]));
+					} catch (err) {
+						ws.send(JSON.stringify({ message: err.message }));
+					}
 				});
 			}
 			break;
@@ -66,10 +70,13 @@ const terminateTopic = (topic, ws, symbol) => {
 				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}`}));
 			} else {
 				each(toolsLib.getKitPairs(), (pair) => {
-					removeSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
-					ws.send(JSON.stringify(publicData[topic][pair]));
+					try {
+						removeSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
+						ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}`}));
+					} catch (err) {
+						ws.send(JSON.stringify({ message: err.message }));
+					}
 				});
-				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
 			}
 			break;
 		case 'order':
@@ -82,7 +89,7 @@ const terminateTopic = (topic, ws, symbol) => {
 			if (!getChannels()[WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId)]) {
 				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 			}
-			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
@@ -130,6 +137,18 @@ const authorizeUser = async (credentials, ws, ip) => {
 };
 
 const terminateClosedChannels = (ws) => {
+	each(toolsLib.getKitPairs(), (pair) => {
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('orderbook', pair), ws);
+		} catch (err) {
+			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
+		}
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('trades', pair), ws);
+		} catch (err) {
+			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
+		}
+	});
 	if (ws.auth.sub) {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws, 'private');
