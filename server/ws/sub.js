@@ -2,7 +2,7 @@
 
 const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL } = require('../constants');
-const { each } = require('lodash');
+const { each, size } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
 const {
 	WS_AUTHENTICATION_REQUIRED,
@@ -38,8 +38,12 @@ const initializeTopic = (topic, ws, symbol) => {
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
-			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
-			require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
+			if (size(getChannels(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId))) === 0) {
+				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
+			} else {
+				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+			}
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
@@ -68,7 +72,9 @@ const terminateTopic = (topic, ws, symbol) => {
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
 			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
-			require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
+			if (size(getChannels(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId))) === 0) {
+				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
+			}
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
 			break;
 		default:
@@ -119,8 +125,19 @@ const authorizeUser = async (credentials, ws, ip) => {
 const terminateClosedChannels = (ws) => {
 	if (ws.auth.sub) {
 		removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws);
+		if (size(getChannels()[WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId)]) === 0) {
+			require('./hub').sendNetworkWsMessage('unsubscribe', 'order', ws.auth.sub.networkId);
+		}
+
 		removeSubscriber(WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId), ws);
+		if (size(getChannels()[WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId)]) === 0) {
+			require('./hub').sendNetworkWsMessage('unsubscribe', 'wallet', ws.auth.sub.networkId);
+		}
+
 		removeSubscriber(WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId), ws);
+		if (size(getChannels()[WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId)]) === 0) {
+			require('./hub').sendNetworkWsMessage('unsubscribe', 'userTrade', ws.auth.sub.networkId);
+		}
 	}
 };
 
@@ -140,7 +157,6 @@ const handleHubData = (data) => {
 				const updatedTrades = data[data.symbol].concat(publicData[data.topic][data.symbol][data.symbol]);
 				publicData[data.topic][data.symbol][data.symbol] = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
 			}
-
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
