@@ -5,7 +5,7 @@ const { WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
 const { userNetworkSubscribe } = require('./hub');
-const { WS_AUTHENTICATION_REQUIRED } = require('../messages');
+const { WS_AUTHENTICATION_REQUIRED, WS_USER_AUTHENTICATED, MULTIPLE_API_KEY, WS_ALREADY_AUTHENTICATED, WS_MISSING_HEADER } = require('../messages');
 // receives data from hub, parse for topic, look for channel, publish data back to client
 
 let publicData = {
@@ -38,6 +38,46 @@ const initializeTopic = (topic, ws, symbol) => {
 			break;
 		default:
 			break;
+	}
+};
+
+const authorizeUser = async (credentials, ws, ip) => {
+	// throw error if user is already authenticated
+	if (ws.auth.sub) {
+		throw new Error(WS_ALREADY_AUTHENTICATED);
+	}
+
+	// first element in args array should be object with credentials
+	const bearerToken = credentials.authorization;
+	const hmacKey = credentials['api-key'];
+
+	if (bearerToken && hmacKey) { // throw error if both authentication methods are given
+		throw new Error(MULTIPLE_API_KEY);
+	} else if (bearerToken) {
+
+		// get authenticated user data and set as ws.auth.
+		// Function will throw an error if there is an issue which will be caught below
+		const auth = await toolsLib.auth.verifyBearerTokenPromise(bearerToken, ip);
+
+		// If authentication was successful, set ws.auth to new auth object and send authenticated message
+		ws.auth = auth;
+		ws.send(JSON.stringify({ message: WS_USER_AUTHENTICATED(ws.auth.sub.email) }));
+	} else if (hmacKey) {
+		const apiSignature = credentials['api-signature'];
+		const apiExpires = credentials['api-expires'];
+		const method = 'CONNECT';
+		const url = '/stream';
+
+		// get authenticated user data and set as ws.auth.
+		// Function will throw an error if there is an issue which will be caught below
+		const auth = await toolsLib.auth.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
+
+		// If authentication was successful, set ws.auth to new auth object and send authenticated message
+		ws.auth = auth;
+		ws.send(JSON.stringify({ message: WS_USER_AUTHENTICATED(ws.auth.sub.email) }));
+	} else {
+		// throw error if bearer and hmac token are missing
+		throw new Error(WS_MISSING_HEADER);
 	}
 };
 
@@ -82,5 +122,6 @@ const handleHubData = (data) => {
 
 module.exports = {
 	initializeTopic,
-	handleHubData
+	handleHubData,
+	authorizeUser
 };

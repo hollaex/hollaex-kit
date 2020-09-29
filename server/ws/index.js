@@ -1,13 +1,7 @@
 
 const wss = require('./server');
 const uuid = require('uuid/v4');
-const { subscriber } = require('../db/pubsub');
 const { loggerWebsocket } = require('../config/logger');
-// const { publishPublicOrderbookFromDB, publishPublicTrades } = require('./utils');
-const {
-	WEBSOCKET_CHANNEL
-} = require('../constants');
-const toolsLib = require('hollaex-tools-lib');
 const {
 	WS_EMPTY_MESSAGE,
 	WS_WRONG_CHANNEL_FROMAT,
@@ -17,12 +11,9 @@ const {
 	WS_WELCOME,
 	WS_UNSUPPORTED_OPERATION,
 	WS_AUTHENTICATION_REQUIRED,
-	WS_ALREADY_AUTHENTICATED,
-	MULTIPLE_API_KEY,
-	WS_USER_AUTHENTICATED,
-	WS_MISSING_HEADER
+	WS_USER_AUTHENTICATED
 } = require('../messages');
-const { initializeTopic } = require('./sub');
+const { initializeTopic, authorizeUser } = require('./sub');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -89,47 +80,9 @@ wss.on('connection', (ws, req) => {
 						}
 					});
 				} else if (op === 'auth') {
-					// throw error if user is already authenticated
-					if (ws.auth.sub) {
-						throw new Error(WS_ALREADY_AUTHENTICATED);
-					}
-
-					// first element in args array should be object with credentials
 					const credentials = args[0];
-					const bearerToken = credentials.authorization;
-					const hmacKey = credentials['api-key'];
-
-					if (bearerToken && hmacKey) { // throw error if both authentication methods are given
-						loggerWebsocket.error('ws/server', MULTIPLE_API_KEY);
-						throw new Error(MULTIPLE_API_KEY);
-					} else if (bearerToken) {
-						const ip = req.socket ? req.socket.remoteAddress : undefined;
-
-						// get authenticated user data and set as ws.auth.
-						// Function will throw an error if there is an issue which will be caught below
-						const auth = await toolsLib.auth.verifyBearerTokenPromise(bearerToken, ip);
-
-						// If authentication was successful, set ws.auth to new auth object and send authenticated message
-						ws.auth = auth;
-						ws.send(JSON.stringify({ message: WS_USER_AUTHENTICATED(ws.auth.sub.email) }));
-					} else if (hmacKey) {
-						const apiSignature = credentials['api-signature'];
-						const apiExpires = credentials['api-expires'];
-						const method = 'CONNECT';
-						const url = '/stream';
-
-						// get authenticated user data and set as ws.auth.
-						// Function will throw an error if there is an issue which will be caught below
-						const auth = await toolsLib.auth.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
-
-						// If authentication was successful, set ws.auth to new auth object and send authenticated message
-						ws.auth = auth;
-						ws.send(JSON.stringify({ message: WS_USER_AUTHENTICATED(ws.auth.sub.email) }));
-					} else {
-						// throw error if bearer and hmac token are missing
-						loggerWebsocket.error('ws/index/message auth', WS_MISSING_HEADER);
-						throw new Error(WS_MISSING_HEADER);
-					}
+					const ip = req.socket ? req.socket.remoteAddress : undefined;
+					authorizeUser(credentials, ws, ip);
 				} else {
 					throw new Error(WS_UNSUPPORTED_OPERATION);
 				}
