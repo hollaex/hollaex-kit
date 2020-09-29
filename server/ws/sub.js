@@ -70,6 +70,7 @@ const terminateTopic = (topic, ws, symbol) => {
 			}
 			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.networkId), ws);
 			sendNetworkWsMessage('unsubscribe', topic, ws.auth.networkId,);
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}`}));
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
