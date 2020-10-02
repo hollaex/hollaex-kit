@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
+import { EditWrapper } from 'components';
 
 import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 
@@ -92,6 +93,7 @@ export const PanelInformationRow = ({
 
 export const CustomTabs = ({
 	title,
+	stringId,
 	icon,
 	notifications,
 	className,
@@ -117,11 +119,18 @@ export const CustomTabs = ({
 					<div className="check_title-notification">{notifications}</div>
 				)}
 			</div>
-			{title && (
+			{title && !stringId && (
 				<div className={classnames('custom_title-label', { 'title-inactive': false })}>
 					{title}
 				</div>
 			)}
+      {title && stringId && (
+				<EditWrapper stringId={stringId}>
+					<div className={classnames('custom_title-label', { 'title-inactive': false })}>
+            {title}
+					</div>
+				</EditWrapper>
+      )}
 		</div>
 	);
 };
