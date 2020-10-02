@@ -27,6 +27,7 @@ import {
 } from '../../actions/appActions';
 import { updateUserSettings, setUserData } from '../../actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
+import { EditWrapper } from 'components';
 
 class AppBar extends Component {
 	state = {
@@ -272,7 +273,9 @@ class AppBar extends Component {
 						<div className="app-bar-account-notification">{totalPending}</div>
 					)}
 				</div>
-				<div className="d-flex align-items-center">{STRINGS["ACCOUNT_TEXT"]}</div>
+				<EditWrapper stringId="ACCOUNT_TEXT">
+					<div className="d-flex align-items-center">{STRINGS["ACCOUNT_TEXT"]}</div>
+				</EditWrapper>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
@@ -513,9 +516,11 @@ class AppBar extends Component {
 											path={ICONS.SIDEBAR_TRADING_ACTIVE}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
-										<div className="d-flex align-items-center overflow">
-											{STRINGS["PRO_TRADE"]}
-										</div>
+										<EditWrapper stringId="PRO_TRADE">
+											<div className="d-flex align-items-center overflow">
+                        {STRINGS["PRO_TRADE"]}
+											</div>
+										</EditWrapper>
 									</div>
 								</Link>
 								{constants.broker_enabled
@@ -529,9 +534,11 @@ class AppBar extends Component {
 												path={ICONS.QUICK_TRADE_TAB_ACTIVE}
 												wrapperClassName="quicktrade_icon"
 											/>
-											<div className="d-flex align-items-center overflow">
-												{STRINGS["QUICK_TRADE"]}
-											</div>
+											<EditWrapper stringId="QUICK_TRADE">
+												<div className="d-flex align-items-center overflow">
+                          {STRINGS["QUICK_TRADE"]}
+												</div>
+											</EditWrapper>
 										</div>
 									</Link>
 									: null

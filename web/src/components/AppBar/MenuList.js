@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS, IS_XHT } from '../../config/constants';
+import { EditWrapper } from 'components';
 
 class MenuList extends Component {
 	state = {
@@ -109,7 +110,9 @@ class MenuList extends Component {
 								path={ICONS.TAB_SUMMARY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS["ACCOUNTS.TAB_SUMMARY"]}
+							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY">
+                {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -144,7 +147,9 @@ class MenuList extends Component {
 								path={ICONS.TAB_WALLET}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS["ACCOUNTS.TAB_WALLET"]}
+							<EditWrapper stringId="ACCOUNTS.TAB_WALLET">
+                {STRINGS["ACCOUNTS.TAB_WALLET"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -158,7 +163,9 @@ class MenuList extends Component {
 								path={ICONS.TAB_HISTORY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS["ACCOUNTS.TAB_HISTORY"]}
+							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY">
+                {STRINGS["ACCOUNTS.TAB_HISTORY"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -193,7 +200,9 @@ class MenuList extends Component {
 								path={ICONS.TAB_SECURITY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS["ACCOUNTS.TAB_SECURITY"]}
+							<EditWrapper stringId="ACCOUNTS.TAB_SECURITY">
+                {STRINGS["ACCOUNTS.TAB_SECURITY"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -230,7 +239,9 @@ class MenuList extends Component {
 								path={ICONS.TAB_VERIFY}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
+							<EditWrapper stringId="ACCOUNTS.TAB_VERIFICATION">
+                {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -244,7 +255,9 @@ class MenuList extends Component {
 								path={ICONS.TAB_SETTING}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+							<EditWrapper stringId="ACCOUNTS.TAB_SETTINGS">
+                {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -258,7 +271,9 @@ class MenuList extends Component {
 								path={ICONS.SIDEBAR_HELP}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS["LOGIN.HELP"]}
+							<EditWrapper stringId="LOGIN.HELP">
+                {STRINGS["LOGIN.HELP"]}
+							</EditWrapper>
 						</div>
 
 						<div
