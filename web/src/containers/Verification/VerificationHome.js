@@ -9,7 +9,13 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
     // if (activeTab < tabs.length) {
         return (
             <div className="presentation_container apply_rtl verification_container">
-                {!isMobile && <IconTitle text={STRINGS["ACCOUNTS.TAB_VERIFICATION"]} textType="title" />}
+                {!isMobile && (
+                  <IconTitle
+                    stringId="ACCOUNTS.TAB_VERIFICATION"
+                    text={STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
+                    textType="title"
+                  />
+                )}
                 <HeaderSection
                     openContactForm={openContactForm}
                 />

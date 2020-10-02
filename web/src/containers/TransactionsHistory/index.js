@@ -240,6 +240,7 @@ class TransactionsHistory extends Component {
 			>
 				{!isMobile && (
 					<IconTitle
+						stringId="TRANSACTION_HISTORY.TITLE"
 						text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
 						iconPath={ICONS.TRANSACTION_HISTORY}
 						textType="title"
@@ -293,6 +294,7 @@ class TransactionsHistory extends Component {
 					<div>
 						<IconTitle
 							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
+							stringId="CANCEL_BASE_WITHDRAWAL"
 							text={STRINGS.formatString(
 								STRINGS["CANCEL_BASE_WITHDRAWAL"],
 								coins[currency].fullname

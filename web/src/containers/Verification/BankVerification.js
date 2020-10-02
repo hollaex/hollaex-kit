@@ -92,7 +92,11 @@ class BankVerification extends Component {
 		const { formFields } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS["USER_VERIFICATION.BANK_VERIFICATION"]} textType="title" />
+				<IconTitle
+					stringId="USER_VERIFICATION.BANK_VERIFICATION"
+					text={STRINGS["USER_VERIFICATION.BANK_VERIFICATION"]}
+					textType="title"
+				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
 						title={STRINGS["USER_VERIFICATION.TITLE_BANK_ACCOUNT"]}

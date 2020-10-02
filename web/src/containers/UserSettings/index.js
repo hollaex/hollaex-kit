@@ -397,6 +397,7 @@ class UserSettings extends Component {
 			<div className="presentation_container apply_rtl verification_container">
 				{!isMobile && (
 					<IconTitle
+						stringId="ACCOUNTS.TAB_SETTINGS"
 						text={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 						textType="title"
 					/>

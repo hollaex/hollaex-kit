@@ -183,7 +183,11 @@ class MobileVerification extends Component {
 		const { formFields, codeRequested, isTimer } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS["USER_VERIFICATION.PHONE_VERIFICATION"]} textType="title" />
+				<IconTitle
+					stringId="USER_VERIFICATION.PHONE_VERIFICATION"
+					text={STRINGS["USER_VERIFICATION.PHONE_VERIFICATION"]}
+					textType="title"
+				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
 						title={STRINGS["USER_VERIFICATION.PHONE_DETAILS"]}

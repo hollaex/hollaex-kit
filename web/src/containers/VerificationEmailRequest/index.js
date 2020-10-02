@@ -123,6 +123,7 @@ class VerifyEmailRequest extends Component {
 				>
 					<IconTitle
 						iconPath={path}
+						stringId="VERIFICATION_EMAIL_REQUEST.TITLE"
 						text={STRINGS["VERIFICATION_EMAIL_REQUEST.TITLE"]}
 						textType="title"
 						underline={true}

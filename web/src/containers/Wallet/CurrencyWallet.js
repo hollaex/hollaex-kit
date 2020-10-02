@@ -88,6 +88,7 @@ class Wallet extends Component {
 				</MobileBarBack> }
 				<div className="presentation_container apply_rtl">
 					<IconTitle
+						stringId="WALLET_TITLE"
 						text={STRINGS["WALLET_TITLE"]}
 						iconPath={ICONS.BITCOIN_WALLET}
 						useSvg={true}

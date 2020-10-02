@@ -11,6 +11,7 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 	return (
 		<div className="otp_form-wrapper">
 			<IconTitle
+				stringId="ACCOUNT_SECURITY.OTP.CONTENT.TITLE"
 				text={STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.TITLE"]}
 				iconPath={ICONS.OTP_KEYS}
 				className="w-100"
