@@ -87,6 +87,7 @@ class StringSettingsModal extends Component {
         bodyOpenClassName="operator-controls__modal-open"
       >
         <Table
+          className="operator-controls__table"
           columns={this.columns}
           dataSource={languages}
           size="small"

@@ -3811,6 +3811,16 @@ table th {
   color: #FFFFFF !important;
   border-color: #FFFFFF !important; }
 
+.operator-controls__tabletable {
+  border-collapse: collapse !important; }
+
+.operator-controls__table thead > tr > th, .operator-controls__table tbody > tr > td {
+  background-color: #0000FF !important;
+  color: #FFFFFF !important; }
+
+.operator-controls__table tbody > tr > td {
+  border: none !important; }
+
 .sidebar-fit-to-screen {
   height: 100vh !important; }
 

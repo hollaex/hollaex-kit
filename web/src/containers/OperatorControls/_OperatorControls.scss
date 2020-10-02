@@ -102,3 +102,19 @@ $operator-controls__panel-border-color: #A7A7A7;
   color: $operator-controls__panel-text-color !important;
   border-color: $operator-controls__panel-text-color !important;
 }
+
+.operator-controls__table {
+
+  &table {
+    border-collapse: collapse !important;
+  }
+
+  & thead > tr > th, & tbody > tr > td {
+    background-color: $operator-controls__panel-main-color !important;
+    color: $operator-controls__panel-text-color !important;
+  }
+
+  & tbody > tr > td {
+    border: none !important;
+  }
+}
