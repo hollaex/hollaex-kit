@@ -254,6 +254,7 @@ class TransactionsHistory extends Component {
 								STRINGS["TRANSACTION_HISTORY.TRADES"]
 							) : (
 									<CheckTitle
+										stringId="TRANSACTION_HISTORY.TRADES"
 										title={STRINGS["TRANSACTION_HISTORY.TRADES"]}
 										icon={ICONS.TRADE_HISTORY}
 									/>
@@ -264,6 +265,7 @@ class TransactionsHistory extends Component {
 								STRINGS["TRANSACTION_HISTORY.DEPOSITS"]
 							) : (
 									<CheckTitle
+										stringId="TRANSACTION_HISTORY.DEPOSITS"
 										title={STRINGS["TRANSACTION_HISTORY.DEPOSITS"]}
 										icon={ICONS.DEPOSIT_HISTORY}
 									/>
@@ -274,6 +276,7 @@ class TransactionsHistory extends Component {
 								STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]
 							) : (
 									<CheckTitle
+										stringId="TRANSACTION_HISTORY.WITHDRAWALS"
 										title={STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]}
 										icon={ICONS.WITHDRAW_HISTORY}
 									/>
