@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import { ICONS, IS_XHT } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 class AppMenuBar extends Component {
     state = {
@@ -135,7 +136,9 @@ class AppMenuBar extends Component {
                         onClick={() => this.handleMenuChange('summary')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
+                            <EditWrapper stringId="ACCOUNTS.TAB_SUMMARY">
+                              {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
+                            </EditWrapper>
                         </div>
                     </div>
                     <div
@@ -156,7 +159,9 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS["ACCOUNTS.TAB_WALLET"]}
+                            <EditWrapper stringId="ACCOUNTS.TAB_WALLET">
+                              {STRINGS["ACCOUNTS.TAB_WALLET"]}
+                            </EditWrapper>
                         </div>
                     </div>
                     <div
@@ -177,7 +182,9 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS["ACCOUNTS.TAB_SECURITY"]}
+                            <EditWrapper stringId="ACCOUNTS.TAB_SECURITY">
+                              {STRINGS["ACCOUNTS.TAB_SECURITY"]}
+                            </EditWrapper>
                         </div>
                     </div>
                     <div
@@ -198,7 +205,9 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
+                            <EditWrapper stringId="ACCOUNTS.TAB_VERIFICATION">
+                              {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
+                            </EditWrapper>
                         </div>
                     </div>
                     <div
@@ -206,7 +215,9 @@ class AppMenuBar extends Component {
                         onClick={() => this.handleMenuChange('settings')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-menu-bar-icon" />
-                            {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+                            <EditWrapper stringId="ACCOUNTS.TAB_SETTINGS">
+                              {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+                            </EditWrapper>
                         </div>
                     </div>
                     {/* <div

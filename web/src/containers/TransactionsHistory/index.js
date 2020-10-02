@@ -240,6 +240,7 @@ class TransactionsHistory extends Component {
 			>
 				{!isMobile && (
 					<IconTitle
+						stringId="TRANSACTION_HISTORY.TITLE"
 						text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
 						iconPath={ICONS.TRANSACTION_HISTORY}
 						textType="title"
@@ -253,6 +254,7 @@ class TransactionsHistory extends Component {
 								STRINGS["TRANSACTION_HISTORY.TRADES"]
 							) : (
 									<CheckTitle
+										stringId="TRANSACTION_HISTORY.TRADES"
 										title={STRINGS["TRANSACTION_HISTORY.TRADES"]}
 										icon={ICONS.TRADE_HISTORY}
 									/>
@@ -263,6 +265,7 @@ class TransactionsHistory extends Component {
 								STRINGS["TRANSACTION_HISTORY.DEPOSITS"]
 							) : (
 									<CheckTitle
+										stringId="TRANSACTION_HISTORY.DEPOSITS"
 										title={STRINGS["TRANSACTION_HISTORY.DEPOSITS"]}
 										icon={ICONS.DEPOSIT_HISTORY}
 									/>
@@ -273,6 +276,7 @@ class TransactionsHistory extends Component {
 								STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]
 							) : (
 									<CheckTitle
+										stringId="TRANSACTION_HISTORY.WITHDRAWALS"
 										title={STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]}
 										icon={ICONS.WITHDRAW_HISTORY}
 									/>
@@ -293,6 +297,7 @@ class TransactionsHistory extends Component {
 					<div>
 						<IconTitle
 							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
+							stringId="CANCEL_BASE_WITHDRAWAL"
 							text={STRINGS.formatString(
 								STRINGS["CANCEL_BASE_WITHDRAWAL"],
 								coins[currency].fullname

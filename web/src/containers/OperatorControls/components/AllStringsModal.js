@@ -83,6 +83,7 @@ class AllStringsModal extends Component {
               </Button>
             </div>
             <Table
+              className="operator-controls__table"
               columns={this.getColumns()}
               dataSource={strings}
               size="small"

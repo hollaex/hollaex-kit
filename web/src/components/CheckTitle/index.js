@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
+import { EditWrapper } from 'components';
 
 import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 
@@ -24,6 +25,7 @@ export const renderStatusIcon = (statusCode = -1, className = "") => {
 
 const CheckTitle = ({
 	title,
+	stringId,
 	icon,
 	notifications,
 	className,
@@ -36,14 +38,21 @@ const CheckTitle = ({
 			<div className='verification-status-container w-100 d-flex justify-content-end'>
 				{!!notificationStatus
 					? notificationStatus
-					: <div className="empty-notification"></div>
+					: <div className="empty-notification" />
 				}
 			</div>
-			{title && (
+			{title && !stringId && (
 				<div className={classnames('check_title-label', titleClassName)}>
 					{title}
 				</div>
 			)}
+      {title && stringId && (
+      	<EditWrapper stringId={stringId}>
+					<div className={classnames('check_title-label', titleClassName)}>
+            {title}
+					</div>
+      	</EditWrapper>
+      )}
 			<div className="check_title-icon">
 				{icon &&
 					(icon.indexOf('.svg') > 0 ? (
@@ -92,6 +101,7 @@ export const PanelInformationRow = ({
 
 export const CustomTabs = ({
 	title,
+	stringId,
 	icon,
 	notifications,
 	className,
@@ -117,11 +127,18 @@ export const CustomTabs = ({
 					<div className="check_title-notification">{notifications}</div>
 				)}
 			</div>
-			{title && (
+			{title && !stringId && (
 				<div className={classnames('custom_title-label', { 'title-inactive': false })}>
 					{title}
 				</div>
 			)}
+      {title && stringId && (
+				<EditWrapper stringId={stringId}>
+					<div className={classnames('custom_title-label', { 'title-inactive': false })}>
+            {title}
+					</div>
+				</EditWrapper>
+      )}
 		</div>
 	);
 };

@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
-import { Input } from 'antd';
+import { Input, Button } from 'antd';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -41,6 +41,8 @@ class OperatorControls extends Component {
       source: false,
       isStringsSettingsOpen: false,
       isAddLanguageModalOpen: false,
+      isExitConfirmationOpen: false,
+      isPublishConfirmationOpen: false,
     }
   }
 
@@ -238,8 +240,18 @@ class OperatorControls extends Component {
   reload = () => window.location.reload(false)
 
   toggleEditMode = () => {
+    const { onChangeEditMode, editMode } = this.props;
+    if (!editMode) {
+      onChangeEditMode();
+    } else {
+      this.openExitConfirmationModal()
+    }
+  }
+
+  exitEditMode = () => {
     const { onChangeEditMode } = this.props;
     onChangeEditMode();
+    this.reload();
   }
 
   getLanguageLabel = (key) => {
@@ -357,6 +369,22 @@ class OperatorControls extends Component {
     }), () => this.closeStringSettingsModal(true));
   }
 
+  openExitConfirmationModal = () => {
+    this.setState({ isExitConfirmationOpen: true });
+  }
+
+  closeExitConfirmationModal = () => {
+    this.setState({ isExitConfirmationOpen: false });
+  }
+
+  openPublishConfirmationModal = () => {
+    this.setState({ isPublishConfirmationOpen: true });
+  }
+
+  closePublishConfirmationModal = () => {
+    this.setState({ isPublishConfirmationOpen: false });
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -371,7 +399,9 @@ class OperatorControls extends Component {
       languageOptions,
       selectedLanguages,
       isStringsSettingsOpen,
+      isExitConfirmationOpen,
       isAddLanguageModalOpen,
+      isPublishConfirmationOpen,
     } = this.state;
     const { editMode } = this.props;
 
@@ -400,7 +430,7 @@ class OperatorControls extends Component {
           <div className="d-flex align-items-center">
             <button
               type="submit"
-              onClick={this.handlePublish}
+              onClick={this.openPublishConfirmationModal}
               className="operator-controls__publish-button"
               disabled={!isPublishEnabled}
             >
@@ -491,6 +521,65 @@ class OperatorControls extends Component {
           languages={LANGUAGES.filter(({ value }) => !languageKeys.includes(value))}
           onSave={this.addLanguage}
         />
+        <Modal
+          isOpen={isExitConfirmationOpen}
+          label="operator-controls-modal"
+          className="operator-controls__modal"
+          disableTheme={true}
+          onCloseDialog={this.closeExitConfirmationModal}
+          shouldCloseOnOverlayClick={true}
+          showCloseText={true}
+          bodyOpenClassName="operator-controls__modal-open"
+        >
+          <span>
+            You are about to exit edit mode with some unpublished changes on your exchange
+          </span>
+          <footer className="d-flex">
+            <Button
+              type="primary"
+              onClick={this.closeExitConfirmationModal}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={this.exitEditMode}
+              danger
+            >
+              Exit
+            </Button>
+          </footer>
+        </Modal>
+        <Modal
+          isOpen={isPublishConfirmationOpen}
+          label="operator-controls-modal"
+          className="operator-controls__modal"
+          disableTheme={true}
+          onCloseDialog={this.closePublishConfirmationModal}
+          shouldCloseOnOverlayClick={true}
+          showCloseText={true}
+          bodyOpenClassName="operator-controls__modal-open"
+        >
+          <span>
+            Publishing will apply all changes to the live website.
+            Are you sure you want to publish the changes?
+          </span>
+          <footer className="d-flex">
+            <Button
+              type="primary"
+              onClick={this.closePublishConfirmationModal}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={this.handlePublish}
+              danger
+            >
+              Publish
+            </Button>
+          </footer>
+        </Modal>
       </div>
     );
   }

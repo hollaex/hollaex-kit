@@ -10,6 +10,7 @@ const RiskyOrder = ({ data, onConfirm, onClose }) => {
     return (
         <div className="risky-trade-wrapper">
             <IconTitle
+                stringId="USER_SETTINGS.RISKY_TRADE_DETECTED"
                 text={STRINGS["USER_SETTINGS.RISKY_TRADE_DETECTED"]}
                 iconPath={ICONS.SETTING_RISK_MANAGE_WARNING_ICON}
                 textType="title"

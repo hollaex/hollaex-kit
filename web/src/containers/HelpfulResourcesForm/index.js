@@ -62,6 +62,7 @@ class HelpfulResourcesForm extends Component {
 			<div className="help-wrapper">
 				<IconTitle
 					iconPath={activeTheme==='white' ? ICONS.QUESTION_MARK : ICONS.QUESTION_MARK_COLOR}
+					stringId="HELPFUL_RESOURCES_TEXT"
 					text={STRINGS["HELPFUL_RESOURCES_TEXT"]}
 					textType="title"
 					underline={true}

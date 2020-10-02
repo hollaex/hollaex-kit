@@ -10,6 +10,7 @@ import MarketSelector from './MarketSelector';
 import { DEFAULT_TRADING_PAIRS } from 'config/constants';
 import { ICONS } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
+import { EditWrapper } from 'components';
 
 let timeOut = '';
 
@@ -387,7 +388,11 @@ class PairTabs extends Component {
                         <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-close" />
                     </div>
                     {Object.keys(selectedTabs).length <= 0 ?
-                        <span onClick={this.openAddTabMenu}>{STRINGS["ADD_TRADING_PAIR"]}</span>
+                        <span onClick={this.openAddTabMenu}>
+                            <EditWrapper stringId="ADD_TRADING_PAIR">
+                                {STRINGS["ADD_TRADING_PAIR"]}
+                            </EditWrapper>
+                        </span>
                     : '' }
                     {isAddTab &&
                         <MarketSelector

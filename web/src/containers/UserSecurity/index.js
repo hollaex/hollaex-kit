@@ -270,6 +270,7 @@ class UserVerification extends Component {
 			<div>
 				{!isMobile && (
 					<IconTitle
+						stringId="ACCOUNTS.TAB_SECURITY"
 						text={STRINGS["ACCOUNTS.TAB_SECURITY"]}
 						textType="title"
 					/>

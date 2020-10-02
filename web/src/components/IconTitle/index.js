@@ -2,9 +2,11 @@ import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { ActionNotification } from '../';
+import { EditWrapper } from 'components';
 
 const BasicIconTitle = ({
 	text,
+	stringId,
 	iconPath,
 	textType,
 	underline,
@@ -19,12 +21,25 @@ const BasicIconTitle = ({
 				<ReactSVG path={iconPath} wrapperClassName={classnames('icon_title-svg', imageWrapperClassName)} />
 			) : (
 				isLogo
-					? (<div style={{ backgroundImage: `url(${iconPath})` }} className={classnames(imageWrapperClassName)}></div>)
+					? (<div style={{ backgroundImage: `url(${iconPath})` }} className={classnames(imageWrapperClassName)} />)
 					: (<img src={iconPath} alt={text} className={classnames("icon_title-image", imageWrapperClassName)} />)
 			))}
-		<div className={classnames('icon_title-text', 'text-center', textType)}>
-			{text}
-		</div>
+		{
+			stringId && (
+				<EditWrapper stringId={stringId}>
+					<div className={classnames('icon_title-text', 'text-center', textType)}>
+            {text}
+					</div>
+				</EditWrapper>
+			)
+		}
+		{
+			!stringId && (
+				<div className={classnames('icon_title-text', 'text-center', textType)}>
+          {text}
+				</div>
+			)
+		}
 	</div>
 );
 

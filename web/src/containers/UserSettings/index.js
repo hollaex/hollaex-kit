@@ -159,6 +159,7 @@ class UserSettings extends Component {
 					/>
 				) : (
 					<CustomTabs
+						stringId="USER_SETTINGS.TITLE_NOTIFICATION"
 						title={STRINGS["USER_SETTINGS.TITLE_NOTIFICATION"]}
 						icon={ICONS.SETTING_NOTIFICATION_ICON}
 					/>
@@ -181,6 +182,7 @@ class UserSettings extends Component {
 					/>
 				) : (
 					<CustomTabs
+						stringId="USER_SETTINGS.TITLE_INTERFACE"
 						title={STRINGS["USER_SETTINGS.TITLE_INTERFACE"]}
 						icon={ICONS.SETTING_INTERFACE_ICON}
 					/>
@@ -203,6 +205,7 @@ class UserSettings extends Component {
 					/>
 				) : (
 					<CustomTabs
+						stringId="USER_SETTINGS.TITLE_LANGUAGE"
 						title={STRINGS["USER_SETTINGS.TITLE_LANGUAGE"]}
 						icon={ICONS.SETTING_LANGUAGE_ICON}
 					/>
@@ -225,6 +228,7 @@ class UserSettings extends Component {
 					/>
 				) : (
 					<CustomTabs
+						stringId="USER_SETTINGS.TITLE_CHAT"
 						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
 						icon={ICONS.SETTING_CHAT_ICON}
 					/>
@@ -245,6 +249,7 @@ class UserSettings extends Component {
 					/>
 				) : (
 					<CustomTabs
+						stringId="USER_SETTINGS.TITLE_AUDIO_CUE"
 						title={STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"]}
 						icon={ICONS.SETTING_AUDIO_ICON}
 					/>
@@ -267,6 +272,7 @@ class UserSettings extends Component {
 					/>
 				) : (
 					<CustomTabs
+						stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
 						title={STRINGS["USER_SETTINGS.TITLE_MANAGE_RISK"]}
 						icon={ICONS.SETTING_RISK_ICON}
 					/>
@@ -391,6 +397,7 @@ class UserSettings extends Component {
 			<div className="presentation_container apply_rtl verification_container">
 				{!isMobile && (
 					<IconTitle
+						stringId="ACCOUNTS.TAB_SETTINGS"
 						text={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 						textType="title"
 					/>

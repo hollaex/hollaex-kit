@@ -196,7 +196,11 @@ class Summary extends Component {
 		return (
 			<div className="summary-container">
 				{!isMobile && (
-					<IconTitle text={`${STRINGS["SUMMARY.TITLE"]}`} textType="title" />
+					<IconTitle
+						stringId="SUMMARY.TITLE"
+						text={`${STRINGS["SUMMARY.TITLE"]}`}
+						textType="title"
+					/>
 				)}
 				{isMobile ? (
 					<MobileSummary
