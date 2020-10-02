@@ -25,6 +25,7 @@ export const renderStatusIcon = (statusCode = -1, className = "") => {
 
 const CheckTitle = ({
 	title,
+	stringId,
 	icon,
 	notifications,
 	className,
@@ -37,14 +38,21 @@ const CheckTitle = ({
 			<div className='verification-status-container w-100 d-flex justify-content-end'>
 				{!!notificationStatus
 					? notificationStatus
-					: <div className="empty-notification"></div>
+					: <div className="empty-notification" />
 				}
 			</div>
-			{title && (
+			{title && !stringId && (
 				<div className={classnames('check_title-label', titleClassName)}>
 					{title}
 				</div>
 			)}
+      {title && stringId && (
+      	<EditWrapper stringId={stringId}>
+					<div className={classnames('check_title-label', titleClassName)}>
+            {title}
+					</div>
+      	</EditWrapper>
+      )}
 			<div className="check_title-icon">
 				{icon &&
 					(icon.indexOf('.svg') > 0 ? (
