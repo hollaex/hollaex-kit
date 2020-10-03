@@ -76,6 +76,7 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 
 export const renderNeedHelpAction = (openContactForm, links = {}) => (
 	<ActionNotification
+		stringId="NEED_HELP_TEXT"
 		text={STRINGS["NEED_HELP_TEXT"]}
 		status="information"
 		iconPath={ICONS.BLUE_QUESTION}

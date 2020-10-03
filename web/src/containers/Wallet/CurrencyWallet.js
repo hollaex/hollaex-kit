@@ -51,6 +51,7 @@ class Wallet extends Component {
 						fullname
 					)}
 					<ActionNotification
+						srringId="TRADE_HISTORY"
 						text={STRINGS["TRADE_HISTORY"]}
 						status="information"
 						iconPath={ICONS.BLUE_CLIP}

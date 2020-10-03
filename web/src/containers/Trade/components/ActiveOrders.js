@@ -113,6 +113,7 @@ const generateHeaders = (pairData = {}, onCancel) => [
 			return (
 				<td key={index} style={{ position: 'relative' }}>
 					<ActionNotification
+						stringId="CANCEL"
 						text={STRINGS["CANCEL"]}
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={() => onCancel(id)}
