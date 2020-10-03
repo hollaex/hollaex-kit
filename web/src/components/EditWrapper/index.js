@@ -1,7 +1,8 @@
 import React from 'react';
-import { string, array, object } from 'prop-types';
+import { string, array, object, bool } from 'prop-types';
+import classnames from 'classnames';
 
-const EditWrapper = ({ children, stringId, position, style }) => {
+const EditWrapper = ({ children, stringId, position, style, reverse }) => {
 
   const [x = 5, y = 0] = position;
   const triggerStyles = {
@@ -9,7 +10,7 @@ const EditWrapper = ({ children, stringId, position, style }) => {
   };
 
   return (
-    <div className="edit-wrapper__container" style={style}>
+    <div className={classnames("edit-wrapper__container", { reverse: reverse })} style={style}>
       {children}
       {
         stringId && (
@@ -30,11 +31,13 @@ EditWrapper.propTypes = {
   stringId: string.isRequired,
   position: array,
   style: object,
+  reverse: bool,
 }
 
 EditWrapper.defaultProps = {
   position: [],
   style: {},
+  reverse: false,
 }
 
 export default EditWrapper;

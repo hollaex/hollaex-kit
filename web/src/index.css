@@ -9623,6 +9623,8 @@ foreignObject {
 
 .edit-wrapper__container {
   display: inline-flex; }
+  .edit-wrapper__container.reverse {
+    flex-direction: row-reverse; }
 
 .edit-wrapper__icon-wrapper {
   display: none; }
