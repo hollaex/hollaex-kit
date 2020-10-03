@@ -65,7 +65,7 @@ const ActionNotification = ({
 			</div>
 		)}
     {(showActionText || !isMobile) && stringId && (
-			<EditWrapper stringId={stringId}>
+			<EditWrapper stringId={stringId} position={[-5, 0]} reverse>
 				<div
 					className={classnames(
             'action_notification-text',
