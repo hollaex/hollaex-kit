@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 // import { render } from 'react-snapshot';
 import { Router, browserHistory } from 'react-router';
+import config, { ProjectConfig } from 'config/project.config';
 import './config/initialize';
 
 import 'flag-icon-css/css/flag-icon.min.css';
@@ -58,15 +59,24 @@ const getConfigs = async () => {
 
   setLocalVersions(remoteVersions);
   setValidLanguages(validLanguages);
-  return remoteConfigs;
+
+  const mergedConfigs = {
+    ...config,
+    ...remoteConfigs,
+  }
+
+  return mergedConfigs;
 }
 
-const bootstrapApp = () => {
+const bootstrapApp = (appConfig) => {
   initializeStrings()
+  window.appConfig = { ...appConfig }
 
   render(
 		<Provider store={store}>
-			<Router routes={routes} history={browserHistory} />
+      <ProjectConfig.Provider value={appConfig}>
+			  <Router routes={routes} history={browserHistory} />
+      </ProjectConfig.Provider>
 		</Provider>,
     document.getElementById('root')
   );
