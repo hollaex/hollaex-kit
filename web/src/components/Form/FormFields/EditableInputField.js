@@ -57,6 +57,7 @@ class EditableInputField extends Component {
 					ref={this.setInputRef}
 				/>
 				<ActionNotification
+					stringId="EDIT_TEXT"
 					text={STRINGS["EDIT_TEXT"]}
 					status="information"
 					iconPath={ICONS.BLUE_EDIT}

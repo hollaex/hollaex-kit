@@ -30,6 +30,7 @@ const HistoryDisplay = (props) => {
 					{title}
 					{count > 0 && (
 						<ActionNotification
+							stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
 							text={STRINGS["TRANSACTION_HISTORY.TEXT_DOWNLOAD"]}
 							iconPath={ICONS.DATA}
 							useSvg={true}

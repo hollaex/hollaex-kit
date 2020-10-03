@@ -76,6 +76,7 @@ class OrdersWrapper extends Component {
                 titleAction: isLoggedIn()
                     ? activeOrders.length > 0 && (
                         <ActionNotification
+                            stringId="CANCEL_ALL"
                             text={STRINGS["CANCEL_ALL"]}
                             iconPath={ICONS.CANCEL_CROSS_ACTIVE}
                             onClick={this.cancelAllOrders}
@@ -102,6 +103,7 @@ class OrdersWrapper extends Component {
                     ),
                 titleAction: isLoggedIn() ? (
                     <ActionNotification
+                        stringId="TRANSACTION_HISTORY.TITLE"
                         text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
                         iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
                         onClick={this.props.goToTransactionsHistory}

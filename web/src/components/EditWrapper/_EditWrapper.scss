@@ -2,16 +2,20 @@ $operator-controls__panel-main-color: #0000FF;
 $operator-controls__panel-text-color: #FFFFFF;
 
 .edit-wrapper__container {
-  display: inline-flex;
+  display: inline-flex !important;
+
+  &.reverse {
+    flex-direction: row-reverse !important;
+  }
 }
 
 .edit-wrapper__icon-wrapper {
-  display: none;
+  display: none !important;
 }
 
 .layout-edit {
   .edit-wrapper__icon-wrapper {
-    display: inline-block;
+    display: inline-block !important;
     padding: 2px;
     width: 17px !important;
     height: 17px !important;

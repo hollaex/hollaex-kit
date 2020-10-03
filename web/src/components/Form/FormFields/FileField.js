@@ -88,6 +88,7 @@ class FileField extends Component {
 						? fileArray.length !== length &&
 						  multiple && (
 								<ActionNotification
+									stringId="ADD_FILES"
 									text={STRINGS["ADD_FILES"]}
 									status="information"
 									iconPath={ICONS.BLUE_CLIP}
@@ -97,6 +98,7 @@ class FileField extends Component {
 						  )
 						: !filename && (
 								<ActionNotification
+									stringId="ADD_FILES"
 									text={STRINGS["ADD_FILES"]}
 									status="information"
 									iconPath={ICONS.BLUE_CLIP}
