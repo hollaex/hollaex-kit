@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
+import { EditWrapper } from 'components';
 
 const getClassNames = (status) => {
 	switch (status) {
@@ -23,6 +24,7 @@ const getClassNames = (status) => {
 const ActionNotification = ({
 	useSvg,
 	text,
+	stringId,
 	status,
 	onClick,
 	iconPath,
@@ -52,7 +54,7 @@ const ActionNotification = ({
 		)}
 		onClick={disable ? () => {} : onClick}
 	>
-		{(showActionText || !isMobile) && (
+		{(showActionText || !isMobile) && !stringId && (
 			<div
 				className={classnames(
 					'action_notification-text',
@@ -62,6 +64,18 @@ const ActionNotification = ({
 				{text}
 			</div>
 		)}
+    {(showActionText || !isMobile) && stringId && (
+			<EditWrapper stringId={stringId}>
+				<div
+					className={classnames(
+            'action_notification-text',
+            getClassNames(status)
+          )}
+				>
+          {text}
+				</div>
+			</EditWrapper>
+    )}
 		{iconPath &&
 			(useSvg ? (
 				<ReactSVG path={iconPath} wrapperClassName="action_notification-svg" />
