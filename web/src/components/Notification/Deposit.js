@@ -28,6 +28,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 			<div className="notification-content-header">
 				{depositTexts.subtitle}
 				<ActionNotification
+					stringId="NEED_HELP_TEXT"
 					text={STRINGS["NEED_HELP_TEXT"]}
 					status="information"
 					iconPath={ICONS.BLUE_QUESTION}

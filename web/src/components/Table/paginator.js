@@ -38,6 +38,7 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
+					stringId="PREVIOUS_PAGE"
 					text={STRINGS["PREVIOUS_PAGE"]}
 					status="information"
 					iconPath={ICONS.BLUE_ARROW_LEFT}
@@ -56,6 +57,7 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
+					stringId="NEXT_PAGE"
 					text={STRINGS["NEXT_PAGE"]}
 					status="information"
 					iconPath={ICONS.BLUE_ARROW_RIGHT}

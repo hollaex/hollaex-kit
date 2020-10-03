@@ -17,6 +17,7 @@ const HeaderSection = ({ title, children, openContactForm, icon }) => {
                         <div className="header_title-text font-weight-bold">{title}</div>
                         {!!openContactForm && <div className="header_title-action">
                             <ActionNotification
+                                stringId="NEED_HELP_TEXT"
                                 text={STRINGS["NEED_HELP_TEXT"]}
                                 status="information"
                                 iconPath={ICONS.BLUE_QUESTION}

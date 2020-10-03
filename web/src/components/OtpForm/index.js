@@ -70,6 +70,7 @@ class Form extends Component {
 					</span>
 					{onClickHelp && (
 						<ActionNotification
+							stringId="NEED_HELP_TEXT"
 							text={STRINGS["NEED_HELP_TEXT"]}
 							onClick={onClickHelp}
 							iconPath={ICONS.BLUE_QUESTION}
