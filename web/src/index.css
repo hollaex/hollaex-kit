@@ -9630,7 +9630,7 @@ foreignObject {
   display: none !important; }
 
 .layout-edit .edit-wrapper__icon-wrapper {
-  display: inline-block;
+  display: inline-block !important;
   padding: 2px;
   width: 17px !important;
   height: 17px !important;
