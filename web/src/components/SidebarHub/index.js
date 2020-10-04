@@ -11,6 +11,7 @@ class SidebarHub extends Component {
 		const { activePath, isLogged, theme } = this.props;
 		const values = [{
 			accordionClassName: 'sidebar_hub-section-content f-1',
+			stringId: 'WALLET_TITLE',
 			title: STRINGS["WALLET_TITLE"],
 			icon: ICONS.SIDEBAR_WALLET_ACTIVE,
 			content: <Wallet />

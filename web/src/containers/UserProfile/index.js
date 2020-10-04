@@ -119,6 +119,7 @@ class UserProfile extends Component {
 
 		const sections = [
 			{
+				stringId: "USER_VERIFICATION.TITLE_EMAIL",
 				title: STRINGS["USER_VERIFICATION.TITLE_EMAIL"],
 				subtitle: email,
 				content: (
@@ -144,6 +145,7 @@ class UserProfile extends Component {
 				)
 			},
 			{
+				stringId: "USER_VERIFICATION.TITLE_MOBILE_PHONE",
 				title: STRINGS["USER_VERIFICATION.TITLE_MOBILE_PHONE"],
 				subtitle: phone_number,
 				content: phone_number ? (
@@ -160,6 +162,7 @@ class UserProfile extends Component {
 				)
 			},
 			{
+				stringId: "USER_VERIFICATION.TITLE_PERSONAL_INFORMATION",
 				title: STRINGS["USER_VERIFICATION.TITLE_PERSONAL_INFORMATION"],
 				subtitle: full_name,
 				content: full_name ? (
@@ -186,6 +189,7 @@ class UserProfile extends Component {
 				)
 			},
 			{
+				stringId: "USER_VERIFICATION.TITLE_ID_DOCUMENTS",
 				title: STRINGS["USER_VERIFICATION.TITLE_ID_DOCUMENTS"],
 				content: (
 					<div>

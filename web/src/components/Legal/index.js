@@ -1,19 +1,23 @@
 import React from 'react';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
-const getContent = (strings, type) => {
+const getType = (type) => {
 	switch (type) {
 		case 'terms':
-			return strings.LEGAL.GENERAL_TERMS;
+			return 'GENERAL_TERMS';
 		case 'legal':
-			return strings.LEGAL.GENERAL_TERMS;
+			return 'PRIVACY_POLICY';
 		default:
-			return {};
+			return '';
 	}
 };
 
 const Legal = ({ type, constants = {} }) => {
-	const { TITLE, SUBTITLE, TEXTS } = getContent(STRINGS, type);
+	const keys = ['TITLE', 'SUBTITLE', 'TEXTS'];
+	const TYPE = getType(type);
+
+	const [TITLE, SUBTITLE, TEXTS] = keys.map(key => STRINGS[`LEGAL.${TYPE}.${key}`])
+
 	return (
 		<div className="d-flex legal-wrapper justify-content-center">
 			<div className="d-flex flex-column legal-content-wrapper">

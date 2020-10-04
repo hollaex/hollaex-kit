@@ -37,9 +37,11 @@ export const renderExtraInformation = (symbol, bank_account) =>
 			<Accordion
 				sections={[
 					{
+						stringId: "WITHDRAW_PAGE.BANK_TO_WITHDRAW",
 						title: STRINGS["WITHDRAW_PAGE.BANK_TO_WITHDRAW"],
 						content: renderBankInformation(bank_account),
 						notification: {
+							stringId: "NEED_HELP_TEXT",
 							text: STRINGS["NEED_HELP_TEXT"],
 							status: 'information',
 							iconPath: ICONS.BLUE_QUESTION,
