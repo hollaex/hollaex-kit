@@ -3,10 +3,12 @@ import Modal from 'components/Dialog/DesktopDialog';
 import { bool, array, func } from 'prop-types';
 import { Button, Table } from 'antd';
 import { CloseOutlined, UndoOutlined } from '@ant-design/icons';
-import { DEFAULT_LANGUAGE } from 'config/constants';
+import { ProjectConfig } from 'config/project.config';
 
 
 class StringSettingsModal extends Component {
+  static contextType = ProjectConfig;
+
   state = {
     removedLanguages: []
   }
@@ -70,7 +72,7 @@ class StringSettingsModal extends Component {
     return removedLanguages.includes(lang)
   }
 
-  isDefault = (lang) => DEFAULT_LANGUAGE === lang
+  isDefault = (lang) => lang === this.context.DEFAULT_LANGUAGE
 
   render() {
     const { isOpen, onCloseDialog, languages, onAddLanguageClick, onConfirm } = this.props;
