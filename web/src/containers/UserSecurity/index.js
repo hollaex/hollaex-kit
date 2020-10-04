@@ -70,6 +70,7 @@ class UserVerification extends Component {
 
 		const sections = [
 			{
+				stringId: "ACCOUNT_SECURITY.OTP.TITLE",
 				title: STRINGS["ACCOUNT_SECURITY.OTP.TITLE"],
 				content: (
 					<OTP
@@ -92,6 +93,7 @@ class UserVerification extends Component {
 					</OTP>
 				),
 				notification: {
+					stringId: "ACCOUNT_SECURITY.OTP.OTP_ENABLED,ACCOUNT_SECURITY.OTP.OTP_DISABLED",
 					text: otp_enabled
 						? STRINGS["ACCOUNT_SECURITY.OTP.OTP_ENABLED"]
 						: STRINGS["ACCOUNT_SECURITY.OTP.OTP_DISABLED"],
@@ -101,6 +103,7 @@ class UserVerification extends Component {
 				}
 			},
 			{
+				stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE",
 				title: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE"],
 				content: (
 					<ChangePasswordForm
@@ -110,6 +113,7 @@ class UserVerification extends Component {
 				),
 				disabled: false,
 				notification: {
+					stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE",
 					text: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE"],
 					status: 'success',
 					iconPath: ICONS.GREEN_CHECK,
@@ -117,6 +121,7 @@ class UserVerification extends Component {
 				}
 			},
 			{
+				stringId: "DEVELOPER_SECTION.TITLE",
 				title: STRINGS["DEVELOPER_SECTION.TITLE"],
 				content: (
 					<DeveloperSection
