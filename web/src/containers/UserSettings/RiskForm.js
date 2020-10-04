@@ -124,6 +124,7 @@ class RiskForm extends Component {
 		];
 		const sections = [
 			{
+				stringId: "USER_SETTINGS.CREATE_ORDER_WARING,USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT,USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1",
 				title: STRINGS["USER_SETTINGS.CREATE_ORDER_WARING"],
 				content: (
 					<div>

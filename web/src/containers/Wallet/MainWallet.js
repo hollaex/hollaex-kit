@@ -140,6 +140,7 @@ class Wallet extends Component {
 
 		const sections = [
 			{
+				stringId: "WALLET_ALL_ASSETS",
 				title: STRINGS["WALLET_ALL_ASSETS"],
 				content: (
 					<AssetsBlock

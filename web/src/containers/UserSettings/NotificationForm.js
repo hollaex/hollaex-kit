@@ -53,6 +53,7 @@ class NotificationForm extends Component {
 
     render() {
         const section = [{
+            stringId: "USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS",
             title: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS"],
             content: <Form {...this.props} />,
             isOpen: true

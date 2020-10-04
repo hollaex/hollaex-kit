@@ -122,6 +122,7 @@ class AudioCueForm extends Component {
 
     render() {
         const section = [{
+            stringId: "USER_SETTINGS.TITLE_AUDIO_CUE",
             title: STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"],
             description: 'This is the description',
             content: (
