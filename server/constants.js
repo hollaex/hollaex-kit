@@ -57,13 +57,15 @@ let configuration = {
 	kit: {
 		info: {},
 		color: {},
+		interface: {},
+		icons: {},
 		links: {},
 		captcha: {},
 		defaults: {},
 		plugins: {
 			configuration: {}
 		},
-		status: false
+		meta: {}
 	}
 };
 
@@ -150,12 +152,16 @@ const resetAllConfig = () => {
 		pairs: {},
 		kit: {
 			info: {},
+			color: {},
+			interface: {},
+			icons: {},
+			links: {},
 			captcha: {},
 			defaults: {},
 			plugins: {
 				configuration: {}
 			},
-			status: false
+			meta: {}
 		}
 	};
 	setRedisData();

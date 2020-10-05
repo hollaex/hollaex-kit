@@ -44,13 +44,15 @@ const checkStatus = () => {
 		kit: {
 			info: {},
 			color: {},
+			interface: {},
+			icons: {},
 			links: {},
 			captcha: {},
 			defaults: {},
 			plugins: {
 				configuration: {}
 			},
-			status: false
+			meta: {}
 		}
 	};
 
@@ -117,7 +119,8 @@ const checkStatus = () => {
 				is_trial: exchange.is_trial,
 				created_at: exchange.created_at,
 				expiry: exchange.expiry,
-				status: true
+				status: true,
+				initiialized: status.initialized
 			};
 			nodeLib = new Kit({
 				networkURL: HE_NETWORK_ENDPOINT,
