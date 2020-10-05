@@ -1590,6 +1590,26 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /admin/complete-setup:
+    x-swagger-router-controller: admin
+    get:
+      operationId: completeExchangeSetup
+      description: Flag exchange setup as complete
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/kit:
     x-swagger-router-controller: admin
     get:

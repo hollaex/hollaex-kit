@@ -435,6 +435,27 @@ const adminCheckTransaction = (req, res) => {
 		});
 };
 
+const completeExchangeSetup = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/completeExchangeSetup auth',
+		req.auth
+	);
+
+	toolsLib.setExchangeSetupCompleted()
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/completeExchangeSetup catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -452,5 +473,6 @@ module.exports = {
 	getCoins,
 	getPairs,
 	transferFund,
-	adminCheckTransaction
+	adminCheckTransaction,
+	completeExchangeSetup
 };
