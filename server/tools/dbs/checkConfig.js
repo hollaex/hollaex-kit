@@ -11,7 +11,6 @@ Status.findOne({ raw: true })
 		const existingSecrets = status.secrets;
 		const kit = {
 			api_name: existingKitConfigurations.api_name || process.env.API_NAME || '',
-			initialized: isBoolean(existingKitConfigurations.initialized) ? existingKitConfigurations.initialized : false,
 			description: existingKitConfigurations.description || '',
 			color: existingKitConfigurations.color || {},
 			interface: existingKitConfigurations.interface || {},

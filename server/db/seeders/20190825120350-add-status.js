@@ -43,7 +43,6 @@ const TABLE = 'Statuses';
 const status = [{
 	kit: JSON.stringify({
 		api_name: API_NAME || '',
-		initialized: false,
 		description: '',
 		color: {},
 		interface: {},
@@ -136,6 +135,7 @@ const status = [{
 		}
 	}),
 	activation_code: ACTIVATION_CODE,
+	initialized: false,
 	api_key: API_KEY,
 	api_secret: API_SECRET
 }];
