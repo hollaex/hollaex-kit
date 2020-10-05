@@ -23,6 +23,21 @@ const getAdminKit = (req, res) => {
 	}
 };
 
+const putNetworkCredentials = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/putNetworkCredentials auth', req.auth.sub);
+
+	const { api_key, api_secret } = req.swagger.params.data.value;
+
+	toolsLib.updateNetworkKeySecret(api_key, api_secret)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putNetworkCredentials', err.message);
+			return res.status(400).json({ message: err.message });
+		});
+};
+
 const createInitialAdmin = (req, res) => {
 	const { email, password } = req.swagger.params.data.value;
 
@@ -487,5 +502,6 @@ module.exports = {
 	getPairs,
 	transferFund,
 	adminCheckTransaction,
-	completeExchangeSetup
+	completeExchangeSetup,
+	putNetworkCredentials
 };

@@ -1610,6 +1610,41 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/network-credentials:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putNetworkCredentials
+      description: Update exchange network credentials
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: New network key and secret
+          schema:
+            type: object
+            required:
+              - api_key
+              - api_secret
+            properties:
+              api_key:
+                type: string
+              api_secret:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/kit:
     x-swagger-router-controller: admin
     get:
