@@ -82,7 +82,8 @@ const kit = {
 	plugins: {
 		enabled: PLUGINS || '',
 		configuration: {}
-	}
+	},
+	meta: {}
 };
 
 const secrets = {

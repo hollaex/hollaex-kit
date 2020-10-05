@@ -81,7 +81,8 @@ const status = [{
 		plugins: {
 			enabled: PLUGINS || '',
 			configuration: {}
-		}
+		},
+		meta: {}
 	}),
 	secrets: JSON.stringify({
 		allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],

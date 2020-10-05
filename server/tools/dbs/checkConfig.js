@@ -51,7 +51,8 @@ Status.findOne({ raw: true })
 				configuration: {
 					...existingKitConfigurations.plugins.configuration
 				}
-			}
+			},
+			meta: existingKitConfigurations.meta || {},
 		};
 
 		const secrets = {
