@@ -64,23 +64,29 @@ class AllStringsModal extends Component {
           isOpen &&
           (<div>
             <div className="operator-controls__all-strings-header">
-              <Search
-                style={{ width: '25%' }}
-                defaultValue={searchValue}
-                onChange={onSearch}
-                enterButton={false}
-                bordered={false}
-              />
-              <Button
-                onClick={onSettingsClick}
-                className="operator-controls__all-strings-settings-button mx-4"
-                type="primary"
-                shape="round"
-                size="small"
-                ghost
-              >
-                Settings
-              </Button>
+              <div className="operator-controls__modal-title">
+                All strings
+              </div>
+              <div className="d-flex justify-content-end">
+                <Search
+                  style={{ width: '134px' }}
+                  defaultValue={searchValue}
+                  onChange={onSearch}
+                  enterButton={false}
+                  bordered={false}
+                  placeholder="Search..."
+                />
+                <Button
+                  onClick={onSettingsClick}
+                  className="operator-controls__all-strings-settings-button mx-4"
+                  type="primary"
+                  shape="round"
+                  size="small"
+                  ghost
+                >
+                  Settings
+                </Button>
+              </div>
             </div>
             <Table
               className="operator-controls__table"
@@ -102,18 +108,18 @@ class AllStringsModal extends Component {
                   onClick: () => this.handleRowClick(key)
                 };
               }}
+              style={{ width: '820px' }}
             />
           </div>)
         }
-        <div className="d-flex align-items-center pt-5">
-          <button
-            type="submit"
-            // onClick={this.handleSave}
-            className="operator-controls__save-button"
-            // disabled={!isSaveEnabled}
+        <div className="d-flex justify-content-end pt-4 mt-4">
+          <Button
+            type="primary"
+            onClick={onCloseDialog}
+            className="operator-controls__save-button confirm"
           >
             Confirm
-          </button>
+          </Button>
         </div>
       </Modal>
     );

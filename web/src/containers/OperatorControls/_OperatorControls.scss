@@ -45,7 +45,7 @@ $operator-controls__panel-border-color: #A7A7A7;
 .operator-controls__panel-item {
   display: flex;
   font-size: 21px;
-  font-family: Neue Haas Grotesk Display Pro;
+  font-family: NHaasGroteskDSPro-95Blk;
   text-align: center;
   cursor: pointer;
   align-items: center;
@@ -53,7 +53,6 @@ $operator-controls__panel-border-color: #A7A7A7;
 }
 
 .operator-controls__publish-button {
-  cursor: pointer;
   background-color: #FF0000;
   border: 1px solid #FF0000 ;
   border-radius: 10px;
@@ -61,18 +60,16 @@ $operator-controls__panel-border-color: #A7A7A7;
   width: 145px;
   margin-right: 37px;
   text-transform: uppercase;
-  font-weight: bold;
 }
 
 .operator-controls__save-button {
-  cursor: pointer;
   background-color: #288500;
   border: 1px solid #288500;
-  border-radius: 10px;
-  height: 50px;
-  width: 232px;
-  text-transform: uppercase;
   font-weight: bold;
+
+  &.confirm {
+    width: 101px;
+  }
 }
 
 .operator-controls__modal {
@@ -80,8 +77,18 @@ $operator-controls__panel-border-color: #A7A7A7;
     background-color: $operator-controls__panel-main-color !important;
     color: $operator-controls__panel-text-color !important;
     padding-top: 20px !important;
+    margin-bottom: 136px !important;
+    max-width: calc(100vw - 2rem) !important;
+    max-height: calc(100vh - 160px) !important;
+
+    .action_notification-image {
+      fill: $operator-controls__panel-text-color !important;
+    }
   }
+
   .ReactModal__Overlay {
+    position: fixed;
+    z-index: 999999;
     background-color: transparent !important;
     color: $operator-controls__panel-text-color !important;
   }
@@ -92,10 +99,33 @@ $operator-controls__panel-border-color: #A7A7A7;
   background-color: transparent !important;
 }
 
+.operator-controls__modal-open {
+  overflow: hidden;
+}
+
 .operator-controls__all-strings-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+
+  .ant-input-suffix {
+    display: none !important;
+  }
+
+  .ant-input-search {
+    border-bottom: 1px solid white;
+  }
+
+  .ant-input-search,
+  .ant-input {
+    color: $operator-controls__panel-text-color !important;
+  }
+}
+
+.operator-controls__modal-title {
+  font-size: 28px;
+  font-weight: bold;
+  font-family: NHaasGroteskDSPro-95Blk;
 }
 
 .operator-controls__all-strings-settings-button {
@@ -104,6 +134,13 @@ $operator-controls__panel-border-color: #A7A7A7;
 }
 
 .operator-controls__table {
+
+  .ant-select-arrow,
+  .ant-select-selector
+  {
+    color: $operator-controls__panel-text-color !important;
+    font-weight: bold;
+  }
 
   &table {
     border-collapse: collapse !important;

@@ -428,16 +428,18 @@ class OperatorControls extends Component {
             </div>
           </div>
           <div className="d-flex align-items-center">
-            <button
-              type="submit"
+            <Button
+              type="primary"
               onClick={this.openPublishConfirmationModal}
-              className="operator-controls__publish-button"
+              className="operator-controls__publish-button bold"
               disabled={!isPublishEnabled}
             >
               Publish
-            </button>
+            </Button>
           </div>
         </div>
+
+
         <Modal
           isOpen={editMode && isEditModalOpen}
           label="operator-controls-modal"
@@ -448,6 +450,9 @@ class OperatorControls extends Component {
           showCloseText={true}
           bodyOpenClassName="operator-controls__modal-open"
         >
+          <div className="operator-controls__modal-title">
+            Edit string
+          </div>
           {
             editMode && isEditModalOpen &&
             editableElementIds.map((key) => {
@@ -485,15 +490,26 @@ class OperatorControls extends Component {
               )
             })
           }
-          <div className="d-flex align-items-center pt-5">
-            <button
-              type="submit"
+          <div
+            className="underline pointer pl-2 pt-4"
+            onClick={() => {
+              this.closeEditModal()
+              this.openAllStringsModal()
+            }}
+          >
+            View all strings
+          </div>
+          <div className="pt-5">
+            <Button
+              block
+              type="primary"
+              size="large"
+              disabled={!isSaveEnabled}
               onClick={this.handleSave}
               className="operator-controls__save-button"
-              disabled={!isSaveEnabled}
             >
               Save
-            </button>
+            </Button>
           </div>
         </Modal>
         <AllStringsModal
@@ -531,17 +547,23 @@ class OperatorControls extends Component {
           showCloseText={true}
           bodyOpenClassName="operator-controls__modal-open"
         >
-          <span>
+          <div className="operator-controls__modal-title">
+            Exit
+          </div>
+          <div className="pt-3" style={{ width: '292px' }}>
             You are about to exit edit mode with some unpublished changes on your exchange
-          </span>
-          <footer className="d-flex">
+          </div>
+          <footer className="d-flex justify-content-end pt-4">
             <Button
-              type="primary"
+              block
+              className="mr-1 bold"
               onClick={this.closeExitConfirmationModal}
             >
               Cancel
             </Button>
             <Button
+              block
+              className="ml-1 bold"
               type="primary"
               onClick={this.exitEditMode}
               danger
@@ -560,18 +582,24 @@ class OperatorControls extends Component {
           showCloseText={true}
           bodyOpenClassName="operator-controls__modal-open"
         >
-          <span>
+          <div className="operator-controls__modal-title">
+            Publish
+          </div>
+          <div className="pt-3" style={{ width: '292px' }}>
             Publishing will apply all changes to the live website.
             Are you sure you want to publish the changes?
-          </span>
-          <footer className="d-flex">
+          </div>
+          <footer className="d-flex justify-content-end pt-4">
             <Button
-              type="primary"
+              className="mr-1 bold"
+              block
               onClick={this.closePublishConfirmationModal}
             >
               Cancel
             </Button>
             <Button
+              block
+              className="ml-1 bold"
               type="primary"
               onClick={this.handlePublish}
               danger

@@ -211,6 +211,9 @@ table th {
 .justify-content-end {
   justify-content: flex-end; }
 
+.underline {
+  text-decoration: underline; }
+
 .dark-app-body {
   background: var(--dark-app-background-color) !important; }
 
@@ -3762,39 +3765,41 @@ table th {
 .operator-controls__panel-item {
   display: flex;
   font-size: 21px;
-  font-family: Neue Haas Grotesk Display Pro;
+  font-family: NHaasGroteskDSPro-95Blk;
   text-align: center;
   cursor: pointer;
   align-items: center;
   margin: 0 35px; }
 
 .operator-controls__publish-button {
-  cursor: pointer;
   background-color: #FF0000;
   border: 1px solid #FF0000;
   border-radius: 10px;
   height: 50px;
   width: 145px;
   margin-right: 37px;
-  text-transform: uppercase;
-  font-weight: bold; }
+  text-transform: uppercase; }
 
 .operator-controls__save-button {
-  cursor: pointer;
   background-color: #288500;
   border: 1px solid #288500;
-  border-radius: 10px;
-  height: 50px;
-  width: 232px;
-  text-transform: uppercase;
   font-weight: bold; }
+  .operator-controls__save-button.confirm {
+    width: 101px; }
 
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
   color: #FFFFFF !important;
-  padding-top: 20px !important; }
+  padding-top: 20px !important;
+  margin-bottom: 136px !important;
+  max-width: calc(100vw - 2rem) !important;
+  max-height: calc(100vh - 160px) !important; }
+  .operator-controls__modal .ReactModal__Content .action_notification-image {
+    fill: #FFFFFF !important; }
 
 .operator-controls__modal .ReactModal__Overlay {
+  position: fixed;
+  z-index: 999999;
   background-color: transparent !important;
   color: #FFFFFF !important; }
 
@@ -3802,14 +3807,34 @@ table th {
   filter: none !important;
   background-color: transparent !important; }
 
+.operator-controls__modal-open {
+  overflow: hidden; }
+
 .operator-controls__all-strings-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center; }
+  .operator-controls__all-strings-header .ant-input-suffix {
+    display: none !important; }
+  .operator-controls__all-strings-header .ant-input-search {
+    border-bottom: 1px solid white; }
+  .operator-controls__all-strings-header .ant-input-search,
+  .operator-controls__all-strings-header .ant-input {
+    color: #FFFFFF !important; }
+
+.operator-controls__modal-title {
+  font-size: 28px;
+  font-weight: bold;
+  font-family: NHaasGroteskDSPro-95Blk; }
 
 .operator-controls__all-strings-settings-button {
   color: #FFFFFF !important;
   border-color: #FFFFFF !important; }
+
+.operator-controls__table .ant-select-arrow,
+.operator-controls__table .ant-select-selector {
+  color: #FFFFFF !important;
+  font-weight: bold; }
 
 .operator-controls__tabletable {
   border-collapse: collapse !important; }
