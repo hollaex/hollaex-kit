@@ -121,7 +121,7 @@ const checkStatus = () => {
 				created_at: exchange.created_at,
 				expiry: exchange.expiry,
 				status: true,
-				initiialized: status.initialized
+				initialized: status.initialized
 			};
 			nodeLib = new Kit({
 				networkURL: HE_NETWORK_ENDPOINT,
