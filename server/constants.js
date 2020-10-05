@@ -396,10 +396,16 @@ exports.KIT_CONFIG_KEYS = [
 	'valid_languages',
 	'user_level_number',
 	'new_user_is_activated',
-	'broker_enabled'
+	'broker_enabled',
+	'interface',
+	'icons',
+	'strings',
+	'meta'
 ];
 
 exports.KIT_SECRETS_KEYS = [
+	'exchange_credentials_set',
+	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',
 	'emails',

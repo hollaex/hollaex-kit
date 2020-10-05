@@ -3838,6 +3838,14 @@ definitions:
             type: object
           links:
             type: object
+          strings:
+            type: object
+          interface:
+            type: object
+          meta:
+            type: object
+          icons:
+            type: object
           description:
             type: string
           title:
