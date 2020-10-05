@@ -14,6 +14,7 @@ Status.findOne({ raw: true })
 			initialized: isBoolean(existingKitConfigurations.initialized) ? existingKitConfigurations.initialized : false,
 			description: existingKitConfigurations.description || '',
 			color: existingKitConfigurations.color || {},
+			interface: existingKitConfigurations.interface || {},
 			title: existingKitConfigurations.title || '',
 			links: existingKitConfigurations.links || {
 				twitter: '',

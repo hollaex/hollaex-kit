@@ -45,6 +45,7 @@ const kit = {
 	initialized: false,
 	description: '',
 	color: {},
+	interface: {},
 	title: '',
 	links: {
 		twitter: '',
