@@ -2647,7 +2647,7 @@ paths:
           schema:
             type: object
             properties:
-              kit:
+              configuration:
                 type: object
               secrets:
                 type: object
