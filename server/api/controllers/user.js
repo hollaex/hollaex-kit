@@ -154,6 +154,7 @@ const loginPost = (req, res) => {
 			return res.status(201).json({
 				token: toolsLib.auth.issueToken(
 					user.id,
+					user.network_id,
 					email,
 					ip,
 					user.is_admin,
