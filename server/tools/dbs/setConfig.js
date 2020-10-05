@@ -40,6 +40,7 @@ const {
 
 const kit = {
 	api_name: API_NAME || '',
+	initialized: false,
 	description: '',
 	color: {},
 	title: '',

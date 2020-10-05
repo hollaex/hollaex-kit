@@ -41,9 +41,9 @@ const {
 
 const TABLE = 'Statuses';
 const status = [{
-	initialized: true,
 	kit: JSON.stringify({
 		api_name: API_NAME || '',
+		initialized: false,
 		description: '',
 		color: {},
 		title: '',

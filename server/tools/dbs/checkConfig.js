@@ -3,6 +3,7 @@
 const { Status } = require('../../db/models');
 const { publisher } = require('../../db/pubsub');
 const { CONFIGURATION_CHANNEL } = require('../../constants');
+const { isBoolean } = require('lodash');
 
 Status.findOne({ raw: true })
 	.then((status) => {
@@ -10,6 +11,7 @@ Status.findOne({ raw: true })
 		const existingSecrets = status.secrets;
 		const kit = {
 			api_name: existingKitConfigurations.api_name || process.env.API_NAME || '',
+			initialized: isBoolean(existingKitConfigurations.initialized) ? existingKitConfigurations.initialized : false,
 			description: existingKitConfigurations.description || '',
 			color: existingKitConfigurations.color || {},
 			title: existingKitConfigurations.title || '',
