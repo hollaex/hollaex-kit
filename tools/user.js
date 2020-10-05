@@ -127,13 +127,13 @@ const verifyUser = (email, code, domain) => {
 				return all([
 					user,
 					getNodeLib().createUserNetwork(email),
-					verificationCode.update({ verified: true }, { transaction })
+					verificationCode.update({ verified: true }, { fields: ['verifed'], transaction })
 				]);
 			})
 			.then(([ user, networkUser ]) => {
 				return user.update({
 					network_id: networkUser.id
-				}, { returning: true, transaction });
+				}, { fields: ['network_id'], returning: true, transaction });
 			})
 			.then((user) => {
 				sendEmail(
@@ -145,6 +145,65 @@ const verifyUser = (email, code, domain) => {
 				return;
 			});
 	});
+};
+
+const createUser = (email, password, role = 'user', domain) => {
+	return getModel('sequelize').transaction((transaction) => {
+		return dbQuery.findOne('user', {
+			where: { email },
+			transaction
+		})
+			.then((user) => {
+				if (user) {
+					throw new Error(USER_EXISTS);
+				}
+				const roles = {
+					is_admin: false,
+					is_supervisor: false,
+					is_support: false,
+					is_kyc: false,
+					is_tech: false
+				};
+
+				if (role !== 'user') {
+					const userRole = 'is_' + role.toLowerCase();
+					if (roles[userRole] === undefined) {
+						throw new Error('Role does not exist');
+					}
+					each(roles, (value, key) => {
+						if (key === userRole) {
+							roles[key] = true;
+						}
+					});
+				}
+
+				return getModel('user').create({
+					email,
+					password,
+					...roles
+				}, { transaction });
+			})
+			.then((user) => {
+				return all([
+					user,
+					getNodeLib().createUserNetwork(email)
+				]);
+			})
+			.then(([ kitUser, networkUser ]) => {
+				return kitUser.update({
+					network_id: networkUser.id
+				}, { returning: true, fields: ['network_id'], transaction });
+			});
+	})
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				user.settings,
+				domain
+			);
+			return;
+		});
 };
 
 const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer) => {
@@ -1088,6 +1147,7 @@ const getUserStats = (userId) => {
 
 module.exports = {
 	loginUser,
+	createUser,
 	getUserByEmail,
 	getUserByKitId,
 	getUserByNetworkId,
