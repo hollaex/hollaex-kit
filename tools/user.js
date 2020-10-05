@@ -139,6 +139,7 @@ const verifyUser = (email, code, domain) => {
 				sendEmail(
 					MAILTYPE.WELCOME,
 					user.email,
+					{},
 					user.settings,
 					domain
 				);
@@ -200,6 +201,7 @@ const createUser = (email, password, role = 'user', domain) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
+				{},
 				user.settings,
 				domain
 			);
