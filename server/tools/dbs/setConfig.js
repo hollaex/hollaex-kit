@@ -1,3 +1,5 @@
+'use strict';
+
 const { Status } = require('../../db/models');
 const { publisher } = require('../../db/pubsub');
 const { CONFIGURATION_CHANNEL } = require('../../constants');
