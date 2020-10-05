@@ -55,3 +55,4 @@ export { default as MobileHome } from './MobileHome';
 export { default as Transfer } from './Admin/Transfers';
 export { default as AdminFees } from './Admin/AdminFees';
 export { default as ThemeProvider } from './ThemeProvider';
+export { default as Init } from './Init';
