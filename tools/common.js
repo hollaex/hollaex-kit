@@ -10,6 +10,7 @@ const {
 	TECH_AUTHORIZED_KIT_SECRETS,
 	ROLES,
 	CONFIGURATION_CHANNEL,
+	INIT_CHANNEL,
 	SEND_CONTACT_US_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
@@ -20,7 +21,6 @@ const {
 const { each, difference, isPlainObject } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
-const { checkStatus } = require(`${SERVER_PATH}/init`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject } = require('bluebird');
 const { NO_NEW_DATA, SUPPORT_DISABLED, TECH_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
@@ -279,7 +279,10 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 			}, { fields: ['api_key', 'api_secret', 'secrets'] });
 		})
 		.then(() => {
-			checkStatus();
+			publisher.publish(
+				INIT_CHANNEL,
+				JSON.stringify({ type: 'refreshInit' })
+			);
 			return;
 		});
 };
