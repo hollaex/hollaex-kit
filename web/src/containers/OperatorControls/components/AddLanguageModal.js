@@ -42,26 +42,38 @@ class AddLanguageModal extends Component {
         showCloseText={true}
         bodyOpenClassName="operator-controls__modal-open"
       >
-        <Select
-          value={selectedLanguage}
-          style={{ width: 120 }}
-          bordered={false}
-          size="default"
-          onSelect={this.handleSelect}
-        >
-          {
-            languages.map(({ label, value }) => (
-              <Option value={value} key={value}>
-                {label}
-              </Option>
-            ))
-          }
-        </Select>
-        <Button
-          onClick={this.addLanguage}
-        >
-          Save
-        </Button>
+        <div className="operator-controls__all-strings-header">
+          <div className="operator-controls__modal-title">
+            Add language
+          </div>
+        </div>
+        <div className="py-4 mx-4">
+          <Select
+            value={selectedLanguage}
+            style={{ width: '290px' }}
+            size="large"
+            onSelect={this.handleSelect}
+          >
+            {
+              languages.map(({ label, value }) => (
+                <Option value={value} key={value}>
+                  {label}
+                </Option>
+              ))
+            }
+          </Select>
+        </div>
+        <div className="pt-4">
+          <Button
+            block
+            type="primary"
+            size="large"
+            className="operator-controls__save-button"
+            onClick={this.addLanguage}
+          >
+            Save
+          </Button>
+        </div>
       </Modal>
     );
   }

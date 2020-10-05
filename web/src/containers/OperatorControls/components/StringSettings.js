@@ -21,13 +21,12 @@ class StringSettingsModal extends Component {
       render: (_, {value, label}) => <Fragment>{`${label} (${value})`}</Fragment>
     },
     {
-      title: "Default Language",
+      title: "Default language",
       dataIndex: "value",
       key: "value",
       render: (_, { value }) => this.isDefault(value) ? "Default" : "",
     },
     {
-      title: "Action",
       dataIndex: "value",
       key: "value",
       render: (_, {value}) => (
@@ -88,6 +87,11 @@ class StringSettingsModal extends Component {
         showCloseText={true}
         bodyOpenClassName="operator-controls__modal-open"
       >
+        <div className="operator-controls__all-strings-header">
+          <div className="operator-controls__modal-title">
+            String settings
+          </div>
+        </div>
         <Table
           className="operator-controls__table"
           columns={this.columns}
@@ -104,22 +108,29 @@ class StringSettingsModal extends Component {
           }}
           scroll={{ y: 240 }}
           rowKey={({ value }) => value}
+          style={{ width: '380px' }}
         />
-        <Button
-          onClick={onAddLanguageClick}
-          className="operator-controls__all-strings-settings-button mx-4"
-          type="primary"
-          shape="round"
-          size="small"
-          ghost
-        >
-          Add language
-        </Button>
-        <Button
-          onClick={() => onConfirm(removedLanguages)}
-        >
-          Confirm
-        </Button>
+        <div className="pt-3">
+          <Button
+            onClick={onAddLanguageClick}
+            className="operator-controls__all-strings-settings-button"
+            type="primary"
+            shape="round"
+            size="small"
+            ghost
+          >
+            Add language
+          </Button>
+        </div>
+        <div className="d-flex justify-content-end pt-4 mt-4">
+          <Button
+            type="primary"
+            className="operator-controls__save-button confirm"
+            onClick={() => onConfirm(removedLanguages)}
+          >
+            Confirm
+          </Button>
+        </div>
       </Modal>
     );
   }
