@@ -47,6 +47,7 @@ const status = [{
 		color: {},
 		interface: {},
 		icons: {},
+		strings: {},
 		title: '',
 		links: {
 			twitter: '',

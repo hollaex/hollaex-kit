@@ -48,6 +48,7 @@ const kit = {
 	color: {},
 	interface: {},
 	icons: {},
+	strings: {},
 	title: '',
 	links: {
 		twitter: '',

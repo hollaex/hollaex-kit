@@ -15,6 +15,7 @@ Status.findOne({ raw: true })
 			color: existingKitConfigurations.color || {},
 			interface: existingKitConfigurations.interface || {},
 			icons: existingKitConfigurations.icons || {},
+			strings: existingKitConfigurations.strings || {},
 			title: existingKitConfigurations.title || '',
 			links: existingKitConfigurations.links || {
 				twitter: '',

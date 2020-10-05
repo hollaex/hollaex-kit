@@ -47,6 +47,7 @@ const checkStatus = () => {
 			interface: {},
 			icons: {},
 			links: {},
+			strings: {},
 			captcha: {},
 			defaults: {},
 			plugins: {
