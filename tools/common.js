@@ -231,9 +231,19 @@ const getNetworkKeySecret = () => {
 	dbQuery.findOne('status')
 		.then((status) => {
 			return {
-				apiKey: status.api_key,
-				apiSecret: status.api_secret
+				apiKey: status.dataValues.api_key,
+				apiSecret: status.dataValues.api_secret
 			};
+		});
+};
+
+const setExchangeInitialized = () => {
+	return dbQuery.findOne('status')
+		.then((status) => {
+			if (status.dataValues.initialized === true) {
+				throw new Error('Exchange already initialized');
+			}
+			return status.update({ initialized: true }, { fields: ['initialized'] });
 		});
 };
 
@@ -255,5 +265,6 @@ module.exports = {
 	updateKitSecrets,
 	updateKitConfigSecrets,
 	sendEmailToSupport,
-	getNetworkKeySecret
+	getNetworkKeySecret,
+	setExchangeInitialized
 };
