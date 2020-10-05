@@ -1559,6 +1559,37 @@ paths:
         - user
 
 # ADMIN ENDPOINTS
+  /admin/signup:
+    x-swagger-router-controller: admin
+    post:
+      operationId: createInitialAdmin
+      description: Create initial admin account for exchange
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+                format: password
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /admin/kit:
     x-swagger-router-controller: admin
     get:

@@ -4,6 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
 const { getNodeLib } = require('../../init');
+const { all } = require('bluebird');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -20,6 +21,36 @@ const getAdminKit = (req, res) => {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getAdminKit', err.message);
 		return res.status(400).json({ message: err.message });
 	}
+};
+
+const createInitialAdmin = (req, res) => {
+	const { email, password } = req.swagger.params.data.value;
+
+	loggerAdmin.info(req.uuid, 'controllers/admin/createInitialAdmin email', email);
+
+	all([
+		toolsLib.database.findOne('user', { raw: true }),
+		toolsLib.database.findOne('status', { raw: true })
+	])
+		.then(([ user, status ]) => {
+			if (status.initialized) {
+				throw new Error('Exchange is already initialized');
+			}
+			if (user) {
+				throw new Error('Admin already exists');
+			}
+			return toolsLib.user.createUser(email, password, 'admin');
+		})
+		.then(() => {
+			return toolsLib.setExchangeInitialized();
+		})
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createInitialAdmin', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
 };
 
 const putAdminKit = (req, res) => {
@@ -405,6 +436,7 @@ const adminCheckTransaction = (req, res) => {
 };
 
 module.exports = {
+	createInitialAdmin,
 	getAdminKit,
 	putAdminKit,
 	getUsersAdmin,
