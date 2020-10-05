@@ -180,6 +180,7 @@ const createUser = (email, password, role = 'user', domain) => {
 				return getModel('user').create({
 					email,
 					password,
+					settings: INITIAL_SETTINGS(),
 					...roles
 				}, { transaction });
 			})
