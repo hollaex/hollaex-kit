@@ -247,6 +247,22 @@ const setExchangeInitialized = () => {
 		});
 };
 
+const setExchangeSetupCompleted = () => {
+	return dbQuery.findOne('status')
+		.then((status) => {
+			if (status.dataValues.secrets.setup_completed) {
+				throw new Error('Exchange setup is already flagged as completed');
+			}
+			const secrets = {
+				...status.dataValues.secrets,
+				setup_completed: true
+			};
+			return status.update({
+				secrets
+			}, { fields: ['secrets'] });
+		});
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -266,5 +282,6 @@ module.exports = {
 	updateKitConfigSecrets,
 	sendEmailToSupport,
 	getNetworkKeySecret,
-	setExchangeInitialized
+	setExchangeInitialized,
+	setExchangeSetupCompleted
 };
