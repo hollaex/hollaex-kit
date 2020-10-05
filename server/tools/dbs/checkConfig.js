@@ -57,6 +57,9 @@ Status.findOne({ raw: true })
 		const secrets = {
 			allowed_domains: existingSecrets.allowed_domains || (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []),
 			admin_whitelist: existingSecrets.admin_whitelist || (process.env.ADMIN_WHITELIST_IP ? process.env.ADMIN_WHITELIST_IP.split(',') : []),
+			exchange_credentials_set: isBoolean(existingSecrets.exchange_credentials_set)
+				? existingSecrets.exchange_credentials_set
+				: ( status.api_key && status.api_secret ? true : false ),
 			broker: {
 				quick_trade_rate: existingSecrets.broker.quick_trade_rate || 0.03,
 				quick_trade_expiration_time: existingSecrets.broker.quick_trade_expiration_time || 20,

@@ -37,7 +37,9 @@ const {
 	ADMIN_EMAIL,
 	USER_LEVEL_NUMBER,
 	CAPTCHA_SITE_KEY,
-	ADMIN_WHITELIST_IP
+	ADMIN_WHITELIST_IP,
+	API_KEY,
+	API_SECRET
 } = process.env;
 
 const kit = {
@@ -86,6 +88,7 @@ const kit = {
 const secrets = {
 	allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
 	admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
+	exchange_credentials_set: API_KEY && API_SECRET ? true : false,
 	broker: {
 		quick_trade_rate: 0.03,
 		quick_trade_expiration_time: 20,
