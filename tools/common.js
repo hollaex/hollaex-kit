@@ -169,7 +169,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	const joinedKitConfig = {};
 	const existingKeys = Object.keys(existingKitConfig);
 
-	existingKeys.forEach((key) => {
+	KIT_CONFIG_KEYS.forEach((key) => {
 		if (newKitConfig[key] === undefined) {
 			joinedKitConfig[key] = existingKitConfig[key];
 		} else {
