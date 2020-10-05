@@ -269,9 +269,9 @@ const storeFilesDataOnDb = (
 	back = '',
 	proof_of_residency = ''
 ) => {
-	return toolsLib().database.model.getModel('sequelize').transaction((transaction) => {
+	return toolsLib().database.getModel('sequelize').transaction((transaction) => {
 		const options = { transaction };
-		return toolsLib().database.model.getModel('verification image').findOrCreate(
+		return toolsLib().database.getModel('verification image').findOrCreate(
 			{
 				where: { user_id },
 				defaults: {
@@ -295,7 +295,7 @@ const storeFilesDataOnDb = (
 				}
 			})
 			.then(() => {
-				return toolsLib().database.query.findOne('user', {
+				return toolsLib().database.findOne('user', {
 					where: { id: user_id },
 					attributes: ['id', 'id_data'],
 					transaction
@@ -364,7 +364,7 @@ const uploadFile = (name, file) => {
 };
 
 const getImagesData = (user_id, type = undefined) => {
-	return toolsLib().database.query.findOne('verification image', {
+	return toolsLib().database.findOne('verification image', {
 		where: { user_id },
 		order: [['created_at', 'DESC']],
 		attributes: ['front', 'back', 'proof_of_residency']
@@ -411,7 +411,7 @@ const getLinks = ({ front, back, proof_of_residency }) => {
 };
 
 const findUserImages = (where) => {
-	return toolsLib().database.query.findOne('user', { where, attributes: ['id', 'id_data'] })
+	return toolsLib().database.findOne('user', { where, attributes: ['id', 'id_data'] })
 		.then((user) => {
 			return all([
 				user.dataValues,
@@ -439,7 +439,7 @@ const approveDocuments = (user) => {
 };
 
 const revokeDocuments = (user, message = '') => {
-	return toolsLib().database.model.getModel('sequelize')
+	return toolsLib().database.getModel('sequelize')
 		.transaction((transaction) => {
 			return all([
 				updateUserData(
@@ -452,7 +452,7 @@ const revokeDocuments = (user, message = '') => {
 					},
 					ROLES.SUPPORT
 				)(user, { transaction, returning: true }),
-				toolsLib().database.model.getModel('verification image').destroy({
+				toolsLib().database.getModel('verification image').destroy({
 					where: { user_id: user.id },
 					transaction
 				})
@@ -464,7 +464,7 @@ const revokeDocuments = (user, message = '') => {
 };
 
 const createAnnouncement = (created_by, title, message, type) => {
-	return toolsLib().database.model.getModel('announcement').create({
+	return toolsLib().database.getModel('announcement').create({
 		created_by,
 		title,
 		message,
@@ -473,11 +473,11 @@ const createAnnouncement = (created_by, title, message, type) => {
 };
 
 const findAnnouncement = (id) => {
-	return toolsLib().database.query.findOne('announcement', { where: { id }});
+	return toolsLib().database.findOne('announcement', { where: { id }});
 };
 
 const destroyAnnouncement = (id) => {
-	return toolsLib().database.model.getModel('announcement').destroy({ where: { id } });
+	return toolsLib().database.getModel('announcement').destroy({ where: { id } });
 };
 
 const getAllAnnouncements = (pagination, timeframe, ordering) => {
@@ -492,7 +492,7 @@ const getAllAnnouncements = (pagination, timeframe, ordering) => {
 		...pagination
 	};
 	if (timeframe) query.where.created_at = timeframe;
-	return toolsLib().database.query.findAndCountAllWithRows('announcement', query);
+	return toolsLib().database.findAndCountAllWithRows('announcement', query);
 };
 
 const snsCredentials = () => {
@@ -605,7 +605,7 @@ const deleteSMSCode = (user_id) => {
 };
 
 const updatePluginConfiguration = (key, data) => {
-	return toolsLib().database.query.findOne('status', {
+	return toolsLib().database.findOne('status', {
 		attributes: ['id', 'kit']
 	})
 		.then((status) => {
