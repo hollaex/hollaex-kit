@@ -3873,6 +3873,21 @@ table th {
     justify-content: center; }
     .init-container .loading_container .loading-content {
       color: var(--colors-white); }
+    .init-container .loading_container .delayed-show {
+      visibility: hidden;
+      animation: 10s ease forwards delayedShow; }
+      .init-container .loading_container .delayed-show.dot-1 {
+        animation-delay: 0.5s; }
+      .init-container .loading_container .delayed-show.dot-2 {
+        animation-delay: 1s; }
+      .init-container .loading_container .delayed-show.dot-3 {
+        animation-delay: 1.5s; }
+
+@keyframes delayedShow {
+  from {
+    visibility: hidden; }
+  to {
+    visibility: visible; } }
   .init-container .setup-container,
   .init-container .welcome-screen {
     align-items: center;
@@ -3880,12 +3895,22 @@ table th {
     display: flex;
     height: 100%;
     justify-content: center; }
+  .init-container .welcome-screen .footer {
+    color: #c4c4c4;
+    font-size: 10px;
+    text-align: center;
+    animation-name: content-animate;
+    animation-duration: 0.1s;
+    position: absolute;
+    bottom: 10px; }
+    .init-container .welcome-screen .footer a {
+      text-decoration-line: underline;
+      font-weight: bold; }
   .init-container .welcome-screen .content {
     color: #c4c4c4;
     text-align: center;
     width: 70rem; }
     .init-container .welcome-screen .content .logo {
-      background-color: #c4c4c4;
       height: 4rem;
       width: 4rem;
       margin: auto;
@@ -3893,21 +3918,29 @@ table th {
       animation-name: image-animate;
       animation-duration: 2s;
       z-index: 2; }
+    .init-container .welcome-screen .content .logo-box {
+      width: 6rem;
+      height: 6rem; }
 
 @keyframes image-animate {
   0% {
+    background-color: #c4c4c4;
     top: 0rem;
     width: 50rem;
     height: 50rem; }
   25% {
+    background-color: #c4c4c4;
     top: 0rem;
     width: 4rem;
     height: 4rem; }
   50% {
+    background-color: #c4c4c4;
     top: 0rem; }
   75% {
+    background-color: #c4c4c4;
     top: 10rem; }
   100% {
+    background-color: #c4c4c4;
     top: 0rem; } }
     .init-container .welcome-screen .content .body-content {
       animation-name: content-animate;

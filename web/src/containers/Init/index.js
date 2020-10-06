@@ -20,7 +20,7 @@ export default class InitWizard extends Component {
     componentDidMount() {
         setTimeout(() => {
             this.setState({ isLoading: false });
-        }, 1000);
+        }, 2000);
     }
 
     handleStepChange = (step) => {
