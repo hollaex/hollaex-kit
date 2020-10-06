@@ -174,11 +174,6 @@ const updateKit = (newKitConfig) => {
 	setRedisData();
 };
 
-const updateCoinsPairs = (type, symbol, config) => {
-	Object.assign(configuration[type][symbol], config);
-	setRedisData();
-};
-
 const updateSecrets = (newSecretsConfig) => {
 	Object.assign(secrets, newSecretsConfig);
 	setRedisData();
