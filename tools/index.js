@@ -2,20 +2,11 @@
 
 module.exports = {
 	...require('./common'),
-
-	// auth
 	auth: require('./auth'),
-
-	// database
 	database: require('./database'),
-
-	// Constants/Secrets
-
-	// logger
-	logger: require('./logger'),
-
-	// plugins
-	plugins: require('./plugins'),
-
-	users: require('./users')
+	order: require('./order'),
+	plugin: require('./plugin'),
+	user: require('./user'),
+	balance: require('./balance'),
+	image: require('./image')
 };

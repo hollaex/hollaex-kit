@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 /**
  * Returns object for sequelize pagination query. Default is { limit: 50, offset: 1 }
  * @param {number} limit - Limit of values in page. Max: 50.
@@ -34,11 +36,11 @@ const paginationQuery = (limit = 50, page = 1) => {
  * @param {string} endDate - End date to filter by in timestamp format (ISO 8601).
  * @returns {object} Sequelize timeframe object.
  */
-const timeframeQuery = (startDate = undefined, endDate = undefined) => {
-	let timestamp = {};
-	if (startDate) timestamp['$gte'] = startDate;
-	if (endDate) timestamp['$lte'] = endDate;
-	if (Object.entries(timestamp).length === 0) return undefined;
+const timeframeQuery = (startDate = 0, endDate = moment().valueOf()) => {
+	let timestamp = {
+		$gte: startDate,
+		$lte: endDate
+	};
 	return timestamp;
 };
 
@@ -48,12 +50,8 @@ const timeframeQuery = (startDate = undefined, endDate = undefined) => {
  * @param {string} order - Order to put query. Can be desc (descending) or asc (ascending).
  * @returns {array} Sequelize ordering array.
  */
-const orderingQuery = (orderBy = undefined, order = undefined) => {
-	if (!orderBy) {
-		return ['id', 'desc'];
-	} else {
-		return [orderBy, order === 'asc' || order === 'desc' ? order : 'desc'];
-	}
+const orderingQuery = (orderBy = 'id', order = 'desc') => {
+	return [orderBy, order === 'asc' || order === 'desc' ? order : 'desc'];
 };
 
 /**
