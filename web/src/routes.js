@@ -44,7 +44,8 @@ import {
 	PluginServices,
 	Settings,
 	Transfer,
-	AdminFees
+	AdminFees,
+	Init
 } from './containers';
 
 import store from './store';
@@ -366,6 +367,7 @@ export default (
 			onEnter={requireAuth}
 		/>
 		<Route path="expired-exchange" component={ExpiredExchange} />
+		<Route path="init" name="initWizard" component={Init} onEnter={requireAuth} />
 		<Route path="*" component={NotFound} />
 	</Router>
 );

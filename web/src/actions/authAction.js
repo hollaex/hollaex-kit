@@ -147,3 +147,7 @@ export const requestResetPassword = (values) => {
 };
 
 export const resetPassword = (data) => axios.post('/reset-password', data);
+
+export const storeAdminKey = (data) => axios.put('/admin/network-credentials', data);
+
+export const adminSignup = (data) => axios.post('/admin/signup', data);
