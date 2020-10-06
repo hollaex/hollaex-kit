@@ -12,6 +12,7 @@ import { content as CONTENT } from 'config/localizedStrings';
 import AllStringsModal from './components/AllStringsModal';
 import StringSettingsModal from './components/StringSettings';
 import AddLanguageModal from './components/AddLanguageModal';
+import UploadIcon from './components/UploadIcon';
 
 class OperatorControls extends Component {
 
@@ -43,6 +44,9 @@ class OperatorControls extends Component {
       isAddLanguageModalOpen: false,
       isExitConfirmationOpen: false,
       isPublishConfirmationOpen: false,
+      isUploadIconOpen: true,
+      iconsOverwrites: {},
+      editableIconIds: ['NOTIFICATION_ORDER_LIMIT_BUY_FILLED', 'PLUGINS_BANK'],
     }
   }
 
@@ -385,6 +389,19 @@ class OperatorControls extends Component {
     this.setState({ isPublishConfirmationOpen: false });
   }
 
+  addIcons = (icons = {}) => {
+    this.setState(prevState => ({
+      iconsOverwrites: { ...prevState.iconsOverwrites, ...icons },
+    }), this.closeUploadIcon);
+  }
+
+  closeUploadIcon = () => {
+    this.setState({
+      editableIconIds: [],
+      isUploadIconOpen: false,
+    });
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -402,6 +419,8 @@ class OperatorControls extends Component {
       isExitConfirmationOpen,
       isAddLanguageModalOpen,
       isPublishConfirmationOpen,
+      isUploadIconOpen,
+      editableIconIds,
     } = this.state;
     const { editMode } = this.props;
 
@@ -536,6 +555,12 @@ class OperatorControls extends Component {
           onCloseDialog={this.closeAddLanguageModal}
           languages={LANGUAGES.filter(({ value }) => !languageKeys.includes(value))}
           onSave={this.addLanguage}
+        />
+        <UploadIcon
+          editId={editableIconIds}
+          isOpen={isUploadIconOpen}
+          onCloseDialog={this.closeUploadIcon}
+          onSave={this.addIcons}
         />
         <Modal
           isOpen={isExitConfirmationOpen}
