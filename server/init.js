@@ -85,9 +85,6 @@ const checkStatus = () => {
 			} else if (!status.activation_code) {
 				stop();
 				throw new Error('Exchange activation code is not set');
-			} else if (!status.api_key || !status.api_secret) {
-				stop();
-				throw new Error('Exchange keys are not set.');
 			} else if (!status.activated) {
 				stop();
 				throw new Error('Exchange is expired');
