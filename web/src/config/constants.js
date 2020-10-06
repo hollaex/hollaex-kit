@@ -310,7 +310,11 @@ export const ICONS = {
 	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
 	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
 	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png',
-	DEFAULT_PLUGINS: '/assets/plugins/default-plugin.png'
+	DEFAULT_PLUGINS: '/assets/plugins/default-plugin.png',
+	SET_ADMIN_NETWORK_KEYS: '/assets/images/set-admin-network-keys.svg',
+	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
+	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',
+	SET_ADMIN_RETYPE_PASSWORD: '/assets/images/set-admin-retype-password.svg',
 };
 
 export const SOCIAL_ICONS = {

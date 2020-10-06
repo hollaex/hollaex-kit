@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Form, Button } from 'antd';
+import ReactSVG from 'react-svg';
 
 const { Item } = Form;
 
@@ -10,8 +11,13 @@ const EmailSetup = (props) => {
     };
     return (
         <div className="setup-container">
-            <div className="content">
-                <div className="email-icon"></div>
+            <div className="content info-container">
+                <div>
+                    <ReactSVG
+                        path={props.icon}
+                        wrapperClassName="email-icon"
+                    />
+                </div>
                 <div className="wrapper">
                     <div className="header">
                         Operator administrator email account

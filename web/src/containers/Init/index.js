@@ -5,6 +5,7 @@ import WelcomeScreen from './WelcomeScreen';
 import NetworkConfig from './NetworkConfig';
 import EmailSetup from './EmailSetup';
 import PasswordSetup, { ReTypePasswordContainer } from './PasswordSetup';
+import { ICONS } from '../../config/constants';
 
 export default class InitWizard extends Component {
     constructor(props) {
@@ -40,6 +41,7 @@ export default class InitWizard extends Component {
             case 'network-config':
                 return (
                     <NetworkConfig
+                        icon={ICONS.SET_ADMIN_NETWORK_KEYS}
                         onChangeStep={this.handleStepChange}
                     />
                 );
@@ -47,6 +49,7 @@ export default class InitWizard extends Component {
                 return (
                     <EmailSetup
                         initialValues={this.state.formValues}
+                        icon={ICONS.SET_ADMIN_EMAIL}
                         onChangeStep={this.handleStepChange}
                         onFieldChange={this.onFieldChange}
                     />
@@ -54,6 +57,7 @@ export default class InitWizard extends Component {
             case 'password':
                 return (
                     <PasswordSetup
+                        icon={ICONS.SET_ADMIN_PASSWORD}
                         onChangeStep={this.handleStepChange}
                         onFieldChange={this.onFieldChange}
                     />
@@ -62,6 +66,7 @@ export default class InitWizard extends Component {
                 return (
                     <ReTypePasswordContainer
                         initialValues={this.state.formValues}
+                        icon={ICONS.SET_ADMIN_RETYPE_PASSWORD}
                         onChangeStep={this.handleStepChange}
                     />
                 );

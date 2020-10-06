@@ -107,8 +107,13 @@
 		}
 	}
 	.setup-container {
+		.info-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
 		.email-icon {
-			width: 4rem;
+			width: 10rem;
 		}
 		.wrapper {
 			align-items: center;

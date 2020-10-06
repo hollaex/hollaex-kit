@@ -3927,8 +3927,12 @@ table th {
     height: 25rem; } }
     .init-container .welcome-screen .content .ant-btn {
       width: 22rem; }
+  .init-container .setup-container .info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
   .init-container .setup-container .email-icon {
-    width: 4rem; }
+    width: 10rem; }
   .init-container .setup-container .wrapper {
     align-items: center;
     color: #c4c4c4;

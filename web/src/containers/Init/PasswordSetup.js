@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Form, Button } from 'antd';
+import ReactSVG from 'react-svg';
 
 import { adminSignup } from '../../actions/authAction';
 
@@ -14,8 +15,13 @@ const PasswordSetup = (props) => {
     };
     return (
         <div className="setup-container">
-            <div className="content">
-                <div className="email-icon"></div>
+            <div className="content info-container">
+                <div>
+                    <ReactSVG
+                        path={props.icon}
+                        wrapperClassName="email-icon"
+                    />
+                </div>
                 <div className="wrapper">
                     <div className="header">
                         Create a memorable password
@@ -74,8 +80,13 @@ export const ReTypePasswordContainer = (props) => {
     };
     return (
         <div className="setup-container">
-            <div className="content">
-                <div className="email-icon"></div>
+            <div className="content info-container">
+                <div>
+                    <ReactSVG
+                        path={props.icon}
+                        wrapperClassName="email-icon"
+                    />
+                </div>
                 <div className="wrapper">
                     <div className="header">
                         Retype your password
