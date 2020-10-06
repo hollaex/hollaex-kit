@@ -181,6 +181,7 @@ const createUser = (email, password, role = 'user', domain) => {
 				return getModel('user').create({
 					email,
 					password,
+					verification_level: 1,
 					settings: INITIAL_SETTINGS(),
 					...roles
 				}, { transaction });
