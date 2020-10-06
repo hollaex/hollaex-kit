@@ -5,6 +5,7 @@ const moment = require('moment');
 const toolsLib = require('hollaex-tools-lib');
 const { handleHubData } = require('./sub');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
+const { loggerWebsocket } = require('../config/logger');
 
 const apiExpires = moment().toISOString() + 60;
 let ws;
@@ -30,12 +31,11 @@ const connect = () => {
 			});
 
 			ws.on('error', (err) => {
-				// ws.send('something');
-				console.log('err', err);
+				loggerWebsocket.error('ws/hub err', err.message);
 			});
 
 			ws.on('close', () => {
-				console.log('close');
+				loggerWebsocket.info('ws/hub close', ws.id);
 			});
 
 			ws.on('message', (data) => {
@@ -43,7 +43,7 @@ const connect = () => {
 					try {
 						data = JSON.parse(data);
 					} catch (err) {
-						console.log('err', err);
+						loggerWebsocket.error('ws/hub message err', err.message);
 					}
 					handleHubData(data);
 				}

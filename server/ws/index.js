@@ -1,3 +1,4 @@
+'use strict';
 
 const wss = require('./server');
 const uuid = require('uuid/v4');
