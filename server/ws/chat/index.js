@@ -3,9 +3,8 @@ const {
 	WEBSOCKET_CHAT_PUBLIC_ROOM,
 	ROLES
 } = require('../../constants');
-const { verifyToken } = require('../../api/helpers/auth');
 const { loggerChat } = require('../../config/logger');
-
+const toolsLib = require('hollaex-tools-lib');
 const { getMessages, addMessage, deleteMessage } = require('./chat');
 const { getUsername, changeUsername } = require('./username');
 const { initBanWS } = require('./ban');
@@ -17,7 +16,7 @@ const initializeChatWS = (chat) => {
 		if (!token) {
 			return next();
 		} else {
-			verifyToken(socket, null, token, (err) => {
+			toolsLib.auth.verifyBearerTokenMiddleware(socket, null, token, (err) => {
 				if (err) {
 					socket.err = err.message;
 					next(err);

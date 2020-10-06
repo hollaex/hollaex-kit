@@ -1,45 +1,19 @@
 'use strict';
 
-const Promise = require('bluebird');
-// const ses = require('../config/aws')('ses');
-// const { loggerEmail } = require('../config/logger');
-
-// const sendAwsRawEmail = (params) =>
-// 	new Promise((resolve, reject) => {
-// 		ses.sendRawEmail(params, (err, data) => {
-// 			if (err) {
-// 				loggerEmail.error('mail/index/sendRawEmail', err);
-// 				reject(err);
-// 			}
-// 			resolve(data);
-// 		});
-// 	});
-
-// const sendAwsEmail = (params) =>
-// 	new Promise((resolve, reject) => {
-// 		ses.sendEmail(params, (err, data) => {
-// 			if (err) {
-// 				loggerEmail.error('mail/index/sendEmail', err);
-// 				reject(err);
-// 			}
-// 			resolve(data);
-// 		});
-// 	});
-
 const momentTz = require('moment-timezone');
 const moment = require('moment');
 const geoip = require('geoip-lite');
 const { FORMATDATE } = require('./strings');
-const { GET_CONFIGURATION, GET_SECRETS } = require('../constants');
+const { GET_KIT_CONFIG, GET_KIT_SECRETS } = require('../constants');
 
-const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
-const VALID_LANGUAGES  = () => GET_CONFIGURATION().constants.valid_languages;
-const DEFAULT_TIMEZONE = () => GET_CONFIGURATION().constants.emails.timezone;
+const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
+const VALID_LANGUAGES  = () => GET_KIT_CONFIG().valid_languages;
+const DEFAULT_TIMEZONE = () => GET_KIT_SECRETS().emails.timezone;
 
-const SMTP_SERVER = () => GET_SECRETS().smtp.server;
-const SMTP_PORT = () => parseInt(GET_SECRETS().smtp.port);
-const SMTP_USER = () => GET_SECRETS().smtp.user;
-const SMTP_PASSWORD = () => GET_SECRETS().smtp.password;
+const SMTP_SERVER = () => GET_KIT_SECRETS().smtp.server;
+const SMTP_PORT = () => parseInt(GET_KIT_SECRETS().smtp.port);
+const SMTP_USER = () => GET_KIT_SECRETS().smtp.user;
+const SMTP_PASSWORD = () => GET_KIT_SECRETS().smtp.password;
 
 const formatTimezone = (date, timezone = DEFAULT_TIMEZONE()) => {
 	let tzTime;

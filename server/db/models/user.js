@@ -156,8 +156,11 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			affiliation_rate: {
 				type: DataTypes.DOUBLE,
-				defaultValue: 0	
+				defaultValue: 0
 			},
+			network_id: {
+				type: DataTypes.INTEGER
+			}
 		},
 		{
 			underscored: true

@@ -1,58 +1,19 @@
 'use strict';
 
-const { all } = require('bluebird');
 const { isEmail, isUUID } = require('validator');
-const {
-	isValidPassword,
-	validatePassword,
-	createResetPasswordCode,
-	setUsedResetPasswordCode,
-	findVerificationCodeByUserId,
-	findVerificationCodeByUserEmail,
-	findUserEmailByVerificationCode
-} = require('../helpers/auth');
-const { signFreshdesk, signZendesk } = require('../helpers/support');
-const { checkCaptcha, issueToken } = require('../helpers/security');
-const {
-	findUser,
-	getUserValuesByEmail,
-	isValidUsername,
-	updateUserSettings,
-	findUserByEmail,
-	checkUsernameIsTaken,
-	INITIAL_SETTINGS,
-	registerLogin,
-	findUserLogins
-} = require('../helpers/user');
-const {
-	checkAffiliation,
-	getAffiliationCount
-} = require('../helpers/affiliation');
-const { getPagination, getTimeframe } = require('../helpers/general');
-const { verifyOtpBeforeAction } = require('../helpers/otp');
-const { getConfiguration } = require('../../init');
+const { signFreshdesk, signZendesk } = require('../helpers/plugins');
+const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
-const { User } = require('../../db/models');
 const { loggerUser } = require('../../config/logger');
 const {
 	USER_VERIFIED,
-	INVALID_VERIFICATION_CODE,
 	PROVIDE_VALID_EMAIL_CODE,
 	USER_REGISTERED,
-	PROVIDE_VALID_EMAIL,
-	USER_EXISTS,
-	INVALID_USERNAME,
 	USER_NOT_FOUND,
-	USERNAME_CANNOT_BE_CHANGED,
 	SERVICE_NOT_SUPPORTED,
-	SIGNUP_NOT_AVAILABLE,
-	USER_NOT_VERIFIED,
-	USER_NOT_ACTIVATED,
-	INVALID_CREDENTIALS,
-	INVALID_OTP_CODE,
-	INVALID_PASSWORD,
-	VERIFICATION_EMAIL_MESSAGE
+	VERIFICATION_EMAIL_MESSAGE,
+	TOKEN_REMOVED
 } = require('../../messages');
 
 const signUpUser = (req, res) => {
@@ -63,7 +24,6 @@ const signUpUser = (req, res) => {
 		referral
 	} = req.swagger.params.signup.value;
 	const ip = req.headers['x-real-ip'];
-	const domain = req.headers['x-real-origin'];
 	loggerUser.debug(
 		req.uuid,
 		'controllers/user/signUpUser',
@@ -71,68 +31,21 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	if (!getConfiguration().constants.new_user_is_activated) {
-		return res.status(400).json({ message: SIGNUP_NOT_AVAILABLE });
-	}
-
-	if (!email || isEmail(email)) {
-		return res.status(400).json({ message: PROVIDE_VALID_EMAIL });
-	}
-
-	checkCaptcha(captcha, ip)
+	toolsLib.auth.checkCaptcha(captcha, ip)
 		.then(() => {
-			return User.findOne({
-				where: { email: email.toLowerCase() },
-				attributes: ['email']
-			});
+			return toolsLib.user.signUpUser(email, password, referral);
 		})
-		.then((user) => {
-			if (user) {
-				loggerUser.error(
-					req.uuid,
-					'controllers/user/signUpUser',
-					USER_EXISTS,
-					user.dataValues
-				);
-				const err = new Error(USER_EXISTS);
-				err.status = 409;
-				throw err;
-			} else if (!isValidPassword(password)) {
-				loggerUser.error(
-					req.uuid,
-					'controllers/user/signUpUser',
-					INVALID_PASSWORD
-				);
-				throw new Error(INVALID_PASSWORD);
-			}
-			return User.create({
-				email,
-				password,
-				settings: INITIAL_SETTINGS()
-			});
-		})
-		.then((user) => {
-			return all([ findVerificationCodeByUserId(user.id), user ]);
-		})
-		.then(([ verificationCode, user ]) => {
-			sendEmail(
-				MAILTYPE.SIGNUP,
-				email,
-				verificationCode.code,
-				{},
-				domain
-			);
-			checkAffiliation(referral, user.id);
-			res.status(201).json({ message: USER_REGISTERED });
+		.then(() => {
+			return res.status(201).json({ message: USER_REGISTERED });
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
 			let status = err.status || 400;
 			let message = err.message;
 			if (err.name === 'SequelizeValidationError') {
-				message = err.errors[0].message;
+				message = err.errs[0].message;
 			}
-			res.status(status).json({ message });
+			return res.status(status).json({ message });
 		});
 };
 
@@ -144,7 +57,7 @@ const getVerifyUser = (req, res) => {
 	let promiseQuery;
 
 	if (email && isEmail(email)) {
-		promiseQuery = findVerificationCodeByUserEmail(email)
+		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
 				if (resendEmail) {
 					sendEmail(
@@ -155,16 +68,16 @@ const getVerifyUser = (req, res) => {
 						domain
 					);
 				}
-				res.json({
+				return res.json({
 					email,
 					verification_code: verificationCode.code,
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
 	} else if (verification_code && isUUID(verification_code)) {
-		promiseQuery = findUserEmailByVerificationCode(verification_code)
+		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
-				res.json({
+				return res.json({
 					email: userEmail,
 					verification_code,
 					message: VERIFICATION_EMAIL_MESSAGE
@@ -178,10 +91,11 @@ const getVerifyUser = (req, res) => {
 
 	promiseQuery
 		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getVerifyUser', err.message);
 			if (err.message === USER_NOT_FOUND) {
 				return res.json({ message: VERIFICATION_EMAIL_MESSAGE });
 			}
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -189,30 +103,13 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	findVerificationCodeByUserEmail(email)
-		.then((verificationCode) => {
-			if (verification_code !== verificationCode) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			}
-			return verificationCode.update({ verified: true }, { returning: true });
-		})
-		.then((verificationCode) => {
-			return findUser({
-				where: { id: verificationCode.user_id },
-				attributes: ['email', 'settings']
-			});
-		})
-		.then((user) => {
-			sendEmail(
-				MAILTYPE.WELCOME,
-				user.email,
-				user.settings,
-				domain
-			);
-			res.json({ message: USER_VERIFIED });
+	toolsLib.user.verifyUser(email, verification_code, domain)
+		.then(() => {
+			return res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {
-			res.status(err.status || 400).json({ message: err.message });
+			loggerUser.error(req.uuid, 'controllers/user/verifyUser', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -231,79 +128,13 @@ const loginPost = (req, res) => {
 	const referer = req.headers.referer;
 	const time = new Date();
 
-	loggerUser.verbose(
-		req.uuid,
-		'controllers/user/loginPost',
-		email,
-		otp_code,
-		captcha,
-		service,
-		ip
-	);
-
-	findUser({
-		where: { email: email.toLowerCase() },
-		attributes: [
-			'id',
-			'email',
-			'password',
-			'verification_level',
-			'otp_enabled',
-			'activated',
-			'is_admin',
-			'is_support',
-			'is_supervisor',
-			'is_kyc',
-			'is_tech',
-			'settings'
-		]
-	})
+	toolsLib.user.loginUser(email, password, otp_code, captcha, ip, device, domain, origin, referer)
 		.then((user) => {
-			loggerUser.verbose(
-				req.uuid,
-				'controllers/user/loginPost',
-				'successful credentials',
-				user.dataValues
-			);
-			if (user.verification_level === 0) {
-				throw new Error(USER_NOT_VERIFIED);
-			} else if (!user.activated) {
-				throw new Error(USER_NOT_ACTIVATED);
-			}
-			return all([
-				user.dataValues,
-				validatePassword(user.password, password)
-			]);
-		})
-		.then(([user, isPasswordValid]) => {
-			if (!isPasswordValid) {
-				throw new Error(INVALID_CREDENTIALS);
-			}
-
-			if (!user.otp_enabled) {
-				return all([user, checkCaptcha(captcha, ip)]);
-			} else {
-				return all([
-					user,
-					verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
-						if (!validOtp) {
-							throw new Error(INVALID_OTP_CODE);
-						} else {
-							return all([checkCaptcha(captcha, ip)]);
-						}
-					})
-				]);
-			}
-		})
-		.then(([user]) => {
-			loggerUser.debug(req.uuid, 'controllers/user/loginPost', ip);
 			const data = {
 				ip,
 				time,
 				device
 			};
-
-			registerLogin(user.id, ip, device, domain, origin, referer);
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			} else {
@@ -321,8 +152,9 @@ const loginPost = (req, res) => {
 				}
 			}
 			return res.status(201).json({
-				token: issueToken(
+				token: toolsLib.auth.issueToken(
 					user.id,
+					user.network_id,
 					email,
 					ip,
 					user.is_admin,
@@ -334,14 +166,14 @@ const loginPost = (req, res) => {
 			});
 		})
 		.catch((err) => {
-			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err);
-			res.status(403).json({ message: err.message });
+			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);
+			return res.status(403).json({ message: err.message });
 		});
 };
 
 const verifyToken = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/verifyToken', req.auth.sub);
-	res.json({ message: 'Valid Token' });
+	return res.json({ message: 'Valid Token' });
 };
 
 const requestResetPassword = (req, res) => {
@@ -350,40 +182,29 @@ const requestResetPassword = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	const captcha = req.swagger.params.captcha.value;
 
-	findUserByEmail(email)
-		.then((user) => {
-			return Promise.all([createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip)]);
+	toolsLib.auth.sendResetPasswordCode(email, captcha, ip, domain)
+		.then(() => {
+			return res.json({ message: `Password request sent to: ${email}` });
 		})
-		.then(([code, user]) => {
-			sendEmail(
-				MAILTYPE.RESET_PASSWORD,
-				email,
-				{ code, ip },
-				user.settings,
-				domain
-			);
-			res.json({ message: `Password request sent to: ${email}` });
-		})
-		.catch((error) => {
-			if (error.message === USER_NOT_FOUND) {
+		.catch((err) => {
+			if (err.message === USER_NOT_FOUND) {
 				return res.json({ message: `Password request sent to: ${email}` });
 			}
-			res.status(error.status || 400).json({ message: error.message });
+			loggerUser.error(req.uuid, 'controllers/user/requestResetPassword', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 const resetPassword = (req, res) => {
 	const { code, new_password } = req.swagger.params.data.value;
-	if (!isValidPassword(new_password)) {
-		return res.status(400).json({ message: INVALID_PASSWORD });
-	}
 
-	setUsedResetPasswordCode(code, new_password)
+	toolsLib.auth.resetUserPassword(code, new_password)
 		.then(() => {
-			res.json({ message: 'Password updated.' });
+			return res.json({ message: 'Password updated.' });
 		})
-		.catch((error) => {
-			res.status(error.status || 400).json({ message: 'Invalid code' });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/resetPassword', err.message);
+			return res.status(err.status || 400).json({ message: 'Invalid code' });
 		});
 };
 
@@ -391,11 +212,11 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	getUserValuesByEmail(email)
+	toolsLib.user.getUserByEmail(email, true, true)
 		.then((user) => res.json(user))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUser', error);
-			res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUser', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -409,16 +230,11 @@ const updateSettings = (req, res) => {
 	);
 	const data = req.swagger.params.data.value;
 
-	findUser({
-		where: { email },
-		attributes: ['id', 'settings']
-	})
-		.then(updateUserSettings(data))
-		.then(() => getUserValuesByEmail(email))
+	toolsLib.user.updateUserSettings({ email }, data)
 		.then((user) => res.json(user))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/updateSettings', error);
-			res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -432,122 +248,241 @@ const changePassword = (req, res) => {
 		req.swagger.params.data.value
 	);
 
-	if (old_password === new_password) {
-		loggerUser.error(
-			req.uuid,
-			'controllers/user/changePassword',
-			'Passwords must be different'
-		);
-		return res.status(400).json({ message: 'Passwords must be different' });
-	} else if (!isValidPassword(new_password)) {
-		loggerUser.error(
-			req.uuid,
-			'controllers/user/changePassword',
-			INVALID_PASSWORD
-		);
-		return res.status(400).json({ message: INVALID_PASSWORD });
-	}
-
-	findUser({
-		where: { email },
-		attributes: ['id', 'password']
-	})
-		.then((user) => {
-			return validatePassword(user.password, old_password).then(
-				(isPasswordValid) => {
-					if (!isPasswordValid) {
-						throw new Error('Invalid password');
-					}
-					return user;
-				}
-			);
-		})
-		.then((user) => {
-			return user.update({ password: new_password });
-		})
+	toolsLib.auth.changeUserPassword(email, old_password, new_password)
 		.then(() => res.json({ message: 'Success' }))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/changePassword', error);
-			res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 const setUsername = (req, res) => {
-	loggerUser.debug(req.uuid, 'controllers/user/setUsername', req.auth.sub);
-	loggerUser.debug(
-		req.uuid,
-		'controllers/user/setUsername',
-		req.swagger.params.data.value
-	);
+	loggerUser.debug(req.uuid, 'controllers/user/setUsername auth', req.auth.sub);
+
 	const { id } = req.auth.sub;
 	const { username } = req.swagger.params.data.value;
 
-	if (!isValidUsername(username)) {
-		return res.status(400).json({ message: INVALID_USERNAME });
-	}
-
-	findUser({
-		where: { id },
-		attributes: ['id', 'username', 'settings']
-	})
-		.then((user) => {
-			loggerUser.debug(
-				req.uuid,
-				'controllers/user/setUsername',
-				user.dataValues
-			);
-			if (user.settings.usernameIsSet) {
-				throw new Error(USERNAME_CANNOT_BE_CHANGED);
-			}
-			return all([user, checkUsernameIsTaken(username)]);
-		})
-		.then(([ user ]) => {
-			return user.update(
-				{
-					username,
-					settings: {
-						...user.settings,
-						usernameIsSet: true
-					}
-				},
-				{ fields: ['username', 'settings'] }
-			);
-		})
+	toolsLib.user.setUsernameById(id, username)
 		.then(() => res.json({ message: 'Username successfully changed' }))
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/setUsername', error);
-			res.status(error.status || 400).json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/setUsername', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 const getUserLogins = (req, res) => {
-	const user_id = req.auth.sub.id;
-	const { limit, page, start_date, end_date } = req.swagger.params;
+	loggerUser.debug(req.uuid, 'controllers/user/getUserLogins auth', req.auth.sub);
 
-	findUserLogins(user_id, getPagination(limit, page), getTimeframe(start_date, end_date))
-		.then((logins) => {
-			return res.json(logins);
+	const user_id = req.auth.sub.id;
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	toolsLib.user.getUserLogins(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+		.then((data) => {
+			if (format.value) {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
 		})
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', error);
-			return res
-				.status(error.status || 400)
-				.json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 const affiliationCount = (req, res) => {
+	loggerUser.debug(req.uuid, 'controllers/user/affiliationCount auth', req.auth.sub);
+
 	const user_id = req.auth.sub.id;
-	getAffiliationCount(user_id)
+	toolsLib.user.getAffiliationCount(user_id)
 		.then((num) => {
 			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', num);
 			return res.json({ count: num });
 		})
-		.catch((error) => {
-			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', error);
-			return res
-				.status(error.status || 400)
-				.json({ message: error.message });
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getUserBalance = (req, res) => {
+	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
+	const user_id = req.auth.sub.id;
+
+	toolsLib.user.getUserBalanceByKitId(user_id)
+		.then((balance) => {
+			return res.json(balance);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const deactivateUser = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/deactivateUser/auth',
+		req.auth
+	);
+	const { id, email } = req.auth.sub;
+
+	toolsLib.user.freezeUserById(id)
+		.then(() => {
+			return res.json({ message: `Account ${email} deactivated` });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/deactivateUser',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const createCryptoAddress = (req, res) => {
+	loggerUser.debug(
+		req.uuid,
+		'controllers/user/createCryptoAddress',
+		req.auth.sub
+	);
+
+	const { id } = req.auth.sub;
+	const crypto = req.swagger.params.crypto.value;
+
+	if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/createCryptoAddress',
+			`Invalid crypto: "${crypto}"`
+		);
+		return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
+	}
+
+	toolsLib.user.createUserCryptoAddressByKitId(id, crypto)
+		.then((data) => {
+			return res.status(201).json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/createCryptoAddress',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getHmacToken = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/getHmacToken auth', req.auth.sub);
+
+	const { id } = req.auth.sub;
+
+	toolsLib.auth.getUserKitHmacTokens(id)
+		.then((tokens) => {
+			return res.json(tokens);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/getHmacToken err',
+				err.message
+			);
+			res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const createHmacToken = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/createHmacToken auth',
+		req.auth.sub
+	);
+
+	const { id } = req.auth.sub;
+	const ip = req.headers['x-real-ip'];
+	const { name, otp_code } = req.swagger.params.data.value;
+
+	toolsLib.auth.createUserKitHmacToken(id, otp_code, ip, name)
+		.then((token) => {
+			return res.json(token);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/createHmacToken',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const deleteHmacToken = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/deleteHmacToken auth',
+		req.auth.sub
+	);
+
+	const { id } = req.auth.sub;
+	const { token_id, otp_code } = req.swagger.params.data.value;
+
+	toolsLib.auth.deleteUserKitHmacToken(id, otp_code, token_id)
+		.then(() => {
+			return res.json({ message: TOKEN_REMOVED });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/deleteHmacToken',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getUserStats = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/getUserStats',
+		req.auth.sub
+	);
+	const user_id = req.auth.sub.id;
+
+	toolsLib.user.getUserStats(user_id)
+		.then((stats) => {
+			return res.json({ data: stats, updatedAt: new Date() });
+		})
+		.catch((err) => {
+			loggerUser.error('controllers/user/getUserStats', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const cancelWithdrawal = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/cancelWithdrawal auth',
+		req.auth
+	);
+
+	const userId = req.auth.sub.id;
+	const { transaction_id } = req.swagger.params.data.value;
+
+	toolsLib.transaction.cancelUserWithdrawal(userId, transaction_id)
+		.then((withdrawal) => {
+			return res.json(withdrawal);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/cancelWithdrawal',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
@@ -564,5 +499,13 @@ module.exports = {
 	changePassword,
 	setUsername,
 	getUserLogins,
-	affiliationCount
+	affiliationCount,
+	getUserBalance,
+	deactivateUser,
+	createCryptoAddress,
+	getHmacToken,
+	createHmacToken,
+	deleteHmacToken,
+	getUserStats,
+	cancelWithdrawal
 };

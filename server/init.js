@@ -4,40 +4,27 @@ const Kit = require('hollaex-node-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
 const cron = require('node-cron');
-const { getStatus } = require('./api/helpers/status');
 const { loggerGeneral } = require('./config/logger');
-const { User } = require('./db/models');
+const { User, Status } = require('./db/models');
 
 const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 
-let kit; // kit object based on hollaex node lib
+let nodeLib;
+
+const getNodeLib = () => nodeLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
-const { INIT_CHANNEL, CONFIGURATION_CHANNEL, STATUS_FROZENUSERS_DATA } = require('./constants');
-const { omit, each } = require('lodash');
-const redis = require('./db/redis').duplicate();
+const { INIT_CHANNEL, CONFIGURATION_CHANNEL } = require('./constants');
+const { each } = require('lodash');
 
 subscriber.on('message', (channel, message) => {
 	if (channel === INIT_CHANNEL) {
-		const { type, data } = JSON.parse(message);
+		const { type } = JSON.parse(message);
 		switch(type) {
-			case 'coins':
-				updateConfiguration(type, data, data.symbol);
-				break;
-			case 'pairs':
-				updateConfiguration(type, data, data.name);
-				break;
-			case 'constants':
-				updateConfiguration(type, data.constants);
-				updateSecrets(data.secrets);
-				break;
-			case 'freezeUser':
-				addFrozenUser(data);
-				break;
-			case 'unfreezeUser':
-				removeFrozenUser(data);
+			case 'refreshInit':
+				checkStatus();
 				break;
 			default:
 				break;
@@ -48,52 +35,45 @@ subscriber.on('message', (channel, message) => {
 
 subscriber.subscribe(INIT_CHANNEL);
 
-let configuration = {
-	coins: {},
-	pairs: {},
-	info: {},
-	constants: {
-		captcha: {},
-		accounts: {},
-		defaults: {},
-		emails: {},
-		plugins: {
-			configuration: {}
-		}
-	},
-	status: false
-};
-
-let secrets = {
-	broker: {},
-	security: {},
-	captcha: {},
-	smtp: {},
-	vault: {},
-	plugins: {
-		s3: {
-			key: {},
-			secret: {}
-		},
-		sns: {},
-		freshdesk: {}
-	}
-};
-
-let frozenUsers = {};
-
-const getCurrencies = () => {
-	return Object.keys(configuration.coins);
-};
-
-const getPairs = () => {
-	return configuration.pairs;
-};
-
 const checkStatus = () => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
 
-	return getStatus()
+	let configuration = {
+		coins: {},
+		pairs: {},
+		kit: {
+			info: {},
+			color: {},
+			interface: {},
+			icons: {},
+			links: {},
+			strings: {},
+			captcha: {},
+			defaults: {},
+			plugins: {
+				configuration: {}
+			},
+			meta: {}
+		}
+	};
+
+	let secrets = {
+		broker: {},
+		security: {},
+		accounts: {},
+		captcha: {},
+		emails: {},
+		smtp: {},
+		plugins: {
+			s3: {},
+			sns: {},
+			freshdesk: {}
+		}
+	};
+
+	let frozenUsers = {};
+
+	return Status.findOne({})
 		.then((status) => {
 			loggerGeneral.info('init/checkStatus');
 			if (!status) {
@@ -105,18 +85,12 @@ const checkStatus = () => {
 			} else if (!status.activation_code) {
 				stop();
 				throw new Error('Exchange activation code is not set');
-			} else if (!status.api_key || !status.api_secret) {
-				stop();
-				throw new Error('Exchange keys are not set.');
 			} else if (!status.activated) {
 				stop();
 				throw new Error('Exchange is expired');
 			} else {
-				Object.assign(secrets, status.constants.secrets);
-				const constants = omit(status.constants, 'secrets');
-				setConfiguration({
-					constants
-				});
+				secrets = status.secrets;
+				configuration.kit = status.kit;
 				return all([
 					checkActivation(
 						status.name,
@@ -130,28 +104,30 @@ const checkStatus = () => {
 		})
 		.then(([exchange, status]) => {
 			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
-			setConfiguration({
-				info: {
-					name: exchange.name,
-					active: exchange.active,
-					url: exchange.url,
-					is_trial: exchange.is_trial,
-					created_at: exchange.created_at,
-					expiry: exchange.expiry,
-					coins: exchange.coins,
-					pairs: exchange.pairs,
-					status: true
-				}
+			each(exchange.coins, (coin) => {
+				configuration.coins[coin.symbol] = coin;
 			});
-			kit = new Kit({
-				apiURL: HE_NETWORK_ENDPOINT ,
-				baseURL: HE_NETWORK_BASE_URL,
+			each(exchange.pairs, (pair) => {
+				configuration.pairs[pair.name] = pair;
+			});
+			configuration.kit.info = {
+				name: exchange.name,
+				active: exchange.active,
+				url: exchange.url,
+				is_trial: exchange.is_trial,
+				created_at: exchange.created_at,
+				expiry: exchange.expiry,
+				status: true,
+				initialized: status.initialized
+			};
+			nodeLib = new Kit({
+				networkURL: HE_NETWORK_ENDPOINT,
+				networkBaseURL: HE_NETWORK_BASE_URL,
 				apiKey: status.api_key,
-				apiSecret: status.secret,
+				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
-
 			return User.findAll({
 				where: {
 					activated: false
@@ -161,10 +137,15 @@ const checkStatus = () => {
 		.then((users) => {
 			loggerGeneral.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
-				addFrozenUser(user.dataValues.id);
+				frozenUsers[user.dataValues.id] = true;
 			});
-			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration, secrets, frozenUsers }));
-			return redis.setAsync(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'initial',
+					data: { configuration, secrets, frozenUsers }
+				})
+			);
 		})
 		.then(() => {
 			loggerGeneral.info('init/checkStatus/activation complete');
@@ -183,9 +164,7 @@ const checkStatus = () => {
 };
 
 const stop = () => {
-	frozenUsers = {};
-	secrets = {};
-	setConfiguration({ coins: {}, pairs: {}, status: false, info: {}, constants: {} });
+	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
 const checkActivation = (name, url, activation_code, constants = {}) => {
@@ -203,55 +182,6 @@ const checkActivation = (name, url, activation_code, constants = {}) => {
 	return rp(options);
 };
 
-const updateConfiguration = (type, config, value = undefined) => {
-	if (value) {
-		Object.assign(configuration[type][value], config);
-	} else {
-		Object.assign(configuration[type], config);
-	}
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ configuration }));
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
-};
-
-const updateSecrets = (newSecrets) => {
-	Object.assign(secrets, newSecrets);
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ secrets }));
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
-};
-
-const setConfiguration = (config) => {
-	Object.assign(configuration, config);
-	return configuration;
-};
-
-const addFrozenUser = (userId) => {
-	frozenUsers[userId] = true;
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ frozenUsers }));
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
-};
-
-const removeFrozenUser = (userId) => {
-	delete frozenUsers[userId];
-	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ frozenUsers }));
-	redis.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
-};
-
-const getConfiguration = () => {
-	return configuration;
-};
-
-const getCoin = (coin) => {
-	return configuration.coins[coin];
-};
-
-const getSecrets = () => {
-	return secrets;
-};
-
-const getFrozenUsers = () => {
-	return frozenUsers;
-};
-
 checkStatus();
 const task = cron.schedule('0 15 * * *', () => {
 	checkStatus();
@@ -264,11 +194,5 @@ task.start();
 module.exports = {
 	checkStatus,
 	checkActivation,
-	getConfiguration,
-	getCurrencies,
-	getPairs,
-	getCoin,
-	getSecrets,
-	getFrozenUsers,
-	kit
+	getNodeLib
 };
