@@ -1241,7 +1241,7 @@ paths:
         - user
     post:
       operationId: createHmacToken
-      description: "Create an HMAC token. It requires OTP to create a token"
+      description: Create an HMAC token. It requires OTP to create a token
       tags:
         - User
         - Token
@@ -1260,7 +1260,7 @@ paths:
               otp_code:
                 type: string
       responses:
-        201:
+        200:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"

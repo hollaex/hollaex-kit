@@ -14,6 +14,23 @@ exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 
 
 // CHANNEL CONSTANTS -----------------------------
 
+exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
+	switch(topic) {
+		case 'orderbook':
+			return `orderbook:${symbolOrUserId}`;
+		case 'trades':
+			return `trades:${symbolOrUserId}`;
+		case 'order':
+			return `order:${symbolOrUserId}`;
+		case 'wallet':
+			return `wallet:${symbolOrUserId}`;
+		case 'userTrade':
+			return `userTrade:${symbolOrUserId}`;
+		default:
+			return;
+	}
+};
+
 exports.WEBSOCKET_CHAT_CHANNEL = '/chat';
 exports.WEBSOCKET_CHAT_PUBLIC_ROOM = 'public';
 exports.CHAT_MAX_MESSAGES = 50;
