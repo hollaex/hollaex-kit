@@ -22,7 +22,7 @@ const WelcomeScreen = ({ onChangeStep }) => {
                         This procedure must only be completed by the exchange owner. When creating your operator administrators account it is important to memorize the details as it will be unrecoverable upon creation.
                     </div>
                     <div className="btn-container">
-                        <Button onClick={() => onChangeStep('network-config')}>Begin account creation</Button>
+                        <Button onClick={() => onChangeStep('email')}>Begin account creation</Button>
                     </div>
                 </div>
             </div>
