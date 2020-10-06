@@ -196,7 +196,7 @@ export function otpRequest() {
 	return (dispatch) => {
 		dispatch({ type: 'REQUEST_OTP_PENDING' });
 		axios
-			.get('/user/requestOTP')
+			.get('/user/request-otp')
 			.then((body) => {
 				dispatch({
 					type: 'REQUEST_OTP_FULFILLED',
@@ -265,7 +265,7 @@ export const setUsernameStore = (username) => ({
 
 export const createAddress = (addressType = '') => ({
 	type: 'CREATE_ADDRESS',
-	payload: axios.post(`/user/address/${addressType}`, {})
+	payload: axios.get(`/user/create-address?crypto=${addressType}`)
 });
 
 export const cleanCreateAddress = () => ({

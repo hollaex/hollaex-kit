@@ -41,7 +41,7 @@ const EmailSetup = (props) => {
                                     },
                                     {
                                         type: 'email',
-                                        message: 'The input is not valid E-mail!'
+                                        message: 'Invalid email address'
                                     }
                                 ]}
                             >

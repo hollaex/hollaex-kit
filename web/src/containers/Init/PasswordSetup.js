@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Form, Button } from 'antd';
+import { Input, Form, Button, message } from 'antd';
 import ReactSVG from 'react-svg';
 
 import { adminSignup } from '../../actions/authAction';
@@ -73,10 +73,16 @@ export const ReTypePasswordContainer = (props) => {
                     console.log('response signup', res);
                 })
                 .catch(error => {
-                    console.log('error', error);
-                })
+                    let errMsg = ''
+                    if (error.response) {
+                        errMsg = error.response.data.message;
+                    } else {
+                        errMsg = error.message;
+                    }
+                    message.error(errMsg);
+                });
         }
-        // props.onChangeStep('login');
+        props.onChangeStep('login');
     };
     return (
         <div className="setup-container">

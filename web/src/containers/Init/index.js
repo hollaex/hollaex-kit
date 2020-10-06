@@ -5,6 +5,7 @@ import WelcomeScreen from './WelcomeScreen';
 import NetworkConfig from './NetworkConfig';
 import EmailSetup from './EmailSetup';
 import PasswordSetup, { ReTypePasswordContainer } from './PasswordSetup';
+import Login from './Login';
 import { ICONS } from '../../config/constants';
 
 export default class InitWizard extends Component {
@@ -67,6 +68,12 @@ export default class InitWizard extends Component {
                     <ReTypePasswordContainer
                         initialValues={this.state.formValues}
                         icon={ICONS.SET_ADMIN_RETYPE_PASSWORD}
+                        onChangeStep={this.handleStepChange}
+                    />
+                );
+            case 'login':
+                return (
+                    <Login
                         onChangeStep={this.handleStepChange}
                     />
                 );

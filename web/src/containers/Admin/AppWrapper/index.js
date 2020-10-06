@@ -18,6 +18,7 @@ import {
 	getToken
 } from '../../../utils/token';
 import { checkUserSessionExpired } from '../../../utils/utils';
+import { getExchangeInitialized } from '../../../utils/initialize';
 import { logout } from '../../../actions/authAction';
 import { setMe } from '../../../actions/userAction';
 import {
@@ -70,6 +71,10 @@ class AppWrapper extends React.Component {
 		// if (!this.props.fetchingAuth && !Object.keys(this.props.pairs).length) {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
+		}
+		const initialized = getExchangeInitialized();
+		if (initialized === 'false' || !initialized) {
+			this.props.router.push('/init');
 		}
 		this._resetTimer();
 		this.props.requestAvailPlugins();

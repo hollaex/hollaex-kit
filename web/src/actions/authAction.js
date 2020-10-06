@@ -88,7 +88,7 @@ export function verifyToken(token) {
 		dispatch({ type: 'VERIFY_TOKEN_PENDING' });
 		axios({
 			method: 'GET',
-			url: '/verify_token',
+			url: '/verify-token',
 			headers: {
 				Authorization: `Bearer ${token}`
 			}
