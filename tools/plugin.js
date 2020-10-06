@@ -4,17 +4,17 @@ const { SERVER_PATH } = require('../constants');
 const { INVALID_PLUGIN, PLUGIN_ALREADY_ENABELD, PLUGIN_ALREADY_DISABLED } = require('../messages');
 const {
 	AVAILABLE_PLUGINS,
-	CONFIGURATION_CHANNEL
+	CONFIGURATION_CHANNEL,
+	SECRET_MASK,
+	MASK_VALUE_GIVEN
 } = require(`${SERVER_PATH}/constants`);
 const { getKitConfig, getKitSecrets, maskSecrets } = require('./common');
 const dbQuery = require('./database/query');
 const { publisher } = require('./database/redis');
+const flatten = require('flat');
 
 const getPluginsConfig = () => {
-	const secrets = {};
-	for (let plugin in getKitSecrets().plugins) {
-		secrets[plugin] = maskSecrets(getKitSecrets().plugins[plugin]);
-	}
+	const secrets = maskSecrets(getKitSecrets()).plugins;
 
 	return {
 		available: AVAILABLE_PLUGINS,
@@ -49,6 +49,10 @@ const updatePluginConfig = (key, data) => {
 				kit.plugins[key] = {...kit.plugins.configuration[key], ...data.kit};
 			}
 			if (data.secrets) {
+				const flattenedNewKitSecrets = flatten(data.secrets);
+				if (Object.values(flattenedNewKitSecrets).includes(SECRET_MASK)) {
+					throw new Error(MASK_VALUE_GIVEN);
+				}
 				secrets.plugins[key] = {...secrets.plugins[key], ...data.secrets};
 			}
 			return status.update({ kit, secrets }, {
