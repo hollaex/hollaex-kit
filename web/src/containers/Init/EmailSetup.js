@@ -42,7 +42,9 @@ const EmailSetup = (props) => {
                                 <Input />
                             </Item>
                         </div>
-                        <div className="btn-container">
+                        <div className="btn-wrapper">
+                            <Button onClick={() => props.onChangeStep('network-config')}>Back</Button>
+                            <div className="separator"></div>
                             <Button htmlType='submit'>Proceed</Button>
                         </div>
                     </Form>

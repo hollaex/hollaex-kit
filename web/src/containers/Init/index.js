@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 import LoadingScreen from './LoadingScreen';
 import WelcomeScreen from './WelcomeScreen';
+import NetworkConfig from './NetworkConfig';
 import EmailSetup from './EmailSetup';
-import PasswordSetup from './PasswordSetup';
+import PasswordSetup, { ReTypePasswordContainer } from './PasswordSetup';
 
 export default class InitWizard extends Component {
     constructor(props) {
@@ -26,7 +27,6 @@ export default class InitWizard extends Component {
     };
 
     onFieldChange = (value, name) => {
-        console.log('e.target', value, name);
         this.setState({
             formValues: {
                 ...this.state.formValues,
@@ -37,6 +37,12 @@ export default class InitWizard extends Component {
 
     renderStep = () => {
         switch(this.state.currentStep) {
+            case 'network-config':
+                return (
+                    <NetworkConfig
+                        onChangeStep={this.handleStepChange}
+                    />
+                );
             case 'email':
                 return (
                     <EmailSetup
@@ -50,6 +56,13 @@ export default class InitWizard extends Component {
                     <PasswordSetup
                         onChangeStep={this.handleStepChange}
                         onFieldChange={this.onFieldChange}
+                    />
+                );
+            case 'retype-password':
+                return (
+                    <ReTypePasswordContainer
+                        initialValues={this.state.formValues}
+                        onChangeStep={this.handleStepChange}
                     />
                 );
             case 'landing-page':
