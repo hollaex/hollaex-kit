@@ -1,9 +1,4 @@
 'use strict';
-
-const {
-	initializeCurrencies,
-	initializePairs,
-} = require('./utils');
 const { toBool } = require('./utils/conversion');
 
 exports.NETWORK = process.env.NETWORK === 'mainnet' ? 'prod' : 'testnet';
@@ -224,22 +219,9 @@ exports.MAIN_CURRENCY = 'eur';
 
 exports.SECRET_MASK = '************************';
 
-const PAIRS = initializePairs(process.env.PAIRS);
-exports.PAIRS = PAIRS;
-exports.PAIR = (process.env.PAIR || '').toLowerCase();
-
-const CURRENCIES = initializeCurrencies(process.env.CURRENCIES);
-
-const BALANCE_TYPES = ['balance', 'available', 'pending'];
-const _balanceKeys = [];
-CURRENCIES.forEach((currency) => {
-	BALANCE_TYPES.forEach((balance) => {
-		_balanceKeys.push(`${currency}_${balance}`);
-	});
-});
-exports.CURRENCIES = CURRENCIES;
-exports.BALANCE_KEYS = _balanceKeys;
 exports.NODE_ENV = process.env.NODE_ENV;
+
+exports.CURRENCIES = [];
 
 exports.SALT_ROUNDS = 10;
 exports.AFFILIATION_CODE_LENGTH = 6;
