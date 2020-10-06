@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { SOCIAL_ICONS } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 
@@ -84,32 +84,32 @@ const generateSectionsText = (strings, theme, links = {}) => {
 			LINKS: [
 				twitter && {
 					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_1"],
-					icon: SOCIAL_ICONS.TWITTER,
+					icon: ICONS['SOCIAL_ICONS.TWITTER'],
 					link: twitter
 				},
 				telegram && {
 					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_2"],
-					icon: SOCIAL_ICONS.TELEGRAM,
+					icon: ICONS['SOCIAL_ICONS.TELEGRAM'],
 					link: telegram
 				},
 				facebook && {
 					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_3"],
-					icon: SOCIAL_ICONS.FACEBOOK,
+					icon: ICONS['SOCIAL_ICONS.FACEBOOK'],
 					link: facebook
 				},
 				instagram && {
 					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_4"],
-					icon: SOCIAL_ICONS.INSTAGRAM,
+					icon: ICONS['SOCIAL_ICONS.INSTAGRAM'],
 					link: instagram
 				},
 				linkedin && {
 					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_5"],
-					icon: SOCIAL_ICONS.LINKEDIN,
+					icon: ICONS['SOCIAL_ICONS.LINKEDIN'],
 					link: linkedin
 				},
 				youtube && {
 					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_9"],
-					icon: SOCIAL_ICONS.YOUTUBE,
+					icon: ICONS['SOCIAL_ICONS.YOUTUBE'],
 					link: youtube
 				}
 			]

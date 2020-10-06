@@ -3,39 +3,39 @@ import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import STRINGS from '../../config/localizedStrings';
 
-import { FLEX_CENTER_CLASSES, FEATURES_ICONS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 
 const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 
 const generateCardsContentFromStrings = (strings) => {
 	return [
 		{
-			icon: FEATURES_ICONS.PRO_TRADING,
+			icon: ICONS['FEATURES_ICONS.PRO_TRADING'],
 			title: STRINGS["HOME.SECTION_3_CARD_1_TITLE"],
 			text: STRINGS["HOME.SECTION_3_CARD_1_TEXT"]
 		},
 		{
-			icon: FEATURES_ICONS.PAYMENT,
+			icon: ICONS['FEATURES_ICONS.PAYMENT'],
 			title: STRINGS["HOME.SECTION_3_CARD_2_TITLE"],
 			text: STRINGS["HOME.SECTION_3_CARD_2_TEXT"]
 		},
 		{
-			icon: FEATURES_ICONS.SECURITY,
+			icon: ICONS['FEATURES_ICONS.SECURITY'],
 			title: STRINGS["HOME.SECTION_3_CARD_3_TITLE"],
 			text: STRINGS["HOME.SECTION_3_CARD_3_TEXT"]
 		},
 		{
-			icon: FEATURES_ICONS.REPORTING,
+			icon: ICONS['FEATURES_ICONS.REPORTING'],
 			title: STRINGS["HOME.SECTION_3_CARD_4_TITLE"],
 			text: STRINGS["HOME.SECTION_3_CARD_4_TEXT"]
 		},
 		{
-			icon: FEATURES_ICONS.SUPPORT,
+			icon: ICONS['FEATURES_ICONS.SUPPORT'],
 			title: STRINGS["HOME.SECTION_3_CARD_5_TITLE"],
 			text: STRINGS["HOME.SECTION_3_CARD_5_TEXT"]
 		},
 		{
-			icon: FEATURES_ICONS.LEGAL,
+			icon: ICONS['FEATURES_ICONS.LEGAL'],
 			title: STRINGS["HOME.SECTION_3_CARD_6_TITLE"],
 			text: STRINGS["HOME.SECTION_3_CARD_6_TEXT"]
 		}
