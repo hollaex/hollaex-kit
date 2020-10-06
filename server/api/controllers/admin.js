@@ -484,6 +484,31 @@ const completeExchangeSetup = (req, res) => {
 		});
 };
 
+const uploadImage = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/uploadImage auth',
+		req.auth
+	);
+
+
+	const name = req.swagger.params.name.value;
+	const file = req.swagger.params.file.value;
+
+	toolsLib.image.storeImage(file, name)
+		.then((path) => {
+			return res.json({ path });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/uploadImage catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -503,5 +528,6 @@ module.exports = {
 	transferFund,
 	adminCheckTransaction,
 	completeExchangeSetup,
-	putNetworkCredentials
+	putNetworkCredentials,
+	uploadImage
 };

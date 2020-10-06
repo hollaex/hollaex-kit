@@ -1691,6 +1691,42 @@ paths:
       x-security-scopes:
         - admin
         - tech
+  /admin/upload:
+    x-swagger-router-controller: admin
+    post:
+      operationId: uploadImage
+      description: Upload an image
+      tags:
+        - Admin
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          description: file of image
+          in: formData
+          required: true
+          type: file
+        - name: name
+          description: name of image
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              path:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/pairs:
     x-swagger-router-controller: admin
     get:
