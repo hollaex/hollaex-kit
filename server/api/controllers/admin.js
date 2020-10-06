@@ -484,30 +484,30 @@ const completeExchangeSetup = (req, res) => {
 		});
 };
 
-const uploadImage = (req, res) => {
-	loggerAdmin.verbose(
-		req.uuid,
-		'controllers/admin/uploadImage auth',
-		req.auth
-	);
+// const uploadImage = (req, res) => {
+// 	loggerAdmin.verbose(
+// 		req.uuid,
+// 		'controllers/admin/uploadImage auth',
+// 		req.auth
+// 	);
 
 
-	const name = req.swagger.params.name.value;
-	const file = req.swagger.params.file.value;
+// 	const name = req.swagger.params.name.value;
+// 	const file = req.swagger.params.file.value;
 
-	toolsLib.image.storeImage(file, name)
-		.then((path) => {
-			return res.json({ path });
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/uploadImage catch',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
+// 	toolsLib.image.storeImage(file, name)
+// 		.then((path) => {
+// 			return res.json({ path });
+// 		})
+// 		.catch((err) => {
+// 			loggerAdmin.error(
+// 				req.uuid,
+// 				'controllers/admin/uploadImage catch',
+// 				err.message
+// 			);
+// 			return res.status(err.status || 400).json({ message: err.message });
+// 		});
+// };
 
 module.exports = {
 	createInitialAdmin,
@@ -529,5 +529,5 @@ module.exports = {
 	adminCheckTransaction,
 	completeExchangeSetup,
 	putNetworkCredentials,
-	uploadImage
+// 	uploadImage
 };
