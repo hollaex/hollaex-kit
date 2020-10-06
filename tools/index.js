@@ -7,5 +7,6 @@ module.exports = {
 	order: require('./order'),
 	plugin: require('./plugin'),
 	user: require('./user'),
-	balance: require('./balance')
+	balance: require('./balance'),
+	image: require('./image')
 };
