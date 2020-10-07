@@ -20,7 +20,9 @@ class OperatorControls extends Component {
     super(props);
 
     const strings = localStorage.getItem('strings') || "{}";
+    const icons = localStorage.getItem('icons') || "{}";
     const overwrites = JSON.parse(strings);
+    const iconsOverwrites = JSON.parse(icons);
     const languageKeys = getValidLanguages();
     const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value));
     const selectedLanguages = this.getSelectedLanguages(languageKeys);
@@ -45,7 +47,7 @@ class OperatorControls extends Component {
       isExitConfirmationOpen: false,
       isPublishConfirmationOpen: false,
       isUploadIconOpen: false,
-      iconsOverwrites: {},
+      iconsOverwrites,
       editableIconIds: [],
     }
   }
@@ -244,8 +246,8 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites: strings } = this.state;
-    const configs = { strings };
+    const { overwrites: strings, iconsOverwrites: icons } = this.state;
+    const configs = { strings, icons };
 
     publish(configs)
       .then(this.reload)
