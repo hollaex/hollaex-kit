@@ -3,6 +3,7 @@ import React from 'react';
 import { hash } from 'rsvp';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
+import merge from 'lodash.merge';
 // import { render } from 'react-snapshot';
 import { Router, browserHistory } from 'react-router';
 import config, { ProjectConfig } from 'config/project.config';
@@ -60,10 +61,7 @@ const getConfigs = async () => {
   setLocalVersions(remoteVersions);
   setValidLanguages(validLanguages);
 
-  const mergedConfigs = {
-    ...config,
-    ...remoteConfigs,
-  }
+  const mergedConfigs = merge(config, remoteConfigs)
 
   return mergedConfigs;
 }
