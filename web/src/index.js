@@ -54,14 +54,19 @@ const getConfigs = async () => {
   })
 
   const remoteConfigs = await hash(promises);
-  Object.entries(remoteConfigs).forEach(([key]) => {
+  Object.keys(remoteConfigs).forEach(([key]) => {
     localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
+  })
+
+  const localConfigs = {};
+  Object.keys(remoteVersions).forEach((key) => {
+    localConfigs[key] = JSON.parse(localStorage.getItem(key) || "{}");
   })
 
   setLocalVersions(remoteVersions);
   setValidLanguages(validLanguages);
 
-  const mergedConfigs = merge(config, remoteConfigs)
+  const mergedConfigs = merge(config, localConfigs);
 
   return mergedConfigs;
 }
