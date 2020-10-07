@@ -9,7 +9,8 @@ $operator-controls__panel-text-color: #FFFFFF;
   }
 }
 
-.edit-wrapper__icon-wrapper {
+.edit-wrapper__icon-wrapper,
+.edit-wrapper__icons-container {
   display: none !important;
 }
 
@@ -24,5 +25,11 @@ $operator-controls__panel-text-color: #FFFFFF;
     color: $operator-controls__panel-text-color;
     background-color: $operator-controls__panel-main-color;
     cursor: pointer;
+    font-size: 10px !important;
+    margin-right: 2px;
+  }
+
+  .edit-wrapper__icons-container {
+    display: inline-flex !important;
   }
 }

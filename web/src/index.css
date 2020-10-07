@@ -9769,7 +9769,8 @@ foreignObject {
   .edit-wrapper__container.reverse {
     flex-direction: row-reverse !important; }
 
-.edit-wrapper__icon-wrapper {
+.edit-wrapper__icon-wrapper,
+.edit-wrapper__icons-container {
   display: none !important; }
 
 .layout-edit .edit-wrapper__icon-wrapper {
@@ -9781,7 +9782,12 @@ foreignObject {
   border-radius: 2px;
   color: #FFFFFF;
   background-color: #0000FF;
-  cursor: pointer; }
+  cursor: pointer;
+  font-size: 10px !important;
+  margin-right: 2px; }
+
+.layout-edit .edit-wrapper__icons-container {
+  display: inline-flex !important; }
 
 html {
   font-size: 12px !important;
