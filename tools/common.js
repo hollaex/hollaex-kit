@@ -244,7 +244,16 @@ const setExchangeInitialized = () => {
 			if (status.dataValues.initialized === true) {
 				throw new Error('Exchange already initialized');
 			}
-			return status.update({ initialized: true }, { fields: ['initialized'] });
+			return status.update({ initialized: true }, { returning: true, fields: ['initialized'] });
+		})
+		.then((status) => {
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update', data: { info: { initialized: status.initialized } }
+				})
+			);
+			return;
 		});
 };
 
@@ -260,7 +269,16 @@ const setExchangeSetupCompleted = () => {
 			};
 			return status.update({
 				secrets
-			}, { fields: ['secrets'] });
+			}, { returning: true, fields: ['secrets'] });
+		})
+		.then((status) => {
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update', data: { secrets: status.secrets }
+				})
+			);
+			return;
 		});
 };
 
