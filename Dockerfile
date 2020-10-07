@@ -13,14 +13,10 @@ WORKDIR /app
 
 RUN npm install --loglevel=error && \
     pm2 update && \
-    cd plugins && npm install --loglevel=error && \
-    for d in ./*/ ; do (cd "$d" && npm install --loglevel=error); done && \
     cd /app/mail && npm install --loglevel=error
 
 EXPOSE 10010
 
 EXPOSE 10080
-
-EXPOSE 10011
 
 ENTRYPOINT ["/entrypoint.sh"]
