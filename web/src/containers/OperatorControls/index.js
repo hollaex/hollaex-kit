@@ -44,9 +44,9 @@ class OperatorControls extends Component {
       isAddLanguageModalOpen: false,
       isExitConfirmationOpen: false,
       isPublishConfirmationOpen: false,
-      isUploadIconOpen: true,
+      isUploadIconOpen: false,
       iconsOverwrites: {},
-      editableIconIds: ['NOTIFICATION_ORDER_LIMIT_BUY_FILLED', 'PLUGINS_BANK'],
+      editableIconIds: [],
     }
   }
 
@@ -110,18 +110,28 @@ class OperatorControls extends Component {
   handleEditButton = ({ target: { dataset = {} } }, source) => {
     const { isEditModalOpen } = this.state;
     const { editMode } = this.props;
-    const { stringId } = dataset;
+    const { stringId, iconId } = dataset;
 
     if(editMode && !isEditModalOpen) {
       const string_ids_array = stringId ? stringId.split(',') : []
+      const icon_ids_array = iconId ? iconId.split(',') : []
+
       this.setState({
         editableElementIds: string_ids_array,
+        editableIconIds: icon_ids_array,
       }, () => {
-        if (source) {
-          this.closeAllStringsModal();
-          this.openEditModal(source);
-        } else {
-        this.openEditModal();
+
+        if (stringId) {
+          if (source) {
+
+            this.closeAllStringsModal();
+            this.openEditModal(source);
+
+          } else {
+            this.openEditModal();
+          }
+        } else if (iconId) {
+          this.openUploadIcon();
         }
       })
     }
@@ -393,6 +403,16 @@ class OperatorControls extends Component {
     this.setState(prevState => ({
       iconsOverwrites: { ...prevState.iconsOverwrites, ...icons },
     }), this.closeUploadIcon);
+  }
+
+  openUploadIcon = () => {
+    const { editableIconIds } = this.state;
+
+    if (editableIconIds.length > 0) {
+      this.setState({
+        isUploadIconOpen: true,
+      });
+    }
   }
 
   closeUploadIcon = () => {
