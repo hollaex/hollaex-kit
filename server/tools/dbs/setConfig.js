@@ -1,4 +1,8 @@
+'use strict';
+
 const { Status } = require('../../db/models');
+const { publisher } = require('../../db/pubsub');
+const { CONFIGURATION_CHANNEL } = require('../../constants');
 
 const {
 	API_NAME,
@@ -19,32 +23,32 @@ const {
 	SEND_EMAIL_TO_SUPPORT,
 	ALLOWED_DOMAINS,
 	ID_DOCS_BUCKET,
-	VAULT_NAME,
 	CAPTCHA_SECRET_KEY,
-	S3_WRITE_ACCESSKEYID,
-	S3_WRITE_SECRETACCESSKEY,
-	S3_READ_ACCESSKEYID,
-	S3_READ_SECRETACCESSKEY,
+	S3_ACCESSKEYID,
+	S3_SECRETACCESSKEY,
 	SNS_ACCESSKEYID,
 	SNS_REGION,
 	SNS_SECRETACCESSKEY,
-	VAULT_KEY,
-	VAULT_SECRET,
+	ZENDESK_HOST,
+	ZENDESK_KEY,
 	FRESHDESK_HOST,
 	FRESHDESK_KEY,
 	FRESHDESK_AUTH,
-	ZENDESK_HOST,
-	ZENDESK_KEY,
 	ADMIN_EMAIL,
 	USER_LEVEL_NUMBER,
 	CAPTCHA_SITE_KEY,
-	ADMIN_WHITELIST_IP
+	ADMIN_WHITELIST_IP,
+	API_KEY,
+	API_SECRET
 } = process.env;
 
-let constants = {
+const kit = {
 	api_name: API_NAME || '',
 	description: '',
 	color: {},
+	interface: {},
+	icons: {},
+	strings: {},
 	title: '',
 	links: {
 		twitter: '',
@@ -71,83 +75,80 @@ let constants = {
 	captcha: {
 		site_key: CAPTCHA_SITE_KEY
 	},
-	accounts: {
-		admin: ADMIN_EMAIL || ''
-	},
 	defaults: {
 		language: NEW_USER_DEFAULT_LANGUAGE || 'en',
 		theme: DEFAULT_THEME || 'white'
-	},
-	emails: {
-		timezone: EMAILS_TIMEZONE || '',
-		send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
-		sender: SENDER_EMAIL || ''
 	},
 	plugins: {
 		enabled: PLUGINS || '',
 		configuration: {}
 	},
-	secrets: {
-		allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
-		admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
-		broker: {
-			quick_trade_rate: 0.03,
-			quick_trade_expiration_time: 20,
-			trade_master_account_id: 2
+	meta: {}
+};
+
+const secrets = {
+	allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
+	admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
+	exchange_credentials_set: API_KEY && API_SECRET ? true : false,
+	setup_completed: false,
+	broker: {
+		quick_trade_rate: 0.03,
+		quick_trade_expiration_time: 20,
+		trade_master_account_id: 2
+	},
+	security: {
+		token_time: '24h',
+		withdrawal_token_expiry: 300000
+	},
+	emails: {
+		timezone: EMAILS_TIMEZONE || '',
+		send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
+		sender: SENDER_EMAIL || '',
+		audit: ADMIN_EMAIL || ''
+	},
+	captcha: {
+		secret_key: CAPTCHA_SECRET_KEY
+	},
+	smtp: {
+		server: SMTP_SERVER || '',
+		port: SMTP_PORT || 587,
+		user: SMTP_USER,
+		password: SMTP_PASSWORD
+	},
+	plugins: {
+		s3: {
+			id_docs_bucket: ID_DOCS_BUCKET || '',
+			key: S3_ACCESSKEYID,
+			secret: S3_SECRETACCESSKEY
 		},
-		security: {
-			token_time: '24h',
-			withdrawal_token_expiry: 300000
+		sns: {
+			region: SNS_REGION || '',
+			key: SNS_ACCESSKEYID || '',
+			secret: SNS_SECRETACCESSKEY || ''
 		},
-		captcha: {
-			secret_key: CAPTCHA_SECRET_KEY
+		freshdesk: {
+			host: FRESHDESK_HOST || '',
+			key: FRESHDESK_KEY || '',
+			auth: FRESHDESK_AUTH || ''
 		},
-		smtp: {
-			server: SMTP_SERVER || '',
-			port: SMTP_PORT || 587,
-			user: SMTP_USER,
-			password: SMTP_PASSWORD
-		},
-		vault: {
-			name: VAULT_NAME || '',
-			key: VAULT_KEY,
-			secret: VAULT_SECRET,
-			connected_coins: []
-		},
-		plugins: {
-			s3: {
-				id_docs_bucket: ID_DOCS_BUCKET || '',
-				key: {
-					write: S3_WRITE_ACCESSKEYID || '',
-					read: S3_READ_ACCESSKEYID || ''
-				},
-				secret: {
-					write: S3_WRITE_SECRETACCESSKEY,
-					read: S3_READ_SECRETACCESSKEY
-				}
-			},
-			sns: {
-				region: SNS_REGION || '',
-				key: SNS_ACCESSKEYID || '',
-				secret: SNS_SECRETACCESSKEY || ''
-			},
-			freshdesk: {
-				host: FRESHDESK_HOST || '',
-				key: FRESHDESK_KEY || '',
-				auth: FRESHDESK_AUTH || ''
-			},
-			zendesk: {
-				host: ZENDESK_HOST || '',
-				key: ZENDESK_KEY || ''
-			}
+		zendesk: {
+			host: ZENDESK_HOST || '',
+			key: ZENDESK_KEY || ''
 		}
 	}
 };
 
 Status.findOne({}).then((status) => {
-	status.update({ constants }, { fields: ['constants'], returning: true })
-		.then(() => {
-			console.log('Constants are updated');
+	status.update({ kit, secrets }, { fields: ['kit', 'secrets'], returning: true })
+		.then((data) => {
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update',
+					data: { kit: data.dataValues.kit, secrets: data.dataValues.secrets }
+				})
+			);
+			console.log('Kit and Secrets are updated');
 			process.exit(0);
 		})
 		.catch((err) => {

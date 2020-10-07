@@ -23,6 +23,9 @@ services:
       - hollaex-kit-network
   hollaex-kit-server:
     image: hollaex-kit-server
+    ports:
+      - 10010:10010
+      - 10011:10011
     build:
       context: .
       dockerfile: ./tools/Dockerfile.pm2
@@ -50,6 +53,7 @@ services:
       - ./tools:/app/tools
       - ./utils:/app/utils
       - ./init.js:/app/init.js
+      - ./node_modules:/app/node_modules
     depends_on:
       - hollaex-kit-db
       - hollaex-kit-redis

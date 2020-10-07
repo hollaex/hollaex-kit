@@ -1,6 +1,6 @@
 'use strict';
 
-const { CURRENCIES, EXPLORERS } = require('../../constants');
+const { GET_COINS, EXPLORERS } = require('../../constants');
 
 const fetchMessage = (email, data, language, domain) => {
 	return {
@@ -16,7 +16,7 @@ const html = (email, data, language, domain) => {
         ${WITHDRAWAL.GREETING(email)}
 		</p>`;
 
-	if (CURRENCIES.includes(data.currency)) {
+	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		let explorers = '';
 		if (EXPLORERS[data.currency]){
 			EXPLORERS[data.currency].forEach((explorer) => {
@@ -61,7 +61,7 @@ const html = (email, data, language, domain) => {
 const text = (email, data, language, domain) => {
 	const { WITHDRAWAL } = require('../strings').languageFile(language);
 	let result = `${WITHDRAWAL.GREETING(email)}`;
-	if (CURRENCIES.includes(data.currency)) {
+	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		result += `
 			${WITHDRAWAL.BODY[data.status](
 				data.amount,

@@ -2,11 +2,11 @@
 const url = require('url');
 const { logger } = require('./logger');
 const { APM_ENABLED, DOMAIN } = require('../constants');
-const { getSecrets } = require('../init');
-const ALLOWED_DOMAINS = () => getSecrets().allowed_domains || (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []);
+const ALLOWED_DOMAINS = () => toolsLib.getKitSecrets().allowed_domains || (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []);
 const helmet = require('helmet');
 const expectCt = require('expect-ct');
 const { apm } = require('./logger');
+const toolsLib = require('hollaex-tools-lib');
 
 const domainMiddleware = (req, res, next) => {
 	logger.verbose(req.uuid, 'origin', req.headers['x-real-origin']);

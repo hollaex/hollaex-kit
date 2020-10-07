@@ -19,17 +19,12 @@ const {
 	SEND_EMAIL_TO_SUPPORT,
 	ALLOWED_DOMAINS,
 	ID_DOCS_BUCKET,
-	VAULT_NAME,
 	CAPTCHA_SECRET_KEY,
-	S3_WRITE_ACCESSKEYID,
-	S3_WRITE_SECRETACCESSKEY,
-	S3_READ_ACCESSKEYID,
-	S3_READ_SECRETACCESSKEY,
+	S3_ACCESSKEYID,
+	S3_SECRETACCESSKEY,
 	SNS_ACCESSKEYID,
 	SNS_REGION,
 	SNS_SECRETACCESSKEY,
-	VAULT_KEY,
-	VAULT_SECRET,
 	ZENDESK_HOST,
 	ZENDESK_KEY,
 	FRESHDESK_HOST,
@@ -46,11 +41,13 @@ const {
 
 const TABLE = 'Statuses';
 const status = [{
-	initialized: true,
-	constants: JSON.stringify({
+	kit: JSON.stringify({
 		api_name: API_NAME || '',
 		description: '',
 		color: {},
+		interface: {},
+		icons: {},
+		strings: {},
 		title: '',
 		links: {
 			twitter: '',
@@ -77,26 +74,21 @@ const status = [{
 		captcha: {
 			site_key: CAPTCHA_SITE_KEY
 		},
-		accounts: {
-			admin: ADMIN_EMAIL || ''
-		},
 		defaults: {
 			language: NEW_USER_DEFAULT_LANGUAGE || 'en',
 			theme: DEFAULT_THEME || 'white'
-		},
-		emails: {
-			timezone: EMAILS_TIMEZONE || '',
-			send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
-			sender: SENDER_EMAIL || ''
 		},
 		plugins: {
 			enabled: PLUGINS || '',
 			configuration: {}
 		},
+		meta: {}
 	}),
 	secrets: JSON.stringify({
 		allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
 		admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
+		exchange_credentials_set: API_KEY && API_SECRET ? true : false,
+		setup_completed: false,
 		broker: {
 			quick_trade_rate: 0.03,
 			quick_trade_expiration_time: 20,
@@ -105,6 +97,12 @@ const status = [{
 		security: {
 			token_time: '24h',
 			withdrawal_token_expiry: 300000
+		},
+		emails: {
+			timezone: EMAILS_TIMEZONE || '',
+			send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
+			sender: SENDER_EMAIL || '',
+			audit: ADMIN_EMAIL || ''
 		},
 		captcha: {
 			secret_key: CAPTCHA_SECRET_KEY
@@ -115,23 +113,11 @@ const status = [{
 			user: SMTP_USER,
 			password: SMTP_PASSWORD
 		},
-		vault: {
-			name: VAULT_NAME || '',
-			key: VAULT_KEY,
-			secret: VAULT_SECRET,
-			connected_coins: []
-		},
 		plugins: {
 			s3: {
 				id_docs_bucket: ID_DOCS_BUCKET || '',
-				key: {
-					write: S3_WRITE_ACCESSKEYID || '',
-					read: S3_READ_ACCESSKEYID || ''
-				},
-				secret: {
-					write: S3_WRITE_SECRETACCESSKEY,
-					read: S3_READ_SECRETACCESSKEY
-				}
+				key: S3_ACCESSKEYID,
+				secret: S3_SECRETACCESSKEY
 			},
 			sns: {
 				region: SNS_REGION || '',
@@ -150,6 +136,7 @@ const status = [{
 		}
 	}),
 	activation_code: ACTIVATION_CODE,
+	initialized: false,
 	api_key: API_KEY,
 	api_secret: API_SECRET
 }];

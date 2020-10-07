@@ -1,9 +1,4 @@
 'use strict';
-
-const {
-	initializeCurrencies,
-	initializePairs,
-} = require('./utils');
 const { toBool } = require('./utils/conversion');
 
 exports.NETWORK = process.env.NETWORK === 'mainnet' ? 'prod' : 'testnet';
@@ -13,6 +8,23 @@ exports.API_HOST = process.env.API_HOST || 'localhost';
 exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
 
 // CHANNEL CONSTANTS -----------------------------
+
+exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
+	switch(topic) {
+		case 'orderbook':
+			return `orderbook:${symbolOrUserId}`;
+		case 'trades':
+			return `trades:${symbolOrUserId}`;
+		case 'order':
+			return `order:${symbolOrUserId}`;
+		case 'wallet':
+			return `wallet:${symbolOrUserId}`;
+		case 'userTrade':
+			return `userTrade:${symbolOrUserId}`;
+		default:
+			return;
+	}
+};
 
 exports.WEBSOCKET_CHAT_CHANNEL = '/chat';
 exports.WEBSOCKET_CHAT_PUBLIC_ROOM = 'public';
@@ -54,33 +66,33 @@ const client = redis.createClient(redisConfig.client);
 let configuration = {
 	coins: {},
 	pairs: {},
-	info: {},
-	constants: {
+	kit: {
+		info: {},
+		color: {},
+		interface: {},
+		icons: {},
+		strings: {},
+		links: {},
 		captcha: {},
-		accounts: {},
 		defaults: {},
-		emails: {},
 		plugins: {
 			configuration: {}
-		}
-	},
-	status: false
+		},
+		meta: {}
+	}
 };
 
 let secrets = {
 	broker: {},
 	security: {},
+	accounts: {},
 	captcha: {},
+	emails: {},
 	smtp: {},
-	vault: {},
 	plugins: {
-		s3: {
-			key: {},
-			secret: {}
-		},
+		s3: {},
 		sns: {},
-		freshdesk: {},
-		zendesk: {}
+		freshdesk: {}
 	}
 };
 
@@ -98,17 +110,104 @@ client.getAsync(STATUS_FROZENUSERS_DATA)
 
 subscriber.subscribe(CONFIGURATION_CHANNEL);
 
-subscriber.on('message', (channel, data) => {
+subscriber.on('message', (channel, message) => {
 	if (channel === CONFIGURATION_CHANNEL) {
-		data = JSON.parse(data);
-		if (data.configuration) configuration = data.configuration;
-		if (data.secrets) secrets = data.secrets;
-		if (data.frozenUsers) frozenUsers = data.frozenUsers;
+		const { type, data } = JSON.parse(message);
+
+		switch(type) {
+			case 'initial':
+				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
+				break;
+			case 'update':
+				if (data.kit) updateKit(data.kit);
+				if (data.secrets) updateSecrets(data.secrets);
+				break;
+			case 'freezeUser':
+				updateFrozenUser(data, 'add');
+				break;
+			case 'unfreezeUser':
+				updateFrozenUser(data, 'remove');
+				break;
+			case 'stop':
+				resetAllConfig();
+				break;
+			default:
+				break;
+		}
 	}
 });
 
-exports.GET_CONFIGURATION = () => configuration;
-exports.GET_SECRETS = () => secrets;
+const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
+	configuration = newConfigurations;
+	secrets = newSecrets;
+	frozenUsers = newFrozenUsers;
+	setRedisData();
+};
+
+const resetAllConfig = () => {
+	frozenUsers = {};
+	secrets = {
+		broker: {},
+		security: {},
+		accounts: {},
+		captcha: {},
+		emails: {},
+		smtp: {},
+		vault: {},
+		plugins: {
+			s3: {},
+			sns: {},
+			freshdesk: {}
+		}
+	};
+	configuration = {
+		coins: {},
+		pairs: {},
+		kit: {
+			info: {},
+			color: {},
+			interface: {},
+			icons: {},
+			strings: {},
+			links: {},
+			captcha: {},
+			defaults: {},
+			plugins: {
+				configuration: {}
+			},
+			meta: {}
+		}
+	};
+	setRedisData();
+};
+
+const updateKit = (newKitConfig) => {
+	Object.assign(configuration.kit, newKitConfig);
+	setRedisData();
+};
+
+const updateSecrets = (newSecretsConfig) => {
+	Object.assign(secrets, newSecretsConfig);
+	setRedisData();
+};
+
+const updateFrozenUser = (action, userId) => {
+	if (action === 'add') {
+		frozenUsers[userId] = true;
+	} else if (action === 'remove') {
+		delete frozenUsers[userId];
+	}
+	setRedisData();
+};
+
+const setRedisData = () => {
+	client.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
+};
+
+exports.GET_COINS = () => configuration.coins;
+exports.GET_PAIRS = () => configuration.pairs;
+exports.GET_KIT_CONFIG = () => configuration.kit;
+exports.GET_KIT_SECRETS = () => secrets;
 exports.GET_FROZEN_USERS = () => frozenUsers;
 
 exports.MAX_TRADES = process.env.MAX_TRADES
@@ -120,22 +219,9 @@ exports.MAIN_CURRENCY = 'eur';
 
 exports.SECRET_MASK = '************************';
 
-const PAIRS = initializePairs(process.env.PAIRS);
-exports.PAIRS = PAIRS;
-exports.PAIR = (process.env.PAIR || '').toLowerCase();
-
-const CURRENCIES = initializeCurrencies(process.env.CURRENCIES);
-
-const BALANCE_TYPES = ['balance', 'available', 'pending'];
-const _balanceKeys = [];
-CURRENCIES.forEach((currency) => {
-	BALANCE_TYPES.forEach((balance) => {
-		_balanceKeys.push(`${currency}_${balance}`);
-	});
-});
-exports.CURRENCIES = CURRENCIES;
-exports.BALANCE_KEYS = _balanceKeys;
 exports.NODE_ENV = process.env.NODE_ENV;
+
+exports.CURRENCIES = [];
 
 exports.SALT_ROUNDS = 10;
 exports.AFFILIATION_CODE_LENGTH = 6;
@@ -229,11 +315,70 @@ exports.CONFIRMATION = {
 	xrp: 0
 };
 
-exports.CONSTANTS_KEYS = [
-	'emails',
+// PLUGIN VALUES
+exports.AVAILABLE_PLUGINS = [
+	'xht_fee',
+	'kyc',
+	'sms',
+	'vault',
+	'freshdesk',
+	'chat',
+	'bank',
+	'announcement',
+	'zendesk'
+]
+
+exports.REQUIRED_XHT = 100;
+
+exports.SMS_CODE_KEY = 'user:sms';
+exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
+
+exports.S3_LINK_EXPIRATION_TIME = 300; // seconds
+
+exports.ID_FIELDS = [
+	'type',
+	'number',
+	'issued_date',
+	'expiration_date',
+	'status'
+];
+exports.USER_FIELD_ADMIN_LOG = [
+	'full_name',
+	'email',
+	'dob',
+	'gender',
+	'nationality',
+	'phone_number',
+	'address',
+	'id_data',
+	'bank_account',
+	'settings',
+	'username'
+];
+exports.ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
+exports.VERIFY_STATUS = {
+	EMPTY: 0,
+	PENDING: 1,
+	REJECTED: 2,
+	COMPLETED: 3
+};
+
+exports.ERC_TOKENS = [
+	'eth',
+	'xht',
+	'usdt',
+	'dai',
+	'mkr',
+	'tusd',
+	'usdc',
+	'leo',
+	'xaut',
+	'busd'
+];
+
+exports.KIT_CONFIG_KEYS = [
 	'captcha',
 	'plugins',
-	'accounts',
 	'api_name',
 	'description',
 	'color',
@@ -246,12 +391,18 @@ exports.CONSTANTS_KEYS = [
 	'user_level_number',
 	'new_user_is_activated',
 	'broker_enabled',
-	'secrets'
+	'interface',
+	'icons',
+	'strings',
+	'meta'
 ];
 
-exports.SECRETS_KEYS = [
+exports.KIT_SECRETS_KEYS = [
+	'exchange_credentials_set',
+	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',
+	'emails',
 	'broker',
 	'security',
 	'captcha',
@@ -274,15 +425,15 @@ exports.AUDIT_KEYS = [
 	'timestamp'
 ];
 
-exports.TECH_AUTHORIZED_CONSTANTS = [
-	'emails',
+exports.TECH_AUTHORIZED_KIT_CONFIG = [
 	'captcha',
 	'plugins',
 	'secrets'
 ];
 
-exports.TECH_AUTHORIZED_SECRETS = [
+exports.TECH_AUTHORIZED_KIT_SECRETS = [
 	'allowed_domains',
+	'emails',
 	'admin_whitelist',
 	'captcha',
 	'smtp',

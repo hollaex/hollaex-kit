@@ -5,10 +5,10 @@ const {
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
 } = require('../../constants');
-const { DOMAIN, GET_CONFIGURATION } = require('../../../constants');
-const LOGO_PATH = () => GET_CONFIGURATION().constants.logo_path;
-const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
-const LINKS = () => GET_CONFIGURATION().constants.links;
+const { DOMAIN, GET_KIT_CONFIG } = require('../../../constants');
+const LOGO_PATH = () => GET_KIT_CONFIG().logo_path;
+const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
+const LINKS = () => GET_KIT_CONFIG().links;
 
 const styles = require('./styles');
 

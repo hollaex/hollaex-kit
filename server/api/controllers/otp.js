@@ -1,36 +1,19 @@
 'use strict';
 
-const {
-	createOtp,
-	findUserOtp,
-	verifyOtp,
-	setActiveUserOtp,
-	verifyOtpBeforeAction,
-	hasUserOtpEnabled,
-	updateUserOtpEnabled
-} = require('../helpers/otp');
 const { INVALID_OTP_CODE } = require('../../messages');
 const { loggerOtp } = require('../../config/logger');
-
-const checkOtp = (user_id) => {
-	return hasUserOtpEnabled(user_id).then((otp_enabled) => {
-		if (otp_enabled) {
-			throw new Error('OTP is already enabled');
-		}
-		return findUserOtp(user_id);
-	});
-};
+const toolsLib = require('hollaex-tools-lib');
 
 const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
 	const { id } = req.auth.sub;
 
-	checkOtp(id)
+	toolsLib.auth.checkOtp(id)
 		.then((otpCode) => {
 			if (otpCode) {
 				return otpCode.secret;
 			}
-			return createOtp(id);
+			return toolsLib.auth.createOtp(id);
 		})
 		.then((secret) => {
 			loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', secret);
@@ -52,16 +35,16 @@ const activateOtp = (req, res) => {
 		req.swagger.params.data
 	);
 
-	checkOtp(id)
+	toolsLib.auth.checkOtp(id)
 		.then((otpCode) => {
-			return verifyOtp(otpCode.secret, code);
+			return toolsLib.auth.verifyOtp(otpCode.secret, code);
 		})
 		.then((validOtp) => {
 			loggerOtp.verbose(req.uuid, 'controllers/otp/activateOtp', validOtp);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
-			return setActiveUserOtp(id);
+			return toolsLib.auth.setActiveUserOtp(id);
 		})
 		.then((user) => {
 			loggerOtp.verbose(
@@ -87,15 +70,15 @@ const deactivateOtp = (req, res) => {
 		req.swagger.params.data
 	);
 
-	hasUserOtpEnabled(id)
+	toolsLib.auth.hasUserOtpEnabled(id)
 		.then((otp_enabled) => {
 			if (!otp_enabled) {
 				throw new Error('OTP is not enabled');
 			}
-			return verifyOtpBeforeAction(id, code);
+			return toolsLib.auth.verifyOtpBeforeAction(id, code);
 		})
 		.then(() => {
-			return updateUserOtpEnabled(id, false);
+			return toolsLib.auth.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
 			res.json({ message: 'OTP disabled' });
@@ -110,8 +93,31 @@ const deactivateOtp = (req, res) => {
 		});
 };
 
+const deactivateOtpAdmin = (req, res) => {
+	loggerOtp.verbose(
+		req.uuid,
+		'controllers/otp/deactivateOtpAdmin/auth',
+		req.auth
+	);
+	const { user_id } = req.swagger.params.data.value;
+
+	toolsLib.user.deactivateUserOtpById(user_id)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerOtp.error(
+				req.uuid,
+				'controllers/otp/deactivateOtpAdmin',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	requestOtp,
 	activateOtp,
-	deactivateOtp
+	deactivateOtp,
+	deactivateOtpAdmin
 };

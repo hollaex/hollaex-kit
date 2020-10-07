@@ -96,7 +96,7 @@ exports.SAME_ADDRESS_REUSED = 'More than one user is using this address';
 exports.SERVICE_NOT_SUPPORTED = 'This service is not supported';
 exports.DEFAULT_REJECTION_NOTE = 'Unspecified';
 
-exports.MULTIPLE_API_KEY = 'Multiple API Key method is provided';
+exports.MULTIPLE_API_KEY = 'Multiple API Key methods are provided';
 exports.API_KEY_NULL = 'Access Denied: API Key is not provided';
 exports.API_REQUEST_EXPIRED = 'Access Denied: API request is expired';
 exports.API_SIGNATURE_NULL = 'Access Denied: API Signature is not provided';
@@ -106,3 +106,35 @@ exports.API_KEY_EXPIRED = 'Access Denied: API Key is expired';
 exports.API_KEY_INACTIVE = 'Access Denied: API Key is frozen';
 exports.API_SIGNATURE_INVALID = 'Access Denied: Invalid API Signature';
 exports.INVALID_VERIFICATION_LEVEL = 'User can not create token. Upgrade user level to create tokens.';
+
+// PLUGINS
+exports.PLUGIN_NOT_ENABLED = (plugin) => `Plugin ${plugin} not enabled`;
+exports.MAX_BANKS_EXCEEDED = 'User can have a maximum of three banks';
+exports.BANK_NOT_FOUND = 'Bank account not found';
+exports.BANK_ALREADY_VERIFIED = 'Bank account is already verified';
+
+exports.SMS_INVALID_PHONE = 'Invalid mobile phone number';
+exports.ID_EMAIL_REQUIRED = 'Missing parameters. ID and email required';
+exports.PENDING_APPROVAL_DENY = 'You are not allowed to upload a document while its pending or approved';
+exports.IMAGE_NOT_FOUND = 'ID image not found';
+
+exports.SMS_ERROR = 'Error sending SMS';
+exports.SMS_PHONE_DONT_MATCH = 'The phone number provided is incorrect';
+exports.SMS_CODE_INVALID = 'The code provided is invalid';
+exports.SMS_CODE_EXPIRED = 'The code provided has expired or has been used';
+exports.INVALID_PHONE_NUMBER = 'Invalid phone number';
+exports.SMS_SUCCESS = 'SMS has been sent';
+exports.PHONE_VERIFIED = 'Phone number has been verified';
+
+exports.WS_WELCOME = 'Welcome to HollaEx Network!';
+exports.WS_EMPTY_MESSAGE = 'message can not be empty';
+exports.WS_WRONG_CHANNEL_FROMAT = 'channel format is incorrect. The format is <event>:<exchange>:<symbol>';
+exports.WS_EXCHANGE_NOT_SUPPORTED = 'exchange is not supported';
+exports.WS_EVENT_NOT_SUPPORTED = 'event is not supported';
+exports.WS_SYMBOL_NOT_SUPPORTED = 'symbol is not supported';
+exports.WS_WRONG_INPUT = 'Error: wrong input';
+exports.WS_AUTHENTICATION_REQUIRED = 'Bearer or HMAC authentication required';
+exports.WS_ALREADY_AUTHENTICATED = 'Already authenticated';
+exports.WS_USER_AUTHENTICATED = (email) => `User ${email} authenticated`;
+exports.WS_MISSING_HEADER = 'Bearer or api-key authentication required';
+exports.WS_INVALID_TOPIC = (topic) => `Topic ${topic} is not supported`;
