@@ -119,6 +119,7 @@ subscriber.on('message', (channel, message) => {
 				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
 				break;
 			case 'update':
+				if (data.info) updateKitInfo(data.info);
 				if (data.kit) updateKit(data.kit);
 				if (data.secrets) updateSecrets(data.secrets);
 				break;
@@ -179,6 +180,10 @@ const resetAllConfig = () => {
 		}
 	};
 	setRedisData();
+};
+
+const updateKitInfo = (newInfo) => {
+	Object.assign(configuration.kit.info, newInfo);
 };
 
 const updateKit = (newKitConfig) => {
