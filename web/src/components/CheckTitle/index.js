@@ -102,6 +102,7 @@ export const PanelInformationRow = ({
 export const CustomTabs = ({
 	title,
 	stringId,
+	iconId,
 	icon,
 	notifications,
 	className,
@@ -127,18 +128,13 @@ export const CustomTabs = ({
 					<div className="check_title-notification">{notifications}</div>
 				)}
 			</div>
-			{title && !stringId && (
-				<div className={classnames('custom_title-label', { 'title-inactive': false })}>
-					{title}
-				</div>
-			)}
-      {title && stringId && (
-				<EditWrapper stringId={stringId}>
+      <EditWrapper stringId={stringId} iconId={iconId}>
+        {title && (
 					<div className={classnames('custom_title-label', { 'title-inactive': false })}>
             {title}
 					</div>
-				</EditWrapper>
-      )}
+        )}
+      </EditWrapper>
 		</div>
 	);
 };

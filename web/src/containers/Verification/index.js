@@ -182,7 +182,8 @@ class Verification extends Component {
 					<CustomTabs
 						stringId="USER_VERIFICATION.TITLE_EMAIL"
 						title={STRINGS["USER_VERIFICATION.TITLE_EMAIL"]}
-						icon={ICONS.VERIFICATION_EMAIL_NEW}
+						iconId="VERIFICATION_EMAIL_NEW"
+						icon={ICONS["VERIFICATION_EMAIL_NEW"]}
 						statusCode={email ? 3 : 0}
 					/>
 				),
@@ -208,7 +209,8 @@ class Verification extends Component {
 					<CustomTabs
 						stringId="USER_VERIFICATION.TITLE_BANK"
 						title={STRINGS["USER_VERIFICATION.TITLE_BANK"]}
-						icon={ICONS.VERIFICATION_BANK_NEW}
+						iconId="VERIFICATION_BANK_NEW"
+						icon={ICONS["VERIFICATION_BANK_NEW"]}
 						statusCode={bank_status}
 					/>
 				),
@@ -230,7 +232,8 @@ class Verification extends Component {
 					<CustomTabs
 						stringId="USER_VERIFICATION.TITLE_IDENTITY"
 						title={STRINGS["USER_VERIFICATION.TITLE_IDENTITY"]}
-						icon={ICONS.VERIFICATION_ID_NEW}
+						iconId="VERIFICATION_ID_NEW"
+						icon={ICONS["VERIFICATION_ID_NEW"]}
 						statusCode={identity_status}
 					/>
 				),
@@ -258,7 +261,8 @@ class Verification extends Component {
 						title={
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE"]
 						}
-						icon={ICONS.VERIFICATION_PHONE_NEW}
+						iconId="VERIFICATION_PHONE_NEW"
+						icon={ICONS["VERIFICATION_PHONE_NEW"]}
 						statusCode={!phone_number ? 0 : 3}
 					/>
 				),
@@ -280,7 +284,8 @@ class Verification extends Component {
 					<CustomTabs
 						stringId="USER_VERIFICATION.TITLE_ID_DOCUMENTS"
 						title={STRINGS["USER_VERIFICATION.TITLE_ID_DOCUMENTS"]}
-						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
+						iconId="VERIFICATION_DOCUMENT_NEW"
+						icon={ICONS["VERIFICATION_DOCUMENT_NEW"]}
 						statusCode={id_data.status}
 					/>
 				),
