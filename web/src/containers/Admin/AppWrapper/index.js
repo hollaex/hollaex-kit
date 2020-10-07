@@ -8,6 +8,7 @@ import io from 'socket.io-client';
 import { debounce } from 'lodash';
 
 import { PATHS } from '../paths';
+import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
 	isLoggedIn,
@@ -33,7 +34,10 @@ import {
 	setConfig,
 	setLanguage,
 	changeTheme,
-	requestAvailPlugins
+	requestAvailPlugins,
+	requestInitial,
+	requestConstant,
+	requestAdminData
 } from '../../../actions/appActions';
 import { WS_URL, SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
 
@@ -57,7 +61,9 @@ class AppWrapper extends React.Component {
 			appLoaded: false,
 			publicSocket: undefined,
 			privateSocket: undefined,
-			idleTimer: undefined
+			idleTimer: undefined,
+			setupCompleted: true,
+			initialLoading: true
 		};
 	}
 
@@ -76,6 +82,7 @@ class AppWrapper extends React.Component {
 		if (initialized === 'false' || !initialized) {
 			this.props.router.push('/init');
 		}
+		this.requestAdminInitialize();
 		this._resetTimer();
 		this.props.requestAvailPlugins();
 		this.setState({
@@ -116,6 +123,22 @@ class AppWrapper extends React.Component {
 		}
 	}
 
+	requestAdminInitialize = () => {
+		requestAdminData()
+			.then((res) => {
+				if (res.data) {
+					if (res.data.secrets) {
+						this.setState({ setupCompleted: res.data.secrets.setup_completed });
+					}
+				}
+				this.setState({ initialLoading: false });
+			})
+			.catch(err => {
+				this.setState({ initialLoading: false });
+				console.error(err);
+			})
+	};
+
 	initSocketConnections = () => {
 		this.setPublicWS();
 		if (isLoggedIn()) {
@@ -152,39 +175,57 @@ class AppWrapper extends React.Component {
 
 		this.setState({ publicSocket });
 
-		publicSocket.on('initial', (data) => {
-			if (!this.props.pair) {
-				const pair = Object.keys(data.pairs)[0];
-				this.props.changePair(pair);
-			}
-			this.props.setPairs(data.pairs);
-			this.props.setPairsData(data.pairs);
-			this.props.setCurrencies(data.coins);
-			this.props.setConfig(data.constants);
-			const pairWithBase = Object.keys(data.pairs).filter((key) => {
-				let temp = data.pairs[key];
-				return temp.pair_2 === BASE_CURRENCY;
+		requestInitial()
+			.then(res => {
+				if (res && res.data) {
+					this.props.setConfig(res.data);
+				}
+			})
+			.catch(err => {
+				console.error(err);
 			});
-			const isValidPair = pairWithBase.length > 0;
-			this.props.setValidBaseCurrency(isValidPair);
-			const orderLimits = {};
-			Object.keys(data.pairs).map((pair, index) => {
-				orderLimits[pair] = {
-					PRICE: {
-						MIN: data.pairs[pair].min_price,
-						MAX: data.pairs[pair].max_price,
-						STEP: data.pairs[pair].increment_price
-					},
-					SIZE: {
-						MIN: data.pairs[pair].min_size,
-						MAX: data.pairs[pair].max_size,
-						STEP: data.pairs[pair].increment_price
+
+		requestConstant()
+			.then(res => {
+				if (res && res.data) {
+					if (!this.props.pair) {
+						const pair = Object.keys(res.data.pairs)[0];
+						this.props.changePair(pair);
 					}
-				};
-				return '';
+					this.props.setPairs(res.data.pairs);
+					this.props.setPairsData(res.data.pairs);
+					this.props.setCurrencies(res.data.coins);
+					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
+						let temp = res.data.pairs[key];
+						return temp.pair_2 === BASE_CURRENCY;
+					});
+					const isValidPair = pairWithBase.length > 0;
+					this.props.setValidBaseCurrency(isValidPair);
+					const orderLimits = {};
+					Object.keys(res.data.pairs).map((pair, index) => {
+						orderLimits[pair] = {
+							PRICE: {
+								MIN: res.data.pairs[pair].min_price,
+								MAX: res.data.pairs[pair].max_price,
+								STEP: res.data.pairs[pair].increment_price
+							},
+							SIZE: {
+								MIN: res.data.pairs[pair].min_size,
+								MAX: res.data.pairs[pair].max_size,
+								STEP: res.data.pairs[pair].increment_price
+							}
+						};
+						return '';
+					});
+					this.props.setOrderLimits(orderLimits);
+				}
+			})
+			.catch(err => {
+				console.error(err);
 			});
-			this.props.setOrderLimits(orderLimits);
-		});
+
+		// publicSocket.on('initial', (data) => {
+		// });
 	};
 
 	setUserSocket = (token) => {
@@ -255,14 +296,19 @@ class AppWrapper extends React.Component {
 			removeToken();
 			router.replace('/login');
 		};
-		const { isAdminUser, isLoaded, appLoaded } = this.state;
+		const { isAdminUser, isLoaded, appLoaded, initialLoading, setupCompleted } = this.state;
 
-		if (!isLoaded) return null;
+		if (!isLoaded || initialLoading) return null;
 		if (!isLoggedIn()) {
 			router.replace('/login');
 		}
 		if (isLoggedIn() && !isAdminUser) {
 			router.replace('/summary');
+		}
+		if (!setupCompleted) {
+			return (
+				<SetupWizard />
+			);
 		}
 		if (md.phone()) {
 			return (

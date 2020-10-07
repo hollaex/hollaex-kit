@@ -39,7 +39,9 @@ import {
 	setSnackDialog,
 	setValidBaseCurrency,
 	setConfig,
-	setInfo
+	setInfo,
+	requestInitial,
+	requestConstant
 } from '../../actions/appActions';
 
 import { playBackgroundAudioNotification } from '../../utils/utils';
@@ -123,7 +125,7 @@ class Container extends Component {
 	storeOrderData = debounce(this.storeData, 250);
 
 	setPublicWS = () => {
-		const publicSocket = io(`${WS_URL}/realtime`, {
+		const publicSocket = io(`${WS_URL}/stream`, {
 			query: {
 				// symbol: 'btc'
 			}
@@ -131,53 +133,68 @@ class Container extends Component {
 
 		this.setState({ publicSocket });
 
-		publicSocket.on('initial', (data) => {
-			if (!this.props.pair) {
-				const pair = Object.keys(data.pairs)[0];
-				this.props.changePair(pair);
-			}
-			this.props.setPairs(data.pairs);
-			this.props.setPairsData(data.pairs);
-			this.props.setCurrencies(data.coins);
-			if (data.constants) {
-				this.props.setConfig(data.constants);
-				if (data.constants.defaults) {
-					const themeColor = localStorage.getItem('theme');
-					const language = localStorage.getItem(LANGUAGE_KEY);
-					if (!themeColor && data.constants.defaults.theme) {
-						this.props.changeTheme(data.constants.defaults.theme);
-						localStorage.setItem('theme', data.constants.defaults.theme);
-					}
-					if (!language && data.constants.defaults.language) {
-						this.props.changeLanguage(data.constants.defaults.language);
-					}
-				}
-			};
-			if (data.info) this.props.setInfo({ ...data.info, status: data.status });
-			const pairWithBase = Object.keys(data.pairs).filter((key) => {
-				let temp = data.pairs[key];
-				return temp.pair_2 === BASE_CURRENCY;
-			});
-			const isValidPair = pairWithBase.length > 0;
-			this.props.setValidBaseCurrency(isValidPair);
-			const orderLimits = {};
-			Object.keys(data.pairs).map((pair, index) => {
-				orderLimits[pair] = {
-					PRICE: {
-						MIN: data.pairs[pair].min_price,
-						MAX: data.pairs[pair].max_price,
-						STEP: data.pairs[pair].increment_price
-					},
-					SIZE: {
-						MIN: data.pairs[pair].min_size,
-						MAX: data.pairs[pair].max_size,
-						STEP: data.pairs[pair].increment_price
+		requestInitial()
+			.then((res) => {
+				if (res && res.data) {
+					this.props.setConfig(res.data);
+					if (res.data.defaults) {
+						const themeColor = localStorage.getItem('theme');
+						const language = localStorage.getItem(LANGUAGE_KEY);
+						if (!themeColor && res.data.defaults.theme) {
+							this.props.changeTheme(res.data.defaults.theme);
+							localStorage.setItem('theme', res.data.defaults.theme);
+						}
+						if (!language && res.data.defaults.language) {
+							this.props.changeLanguage(res.data.defaults.language);
+						}
 					}
 				};
-				return '';
+				if (res.data.info) this.props.setInfo({ ...res.data.info });
+			})
+			.catch(err => {
+				console.error(err);
 			});
-			this.props.setOrderLimits(orderLimits);
-		});
+
+		requestConstant()
+			.then((res) => {
+				if (res && res.data) {
+					if (!this.props.pair) {
+						const pair = Object.keys(res.data.pairs)[0];
+						this.props.changePair(pair);
+					}
+					this.props.setPairs(res.data.pairs);
+					this.props.setPairsData(res.data.pairs);
+					this.props.setCurrencies(res.data.coins);
+	
+					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
+						let temp = res.data.pairs[key];
+						return temp.pair_2 === BASE_CURRENCY;
+					});
+					const isValidPair = pairWithBase.length > 0;
+					this.props.setValidBaseCurrency(isValidPair);
+					const orderLimits = {};
+					Object.keys(res.data.pairs).map((pair, index) => {
+						orderLimits[pair] = {
+							PRICE: {
+								MIN: res.data.pairs[pair].min_price,
+								MAX: res.data.pairs[pair].max_price,
+								STEP: res.data.pairs[pair].increment_price
+							},
+							SIZE: {
+								MIN: res.data.pairs[pair].min_size,
+								MAX: res.data.pairs[pair].max_size,
+								STEP: res.data.pairs[pair].increment_price
+							}
+						};
+						return '';
+					});
+					this.props.setOrderLimits(orderLimits);
+				}
+			})
+			.catch(err => console.error(err))
+
+		// publicSocket.on('initial', (data) => {
+		// });
 
 		publicSocket.on('orderbook', (data) => {
 			this.orderCache = { ...this.orderCache, ...data };

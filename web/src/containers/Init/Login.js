@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Form, Button, InputNumber } from 'antd';
+import { Input, Form, Button, InputNumber, message } from 'antd';
 import { browserHistory } from 'react-router';
 
 import { adminLogIn } from '../../actions/authAction';
@@ -20,6 +20,7 @@ const Login = (props) => {
                     } else {
                         errMsg = error.message;
                     }
+                    message.error(errMsg);
                 });
         }
         browserHistory.push('/admin')

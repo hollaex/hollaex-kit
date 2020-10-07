@@ -8,6 +8,7 @@ import EmailSetup from './EmailSetup';
 import PasswordSetup, { ReTypePasswordContainer } from './PasswordSetup';
 import Login from './Login';
 import { ICONS } from '../../config/constants';
+import { getExchangeInitialized } from '../../utils/initialize';
 
 export default class InitWizard extends Component {
     constructor(props) {
@@ -21,6 +22,10 @@ export default class InitWizard extends Component {
     }
 
     componentDidMount() {
+        const initialized = getExchangeInitialized();
+		if (initialized === 'true' || initialized) {
+			this.props.router.push('/admin');
+		}
         setTimeout(() => {
             this.setState({ isLoading: false });
         }, 2000);

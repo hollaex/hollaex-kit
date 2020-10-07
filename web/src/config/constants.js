@@ -316,6 +316,7 @@ export const ICONS = {
 	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
 	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',
 	SET_ADMIN_RETYPE_PASSWORD: '/assets/images/set-admin-retype-password.svg',
+	TIMEZONE_WORLD_MAP: '/assets/images/timezone-worldmap.svg',
 };
 
 export const SOCIAL_ICONS = {

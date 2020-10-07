@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Input, Form, Button, message } from 'antd';
 import ReactSVG from 'react-svg';
 
@@ -66,9 +66,6 @@ const PasswordSetup = (props) => {
 }
 
 export const ReTypePasswordContainer = (props) => {
-    useEffect(() => {
-        props.setMessage('')
-    }, []);
     const handleSubmit = () => {
         if (props.initialValues) {
             adminSignup(props.initialValues)
