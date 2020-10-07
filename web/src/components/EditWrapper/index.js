@@ -42,13 +42,16 @@ const EditWrapper = ({ children, stringId, iconId, position, style, reverse }) =
 }
 
 EditWrapper.propTypes = {
-  stringId: string.isRequired,
+  stringId: string,
+  iconId: string,
   position: array,
   style: object,
   reverse: bool,
 }
 
 EditWrapper.defaultProps = {
+  stringId: '',
+  iconId: '',
   position: [],
   style: {},
   reverse: false,
