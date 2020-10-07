@@ -893,6 +893,7 @@ module.exports = {
 	verifyHmacTokenMiddleware,
 	verifyNetworkHmacToken,
 	userScopeIsValid,
+	isValidPassword,
 	userIsDeactivated,
 	checkCaptcha,
 	verifyOtpBeforeAction,
