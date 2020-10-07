@@ -403,7 +403,6 @@ exports.KIT_CONFIG_KEYS = [
 ];
 
 exports.KIT_SECRETS_KEYS = [
-	'exchange_credentials_set',
 	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',

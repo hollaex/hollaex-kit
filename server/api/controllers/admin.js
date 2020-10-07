@@ -81,9 +81,6 @@ const putAdminKit = (req, res) => {
 		if (data.secrets.plugins) {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
 			return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
-		} else if (data.secrets.exchange_credentials_set) {
-			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update exchange_credentials_set value through this endpoint');
-			return res.status(400).json({ message: 'Cannot update exchange_credentials_set value through this endpoint'});
 		} else if (data.secrets.setup_completed) {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
 			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
