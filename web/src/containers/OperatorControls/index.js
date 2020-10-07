@@ -108,11 +108,11 @@ class OperatorControls extends Component {
   }
 
   handleEditButton = ({ target: { dataset = {} } }, source) => {
-    const { isEditModalOpen } = this.state;
+    const { isEditModalOpen, isUploadIconOpen } = this.state;
     const { editMode } = this.props;
     const { stringId, iconId } = dataset;
 
-    if(editMode && !isEditModalOpen) {
+    if(editMode && !isEditModalOpen && !isUploadIconOpen) {
       const string_ids_array = stringId ? stringId.split(',') : []
       const icon_ids_array = iconId ? iconId.split(',') : []
 
