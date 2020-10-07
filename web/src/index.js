@@ -44,31 +44,26 @@ const getConfigs = async () => {
   const validLanguages = await getValidLanguages();
 
   const promises = {};
-  Object.entries(remoteVersions).forEach(([key]) => {
+  Object.keys(remoteVersions).forEach((key) => {
     const localVersion = localVersions[key];
     const remoteVersion = remoteVersions[key];
 
     if (localVersion !== remoteVersion) {
-      promises[key] = generateRequest(key)
+      promises[key] = generateRequest(key);
+    } else {
+      promises[key] = JSON.parse(localStorage.getItem(key) || "{}");
     }
   })
 
   const remoteConfigs = await hash(promises);
-  Object.keys(remoteConfigs).forEach(([key]) => {
+  Object.keys(remoteConfigs).forEach((key) => {
     localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
-  })
-
-  const localConfigs = {};
-  Object.keys(remoteVersions).forEach((key) => {
-    localConfigs[key] = JSON.parse(localStorage.getItem(key) || "{}");
   })
 
   setLocalVersions(remoteVersions);
   setValidLanguages(validLanguages);
 
-  const mergedConfigs = merge(config, localConfigs);
-
-  return mergedConfigs;
+  return merge(config, remoteConfigs);
 }
 
 const bootstrapApp = (appConfig) => {
