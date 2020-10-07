@@ -289,12 +289,10 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 
 	return dbQuery.findOne('status')
 		.then((status) => {
-			const secrets = joinKitSecrets(status.dataValues.secrets, { exchange_credentials_set: true });
 			return status.update({
 				api_key: apiKey,
-				api_secret: apiSecret,
-				secrets
-			}, { fields: ['api_key', 'api_secret', 'secrets'] });
+				api_secret: apiSecret
+			}, { fields: ['api_key', 'api_secret'] });
 		})
 		.then(() => {
 			publisher.publish(
