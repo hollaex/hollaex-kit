@@ -437,14 +437,13 @@ class HollaEx {
 	 * @param {string} currency - Curreny to withdraw
 	 * @param {number} amount - Amount to withdraw
 	 * @param {number} fee - The withdrawal fee
-	 * @param {string} otp_code - OTP code from the network to verify withdrawal request
 	 * @return {object} Withdrawal made on the network
 	 */
-	createWithdrawalNetwork(userId, address, currency, amount, fee, otp_code) {
+	createWithdrawalNetwork(userId, address, currency, amount, fee) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${userId}`;
-		const data = { address, currency, amount, fee, otp_code };
+		const data = { address, currency, amount, fee };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
