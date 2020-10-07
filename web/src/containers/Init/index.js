@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { CheckOutlined } from '@ant-design/icons';
 
 import LoadingScreen from './LoadingScreen';
 import WelcomeScreen from './WelcomeScreen';
@@ -14,7 +15,8 @@ export default class InitWizard extends Component {
         this.state = {
             isLoading: true,
             currentStep: 'landing-page',
-            formValues: {}
+            formValues: {},
+            message: ''
         }
     }
 
@@ -23,6 +25,16 @@ export default class InitWizard extends Component {
             this.setState({ isLoading: false });
         }, 2000);
     }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.message !== prevState.message
+            && this.state.message) {
+                setTimeout(() => {
+                    this.setMessage('')
+                }, 10000);
+            }
+    }
+    
 
     handleStepChange = (step) => {
         this.setState({ currentStep: step });
@@ -35,6 +47,10 @@ export default class InitWizard extends Component {
                 [name]: value
             }
         });
+    };
+
+    setMessage = (message) => {
+        this.setState({ message });
     };
 
     renderStep = () => {
@@ -68,6 +84,7 @@ export default class InitWizard extends Component {
                     <ReTypePasswordContainer
                         initialValues={this.state.formValues}
                         icon={ICONS.SET_ADMIN_RETYPE_PASSWORD}
+                        setMessage={this.setMessage}
                         onChangeStep={this.handleStepChange}
                     />
                 );
@@ -84,9 +101,18 @@ export default class InitWizard extends Component {
     };
     
     render() {
+        const { message, isLoading } = this.state
         return (
             <div className="init-container">
-                {(this.state.isLoading)
+                {message
+                    ?
+                        <div className="message success">
+                            <CheckOutlined color="#ffffff" />{' '}
+                            {message}
+                        </div>
+                    :   null
+                }
+                {(isLoading)
                     ? <LoadingScreen />
                     : this.renderStep()
                 }

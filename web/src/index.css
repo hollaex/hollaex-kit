@@ -3849,6 +3849,17 @@ table th {
 .init-container {
   flex: 1;
   height: 100%; }
+  .init-container .message {
+    color: var(--colors-white);
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    padding: 3px; }
+  .init-container .success {
+    background-color: #288500; }
+  .init-container .error {
+    background-color: #FF0000; }
   .init-container .header {
     font-size: 40px;
     font-weight: bold;
@@ -3894,7 +3905,8 @@ table th {
     background-color: #0808df;
     display: flex;
     height: 100%;
-    justify-content: center; }
+    justify-content: center;
+    flex-direction: column; }
   .init-container .welcome-screen .footer {
     color: #c4c4c4;
     font-size: 10px;
@@ -3980,12 +3992,15 @@ table th {
     text-align: left;
     width: 22rem; }
     .init-container .setup-container .setup-field-content .ant-input-affix-wrapper,
-    .init-container .setup-container .setup-field-content .ant-input {
+    .init-container .setup-container .setup-field-content .ant-input,
+    .init-container .setup-container .setup-field-content .ant-input-number {
       background-color: #0000ff;
       color: #c4c4c4; }
       .init-container .setup-container .setup-field-content .ant-input-affix-wrapper:hover, .init-container .setup-container .setup-field-content .ant-input-affix-wrapper:focus,
       .init-container .setup-container .setup-field-content .ant-input:hover,
-      .init-container .setup-container .setup-field-content .ant-input:focus {
+      .init-container .setup-container .setup-field-content .ant-input:focus,
+      .init-container .setup-container .setup-field-content .ant-input-number:hover,
+      .init-container .setup-container .setup-field-content .ant-input-number:focus {
         border-color: #c4c4c4;
         box-shadow: #c4c4c4; }
     .init-container .setup-container .setup-field-content .ant-input-password-icon {

@@ -1,11 +1,28 @@
 import React from 'react';
 import { Input, Form, Button, InputNumber } from 'antd';
+import { browserHistory } from 'react-router';
+
+import { adminLogIn } from '../../actions/authAction';
 
 const { Item } = Form;
 
 const Login = (props) => {
     const handleSubmit = (values) => {
-        console.log('values', values);
+        if (values) {
+            adminLogIn(values)
+                .then(res => {
+                    console.log('logIn response', res);
+                })
+                .catch(error => {
+                    let errMsg = ''
+                    if (error.response) {
+                        errMsg = error.response.data.message;
+                    } else {
+                        errMsg = error.message;
+                    }
+                });
+        }
+        browserHistory.push('/admin')
     };
     return (
         <div className="setup-container">
