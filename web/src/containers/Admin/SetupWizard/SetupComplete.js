@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 import { Button } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
+import { browserHistory } from 'react-router';
 
 import { ICONS } from '../../../config/constants';
 import { Carousel } from 'components';
@@ -63,7 +64,7 @@ export default class ExchangeSetup extends Component {
 	componentDidMount () {
 		setTimeout(() => {
 			this.setState({ isLoading: false });
-		}, 120000);
+		}, 10000);
 	}
 
 	renderStatus = () => {
@@ -93,11 +94,15 @@ export default class ExchangeSetup extends Component {
 		});
 	};
 
+	goToAccount = () => browserHistory.push('/account');
+
 	render () {
         const menuItems = this.CarouselData();
 		return (
 			<div className='wizard-container'>
-				{this.state.isLoading ? this.renderStatus() : <CheckCircleFilled />}
+				<div className="wizard-complete-status">
+					{this.state.isLoading ? this.renderStatus() : <CheckCircleFilled />}
+				</div>
 				<div className='content'>
 					<div>
 						{this.state.isLoading ? (
@@ -116,9 +121,9 @@ export default class ExchangeSetup extends Component {
 						/>
 						<div className='btn-container'>
 							<Button
-								htmlType='submit'
 								className='exchange-btn'
 								disabled={this.state.isLoading}
+								onClick={this.gotoAccount}
 							>
 								Enter Your Exchange
 							</Button>
