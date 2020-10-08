@@ -441,6 +441,17 @@ class OperatorControls extends Component {
     });
   }
 
+  removeIcon = (key) => {
+    const { removeIcon } = this.props;
+    const { iconsOverwrites } = this.state;
+    const { [key]: iconKey, ...restIcons } = iconsOverwrites;
+    this.setState({
+      iconsOverwrites: restIcons,
+    }, () => {
+      removeIcon(key);
+    });
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -600,6 +611,7 @@ class OperatorControls extends Component {
           isOpen={isUploadIconOpen}
           onCloseDialog={this.closeUploadIcon}
           onSave={this.addIcons}
+          onReset={this.removeIcon}
         />
         <Modal
           isOpen={isExitConfirmationOpen}

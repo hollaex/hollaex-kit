@@ -23,7 +23,7 @@ class UploadIcon extends Component {
     const { onSave } = this.props;
     const { selectedFiles } = this.state;
 
-    const path = '/somewhere';
+    const path = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png';
     const icons = {};
 
     Object.entries(selectedFiles).forEach(([key, file]) => {
@@ -37,7 +37,7 @@ class UploadIcon extends Component {
   }
 
   render() {
-    const { isOpen, onCloseDialog, editId } = this.props;
+    const { isOpen, onCloseDialog, editId, onReset } = this.props;
 
     return (
       <Modal
@@ -65,6 +65,12 @@ class UploadIcon extends Component {
                 style={{ width: '232px' }}
                 onChange={this.onFileChange}
               />
+              <span
+                className="pointer"
+                onClick={() => onReset(id)}
+              >
+                Reset
+              </span>
             </div>
           ))}
         </div>

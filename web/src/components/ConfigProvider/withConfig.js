@@ -4,11 +4,12 @@ import { ProjectConfig } from 'config/project.config';
 const withConfig = (Component) => {
   return (props) => (
     <ProjectConfig.Consumer>
-      {({ icons, updateIcons }) => (
+      {({ icons, updateIcons, removeIcon }) => (
         <Component
           {...props}
           icons={icons}
           updateIcons={updateIcons}
+          removeIcon={removeIcon}
         />
       )}
     </ProjectConfig.Consumer>

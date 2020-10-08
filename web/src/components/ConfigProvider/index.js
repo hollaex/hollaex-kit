@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ProjectConfig } from 'config/project.config';
+import { getIconByKey } from 'utils/icon';
 
 class ConfigProvider extends Component {
   constructor(props) {
@@ -21,16 +22,22 @@ class ConfigProvider extends Component {
     }))
   }
 
+  removeIcon = (key) => {
+    const iconObject = { [key]: getIconByKey(key)};
+    this.updateIcons(iconObject);
+  }
+
   render() {
     const { children } = this.props;
     const { icons } = this.state;
-    const { updateIcons } = this;
+    const { updateIcons, removeIcon } = this;
 
     return (
       <ProjectConfig.Provider
         value={{
           icons,
           updateIcons,
+          removeIcon,
         }}
       >
         {children}
