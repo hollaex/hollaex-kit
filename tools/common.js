@@ -232,8 +232,8 @@ const getNetworkKeySecret = () => {
 	dbQuery.findOne('status')
 		.then((status) => {
 			return {
-				apiKey: status.dataValues.api_key,
-				apiSecret: status.dataValues.api_secret
+				apiKey: status.api_key,
+				apiSecret: status.api_secret
 			};
 		});
 };

@@ -1,26 +1,44 @@
 'use strict';
 
-const fs = require('fs');
 const { reject } = require('bluebird');
 const { SERVER_PATH } = require('../constants');
+const { getKitConfig, getNetworkKeySecret } = require('./common');
+const rp = require('request-promise');
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { HOLLAEX_NETWORK_URL } = require(`${SERVER_PATH}/constants`);
 
-const storeImage = (image, name) => {
+const storeImageOnNetwork = (image, name) => {
 	if (image.mimetype.indexOf('image/') !== 0) {
 		return reject(new Error('Invalid file type'));
 	}
 
-	if (name.indexOf(' ') !== -1 || name.indexOf('.') !== -1) {
+	if (/[\s/\\0.]/g.test(name)) {
 		return reject(new Error('Invalid image name'));
 	}
 
-	const imagePath = `${SERVER_PATH}/images/${name}-${image.originalname}`;
+	const { apiKey } = getNetworkKeySecret();
+	const exchangeId = getNodeLib().exchange_id;
+	const exchangeName = getKitConfig().info.name;
 
-	return fs.writeFileSync(imagePath, image.buffer)
-		.then((data) => {
-			console.log(data)
-		})
+	const options = {
+		method: 'POST',
+		uri: `${HOLLAEX_NETWORK_URL}/exchange/icon`,
+		formData: {
+			exchange_id: exchangeId,
+			exchange_name: exchangeName,
+			file_name: name,
+			file: image
+		},
+		headers: {
+			api_key: apiKey
+		}
+	};
+
+	console.log(options);
+
+	return rp(options);
 };
 
 module.exports = {
-	storeImage
+	storeImageOnNetwork
 };
