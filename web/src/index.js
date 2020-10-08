@@ -6,7 +6,7 @@ import { render } from 'react-dom';
 import merge from 'lodash.merge';
 // import { render } from 'react-snapshot';
 import { Router, browserHistory } from 'react-router';
-import config, { ProjectConfig } from 'config/project.config';
+import defaultConfig, { ProjectConfig } from 'config/project.config';
 import './config/initialize';
 
 import 'flag-icon-css/css/flag-icon.min.css';
@@ -63,7 +63,7 @@ const getConfigs = async () => {
   setLocalVersions(remoteVersions);
   setValidLanguages(validLanguages);
 
-  return merge(config, remoteConfigs);
+  return merge({}, defaultConfig, remoteConfigs);
 }
 
 const bootstrapApp = (appConfig) => {
