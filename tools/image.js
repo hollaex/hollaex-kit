@@ -7,7 +7,7 @@ const rp = require('request-promise');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { HOLLAEX_NETWORK_URL } = require(`${SERVER_PATH}/constants`);
 
-const storeImageOnNetwork = (image, name) => {
+const storeImageOnNetwork = async (image, name) => {
 	if (image.mimetype.indexOf('image/') !== 0) {
 		return reject(new Error('Invalid file type'));
 	}
@@ -16,7 +16,7 @@ const storeImageOnNetwork = (image, name) => {
 		return reject(new Error('Invalid image name'));
 	}
 
-	const { apiKey } = getNetworkKeySecret();
+	const { apiKey } = await getNetworkKeySecret();
 	const exchangeId = getNodeLib().exchange_id;
 	const exchangeName = getKitConfig().info.name;
 
@@ -33,8 +33,6 @@ const storeImageOnNetwork = (image, name) => {
 			api_key: apiKey
 		}
 	};
-
-	console.log(options);
 
 	return rp(options);
 };
