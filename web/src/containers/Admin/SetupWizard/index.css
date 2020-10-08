@@ -13,6 +13,8 @@
 }
 .description {
     font-size: 16px;
+    margin-left: 10rem;
+    width: 70%;
 }
 .btn-container {
     margin: 2rem 0rem;
@@ -128,5 +130,27 @@
 .setup-field-label {
     font-size: 15px;
     color: #ffffff;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.50rem;
+}
+
+
+.wizard-container .slider__button {
+    color: #c4c4c4 !important;
+}
+.icon-wrapper {
+    display: flex;
+    justify-content: center;
+}
+.icon-align {
+    width: 18rem;
+}
+.exchange-btn {
+    width: 50%;
+    height: 50px;
+}
+.anticon {
+    font-size: 85px;
+}
+.margin {    
+    margin-left: 3rem;
 }

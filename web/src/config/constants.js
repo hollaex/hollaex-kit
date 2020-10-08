@@ -317,6 +317,14 @@ export const ICONS = {
 	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',
 	SET_ADMIN_RETYPE_PASSWORD: '/assets/images/set-admin-retype-password.svg',
 	TIMEZONE_WORLD_MAP: '/assets/images/timezone-worldmap.svg',
+	SETUP_SECTION_PRO_TRADING: '/assets/images/setup-section-pro-trading-01.svg',
+	SETUP_SECTION_LOADING: '/assets/images/762.gif',
+	SETUP_SECTION_BACKOFFICE: '/assets/images/setup-section-backoffice.svg',
+	SETUP_SECTION_LIQUIDITY: '/assets/images/setup-section-liquidity.svg',
+	SETUP_SECTION_QUICK_TRADE: '/assets/images/setup-section-quick-trade.svg',
+	SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
+	SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
+	SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg'
 };
 
 export const SOCIAL_ICONS = {
