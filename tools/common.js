@@ -229,7 +229,7 @@ const sendEmailToSupport = (email, category, subject, description) => {
 };
 
 const getNetworkKeySecret = () => {
-	dbQuery.findOne('status')
+	return dbQuery.findOne('status')
 		.then((status) => {
 			return {
 				apiKey: status.api_key,
