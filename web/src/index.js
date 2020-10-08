@@ -6,7 +6,8 @@ import { render } from 'react-dom';
 import merge from 'lodash.merge';
 // import { render } from 'react-snapshot';
 import { Router, browserHistory } from 'react-router';
-import defaultConfig, { ProjectConfig } from 'config/project.config';
+import ConfigProvider from 'components/ConfigProvider';
+import defaultConfig from 'config/project.config';
 import './config/initialize';
 
 import 'flag-icon-css/css/flag-icon.min.css';
@@ -68,13 +69,13 @@ const getConfigs = async () => {
 
 const bootstrapApp = (appConfig) => {
   initializeStrings()
-  window.appConfig = { ...appConfig }
+  // window.appConfig = { ...appConfig }
 
   render(
 		<Provider store={store}>
-      <ProjectConfig.Provider value={appConfig}>
+      <ConfigProvider initialConfig={appConfig}>
 			  <Router routes={routes} history={browserHistory} />
-      </ProjectConfig.Provider>
+      </ConfigProvider>
 		</Provider>,
     document.getElementById('root')
   );
