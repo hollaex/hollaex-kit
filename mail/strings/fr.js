@@ -174,18 +174,13 @@ const WITHDRAWALREQUEST = {
 	TITLE: (currency) =>
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL} Demande`,
 	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${API_NAME()} wallet.`,
-		1: 'Si vous avez d\'autres questions, vous pouvez répondre à cet email',
-		2: (txid) => COMMON.TXID(txid),
-		3: (amount) => COMMON.AMOUNT(amount),
-		4: 'Status: Rejeté'
-	},
+	BODY: {
 		1: (currency, amount, address) =>
 			`Vous avez fait une demande de retrait ${currency.toUpperCase()} d'un montant de ${amount} à l'adresse suivante ${address}`,
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Addresse: ${address}`,
-		5: 'Pour confirmer le retrait, veuillez cliquer dur le bouton ci-dessous.'
+		5: 'Pour confirmer le retrait, veuillez cliquer dur le bouton ci-dessous.',
 		6: 'Confirmer',
 		7: COMMON.ERROR_REQUEST,
 		8: (ip) => COMMON.IP_REQUEST_FROM(ip)

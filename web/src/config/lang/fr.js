@@ -32,11 +32,11 @@ export default {
 	CONTACT_US_TEXT: 'Contactez-nous',
 	HELPFUL_RESOURCES_TEXT: 'Ressources utiles',
 	HELP_RESOURCE_GUIDE_TEXT:
-		'N\'hésitez pas à nous contacter pour plus d\'information ou en cas d\'éventuels problèmes en nous envoyant un email'
+		'N\'hésitez pas à nous contacter pour plus d\'information ou en cas d\'éventuels problèmes en nous envoyant un email',
 	HELP_TELEGRAM_TEXT: 'Consulter pour ouvrir la documentation de l\'API:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
-	NEED_HELP_TEXT: 'Besoin d\'aide?', // new
 	HELP_TEXT: 'aide',
+	NEED_HELP_TEXT: 'Besoin d\'aide?',
 	SUCCESS_TEXT: 'Réussi',
 	ERROR_TEXT: 'Erreur',
 	PROCEED: 'POURSUIVRE',
@@ -64,7 +64,7 @@ export default {
 			'Plugins avec des modules personnalisables disponibles pour l\'intégration bancaire. Nous connaissons la finance traditionnelle et pouvons vous aider à rendre votre échange disponible à la population locale ou globale.',
 		SECTION_3_CARD_3_TITLE: 'SÉCURITÉ FORTE',
 		SECTION_3_CARD_3_TEXT: 
-			'HollaEx utilise les meilleurs systèmes de sécurité et les algorithmes les plus sûrs et fiables pour assurer la sécurité des fonds. C\'est notre priorité absolue et nous en avons pris soin tout particulièrement'
+			'HollaEx utilise les meilleurs systèmes de sécurité et les algorithmes les plus sûrs et fiables pour assurer la sécurité des fonds. C\'est notre priorité absolue et nous en avons pris soin tout particulièrement',
 		SECTION_3_CARD_4_TITLE: 'REPORTING AVANCÉS',
 		SECTION_3_CARD_4_TEXT:
 			'Panneau d\'administration avec email et rapports personnalisables pour informer l\'administrateur et l\'équipe technique de l\'état du système et des transactions.',
@@ -121,7 +121,7 @@ export default {
 			SECTION_6_LINK_9: 'YouTube', // new
 		},
 		XHT_DESCRIPTION:
-			'HollaEx Kit est une plateforme de trading open source construite par bitHolla Inc. Vous pouvez créer et répertorier tous vos digital assets et inviter des utilisateurs sur votre échange à l\'aide de ce kit. Pour simplement avoir votre propre échange {1}'. 
+			'HollaEx Kit est une plateforme de trading open source construite par bitHolla Inc. Vous pouvez créer et répertorier tous vos digital assets et inviter des utilisateurs sur votre échange à l\'aide de ce kit. Pour simplement avoir votre propre échange {1}',
 		CLICK_HERE: 'Cliquez ici',
 		VISIT_HERE: 'Visitez ici'
 	},
@@ -234,9 +234,9 @@ export default {
 				'HollaEx Web est une plateforme de trading virtuelle appartenant entièrement à bitHolla Inc. bitHolla Inc (dénommée bitHolla ci-après) a été créée à Séoul, en Corée du Sud.', 
 				'L\'utilisation du site internet HollaEx ("Site Web") et les services ("Service") proposés sur le Site Web sont régis par les conditions rédigées et disponible sur la page Termes et Conditions ("Termes"). Cet accord constitue entièrement l\'accord entre les deux parties. Toutes autres informations se trouvant sur le Site Web ou autres informations reçues via email ou téléphone (voie orale/ écrite) sont exclues de cet accord; la politique de l\'échange a pour but d\'informer et conseiller uniquement et ne constitue pas un accord légal entre les parties.',
 				'En accédant et en vous informant ainsi qu\'en téléchargeant les informations de ce Site Web et en utilisant les Services de bitHolla vous confirmez que vous avez lu et compris ces Termes et que vous les acceptés complètement sans conditions. bitHolla peut à n\'importe quel moment, sans prévenir, modifier ces Termes. Vous acceptez de continuer à être liés à ces Termes et conditions et confirmez que bitHolla n\'a aucune obligation de vous informer de quelconque changement. Vous acceptez que c\'est de votre responsabilité de vous informer et de vérifier ces Termes périodiquement afin de voir si des annotations ont été faites. Ainsi votre action de continuer à consulter le Site Web ainsi que l\'utilisation des Services proposés par bitHolla indique votre acceptation de ces Termes.',
-				'Le Site Web et les droits d\'auteur dans tous les textes, graphiques, images, logiciels et autre matériel situés sur le Site Web appartiennent entièrement à bitHolla et ceci en incluant toutes les marques déposées et autres droits de propriété intellectuelle en ce qui concerne le matériel et Services du Site Web. Le matériel de ce Site Web ne peut être utilisé qu\'à des fins personnels et non commerciales.' 
-				'Vous pouvez afficher sur un écran d\'ordinateur ou imprimer des extraits du Site Web pour des fins mentionnées précédemment à condition que vous conserviez les droits d\'auteur et autres avis de propriété telles que les marques ou logos de bitHolla, comme indiqué sur l\'impression initiale ou le téléchargement sans altération (ajout ou suppression non autorisés). Sauf indication claire dans les présentes, vous ne pouvez sans l\'autorisation écrite préalable de bitHolla changer, modifier, reproduire, distribuer ou utiliser dans tout autre contexte commercial le matériel du Site Web.'
-				'Vous reconnaissez que « bitHolla » et le logo bitHolla sont des marques de commerce de bitHolla Inc. Vous pouvez reproduire ces marques sans altération du matériel téléchargé à partir de ce Site Web dans la mesure autorisée ci-dessus, mais vous ne pouvez pas les utiliser, les copier, les adapter ou les effacer autrement.'
+				'Le Site Web et les droits d\'auteur dans tous les textes, graphiques, images, logiciels et autre matériel situés sur le Site Web appartiennent entièrement à bitHolla et ceci en incluant toutes les marques déposées et autres droits de propriété intellectuelle en ce qui concerne le matériel et Services du Site Web. Le matériel de ce Site Web ne peut être utilisé qu\'à des fins personnels et non commerciales.',
+				'Vous pouvez afficher sur un écran d\'ordinateur ou imprimer des extraits du Site Web pour des fins mentionnées précédemment à condition que vous conserviez les droits d\'auteur et autres avis de propriété telles que les marques ou logos de bitHolla, comme indiqué sur l\'impression initiale ou le téléchargement sans altération (ajout ou suppression non autorisés). Sauf indication claire dans les présentes, vous ne pouvez sans l\'autorisation écrite préalable de bitHolla changer, modifier, reproduire, distribuer ou utiliser dans tout autre contexte commercial le matériel du Site Web.',
+				'Vous reconnaissez que « bitHolla » et le logo bitHolla sont des marques de commerce de bitHolla Inc. Vous pouvez reproduire ces marques sans altération du matériel téléchargé à partir de ce Site Web dans la mesure autorisée ci-dessus, mais vous ne pouvez pas les utiliser, les copier, les adapter ou les effacer autrement.',
 				'Vous ne devez en aucun cas obtenir des droits sur ou à l\'égard du Site Web (autres que les droits d\'utiliser le Site Web conformément aux présentes conditions et à toute autre condition régissant un service ou une section particulier du Site Web) ou vous présenter comme avoir de tels droits sur ou à l\'égard du Site.'
 			]
 		},
@@ -248,9 +248,9 @@ export default {
 				'HollaEx Web est une plateforme de trading virtuelle appartenant entièrement à bitHolla Inc. bitHolla Inc (dénommée bitHolla ci-après) a été créée à Séoul, en Corée du Sud.', 
 				'L\'utilisation du site internet HollaEx ("Site Web") et les services ("Service") proposés sur le Site Web sont régis par les conditions rédigées et disponible sur la page Termes et Conditions ("Termes"). Cet accord constitue entièrement l\'accord entre les deux parties. Toutes autres informations se trouvant sur le Site Web ou autres informations reçues via email ou téléphone (voie orale/ écrite) sont exclues de cet accord; la politique de l\'échange a pour but d\'informer et conseiller uniquement et ne constitue pas un accord légal entre les parties.',
 				'En accédant et en vous informant ainsi qu\'en téléchargeant les informations de ce Site Web et en utilisant les Services de bitHolla vous confirmez que vous avez lu et compris ces Termes et que vous les acceptés complètement sans conditions. bitHolla peut à n\'importe quel moment, sans prévenir, modifier ces Termes. Vous acceptez de continuer à être liés à ces Termes et conditions et confirmez que bitHolla n\'a aucune obligation de vous informer de quelconque changement. Vous acceptez que c\'est de votre responsabilité de vous informer et de vérifier ces Termes périodiquement afin de voir si des annotations ont été faites. Ainsi votre action de continuer à consulter le Site Web ainsi que l\'utilisation des Services proposés par bitHolla indique votre acceptation de ces Termes.',
-				'Le Site Web et les droits d\'auteur dans tous les textes, graphiques, images, logiciels et autre matériel situés sur le Site Web appartiennent entièrement à bitHolla et ceci en incluant toutes les marques déposées et autres droits de propriété intellectuelle en ce qui concerne le matériel et Services du Site Web. Le matériel de ce Site Web ne peut être utilisé qu\'à des fins personnels et non commerciales.' 
-				'Vous pouvez afficher sur un écran d\'ordinateur ou imprimer des extraits du Site Web pour des fins mentionnées précédemment à condition que vous conserviez les droits d\'auteur et autres avis de propriété telles que les marques ou logos de bitHolla, comme indiqué sur l\'impression initiale ou le téléchargement sans altération (ajout ou suppression non autorisés). Sauf indication claire dans les présentes, vous ne pouvez sans l\'autorisation écrite préalable de bitHolla changer, modifier, reproduire, distribuer ou utiliser dans tout autre contexte commercial le matériel du Site Web.'
-				'Vous reconnaissez que « bitHolla » et le logo bitHolla sont des marques de commerce de bitHolla Inc. Vous pouvez reproduire ces marques sans altération du matériel téléchargé à partir de ce Site Web dans la mesure autorisée ci-dessus, mais vous ne pouvez pas les utiliser, les copier, les adapter ou les effacer autrement.'
+				'Le Site Web et les droits d\'auteur dans tous les textes, graphiques, images, logiciels et autre matériel situés sur le Site Web appartiennent entièrement à bitHolla et ceci en incluant toutes les marques déposées et autres droits de propriété intellectuelle en ce qui concerne le matériel et Services du Site Web. Le matériel de ce Site Web ne peut être utilisé qu\'à des fins personnels et non commerciales.',
+				'Vous pouvez afficher sur un écran d\'ordinateur ou imprimer des extraits du Site Web pour des fins mentionnées précédemment à condition que vous conserviez les droits d\'auteur et autres avis de propriété telles que les marques ou logos de bitHolla, comme indiqué sur l\'impression initiale ou le téléchargement sans altération (ajout ou suppression non autorisés). Sauf indication claire dans les présentes, vous ne pouvez sans l\'autorisation écrite préalable de bitHolla changer, modifier, reproduire, distribuer ou utiliser dans tout autre contexte commercial le matériel du Site Web.',
+				'Vous reconnaissez que « bitHolla » et le logo bitHolla sont des marques de commerce de bitHolla Inc. Vous pouvez reproduire ces marques sans altération du matériel téléchargé à partir de ce Site Web dans la mesure autorisée ci-dessus, mais vous ne pouvez pas les utiliser, les copier, les adapter ou les effacer autrement.',
 				'Vous ne devez en aucun cas obtenir des droits sur ou à l\'égard du Site Web (autres que les droits d\'utiliser le Site Web conformément aux présentes conditions et à toute autre condition régissant un service ou une section particulier du Site Web) ou vous présenter comme avoir de tels droits sur ou à l\'égard du Site.'
 			]
 		}
@@ -262,7 +262,7 @@ export default {
 			SEE_HISTORY: 'Voir l\'historique'
 		},
 		DEPOSITS: {
-			TITLE_RECEIVED: '{0} Dépôt reçu'
+			TITLE_RECEIVED: '{0} Dépôt reçu',
 			TITLE_INCOMING: 'Transaction entrante{0}',
 			SUBTITLE_RECEIVED: 'Vous avez reçu votre {0} de caution',
 			SUBTITLE_INCOMING: 'Vous avez une transaction entrante {0}',
@@ -362,7 +362,7 @@ export default {
 		INFO_TXT:
 			'Vous pouvez suivre ici l\'évolution des vérifications et les mises à jour de comptes.',
 		INFO_TXT_1:
-			'Veuillez soumettre toutes les informations pertinentes nécessaires pour chaque section ci-dessous. Ce nn\'est que lorsque toutes les sections seront complétées que vos informations seront examinées et approuvées pour une mise à niveau de compte.'
+			'Veuillez soumettre toutes les informations pertinentes nécessaires pour chaque section ci-dessous. Ce nn\'est que lorsque toutes les sections seront complétées que vos informations seront examinées et approuvées pour une mise à niveau de compte.',
 		INFO_TXT_2:
 			'* La vérification de la section d\'identité vous oblige à {0} certains documents.',
 		DOCUMENTATIONS: 'Télécharger',
@@ -475,7 +475,7 @@ export default {
 			},
 			INFORMATION: {
 				TEXT:
-					'IMPORTANT: Entrez votre nom dans les champs exactement comme il apparaît sur votre pièce d\'identité (prénom complet + deuxièmes prénoms / initiales et nom (s) complet (s)). Êtes-vous une entreprise? Contactez le service client pour un compte d\'entreprise.' 
+					'IMPORTANT: Entrez votre nom dans les champs exactement comme il apparaît sur votre pièce d\'identité (prénom complet + deuxièmes prénoms / initiales et nom (s) complet (s)). Êtes-vous une entreprise? Contactez le service client pour un compte d\'entreprise.',
 				TITLE_PERSONAL_INFORMATION: 'Informations personnelles',
 				TITLE_PHONE: 'Téléphone',
 				PHONE_VERIFICATION_TXT:
@@ -503,7 +503,7 @@ export default {
 				TYPE_PLACEHOLDER: 'Sélectionnez le type de pièce d\'identité',
 				TYPE_OPTIONS: {
 					ID: 'Identité',
-					PASSPORT: 'Passeport'
+					PASSPORT: 'Passeport',
 				},
 				ID_NUMBER_LABEL: 'Numéro de passeport',
 				ID_NUMBER_PLACEHOLDER: 'Entrez votre numéro de passeport',
@@ -564,7 +564,7 @@ export default {
 						"Veuillez fournir une photo de vous tenant votre passeport. Sur la même photo mettre la référence à l\'url de l\'échange, la date du jour et votre signature. Assurez-vous que votre visage est clairement visible et que les détails de votre identité sont clairement lisibles.",
 					REQUIRED: 'Obligatoire:',
 					INSTRUCTION_1: 'Votre visage doit être clairement visible',
-					INSTRUCTION_2: 'Votre passeport doit être clairement lisible '
+					INSTRUCTION_2: 'Votre passeport doit être clairement lisible',
  					INSTRUCTION_3: 'Écrivez le nom d\'échange',
 					INSTRUCTION_4: "Écrivez la date du jour",
 					INSTRUCTION_5: 'Signez la photo / écrivez votre signature',
@@ -644,7 +644,7 @@ export default {
 			ORDERS_COMPLETED_AUDIO:
 				'Quand l\'une de vos transactions est entièrement complétée.',
 			CLICK_AMOUNTS_AUDIO:
-				'En cliquant sur les montants et les prix de l\'Orderbook,'
+				'En cliquant sur les montants et les prix de l\'Orderbook',
 			GET_QUICK_TRADE_AUDIO:
 				'Lors de l\'obtention d\'un devis pour un échange rapide',
 			SUCCESS_QUICK_TRADE_AUDIO:
@@ -874,7 +874,7 @@ export default {
 		MESSAGE_FEE: 'Frais de transaction de {0} ({1}) inclus dedans',
 		MESSAGE_FEE_BASE: 'Frais de transaction de {0} inclus dedans',
 		BASE_MESSAGE_1:
-			'Vous ne pouvez effectuer de retrait que sur un compte bancaire dont le nom correspond au nom enregistré avec votre compte.",		BASE_MESSAGE_2: 'Withdrawal min amount',
+			'Vous ne pouvez effectuer de retrait que sur un compte bancaire dont le nom correspond au nom enregistré avec votre compte', 
 		BASE_MESSAGE_2: 'Montant minimum de retrait',
 		BASE_MESSAGE_3: 'Montant maximum du retrait quotidien',
 		BASE_INCREASE_LIMIT: 'Augmentez votre limite quotidienne',
@@ -1038,7 +1038,7 @@ export default {
 		TROLLBOX: 'Trollbox ({0})' // new
 	},
 	INVALID_USERNAME:
-		'Le nom d\'utilisateur doit comporter entre 3 et 15 caractères. Ne contient que des minuscules, des chiffres et des traits de soulignement,'
+		'Le nom d\'utilisateur doit comporter entre 3 et 15 caractères. Ne contient que des minuscules, des chiffres et des traits de soulignement',
 	USERNAME_TAKEN: 'Ce nom d\'utilisateur a déjà été pris. Veuillez en essayer un autre.',
 	USERNAME_LABEL: 'Nom d\'utilisateur (utilisé pour le chat)',
 	USERNAME_PLACEHOLDER: 'Nom d\'utilisateur',
@@ -1209,7 +1209,7 @@ export default {
 		XHT_WAVE_DESC_2:
 			'L\'enchère Wave vend une quantité aléatoire de XHT à des moments aléatoires aux plus offrants de l\'Orderbook', // new
 		XHT_WAVE_DESC_3:
-			'Ci-dessous affiche les données historiques sur l\'historique de l'\'enchère Wave', // new
+			'Ci-dessous affiche les données historiques sur l\'historique de l\'enchère Wave', // new
 		WAVE_AUCTION_PHASE: 'Phase Wave Auction {0}', // new
 		LEARN_MORE_WAVE_AUCTION: 'En savoir plus l\'enchère', // new
 		WAVE_NUMBER: 'Wave Number', // new
