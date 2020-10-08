@@ -1,0 +1,132 @@
+.wizard-container {
+    align-items: center;
+    background-color: #0808df;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    flex-direction: column;
+}
+.header {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 1rem 0rem;
+}
+.description {
+    font-size: 16px;
+}
+.btn-container {
+    margin: 2rem 0rem;
+}
+.ant-btn {
+    background-color: #c4c4c4;
+    color: #0000ff;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+}
+.content {
+    color: #c4c4c4;
+    text-align: center;
+    width: 70rem;
+}
+.step-container {
+    display: flex;
+    margin-top: 3rem;
+}
+.steps,
+.step-content {
+    flex: 1;
+}
+.steps {
+    border-right: 1px solid #C4C4C4;
+}
+.step-content {
+    margin: 5px 10px 10px 20px;
+}
+.world-map {
+    width: 20rem;
+}
+.ant-steps-item-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    line-height: 22px;
+    margin-top: 8px;
+    background-color: green;
+    border-color: green;
+}
+.ant-steps-item-tail {
+    display: none;
+}
+.ant-steps-item-content {
+    padding: 0px 10px;
+}
+.ant-steps-item-tail::after {
+    display: none;
+}
+.ant-steps-item-finish .ant-steps-item-icon {
+    background-color: green;
+    border-color: green;
+}
+.ant-steps-item-active .ant-steps-item-icon,
+.ant-steps-item-wait .ant-steps-item-icon {
+    display: none;
+}
+.ant-steps-item-active .ant-steps-item-content,
+.ant-steps-item-wait .ant-steps-item-content {
+    margin-left: 34px;
+}
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+    color: #ffffff !important;
+}
+.ant-steps-item-title {
+    color: #C4C4C4 !important;
+}
+.ant-steps-item-active .ant-steps-item-title {
+    font-weight: bold;
+    color: #ffffff !important;
+}
+.ant-steps-item-active .ant-steps-item-content {
+    background-color: #000000;
+    min-width: 15rem;
+    width: 70%;
+}
+.ant-steps-vertical .ant-steps-item-content {
+    min-height: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.btn-container {
+    margin: 2rem 0rem;
+}
+.setup-field-content {
+    text-align: left;
+    width: 22rem;
+}
+.ant-input-affix-wrapper,
+.ant-input,
+.ant-input-number,
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: #0000ff;
+    color: #c4c4c4;
+}
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper:focus,
+.ant-input:hover,
+.ant-input:focus,
+.ant-input-number:hover,
+.ant-input-number:focus {
+    border-color: #c4c4c4;
+    box-shadow: #c4c4c4;
+}
+.ant-input-password-icon {
+    color: #c4c4c4;
+}
+.form-wrapper {
+    width: 22rem;
+}
+.setup-field-label {
+    font-size: 15px;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+}
