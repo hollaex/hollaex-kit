@@ -7,6 +7,8 @@ exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used f
 exports.API_HOST = process.env.API_HOST || 'localhost';
 exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
 
+exports.HOLLAEX_NETWORK_URL = process.env.HOLLAEX_NETWORK_URL || 'https://api.testnet.hollaex.network/v2';
+
 // CHANNEL CONSTANTS -----------------------------
 
 exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
