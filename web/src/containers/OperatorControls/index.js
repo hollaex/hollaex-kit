@@ -219,13 +219,13 @@ class OperatorControls extends Component {
 
     this.setState({
       overwrites: saveData,
-      isPublishEnabled: true,
       isEditModalOpen: false,
       isSaveEnabled: false,
       editData: {},
       editableElementIds: [],
     }, () => {
-      initializeStrings(saveData)
+      initializeStrings(saveData);
+      this.enablePublish();
       if (source) {
         this.openAllStringsModal();
       }
@@ -255,6 +255,12 @@ class OperatorControls extends Component {
 
   reload = () => window.location.reload(false)
 
+  enablePublish = (isPublishEnabled = true) => {
+    this.setState({
+      isPublishEnabled,
+    });
+  }
+
   toggleEditMode = () => {
     const { onChangeEditMode, editMode } = this.props;
     if (!editMode) {
@@ -265,9 +271,14 @@ class OperatorControls extends Component {
   }
 
   exitEditMode = () => {
+    const { isPublishEnabled } = this.state;
     const { onChangeEditMode } = this.props;
     onChangeEditMode();
-    this.reload();
+    this.closeExitConfirmationModal();
+
+    if(isPublishEnabled) {
+      this.reload();
+    }
   }
 
   getLanguageLabel = (key) => {
@@ -404,7 +415,10 @@ class OperatorControls extends Component {
   addIcons = (icons = {}) => {
     this.setState(prevState => ({
       iconsOverwrites: { ...prevState.iconsOverwrites, ...icons },
-    }), this.closeUploadIcon);
+    }), () => {
+      this.closeUploadIcon();
+      this.enablePublish();
+    });
   }
 
   openUploadIcon = () => {
