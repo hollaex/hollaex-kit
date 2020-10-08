@@ -292,6 +292,7 @@ class PluginServices extends Component {
 					loading: false
 				});
 				this.getConstantData();
+				this.getPluginsData(this.props.params.services);
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -316,12 +317,13 @@ class PluginServices extends Component {
 
 	connectCoinToVault = (formProps = { connected_coins: [] }, coin) => {
 		// let formValues = { ...formProps };
+		let connected_coins = formProps.connected_coins || []
 		let formValues = {
-			connected_coins: formProps.connected_coins || []
+			coins: connected_coins
 		};
-		if (!formValues.connected_coins.includes(coin)) {
-			formValues.connected_coins = [
-				...formProps.connected_coins,
+		if (!formValues.coins.includes(coin)) {
+			formValues.coins = [
+				...connected_coins,
 				coin
 			];
 		}

@@ -196,6 +196,7 @@ const updatePluginConstant = (plugin, newValues) => {
 };
 
 const maskSecrets = (plugin, secrets) => {
+	secrets = JSON.parse(JSON.stringify(secrets));
 	each(secrets, (secret, secretKey) => {
 		if (plugin === 's3' && secretKey === 'secret') {
 			secrets[secretKey] = {
