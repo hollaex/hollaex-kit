@@ -12,10 +12,6 @@ const storeImageOnNetwork = async (image, name) => {
 		return reject(new Error('Invalid file type'));
 	}
 
-	if (/[\s/\\0.]/g.test(name)) {
-		return reject(new Error('Invalid image name'));
-	}
-
 	const { apiKey } = await getNetworkKeySecret();
 	const exchangeId = getNodeLib().exchange_id;
 	const exchangeName = getKitConfig().info.name;
@@ -27,14 +23,21 @@ const storeImageOnNetwork = async (image, name) => {
 			exchange_id: exchangeId,
 			exchange_name: exchangeName,
 			file_name: name,
-			file: image
+			file: {
+				value: image.buffer,
+				options: {
+					filename: image.originalname
+				}
+			}
 		},
 		headers: {
-			api_key: apiKey
+			'api-key': apiKey,
+			'Content-Type': 'multipart/form-data'
 		}
 	};
 
-	return rp(options);
+	return rp(options)
+		.then(JSON.parse);
 };
 
 module.exports = {
