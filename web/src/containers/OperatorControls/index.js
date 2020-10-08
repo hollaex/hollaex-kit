@@ -13,6 +13,7 @@ import AllStringsModal from './components/AllStringsModal';
 import StringSettingsModal from './components/StringSettings';
 import AddLanguageModal from './components/AddLanguageModal';
 import UploadIcon from './components/UploadIcon';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class OperatorControls extends Component {
 
@@ -413,9 +414,11 @@ class OperatorControls extends Component {
   }
 
   addIcons = (icons = {}) => {
+    const { updateIcons } = this.props;
     this.setState(prevState => ({
       iconsOverwrites: { ...prevState.iconsOverwrites, ...icons },
     }), () => {
+      updateIcons(icons);
       this.closeUploadIcon();
       this.enablePublish();
     });
@@ -674,4 +677,4 @@ class OperatorControls extends Component {
   }
 }
 
-export default OperatorControls;
+export default withConfig(OperatorControls);

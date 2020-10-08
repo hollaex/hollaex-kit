@@ -4,7 +4,13 @@ import { ProjectConfig } from 'config/project.config';
 const withConfig = (Component) => {
   return (props) => (
     <ProjectConfig.Consumer>
-      {config => <Component {...props} configuration={config} />}
+      {({ icons, updateIcons }) => (
+        <Component
+          {...props}
+          icons={icons}
+          updateIcons={updateIcons}
+        />
+      )}
     </ProjectConfig.Consumer>
   );
 }

@@ -4,13 +4,35 @@ import { ProjectConfig } from 'config/project.config';
 class ConfigProvider extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const { initialConfig } = this.props;
+    const { icons = {} } = { ...initialConfig }
+    this.state = {
+      icons
+    };
+  }
+
+  updateIcons = (icons = {}) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      icons: {
+        ...prevState.icons,
+        ...icons,
+      }
+    }))
   }
 
   render() {
-    const { children, initialConfig } = this.props;
+    const { children } = this.props;
+    const { icons } = this.state;
+    const { updateIcons } = this;
+
     return (
-      <ProjectConfig.Provider value={initialConfig}>
+      <ProjectConfig.Provider
+        value={{
+          icons,
+          updateIcons,
+        }}
+      >
         {children}
       </ProjectConfig.Provider>
     );
