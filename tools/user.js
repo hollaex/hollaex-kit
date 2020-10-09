@@ -181,7 +181,6 @@ const createUser = (email, password, role = 'user', domain) => {
 				return getModel('user').create({
 					email,
 					password,
-					verification_level: 1,
 					settings: INITIAL_SETTINGS(),
 					...roles
 				}, { transaction });
@@ -199,6 +198,15 @@ const createUser = (email, password, role = 'user', domain) => {
 			});
 	})
 		.then((user) => {
+			return all([
+				user,
+				getModel('verification code').update(
+					{ verified: true },
+					{ where: { user_id: user.id }, fields: [ 'verified' ]}
+				)
+			]);
+		})
+		.then(([ user ]) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,

@@ -125,13 +125,13 @@ const checkTransaction = (currency, transactionId, address, isTestnet = false) =
 	return getNodeLib().checkTransactionNetwork(currency, transactionId, address, isTestnet);
 };
 
-const performWithdrawal = (userId, address, currency, amount, fee, otpCode) => {
+const performWithdrawal = (userId, address, currency, amount, fee) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
 	return getUserByKitId(userId)
 		.then((user) => {
-			return getNodeLib().createWithdrawalNetwork(user.network_id, address, currency, amount, fee, otpCode);
+			return getNodeLib().createWithdrawalNetwork(user.network_id, address, currency, amount, fee);
 		});
 };
 

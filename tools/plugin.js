@@ -14,13 +14,9 @@ const { publisher } = require('./database/redis');
 const flatten = require('flat');
 
 const getPluginsConfig = () => {
-	const secrets = maskSecrets(getKitSecrets()).plugins;
-
-	return {
+return {
 		available: AVAILABLE_PLUGINS,
-		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : [],
-		configuration: getKitConfig().plugins.configuration,
-		secrets
+		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : []
 	};
 };
 
