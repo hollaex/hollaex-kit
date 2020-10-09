@@ -6,17 +6,35 @@ const { Item } = Form;
 const EmailConfiguration = ({ handleNext, updateConstants, setPreview, initialValues = {} }) => {
     const handleSubmit = (values) => {
         const { site_key, secret_key, server, port, user, password, ...rest } = values;
-        const formProps = { kit: {}, secrets: { smtp: {} } };
+        const formProps = {};
         if (site_key) {
+            formProps.kit = {};
             formProps.kit.captcha = { site_key };
         }
-        if (secret_key) formProps.secrets.captcha = { secret_key };
-        if (server) formProps.secrets.smtp.server = server;
-        if (port) formProps.secrets.smtp.port = port;
-        if (user) formProps.secrets.smtp.user = user;
-        if (password) formProps.secrets.smtp.password = password;
-        formProps.secrets.emails = { ...rest };
-        updateConstants(formProps, setPreview);
+        if (site_key
+            || secret_key
+            || server
+            || port
+            || user
+            || password
+        ) {
+            formProps.secrets = { smtp: {} };
+            if (secret_key) formProps.secrets.captcha = { secret_key };
+            if (server) formProps.secrets.smtp.server = server;
+            if (port) formProps.secrets.smtp.port = port;
+            if (user) formProps.secrets.smtp.user = user;
+            if (password) formProps.secrets.smtp.password = password;
+        }
+        if (Object.keys(rest).filter((key) => rest[key]).length) {
+            formProps.secrets = { emails: {} };
+            if (rest.sender) formProps.secrets.emails.sender = rest.sender;
+            if (rest.timezone) formProps.secrets.emails.timezone = rest.timezone;
+            if (rest.audit) formProps.secrets.emails.audit = rest.audit;
+            if (rest.send_email_to_support) formProps.secrets.emails.send_email_to_support = rest.send_email_to_support;
+        }
+        if (Object.keys(formProps).length) {
+            updateConstants(formProps, () => setPreview(true));
+        }
     };
     return (
         <div className="asset-content">
@@ -86,7 +104,7 @@ const EmailConfiguration = ({ handleNext, updateConstants, setPreview, initialVa
                     <div className="asset-btn-wrapper">
                         <span
                             className="step-link"
-                            onClick={setPreview}
+                            onClick={() => setPreview(true)}
                         >
                             Skip this step
                         </span>

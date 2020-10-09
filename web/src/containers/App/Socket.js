@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import io from 'socket.io-client';
 import { debounce } from 'lodash';
 import { WS_URL, SESSION_TIME, BASE_CURRENCY, LANGUAGE_KEY } from '../../config/constants';
-import { isMobile } from 'react-device-detect';
+// import { isMobile } from 'react-device-detect';
 
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
@@ -35,7 +34,7 @@ import {
 	closeAllNotification,
 	setChatUnreadMessages,
 	setOrderLimits,
-	NOTIFICATIONS,
+	// NOTIFICATIONS,
 	setSnackDialog,
 	setValidBaseCurrency,
 	setConfig,
@@ -125,12 +124,7 @@ class Container extends Component {
 	storeOrderData = debounce(this.storeData, 250);
 
 	setPublicWS = () => {
-		const publicSocket = io(`${WS_URL}/stream`, {
-			query: {
-				// symbol: 'btc'
-			}
-		});
-
+		const publicSocket = new WebSocket(`${WS_URL}/stream`);
 		this.setState({ publicSocket });
 
 		requestInitial()
@@ -165,7 +159,7 @@ class Container extends Component {
 					this.props.setPairs(res.data.pairs);
 					this.props.setPairsData(res.data.pairs);
 					this.props.setCurrencies(res.data.coins);
-	
+
 					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
 						let temp = res.data.pairs[key];
 						return temp.pair_2 === BASE_CURRENCY;
@@ -193,315 +187,387 @@ class Container extends Component {
 			})
 			.catch(err => console.error(err))
 
-		// publicSocket.on('initial', (data) => {
-		// });
+		publicSocket.onopen = (event) => {
+			console.log('Connected Public Socket');
+			publicSocket.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: ['orderbook', 'trade'],
+				})
+			);
+		};
 
-		publicSocket.on('orderbook', (data) => {
-			this.orderCache = { ...this.orderCache, ...data };
-			this.storeOrderData(this.orderCache);
-			// this.props.setOrderbooks(data);
-		});
+		publicSocket.onclose = (evt) => {
+			console.log('public socket close', evt);
+		};
 
-		publicSocket.on('trades', (data) => {
-			this.props.setTrades(data);
-			this.props.setTickers(data);
-			if (data.action === 'update') {
-				if (
-					this.props.settings.audio &&
-					this.props.settings.audio.public_trade &&
-					this.props.location.pathname.indexOf('/trade/') === 0 &&
-					this.props.router.params.pair
-				) {
-					playBackgroundAudioNotification('public_trade', this.props.settings);
-				}
-			}
-		});
-	};
+		publicSocket.onerror = (evt) => {
+			console.log('public socket error', evt);
+		};
 
-	setUserSocket = (token) => {
-		const privateSocket = io.connect(`${WS_URL}/user`, {
-			query: {
-				token: `Bearer ${token}`
-			}
-		});
-
-		this.setState({ privateSocket });
-
-		privateSocket.on('error', (error) => {
-			if (
-				error &&
-				typeof error === 'string' &&
-				error.indexOf('Access Denied') > -1
-			) {
-				this.props.logout('Token is expired');
-			}
-		});
-
-		privateSocket.on('user', ({ action, data }) => {
-			const { defaults = {} } = this.props.constants;
-			let userData = { ...data };
-			if (data.settings) {
-				if (
-					!data.settings.language &&
-					!this.props.activeLanguage &&
-					defaults.language
-				) {
-					this.props.changeLanguage(defaults.language);
-					userData = {
+		publicSocket.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			switch (data.topic) {
+				case 'trade':
+					const tradesData = {
 						...data,
-						settings: {
-							...data.settings,
-							language: defaults.language
-						}
-					};
-				} else if (data.settings.language !== this.props.activeLanguage) {
-					this.props.changeLanguage(data.settings.language);
-				}
-				if (data.settings.interface) {
-					if (
-						!data.settings.interface.theme &&
-						!this.props.activeTheme &&
-						defaults.theme
-					) {
-						this.props.changeTheme(defaults.theme);
-						localStorage.setItem('theme', defaults.theme);
-						userData = {
-							...data,
-							settings: {
-								...data.settings,
-								interface: {
-									...data.settings.interface,
-									theme: defaults.theme
-								}
-							}
-						};
-					} else if (data.settings.interface.theme !== this.props.activeTheme) {
-						this.props.changeTheme(data.settings.interface.theme);
-						localStorage.setItem('theme', data.settings.interface.theme);
+						[data.symbol]: data.data
 					}
-				}
-			}
-			this.props.setMe(userData);
-		});
-
-		privateSocket.on('orders', ({ action, data }) => {
-			this.props.setUserOrders(data);
-		});
-
-		privateSocket.on('trades', ({ action, data }) => {
-			// this.props.addUserTrades(data);
-		});
-
-		privateSocket.on('wallet', ({ action, balance }) => {
-			this.props.setBalance(balance);
-		});
-
-		privateSocket.on('update', ({ action, type, data }) => {
-			switch (type) {
-				case 'order_queued':
-					// TODO add queued orders to the store
-					// this.props.addOrder(data);
-					this.setState({
-						ordersQueued: this.state.ordersQueued.concat(data)
-					});
-					if (data.type === 'limit') {
-						playBackgroundAudioNotification('orderbook_limit_order', this.props.settings);
-						this.setState({ limitFilledOnOrder: data.id });
-						this.limitTimeOut = setTimeout(() => {
-							if (this.state.limitFilledOnOrder)
-								this.setState({ limitFilledOnOrder: '' });
-						}, 1000);
-					}
-					break;
-				case 'order_processed':
-				case 'order_canceled': {
-					const ordersQueued = [].concat(this.state.ordersQueued);
-					const indexOfOrder = ordersQueued.findIndex(
-						(order) => order.id === data.id
-					);
-					if (indexOfOrder > -1) {
-						ordersQueued.splice(indexOfOrder, 1);
-					}
-					this.setState({ ordersQueued });
-					break;
-				}
-				case 'order_added': {
-					const { ordersQueued } = this.state;
-					const indexOfOrder = ordersQueued.findIndex(
-						({ id }) => id === data.id
-					);
-					if (indexOfOrder > -1) {
-						ordersQueued.splice(indexOfOrder, 1);
-						this.setState({ ordersQueued });
-					}
-					this.props.addOrder(data);
-					// this.props.setNotification(NOTIFICATIONS.ORDERS, { type, data });
-					break;
-				}
-				case 'order_partialy_filled': {
-					// let filled = 0;
-					// const order = this.props.orders.find(order => order.id === data.id)
-					// if (order) {
-					// 	filled = order.filled;
-					// }
-					this.props.updateOrder(data);
-					if (
-						this.props.settings.notification &&
-						this.props.settings.notification.popup_order_partially_filled
-					) {
-						// data.filled = data.filled - filled;
-						if (isMobile) {
-							this.props.setSnackDialog({
-								isDialog: true,
-								type: 'order',
-								data: {
-									type,
-									order: data,
-									data
-								}
-							});
-						} else {
-							this.props.setNotification(NOTIFICATIONS.ORDERS, {
-								type,
-								order: data,
-								data
-							});
-						}
-					}
-					if (
-						this.props.settings.audio &&
-						this.props.settings.audio.order_partially_completed
-					) {
-						playBackgroundAudioNotification('order_partialy_filled', this.props.settings);
-					}
-					break;
-				}
-				case 'order_updated':
-					this.props.updateOrder(data);
-					this.props.setNotification(
-						NOTIFICATIONS.ORDERS,
-						{ type, data },
-						false
-					);
-					break;
-				case 'order_filled': {
-					const ordersDeleted = this.props.orders.filter((order, index) => {
-						return (
-							data.findIndex((deletedOrder) => deletedOrder.id === order.id) >
-							-1
-						);
-					});
-					this.props.removeOrder(data);
-					if (
-						this.props.settings.notification &&
-						this.props.settings.notification.popup_order_completed
-					) {
-						ordersDeleted.forEach((orderDeleted) => {
-							if (isMobile) {
-								this.props.setSnackDialog({
-									isDialog: true,
-									type: 'order',
-									data: {
-										type,
-										data: {
-											...orderDeleted,
-											filled: orderDeleted.size
-										}
-									}
-								});
-							} else {
-								this.props.setNotification(NOTIFICATIONS.ORDERS, {
-									type,
-									data: {
-										...orderDeleted,
-										filled: orderDeleted.size
-									}
-								});
-							}
-						});
-					}
-					if (
-						this.props.settings.audio &&
-						this.props.settings.audio.order_completed
-					) {
-						playBackgroundAudioNotification('order_filled', this.props.settings);
-					}
-					break;
-				}
-				case 'order_removed':
-					this.props.removeOrder(data);
-					this.props.setNotification(
-						NOTIFICATIONS.ORDERS,
-						{ type, data },
-						false
-					);
-					break;
-				case 'trade': {
-					this.props.addUserTrades(data.reverse());
-					const tradeOrdersIds = new Set();
-					data.forEach((trade) => {
-						if (trade.id) {
-							tradeOrdersIds.add(trade.id);
-						}
-					});
-					if (tradeOrdersIds.size === 1) {
-						const orderIdFromTrade = Array.from(tradeOrdersIds)[0];
-						const { ordersQueued } = this.state;
-						let order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
-						if (!order) {
-							const { orders } = this.props;
-							order = orders.find(({ id }) => id === orderIdFromTrade);
-						}
+					delete tradesData.data;
+					this.props.setTrades(tradesData);
+					this.props.setTickers(tradesData);
+					if (data.action === 'update') {
 						if (
-							order &&
-							order.type === 'market' &&
-							this.props.settings.notification &&
-							this.props.settings.notification.popup_order_completed
+							this.props.settings.audio &&
+							this.props.settings.audio.public_trade &&
+							this.props.location.pathname.indexOf('/trade/') === 0 &&
+							this.props.router.params.pair
 						) {
-							if (isMobile) {
-								this.props.setSnackDialog({
-									isDialog: true,
-									type: 'trade',
-									data: { order, data }
-								});
-							} else {
-								this.props.setNotification(NOTIFICATIONS.TRADES, {
-									data,
-									order
-								});
-							}
+							playBackgroundAudioNotification('public_trade', this.props.settings);
 						}
 					}
-					if (
-						this.state.limitFilledOnOrder &&
-						data.filter((limit) => limit.id === this.state.limitFilledOnOrder)
-							.length &&
-						this.props.settings.audio &&
-						this.props.settings.audio.order_completed
-					) {
-						setTimeout(() => {
-							playBackgroundAudioNotification('order_filled', this.props.settings);
-						}, 1000);
-					}
 					break;
-				}
-				case 'deposit': {
-					const show = data.status || data.currency !== BASE_CURRENCY;
-					data.coins = this.props.coins;
-					this.props.setNotification(NOTIFICATIONS.DEPOSIT, data, show);
+				case 'orderbook':
+					const tempData = {
+						...data,
+						[data.symbol]: data.data
+					};
+					delete tempData.data;
+					this.orderCache = { ...this.orderCache, ...tempData };
+					this.storeOrderData(this.orderCache);
+					// this.props.setOrderbooks(data);
 					break;
-				}
-				case 'withdrawal': {
-					// TODO FIX when notification is defined
-
-					const show = data.amount;
-					this.props.setNotification(NOTIFICATIONS.WITHDRAWAL, data, !show);
-					break;
-				}
 				default:
 					break;
 			}
-		});
+		};
+
+		// publicSocket.on('orderbook', (data) => {
+		// 	this.orderCache = { ...this.orderCache, ...data };
+		// 	this.storeOrderData(this.orderCache);
+		// 	// this.props.setOrderbooks(data);
+		// });
+
+		// publicSocket.on('trades', (data) => {
+		// 	this.props.setTrades(data);
+		// 	this.props.setTickers(data);
+		// 	if (data.action === 'update') {
+		// 		if (
+		// 			this.props.settings.audio &&
+		// 			this.props.settings.audio.public_trade &&
+		// 			this.props.location.pathname.indexOf('/trade/') === 0 &&
+		// 			this.props.router.params.pair
+		// 		) {
+		// 			playBackgroundAudioNotification('public_trade', this.props.settings);
+		// 		}
+		// 	}
+		// });
+	};
+
+	setUserSocket = (token) => {
+		const privateSocket = new WebSocket(`${WS_URL}/stream`);
+
+		this.setState({ privateSocket });
+
+		privateSocket.onopen = (evt) => {
+			console.log('Connected Private Socket', evt);
+			let request = {
+				op: 'auth',
+				args: [
+					{
+						"authorization": `Bearer ${token}`
+					}
+				],
+			};
+			privateSocket.send(JSON.stringify(request));
+			privateSocket.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: ['wallet', 'order', 'userTrade'],
+				})
+			);
+		};
+
+		privateSocket.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			console.log(data);
+		};
+
+		// privateSocket.on('error', (error) => {
+		// 	if (
+		// 		error &&
+		// 		typeof error === 'string' &&
+		// 		error.indexOf('Access Denied') > -1
+		// 	) {
+		// 		this.props.logout('Token is expired');
+		// 	}
+		// });
+
+		// privateSocket.on('user', ({ action, data }) => {
+		// 	const { defaults = {} } = this.props.constants;
+		// 	let userData = { ...data };
+		// 	if (data.settings) {
+		// 		if (
+		// 			!data.settings.language &&
+		// 			!this.props.activeLanguage &&
+		// 			defaults.language
+		// 		) {
+		// 			this.props.changeLanguage(defaults.language);
+		// 			userData = {
+		// 				...data,
+		// 				settings: {
+		// 					...data.settings,
+		// 					language: defaults.language
+		// 				}
+		// 			};
+		// 		} else if (data.settings.language !== this.props.activeLanguage) {
+		// 			this.props.changeLanguage(data.settings.language);
+		// 		}
+		// 		if (data.settings.interface) {
+		// 			if (
+		// 				!data.settings.interface.theme &&
+		// 				!this.props.activeTheme &&
+		// 				defaults.theme
+		// 			) {
+		// 				this.props.changeTheme(defaults.theme);
+		// 				localStorage.setItem('theme', defaults.theme);
+		// 				userData = {
+		// 					...data,
+		// 					settings: {
+		// 						...data.settings,
+		// 						interface: {
+		// 							...data.settings.interface,
+		// 							theme: defaults.theme
+		// 						}
+		// 					}
+		// 				};
+		// 			} else if (data.settings.interface.theme !== this.props.activeTheme) {
+		// 				this.props.changeTheme(data.settings.interface.theme);
+		// 				localStorage.setItem('theme', data.settings.interface.theme);
+		// 			}
+		// 		}
+		// 	}
+		// 	this.props.setMe(userData);
+		// });
+
+		// privateSocket.on('orders', ({ action, data }) => {
+		// 	this.props.setUserOrders(data);
+		// });
+
+		// privateSocket.on('trades', ({ action, data }) => {
+		// 	// this.props.addUserTrades(data);
+		// });
+
+		// privateSocket.on('wallet', ({ action, balance }) => {
+		// 	this.props.setBalance(balance);
+		// });
+
+		// privateSocket.on('update', ({ action, type, data }) => {
+		// 	switch (type) {
+		// 		case 'order_queued':
+		// 			// TODO add queued orders to the store
+		// 			// this.props.addOrder(data);
+		// 			this.setState({
+		// 				ordersQueued: this.state.ordersQueued.concat(data)
+		// 			});
+		// 			if (data.type === 'limit') {
+		// 				playBackgroundAudioNotification('orderbook_limit_order', this.props.settings);
+		// 				this.setState({ limitFilledOnOrder: data.id });
+		// 				this.limitTimeOut = setTimeout(() => {
+		// 					if (this.state.limitFilledOnOrder)
+		// 						this.setState({ limitFilledOnOrder: '' });
+		// 				}, 1000);
+		// 			}
+		// 			break;
+		// 		case 'order_processed':
+		// 		case 'order_canceled': {
+		// 			const ordersQueued = [].concat(this.state.ordersQueued);
+		// 			const indexOfOrder = ordersQueued.findIndex(
+		// 				(order) => order.id === data.id
+		// 			);
+		// 			if (indexOfOrder > -1) {
+		// 				ordersQueued.splice(indexOfOrder, 1);
+		// 			}
+		// 			this.setState({ ordersQueued });
+		// 			break;
+		// 		}
+		// 		case 'order_added': {
+		// 			const { ordersQueued } = this.state;
+		// 			const indexOfOrder = ordersQueued.findIndex(
+		// 				({ id }) => id === data.id
+		// 			);
+		// 			if (indexOfOrder > -1) {
+		// 				ordersQueued.splice(indexOfOrder, 1);
+		// 				this.setState({ ordersQueued });
+		// 			}
+		// 			this.props.addOrder(data);
+		// 			// this.props.setNotification(NOTIFICATIONS.ORDERS, { type, data });
+		// 			break;
+		// 		}
+		// 		case 'order_partialy_filled': {
+		// 			// let filled = 0;
+		// 			// const order = this.props.orders.find(order => order.id === data.id)
+		// 			// if (order) {
+		// 			// 	filled = order.filled;
+		// 			// }
+		// 			this.props.updateOrder(data);
+		// 			if (
+		// 				this.props.settings.notification &&
+		// 				this.props.settings.notification.popup_order_partially_filled
+		// 			) {
+		// 				// data.filled = data.filled - filled;
+		// 				if (isMobile) {
+		// 					this.props.setSnackDialog({
+		// 						isDialog: true,
+		// 						type: 'order',
+		// 						data: {
+		// 							type,
+		// 							order: data,
+		// 							data
+		// 						}
+		// 					});
+		// 				} else {
+		// 					this.props.setNotification(NOTIFICATIONS.ORDERS, {
+		// 						type,
+		// 						order: data,
+		// 						data
+		// 					});
+		// 				}
+		// 			}
+		// 			if (
+		// 				this.props.settings.audio &&
+		// 				this.props.settings.audio.order_partially_completed
+		// 			) {
+		// 				playBackgroundAudioNotification('order_partialy_filled', this.props.settings);
+		// 			}
+		// 			break;
+		// 		}
+		// 		case 'order_updated':
+		// 			this.props.updateOrder(data);
+		// 			this.props.setNotification(
+		// 				NOTIFICATIONS.ORDERS,
+		// 				{ type, data },
+		// 				false
+		// 			);
+		// 			break;
+		// 		case 'order_filled': {
+		// 			const ordersDeleted = this.props.orders.filter((order, index) => {
+		// 				return (
+		// 					data.findIndex((deletedOrder) => deletedOrder.id === order.id) >
+		// 					-1
+		// 				);
+		// 			});
+		// 			this.props.removeOrder(data);
+		// 			if (
+		// 				this.props.settings.notification &&
+		// 				this.props.settings.notification.popup_order_completed
+		// 			) {
+		// 				ordersDeleted.forEach((orderDeleted) => {
+		// 					if (isMobile) {
+		// 						this.props.setSnackDialog({
+		// 							isDialog: true,
+		// 							type: 'order',
+		// 							data: {
+		// 								type,
+		// 								data: {
+		// 									...orderDeleted,
+		// 									filled: orderDeleted.size
+		// 								}
+		// 							}
+		// 						});
+		// 					} else {
+		// 						this.props.setNotification(NOTIFICATIONS.ORDERS, {
+		// 							type,
+		// 							data: {
+		// 								...orderDeleted,
+		// 								filled: orderDeleted.size
+		// 							}
+		// 						});
+		// 					}
+		// 				});
+		// 			}
+		// 			if (
+		// 				this.props.settings.audio &&
+		// 				this.props.settings.audio.order_completed
+		// 			) {
+		// 				playBackgroundAudioNotification('order_filled', this.props.settings);
+		// 			}
+		// 			break;
+		// 		}
+		// 		case 'order_removed':
+		// 			this.props.removeOrder(data);
+		// 			this.props.setNotification(
+		// 				NOTIFICATIONS.ORDERS,
+		// 				{ type, data },
+		// 				false
+		// 			);
+		// 			break;
+		// 		case 'trade': {
+		// 			this.props.addUserTrades(data.reverse());
+		// 			const tradeOrdersIds = new Set();
+		// 			data.forEach((trade) => {
+		// 				if (trade.id) {
+		// 					tradeOrdersIds.add(trade.id);
+		// 				}
+		// 			});
+		// 			if (tradeOrdersIds.size === 1) {
+		// 				const orderIdFromTrade = Array.from(tradeOrdersIds)[0];
+		// 				const { ordersQueued } = this.state;
+		// 				let order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
+		// 				if (!order) {
+		// 					const { orders } = this.props;
+		// 					order = orders.find(({ id }) => id === orderIdFromTrade);
+		// 				}
+		// 				if (
+		// 					order &&
+		// 					order.type === 'market' &&
+		// 					this.props.settings.notification &&
+		// 					this.props.settings.notification.popup_order_completed
+		// 				) {
+		// 					if (isMobile) {
+		// 						this.props.setSnackDialog({
+		// 							isDialog: true,
+		// 							type: 'trade',
+		// 							data: { order, data }
+		// 						});
+		// 					} else {
+		// 						this.props.setNotification(NOTIFICATIONS.TRADES, {
+		// 							data,
+		// 							order
+		// 						});
+		// 					}
+		// 				}
+		// 			}
+		// 			if (
+		// 				this.state.limitFilledOnOrder &&
+		// 				data.filter((limit) => limit.id === this.state.limitFilledOnOrder)
+		// 					.length &&
+		// 				this.props.settings.audio &&
+		// 				this.props.settings.audio.order_completed
+		// 			) {
+		// 				setTimeout(() => {
+		// 					playBackgroundAudioNotification('order_filled', this.props.settings);
+		// 				}, 1000);
+		// 			}
+		// 			break;
+		// 		}
+		// 		case 'deposit': {
+		// 			const show = data.status || data.currency !== BASE_CURRENCY;
+		// 			data.coins = this.props.coins;
+		// 			this.props.setNotification(NOTIFICATIONS.DEPOSIT, data, show);
+		// 			break;
+		// 		}
+		// 		case 'withdrawal': {
+		// 			// TODO FIX when notification is defined
+
+		// 			const show = data.amount;
+		// 			this.props.setNotification(NOTIFICATIONS.WITHDRAWAL, data, !show);
+		// 			break;
+		// 		}
+		// 		default:
+		// 			break;
+		// 	}
+		// 	});
 	};
 
 	render() {
