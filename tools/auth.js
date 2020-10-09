@@ -405,7 +405,7 @@ const checkCaptcha = (captcha = '', remoteip = '') => {
 	const options = {
 		method: 'POST',
 		form: {
-			secret: getKitSecrets().catpcha.secret_key,
+			secret: getKitSecrets().captcha.secret_key,
 			response: captcha,
 			remoteip
 		},
