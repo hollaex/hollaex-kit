@@ -121,6 +121,7 @@ subscriber.on('message', (channel, message) => {
 				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
 				break;
 			case 'update':
+				if (data.info) updateKitInfo(data.info);
 				if (data.kit) updateKit(data.kit);
 				if (data.secrets) updateSecrets(data.secrets);
 				break;
@@ -181,6 +182,10 @@ const resetAllConfig = () => {
 		}
 	};
 	setRedisData();
+};
+
+const updateKitInfo = (newInfo) => {
+	Object.assign(configuration.kit.info, newInfo);
 };
 
 const updateKit = (newKitConfig) => {
@@ -400,7 +405,6 @@ exports.KIT_CONFIG_KEYS = [
 ];
 
 exports.KIT_SECRETS_KEYS = [
-	'exchange_credentials_set',
 	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',
