@@ -28,3 +28,12 @@ export const getValidLanguages = () => {
 export const setValidLanguages = (validLanguages = '') => {
   return localStorage.setItem('valid_languages', validLanguages)
 }
+
+export const setExchangeInitialized = (initialized) => {
+  return localStorage.setItem('initialized', initialized)
+}
+
+export const getExchangeInitialized = () => {
+  const initialized = localStorage.getItem('initialized') || false;
+  return initialized;
+}

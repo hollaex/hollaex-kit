@@ -310,7 +310,23 @@ export const ICONS = {
 	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
 	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
 	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png',
-	DEFAULT_PLUGINS: '/assets/plugins/default-plugin.png'
+	DEFAULT_PLUGINS: '/assets/plugins/default-plugin.png',
+	HOLLAEX_INIT_LOGO: '/assets/images/hollaex-icon-01.svg',
+	CANDLES_LOGO: '/assets/images/Light-theme-candles.svg',
+	WALLET_BTC_ICON: '/assets/images/wallet-only-btc-icon.svg',
+	SET_ADMIN_NETWORK_KEYS: '/assets/images/set-admin-network-keys.svg',
+	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
+	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',
+	SET_ADMIN_RETYPE_PASSWORD: '/assets/images/set-admin-retype-password.svg',
+	TIMEZONE_WORLD_MAP: '/assets/images/timezone-worldmap.svg',
+	SETUP_SECTION_PRO_TRADING: '/assets/images/setup-section-pro-trading-01.svg',
+	SETUP_SECTION_LOADING: '/assets/images/762.gif',
+	SETUP_SECTION_BACKOFFICE: '/assets/images/setup-section-backoffice.svg',
+	SETUP_SECTION_LIQUIDITY: '/assets/images/setup-section-liquidity.svg',
+	SETUP_SECTION_QUICK_TRADE: '/assets/images/setup-section-quick-trade.svg',
+	SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
+	SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
+	SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg'
 };
 
 export const SOCIAL_ICONS = {

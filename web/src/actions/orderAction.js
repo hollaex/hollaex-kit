@@ -34,7 +34,7 @@ export function removeOrder(ids) {
 
 export const submitOrder = (order) => axios.post('/order', order);
 export const cancelOrder = (orderId, settings) => (dispatch) => {
-	axios.delete(`/user/orders/${orderId}`)
+	axios.delete(`/user/order?order_id=${orderId}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ORDER',
@@ -54,7 +54,7 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 };
 
 export const cancelAllOrders = (symbol = '', settings) => dispatch => {
-	axios.delete(`/user/orders?symbol=${symbol}`)
+	axios.delete(`/user/order?symbol=${symbol}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ALL_ORDERS',

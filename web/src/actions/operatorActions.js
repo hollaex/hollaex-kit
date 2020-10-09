@@ -24,23 +24,28 @@ export const updateConfigs = async (configs) => {
 }
 
 export const getConstants = async () => {
-  const { data: { constants } } = await axios.get('/constant')
-  return constants;
+  const { data = { } } = await axios.get('/kit');
+  return data;
 }
 
 export const getConfig = async (key) => {
-  const { data: { constants: { color: { [key]: config } } } } = await axios.get('/constant')
-  return config;
+  const { data: { color = { } } } = await axios.get('/kit')
+  return color[key] ? color[key].config : {};
 }
 
 export const getValidLanguages = async () => {
-  const { data: { constants: { valid_languages = '' } } } = await axios.get('/constant')
+  const { data: { valid_languages = '' } } = await axios.get('/kit')
   return valid_languages;
 }
 
 export const getVersions = async () => {
-  const { data: { constants: { color: { versions = {} } } } } = await axios.get('/constant')
-  return versions
+  const { data: { color = { } } } = await axios.get('/kit')
+  return color.versions ? color.versions : {};
+}
+
+export const getInitialized = async () => {
+  const { data: { info: { initialized } } } = await axios.get('/kit')
+  return initialized;
 }
 
 export const publish = async (configs) => {

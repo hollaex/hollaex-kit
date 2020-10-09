@@ -60,6 +60,7 @@ import {
 } from './utils/token';
 import { getLanguage, getInterfaceLanguage, getLanguageFromLocal } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
+import { getExchangeInitialized } from './utils/initialize';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
@@ -88,7 +89,12 @@ if (token) {
 }
 
 function requireAuth(nextState, replace) {
-	if (!isLoggedIn()) {
+	const initialized = getExchangeInitialized();
+	if (initialized === 'false' || !initialized) {
+		replace({
+			pathname: '/init'
+		});
+	} else if (!isLoggedIn()) {
 		replace({
 			pathname: '/login'
 		});
@@ -96,7 +102,12 @@ function requireAuth(nextState, replace) {
 }
 
 function loggedIn(nextState, replace) {
-	if (isLoggedIn()) {
+	const initialized = getExchangeInitialized();
+	if (initialized === 'false' || !initialized) {
+		replace({
+			pathname: '/init'
+		});
+	} else if (isLoggedIn()) {
 		replace({
 			pathname: '/account'
 		});
@@ -367,7 +378,7 @@ export default (
 			onEnter={requireAuth}
 		/>
 		<Route path="expired-exchange" component={ExpiredExchange} />
-		<Route path="init" name="initWizard" component={Init} onEnter={requireAuth} />
+		<Route path="init" name="initWizard" component={Init} />
 		<Route path="*" component={NotFound} />
 	</Router>
 );

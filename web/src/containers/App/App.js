@@ -62,6 +62,7 @@ import {
 	getClasesForLanguage,
 	getFontClassForLanguage
 } from '../../utils/string';
+import { getExchangeInitialized } from '../../utils/initialize';
 
 import Socket from './Socket';
 import Container from './Container';
@@ -95,6 +96,10 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		const initialized = getExchangeInitialized();
+		if (initialized === 'false' || !initialized) {
+			this.props.router.push('/init');
+		}
 		this.updateThemeToBody(this.props.activeTheme);
 		if (this.props.location && this.props.location.pathname) {
 			this.checkPath(this.props.location.pathname);

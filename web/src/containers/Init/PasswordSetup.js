@@ -1,5 +1,6 @@
 import React from 'react';
-import { Input, Form, Button } from 'antd';
+import { Input, Form, Button, message } from 'antd';
+import ReactSVG from 'react-svg';
 
 import { adminSignup } from '../../actions/authAction';
 
@@ -14,8 +15,13 @@ const PasswordSetup = (props) => {
     };
     return (
         <div className="setup-container">
-            <div className="content">
-                <div className="email-icon"></div>
+            <div className="content info-container">
+                <div>
+                    <ReactSVG
+                        path={props.icon}
+                        wrapperClassName="email-icon"
+                    />
+                </div>
                 <div className="wrapper">
                     <div className="header">
                         Create a memorable password
@@ -65,17 +71,29 @@ export const ReTypePasswordContainer = (props) => {
             adminSignup(props.initialValues)
                 .then(res => {
                     console.log('response signup', res);
+                    props.setMessage('Account successfully created')
                 })
                 .catch(error => {
-                    console.log('error', error);
-                })
+                    let errMsg = ''
+                    if (error.response) {
+                        errMsg = error.response.data.message;
+                    } else {
+                        errMsg = error.message;
+                    }
+                    message.error(errMsg);
+                });
         }
-        // props.onChangeStep('login');
+        props.onChangeStep('login');
     };
     return (
         <div className="setup-container">
-            <div className="content">
-                <div className="email-icon"></div>
+            <div className="content info-container">
+                <div>
+                    <ReactSVG
+                        path={props.icon}
+                        wrapperClassName="email-icon"
+                    />
+                </div>
                 <div className="wrapper">
                     <div className="header">
                         Retype your password

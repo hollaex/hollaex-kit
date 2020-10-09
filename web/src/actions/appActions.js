@@ -1,5 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE, LANGUAGE_KEY , WS_URL} from '../config/constants';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY, WS_URL } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -259,28 +259,30 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
 
+export const requestInitial = () => axios.get('/kit');
+export const requestConstant = () => axios.get('/constant');
+export const requestAdminData = () => axios.get('/admin/kit');
+
 export const getExchangeInfo = () => {
 	return (dispatch) => {
-		axios.get('/constant').then((res) => {
+		axios.get('/kit').then((res) => {
 			if (res && res.data) {
-				if (res.data.constants) {
-					dispatch(setConfig(res.data.constants));
-					if (res.data.constants.defaults) {
-						const themeColor = localStorage.getItem('theme');
-						const language = localStorage.getItem(LANGUAGE_KEY);
-						if (!themeColor && res.data.constants.defaults.theme) {
-							dispatch(changeTheme(res.data.constants.defaults.theme));
-							localStorage.setItem('theme', res.data.constants.defaults.theme);
-						}
-						if (!language && res.data.constants.defaults.language) {
-							dispatch(setLanguage(res.data.constants.defaults.language));
-						}
+				dispatch(setConfig(res.data));
+				if (res.data.defaults) {
+					const themeColor = localStorage.getItem('theme');
+					const language = localStorage.getItem(LANGUAGE_KEY);
+					if (!themeColor && res.data.defaults.theme) {
+						dispatch(changeTheme(res.data.defaults.theme));
+						localStorage.setItem('theme', res.data.defaults.theme);
+					}
+					if (!language && res.data.defaults.language) {
+						dispatch(setLanguage(res.data.defaults.language));
 					}
 				}
 				if (res.data.info) {
 					dispatch({
 						type: SET_INFO,
-						payload: { info: { ...res.data.info, status: res.data.status } }
+						payload: { info: { ...res.data.info } }
 					});
 				}
 			}
@@ -310,7 +312,7 @@ export const getAnnouncement = () => dispatch => {
 			dispatch({ type: SET_APP_ANNOUNCEMENT, payload: { announcements: res.data.data } });
 		}
 	})
-	.catch((err) => {});
+		.catch((err) => { });
 };
 
 export const requestAvailPlugins = () => dispatch => {

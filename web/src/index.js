@@ -24,9 +24,10 @@ import {
   getRemoteVersion,
   initializeStrings,
   setValidLanguages,
+  setExchangeInitialized
 } from 'utils/initialize';
 
-import { getConfig, getValidLanguages } from 'actions/operatorActions';
+import { getConfig, getInitialized, getValidLanguages } from 'actions/operatorActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
@@ -41,6 +42,7 @@ const getConfigs = async () => {
   const localVersions = getLocalVersions();
   const remoteVersions = await getRemoteVersion();
   const validLanguages = await getValidLanguages();
+  const initialized = await getInitialized();
 
   const promises = {};
   Object.entries(remoteVersions).forEach(([key]) => {
@@ -59,6 +61,7 @@ const getConfigs = async () => {
 
   setLocalVersions(remoteVersions);
   setValidLanguages(validLanguages);
+  setExchangeInitialized(initialized);
 
   const mergedConfigs = {
     ...config,
