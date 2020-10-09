@@ -17,7 +17,7 @@ export const requestUserData = (values) =>
 		.then((data) => data);
 
 export const requestUserBalance = (values) =>
-	requestAuthenticated(`/admin/user/${values}/balance`)
+	requestAuthenticated(`/admin/user/balance?user_id=${values}`)
 		.catch(handleError)
 		.then((data) => {
 			return data;

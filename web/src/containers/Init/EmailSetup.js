@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Form, Button } from 'antd';
+import ReactSVG from 'react-svg';
 
 const { Item } = Form;
 
@@ -10,8 +11,13 @@ const EmailSetup = (props) => {
     };
     return (
         <div className="setup-container">
-            <div className="content">
-                <div className="email-icon"></div>
+            <div className="content info-container">
+                <div>
+                    <ReactSVG
+                        path={props.icon}
+                        wrapperClassName="email-icon"
+                    />
+                </div>
                 <div className="wrapper">
                     <div className="header">
                         Operator administrator email account
@@ -35,16 +41,14 @@ const EmailSetup = (props) => {
                                     },
                                     {
                                         type: 'email',
-                                        message: 'The input is not valid E-mail!'
+                                        message: 'Invalid email address'
                                     }
                                 ]}
                             >
                                 <Input />
                             </Item>
                         </div>
-                        <div className="btn-wrapper">
-                            <Button onClick={() => props.onChangeStep('network-config')}>Back</Button>
-                            <div className="separator"></div>
+                        <div className="btn-container">
                             <Button htmlType='submit'>Proceed</Button>
                         </div>
                     </Form>
