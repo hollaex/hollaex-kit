@@ -82,7 +82,7 @@ export default class ExchangeSetup extends Component {
 					<div className='icon-wrapper'>
 						<ReactSVG
 							path={value.icon}
-							wrapperClassName='icon-align'
+							wrapperClassName={value.icon === ICONS.SETUP_QUICK_TRADE ? null :'icon-align'}
 						/>
 					</div>
 					<div className='setup-field-label'>{value.title}</div>
@@ -123,7 +123,7 @@ export default class ExchangeSetup extends Component {
 							<Button
 								className='exchange-btn'
 								disabled={this.state.isLoading}
-								onClick={this.gotoAccount}
+								onClick={this.goToAccount}
 							>
 								Enter Your Exchange
 							</Button>

@@ -3,11 +3,10 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
 
-const ExchangeReview = ({ constants = {}, assets = {}, setPreview, setConfirm }) => {
+const ExchangeReview = ({ constants = {}, coins = {}, pairs = {}, setPreview, setConfirm }) => {
     const { kit = {}, secrets = {} } = constants;
-    console.log('constants', constants);
-    let coins = Object.keys(assets.coins || {}).map(key => key).join(',');
-    let pairs = Object.keys(assets.pairs || {}).map(key => key).join(',');
+    let coinData = Object.keys(coins || {}).map(key => key).join(',');
+    let pairData = Object.keys(pairs || {}).map(key => key).join(',');
     return (
         <div className="wizard-container">
             <div className="content">
@@ -46,15 +45,15 @@ const ExchangeReview = ({ constants = {}, assets = {}, setPreview, setConfirm })
                     </div>
                     <div className="option-list">
                         <div className="option-label">Assets: </div>
-                        <div className="option-value">{coins}</div>
+                        <div className="option-value">{coinData}</div>
                     </div>
                     <div className="option-list">
                         <div className="option-label">Pairs: </div>
-                        <div className="option-value"></div>
+                        <div className="option-value">{pairData}</div>
                     </div>
                     <div className="option-list">
                         <div className="option-label">Pro trade: </div>
-                        <div className="option-value">{pairs}</div>
+                        <div className="option-value">true</div>
                     </div>
                     <div className="option-list">
                         <div className="option-label">Quick trade: </div>
@@ -62,11 +61,11 @@ const ExchangeReview = ({ constants = {}, assets = {}, setPreview, setConfirm })
                     </div>
                     <div className="option-list">
                         <div className="option-label">Sender email: </div>
-                        <div className="option-value">true</div>
+                        <div className="option-value">{secrets.emails.sender}</div>
                     </div>
                     <div className="option-list">
                         <div className="option-label">Email time zone: </div>
-                        <div className="option-value">{secrets.smtp.timezone}</div>
+                        <div className="option-value">{secrets.emails.timezone}</div>
                     </div>
                     <div className="option-list">
                         <div className="option-label">SMTP server: </div>
@@ -86,7 +85,7 @@ const ExchangeReview = ({ constants = {}, assets = {}, setPreview, setConfirm })
                     </div>
                     <div className="option-list">
                         <div className="option-label">Auditor email: </div>
-                        <div className="option-value">{secrets.emails.auditor}</div>
+                        <div className="option-value">{secrets.emails.audit}</div>
                     </div>
                     <div className="option-list">
                         <div className="option-label">Site key (Google reCAPTHA V3): </div>
@@ -94,7 +93,7 @@ const ExchangeReview = ({ constants = {}, assets = {}, setPreview, setConfirm })
                     </div>
                     <div className="option-list">
                         <div className="option-label">Secret key (Google reCAPTHA V3): </div>
-                        <div className="option-value">{secrets.captcha.secter_key}</div>
+                        <div className="option-value">{secrets.captcha.secret_key}</div>
                     </div>
                 </div>
                 <div className="option-list previewButton">
@@ -109,7 +108,8 @@ const ExchangeReview = ({ constants = {}, assets = {}, setPreview, setConfirm })
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    assets: state.app.constants
+    coins: state.app.coins,
+    pairs: state.app.pairs,
 });
 
 export default connect(mapStateToProps)(ExchangeReview);

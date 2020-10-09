@@ -3,7 +3,7 @@ import { Input, Form, Checkbox, Button, InputNumber } from 'antd';
 
 const { Item } = Form;
 
-const EmailConfiguration = ({ updateConstants, setPreview }) => {
+const EmailConfiguration = ({ handleNext, updateConstants, setPreview, initialValues = {} }) => {
     const handleSubmit = (values) => {
         const { site_key, secret_key, server, port, user, password, ...rest } = values;
         const formProps = { kit: {}, secrets: { smtp: {} } };
@@ -21,7 +21,11 @@ const EmailConfiguration = ({ updateConstants, setPreview }) => {
     return (
         <div className="asset-content">
             <div className="title-text">Email configuration</div>
-            <Form name="email-config-form" onFinish={handleSubmit}>
+            <Form 
+                name="email-config-form" 
+                onFinish={handleSubmit}
+                initialValues={initialValues}
+            >
                 <div className="setup-field-wrapper setup-field-content">
                     <div className="coin-wrapper">
                         <div className="setup-field-label">
