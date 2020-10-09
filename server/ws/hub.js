@@ -17,6 +17,8 @@ const HE_NETWORK_WS_ENDPOINT = 'wss://api.testnet.hollaex.network/stream';
 const apiExpires = moment().toISOString() + 60;
 let ws;
 
+const reconnectInterval = 5000; // 5 seconds
+
 const connect = () => {
 	toolsLib.database.findOne('status', { raw: true })
 		.then((status) => {
@@ -53,6 +55,7 @@ const connect = () => {
 
 			ws.on('close', () => {
 				loggerWebsocket.info('ws/hub close', ws.id);
+				setTimeout(connect, reconnectInterval);
 			});
 
 			ws.on('message', (data) => {
