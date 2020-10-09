@@ -12,7 +12,8 @@ import {
 const { Item } = Form;
 
 const AccountSecurity = ({ user = {}, constants = {}, handleNext, requestOTP, otpSetActivated }) => {
-    const app_name = constants.api_name.replace(' ', '').trim() || '';
+    const api_name = constants.api_name || '';
+    const app_name = api_name.replace(' ', '').trim() || '';
     useEffect(() => {
         requestOTP();
     }, [requestOTP]);

@@ -29,8 +29,8 @@ export const getConstants = async () => {
 }
 
 export const getConfig = async (key) => {
-  const { data: { color: { [key]: config } } } = await axios.get('/kit')
-  return config;
+  const { data: { color = { } } } = await axios.get('/kit')
+  return color[key] ? color[key].config : {};
 }
 
 export const getValidLanguages = async () => {
@@ -39,8 +39,8 @@ export const getValidLanguages = async () => {
 }
 
 export const getVersions = async () => {
-  const { data: { color: { versions = {} } } } = await axios.get('/kit')
-  return versions
+  const { data: { color = { } } } = await axios.get('/kit')
+  return color.versions ? color.versions : {};
 }
 
 export const getInitialized = async () => {
