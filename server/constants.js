@@ -15,8 +15,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 	switch(topic) {
 		case 'orderbook':
 			return `orderbook:${symbolOrUserId}`;
-		case 'trades':
-			return `trades:${symbolOrUserId}`;
+		case 'trade':
+			return `trade:${symbolOrUserId}`;
 		case 'order':
 			return `order:${symbolOrUserId}`;
 		case 'wallet':
