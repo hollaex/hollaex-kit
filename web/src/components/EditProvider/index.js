@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const EditContext = React.createContext()
+export const EditContext = React.createContext()
 
 class EditProvider extends Component {
   state = {

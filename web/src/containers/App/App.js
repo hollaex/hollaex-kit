@@ -66,6 +66,7 @@ import {
 import Socket from './Socket';
 import Container from './Container';
 import GetSocketState from './GetSocketState';
+import withEdit from 'components/EditProvider/withEdit';
 
 class App extends Component {
 	state = {
@@ -79,7 +80,6 @@ class App extends Component {
 		ordersQueued: [],
 		limitFilledOnOrder: '',
 		sidebarFitHeight: false,
-		isEditMode: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -456,13 +456,6 @@ class App extends Component {
 		}
 	};
 
-	handleEditMode = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      isEditMode: !prevState.isEditMode,
-    }))
-	}
-
 	render() {
 		const {
 			symbol,
@@ -481,6 +474,8 @@ class App extends Component {
 			info,
 			enabledPlugins,
 			constants = { captcha: {} },
+			isEditMode,
+			handleEditMode,
 			// user,
 		} = this.props;
 		const {
@@ -489,7 +484,6 @@ class App extends Component {
 			chatIsClosed,
 			sidebarFitHeight,
 			isSocketDataReady,
-      isEditMode,
 		} = this.state;
 		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
 		if (CAPTCHA_SITEKEY) {
@@ -715,10 +709,10 @@ class App extends Component {
 						{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 					</div>
 				</div>
-				{ isAdmin() && isBrowser && <OperatorControls onChangeEditMode={this.handleEditMode} editMode={isEditMode}/>}
+				{ isAdmin() && isBrowser && <OperatorControls onChangeEditMode={handleEditMode} editMode={isEditMode}/>}
 			</ThemeProvider>
 		);
 	}
 }
 
-export default App;
+export default withEdit(App);
