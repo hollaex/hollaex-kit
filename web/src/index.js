@@ -7,6 +7,7 @@ import merge from 'lodash.merge';
 // import { render } from 'react-snapshot';
 import { Router, browserHistory } from 'react-router';
 import ConfigProvider from 'components/ConfigProvider';
+import EditProvider from 'components/EditProvider';
 import defaultConfig from 'config/project.config';
 import './config/initialize';
 
@@ -73,9 +74,11 @@ const bootstrapApp = (appConfig) => {
 
   render(
 		<Provider store={store}>
-      <ConfigProvider initialConfig={appConfig}>
-			  <Router routes={routes} history={browserHistory} />
-      </ConfigProvider>
+      <EditProvider>
+        <ConfigProvider initialConfig={appConfig}>
+          <Router routes={routes} history={browserHistory} />
+        </ConfigProvider>
+      </EditProvider>
 		</Provider>,
     document.getElementById('root')
   );
