@@ -14,6 +14,7 @@ import ApiKeyModal, { TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
 import { openContactForm } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const INITIAL_STATE = {
 	dialogIsOpen: false,
@@ -79,6 +80,7 @@ class ApiKey extends Component {
 			otp_enabled,
 			openOtp,
 			activeTheme,
+			icons: ICONS,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const { dialogIsOpen, dialogType } = this.state;
@@ -98,7 +100,8 @@ class ApiKey extends Component {
 								rowClassName="pt-2 pb-2"
 								headers={generateHeaders(
 									this.onClickRevokeToken,
-									otp_enabled
+									otp_enabled,
+									ICONS,
 								)}
 								data={tokens.data}
 								rowKey={(data) => {
@@ -154,4 +157,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(ApiKey);
+)(withConfig(ApiKey));

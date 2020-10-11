@@ -2,14 +2,14 @@ import {
 	COUNTRIES_OPTIONS,
 	NATIONAL_COUNTRY_VALUE
 } from '../../utils/countries';
-import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { isMobile } from 'react-device-detect';
 
 
 export const generateFormValues = (
 	language,
-	nationality = NATIONAL_COUNTRY_VALUE
+	nationality = NATIONAL_COUNTRY_VALUE,
+	ICONS
 ) => {
 	const ID_NUMBER_TYPE =
 		nationality === NATIONAL_COUNTRY_VALUE ? 'NATIONAL' : 'PASSPORT';
@@ -30,13 +30,13 @@ export const generateFormValues = (
 					value: false,
 					label:
 						STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN"],
-					icon: ICONS.GENDER_M
+					icon: ICONS["GENDER_M"]
 				},
 				{
 					value: true,
 					label:
 						STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN"],
-					icon: ICONS.GENDER_F
+					icon: ICONS["GENDER_F"]
 				}
 			],
 			disabled: true,

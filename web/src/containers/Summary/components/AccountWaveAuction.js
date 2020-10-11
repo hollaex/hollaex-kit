@@ -6,6 +6,7 @@ import { Table } from '../../../components';
 import { getWaveAuction } from '../../../actions/appActions';
 import { generateWaveHeaders } from './utils';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class AccountWaveAuction extends Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class AccountWaveAuction extends Component {
     }
 
     constructData = () => {
+        const { icons: ICONS } = this.props;
         let phase = [];
         let defaultWave = {
             amount: "TBA",
@@ -65,7 +67,7 @@ class AccountWaveAuction extends Component {
             }
             waveData = [ ...waveData, ...filteredData ];
         });
-        const headers = generateWaveHeaders();
+        const headers = generateWaveHeaders(ICONS);
         this.setState({ waveData, headers, phase, currentPhase: phase[0] || 1 });
     };
 
@@ -119,4 +121,4 @@ const mapDispatchToProps = (dispatch) => ({
     getWaveAuction: bindActionCreators(getWaveAuction, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountWaveAuction);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(AccountWaveAuction));

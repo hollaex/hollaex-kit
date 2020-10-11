@@ -9,12 +9,13 @@ import {
 	ActionNotification,
 	MobileBarBack
 } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	generateWalletActionsText,
 	getCurrencyFromName
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Wallet extends Component {
 	state = {
@@ -41,6 +42,7 @@ class Wallet extends Component {
 	};
 
 	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
+		const { icons: ICONS } = this.props;
 		const balanceValue = balance[`${symbol}_balance`] || 0;
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 		return (
@@ -75,7 +77,7 @@ class Wallet extends Component {
 	};
 
 	render() {
-		const { balance, price, coins } = this.props;
+		const { balance, price, coins, icons: ICONS } = this.props;
 		const { currency } = this.state;
 		if (!currency) {
 			return <div />;
@@ -126,4 +128,4 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language
 });
 
-export default connect(mapStateToProps)(Wallet);
+export default connect(mapStateToProps)(withConfig(Wallet));

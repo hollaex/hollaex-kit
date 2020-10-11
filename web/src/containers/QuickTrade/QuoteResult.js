@@ -6,9 +6,9 @@ import { formatToCurrency } from 'utils/currency';
 import { translateError, QUICK_TRADE_INSUFFICIENT_BALANCE } from 'components/QuickTrade/utils';
 
 import STRINGS from 'config/localizedStrings';
-import { ICONS } from 'config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, data } }) => {
+const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, data }, icons: ICONS }) => {
 
 	if (fetching) {
 		return <Loader relative={true} background={false} />;
@@ -16,11 +16,11 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 		return (
 			<div className="base_negative_balance">
 				<ReactSVG
-					path={ICONS.QUICK_TRADE_INSUFFICIENT_FUND}
+					path={ICONS['QUICK_TRADE_INSUFFICIENT_FUND']}
 					wrapperClassName="quick-trade__icon"
 				/>
 				<div className="quote-success__title" >
-                  {STRINGS["QUICK_TRADE_INSUFFICIENT_FUND"]}
+					{STRINGS["QUICK_TRADE_INSUFFICIENT_FUND"]}
 				</div>
 				<div className="quote-success-review-text">
 				  {STRINGS["QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE"]}
@@ -52,11 +52,11 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 		return (
 			<div className='success-review'>
 				<ReactSVG
-					path={ICONS.QUICK_TRADE_SUCCESSFUL}
+					path={ICONS['QUICK_TRADE_SUCCESSFUL']}
 					wrapperClassName="quick-trade__icon"
 				/>
 				<div className="quote-success__title" >
-                  {STRINGS["QUICK_TRADE_SUCCESS"]}
+					{STRINGS["QUICK_TRADE_SUCCESS"]}
 				</div>
 				<div className="quote-success-review-text">
 					{STRINGS.formatString(
@@ -91,4 +91,4 @@ QuoteResult.propTypes = {
   data: object.isRequired,
 }
 
-export default QuoteResult;
+export default withConfig(QuoteResult);

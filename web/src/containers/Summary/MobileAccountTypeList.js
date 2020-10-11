@@ -4,7 +4,8 @@ import ReactSVG from 'react-svg';
 
 import STRINGS from '../../config/localizedStrings';
 import AccountTypeDetails from './components/AccountTypeDetails';
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const MobileAccountTypeList = ({
     user,
@@ -17,7 +18,8 @@ const MobileAccountTypeList = ({
     onFeesAndLimits,
     onUpgradeAccount,
     verification_level,
-    balance
+    balance,
+    icons: ICONS,
 }) => {
     return (
         <div className="mobile-account-type my-4">
@@ -42,7 +44,7 @@ const MobileAccountTypeList = ({
                                     <ReactSVG
                                         path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
                                             ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
-                                            : ICONS.LEVEL_ACCOUNT_ICON_4}
+                                            : ICONS['LEVEL_ACCOUNT_ICON_4']}
                                         wrapperClassName="trader-account-icon"
                                     />
                                 </div>
@@ -75,4 +77,4 @@ const MobileAccountTypeList = ({
     );
 };
 
-export default MobileAccountTypeList;
+export default withConfig(MobileAccountTypeList);

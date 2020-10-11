@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
-import { ICONS } from '../../../config/constants';
 import { Table, ActionNotification } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
 import {
@@ -12,8 +11,9 @@ import {
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const generateHeaders = (pairData = {}, onCancel) => [
+const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 	{
 		label: STRINGS["PAIR"],
 		key: 'pair',
@@ -115,7 +115,7 @@ const generateHeaders = (pairData = {}, onCancel) => [
 					<ActionNotification
 						stringId="CANCEL"
 						text={STRINGS["CANCEL"]}
-						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
+						iconPath={ICONS["CANCEL_CROSS_ACTIVE"]}
 						onClick={() => onCancel(id)}
 						className="relative"
 						status="information"
@@ -135,7 +135,8 @@ const ActiveOrders = ({
 	onCancel,
 	maxHeight,
 	height,
-	cancelDelayData
+	cancelDelayData,
+	icons: ICONS,
 }) => {
 	return (
 		<div
@@ -146,7 +147,7 @@ const ActiveOrders = ({
 			}
 		>
 			<Table
-				headers={generateHeaders(pairData, onCancel)}
+				headers={generateHeaders(pairData, onCancel, ICONS)}
 				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}
@@ -164,4 +165,4 @@ ActiveOrders.defaultProps = {
 	orders: [],
 	onCancel: () => {}
 };
-export default ActiveOrders;
+export default withConfig(ActiveOrders);

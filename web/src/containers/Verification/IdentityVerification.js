@@ -9,10 +9,10 @@ import {
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { COUNTRIES_OPTIONS } from '../../utils/countries';
 
 import { isMobile } from 'react-device-detect';
-import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateUser } from '../../actions/userAction';
 
@@ -35,6 +35,7 @@ class IdentityVerification extends Component {
 
 	generateFormFields = (language, fullName = '') => {
 		// const ID_NUMBER_TYPE = 'PASSPORT';
+		const { icons: ICONS } = this.props;
 		const formFields = {
 			full_name: {
 				type: 'text',
@@ -57,13 +58,13 @@ class IdentityVerification extends Component {
 						value: false,
 						label:
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN"],
-						icon: ICONS.GENDER_M
+						icon: ICONS["GENDER_M"]
 					},
 					{
 						value: true,
 						label:
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN"],
-						icon: ICONS.GENDER_F
+						icon: ICONS["GENDER_F"]
 					}
 				],
 				validate: [requiredBoolean],
@@ -161,7 +162,8 @@ class IdentityVerification extends Component {
 			submitting,
 			valid,
 			error,
-			openContactForm
+			openContactForm,
+			icons: ICONS,
 		} = this.props;
 		const { formFields } = this.state;
 		return (
@@ -176,7 +178,7 @@ class IdentityVerification extends Component {
 						title={
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"]
 						}
-						icon={ICONS.VERIFICATION_ID_NEW}
+						icon={ICONS["VERIFICATION_ID_NEW"]}
 						openContactForm={openContactForm}
 					>
 						<div className="my-1 verification-info-txt">{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT"]}</div>
@@ -210,6 +212,6 @@ class IdentityVerification extends Component {
 
 const IdentityVerificationForm = reduxForm({
 	form: FORM_NAME
-})(IdentityVerification);
+})(withConfig(IdentityVerification));
 
 export default IdentityVerificationForm;

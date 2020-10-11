@@ -5,8 +5,9 @@ import { bindActionCreators } from 'redux';
 import ReactSVG from 'react-svg';
 import { IconTitle, Notification, Button, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS, openContactForm } from '../../actions/appActions';
+import { EditWrapper } from 'components';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 
 class HelpfulResourcesForm extends Component {
@@ -50,7 +51,7 @@ class HelpfulResourcesForm extends Component {
 
 
 	render() {
-		const { onClose, activeTheme } = this.props;
+		const { onClose, activeTheme, icons: ICONS } = this.props;
 		const { submited } = this.state;
 		if (submited) {
 			return (
@@ -61,6 +62,7 @@ class HelpfulResourcesForm extends Component {
 		return (
 			<div className="help-wrapper">
 				<IconTitle
+					iconId={activeTheme==='white' ? "QUESTION_MARK" : "QUESTION_MARK_COLOR"}
 					iconPath={activeTheme==='white' ? ICONS.QUESTION_MARK : ICONS.QUESTION_MARK_COLOR}
 					stringId="HELPFUL_RESOURCES_TEXT"
 					text={STRINGS["HELPFUL_RESOURCES_TEXT"]}
@@ -71,7 +73,12 @@ class HelpfulResourcesForm extends Component {
 				/>
 				<div>
 					<div className='d-flex mt-5'>
-						<ReactSVG path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
+						<EditWrapper iconId={activeTheme==='white' ? "LAPTOP" : "LAPTOP_COLOR"}>
+							<ReactSVG
+								path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR}
+								wrapperClassName='help_icons ml-1 mr-1'
+							/>
+						</EditWrapper>
 						<div className='text' >
 							{STRINGS["HELP_RESOURCE_GUIDE_TEXT"]}
 							<BlueLink
@@ -82,7 +89,9 @@ class HelpfulResourcesForm extends Component {
 						<div className="w-25" />
 					</div>
 					<div className='d-flex mt-5 mb-5'>
-						<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
+						<EditWrapper iconId={activeTheme==='white' ? "TELEGRAM" : "TELEGRAM_COLOR"}>
+							<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
+						</EditWrapper>
 						<div className='text' >
 							{STRINGS["HELP_TELEGRAM_TEXT"]} 
 							<BlueLink
@@ -114,4 +123,4 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HelpfulResourcesForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(HelpfulResourcesForm));

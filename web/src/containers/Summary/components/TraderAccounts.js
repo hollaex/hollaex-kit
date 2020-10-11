@@ -3,7 +3,8 @@ import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
-import { ICONS, IS_XHT } from '../../../config/constants';
+import { IS_XHT } from '../../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const TraderAccounts = ({
 	user = {},
@@ -14,7 +15,8 @@ const TraderAccounts = ({
 	onInviteFriends,
 	verification_level,
 	selectedAccount,
-	onStakeToken
+	onStakeToken,
+	icons: ICONS,
 }) => {
 	const level = selectedAccount ? selectedAccount : verification_level;
 	const Title = STRINGS.formatString(
@@ -26,14 +28,14 @@ const TraderAccounts = ({
 		: STRINGS["SUMMARY.LEVEL_TXT_DEFAULT"];
 	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-		: ICONS.LEVEL_ACCOUNT_ICON_4;
+		: ICONS["LEVEL_ACCOUNT_ICON_4"];
 	// if (!isAccountDetails) {
 	// 	description = user.is_hap
 	// 		? STRINGS["SUMMARY.HAP_ACCOUNT_TXT"]
 	// 		: STRINGS["SUMMARY.TRADER_ACCOUNT_XHT_TEXT"];
 	// 	icon = user.is_hap === true
-	// 		? ICONS.HAP_ACCOUNT_ICON
-	// 		: ICONS.ACCOUNT_SUMMARY;
+	// 		? ICONS["HAP_ACCOUNT_ICON"]
+	// 		: ICONS["ACCOUNT_SUMMARY"];
 	// }
 	return (
 		<div className="d-flex">
@@ -114,4 +116,4 @@ const TraderAccounts = ({
 	);
 };
 
-export default TraderAccounts;
+export default withConfig(TraderAccounts);

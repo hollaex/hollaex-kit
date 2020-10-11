@@ -9,11 +9,12 @@ import { BarChart } from '../../../components';
 import { calculatePrice, formatToCurrency } from '../../../utils/currency';
 import {
 	TRADING_VOLUME_CHART_LIMITS,
-	ICONS,
 	CHART_MONTHS,
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA
 } from '../../../config/constants';
+
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class TradingVolume extends Component {
 	state = {
@@ -39,7 +40,7 @@ class TradingVolume extends Component {
 	}
 
 	constructData = (tradeValues, coins) => {
-		const { pairs, prices, activeTheme } = this.props;
+		const { pairs, prices, activeTheme, icons: ICONS } = this.props;
 		const chartData = [];
 		let totalVolume = 0;
 		let peakVolume = this.state.peakVolume;
@@ -228,4 +229,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(TradingVolume);
+)(withConfig(TradingVolume));

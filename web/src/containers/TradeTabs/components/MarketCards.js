@@ -4,14 +4,14 @@ import classnames from 'classnames';
 import { oneOfType, arrayOf, shape, array, object, number, string, func } from 'prop-types';
 
 import { Paginator } from 'components';
-import { ICONS } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import {
   formatAverage,
   formatToCurrency
 } from 'utils/currency';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const MarketCards = ({ page, pageSize, count, handleClick, goToPreviousPage, goToNextPage, markets }) => {
+const MarketCards = ({ page, pageSize, count, handleClick, goToPreviousPage, goToNextPage, markets, icons: ICONS }) => {
 
     return (
         <Fragment>
@@ -42,7 +42,7 @@ const MarketCards = ({ page, pageSize, count, handleClick, goToPreviousPage, goT
                       path={
                         ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
                           ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-                          : ICONS.DEFAULT_ICON
+                          : ICONS["DEFAULT_ICON"]
                       }
                       wrapperClassName="trade_tab-icons"
                     />
@@ -123,4 +123,4 @@ MarketCards.propTypes = {
   count: number.isRequired,
 };
 
-export default MarketCards;
+export default withConfig(MarketCards);

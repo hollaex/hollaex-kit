@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import ReactSvg from 'react-svg';
 import moment from 'moment';
 
-import { ICONS } from '../../../config/constants';
 import { getWaveAuction } from '../../../actions/appActions';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class UpComingWave extends Component {
 	constructor(props) {
@@ -55,10 +55,11 @@ class UpComingWave extends Component {
 	};
 
 	render() {
+		const { icons: ICONS } = this.props;
 		return (
 			<div className="trade_orderbook-headers d-flex">
 				<div>
-					<ReactSvg path={ICONS.INCOMING_WAVE} wrapperClassName="waves-icon" />
+					<ReactSvg path={ICONS["INCOMING_WAVE"]} wrapperClassName="waves-icon" />
 				</div>
 				<div className="ml-3">
 					<div className=" f-1 trade_orderbook-cell mb-2">
@@ -118,4 +119,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(UpComingWave);
+)(withConfig(UpComingWave));

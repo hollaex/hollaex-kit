@@ -5,9 +5,10 @@ import classnames from "classnames";
 
 import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTipClose, onTipMove }) => {
+const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTipClose, onTipMove, icons: ICONS }) => {
     const { id_data } = user;
     let note = '';
     if (id_data.status === 1) {
@@ -24,7 +25,7 @@ const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTi
                     <div
                         className={classnames('mr-2', FLEX_CENTER_CLASSES)}
                         title={STRINGS["USER_VERIFICATION.NOTE_FROM_VERIFICATION_DEPARTMENT"]}>
-                        <ReactSVG path={ICONS.NOTE_KYC} wrapperClassName="document-note-icon" />
+                        <ReactSVG path={ICONS["NOTE_KYC"]} wrapperClassName="document-note-icon" />
                     </div>
                     <PanelInformationRow
                         label={STRINGS["USER_VERIFICATION.CUSTOMER_SUPPORT_MESSAGE"]}
@@ -65,4 +66,4 @@ const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTi
     );
 };
 
-export default DocumentsVerificationHome;
+export default withConfig(DocumentsVerificationHome);

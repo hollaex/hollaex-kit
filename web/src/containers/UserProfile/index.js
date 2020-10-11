@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ICONS } from '../../config/constants';
 import { Accordion, Loader, Button } from '../../components';
 import Form from './Form';
 import { generateFormValues as generateMobileFormValues } from './MobileFormValues';
@@ -13,6 +12,7 @@ import { InformationSection } from './InformationSection';
 import { LevelSection } from './LevelSection';
 import { logout } from '../../actions/authAction';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { isMobile } from 'react-device-detect';
 
 const MobileForm = Form('MobileForm');
@@ -74,6 +74,7 @@ class UserProfile extends Component {
 		provided = false,
 		verifyText = ''
 	) => {
+		const { icons: ICONS } = this.props;
 		return {
 			text: verified
 				? STRINGS["USER_VERIFICATION.COMPLETED"]
@@ -82,8 +83,8 @@ class UserProfile extends Component {
 					: verifyText,
 			status: verified ? 'success' : provided ? 'information' : 'warning',
 			iconPath: verified
-				? ICONS.GREEN_CHECK
-				: provided ? ICONS.BLUE_TIMER : ICONS.RED_ARROW,
+				? ICONS["GREEN_CHECK"]
+				: provided ? ICONS["BLUE_TIMER"] : ICONS["RED_ARROW"],
 			allowClick: false
 		};
 	};
@@ -96,9 +97,11 @@ class UserProfile extends Component {
 		limits,
 		fees
 	) => {
+		const { icons: ICONS } = this.props;
 		const dataFormValues = generateDataFormValues(
 			language,
-			userData.nationality
+			userData.nationality,
+			ICONS,
 		);
 		const mobileFormValues = generateMobileFormValues();
 		this.setState({ dataFormValues, mobileFormValues }, () => {
@@ -279,4 +282,4 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(UserProfile));

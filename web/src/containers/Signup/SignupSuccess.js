@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router';
 import { IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const SignupSuccess = ({ ...rest }) => {
+const SignupSuccess = ({ icons: ICONS, ...rest }) => {
 	return (
 		<div className="signup_success-wrapper d-flex justify-content-center align-items-center flex-column auth_wrapper">
 			<IconTitle
-				iconPath={rest.activeTheme ==="dark" ? ICONS.DARK_CHECK: ICONS.CHECK}
+				iconPath={rest.activeTheme ==="dark" ? ICONS["DARK_CHECK"]: ICONS["CHECK"]}
 				text={STRINGS["VERIFICATION_TEXTS.TITLE"]}
 				textType="title"
 				className="w-100"
@@ -26,4 +26,4 @@ const SignupSuccess = ({ ...rest }) => {
 		</div>
 	);
 };
-export default SignupSuccess;
+export default withConfig(SignupSuccess);

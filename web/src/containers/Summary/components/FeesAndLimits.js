@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import LimitsBlock from "./LimitsBlock";
 import FeesBlock from "./FeesBlock";
 import { IconTitle, Button } from "../../../components";
-import { ICONS } from "../../../config/constants";
 import STRINGS from "../../../config/localizedStrings";
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
+const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {}, icons: ICONS }) => {
 	const { verification_level, discount = 0 } = data;
 	const LEVEL_OF_ACCOUNT = STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"], verification_level);
 	const Discount_percentage = discount > 0 ? STRINGS.formatString(STRINGS["SUMMARY.DISCOUNT"], discount) : null
@@ -23,7 +23,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
 				}
 				iconPath={ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 					? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-					: ICONS.LEVEL_ACCOUNT_ICON_4}
+					: ICONS['LEVEL_ACCOUNT_ICON_4']}
 				textType="title"
 				useSvg={true}
 				underline={true}
@@ -59,4 +59,4 @@ const mapStateToProps = state => ({
 	constants: state.app.constants
 });
 
-export default connect(mapStateToProps)(FeesAndLimits);
+export default connect(mapStateToProps)(withConfig(FeesAndLimits));

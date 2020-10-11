@@ -6,7 +6,6 @@ import { loadReCaptcha } from 'react-recaptcha-v3';
 import { Helmet } from "react-helmet";
 import STRINGS from '../../config/localizedStrings';
 import {
-	ICONS,
 	FLEX_CENTER_CLASSES,
 	FIT_SCREEN_HEIGHT,
 	CAPTCHA_SITEKEY,
@@ -67,6 +66,7 @@ import Socket from './Socket';
 import Container from './Container';
 import GetSocketState from './GetSocketState';
 import withEdit from 'components/EditProvider/withEdit';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class App extends Component {
 	state = {
@@ -264,6 +264,7 @@ class App extends Component {
 	}
 
 	renderDialogContent = ({ type, data }, prices = {}) => {
+		const { icons: ICONS } = this.props;
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
@@ -293,7 +294,8 @@ class App extends Component {
 			case NOTIFICATIONS.ERROR:
 				return (
 					<MessageDisplay
-						iconPath={ICONS.RED_WARNING}
+						iconId="RED_WARNING"
+						iconPath={ICONS['RED_WARNING']}
 						onClick={this.onCloseDialog}
 						text={data}
 					/>
@@ -478,6 +480,7 @@ class App extends Component {
 			handleEditMode,
 			// user,
 		} = this.props;
+
 		const {
 			dialogIsOpen,
 			appLoaded,
@@ -715,4 +718,4 @@ class App extends Component {
 	}
 }
 
-export default withEdit(App);
+export default withEdit(withConfig(App));

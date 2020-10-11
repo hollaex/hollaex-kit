@@ -14,13 +14,13 @@ import { changeSymbol } from 'actions/orderbookAction';
 import { NOTIFICATIONS, openContactForm } from 'actions/appActions';
 import { createAddress, cleanCreateAddress } from 'actions/userAction';
 import {
-	ICONS,
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA
 } from 'config/constants';
 import { calculateBalancePrice, formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
@@ -137,6 +137,7 @@ class Wallet extends Component {
 	) => {
 		const totalAssets = this.calculateTotalAssets(balance, prices, coins);
 		const searchResult = this.getSearchResult(coins, balance);
+		const { icons: ICONS } = this.props;
 
 		const sections = [
 			{
@@ -318,4 +319,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Wallet);
+)(withConfig(Wallet));

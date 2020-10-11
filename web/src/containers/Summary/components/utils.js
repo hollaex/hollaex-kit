@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import { calculatePrice } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
-import { BASE_CURRENCY, ICONS } from '../../../config/constants';
+import { BASE_CURRENCY } from '../../../config/constants';
 
 export const getXhtRequirements = (user, coins) => {
 	let walletDeposit = false;
@@ -149,7 +149,7 @@ export const getLastMonthVolume = (tradeData = {}, prices = {}, pairs = {}) => {
 	return total;
 };
 
-export const generateWaveHeaders = (onCancel) => [
+export const generateWaveHeaders = (ICONS) => [
 	{
 		label: STRINGS["SUMMARY.WAVE_NUMBER"],
 		key: 'id',
@@ -164,7 +164,7 @@ export const generateWaveHeaders = (onCancel) => [
 				>
 					<div className="d-flex">
 						<ReactSvg
-							path={ICONS.INCOMING_WAVE}
+							path={ICONS["INCOMING_WAVE"]}
 							wrapperClassName="wave-auction-icon"
 						/>
 						<div className="ml-1">{no}</div>

@@ -1,13 +1,14 @@
 import React from 'react';
 import { IconTitle, Button } from '../../components';
-import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const ResetPasswordSuccess = ({ onClick, ...rest }) => {
+const ResetPasswordSuccess = ({ onClick, icons: ICONS, ...rest }) => {
 	return (
 		<div className="auth_wrapper">
 			<IconTitle
-				iconPath={ICONS.SUCCESS_BLACK}
+				iconId={"SUCCESS_BLACK"}
+				iconPath={ICONS["SUCCESS_BLACK"]}
 				text={STRINGS["SUCCESS_TEXT"]}
 				textType="title"
 				className="w-100"
@@ -26,4 +27,4 @@ const ResetPasswordSuccess = ({ onClick, ...rest }) => {
 		</div>
 	);
 };
-export default ResetPasswordSuccess;
+export default withConfig(ResetPasswordSuccess);

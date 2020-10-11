@@ -7,8 +7,8 @@ import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, ElapsedTimer, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { PHONE_OPTIONS } from '../../utils/countries';
-import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
 import {
 	verifySmsCode,
@@ -45,6 +45,7 @@ class MobileVerification extends Component {
 	
 
 	generateFormFields = (codeRequested = false, loading = false) => {
+		const { icons: ICONS } = this.props;
 		const formFields = {
 			phone_country: {
 				type: 'autocomplete',
@@ -68,7 +69,7 @@ class MobileVerification extends Component {
 						? STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING"]
 						: STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND"],
 					status: loading ? 'loading' : 'information',
-					iconPath: loading ? ICONS.CONNECT_LOADING :ICONS.BLUE_ARROW_RIGHT,
+					iconPath: loading ? ICONS["CONNECT_LOADING"] :ICONS["BLUE_ARROW_RIGHT"],
 					useSvg: loading ? true : false,
 					className: 'file_upload_icon',
 					onClick: loading ? () => {} : this.handleSendSmsCode
@@ -178,7 +179,8 @@ class MobileVerification extends Component {
 			submitting,
 			valid,
 			error,
-			openContactForm
+			openContactForm,
+			icons: ICONS,
 		} = this.props;
 		const { formFields, codeRequested, isTimer } = this.state;
 		return (
@@ -192,7 +194,7 @@ class MobileVerification extends Component {
 					<HeaderSection
 						title={STRINGS["USER_VERIFICATION.PHONE_DETAILS"]}
 						openContactForm={openContactForm}
-						icon={ICONS.VERIFICATION_PHONE_NEW}
+						icon={ICONS["VERIFICATION_PHONE_NEW"]}
 					>
 						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT"]}</div>
 						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1"]}</div>
@@ -240,4 +242,4 @@ const selector = formValueSelector(FORM_NAME);
 const mapStateToProps = (state) =>
 	selector(state, 'phone_country', 'phone_number');
 
-export default connect(mapStateToProps)(MobileVerificationForm);
+export default connect(mapStateToProps)(withConfig(MobileVerificationForm));

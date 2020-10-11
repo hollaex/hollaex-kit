@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 
 import SummaryRequirements from './SummaryRequirements';
-import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const RewardsBonus = ({
     user,
@@ -13,7 +13,8 @@ const RewardsBonus = ({
     balance,
     affiliation,
     lastMonthVolume,
-    onUpgradeAccount
+    onUpgradeAccount,
+    icons: ICONS,
 }) => {
     return (
         <div
@@ -25,7 +26,7 @@ const RewardsBonus = ({
             }>
             <div className="d-flex">
                 <ReactSVG
-                    path={ICONS.BONUS_OFFERING}
+                    path={ICONS["BONUS_OFFERING"]}
                     wrapperClassName='trader-wrapper-icon'
                 />
                 <div>
@@ -62,4 +63,4 @@ const RewardsBonus = ({
     )
 }
 
-export default RewardsBonus;
+export default withConfig(RewardsBonus);

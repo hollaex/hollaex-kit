@@ -5,8 +5,8 @@ import renderFields from '../../components/Form/factoryFields';
 import { getErrorLocalized } from '../../utils/errors';
 import { required, minValue, maxValue } from '../../components/Form/validations';
 import { IconTitle, Button } from '../../components';
-import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const fields = {
     order_portfolio_percentage: {
@@ -49,7 +49,7 @@ const OrderPortfolioForm = reduxForm({
     form: 'WarningForm'
 })(Form);
 
-const SetOrderPortfolio = ({ data, ...rest }) => {
+const SetOrderPortfolio = ({ data, icons: ICONS, ...rest }) => {
     const { initialValues = {} } = data;
     const portfolioPercent = initialValues.order_portfolio_percentage ? `${initialValues.order_portfolio_percentage}%` : '';
     
@@ -57,7 +57,7 @@ const SetOrderPortfolio = ({ data, ...rest }) => {
         <div className="portfolio-wrapper">
             <IconTitle
                 text={STRINGS["USER_SETTINGS.CREATE_ORDER_WARING"]}
-                iconPath={ICONS.SETTING_RISK_ADJUST_ICON}
+                iconPath={ICONS["SETTING_RISK_ADJUST_ICON"]}
                 textType="title"
                 useSvg={true}
                 underline={true}
@@ -68,4 +68,4 @@ const SetOrderPortfolio = ({ data, ...rest }) => {
     );
 };
 
-export default SetOrderPortfolio;
+export default withConfig(SetOrderPortfolio);

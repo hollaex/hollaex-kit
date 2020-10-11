@@ -10,11 +10,9 @@ import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { ContactForm } from '../';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
-import {
-	FLEX_CENTER_CLASSES,
-	ICONS
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 let errorTimeOut = null;
 
@@ -140,7 +138,7 @@ class Signup extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme, constants = {} } = this.props;
+		const { languageClasses, activeTheme, constants = {}, icons: ICONS } = this.props;
 		const { success, showContactForm, isReferral } = this.state;
 
 		if (success) {
@@ -181,7 +179,7 @@ class Signup extends Component {
 						)}
 						actionProps={{
 							text: STRINGS["HELP_TEXT"],
-							iconPath: ICONS.BLUE_QUESTION,
+							iconPath: ICONS["BLUE_QUESTION"],
 							onClick: this.onOpenDialog,
 							useSvg: true,
 							showActionText: true
@@ -232,4 +230,4 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Signup));
