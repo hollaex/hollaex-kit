@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactSVG from "react-svg";
 import classnames from "classnames";
-import { EditWrapper } from 'components';
+import { Image } from 'components';
 
 import { BASE_CURRENCY, FLEX_CENTER_CLASSES } from "config/constants";
 import { formatAverage } from "utils/currency";
@@ -16,19 +15,19 @@ const AssetCard = ({ value, currencyBalance, symbol, icons: ICONS }) => {
             FLEX_CENTER_CLASSES
           )}
         >
-          <EditWrapper iconId={
-            ICONS[`${value.symbol.toUpperCase()}_ICON`]
-              ? `${value.symbol.toUpperCase()}_ICON`
-              : "DEFAULT_ICON"
-          }>
-            <ReactSVG
-              path={
-                ICONS[`${value.symbol.toUpperCase()}_ICON`]
-                  ? ICONS[`${value.symbol.toUpperCase()}_ICON`]
-                  : ICONS["DEFAULT_ICON"]}
-              wrapperClassName="coin-price"
-            />
-          </EditWrapper>
+          <Image
+            iconId={
+              ICONS[`${value.symbol.toUpperCase()}_ICON`]
+                ? `${value.symbol.toUpperCase()}_ICON`
+                : "DEFAULT_ICON"
+            }
+            icon={
+              ICONS[`${value.symbol.toUpperCase()}_ICON`]
+                ? ICONS[`${value.symbol.toUpperCase()}_ICON`]
+                : ICONS["DEFAULT_ICON"]
+            }
+            wrapperClassName="coin-price"
+          />
         </div>
         <div className="price-text">
           {`${symbol.toUpperCase()} ${formatAverage(currencyBalance)}`}
