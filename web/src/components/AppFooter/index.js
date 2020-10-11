@@ -1,11 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const generateSectionsText = (strings, theme, links = {}) => {
+const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 	const { api, contact, facebook, github, helpdesk, information, instagram, linkedin, youtube, privacy, telegram, terms, twitter, website, whitepaper } = links
 
 	let sectionsText = [
@@ -128,7 +128,7 @@ const generateSectionsText = (strings, theme, links = {}) => {
 	})
 };
 
-const AppFooter = ({ className, theme, constants = { description: '' } }) => {
+const AppFooter = ({ className, theme, constants = { description: '' }, icons }) => {
 	return (
 		<div
 			className={classnames(
@@ -160,7 +160,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 							'flex-column': isMobile
 						})}
 					>
-						{generateSectionsText(STRINGS, theme, constants.links).map(
+						{generateSectionsText(STRINGS, theme, constants.links, icons).map(
 							({ TITLE, LINKS }, index) => (
 								<div
 									key={index}
@@ -259,4 +259,4 @@ AppFooter.defaultProps = {
 	activeLanguage: ''
 };
 
-export default AppFooter;
+export default withConfig(AppFooter);

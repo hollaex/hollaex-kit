@@ -27,6 +27,7 @@ const CheckTitle = ({
 	title,
 	stringId,
 	icon,
+	iconId,
 	notifications,
 	className,
 	titleClassName,
@@ -41,18 +42,13 @@ const CheckTitle = ({
 					: <div className="empty-notification" />
 				}
 			</div>
-			{title && !stringId && (
-				<div className={classnames('check_title-label', titleClassName)}>
-					{title}
-				</div>
-			)}
-      {title && stringId && (
-      	<EditWrapper stringId={stringId}>
+			<EditWrapper stringId={stringId} iconId={iconId}>
+        {title && (
 					<div className={classnames('check_title-label', titleClassName)}>
             {title}
 					</div>
-      	</EditWrapper>
-      )}
+        )}
+			</EditWrapper>
 			<div className="check_title-icon">
 				{icon &&
 					(icon.indexOf('.svg') > 0 ? (

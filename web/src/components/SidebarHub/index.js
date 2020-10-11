@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
 import { IconTitle, Accordion } from '../../components';
 
@@ -8,12 +8,12 @@ import { ButtonLink, Wallet } from '../';
 
 class SidebarHub extends Component {
 	render() {
-		const { activePath, isLogged, theme } = this.props;
+		const { activePath, isLogged, theme, icons: ICONS } = this.props;
 		const values = [{
 			accordionClassName: 'sidebar_hub-section-content f-1',
 			stringId: 'WALLET_TITLE',
 			title: STRINGS["WALLET_TITLE"],
-			icon: ICONS.SIDEBAR_WALLET_ACTIVE,
+			icon: ICONS["SIDEBAR_WALLET_ACTIVE"],
 			content: <Wallet />
 		}];
 		return (
@@ -31,10 +31,15 @@ class SidebarHub extends Component {
 					) : (
 						<div>
 							<IconTitle
+								iconId={
+                  theme === 'white'
+                    ? "DEMO_LOGIN_ICON_LIGHT"
+                    : "DEMO_LOGIN_ICON_DARK"
+								}
 								iconPath={
 									theme === 'white'
-										? ICONS.DEMO_LOGIN_ICON_LIGHT
-										: ICONS.DEMO_LOGIN_ICON_DARK
+										? ICONS["DEMO_LOGIN_ICON_LIGHT"]
+										: ICONS["DEMO_LOGIN_ICON_DARK"]
 								}
 								textType="title"
 								className="w-100"
@@ -63,4 +68,4 @@ class SidebarHub extends Component {
 	}
 }
 
-export default SidebarHub;
+export default withConfig(SidebarHub);
