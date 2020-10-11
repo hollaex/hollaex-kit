@@ -90,6 +90,7 @@ class AllStringsModal extends Component {
             </div>
             <Table
               className="operator-controls__table"
+              rowClassName="pointer"
               columns={this.getColumns()}
               dataSource={strings}
               size="small"
