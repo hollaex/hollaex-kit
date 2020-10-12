@@ -38,7 +38,6 @@ import {
 	Dialog,
 	Notification,
 	MessageDisplay,
-	CurrencyList,
 	SnackNotification,
 	SnackDialog
 } from '../../components';
@@ -567,12 +566,6 @@ class App extends Component {
 									logout={this.logout}
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
-									rightChildren={
-										<CurrencyList
-											className="horizontal-currency-list justify-content-end"
-											activeLanguage={activeLanguage}
-										/>
-									}
 								/>
 								{info.is_trial ? (
 									<div
