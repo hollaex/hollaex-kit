@@ -52,6 +52,12 @@ const wss = new WebSocket.Server({
 	port: PORT,
 	verifyClient: (info, next) => {
 		try {
+			const hubConnected = require('./hub');
+
+			if (!hubConnected) {
+				throw new Error('Hub websocket is disconnected');
+			}
+
 			const query = url.parse(info.req.url, true).query;
 			const bearerToken = query.authorization;
 			const hmacKey = query['api-key'];
@@ -91,8 +97,8 @@ const wss = new WebSocket.Server({
 				return next(true);
 			}
 		} catch (err) {
-			loggerWebsocket.error('ws/server/catch', err);
-			return next(false, 400, 'Wrong format. Follow /stream?exchange_id=<exchangeId> format');
+			loggerWebsocket.error('ws/server/catch', err.message);
+			return next(false, 400, err.message);
 		}
 	}
 });
