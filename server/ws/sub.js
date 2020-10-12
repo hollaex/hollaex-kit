@@ -222,6 +222,10 @@ const closeAllClients = () => {
 		});
 	});
 	resetChannels();
+	publicData = {
+		orderbook: {},
+		trade: {}
+	};
 };
 
 module.exports = {
