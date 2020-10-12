@@ -51,6 +51,7 @@ const connect = () => {
 
 			ws.on('error', (err) => {
 				loggerWebsocket.error('ws/hub err', err.message);
+				ws.close();
 			});
 
 			ws.on('close', () => {
