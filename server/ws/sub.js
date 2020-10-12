@@ -1,6 +1,6 @@
 'use strict';
 
-const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
+const { addSubscriber, removeSubscriber, getChannels, resetChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
@@ -215,10 +215,20 @@ const handleHubData = (data) => {
 	}
 };
 
+const closeAllClients = () => {
+	each(getChannels(), (channel) => {
+		each(channel, (ws) => {
+			ws.close();
+		});
+	});
+	resetChannels();
+};
+
 module.exports = {
 	initializeTopic,
 	terminateTopic,
 	handleHubData,
 	authorizeUser,
-	terminateClosedChannels
+	terminateClosedChannels,
+	closeAllClients
 };

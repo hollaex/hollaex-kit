@@ -3,7 +3,7 @@
 const WebSocket = require('ws');
 const moment = require('moment');
 const toolsLib = require('hollaex-tools-lib');
-const { handleHubData } = require('./sub');
+const { handleHubData, closeAllClients } = require('./sub');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { loggerWebsocket } = require('../config/logger');
 const { all } = require('bluebird');
@@ -56,6 +56,7 @@ const connect = () => {
 
 			ws.on('close', () => {
 				loggerWebsocket.info('ws/hub close', ws.id);
+				closeAllClients();
 				setTimeout(connect, reconnectInterval);
 			});
 
