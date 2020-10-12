@@ -106,5 +106,6 @@ const checkActivation = (name, url, activation_code, constants = {}) => {
 module.exports = {
 	sendNetworkWsMessage,
 	connect,
-	hubConnected
+	hubConnected,
+	ws
 };
