@@ -229,11 +229,11 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 };
 
 const verifyNetworkHmacToken = (req) => {
-	const apiKey = req.headers ? req.headers['api-key'] : undefined;
+	const givenApiKey = req.headers ? req.headers['api-key'] : undefined;
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
 
-	if (!apiKey) {
+	if (!givenApiKey) {
 		return reject(new Error(API_KEY_NULL));
 	} else if (!apiSignature) {
 		return reject(new Error(API_SIGNATURE_NULL));
@@ -242,7 +242,10 @@ const verifyNetworkHmacToken = (req) => {
 	}
 
 	return getNetworkKeySecret()
-		.then(({ apiSecret }) => {
+		.then(({ apiKey, apiSecret }) => {
+			if (givenApiKey !== apiKey) {
+				throw new Error(API_KEY_INVALID);
+			}
 			const isSignatureValid = checkHmacSignature(
 				apiSecret,
 				req
