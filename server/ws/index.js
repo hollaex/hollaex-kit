@@ -11,7 +11,8 @@ const {
 	WS_USER_AUTHENTICATED
 } = require('../messages');
 const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels } = require('./sub');
-const { connect } = require('./hub');
+const { connect, hubConnected } = require('./hub');
+const { getChannels } = require('./channel');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
 
 wss.on('connection', (ws, req) => {
@@ -69,7 +70,9 @@ wss.on('connection', (ws, req) => {
 	});
 
 	ws.on('close', () => {
-		terminateClosedChannels(ws);
+		if (hubConnected()) {
+			terminateClosedChannels(ws);
+		}
 	});
 });
 

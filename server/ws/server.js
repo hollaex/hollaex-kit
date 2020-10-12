@@ -44,6 +44,7 @@ const WebSocket = require('ws');
 const { loggerWebsocket } = require('../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { MULTIPLE_API_KEY } = require('../messages');
+const url = require('url');
 
 const PORT = process.env.WEBSOCKET_PORT || 10080;
 
@@ -51,15 +52,23 @@ const wss = new WebSocket.Server({
 	port: PORT,
 	verifyClient: (info, next) => {
 		try {
+			const { hubConnected } = require('./hub');
+
+			if (!hubConnected()) {
+				throw new Error('Hub websocket is disconnected');
+			}
+
+			const query = url.parse(info.req.url, true).query;
+			const bearerToken = query.authorization;
+			const hmacKey = query['api-key'];
 			info.req.auth = {};
-			const bearerToken = info.req.headers.authorization;
-			const hmacKey = info.req.headers['api-key'];
 			if (bearerToken && hmacKey) {
 				// throw error if both bearer and hmac authentication methods are given
 				loggerWebsocket.error('ws/server', MULTIPLE_API_KEY);
 				return next(false, 400, MULTIPLE_API_KEY);
 			} else if (bearerToken) {
 				// Function will set req.auth to authenticated token object if successful
+				info.req.headers.authorization = bearerToken;
 				toolsLib.auth.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
@@ -69,6 +78,9 @@ const wss = new WebSocket.Server({
 					}
 				}, true);
 			} else if (hmacKey) {
+				info.req.headers['api-key'] = hmacKey;
+				info.req.headers['api-signature'] = query['api-signature'];
+				info.req.headers['api-expires'] = query['api-expires'];
 				info.req.method = 'CONNECT';
 				info.req.originalUrl = '/stream';
 				// Function will set req.auth to authenticated token object if successful
@@ -85,8 +97,8 @@ const wss = new WebSocket.Server({
 				return next(true);
 			}
 		} catch (err) {
-			loggerWebsocket.error('ws/server/catch', err);
-			return next(false, 400, 'Wrong format. Follow /stream?exchange_id=<exchangeId> format');
+			loggerWebsocket.error('ws/server/catch', err.message);
+			return next(false, 400, err.message);
 		}
 	}
 });

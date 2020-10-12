@@ -24,7 +24,7 @@ subscriber.on('message', (channel, message) => {
 		const { type } = JSON.parse(message);
 		switch(type) {
 			case 'refreshInit':
-				checkStatus();
+				checkStatus(true);
 				break;
 			default:
 				break;
@@ -35,7 +35,7 @@ subscriber.on('message', (channel, message) => {
 
 subscriber.subscribe(INIT_CHANNEL);
 
-const checkStatus = () => {
+const checkStatus = (restart = false) => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
 
 	let configuration = {
@@ -151,6 +151,12 @@ const checkStatus = () => {
 			);
 		})
 		.then(() => {
+			if (restart) {
+				const { getWs, hubConnected } = require('./ws/hub');
+				if (hubConnected()) {
+					getWs().close();
+				}
+			}
 			loggerGeneral.info('init/checkStatus/activation complete');
 		})
 		.catch((err) => {

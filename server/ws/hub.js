@@ -3,7 +3,7 @@
 const WebSocket = require('ws');
 const moment = require('moment');
 const toolsLib = require('hollaex-tools-lib');
-const { handleHubData } = require('./sub');
+const { handleHubData, closeAllClients } = require('./sub');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { loggerWebsocket } = require('../config/logger');
 const { all } = require('bluebird');
@@ -14,8 +14,14 @@ const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 const HE_NETWORK_WS_ENDPOINT = 'wss://api.testnet.hollaex.network/stream';
 
+let connected = false;
+const hubConnected = () => connected;
+
 const apiExpires = moment().toISOString() + 60;
 let ws;
+const getWs = () => ws;
+
+const reconnectInterval = 5000; // 5 seconds
 
 const connect = () => {
 	toolsLib.database.findOne('status', { raw: true })
@@ -41,6 +47,8 @@ const connect = () => {
 			});
 
 			ws.on('open', () => {
+				loggerWebsocket.info('ws/hub open');
+				connected = true;
 				ws.send(JSON.stringify({
 					op: 'subscribe',
 					args: ['orderbook', 'trade']
@@ -49,10 +57,14 @@ const connect = () => {
 
 			ws.on('error', (err) => {
 				loggerWebsocket.error('ws/hub err', err.message);
+				ws.close();
 			});
 
 			ws.on('close', () => {
 				loggerWebsocket.info('ws/hub close', ws.id);
+				connected = false;
+				closeAllClients();
+				setTimeout(connect, reconnectInterval);
 			});
 
 			ws.on('message', (data) => {
@@ -96,5 +108,7 @@ const checkActivation = (name, url, activation_code, constants = {}) => {
 
 module.exports = {
 	sendNetworkWsMessage,
-	connect
+	connect,
+	hubConnected,
+	getWs
 };
