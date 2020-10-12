@@ -52,9 +52,9 @@ const wss = new WebSocket.Server({
 	port: PORT,
 	verifyClient: (info, next) => {
 		try {
-			const hubConnected = require('./hub');
+			const { hubConnected } = require('./hub');
 
-			if (!hubConnected) {
+			if (!hubConnected()) {
 				throw new Error('Hub websocket is disconnected');
 			}
 

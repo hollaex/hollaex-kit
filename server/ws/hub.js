@@ -14,10 +14,12 @@ const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 const HE_NETWORK_WS_ENDPOINT = 'wss://api.testnet.hollaex.network/stream';
 
-let hubConnected = false;
+let connected = false;
+const hubConnected = () => connected;
 
 const apiExpires = moment().toISOString() + 60;
 let ws;
+const getWs = () => ws;
 
 const reconnectInterval = 5000; // 5 seconds
 
@@ -45,7 +47,7 @@ const connect = () => {
 			});
 
 			ws.on('open', () => {
-				hubConnected = true;
+				connected = true;
 				ws.send(JSON.stringify({
 					op: 'subscribe',
 					args: ['orderbook', 'trade']
@@ -59,7 +61,7 @@ const connect = () => {
 
 			ws.on('close', () => {
 				loggerWebsocket.info('ws/hub close', ws.id);
-				hubConnected = false;
+				connected = false;
 				closeAllClients();
 				setTimeout(connect, reconnectInterval);
 			});
@@ -107,5 +109,5 @@ module.exports = {
 	sendNetworkWsMessage,
 	connect,
 	hubConnected,
-	ws
+	getWs
 };
