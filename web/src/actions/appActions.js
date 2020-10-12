@@ -54,7 +54,6 @@ export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
 export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
-export const SET_LOGIN = 'SET_LOGIN';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -330,15 +329,3 @@ export const requestAvailPlugins = () => dispatch => {
 	});
 };
 
-export const getLogin = () => {
-	return (dispatch) => {
-		axios.get('/user/logins').then((res) => {
-			if (res && res.data && res.data.data) {
-				dispatch({
-					type: SET_LOGIN,
-					payload: { data: res.data.data }
-				});
-			}
-		});
-	};
-};
