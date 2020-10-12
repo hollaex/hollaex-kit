@@ -3793,13 +3793,14 @@ table th {
   padding-top: 20px !important;
   margin-bottom: 136px !important;
   max-width: calc(100vw - 2rem) !important;
-  max-height: calc(100vh - 160px) !important; }
+  max-height: calc(100vh - 160px) !important;
+  z-index: 999999 !important; }
   .operator-controls__modal .ReactModal__Content .action_notification-image {
     fill: #FFFFFF !important; }
 
 .operator-controls__modal .ReactModal__Overlay {
   position: fixed;
-  z-index: 999999;
+  z-index: 999999 !important;
   background-color: transparent !important;
   color: #FFFFFF !important; }
 

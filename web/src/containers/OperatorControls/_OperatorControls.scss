@@ -80,6 +80,7 @@ $operator-controls__panel-border-color: #A7A7A7;
     margin-bottom: 136px !important;
     max-width: calc(100vw - 2rem) !important;
     max-height: calc(100vh - 160px) !important;
+    z-index: 999999 !important;
 
     .action_notification-image {
       fill: $operator-controls__panel-text-color !important;
@@ -88,7 +89,7 @@ $operator-controls__panel-border-color: #A7A7A7;
 
   .ReactModal__Overlay {
     position: fixed;
-    z-index: 999999;
+    z-index: 999999 !important;
     background-color: transparent !important;
     color: $operator-controls__panel-text-color !important;
   }
