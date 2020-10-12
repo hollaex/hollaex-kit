@@ -1723,10 +1723,6 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - admin
   /admin/pairs:
     x-swagger-router-controller: admin
     get:
