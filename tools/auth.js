@@ -402,14 +402,14 @@ const checkCaptcha = (captcha = '', remoteip = '') => {
 		} else {
 			return reject(new Error(INVALID_CAPTCHA));
 		}
-	} else if (!getKitSecrets().captcha.secret_key) {
+	} else if (!getKitSecrets().captcha || !getKitSecrets().captcha.secret_key) {
 		return resolve();
 	}
 
 	const options = {
 		method: 'POST',
 		form: {
-			secret: getKitSecrets().catpcha.secret_key,
+			secret: getKitSecrets().captcha.secret_key,
 			response: captcha,
 			remoteip
 		},

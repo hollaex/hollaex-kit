@@ -127,7 +127,7 @@ const verifyUser = (email, code, domain) => {
 				return all([
 					user,
 					getNodeLib().createUserNetwork(email),
-					verificationCode.update({ verified: true }, { fields: ['verifed'], transaction })
+					verificationCode.update({ verified: true }, { fields: ['verified'], returning: true, transaction })
 				]);
 			})
 			.then(([ user, networkUser ]) => {
