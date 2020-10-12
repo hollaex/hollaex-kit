@@ -47,6 +47,7 @@ const connect = () => {
 			});
 
 			ws.on('open', () => {
+				loggerWebsocket.info('ws/hub open');
 				connected = true;
 				ws.send(JSON.stringify({
 					op: 'subscribe',
