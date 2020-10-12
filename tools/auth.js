@@ -32,7 +32,7 @@ const {
 const { SERVER_PATH } = require('../constants');
 const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET, TOKEN_TYPES, HMAC_TOKEN_EXPIRY } = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
-const { getKitSecrets, getKitConfig, getFrozenUsers } = require('./common');
+const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
 const dbQuery = require('./database/query');
 const otp = require('otp');
 const bcrypt = require('bcryptjs');
@@ -228,22 +228,10 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	}
 };
 
-const getApiKeySecret = () => {
-	return dbQuery.findOne('status', { raw: true })
-		.then((status) => {
-			return {
-				apiKey: status.api_key,
-				apiSecret: status.api_secret
-			};
-		});
-};
-
 const verifyNetworkHmacToken = (req) => {
 	const apiKey = req.headers ? req.headers['api-key'] : undefined;
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
-
-	const systemKeySecret = getApiKeySecret();
 
 	if (!apiKey) {
 		return reject(new Error(API_KEY_NULL));
@@ -251,17 +239,20 @@ const verifyNetworkHmacToken = (req) => {
 		return reject(new Error(API_SIGNATURE_NULL));
 	} else if (moment().unix() > apiExpires) {
 		return reject(new Error(API_REQUEST_EXPIRED));
-	} else {
-		const isSignatureValid = checkHmacSignature(
-			systemKeySecret.apiSecret,
-			req
-		);
-		if (!isSignatureValid) {
-			return reject(new Error(API_SIGNATURE_INVALID));
-		}
 	}
 
-	return resolve();
+	return getNetworkKeySecret()
+		.then(({ apiSecret }) => {
+			const isSignatureValid = checkHmacSignature(
+				apiSecret,
+				req
+			);
+			if (!isSignatureValid) {
+				throw new Error(API_SIGNATURE_INVALID);
+			} else {
+				return;
+			}
+		});
 };
 
 const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
