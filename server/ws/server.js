@@ -74,7 +74,7 @@ const wss = new WebSocket.Server({
 			} else if (hmacKey) {
 				info.req.headers['api-key'] = hmacKey;
 				info.req.headers['api-signature'] = query['api-signature'];
-				info.req.headers['api-expires'] = parseInt(query['api-expires']);
+				info.req.headers['api-expires'] = query['api-expires'];
 				info.req.method = 'CONNECT';
 				info.req.originalUrl = '/stream';
 				// Function will set req.auth to authenticated token object if successful
