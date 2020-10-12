@@ -152,7 +152,10 @@ const checkStatus = (restart = false) => {
 		})
 		.then(() => {
 			if (restart) {
-				require('./ws/hub').getWs().close();
+				const { getWs, hubConnected } = require('./ws/hub');
+				if (hubConnected()) {
+					getWs().close();
+				}
 			}
 			loggerGeneral.info('init/checkStatus/activation complete');
 		})
