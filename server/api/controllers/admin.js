@@ -494,6 +494,11 @@ const uploadImage = (req, res) => {
 	const givenApiKey = req.headers['api-key'];
 
 	if (!givenApiKey) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/uploadImage',
+			'Missing headers'
+		);
 		return res.status(401).json({ message: 'Missing headers' });
 	}
 
