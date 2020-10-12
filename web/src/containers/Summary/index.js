@@ -260,6 +260,7 @@ class Summary extends Component {
 								className={classnames('assets-wrapper', 'asset_wrapper_width')}
 							>
 								<SummaryBlock
+									stringId="SUMMARY.ACCOUNT_ASSETS"
 									title={STRINGS["SUMMARY.ACCOUNT_ASSETS"]}
 									secondaryTitle={
 										SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (

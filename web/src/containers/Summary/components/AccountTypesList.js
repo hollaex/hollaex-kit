@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import STRINGS from '../../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
@@ -31,11 +31,12 @@ const AccountTypesList = ({
 						onClick={() => onAccountTypeChange(key)}
 					>
 						<div className="mr-4">
-                            <ReactSVG
-                               	path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`] ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`] : ICONS['LEVEL_ACCOUNT_ICON_4']}
-                                wrapperClassName="trader-account-icon"
-                            />
-                        </div>
+							<Image
+							    iconId={ICONS[`LEVEL_ACCOUNT_ICON_${key}`] ? `LEVEL_ACCOUNT_ICON_${key}` : 'LEVEL_ACCOUNT_ICON_4'}
+							    icon={ICONS[`LEVEL_ACCOUNT_ICON_${key}`] ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`] : ICONS['LEVEL_ACCOUNT_ICON_4']}
+							    wrapperClassName="trader-account-icon"
+							/>
+						</div>
 						<div className={classnames(FLEX_CENTER_CLASSES)}>
 							<div className={classnames(FLEX_CENTER_CLASSES)}>
 								{STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"], key)}

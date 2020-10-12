@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { object, func } from 'prop-types';
 import { Loader, Button } from 'components';
 import { formatToCurrency } from 'utils/currency';
@@ -15,10 +15,13 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 	} else if (error === QUICK_TRADE_INSUFFICIENT_BALANCE) {
 		return (
 			<div className="base_negative_balance">
-				<ReactSVG
-					path={ICONS['QUICK_TRADE_INSUFFICIENT_FUND']}
-					wrapperClassName="quick-trade__icon"
-				/>
+				<div className="d-flex content-center">
+					<Image
+						iconId='QUICK_TRADE_INSUFFICIENT_FUND'
+						icon={ICONS['QUICK_TRADE_INSUFFICIENT_FUND']}
+						wrapperClassName="quick-trade__icon"
+					/>
+				</div>
 				<div className="quote-success__title" >
 					{STRINGS["QUICK_TRADE_INSUFFICIENT_FUND"]}
 				</div>
@@ -51,10 +54,13 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 
 		return (
 			<div className='success-review'>
-				<ReactSVG
-					path={ICONS['QUICK_TRADE_SUCCESSFUL']}
-					wrapperClassName="quick-trade__icon"
-				/>
+				<div className="d-flex content-center">
+					<Image
+						iconId='QUICK_TRADE_SUCCESSFUL'
+						icon={ICONS['QUICK_TRADE_SUCCESSFUL']}
+						wrapperClassName="quick-trade__icon"
+					/>
+				</div>
 				<div className="quote-success__title" >
 					{STRINGS["QUICK_TRADE_SUCCESS"]}
 				</div>

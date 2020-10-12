@@ -1,12 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
+import { EditWrapper } from 'components';
 import { connect } from 'react-redux';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const TradeBlock = ({
 	children,
 	action,
+	stringId,
 	title,
 	overflowY = false,
 	setRef,
@@ -36,16 +38,21 @@ const TradeBlock = ({
 				<div className='d-flex justify-content-between'>
 					<div className='d-flex'>
 						{pairs.length
-							? <ReactSVG
-								path={
-									ICON_PATH
-										? ICON_PATH
-										: ICONS["DEFAULT_ICON"]
-								}
-								wrapperClassName='trade_block-icon' />
+							? (
+								<Image
+									icon={
+                    ICON_PATH
+                      ? ICON_PATH
+                      : ICONS["DEFAULT_ICON"]
+                  }
+									wrapperClassName='trade_block-icon'
+								/>
+							)
 							: null
 						}
-						<div className="trade_block-title-items" >{title}</div>
+						<EditWrapper stringId={stringId}>
+							<div className="trade_block-title-items" >{title}</div>
+						</EditWrapper>
 					</div>
 					{tailHead
 						? <div className={'trade_block-title-currency'}>

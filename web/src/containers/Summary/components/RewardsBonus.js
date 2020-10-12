@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 
@@ -25,9 +25,10 @@ const RewardsBonus = ({
                 )
             }>
             <div className="d-flex">
-                <ReactSVG
-                    path={ICONS["BONUS_OFFERING"]}
-                    wrapperClassName='trader-wrapper-icon'
+                <Image
+                    iconId="BONUS_OFFERING"
+                    icon={ICONS["BONUS_OFFERING"]}
+                    wrapperClassName="trader-wrapper-icon"
                 />
                 <div>
                    <div className="requirement-content"> {STRINGS["SUMMARY.COMPLETE_TASK_DESC"]}</div>

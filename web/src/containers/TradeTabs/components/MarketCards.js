@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 import { oneOfType, arrayOf, shape, array, object, number, string, func } from 'prop-types';
 
@@ -38,8 +38,13 @@ const MarketCards = ({ page, pageSize, count, handleClick, goToPreviousPage, goT
                   onClick={() => handleClick(key)}
                 >
                   <div className="px-2">
-                    <ReactSVG
-                      path={
+                    <Image
+                      iconId={
+                        ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                          ? `${pair.pair_base.toUpperCase()}_ICON`
+                          : "DEFAULT_ICON"
+                      }
+                      icon={
                         ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
                           ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
                           : ICONS["DEFAULT_ICON"]

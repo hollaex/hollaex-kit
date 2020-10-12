@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 
 import STRINGS from '../../config/localizedStrings';
 import AccountTypeDetails from './components/AccountTypeDetails';
@@ -41,10 +41,17 @@ const MobileAccountTypeList = ({
                         {selectedAccount !== key
                             ? <div className="d-flex">
                                 <div className="mr-4">
-                                    <ReactSVG
-                                        path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                    <Image
+                                        iconId={
+                                          ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                            ? `LEVEL_ACCOUNT_ICON_${key}`
+                                            : 'LEVEL_ACCOUNT_ICON_4'
+                                        }
+                                        icon={
+                                          ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
                                             ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
-                                            : ICONS['LEVEL_ACCOUNT_ICON_4']}
+                                            : ICONS['LEVEL_ACCOUNT_ICON_4']
+                                        }
                                         wrapperClassName="trader-account-icon"
                                     />
                                 </div>

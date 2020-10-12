@@ -1,7 +1,7 @@
 import React from 'react';
 import { oneOfType, arrayOf, shape, array, object, number, string, func } from 'prop-types';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 
 import { THEME_DEFAULT } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
@@ -46,8 +46,13 @@ const MarketList = ({ markets, handleClick, chartData, icons: ICONS }) => {
                 >
                   <td>
                     <div className="d-flex align-items-center">
-                      <ReactSVG
-                        path={
+                      <Image
+                        iconId={
+                          ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                            ? `${pair.pair_base.toUpperCase()}_ICON`
+                            : "DEFAULT_ICON"
+                        }
+                        icon={
                           ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
                             ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
                             : ICONS["DEFAULT_ICON"]

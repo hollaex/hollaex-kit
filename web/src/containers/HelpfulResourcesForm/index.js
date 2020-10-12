@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { IconTitle, Notification, Button, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { sendSupportMail, NOTIFICATIONS, openContactForm } from '../../actions/appActions';
-import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 
@@ -73,12 +72,11 @@ class HelpfulResourcesForm extends Component {
 				/>
 				<div>
 					<div className='d-flex mt-5'>
-						<EditWrapper iconId={activeTheme==='white' ? "LAPTOP" : "LAPTOP_COLOR"}>
-							<ReactSVG
-								path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR}
-								wrapperClassName='help_icons ml-1 mr-1'
-							/>
-						</EditWrapper>
+						<Image
+							iconId={activeTheme==='white' ? "LAPTOP" : "LAPTOP_COLOR"}
+							icon={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR}
+							wrapperClassName='help_icons ml-1 mr-1'
+						/>
 						<div className='text' >
 							{STRINGS["HELP_RESOURCE_GUIDE_TEXT"]}
 							<BlueLink
@@ -89,9 +87,11 @@ class HelpfulResourcesForm extends Component {
 						<div className="w-25" />
 					</div>
 					<div className='d-flex mt-5 mb-5'>
-						<EditWrapper iconId={activeTheme==='white' ? "TELEGRAM" : "TELEGRAM_COLOR"}>
-							<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
-						</EditWrapper>
+						<Image
+							iconId={activeTheme==='white' ? "TELEGRAM" : "TELEGRAM_COLOR"}
+							icon={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR}
+							wrapperClassName='help_icons ml-1 mr-1'
+						/>
 						<div className='text' >
 							{STRINGS["HELP_TELEGRAM_TEXT"]} 
 							<BlueLink

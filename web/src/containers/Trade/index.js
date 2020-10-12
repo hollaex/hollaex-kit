@@ -284,6 +284,7 @@ class Trade extends PureComponent {
 								)}
 							>
 								<TradeBlock
+									stringId="ORDERBOOK"
 									isLoggedIn={isLoggedIn()}
 									title={STRINGS["ORDERBOOK"]}
 									pairData={pairData}
@@ -317,6 +318,7 @@ class Trade extends PureComponent {
 										)}
 									>
 										<TradeBlock
+											stringId="ORDER_ENTRY"
 											title={STRINGS["ORDER_ENTRY"]}
 											pairData={pairData}
 											pair={pair}
@@ -338,6 +340,7 @@ class Trade extends PureComponent {
 										</TradeBlock>
 									</div>
 									<TradeBlock
+										stringId="CHART"
 										title={STRINGS["CHART"]}
 										setRef={this.setChartRef}
 										className="f-1 overflow-x"
@@ -384,6 +387,7 @@ class Trade extends PureComponent {
 								)}
 							>
 								<TradeBlock
+									stringId="PUBLIC_SALES"
 									title={STRINGS["PUBLIC_SALES"]}
 									pairData={pairData}
 									pair={pair}>

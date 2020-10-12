@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 
 import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -29,8 +29,9 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack, icons: I
 					<div key={index} className="d-flex my-4">
 						{account.status === 1 && (
 							<div className="d-flex align-items-center mr-3">
-								<ReactSVG
-									path={ICONS["PENDING_TIMER"]}
+								<Image
+									iconId="PENDING_TIMER"
+									icon={ICONS["PENDING_TIMER"]}
 									wrapperClassName="account-pending-icon"
 								/>
 							</div>

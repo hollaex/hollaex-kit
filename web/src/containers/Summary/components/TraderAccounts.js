@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
@@ -40,13 +40,18 @@ const TraderAccounts = ({
 	return (
 		<div className="d-flex">
 			<div>
-				<ReactSVG
-					path={icon}
-					wrapperClassName={
-						isAccountDetails
-							? 'trader-wrapper-icon trader-acc-detail-icon'
-							: 'trader-wrapper-icon'
-					}
+				<Image
+				    iconId={
+              ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+                ? `LEVEL_ACCOUNT_ICON_${verification_level}`
+                : "LEVEL_ACCOUNT_ICON_4"
+						}
+				    icon={icon}
+				    wrapperClassName={
+              isAccountDetails
+                ? 'trader-wrapper-icon trader-acc-detail-icon'
+                : 'trader-wrapper-icon'
+            }
 				/>
 			</div>
 			<div className="trade-account-secondary-txt summary-content-txt">

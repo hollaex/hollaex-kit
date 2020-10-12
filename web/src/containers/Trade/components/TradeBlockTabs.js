@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import TradeBlock from './TradeBlock';
 import { isLoggedIn } from '../../../utils/token';
+import { EditWrapper } from 'components';
 
 class TradeBlockTabs extends Component {
 	state = {
@@ -31,13 +32,15 @@ class TradeBlockTabs extends Component {
 			<div className="trade_block-title">
 				<div className="trade_block-title-items">
 					{content.map((item, index) => (
-						<div
-							key={index}
-							className={classnames('pointer', { active: active === index })}
-							onClick={this.setActiveTab(index)}
-						>
-							{item.title}
-						</div>
+						<EditWrapper stringId={item.stringId}>
+							<div
+								key={index}
+								className={classnames('pointer', { active: active === index })}
+								onClick={this.setActiveTab(index)}
+							>
+                {item.title}
+							</div>
+						</EditWrapper>
 					))}
 				</div>
 				{content[active].titleAction}
@@ -61,8 +64,8 @@ class TradeBlockTabs extends Component {
 			</div>
 		) : (
 			<div className="d-flex flex-column f-1 trade_block-column-wrapper">
-				{content.map(({ title, titleAction, children }, index) => (
-					<TradeBlock title={title} action={titleAction} key={index}>
+				{content.map(({ title, titleAction, children, stringId }, index) => (
+					<TradeBlock title={title} action={titleAction} stringId={stringId} key={index}>
 						{React.cloneElement(children, { ...this.props, height: this.state.height })}
 					</TradeBlock>
 				))}

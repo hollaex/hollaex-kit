@@ -63,6 +63,7 @@ class OrdersWrapper extends Component {
         } = this.state;
         const USER_TABS = [
             {
+                stringId: "ORDERS",
                 title: STRINGS["ORDERS"],
                 children: isLoggedIn() ? (
                     <ActiveOrders
@@ -88,6 +89,7 @@ class OrdersWrapper extends Component {
                     : ''
             },
             {
+                stringId: "RECENT_TRADES",
                 title: STRINGS["RECENT_TRADES"],
                 children: isLoggedIn() ? (
                     <UserTrades
