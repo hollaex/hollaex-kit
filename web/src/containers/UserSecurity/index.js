@@ -52,7 +52,7 @@ class UserVerification extends Component {
 	};
 
 	componentDidMount() {
-		this.calculateSections(this.props.user,this.state.activeTab);
+		this.calculateTabs(this.props.user,this.state.activeTab);
 		if (this.props.openApiKey) {
 			this.openDevelopers();
 		}
@@ -73,7 +73,7 @@ class UserVerification extends Component {
 			nextProps.user.otp_enabled === this.props.user.otp_enabled ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
-			this.calculateSections(nextProps.user,this.state.activeTab);
+			this.calculateTabs(nextProps.user,this.state.activeTab);
 		}
 
 		if (
@@ -91,17 +91,15 @@ class UserVerification extends Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		if (
-			this.state.activeTab !== nextState.activeTab &&
-			nextState.activeTab !== 0
+			this.state.activeTab !== nextState.activeTab
 		) {
-			this.calculateSections(nextProps, nextState.activeTab);
+			this.calculateTabs(nextProps, nextState.activeTab);
 		}
 	}
 
 	renderLoginsTab = () => {
 		const { logins } = this.props;
 		const { headers} = this.state;
-		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
 		};
@@ -111,7 +109,6 @@ class UserVerification extends Component {
 				props.data = logins;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
-
 
 		return <HistoryDisplay {...props} />;
 	};
@@ -136,7 +133,7 @@ class UserVerification extends Component {
 				}
 	};
 
-	calculateSections = (user , activeTab) => {
+	calculateTabs = (user , activeTab) => {
 		const {freeze}= this.state;
 		const formValues = generateFormValues();
 		const { otp_enabled, otp, verification_level } = user;
