@@ -901,6 +901,7 @@ module.exports = {
 	verifyNetworkHmacToken,
 	userScopeIsValid,
 	isValidPassword,
+	hasUserOtpEnabled,
 	userIsDeactivated,
 	checkCaptcha,
 	verifyOtpBeforeAction,
