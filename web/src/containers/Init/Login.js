@@ -1,17 +1,23 @@
 import React from 'react';
-import { Input, Form, Button, InputNumber, message } from 'antd';
+import { message } from 'antd';
 import { browserHistory } from 'react-router';
 
-import { adminLogIn } from '../../actions/authAction';
+import { AdminHocForm } from '../../components';
+import { performLogin } from '../../actions/authAction';
+import {
+    validateRequired,
+    email
+} from '../../components/AdminForm/validations';
+import { getLanguage } from '../../utils/string';
 
-const { Item } = Form;
+const LoginForm = AdminHocForm('LOGIN_FORM', 'setup-field-wrapper setup-field-content');
 
 const Login = (props) => {
     const handleSubmit = (values) => {
         if (values) {
-            adminLogIn(values)
+            performLogin(values)
                 .then(res => {
-                    console.log('logIn response', res);
+                    browserHistory.push('/admin');
                 })
                 .catch(error => {
                     let errMsg = ''
@@ -20,10 +26,12 @@ const Login = (props) => {
                     } else {
                         errMsg = error.message;
                     }
+                    setTimeout(() => {
+                        props.change('LOGIN_FORM', 'captcha', '');
+                    }, 5000);
                     message.error(errMsg);
                 });
         }
-        browserHistory.push('/admin')
     };
     return (
         <div className="setup-container">
@@ -33,49 +41,32 @@ const Login = (props) => {
                     <div className="header">
                         Login
                     </div>
-                    <Form name='login-form' onFinish={handleSubmit}>
-                        <div className="setup-field-wrapper setup-field-content">
-                            <div className="setup-field-label">Email</div>
-                            <Item
-                                name="email"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your email!'
-                                    },
-                                    {
-                                        type: 'email',
-                                        message: 'Invalid email address'
-                                    }
-                                ]}
-                            >
-                                <Input />
-                            </Item>
-                            <div className="setup-field-label">Password</div>
-                            <Item
-                                name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your password!'
-                                    }
-                                ]}
-                            >
-                                <Input.Password />
-                            </Item>
-                            <div className="setup-field-label">2FA
-                                <span className="description">(if active)</span>
-                            </div>
-                            <Item
-                                name="otp"
-                            >
-                                <InputNumber maxLength="6" placeholder="6-digit code" />
-                            </Item>
-                        </div>
-                        <div className="btn-container">
-                            <Button htmlType='submit'>Proceed</Button>
-                        </div>
-                    </Form>
+                    <LoginForm
+                        fields={{
+                            email: {
+                                type: 'text',
+                                label: 'Email',
+                                validate: [validateRequired, email]
+                            },
+                            password: {
+                                type: 'password',
+                                label: 'Currency',
+                                validate: [validateRequired]
+                            },
+                            otp_code: {
+                                type: 'number',
+                                label: '2FA (if active)',
+                            },
+                            captcha: {
+                                type: 'captcha',
+                                language: getLanguage(),
+                                theme: props.theme,
+                                validate: [validateRequired]
+                            }
+                        }}
+                        onSubmit={handleSubmit}
+                        buttonText={'Proceed'}
+                    />
                 </div>
             </div>
         </div>

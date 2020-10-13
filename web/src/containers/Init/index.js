@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { CheckOutlined } from '@ant-design/icons';
+import { loadReCaptcha } from 'react-recaptcha-v3';
+import { connect } from 'react-redux';
 
 import LoadingScreen from './LoadingScreen';
 import WelcomeScreen from './WelcomeScreen';
@@ -7,10 +9,10 @@ import NetworkConfig from './NetworkConfig';
 import EmailSetup from './EmailSetup';
 import PasswordSetup, { ReTypePasswordContainer } from './PasswordSetup';
 import Login from './Login';
-import { ICONS } from '../../config/constants';
+import { ICONS, CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from '../../config/constants';
 import { getExchangeInitialized } from '../../utils/initialize';
 
-export default class InitWizard extends Component {
+class InitWizard extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -106,7 +108,15 @@ export default class InitWizard extends Component {
     };
     
     render() {
-        const { message, isLoading } = this.state
+        const { message, isLoading } = this.state;
+        const { constants } = this.props;
+        let siteKey = DEFAULT_CAPTCHA_SITEKEY;
+		if (CAPTCHA_SITEKEY) {
+			siteKey = CAPTCHA_SITEKEY;
+		} else if (constants.captcha && constants.captcha.site_key) {
+			siteKey = constants.captcha.site_key;
+		}
+		loadReCaptcha(siteKey);
         return (
             <div className="init-container">
                 {message
@@ -125,3 +135,9 @@ export default class InitWizard extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    constants: state.app.constants,
+});
+
+export default connect(mapStateToProps)(InitWizard);

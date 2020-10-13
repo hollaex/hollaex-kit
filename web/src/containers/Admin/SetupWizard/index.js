@@ -21,7 +21,8 @@ export default class SetupWizard extends Component {
             currentTab: 0,
             isReview: false,
             isConfirmScreen: false,
-            constants: {}
+            constants: {},
+            emailInitialvalues: {}
         }
     }
 
@@ -37,7 +38,40 @@ export default class SetupWizard extends Component {
     };
 
     setConstants = (data) => {
-        this.setState({ constants: data });
+        const { kit = {}, secrets = {} } = data;
+        let emailInitialvalues = {
+            site_key: kit.captcha && kit.captcha.site_key !== 'null'
+                ? kit.captcha.site_key : '',
+            secret_key: secrets.captcha && secrets.captcha.secret_key !== 'null'
+                ? secrets.captcha.secret_key : '',
+        }
+        if (secrets.emails) {
+            emailInitialvalues = {
+                ...emailInitialvalues,
+                sender: secrets.emails.sender !== 'null'
+                    ? secrets.emails.sender : '',
+                timezone: secrets.emails.timezone !== 'null'
+                    ? secrets.emails.timezone : '',
+                audit: secrets.emails.audit !== 'null'
+                    ? secrets.emails.audit : '',
+                send_email_to_support: secrets.emails.send_email_to_support
+                    ? secrets.emails.send_email_to_support : false,
+            }
+        }
+        if (secrets.smtp) {
+            emailInitialvalues = {
+                ...emailInitialvalues,
+                server: secrets.smtp.server !== 'null'
+                    ? secrets.smtp.server : '',
+                port: secrets.smtp.port !== 'null'
+                    ? secrets.smtp.port : '',
+                user: secrets.smtp.user !== 'null'
+                    ? secrets.smtp.user : '',
+                password: secrets.smtp.password !== 'null'
+                    ? secrets.smtp.password : '',
+            }
+        }
+        this.setState({ constants: data, emailInitialvalues });
     };
 
     setPreview = (value = false) => {
@@ -75,6 +109,7 @@ export default class SetupWizard extends Component {
                         handleNext={this.onTabChange}
                         updateConstants={this.updateConstants}
                         setPreview={this.setPreview}
+                        initialValues={this.state.emailInitialvalues}
                     />
                 );
             default:

@@ -193,6 +193,12 @@
 			text-align: left;
 			width: 22rem;
 
+			.input_field {
+				label {
+					font-size: 15px;
+					color: #ffffff;
+				}
+			}
 			.ant-input-affix-wrapper,
 			.ant-input,
 			.ant-input-number {
@@ -223,5 +229,55 @@
                 flex: 1;
             }
         }
+	}
+}
+
+@media screen and (max-width: 1096px) and (min-width: 768px) {
+	.init-container {
+		.setup-container {
+			.setup-field-wrapper {
+				.captcha-wrapper {
+					height: 5.5rem;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 334px) and (min-width: 280px) {
+	.init-container {
+		.setup-container {
+			.setup-field-wrapper {
+				.captcha-wrapper {
+					height: 7rem;
+				}
+			}
+		}
+	}
+	#rc-imageselect,
+	.g-recaptcha {
+		transform: scale(0.6);
+		-webkit-transform: scale(0.6);
+		transform-origin: 0 0;
+		-webkit-transform-origin: 0% 0%;
+	}
+}
+
+@media screen and (max-width: 460px) and (min-width: 335px) {
+	.init-container {
+		.setup-container {
+			.setup-field-wrapper {
+				.captcha-wrapper {
+					height: 7rem;
+				}
+			}
+		}
+	}
+	#rc-imageselect,
+	.g-recaptcha {
+		transform: scale(0.62);
+		-webkit-transform: scale(0.62);
+		transform-origin: 0 0;
+		-webkit-transform-origin: 0 0;
 	}
 }

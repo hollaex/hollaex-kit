@@ -310,6 +310,7 @@
 }
 .wizard-complete-status .anticon {
 	font-size: 85px;
+	color: #c4c4c4 !important;
 }
 .margin {
 	margin-left: 3rem;

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { browserHistory } from 'react-router';
 
 import { ICONS } from '../../../config/constants';
 import { Carousel } from 'components';
+import { getCompleteSetup } from '../Settings/action';
+
 import './index.css';
 
 const Carousel_items = [
@@ -57,7 +59,8 @@ export default class ExchangeSetup extends Component {
 	constructor () {
 		super();
 		this.state = {
-			isLoading: true
+			isLoading: true,
+			setupCompleted: true,
 		};
 	}
 
@@ -82,7 +85,7 @@ export default class ExchangeSetup extends Component {
 					<div className='icon-wrapper'>
 						<ReactSVG
 							path={value.icon}
-							wrapperClassName='icon-align'
+							wrapperClassName={value.icon === ICONS.SETUP_QUICK_TRADE ? null :'icon-align'}
 						/>
 					</div>
 					<div className='setup-field-label'>{value.title}</div>
@@ -94,7 +97,26 @@ export default class ExchangeSetup extends Component {
 		});
 	};
 
-	goToAccount = () => browserHistory.push('/account');
+	goToAccount = () => {
+		getCompleteSetup()
+		.then((res) => {
+			if (res.data.secrets) {
+				this.setState({
+					setupCompleted: res.data.secrets.setup_completed
+				});
+			}
+			browserHistory.push('/account');
+		})
+		.catch(err => {
+			let errMsg = err.message;
+			if (err.data && err.data.message
+				&& err.data.message.includes('Exchange setup is already flagged as completed')) {
+					browserHistory.push('/account');
+				errMsg = err.data.message;
+			}
+			message.error(errMsg);
+		})
+	}
 
 	render () {
         const menuItems = this.CarouselData();
@@ -123,7 +145,7 @@ export default class ExchangeSetup extends Component {
 							<Button
 								className='exchange-btn'
 								disabled={this.state.isLoading}
-								onClick={this.gotoAccount}
+								onClick={this.goToAccount}
 							>
 								Enter Your Exchange
 							</Button>
