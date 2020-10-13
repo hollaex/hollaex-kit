@@ -8,5 +8,6 @@ module.exports = {
 	plugin: require('./plugin'),
 	user: require('./user'),
 	balance: require('./balance'),
-	image: require('./image')
+	image: require('./image'),
+	transaction: require('./transaction');
 };
