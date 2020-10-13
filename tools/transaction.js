@@ -101,7 +101,7 @@ const validateWithdrawalToken = (token) => {
 
 				client.hdelAsync(WITHDRAWALS_REQUEST_KEY, token);
 
-				if (Date.now() - withdrawal.timestamp > getKitSecrets.security.withdrawal_token_expiry) {
+				if (Date.now() - withdrawal.timestamp > getKitSecrets().security.withdrawal_token_expiry) {
 					throw new Error(EXPIRED_WITHDRAWAL_TOKEN);
 				} else {
 					return withdrawal;
