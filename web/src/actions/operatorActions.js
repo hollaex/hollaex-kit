@@ -46,14 +46,12 @@ export const pushVersions = async (configs) => {
 
 export const upload = (formData) => {
   const options = {
-    method: 'POST',
-    body: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    data: formData,
+    method: 'POST'
   };
 
-  const path = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png';
-  return new Promise((resolve, reject) => {
-    return setTimeout(() => resolve(path), 2000)
-  })
-
-  return requestAuthenticated('/admin/upload', options)
+  return axios('/admin/upload', options)
 }

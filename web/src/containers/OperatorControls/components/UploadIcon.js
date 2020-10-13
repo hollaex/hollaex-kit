@@ -40,7 +40,7 @@ class UploadIcon extends Component {
           formData.append('name', key);
           formData.append('file', file);
 
-          const path = await upload(formData)
+          const { data: { path } } = await upload(formData)
           icons[key] = path;
         }
       }
