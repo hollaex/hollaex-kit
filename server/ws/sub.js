@@ -53,7 +53,9 @@ const initializeTopic = (topic, ws, symbol) => {
 				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			} else {
+				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			}
 			break;
 		default:
