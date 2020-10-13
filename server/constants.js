@@ -21,8 +21,6 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `order:${symbolOrUserId}`;
 		case 'wallet':
 			return `wallet:${symbolOrUserId}`;
-		case 'userTrade':
-			return `userTrade:${symbolOrUserId}`;
 		default:
 			return;
 	}

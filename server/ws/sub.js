@@ -46,7 +46,6 @@ const initializeTopic = (topic, ws, symbol) => {
 			break;
 		case 'order':
 		case 'wallet':
-		case 'userTrade':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
@@ -85,7 +84,6 @@ const terminateTopic = (topic, ws, symbol) => {
 			break;
 		case 'order':
 		case 'wallet':
-		case 'userTrade':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
@@ -171,15 +169,6 @@ const terminateClosedChannels = (ws) => {
 		} catch (err) {
 			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
-
-		try {
-			removeSubscriber(WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId), ws, 'private');
-			if (!getChannels()[WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId)]) {
-				require('./hub').sendNetworkWsMessage('unsubscribe', 'userTrade', ws.auth.sub.networkId);
-			}
-		} catch (err) {
-			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
-		}
 	}
 };
 
@@ -206,7 +195,6 @@ const handleHubData = (data) => {
 			break;
 		case 'order':
 		case 'wallet':
-		case 'userTrade':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
