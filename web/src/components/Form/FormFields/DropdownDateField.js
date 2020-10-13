@@ -4,7 +4,7 @@ import moment from 'moment';
 import { range } from 'lodash';
 import FieldWrapper from './FieldWrapper';
 import DropdownDateOption from './DropdownDateOption';
-import { ProjectConfig } from 'config/project.config';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
@@ -36,20 +36,24 @@ const generateDateLimits = (yearsBack = LIMIT_YEARS, yearsForward = 0) => {
 };
 
 class DropdownDateField extends Component {
-  static contextType = ProjectConfig;
 
-	state = {
-		language: this.context.DEFAULT_LANGUAGE,
-		focused: false,
-		display: {
-			year: '',
-			month: '',
-			day: ''
-		},
-		date: moment(),
-		unixtime: 0,
-		limits: {}
-	};
+  constructor(props) {
+    super(props);
+    const { defaultLanguage: DEFAULT_LANGUAGE } = this.props;
+
+    this.state = {
+      language: DEFAULT_LANGUAGE,
+      focused: false,
+      display: {
+        year: '',
+        month: '',
+        day: ''
+      },
+      date: moment(),
+      unixtime: 0,
+      limits: {}
+    };
+  }
 
 	componentWillMount() {
 		let limits = {};
@@ -77,12 +81,12 @@ class DropdownDateField extends Component {
 		this.setState({ limits: limits || generateDateLimits() });
 	};
 
-	setDisplay = (limits, dateString = '', language = this.context.DEFAULT_LANGUAGE) => {
+	setDisplay = (limits, dateString = '', language = this.props.defaultLanguage) => {
 		const display = {};
 		let dateUnixtime = moment(dateString || new Date()).valueOf();
 		moment.locale(language);
 		const date = moment(dateUnixtime);
-		moment.locale(this.context.DEFAULT_LANGUAGE);
+		moment.locale(this.props.defaultLanguage);
 		display.en = {
 			...limits.en,
 			month: moment.months(),
@@ -161,4 +165,4 @@ class DropdownDateField extends Component {
 	}
 }
 
-export default DropdownDateField;
+export default withConfig(DropdownDateField);

@@ -6,9 +6,10 @@ class ConfigProvider extends Component {
   constructor(props) {
     super(props);
     const { initialConfig } = this.props;
-    const { icons = {} } = { ...initialConfig }
+    const { icons = {}, defaultLanguage } = { ...initialConfig }
     this.state = {
-      icons
+      icons,
+      defaultLanguage,
     };
   }
 
@@ -29,7 +30,7 @@ class ConfigProvider extends Component {
 
   render() {
     const { children } = this.props;
-    const { icons } = this.state;
+    const { icons, defaultLanguage } = this.state;
     const { updateIcons, removeIcon } = this;
 
     return (
@@ -38,6 +39,7 @@ class ConfigProvider extends Component {
           icons,
           updateIcons,
           removeIcon,
+          defaultLanguage,
         }}
       >
         {children}
