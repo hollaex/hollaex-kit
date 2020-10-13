@@ -33,8 +33,8 @@ import { getConfig, getValidLanguages } from 'actions/operatorActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
-console.log(name, version);
-console.log(API_URL);
+console.info(name, version);
+console.info(API_URL);
 
 const generateRequest = async (key) => {
 	return await getConfig(key);
