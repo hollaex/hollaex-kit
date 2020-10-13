@@ -17,6 +17,7 @@ class AllStringsModal extends Component {
           bordered={false}
           size="default"
           onSelect={(value) => onSelect(value, index)}
+          dropdownStyle={{ zIndex: '10003' }}
         >
           {
             languageOptions.map(({ label, value }) => (
