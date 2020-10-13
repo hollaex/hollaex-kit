@@ -311,7 +311,7 @@ const getUserBalance = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.user.getUserBalanceByKitId(user_id)
+	toolsLib.balance.getUserBalance(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})

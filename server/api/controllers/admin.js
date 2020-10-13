@@ -185,7 +185,7 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.user.getUserBalanceByKitId(user_id)
+	toolsLib.balance.getUserBalance(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -421,7 +421,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.user.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.balance.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
