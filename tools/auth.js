@@ -474,6 +474,15 @@ const verifyOtpBeforeAction = (user_id, otp_code) => {
 	});
 };
 
+const checkOtp = (userId) => {
+	return hasUserOtpEnabled(userId).then((otp_enabled) => {
+		if (otp_enabled) {
+			throw new Error('OTP is already enabled');
+		}
+		return findUserOtp(userId);
+	});
+};
+
 const checkAdminIp = (whiteListedIps = [], ip = '') => {
 	if (whiteListedIps.length === 0) {
 		return true; // no ip restriction for admin
@@ -896,6 +905,7 @@ module.exports = {
 	checkCaptcha,
 	verifyOtpBeforeAction,
 	verifyOtp,
+	checkOtp,
 	findToken,
 	issueToken,
 	validatePassword,
