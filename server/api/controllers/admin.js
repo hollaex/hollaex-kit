@@ -188,7 +188,7 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.user.getUserBalanceByKitId(user_id)
+	toolsLib.balance.getUserBalance(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
