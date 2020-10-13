@@ -7,7 +7,7 @@ const { all } = require('bluebird');
 const getWithdrawalFee = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 
-	if (!toolsLib.subscribeToCoin(currency)) {
+	if (!toolsLib.subscribedToCoin(currency)) {
 		loggerWithdrawals.error(
 			req.uuid,
 			'controller/withdrawal/getWithdrawalFee err',

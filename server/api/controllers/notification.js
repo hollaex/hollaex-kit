@@ -35,7 +35,7 @@ const handleCurrencyDeposit = (req, res) => {
 
 	toolsLib.auth.verifyNetworkHmacToken(req)
 		.then(() => {
-			if (!toolsLib.subscribeToCoin(currency)) {
+			if (!toolsLib.subscribedToCoin(currency)) {
 				throw new Error('Invalid currency');
 			}
 			return toolsLib.user.getUserByNetworkId(user_id);
@@ -77,7 +77,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 
 	toolsLib.auth.verifyNetworkHmacToken(req)
 		.then(() => {
-			if (!toolsLib.subscribeToCoin(currency)) {
+			if (!toolsLib.subscribedToCoin(currency)) {
 				throw new Error('Invalid currency');
 			}
 			return toolsLib.user.getUserByNetworkId(user_id);
