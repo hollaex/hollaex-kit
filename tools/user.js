@@ -675,6 +675,9 @@ const updateUserRole = (user_id, role) => {
 		]
 	})
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			const roles = pick(
 				user.dataValues,
 				'is_admin',
