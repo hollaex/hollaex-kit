@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 import { WS_URL, SESSION_TIME, BASE_CURRENCY, LANGUAGE_KEY } from '../../config/constants';
 // import { isMobile } from 'react-device-detect';
 
-import { setMe, setBalance, updateUser } from '../../actions/userAction';
+import { getMe, setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
 import {
 	setUserOrders,
@@ -34,7 +34,7 @@ import {
 	closeAllNotification,
 	setChatUnreadMessages,
 	setOrderLimits,
-	// NOTIFICATIONS,
+	NOTIFICATIONS,
 	setSnackDialog,
 	setValidBaseCurrency,
 	setConfig,
@@ -106,10 +106,12 @@ class Container extends Component {
 	resetTimer = debounce(this._resetTimer, 250);
 
 	initSocketConnections = () => {
+		let token = '';
 		this.setPublicWS();
 		if (isLoggedIn()) {
-			this.setUserSocket(getToken());
+			token = getToken();
 		}
+		this.setUserSocket(token);
 		this.setState({ appLoaded: true }, () => {
 			this.props.connectionCallBack(true);
 			this._resetTimer();
@@ -124,8 +126,8 @@ class Container extends Component {
 	storeOrderData = debounce(this.storeData, 250);
 
 	setPublicWS = () => {
-		const publicSocket = new WebSocket(`${WS_URL}/stream`);
-		this.setState({ publicSocket });
+		// const publicSocket = new WebSocket(`${WS_URL}/stream`);
+		// this.setState({ publicSocket });
 
 		requestInitial()
 			.then((res) => {
@@ -187,25 +189,90 @@ class Container extends Component {
 			})
 			.catch(err => console.error(err))
 
-		publicSocket.onopen = (event) => {
-			console.log('Connected Public Socket');
-			publicSocket.send(
+	};
+
+	getUserDetails = () => {
+		return this.props
+			.getMe()
+			.then(({ value }) => {
+				if (value && value.data && value.data.id) {
+					const data = value.data;
+					const { defaults = {} } = this.props.constants;
+					let userData = { ...data };
+					console.log('this.props.constants', this.props.constants);
+					console.log('userData', userData);
+					if (data.settings) {
+						if (
+							!data.settings.language &&
+							!this.props.activeLanguage &&
+							defaults.language
+						) {
+							this.props.changeLanguage(defaults.language);
+							userData = {
+								...data,
+								settings: {
+									...data.settings,
+									language: defaults.language
+								}
+							};
+						} else if (data.settings.language !== this.props.activeLanguage) {
+							this.props.changeLanguage(data.settings.language);
+						}
+						if (data.settings.interface) {
+							if (
+								!data.settings.interface.theme &&
+								!this.props.activeTheme &&
+								defaults.theme
+							) {
+								this.props.changeTheme(defaults.theme);
+								localStorage.setItem('theme', defaults.theme);
+								userData = {
+									...data,
+									settings: {
+										...data.settings,
+										interface: {
+											...data.settings.interface,
+											theme: defaults.theme
+										}
+									}
+								};
+							} else if (data.settings.interface.theme !== this.props.activeTheme) {
+								this.props.changeTheme(data.settings.interface.theme);
+								localStorage.setItem('theme', data.settings.interface.theme);
+							}
+						}
+					}
+					this.props.setMe(userData);
+				}
+			})
+			.catch((err) => {
+				const message = err.message || JSON.stringify(err);
+				this.props.setNotification(NOTIFICATIONS.ERROR, message);
+			});
+	};
+
+	setUserSocket = (token) => {
+		let url = `${WS_URL}/stream`;
+		if (token) {
+			url = `${WS_URL}/stream?authorization=Bearer ${token}`;
+		}
+		const privateSocket = new WebSocket(url);
+
+		this.setState({ privateSocket });
+
+		this.getUserDetails();
+
+		privateSocket.onopen = (evt) => {
+			console.log('Connected Private Socket', evt);
+			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['orderbook', 'trade'],
+					args: ['orderbook', 'trade', 'wallet', 'order', 'userTrade'],
 				})
 			);
 		};
 
-		publicSocket.onclose = (evt) => {
-			console.log('public socket close', evt);
-		};
-
-		publicSocket.onerror = (evt) => {
-			console.log('public socket error', evt);
-		};
-
-		publicSocket.onmessage = (evt) => {
+		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
 			switch (data.topic) {
 				case 'trade':
@@ -237,61 +304,19 @@ class Container extends Component {
 					this.storeOrderData(this.orderCache);
 					// this.props.setOrderbooks(data);
 					break;
+				case 'order':
+					this.props.setUserOrders(data.data);
+					break;
+				case 'userTrade':
+					this.props.addUserTrades(data.data);
+					break;
+				case 'wallet':
+					this.props.setBalance(data.data);
+					break;
 				default:
 					break;
-			}
-		};
-
-		// publicSocket.on('orderbook', (data) => {
-		// 	this.orderCache = { ...this.orderCache, ...data };
-		// 	this.storeOrderData(this.orderCache);
-		// 	// this.props.setOrderbooks(data);
-		// });
-
-		// publicSocket.on('trades', (data) => {
-		// 	this.props.setTrades(data);
-		// 	this.props.setTickers(data);
-		// 	if (data.action === 'update') {
-		// 		if (
-		// 			this.props.settings.audio &&
-		// 			this.props.settings.audio.public_trade &&
-		// 			this.props.location.pathname.indexOf('/trade/') === 0 &&
-		// 			this.props.router.params.pair
-		// 		) {
-		// 			playBackgroundAudioNotification('public_trade', this.props.settings);
-		// 		}
-		// 	}
-		// });
-	};
-
-	setUserSocket = (token) => {
-		const privateSocket = new WebSocket(`${WS_URL}/stream`);
-
-		this.setState({ privateSocket });
-
-		privateSocket.onopen = (evt) => {
-			console.log('Connected Private Socket', evt);
-			let request = {
-				op: 'auth',
-				args: [
-					{
-						"authorization": `Bearer ${token}`
-					}
-				],
 			};
-			privateSocket.send(JSON.stringify(request));
-			privateSocket.send(
-				JSON.stringify({
-					op: 'subscribe',
-					args: ['wallet', 'order', 'userTrade'],
-				})
-			);
-		};
-
-		privateSocket.onmessage = (evt) => {
-			const data = JSON.parse(evt.data);
-			console.log(data);
-		};
+		}
 
 		// privateSocket.on('error', (error) => {
 		// 	if (
@@ -301,53 +326,6 @@ class Container extends Component {
 		// 	) {
 		// 		this.props.logout('Token is expired');
 		// 	}
-		// });
-
-		// privateSocket.on('user', ({ action, data }) => {
-		// 	const { defaults = {} } = this.props.constants;
-		// 	let userData = { ...data };
-		// 	if (data.settings) {
-		// 		if (
-		// 			!data.settings.language &&
-		// 			!this.props.activeLanguage &&
-		// 			defaults.language
-		// 		) {
-		// 			this.props.changeLanguage(defaults.language);
-		// 			userData = {
-		// 				...data,
-		// 				settings: {
-		// 					...data.settings,
-		// 					language: defaults.language
-		// 				}
-		// 			};
-		// 		} else if (data.settings.language !== this.props.activeLanguage) {
-		// 			this.props.changeLanguage(data.settings.language);
-		// 		}
-		// 		if (data.settings.interface) {
-		// 			if (
-		// 				!data.settings.interface.theme &&
-		// 				!this.props.activeTheme &&
-		// 				defaults.theme
-		// 			) {
-		// 				this.props.changeTheme(defaults.theme);
-		// 				localStorage.setItem('theme', defaults.theme);
-		// 				userData = {
-		// 					...data,
-		// 					settings: {
-		// 						...data.settings,
-		// 						interface: {
-		// 							...data.settings.interface,
-		// 							theme: defaults.theme
-		// 						}
-		// 					}
-		// 				};
-		// 			} else if (data.settings.interface.theme !== this.props.activeTheme) {
-		// 				this.props.changeTheme(data.settings.interface.theme);
-		// 				localStorage.setItem('theme', data.settings.interface.theme);
-		// 			}
-		// 		}
-		// 	}
-		// 	this.props.setMe(userData);
 		// });
 
 		// privateSocket.on('orders', ({ action, data }) => {
@@ -628,7 +606,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
-	setInfo: bindActionCreators(setInfo, dispatch)
+	setInfo: bindActionCreators(setInfo, dispatch),
+	getMe: bindActionCreators(getMe, dispatch),
 });
 
 export default connect(
