@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 let timerInterval = '';
 
@@ -52,7 +52,7 @@ class ElapsedTimer extends Component {
     };
 
     render() {
-        const { isLoading, timerText } = this.props;
+        const { isLoading, timerText, icons: ICONS } = this.props;
         if (!isLoading) {
             return null;
         }
@@ -63,7 +63,7 @@ class ElapsedTimer extends Component {
                     <span className="timer-time mx-1">{this.state.seconds} {STRINGS["SECONDS"]}</span>
                 </div>
                 <div>
-                    <ReactSVG path={ICONS.PENDING_TIMER} wrapperClassName="timer-svg" />
+                    <Image iconId="PENDING_TIMER" icon={ICONS["PENDING_TIMER"]} wrapperClassName="timer-svg" />
                 </div>
             </div>
         );
@@ -77,4 +77,4 @@ ElapsedTimer.defaultProps = {
     intervalSeconds: 1
 }
 
-export default ElapsedTimer;
+export default withConfig(ElapsedTimer);

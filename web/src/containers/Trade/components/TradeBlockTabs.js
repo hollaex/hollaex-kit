@@ -32,9 +32,8 @@ class TradeBlockTabs extends Component {
 			<div className="trade_block-title">
 				<div className="trade_block-title-items">
 					{content.map((item, index) => (
-						<EditWrapper stringId={item.stringId}>
+						<EditWrapper key={index} stringId={item.stringId}>
 							<div
-								key={index}
 								className={classnames('pointer', { active: active === index })}
 								onClick={this.setActiveTab(index)}
 							>

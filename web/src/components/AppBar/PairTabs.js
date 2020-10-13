@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { SortableContainer } from 'react-sortable-hoc';
@@ -8,9 +8,9 @@ import { browserHistory } from 'react-router';
 import Tab from './Tab';
 import MarketSelector from './MarketSelector';
 import { DEFAULT_TRADING_PAIRS } from 'config/constants';
-import { ICONS } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 let timeOut = '';
 
@@ -356,7 +356,7 @@ class PairTabs extends Component {
             selectedToRemove
         } = this.state;
 
-        const { tickers, location, coins } = this.props;
+        const { tickers, location, coins, icons: ICONS } = this.props;
         
         return (
             <div className="d-flex h-100">
@@ -385,7 +385,7 @@ class PairTabs extends Component {
                         })
                     }>
                     <div onClick={this.openAddTabMenu}>
-                        <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-close" />
+                        <Image iconId={"TAB_PLUS"} icon={ICONS["TAB_PLUS"]} wrapperClassName="app-bar-tab-close" />
                     </div>
                     {Object.keys(selectedTabs).length <= 0 ?
                         <span onClick={this.openAddTabMenu}>
@@ -417,4 +417,4 @@ const mapStateToProps = ({ app: { language: activeLanguage, pairs, tickers, coin
     prices,
 });
 
-export default connect(mapStateToProps)(PairTabs);
+export default connect(mapStateToProps)(withConfig(PairTabs));

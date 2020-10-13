@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { object, string, func } from 'prop-types';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 
 import { Slider } from 'components';
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { donutFormatPercentage, formatToCurrency, calculatePrice } from 'utils/currency';
 import SearchBox from './SearchBox';
 
@@ -131,7 +132,8 @@ class MarketSelector extends Component {
             tickers = {},
             addTradePairTab,
             triggerId,
-            wrapperClassName
+            wrapperClassName,
+            icons: ICONS,
         } = this.props;
 
         const { selectedTabMenu, searchValue, searchResult } = this.state;
@@ -209,8 +211,8 @@ class MarketSelector extends Component {
                       {this.tabListMenuItems()}
                     </Slider>
                     {/*<div className="d-flex align-items-center mr-2">*/}
-                      {/*<ReactSVG*/}
-                        {/*path={ICONS.TAB_SETTING}*/}
+                      {/*<Image*/}
+                        {/*icon={ICONS.TAB_SETTING}*/}
                         {/*wrapperClassName="app-bar-tab-setting"*/}
                       {/*/>*/}
                     {/*</div>*/}
@@ -232,8 +234,13 @@ class MarketSelector extends Component {
                                     onClick={() => addTradePairTab(pair)}
                                 >
                                     <div className="d-flex align-items-center">
-                                        <ReactSVG
-                                          path={
+                                        <Image
+                                          iconId={
+                                            ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+                                              ? `${menu.pair_base.toUpperCase()}_ICON`
+                                              : "DEFAULT_ICON"
+                                          }
+                                          icon={
                                             ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
                                               ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
                                               : ICONS.DEFAULT_ICON
@@ -305,4 +312,4 @@ const mapStateToProps = ({ app: { pairs, tickers, coins } }) => ({
   coins,
 });
 
-export default connect(mapStateToProps)(MarketSelector);
+export default connect(mapStateToProps)(withConfig(MarketSelector));
