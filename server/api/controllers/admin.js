@@ -424,7 +424,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.user.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.balance.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
