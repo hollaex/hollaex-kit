@@ -20,7 +20,7 @@ export const updateConfigs = async (configs) => {
     method: 'PUT',
     body: JSON.stringify(constants)
   };
-  return requestAuthenticated('/admin/constant', options);
+  return requestAuthenticated('/admin/kit', options);
 }
 
 export const getConstants = async () => {

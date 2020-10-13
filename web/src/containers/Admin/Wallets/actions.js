@@ -7,7 +7,7 @@ export const requestEthSweep = (value) =>
 	requestAuthenticated(`/admin/eth/sweep?wallets=${value}`);
 
 export const requestConstants = () =>
-	requestAuthenticated('/admin/constant');
+	requestAuthenticated('/admin/kit');
 
 export const connectVault = (values) => {
 	const options = {

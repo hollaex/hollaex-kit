@@ -199,8 +199,6 @@ class Container extends Component {
 					const data = value.data;
 					const { defaults = {} } = this.props.constants;
 					let userData = { ...data };
-					console.log('this.props.constants', this.props.constants);
-					console.log('userData', userData);
 					if (data.settings) {
 						if (
 							!data.settings.language &&
