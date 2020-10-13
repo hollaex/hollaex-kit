@@ -7,7 +7,7 @@ const API_PATH = '/v2';
 
 const generateEndpoint = (endpoint, path) => ({
 	API_URL: `${endpoint}${path}`,
-	WS_URL: endpoint
+	WS_URL: 'wss://api.sandbox.hollaex.com'
 });
 
 const VARIABLES = {

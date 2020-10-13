@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { DownloadOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import { debounce } from 'lodash';
 
 import { PATHS } from '../paths';
@@ -15,13 +15,12 @@ import {
 	isSupport,
 	isSupervisor,
 	isAdmin,
-	getTokenTimestamp,
-	getToken
+	getTokenTimestamp
 } from '../../../utils/token';
 import { checkUserSessionExpired } from '../../../utils/utils';
 import { getExchangeInitialized } from '../../../utils/initialize';
 import { logout } from '../../../actions/authAction';
-import { setMe } from '../../../actions/userAction';
+import { getMe, setMe } from '../../../actions/userAction';
 import {
 	setPairsData
 } from '../../../actions/orderbookAction';
@@ -39,7 +38,7 @@ import {
 	requestConstant,
 	requestAdminData
 } from '../../../actions/appActions';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
+import { SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
 
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
@@ -60,7 +59,6 @@ class AppWrapper extends React.Component {
 			isLoaded: false,
 			appLoaded: false,
 			publicSocket: undefined,
-			privateSocket: undefined,
 			idleTimer: undefined,
 			setupCompleted: true,
 			initialLoading: true
@@ -110,13 +108,6 @@ class AppWrapper extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.state.publicSocket) {
-			this.state.publicSocket.close();
-		}
-
-		if (this.state.privateSocket) {
-			this.state.privateSocket.close();
-		}
 
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
@@ -142,7 +133,7 @@ class AppWrapper extends React.Component {
 	initSocketConnections = () => {
 		this.setPublicWS();
 		if (isLoggedIn()) {
-			this.setUserSocket(getToken());
+			this.setUserSocket();
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -165,15 +156,6 @@ class AppWrapper extends React.Component {
 	resetTimer = debounce(this._resetTimer, 250);
 
 	setPublicWS = () => {
-		// TODO change when added more cryptocurrencies
-
-		const publicSocket = io(`${WS_URL}/realtime`, {
-			query: {
-				// symbol: 'btc'
-			}
-		});
-
-		this.setState({ publicSocket });
 
 		requestInitial()
 			.then(res => {
@@ -223,46 +205,39 @@ class AppWrapper extends React.Component {
 			.catch(err => {
 				console.error(err);
 			});
-
-		// publicSocket.on('initial', (data) => {
-		// });
 	};
 
 	setUserSocket = (token) => {
-		const privateSocket = io.connect(`${WS_URL}/user`, {
-			query: {
-				token: `Bearer ${token}`
-			}
-		});
-
-		this.setState({ privateSocket });
-
-		privateSocket.on('error', (error) => {
-			if (
-				error &&
-				typeof error === 'string' &&
-				error.indexOf('Access Denied') > -1
-			) {
-				this.logout('Token is expired');
-			}
-		});
-
-		privateSocket.on('user', ({ action, data }) => {
-			this.props.setMe(data);
-			if (
-				data.settings &&
-				data.settings.language !== this.props.activeLanguage
-			) {
-				this.props.changeLanguage(data.settings.language);
-			}
-			if (
-				data.settings.interface &&
-				data.settings.interface.theme !== this.props.activeTheme
-			) {
-				this.props.changeTheme(data.settings.interface.theme);
-				localStorage.setItem('theme', data.settings.interface.theme);
-			}
-		});
+		this.props.getMe()
+			.then(({ value }) => {
+				if (value && value.data && value.data.id) {
+					const data = value.data;
+						this.props.setMe(data);
+						if (
+							data.settings &&
+							data.settings.language !== this.props.activeLanguage
+						) {
+							this.props.changeLanguage(data.settings.language);
+						}
+						if (
+							data.settings.interface &&
+							data.settings.interface.theme !== this.props.activeTheme
+						) {
+							this.props.changeTheme(data.settings.interface.theme);
+							localStorage.setItem('theme', data.settings.interface.theme);
+						}
+				}
+			})
+			.catch((err) => {
+				console.log('err', err);
+				let error = err.message;
+				if (err.data && err.data.message) {
+					error = err.data.message;
+				}
+				if (error.indexOf('Access Denied') > -1) {
+					this.logout('Token is expired');
+				}
+			})
 	};
 
 	isSocketDataReady = () => {
@@ -422,6 +397,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
+	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),

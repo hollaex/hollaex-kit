@@ -10,3 +10,6 @@ export const updatePlugins = (values) => {
 
 export const getConstants = () =>
 	requestAuthenticated('/admin/kit');
+
+export const getCompleteSetup = () =>
+	requestAuthenticated('/admin/complete-setup');
