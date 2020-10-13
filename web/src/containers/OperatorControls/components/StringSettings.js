@@ -32,11 +32,11 @@ class StringSettingsModal extends Component {
       render: (_, {value}) => (
         <Fragment>
           <Button
-            type="primary"
             shape="circle"
             size="small"
             ghost
             icon={!this.isRemoved(value) ? <CloseOutlined /> : <UndoOutlined />}
+            className="operator-controls__all-strings-settings-button"
             disabled={this.isDefault(value)}
             onClick={() => {
               !this.isRemoved(value) ? this.removeLanguage(value) : this.revert(value);

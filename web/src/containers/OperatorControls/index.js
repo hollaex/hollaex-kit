@@ -5,6 +5,7 @@ import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -540,16 +541,18 @@ class OperatorControls extends Component {
                               type="text"
                               name={`${key}-${lang}`}
                               placeholder="text"
-                              className="operator-controls__input"
+                              className="operator-controls__input mr-2"
                               value={editData[lang][key]}
                               onChange={this.handleInputChange}
                             />
-                            <span
-                              className="pointer"
+                            <Button
+                              ghost
+                              shape="circle"
+                              size="small"
+                              className="operator-controls__all-strings-settings-button"
                               onClick={() => this.getDefaultString(key, lang)}
-                            >
-                            Reset
-                          </span>
+                              icon={<DeleteOutlined />}
+                            />
                           </div>
                         </div>
                       )
