@@ -134,8 +134,6 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 			//return the error in the callback if the Authorization header doesn't have the correct format
 			return sendError(MISSING_HEADER);
 		}
-	} else {
-		return sendError(MISSING_HEADER);
 	}
 };
 
@@ -223,8 +221,6 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 					return sendError(err);
 				});
 		}
-	} else {
-		return sendError(MISSING_HEADER);
 	}
 };
 
