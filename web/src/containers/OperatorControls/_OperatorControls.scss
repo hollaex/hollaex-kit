@@ -53,6 +53,7 @@ $operator-controls__panel-border-color: #A7A7A7;
 }
 
 .operator-controls__publish-button {
+  color: $operator-controls__panel-text-color;
   background-color: #FF0000;
   border: 1px solid #FF0000 ;
   border-radius: 10px;
@@ -63,6 +64,7 @@ $operator-controls__panel-border-color: #A7A7A7;
 }
 
 .operator-controls__save-button {
+  color: $operator-controls__panel-text-color;
   background-color: #288500;
   border: 1px solid #288500;
   font-weight: bold;
@@ -73,6 +75,16 @@ $operator-controls__panel-border-color: #A7A7A7;
 }
 
 .operator-controls__modal {
+
+  .ant-select-selector {
+    background-color: $operator-controls__panel-text-color !important;
+  }
+
+  .ant-input {
+    color: #0a0a0a !important;
+    background-color: $operator-controls__panel-text-color !important;
+  }
+
   .ReactModal__Content {
     background-color: $operator-controls__panel-main-color !important;
     color: $operator-controls__panel-text-color !important;
@@ -120,6 +132,7 @@ $operator-controls__panel-border-color: #A7A7A7;
   .ant-input-search,
   .ant-input {
     color: $operator-controls__panel-text-color !important;
+    background-color: $operator-controls__panel-main-color !important;
   }
 }
 
@@ -140,6 +153,7 @@ $operator-controls__panel-border-color: #A7A7A7;
   .ant-select-selector
   {
     color: $operator-controls__panel-text-color !important;
+    background-color: $operator-controls__panel-main-color !important;
     font-weight: bold;
   }
 

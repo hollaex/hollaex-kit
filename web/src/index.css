@@ -3772,6 +3772,7 @@ table th {
   margin: 0 35px; }
 
 .operator-controls__publish-button {
+  color: #FFFFFF;
   background-color: #FF0000;
   border: 1px solid #FF0000;
   border-radius: 10px;
@@ -3781,11 +3782,19 @@ table th {
   text-transform: uppercase; }
 
 .operator-controls__save-button {
+  color: #FFFFFF;
   background-color: #288500;
   border: 1px solid #288500;
   font-weight: bold; }
   .operator-controls__save-button.confirm {
     width: 101px; }
+
+.operator-controls__modal .ant-select-selector {
+  background-color: #FFFFFF !important; }
+
+.operator-controls__modal .ant-input {
+  color: #0a0a0a !important;
+  background-color: #FFFFFF !important; }
 
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
@@ -3821,7 +3830,8 @@ table th {
     border-bottom: 1px solid white; }
   .operator-controls__all-strings-header .ant-input-search,
   .operator-controls__all-strings-header .ant-input {
-    color: #FFFFFF !important; }
+    color: #FFFFFF !important;
+    background-color: #0000FF !important; }
 
 .operator-controls__modal-title {
   font-size: 28px;
@@ -3835,6 +3845,7 @@ table th {
 .operator-controls__table .ant-select-arrow,
 .operator-controls__table .ant-select-selector {
   color: #FFFFFF !important;
+  background-color: #0000FF !important;
   font-weight: bold; }
 
 .operator-controls__tabletable {
@@ -9863,7 +9874,9 @@ foreignObject {
   background-color: #0000FF;
   cursor: pointer;
   font-size: 10px !important;
-  margin-right: 2px; }
+  margin-right: 2px;
+  text-decoration: none !important;
+  font-weight: normal !important; }
 
 .layout-edit .edit-wrapper__icon-wrapper {
   display: inline-block !important; }
