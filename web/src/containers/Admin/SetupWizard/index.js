@@ -100,7 +100,7 @@ export default class SetupWizard extends Component {
             case 1:
                 return (<AccountSecurity handleNext={this.onTabChange} />);
             case 2:
-                return (<Assets handleNext={this.onTabChange} />);
+                return (<Assets handleNext={this.onTabChange} updateConstants={this.updateConstants} />);
             case 3:
                 return (<TradingInterface handleNext={this.onTabChange} updateConstants={this.updateConstants} />);
             case 4:

@@ -12,7 +12,9 @@ import {
 	updatePluginsService,
 	connectVault,
 	requestVaultSupportCoins,
-	disconnectVault
+	disconnectVault,
+	connectPlugin,
+	disconnectPlugin
 } from './action';
 import { getAllPluginsData, getPluginsForm } from './Utils';
 import { setConfig } from '../../../actions/appActions';
@@ -72,7 +74,7 @@ class PluginServices extends Component {
 		this.setState({ loading: true, error: '' });
 		getConstants()
 			.then((res) => {
-				this.setState({ loading: false, constants: { ...res.constants } });
+				this.setState({ loading: false, constants: { ...res } });
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -118,7 +120,7 @@ class PluginServices extends Component {
 	};
 
 	getServices = (services = '') => {
-		const { plugins = { enabled: '' } } = this.state.constants;
+		const { enabled = [] } = this.state.constants;
 		const initialData = this.state.pluginsData[services] || {};
 		const allPluginsData = getAllPluginsData(this.props.availablePlugins);
 		const pluginData = allPluginsData[services] || {}
@@ -129,7 +131,7 @@ class PluginServices extends Component {
 		let connectStatus = false;
 		let initialValues = {}
 		if (services === 'vault') {
-			if (plugins.enabled.includes(services)) {
+			if (enabled.includes(services)) {
 				connectStatus = true;
 			}
 			initialValues = {
@@ -143,14 +145,14 @@ class PluginServices extends Component {
 					}, 200);
 				}
 			}
-		} else if ((services === 'bank' || services === 'chat') && plugins.enabled) {
-			if (plugins.enabled.includes(services)) {
+		} else if ((services === 'bank' || services === 'chat') && enabled) {
+			if (enabled.includes(services)) {
 				connectStatus = true;
 				initialValues = {};
 			}
 		} else {
 			if (pluginData.key) {
-				if (plugins.enabled.includes(services)) {
+				if (enabled.includes(services)) {
 					connectStatus = true;
 				}
 				initialValues = { ...initialData };
@@ -166,7 +168,7 @@ class PluginServices extends Component {
 						}
 					});
 				}
-			} else if (plugins.enabled.includes(services)) {
+			} else if (enabled.includes(services)) {
 				connectStatus = true;
 			}
 		}
@@ -197,34 +199,37 @@ class PluginServices extends Component {
 	};
 
 	enablePlugins = (service) => {
-		const { plugins = { enabled: '', configuration: {} } } = this.state.constants;
+		const { enabled = [] } = this.state.constants;
 		let formValues = {
-			plugins: {
-				...plugins
-			}
+			enabled: [
+				...enabled
+			]
 		};
-		if (!plugins.enabled.includes(service)) {
-			formValues.plugins.enabled = plugins.enabled ? `${plugins.enabled},${service}` : service;
+		if (!enabled.includes(service)) {
+			formValues.enabled = [
+				...formValues.enabled,
+				service
+			];
 		}
-		return this.updateConstants(formValues);
+		return this.connectPlugins();
 	};
 
 	disablePlugins = (service) => {
-		const {
-			plugins = { configuration: {} }
-		} = this.state.constants;
-		let enabled = plugins.enabled;
-		if (plugins.enabled.includes(service)) {
-			let temp = plugins.enabled.split(',');
-			enabled = temp.filter(val => val !== service).join(',');
-		}
-		let formValues = {
-			plugins: {
-				...plugins,
-				enabled
-			}
-		}
-		this.updateConstants(formValues, true);
+		// const {
+		// 	plugins = { configuration: {} }
+		// } = this.state.constants;
+		// let enabled = plugins.enabled;
+		// if (plugins.enabled.includes(service)) {
+		// 	let temp = plugins.enabled.split(',');
+		// 	enabled = temp.filter(val => val !== service).join(',');
+		// }
+		// let formValues = {
+		// 	plugins: {
+		// 		...plugins,
+		// 		enabled
+		// 	}
+		// }
+		this.disconnectPlugins();
 		this.handleDeactivate();
 	};
 
@@ -328,6 +333,32 @@ class PluginServices extends Component {
 			];
 		}
 		this.connectVault(formValues);
+	};
+
+	connectPlugins = () => {
+		return connectPlugin(this.state.services)
+			.then(res => {
+				this.getConstantData();
+				this.setState({ serviceLoading: false });
+			})
+			.catch(error => {
+				const message = error.data ? error.data.message : error.message;
+				message.error(message);
+				this.setState({ serviceLoading: false });
+			})
+	};
+
+	disconnectPlugins = () => {
+		return disconnectPlugin(this.state.services)
+			.then(res => {
+				this.getConstantData();
+				this.setState({ serviceLoading: false });
+			})
+			.catch(error => {
+				const message = error.data ? error.data.message : error.message;
+				message.error(message);
+				this.setState({ serviceLoading: false });
+			})
 	};
 
 	updateConstants = (formProps) => {

@@ -57,6 +57,10 @@
 	text-align: left;
 	padding-left: 2rem;
 }
+.select-coin-text {
+	font-size: 16px;
+	margin-bottom: 0.5rem;
+}
 .title-text {
 	font-size: 16px;
 	color: #ffffff;
@@ -88,6 +92,17 @@
 	padding-bottom: 1rem;
 	border-bottom: 1px solid #c4c4c4;
 }
+.coin-wrapper .ant-select-arrow {
+	color: #c4c4c4;
+}
+.coin-wrapper .ant-select {
+	height: 50px;
+	width: 20rem;
+}
+.coin-wrapper .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+	height: 50px;
+}
+.asset-list .select-coin-text,
 .asset-list .title-text {
 	margin-right: 0.5rem;
 }
