@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, IS_XHT } from '../../config/constants';
+import { IS_XHT } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 
 class MenuList extends Component {
@@ -75,7 +76,8 @@ class MenuList extends Component {
 			securityPending,
 			verificationPending,
 			walletPending,
-			activePath
+			activePath,
+			icons: ICONS,
 		} = this.props;
 		const { isOpen } = this.state;
 		const totalPending = IS_XHT
@@ -89,8 +91,9 @@ class MenuList extends Component {
 				})}
 				ref={(el) => (this.element = el)}
 			>
-				<ReactSVG
-					path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+				<Image
+					iconId="SIDEBAR_ACCOUNT_INACTIVE"
+					icon={ICONS["SIDEBAR_ACCOUNT_INACTIVE"]}
 					wrapperClassName="app-bar-account-icon"
 				/>
 				{!!totalPending && (
@@ -106,8 +109,9 @@ class MenuList extends Component {
 							onClick={() => this.handleMenu('summary')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SUMMARY}
+							<Image
+								iconId="TAB_SUMMARY"
+								icon={ICONS["TAB_SUMMARY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY">
@@ -143,8 +147,9 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_WALLET}
+							<Image
+								iconId="TAB_WALLET"
+								icon={ICONS["TAB_WALLET"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_WALLET">
@@ -159,8 +164,9 @@ class MenuList extends Component {
 							onClick={() => this.handleMenu('history')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_HISTORY}
+							<Image
+								iconId="TAB_HISTORY"
+								icon={ICONS["TAB_HISTORY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY">
@@ -196,8 +202,9 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_SECURITY}
+							<Image
+								iconId="TAB_SECURITY"
+								icon={ICONS["TAB_SECURITY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_SECURITY">
@@ -235,8 +242,9 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_VERIFY}
+							<Image
+								iconId="TAB_VERIFY"
+								icon={ICONS["TAB_VERIFY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_VERIFICATION">
@@ -251,8 +259,9 @@ class MenuList extends Component {
 							onClick={() => this.handleMenu('settings')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SETTING}
+							<Image
+								iconId="TAB_SETTING"
+								icon={ICONS["TAB_SETTING"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_SETTINGS">
@@ -267,8 +276,9 @@ class MenuList extends Component {
 							onClick={this.onHelp}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.SIDEBAR_HELP}
+							<Image
+								iconId="SIDEBAR_HELP"
+								icon={ICONS["SIDEBAR_HELP"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							<EditWrapper stringId="LOGIN.HELP">
@@ -281,8 +291,8 @@ class MenuList extends Component {
 							onClick={this.logout}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SIGNOUT}
+							<Image
+								icon={ICONS["TAB_SIGNOUT"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
 							{STRINGS["ACCOUNTS.TAB_SIGNOUT"]}
@@ -294,4 +304,4 @@ class MenuList extends Component {
 	}
 }
 
-export default MenuList;
+export default withConfig(MenuList);

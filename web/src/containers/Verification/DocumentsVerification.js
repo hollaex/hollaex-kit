@@ -8,6 +8,7 @@ import {
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import {
 	IdentificationFormSection,
 	PORSection,
@@ -17,7 +18,6 @@ import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
 
 import { isMobile } from 'react-device-detect';
-import { ICONS } from '../../config/constants';
 const FORM_NAME = 'DocumentsVerification';
 
 class DocumentsVerification extends Component {
@@ -180,7 +180,8 @@ class DocumentsVerification extends Component {
 			error,
 			// skip,
 			openContactForm,
-			activeLanguage
+			activeLanguage,
+			icons: ICONS,
 		} = this.props;
 		const { formFields } = this.state;
 		return (
@@ -196,7 +197,7 @@ class DocumentsVerification extends Component {
 				>
 					<HeaderSection
 						title={STRINGS["USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"]}
-						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
+						icon={ICONS["VERIFICATION_DOCUMENT_NEW"]}
 						openContactForm={openContactForm}
 					>
 						<IdentificationFormSection />
@@ -229,7 +230,7 @@ class DocumentsVerification extends Component {
 							</HeaderSection>
 							<div className="my-2">
 								<img
-									src={activeLanguage === 'en' ? ICONS.SELF_KYC_ID_EN : ICONS.SELF_KYC_ID_EN}
+									src={activeLanguage === 'en' ? ICONS["SELF_KYC_ID_EN"] : ICONS["SELF_KYC_ID_EN"]}
 									className="verification_document-sample"
 									alt="document-sample" />
 							</div>
@@ -270,6 +271,6 @@ class DocumentsVerification extends Component {
 
 const DocumentsVerificationForm = reduxForm({
 	form: FORM_NAME
-})(DocumentsVerification);
+})(withConfig(DocumentsVerification));
 
 export default DocumentsVerificationForm;

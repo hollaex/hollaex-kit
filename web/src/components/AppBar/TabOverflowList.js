@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
-
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import Image from 'components/Image';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import { donutFormatPercentage, formatToCurrency } from '../../utils/currency';
 
 let tickClicked = false;
@@ -35,7 +35,7 @@ class TabOverflowList extends Component {
     }
 
     render() {
-        const { selectedTabs, activePairTab, tickers, coins = {} } = this.props;
+        const { selectedTabs, activePairTab, tickers, coins = {}, icons: ICONS } = this.props;
         return (
             <div id="tab-overflow-list" className="app-bar-add-tab-menu">
                 <div className="app-bar-tab-overflow-content">
@@ -56,16 +56,17 @@ class TabOverflowList extends Component {
                                 className="app-bar-add-tab-content-list d-flex align-items-center"
                                 onClick={() => this.onOverflow(pair)}>
                                 {pair === activePairTab
-                                    ? <ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="app-bar-tab-setting" />
+                                    ? <Image icon={ICONS.BLACK_CHECK} wrapperClassName="app-bar-tab-setting" />
                                     : <div className="app-bar-tab-setting"> </div>
                                 }
-                                <ReactSVG
-                                    path={
+                                <Image
+                                    icon={
                                         ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
                                             ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
                                             : ICONS.DEFAULT_ICON
                                     }
-                                    wrapperClassName="app-bar-add-tab-icons" />
+                                    wrapperClassName="app-bar-add-tab-icons"
+                                />
                                 <div className="app_bar-pair-font">
                                     {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                 </div>
@@ -95,4 +96,4 @@ class TabOverflowList extends Component {
     }
 };
 
-export default TabOverflowList;
+export default withConfig(TabOverflowList);

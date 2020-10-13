@@ -38,7 +38,7 @@ import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
 import RiskForm, { generateWarningFormValues } from './RiskForm';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { calculateBalancePrice } from '../../utils/currency';
 
 class UserSettings extends Component {
@@ -126,7 +126,7 @@ class UserSettings extends Component {
 	};
 
 	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
-		const { constants = {} } = this.props;
+		const { constants = {}, icons: ICONS } = this.props;
 		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -155,13 +155,14 @@ class UserSettings extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS["USER_SETTINGS.TITLE_NOTIFICATION"]}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						icon={ICONS["SETTING_NOTIFICATION_ICON"]}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_NOTIFICATION"
 						title={STRINGS["USER_SETTINGS.TITLE_NOTIFICATION"]}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						iconId="SETTING_NOTIFICATION_ICON"
+						icon={ICONS["SETTING_NOTIFICATION_ICON"]}
 					/>
 				),
 				content: activeTab === 0 && (
@@ -178,13 +179,14 @@ class UserSettings extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS["USER_SETTINGS.TITLE_INTERFACE"]}
-						icon={ICONS.SETTING_INTERFACE_ICON}
+						icon={ICONS["SETTING_INTERFACE_ICON"]}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_INTERFACE"
 						title={STRINGS["USER_SETTINGS.TITLE_INTERFACE"]}
-						icon={ICONS.SETTING_INTERFACE_ICON}
+						iconId="SETTING_INTERFACE_ICON"
+						icon={ICONS["SETTING_INTERFACE_ICON"]}
 					/>
 				),
 				content: activeTab === 1 && (
@@ -201,13 +203,14 @@ class UserSettings extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS["USER_SETTINGS.TITLE_LANGUAGE"]}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
+						icon={ICONS["SETTING_LANGUAGE_ICON"]}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_LANGUAGE"
 						title={STRINGS["USER_SETTINGS.TITLE_LANGUAGE"]}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
+						iconId="SETTING_LANGUAGE_ICON"
+						icon={ICONS["SETTING_LANGUAGE_ICON"]}
 					/>
 				),
 				content: activeTab === 2 && (
@@ -224,13 +227,14 @@ class UserSettings extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
-						icon={ICONS.SETTING_CHAT_ICON}
+						icon={ICONS["SETTING_CHAT_ICON"]}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_CHAT"
 						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
-						icon={ICONS.SETTING_CHAT_ICON}
+						iconId="SETTING_CHAT_ICON"
+						icon={ICONS["SETTING_CHAT_ICON"]}
 					/>
 				),
 				content: activeTab === 3 && (
@@ -245,13 +249,14 @@ class UserSettings extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"]}
-						icon={ICONS.SETTING_AUDIO_ICON}
+						icon={ICONS["SETTING_AUDIO_ICON"]}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_AUDIO_CUE"
 						title={STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"]}
-						icon={ICONS.SETTING_AUDIO_ICON}
+						iconId="SETTING_AUDIO_ICON"
+						icon={ICONS["SETTING_AUDIO_ICON"]}
 					/>
 				),
 				content: activeTab === 4 && (
@@ -268,13 +273,14 @@ class UserSettings extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS["USER_SETTINGS.TITLE_MANAGE_RISK"]}
-						icon={ICONS.SETTING_RISK_ICON}
+						icon={ICONS["SETTING_RISK_ICON"]}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
 						title={STRINGS["USER_SETTINGS.TITLE_MANAGE_RISK"]}
-						icon={ICONS.SETTING_RISK_ICON}
+						iconId="SETTING_RISK_ICON"
+						icon={ICONS["SETTING_RISK_ICON"]}
 					/>
 				),
 				content: activeTab === 5 && (
@@ -469,4 +475,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(UserSettings);
+)(withConfig(UserSettings))

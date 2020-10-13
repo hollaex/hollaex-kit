@@ -53,6 +53,7 @@ class AddLanguageModal extends Component {
             style={{ width: '290px' }}
             size="large"
             onSelect={this.handleSelect}
+            dropdownStyle={{ zIndex: '10003' }}
           >
             {
               languages.map(({ label, value }) => (

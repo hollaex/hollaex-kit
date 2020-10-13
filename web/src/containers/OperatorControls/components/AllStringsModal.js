@@ -17,6 +17,7 @@ class AllStringsModal extends Component {
           bordered={false}
           size="default"
           onSelect={(value) => onSelect(value, index)}
+          dropdownStyle={{ zIndex: '10003' }}
         >
           {
             languageOptions.map(({ label, value }) => (
@@ -90,6 +91,7 @@ class AllStringsModal extends Component {
             </div>
             <Table
               className="operator-controls__table"
+              rowClassName="pointer"
               columns={this.getColumns()}
               dataSource={strings}
               size="small"

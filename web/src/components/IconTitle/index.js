@@ -8,6 +8,7 @@ const BasicIconTitle = ({
 	text,
 	stringId,
 	iconPath,
+	iconId,
 	textType,
 	underline,
 	className,
@@ -24,22 +25,11 @@ const BasicIconTitle = ({
 					? (<div style={{ backgroundImage: `url(${iconPath})` }} className={classnames(imageWrapperClassName)} />)
 					: (<img src={iconPath} alt={text} className={classnames("icon_title-image", imageWrapperClassName)} />)
 			))}
-		{
-			stringId && (
-				<EditWrapper stringId={stringId}>
-					<div className={classnames('icon_title-text', 'text-center', textType)}>
-            {text}
-					</div>
-				</EditWrapper>
-			)
-		}
-		{
-			!stringId && (
+			<EditWrapper stringId={stringId} iconId={iconId}>
 				<div className={classnames('icon_title-text', 'text-center', textType)}>
           {text}
 				</div>
-			)
-		}
+			</EditWrapper>
 	</div>
 );
 

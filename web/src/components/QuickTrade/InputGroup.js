@@ -1,14 +1,14 @@
 import React from 'react';
 import { oneOfType, array, string, func, number, object } from 'prop-types';
 import { Select, Input } from 'antd';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
-import { ICONS } from 'config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const { Option } = Select;
 const { Group } = Input;
@@ -56,7 +56,7 @@ class InputGroup extends React.PureComponent {
 
   render() {
     const { isOpen } = this.state;
-    const { name, options, inputValue, selectValue, onSelect, limits = {} } = this.props;
+    const { name, options, inputValue, selectValue, onSelect, limits = {}, icons: ICONS } = this.props;
 
     return (
       <div className="py-2">
@@ -81,13 +81,13 @@ class InputGroup extends React.PureComponent {
             {options.map((symbol, index) => (
               <Option name="selectedPairBase" value={symbol} key={index} className="d-flex">
                 <div className="d-flex align-items-center">
-                  <ReactSVG
-                    path={
-                      ICONS[`${symbol.toUpperCase()}_ICON`]
-                        ? ICONS[`${symbol.toUpperCase()}_ICON`]
-                        : ICONS.DEFAULT_ICON
-                    }
-                    wrapperClassName="input-group__coin-icons"
+                  <Image
+                      icon={
+                        ICONS[`${symbol.toUpperCase()}_ICON`]
+                          ? ICONS[`${symbol.toUpperCase()}_ICON`]
+                          : ICONS["DEFAULT_ICON"]
+                      }
+                      wrapperClassName="input-group__coin-icons"
                   />
                   <span className="pl-1">
                     {symbol.toUpperCase()}
@@ -132,4 +132,4 @@ InputGroup.propTypes = {
   limits: object,
 }
 
-export default InputGroup;
+export default withConfig(InputGroup);

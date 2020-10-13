@@ -12,12 +12,10 @@ import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
-import {
-	FLEX_CENTER_CLASSES,
-	ICONS
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 let errorTimeOut = null;
 
@@ -209,7 +207,7 @@ class Login extends Component {
 	};
 
 	render() {
-		const { logoutMessage, activeTheme, constants = {} } = this.props;
+		const { logoutMessage, activeTheme, constants = {}, icons: ICONS } = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
@@ -307,4 +305,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Login);
+)(withConfig(Login));

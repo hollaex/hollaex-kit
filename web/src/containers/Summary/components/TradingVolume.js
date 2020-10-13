@@ -9,11 +9,12 @@ import { BarChart } from '../../../components';
 import { calculatePrice, formatToCurrency } from '../../../utils/currency';
 import {
 	TRADING_VOLUME_CHART_LIMITS,
-	SUMMMARY_ICON,
 	CHART_MONTHS,
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA
 } from '../../../config/constants';
+
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class TradingVolume extends Component {
 	state = {
@@ -39,7 +40,7 @@ class TradingVolume extends Component {
 	}
 
 	constructData = (tradeValues, coins) => {
-		const { pairs, prices, activeTheme } = this.props;
+		const { pairs, prices, activeTheme, icons: ICONS } = this.props;
 		const chartData = [];
 		let totalVolume = 0;
 		let peakVolume = this.state.peakVolume;
@@ -93,7 +94,7 @@ class TradingVolume extends Component {
 			TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 				if (index === 0) {
 					limitContent.push({
-						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
+						icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'}`],
 						text: STRINGS.formatString(
 							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							3
@@ -101,7 +102,7 @@ class TradingVolume extends Component {
 					});
 				} else if (index === 1) {
 					limitContent.push({
-						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
+						icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'}`],
 						text: STRINGS.formatString(
 							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							4
@@ -154,7 +155,7 @@ class TradingVolume extends Component {
 				TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 					if (index === 0) {
 						limitContent.push({
-							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
+							icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'}`],
 							text: STRINGS.formatString(
 								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								3
@@ -162,7 +163,7 @@ class TradingVolume extends Component {
 						});
 					} else if (index === 1) {
 						limitContent.push({
-							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
+							icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'}`],
 							text: STRINGS.formatString(
 								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								4
@@ -228,4 +229,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(TradingVolume);
+)(withConfig(TradingVolume));

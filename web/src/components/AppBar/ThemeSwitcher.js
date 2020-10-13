@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const ThemeSwitcher = ({ selected, options = [], toggle }) => {
+const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
     return (
         <div>
             <div className={classnames('toggle_button-wrapper', 'd-flex')}>
@@ -20,8 +20,9 @@ const ThemeSwitcher = ({ selected, options = [], toggle }) => {
                         <div
                             className={'app-bar-account-content app-bar-account-moon-content'}
                         >
-                            <ReactSVG
-                                path={ICONS.SUN_THEME}
+                            <Image
+                                iconId="SUN_THEME"
+                                icon={ICONS["SUN_THEME"]}
                                 wrapperClassName="app-bar-account-moon-icon"
                             />
                         </div>
@@ -39,8 +40,9 @@ const ThemeSwitcher = ({ selected, options = [], toggle }) => {
                         <div
                             className={'app-bar-account-content app-bar-account-moon-content'}
                         >
-                            <ReactSVG
-                                path={ICONS.MOON_THEME}
+                            <Image
+                                iconId="MOON_THEME"
+                                icon={ICONS["MOON_THEME"]}
                                 wrapperClassName="app-bar-account-moon-icon"
                             />
                         </div>
@@ -51,4 +53,4 @@ const ThemeSwitcher = ({ selected, options = [], toggle }) => {
     )
 }
 
-export default ThemeSwitcher;
+export default withConfig(ThemeSwitcher);

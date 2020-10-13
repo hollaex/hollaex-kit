@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { ICONS } from '../../config/constants';
 import {
 	resetPassword,
 	otpRequest,
@@ -25,6 +24,7 @@ import { OTP, renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class UserVerification extends Component {
 	state = {
@@ -67,6 +67,7 @@ class UserVerification extends Component {
 	calculateSections = (user) => {
 		const formValues = generateFormValues();
 		const { otp_enabled, otp, verification_level } = user;
+		const { icons: ICONS } = this.props;
 
 		const sections = [
 			{
@@ -98,7 +99,7 @@ class UserVerification extends Component {
 						? STRINGS["ACCOUNT_SECURITY.OTP.OTP_ENABLED"]
 						: STRINGS["ACCOUNT_SECURITY.OTP.OTP_DISABLED"],
 					status: otp_enabled ? 'success' : 'warning',
-					iconPath: otp_enabled ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
+					iconPath: otp_enabled ? ICONS["GREEN_CHECK"] : ICONS["RED_ARROW"],
 					allowClick: !otp_enabled
 				}
 			},
@@ -116,7 +117,7 @@ class UserVerification extends Component {
 					stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE",
 					text: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE"],
 					status: 'success',
-					iconPath: ICONS.GREEN_CHECK,
+					iconPath: ICONS["GREEN_CHECK"],
 					allowClick: true
 				}
 			},
@@ -135,8 +136,8 @@ class UserVerification extends Component {
 					// text: STRINGS[`DEVELOPER_SECTION.${otp_enabled ? 'ACTIVE' : 'INACTIVE'}`],
 					status: otp_enabled ? 'success' : 'disabled',
 					iconPath: otp_enabled
-						? ICONS.TOKENS_ACTIVE
-						: ICONS.TOKENS_INACTIVE, // TODO check
+						? ICONS["TOKENS_ACTIVE"]
+						: ICONS["TOKENS_INACTIVE"], // TODO check
 					allowClick: true
 				}
 			}
@@ -242,6 +243,7 @@ class UserVerification extends Component {
 		modalText,
 		constants
 	) => {
+		const { icons: ICONS } = this.props;
 		if (error) {
 			return (
 				<SuccessDisplay
@@ -253,7 +255,7 @@ class UserVerification extends Component {
 		} else if (otp_enabled && !modalText) {
 			return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
 		} else if (requested && !activated) {
-			return renderOTPForm(secret, email, this.onSubmitActivateOtp, constants);
+			return renderOTPForm(secret, email, this.onSubmitActivateOtp, constants, ICONS);
 		} else {
 			return (
 				<SuccessDisplay
@@ -320,4 +322,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(UserVerification);
+)(withConfig(UserVerification))

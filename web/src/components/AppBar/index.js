@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 import math from 'mathjs';
@@ -265,8 +265,9 @@ class AppBar extends Component {
 		return token ? (
 			<div className="d-flex app-bar-account" onClick={this.handleSummary}>
 				<div className="app-bar-account-content mr-2">
-					<ReactSVG
-						path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+					<Image
+						iconId="SIDEBAR_ACCOUNT_INACTIVE"
+						icon={ICONS["SIDEBAR_ACCOUNT_INACTIVE"]}
 						wrapperClassName="app-bar-currency-icon"
 					/>
 					{!!totalPending && (
@@ -495,8 +496,8 @@ class AppBar extends Component {
 												'quick_trade-active': location.pathname === '/admin'
 											})}
 										>
-											<ReactSVG
-												path={ICONS.SIDEBAR_ADMIN_DASH_ACTIVE}
+											<Image
+												icon={ICONS["SIDEBAR_ADMIN_DASH_ACTIVE"]}
 												wrapperClassName="quicktrade_icon mx-1"
 											/>
 											<div className="d-flex align-items-center">
@@ -512,8 +513,9 @@ class AppBar extends Component {
 												location.pathname === '/trade/add/tabs'
 										})}
 									>
-										<ReactSVG
-											path={ICONS.SIDEBAR_TRADING_ACTIVE}
+										<Image
+											iconId="SIDEBAR_TRADING_ACTIVE"
+											icon={ICONS["SIDEBAR_TRADING_ACTIVE"]}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
 										<EditWrapper stringId="PRO_TRADE">
@@ -530,8 +532,9 @@ class AppBar extends Component {
 												'quick_trade-active': activePath === 'quick-trade'
 											})}
 										>
-											<ReactSVG
-												path={ICONS.QUICK_TRADE_TAB_ACTIVE}
+											<Image
+												iconId="QUICK_TRADE_TAB_ACTIVE"
+												icon={ICONS["QUICK_TRADE_TAB_ACTIVE"]}
 												wrapperClassName="quicktrade_icon"
 											/>
 											<EditWrapper stringId="QUICK_TRADE">

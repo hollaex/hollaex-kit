@@ -8,7 +8,6 @@ import math from 'mathjs';
 
 import { submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
-// import { ICONS, BALANCE_ERROR, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
 import {
 	QuickTrade,

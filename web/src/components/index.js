@@ -57,3 +57,4 @@ export { default as EditWrapper } from './EditWrapper';
 export { default as AdminHocForm } from './AdminForm/hoc';
 export { default as ModalForm } from './AdminForm/modal';
 export { default as AppFooter } from './AppFooter';
+export { default as Image } from './Image';

@@ -13,7 +13,7 @@ import {
 } from '../../actions/walletActions';
 
 import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
@@ -24,6 +24,7 @@ import { RECORD_LIMIT } from './constants';
 import HistoryDisplay from './HistoryDisplay';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
@@ -221,7 +222,7 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme, coins } = this.props;
+		const { id, activeTheme, coins, icons: ICONS } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
@@ -242,7 +243,8 @@ class TransactionsHistory extends Component {
 					<IconTitle
 						stringId="TRANSACTION_HISTORY.TITLE"
 						text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
-						iconPath={ICONS.TRANSACTION_HISTORY}
+						iconId="TRANSACTION_HISTORY"
+						iconPath={ICONS["TRANSACTION_HISTORY"]}
 						textType="title"
 						useSvg={true}
 					/>
@@ -256,7 +258,8 @@ class TransactionsHistory extends Component {
 									<CheckTitle
 										stringId="TRANSACTION_HISTORY.TRADES"
 										title={STRINGS["TRANSACTION_HISTORY.TRADES"]}
-										icon={ICONS.TRADE_HISTORY}
+										iconId="TRADE_HISTORY"
+										icon={ICONS["TRADE_HISTORY"]}
 									/>
 								)
 						},
@@ -267,7 +270,8 @@ class TransactionsHistory extends Component {
 									<CheckTitle
 										stringId="TRANSACTION_HISTORY.DEPOSITS"
 										title={STRINGS["TRANSACTION_HISTORY.DEPOSITS"]}
-										icon={ICONS.DEPOSIT_HISTORY}
+										iconId="DEPOSIT_HISTORY"
+										icon={ICONS["DEPOSIT_HISTORY"]}
 									/>
 								)
 						},
@@ -278,7 +282,8 @@ class TransactionsHistory extends Component {
 									<CheckTitle
 										stringId="TRANSACTION_HISTORY.WITHDRAWALS"
 										title={STRINGS["TRANSACTION_HISTORY.WITHDRAWALS"]}
-										icon={ICONS.WITHDRAW_HISTORY}
+										iconId="WITHDRAW_HISTORY"
+										icon={ICONS["WITHDRAW_HISTORY"]}
 									/>
 								)
 						}
@@ -296,7 +301,8 @@ class TransactionsHistory extends Component {
 				>
 					<div>
 						<IconTitle
-							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
+							iconId={activeTheme === 'dark' ? "CANCEL_WITHDRAW_DARK": "CANCEL_WITHDRAW_LIGHT"}
+							iconPath={activeTheme === 'dark' ? ICONS["CANCEL_WITHDRAW_DARK"] : ICONS["CANCEL_WITHDRAW_LIGHT"]}
 							stringId="CANCEL_BASE_WITHDRAWAL"
 							text={STRINGS.formatString(
 								STRINGS["CANCEL_BASE_WITHDRAWAL"],
@@ -354,5 +360,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-	TransactionsHistory
+  withConfig(TransactionsHistory)
 );

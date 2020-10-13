@@ -1,9 +1,10 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 import { SortableElement } from 'react-sortable-hoc';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import { donutFormatPercentage, formatToCurrency } from '../../utils/currency';
 
 const Tab = SortableElement(({
@@ -18,6 +19,7 @@ const Tab = SortableElement(({
     selectedToOpen,
     selectedToRemove,
     sortId,
+    icons: ICONS,
     ...rest
 }) => {
     const { symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -67,12 +69,14 @@ const Tab = SortableElement(({
                 </div>
             </div>
             <div className='d-flex align-items-center mx-2' onClick={() => onTabChange(tab)}>
-                <ReactSVG
-                    path={ICONS.CLOSE_CROSS}
-                    wrapperClassName="app-bar-tab-close mr-0" />
+                <Image
+                    iconId="CLOSE_CROSS"
+                    icon={ICONS["CLOSE_CROSS"]}
+                    wrapperClassName="app-bar-tab-close mr-0"
+                />
             </div>
         </div>
     );
 });
 
-export default Tab;
+export default withConfig(Tab);

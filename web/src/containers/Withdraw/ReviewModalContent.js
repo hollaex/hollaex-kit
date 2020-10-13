@@ -1,9 +1,10 @@
 import React from 'react';
 import math from 'mathjs';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { Button } from '../../components';
 import { formatToCurrency } from '../../utils/currency';
-import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -31,7 +32,8 @@ const ReviewModalContent = ({
 	data,
 	price,
 	onClickAccept,
-	onClickCancel
+	onClickCancel,
+	icons: ICONS,
 }) => {
 	const { min, fullname, symbol = '' } = coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -52,8 +54,9 @@ const ReviewModalContent = ({
 
 	return (
 		<div className="d-flex flex-column review-wrapper">
-			<ReactSVG
-				path={ICONS.CHECK_SENDING_BITCOIN}
+			<Image
+				iconId="CHECK_SENDING_BITCOIN"
+				icon={ICONS["CHECK_SENDING_BITCOIN"]}
 				wrapperClassName="review-icon"
 			/>
 			{currency === BASE_CURRENCY ? (
@@ -120,4 +123,4 @@ ReviewModalContent.defaultProps = {
 	coins: {}
 };
 
-export default ReviewModalContent;
+export default withConfig(ReviewModalContent);

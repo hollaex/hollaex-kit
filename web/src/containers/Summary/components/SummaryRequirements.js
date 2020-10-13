@@ -4,12 +4,10 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 
 import { Button } from '../../../components';
-import {
-	ICONS,
-	IS_XHT
-} from '../../../config/constants';
+import { IS_XHT } from 'config/constants';
 import STRINGS from '../../../config/localizedStrings';
 // import { getBonusRequirements } from './utils';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 // const SucessStatus = ({ isAccountDetails }) => (
 // 	<div className="d-flex">
@@ -19,7 +17,7 @@ import STRINGS from '../../../config/localizedStrings';
 // 			</div>
 // 		)}
 // 		<ReactSvg
-// 			path={ICONS.GREEN_CHECK}
+// 			path={ICONS["GREEN_CHECK"]}
 // 			wrapperClassName="requirement-stauts"
 // 		/>
 // 	</div>
@@ -33,7 +31,7 @@ import STRINGS from '../../../config/localizedStrings';
 // 			</div>
 // 		) : (
 // 				<ReactSvg
-// 					path={ICONS.VERIFICATION_INCOMPLETE}
+// 					path={ICONS["VERIFICATION_INCOMPLETE"]}
 // 					wrapperClassName="requirement-stauts"
 // 				/>
 // 			)}
@@ -43,7 +41,7 @@ import STRINGS from '../../../config/localizedStrings';
 // const PendingStatus = ({ isAccountDetails }) => (
 // 	<div className="d-flex">
 // 		<ReactSvg
-// 			path={ICONS.VERIFICATION_PENDING}
+// 			path={ICONS["VERIFICATION_PENDING"]}
 // 			wrapperClassName="requirement-stauts"
 // 		/>
 // 	</div>
@@ -52,7 +50,7 @@ import STRINGS from '../../../config/localizedStrings';
 // const RejectedStatus = ({ isAccountDetails }) => (
 // 	<div className="d-flex">
 // 		<ReactSvg
-// 			path={ICONS.VERIFICATION_REJECTED}
+// 			path={ICONS["VERIFICATION_REJECTED"]}
 // 			wrapperClassName="requirement-stauts"
 // 		/>
 // 	</div>
@@ -304,7 +302,8 @@ const SummaryRequirements = ({
 	lastMonthVolume,
 	onUpgradeAccount,
 	balance,
-	affiliation
+	affiliation,
+	icons: ICONS,
 }) => {
 	const {
 		phone_number,
@@ -324,7 +323,7 @@ const SummaryRequirements = ({
 			{(!isAccountDetails && !isBonusSection) ? (
 				<div>
 					<ReactSvg
-						path={ICONS.VERIFICATION_DOC_STATUS}
+						path={ICONS["VERIFICATION_DOC_STATUS"]}
 						wrapperClassName="requirement-doc-icon"
 					/>
 				</div>
@@ -400,4 +399,4 @@ const SummaryRequirements = ({
 	);
 };
 
-export default SummaryRequirements;
+export default withConfig(SummaryRequirements);

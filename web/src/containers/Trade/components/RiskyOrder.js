@@ -2,17 +2,18 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { IconTitle, Button } from '../../../components';
-import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const RiskyOrder = ({ data, onConfirm, onClose }) => {
+const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
     const { symbol = '' } = data.coins[data.pairData.pair_2] || {};
     return (
         <div className="risky-trade-wrapper">
             <IconTitle
                 stringId="USER_SETTINGS.RISKY_TRADE_DETECTED"
                 text={STRINGS["USER_SETTINGS.RISKY_TRADE_DETECTED"]}
-                iconPath={ICONS.SETTING_RISK_MANAGE_WARNING_ICON}
+                iconId="SETTING_RISK_MANAGE_WARNING_ICON"
+                iconPath={ICONS["SETTING_RISK_MANAGE_WARNING_ICON"]}
                 textType="title"
                 useSvg={true}
                 underline={true}
@@ -59,4 +60,4 @@ const RiskyOrder = ({ data, onConfirm, onClose }) => {
     );
 };
 
-export default RiskyOrder;
+export default withConfig(RiskyOrder);

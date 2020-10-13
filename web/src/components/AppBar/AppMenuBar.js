@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 
-import { ICONS, IS_XHT } from '../../config/constants';
+import { IS_XHT } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 
 class AppMenuBar extends Component {
@@ -127,6 +128,7 @@ class AppMenuBar extends Component {
     };
 
     render() {
+        const { icons: ICONS } = this.props;
         const { activeMenu, securityPending, verificationPending, walletPending } = this.state;
         return (
             <div className="d-flex justify-content-between">
@@ -135,7 +137,11 @@ class AppMenuBar extends Component {
                         className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'summary' })}
                         onClick={() => this.handleMenuChange('summary')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            <ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="app-menu-bar-icon" />
+                            <Image
+                              iconId="TAB_SUMMARY"
+                              icon={ICONS["TAB_SUMMARY"]}
+                              wrapperClassName="app-menu-bar-icon"
+                            />
                             <EditWrapper stringId="ACCOUNTS.TAB_SUMMARY">
                               {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
                             </EditWrapper>
@@ -158,7 +164,11 @@ class AppMenuBar extends Component {
                                     {walletPending}
                                 </div>
                             }
-                            <ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-menu-bar-icon" />
+                            <Image
+                              iconId="TAB_WALLET"
+                              icon={ICONS["TAB_WALLET"]}
+                              wrapperClassName="app-menu-bar-icon"
+                            />
                             <EditWrapper stringId="ACCOUNTS.TAB_WALLET">
                               {STRINGS["ACCOUNTS.TAB_WALLET"]}
                             </EditWrapper>
@@ -181,7 +191,11 @@ class AppMenuBar extends Component {
                                     {securityPending}
                                 </div>
                             }
-                            <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-menu-bar-icon" />
+                            <Image
+                              iconId="TAB_SECURITY"
+                              icon={ICONS["TAB_SECURITY"]}
+                              wrapperClassName="app-menu-bar-icon"
+                            />
                             <EditWrapper stringId="ACCOUNTS.TAB_SECURITY">
                               {STRINGS["ACCOUNTS.TAB_SECURITY"]}
                             </EditWrapper>
@@ -204,7 +218,11 @@ class AppMenuBar extends Component {
                                     {verificationPending}
                                 </div>
                             }
-                            <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-menu-bar-icon" />
+                            <Image
+                              iconId="TAB_VERIFY"
+                              icon={ICONS["TAB_VERIFY"]}
+                              wrapperClassName="app-menu-bar-icon"
+                            />
                             <EditWrapper stringId="ACCOUNTS.TAB_VERIFICATION">
                               {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
                             </EditWrapper>
@@ -214,7 +232,11 @@ class AppMenuBar extends Component {
                         className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'settings' })}
                         onClick={() => this.handleMenuChange('settings')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            <ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-menu-bar-icon" />
+                            <Image
+                              iconId="TAB_SETTING"
+                              icon={ICONS["TAB_SETTING"]}
+                              wrapperClassName="app-menu-bar-icon"
+                            />
                             <EditWrapper stringId="ACCOUNTS.TAB_SETTINGS">
                               {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
                             </EditWrapper>
@@ -224,7 +246,7 @@ class AppMenuBar extends Component {
                         className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'api' })}
                         onClick={() => this.handleMenuChange('api')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            <ReactSVG path={ICONS.TAB_API} wrapperClassName="app-menu-bar-icon" />
+                            <Image iconId={ICONS["TAB_API"]} wrapperClassName="app-menu-bar-icon" />
                             {STRINGS["ACCOUNTS.TAB_API"]}
                         </div>
                     </div> */}
@@ -242,4 +264,4 @@ const mapStateToProps = (state) => ({
     enabledPlugins: state.app.enabledPlugins
 });
 
-export default connect(mapStateToProps)(AppMenuBar);
+export default connect(mapStateToProps)(withConfig(AppMenuBar));

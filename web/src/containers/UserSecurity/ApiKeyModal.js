@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { OtpForm, Loader, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { PopupInfo, TokenCreatedInfo } from './DeveloperSection';
 import { formValueSelector } from 'redux-form';
 import { TokenForm, generateFormValues, FORM_NAME } from './ApiKeyForm';
 import { tokenKeyValidation } from '../../components/Form/validations';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 export const TYPE_REVOKE = 'TYPE_REVOKE';
 export const TYPE_GENERATE = 'TYPE_GENERATE';
@@ -80,7 +80,7 @@ class ApiKeyModal extends Component {
 			tokenKey,
 			secret
 		} = this.state;
-		const { notificationType, openContactForm, activeTheme } = this.props;
+		const { notificationType, openContactForm, activeTheme, icons: ICONS } = this.props;
 		if (dialogOtpOpen) {
 			return (
 				<OtpForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />
@@ -106,7 +106,7 @@ class ApiKeyModal extends Component {
 		} else {
 			const icon =
 				notificationType === TYPE_REVOKE
-					? ICONS.TOKEN_TRASHED
+					? ICONS["TOKEN_TRASHED"]
 					: ICONS[
 							`TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`
 					  ];
@@ -144,4 +144,4 @@ const mapStateToForm = (state) => ({
 	activeTheme: state.app.theme
 });
 
-export default connect(mapStateToForm)(ApiKeyModal);
+export default connect(mapStateToForm)(withConfig(ApiKeyModal));

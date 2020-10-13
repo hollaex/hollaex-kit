@@ -1,13 +1,14 @@
 import React from 'react';
 import { oneOfType, arrayOf, shape, array, object, number, string, func } from 'prop-types';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 
-import { ICONS, THEME_DEFAULT } from 'config/constants';
+import { THEME_DEFAULT } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 
-const MarketList = ({ markets, handleClick, chartData }) => {
+const MarketList = ({ markets, handleClick, chartData, icons: ICONS }) => {
 
     const stroke = THEME_DEFAULT === 'dark' ? '#0066B4' : '#0000ff';
 
@@ -45,11 +46,16 @@ const MarketList = ({ markets, handleClick, chartData }) => {
                 >
                   <td>
                     <div className="d-flex align-items-center">
-                      <ReactSVG
-                        path={
+                      <Image
+                        iconId={
+                          ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                            ? `${pair.pair_base.toUpperCase()}_ICON`
+                            : "DEFAULT_ICON"
+                        }
+                        icon={
                           ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
                             ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-                            : ICONS.DEFAULT_ICON
+                            : ICONS["DEFAULT_ICON"]
                         }
                         wrapperClassName="market-list__coin-icons"
                       />
@@ -115,4 +121,4 @@ MarketList.propTypes = {
   handleClick: func.isRequired,
 };
 
-export default MarketList;
+export default withConfig(MarketList);

@@ -6,12 +6,12 @@ import { CurrencyBall, ActionNotification, SearchBox, AssetsBlockForm, EditWrapp
 import { calculatePrice, formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import {
-  ICONS,
   BASE_CURRENCY,
   CURRENCY_PRICE_FORMAT,
   DEFAULT_COIN_DATA,
   IS_XHT
 } from 'config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const AssetsBlock = ({
 	balance,
@@ -27,7 +27,8 @@ const AssetsBlock = ({
 	openContactUs,
 	handleSearch,
 	searchResult,
- 	handleCheck
+ 	handleCheck,
+	icons: ICONS,
 }) => {
 
 	const sortedSearchResults = Object.entries(searchResult)
@@ -266,4 +267,4 @@ const AssetsBlock = ({
   );
 }
 
-export default AssetsBlock;
+export default withConfig(AssetsBlock);

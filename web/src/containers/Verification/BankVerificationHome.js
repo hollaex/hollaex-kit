@@ -1,11 +1,12 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 
 import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, MAX_NUMBER_BANKS } from '../../config/constants';
+import { MAX_NUMBER_BANKS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
+const BankVerificationHome = ({ user, setActivePageContent, handleBack, icons: ICONS }) => {
 	const { bank_account } = user;
 	if (
 		!bank_account.length ||
@@ -28,8 +29,9 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
 					<div key={index} className="d-flex my-4">
 						{account.status === 1 && (
 							<div className="d-flex align-items-center mr-3">
-								<ReactSVG
-									path={ICONS.PENDING_TIMER}
+								<Image
+									iconId="PENDING_TIMER"
+									icon={ICONS["PENDING_TIMER"]}
 									wrapperClassName="account-pending-icon"
 								/>
 							</div>
@@ -81,4 +83,4 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
 	}
 };
 
-export default BankVerificationHome;
+export default withConfig(BankVerificationHome);

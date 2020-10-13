@@ -1,7 +1,10 @@
 import React from "react";
+import icons from 'config/icons';
+import { DEFAULT_LANGUAGE } from 'config/constants';
 
 const config = {
-  DEFAULT_LANGUAGE: process.env.REACT_APP_DEFAULT_LANGUAGE || 'en',
+  defaultLanguage: DEFAULT_LANGUAGE,
+  icons,
 }
 
 const ProjectConfig = React.createContext("appConfig")

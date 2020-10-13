@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { oneOfType, object, func, bool, string, array, number } from 'prop-types';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 import { Button } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { ICONS, FLEX_CENTER_CLASSES } from 'config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
 
 class QuickTrade extends Component {
@@ -25,10 +26,11 @@ class QuickTrade extends Component {
 			sourceOptions,
 			selectedSource,
 			selectedTarget,
-          	forwardSourceError,
-            forwardTargetError,
-          	orderLimits: { SIZE, PRICE },
+			forwardSourceError,
+			forwardTargetError,
+			orderLimits: { SIZE, PRICE },
 			side,
+			icons: ICONS
 		} = this.props;
 
 		return (
@@ -40,7 +42,13 @@ class QuickTrade extends Component {
 						// ...GROUP_CLASSES
 					)}
 				>
-					<ReactSVG path={ isMobile ? ICONS.SIDEBAR_QUICK_TRADING_INACTIVE: ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
+					<div className="d-flex content-center">
+						<Image
+							iconId={isMobile ? "SIDEBAR_QUICK_TRADING_INACTIVE" : "QUICK_TRADE"}
+							icon={isMobile ? ICONS["SIDEBAR_QUICK_TRADING_INACTIVE"] : ICONS["QUICK_TRADE"]}
+							wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"}
+						/>
+					</div>
 					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
 						{STRINGS["QUICK_TRADE_COMPONENT.TITLE"]}
 					</div>
@@ -117,4 +125,4 @@ QuickTrade.defaultProps = {
 	disabled: false
 };
 
-export default QuickTrade;
+export default withConfig(QuickTrade);

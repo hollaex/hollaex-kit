@@ -1,14 +1,13 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { getFormatTimestamp } from '../../utils/utils';
 import { Tooltip } from '../../components';
 
 const NOT_REVOKED = 'pointer blue-link';
 
-export const generateHeaders = (revokeToken, otp_enabled) => {
+export const generateHeaders = (revokeToken, otp_enabled, ICONS) => {
 	return [
 		{
 			label: '',
@@ -18,8 +17,9 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 					key={key}
 					className={classnames('tokens-icon', { 'small-icon': !revoked })}
 				>
-					<ReactSVG
-						path={revoked ? ICONS.TOKEN_REVOKED : ICONS.TOKEN_ACTIVE}
+					<Image
+						iconId={revoked ? "TOKEN_REVOKED" : "TOKEN_ACTIVE"}
+						icon={revoked ? ICONS["TOKEN_REVOKED"] : ICONS["TOKEN_ACTIVE"]}
 						wrapperClassName="tokens-icon-svg"
 					/>
 				</td>

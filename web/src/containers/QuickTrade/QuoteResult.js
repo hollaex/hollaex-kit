@@ -1,26 +1,29 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { object, func } from 'prop-types';
 import { Loader, Button } from 'components';
 import { formatToCurrency } from 'utils/currency';
 import { translateError, QUICK_TRADE_INSUFFICIENT_BALANCE } from 'components/QuickTrade/utils';
 
 import STRINGS from 'config/localizedStrings';
-import { ICONS } from 'config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, data } }) => {
+const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, data }, icons: ICONS }) => {
 
 	if (fetching) {
 		return <Loader relative={true} background={false} />;
 	} else if (error === QUICK_TRADE_INSUFFICIENT_BALANCE) {
 		return (
 			<div className="base_negative_balance">
-				<ReactSVG
-					path={ICONS.QUICK_TRADE_INSUFFICIENT_FUND}
-					wrapperClassName="quick-trade__icon"
-				/>
+				<div className="d-flex content-center">
+					<Image
+						iconId='QUICK_TRADE_INSUFFICIENT_FUND'
+						icon={ICONS['QUICK_TRADE_INSUFFICIENT_FUND']}
+						wrapperClassName="quick-trade__icon"
+					/>
+				</div>
 				<div className="quote-success__title" >
-                  {STRINGS["QUICK_TRADE_INSUFFICIENT_FUND"]}
+					{STRINGS["QUICK_TRADE_INSUFFICIENT_FUND"]}
 				</div>
 				<div className="quote-success-review-text">
 				  {STRINGS["QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE"]}
@@ -51,12 +54,15 @@ const QuoteResult = ({ onClose, onConfirm, pairData, data: { fetching, error, da
 
 		return (
 			<div className='success-review'>
-				<ReactSVG
-					path={ICONS.QUICK_TRADE_SUCCESSFUL}
-					wrapperClassName="quick-trade__icon"
-				/>
+				<div className="d-flex content-center">
+					<Image
+						iconId='QUICK_TRADE_SUCCESSFUL'
+						icon={ICONS['QUICK_TRADE_SUCCESSFUL']}
+						wrapperClassName="quick-trade__icon"
+					/>
+				</div>
 				<div className="quote-success__title" >
-                  {STRINGS["QUICK_TRADE_SUCCESS"]}
+					{STRINGS["QUICK_TRADE_SUCCESS"]}
 				</div>
 				<div className="quote-success-review-text">
 					{STRINGS.formatString(
@@ -91,4 +97,4 @@ QuoteResult.propTypes = {
   data: object.isRequired,
 }
 
-export default QuoteResult;
+export default withConfig(QuoteResult);

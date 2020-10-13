@@ -5,71 +5,12 @@ import ReactSVG from 'react-svg';
 import { DisplayTable } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
-import { IS_XHT, ICONS } from '../../../config/constants';
+import { IS_XHT } from '../../../config/constants';
 import { formatToCurrency } from '../../../utils/currency';
 // import { roundNumber } from '../../../utils/currency';
 // import { getDecimals } from '../../../utils/utils';
 import { tradeHistorySelector } from '../utils';
-
-const generateHeaders = (pairs) => {
-	return [
-		{
-			key: 'price',
-			label: STRINGS["PRICE"],
-			renderCell: ({ side, price = 0, isSameBefore, upDownRate, timestamp }, index) => {
-				const isArrow = upDownRate < 0;
-				return (
-					<div
-						className={classnames('trade_history-row d-flex flex-row', side)}
-						key={`time-${index}`}
-					>
-						{!isSameBefore
-							? <ReactSVG
-								path={isArrow
-									? ICONS.DOWN_ARROW
-									: ICONS.UP_ARROW
-								}
-								wrapperClassName={'trade_history-icon'}
-							/>
-							: <div className='trade_history-icon' />
-						}
-						{price}
-					</div>
-				)
-			}
-		},
-		{
-			key: 'size',
-			label: STRINGS["SIZE"],
-			renderCell: ({ size = 0, side }, index) => { 
-				// const { increment_size } = pairs;
-				// const minSize = roundNumber(size, getDecimals(increment_size));
-				return (
-					IS_XHT
-						? <div
-							className={classnames('trade_history-row', side)}
-							key={`size-${index}`}
-						>
-							{size}
-						</div>
-						: size
-				)
-			}
-		},
-		{
-			key: 'timestamp',
-			label: STRINGS["TIME"],
-			renderCell: ({ timestamp, side }, index) => IS_XHT
-				? <div
-					className={classnames('trade_history-row', side)}
-					key={`timestamp-${index}`}
-				>
-					{getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])}
-				</div>
-				: getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])
-		}
-	];
-}
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class TradeHistory extends Component {
 	state = {
@@ -98,7 +39,7 @@ class TradeHistory extends Component {
 	}
 
 	calculateHeaders = () => {
-		const headers = generateHeaders(this.props.pairs[this.props.pair]);
+		const headers = this.generateHeaders(this.props.pairs[this.props.pair]);
 		this.setState({ headers });
 	};
 
@@ -114,6 +55,67 @@ class TradeHistory extends Component {
 		});
 		this.setState({ data: constructedData });
 	};
+
+  generateHeaders = (pairs) => {
+  	const { icons: ICONS } = this.props;
+    return [
+      {
+        key: 'price',
+        label: STRINGS["PRICE"],
+        renderCell: ({ side, price = 0, isSameBefore, upDownRate, timestamp }, index) => {
+          const isArrow = upDownRate < 0;
+          return (
+						<div
+							className={classnames('trade_history-row d-flex flex-row', side)}
+							key={`time-${index}`}
+						>
+              {!isSameBefore
+                ? <ReactSVG
+									path={isArrow
+                    ? ICONS["DOWN_ARROW"]
+                    : ICONS["UP_ARROW"]
+                  }
+									wrapperClassName={'trade_history-icon'}
+								/>
+                : <div className='trade_history-icon' />
+              }
+              {price}
+						</div>
+          )
+        }
+      },
+      {
+        key: 'size',
+        label: STRINGS["SIZE"],
+        renderCell: ({ size = 0, side }, index) => {
+          // const { increment_size } = pairs;
+          // const minSize = roundNumber(size, getDecimals(increment_size));
+          return (
+            IS_XHT
+              ? <div
+								className={classnames('trade_history-row', side)}
+								key={`size-${index}`}
+							>
+                {size}
+							</div>
+              : size
+          )
+        }
+      },
+      {
+        key: 'timestamp',
+        label: STRINGS["TIME"],
+        renderCell: ({ timestamp, side }, index) => IS_XHT
+          ? <div
+						className={classnames('trade_history-row', side)}
+						key={`timestamp-${index}`}
+					>
+            {getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])}
+					</div>
+          : getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])
+      }
+    ];
+  }
 
 	render() {
 		const { data } = this.state;
@@ -135,4 +137,4 @@ const mapStateToProps = (store) => ({
 	data: tradeHistorySelector(store)
 });
 
-export default connect(mapStateToProps)(TradeHistory);
+export default connect(mapStateToProps)(withConfig(TradeHistory));

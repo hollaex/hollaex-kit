@@ -3,9 +3,12 @@ import React from 'react';
 import { hash } from 'rsvp';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
+import merge from 'lodash.merge';
 // import { render } from 'react-snapshot';
 import { Router, browserHistory } from 'react-router';
-import config, { ProjectConfig } from 'config/project.config';
+import ConfigProvider from 'components/ConfigProvider';
+import EditProvider from 'components/EditProvider';
+import defaultConfig from 'config/project.config';
 import './config/initialize';
 
 import 'flag-icon-css/css/flag-icon.min.css';
@@ -21,65 +24,68 @@ import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disabl
 import {
   setLocalVersions,
   getLocalVersions,
-  getRemoteVersion,
   initializeStrings,
   setValidLanguages,
   setExchangeInitialized
 } from 'utils/initialize';
 
-import { getConfig, getInitialized, getValidLanguages } from 'actions/operatorActions';
+import { getKitData } from 'actions/operatorActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
-console.log(name, version);
-console.log(API_URL);
-
-const generateRequest = async (key) => {
-	return await getConfig(key);
-}
+console.info(name, version);
+console.info(API_URL);
 
 const getConfigs = async () => {
   const localVersions = getLocalVersions();
-  const remoteVersions = await getRemoteVersion();
-  const validLanguages = await getValidLanguages();
-  const initialized = await getInitialized();
+
+  const kitData = await getKitData();
+  const {
+    meta: {
+      versions: remoteVersions = {}
+      },
+    valid_languages = '',
+    info: {
+      initialized
+    }
+  } = kitData;
+
 
   const promises = {};
-  Object.entries(remoteVersions).forEach(([key]) => {
+  Object.keys(remoteVersions).forEach((key) => {
     const localVersion = localVersions[key];
     const remoteVersion = remoteVersions[key];
 
     if (localVersion !== remoteVersion) {
-      promises[key] = generateRequest(key)
+      promises[key] = kitData[key];
+    } else {
+      promises[key] = JSON.parse(localStorage.getItem(key) || "{}");
     }
   })
 
   const remoteConfigs = await hash(promises);
-  Object.entries(remoteConfigs).forEach(([key]) => {
+  Object.keys(remoteConfigs).forEach((key) => {
     localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
   })
 
   setLocalVersions(remoteVersions);
-  setValidLanguages(validLanguages);
+  setValidLanguages(valid_languages);
   setExchangeInitialized(initialized);
 
-  const mergedConfigs = {
-    ...config,
-    ...remoteConfigs,
-  }
-
-  return mergedConfigs;
+  return merge({}, defaultConfig, remoteConfigs);
 }
 
 const bootstrapApp = (appConfig) => {
   initializeStrings()
-  window.appConfig = { ...appConfig }
+  // window.appConfig = { ...appConfig }
 
   render(
 		<Provider store={store}>
-      <ProjectConfig.Provider value={appConfig}>
-			  <Router routes={routes} history={browserHistory} />
-      </ProjectConfig.Provider>
+      <EditProvider>
+        <ConfigProvider initialConfig={appConfig}>
+          <Router routes={routes} history={browserHistory} />
+        </ConfigProvider>
+      </EditProvider>
 		</Provider>,
     document.getElementById('root')
   );
@@ -87,7 +93,7 @@ const bootstrapApp = (appConfig) => {
 
 getConfigs()
 	.then(bootstrapApp)
-	.catch((err) => console.error(err))
+	.catch((err) => console.error('Initialization failed!\n', err))
 
 // import registerServiceWorker from './registerServiceWorker'
 // registerServiceWorker();

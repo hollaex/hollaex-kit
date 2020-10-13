@@ -2,18 +2,17 @@ import React from 'react';
 import { CheckboxButton, IconTitle } from '../../components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
-import { ICONS } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
-export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
+export const renderOTPForm = (secret, email, activateOTP, constants = {}, ICONS) => {
 	const app_name = constants.api_name.replace(' ', '').trim() || '';
 	return (
 		<div className="otp_form-wrapper">
 			<IconTitle
 				stringId="ACCOUNT_SECURITY.OTP.CONTENT.TITLE"
 				text={STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.TITLE"]}
-				iconPath={ICONS.OTP_KEYS}
+				iconPath={ICONS["OTP_KEYS"]}
 				className="w-100"
 				textType="title"
 				useSvg={true}

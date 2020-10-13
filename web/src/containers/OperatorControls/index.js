@@ -5,6 +5,7 @@ import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -12,6 +13,8 @@ import { content as CONTENT } from 'config/localizedStrings';
 import AllStringsModal from './components/AllStringsModal';
 import StringSettingsModal from './components/StringSettings';
 import AddLanguageModal from './components/AddLanguageModal';
+import UploadIcon from './components/UploadIcon';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class OperatorControls extends Component {
 
@@ -19,7 +22,9 @@ class OperatorControls extends Component {
     super(props);
 
     const strings = localStorage.getItem('strings') || "{}";
+    const icons = localStorage.getItem('icons') || "{}";
     const overwrites = JSON.parse(strings);
+    const iconsOverwrites = JSON.parse(icons);
     const languageKeys = getValidLanguages();
     const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value));
     const selectedLanguages = this.getSelectedLanguages(languageKeys);
@@ -43,6 +48,9 @@ class OperatorControls extends Component {
       isAddLanguageModalOpen: false,
       isExitConfirmationOpen: false,
       isPublishConfirmationOpen: false,
+      isUploadIconOpen: false,
+      iconsOverwrites,
+      editableIconIds: [],
     }
   }
 
@@ -104,20 +112,30 @@ class OperatorControls extends Component {
   }
 
   handleEditButton = ({ target: { dataset = {} } }, source) => {
-    const { isEditModalOpen } = this.state;
+    const { isEditModalOpen, isUploadIconOpen } = this.state;
     const { editMode } = this.props;
-    const { stringId } = dataset;
+    const { stringId, iconId } = dataset;
 
-    if(editMode && !isEditModalOpen) {
+    if(editMode && !isEditModalOpen && !isUploadIconOpen) {
       const string_ids_array = stringId ? stringId.split(',') : []
+      const icon_ids_array = iconId ? iconId.split(',') : []
+
       this.setState({
         editableElementIds: string_ids_array,
+        editableIconIds: icon_ids_array,
       }, () => {
-        if (source) {
-          this.closeAllStringsModal();
-          this.openEditModal(source);
-        } else {
-        this.openEditModal();
+
+        if (stringId) {
+          if (source) {
+
+            this.closeAllStringsModal();
+            this.openEditModal(source);
+
+          } else {
+            this.openEditModal();
+          }
+        } else if (iconId) {
+          this.openUploadIcon();
         }
       })
     }
@@ -203,13 +221,13 @@ class OperatorControls extends Component {
 
     this.setState({
       overwrites: saveData,
-      isPublishEnabled: true,
       isEditModalOpen: false,
       isSaveEnabled: false,
       editData: {},
       editableElementIds: [],
     }, () => {
-      initializeStrings(saveData)
+      initializeStrings(saveData);
+      this.enablePublish();
       if (source) {
         this.openAllStringsModal();
       }
@@ -230,14 +248,26 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites: strings } = this.state;
-    const configs = { strings };
+    const { overwrites: strings, iconsOverwrites: icons, languageKeys } = this.state;
+    const valid_languages = languageKeys.join();
+
+    const configs = {
+      strings,
+      icons,
+      valid_languages,
+    }
 
     publish(configs)
       .then(this.reload)
   }
 
   reload = () => window.location.reload(false)
+
+  enablePublish = (isPublishEnabled = true) => {
+    this.setState({
+      isPublishEnabled,
+    });
+  }
 
   toggleEditMode = () => {
     const { onChangeEditMode, editMode } = this.props;
@@ -249,9 +279,14 @@ class OperatorControls extends Component {
   }
 
   exitEditMode = () => {
+    const { isPublishEnabled } = this.state;
     const { onChangeEditMode } = this.props;
     onChangeEditMode();
-    this.reload();
+    this.closeExitConfirmationModal();
+
+    if(isPublishEnabled) {
+      this.reload();
+    }
   }
 
   getLanguageLabel = (key) => {
@@ -385,6 +420,45 @@ class OperatorControls extends Component {
     this.setState({ isPublishConfirmationOpen: false });
   }
 
+  addIcons = (icons = {}) => {
+    const { updateIcons } = this.props;
+    this.setState(prevState => ({
+      iconsOverwrites: { ...prevState.iconsOverwrites, ...icons },
+    }), () => {
+      updateIcons(icons);
+      this.closeUploadIcon();
+      this.enablePublish();
+    });
+  }
+
+  openUploadIcon = () => {
+    const { editableIconIds } = this.state;
+
+    if (editableIconIds.length > 0) {
+      this.setState({
+        isUploadIconOpen: true,
+      });
+    }
+  }
+
+  closeUploadIcon = () => {
+    this.setState({
+      editableIconIds: [],
+      isUploadIconOpen: false,
+    });
+  }
+
+  removeIcon = (key) => {
+    const { removeIcon } = this.props;
+    const { iconsOverwrites } = this.state;
+    const { [key]: iconKey, ...restIcons } = iconsOverwrites;
+    this.setState({
+      iconsOverwrites: restIcons,
+    }, () => {
+      removeIcon(key);
+    });
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -402,6 +476,8 @@ class OperatorControls extends Component {
       isExitConfirmationOpen,
       isAddLanguageModalOpen,
       isPublishConfirmationOpen,
+      isUploadIconOpen,
+      editableIconIds,
     } = this.state;
     const { editMode } = this.props;
 
@@ -471,16 +547,18 @@ class OperatorControls extends Component {
                               type="text"
                               name={`${key}-${lang}`}
                               placeholder="text"
-                              className="operator-controls__input"
+                              className="operator-controls__input mr-2"
                               value={editData[lang][key]}
                               onChange={this.handleInputChange}
                             />
-                            <span
-                              className="pointer"
+                            <Button
+                              ghost
+                              shape="circle"
+                              size="small"
+                              className="operator-controls__all-strings-settings-button"
                               onClick={() => this.getDefaultString(key, lang)}
-                            >
-                            Reset
-                          </span>
+                              icon={<DeleteOutlined />}
+                            />
                           </div>
                         </div>
                       )
@@ -536,6 +614,13 @@ class OperatorControls extends Component {
           onCloseDialog={this.closeAddLanguageModal}
           languages={LANGUAGES.filter(({ value }) => !languageKeys.includes(value))}
           onSave={this.addLanguage}
+        />
+        <UploadIcon
+          editId={editableIconIds}
+          isOpen={isUploadIconOpen}
+          onCloseDialog={this.closeUploadIcon}
+          onSave={this.addIcons}
+          onReset={this.removeIcon}
         />
         <Modal
           isOpen={isExitConfirmationOpen}
@@ -613,4 +698,4 @@ class OperatorControls extends Component {
   }
 }
 
-export default OperatorControls;
+export default withConfig(OperatorControls);

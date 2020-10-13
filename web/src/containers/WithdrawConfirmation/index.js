@@ -3,8 +3,9 @@ import classnames from 'classnames';
 
 import { IconTitle, Button, Loader } from '../../components';
 import { performConfirmWithdrawal } from '../../actions/walletActions';
-import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class ConfirmWithdrawal extends Component {
     state = {
@@ -40,6 +41,7 @@ class ConfirmWithdrawal extends Component {
 
     render() {
         const { is_success, error_txt, loading } = this.state;
+        const { icons: ICONS } = this.props;
         let childProps = {};
         if (loading) {
             childProps = {
@@ -49,7 +51,7 @@ class ConfirmWithdrawal extends Component {
         } else if (!is_success && error_txt) {
             childProps = {
                 titleSection: {
-                    iconPath: ICONS.RED_WARNING,
+                    iconPath: ICONS["RED_WARNING"],
                     text: STRINGS["ERROR_TEXT"]
                 },
                 child: <div className='text-center mb-4'>
@@ -59,7 +61,7 @@ class ConfirmWithdrawal extends Component {
         } else {
             childProps = {
                 titleSection: {
-                    iconPath: ICONS.GREEN_CHECK,
+                    iconPath: ICONS["GREEN_CHECK"],
                     text: STRINGS["SUCCESS_TEXT"]
                 },
                 useSvg: true,
@@ -98,4 +100,4 @@ class ConfirmWithdrawal extends Component {
     }
 }
 
-export default ConfirmWithdrawal;
+export default withConfig(ConfirmWithdrawal);

@@ -6,7 +6,7 @@ import {
 	isInclusivelyBeforeDay
 } from 'react-dates';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
-import { ProjectConfig } from 'config/project.config';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
@@ -15,8 +15,6 @@ const FIELDS = [
 ];
 
 class DateField extends Component {
-  static contextType = ProjectConfig;
-
 	state = {
 		focused: false,
 		date: moment(),
@@ -43,7 +41,7 @@ class DateField extends Component {
 		}
 	}
 
-	setDisplay = (dateString = '', language = this.context.DEFAULT_LANGUAGE) => {
+	setDisplay = (dateString = '', language = this.props.defaultLanguage) => {
 		const display = {};
 		let date;
 		date = moment(dateString);
@@ -143,4 +141,4 @@ class DateField extends Component {
 	}
 }
 
-export default DateField;
+export default withConfig(DateField);

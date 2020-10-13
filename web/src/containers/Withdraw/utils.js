@@ -2,7 +2,6 @@ import React from 'react';
 import mathjs from 'mathjs';
 import { Accordion } from '../../components';
 import {
-	ICONS,
 	BANK_WITHDRAWAL_BASE_FEE,
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
 	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE,
@@ -31,7 +30,7 @@ export const generateBaseInformation = (currency, limits = {}) => {
 	);
 };
 
-export const renderExtraInformation = (symbol, bank_account) =>
+export const renderExtraInformation = (symbol, bank_account, icon) =>
 	symbol === BASE_CURRENCY && (
 		<div className="bank_account-information-wrapper">
 			<Accordion
@@ -44,7 +43,7 @@ export const renderExtraInformation = (symbol, bank_account) =>
 							stringId: "NEED_HELP_TEXT",
 							text: STRINGS["NEED_HELP_TEXT"],
 							status: 'information',
-							iconPath: ICONS.BLUE_QUESTION,
+							iconPath: icon,
 							allowClick: true
 						}
 					}

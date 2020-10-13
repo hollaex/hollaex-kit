@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { HocForm, IconTitle, Notification } from '../../components';
 import { email as isEmail, required } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS } from '../../actions/appActions';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const FORM_NAME = 'RequestForm';
 
@@ -95,7 +95,7 @@ class RequestForm extends Component {
     });
 
     render() {
-        const { onClose, email, initialValues } = this.props;
+        const { onClose, email, initialValues, icons: ICONS } = this.props;
         const { submitted } = this.state;
         if (submitted) {
             return (
@@ -107,7 +107,9 @@ class RequestForm extends Component {
         return (
             <div className="contact_form-wrapper">
                 <IconTitle
-                    iconPath={ICONS.XHT_COIN_STACK}
+                    iconId="XHT_COIN_STACK"
+                    iconPath={ICONS['XHT_COIN_STACK']}
+                    stringId="REQUEST_XHT_ACCESS.REQUEST_TITLE"
                     text={STRINGS["REQUEST_XHT_ACCESS.REQUEST_TITLE"]}
                     textType="title"
                     underline={true}
@@ -132,4 +134,4 @@ const mapStateToProps = (store) => ({
     // contactFormData: store.app.contactFormData
 });
 
-export default connect(mapStateToProps)(RequestForm);
+export default connect(mapStateToProps)(withConfig(RequestForm));

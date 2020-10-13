@@ -7,6 +7,7 @@ import { Button, ActionNotification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
+import withEdit from 'components/EditProvider/withEdit';
 
 class Dialog extends PureComponent {
 	static propTypes = {
@@ -38,6 +39,7 @@ class Dialog extends PureComponent {
 			className,
 			disableTheme,
       bodyOpenClassName,
+			isEditMode,
 		} = this.props;
 		
 		return (
@@ -47,7 +49,7 @@ class Dialog extends PureComponent {
 				contentLabel={label}
 				onRequestClose={this.onRequestClose}
 				shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-				portalClassName={classnames(className, languageClasses, (disableTheme ? '' : getThemeClass(theme)))}
+				portalClassName={classnames(className, languageClasses, (disableTheme ? '' : getThemeClass(theme)), { 'layout-edit': isEditMode })}
 				bodyOpenClassName={bodyOpenClassName}
 			>
 				{showCloseText &&
@@ -85,4 +87,4 @@ Dialog.defaultProps = {
 	className: ''
 };
 
-export default Dialog;
+export default withEdit(Dialog);

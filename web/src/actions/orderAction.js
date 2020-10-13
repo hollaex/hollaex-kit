@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ICONS } from '../config/constants';
+import ICONS from 'config/icons';
 import STRINGS from '../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../utils/utils';
 
@@ -44,7 +44,7 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
-					icon: ICONS.CLOSE_CROSS,
+					icon: ICONS["CLOSE_CROSS"],
 					content: STRINGS["CANCEL_SUCCESS_TEXT"]
 				}
 			});
@@ -64,7 +64,7 @@ export const cancelAllOrders = (symbol = '', settings) => dispatch => {
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
-					icon: ICONS.CLOSE_CROSS,
+					icon: ICONS["CLOSE_CROSS"],
 					content: STRINGS["CANCEL_SUCCESS_TEXT"]
 				}
 			});
