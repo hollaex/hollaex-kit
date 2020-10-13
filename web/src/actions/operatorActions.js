@@ -20,29 +20,14 @@ export const updateConfigs = async (configs) => {
   return requestAuthenticated('/admin/kit', options);
 }
 
-export const getConstants = async () => {
-  const { data = { } } = await axios.get('/kit');
-  return data;
-}
-
-export const getConfig = async (key) => {
+export const getKitData = async () => {
   const { data } = await axios.get('/kit')
-  return data[key] ? data[key] : {};
-}
-
-export const getValidLanguages = async () => {
-  const { data: { valid_languages = '' } } = await axios.get('/kit')
-  return valid_languages;
+  return data;
 }
 
 export const getVersions = async () => {
   const { data: { meta = { } } } = await axios.get('/kit')
   return meta.versions ? meta.versions : {};
-}
-
-export const getInitialized = async () => {
-  const { data: { info: { initialized } } } = await axios.get('/kit')
-  return initialized;
 }
 
 export const publish = async (configs) => {

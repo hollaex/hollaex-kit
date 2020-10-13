@@ -1,9 +1,4 @@
 import { overwriteLocale } from './string';
-import { getVersions } from 'actions/operatorActions';
-
-export const getRemoteVersion = async () => {
-  return await getVersions()
-}
 
 export const getLocalVersions = () => {
   const versions = localStorage.getItem('versions') || '{}';

@@ -24,28 +24,32 @@ import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disabl
 import {
   setLocalVersions,
   getLocalVersions,
-  getRemoteVersion,
   initializeStrings,
   setValidLanguages,
   setExchangeInitialized
 } from 'utils/initialize';
 
-import { getConfig, getInitialized, getValidLanguages } from 'actions/operatorActions';
+import { getKitData } from 'actions/operatorActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
 console.info(name, version);
 console.info(API_URL);
 
-const generateRequest = async (key) => {
-	return await getConfig(key);
-}
-
 const getConfigs = async () => {
   const localVersions = getLocalVersions();
-  const remoteVersions = await getRemoteVersion();
-  const validLanguages = await getValidLanguages();
-  const initialized = await getInitialized();
+
+  const kitData = await getKitData();
+  const {
+    meta: {
+      versions: remoteVersions = {}
+      },
+    valid_languages = '',
+    info: {
+      initialized
+    }
+  } = kitData;
+
 
   const promises = {};
   Object.keys(remoteVersions).forEach((key) => {
@@ -53,7 +57,7 @@ const getConfigs = async () => {
     const remoteVersion = remoteVersions[key];
 
     if (localVersion !== remoteVersion) {
-      promises[key] = generateRequest(key);
+      promises[key] = kitData[key];
     } else {
       promises[key] = JSON.parse(localStorage.getItem(key) || "{}");
     }
@@ -65,7 +69,7 @@ const getConfigs = async () => {
   })
 
   setLocalVersions(remoteVersions);
-  setValidLanguages(validLanguages);
+  setValidLanguages(valid_languages);
   setExchangeInitialized(initialized);
 
   return merge({}, defaultConfig, remoteConfigs);
@@ -89,7 +93,7 @@ const bootstrapApp = (appConfig) => {
 
 getConfigs()
 	.then(bootstrapApp)
-	.catch((err) => console.error(err))
+	.catch((err) => console.error('Initialization failed!\n', err))
 
 // import registerServiceWorker from './registerServiceWorker'
 // registerServiceWorker();
