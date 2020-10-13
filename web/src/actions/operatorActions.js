@@ -2,14 +2,15 @@ import axios from 'axios';
 import { requestAuthenticated } from 'utils';
 
 export const updateConfigs = async (configs) => {
+  const { 'valid-languages': validLanguages, ...restConfigs } = configs;
 
   const oldConstants = await getConstants();
-  const versionedConfigs = await pushVersions(configs)
+  const versionedConfigs = await pushVersions(restConfigs)
 
   oldConstants.user_level_number = parseInt(oldConstants.user_level_number, 10);
 
   const constants = {
-    ...oldConstants,
+    'valid-languages': validLanguages,
     color: {
       ...oldConstants.color,
       ...versionedConfigs,

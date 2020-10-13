@@ -248,8 +248,14 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites: strings, iconsOverwrites: icons } = this.state;
-    const configs = { strings, icons };
+    const { overwrites: strings, iconsOverwrites: icons, languageKeys } = this.state;
+    const validLanguages = languageKeys.join();
+
+    const configs = {
+      strings,
+      icons,
+      'valid-languages': validLanguages,
+    }
 
     publish(configs)
       .then(this.reload)
