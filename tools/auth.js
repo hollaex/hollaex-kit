@@ -821,8 +821,7 @@ const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
 				where: {
 					id: tokenId,
 					user_id: userId
-				},
-				raw: true
+				}
 			});
 		})
 		.then((token) => {
