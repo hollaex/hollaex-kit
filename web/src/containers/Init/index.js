@@ -1,26 +1,47 @@
 import React, { Component } from 'react';
+import { CheckOutlined } from '@ant-design/icons';
+import { loadReCaptcha } from 'react-recaptcha-v3';
+import { connect } from 'react-redux';
 
 import LoadingScreen from './LoadingScreen';
 import WelcomeScreen from './WelcomeScreen';
 import NetworkConfig from './NetworkConfig';
 import EmailSetup from './EmailSetup';
 import PasswordSetup, { ReTypePasswordContainer } from './PasswordSetup';
+import Login from './Login';
+import { ICONS, CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from '../../config/constants';
+import { getExchangeInitialized } from '../../utils/initialize';
 
-export default class InitWizard extends Component {
+class InitWizard extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isLoading: true,
             currentStep: 'landing-page',
-            formValues: {}
+            formValues: {},
+            message: ''
         }
     }
 
     componentDidMount() {
+        const initialized = getExchangeInitialized();
+		if (initialized === 'true' || initialized) {
+			this.props.router.push('/admin');
+		}
         setTimeout(() => {
             this.setState({ isLoading: false });
-        }, 1000);
+        }, 2000);
     }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.message !== prevState.message
+            && this.state.message) {
+                setTimeout(() => {
+                    this.setMessage('')
+                }, 10000);
+            }
+    }
+    
 
     handleStepChange = (step) => {
         this.setState({ currentStep: step });
@@ -35,11 +56,16 @@ export default class InitWizard extends Component {
         });
     };
 
+    setMessage = (message) => {
+        this.setState({ message });
+    };
+
     renderStep = () => {
         switch(this.state.currentStep) {
             case 'network-config':
                 return (
                     <NetworkConfig
+                        icon={ICONS.SET_ADMIN_NETWORK_KEYS}
                         onChangeStep={this.handleStepChange}
                     />
                 );
@@ -47,6 +73,7 @@ export default class InitWizard extends Component {
                 return (
                     <EmailSetup
                         initialValues={this.state.formValues}
+                        icon={ICONS.SET_ADMIN_EMAIL}
                         onChangeStep={this.handleStepChange}
                         onFieldChange={this.onFieldChange}
                     />
@@ -54,6 +81,7 @@ export default class InitWizard extends Component {
             case 'password':
                 return (
                     <PasswordSetup
+                        icon={ICONS.SET_ADMIN_PASSWORD}
                         onChangeStep={this.handleStepChange}
                         onFieldChange={this.onFieldChange}
                     />
@@ -62,6 +90,14 @@ export default class InitWizard extends Component {
                 return (
                     <ReTypePasswordContainer
                         initialValues={this.state.formValues}
+                        icon={ICONS.SET_ADMIN_RETYPE_PASSWORD}
+                        setMessage={this.setMessage}
+                        onChangeStep={this.handleStepChange}
+                    />
+                );
+            case 'login':
+                return (
+                    <Login
                         onChangeStep={this.handleStepChange}
                     />
                 );
@@ -72,9 +108,26 @@ export default class InitWizard extends Component {
     };
     
     render() {
+        const { message, isLoading } = this.state;
+        const { constants } = this.props;
+        let siteKey = DEFAULT_CAPTCHA_SITEKEY;
+		if (CAPTCHA_SITEKEY) {
+			siteKey = CAPTCHA_SITEKEY;
+		} else if (constants.captcha && constants.captcha.site_key) {
+			siteKey = constants.captcha.site_key;
+		}
+		loadReCaptcha(siteKey);
         return (
             <div className="init-container">
-                {(this.state.isLoading)
+                {message
+                    ?
+                        <div className="message success">
+                            <CheckOutlined color="#ffffff" />{' '}
+                            {message}
+                        </div>
+                    :   null
+                }
+                {(isLoading)
                     ? <LoadingScreen />
                     : this.renderStep()
                 }
@@ -82,3 +135,9 @@ export default class InitWizard extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    constants: state.app.constants,
+});
+
+export default connect(mapStateToProps)(InitWizard);

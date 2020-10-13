@@ -1,13 +1,13 @@
 const PRODUCTION_ENDPOINT =
 	process.env.REACT_APP_SERVER_ENDPOINT || 'https://api.hollaex.com';
 
-const DEVELOPMENT_ENDPOINT = 'https://api.demo.bitholla.com';
+const DEVELOPMENT_ENDPOINT = 'https://api.sandbox.hollaex.com';
 
-const API_PATH = '/v1';
+const API_PATH = '/v2';
 
 const generateEndpoint = (endpoint, path) => ({
 	API_URL: `${endpoint}${path}`,
-	WS_URL: endpoint
+	WS_URL: 'wss://api.sandbox.hollaex.com'
 });
 
 const VARIABLES = {

@@ -100,7 +100,7 @@ class Signup extends Component {
 					this.props.change(FORM_NAME, 'captcha', '');
 				}, 5000);
 
-				if (error.response.status === 409) {
+				if (error.response && error.response.status === 409) {
 					errors.email = STRINGS["VALIDATIONS.USER_EXIST"];
 				} else if (error.response) {
 					const { message = '' } = error.response.data;

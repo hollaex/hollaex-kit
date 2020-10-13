@@ -54,7 +54,7 @@ class Settings extends Component {
         this.setState({ loading: true, error: '' });
         getConstants()
             .then((res) => {
-                this.setState({ loading: false, constants: res.constants });
+                this.setState({ loading: false, constants: res });
             })
             .catch((error) => {
                 const message = error.data ? error.data.message : error.message;
@@ -75,7 +75,7 @@ class Settings extends Component {
             captcha = {},
             links = {},
             color = {}
-        } = this.state.constants;
+        } = this.state.constants || {};
         const { configuration = {}, distribution = {} } = this.state.initialEmailValues || {};
         const initialEmailValues = {
             configuration: { ...configuration, ...emails, ...secrets.smtp },

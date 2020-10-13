@@ -60,6 +60,7 @@ import {
 	getClasesForLanguage,
 	getFontClassForLanguage
 } from '../../utils/string';
+import { getExchangeInitialized } from '../../utils/initialize';
 
 import Socket from './Socket';
 import Container from './Container';
@@ -94,6 +95,10 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		const initialized = getExchangeInitialized();
+		if (initialized === 'false' || !initialized) {
+			this.props.router.push('/init');
+		}
 		this.updateThemeToBody(this.props.activeTheme);
 		if (this.props.location && this.props.location.pathname) {
 			this.checkPath(this.props.location.pathname);
@@ -155,7 +160,9 @@ class App extends Component {
 	checkPath = (path) => {
 		var sheet = document.createElement('style');
 		if (path === 'login' || path === 'signup'
-			|| (path === '/reset-password') || path.includes('/withdraw')) {
+			|| (path === '/reset-password') || path.includes('/withdraw')
+			|| path.includes('/init')
+		) {
 			sheet.innerHTML = '.grecaptcha-badge { visibility: visible !important;}';
 			sheet.id = 'addCap';
 			if (document.getElementById('rmvCap') !== null) {
