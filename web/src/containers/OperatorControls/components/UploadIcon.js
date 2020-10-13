@@ -3,6 +3,7 @@ import Modal from 'components/Dialog/DesktopDialog';
 import { bool, func, array } from 'prop-types';
 import { Button } from 'antd';
 import { upload } from 'actions/operatorActions';
+import { DeleteOutlined } from '@ant-design/icons';
 
 class UploadIcon extends Component {
 
@@ -82,12 +83,15 @@ class UploadIcon extends Component {
                 style={{ width: '232px' }}
                 onChange={this.onFileChange}
               />
-              <span
-                className="pointer"
+              <Button
+                ghost
+                shape="circle"
+                size="small"
+                disabled={loading}
+                className="operator-controls__all-strings-settings-button"
                 onClick={() => onReset(id)}
-              >
-                Reset
-              </span>
+                icon={<DeleteOutlined />}
+              />
             </div>
           ))}
         </div>
