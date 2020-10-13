@@ -488,27 +488,10 @@ const uploadImage = (req, res) => {
 		req.auth
 	);
 
-	const givenApiKey = req.headers['api-key'];
-
-	if (!givenApiKey) {
-		loggerAdmin.error(
-			req.uuid,
-			'controllers/admin/uploadImage',
-			'Missing headers'
-		);
-		return res.status(401).json({ message: 'Missing headers' });
-	}
-
 	const name = req.swagger.params.name.value;
 	const file = req.swagger.params.file.value;
 
-	toolsLib.getNetworkKeySecret()
-		.then(({ apiKey }) => {
-			if (givenApiKey !== apiKey) {
-				throw new Error('Not authorized');
-			}
-			return toolsLib.image.storeImageOnNetwork(file, name);
-		})
+	toolsLib.image.storeImageOnNetwork(file, name)
 		.then((result) => {
 			return res.json(result);
 		})
