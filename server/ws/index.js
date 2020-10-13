@@ -12,7 +12,6 @@ const {
 } = require('../messages');
 const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels } = require('./sub');
 const { connect, hubConnected } = require('./hub');
-const { getChannels } = require('./channel');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
 
 wss.on('connection', (ws, req) => {
@@ -37,7 +36,12 @@ wss.on('connection', (ws, req) => {
 				throw new Error(WS_EMPTY_MESSAGE);
 			}
 
-			message = JSON.parse(message);
+			try {
+				message = JSON.parse(message);
+			} catch (err) {
+				throw new Error(WS_WRONG_INPUT);
+			}
+
 			const { op, args } = message;
 			if (op === 'ping') {
 				ws.send(JSON.stringify({ message: 'pong' }));
