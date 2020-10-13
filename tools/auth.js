@@ -768,7 +768,7 @@ const getUserKitHmacTokens = (userId) => {
 	return dbQuery.findAndCountAllWithRows('token', {
 		where: {
 			user_id: userId,
-			role: TOKEN_TYPES.HMAC
+			type: TOKEN_TYPES.HMAC
 		},
 		attributes: {
 			exclude: ['user_id', 'updated_at']
