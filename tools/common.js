@@ -225,7 +225,8 @@ const sendEmailToSupport = (email, category, subject, description) => {
 		subject,
 		description
 	};
-	return sendEmail(MAILTYPE.CONTACT_FORM, email, emailData, {});
+	sendEmail(MAILTYPE.CONTACT_FORM, email, emailData, {});
+	return;
 };
 
 const getNetworkKeySecret = () => {
