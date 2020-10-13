@@ -2,26 +2,22 @@ import axios from 'axios';
 import { requestAuthenticated } from 'utils';
 
 export const updateConfigs = async (configs) => {
-  const { 'valid-languages': validLanguages, ...restConfigs } = configs;
-
-  const oldConstants = await getConstants();
+  const { valid_languages, ...restConfigs } = configs;
   const versionedConfigs = await pushVersions(restConfigs)
 
-  oldConstants.user_level_number = parseInt(oldConstants.user_level_number, 10);
-
   const constants = {
-    'valid-languages': validLanguages,
-    color: {
-      ...oldConstants.color,
+    kit: {
+      valid_languages,
       ...versionedConfigs,
-    },
+    }
   }
 
   const options = {
     method: 'PUT',
     body: JSON.stringify(constants)
   };
-  return requestAuthenticated('/admin/constant', options);
+
+  return requestAuthenticated('/admin/kit', options);
 }
 
 export const getConstants = async () => {
@@ -30,8 +26,8 @@ export const getConstants = async () => {
 }
 
 export const getConfig = async (key) => {
-  const { data: { color = { } } } = await axios.get('/kit')
-  return color[key] ? color[key].config : {};
+  const { data } = await axios.get('/kit')
+  return data[key] ? data[key] : {};
 }
 
 export const getValidLanguages = async () => {
@@ -40,8 +36,8 @@ export const getValidLanguages = async () => {
 }
 
 export const getVersions = async () => {
-  const { data: { color = { } } } = await axios.get('/kit')
-  return color.versions ? color.versions : {};
+  const { data: { meta = { } } } = await axios.get('/kit')
+  return meta.versions ? meta.versions : {};
 }
 
 export const getInitialized = async () => {
@@ -60,7 +56,7 @@ export const pushVersions = async (configs) => {
   Object.keys(configs).forEach(key => {
     versions[key] = `${key}-${uniqid}`
   })
-  return {...configs, versions}
+  return {...configs, meta: { versions }}
 }
 
 export const upload = (formData) => {
