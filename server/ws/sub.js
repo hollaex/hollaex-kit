@@ -196,8 +196,9 @@ const handleHubData = (data) => {
 			if (data.action === 'partial') {
 				publicData[data.topic][data.symbol] = data;
 			} else {
-				const updatedTrades = data[data.symbol].concat(publicData[data.topic][data.symbol][data.symbol]);
-				publicData[data.topic][data.symbol][data.symbol] = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
+				const updatedTrades = data.data.concat(publicData[data.topic][data.symbol].data);
+				publicData[data.topic][data.symbol].time = data.time;
+				publicData[data.topic][data.symbol].data = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
 			}
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
 				ws.send(JSON.stringify(data));
