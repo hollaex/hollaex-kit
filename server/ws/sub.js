@@ -46,7 +46,6 @@ const initializeTopic = (topic, ws, symbol) => {
 			break;
 		case 'order':
 		case 'wallet':
-		case 'userTrade':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
@@ -54,7 +53,9 @@ const initializeTopic = (topic, ws, symbol) => {
 				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			} else {
+				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			}
 			break;
 		default:
@@ -85,7 +86,6 @@ const terminateTopic = (topic, ws, symbol) => {
 			break;
 		case 'order':
 		case 'wallet':
-		case 'userTrade':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
@@ -171,15 +171,6 @@ const terminateClosedChannels = (ws) => {
 		} catch (err) {
 			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
-
-		try {
-			removeSubscriber(WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId), ws, 'private');
-			if (!getChannels()[WEBSOCKET_CHANNEL('userTrade', ws.auth.sub.networkId)]) {
-				require('./hub').sendNetworkWsMessage('unsubscribe', 'userTrade', ws.auth.sub.networkId);
-			}
-		} catch (err) {
-			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
-		}
 	}
 };
 
@@ -196,8 +187,9 @@ const handleHubData = (data) => {
 			if (data.action === 'partial') {
 				publicData[data.topic][data.symbol] = data;
 			} else {
-				const updatedTrades = data[data.symbol].concat(publicData[data.topic][data.symbol][data.symbol]);
-				publicData[data.topic][data.symbol][data.symbol] = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
+				const updatedTrades = data.data.concat(publicData[data.topic][data.symbol].data);
+				publicData[data.topic][data.symbol].time = data.time;
+				publicData[data.topic][data.symbol].data = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
 			}
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
 				ws.send(JSON.stringify(data));
@@ -205,7 +197,6 @@ const handleHubData = (data) => {
 			break;
 		case 'order':
 		case 'wallet':
-		case 'userTrade':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
