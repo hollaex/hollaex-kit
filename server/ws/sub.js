@@ -1,6 +1,6 @@
 'use strict';
 
-const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
+const { addSubscriber, removeSubscriber, getChannels, resetChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
@@ -16,24 +16,28 @@ const {
 
 let publicData = {
 	orderbook: {},
-	trades: {}
+	trade: {}
 };
 
 const initializeTopic = (topic, ws, symbol) => {
 	switch (topic) {
 		case 'orderbook':
-		case 'trades':
+		case 'trade':
 			if (symbol) {
 				if (!toolsLib.subscribedToPair(symbol)) {
 					throw new Error('Invalid symbol');
 				}
 				addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
-				ws.send(JSON.stringify(publicData[topic][symbol]));
+				if (publicData[topic][symbol]) {
+					ws.send(JSON.stringify(publicData[topic][symbol]));
+				}
 			} else {
 				each(toolsLib.getKitPairs(), (pair) => {
 					try {
 						addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
-						ws.send(JSON.stringify(publicData[topic][pair]));
+						if (publicData[topic][pair]) {
+							ws.send(JSON.stringify(publicData[topic][pair]));
+						}
 					} catch (err) {
 						ws.send(JSON.stringify({ message: err.message }));
 					}
@@ -61,7 +65,7 @@ const initializeTopic = (topic, ws, symbol) => {
 const terminateTopic = (topic, ws, symbol) => {
 	switch (topic) {
 		case 'orderbook':
-		case 'trades':
+		case 'trade':
 			if (symbol) {
 				if (!toolsLib.subscribedToPair(symbol)) {
 					throw new Error('Invalid symbol');
@@ -144,7 +148,7 @@ const terminateClosedChannels = (ws) => {
 			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
 		try {
-			removeSubscriber(WEBSOCKET_CHANNEL('trades', pair), ws);
+			removeSubscriber(WEBSOCKET_CHANNEL('trade', pair), ws);
 		} catch (err) {
 			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
@@ -188,7 +192,7 @@ const handleHubData = (data) => {
 				ws.send(JSON.stringify(data));
 			});
 			break;
-		case 'trades':
+		case 'trade':
 			if (data.action === 'partial') {
 				publicData[data.topic][data.symbol] = data;
 			} else {
@@ -211,10 +215,24 @@ const handleHubData = (data) => {
 	}
 };
 
+const closeAllClients = () => {
+	each(getChannels(), (channel) => {
+		each(channel, (ws) => {
+			ws.close();
+		});
+	});
+	resetChannels();
+	publicData = {
+		orderbook: {},
+		trade: {}
+	};
+};
+
 module.exports = {
 	initializeTopic,
 	terminateTopic,
 	handleHubData,
 	authorizeUser,
-	terminateClosedChannels
+	terminateClosedChannels,
+	closeAllClients
 };

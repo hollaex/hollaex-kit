@@ -42,8 +42,13 @@ const removeSubscriber = (channel, ws, type = undefined) => {
 	}
 };
 
+const resetChannels = () => {
+	channels = {};
+};
+
 module.exports = {
 	getChannels,
 	addSubscriber,
-	removeSubscriber
+	removeSubscriber,
+	resetChannels
 };

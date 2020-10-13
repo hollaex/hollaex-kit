@@ -4220,11 +4220,6 @@ definitions:
       token:
         type: string
         description: withdrawal confirmation token
-      otp_code:
-        type: string
-        description: OTP code when otp is enabled
-        minLength: 6
-        maxLength: 6
   StatsResponse:
     type: object
     properties:

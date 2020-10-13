@@ -67,7 +67,7 @@ const performWithdrawal = (req, res) => {
 		req.swagger.params.data.value
 	);
 
-	const { token, otp_code } = req.swagger.params.data.value;
+	const { token } = req.swagger.params.data.value;
 
 	loggerWithdrawals.verbose(
 		req.uuid,
@@ -83,7 +83,7 @@ const performWithdrawal = (req, res) => {
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}
-			return all([ toolsLib.transaction.performWithdrawal(withdrawal.user_id, withdrawal.address, withdrawal.currency, withdrawal.amount, withdrawal.fee, otp_code), withdrawal ]);
+			return all([ toolsLib.transaction.performWithdrawal(withdrawal.user_id, withdrawal.address, withdrawal.currency, withdrawal.amount, withdrawal.fee), withdrawal ]);
 		})
 		.then(([ { transaction_id }, { fee } ]) => {
 			return res.json({

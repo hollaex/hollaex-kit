@@ -24,7 +24,7 @@ subscriber.on('message', (channel, message) => {
 		const { type } = JSON.parse(message);
 		switch(type) {
 			case 'refreshInit':
-				checkStatus();
+				checkStatus(true);
 				break;
 			default:
 				break;
@@ -35,7 +35,7 @@ subscriber.on('message', (channel, message) => {
 
 subscriber.subscribe(INIT_CHANNEL);
 
-const checkStatus = () => {
+const checkStatus = (restart = false) => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
 
 	let configuration = {
@@ -85,6 +85,9 @@ const checkStatus = () => {
 			} else if (!status.activation_code) {
 				stop();
 				throw new Error('Exchange activation code is not set');
+			} else if (!status.api_key || !status.api_secret) {
+				stop();
+				throw new Error('Exchange keys are not set.');
 			} else if (!status.activated) {
 				stop();
 				throw new Error('Exchange is expired');
@@ -148,6 +151,12 @@ const checkStatus = () => {
 			);
 		})
 		.then(() => {
+			if (restart) {
+				const { getWs, hubConnected } = require('./ws/hub');
+				if (hubConnected()) {
+					getWs().close();
+				}
+			}
 			loggerGeneral.info('init/checkStatus/activation complete');
 		})
 		.catch((err) => {
