@@ -77,7 +77,7 @@ const performWithdrawal = (req, res) => {
 
 	toolsLib.transaction.validateWithdrawalToken(token)
 		.then((withdrawal) => {
-			return all([ withdrawal, toolsLib.getUserByKitId(withdrawal.user_id) ]);
+			return all([ withdrawal, toolsLib.user.getUserByKitId(withdrawal.user_id) ]);
 		})
 		.then(([ withdrawal, user ]) => {
 			if (user.verification_level < 1) {
