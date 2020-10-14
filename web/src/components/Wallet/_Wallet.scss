@@ -60,6 +60,12 @@ $sections-font--color: $colors-deactivate-color2;
 	}
 }
 
+.wallet_link {
+	margin: .5rem 0;
+	padding: 0 .5rem;
+	text-transform: uppercase;
+}
+
 .direction_ltr {
 	.sidebar_section-container
 		.wallet-wrapper

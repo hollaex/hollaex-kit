@@ -1,5 +1,6 @@
 import React from 'react';
-import { notification, Icon } from 'antd';
+import { InfoCircleTwoTone } from '@ant-design/icons';
+import { notification } from 'antd';
 import classnames from 'classnames';
 import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
@@ -29,7 +30,7 @@ const calculateFeeAmount = (
 	side = ''
 ) => {
 	if (!fee || fee <= 0) {
-		return STRINGS.NO_FEE;
+		return STRINGS["NO_FEE"];
 	}
 	let feeAmount = 0;
 	if (side === 'buy') {
@@ -74,7 +75,7 @@ const calculatePrice = (isQuick = false, price, size) => {
 export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 	return [
 		{
-			label: STRINGS.PAIR,
+			label: STRINGS["PAIR"],
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			renderCell: ({ symbol }, key, index) => {
@@ -86,21 +87,21 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
-			label: STRINGS.TYPE,
+			label: STRINGS["TYPE"],
 			key: 'side',
 			exportToCsv: ({ side = '' }) => side,
 			renderCell: ({ side = '' }, key, index) => {
 				return (
 					<td key={index} className={classnames('cell_box-type')}>
 						<div className={classnames(side)}>
-							{STRINGS.SIDES_VALUES[side]}
+							{STRINGS[`SIDES_VALUES.${side}`]}
 						</div>
 					</td>
 				);
 			}
 		},
 		{
-			label: STRINGS.SIZE,
+			label: STRINGS["SIZE"],
 			key: 'size',
 			exportToCsv: ({ size = 0, ...data }) => {
 				if (pairs[data.symbol]) {
@@ -138,7 +139,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
-			label: STRINGS.PRICE,
+			label: STRINGS["PRICE"],
 			key: 'price',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
@@ -177,7 +178,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
-			label: STRINGS.AMOUNT,
+			label: STRINGS["AMOUNT"],
 			key: 'amount',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
@@ -223,7 +224,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
-			label: STRINGS.FEE,
+			label: STRINGS["FEE"],
 			key: 'fee',
 			exportToCsv: ({
 				fee = 0,
@@ -291,7 +292,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
-			label: STRINGS.TIME,
+			label: STRINGS["TIME"],
 			key: 'timestamp',
 			className: isMobile ? 'text-center' : '',
 			exportToCsv: ({ timestamp = '' }) => timestamp,
@@ -329,7 +330,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
-			label: STRINGS.CURRENCY,
+			label: STRINGS["CURRENCY"],
 			key: 'currency',
 			exportToCsv: ({ currency }) => {
 				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
@@ -341,7 +342,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
-			label: STRINGS.STATUS,
+			label: STRINGS["STATUS"],
 			key: 'status',
 			exportToCsv: ({
 				status = false,
@@ -349,10 +350,10 @@ export const generateWithdrawalsHeaders = (
 				rejected = false
 			}) =>
 				status
-					? STRINGS.COMPLETE
+					? STRINGS["COMPLETE"]
 					: dismissed || rejected
-					? STRINGS.REJECTED
-					: STRINGS.PENDING,
+					? STRINGS["REJECTED"]
+					: STRINGS["PENDING"],
 			renderCell: (
 				{ status = false, dismissed = false, rejected = false },
 				key,
@@ -361,16 +362,16 @@ export const generateWithdrawalsHeaders = (
 				return (
 					<td key={index}>
 						{status
-							? STRINGS.COMPLETE
+							? STRINGS["COMPLETE"]
 							: dismissed || rejected
-							? STRINGS.REJECTED
-							: STRINGS.PENDING}
+							? STRINGS["REJECTED"]
+							: STRINGS["PENDING"]}
 					</td>
 				);
 			}
 		},
 		{
-			label: STRINGS.AMOUNT,
+			label: STRINGS["AMOUNT"],
 			key: 'amount',
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
 				const { min, ...rest } =
@@ -393,7 +394,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
-			label: STRINGS.FEE,
+			label: STRINGS["FEE"],
 			key: 'fee',
 			exportToCsv: ({ fee = 0 }) => fee,
 			renderCell: ({ fee, price, size, currency }, key, index) => {
@@ -416,7 +417,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
-			label: STRINGS.TIME,
+			label: STRINGS["TIME"],
 			key: 'created_at',
 			exportToCsv: ({ created_at = '' }) => created_at,
 			renderCell: ({ created_at = '' }, key, index) => {
@@ -424,7 +425,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
-			label: STRINGS.MORE,
+			label: STRINGS["MORE"],
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
 			renderCell: (
@@ -459,7 +460,7 @@ export const generateWithdrawalsHeaders = (
 								onClick={() => withdrawalPopup(id, amount, currency)}
 								key={id}
 							>
-								{STRINGS.CANCEL}
+								{STRINGS["CANCEL"]}
 							</div>
 						</td>
 					);
@@ -478,16 +479,12 @@ export const generateWithdrawalsHeaders = (
 									message: 'Transaction ID',
 									description: transaction_id,
 									icon: (
-										<Icon
-											type="info-circle"
-											theme="twoTone"
-											style={{ color: '#0000ff' }}
-										/>
+										<InfoCircleTwoTone style={{ color: '#0000ff' }} />
 									)
 								});
 							}}
 						>
-							{STRINGS.VIEW}
+							{STRINGS["VIEW"]}
 						</td>
 					);
 				} else {
@@ -499,7 +496,7 @@ export const generateWithdrawalsHeaders = (
 								target="blank"
 								href={EXPLORERS_ENDPOINT(currency) + transaction_id}
 							>
-								{STRINGS.VIEW}
+								{STRINGS["VIEW"]}
 							</a>
 						</td>
 					) : (
@@ -511,16 +508,12 @@ export const generateWithdrawalsHeaders = (
 									message: 'Transaction ID',
 									description: transaction_id,
 									icon: (
-										<Icon
-											type="info-circle"
-											theme="twoTone"
-											style={{ color: '#0000ff' }}
-										/>
+										<InfoCircleTwoTone style={{ color: '#0000ff' }} />
 									)
 								});
 							}}
 						>
-							{STRINGS.VIEW}
+							{STRINGS["VIEW"]}
 						</td>
 					);
 				}

@@ -7,8 +7,9 @@ import ResetPasswordForm from './ResetPasswordForm';
 import ResetPasswordSuccess from './ResetPasswordSuccess';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class ResetPassword extends Component {
 	state = {
@@ -60,7 +61,7 @@ class ResetPassword extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme } = this.props;
+		const { languageClasses, activeTheme, icons: ICONS } = this.props;
 		const { success, showContactForm } = this.state;
 
 		if (success) {
@@ -78,16 +79,17 @@ class ResetPassword extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={ICONS.SET_NEW_PASSWORD}
-						text={STRINGS.RESET_PASSWORD.TITLE}
+						iconId="SET_NEW_PASSWORD"
+						iconPath={ICONS['SET_NEW_PASSWORD']}
+						text={STRINGS["RESET_PASSWORD.TITLE"]}
 						textType="title"
 						underline={true}
 						className="w-100"
-						subtitle={STRINGS.RESET_PASSWORD.SUBTITLE}
+						subtitle={STRINGS["RESET_PASSWORD.SUBTITLE"]}
 						useSvg={true}
 						actionProps={{
-							text: STRINGS.HELP_TEXT,
-							iconPath: ICONS.BLUE_QUESTION,
+							text: STRINGS["HELP_TEXT"],
+							iconPath: ICONS['BLUE_QUESTION'],
 							onClick: this.onOpenDialog,
 							useSvg: true
 						}}
@@ -128,4 +130,4 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants
 });
 
-export default connect(mapStateToProps)(ResetPassword);
+export default connect(mapStateToProps)(withConfig(ResetPassword));

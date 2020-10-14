@@ -9,8 +9,9 @@ import {
 } from '../../actions/authAction';
 
 import { IconTitle, Loader, Button } from '../../components';
-import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class VerifyEmailCode extends Component {
 	state = {
@@ -23,11 +24,11 @@ class VerifyEmailCode extends Component {
 		if (isUUID(code)) {
 			this.props.checkVerificationData({ verification_code: code });
 		} else {
-			this.setError(STRINGS.VERIFICATION_EMAIL.INVALID_UUID);
+			this.setError(STRINGS["VERIFICATION_EMAIL.INVALID_UUID"]);
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.data.hasValidData && !this.props.data.hasValidData) {
 			this.props.verifyCode(nextProps.data.data);
 		}
@@ -41,7 +42,7 @@ class VerifyEmailCode extends Component {
 		this.props.router.replace('login');
 	};
 	render() {
-		const { data: { fetching, fetched, error } } = this.props;
+		const { data: { fetching, fetched, error }, icons: ICONS } = this.props;
 		const { errorMessage } = this.state;
 
 		let childProps = {};
@@ -54,23 +55,23 @@ class VerifyEmailCode extends Component {
 		} else if (error || errorMessage) {
 			childProps = {
 				titleSection: {
-					iconPath: ICONS.LETTER,
-					text: STRINGS.ERROR_TEXT
+					iconPath: ICONS["LETTER"],
+					text: STRINGS["ERROR_TEXT"]
 				},
 				child: <div>{error || errorMessage}</div>
 			};
 		} else {
 			childProps = {
 				titleSection: {
-					iconPath: ICONS.SUCCESS_BLACK,
-					text: STRINGS.SUCCESS_TEXT
+					iconPath: ICONS["SUCCESS_BLACK"],
+					text: STRINGS["SUCCESS_TEXT"]
 				},
 				child: (
 					<div className="text-center w-100">
-						<div>{STRINGS.VERIFICATION_EMAIL.TEXT_1}</div>
-						<div>{STRINGS.VERIFICATION_EMAIL.TEXT_2}</div>
+						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_1"]}</div>
+						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_2"]}</div>
 						<Button
-							label={STRINGS.LOGIN_TEXT}
+							label={STRINGS["LOGIN_TEXT"]}
 							className="button-margin"
 							onClick={this.onClickLogin}
 						/>
@@ -119,4 +120,4 @@ const mapDispatchToProps = (dispatch) => ({
 	verifyCode: bindActionCreators(verifyVerificationCode, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(VerifyEmailCode);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(VerifyEmailCode));

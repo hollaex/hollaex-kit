@@ -36,6 +36,10 @@ Join us on the [Forum](https://forum.bitholla.com) and feel free to raise any to
 [2]: http://www.facebook.com/bitholla
 [3]: http://www.github.com/bitholla
 
+<a href="https://github.com/bitholla/hollaex-kit/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=bitholla/hollaex-kit" />
+</a>
+
 
 ## Useful Resources
 

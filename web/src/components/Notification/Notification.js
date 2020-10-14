@@ -30,7 +30,7 @@ export const NotificationWraperDesktop = ({
 		{children}
 		{ onBack ?
 			<Button
-				label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
+				label={STRINGS["NOTIFICATIONS.BUTTONS.OKAY"]}
 				onClick={onClose}
 				autoFocus
 			>

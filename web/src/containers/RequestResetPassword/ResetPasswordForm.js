@@ -14,13 +14,13 @@ export const generateFormFields = (theme) => ({
 	email: {
 		type: 'email',
 		validate: [
-			requiredWithCustomMessage(STRINGS.VALIDATIONS.TYPE_EMAIL),
+			requiredWithCustomMessage(STRINGS["VALIDATIONS.TYPE_EMAIL"]),
 			email
 		],
 		normalize: normalizeEmail,
 		fullWidth: true,
-		label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
-		placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER
+		label: STRINGS["FORM_FIELDS.EMAIL_LABEL"],
+		placeholder: STRINGS["FORM_FIELDS.EMAIL_PLACEHOLDER"]
 	},
 	captcha: {
 		type: 'captcha',
@@ -31,7 +31,7 @@ export const generateFormFields = (theme) => ({
 });
 
 const Form = (props) => (
-	<AuthForm {...props} buttonLabel={STRINGS.REQUEST_RESET_PASSWORD.BUTTON} />
+	<AuthForm {...props} buttonLabel={STRINGS["REQUEST_RESET_PASSWORD.BUTTON"]} />
 );
 
 export default reduxForm({

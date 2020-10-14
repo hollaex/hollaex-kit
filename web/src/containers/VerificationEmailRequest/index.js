@@ -14,9 +14,9 @@ import STRINGS from '../../config/localizedStrings';
 
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
-		{STRINGS.VERIFICATION_EMAIL_REQUEST.NO_EMAIL}
+		{STRINGS["VERIFICATION_EMAIL_REQUEST.NO_EMAIL"]}
 		<Link to="/verify" className={classnames('blue-link')}>
-			{STRINGS.VERIFICATION_EMAIL_REQUEST.REQUEST_EMAIL}
+			{STRINGS["VERIFICATION_EMAIL_REQUEST.REQUEST_EMAIL"]}
 		</Link>
 	</div>
 );
@@ -123,7 +123,8 @@ class VerifyEmailRequest extends Component {
 				>
 					<IconTitle
 						iconPath={path}
-						text={STRINGS.VERIFICATION_EMAIL_REQUEST.TITLE}
+						stringId="VERIFICATION_EMAIL_REQUEST.TITLE"
+						text={STRINGS["VERIFICATION_EMAIL_REQUEST.TITLE"]}
 						textType="title"
 						underline={true}
 						useSvg={false}

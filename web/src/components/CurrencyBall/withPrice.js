@@ -22,7 +22,7 @@ const CurrencyBallWithPrice = ({
 				{/* {symbol !== BASE_CURRENCY && price && (
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
 						{` ~ ${formatToCurrency(
-							calculatePrice(amount, price), baseCoin.min
+							calculatePrice(amount, symbol), baseCoin.min
 						)} ${baseCoin.symbol.toUpperCase()}`}
 					</div>
 				)} */}

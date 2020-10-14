@@ -31,7 +31,7 @@ const ENDPOINTS = {
 	DEPOSIT_BANK: '/user/deposit/bank',
 	WITHDRAW_BANK: '/user/withdraw/bank',
 	WITHDRAW: (currency) => `/user/request-withdrawal`,
-	WITHDRAW_FEE: (currency) => `/user/withdraw/${currency}/fee`,
+	WITHDRAW_FEE: (currency) => `/user/withdrawal?currency=${currency}`,
 	CANCEL_WITHDRAWAL: '/user/withdrawals',
 	CONFIRM_WITHDRAWAL: '/user/confirm-withdrawal'
 };

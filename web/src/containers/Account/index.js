@@ -4,10 +4,12 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
 import { CheckTitle, MobileBarTabs, Loader } from '../../components';
-import { ICONS, IS_XHT } from '../../config/constants';
+import { IS_XHT } from '../../config/constants';
 import { UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
+
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const getInitialTab = ({ name, path }) => {
 	let activeTab = -1;
@@ -48,7 +50,7 @@ class Account extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.id !== this.props.id ||
 			nextProps.verification_level !== this.props.verification_level ||
@@ -86,6 +88,7 @@ class Account extends Component {
 		},
 		updateActiveTab = false
 	) => {
+		const { icons: ICONS } = this.props;
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
 		let activeDevelopers = false;
 
@@ -110,22 +113,26 @@ class Account extends Component {
 		const tabs = [
 			{
 				title: isMobile ? (
-					STRINGS.SUMMARY.TITLE
+					STRINGS["SUMMARY.TITLE"]
 				) : (
 						<CheckTitle
-							title={STRINGS.SUMMARY.TITLE}
-							icon={ICONS.TAB_SUMMARY}
+							stringId="SUMMARY.TITLE"
+							title={STRINGS["SUMMARY.TITLE"]}
+							iconId="TAB_SUMMARY"
+							icon={ICONS["TAB_SUMMARY"]}
 						/>
 					),
 				content: <Summary />
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_SECURITY
+					STRINGS["ACCOUNTS.TAB_SECURITY"]
 				) : (
 					<CheckTitle
-						title={STRINGS.ACCOUNTS.TAB_SECURITY}
-						icon={ICONS.SECURITY_GREY}
+						stringId="ACCOUNTS.TAB_SECURITY"
+						title={STRINGS["ACCOUNTS.TAB_SECURITY"]}
+						iconId="SECURITY_GREY"
+						icon={ICONS["SECURITY_GREY"]}
 						notifications={!otp_enabled ? '!' : ''}
 					/>
 				),
@@ -134,11 +141,13 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_VERIFICATION
+					STRINGS["ACCOUNTS.TAB_VERIFICATION"]
 				) : (
 						<CheckTitle
-							title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
-							icon={ICONS.TAB_SUMMARY}
+							stringId="ACCOUNTS.TAB_VERIFICATION"
+							title={STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
+							iconId="TAB_SUMMARY"
+							icon={ICONS["TAB_SUMMARY"]}
 						/>
 					),
 				notifications: verificationPending && !IS_XHT ? '!' : '',
@@ -146,11 +155,13 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_SETTINGS
+					STRINGS["ACCOUNTS.TAB_SETTINGS"]
 				) : (
 					<CheckTitle
-						title={STRINGS.ACCOUNTS.TAB_SETTINGS}
-						icon={ICONS.GEAR_GREY}
+						stringId="ACCOUNTS.TAB_SETTINGS"
+						title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+						iconId="GEAR_GREY"
+						icon={ICONS["GEAR_GREY"]}
 					/>
 				),
 				content: <UserSettings location={location} />
@@ -197,8 +208,9 @@ class Account extends Component {
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
 					tabs={tabs}
-					title={STRINGS.ACCOUNTS.TITLE}
-					titleIcon={ICONS.ACCOUNT_LINE}
+					title={STRINGS["ACCOUNTS.TITLE"]}
+					titleIcon={ICONS["ACCOUNT_LINE"]}
+					iconId="ACCOUNT_LINE"
 					className="account-tab"
 				/> */}
 				<div className="inner_container">
@@ -226,4 +238,4 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Account);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Account));

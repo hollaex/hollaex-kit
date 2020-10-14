@@ -42,7 +42,7 @@ class Chat extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			!nextProps.fetchingAuth &&
 			nextProps.fetchingAuth !== this.props.fetchingAuth

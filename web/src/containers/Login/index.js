@@ -12,20 +12,18 @@ import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
-import {
-	FLEX_CENTER_CLASSES,
-	ICONS
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 let errorTimeOut = null;
 
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
-		{STRINGS.LOGIN.NO_ACCOUNT}
+		{STRINGS["LOGIN.NO_ACCOUNT"]}
 		<Link to="/signup" className={classnames('blue-link')}>
-			{STRINGS.LOGIN.CREATE_ACCOUNT}
+			{STRINGS["LOGIN.CREATE_ACCOUNT"]}
 		</Link>
 	</div>
 );
@@ -45,7 +43,7 @@ class Login extends Component {
 			this.setState({ logoutDialogIsOpen: true });
 		}
 	}
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.logoutMessage &&
 			nextProps.logoutMessage !== this.props.logoutMessage
@@ -150,12 +148,12 @@ class Login extends Component {
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });
-					error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
+					error._error = STRINGS["VALIDATIONS.OTP_LOGIN"];
 				} else {
 					if (_error === 'User is not activated') {
-						error._error = (STRINGS.VALIDATIONS.FROZEN_ACCOUNT);
+						error._error = (STRINGS["VALIDATIONS.FROZEN_ACCOUNT"]);
 					} else if (_error.indexOf('captcha') > -1) {
-						error._error = (STRINGS.VALIDATIONS.CAPTCHA);
+						error._error = (STRINGS["VALIDATIONS.CAPTCHA"]);
 					} else {
 						error._error = _error;
 					}
@@ -209,7 +207,7 @@ class Login extends Component {
 	};
 
 	render() {
-		const { logoutMessage, activeTheme, constants = {} } = this.props;
+		const { logoutMessage, activeTheme, constants = {}, icons: ICONS } = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
@@ -230,7 +228,7 @@ class Login extends Component {
 				>
 					<IconTitle
 						iconPath={path}
-						text={STRINGS.LOGIN_TEXT}
+						text={STRINGS["LOGIN_TEXT"]}
 						textType="title"
 						underline={true}
 						useSvg={false}
@@ -238,11 +236,11 @@ class Login extends Component {
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
-							STRINGS.LOGIN.LOGIN_TO,
+							STRINGS["LOGIN.LOGIN_TO"],
 							constants.api_name || ''
 						)}
 						actionProps={{
-							text: STRINGS.LOGIN.CANT_LOGIN,
+							text: STRINGS["LOGIN.CANT_LOGIN"],
 							iconPath: ICONS.BLUE_ARROW_RIGHT,
 							onClick: this.redirectToResetPassword,
 							useSvg: true,
@@ -307,4 +305,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Login);
+)(withConfig(Login));

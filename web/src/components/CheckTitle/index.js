@@ -1,8 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
+import Image from 'components/Image';
+import { EditWrapper } from 'components';
 
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import ICONS from 'config/icons';
 
 export const renderStatusIcon = (statusCode = -1, className = "") => {
 
@@ -10,21 +13,23 @@ export const renderStatusIcon = (statusCode = -1, className = "") => {
 		case -1:
 			return null;
 		case 0:
-			return <ReactSVG path={ICONS.VERIFICATION_INCOMPLETE} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={className} />;
 		case 1:
-			return <ReactSVG path={ICONS.VERIFICATION_PENDING} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_PENDING"]} wrapperClassName={className} />;
 		case 2:
-			return <ReactSVG path={ICONS.VERIFICATION_REJECTED} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_REJECTED"]} wrapperClassName={className} />;
 		case 3:
-			return <ReactSVG path={ICONS.VERIFICATION_VERIFIED} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_VERIFIED"]} wrapperClassName={className} />;
 		default:
-			return <ReactSVG path={ICONS.VERIFICATION_INCOMPLETE} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={className} />;
 	}
 };
 
 const CheckTitle = ({
 	title,
+	stringId,
 	icon,
+	iconId,
 	notifications,
 	className,
 	titleClassName,
@@ -36,21 +41,22 @@ const CheckTitle = ({
 			<div className='verification-status-container w-100 d-flex justify-content-end'>
 				{!!notificationStatus
 					? notificationStatus
-					: <div className="empty-notification"></div>
+					: <div className="empty-notification" />
 				}
 			</div>
-			{title && (
-				<div className={classnames('check_title-label', titleClassName)}>
-					{title}
-				</div>
-			)}
+			<EditWrapper stringId={stringId} iconId={iconId}>
+        {title && (
+					<div className={classnames('check_title-label', titleClassName)}>
+            {title}
+					</div>
+        )}
+			</EditWrapper>
 			<div className="check_title-icon">
-				{icon &&
-					(icon.indexOf('.svg') > 0 ? (
-						<ReactSVG path={icon} wrapperClassName="check_title-svg" />
-					) : (
-						<img alt={icon} src={icon} className="check_title-img" />
-					))}
+					<Image
+					    icon={icon}
+					    imageWrapperClassName="check_title-img"
+							svgWrapperClassName="check_title-svg"
+					/>
 				{!!notifications && (
 					<div className="check_title-notification">{notifications}</div>
 				)}
@@ -92,6 +98,8 @@ export const PanelInformationRow = ({
 
 export const CustomTabs = ({
 	title,
+	stringId,
+	iconId,
 	icon,
 	notifications,
 	className,
@@ -107,21 +115,22 @@ export const CustomTabs = ({
 						: <div className="empty-notification"></div>
 					}
 				</div>
-				{icon &&
-					(icon.indexOf('.svg') > 0 ? (
-						<ReactSVG path={icon} wrapperClassName="custom_title-svg" />
-					) : (
-							<img alt={icon} src={icon} className="custom_title-img" />
-						))}
+						<Image
+						    icon={icon}
+						    imageWrapperClassName="custom_title-img"
+								svgWrapperClassName="custom_title-svg"
+						/>
 				{!!notifications && (
 					<div className="check_title-notification">{notifications}</div>
 				)}
 			</div>
-			{title && (
-				<div className={classnames('custom_title-label', { 'title-inactive': false })}>
-					{title}
-				</div>
-			)}
+      <EditWrapper stringId={stringId} iconId={iconId}>
+        {title && (
+					<div className={classnames('custom_title-label', { 'title-inactive': false })}>
+            {title}
+					</div>
+        )}
+      </EditWrapper>
 		</div>
 	);
 };
@@ -154,8 +163,8 @@ export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
 			)}
 		>
 			<div className="d-flex">
-				<ReactSVG
-					path={icon}
+				<Image
+					icon={icon}
 					wrapperClassName="custom_tab_icon-mobile"
 				/>
 				<div className={classnames(FLEX_CENTER_CLASSES, "mobile-tab-title", "ml-3")}>

@@ -13,6 +13,8 @@ $input-bottom_line--animation--width: 100px;
 
 $title-icon--height: 10rem;
 
+@import './_InputGroup.scss';
+
 .language_rtl {
 	.quick_trade-wrapper {
 		font-family: inherit;
@@ -153,9 +155,10 @@ $title-icon--height: 10rem;
 		}
 	}
 
-	.input_block-error-wrapper {
+	.input-group__error-wrapper {
 		color: red;
 		margin-top: 0.5rem;
+		float: right;
 	}
 
 	.input_block-wrapper {
@@ -341,6 +344,10 @@ $title-icon--height: 10rem;
 		}
 	}
 
+	.review-block-wrapper {
+		border-top: $colors-white solid 1px;
+	}
+
 	svg {
 		.quick-trade-1 {
 			stroke: $dark-main-title-icon-color-3;
@@ -388,4 +395,8 @@ $title-icon--height: 10rem;
 }
 .mobile_dropdown-section {
 	border-top: solid;
+}
+
+.review-block-wrapper {
+	border-top: $colors-black solid 1px;
 }

@@ -2,20 +2,25 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ReCaptcha } from 'react-recaptcha-v3';
 import { connect } from 'react-redux';
+import { ProjectConfig } from 'config/project.config';
 
-import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY, CAPTCHA_TIMEOUT } from '../../config/constants';
+import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from '../../config/constants';
 
 class CaptchaField extends Component {
+  static contextType = ProjectConfig;
+
 	state = {
-		active: false,
+		active: true,
 		ready: false
 	};
+
 	componentDidMount() {
-		setTimeout(() => {
-			this.setState({ active: true });
-		}, CAPTCHA_TIMEOUT);
+		this.expiryTime = setInterval(() => {
+			this.captcha.execute();
+		}, 120000);
 	}
-	componentWillReceiveProps(nextProps) {
+
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.input.value === '' &&
 			nextProps.input.value !== this.props.input.value
@@ -28,10 +33,6 @@ class CaptchaField extends Component {
 		this.captcha = el;
 	};
 
-	onLoadCallback = () => {
-		this.setState({ ready: true });
-	};
-
 	onVerifyCallback = (data) => {
 		this.props.input.onChange(data);
 	};
@@ -41,18 +42,31 @@ class CaptchaField extends Component {
 		this.captcha.execute();
 	};
 
+	componentWillUnmount() {
+		if (this.expiryTime) {
+			clearInterval(this.expiryTime);
+		}
+	}
+
 	render() {
-		const { constants: { captcha = {} } } = this.props;
+		const { language, constants: { captcha = {} } } = this.props;
 		const { ready, active } = this.state;
+		const { DEFAULT_LANGUAGE } = this.context;
+
 		return (
 			active && (
-				<div className={classnames('field-wrapper', { hidden: !ready })}>
+				<div
+					className={classnames('field-wrapper', 'captcha-wrapper', {
+						hidden: !ready
+					})}
+				>
 					<ReCaptcha
 						ref={this.setRef}
 						// sitekey={captcha.site_key || CAPTCHA_SITEKEY}
 						sitekey={CAPTCHA_SITEKEY || captcha.sitekey || DEFAULT_CAPTCHA_SITEKEY}
 						verifyCallback={this.onVerifyCallback}
 						expiredCallback={this.onExpiredCallback}
+						lang={language || DEFAULT_LANGUAGE}
 					/>
 				</div>
 			)

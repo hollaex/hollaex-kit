@@ -41,12 +41,7 @@ const INITIAL_STATE = {
 	pair: '',
 	symbol: '',
 	price: 0,
-	prices: {
-		eur: 1,
-		eth: 1,
-		btc: 1,
-		bch: 1
-	},
+	prices: {},
 	asks: [],
 	bids: [],
 	orderbookReady: false,

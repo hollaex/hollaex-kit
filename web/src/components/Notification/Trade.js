@@ -23,16 +23,16 @@ export const getTitleAndIcon = (side, type) => {
 	if (side === SIDE_BUY) {
 		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
-			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
-			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,
-			STRINGS.SIDES_VALUES[SIDE_BUY]
+			STRINGS["ORDER_TITLE_TRADE_COMPLETE"],
+			<span className="text-capitalize">{STRINGS[`TYPES_VALUES.${type}`]}</span>,
+			STRINGS[`SIDES_VALUES.${SIDE_BUY}`]
 		);
 	} else if (side === SIDE_SELL) {
 		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
-			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
-			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,
-			STRINGS.SIDES_VALUES[SIDE_SELL]
+			STRINGS["ORDER_TITLE_TRADE_COMPLETE"],
+			<span className="text-capitalize">{STRINGS[`TYPES_VALUES.${type}`]}</span>,
+			STRINGS[`SIDES_VALUES.${SIDE_SELL}`]
 		);
 	}
 
@@ -71,9 +71,9 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 	const payValue = coins[pair.pair_2] || DEFAULT_COIN_DATA;
 
 	const actionText =
-		side === 'sell' ? STRINGS.ORDER_SOLD : STRINGS.ORDER_BOUGHT;
+		side === 'sell' ? STRINGS["ORDER_SOLD"] : STRINGS["ORDER_BOUGHT"];
 	const resultText =
-		side === 'sell' ? STRINGS.ORDER_RECEIVED : STRINGS.ORDER_SPENT;
+		side === 'sell' ? STRINGS["ORDER_RECEIVED"] : STRINGS["ORDER_SPENT"];
 	const { btc, base, average } = calculateValues(data, pair, coins);
 	return (
 		<NotificationContent>
@@ -86,7 +86,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				)}
 			/>
 			<InformationRow
-				label={STRINGS.ORDER_AVERAGE_PRICE}
+				label={STRINGS["ORDER_AVERAGE_PRICE"]}
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					average,

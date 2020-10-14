@@ -18,7 +18,7 @@ class Accordion extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.ready && nextProps.sections.length > 0) {
 			this.initialize(nextProps.sections);
 		}

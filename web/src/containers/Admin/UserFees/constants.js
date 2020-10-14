@@ -141,7 +141,7 @@ export const getPairsColumns = (handleClick) => [
 		dataIndex: 'maker_fees',
 		key: 'maker_fees',
 		render: (v, data) => (<div className="d-flex">
-			<div className="blue-link pointer" onClick={() => handleClick(v, data, 'maker_fees')}>{STRINGS.VIEW}</div>
+			<div className="blue-link pointer" onClick={() => handleClick(v, data, 'maker_fees')}>{STRINGS["VIEW"]}</div>
 		</div>)
 	},
 	{
@@ -149,7 +149,7 @@ export const getPairsColumns = (handleClick) => [
 		dataIndex: 'taker_fees',
 		key: 'taker_fees',
 		render: (v, data) => (<div className="d-flex">
-			<div className="blue-link pointer" onClick={() => handleClick(v, data, 'taker_fees')}>{STRINGS.VIEW}</div>
+			<div className="blue-link pointer" onClick={() => handleClick(v, data, 'taker_fees')}>{STRINGS["VIEW"]}</div>
 		</div>)
 	}
 ];

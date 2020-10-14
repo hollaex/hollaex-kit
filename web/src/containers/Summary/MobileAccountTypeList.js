@@ -1,10 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 
 import STRINGS from '../../config/localizedStrings';
 import AccountTypeDetails from './components/AccountTypeDetails';
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const MobileAccountTypeList = ({
     user,
@@ -17,7 +18,8 @@ const MobileAccountTypeList = ({
     onFeesAndLimits,
     onUpgradeAccount,
     verification_level,
-    balance
+    balance,
+    icons: ICONS,
 }) => {
     return (
         <div className="mobile-account-type my-4">
@@ -39,17 +41,24 @@ const MobileAccountTypeList = ({
                         {selectedAccount !== key
                             ? <div className="d-flex">
                                 <div className="mr-4">
-                                    <ReactSVG
-                                        path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                    <Image
+                                        iconId={
+                                          ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                            ? `LEVEL_ACCOUNT_ICON_${key}`
+                                            : 'LEVEL_ACCOUNT_ICON_4'
+                                        }
+                                        icon={
+                                          ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
                                             ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
-                                            : ICONS.LEVEL_ACCOUNT_ICON_4}
+                                            : ICONS['LEVEL_ACCOUNT_ICON_4']
+                                        }
                                         wrapperClassName="trader-account-icon"
                                     />
                                 </div>
                                 <div className={classnames(FLEX_CENTER_CLASSES)}>
-                                    {STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, key)}
+                                    {STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"], key)}
                                     {(key === verification_level) &&
-                                        <div className="account-current summary-content-txt ml-2"> {`(${STRINGS.SUMMARY.CURRENT_TXT})`} </div>
+                                        <div className="account-current summary-content-txt ml-2"> {`(${STRINGS["SUMMARY.CURRENT_TXT"]})`} </div>
                                     }
                                 </div>
                             </div>
@@ -75,4 +84,4 @@ const MobileAccountTypeList = ({
     );
 };
 
-export default MobileAccountTypeList;
+export default withConfig(MobileAccountTypeList);

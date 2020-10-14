@@ -1,5 +1,7 @@
 import axios from 'axios';
 import math from 'mathjs';
+import moment from 'moment';
+import { hashSettled } from 'rsvp';
 
 import { getDecimals } from '../utils/utils'
 
@@ -53,3 +55,38 @@ export const getChartHistory = (symbol, resolution, from, to, firstDataRequest) 
 		method: 'GET'
 	});
 };
+
+const getPriceSparkLine = async (pair) => {
+  const from = moment()
+    .subtract('1', 'month')
+    .format('X');
+  const to = moment().format('X');
+
+  const { data } = await axios({
+			url: `/chart?symbol=${pair}&resolution=D&from=${from}&to=${to}`,
+			method: 'GET'
+		})
+
+  return data.map(({ close }) => close);
+};
+
+export const getSparklines = async (pairs = []) => {
+	const promises = {}
+  pairs.forEach(pair => {
+  	promises[pair] = getPriceSparkLine(pair)
+	})
+
+	const hash = await hashSettled(promises)
+	const result = {}
+
+	Object.entries(hash).forEach(([key]) => {
+		const { state, value } = hash[key];
+		if (state === "fulfilled") {
+			result[key] = value
+		} else {
+			result[key] = []
+		}
+	})
+
+	return result;
+}

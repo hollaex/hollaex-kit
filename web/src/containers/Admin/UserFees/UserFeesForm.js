@@ -7,8 +7,8 @@ const UserFeesForm = ({ fields }) => {
     return (
         <div>
             <div className='d-flex mb-2'>
-                <div className='verification_label'>{STRINGS.USER_LEVEL}</div>
-                <div className='verification_content'>{STRINGS.FEE_AMOUNT}</div>
+                <div className='verification_label'>{STRINGS["USER_LEVEL"]}</div>
+                <div className='verification_content'>{STRINGS["FEE_AMOUNT"]}</div>
             </div>
             {Object.keys(fields).map((key, index) => {
                 const levelFields = fields[key];

@@ -44,11 +44,11 @@ const AccountTypeDetails = ({
 						<div className="requirement-header d-flex justify-content-between">
 							<div>
 								{selectedLevel === 3
-									? STRINGS.SUMMARY.ONE_REQUIREMENT
-									: STRINGS.SUMMARY.REQUIREMENTS
+									? STRINGS["SUMMARY.ONE_REQUIREMENT"]
+									: STRINGS["SUMMARY.REQUIREMENTS"]
 								}
 							</div>
-							<div className="status-header">{STRINGS.STATUS}</div>
+							<div className="status-header">{STRINGS["STATUS"]}</div>
 						</div>
 						<SummaryRequirements
 							user={user}

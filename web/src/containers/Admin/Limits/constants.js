@@ -31,7 +31,7 @@ export const CURRENCY_KEYS = [
 const returnArray = (obj, data, keyIndex, handleClick) => {
 	return (<div className="d-flex">
 		{/* <div>{keys.map((index) => ` ${obj[index]} `)}</div> */}
-		<div className="blue-link pointer" onClick={() => handleClick(obj, data, keyIndex)}>{STRINGS.VIEW}</div>
+		<div className="blue-link pointer" onClick={() => handleClick(obj, data, keyIndex)}>{STRINGS["VIEW"]}</div>
 		<div>
 			{/* <ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" /> */}
 		</div>

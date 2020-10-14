@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ReCaptcha } from 'react-recaptcha-v3';
 import { connect } from 'react-redux';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY, DEFAULT_LANGUAGE } from '../../../config/constants';
+import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from '../../../config/constants';
 
 class CaptchaField extends Component {
 	state = {
@@ -17,7 +18,7 @@ class CaptchaField extends Component {
 		}, 120000);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.input.value === '' &&
 			nextProps.input.value !== this.props.input.value
@@ -46,8 +47,9 @@ class CaptchaField extends Component {
 	}
 
 	render() {
-		const { language, constants: { captcha = {} } } = this.props;
+		const { language, constants: { captcha = {} }, defaultLanguage: DEFAULT_LANGUAGE } = this.props;
 		const { ready, active } = this.state;
+
 		return (
 			active && (
 				<div
@@ -73,4 +75,4 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants
 });
 
-export default connect(mapStateToProps)(CaptchaField);
+export default connect(mapStateToProps)(withConfig(CaptchaField));

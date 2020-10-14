@@ -1,7 +1,6 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { TABLE_PAGE_SIZE } from './constants';
-import { ICONS } from '../../config/constants';
 import {
 	ActionNotification,
 	Table,
@@ -10,6 +9,7 @@ import {
 } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const HistoryDisplay = (props) => {
 	const {
@@ -20,7 +20,8 @@ const HistoryDisplay = (props) => {
 		withIcon,
 		handleNext,
 		jumpToPage,
-		handleDownload
+		handleDownload,
+		icons: ICONS,
 	} = props;
 
 	return (
@@ -30,8 +31,9 @@ const HistoryDisplay = (props) => {
 					{title}
 					{count > 0 && (
 						<ActionNotification
-							text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
-							iconPath={ICONS.DATA}
+							stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
+							text={STRINGS["TRANSACTION_HISTORY.TEXT_DOWNLOAD"]}
+							iconPath={ICONS["DATA"]}
 							useSvg={true}
 							className="csv-action"
 							onClick={handleDownload}
@@ -60,4 +62,4 @@ const HistoryDisplay = (props) => {
 	);
 };
 
-export default HistoryDisplay;
+export default withConfig(HistoryDisplay);

@@ -24,7 +24,7 @@ class Plugins extends Component {
 		this.setState({ loading: true });
 		getConstants()
 			.then(res => {
-				this.setState({ loading: false, constants: res.constants });
+				this.setState({ loading: false, constants: res });
 			})
 			.catch(err => {
 				this.setState({ loading: false });
@@ -39,14 +39,13 @@ class Plugins extends Component {
 	}
 
 	generateCards = () => {
-		const { plugins = { enabled: '' } } = this.state.constants;
-		if (plugins) {
-			let enabledPlugins = plugins.enabled.split(',');
+		const { enabled = [] } = this.state.constants;
+		// if (plugins) {
 			let allPluginsData = getAllPluginsData(this.props.availablePlugins);
-			let myPlugins = Object.keys(allPluginsData).filter((data) => enabledPlugins.includes(data));
-			const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
+			let myPlugins = Object.keys(allPluginsData).filter((data) => enabled.includes(data));
+			const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabled.includes(data));
 			this.setState({ myPlugins, otherPlugins, allPluginsData });
-		}
+		// }
 	};
 
 	tabChange = (activeTab) => {

@@ -15,7 +15,7 @@ const IdentityVerificationHome = ({ user, activeLanguage, setActivePageContent, 
     if (!address.country) {
         return (
             <div>
-                <Button label={STRINGS.USER_VERIFICATION.START_IDENTITY_VERIFICATION} onClick={() => setActivePageContent('kyc')} />
+                <Button label={STRINGS["USER_VERIFICATION.START_IDENTITY_VERIFICATION"]} onClick={() => setActivePageContent('kyc')} />
             </div>
         );
     } else {
@@ -23,47 +23,47 @@ const IdentityVerificationHome = ({ user, activeLanguage, setActivePageContent, 
             <div>
                 <div className="font-weight-bold text-lowercase">
                     {STRINGS.formatString(
-                        STRINGS.USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT,
+                        STRINGS["USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT"],
                         <span className="verification_link pointer" onClick={(e) => handleBack('document', e)}>
-                            {STRINGS.USER_VERIFICATION.DOCUMENT_SUBMISSION}
+                            {STRINGS["USER_VERIFICATION.DOCUMENT_SUBMISSION"]}
                         </span>)
                     }
                 </div>
                 <div className="my-3">
                     <PanelInformationRow
-                        label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_LABEL}
+                        label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_LABEL"]}
                         information={user.full_name}
                         className="title-font"
                         disable />
                     <div className="d-flex">
                         <PanelInformationRow
-                            label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_LABEL}
+                            label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_LABEL"]}
                             information={
                                 user.gender === false
-                                    ? STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN
-                                    : STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN
+                                    ? STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN"]
+                                    : STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN"]
                             }
                             className="title-font divider"
                             disable />
                         <PanelInformationRow
-                            label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL}
+                            label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL"]}
                             information={getFormatTimestamp(user.dob, formatBirthday[activeLanguage])}
                             className="title-font"
                             disable />
                     </div>
                     <PanelInformationRow
-                        label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_LABEL}
+                        label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_LABEL"]}
                         information={getCountry(user.nationality).name}
                         className="title-font"
                         disable />
                     <div className="d-flex">
                         <PanelInformationRow
-                            label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL}
+                            label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL"]}
                             information={getCountry(address.country).name}
                             className="title-font divider"
                             disable />
                         <PanelInformationRow
-                            label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL}
+                            label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL"]}
                             information={address.city}
                             className="title-font"
                             disable />
@@ -71,13 +71,13 @@ const IdentityVerificationHome = ({ user, activeLanguage, setActivePageContent, 
                     <div className="d-flex">
                         <div className="w-75">
                             <PanelInformationRow
-                                label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL}
+                                label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL"]}
                                 information={address.address}
                                 className="title-font divider"
                                 disable />
                         </div>
                         <PanelInformationRow
-                            label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL}
+                            label={STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL"]}
                             information={address.postal_code}
                             className="title-font"
                             disable />
@@ -86,7 +86,7 @@ const IdentityVerificationHome = ({ user, activeLanguage, setActivePageContent, 
                 {id_data.status === 3
                     ? null
                     :<Button
-                        label={STRINGS.USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION}
+                        label={STRINGS["USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION"]}
                         onClick={() => setActivePageContent('kyc')} />
                 }
             </div>

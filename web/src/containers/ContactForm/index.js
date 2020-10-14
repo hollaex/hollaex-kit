@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { HocForm, IconTitle, Notification } from '../../components';
 import { email as isEmail, required } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS } from '../../actions/appActions';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const FORM_NAME = 'ContactForm';
 
@@ -48,40 +48,40 @@ class ContactForm extends Component {
 	generateFormFields = (email) => ({
 		email: {
 			type: 'email',
-			label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
-			placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER,
+			label: STRINGS["FORM_FIELDS.EMAIL_LABEL"],
+			placeholder: STRINGS["FORM_FIELDS.EMAIL_PLACEHOLDER"],
 			validate: [required, isEmail],
 			fullWidth: true,
 			disabled: !!email
 		},
 		category: {
 			type: 'select',
-			label: STRINGS.CONTACT_FORM.CATEGORY_LABEL,
-			placeholder: STRINGS.CONTACT_FORM.CATEGORY_PLACEHOLDER,
+			label: STRINGS["CONTACT_FORM.CATEGORY_LABEL"],
+			placeholder: STRINGS["CONTACT_FORM.CATEGORY_PLACEHOLDER"],
 			options: [
 				{
 					value: 'verify',
-					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY"]
 				},
 				{
 					value: 'level',
-					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL"]
 				},
 				{
 					value: 'deposit',
-					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT"]
 				},
 				{
 					value: 'bug',
-					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG"]
 				},
 				{
 					value: 'personal',
-					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO"]
 				},
 				{
 					value: 'bank_transfer',
-					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER"]
 				}
 			],
 			validate: [required],
@@ -89,23 +89,23 @@ class ContactForm extends Component {
 		},
 		subject: {
 			type: 'text',
-			label: STRINGS.CONTACT_FORM.SUBJECT_LABEL,
-			placeholder: STRINGS.CONTACT_FORM.SUBJECT_PLACEHOLDER,
+			label: STRINGS["CONTACT_FORM.SUBJECT_LABEL"],
+			placeholder: STRINGS["CONTACT_FORM.SUBJECT_PLACEHOLDER"],
 			validate: [required],
 			fullWidth: true
 		},
 		description: {
 			type: 'textarea',
-			label: STRINGS.CONTACT_FORM.DESCRIPTION_LABEL,
-			placeholder: STRINGS.CONTACT_FORM.DESCRIPTION_PLACEHOLDER,
+			label: STRINGS["CONTACT_FORM.DESCRIPTION_LABEL"],
+			placeholder: STRINGS["CONTACT_FORM.DESCRIPTION_PLACEHOLDER"],
 			validate: [required],
 			fullWidth: true,
 			rows: '2'
 		},
 		attachment: {
 		  type: 'file',
-		  label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
-		  placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
+		  label: STRINGS["CONTACT_FORM.ATTACHMENT_LABEL"],
+		  placeholder: STRINGS["CONTACT_FORM.ATTACHMENT_PLACEHOLDER"],
 		  fullWidth: true,
 		  multiple: true,
 		  length: 3
@@ -113,7 +113,7 @@ class ContactForm extends Component {
 	});
 
 	render() {
-		const { onClose, email } = this.props;
+		const { onClose, email, icons: ICONS } = this.props;
 		const { submited, initialValues } = this.state;
 
 		if (submited) {
@@ -126,8 +126,10 @@ class ContactForm extends Component {
 		return (
 			<div className="contact_form-wrapper">
 				<IconTitle
-					iconPath={ICONS.CONTACT_US_ICON}
-					text={STRINGS.CONTACT_US_TEXT}
+					iconId="CONTACT_US_ICON"
+					iconPath={ICONS['CONTACT_US_ICON']}
+					stringId="CONTACT_US_TEXT"
+					text={STRINGS["CONTACT_US_TEXT"]}
 					textType="title"
 					underline={true}
 					className="w-100"
@@ -137,8 +139,8 @@ class ContactForm extends Component {
 					onSubmit={this.onSubmit}
 					formFields={formFields}
 					initialValues={initialValues}
-					buttonLabel={STRINGS.SUBMIT}
-					extraButtonLabel={STRINGS.BACK_TEXT}
+					buttonLabel={STRINGS["SUBMIT"]}
+					extraButtonLabel={STRINGS["BACK_TEXT"]}
 					extraButtonOnClick={onClose}
 				/>
 			</div>
@@ -151,4 +153,4 @@ const mapStateToProps = (store) => ({
 	contactFormData: store.app.contactFormData
 });
 
-export default connect(mapStateToProps)(ContactForm);
+export default connect(mapStateToProps)(withConfig(ContactForm));

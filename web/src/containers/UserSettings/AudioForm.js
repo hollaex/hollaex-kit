@@ -9,60 +9,60 @@ import STRINGS from '../../config/localizedStrings';
 export const generateAudioCueFormValues = () => ({
     all: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ALL_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.ALL_AUDIO"],
         className: 'toggle-wrapper-all',
     },
     public_trade: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.PUBLIC_TRADE_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.PUBLIC_TRADE_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     order_partially_completed: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PARTIAL_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PARTIAL_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     order_placed: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PLACED_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PLACED_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     order_canceled: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_CANCELED_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_CANCELED_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     order_completed: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_COMPLETED_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_COMPLETED_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     click_amounts: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.CLICK_AMOUNTS_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.CLICK_AMOUNTS_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     get_quote_quick_trade: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.GET_QUICK_TRADE_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.GET_QUICK_TRADE_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     quick_trade_success: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.SUCCESS_QUICK_TRADE_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.SUCCESS_QUICK_TRADE_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
     quick_trade_timeout: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.QUICK_TRADE_TIMEOUT_AUDIO,
+        label: STRINGS["USER_SETTINGS.AUDIO_CUE_FORM.QUICK_TRADE_TIMEOUT_AUDIO"],
         className: 'toggle-wrapper',
         disabled: false
     },
@@ -83,7 +83,7 @@ const Form = ({
             {error && <div className="warning_text">{getErrorLocalized(error)}</div>}
             <Button
                 className="mt-4"
-                label={STRINGS.SETTING_BUTTON}
+                label={STRINGS["SETTING_BUTTON"]}
                 disabled={pristine || submitting || !valid}
             />
         </form>
@@ -122,11 +122,12 @@ class AudioCueForm extends Component {
 
     render() {
         const section = [{
-            title: STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE,
+            stringId: "USER_SETTINGS.TITLE_AUDIO_CUE",
+            title: STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"],
             description: 'This is the description',
             content: (
                 <div>
-                    <p>{STRINGS.USER_SETTINGS.DESC_AUDIO_CUE}</p>
+                    <p>{STRINGS["USER_SETTINGS.DESC_AUDIO_CUE"]}</p>
                     <Form {...this.props} callback={this.callback} formFields={this.state.formFields} />
                 </div>
             ),
