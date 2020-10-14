@@ -35,6 +35,7 @@ const {
 	CAPTCHA_SITE_KEY,
 	ADMIN_WHITELIST_IP,
 	ACTIVATION_CODE,
+	NATIVE_CURRENCY,
 	API_KEY,
 	API_SECRET
 } = process.env;
@@ -65,6 +66,7 @@ const status = [{
 			website: '',
 			information: '',
 		},
+		native_currency: NATIVE_CURRENCY || 'btc',
 		logo_path: LOGO_PATH,
 		logo_black_path: LOGO_BLACK_PATH,
 		valid_languages: VALID_LANGUAGES || (NEW_USER_DEFAULT_LANGUAGE ? NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),

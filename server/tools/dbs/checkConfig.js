@@ -33,6 +33,7 @@ Status.findOne()
 				website: '',
 				information: '',
 			},
+			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY || 'btc',
 			logo_path: existingKitConfigurations.logo_path || process.env.LOGO_PATH,
 			logo_black_path: existingKitConfigurations.logo_black_path || process.env.LOGO_BLACK_PATH,
 			valid_languages: existingKitConfigurations.valid_languages || process.env.VALID_LANGUAGES || (process.env.NEW_USER_DEFAULT_LANGUAGE ? process.env.NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),

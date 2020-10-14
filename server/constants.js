@@ -388,6 +388,7 @@ exports.KIT_CONFIG_KEYS = [
 	'title',
 	'links',
 	'defaults',
+	'native_currency',
 	'logo_path',
 	'logo_black_path',
 	'valid_languages',
