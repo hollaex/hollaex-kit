@@ -57,6 +57,7 @@ class Container extends Component {
 			limitFilledOnOrder: ''
 		}
 		this.orderCache = {};
+		this.wsInterval = null;
 	}
 
 	limitTimeOut = null;
@@ -91,6 +92,9 @@ class Container extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 		clearTimeout(this.limitTimeOut);
+		if (this.wsInterval) {
+			clearInterval(this.wsInterval);
+		}
 	}
 
 	_resetTimer = () => {
@@ -268,6 +272,13 @@ class Container extends Component {
 					args: ['orderbook', 'trade', 'wallet', 'order', 'userTrade'],
 				})
 			);
+			this.wsInterval = setInterval(() => {
+				privateSocket.send(
+					JSON.stringify({
+						op: 'ping'
+					})
+				);
+			}, 55000);
 		};
 
 		privateSocket.onmessage = (evt) => {

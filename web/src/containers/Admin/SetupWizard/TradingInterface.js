@@ -53,8 +53,8 @@ const TradingInterface = ({ initialValues = {}, handleNext, updateConstants }) =
                                     </div>
                                 </div>
                             </Radio>
-                            <Radio value="pro-trade">
-                                Pro trade only
+                            <Radio value="pro-trade" disabled>
+                                Pro trade only (coming soon)
                                             <div className="small-text">
                                     (Chart, orderbook, limit orders with wallet)
                                             </div>
@@ -63,8 +63,8 @@ const TradingInterface = ({ initialValues = {}, handleNext, updateConstants }) =
                                     wrapperClassName="candle-icon"
                                 />
                             </Radio>
-                            <Radio value="quick-trade">
-                                Quick trade only
+                            <Radio value="quick-trade" disabled>
+                                Quick trade only (coming soon)
                             <div className="flex-container">
                                     <div className="small-text">
                                         (Simple buy/sell interface with wallet)
@@ -81,8 +81,8 @@ const TradingInterface = ({ initialValues = {}, handleNext, updateConstants }) =
                                     </div>
                                 </div>
                             </Radio>
-                            <Radio value="wallet">
-                                Wallet only
+                            <Radio value="wallet" disabled>
+                                Wallet only (coming soon)
                                             <div className="flex-container">
                                     <div className="small-text">
                                         (No trading. Only crypto wallet)

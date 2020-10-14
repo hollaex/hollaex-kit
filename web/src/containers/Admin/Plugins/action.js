@@ -46,7 +46,7 @@ export const requestVaultSupportCoins = () =>
 	axios.get(REQUEST_VAULT_SUPPORTED_COINS);
 
 export const requestAnnouncements = (query) =>
-	requestAuthenticated(`/plugins/announcements?${querystring.stringify(query)}`);
+	requestAuthenticated(`/plugins/announcement?${querystring.stringify(query)}`);
 
 export const requestPostAnnouncement = (values) => {
 	const options = {
