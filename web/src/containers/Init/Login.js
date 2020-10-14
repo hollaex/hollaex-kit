@@ -50,7 +50,7 @@ const Login = (props) => {
                             },
                             password: {
                                 type: 'password',
-                                label: 'Currency',
+                                label: 'Password',
                                 validate: [validateRequired]
                             },
                             otp_code: {
