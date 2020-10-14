@@ -38,6 +38,7 @@ const {
 	USER_LEVEL_NUMBER,
 	CAPTCHA_SITE_KEY,
 	ADMIN_WHITELIST_IP,
+	NATIVE_CURRENCY,
 	API_KEY,
 	API_SECRET
 } = process.env;
@@ -66,12 +67,12 @@ const kit = {
 		website: '',
 		information: '',
 	},
+	native_currency: NATIVE_CURRENCY,
 	logo_path: LOGO_PATH,
 	logo_black_path: LOGO_BLACK_PATH,
 	valid_languages: VALID_LANGUAGES || (NEW_USER_DEFAULT_LANGUAGE ? NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),
 	user_level_number: USER_LEVEL_NUMBER || 4,
 	new_user_is_activated: (NEW_USER_IS_ACTIVATED && NEW_USER_IS_ACTIVATED === 'true') || false,
-	broker_enabled: true,
 	captcha: {
 		site_key: CAPTCHA_SITE_KEY
 	},
@@ -90,11 +91,6 @@ const secrets = {
 	allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
 	admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
 	setup_completed: false,
-	broker: {
-		quick_trade_rate: 0.03,
-		quick_trade_expiration_time: 20,
-		trade_master_account_id: 2
-	},
 	security: {
 		token_time: '24h',
 		withdrawal_token_expiry: 300000

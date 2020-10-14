@@ -25,7 +25,7 @@ class InitWizard extends Component {
 
     componentDidMount() {
         const initialized = getExchangeInitialized();
-		if (initialized === 'true' || initialized) {
+		if (initialized === 'true' || (typeof initialized === 'boolean' && initialized)) {
 			this.props.router.push('/admin');
 		}
         setTimeout(() => {

@@ -1,5 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE, LANGUAGE_KEY, WS_URL } from '../config/constants';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -304,14 +304,12 @@ export const getWaveAuction = () => {
 };
 
 export const getAnnouncement = () => dispatch => {
-	return axios({
-		url: `${WS_URL}/plugins/announcements`,
-		method: 'GET'
-	}).then((res) => {
-		if (res.data && res.data.data) {
-			dispatch({ type: SET_APP_ANNOUNCEMENT, payload: { announcements: res.data.data } });
-		}
-	})
+	return axios.get('/plugins/announcements')
+		.then((res) => {
+			if (res.data && res.data.data) {
+				dispatch({ type: SET_APP_ANNOUNCEMENT, payload: { announcements: res.data.data } });
+			}
+		})
 		.catch((err) => { });
 };
 

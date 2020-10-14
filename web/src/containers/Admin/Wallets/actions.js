@@ -1,4 +1,3 @@
-import { WS_URL } from '../../../config/constants';
 import { requestAuthenticated } from '../../../utils';
 
 export const requestTotalBalance = () => requestAuthenticated('/admin/stats');
@@ -15,5 +14,5 @@ export const connectVault = (values) => {
 		body: JSON.stringify(values)
 	};
 	
-	return requestAuthenticated('/plugins/vault/connect', options, null, WS_URL);
+	return requestAuthenticated('/plugins/vault/connect', options);
 };

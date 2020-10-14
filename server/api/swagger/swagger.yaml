@@ -3933,8 +3933,8 @@ definitions:
             type: number
           new_user_is_activated:
             type: boolean
-          broker_enabled:
-            type: boolean
+          native_currency:
+            type: string
       secrets:
         type: object
         properties:
@@ -3957,16 +3957,6 @@ definitions:
             type: array
             items:
               type: string
-          broker:
-            type: object
-            properties:
-              quick_trade_rate:
-                type: number
-                format: double
-              quick_trade_expiration_time:
-                type: number
-              trade_master_account_id:
-                type: number
           security:
             type: object
             properties:

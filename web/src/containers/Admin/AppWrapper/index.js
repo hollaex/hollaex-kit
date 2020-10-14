@@ -77,7 +77,7 @@ class AppWrapper extends React.Component {
 			this.initSocketConnections();
 		}
 		const initialized = getExchangeInitialized();
-		if (initialized === 'false' || !initialized) {
+		if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 			this.props.router.push('/init');
 		}
 		this.requestAdminInitialize();
