@@ -1,0 +1,17 @@
+test
+node_modules
+.git
+README.md
+tools
+!tools/dbs/*.js
+!tools/general/*.js
+!tools/nexe
+Dockerfile
+docker-compose.yml
+index.html
+package-lock.json
+logs
+coverage
+.nyc_output
+.*docker-compose.yaml
+.drone*.yml
