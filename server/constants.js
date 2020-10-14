@@ -83,7 +83,6 @@ let configuration = {
 };
 
 let secrets = {
-	broker: {},
 	security: {},
 	accounts: {},
 	captcha: {},
@@ -148,7 +147,6 @@ const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 const resetAllConfig = () => {
 	frozenUsers = {};
 	secrets = {
-		broker: {},
 		security: {},
 		accounts: {},
 		captcha: {},
@@ -395,7 +393,6 @@ exports.KIT_CONFIG_KEYS = [
 	'valid_languages',
 	'user_level_number',
 	'new_user_is_activated',
-	'broker_enabled',
 	'interface',
 	'icons',
 	'strings',
@@ -407,7 +404,6 @@ exports.KIT_SECRETS_KEYS = [
 	'allowed_domains',
 	'admin_whitelist',
 	'emails',
-	'broker',
 	'security',
 	'captcha',
 	'smtp',

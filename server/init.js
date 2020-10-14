@@ -58,7 +58,6 @@ const checkStatus = (restart = false) => {
 	};
 
 	let secrets = {
-		broker: {},
 		security: {},
 		accounts: {},
 		captcha: {},
