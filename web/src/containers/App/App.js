@@ -96,7 +96,7 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
-		if (initialized === 'false' || !initialized) {
+		if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 			this.props.router.push('/init');
 		}
 		this.updateThemeToBody(this.props.activeTheme);
