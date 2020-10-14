@@ -173,7 +173,9 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (newKitConfig[key] === undefined) {
 			joinedKitConfig[key] = existingKitConfig[key];
 		} else {
-			if (isPlainObject(existingKitConfig[key])) {
+			if (key === 'strings' || key === 'icons' || key === 'meta') {
+				joinedKitConfig[key] = newKitConfig[key];
+			} else if (isPlainObject(existingKitConfig[key])) {
 				joinedKitConfig[key] = { ...existingKitConfig[key], ...newKitConfig[key] };
 			} else {
 				joinedKitConfig[key] = newKitConfig[key];
