@@ -289,6 +289,10 @@
 .wizard-container .ant-input-password-icon {
 	color: #c4c4c4;
 }
+.wizard-container .ant-radio-disabled .ant-radio-inner {
+	background-color: #050596;
+	border-color: #050596 !important;
+}
 .wizard-container .ant-radio-disabled + span {
 	color: #808088;
 }
