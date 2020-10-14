@@ -88,7 +88,7 @@ export function verifyToken(token) {
 		dispatch({ type: 'VERIFY_TOKEN_PENDING' });
 		axios({
 			method: 'GET',
-			url: '/verify_token',
+			url: '/verify-token',
 			headers: {
 				Authorization: `Bearer ${token}`
 			}
@@ -147,3 +147,9 @@ export const requestResetPassword = (values) => {
 };
 
 export const resetPassword = (data) => axios.post('/reset-password', data);
+
+export const storeAdminKey = (data) => axios.put('/admin/network-credentials', data);
+
+export const adminSignup = (data) => axios.post('/admin/signup', data);
+
+export const adminLogIn = (data) => axios.post('/login ', data);

@@ -9,18 +9,18 @@ const MobileVerificationHome = ({ user, setActivePageContent }) => {
     if (!phone_number) {
         return (
             <div>
-                <Button label={STRINGS.USER_VERIFICATION.START_PHONE_VERIFICATION} onClick={() => setActivePageContent('sms')} />
+                <Button label={STRINGS["USER_VERIFICATION.START_PHONE_VERIFICATION"]} onClick={() => setActivePageContent('sms')} />
             </div>
         );
     } else {
         return <div className="my-3">
             <PanelInformationRow
-                label={STRINGS.USER_VERIFICATION.PHONE_COUNTRY_ORIGIN}
+                label={STRINGS["USER_VERIFICATION.PHONE_COUNTRY_ORIGIN"]}
                 information={getCountryFromNumber(phone_number).name}
                 className="title-font"
                 disable />
             <PanelInformationRow
-                label={STRINGS.USER_VERIFICATION.MOBILE_NUMBER}
+                label={STRINGS["USER_VERIFICATION.MOBILE_NUMBER"]}
                 information={phone_number}
                 className="title-font"
                 disable />

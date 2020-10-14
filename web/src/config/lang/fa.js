@@ -1,9 +1,11 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
+import flatten from 'flat';
 
-export default {
-	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'اکسچنج دارایی های دیجیتال متن باز', // slogan
+const options = { safe: true };
+const nestedContent = {
+  APP_TITLE: 'HollaEx',
+  APP_SUB_TITLE: 'اکسچنج دارایی های دیجیتال متن باز', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'آیا برای خارج شدن مطمئن هستید؟',
 	ADD_TRADING_PAIR: 'اضافه کردن دارایی جدید',
@@ -323,6 +325,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		REQUEST_EMAIL: 'درخواست مجدد',
 		HAVE_ACCOUNT: 'در حال حاضر حساب کاربری دارید؟',
 		GOTO_LOGIN: 'به صفحه ورود بروید',
+		AFFILIATION_CODE: 'کد رفرال (اختیاری)',
+		AFFILIATION_CODE_PLACEHOLDER:'کد رفرال را وارد کنید',
 		TERMS: {
 			terms: 'شرایط عمومی',
 			policy: 'حریم خصوصی',
@@ -1312,3 +1316,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	OPEN_WALLET: 'کیف پول', // new
 	AGO: 'پیش' // new
 };
+
+const content = flatten(nestedContent, options);
+
+export default content;

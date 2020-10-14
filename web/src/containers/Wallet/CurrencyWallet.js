@@ -9,12 +9,13 @@ import {
 	ActionNotification,
 	MobileBarBack
 } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	generateWalletActionsText,
 	getCurrencyFromName
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Wallet extends Component {
 	state = {
@@ -25,7 +26,7 @@ class Wallet extends Component {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
 			this.setCurrency(nextProps.routeParams.currency);
 		}
@@ -41,17 +42,19 @@ class Wallet extends Component {
 	};
 
 	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
+		const { icons: ICONS } = this.props;
 		const balanceValue = balance[`${symbol}_balance`] || 0;
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
 					{STRINGS.formatString(
-						STRINGS.CURRENCY_BALANCE_TEXT,
+						STRINGS["CURRENCY_BALANCE_TEXT"],
 						fullname
 					)}
 					<ActionNotification
-						text={STRINGS.TRADE_HISTORY}
+						srringId="TRADE_HISTORY"
+						text={STRINGS["TRADE_HISTORY"]}
 						status="information"
 						iconPath={ICONS.BLUE_CLIP}
 						useSvg={true}
@@ -74,7 +77,7 @@ class Wallet extends Component {
 	};
 
 	render() {
-		const { balance, price, coins } = this.props;
+		const { balance, price, coins, icons: ICONS } = this.props;
 		const { currency } = this.state;
 		if (!currency) {
 			return <div />;
@@ -88,7 +91,8 @@ class Wallet extends Component {
 				</MobileBarBack> }
 				<div className="presentation_container apply_rtl">
 					<IconTitle
-						text={STRINGS.WALLET_TITLE}
+						stringId="WALLET_TITLE"
+						text={STRINGS["WALLET_TITLE"]}
 						iconPath={ICONS.BITCOIN_WALLET}
 						useSvg={true}
 						textType="title"
@@ -98,9 +102,17 @@ class Wallet extends Component {
 						<div
 							className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}
 						>
-						<ButtonLink label={depositText} link={`/wallet/${currency}/deposit`} />
+						{
+						(coins[currency].allow_deposit)
+							? <ButtonLink label={depositText} link={`/wallet/${currency}/deposit`} />
+							: null
+						}
 						<div className="separator" />
-							<ButtonLink label={withdrawText} link={`/wallet/${currency}/withdraw`} />
+							{
+							(coins[currency].allow_withdrawal)
+								? <ButtonLink label={withdrawText} link={`/wallet/${currency}/withdraw`} />
+								: null
+							}
 						</div>
 					</div>
 				</div>
@@ -116,4 +128,4 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language
 });
 
-export default connect(mapStateToProps)(Wallet);
+export default connect(mapStateToProps)(withConfig(Wallet));

@@ -16,7 +16,7 @@ export const generateLanguageFormValues = (values) => {
 		language: {
 			type: 'select',
 			validate: [required],
-			label: STRINGS.SETTINGS_LANGUAGE_LABEL,
+			label: STRINGS["SETTINGS_LANGUAGE_LABEL"],
 			options: langValues,
 			fullWidth: isMobile
 		}
@@ -49,7 +49,7 @@ class Form extends Component {
 					<div className="warning_text">{getErrorLocalized(error)}</div>
 				)}
 				<Button
-					label={STRINGS.SETTING_BUTTON}
+					label={STRINGS["SETTING_BUTTON"]}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>

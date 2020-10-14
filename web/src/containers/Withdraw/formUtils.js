@@ -8,7 +8,7 @@ import {
 	normalizeBTCFee
 } from "../../components/Form/validations";
 import STRINGS from "../../config/localizedStrings";
-import { ICONS, DEFAULT_COIN_DATA } from "../../config/constants";
+import { DEFAULT_COIN_DATA } from "../../config/constants";
 import { getLanguage } from '../../utils/string';
 import { getTheme } from "../../utils/theme";
 import { toFixed } from '../../utils/currency';
@@ -36,7 +36,8 @@ export const generateFormValues = (
 	calculateMax,
 	coins = {},
 	verification_level,
-	theme = getTheme()
+	theme = getTheme(),
+	icon,
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
@@ -49,8 +50,8 @@ export const generateFormValues = (
 
 	fields.address = {
 		type: "text",
-		label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
-		placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
+		label: STRINGS["WITHDRAWALS_FORM_ADDRESS_LABEL"],
+		placeholder: STRINGS["WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER"],
 		validate: [
 			required,
 			validAddress(
@@ -63,41 +64,41 @@ export const generateFormValues = (
 	if (symbol === 'xrp') {
 		fields.destination_tag = {
 			type: "text",
-			label: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,
-			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
+			label: STRINGS["WITHDRAWALS_FORM_DESTINATION_TAG_LABEL"],
+			placeholder: STRINGS["WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER"],
 			fullWidth: true
 		};
 	} else if (symbol === 'xlm') {
 		fields.destination_tag = {
 			type: "text",
-			label: STRINGS.WITHDRAWALS_FORM_MEMO_LABEL,
-			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
+			label: STRINGS["WITHDRAWALS_FORM_MEMO_LABEL"],
+			placeholder: STRINGS["WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER"],
 			fullWidth: true
 		};
 	}
 
 	const amountValidate = [required];
 	if (min) {
-		amountValidate.push(minValue(min, STRINGS.WITHDRAWALS_MIN_VALUE_ERROR));
+		amountValidate.push(minValue(min, STRINGS["WITHDRAWALS_MIN_VALUE_ERROR"]));
 	}
 	if (MAX) {
-		amountValidate.push(maxValue(MAX, STRINGS.WITHDRAWALS_MAX_VALUE_ERROR));
+		amountValidate.push(maxValue(MAX, STRINGS["WITHDRAWALS_MAX_VALUE_ERROR"]));
 	}
 	// FIX add according fee
-	// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, fullname), fee));
+	// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname), fee));
 	amountValidate.push(
 		checkBalance(
 			available,
-			STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, fullname),
+			STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname),
 			0
 		)
 	);
 
 	fields.amount = {
 		type: "number",
-		label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, fullname),
+		label: STRINGS.formatString(STRINGS["WITHDRAWALS_FORM_AMOUNT_LABEL"], fullname),
 		placeholder: STRINGS.formatString(
-			STRINGS.WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER,
+			STRINGS["WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER"],
 			fullname
 		).join(""),
 		min: min,
@@ -107,9 +108,9 @@ export const generateFormValues = (
 		normalize: normalizeBTC,
 		fullWidth: true,
 		notification: {
-			text: STRINGS.CALCULATE_MAX,
+			text: STRINGS["CALCULATE_MAX"],
 			status: "information",
-			iconPath: ICONS.BLUE_PLUS,
+			iconPath: icon,
 			className: "file_upload_icon",
 			useSvg: true,
 			onClick: calculateMax
@@ -132,11 +133,11 @@ export const generateFormValues = (
 			type: "number",
 			// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			label: STRINGS.formatString(
-				STRINGS.WITHDRAWALS_FORM_FEE_COMMON_LABEL,
+				STRINGS["WITHDRAWALS_FORM_FEE_COMMON_LABEL"],
 				fullname
 			),
 			placeholder: STRINGS.formatString(
-				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
+				STRINGS["WITHDRAWALS_FORM_FEE_PLACEHOLDER"],
 				fullname
 			).join(""),
 			disabled: true,
@@ -148,7 +149,7 @@ export const generateFormValues = (
 			inputType: "number",
 			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
-				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
+				STRINGS["WITHDRAWALS_FORM_FEE_PLACEHOLDER"],
 				fullname
 			).join(""),
 			min: min,

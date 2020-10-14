@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 
-import { ICONS } from '../../config/constants';
+import ICONS from 'config/icons';
 import SnackDialogContent from './SnackDialogContent';
 import { 
   // closeSnackNotification, 
@@ -42,7 +42,7 @@ class SnackDialog extends Component {
         }
     };
     
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.snackProps.isDialog !== nextProps.snackProps.isDialog
             && nextProps.snackProps.isDialog) {
                 this.setState({ closeSnack: false });
@@ -96,7 +96,7 @@ class SnackDialog extends Component {
                 <SnackDialogContent {...data} />
                 <div className="close-dialog pointer" onClick={(e) => this.closeDialog(data.id, e)}>
                     <ReactSVG
-                        path={ICONS.CANCEL_CROSS_ACTIVE}
+                        path={ICONS["CANCEL_CROSS_ACTIVE"]}
                         wrapperClassName="bar-icon-back"
                     />
                 </div>

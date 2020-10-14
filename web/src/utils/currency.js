@@ -1,7 +1,9 @@
 import math from 'mathjs';
 import numbro from 'numbro';
+import store from 'store';
 import STRINGS from '../config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../config/constants';
+import { findPath, convertPathToPairNames } from './data';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -133,13 +135,20 @@ export const formatNumber = (number, round = 0) => {
 export const formatAverage = (amount = 0) =>
 	numbro(amount).format(AVERAGE_FORMAT);
 
-export const calculatePrice = (value = 0, price = 1) =>
-	math.number(math.multiply(math.fraction(value), math.fraction(price)));
+export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
+	let price
+	if(key === BASE_CURRENCY) {
+		price = 1
+	} else {
+		price = estimatePrice(key)
+	}
+	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
+}
 
-export const calculateBalancePrice = (balance, prices, coins = {}) => {
+export const calculateBalancePrice = (balance, prices = {}, coins = {}) => {
 	let accumulated = math.fraction(0);
 	Object.keys(coins).forEach((key) => {
-		let price = prices[key] ? prices[key] : 1;
+		const price = estimatePrice(key);
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(
 				math.multiply(
@@ -187,13 +196,13 @@ export const generateWalletActionsText = (
 
 	const depositText = `${
 		symbol === BASE_CURRENCY
-			? STRINGS.WALLET_BUTTON_BASE_DEPOSIT
-			: STRINGS.WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT
+			? STRINGS["WALLET_BUTTON_BASE_DEPOSIT"]
+			: STRINGS["WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT"]
 	} ${nameToDisplay}`;
 	const withdrawText = `${
 		symbol === BASE_CURRENCY
-			? STRINGS.WALLET_BUTTON_BASE_WITHDRAW
-			: STRINGS.WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW
+			? STRINGS["WALLET_BUTTON_BASE_WITHDRAW"]
+			: STRINGS["WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW"]
 	} ${nameToDisplay}`;
 
 	return {
@@ -291,3 +300,24 @@ export const toFixed = (exponential) => {
 	}
 	return exponential;
 };
+
+export const estimatePrice = (key) => {
+	const { app: { pairs, tickers }, orderbook: { prices } } = store.getState();
+
+  if(prices[key]) return prices[key];
+
+	const pairsArray = Object.entries(pairs).map(([, pairObj]) => pairObj)
+	const path = findPath(pairsArray, key)[0];
+	let estimatedPrice = 1;
+
+	if(path) {
+		convertPathToPairNames(path).forEach((pairKey) => {
+			const { close = 0 } = tickers[pairKey] || {}
+			estimatedPrice *= close;
+		})
+	} else {
+		estimatedPrice = 0
+	}
+
+	return estimatedPrice
+}

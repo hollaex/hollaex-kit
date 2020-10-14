@@ -1,101 +1,38 @@
 import React, { Component } from 'react';
+import { oneOfType, object, func, bool, string, array, number } from 'prop-types';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
-import { debounce } from 'lodash';
-import { browserHistory } from 'react-router';
+import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
-import { Button } from '../../components';
-import MobileDropdownWrapper from '../../containers/Trade/components/MobileDropdownWrapper';
-import STRINGS from '../../config/localizedStrings';
-import {
-	ICONS,
-	FLEX_CENTER_CLASSES,
-	BALANCE_ERROR,
-	DEFAULT_COIN_DATA
-} from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-import ToogleButton from './ToogleButton';
-import ReviewBlock from './ReviewBlock';
-import InputBlock from './InputBlock';
+import { Button } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
+import InputGroup from './InputGroup';
 
 class QuickTrade extends Component {
-	state = {
-		side: STRINGS.SIDES[0].value,
-		value: 0.1,
-		symbol: '',
-		tabs: [],
-		activeTab: -1,
-		currencies: []
-	};
-
-	componentWillMount() {
-		if (this.props.symbol) {
-			this.onChangeSymbol(this.props.symbol);
-		}
-	}
-
-	componentDidMount() {
-		if (this.props.symbol) {
-			this.onChangeSymbol(this.props.symbol);
-		}
-		if (this.props.onChangeSide) {
-			this.props.onChangeSide(this.state.side);
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.symbol !== this.props.symbol
-		) {
-			this.onChangeSymbol(nextProps.symbol);
-		}
-	}
-	onChangeSymbol = (symbol) => {
-		this.setState({ symbol });
-		this.requestValue({
-			size: this.state.value,
-			symbol: symbol,
-			side: this.state.side
-		});
-	};
-	goToPair = (pair) => {
-		browserHistory.push(`/quick-trade/${pair}`)
-	};
-	onToogleSide = () => {
-		const SIDES = STRINGS.SIDES;
-
-		const side =
-			this.state.side === SIDES[0].value ? SIDES[1].value : SIDES[0].value;
-		this.setState({ side });
-		this.requestValue({
-			size: this.state.value,
-			symbol: this.state.symbol,
-			side: side
-		});
-		if (this.props.onChangeSide) {
-			this.props.onChangeSide(side);
-		}
-	};
-
-	onChangeValue = (value) => {
-		if (value !== this.state.value) {
-			this.requestValue({
-				size: value || 0,
-				symbol: this.state.symbol,
-				side: this.state.side
-			});
-		}
-		this.setState({ value });
-	};
-
-	requestValue = debounce(this.props.onRequestMarketValue, 250);
 
 	render() {
-		const { onReviewQuickTrade, quickTradeData, disabled, orderLimits, pairs, coins } = this.props;
-		const { side, value, symbol } = this.state;
-		const { data, fetching, error } = quickTradeData;
-		const baseCoin = pairs[symbol].pair_base;
-		const { fullname } = coins[baseCoin] || DEFAULT_COIN_DATA;
+		const {
+			targetAmount,
+			sourceAmount,
+			onSelectSource,
+			onSelectTarget,
+			onChangeSourceAmount,
+			onChangeTargetAmount,
+			onReviewQuickTrade,
+			disabled,
+			targetOptions,
+			sourceOptions,
+			selectedSource,
+			selectedTarget,
+			forwardSourceError,
+			forwardTargetError,
+			orderLimits: { SIZE, PRICE },
+			side,
+			icons: ICONS
+		} = this.props;
+
 		return (
 			<div className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}>
 				<div
@@ -105,92 +42,49 @@ class QuickTrade extends Component {
 						// ...GROUP_CLASSES
 					)}
 				>
-					<ReactSVG path={ isMobile ? ICONS.SIDEBAR_QUICK_TRADING_INACTIVE: ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
-					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
-						{STRINGS.formatString(
-							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,
-							STRINGS.QUICK_TRADE_COMPONENT.TITLE,
-							STRINGS.SIDES_VALUES[side]
-						)}
-					</div>
-				</div>
-				<div
-					className={classnames(
-						'quick_trade-section_wrapper',
-						// ...GROUP_CLASSES
-					)}
-				>
-					<div className='mobile_dropdown-section d-flex justify-content-center align-items-center '>
-						<div className='my-5'>
-							<MobileDropdownWrapper goToPair={this.goToPair} />
-						</div>
-					</div>
-					<div>
-						<ToogleButton
-							values={STRINGS.SIDES}
-							onToogle={this.onToogleSide}
-							selected={side}
+					<div className="d-flex content-center">
+						<Image
+							iconId={isMobile ? "SIDEBAR_QUICK_TRADING_INACTIVE" : "QUICK_TRADE"}
+							icon={isMobile ? ICONS["SIDEBAR_QUICK_TRADING_INACTIVE"] : ICONS["QUICK_TRADE"]}
+							wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"}
 						/>
 					</div>
+					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
+						{STRINGS["QUICK_TRADE_COMPONENT.TITLE"]}
+					</div>
 				</div>
+				<InputGroup
+					name="convert"
+					options={sourceOptions}
+					inputValue={sourceAmount}
+					selectValue={selectedSource}
+					onSelect={onSelectSource}
+					onInputChange={onChangeSourceAmount}
+					forwardError={forwardSourceError}
+					limits={side === "buy" ? PRICE : SIZE}
+				/>
+				<InputGroup
+					name="to"
+					options={targetOptions}
+					inputValue={targetAmount}
+					selectValue={selectedTarget}
+					onSelect={onSelectTarget}
+					onInputChange={onChangeTargetAmount}
+					forwardError={forwardTargetError}
+					limits={side === "buy" ? SIZE : PRICE}
+				/>
 				<div
 					className={classnames(
 						'quick_trade-section_wrapper',
 						'quick_trade-bottom-padded',
-						// ...GROUP_CLASSES
-					)}
-				>
-					<InputBlock
-						onChange={this.onChangeValue}
-						initialValue={value}
-						text={STRINGS.formatString(
-							STRINGS.QUICK_TRADE_COMPONENT.INPUT,
-							fullname,
-							STRINGS.SIDES_VALUES[side]
-						)}
-						symbol={symbol}
-						className={classnames({ loading: fetching })}
-						error={error}
-						orderLimits={orderLimits}
-						pairs={pairs}
-						coins={coins}
-					/>
-				</div>
-				<div
-					className={classnames(
-						'quick_trade-section_wrapper',
-						'quick_trade-bottom-padded',
-						// ...GROUP_CLASSES,
-						{ fetching }
-					)}
-				>
-					<ReviewBlock
-						symbol={symbol}
-						pairs={pairs}
-						coins={coins}
-						text={STRINGS.QUICK_TRADE_COMPONENT.TOTAL_COST}
-						value={data.price || 0}
-					/>
-				</div>
-				<div
-					className={classnames(
-						'quick_trade-section_wrapper',
-						'quick_trade-bottom-padded',
+						'my-5'
 						// ...GROUP_CLASSES
 					)}
 				>
 					<Button
-						label={STRINGS.formatString(
-							STRINGS.QUICK_TRADE_COMPONENT.BUTTON,
-							STRINGS.SIDES_VALUES[side]
-						).join(' ')}
+						label={STRINGS["QUICK_TRADE_COMPONENT.BUTTON"]}
 						onClick={onReviewQuickTrade}
-						disabled={
-							disabled ||
-							!onReviewQuickTrade ||
-							(!!error && error !== BALANCE_ERROR) ||
-							fetching
-						}
+						disabled={disabled}
 						type="button"
 					/>
 				</div>
@@ -199,11 +93,36 @@ class QuickTrade extends Component {
 	}
 }
 
+QuickTrade.propTypes = {
+	onReviewQuickTrade: func.isRequired,
+	theme: string.isRequired,
+	disabled: bool.isRequired,
+  pairs: object.isRequired,
+  coins: object.isRequired,
+  orderLimits: object.isRequired,
+	onSelectTarget: func.isRequired,
+	onSelectSource: func.isRequired,
+	targetOptions: array,
+	sourceOptions: array,
+	selectedSource: string,
+	selectedTarget: string,
+	targetAmount: oneOfType([
+    number,
+    string,
+  ]),
+	sourceAmount: oneOfType([
+    number,
+    string,
+  ]),
+	onChangeTargetAmount: func.isRequired,
+  onChangeSourceAmount: func.isRequired,
+}
+
 QuickTrade.defaultProps = {
-	onRequestMarketValue: () => {},
+  targetOptions: [],
+  sourceOptions: [],
 	onReviewQuickTrade: () => {},
-	estimatedValue: 0,
 	disabled: false
 };
 
-export default QuickTrade;
+export default withConfig(QuickTrade);

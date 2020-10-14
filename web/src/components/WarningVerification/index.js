@@ -4,13 +4,13 @@ import STRINGS from '../../config/localizedStrings';
 const generateTexts = (level = 0) => {
 	if (level === 1) {
 		return {
-			title: STRINGS.VERIFICATION_WARNING_TITLE,
-			text: STRINGS.VERIFICATION_WARNING_MESSAGE
+			title: STRINGS["VERIFICATION_WARNING_TITLE"],
+			text: STRINGS["VERIFICATION_WARNING_MESSAGE"]
 		};
 	} else {
 		return {
-			title: STRINGS.VERIFICATION_NO_WITHDRAW_TITLE,
-			text: STRINGS.VERIFICATION_NO_WITHDRAW_MESSAGE
+			title: STRINGS["VERIFICATION_NO_WITHDRAW_TITLE"],
+			text: STRINGS["VERIFICATION_NO_WITHDRAW_MESSAGE"]
 		};
 	}
 };

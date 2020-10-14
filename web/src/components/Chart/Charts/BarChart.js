@@ -30,7 +30,7 @@ class BarChart extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.chartData) !== JSON.stringify(nextProps.chartData)
             && !nextProps.loading) {
             this.generateChart(nextProps.chartData, nextProps.limitContent, nextProps.peakVolume);

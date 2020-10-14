@@ -16,7 +16,7 @@ class Form extends Component {
 		this.setFormValues();
 	}
 
-	componentWillReceiveProps = (nextProps)=> {
+	UNSAFE_componentWillReceiveProps = (nextProps)=> {
 		if (this.props.dirty !== nextProps.dirty
 			|| this.props.submitFailed !== nextProps.submitFailed
 			|| this.props.valid !== nextProps.valid) {
@@ -29,9 +29,9 @@ class Form extends Component {
 		const formValues = {
 			otp_code: {
 				type: 'number',
-				label: STRINGS.OTP_FORM.OTP_LABEL,
-				placeholder: STRINGS.OTP_FORM.OTP_PLACEHOLDER,
-				validate: [required, validateOtp(STRINGS.OTP_FORM.ERROR_INVALID)],
+				label: STRINGS["OTP_FORM.OTP_LABEL"],
+				placeholder: STRINGS["OTP_FORM.OTP_PLACEHOLDER"],
+				validate: [required, validateOtp(STRINGS["OTP_FORM.ERROR_INVALID"])],
 				fullWidth: true
 			}
 		};
@@ -60,17 +60,18 @@ class Form extends Component {
 		return (
 			<div className="otp_form-wrapper">
 				<IconTitle
-					text={STRINGS.OTP_FORM.OTP_TITLE}
+					text={STRINGS["OTP_FORM.OTP_TITLE"]}
 					iconPath={ICONS.OTP_CODE}
 					useSvg={true}
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">
-						{STRINGS.OTP_FORM.OTP_FORM_TITLE}
+						{STRINGS["OTP_FORM.OTP_FORM_TITLE"]}
 					</span>
 					{onClickHelp && (
 						<ActionNotification
-							text={STRINGS.NEED_HELP_TEXT}
+							stringId="NEED_HELP_TEXT"
+							text={STRINGS["NEED_HELP_TEXT"]}
 							onClick={onClickHelp}
 							iconPath={ICONS.BLUE_QUESTION}
 							status="information"
@@ -84,7 +85,7 @@ class Form extends Component {
 						{error && <div className="warning_text">{error}</div>}
 					</div>
 					<Button
-						label={STRINGS.OTP_FORM.OTP_BUTTON}
+						label={STRINGS["OTP_FORM.OTP_BUTTON"]}
 						disabled={pristine || submitting || !valid}
 					/>
 				</form>

@@ -23,7 +23,9 @@ const updateThemeToBody = (theme = 'white') => {
 const checkPath = (path) => {
 	var sheet = document.createElement('style');
 	if ((path === '/login') || (path === '/signup')
-		|| (path === '/reset-password') || path.includes('/withdraw')) {
+		|| (path === '/reset-password') || path.includes('/withdraw')
+		|| path.includes('/init')
+	) {
 		sheet.innerHTML = ".grecaptcha-badge { visibility: visible !important;}";
 		sheet.id = 'addCap'
 		if (document.getElementById('rmvCap') !== null) {
@@ -121,9 +123,9 @@ class AuthContainer extends Component {
 							}
 						)}>
 							{expiryData.is_expired
-								? STRINGS.EXPIRY_EXCHANGE_MSG
+								? STRINGS["EXPIRY_EXCHANGE_MSG"]
 								: STRINGS.formatString(
-									STRINGS.TRIAL_EXCHANGE_MSG,
+									STRINGS["TRIAL_EXCHANGE_MSG"],
 									constants.api_name || '',
 									expiryData.daysLeft
 								)

@@ -33,7 +33,7 @@ export const ChatHeader = ({
 					: onCloseEmoji
 			}
 		>
-			<div className="chat-header-txt">{STRINGS.formatString(STRINGS.CHAT.TROLLBOX, unreadMessages)}</div>
+			<div className="chat-header-txt">{STRINGS.formatString(STRINGS["CHAT.TROLLBOX"], unreadMessages)}</div>
 			{/* <div className="d-flex chat-header-icon" /> */}
 			<MinimalizeChat minimized={minimized} onClick={minimizeChat} />
 		</div>

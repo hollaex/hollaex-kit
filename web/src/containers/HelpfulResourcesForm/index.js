@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { IconTitle, Notification, Button, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS, openContactForm } from '../../actions/appActions';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 
 class HelpfulResourcesForm extends Component {
@@ -50,7 +50,7 @@ class HelpfulResourcesForm extends Component {
 
 
 	render() {
-		const { onClose, activeTheme } = this.props;
+		const { onClose, activeTheme, icons: ICONS } = this.props;
 		const { submited } = this.state;
 		if (submited) {
 			return (
@@ -61,8 +61,10 @@ class HelpfulResourcesForm extends Component {
 		return (
 			<div className="help-wrapper">
 				<IconTitle
+					iconId={activeTheme==='white' ? "QUESTION_MARK" : "QUESTION_MARK_COLOR"}
 					iconPath={activeTheme==='white' ? ICONS.QUESTION_MARK : ICONS.QUESTION_MARK_COLOR}
-					text={STRINGS.HELPFUL_RESOURCES_TEXT}
+					stringId="HELPFUL_RESOURCES_TEXT"
+					text={STRINGS["HELPFUL_RESOURCES_TEXT"]}
 					textType="title"
 					underline={true}
 					className="w-100"
@@ -70,31 +72,39 @@ class HelpfulResourcesForm extends Component {
 				/>
 				<div>
 					<div className='d-flex mt-5'>
-						<ReactSVG path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
+						<Image
+							iconId={activeTheme==='white' ? "LAPTOP" : "LAPTOP_COLOR"}
+							icon={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR}
+							wrapperClassName='help_icons ml-1 mr-1'
+						/>
 						<div className='text' >
-							{STRINGS.HELP_RESOURCE_GUIDE_TEXT}
+							{STRINGS["HELP_RESOURCE_GUIDE_TEXT"]}
 							<BlueLink
-								href={STRINGS.HELP_EXIR_TUTORIAL_LINK}
-								text={STRINGS.HELP_EXIR_TUTORIAL_LINK}
+								href={STRINGS["HELP_EXIR_TUTORIAL_LINK"]}
+								text={STRINGS["HELP_EXIR_TUTORIAL_LINK"]}
 							/>
 						</div>
 						<div className="w-25" />
 					</div>
 					<div className='d-flex mt-5 mb-5'>
-						<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
+						<Image
+							iconId={activeTheme==='white' ? "TELEGRAM" : "TELEGRAM_COLOR"}
+							icon={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR}
+							wrapperClassName='help_icons ml-1 mr-1'
+						/>
 						<div className='text' >
-							{STRINGS.HELP_TELEGRAM_TEXT} 
+							{STRINGS["HELP_TELEGRAM_TEXT"]} 
 							<BlueLink
-								href={STRINGS.HELP_TELEGRAM_LINK}
-								text={STRINGS.HELP_TELEGRAM_LINK}
+								href={STRINGS["HELP_TELEGRAM_LINK"]}
+								text={STRINGS["HELP_TELEGRAM_LINK"]}
 							/>
 						</div>
 						<div className="w-25" />
 					</div>
 					<div className='w-100 buttons-wrapper d-flex' >
-						<Button label={STRINGS.BACK_TEXT} onClick={onClose}/>
+						<Button label={STRINGS["BACK_TEXT"]} onClick={onClose}/>
 						<div className='separator' />
-						<Button label={STRINGS.REQUEST_RESET_PASSWORD.SUPPORT} onClick={this.openNewForm}/>
+						<Button label={STRINGS["REQUEST_RESET_PASSWORD.SUPPORT"]} onClick={this.openNewForm}/>
 					</div>
 				</div>
 			</div>
@@ -113,4 +123,4 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HelpfulResourcesForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(HelpfulResourcesForm));

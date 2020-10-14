@@ -29,6 +29,7 @@ import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import TVChartContainer from './ChartContainer';
 import OrdersWrapper from './components/OrdersWrapper';
+import { AddTradeTabs } from 'containers';
 
 import { Loader, MobileBarTabs } from '../../components';
 
@@ -52,7 +53,7 @@ class Trade extends PureComponent {
 		this.setSymbol(this.props.routeParams.pair);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.setSymbol(nextProps.routeParams.pair);
 		}
@@ -198,7 +199,7 @@ class Trade extends PureComponent {
 
 		const mobileTabs = [
 			{
-				title: STRINGS.TRADE_TAB_CHART,
+				title: STRINGS["TRADE_TAB_CHART"],
 				content: (
 					<MobileChart
 						pair={pair}
@@ -207,12 +208,13 @@ class Trade extends PureComponent {
 						activeTheme={activeTheme}
 						symbol={symbol}
 						goToPair={this.goToPair}
+						goToMarkets={() => this.setActiveTab(3)}
 						orderLimits={orderLimits}
 					/>
 				)
 			},
 			{
-				title: STRINGS.TRADE_TAB_TRADE,
+				title: STRINGS["TRADE_TAB_TRADE"],
 				content: (
 					<MobileTrade
 						orderbookProps={orderbookProps}
@@ -225,6 +227,7 @@ class Trade extends PureComponent {
 						onRiskyTrade={this.onRiskyTrade}
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
+						goToMarkets={() => this.setActiveTab(3)}
 						pair={pair}
 						setPriceRef={this.setPriceRef}
 						setSizeRef={this.setSizeRef}
@@ -232,7 +235,7 @@ class Trade extends PureComponent {
 				)
 			},
 			{
-				title: STRINGS.TRADE_TAB_ORDERS,
+				title: STRINGS["TRADE_TAB_ORDERS"],
 				content: (
 					<OrdersWrapper
 						isLoggedIn={isLoggedIn()}
@@ -245,7 +248,16 @@ class Trade extends PureComponent {
 						activeTheme={activeTheme}
 					/>
 				)
-			}
+			},
+      {
+        title: 'Market',
+        content: (
+					<AddTradeTabs
+						router={this.props.router}
+						onRouteChange={() => this.setActiveTab(0)}
+					/>
+        )
+      },
 		];
 		return (
 			<div className={classnames('trade-container', 'd-flex')}>
@@ -272,8 +284,9 @@ class Trade extends PureComponent {
 								)}
 							>
 								<TradeBlock
+									stringId="ORDERBOOK"
 									isLoggedIn={isLoggedIn()}
-									title={STRINGS.ORDERBOOK}
+									title={STRINGS["ORDERBOOK"]}
 									pairData={pairData}
 									pair={pair}
 								>
@@ -305,7 +318,8 @@ class Trade extends PureComponent {
 										)}
 									>
 										<TradeBlock
-											title={STRINGS.ORDER_ENTRY}
+											stringId="ORDER_ENTRY"
+											title={STRINGS["ORDER_ENTRY"]}
 											pairData={pairData}
 											pair={pair}
 										>
@@ -326,7 +340,8 @@ class Trade extends PureComponent {
 										</TradeBlock>
 									</div>
 									<TradeBlock
-										title={STRINGS.CHART}
+										stringId="CHART"
+										title={STRINGS["CHART"]}
 										setRef={this.setChartRef}
 										className="f-1 overflow-x"
 										pairData={pairData}
@@ -372,7 +387,8 @@ class Trade extends PureComponent {
 								)}
 							>
 								<TradeBlock
-									title={STRINGS.PUBLIC_SALES}
+									stringId="PUBLIC_SALES"
+									title={STRINGS["PUBLIC_SALES"]}
 									pairData={pairData}
 									pair={pair}>
 									<TradeHistory

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ICONS } from '../config/constants';
+import ICONS from 'config/icons';
 import STRINGS from '../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../utils/utils';
 
@@ -34,7 +34,7 @@ export function removeOrder(ids) {
 
 export const submitOrder = (order) => axios.post('/order', order);
 export const cancelOrder = (orderId, settings) => (dispatch) => {
-	axios.delete(`/user/orders/${orderId}`)
+	axios.delete(`/user/order?order_id=${orderId}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ORDER',
@@ -44,8 +44,8 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
-					icon: ICONS.CLOSE_CROSS,
-					content: STRINGS.CANCEL_SUCCESS_TEXT
+					icon: ICONS["CLOSE_CROSS"],
+					content: STRINGS["CANCEL_SUCCESS_TEXT"]
 				}
 			});
 		})
@@ -54,7 +54,7 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 };
 
 export const cancelAllOrders = (symbol = '', settings) => dispatch => {
-	axios.delete(`/user/orders?symbol=${symbol}`)
+	axios.delete(`/user/order?symbol=${symbol}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ALL_ORDERS',
@@ -64,8 +64,8 @@ export const cancelAllOrders = (symbol = '', settings) => dispatch => {
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
-					icon: ICONS.CLOSE_CROSS,
-					content: STRINGS.CANCEL_SUCCESS_TEXT
+					icon: ICONS["CLOSE_CROSS"],
+					content: STRINGS["CANCEL_SUCCESS_TEXT"]
 				}
 			});
 		})

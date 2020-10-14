@@ -15,15 +15,15 @@ const Form = (props) => {
 			validate: [required, email],
 			fullWidth: true,
 			normalize: normalizeEmail,
-			label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
-			placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER
+			label: STRINGS["FORM_FIELDS.EMAIL_LABEL"],
+			placeholder: STRINGS["FORM_FIELDS.EMAIL_PLACEHOLDER"]
 		},
 		password: {
 			type: 'password',
 			validate: [required, password],
 			fullWidth: true,
-			label: STRINGS.FORM_FIELDS.PASSWORD_LABEL,
-			placeholder: STRINGS.FORM_FIELDS.PASSWORD_PLACEHOLDER
+			label: STRINGS["FORM_FIELDS.PASSWORD_LABEL"],
+			placeholder: STRINGS["FORM_FIELDS.PASSWORD_PLACEHOLDER"]
 		},
 		captcha: {
 			type: 'captcha',
@@ -37,7 +37,7 @@ const Form = (props) => {
 		<AuthForm
 			{...props}
 			formFields={FormFields}
-			buttonLabel={STRINGS.LOGIN_TEXT}
+			buttonLabel={STRINGS["LOGIN_TEXT"]}
 		/>
 	);
 };

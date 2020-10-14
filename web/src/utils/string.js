@@ -1,7 +1,8 @@
 import moment from 'moment';
 
 import { LANGUAGE_KEY, DEFAULT_LANGUAGE } from '../config/constants';
-import STRINGS from '../config/localizedStrings';
+import STRINGS, { content as CONTENT } from 'config/localizedStrings';
+import { getValidLanguages } from 'utils/initialize';
 export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
 
 export const getFormattedDate = (value) => {
@@ -84,3 +85,59 @@ export const getFontClassForLanguage = (language = '') => {
 export const maskToken = (token = '') => {
 	return token.substr(0, 5) + '**********' + token.substr(-5);
 };
+
+export const setContent = (content) => {
+  STRINGS.setContent(content);
+};
+
+export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
+	const content = STRINGS._props;
+
+	const mergedContent = {
+		...content,
+		[key]: {
+      ...(content[key] ? content[key] : {}),
+      ...overwrites
+		}
+  }
+
+  setContent(mergedContent)
+}
+
+export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._props) => {
+
+	if (!content[lang]) {
+		return getStringByKey(key, 'en', CONTENT);
+	}
+
+	const string = content[lang][key];
+  if (typeof string === 'string') {
+		return string;
+	}
+}
+
+export const getAllStrings = (validLanguages = getValidLanguages(), content = STRINGS._props) => {
+	const allStrings = [];
+
+  Object.entries(content['en']).forEach(([key]) => {
+    const stringObject = { key };
+		validLanguages.forEach((lang) => {
+      stringObject[lang] = getStringByKey(key, lang, content)
+		})
+    allStrings.push(stringObject)
+	})
+
+	return allStrings.filter(({key}) => !EXCLUSIONS.includes(key));
+}
+
+const EXCLUSIONS = [
+	"FOOTER.FOOTER_LEGAL",
+	"LEGAL.PRIVACY_POLICY.TEXTS",
+	"LEGAL.GENERAL_TERMS.TEXTS",
+	"TYPES",
+	"SIDES",
+	"DEFAULT_TOGGLE_OPTIONS",
+	"SETTINGS_LANGUAGE_OPTIONS",
+	"SETTINGS_ORDERPOPUP_OPTIONS",
+	"SETTINGS_THEME_OPTIONS",
+];

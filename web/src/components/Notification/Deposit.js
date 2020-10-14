@@ -28,7 +28,8 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 			<div className="notification-content-header">
 				{depositTexts.subtitle}
 				<ActionNotification
-					text={STRINGS.NEED_HELP_TEXT}
+					stringId="NEED_HELP_TEXT"
+					text={STRINGS["NEED_HELP_TEXT"]}
 					status="information"
 					iconPath={ICONS.BLUE_QUESTION}
 					onClick={onClick}
@@ -52,7 +53,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 				/>
 			</div>
 			<div className="notification-buttons-wrapper d-flex">
-				<Button label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY} onClick={onClose} />
+				<Button label={STRINGS["NOTIFICATIONS.BUTTONS.OKAY"]} onClick={onClose} />
 				{/* <div className="separator" />
 				<Button
 					className={classnames(
@@ -61,8 +62,8 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 					)}
 					label={
 						data.currency === BASE_CURRENCY
-							? STRINGS.NOTIFICATIONS.BUTTONS.START_TRADING
-							: STRINGS.NOTIFICATIONS.BUTTONS.SEE_HISTORY
+							? STRINGS["NOTIFICATIONS.BUTTONS.START_TRADING"]
+							: STRINGS["NOTIFICATIONS.BUTTONS.SEE_HISTORY"]
 					}
 					onClick={() => {
 						goToPage(data.currency === BASE_CURRENCY ? 'trade' : 'transactions');

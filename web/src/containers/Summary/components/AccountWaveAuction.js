@@ -6,6 +6,7 @@ import { Table } from '../../../components';
 import { getWaveAuction } from '../../../actions/appActions';
 import { generateWaveHeaders } from './utils';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class AccountWaveAuction extends Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class AccountWaveAuction extends Component {
     }
 
     constructData = () => {
+        const { icons: ICONS } = this.props;
         let phase = [];
         let defaultWave = {
             amount: "TBA",
@@ -65,7 +67,7 @@ class AccountWaveAuction extends Component {
             }
             waveData = [ ...waveData, ...filteredData ];
         });
-        const headers = generateWaveHeaders();
+        const headers = generateWaveHeaders(ICONS);
         this.setState({ waveData, headers, phase, currentPhase: phase[0] || 1 });
     };
 
@@ -78,20 +80,20 @@ class AccountWaveAuction extends Component {
         return (
             <div className="summary-section_2">
                 <div className="summary-content-txt mb-2">
-                    <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_1}</div>
-                    <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_2}</div>
-                    <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_3}</div>
+                    <div>{STRINGS["SUMMARY.XHT_WAVE_DESC_1"]}</div>
+                    <div>{STRINGS["SUMMARY.XHT_WAVE_DESC_2"]}</div>
+                    <div>{STRINGS["SUMMARY.XHT_WAVE_DESC_3"]}</div>
                     <a
                         className="blue-link"
                         target="blank"
                         href="https://hollaex.com/docs/wave-auction.pdf">
-                            {STRINGS.SUMMARY.LEARN_MORE_WAVE_AUCTION}
+                            {STRINGS["SUMMARY.LEARN_MORE_WAVE_AUCTION"]}
                     </a>
                 </div>
                 <div className="wave-action-phase">
                     <div className="summary-block-title my-1">
                         {STRINGS.formatString(
-                            STRINGS.SUMMARY.WAVE_AUCTION_PHASE,
+                            STRINGS["SUMMARY.WAVE_AUCTION_PHASE"],
                             currentPhase
                         )}
                     </div>
@@ -119,4 +121,4 @@ const mapDispatchToProps = (dispatch) => ({
     getWaveAuction: bindActionCreators(getWaveAuction, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountWaveAuction);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(AccountWaveAuction));

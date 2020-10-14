@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-import { Accordion } from '../';
+import { browserHistory, Link } from 'react-router';
+
+import { Accordion, ControlledScrollbar } from 'components';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from '../../config/constants';
 import {
 	calculateBalancePrice,
@@ -28,7 +29,7 @@ class Wallet extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.user_id !== this.props.user_id ||
 			nextProps.price !== this.props.price ||
@@ -77,7 +78,7 @@ class Wallet extends Component {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculatePrice(
 				balance[`${symbol}_balance`],
-				prices[currency]
+        currency
 			);
 			const balancePercent = calculatePricePercentage(
 				currencyBalance,
@@ -89,9 +90,13 @@ class Wallet extends Component {
 				balanceFormat: formatToCurrency(currencyBalance, min),
 				balancePercentage: donutFormatPercentage(balancePercent)
 			});
-			sections.push(
-				this.generateSection(symbol, price, balance, orders, coins)
-			);
+
+      // Hide zero balances
+      if (balancePercent !== 0) {
+        sections.push(
+          this.generateSection(symbol, price, balance, orders, coins)
+        );
+			}
 		});
 
 		this.setState({
@@ -111,6 +116,7 @@ class Wallet extends Component {
 			return <div />;
 		}
 		const { symbol = '' } = coins[BASE_CURRENCY] || {};
+		const hasScrollbar = sections.length > 7;
 
 		return (
 			<div className="wallet-wrapper">
@@ -120,15 +126,26 @@ class Wallet extends Component {
 						|| !(Object.keys(prices).length)
 						|| !chartData.length
 						|| fetching)
-						? <div className="text-center mt-3">{STRINGS.WALLET.LOADING_ASSETS}</div>
+						? <div className="text-center mt-3">{STRINGS["WALLET.LOADING_ASSETS"]}</div>
 						: <DonutChart id="side-bar-donut" coins={coins} chartData={chartData} />
 					}
 				</div>
-				<Accordion sections={sections} />
+				<ControlledScrollbar
+					autoHideArrows={true}
+					autoHeight={true}
+					autoHeightMax={hasScrollbar ? 245 : 350}
+				>
+					<Accordion sections={sections} />
+					<div className="d-flex justify-content-center wallet_link blue-link">
+						<Link to="/wallet">
+              {`view all`}
+						</Link>
+					</div>
+				</ControlledScrollbar>
 				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
-							{STRINGS.WALLET.TOTAL_ASSETS}
+							{STRINGS["WALLET.TOTAL_ASSETS"]}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
 							{symbol.toUpperCase()}

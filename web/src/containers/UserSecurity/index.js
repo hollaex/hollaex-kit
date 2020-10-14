@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { ICONS } from '../../config/constants';
 import {
 	resetPassword,
 	otpRequest,
@@ -25,6 +24,7 @@ import { OTP, renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class UserVerification extends Component {
 	state = {
@@ -40,7 +40,7 @@ class UserVerification extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.user.otp.requested !== this.props.user.otp.requested ||
 			nextProps.user.otp.requesting !== this.props.user.otp.requesting ||
@@ -67,10 +67,12 @@ class UserVerification extends Component {
 	calculateSections = (user) => {
 		const formValues = generateFormValues();
 		const { otp_enabled, otp, verification_level } = user;
+		const { icons: ICONS } = this.props;
 
 		const sections = [
 			{
-				title: STRINGS.ACCOUNT_SECURITY.OTP.TITLE,
+				stringId: "ACCOUNT_SECURITY.OTP.TITLE",
+				title: STRINGS["ACCOUNT_SECURITY.OTP.TITLE"],
 				content: (
 					<OTP
 						requestOTP={this.handleOTPCheckbox}
@@ -80,11 +82,11 @@ class UserVerification extends Component {
 						{/*otp_enabled && (
 							<div className="d-flex flex-column">
 								<CheckboxButton
-									label={STRINGS.ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_1}
+									label={STRINGS["ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_1"]}
 									checked={true}
 								/>
 								<CheckboxButton
-									label={STRINGS.ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_2}
+									label={STRINGS["ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_2"]}
 									checked={true}
 								/>
 							</div>
@@ -92,16 +94,18 @@ class UserVerification extends Component {
 					</OTP>
 				),
 				notification: {
+					stringId: "ACCOUNT_SECURITY.OTP.OTP_ENABLED,ACCOUNT_SECURITY.OTP.OTP_DISABLED",
 					text: otp_enabled
-						? STRINGS.ACCOUNT_SECURITY.OTP.OTP_ENABLED
-						: STRINGS.ACCOUNT_SECURITY.OTP.OTP_DISABLED,
+						? STRINGS["ACCOUNT_SECURITY.OTP.OTP_ENABLED"]
+						: STRINGS["ACCOUNT_SECURITY.OTP.OTP_DISABLED"],
 					status: otp_enabled ? 'success' : 'warning',
-					iconPath: otp_enabled ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
+					iconPath: otp_enabled ? ICONS["GREEN_CHECK"] : ICONS["RED_ARROW"],
 					allowClick: !otp_enabled
 				}
 			},
 			{
-				title: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE,
+				stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE",
+				title: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE"],
 				content: (
 					<ChangePasswordForm
 						onSubmit={this.onSubmitChangePassword}
@@ -110,14 +114,16 @@ class UserVerification extends Component {
 				),
 				disabled: false,
 				notification: {
-					text: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE,
+					stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE",
+					text: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE"],
 					status: 'success',
-					iconPath: ICONS.GREEN_CHECK,
+					iconPath: ICONS["GREEN_CHECK"],
 					allowClick: true
 				}
 			},
 			{
-				title: STRINGS.DEVELOPER_SECTION.TITLE,
+				stringId: "DEVELOPER_SECTION.TITLE",
+				title: STRINGS["DEVELOPER_SECTION.TITLE"],
 				content: (
 					<DeveloperSection
 						otp_enabled={otp_enabled}
@@ -127,11 +133,11 @@ class UserVerification extends Component {
 				),
 				disabled: false,
 				notification: {
-					// text: STRINGS.DEVELOPER_SECTION[otp_enabled ? 'ACTIVE' : 'INACTIVE'],
+					// text: STRINGS[`DEVELOPER_SECTION.${otp_enabled ? 'ACTIVE' : 'INACTIVE'}`],
 					status: otp_enabled ? 'success' : 'disabled',
 					iconPath: otp_enabled
-						? ICONS.TOKENS_ACTIVE
-						: ICONS.TOKENS_INACTIVE, // TODO check
+						? ICONS["TOKENS_ACTIVE"]
+						: ICONS["TOKENS_INACTIVE"], // TODO check
 					allowClick: true
 				}
 			}
@@ -156,7 +162,7 @@ class UserVerification extends Component {
 				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS
+					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS"]
 				});
 			})
 			.catch((err) => {
@@ -177,7 +183,7 @@ class UserVerification extends Component {
 				this.setState({
 					dialogIsOpen: true,
 					modalText:
-						STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS
+						STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS"]
 				});
 			})
 			.catch((err) => {
@@ -194,7 +200,7 @@ class UserVerification extends Component {
 				this.props.otpSetActivated(false);
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.REVOKE
+					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.REVOKE"]
 				});
 			})
 			.catch(errorHandler);
@@ -237,6 +243,7 @@ class UserVerification extends Component {
 		modalText,
 		constants
 	) => {
+		const { icons: ICONS } = this.props;
 		if (error) {
 			return (
 				<SuccessDisplay
@@ -248,7 +255,7 @@ class UserVerification extends Component {
 		} else if (otp_enabled && !modalText) {
 			return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
 		} else if (requested && !activated) {
-			return renderOTPForm(secret, email, this.onSubmitActivateOtp, constants);
+			return renderOTPForm(secret, email, this.onSubmitActivateOtp, constants, ICONS);
 		} else {
 			return (
 				<SuccessDisplay
@@ -270,7 +277,8 @@ class UserVerification extends Component {
 			<div>
 				{!isMobile && (
 					<IconTitle
-						text={STRINGS.ACCOUNTS.TAB_SECURITY}
+						stringId="ACCOUNTS.TAB_SECURITY"
+						text={STRINGS["ACCOUNTS.TAB_SECURITY"]}
 						textType="title"
 					/>
 				)}
@@ -314,4 +322,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(UserVerification);
+)(withConfig(UserVerification))

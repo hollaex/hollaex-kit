@@ -245,3 +245,15 @@ $order_entry-column--width-lg: 18rem;
 		border: 1px solid grey;
 	}
 }
+
+.trade-tab__market-selector {
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 1.75rem;
+	font-family: $title--font-family;
+}
+
+.mobile-chart__market-selector-wrapper {
+	font-family: "Open Sans" !important;
+	font-weight: normal;
+}

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import classnames from 'classnames';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, IS_XHT } from '../../config/constants';
+import { IS_XHT } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 class MenuList extends Component {
 	state = {
@@ -74,7 +76,8 @@ class MenuList extends Component {
 			securityPending,
 			verificationPending,
 			walletPending,
-			activePath
+			activePath,
+			icons: ICONS,
 		} = this.props;
 		const { isOpen } = this.state;
 		const totalPending = IS_XHT
@@ -88,8 +91,9 @@ class MenuList extends Component {
 				})}
 				ref={(el) => (this.element = el)}
 			>
-				<ReactSVG
-					path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+				<Image
+					iconId="SIDEBAR_ACCOUNT_INACTIVE"
+					icon={ICONS["SIDEBAR_ACCOUNT_INACTIVE"]}
 					wrapperClassName="app-bar-account-icon"
 				/>
 				{!!totalPending && (
@@ -105,11 +109,14 @@ class MenuList extends Component {
 							onClick={() => this.handleMenu('summary')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SUMMARY}
+							<Image
+								iconId="TAB_SUMMARY"
+								icon={ICONS["TAB_SUMMARY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SUMMARY}
+							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY">
+                {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -140,11 +147,14 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_WALLET}
+							<Image
+								iconId="TAB_WALLET"
+								icon={ICONS["TAB_WALLET"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_WALLET}
+							<EditWrapper stringId="ACCOUNTS.TAB_WALLET">
+                {STRINGS["ACCOUNTS.TAB_WALLET"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -154,11 +164,14 @@ class MenuList extends Component {
 							onClick={() => this.handleMenu('history')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_HISTORY}
+							<Image
+								iconId="TAB_HISTORY"
+								icon={ICONS["TAB_HISTORY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_HISTORY}
+							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY">
+                {STRINGS["ACCOUNTS.TAB_HISTORY"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -189,11 +202,14 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_SECURITY}
+							<Image
+								iconId="TAB_SECURITY"
+								icon={ICONS["TAB_SECURITY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SECURITY}
+							<EditWrapper stringId="ACCOUNTS.TAB_SECURITY">
+                {STRINGS["ACCOUNTS.TAB_SECURITY"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -226,11 +242,14 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_VERIFY}
+							<Image
+								iconId="TAB_VERIFY"
+								icon={ICONS["TAB_VERIFY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_VERIFICATION}
+							<EditWrapper stringId="ACCOUNTS.TAB_VERIFICATION">
+                {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -240,11 +259,14 @@ class MenuList extends Component {
 							onClick={() => this.handleMenu('settings')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SETTING}
+							<Image
+								iconId="TAB_SETTING"
+								icon={ICONS["TAB_SETTING"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SETTINGS}
+							<EditWrapper stringId="ACCOUNTS.TAB_SETTINGS">
+                {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
@@ -254,11 +276,14 @@ class MenuList extends Component {
 							onClick={this.onHelp}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.SIDEBAR_HELP}
+							<Image
+								iconId="SIDEBAR_HELP"
+								icon={ICONS["SIDEBAR_HELP"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.LOGIN.HELP}
+							<EditWrapper stringId="LOGIN.HELP">
+                {STRINGS["LOGIN.HELP"]}
+							</EditWrapper>
 						</div>
 
 						<div
@@ -266,11 +291,11 @@ class MenuList extends Component {
 							onClick={this.logout}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SIGNOUT}
+							<Image
+								icon={ICONS["TAB_SIGNOUT"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SIGNOUT}
+							{STRINGS["ACCOUNTS.TAB_SIGNOUT"]}
 						</div>
 					</div>
 				)}
@@ -279,4 +304,4 @@ class MenuList extends Component {
 	}
 }
 
-export default MenuList;
+export default withConfig(MenuList);

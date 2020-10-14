@@ -1,50 +1,72 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import { browserHistory } from 'react-router';
+import math from 'mathjs';
 
-import STRINGS from '../../config/localizedStrings';
-import { ICONS, BALANCE_ERROR, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { submitOrder } from 'actions/orderAction';
+import STRINGS from 'config/localizedStrings';
 
 import {
 	QuickTrade,
 	Dialog,
-	Countdown,
-	IconTitle,
 	Loader,
-	MobileBarBack
-} from '../../components';
+	MobileBarBack,
+  Button,
+} from 'components';
+import ReviewBlock from 'components/QuickTrade/ReviewBlock';
+import { changeSymbol } from 'actions/orderbookAction';
 import {
-	requestQuote,
-	executeQuote,
-	changeSymbol,
-	requestQuickTrade
-} from '../../actions/orderbookAction';
-import {
+  formatNumber,
 	calculateBalancePrice,
-	formatToCurrency
-} from '../../utils/currency';
-import { isLoggedIn } from '../../utils/token';
+	// formatToCurrency
+} from 'utils/currency';
+import { isLoggedIn } from 'utils/token';
+import { unique } from 'utils/data';
+import { getDecimals } from 'utils/utils';
 import {
 	changePair,
 	setNotification,
-	RISKY_ORDER
-} from '../../actions/appActions';
+	// RISKY_ORDER
+} from 'actions/appActions';
 
 import QuoteResult from './QuoteResult';
 
-class QuickTradeContainer extends Component {
-	state = {
-		pair: '',
-		showQuickTradeModal: false,
-		side: 'buy',
-		quote: {},
-		interval: undefined,
-		totalAssets: ''
-	};
+const DECIMALS = 4;
 
-	componentWillMount() {
+class QuickTradeContainer extends PureComponent {
+  constructor(props) {
+    super(props);
+    const { routeParams: { pair }, sourceOptions, tickers } = this.props;
+    const [, selectedSource = sourceOptions[0] ] = pair.split("-");
+    const targetOptions = this.getTargetOptions(selectedSource);
+    const [ selectedTarget = targetOptions[0] ] = pair.split("-");
+	const { close: tickerClose } = tickers[pair];
+
+    this.state = {
+      pair,
+    	side: 'buy',
+      tickerClose,
+      showQuickTradeModal: false,
+      totalAssets: '',
+      targetOptions,
+      selectedSource,
+      selectedTarget,
+	  targetAmount: undefined,
+	  sourceAmount: undefined,
+	  order: {
+        fetching: false,
+        error: false,
+		data: {},
+	  },
+	  sourceError: '',
+	  targetError: '',
+    };
+  }
+
+  UNSAFE_componentWillMount() {
 		this.changePair(this.props.routeParams.pair);
 	}
 
@@ -59,22 +81,7 @@ class QuickTradeContainer extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const nextExp = nextProps.quoteData.data.exp;
-		const thisExp = this.props.quoteData.data.exp;
-		if (
-			nextProps.quoteData.error &&
-			nextProps.quoteData.error !== this.props.quoteData.error
-		) {
-			this.onClearQuoteInterval();
-		}
-		if (nextExp !== thisExp) {
-			const interval = setInterval(() => {
-				this.onRequestQuote();
-			}, 60 * 1000);
-			this.onClearQuoteInterval();
-			this.setState({ interval });
-		}
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
 		}
@@ -90,26 +97,18 @@ class QuickTradeContainer extends Component {
 		}
 	}
 
-	componentWillUnmount() {
-		this.onClearQuoteInterval();
-	}
-
 	changePair = (pair) => {
 		this.setState({ pair });
 		this.props.changePair(pair);
 	};
 
-	onOpenDialog = () => {
-		this.onClearQuoteInterval();
-		this.setState({ showQuickTradeModal: true });
-	};
+  onOpenDialog = () => {
+    this.setState({ showQuickTradeModal: true });
+  };
 
-	onCloseDialog = () => {
-		this.setState({ showQuickTradeModal: false });
-		if (this.state.quote) {
-			this.props.requestQuote(this.state.quote);
-		}
-	};
+  onCloseDialog = () => {
+    this.setState({ showQuickTradeModal: false }, this.resetOrderData);
+  };
 
 	calculateSections = ({ balance, prices, coins }) => {
 		const totalAssets = calculateBalancePrice(balance, prices, coins);
@@ -117,127 +116,227 @@ class QuickTradeContainer extends Component {
 	};
 
 	onReviewQuickTrade = () => {
-		const { pair_base, pair_2 } = this.props.pairData;
-		const {
-			settings: { risk = {} },
-			quoteData: { data = {} },
-			setNotification,
-			pairData,
-			balance
-		} = this.props;
+    	this.onOpenDialog();
+	};
 
-		if (this.props.quoteData.error === BALANCE_ERROR) {
-			this.props.changeSymbol(
-				this.state.side === 'sell' ? pair_base : pair_2
-			);
-			this.props.router.push('deposit');
+  onExecuteTrade = () => {
+    const { side, targetAmount, pair, sourceAmount } = this.state;
+    const { pairs } = this.props;
+    const pairData = pairs[pair] || {}
+    const { increment_size } = pairData
+
+    let size
+		let price;
+		if(side === "buy") {
+			[size, price] = [targetAmount, sourceAmount]
 		} else {
-			const order = {
-				type: 'quick trade',
-				side: data.side,
-				price: 0,
-				size: data.size,
-				symbol: pair_base,
-				orderPrice: data.price,
-				orderFees: 0
-			};
-			// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-			let coin_balance = 0;
-			if (data.side === 'buy') {
-				coin_balance = balance[`${pair_2.toLowerCase()}_balance`];
-			} else {
-				coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
+      [price, size] = [targetAmount, sourceAmount]
+		}
+
+    const orderData = {
+      type: 'market',
+      side,
+      size: formatNumber(
+        size,
+        getDecimals(increment_size)
+      ),
+			symbol: pair,
+		}
+
+		this.setState({
+			order: {
+        completed: false,
+				fetching: true,
+				error: false,
+				data: orderData,
 			}
-			const riskySize = ((coin_balance / 100) * risk.order_portfolio_percentage);
-			if (risk.popup_warning && data.size >= riskySize) {
-				order['order_portfolio_percentage'] =
-					risk.order_portfolio_percentage;
-				setNotification(RISKY_ORDER, {
-					order,
-					onConfirm: () => {
-						this.onClearQuoteInterval();
-						this.onOpenDialog();
-					},
-					fees: {},
-					pairData
-				});
-			} else {
-				this.onClearQuoteInterval();
-				this.onOpenDialog();
-			}
-		}
-	};
+		})
 
-	onChangeSide = (side = '') => {
-		this.setState({ side });
-	};
+    submitOrder(orderData)
+      .then(({ data }) => {
+        this.setState({
+          order: {
+          	completed: true,
+            fetching: false,
+            error: false,
+            data: {
+							...data,
+							price,
+						},
+          }
+        })
+			})
+      .catch((err) => {
+        const _error =
+          err.response && err.response.data
+            ? err.response.data.message
+            : err.message;
 
-	onExecuteTrade = () => {
-		const { token } = this.props.quoteData;
-		this.props.executeQuote(token, this.props.settings);
-	};
-
-	onRequestQuote = (quoteData) => {
-		let quote;
-		if (quoteData) {
-			quote = quoteData;
-			this.setState({ quote });
-		} else {
-			quote = this.state.quote;
-		}
-		isLoggedIn()
-			? this.props.requestQuote(quote)
-			: this.props.requestQuickTrade(quote);
-	};
-
-	onClearQuoteInterval = () => {
-		if (this.state.interval) {
-			clearInterval(this.state.interval);
-		}
-	};
-
-	renderCountdown = (countdown) => {
-		return (
-			<div className="quote-countdown-wrapper">
-				{STRINGS.formatString(
-					STRINGS.QUOTE_COUNTDOWN_MESSAGE,
-					<div className="counter">{countdown}</div>
-				)}
-			</div>
-		);
-	};
-
-	renderTimeout = () => (
-		<div className="quote-countdown-wrapper">
-			{STRINGS.QUOTE_EXPIRED_TOKEN}
-		</div>
-	);
+        this.setState({
+          order: {
+            completed: true,
+            fetching: false,
+            error: _error,
+            data: orderData,
+          }
+				})
+      });
+  };
 
 	onGoBack = () => {
 		this.props.router.push(`/trade/${this.state.pair}`);
 	};
 
+  onSelectTarget = (selectedTarget) => {
+    const { tickers } = this.props;
+  	const { selectedSource } = this.state;
+
+    const pairName = `${selectedTarget}-${selectedSource}`;
+    const reversePairName = `${selectedSource}-${selectedTarget}`;
+
+    let tickerClose;
+    let side;
+    let pair;
+    if(tickers[pairName]) {
+      const { close } = tickers[pairName];
+      tickerClose = close;
+	  side = 'buy';
+      pair = pairName;
+    } else if(tickers[reversePairName]) {
+      const { close } = tickers[reversePairName];
+      tickerClose = 1 / close;
+      side = 'sell';
+      pair = reversePairName;
+    }
+
+    this.setState({
+      tickerClose,
+      side,
+	  selectedTarget,
+	  targetAmount: undefined,
+	  sourceAmount: undefined,
+    })
+    this.goToPair(pair);
+	}
+
+	onSelectSource = (selectedSource) => {
+    const { tickers } = this.props;
+
+    const targetOptions = this.getTargetOptions(selectedSource);
+    const selectedTarget = targetOptions[0];
+    const pairName = `${selectedTarget}-${selectedSource}`;
+    const reversePairName = `${selectedSource}-${selectedTarget}`;
+
+    let tickerClose;
+    let side;
+    let pair;
+    if(tickers[pairName]) {
+      const { close } = tickers[pairName];
+      tickerClose = close;
+      side = 'buy';
+      pair = pairName;
+    } else if(tickers[reversePairName]) {
+      const { close } = tickers[reversePairName];
+      tickerClose = 1 / close;
+      side = 'sell';
+      pair = reversePairName;
+    }
+
+    this.setState({
+      tickerClose,
+      side,
+      // pair,
+	  selectedSource,
+	  selectedTarget,
+	  targetOptions: targetOptions,
+      targetAmount: undefined,
+      sourceAmount: undefined,
+    })
+    this.goToPair(pair);
+	}
+
+	getTargetOptions = (sourceKey) => {
+  	const { sourceOptions, pairs } = this.props;
+
+    return sourceOptions.filter(key => pairs[`${key}-${sourceKey}`] || pairs[`${sourceKey}-${key}`])
+	}
+
+  onChangeTargetAmount = (targetAmount) => {
+  	const { tickerClose } = this.state;
+		const sourceAmount = math.round(targetAmount * tickerClose, DECIMALS);
+
+		this.setState({
+			targetAmount,
+      sourceAmount,
+    });
+	}
+
+	onChangeSourceAmount = (sourceAmount) => {
+    const { tickerClose } = this.state;
+    const targetAmount = math.round(sourceAmount / tickerClose, DECIMALS);
+
+    this.setState({
+      sourceAmount,
+      targetAmount,
+    })
+	}
+
+	isReviewDisabled = () => {
+  	const { targetAmount, sourceAmount, selectedTarget, selectedSource, sourceError, targetError } = this.state;
+  	return !isLoggedIn() || !selectedTarget || !selectedSource || !targetAmount || !sourceAmount || sourceError || targetError;
+	}
+
+  goToPair = (pair) => {
+    browserHistory.push(`/quick-trade/${pair}`)
+  };
+
+  resetOrderData = () => {
+  	this.setState({
+      order: {
+        fetching: false,
+        error: false,
+        data: {},
+      }
+		});
+	}
+
+	goToWallet = () => {
+  	this.props.router.push('/wallet');
+	}
+
+	forwardSourceError = (sourceError) => {
+  		this.setState({ sourceError });
+	}
+
+	forwardTargetError = (targetError) => {
+  		this.setState({ targetError });
+	}
+
 	render() {
 		const {
-			quoteData,
 			pairData = {},
 			activeTheme,
-			quickTrade,
 			orderLimits,
 			pairs,
-			coins
+			coins,
+			sourceOptions,
 		} = this.props;
-		const { showQuickTradeModal, side, pair } = this.state;
+		const {
+			order,
+			targetAmount,
+			sourceAmount,
+			selectedTarget,
+			selectedSource,
+			showQuickTradeModal,
+			pair,
+			targetOptions,
+          	side
+		} = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
 			return <Loader background={false} />;
 		}
 
-		const { data, order } = quoteData;
-		const end = quoteData.data.exp;
-		const tradeData = isLoggedIn() ? quoteData : quickTrade;
-		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		const pairCoin = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 		return (
 			<div className='h-100'>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
@@ -253,67 +352,74 @@ class QuickTradeContainer extends Component {
 				>
 					<QuickTrade
 						onReviewQuickTrade={this.onReviewQuickTrade}
-						onRequestMarketValue={this.onRequestQuote}
+						onSelectTarget={this.onSelectTarget}
+						onSelectSource={this.onSelectSource}
+						side={side}
 						symbol={pair}
 						theme={activeTheme}
-						quickTradeData={tradeData}
-						onChangeSide={this.onChangeSide}
-						disabled={
-							quoteData.error === BALANCE_ERROR ? true : !quoteData.token
-						}
-						orderLimits={orderLimits}
+						disabled={this.isReviewDisabled()}
+						orderLimits={orderLimits[pair]}
 						pairs={pairs}
 						coins={coins}
+						sourceOptions={sourceOptions}
+						targetOptions={targetOptions}
+						selectedSource={selectedSource}
+						selectedTarget={selectedTarget}
+						targetAmount={targetAmount}
+						sourceAmount={sourceAmount}
+						onChangeTargetAmount={this.onChangeTargetAmount}
+						onChangeSourceAmount={this.onChangeSourceAmount}
+						forwardSourceError={this.forwardSourceError}
+						forwardTargetError={this.forwardTargetError}
 					/>
 					<Dialog
-						isOpen={!!end && showQuickTradeModal}
+						isOpen={showQuickTradeModal}
 						label="quick-trade-modal"
 						onCloseDialog={this.onCloseDialog}
 						shouldCloseOnOverlayClick={false}
-						showCloseText={!order.fetching && !order.completed}
+						showCloseText={false}
 						theme={activeTheme}
 						style={{ 'z-index': 100 }}
 					>
-						{showQuickTradeModal ? (
-							!order.fetching && !order.completed ? (
-								<Countdown
-									buttonLabel={STRINGS.QUOTE_BUTTON}
-									settings={this.props.settings}
-									onClickButton={this.onExecuteTrade}
-									end={end}
-									renderTimeout={this.renderTimeout}
-									renderCountdown={this.renderCountdown}
-								>
-									<IconTitle
-										iconPath={ICONS.SQUARE_DOTS}
-										text={STRINGS.QUOTE_REVIEW}
-										underline={true}
-										useSvg={true}
-										className="w-100"
-									/>
-									<div className="quote-review-wrapper">
-										{STRINGS.formatString(
-											STRINGS.QUOTE_MESSAGE,
-											STRINGS.SIDES_VALUES[side],
-											formatToCurrency(data.size, pairData.increment_size),
-											pairCoin.fullname,
-											formatToCurrency(data.price, pairData.increment_price),
-											baseCoin.fullname
-										)}
+            {showQuickTradeModal ? (
+              !order.fetching && !order.completed ? (
+								<div className="quote-review-wrapper">
+									<div>
+										<ReviewBlock
+											symbol={selectedSource}
+											text={"Spend Amount"}
+											amount={sourceAmount}
+										/>
+										<ReviewBlock
+											symbol={selectedTarget}
+											text={"Estimated Recieving Amount"}
+											amount={targetAmount}
+										/>
+										<footer className="d-flex pt-4">
+											<Button
+												label={STRINGS["CLOSE_TEXT"]}
+												onClick={this.onCloseDialog}
+												className="mr-2"
+											/>
+											<Button
+												label={"Confirm"}
+												onClick={this.onExecuteTrade}
+												className="ml-2"
+											/>
+										</footer>
 									</div>
-								</Countdown>
-							) : (
+								</div>
+              ) : (
 								<QuoteResult
 									pairData={pairData}
 									data={order}
-									name={pairCoin.fullname}
-									coins={coins}
 									onClose={this.onCloseDialog}
+									onConfirm={this.goToWallet}
 								/>
-							)
-						) : (
+              )
+            ) : (
 							<div />
-						)}
+            )}
 					</Dialog>
 				</div>
 			</div>
@@ -321,18 +427,30 @@ class QuickTradeContainer extends Component {
 	}
 }
 
+const getSourceOptions = (pairs = {}) => {
+	const coins = []
+  Object.entries(pairs).forEach(([, { pair_base, pair_2 }]) => {
+		coins.push(pair_base);
+		coins.push(pair_2);
+	})
+
+	return unique(coins)
+}
+
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair] || {};
+	const sourceOptions = getSourceOptions(store.app.pairs);
+
 	return {
+    sourceOptions,
 		pair,
 		pairData,
 		pairs: store.app.pairs,
 		coins: store.app.coins,
-		quoteData: store.orderbook.quoteData,
+		tickers: store.app.tickers,
 		activeTheme: store.app.theme,
 		activeLanguage: store.app.language,
-		quickTrade: store.orderbook.quickTrade,
 		orderLimits: store.app.orderLimits,
 		prices: store.orderbook.prices,
 		balance: store.user.balance,
@@ -345,10 +463,7 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
-	requestQuote: bindActionCreators(requestQuote, dispatch),
-	executeQuote: bindActionCreators(executeQuote, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
-	requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch)
 });
 

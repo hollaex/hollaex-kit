@@ -9,11 +9,12 @@ import { BarChart } from '../../../components';
 import { calculatePrice, formatToCurrency } from '../../../utils/currency';
 import {
 	TRADING_VOLUME_CHART_LIMITS,
-	SUMMMARY_ICON,
 	CHART_MONTHS,
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA
 } from '../../../config/constants';
+
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class TradingVolume extends Component {
 	state = {
@@ -29,7 +30,7 @@ class TradingVolume extends Component {
 		this.props.getTradeVolume();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			JSON.stringify(this.props.tradeVolumes) !==
 			JSON.stringify(nextProps.tradeVolumes)
@@ -39,7 +40,7 @@ class TradingVolume extends Component {
 	}
 
 	constructData = (tradeValues, coins) => {
-		const { pairs, prices, activeTheme } = this.props;
+		const { pairs, prices, activeTheme, icons: ICONS } = this.props;
 		const chartData = [];
 		let totalVolume = 0;
 		let peakVolume = this.state.peakVolume;
@@ -67,7 +68,7 @@ class TradingVolume extends Component {
 						let volumeObj = trade[pair] || {};
 						let pairPrice = calculatePrice(
 							volumeObj.volume,
-							prices[pairValue.pair_base]
+              pairValue.pair_base
 						);
 						pairWisePrice[pairValue.pair_base] = pairPrice;
 						pairVolume[pairValue.pair_base] = volumeObj.volume;
@@ -93,17 +94,17 @@ class TradingVolume extends Component {
 			TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 				if (index === 0) {
 					limitContent.push({
-						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
+						icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'}`],
 						text: STRINGS.formatString(
-							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							3
 						)
 					});
 				} else if (index === 1) {
 					limitContent.push({
-						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
+						icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'}`],
 						text: STRINGS.formatString(
-							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 							4
 						)
 					});
@@ -128,7 +129,7 @@ class TradingVolume extends Component {
 							let volumeObj = trade[pair] || {};
 							let pairPrice = calculatePrice(
 								volumeObj.volume,
-								prices[pairValue.pair_base]
+                pairValue.pair_base
 							);
 							pairWisePrice[pairValue.pair_base] = pairPrice;
 							pairVolume[pairValue.pair_base] = volumeObj.volume;
@@ -154,17 +155,17 @@ class TradingVolume extends Component {
 				TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 					if (index === 0) {
 						limitContent.push({
-							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
+							icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'}`],
 							text: STRINGS.formatString(
-								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								3
 							).join('')
 						});
 					} else if (index === 1) {
 						limitContent.push({
-							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
+							icon: ICONS[`SUMMMARY_ICON.${activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'}`],
 							text: STRINGS.formatString(
-								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								STRINGS["SUMMARY.TRADER_ACCOUNT_ELIGIBILITY"],
 								4
 							).join('')
 						});
@@ -193,11 +194,11 @@ class TradingVolume extends Component {
 					<div className="summary-content-txt">
 						<div>
 							{STRINGS.formatString(
-								STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
+								STRINGS["SUMMARY.TRADING_VOLUME_TXT_1"],
 								fullname
 							)}
 						</div>
-						<div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
+						<div>{STRINGS["SUMMARY.TRADING_VOLUME_TXT_2"]}</div>
 					</div>
 					<BarChart
 						loading={tradeVolumes.fetching && !tradeVolumes.fetched}
@@ -228,4 +229,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(TradingVolume);
+)(withConfig(TradingVolume));

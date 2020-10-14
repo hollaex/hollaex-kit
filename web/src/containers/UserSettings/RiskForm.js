@@ -10,7 +10,7 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from "../../config/constants
 export const generateHeaders = onAdjustPortfolio => {
 	return [
 		{
-			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO,
+			label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO"],
 			key: "percentage",
 			renderCell: ({ id, percentage }, key, index) => (
 				<td key={`${key}-${id}-percentage`}>
@@ -30,7 +30,7 @@ export const generateHeaders = onAdjustPortfolio => {
 								percentage.popupWarning ? onAdjustPortfolio : () => { }
 							}
 						>
-							{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ADJUST}
+							{STRINGS["USER_SETTINGS.RISK_MANAGEMENT.ADJUST"]}
 						</span>
 					</span>
 				</td>
@@ -38,7 +38,7 @@ export const generateHeaders = onAdjustPortfolio => {
 		},
 		!IS_XHT
 			? {
-				label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET,
+				label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET"],
 				key: "assetValue",
 				renderCell: ({ id, assetValue }, key, index) => (
 					<td key={`${key}-${id}-assetValue.percentPrice`}>
@@ -55,7 +55,7 @@ export const generateHeaders = onAdjustPortfolio => {
 			}
 			: {},
 		{
-			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT,
+			label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT"],
 			key: "adjust",
 			className: "text-right",
 			renderCell: ({ id, adjust }, key, index) => (
@@ -72,7 +72,7 @@ export const generateHeaders = onAdjustPortfolio => {
 export const generateWarningFormValues = () => ({
 	popup_warning: {
 		type: "toggle",
-		label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP,
+		label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP"],
 		className: "toggle-wrapper",
 		toggleOnly: true
 	}
@@ -124,14 +124,15 @@ class RiskForm extends Component {
 		];
 		const sections = [
 			{
-				title: STRINGS.USER_SETTINGS.CREATE_ORDER_WARING,
+				stringId: "USER_SETTINGS.CREATE_ORDER_WARING,USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT,USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1",
+				title: STRINGS["USER_SETTINGS.CREATE_ORDER_WARING"],
 				content: (
 					<div>
-						<p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
+						<p>{STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT"]}</p>
 						{!IS_XHT
 							? <p>
 								{STRINGS.formatString(
-									STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1,
+									STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1"],
 									fullname,
 									totalAssets
 								).join("")}
@@ -156,7 +157,7 @@ class RiskForm extends Component {
 					<Accordion sections={sections} />
 					<Button
 						className="mt-4"
-						label={STRINGS.SETTING_BUTTON}
+						label={STRINGS["SETTING_BUTTON"]}
 						disabled={pristine || submitting || !valid}
 					/>
 				</form>

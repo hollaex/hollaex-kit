@@ -13,10 +13,10 @@ const getTitleAndIcon = (type) => {
 
 	if (type === 'skip') {
 		data.icon = ICONS.VERIFICATION_WARNING;
-		data.title = STRINGS.VERIFICATION_NOTIFICATION_SKIP_TITLE;
+		data.title = STRINGS["VERIFICATION_NOTIFICATION_SKIP_TITLE"];
 	} else if (type === 'complete') {
 		data.icon = ICONS.VERIFICATION_SUCCESS;
-		data.title = STRINGS.VERIFICATION_NOTIFICATION_SUCCESS_TITLE;
+		data.title = STRINGS["VERIFICATION_NOTIFICATION_SUCCESS_TITLE"];
 	}
 
 	return data;
@@ -31,11 +31,11 @@ const VerificationNotification = ({ data: { type, onClick } }) => {
 		>
 			<NotificationContent>
 				{type === 'skip'
-					? STRINGS.VERIFICATION_NOTIFICATION_SKIP_TEXT
-					: STRINGS.VERIFICATION_NOTIFICATION_SUCCESS_TEXT}
+					? STRINGS["VERIFICATION_NOTIFICATION_SKIP_TEXT"]
+					: STRINGS["VERIFICATION_NOTIFICATION_SUCCESS_TEXT"]}
 			</NotificationContent>
 			<Button
-				label={STRINGS.VERIFICATION_NOTIFICATION_BUTTON}
+				label={STRINGS["VERIFICATION_NOTIFICATION_BUTTON"]}
 				onClick={onClick}
 			/>
 		</NotificationWraper>

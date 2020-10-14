@@ -13,8 +13,8 @@ export const generateUsernameFormValues = (disabled = false) => ({
 	username: {
 		type: 'text',
 		validate: [required, username],
-		label: STRINGS.USERNAME_LABEL,
-		placeholder: STRINGS.USERNAME_PLACEHOLDER,
+		label: STRINGS["USERNAME_LABEL"],
+		placeholder: STRINGS["USERNAME_PLACEHOLDER"],
 		disabled,
 		fullWidth: isMobile
 	}
@@ -49,11 +49,11 @@ class Form extends Component {
 					<FieldError
 						className="warning_text mb-4"
 						displayError={true}
-						error={STRINGS.USERNAME_WARNING}
+						error={STRINGS["USERNAME_WARNING"]}
 					/>
 				)}
 				<Button
-					label={STRINGS.SETTING_BUTTON}
+					label={STRINGS["SETTING_BUTTON"]}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>

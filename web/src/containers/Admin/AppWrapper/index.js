@@ -2,23 +2,25 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Layout, Menu, Icon, Row, Col, Spin } from 'antd';
-import io from 'socket.io-client';
+import { DownloadOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Layout, Menu, Row, Col, Spin } from 'antd';
+// import io from 'socket.io-client';
 import { debounce } from 'lodash';
 
 import { PATHS } from '../paths';
+import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
 	isLoggedIn,
 	isSupport,
 	isSupervisor,
 	isAdmin,
-	getTokenTimestamp,
-	getToken
+	getTokenTimestamp
 } from '../../../utils/token';
 import { checkUserSessionExpired } from '../../../utils/utils';
+import { getExchangeInitialized } from '../../../utils/initialize';
 import { logout } from '../../../actions/authAction';
-import { setMe } from '../../../actions/userAction';
+import { getMe, setMe } from '../../../actions/userAction';
 import {
 	setPairsData
 } from '../../../actions/orderbookAction';
@@ -31,9 +33,12 @@ import {
 	setConfig,
 	setLanguage,
 	changeTheme,
-	requestAvailPlugins
+	requestAvailPlugins,
+	requestInitial,
+	requestConstant,
+	requestAdminData
 } from '../../../actions/appActions';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
+import { SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
 
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
@@ -54,8 +59,9 @@ class AppWrapper extends React.Component {
 			isLoaded: false,
 			appLoaded: false,
 			publicSocket: undefined,
-			privateSocket: undefined,
-			idleTimer: undefined
+			idleTimer: undefined,
+			setupCompleted: true,
+			initialLoading: true
 		};
 	}
 
@@ -70,6 +76,11 @@ class AppWrapper extends React.Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
+		const initialized = getExchangeInitialized();
+		if (initialized === 'false' || !initialized) {
+			this.props.router.push('/init');
+		}
+		this.requestAdminInitialize();
 		this._resetTimer();
 		this.props.requestAvailPlugins();
 		this.setState({
@@ -80,7 +91,7 @@ class AppWrapper extends React.Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		// if (
 		// 	!nextProps.fetchingAuth &&
 		// 	nextProps.fetchingAuth !== this.props.fetchingAuth &&
@@ -97,23 +108,32 @@ class AppWrapper extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.state.publicSocket) {
-			this.state.publicSocket.close();
-		}
-
-		if (this.state.privateSocket) {
-			this.state.privateSocket.close();
-		}
 
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
 		}
 	}
 
+	requestAdminInitialize = () => {
+		requestAdminData()
+			.then((res) => {
+				if (res.data) {
+					if (res.data.secrets) {
+						this.setState({ setupCompleted: res.data.secrets.setup_completed });
+					}
+				}
+				this.setState({ initialLoading: false });
+			})
+			.catch(err => {
+				this.setState({ initialLoading: false });
+				console.error(err);
+			})
+	};
+
 	initSocketConnections = () => {
 		this.setPublicWS();
 		if (isLoggedIn()) {
-			this.setUserSocket(getToken());
+			this.setUserSocket();
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -136,86 +156,88 @@ class AppWrapper extends React.Component {
 	resetTimer = debounce(this._resetTimer, 250);
 
 	setPublicWS = () => {
-		// TODO change when added more cryptocurrencies
 
-		const publicSocket = io(`${WS_URL}/realtime`, {
-			query: {
-				// symbol: 'btc'
-			}
-		});
-
-		this.setState({ publicSocket });
-
-		publicSocket.on('initial', (data) => {
-			if (!this.props.pair) {
-				const pair = Object.keys(data.pairs)[0];
-				this.props.changePair(pair);
-			}
-			this.props.setPairs(data.pairs);
-			this.props.setPairsData(data.pairs);
-			this.props.setCurrencies(data.coins);
-			this.props.setConfig(data.constants);
-			const pairWithBase = Object.keys(data.pairs).filter((key) => {
-				let temp = data.pairs[key];
-				return temp.pair_2 === BASE_CURRENCY;
+		requestInitial()
+			.then(res => {
+				if (res && res.data) {
+					this.props.setConfig(res.data);
+				}
+			})
+			.catch(err => {
+				console.error(err);
 			});
-			const isValidPair = pairWithBase.length > 0;
-			this.props.setValidBaseCurrency(isValidPair);
-			const orderLimits = {};
-			Object.keys(data.pairs).map((pair, index) => {
-				orderLimits[pair] = {
-					PRICE: {
-						MIN: data.pairs[pair].min_price,
-						MAX: data.pairs[pair].max_price,
-						STEP: data.pairs[pair].increment_price
-					},
-					SIZE: {
-						MIN: data.pairs[pair].min_size,
-						MAX: data.pairs[pair].max_size,
-						STEP: data.pairs[pair].increment_price
+
+		requestConstant()
+			.then(res => {
+				if (res && res.data) {
+					if (!this.props.pair) {
+						const pair = Object.keys(res.data.pairs)[0];
+						this.props.changePair(pair);
 					}
-				};
-				return '';
+					this.props.setPairs(res.data.pairs);
+					this.props.setPairsData(res.data.pairs);
+					this.props.setCurrencies(res.data.coins);
+					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
+						let temp = res.data.pairs[key];
+						return temp.pair_2 === BASE_CURRENCY;
+					});
+					const isValidPair = pairWithBase.length > 0;
+					this.props.setValidBaseCurrency(isValidPair);
+					const orderLimits = {};
+					Object.keys(res.data.pairs).map((pair, index) => {
+						orderLimits[pair] = {
+							PRICE: {
+								MIN: res.data.pairs[pair].min_price,
+								MAX: res.data.pairs[pair].max_price,
+								STEP: res.data.pairs[pair].increment_price
+							},
+							SIZE: {
+								MIN: res.data.pairs[pair].min_size,
+								MAX: res.data.pairs[pair].max_size,
+								STEP: res.data.pairs[pair].increment_price
+							}
+						};
+						return '';
+					});
+					this.props.setOrderLimits(orderLimits);
+				}
+			})
+			.catch(err => {
+				console.error(err);
 			});
-			this.props.setOrderLimits(orderLimits);
-		});
 	};
 
 	setUserSocket = (token) => {
-		const privateSocket = io.connect(`${WS_URL}/user`, {
-			query: {
-				token: `Bearer ${token}`
-			}
-		});
-
-		this.setState({ privateSocket });
-
-		privateSocket.on('error', (error) => {
-			if (
-				error &&
-				typeof error === 'string' &&
-				error.indexOf('Access Denied') > -1
-			) {
-				this.logout('Token is expired');
-			}
-		});
-
-		privateSocket.on('user', ({ action, data }) => {
-			this.props.setMe(data);
-			if (
-				data.settings &&
-				data.settings.language !== this.props.activeLanguage
-			) {
-				this.props.changeLanguage(data.settings.language);
-			}
-			if (
-				data.settings.interface &&
-				data.settings.interface.theme !== this.props.activeTheme
-			) {
-				this.props.changeTheme(data.settings.interface.theme);
-				localStorage.setItem('theme', data.settings.interface.theme);
-			}
-		});
+		this.props.getMe()
+			.then(({ value }) => {
+				if (value && value.data && value.data.id) {
+					const data = value.data;
+						this.props.setMe(data);
+						if (
+							data.settings &&
+							data.settings.language !== this.props.activeLanguage
+						) {
+							this.props.changeLanguage(data.settings.language);
+						}
+						if (
+							data.settings.interface &&
+							data.settings.interface.theme !== this.props.activeTheme
+						) {
+							this.props.changeTheme(data.settings.interface.theme);
+							localStorage.setItem('theme', data.settings.interface.theme);
+						}
+				}
+			})
+			.catch((err) => {
+				console.log('err', err);
+				let error = err.message;
+				if (err.data && err.data.message) {
+					error = err.data.message;
+				}
+				if (error.indexOf('Access Denied') > -1) {
+					this.logout('Token is expired');
+				}
+			})
 	};
 
 	isSocketDataReady = () => {
@@ -249,14 +271,19 @@ class AppWrapper extends React.Component {
 			removeToken();
 			router.replace('/login');
 		};
-		const { isAdminUser, isLoaded, appLoaded } = this.state;
+		const { isAdminUser, isLoaded, appLoaded, initialLoading, setupCompleted } = this.state;
 
-		if (!isLoaded) return null;
+		if (!isLoaded || initialLoading) return null;
 		if (!isLoggedIn()) {
 			router.replace('/login');
 		}
 		if (isLoggedIn() && !isAdminUser) {
 			router.replace('/summary');
+		}
+		if (!setupCompleted) {
+			return (
+				<SetupWizard />
+			);
 		}
 		if (md.phone()) {
 			return (
@@ -311,13 +338,13 @@ class AppWrapper extends React.Component {
 								).map(this.renderMenuItem)}
 								<Menu.Item>
 									<Link to="/summary">
-										<Icon type="home" />
+										<HomeOutlined />
 										Go To HollaEx-WEB
 									</Link>
 								</Menu.Item>
 								<Menu.Item key="logout">
 									<div onClick={logout}>
-										<Icon type="logout" />
+										<LogoutOutlined />
 										LOGOUT
 									</div>
 								</Menu.Item>
@@ -333,7 +360,7 @@ class AppWrapper extends React.Component {
 										href={ADMIN_GUIDE_DOWNLOAD_LINK}
 										target="blank"
 									>
-										<Icon type="download" />
+										<DownloadOutlined />
 										Admin Panel Guide
 									</Link>
 								</Menu.Item>
@@ -370,6 +397,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
+	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),

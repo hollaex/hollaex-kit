@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Icon, Spin, Button, Card } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
+import { Table, Spin, Button, Card } from 'antd';
 import { Link } from 'react-router';
 
 import { requestUsers } from '../ListUsers/actions';
@@ -9,7 +10,7 @@ const renderLink = (value) => (
 	<Button type="primary" onClick={(e) => refreshPage(e)}>
 		<Link to={`user?id=${value}`}>
 			GO
-			<Icon type="right" />
+			<RightOutlined />
 		</Link>
 	</Button>
 );

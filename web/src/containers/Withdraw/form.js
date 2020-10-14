@@ -38,7 +38,7 @@ const validate = (values, props) => {
 	const totalTransaction = math.add(fee, amount);
 	if (math.larger(totalTransaction, balance)) {
 		errors.amount = STRINGS.formatString(
-			STRINGS.WITHDRAWALS_LOWER_BALANCE,
+			STRINGS["WITHDRAWALS_LOWER_BALANCE"],
 			math.number(totalTransaction)
 		);
 	}
@@ -53,7 +53,7 @@ class Form extends Component {
 		otp_code: ''
 	};
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.currency !== this.props.currency) {
 			nextProps.dispatch(reset(FORM_NAME));
 		}
@@ -201,7 +201,7 @@ class Form extends Component {
 					{error && <div className="warning_text">{error}</div>}
 				</div>
 				<Button
-					label={STRINGS.WITHDRAWALS_BUTTON_TEXT}
+					label={STRINGS["WITHDRAWALS_BUTTON_TEXT"]}
 					disabled={pristine || submitting || !valid}
 					onClick={this.onOpenDialog}
 				/>

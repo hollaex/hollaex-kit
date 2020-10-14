@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { ActionNotification } from '../';
-import { ICONS } from '../../config/constants';
+import ICONS from 'config/icons';
 import STRINGS from '../../config/localizedStrings';
 
 const renderPageCount = (currentPage, totalPages) => {
@@ -9,7 +9,7 @@ const renderPageCount = (currentPage, totalPages) => {
 		return (
 			<div>
 				{STRINGS.formatString(
-					STRINGS.PAGINATOR_FORMAT,
+					STRINGS["PAGINATOR_FORMAT"],
 					currentPage,
 					totalPages
 				)}
@@ -38,9 +38,10 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
-					text={STRINGS.PREVIOUS_PAGE}
+					stringId="PREVIOUS_PAGE"
+					text={STRINGS["PREVIOUS_PAGE"]}
 					status="information"
-					iconPath={ICONS.BLUE_ARROW_LEFT}
+					iconPath={ICONS["BLUE_ARROW_LEFT"]}
 					textPosition="left"
 					iconPosition="left"
 					rotateIfLtr={true}
@@ -56,9 +57,10 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
-					text={STRINGS.NEXT_PAGE}
+					stringId="NEXT_PAGE"
+					text={STRINGS["NEXT_PAGE"]}
 					status="information"
-					iconPath={ICONS.BLUE_ARROW_RIGHT}
+					iconPath={ICONS["BLUE_ARROW_RIGHT"]}
 					rotateIfRtl={true}
 					useSvg={true}
 				/>

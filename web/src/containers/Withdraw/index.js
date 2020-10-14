@@ -7,8 +7,8 @@ import { formValueSelector, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
 import { Loader, MobileBarBack } from '../../components';
+import withConfig from 'components/ConfigProvider/withConfig';
 import {
-	ICONS,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
 	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
 	DEFAULT_COIN_DATA
@@ -61,7 +61,7 @@ class Withdraw extends Component {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.checked) {
 			if (nextProps.verification_level) {
 				this.validateRoute(
@@ -124,6 +124,7 @@ class Withdraw extends Component {
 	};
 
 	generateFormValues = (currency, balance, coins, verification_level) => {
+		const { icons: ICONS } = this.props;
 		const balanceAvailable = balance[`${currency}_available`];
 		const formValues = generateFormValues(
 			currency,
@@ -131,7 +132,8 @@ class Withdraw extends Component {
 			this.onCalculateMax,
 			coins,
 			verification_level,
-			this.props.activeTheme
+			this.props.activeTheme,
+      ICONS["BLUE_PLUS"]
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -207,7 +209,8 @@ class Withdraw extends Component {
 			openContactForm,
 			activeLanguage,
 			router,
-			coins
+			coins,
+			icons: ICONS,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const { formValues, initialValues, currency, checked } = this.state;
@@ -244,7 +247,7 @@ class Withdraw extends Component {
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
 				</MobileBarBack> }
 				<div className="presentation_container apply_rtl">
-					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW, coins)}
+					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS['WITHDRAW'], coins, 'WITHDRAW')}
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
@@ -256,10 +259,11 @@ class Withdraw extends Component {
 								generateBaseInformation,
 								coins,
 								'withdraw',
-								links
+								links,
+                ICONS["BLUE_QUESTION"],
 							)}
 							<WithdrawCryptocurrency {...formProps} />
-							{/* {renderExtraInformation(currency, bank_account)} */}
+							{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}
 						</div>
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 						) : (
@@ -295,4 +299,4 @@ const mapDispatchToProps = (dispatch) => ({
 	dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Withdraw);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Withdraw));

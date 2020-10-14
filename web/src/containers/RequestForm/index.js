@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { HocForm, IconTitle, Notification } from '../../components';
 import { email as isEmail, required } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS } from '../../actions/appActions';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const FORM_NAME = 'RequestForm';
 
@@ -41,44 +41,44 @@ class RequestForm extends Component {
     generateFormFields = (email) => ({
         email: {
             type: 'email',
-            label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
-            placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER,
+            label: STRINGS["FORM_FIELDS.EMAIL_LABEL"],
+            placeholder: STRINGS["FORM_FIELDS.EMAIL_PLACEHOLDER"],
             validate: [required, isEmail],
             fullWidth: true,
             disabled: !!email
         },
         category: {
             type: 'select',
-            label: STRINGS.CONTACT_FORM.CATEGORY_LABEL,
-            placeholder: STRINGS.REQUEST_XHT_ACCESS.CATEGORY_PLACEHOLDER,
+            label: STRINGS["CONTACT_FORM.CATEGORY_LABEL"],
+            placeholder: STRINGS["REQUEST_XHT_ACCESS.CATEGORY_PLACEHOLDER"],
             options: [
                 {
                     value: 'verify',
-                    label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY
+                    label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY"]
                 },
                 {
                     value: 'level',
-                    label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL
+                    label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL"]
                 },
                 {
                     value: 'deposit',
-                    label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT
+                    label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT"]
                 },
                 {
                     value: 'bug',
-                    label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG
+                    label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG"]
                 },
                 {
                     value: 'personal',
-                    label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO
+                    label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO"]
                 },
                 {
                     value: 'bank_transfer',
-                    label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER
+                    label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER"]
                 },
                 {
                     value: 'request_Xht_Invite',
-                    label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_REQUEST
+                    label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_REQUEST"]
                 },
             ],
             validate: [required],
@@ -86,8 +86,8 @@ class RequestForm extends Component {
         },
         Description: {
             type: 'textarea',
-            label: STRINGS.REQUEST_XHT_ACCESS.INTRODUCTION_LABEL,
-            placeholder: STRINGS.REQUEST_XHT_ACCESS.INTRODUCTION_PLACEHOLDER,
+            label: STRINGS["REQUEST_XHT_ACCESS.INTRODUCTION_LABEL"],
+            placeholder: STRINGS["REQUEST_XHT_ACCESS.INTRODUCTION_PLACEHOLDER"],
             validate: [required],
             fullWidth: true,
             rows: '2'
@@ -95,7 +95,7 @@ class RequestForm extends Component {
     });
 
     render() {
-        const { onClose, email, initialValues } = this.props;
+        const { onClose, email, initialValues, icons: ICONS } = this.props;
         const { submitted } = this.state;
         if (submitted) {
             return (
@@ -107,8 +107,10 @@ class RequestForm extends Component {
         return (
             <div className="contact_form-wrapper">
                 <IconTitle
-                    iconPath={ICONS.XHT_COIN_STACK}
-                    text={STRINGS.REQUEST_XHT_ACCESS.REQUEST_TITLE}
+                    iconId="XHT_COIN_STACK"
+                    iconPath={ICONS['XHT_COIN_STACK']}
+                    stringId="REQUEST_XHT_ACCESS.REQUEST_TITLE"
+                    text={STRINGS["REQUEST_XHT_ACCESS.REQUEST_TITLE"]}
                     textType="title"
                     underline={true}
                     className="w-100"
@@ -118,8 +120,8 @@ class RequestForm extends Component {
                     onSubmit={this.onSubmit}
                     formFields={formFields}
                     initialValues={initialValues}
-                    buttonLabel={STRINGS.SUBMIT}
-                    extraButtonLabel={STRINGS.BACK_TEXT}
+                    buttonLabel={STRINGS["SUBMIT"]}
+                    extraButtonLabel={STRINGS["BACK_TEXT"]}
                     extraButtonOnClick={onClose}
                 />
             </div>
@@ -132,4 +134,4 @@ const mapStateToProps = (store) => ({
     // contactFormData: store.app.contactFormData
 });
 
-export default connect(mapStateToProps)(RequestForm);
+export default connect(mapStateToProps)(withConfig(RequestForm));

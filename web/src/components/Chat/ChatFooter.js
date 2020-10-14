@@ -28,7 +28,7 @@ const ChatFooter = ({
 							<ButtonLink
 								link={'/signup'}
 								type="button"
-								label={STRINGS.SIGNUP_TEXT}
+								label={STRINGS["SIGNUP_TEXT"]}
 							/>
 						</div>
 						<div className="separator" />
@@ -36,7 +36,7 @@ const ChatFooter = ({
 							<ButtonLink
 								link={'/login'}
 								type="button"
-								label={STRINGS.LOGIN_TEXT}
+								label={STRINGS["LOGIN_TEXT"]}
 							/>
 						</div>
 					</div>

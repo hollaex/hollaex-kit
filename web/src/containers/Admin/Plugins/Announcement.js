@@ -31,6 +31,8 @@ const Announcement = (props) => {
 
     useEffect(() => {
         requestPosts();
+      //  TODO: Fix react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const requestPosts = (pageNo = 1) => {

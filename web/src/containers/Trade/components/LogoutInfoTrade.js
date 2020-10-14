@@ -6,12 +6,12 @@ import STRINGS from '../../../config/localizedStrings';
 const LogoutInfoTrade = () => {
     return (
         <div className='text-center my-3'>
-            <div className="xht-order-heading my-3">{STRINGS.TERMS_OF_SERVICES.XHT_TRADE_TXT_1}</div>
+            <div className="xht-order-heading my-3">{STRINGS["TERMS_OF_SERVICES.XHT_TRADE_TXT_1"]}</div>
             <div className="xht-order-content my-3">
                 {STRINGS.formatString(
-                    STRINGS.TERMS_OF_SERVICES.XHT_TRADE_TXT_2,
+                    STRINGS["TERMS_OF_SERVICES.XHT_TRADE_TXT_2"],
                     <Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
-                        {STRINGS.TERMS_OF_SERVICES.LOGIN_HERE}
+                        {STRINGS["TERMS_OF_SERVICES.LOGIN_HERE"]}
                     </Link>
                 )}
             </div>

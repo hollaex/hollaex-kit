@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import { Upload, Button, Icon } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+
+import { Upload, Button } from 'antd';
 
 const INITIAL_STATE = {
 	fileList: [],
@@ -9,7 +11,7 @@ const INITIAL_STATE = {
 export class FileField extends Component {
 	state = INITIAL_STATE;
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!nextProps.input.value && this.props.input.value) {
 			this.clearList();
 		}
@@ -54,7 +56,7 @@ export class FileField extends Component {
 				{label && <label>{label}</label>}
 				<Upload {...props}>
 					<Button>
-						<Icon type="upload" /> Select File
+						<UploadOutlined /> Select File
 					</Button>
 				</Upload>
 				{touched &&

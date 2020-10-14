@@ -15,8 +15,8 @@ import {
 } from '../../../actions/orderAction';
 import { isLoggedIn } from '../../../utils/token';
 import { ActionNotification } from '../../../components';
-import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { userTradesSelector, activeOrdersSelector } from '../utils';
 
 class OrdersWrapper extends Component {
@@ -56,13 +56,15 @@ class OrdersWrapper extends Component {
             pairs,
             coins,
             discount,
+            icons: ICONS,
         } = this.props;
         const {
             cancelDelayData
         } = this.state;
         const USER_TABS = [
             {
-                title: STRINGS.ORDERS,
+                stringId: "ORDERS",
+                title: STRINGS["ORDERS"],
                 children: isLoggedIn() ? (
                     <ActiveOrders
                         pairData={pairData}
@@ -76,8 +78,9 @@ class OrdersWrapper extends Component {
                 titleAction: isLoggedIn()
                     ? activeOrders.length > 0 && (
                         <ActionNotification
-                            text={STRINGS.CANCEL_ALL}
-                            iconPath={ICONS.CANCEL_CROSS_ACTIVE}
+                            stringId="CANCEL_ALL"
+                            text={STRINGS["CANCEL_ALL"]}
+                            iconPath={ICONS["CANCEL_CROSS_ACTIVE"]}
                             onClick={this.cancelAllOrders}
                             status="information"
                             useSvg={true}
@@ -86,7 +89,8 @@ class OrdersWrapper extends Component {
                     : ''
             },
             {
-                title: STRINGS.RECENT_TRADES,
+                stringId: "RECENT_TRADES",
+                title: STRINGS["RECENT_TRADES"],
                 children: isLoggedIn() ? (
                     <UserTrades
                         pageSize={10}
@@ -102,8 +106,9 @@ class OrdersWrapper extends Component {
                     ),
                 titleAction: isLoggedIn() ? (
                     <ActionNotification
-                        text={STRINGS.TRANSACTION_HISTORY.TITLE}
-                        iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
+                        stringId="TRANSACTION_HISTORY.TITLE"
+                        text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
+                        iconPath={ICONS["ARROW_TRANSFER_HISTORY_ACTIVE"]}
                         onClick={this.props.goToTransactionsHistory}
                         status="information"
                         useSvg={true}
@@ -152,4 +157,4 @@ const mapDispatchToProps = (dispatch) => ({
     cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrdersWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(OrdersWrapper));

@@ -60,13 +60,13 @@ class HamburgerMenu extends React.Component {
             {user.email}
           </MenuItem>
           <MenuItem  onClick={()=>this.handleLinkClick('Settings')}>
-            {STRINGS.ACCOUNTS.TAB_SETTINGS}
+            {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
           </MenuItem>
           <MenuItem  onClick={()=>this.handleLinkClick('home')}>
-            {STRINGS.TRADE_TAB_POSTS}
+            {STRINGS["TRADE_TAB_POSTS"]}
           </MenuItem>
           <MenuItem  onClick={()=>this.logout()}>
-            {STRINGS.ACCOUNTS.TAB_SIGNOUT}
+            {STRINGS["ACCOUNTS.TAB_SIGNOUT"]}
           </MenuItem>
         </Menu>
       </div>

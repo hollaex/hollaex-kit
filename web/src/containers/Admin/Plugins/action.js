@@ -8,21 +8,27 @@ export const updatePlugins = (values) => {
 		method: 'PUT',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated(`/admin/constant`, options);
+	return requestAuthenticated(`/plugins`, options);
 };
 
 export const getConstants = () =>
-	requestAuthenticated('/admin/constant');
+	requestAuthenticated('/plugins');
 
 export const getPlugins = (service) =>
-	requestAuthenticated(`/plugins/${service}/constant`, {}, null, WS_URL);
+	requestAuthenticated(`/plugins?${service}`, {});
+
+export const connectPlugin = (service) =>
+	requestAuthenticated(`/plugins/enable?plugin=${service}`);
+
+export const disconnectPlugin = (service) =>
+	requestAuthenticated(`/plugins/disable?plugin=${service}`);
 
 export const updatePluginsService = (service, values) => {
 	const options = {
 		method: 'PUT',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated(`/plugins/${service}/constant`, options, null, WS_URL);
+	return requestAuthenticated(`/plugins?plugin=${service}`, options, null);
 };
 
 export const connectVault = (values) => {

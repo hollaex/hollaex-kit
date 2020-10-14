@@ -39,7 +39,7 @@ const SIGNUP = {
 	TITLE: '회원가입',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `안녕하세요. 아래 버튼을 클릭하여 회원님의 이메일 계정을 인증해주시기바랍니다. 
+		1: () => `안녕하세요. 아래 버튼을 클릭하여 회원님의 이메일 계정을 인증해주시기바랍니다. 
 		문의사항은 본 메일에 회신하여 문의하실 수 있습니다.`,
 		2: '아래 버튼을 클릭하여 등록 절차를 진행하시기 바랍니다.',
 		3: '나의 계정 활성화'
@@ -71,7 +71,7 @@ const LOGIN = {
 		3: (country) => COMMON.COUNTRY(country),
 		4: (device) => COMMON.DEVICE(device),
 		5: (ip) => COMMON.IP_ADDRESS(ip),
-		6: '본인이 아닌 경우, HollEx에 방문하여 비밀번호 변경 및 이중인증 보안을 설정하시고 즉시, 회신하여 저희에게 문의해주시기 바랍니다.'
+		6: `본인이 아닌 경우, ${API_NAME()}에 방문하여 비밀번호 변경 및 이중인증 보안을 설정하시고 즉시, 회신하여 저희에게 문의해주시기 바랍니다.`
 	},
 	CLOSING: COMMON.CLOSING
 };

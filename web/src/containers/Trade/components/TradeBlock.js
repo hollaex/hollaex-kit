@@ -1,11 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
+import { EditWrapper } from 'components';
 import { connect } from 'react-redux';
-import { ICONS } from '../../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
+
 const TradeBlock = ({
 	children,
 	action,
+	stringId,
 	title,
 	overflowY = false,
 	setRef,
@@ -15,7 +18,8 @@ const TradeBlock = ({
 	pair,
 	isLoggedIn,
 	activeTheme,
-	tailHead = ''
+	tailHead = '',
+	icons: ICONS,
 }) => {
 	const pairs = pair ? pair.split('-').map(curr => curr.toUpperCase()) : [];
 	const { pair_base } = pairData;
@@ -34,16 +38,21 @@ const TradeBlock = ({
 				<div className='d-flex justify-content-between'>
 					<div className='d-flex'>
 						{pairs.length
-							? <ReactSVG
-								path={
-									ICON_PATH
-										? ICON_PATH
-										: ICONS.DEFAULT_ICON
-								}
-								wrapperClassName='trade_block-icon' />
+							? (
+								<Image
+									icon={
+                    ICON_PATH
+                      ? ICON_PATH
+                      : ICONS["DEFAULT_ICON"]
+                  }
+									wrapperClassName='trade_block-icon'
+								/>
+							)
 							: null
 						}
-						<div className="trade_block-title-items" >{title}</div>
+						<EditWrapper stringId={stringId}>
+							<div className="trade_block-title-items" >{title}</div>
+						</EditWrapper>
 					</div>
 					{tailHead
 						? <div className={'trade_block-title-currency'}>
@@ -73,4 +82,4 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme
 });
 
-export default connect(mapStateToProps)(TradeBlock);
+export default connect(mapStateToProps)(withConfig(TradeBlock));

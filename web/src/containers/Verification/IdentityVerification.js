@@ -9,10 +9,10 @@ import {
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { COUNTRIES_OPTIONS } from '../../utils/countries';
 
 import { isMobile } from 'react-device-detect';
-import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateUser } from '../../actions/userAction';
 
@@ -27,7 +27,7 @@ class IdentityVerification extends Component {
 		this.generateFormFields(this.props.activeLanguage, this.props.fullName);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.generateFormFields(nextProps.activeLanguage, nextProps.fullName);
 		}
@@ -35,15 +35,14 @@ class IdentityVerification extends Component {
 
 	generateFormFields = (language, fullName = '') => {
 		// const ID_NUMBER_TYPE = 'PASSPORT';
+		const { icons: ICONS } = this.props;
 		const formFields = {
 			full_name: {
 				type: 'text',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.FULL_NAME_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_LABEL"],
 				placeholder:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.FULL_NAME_PLACEHOLDER,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_PLACEHOLDER"],
 				disabled: fullName.length > 0,
 				validate: [required],
 				fullWidth: isMobile
@@ -51,25 +50,21 @@ class IdentityVerification extends Component {
 			gender: {
 				type: 'select',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.GENDER_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_LABEL"],
 				placeholder:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.GENDER_PLACEHOLDER,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_PLACEHOLDER"],
 				options: [
 					{
 						value: false,
 						label:
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-								.GENDER_OPTIONS.MAN,
-						icon: ICONS.GENDER_M
+							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN"],
+						icon: ICONS["GENDER_M"]
 					},
 					{
 						value: true,
 						label:
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-								.GENDER_OPTIONS.WOMAN,
-						icon: ICONS.GENDER_F
+							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN"],
+						icon: ICONS["GENDER_F"]
 					}
 				],
 				validate: [requiredBoolean],
@@ -79,8 +74,7 @@ class IdentityVerification extends Component {
 				type: 'date-dropdown',
 				language: 'en',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.DOB_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL"],
 				validate: [required, isBefore()],
 				endDate: moment().add(1, 'days'),
 				pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}',
@@ -89,11 +83,9 @@ class IdentityVerification extends Component {
 			nationality: {
 				type: 'autocomplete',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.NATIONALITY_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_LABEL"],
 				placeholder:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.NATIONALITY_PLACEHOLDER,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_PLACEHOLDER"],
 				options: COUNTRIES_OPTIONS,
 				validate: [required],
 				fullWidth: isMobile
@@ -101,11 +93,9 @@ class IdentityVerification extends Component {
 			country: {
 				type: 'autocomplete',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.COUNTRY_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL"],
 				placeholder:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.COUNTRY_PLACEHOLDER,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_PLACEHOLDER"],
 				options: COUNTRIES_OPTIONS,
 				validate: [required],
 				fullWidth: isMobile
@@ -113,33 +103,27 @@ class IdentityVerification extends Component {
 			city: {
 				type: 'text',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.CITY_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL"],
 				placeholder:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.CITY_PLACEHOLDER,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_PLACEHOLDER"],
 				validate: [required],
 				fullWidth: isMobile
 			},
 			address: {
 				type: 'text',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.ADDRESS_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL"],
 				placeholder:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.ADDRESS_PLACEHOLDER,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_PLACEHOLDER"],
 				validate: [required],
 				fullWidth: isMobile
 			},
 			postal_code: {
 				type: 'text',
 				label:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.POSTAL_CODE_LABEL,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL"],
 				placeholder:
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-						.POSTAL_CODE_PLACEHOLDER,
+					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_PLACEHOLDER"],
 				validate: [required],
 				fullWidth: isMobile
 			}
@@ -178,22 +162,26 @@ class IdentityVerification extends Component {
 			submitting,
 			valid,
 			error,
-			openContactForm
+			openContactForm,
+			icons: ICONS,
 		} = this.props;
 		const { formFields } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
-				<IconTitle text={STRINGS.USER_VERIFICATION.IDENTITY_VERIFICATION} textType="title" />
+				<IconTitle
+					stringId="USER_VERIFICATION.IDENTITY_VERIFICATION"
+					text={STRINGS["USER_VERIFICATION.IDENTITY_VERIFICATION"]}
+					textType="title"
+				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
 						title={
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-								.TITLE_PERSONAL_INFORMATION
+							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"]
 						}
-						icon={ICONS.VERIFICATION_ID_NEW}
+						icon={ICONS["VERIFICATION_ID_NEW"]}
 						openContactForm={openContactForm}
 					>
-						<div className="my-1 verification-info-txt">{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT}</div>
+						<div className="my-1 verification-info-txt">{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT"]}</div>
 					</HeaderSection>
 					{renderFields(formFields)}
 					{error && (
@@ -202,7 +190,7 @@ class IdentityVerification extends Component {
 					<div className="d-flex">
 						<div className="w-50">
 							<Button
-								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
 							/>
 						</div>
@@ -211,7 +199,7 @@ class IdentityVerification extends Component {
 							<Button
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
-								label={STRINGS.SUBMIT}
+								label={STRINGS["SUBMIT"]}
 								disabled={pristine || submitting || !valid || !!error}
 							/>
 						</div>
@@ -224,6 +212,6 @@ class IdentityVerification extends Component {
 
 const IdentityVerificationForm = reduxForm({
 	form: FORM_NAME
-})(IdentityVerification);
+})(withConfig(IdentityVerification));
 
 export default IdentityVerificationForm;

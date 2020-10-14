@@ -57,7 +57,7 @@ class Transactions extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.queryParams.currency !== this.props.queryParams.currency ||
 			nextProps.queryParams.type !== this.props.queryParams.type

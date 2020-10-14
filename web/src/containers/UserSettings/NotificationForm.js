@@ -9,17 +9,17 @@ import STRINGS from '../../config/localizedStrings';
 export const generateNotificationFormValues = () => ({
     popup_order_confirmation: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CONFIRMATION,
+        label: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CONFIRMATION"],
         className: 'toggle-wrapper'
     },
     popup_order_completed: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_COMPLETED,
+        label: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_COMPLETED"],
         className: 'toggle-wrapper'
     },
     popup_order_partially_filled: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_PARTIALLY_FILLED,
+        label: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_PARTIALLY_FILLED"],
         className: 'toggle-wrapper'
     }
 });
@@ -38,7 +38,7 @@ const Form = ({
             {error && <div className="warning_text">{getErrorLocalized(error)}</div>}
             <Button
                 className="mt-4"
-                label={STRINGS.SETTING_BUTTON}
+                label={STRINGS["SETTING_BUTTON"]}
                 disabled={pristine || submitting || !valid}
             />
         </form>
@@ -53,7 +53,8 @@ class NotificationForm extends Component {
 
     render() {
         const section = [{
-            title: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS,
+            stringId: "USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS",
+            title: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS"],
             content: <Form {...this.props} />,
             isOpen: true
         }]

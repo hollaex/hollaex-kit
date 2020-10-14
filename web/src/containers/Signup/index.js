@@ -10,26 +10,24 @@ import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { ContactForm } from '../';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
-import {
-	FLEX_CENTER_CLASSES,
-	ICONS
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 let errorTimeOut = null;
 
 const BottomLinks = () => (
 	<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
 		<div>
-			{STRINGS.SIGN_UP.HAVE_ACCOUNT}
+			{STRINGS["SIGN_UP.HAVE_ACCOUNT"]}
 			<Link to="/login" className="blue-link">
-				{STRINGS.SIGN_UP.GOTO_LOGIN}
+				{STRINGS["SIGN_UP.GOTO_LOGIN"]}
 			</Link>
 		</div>
 		<div>
-			{STRINGS.SIGN_UP.NO_EMAIL}
+			{STRINGS["SIGN_UP.NO_EMAIL"]}
 			<Link to="/verify" className="blue-link">
-				{STRINGS.SIGN_UP.REQUEST_EMAIL}
+				{STRINGS["SIGN_UP.REQUEST_EMAIL"]}
 			</Link>
 		</div>
 	</div>
@@ -44,9 +42,13 @@ class Signup extends Component {
 	
 	componentDidMount() {
 		const affiliation_code = this.getReferralCode();
+		const email = this.getEmail()
 		if (affiliation_code) {
 			this.props.change(FORM_NAME, 'referral', affiliation_code)
 			this.setState({ isReferral: true });
+		}
+		if (email) {
+			this.props.change(FORM_NAME, 'email', email)			
 		}
 	}
 
@@ -69,6 +71,19 @@ class Signup extends Component {
 		}
 		return affiliation_code;
 	}
+	getEmail = () => {
+		let email = '';
+		if (this.props.location
+			&& this.props.location.query
+			&& this.props.location.query.email) {
+			email = this.props.location.query.email;
+		} else if (window.location
+			&& window.location.search
+			&& window.location.search.includes('email')) {
+			email = window.location.search.split('?email')[1];
+		}
+		return email;
+	}
 
 	onSubmitSignup = (values) => {
 		// const affiliation_code = this.getReferralCode();		
@@ -85,13 +100,13 @@ class Signup extends Component {
 					this.props.change(FORM_NAME, 'captcha', '');
 				}, 5000);
 
-				if (error.response.status === 409) {
-					errors.email = STRINGS.VALIDATIONS.USER_EXIST;
+				if (error.response && error.response.status === 409) {
+					errors.email = STRINGS["VALIDATIONS.USER_EXIST"];
 				} else if (error.response) {
 					const { message = '' } = error.response.data;
 					if (message.toLowerCase().indexOf('password') > -1) {
 						// TODO set error in constants for language
-						errors.password = STRINGS.VALIDATIONS.INVALID_PASSWORD;
+						errors.password = STRINGS["VALIDATIONS.INVALID_PASSWORD"];
 					} else {
 						errors._error = message || error.message;
 					}
@@ -123,7 +138,7 @@ class Signup extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme, constants = {} } = this.props;
+		const { languageClasses, activeTheme, constants = {}, icons: ICONS } = this.props;
 		const { success, showContactForm, isReferral } = this.state;
 
 		if (success) {
@@ -151,7 +166,7 @@ class Signup extends Component {
 				>
 					<IconTitle
 						iconPath={path}
-						text={STRINGS.SIGNUP_TEXT}
+						text={STRINGS["SIGNUP_TEXT"]}
 						textType="title"
 						underline={true}
 						useSvg={false}
@@ -159,12 +174,12 @@ class Signup extends Component {
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
-							STRINGS.SIGN_UP.SIGNUP_TO,
+							STRINGS["SIGN_UP.SIGNUP_TO"],
 							constants.api_name || ''
 						)}
 						actionProps={{
-							text: STRINGS.HELP_TEXT,
-							iconPath: ICONS.BLUE_QUESTION,
+							text: STRINGS["HELP_TEXT"],
+							iconPath: ICONS["BLUE_QUESTION"],
 							onClick: this.onOpenDialog,
 							useSvg: true,
 							showActionText: true
@@ -215,4 +230,4 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Signup));

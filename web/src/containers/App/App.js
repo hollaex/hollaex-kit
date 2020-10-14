@@ -6,7 +6,6 @@ import { loadReCaptcha } from 'react-recaptcha-v3';
 import { Helmet } from "react-helmet";
 import STRINGS from '../../config/localizedStrings';
 import {
-	ICONS,
 	FLEX_CENTER_CLASSES,
 	FIT_SCREEN_HEIGHT,
 	CAPTCHA_SITEKEY,
@@ -30,7 +29,7 @@ import {
 	setChatMinimized
 } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getTokenTimestamp, isLoggedIn } from '../../utils/token';
+import { getTokenTimestamp, isLoggedIn, isAdmin } from '../../utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -39,7 +38,6 @@ import {
 	Dialog,
 	Notification,
 	MessageDisplay,
-	CurrencyList,
 	SnackNotification,
 	SnackDialog
 } from '../../components';
@@ -56,15 +54,19 @@ import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
 import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
+import OperatorControls from 'containers/OperatorControls';
 
 import {
 	getClasesForLanguage,
 	getFontClassForLanguage
 } from '../../utils/string';
+import { getExchangeInitialized } from '../../utils/initialize';
 
 import Socket from './Socket';
 import Container from './Container';
 import GetSocketState from './GetSocketState';
+import withEdit from 'components/EditProvider/withEdit';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class App extends Component {
 	state = {
@@ -77,7 +79,7 @@ class App extends Component {
 		idleTimer: undefined,
 		ordersQueued: [],
 		limitFilledOnOrder: '',
-		sidebarFitHeight: false
+		sidebarFitHeight: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -93,6 +95,10 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		const initialized = getExchangeInitialized();
+		if (initialized === 'false' || !initialized) {
+			this.props.router.push('/init');
+		}
 		this.updateThemeToBody(this.props.activeTheme);
 		if (this.props.location && this.props.location.pathname) {
 			this.checkPath(this.props.location.pathname);
@@ -100,7 +106,7 @@ class App extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp
@@ -154,7 +160,9 @@ class App extends Component {
 	checkPath = (path) => {
 		var sheet = document.createElement('style');
 		if (path === 'login' || path === 'signup'
-			|| (path === '/reset-password') || path.includes('/withdraw')) {
+			|| (path === '/reset-password') || path.includes('/withdraw')
+			|| path.includes('/init')
+		) {
 			sheet.innerHTML = '.grecaptcha-badge { visibility: visible !important;}';
 			sheet.id = 'addCap';
 			if (document.getElementById('rmvCap') !== null) {
@@ -262,6 +270,7 @@ class App extends Component {
 	}
 
 	renderDialogContent = ({ type, data }, prices = {}) => {
+		const { icons: ICONS } = this.props;
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
@@ -291,7 +300,8 @@ class App extends Component {
 			case NOTIFICATIONS.ERROR:
 				return (
 					<MessageDisplay
-						iconPath={ICONS.RED_WARNING}
+						iconId="RED_WARNING"
+						iconPath={ICONS['RED_WARNING']}
 						onClick={this.onCloseDialog}
 						text={data}
 					/>
@@ -471,15 +481,18 @@ class App extends Component {
 			location,
 			info,
 			enabledPlugins,
-			constants = { captcha: {} }
-			// user
+			constants = { captcha: {} },
+			isEditMode,
+			handleEditMode,
+			// user,
 		} = this.props;
+
 		const {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
 			sidebarFitHeight,
-			isSocketDataReady
+			isSocketDataReady,
 		} = this.state;
 		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
 		if (CAPTCHA_SITEKEY) {
@@ -523,7 +536,8 @@ class App extends Component {
 							languageClasses[0],
 							{
 								'layout-mobile': isMobile,
-								'layout-desktop': isBrowser
+								'layout-desktop': isBrowser,
+                'layout-edit': isEditMode && isBrowser,
 							}
 						)}
 					>
@@ -538,7 +552,8 @@ class App extends Component {
 								languageClasses[0],
 								{
 									'layout-mobile': isMobile,
-									'layout-desktop': isBrowser
+									'layout-desktop': isBrowser,
+									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
 						>
@@ -558,12 +573,6 @@ class App extends Component {
 									logout={this.logout}
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
-									rightChildren={
-										<CurrencyList
-											className="horizontal-currency-list justify-content-end"
-											activeLanguage={activeLanguage}
-										/>
-									}
 								/>
 								{info.is_trial ? (
 									<div
@@ -575,7 +584,7 @@ class App extends Component {
 										)}
 									>
 										{STRINGS.formatString(
-											STRINGS.TRIAL_EXCHANGE_MSG,
+											STRINGS["TRIAL_EXCHANGE_MSG"],
 											constants.api_name || '',
 											expiryData.daysLeft
 										)}
@@ -703,9 +712,10 @@ class App extends Component {
 						{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 					</div>
 				</div>
+				{ isAdmin() && isBrowser && <OperatorControls onChangeEditMode={handleEditMode} editMode={isEditMode}/>}
 			</ThemeProvider>
 		);
 	}
 }
 
-export default App;
+export default withEdit(withConfig(App));
