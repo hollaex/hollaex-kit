@@ -3933,6 +3933,8 @@ definitions:
             type: number
           new_user_is_activated:
             type: boolean
+          native_currency:
+            type: string
       secrets:
         type: object
         properties:
