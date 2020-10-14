@@ -67,7 +67,7 @@ const kit = {
 		website: '',
 		information: '',
 	},
-	native_currency: NATIVE_CURRENCY || 'btc',
+	native_currency: NATIVE_CURRENCY,
 	logo_path: LOGO_PATH,
 	logo_black_path: LOGO_BLACK_PATH,
 	valid_languages: VALID_LANGUAGES || (NEW_USER_DEFAULT_LANGUAGE ? NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),
