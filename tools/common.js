@@ -256,22 +256,22 @@ const setExchangeInitialized = () => {
 const setExchangeSetupCompleted = () => {
 	return dbQuery.findOne('status')
 		.then((status) => {
-			if (status.dataValues.secrets.setup_completed) {
+			if (status.dataValues.kit.setup_completed) {
 				throw new Error('Exchange setup is already flagged as completed');
 			}
-			const secrets = {
-				...status.dataValues.secrets,
+			const kit = {
+				...status.dataValues.kit,
 				setup_completed: true
 			};
 			return status.update({
-				secrets
-			}, { returning: true, fields: ['secrets'] });
+				kit
+			}, { returning: true, fields: ['kit'] });
 		})
 		.then((status) => {
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
-					type: 'update', data: { secrets: status.secrets }
+					type: 'update', data: { kit: status.kit }
 				})
 			);
 			return;
