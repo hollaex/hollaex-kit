@@ -591,7 +591,8 @@ const mapStateToProps = (state, ownProps) => {
 		coins: state.app.coins,
 		info: state.app.info,
 		enabledPlugins: state.app.enabledPlugins,
-		constants: state.app.constants
+		constants: state.app.constants,
+    activeLanguage: state.app.language
 	};
 };
 
