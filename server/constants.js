@@ -152,7 +152,6 @@ const resetAllConfig = () => {
 		captcha: {},
 		emails: {},
 		smtp: {},
-		vault: {},
 		plugins: {
 			s3: {},
 			sns: {},
@@ -408,7 +407,6 @@ exports.KIT_SECRETS_KEYS = [
 	'security',
 	'captcha',
 	'smtp',
-	'vault',
 	'plugins'
 ];
 
