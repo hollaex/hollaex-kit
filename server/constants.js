@@ -397,11 +397,11 @@ exports.KIT_CONFIG_KEYS = [
 	'interface',
 	'icons',
 	'strings',
-	'meta'
+	'meta',
+	'setup_completed'
 ];
 
 exports.KIT_SECRETS_KEYS = [
-	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',
 	'emails',

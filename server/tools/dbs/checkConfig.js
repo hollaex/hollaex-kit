@@ -33,6 +33,7 @@ Status.findOne()
 				website: '',
 				information: '',
 			},
+			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
 			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY,
 			logo_path: existingKitConfigurations.logo_path || process.env.LOGO_PATH,
 			logo_black_path: existingKitConfigurations.logo_black_path || process.env.LOGO_BLACK_PATH,
@@ -58,7 +59,6 @@ Status.findOne()
 		const secrets = {
 			allowed_domains: existingSecrets.allowed_domains || (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []),
 			admin_whitelist: existingSecrets.admin_whitelist || (process.env.ADMIN_WHITELIST_IP ? process.env.ADMIN_WHITELIST_IP.split(',') : []),
-			setup_completed: isBoolean(existingSecrets.setup_completed) ? existingSecrets.setup_completed : false,
 			security: {
 				token_time: existingSecrets.security.token_time || '24h',
 				withdrawal_token_expiry: existingSecrets.security.withdrawal_token_expiry || 300000

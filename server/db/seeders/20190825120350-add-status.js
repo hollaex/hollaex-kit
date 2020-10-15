@@ -66,6 +66,7 @@ const status = [{
 			website: '',
 			information: '',
 		},
+		setup_completed: false,
 		native_currency: NATIVE_CURRENCY,
 		logo_path: LOGO_PATH,
 		logo_black_path: LOGO_BLACK_PATH,
@@ -88,7 +89,6 @@ const status = [{
 	secrets: JSON.stringify({
 		allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
 		admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
-		setup_completed: false,
 		security: {
 			token_time: '24h',
 			withdrawal_token_expiry: 300000
