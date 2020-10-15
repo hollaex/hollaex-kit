@@ -87,7 +87,9 @@ export const maskToken = (token = '') => {
 };
 
 export const setContent = (content) => {
+	const language = getLanguage()
   STRINGS.setContent(content);
+	STRINGS.setLanguage(language)
 };
 
 export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
