@@ -167,6 +167,11 @@ const updateKitSecrets = (secrets, scopes) => {
 };
 
 const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
+	const newKeys = difference(Object.keys(newKitConfig), KIT_CONFIG_KEYS);
+	if (newKeys.length > 0) {
+		throw new Error(`Invalid kit keys given: ${newKeys}`);
+	}
+
 	const joinedKitConfig = {};
 
 	KIT_CONFIG_KEYS.forEach((key) => {
@@ -187,11 +192,18 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 };
 
 const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
+	const newKeys = difference(Object.keys(newKitSecrets), KIT_SECRETS_KEYS);
+	if (newKeys.length > 0) {
+		throw new Error(`Invalid secret keys given: ${newKeys}`);
+	}
+
 	const flattenedNewKitSecrets = flatten(newKitSecrets);
 	if (Object.values(flattenedNewKitSecrets).includes(SECRET_MASK)) {
 		throw new Error(MASK_VALUE_GIVEN);
 	}
+
 	const joinedKitSecrets = {};
+
 	KIT_SECRETS_KEYS.forEach((key) => {
 		if (newKitSecrets[key]) {
 			if (role === 'tech' && key === 'emails' && newKitSecrets[key] && newKitSecrets[key].send_email_to_support !== existingKitSecrets[key].send_email_to_support) {
