@@ -28,6 +28,7 @@ import {
 import { updateUserSettings, setUserData } from '../../actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
 import { EditWrapper } from 'components';
+import withEdit from 'components/EditProvider/withEdit';
 
 class AppBar extends Component {
 	state = {
@@ -407,7 +408,8 @@ class AppBar extends Component {
 			pairs,
 			onHelp,
 			// user,
-			constants = {}
+			constants = {},
+      isEditMode,
 		} = this.props;
 		const {
 			selectedMenu,
@@ -490,7 +492,7 @@ class AppBar extends Component {
 									toggle={this.onToggle}
 								/>
 								{isAdmin() ? (
-									<Link to="/admin">
+									<Link to={ isEditMode ? "/" : "/admin" }>
 										<div
 											className={classnames('app_bar-quicktrade', 'd-flex', {
 												'quick_trade-active': location.pathname === '/admin'
@@ -603,4 +605,4 @@ AppBar.defaultProps = {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(AppBar);
+)(withEdit(AppBar));
