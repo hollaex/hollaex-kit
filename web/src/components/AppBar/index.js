@@ -502,9 +502,14 @@ class AppBar extends Component {
 												icon={ICONS["SIDEBAR_ADMIN_DASH_ACTIVE"]}
 												wrapperClassName="quicktrade_icon mx-1"
 											/>
-											<div className="d-flex align-items-center">
-												{STRINGS["ADMIN_DASH"]}
-											</div>
+											<EditWrapper
+												stringId="ADMIN_DASH"
+												iconId="SIDEBAR_ADMIN_DASH_ACTIVE"
+											>
+												<div className="d-flex align-items-center">
+                          {STRINGS["ADMIN_DASH"]}
+												</div>
+											</EditWrapper>
 										</div>
 									</Link>
 								) : null}
@@ -516,11 +521,13 @@ class AppBar extends Component {
 										})}
 									>
 										<Image
-											iconId="SIDEBAR_TRADING_ACTIVE"
 											icon={ICONS["SIDEBAR_TRADING_ACTIVE"]}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
-										<EditWrapper stringId="PRO_TRADE">
+										<EditWrapper
+											stringId="PRO_TRADE"
+											iconId="SIDEBAR_TRADING_ACTIVE"
+										>
 											<div className="d-flex align-items-center overflow">
                         {STRINGS["PRO_TRADE"]}
 											</div>
