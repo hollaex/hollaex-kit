@@ -5,8 +5,10 @@ import ReactSVG from 'react-svg';
 import { ICONS } from '../../../config/constants';
 import { ActionNotification } from '../../';
 import { getErrorLocalized } from '../../../utils/errors';
+import { EditWrapper } from 'components';
 
 export const FieldContent = ({
+	stringId,
 	label = '',
 	valid = false,
 	hasValue = false,
@@ -19,7 +21,10 @@ export const FieldContent = ({
 }) => {
 	return (
 		<div className={classnames('field-content')}>
-			{label && <div className="field-label">{label}</div>}
+			<div className="d-flex">
+        {label && <div className="field-label">{label}</div>}
+        <EditWrapper stringId={stringId} />
+			</div>
 			<div
 				className={classnames(
 					'field-children',
@@ -65,6 +70,7 @@ class FieldWrapper extends Component {
 		const {
 			children,
 			label,
+      stringId,
 			input: { value },
 			meta: { active = false, error = '', touched = false, invalid = false },
 			focused = false,
@@ -90,6 +96,7 @@ class FieldWrapper extends Component {
 				})}
 			>
 				<FieldContent
+					stringId={stringId}
 					label={label}
 					valid={!invalid}
 					hasValue={hasValue}
