@@ -60,10 +60,10 @@ class EditableInputField extends Component {
 					stringId="EDIT_TEXT"
 					text={STRINGS["EDIT_TEXT"]}
 					status="information"
-					iconPath={ICONS.BLUE_EDIT}
+					iconId="BLUE_EDIT"
+					iconPath={ICONS["BLUE_EDIT"]}
 					className="no_bottom pr-0 pl-0"
 					onClick={this.toogleEditable}
-					useSvg={true}
 					showActionText={true}
 				/>
 			</FieldWrapper>

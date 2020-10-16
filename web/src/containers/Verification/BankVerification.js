@@ -87,7 +87,8 @@ class BankVerification extends Component {
 			valid,
 			error,
 			openContactForm,
-			icon
+			icon,
+			iconId,
 		} = this.props;
 		const { formFields } = this.state;
 		return (
@@ -99,7 +100,9 @@ class BankVerification extends Component {
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
+						stringId="USER_VERIFICATION.TITLE_BANK_ACCOUNT"
 						title={STRINGS["USER_VERIFICATION.TITLE_BANK_ACCOUNT"]}
+						iconId={iconId}
 						icon={icon}
 						openContactForm={openContactForm}
 					>

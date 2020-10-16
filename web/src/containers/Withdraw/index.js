@@ -261,6 +261,7 @@ class Withdraw extends Component {
 								'withdraw',
 								links,
                 ICONS["BLUE_QUESTION"],
+								"BLUE_QUESTION",
 							)}
 							<WithdrawCryptocurrency {...formProps} />
 							{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}

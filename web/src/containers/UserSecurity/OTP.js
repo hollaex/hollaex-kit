@@ -12,6 +12,7 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}, ICONS)
 			<IconTitle
 				stringId="ACCOUNT_SECURITY.OTP.CONTENT.TITLE"
 				text={STRINGS["ACCOUNT_SECURITY.OTP.CONTENT.TITLE"]}
+				iconId="OTP_KEYS"
 				iconPath={ICONS["OTP_KEYS"]}
 				className="w-100"
 				textType="title"

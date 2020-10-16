@@ -55,7 +55,7 @@ const ActionNotification = ({
 		onClick={disable ? () => {} : onClick}
 	>
     {(showActionText || !isMobile) && (
-			<EditWrapper stringId={stringId} position={[-5, 0]} reverse>
+			<EditWrapper>
 				<div
 					className={classnames(
             'action_notification-text',
@@ -68,6 +68,7 @@ const ActionNotification = ({
     )}
 			<Image
 				iconId={iconId}
+				stringId={stringId}
 				icon={iconPath}
 				alt={text}
 				svgWrapperClassName="action_notification-svg"

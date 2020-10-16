@@ -13,6 +13,7 @@ class SidebarHub extends Component {
 			accordionClassName: 'sidebar_hub-section-content f-1',
 			stringId: 'WALLET_TITLE',
 			title: STRINGS["WALLET_TITLE"],
+			iconId: "SIDEBAR_WALLET_ACTIVE",
 			icon: ICONS["SIDEBAR_WALLET_ACTIVE"],
 			content: <Wallet />
 		}];
@@ -31,11 +32,7 @@ class SidebarHub extends Component {
 					) : (
 						<div>
 							<IconTitle
-								iconId={
-                  theme === 'white'
-                    ? "DEMO_LOGIN_ICON_LIGHT"
-                    : "DEMO_LOGIN_ICON_DARK"
-								}
+								iconId="DEMO_LOGIN_ICON_LIGHT,DEMO_LOGIN_ICON_DARK"
 								iconPath={
 									theme === 'white'
 										? ICONS["DEMO_LOGIN_ICON_LIGHT"]

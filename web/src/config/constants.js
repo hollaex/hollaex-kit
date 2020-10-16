@@ -66,6 +66,9 @@ export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
 
+export const TEMP_KEY_LANGUAGE_RTL = 'temp_key_language_rtl';
+export const TEMP_KEY_LANGUAGE_LTR = 'temp_key_language_ltr';
+
 export const BANK_WITHDRAWAL_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 1;
 export const BANK_WITHDRAWAL_DYNAMIC_FEE_RATE =

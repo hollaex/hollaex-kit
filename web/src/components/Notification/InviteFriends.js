@@ -32,8 +32,10 @@ class InviteFriends extends Component {
         return (
             <div className='invite_friends_wrapper mx-auto'>
                 <IconTitle
+                    stringId="REFERRAL_LINK.TITLE"
                     text={STRINGS["REFERRAL_LINK.TITLE"]}
-                    iconPath={ICONS.REFER_ICON}
+                    iconId="REFER_ICON"
+                    iconPath={ICONS["REFER_ICON"]}
                     textType="title"
                     useSvg={true}
                     underline={true}

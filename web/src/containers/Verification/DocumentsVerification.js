@@ -196,7 +196,9 @@ class DocumentsVerification extends Component {
 					onSubmit={this.handleSubmit}
 				>
 					<HeaderSection
+						stringId="USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"
 						title={STRINGS["USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"]}
+						iconId="VERIFICATION_DOCUMENT_NEW"
 						icon={ICONS["VERIFICATION_DOCUMENT_NEW"]}
 						openContactForm={openContactForm}
 					>
@@ -209,6 +211,7 @@ class DocumentsVerification extends Component {
 					{formFields.proof_of_residency && (
 						<div>
 							<HeaderSection
+								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"
 								title={
 									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"]
 								}
@@ -222,6 +225,7 @@ class DocumentsVerification extends Component {
 					{formFields.selfieWithNote && (
 						<div>
 							<HeaderSection
+								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"
 								title={
 									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"]
 								}

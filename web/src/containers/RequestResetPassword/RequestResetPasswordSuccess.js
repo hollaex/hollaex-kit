@@ -7,7 +7,9 @@ import { IconTitle, Button } from '../../components';
 const RequestResetPasswordSuccess = ({ onLoginClick, onContactUs }) => (
 	<div className="auth_wrapper d-flex justify-content-center align-items-center flex-column">
 		<IconTitle
-			iconPath={ICONS.PASSWORD_RESET}
+			iconId="PASSWORD_RESET"
+			iconPath={ICONS["PASSWORD_RESET"]}
+			stringId="REQUEST_RESET_PASSWORD_SUCCESS.TITLE"
 			text={STRINGS["REQUEST_RESET_PASSWORD_SUCCESS.TITLE"]}
 			textType="title"
 			className="w-100"

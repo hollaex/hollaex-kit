@@ -8,7 +8,9 @@ const SignupSuccess = ({ icons: ICONS, ...rest }) => {
 	return (
 		<div className="signup_success-wrapper d-flex justify-content-center align-items-center flex-column auth_wrapper">
 			<IconTitle
+				iconId="CHECK,DARK_CHECK"
 				iconPath={rest.activeTheme ==="dark" ? ICONS["DARK_CHECK"]: ICONS["CHECK"]}
+				stringId="VERIFICATION_TEXTS.TITLE"
 				text={STRINGS["VERIFICATION_TEXTS.TITLE"]}
 				textType="title"
 				className="w-100"

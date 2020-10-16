@@ -9,7 +9,9 @@ const ReferralSuccess = (props) => {
     return (
         <div className="deposit_funds-wrapper m-auto">
             <IconTitle
-                iconPath={ICONS.REFERRAL_SUCCESS}
+                iconId="REFERRAL_SUCCESS"
+                iconPath={ICONS["REFERRAL_SUCCESS"]}
+                stringId="REFERRAL_SUCCESS.TITLE"
                 text={STRINGS["REFERRAL_SUCCESS.TITLE"]}
                 textType="title"
                 underline={true}

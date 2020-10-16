@@ -2,6 +2,8 @@ import flatten from 'flat';
 
 const options = { safe: true }
 const nestedIcons = {
+  EXCHANGE_LOGO_LIGHT: '',
+  EXCHANGE_LOGO_DARK: '',
   TRADE_HISTORY_DARK: '/assets/icons/trade-history-dark.svg',
   TRADE_HISTORY_LIGHT: '/assets/icons/trade-history-light.svg',
   ACTIVE_TRADE_DARK: '/assets/icons/active-trade-dark.svg',

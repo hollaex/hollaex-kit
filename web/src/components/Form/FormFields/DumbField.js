@@ -13,9 +13,9 @@ export const renderCopy = (text, onCopy, component) => {
 				status="information"
 				stringId="COPY_TEXT"
 				text={STRINGS["COPY_TEXT"]}
-				iconPath={ICONS.COPY_NEW}
+				iconId="COPY_NEW"
+				iconPath={ICONS["COPY_NEW"]}
 				className="copy-wrapper"
-				useSvg={true}
 				onClick={onCopy}
 			/>
 		</CopyToClipboard>

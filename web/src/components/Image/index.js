@@ -3,10 +3,10 @@ import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { EditWrapper } from 'components';
 
-const Image = ({ icon, iconId, alt, wrapperClassName, imageWrapperClassName, svgWrapperClassName }) => {
+const Image = ({ icon, iconId, alt, wrapperClassName, imageWrapperClassName, svgWrapperClassName, stringId }) => {
   const useSvg = icon.indexOf('.svg') > 0
     return (
-      <EditWrapper iconId={iconId}>
+      <EditWrapper iconId={iconId} stringId={stringId}>
         {icon && useSvg && (
           <ReactSVG
             path={icon}
@@ -27,6 +27,7 @@ const Image = ({ icon, iconId, alt, wrapperClassName, imageWrapperClassName, svg
 Image.defaultProps = {
   icon: '',
   iconId: '',
+  stringId: '',
   alt: '',
   wrapperClassName: '',
   imageWrapperClassName: '',
