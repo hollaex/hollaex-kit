@@ -228,6 +228,7 @@ class Login extends Component {
 				>
 					<IconTitle
 						iconPath={path}
+						stringId="LOGIN_TEXT"
 						text={STRINGS["LOGIN_TEXT"]}
 						textType="title"
 						underline={true}
@@ -240,8 +241,10 @@ class Login extends Component {
 							constants.api_name || ''
 						)}
 						actionProps={{
+							stringId: "LOGIN.CANT_LOGIN",
 							text: STRINGS["LOGIN.CANT_LOGIN"],
-							iconPath: ICONS.BLUE_ARROW_RIGHT,
+							iconId: "BLUE_ARROW_RIGHT",
+							iconPath: ICONS["BLUE_ARROW_RIGHT"],
 							onClick: this.redirectToResetPassword,
 							useSvg: true,
 							showActionText: true

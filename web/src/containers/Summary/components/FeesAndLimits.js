@@ -14,6 +14,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {}, icons: ICO
 	return (
 		<div className="fee-limits-wrapper">
 			<IconTitle
+				stringId="SUMMARY.FEES_AND_LIMIT"
 				text={
 					<label>{STRINGS.formatString(
 						STRINGS["SUMMARY.FEES_AND_LIMIT"],
@@ -21,6 +22,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {}, icons: ICO
 					)} {Discount_percentage}
 					</label>
 				}
+				iconId={`LEVEL_ACCOUNT_ICON_${verification_level},LEVEL_ACCOUNT_ICON_4`}
 				iconPath={ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 					? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 					: ICONS['LEVEL_ACCOUNT_ICON_4']}

@@ -93,7 +93,8 @@ class Wallet extends Component {
 					<IconTitle
 						stringId="WALLET_TITLE"
 						text={STRINGS["WALLET_TITLE"]}
-						iconPath={ICONS.BITCOIN_WALLET}
+						iconId="BITCOIN_WALLET"
+						iconPath={ICONS["BITCOIN_WALLET"]}
 						useSvg={true}
 						textType="title"
 					/>

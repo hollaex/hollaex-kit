@@ -32,11 +32,7 @@ class SidebarHub extends Component {
 					) : (
 						<div>
 							<IconTitle
-								iconId={
-                  theme === 'white'
-                    ? "DEMO_LOGIN_ICON_LIGHT"
-                    : "DEMO_LOGIN_ICON_DARK"
-								}
+								iconId="DEMO_LOGIN_ICON_LIGHT,DEMO_LOGIN_ICON_DARK"
 								iconPath={
 									theme === 'white'
 										? ICONS["DEMO_LOGIN_ICON_LIGHT"]

@@ -111,6 +111,10 @@ export const renderInformation = (
 export const renderTitleSection = (symbol, type, icon, coins, iconId) => {
 	const { withdrawText, depositText } = generateWalletActionsText(symbol, coins);
 	const text = type === 'withdraw' ? withdrawText : depositText;
+	const stringId = 'withdraw' ?
+		"WALLET_BUTTON_BASE_WITHDRAW,WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW" :
+		"WALLET_BUTTON_BASE_DEPOSIT,WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT";
 
-	return <IconTitle text={text} iconPath={icon} iconId={iconId} textType="title" useSvg={true} />;
+
+	return <IconTitle text={text} stringId={stringId} iconPath={icon} iconId={iconId} textType="title" useSvg={true} />;
 };

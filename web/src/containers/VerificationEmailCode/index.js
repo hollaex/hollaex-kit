@@ -63,7 +63,9 @@ class VerifyEmailCode extends Component {
 		} else {
 			childProps = {
 				titleSection: {
+					iconId: "SUCCESS_BLACK",
 					iconPath: ICONS["SUCCESS_BLACK"],
+					stringId: "SUCCESS_TEXT",
 					text: STRINGS["SUCCESS_TEXT"]
 				},
 				child: (

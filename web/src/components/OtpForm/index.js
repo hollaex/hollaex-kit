@@ -60,8 +60,10 @@ class Form extends Component {
 		return (
 			<div className="otp_form-wrapper">
 				<IconTitle
+					stringId="OTP_FORM.OTP_TITLE"
 					text={STRINGS["OTP_FORM.OTP_TITLE"]}
-					iconPath={ICONS.OTP_CODE}
+					iconId="OTP_CODE"
+					iconPath={ICONS["OTP_CODE"]}
 					useSvg={true}
 				/>
 				<div className="otp_form-title-wrapper">

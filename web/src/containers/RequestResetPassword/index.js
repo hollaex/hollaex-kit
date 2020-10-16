@@ -103,7 +103,9 @@ class RequestResetPassword extends Component {
 						)}
 					>
 						<IconTitle
+							iconId="ACCOUNT_RECOVERY"
 							iconPath={ICONS["ACCOUNT_RECOVERY"]}
+							stringId="REQUEST_RESET_PASSWORD.TITLE"
 							text={STRINGS["REQUEST_RESET_PASSWORD.TITLE"]}
 							textType="title"
 							underline={true}
