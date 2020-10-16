@@ -290,20 +290,22 @@ class AppBar extends Component {
 	};
 
 	renderIcon = (isHome) => {
-		const { constants, icons: ICONS } = this.props;
+		const { constants, icons: ICONS, isEditMode } = this.props;
 		const path = getLogo('dark', constants, ICONS);
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
-				{isHome ? (
-					<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo">
+				{isHome || isEditMode ? (
+					<div className="d-flex">
+						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo" />
 						<EditWrapper iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK" position={[-5,5]} />
 					</div>
 				) : (
-					<Link href={DEFAULT_URL}>
-						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo">
-							<EditWrapper iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK" position={[-5,5]} />
-						</div>
-					</Link>
+					<div class="d-flex">
+						<Link href={DEFAULT_URL}>
+							<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo" />
+						</Link>
+						<EditWrapper iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK" position={[-5,5]} />
+					</div>
 				)}
 			</div>
 		);
