@@ -50,7 +50,7 @@ export const FieldContent = ({
 	);
 };
 
-export const FieldError = ({ error, displayError, className }) => (
+export const FieldError = ({ error, displayError, className, stringId }) => (
 	<div
 		className={classnames('field-error-content', className, {
 			'field-error-hidden': !displayError
@@ -60,7 +60,9 @@ export const FieldError = ({ error, displayError, className }) => (
 			<img src={ICONS.RED_WARNING} className="field-error-icon" alt="error" />
 		)}
 		{error && (
-			<span className="field-error-text">{getErrorLocalized(error)}</span>
+			<EditWrapper stringId={stringId}>
+				<span className="field-error-text">{getErrorLocalized(error)}</span>
+			</EditWrapper>
 		)}
 	</div>
 );
