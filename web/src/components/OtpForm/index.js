@@ -73,9 +73,9 @@ class Form extends Component {
 							stringId="NEED_HELP_TEXT"
 							text={STRINGS["NEED_HELP_TEXT"]}
 							onClick={onClickHelp}
-							iconPath={ICONS.BLUE_QUESTION}
+							iconId="BLUE_QUESTION"
+							iconPath={ICONS["BLUE_QUESTION"]}
 							status="information"
-							useSvg={true}
 						/>
 					)}
 				</div>

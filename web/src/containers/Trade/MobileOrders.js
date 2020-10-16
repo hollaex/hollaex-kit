@@ -46,7 +46,6 @@ const MobileOrders = ({
 					iconPath={ICONS["CANCEL_CROSS_ACTIVE"]}
 					onClick={cancelAllOrders}
 					status=""
-					useSvg={true}
 					showActionText={true}
 				/> : ''
 			}
@@ -67,7 +66,6 @@ const MobileOrders = ({
 					iconPath={ICONS["ARROW_TRANSFER_HISTORY_ACTIVE"]}
 					onClick={goToTransactionsHistory}
 					status=""
-					useSvg={true}
 					showActionText={true}
 				/> 
 				: ''
