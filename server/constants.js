@@ -152,7 +152,6 @@ const resetAllConfig = () => {
 		captcha: {},
 		emails: {},
 		smtp: {},
-		vault: {},
 		plugins: {
 			s3: {},
 			sns: {},
@@ -309,7 +308,6 @@ exports.MASK_CHARS = parseInt(process.env.MASK_CHARS || 5, 10);
 exports.MAX_ORDER_QUEUE = parseInt(process.env.MAX_ORDER_QUEUE) || 10;
 
 // WALLI CONSTANTS -----------------------------
-exports.VAULT_ENDPOINT = 'https://api.bitholla.com/v1/vault';
 
 exports.CONFIRMATION = {
 	btc: 1,
@@ -323,13 +321,12 @@ exports.AVAILABLE_PLUGINS = [
 	'xht_fee',
 	'kyc',
 	'sms',
-	'vault',
 	'freshdesk',
 	'chat',
 	'bank',
 	'announcement',
 	'zendesk'
-]
+];
 
 exports.REQUIRED_XHT = 100;
 
@@ -397,18 +394,17 @@ exports.KIT_CONFIG_KEYS = [
 	'interface',
 	'icons',
 	'strings',
-	'meta'
+	'meta',
+	'setup_completed'
 ];
 
 exports.KIT_SECRETS_KEYS = [
-	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',
 	'emails',
 	'security',
 	'captcha',
 	'smtp',
-	'vault',
 	'plugins'
 ];
 

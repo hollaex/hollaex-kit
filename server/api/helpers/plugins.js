@@ -653,7 +653,6 @@ const updatePluginConfiguration = (key, data) => {
 			} else {
 				return data.kit.plugins.configuration[key];
 			}
-			// return maskSecrets(plugin, plugin === 'vault' ? secrets.vault : secrets.plugins[plugin]);
 		});
 };
 
