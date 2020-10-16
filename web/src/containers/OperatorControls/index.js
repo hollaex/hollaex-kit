@@ -582,7 +582,7 @@ class OperatorControls extends Component {
             })
           }
           <div
-            className="underline pointer pl-2 pt-4"
+            className="underline-text pointer pl-2 pt-4"
             onClick={() => {
               this.closeEditModal()
               this.openAllStringsModal()
