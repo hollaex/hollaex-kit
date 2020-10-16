@@ -7,6 +7,7 @@ import { Button } from '../../components';
 import { required } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 export const generateLanguageFormValues = (values) => {
 	const langValues = STRINGS.SETTINGS_LANGUAGE_OPTIONS.filter(filterValue => {
@@ -16,6 +17,7 @@ export const generateLanguageFormValues = (values) => {
 		language: {
 			type: 'select',
 			validate: [required],
+			stringId: 'SETTINGS_LANGUAGE_LABEL',
 			label: STRINGS["SETTINGS_LANGUAGE_LABEL"],
 			options: langValues,
 			fullWidth: isMobile
@@ -48,6 +50,7 @@ class Form extends Component {
 				{error && (
 					<div className="warning_text">{getErrorLocalized(error)}</div>
 				)}
+				<EditWrapper stringId="SETTING_BUTTON" />
 				<Button
 					label={STRINGS["SETTING_BUTTON"]}
 					disabled={pristine || submitting || !valid}

@@ -5,20 +5,24 @@ import renderFields from '../../components/Form/factoryFields';
 import { Button, Accordion } from '../../components';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 export const generateNotificationFormValues = () => ({
     popup_order_confirmation: {
         type: 'toggle',
+        stringId: 'USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CONFIRMATION',
         label: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CONFIRMATION"],
         className: 'toggle-wrapper'
     },
     popup_order_completed: {
         type: 'toggle',
+        stringId: 'USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_COMPLETED',
         label: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_COMPLETED"],
         className: 'toggle-wrapper'
     },
     popup_order_partially_filled: {
         type: 'toggle',
+        stringId: 'USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_PARTIALLY_FILLED',
         label: STRINGS["USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_PARTIALLY_FILLED"],
         className: 'toggle-wrapper'
     }
@@ -36,6 +40,7 @@ const Form = ({
         <form onSubmit={handleSubmit}>
             {renderFields(formFields)}
             {error && <div className="warning_text">{getErrorLocalized(error)}</div>}
+            <EditWrapper stringId="SETTING_BUTTON" />
             <Button
                 className="mt-4"
                 label={STRINGS["SETTING_BUTTON"]}

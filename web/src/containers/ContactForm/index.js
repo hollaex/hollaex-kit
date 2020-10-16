@@ -48,6 +48,7 @@ class ContactForm extends Component {
 	generateFormFields = (email) => ({
 		email: {
 			type: 'email',
+			stringId: 'FORM_FIELDS.EMAIL_LABEL,FORM_FIELDS.EMAIL_PLACEHOLDER',
 			label: STRINGS["FORM_FIELDS.EMAIL_LABEL"],
 			placeholder: STRINGS["FORM_FIELDS.EMAIL_PLACEHOLDER"],
 			validate: [required, isEmail],
@@ -56,32 +57,39 @@ class ContactForm extends Component {
 		},
 		category: {
 			type: 'select',
+			stringId: "CONTACT_FORM.CATEGORY_LABEL,CONTACT_FORM.CATEGORY_PLACEHOLDER",
 			label: STRINGS["CONTACT_FORM.CATEGORY_LABEL"],
 			placeholder: STRINGS["CONTACT_FORM.CATEGORY_PLACEHOLDER"],
 			options: [
 				{
 					value: 'verify',
-					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY"]
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY"],
+					stringId: "CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY",
 				},
 				{
 					value: 'level',
-					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL"]
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL"],
+					stringId: "CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL",
 				},
 				{
 					value: 'deposit',
-					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT"]
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT"],
+					stringId: "CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT",
 				},
 				{
 					value: 'bug',
-					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG"]
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG"],
+					stringId: "CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG",
 				},
 				{
 					value: 'personal',
-					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO"]
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO"],
+					stringId: "CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO",
 				},
 				{
 					value: 'bank_transfer',
-					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER"]
+					label: STRINGS["CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER"],
+					stringId: "CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER",
 				}
 			],
 			validate: [required],
@@ -89,6 +97,7 @@ class ContactForm extends Component {
 		},
 		subject: {
 			type: 'text',
+			stringId: "CONTACT_FORM.SUBJECT_LABEL,CONTACT_FORM.SUBJECT_PLACEHOLDER",
 			label: STRINGS["CONTACT_FORM.SUBJECT_LABEL"],
 			placeholder: STRINGS["CONTACT_FORM.SUBJECT_PLACEHOLDER"],
 			validate: [required],
@@ -96,6 +105,7 @@ class ContactForm extends Component {
 		},
 		description: {
 			type: 'textarea',
+			stringId: "CONTACT_FORM.DESCRIPTION_LABEL,CONTACT_FORM.DESCRIPTION_PLACEHOLDER",
 			label: STRINGS["CONTACT_FORM.DESCRIPTION_LABEL"],
 			placeholder: STRINGS["CONTACT_FORM.DESCRIPTION_PLACEHOLDER"],
 			validate: [required],
@@ -104,6 +114,7 @@ class ContactForm extends Component {
 		},
 		attachment: {
 		  type: 'file',
+			stringId: "CONTACT_FORM.ATTACHMENT_LABEL,CONTACT_FORM.ATTACHMENT_PLACEHOLDER",
 		  label: STRINGS["CONTACT_FORM.ATTACHMENT_LABEL"],
 		  placeholder: STRINGS["CONTACT_FORM.ATTACHMENT_PLACEHOLDER"],
 		  fullWidth: true,
