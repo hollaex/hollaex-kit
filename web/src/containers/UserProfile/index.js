@@ -72,16 +72,19 @@ class UserProfile extends Component {
 	generateNotification = (
 		verified = false,
 		provided = false,
-		verifyText = ''
+		verifyText = '',
+    verifyTextId,
 	) => {
 		const { icons: ICONS } = this.props;
 		return {
+			stringId: `USER_VERIFICATION.COMPLETED,USER_VERIFICATION.PENDING_VERIFICATION,${verifyTextId}`,
 			text: verified
 				? STRINGS["USER_VERIFICATION.COMPLETED"]
 				: provided
 					? STRINGS["USER_VERIFICATION.PENDING_VERIFICATION"]
 					: verifyText,
 			status: verified ? 'success' : provided ? 'information' : 'warning',
+			iconId: "GREEN_CHECK,BLUE_TIMER,RED_ARROW",
 			iconPath: verified
 				? ICONS["GREEN_CHECK"]
 				: provided ? ICONS["BLUE_TIMER"] : ICONS["RED_ARROW"],
@@ -144,7 +147,8 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					true,
 					true,
-					STRINGS["USER_VERIFICATION.VERIFY_EMAIL"]
+					STRINGS["USER_VERIFICATION.VERIFY_EMAIL"],
+					"USER_VERIFICATION.VERIFY_EMAIL",
 				)
 			},
 			{
@@ -161,7 +165,8 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					!!phone_number,
 					!!phone_number,
-					STRINGS["USER_VERIFICATION.VERIFY_MOBILE_PHONE"]
+					STRINGS["USER_VERIFICATION.VERIFY_MOBILE_PHONE"],
+          "USER_VERIFICATION.VERIFY_MOBILE_PHONE",
 				)
 			},
 			{
@@ -188,7 +193,8 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					verification_level > 1,
 					!!full_name,
-					STRINGS["USER_VERIFICATION.VERIFY_USER_DOCUMENTATION"]
+					STRINGS["USER_VERIFICATION.VERIFY_USER_DOCUMENTATION"],
+					"USER_VERIFICATION.VERIFY_USER_DOCUMENTATION",
 				)
 			},
 			{
@@ -214,7 +220,8 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					id_data.verified,
 					id_data.provided,
-					STRINGS["USER_VERIFICATION.VERIFY_ID_DOCUMENTS"]
+					STRINGS["USER_VERIFICATION.VERIFY_ID_DOCUMENTS"],
+					"USER_VERIFICATION.VERIFY_ID_DOCUMENTS"
 				)
 			}
 		];

@@ -14,6 +14,9 @@ import {
 } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { formatPercentage } from 'utils/currency';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { getLogo } from 'utils/icon';
+import { EditWrapper } from 'components';
 
 class AddTradeTab extends Component {
 	state = {
@@ -151,7 +154,8 @@ class AddTradeTab extends Component {
 			pairs,
 			tickers,
 			coins,
-			constants = {}
+			constants = {},
+			icons: ICONS,
 		} = this.props;
 		const { page, pageSize, count, data, selected, options, chartData } = this.state;
 		const { handleClick, goToPreviousPage, goToNextPage } = this;
@@ -160,10 +164,7 @@ class AddTradeTab extends Component {
 		if (!this.props.pair && Object.keys(pairs).length) {
 			quickPair = Object.keys(pairs)[0];
 		}
-		let path = constants.logo_path;
-		if (activeTheme === 'dark') {
-			path = constants.logo_black_path;
-		}
+    const path = getLogo(activeTheme, constants, ICONS);
 
 		const processedData = data.map((key) => {
       let pair = pairs[key] || {};
@@ -206,7 +207,9 @@ class AddTradeTab extends Component {
 						>
 						</div>
 						<div className="text-center trade-tab-app-title">
-              {STRINGS["APP_SUB_TITLE"].toUpperCase()}
+							<EditWrapper stringId="APP_SUB_TITLE" iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK">
+                {STRINGS["APP_SUB_TITLE"].toUpperCase()}
+							</EditWrapper>
 						</div>
 					</div>
 				)}
@@ -280,4 +283,4 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants
 });
 
-export default connect(mapStateToProps)(AddTradeTab);
+export default connect(mapStateToProps)(withConfig(AddTradeTab));

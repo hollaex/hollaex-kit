@@ -138,11 +138,13 @@ class AppMenuBar extends Component {
                         onClick={() => this.handleMenuChange('summary')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <Image
-                              iconId="TAB_SUMMARY"
                               icon={ICONS["TAB_SUMMARY"]}
                               wrapperClassName="app-menu-bar-icon"
                             />
-                            <EditWrapper stringId="ACCOUNTS.TAB_SUMMARY">
+                            <EditWrapper
+                              stringId="ACCOUNTS.TAB_SUMMARY"
+                              iconId="TAB_SUMMARY"
+                            >
                               {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
                             </EditWrapper>
                         </div>
@@ -165,11 +167,13 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <Image
-                              iconId="TAB_WALLET"
                               icon={ICONS["TAB_WALLET"]}
                               wrapperClassName="app-menu-bar-icon"
                             />
-                            <EditWrapper stringId="ACCOUNTS.TAB_WALLET">
+                            <EditWrapper
+                              stringId="ACCOUNTS.TAB_WALLET"
+                              iconId="TAB_WALLET"
+                            >
                               {STRINGS["ACCOUNTS.TAB_WALLET"]}
                             </EditWrapper>
                         </div>
@@ -192,11 +196,13 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <Image
-                              iconId="TAB_SECURITY"
                               icon={ICONS["TAB_SECURITY"]}
                               wrapperClassName="app-menu-bar-icon"
                             />
-                            <EditWrapper stringId="ACCOUNTS.TAB_SECURITY">
+                            <EditWrapper
+                              stringId="ACCOUNTS.TAB_SECURITY"
+                              iconId="TAB_SECURITY"
+                            >
                               {STRINGS["ACCOUNTS.TAB_SECURITY"]}
                             </EditWrapper>
                         </div>
@@ -219,11 +225,13 @@ class AppMenuBar extends Component {
                                 </div>
                             }
                             <Image
-                              iconId="TAB_VERIFY"
                               icon={ICONS["TAB_VERIFY"]}
                               wrapperClassName="app-menu-bar-icon"
                             />
-                            <EditWrapper stringId="ACCOUNTS.TAB_VERIFICATION">
+                            <EditWrapper
+                              stringId="ACCOUNTS.TAB_VERIFICATION"
+                              iconId="TAB_VERIFY"
+                            >
                               {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
                             </EditWrapper>
                         </div>
@@ -233,11 +241,13 @@ class AppMenuBar extends Component {
                         onClick={() => this.handleMenuChange('settings')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <Image
-                              iconId="TAB_SETTING"
                               icon={ICONS["TAB_SETTING"]}
                               wrapperClassName="app-menu-bar-icon"
                             />
-                            <EditWrapper stringId="ACCOUNTS.TAB_SETTINGS">
+                            <EditWrapper
+                              stringId="ACCOUNTS.TAB_SETTINGS"
+                              iconId="TAB_SETTING"
+                            >
                               {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
                             </EditWrapper>
                         </div>

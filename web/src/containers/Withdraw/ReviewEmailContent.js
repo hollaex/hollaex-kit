@@ -8,6 +8,7 @@ const ReviewEmailContent = ({ onConfirmEmail, icons: ICONS }) => {
     return (
         <div className="d-flex flex-column review_email-wrapper">
             <IconTitle
+                stringId="WITHDRAW_PAGE.CONFIRM_VIA_EMAIL"
                 text={STRINGS["WITHDRAW_PAGE.CONFIRM_VIA_EMAIL"]}
                 iconId="WITHDRAW_MAIL_CONFIRMATION"
                 iconPath={ICONS["WITHDRAW_MAIL_CONFIRMATION"]}

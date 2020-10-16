@@ -379,6 +379,7 @@ class Verification extends Component {
 			case 'bank':
 				return (
 					<BankVerification
+						iconId="VERIFICATION_BANK_NEW"
 						icon={ICONS["VERIFICATION_BANK_NEW"]}
 						openContactForm={this.openContactForm}
 						setActivePageContent={this.setActivePageContent}

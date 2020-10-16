@@ -53,11 +53,11 @@ class Wallet extends Component {
 						fullname
 					)}
 					<ActionNotification
-						srringId="TRADE_HISTORY"
+						stringId="TRADE_HISTORY"
 						text={STRINGS["TRADE_HISTORY"]}
 						status="information"
-						iconPath={ICONS.BLUE_CLIP}
-						useSvg={true}
+						iconId="BLUE_CLIP"
+						iconPath={ICONS["BLUE_CLIP"]}
 						onClick={() => {
 							this.props.router.push('/transactions');
 						}}
@@ -93,7 +93,8 @@ class Wallet extends Component {
 					<IconTitle
 						stringId="WALLET_TITLE"
 						text={STRINGS["WALLET_TITLE"]}
-						iconPath={ICONS.BITCOIN_WALLET}
+						iconId="BITCOIN_WALLET"
+						iconPath={ICONS["BITCOIN_WALLET"]}
 						useSvg={true}
 						textType="title"
 					/>

@@ -8,8 +8,10 @@ const StakeToken = ({ onBack }) => {
     return (
         <div className='invite_friends_wrapper'>
             <IconTitle
+                stringId="STAKE_TOKEN.TITLE"
                 text={STRINGS["STAKE_TOKEN.TITLE"]}
-                iconPath={ICONS.STAKETOKEN_ICON}
+                iconId="STAKETOKEN_ICON"
+                iconPath={ICONS["STAKETOKEN_ICON"]}
                 textType="title"
                 useSvg={true}
                 underline={true}

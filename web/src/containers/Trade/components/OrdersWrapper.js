@@ -80,10 +80,10 @@ class OrdersWrapper extends Component {
                         <ActionNotification
                             stringId="CANCEL_ALL"
                             text={STRINGS["CANCEL_ALL"]}
+                            iconId="CANCEL_CROSS_ACTIVE"
                             iconPath={ICONS["CANCEL_CROSS_ACTIVE"]}
                             onClick={this.cancelAllOrders}
                             status="information"
-                            useSvg={true}
                         />
                     )
                     : ''
@@ -108,10 +108,10 @@ class OrdersWrapper extends Component {
                     <ActionNotification
                         stringId="TRANSACTION_HISTORY.TITLE"
                         text={STRINGS["TRANSACTION_HISTORY.TITLE"]}
+                        iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
                         iconPath={ICONS["ARROW_TRANSFER_HISTORY_ACTIVE"]}
                         onClick={this.props.goToTransactionsHistory}
                         status="information"
-                        useSvg={true}
                     />
                 ) : (
                         ''

@@ -10,6 +10,7 @@ const EmailRequestSuccess = ({ onClick, icons: ICONS, ...rest }) => {
 		<div className={classnames(...FLEX_CENTER_CLASSES, "signup_success-wrapper", "flex-column", "h-100", "auth_wrapper")}>
 			<IconTitle
 				stringId="VERIFICATION_EMAIL_REQUEST_SUCCESS.TITLE"
+				iconId="VERIFICATION_SENT_DARK,VERIFICATION_SENT"
 				iconPath={rest.activeTheme === 'dark' ? ICONS["VERIFICATION_SENT_DARK"] : ICONS["VERIFICATION_SENT"]}
 				text={STRINGS["VERIFICATION_EMAIL_REQUEST_SUCCESS.TITLE"]}
 				textType="title"

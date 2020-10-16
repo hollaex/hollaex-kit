@@ -175,9 +175,11 @@ class IdentityVerification extends Component {
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
+						stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"
 						title={
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"]
 						}
+						iconId="VERIFICATION_ID_NEW"
 						icon={ICONS["VERIFICATION_ID_NEW"]}
 						openContactForm={openContactForm}
 					>

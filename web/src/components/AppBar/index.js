@@ -7,11 +7,7 @@ import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 import math from 'mathjs';
-import {
-	DEFAULT_URL,
-	ICONS,
-	IS_XHT
-} from '../../config/constants';
+import { DEFAULT_URL, IS_XHT } from 'config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
 import MenuList from './MenuList';
@@ -28,6 +24,9 @@ import {
 import { updateUserSettings, setUserData } from '../../actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
 import { EditWrapper } from 'components';
+import withEdit from 'components/EditProvider/withEdit';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { getLogo } from 'utils/icon';
 
 class AppBar extends Component {
 	state = {
@@ -253,6 +252,7 @@ class AppBar extends Component {
 
 	renderSplashActions = (token, verifyingToken) => {
 		const { securityPending, verificationPending, walletPending } = this.state;
+		const { icons: ICONS } = this.props;
 		if (verifyingToken) {
 			return <div />;
 		}
@@ -290,14 +290,19 @@ class AppBar extends Component {
 	};
 
 	renderIcon = (isHome) => {
-		let path = this.props.constants.logo_black_path;
+		const { constants, icons: ICONS } = this.props;
+		const path = getLogo('dark', constants, ICONS);
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
-					<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
+					<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo">
+						<EditWrapper iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK" position={[-5,5]} />
+					</div>
 				) : (
 					<Link href={DEFAULT_URL}>
-						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
+						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo">
+							<EditWrapper iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK" position={[-5,5]} />
+						</div>
 					</Link>
 				)}
 			</div>
@@ -407,7 +412,9 @@ class AppBar extends Component {
 			pairs,
 			onHelp,
 			// user,
-			constants = {}
+			constants = {},
+      isEditMode,
+			icons: ICONS,
 		} = this.props;
 		const {
 			selectedMenu,
@@ -490,7 +497,7 @@ class AppBar extends Component {
 									toggle={this.onToggle}
 								/>
 								{isAdmin() ? (
-									<Link to="/admin">
+									<Link to={ isEditMode ? "/" : "/admin" }>
 										<div
 											className={classnames('app_bar-quicktrade', 'd-flex', {
 												'quick_trade-active': location.pathname === '/admin'
@@ -500,9 +507,14 @@ class AppBar extends Component {
 												icon={ICONS["SIDEBAR_ADMIN_DASH_ACTIVE"]}
 												wrapperClassName="quicktrade_icon mx-1"
 											/>
-											<div className="d-flex align-items-center">
-												{STRINGS["ADMIN_DASH"]}
-											</div>
+											<EditWrapper
+												stringId="ADMIN_DASH"
+												iconId="SIDEBAR_ADMIN_DASH_ACTIVE"
+											>
+												<div className="d-flex align-items-center">
+                          {STRINGS["ADMIN_DASH"]}
+												</div>
+											</EditWrapper>
 										</div>
 									</Link>
 								) : null}
@@ -514,11 +526,13 @@ class AppBar extends Component {
 										})}
 									>
 										<Image
-											iconId="SIDEBAR_TRADING_ACTIVE"
 											icon={ICONS["SIDEBAR_TRADING_ACTIVE"]}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
-										<EditWrapper stringId="PRO_TRADE">
+										<EditWrapper
+											stringId="PRO_TRADE"
+											iconId="SIDEBAR_TRADING_ACTIVE"
+										>
 											<div className="d-flex align-items-center overflow">
                         {STRINGS["PRO_TRADE"]}
 											</div>
@@ -533,11 +547,10 @@ class AppBar extends Component {
 											})}
 										>
 											<Image
-												iconId="QUICK_TRADE_TAB_ACTIVE"
 												icon={ICONS["QUICK_TRADE_TAB_ACTIVE"]}
 												wrapperClassName="quicktrade_icon"
 											/>
-											<EditWrapper stringId="QUICK_TRADE">
+											<EditWrapper stringId="QUICK_TRADE" iconId="QUICK_TRADE_TAB_ACTIVE">
 												<div className="d-flex align-items-center overflow">
                           {STRINGS["QUICK_TRADE"]}
 												</div>
@@ -582,7 +595,8 @@ const mapStateToProps = (state, ownProps) => {
 		coins: state.app.coins,
 		info: state.app.info,
 		enabledPlugins: state.app.enabledPlugins,
-		constants: state.app.constants
+		constants: state.app.constants,
+    activeLanguage: state.app.language
 	};
 };
 
@@ -603,4 +617,4 @@ AppBar.defaultProps = {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(AppBar);
+)(withEdit(withConfig(AppBar)));

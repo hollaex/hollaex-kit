@@ -110,11 +110,13 @@ class MenuList extends Component {
 						>
 							<div className="notification-content" />
 							<Image
-								iconId="TAB_SUMMARY"
 								icon={ICONS["TAB_SUMMARY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY">
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SUMMARY"
+								iconId="TAB_SUMMARY"
+							>
                 {STRINGS["ACCOUNTS.TAB_SUMMARY"]}
 							</EditWrapper>
 						</div>
@@ -148,11 +150,13 @@ class MenuList extends Component {
 								)}
 							</div>
 							<Image
-								iconId="TAB_WALLET"
 								icon={ICONS["TAB_WALLET"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_WALLET">
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_WALLET"
+								iconId="TAB_WALLET"
+							>
                 {STRINGS["ACCOUNTS.TAB_WALLET"]}
 							</EditWrapper>
 						</div>
@@ -165,11 +169,13 @@ class MenuList extends Component {
 						>
 							<div className="notification-content" />
 							<Image
-								iconId="TAB_HISTORY"
 								icon={ICONS["TAB_HISTORY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY">
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_HISTORY"
+								iconId="TAB_HISTORY"
+							>
                 {STRINGS["ACCOUNTS.TAB_HISTORY"]}
 							</EditWrapper>
 						</div>
@@ -203,11 +209,13 @@ class MenuList extends Component {
 								)}
 							</div>
 							<Image
-								iconId="TAB_SECURITY"
 								icon={ICONS["TAB_SECURITY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_SECURITY">
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SECURITY"
+								iconId="TAB_SECURITY"
+							>
                 {STRINGS["ACCOUNTS.TAB_SECURITY"]}
 							</EditWrapper>
 						</div>
@@ -243,11 +251,13 @@ class MenuList extends Component {
 								)}
 							</div>
 							<Image
-								iconId="TAB_VERIFY"
 								icon={ICONS["TAB_VERIFY"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_VERIFICATION">
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_VERIFICATION"
+								iconId="TAB_VERIFY"
+							>
                 {STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
 							</EditWrapper>
 						</div>
@@ -260,11 +270,13 @@ class MenuList extends Component {
 						>
 							<div className="notification-content" />
 							<Image
-								iconId="TAB_SETTING"
 								icon={ICONS["TAB_SETTING"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_SETTINGS">
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SETTINGS"
+								iconId="TAB_SETTING"
+							>
                 {STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 							</EditWrapper>
 						</div>
@@ -277,25 +289,29 @@ class MenuList extends Component {
 						>
 							<div className="notification-content" />
 							<Image
-								iconId="SIDEBAR_HELP"
 								icon={ICONS["SIDEBAR_HELP"]}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							<EditWrapper stringId="LOGIN.HELP">
+							<EditWrapper
+								stringId="LOGIN.HELP"
+								iconId="SIDEBAR_HELP"
+							>
                 {STRINGS["LOGIN.HELP"]}
 							</EditWrapper>
 						</div>
 
 						<div
 							className="app-bar-account-menu-list d-flex"
-							onClick={this.logout}
 						>
-							<div className="notification-content" />
-							<Image
-								icon={ICONS["TAB_SIGNOUT"]}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							{STRINGS["ACCOUNTS.TAB_SIGNOUT"]}
+							<div class="d-flex" onClick={this.logout}>
+								<div className="notification-content" />
+								<Image
+									icon={ICONS["TAB_SIGNOUT"]}
+									wrapperClassName="app-bar-account-list-icon"
+								/>
+                {STRINGS["ACCOUNTS.TAB_SIGNOUT"]}
+							</div>
+							<EditWrapper stringId="ACCOUNTS.TAB_SIGNOUT" iconId="TAB_SIGNOUT" />
 						</div>
 					</div>
 				)}

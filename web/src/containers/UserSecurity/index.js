@@ -100,6 +100,7 @@ class UserVerification extends Component {
 						: STRINGS["ACCOUNT_SECURITY.OTP.OTP_DISABLED"],
 					status: otp_enabled ? 'success' : 'warning',
 					iconPath: otp_enabled ? ICONS["GREEN_CHECK"] : ICONS["RED_ARROW"],
+					iconId: "GREEN_CHECK,RED_ARROW",
 					allowClick: !otp_enabled
 				}
 			},
@@ -118,6 +119,7 @@ class UserVerification extends Component {
 					text: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE"],
 					status: 'success',
 					iconPath: ICONS["GREEN_CHECK"],
+					iconId: "GREEN_CHECK",
 					allowClick: true
 				}
 			},
@@ -135,6 +137,7 @@ class UserVerification extends Component {
 				notification: {
 					// text: STRINGS[`DEVELOPER_SECTION.${otp_enabled ? 'ACTIVE' : 'INACTIVE'}`],
 					status: otp_enabled ? 'success' : 'disabled',
+					iconId: "TOKENS_ACTIVE,TOKENS_INACTIVE",
 					iconPath: otp_enabled
 						? ICONS["TOKENS_ACTIVE"]
 						: ICONS["TOKENS_INACTIVE"], // TODO check

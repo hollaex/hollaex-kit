@@ -33,8 +33,8 @@ const HistoryDisplay = (props) => {
 						<ActionNotification
 							stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
 							text={STRINGS["TRANSACTION_HISTORY.TEXT_DOWNLOAD"]}
+							iconId="DATA"
 							iconPath={ICONS["DATA"]}
-							useSvg={true}
 							className="csv-action"
 							onClick={handleDownload}
 						/>
