@@ -90,7 +90,7 @@ if (token) {
 
 function requireAuth(nextState, replace) {
 	const initialized = getExchangeInitialized();
-	if (initialized === 'false' || !initialized) {
+	if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 		replace({
 			pathname: '/init'
 		});
@@ -103,7 +103,7 @@ function requireAuth(nextState, replace) {
 
 function loggedIn(nextState, replace) {
 	const initialized = getExchangeInitialized();
-	if (initialized === 'false' || !initialized) {
+	if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 		replace({
 			pathname: '/init'
 		});

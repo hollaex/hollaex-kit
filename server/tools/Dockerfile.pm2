@@ -1,0 +1,37 @@
+### Multi-Stage Build Dockerfile
+
+### Build section
+FROM node:10.15.3-stretch-slim as build
+
+RUN apt-get update && apt-get install -y --no-install-recommends git python build-essential && rm -rf /var/lib/apt/lists/*
+
+## DISTRIBUTION MODE
+ENV NODE_ENV=production
+
+RUN mkdir -p /app/logs
+
+COPY package.json /app/package.json
+
+COPY . /app
+
+WORKDIR /app
+
+RUN npm install
+
+FROM node:10.15.3-stretch-slim
+
+COPY --from=build /app /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends git python build-essential && rm -rf /var/lib/apt/lists/*
+
+RUN npm install pm2@3.2.7 sequelize-cli@5.4.0 mocha -g
+
+## DISTRIBUTION MODE
+ENV NODE_ENV=production
+
+# SERVER PORT
+EXPOSE 10010 10080
+
+WORKDIR /app
+
+ENTRYPOINT ["/app/entrypoint.sh"]
