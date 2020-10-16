@@ -31,6 +31,9 @@ export default class SetupWizard extends Component {
             .then((res) => {
                 this.setConstants(res);
             })
+            .catch(err => {
+                console.error(err);
+            })
     }
     
     onTabChange = (tab) => {

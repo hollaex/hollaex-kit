@@ -32,3 +32,12 @@ export const getExchangeInitialized = () => {
   const initialized = localStorage.getItem('initialized') || false;
   return initialized;
 }
+
+export const setSetupCompleted = (setup_completed) => {
+  return localStorage.setItem('setup_completed', setup_completed)
+}
+
+export const getSetupCompleted = () => {
+  const setup_completed = localStorage.getItem('setup_completed') || false;
+  return setup_completed;
+}

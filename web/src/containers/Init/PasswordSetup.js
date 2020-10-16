@@ -70,8 +70,8 @@ export const ReTypePasswordContainer = (props) => {
         if (props.initialValues) {
             adminSignup(props.initialValues)
                 .then(res => {
-                    console.log('response signup', res);
-                    props.setMessage('Account successfully created')
+                    props.setMessage('Account successfully created');
+                    props.onChangeStep('login');
                 })
                 .catch(error => {
                     let errMsg = ''
@@ -83,7 +83,6 @@ export const ReTypePasswordContainer = (props) => {
                     message.error(errMsg);
                 });
         }
-        props.onChangeStep('login');
     };
     return (
         <div className="setup-container">
