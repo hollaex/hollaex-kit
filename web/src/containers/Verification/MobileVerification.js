@@ -14,6 +14,7 @@ import {
 	verifySmsCode,
 	requestSmsCode
 } from '../../actions/verificationActions';
+import { EditWrapper } from 'components';
 
 const FORM_NAME = 'MobileVerification';
 let loadingTimeOut = '';
@@ -49,6 +50,7 @@ class MobileVerification extends Component {
 		const formFields = {
 			phone_country: {
 				type: 'autocomplete',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_LABEL"],
 				placeholder:
@@ -59,12 +61,14 @@ class MobileVerification extends Component {
 			},
 			phone_number: {
 				type: 'text',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER,USER_VERIFICATION.CODE_EXPIRES_IN',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL"],
 				placeholder:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER"],
 				validate: [required], // TODO ^\+?[1-9]\d{1,14}$
 				notification: {
+					stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND',
 					text: loading
 						? STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING"]
 						: STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND"],
@@ -78,6 +82,7 @@ class MobileVerification extends Component {
 			},
 			code: {
 				type: 'text',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_LABEL"],
 				placeholder:
@@ -198,20 +203,34 @@ class MobileVerification extends Component {
 						iconId="VERIFICATION_PHONE_NEW"
 						icon={ICONS["VERIFICATION_PHONE_NEW"]}
 					>
-						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT"]}</div>
-						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1"]}</div>
-						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2"]}</div>
+						<div>
+							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT">
+								{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT"]}
+							</EditWrapper>
+						</div>
+						<div>
+							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1">
+								{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1"]}
+							</EditWrapper>
+						</div>
+						<div>
+							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2">
+								{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2"]}
+							</EditWrapper>
+						</div>
 					</HeaderSection>
 					{renderFields(formFields)}
 					<ElapsedTimer
 						timerText={STRINGS["USER_VERIFICATION.CODE_EXPIRES_IN"]}
 						isLoading={isTimer}
 						timeoutCallback={this.onClearTimer} />
+					<EditWrapper stringId="USER_VERIFICATION.CODE_EXPIRES_IN" />
 					{error && (
 						<div className="warning_text">{getErrorLocalized(error)}</div>
 					)}
 					<div className="d-flex">
 						<div className="w-50">
+							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button
 								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
@@ -219,6 +238,7 @@ class MobileVerification extends Component {
 						</div>
 						<div className="separator" />
 						<div className="w-50">
+							<EditWrapper stringId="SUBMIT" />
 							<Button
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
