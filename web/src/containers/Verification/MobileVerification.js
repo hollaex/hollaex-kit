@@ -192,8 +192,10 @@ class MobileVerification extends Component {
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
+						stringId="USER_VERIFICATION.PHONE_DETAILS"
 						title={STRINGS["USER_VERIFICATION.PHONE_DETAILS"]}
 						openContactForm={openContactForm}
+						iconId="VERIFICATION_PHONE_NEW"
 						icon={ICONS["VERIFICATION_PHONE_NEW"]}
 					>
 						<div>{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT"]}</div>

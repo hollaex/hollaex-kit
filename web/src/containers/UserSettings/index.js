@@ -409,6 +409,7 @@ class UserSettings extends Component {
 					/>
 				)}
 				<HeaderSection
+					stringId="ACCOUNTS.TAB_SETTINGS"
 					title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 					openContactForm={this.openContactForm}
 				>
