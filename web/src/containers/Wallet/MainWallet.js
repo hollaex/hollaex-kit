@@ -165,11 +165,12 @@ class Wallet extends Component {
 				isOpen: true,
 				allowClose: false,
 				notification: !isMobile && {
+					stringId: 'TRADE_HISTORY',
 					text: STRINGS["TRADE_HISTORY"],
 					status: 'information',
-					iconPath: ICONS.BLUE_CLIP,
+					iconId: 'BLUE_CLIP',
+					iconPath: ICONS["BLUE_CLIP"],
 					allowClick: true,
-					useSvg: true,
 					className: isOpen ? '' : 'wallet-notification',
 					onClick: () => {
 						this.props.router.push('/transactions');

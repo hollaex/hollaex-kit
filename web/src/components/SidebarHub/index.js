@@ -13,6 +13,7 @@ class SidebarHub extends Component {
 			accordionClassName: 'sidebar_hub-section-content f-1',
 			stringId: 'WALLET_TITLE',
 			title: STRINGS["WALLET_TITLE"],
+			iconId: "SIDEBAR_WALLET_ACTIVE",
 			icon: ICONS["SIDEBAR_WALLET_ACTIVE"],
 			content: <Wallet />
 		}];
