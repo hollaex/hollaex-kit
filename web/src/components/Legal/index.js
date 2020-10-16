@@ -12,7 +12,7 @@ const getType = (type) => {
 	}
 };
 
-const Legal = ({ type, constants = {} }) => {
+const Legal = ({ type, constants = {}, logoPath }) => {
 	const keys = ['TITLE', 'SUBTITLE', 'TEXTS'];
 	const TYPE = getType(type);
 
@@ -23,7 +23,7 @@ const Legal = ({ type, constants = {} }) => {
 			<div className="d-flex flex-column legal-content-wrapper">
 				<div className="legal-logo-wrapper">
 					<img
-						src={constants.logo_path}
+						src={logoPath}
 						alt={constants.api_name || ''}
 						className="legal-logo"
 					/>
