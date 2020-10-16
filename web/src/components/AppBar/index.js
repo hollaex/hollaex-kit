@@ -300,7 +300,7 @@ class AppBar extends Component {
 						<EditWrapper iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK" position={[-5,5]} />
 					</div>
 				) : (
-					<div class="d-flex">
+					<div className="d-flex">
 						<Link href={DEFAULT_URL}>
 							<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo" />
 						</Link>
