@@ -1,19 +1,26 @@
 import React from 'react';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 import { NotificationWraper, NotificationContent } from './Notification';
 import { Button } from '../';
 
 export const GenerateApiKey = (props) => {
-	const { icon, iconId, nextLabel, onBack, onNext, disabledNext, children } = props;
+	const { icon, iconId, nextLabel, onBack, onNext, disabledNext, children, stringId_nextLabel } = props;
 
 	return (
 		<NotificationWraper icon={icon} iconId={iconId} className="new-order-notification">
 			<NotificationContent>{children}</NotificationContent>
 			<div className="d-flex">
-				<Button label={STRINGS["BACK_TEXT"]} onClick={onBack} />
+				<div className="w-50">
+					<EditWrapper stringId="BACK_TEXT" />
+					<Button label={STRINGS["BACK_TEXT"]} onClick={onBack} />
+				</div>
 				<div className="separator" />
-				<Button label={nextLabel} onClick={onNext} disabled={disabledNext} />
+				<div className="w-50">
+					<EditWrapper stringId={stringId_nextLabel} />
+					<Button label={nextLabel} onClick={onNext} disabled={disabledNext} />
+				</div>
 			</div>
 		</NotificationWraper>
 	);
