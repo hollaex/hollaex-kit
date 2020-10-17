@@ -5,10 +5,10 @@ import { NotificationWraper, NotificationContent } from './Notification';
 import { Button } from '../';
 
 export const GenerateApiKey = (props) => {
-	const { icon, nextLabel, onBack, onNext, disabledNext, children } = props;
+	const { icon, iconId, nextLabel, onBack, onNext, disabledNext, children } = props;
 
 	return (
-		<NotificationWraper icon={icon} className="new-order-notification">
+		<NotificationWraper icon={icon} iconId={iconId} className="new-order-notification">
 			<NotificationContent>{children}</NotificationContent>
 			<div className="d-flex">
 				<Button label={STRINGS["BACK_TEXT"]} onClick={onBack} />
