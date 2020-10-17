@@ -88,9 +88,13 @@ export const NotificationContent = ({ children, className = '' }) => (
 	</div>
 );
 
-export const InformationRow = ({ label, value }) => (
+export const InformationRow = ({ label, value, stringId }) => (
 	<div className="d-flex">
-		<div className="f-1 text_disabled">{label}:</div>
+		<div className="f-1 text_disabled">
+			<EditWrapper stringId={stringId}>
+        {label}:
+			</EditWrapper>
+		</div>
 		<div className="f-1">{value}</div>
 	</div>
 );
