@@ -27,11 +27,12 @@ export const GenerateApiKey = (props) => {
 };
 
 export const CreatedApiKey = (props) => {
-	const { icon, onClose, children } = props;
+	const { icon, onClose, children, iconId } = props;
 
 	return (
-		<NotificationWraper icon={icon} iconType="svg" className="new-order-notification">
+		<NotificationWraper icon={icon} iconId={iconId} iconType="svg" className="new-order-notification">
 			<NotificationContent>{children}</NotificationContent>
+			<EditWrapper stringId="CLOSE_TEXT" />
 			<div className="d-flex">
 				<Button label={STRINGS["CLOSE_TEXT"]} onClick={onClose} />
 			</div>
