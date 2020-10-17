@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -13,7 +13,7 @@ import { formatToCurrency } from '../../utils/currency';
 const SIDE_BUY = 'buy';
 const SIDE_SELL = 'sell';
 
-export const getTitleAndIcon = (side, type) => {
+export const getTitleAndIcon = (side, type, ICONS) => {
 	const data = {
     iconId: '',
     stringId: '',
@@ -114,9 +114,9 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 	);
 };
 
-const TradeNotification = ({ onClose, data: { order, data }, pairs, coins }) => {
+const TradeNotification = ({ onClose, data: { order, data }, pairs, coins, icons }) => {
 	const { side, type } = order;
-	const notificationProps = getTitleAndIcon(side, type);
+	const notificationProps = getTitleAndIcon(side, type, icons);
 
 	return (
 		<NotificationWraper
