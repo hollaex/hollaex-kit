@@ -1,12 +1,11 @@
 import React from 'react';
 
 import { Button } from '../';
-import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
 import { EditWrapper } from 'components';
 
-const getTitleAndIcon = (type) => {
+const getTitleAndIcon = (type, ICONS) => {
 	const data = {
     iconId: '',
     stringId: '',
@@ -29,8 +28,8 @@ const getTitleAndIcon = (type) => {
 	return data;
 };
 
-const VerificationNotification = ({ data: { type, onClick } }) => {
-	const notificationProps = getTitleAndIcon(type);
+const VerificationNotification = ({ data: { type, onClick }, icons }) => {
+	const notificationProps = getTitleAndIcon(type, icons);
 	return (
 		<NotificationWraper
 			{...notificationProps}
