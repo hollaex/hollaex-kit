@@ -1,22 +1,24 @@
 import React from 'react';
 import classnames from 'classnames';
 import { CurrencyBallWithPrice, ActionNotification, Button } from '../';
-import { ICONS } from '../../config/constants';
 
 import { getDepositTexts } from './constants';
 import Header from './Header';
 import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
+const DepositNotification = ({ data, onClose, goToPage, openContactForm, icons: ICONS }) => {
 	const depositTexts = getDepositTexts(data.currency, data.coins, data.status);
 
 	const headerProps = {
 		text: depositTexts.title,
+		iconId: data.currency === BASE_CURRENCY
+      ? data.status ? "DEPOSIT_BASE_COIN_COMPLETE" : "INCOMING_TOMAN"
+      : data.status ? "DEPOSIT_RECEIVED_BITCOIN" : "INCOMING_BTC",
 		icon:
 			data.currency === BASE_CURRENCY
-				? data.status ? ICONS.DEPOSIT_BASE_COIN_COMPLETE : ICONS.INCOMING_TOMAN
-				: data.status ? ICONS.DEPOSIT_RECEIVED_BITCOIN : ICONS.INCOMING_BTC
+				? data.status ? ICONS["DEPOSIT_BASE_COIN_COMPLETE"] : ICONS["INCOMING_TOMAN"]
+				: data.status ? ICONS["DEPOSIT_RECEIVED_BITCOIN"] : ICONS["INCOMING_BTC"]
 	};
 	const onClick = () => {
 		onClose();
