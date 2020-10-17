@@ -1,7 +1,7 @@
 import React from 'react';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
-import { ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -18,6 +18,7 @@ const generateRows = ({ order, pairData }, coins) => {
 	const rows = [];
 
 	rows.push({
+		stringId: `TYPE,CHECK_ORDER_TYPE,TYPES_VALUES.${type},SIDES_VALUES.${side}`,
 		label: STRINGS["TYPE"],
 		value: (
 			<div className="text-capitalize">
@@ -31,6 +32,7 @@ const generateRows = ({ order, pairData }, coins) => {
 	});
 
 	rows.push({
+		stringId: 'SIZE',
 		label: STRINGS["SIZE"],
 		value: STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
@@ -41,6 +43,7 @@ const generateRows = ({ order, pairData }, coins) => {
 
 	if (type === 'limit') {
 		rows.push({
+			stringId: 'PRICE',
 			label: STRINGS["PRICE"],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
@@ -61,7 +64,7 @@ const OrderDisplay = ({ rows }) => {
 	);
 };
 
-const NewOrderNotification = ({ type, data, coins, onBack, onConfirm }) => {
+const NewOrderNotification = ({ type, data, coins, onBack, onConfirm, icons: ICONS }) => {
 	const rows = generateRows(data, coins);
 	const onConfirmClick = () => {
 		onConfirm();
@@ -76,8 +79,10 @@ const NewOrderNotification = ({ type, data, coins, onBack, onConfirm }) => {
 
 	return (
 		<NotificationWraper
+			stringId="CHECK_ORDER"
 			title={STRINGS["CHECK_ORDER"]}
-			icon={ICONS.CHECK_ORDER}
+			iconId="CHECK_ORDER"
+			icon={ICONS["CHECK_ORDER"]}
 			className="new-order-notification"
 		>
 			<EventListener target="document" onKeydown={onKeydown} />
