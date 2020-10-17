@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import ICONS from 'config/icons';
 import ReactSVG from 'react-svg';
+import { EditWrapper } from 'components';
 
 const renderCheckboxImage = (checked) => (
 	<ReactSVG
@@ -20,6 +21,7 @@ const CheckboxButton = ({
 	name = 'CheckboxButton',
 	checked = false,
 	onClick,
+	stringId,
 	label = 'Label',
 	disabled = false,
 	loading = false,
@@ -40,7 +42,11 @@ const CheckboxButton = ({
 			) : (
 				renderCheckboxImage(checked, disabled)
 			)}
-			<span className="checkbutton-input-wrapper--label">{label}</span>
+			<span className="checkbutton-input-wrapper--label">
+				<EditWrapper stringId={stringId}>
+					{label}
+				</EditWrapper>
+			</span>
 		</div>
 		{children && <div className="checkbutton-content-wrapper">{children}</div>}
 	</div>
