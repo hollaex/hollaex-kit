@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import IconTitle from '../IconTitle';
 import DumbField from '../Form/FormFields/DumbField';
 import Button from '../Button';
-import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getUserReferralCount } from '../../actions/userAction';
+import { EditWrapper } from 'components';
 
 const RenderDumbField = (props) => <DumbField {...props} />;
 
@@ -26,7 +26,7 @@ class InviteFriends extends Component {
 
     render() {
         const { affiliation_code } = this.props.data;
-        const { affiliation } = this.props;
+        const { affiliation, icons: ICONS } = this.props;
         const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
         const affiliationCount = affiliation.count ? affiliation.count : 0;
         return (
@@ -42,10 +42,15 @@ class InviteFriends extends Component {
                 />
                 <div>
                     <div className='my-2'>
-                        <div>{STRINGS["REFERRAL_LINK.INFO_TEXT"]}</div>
+                        <div>
+                            <EditWrapper stringId="REFERRAL_LINK.INFO_TEXT">
+                              {STRINGS["REFERRAL_LINK.INFO_TEXT"]}
+                            </EditWrapper>
+                        </div>
                     </div>
                     <div className='my-4'>
                         <RenderDumbField
+                            stringId="REFERRAL_LINK.COPY_FIELD_LABEL"
                             label={STRINGS["REFERRAL_LINK.COPY_FIELD_LABEL"]}
                             value={referralLink}
                             fullWidth={true}
