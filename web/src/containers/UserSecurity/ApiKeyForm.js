@@ -14,6 +14,7 @@ export const generateFormValues = (type) => {
 			name: {
 				type: 'text',
 				validate: [tokenKeyValidation],
+				stringId: 'DEVELOPERS_TOKENS_POPUP.FORM_NAME_LABEL,DEVELOPERS_TOKENS_POPUP.FORM_LABLE_PLACEHOLDER',
 				label: STRINGS["DEVELOPERS_TOKENS_POPUP.FORM_NAME_LABEL"],
 				placeholder: STRINGS["DEVELOPERS_TOKENS_POPUP.FORM_LABLE_PLACEHOLDER"],
 				fullWidth: true,
