@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
 import {
@@ -12,7 +12,7 @@ import {
 
 const SIDE_BUY = 'buy';
 
-export const getTitleAndIcon = (type, { side, filled }) => {
+export const getTitleAndIcon = (type, { side, filled }, ICONS) => {
 	const data = {
 		iconId: '',
 		stringId: '',
@@ -157,8 +157,8 @@ export const OrderDisplay = ({ rows }) => {
 	);
 };
 
-const OrderNotification = ({ type, data, pairs, coins, onClose }) => {
-	const notificationProps = getTitleAndIcon(type, data);
+const OrderNotification = ({ type, data, pairs, coins, onClose, icons }) => {
+	const notificationProps = getTitleAndIcon(type, data, icons);
 	const rows = generateRows(type, data, pairs, coins);
 
 	return (
