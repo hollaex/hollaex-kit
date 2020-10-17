@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '../';
-import { ICONS } from '../../config/constants';
 import { NotificationWraper, NotificationContent } from './Notification';
 
 import STRINGS from '../../config/localizedStrings';
@@ -31,11 +30,11 @@ const getMessage = (message = '') => {
 	}
 };
 
-const LogoutNotification = ({ data, onClose }) => {
+const LogoutNotification = ({ data, onClose, icons: ICONS }) => {
 	return (
 		<NotificationWraper
 			title={STRINGS["LOGOUT_TITLE"]}
-			icon={ICONS.SESSION_TIMED_OUT}
+			icon={ICONS["SESSION_TIMED_OUT"]}
 			className="logout-notification"
 		>
 			<NotificationContent>{getMessage(data.message)}</NotificationContent>
