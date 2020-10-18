@@ -36,8 +36,11 @@ class UploadIcon extends Component {
         const file = selectedFiles[key];
         if (file) {
           const formData = new FormData();
+          const { name: fileName } = file;
+          const extension = fileName.split('.').pop();
+          const name = `${key}.${extension}`
 
-          formData.append('name', key);
+          formData.append('name', name);
           formData.append('file', file);
 
           const { data: { path } } = await upload(formData)
