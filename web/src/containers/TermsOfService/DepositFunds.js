@@ -16,7 +16,6 @@ const DepositFunds = (props) => {
                 text={STRINGS["TERMS_OF_SERVICES.DEPOSIT_FUNDS"]}
                 textType="title"
                 underline={true}
-                useSvg={true}
                 className="w-100"
             />
             <div className="mx-3">

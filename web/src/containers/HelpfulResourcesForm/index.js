@@ -69,7 +69,6 @@ class HelpfulResourcesForm extends Component {
 					textType="title"
 					underline={true}
 					className="w-100"
-					useSvg={true}
 				/>
 				<div>
 					<div className='d-flex mt-5'>

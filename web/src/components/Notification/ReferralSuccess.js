@@ -14,7 +14,6 @@ const ReferralSuccess = ({ onClose, icons: ICONS }) => {
                 text={STRINGS["REFERRAL_SUCCESS.TITLE"]}
                 textType="title"
                 underline={true}
-                useSvg={true}
                 className="w-100"
             />
             <div className="my-4 ml-2">

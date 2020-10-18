@@ -27,7 +27,6 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {}, icons: ICO
 					? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 					: ICONS['LEVEL_ACCOUNT_ICON_4']}
 				textType="title"
-				useSvg={true}
 				underline={true}
 			/>
 			<div className="content-txt">

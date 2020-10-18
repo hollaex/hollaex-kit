@@ -40,7 +40,6 @@ class SidebarHub extends Component {
 								}
 								textType="title"
 								className="w-100"
-								useSvg={true}
 							/>
 
 							<ButtonLink

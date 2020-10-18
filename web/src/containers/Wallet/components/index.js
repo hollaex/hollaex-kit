@@ -116,5 +116,5 @@ export const renderTitleSection = (symbol, type, icon, coins, iconId) => {
 		"WALLET_BUTTON_BASE_DEPOSIT,WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT";
 
 
-	return <IconTitle text={text} stringId={stringId} iconPath={icon} iconId={iconId} textType="title" useSvg={true} />;
+	return <IconTitle text={text} stringId={stringId} iconPath={icon} iconId={iconId} textType="title" />;
 };

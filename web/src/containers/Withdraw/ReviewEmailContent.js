@@ -12,7 +12,6 @@ const ReviewEmailContent = ({ onConfirmEmail, icons: ICONS }) => {
                 text={STRINGS["WITHDRAW_PAGE.CONFIRM_VIA_EMAIL"]}
                 iconId="WITHDRAW_MAIL_CONFIRMATION"
                 iconPath={ICONS["WITHDRAW_MAIL_CONFIRMATION"]}
-                useSvg={true}
                 textType="title"
             />
             <div className="review_email-content">

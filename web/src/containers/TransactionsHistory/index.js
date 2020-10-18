@@ -246,7 +246,6 @@ class TransactionsHistory extends Component {
 						iconId="TRANSACTION_HISTORY"
 						iconPath={ICONS["TRANSACTION_HISTORY"]}
 						textType="title"
-						useSvg={true}
 					/>
 				)}
 				<TabController

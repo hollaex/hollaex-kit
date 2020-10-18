@@ -231,7 +231,6 @@ class Login extends Component {
 						text={STRINGS["LOGIN_TEXT"]}
 						textType="title"
 						underline={true}
-						useSvg={false}
 						isLogo={true}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"

@@ -17,7 +17,6 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}, ICONS)
 				iconPath={ICONS["OTP_KEYS"]}
 				className="w-100"
 				textType="title"
-				useSvg={true}
 			/>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">

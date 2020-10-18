@@ -13,7 +13,6 @@ const StakeToken = ({ onBack, icons: ICONS }) => {
                 iconId="STAKETOKEN_ICON"
                 iconPath={ICONS["STAKETOKEN_ICON"]}
                 textType="title"
-                useSvg={true}
                 underline={true}
             />
             <div>

@@ -37,7 +37,6 @@ class InviteFriends extends Component {
                     iconId="REFER_ICON"
                     iconPath={ICONS["REFER_ICON"]}
                     textType="title"
-                    useSvg={true}
                     underline={true}
                 />
                 <div>
