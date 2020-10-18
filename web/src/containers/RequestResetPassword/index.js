@@ -109,7 +109,6 @@ class RequestResetPassword extends Component {
 							text={STRINGS["REQUEST_RESET_PASSWORD.TITLE"]}
 							textType="title"
 							underline={true}
-							useSvg={true}
 							className="w-100"
 							subtitle={STRINGS["REQUEST_RESET_PASSWORD.SUBTITLE"]}
 							actionProps={{

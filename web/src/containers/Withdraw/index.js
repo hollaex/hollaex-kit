@@ -133,7 +133,8 @@ class Withdraw extends Component {
 			coins,
 			verification_level,
 			this.props.activeTheme,
-      ICONS["BLUE_PLUS"]
+      ICONS["BLUE_PLUS"],
+			"BLUE_PLUS",
 		);
 		const initialValues = generateInitialValues(currency, coins);
 

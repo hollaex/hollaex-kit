@@ -5,6 +5,7 @@ import { Button } from '../../components';
 import { formatToCurrency } from '../../utils/currency';
 import { BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -62,48 +63,58 @@ const ReviewModalContent = ({
 			{currency === BASE_CURRENCY ? (
 				<div className="d-flex flex-column align-items-center review-info_container">
 					<div className="review-info_message">
-						{STRINGS["WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW"]}
+						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW">
+              {STRINGS["WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW"]}
+						</EditWrapper>
 					</div>
 					<div className="review-crypto-amount review-crypto-address">
 						<div>{cryptoAmountText}</div>
 						<div className="review-fee_message">
-							{STRINGS.formatString(
-								STRINGS["WITHDRAW_PAGE.MESSAGE_FEE_BASE"],
-								STRINGS.formatString(
-									CURRENCY_PRICE_FORMAT,
-									formatToCurrency(fee, baseCoin.min),
-									baseCoin.symbol.toUpperCase()
-								)
-							)}
+							<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE_BASE">
+                {STRINGS.formatString(
+                  STRINGS["WITHDRAW_PAGE.MESSAGE_FEE_BASE"],
+                  STRINGS.formatString(
+                    CURRENCY_PRICE_FORMAT,
+                    formatToCurrency(fee, baseCoin.min),
+                    baseCoin.symbol.toUpperCase()
+                  )
+                )}
+							</EditWrapper>
 						</div>
 					</div>
 				</div>
 			) : (
 				<div className="d-flex flex-column align-items-center review-info_container">
 					<div className="review-info_message">
-						{STRINGS["WITHDRAW_PAGE.MESSAGE_ABOUT_SEND"]}
+						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_ABOUT_SEND">
+              {STRINGS["WITHDRAW_PAGE.MESSAGE_ABOUT_SEND"]}
+						</EditWrapper>
 					</div>
 					<div className="review-crypto-amount review-crypto-address">
 						<div>{cryptoAmountText}</div>
 						<div className="review-fee_message">
-							{STRINGS.formatString(
-								STRINGS["WITHDRAW_PAGE.MESSAGE_FEE"],
-								fee,
-								STRINGS.formatString(
-									CURRENCY_PRICE_FORMAT,
-									formatToCurrency(feePrice, baseCoin.min),
-									baseCoin.symbol.toUpperCase()
-								)
-							)}
+							<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE">
+                {STRINGS.formatString(
+                  STRINGS["WITHDRAW_PAGE.MESSAGE_FEE"],
+                  fee,
+                  STRINGS.formatString(
+                    CURRENCY_PRICE_FORMAT,
+                    formatToCurrency(feePrice, baseCoin.min),
+                    baseCoin.symbol.toUpperCase()
+                  )
+                )}
+							</EditWrapper>
 						</div>
 					</div>
 					<div className="review-warning_arrow" />
 					<div className="review-crypto-address">{data.address}</div>
 					<div className="warning_text review-info_message">
-						{STRINGS.formatString(
-							STRINGS["WITHDRAW_PAGE.MESSAGE_BTC_WARNING"],
-							fullname
-						)}
+						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_BTC_WARNING">
+              {STRINGS.formatString(
+                STRINGS["WITHDRAW_PAGE.MESSAGE_BTC_WARNING"],
+                fullname
+              )}
+						</EditWrapper>
 					</div>
 				</div>
 			)}

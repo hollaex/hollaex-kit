@@ -10,6 +10,7 @@ class UploadIcon extends Component {
   state = {
     selectedFiles: {},
     loading: false,
+    error: false,
   }
 
   onFileChange = ({ target: { name, files } }) => {
@@ -28,6 +29,7 @@ class UploadIcon extends Component {
     const icons = {};
 
     this.setState({
+      error: false,
       loading: true,
     });
 
@@ -36,12 +38,24 @@ class UploadIcon extends Component {
         const file = selectedFiles[key];
         if (file) {
           const formData = new FormData();
+          const { name: fileName } = file;
+          const extension = fileName.split('.').pop();
+          const name = `${key}.${extension}`
 
-          formData.append('name', key);
+          formData.append('name', name);
           formData.append('file', file);
 
-          const { data: { path } } = await upload(formData)
-          icons[key] = path;
+          try {
+            const { data: { path } } = await upload(formData)
+            icons[key] = path;
+
+          } catch(error) {
+            this.setState({
+              loading: false,
+              error: "Something went wrong!",
+            });
+            return;
+          }
         }
       }
     }
@@ -55,7 +69,7 @@ class UploadIcon extends Component {
 
   render() {
     const { isOpen, onCloseDialog, editId, onReset } = this.props;
-    const { loading } = this.state;
+    const { loading, error } = this.state;
 
     return (
       <Modal
@@ -95,6 +109,13 @@ class UploadIcon extends Component {
             </div>
           ))}
         </div>
+        {
+          error && (
+            <div style={{ color: 'red' }} className="pt-2">
+              {error}
+            </div>
+          )
+        }
         <div className="d-flex justify-content-end pt-3 mt-3">
           <Button
             block

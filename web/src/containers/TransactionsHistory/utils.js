@@ -75,6 +75,7 @@ const calculatePrice = (isQuick = false, price, size) => {
 export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 	return [
 		{
+			stringId: 'PAIR',
 			label: STRINGS["PAIR"],
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
@@ -87,6 +88,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
+			stringId: 'TYPE',
 			label: STRINGS["TYPE"],
 			key: 'side',
 			exportToCsv: ({ side = '' }) => side,
@@ -101,6 +103,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
+			stringId: 'SIZE',
 			label: STRINGS["SIZE"],
 			key: 'size',
 			exportToCsv: ({ size = 0, ...data }) => {
@@ -139,6 +142,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
+			stringId: 'PRICE',
 			label: STRINGS["PRICE"],
 			key: 'price',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
@@ -178,6 +182,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
+			stringId: 'AMOUNT',
 			label: STRINGS["AMOUNT"],
 			key: 'amount',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
@@ -224,6 +229,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
+			stringId: 'FEE,NO_FEE',
 			label: STRINGS["FEE"],
 			key: 'fee',
 			exportToCsv: ({
@@ -292,6 +298,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			}
 		},
 		{
+			stringId: 'TIME',
 			label: STRINGS["TIME"],
 			key: 'timestamp',
 			className: isMobile ? 'text-center' : '',
@@ -330,6 +337,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
+			stringId: 'CURRENCY',
 			label: STRINGS["CURRENCY"],
 			key: 'currency',
 			exportToCsv: ({ currency }) => {
@@ -342,6 +350,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
+			stringId: 'STATUS,COMPLETE,REJECTED,PENDING',
 			label: STRINGS["STATUS"],
 			key: 'status',
 			exportToCsv: ({
@@ -371,6 +380,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
+			stringId: 'AMOUNT',
 			label: STRINGS["AMOUNT"],
 			key: 'amount',
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
@@ -394,6 +404,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
+			stringId: 'FEE,NO_FEE',
 			label: STRINGS["FEE"],
 			key: 'fee',
 			exportToCsv: ({ fee = 0 }) => fee,
@@ -417,6 +428,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
+			stringId: 'TIME',
 			label: STRINGS["TIME"],
 			key: 'created_at',
 			exportToCsv: ({ created_at = '' }) => created_at,
@@ -425,6 +437,7 @@ export const generateWithdrawalsHeaders = (
 			}
 		},
 		{
+			stringId: 'MORE,CANCEL,VIEW',
 			label: STRINGS["MORE"],
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,

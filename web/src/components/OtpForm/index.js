@@ -66,7 +66,6 @@ class Form extends Component {
 					text={STRINGS["OTP_FORM.OTP_TITLE"]}
 					iconId="OTP_CODE"
 					iconPath={ICONS["OTP_CODE"]}
-					useSvg={true}
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">

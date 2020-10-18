@@ -61,7 +61,6 @@ const SetOrderPortfolio = ({ data, icons: ICONS, ...rest }) => {
                 iconId="SETTING_RISK_ADJUST_ICON"
                 iconPath={ICONS["SETTING_RISK_ADJUST_ICON"]}
                 textType="title"
-                useSvg={true}
                 underline={true}
             />
             <div className="mt-1">{STRINGS.formatString(STRINGS["USER_SETTINGS.CREATE_ORDER_WARING_TEXT"], portfolioPercent).join('')}</div>

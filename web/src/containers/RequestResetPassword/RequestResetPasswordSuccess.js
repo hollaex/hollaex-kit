@@ -13,7 +13,6 @@ const RequestResetPasswordSuccess = ({ onLoginClick, onContactUs }) => (
 			text={STRINGS["REQUEST_RESET_PASSWORD_SUCCESS.TITLE"]}
 			textType="title"
 			className="w-100"
-			useSvg={true}
 		/>
 		<div className="text-center">
 			{STRINGS["REQUEST_RESET_PASSWORD_SUCCESS.TEXT"]}

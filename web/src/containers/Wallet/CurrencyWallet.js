@@ -95,7 +95,6 @@ class Wallet extends Component {
 						text={STRINGS["WALLET_TITLE"]}
 						iconId="BITCOIN_WALLET"
 						iconPath={ICONS["BITCOIN_WALLET"]}
-						useSvg={true}
 						textType="title"
 					/>
 					<div className="wallet-container">

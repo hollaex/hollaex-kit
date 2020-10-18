@@ -13,7 +13,6 @@ const ResetPasswordSuccess = ({ onClick, icons: ICONS, ...rest }) => {
 				text={STRINGS["SUCCESS_TEXT"]}
 				textType="title"
 				className="w-100"
-				useSvg={true}
 			/>
 			<div className="text-center">
 				{STRINGS["RESET_PASSWORD_SUCCESS.TEXT_1"]}

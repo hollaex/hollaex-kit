@@ -4,6 +4,7 @@ import DumbField from '../../../components/Form/FormFields/DumbField';
 import { generateWalletActionsText, formatToCurrency } from '../../../utils/currency';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 export const renderDumbField = (data) => <DumbField {...data} />;
 
@@ -47,10 +48,18 @@ export const renderBankInformation = (
 };
 
 export const renderTitle = (symbol, type = 'withdraw', coins) => {
-	const { withdrawText, depositText } = generateWalletActionsText(symbol, coins, true);
+	const {
+		withdrawText,
+		depositText,
+		stringId_withdraw,
+		stringId_deposit
+	} = generateWalletActionsText(symbol, coins, true);
+
 	return (
 		<div className="title text-capitalize">
-			{type === 'withdraw' ? withdrawText : depositText}
+			<EditWrapper stringId={type === 'withdraw' ? stringId_withdraw : stringId_deposit}>
+        {type === 'withdraw' ? withdrawText : depositText}
+			</EditWrapper>
 		</div>
 	);
 };
@@ -62,14 +71,16 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 
 	return (
 		<div className="text">
-			<p>
-				{STRINGS.formatString(
-					STRINGS["AVAILABLE_BALANCE_TEXT"],
-					fullname,
-					available,
-					shortName
-				)}
-			</p>
+			<EditWrapper stringId="AVAILABLE_BALANCE_TEXT">
+				<p>
+          {STRINGS.formatString(
+            STRINGS["AVAILABLE_BALANCE_TEXT"],
+            fullname,
+            available,
+            shortName
+          )}
+				</p>
+			</EditWrapper>
 		</div>
 	);
 };
@@ -109,12 +120,17 @@ export const renderInformation = (
 };
 
 export const renderTitleSection = (symbol, type, icon, coins, iconId) => {
-	const { withdrawText, depositText } = generateWalletActionsText(symbol, coins);
+	const {
+		withdrawText,
+		depositText,
+    stringId_withdraw,
+		stringId_deposit
+	} = generateWalletActionsText(symbol, coins);
+
 	const text = type === 'withdraw' ? withdrawText : depositText;
-	const stringId = 'withdraw' ?
-		"WALLET_BUTTON_BASE_WITHDRAW,WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW" :
-		"WALLET_BUTTON_BASE_DEPOSIT,WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT";
+	const stringId = type === 'withdraw' ?
+    stringId_withdraw :
+    stringId_deposit;
 
-
-	return <IconTitle text={text} stringId={stringId} iconPath={icon} iconId={iconId} textType="title" useSvg={true} />;
+	return <IconTitle text={text} stringId={stringId} iconPath={icon} iconId={iconId} textType="title" />;
 };

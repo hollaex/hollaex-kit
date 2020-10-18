@@ -13,25 +13,27 @@ const BasicIconTitle = ({
 	underline,
 	className,
 	imageWrapperClassName = '',
-	useSvg = false,
 	isLogo = false,
-}) => (
-	<div className={classnames('icon_title-wrapper', { underline }, className)}>
-		{iconPath &&
-			(useSvg ? (
+}) => {
+	const useSvg = iconPath.indexOf('.svg') > 0
+	return (
+		<div className={classnames('icon_title-wrapper', { underline }, className)}>
+      {iconPath &&
+      (useSvg ? (
 				<ReactSVG path={iconPath} wrapperClassName={classnames('icon_title-svg', imageWrapperClassName)} />
-			) : (
-				isLogo
-					? (<div style={{ backgroundImage: `url(${iconPath})` }} className={classnames(imageWrapperClassName)} />)
-					: (<img src={iconPath} alt={text} className={classnames("icon_title-image", imageWrapperClassName)} />)
-			))}
+      ) : (
+        isLogo
+          ? (<div style={{ backgroundImage: `url(${iconPath})` }} className={classnames(imageWrapperClassName)} />)
+          : (<img src={iconPath} alt={text} className={classnames("icon_title-image", imageWrapperClassName)} />)
+      ))}
 			<EditWrapper stringId={stringId} iconId={iconId}>
 				<div className={classnames('icon_title-text', 'text-center', textType)}>
           {text}
 				</div>
 			</EditWrapper>
-	</div>
-);
+		</div>
+  )
+};
 
 const EnhancedIconTitle = ({ subtitle, actionProps, ...rest }) => (
 	<div className={classnames('w-100')}>
