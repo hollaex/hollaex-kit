@@ -9,10 +9,12 @@ import {
 } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const HistoryDisplay = (props) => {
 	const {
+		stringId,
 		title,
 		headers,
 		data: { data, count, loading },
@@ -28,7 +30,9 @@ const HistoryDisplay = (props) => {
 		<div className="history_block-wrapper">
 			{!isMobile && (
 				<div className="title text-capitalize">
-					{title}
+					<EditWrapper stringId={stringId}>
+            {title}
+					</EditWrapper>
 					{count > 0 && (
 						<ActionNotification
 							stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"

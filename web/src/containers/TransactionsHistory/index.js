@@ -187,6 +187,7 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
+				props.stringId= "TRANSACTION_HISTORY.TITLE_TRADES";
 				props.title = `${STRINGS["TRANSACTION_HISTORY.TITLE_TRADES"]}`;
 				props.headers = headers.trades;
 				props.data = trades;
@@ -197,6 +198,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = downloadUserTrades;
 				break;
 			case 1:
+        props.stringId= "TRANSACTION_HISTORY.TITLE_DEPOSITS";
 				props.title = STRINGS["TRANSACTION_HISTORY.TITLE_DEPOSITS"];
 				props.headers = headers.deposits;
 				props.data = deposits;
@@ -206,6 +208,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = downloadUserDeposit;
 				break;
 			case 2:
+        props.stringId= "TRANSACTION_HISTORY.TITLE_WITHDRAWALS";
 				props.title = STRINGS["TRANSACTION_HISTORY.TITLE_WITHDRAWALS"];
 				props.headers = headers.withdrawals;
 				props.data = withdrawals;
