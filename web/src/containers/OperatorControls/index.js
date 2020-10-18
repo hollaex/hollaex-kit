@@ -18,7 +18,7 @@ import AddLanguageModal from './components/AddLanguageModal';
 import UploadIcon from './components/UploadIcon';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
-import { pushTempContent, getTempLanguageKey } from 'utils/string';
+import { pushTempContent, getTempLanguageKey, filterOverwrites } from 'utils/string';
 
 class OperatorControls extends Component {
 
@@ -253,8 +253,9 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites: strings, iconsOverwrites: icons, languageKeys } = this.state;
+    const { overwrites, iconsOverwrites: icons, languageKeys } = this.state;
     const valid_languages = languageKeys.join();
+    const strings = filterOverwrites(overwrites)
 
     const configs = {
       strings,

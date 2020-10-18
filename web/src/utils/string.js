@@ -163,6 +163,20 @@ export const getAllStrings = (validLanguages = getValidLanguages(), content = ST
 	return allStrings.filter(({key}) => !EXCLUSIONS.includes(key));
 }
 
+export const filterOverwrites = (overwrites) => {
+  const result = {}
+  Object.entries(overwrites).forEach(([lang, content]) => {
+  	result[lang] = {}
+  	Object.entries(content).forEach(([key, string]) => {
+  		if (!EXCLUSIONS.includes(key)) {
+  			result[lang][key] = string;
+			}
+		})
+  })
+
+	return result;
+}
+
 const EXCLUSIONS = [
 	"FOOTER.FOOTER_LEGAL",
 	"LEGAL.PRIVACY_POLICY.TEXTS",
