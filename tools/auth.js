@@ -805,11 +805,8 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 		})
 		.then(() => {
 			return {
-				id: userId,
-				key: {
-					apiKey: key,
-					secret
-				}
+				apiKey: key,
+				secret
 			};
 		});
 };
