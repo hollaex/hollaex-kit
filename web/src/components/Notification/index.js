@@ -14,6 +14,7 @@ import InviteFriends from './InviteFriends';
 import StakeToken from './StakeToken';
 import ReferralSuccess from './ReferralSuccess';
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
 	switch (type) {
@@ -58,7 +59,8 @@ const Notification = (props) => (
 
 Notification.defaultProps = {
 	type: '',
-	data: {}
+	data: {},
+	icons: {},
 };
 
-export default Notification;
+export default withConfig(Notification);

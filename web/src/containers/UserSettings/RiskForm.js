@@ -6,10 +6,12 @@ import renderFields from "../../components/Form/factoryFields";
 import STRINGS from "../../config/localizedStrings";
 import { formatBaseAmount } from "../../utils/currency";
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from "../../config/constants";
+import { EditWrapper } from 'components';
 
 export const generateHeaders = onAdjustPortfolio => {
 	return [
 		{
+			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO',
 			label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO"],
 			key: "percentage",
 			renderCell: ({ id, percentage }, key, index) => (
@@ -32,12 +34,14 @@ export const generateHeaders = onAdjustPortfolio => {
 						>
 							{STRINGS["USER_SETTINGS.RISK_MANAGEMENT.ADJUST"]}
 						</span>
+						<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST" />
 					</span>
 				</td>
 			)
 		},
 		!IS_XHT
 			? {
+				stringId: 'USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET',
 				label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET"],
 				key: "assetValue",
 				renderCell: ({ id, assetValue }, key, index) => (
@@ -55,6 +59,7 @@ export const generateHeaders = onAdjustPortfolio => {
 			}
 			: {},
 		{
+			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT',
 			label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT"],
 			key: "adjust",
 			className: "text-right",
@@ -72,6 +77,7 @@ export const generateHeaders = onAdjustPortfolio => {
 export const generateWarningFormValues = () => ({
 	popup_warning: {
 		type: "toggle",
+		stringId: 'USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP',
 		label: STRINGS["USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP"],
 		className: "toggle-wrapper",
 		toggleOnly: true
@@ -128,17 +134,23 @@ class RiskForm extends Component {
 				title: STRINGS["USER_SETTINGS.CREATE_ORDER_WARING"],
 				content: (
 					<div>
-						<p>{STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT"]}</p>
-						{!IS_XHT
-							? <p>
-								{STRINGS.formatString(
-									STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1"],
-									fullname,
-									totalAssets
-								).join("")}
+						<p>
+							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT">
+								{STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT"]}
+							</EditWrapper>
+						</p>
+            {!IS_XHT
+              ? <p>
+								<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1">
+                  {STRINGS.formatString(
+                    STRINGS["USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1"],
+                    fullname,
+                    totalAssets
+                  ).join("")}
+								</EditWrapper>
 							</p>
-							: null
-						}
+              : null
+            }
 						<Table
 							rowClassName="pt-2 pb-2"
 							headers={generateHeaders(onAdjustPortfolio)}
@@ -155,6 +167,7 @@ class RiskForm extends Component {
 			<div>
 				<form onSubmit={handleSubmit}>
 					<Accordion sections={sections} />
+					<EditWrapper stringId="SETTING_BUTTON" />
 					<Button
 						className="mt-4"
 						label={STRINGS["SETTING_BUTTON"]}

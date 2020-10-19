@@ -6,6 +6,7 @@ import { Button, IconTitle, ActionNotification } from '../';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
+import { EditWrapper } from 'components';
 
 class Form extends Component {
 	state = {
@@ -29,6 +30,7 @@ class Form extends Component {
 		const formValues = {
 			otp_code: {
 				type: 'number',
+				stringId: 'OTP_FORM.OTP_LABEL,OTP_FORM.OTP_PLACEHOLDER,OTP_FORM.ERROR_INVALID',
 				label: STRINGS["OTP_FORM.OTP_LABEL"],
 				placeholder: STRINGS["OTP_FORM.OTP_PLACEHOLDER"],
 				validate: [required, validateOtp(STRINGS["OTP_FORM.ERROR_INVALID"])],
@@ -60,22 +62,25 @@ class Form extends Component {
 		return (
 			<div className="otp_form-wrapper">
 				<IconTitle
+					stringId="OTP_FORM.OTP_TITLE"
 					text={STRINGS["OTP_FORM.OTP_TITLE"]}
-					iconPath={ICONS.OTP_CODE}
-					useSvg={true}
+					iconId="OTP_CODE"
+					iconPath={ICONS["OTP_CODE"]}
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">
-						{STRINGS["OTP_FORM.OTP_FORM_TITLE"]}
+						<EditWrapper stringId="OTP_FORM.OTP_FORM_TITLE">
+              {STRINGS["OTP_FORM.OTP_FORM_TITLE"]}
+					  </EditWrapper>
 					</span>
 					{onClickHelp && (
 						<ActionNotification
 							stringId="NEED_HELP_TEXT"
 							text={STRINGS["NEED_HELP_TEXT"]}
 							onClick={onClickHelp}
-							iconPath={ICONS.BLUE_QUESTION}
+							iconId="BLUE_QUESTION"
+							iconPath={ICONS["BLUE_QUESTION"]}
 							status="information"
-							useSvg={true}
 						/>
 					)}
 				</div>
@@ -84,6 +89,7 @@ class Form extends Component {
 						{renderFields(formValues)}
 						{error && <div className="warning_text">{error}</div>}
 					</div>
+					<EditWrapper stringId="OTP_FORM.OTP_BUTTON" />
 					<Button
 						label={STRINGS["OTP_FORM.OTP_BUTTON"]}
 						disabled={pristine || submitting || !valid}

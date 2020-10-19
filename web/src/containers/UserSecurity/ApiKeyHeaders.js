@@ -26,6 +26,7 @@ export const generateHeaders = (revokeToken, otp_enabled, ICONS) => {
 			)
 		},
 		{
+			stringId: 'DEVELOPERS_TOKENS_TABLE.NAME',
 			label: STRINGS["DEVELOPERS_TOKENS_TABLE.NAME"],
 			key: 'name',
 			className: 'tokens-name',
@@ -36,6 +37,7 @@ export const generateHeaders = (revokeToken, otp_enabled, ICONS) => {
 			)
 		},
 		{
+			stringId: 'DEVELOPERS_TOKENS_TABLE.API_KEY',
 			label: STRINGS["DEVELOPERS_TOKENS_TABLE.API_KEY"],
 			key: 'apiKey',
 			className: 'text-center tokens-tokenkey',
@@ -49,6 +51,7 @@ export const generateHeaders = (revokeToken, otp_enabled, ICONS) => {
 			)
 		},
 		{
+			stringId: 'DEVELOPERS_TOKENS_TABLE.SECRET',
 			label: STRINGS["DEVELOPERS_TOKENS_TABLE.SECRET"],
 			key: 'secret',
 			className: 'text-center tokens-tokenkey',
@@ -62,6 +65,7 @@ export const generateHeaders = (revokeToken, otp_enabled, ICONS) => {
 			)
 		},
 		{
+			stringId: 'DEVELOPERS_TOKENS_TABLE.CREATED',
 			label: STRINGS["DEVELOPERS_TOKENS_TABLE.CREATED"],
 			key: 'created',
 			className: 'tokens-cell tokens-date',
@@ -72,6 +76,7 @@ export const generateHeaders = (revokeToken, otp_enabled, ICONS) => {
 			)
 		},
 		{
+			stringId: 'DEVELOPERS_TOKENS_TABLE.REVOKE,DEVELOPERS_TOKENS_TABLE.REVOKED,DEVELOPERS_TOKENS_TABLE.REVOKE_TOOLTIP',
 			label: STRINGS["DEVELOPERS_TOKENS_TABLE.REVOKE"],
 			key: 'revoke',
 			className: 'text-center tokens-revoke',

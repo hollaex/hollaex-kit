@@ -41,11 +41,11 @@ const Paginator = ({
 					stringId="PREVIOUS_PAGE"
 					text={STRINGS["PREVIOUS_PAGE"]}
 					status="information"
+					iconId="BLUE_ARROW_LEFT"
 					iconPath={ICONS["BLUE_ARROW_LEFT"]}
 					textPosition="left"
 					iconPosition="left"
 					rotateIfLtr={true}
-					useSvg={true}
 				/>
 			</div>
 			{renderPageCount(currentPage, totalPages)}
@@ -60,9 +60,9 @@ const Paginator = ({
 					stringId="NEXT_PAGE"
 					text={STRINGS["NEXT_PAGE"]}
 					status="information"
+					iconId="BLUE_ARROW_RIGHT"
 					iconPath={ICONS["BLUE_ARROW_RIGHT"]}
 					rotateIfRtl={true}
-					useSvg={true}
 				/>
 			</div>
 		</div>

@@ -12,6 +12,7 @@ import {
 } from "config/constants";
 import { formatToCurrency } from "utils/currency";
 import AssetCard from './AssetCard';
+import { EditWrapper } from 'components';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeTheme }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -37,9 +38,19 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 	return (
 		<div className="summary-section_2">
 			<div className="summary-content-txt assets-description">
-				<div>{STRINGS["SUMMARY.ACCOUNT_ASSETS_TXT_1"]}</div>
+				<div>
+					<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">
+            {STRINGS["SUMMARY.ACCOUNT_ASSETS_TXT_1"]}
+					</EditWrapper>
+				</div>
 				{SHOW_SUMMARY_ACCOUNT_DETAILS
-					? <div>{STRINGS["SUMMARY.ACCOUNT_ASSETS_TXT_2"]}</div>
+					? (
+						<div>
+							<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_2">
+                {STRINGS["SUMMARY.ACCOUNT_ASSETS_TXT_2"]}
+							</EditWrapper>
+						</div>
+					)
 					: null
 				}
 			</div>
@@ -50,6 +61,9 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 						'w-100': isMobile
 					})}
 				>
+					<div className="d-flex justify-content-end">
+						<EditWrapper stringId="ZERO_ASSET,DEPOSIT_ASSETS,OPEN_WALLET" />
+					</div>
 					<div
 						className={
 							classnames(

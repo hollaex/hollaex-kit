@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import debounce from 'lodash.debounce';
 import classnames from 'classnames';
 import { EditFilled } from '@ant-design/icons';
@@ -15,6 +17,8 @@ import StringSettingsModal from './components/StringSettings';
 import AddLanguageModal from './components/AddLanguageModal';
 import UploadIcon from './components/UploadIcon';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { setLanguage } from 'actions/appActions';
+import { pushTempContent, getTempLanguageKey, filterOverwrites } from 'utils/string';
 
 class OperatorControls extends Component {
 
@@ -227,6 +231,7 @@ class OperatorControls extends Component {
       editableElementIds: [],
     }, () => {
       initializeStrings(saveData);
+      this.forceRender();
       this.enablePublish();
       if (source) {
         this.openAllStringsModal();
@@ -248,8 +253,9 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites: strings, iconsOverwrites: icons, languageKeys } = this.state;
+    const { overwrites, iconsOverwrites: icons, languageKeys } = this.state;
     const valid_languages = languageKeys.join();
+    const strings = filterOverwrites(overwrites)
 
     const configs = {
       strings,
@@ -426,9 +432,17 @@ class OperatorControls extends Component {
       iconsOverwrites: { ...prevState.iconsOverwrites, ...icons },
     }), () => {
       updateIcons(icons);
+      this.forceRender();
       this.closeUploadIcon();
       this.enablePublish();
     });
+  }
+
+  forceRender = () => {
+    const { activeLanguage, changeLanguage } = this.props;
+    pushTempContent(activeLanguage)
+    changeLanguage(getTempLanguageKey(activeLanguage))
+    setTimeout(() => changeLanguage(activeLanguage), 300)
   }
 
   openUploadIcon = () => {
@@ -569,7 +583,7 @@ class OperatorControls extends Component {
             })
           }
           <div
-            className="underline pointer pl-2 pt-4"
+            className="underline-text pointer pl-2 pt-4"
             onClick={() => {
               this.closeEditModal()
               this.openAllStringsModal()
@@ -698,4 +712,12 @@ class OperatorControls extends Component {
   }
 }
 
-export default withConfig(OperatorControls);
+const mapStateToProps = (state) => ({
+  activeLanguage: state.app.language,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  changeLanguage: bindActionCreators(setLanguage, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(OperatorControls));

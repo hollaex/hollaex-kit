@@ -7,6 +7,7 @@ import { IconTitle, Notification, Button, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { sendSupportMail, NOTIFICATIONS, openContactForm } from '../../actions/appActions';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 
 class HelpfulResourcesForm extends Component {
@@ -61,14 +62,13 @@ class HelpfulResourcesForm extends Component {
 		return (
 			<div className="help-wrapper">
 				<IconTitle
-					iconId={activeTheme==='white' ? "QUESTION_MARK" : "QUESTION_MARK_COLOR"}
+					iconId="QUESTION_MARK,QUESTION_MARK_COLOR"
 					iconPath={activeTheme==='white' ? ICONS.QUESTION_MARK : ICONS.QUESTION_MARK_COLOR}
 					stringId="HELPFUL_RESOURCES_TEXT"
 					text={STRINGS["HELPFUL_RESOURCES_TEXT"]}
 					textType="title"
 					underline={true}
 					className="w-100"
-					useSvg={true}
 				/>
 				<div>
 					<div className='d-flex mt-5'>
@@ -83,6 +83,7 @@ class HelpfulResourcesForm extends Component {
 								href={STRINGS["HELP_EXIR_TUTORIAL_LINK"]}
 								text={STRINGS["HELP_EXIR_TUTORIAL_LINK"]}
 							/>
+							<EditWrapper stringId="HELP_RESOURCE_GUIDE_TEXT" />
 						</div>
 						<div className="w-25" />
 					</div>
@@ -98,13 +99,20 @@ class HelpfulResourcesForm extends Component {
 								href={STRINGS["HELP_TELEGRAM_LINK"]}
 								text={STRINGS["HELP_TELEGRAM_LINK"]}
 							/>
+							<EditWrapper stringId="HELP_TELEGRAM_TEXT,HELP_TELEGRAM_LINK" />
 						</div>
 						<div className="w-25" />
 					</div>
-					<div className='w-100 buttons-wrapper d-flex' >
-						<Button label={STRINGS["BACK_TEXT"]} onClick={onClose}/>
+					<div className="d-flex">
+						<div className="w-50">
+							<EditWrapper stringId="BACK_TEXT" />
+							<Button label={STRINGS["BACK_TEXT"]} onClick={onClose}/>
+						</div>
 						<div className='separator' />
-						<Button label={STRINGS["REQUEST_RESET_PASSWORD.SUPPORT"]} onClick={this.openNewForm}/>
+						<div className="w-50">
+							<EditWrapper stringId="REQUEST_RESET_PASSWORD.SUPPORT" />
+							<Button label={STRINGS["REQUEST_RESET_PASSWORD.SUPPORT"]} onClick={this.openNewForm}/>
+						</div>
 					</div>
 				</div>
 			</div>

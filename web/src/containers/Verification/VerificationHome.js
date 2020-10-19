@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import { IconTitle, HeaderSection, CustomTabBar, MobileTabBar } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiveTab, renderContent }) => {
     // if (activeTab < tabs.length) {
@@ -29,8 +30,16 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
                             }
                         )
                     }>
-                    <div className="mb-3">{STRINGS["USER_VERIFICATION.INFO_TXT"]}</div>
-                    <div className="mb-3">{STRINGS["USER_VERIFICATION.INFO_TXT_1"]}</div>
+                    <div className="mb-3">
+                      <EditWrapper stringId="USER_VERIFICATION.INFO_TXT">
+                        {STRINGS["USER_VERIFICATION.INFO_TXT"]}
+                      </EditWrapper>
+                    </div>
+                    <div className="mb-3">
+                      <EditWrapper stringId="USER_VERIFICATION.INFO_TXT_1">
+                        {STRINGS["USER_VERIFICATION.INFO_TXT_1"]}
+                      </EditWrapper>
+                    </div>
                 </div>
                 {!isMobile
                     ? <CustomTabBar activeTab={activeTab} setActiveTab={setActiveTab} {...tabProps} />

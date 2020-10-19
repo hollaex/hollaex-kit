@@ -5,6 +5,7 @@ import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { MAX_NUMBER_BANKS } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 const BankVerificationHome = ({ user, setActivePageContent, handleBack, icons: ICONS }) => {
 	const { bank_account } = user;
@@ -38,6 +39,7 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack, icons: I
 						)}
 						<div className="w-100">
 							<PanelInformationRow
+								stringId="USER_VERIFICATION.BANK_NAME"
 								label={STRINGS["USER_VERIFICATION.BANK_NAME"]}
 								information={account.bank_name}
 								className="title-font"
@@ -45,6 +47,7 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack, icons: I
 							/>
 							<div className="d-flex">
 								<PanelInformationRow
+									stringId="USER_VERIFICATION.ACCOUNT_NUMBER"
 									label={STRINGS["USER_VERIFICATION.ACCOUNT_NUMBER"]}
 									information={account.account_number}
 									className="mr-3 title-font"
@@ -69,14 +72,18 @@ const BankVerificationHome = ({ user, setActivePageContent, handleBack, icons: I
 							{STRINGS["USER_VERIFICATION.DOCUMENT_SUBMISSION"]}
 						</span>
 					)}
+					<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT,USER_VERIFICATION.DOCUMENT_SUBMISSION" />
 				</div>
 				{List}
 				{lastVerified.status === 3 &&
 				MAX_NUMBER_BANKS > bank_account.length ? (
-					<Button
-						label={STRINGS["USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT"]}
-						onClick={() => setActivePageContent('bank')}
-					/>
+					<div>
+						<EditWrapper stringId="USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT" />
+						<Button
+							label={STRINGS["USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT"]}
+							onClick={() => setActivePageContent('bank')}
+						/>
+					</div>
 				) : null}
 			</div>
 		);

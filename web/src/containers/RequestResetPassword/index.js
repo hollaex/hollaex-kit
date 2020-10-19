@@ -103,11 +103,12 @@ class RequestResetPassword extends Component {
 						)}
 					>
 						<IconTitle
+							iconId="ACCOUNT_RECOVERY"
 							iconPath={ICONS["ACCOUNT_RECOVERY"]}
+							stringId="REQUEST_RESET_PASSWORD.TITLE"
 							text={STRINGS["REQUEST_RESET_PASSWORD.TITLE"]}
 							textType="title"
 							underline={true}
-							useSvg={true}
 							className="w-100"
 							subtitle={STRINGS["REQUEST_RESET_PASSWORD.SUBTITLE"]}
 							actionProps={{

@@ -16,6 +16,7 @@ import {
 } from './HeaderSection';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
+import Image from 'components/Image';
 
 import { isMobile } from 'react-device-detect';
 const FORM_NAME = 'DocumentsVerification';
@@ -41,6 +42,7 @@ class DocumentsVerification extends Component {
 			idDocument: {
 				number: {
 					type: 'text',
+					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER',
 					label:
 						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL"],
 					placeholder:
@@ -54,6 +56,7 @@ class DocumentsVerification extends Component {
 				},
 				issued_date: {
 					type: 'date-dropdown',
+					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE',
 					label:
 						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL"],
 					validate: [
@@ -68,6 +71,7 @@ class DocumentsVerification extends Component {
 				},
 				expiration_date: {
 					type: 'date-dropdown',
+					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE',
 					label:
 						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL"],
 					validate: [
@@ -89,6 +93,7 @@ class DocumentsVerification extends Component {
 				},
 				front: {
 					type: 'file',
+					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT',
 					label:
 						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL"],
 					placeholder:
@@ -107,6 +112,7 @@ class DocumentsVerification extends Component {
 				},
 				back: {
 					type: 'file',
+					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.PROOF_OF_RESIDENCY',
 					label:
 						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL"],
 					placeholder:
@@ -125,6 +131,7 @@ class DocumentsVerification extends Component {
 				},
 				proof_of_residency: {
 					type: 'file',
+					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.SELFIE_PHOTO_ID',
 					label:
 						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL"],
 					placeholder:
@@ -180,7 +187,6 @@ class DocumentsVerification extends Component {
 			error,
 			// skip,
 			openContactForm,
-			activeLanguage,
 			icons: ICONS,
 		} = this.props;
 		const { formFields } = this.state;
@@ -196,7 +202,9 @@ class DocumentsVerification extends Component {
 					onSubmit={this.handleSubmit}
 				>
 					<HeaderSection
+						stringId="USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"
 						title={STRINGS["USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"]}
+						iconId="VERIFICATION_DOCUMENT_NEW"
 						icon={ICONS["VERIFICATION_DOCUMENT_NEW"]}
 						openContactForm={openContactForm}
 					>
@@ -209,6 +217,7 @@ class DocumentsVerification extends Component {
 					{formFields.proof_of_residency && (
 						<div>
 							<HeaderSection
+								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"
 								title={
 									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"]
 								}
@@ -222,6 +231,7 @@ class DocumentsVerification extends Component {
 					{formFields.selfieWithNote && (
 						<div>
 							<HeaderSection
+								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"
 								title={
 									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"]
 								}
@@ -229,10 +239,12 @@ class DocumentsVerification extends Component {
 								<SelfieWithPhotoId />
 							</HeaderSection>
 							<div className="my-2">
-								<img
-									src={activeLanguage === 'en' ? ICONS["SELF_KYC_ID_EN"] : ICONS["SELF_KYC_ID_EN"]}
-									className="verification_document-sample"
-									alt="document-sample" />
+								<Image
+										alt="document-sample"
+								    iconId="SELF_KYC_ID_EN"
+								    icon={ICONS["SELF_KYC_ID_EN"]}
+								    wrapperClassName="verification_document-sample"
+								/>
 							</div>
 							{renderFields(formFields.selfieWithNote)}
 						</div>

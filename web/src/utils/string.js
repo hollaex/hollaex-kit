@@ -1,6 +1,11 @@
 import moment from 'moment';
 
-import { LANGUAGE_KEY, DEFAULT_LANGUAGE } from '../config/constants';
+import {
+	LANGUAGE_KEY,
+	DEFAULT_LANGUAGE,
+	TEMP_KEY_LANGUAGE_RTL,
+  TEMP_KEY_LANGUAGE_LTR,
+} from '../config/constants';
 import STRINGS, { content as CONTENT } from 'config/localizedStrings';
 import { getValidLanguages } from 'utils/initialize';
 export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
@@ -66,6 +71,7 @@ export const getClasesForLanguage = (language = '', type = 'object') => {
 	switch (language) {
 		case 'fa':
 		case 'ar':
+		case TEMP_KEY_LANGUAGE_RTL:
 			return type === 'object' ? RTL_CLASSES_OBJECT : RTL_CLASSES_ARRAY;
 		default:
 			return type === 'object' ? LTR_CLASSES_OBJECT : LTR_CLASSES_ARRAY;
@@ -76,6 +82,7 @@ export const getFontClassForLanguage = (language = '') => {
 	switch (language) {
 		case 'fa':
 		case 'ar':
+		case TEMP_KEY_LANGUAGE_RTL:
 			return LANGUAGE_RTL;
 		default:
 			return '';
@@ -87,7 +94,9 @@ export const maskToken = (token = '') => {
 };
 
 export const setContent = (content) => {
+	const language = getLanguage()
   STRINGS.setContent(content);
+	STRINGS.setLanguage(language)
 };
 
 export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
@@ -102,6 +111,30 @@ export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
   }
 
   setContent(mergedContent)
+}
+
+export const getTempLanguageKey = (key = DEFAULT_LANGUAGE) => {
+  switch (key) {
+    case 'fa':
+    case 'ar':
+      return TEMP_KEY_LANGUAGE_RTL;
+    default:
+      return TEMP_KEY_LANGUAGE_LTR;
+  }
+}
+
+export const pushTempContent = (key = DEFAULT_LANGUAGE) => {
+  const content = STRINGS._props;
+  const TEMP_CONTENT_KEY = getTempLanguageKey(key);
+
+  const withTempContent = {
+    ...content,
+    [TEMP_CONTENT_KEY]: {
+      ...(content[key] ? content[key] : {})
+    }
+	}
+
+  setContent(withTempContent)
 }
 
 export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._props) => {
@@ -128,6 +161,20 @@ export const getAllStrings = (validLanguages = getValidLanguages(), content = ST
 	})
 
 	return allStrings.filter(({key}) => !EXCLUSIONS.includes(key));
+}
+
+export const filterOverwrites = (overwrites) => {
+  const result = {}
+  Object.entries(overwrites).forEach(([lang, content]) => {
+  	result[lang] = {}
+  	Object.entries(content).forEach(([key, string]) => {
+  		if (!EXCLUSIONS.includes(key)) {
+  			result[lang][key] = string;
+			}
+		})
+  })
+
+	return result;
 }
 
 const EXCLUSIONS = [

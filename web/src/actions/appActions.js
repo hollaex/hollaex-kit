@@ -304,7 +304,7 @@ export const getWaveAuction = () => {
 };
 
 export const getAnnouncement = () => dispatch => {
-	return axios.get('/plugins/announcements')
+	return axios.get('/plugins/announcement')
 		.then((res) => {
 			if (res.data && res.data.data) {
 				dispatch({ type: SET_APP_ANNOUNCEMENT, payload: { announcements: res.data.data } });

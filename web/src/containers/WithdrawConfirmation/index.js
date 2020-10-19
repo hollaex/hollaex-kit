@@ -51,7 +51,9 @@ class ConfirmWithdrawal extends Component {
         } else if (!is_success && error_txt) {
             childProps = {
                 titleSection: {
+                    iconId: "RED_WARNING",
                     iconPath: ICONS["RED_WARNING"],
+                    stringId: "ERROR_TEXT",
                     text: STRINGS["ERROR_TEXT"]
                 },
                 child: <div className='text-center mb-4'>
@@ -61,8 +63,10 @@ class ConfirmWithdrawal extends Component {
         } else {
             childProps = {
                 titleSection: {
+                    iconId: "GREEN_CHECK",
                     iconPath: ICONS["GREEN_CHECK"],
-                    text: STRINGS["SUCCESS_TEXT"]
+                    stringId: "SUCCESS_TEXT",
+                    text: STRINGS["SUCCESS_TEXT"],
                 },
                 useSvg: true,
                 child: <div className='text-center mb-4'>

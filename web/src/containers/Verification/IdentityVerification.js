@@ -15,6 +15,7 @@ import { COUNTRIES_OPTIONS } from '../../utils/countries';
 import { isMobile } from 'react-device-detect';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateUser } from '../../actions/userAction';
+import { EditWrapper } from 'components';
 
 const FORM_NAME = 'IdentityVerification';
 
@@ -39,6 +40,7 @@ class IdentityVerification extends Component {
 		const formFields = {
 			full_name: {
 				type: 'text',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_LABEL"],
 				placeholder:
@@ -49,6 +51,7 @@ class IdentityVerification extends Component {
 			},
 			gender: {
 				type: 'select',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_LABEL"],
 				placeholder:
@@ -56,12 +59,14 @@ class IdentityVerification extends Component {
 				options: [
 					{
 						value: false,
+						stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN',
 						label:
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN"],
 						icon: ICONS["GENDER_M"]
 					},
 					{
 						value: true,
+						stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN',
 						label:
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN"],
 						icon: ICONS["GENDER_F"]
@@ -72,6 +77,7 @@ class IdentityVerification extends Component {
 			},
 			dob: {
 				type: 'date-dropdown',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL',
 				language: 'en',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL"],
@@ -82,6 +88,7 @@ class IdentityVerification extends Component {
 			},
 			nationality: {
 				type: 'autocomplete',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_LABEL"],
 				placeholder:
@@ -92,6 +99,7 @@ class IdentityVerification extends Component {
 			},
 			country: {
 				type: 'autocomplete',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL"],
 				placeholder:
@@ -102,6 +110,7 @@ class IdentityVerification extends Component {
 			},
 			city: {
 				type: 'text',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL"],
 				placeholder:
@@ -111,6 +120,7 @@ class IdentityVerification extends Component {
 			},
 			address: {
 				type: 'text',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL"],
 				placeholder:
@@ -120,6 +130,7 @@ class IdentityVerification extends Component {
 			},
 			postal_code: {
 				type: 'text',
+				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_PLACEHOLDER',
 				label:
 					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL"],
 				placeholder:
@@ -175,13 +186,19 @@ class IdentityVerification extends Component {
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
+						stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"
 						title={
 							STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"]
 						}
+						iconId="VERIFICATION_ID_NEW"
 						icon={ICONS["VERIFICATION_ID_NEW"]}
 						openContactForm={openContactForm}
 					>
-						<div className="my-1 verification-info-txt">{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT"]}</div>
+						<div className="my-1 verification-info-txt">
+							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT">
+                {STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT"]}
+							</EditWrapper>
+						</div>
 					</HeaderSection>
 					{renderFields(formFields)}
 					{error && (
@@ -189,6 +206,7 @@ class IdentityVerification extends Component {
 					)}
 					<div className="d-flex">
 						<div className="w-50">
+							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button
 								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
@@ -196,6 +214,7 @@ class IdentityVerification extends Component {
 						</div>
 						<div className="separator" />
 						<div className="w-50">
+							<EditWrapper stringId="SUBMIT" />
 							<Button
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}

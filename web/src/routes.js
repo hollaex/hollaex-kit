@@ -45,7 +45,8 @@ import {
 	Settings,
 	Transfer,
 	AdminFees,
-	Init
+	Init,
+	AdminLogin
 } from './containers';
 
 import store from './store';
@@ -56,11 +57,12 @@ import {
 	isLoggedIn,
 	getToken,
 	removeToken,
-	getTokenTimestamp
+	getTokenTimestamp,
+	isAdmin
 } from './utils/token';
 import { getLanguage, getInterfaceLanguage, getLanguageFromLocal } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
-import { getExchangeInitialized } from './utils/initialize';
+import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
@@ -90,9 +92,18 @@ if (token) {
 
 function requireAuth(nextState, replace) {
 	const initialized = getExchangeInitialized();
+	const setup_completed = getSetupCompleted();
 	if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 		replace({
 			pathname: '/init'
+		});
+	} else if (!isLoggedIn() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin-login'
+		});
+	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin'
 		});
 	} else if (!isLoggedIn()) {
 		replace({
@@ -103,9 +114,18 @@ function requireAuth(nextState, replace) {
 
 function loggedIn(nextState, replace) {
 	const initialized = getExchangeInitialized();
+	const setup_completed = getSetupCompleted();
 	if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 		replace({
 			pathname: '/init'
+		});
+	} else if (!isLoggedIn() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin-login'
+		});
+	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin'
 		});
 	} else if (isLoggedIn()) {
 		replace({
@@ -378,6 +398,7 @@ export default (
 			onEnter={requireAuth}
 		/>
 		<Route path="expired-exchange" component={ExpiredExchange} />
+		<Route path="admin-login" name="admin-login" component={AdminLogin} />
 		<Route path="init" name="initWizard" component={Init} />
 		<Route path="*" component={NotFound} />
 	</Router>

@@ -199,15 +199,26 @@ export const generateWalletActionsText = (
 			? STRINGS["WALLET_BUTTON_BASE_DEPOSIT"]
 			: STRINGS["WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT"]
 	} ${nameToDisplay}`;
+
 	const withdrawText = `${
 		symbol === BASE_CURRENCY
 			? STRINGS["WALLET_BUTTON_BASE_WITHDRAW"]
 			: STRINGS["WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW"]
 	} ${nameToDisplay}`;
 
+	const stringId_withdraw = symbol === BASE_CURRENCY
+    ? "WALLET_BUTTON_BASE_WITHDRAW"
+    : "WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW"
+
+	const stringId_deposit = symbol === BASE_CURRENCY
+    ? "WALLET_BUTTON_BASE_DEPOSIT"
+    : "WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT"
+
 	return {
 		depositText,
-		withdrawText
+		withdrawText,
+    stringId_withdraw,
+    stringId_deposit,
 	};
 };
 

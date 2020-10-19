@@ -115,12 +115,12 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 					<ActionNotification
 						stringId="CANCEL"
 						text={STRINGS["CANCEL"]}
+						iconId="CANCEL_CROSS_ACTIVE"
 						iconPath={ICONS["CANCEL_CROSS_ACTIVE"]}
 						onClick={() => onCancel(id)}
 						className="relative"
 						status="information"
 						textPosition="left"
-						useSvg={true}
 						showActionText={true}
 					/>
 				</td>

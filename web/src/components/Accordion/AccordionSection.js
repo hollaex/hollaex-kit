@@ -1,11 +1,13 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSvg from 'react-svg';
+import Image from 'components/Image';
+import { EditWrapper } from 'components';
 import { ActionNotification } from '../';
 
 const AccordionSection = ({
 	accordionClassName = '',
 	index,
+	stringId,
 	title,
 	titleClassName = '',
 	titleInformation,
@@ -17,7 +19,8 @@ const AccordionSection = ({
 	notification,
 	subtitle = '',
 	showActionText = false,
-	icon = ''
+	icon = '',
+	iconId,
 }) => {
 	const onClick = () => {
 		if (!disabled) {
@@ -49,21 +52,28 @@ const AccordionSection = ({
 				<span className={classnames('sidebar_hub-icon', {
 					'd-flex align-items-center justify-content-center': icon
 				})}>
-					{icon && <span><ReactSvg path={icon} wrapperClassName="sidebar_hub-section-icon" /></span>}
-					<span
-						className={classnames(
-							'accordion_section_content_text',
-							titleClassName,
-							{ with_arrow: !disabled && allowClose }
-						)}
-					>
+					<span>
+							<Image
+								icon={icon}
+								wrapperClassName="sidebar_hub-section-icon"
+							/>
+					</span>
+					<EditWrapper stringId={stringId} iconId={iconId}>
+						<span
+							className={classnames(
+                'accordion_section_content_text',
+                titleClassName,
+                { with_arrow: !disabled && allowClose }
+              )}
+						>
 						{title}{' '}
-						{subtitle && (
-							<span className="accordion_section_content_text-subtitle">
+              {subtitle && (
+								<span className="accordion_section_content_text-subtitle">
 								{subtitle}
 							</span>
-						)}
+              )}
 					</span>
+					</EditWrapper>
 				</span>
 				{titleInformation}
 				{notification && (
@@ -75,7 +85,6 @@ const AccordionSection = ({
 								: openSection
 						}
 						showPointer={notification.allowClick}
-						useSvg={true}
 						showActionText={showActionText}
 					/>
 				)}

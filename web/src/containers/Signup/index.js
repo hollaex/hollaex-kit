@@ -13,6 +13,7 @@ import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getLogo } from 'utils/icon';
 
 let errorTimeOut = null;
 
@@ -148,10 +149,7 @@ class Signup extends Component {
 		}
 
 		const formFields = generateFormFields(STRINGS, activeTheme, constants.links, isReferral);
-		let path = constants.logo_path;
-		if (activeTheme === 'dark') {
-			path = constants.logo_black_path;
-		}
+    const path = getLogo(activeTheme, constants, ICONS);
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -165,11 +163,11 @@ class Signup extends Component {
 					)}
 				>
 					<IconTitle
+						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
 						iconPath={path}
 						text={STRINGS["SIGNUP_TEXT"]}
 						textType="title"
 						underline={true}
-						useSvg={false}
 						isLogo={true}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"

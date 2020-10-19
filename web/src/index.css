@@ -211,7 +211,7 @@ table th {
 .justify-content-end {
   justify-content: flex-end; }
 
-.underline {
+.underline-text {
   text-decoration: underline; }
 
 .dark-app-body {
@@ -3990,6 +3990,9 @@ table th {
     align-items: center; }
   .init-container .setup-container .email-icon {
     width: 10rem; }
+  .init-container .setup-container .map-icon {
+    width: 15rem;
+    opacity: 0.6; }
   .init-container .setup-container .wrapper {
     align-items: center;
     color: #c4c4c4;

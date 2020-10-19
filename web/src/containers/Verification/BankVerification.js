@@ -13,6 +13,7 @@ import STRINGS from '../../config/localizedStrings';
 import { verifyBankData } from '../../actions/verificationActions';
 import { getErrorLocalized } from '../../utils/errors';
 import { isMobile } from 'react-device-detect';
+import { EditWrapper } from 'components';
 
 const FORM_NAME = 'BankVerification';
 
@@ -30,6 +31,7 @@ class BankVerification extends Component {
 
 		formFields.bank_name = {
 			type: 'text',
+			stringId: 'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL,USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_PLACEHOLDER',
 			label:
 				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL"],
 			placeholder:
@@ -39,6 +41,7 @@ class BankVerification extends Component {
 		};
 		formFields.account_number = {
 			type: 'text',
+			stringId: 'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL,USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER,USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH',
 			label:
 				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL"],
 			placeholder:
@@ -87,7 +90,8 @@ class BankVerification extends Component {
 			valid,
 			error,
 			openContactForm,
-			icon
+			icon,
+			iconId,
 		} = this.props;
 		const { formFields } = this.state;
 		return (
@@ -99,16 +103,38 @@ class BankVerification extends Component {
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
+						stringId="USER_VERIFICATION.TITLE_BANK_ACCOUNT"
 						title={STRINGS["USER_VERIFICATION.TITLE_BANK_ACCOUNT"]}
+						iconId={iconId}
 						icon={icon}
 						openContactForm={openContactForm}
 					>
-					<div className="my-2">{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_1"]}</div>
-					<div className="my-2">{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_2"]}</div>
+					<div className="my-2">
+						<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_1">
+							{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_1"]}
+						</EditWrapper>
+					</div>
+					<div className="my-2">
+						<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_2">
+							{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_2"]}
+						</EditWrapper>
+					</div>
 					<ul className="pl-4">
-						<li className="my-1">{STRINGS["USER_VERIFICATION.BASE_WITHDRAWAL"]}</li>
-						<li className="my-1">{STRINGS["USER_VERIFICATION.BASE_DEPOSITS"]}</li>
-						<li className="my-1">{STRINGS["USER_VERIFICATION.WARNING.LIST_ITEM_3"]}</li>
+						<li className="my-1">
+							<EditWrapper stringId="USER_VERIFICATION.BASE_WITHDRAWAL">
+								{STRINGS["USER_VERIFICATION.BASE_WITHDRAWAL"]}
+							</EditWrapper>
+						</li>
+						<li className="my-1">
+							<EditWrapper stringId="USER_VERIFICATION.BASE_DEPOSITS">
+								{STRINGS["USER_VERIFICATION.BASE_DEPOSITS"]}
+							</EditWrapper>
+						</li>
+						<li className="my-1">
+							<EditWrapper stringId="USER_VERIFICATION.WARNING.LIST_ITEM_3">
+                {STRINGS["USER_VERIFICATION.WARNING.LIST_ITEM_3"]}
+							</EditWrapper>
+						</li>
 					</ul>
 					</HeaderSection>
 					{renderFields(formFields)}
@@ -117,6 +143,7 @@ class BankVerification extends Component {
 					)}
 					<div className="d-flex">
 						<div className="w-50">
+							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button 
 								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
 								onClick={this.onGoBack}
@@ -124,6 +151,7 @@ class BankVerification extends Component {
 						</div>
 						<div className="separator" />
 						<div className="w-50">
+							<EditWrapper stringId="SUBMIT" />
 							<Button
 								label={STRINGS["SUBMIT"]}
 								type="button"
