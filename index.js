@@ -695,6 +695,8 @@ class HollaEx {
 	 * Get all orders for the exchange on the network
 	 * @param {number} userId - User id on network. Leave blank to get all orders for the exchange
 	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
+	 * @param {string} side - Side of orders to query e.g. buy, sell
+	 * @param {string} type - Type of orders to query e.g. active, stop
 	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} page - Page of trades data. Default: 1
 	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
@@ -703,7 +705,7 @@ class HollaEx {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {array} Array of queried orders
 	 */
-	getAllOrderNetwork(userId, symbol, side, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getAllOrderNetwork(userId, symbol, side, type, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -716,6 +718,9 @@ class HollaEx {
 		}
 		if (side) {
 			path += `&side=${side}`;
+		}
+		if (type) {
+			path += `&type=${type}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
