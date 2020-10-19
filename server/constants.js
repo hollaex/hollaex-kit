@@ -21,6 +21,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `order:${symbolOrUserId}`;
 		case 'wallet':
 			return `wallet:${symbolOrUserId}`;
+		case 'deposit':
+			return `deposit:${symbolOrUserId}`;
 		default:
 			return;
 	}
@@ -38,6 +40,7 @@ exports.INIT_CHANNEL = 'channel:init';
 
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 
+exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
 exports.WS_USER_TRADE_TYPE = 'trade';
 exports.WS_USER_ORDER_QUEUED_TYPE = 'order_queued';
 exports.WS_USER_ORDER_PROCESSED_TYPE = 'order_processed';
