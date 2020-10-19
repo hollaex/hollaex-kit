@@ -56,30 +56,30 @@ const cancelUserOrderByEmail = (email, orderId) => {
 		});
 };
 
-const getAllExchangeOrders = (symbol, side, limit, page, orderBy, order, startDate, endDate) => {
+const getAllExchangeOrders = (symbol, side, type, limit, page, orderBy, order, startDate, endDate) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getNodeLib().getAllOrderNetwork(undefined, symbol, side, limit, page, orderBy, order, startDate, endDate);
+	return getNodeLib().getAllOrderNetwork(undefined, symbol, side, type, limit, page, orderBy, order, startDate, endDate);
 };
 
-const getAllUserOrdersByKitId = (userKitId, symbol, side, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByKitId = (userKitId, symbol, side, type, limit, page, orderBy, order, startDate, endDate) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, limit, page, orderBy, order, startDate, endDate);
+			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, type, limit, page, orderBy, order, startDate, endDate);
 		});
 };
 
-const getAllUserOrdersByEmail = (email, symbol, side, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByEmail = (email, symbol, side, type, limit, page, orderBy, order, startDate, endDate) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
 	return getUserByEmail(email)
 		.then((user) => {
-			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, limit, page, orderBy, order, startDate, endDate);
+			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, type, limit, page, orderBy, order, startDate, endDate);
 		});
 };
 
