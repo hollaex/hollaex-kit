@@ -1035,6 +1035,58 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /admin/tier:
+    x-swagger-router-controller: tier
+    post:
+      description: Make a new Tier
+      operationId: postTier
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Tier object
+          schema:
+            $ref: "#/definitions/PostTierBody"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TierObject"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      description: Update tier
+      operationId: putTier
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Tier object
+          schema:
+            $ref: "#/definitions/PutTierBody"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TierObject"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /user/orders:
     x-swagger-router-controller: order
     get:
@@ -4321,6 +4373,51 @@ definitions:
           type: number
         low:
           type: number
+  PutTierBody:
+    type: object
+    required:
+      - level
+    properties:
+      level:
+        type: number
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      deposit_limit:
+        type: number
+        format: double
+      withdrawal_limit:
+        type: number
+        format: double
+      fees:
+        type: object
+  PostTierBody:
+    type: object
+    required:
+      - level
+      - name
+      - description
+      - deposit_limit
+      - withdrawal_limit
+      - fees
+    properties:
+      level:
+        type: number
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      deposit_limit:
+        type: number
+        format: double
+      withdrawal_limit:
+        type: number
+        format: double
+      fees:
+        type: object
   TierObject:
     type: object
     required:
