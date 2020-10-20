@@ -94,7 +94,7 @@ const updateTier = (level, updateData) => {
 				updateData.fees
 				&& updateData.fees.maker
 			) {
-				updatedMakerFee = { ...updatedMakerFee, ...updateData.fees.maker };
+				updatedMakerFee = updateData.fees.maker;
 			}
 
 			let updatedTakerFee = tier.fees.taker;
@@ -102,7 +102,7 @@ const updateTier = (level, updateData) => {
 				updateData.fees
 				&& updateData.fees.taker
 			) {
-				updatedTakerFee = { ...updatedTakerFee, ...updateData.fees.taker };
+				updatedTakerFee = updateData.fees.taker;
 			}
 
 			if (updateData.name) {
