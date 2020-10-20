@@ -9,5 +9,6 @@ module.exports = {
 	user: require('./user'),
 	balance: require('./balance'),
 	image: require('./image'),
-	transaction: require('./transaction')
+	transaction: require('./transaction'),
+	tier: require('./tier')
 };

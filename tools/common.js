@@ -14,6 +14,7 @@ const {
 	SEND_CONTACT_US_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
+	GET_TIERS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
 	GET_FROZEN_USERS
@@ -42,6 +43,19 @@ const subscribedToCoin = (coin) => {
 
 const subscribedToPair = (pair) => {
 	return getKitPairs().includes(pair);
+};
+
+const getKitTiers = () => {
+	return GET_TIERS();
+};
+
+const getKitTier = (tier) => {
+	const result = GET_TIERS()[tier];
+	if (!result) {
+		throw new Error('Tier does not exist');
+	} else {
+		return result;
+	}
 };
 
 const getKitConfig = () => {
@@ -316,6 +330,8 @@ module.exports = {
 	getKitConfig,
 	getKitSecrets,
 	subscribedToCoin,
+	getKitTier,
+	getKitTiers,
 	getKitCoin,
 	getKitCoins,
 	getKitCoinsConfig,
