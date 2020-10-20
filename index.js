@@ -895,6 +895,26 @@ class HollaEx {
 	}
 
 	/**
+	 * Get TradingView trade history HOLCV for all pairs
+	 * @param {string} from - Starting date of trade history in UNIX timestamp format
+	 * @param {string} to - Ending date of trade history in UNIX timestamp format
+	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
+	 * @return {array} Array of objects with trade history info
+	 */
+	getAllChartsEngine(from, to, resolution) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/charts?from=${from}&to=${to}&resolution=${resolution}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	/**
 	 * Get TradingView udf config
 	 * @return {object} Object with TradingView udf config
 	 */
