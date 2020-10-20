@@ -1039,6 +1039,11 @@ paths:
           enum: ['buy', 'sell']
           type: string
         - in: query
+          name: type
+          description: Order type e.g. active, stop
+          required: false
+          type: string
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -2158,6 +2163,11 @@ paths:
           description: buy or sell
           required: false
           enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: type
+          description: Order type e.g. active, stop
+          required: false
           type: string
         - in: query
           name: limit
