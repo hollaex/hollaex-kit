@@ -1,7 +1,7 @@
 'use strict';
 
 const { addSubscriber, removeSubscriber, getChannels, resetChannels } = require('./channel');
-const { WEBSOCKET_CHANNEL } = require('../constants');
+const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
 const { loggerWebsocket } = require('../config/logger');
@@ -13,6 +13,15 @@ const {
 	WS_MISSING_HEADER,
 	WS_INVALID_TOPIC
 } = require('../messages');
+const { subscriber } = require('../db/pubsub');
+
+subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
+subscriber.on('message', (channel, data) => {
+	if (channel === WS_PUBSUB_DEPOSIT_CHANNEL) {
+		data = JSON.parse(data);
+		handleHubData(data);
+	}
+});
 
 let publicData = {
 	orderbook: {},
@@ -58,6 +67,12 @@ const initializeTopic = (topic, ws, symbol) => {
 				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			}
 			break;
+		case 'deposit':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
 	}
@@ -93,6 +108,13 @@ const terminateTopic = (topic, ws, symbol) => {
 			if (!getChannels()[WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId)]) {
 				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 			}
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
+			break;
+		case 'deposit':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws, 'private');
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
 			break;
 		default:
@@ -171,6 +193,12 @@ const terminateClosedChannels = (ws) => {
 		} catch (err) {
 			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}
+
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('deposit', ws.auth.sub.networkId), ws, 'private');
+		} catch (err) {
+			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
+		}
 	}
 };
 
@@ -197,6 +225,7 @@ const handleHubData = (data) => {
 			break;
 		case 'order':
 		case 'wallet':
+		case 'deposit':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
