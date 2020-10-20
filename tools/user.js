@@ -537,6 +537,21 @@ const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
 	return getUser({ kit_id }, rawData, networkData);
 };
 
+const getUserTier = (user_id) => {
+	return getUser({ user_id }, true)
+		.then((user) => {
+			if (user.verification_level < 1) {
+				throw new Error('User is not verified');
+			}
+			return dbQuery.findOne('tier', {
+				where: {
+					id: user.verification_level
+				},
+				raw: true
+			});
+		});
+};
+
 const getUserByNetworkId = (network_id, rawData = true, networkData = false) => {
 	if (!network_id) {
 		return reject(new Error(PROVIDE_NETWORK_ID));
@@ -1162,6 +1177,7 @@ const getUserStats = (userId) => {
 
 module.exports = {
 	loginUser,
+	getUserTier,
 	createUser,
 	getUserByEmail,
 	getUserByKitId,
