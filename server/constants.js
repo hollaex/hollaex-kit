@@ -69,6 +69,7 @@ const client = redis.createClient(redisConfig.client);
 let configuration = {
 	coins: {},
 	pairs: {},
+	tiers: {},
 	kit: {
 		info: {},
 		color: {},
@@ -122,6 +123,7 @@ subscriber.on('message', (channel, message) => {
 				break;
 			case 'update':
 				if (data.info) updateKitInfo(data.info);
+				if (data.tiers) updateTiers(data.tiers);
 				if (data.kit) updateKit(data.kit);
 				if (data.secrets) updateSecrets(data.secrets);
 				break;
@@ -182,8 +184,14 @@ const resetAllConfig = () => {
 	setRedisData();
 };
 
+const updateTiers = (newTiers) => {
+	Object.assign(configuration.tiers, newTiers);
+	setRedisData();
+};
+
 const updateKitInfo = (newInfo) => {
 	Object.assign(configuration.kit.info, newInfo);
+	setRedisData();
 };
 
 const updateKit = (newKitConfig) => {
@@ -211,6 +219,7 @@ const setRedisData = () => {
 
 exports.GET_COINS = () => configuration.coins;
 exports.GET_PAIRS = () => configuration.pairs;
+exports.GET_TIERS = () => configuration.tiers;
 exports.GET_KIT_CONFIG = () => configuration.kit;
 exports.GET_KIT_SECRETS = () => secrets;
 exports.GET_FROZEN_USERS = () => frozenUsers;
@@ -332,6 +341,8 @@ exports.AVAILABLE_PLUGINS = [
 ];
 
 exports.REQUIRED_XHT = 100;
+
+exports.DEFAULT_TRADING_FEE = 0.2; //percent
 
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
