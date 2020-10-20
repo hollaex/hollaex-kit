@@ -52,6 +52,7 @@ const createTier = (level, name, description, deposit_limit, withdrawal_limit, f
 					}
 				})
 			);
+			return tier;
 		});
 };
 
