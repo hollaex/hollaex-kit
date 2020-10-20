@@ -8,7 +8,7 @@ const tiers = [
 		description: 'basic tier',
 		deposit_limit: 0,
 		withdrawal_limit: 0,
-		fees: {}
+		fees: JSON.stringify({})
 	},
 	{
 		id: 2,
@@ -16,7 +16,7 @@ const tiers = [
 		description: 'vip tier',
 		deposit_limit: 0,
 		withdrawal_limit: 0,
-		fees: {}
+		fees: JSON.stringify({})
 	}
 ];
 
