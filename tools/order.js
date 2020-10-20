@@ -5,7 +5,7 @@ const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { DEFAULT_TRADING_FEE } = require(`${SERVER_PATH}/constants`);
 const { parse } = require('json2csv');
-const { subscribedToPair, subscribedToCoin } = require('./common');
+const { subscribedToPair, subscribedToCoin, getKitTier } = require('./common');
 const { reject } = require('bluebird');
 const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV } = require('../messages');
 const dbQuery = require('./database/query');
@@ -18,8 +18,8 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 		return reject(new Error(INVALID_COIN(feeCoin)));
 	}
 	return getUserByKitId(userKitId)
-		.then(async (user) => {
-			const tier = await dbQuery.findOne('tier', { where: { id: user.verificatin_level }, raw: true });
+		.then((user) => {
+			const tier = getKitTier(user.verification_level);
 			if (!tier) {
 				throw new Error('User tier not found');
 			}
@@ -43,8 +43,8 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, feeC
 		return reject(new Error(INVALID_COIN(feeCoin)));
 	}
 	return getUserByEmail(email)
-		.then(async (user) => {
-			const tier = await dbQuery.findOne('tier', { where: { id: user.verificatin_level }, raw: true });
+		.then((user) => {
+			const tier = getKitTier(user.verification_level);
 			if (!tier) {
 				throw new Error('User tier not found');
 			}
