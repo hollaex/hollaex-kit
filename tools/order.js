@@ -3,28 +3,60 @@
 const { getUserByKitId, getUserByEmail } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { DEFAULT_TRADING_FEE } = require(`${SERVER_PATH}/constants`);
 const { parse } = require('json2csv');
-const { subscribedToPair } = require('./common');
+const { subscribedToPair, subscribedToCoin } = require('./common');
 const { reject } = require('bluebird');
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV } = require('../messages');
+const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV } = require('../messages');
+const dbQuery = require('./database/query');
 
-const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0) => {
+const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, feeCoin) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
+	if (feeCoin && !subscribedToCoin(feeCoin)) {
+		return reject(new Error(INVALID_COIN(feeCoin)));
+	}
 	return getUserByKitId(userKitId)
-		.then((user) => {
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
+		.then(async (user) => {
+			const tier = await dbQuery.findOne('tier', { where: { id: user.verificatin_level }, raw: true });
+			if (!tier) {
+				throw new Error('User tier not found');
+			}
+			const feeData = {};
+			feeData.fee_structure = {
+				maker: tier.fees.maker[symbol] || DEFAULT_TRADING_FEE,
+				taker: tier.fees.taker[symbol] || DEFAULT_TRADING_FEE
+			};
+			if (feeCoin) {
+				feeData.fee_coin = feeCoin;
+			}
+			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
 		});
 };
 
-const createUserOrderByEmail = (email, symbol, side, size, type, price = 0) => {
+const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, feeCoin) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
+	if (feeCoin && !subscribedToCoin(feeCoin)) {
+		return reject(new Error(INVALID_COIN(feeCoin)));
+	}
 	return getUserByEmail(email)
-		.then((user) => {
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
+		.then(async (user) => {
+			const tier = await dbQuery.findOne('tier', { where: { id: user.verificatin_level }, raw: true });
+			if (!tier) {
+				throw new Error('User tier not found');
+			}
+			const feeData = {};
+			feeData.fee_structure = {
+				maker: tier.fees.maker[symbol] || DEFAULT_TRADING_FEE,
+				taker: tier.fees.taker[symbol] || DEFAULT_TRADING_FEE
+			};
+			if (feeCoin) {
+				feeData.fee_coin = feeCoin;
+			}
+			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
 		});
 };
 
