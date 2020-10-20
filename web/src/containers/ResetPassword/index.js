@@ -81,14 +81,16 @@ class ResetPassword extends Component {
 					<IconTitle
 						iconId="SET_NEW_PASSWORD"
 						iconPath={ICONS['SET_NEW_PASSWORD']}
+						stringId="RESET_PASSWORD.TITLE"
 						text={STRINGS["RESET_PASSWORD.TITLE"]}
 						textType="title"
 						underline={true}
 						className="w-100"
 						subtitle={STRINGS["RESET_PASSWORD.SUBTITLE"]}
-						useSvg={true}
 						actionProps={{
+							stringId: "HELP_TEXT",
 							text: STRINGS["HELP_TEXT"],
+							iconId: "BLUE_QUESTION",
 							iconPath: ICONS['BLUE_QUESTION'],
 							onClick: this.onOpenDialog,
 							useSvg: true

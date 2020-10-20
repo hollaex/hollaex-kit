@@ -8,10 +8,12 @@ import { Button } from '../../components';
 import { required, username } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 export const generateUsernameFormValues = (disabled = false) => ({
 	username: {
 		type: 'text',
+		stringId: 'USERNAME_LABEL,USERNAME_PLACEHOLDER',
 		validate: [required, username],
 		label: STRINGS["USERNAME_LABEL"],
 		placeholder: STRINGS["USERNAME_PLACEHOLDER"],
@@ -50,8 +52,10 @@ class Form extends Component {
 						className="warning_text mb-4"
 						displayError={true}
 						error={STRINGS["USERNAME_WARNING"]}
+						stringId="USERNAME_WARNING"
 					/>
 				)}
+				<EditWrapper stringId="SETTING_BUTTON" />
 				<Button
 					label={STRINGS["SETTING_BUTTON"]}
 					disabled={pristine || submitting || !valid}

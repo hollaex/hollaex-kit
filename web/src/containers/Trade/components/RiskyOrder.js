@@ -15,7 +15,6 @@ const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
                 iconId="SETTING_RISK_MANAGE_WARNING_ICON"
                 iconPath={ICONS["SETTING_RISK_MANAGE_WARNING_ICON"]}
                 textType="title"
-                useSvg={true}
                 underline={true}
             />
             <div className="mt-1 mb-2" >

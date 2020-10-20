@@ -40,6 +40,7 @@ import RiskForm, { generateWarningFormValues } from './RiskForm';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { calculateBalancePrice } from '../../utils/currency';
+import { EditWrapper } from 'components';
 
 class UserSettings extends Component {
 	state = {
@@ -409,13 +410,20 @@ class UserSettings extends Component {
 					/>
 				)}
 				<HeaderSection
+					stringId="ACCOUNTS.TAB_SETTINGS"
 					title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
 					openContactForm={this.openContactForm}
 				>
 					<div className="header-content">
-						<div>{STRINGS["USER_SETTINGS.TITLE_TEXT_1"]}</div>
+						<div>
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
+                {STRINGS["USER_SETTINGS.TITLE_TEXT_1"]}
+							</EditWrapper>
+						</div>
 						<div className="mb-3">
-							{STRINGS["USER_SETTINGS.TITLE_TEXT_2"]}
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_2">
+                {STRINGS["USER_SETTINGS.TITLE_TEXT_2"]}
+							</EditWrapper>
 						</div>
 					</div>
 				</HeaderSection>

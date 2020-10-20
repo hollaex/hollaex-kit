@@ -38,6 +38,7 @@ export const generateFormValues = (
 	verification_level,
 	theme = getTheme(),
 	icon,
+	iconId,
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
@@ -50,6 +51,7 @@ export const generateFormValues = (
 
 	fields.address = {
 		type: "text",
+		stringId: 'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
 		label: STRINGS["WITHDRAWALS_FORM_ADDRESS_LABEL"],
 		placeholder: STRINGS["WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER"],
 		validate: [
@@ -64,6 +66,7 @@ export const generateFormValues = (
 	if (symbol === 'xrp') {
 		fields.destination_tag = {
 			type: "text",
+			stringId: 'WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER',
 			label: STRINGS["WITHDRAWALS_FORM_DESTINATION_TAG_LABEL"],
 			placeholder: STRINGS["WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER"],
 			fullWidth: true
@@ -71,6 +74,7 @@ export const generateFormValues = (
 	} else if (symbol === 'xlm') {
 		fields.destination_tag = {
 			type: "text",
+			stringId: 'WITHDRAWALS_FORM_MEMO_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER',
 			label: STRINGS["WITHDRAWALS_FORM_MEMO_LABEL"],
 			placeholder: STRINGS["WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER"],
 			fullWidth: true
@@ -96,6 +100,7 @@ export const generateFormValues = (
 
 	fields.amount = {
 		type: "number",
+		stringId: 'WITHDRAWALS_FORM_AMOUNT_LABEL,WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER',
 		label: STRINGS.formatString(STRINGS["WITHDRAWALS_FORM_AMOUNT_LABEL"], fullname),
 		placeholder: STRINGS.formatString(
 			STRINGS["WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER"],
@@ -108,9 +113,11 @@ export const generateFormValues = (
 		normalize: normalizeBTC,
 		fullWidth: true,
 		notification: {
+			stringId: 'CALCULATE_MAX',
 			text: STRINGS["CALCULATE_MAX"],
 			status: "information",
 			iconPath: icon,
+      iconId,
 			className: "file_upload_icon",
 			useSvg: true,
 			onClick: calculateMax
@@ -131,6 +138,7 @@ export const generateFormValues = (
 	if (coins[symbol]) {
 		fields.fee = {
 			type: "number",
+			stringId: 'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
 			// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			label: STRINGS.formatString(
 				STRINGS["WITHDRAWALS_FORM_FEE_COMMON_LABEL"],
@@ -146,6 +154,7 @@ export const generateFormValues = (
 	} else {
 		fields.fee = {
 			type: "editable",
+			stringId: `WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER`,
 			inputType: "number",
 			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(

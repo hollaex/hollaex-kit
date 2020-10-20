@@ -74,6 +74,7 @@ CheckTitle.defaultProps = {
 };
 
 export const PanelInformationRow = ({
+	stringId,
 	label = '',
 	information = '',
 	className,
@@ -93,6 +94,7 @@ export const PanelInformationRow = ({
 		<span style={{ wordBreak: 'normal' }}>
 			{bold ? <b>{label}</b> : label}: <span className='information-content'>{information}</span>
 		</span>
+		<EditWrapper stringId={stringId} />
 	</div>
 );
 

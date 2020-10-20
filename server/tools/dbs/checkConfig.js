@@ -33,12 +33,13 @@ Status.findOne()
 				website: '',
 				information: '',
 			},
+			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
+			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY,
 			logo_path: existingKitConfigurations.logo_path || process.env.LOGO_PATH,
 			logo_black_path: existingKitConfigurations.logo_black_path || process.env.LOGO_BLACK_PATH,
 			valid_languages: existingKitConfigurations.valid_languages || process.env.VALID_LANGUAGES || (process.env.NEW_USER_DEFAULT_LANGUAGE ? process.env.NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),
 			user_level_number: existingKitConfigurations.user_level_number || process.env.USER_LEVEL_NUMBER || 4,
 			new_user_is_activated: existingKitConfigurations.new_user_is_activated || (process.env.NEW_USER_IS_ACTIVATED && process.env.NEW_USER_IS_ACTIVATED === 'true') || false,
-			broker_enabled: existingKitConfigurations.broker_enabled || true,
 			captcha: {
 				site_key: existingKitConfigurations.captcha.site_key || process.env.CAPTCHA_SITE_KEY
 			},
@@ -58,12 +59,6 @@ Status.findOne()
 		const secrets = {
 			allowed_domains: existingSecrets.allowed_domains || (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []),
 			admin_whitelist: existingSecrets.admin_whitelist || (process.env.ADMIN_WHITELIST_IP ? process.env.ADMIN_WHITELIST_IP.split(',') : []),
-			setup_completed: isBoolean(existingSecrets.setup_completed) ? existingSecrets.setup_completed : false,
-			broker: {
-				quick_trade_rate: existingSecrets.broker.quick_trade_rate || 0.03,
-				quick_trade_expiration_time: existingSecrets.broker.quick_trade_expiration_time || 20,
-				trade_master_account_id: existingSecrets.broker.trade_master_account_id || 2
-			},
 			security: {
 				token_time: existingSecrets.security.token_time || '24h',
 				withdrawal_token_expiry: existingSecrets.security.withdrawal_token_expiry || 300000

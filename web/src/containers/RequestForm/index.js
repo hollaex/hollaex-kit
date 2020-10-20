@@ -114,7 +114,6 @@ class RequestForm extends Component {
                     textType="title"
                     underline={true}
                     className="w-100"
-                    useSvg={true}
                 />
                 <Form
                     onSubmit={this.onSubmit}

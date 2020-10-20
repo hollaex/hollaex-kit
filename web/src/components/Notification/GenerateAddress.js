@@ -1,8 +1,9 @@
 import React from 'react';
-import { ICONS, DEFAULT_COIN_DATA } from '../../config/constants';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
 import { Button, Loader } from '../';
+import { EditWrapper } from 'components';
 
 const GenerateAddressNotification = ({
 	type,
@@ -10,7 +11,8 @@ const GenerateAddressNotification = ({
 	coins,
 	currency,
 	onBack,
-	onGenerate
+	onGenerate,
+	icons: ICONS,
 }) => {
 	const { fetching, error } = data;
 	const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
@@ -28,18 +30,22 @@ const GenerateAddressNotification = ({
 	return (
 		<NotificationWraper
 			title={title}
-			icon={ICONS.SIDEBAR_WALLET_ACTIVE}
+			icon={ICONS["SIDEBAR_WALLET_ACTIVE"]}
 			className="new-order-notification"
 			titleClassName="with-border-bottom"
 		>
 			<NotificationContent>
 				{!error ? (
 					<div className="notification-content-header">
-						{STRINGS["WALLET_ADDRESS_MESSAGE"]}
+						<EditWrapper stringId="WALLET_ADDRESS_MESSAGE">
+							{STRINGS["WALLET_ADDRESS_MESSAGE"]}
+						</EditWrapper>
 					</div>
 				) : (
 					<div className="notification-content-header warning_text">
-						{STRINGS["WALLET_ADDRESS_ERROR"]}
+						<EditWrapper stringId="WALLET_ADDRESS_ERROR">
+							{STRINGS["WALLET_ADDRESS_ERROR"]}
+						</EditWrapper>
 					</div>
 				)}
 			</NotificationContent>

@@ -187,6 +187,7 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
+				props.stringId= "TRANSACTION_HISTORY.TITLE_TRADES";
 				props.title = `${STRINGS["TRANSACTION_HISTORY.TITLE_TRADES"]}`;
 				props.headers = headers.trades;
 				props.data = trades;
@@ -197,6 +198,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = downloadUserTrades;
 				break;
 			case 1:
+        props.stringId= "TRANSACTION_HISTORY.TITLE_DEPOSITS";
 				props.title = STRINGS["TRANSACTION_HISTORY.TITLE_DEPOSITS"];
 				props.headers = headers.deposits;
 				props.data = deposits;
@@ -206,6 +208,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = downloadUserDeposit;
 				break;
 			case 2:
+        props.stringId= "TRANSACTION_HISTORY.TITLE_WITHDRAWALS";
 				props.title = STRINGS["TRANSACTION_HISTORY.TITLE_WITHDRAWALS"];
 				props.headers = headers.withdrawals;
 				props.data = withdrawals;
@@ -246,7 +249,6 @@ class TransactionsHistory extends Component {
 						iconId="TRANSACTION_HISTORY"
 						iconPath={ICONS["TRANSACTION_HISTORY"]}
 						textType="title"
-						useSvg={true}
 					/>
 				)}
 				<TabController
@@ -301,7 +303,7 @@ class TransactionsHistory extends Component {
 				>
 					<div>
 						<IconTitle
-							iconId={activeTheme === 'dark' ? "CANCEL_WITHDRAW_DARK": "CANCEL_WITHDRAW_LIGHT"}
+							iconId="CANCEL_WITHDRAW_DARK,CANCEL_WITHDRAW_LIGHT"
 							iconPath={activeTheme === 'dark' ? ICONS["CANCEL_WITHDRAW_DARK"] : ICONS["CANCEL_WITHDRAW_LIGHT"]}
 							stringId="CANCEL_BASE_WITHDRAWAL"
 							text={STRINGS.formatString(

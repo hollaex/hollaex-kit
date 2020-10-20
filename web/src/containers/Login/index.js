@@ -12,6 +12,7 @@ import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
+import { getLogo } from 'utils/icon';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
@@ -209,10 +210,7 @@ class Login extends Component {
 	render() {
 		const { logoutMessage, activeTheme, constants = {}, icons: ICONS } = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
-		let path = constants.logo_path;
-		if (activeTheme === 'dark') {
-			path = constants.logo_black_path;
-		}
+		const path = getLogo(activeTheme, constants, ICONS);
 
 		return (
 			<div
@@ -227,11 +225,12 @@ class Login extends Component {
 					)}
 				>
 					<IconTitle
+						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
 						iconPath={path}
+						stringId="LOGIN_TEXT"
 						text={STRINGS["LOGIN_TEXT"]}
 						textType="title"
 						underline={true}
-						useSvg={false}
 						isLogo={true}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
@@ -240,8 +239,10 @@ class Login extends Component {
 							constants.api_name || ''
 						)}
 						actionProps={{
+							stringId: "LOGIN.CANT_LOGIN",
 							text: STRINGS["LOGIN.CANT_LOGIN"],
-							iconPath: ICONS.BLUE_ARROW_RIGHT,
+							iconId: "BLUE_ARROW_RIGHT",
+							iconPath: ICONS["BLUE_ARROW_RIGHT"],
 							onClick: this.redirectToResetPassword,
 							useSvg: true,
 							showActionText: true

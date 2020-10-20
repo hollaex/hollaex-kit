@@ -21,6 +21,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `order:${symbolOrUserId}`;
 		case 'wallet':
 			return `wallet:${symbolOrUserId}`;
+		case 'deposit':
+			return `deposit:${symbolOrUserId}`;
 		default:
 			return;
 	}
@@ -38,6 +40,7 @@ exports.INIT_CHANNEL = 'channel:init';
 
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 
+exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
 exports.WS_USER_TRADE_TYPE = 'trade';
 exports.WS_USER_ORDER_QUEUED_TYPE = 'order_queued';
 exports.WS_USER_ORDER_PROCESSED_TYPE = 'order_processed';
@@ -83,7 +86,6 @@ let configuration = {
 };
 
 let secrets = {
-	broker: {},
 	security: {},
 	accounts: {},
 	captcha: {},
@@ -148,13 +150,11 @@ const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 const resetAllConfig = () => {
 	frozenUsers = {};
 	secrets = {
-		broker: {},
 		security: {},
 		accounts: {},
 		captcha: {},
 		emails: {},
 		smtp: {},
-		vault: {},
 		plugins: {
 			s3: {},
 			sns: {},
@@ -311,7 +311,6 @@ exports.MASK_CHARS = parseInt(process.env.MASK_CHARS || 5, 10);
 exports.MAX_ORDER_QUEUE = parseInt(process.env.MAX_ORDER_QUEUE) || 10;
 
 // WALLI CONSTANTS -----------------------------
-exports.VAULT_ENDPOINT = 'https://api.bitholla.com/v1/vault';
 
 exports.CONFIRMATION = {
 	btc: 1,
@@ -325,13 +324,12 @@ exports.AVAILABLE_PLUGINS = [
 	'xht_fee',
 	'kyc',
 	'sms',
-	'vault',
 	'freshdesk',
 	'chat',
 	'bank',
 	'announcement',
 	'zendesk'
-]
+];
 
 exports.REQUIRED_XHT = 100;
 
@@ -390,28 +388,26 @@ exports.KIT_CONFIG_KEYS = [
 	'title',
 	'links',
 	'defaults',
+	'native_currency',
 	'logo_path',
 	'logo_black_path',
 	'valid_languages',
 	'user_level_number',
 	'new_user_is_activated',
-	'broker_enabled',
 	'interface',
 	'icons',
 	'strings',
-	'meta'
+	'meta',
+	'setup_completed'
 ];
 
 exports.KIT_SECRETS_KEYS = [
-	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',
 	'emails',
-	'broker',
 	'security',
 	'captcha',
 	'smtp',
-	'vault',
 	'plugins'
 ];
 

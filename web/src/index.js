@@ -26,7 +26,8 @@ import {
   getLocalVersions,
   initializeStrings,
   setValidLanguages,
-  setExchangeInitialized
+  setExchangeInitialized,
+  setSetupCompleted
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -47,7 +48,8 @@ const getConfigs = async () => {
     valid_languages = '',
     info: {
       initialized
-    }
+    },
+    setup_completed
   } = kitData;
 
 
@@ -71,6 +73,7 @@ const getConfigs = async () => {
   setLocalVersions(remoteVersions);
   setValidLanguages(valid_languages);
   setExchangeInitialized(initialized);
+  setSetupCompleted(setup_completed);
 
   return merge({}, defaultConfig, remoteConfigs);
 }

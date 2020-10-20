@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { WS_URL } from '../config/constants';
 
 export function getMe() {
 	return {
@@ -82,11 +81,7 @@ export const updateUser = (values) => {
 		userValues.settings = values.settings;
 	}
 
-	return axios({
-		data: userValues,
-		url: `${WS_URL}/plugins/kyc/user`,
-		method: 'PUT'
-	});
+	return axios.put('/plugins/kyc/user', userValues);
 };
 
 export const updateUserSettings = (values) => {
@@ -109,7 +104,7 @@ export const updateDocuments = (values) => {
 			'Content-Type': 'multipart/form-data'
 		},
 		data: formData,
-		url: `${WS_URL}/plugins/kyc/user/upload`,
+		url: '/plugins/kyc/user/upload',
 		method: 'POST'
 	});
 };

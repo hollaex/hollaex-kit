@@ -212,19 +212,21 @@ const AssetsBlock = ({
                   {wallets[key] ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
+												stringId="WALLET_BUTTON_BASE_DEPOSIT"
 												text={STRINGS["WALLET_BUTTON_BASE_DEPOSIT"]}
-												iconPath={ICONS.BLUE_PLUS}
+												iconId="BLUE_PLUS"
+												iconPath={ICONS["BLUE_PLUS"]}
 												onClick={() => navigate(`wallet/${key}/deposit`)}
-												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
 												disable={!allow_deposit}
 											/>
 											<ActionNotification
+												stringId="WALLET_BUTTON_BASE_WITHDRAW"
 												text={STRINGS["WALLET_BUTTON_BASE_WITHDRAW"]}
-												iconPath={ICONS.BLUE_PLUS}
+												iconId="BLUE_PLUS"
+												iconPath={ICONS["BLUE_PLUS"]}
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
-												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
 												disable={!allow_withdrawal}
@@ -233,9 +235,11 @@ const AssetsBlock = ({
                   ) : (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
+												stringId="GENERATE_WALLET"
 												text={STRINGS["GENERATE_WALLET"]}
 												status="information"
-												iconPath={ICONS.BLUE_PLUS}
+												iconId="BLUE_PLUS"
+												iconPath={ICONS["BLUE_PLUS"]}
 												onClick={() => onOpenDialog(key)}
 												className="need-help"
 												useSvg={true}
@@ -248,10 +252,11 @@ const AssetsBlock = ({
 								{
 									!isMobile && <td>
 									<ActionNotification
+										stringId="TRADE_TAB_TRADE"
 										text={STRINGS["TRADE_TAB_TRADE"]}
-										iconPath={ICONS.BLUE_PLUS}
+										iconId="BLUE_PLUS"
+										iconPath={ICONS["BLUE_PLUS"]}
 										onClick={() => goToTrade(pair)}
-										useSvg={true}
 										className="csv-action"
 										showActionText={isMobile}
 										disable={!isMarketAvailable(pair)}

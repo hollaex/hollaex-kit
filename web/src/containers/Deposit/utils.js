@@ -3,6 +3,7 @@ import QRCode from 'qrcode.react';
 import classnames from 'classnames';
 import { DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 import { isMobile } from 'react-device-detect';
 import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
@@ -61,7 +62,11 @@ const renderBTCContent = (
 					<div className="qr-code-bg d-flex justify-content-center align-items-center">
 						<QRCode value={address} />
 					</div>
-					<div className="qr-text">{STRINGS["DEPOSIT.QR_CODE"]}</div>
+					<div className="qr-text">
+						<EditWrapper stringId="DEPOSIT.QR_CODE">
+              {STRINGS["DEPOSIT.QR_CODE"]}
+						</EditWrapper>
+					</div>
 				</div>
 			</div>
 		</div>

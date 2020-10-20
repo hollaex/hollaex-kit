@@ -94,6 +94,7 @@ class ApiKeyModal extends Component {
 			};
 			return (
 				<Notification
+					iconId={`TOKEN_CREATED${activeTheme === 'dark' ? '_DARK' : ''}`}
 					icon={
 						ICONS[`TOKEN_CREATED${activeTheme === 'dark' ? '_DARK' : ''}`]
 					}
@@ -110,16 +111,24 @@ class ApiKeyModal extends Component {
 					: ICONS[
 							`TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`
 					  ];
+			const iconId = notificationType === TYPE_REVOKE
+        ? "TOKEN_TRASHED"
+        : `TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`;
 			const nextLabel =
 				notificationType === TYPE_REVOKE
 					? STRINGS["DEVELOPERS_TOKENS_POPUP.DELETE"]
 					: STRINGS["DEVELOPERS_TOKENS_POPUP.GENERATE"];
+			const stringId_nextLabel = notificationType === TYPE_REVOKE
+        ? "DEVELOPERS_TOKENS_POPUP.DELETE"
+        : "DEVELOPERS_TOKENS_POPUP.GENERATE"
 			return (
 				<Notification
+					iconId={iconId}
 					icon={icon}
 					onBack={this.onCloseDialog}
 					onNext={this.onClickNext}
 					nextLabel={nextLabel}
+					stringId_nextLabel={stringId_nextLabel}
 					disabledNext={
 						notificationType === TYPE_GENERATE &&
 						!!tokenKeyValidation(tokenName)

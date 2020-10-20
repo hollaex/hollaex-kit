@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -13,27 +13,33 @@ import { formatToCurrency } from '../../utils/currency';
 const SIDE_BUY = 'buy';
 const SIDE_SELL = 'sell';
 
-export const getTitleAndIcon = (side, type) => {
+export const getTitleAndIcon = (side, type, ICONS) => {
 	const data = {
+    iconId: '',
+    stringId: '',
 		icon: '',
 		title: '',
 		onBack: true,
 	};
 
 	if (side === SIDE_BUY) {
-		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
+    data.iconId = "TRADE_FILLED_SUCESSFUL";
+		data.icon = ICONS["TRADE_FILLED_SUCESSFUL"];
 		data.title = STRINGS.formatString(
 			STRINGS["ORDER_TITLE_TRADE_COMPLETE"],
 			<span className="text-capitalize">{STRINGS[`TYPES_VALUES.${type}`]}</span>,
 			STRINGS[`SIDES_VALUES.${SIDE_BUY}`]
 		);
+		data.stringId = `ORDER_TITLE_TRADE_COMPLETE,TYPES_VALUES.${type},SIDES_VALUES.${SIDE_BUY}`
 	} else if (side === SIDE_SELL) {
-		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
+		data.iconId = "TRADE_FILLED_SUCESSFUL";
+		data.icon = ICONS["TRADE_FILLED_SUCESSFUL"];
 		data.title = STRINGS.formatString(
 			STRINGS["ORDER_TITLE_TRADE_COMPLETE"],
 			<span className="text-capitalize">{STRINGS[`TYPES_VALUES.${type}`]}</span>,
 			STRINGS[`SIDES_VALUES.${SIDE_SELL}`]
 		);
+		data.stringId = `ORDER_TITLE_TRADE_COMPLETE,TYPES_VALUES.${type},SIDES_VALUES.${SIDE_SELL}`
 	}
 
 	return data;
@@ -78,6 +84,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 	return (
 		<NotificationContent>
 			<InformationRow
+				stringId={side === 'sell' ? "ORDER_SOLD" : "ORDER_BOUGHT"}
 				label={actionText}
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
@@ -86,6 +93,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				)}
 			/>
 			<InformationRow
+				stringId="ORDER_AVERAGE_PRICE"
 				label={STRINGS["ORDER_AVERAGE_PRICE"]}
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
@@ -94,6 +102,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				)}
 			/>
 			<InformationRow
+				stringId={side === 'sell' ? "ORDER_RECEIVED" : "ORDER_SPENT"}
 				label={resultText}
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
@@ -105,9 +114,9 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 	);
 };
 
-const TradeNotification = ({ onClose, data: { order, data }, pairs, coins }) => {
+const TradeNotification = ({ onClose, data: { order, data }, pairs, coins, icons }) => {
 	const { side, type } = order;
-	const notificationProps = getTitleAndIcon(side, type);
+	const notificationProps = getTitleAndIcon(side, type, icons);
 
 	return (
 		<NotificationWraper

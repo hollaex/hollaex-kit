@@ -133,7 +133,8 @@ class Withdraw extends Component {
 			coins,
 			verification_level,
 			this.props.activeTheme,
-      ICONS["BLUE_PLUS"]
+      ICONS["BLUE_PLUS"],
+			"BLUE_PLUS",
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -261,6 +262,7 @@ class Withdraw extends Component {
 								'withdraw',
 								links,
                 ICONS["BLUE_QUESTION"],
+								"BLUE_QUESTION",
 							)}
 							<WithdrawCryptocurrency {...formProps} />
 							{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}

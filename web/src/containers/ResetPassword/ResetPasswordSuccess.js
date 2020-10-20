@@ -7,12 +7,12 @@ const ResetPasswordSuccess = ({ onClick, icons: ICONS, ...rest }) => {
 	return (
 		<div className="auth_wrapper">
 			<IconTitle
-				iconId={"SUCCESS_BLACK"}
+				iconId="SUCCESS_BLACK"
 				iconPath={ICONS["SUCCESS_BLACK"]}
+				stringId="SUCCESS_TEXT"
 				text={STRINGS["SUCCESS_TEXT"]}
 				textType="title"
 				className="w-100"
-				useSvg={true}
 			/>
 			<div className="text-center">
 				{STRINGS["RESET_PASSWORD_SUCCESS.TEXT_1"]}

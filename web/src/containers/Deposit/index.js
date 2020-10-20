@@ -127,6 +127,7 @@ class Deposit extends Component {
 							'deposit',
 							constants.links,
               ICONS["BLUE_QUESTION"],
+							"BLUE_QUESTION"
 						)}
 						{renderContent(currency, crypto_wallet, coins, this.onCopy)}
 						{isMobile && (
