@@ -123,6 +123,23 @@ const getChart = (req, res) => {
 		});
 };
 
+const getCharts = (req, res) => {
+	const { from, to, resolution } = req.swagger.params;
+
+	getNodeLib().getAllChartsEngine(from.value, to.value, resolution.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerEngine.error(
+				req.uuid,
+				'controller/engine/getCharts',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 const getConfig = (req, res) => {
 	getNodeLib().getUdfConfigEngine()
 		.then((data) => {
@@ -196,6 +213,7 @@ module.exports = {
 	getTicker,
 	getAllTicker,
 	getChart,
+	getCharts,
 	getConfig,
 	getHistory,
 	getSymbols

@@ -492,6 +492,39 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /charts:
+    x-swagger-router-controller: engine
+    get:
+      description: Get trade history HOLCV for all pairs
+      operationId: getCharts
+      tags:
+        - Engine
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TradeDataResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /udf/config:
     x-swagger-router-controller: engine
     get:
