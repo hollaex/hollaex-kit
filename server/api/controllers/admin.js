@@ -507,6 +507,27 @@ const uploadImage = (req, res) => {
 		});
 };
 
+const getOperators = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getOperators auth',
+		req.auth
+	);
+
+	toolsLib.user.getExchangeOperators()
+		.then((operators) => {
+			return res.json(operators);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getOperators catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -527,5 +548,6 @@ module.exports = {
 	adminCheckTransaction,
 	completeExchangeSetup,
 	putNetworkCredentials,
-	uploadImage
+	uploadImage,
+	getOperators
 };

@@ -1729,6 +1729,26 @@ paths:
       x-security-scopes:
         - admin
         - tech
+  /admin/operators:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getOperators
+      description: Get exchange operators
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OperatorsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/upload:
     x-swagger-router-controller: admin
     post:
@@ -3580,6 +3600,45 @@ definitions:
         type: string
       code:
         type: string
+  OperatorResponse:
+    type: object
+    required:
+      - id
+      - email
+      - is_admin
+      - is_supervisor
+      - is_support
+      - is_kyc
+      - is_tech
+    properties:
+      id:
+        type: number
+        format: int32
+      email:
+        type: string
+      is_admin:
+        type: boolean
+      is_supervisor:
+        type: boolean
+      is_support:
+        type: boolean
+      is_kyc:
+        type: boolean
+      is_tech:
+        type: boolean
+  OperatorsResponse:
+    type: object
+    required:
+      - count
+      - data
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/OperatorResponse"
   UserResponse:
     type: object
     properties:
