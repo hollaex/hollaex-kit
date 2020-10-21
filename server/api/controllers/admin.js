@@ -528,6 +528,30 @@ const getOperators = (req, res) => {
 		});
 };
 
+const inviteNewOperator = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/inviteNewOperator auth',
+		req.auth
+	);
+
+	const invitingEmail = req.auth.sub.email;
+	const { email, role } = req.swagger.params;
+
+	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/inviteNewOperator err',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -549,5 +573,6 @@ module.exports = {
 	completeExchangeSetup,
 	putNetworkCredentials,
 	uploadImage,
-	getOperators
+	getOperators,
+	inviteNewOperator
 };

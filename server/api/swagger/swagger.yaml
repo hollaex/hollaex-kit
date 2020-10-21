@@ -1749,6 +1749,37 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/operator/invite:
+    x-swagger-router-controller: admin
+    get:
+      operationId: inviteNewOperator
+      description: Invite a new operator
+      tags:
+        - Admin
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+          description: Email of user to invite
+        - name: role
+          in: query
+          required: true
+          type: string
+          description: Role of user
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/upload:
     x-swagger-router-controller: admin
     post:
