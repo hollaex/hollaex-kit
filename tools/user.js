@@ -1236,9 +1236,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 						created
 					]);
 				} else {
-					if (user.id === 1) {
-						throw new Error('Cannot change role of main admin account');
-					} else if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_tech) {
+					if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_tech) {
 						throw new Error('User is already an operator');
 					}
 					return all([
