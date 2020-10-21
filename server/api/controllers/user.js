@@ -213,7 +213,10 @@ const getUser = (req, res) => {
 	const email = req.auth.sub.email;
 
 	toolsLib.user.getUserByEmail(email, true, true)
-		.then((user) => res.json(user))
+		.then((user) => {
+			delete user.password;
+			return res.json(user);
+		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
