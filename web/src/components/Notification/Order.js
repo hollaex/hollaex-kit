@@ -51,7 +51,7 @@ export const getTitleAndIcon = (type, { side, filled }, ICONS) => {
 			);
       data.stringId = `ORDER_TITLE_PARTIALLY_FILLED,SIDES_VALUES.${side}`
 		}
-	} else if (type === 'order_filled' || type === 'order_partialy_filled') {
+	} else if (type === 'filled' || type === 'pfilled') {
 		data.iconId =
       side === SIDE_BUY
         ? "TRADE_FILLED_SUCESSFUL"
