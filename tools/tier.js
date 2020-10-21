@@ -3,11 +3,12 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitTiers, getKitPairs } = require('./common');
+const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig } = require('./common');
 const { reject } = require('bluebird');
 const { difference } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 
 const createTier = (level, name, description, deposit_limit, withdrawal_limit, fees = {}) => {
 	const existingTiers = getKitTiers();
@@ -144,7 +145,50 @@ const updateTier = (level, updateData) => {
 		});
 };
 
+const estimateNativeCurrencyPrice = async (startingCurrency) => {
+	const pairs = Object.values(getKitPairsConfig());
+	const tickers = await getNodeLib().getAllTickersEngine();
+
+	const path = findPath(pairs, startingCurrency)[0];
+
+	let estimatedPrice = 1;
+
+	if(path) {
+		convertPathToPairNames(path).forEach((pairKey) => {
+			const { close = 0 } = tickers[pairKey] || {};
+			estimatedPrice *= close;
+		});
+	} else {
+		estimatedPrice = 0;
+	}
+
+	return estimatedPrice;
+};
+
+const findPath = (connections = [], start, end = getKitConfig().native_currency, source_key = 'pair_base', target_key = 'pair_2') => {
+	const connectionsFromStart = connections.filter(({ [source_key]: source }) => source === start);
+	const connectionsFromStartToEnd = connectionsFromStart.filter(({ [target_key]: target }) => target === end);
+
+	if (connectionsFromStartToEnd.length !== 0) return [connectionsFromStartToEnd];
+
+	const paths = [];
+
+	connectionsFromStart.forEach((intermediaryNode) => {
+		const connectionsFromIntermediaryToEnd = findPath(connections, intermediaryNode[target_key], end);
+		connectionsFromIntermediaryToEnd.forEach((intermediaryConnections) => {
+			paths.push([intermediaryNode, ...intermediaryConnections]);
+		});
+	});
+
+	return paths;
+};
+
+const convertPathToPairNames = (path = [], from_key = 'pair_base', to_key = 'pair_2', separator = '-') =>{
+	return path.map(({ [from_key]: from, [to_key]: to}) => `${from}${separator}${to}`);
+};
+
 module.exports = {
 	createTier,
-	updateTier
+	updateTier,
+	estimateNativeCurrencyPrice
 };
