@@ -657,11 +657,22 @@ class HollaEx {
 	 * @param {number} price - The price at which to order (only required if type is 'limit')
 	 * @return {object} Newly created order values e.g. symbol, id, side, status, etc.
 	 */
-	createOrderNetwork(userId, symbol, side, size, type, price = 0) {
+	createOrderNetwork(userId, symbol, side, size, type, price = 0, feeData = {}, meta = {}) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}`;
-		const data = { symbol, side, size, type, price };
+		const data = { symbol, side, size, type, price, meta };
+
+		if (feeData.fee !== undefined) {
+			data.fee = feeData.fee;
+		} else if (feeData.fee_structure !== undefined) {
+			data.fee_structure = feeData.fee_structure;
+		}
+
+		if (feeData.fee_coin !== undefined) {
+			data.fee_coin = feeData.fee_coin;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
