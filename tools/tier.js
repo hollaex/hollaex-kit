@@ -9,6 +9,7 @@ const { difference, each } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const math = require('mathjs');
 
 const findTier = (level) => {
 	return dbQuery.findOne('tier', {
@@ -161,7 +162,7 @@ const estimateNativeCurrencyPrice = async (startingCurrency) => {
 	const prices = {};
 
 	each(tickers, (ticker, key) => {
-		prices[key] = ticker.last;
+		prices[key] = ticker.close;
 	});
 
 	if (prices[`${startingCurrency}-${getKitConfig().native_currency}`]) {
@@ -175,7 +176,7 @@ const estimateNativeCurrencyPrice = async (startingCurrency) => {
 	if(path) {
 		convertPathToPairNames(path).forEach((pairKey) => {
 			const { close = 0 } = tickers[pairKey] || {};
-			estimatedPrice *= close;
+			estimatedPrice = math.number(math.multiply(math.bignumber(estimatedPrice), math.bignumber(close)));
 		});
 	} else {
 		estimatedPrice = 0;
