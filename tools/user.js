@@ -1191,7 +1191,7 @@ const getExchangeOperators = () => {
 	});
 };
 
-const inviteExchangeOperator = (email, role) => {
+const inviteExchangeOperator = (invitingEmail, email, role) => {
 	const roles = {
 		is_admin: false,
 		is_supervisor: false,
@@ -1236,8 +1236,10 @@ const inviteExchangeOperator = (email, role) => {
 						created
 					]);
 				} else {
-					if (user.roleToUpdate === true) {
-						throw new Error(`User already has role ${role}`);
+					if (user.id === 1) {
+						throw new Error('Cannot change role of main admin account');
+					} else if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_tech) {
+						throw new Error('User is already an operator');
 					}
 					return all([
 						user.update({ ...roles }, { returning: true, fields: Object.keys(roles), transaction }),
@@ -1257,6 +1259,7 @@ const inviteExchangeOperator = (email, role) => {
 				MAILTYPE.INVITED_OPERATOR,
 				user.email,
 				{
+					invitingEmail,
 					created,
 					password: created ? tempPassword : undefined,
 					role
