@@ -49,6 +49,7 @@ const { Op } = require('sequelize');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const { parse } = require('json2csv');
 const flatten = require('flat');
+const uuid = require('uuid/v4');
 
 	/* Onboarding*/
 
@@ -1190,6 +1191,82 @@ const getExchangeOperators = () => {
 	});
 };
 
+const inviteExchangeOperator = (email, role) => {
+	const roles = {
+		is_admin: false,
+		is_supervisor: false,
+		is_support: false,
+		is_kyc: false,
+		is_tech: false
+	};
+
+	const roleToUpdate = `is_${role}`;
+
+	if (role === 'user') {
+		return reject(new Error('Must invite user as an operator role'));
+	} else {
+		if (roles[roleToUpdate] === undefined) {
+			return reject(new Error('Invalid role'));
+		} else {
+			roles[roleToUpdate] = true;
+		}
+	}
+
+	const tempPassword = uuid();
+
+	return getModel('sequelize').transaction((transaction) => {
+		return getModel('user').findOrCreate({
+			defaults: {
+				email,
+				password: tempPassword,
+				...roles,
+				settings: INITIAL_SETTINGS()
+			},
+			where: { email },
+			transaction
+		})
+			.then(async ([ user, created ]) => {
+				if (created) {
+					const networkUser = await getNodeLib().createUserNetwork(email);
+					return all([
+						user.update(
+							{ network_id: networkUser.id },
+							{ returning: true, fields: ['network_id'], transaction }
+						),
+						created
+					]);
+				} else {
+					if (user.roleToUpdate === true) {
+						throw new Error(`User already has role ${role}`);
+					}
+					return all([
+						user.update({ ...roles }, { returning: true, fields: Object.keys(roles), transaction }),
+						created
+					]);
+				}
+			});
+	})
+		.then(async ([ user, created ]) => {
+			if (created) {
+				await getModel('verification code').update(
+					{ verified: true },
+					{ where: { user_id: user.id }, fields: [ 'verified' ]}
+				);
+			}
+			sendEmail(
+				MAILTYPE.INVITED_OPERATOR,
+				user.email,
+				{
+					created,
+					password: created ? tempPassword : undefined,
+					role
+				},
+				user.settings
+			);
+			return;
+		});
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1225,5 +1302,6 @@ module.exports = {
 	createUserCryptoAddressByKitId,
 	createAudit,
 	getUserStats,
-	getExchangeOperators
+	getExchangeOperators,
+	inviteExchangeOperator
 };
