@@ -1175,6 +1175,21 @@ const getUserStats = (userId) => {
 		});
 };
 
+const getExchangeOperators = () => {
+	return dbQuery.findAndCountAllWithRows('user', {
+		where: {
+			[Op.or]: [
+				{ is_admin: true },
+				{ is_supervisor: true },
+				{ is_support: true },
+				{ is_kyc: true },
+				{ is_tech: true }
+			]
+		},
+		attributes: ['id', 'email', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_tech']
+	});
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1209,5 +1224,6 @@ module.exports = {
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
-	getUserStats
+	getUserStats,
+	getExchangeOperators
 };
