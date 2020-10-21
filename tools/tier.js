@@ -5,10 +5,24 @@ const dbQuery = require('./database/query');
 const { getModel } = require('./database');
 const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig } = require('./common');
 const { reject } = require('bluebird');
-const { difference } = require('lodash');
+const { difference, each } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+
+const findTier = (level) => {
+	return dbQuery.findOne('tier', {
+		where: {
+			id: level
+		}
+	})
+		.then((tier) => {
+			if (!tier) {
+				throw new Error('Tier does not exist');
+			}
+			return tier;
+		});
+};
 
 const createTier = (level, name, description, deposit_limit, withdrawal_limit, fees = {}) => {
 	const existingTiers = getKitTiers();
@@ -82,11 +96,7 @@ const updateTier = (level, updateData) => {
 		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
 	}
 
-	return dbQuery.findOne('tier', {
-		where: {
-			id: level
-		}
-	})
+	return findTier(level)
 		.then((tier) => {
 			const newData = {};
 
@@ -114,12 +124,12 @@ const updateTier = (level, updateData) => {
 				newData.description = updateData.description;
 			}
 
-			if (updateData.deposit_limit) {
+			if (updateData.deposit_limit !== undefined) {
 				newData.deposit_limit = updateData.deposit_limit;
 			}
 
-			if (updateData.withdrawal_limit) {
-				newData.withdrawal_limit = updateData.deposit_limit;
+			if (updateData.withdrawal_limit !== undefined) {
+				newData.withdrawal_limit = updateData.withdrawal_limit;
 			}
 
 			newData.fees = {
@@ -148,6 +158,15 @@ const updateTier = (level, updateData) => {
 const estimateNativeCurrencyPrice = async (startingCurrency) => {
 	const pairs = Object.values(getKitPairsConfig());
 	const tickers = await getNodeLib().getAllTickersEngine();
+	const prices = {};
+
+	each(tickers, (ticker, key) => {
+		prices[key] = ticker.last;
+	});
+
+	if (prices[`${startingCurrency}-${getKitConfig().native_currency}`]) {
+		return prices[`${startingCurrency}-${getKitConfig().native_currency}`];
+	}
 
 	const path = findPath(pairs, startingCurrency)[0];
 
@@ -188,6 +207,7 @@ const convertPathToPairNames = (path = [], from_key = 'pair_base', to_key = 'pai
 };
 
 module.exports = {
+	findTier,
 	createTier,
 	updateTier,
 	estimateNativeCurrencyPrice
