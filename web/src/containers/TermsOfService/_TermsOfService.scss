@@ -59,35 +59,3 @@
         }
     }
 }
-
-.dark-theme {
-    .terms_wrapper {
-        .agreement_wrapper {
-            background-color: $dark-colors-terms-background;
-        }
-        .download-wrapper {
-            color: $dark-link;
-        }
-        
-        .trans-history-1,
-        .trans-history-2,
-        .trans-history-3 {
-            fill: $dark-link;
-        }
-        .trans-history-4 {
-            stroke: $dark-link;
-        }
-    }
-
-    .deposit_funds-wrapper {
-        .funds-svg {
-            .xht-faq,
-            .xht-pdf,
-            .xht-docs,
-            .xht-email,
-            .wave-icon {
-                fill: $dark-icon-color;
-            }
-        }
-    }
-}

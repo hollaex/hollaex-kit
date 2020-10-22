@@ -7,20 +7,20 @@
   }
 }
 
-.dark-theme {
-  .input-group__container {
-    border: $colors-white solid 1px;
-
-    .ant-select-selection,
-    .ant-input,
-    .ant-select-arrow,
-    .ant-select-selector
-    {
-      background-color: $dark-quick-trade-container !important;
-      color: $dark-font-main-text-color !important;
-    }
-  }
-}
+//.dark-theme {
+//  .input-group__container {
+//    border: $colors-white solid 1px;
+//
+//    .ant-select-selection,
+//    .ant-input,
+//    .ant-select-arrow,
+//    .ant-select-selector
+//    {
+//      background-color: $dark-quick-trade-container !important;
+//      color: $dark-font-main-text-color !important;
+//    }
+//  }
+//}
 
 .input-group__coin-icons {
   width: 2rem;

@@ -7,16 +7,8 @@ $inner_container-border: 1px solid $border-color;
 .app_container {
 	// height: 100%;
 	min-height: 100vh;
-
-	&.white-theme {
-		background-color: $app-background-color;
-		color: $colors-main-black;
-	}
-
-	&.dark-theme {
-		background: $dark-app-background-color !important;
-		min-height: 100vh;
-	}
+	background-color: $app-background-color;
+	color: $colors-main-black;
 
 	&.btc {
 		@include currency-color($coin-btc);
@@ -133,65 +125,6 @@ $inner_container-border: 1px solid $border-color;
 					}
 				}
 			}
-		}
-	}
-}
-
-.dark-theme {
-	.presentation_container {
-		.inner_container {
-			&.with_border_top {
-				border-top-color: $dark-border-main;
-			}
-			&.with_border_bottom {
-				border-bottom-color: $dark-border-main;
-			}
-
-			.information_block {
-				.information_block-text_wrapper {
-					.title,
-					.text {
-						color: $dark-font-sub-text-color;
-					}
-				}
-			}
-		}
-	}
-
-	.app_container {
-		.app_container-sidebar {
-			background-color: $dark-app-sidebar-background;
-			border-left: 1px solid $dark-app-line-divider;
-		}
-	}
-	svg {
-		.leviathan-trader0 {
-			fill: $colors-black;
-		}
-		.incoming-btc-01,
-		.incoming-toman-01 {
-			fill: $dark-app-background-color;
-		}
-		.incoming-toman-02,
-		.incoming-btc-2,
-		.buy-order-filled-1,
-		.buy-order-filled-3,
-		.buy-filled-01,
-		.buy-filled-03,
-		.sell-order-01,
-		.sell-order-03,
-		.sell-part-01,
-		.sell-part-03,
-		.key-trashed {
-			fill: $dark-icon-color;
-		}
-		.buy-order-filled-4,
-		.sell-order-04 {
-			stroke: $dark-app-background-color;
-		}
-		.copy-notification-0,
-		.copy-notification-1 {
-			fill: $dark-icon-color;
 		}
 	}
 }

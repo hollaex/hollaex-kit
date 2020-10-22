@@ -1,11 +1,11 @@
 import { THEMES, THEME_DEFAULT, CHAT_STATUS_KEY } from '../config/constants';
 
 export const getTheme = (theme = '') => {
-	const indexOfTheme = THEMES.indexOf(theme);
-	if (indexOfTheme > -1) {
-		return THEMES[indexOfTheme];
-	}
-	return THEME_DEFAULT;
+	// const indexOfTheme = THEMES.indexOf(theme);
+	// if (indexOfTheme > -1) {
+	// 	return THEMES[indexOfTheme];
+	// }
+	return theme || THEME_DEFAULT;
 };
 
 export const getThemeClass = (theme = '') => {

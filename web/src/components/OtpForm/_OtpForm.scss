@@ -17,27 +17,6 @@
 	margin-bottom: 1rem;
 }
 
-.dark-theme {
-	border-top-color: $dark-border-main;
-
-	color: $dark-font-main-text-color;
-	.dots-1 {
-		stroke: $dark-font-main-text-color;
-	}
-	.dots-2 {
-		fill: $dark-font-main-text-color;
-	}
-	.otp_form-wrapper {
-		.icon_title-svg {
-			svg {
-				path {
-					fill: $dark-icon-color;
-				}
-			}
-		}
-	}
-}
-
 .layout-mobile {
 	.otp_form-wrapper {
 		flex: 1;

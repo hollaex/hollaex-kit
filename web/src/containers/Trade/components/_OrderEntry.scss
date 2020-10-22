@@ -137,7 +137,7 @@
         }
 	}
 	.risky_managment_percentage {
-        color: $error-color
+        color: $colors-notifications-red
     }
 }
 
@@ -186,62 +186,4 @@
     .risky-trade-wrapper {
         margin: auto;
     }
-}
-
-.dark-theme {
-	.trade_order_entry-wrapper {
-		color: $dark-font-sub-text-color !important;
-
-		.trade_order_entry-review {
-			border-top-color: $dark-border-main !important;
-			.text-price {
-				color: $dark-font-main-text-color !important;
-			}
-			.blue-link {
-				color: $dark-link !important;
-			}
-		}
-		.exir-button-font.active {
-			color: $dark-app-background-color !important;
-		}
-
-		.trade_order_entry-action_selector {
-			color: $dark-font-sub-text-1-color;
-			border: 1px solid $dark-border-main !important;
-		}
-
-		.trade_order_entry-selector {
-			border-top: 1px solid $dark-border-main !important;
-			color: $dark-font-sub-text-1-color;
-			// &:after {
-			// 	background: $dark-border-main !important;
-			// }
-
-			.active {
-				color: $dark-font-main-text-color !important;
-				&:after {
-					background: $dark-border-main !important;
-				}
-			}
-		}
-		&.order_side-selector-sell {
-			@include entry_form($dark-color-sell-btc-light, $dark-button-disabled);
-
-			.trade_order_entry-action_selector {
-				.active {
-					color: $dark-sell-asks-text !important;
-				}
-			}
-			.trade_order_entry-form-action {
-				color: $dark-sell-asks-text !important;
-			}
-		}
-		&.order_side-selector-buy {
-			@include entry_form($dark-buy, $dark-button-disabled);
-
-			.trade_order_entry-form-action {
-				color: $dark-buy-bids-text !important;
-			}
-		}
-	}
 }

@@ -210,42 +210,6 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	}
 }
 
-.dark-theme {
-	.app_footer-container {
-		background-color: $dark-footer-background-color;
-		color: $dark-font-sub-text-1-color;
-
-		.footer-row-content {
-			.footer-links-section {
-				.footer-links-group {
-					.footer-links-section--title {
-						color: $colors-white;
-					}
-					.footer-links-section--list {
-						.link-section {
-							&:hover {
-								color: $colors-white;
-							}
-						}
-	
-					}
-				}
-			}
-			.footer_separter {
-				.footer-logo {
-					svg {
-						.hollaEX_logo_gray {
-							fill: $footer-logo-color !important;
-						}
-					}
-				}
-				.blue-link {
-					color: $dark-link !important;
-				}
-			}
-		}
-	}
-}
 .layout-mobile {
 	.app_footer-container {
 		.footer-row-content {
