@@ -514,7 +514,9 @@ const getOperators = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.user.getExchangeOperators()
+	const { limit, page, order_by, order } = req.swagger.params;
+
+	toolsLib.user.getExchangeOperators(limit.value, page.value, order_by.value, order.value)
 		.then((operators) => {
 			return res.json(operators);
 		})
