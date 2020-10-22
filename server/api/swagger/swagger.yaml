@@ -1703,7 +1703,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
     put:
       operationId: putAdminKit
       description: Update exchange constants and secrets
@@ -1728,7 +1727,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
   /admin/operators:
     x-swagger-router-controller: admin
     get:
@@ -2880,7 +2878,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
   /plugins/enable:
     x-swagger-router-controller: plugins
     get:
@@ -2912,7 +2909,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
   /plugins/disable:
     x-swagger-router-controller: plugins
     get:
@@ -2944,7 +2940,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
   /plugins/activate-xht-fee:
     x-swagger-router-controller: plugins
     get:
@@ -3640,7 +3635,7 @@ definitions:
       - is_supervisor
       - is_support
       - is_kyc
-      - is_tech
+      - is_communicator
     properties:
       id:
         type: number
@@ -3655,7 +3650,7 @@ definitions:
         type: boolean
       is_kyc:
         type: boolean
-      is_tech:
+      is_communicator:
         type: boolean
   OperatorsResponse:
     type: object
@@ -4142,7 +4137,7 @@ definitions:
           - supervisor
           - support
           - kyc
-          - tech
+          - communicator
           - user
   UserRolePutResponse:
     type: object
@@ -4153,7 +4148,7 @@ definitions:
       - is_support
       - is_supervisor
       - is_kyc
-      - is_tech
+      - is_communicator
     properties:
       id:
         type: number
@@ -4167,7 +4162,7 @@ definitions:
         type: boolean
       is_kyc:
         type: boolean
-      is_tech:
+      is_communicator:
         type: boolean
   UserNotePut:
     type: object
