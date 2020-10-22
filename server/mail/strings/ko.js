@@ -268,6 +268,25 @@ const SMS = {
 		`Your ${currency.toUpperCase()} withdrawal for amount ${amount} is confirmed`
 };
 
+const INVITEDOPERATOR = {
+	TITLE: 'Operator Invite',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		CREATED: {
+			1: (role, invitingEmail) => `You've been invited as an operator to ${API_NAME()} with the role of ${role} by user ${invitingEmail}.`,
+			2: 'Your temporary password is provided below. Make sure to change your password after logging in for security purposes.',
+			3: (email) => `Email: ${email}`,
+			4: (password) => `Password: ${password}`,
+			5: 'Login'
+		},
+		EXISTING: {
+			1: (role, invitingEmail) => `Your ${API_NAME()} account has been upgraded to the role of ${role} by user ${invitingEmail}.`,
+			2: 'Login'
+		}
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -288,5 +307,6 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	INVITEDOPERATOR
 };

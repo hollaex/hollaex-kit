@@ -150,7 +150,7 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},
-			is_tech: {
+			is_communicator: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},

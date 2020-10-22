@@ -507,6 +507,53 @@ const uploadImage = (req, res) => {
 		});
 };
 
+const getOperators = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getOperators auth',
+		req.auth
+	);
+
+	const { limit, page, order_by, order } = req.swagger.params;
+
+	toolsLib.user.getExchangeOperators(limit.value, page.value, order_by.value, order.value)
+		.then((operators) => {
+			return res.json(operators);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getOperators catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const inviteNewOperator = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/inviteNewOperator auth',
+		req.auth
+	);
+
+	const invitingEmail = req.auth.sub.email;
+	const { email, role } = req.swagger.params;
+
+	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/inviteNewOperator err',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -527,5 +574,7 @@ module.exports = {
 	adminCheckTransaction,
 	completeExchangeSetup,
 	putNetworkCredentials,
-	uploadImage
+	uploadImage,
+	getOperators,
+	inviteNewOperator
 };
