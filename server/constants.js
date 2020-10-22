@@ -273,7 +273,7 @@ const ROLES = {
 	SUPPORT: 'support',
 	ADMIN: 'admin',
 	KYC: 'kyc',
-	TECH: 'tech',
+	COMMUNICATOR: 'communicator',
 	USER: 'user',
 	HMAC: 'hmac'
 };
@@ -433,19 +433,9 @@ exports.AUDIT_KEYS = [
 	'timestamp'
 ];
 
-exports.TECH_AUTHORIZED_KIT_CONFIG = [
-	'captcha',
-	'plugins',
-	'secrets'
-];
-
-exports.TECH_AUTHORIZED_KIT_SECRETS = [
-	'allowed_domains',
-	'emails',
-	'admin_whitelist',
-	'captcha',
-	'smtp',
-	'plugins'
+exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
+	'icons',
+	'strings'
 ];
 
 const MAINNET_EXPLORERS = {

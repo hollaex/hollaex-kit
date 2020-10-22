@@ -492,6 +492,39 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /charts:
+    x-swagger-router-controller: engine
+    get:
+      description: Get trade history HOLCV for all pairs
+      operationId: getCharts
+      tags:
+        - Engine
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TradeDataResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /udf/config:
     x-swagger-router-controller: engine
     get:
@@ -1105,6 +1138,11 @@ paths:
           description: buy or sell
           required: false
           enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: type
+          description: Order type e.g. active, stop
+          required: false
           type: string
         - in: query
           name: limit
@@ -1733,7 +1771,10 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
+        - supervisor
+        - support
+        - kyc
+        - communicator
     put:
       operationId: putAdminKit
       description: Update exchange constants and secrets
@@ -1758,7 +1799,82 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
+        - communicator
+  /admin/operators:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getOperators
+      description: Get exchange operators
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: Direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OperatorsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/operator/invite:
+    x-swagger-router-controller: admin
+    get:
+      operationId: inviteNewOperator
+      description: Invite a new operator
+      tags:
+        - Admin
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+          description: Email of user to invite
+        - name: role
+          in: query
+          required: true
+          type: string
+          description: Role of user
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/upload:
     x-swagger-router-controller: admin
     post:
@@ -2226,6 +2342,11 @@ paths:
           description: buy or sell
           required: false
           enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: type
+          description: Order type e.g. active, stop
+          required: false
           type: string
         - in: query
           name: limit
@@ -2854,7 +2975,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
   /plugins/enable:
     x-swagger-router-controller: plugins
     get:
@@ -2886,7 +3006,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
   /plugins/disable:
     x-swagger-router-controller: plugins
     get:
@@ -2918,7 +3037,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-        - tech
   /plugins/activate-xht-fee:
     x-swagger-router-controller: plugins
     get:
@@ -3605,6 +3723,45 @@ definitions:
         type: string
       code:
         type: string
+  OperatorResponse:
+    type: object
+    required:
+      - id
+      - email
+      - is_admin
+      - is_supervisor
+      - is_support
+      - is_kyc
+      - is_communicator
+    properties:
+      id:
+        type: number
+        format: int32
+      email:
+        type: string
+      is_admin:
+        type: boolean
+      is_supervisor:
+        type: boolean
+      is_support:
+        type: boolean
+      is_kyc:
+        type: boolean
+      is_communicator:
+        type: boolean
+  OperatorsResponse:
+    type: object
+    required:
+      - count
+      - data
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/OperatorResponse"
   UserResponse:
     type: object
     properties:
@@ -4075,7 +4232,7 @@ definitions:
           - supervisor
           - support
           - kyc
-          - tech
+          - communicator
           - user
   UserRolePutResponse:
     type: object
@@ -4086,7 +4243,7 @@ definitions:
       - is_support
       - is_supervisor
       - is_kyc
-      - is_tech
+      - is_communicator
     properties:
       id:
         type: number
@@ -4100,7 +4257,7 @@ definitions:
         type: boolean
       is_kyc:
         type: boolean
-      is_tech:
+      is_communicator:
         type: boolean
   UserNotePut:
     type: object
