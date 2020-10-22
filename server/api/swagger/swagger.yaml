@@ -2576,7 +2576,7 @@ paths:
   /admin/upgrade-user:
     x-swagger-router-controller: admin
     post:
-      description: "Update verification level of a user. 1: email verified. 2: id verified. 3: bank verified. 4: loyal member. 5: VIP. 6: VVIP"
+      description: Update verification level of a user
       operationId: upgradeUser
       tags:
         - Admin
@@ -4573,6 +4573,26 @@ definitions:
         format: double
       fees:
         type: object
+        required:
+          - maker
+          - taker
+        properties:
+          maker:
+            type: object
+            required:
+              - default
+            properties:
+              default:
+                type: number
+                format: double
+          taker:
+            type: object
+            required:
+              - default
+            properties:
+              default:
+                type: number
+                format: double
   TierObject:
     type: object
     required:

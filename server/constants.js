@@ -307,8 +307,6 @@ exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to
 
 exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
 
-exports.MIN_VERIFICATION_LEVEL = 1;
-
 exports.SEND_CONTACT_US_EMAIL = true;
 
 exports.ZENDESK_HOST = process.env.ZENDESK_HOST || '';
