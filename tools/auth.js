@@ -496,7 +496,7 @@ const issueToken = (
 	isSupport = false,
 	isSupervisor = false,
 	isKYC = false,
-	isTech = false
+	isCommunicator = false
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -514,8 +514,8 @@ const issueToken = (
 		if (isKYC) {
 			scopes = scopes.concat(ROLES.KYC);
 		}
-		if (isTech) {
-			scopes = scopes.concat(ROLES.TECH);
+		if (isCommunicator) {
+			scopes = scopes.concat(ROLES.COMMUNICATOR);
 		}
 	}
 
