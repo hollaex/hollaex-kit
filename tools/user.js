@@ -1176,8 +1176,11 @@ const getUserStats = (userId) => {
 		});
 };
 
-const getExchangeOperators = () => {
-	return dbQuery.findAndCountAllWithRows('user', {
+const getExchangeOperators = (limit, page, orderBy, order) => {
+	const pagination = paginationQuery(limit, page);
+	const ordering = orderingQuery(orderBy, order);
+
+	const options = {
 		where: {
 			[Op.or]: [
 				{ is_admin: true },
@@ -1187,8 +1190,12 @@ const getExchangeOperators = () => {
 				{ is_communicator: true }
 			]
 		},
-		attributes: ['id', 'email', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator']
-	});
+		attributes: ['id', 'email', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator'],
+		order: [ordering],
+		...pagination
+	};
+
+	return dbQuery.findAndCountAllWithRows('user', options);
 };
 
 const inviteExchangeOperator = (invitingEmail, email, role) => {
