@@ -3,7 +3,6 @@
 const { getUserByKitId, getUserByEmail } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { DEFAULT_TRADING_FEE } = require(`${SERVER_PATH}/constants`);
 const { parse } = require('json2csv');
 const { subscribedToPair, subscribedToCoin, getKitTier } = require('./common');
 const { reject } = require('bluebird');
@@ -19,20 +18,19 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			// const tier = getKitTier(user.verification_level);
-			// if (!tier) {
-			// 	throw new Error('User tier not found');
-			// }
-			// const feeData = {};
-			// feeData.fee_structure = {
-			// 	maker: tier.fees.maker[symbol] || DEFAULT_TRADING_FEE,
-			// 	taker: tier.fees.taker[symbol] || DEFAULT_TRADING_FEE
-			// };
-			// if (feeCoin) {
-			// 	feeData.fee_coin = feeCoin;
-			// }
-			// return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
+			const tier = getKitTier(user.verification_level);
+			if (!tier) {
+				throw new Error('User tier not found');
+			}
+			const feeData = {};
+			feeData.fee_structure = {
+				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
+				taker: tier.fees.taker[symbol] || tier.fees.taker.default
+			};
+			if (feeCoin) {
+				feeData.fee_coin = feeCoin;
+			}
+			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
 		});
 };
 
@@ -45,20 +43,19 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, feeC
 	}
 	return getUserByEmail(email)
 		.then((user) => {
-			// const tier = getKitTier(user.verification_level);
-			// if (!tier) {
-			// 	throw new Error('User tier not found');
-			// }
-			// const feeData = {};
-			// feeData.fee_structure = {
-			// 	maker: tier.fees.maker[symbol] || DEFAULT_TRADING_FEE,
-			// 	taker: tier.fees.taker[symbol] || DEFAULT_TRADING_FEE
-			// };
-			// if (feeCoin) {
-			// 	feeData.fee_coin = feeCoin;
-			// }
-			// return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
+			const tier = getKitTier(user.verification_level);
+			if (!tier) {
+				throw new Error('User tier not found');
+			}
+			const feeData = {};
+			feeData.fee_structure = {
+				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
+				taker: tier.fees.taker[symbol] || tier.fees.taker.default
+			};
+			if (feeCoin) {
+				feeData.fee_coin = feeCoin;
+			}
+			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
 		});
 };
 
