@@ -1200,6 +1200,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		is_communicator: false
 	};
 
+	role = role.toLowerCase();
 	const roleToUpdate = `is_${role}`;
 
 	if (role === 'user') {
