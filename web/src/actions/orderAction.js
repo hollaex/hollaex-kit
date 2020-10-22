@@ -25,10 +25,10 @@ export function updateOrder(order) {
 	};
 }
 
-export function removeOrder(ids) {
+export function removeOrder(ids = {}) {
 	return {
 		type: 'REMOVE_ORDER',
-		payload: { ids: ids.map((item) => item.id) }
+		payload: { ids: [ids.id] }
 	};
 }
 
@@ -54,7 +54,7 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 };
 
 export const cancelAllOrders = (symbol = '', settings) => dispatch => {
-	axios.delete(`/user/order?symbol=${symbol}`)
+	axios.delete(`/user/orders?symbol=${symbol}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ALL_ORDERS',
@@ -69,5 +69,5 @@ export const cancelAllOrders = (symbol = '', settings) => dispatch => {
 				}
 			});
 		})
-		.catch((err) => {})
+		.catch((err) => { })
 };

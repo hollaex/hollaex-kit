@@ -283,15 +283,18 @@ class Container extends Component {
 
 		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
+			// console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
-					const tradesData = {
-						...data,
-						[data.symbol]: data.data
+					if (data.action === 'partial') {
+						const tradesData = {
+							...data,
+							[data.symbol]: data.data
+						}
+						delete tradesData.data;
+						this.props.setTrades(tradesData);
+						this.props.setTickers(tradesData);
 					}
-					delete tradesData.data;
-					this.props.setTrades(tradesData);
-					this.props.setTickers(tradesData);
 					if (data.action === 'update') {
 						if (
 							this.props.settings.audio &&
@@ -325,7 +328,11 @@ class Container extends Component {
 									this.setState({ limitFilledOnOrder: '' });
 							}, 1000);
 						}
-						this.props.addOrder(data.data);
+						if (data.data.status === 'filled') {
+							this.props.addUserTrades([data.data]);
+						} else {
+							this.props.addOrder(data.data);
+						}
 						break;
 					} else if (data.action === 'update') {
 						if (data.data.status === 'pfilled') {
@@ -367,6 +374,7 @@ class Container extends Component {
 								);
 							});
 							this.props.removeOrder(data.data);
+							this.props.addUserTrades([data.data]);
 							if (
 								this.props.settings.notification &&
 								this.props.settings.notification.popup_order_completed
