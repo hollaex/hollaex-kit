@@ -5,7 +5,7 @@ const dbQuery = require('./database/query');
 const { getModel } = require('./database');
 const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig } = require('./common');
 const { reject } = require('bluebird');
-const { difference, each } = require('lodash');
+const { difference, each, omit } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
@@ -32,20 +32,21 @@ const createTier = (level, name, description, deposit_limit, withdrawal_limit, f
 		return reject(new Error('Tier already exists'));
 	}
 
+	const givenMakerSymbols = Object.keys(omit(fees.maker, 'default'));
+	const givenTakerSymbols = Object.keys(omit(fees.taker, 'default'));
+
 	if (
-		fees.maker
-		&& Object.keys(fees.maker).length > 0
-		&& difference(Object.keys(fees.maker), getKitPairs()).length > 0
+		givenMakerSymbols.length > 0
+		&& difference(givenMakerSymbols, getKitPairs()).length > 0
 	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
+		return reject(new Error('Maker fees includes a symbol that you are not subscribed to'));
 	}
 
 	if (
-		fees.taker
-		&& Object.keys(fees.taker).length > 0
-		&& difference(Object.keys(fees.taker), getKitPairs()).length > 0
+		givenTakerSymbols.length > 0
+		&& difference(givenTakerSymbols, getKitPairs()).length > 0
 	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
+		return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
 	}
 
 	return getModel('tier').create({
@@ -79,22 +80,23 @@ const updateTier = (level, updateData) => {
 		return reject(new Error('Tier does not exist'));
 	}
 
-	if (
-		updateData.fees
-		&& updateData.fees.maker
-		&& Object.keys(updateData.fees.maker).length > 0
-		&& difference(Object.keys(updateData.fees.maker), getKitPairs()).length > 0
-	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
-	}
+	if (updateData.fees) {
+		const givenMakerSymbols = Object.keys(omit(updateData.fees.maker, 'default'));
+		const givenTakerSymbols = Object.keys(omit(updateData.fees.taker, 'default'));
 
-	if (
-		updateData.fees
-		&& updateData.fees.taker
-		&& Object.keys(updateData.fees.taker).length > 0
-		&& difference(Object.keys(updateData.fees.taker), getKitPairs()).length > 0
-	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
+		if (
+			givenMakerSymbols.length > 0
+			&& difference(givenMakerSymbols, getKitPairs()).length > 0
+		) {
+			return reject(new Error('Maker fees includes a symbol that you are not subscribed to'));
+		}
+
+		if (
+			givenTakerSymbols.length > 0
+			&& difference(givenTakerSymbols, getKitPairs()).length > 0
+		) {
+			return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
+		}
 	}
 
 	return findTier(level)
@@ -106,7 +108,7 @@ const updateTier = (level, updateData) => {
 				updateData.fees
 				&& updateData.fees.maker
 			) {
-				updatedMakerFee = updateData.fees.maker;
+				updatedMakerFee = { ...updatedMakerFee, ...updateData.fees.maker };
 			}
 
 			let updatedTakerFee = tier.fees.taker;
@@ -114,7 +116,7 @@ const updateTier = (level, updateData) => {
 				updateData.fees
 				&& updateData.fees.taker
 			) {
-				updatedTakerFee = updateData.fees.taker;
+				updatedTakerFee = { ...updatedTakerFee, ...updateData.fees.taker };
 			}
 
 			if (updateData.name) {
