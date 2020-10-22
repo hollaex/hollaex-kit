@@ -52,7 +52,7 @@ exports.UPGRADE_VERIFICATION_LEVEL = (level) => `Verification level must be at o
 exports.INVALID_VERIFICATION_LEVEL = (level) => `Invalid verification level: ${level}`;
 exports.NO_NEW_DATA = 'No new data given';
 exports.SUPPORT_DISABLED = 'Cannot send email to support at this time';
-exports.TECH_CANNOT_UPDATE = (value) => `Tech users cannot update value: ${value}`;
+exports.COMMUNICATOR_CANNOT_UPDATE = (value) => `Communicator operators cannot update value: ${value}`;
 exports.MASK_VALUE_GIVEN = 'Masked value given';
 exports.NO_DATA_FOR_CSV = 'No data to convert to CSV';
 exports.USER_IS_VERIFIED = 'User is already verified';

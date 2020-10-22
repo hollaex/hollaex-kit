@@ -19,7 +19,7 @@ exports.OMITTED_USER_FIELDS = [
 	'is_support',
 	'is_supervisor',
 	'is_kyc',
-	'is_tech',
+	'is_communicator',
 	'flagged'
 ];
 

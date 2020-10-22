@@ -164,7 +164,7 @@ const createUser = (email, password, role = 'user', domain) => {
 					is_supervisor: false,
 					is_support: false,
 					is_kyc: false,
-					is_tech: false
+					is_communicator: false
 				};
 
 				if (role !== 'user') {
@@ -430,7 +430,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 		query = {
 			where: {},
 			attributes: {
-				exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_tech']
+				exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_communicator']
 			},
 			order: [ordering]
 		};
@@ -665,8 +665,8 @@ const getUserRole = (opts = {}) => {
 				return 'support';
 			} else if (user.is_kyc) {
 				return 'kyc';
-			} else if (user.is_tech) {
-				return 'tech';
+			} else if (user.is_communicator) {
+				return 'communicator';
 			} else {
 				return 'user';
 			}
@@ -687,7 +687,7 @@ const updateUserRole = (user_id, role) => {
 			'is_support',
 			'is_supervisor',
 			'is_kyc',
-			'is_tech'
+			'is_communicator'
 		]
 	})
 		.then((user) => {
@@ -700,7 +700,7 @@ const updateUserRole = (user_id, role) => {
 				'is_supervisor',
 				'is_support',
 				'is_kyc',
-				'is_tech'
+				'is_communicator'
 			);
 
 			const roleChange = 'is_' + role.toLowerCase();
@@ -722,7 +722,7 @@ const updateUserRole = (user_id, role) => {
 		.then(([user, roles]) => {
 			return user.update(
 				roles,
-				{ fields: ['is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_tech'], returning: true }
+				{ fields: ['is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_communicator'], returning: true }
 			);
 		})
 		.then((user) => {
@@ -734,7 +734,7 @@ const updateUserRole = (user_id, role) => {
 				'is_support',
 				'is_supervisor',
 				'is_kyc',
-				'is_tech'
+				'is_communicator'
 			);
 			return result;
 		});
@@ -1184,10 +1184,10 @@ const getExchangeOperators = () => {
 				{ is_supervisor: true },
 				{ is_support: true },
 				{ is_kyc: true },
-				{ is_tech: true }
+				{ is_communicator: true }
 			]
 		},
-		attributes: ['id', 'email', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_tech']
+		attributes: ['id', 'email', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator']
 	});
 };
 
@@ -1197,7 +1197,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		is_supervisor: false,
 		is_support: false,
 		is_kyc: false,
-		is_tech: false
+		is_communicator: false
 	};
 
 	role = role.toLowerCase();
@@ -1237,7 +1237,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 						created
 					]);
 				} else {
-					if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_tech) {
+					if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_communicator) {
 						throw new Error('User is already an operator');
 					}
 					return all([

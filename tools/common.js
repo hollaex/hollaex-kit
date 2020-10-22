@@ -6,8 +6,7 @@ const {
 	SECRET_MASK,
 	KIT_CONFIG_KEYS,
 	KIT_SECRETS_KEYS,
-	TECH_AUTHORIZED_KIT_CONFIG,
-	TECH_AUTHORIZED_KIT_SECRETS,
+	COMMUNICATOR_AUTHORIZED_KIT_CONFIG,
 	ROLES,
 	CONFIGURATION_CHANNEL,
 	INIT_CHANNEL,
@@ -24,7 +23,7 @@ const { publisher } = require('./database/redis');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject } = require('bluebird');
-const { NO_NEW_DATA, SUPPORT_DISABLED, TECH_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
+const { NO_NEW_DATA, SUPPORT_DISABLED, COMMUNICATOR_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
 const flatten = require('flat');
 
 /**
@@ -126,17 +125,19 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 		return reject(new Error(NO_NEW_DATA));
 	}
 
-	if (scopes.indexOf(ROLES.TECH) > -1) {
-		role = 'tech';
+	if (scopes.indexOf(ROLES.COMMUNICATOR) > -1) {
+		role = 'communicator';
+
+		if (data.secrets) {
+			return reject(new Error('Communicator operators cannot update secrets values'));
+		}
+
 		let unauthorizedKeys = [];
 		if (data.kit) {
-			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.kit), TECH_AUTHORIZED_KIT_CONFIG));
-		}
-		if (data.secrets) {
-			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.secrets), TECH_AUTHORIZED_KIT_SECRETS));
+			unauthorizedKeys = unauthorizedKeys.concat(difference(Object.keys(data.kit), COMMUNICATOR_AUTHORIZED_KIT_CONFIG));
 		}
 		if (unauthorizedKeys.length > 0) {
-			return reject(new Error(TECH_CANNOT_UPDATE(unauthorizedKeys)));
+			return reject(new Error(COMMUNICATOR_CANNOT_UPDATE(unauthorizedKeys)));
 		}
 	}
 
@@ -192,7 +193,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (newKitConfig[key] === undefined) {
 			joinedKitConfig[key] = existingKitConfig[key];
 		} else {
-			if (key === 'strings' || key === 'icons' || key === 'meta') {
+			if (key === 'strings' || key === 'icons' || key === 'meta' || key === 'color') {
 				joinedKitConfig[key] = newKitConfig[key];
 			} else if (isPlainObject(existingKitConfig[key])) {
 				joinedKitConfig[key] = { ...existingKitConfig[key], ...newKitConfig[key] };
@@ -220,9 +221,6 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
 
 	KIT_SECRETS_KEYS.forEach((key) => {
 		if (newKitSecrets[key]) {
-			if (role === 'tech' && key === 'emails' && newKitSecrets[key] && newKitSecrets[key].send_email_to_support !== existingKitSecrets[key].send_email_to_support) {
-				throw new Error(TECH_CANNOT_UPDATE('send_email_copy'));
-			}
 			if (isPlainObject(existingKitSecrets[key])) {
 				joinedKitSecrets[key] = { ...existingKitSecrets[key], ...newKitSecrets[key] };
 			} else {
