@@ -161,7 +161,7 @@ const loginPost = (req, res) => {
 					user.is_support,
 					user.is_supervisor,
 					user.is_kyc,
-					user.is_tech
+					user.is_communicator
 				)
 			});
 		})

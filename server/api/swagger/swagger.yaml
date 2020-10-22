@@ -1703,6 +1703,10 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
+        - support
+        - kyc
+        - communicator
     put:
       operationId: putAdminKit
       description: Update exchange constants and secrets
@@ -1727,6 +1731,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - communicator
   /admin/operators:
     x-swagger-router-controller: admin
     get:
