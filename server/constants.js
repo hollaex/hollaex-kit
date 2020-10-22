@@ -342,8 +342,6 @@ exports.AVAILABLE_PLUGINS = [
 
 exports.REQUIRED_XHT = 100;
 
-exports.DEFAULT_TRADING_FEE = 0.2; //percent
-
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
 
@@ -403,7 +401,6 @@ exports.KIT_CONFIG_KEYS = [
 	'logo_path',
 	'logo_black_path',
 	'valid_languages',
-	'user_level_number',
 	'new_user_is_activated',
 	'interface',
 	'icons',

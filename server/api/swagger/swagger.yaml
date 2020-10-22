@@ -3997,8 +3997,6 @@ definitions:
             type: string
           valid_languages:
             type: string
-          user_level_number:
-            type: number
           new_user_is_activated:
             type: boolean
           native_currency:
