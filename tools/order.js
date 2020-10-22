@@ -18,19 +18,19 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			const tier = getKitTier(user.verification_level);
-			if (!tier) {
-				throw new Error('User tier not found');
-			}
-			const feeData = {};
-			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
-				taker: tier.fees.taker[symbol] || tier.fees.taker.default
-			};
-			if (feeCoin) {
-				feeData.fee_coin = feeCoin;
-			}
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
+			// const tier = getKitTier(user.verification_level);
+			// if (!tier) {
+			// 	throw new Error('User tier not found');
+			// }
+			// const feeData = {};
+			// feeData.fee_structure = {
+			// 	maker: tier.fees.maker[symbol] || tier.fees.maker.default,
+			// 	taker: tier.fees.taker[symbol] || tier.fees.taker.default
+			// };
+			// if (feeCoin) {
+			// 	feeData.fee_coin = feeCoin;
+			// }
+			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
 		});
 };
 
@@ -43,19 +43,19 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, feeC
 	}
 	return getUserByEmail(email)
 		.then((user) => {
-			const tier = getKitTier(user.verification_level);
-			if (!tier) {
-				throw new Error('User tier not found');
-			}
-			const feeData = {};
-			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
-				taker: tier.fees.taker[symbol] || tier.fees.taker.default
-			};
-			if (feeCoin) {
-				feeData.fee_coin = feeCoin;
-			}
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData);
+			// const tier = getKitTier(user.verification_level);
+			// if (!tier) {
+			// 	throw new Error('User tier not found');
+			// }
+			// const feeData = {};
+			// feeData.fee_structure = {
+			// 	maker: tier.fees.maker[symbol] || tier.fees.maker.default,
+			// 	taker: tier.fees.taker[symbol] || tier.fees.taker.default
+			// };
+			// if (feeCoin) {
+			// 	feeData.fee_coin = feeCoin;
+			// }
+			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price);
 		});
 };
 
