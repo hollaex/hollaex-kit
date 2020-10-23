@@ -4301,10 +4301,8 @@ definitions:
     properties:
       user_id:
         type: integer
-      veification_level:
+      verification_level:
         type: integer
-        minimum: 1
-        maximum: 5
   AuditsResponse:
     type: object
     properties:
