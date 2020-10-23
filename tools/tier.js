@@ -211,23 +211,44 @@ const updatePairFees = (pair, fees) => {
 
 	const tiersToUpdate = Object.keys(fees);
 
-	if (difference(tiersToUpdate, getTierLevels).length > 0) {
+	if (difference(tiersToUpdate, getTierLevels()).length > 0) {
 		return reject(new Error('Invalid tier level given'));
+	}
+
+	if (Object.values(flatten(fees)).some(fee => fee < 0)) {
+		return reject(new Error('Fees cannot be negative'));
 	}
 
 	return getModel('sequelize').transaction((transaction) => {
 		return all(tiersToUpdate.map(async (level) => {
-			const tier = await dbQuery.findOne({ where: { id: level } });
+
+			const tier = await dbQuery.findOne('tier', { where: { id: level } });
+
 			const updatedFees = {
 				maker: { ...tier.fees.maker },
 				taker: { ...tier.fees.taker }
 			};
 			updatedFees.maker[pair] = fees[level].maker;
 			updatedFees.taker[pair] = fees[level].taker;
-			return tier.update(
+
+			const updatedTier = await tier.update(
 				{ fees: updatedFees },
 				{ fields: ['fees'], transaction }
 			);
+
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update',
+					data: {
+						tiers: {
+							[updatedTier.id]: updatedTier
+						}
+					}
+				})
+			);
+
+			return updatedTier
 		}));
 	});
 };
