@@ -26,7 +26,7 @@ const findTier = (level) => {
 		});
 };
 
-const createTier = (level, name, description, deposit_limit, withdrawal_limit, fees = {}) => {
+const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees = {}) => {
 	const existingTiers = getKitTiers();
 
 	if (existingTiers[level]) {
@@ -63,6 +63,7 @@ const createTier = (level, name, description, deposit_limit, withdrawal_limit, f
 	return getModel('tier').create({
 		id: level,
 		name,
+		icon,
 		description,
 		deposit_limit,
 		withdrawal_limit,
@@ -109,6 +110,10 @@ const updateTier = (level, updateData) => {
 
 			if (updateData.name) {
 				newData.name = updateData.name;
+			}
+
+			if (updateData.icon) {
+				newData.icon = updateData.icon;
 			}
 
 			if (updateData.description) {
