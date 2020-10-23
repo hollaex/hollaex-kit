@@ -159,6 +159,11 @@ const updateTier = (level, updateData) => {
 };
 
 const estimateNativeCurrencyPrice = async (startingCurrency) => {
+
+	if (startingCurrency === getKitConfig().native_currency) {
+		return 1;
+	}
+
 	const pairs = Object.values(getKitPairsConfig());
 	const tickers = await getNodeLib().getAllTickersEngine();
 	const prices = {};
