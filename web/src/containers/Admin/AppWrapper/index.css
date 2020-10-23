@@ -61,3 +61,41 @@
 	width: 300px;
 	padding: 0;
 }
+.admin-top-bar {
+	height: 38px;
+	background-color: #0F1114;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: #ffffff;
+}
+.admin-top-header {
+	font-size: 18px;
+}
+.top-box-menu {
+	border: 1px solid #C4C4C4;
+	border-radius: 5px;
+	color: #C4C4C4;
+	margin: 0px 10px;
+	padding: 1px 5px;
+}
+.ant-layout {
+	height: calc(100vh - 38px);
+}
+.ant-layout .ant-layout-content {
+	margin-left: 310px;
+    background-color: #0000FF;
+}
+.ant-layout-sider .ant-layout-sider-children .ant-menu .ant-menu-item {
+	color: #FFFFFF;
+}
+.ant-layout-sider .ant-layout-sider-children .ant-menu {
+	background-color: #0000FF;
+	color: #FFFFFF;
+}
+.ant-layout-sider .ant-layout-sider-children {
+	background-color: #0000FF;
+}
+.menu-wrapper {
+	width: 100%;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -308,61 +308,70 @@ class AppWrapper extends React.Component {
 			);
 		} else {
 			return (
-				<Layout>
-					<Sider>
-						<div className="d-flex flex-column justify-content-between">
-							<Menu
-								theme="dark"
-								mode="vertical"
-								style={{ lineHeight: '64px' }}
-								className="m-top"
-							>
-								{PATHS.filter(
-									({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
-										true
-								).map(this.renderMenuItem)}
-								<Menu.Item>
-									<Link to="/summary">
-										<HomeOutlined />
+				<Fragment>
+					<div className="admin-top-bar">
+						<Link to="/summary">
+							<div className="top-box-menu">Back to Exchange web</div>
+						</Link>
+						<div className="admin-top-header">Operator Control Panel</div>
+						<div className="top-box-menu">Go to master admin</div>
+					</div>
+					<Layout>
+						<Sider width={310}>
+							<div className="d-flex flex-column justify-content-between menu-wrapper">
+								<Menu
+									// theme="dark"
+									mode="vertical"
+									style={{ lineHeight: '64px' }}
+									// className="m-top"
+								>
+									{PATHS.filter(
+										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
+											true
+									).map(this.renderMenuItem)}
+									<Menu.Item>
+										<Link to="/summary">
+											<HomeOutlined />
 										Go To HollaEx-WEB
 									</Link>
-								</Menu.Item>
-								<Menu.Item key="logout">
-									<div onClick={logout}>
-										<LogoutOutlined />
+									</Menu.Item>
+									<Menu.Item key="logout">
+										<div onClick={logout}>
+											<LogoutOutlined />
 										LOGOUT
 									</div>
-								</Menu.Item>
-							</Menu>
-							<Menu
-								theme="dark"
-								mode="vertical"
-								style={{ lineHeight: '64px' }}
-								className="m-top"
-							>
-								<Menu.Item style={{ fontSize: '14px', fontWeight: 'normal' }}>
-									<Link
-										href={ADMIN_GUIDE_DOWNLOAD_LINK}
-										target="blank"
-									>
-										<DownloadOutlined />
+									</Menu.Item>
+								</Menu>
+								<Menu
+									// theme="dark"
+									mode="vertical"
+									style={{ lineHeight: '64px' }}
+									className="m-top"
+								>
+									<Menu.Item style={{ fontSize: '14px', fontWeight: 'normal' }}>
+										<Link
+											href={ADMIN_GUIDE_DOWNLOAD_LINK}
+											target="blank"
+										>
+											<DownloadOutlined />
 										Admin Panel Guide
 									</Link>
-								</Menu.Item>
-							</Menu>
-						</div>
-					</Sider>
-					<Layout>
-						<Content>
-							<div className="content-wrapper">
-								{appLoaded && this.isSocketDataReady()
-									? children
-									: <Spin size="large" className="m-top" />
-								}
+									</Menu.Item>
+								</Menu>
 							</div>
-						</Content>
+						</Sider>
+						<Layout>
+							<Content>
+								<div className="content-wrapper">
+									{appLoaded && this.isSocketDataReady()
+										? children
+										: <Spin size="large" className="m-top" />
+									}
+								</div>
+							</Content>
+						</Layout>
 					</Layout>
-				</Layout>
+				</Fragment>
 			);
 		}
 	}
