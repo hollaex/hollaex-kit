@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { DownloadOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
 // import io from 'socket.io-client';
 import { debounce } from 'lodash';
+import ReactSVG from 'react-svg';
 
 import { PATHS } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -37,7 +37,7 @@ import {
 	requestInitial,
 	requestConstant
 } from '../../../actions/appActions';
-import { SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
+import { SESSION_TIME, BASE_CURRENCY, ICONS } from '../../../config/constants';
 
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
@@ -239,14 +239,37 @@ class AppWrapper extends React.Component {
 	renderMenuItem = ({ path, label, routeKey, ...rest }, index) => {
 		let showLabel = label;
 		if (routeKey === 'main') {
-			showLabel = this.props.constants.api_name || ''
+			showLabel = this.props.constants.api_name || '';
+			return (
+				<Link to={path} className="no-link" key={index}>
+					<div
+						className={
+							this.props.location.pathname === '/admin'
+								? "sidebar-exchange-menu flex-menu active-exchange-menu"
+								: "sidebar-exchange-menu flex-menu"
+						}
+					>
+						<ReactSVG path={ICONS.HEX_PATTERN_ICON} wrapperClassName="sidebar-icon" />
+						<div>
+							<div>DASHBOARD</div>
+							<div className="exchange-title">{showLabel}</div>
+						</div>
+					</div>
+				</Link>
+			);
 		}
 		return (
-			<Menu.Item key={index}>
-				<Link to={path} className="no-link">
+			<Link to={path} className="no-link" key={index}>
+				<div
+					className={
+						this.props.location.pathname.includes(path)
+							? "sidebar-menu active-side-menu"
+							: "sidebar-menu"
+					}
+				>
 					{showLabel}
-				</Link>
-			</Menu.Item>
+				</div>
+			</Link>
 		);
 	}
 
@@ -323,45 +346,37 @@ class AppWrapper extends React.Component {
 									// theme="dark"
 									mode="vertical"
 									style={{ lineHeight: '64px' }}
-									// className="m-top"
+								// className="m-top"
 								>
 									{PATHS.filter(
 										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
 											true
 									).map(this.renderMenuItem)}
-									<Menu.Item>
-										<Link to="/summary">
-											<HomeOutlined />
-										Go To HollaEx-WEB
-									</Link>
-									</Menu.Item>
-									<Menu.Item key="logout">
-										<div onClick={logout}>
-											<LogoutOutlined />
-										LOGOUT
-									</div>
-									</Menu.Item>
 								</Menu>
-								<Menu
-									// theme="dark"
-									mode="vertical"
-									style={{ lineHeight: '64px' }}
-									className="m-top"
-								>
-									<Menu.Item style={{ fontSize: '14px', fontWeight: 'normal' }}>
-										<Link
-											href={ADMIN_GUIDE_DOWNLOAD_LINK}
-											target="blank"
-										>
-											<DownloadOutlined />
-										Admin Panel Guide
-									</Link>
-									</Menu.Item>
-								</Menu>
+								<div>
+									<div className="bottom-side-top"></div>
+									<Menu
+										mode="vertical"
+										style={{ lineHeight: '64px' }}
+									>
+
+										<Link to="/admin/resources">
+											<div
+												className={"sidebar-menu"}
+											>
+												Resources
+											</div>
+										</Link>
+											<div className={"sidebar-menu"} onClick={logout}>
+											Logout
+										</div>
+									</Menu>
+								</div>
 							</div>
 						</Sider>
 						<Layout>
 							<Content>
+								<div className="admin-content-head">Dashboard</div>
 								<div className="content-wrapper">
 									{appLoaded && this.isSocketDataReady()
 										? children

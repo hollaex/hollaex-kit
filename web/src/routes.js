@@ -30,7 +30,7 @@ import {
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
-	Main,
+	// Main,
 	DepositsPage,
 	Limits,
 	Wallets,
@@ -46,7 +46,8 @@ import {
 	Transfer,
 	AdminFees,
 	Init,
-	AdminLogin
+	AdminLogin,
+	AdminDashboard
 } from './containers';
 
 import store from './store';
@@ -318,7 +319,7 @@ export default (
 			<Route path="logout" name="LogOut" onEnter={setLogout} />
 		</Route>
 		<Route component={AdminContainer}>
-			<Route path="/admin" name="Admin Main" component={Main} />
+			<Route path="/admin" name="Admin Main" component={AdminDashboard} />
 			<Route
 				path="/admin/user"
 				name="Admin User"

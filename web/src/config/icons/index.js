@@ -313,6 +313,9 @@ const nestedIcons = {
   SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
   SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
   SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg',
+  HEX_PATTERN_ICON: '/assets/icons/hex-pattern-icon-05.svg',
+  GENERAL_SETUP: '/assets/images/general-setup.svg',
+  USERS_SETUP: '/assets/images/users.svg',
 
   SOCIAL_ICONS: {
     FACEBOOK: '/assets/icons/facebook.png',
