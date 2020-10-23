@@ -89,8 +89,6 @@ const updateTier = (level, updateData) => {
 
 	if (!existingTiers[level]) {
 		return reject(new Error('Tier does not exist'));
-	} else if (updateData.fees) {
-		return reject(new Error('Cannot update fees through this endpoint'));
 	} else if (
 		updateData.withdrawal_limit !== undefined
 		&& updateData.withdrawal_limit < 0
