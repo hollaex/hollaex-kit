@@ -41,7 +41,7 @@ const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL, ADMIN_ACCOUNT_ID, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins, getKitTiers } = require('./common');
+const { getKitConfig, getKitSecrets, getKitCoins, getKitTiers, isValidTierLevel } = require('./common');
 const { isValidPassword } = require('./auth');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -833,13 +833,7 @@ const updateUserNote = (userId, note) => {
 };
 
 const changeUserVerificationLevelById = (userId, newLevel, domain) => {
-	const levels = Object.keys(getKitTiers()).sort();
-	const minLevel = parseInt(levels[0]);
-	const maxLevel = parseInt(levels[levels.length - 1]);
-	if (
-		newLevel < minLevel ||
-		newLevel > maxLevel
-	) {
+	if (!isValidTierLevel(newLevel)) {
 		return reject(new Error(INVALID_VERIFICATION_LEVEL(newLevel)));
 	}
 

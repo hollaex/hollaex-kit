@@ -57,6 +57,15 @@ const getKitTier = (tier) => {
 	}
 };
 
+const isValidTierLevel = (level) => {
+	const levels = Object.keys(getKitTiers()).map((tier) => parseInt(tier));
+	if (!levels.includes(level)) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
 const getKitConfig = () => {
 	return GET_KIT_CONFIG();
 };
@@ -346,5 +355,6 @@ module.exports = {
 	getNetworkKeySecret,
 	setExchangeInitialized,
 	setExchangeSetupCompleted,
-	updateNetworkKeySecret
+	updateNetworkKeySecret,
+	isValidTierLevel
 };
