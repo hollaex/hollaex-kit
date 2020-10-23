@@ -13,6 +13,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false
 			},
+			icon: {
+				type: DataTypes.STRING,
+				defaultValue: ''
+			},
 			description: {
 				type: DataTypes.STRING,
 				allowNull: false
