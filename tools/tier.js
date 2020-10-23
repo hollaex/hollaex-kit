@@ -160,7 +160,9 @@ const updateTier = (level, updateData) => {
 
 const estimateNativeCurrencyPrice = async (startingCurrency) => {
 
-	if (startingCurrency === getKitConfig().native_currency) {
+	if (!getKitConfig().native_currency) {
+		throw new Error('Native currency is not set');
+	} else if (startingCurrency === getKitConfig().native_currency) {
 		return 1;
 	}
 
