@@ -4536,6 +4536,8 @@ definitions:
         format: int32
       name:
         type: string
+      icon:
+        type: string
       description:
         type: string
       deposit_limit:
@@ -4549,6 +4551,7 @@ definitions:
     required:
       - level
       - name
+      - icon
       - description
       - deposit_limit
       - withdrawal_limit
@@ -4558,6 +4561,8 @@ definitions:
         type: number
         format: int32
       name:
+        type: string
+      icon:
         type: string
       description:
         type: string
@@ -4594,6 +4599,7 @@ definitions:
     required:
       - id
       - name
+      - icon
       - description
       - deposit_limit
       - withdrawal_limit
@@ -4603,6 +4609,8 @@ definitions:
         type: number
         format: int32
       name:
+        type: string
+      icon:
         type: string
       description:
         type: string
