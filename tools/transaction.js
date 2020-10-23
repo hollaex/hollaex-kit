@@ -66,6 +66,8 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 					if (convertedAmount > limit) {
 						throw new Error('Amount exceeds withdrawal limit');
 					}
+				} else {
+					throw new Error('Currency cannot be converted into native currency');
 				}
 			}
 			return withdrawRequestEmail(
