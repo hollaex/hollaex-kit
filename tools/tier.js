@@ -10,6 +10,7 @@ const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const math = require('mathjs');
+const flatten = require('flat');
 
 const findTier = (level) => {
 	return dbQuery.findOne('tier', {
@@ -30,6 +31,18 @@ const createTier = (level, name, description, deposit_limit, withdrawal_limit, f
 
 	if (existingTiers[level]) {
 		return reject(new Error('Tier already exists'));
+	} else if (
+		withdrawal_limit < 0
+		&& withdrawal_limit !== -1
+	) {
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
+	} else if (
+		deposit_limit < 0
+		&& deposit_limit !== -1
+	) {
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
+	} else if (Object.values(flatten(fees)).some(fee => fee < 0)) {
+		return reject(new Error('Fees cannot be negative'));
 	}
 
 	const givenMakerSymbols = Object.keys(omit(fees.maker, 'default'));
@@ -40,9 +53,7 @@ const createTier = (level, name, description, deposit_limit, withdrawal_limit, f
 		&& difference(givenMakerSymbols, getKitPairs()).length > 0
 	) {
 		return reject(new Error('Maker fees includes a symbol that you are not subscribed to'));
-	}
-
-	if (
+	} else if (
 		givenTakerSymbols.length > 0
 		&& difference(givenTakerSymbols, getKitPairs()).length > 0
 	) {
@@ -78,46 +89,25 @@ const updateTier = (level, updateData) => {
 
 	if (!existingTiers[level]) {
 		return reject(new Error('Tier does not exist'));
-	}
-
-	if (updateData.fees) {
-		const givenMakerSymbols = Object.keys(omit(updateData.fees.maker, 'default'));
-		const givenTakerSymbols = Object.keys(omit(updateData.fees.taker, 'default'));
-
-		if (
-			givenMakerSymbols.length > 0
-			&& difference(givenMakerSymbols, getKitPairs()).length > 0
-		) {
-			return reject(new Error('Maker fees includes a symbol that you are not subscribed to'));
-		}
-
-		if (
-			givenTakerSymbols.length > 0
-			&& difference(givenTakerSymbols, getKitPairs()).length > 0
-		) {
-			return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
-		}
+	} else if (updateData.fees) {
+		return reject(new Error('Cannot update fees through this endpoint'));
+	} else if (
+		updateData.withdrawal_limit !== undefined
+		&& updateData.withdrawal_limit < 0
+		&& updateData.withdrawal_limit !== -1
+	) {
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
+	} else if (
+		updateData.deposit_limit !== undefined
+		&& updateData.deposit_limit < 0
+		&& updateData.deposit_limit !== -1
+	) {
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
 	}
 
 	return findTier(level)
 		.then((tier) => {
 			const newData = {};
-
-			let updatedMakerFee = tier.fees.maker;
-			if (
-				updateData.fees
-				&& updateData.fees.maker
-			) {
-				updatedMakerFee = { ...updatedMakerFee, ...updateData.fees.maker };
-			}
-
-			let updatedTakerFee = tier.fees.taker;
-			if (
-				updateData.fees
-				&& updateData.fees.taker
-			) {
-				updatedTakerFee = { ...updatedTakerFee, ...updateData.fees.taker };
-			}
 
 			if (updateData.name) {
 				newData.name = updateData.name;
@@ -134,11 +124,6 @@ const updateTier = (level, updateData) => {
 			if (updateData.withdrawal_limit !== undefined) {
 				newData.withdrawal_limit = updateData.withdrawal_limit;
 			}
-
-			newData.fees = {
-				maker: updatedMakerFee,
-				taker: updatedTakerFee
-			};
 
 			return tier.update(newData, { returning: true });
 		})
