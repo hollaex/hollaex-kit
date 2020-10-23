@@ -4544,8 +4544,6 @@ definitions:
       withdrawal_limit:
         type: number
         format: double
-      fees:
-        type: object
   PostTierBody:
     type: object
     required:

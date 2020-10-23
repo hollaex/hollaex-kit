@@ -35,14 +35,13 @@ const postTier = (req, res) => {
 const putTier = (req, res) => {
 	loggerTier.verbose(req.uuid, 'controllers/tier/putTier auth', req.auth);
 
-	const { level, name, description, deposit_limit, withdrawal_limit, fees } = req.swagger.params.data.value;
+	const { level, name, description, deposit_limit, withdrawal_limit } = req.swagger.params.data.value;
 
 	const updateData = {
 		name,
 		description,
 		deposit_limit,
-		withdrawal_limit,
-		fees
+		withdrawal_limit
 	};
 
 	toolsLib.tier.updateTier(level, updateData)
