@@ -66,6 +66,10 @@ const isValidTierLevel = (level) => {
 	}
 };
 
+const getTierLevels = () => {
+	return Object.keys(getKitTiers());
+};
+
 const getKitConfig = () => {
 	return GET_KIT_CONFIG();
 };
@@ -355,5 +359,6 @@ module.exports = {
 	setExchangeInitialized,
 	setExchangeSetupCompleted,
 	updateNetworkKeySecret,
-	isValidTierLevel
+	isValidTierLevel,
+	getTierLevels
 };

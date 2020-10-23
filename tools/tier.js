@@ -3,8 +3,8 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig } = require('./common');
-const { reject } = require('bluebird');
+const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig, subscribedToPair, getTierLevels } = require('./common');
+const { reject, all } = require('bluebird');
 const { difference, each, omit } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
@@ -204,9 +204,38 @@ const convertPathToPairNames = (path = [], from_key = 'pair_base', to_key = 'pai
 	return path.map(({ [from_key]: from, [to_key]: to}) => `${from}${separator}${to}`);
 };
 
+const updatePairFees = (pair, fees) => {
+	if (!subscribedToPair(pair)) {
+		return reject(new Error('Invalid pair'));
+	}
+
+	const tiersToUpdate = Object.keys(fees);
+
+	if (difference(tiersToUpdate, getTierLevels).length > 0) {
+		return reject(new Error('Invalid tier level given'));
+	}
+
+	return getModel('sequelize').transaction((transaction) => {
+		return all(tiersToUpdate.map(async (level) => {
+			const tier = await dbQuery.findOne({ where: { id: level } });
+			const updatedFees = {
+				maker: { ...tier.fees.maker },
+				taker: { ...tier.fees.taker }
+			};
+			updatedFees.maker[pair] = fees[level].maker;
+			updatedFees.taker[pair] = fees[level].taker;
+			return tier.update(
+				{ fees: updatedFees },
+				{ fields: ['fees'], transaction }
+			);
+		}));
+	});
+};
+
 module.exports = {
 	findTier,
 	createTier,
 	updateTier,
-	estimateNativeCurrencyPrice
+	estimateNativeCurrencyPrice,
+	updatePairFees
 };
