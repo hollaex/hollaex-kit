@@ -1936,6 +1936,32 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/pair/fees:
+    x-swagger-router-controller: tier
+    put:
+      operationId: updatePairFees
+      description: Update trading pair fees
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PairFeesPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/coins:
     x-swagger-router-controller: admin
     get:
@@ -4620,5 +4646,15 @@ definitions:
       withdrawal_limit:
         type: number
         format: double
+      fees:
+        type: object
+  PairFeesPut:
+    type: object
+    required:
+      - pair
+      - fees
+    properties:
+      pair:
+        type: string
       fees:
         type: object
