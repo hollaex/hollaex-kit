@@ -148,14 +148,14 @@ export const playBackgroundAudioNotification = (type = '', audioSettings = { aud
 	let audioFile = '';
 	switch (type) {
 		case 'orderbook_market_order':
-		case 'order_filled':
+		case 'filled':
 			if (audioSetup.order_completed) {
 				audioFile = AUDIOS.ORDER_COMPLETED;
 			} else {
 				audioFile = '';
 			}
 			break;
-		case 'order_partialy_filled':
+		case 'pfilled':
 			if (audioSetup.order_partially_completed) {
 				audioFile = AUDIOS.ORDER_PARTIALLY_COMPLETED;
 			} else {
