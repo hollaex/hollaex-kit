@@ -114,59 +114,6 @@ $sections-font--color: $colors-deactivate-color2;
 	}
 }
 
-.dark-theme {
-	.wallet-wrapper,
-	.wallet_section-title,
-	.wallet_section-title-amount,
-	.wallet_section-total_asset {
-		color: $dark-font-sub-text-color !important;
-	}
-
-	.direction_ltr {
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section_title
-			.wallet_section-title {
-			&:after {
-				@include css-triangle($dark-font-sub-text-color, 'left', $accordion_arrow-size);
-			}
-		}
-
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section--open
-			.accordion_section_title
-			.wallet_section-title {
-			color: $dark-font-sub-text-color;
-			&:after {
-				border-right-color: $dark-border-main;
-			}
-		}
-	}
-
-	.direction_rtl {
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section_title
-			.wallet_section-title {
-			&:after {
-				@include css-triangle($dark-font-sub-text-color, 'left', $accordion_arrow-size);
-			}
-		}
-
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section--open
-			.accordion_section_title
-			.wallet_section-title {
-			color: $dark-font-sub-text-color;
-			&:after {
-				border-right-color: $dark-border-main;
-			}
-		}
-	}
-}
-
 @media (min-width: 1920px) {
 	.wallet-wrapper {
 		.donut-container {

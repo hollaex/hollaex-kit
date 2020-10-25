@@ -1,23 +1,5 @@
 $mobile-notification-size: 1.75rem;
 
-.dark-theme {
-	.mobile-bar {
-		color: $colors-deactivate !important;
-		background: $dark-app-bar-background-color !important;
-	}
-	.mobile-bar-tab {
-		&.active {
-			position: relative;
-			color: white;
-			&:after {
-				content: '';
-				bottom: 0;
-				@include css-triangle($dark-app-background-color, 'up', 1rem) ;
-			}
-		}
-	}
-}
-
 .mobile-bar {
 	width: 100%;
 	min-width: 100vw;

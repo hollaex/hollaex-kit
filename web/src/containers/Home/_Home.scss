@@ -151,36 +151,6 @@ $no-background--color: white;
 	}
 }
 
-.dark-theme {
-	&.home_container{
-		.section_1-content {
-			background: url($background-image-dark);
-		}
-		.features-container {
-			background-color: #020202;
-		}
-		.home-card-container {
-			border-color:#f9f9f9;
-			.home-card-icon-wrapper {
-				> div {
-					.home-card-icon {
-						fill:#f9f9f9
-					}
-				}
-			}
-			.home-card-text-container {
-				color:#f9f9f9;
-			}
-		}
-		.buttons-section--button {
-			border-color:#f9f9f9;
-		}
-	}
-	.arrow-down {
-		stroke: #f9f9f9;
-	}
-}
-
 @media (max-width: $bp-sm) {
 	.home_container {
 		.home-card-container {

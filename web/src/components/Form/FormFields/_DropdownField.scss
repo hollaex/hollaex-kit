@@ -75,25 +75,3 @@ $dropdown-option--padding: 0.25rem;
 		}
 	}
 }
-
-.dark-theme {
-	.dropdown-options-wrapper {
-		background: $dark-app-background-color !important;
-	}
-	.disabled {
-		.field-children {
-			color: $dark-form-text-disabled !important;
-		}
-	}
-	.dropdown-option {
-		color: $dark-form-text !important;
-
-		.option-icon {
-			svg {
-				path {
-					fill: $dark-font-sub-text-color;
-				}
-			}
-		}
-	}
-}

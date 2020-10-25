@@ -31,13 +31,3 @@
     -webkit-transform: rotate(45deg);
   }
 }
-
-.dark-theme {
-  .controlled-scrollbar__button {
-    color: $dark-link;
-
-    &.disabled {
-      color: $colors-deactivate-color2;
-    }
-  }
-}
