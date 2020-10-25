@@ -46,6 +46,14 @@ class AddTheme extends Component {
     });
   }
 
+  isDisabled = () => {
+    const { isEditTheme, themeKey } = this.state;
+    const { themes } = this.props;
+    const themeKeys = Object.keys(themes)
+
+    return !themeKey || (!isEditTheme && themeKeys.includes(themeKey))
+  }
+
   render() {
     const { isOpen, onCloseDialog } = this.props;
     const { isEditTheme, themeKey, theme } = this.state;
@@ -113,6 +121,7 @@ class AddTheme extends Component {
             type="primary"
             size="large"
             className="operator-controls__save-button"
+            disabled={this.isDisabled()}
             onClick={this.addTheme}
           >
             Save

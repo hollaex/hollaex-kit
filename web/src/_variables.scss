@@ -30,47 +30,45 @@ $color-currency-eur--main: var(--color-currency-eur--main);
 $color-currency-eur--secondary: var(--color-currency-eur--secondary);
 $color-currency-btc--main: var(--color-currency-btc--main);
 $color-currency-btc--secondary: var(--color-currency-btc--secondary);
-$colors-currencies-bch: var(--colors-currencies-bch);
-$colors-currencies-eth: var(--colors-currencies-eth);
-$colors-currencies-ltc: var(--colors-currencies-ltc);
-$colors-currencies-xrp: var(--colors-currencies-xrp);
 
 //common colors for terms
 $colors-terms-background: var(--colors-terms-background); // for Hollaex
 
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: var(--dark-app-bar-add-tab-menu-background);
-$dark-app-bar-tab-active-menu-list-background: var(--dark-app-bar-tab-active-menu-list-background);
 $app-bar-menu-list-color: var(--app-bar-menu-list-color);
 $app-bar-icon-inactive: var(--app-bar-icon-inactive);
-$app-bar--quicktrade-active-color: var(--app-bar--quicktrade-active-color);
-$app-bar--quicktrade-inactive-color: var(--app-bar--quicktrade-inactive-color);
-$app-bar-pairs-up: var(--app-bar-pairs-up);
-$app-bar-pairs-down: var(--app-bar-pairs-down);
-$dark-app-bar-pairs-up: var(--dark-app-bar-pairs-up);
-$dark-app-bar-pairs-down: var(--dark-app-bar-pairs-down);
 
 // theme colors
 $app-background-color: var(--app-background-color);
 $app-light-background: var(--app-light-background);
 $app-sidebar-background: var(--app-sidebar-background);
 $auth-container-background: var(--auth-container-background);
+
+// Quick trade
 $quick-trade-background: var(--quick-trade-background);
 $quick-trade-container: var(--quick-trade-container);
+
 $app-modal-background: var(--app-modal-background);
 $app-bar-background-color: var(--app-bar-background-color);
+
 $app-line-divider: var(--app-line-divider);
 $box-fields: var(--box-fields);
+
 $buy: var(--buy); // for Hollaex
 $sell: var(--sell); // for Hollaex
 $color-sell-btc-light: var(--color-sell-btc-light); // for Hollaex
+
 $link: var(--link);
+
 $trade-fields: var(--trade-fields);
 $trade-fields-border: var(--trade-fields-border);
 $trade-fill-indicator: var(--trade-fill-indicator); // for Hollaex
 $trade-fill-indicator-text: var(--trade-fill-indicator-text); // for Hollaex
+
 $buy-bids-text: var(--buy-bids-text); // for Hollaex
 $sell-bids-text: var(--sell-bids-text);
+
 $app-logo-color: var(--app-logo-color);
 $sidebar-border--color: var(--sidebar-border--color);
 $border-color: var(--border-color);
@@ -82,7 +80,6 @@ $form-color-underline: var(--form-color-underline);
 $form-color-placeholder: var(--form-color-placeholder);
 $form-arrow: var(--form-arrow);
 $form-label: var(--form-label);
-$form-text-disabled: var(--form-text-disabled);
 
 // theme tabs
 $tab-active: var(--tab-active);
@@ -98,7 +95,7 @@ $trade-tabs-inactive-color: var(--trade-tabs-inactive-color);
 // theme footer
 $footer-background-color: var(--footer-background-color);
 
-// white chat color
+// chat color
 $chat-message-background-even: var(--chat-message-background-even);
 $chat-message-background-odd: var(--chat-message-background-odd);
 $chat-message-color: var(--chat-message-color);
@@ -111,13 +108,11 @@ $history-color-sell: var(--history-color-sell);
 // remaining dark colors
 $dark-app-background-color: var(--dark-app-background-color);
 $dark-app-light-background: var(--dark-app-light-background);
-$dark-quick-trade-container: var(--dark-quick-trade-container);
 $dark-app-line-divider: var(--dark-app-line-divider);
 $dark-buy: var(--dark-buy);
 $dark-link: var(--dark-link);
 $dark-border-main: var(--dark-border-main);
 $dark-inactive-color: var(--dark-inactive-color);
-$dark-font-main-text-color: var(--dark-font-main-text-color);
 $dark-font-sub-text-color: var(--dark-font-sub-text-color);
 $dark-font-sub-text-1-color: var(--dark-font-sub-text-1-color);
 $dark-disabled-main: var(--dark-disabled-main);

@@ -1,4 +1,4 @@
-import { THEMES, THEME_DEFAULT, CHAT_STATUS_KEY } from '../config/constants';
+import { THEME_DEFAULT, CHAT_STATUS_KEY } from '../config/constants';
 
 export const getTheme = (theme = '') => {
 	// const indexOfTheme = THEMES.indexOf(theme);
