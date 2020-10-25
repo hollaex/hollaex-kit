@@ -15,6 +15,8 @@ import { content as CONTENT } from 'config/localizedStrings';
 import AllStringsModal from './components/AllStringsModal';
 import StringSettingsModal from './components/StringSettings';
 import AddLanguageModal from './components/AddLanguageModal';
+import ThemeSettings from './components/ThemeSettings';
+import AddTheme from './components/AddTheme';
 import UploadIcon from './components/UploadIcon';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
@@ -27,8 +29,10 @@ class OperatorControls extends Component {
 
     const strings = localStorage.getItem('strings') || "{}";
     const icons = localStorage.getItem('icons') || "{}";
+    const color = localStorage.getItem('color') || "{}";
     const overwrites = JSON.parse(strings);
     const iconsOverwrites = JSON.parse(icons);
+    const colorOverwrites = JSON.parse(color);
     const languageKeys = getValidLanguages();
     const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value));
     const selectedLanguages = this.getSelectedLanguages(languageKeys);
@@ -53,7 +57,11 @@ class OperatorControls extends Component {
       isExitConfirmationOpen: false,
       isPublishConfirmationOpen: false,
       isUploadIconOpen: false,
+      isThemeSettingsOpen: false,
+      isAddThemeOpen: false,
+      selectedTheme: '',
       iconsOverwrites,
+      colorOverwrites,
       editableIconIds: [],
     }
   }
@@ -253,11 +261,18 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites, iconsOverwrites: icons, languageKeys } = this.state;
+    const {
+      overwrites,
+      iconsOverwrites: icons,
+      colorOverwrites: color,
+      languageKeys
+    } = this.state;
+
     const valid_languages = languageKeys.join();
     const strings = filterOverwrites(overwrites)
 
     const configs = {
+      color,
       strings,
       icons,
       valid_languages,
@@ -473,6 +488,63 @@ class OperatorControls extends Component {
     });
   }
 
+  openThemeSettings = () => {
+    this.setState({
+      isThemeSettingsOpen: true,
+    });
+  }
+
+  closeThemeSettings = () => {
+    this.setState({
+      isThemeSettingsOpen: false,
+    });
+  }
+
+  addTheme = (themeKey, theme) => {
+    const { updateColor } = this.props;
+    this.setState(prevState => ({
+      ...prevState,
+      colorOverwrites: {
+        ...prevState.colorOverwrites,
+        [themeKey]: theme,
+      }
+    }), () => {
+      const { colorOverwrites } = this.state;
+      updateColor(colorOverwrites);
+      this.enablePublish();
+      this.closeAddTheme();
+    })
+  }
+
+  removeThemes = (keys = []) => {
+    const { colorOverwrites: prevColorOverwrites } = this.state;
+    const colorOverwrites = {}
+
+    Object.entries(prevColorOverwrites).forEach(([themeKey, theme]) => {
+      if (!keys.includes(themeKey)) {
+        colorOverwrites[themeKey] = theme;
+      }
+    })
+
+    this.setState({
+      colorOverwrites,
+    }, this.closeThemeSettings)
+  }
+
+  openAddTheme = (selectedTheme = '') => {
+    this.closeThemeSettings();
+    this.setState({
+      isAddThemeOpen: true,
+      selectedTheme,
+    });
+  }
+
+  closeAddTheme = () => {
+    this.setState({
+      isAddThemeOpen: false,
+    }, this.openThemeSettings);
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -492,8 +564,11 @@ class OperatorControls extends Component {
       isPublishConfirmationOpen,
       isUploadIconOpen,
       editableIconIds,
+      isThemeSettingsOpen,
+      isAddThemeOpen,
+      selectedTheme,
     } = this.state;
-    const { editMode } = this.props;
+    const { editMode, color: themes, themeOptions } = this.props;
 
     return (
       <div
@@ -515,6 +590,12 @@ class OperatorControls extends Component {
               onClick={this.openAllStringsModal}
             >
               All strings
+            </div>
+            <div
+              className="operator-controls__panel-item"
+              onClick={this.openThemeSettings}
+            >
+              Themes
             </div>
           </div>
           <div className="d-flex align-items-center">
@@ -636,6 +717,27 @@ class OperatorControls extends Component {
           onSave={this.addIcons}
           onReset={this.removeIcon}
         />
+        { isThemeSettingsOpen && (
+          <ThemeSettings
+            isOpen={editMode && isThemeSettingsOpen}
+            onCloseDialog={this.closeThemeSettings}
+            themes={themeOptions}
+            onAddThemeClick={this.openAddTheme}
+            onConfirm={this.removeThemes}
+          />
+        )
+        }
+        { isAddThemeOpen && (
+          <AddTheme
+            isOpen={editMode && isAddThemeOpen}
+            onCloseDialog={this.closeAddTheme}
+            selectedTheme={selectedTheme}
+            themes={themes}
+            onSave={this.addTheme}
+          />
+        )
+        }
+
         <Modal
           isOpen={isExitConfirmationOpen}
           label="operator-controls-modal"

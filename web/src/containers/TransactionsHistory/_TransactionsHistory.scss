@@ -1,5 +1,5 @@
-$trade-asks-color-main: $colors-currencies-btc;
-$trade-asks-color-font: $colors-currencies-btc;
+$trade-asks-color-main: $color-currency-btc--secondary;
+$trade-asks-color-font: $color-currency-btc--secondary;
 .layout-mobile {
 	.tab_controller-wrapper {
 		height: auto;
@@ -106,36 +106,5 @@ $trade-asks-color-font: $colors-currencies-btc;
 	}
 	&:first-child .display_table-body {
 		padding-top: 0.1rem !important;
-	}
-} 
-
-.dark-theme {
-	.csv-action {
-		.action_notification-text {
-			color: $dark-link !important;
-		}
-	}
-	.action_notification-svg svg {
-		.data-1 {
-			fill: $dark-link;
-		}
-	}
-
-	svg {
-		.transaction-history-1 {
-			fill: $dark-main-title-icon-color-2;
-		}
-		.transaction-history-2 {
-			fill: $dark-main-title-icon-color-3;
-		}
-		.transaction-history-3 {
-			fill: $dark-main-title-icon-color-2;
-		}
-		.transaction-history-4 {
-			stroke: $dark-main-title-icon-color-2;
-		}
-		.transaction-history-5 {
-			fill: $dark-main-title-icon-color-1;
-		}
 	}
 }

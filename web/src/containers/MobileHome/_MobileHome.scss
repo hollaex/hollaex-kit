@@ -47,28 +47,3 @@
         }
     }
 }
-
-.dark-theme {
-    &.home_container-mobile {
-        .post-wrapper {
-            border-top-color: $dark-border-main !important;
-            .post-title {
-                color: $dark-font-main-text-color;
-            }
-            .trade_post_icon {
-                svg {
-                    .announcement {
-                        fill: $colors-white
-                    }
-                }
-            }
-            .post_header {
-                color: $dark-font-main-text-color;
-            }
-            .post-content{
-                color: $dark-font-sub-text-color;
-                font-size: $trade-post-font-size;
-            }
-        }
-    }
-}

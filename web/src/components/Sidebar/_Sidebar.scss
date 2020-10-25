@@ -142,31 +142,6 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	}
 }
 
-.dark-theme {
-	.sidebar-row {
-		border-top-color: $dark-border-main !important;
-		color: $dark-font-main-text-color;
-
-		.cell-wrapper {
-			&:not(:last-child) {
-				border-left-color: $dark-border-main !important;
-				border-right-color: $dark-border-main !important;
-			}
-		}
-		.sidebar-row--right-icon {
-			&.icon--help {
-				@include hover-icon($dark-icon-hover, $dark-icon-unhover);
-			}
-			&.icon--logout {
-				@include hover-icon($dark-icon-hover, $dark-icon-unhover);
-			}
-			&.icon--chat {
-				@include hover-icon($dark-icon-hover, $dark-icon-unhover);
-			}
-		}
-	}
-}
-
 @media screen and ( max-height: 600px ) {
 	.sidebar-container {
 		.sidebar_hub-wrapper {

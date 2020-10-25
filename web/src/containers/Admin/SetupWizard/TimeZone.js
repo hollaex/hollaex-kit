@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactSVG from 'react-svg';
 import { Select, Form, Button } from 'antd';
 
@@ -16,17 +16,25 @@ const renderOptions = (values = []) => (
 );
 
 const TimeZone = ({ initialValues, handleNext, updateConstants }) => {
+    const [form] = Form.useForm();
+    useEffect(() => {
+        form.setFieldsValue(initialValues);
+    }, [initialValues, form]);
     const handleSubmit = (values) => {
         const formValues = {};
         if (values.language) {
-            formValues.defaults = {
+            formValues.kit = { };
+            formValues.kit.defaults = {
                 language: values.language
             }
         }
         if (values.timezone) {
-            formValues.timezone = values.timezone;
+            formValues.secrets = { };
+            formValues.secrets.emails = {
+                timezone: values.timezone
+            };
         }
-        updateConstants({ kit: formValues}, () => handleNext(1));
+        updateConstants(formValues, () => handleNext(1));
     };
     return (
         <div>
@@ -34,6 +42,7 @@ const TimeZone = ({ initialValues, handleNext, updateConstants }) => {
             <div className="form-wrapper">
                 <Form
                     name='timezone'
+                    form={form}
                     initialValues={initialValues}
                     onFinish={handleSubmit}
                 >

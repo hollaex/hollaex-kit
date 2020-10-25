@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { debounce } from 'lodash';
 import { WS_URL, SESSION_TIME, BASE_CURRENCY, LANGUAGE_KEY } from '../../config/constants';
-// import { isMobile } from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 import { getMe, setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
@@ -269,7 +269,7 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['orderbook', 'trade', 'wallet', 'order', 'userTrade'],
+					args: ['orderbook', 'trade', 'wallet', 'order', 'deposit'],
 				})
 			);
 			this.wsInterval = setInterval(() => {
@@ -283,15 +283,18 @@ class Container extends Component {
 
 		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
+			// console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
-					const tradesData = {
-						...data,
-						[data.symbol]: data.data
+					if (data.action === 'partial') {
+						const tradesData = {
+							...data,
+							[data.symbol]: data.data
+						}
+						delete tradesData.data;
+						this.props.setTrades(tradesData);
+						this.props.setTickers(tradesData);
 					}
-					delete tradesData.data;
-					this.props.setTrades(tradesData);
-					this.props.setTickers(tradesData);
 					if (data.action === 'update') {
 						if (
 							this.props.settings.audio &&
@@ -314,18 +317,127 @@ class Container extends Component {
 					// this.props.setOrderbooks(data);
 					break;
 				case 'order':
-					this.props.setUserOrders(data.data);
+					if (data.action === 'partial') {
+						this.props.setUserOrders(data.data);
+					} else if (data.action === 'insert') {
+						if (data.type === 'limit') {
+							playBackgroundAudioNotification('orderbook_limit_order', this.props.settings);
+							this.setState({ limitFilledOnOrder: data.data.id });
+							this.limitTimeOut = setTimeout(() => {
+								if (this.state.limitFilledOnOrder)
+									this.setState({ limitFilledOnOrder: '' });
+							}, 1000);
+						}
+						if (data.data.status === 'filled') {
+							this.props.addUserTrades([data.data]);
+						} else {
+							this.props.addOrder(data.data);
+						}
+						break;
+					} else if (data.action === 'update') {
+						if (data.data.status === 'pfilled') {
+							this.props.updateOrder(data.data);
+							if (
+								this.props.settings.notification &&
+								this.props.settings.notification.popup_order_partially_filled
+							) {
+								// data.filled = data.filled - filled;
+								if (isMobile) {
+									this.props.setSnackDialog({
+										isDialog: true,
+										type: 'order',
+										data: {
+											type: data.data.status,
+											order: data.data,
+											data: data.data
+										}
+									});
+								} else {
+									this.props.setNotification(NOTIFICATIONS.ORDERS, {
+										type: data.data.status,
+										order: data.data,
+										data: data.data
+									});
+								}
+							}
+							if (
+								this.props.settings.audio &&
+								this.props.settings.audio.order_partially_completed
+							) {
+								playBackgroundAudioNotification('pfilled', this.props.settings);
+							}
+						} else if (data.data.status === 'filled') {
+							const ordersDeleted = this.props.orders.filter((order, index) => {
+								return (
+									data.data.id === order.id >
+									-1
+								);
+							});
+							this.props.removeOrder(data.data);
+							this.props.addUserTrades([data.data]);
+							if (
+								this.props.settings.notification &&
+								this.props.settings.notification.popup_order_completed
+							) {
+								ordersDeleted.forEach((orderDeleted) => {
+									if (isMobile) {
+										this.props.setSnackDialog({
+											isDialog: true,
+											type: 'order',
+											data: {
+												type: data.data.status,
+												data: {
+													...orderDeleted,
+													filled: orderDeleted.size
+												}
+											}
+										});
+									} else {
+										this.props.setNotification(NOTIFICATIONS.ORDERS, {
+											type: data.data.status,
+											data: {
+												...orderDeleted,
+												filled: orderDeleted.size
+											}
+										});
+									}
+								});
+							}
+							if (
+								this.props.settings.audio &&
+								this.props.settings.audio.order_completed
+							) {
+								playBackgroundAudioNotification('filled', this.props.settings);
+							}
+						} else if (data.data.status === 'canceled') {
+							this.props.removeOrder(data.data);
+							this.props.setNotification(
+								NOTIFICATIONS.ORDERS,
+								{ type: data.data.status, data: data.data },
+								false
+							);
+						}
+					}
 					break;
-				case 'userTrade':
-					this.props.addUserTrades(data.data);
-					break;
+				// case 'userTrade':
+				// 	this.props.addUserTrades(data.data);
+				// 	break;
 				case 'wallet':
 					this.props.setBalance(data.data);
+					break;
+				case 'deposit':
+					const show = data.data.status || data.data.currency !== BASE_CURRENCY;
+					data.data.coins = this.props.coins;
+					this.props.setNotification(NOTIFICATIONS.DEPOSIT, data.data, show);
 					break;
 				default:
 					break;
 			};
 		}
+
+		privateSocket.onerror = (evt) => {
+			console.log('public socket error', evt);
+		};
 
 		// privateSocket.on('error', (error) => {
 		// 	if (

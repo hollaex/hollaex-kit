@@ -22,7 +22,11 @@ export default class SetupWizard extends Component {
             isReview: false,
             isConfirmScreen: false,
             constants: {},
-            emailInitialvalues: {}
+            emailInitialvalues: {},
+            timeZoneInitialValues: {
+                timezone: 'UTC',
+                language: 'en'
+            }
         }
     }
 
@@ -31,14 +35,21 @@ export default class SetupWizard extends Component {
             .then((res) => {
                 this.setConstants(res);
             })
+            .catch(err => {
+                console.error(err);
+            })
     }
-    
+
     onTabChange = (tab) => {
         this.setState({ currentTab: tab });
     };
 
     setConstants = (data) => {
         const { kit = {}, secrets = {} } = data;
+        let timeZoneInitialValues = {
+            language: kit.defaults && kit.defaults.language,
+            timezone: secrets.emails && secrets.emails.timezone
+        };
         let emailInitialvalues = {
             site_key: kit.captcha && kit.captcha.site_key !== 'null'
                 ? kit.captcha.site_key : '',
@@ -71,7 +82,7 @@ export default class SetupWizard extends Component {
                     ? secrets.smtp.password : '',
             }
         }
-        this.setState({ constants: data, emailInitialvalues });
+        this.setState({ constants: data, emailInitialvalues, timeZoneInitialValues });
     };
 
     setPreview = (value = false) => {
@@ -82,7 +93,7 @@ export default class SetupWizard extends Component {
         this.setState({ isConfirmScreen: value, isReview: false });
     };
 
-    updateConstants = (formValues, callback = () => {}) => {
+    updateConstants = (formValues, callback = () => { }) => {
         updatePlugins(formValues)
             .then((res) => {
                 this.setConstants(res);
@@ -94,9 +105,15 @@ export default class SetupWizard extends Component {
     };
 
     renderStep = () => {
-        switch(this.state.currentTab) {
+        switch (this.state.currentTab) {
             case 0:
-                return (<TimeZone handleNext={this.onTabChange} updateConstants={this.updateConstants} />);
+                return (
+                    <TimeZone
+                        initialValues={this.state.timeZoneInitialValues}
+                        handleNext={this.onTabChange}
+                        updateConstants={this.updateConstants}
+                    />
+                );
             case 1:
                 return (<AccountSecurity handleNext={this.onTabChange} />);
             case 2:

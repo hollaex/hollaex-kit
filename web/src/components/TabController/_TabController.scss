@@ -62,31 +62,6 @@ $tab_controller-item-min-width: 10rem;
 	}
 }
 
-.dark-theme {
-	$disabled-color: $colors-deactivate-color2 !important;
-	$active-color: $dark-tab-active !important;
-	.tab_controller-tabs {
-		border-top-color: $dark-border-main !important;
-		.tab_item {
-			color: $disabled-color;
-
-			svg path, svg rect {
-				fill: $disabled-color;
-				stroke: $disabled-color;
-			}
-
-			&.tab_item-active {
-				border-top-color: $dark-border-main !important;
-				color: $active-color;
-				svg path, svg rect {
-					fill: $active-color;
-					stroke: $active-color;
-				}
-			}
-		}
-	}
-}
-
 .layout-mobile {
 	.transaction-history-wrapper {
 		padding-top: 0 !important;

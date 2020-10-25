@@ -18,7 +18,7 @@ import {
 	getTokenTimestamp
 } from '../../../utils/token';
 import { checkUserSessionExpired } from '../../../utils/utils';
-import { getExchangeInitialized } from '../../../utils/initialize';
+import { getExchangeInitialized, getSetupCompleted } from '../../../utils/initialize';
 import { logout } from '../../../actions/authAction';
 import { getMe, setMe } from '../../../actions/userAction';
 import {
@@ -35,8 +35,7 @@ import {
 	changeTheme,
 	requestAvailPlugins,
 	requestInitial,
-	requestConstant,
-	requestAdminData
+	requestConstant
 } from '../../../actions/appActions';
 import { SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
 
@@ -61,7 +60,6 @@ class AppWrapper extends React.Component {
 			publicSocket: undefined,
 			idleTimer: undefined,
 			setupCompleted: true,
-			initialLoading: true
 		};
 	}
 
@@ -77,13 +75,16 @@ class AppWrapper extends React.Component {
 			this.initSocketConnections();
 		}
 		const initialized = getExchangeInitialized();
+		const setupCompleted = getSetupCompleted();
 		if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 			this.props.router.push('/init');
 		}
-		this.requestAdminInitialize();
 		this._resetTimer();
 		this.props.requestAvailPlugins();
 		this.setState({
+			setupCompleted: (setupCompleted === 'false'
+				|| (typeof setupCompleted === 'boolean' && !setupCompleted))
+				? false : true,
 			isSupportUser: isSupport(),
 			isSupervisorUser: isSupervisor(),
 			isAdminUser: isAdmin(),
@@ -113,22 +114,6 @@ class AppWrapper extends React.Component {
 			clearTimeout(this.state.idleTimer);
 		}
 	}
-
-	requestAdminInitialize = () => {
-		requestAdminData()
-			.then((res) => {
-				if (res.data) {
-					if (res.data.secrets) {
-						this.setState({ setupCompleted: res.data.secrets.setup_completed });
-					}
-				}
-				this.setState({ initialLoading: false });
-			})
-			.catch(err => {
-				this.setState({ initialLoading: false });
-				console.error(err);
-			})
-	};
 
 	initSocketConnections = () => {
 		this.setPublicWS();
@@ -212,20 +197,20 @@ class AppWrapper extends React.Component {
 			.then(({ value }) => {
 				if (value && value.data && value.data.id) {
 					const data = value.data;
-						this.props.setMe(data);
-						if (
-							data.settings &&
-							data.settings.language !== this.props.activeLanguage
-						) {
-							this.props.changeLanguage(data.settings.language);
-						}
-						if (
-							data.settings.interface &&
-							data.settings.interface.theme !== this.props.activeTheme
-						) {
-							this.props.changeTheme(data.settings.interface.theme);
-							localStorage.setItem('theme', data.settings.interface.theme);
-						}
+					this.props.setMe(data);
+					if (
+						data.settings &&
+						data.settings.language !== this.props.activeLanguage
+					) {
+						this.props.changeLanguage(data.settings.language);
+					}
+					if (
+						data.settings.interface &&
+						data.settings.interface.theme !== this.props.activeTheme
+					) {
+						this.props.changeTheme(data.settings.interface.theme);
+						localStorage.setItem('theme', data.settings.interface.theme);
+					}
 				}
 			})
 			.catch((err) => {
@@ -271,9 +256,9 @@ class AppWrapper extends React.Component {
 			removeToken();
 			router.replace('/login');
 		};
-		const { isAdminUser, isLoaded, appLoaded, initialLoading, setupCompleted } = this.state;
+		const { isAdminUser, isLoaded, appLoaded, setupCompleted } = this.state;
 
-		if (!isLoaded || initialLoading) return null;
+		if (!isLoaded) return null;
 		if (!isLoggedIn()) {
 			router.replace('/login');
 		}

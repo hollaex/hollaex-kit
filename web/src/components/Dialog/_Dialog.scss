@@ -87,35 +87,6 @@ $close-button--margin: 1.5rem;
 	}
 }
 
-.dark-theme {
-	.ReactModal__Content {
-		background-color: $dark-auth-container-background !important;
-	}
-	.ReactModal__Overlay {
-		background-color: $dark-app-modal-background !important;
-	}
-	.success_display-wrapper {
-		color: $dark-font-main-text-color;
-
-		.limit-trade-tick {
-			color: $dark-icon-color
-		}
-	}
-	.close-button {
-		&.action_notification-wrapper {
-			.action_notification-image {
-				fill: $dark-font-main-text-color;
-			}
-		}
-	}
-	.exir-button {
-		&.disabled {
-			background-color: #535353 !important;
-			color: gray !important;
-		}
-	}
-}
-
 .layout-mobile {
 	.ReactModal__Overlay {
 		background-color: transparent !important;

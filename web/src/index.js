@@ -26,7 +26,8 @@ import {
   getLocalVersions,
   initializeStrings,
   setValidLanguages,
-  setExchangeInitialized
+  setExchangeInitialized,
+  setSetupCompleted
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -47,7 +48,8 @@ const getConfigs = async () => {
     valid_languages = '',
     info: {
       initialized
-    }
+    },
+    setup_completed
   } = kitData;
 
 
@@ -65,12 +67,20 @@ const getConfigs = async () => {
 
   const remoteConfigs = await hash(promises);
   Object.keys(remoteConfigs).forEach((key) => {
+    if (key === 'color') {
+      Object.entries(remoteConfigs[key]).forEach(([themeKey, themeObj]) => {
+        if (typeof themeObj !== "object") {
+          delete remoteConfigs[key][themeKey]
+        }
+      })
+    }
     localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
   })
 
   setLocalVersions(remoteVersions);
   setValidLanguages(valid_languages);
   setExchangeInitialized(initialized);
+  setSetupCompleted(setup_completed);
 
   return merge({}, defaultConfig, remoteConfigs);
 }
