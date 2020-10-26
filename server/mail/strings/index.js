@@ -19,6 +19,7 @@ const MAILTYPE = {
 	USER_VERIFICATION: 'userVerification',
 	USER_DEACTIVATED: 'userDeactivated',
 	INVALID_ADDRESS: 'invalidAddress',
+	INVITED_OPERATOR: 'invitedOperator',
 	ALERT: 'alert'
 };
 

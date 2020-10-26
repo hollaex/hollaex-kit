@@ -217,12 +217,14 @@ const setRedisData = () => {
 	client.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
-exports.GET_COINS = () => configuration.coins;
-exports.GET_PAIRS = () => configuration.pairs;
-exports.GET_TIERS = () => configuration.tiers;
-exports.GET_KIT_CONFIG = () => configuration.kit;
-exports.GET_KIT_SECRETS = () => secrets;
-exports.GET_FROZEN_USERS = () => frozenUsers;
+const { cloneDeep } = require('lodash');
+
+exports.GET_COINS = () => cloneDeep(configuration.coins);
+exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
+exports.GET_TIERS = () => cloneDeep(configuration.tiers);
+exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
+exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
+exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
 exports.MAX_TRADES = process.env.MAX_TRADES
 	? parseInt(process.env.MAX_TRADES)
@@ -273,7 +275,7 @@ const ROLES = {
 	SUPPORT: 'support',
 	ADMIN: 'admin',
 	KYC: 'kyc',
-	TECH: 'tech',
+	COMMUNICATOR: 'communicator',
 	USER: 'user',
 	HMAC: 'hmac'
 };
@@ -306,8 +308,6 @@ exports.ORDER_SIDE_SELL = 'sell';
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
 
 exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
-
-exports.MIN_VERIFICATION_LEVEL = 1;
 
 exports.SEND_CONTACT_US_EMAIL = true;
 
@@ -433,19 +433,9 @@ exports.AUDIT_KEYS = [
 	'timestamp'
 ];
 
-exports.TECH_AUTHORIZED_KIT_CONFIG = [
-	'captcha',
-	'plugins',
-	'secrets'
-];
-
-exports.TECH_AUTHORIZED_KIT_SECRETS = [
-	'allowed_domains',
-	'emails',
-	'admin_whitelist',
-	'captcha',
-	'smtp',
-	'plugins'
+exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
+	'icons',
+	'strings'
 ];
 
 const MAINNET_EXPLORERS = {
