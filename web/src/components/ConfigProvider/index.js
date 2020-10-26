@@ -57,6 +57,21 @@ class ConfigProvider extends Component {
     }))
   }
 
+  removeTheme = (keys = []) => {
+    const { color: prevColor } = this.state;
+    const color = {}
+
+    Object.entries(prevColor).forEach(([themeKey, theme]) => {
+      if (!keys.includes(themeKey)) {
+        color[themeKey] = theme;
+      }
+    })
+
+    this.setState({
+      color,
+    })
+  }
+
   render() {
     const { children } = this.props;
     const { icons, defaultLanguage, color, themeOptions } = this.state;

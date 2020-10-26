@@ -518,6 +518,7 @@ class OperatorControls extends Component {
 
   removeThemes = (keys = []) => {
     const { colorOverwrites: prevColorOverwrites } = this.state;
+    const { removeTheme } = this.props;
     const colorOverwrites = {}
 
     Object.entries(prevColorOverwrites).forEach(([themeKey, theme]) => {
@@ -528,6 +529,7 @@ class OperatorControls extends Component {
 
     this.setState({
       colorOverwrites,
+      removeTheme,
     }, this.closeThemeSettings)
   }
 
