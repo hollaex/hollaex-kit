@@ -4,6 +4,7 @@ import { bool, object, func, string } from 'prop-types';
 import { Input, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { oldLight as initialTheme } from 'config/colors/light';
+import { getColorByKey } from 'utils/color';
 
 class AddTheme extends Component {
   constructor(props) {
@@ -52,6 +53,11 @@ class AddTheme extends Component {
     const themeKeys = Object.keys(themes)
 
     return !themeKey || (!isEditTheme && themeKeys.includes(themeKey))
+  }
+
+  onReset = (name) => {
+    const value = getColorByKey(name)
+    this.updateTheme(value, name)
   }
 
   render() {
@@ -107,7 +113,7 @@ class AddTheme extends Component {
                     shape="circle"
                     size="small"
                     className="operator-controls__all-strings-settings-button"
-                    onClick={() => console.log('get default color')}
+                    onClick={() => this.onReset(colorKey)}
                     icon={<DeleteOutlined />}
                   />
                 </div>
