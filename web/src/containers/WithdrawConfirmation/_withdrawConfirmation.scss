@@ -8,28 +8,3 @@
     }
 }
 
-.dark-theme {
-	svg {
-		.check-order-1,
-        .check-order-2 {
-            stroke: $dark-tab-inactive;
-        }
-        .check-order-2 {
-            fill: $dark-tab-inactive;
-        }
-        .coin-btc-1 {
-            fill: $dark-tab-inactive;
-        }
-        .coin-btc-4 {
-            stroke: $dark-tab-inactive;
-        }
-
-        .coin-base-1 {
-            fill: $dark-tab-inactive;
-        }
-        .coin-base-4 {
-            stroke: $dark-tab-inactive;
-        }
-	}
-}
-
