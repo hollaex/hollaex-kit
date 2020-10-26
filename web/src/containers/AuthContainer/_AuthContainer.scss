@@ -189,44 +189,6 @@ $container--padding-sm: 3rem;
 	position: relative;
 }
 
-.dark-theme {
-	&.auth-wrapper {
-		background: $dark-app-light-background;
-		background: url($dark-background-image);
-		background-size: cover;
-		&:before {
-			background-color: transparent;
-		}
-
-		.auth-container {
-			.auth_wrapper {
-				background-color: $dark-auth-container-background;
-
-				.icon_title-svg {
-					.hollaEX_logo_gray {
-						fill: $colors-white;
-					}
-				}
-			}
-		}
-		.exir-button {
-			&.disabled {
-				background-color: #535353 !important;
-				color: gray !important;
-			}
-		}
-	}
-	.exir-logo-01,
-	.account-recovery-1,
-	.account-recovery-success-1,
-	.account-recovery-success-2,
-	.password-reset-1,
-	.password-reset-2,
-	.success-black-1 {
-		fill: $dark-icon-color;
-	}
-}
-
 @media screen and (max-width: 1096px) {
 	.auth-wrapper {
 		.auth-container {

@@ -96,12 +96,6 @@ table th {
 	color: $link !important;
 }
 
-.dark-theme {
-	.blue-link {
-		color: $dark-link !important;
-	}
-}
-
 .arrow {
 	border: solid grey;
 	border-width: 0 3px 3px 0;
@@ -161,6 +155,14 @@ table th {
 
 .justify-content-end {
 	justify-content: flex-end;
+}
+
+.justify-content-between {
+	justify-content: space-between;
+}
+
+.align-center {
+	align-items: center;
 }
 
 .underline-text {

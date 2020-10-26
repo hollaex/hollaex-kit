@@ -159,46 +159,6 @@ $padding-input: 4rem;
 	}
 }
 
-.dark-theme {
-	.logout-menu-wrapper {
-		color: $dark-font-main-text-color;
-		border-bottom: 1px solid $dark-font-main-text-color;
-
-		.logout-icon {
-			.tab-signout {
-				fill: $dark-font-main-text-color;
-			}
-		}
-	}
-	.otp_form-section-wrapper {
-		border-top: 1px solid $dark-font-main-text-color;
-	}
-	.otp_form-wrapper {
-		.otp_form-section-title {
-			color: $dark-font-main-text-color;
-		}
-		.otp_form-section-wrapper {
-			border-top-color: $dark-font-main-text-color;
-		}
-		.otp_form-section-text {
-			color: $dark-font-sub-text-color;
-		}
-		.otp_secret {
-			background-color: $dark-inactive-color;
-			color: $dark-font-sub-text-color !important;
-		}
-
-		.otp_form-section-wrapper svg path {
-			fill: $dark-tab-active;
-		}
-	}
-	.tokens-icon-svg {
-		path, rect {
-			fill: $dark-font-sub-text-color;
-		}
-	}
-}
-
 .layout-mobile {
 	.user_security-wrapper{
 		.warning_text{
