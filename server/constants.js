@@ -69,6 +69,7 @@ const client = redis.createClient(redisConfig.client);
 let configuration = {
 	coins: {},
 	pairs: {},
+	tiers: {},
 	kit: {
 		info: {},
 		color: {},
@@ -122,6 +123,7 @@ subscriber.on('message', (channel, message) => {
 				break;
 			case 'update':
 				if (data.info) updateKitInfo(data.info);
+				if (data.tiers) updateTiers(data.tiers);
 				if (data.kit) updateKit(data.kit);
 				if (data.secrets) updateSecrets(data.secrets);
 				break;
@@ -182,8 +184,14 @@ const resetAllConfig = () => {
 	setRedisData();
 };
 
+const updateTiers = (newTiers) => {
+	Object.assign(configuration.tiers, newTiers);
+	setRedisData();
+};
+
 const updateKitInfo = (newInfo) => {
 	Object.assign(configuration.kit.info, newInfo);
+	setRedisData();
 };
 
 const updateKit = (newKitConfig) => {
@@ -209,11 +217,14 @@ const setRedisData = () => {
 	client.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
-exports.GET_COINS = () => configuration.coins;
-exports.GET_PAIRS = () => configuration.pairs;
-exports.GET_KIT_CONFIG = () => configuration.kit;
-exports.GET_KIT_SECRETS = () => secrets;
-exports.GET_FROZEN_USERS = () => frozenUsers;
+const { cloneDeep } = require('lodash');
+
+exports.GET_COINS = () => cloneDeep(configuration.coins);
+exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
+exports.GET_TIERS = () => cloneDeep(configuration.tiers);
+exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
+exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
+exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
 exports.MAX_TRADES = process.env.MAX_TRADES
 	? parseInt(process.env.MAX_TRADES)
@@ -297,8 +308,6 @@ exports.ORDER_SIDE_SELL = 'sell';
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
 
 exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
-
-exports.MIN_VERIFICATION_LEVEL = 1;
 
 exports.SEND_CONTACT_US_EMAIL = true;
 
@@ -392,7 +401,6 @@ exports.KIT_CONFIG_KEYS = [
 	'logo_path',
 	'logo_black_path',
 	'valid_languages',
-	'user_level_number',
 	'new_user_is_activated',
 	'interface',
 	'icons',

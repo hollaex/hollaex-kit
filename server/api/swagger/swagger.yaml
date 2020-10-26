@@ -1029,7 +1029,7 @@ paths:
       operationId: createOrder
       tags:
         - User
-        - order
+        - Order
       parameters:
         - in: body
           name: order
@@ -1052,6 +1052,74 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /tiers:
+    x-swagger-router-controller: tier
+    get:
+      description: Get user tiers
+      operationId: getTiers
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /admin/tier:
+    x-swagger-router-controller: tier
+    post:
+      description: Make a new Tier
+      operationId: postTier
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Tier object
+          schema:
+            $ref: "#/definitions/PostTierBody"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TierObject"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      description: Update tier
+      operationId: putTier
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Tier object
+          schema:
+            $ref: "#/definitions/PutTierBody"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TierObject"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /user/orders:
     x-swagger-router-controller: order
     get:
@@ -1868,6 +1936,32 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/pair/fees:
+    x-swagger-router-controller: tier
+    put:
+      operationId: updatePairFees
+      description: Update trading pair fees
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PairFeesPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/coins:
     x-swagger-router-controller: admin
     get:
@@ -2508,7 +2602,7 @@ paths:
   /admin/upgrade-user:
     x-swagger-router-controller: admin
     post:
-      description: "Update verification level of a user. 1: email verified. 2: id verified. 3: bank verified. 4: loyal member. 5: VIP. 6: VVIP"
+      description: Update verification level of a user
       operationId: upgradeUser
       tags:
         - Admin
@@ -4086,8 +4180,6 @@ definitions:
             type: string
           valid_languages:
             type: string
-          user_level_number:
-            type: number
           new_user_is_activated:
             type: boolean
           native_currency:
@@ -4235,10 +4327,8 @@ definitions:
     properties:
       user_id:
         type: integer
-      veification_level:
+      verification_level:
         type: integer
-        minimum: 1
-        maximum: 5
   AuditsResponse:
     type: object
     properties:
@@ -4462,3 +4552,109 @@ definitions:
           type: number
         low:
           type: number
+  PutTierBody:
+    type: object
+    required:
+      - level
+    properties:
+      level:
+        type: number
+        format: int32
+      name:
+        type: string
+      icon:
+        type: string
+      description:
+        type: string
+      deposit_limit:
+        type: number
+        format: double
+      withdrawal_limit:
+        type: number
+        format: double
+  PostTierBody:
+    type: object
+    required:
+      - level
+      - name
+      - icon
+      - description
+      - deposit_limit
+      - withdrawal_limit
+      - fees
+    properties:
+      level:
+        type: number
+        format: int32
+      name:
+        type: string
+      icon:
+        type: string
+      description:
+        type: string
+      deposit_limit:
+        type: number
+        format: double
+      withdrawal_limit:
+        type: number
+        format: double
+      fees:
+        type: object
+        required:
+          - maker
+          - taker
+        properties:
+          maker:
+            type: object
+            required:
+              - default
+            properties:
+              default:
+                type: number
+                format: double
+          taker:
+            type: object
+            required:
+              - default
+            properties:
+              default:
+                type: number
+                format: double
+  TierObject:
+    type: object
+    required:
+      - id
+      - name
+      - icon
+      - description
+      - deposit_limit
+      - withdrawal_limit
+      - fees
+    properties:
+      id:
+        type: number
+        format: int32
+      name:
+        type: string
+      icon:
+        type: string
+      description:
+        type: string
+      deposit_limit:
+        type: number
+        format: double
+      withdrawal_limit:
+        type: number
+        format: double
+      fees:
+        type: object
+  PairFeesPut:
+    type: object
+    required:
+      - pair
+      - fees
+    properties:
+      pair:
+        type: string
+      fees:
+        type: object

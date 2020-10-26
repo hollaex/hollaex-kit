@@ -97,7 +97,8 @@ const LOGGER_NAMES = {
 	chat: 'chat',
 	auth: 'auth',
 	general: 'general',
-	plugin: 'plugin'
+	plugin: 'plugin',
+	tier: 'tier'
 };
 
 winston.loggers.add('default', generateLoggerConfiguration('all', false));
@@ -151,5 +152,6 @@ module.exports = {
 	loggerAuth: winston.loggers.get(LOGGER_NAMES.auth),
 	loggerGeneral: winston.loggers.get(LOGGER_NAMES.general),
 	loggerPlugin: winston.loggers.get(LOGGER_NAMES.plugin),
-	loggerEngine: winston.loggers.get(LOGGER_NAMES.engine)
+	loggerEngine: winston.loggers.get(LOGGER_NAMES.engine),
+	loggerTier: winston.loggers.get(LOGGER_NAMES.tier)
 };

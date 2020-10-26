@@ -5,7 +5,7 @@ const { all } = require('bluebird');
 const rp = require('request-promise');
 const cron = require('node-cron');
 const { loggerGeneral } = require('./config/logger');
-const { User, Status } = require('./db/models');
+const { User, Status, Tier } = require('./db/models');
 
 const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
@@ -41,6 +41,7 @@ const checkStatus = (restart = false) => {
 	let configuration = {
 		coins: {},
 		pairs: {},
+		tiers: {},
 		kit: {
 			info: {},
 			color: {},
@@ -100,12 +101,16 @@ const checkStatus = (restart = false) => {
 						status.activation_code,
 						status.constants
 					),
+					Tier.findAll({ raw: true }),
 					status.dataValues
 				]);
 			}
 		})
-		.then(([exchange, status]) => {
+		.then(([exchange, tiers, status]) => {
 			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
+			each(tiers, (tier) => {
+				configuration.tiers[tier.id] = tier;
+			});
 			each(exchange.coins, (coin) => {
 				configuration.coins[coin.symbol] = coin;
 			});
