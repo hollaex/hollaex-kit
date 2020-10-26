@@ -24,10 +24,6 @@ const uuid = require('uuid/v4');
 const { all, reject } = require('bluebird');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 
-// const validateWithdraw = (currency, address, amount) => {
-
-// };
-
 const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, captcha, ip, domain) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
@@ -70,6 +66,8 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 					if (convertedAmount > limit) {
 						throw new Error('Amount exceeds withdrawal limit');
 					}
+				} else {
+					throw new Error('Currency cannot be converted into native currency');
 				}
 			}
 			return withdrawRequestEmail(

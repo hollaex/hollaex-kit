@@ -57,6 +57,19 @@ const getKitTier = (tier) => {
 	}
 };
 
+const isValidTierLevel = (level) => {
+	const levels = Object.keys(getKitTiers()).map((tier) => parseInt(tier));
+	if (!levels.includes(level)) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
+const getTierLevels = () => {
+	return Object.keys(getKitTiers());
+};
+
 const getKitConfig = () => {
 	return GET_KIT_CONFIG();
 };
@@ -94,7 +107,6 @@ const getFrozenUsers = () => {
 };
 
 const maskSecrets = (secrets) => {
-	secrets = JSON.parse(JSON.stringify(secrets));
 	each(secrets, (secret, secretKey) => {
 		if (secretKey === 'captcha') {
 			secret.secret_key = SECRET_MASK;
@@ -346,5 +358,7 @@ module.exports = {
 	getNetworkKeySecret,
 	setExchangeInitialized,
 	setExchangeSetupCompleted,
-	updateNetworkKeySecret
+	updateNetworkKeySecret,
+	isValidTierLevel,
+	getTierLevels
 };

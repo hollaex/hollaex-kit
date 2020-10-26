@@ -3,13 +3,14 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig } = require('./common');
-const { reject } = require('bluebird');
-const { difference, each } = require('lodash');
+const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig, subscribedToPair, getTierLevels } = require('./common');
+const { reject, all } = require('bluebird');
+const { difference, each, omit } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const math = require('mathjs');
+const flatten = require('flat');
 
 const findTier = (level) => {
 	return dbQuery.findOne('tier', {
@@ -25,32 +26,44 @@ const findTier = (level) => {
 		});
 };
 
-const createTier = (level, name, description, deposit_limit, withdrawal_limit, fees = {}) => {
+const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees = {}) => {
 	const existingTiers = getKitTiers();
 
 	if (existingTiers[level]) {
 		return reject(new Error('Tier already exists'));
+	} else if (
+		withdrawal_limit < 0
+		&& withdrawal_limit !== -1
+	) {
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
+	} else if (
+		deposit_limit < 0
+		&& deposit_limit !== -1
+	) {
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
+	} else if (Object.values(flatten(fees)).some(fee => fee < 0)) {
+		return reject(new Error('Fees cannot be negative'));
 	}
 
-	if (
-		fees.maker
-		&& Object.keys(fees.maker).length > 0
-		&& difference(Object.keys(fees.maker), getKitPairs()).length > 0
-	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
-	}
+	const givenMakerSymbols = Object.keys(omit(fees.maker, 'default'));
+	const givenTakerSymbols = Object.keys(omit(fees.taker, 'default'));
 
 	if (
-		fees.taker
-		&& Object.keys(fees.taker).length > 0
-		&& difference(Object.keys(fees.taker), getKitPairs()).length > 0
+		givenMakerSymbols.length > 0
+		&& difference(givenMakerSymbols, getKitPairs()).length > 0
 	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
+		return reject(new Error('Maker fees includes a symbol that you are not subscribed to'));
+	} else if (
+		givenTakerSymbols.length > 0
+		&& difference(givenTakerSymbols, getKitPairs()).length > 0
+	) {
+		return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
 	}
 
 	return getModel('tier').create({
 		id: level,
 		name,
+		icon,
 		description,
 		deposit_limit,
 		withdrawal_limit,
@@ -77,48 +90,30 @@ const updateTier = (level, updateData) => {
 
 	if (!existingTiers[level]) {
 		return reject(new Error('Tier does not exist'));
-	}
-
-	if (
-		updateData.fees
-		&& updateData.fees.maker
-		&& Object.keys(updateData.fees.maker).length > 0
-		&& difference(Object.keys(updateData.fees.maker), getKitPairs()).length > 0
+	} else if (
+		updateData.withdrawal_limit !== undefined
+		&& updateData.withdrawal_limit < 0
+		&& updateData.withdrawal_limit !== -1
 	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
-	}
-
-	if (
-		updateData.fees
-		&& updateData.fees.taker
-		&& Object.keys(updateData.fees.taker).length > 0
-		&& difference(Object.keys(updateData.fees.taker), getKitPairs()).length > 0
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
+	} else if (
+		updateData.deposit_limit !== undefined
+		&& updateData.deposit_limit < 0
+		&& updateData.deposit_limit !== -1
 	) {
-		return reject(new Error('Fees includes a symbol that you are not subscribed to'));
+		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
 	}
 
 	return findTier(level)
 		.then((tier) => {
 			const newData = {};
 
-			let updatedMakerFee = tier.fees.maker;
-			if (
-				updateData.fees
-				&& updateData.fees.maker
-			) {
-				updatedMakerFee = updateData.fees.maker;
-			}
-
-			let updatedTakerFee = tier.fees.taker;
-			if (
-				updateData.fees
-				&& updateData.fees.taker
-			) {
-				updatedTakerFee = updateData.fees.taker;
-			}
-
 			if (updateData.name) {
 				newData.name = updateData.name;
+			}
+
+			if (updateData.icon) {
+				newData.icon = updateData.icon;
 			}
 
 			if (updateData.description) {
@@ -132,11 +127,6 @@ const updateTier = (level, updateData) => {
 			if (updateData.withdrawal_limit !== undefined) {
 				newData.withdrawal_limit = updateData.withdrawal_limit;
 			}
-
-			newData.fees = {
-				maker: updatedMakerFee,
-				taker: updatedTakerFee
-			};
 
 			return tier.update(newData, { returning: true });
 		})
@@ -157,6 +147,13 @@ const updateTier = (level, updateData) => {
 };
 
 const estimateNativeCurrencyPrice = async (startingCurrency) => {
+
+	if (!getKitConfig().native_currency) {
+		throw new Error('Native currency is not set');
+	} else if (startingCurrency === getKitConfig().native_currency) {
+		return 1;
+	}
+
 	const pairs = Object.values(getKitPairsConfig());
 	const tickers = await getNodeLib().getAllTickersEngine();
 	const prices = {};
@@ -207,9 +204,59 @@ const convertPathToPairNames = (path = [], from_key = 'pair_base', to_key = 'pai
 	return path.map(({ [from_key]: from, [to_key]: to}) => `${from}${separator}${to}`);
 };
 
+const updatePairFees = (pair, fees) => {
+	if (!subscribedToPair(pair)) {
+		return reject(new Error('Invalid pair'));
+	}
+
+	const tiersToUpdate = Object.keys(fees);
+
+	if (difference(tiersToUpdate, getTierLevels()).length > 0) {
+		return reject(new Error('Invalid tier level given'));
+	}
+
+	if (Object.values(flatten(fees)).some(fee => fee < 0)) {
+		return reject(new Error('Fees cannot be negative'));
+	}
+
+	return getModel('sequelize').transaction((transaction) => {
+		return all(tiersToUpdate.map(async (level) => {
+
+			const tier = await dbQuery.findOne('tier', { where: { id: level } });
+
+			const updatedFees = {
+				maker: { ...tier.fees.maker },
+				taker: { ...tier.fees.taker }
+			};
+			updatedFees.maker[pair] = fees[level].maker;
+			updatedFees.taker[pair] = fees[level].taker;
+
+			const updatedTier = await tier.update(
+				{ fees: updatedFees },
+				{ fields: ['fees'], transaction }
+			);
+
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update',
+					data: {
+						tiers: {
+							[updatedTier.id]: updatedTier
+						}
+					}
+				})
+			);
+
+			return updatedTier
+		}));
+	});
+};
+
 module.exports = {
 	findTier,
 	createTier,
 	updateTier,
-	estimateNativeCurrencyPrice
+	estimateNativeCurrencyPrice,
+	updatePairFees
 };
