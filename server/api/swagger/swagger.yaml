@@ -4062,6 +4062,14 @@ definitions:
         type: number
         format: double
         description: Price of the order
+      stop:
+        type: number
+        format: double
+      meta:
+        type: object
+        properties:
+          post_only:
+            type: boolean
   OrderResponse:
     type: object
     properties:

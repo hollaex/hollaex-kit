@@ -18,7 +18,7 @@ const createOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order = req.swagger.params.order.value;
 
-	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price)
+	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price, order.stop, order.meta)
 		.then((order) => {
 			return res.json(order);
 		})
