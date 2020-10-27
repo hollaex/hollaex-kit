@@ -39,6 +39,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: true
 			},
+			kit_version: {
+				type: DataTypes.STRING,
+				allowNull: false
+			}
 		},
 		{
 			underscored: true
