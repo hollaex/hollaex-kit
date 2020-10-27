@@ -1,4 +1,6 @@
 const { Status } = require('../../db/models');
+const { publisher } = require('../../db/pubsub');
+const { INIT_CHANNEL } = require('../../constants');
 
 Status.findOne({})
 	.then((status) => {
@@ -7,6 +9,7 @@ Status.findOne({})
 		}, { fields: ['kit_version'], returning: true });
 	})
 	.then(() => {
+		publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 		console.log('Kit version is updated');
 		process.exit(0);
 	})
