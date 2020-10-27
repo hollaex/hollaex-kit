@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined} from '@ant-design/icons';
-import { Layout, Menu, Row, Col, Spin, Form } from 'antd';
+import { Layout, Menu, Row, Col, Spin } from 'antd';
 // import io from 'socket.io-client';
 import { debounce } from 'lodash';
 import ReactSVG from 'react-svg';
@@ -38,7 +38,7 @@ import {
 	requestInitial,
 	requestConstant
 } from '../../../actions/appActions';
-import { SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK, ICONS } from '../../../config/constants';
+import { SESSION_TIME, BASE_CURRENCY, ICONS } from '../../../config/constants';
 import { checkRole } from '../../../utils/token';
 
 import MobileDetect from 'mobile-detect';
@@ -275,6 +275,35 @@ class AppWrapper extends React.Component {
 		);
 	}
 
+	getTitle = () => {
+		const { location = {} } = this.props;
+		if (location.pathname.includes('/admin/user')) {
+			return 'Users';
+		} else if (location.pathname.includes('/admin/general')) {
+			return 'General';
+		} else if (location.pathname.includes('/admin/financial')) {
+			return 'Financial';
+		} else if (location.pathname.includes('/admin/trade')) {
+			return 'Trade';
+		} else if (location.pathname.includes('/admin/plugins')) {
+			return 'Plugins';
+		} else if (location.pathname.includes('/admin/tiers')) {
+			return 'Tiers';
+		} else if (location.pathname.includes('/admin/roles')) {
+			return 'Roles';
+		} else if (location.pathname.includes('/admin/hosting')) {
+			return 'Hosting';
+		} else if (location.pathname.includes('/admin/apikey')) {
+			return 'API keys';
+		} else if (location.pathname.includes('/admin/billing')) {
+			return 'Billing';
+		} else if (location.pathname.includes('/admin/collateral')) {
+			return 'Collateral';
+		} else {
+			return 'Dashboard';
+		}
+	};
+
 	renderItems = () => {
 		switch (checkRole()) {
 			case 'supervisor':
@@ -359,7 +388,7 @@ class AppWrapper extends React.Component {
 				)
 		}
 	}
-	
+
 	render() {
 		const { children, router } = this.props;
 		const logout = () => {
@@ -472,7 +501,7 @@ class AppWrapper extends React.Component {
 						</Sider>
 						<Layout>
 							<Content>
-								<div className="admin-content-head">Dashboard</div>
+									<div className="admin-content-head">{this.getTitle()}</div>
 								<div className="content-wrapper">
 									{appLoaded && this.isSocketDataReady()
 										? children

@@ -283,7 +283,7 @@ class Container extends Component {
 
 		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			// console.log('privateSocket', data);
+			console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
 					if (data.action === 'partial') {

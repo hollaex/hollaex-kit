@@ -29,11 +29,17 @@
 	width: 100%;
 	/* flex: 1; */
 }
+.app_container-content .ant-tabs,
+.app_container-content h2,
+.app_container-content .ant-tabs-tab:hover,
+.app_container-content .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	color: #FFFFFF;
+}
 .admin-content-head {
 	border-bottom: 1px solid #c4c4c4;
 	color: #FFFFFF;
 	font-size: 38px;
-	padding: 24px 24px 5px 24px;
+	padding: 5px 24px;
 }
 .content-wrapper {
 	margin:24px;
@@ -42,7 +48,7 @@
 	background-color: #0000d1;
     overflow-y: auto;
     margin: 0px;
-    padding: 24px;
+    padding: 0px 24px;
     height: 100%;
 	top: 0px;
 }
@@ -194,6 +200,7 @@
 }
 .admin-content-wrapper {
 	background-color: #0000d1;
+	margin-top: 1rem;
 }
 .link-icon {
     width: 14px;
