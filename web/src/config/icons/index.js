@@ -316,7 +316,12 @@ const nestedIcons = {
   HEX_PATTERN_ICON: '/assets/icons/hex-pattern-icon-05.svg',
   GENERAL_SETUP: '/assets/images/general-setup.svg',
   USERS_SETUP: '/assets/images/users.svg',
-
+  BLUE_SCREEN_EYE_ICON: '/assets/images/all-seeing-eye-admin-role-blue.png',
+  BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE: '/assets/images/communications-role-seal-02.svg',
+  BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE: '/assets/images/exchange-support-role-01.svg',
+  BLUE_SCREEN_SUPERVISOR: '/assets/images/supervisor.svg',
+  BLUE_SCREEN_KYC: '/assets/images/KYC-01.svg',
+  BLUE_SCREEN_LINK: '/assets/images/link.svg',
   SOCIAL_ICONS: {
     FACEBOOK: '/assets/icons/facebook.png',
     LINKEDIN: '/assets/icons/linkedin.png',

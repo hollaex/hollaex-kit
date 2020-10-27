@@ -195,3 +195,43 @@
 .admin-content-wrapper {
 	background-color: #0000d1;
 }
+.link-icon {
+    width: 14px;
+}
+.role-section {
+    display: flex;
+    padding: 25px;
+    border-bottom: 1px solid #F0F0F0;
+}
+.main-label {
+    color: #FFFFFF;
+    margin: 0rem 9rem;
+    font-size: 18px;
+    font-weight: bold;
+}
+.sub-label {
+	position: absolute;
+	top: 4rem;
+    left: 11.2rem;
+}
+.sider-icons {
+    width: 85px;
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+}
+.bg-black {
+	background-color: #0F1114;
+}
+.bg-grey {
+	background-color: #DADADA;
+}
+.bg-orange {
+	background-color: #E66B00;
+}
+.bg-yellow {
+	background-color: #FFFF00;
+}
+.black {
+	color: #101000;
+}

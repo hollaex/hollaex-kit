@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Layout, Menu, Row, Col, Spin } from 'antd';
+import { CaretLeftOutlined} from '@ant-design/icons';
+import { Layout, Menu, Row, Col, Spin, Form } from 'antd';
 // import io from 'socket.io-client';
 import { debounce } from 'lodash';
 import ReactSVG from 'react-svg';
@@ -37,7 +38,8 @@ import {
 	requestInitial,
 	requestConstant
 } from '../../../actions/appActions';
-import { SESSION_TIME, BASE_CURRENCY, ICONS } from '../../../config/constants';
+import { SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK, ICONS } from '../../../config/constants';
+import { checkRole } from '../../../utils/token';
 
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
@@ -59,7 +61,7 @@ class AppWrapper extends React.Component {
 			appLoaded: false,
 			publicSocket: undefined,
 			idleTimer: undefined,
-			setupCompleted: true,
+			setupCompleted: true
 		};
 	}
 
@@ -273,6 +275,91 @@ class AppWrapper extends React.Component {
 		);
 	}
 
+	renderItems = () => {
+		switch (checkRole()) {
+			case 'supervisor':
+				return (
+					<div className="role-section bg-black">
+						<div>
+							<img src={ICONS.BLUE_SCREEN_SUPERVISOR} className="sider-icons" alt="EyeIcon" />
+						</div>
+						<div>
+							<div className="main-label">
+								Role:
+							</div>
+							<div className="sub-label">
+								SuperVisor
+							</div>
+						</div>
+					</div>
+				)
+			case 'kyc':
+				return (
+					<div className="role-section bg-grey">
+						<div>
+							<img src={ICONS.BLUE_SCREEN_KYC} className="sider-icons" alt="EyeIcon" />
+						</div>
+						<div>
+							<div className="main-label black">
+								Role:
+							</div>
+							<div className="sub-label black">
+								KYC
+							</div>
+						</div>
+					</div>
+				)
+			case 'tech':
+				return (
+					<div className="role-section bg-orange">
+						<div>
+							<img src={ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE} className="sider-icons" alt="EyeIcon" />
+						</div>
+						<div>
+							<div className="main-label">
+								Role:
+							</div>
+							<div className="sub-label">
+								Support
+							</div>
+						</div>
+					</div>
+				)
+			case 'support':
+				return (
+					<div className="role-section bg-yellow">
+						<div>
+							<img src={ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE} className="sider-icons" alt="EyeIcon" />
+						</div>
+						<div>
+							<div className="main-label black">
+								Role:
+							</div>
+							<div className="sub-label black">
+								Support
+							</div>
+						</div>
+					</div>
+				)
+			default:
+				return (
+					<div className="role-section">
+						<div>
+							<img src={ICONS.BLUE_SCREEN_EYE_ICON} className="sider-icons" alt="EyeIcon" />
+						</div>
+						<div>
+							<div className="main-label">
+								Role:
+							</div>
+							<div className="sub-label">
+								Administrator
+							</div>
+						</div>
+					</div>
+				)
+		}
+	}
+	
 	render() {
 		const { children, router } = this.props;
 		const logout = () => {
@@ -334,10 +421,16 @@ class AppWrapper extends React.Component {
 				<Fragment>
 					<div className="admin-top-bar">
 						<Link to="/summary">
-							<div className="top-box-menu">Back to Exchange web</div>
+							<div className="top-box-menu">
+								<CaretLeftOutlined />
+								Back to Exchange web
+							</div>
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
-						<div className="top-box-menu">Go to master admin</div>
+						<div className="top-box-menu">
+							<img src={ICONS.BLUE_SCREEN_LINK} className="link-icon" alt="Link-icon" />{' '}
+							Go to master admin
+						</div>
 					</div>
 					<Layout>
 						<Sider width={310}>
@@ -346,8 +439,11 @@ class AppWrapper extends React.Component {
 									// theme="dark"
 									mode="vertical"
 									style={{ lineHeight: '64px' }}
-								// className="m-top"
+									// className="m-top"
 								>
+									<div>
+										{this.renderItems()}
+									</div>
 									{PATHS.filter(
 										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
 											true
