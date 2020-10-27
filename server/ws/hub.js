@@ -31,6 +31,7 @@ const connect = () => {
 					status.name,
 					status.url,
 					status.activation_code,
+					status.version,
 					status.constants
 				),
 				status
@@ -91,13 +92,14 @@ const sendNetworkWsMessage = (op, topic, networkId) => {
 	}
 };
 
-const checkActivation = (name, url, activation_code, constants = {}) => {
+const checkActivation = (name, url, activation_code, version, constants = {}) => {
 	const options = {
 		method: 'POST',
 		body: {
 			name,
 			url,
 			activation_code,
+			version,
 			constants
 		},
 		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
