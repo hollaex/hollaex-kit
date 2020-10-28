@@ -248,7 +248,7 @@ const updatePairFees = (pair, fees) => {
 				})
 			);
 
-			return updatedTier
+			return updatedTier;
 		}));
 	});
 };
