@@ -724,7 +724,7 @@ class HollaEx {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {array} Array of queried orders
 	 */
-	getAllOrderNetwork(userId, symbol, side, type, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getAllOrderNetwork(userId, symbol, side, status, open, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
@@ -738,8 +738,11 @@ class HollaEx {
 		if (side) {
 			path += `&side=${side}`;
 		}
-		if (type) {
-			path += `&type=${type}`;
+		if (status) {
+			path += `&status=${status}`;
+		}
+		if (open) {
+			path += `&open=${open}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
