@@ -1140,10 +1140,15 @@ paths:
           enum: ['buy', 'sell']
           type: string
         - in: query
-          name: type
-          description: Order type e.g. active, stop
+          name: status
+          description: Order status e.g. pfilled, filled
           required: false
           type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -2370,10 +2375,15 @@ paths:
           enum: ['buy', 'sell']
           type: string
         - in: query
-          name: type
-          description: Order type e.g. active, stop
+          name: status
+          description: Order status e.g. pfilled, filled
           required: false
           type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
