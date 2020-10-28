@@ -737,15 +737,15 @@ export default {
 		limit: 'limite'
 	},
 	TYPES: [
-		{ value: 'marché', label: 'marché' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limite', label: 'limite' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'market', label: 'marché' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'limite' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Acheter/Vendre',
 	SIDES_VALUES: {
 		buy: 'acheter',
 		sell: 'vendre'
 	},
-	SIDES: [{ value: 'acheter', label: 'acheter' }, { value: 'vendre', label: 'vendre' }], // DO NOT CHANGE value, ONLY TRANSLATE label
+	SIDES: [{ value: 'buy', label: 'acheter' }, { value: 'sell', label: 'vendre' }], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
@@ -975,8 +975,8 @@ export default {
 	],
 	SETTINGS_THEME_LABEL: 'Thème de l\'interface utilisateur', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
-		{ value: 'blanc', label: 'Blanc' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'sombre', label: 'Sombre' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'white', label: 'Blanc' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Sombre' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'sauvegarder',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
