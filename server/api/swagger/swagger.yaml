@@ -520,7 +520,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/TradeDataResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
