@@ -58,3 +58,5 @@ export { default as AdminFees } from './Admin/AdminFees';
 export { default as ThemeProvider } from './ThemeProvider';
 export { default as Init } from './Init';
 export { default as AdminLogin } from './Init/Login';
+export { default as AdminFinancials } from './Admin/AdminFinancials';
+export { default as MoveToDash } from './Admin/MoveToDash';

@@ -47,7 +47,9 @@ import {
 	AdminFees,
 	Init,
 	AdminLogin,
-	AdminDashboard
+	AdminDashboard,
+	AdminFinancials,
+	MoveToDash
 } from './containers';
 
 import store from './store';
@@ -324,6 +326,36 @@ export default (
 				path="/admin/user"
 				name="Admin User"
 				component={withAdminProps(User, 'user')}
+			/>
+			<Route
+				path="/admin/financials"
+				name="Admin Financials"
+				component={withAdminProps(AdminFinancials, 'financials')}
+			/>
+			<Route
+				path="/admin/trade"
+				name="Admin Trade"
+				component={withAdminProps(MoveToDash, 'trade')}
+			/>
+			<Route
+				path="/admin/hosting"
+				name="Admin Hosting"
+				component={withAdminProps(MoveToDash, 'hosting')}
+			/>
+			<Route
+				path="/admin/apikeys"
+				name="Admin APIkeys"
+				component={withAdminProps(MoveToDash, 'apikeys')}
+			/>
+			<Route
+				path="/admin/billing"
+				name="Admin Billing"
+				component={withAdminProps(MoveToDash, 'billing')}
+			/>
+			<Route
+				path="/admin/collateral"
+				name="Admin Collateral"
+				component={withAdminProps(MoveToDash, 'collateral')}
 			/>
 			<Route
 				path="/admin/wallets"

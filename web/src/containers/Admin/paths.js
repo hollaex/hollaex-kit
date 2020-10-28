@@ -15,6 +15,36 @@ export const PATHS = [
 		routeKey: 'user'
 	},
 	{
+		path: '/admin/financials',
+		label: 'Financials',
+		routeKey: 'financials'
+	},
+	{
+		path: '/admin/trade',
+		label: 'Trading',
+		routeKey: 'trade'
+	},
+	{
+		path: '/admin/hosting',
+		label: 'Hosting',
+		routeKey: 'hosting'
+	},
+	{
+		path: '/admin/apikeys',
+		label: 'API Keys',
+		routeKey: 'apikeys'
+	},
+	{
+		path: '/admin/billing',
+		label: 'Billing',
+		routeKey: 'billing'
+	},
+	{
+		path: '/admin/collateral',
+		label: 'Collateral',
+		routeKey: 'collateral'
+	},
+	{
 		path: '/admin/wallets',
 		// component: Wallets,
 		label: 'Wallets',
