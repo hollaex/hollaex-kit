@@ -1026,6 +1026,44 @@ class HollaEx {
 			headers
 		);
 	}
+
+	mintAsset(userId, currency, description, amount) {
+		const verb = 'POST';
+		const path = `${HOLLAEX_NETWORK_VERSION}/mint`;
+		const data = {
+			user_id: userId,
+			currency,
+			description,
+			amount
+		};
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers,
+			data
+		);
+	}
+
+	burnAsset(userId, currency, description, amount) {
+		const verb = 'POST';
+		const path = `${HOLLAEX_NETWORK_VERSION}/burn`;
+		const data = {
+			user_id: userId,
+			currency,
+			description,
+			amount
+		};
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers,
+			data
+		);
+	}
 }
 
 /**************************************
