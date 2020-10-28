@@ -520,7 +520,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/TradeDataResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -1140,10 +1140,15 @@ paths:
           enum: ['buy', 'sell']
           type: string
         - in: query
-          name: type
-          description: Order type e.g. active, stop
+          name: status
+          description: Order status e.g. pfilled, filled
           required: false
           type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -2370,10 +2375,15 @@ paths:
           enum: ['buy', 'sell']
           type: string
         - in: query
-          name: type
-          description: Order type e.g. active, stop
+          name: status
+          description: Order status e.g. pfilled, filled
           required: false
           type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -4062,6 +4072,14 @@ definitions:
         type: number
         format: double
         description: Price of the order
+      stop:
+        type: number
+        format: double
+      meta:
+        type: object
+        properties:
+          post_only:
+            type: boolean
   OrderResponse:
     type: object
     properties:

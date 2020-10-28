@@ -36,7 +36,8 @@ const {
 	ACTIVATION_CODE,
 	NATIVE_CURRENCY,
 	API_KEY,
-	API_SECRET
+	API_SECRET,
+	KIT_VERSION
 } = process.env;
 
 const TABLE = 'Statuses';
@@ -131,7 +132,8 @@ const status = [{
 	activation_code: ACTIVATION_CODE,
 	initialized: false,
 	api_key: API_KEY,
-	api_secret: API_SECRET
+	api_secret: API_SECRET,
+	kit_version: KIT_VERSION
 }];
 
 module.exports = {
