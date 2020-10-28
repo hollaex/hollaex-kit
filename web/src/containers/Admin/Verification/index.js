@@ -6,17 +6,19 @@ import {
 	verifyData,
 	revokeData
 } from './actions';
-import { Card, Input } from 'antd';
+import { Card, Button, Modal } from 'antd';
+import { ClockCircleFilled } from '@ant-design/icons';
 
 import { AdminHocForm } from '../../../components';
-import {
-	validateRequired,
-	validateRange
-} from '../../../components/AdminForm/validations';
+// import {
+// 	validateRequired,
+// 	validateRange
+// } from '../../../components/AdminForm/validations';
 import DataDisplay, {
 	renderRowImages,
-	renderRowInformation
+	// renderRowInformation
 } from './DataDisplay';
+import UploadIds from '../UploadIds';
 
 import './index.css';
 
@@ -26,31 +28,32 @@ import {
 	DATETIME_FORMAT,
 } from '../../../utils/date';
 
-const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
-const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
-	'4', '5', '6'
-]);
+// const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
+// const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
+// 	'4', '5', '6'
+// ]);
 
-const ROLE = [
-	{ label: 'admin', value: 'admin' },
-	{ label: 'support', value: 'support' },
-	{ label: 'supervisor', value: 'supervisor' },
-	{ label: 'kyc', value: 'kyc' },
-	{ label: 'tech', value: 'tech' },
-	{ label: 'user', value: 'user' }
-];
+// const ROLE = [
+// 	{ label: 'admin', value: 'admin' },
+// 	{ label: 'support', value: 'support' },
+// 	{ label: 'supervisor', value: 'supervisor' },
+// 	{ label: 'kyc', value: 'kyc' },
+// 	{ label: 'tech', value: 'tech' },
+// 	{ label: 'user', value: 'user' }
+// ];
 
 const IDForm = AdminHocForm('ID_DATA_FORM');
 const IDRevokeForm = AdminHocForm('ID_DATA_REVOKE_FORM');
 // const BankRevokeForm = HocForm('BANK_DATA_REVOKE_FORM');
-const VerificationForm = AdminHocForm('VERIFICATION_FORM');
-const UserRoleForm = AdminHocForm('USER_ROLE_FORM');
+// const VerificationForm = AdminHocForm('VERIFICATION_FORM');
+// const UserRoleForm = AdminHocForm('USER_ROLE_FORM');
 
 class Verification extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			note: ''
+			note: '',
+			isConfirm: false
 		};
 	}
 	onSubmit = (refreshData) => (values) => {
@@ -102,6 +105,7 @@ class Verification extends Component {
 		return revokeData(values)
 			.then(() => {
 				refreshData(postData);
+				this.handleClose();
 			})
 			.catch((err) => {
 				let error = err && err.data
@@ -133,31 +137,40 @@ class Verification extends Component {
 			});
 	};
 
+	handleConfirmation = () => {
+		this.setState({ isConfirm: true });
+	};
+
+	handleClose = () => {
+		this.setState({ isConfirm: false });
+		this.props.closeUpload();
+	};
+
 	render() {
 		const {
 			userImages,
 			userInformation,
 			refreshData,
-			constants,
-			roleInitialValues,
-			verificationInitialValues
+			isUpload,
+			closeUpload
+			// constants
 		} = this.props;
-		const { id, id_data, is_admin } = userInformation;
-		let VERIFICATION_LEVELS =
-			isSupport() || isSupervisor()
-				? VERIFICATION_LEVELS_SUPPORT
-				: VERIFICATION_LEVELS_ADMIN;
-		if (constants.user_level_number) {
-			const temp = [];
-			for (let level = 1; level <= constants.user_level_number; level++) {
-				temp.push(level.toString());
-			}
-			VERIFICATION_LEVELS = temp;
-		}
+		const { id, id_data } = userInformation;
+		// let VERIFICATION_LEVELS =
+		// 	isSupport() || isSupervisor()
+		// 		? VERIFICATION_LEVELS_SUPPORT
+		// 		: VERIFICATION_LEVELS_ADMIN;
+		// if (constants.user_level_number) {
+		// 	const temp = [];
+		// 	for (let level = 1; level <= constants.user_level_number; level++) {
+		// 		temp.push(level.toString());
+		// 	}
+		// 	VERIFICATION_LEVELS = temp;
+		// }
 		return (
-			<div>
+			<div className="d-flex">
 				<div className="verification_data_container">
-					<Card title="Verification Level" style={{ width: 300 }}>
+					{/* <Card title="Verification Level" style={{ width: 300 }}>
 						<VerificationForm
 							onSubmit={this.onSubmit(refreshData)}
 							buttonText="Update"
@@ -194,45 +207,9 @@ class Verification extends Component {
 								}
 							}}
 						/>
-					</Card>
-					{id_data.status > 0 && (
-						<Card
-							title="ID Data"
-							extra={
-								<div className="verification_data_container--actions">
-									{id_data.status === 1 && (
-										<IDForm
-											onSubmit={() =>
-												this.onVerify(refreshData)({
-													user_id: id
-												})
-											}
-											buttonText={'Approve'}
-										/>
-									)}
-									{(!isSupport() || !isSupervisor()) &&
-										id_data.status === 1 && (
-											<div>
-												<IDRevokeForm
-													onSubmit={() =>
-														this.onRevoke(refreshData)({
-															user_id: id,
-															message: this.state.note
-														})
-													}
-													buttonText={'Reject'}
-												/>
-												<Input.TextArea
-													rows={4}
-													value={this.state.note}
-													onChange={this.handleNoteChange}
-												/>
-											</div>
-										)}
-								</div>
-							}
-							style={{ width: 300 }}
-						>
+					</Card> */}
+					{id_data.status === 3
+						? <div className="verified-container">
 							<p>Type: {id_data.type}</p>
 							<p>Number: {id_data.number}</p>
 							{id_data.issued_date && (
@@ -253,21 +230,134 @@ class Verification extends Component {
 									)}{' '}
 								</p>
 							)}
-						</Card>
-					)}
+						</div>
+						: id_data.status === 1
+							? (
+								<Card
+									title={
+										<div>
+											<ClockCircleFilled style={{ color: '#F28041', marginRight: '5px' }} />
+											Pending ID data
+										</div>
+									}
+									style={{ width: 300 }}
+								>
+									<p>Type: {id_data.type}</p>
+									<p>Number: {id_data.number}</p>
+									{id_data.issued_date && (
+										<p>
+											Issue date:{' '}
+											{formatTimestampGregorian(
+												id_data.issued_date,
+												DATETIME_FORMAT
+											)}{' '}
+										</p>
+									)}
+									{id_data.expiration_date && (
+										<p>
+											Expire date:{' '}
+											{formatTimestampGregorian(
+												id_data.expiration_date,
+												DATETIME_FORMAT
+											)}{' '}
+										</p>
+									)}
+									<div className="verification_data_container--actions">
+										{(!isSupport() || !isSupervisor()) &&
+											id_data.status === 1 && (
+												<div>
+													<Button
+														// onSubmit={() =>
+														// 	this.onRevoke(refreshData)({
+														// 		user_id: id,
+														// 		message: this.state.note
+														// 	})
+														// }
+														// buttonText={'Reject'}
+														type="primary"
+														size="small"
+														danger
+														onClick={this.handleConfirmation}
+													>
+														Reject
+													</Button>
+													{/* <Input.TextArea
+														rows={4}
+														value={this.state.note}
+														onChange={this.handleNoteChange}
+													/> */}
+												</div>
+											)}
+										{id_data.status === 1 && (
+											<IDForm
+												onSubmit={() =>
+													this.onVerify(refreshData)({
+														user_id: id
+													})
+												}
+												buttonText={'Approve'}
+												small
+											/>
+										)}
+									</div>
+								</Card>
+							)
+							: null
+					}
 				</div>
 				<div className="verification_data_container">
 					<DataDisplay
+						className={"d-flex flex-wrap"}
 						data={userImages}
-						title="User Identication Ids"
 						renderRow={renderRowImages}
 					/>
-					<DataDisplay
+					{/* <DataDisplay
 						data={userInformation}
 						title="User Information"
 						renderRow={renderRowInformation}
-					/>
+					/> */}
 				</div>
+				<Modal
+					title={
+						this.state.isConfirm
+							? 'Reject ID'
+							: 'Upload files'
+					}
+					width={this.state.isConfirm ? 520 : 350}
+					visible={this.state.isConfirm || isUpload}
+					footer={null}
+					onCancel={this.handleClose}
+				>
+					{this.state.isConfirm
+						? <div className="verification-confirm-modal">
+							<p>Are you sure you want to reject the ID?</p>
+							<IDRevokeForm
+								fields={{
+									message: {
+										type: 'textarea',
+										label: 'Reason (this will be sent to the user)'
+									}
+								}}
+								onSubmit={(formProps) => {
+									this.onRevoke(refreshData)({
+										user_id: id,
+										message: formProps.message
+									});
+								}}
+								buttonText="Confirm"
+								small
+							/>
+						</div>
+						: <div>
+							<p>Upload ID supporting files to user database</p>
+							<UploadIds
+								user_id={id}
+								refreshData={refreshData}
+								closeUpload={closeUpload}
+							/>
+						</div>
+					}
+				</Modal>
 			</div>
 		);
 	}

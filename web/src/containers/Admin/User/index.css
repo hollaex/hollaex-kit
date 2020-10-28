@@ -116,9 +116,22 @@
 .about-notes-content {
 	width: 18rem;
 }
+.about-notes-text {
+	margin-bottom: 2rem;
+}
+.about-notes-content .ant-btn {
+	width: auto;
+}
 .about-title {
 	border-bottom: 1px solid #C4C4C4;
 	font-weight: bold;
 	padding: 10px;
 	margin-bottom: 8px;
+}
+.verification-docs-container {
+	margin-bottom: 5px;
+	width: 20rem;
+}
+.ant-modal-confirm-btns {
+	display: flex;
 }

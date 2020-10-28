@@ -7,9 +7,22 @@ import { AdminHocForm } from '../../../components';
 
 // import { isSupport } from '../../../utils';
 
-const UploadForm = AdminHocForm('UPLOAD_FORM');
+const UploadForm = AdminHocForm('UPLOAD_FORM', 'verification-form');
 
 const FORM_FIELDS = {
+	type: {
+		type: 'select',
+		label: 'Type',
+		options: [
+			{ label: 'National Id', value: 'id' },
+			{ label: 'Passport', value: 'passport' }
+		]
+	},
+	number: {
+		type: 'text',
+		label: 'Document number',
+		validate: []
+	},
 	front: {
 		type: 'file',
 		label: 'Front',
@@ -24,19 +37,6 @@ const FORM_FIELDS = {
 		type: 'file',
 		label: 'Proof of Residence',
 		validate: []
-	},
-	type: {
-		type: 'select',
-		label: 'Type',
-		options: [
-			{ label: 'National Id', value: 'id' },
-			{ label: 'Passport', value: 'passport' }
-		]
-	},
-	number: {
-		type: 'text',
-		label: 'Document number',
-		validate: []
 	}
 };
 
@@ -46,6 +46,7 @@ class UploadIds extends Component {
 			.then(({ success, data: { data, user } }) => {
 				refreshData(data, 'files');
 				refreshData(user);
+				this.props.closeUpload();
 				AntdMessage.success('Files upload successfully', 5);
 			})
 			.catch((err) => {
@@ -63,6 +64,7 @@ class UploadIds extends Component {
 					fields={FORM_FIELDS}
 					onSubmit={this.onSubmit(refreshData)}
 					buttonText="Upload"
+					buttonClass="green-btn"
 				/>
 			</div>
 		);

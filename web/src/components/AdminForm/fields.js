@@ -79,7 +79,7 @@ export const renderNumberField = ({
 );
 
 export const renderSelectField = ({
-	input,
+	input: { onBlur, ...inputProps },
 	options = [],
 	label,
 	meta: { touched, error, warning },
@@ -87,10 +87,10 @@ export const renderSelectField = ({
 	multiSelect = false,
 	...rest
 }) => {
-	let value = input.value || '';
-	if ((multiSelect || rest.mode === 'tags') && typeof input.value === 'string') {
-		value = input.value
-			? input.value.split(',')
+	let value = inputProps.value || '';
+	if ((multiSelect || rest.mode === 'tags') && typeof inputProps.value === 'string') {
+		value = inputProps.value
+			? inputProps.value.split(',')
 			: [];
 	}
 	return (
@@ -99,7 +99,7 @@ export const renderSelectField = ({
 		<div>
 			<Select
 				mode={multiSelect ? 'multiple' : 'default'}
-				{...input}
+				{...inputProps}
 				value={value}
 				placeholder={label}
 				disabled={disabled}

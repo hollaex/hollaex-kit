@@ -7,12 +7,12 @@ import {
 	Balance,
 	Logins,
 	Audits,
-	Verification,
+	// Verification,
 	// Otp,
 	UserBalance,
 	// Activate,
 	TradeHistory,
-	UploadIds,
+	// UploadIds,
 	Transactions,
 	ActiveOrders
 } from '../';
@@ -24,7 +24,7 @@ import { ICONS } from '../../../config/constants';
 import { deactivateOtp, flagUser, activateUser } from './actions';
 
 // import Flagger from '../Flaguser';
-import Notes from './Notes';
+// import Notes from './Notes';
 
 const TabPane = Tabs.TabPane;
 const { Item } = Breadcrumb;
@@ -157,7 +157,12 @@ class UserContent extends Component {
 					<TabPane tab="About" key="about">
 						<div>
 							<AboutData
+								user_id={userInformation.id}
 								userData={userInformation}
+								userImages={userImages}
+								constants={constants}
+								refreshData={refreshData}
+								onChangeSuccess={onChangeUserDataSuccess}
 								disableOTP={this.disableOTP}
 								flagUser={this.flagUser}
 								freezeAccount={this.freezeAccount}
@@ -238,7 +243,7 @@ class UserContent extends Component {
 							/>
 						</TabPane>
 					)}
-					<TabPane tab="Verification" key="verification">
+					{/* <TabPane tab="Verification" key="verification">
 						<Verification
 							constants={constants}
 							user_id={userInformation.id}
@@ -248,7 +253,7 @@ class UserContent extends Component {
 							roleInitialValues={roleInitialValues}
 							refreshData={refreshData}
 						/>
-					</TabPane>
+					</TabPane> */}
 					<TabPane tab="Logins" key="logins">
 						<Logins userId={userInformation.id} />
 					</TabPane>
@@ -268,17 +273,17 @@ class UserContent extends Component {
 							refreshData={refreshData}
 						/>
 					</TabPane> */}
-					{!isSupportUser && !isKYC() && (
+					{/* {!isSupportUser && !isKYC() && (
 						<TabPane tab="Upload" key="upload">
 							<UploadIds user_id={id} refreshData={refreshData} />
 						</TabPane>
-					)}
+					)} */}
 					{isAdmin() && (
 						<TabPane tab="Audits" key="audits">
 							<Audits userId={userInformation.id} />
 						</TabPane>
 					)}
-					<TabPane tab="Notes" key="notes">
+					{/* <TabPane tab="Notes" key="notes">
 						<Notes
 							initialValues={{
 								id: userInformation.id,
@@ -287,7 +292,7 @@ class UserContent extends Component {
 							userInfo={userInformation}
 							onChangeSuccess={onChangeUserDataSuccess}
 						/>
-					</TabPane>
+					</TabPane> */}
 				</Tabs>
 			</div>
 		);

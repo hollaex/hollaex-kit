@@ -1,15 +1,39 @@
-import { Card } from 'antd';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import ReactSVG from 'react-svg';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 
 import { ICONS } from '../../../config/constants';
-import {
-	formatTimestampGregorian,
-	DATETIME_FORMAT,
-} from '../../../utils/date';
+import Verification from '../Verification';
+import Notes from './Notes';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
-const AboutData = ({ userData = {}, disableOTP, flagUser, freezeAccount }) => {
+const AboutData = ({
+    userData = {},
+    userImages = {},
+    constants = {},
+    refreshData,
+    disableOTP,
+    flagUser,
+    freezeAccount,
+    onChangeSuccess
+}) => {
+    const [isUpload, setUpload] = useState(false);
+    const [isEdit, setEdit] = useState(false);
+    const userDocs = {
+        front: userImages.front ? userImages.front : '',
+        back: userImages.back ? userImages.back : '',
+        proof_of_residency: userImages.proof_of_residency ? userImages.proof_of_residency : ''
+    }
+    const handleNotesRemove = () => {
+        Modal.confirm({
+            icon: <ExclamationCircleFilled />,
+            content: <div>Are you sure want to delete this?</div>,
+            onOk() {
+                console.log('OK');
+            }
+        })
+    };
+    const handleClose = () => { setEdit(false) };
     return (
         <div className="about-wrapper">
             <div className="d-flex justify-content-end">
@@ -95,56 +119,25 @@ const AboutData = ({ userData = {}, disableOTP, flagUser, freezeAccount }) => {
                         User identification files
                     </div>
                     <div className="d-flex justify-content-between">
-                        <div>
-                            {userData.id_data.status > 0
-                                ? <Card title="Pending ID data">
-                                    <p>Type: {userData.id_data.type}</p>
-                                    <p>Number: {userData.id_data.number}</p>
-                                    {userData.id_data.issued_date && (
-                                        <p>
-                                            Issue date:{' '}
-                                            {formatTimestampGregorian(
-                                                userData.id_data.issued_date,
-                                                DATETIME_FORMAT
-                                            )}{' '}
-                                        </p>
-                                    )}
-                                    {userData.id_data.expiration_date && (
-                                        <p>
-                                            Expire date:{' '}
-                                            {formatTimestampGregorian(
-                                                userData.id_data.expiration_date,
-                                                DATETIME_FORMAT
-                                            )}{' '}
-                                        </p>
-                                    )}
-                                </Card>
-                                : <div>
-                                    <p>Type: {userData.id_data.type}</p>
-                                    <p>Number: {userData.id_data.number}</p>
-                                    {userData.id_data.issued_date && (
-                                        <p>
-                                            Issue date:{' '}
-                                            {formatTimestampGregorian(
-                                                userData.id_data.issued_date,
-                                                DATETIME_FORMAT
-                                            )}{' '}
-                                        </p>
-                                    )}
-                                    {userData.id_data.expiration_date && (
-                                        <p>
-                                            Expire date:{' '}
-                                            {formatTimestampGregorian(
-                                                userData.id_data.expiration_date,
-                                                DATETIME_FORMAT
-                                            )}{' '}
-                                        </p>
-                                    )}
-                                </div>
-                            }
+                        <div className="d-flex">
+                            <Verification
+                                isUpload={isUpload}
+                                constants={constants}
+                                user_id={userData.id}
+                                userImages={userDocs}
+                                userInformation={userData}
+                                refreshData={refreshData}
+                                closeUpload={() => setUpload(false)}
+                            />
                         </div>
                         <div>
-                            <Button type="primary">Upload</Button>
+                            <Button
+                                type="primary"
+                                className="green-btn"
+                                onClick={() => setUpload(true)}
+                            >
+                                Upload
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -152,15 +145,45 @@ const AboutData = ({ userData = {}, disableOTP, flagUser, freezeAccount }) => {
                     <div className="about-title">
                         Notes
                     </div>
-                    <div>
+                    <div className="about-notes-text">
                         {userData.note}
                     </div>
-                    <div className="d-flex">
-                        <Button type="primary">Delete</Button>
-                        <Button>Edit</Button>
+                    <div className="d-flex justify-content-end">
+                        <Button
+                            type="primary"
+                            size="small"
+                            danger
+                            onClick={handleNotesRemove}
+                        >
+                            Delete
+                        </Button>
+                        <div className="separator"></div>
+                        <Button
+                            type="primary"
+                            className="green-btn"
+                            size="small"
+                            onClick={() => { setEdit(true) }}
+                        >
+                            Edit
+                        </Button>
                     </div>
                 </div>
             </div>
+            <Modal
+                visible={isEdit}
+                footer={null}
+                onCancel={handleClose}
+            >
+                <Notes
+                    initialValues={{
+                        id: userData.id,
+                        note: userData.note
+                    }}
+                    userInfo={userData}
+                    onChangeSuccess={onChangeSuccess}
+                    handleClose={handleClose}
+                />
+            </Modal>
         </div>
     );
 }

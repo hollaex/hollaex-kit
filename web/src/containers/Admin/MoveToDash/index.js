@@ -13,7 +13,7 @@ const MoveToDash = () => {
             </div>
 			<ReactSVG path={ICONS.ADMIN_MISSING_GO_BACK} wrapperClassName="master-admin-img" />
             <div>
-                <a href="https://dash.testnet.hollaex.com/" target="_blank">
+                <a href="https://dash.testnet.hollaex.com/" target="_blank" rel="noopener noreferrer">
                     <Button type="primary">Go to master admin</Button>
                 </a>
             </div>
