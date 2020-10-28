@@ -22,17 +22,4 @@
         padding: 2rem 3rem;
     }
 }
-.dark-theme {
-    background-color: $dark-app-background-color;
-    .expired_exchange_wrapper {
-        .expired_img_icon {
-            svg {
-                .expired_icon {
-                 
-                    fill: $dark-icon-color;
-                }
-            }
-        }
-    }
-}
 

@@ -69,48 +69,6 @@
 	}
 }
 
-.dark-theme {
-	.header_title-wrapper {
-		.header_title-children {
-			.important_information {
-				color: $dark-font-sub-text-color !important
-			}
-		}
-	}
-	.title-inactive {
-		color: $dark-tab-inactive !important;
-	}
-
-	.astrics-1 {
-		fill: $dark-tab-inactive;
-	}
-
-	.verification_container {
-		.link-content {
-			color: $dark-link;
-		}
-
-		svg {
-			.pending-timer {
-				stroke: $dark-icon-color;
-			}
-			.note-kyc {
-				fill: $dark-icon-color;
-			}
-		}
-		.inner_container,
-		.content-text,
-		.header-content {
-			color: $dark-font-sub-text-color;
-		}
-	}
-
-	.verification_link {
-		color: $dark-link;
-	}
-
-}
-
 .layout-mobile {
 	.verification_container{	
 		.verification-info-txt {

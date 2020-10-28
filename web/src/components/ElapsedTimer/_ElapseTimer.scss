@@ -18,21 +18,3 @@
         }
     }
 }
-
-.dark-theme {
-    .elapsed-timer-wrapper {
-        color: $dark-font-sub-text-color;
-
-        .timer-time {
-            color: $dark-font-main-text-color;
-        }
-
-        .timer-svg {
-            svg {
-                .pending-timer {
-                    stroke: $dark-icon-color;
-                }
-            }
-        }
-    }
-}

@@ -196,22 +196,3 @@
 		right: -1rem;
 	}
 }
-.dark-theme {
-	.with_arrow_trade:after {
-		border-bottom-color: $dark-font-main-text-color !important;
-		border-right-color: $dark-font-main-text-color !important;
-	}
-	.mobile-drop-down {
-		color: $dark-sell;
-	}
-	.drop-down, .option{
-		&.xht {
-			border : none !important;
-			color: $colors-white !important;
-		}
-		.option{
-			background: $dark-quick-trade-background;
-			border:1px solid red!important
-		}
-	}
-}

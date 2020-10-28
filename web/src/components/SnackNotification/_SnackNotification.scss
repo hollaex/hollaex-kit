@@ -122,25 +122,6 @@
     100% { bottom: 5.5rem; }
 }
 
-.dark-theme {
-    .snack_notification-wrapper {
-        background-color: $dark-app-background-color;
-        border-top-color: $dark-app-line-divider;
-        border-left: 1px solid $dark-app-line-divider;
-        border-right: 1px solid $dark-app-line-divider;
-        border-bottom: 1px solid $dark-app-line-divider;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
-    .mobile-notification {
-        border-left: 1px solid $dark-app-line-divider;
-        border-right: 1px solid $dark-app-line-divider;
-        border-top: 1px solid $dark-app-line-divider;
-        border-bottom: .5rem solid $dark-app-line-divider;
-    }
-}
-
 .mobile-notification {
     border-top: 0;
     border-bottom: .5rem solid $colors-black;

@@ -31,35 +31,3 @@
 		}
 	}
 }
-
-.dark-theme {
-	.trade_post_icon {
-		svg {
-			.announcement {
-				fill: $colors-white
-			}
-			.settings{
-				fill: $colors-white
-			}
-			.wave-icon{
-				fill: $colors-white
-			}
-		}
-	}
-	.post_header {
-		color: $dark-font-main-text-color;
-	}
-	.post-content {
-		color: $dark-font-sub-text-color;
-
-		.notifications_list-item-text {
-			a {
-				color: $dark-link;
-			}
-			span, p {
-				background-color: $dark-app-sidebar-background !important;
-				color: $dark-font-sub-text-color !important;
-			}
-		}
-	}
-}

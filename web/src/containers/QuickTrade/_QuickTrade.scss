@@ -42,19 +42,6 @@
 	margin-left: auto;
 }
 
-
-.dark-theme {
-	.quote-container {
-		background-color: $dark-quick-trade-background;
-	}
-
-	.quick-trade__icon {
-		& svg {
-			fill: $dark-font-main-text-color
-		}
-	}
-}
-
 .layout-mobile {
 	.quote-container {
 		background-color: transparent;

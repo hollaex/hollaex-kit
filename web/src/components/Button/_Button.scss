@@ -64,22 +64,3 @@
 		font-family: inherit !important;
 	}
 }
-
-.dark-theme {
-	.exir-button {
-		color: $dark-button-text;
-		background-color: $dark-button-active !important;
-
-		&.disabled {
-			background-color: $dark-button-disabled !important;
-			color: $dark-button-text-disabled !important;
-			font-weight: bold;
-		}
-	}
-	.checkbutton-wrapper {
-		color: $dark-font-main-text-color;
-		.success-black-1, .secure-1 {
-			fill: $dark-font-main-text-color;
-		}
-	}
-}
