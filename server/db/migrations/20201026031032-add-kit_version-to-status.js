@@ -6,8 +6,7 @@ const COLUMN = 'kit_version';
 module.exports = {
 	up: (queryInterface, Sequelize) =>
 		queryInterface.addColumn(TABLE, COLUMN, {
-			type: Sequelize.STRING,
-			defaultValue: '2.0.0'
+			type: Sequelize.STRING
 		}),
 	down: (queryInterface, Sequelize) =>
 		queryInterface.removeColumn(TABLE, COLUMN)

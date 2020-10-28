@@ -133,7 +133,7 @@ const status = [{
 	initialized: false,
 	api_key: API_KEY,
 	api_secret: API_SECRET,
-	kit_version: KIT_VERSION || '2.0.0'
+	kit_version: KIT_VERSION
 }];
 
 module.exports = {
