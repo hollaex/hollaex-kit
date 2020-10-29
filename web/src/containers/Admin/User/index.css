@@ -83,7 +83,7 @@
 }
 .about-info {
 	padding: 15px 10px;
-	border-left: 1px solid #ffffff;
+	border-left: 1px solid #c4c4c4;
 	width: 16rem;
 }
 .about-icon {
@@ -134,4 +134,47 @@
 }
 .ant-modal-confirm-btns {
 	display: flex;
+}
+h3 {
+	color: #FFFFFF;
+}
+.user-info-container,
+.user-role-container,
+.user-level-container {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 10px;
+}
+.user-info-container {
+	width: 25rem;
+}
+.user-role-container {
+}
+.user-level-container {
+}
+.user-info-separator {
+	border-right: 1px solid #C4C4C4;
+    margin: 0rem 2rem;
+    width: 1px;
+    height: 4rem;
+}
+.user-data-form .user-edit-icon {
+	margin-right: 1rem;
+	width: 3rem;
+}
+.user-data-form .ant-picker .ant-picker-clear path,
+.user-data-form .ant-picker .ant-picker-suffix path,
+.user-data-form .ant-select .ant-select-arrow path {
+	fill: #FFFFFF;
+}
+.user-data-form .ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+.user-data-form .ant-input,
+.user-data-form .ant-picker-input > input,
+.user-data-form .ant-picker {
+	background-color: #0000ff;
+	color: #FFFFFF;
+}
+.download-csv-table {
+	border: 1px solid #ffffff;
+    padding: 2px 5px;
 }

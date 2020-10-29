@@ -5,8 +5,8 @@ import ReactSVG from 'react-svg';
 
 import {
 	Balance,
-	Logins,
-	Audits,
+	// Logins,
+	// Audits,
 	// Verification,
 	// Otp,
 	UserBalance,
@@ -243,56 +243,6 @@ class UserContent extends Component {
 							/>
 						</TabPane>
 					)}
-					{/* <TabPane tab="Verification" key="verification">
-						<Verification
-							constants={constants}
-							user_id={userInformation.id}
-							userImages={userImages}
-							userInformation={userInformation}
-							verificationInitialValues={verificationInitialValues}
-							roleInitialValues={roleInitialValues}
-							refreshData={refreshData}
-						/>
-					</TabPane> */}
-					<TabPane tab="Logins" key="logins">
-						<Logins userId={userInformation.id} />
-					</TabPane>
-					{/* {!isSupportUser && !isKYC() && (
-						<TabPane tab="OTP" key="otp">
-							<Otp
-								user_id={id}
-								otp_enabled={otp_enabled}
-								refreshData={refreshData}
-							/>
-						</TabPane>
-					)}
-					<TabPane tab="Status" key="activate">
-						<Activate
-							user_id={id}
-							activated={activated}
-							refreshData={refreshData}
-						/>
-					</TabPane> */}
-					{/* {!isSupportUser && !isKYC() && (
-						<TabPane tab="Upload" key="upload">
-							<UploadIds user_id={id} refreshData={refreshData} />
-						</TabPane>
-					)} */}
-					{isAdmin() && (
-						<TabPane tab="Audits" key="audits">
-							<Audits userId={userInformation.id} />
-						</TabPane>
-					)}
-					{/* <TabPane tab="Notes" key="notes">
-						<Notes
-							initialValues={{
-								id: userInformation.id,
-								note: userInformation.note
-							}}
-							userInfo={userInformation}
-							onChangeSuccess={onChangeUserDataSuccess}
-						/>
-					</TabPane> */}
 				</Tabs>
 			</div>
 		);

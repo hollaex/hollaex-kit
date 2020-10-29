@@ -6,7 +6,7 @@ import {
 	DATETIME_FORMAT
 } from '../../../utils/date';
 export const KEYS_TO_HIDE = [
-	'email',
+	// 'email',
 	'id',
 	'activated',
 	'otp_enabled',
