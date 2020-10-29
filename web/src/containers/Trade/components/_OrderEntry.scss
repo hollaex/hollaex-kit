@@ -109,7 +109,7 @@
 
 .trade_order_entry-wrapper {
 	&.order_side-selector-sell {
-		@include entry_form($color-sell-btc-light, $trade-asks-color-disabled);
+		@include entry_form($sell, $trade-asks-color-disabled);
 	}
 	&.order_side-selector-buy {
 		@include entry_form($buy, $trade-bids-color-disabled);

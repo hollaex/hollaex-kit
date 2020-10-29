@@ -1,5 +1,5 @@
-import { oldDark } from 'config/colors/dark';
+import light from 'config/colors/light';
 
-export const getColorByKey = (key, content = oldDark) => {
+export const getColorByKey = (key, content = light) => {
   return content[key];
 }

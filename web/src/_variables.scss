@@ -6,116 +6,102 @@ $bp-md: 991px;
 $bp-lg: 1199px;
 
 // common colors
-$colors-main-black: var(--colors-main-black);
-$colors-white: var(--colors-white);
-$colors-black: var(--colors-black);
-$colors-wave-phase-completed: var(--colors-wave-phase-completed);
+$colors-main-black: var(--labels_important-active-labels-text-graphics);
+$colors-white: var(--colors-white); /* old */
+$colors-black: var(--labels_secondary-inactive-label-text-graphics);
+$colors-wave-phase-completed: var(--colors-wave-phase-completed); /* old */
 
 // common colors for deactivate and disabled look
-$colors-deactivate: var(--colors-deactivate);
-$colors-deactivate-color1: var(--colors-deactivate-color1);
-$colors-deactivate-color2: var(--colors-deactivate-color2);
-$colors-deactivate-color3: var( --colors-deactivate-color3);
-$colors-deactivate-color4: var( --colors-deactivate-color4);
+$colors-deactivate: var(--labels_secondary-inactive-label-text-graphics);
+$colors-deactivate-color1: var(--base_inactive-button);
+$colors-deactivate-color2: var(--labels_secondary-inactive-label-text-graphics);
+$colors-deactivate-color4: var(--base_inactive-button);
 
 //common colors for notifications and errors
-$colors-notifications-red: var(--colors-notifications-red);
-$colors-notification-inactive-red: var(--colors-notification-inactive-red);
-$colors-notifications-blue: var(--colors-notifications-blue); // for Hollaex
-$colors-notifications-green: var(--colors-notifications-green);
-
-
-//common colors for currencies
-$color-currency-eur--main: var(--color-currency-eur--main);
-$color-currency-eur--secondary: var(--color-currency-eur--secondary);
-$color-currency-btc--main: var(--color-currency-btc--main);
-$color-currency-btc--secondary: var(--color-currency-btc--secondary);
+$colors-notifications-red: var(--specials_notifications-alerts-warnings);
+$colors-notification-inactive-red: var(--specials_notifications-alerts-warnings);
+$colors-notifications-blue: var(--specials_buttons-links-and-highlights);
+$colors-notifications-green: var(--specials_checks-okay-done);
 
 //common colors for terms
-$colors-terms-background: var(--colors-terms-background); // for Hollaex
-
-// common colors for app bar
-$dark-app-bar-add-tab-menu-background: var(--dark-app-bar-add-tab-menu-background);
-$app-bar-menu-list-color: var(--app-bar-menu-list-color);
-$app-bar-icon-inactive: var(--app-bar-icon-inactive);
+$colors-terms-background: var(--base_wallet-sidebar-and-popup);
 
 // theme colors
-$app-background-color: var(--app-background-color);
-$app-light-background: var(--app-light-background);
-$app-sidebar-background: var(--app-sidebar-background);
-$auth-container-background: var(--auth-container-background);
+$app-background-color: var(--base_background);
+$app-light-background: var(--base_secondary-navigation-bar);
+$app-sidebar-background: var(--base_wallet-sidebar-and-popup);
+$auth-container-background: var(--base_wallet-sidebar-and-popup);
+
+// common colors for app bar
+$dark-app-bar-add-tab-menu-background: $app-background-color;
+$app-bar-menu-list-color: var(--labels_secondary-inactive-label-text-graphics);
+$app-bar-icon-inactive: var(--labels_secondary-inactive-label-text-graphics);
 
 // Quick trade
-$quick-trade-background: var(--quick-trade-background);
-$quick-trade-container: var(--quick-trade-container);
+$quick-trade-background: $app-background-color;
+$quick-trade-container: var(--base_wallet-sidebar-and-popup);
 
-$app-modal-background: var(--app-modal-background);
-$app-bar-background-color: var(--app-bar-background-color);
+$app-modal-background: var(--app-modal-background); /* old */
+$app-bar-background-color: var(--base_top-bar-navigation);
 
-$app-line-divider: var(--app-line-divider);
-$box-fields: var(--box-fields);
+$app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
+$box-fields: var(--base_fields);
 
-$buy: var(--buy); // for Hollaex
-$sell: var(--sell); // for Hollaex
-$color-sell-btc-light: var(--color-sell-btc-light); // for Hollaex
+$buy: var(--trading_buying-related-elements);
+$sell: var(--trading_selling-related-elements);
 
-$link: var(--link);
+$link: var(--specials_buttons-links-and-highlights);
 
-$trade-fields: var(--trade-fields);
-$trade-fields-border: var(--trade-fields-border);
-$trade-fill-indicator: var(--trade-fill-indicator); // for Hollaex
-$trade-fill-indicator-text: var(--trade-fill-indicator-text); // for Hollaex
+$trade-fields: var(--base_fields);
+$trade-fields-border: var(--labels_secondary-inactive-label-text-graphics);
+$trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
+$trade-fill-indicator-text: var(--labels_secondary-inactive-label-text-graphics);
 
-$buy-bids-text: var(--buy-bids-text); // for Hollaex
-$sell-bids-text: var(--sell-bids-text);
+$buy-bids-text: var(--buy-bids-text); /* old */
+$sell-bids-text: var(--sell-bids-text); /* old */
 
-$app-logo-color: var(--app-logo-color);
-$sidebar-border--color: var(--sidebar-border--color);
-$border-color: var(--border-color);
-$border-main: var(--border-main);
+$sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);
+$border-color: var(--labels_secondary-inactive-label-text-graphics);
+$border-main: var(--labels_important-active-labels-text-graphics);
 
 // form field colors
-$form-color-underline-focus: var(--form-color-underline-focus);
-$form-color-underline: var(--form-color-underline);
-$form-color-placeholder: var(--form-color-placeholder);
-$form-arrow: var(--form-arrow);
-$form-label: var(--form-label);
+$form-color-underline-focus: var(--labels_important-active-labels-text-graphics);
+$form-color-underline: var(--labels_secondary-inactive-label-text-graphics);
+$form-color-placeholder: var(--labels_secondary-inactive-label-text-graphics);
+$form-arrow: var(--labels_important-active-labels-text-graphics);
+$form-label: var(--labels_important-active-labels-text-graphics);
 
 // theme tabs
-$tab-active: var(--tab-active);
-$tab-inactive: var(--tab-inactive);
-$sidebar-color: var(--sidebar-color);
-$sidebar-color-active: var(--sidebar-color-active);
-$info-panel-background: var(--info-panel-background);
-$info-panel-text: var(--info-panel-text);
-$icon-hover: var(--icon-hover);
-$icon-unhover: var(--icon-unhover);
-$trade-tabs-inactive-color: var(--trade-tabs-inactive-color);
+$tab-active: var(--labels_important-active-labels-text-graphics);
+$tab-inactive: var(--labels_secondary-inactive-label-text-graphics);
+$sidebar-color: var(--labels_secondary-inactive-label-text-graphics);
+$sidebar-color-active: var(--labels_important-active-labels-text-graphics);
+$info-panel-background: var(--base_fields);
+$info-panel-text: var(--labels_secondary-inactive-label-text-graphics);
+$icon-hover: var(--labels_important-active-labels-text-graphics);
+$icon-unhover: var(--labels_secondary-inactive-label-text-graphics);
+$trade-tabs-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
 
 // theme footer
-$footer-background-color: var(--footer-background-color);
+$footer-background-color: var(--base_footer);
 
 // chat color
-$chat-message-background-even: var(--chat-message-background-even);
-$chat-message-background-odd: var(--chat-message-background-odd);
-$chat-message-color: var(--chat-message-color);
-$chat-box-border: var(--chat-box-border);
+$chat-message-background-even: var(--base_background);
+$chat-message-background-odd: var(--base_secondary-navigation-bar);
+$chat-message-color: var(--labels_secondary-inactive-label-text-graphics);
+$chat-box-border: var(--labels_important-active-labels-text-graphics);
 
 // this is for transaction history- ToDo: need to customize for common theme
-$history-color-buy: var(--history-color-buy);
-$history-color-sell: var(--history-color-sell);
+$history-color-buy: var(--trading_buying-related-elements);
+$history-color-sell: var(--trading_selling-related-elements);
 
 // remaining dark colors
-$dark-app-background-color: var(--dark-app-background-color);
-$dark-app-light-background: var(--dark-app-light-background);
-$dark-app-line-divider: var(--dark-app-line-divider);
-$dark-buy: var(--dark-buy);
-$dark-link: var(--dark-link);
-$dark-border-main: var(--dark-border-main);
-$dark-inactive-color: var(--dark-inactive-color);
-$dark-font-sub-text-color: var(--dark-font-sub-text-color);
-$dark-font-sub-text-1-color: var(--dark-font-sub-text-1-color);
-$dark-disabled-main: var(--dark-disabled-main);
+$dark-app-background-color: var(--base_background);
+$dark-app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
+$dark-border-main: var(--labels_secondary-inactive-label-text-graphics);
+$dark-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
+$dark-font-sub-text-color: var(--labels_secondary-inactive-label-text-graphics);
+$dark-font-sub-text-1-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-accordion-arrow-active: var(--dark-accordion-arrow-active);
 
 // coins for white theme
@@ -324,8 +310,6 @@ $sidebar-sections-padding: 1rem;
 $sidebar-borderbottom-color: $colors-deactivate-color2;
 $sidebar-borderbottom-color-active: $colors-deactivate-color2;
 $sidebar-borderbottom-height: 4px;
-
-$btc-color: $color-currency-btc--secondary;
 
 $currency-color: inherit;
 
