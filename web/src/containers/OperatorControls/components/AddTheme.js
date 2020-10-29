@@ -3,7 +3,7 @@ import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
 import { Input, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { oldLight as initialTheme } from 'config/colors/light';
+import initialTheme from 'config/colors/light';
 import { getColorByKey } from 'utils/color';
 
 class AddTheme extends Component {
@@ -97,9 +97,19 @@ class AddTheme extends Component {
         <div>
           {Object.entries(theme).map(([colorKey, colorValue]) => {
             return (
-              <div className="d-flex justify-content-between py-1" key={colorKey}>
-                <div className="bold">{colorKey}</div>
+              <div className="d-flex justify-content-between align-items-center py-1" key={colorKey}>
+                <div className="bold">{colorKey.split("_")[1].replace(/-/g, ' ')}</div>
                 <div className="d-flex align-items-center">
+                  <div
+                    className="mr-2"
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '1px solid #322D2D99',
+                      borderRadius: '38px',
+                      backgroundColor: colorValue,
+                    }}
+                  />
                   <Input
                     type="text"
                     name={colorKey}
