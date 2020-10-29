@@ -178,3 +178,30 @@ h3 {
 	border: 1px solid #ffffff;
     padding: 2px 5px;
 }
+.user-info-icon {
+    width: 35px;
+    position: relative;
+    bottom: 5px;
+}
+.user-info-label {
+	margin-left: 15px;
+}
+.ant-table-pagination.ant-pagination {
+    margin: 16px 0;
+    background: #FFFFFF;
+    border-radius: 31%;
+    padding: 15px;
+}
+.levels-icon {
+	width: 57px;
+	position: relative;
+	bottom: 15px;
+}
+.select-level-icon {
+    width: 3rem;
+    position: relative;
+    top: 0.2rem;
+}
+.user-data-form .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+	height: 50px;
+}

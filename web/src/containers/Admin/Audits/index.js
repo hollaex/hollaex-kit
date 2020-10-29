@@ -124,6 +124,7 @@ class Audits extends Component {
 					}}
 					columns={AUDIT_COLUMNS}
 					dataSource={audits ? audits : 'No Data'}
+					pagination={{ pageSize: 5 }}
 				/>
 			</div>
 		);

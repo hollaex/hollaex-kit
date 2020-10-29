@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import ReactSVG from 'react-svg';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Select } from 'antd';
 import { Link } from 'react-router';
 import { ExclamationCircleFilled, CaretUpFilled, CaretDownFilled } from '@ant-design/icons';
 import { SubmissionError } from 'redux-form';
@@ -64,6 +64,18 @@ const RenderModalContent = ({
                 throw new SubmissionError({ _error: error });
             });
     };
+    const renderLevelOptions = (levels) => (
+        levels.map((level, index) => (
+            <Select.Option key={index} value={level}>
+                <div className='asset-list'>
+                    <ReactSVG path={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]} wrapperClassName="select-level-icon" />
+                    <div className='select-coin-text'>
+                        {`Account tier ${level}`}
+                    </div>
+                </div>
+            </Select.Option>
+        ))
+    );
     switch (modalKey) {
         case 'notes':
             return (
@@ -107,6 +119,7 @@ const RenderModalContent = ({
                         fields={{
                             verification_level: {
                                 type: 'select',
+                                renderOptions: renderLevelOptions,
                                 options: VERIFICATION_LEVELS,
                                 label: 'Adjust user level',
                                 validate: [
@@ -334,6 +347,9 @@ const AboutData = ({
                     <div className="user-info-separator"></div>
                     <div className="user-role-container">
                         <div>
+							<img src={ICONS.BLUE_SCREEN_EYE_ICON} className="user-info-icon" alt="EyeIcon" />
+						</div>
+                        <div className="user-info-label">
                             Role: {checkRole()}
                         </div>
                         <div className="ml-4">
@@ -345,6 +361,9 @@ const AboutData = ({
                     <div className="user-info-separator"></div>
                     <div className="user-level-container">
                         <div>
+                            <ReactSVG path={ICONS.LEVEL_ACCOUNT_ICON_1} wrapperClassName="levels-icon" />
+						</div>
+                        <div className="user-info-label">
                             Verification level: {userData.verification_level}
                         </div>
                         <div className="ml-4">

@@ -93,6 +93,7 @@ class Logins extends Component {
 					rowKey={(data, index) => {
 						return `${data.id}_${index}`;
 					}}
+					pagination={{ pageSize: 5 }}
 				/>
 			</div>
 		);
