@@ -49,7 +49,10 @@ import {
 	AdminLogin,
 	AdminDashboard,
 	AdminFinancials,
-	MoveToDash
+	MoveToDash,
+	General,
+	Tiers,
+	Roles
 } from './containers';
 
 import store from './store';
@@ -322,6 +325,21 @@ export default (
 		</Route>
 		<Route component={AdminContainer}>
 			<Route path="/admin" name="Admin Main" component={AdminDashboard} />
+			<Route
+				path="/admin/general"
+				name="Admin General"
+				component={withAdminProps(General, 'general')}
+			/>
+			<Route
+				path="/admin/tiers"
+				name="Admin Tiers"
+				component={withAdminProps(Tiers, 'tiers')}
+			/>
+			<Route
+				path="/admin/roles"
+				name="Admin Roles"
+				component={withAdminProps(Roles, 'roles')}
+			/>
 			<Route
 				path="/admin/user"
 				name="Admin User"

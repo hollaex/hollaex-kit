@@ -42,7 +42,7 @@ const CARD_LIST = [
         icon: ICONS.ADMIN_CUSTOMIZE,
         title: 'Customize your exchange',
         description: 'Change strings, icons, add languages to customize your exchange in real-time.',
-        path: '/admin/general'
+        path: '/account'
     }
 ];
 

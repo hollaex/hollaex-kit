@@ -310,7 +310,7 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section bg-black">
 						<div>
-							<img src={ICONS.BLUE_SCREEN_SUPERVISOR} className="sider-icons" alt="EyeIcon" />
+							<ReactSVG path={ICONS.BLUE_SCREEN_SUPERVISOR} wrapperClassName="sider-icons" />
 						</div>
 						<div>
 							<div className="main-label">
@@ -326,7 +326,7 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section bg-grey">
 						<div>
-							<img src={ICONS.BLUE_SCREEN_KYC} className="sider-icons" alt="EyeIcon" />
+							<ReactSVG path={ICONS.BLUE_SCREEN_KYC} wrapperClassName="sider-icons" />
 						</div>
 						<div>
 							<div className="main-label black">
@@ -342,7 +342,7 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section bg-orange">
 						<div>
-							<img src={ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE} className="sider-icons" alt="EyeIcon" />
+							<ReactSVG path={ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE} wrapperClassName="sider-icons" />
 						</div>
 						<div>
 							<div className="main-label">
@@ -358,7 +358,7 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section bg-yellow">
 						<div>
-							<img src={ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE} className="sider-icons" alt="EyeIcon" />
+							<ReactSVG path={ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE} wrapperClassName="sider-icons" />
 						</div>
 						<div>
 							<div className="main-label black">

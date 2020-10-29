@@ -331,6 +331,8 @@ const nestedIcons = {
   ADMIN_ROLES: '/assets/images/roles.svg',
   ADMIN_CUSTOMIZE: '/assets/images/customize.svg',
   ADMIN_MISSING_GO_BACK: '/assets/images/missing-page-go-back-to-dash.svg',
+  HELP_DESCRIPTION_POPUP: '/assets/images/help-popup-description.png',
+  HELP_FOOTER_POPUP: '/assets/images/help-popup-description.png',
   SOCIAL_ICONS: {
     FACEBOOK: '/assets/icons/facebook.png',
     LINKEDIN: '/assets/icons/linkedin.png',
