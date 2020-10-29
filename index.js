@@ -1065,7 +1065,7 @@ class HollaEx {
 		);
 	}
 
-	getGeneratedFees(limit, page, startDate, endDate) {
+	getGeneratedFees(limit = 50, page = 1, startDate = 0, endDate = moment().toISOString()) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/fee?exchange_id=${this.exchange_id}&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}`;
