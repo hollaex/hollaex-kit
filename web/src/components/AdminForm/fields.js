@@ -78,6 +78,17 @@ export const renderNumberField = ({
 	</div>
 );
 
+const renderDefaultOptions = (options) => (
+	options.map((option, index) => {
+		let value = (!option.value && option.value !== '') ? option : option.value;
+		return (
+			<Select.Option value={value} key={index}>
+				{option.label || option}
+			</Select.Option>
+		)
+	})
+);
+
 export const renderSelectField = ({
 	input: { onBlur, ...inputProps },
 	options = [],
@@ -85,6 +96,7 @@ export const renderSelectField = ({
 	meta: { touched, error, warning },
 	disabled = false,
 	multiSelect = false,
+	renderOptions = renderDefaultOptions,
 	...rest
 }) => {
 	let value = inputProps.value || '';
@@ -105,15 +117,7 @@ export const renderSelectField = ({
 				disabled={disabled}
 				{...rest}
 			>
-				{options.map((option, index) => {
-					let value = (!option.value && option.value !== '') ? option : option.value;
-					return (
-						<Select.Option value={value} key={index}>
-							{option.label || option}
-						</Select.Option>
-					)
-				}
-				)}
+				{renderOptions(options)}
 			</Select>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
