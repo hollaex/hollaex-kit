@@ -1064,6 +1064,19 @@ class HollaEx {
 			data
 		);
 	}
+
+	getGeneratedFees(limit, page, startDate, endDate) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/fee?exchange_id=${this.exchange_id}&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
 }
 
 /**************************************
