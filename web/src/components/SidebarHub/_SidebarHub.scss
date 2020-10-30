@@ -85,10 +85,10 @@ $deactive-tab-border: $boder--width solid $border--color;
 				}
 
 				&.tab-btc {
-					@include tab-active($color-currency-btc--main, $color-currency-btc--secondary, $tab_lines-height);
+					@include tab-active($coin-btc, $coin-btc-1, $tab_lines-height);
 				}
 				&.tab-eur {
-					@include tab-active($color-currency-eur--main, $color-currency-eur--secondary, $tab_lines-height);
+					@include tab-active($coin-eur, $coin-eur-1, $tab_lines-height);
 				}
 			}
 		}

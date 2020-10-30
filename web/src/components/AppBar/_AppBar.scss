@@ -37,18 +37,6 @@ $app-bar-add-tab-red: #ff0000;
 		background-repeat: no-repeat;
 	}
 
-	.app_bar-icon-logo svg {
-		.logo-black {
-			fill: $app-logo-color;
-		}
-		path {
-			fill: $app-logo-color;
-		}
-		polygon, circle {
-			stroke: $app-logo-color;
-		}
-	}
-
 	.app_bar-icon {
 		flex: 0;
 		margin: 0 .5rem;
@@ -531,7 +519,7 @@ $app-bar-add-tab-red: #ff0000;
 }
 
 .app-bar-tab-menu {
-	background-color: $colors-black !important;
+	background-color: $app-bar-background-color !important;
 }
 
 .app_bar-mobile {
@@ -728,7 +716,7 @@ $app-bar-add-tab-red: #ff0000;
 	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 	.app-bar-tab-menu-list {
-		background-color: $colors-black;
+		background-color: $app-bar-background-color;
 		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		height: 2.5rem;
