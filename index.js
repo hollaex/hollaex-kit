@@ -1077,6 +1077,34 @@ class HollaEx {
 			headers
 		);
 	}
+
+	getOraclePrice(asset, quote = 'usdt', amount = 1) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/oracle/price?exchange_id=${this.exchange_id}&asset=${asset}&quote=${quote}&amount=${amount}}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	getOraclePrices(assets = [], quote = 'usdt', amount = 1) {
+		checkKit(this.exchange_id);
+		assets = assets.join(',');
+
+		const verb = 'GET';
+		const path = `${HOLLAEX_NETWORK_VERSION}/oracle/price?exchange_id=${this.exchange_id}&assets=${assets}&quote=${quote}&amount=${amount}}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
 }
 
 /**************************************
