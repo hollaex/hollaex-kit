@@ -25,6 +25,7 @@ const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject } = require('bluebird');
 const { NO_NEW_DATA, SUPPORT_DISABLED, COMMUNICATOR_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
 const flatten = require('flat');
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 
 /**
  * Checks if url given is a valid url.
@@ -335,6 +336,32 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 		});
 };
 
+const getAssetPrice = (asset, quote = 'usdt', amount = 1) => {
+	if (!subscribedToCoin(asset)) {
+		return reject(new Error('Invalid asset'));
+	}
+
+	if (amount <= 0) {
+		return reject(new Error('Amount must be greater than 0'));
+	}
+
+	return getNodeLib().getOraclePrice(asset, quote, amount);
+};
+
+const getAssetsPrices = (assets = [], quote, amount) => {
+	each(assets, (asset) => {
+		if (!subscribedToCoin(asset)) {
+			return reject(new Error('Invalid asset'));
+		}
+	});
+
+	if (amount <= 0) {
+		return reject(new Error('Amount must be greater than 0'));
+	}
+
+	return getNodeLib().getOraclePrice(assets, quote, amount);
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -360,5 +387,7 @@ module.exports = {
 	setExchangeSetupCompleted,
 	updateNetworkKeySecret,
 	isValidTierLevel,
-	getTierLevels
+	getTierLevels,
+	getAssetPrice,
+	getAssetsPrices
 };
