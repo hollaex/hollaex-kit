@@ -1,9 +1,6 @@
 @import url(_customVariables.css);
 /* old */
 /* old */
-/* old */
-/* old */
-/* old */
 @import url(_customVariables.css);
 @import url(_customVariables.css);
 @font-face {
@@ -1530,7 +1527,7 @@ table th {
     border: 1px solid var(--trading_selling-related-elements); }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector .active {
       background-color: var(--trading_selling-related-elements);
-      color: var(--sell-bids-text);
+      color: var(--calculated_trading_selling-related-text);
       font-weight: bold; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review {
     border-top: 1px solid grey;
@@ -1589,7 +1586,7 @@ table th {
     border: 1px solid var(--trading_buying-related-elements); }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector .active {
       background-color: var(--trading_buying-related-elements);
-      color: var(--sell-bids-text);
+      color: var(--calculated_trading_selling-related-text);
       font-weight: bold; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review {
     border-top: 1px solid grey;
@@ -1694,11 +1691,11 @@ table th {
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child {
     background-color: var(--trading_selling-related-elements); }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child > div {
-      color: var(--sell-bids-text); }
+      color: var(--calculated_trading_selling-related-text); }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child {
     background-color: var(--trading_buying-related-elements); }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child > div {
-      color: var(--buy-bids-text); }
+      color: var(--calculated_trading_buying-related-text); }
   .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper {
     color: var(--trading_selling-related-elements); }
     .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
@@ -4936,9 +4933,6 @@ table th {
 
 /* old */
 /* old */
-/* old */
-/* old */
-/* old */
 .exir-button {
   width: 100%;
   font-size: 0.9rem;
@@ -4983,7 +4977,7 @@ table th {
   justify-content: center;
   align-items: center;
   z-index: 100 !important;
-  background-color: var(--app-modal-background) !important; }
+  background-color: var(--calculated_base_modal-overlay) !important; }
 
 .ReactModal__Content {
   padding: 2.5rem !important;
@@ -5222,9 +5216,6 @@ table th {
 .direction_rtl .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
   border-top-color: var(--labels_secondary-inactive-label-text-graphics); }
 
-/* old */
-/* old */
-/* old */
 /* old */
 /* old */
 .action_notification-wrapper {
@@ -5707,7 +5698,7 @@ table th {
     background-color: var(--base_background);
     border-color: var(--base_background); } }
   .table-wrapper .cell_box-type {
-    color: var(--buy-bids-text);
+    color: var(--calculated_trading_buying-related-text);
     text-transform: capitalize; }
     .table-wrapper .cell_box-type > div {
       padding: 0.15rem 0.25rem; }
@@ -7517,7 +7508,7 @@ body {
 
 .ReactModal__Body--open #root {
   filter: blur(5px);
-  background: var(--app-modal-background); }
+  background: var(--calculated_base_modal-overlay); }
 
 .form {
   min-width: 25rem;

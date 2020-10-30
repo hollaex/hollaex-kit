@@ -32,15 +32,16 @@
 
     /*_________________________________*/
 
-    --app-modal-background: #ddddddbf;
-    --buy-bids-text: #000000;
-    --sell-bids-text: #ffffff;
-    --colors-white: white;
+
+    --calculated_trading_buying-related-text: #000000;
+    --calculated_trading_selling-related-text: #ffffff;
+    --calculated_base_modal-overlay: #ddddddbf;
 
     /*_________________________________*/
 
 
     /*_____Remaining_____*/
+    --colors-white: white;
     --colors-wave-phase-completed: #808000;
     --dark-accordion-arrow-active: #ffffff;
     --tradingViewWaterMark: #808080;

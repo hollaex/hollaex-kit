@@ -5,6 +5,7 @@ import { Input, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import initialTheme from 'config/colors/light';
 import { getColorByKey } from 'utils/color';
+import { filterTheme } from 'utils/color';
 
 class AddTheme extends Component {
   constructor(props) {
@@ -12,11 +13,12 @@ class AddTheme extends Component {
     const { themes, selectedTheme: themeKey = '' } = this.props;
     const isEditTheme = !!themeKey
     const theme = themeKey && themes[themeKey] ? themes[themeKey] : initialTheme
+    const filteredTheme = filterTheme(theme);
 
     this.state = {
       isEditTheme,
       themeKey,
-      theme,
+      theme: filteredTheme,
     }
   }
 

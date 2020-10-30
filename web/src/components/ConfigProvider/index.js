@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ProjectConfig } from 'config/project.config';
 import { getIconByKey } from 'utils/icon';
+import { calculateThemes } from 'utils/color';
 
 class ConfigProvider extends Component {
   constructor(props) {
@@ -12,11 +13,12 @@ class ConfigProvider extends Component {
       color = {},
     } = { ...initialConfig }
 
-    const themeOptions = Object.keys(color).map((value) => ({ value }))
+    const themeOptions = Object.keys(color).map((value) => ({ value }));
+    const calculatedThemes = calculateThemes(color);
 
     this.state = {
       icons,
-      color,
+      color: calculatedThemes,
       defaultLanguage,
       themeOptions,
     };
@@ -26,8 +28,10 @@ class ConfigProvider extends Component {
     const { color } = this.state;
     if (JSON.stringify(color) !== JSON.stringify(nextState.color)) {
       const themeOptions = Object.keys(nextState.color).map((value) => ({ value }))
+      const calculatedThemes = calculateThemes(nextState.color)
       this.setState({
-        themeOptions
+        themeOptions,
+        color: calculatedThemes,
       })
     }
   }

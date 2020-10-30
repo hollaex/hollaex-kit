@@ -41,7 +41,7 @@ $app-bar-icon-inactive: var(--labels_secondary-inactive-label-text-graphics);
 $quick-trade-background: $app-background-color;
 $quick-trade-container: var(--base_wallet-sidebar-and-popup);
 
-$app-modal-background: var(--app-modal-background); /* old */
+$app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);
 
 $app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
@@ -57,8 +57,8 @@ $trade-fields-border: var(--labels_secondary-inactive-label-text-graphics);
 $trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
 $trade-fill-indicator-text: var(--labels_secondary-inactive-label-text-graphics);
 
-$buy-bids-text: var(--buy-bids-text); /* old */
-$sell-bids-text: var(--sell-bids-text); /* old */
+$buy-bids-text: var(--calculated_trading_buying-related-text);
+$sell-bids-text: var(--calculated_trading_selling-related-text);
 
 $sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);
 $border-color: var(--labels_secondary-inactive-label-text-graphics);
