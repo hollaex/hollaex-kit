@@ -22,13 +22,13 @@ $no-background--color: white;
 	background-size: cover;
 
 	.exchange-expired {
-		background-color: $colors-notifications-red !important;
-		color: $colors-white !important;
+		background-color: #ed1c24 !important;
+		color: #ffffff !important;
 	}
 	
 	.exchange-warning {
 		background-color: #FFF100;
-		color: $colors-black;
+		color: #000000;
 	}
 
 	.quick_trade-section {

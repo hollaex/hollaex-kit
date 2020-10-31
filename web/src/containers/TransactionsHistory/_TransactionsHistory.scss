@@ -47,13 +47,13 @@
 	.withdraw,
 	.sell {
 		background-color: $history-color-sell;
-		color: $colors-white;
+		color: $sell-bids-text;
 	}
 
 	.deposit,
 	.buy {
 		background-color: $history-color-buy;
-		color: $colors-black;
+		color: $buy-bids-text;
 	}
 }
 

@@ -7,9 +7,8 @@ $bp-lg: 1199px;
 
 // common colors
 $colors-main-black: var(--labels_important-active-labels-text-graphics);
-$colors-white: var(--colors-white); /* old */
 $colors-black: var(--labels_secondary-inactive-label-text-graphics);
-$colors-wave-phase-completed: var(--colors-wave-phase-completed); /* old */
+$colors-wave-phase-completed: var(--specials_checks-okay-done);
 
 // common colors for deactivate and disabled look
 $colors-deactivate: var(--labels_secondary-inactive-label-text-graphics);
@@ -22,9 +21,10 @@ $colors-notifications-red: var(--specials_notifications-alerts-warnings);
 $colors-notification-inactive-red: var(--specials_notifications-alerts-warnings);
 $colors-notifications-blue: var(--specials_buttons-links-and-highlights);
 $colors-notifications-green: var(--specials_checks-okay-done);
+$specials_highlight-box: var(--calculated_specials_highlight-box);
 
 //common colors for terms
-$colors-terms-background: var(--base_wallet-sidebar-and-popup);
+$colors-terms-background: $specials_highlight-box;
 
 // theme colors
 $app-background-color: var(--base_background);
@@ -59,6 +59,8 @@ $trade-fill-indicator-text: var(--labels_secondary-inactive-label-text-graphics)
 
 $buy-bids-text: var(--calculated_trading_buying-related-text);
 $sell-bids-text: var(--calculated_trading_selling-related-text);
+$base_top-bar-navigation_text: var(--calculated_base_top-bar-navigation_text);
+$base_footer_text: var(--calculated_base_footer_text);
 
 $sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);
 $border-color: var(--labels_secondary-inactive-label-text-graphics);
