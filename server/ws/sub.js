@@ -1,6 +1,6 @@
 'use strict';
 
-const { addSubscriber, addChatSubscriber, removeSubscriber, removeChatSubscriber, getChannels, getChatChannels, resetChannels } = require('./channel');
+const { addSubscriber, removeSubscriber, getChannels, resetChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
@@ -14,9 +14,7 @@ const {
 	WS_INVALID_TOPIC
 } = require('../messages');
 const { subscriber } = require('../db/pubsub');
-const { getMessages, addMessage } = require('./chat');
-const { getUsername } = require('./chat/username');
-const moment = require('moment');
+const { sendParitalMessages } = require('./chat');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.on('message', (channel, data) => {
@@ -32,7 +30,6 @@ let publicData = {
 };
 
 const initializeTopic = async (topic, ws, symbol) => {
-	let usernameOnDb;
 	switch (topic) {
 		case 'orderbook':
 		case 'trade':
@@ -78,20 +75,8 @@ const initializeTopic = async (topic, ws, symbol) => {
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 			break;
 		case 'chat':
-			if (!ws.auth.sub) {
-				throw new Error(WS_AUTHENTICATION_REQUIRED);
-			}
-			addChatSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
-			usernameOnDb = await getUsername(ws.auth.sub.id);
-			ws.auth.sub.username = usernameOnDb.username;
-			ws.auth.sub.verificationLevel = usernameOnDb.verification_level;
-			ws.send(JSON.stringify({
-				topic: 'chat',
-				action: 'partial',
-				user_id: ws.auth.sub.id,
-				data: getMessages(),
-				time: moment().unix()
-			}));
+			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+			sendParitalMessages(ws);
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
@@ -101,7 +86,7 @@ const initializeTopic = async (topic, ws, symbol) => {
 const chatUpdate = (action, ws, data) => {
 	switch (action) {
 		case 'addMessage':
-			addMessage(ws, data)
+			// addMessage(ws, data)
 			//addMessage
 			break;
 		case 'deleteMessage':
@@ -158,7 +143,7 @@ const terminateTopic = (topic, ws, symbol) => {
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
-			removeChatSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
+			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}`}));
 			break;
 		default:
@@ -245,7 +230,7 @@ const terminateClosedChannels = (ws) => {
 		}
 
 		try {
-			removeChatSubscriber(WEBSOCKET_CHANNEL('chat', ws.auth.sub.id), ws, 'private');
+			removeSubscriber(WEBSOCKET_CHANNEL('chat'), ws);
 		} catch (err) {
 			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
 		}

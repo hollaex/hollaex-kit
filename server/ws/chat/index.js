@@ -8,7 +8,7 @@ const {
 } = require('../../constants');
 const { storeData, restoreData } = require('./utils');
 const { isUserBanned } = require('./ban');
-
+const moment = require('moment');
 const redis = require('../../db/redis').duplicate();
 const { subscriber, publisher } = require('../../db/pubsub');
 const emitter = require('socket.io-emitter')(redis);
@@ -30,11 +30,21 @@ subscriber.on('message', (channel, data) => {
 });
 
 const getMessages = (limit = CHAT_MAX_MESSAGES) => {
+	console.log(MESSAGES)
 	return MESSAGES.slice(-limit);
 };
 
+const sendParitalMessages = (ws) => {
+	ws.send(JSON.stringify({
+		topic: 'chat',
+		action: 'partial',
+		data: getMessages(),
+		time: moment().unix()
+	}));
+};
+
 const addMessage = (username, userId, verification_level) => ({ message }) => {
-	const timestamp = Date.now();
+	const timestamp = moment().unix();
 	if (!isUserBanned(userId)) {
 		const data = {
 			id: `${timestamp}-${username}`,
@@ -78,5 +88,6 @@ module.exports = {
 	getMessages,
 	addMessage,
 	deleteMessage,
-	publishChatMessage
+	publishChatMessage,
+	sendParitalMessages
 };
