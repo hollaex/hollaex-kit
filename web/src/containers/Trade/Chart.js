@@ -2,10 +2,8 @@ import * as React from 'react';
 import _isEqual from 'lodash/isEqual';
 import { widget } from '../../charting_library/charting_library.min';
 import {
-	getWhiteTheme,
-	getDarkTheme,
-	getVolumeWhite,
-	getVolumeDark,
+	getTheme,
+	getVolume,
 	getToolbarBG
 } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
@@ -16,29 +14,11 @@ import {
 } from '../../actions/chartAction';
 
 function getThemeOverrides(theme = 'white', color = {}) {
-	if (theme === 'white') {
-		return getWhiteTheme(color['light'] || {});
-	} else {
-		let themeC = color['dark'] || {};
-		if (color['dark']) {
-			themeC.buy = color.dark['dark-buy'];
-			themeC.sell = color.dark['dark-sell'];
-		}
-		return getDarkTheme(themeC);
-	}
+  return getTheme(color[theme] || {});
 }
 
 function getStudiesOverrides(theme = 'white', color = {}) {
-	if (theme === 'white') {
-		return getVolumeWhite(color['light'] || {});
-	} else {
-		let themeC = {}
-		if (color['dark']) {
-			themeC.buy = color.dark['dark-buy'];
-			themeC.sell = color.dark['dark-sell'];
-		}
-		return getVolumeDark(themeC);
-	}
+  return getVolume(color[theme] || {});
 }
 
 class TVChartContainer extends React.PureComponent {
@@ -259,13 +239,13 @@ class TVChartContainer extends React.PureComponent {
 		containerId,
 		libraryPath,
 		interval,
-		constants = {}
+		color = {},
 	}) => {
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
-			theme: activeTheme === 'white' ? 'light' : 'dark',
-			toolbar_bg: getToolbarBG(activeTheme, constants.color),
+			theme: activeTheme,
+			toolbar_bg: getToolbarBG(activeTheme, color),
 			datafeed: this.chartConfig,
 			interval: interval,
 			container_id: containerId,
@@ -303,13 +283,13 @@ class TVChartContainer extends React.PureComponent {
 			user_id: this.props.userId,
 			fullscreen: this.props.fullscreen,
 			autosize: this.props.autosize,
-			studies_overrides: getStudiesOverrides(activeTheme, constants.color),
+			studies_overrides: getStudiesOverrides(activeTheme, color),
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
-			loading_screen: { backgroundColor: getToolbarBG(activeTheme, constants.color) },
+			loading_screen: { backgroundColor: getToolbarBG(activeTheme, color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
-			overrides: getThemeOverrides(activeTheme, constants.color)
+			overrides: getThemeOverrides(activeTheme, color)
 		};
 
 		const tvWidget = new widget(widgetOptions);
@@ -324,12 +304,8 @@ class TVChartContainer extends React.PureComponent {
 				)
 				.addClass('apply-common-tooltip screen-button')
 				.on('click', () => tvWidget.takeScreenshot());
-			tvWidget.applyOverrides(getThemeOverrides(activeTheme, constants.color));
-			if (activeTheme === 'white') {
-				tvWidget.changeTheme('light');
-			} else {
-				tvWidget.changeTheme('dark');
-			}
+			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
+      tvWidget.changeTheme(activeTheme);
 
 			button[0].innerHTML = `<div class='screen-container'><div class='screen-content'>Share Screenshot</div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
 		});
