@@ -2807,6 +2807,28 @@ table th {
   color: #0a0a0a !important;
   background-color: #FFFFFF !important; }
 
+.operator-controls__modal .ant-radio, .operator-controls__modal .ant-radio-wrapper, .operator-controls__modal .ant-radio-group {
+  color: #ffffff; }
+
+.operator-controls__modal .ant-radio-inner {
+  background-color: #0a0a0a; }
+
+.operator-controls__modal .ant-radio-checked .ant-radio-inner {
+  border-color: #0a0a0a; }
+
+.operator-controls__modal .ant-radio-inner::after {
+  background-color: #ffffff; }
+
+.operator-controls__modal .ant-radio-wrapper-checked {
+  border: 1px solid #c4c4c4; }
+
+.operator-controls__modal .ant-radio-group {
+  width: 100%; }
+
+.operator-controls__modal .ant-radio-wrapper {
+  display: block;
+  padding: 12px; }
+
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
   color: #FFFFFF !important;
@@ -7463,18 +7485,21 @@ foreignObject {
 
 .edit-wrapper__icon-wrapper {
   display: none !important;
-  padding: 2px;
-  width: 17px !important;
-  height: 17px !important;
+  position: relative;
+  width: 19px !important;
+  height: 19px !important;
   text-align: center;
   border-radius: 2px;
-  color: #FFFFFF;
-  background-color: #0000FF;
   cursor: pointer;
   font-size: 10px !important;
-  margin-right: 2px;
   text-decoration: none !important;
   font-weight: normal !important; }
+
+.edit-wrapper__icon {
+  position: relative;
+  z-index: -1;
+  height: 100% !important;
+  width: 100% !important; }
 
 .layout-edit .edit-wrapper__icon-wrapper {
   display: inline-block !important; }

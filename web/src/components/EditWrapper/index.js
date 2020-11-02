@@ -1,6 +1,8 @@
 import React from 'react';
 import { string, array, object, bool } from 'prop-types';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
+import ICONS from 'config/icons';
 
 const EditWrapper = ({ children, stringId, iconId, position, style, reverse }) => {
 
@@ -22,7 +24,10 @@ const EditWrapper = ({ children, stringId, iconId, position, style, reverse }) =
               className="edit-wrapper__icon-wrapper"
               data-string-id={stringId}
             >
-              S
+              <ReactSVG
+                path={ICONS['ADMIN_ICON.EDIT_STRING']}
+                wrapperClassName="edit-wrapper__icon"
+              />
             </div>
           )
         }
@@ -32,7 +37,10 @@ const EditWrapper = ({ children, stringId, iconId, position, style, reverse }) =
               className="edit-wrapper__icon-wrapper"
               data-icon-id={iconId}
             >
-              I
+              <ReactSVG
+                path={ICONS['ADMIN_ICON.EDIT_ICON']}
+                wrapperClassName="edit-wrapper__icon"
+              />
             </div>
           )
         }

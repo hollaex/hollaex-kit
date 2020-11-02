@@ -88,7 +88,7 @@ const MarketList = ({ markets, handleClick, chartData, icons: ICONS }) => {
                   </td>
                   <td>
                     <div className="m-2">
-                      <Sparklines data={chartData[key]}>
+                      <Sparklines data={chartData[key] || []}>
                         <SparklinesLine style={{ strokeWidth: 2, stroke, fill: "none",  }}/>
                       </Sparklines>
                     </div>
