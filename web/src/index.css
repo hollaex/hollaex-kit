@@ -2807,6 +2807,28 @@ table th {
   color: #0a0a0a !important;
   background-color: #FFFFFF !important; }
 
+.operator-controls__modal .ant-radio, .operator-controls__modal .ant-radio-wrapper, .operator-controls__modal .ant-radio-group {
+  color: #ffffff; }
+
+.operator-controls__modal .ant-radio-inner {
+  background-color: #0a0a0a; }
+
+.operator-controls__modal .ant-radio-checked .ant-radio-inner {
+  border-color: #0a0a0a; }
+
+.operator-controls__modal .ant-radio-inner::after {
+  background-color: #ffffff; }
+
+.operator-controls__modal .ant-radio-wrapper-checked {
+  border: 1px solid #c4c4c4; }
+
+.operator-controls__modal .ant-radio-group {
+  width: 100%; }
+
+.operator-controls__modal .ant-radio-wrapper {
+  display: block;
+  padding: 12px; }
+
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
   color: #FFFFFF !important;
