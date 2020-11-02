@@ -16,6 +16,7 @@ const {
 const { subscriber } = require('../db/pubsub');
 const { sendParitalMessages, addMessage, deleteMessage } = require('./chat');
 const { getUsername } = require('./chat/username');
+const { getBannedUsers } = require('./chat/ban');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.on('message', (channel, data) => {
@@ -104,6 +105,15 @@ const chatUpdate = (action, ws, data) => {
 					break;
 				case 'deleteMessage':
 					deleteMessage(data);
+					break;
+				case 'getBannedUsers':
+					//
+					break;
+				case 'banUser':
+					//
+					break;
+				case 'unbanUser':
+					//
 					break;
 				case 'changeUsername':
 					//change username;
