@@ -13,6 +13,7 @@
 	padding-top: 30px;
 }
 
+.tiers-wrapper .ant-tabs-nav .ant-tabs-ink-bar,
 .user-content .ant-tabs-nav .ant-tabs-ink-bar,
 .user-container .ant-tabs-nav .ant-tabs-ink-bar {
 	height: 6px;
@@ -21,6 +22,7 @@
 .user-container .ant-tabs-nav .ant-tabs-ink-bar {
 	top: 0px;
 }
+.tiers-wrapper .ant-tabs-nav .ant-tabs-tab,
 .user-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
 	color: #FFFFFF;
@@ -29,6 +31,7 @@
 .user-container .ant-tabs-nav .ant-tabs-tab:hover {
 	color: #FFFFFF;
 }
+.tiers-wrapper .ant-tabs-nav::before,
 .user-content .ant-tabs-nav::before,
 .user-container .ant-tabs-nav::before {
 	border-bottom: none;

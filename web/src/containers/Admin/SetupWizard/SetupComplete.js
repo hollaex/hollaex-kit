@@ -59,8 +59,7 @@ export default class ExchangeSetup extends Component {
 	constructor () {
 		super();
 		this.state = {
-			isLoading: true,
-			setupCompleted: true,
+			isLoading: true
 		};
 	}
 
@@ -100,11 +99,6 @@ export default class ExchangeSetup extends Component {
 	goToAccount = () => {
 		getCompleteSetup()
 		.then((res) => {
-			if (res.data.secrets) {
-				this.setState({
-					setupCompleted: res.data.secrets.setup_completed
-				});
-			}
 			browserHistory.push('/account');
 		})
 		.catch(err => {

@@ -1,0 +1,25 @@
+.tiers-container {
+    border: 1px solid #C4C4C4;
+    border-bottom: none;
+    max-width: 50rem;
+    min-width: 25rem;
+    padding: 12px;
+}
+.tiers-container:last-child {
+    border-bottom: 1px solid #C4C4C4;
+}
+.tiers-wrapper .tier-icon {
+    height: 3rem;
+    width: 3rem;
+}
+.tiers-container .description {
+    width: auto;
+}
+.requirement-divider {
+    background-color: #C4C4C4;
+    height: 1px;
+    margin: 15px 0px;
+}
+.new-tier-form .file-container {
+    width: 100%;
+}
