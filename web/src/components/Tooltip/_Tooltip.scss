@@ -19,5 +19,5 @@
 }
 
 .light-theme {
-	@include exir-tooltip($colors-white, $colors-main-black);
+	@include exir-tooltip($app-background-color, $colors-main-black);
 }

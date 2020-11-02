@@ -21,6 +21,7 @@ import UploadIcon from './components/UploadIcon';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
 import { pushTempContent, getTempLanguageKey, filterOverwrites } from 'utils/string';
+import { filterThemes } from 'utils/color';
 
 class OperatorControls extends Component {
 
@@ -264,12 +265,13 @@ class OperatorControls extends Component {
     const {
       overwrites,
       iconsOverwrites: icons,
-      colorOverwrites: color,
+      colorOverwrites,
       languageKeys
     } = this.state;
 
     const valid_languages = languageKeys.join();
-    const strings = filterOverwrites(overwrites)
+    const strings = filterOverwrites(overwrites);
+    const color = filterThemes(colorOverwrites);
 
     const configs = {
       color,
@@ -518,6 +520,7 @@ class OperatorControls extends Component {
 
   removeThemes = (keys = []) => {
     const { colorOverwrites: prevColorOverwrites } = this.state;
+    const { removeTheme } = this.props;
     const colorOverwrites = {}
 
     Object.entries(prevColorOverwrites).forEach(([themeKey, theme]) => {
@@ -528,6 +531,7 @@ class OperatorControls extends Component {
 
     this.setState({
       colorOverwrites,
+      removeTheme,
     }, this.closeThemeSettings)
   }
 

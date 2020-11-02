@@ -85,6 +85,35 @@ $operator-controls__panel-border-color: #A7A7A7;
     background-color: $operator-controls__panel-text-color !important;
   }
 
+  .ant-radio, .ant-radio-wrapper, .ant-radio-group {
+    color: #ffffff;
+  }
+
+  .ant-radio-inner {
+    background-color: #0a0a0a;
+  }
+
+  .ant-radio-checked .ant-radio-inner {
+    border-color: #0a0a0a;
+  }
+
+  .ant-radio-inner::after {
+    background-color: #ffffff;
+  }
+
+  .ant-radio-wrapper-checked {
+    border: 1px solid #c4c4c4;
+  }
+
+  .ant-radio-group {
+    width: 100%;
+  }
+
+  .ant-radio-wrapper {
+    display: block;
+    padding: 12px;
+  }
+
   .ReactModal__Content {
     background-color: $operator-controls__panel-main-color !important;
     color: $operator-controls__panel-text-color !important;

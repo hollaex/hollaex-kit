@@ -18,10 +18,6 @@ $container--padding-sm: 3rem;
 	}
 }
 
-.dark-auth-body {
-	background: $dark-app-light-background !important;
-}
-
 .exchange-warning {
 	position: absolute;
 	top: 0;
@@ -30,13 +26,13 @@ $container--padding-sm: 3rem;
 }
 
 .exchange-expired {
-	background-color: $colors-notifications-red !important;
-	color: $colors-white !important;
+	background-color: #ed1c24 !important;
+	color: #ffffff !important;
 }
 
 .exchange-trial {
 	background-color: #FFF100;
-	color: $colors-black;
+	color: #000000;
 }
 
 .layout-mobile {

@@ -1,7 +1,7 @@
-@mixin entry_form($theme-color, $theme-color-disabled, $theme-text-color: white) {
+@mixin entry_form($theme-color, $theme-color-disabled, $theme-text-color) {
 	flex: 1;
 	$row-height: 2.5rem;
-	color: $font-color--disabled;
+	color: $colors-black;
 
 	> div:not(:last-child) {
 		margin-bottom: 0.5rem;
@@ -27,7 +27,7 @@
 
 		.active {
 			position: relative;
-			color: $font-color--acitve;
+			color: $colors-main-black;
 			font-weight: bold;
 
 			&:after {
@@ -47,7 +47,7 @@
 		border: 1px solid $theme-color;
 		.active {
 			background-color: $theme-color;
-			color: $sell-bids-text;
+			color: $theme-text-color;
 			font-weight: bold;
 		}
 	}
@@ -56,7 +56,7 @@
 		border-top: 1px solid $trade-section-border-disabled--color;
 		line-height: 1.5rem;
 		.text-price {
-			color: $font-color--acitve;
+			color: $colors-main-black;
 		}
 		.blue-link {
 			color: $link;
@@ -84,7 +84,7 @@
 		.trade_order_entry-form-action {
 			margin-top: 0.5rem;
 			background-color: $theme-color !important;
-			color: $colors-white;
+			color: $theme-text-color;
 			font-weight: bold;
 
 			&:disabled {
@@ -98,7 +98,7 @@
 		}
 
 		.form-error {
-			margin: 0.5 0;
+			margin: 0.5rem 0;
 		}
 	}
 
@@ -109,10 +109,10 @@
 
 .trade_order_entry-wrapper {
 	&.order_side-selector-sell {
-		@include entry_form($color-sell-btc-light, $trade-asks-color-disabled);
+		@include entry_form($sell, $colors-deactivate-color1, $sell-bids-text);
 	}
 	&.order_side-selector-buy {
-		@include entry_form($buy, $trade-bids-color-disabled);
+		@include entry_form($buy, $colors-deactivate-color1, $buy-bids-text);
 	}
 }
 

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
-import { Input, Button } from 'antd';
+import { Input, Button, Radio } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { oldLight as initialTheme } from 'config/colors/light';
+import initialTheme from 'config/colors/light';
+import { getColorByKey, filterTheme, CALCULATED_COLOR_KEYS, calculateBaseColors } from 'utils/color';
+
+const { Group } = Radio;
 
 class AddTheme extends Component {
   constructor(props) {
@@ -11,19 +14,36 @@ class AddTheme extends Component {
     const { themes, selectedTheme: themeKey = '' } = this.props;
     const isEditTheme = !!themeKey
     const theme = themeKey && themes[themeKey] ? themes[themeKey] : initialTheme
+    const filteredTheme = filterTheme(theme);
 
     this.state = {
       isEditTheme,
       themeKey,
-      theme,
+      theme: filteredTheme,
+      isSingleBase: false,
     }
   }
 
   addTheme = () => {
-    const { themeKey, theme } = this.state;
+    const { themeKey, theme, isSingleBase } = this.state;
     const { onSave } = this.props;
 
-    onSave(themeKey, theme);
+    if (isSingleBase) {
+      const calculatedColors = calculateBaseColors(theme['base_background']);
+
+      this.setState(prevState => ({
+        ...prevState,
+        theme: {
+          ...prevState.theme,
+          ...calculatedColors,
+        }
+      }), () => {
+        const { theme, themeKey } = this.state;
+        onSave(themeKey, theme);
+      });
+    } else {
+      onSave(themeKey, theme);
+    }
   }
 
   updateTheme = (value, name) => {
@@ -46,7 +66,7 @@ class AddTheme extends Component {
     });
   }
 
-  isDisabled = () => {
+  isSaveDisabled = () => {
     const { isEditTheme, themeKey } = this.state;
     const { themes } = this.props;
     const themeKeys = Object.keys(themes)
@@ -54,9 +74,29 @@ class AddTheme extends Component {
     return !themeKey || (!isEditTheme && themeKeys.includes(themeKey))
   }
 
+  onReset = (name) => {
+    const value = getColorByKey(name)
+    this.updateTheme(value, name)
+  }
+
+  handleBaseMode = ({ target: { value }}) => {
+    this.setState({
+      isSingleBase: value,
+    });
+  }
+
+  isDisabled = (key) => {
+    const { isSingleBase } = this.state;
+    if (!isSingleBase) {
+      return false;
+    } else {
+      return CALCULATED_COLOR_KEYS.includes(key)
+    }
+  }
+
   render() {
     const { isOpen, onCloseDialog } = this.props;
-    const { isEditTheme, themeKey, theme } = this.state;
+    const { isEditTheme, themeKey, theme, isSingleBase } = this.state;
 
     return (
       <Modal
@@ -74,7 +114,7 @@ class AddTheme extends Component {
             {`${isEditTheme ? 'Edit' : 'Add'} theme`}
           </div>
         </div>
-        <div className="py-4 mb-5 d-flex align-center">
+        <div className="mb-5 d-flex align-center">
           <div className="bold mr-4">
             Theme:
           </div>
@@ -88,15 +128,32 @@ class AddTheme extends Component {
             onChange={this.handleThemeKey}
           />
         </div>
+        <div className="mb-5">
+          <Group onChange={this.handleBaseMode} value={isSingleBase}>
+            <Radio value={true}>Use single base</Radio>
+            <Radio value={false}>Use separated base</Radio>
+          </Group>
+        </div>
         <div>
           {Object.entries(theme).map(([colorKey, colorValue]) => {
             return (
-              <div className="d-flex justify-content-between py-1" key={colorKey}>
-                <div className="bold">{colorKey}</div>
+              <div className="d-flex justify-content-between align-items-center py-1" key={colorKey}>
+                <div className="bold">{colorKey.split("_")[1].replace(/-/g, ' ')}</div>
                 <div className="d-flex align-items-center">
+                  <div
+                    className="mr-2"
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '1px solid #322D2D99',
+                      borderRadius: '38px',
+                      backgroundColor: colorValue,
+                    }}
+                  />
                   <Input
                     type="text"
                     name={colorKey}
+                    disabled={this.isDisabled(colorKey)}
                     placeholder="Please pick a color"
                     className="operator-controls__input mr-2"
                     value={colorValue}
@@ -107,7 +164,7 @@ class AddTheme extends Component {
                     shape="circle"
                     size="small"
                     className="operator-controls__all-strings-settings-button"
-                    onClick={() => console.log('get default color')}
+                    onClick={() => this.onReset(colorKey)}
                     icon={<DeleteOutlined />}
                   />
                 </div>
@@ -121,7 +178,7 @@ class AddTheme extends Component {
             type="primary"
             size="large"
             className="operator-controls__save-button"
-            disabled={this.isDisabled()}
+            disabled={this.isSaveDisabled()}
             onClick={this.addTheme}
           >
             Save
