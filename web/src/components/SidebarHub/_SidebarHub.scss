@@ -157,7 +157,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	@include bottom-border($border-main, $bottom_line-height);
 
 	.sign_up-btn,  .log_in-btn{
-		background: $colors-white !important;
+		background: $app-background-color !important;
 		color: $trade-button--color !important;
 		border: 1px solid $border--color
 	}
@@ -165,7 +165,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	.sidebar_hub-trade {
 		.sidebar_hub-button {
 			&.not-active {
-				background: $colors-white !important;
+				background: $app-background-color !important;
 				color: $trade-button--color !important;
 				border: 1px solid $border--color;
 			}

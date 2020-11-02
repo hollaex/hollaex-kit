@@ -182,15 +182,20 @@ const stop = () => {
 };
 
 const checkActivation = (name, url, activation_code, version, constants = {}) => {
+	const body = {
+		name,
+		url,
+		activation_code,
+		constants
+	};
+	if (version) {
+		// only sends version if its set
+		body.version = version;
+	}
+
 	const options = {
 		method: 'POST',
-		body: {
-			name,
-			url,
-			activation_code,
-			version,
-			constants
-		},
+		body,
 		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
 		json: true
 	};
