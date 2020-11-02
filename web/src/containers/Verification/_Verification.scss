@@ -12,10 +12,6 @@
 		margin: 1rem 0;
 		padding: 0;
 	}
-	.link-content {
-		color: $dark-buy;
-		font-weight: bold;
-	}
 	.header-content {
 		color: $colors-deactivate-color2;
 		font-size: .8rem;
@@ -37,7 +33,7 @@
 }
 
 .verification_link {
-	color: $dark-buy
+	color: $link
 }
 
 .verification-info-txt {

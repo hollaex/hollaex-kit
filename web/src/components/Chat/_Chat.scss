@@ -1,7 +1,5 @@
-$chat-message-box-light--background-color: $box-fields;
 $chat-wrapper-light--background-color: white;
 $chat-message-box-dark--background-color: #0f1114;
-$chat-wrapper-dark--background-color: $dark-app-light-background;
 $chat-message-light--font-color: #999999;
 $chat-message-dark--font-color: #808080;
 $chat-wrapper--border-color: #282829;
@@ -20,6 +18,7 @@ $emoji-content-background: #cecece;
 $dark-emoji-content-background: #454848;
 $dark-emoji-content-top-background: #525656;
 $light-emoji-content-top-background: #dbdbdb;
+$colors-white: white;
 
 .layout-mobile {
 	.chat-wrapper {

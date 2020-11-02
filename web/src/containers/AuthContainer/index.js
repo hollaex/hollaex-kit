@@ -14,14 +14,8 @@ import { getThemeClass } from '../../utils/theme';
 import { getExchangeInfo } from '../../actions/appActions';
 import ThemeProvider from '../ThemeProvider';
 
-const updateThemeToBody = (theme = 'white') => {
-	// const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
-	if (document.body) {
-		// document.body.className = themeName;
-	}
-};
 const checkPath = (path) => {
-	var sheet = document.createElement('style');
+	const sheet = document.createElement('style');
 	if ((path === '/login') || (path === '/signup')
 		|| (path === '/reset-password') || path.includes('/withdraw')
 		|| path.includes('/init')
@@ -101,7 +95,6 @@ class AuthContainer extends Component {
 			siteKey = constants.captcha.site_key;
 		}
 		loadReCaptcha(siteKey);
-		updateThemeToBody(activeTheme);
 		const expiryData = this.checkExchangeExpiry();
 		let isWarning = false;
 		if (rest.location && rest.location.pathname) {

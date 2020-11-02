@@ -16,7 +16,12 @@ class ThemeSettingsModal extends Component {
       title: "Themes",
       dataIndex: "value",
       key: "value",
-      render: (_, {value, label}) => <span className="caps-first">{value}</span>
+      render: (_, {value, label}) => <span className="caps-first">{value} (edit)</span>,
+      onCell: ({ value }) => {
+        return {
+          onClick: () => this.props.onAddThemeClick(value)
+        };
+      }
     },
     {
       title: "Default theme",
@@ -111,11 +116,6 @@ class ThemeSettingsModal extends Component {
           scroll={{ y: 240 }}
           rowKey={({ value }) => value}
           style={{ width: '380px' }}
-          onRow={({ value }) => {
-            return {
-              onClick: () => onAddThemeClick(value)
-            };
-          }}
         />
         <div className="pt-3">
           <Button

@@ -3,7 +3,9 @@ import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
 import { Input, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { oldLight as initialTheme } from 'config/colors/light';
+import initialTheme from 'config/colors/light';
+import { getColorByKey } from 'utils/color';
+import { filterTheme } from 'utils/color';
 
 class AddTheme extends Component {
   constructor(props) {
@@ -11,11 +13,12 @@ class AddTheme extends Component {
     const { themes, selectedTheme: themeKey = '' } = this.props;
     const isEditTheme = !!themeKey
     const theme = themeKey && themes[themeKey] ? themes[themeKey] : initialTheme
+    const filteredTheme = filterTheme(theme);
 
     this.state = {
       isEditTheme,
       themeKey,
-      theme,
+      theme: filteredTheme,
     }
   }
 
@@ -52,6 +55,11 @@ class AddTheme extends Component {
     const themeKeys = Object.keys(themes)
 
     return !themeKey || (!isEditTheme && themeKeys.includes(themeKey))
+  }
+
+  onReset = (name) => {
+    const value = getColorByKey(name)
+    this.updateTheme(value, name)
   }
 
   render() {
@@ -91,9 +99,19 @@ class AddTheme extends Component {
         <div>
           {Object.entries(theme).map(([colorKey, colorValue]) => {
             return (
-              <div className="d-flex justify-content-between py-1" key={colorKey}>
-                <div className="bold">{colorKey}</div>
+              <div className="d-flex justify-content-between align-items-center py-1" key={colorKey}>
+                <div className="bold">{colorKey.split("_")[1].replace(/-/g, ' ')}</div>
                 <div className="d-flex align-items-center">
+                  <div
+                    className="mr-2"
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '1px solid #322D2D99',
+                      borderRadius: '38px',
+                      backgroundColor: colorValue,
+                    }}
+                  />
                   <Input
                     type="text"
                     name={colorKey}
@@ -107,7 +125,7 @@ class AddTheme extends Component {
                     shape="circle"
                     size="small"
                     className="operator-controls__all-strings-settings-button"
-                    onClick={() => console.log('get default color')}
+                    onClick={() => this.onReset(colorKey)}
                     icon={<DeleteOutlined />}
                   />
                 </div>
