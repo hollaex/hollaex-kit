@@ -16,7 +16,7 @@ const {
 const { subscriber } = require('../db/pubsub');
 const { sendParitalMessages, addMessage, deleteMessage } = require('./chat');
 const { getUsername } = require('./chat/username');
-const { getBannedUsers } = require('./chat/ban');
+const { sendBannedUsers, banUser, unbanUser } = require('./chat/ban');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.on('message', (channel, data) => {
@@ -88,7 +88,7 @@ const initializeTopic = async (topic, ws, symbol) => {
 const chatUpdate = (action, ws, data) => {
 	if (!ws.auth.sub) {
 		throw new Error('Not authorized');
-	} else if (action === 'deleteMessage') {
+	} else if (action === 'deleteMessage' || action === 'getBannedUsers' || action === 'banUser' || action === 'unbanUser') {
 		if (
 			ws.auth.scopes.indexOf(ROLES.ADMIN) === -1 &&
 			ws.auth.scopes.indexOf(ROLES.SUPERVISOR) === -1 &&
@@ -101,19 +101,19 @@ const chatUpdate = (action, ws, data) => {
 		.then(({ username, verification_level }) => {
 			switch (action) {
 				case 'addMessage':
-					addMessage(username, verification_level, ws, data);
+					addMessage(username, verification_level, ws.auth.sub.id, data);
 					break;
 				case 'deleteMessage':
 					deleteMessage(data);
 					break;
 				case 'getBannedUsers':
-					//
+					sendBannedUsers(ws);
 					break;
 				case 'banUser':
-					//
+					banUser(data);
 					break;
 				case 'unbanUser':
-					//
+					unbanUser(data);
 					break;
 				case 'changeUsername':
 					//change username;

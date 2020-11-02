@@ -39,9 +39,9 @@ const sendParitalMessages = (ws) => {
 	}));
 };
 
-const addMessage = (username, verification_level, ws, message) => {
+const addMessage = (username, verification_level, userId, message) => {
 	const timestamp = moment().unix();
-	if (!isUserBanned(ws.auth.sub.id)) {
+	if (!isUserBanned(userId)) {
 		const data = {
 			id: `${timestamp}-${username}`,
 			username,
