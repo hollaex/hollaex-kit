@@ -1,7 +1,7 @@
 'use strict';
 
 const { addSubscriber, removeSubscriber, getChannels, resetChannels } = require('./channel');
-const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL } = require('../constants');
+const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, ROLES } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
 const { loggerWebsocket } = require('../config/logger');
@@ -14,7 +14,7 @@ const {
 	WS_INVALID_TOPIC
 } = require('../messages');
 const { subscriber } = require('../db/pubsub');
-const { sendParitalMessages, addMessage } = require('./chat');
+const { sendParitalMessages, addMessage, deleteMessage } = require('./chat');
 const { getUsername } = require('./chat/username');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
@@ -87,6 +87,14 @@ const initializeTopic = async (topic, ws, symbol) => {
 const chatUpdate = (action, ws, data) => {
 	if (!ws.auth.sub) {
 		throw new Error('Not authorized');
+	} else if (action === 'deleteMessage') {
+		if (
+			ws.auth.scopes.indexOf(ROLES.ADMIN) === -1 &&
+			ws.auth.scopes.indexOf(ROLES.SUPERVISOR) === -1 &&
+			ws.auth.scopes.indexOf(ROLES.SUPPORT) === -1
+		) {
+			throw new Error('Not authorized');
+		}
 	}
 	getUsername(ws.auth.sub.id)
 		.then(({ username, verification_level }) => {
@@ -95,7 +103,7 @@ const chatUpdate = (action, ws, data) => {
 					addMessage(username, verification_level, ws, data);
 					break;
 				case 'deleteMessage':
-					// dleeteMessage
+					deleteMessage(data);
 					break;
 				case 'changeUsername':
 					//change username;

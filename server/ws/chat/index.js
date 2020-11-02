@@ -52,6 +52,8 @@ const addMessage = (username, verification_level, ws, message) => {
 		publisher.publish(CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'message', data }));
 		publishChatMessage('addMessage', data);
 		maintenanceMessageList();
+	} else {
+		throw new Error('User is banned');
 	}
 };
 
