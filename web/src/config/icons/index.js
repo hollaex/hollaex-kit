@@ -342,7 +342,12 @@ const nestedIcons = {
     LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
     LEVEL_4: '/assets/summary/level-4.png',
     LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
-  }
+  },
+
+  ADMIN_ICON: {
+    EDIT_STRING: '/assets/icons/edit-string.svg',
+    EDIT_ICON: '/assets/icons/upload-graphic-edit.svg',
+  },
 };
 
 const icons = flatten(nestedIcons, options)
