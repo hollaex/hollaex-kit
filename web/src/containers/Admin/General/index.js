@@ -333,7 +333,6 @@ class General extends Component {
 					<div className='divider'></div>
 				</div>
 				<div>
-					<div className='sub-title'>Footer</div>
 					<FooterConfig />
 				</div>
 				<div className='divider'></div>
