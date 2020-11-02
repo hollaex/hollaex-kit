@@ -62,8 +62,8 @@ const deleteMessage = (idToDelete) => {
 	if (indexOfMessage > -1) {
 		publisher.publish(CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'deleteMessage', data: indexOfMessage }));
 		maintenanceMessageList();
+		publishChatMessage('deleteMessage', idToDelete);
 	}
-	publishChatMessage('deleteMessage', idToDelete);
 };
 
 const publishChatMessage = (event, data) => {
