@@ -10,7 +10,7 @@ const {
 	WS_UNSUPPORTED_OPERATION,
 	WS_USER_AUTHENTICATED
 } = require('../messages');
-const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels } = require('./sub');
+const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, chatUpdate } = require('./sub');
 const { connect, hubConnected } = require('./hub');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
 
@@ -59,6 +59,11 @@ wss.on('connection', (ws, req) => {
 				const credentials = args[0];
 				const ip = req.socket ? req.socket.remoteAddress : undefined;
 				authorizeUser(credentials, ws, ip);
+			} else if (op === 'chat') {
+				args.forEach(arg => {
+					let [action, data] = arg.split(':');
+					chatUpdate(action, ws, data);
+				});
 			} else {
 				throw new Error(WS_UNSUPPORTED_OPERATION);
 			}
