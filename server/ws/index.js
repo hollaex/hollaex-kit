@@ -27,7 +27,7 @@ wss.on('connection', (ws, req) => {
 		ws.send(JSON.stringify({ message: WS_USER_AUTHENTICATED(ws.auth.sub.email) }));
 	}
 
-	ws.on('message', async (message) => {
+	ws.on('message', (message) => {
 		try {
 			loggerWebsocket.info('ws/index/message', message);
 
@@ -61,7 +61,7 @@ wss.on('connection', (ws, req) => {
 				authorizeUser(credentials, ws, ip);
 			} else if (op === 'chat') {
 				args.forEach(arg => {
-					let [action, data] = arg.split(':');
+					const { action, data } = arg;
 					chatUpdate(action, ws, data);
 				});
 			} else {

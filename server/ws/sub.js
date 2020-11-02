@@ -14,7 +14,8 @@ const {
 	WS_INVALID_TOPIC
 } = require('../messages');
 const { subscriber } = require('../db/pubsub');
-const { sendParitalMessages } = require('./chat');
+const { sendParitalMessages, addMessage } = require('./chat');
+const { getUsername } = require('./chat/username');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.on('message', (channel, data) => {
@@ -84,20 +85,25 @@ const initializeTopic = async (topic, ws, symbol) => {
 };
 
 const chatUpdate = (action, ws, data) => {
-	switch (action) {
-		case 'addMessage':
-			// addMessage(ws, data)
-			//addMessage
-			break;
-		case 'deleteMessage':
-			// dleeteMessage
-			break;
-		case 'changeUsername':
-			//change username;
-			break;
-		default:
-			throw new Error('Invalid action');
+	if (!ws.auth.sub) {
+		throw new Error('Not authorized');
 	}
+	getUsername(ws.auth.sub.id)
+		.then(({ username, verification_level }) => {
+			switch (action) {
+				case 'addMessage':
+					addMessage(username, verification_level, ws, data);
+					break;
+				case 'deleteMessage':
+					// dleeteMessage
+					break;
+				case 'changeUsername':
+					//change username;
+					break;
+				default:
+					throw new Error('Invalid action');
+			}
+		});
 };
 
 const terminateTopic = (topic, ws, symbol) => {

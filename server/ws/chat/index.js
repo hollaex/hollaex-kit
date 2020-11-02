@@ -1,17 +1,15 @@
 'use strict';
-const { debounce } = require('lodash');
+const { debounce, each } = require('lodash');
 const {
-	WEBSOCKET_CHAT_CHANNEL,
-	WEBSOCKET_CHAT_PUBLIC_ROOM,
 	CHAT_MESSAGE_CHANNEL,
-	CHAT_MAX_MESSAGES
+	CHAT_MAX_MESSAGES,
+	WEBSOCKET_CHANNEL
 } = require('../../constants');
 const { storeData, restoreData } = require('./utils');
 const { isUserBanned } = require('./ban');
 const moment = require('moment');
-const redis = require('../../db/redis').duplicate();
 const { subscriber, publisher } = require('../../db/pubsub');
-const emitter = require('socket.io-emitter')(redis);
+const { getChannels } = require('../channel');
 
 const MESSAGES_KEY = 'WS:MESSAGES';
 let MESSAGES = [];
@@ -30,22 +28,20 @@ subscriber.on('message', (channel, data) => {
 });
 
 const getMessages = (limit = CHAT_MAX_MESSAGES) => {
-	console.log(MESSAGES)
 	return MESSAGES.slice(-limit);
 };
 
 const sendParitalMessages = (ws) => {
 	ws.send(JSON.stringify({
 		topic: 'chat',
-		action: 'partial',
-		data: getMessages(),
-		time: moment().unix()
+		action: 'init',
+		data: getMessages()
 	}));
 };
 
-const addMessage = (username, userId, verification_level) => ({ message }) => {
+const addMessage = (username, verification_level, ws, message) => {
 	const timestamp = moment().unix();
-	if (!isUserBanned(userId)) {
+	if (!isUserBanned(ws.auth.sub.id)) {
 		const data = {
 			id: `${timestamp}-${username}`,
 			username,
@@ -54,7 +50,7 @@ const addMessage = (username, userId, verification_level) => ({ message }) => {
 			timestamp
 		};
 		publisher.publish(CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'message', data }));
-		publishChatMessage('message', data);
+		publishChatMessage('addMessage', data);
 		maintenanceMessageList();
 	}
 };
@@ -68,11 +64,14 @@ const deleteMessage = (idToDelete) => {
 	publishChatMessage('deleteMessage', idToDelete);
 };
 
-const publishChatMessage = (event, data, room = WEBSOCKET_CHAT_PUBLIC_ROOM) => {
-	emitter
-		.of(WEBSOCKET_CHAT_CHANNEL)
-		.to(room)
-		.emit(event, data);
+const publishChatMessage = (event, data) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
+		ws.send(JSON.stringify({
+			topic: 'chat',
+			action: event,
+			data
+		}));
+	});
 };
 
 const maintenanceMessageList = debounce(() => {
