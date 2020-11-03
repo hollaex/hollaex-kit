@@ -7,7 +7,10 @@ const API_PATH = '/v2';
 
 const generateEndpoint = (endpoint, path) => ({
 	API_URL: `${endpoint}${path}`,
-	WS_URL: `wss://${endpoint.split('//')[1]}`
+	WS_URL:
+		endpoint.split('://')[0] === 'https'
+			? `wss://${endpoint.split('://')[1]}` // websocket with ssl
+			: `ws://${endpoint.split('://')[1]}` // without ssl used for localhost
 });
 
 const VARIABLES = {
