@@ -4687,7 +4687,6 @@ definitions:
       - description
       - deposit_limit
       - withdrawal_limit
-      - note
       - fees
     properties:
       level:
