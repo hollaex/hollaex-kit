@@ -28,9 +28,16 @@
 .file-wrapper {
 	margin: 1rem 0rem;
 }
+.new-tier-form .file-container {
+	padding-left: 100px;
+}
+.new-tier-form .file-wrapper .icon-img {
+	width: 90px;
+}
 .file-wrapper .icon-img {
 	width: 150px;
 }
+.file-wrapper .file-img-content,
 .file-wrapper img {
 	position: absolute;
 	top: 0px;

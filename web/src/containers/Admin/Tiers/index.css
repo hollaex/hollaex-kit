@@ -8,7 +8,7 @@
 .tiers-container:last-child {
     border-bottom: 1px solid #C4C4C4;
 }
-.tiers-wrapper .tier-icon {
+.tiers-container .tier-icon {
     height: 3rem;
     width: 3rem;
 }
@@ -23,3 +23,17 @@
 .new-tier-form .file-container {
     width: 100%;
 }
+.tiers-confirm-warning {
+    background-color: #0000d1;
+    padding: 8px;
+    margin: 10px 0px;
+}
+.warning-txt {
+    color: #F28041;
+}
+.new-tier-form .text-editor-wrapper {
+	border: 1px solid #d9d9d9;
+	border-radius: 4px;
+	min-height: 200px;
+}
+

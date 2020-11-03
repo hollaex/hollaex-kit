@@ -1,11 +1,22 @@
-import React, { Component } from 'react';
-import { Button, Input } from 'antd';
-import ReactSVG from 'react-svg';
+import React, { Component, Fragment } from 'react';
+import { Button, Input, InputNumber, message, Modal } from 'antd';
 import { WarningFilled, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import _get from 'lodash/get';
 
-import { ICONS } from '../../../config/constants';
+import withConfig from '../../../components/ConfigProvider/withConfig';
+import Image from '../../../components/Image';
+import { upload } from './action';
 
 const { TextArea } = Input;
+
+const createMarkup = (row) => {
+    return { __html: row };
+};
 
 export const NewTierConfirmation = ({ onTypeChange }) => (
     <div>
@@ -26,45 +37,203 @@ export const NewTierConfirmation = ({ onTypeChange }) => (
     </div>
 );
 
-export default class NewTierForm extends Component {
+const Preview = ({ isNew = false, tierData = {}, onTypeChange, handleSave, icons = {}, ...rest }) => {
+    return (
+        <div>
+            <h3>Check and confirm tier</h3>
+            <div className="mb-3">Please carefully check that the details of this account tier are correct.</div>
+            <div>
+                <div className="d-flex tiers-container">
+                    <div>
+                        <Image
+                            icon={icons[`LEVEL_ACCOUNT_ICON_${tierData.id}`]}
+                            wrapperClassName="tier-icon"
+                        />
+                        {/* {tierData.icon
+                            ? <img src={tierData.icon} className="tier-icon" alt={`Account Tier ${tierData.id}`} />
+                            : <ReactSVG path={ICONS[`LEVEL_ACCOUNT_ICON_${tierData.id}`]} wrapperClassName="tier-icon" />
+                        } */}
+                    </div>
+                    <div className="mx-3 f-1">
+                        <div>
+                            <div>Account Tier {tierData.id}</div>
+                            <div className="description">{tierData.description}</div>
+                        </div>
+                        <div className="requirement-divider"></div>
+                        <div>
+                            <div>Requirements</div>
+                            <div
+                                className="description"
+                                dangerouslySetInnerHTML={createMarkup(tierData.note)}
+                            />
+                        </div>
+                        {isNew
+                            ? <Fragment>
+                                <div className="requirement-divider"></div>
+                                <div>
+                                    <div>Default fees</div>
+                                    <div>
+                                        Maker:{' '}
+                                        <span className="description">
+                                            {_get(tierData, 'fees.maker.default')}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        Taker:{' '}
+                                        <span className="description">
+                                            {_get(tierData, 'fees.taker.default')}
+                                        </span>
+                                    </div>
+                                </div>
+                            </Fragment>
+                            : null
+                        }
+                    </div>
+                </div>
+            </div>
+            {isNew
+                ? <div className="tiers-confirm-warning d-flex">
+                    <div>
+                        <WarningFilled style={{ color: '#F28041', fontSize: '42px', marginRight: '10px' }} />
+                    </div>
+                    <div>
+                        <h3 className="warning-txt">WARNING!</h3>
+                        <div>Before adding a new tier be aware that removing tiers may have adverse effects upon a working exchange.</div>
+                    </div>
+                </div>
+                : null
+            }
+            <div className="d-flex mt-3">
+                <Button
+                    className="green-btn"
+                    onClick={() => {
+                        if (isNew) {
+                            onTypeChange('new-tier-form');
+                        } else {
+                            onTypeChange('edit-tier-form');
+                        }
+                    }}
+                >
+                    Back
+                </Button>
+                <div className="mx-2"></div>
+                <Button className="green-btn" onClick={handleSave}>Confirm</Button>
+            </div>
+        </div>
+    );
+};
+
+export const PreviewContainer = withConfig(Preview);
+
+class NewTierForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
             requirements: [
                 { id: 1, point: '' }
             ],
-            tierData: this.props.editData || {}
+            tierData: this.props.editData || {},
+            tierIcon: {},
+            editorState: EditorState.createEmpty(),
+            loading: false
         }
     }
 
     componentDidMount() {
-        this.setState({ tierData: this.props.editData || {} });
+        let editorState = EditorState.createEmpty();
+        if (this.props.editData.note) {
+            const contentBlock = htmlToDraft(this.props.editData.note);
+            if (contentBlock) {
+                const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                editorState = EditorState.createWithContent(contentState);
+            }
+        }
+        this.setState({
+            tierData: this.props.editData || {},
+            editorState
+        });
     }
+
+    handleSaveIcon = async () => {
+        const { tierIcon } = this.state;
+        const { updateIcons } = this.props;
+        const icons = {};
+        this.setState({
+            error: false,
+            loading: true,
+        });
+
+        for (const key in tierIcon) {
+            if (tierIcon.hasOwnProperty(key)) {
+                const file = tierIcon[key];
+                if (file) {
+                    const formData = new FormData();
+                    const { name: fileName } = file;
+                    const extension = fileName.split('.').pop();
+                    const name = `${key}.${extension}`
+                    formData.append('name', name);
+                    formData.append('file', file);
+                    try {
+                        const { data: { path } } = await upload(formData)
+                        icons[key] = path;
+                        this.setState({
+                            tierData: {
+                                ...this.state.tierData,
+                                icon: path
+                            }
+                        });
+                    } catch (error) {
+                        this.setState({
+                            loading: false,
+                        });
+                        message.error("Something went wrong!");
+                        return;
+                    }
+                }
+            }
+        }
+        this.setState({
+            loading: false
+        });
+        updateIcons(icons);
+    };
+
+    handleCancelIcon = () => {
+        this.setState({ tierIcon: {} });
+    };
 
     handleChangeFile = (event) => {
         if (event.target.files) {
             this.setState({
-                tierData: {
-                    ...this.state.tierData,
+                tierIcon: {
+                    ...this.state.tierIcon,
                     [event.target.name]: event.target.files[0]
                 }
+            }, () => {
+                Modal.confirm({
+                    content: 'Do you want to save this icon?',
+                    okText: 'Save',
+                    cancelText: 'Cancel',
+                    onOk: this.handleSaveIcon,
+                    onCancel: this.handleCancelIcon
+                })
             });
         }
     };
 
-    handleRequirementChange = (event, data) => {
-        this.setState({
-            requirements: this.state.requirements.map(requirement => {
-                if (requirement.id === data.id) {
-                    return {
-                        ...requirement,
-                        point: event.target.value
-                    }
-                }
-                return requirement;
-            })
-        });
-    };
+    // handleRequirementChange = (event, data) => {
+    //     this.setState({
+    //         requirements: this.state.requirements.map(requirement => {
+    //             if (requirement.id === data.id) {
+    //                 return {
+    //                     ...requirement,
+    //                     point: event.target.value
+    //                 }
+    //             }
+    //             return requirement;
+    //         })
+    //     });
+    // };
 
     handleChange = (e) => {
         this.setState({
@@ -75,13 +244,40 @@ export default class NewTierForm extends Component {
         });
     };
 
+    handleChangeNumber = (value, name) => {
+        const { fees = {}, ...rest } = this.state.tierData;
+        this.setState({
+            tierData: {
+                ...rest,
+                fees: {
+                    ...fees,
+                    [name]: {
+                        default: value
+                    }
+                }
+            }
+        });
+    };
+
     saveForm = () => {
-        console.log('this.state', this.state.tierData);
+        this.props.handleNext(this.state.tierData);
+        this.props.onTypeChange('preview');
+    };
+
+    onEditorStateChange = edState => {
+        const currentState = convertToRaw(edState.getCurrentContent());
+        this.setState({
+            tierData: {
+                ...this.state.tierData,
+                note: draftToHtml(currentState)
+            },
+            editorState: edState
+        });
     };
 
     render() {
-        const { tierData } = this.state;
-        const { tierLevel = 1 } = this.props;
+        const { tierData, editorState } = this.state;
+        const { icons = {}, isNew = false } = this.props;
         return (
             <div className="new-tier-form">
                 <h3>Account tier details</h3>
@@ -97,17 +293,19 @@ export default class NewTierForm extends Component {
                 <div className="requirement-divider"></div>
                 <div className='file-wrapper'>
                     <div className="file-container">
-                        <img
-                            src={tierData.icon || ICONS[`LEVEL_ACCOUNT_ICON_${tierLevel}`]}
-                            alt='icon'
-                            className='icon-img'
-                        />
+                        <div className="file-img-content">
+                            <Image
+                                icon={icons[`LEVEL_ACCOUNT_ICON_${tierData.id}`]}
+                                wrapperClassName='icon-img'
+                            />
+                        </div>
                         <label>
                             <span className="anchor">Upload</span>
                             <input
                                 type="file"
+                                accept="image/*"
                                 onChange={this.handleChangeFile}
-                                name={'icon'}
+                                name={`LEVEL_ACCOUNT_ICON_${tierData.id}`}
                             />
                         </label>
                     </div>
@@ -126,7 +324,7 @@ export default class NewTierForm extends Component {
                 <div className="requirement-divider"></div>
                 <div>
                     <div className="sub-title">Requirement bullet point</div>
-                    {this.state.requirements.map((requirement, index) => (
+                    {/* {this.state.requirements.map((requirement, index) => (
                         <div key={index} className="my-1">
                             <Input
                                 name={requirement.id}
@@ -135,8 +333,14 @@ export default class NewTierForm extends Component {
                                 onChange={(e) => this.handleRequirementChange(e, requirement)}
                             />
                         </div>
-                    ))}
-                    <div className="my-2">
+                    ))} */}
+                    <Editor
+                        wrapperClassName="text-editor-wrapper"
+                        editorClassName="text-editor"
+                        editorState={editorState}
+                        onEditorStateChange={this.onEditorStateChange}
+                    />
+                    {/* <div className="my-2">
                         <Button
                             type="primary"
                             onClick={() => this.setState({
@@ -151,20 +355,32 @@ export default class NewTierForm extends Component {
                         >
                             + Add bullet point
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
-                <div className="requirement-divider"></div>
-                <div>
-                    <div className="sub-title">Default maker trading fee</div>
-                    <Input name="maker_fee" value={tierData.maker_fee} onChange={this.handleChange} />
-                </div>
-                <div className="requirement-divider"></div>
-                <div>
-                    <div className="sub-title">Taker trading fee</div>
-                    <Input name="taker_fee" value={tierData.taker_fee} onChange={this.handleChange} />
-                </div>
-                <div className="requirement-divider"></div>
-                <div className='d-flex align-items-center'>
+                {isNew
+                    ? <Fragment>
+                        <div className="requirement-divider"></div>
+                        <div>
+                            <div className="sub-title">Default maker trading fee</div>
+                            <InputNumber
+                                name="maker_fee"
+                                value={_get(tierData, 'fees.maker.default')}
+                                onChange={(value) => this.handleChangeNumber(value, 'maker')}
+                            />
+                        </div>
+                        <div className="requirement-divider"></div>
+                        <div>
+                            <div className="sub-title">Taker trading fee</div>
+                            <InputNumber
+                                name="taker_fee"
+                                value={_get(tierData, 'fees.taker.default')}
+                                onChange={(value) => this.handleChangeNumber(value, 'taker')}
+                            />
+                        </div>
+                    </Fragment>
+                    : null
+                }
+                <div className='d-flex align-items-center mt-3'>
                     <div>
                         <ExclamationCircleOutlined style={{ fontSize: '44px', marginRight: '10px' }} />
                     </div>
@@ -172,7 +388,7 @@ export default class NewTierForm extends Component {
                         The default trading fee will be applied to all trading pairs. You'll be able to define each pairs trading fees in the fees section once this tier has been created.
                     </div>
                 </div>
-                <Button type="primary" className="green-btn" onClick={this.saveForm}>
+                <Button type="primary" className="green-btn my-2" onClick={this.saveForm}>
                     Next
                 </Button>
             </div>
@@ -180,26 +396,5 @@ export default class NewTierForm extends Component {
     }
 }
 
-export const Preview = ({ tierData = {} }) => {
-    return (
-        <div className="d-flex tiers-container">
-            <div>
-                {tierData.icon
-                    ? <img src={tierData.icon} className="tier-icon" alt={`Account Tier ${tierData.id}`} />
-                    : <ReactSVG path={ICONS[`LEVEL_ACCOUNT_ICON_${tierData.id}`]} wrapperClassName="tier-icon" />
-                }
-            </div>
-            <div className="mx-3 f-1">
-                <div>
-                    <div>Account Tier {tierData.id}</div>
-                    <div className="description">{tierData.description}</div>
-                </div>
-                <div className="requirement-divider"></div>
-                <div>
-                    <div>Requirements</div>
-                    <div className="description">{tierData.requirements}</div>
-                </div>
-            </div>
-        </div>
-    );
-};
+export default withConfig(NewTierForm);
+

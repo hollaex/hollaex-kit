@@ -1,11 +1,16 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+// import ReactSVG from 'react-svg';
 import { Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-import { ICONS } from '../../../config/constants';
+import Image from '../../../components/Image';
+import withConfig from '../../../components/ConfigProvider/withConfig';
 
-const TiersContainer = ({ userTiers = {}, handleEdit, handleAdd }) => {
+const createMarkup = (row) => {
+    return {__html: row};
+};
+
+const TiersContainer = ({ icons = {}, userTiers = {}, handleEdit, handleAdd }) => {
     return (
         <div>
             <div className="sub-title mb-2">
@@ -18,10 +23,14 @@ const TiersContainer = ({ userTiers = {}, handleEdit, handleAdd }) => {
                     return (
                         <div key={index} className="d-flex tiers-container">
                             <div>
-                                {tierData.icon
+                                <Image
+                                    icon={icons[`LEVEL_ACCOUNT_ICON_${tier}`]}
+                                    wrapperClassName="tier-icon"
+                                />
+                                {/* {tierData.icon
                                     ? <img src={tierData.icon} className="tier-icon" alt={`Account Tier ${tier}`} />
-                                    : <ReactSVG path={ICONS[`LEVEL_ACCOUNT_ICON_${tier}`]} wrapperClassName="tier-icon" />
-                                }
+                                    : <ReactSVG path={icons[`LEVEL_ACCOUNT_ICON_${tier}`]} wrapperClassName="tier-icon" />
+                                } */}
                             </div>
                             <div className="mx-3 f-1">
                                 <div>
@@ -31,10 +40,23 @@ const TiersContainer = ({ userTiers = {}, handleEdit, handleAdd }) => {
                                 <div className="requirement-divider"></div>
                                 <div>
                                     <div>Requirements</div>
-                                    <div className="description">{tierData.requirements}</div>
+                                    <div
+                                        className="description"
+                                        dangerouslySetInnerHTML={createMarkup(tierData.note)}
+                                    />
                                 </div>
                             </div>
-                            <div className="pointer" onClick={() => handleEdit(tierData)}>Edit</div>
+                            <div
+                                className="pointer"
+                                onClick={() => {
+                                    handleEdit({
+                                        level: parseInt(tier, 10),
+                                        ...tierData
+                                    })
+                                }}
+                            >
+                                Edit
+                            </div>
                         </div>
                     )
                 })}
@@ -48,4 +70,4 @@ const TiersContainer = ({ userTiers = {}, handleEdit, handleAdd }) => {
     );
 }
 
-export default TiersContainer;
+export default withConfig(TiersContainer);
