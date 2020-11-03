@@ -26,7 +26,7 @@ const findTier = (level) => {
 		});
 };
 
-const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees = {}) => {
+const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees = {}, note = '') => {
 	const existingTiers = getKitTiers();
 
 	if (existingTiers[level]) {
@@ -67,7 +67,8 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		description,
 		deposit_limit,
 		withdrawal_limit,
-		fees
+		fees,
+		note
 	})
 		.then((tier) => {
 			publisher.publish(
@@ -114,6 +115,10 @@ const updateTier = (level, updateData) => {
 
 			if (updateData.icon) {
 				newData.icon = updateData.icon;
+			}
+
+			if (updateData.note) {
+				newData.note = updateData.note;
 			}
 
 			if (updateData.description) {
