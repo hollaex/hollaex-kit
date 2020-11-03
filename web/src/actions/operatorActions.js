@@ -2,12 +2,13 @@ import axios from 'axios';
 import { requestAuthenticated } from 'utils';
 
 export const updateConfigs = async (configs) => {
-  const { valid_languages, ...restConfigs } = configs;
+  const { valid_languages, defaults, ...restConfigs } = configs;
   const versionedConfigs = await pushVersions(restConfigs)
 
   const constants = {
     kit: {
       valid_languages,
+      defaults,
       ...versionedConfigs,
     }
   }
