@@ -32,6 +32,10 @@ module.exports = function(sequelize, DataTypes) {
 			fees: {
 				type: DataTypes.JSONB,
 				defaultValue: {}
+			},
+			note: {
+				type: DataTypes.STRING,
+				defaultValue: ''
 			}
 		},
 		{
