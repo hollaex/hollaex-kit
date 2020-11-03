@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import debounce from 'lodash.debounce';
 import classnames from 'classnames';
@@ -7,7 +8,7 @@ import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input, Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SettingFilled } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -588,14 +589,36 @@ class OperatorControls extends Component {
       <div
         className={classnames("operator-controls__wrapper", { open: editMode })}
       >
-        <div
-          className="operator-controls__button"
-          onClick={this.toggleEditMode}
-        >
-          <EditFilled />
-          <span className="pl-1">
+        <div className="operator-controls__buttons-wrapper">
+          <div
+            className="operator-controls__button"
+            onClick={this.toggleEditMode}
+          >
+            <EditFilled />
+            <span className="pl-1">
             {`${ editMode ? 'Exit' : 'Enter' } edit mode`}
           </span>
+          </div>
+          <div className={classnames("operator-controls__button", { disabled: editMode })}>
+            {!editMode && (
+              <Link
+                to="/admin"
+              >
+                <SettingFilled />
+                <span className="pl-1">
+                Operator controls
+              </span>
+              </Link>
+            )}
+            {editMode && (
+              <div>
+                <SettingFilled />
+                <span className="pl-1">
+                  Operator controls
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="operator-controls__panel">
           <div className="operator-controls__panel-list">

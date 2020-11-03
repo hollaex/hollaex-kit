@@ -2750,16 +2750,23 @@ table th {
     bottom: 0;
     z-index: 10002 !important; }
 
+.operator-controls__buttons-wrapper {
+  display: flex;
+  margin-left: 57px; }
+
 .operator-controls__button {
   height: 30px;
   font-size: 16px;
   background-color: #0000FF;
   width: 162px;
-  margin-left: 57px;
+  margin-right: 8px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center; }
+  .operator-controls__button.disabled {
+    color: #FFFFFFB3;
+    cursor: not-allowed; }
 
 .operator-controls__panel {
   display: flex;
