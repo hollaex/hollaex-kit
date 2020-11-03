@@ -31,7 +31,7 @@ const getMessages = (limit = CHAT_MAX_MESSAGES) => {
 	return MESSAGES.slice(-limit);
 };
 
-const sendParitalMessages = (ws) => {
+const sendInitialMessages = (ws) => {
 	ws.send(JSON.stringify({
 		topic: 'chat',
 		action: 'init',
@@ -90,5 +90,5 @@ module.exports = {
 	addMessage,
 	deleteMessage,
 	publishChatMessage,
-	sendParitalMessages
+	sendInitialMessages
 };
