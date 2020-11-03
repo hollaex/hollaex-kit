@@ -3,12 +3,18 @@ import Modal from 'components/Dialog/DesktopDialog';
 import { bool, array, func } from 'prop-types';
 import { Button, Table } from 'antd';
 import { CloseOutlined, UndoOutlined } from '@ant-design/icons';
-import withConfig from 'components/ConfigProvider/withConfig';
 
 
 class StringSettingsModal extends Component {
-  state = {
-    removedLanguages: []
+
+  constructor(props) {
+    super(props);
+    const { defaultLanguage } = this.props;
+
+    this.state = {
+      removedLanguages: [],
+      defaultLanguage,
+    }
   }
 
   columns = [
@@ -23,6 +29,11 @@ class StringSettingsModal extends Component {
       dataIndex: "value",
       key: "value",
       render: (_, { value }) => this.isDefault(value) ? "Default" : "",
+      onCell: ({ value }) => {
+        return {
+          onClick: () => this.setDefault(value)
+        };
+      }
     },
     {
       dataIndex: "value",
@@ -70,8 +81,16 @@ class StringSettingsModal extends Component {
   }
 
   isDefault = (lang) => {
-    const { defaults: { language: DEFAULT_LANGUAGE } } = this.props;
-     return lang === DEFAULT_LANGUAGE
+    const { defaultLanguage } = this.state;
+     return lang === defaultLanguage
+  }
+
+  setDefault = (defaultLanguage) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      defaultLanguage,
+      removedLanguages: prevState.removedLanguages.filter(lang => lang !== defaultLanguage)
+    }));
   }
 
   render() {
@@ -95,6 +114,7 @@ class StringSettingsModal extends Component {
         </div>
         <Table
           className="operator-controls__table"
+          rowClassName="pointer"
           columns={this.columns}
           dataSource={languages}
           size="small"
@@ -144,4 +164,4 @@ StringSettingsModal.propTypes = {
   onAddLanguageClick: func.isRequired,
 }
 
-export default withConfig(StringSettingsModal);
+export default StringSettingsModal;

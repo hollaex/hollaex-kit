@@ -707,6 +707,7 @@ class OperatorControls extends Component {
           languages={languageOptions}
           onAddLanguageClick={this.openAddLanguageModal}
           onConfirm={this.removeLanguage}
+          defaultLanguage={this.props.defaults.language}
         />
         <AddLanguageModal
           isOpen={editMode && isAddLanguageModalOpen}
@@ -728,6 +729,7 @@ class OperatorControls extends Component {
             themes={themeOptions}
             onAddThemeClick={this.openAddTheme}
             onConfirm={this.removeThemes}
+            defaultTheme={this.props.defaults.theme}
           />
         )
         }
