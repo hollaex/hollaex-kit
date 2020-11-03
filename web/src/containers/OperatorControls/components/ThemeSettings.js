@@ -105,7 +105,7 @@ class ThemeSettingsModal extends Component {
 
   render() {
     const { isOpen, onCloseDialog, themes, onAddThemeClick, onConfirm } = this.props;
-    const { removedThemes } = this.state;
+    const { removedThemes, defaultTheme } = this.state;
     return (
       <Modal
         isOpen={isOpen}
@@ -157,7 +157,7 @@ class ThemeSettingsModal extends Component {
           <Button
             type="primary"
             className="operator-controls__save-button confirm"
-            onClick={() => onConfirm(removedThemes)}
+            onClick={() => onConfirm(removedThemes, defaultTheme)}
           >
             Confirm
           </Button>

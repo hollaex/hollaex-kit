@@ -95,7 +95,7 @@ class StringSettingsModal extends Component {
 
   render() {
     const { isOpen, onCloseDialog, languages, onAddLanguageClick, onConfirm } = this.props;
-    const { removedLanguages } = this.state;
+    const { removedLanguages, defaultLanguage } = this.state;
     return (
       <Modal
         isOpen={isOpen}
@@ -147,7 +147,7 @@ class StringSettingsModal extends Component {
           <Button
             type="primary"
             className="operator-controls__save-button confirm"
-            onClick={() => onConfirm(removedLanguages)}
+            onClick={() => onConfirm(removedLanguages, defaultLanguage)}
           >
             Confirm
           </Button>

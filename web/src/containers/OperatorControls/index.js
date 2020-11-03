@@ -269,11 +269,14 @@ class OperatorControls extends Component {
       languageKeys
     } = this.state;
 
+    const { defaults } = this.props;
+
     const valid_languages = languageKeys.join();
     const strings = filterOverwrites(overwrites);
     const color = filterThemes(colorOverwrites);
 
     const configs = {
+      defaults,
       color,
       strings,
       icons,
@@ -420,11 +423,15 @@ class OperatorControls extends Component {
     })
   }
 
-  removeLanguage = (keys = []) => {
+  confirmStringSettings = (keys = [], language) => {
+    const { updateDefaults } = this.props;
     this.setState(prevState => ({
       ...prevState,
       languageKeys: prevState.languageKeys.filter((key) => !keys.includes(key))
-    }), () => this.closeStringSettingsModal(true));
+    }), () => {
+      updateDefaults({ language });
+      this.closeStringSettingsModal(true)
+    });
   }
 
   openExitConfirmationModal = () => {
@@ -518,9 +525,9 @@ class OperatorControls extends Component {
     })
   }
 
-  removeThemes = (keys = []) => {
+  confirmThemeSettings = (keys = [], theme) => {
     const { colorOverwrites: prevColorOverwrites } = this.state;
-    const { removeTheme } = this.props;
+    const { removeTheme, updateDefaults } = this.props;
     const colorOverwrites = {}
 
     Object.entries(prevColorOverwrites).forEach(([themeKey, theme]) => {
@@ -531,8 +538,11 @@ class OperatorControls extends Component {
 
     this.setState({
       colorOverwrites,
-      removeTheme,
-    }, this.closeThemeSettings)
+    }, () => {
+      removeTheme(keys);
+      updateDefaults({ theme });
+      this.closeThemeSettings();
+    })
   }
 
   openAddTheme = (selectedTheme = '') => {
@@ -706,7 +716,7 @@ class OperatorControls extends Component {
           onCloseDialog={this.closeStringSettingsModal}
           languages={languageOptions}
           onAddLanguageClick={this.openAddLanguageModal}
-          onConfirm={this.removeLanguage}
+          onConfirm={this.confirmStringSettings}
           defaultLanguage={this.props.defaults.language}
         />
         <AddLanguageModal
@@ -728,7 +738,7 @@ class OperatorControls extends Component {
             onCloseDialog={this.closeThemeSettings}
             themes={themeOptions}
             onAddThemeClick={this.openAddTheme}
-            onConfirm={this.removeThemes}
+            onConfirm={this.confirmThemeSettings}
             defaultTheme={this.props.defaults.theme}
           />
         )

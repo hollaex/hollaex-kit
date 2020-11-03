@@ -77,10 +77,20 @@ class ConfigProvider extends Component {
     })
   }
 
+  updateDefaults = (defaultOverwriteObject = {}) => {
+    this.setState(prevState => ({
+      ...prevState,
+      defaults: {
+        ...prevState.defaults,
+        ...defaultOverwriteObject,
+      }
+    }));
+  }
+
   render() {
     const { children } = this.props;
     const { icons, color, themeOptions, defaults } = this.state;
-    const { updateIcons, removeIcon, updateColor } = this;
+    const { updateIcons, removeIcon, updateColor, updateDefaults, removeTheme } = this;
 
     return (
       <ProjectConfig.Provider
@@ -91,6 +101,8 @@ class ConfigProvider extends Component {
           themeOptions,
           updateIcons,
           updateColor,
+          updateDefaults,
+          removeTheme,
           removeIcon,
         }}
       >
