@@ -70,7 +70,7 @@ class StringSettingsModal extends Component {
   }
 
   isDefault = (lang) => {
-    const { defaultLanguage: DEFAULT_LANGUAGE } = this.props;
+    const { defaults: { language: DEFAULT_LANGUAGE } } = this.props;
      return lang === DEFAULT_LANGUAGE
   }
 
