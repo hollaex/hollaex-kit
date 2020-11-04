@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { ProjectConfig } from 'config/project.config';
 import { getIconByKey } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
+
+export const ProjectConfig = React.createContext("appConfig")
 
 class ConfigProvider extends Component {
   constructor(props) {
@@ -9,8 +10,8 @@ class ConfigProvider extends Component {
     const { initialConfig } = this.props;
     const {
       icons = {},
-      defaultLanguage,
       color = {},
+      defaults = {},
     } = { ...initialConfig }
 
     const themeOptions = Object.keys(color).map((value) => ({ value }));
@@ -19,8 +20,8 @@ class ConfigProvider extends Component {
     this.state = {
       icons,
       color: calculatedThemes,
-      defaultLanguage,
       themeOptions,
+      defaults,
     };
   }
 
@@ -76,21 +77,33 @@ class ConfigProvider extends Component {
     })
   }
 
+  updateDefaults = (defaultOverwriteObject = {}) => {
+    this.setState(prevState => ({
+      ...prevState,
+      defaults: {
+        ...prevState.defaults,
+        ...defaultOverwriteObject,
+      }
+    }));
+  }
+
   render() {
     const { children } = this.props;
-    const { icons, defaultLanguage, color, themeOptions } = this.state;
-    const { updateIcons, removeIcon, updateColor } = this;
+    const { icons, color, themeOptions, defaults } = this.state;
+    const { updateIcons, removeIcon, updateColor, updateDefaults, removeTheme } = this;
 
     return (
       <ProjectConfig.Provider
         value={{
+          defaults,
           icons,
           color,
           themeOptions,
           updateIcons,
           updateColor,
+          updateDefaults,
+          removeTheme,
           removeIcon,
-          defaultLanguage,
         }}
       >
         {children}

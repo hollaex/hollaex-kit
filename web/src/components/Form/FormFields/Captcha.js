@@ -47,7 +47,7 @@ class CaptchaField extends Component {
 	}
 
 	render() {
-		const { language, constants: { captcha = {} }, defaultLanguage: DEFAULT_LANGUAGE } = this.props;
+		const { language, constants: { captcha = {} }, defaults: { language: DEFAULT_LANGUAGE } } = this.props;
 		const { ready, active } = this.state;
 
 		return (
