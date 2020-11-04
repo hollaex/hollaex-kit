@@ -4,14 +4,23 @@ import { CurrencyBall } from '../../../components';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { formatToCurrency } from '../../../utils/currency';
+import { EditWrapper } from 'components';
 
 const getLimitValue = (limit, increment_unit) => {
     if (limit === undefined || limit === null || limit === '') {
         return 'N/A';
     } else if (limit === 0) {
-        return STRINGS["LEVELS.UNLIMITED"];
+        return (
+          <EditWrapper stringId="LEVELS.UNLIMITED">
+            {STRINGS["LEVELS.UNLIMITED"]}
+          </EditWrapper>
+        );
     } else if (limit === -1) {
-        return STRINGS["LEVELS.BLOCKED"];
+        return (
+          <EditWrapper stringId="LEVELS.BLOCKED">
+            {STRINGS["LEVELS.BLOCKED"]}
+          </EditWrapper>
+        );
     } else {
         return increment_unit ? formatToCurrency(limit, increment_unit) : limit;
     }
@@ -60,13 +69,27 @@ const LimitsBlock = ({ level, coins }) => {
                 <thead>
                     <tr>
                         <th className="limit-head-currency content-title" colSpan={3}>
-                            {STRINGS["SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE"]}
+                            <EditWrapper stringId="SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE">
+                              {STRINGS["SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE"]}
+                            </EditWrapper>
                         </th>
                     </tr>
                     <tr>
-                        <th className="limit-head-currency">{STRINGS["CURRENCY"]}</th>
-                        <th className="limit-head-currency">{STRINGS["SUMMARY.DEPOSIT"]}</th>
-                        <th className="limit-head-currency">{STRINGS["SUMMARY.WITHDRAWAL"]}</th>
+                        <th className="limit-head-currency">
+                            <EditWrapper stringId="CURRENCY">
+                              {STRINGS["CURRENCY"]}
+                            </EditWrapper>
+                        </th>
+                        <th className="limit-head-currency">
+                            <EditWrapper stringId="SUMMARY.DEPOSIT">
+                              {STRINGS["SUMMARY.DEPOSIT"]}
+                            </EditWrapper>
+                        </th>
+                        <th className="limit-head-currency">
+                            <EditWrapper stringId="SUMMARY.WITHDRAWAL">
+                              {STRINGS["SUMMARY.WITHDRAWAL"]}
+                            </EditWrapper>
+                        </th>
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">
