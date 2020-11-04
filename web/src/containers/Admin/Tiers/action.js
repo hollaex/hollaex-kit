@@ -30,4 +30,12 @@ export const upload = (formData) => {
 	};
 
 	return axios('/admin/upload', options)
-}
+};
+
+export const updateFees = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values)
+	};
+	return requestAuthenticated(`/admin/pair/fees`, options);
+};

@@ -333,6 +333,12 @@ const nestedIcons = {
   ADMIN_MISSING_GO_BACK: '/assets/images/missing-page-go-back-to-dash.svg',
   HELP_DESCRIPTION_POPUP: '/assets/images/help-popup-description.png',
   HELP_FOOTER_POPUP: '/assets/images/help-popup-description.png',
+  DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
+  WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
+  TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
+  MAKER_TIERS_SECTION: '/assets/images/maker-tier-section.svg',
+  LIMITS_SECTION_ICON: '/assets/images/limits-coin-tiers.svg',
+  FEES_SECTION_ICON: '/assets/images/limits-pairs-tiers.svg',
   SOCIAL_ICONS: {
     FACEBOOK: '/assets/icons/facebook.png',
     LINKEDIN: '/assets/icons/linkedin.png',

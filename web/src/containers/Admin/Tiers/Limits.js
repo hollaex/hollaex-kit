@@ -3,8 +3,22 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 
 import { CurrencyBall } from '../../../components';
+import Image from '../../../components/Image';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const getHeaders = (userTiers) => {
+const limitStatus = (value, nativeCurrency) => {
+    if (value === -1) {
+        return 'BLOCKED';
+    } else if (value === 0) {
+        return 'UNLIMITED';
+    } else if (!value) {
+        return 'N/A';
+    } else {
+        return `${value} ${nativeCurrency}`
+    }
+};
+
+const getHeaders = (userTiers, icons, constants = {}, onEditLimit) => {
     const headers = [
         {
             title: 'Asset',
@@ -21,48 +35,95 @@ const getHeaders = (userTiers) => {
             title: 'Limit type',
             dataIndex: 'type',
             key: 'type',
+            className: 'type-column',
             render: () => (
                 <div>
-                    <div>
-                        Deposit
+                    <div className="custom-column-td column-divider">
+                        <div className="d-flex align-items-center">
+                            <Image
+                                icon={icons['DEPOSIT_TIERS_SECTION']}
+                                wrapperClassName='limit-status-icon mr-2'
+                            />
+                            Deposit
+                        </div>
                     </div>
-                    <div>
-                        Withdraw
+                    <div className="custom-column-td">
+                        <div className="d-flex align-items-center">
+                            <Image
+                                icon={icons['WITHDRAW_TIERS_SECTION']}
+                                wrapperClassName='limit-status-icon mr-2'
+                            />
+                            Withdraw
+                        </div>
                     </div>
                 </div>
             )
         }
     ];
+    let children = [];
     Object.keys(userTiers).forEach((level) => {
-        headers.push({
-            title: `Tiers ${level}`, dataIndex: 'deposit_limit', key: 'deposit_limit'
-        })
+        let tiersData = userTiers[level];
+        children.push({
+            title: (
+                <div className="d-flex align-items-center">
+                    <Image
+                        icon={icons[`LEVEL_ACCOUNT_ICON_${level}`]}
+                        wrapperClassName="table-tier-icon mr-2"
+                    />
+                    {`Tiers ${level}`}
+                </div>
+            ),
+            dataIndex: 'name',
+            key: 'name',
+            className: 'type-column',
+            render: (name) => (
+                <div>
+                    <div className="custom-column-td column-divider">
+                        {limitStatus(tiersData.deposit_limit, constants.native_currency)}
+                    </div>
+                    <div className="custom-column-td">
+                        {limitStatus(tiersData.withdrawal_limit, constants.native_currency)}
+                    </div>
+                </div>
+            )
+        });
+    });
+    headers.push({
+        title: `Limit amount valued in ${constants.native_currency}`,
+        children
     });
     headers.push({
         title: 'Adjust limit values',
         dataIndex: 'type',
         key: 'type',
+        align: 'right',
         render: () => (
-            <div>Adjust limits</div>
+            <span className="pointer" onClick={onEditLimit}>Adjust limits</span>
         )
     });
     return headers;
 }
 
-const Limits = ({ coins, userTiers }) => {
+const Limits = ({ coins, userTiers, icons = {}, constants = {}, onEditLimit }) => {
     const coinsData = Object.keys(coins).map(key => coins[key]);
     return (
         <div>
             <div className="d-flex">
+                <div>
+                    <Image
+                        icon={icons.LIMITS_SECTION_ICON}
+                        wrapperClassName="tier-section-icon mx-3"
+                    />
+                </div>
                 <div>
                     <div className="sub-title">User asset deposit & withdrawal limits</div>
                     <div className="description mx-2">Set the amount allowed to be withdrawn and deposited for each coin on your exchange</div>
                     <div className="description mt-4">All amounts are valued in your set native currency USD. You can change the native currency for your exchange in the general setup page.</div>
                 </div>
             </div>
-            <div>
+            <div className="my-4">
                 <Table
-                    columns={getHeaders(userTiers, coins)}
+                    columns={getHeaders(userTiers, icons, constants, onEditLimit)}
                     dataSource={coinsData}
                     bordered
                 />
@@ -72,7 +133,8 @@ const Limits = ({ coins, userTiers }) => {
 }
 
 const mapStateToProps = (state) => ({
-    coins: state.app.coins
+    coins: state.app.coins,
+    constants: state.app.constants
 });
 
-export default connect(mapStateToProps)(Limits);
+export default connect(mapStateToProps)(withConfig(Limits));

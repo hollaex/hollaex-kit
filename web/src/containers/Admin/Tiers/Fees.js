@@ -1,10 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
+import _get from 'lodash/get';
+// import { PercentageOutlined } from '@ant-design/icons';
 
 import { CurrencyBall } from '../../../components';
+import Image from '../../../components/Image';
+import withConfig from '../../../components/ConfigProvider/withConfig';
 
-const getHeaders = (userTiers) => {
+const getHeaders = (userTiers, icons, onEditFees) => {
     const headers = [
         {
             title: 'Pairs',
@@ -21,48 +25,94 @@ const getHeaders = (userTiers) => {
             title: 'Fee type',
             dataIndex: 'type',
             key: 'type',
+            className: 'type-column',
             render: () => (
                 <div>
-                    <div>
-                        Taker
+                    <div className="custom-column-td column-divider">
+                        <Image
+                            icon={icons['TAKER_TIERS_SECTION']}
+                            wrapperClassName='fee-indicator-icon mr-2'
+                        />
                     </div>
-                    <div>
-                        Maker
+                    <div className="custom-column-td">
+                        <Image
+                            icon={icons['MAKER_TIERS_SECTION']}
+                            wrapperClassName='fee-indicator-icon mr-2'
+                        />
                     </div>
                 </div>
             )
         }
     ];
+    let children = [];
     Object.keys(userTiers).forEach((level) => {
-        headers.push({
-            title: `Tiers ${level}`, dataIndex: 'deposit_limit', key: 'deposit_limit'
-        })
+        let tiersData = userTiers[level];
+        children.push({
+            title: (
+                <div className="d-flex align-items-center">
+                    <Image
+                        icon={icons[`LEVEL_ACCOUNT_ICON_${level}`]}
+                        wrapperClassName="table-tier-icon mr-2"
+                    />
+                    {`Tiers ${level}`}
+                </div>
+            ),
+            dataIndex: 'name',
+            key: level,
+            className: 'type-column',
+            render: (name) => (
+                <div>
+                    <div className="custom-column-td column-divider">
+                        {_get(tiersData, `fees.taker.${name}`)}{' '}%
+                    </div>
+                    <div className="custom-column-td">
+                        {_get(tiersData, `fees.maker.${name}`)}{' '}%
+                    </div>
+                </div>
+            )
+        });
     });
     headers.push({
-        title: 'Adjust limit values',
-        dataIndex: 'type',
-        key: 'type',
-        render: () => (
-            <div>Adjust limits</div>
+        title: 'Trading fee percentages',
+        children
+    });
+    headers.push({
+        title: 'Adjust fee values',
+        dataIndex: 'name',
+        key: 'action',
+        align: 'right',
+        render: (name) => (
+            <span
+                className="pointer"
+                onClick={() => onEditFees(name)}
+            >
+                Adjust fees
+            </span>
         )
     });
     return headers;
 }
 
-const Fees = ({ pairs, userTiers }) => {
+const Fees = ({ pairs, userTiers, icons = {}, onEditFees }) => {
     const coinsData = Object.keys(pairs).map(key => pairs[key]);
     return (
         <div>
             <div className="d-flex">
+                <div>
+                    <Image
+                        icon={icons.FEES_SECTION_ICON}
+                        wrapperClassName="tier-section-icon mx-3"
+                    />
+                </div>
                 <div>
                     <div className="sub-title">User asset deposit & withdrawal limits</div>
                     <div className="description mx-2">Set the amount allowed to be withdrawn and deposited for each coin on your exchange</div>
                     <div className="description mt-4">All amounts are valued in your set native currency USD. You can change the native currency for your exchange in the general setup page.</div>
                 </div>
             </div>
-            <div>
+            <div className="my-4">
                 <Table
-                    columns={getHeaders(userTiers, pairs)}
+                    columns={getHeaders(userTiers, icons, onEditFees)}
                     dataSource={coinsData}
                     bordered
                 />
@@ -75,4 +125,4 @@ const mapStateToProps = (state) => ({
     pairs: state.app.pairs
 });
 
-export default connect(mapStateToProps)(Fees);
+export default connect(mapStateToProps)(withConfig(Fees));

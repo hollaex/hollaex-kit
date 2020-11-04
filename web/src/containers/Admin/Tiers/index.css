@@ -36,4 +36,28 @@
 	border-radius: 4px;
 	min-height: 200px;
 }
-
+.table-tier-icon {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.limit-status-icon {
+    width: 2rem;
+}
+td.type-column {
+    padding: 0px !important;
+}
+.tiers-wrapper .ant-table-tbody > tr > td {
+    border-bottom: 1px solid #C4C4C4;
+}
+.custom-column-td {
+    padding: 8px 16px;
+}
+.column-divider {
+    border-bottom: 1px solid #C4C4C4;
+}
+.fee-indicator-icon {
+    width: 8rem;
+}
+.tier-section-icon {
+    width: 4rem;
+}

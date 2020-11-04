@@ -19,8 +19,10 @@
 	margin: 2rem 0;
 	width: 500px;
 }
-.description {
+.wizard-container .description {
 	width: 550px;
+}
+.description {
 	color: #ffffff;
 	margin: 5px 0px;
 	font-size: 13px;

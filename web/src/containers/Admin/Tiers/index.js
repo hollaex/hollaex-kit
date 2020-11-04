@@ -5,12 +5,25 @@ import TiersContainer from './Tiers';
 import Limits from './Limits';
 import Fees from './Fees';
 import NewTierForm, { NewTierConfirmation, PreviewContainer } from './ModalForm';
+import EditFees from './EditFees';
+import EditLimit from './EditLimit';
 import { requestTiers, addNewTier, updateTier } from './action';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const renderContent = (isNew, type, editData, onTypeChange, handleNext, handleSave) => {
+const renderContent = (
+    isNew,
+    type,
+    editData,
+    userTiers,
+    selectedPair,
+    onTypeChange,
+    handleNext,
+    handleSave,
+    handleClose,
+    getTiers
+) => {
     switch (type) {
         case 'new-tier-confirm':
             return <NewTierConfirmation onTypeChange={onTypeChange} />;
@@ -34,6 +47,23 @@ const renderContent = (isNew, type, editData, onTypeChange, handleNext, handleSa
             );
         case 'preview':
             return <PreviewContainer isNew={isNew} tierData={editData} onTypeChange={onTypeChange} handleSave={handleSave} />;
+        case 'edit-fees':
+            return (
+                <EditFees
+                    selectedPair={selectedPair}
+                    userTiers={userTiers}
+                    getTiers={getTiers}
+                    handleClose={handleClose}
+                />
+            );
+        case 'edit-limits':
+            return (
+                <EditLimit
+                    userTiers={userTiers}
+                    getTiers={getTiers}
+                    handleClose={handleClose}
+                />
+            );
         default:
             return <div></div>;
     }
@@ -45,6 +75,7 @@ const Tiers = () => {
     const [isOpen, setOpen] = useState(false);
     const [modalType, setType] = useState('');
     const [editData, setData] = useState({});
+    const [selectedPair, setPair] = useState('');
 
     useEffect(() => {
         getTiers();
@@ -80,6 +111,7 @@ const Tiers = () => {
         setNew(false);
         setType('');
         setData({});
+        setPair('');
     };
     const onTypeChange = (type) => {
         setType(type);
@@ -97,7 +129,7 @@ const Tiers = () => {
             })
             .catch(err => {
                 let error = err && err.data
-					? err.data.message
+                    ? err.data.message
                     : err.message;
                 message.error(error);
             });
@@ -112,7 +144,7 @@ const Tiers = () => {
             })
             .catch(err => {
                 let error = err && err.data
-					? err.data.message
+                    ? err.data.message
                     : err.message;
                 message.error(error);
             });
@@ -122,6 +154,18 @@ const Tiers = () => {
             handleSaveTiers();
         } else {
             handleUpdateTiers();
+        }
+    };
+    const getWidth = () => {
+        if (modalType === 'preview'
+            || modalType === 'edit-fees') {
+            return 520;
+        } else if (modalType === 'edit-limits') {
+            return 730;
+        } else if (modalType === 'new-tier-confirm') {
+            return 350;
+        } else {
+            return 420;
         }
     };
     return (
@@ -135,25 +179,43 @@ const Tiers = () => {
                     />
                 </TabPane>
                 <TabPane tab="Limits" key="limits">
-                    <Limits userTiers={userTiers} />
+                    <Limits
+                        userTiers={userTiers}
+                        onEditLimit={() => {
+                            setOpen(true);
+                            onTypeChange('edit-limits')
+                        }}
+                    />
                 </TabPane>
                 <TabPane tab="Fees" key="fees">
-                    <Fees userTiers={userTiers} />
+                    <Fees
+                        userTiers={userTiers}
+                        onEditFees={(pair) => {
+                            setOpen(true);
+                            onTypeChange('edit-fees');
+                            setPair(pair);
+                        }}
+                    />
                 </TabPane>
             </Tabs>
             <Modal
                 visible={isOpen}
                 footer={null}
                 onCancel={handleClose}
-                width={
-                    modalType === 'preview'
-                        ? 520
-                        : modalType === 'new-tier-confirm'
-                            ? 350
-                            : 420
-                }
+                width={getWidth()}
             >
-                {renderContent(isNew, modalType, editData, onTypeChange, handleNext, handleSubmit)}
+                {renderContent(
+                    isNew,
+                    modalType,
+                    editData,
+                    userTiers,
+                    selectedPair,
+                    onTypeChange,
+                    handleNext,
+                    handleSubmit,
+                    handleClose,
+                    getTiers
+                )}
             </Modal>
         </div>
     );
