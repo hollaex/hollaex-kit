@@ -1,7 +1,7 @@
 'use strict';
 
 const { addSubscriber, removeSubscriber, getChannels, resetChannels } = require('./channel');
-const { WEBSOCKET_CHANNEL } = require('../constants');
+const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, ROLES } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
 const { loggerWebsocket } = require('../config/logger');
@@ -13,6 +13,18 @@ const {
 	WS_MISSING_HEADER,
 	WS_INVALID_TOPIC
 } = require('../messages');
+const { subscriber } = require('../db/pubsub');
+const { sendInitialMessages, addMessage, deleteMessage } = require('./chat');
+const { getUsername, changeUsername } = require('./chat/username');
+const { sendBannedUsers, banUser, unbanUser } = require('./chat/ban');
+
+subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
+subscriber.on('message', (channel, data) => {
+	if (channel === WS_PUBSUB_DEPOSIT_CHANNEL) {
+		data = JSON.parse(data);
+		handleHubData(data);
+	}
+});
 
 let publicData = {
 	orderbook: {},
@@ -58,6 +70,16 @@ const initializeTopic = (topic, ws, symbol) => {
 				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			}
 			break;
+		case 'deposit':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+			break;
+		case 'chat':
+			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+			sendInitialMessages(ws);
+			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
 	}
@@ -94,6 +116,17 @@ const terminateTopic = (topic, ws, symbol) => {
 				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 			}
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
+			break;
+		case 'deposit':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws, 'private');
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
+			break;
+		case 'chat':
+			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}`}));
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
@@ -145,12 +178,12 @@ const terminateClosedChannels = (ws) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('orderbook', pair), ws);
 		} catch (err) {
-			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('trade', pair), ws);
 		} catch (err) {
-			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
 	});
 	if (ws.auth.sub) {
@@ -160,7 +193,7 @@ const terminateClosedChannels = (ws) => {
 				require('./hub').sendNetworkWsMessage('unsubscribe', 'order', ws.auth.sub.networkId);
 			}
 		} catch (err) {
-			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
 
 		try {
@@ -169,7 +202,19 @@ const terminateClosedChannels = (ws) => {
 				require('./hub').sendNetworkWsMessage('unsubscribe', 'wallet', ws.auth.sub.networkId);
 			}
 		} catch (err) {
-			loggerWebsocket.debug('ws/sub/terminateClosedChannels', err.message);
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
+		}
+
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('deposit', ws.auth.sub.networkId), ws, 'private');
+		} catch (err) {
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
+		}
+
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('chat'), ws);
+		} catch (err) {
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
 	}
 };
@@ -197,6 +242,7 @@ const handleHubData = (data) => {
 			break;
 		case 'order':
 		case 'wallet':
+		case 'deposit':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				ws.send(JSON.stringify(data));
 			});
@@ -204,6 +250,49 @@ const handleHubData = (data) => {
 		default:
 			break;
 	}
+};
+
+const handleChatData = (action, ws, data) => {
+	if (!ws.auth.sub) {
+		throw new Error('Not authorized');
+	} else if (action === 'deleteMessage' || action === 'getBannedUsers' || action === 'banUser' || action === 'unbanUser') {
+		if (
+			ws.auth.scopes.indexOf(ROLES.ADMIN) === -1 &&
+			ws.auth.scopes.indexOf(ROLES.SUPERVISOR) === -1 &&
+			ws.auth.scopes.indexOf(ROLES.SUPPORT) === -1
+		) {
+			throw new Error('Not authorized');
+		}
+	}
+	getUsername(ws.auth.sub.id)
+		.then(({ username, verification_level }) => {
+			switch (action) {
+				case 'addMessage':
+					addMessage(username, verification_level, ws.auth.sub.id, data);
+					break;
+				case 'deleteMessage':
+					deleteMessage(data);
+					break;
+				case 'getBannedUsers':
+					sendBannedUsers(ws);
+					break;
+				case 'banUser':
+					banUser(data);
+					break;
+				case 'unbanUser':
+					unbanUser(data);
+					break;
+				case 'changeUsername':
+					changeUsername(data);
+					break;
+				default:
+					throw new Error('Invalid action');
+			}
+		})
+		.catch((err) => {
+			loggerWebsocket.error(ws.id, 'ws/sub/handleChatData', err.message);
+			ws.send(JSON.stringify({ error: err.message }));
+		});
 };
 
 const closeAllClients = () => {
@@ -225,5 +314,6 @@ module.exports = {
 	handleHubData,
 	authorizeUser,
 	terminateClosedChannels,
-	closeAllClients
+	closeAllClients,
+	handleChatData
 };

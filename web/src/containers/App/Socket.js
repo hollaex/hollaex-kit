@@ -369,7 +369,7 @@ class Container extends Component {
 						} else if (data.data.status === 'filled') {
 							const ordersDeleted = this.props.orders.filter((order, index) => {
 								return (
-									data.data.findIndex((deletedOrder) => deletedOrder.id === order.id) >
+									data.data.id === order.id >
 									-1
 								);
 							});

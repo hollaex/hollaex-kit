@@ -37,7 +37,6 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
-		options: [{ value: 'white' }, { value: 'dark' }],
 		tabCount: 1
 	};
 
@@ -57,12 +56,7 @@ class AppBar extends Component {
 		}
 		this.props.getTickers();
 		if (this.props.theme) {
-			this.setState({
-				selected:
-					this.props.theme === this.state.options[0].value
-						? this.state.options[0].value
-						: this.state.options[1].value
-			});
+      this.setSelectedTheme(this.props.theme);
 		}
 	}
 
@@ -94,12 +88,14 @@ class AppBar extends Component {
 			}
 		}
 		if (prevProps.theme !== this.props.theme) {
-			let selected =
-				this.props.theme === this.state.options[0].value
-					? this.state.options[0].value
-					: this.state.options[1].value;
-			this.setState({ selected });
+			this.setSelectedTheme(this.props.theme);
 		}
+	}
+
+	setSelectedTheme = (theme) => {
+		const { themeOptions } = this.props;
+		const selected = (themeOptions.find(({ value }) => value === theme) || themeOptions[0]).value;
+    this.setState({ selected });
 	}
 
 	checkExchangeExpiry = (info = {}) => {
@@ -200,17 +196,15 @@ class AppBar extends Component {
 	};
 
 	handleTheme = (selected) => {
-		if (!isLoggedIn()) {
+		const { isEditMode, themeOptions } = this.props;
+		if (!isLoggedIn() || isEditMode) {
 			this.props.changeTheme(selected);
 			localStorage.setItem('theme', selected);
 		} else {
 			const { settings = { interface: {} } } = this.props.user;
 			const settingsObj = { interface: { ...settings.interface } };
-			if (selected === 'white') {
-				settingsObj.interface.theme = 'white';
-			} else {
-				settingsObj.interface.theme = 'dark';
-			}
+			const theme = (themeOptions.find(({ value }) => value === selected) || themeOptions[0]).value;
+      settingsObj.interface.theme = theme;
 			return updateUserSettings(settingsObj)
 				.then(({ data }) => {
 					this.props.setUserData(data);
@@ -370,14 +364,9 @@ class AppBar extends Component {
 		this.setState({ selectedMenu });
 	};
 
-	onToggle = () => {
-		const { options } = this.state;
-		const selected =
-			this.state.selected === options[0].value
-				? options[1].value
-				: options[0].value;
-		this.setState({ selected });
-		this.handleTheme(selected);
+	onToggle = (theme) => {
+    this.setSelectedTheme(theme);
+		this.handleTheme(theme);
 	};
 
 	calculateTabs = () => {
@@ -434,7 +423,8 @@ class AppBar extends Component {
 		}
 		let disableBorder =
 			noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
-		const { selected, options } = this.state;
+		const { selected } = this.state;
+		const { themeOptions } = this.props;
 		return isMobile ? (
 			<MobileBarWrapper
 				className={classnames(
@@ -484,7 +474,7 @@ class AppBar extends Component {
 					<div id="trade-nav-container">
 						<ThemeSwitcher
 							selected={selected}
-							options={options}
+							options={themeOptions}
 							toggle={this.onToggle}
 						/>
 					</div>
@@ -495,7 +485,7 @@ class AppBar extends Component {
 							<div className="d-flex app_bar-quicktrade-container">
 								<ThemeSwitcher
 									selected={selected}
-									options={options}
+									options={themeOptions}
 									toggle={this.onToggle}
 								/>
 								{isAdmin() ? (

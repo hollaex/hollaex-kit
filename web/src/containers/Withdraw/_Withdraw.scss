@@ -64,29 +64,6 @@ $content--margin: 2rem;
 	margin: $content--margin 0;
 }
 
-.dark-theme {
-	svg {
-		.withdraw-1 {
-			fill: $dark-main-title-icon-color-1;
-		}
-		.withdraw-2 {
-			fill: $dark-main-title-icon-color-2;
-		}
-		.withdraw-3 {
-			fill: $dark-main-title-icon-color-3;
-		}
-		.check-send-btc-1 {
-			fill: $dark-icon-color;
-		}
-		.email-confirmation {
-			fill: $dark-icon-color;
-		}
-	}
-	.review_email-content {
-		border-color: $colors-main-black;
-	}
-}
-
 .layout-mobile {
 	.review-wrapper {
 		min-width: 0;

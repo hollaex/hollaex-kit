@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import debounce from 'lodash.debounce';
 import classnames from 'classnames';
@@ -7,7 +8,7 @@ import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input, Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SettingFilled } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -15,10 +16,13 @@ import { content as CONTENT } from 'config/localizedStrings';
 import AllStringsModal from './components/AllStringsModal';
 import StringSettingsModal from './components/StringSettings';
 import AddLanguageModal from './components/AddLanguageModal';
+import ThemeSettings from './components/ThemeSettings';
+import AddTheme from './components/AddTheme';
 import UploadIcon from './components/UploadIcon';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
 import { pushTempContent, getTempLanguageKey, filterOverwrites } from 'utils/string';
+import { filterThemes } from 'utils/color';
 
 class OperatorControls extends Component {
 
@@ -27,8 +31,10 @@ class OperatorControls extends Component {
 
     const strings = localStorage.getItem('strings') || "{}";
     const icons = localStorage.getItem('icons') || "{}";
+    const color = localStorage.getItem('color') || "{}";
     const overwrites = JSON.parse(strings);
     const iconsOverwrites = JSON.parse(icons);
+    const colorOverwrites = JSON.parse(color);
     const languageKeys = getValidLanguages();
     const languageOptions = LANGUAGES.filter(({ value }) => languageKeys.includes(value));
     const selectedLanguages = this.getSelectedLanguages(languageKeys);
@@ -53,7 +59,11 @@ class OperatorControls extends Component {
       isExitConfirmationOpen: false,
       isPublishConfirmationOpen: false,
       isUploadIconOpen: false,
+      isThemeSettingsOpen: false,
+      isAddThemeOpen: false,
+      selectedTheme: '',
       iconsOverwrites,
+      colorOverwrites,
       editableIconIds: [],
     }
   }
@@ -253,11 +263,22 @@ class OperatorControls extends Component {
   }
 
   handlePublish = () => {
-    const { overwrites, iconsOverwrites: icons, languageKeys } = this.state;
+    const {
+      overwrites,
+      iconsOverwrites: icons,
+      colorOverwrites,
+      languageKeys
+    } = this.state;
+
+    const { defaults } = this.props;
+
     const valid_languages = languageKeys.join();
-    const strings = filterOverwrites(overwrites)
+    const strings = filterOverwrites(overwrites);
+    const color = filterThemes(colorOverwrites);
 
     const configs = {
+      defaults,
+      color,
       strings,
       icons,
       valid_languages,
@@ -403,11 +424,15 @@ class OperatorControls extends Component {
     })
   }
 
-  removeLanguage = (keys = []) => {
+  confirmStringSettings = (keys = [], language) => {
+    const { updateDefaults } = this.props;
     this.setState(prevState => ({
       ...prevState,
       languageKeys: prevState.languageKeys.filter((key) => !keys.includes(key))
-    }), () => this.closeStringSettingsModal(true));
+    }), () => {
+      updateDefaults({ language });
+      this.closeStringSettingsModal(true)
+    });
   }
 
   openExitConfirmationModal = () => {
@@ -473,6 +498,68 @@ class OperatorControls extends Component {
     });
   }
 
+  openThemeSettings = () => {
+    this.setState({
+      isThemeSettingsOpen: true,
+    });
+  }
+
+  closeThemeSettings = () => {
+    this.setState({
+      isThemeSettingsOpen: false,
+    });
+  }
+
+  addTheme = (themeKey, theme) => {
+    const { updateColor } = this.props;
+    this.setState(prevState => ({
+      ...prevState,
+      colorOverwrites: {
+        ...prevState.colorOverwrites,
+        [themeKey]: theme,
+      }
+    }), () => {
+      const { colorOverwrites } = this.state;
+      updateColor(colorOverwrites);
+      this.enablePublish();
+      this.closeAddTheme();
+    })
+  }
+
+  confirmThemeSettings = (keys = [], theme) => {
+    const { colorOverwrites: prevColorOverwrites } = this.state;
+    const { removeTheme, updateDefaults } = this.props;
+    const colorOverwrites = {}
+
+    Object.entries(prevColorOverwrites).forEach(([themeKey, theme]) => {
+      if (!keys.includes(themeKey)) {
+        colorOverwrites[themeKey] = theme;
+      }
+    })
+
+    this.setState({
+      colorOverwrites,
+    }, () => {
+      removeTheme(keys);
+      updateDefaults({ theme });
+      this.closeThemeSettings();
+    })
+  }
+
+  openAddTheme = (selectedTheme = '') => {
+    this.closeThemeSettings();
+    this.setState({
+      isAddThemeOpen: true,
+      selectedTheme,
+    });
+  }
+
+  closeAddTheme = () => {
+    this.setState({
+      isAddThemeOpen: false,
+    }, this.openThemeSettings);
+  }
+
   render() {
     const {
       isPublishEnabled,
@@ -492,21 +579,46 @@ class OperatorControls extends Component {
       isPublishConfirmationOpen,
       isUploadIconOpen,
       editableIconIds,
+      isThemeSettingsOpen,
+      isAddThemeOpen,
+      selectedTheme,
     } = this.state;
-    const { editMode } = this.props;
+    const { editMode, color: themes, themeOptions } = this.props;
 
     return (
       <div
         className={classnames("operator-controls__wrapper", { open: editMode })}
       >
-        <div
-          className="operator-controls__button"
-          onClick={this.toggleEditMode}
-        >
-          <EditFilled />
-          <span className="pl-1">
+        <div className="operator-controls__buttons-wrapper">
+          <div
+            className="operator-controls__button"
+            onClick={this.toggleEditMode}
+          >
+            <EditFilled />
+            <span className="pl-1">
             {`${ editMode ? 'Exit' : 'Enter' } edit mode`}
           </span>
+          </div>
+          <div className={classnames("operator-controls__button", { disabled: editMode })}>
+            {!editMode && (
+              <Link
+                to="/admin"
+              >
+                <SettingFilled />
+                <span className="pl-1">
+                Operator controls
+              </span>
+              </Link>
+            )}
+            {editMode && (
+              <div>
+                <SettingFilled />
+                <span className="pl-1">
+                  Operator controls
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="operator-controls__panel">
           <div className="operator-controls__panel-list">
@@ -515,6 +627,12 @@ class OperatorControls extends Component {
               onClick={this.openAllStringsModal}
             >
               All strings
+            </div>
+            <div
+              className="operator-controls__panel-item"
+              onClick={this.openThemeSettings}
+            >
+              Themes
             </div>
           </div>
           <div className="d-flex align-items-center">
@@ -621,7 +739,8 @@ class OperatorControls extends Component {
           onCloseDialog={this.closeStringSettingsModal}
           languages={languageOptions}
           onAddLanguageClick={this.openAddLanguageModal}
-          onConfirm={this.removeLanguage}
+          onConfirm={this.confirmStringSettings}
+          defaultLanguage={this.props.defaults.language}
         />
         <AddLanguageModal
           isOpen={editMode && isAddLanguageModalOpen}
@@ -636,6 +755,28 @@ class OperatorControls extends Component {
           onSave={this.addIcons}
           onReset={this.removeIcon}
         />
+        { isThemeSettingsOpen && (
+          <ThemeSettings
+            isOpen={editMode && isThemeSettingsOpen}
+            onCloseDialog={this.closeThemeSettings}
+            themes={themeOptions}
+            onAddThemeClick={this.openAddTheme}
+            onConfirm={this.confirmThemeSettings}
+            defaultTheme={this.props.defaults.theme}
+          />
+        )
+        }
+        { isAddThemeOpen && (
+          <AddTheme
+            isOpen={editMode && isAddThemeOpen}
+            onCloseDialog={this.closeAddTheme}
+            selectedTheme={selectedTheme}
+            themes={themes}
+            onSave={this.addTheme}
+          />
+        )
+        }
+
         <Modal
           isOpen={isExitConfirmationOpen}
           label="operator-controls-modal"

@@ -158,19 +158,19 @@
     margin: auto;
     margin-top: 7px;
 }
-.sell {
+.wizard-container .sell {
     border: 1px solid #ffffff;
     width: 60px;
     height: 18px;
 }
-.sell .label {
+.wizard-container .sell .label {
     font-size: 10px;
     position: relative;
     bottom: 3px;
     left: 18px;
     color: #ffffff !important;
 }
-.buy {
+.wizard-container .buy {
     width: 60px;
     height: 18px;
     border: 1px solid #000000;
@@ -178,7 +178,7 @@
     color: #000000;
     background-color: #ffffff;
 }
-.buy .label {
+.wizard-container .buy .label {
     font-size: 10px;
     position: relative;
     bottom: 3px;

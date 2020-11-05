@@ -147,36 +147,3 @@
     }
   }
 }
-
-.dark-theme {
-
-  .market-list__container {
-
-    .market-list__block {
-      color: $dark-font-main-text-color !important;
-      .market-list__block-table {
-
-        thead {
-          color: $dark-font-main-text-color;
-        }
-
-        tbody, tfoot {
-          color: $dark-font-sub-text-color;
-        }
-
-        .table-bottom-border td,
-        th {
-          border-bottom-color: $dark-border-main;
-        }
-
-        .table-row {
-
-          &:hover {
-            background-color: $dark-app-bar-tab-active-menu-list-background;
-            color: $dark-font-main-text-color;
-          }
-        }
-      }
-    }
-  }
-}

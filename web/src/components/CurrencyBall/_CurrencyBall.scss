@@ -307,21 +307,3 @@ $large-modifier: 2.25;
 		justify-content: flex-end;
 	}
 }
-
-.dark-theme {
-	.with_price-block_amount {
-		color: $dark-font-main-text-color;
-		.with_price-block_amount-value-eur {
-			color: $dark-font-sub-text-color;
-		}
-	}
-	.currency_ball-wrapper {
-		color: $dark-app-background-color;
-		font-weight: bold;
-
-		&.default-coin{
-			border:1px solid $colors-white;
-			color: $colors-white;
-		}
-	}
-}

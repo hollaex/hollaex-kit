@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 import TVChartContainer from './Chart';
 import { tradeHistorySelector } from './utils';
@@ -13,4 +14,4 @@ const mapStateToProps = (state) => ({
     constants: state.app.constants
 });
 
-export default connect(mapStateToProps)(ChartContainer);
+export default connect(mapStateToProps)(withConfig(ChartContainer));

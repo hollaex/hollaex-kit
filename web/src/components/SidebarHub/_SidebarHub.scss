@@ -85,10 +85,10 @@ $deactive-tab-border: $boder--width solid $border--color;
 				}
 
 				&.tab-btc {
-					@include tab-active($color-currency-btc--main, $color-currency-btc--secondary, $tab_lines-height);
+					@include tab-active($coin-btc, $coin-btc-1, $tab_lines-height);
 				}
 				&.tab-eur {
-					@include tab-active($color-currency-eur--main, $color-currency-eur--secondary, $tab_lines-height);
+					@include tab-active($coin-eur, $coin-eur-1, $tab_lines-height);
 				}
 			}
 		}
@@ -157,7 +157,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	@include bottom-border($border-main, $bottom_line-height);
 
 	.sign_up-btn,  .log_in-btn{
-		background: $colors-white !important;
+		background: $app-background-color !important;
 		color: $trade-button--color !important;
 		border: 1px solid $border--color
 	}
@@ -165,7 +165,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	.sidebar_hub-trade {
 		.sidebar_hub-button {
 			&.not-active {
-				background: $colors-white !important;
+				background: $app-background-color !important;
 				color: $trade-button--color !important;
 				border: 1px solid $border--color;
 			}
@@ -208,94 +208,5 @@ $deactive-tab-border: $boder--width solid $border--color;
 				width: 100%;
 			}
 		}
-	}
-}
-
-.dark-theme {
-	.sidebar_hub-wrapper {
-		.sidebar_hub-content {
-			.sign_up-btn,  .log_in-btn{
-				background: $dark-button-active !important;
-				color: $dark-font-main-text-color !important;
-				border: 1px solid $border--color
-			}
-			.sidebar_hub-section {
-				border-top-color: $dark-app-line-divider;
-
-				.sidebar_hub-section-header {
-
-					.sidebar_hub-section-icon {
-						svg path {
-							fill: transparent;
-							stroke: $dark-sidebar-color;
-						}
-					}
-					.sidebar_hub-section-title {
-						color: $dark-sidebar-color;
-					}
-				}
-
-				.sidebar_hub-section-content {
-					.accordion_wrapper .accordion_section {
-						border-color: $dark-app-line-divider;
-					}
-				}
-
-				&.section-active {
-					border-color: $dark-app-line-divider;
-
-					.sidebar_hub-section-header {
-						.sidebar_hub-section-icon {
-							svg path {
-								fill: $dark-sidebar-color-active;
-								stroke: $dark-sidebar-color-active;
-							}
-						}
-						.sidebar_hub-section-title {
-							color: $dark-sidebar-color-active;
-						}
-					}
-				}
-			}
-			.icon_title-wrapper {
-				.icon_title-svg svg {
-					.st0 {
-						fill: $dark-icon-unhover;
-					}
-				}
-			}
-		}
-
-		.sidebar_hub-trade {
-			.sidebar_hub-button {
-				border: none;
-				&.not-active {
-					background: $dark-disabled-main !important;
-					color: $dark-font-main-text-color !important;
-				}
-				&.active {
-					background: $dark-button-active !important;
-				}
-			}
-		}
-
-		.currency-selector {
-			.tab-action {
-				&.tab-active {
-					background: $dark-app-background-color !important;
-					color: $dark-font-main-text-color;
-				}
-				&.not-active {
-					background: $dark-disabled-main !important;
-					color: $dark-font-main-text-color;
-				}
-			}
-		}
-	}
-}
-
-.dark-theme {
-	.sidebar_hub-wrapper {
-		@include bottom-border($dark-border-main, $bottom_line-height);
 	}
 }

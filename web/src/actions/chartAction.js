@@ -1,8 +1,6 @@
 import axios from 'axios';
 import math from 'mathjs';
 import moment from 'moment';
-import { hashSettled } from 'rsvp';
-
 import { getDecimals } from '../utils/utils'
 
 export const getChartConfig = () => {
@@ -56,37 +54,21 @@ export const getChartHistory = (symbol, resolution, from, to, firstDataRequest) 
 	});
 };
 
-const getPriceSparkLine = async (pair) => {
+export const getSparklines = async () => {
   const from = moment()
     .subtract('1', 'month')
     .format('X');
   const to = moment().format('X');
 
-  const { data } = await axios({
-			url: `/chart?symbol=${pair}&resolution=D&from=${from}&to=${to}`,
-			method: 'GET'
-		})
+  const { data = {} } = await axios({
+    url: `/charts?resolution=D&from=${from}&to=${to}`,
+    method: 'GET'
+  });
 
-  return data.map(({ close }) => close);
-};
-
-export const getSparklines = async (pairs = []) => {
-	const promises = {}
-  pairs.forEach(pair => {
-  	promises[pair] = getPriceSparkLine(pair)
+  const chartData = {}
+  Object.entries(data).forEach(([pairKey, pairData = []]) => {
+    chartData[pairKey] = pairData.map(({ close }) => close)
 	})
 
-	const hash = await hashSettled(promises)
-	const result = {}
-
-	Object.entries(hash).forEach(([key]) => {
-		const { state, value } = hash[key];
-		if (state === "fulfilled") {
-			result[key] = value
-		} else {
-			result[key] = []
-		}
-	})
-
-	return result;
+	return chartData
 }

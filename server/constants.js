@@ -21,6 +21,10 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `order:${symbolOrUserId}`;
 		case 'wallet':
 			return `wallet:${symbolOrUserId}`;
+		case 'deposit':
+			return `deposit:${symbolOrUserId}`;
+		case 'chat':
+			return 'chat';
 		default:
 			return;
 	}
@@ -38,6 +42,7 @@ exports.INIT_CHANNEL = 'channel:init';
 
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 
+exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
 exports.WS_USER_TRADE_TYPE = 'trade';
 exports.WS_USER_ORDER_QUEUED_TYPE = 'order_queued';
 exports.WS_USER_ORDER_PROCESSED_TYPE = 'order_processed';
@@ -66,6 +71,7 @@ const client = redis.createClient(redisConfig.client);
 let configuration = {
 	coins: {},
 	pairs: {},
+	tiers: {},
 	kit: {
 		info: {},
 		color: {},
@@ -83,7 +89,6 @@ let configuration = {
 };
 
 let secrets = {
-	broker: {},
 	security: {},
 	accounts: {},
 	captcha: {},
@@ -120,6 +125,7 @@ subscriber.on('message', (channel, message) => {
 				break;
 			case 'update':
 				if (data.info) updateKitInfo(data.info);
+				if (data.tiers) updateTiers(data.tiers);
 				if (data.kit) updateKit(data.kit);
 				if (data.secrets) updateSecrets(data.secrets);
 				break;
@@ -148,13 +154,11 @@ const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 const resetAllConfig = () => {
 	frozenUsers = {};
 	secrets = {
-		broker: {},
 		security: {},
 		accounts: {},
 		captcha: {},
 		emails: {},
 		smtp: {},
-		vault: {},
 		plugins: {
 			s3: {},
 			sns: {},
@@ -182,8 +186,14 @@ const resetAllConfig = () => {
 	setRedisData();
 };
 
+const updateTiers = (newTiers) => {
+	Object.assign(configuration.tiers, newTiers);
+	setRedisData();
+};
+
 const updateKitInfo = (newInfo) => {
 	Object.assign(configuration.kit.info, newInfo);
+	setRedisData();
 };
 
 const updateKit = (newKitConfig) => {
@@ -209,11 +219,14 @@ const setRedisData = () => {
 	client.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
-exports.GET_COINS = () => configuration.coins;
-exports.GET_PAIRS = () => configuration.pairs;
-exports.GET_KIT_CONFIG = () => configuration.kit;
-exports.GET_KIT_SECRETS = () => secrets;
-exports.GET_FROZEN_USERS = () => frozenUsers;
+const { cloneDeep } = require('lodash');
+
+exports.GET_COINS = () => cloneDeep(configuration.coins);
+exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
+exports.GET_TIERS = () => cloneDeep(configuration.tiers);
+exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
+exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
+exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
 exports.MAX_TRADES = process.env.MAX_TRADES
 	? parseInt(process.env.MAX_TRADES)
@@ -264,7 +277,7 @@ const ROLES = {
 	SUPPORT: 'support',
 	ADMIN: 'admin',
 	KYC: 'kyc',
-	TECH: 'tech',
+	COMMUNICATOR: 'communicator',
 	USER: 'user',
 	HMAC: 'hmac'
 };
@@ -298,8 +311,6 @@ exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to
 
 exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
 
-exports.MIN_VERIFICATION_LEVEL = 1;
-
 exports.SEND_CONTACT_US_EMAIL = true;
 
 exports.ZENDESK_HOST = process.env.ZENDESK_HOST || '';
@@ -311,7 +322,6 @@ exports.MASK_CHARS = parseInt(process.env.MASK_CHARS || 5, 10);
 exports.MAX_ORDER_QUEUE = parseInt(process.env.MAX_ORDER_QUEUE) || 10;
 
 // WALLI CONSTANTS -----------------------------
-exports.VAULT_ENDPOINT = 'https://api.bitholla.com/v1/vault';
 
 exports.CONFIRMATION = {
 	btc: 1,
@@ -325,13 +335,14 @@ exports.AVAILABLE_PLUGINS = [
 	'xht_fee',
 	'kyc',
 	'sms',
-	'vault',
 	'freshdesk',
 	'chat',
 	'bank',
 	'announcement',
 	'zendesk'
-]
+];
+
+exports.HMAC_TOKEN_KEY = 'hmac:token';
 
 exports.REQUIRED_XHT = 100;
 
@@ -390,28 +401,25 @@ exports.KIT_CONFIG_KEYS = [
 	'title',
 	'links',
 	'defaults',
+	'native_currency',
 	'logo_path',
 	'logo_black_path',
 	'valid_languages',
-	'user_level_number',
 	'new_user_is_activated',
-	'broker_enabled',
 	'interface',
 	'icons',
 	'strings',
-	'meta'
+	'meta',
+	'setup_completed'
 ];
 
 exports.KIT_SECRETS_KEYS = [
-	'setup_completed',
 	'allowed_domains',
 	'admin_whitelist',
 	'emails',
-	'broker',
 	'security',
 	'captcha',
 	'smtp',
-	'vault',
 	'plugins'
 ];
 
@@ -429,19 +437,9 @@ exports.AUDIT_KEYS = [
 	'timestamp'
 ];
 
-exports.TECH_AUTHORIZED_KIT_CONFIG = [
-	'captcha',
-	'plugins',
-	'secrets'
-];
-
-exports.TECH_AUTHORIZED_KIT_SECRETS = [
-	'allowed_domains',
-	'emails',
-	'admin_whitelist',
-	'captcha',
-	'smtp',
-	'plugins'
+exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
+	'icons',
+	'strings'
 ];
 
 const MAINNET_EXPLORERS = {

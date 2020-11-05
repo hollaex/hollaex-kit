@@ -72,18 +72,20 @@ const putAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putAdminKit', req.auth.sub);
 	const data = req.swagger.params.data.value;
 
-	if (data.kit && data.kit.plugins) {
-		loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
-		return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
+	if (data.kit) {
+		if (data.kit.plugins) {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
+			return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
+		} else if (data.kit.setup_completed) {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
+			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
+		}
 	}
 
 	if (data.secrets) {
 		if (data.secrets.plugins) {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
 			return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
-		} else if (data.secrets.setup_completed) {
-			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
-			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
 		}
 	}
 
@@ -505,6 +507,76 @@ const uploadImage = (req, res) => {
 		});
 };
 
+const getOperators = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getOperators auth',
+		req.auth
+	);
+
+	const { limit, page, order_by, order } = req.swagger.params;
+
+	toolsLib.user.getExchangeOperators(limit.value, page.value, order_by.value, order.value)
+		.then((operators) => {
+			return res.json(operators);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getOperators catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const inviteNewOperator = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/inviteNewOperator auth',
+		req.auth
+	);
+
+	const invitingEmail = req.auth.sub.email;
+	const { email, role } = req.swagger.params;
+
+	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/inviteNewOperator err',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getExchangeGeneratedFees = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getExchangeGeneratedFees auth',
+		req.auth
+	);
+
+	const { limit, page, start_date, end_date } = req.swagger.params;
+
+	getNodeLib().getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getExchangeGeneratedFees catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -525,5 +597,8 @@ module.exports = {
 	adminCheckTransaction,
 	completeExchangeSetup,
 	putNetworkCredentials,
-	uploadImage
+	uploadImage,
+	getOperators,
+	inviteNewOperator,
+	getExchangeGeneratedFees
 };

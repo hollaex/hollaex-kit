@@ -8,7 +8,7 @@
 	appearance: none;
 	text-indent: 1px;
 	text-overflow: '';
-	color: $history-color-sell;
+	color: $colors-black;
 	font-size: 2rem;
 	font-weight: bold;
 	padding-right: 2rem;
@@ -194,24 +194,5 @@
 		transform: rotate(90deg);
 		@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size, relative);
 		right: -1rem;
-	}
-}
-.dark-theme {
-	.with_arrow_trade:after {
-		border-bottom-color: $dark-font-main-text-color !important;
-		border-right-color: $dark-font-main-text-color !important;
-	}
-	.mobile-drop-down {
-		color: $dark-sell;
-	}
-	.drop-down, .option{
-		&.xht {
-			border : none !important;
-			color: $colors-white !important;
-		}
-		.option{
-			background: $dark-quick-trade-background;
-			border:1px solid red!important
-		}
 	}
 }

@@ -1,302 +1,7 @@
 $language-selector-arrow--size: 0.4rem;
-$app-bar--pairs-color: #CCCBCA;
 $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
-$app-bar-add-tab-red: #ff0000;
-
-.dark-theme {
-	.app_bar {
-		background: $dark-app-bar-background-color !important;
-		color: $dark-font-main-text-color !important;
-		> div {
-			&:not(:first-child) {
-				border-left-color: $dark-border-main !important;
-			}
-		}
-
-		.app_bar-pair-content {
-			color: $dark-font-sub-text-1-color;
-		}
-
-		.active-tab-pair {
-			background-color: $dark-app-background-color !important;
-			border-left: 1px solid $dark-border-main !important;
-			border-right: 1px solid $dark-border-main !important;
-			color: $dark-font-main-text-color !important;
-
-			svg {
-				.btc0,
-				.btc1,
-				.eth0,
-				.eth1,
-				.bch-icon,
-				.xrp-icon,
-				.xht-icon,
-				.xmr-icon,
-				.xlm-icon,
-				.eos-icon,
-				.trx-icon,
-				.ada-icon,
-				.bnb-icon,
-				.tusd-icon,
-				.dai-icon,
-				.ltc-icon {
-					fill: $dark-font-main-text-color;
-				}
-				.tab-close, .plus, .double-arrow {
-					stroke: $dark-font-main-text-color;
-				}
-				.st0 {
-					fill: $dark-font-main-text-color;
-					stroke-width: 0rem;
-				}
-			}
-		}
-
-		.active-tab-overflow {
-			background-color: $dark-app-background-color !important;
-			border-left: 1px solid $dark-app-background-color !important;
-			color: $dark-font-main-text-color !important;
-			top: 1px;
-
-			svg {
-				.double-arrow {
-					stroke: $dark-font-main-text-color;
-				}
-			}
-		}
-
-		.app-price-diff-down {
-			color: $dark-sell;
-		}
-
-		.app-price-diff-up {
-			color: $dark-buy;
-		}
-
-		.app-bar-price_diff_up:before {
-			@include css-triangle($dark-buy, 'up', $app-bar--arrow-size);
-			display: inline-block;
-			margin-bottom: 0.2rem;
-			margin-right: 0.5rem;
-			position: relative;
-			top: calc(50% - 0.6rem);
-		}
-
-		.app-bar-price_diff_down:before {
-			@include css-triangle($dark-sell, 'down', $app-bar--arrow-size);
-			display: inline-block;
-			margin-right: 0.5rem;
-			position: relative;
-			top: calc(50% - 0.6rem);
-		}
-	}
-
-	.app-menu-bar {
-		background: $dark-app-light-background !important;
-		border-bottom: 1px solid $dark-app-line-divider;
-
-		.app-menu-bar-content {
-			svg {
-				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
-				.tab-security0, .tab-api0 {
-					fill: $app-bar-icon-inactive !important;
-				}
-			}
-		}
-		
-		.active-menu {
-			background: $dark-app-background-color !important;
-			color: $dark-font-main-text-color !important;
-
-			svg {
-				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
-				.tab-security0, .tab-api0 {
-					fill: $dark-font-main-text-color !important;
-				}
-			}
-		}
-
-		.menu-notification-active {
-			color:$colors-notifications-red !important;
-
-			svg {
-				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
-				.tab-security0, .tab-api0 {
-					fill:$colors-notifications-red !important;
-				}
-			}
-		}
-
-		.notification {
-			color: $colors-notifications-red !important;
-		
-			svg {
-				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
-				.tab-security0, .tab-api0 {
-					fill: $colors-notifications-red !important;
-				}
-			}
-		}
-		.security_notification, .verification_notification, .wallet_notification {
-			color: $colors-notification-inactive-red !important;
-		
-			svg {
-				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
-				.tab-security0, .tab-api0 {
-					fill: $colors-notification-inactive-red !important;
-				}
-			}
-		}
-	}
-
-	.app_bar-icon {
-		.app_bar-icon-logo svg {
-			.logo-black {
-				fill: $dark-app-logo-color;
-			}
-			path {
-				fill: $dark-app-logo-color;
-			}
-			polygon, circle {
-				stroke: $dark-app-logo-color;
-			}
-		}
-	}
-
-	.app_bar-mobile {
-		
-		background-color: $colors-black;
-		.homeicon-svg {
-			.logo-black {
-				fill: $colors-main-black;
-			}
-		}
-	}
-
-	.search-field {
-		background-color: $dark-app-background-color;
-		color: $dark-font-main-text-color;
-	}
-
-	.app-bar_add-tab-price {
-		color: $dark-font-main-text-color;
-	}
-
-	.app-bar-add-tab-content {
-		background-color: $dark-app-bar-add-tab-menu-background;
-		color: $app-bar-menu-list-color;
-	}
-
-	.app-bar-search-field {
-		background-color: $dark-app-bar-add-tab-menu-background !important;
-
-		&::placeholder {
-			color: $app-bar-menu-list-color !important;
-		}
-	}
-
-	.app-bar-add-tab-menu {
-		background-color: $colors-black;
-		color: $app-bar-menu-list-color;
-
-		.app-bar-tab-menu-list {
-			background-color: $colors-black;
-			color: $app-bar-menu-list-color;
-		}
-
-		.active-tab {
-			background-color: $dark-app-bar-add-tab-menu-background;
-			color: $dark-font-main-text-color;
-		}
-
-		.app-bar-tab-overflow-content {
-			background-color: $dark-app-bar-add-tab-menu-background;
-			color: $app-bar-menu-list-color;
-		}
-
-		.app-bar-add-tab-content-list {
-			color: $app-bar-menu-list-color;
-
-			&:hover {
-				background-color: $dark-app-bar-tab-active-menu-list-background;
-				color: $dark-font-main-text-color;
-
-				svg {
-					.btc0,
-					.btc1,
-					.eth0,
-					.eth1,
-					.bch-icon,
-					.xrp-icon,
-					.xht-icon,
-					.xmr-icon,
-					.xlm-icon,
-					.eos-icon,
-					.trx-icon,
-					.ada-icon,
-					.bnb-icon,
-					.tusd-icon,
-					.dai-icon,
-					.ltc-icon,
-					.default-icon {
-						fill: $dark-font-main-text-color !important;
-					}
-					.st0 {
-						fill: $dark-font-main-text-color !important;
-					}
-				}
-			}
-		}
-
-		.app-bar-tab-setting, .app-bar-add-tab-icons {
-			svg {
-				.btc0,
-				.btc1,
-				.eth0,
-				.eth1,
-				.bch-icon,
-				.xrp-icon,
-				.xht-icon,
-				.xmr-icon,
-				.xlm-icon,
-				.eos-icon,
-				.trx-icon,
-				.ada-icon,
-				.bnb-icon,
-				.tusd-icon,
-				.dai-icon,
-				.ltc-icon,
-				.default-icon {
-					fill: $app-bar-menu-list-color !important;
-				}
-				.plus, .minus {
-					stroke: $app-bar-menu-list-color !important;
-					stroke-width: .2rem;
-				}
-				.st0 {
-					fill: $colors-white;
-					stroke-width: 0rem;
-				}
-				.icon-check-1 {
-					stroke: $colors-white;
-				}
-				.xht-icon-1 {
-					fill: $dark-app-background-color !important;
-				}
-			}
-
-			.app-price-diff-down {
-				color: $dark-sell;
-			}
-
-			.app-price-diff-up {
-				color: $dark-buy;
-			}
-		}
-	}
-}
 
 .app_bar {
 	position: relative;
@@ -328,18 +33,6 @@ $app-bar-add-tab-red: #ff0000;
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
-	}
-
-	.app_bar-icon-logo svg {
-		.logo-black {
-			fill: $app-logo-color;
-		}
-		path {
-			fill: $app-logo-color;
-		}
-		polygon, circle {
-			stroke: $app-logo-color;
-		}
 	}
 
 	.app_bar-icon {
@@ -400,13 +93,13 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.quick_trade-active {
-		border: 1px solid $colors-white;
-		color: $colors-white;
+		border: 1px solid $base_top-bar-navigation_text;
+		color: $base_top-bar-navigation_text;
 
 		svg {
 			.trade-active-2, .st0 {
-				fill: $colors-white !important;
-				stroke: $colors-white !important;
+				fill: $base_top-bar-navigation_text !important;
+				stroke: $base_top-bar-navigation_text !important;
 				stroke-width: 3 !important;
 			}
 		}
@@ -418,7 +111,7 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app-bar-account {
-		color: $colors-white;
+		color: $base_top-bar-navigation_text;
 		cursor: pointer;
 		margin-right: 0.8rem;
 	}
@@ -487,7 +180,7 @@ $app-bar-add-tab-red: #ff0000;
 
 	.active-tab-pair {
 		background-color: $app-background-color;
-		border-left: 1px solid $colors-white;
+		border-left: 1px solid $base_top-bar-navigation_text;
 		color: $colors-black;
 		top: 1px;
 
@@ -564,23 +257,23 @@ $app-bar-add-tab-red: #ff0000;
 	}
 	.toggle_button-wrapper {
 		.toggle-content {
-			color: $colors-white;
+			color: $base_top-bar-navigation_text;
 			border-radius: .35rem;
 			padding: 0px 0.1rem;
 	
 			.dark {
 				.moon-icon {
-					fill: $colors-white;
+					fill: $base_top-bar-navigation_text;
 				}
 			}
 			.white {
 				.sun-icon {
-					fill: $colors-white;
+					fill: $base_top-bar-navigation_text;
 				}
 			}
 
 			.toggle-action_button {
-				border-color: $colors-white;
+				border-color: $base_top-bar-navigation_text;
 				width: 34px;
 				height: 75.5%;
 				margin: 0;
@@ -593,7 +286,7 @@ $app-bar-add-tab-red: #ff0000;
 				}
 
 				.toggle-action_button-display {
-					background: $colors-white;
+					background: $base_top-bar-navigation_text;
 					height: 9px;
 					width: 9px;
 					margin: 1.2px 3px 1px 0!important;
@@ -626,7 +319,7 @@ $app-bar-add-tab-red: #ff0000;
 			stroke: $app-bar-icon-inactive;
 		}
 		.st0 {
-			fill: $colors-white !important;
+			fill: $base_top-bar-navigation_text !important;
 			stroke-width: 0rem;
 		}
 	}
@@ -824,7 +517,7 @@ $app-bar-add-tab-red: #ff0000;
 }
 
 .app-bar-tab-menu {
-	background-color: $colors-black !important;
+	background-color: $app-bar-background-color !important;
 }
 
 .app_bar-mobile {
@@ -843,7 +536,7 @@ $app-bar-add-tab-red: #ff0000;
 		}
 	}
 	.app-bar-account {
-		color: $colors-white;
+		color: $base_top-bar-navigation_text;
 		cursor: pointer;
 		margin-right: 0.5rem;
 	}
@@ -857,7 +550,7 @@ $app-bar-add-tab-red: #ff0000;
 		margin: .5rem .3rem 0 .3rem;
 		width: 1.5rem;
 		.st0 {
-			fill: $colors-white !important;
+			fill: $base_top-bar-navigation_text !important;
 			stroke-width: 0rem;
 		}
 	}
@@ -923,7 +616,7 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.menu-notification-active {
-		background-color: $colors-white;
+		background-color: $base_top-bar-navigation_text;
 		height: 2.5rem;
 		position: relative;
 		color: $colors-notifications-red;
@@ -1021,7 +714,7 @@ $app-bar-add-tab-red: #ff0000;
 	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 	.app-bar-tab-menu-list {
-		background-color: $colors-black;
+		background-color: $app-bar-background-color;
 		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		height: 2.5rem;
@@ -1125,11 +818,11 @@ $app-bar-add-tab-red: #ff0000;
 				stroke-width: .2rem;
 			}
 			.st0 {
-				fill: $colors-white;
+				fill: $base_top-bar-navigation_text;
 				stroke-width: 0rem;
 			}
 			.icon-check-1 {
-				stroke: $colors-white;
+				stroke: $base_top-bar-navigation_text;
 			}
 			.xht-icon-1 {
 				fill: $dark-app-background-color !important;

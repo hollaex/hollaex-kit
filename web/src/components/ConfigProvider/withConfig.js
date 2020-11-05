@@ -1,16 +1,21 @@
 import React from 'react';
-import { ProjectConfig } from 'config/project.config';
+import { ProjectConfig } from './index';
 
 const withConfig = (Component) => {
   return (props) => (
     <ProjectConfig.Consumer>
-      {({ icons, updateIcons, removeIcon, defaultLanguage }) => (
+      {({ defaults, icons, updateIcons, removeIcon, color, updateColor, themeOptions, removeTheme, updateDefaults }) => (
         <Component
           {...props}
+          defaults={defaults}
+          color={color}
+          updateColor={updateColor}
           icons={icons}
           updateIcons={updateIcons}
           removeIcon={removeIcon}
-          defaultLanguage={defaultLanguage}
+          themeOptions={themeOptions}
+          removeTheme={removeTheme}
+          updateDefaults={updateDefaults}
         />
       )}
     </ProjectConfig.Consumer>

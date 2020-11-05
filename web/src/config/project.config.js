@@ -1,14 +1,14 @@
-import React from "react";
 import icons from 'config/icons';
-import { DEFAULT_LANGUAGE } from 'config/constants';
+import color from 'config/colors';
+import { DEFAULT_LANGUAGE, THEME_DEFAULT } from 'config/constants';
 
 const config = {
-  defaultLanguage: DEFAULT_LANGUAGE,
   icons,
-}
-
-const ProjectConfig = React.createContext("appConfig")
-
-export { ProjectConfig }
+  color,
+  defaults: {
+    theme: THEME_DEFAULT,
+    language: DEFAULT_LANGUAGE,
+  }
+};
 
 export default config;

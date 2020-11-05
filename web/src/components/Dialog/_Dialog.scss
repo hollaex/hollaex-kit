@@ -19,7 +19,7 @@ $close-button--margin: 1.5rem;
 	max-height: calc(100% - #{$dialog--padding});
 	overflow: auto;
 	border: none !important;
-	background-color: $app-background-color;
+	background-color: $app-sidebar-background !important;
 
 	.action_notification-wrapper.close-button {
 		margin-top: $close-button--margin;
@@ -84,35 +84,6 @@ $close-button--margin: 1.5rem;
 .app-dialog-flex {
 	.ReactModal__Overlay {
 		z-index: 10000 !important;
-	}
-}
-
-.dark-theme {
-	.ReactModal__Content {
-		background-color: $dark-auth-container-background !important;
-	}
-	.ReactModal__Overlay {
-		background-color: $dark-app-modal-background !important;
-	}
-	.success_display-wrapper {
-		color: $dark-font-main-text-color;
-
-		.limit-trade-tick {
-			color: $dark-icon-color
-		}
-	}
-	.close-button {
-		&.action_notification-wrapper {
-			.action_notification-image {
-				fill: $dark-font-main-text-color;
-			}
-		}
-	}
-	.exir-button {
-		&.disabled {
-			background-color: #535353 !important;
-			color: gray !important;
-		}
 	}
 }
 

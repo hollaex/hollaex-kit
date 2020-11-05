@@ -256,46 +256,6 @@ $header-margin: 2rem;
 	}
 }
 
-.dark-theme {
-	svg {
-		.wallet-coins-1,
-		.deposit-wallet-01 {
-			stroke: $dark-button-active;
-		}
-		.wallet-coins-2,
-		.deposit-wallet-02 {
-			fill: $dark-font-main-text-color;
-		}
-	}
-
-	.wallet-container {
-		border-top-color: $dark-app-line-divider;
-		.accordion_wrapper {
-			.accordion_section_content_text {
-				color: $dark-font-main-text-color !important;
-				&:after {
-					border-left-color: $dark-border-main !important;
-				}
-			}
-		}
-
-		.wallet-assets_block {
-			color: $dark-font-main-text-color !important;
-			.wallet-assets_block-table {
-				tbody, tfoot {
-					color: $dark-font-sub-text-color;
-				}
-				.table-bottom-border td,
-				th {
-					&:not(:first-child) {
-						border-bottom-color: $dark-border-main;
-					}
-				}
-			}
-		}
-	}
-}
-
 .need-help {
 	svg {
 		@include size-important(1rem);

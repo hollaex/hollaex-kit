@@ -1,7 +1,5 @@
-$chat-message-box-light--background-color: $box-fields;
 $chat-wrapper-light--background-color: white;
 $chat-message-box-dark--background-color: #0f1114;
-$chat-wrapper-dark--background-color: $dark-app-light-background;
 $chat-message-light--font-color: #999999;
 $chat-message-dark--font-color: #808080;
 $chat-wrapper--border-color: #282829;
@@ -21,6 +19,7 @@ $emoji-content-background: #cecece;
 $dark-emoji-content-background: #454848;
 $dark-emoji-content-top-background: #525656;
 $light-emoji-content-top-background: #dbdbdb;
+$colors-white: white;
 
 .layout-mobile {
 	.chat-wrapper {
@@ -441,151 +440,6 @@ $light-emoji-content-top-background: #dbdbdb;
 			button {
 				&:focus {
 					outline: none !important;
-				}
-			}
-		}
-	}
-}
-
-.dark-theme {
-	.chat-wrapper {
-		border: 1px solid $dark-box-fields !important;
-		background-color: $chat-wrapper-dark--background-color;
-
-		&.minimized {
-			.chat-header {
-				border-top: 1px solid $colors-white;
-			}
-		}
-		.chat-username-footer{
-			border-top: 1px solid gray
-		}
-		.minimize-button {
-	
-			&:hover {
-				background-color: $dark-app-background-color;
-			}
-			.minimize-button-content{
-				border-bottom: 1px solid $chat-top-theme-icon;
-			}
-		}
-		.user-icon {
-			width: 2rem;
-
-			svg {
-				.level_icon {
-					fill: $colors-white;
-				}
-			}
-		}
-		.chat-message-list{
-			background-color:$dark-app-light-background;
-			.view{
-				> div{
-					&:nth-child(odd){
-						background-color: $dark-app-light-background
-					}
-					&:nth-child(even){
-						background-color: $dark-box-fields
-					}
-				}
-			}
-		}
-		.chat-message {
-			.message-content {
-				.message {
-					color: $chat-message-content-color;
-				}	
-				span {
-					&.toggle-content {
-						color: $colors-notifications-red;
-
-					}
-				}
-				.nonmobile {
-					.own-message {
-						color: #ffff00;
-					}
-				}
-			}
-
-			.item-options {
-				.item-options-wrapper {
-					.item-option {
-						background-color: #474855;
-						border-bottom: 1px solid #464545;
-						color: $chat-message-dark--font-color;
-						&:hover {
-							background-color: $chat-wrapper-light--background-color;
-							color: $chat-message-light--font-color;
-						}
-					}
-				}
-			}
-
-			.username {
-				color: $colors-white;
-			}
-		}
-		.username-to-chat {
-			padding: 0.7rem !important;
-			color:$colors-username-set-dark !important;
-			font-size: 1rem !important;
-			font-family: "Open Sans"!important;
-			
-		}
-		.chat-header {
-			background-color: $chat-message-box-dark--background-color;
-
-			.chat-header-icon {
-				svg {
-					.dotted-grip-0 {
-						fill: $chat-message-content-color
-					}
-				}
-			}
-		}
-		.chat-footer {
-			.chat-message-box {
-				background-color: $chat-message-box-dark--background-color;
-				color: $chat-message-content-color;
-				
-				&::placeholder {
-					color: $chat-message-content-color;
-				}
-			}
-			.emoji-container {
-				background-color: $dark-emoji-content-background;
-
-				.chat-category {
-					background-color: $dark-emoji-content-top-background;
-					border-bottom: 1px solid grey;
-
-					.top-background	{
-						.emoji-mart-emoji {
-							background-color: $dark-emoji-content-top-background!important
-						}
-					}
-					.cross-icon-back {
-						svg{
-							.cancel-cross-2{
-								stroke: $dark-emoji-content-top-background;
-							}
-						}
-					}
-				}
-				.emoji-mart-emoji {
-					background-color: $dark-emoji-content-background;
-				}
-			}
-			.chat-emoji-wrapper {
-				background-color: $chat-message-box-dark--background-color;
-				.chat-emoji-icon {
-				    svg {
-				     	.emoji-face-icon {
-					    	fill: $chat-message-content-color;
-						}
-					}
 				}
 			}
 		}
