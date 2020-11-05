@@ -258,10 +258,56 @@ const updatePairFees = (pair, fees) => {
 	});
 };
 
+const updatePairLimits = (pair, limits) => {
+	if (!subscribedToPair(pair)) {
+		return reject(new Error('Invalid pair'));
+	}
+
+	const tiersToUpdate = Object.keys(limits);
+
+	if (difference(tiersToUpdate, getTierLevels()).length > 0) {
+		return reject(new Error('Invalid tier level given'));
+	}
+
+	if (Object.values(flatten(limits)).some(limit => limit < 0 && limit !== -1)) {
+		return reject(new Error('Limits can be either -1 or GTE 0'));
+	}
+
+	return getModel('sequelize').transaction((transaction) => {
+		return all(tiersToUpdate.map(async (level) => {
+
+			const tier = await dbQuery.findOne('tier', { where: { id: level } });
+
+			const deposit_limit = limits[level].deposit_limit || tier.deposit_limit;
+			const withdrawal_limit = limits[level].withdrawal_limit || tier.withdrawal_limit;
+
+			const updatedTier = await tier.update(
+				{ deposit_limit, withdrawal_limit },
+				{ fields: [ 'deposit_limit', 'withdrawal_limit' ], transaction }
+			);
+
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update',
+					data: {
+						tiers: {
+							[updatedTier.id]: updatedTier
+						}
+					}
+				})
+			);
+
+			return updatedTier;
+		}));
+	});
+};
+
 module.exports = {
 	findTier,
 	createTier,
 	updateTier,
 	estimateNativeCurrencyPrice,
-	updatePairFees
+	updatePairFees,
+	updatePairLimits
 };
