@@ -361,7 +361,7 @@ const AboutData = ({
                     <div className="user-info-separator"></div>
                     <div className="user-level-container">
                         <div>
-                            <ReactSVG path={ICONS.LEVEL_ACCOUNT_ICON_1} wrapperClassName="levels-icon" />
+                            <ReactSVG path={ICONS[`LEVEL_ACCOUNT_ICON_${userData.verification_level}`]} wrapperClassName="levels-icon" />
 						</div>
                         <div className="user-info-label">
                             Verification level: {userData.verification_level}
