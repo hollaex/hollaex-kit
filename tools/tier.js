@@ -91,18 +91,10 @@ const updateTier = (level, updateData) => {
 
 	if (!existingTiers[level]) {
 		return reject(new Error('Tier does not exist'));
-	} else if (
-		updateData.withdrawal_limit !== undefined
-		&& updateData.withdrawal_limit < 0
-		&& updateData.withdrawal_limit !== -1
-	) {
-		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
-	} else if (
-		updateData.deposit_limit !== undefined
-		&& updateData.deposit_limit < 0
-		&& updateData.deposit_limit !== -1
-	) {
-		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
+	} else if (updateData.deposit_limit !== undefined || updateData.withdrawal_limit !== undefined) {
+		return reject(new Error('Cannot update limits through this endpoint'));
+	} else if (updateData.fees !== undefined) {
+		return reject(new Error('Cannot update fees through this endpoint'));
 	}
 
 	return findTier(level)
@@ -123,14 +115,6 @@ const updateTier = (level, updateData) => {
 
 			if (updateData.description) {
 				newData.description = updateData.description;
-			}
-
-			if (updateData.deposit_limit !== undefined) {
-				newData.deposit_limit = updateData.deposit_limit;
-			}
-
-			if (updateData.withdrawal_limit !== undefined) {
-				newData.withdrawal_limit = updateData.withdrawal_limit;
 			}
 
 			return tier.update(newData, { returning: true });
