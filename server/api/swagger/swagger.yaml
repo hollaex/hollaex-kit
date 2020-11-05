@@ -2012,6 +2012,32 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/pair/limits:
+    x-swagger-router-controller: tier
+    put:
+      operationId: updatePairLimits
+      description: Update trading pair limits
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PairLimitsPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/coins:
     x-swagger-router-controller: admin
     get:
@@ -4672,12 +4698,6 @@ definitions:
         type: string
       description:
         type: string
-      deposit_limit:
-        type: number
-        format: double
-      withdrawal_limit:
-        type: number
-        format: double
   PostTierBody:
     type: object
     required:
@@ -4769,3 +4789,31 @@ definitions:
         type: string
       fees:
         type: object
+        additionalProperties:
+          type: object
+          properties:
+            maker:
+              type: number
+              format: double
+            taker:
+              type: number
+              format: double
+  PairLimitsPut:
+    type: object
+    required:
+      - pair
+      - limits
+    properties:
+      pair:
+        type: string
+      limits:
+        type: object
+        additionalProperties:
+          type: object
+          properties:
+            deposit_limit:
+              type: number
+              format: double
+            withdrawal_limit:
+              type: number
+              format: double
