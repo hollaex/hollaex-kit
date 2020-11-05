@@ -4527,6 +4527,57 @@ table th {
       width: 8rem; }
     .notification-wrapper .invite_friends_wrapper .icon_title-wrapper .icon_title-text.title {
       font-size: 2rem; }
+  .notification-wrapper svg .check-order-1,
+  .notification-wrapper svg .check-order-2,
+  .notification-wrapper svg .coin-btc-4,
+  .notification-wrapper svg .coin-base-4 {
+    stroke: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper svg .market-buy,
+  .notification-wrapper svg .check-order-2,
+  .notification-wrapper svg .coin-btc-1,
+  .notification-wrapper svg .coin-btc-5,
+  .notification-wrapper svg .coin-base-1,
+  .notification-wrapper svg .coin-base-5,
+  .notification-wrapper svg .email_sent,
+  .notification-wrapper svg .limit-sell-03,
+  .notification-wrapper svg .limit-sell-04,
+  .notification-wrapper svg .limit-buy-03,
+  .notification-wrapper svg .limit-buy-04,
+  .notification-wrapper svg .refer-icon,
+  .notification-wrapper svg .stake_icon {
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper svg .limit-sell-01,
+  .notification-wrapper svg .limit-buy-01,
+  .notification-wrapper svg .limit-buy-02,
+  .notification-wrapper svg .limit-sell-02,
+  .notification-wrapper svg .wallet-selected-2 {
+    stroke: var(--labels_important-active-labels-text-graphics);
+    fill: transparent; }
+  .notification-wrapper svg g .wallet-selected-2 {
+    stroke: transparent;
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper .partial-fill {
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper .limit-trade-tick {
+    fill: var(--labels_secondary-inactive-label-text-graphics); }
+  .notification-wrapper .new-order-notification svg {
+    fill: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .new-order-notification svg .newWave-icon {
+      fill: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .new-order-notification svg .generate_api {
+      fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper .notification-wrapper {
+    color: var(--labels_secondary-inactive-label-text-graphics); }
+    .notification-wrapper .notification-wrapper .notification-title-wrapper {
+      border-bottom-color: var(--labels_secondary-inactive-label-text-graphics); }
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-icon svg .deposit-02,
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-icon svg .deposit-complete-01,
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-icon svg .deposit-complete-btc-01 {
+        fill: var(--labels_important-active-labels-text-graphics); }
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-text {
+        color: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .notification-wrapper .notification-content-information .text_disabled {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .notification-wrapper .notification-content-wrapper.notification-withdrawal .notification-content-icon {
   width: 80% !important; }
@@ -4547,7 +4598,7 @@ table th {
   .layout-mobile .notification-wrapper .order-notification {
     margin: 0.75rem;
     flex-direction: row;
-    color: white; }
+    color: var(--labels_important-active-labels-text-graphics); }
     .layout-mobile .notification-wrapper .trade-notification .notification-content-icon,
     .layout-mobile .notification-wrapper .order-notification .notification-content-icon {
       margin: 0;
@@ -4559,9 +4610,6 @@ table th {
       .layout-mobile .notification-wrapper .order-notification .notification-content-icon svg {
         width: 6rem;
         height: 6rem; }
-      .layout-mobile .notification-wrapper .trade-notification .notification-content-icon .limit-trade-tick,
-      .layout-mobile .notification-wrapper .order-notification .notification-content-icon .limit-trade-tick {
-        fill: #BBBDBF; }
     .layout-mobile .notification-wrapper .trade-notification .notification-content-title,
     .layout-mobile .notification-wrapper .order-notification .notification-content-title {
       margin: 0; }
