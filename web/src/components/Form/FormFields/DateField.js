@@ -41,7 +41,7 @@ class DateField extends Component {
 		}
 	}
 
-	setDisplay = (dateString = '', language = this.props.defaultLanguage) => {
+	setDisplay = (dateString = '', language = this.props.defaults.language) => {
 		const display = {};
 		let date;
 		date = moment(dateString);

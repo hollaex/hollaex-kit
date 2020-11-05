@@ -1,5 +1,6 @@
 $operator-controls__panel-main-color: #0000FF;
 $operator-controls__panel-text-color: #FFFFFF;
+$operator-controls__panel-text-color-inactive: #FFFFFFB3;
 $operator-controls__panel-border-color: #A7A7A7;
 
 
@@ -16,16 +17,26 @@ $operator-controls__panel-border-color: #A7A7A7;
   }
 }
 
+.operator-controls__buttons-wrapper {
+  display: flex;
+  margin-left: 57px;
+}
+
 .operator-controls__button {
   height: 30px;
   font-size: 16px;
   background-color: $operator-controls__panel-main-color;
   width: 162px;
-  margin-left: 57px;
+  margin-right: 8px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &.disabled {
+    color: $operator-controls__panel-text-color-inactive;
+    cursor: not-allowed;
+  }
 }
 
 .operator-controls__panel {
