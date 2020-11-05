@@ -5002,7 +5002,7 @@ table th {
   width: 100%;
   font-size: 0.9rem;
   padding: 0 4px;
-  background-color: var(--labels_important-active-labels-text-graphics) !important; }
+  background-color: var(--specials_buttons-links-and-highlights) !important; }
   .exir-button.button-success {
     background-color: var(--specials_checks-okay-done) !important; }
   .exir-button.button-fail {
