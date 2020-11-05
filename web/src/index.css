@@ -5824,7 +5824,8 @@ table th {
 
 .donut-label-percentage {
   font-size: .8rem;
-  font-weight: bold; }
+  font-weight: bold;
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .donut-label-link {
   font-size: .7rem;
@@ -5833,11 +5834,13 @@ table th {
 
 .donut-label-no-price {
   font-size: .7rem;
-  font-weight: bold; }
+  font-weight: bold;
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .donut-label-pair {
   font-size: 1rem;
-  font-weight: bold; }
+  font-weight: bold;
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .deposit-asset {
   fill: var(--specials_buttons-links-and-highlights);
