@@ -1,4 +1,5 @@
 .general-wrapper {
+	color: #ffffff;
 	margin-top: 2rem;
 }
 .general-wrapper .ant-input,
@@ -241,7 +242,7 @@ h2,
 	bottom: 3px;
 }
 .description_footer {
-	bottom: 2px;
+	bottom: 60px;
 	right: 7px;
 }
 .custom-form-wrapper {

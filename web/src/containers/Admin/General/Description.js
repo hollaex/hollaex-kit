@@ -1,48 +1,14 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
+import { AdminHocForm } from '../../../components';
 import { ICONS } from '../../../config/constants';
 
-const { Item } = Form;
-const { TextArea } = Input;
-
-const DescriptionForm = ({ handleSubmit }) => {
-    return (
-        <Form onSubmit={handleSubmit}>
-            <Item name="description">
-                <div className="sub-title">Write description</div>
-                <TextArea rows={3} placeholder="Write a short description or slogan..." />
-            </Item>
-            <Button block type="primary" htmlType="submit">
-                Save
-            </Button>
-        </Form>
-    );
-};
-
-const FooterTextForm = ({ handleSubmit }) => {
-    return (
-        <Form onSubmit={handleSubmit}>
-            <Item name="footer_text">
-                <div className="sub-title">Small text</div>
-                <TextArea rows={3} placeholder="Write your small text filler" />
-            </Item>
-            <Button block type="primary" htmlType="submit">
-                Save
-            </Button>
-        </Form>
-    );
-};
+const DescriptionForm = AdminHocForm('DescriptionForm');
+const FooterTextForm = AdminHocForm('FooterDescriptionForm');
 
 class Description extends Component {
-    handleSubmitDescription = async (e) => {
-        e.preventDefault();
-    };
-    
-    handleSubmitFooter = async (e) => {
-        e.preventDefault();
-    };
 
     handleImg = (type) => {
         return (
@@ -63,6 +29,12 @@ class Description extends Component {
     }
         
     render() {
+        const {
+            descriptionFields,
+            descriptionInitialValues,
+            footerFields,
+            footerInitialValues
+        } = this.props;
         return (
             <div className="description-wrapper">
                 <div>
@@ -77,7 +49,13 @@ class Description extends Component {
                     </h3>
                 </div>
                 <p>Write a short description or slogan for your project that will be displayed in the footer near your logo.</p>
-                <DescriptionForm handleSubmit={this.handleSubmitDescription} />
+                <DescriptionForm
+                    initialValues={descriptionInitialValues}
+                    fields={descriptionFields}
+                    onSubmit={this.props.handleSubmitDescription}
+                    buttonText="Save"
+                    buttonClass="green-btn minimal-btn"
+                />
                 <div className="divider"></div>
                 <div>
                     <h3>
@@ -91,7 +69,13 @@ class Description extends Component {
                     </h3>
                 </div>
                 <p>Small text often used for copywrite or other business data</p>
-                <FooterTextForm handleSubmit={this.handleSubmitFooter} />
+                <FooterTextForm
+                    initialValues={footerInitialValues}
+                    fields={footerFields}
+                    onSubmit={this.props.handleSubmitDescription}
+                    buttonText="Save"
+                    buttonClass="green-btn minimal-btn"
+                />
             </div>
         );
     }

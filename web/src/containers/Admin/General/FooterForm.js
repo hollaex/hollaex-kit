@@ -11,11 +11,8 @@ class FormWrapper extends Component {
         }
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields();
-        const formProps = this.props.form.getFieldsValue();
-        this.props.handleSubmit(formProps);
+    onSubmit = (formProps) => {
+        this.props.handleSubmitLinks(formProps);
     };
 
     renderCustomFields = (fields = {}) => {
@@ -68,16 +65,22 @@ class FormWrapper extends Component {
     }
 
     render() {
-        const { fields, initialValues = {}, customFields = false, buttonTxt = "Save" } = this.props;
+        const { fields, initialValues = {}, customFields = false, buttonTxt = "Save", handleSubmit } = this.props;
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
+                <form>
                     {customFields
                         ? this.renderCustomFields(fields)
                         : renderFields(fields, getFieldDecorator, initialValues)
                     }
-                    <Button block type="primary" htmlType="submit" className="green-btn minimal-btn">
+                    <Button
+                        block
+                        type="primary"
+                        htmlType="submit"
+                        className="green-btn minimal-btn"
+                        onClick={handleSubmit(this.onSubmit)}
+                    >
                         {buttonTxt}
                     </Button>
                 </form>
@@ -87,5 +90,6 @@ class FormWrapper extends Component {
 }
 
 export default reduxForm({
-	form: 'FooterLinkForm'
+    form: 'FooterLinkForm',
+    enableReinitialize: true
 })(FormWrapper);

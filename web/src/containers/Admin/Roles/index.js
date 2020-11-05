@@ -105,7 +105,7 @@ const Roles = () => {
 	const [modalType, setType] = useState('');
 	const [isOpen, setOpen] = useState(false);
 
-	const requestInitRole = (pageNo = 1, limit = 50) => {
+	const requestInitRole = (pageNo = 1) => {
 		requestRole({ pageNo, limit })
 			.then((res) => {
 				let temp = pageNo === 1
@@ -113,7 +113,8 @@ const Roles = () => {
 					[...operatorList, ...res.data];
 				setOperatorList(temp);
 				setPage(pageNo);
-				setCurrentTablePage(pageNo === 1 ? 1 : currentTablePage);
+				let currentPage = pageNo === 1 ? 1 : currentTablePage
+				setCurrentTablePage(currentPage);
 				setIsRemaining(res.count > pageNo * limit);
 			})
 			.catch((err) => {

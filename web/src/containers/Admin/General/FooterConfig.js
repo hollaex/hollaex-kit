@@ -256,13 +256,27 @@ class FooterConfig extends Component {
         }
     }
 
-    handleSubmitHelpdesk = (formProps) => {
-        console.log('formProps', formProps);
-    };
+    componentDidMount() {
+        if (this.props.initialValues) {
+            this.setState({
+                initialCustom: {
+                    ...this.state.initialCustom,
+                    ...this.props.initialValues
+                }
+            });
+        }
+    }
 
-    handleSubmitLinks = (formProps) => {
-        console.log('formProps', formProps);
-    };
+    componentDidUpdate(prevProps, prevState) {
+        if (JSON.stringify(this.props.initialValues) !== JSON.stringify(prevProps.initialValues)) {
+            this.setState({
+                initialCustom: {
+                    ...this.state.initialCustom,
+                    ...this.props.initialValues
+                }
+            });
+        }
+    }
 
     handleToggle = (checked) => {
         this.setState({
@@ -357,7 +371,7 @@ class FooterConfig extends Component {
                     fields={custom_fields}
                     initialValues={initialCustom}
                     customFields={true}
-                    handleSubmit={this.handleSubmitLinks}
+                    handleSubmitLinks={(formProps) => this.props.handleSubmitFooter(formProps, 'links')}
                 />
                 <p className="bottom-description">
                     Add/change footer description and small text{' '}

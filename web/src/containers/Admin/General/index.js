@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Input, Button, Radio } from 'antd';
-import ReactSVG from 'react-svg';
+import { Button, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 
 import FooterConfig from './FooterConfig';
 import Description from './Description';
-import { ICONS } from '../../../config/constants';
+import InterfaceForm from './InterfaceForm';
 import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
+import Image from '../../../components/Image';
+import withConfig from '../../../components/ConfigProvider/withConfig';
 import { requestAdminData } from '../../../actions/appActions';
+import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
 
 import './index.css';
@@ -17,37 +19,28 @@ const NameForm = AdminHocForm('NameForm');
 const LanguageForm = AdminHocForm('LanguageForm');
 const ThemeForm = AdminHocForm('ThemeForm');
 const NativeCurrencyForm = AdminHocForm('NativeCurrencyForm');
+const HelpDeskForm = AdminHocForm('HelpDeskForm');
 
 class General extends Component {
 	constructor() {
 		super();
 		this.state = {
 			constants: {},
-			icons: {},
+			currentIcon: {},
 			uploads: {},
+			initialNameValues: {},
+			initialLanguageValues: {},
+			initialThemeValues: {},
 			initialEmailValues: {},
-			initialGeneralValues: {}
+			initialLinkValues: {}
 		};
 	}
 
 	componentDidMount() {
-		if (this.props.constants && this.props.constants.icons) {
-			this.setState({
-				icons: this.props.constants.icons
-			});
-		}
 		this.requestInitial();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(prevProps.constants.icons) !== JSON.stringify(this.props.constants.icons)) {
-			this.setState({
-				icons: {
-					...this.state.icons,
-					...this.props.constants.icons
-				}
-			});
-		}
 		if (JSON.stringify(prevState.constants) !== JSON.stringify(this.state.constants)) {
 			this.getSettingsValues();
 		}
@@ -62,56 +55,230 @@ class General extends Component {
 				console.log('err', err);
 			})
 	}
-	
+
 	getSettingsValues = () => {
-        let initialGeneralValues = { ...this.state.initialGeneralValues };
-        const {
-            title,
-            description,
-            defaults = {},
-            secrets = { smtp: {}, captcha: {}, emails: {} },
-            links = {}
-        } = this.state.constants || {};
-        const { configuration = {}, distribution = {} } = this.state.initialEmailValues || {};
-        const initialEmailValues = {
-            configuration: { ...configuration, ...secrets.emails, ...secrets.smtp },
-            distribution: { ...distribution, ...secrets.emails }
-        };
-        initialGeneralValues = { ...initialGeneralValues, ...defaults, title, description };
+		let initialNameValues = { ...this.state.initialNameValues };
+		let initialLanguageValues = { ...this.state.initialLanguageValues };
+		let initialThemeValues = { ...this.state.initialThemeValues };
+		const {
+			kit = {},
+			secrets = { smtp: {}, captcha: {}, emails: {} },
+		} = this.state.constants || {};
+		const { api_name, defaults = {}, links = {} } = kit;
+		initialNameValues = { ...initialNameValues, api_name };
+		initialLanguageValues = { ...initialLanguageValues, language: defaults.language };
+		initialThemeValues = { ...initialThemeValues, theme: defaults.theme };
 
-        const initialLinkValues = { ...links };
-        this.setState({
-            initialGeneralValues,
-            initialEmailValues,
-            initialLinkValues
-        });
-    };
+		const { configuration = {}, } = this.state.initialEmailValues || {};
+		const initialEmailValues = {
+			configuration: { ...configuration, ...secrets.emails, ...secrets.smtp },
+			distribution: { ...secrets.emails }
+		};
+		delete initialEmailValues.configuration.audit;
+		const initialLinkValues = { ...links };
+		this.setState({
+			initialNameValues,
+			initialLanguageValues,
+			initialThemeValues,
+			initialEmailValues,
+			initialLinkValues
+		});
+	};
 
-	handleSubmitName = (formProps) => {
-		console.log(formProps);
+	handleSaveIcon = async () => {
+		const { currentIcon } = this.state;
+		const { updateIcons } = this.props;
+		const icons = {};
+		this.setState({
+			loading: true,
+		});
+
+		for (const key in currentIcon) {
+			if (currentIcon.hasOwnProperty(key)) {
+				const file = currentIcon[key];
+				if (file) {
+					const formData = new FormData();
+					const { name: fileName } = file;
+					const extension = fileName.split('.').pop();
+					const name = `${key}.${extension}`
+					formData.append('name', name);
+					formData.append('file', file);
+					try {
+						const { data: { path } } = await upload(formData)
+						icons[key] = path;
+						this.setState({ currentIcon: {} });
+					} catch (error) {
+						this.setState({
+							loading: false,
+						});
+						message.error("Something went wrong!");
+						return;
+					}
+				}
+			}
+		}
+		this.setState({
+			loading: false
+		});
+		updateIcons(icons);
+	};
+
+	handleCancelIcon = () => {
+		this.setState({ currentIcon: {} });
 	};
 
 	handleChangeFile = (event) => {
 		if (event.target.files) {
 			this.setState({
-				icons: {
-					...this.state.icons,
-					[event.target.name]: event.target.value
-				},
-				uploads: {
-					...this.state.uploads,
+				currentIcon: {
+					...this.state.currentIcon,
 					[event.target.name]: event.target.files[0]
 				}
+			}, () => {
+				Modal.confirm({
+					content: 'Do you want to save this icon?',
+					okText: 'Save',
+					cancelText: 'Cancel',
+					onOk: this.handleSaveIcon,
+					onCancel: this.handleCancelIcon
+				})
 			});
 		}
 	};
 
-	submitSettings = (formProps) => {
-		console.log('submitSettings', formProps);
+	handleSubmitGeneral = (formProps) => {
+		updateConstants(formProps)
+			.then((res) => {
+				this.setState({ constants: res });
+				message.success('Updated successfully');
+			})
+			.catch(err => {
+				let error = err && err.data
+					? err.data.message
+					: err.message;
+				message.error(error);
+			})
+	};
+
+	handleSubmitName = (formProps) => {
+		this.handleSubmitGeneral({ kit: { ...formProps } });
+	};
+
+	handleSubmitDefault = (formProps) => {
+		this.handleSubmitGeneral({
+			kit: {
+				defaults: { ...formProps }
+			}
+		});
+	};
+
+	submitSettings = (formProps, formKey) => {
+		const { initialEmailValues } = this.state;
+		let formValues = {};
+		if (formKey === 'email_distribution') {
+			formValues = {};
+			if (formProps.audit) {
+				formValues.secrets = {
+					emails: {
+						audit: formProps.audit
+					}
+				}
+			}
+		} else if (formKey === 'email_configuration') {
+			formValues = {};
+			let compareValues = initialEmailValues.configuration || {};
+			Object.keys(formProps).forEach((val) => {
+				if (val === 'sender' || val === 'timezone' || val === 'send_email_to_support') {
+					if (compareValues[val] !== formProps[val]) {
+						if (!formValues.secrets) formValues.secrets = {};
+						if (!formValues.secrets.emails) formValues.secrets.emails = {};
+						formValues.secrets.emails[val] = formProps[val];
+					}
+				} else if (val === 'port') {
+					if (compareValues[val] !== parseInt(formProps[val], 10)) {
+						if (!formValues.secrets) formValues.secrets = {};
+						if (!formValues.secrets.smtp) formValues.secrets.smtp = {};
+						formValues.secrets.smtp[val] = parseInt(formProps[val], 10);
+					}
+				} else {
+					if (compareValues[val] !== formProps[val]) {
+						if (!formValues.secrets) formValues.secrets = {};
+						if (!formValues.secrets.smtp) formValues.secrets.smtp = {};
+						if (val === 'password') {
+							if (!formProps[val].includes('*')) {
+								formValues.secrets.smtp[val] = formProps[val];
+							}
+						} else {
+							formValues.secrets.smtp[val] = formProps[val];
+						}
+					}
+				}
+			});
+		} else if (formKey === 'links') {
+			formValues.kit = {
+				links: { ...formProps }
+			};
+		}
+		if (!Object.keys(formValues).length) {
+			this.setState({ error: 'Remove masked values from the secrets fields' });
+			return false;
+		}
+		this.handleSubmitGeneral(formValues);
+	};
+	
+	handleSubmitHelpDesk = (formProps) => {
+		this.handleSubmitGeneral({
+			kit: {
+				links: {
+					...formProps
+				}
+			}
+		});
+	};
+
+	renderImageUpload = (name, label) => {
+		const { icons } = this.props;
+		return (
+			<div className="file-container">
+				<div className="file-img-content">
+					<Image
+						icon={icons[name]}
+						wrapperClassName='icon-img'
+					/>
+				</div>
+				<label>
+					{label ? <p>{label}</p> : null}
+					<span className="anchor">Upload</span>
+					<input
+						type="file"
+						accept="image/*"
+						onChange={this.handleChangeFile}
+						name={name}
+					/>
+				</label>
+			</div>
+		);
+	};
+
+	handleSaveInterface = (type) => {
+		this.handleSubmitGeneral({
+			kit: {
+				interface: {
+					type
+				}
+			}
+		});
 	};
 
 	render() {
-		const { icons, initialEmailValues } = this.state;
+		const {
+			initialEmailValues,
+			initialNameValues,
+			initialLanguageValues,
+			initialThemeValues,
+			initialLinkValues
+		} = this.state;
+		const { kit = {} } = this.state.constants;
 		const { coins } = this.props;
 		const generalFields = getGeneralFields(coins);
 		return (
@@ -120,6 +287,7 @@ class General extends Component {
 					<div>
 						<div className='sub-title'>Exchange Name</div>
 						<NameForm
+							initialValues={initialNameValues}
 							onSubmit={this.handleSubmitName}
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
@@ -135,7 +303,8 @@ class General extends Component {
 						</div>
 						<span className='general-edit-link general-edit-link-position'>Edit</span>
 						<LanguageForm
-							onSubmit={this.handleSubmitName}
+							initialValues={initialLanguageValues}
+							onSubmit={this.handleSubmitDefault}
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
 							fields={generalFields.section_2}
@@ -150,7 +319,8 @@ class General extends Component {
 						</div>
 						<span className='general-edit-link general-edit-link-position'>Edit</span>
 						<ThemeForm
-							onSubmit={this.handleSubmitName}
+							initialValues={initialThemeValues}
+							onSubmit={this.handleSubmitDefault}
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
 							fields={generalFields.section_3}
@@ -165,6 +335,9 @@ class General extends Component {
 						</div>
 						<div className='coins-list'>
 							<NativeCurrencyForm
+								initialValues={{
+									native_currency: kit.native_currency
+								}}
 								onSubmit={this.handleSubmitName}
 								buttonText={'Save'}
 								buttonClass="green-btn minimal-btn"
@@ -181,38 +354,8 @@ class General extends Component {
 							the direct edit function will override the logo.
 						</div>
 						<div className='file-wrapper'>
-							<div className="file-container">
-								<img
-									src={icons.EXCHANGE_LOGO_LIGHT || ''}
-									alt='icon'
-									className='icon-img'
-								/>
-								<label>
-									<p style={{ whiteSpace: 'normal' }}>Light theme</p>
-									<span className="anchor">Upload</span>
-									<input
-										type="file"
-										onChange={this.handleChangeFile}
-										name={'EXCHANGE_LOGO_LIGHT'}
-									/>
-								</label>
-							</div>
-							<div className='file-container'>
-								<img
-									src={icons.EXCHANGE_LOGO_DARK || ''}
-									alt='icon'
-									className='icon-img'
-								/>
-								<label>
-									<p style={{ whiteSpace: 'normal' }}>Dark theme</p>
-									<span className='anchor'>Upload</span>
-									<input
-										type="file"
-										onChange={this.handleChangeFile}
-										name={'EXCHANGE_LOGO_DARK'}
-									/>
-								</label>
-							</div>
+							{this.renderImageUpload('EXCHANGE_LOGO_LIGHT', 'Light theme')}
+							{this.renderImageUpload('EXCHANGE_LOGO_DARK', 'Dark theme')}
 						</div>
 						<Button type="primary" className="green-btn minimal-btn">Save</Button>
 					</div>
@@ -223,38 +366,8 @@ class General extends Component {
 							Used for areas that require loading.Also known as a spinner.
 						</div>
 						<div className='file-wrapper'>
-							<div className='file-container'>
-								<img
-									src={icons.LOADER_LIGHT || ''}
-									alt='icon'
-									className='icon-img'
-								/>
-								<label>
-									<p style={{ whiteSpace: 'normal' }}>Light theme</p>
-									<span className='anchor'>Upload</span>
-									<input
-										type="file"
-										onChange={this.handleChangeFile}
-										name={'LOADER_LIGHT'}
-									/>
-								</label>
-							</div>
-							<div className='file-container'>
-								<img
-									src={icons.LOADER_DARK || ''}
-									alt='icon'
-									className='icon-img'
-								/>
-								<label>
-									<p style={{ whiteSpace: 'normal' }}>Dark theme</p>
-									<span className='anchor'>Upload</span>
-									<input
-										type="file"
-										onChange={this.handleChangeFile}
-										name={'LOADER_DARK'}
-									/>
-								</label>
-							</div>
+							{this.renderImageUpload('LOADER_LIGHT', 'Light theme')}
+							{this.renderImageUpload('LOADER_DARK', 'Dark theme')}
 						</div>
 						<Button type="primary" className="green-btn minimal-btn">Save</Button>
 					</div>
@@ -262,21 +375,7 @@ class General extends Component {
 					<div>
 						<div className='sub-title'>Exchange favicon</div>
 						<div className='file-wrapper'>
-							<div className='file-container'>
-								<img
-									src={icons.FAV_ICON || ''}
-									alt='icon'
-									className='icon-img'
-								/>
-								<label>
-									<span className='anchor'>Upload</span>
-									<input
-										type="file"
-										onChange={this.handleChangeFile}
-										name={'FAV_ICON'}
-									/>
-								</label>
-							</div>
+							{this.renderImageUpload('FAV_ICON')}
 						</div>
 						<Button type="primary" className="green-btn minimal-btn">Save</Button>
 					</div>
@@ -284,38 +383,8 @@ class General extends Component {
 					<div>
 						<div className='sub-title'>Onboarding background image</div>
 						<div className='file-wrapper'>
-							<div className='file-container'>
-								<img
-									src={icons.BOARDING_BACKGROUND_LIGHT || ''}
-									alt='icon'
-									className='icon-img'
-								/>
-								<label>
-									<p style={{ whiteSpace: 'normal' }}>Light theme</p>
-									<span className='anchor'>Upload</span>
-									<input
-										type="file"
-										onChange={this.handleChangeFile}
-										name={'BOARDING_BACKGROUND_LIGHT'}
-									/>
-								</label>
-							</div>
-							<div className='file-container'>
-								<img
-									src={icons.BOARDING_BACKGROUND_LIGHT || ''}
-									alt='icon'
-									className='icon-img'
-								/>
-								<label>
-									<p style={{ whiteSpace: 'normal' }}>Dark theme</p>
-									<span className='anchor'>Upload</span>
-									<input
-										type="file"
-										onChange={this.handleChangeFile}
-										name={'BOARDING_BACKGROUND_DARK'}
-									/>
-								</label>
-							</div>
+							{this.renderImageUpload('BOARDING_IMAGE_LIGHT', 'Light theme')}
+							{this.renderImageUpload('BOARDING_IMAGE_DARK', 'Dark theme')}
 						</div>
 						<Button type="primary" className="green-btn minimal-btn">Save</Button>
 					</div>
@@ -329,11 +398,17 @@ class General extends Component {
 						</div>
 					</div>
 					<div className='divider'></div>
-						<Description />
+					<Description
+						descriptionFields={generalFields.section_5}
+						descriptionInitialValues={{ description: kit.description }}
+						footerFields={generalFields.section_6}
+						footerInitialValues={{ description: kit.footer_description }}
+						handleSubmitDescription={this.handleSubmitName}
+					/>
 					<div className='divider'></div>
 				</div>
 				<div>
-					<FooterConfig />
+					<FooterConfig initialValues={initialLinkValues} handleSubmitFooter={this.submitSettings} />
 				</div>
 				<div className='divider'></div>
 				<div className="general-wrapper">
@@ -343,97 +418,21 @@ class General extends Component {
 						You can put a direct link to your helpdesk service or your support
 						email address.
 					</div>
-					<div className='text-area-wrapper'>
-						<div className='description'>Helpdesk</div>
-						<Input defaultValue='http://' />
-					</div>
-					<div>
-						<Button type='primary'>Save</Button>
-					</div>
+					<HelpDeskForm
+						initialValues={{
+							helpdesk: initialLinkValues.helpdesk
+						}}
+						fields={generalFields.section_7}
+						buttonText="Save"
+						buttonClass="green-btn minimal-btn"
+						onSubmit={this.handleSubmitHelpDesk}
+					/>
 				</div>
 				<div className='divider'></div>
-				<div className="general-wrapper">
-					<div className='sub-title'>Trading Interface</div>
-					<div className='description'>
-						Select the trading interface that will be available on your
-						exchange. All interfaces includes a crypto wallet.
-					</div>
-					<div className='radio-btn-wrapper'>
-						<Radio.Group>
-							<Radio value='full'>
-								Full interface
-								<div className='flex-container'>
-									<div className='small-text'>
-										(Pro & quick trade with wallet)
-									</div>
-									<div className='box'>
-										<div className='interface_container'>
-											<div className='sell'>
-												<span className='label'>SELL</span>
-											</div>
-											<div className='buy'>
-												<span className='label'>BUY</span>
-											</div>
-										</div>
-									</div>
-									<div>
-										<ReactSVG
-											path={ICONS.CANDLES_LOGO}
-											wrapperClassName='candle-icon'
-										/>
-									</div>
-								</div>
-							</Radio>
-							<Radio value='pro-trade'>
-								Pro trade only
-								<div className='small-text'>
-									(Chart, orderbook, limit orders with wallet)
-								</div>
-								<ReactSVG
-									path={ICONS.CANDLES_LOGO}
-									wrapperClassName='candle-icon'
-								/>
-							</Radio>
-							<Radio value='quick-trade'>
-								Quick trade only
-								<div className='flex-container'>
-									<div className='small-text'>
-										(Simple buy/sell interface with wallet)
-									</div>
-									<div className='box interface'>
-										<div className='interface_container'>
-											<div className='sell'>
-												<span className='label'>SELL</span>
-											</div>
-											<div className='buy'>
-												<span className='label'>BUY</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</Radio>
-							<Radio value='wallet'>
-								Wallet only
-								<div className='flex-container'>
-									<div className='small-text'>
-										(No trading. Only crypto wallet)
-									</div>
-									<div className='box interface'>
-										<ReactSVG
-											path={ICONS.WALLET_BTC_ICON}
-											wrapperClassName='wallet-icon'
-										/>
-									</div>
-								</div>
-							</Radio>
-						</Radio.Group>
-					</div>
-					<div>
-						<Button type='primary' disabled={true}>
-							Save
-						</Button>
-					</div>
-				</div>
+				<InterfaceForm
+					initialValues={kit.interface}
+					handleSaveInterface={this.handleSaveInterface}
+				/>
 			</div>
 		);
 	}
@@ -445,4 +444,4 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants
 });
 
-export default connect(mapStateToProps)(General);
+export default connect(mapStateToProps)(withConfig(General));
