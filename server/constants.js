@@ -340,6 +340,8 @@ exports.AVAILABLE_PLUGINS = [
 	'zendesk'
 ];
 
+exports.HMAC_TOKEN_KEY = 'hmac:token';
+
 exports.REQUIRED_XHT = 100;
 
 exports.SMS_CODE_KEY = 'user:sms';
