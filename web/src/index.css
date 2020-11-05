@@ -4441,16 +4441,22 @@ table th {
       .notification-wrapper .notification-title-wrapper .notification-title-icon svg {
         width: 8rem;
         height: 8rem; }
+        .notification-wrapper .notification-title-wrapper .notification-title-icon svg path {
+          fill: var(--labels_important-active-labels-text-graphics); }
+        .notification-wrapper .notification-title-wrapper .notification-title-icon svg polyline {
+          fill: transparent; }
     .notification-wrapper .notification-title-wrapper .notification-title-text {
       flex: 0;
       text-align: center;
-      font-size: 1.25rem; }
+      font-size: 1.25rem;
+      color: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .notification-content-wrapper {
     position: relative;
     font-size: 1rem;
     display: flex;
     flex-direction: column;
-    flex: 1; }
+    flex: 1;
+    color: var(--labels_secondary-inactive-label-text-graphics); }
     .notification-wrapper .notification-content-wrapper .notification-content-title.with-border-bottom {
       border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
     .notification-wrapper .notification-content-wrapper.notification_verification {
@@ -4482,7 +4488,8 @@ table th {
         color: var(--labels_secondary-inactive-label-text-graphics); }
     .notification-wrapper .notification-content-wrapper .notification-content-header {
       position: relative;
-      font-size: 0.9rem; }
+      font-size: 1.25rem;
+      color: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .notification-buttons-wrapper .button-eur {
     background-color: var(--coin-eur); }
   .notification-wrapper .notification-information {

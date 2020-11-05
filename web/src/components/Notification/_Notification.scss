@@ -19,6 +19,12 @@ $dark-api-icon-color: #808080;
 			margin: 2rem 0;
 			svg {
 				@include size(8rem);
+				path {
+					fill: $colors-main-black;
+				}
+				polyline {
+					fill: transparent;
+				}
 			}
 		}
 
@@ -26,6 +32,7 @@ $dark-api-icon-color: #808080;
 			flex: 0;
 			text-align: center;
 			font-size: $font-size-subhead3;
+			color: $colors-main-black;
 		}
 	}
 
@@ -35,6 +42,7 @@ $dark-api-icon-color: #808080;
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+		color: $colors-black;
 		.notification-content-title {
 			&.with-border-bottom {
 				border-bottom: 1px solid $border-main;
@@ -91,7 +99,8 @@ $dark-api-icon-color: #808080;
 
 		.notification-content-header {
 			position: relative;
-			font-size: $font-size-subtext;
+			font-size: $font-size-subhead3;
+			color: $colors-main-black;
 		}
 	}
 	.notification-buttons-wrapper {
