@@ -80,6 +80,7 @@ class UserVerification extends Component {
 						requestOTP={this.handleOTPCheckbox}
 						data={otp}
 						otp_enabled={otp_enabled}
+						icons={ICONS}
 					>
 						{/*otp_enabled && (
 							<div className="d-flex flex-column">
