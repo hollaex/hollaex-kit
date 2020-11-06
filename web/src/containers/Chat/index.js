@@ -208,11 +208,13 @@ class Chat extends Component {
 	};
 
 	closeChatSocket = () => {
-		const { chatWs } = this.state;
+		const { chatWs, chatSocketInitialized } = this.state;
 		if (chatWs) {
-      chatWs.send(
-        JSON.stringify({ op: 'unsubscribe', args: ['chat'] })
-      );
+			if (chatSocketInitialized) {
+        chatWs.send(
+          JSON.stringify({ op: 'unsubscribe', args: ['chat'] })
+        );
+			}
 			chatWs.close();
 		}
 	};

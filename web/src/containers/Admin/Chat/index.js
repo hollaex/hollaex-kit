@@ -205,11 +205,13 @@ class Chat extends Component {
 	};
 
 	disconnectFromChat = () => {
-		const { chatWs } = this.state;
+		const { chatWs, ready } = this.state;
 		if (chatWs) {
-      chatWs.send(
-        JSON.stringify({ op: 'unsubscribe', args: ['chat'] })
-      );
+		  if (ready) {
+        chatWs.send(
+          JSON.stringify({ op: 'unsubscribe', args: ['chat'] })
+        );
+      }
 			chatWs.close();
 		}
 	};
