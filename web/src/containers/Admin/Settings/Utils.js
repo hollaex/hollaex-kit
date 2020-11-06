@@ -172,7 +172,7 @@ export const generateAdminSettings = (key) => {
     } else if (key === 'email') {
         return {
             email_distribution_list: {
-                admin: {
+                audit: {
                     type: 'input',
                     label: 'Auditor email',
                     placeholder: 'auditor email address',

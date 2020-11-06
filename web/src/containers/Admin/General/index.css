@@ -1,0 +1,273 @@
+.general-wrapper {
+	color: #ffffff;
+	margin-top: 2rem;
+}
+.general-wrapper .ant-input,
+.general-wrapper .ant-select {
+	width: 300px;
+	margin: 1rem 0rem;
+}
+.minimal-btn {
+	width: 10rem !important;
+}
+.sub-title {
+	color: #ffffff;
+	font-size: 15px;
+	font-weight: bold;
+}
+.divider {
+	border-top: 1px solid #c4c4c4;
+	margin: 2rem 0;
+	width: 500px;
+}
+.wizard-container .description {
+	width: 550px;
+}
+.description {
+	color: #ffffff;
+	margin: 5px 0px;
+	font-size: 13px;
+}
+.file-wrapper {
+	margin: 1rem 0rem;
+}
+.new-tier-form .file-container {
+	padding-left: 100px;
+}
+.new-tier-form .file-wrapper .icon-img {
+	width: 90px;
+}
+.file-wrapper .icon-img {
+	width: 150px;
+}
+.file-wrapper .file-img-content,
+.file-wrapper img {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	display: block;
+	width: 90px;
+	height: 86px;
+	object-fit: fill;
+	cursor: pointer;
+}
+.file-wrapper label {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 86px;
+	border-left: 1px solid #b9b9b9;
+}
+.file-container .ant-spin {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+}
+.file-container label .anchor {
+	color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.file-container .ant-form-item-control {
+	line-height: 1;
+}
+.file-container input {
+	opacity: 0;
+	position: fixed;
+	left: -999px;
+}
+.file-container::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+.general-edit-link,
+.general-edit-link-position {
+	color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.general-edit-link-position {
+	position: relative;
+	left: 310px;
+	top: 35px;
+}
+.file-wrapper input {
+	opacity: 0;
+	position: fixed;
+	left: -999px;
+}
+.file-wrapper input::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+.file-container {
+	border: 1px solid #b9b9b9;
+	width: 420px;
+	display: block;
+	padding-left: 150px;
+	white-space: nowrap;
+	position: relative;
+	height: 88px;
+}
+.general-wrapper .ant-btn {
+	height: 40px;
+	width: 250px;
+	background-color: #288500;
+	color: #ffffff;
+}
+.text-area-wrapper {
+	margin-bottom: 10px;
+}
+.text-area-wrapper .description {
+	font-size: 12px;
+}
+.flex-container {
+	display: flex;
+	justify-content: space-between;
+}
+.small-text {
+	font-size: 12px;
+	margin-left: 1.4rem;
+	color: #ffffff;
+}
+.candle-icon {
+	position: absolute;
+	right: 7px;
+	top: 23px;
+	width: 74px;
+}
+.wallet-icon {
+	position: relative;
+	width: 36px;
+	margin: 5px auto;
+}
+.box {
+	display: flex;
+	width: 75px;
+	height: 50px;
+	background-color: #050596;
+	position: relative;
+	bottom: 2rem;
+}
+.box .interface_container {
+	margin: auto;
+	margin-top: 7px;
+}
+.sell {
+	border: 1px solid #ffffff;
+	width: 60px;
+	height: 18px;
+}
+.sell .label {
+	font-size: 10px;
+	position: relative;
+	bottom: 3px;
+	left: 18px;
+	color: #ffffff !important;
+}
+.buy {
+	width: 60px;
+	height: 18px;
+	border: 1px solid #000000;
+	margin-top: 0.25rem;
+	background-color: #ffffff;
+}
+.buy .label {
+	font-size: 10px;
+	position: relative;
+	bottom: 3px;
+	left: 18px;
+	color: #000000 !important;
+}
+.ant-radio-wrapper {
+	height: 100px;
+	width: 420px;
+}
+.ant-radio-wrapper span:last-child {
+	color: #ffffff;
+}
+.bottom-description {
+	margin-top: 1rem;
+}
+.file-container p {
+	color: #a8a8ef;
+}
+.section-wrapper {
+	width: 220px;
+}
+.center-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.coins-list .ant-select-selector {
+	height: 48px !important;
+}
+h2,
+.email-config-form,
+.ant-checkbox-wrapper span,
+.description-wrapper,
+.bottom-description,
+.custom-form-wrapper {
+	color: #ffffff;
+}
+.ant-tooltip-arrow {
+	display: none;
+}
+
+.ant-tooltip-inner {
+	padding: 0px;
+	min-width: 0px;
+}
+.ant-tooltip {
+	max-width: 0px;
+}
+.ant-tooltip .ant-tooltip-placement-right {
+	left: 566px;
+	top: 104px;
+}
+.ant-tooltip-placement-right {
+	padding-left: 0px;
+}
+.help-icon {
+	width: 600px;
+	height: 150px;
+	position: relative;
+}
+.description_note {
+	right: 8px;
+	bottom: 3px;
+}
+.description_footer {
+	bottom: 60px;
+	right: 7px;
+}
+.custom-form-wrapper {
+    display: flex;
+    margin-top: 1.5rem;
+}
+.section-wrapper {
+    width: 220px;
+}
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.divider-vertical {
+    display: inline-block;
+    width: 0px;
+    height: 18rem;
+    border-left: 1px solid #707070;
+    margin: 0rem 1rem;
+}
+.divider-horizontal {
+    display: inline-block;
+    width: 5rem;
+    height: 0px;
+    border-top: 1px solid #707070;
+    margin: 1rem 0rem;
+}
