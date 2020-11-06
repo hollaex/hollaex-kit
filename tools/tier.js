@@ -5,7 +5,7 @@ const dbQuery = require('./database/query');
 const { getModel } = require('./database');
 const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig, subscribedToPair, getTierLevels } = require('./common');
 const { reject, all } = require('bluebird');
-const { difference, each, omit } = require('lodash');
+const { difference, each, omit, isNumber } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
@@ -242,9 +242,9 @@ const updatePairFees = (pair, fees) => {
 	});
 };
 
-const updatePairLimits = (pair, limits) => {
-	if (!subscribedToPair(pair)) {
-		return reject(new Error('Invalid pair'));
+const updateTiersLimits = (limits) => {
+	if (!Object.keys(limits).length === 0) {
+		return reject(new Error('No new limits given'));
 	}
 
 	const tiersToUpdate = Object.keys(limits);
@@ -262,8 +262,8 @@ const updatePairLimits = (pair, limits) => {
 
 			const tier = await dbQuery.findOne('tier', { where: { id: level } });
 
-			const deposit_limit = limits[level].deposit_limit || tier.deposit_limit;
-			const withdrawal_limit = limits[level].withdrawal_limit || tier.withdrawal_limit;
+			const deposit_limit = isNumber(limits[level].deposit_limit) ? limits[level].deposit_limit : tier.deposit_limit;
+			const withdrawal_limit = isNumber(limits[level].withdrawal_limit) ? limits[level].withdrawal_limit : tier.withdrawal_limit;
 
 			const updatedTier = await tier.update(
 				{ deposit_limit, withdrawal_limit },
@@ -293,5 +293,5 @@ module.exports = {
 	updateTier,
 	estimateNativeCurrencyPrice,
 	updatePairFees,
-	updatePairLimits
+	updateTiersLimits
 };
