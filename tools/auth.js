@@ -30,13 +30,24 @@ const {
 	SAME_PASSWORD
 } = require('../messages');
 const { SERVER_PATH } = require('../constants');
-const { NODE_ENV, CAPTCHA_ENDPOINT, BASE_SCOPES, ROLES, ISSUER, SECRET, TOKEN_TYPES, HMAC_TOKEN_EXPIRY } = require(`${SERVER_PATH}/constants`);
+const {
+	NODE_ENV,
+	CAPTCHA_ENDPOINT,
+	BASE_SCOPES,
+	ROLES,
+	ISSUER,
+	SECRET,
+	TOKEN_TYPES,
+	HMAC_TOKEN_EXPIRY,
+	HMAC_TOKEN_KEY
+} = require(`${SERVER_PATH}/constants`);
 const rp = require('request-promise');
 const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
 const dbQuery = require('./database/query');
 const otp = require('otp');
 const bcrypt = require('bcryptjs');
 const { getModel } = require('./database/model');
+const { client } = require('./database/redis');
 const uuid = require('uuid/v4');
 const { all, resolve, reject, promisify } = require('bluebird');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
@@ -835,7 +846,10 @@ const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
 				{ fields: ['active', 'revoked'], returning: true }
 			);
 		})
-		.then(formatTokenObject);
+		.then((token) => {
+			client.hdelAsync(HMAC_TOKEN_KEY, token.key);
+			return formatTokenObject(token);
+		});
 };
 
 const findToken = (query) => {
@@ -843,19 +857,30 @@ const findToken = (query) => {
 };
 
 const findTokenByApiKey = (apiKey) => {
-	return dbQuery.findOne('token', {
-		where: {
-			key: apiKey,
-			active: true
-		},
-		include: [
-			{
-				model: getModel('user'),
-				as: 'user',
-				attributes: ['id', 'email', 'network_id']
+	return client.hgetAsync(HMAC_TOKEN_KEY, apiKey)
+		.then(async (token) => {
+			if (!token) {
+				token = await dbQuery.findOne('token', {
+					where: {
+						key: apiKey,
+						active: true
+					},
+					raw: true,
+					nest: true,
+					include: [
+						{
+							model: getModel('user'),
+							as: 'user',
+							attributes: ['id', 'email', 'network_id'],
+						}
+					]
+				});
+				client.hsetAsync(HMAC_TOKEN_KEY, apiKey, JSON.stringify(token));
+				return token;
+			} else {
+				return JSON.parse(token);
 			}
-		]
-	});
+		});
 };
 
 const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
