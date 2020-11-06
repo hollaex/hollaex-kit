@@ -3470,6 +3470,25 @@ table th {
         height: 9px;
         width: 9px;
         margin: 1.2px 3px 1px 0 !important; }
+  .app_bar .toggle_button-wrapper .ant-select {
+    max-height: 100%; }
+  .app_bar .toggle_button-wrapper .ant-select-selection,
+  .app_bar .toggle_button-wrapper .ant-select,
+  .app_bar .toggle_button-wrapper .ant-select-single,
+  .app_bar .toggle_button-wrapper .ant-input,
+  .app_bar .toggle_button-wrapper .ant-select-arrow,
+  .app_bar .toggle_button-wrapper .ant-select-selector,
+  .app_bar .toggle_button-wrapper .ant-select-selection-search-input {
+    background-color: var(--base_top-bar-navigation);
+    color: var(--calculated_base_top-bar-navigation_text-inactive);
+    font-size: 0.9rem;
+    line-height: 17px !important; }
+  .app_bar .toggle_button-wrapper .ant-select-selector {
+    border-color: var(--calculated_base_top-bar-navigation_text-inactive); }
+  .app_bar .toggle_button-wrapper .ant-select-selection-item {
+    height: 17px !important;
+    display: flex;
+    align-items: center; }
   .app_bar .app_bar-pair-content .btc0,
   .app_bar .app_bar-pair-content .btc1,
   .app_bar .app_bar-pair-content .eth0,
