@@ -12,7 +12,7 @@ const Fields = {
 	}
 };
 
-const onSubmit = (onChangeSuccess, userInfo) => (values) => {
+const onSubmit = (onChangeSuccess, userInfo, handleClose) => (values) => {
     values.id = userInfo.id
 	return updateNotes(values)
 		.then((data) => {
@@ -22,6 +22,7 @@ const onSubmit = (onChangeSuccess, userInfo) => (values) => {
 					...values,
 				});
 			}
+			handleClose();
 		})
 		.catch((err) => {
             throw new SubmissionError({ _error: err.data.message });
@@ -35,13 +36,14 @@ const generateInitialValues = (initialValues) => {
 	return values;
 };
 
-const Notes = ({ initialValues, userInfo, onChangeSuccess }) => {
+const Notes = ({ initialValues, userInfo, onChangeSuccess, handleClose }) => {
     return (
         <Form
-            onSubmit={onSubmit(onChangeSuccess, userInfo)}
+            onSubmit={onSubmit(onChangeSuccess, userInfo, handleClose)}
             buttonText="SAVE"
             fields={Fields}
-            initialValues={generateInitialValues(initialValues)}
+			initialValues={generateInitialValues(initialValues)}
+			buttonClass="green-btn"
         />
     );
 } 

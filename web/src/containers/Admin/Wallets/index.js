@@ -30,7 +30,7 @@ class Wallets extends Component {
 		});
 		requestConstants()
 			.then(res => {
-				this.setState({ loading: false, constants: res.constants });
+				this.setState({ loading: false, constants: res.kit });
 			})
 			.catch(error => {
 				const message = error.data ? error.data.message : error.message;

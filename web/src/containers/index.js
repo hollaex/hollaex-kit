@@ -33,6 +33,7 @@ export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
 
 // ADMIN PAGE
+export { default as AdminDashboard } from './Admin/Dashboard';
 export { default as User } from './Admin/User';
 export { default as AppWrapper } from './Admin/AppWrapper';
 export { default as Main } from './Admin/Main';
@@ -57,3 +58,8 @@ export { default as AdminFees } from './Admin/AdminFees';
 export { default as ThemeProvider } from './ThemeProvider';
 export { default as Init } from './Init';
 export { default as AdminLogin } from './Init/Login';
+export { default as AdminFinancials } from './Admin/AdminFinancials';
+export { default as MoveToDash } from './Admin/MoveToDash';
+export { default as General } from './Admin/General';
+export { default as Tiers } from './Admin/Tiers';
+export { default as Roles } from './Admin/Roles';

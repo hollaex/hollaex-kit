@@ -283,7 +283,7 @@ class Container extends Component {
 
 		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			// console.log('privateSocket', data);
+			console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
 					if (data.action === 'partial') {
@@ -368,10 +368,7 @@ class Container extends Component {
 							}
 						} else if (data.data.status === 'filled') {
 							const ordersDeleted = this.props.orders.filter((order, index) => {
-								return (
-									data.data.id === order.id >
-									-1
-								);
+								return (data.data.id === order.id);
 							});
 							this.props.removeOrder(data.data);
 							this.props.addUserTrades([data.data]);

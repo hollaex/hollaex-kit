@@ -6,7 +6,7 @@ import { CurrencyBall } from '../../../components';
 
 const { Option } = Select;
 
-const Assets = ({ coins = {}, pairs, user, handleNext, updateConstants }) => {
+const Assets = ({ coins = {}, pairs, constants = {}, handleNext, updateConstants }) => {
     const [native_currency, setCurrency] = useState('');
     useEffect(() => {
         let base_coin = Object.keys(coins).length
@@ -14,6 +14,9 @@ const Assets = ({ coins = {}, pairs, user, handleNext, updateConstants }) => {
             : '';
         setCurrency(base_coin);
     }, [coins]);
+    useEffect(() => {
+        setCurrency(constants.native_currency);
+    }, [constants.native_currency]);
     const onChange = (key) => {
         setCurrency(key);
     };

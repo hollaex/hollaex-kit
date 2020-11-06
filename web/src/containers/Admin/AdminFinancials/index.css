@@ -1,0 +1,9 @@
+.tab-contents {
+    margin-top: 4rem;
+}
+.content-wrapper .w-100 {
+    width: 100%;
+}
+.content-wrapper .ant-tabs {
+    color: #FFFFFF;
+}

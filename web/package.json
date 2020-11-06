@@ -23,6 +23,7 @@
 		"emoji-mart": "2.11.1",
 		"flag-icon-css": "3.3.0",
 		"flat": "5.0.2",
+		"html-to-draftjs": "^1.5.0",
 		"jwt-decode": "2.2.0",
 		"keycode": "2.2.0",
 		"lint-staged": "8.2.1",

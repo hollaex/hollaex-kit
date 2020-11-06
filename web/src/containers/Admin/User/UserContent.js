@@ -1,46 +1,104 @@
 import React, { Component } from 'react';
-import { FlagOutlined } from '@ant-design/icons';
-import { Tabs, Button, Tag } from 'antd';
+import { Tabs, Button, Breadcrumb, message } from 'antd';
+import { Link } from 'react-router';
+import ReactSVG from 'react-svg';
 
 import {
 	Balance,
-	Logins,
-	Audits,
-	Verification,
-	Otp,
+	// Logins,
+	// Audits,
+	// Verification,
+	// Otp,
 	UserBalance,
-	Activate,
+	// Activate,
 	TradeHistory,
-	UploadIds,
+	// UploadIds,
 	Transactions,
 	ActiveOrders
 } from '../';
 import UserData from './UserData';
 import BankData from './BankData';
+import AboutData from './AboutData';
 import { isSupport, isAdmin, isKYC } from '../../../utils/token';
+import { ICONS } from '../../../config/constants';
+import { deactivateOtp, flagUser, activateUser } from './actions';
 
-import Flagger from '../Flaguser';
-import Notes from './Notes';
+// import Flagger from '../Flaguser';
+// import Notes from './Notes';
 
 const TabPane = Tabs.TabPane;
+const { Item } = Breadcrumb;
 
 class UserContent extends Component {
+	disableOTP = () => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10)
+		};
+		return deactivateOtp(postValues)
+			.then((res) => {
+				refreshData({ otp_enabled: false });
+			})
+			.catch((err) => {
+				const _error = err.data && err.data.message
+					? err.data.message
+					: err.message
+				message.error(_error);
+			});
+	};
+
+	flagUser = (value) => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+			flagged: value
+		};
+		flagUser(postValues)
+			.then((res) => {
+				refreshData(postValues);
+			})
+			.catch((err) => {
+				const _error = err.data && err.data.message
+					? err.data.message
+					: err.message
+				message.error(_error);
+			});
+	};
+
+	freezeAccount = (value) => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+			activated: value
+		};
+		activateUser(postValues)
+			.then((res) => {
+				refreshData(postValues);
+			})
+			.catch((err) => {
+				const _error = err.data && err.data.message
+					? err.data.message
+					: err.message
+				message.error(_error);
+			});
+	};
+
 	render() {
 		const {
 			coins,
 			constants,
 			userInformation,
 			userImages,
-			clearData,
+			// clearData,
 			refreshData,
 			refreshAllData,
 			onChangeUserDataSuccess
 		} = this.props;
 		const {
 			id,
-			activated,
-			otp_enabled,
-			flagged,
+			// activated,
+			// otp_enabled,
+			// flagged,
 			verification_level,
 			is_admin,
 			is_support,
@@ -69,37 +127,48 @@ class UserContent extends Component {
 			roleInitialValues.role = 'user';
 		}
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content user-content">
+				<Breadcrumb>
+					<Item><Link to="/admin">Home</Link></Item>
+					<Item><Link to="/admin/user">Users</Link></Item>
+					<Item>User profile</Item>
+				</Breadcrumb>
 				<div className="d-flex justify-content-between">
-					<div className="d-flex">
-						<Tag color="red">User Id: {userInformation.id}</Tag>
-						<Tag>{userInformation.email}</Tag>
-						{userInformation.flagged ? (
-							<Tag color="red" style={{ fontWeight: 'bold' }}>
-								<FlagOutlined /> flagged user
-							</Tag>
-						) : null}
+					<div className="d-flex align-items-center user-details">
+						<ReactSVG path={ICONS.USER_DETAILS_ICON} wrapperClassName="user-icon" />
+						<div>User Id: {userInformation.id}</div>
+						<div className="user-seperator"></div>
+						<div>{userInformation.email}</div>
 					</div>
 					<div className="d-flex">
 						<Button
-							size="small"
+							size="medium"
 							type="primary"
 							style={{ marginRight: 5 }}
 							onClick={refreshAllData}
 						>
-							Refresh data
+							Refresh
 						</Button>
-						<Flagger
-							user_id={id}
-							flagged={flagged}
-							refreshData={refreshData}
-							small={true}
-						/>
 					</div>
 				</div>
 				<Tabs
-					tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
+				// tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
 				>
+					<TabPane tab="About" key="about">
+						<div>
+							<AboutData
+								user_id={userInformation.id}
+								userData={userInformation}
+								userImages={userImages}
+								constants={constants}
+								refreshData={refreshData}
+								onChangeSuccess={onChangeUserDataSuccess}
+								disableOTP={this.disableOTP}
+								flagUser={this.flagUser}
+								freezeAccount={this.freezeAccount}
+							/>
+						</div>
+					</TabPane>
 					<TabPane tab="Data" key="data">
 						<div>
 							<UserData
@@ -174,56 +243,6 @@ class UserContent extends Component {
 							/>
 						</TabPane>
 					)}
-					<TabPane tab="Verification" key="verification">
-						<Verification
-							constants={constants}
-							user_id={userInformation.id}
-							userImages={userImages}
-							userInformation={userInformation}
-							verificationInitialValues={verificationInitialValues}
-							roleInitialValues={roleInitialValues}
-							refreshData={refreshData}
-						/>
-					</TabPane>
-					<TabPane tab="Logins" key="logins">
-						<Logins userId={userInformation.id} />
-					</TabPane>
-					{!isSupportUser && !isKYC() && (
-						<TabPane tab="OTP" key="otp">
-							<Otp
-								user_id={id}
-								otp_enabled={otp_enabled}
-								refreshData={refreshData}
-							/>
-						</TabPane>
-					)}
-					<TabPane tab="Status" key="activate">
-						<Activate
-							user_id={id}
-							activated={activated}
-							refreshData={refreshData}
-						/>
-					</TabPane>
-					{!isSupportUser && !isKYC() && (
-						<TabPane tab="Upload" key="upload">
-							<UploadIds user_id={id} refreshData={refreshData} />
-						</TabPane>
-					)}
-					{isAdmin() && (
-						<TabPane tab="Audits" key="audits">
-							<Audits userId={userInformation.id} />
-						</TabPane>
-					)}				
-					<TabPane tab="Notes" key="notes">
-						<Notes 
-							initialValues={{
-								id: userInformation.id,
-								note: userInformation.note
-							}}
-							userInfo={userInformation}
-							onChangeSuccess={onChangeUserDataSuccess}
-						/>
-					</TabPane>
 				</Tabs>
 			</div>
 		);
