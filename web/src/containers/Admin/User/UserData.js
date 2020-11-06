@@ -58,7 +58,7 @@ const Fields = {
 	...AddressFields
 };
 
-const onSubmit = (onChangeSuccess) => (values) => {
+const onSubmit = (onChangeSuccess, handleClose) => (values) => {
 	const submitData = {
 		id: values.id,
 		address: {}
@@ -83,6 +83,7 @@ const onSubmit = (onChangeSuccess) => (values) => {
 					...data
 				});
 			}
+			handleClose();
 		})
 		.catch((err) => {
 			throw new SubmissionError({ _error: err.data.message });
@@ -98,12 +99,13 @@ const generateInitialValues = (initialValues) => {
 	return values;
 };
 
-const UserData = ({ initialValues, readOnly = false, onChangeSuccess }) => (
+const UserData = ({ initialValues, readOnly = false, onChangeSuccess, handleClose }) => (
 	<Form
-		onSubmit={onSubmit(onChangeSuccess)}
+		onSubmit={onSubmit(onChangeSuccess, handleClose)}
 		buttonText="SAVE"
 		fields={Fields}
 		initialValues={generateInitialValues(initialValues)}
+		buttonClass="green-btn"
 	/>
 );
 

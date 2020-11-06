@@ -18,9 +18,13 @@ $colors-deactivate-color4: var(--base_inactive-button);
 
 //common colors for notifications and errors
 $colors-notifications-red: var(--specials_notifications-alerts-warnings);
-$colors-notification-inactive-red: var(--specials_notifications-alerts-warnings);
+$colors-notification-inactive-red: var(--calculated_specials_notifications-alerts-inactive);
+$colors-notification-alert-text: var(--calculated_specials_notifications-alerts-text);
 $colors-notifications-blue: var(--specials_buttons-links-and-highlights);
 $colors-notifications-green: var(--specials_checks-okay-done);
+$colors-notification-pending-text: var(--calculated_specials_notifications-pending-text);
+$colors-notification-green-text: var(--calculated_specials_notifications-success-text);
+$colors-notification-pending: var(--specials_pending-waiting-caution);
 $specials_highlight-box: var(--calculated_specials_highlight-box);
 
 //common colors for terms
@@ -35,7 +39,7 @@ $auth-container-background: var(--base_wallet-sidebar-and-popup);
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $app-background-color;
 $app-bar-menu-list-color: var(--labels_secondary-inactive-label-text-graphics);
-$app-bar-icon-inactive: var(--labels_secondary-inactive-label-text-graphics);
+$app-bar-icon-inactive: var(--calculated_base_top-bar-navigation_text-inactive);
 
 // Quick trade
 $quick-trade-background: $app-background-color;
@@ -60,6 +64,7 @@ $trade-fill-indicator-text: var(--labels_secondary-inactive-label-text-graphics)
 $buy-bids-text: var(--calculated_trading_buying-related-text);
 $sell-bids-text: var(--calculated_trading_selling-related-text);
 $base_top-bar-navigation_text: var(--calculated_base_top-bar-navigation_text);
+$base_top-bar-navigation_text-inactive: var(--calculated_base_top-bar-navigation_text-inactive);
 $base_footer_text: var(--calculated_base_footer_text);
 
 $sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);

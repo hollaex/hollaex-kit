@@ -5,7 +5,7 @@ const { all } = require('bluebird');
 const rp = require('request-promise');
 const cron = require('node-cron');
 const { loggerGeneral } = require('./config/logger');
-const { User, Status } = require('./db/models');
+const { User, Status, Tier } = require('./db/models');
 
 const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
@@ -41,6 +41,7 @@ const checkStatus = (restart = false) => {
 	let configuration = {
 		coins: {},
 		pairs: {},
+		tiers: {},
 		kit: {
 			info: {},
 			color: {},
@@ -58,7 +59,6 @@ const checkStatus = (restart = false) => {
 	};
 
 	let secrets = {
-		broker: {},
 		security: {},
 		accounts: {},
 		captcha: {},
@@ -99,14 +99,19 @@ const checkStatus = (restart = false) => {
 						status.name,
 						status.url,
 						status.activation_code,
+						status.kit_version,
 						status.constants
 					),
+					Tier.findAll({ raw: true }),
 					status.dataValues
 				]);
 			}
 		})
-		.then(([exchange, status]) => {
+		.then(([exchange, tiers, status]) => {
 			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
+			each(tiers, (tier) => {
+				configuration.tiers[tier.id] = tier;
+			});
 			each(exchange.coins, (coin) => {
 				configuration.coins[coin.symbol] = coin;
 			});
@@ -176,15 +181,21 @@ const stop = () => {
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
-const checkActivation = (name, url, activation_code, constants = {}) => {
+const checkActivation = (name, url, activation_code, version, constants = {}) => {
+	const body = {
+		name,
+		url,
+		activation_code,
+		constants
+	};
+	if (version) {
+		// only sends version if its set
+		body.version = version;
+	}
+
 	const options = {
 		method: 'POST',
-		body: {
-			name,
-			url,
-			activation_code,
-			constants
-		},
+		body,
 		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
 		json: true
 	};

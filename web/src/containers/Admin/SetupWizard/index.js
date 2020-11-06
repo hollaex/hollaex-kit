@@ -105,7 +105,8 @@ export default class SetupWizard extends Component {
     };
 
     renderStep = () => {
-        switch (this.state.currentTab) {
+        const { currentTab, constants } = this.state;
+        switch (currentTab) {
             case 0:
                 return (
                     <TimeZone
@@ -117,7 +118,7 @@ export default class SetupWizard extends Component {
             case 1:
                 return (<AccountSecurity handleNext={this.onTabChange} />);
             case 2:
-                return (<Assets handleNext={this.onTabChange} updateConstants={this.updateConstants} />);
+                return (<Assets constants={constants.kit} handleNext={this.onTabChange} updateConstants={this.updateConstants} />);
             case 3:
                 return (<TradingInterface handleNext={this.onTabChange} updateConstants={this.updateConstants} />);
             case 4:

@@ -222,7 +222,7 @@ class App extends Component {
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
 			/>
 		) : (
-				<div className="app_container-content">
+				<div className="app_container-content user-container">
 					<Tabs>
 						<TabPane tab="Search" key="search">
 							<h2>SEARCH FOR USER</h2>

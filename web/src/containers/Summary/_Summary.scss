@@ -163,18 +163,58 @@
     }
     .requirement-verified {
         color: $colors-notifications-green;
+        svg {
+			circle {
+				fill: $colors-notifications-green;
+			}
+			path, polygon, polyline {
+				fill: $colors-notification-green-text;
+			}
+		}
     }
     .requirement-not-verified {
         color: $colors-notifications-red;
+        svg {
+			circle {
+				fill: $colors-notifications-red;
+			}
+			path, polygon, polyline {
+				fill: $colors-notification-alert-text;
+			}
+		}
     }
     .requirement-rejected {
-        color: #FFF100;
+        color: $colors-notifications-red;
+        svg {
+			circle {
+				fill: $colors-notifications-red;
+			}
+			path, polygon, polyline {
+				fill: $colors-notification-alert-text;
+			}
+		}
     }
     .requirement-pending {
-        color: #F6921E;
+        color: $colors-notification-pending;
+        svg {
+			circle {
+				fill: $colors-notification-pending;
+			}
+			path, polygon, polyline {
+				fill: $colors-notification-pending-text;
+			}
+		}
     }
     .requirement-incomplete {
         color: $colors-deactivate-color2;
+        svg {
+			circle {
+				fill: $colors-deactivate-color2;
+			}
+			path, polygon, polyline {
+				fill: $colors-black;
+			}
+		}
     }
 
     .requirement-wrapper {
@@ -200,8 +240,8 @@
         height: 1rem;
         width: 1rem;
         border-radius: 1.5rem;
-        background-color: red;
-        color: white;
+        background-color: $colors-notifications-red;
+        color: $colors-notification-alert-text;
         display: -ms-flexbox;
         display: flex;
         -ms-flex-pack: center;
