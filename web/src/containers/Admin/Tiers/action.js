@@ -39,3 +39,11 @@ export const updateFees = (values) => {
 	};
 	return requestAuthenticated(`/admin/pair/fees`, options);
 };
+
+export const updateLimits = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values)
+	};
+	return requestAuthenticated(`/admin/pair/limits`, options);
+};

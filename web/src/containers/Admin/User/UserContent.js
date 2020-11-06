@@ -16,7 +16,7 @@ import {
 	Transactions,
 	ActiveOrders
 } from '../';
-import UserData from './UserData';
+// import UserData from './UserData';
 import BankData from './BankData';
 import AboutData from './AboutData';
 import { isSupport, isAdmin, isKYC } from '../../../utils/token';
@@ -169,14 +169,14 @@ class UserContent extends Component {
 							/>
 						</div>
 					</TabPane>
-					<TabPane tab="Data" key="data">
+					{/* <TabPane tab="Data" key="data">
 						<div>
 							<UserData
 								initialValues={userInformation}
 								onChangeSuccess={onChangeUserDataSuccess}
 							/>
 						</div>
-					</TabPane>
+					</TabPane> */}
 					<TabPane tab="Bank" key="bank">
 						<div>
 							<BankData
