@@ -100,27 +100,26 @@ const updatePairFees = (req, res) => {
 		});
 };
 
-const updatePairLimits = (req, res) => {
+const updateTiersLimits = (req, res) => {
 	loggerTier.verbose(
 		req.uuid,
-		'controllers/tier/updatePairLimits auth',
+		'controllers/tier/updateTierLimits auth',
 		req.auth
 	);
 
-	const { pair, limits } = req.swagger.params.data.value;
+	const { limits } = req.swagger.params.data.value;
 
 	loggerTier.info(
 		req.uuid,
-		'controllers/tier/updatePairLimits pair',
-		pair
+		'controllers/tier/updateTierLimits tiers',
+		Object.keys(limits)
 	);
 
-	toolsLib.tier.updatePairLimits(pair, limits)
+	toolsLib.tier.updateTiersLimits(limits)
 		.then(() => {
 			loggerTier.info(
 				req.uuid,
-				'controllers/tier/updatePairLimits updated limits pair',
-				pair
+				'controllers/tier/updateTierLimits updated limits',
 			);
 			return res.json({ message: 'Success' });
 		})
@@ -139,5 +138,5 @@ module.exports = {
 	postTier,
 	putTier,
 	updatePairFees,
-	updatePairLimits
+	updateTiersLimits
 };
