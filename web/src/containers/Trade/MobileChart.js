@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import TradeBlock from './components/TradeBlock';
-// import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
 import TradeHistory from './components/TradeHistory';
 import TVChartContainer from './ChartContainer';
