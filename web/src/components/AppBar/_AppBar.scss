@@ -294,6 +294,34 @@ $app-menu-notification-size: 1.2rem;
 				}
 			}
 		}
+		.ant-select {
+			max-height: 100%;
+		}
+
+		.ant-select-selection,
+		.ant-select,
+		.ant-select-single,
+		.ant-input,
+		.ant-select-arrow,
+		.ant-select-selector,
+		.ant-select-selection-search-input
+		{
+			background-color: $app-bar-background-color;
+			color: $base_top-bar-navigation_text-inactive;
+			font-size: $navigation_bar-font_size;
+			line-height: 17px !important;
+		}
+
+		.ant-select-selector {
+			border-color: $base_top-bar-navigation_text-inactive;
+		}
+
+		.ant-select-selection-item
+		{
+			height: 17px !important;
+			display: flex;
+			align-items: center;
+		}
 	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {

@@ -73,7 +73,6 @@
 		"redux-thunk": "2.3.0",
 		"reselect": "4.0.0",
 		"rsvp": "4.8.5",
-		"socket.io-client": "2.2.0",
 		"universal-cookie": "4.0.2",
 		"validator": "10.11.0",
 		"wallet-address-validator": "0.2.4"
