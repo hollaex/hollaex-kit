@@ -1,84 +1,94 @@
 'use strict';
+const { debounce, each } = require('lodash');
 const {
-	WEBSOCKET_CHAT_PUBLIC_ROOM,
-	ROLES
+	CHAT_MESSAGE_CHANNEL,
+	CHAT_MAX_MESSAGES,
+	WEBSOCKET_CHANNEL
 } = require('../../constants');
-const { loggerChat } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { getMessages, addMessage, deleteMessage } = require('./chat');
-const { getUsername, changeUsername } = require('./username');
-const { initBanWS } = require('./ban');
+const { storeData, restoreData } = require('./utils');
+const { isUserBanned } = require('./ban');
+const moment = require('moment');
+const { subscriber, publisher } = require('../../db/pubsub');
+const { getChannels } = require('../channel');
 
-const initializeChatWS = (chat) => {
-	chat.use((socket, next) => {
-		const { token } = socket.handshake.query;
-		socket.headers = { 'authorization': token };
-		if (!token) {
-			return next();
-		} else {
-			toolsLib.auth.verifyBearerTokenMiddleware(socket, null, token, (err) => {
-				if (err) {
-					socket.err = err.message;
-					next(err);
-				}
-				next();
-			}, true);
+const MESSAGES_KEY = 'WS:MESSAGES';
+let MESSAGES = [];
+
+// redis subscriber, get message and updates MESSAGES array
+subscriber.subscribe(CHAT_MESSAGE_CHANNEL);
+subscriber.on('message', (channel, data) => {
+	if (channel === CHAT_MESSAGE_CHANNEL) {
+		data = JSON.parse(data);
+		if (data.type === 'message') {
+			MESSAGES.push(data.data);
+		} else if (data.type === 'deleteMessage') {
+			MESSAGES.splice(data.data, 1);
 		}
-	});
+	}
+});
 
-	chat.on('connection', (socket) => {
-		if (socket.err) {
-			loggerChat.error('connection error', socket.id, socket.err);
-			return socket.disconnect(socket.err);
-		}
-		if (!socket.auth) {
-			// user is not logged in
-		}
+const getMessages = (limit = CHAT_MAX_MESSAGES) => {
+	return MESSAGES.slice(-limit);
+};
 
-		socket.join(WEBSOCKET_CHAT_PUBLIC_ROOM);
+const sendInitialMessages = (ws) => {
+	ws.send(JSON.stringify({
+		topic: 'chat',
+		action: 'init',
+		data: getMessages()
+	}));
+};
 
-		loggerChat.info('init', socket.id);
-		socket.emit('init', {
-			messages: getMessages()
-		});
+const addMessage = (username, verification_level, userId, message) => {
+	const timestamp = moment().unix();
+	if (!isUserBanned(userId)) {
+		const data = {
+			id: `${timestamp}-${username}`,
+			username,
+			verification_level,
+			message,
+			timestamp
+		};
+		publisher.publish(CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'message', data }));
+		publishChatMessage('addMessage', data);
+		maintenanceMessageList();
+	} else {
+		throw new Error('User is banned');
+	}
+};
 
-		if (socket.auth) {
-			const userId = socket.auth.sub.id;
-			getUsername(userId).then((usernameOnDB) => {
-				let { username, verification_level } = usernameOnDB;
-				if (
-					socket.auth.scopes.indexOf(ROLES.ADMIN) > -1 ||
-					socket.auth.scopes.indexOf(ROLES.SUPERVISOR) > -1 ||
-					socket.auth.scopes.indexOf(ROLES.SUPPORT) > -1
-				) {
-					loggerChat.info('connected admin', socket.id, username);
-					socket.on('deleteMessage', deleteMessage);
-					// TODO set to admin username
-					socket.on('message', (data) => {
-						addMessage(username, userId, verification_level)(data);
-					});
-					socket.on('changeUsername', (username) => {
-						username = changeUsername(userId);
-					});
-					initBanWS(socket);
-				} else {
-					loggerChat.info('connected user', socket.id, username);
-					socket.on('message', (data) => {
-						addMessage(username, userId, verification_level)(data);
-					});
-					socket.on('changeUsername', () => {
-						changeUsername(userId).then((newUsername) => {
-							username = newUsername.username;
-						});
-					});
-				}
-			});
-		}
+const deleteMessage = (idToDelete) => {
+	const indexOfMessage = MESSAGES.findIndex(({ id }) => id === idToDelete);
+	if (indexOfMessage > -1) {
+		publisher.publish(CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'deleteMessage', data: indexOfMessage }));
+		maintenanceMessageList();
+		publishChatMessage('deleteMessage', idToDelete);
+	}
+};
 
-		chat.on('disconnect', () => {});
+const publishChatMessage = (event, data) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
+		ws.send(JSON.stringify({
+			topic: 'chat',
+			action: event,
+			data
+		}));
 	});
 };
 
+const maintenanceMessageList = debounce(() => {
+	MESSAGES = getMessages();
+	storeData(MESSAGES_KEY, MESSAGES);
+}, 5000);
+
+restoreData(MESSAGES_KEY).then((messages) => {
+	MESSAGES = messages;
+});
+
 module.exports = {
-	initializeChatWS
+	getMessages,
+	addMessage,
+	deleteMessage,
+	publishChatMessage,
+	sendInitialMessages
 };

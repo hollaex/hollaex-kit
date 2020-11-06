@@ -78,19 +78,31 @@ export const renderNumberField = ({
 	</div>
 );
 
+const renderDefaultOptions = (options) => (
+	options.map((option, index) => {
+		let value = (!option.value && option.value !== '') ? option : option.value;
+		return (
+			<Select.Option value={value} key={index}>
+				{option.label || option}
+			</Select.Option>
+		)
+	})
+);
+
 export const renderSelectField = ({
-	input,
+	input: { onBlur, ...inputProps },
 	options = [],
 	label,
 	meta: { touched, error, warning },
 	disabled = false,
 	multiSelect = false,
+	renderOptions = renderDefaultOptions,
 	...rest
 }) => {
-	let value = input.value || '';
-	if ((multiSelect || rest.mode === 'tags') && typeof input.value === 'string') {
-		value = input.value
-			? input.value.split(',')
+	let value = inputProps.value || '';
+	if ((multiSelect || rest.mode === 'tags') && typeof inputProps.value === 'string') {
+		value = inputProps.value
+			? inputProps.value.split(',')
 			: [];
 	}
 	return (
@@ -99,21 +111,13 @@ export const renderSelectField = ({
 		<div>
 			<Select
 				mode={multiSelect ? 'multiple' : 'default'}
-				{...input}
+				{...inputProps}
 				value={value}
 				placeholder={label}
 				disabled={disabled}
 				{...rest}
 			>
-				{options.map((option, index) => {
-					let value = (!option.value && option.value !== '') ? option : option.value;
-					return (
-						<Select.Option value={value} key={index}>
-							{option.label || option}
-						</Select.Option>
-					)
-				}
-				)}
+				{renderOptions(options)}
 			</Select>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||

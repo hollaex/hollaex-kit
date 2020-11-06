@@ -38,6 +38,8 @@ model = sequelize.import('status', require('./status'));
 db[model.name] = model;
 model = sequelize.import('announcement', require('./announcement'));
 db[model.name] = model;
+model = sequelize.import('tier', require('./tier'));
+db[model.name] = model;
 
 Object.keys(db).forEach(function(modelName) {
 	if ('associate' in db[modelName]) {

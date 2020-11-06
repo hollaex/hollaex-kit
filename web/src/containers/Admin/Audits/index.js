@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Table, Spin } from 'antd';
+import { Table, Spin } from 'antd';
 import { requestUserAudits, requestUserAuditsDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
@@ -7,7 +7,8 @@ import { SubmissionError } from 'redux-form';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
-	tradeHistory: '',
+	audits: [],
+	total: 0,
 	loading: true
 };
 
@@ -20,7 +21,7 @@ const formatDescription = (value) => {
 		return Object.keys(value.old).map((item, key) => {
 			return (
 				<div key={item}>
-					{item}: {JSON.stringify(value.old[item])} ->{' '}
+					{item}: {JSON.stringify(value.old[item])}{' '}{'->'}{' '}
 					{JSON.stringify(value.new[item])}
 				</div>
 			);
@@ -79,6 +80,7 @@ class Audits extends Component {
 				if (res) {
 					this.setState({
 						audits: res.data,
+						total: res.count,
 						loading: false
 					});
 				}
@@ -92,7 +94,7 @@ class Audits extends Component {
 	};
 
 	requestUserAuditsDownload = (userId) => {
-		return requestUserAuditsDownload({format: 'csv', userId: userId})
+		return requestUserAuditsDownload({ format: 'csv', userId: userId })
 	}
 
 	render() {
@@ -107,22 +109,24 @@ class Audits extends Component {
 		}
 
 		return (
-			<Row gutter={16} style={{ marginTop: 16 }}>
-				<Col>
+			<div className="app_container-content my-2">
+				<div className="d-flex justify-content-between my-3">
 					<div>
-						<span className="pointer" onClick={() => this.requestUserAuditsDownload(this.props.userId)}>
-							Download table
-						</span>
+						Number of events: {this.state.total}
 					</div>
-					<Table
-						rowKey={(data) => {
-							return data.id;
-						}}
-						columns={AUDIT_COLUMNS}
-						dataSource={audits ? audits : 'No Data'}
-					/>
-				</Col>
-			</Row>
+					<div className="pointer download-csv-table" onClick={() => this.requestUserAuditsDownload(this.props.userId)}>
+						Download CSV table
+					</div>
+				</div>
+				<Table
+					rowKey={(data) => {
+						return data.id;
+					}}
+					columns={AUDIT_COLUMNS}
+					dataSource={audits ? audits : 'No Data'}
+					pagination={{ pageSize: 5 }}
+				/>
+			</div>
 		);
 	}
 }

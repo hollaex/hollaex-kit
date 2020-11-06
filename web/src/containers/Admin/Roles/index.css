@@ -1,0 +1,42 @@
+.roles-wrapper .role-icon {
+    width: 5rem;
+}
+.roles-wrapper .admin-link {
+    text-decoration: underline;
+}
+.role-type-container {
+    border: 1px solid #c4c4c4;
+}
+.roles-wrapper .revoke-btn {
+    background-color: #f28041;
+    color: #FFFFFF;
+}
+.roles-wrapper .line-separator {
+    background-color: #c4c4c4;
+    width: 1px;
+}
+.roles-wrapper .role-description-box {
+    border-bottom: 1px solid #c4c4c4;
+}
+.roles-wrapper .role-label {
+    font-size: 20px;
+    font-weight: bold;
+}
+.roles-wrapper .role-supervisor {
+    background-color: #000000;
+}
+.roles-wrapper .role-kyc {
+    background-color: #DADADA;
+    color: #000000;
+}
+.roles-wrapper .role-communication {
+    background-color: #E66B00;
+    color: #000000;
+}
+.roles-wrapper .role-support {
+    background-color: #FFFF00;
+    color: #000000;
+}
+.edit-role-icon {
+    width: 3rem;
+}

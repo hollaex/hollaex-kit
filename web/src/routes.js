@@ -30,7 +30,7 @@ import {
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
-	Main,
+	// Main,
 	DepositsPage,
 	Limits,
 	Wallets,
@@ -46,7 +46,13 @@ import {
 	Transfer,
 	AdminFees,
 	Init,
-	AdminLogin
+	AdminLogin,
+	AdminDashboard,
+	AdminFinancials,
+	MoveToDash,
+	General,
+	Tiers,
+	Roles
 } from './containers';
 
 import store from './store';
@@ -318,11 +324,56 @@ export default (
 			<Route path="logout" name="LogOut" onEnter={setLogout} />
 		</Route>
 		<Route component={AdminContainer}>
-			<Route path="/admin" name="Admin Main" component={Main} />
+			<Route path="/admin" name="Admin Main" component={AdminDashboard} />
+			<Route
+				path="/admin/general"
+				name="Admin General"
+				component={withAdminProps(General, 'general')}
+			/>
+			<Route
+				path="/admin/tiers"
+				name="Admin Tiers"
+				component={withAdminProps(Tiers, 'tiers')}
+			/>
+			<Route
+				path="/admin/roles"
+				name="Admin Roles"
+				component={withAdminProps(Roles, 'roles')}
+			/>
 			<Route
 				path="/admin/user"
 				name="Admin User"
 				component={withAdminProps(User, 'user')}
+			/>
+			<Route
+				path="/admin/financials"
+				name="Admin Financials"
+				component={withAdminProps(AdminFinancials, 'financials')}
+			/>
+			<Route
+				path="/admin/trade"
+				name="Admin Trade"
+				component={withAdminProps(MoveToDash, 'trade')}
+			/>
+			<Route
+				path="/admin/hosting"
+				name="Admin Hosting"
+				component={withAdminProps(MoveToDash, 'hosting')}
+			/>
+			<Route
+				path="/admin/apikeys"
+				name="Admin APIkeys"
+				component={withAdminProps(MoveToDash, 'apikeys')}
+			/>
+			<Route
+				path="/admin/billing"
+				name="Admin Billing"
+				component={withAdminProps(MoveToDash, 'billing')}
+			/>
+			<Route
+				path="/admin/collateral"
+				name="Admin Collateral"
+				component={withAdminProps(MoveToDash, 'collateral')}
 			/>
 			<Route
 				path="/admin/wallets"
