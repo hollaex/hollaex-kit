@@ -432,7 +432,7 @@ class AppWrapper extends React.Component {
 						<Col span={16}>
 							<Layout>
 								<Content style={{ marginLeft: 50, marginTop: 0 }}>
-									<div className="content-wrapper">
+									<div className="content-wrapper admin-content-wrapper">
 										{appLoaded && this.isSocketDataReady()
 											? children
 											: <Spin size="large" className="m-top" />
@@ -501,7 +501,7 @@ class AppWrapper extends React.Component {
 						<Layout>
 							<Content>
 									<div className="admin-content-head">{this.getTitle()}</div>
-								<div className="content-wrapper">
+								<div className="content-wrapper admin-content-wrapper">
 									{appLoaded && this.isSocketDataReady()
 										? children
 										: <Spin size="large" className="m-top" />
