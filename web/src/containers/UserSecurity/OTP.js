@@ -65,7 +65,7 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}, ICONS)
 	);
 }
 
-export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
+export const OTP = ({ requestOTP, data, otp_enabled, children, icons = {} }) => (
 	<div className="user_security-wrapper">
 		{!otp_enabled && (
 			<div className="warning_text">
@@ -83,6 +83,7 @@ export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
 			disabled={data.requesting}
 			loading={data.requesting}
 			checked={otp_enabled}
+			icons={icons}
 		>
 			{children}
 		</CheckboxButton>

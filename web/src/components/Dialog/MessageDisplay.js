@@ -2,8 +2,10 @@ import React from 'react';
 import { Button } from '../';
 import STRINGS from '../../config/localizedStrings';
 import Image from 'components/Image';
+import { EditWrapper } from 'components';
 
 const MessageDisplay = ({
+	stringId,
 	text,
 	onClick,
 	buttonLabel = STRINGS["CLOSE_TEXT"],
@@ -17,7 +19,11 @@ const MessageDisplay = ({
 			    icon={iconPath}
 			    wrapperClassName='success_display-content-image'
 			/>
-			<div className="success_display-content-text">{text}</div>
+			<div className="success_display-content-text">
+				<EditWrapper stringId={stringId}>
+          {text}
+				</EditWrapper>
+			</div>
 		</div>
 		<Button label={buttonLabel} onClick={onClick} />
 	</div>

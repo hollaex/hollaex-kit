@@ -6,6 +6,7 @@ import { performConfirmWithdrawal } from '../../actions/walletActions';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 class ConfirmWithdrawal extends Component {
     state = {
@@ -70,8 +71,16 @@ class ConfirmWithdrawal extends Component {
                 },
                 useSvg: true,
                 child: <div className='text-center mb-4'>
-                    <div>{STRINGS["WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1"]}</div>
-                    <div>{STRINGS["WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2"]}</div>
+                    <div>
+                        <EditWrapper stringId="WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1">
+                            {STRINGS["WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1"]}
+                        </EditWrapper>
+                    </div>
+                    <div>
+                        <EditWrapper stringId="WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2">
+                            {STRINGS["WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2"]}
+                        </EditWrapper>
+                    </div>
                 </div>
             }
         }
@@ -94,6 +103,7 @@ class ConfirmWithdrawal extends Component {
                     {!loading &&
                         <Button
                             className='w-50'
+                            stringId="WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY"
                             label={STRINGS["WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY"]}
                             onClick={this.handleTransaction}
                         />

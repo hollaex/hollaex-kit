@@ -18,6 +18,7 @@
 .donut-label-percentage {
 	font-size: .8rem;
 	font-weight: bold;
+	fill: $colors-black;
 }
 .donut-label-link {
 	font-size: .7rem;
@@ -28,11 +29,13 @@
 .donut-label-no-price {
 	font-size: .7rem;
 	font-weight: bold;
+	fill: $colors-black;
 }
 
 .donut-label-pair {
 	font-size: 1rem;
 	font-weight: bold;
+	fill: $colors-black;
 }
 
 .deposit-asset {

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import FieldWrapper from './FieldWrapper';
 import { ActionNotification } from '../../';
-import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class FileField extends Component {
 	state = {
@@ -44,7 +44,7 @@ class FileField extends Component {
 	};
 
 	render() {
-		const { placeholder, multiple, length } = this.props;
+		const { placeholder, multiple, length, icons: ICONS } = this.props;
 		const { filename, fileArray } = this.state;
 		const input = {
 			onChange: this.onChange,
@@ -113,4 +113,4 @@ class FileField extends Component {
 	}
 }
 
-export default FileField;
+export default withConfig(FileField);

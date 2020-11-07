@@ -80,8 +80,8 @@ $notification-size: 1.5rem;
 		height: $notification-size;
 		width: $notification-size;
 		border-radius: $notification-size;
-		background-color: red;
-		color: white;
+		background-color: $colors-notifications-red;
+		color: $colors-notification-alert-text;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -109,6 +109,40 @@ $notification-size: 1.5rem;
 
 .verification-stauts {
 	width: 1rem;
+
+	&.incomplete, &.pending {
+		svg {
+			circle {
+				fill: $colors-notification-pending;
+			}
+			path, polygon, polyline {
+				fill: $colors-notification-pending-text;
+			}
+		}
+	}
+
+	&.rejected {
+		svg {
+			circle {
+				fill: $colors-notifications-red;
+			}
+			path, polygon, polyline {
+				fill: $colors-notification-alert-text;
+			}
+		}
+	}
+
+	&.verified {
+		svg {
+			circle {
+				fill: $colors-notifications-green;
+			}
+			path, polygon, polyline {
+				fill: $colors-notification-green-text;
+			}
+		}
+	}
+
 }
 
 .empty-notification {
@@ -207,16 +241,16 @@ $notification-size: 1.5rem;
 	}
 
 	.verified {
-		color: #00A551;
+		color: $colors-notifications-green;
 	}
 	.pending {
-		color: #F6921E;
-	}
-	.rejected {
-		color: #FFF100;
+		color: $colors-notification-pending;
 	}
 	.incompleted {
-		color: #EC1C24;
+		color: $colors-notification-pending;
+	}
+	.rejected {
+		color: $colors-notifications-red;
 	}
 }
 

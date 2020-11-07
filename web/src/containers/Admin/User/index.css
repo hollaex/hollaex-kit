@@ -138,7 +138,18 @@
 .ant-modal-confirm-btns {
 	display: flex;
 }
-h3 {
+.admin-content-wrapper .blue-link {
+	color: #FFFFFF !important;
+	text-decoration: underline;
+}
+.admin-content-wrapper h1,
+.admin-content-wrapper h2,
+.admin-content-wrapper h3,
+.admin-content-wrapper h4,
+.admin-content-wrapper h5,
+.admin-content-wrapper h6,
+.ant-modal-body h1,
+.ant-modal-body h3 {
 	color: #FFFFFF;
 }
 .user-info-container,
