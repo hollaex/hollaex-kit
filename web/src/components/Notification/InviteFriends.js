@@ -60,10 +60,12 @@ class InviteFriends extends Component {
                         
                     </div>
                     <div className="user_refer_info p-4 d-flex align-items-center">
-                        {STRINGS.formatString(
+                        <EditWrapper stringId="REFERRAL_LINK.REFERRED_USER_COUT">
+                          {STRINGS.formatString(
                             STRINGS["REFERRAL_LINK.REFERRED_USER_COUT"],
                             affiliationCount
-                        )}
+                          )}
+                        </EditWrapper>
                     </div>
                     <div className="d-flex my-5">
                         <Button

@@ -1080,7 +1080,7 @@ table th {
   position: relative;
   width: 1px;
   height: 3rem;
-  background-color: var(--labels_important-active-labels-text-graphics); }
+  background-color: var(--labels_secondary-inactive-label-text-graphics); }
   .review-wrapper .review-warning_arrow:after {
     content: '';
     position: absolute;
@@ -1090,7 +1090,7 @@ table th {
     left: calc(50% - 4px);
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-top: 8px solid var(--labels_important-active-labels-text-graphics); }
+    border-top: 8px solid var(--labels_secondary-inactive-label-text-graphics); }
 
 .review-wrapper .review-crypto-address {
   font-size: 1.75rem;
@@ -2109,14 +2109,34 @@ table th {
     width: 11rem; }
   .summary-container .requirement-verified {
     color: var(--specials_checks-okay-done); }
+    .summary-container .requirement-verified svg circle {
+      fill: var(--specials_checks-okay-done); }
+    .summary-container .requirement-verified svg path, .summary-container .requirement-verified svg polygon, .summary-container .requirement-verified svg polyline {
+      fill: var(--calculated_specials_notifications-success-text); }
   .summary-container .requirement-not-verified {
     color: var(--specials_notifications-alerts-warnings); }
+    .summary-container .requirement-not-verified svg circle {
+      fill: var(--specials_notifications-alerts-warnings); }
+    .summary-container .requirement-not-verified svg path, .summary-container .requirement-not-verified svg polygon, .summary-container .requirement-not-verified svg polyline {
+      fill: var(--calculated_specials_notifications-alerts-text); }
   .summary-container .requirement-rejected {
-    color: #FFF100; }
+    color: var(--specials_notifications-alerts-warnings); }
+    .summary-container .requirement-rejected svg circle {
+      fill: var(--specials_notifications-alerts-warnings); }
+    .summary-container .requirement-rejected svg path, .summary-container .requirement-rejected svg polygon, .summary-container .requirement-rejected svg polyline {
+      fill: var(--calculated_specials_notifications-alerts-text); }
   .summary-container .requirement-pending {
-    color: #F6921E; }
+    color: var(--specials_pending-waiting-caution); }
+    .summary-container .requirement-pending svg circle {
+      fill: var(--specials_pending-waiting-caution); }
+    .summary-container .requirement-pending svg path, .summary-container .requirement-pending svg polygon, .summary-container .requirement-pending svg polyline {
+      fill: var(--calculated_specials_notifications-pending-text); }
   .summary-container .requirement-incomplete {
     color: var(--labels_secondary-inactive-label-text-graphics); }
+    .summary-container .requirement-incomplete svg circle {
+      fill: var(--labels_secondary-inactive-label-text-graphics); }
+    .summary-container .requirement-incomplete svg path, .summary-container .requirement-incomplete svg polygon, .summary-container .requirement-incomplete svg polyline {
+      fill: var(--labels_secondary-inactive-label-text-graphics); }
   .summary-container .requirement-wrapper {
     width: 50rem; }
     .summary-container .requirement-wrapper .requirement-doc-icon {
@@ -2130,8 +2150,8 @@ table th {
     height: 1rem;
     width: 1rem;
     border-radius: 1.5rem;
-    background-color: red;
-    color: white;
+    background-color: var(--specials_notifications-alerts-warnings);
+    color: var(--calculated_specials_notifications-alerts-text);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: center;
@@ -3294,9 +3314,9 @@ table th {
   .app_bar .app_bar-quicktrade-container {
     margin: 0 .25rem; }
   .app_bar .app_bar-quicktrade {
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    border: 1px solid var(--calculated_base_top-bar-navigation_text-inactive);
     border-radius: .35rem;
-    color: var(--labels_secondary-inactive-label-text-graphics);
+    color: var(--calculated_base_top-bar-navigation_text-inactive);
     font-weight: 400;
     margin: 0 6px;
     padding: 0 .4rem;
@@ -3304,10 +3324,10 @@ table th {
     white-space: nowrap; }
     .app_bar .app_bar-quicktrade svg .trade-active-2, .app_bar .app_bar-quicktrade svg .st0 {
       fill: var(--labels_secondary-inactive-label-text-graphics) !important;
-      stroke: var(--labels_secondary-inactive-label-text-graphics) !important;
+      stroke: var(--calculated_base_top-bar-navigation_text-inactive) !important;
       stroke-width: 3 !important; }
     .app_bar .app_bar-quicktrade svg .admin-dash {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+      fill: var(--calculated_base_top-bar-navigation_text-inactive) !important; }
   .app_bar .overflow {
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -3330,8 +3350,8 @@ table th {
     font-size: .8rem; }
   .app_bar .app_bar-pair-content {
     align-items: center;
-    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    color: var(--labels_secondary-inactive-label-text-graphics);
+    border-left: 1px solid var(--calculated_base_top-bar-navigation_text-inactive);
+    color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
     display: flex;
     font-size: 1rem;
@@ -3368,7 +3388,7 @@ table th {
     left: -4rem; } }
   .app_bar .app_bar-pair-overflow {
     align-items: center;
-    color: var(--labels_secondary-inactive-label-text-graphics);
+    color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
     display: flex;
     font-size: 1rem;
@@ -3450,6 +3470,25 @@ table th {
         height: 9px;
         width: 9px;
         margin: 1.2px 3px 1px 0 !important; }
+  .app_bar .toggle_button-wrapper .ant-select {
+    max-height: 100%; }
+  .app_bar .toggle_button-wrapper .ant-select-selection,
+  .app_bar .toggle_button-wrapper .ant-select,
+  .app_bar .toggle_button-wrapper .ant-select-single,
+  .app_bar .toggle_button-wrapper .ant-input,
+  .app_bar .toggle_button-wrapper .ant-select-arrow,
+  .app_bar .toggle_button-wrapper .ant-select-selector,
+  .app_bar .toggle_button-wrapper .ant-select-selection-search-input {
+    background-color: var(--base_top-bar-navigation);
+    color: var(--calculated_base_top-bar-navigation_text-inactive);
+    font-size: 0.9rem;
+    line-height: 17px !important; }
+  .app_bar .toggle_button-wrapper .ant-select-selector {
+    border-color: var(--calculated_base_top-bar-navigation_text-inactive); }
+  .app_bar .toggle_button-wrapper .ant-select-selection-item {
+    height: 17px !important;
+    display: flex;
+    align-items: center; }
   .app_bar .app_bar-pair-content .btc0,
   .app_bar .app_bar-pair-content .btc1,
   .app_bar .app_bar-pair-content .eth0,
@@ -3511,14 +3550,14 @@ table th {
   .app_bar .app-bar-account-icon svg .tusd-icon,
   .app_bar .app-bar-account-icon svg .dai-icon,
   .app_bar .app-bar-account-icon svg .ltc-icon {
-    fill: var(--labels_secondary-inactive-label-text-graphics); }
+    fill: var(--calculated_base_top-bar-navigation_text-inactive); }
   .app_bar .app_bar-pair-content .tab-close, .app_bar .app_bar-pair-content .plus, .app_bar .app-bar-tab-close .tab-close, .app_bar .app-bar-tab-close .plus, .app_bar .app-bar-currency-icon .tab-close, .app_bar .app-bar-currency-icon .plus, .app_bar .app-bar-account-icon svg .tab-close, .app_bar .app-bar-account-icon svg .plus {
-    stroke: var(--labels_secondary-inactive-label-text-graphics); }
+    stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
   .app_bar .app_bar-pair-content .st0, .app_bar .app-bar-tab-close .st0, .app_bar .app-bar-currency-icon .st0, .app_bar .app-bar-account-icon svg .st0 {
     fill: var(--calculated_base_top-bar-navigation_text) !important;
     stroke-width: 0rem; }
   .app_bar .account-inactive .app-bar-account-icon svg .st0 {
-    fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+    fill: var(--calculated_base_top-bar-navigation_text-inactive) !important; }
   .app_bar .app_bar-currency-txt {
     font-weight: 600; }
   .app_bar .app-price-diff-down {
@@ -3570,8 +3609,8 @@ table th {
     height: 1.2rem;
     width: 1.2rem;
     border-radius: 1.2rem;
-    background-color: red;
-    color: white;
+    background-color: var(--specials_notifications-alerts-warnings);
+    color: var(--calculated_specials_notifications-alerts-text);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -3585,21 +3624,21 @@ table th {
     top: 36px;
     min-width: 10rem;
     min-height: 8rem;
-    background-color: #fafafa;
+    background-color: var(--base_background);
     z-index: 20;
     padding: 1rem;
     -webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4); }
     .app_bar .app-bar-account-menu .app-bar-account-menu-list {
-      color: var(--labels_secondary-inactive-label-text-graphics);
+      color: var(--calculated_base_top-bar-navigation_text-inactive);
       cursor: pointer;
       padding: .2rem 0; }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon {
       margin-right: .4rem;
       width: 1rem; }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .account-active-1 {
-      fill: var(--labels_secondary-inactive-label-text-graphics); }
+      fill: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app_bar .app-bar-account-menu .menu-notification-active {
       color: var(--specials_notifications-alerts-warnings); }
       .app_bar .app-bar-account-menu .menu-notification-active svg .tab-summary0, .app_bar .app-bar-account-menu .menu-notification-active svg .tab-wallet0, .app_bar .app-bar-account-menu .menu-notification-active svg .tab-setting0, .app_bar .app-bar-account-menu .menu-notification-active svg .tab-verify0,
@@ -3618,12 +3657,12 @@ table th {
       .app_bar .app-bar-account-menu .notification svg .tab-security0, .app_bar .app-bar-account-menu .notification svg .tab-api0 {
         fill: var(--specials_notifications-alerts-warnings); }
     .app_bar .app-bar-account-menu .security_notification, .app_bar .app-bar-account-menu .verification_notification, .app_bar .app-bar-account-menu .wallet_notification {
-      color: var(--specials_notifications-alerts-warnings); }
+      color: var(--calculated_specials_notifications-alerts-inactive); }
       .app_bar .app-bar-account-menu .security_notification svg .tab-summary0, .app_bar .app-bar-account-menu .security_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .security_notification svg .tab-setting0, .app_bar .app-bar-account-menu .security_notification svg .tab-verify0,
       .app_bar .app-bar-account-menu .security_notification svg .tab-security0, .app_bar .app-bar-account-menu .security_notification svg .tab-api0, .app_bar .app-bar-account-menu .verification_notification svg .tab-summary0, .app_bar .app-bar-account-menu .verification_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .verification_notification svg .tab-setting0, .app_bar .app-bar-account-menu .verification_notification svg .tab-verify0,
       .app_bar .app-bar-account-menu .verification_notification svg .tab-security0, .app_bar .app-bar-account-menu .verification_notification svg .tab-api0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-summary0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-setting0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-verify0,
       .app_bar .app-bar-account-menu .wallet_notification svg .tab-security0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-api0 {
-        fill: var(--specials_notifications-alerts-warnings); }
+        fill: var(--calculated_specials_notifications-alerts-inactive); }
     .app_bar .app-bar-account-menu .app-bar-account-menu-notification {
       position: absolute;
       right: -10px;
@@ -3632,7 +3671,7 @@ table th {
       width: 1.2rem;
       border-radius: 1.2rem;
       background-color: var(--specials_notifications-alerts-warnings);
-      color: white;
+      color: var(--calculated_specials_notifications-alerts-text);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -3646,7 +3685,7 @@ table th {
     .app_bar .app-bar-account-menu .security_selected_inactive,
     .app_bar .app-bar-account-menu .verification_selected_inactive,
     .app_bar .app-bar-account-menu .wallet_selected_inactive {
-      background-color: var(--specials_notifications-alerts-warnings) !important; }
+      background-color: var(--calculated_specials_notifications-alerts-inactive) !important; }
     .app_bar .app-bar-account-menu .app-bar-account-list-notification {
       position: relative;
       right: 0;
@@ -3655,7 +3694,7 @@ table th {
       width: 1.2rem;
       border-radius: 1.2rem;
       background-color: var(--specials_notifications-alerts-warnings);
-      color: white;
+      color: var(--calculated_specials_notifications-alerts-text);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -3699,8 +3738,8 @@ table th {
     height: 1.2rem;
     width: 1.2rem;
     border-radius: 1.2rem;
-    background-color: red;
-    color: white;
+    background-color: var(--calculated_specials_notifications-alerts-inactive);
+    color: var(--calculated_specials_notifications-alerts-text);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -3717,7 +3756,7 @@ table th {
   position: relative;
   width: 100%; }
   .app-menu-bar .app-menu-bar-content {
-    color: var(--labels_secondary-inactive-label-text-graphics);
+    color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
     height: 2.5rem;
     position: relative;
@@ -3751,12 +3790,12 @@ table th {
     .app-menu-bar .notification svg .tab-security0, .app-menu-bar .notification svg .tab-api0 {
       fill: var(--specials_notifications-alerts-warnings); }
   .app-menu-bar .security_notification, .app-menu-bar .verification_notification, .app-menu-bar .wallet_notification {
-    color: var(--specials_notifications-alerts-warnings); }
+    color: var(--calculated_specials_notifications-alerts-inactive); }
     .app-menu-bar .security_notification svg .tab-summary0, .app-menu-bar .security_notification svg .tab-wallet0, .app-menu-bar .security_notification svg .tab-setting0, .app-menu-bar .security_notification svg .tab-verify0,
     .app-menu-bar .security_notification svg .tab-security0, .app-menu-bar .security_notification svg .tab-api0, .app-menu-bar .verification_notification svg .tab-summary0, .app-menu-bar .verification_notification svg .tab-wallet0, .app-menu-bar .verification_notification svg .tab-setting0, .app-menu-bar .verification_notification svg .tab-verify0,
     .app-menu-bar .verification_notification svg .tab-security0, .app-menu-bar .verification_notification svg .tab-api0, .app-menu-bar .wallet_notification svg .tab-summary0, .app-menu-bar .wallet_notification svg .tab-wallet0, .app-menu-bar .wallet_notification svg .tab-setting0, .app-menu-bar .wallet_notification svg .tab-verify0,
     .app-menu-bar .wallet_notification svg .tab-security0, .app-menu-bar .wallet_notification svg .tab-api0 {
-      fill: var(--specials_notifications-alerts-warnings); }
+      fill: var(--calculated_specials_notifications-alerts-inactive); }
   .app-menu-bar .app-menu-bar-icon-notification {
     position: absolute;
     left: -14px;
@@ -3765,7 +3804,7 @@ table th {
     width: 1.2rem;
     border-radius: 1.2rem;
     background-color: var(--specials_notifications-alerts-warnings);
-    color: white;
+    color: var(--calculated_specials_notifications-alerts-text);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -3800,7 +3839,7 @@ table th {
 
 .app-bar-add-tab-menu {
   background-color: var(--base_background);
-  border: 1px solid #535353;
+  border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
   color: var(--labels_secondary-inactive-label-text-graphics);
   display: block;
   width: 22rem;
@@ -4063,8 +4102,8 @@ table th {
     height: 1.5rem;
     width: 1.5rem;
     border-radius: 1.5rem;
-    background-color: red;
-    color: white;
+    background-color: var(--specials_notifications-alerts-warnings);
+    color: var(--calculated_specials_notifications-alerts-text);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -4087,6 +4126,18 @@ table th {
 
 .verification-stauts {
   width: 1rem; }
+  .verification-stauts.incomplete svg circle, .verification-stauts.pending svg circle {
+    fill: var(--specials_pending-waiting-caution); }
+  .verification-stauts.incomplete svg path, .verification-stauts.incomplete svg polygon, .verification-stauts.incomplete svg polyline, .verification-stauts.pending svg path, .verification-stauts.pending svg polygon, .verification-stauts.pending svg polyline {
+    fill: var(--calculated_specials_notifications-pending-text); }
+  .verification-stauts.rejected svg circle {
+    fill: var(--specials_notifications-alerts-warnings); }
+  .verification-stauts.rejected svg path, .verification-stauts.rejected svg polygon, .verification-stauts.rejected svg polyline {
+    fill: var(--calculated_specials_notifications-alerts-text); }
+  .verification-stauts.verified svg circle {
+    fill: var(--specials_checks-okay-done); }
+  .verification-stauts.verified svg path, .verification-stauts.verified svg polygon, .verification-stauts.verified svg polyline {
+    fill: var(--calculated_specials_notifications-success-text); }
 
 .empty-notification {
   height: 1.5rem; }
@@ -4154,13 +4205,13 @@ table th {
     font-size: 2rem;
     font-weight: bold; }
   .mobile_tab-wrapper .verified {
-    color: #00A551; }
+    color: var(--specials_checks-okay-done); }
   .mobile_tab-wrapper .pending {
-    color: #F6921E; }
-  .mobile_tab-wrapper .rejected {
-    color: #FFF100; }
+    color: var(--specials_pending-waiting-caution); }
   .mobile_tab-wrapper .incompleted {
-    color: #EC1C24; }
+    color: var(--specials_pending-waiting-caution); }
+  .mobile_tab-wrapper .rejected {
+    color: var(--specials_notifications-alerts-warnings); }
 
 .mobile_tab_last {
   border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
@@ -4409,16 +4460,22 @@ table th {
       .notification-wrapper .notification-title-wrapper .notification-title-icon svg {
         width: 8rem;
         height: 8rem; }
+        .notification-wrapper .notification-title-wrapper .notification-title-icon svg path {
+          fill: var(--labels_important-active-labels-text-graphics); }
+        .notification-wrapper .notification-title-wrapper .notification-title-icon svg polyline {
+          fill: transparent; }
     .notification-wrapper .notification-title-wrapper .notification-title-text {
       flex: 0;
       text-align: center;
-      font-size: 1.25rem; }
+      font-size: 1.25rem;
+      color: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .notification-content-wrapper {
     position: relative;
     font-size: 1rem;
     display: flex;
     flex-direction: column;
-    flex: 1; }
+    flex: 1;
+    color: var(--labels_secondary-inactive-label-text-graphics); }
     .notification-wrapper .notification-content-wrapper .notification-content-title.with-border-bottom {
       border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
     .notification-wrapper .notification-content-wrapper.notification_verification {
@@ -4450,7 +4507,8 @@ table th {
         color: var(--labels_secondary-inactive-label-text-graphics); }
     .notification-wrapper .notification-content-wrapper .notification-content-header {
       position: relative;
-      font-size: 0.9rem; }
+      font-size: 1.25rem;
+      color: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .notification-buttons-wrapper .button-eur {
     background-color: var(--coin-eur); }
   .notification-wrapper .notification-information {
@@ -4488,6 +4546,57 @@ table th {
       width: 8rem; }
     .notification-wrapper .invite_friends_wrapper .icon_title-wrapper .icon_title-text.title {
       font-size: 2rem; }
+  .notification-wrapper svg .check-order-1,
+  .notification-wrapper svg .check-order-2,
+  .notification-wrapper svg .coin-btc-4,
+  .notification-wrapper svg .coin-base-4 {
+    stroke: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper svg .market-buy,
+  .notification-wrapper svg .check-order-2,
+  .notification-wrapper svg .coin-btc-1,
+  .notification-wrapper svg .coin-btc-5,
+  .notification-wrapper svg .coin-base-1,
+  .notification-wrapper svg .coin-base-5,
+  .notification-wrapper svg .email_sent,
+  .notification-wrapper svg .limit-sell-03,
+  .notification-wrapper svg .limit-sell-04,
+  .notification-wrapper svg .limit-buy-03,
+  .notification-wrapper svg .limit-buy-04,
+  .notification-wrapper svg .refer-icon,
+  .notification-wrapper svg .stake_icon {
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper svg .limit-sell-01,
+  .notification-wrapper svg .limit-buy-01,
+  .notification-wrapper svg .limit-buy-02,
+  .notification-wrapper svg .limit-sell-02,
+  .notification-wrapper svg .wallet-selected-2 {
+    stroke: var(--labels_important-active-labels-text-graphics);
+    fill: transparent; }
+  .notification-wrapper svg g .wallet-selected-2 {
+    stroke: transparent;
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper .partial-fill {
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper .limit-trade-tick {
+    fill: var(--labels_secondary-inactive-label-text-graphics); }
+  .notification-wrapper .new-order-notification svg {
+    fill: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .new-order-notification svg .newWave-icon {
+      fill: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .new-order-notification svg .generate_api {
+      fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper .notification-wrapper {
+    color: var(--labels_secondary-inactive-label-text-graphics); }
+    .notification-wrapper .notification-wrapper .notification-title-wrapper {
+      border-bottom-color: var(--labels_secondary-inactive-label-text-graphics); }
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-icon svg .deposit-02,
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-icon svg .deposit-complete-01,
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-icon svg .deposit-complete-btc-01 {
+        fill: var(--labels_important-active-labels-text-graphics); }
+      .notification-wrapper .notification-wrapper .notification-title-wrapper .notification-title-text {
+        color: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .notification-wrapper .notification-content-information .text_disabled {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .notification-wrapper .notification-content-wrapper.notification-withdrawal .notification-content-icon {
   width: 80% !important; }
@@ -4508,7 +4617,7 @@ table th {
   .layout-mobile .notification-wrapper .order-notification {
     margin: 0.75rem;
     flex-direction: row;
-    color: white; }
+    color: var(--labels_important-active-labels-text-graphics); }
     .layout-mobile .notification-wrapper .trade-notification .notification-content-icon,
     .layout-mobile .notification-wrapper .order-notification .notification-content-icon {
       margin: 0;
@@ -4520,9 +4629,6 @@ table th {
       .layout-mobile .notification-wrapper .order-notification .notification-content-icon svg {
         width: 6rem;
         height: 6rem; }
-      .layout-mobile .notification-wrapper .trade-notification .notification-content-icon .limit-trade-tick,
-      .layout-mobile .notification-wrapper .order-notification .notification-content-icon .limit-trade-tick {
-        fill: #BBBDBF; }
     .layout-mobile .notification-wrapper .trade-notification .notification-content-title,
     .layout-mobile .notification-wrapper .order-notification .notification-content-title {
       margin: 0; }
@@ -4970,7 +5076,7 @@ table th {
   width: 100%;
   font-size: 0.9rem;
   padding: 0 4px;
-  background-color: var(--labels_important-active-labels-text-graphics) !important; }
+  background-color: var(--specials_buttons-links-and-highlights) !important; }
   .exir-button.button-success {
     background-color: var(--specials_checks-okay-done) !important; }
   .exir-button.button-fail {
@@ -5792,7 +5898,8 @@ table th {
 
 .donut-label-percentage {
   font-size: .8rem;
-  font-weight: bold; }
+  font-weight: bold;
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .donut-label-link {
   font-size: .7rem;
@@ -5801,11 +5908,13 @@ table th {
 
 .donut-label-no-price {
   font-size: .7rem;
-  font-weight: bold; }
+  font-weight: bold;
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .donut-label-pair {
   font-size: 1rem;
-  font-weight: bold; }
+  font-weight: bold;
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .deposit-asset {
   fill: var(--specials_buttons-links-and-highlights);

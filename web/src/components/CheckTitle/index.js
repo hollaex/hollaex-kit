@@ -13,15 +13,15 @@ export const renderStatusIcon = (statusCode = -1, className = "") => {
 		case -1:
 			return null;
 		case 0:
-			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={classnames(className, 'incomplete')} />;
 		case 1:
-			return <ReactSVG path={ICONS["VERIFICATION_PENDING"]} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_PENDING"]} wrapperClassName={classnames(className, 'pending')} />;
 		case 2:
-			return <ReactSVG path={ICONS["VERIFICATION_REJECTED"]} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_REJECTED"]} wrapperClassName={classnames(className, 'rejected')} />;
 		case 3:
-			return <ReactSVG path={ICONS["VERIFICATION_VERIFIED"]} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_VERIFIED"]} wrapperClassName={classnames(className, 'verified')} />;
 		default:
-			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={className} />;
+			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={classnames(className, 'incomplete')} />;
 	}
 };
 

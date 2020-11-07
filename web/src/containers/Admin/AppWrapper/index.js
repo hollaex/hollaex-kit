@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined} from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
-// import io from 'socket.io-client';
 import { debounce } from 'lodash';
 import ReactSVG from 'react-svg';
 

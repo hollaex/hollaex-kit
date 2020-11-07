@@ -68,7 +68,7 @@ $app-menu-notification-size: 1.2rem;
 	.app_bar-quicktrade {
 		border: 1px solid $app-bar-icon-inactive;
 		border-radius: .35rem;
-		color: $app-bar-icon-inactive;
+		color: $base_top-bar-navigation_text-inactive;
 		font-weight: 400;
 		margin: 0 6px;
 		padding: 0 .4rem;
@@ -122,8 +122,8 @@ $app-menu-notification-size: 1.2rem;
 
 	.app_bar-pair-content {
 		align-items: center;
-		border-left: 1px solid $dark-inactive-color;
-		color: $app-bar-icon-inactive;
+		border-left: 1px solid $base_top-bar-navigation_text-inactive;
+		color: $base_top-bar-navigation_text-inactive;
 		cursor: pointer;
 		display: flex;
 		font-size: $font-size-main;
@@ -294,6 +294,34 @@ $app-menu-notification-size: 1.2rem;
 				}
 			}
 		}
+		.ant-select {
+			max-height: 100%;
+		}
+
+		.ant-select-selection,
+		.ant-select,
+		.ant-select-single,
+		.ant-input,
+		.ant-select-arrow,
+		.ant-select-selector,
+		.ant-select-selection-search-input
+		{
+			background-color: $app-bar-background-color;
+			color: $base_top-bar-navigation_text-inactive;
+			font-size: $navigation_bar-font_size;
+			line-height: 17px !important;
+		}
+
+		.ant-select-selector {
+			border-color: $base_top-bar-navigation_text-inactive;
+		}
+
+		.ant-select-selection-item
+		{
+			height: 17px !important;
+			display: flex;
+			align-items: center;
+		}
 	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
@@ -383,8 +411,8 @@ $app-menu-notification-size: 1.2rem;
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
 		border-radius: $app-menu-notification-size;
-		background-color: red;
-		color: white;
+		background-color: $colors-notifications-red;
+		color: $colors-notification-alert-text;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -400,7 +428,7 @@ $app-menu-notification-size: 1.2rem;
 		top: 36px;
 		min-width: 10rem;
 		min-height: 8rem;
-		background-color: #fafafa;
+		background-color: $app-background-color;
 		z-index: 20;
 		padding: 1rem;
 		-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -423,15 +451,15 @@ $app-menu-notification-size: 1.2rem;
 			}
 		}
 		.menu-notification-active {
-				color: $colors-notifications-red;
-			
-				svg {
-					.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
-					.tab-security0, .tab-api0 {
-						fill: $colors-notifications-red;
-					}
+			color: $colors-notifications-red;
+
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notifications-red;
 				}
 			}
+		}
 		.menu-active {
 			color: $colors-main-black;
 
@@ -478,7 +506,7 @@ $app-menu-notification-size: 1.2rem;
 			width: $app-menu-notification-size;
 			border-radius: $app-menu-notification-size;
 			background-color: $colors-notifications-red;
-			color: white;
+			color: $colors-notification-alert-text;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -505,7 +533,7 @@ $app-menu-notification-size: 1.2rem;
 			width: $app-menu-notification-size;
 			border-radius: $app-menu-notification-size;
 			background-color: $colors-notifications-red;
-			color: white;
+			color: $colors-notification-alert-text;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -561,8 +589,8 @@ $app-menu-notification-size: 1.2rem;
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
 		border-radius: $app-menu-notification-size;
-		background-color: red;
-		color: white;
+		background-color: $colors-notification-inactive-red;
+		color: $colors-notification-alert-text;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -657,7 +685,7 @@ $app-menu-notification-size: 1.2rem;
 		width: $app-menu-notification-size;
 		border-radius: $app-menu-notification-size;
 		background-color: $colors-notifications-red;
-		color: white;
+		color: $colors-notification-alert-text;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -700,7 +728,7 @@ $app-menu-notification-size: 1.2rem;
 
 .app-bar-add-tab-menu {
 	background-color: $app-background-color;
-	border: 1px solid #535353;
+	border: 1px solid $border-color;
 	color: $app-bar-menu-list-color;
 	display: block;
 	width: 22rem;

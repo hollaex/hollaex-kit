@@ -124,6 +124,8 @@ const Roles = () => {
 	};
 	useEffect(() => {
 		requestInitRole();
+    //  TODO: Fix react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleInvite = (values) => {

@@ -30,7 +30,8 @@ class UserVerification extends Component {
 	state = {
 		sections: [],
 		dialogIsOpen: false,
-		modalText: ''
+		modalText: '',
+		stringId: '',
 	};
 
 	componentDidMount() {
@@ -55,11 +56,12 @@ class UserVerification extends Component {
 			nextProps.user.otp.requested &&
 			nextProps.user.otp.requested !== this.props.user.otp.requested
 		) {
-			this.setState({ dialogIsOpen: true, modalText: '' });
+			this.setState({ dialogIsOpen: true, modalText: '', stringId: '' });
 		} else if (nextProps.user.otp.error !== this.props.user.otp.error) {
 			this.setState({
 				dialogIsOpen: true,
-				modalText: nextProps.user.otp.error
+				modalText: nextProps.user.otp.error,
+        stringId: '',
 			});
 		}
 	}
@@ -78,6 +80,7 @@ class UserVerification extends Component {
 						requestOTP={this.handleOTPCheckbox}
 						data={otp}
 						otp_enabled={otp_enabled}
+						icons={ICONS}
 					>
 						{/*otp_enabled && (
 							<div className="d-flex flex-column">
@@ -154,7 +157,7 @@ class UserVerification extends Component {
 			this.props.requestOTP();
 		} else {
 			// TODO cancel otp
-			this.setState({ dialogIsOpen: true, modalText: '' });
+			this.setState({ dialogIsOpen: true, modalText: '', stringId: '' });
 		}
 	};
 
@@ -165,7 +168,8 @@ class UserVerification extends Component {
 				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS"]
+					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS"],
+					stringId: "ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS",
 				});
 			})
 			.catch((err) => {
@@ -186,7 +190,8 @@ class UserVerification extends Component {
 				this.setState({
 					dialogIsOpen: true,
 					modalText:
-						STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS"]
+						STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS"],
+					stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS",
 				});
 			})
 			.catch((err) => {
@@ -203,7 +208,8 @@ class UserVerification extends Component {
 				this.props.otpSetActivated(false);
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.REVOKE"]
+					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.REVOKE"],
+					stringId: "ACCOUNT_SECURITY.OTP.DIALOG.REVOKE",
 				});
 			})
 			.catch(errorHandler);
@@ -246,7 +252,7 @@ class UserVerification extends Component {
 		modalText,
 		constants
 	) => {
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, stringId } = this.props;
 		if (error) {
 			return (
 				<SuccessDisplay
@@ -263,6 +269,7 @@ class UserVerification extends Component {
 			return (
 				<SuccessDisplay
 					onClick={this.onCloseDialog}
+					stringId={stringId}
 					text={modalText}
 					success={!error}
 				/>

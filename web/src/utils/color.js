@@ -23,10 +23,15 @@ const pushCalculatedColors = (themeData) => {
     'calculated_base_modal-overlay': Color(themeData['base_background']).alpha(0.75).string(),
     'calculated_specials_highlight-box': Color(themeData['specials_buttons-links-and-highlights']).alpha(0.2).string(),
     'calculated_base_top-bar-navigation_text': Color(themeData['base_top-bar-navigation']).isLight() ? 'black' : 'white',
+    'calculated_base_top-bar-navigation_text-inactive': Color(themeData['base_top-bar-navigation']).isLight() ? '#000000b3' : '#ffffffb3',
     'calculated_base_footer_text': Color(themeData['base_footer']).isLight() ? 'black' : 'white',
     'calculated_trad-view_watermark': Color(themeData['labels_important-active-labels-text-graphics']).alpha(0.1).string(),
     'calculated_trad-view_axis': Color(themeData['labels_important-active-labels-text-graphics']).alpha(0.5).string(),
     'calculated_trad-view_text': Color(themeData['labels_important-active-labels-text-graphics']).alpha(0.85).string(),
+    'calculated_specials_notifications-alerts-inactive': Color(themeData['specials_notifications-alerts-warnings']).alpha(0.75).string(),
+    'calculated_specials_notifications-alerts-text': Color(themeData['specials_notifications-alerts-warnings']).isLight() ? 'black' : 'white',
+    'calculated_specials_notifications-pending-text': Color(themeData['specials_pending-waiting-caution']).isLight() ? 'black' : 'white',
+    'calculated_specials_notifications-success-text': Color(themeData['specials_checks-okay-done']).isLight() ? 'black' : 'white',
   }
 
   return {...themeData, ...calculatedColors};
