@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
-import { Input, Button, Radio } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
-import initialTheme from 'config/colors/light';
+import { Input, Button, Radio, Divider } from 'antd';
+import { DeleteOutlined, BgColorsOutlined } from '@ant-design/icons';
+import initialTheme, { nestedColors as nestedStructure } from 'config/colors/light';
 import { getColorByKey, filterTheme, CALCULATED_COLOR_KEYS, calculateBaseColors } from 'utils/color';
 
 const { Group } = Radio;
@@ -114,7 +114,7 @@ class AddTheme extends Component {
             {`${isEditTheme ? 'Edit' : 'Add'} theme`}
           </div>
         </div>
-        <div className="mb-5 d-flex align-center">
+        <div className="my-4 d-flex align-center">
           <div className="bold mr-4">
             Theme:
           </div>
@@ -135,38 +135,56 @@ class AddTheme extends Component {
           </Group>
         </div>
         <div>
-          {Object.entries(theme).map(([colorKey, colorValue]) => {
+          {Object.entries(nestedStructure).map(([clusterKey, clusterObj]) => {
             return (
-              <div className="d-flex justify-content-between align-items-center py-1" key={colorKey}>
-                <div className="bold">{colorKey.split("_")[1].replace(/-/g, ' ')}</div>
-                <div className="d-flex align-items-center">
-                  <div
-                    className="mr-2"
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      border: '1px solid #322D2D99',
-                      borderRadius: '38px',
-                      backgroundColor: colorValue,
-                    }}
-                  />
-                  <Input
-                    type="text"
-                    name={colorKey}
-                    disabled={this.isDisabled(colorKey)}
-                    placeholder="Please pick a color"
-                    className="operator-controls__input mr-2"
-                    value={colorValue}
-                    onChange={this.handleInputChange}
-                  />
-                  <Button
-                    ghost
-                    shape="circle"
-                    size="small"
-                    className="operator-controls__all-strings-settings-button"
-                    onClick={() => this.onReset(colorKey)}
-                    icon={<DeleteOutlined />}
-                  />
+              <div className="pb-4">
+                <Divider orientation="left">
+                  <span className="caps">
+                    <BgColorsOutlined />
+                    {' '}
+                    {clusterKey}
+                  </span>
+                </Divider>
+                <div className="pt-2">
+                  {Object.keys(clusterObj).map((localColorKey) => {
+                    const colorKey = `${clusterKey}_${localColorKey}`;
+                    const colorValue = theme[colorKey];
+
+                    return (
+                      <div className="d-flex justify-content-between align-items-center py-1" key={colorKey}>
+                        <div className="bold">{colorKey.split("_")[1].replace(/-/g, ' ')}</div>
+                        <div className="d-flex align-items-center">
+                          <div
+                            className="mr-2"
+                            style={{
+                              width: '20px',
+                              height: '20px',
+                              border: '1px solid #322D2D99',
+                              borderRadius: '38px',
+                              backgroundColor: colorValue,
+                            }}
+                          />
+                          <Input
+                            type="text"
+                            name={colorKey}
+                            disabled={this.isDisabled(colorKey)}
+                            placeholder="Please pick a color"
+                            className="operator-controls__input mr-2"
+                            value={colorValue}
+                            onChange={this.handleInputChange}
+                          />
+                          <Button
+                            ghost
+                            shape="circle"
+                            size="small"
+                            className="operator-controls__all-strings-settings-button"
+                            onClick={() => this.onReset(colorKey)}
+                            icon={<DeleteOutlined />}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )

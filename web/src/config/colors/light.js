@@ -1,7 +1,7 @@
 import flatten from 'flat';
 
 const options = { safe: true, delimiter: '_' }
-const nestedColors = {
+export const nestedColors = {
   base: {
     'background': '#ffffff',
     'top-bar-navigation': '#000000',
