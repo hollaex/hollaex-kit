@@ -22,16 +22,17 @@ class AddTheme extends Component {
       themeKey,
       theme: filteredTheme,
       isSingleBase: false,
+      isDarken: true,
       baseRatios,
     }
   }
 
   addTheme = () => {
-    const { themeKey, theme, isSingleBase, baseRatios } = this.state;
+    const { themeKey, theme, isSingleBase, baseRatios, isDarken } = this.state;
     const { onSave } = this.props;
 
     if (isSingleBase) {
-      const calculatedColors = calculateBaseColors(theme['base_background'], true, baseRatios);
+      const calculatedColors = calculateBaseColors(theme['base_background'], isDarken, baseRatios);
 
       this.setState(prevState => ({
         ...prevState,
@@ -110,9 +111,15 @@ class AddTheme extends Component {
     }
   }
 
+  handleColorMode = ({ target: { value }}) => {
+    this.setState({
+      isDarken: value,
+    });
+  }
+
   render() {
     const { isOpen, onCloseDialog } = this.props;
-    const { isEditTheme, themeKey, theme, isSingleBase, baseRatios } = this.state;
+    const { isEditTheme, themeKey, theme, isSingleBase, baseRatios, isDarken } = this.state;
 
     return (
       <Modal
@@ -146,9 +153,19 @@ class AddTheme extends Component {
         </div>
         <div className="mb-5">
           <Group onChange={this.handleBaseMode} value={isSingleBase}>
-            <Radio value={true}>Use single base</Radio>
             <Radio value={false}>Use separated base</Radio>
+            <Radio value={true}>Use single base</Radio>
           </Group>
+          {
+            isSingleBase && (
+              <div className="pl-5">
+                <Group onChange={this.handleColorMode} value={isDarken}>
+                  <Radio value={true}>Darken</Radio>
+                  <Radio value={false}>Lighten</Radio>
+                </Group>
+              </div>
+            )
+          }
         </div>
         <div>
           {Object.entries(nestedStructure).map(([clusterKey, clusterObj]) => {
