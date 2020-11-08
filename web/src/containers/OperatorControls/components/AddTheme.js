@@ -5,6 +5,7 @@ import { Input, Button, Radio, Divider } from 'antd';
 import { DeleteOutlined, BgColorsOutlined } from '@ant-design/icons';
 import initialTheme, { nestedColors as nestedStructure } from 'config/colors/light';
 import { getColorByKey, filterTheme, CALCULATED_COLOR_KEYS, CALCULATED_COLOR_RATIO_OBJECT, calculateBaseColors } from 'utils/color';
+import validateColor from 'validate-color';
 
 const { Group } = Radio;
 
@@ -117,6 +118,18 @@ class AddTheme extends Component {
     });
   }
 
+  validateRatio = (value) => {
+    return value >= 0 && value <= 1
+  }
+
+  validateColor = ({ target: { value, name } }) => {
+    if (!this.isCalculated(name) && !validateColor(value)) {
+      this.onReset(name)
+    } else if (this.isCalculated(name) && !this.validateRatio(value)) {
+      this.updateRatio(0, name)
+    }
+  }
+
   render() {
     const { isOpen, onCloseDialog } = this.props;
     const { isEditTheme, themeKey, theme, isSingleBase, baseRatios, isDarken } = this.state;
@@ -181,7 +194,9 @@ class AddTheme extends Component {
                 <div className="pt-2">
                   {Object.keys(clusterObj).map((localColorKey) => {
                     const colorKey = `${clusterKey}_${localColorKey}`;
-                    const colorValue = this.isCalculated(colorKey)? baseRatios[colorKey] : theme[colorKey];
+                    const isCalculated = this.isCalculated(colorKey);
+                    const colorValue = isCalculated ? baseRatios[colorKey] : theme[colorKey];
+
 
                     return (
                       <div className="d-flex justify-content-between align-items-center py-1" key={colorKey}>
@@ -195,22 +210,29 @@ class AddTheme extends Component {
                               border: '1px solid #322D2D99',
                               borderRadius: '38px',
                               backgroundColor: colorValue,
-                              visibility: this.isCalculated(colorKey)? 'hidden' : 'visible',
+                              visibility: isCalculated ? 'hidden' : 'visible',
                             }}
                           />
                           <Input
-                            type="text"
+                            type={isCalculated ? 'number' : 'text'}
                             name={colorKey}
                             placeholder="Please pick a color"
                             className="operator-controls__input mr-2"
                             value={colorValue}
                             onChange={this.handleInputChange}
+                            onBlur={this.validateColor}
+                            {...(isCalculated ? {
+                              min: 0,
+                              max: 1,
+                              step: 0.05,
+                            } : {})}
                           />
                           <Button
                             ghost
                             shape="circle"
                             size="small"
                             className="operator-controls__all-strings-settings-button"
+                            disabled={isCalculated}
                             onClick={() => this.onReset(colorKey)}
                             icon={<DeleteOutlined />}
                           />
