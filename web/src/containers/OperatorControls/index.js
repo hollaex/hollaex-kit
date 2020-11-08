@@ -7,8 +7,8 @@ import classnames from 'classnames';
 import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
-import { Input, Button } from 'antd';
-import { DeleteOutlined, SettingFilled } from '@ant-design/icons';
+import { Input, Button, Divider } from 'antd';
+import { DeleteOutlined, SettingFilled, KeyOutlined } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -658,14 +658,19 @@ class OperatorControls extends Component {
           showCloseText={true}
           bodyOpenClassName="operator-controls__modal-open"
         >
-          <div className="operator-controls__modal-title">
+          <div className="operator-controls__modal-title pb-3">
             Edit string
           </div>
           {
             editMode && isEditModalOpen &&
             editableElementIds.map((key) => {
               return (
-                <div className="pt-3" key={key}>
+                <div className="pb-3" key={key}>
+                  <Divider orientation="left">
+                      <span className="operator-controls__string-key">
+                        <KeyOutlined /> {key}
+                      </span>
+                  </Divider>
                   {
                     languageKeys.map((lang) => {
 

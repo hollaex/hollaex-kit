@@ -60,21 +60,25 @@ export const filterTheme = (theme) => {
   return filteredTheme;
 }
 
-export const CALCULATED_COLOR_KEYS = [
-  'base_top-bar-navigation',
-  'base_secondary-navigation-bar',
-  'base_wallet-sidebar-and-popup',
-  'base_footer',
-];
+export const CALCULATED_COLOR_RATIO_OBJECT = {
+  'base_top-bar-navigation': 0.7,
+  'base_secondary-navigation-bar': 0.5,
+  'base_wallet-sidebar-and-popup': 0.3,
+  'base_footer': 0.6,
+};
 
-export const calculateBaseColors = (base_background) => {
+export const CALCULATED_COLOR_KEYS = Object.keys(CALCULATED_COLOR_RATIO_OBJECT);
+
+export const calculateBaseColors = (base_background, isDarken = true, baseRatios = CALCULATED_COLOR_RATIO_OBJECT) => {
   const baseColors = {
     base_background,
-    'base_top-bar-navigation': Color(base_background).darken(0.7).hex(),
-    'base_secondary-navigation-bar': Color(base_background).darken(0.5).hex(),
-    'base_wallet-sidebar-and-popup': Color(base_background).darken(0.3).hex(),
-    'base_footer': Color(base_background).darken(0.6).hex(),
   }
+
+  const mode = isDarken ? 'darken' : 'lighten';
+
+  Object.entries(baseRatios).forEach(([colorKey, value]) => {
+    baseColors[colorKey] = Color(base_background)[mode](value).hex();
+  })
 
   return baseColors;
 }

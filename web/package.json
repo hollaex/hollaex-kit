@@ -74,6 +74,7 @@
 		"reselect": "4.0.0",
 		"rsvp": "4.8.5",
 		"universal-cookie": "4.0.2",
+		"validate-color": "2.1.0",
 		"validator": "10.11.0",
 		"wallet-address-validator": "0.2.4"
 	},

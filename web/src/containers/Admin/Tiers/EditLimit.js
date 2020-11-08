@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from '../../../components/Image';
-import { updateTier } from './action';
+import { updateLimits } from './action';
 
 class EditLimit extends Component {
     constructor(props) {
@@ -62,11 +62,16 @@ class EditLimit extends Component {
             ...levelData,
             [type]: value
         }
+        let tempData = formData[level];
         if (value !== 1) {
-            let tempData = formData[level];
             formData[level] = {
                 ...tempData,
                 [type]: value
+            }
+        } else {
+            formData[level] = {
+                ...tempData,
+                [type]: 0
             }
         }
         this.setState({ selectValues, formData });
@@ -116,12 +121,10 @@ class EditLimit extends Component {
 
     handleSave = () => {
         const { formData } = this.state;
-        let level = Object.keys(formData)[0] || 1;
         let formValues = {
-            level: parseInt(level, 10),
-            ...formData[level]
+            limits: formData
         }
-        updateTier(formValues)
+        updateLimits(formValues)
             .then((res) => {
                 this.props.getTiers();
                 this.props.handleClose();

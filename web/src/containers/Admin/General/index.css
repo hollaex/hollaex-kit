@@ -10,12 +10,15 @@
 .minimal-btn {
 	width: 10rem !important;
 }
-.sub-title {
+.wizard-container .sub-title,
+.ant-modal-body .sub-title,
+.admin-content-wrapper .sub-title {
 	color: #ffffff;
 	font-size: 15px;
 	font-weight: bold;
 }
-.divider {
+.admin-content-wrapper .divider,
+.ant-modal-body .divider {
 	border-top: 1px solid #c4c4c4;
 	margin: 2rem 0;
 	width: 500px;
@@ -23,7 +26,9 @@
 .wizard-container .description {
 	width: 550px;
 }
-.description {
+.ant-modal-body .description,
+.admin-content-wrapper .description,
+.wizard-container .description {
 	color: #ffffff;
 	margin: 5px 0px;
 	font-size: 13px;
@@ -156,37 +161,37 @@
 	margin: auto;
 	margin-top: 7px;
 }
-.sell {
+.general-wrapper .sell {
 	border: 1px solid #ffffff;
 	width: 60px;
 	height: 18px;
 }
-.sell .label {
+.general-wrapper .sell .label {
 	font-size: 10px;
 	position: relative;
 	bottom: 3px;
 	left: 18px;
 	color: #ffffff !important;
 }
-.buy {
+.general-wrapper .buy {
 	width: 60px;
 	height: 18px;
 	border: 1px solid #000000;
 	margin-top: 0.25rem;
 	background-color: #ffffff;
 }
-.buy .label {
+.general-wrapper .buy .label {
 	font-size: 10px;
 	position: relative;
 	bottom: 3px;
 	left: 18px;
 	color: #000000 !important;
 }
-.ant-radio-wrapper {
+.general-wrapper .ant-radio-wrapper {
 	height: 100px;
 	width: 420px;
 }
-.ant-radio-wrapper span:last-child {
+.general-wrapper .ant-radio-wrapper span:last-child {
 	color: #ffffff;
 }
 .bottom-description {

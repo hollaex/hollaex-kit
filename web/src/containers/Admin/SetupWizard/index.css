@@ -18,7 +18,7 @@
 .btn-container {
 	margin: 2rem 0rem;
 }
-.ant-btn {
+.wizard-container .ant-btn {
 	background-color: #c4c4c4;
 	color: #0000ff;
 	font-size: 16px;
@@ -193,13 +193,13 @@
 .ant-radio-inner::after {
     background-color: #ffffff;
 }
-.interface-box .ant-radio-wrapper {
+.wizard-container .interface-box .ant-radio-wrapper {
     padding: 12px 10px;
     height: 70px;
     color: #ffffff;
     width: 100%;
 }
-.ant-radio-wrapper-checked {
+.wizard-container .ant-radio-wrapper-checked {
     border: 1px solid #c4c4c4;
 }
 .ant-radio-group {
@@ -209,7 +209,7 @@
 .sub-radio {
     margin-top: 12px;
 }
-.ant-radio-wrapper {
+.wizard-container .ant-radio-wrapper {
     display: block;
     padding: 24px 12px;
 }
