@@ -4,7 +4,7 @@ import { bool, object, func, string } from 'prop-types';
 import { Input, Button, Radio, Divider } from 'antd';
 import { DeleteOutlined, BgColorsOutlined } from '@ant-design/icons';
 import initialTheme, { nestedColors as nestedStructure } from 'config/colors/light';
-import { getColorByKey, filterTheme, CALCULATED_COLOR_KEYS, calculateBaseColors } from 'utils/color';
+import { getColorByKey, filterTheme, CALCULATED_COLOR_KEYS, CALCULATED_COLOR_RATIO_OBJECT, calculateBaseColors } from 'utils/color';
 
 const { Group } = Radio;
 
@@ -15,21 +15,23 @@ class AddTheme extends Component {
     const isEditTheme = !!themeKey
     const theme = themeKey && themes[themeKey] ? themes[themeKey] : initialTheme
     const filteredTheme = filterTheme(theme);
+    const baseRatios = CALCULATED_COLOR_RATIO_OBJECT;
 
     this.state = {
       isEditTheme,
       themeKey,
       theme: filteredTheme,
       isSingleBase: false,
+      baseRatios,
     }
   }
 
   addTheme = () => {
-    const { themeKey, theme, isSingleBase } = this.state;
+    const { themeKey, theme, isSingleBase, baseRatios } = this.state;
     const { onSave } = this.props;
 
     if (isSingleBase) {
-      const calculatedColors = calculateBaseColors(theme['base_background']);
+      const calculatedColors = calculateBaseColors(theme['base_background'], true, baseRatios);
 
       this.setState(prevState => ({
         ...prevState,
@@ -56,8 +58,22 @@ class AddTheme extends Component {
     }));
   }
 
+  updateRatio = (value, name) => {
+    this.setState(prevState => ({
+      ...prevState,
+      baseRatios: {
+        ...prevState.baseRatios,
+        [name]: value,
+      }
+    }));
+  }
+
   handleInputChange = ({ target: { value, name } }) => {
-    this.updateTheme(value, name)
+    if (this.isCalculated(name)) {
+      this.updateRatio(value, name)
+    } else {
+      this.updateTheme(value, name)
+    }
   }
 
   handleThemeKey = ({ target: { value: themeKey }}) => {
@@ -85,7 +101,7 @@ class AddTheme extends Component {
     });
   }
 
-  isDisabled = (key) => {
+  isCalculated = (key) => {
     const { isSingleBase } = this.state;
     if (!isSingleBase) {
       return false;
@@ -96,7 +112,7 @@ class AddTheme extends Component {
 
   render() {
     const { isOpen, onCloseDialog } = this.props;
-    const { isEditTheme, themeKey, theme, isSingleBase } = this.state;
+    const { isEditTheme, themeKey, theme, isSingleBase, baseRatios } = this.state;
 
     return (
       <Modal
@@ -137,7 +153,7 @@ class AddTheme extends Component {
         <div>
           {Object.entries(nestedStructure).map(([clusterKey, clusterObj]) => {
             return (
-              <div className="pb-4">
+              <div className="pb-4" key={clusterKey}>
                 <Divider orientation="left">
                   <span className="caps">
                     <BgColorsOutlined />
@@ -148,7 +164,7 @@ class AddTheme extends Component {
                 <div className="pt-2">
                   {Object.keys(clusterObj).map((localColorKey) => {
                     const colorKey = `${clusterKey}_${localColorKey}`;
-                    const colorValue = theme[colorKey];
+                    const colorValue = this.isCalculated(colorKey)? baseRatios[colorKey] : theme[colorKey];
 
                     return (
                       <div className="d-flex justify-content-between align-items-center py-1" key={colorKey}>
@@ -162,12 +178,12 @@ class AddTheme extends Component {
                               border: '1px solid #322D2D99',
                               borderRadius: '38px',
                               backgroundColor: colorValue,
+                              visibility: this.isCalculated(colorKey)? 'hidden' : 'visible',
                             }}
                           />
                           <Input
                             type="text"
                             name={colorKey}
-                            disabled={this.isDisabled(colorKey)}
                             placeholder="Please pick a color"
                             className="operator-controls__input mr-2"
                             value={colorValue}
