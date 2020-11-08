@@ -2856,6 +2856,25 @@ table th {
   display: block;
   padding: 12px; }
 
+.operator-controls__modal .ant-divider-with-text,
+.operator-controls__modal .ant-divider-horizontal,
+.operator-controls__modal .ant-divider,
+.operator-controls__modal .ant-divider-inner-text {
+  color: #FFFFFFB3 !important;
+  font-size: small !important;
+  font-weight: 600;
+  border-color: #FFFFFFB3 !important; }
+
+.operator-controls__modal .ant-divider-with-text::after,
+.operator-controls__modal .ant-divider-with-text::before {
+  border-color: #FFFFFFB3 !important; }
+
+.operator-controls__modal .ant-divider-inner-text {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
   color: #FFFFFF !important;
