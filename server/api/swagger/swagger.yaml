@@ -1856,7 +1856,7 @@ paths:
       operationId: getAssetPrice
       description: Convert asset price
       tags:
-        - Oracle
+        - Admin
       parameters:
         - name: asset
           in: query
@@ -1888,14 +1888,14 @@ paths:
       security:
         - Bearer: []
       x-security-scopes:
-        - user
+        - admin
   /admin/oracle/prices:
     x-swagger-router-controller: engine
     get:
       operationId: getAssetsPrices
       description: Convert assets prices
       tags:
-        - Oracle
+        - Admin
       parameters:
         - name: assets
           in: query
@@ -1930,7 +1930,7 @@ paths:
       security:
         - Bearer: []
       x-security-scopes:
-        - user
+        - admin
   /admin/operators:
     x-swagger-router-controller: admin
     get:
