@@ -125,6 +125,28 @@ $operator-controls__panel-border-color: #A7A7A7;
     padding: 12px;
   }
 
+  .ant-divider-with-text,
+  .ant-divider-horizontal,
+  .ant-divider,
+  .ant-divider-inner-text {
+    color: $operator-controls__panel-text-color-inactive !important;
+    font-size: small !important;
+    font-weight: 600;
+    border-color: $operator-controls__panel-text-color-inactive !important;
+  }
+
+  .ant-divider-with-text::after,
+  .ant-divider-with-text::before {
+    border-color: $operator-controls__panel-text-color-inactive !important;
+  }
+
+  .ant-divider-inner-text {
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .ReactModal__Content {
     background-color: $operator-controls__panel-main-color !important;
     color: $operator-controls__panel-text-color !important;
