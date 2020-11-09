@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, func, array } from 'prop-types';
-import { Button } from 'antd';
+import { Button, Divider } from 'antd';
+import { KeyOutlined } from '@ant-design/icons';
 import { upload } from 'actions/operatorActions';
 import { DeleteOutlined } from '@ant-design/icons';
 
@@ -83,27 +84,34 @@ class UploadIcon extends Component {
 				bodyOpenClassName="operator-controls__modal-open"
 			>
 				<div className="operator-controls__all-strings-header">
-					<div className="operator-controls__modal-title">Upload Icon</div>
+					<div className="operator-controls__modal-title pb-3">Upload Icon</div>
 				</div>
-				<div className="pt-4">
+				<div>
 					{editId.map((id) => (
-						<div key={id} className="pb-1">
-							<input
-								name={id}
-								type="file"
-								accept="image/*"
-								style={{ width: '232px' }}
-								onChange={this.onFileChange}
-							/>
-							<Button
-								ghost
-								shape="circle"
-								size="small"
-								disabled={loading}
-								className="operator-controls__all-strings-settings-button"
-								onClick={() => onReset(id)}
-								icon={<DeleteOutlined />}
-							/>
+						<div key={id} className="pb-3">
+							<Divider orientation="left">
+								<span className="operator-controls__string-key">
+									<KeyOutlined /> {id}
+								</span>
+							</Divider>
+							<div className="d-flex pt-1">
+								<input
+									name={id}
+									type="file"
+									accept="image/*"
+									style={{ width: '232px' }}
+									onChange={this.onFileChange}
+								/>
+								<Button
+									ghost
+									shape="circle"
+									size="small"
+									disabled={loading}
+									className="operator-controls__all-strings-settings-button"
+									onClick={() => onReset(id)}
+									icon={<DeleteOutlined />}
+								/>
+							</div>
 						</div>
 					))}
 				</div>
