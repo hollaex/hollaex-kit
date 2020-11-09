@@ -13,9 +13,11 @@ const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 	const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
 	const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 	const makersData = discount
-		? (makersFee - (makersFee * discount / 100)) : makersFee;
+		? makersFee - (makersFee * discount) / 100
+		: makersFee;
 	const takersData = discount
-		? (takersFee - (takersFee * discount / 100)) : takersFee;
+		? takersFee - (takersFee * discount) / 100
+		: takersFee;
 	return (
 		<tr key={index}>
 			<td className="account-limits-coin">
@@ -31,16 +33,10 @@ const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 				</div>
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{level
-					? formatPercentage(makersData)
-					: 'N/A'
-				}
+				{level ? formatPercentage(makersData) : 'N/A'}
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{level
-					? formatPercentage(takersData)
-					: 'N/A'
-				}
+				{level ? formatPercentage(takersData) : 'N/A'}
 			</td>
 		</tr>
 	);
@@ -78,24 +74,24 @@ const FeesBlock = ({ pairs, coins, level, discount }) => {
 					<tr>
 						<th className="content-title limit-head-currency" colSpan={3}>
 							<EditWrapper stringId="SUMMARY.TRADING_FEE_STRUCTURE">
-                {STRINGS["SUMMARY.TRADING_FEE_STRUCTURE"]}
+								{STRINGS['SUMMARY.TRADING_FEE_STRUCTURE']}
 							</EditWrapper>
 						</th>
 					</tr>
 					<tr>
 						<th className="limit-head-currency">
 							<EditWrapper stringId="CURRENCY">
-                {STRINGS["CURRENCY"]}
+								{STRINGS['CURRENCY']}
 							</EditWrapper>
 						</th>
 						<th className="limit-head-currency">
 							<EditWrapper stringId="SUMMARY.MAKER">
-                {STRINGS["SUMMARY.MAKER"]}
+								{STRINGS['SUMMARY.MAKER']}
 							</EditWrapper>
 						</th>
 						<th className="limit-head-currency">
 							<EditWrapper stringId="SUMMARY.TAKER">
-                {STRINGS["SUMMARY.TAKER"]}
+								{STRINGS['SUMMARY.TAKER']}
 							</EditWrapper>
 						</th>
 					</tr>

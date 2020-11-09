@@ -6,7 +6,7 @@ import {
 	revokeToken,
 	generateToken,
 	tokenGenerated,
-	tokenRevoked
+	tokenRevoked,
 } from '../../actions/userAction';
 import { Table, Dialog, Loader } from '../../components';
 import { generateHeaders } from './ApiKeyHeaders';
@@ -19,7 +19,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 const INITIAL_STATE = {
 	dialogIsOpen: false,
 	dialogType: '',
-	tokenId: -1
+	tokenId: -1,
 };
 class ApiKey extends Component {
 	state = INITIAL_STATE;
@@ -101,7 +101,7 @@ class ApiKey extends Component {
 								headers={generateHeaders(
 									this.onClickRevokeToken,
 									otp_enabled,
-									ICONS,
+									ICONS
 								)}
 								data={tokens.data}
 								rowKey={(data) => {
@@ -125,7 +125,9 @@ class ApiKey extends Component {
 						notificationType={dialogType}
 						onGenerate={this.onGenerateToken}
 						onRevoke={this.onRevokeToken}
-						openContactForm={() => openContactForm({ helpdesk: links.helpdesk })}
+						openContactForm={() =>
+							openContactForm({ helpdesk: links.helpdesk })
+						}
 					/>
 				</Dialog>
 			</div>
@@ -136,7 +138,7 @@ class ApiKey extends Component {
 ApiKey.defaultProps = {
 	tokens: [],
 	openOtp: () => {},
-	generateKey: () => {}
+	generateKey: () => {},
 };
 
 const mapStateToProps = (state) => ({
@@ -144,17 +146,14 @@ const mapStateToProps = (state) => ({
 	fetching: state.user.fetching,
 	error: state.user.error,
 	activeTheme: state.app.theme,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	requestTokens: bindActionCreators(requestTokens, dispatch),
 	tokenGenerated: bindActionCreators(tokenGenerated, dispatch),
-	tokenRevoked: bindActionCreators(tokenRevoked, dispatch)
+	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(withConfig(ApiKey));
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(ApiKey));

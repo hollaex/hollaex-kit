@@ -9,7 +9,7 @@ const Loader = ({ relative, className, background }) => (
 			'align-items-center',
 			{
 				loader_wrapper: !relative,
-				loader_wrapper_relative: relative
+				loader_wrapper_relative: relative,
 			},
 			className
 		)}
@@ -22,7 +22,7 @@ const Loader = ({ relative, className, background }) => (
 Loader.defaultProps = {
 	relative: false,
 	background: true,
-	className: ''
+	className: '',
 };
 
 export default Loader;

@@ -41,7 +41,8 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		.cancel-row-color {
 			@extend .cancel-animate;
 			.cell_box-type {
-				.sell, .buy {
+				.sell,
+				.buy {
 					@extend .cancel-animate;
 				}
 			}
@@ -61,13 +62,14 @@ $controllers--color-disabled: $colors-deactivate-color2;
 
 		.cancel-animate {
 			-webkit-animation: cancelRow 1.4s;
-			-moz-animation:    cancelRow 1.4s;
-			-o-animation:      cancelRow 1.4s;
-			animation:         cancelRow 1.4s;
+			-moz-animation: cancelRow 1.4s;
+			-o-animation: cancelRow 1.4s;
+			animation: cancelRow 1.4s;
 		}
-		
+
 		@-webkit-keyframes cancelRow {
-			from {}
+			from {
+			}
 			to {
 				color: $app-background-color;
 				background-color: $app-background-color;
@@ -75,7 +77,8 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			}
 		}
 		@-moz-keyframes cancelRow {
-			from {}
+			from {
+			}
 			to {
 				color: $app-background-color;
 				background-color: $app-background-color;
@@ -83,13 +86,14 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			}
 		}
 		@keyframes cancelRow {
-			from {}
+			from {
+			}
 			to {
 				color: $app-background-color;
 				background-color: $app-background-color;
 				border-color: $app-background-color;
 			}
-		}		
+		}
 	}
 
 	.cell_box-type {
@@ -103,7 +107,7 @@ $controllers--color-disabled: $colors-deactivate-color2;
 }
 
 .layout-mobile {
-	.table_controllers-wrapper { 
+	.table_controllers-wrapper {
 		font-size: $regular--font-size;
 
 		.action_notification-wrapper {

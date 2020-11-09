@@ -15,7 +15,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		buttonText,
 		buttonType,
 		small,
-		buttonClass = ''
+		buttonClass = '',
 	}) => {
 		return (
 			<form className={className}>
@@ -48,7 +48,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		form: name,
 		// onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
 		onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
-		enableReinitialize: true
+		enableReinitialize: true,
 	})(HocForm);
 };
 

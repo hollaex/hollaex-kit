@@ -38,10 +38,10 @@ class Dialog extends PureComponent {
 			theme,
 			className,
 			disableTheme,
-      bodyOpenClassName,
+			bodyOpenClassName,
 			isEditMode,
 		} = this.props;
-		
+
 		return (
 			<Modal
 				id={dialogId}
@@ -49,27 +49,31 @@ class Dialog extends PureComponent {
 				contentLabel={label}
 				onRequestClose={this.onRequestClose}
 				shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-				portalClassName={classnames(className, languageClasses, (disableTheme ? '' : getThemeClass(theme)), { 'layout-edit': isEditMode })}
+				portalClassName={classnames(
+					className,
+					languageClasses,
+					disableTheme ? '' : getThemeClass(theme),
+					{ 'layout-edit': isEditMode }
+				)}
 				bodyOpenClassName={bodyOpenClassName}
 			>
-				{showCloseText &&
-					!closeButton && (
-						<ActionNotification
-							text={
-								<Ionicon
-									icon="md-close"
-									fontSize="24px"
-									className="action_notification-image"
-								/>
-							}
-							onClick={this.onRequestClose}
-							className="close-button"
-						/>
-					)}
+				{showCloseText && !closeButton && (
+					<ActionNotification
+						text={
+							<Ionicon
+								icon="md-close"
+								fontSize="24px"
+								className="action_notification-image"
+							/>
+						}
+						onClick={this.onRequestClose}
+						className="close-button"
+					/>
+				)}
 				{children}
 				{closeButton && (
 					<div>
-						<Button onClick={closeButton} label={STRINGS["CLOSE_TEXT"]} />
+						<Button onClick={closeButton} label={STRINGS['CLOSE_TEXT']} />
 					</div>
 				)}
 			</Modal>
@@ -84,7 +88,7 @@ Dialog.defaultProps = {
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
 	theme: '',
-	className: ''
+	className: '',
 };
 
 export default withEdit(Dialog);

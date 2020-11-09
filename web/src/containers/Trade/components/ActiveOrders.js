@@ -4,10 +4,7 @@ import math from 'mathjs';
 
 import { Table, ActionNotification } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
-import {
-	formatBaseAmount,
-	formatToCurrency
-} from '../../../utils/currency';
+import { formatBaseAmount, formatToCurrency } from '../../../utils/currency';
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
@@ -15,7 +12,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 	{
-		label: STRINGS["PAIR"],
+		label: STRINGS['PAIR'],
 		key: 'pair',
 		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 		renderCell: ({ symbol }, key, index) => {
@@ -24,10 +21,10 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 					{symbol}
 				</td>
 			);
-		}
+		},
 	},
 	{
-		label: STRINGS["SIDE"],
+		label: STRINGS['SIDE'],
 		key: 'side',
 		renderCell: ({ side = '' }, key, index) => {
 			return (
@@ -37,7 +34,7 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 					</div>
 				</td>
 			);
-		}
+		},
 	},
 	// {
 	//   label: 'Type',
@@ -49,53 +46,54 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 	//   },
 	// },
 	{
-		label: STRINGS["TIME"],
+		label: STRINGS['TIME'],
 		key: 'created_At',
 		renderCell: ({ created_at = '' }, key, index) => {
 			return <td key={index}>{getFormatTimestamp(created_at)}</td>;
-		}
+		},
 	},
 	{
-		label: STRINGS["PRICE"],
+		label: STRINGS['PRICE'],
 		key: 'price',
 		renderCell: ({ price = 0 }, key, index) => {
-			return <td key={index}>{formatToCurrency(price, pairData.increment_price)}</td>;
-		}
+			return (
+				<td key={index}>{formatToCurrency(price, pairData.increment_price)}</td>
+			);
+		},
 	},
 	{
-		label: STRINGS["AMOUNT"],
+		label: STRINGS['AMOUNT'],
 		key: 'size',
 		exportToCsv: ({ size = 0 }) => size,
 		renderCell: ({ size = 0, ...rest }, key, index) => {
-			return <td key={index}>{formatToCurrency(size, pairData.increment_size)}</td>;
-		}
+			return (
+				<td key={index}>{formatToCurrency(size, pairData.increment_size)}</td>
+			);
+		},
 	},
 	{
-		label: STRINGS["REMAINING"],
+		label: STRINGS['REMAINING'],
 		key: 'remaining',
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {
-			return <td key={index}>{formatToCurrency(subtract(size, filled), pairData.increment_price)}</td>;
-		}
+			return (
+				<td key={index}>
+					{formatToCurrency(subtract(size, filled), pairData.increment_price)}
+				</td>
+			);
+		},
 	},
 	!isMobile && {
-		label: STRINGS["STATUS"],
+		label: STRINGS['STATUS'],
 		key: 'status',
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {
 			const fullfilled = formatBaseAmount(
-				math
-					.chain(filled)
-					.divide(size)
-					.multiply(100)
-					.done()
+				math.chain(filled).divide(size).multiply(100).done()
 			);
 			return (
-				<td
-					key={index}
-					className={classnames('cell_box-type', 'fullfilled')}
-				>
+				<td key={index} className={classnames('cell_box-type', 'fullfilled')}>
 					<div className="cell-wrapper">
 						<div className="cell_value-wrapper text_overflow">
-							{STRINGS.formatString(STRINGS["FULLFILLED"], fullfilled)}
+							{STRINGS.formatString(STRINGS['FULLFILLED'], fullfilled)}
 							<span
 								className="cell_value-bar"
 								style={{ width: `${fullfilled}%` }}
@@ -104,19 +102,19 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 					</div>
 				</td>
 			);
-		}
+		},
 	},
 	{
-		label: STRINGS["CANCEL"],
+		label: STRINGS['CANCEL'],
 		key: 'cancel',
 		renderCell: ({ size = 0, filled = 0, id }, key, index) => {
 			return (
 				<td key={index} style={{ position: 'relative' }}>
 					<ActionNotification
 						stringId="CANCEL"
-						text={STRINGS["CANCEL"]}
+						text={STRINGS['CANCEL']}
 						iconId="CANCEL_CROSS_ACTIVE"
-						iconPath={ICONS["CANCEL_CROSS_ACTIVE"]}
+						iconPath={ICONS['CANCEL_CROSS_ACTIVE']}
 						onClick={() => onCancel(id)}
 						className="relative"
 						status="information"
@@ -125,8 +123,8 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 					/>
 				</td>
 			);
-		}
-	}
+		},
+	},
 ];
 
 const ActiveOrders = ({
@@ -163,6 +161,6 @@ const ActiveOrders = ({
 
 ActiveOrders.defaultProps = {
 	orders: [],
-	onCancel: () => {}
+	onCancel: () => {},
 };
 export default withConfig(ActiveOrders);

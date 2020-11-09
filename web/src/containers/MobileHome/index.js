@@ -10,18 +10,25 @@ import { getThemeClass } from '../../utils/theme';
 
 class Home extends Component {
 	render() {
-		const { activeTheme, activeLanguage, constants, enabledPlugins } = this.props;
+		const {
+			activeTheme,
+			activeLanguage,
+			constants,
+			enabledPlugins,
+		} = this.props;
 		return (
-			<div className={classnames(
-				'app_container',
-				'home_container-mobile',
-				getClasesForLanguage(activeLanguage),
-				getThemeClass(activeTheme),
-				{
-					'layout-mobile': isMobile,
-					'layout-desktop': isBrowser
-				}
-			)}>
+			<div
+				className={classnames(
+					'app_container',
+					'home_container-mobile',
+					getClasesForLanguage(activeLanguage),
+					getThemeClass(activeTheme),
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser,
+					}
+				)}
+			>
 				<div className="p-5">
 					{/* {!isLoggedIn() ?
 						<div className="w-100">
@@ -84,19 +91,17 @@ class Home extends Component {
 						</div>
 					} */}
 					<div className="post-wrapper mt-4 mx-3">
-						<div className="post-title mb-3">{STRINGS["TRADE_TAB_POSTS"]}</div>
-						{
-							enabledPlugins.includes('announcement')
-								? <NotificationsList />
-								: null
-						}
+						<div className="post-title mb-3">{STRINGS['TRADE_TAB_POSTS']}</div>
+						{enabledPlugins.includes('announcement') ? (
+							<NotificationsList />
+						) : null}
 					</div>
 				</div>
 				<div>
 					<AppFooter theme={activeTheme} constants={constants} />
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
@@ -104,7 +109,7 @@ const mapStateToProps = (state) => ({
 	activeTheme: state.app.theme,
 	activeLanguage: state.app.language,
 	constants: state.app.constants,
-	enabledPlugins: state.app.enabledPlugins
+	enabledPlugins: state.app.enabledPlugins,
 });
 
 export default connect(mapStateToProps)(Home);

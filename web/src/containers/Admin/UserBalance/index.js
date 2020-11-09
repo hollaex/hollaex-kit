@@ -11,7 +11,7 @@ import moment from 'moment';
 
 const INITIAL_STATE = {
 	tradeHistory: '',
-	loading: true
+	loading: true,
 };
 
 class UserBalance extends Component {
@@ -33,7 +33,7 @@ class UserBalance extends Component {
 							isSupportUser: isSupportUser,
 							userBalance: res,
 							loading: false,
-							userInformation: userData
+							userInformation: userData,
 						});
 					}
 				})
@@ -51,12 +51,7 @@ class UserBalance extends Component {
 	};
 
 	render() {
-		const {
-			userInformation,
-			userBalance,
-			loading,
-			isSupportUser
-		} = this.state;
+		const { userInformation, userBalance, loading, isSupportUser } = this.state;
 
 		if (loading) {
 			return (
@@ -69,15 +64,13 @@ class UserBalance extends Component {
 		return (
 			<Row>
 				<Row gutter={16}>
-					{Object.entries(userInformation.crypto_wallet).map(
-						([key, value]) => (
-							<Col key={key}>
-								<Card title={<h3>{key}</h3>} type="inner">
-									{value}
-								</Card>
-							</Col>
-						)
-					)}
+					{Object.entries(userInformation.crypto_wallet).map(([key, value]) => (
+						<Col key={key}>
+							<Card title={<h3>{key}</h3>} type="inner">
+								{value}
+							</Card>
+						</Col>
+					))}
 				</Row>
 				{!isSupportUser && (
 					<Row gutter={16} style={{ marginTop: 16 }}>

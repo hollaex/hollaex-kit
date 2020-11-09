@@ -13,7 +13,7 @@ class UpComingWave extends Component {
 		super(props);
 		this.state = {
 			waveData: {},
-			lastWave: {}
+			lastWave: {},
 		};
 	}
 
@@ -39,7 +39,7 @@ class UpComingWave extends Component {
 			no: 'TBA',
 			phase: 'TBA',
 			status: 'TBA',
-			updated_at: 'TBA'
+			updated_at: 'TBA',
 		};
 		const { wave = [] } = this.props;
 		var now = moment(new Date());
@@ -59,18 +59,21 @@ class UpComingWave extends Component {
 		return (
 			<div className="trade_orderbook-headers d-flex">
 				<div>
-					<ReactSvg path={ICONS["INCOMING_WAVE"]} wrapperClassName="waves-icon" />
+					<ReactSvg
+						path={ICONS['INCOMING_WAVE']}
+						wrapperClassName="waves-icon"
+					/>
 				</div>
 				<div className="ml-3">
 					<div className=" f-1 trade_orderbook-cell mb-2">
 						<span className="wave-header mr-2">
-							{`${STRINGS["WAVES.NEXT_WAVE"]}:`}
+							{`${STRINGS['WAVES.NEXT_WAVE']}:`}
 						</span>
 						<span className="wave-content">{this.state.waveData.no}</span>
 					</div>
 					<div className=" f-1 trade_orderbook-cell mb-2">
 						<span className="wave-header mr-2">
-							{`${STRINGS["WAVES.WAVE_AMOUNT"]}:`}
+							{`${STRINGS['WAVES.WAVE_AMOUNT']}:`}
 						</span>
 						<span className="wave-content">
 							{`${this.state.waveData.amount} ${this.props.pairBase}`}
@@ -78,13 +81,13 @@ class UpComingWave extends Component {
 					</div>
 					<div className=" f-1 trade_orderbook-cell mb-2">
 						<span className="wave-header mr-2">
-							{`${STRINGS["WAVES.FLOOR"]}:`}
+							{`${STRINGS['WAVES.FLOOR']}:`}
 						</span>
 						<span className="wave-content">{this.state.waveData.floor}</span>
 					</div>
 					<div className=" f-1 trade_orderbook-cell mb-2">
 						<span className="wave-header mr-2">
-							{`${STRINGS["WAVES.LAST_WAVE"]}:`}
+							{`${STRINGS['WAVES.LAST_WAVE']}:`}
 						</span>
 						<span className="wave-content">
 							{this.state.lastWave.updated_at}
@@ -99,7 +102,7 @@ class UpComingWave extends Component {
 							rel="noopener noreferrer"
 							className="blue-link pointer"
 						>
-							{STRINGS["HOME.SECTION_1_BUTTON_1"]}
+							{STRINGS['HOME.SECTION_1_BUTTON_1']}
 						</a>
 					</div>
 				</div>
@@ -109,11 +112,11 @@ class UpComingWave extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	wave: state.app.wave
+	wave: state.app.wave,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getWaveAuction: bindActionCreators(getWaveAuction, dispatch)
+	getWaveAuction: bindActionCreators(getWaveAuction, dispatch),
 });
 
 export default connect(

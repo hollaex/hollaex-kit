@@ -22,7 +22,7 @@ const INITIAL_STATE = {
 	userInformation: {},
 	userImages: {},
 	loading: false,
-	userInformationList: []
+	userInformationList: [],
 };
 
 const Form = AdminHocForm('USER_REQUEST_FORM');
@@ -52,13 +52,18 @@ class App extends Component {
 			} else {
 				this.setState({
 					userInformation: {},
-					userImages: {}
+					userImages: {},
 				});
 			}
 		}
-		if(JSON.stringify(prevState.userInformation) !== JSON.stringify(this.state.userInformation)) {
-			if(this.state.userInformation.id) {
-				this.props.router.replace(`/admin/user?id=${this.state.userInformation.id}`);
+		if (
+			JSON.stringify(prevState.userInformation) !==
+			JSON.stringify(this.state.userInformation)
+		) {
+			if (this.state.userInformation.id) {
+				this.props.router.replace(
+					`/admin/user?id=${this.state.userInformation.id}`
+				);
 			}
 		}
 	}
@@ -75,16 +80,18 @@ class App extends Component {
 		}
 		return requestUser(values)
 			.then(([userInformation, userImages, userBalance]) => {
-				if (userInformation &&
+				if (
+					userInformation &&
 					userInformation.data &&
-					userInformation.data.length) {
+					userInformation.data.length
+				) {
 					if (userInformation.data.length === 1) {
 						this.setState({
 							userInformationList: [],
 							userInformation: userInformation.data[0],
 							userImages,
 							userBalance,
-							loading: false
+							loading: false,
 						});
 					} else {
 						this.setState({
@@ -92,7 +99,7 @@ class App extends Component {
 							userInformation: {},
 							userImages,
 							userBalance,
-							loading: false
+							loading: false,
 						});
 					}
 				} else {
@@ -122,7 +129,7 @@ class App extends Component {
 
 			const userInformation = {
 				...this.state.userInformation,
-				...data
+				...data,
 			};
 			this.setState({ userInformation });
 		}
@@ -146,7 +153,7 @@ class App extends Component {
 	onChangeUserDataSuccess = (userInformation) => {
 		notification['success']({
 			message: 'Success',
-			description: 'Data saved successfully.'
+			description: 'Data saved successfully.',
 		});
 		this.setState({ userInformation });
 	};
@@ -154,8 +161,7 @@ class App extends Component {
 	searchUser = (values) => {
 		if (values.id) {
 			this.requestUserData({ id: values.id });
-		}
-		else {
+		} else {
 			const searchUserdata = values.input.trim();
 			this.requestUserData({ search: searchUserdata });
 		}
@@ -166,20 +172,29 @@ class App extends Component {
 
 		// } else if (!isNaN(parseInt(input, 10))) {
 		// }
-	}
+	};
 
 	render() {
-		const { userInformation, userImages, userBalance, loading, userInformationList } = this.state;
+		const {
+			userInformation,
+			userImages,
+			userBalance,
+			loading,
+			userInformationList,
+		} = this.state;
 		const { coins, constants } = this.props;
 		const renderBoolean = (value) => (
 			<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
 		);
 
 		const renderLink = (value) => (
-			<Button type="primary" onClick={() => this.requestUserData({ id: value })}>
+			<Button
+				type="primary"
+				onClick={() => this.requestUserData({ id: value })}
+			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO
-							<RightOutlined />
+					<RightOutlined />
 				</Link>
 			</Button>
 		);
@@ -190,15 +205,15 @@ class App extends Component {
 			{
 				title: 'Verification Level',
 				dataIndex: 'verification_level',
-				key: 'verification_level'
+				key: 'verification_level',
 			},
 			{
 				title: 'Activated',
 				dataIndex: 'activated',
 				key: 'activated',
-				render: renderBoolean
+				render: renderBoolean,
 			},
-			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
+			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink },
 		];
 
 		if (loading) {
@@ -222,68 +237,67 @@ class App extends Component {
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
 			/>
 		) : (
-				<div className="app_container-content user-container">
-					<Tabs>
-						<TabPane tab="Search" key="search">
-							<h2>SEARCH FOR USER</h2>
-							<Form
-								onSubmit={this.searchUser}
-								buttonText="Search"
-								fields={{
-									id: {
-										type: 'number',
-										label: 'Id',
-										placeholder: ' id ',
-										validate: []
-									},
-									input: {
-										type: 'string',
-										label: 'Email or User Name',
-										placeholder: 'email or username',
-										validate: []
-									}
+			<div className="app_container-content user-container">
+				<Tabs>
+					<TabPane tab="Search" key="search">
+						<h2>SEARCH FOR USER</h2>
+						<Form
+							onSubmit={this.searchUser}
+							buttonText="Search"
+							fields={{
+								id: {
+									type: 'number',
+									label: 'Id',
+									placeholder: ' id ',
+									validate: [],
+								},
+								input: {
+									type: 'string',
+									label: 'Email or User Name',
+									placeholder: 'email or username',
+									validate: [],
+								},
+							}}
+							initialValues={{ type: 'id' }}
+						/>
+						{userInformationList.length ? (
+							<Table
+								columns={COLUMNS}
+								dataSource={userInformationList}
+								rowKey={(data) => {
+									return data.id;
 								}}
-								initialValues={{ type: 'id' }}
 							/>
-							{userInformationList.length
-								? <Table
-									columns={COLUMNS}
-									dataSource={userInformationList}
-									rowKey={(data) => {
-										return data.id;
-									}}
-								/>
-								: null
-							}
-						</TabPane>
+						) : null}
+					</TabPane>
 
-						<TabPane tab="User Verification" key="userVerification">
-							<div className="list_users">
-								<ListUsers
-									requestUser={this.requestUserData}
-									handleDownload={this.requestUsersDownload}
-									columns={COLUMNS}
-								/>
-							</div>
-						</TabPane>
-
-						<TabPane tab="All Users" key="users">
-							<h2 className="m-top">LIST OF ALL USERS</h2>
-							<FullListUsers
-								coins={coins}
+					<TabPane tab="User Verification" key="userVerification">
+						<div className="list_users">
+							<ListUsers
 								requestUser={this.requestUserData}
 								handleDownload={this.requestUsersDownload}
+								columns={COLUMNS}
 							/>
-						</TabPane>
-					</Tabs>
-				</div>
-			);
+						</div>
+					</TabPane>
+
+					<TabPane tab="All Users" key="users">
+						<h2 className="m-top">LIST OF ALL USERS</h2>
+						<FullListUsers
+							coins={coins}
+							requestUser={this.requestUserData}
+							handleDownload={this.requestUsersDownload}
+						/>
+					</TabPane>
+				</Tabs>
+			</div>
+		);
 	}
 }
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(App);

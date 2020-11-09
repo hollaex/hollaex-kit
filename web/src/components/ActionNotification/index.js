@@ -37,7 +37,7 @@ const ActionNotification = ({
 	rotateIfLtr,
 	rotateIfRtl,
 	showActionText,
-	disable = false
+	disable = false,
 }) => (
 	<div
 		className={classnames(
@@ -48,37 +48,37 @@ const ActionNotification = ({
 				right: textPosition === 'right',
 				'icon_on-right': iconPosition === 'right',
 				'icon_on-left': iconPosition === 'left',
-				disabled: disable
+				disabled: disable,
 			},
 			className
 		)}
 		onClick={disable ? () => {} : onClick}
 	>
-    {(showActionText || !isMobile) && (
+		{(showActionText || !isMobile) && (
 			<EditWrapper>
 				<div
 					className={classnames(
-            'action_notification-text',
-            getClassNames(status)
-          )}
+						'action_notification-text',
+						getClassNames(status)
+					)}
 				>
-          {text}
+					{text}
 				</div>
 			</EditWrapper>
-    )}
-			<Image
-				iconId={iconId}
-				stringId={stringId}
-				icon={iconPath}
-				alt={text}
-				svgWrapperClassName="action_notification-svg"
-				imageWrapperClassName={classnames('action_notification-image', {
-					rotate_ltr: rotateIfLtr,
-					rotate_rtl: rotateIfRtl,
-					rotate,
-					reverse: reverseImage
-				})}
-			/>
+		)}
+		<Image
+			iconId={iconId}
+			stringId={stringId}
+			icon={iconPath}
+			alt={text}
+			svgWrapperClassName="action_notification-svg"
+			imageWrapperClassName={classnames('action_notification-image', {
+				rotate_ltr: rotateIfLtr,
+				rotate_rtl: rotateIfRtl,
+				rotate,
+				reverse: reverseImage,
+			})}
+		/>
 	</div>
 );
 
@@ -93,6 +93,6 @@ ActionNotification.defaultProps = {
 	showPointer: true,
 	rotate: false,
 	rotateIfRtl: false,
-	rotateIfLtr: false
+	rotateIfLtr: false,
 };
 export default ActionNotification;

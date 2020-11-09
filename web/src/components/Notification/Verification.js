@@ -7,22 +7,22 @@ import { EditWrapper } from 'components';
 
 const getTitleAndIcon = (type, ICONS) => {
 	const data = {
-    iconId: '',
-    stringId: '',
+		iconId: '',
+		stringId: '',
 		icon: '',
-		title: ''
+		title: '',
 	};
 
 	if (type === 'skip') {
-		data.iconId = "VERIFICATION_WARNING";
-		data.icon = ICONS["VERIFICATION_WARNING"];
-		data.title = STRINGS["VERIFICATION_NOTIFICATION_SKIP_TITLE"];
-		data.stringId = "VERIFICATION_NOTIFICATION_SKIP_TITLE";
+		data.iconId = 'VERIFICATION_WARNING';
+		data.icon = ICONS['VERIFICATION_WARNING'];
+		data.title = STRINGS['VERIFICATION_NOTIFICATION_SKIP_TITLE'];
+		data.stringId = 'VERIFICATION_NOTIFICATION_SKIP_TITLE';
 	} else if (type === 'complete') {
-		data.iconId = "VERIFICATION_SUCCESS";
-		data.icon = ICONS["VERIFICATION_SUCCESS"];
-		data.title = STRINGS["VERIFICATION_NOTIFICATION_SUCCESS_TITLE"];
-		data.stringId = "VERIFICATION_NOTIFICATION_SUCCESS_TITLE";
+		data.iconId = 'VERIFICATION_SUCCESS';
+		data.icon = ICONS['VERIFICATION_SUCCESS'];
+		data.title = STRINGS['VERIFICATION_NOTIFICATION_SUCCESS_TITLE'];
+		data.stringId = 'VERIFICATION_NOTIFICATION_SUCCESS_TITLE';
 	}
 
 	return data;
@@ -36,15 +36,21 @@ const VerificationNotification = ({ data: { type, onClick }, icons }) => {
 			className="notification_verification"
 		>
 			<NotificationContent>
-				<EditWrapper stringId={type === 'skip' ? "VERIFICATION_NOTIFICATION_SKIP_TEXT" : "VERIFICATION_NOTIFICATION_SUCCESS_TEXT"} >
-          {type === 'skip'
-            ? STRINGS["VERIFICATION_NOTIFICATION_SKIP_TEXT"]
-            : STRINGS["VERIFICATION_NOTIFICATION_SUCCESS_TEXT"]}
+				<EditWrapper
+					stringId={
+						type === 'skip'
+							? 'VERIFICATION_NOTIFICATION_SKIP_TEXT'
+							: 'VERIFICATION_NOTIFICATION_SUCCESS_TEXT'
+					}
+				>
+					{type === 'skip'
+						? STRINGS['VERIFICATION_NOTIFICATION_SKIP_TEXT']
+						: STRINGS['VERIFICATION_NOTIFICATION_SUCCESS_TEXT']}
 				</EditWrapper>
 			</NotificationContent>
 			<EditWrapper stringId="VERIFICATION_NOTIFICATION_BUTTON" />
 			<Button
-				label={STRINGS["VERIFICATION_NOTIFICATION_BUTTON"]}
+				label={STRINGS['VERIFICATION_NOTIFICATION_BUTTON']}
 				onClick={onClick}
 			/>
 		</NotificationWraper>

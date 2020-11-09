@@ -3,7 +3,7 @@ import { reduxForm, SubmissionError } from 'redux-form';
 import moment from 'moment';
 import {
 	isBefore,
-	requiredWithCustomMessage
+	requiredWithCustomMessage,
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, HeaderSection } from '../../components';
@@ -12,7 +12,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import {
 	IdentificationFormSection,
 	PORSection,
-	SelfieWithPhotoId
+	SelfieWithPhotoId,
 } from './HeaderSection';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
@@ -23,7 +23,7 @@ const FORM_NAME = 'DocumentsVerification';
 
 class DocumentsVerification extends Component {
 	state = {
-		formFields: {}
+		formFields: {},
 	};
 
 	componentDidMount() {
@@ -42,108 +42,144 @@ class DocumentsVerification extends Component {
 			idDocument: {
 				number: {
 					type: 'text',
-					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER',
+					stringId:
+						'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER',
 					label:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL'
+						],
 					placeholder:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER'
+						],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER"]
-						)
+							STRINGS[
+								'USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER'
+							]
+						),
 					],
-					fullWidth: isMobile
+					fullWidth: isMobile,
 				},
 				issued_date: {
 					type: 'date-dropdown',
-					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE',
+					stringId:
+						'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE',
 					label:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL'
+						],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE"]
+							STRINGS[
+								'USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE'
+							]
 						),
-						isBefore()
+						isBefore(),
 					],
 					endDate: moment().add(1, 'days'),
 					language,
-					fullWidth: isMobile
+					fullWidth: isMobile,
 				},
 				expiration_date: {
 					type: 'date-dropdown',
-					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE',
+					stringId:
+						'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE',
 					label:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL'
+						],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE"]
+							STRINGS[
+								'USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE'
+							]
 						),
-						isBefore(moment().add(15, 'years'))
+						isBefore(moment().add(15, 'years')),
 					],
 					endDate: moment().add(15, 'years'),
 					addYears: 15,
 					yearsBefore: 5,
 					language,
-					fullWidth: isMobile
+					fullWidth: isMobile,
 				},
 			},
 			id: {
 				type: {
-					type: 'hidden'
+					type: 'hidden',
 				},
 				front: {
 					type: 'file',
-					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT',
+					stringId:
+						'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT',
 					label:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL'
+						],
 					placeholder:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER'
+						],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT"]
-						)
+							STRINGS['USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT']
+						),
 					],
-					fullWidth: isMobile
-				}
+					fullWidth: isMobile,
+				},
 			},
 			proof_of_residency: {
 				type: {
-					type: 'hidden'
+					type: 'hidden',
 				},
 				back: {
 					type: 'file',
-					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.PROOF_OF_RESIDENCY',
+					stringId:
+						'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.PROOF_OF_RESIDENCY',
 					label:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL'
+						],
 					placeholder:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_PLACEHOLDER"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_PLACEHOLDER'
+						],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.PROOF_OF_RESIDENCY"]
-						)
+							STRINGS[
+								'USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.PROOF_OF_RESIDENCY'
+							]
+						),
 					],
-					fullWidth: isMobile
-				}
+					fullWidth: isMobile,
+				},
 			},
 			selfieWithNote: {
 				type: {
-					type: 'hidden'
+					type: 'hidden',
 				},
 				proof_of_residency: {
 					type: 'file',
-					stringId: 'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.SELFIE_PHOTO_ID',
+					stringId:
+						'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_PLACEHOLDER,USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.SELFIE_PHOTO_ID',
 					label:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL'
+						],
 					placeholder:
-						STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_PLACEHOLDER"],
+						STRINGS[
+							'USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_PLACEHOLDER'
+						],
 					validate: [
 						requiredWithCustomMessage(
-							STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.SELFIE_PHOTO_ID"]
-						)
+							STRINGS[
+								'USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.SELFIE_PHOTO_ID'
+							]
+						),
 					],
-					fullWidth: isMobile
-				}
-			}
+					fullWidth: isMobile,
+				},
+			},
 		};
 
 		this.setState({ formFields });
@@ -157,7 +193,7 @@ class DocumentsVerification extends Component {
 					number: formValues.number,
 					expiration_date: formValues.expiration_date,
 					issued_date: formValues.issued_date,
-					status: 1
+					status: 1,
 				};
 
 				this.props.moveToNextStep('documents', values);
@@ -194,7 +230,7 @@ class DocumentsVerification extends Component {
 			<div className="presentation_container apply_rtl verification_container">
 				<IconTitle
 					stringId="USER_VERIFICATION.DOCUMENT_VERIFICATION"
-					text={STRINGS["USER_VERIFICATION.DOCUMENT_VERIFICATION"]}
+					text={STRINGS['USER_VERIFICATION.DOCUMENT_VERIFICATION']}
 					textType="title"
 				/>
 				<form
@@ -203,9 +239,9 @@ class DocumentsVerification extends Component {
 				>
 					<HeaderSection
 						stringId="USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"
-						title={STRINGS["USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"]}
+						title={STRINGS['USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION']}
 						iconId="VERIFICATION_DOCUMENT_NEW"
-						icon={ICONS["VERIFICATION_DOCUMENT_NEW"]}
+						icon={ICONS['VERIFICATION_DOCUMENT_NEW']}
 						openContactForm={openContactForm}
 					>
 						<IdentificationFormSection />
@@ -219,7 +255,9 @@ class DocumentsVerification extends Component {
 							<HeaderSection
 								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"
 								title={
-									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"]
+									STRINGS[
+										'USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY'
+									]
 								}
 							>
 								<PORSection />
@@ -233,17 +271,19 @@ class DocumentsVerification extends Component {
 							<HeaderSection
 								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"
 								title={
-									STRINGS["USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"]
+									STRINGS[
+										'USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE'
+									]
 								}
 							>
 								<SelfieWithPhotoId />
 							</HeaderSection>
 							<div className="my-2">
 								<Image
-										alt="document-sample"
-								    iconId="SELF_KYC_ID_EN"
-								    icon={ICONS["SELF_KYC_ID_EN"]}
-								    wrapperClassName="verification_document-sample"
+									alt="document-sample"
+									iconId="SELF_KYC_ID_EN"
+									icon={ICONS['SELF_KYC_ID_EN']}
+									wrapperClassName="verification_document-sample"
 								/>
 							</div>
 							{renderFields(formFields.selfieWithNote)}
@@ -258,7 +298,7 @@ class DocumentsVerification extends Component {
 							<Button
 								type="button"
 								onClick={this.onGoBack}
-								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
+								label={STRINGS['USER_VERIFICATION.GO_BACK']}
 								disabled={submitting}
 							/>
 						</div>
@@ -267,12 +307,18 @@ class DocumentsVerification extends Component {
 							<Button
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
-								label={idData.status === 0 ? STRINGS["SUBMIT"] : `${STRINGS["RESUBMIT"]}*`}
+								label={
+									idData.status === 0
+										? STRINGS['SUBMIT']
+										: `${STRINGS['RESUBMIT']}*`
+								}
 								disabled={pristine || submitting || !valid || !!error}
 							/>
-							{idData.status !== 0 &&
-								<span className="content-text">{STRINGS["USER_VERIFICATION.SUBMISSION_PENDING_TXT"]}</span>
-							}
+							{idData.status !== 0 && (
+								<span className="content-text">
+									{STRINGS['USER_VERIFICATION.SUBMISSION_PENDING_TXT']}
+								</span>
+							)}
 						</div>
 					</div>
 				</form>
@@ -282,7 +328,7 @@ class DocumentsVerification extends Component {
 }
 
 const DocumentsVerificationForm = reduxForm({
-	form: FORM_NAME
+	form: FORM_NAME,
 })(withConfig(DocumentsVerification));
 
 export default DocumentsVerificationForm;

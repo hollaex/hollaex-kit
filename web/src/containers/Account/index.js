@@ -34,14 +34,14 @@ const getInitialTab = ({ name, path }) => {
 	}
 	return {
 		activeTab,
-		activeDevelopers
+		activeDevelopers,
 	};
 };
 
 class Account extends Component {
 	state = {
 		activeTab: -1,
-		tabs: []
+		tabs: [],
 	};
 
 	componentDidMount() {
@@ -60,7 +60,7 @@ class Account extends Component {
 			this.updateTabs(nextProps, false);
 		} else if (nextProps.route.path !== this.props.route.path) {
 			this.updateTabs(nextProps, true);
-		} 
+		}
 	}
 
 	hasUserVerificationNotifications = (
@@ -68,7 +68,11 @@ class Account extends Component {
 		bank_account = {},
 		id_data = {}
 	) => {
-		if (verification_level >= 2 && bank_account.verified && id_data.status === 3) {
+		if (
+			verification_level >= 2 &&
+			bank_account.verified &&
+			id_data.status === 3
+		) {
 			return false;
 		}
 		return true;
@@ -84,7 +88,7 @@ class Account extends Component {
 			phone_number,
 			route,
 			location,
-			enabledPlugins
+			enabledPlugins,
 		},
 		updateActiveTab = false
 	) => {
@@ -98,74 +102,83 @@ class Account extends Component {
 			activeDevelopers = initialValues.activeDevelopers;
 		}
 		let verificationPending = false;
-		if (verification_level < 1 && !full_name && enabledPlugins.includes('kyc')) {
+		if (
+			verification_level < 1 &&
+			!full_name &&
+			enabledPlugins.includes('kyc')
+		) {
 			verificationPending = true;
-		} else if ((id_data.status === 0 || id_data.status === 2)
-			&& enabledPlugins.includes('kyc')) {
+		} else if (
+			(id_data.status === 0 || id_data.status === 2) &&
+			enabledPlugins.includes('kyc')
+		) {
 			verificationPending = true;
 		} else if (!phone_number && enabledPlugins.includes('sms')) {
 			verificationPending = true;
-		} else if (!bank_account.filter(acc => acc.status === 0 || acc.status === 2).length
-			&& enabledPlugins.includes('bank')) {
+		} else if (
+			!bank_account.filter((acc) => acc.status === 0 || acc.status === 2)
+				.length &&
+			enabledPlugins.includes('bank')
+		) {
 			verificationPending = true;
 		}
 
 		const tabs = [
 			{
 				title: isMobile ? (
-					STRINGS["SUMMARY.TITLE"]
+					STRINGS['SUMMARY.TITLE']
 				) : (
-						<CheckTitle
-							stringId="SUMMARY.TITLE"
-							title={STRINGS["SUMMARY.TITLE"]}
-							iconId="TAB_SUMMARY"
-							icon={ICONS["TAB_SUMMARY"]}
-						/>
-					),
-				content: <Summary />
+					<CheckTitle
+						stringId="SUMMARY.TITLE"
+						title={STRINGS['SUMMARY.TITLE']}
+						iconId="TAB_SUMMARY"
+						icon={ICONS['TAB_SUMMARY']}
+					/>
+				),
+				content: <Summary />,
 			},
 			{
 				title: isMobile ? (
-					STRINGS["ACCOUNTS.TAB_SECURITY"]
+					STRINGS['ACCOUNTS.TAB_SECURITY']
 				) : (
 					<CheckTitle
 						stringId="ACCOUNTS.TAB_SECURITY"
-						title={STRINGS["ACCOUNTS.TAB_SECURITY"]}
+						title={STRINGS['ACCOUNTS.TAB_SECURITY']}
 						iconId="SECURITY_GREY"
-						icon={ICONS["SECURITY_GREY"]}
+						icon={ICONS['SECURITY_GREY']}
 						notifications={!otp_enabled ? '!' : ''}
 					/>
 				),
 				notifications: !otp_enabled ? '!' : '',
-				content: <UserSecurity openApiKey={activeDevelopers} />
+				content: <UserSecurity openApiKey={activeDevelopers} />,
 			},
 			{
 				title: isMobile ? (
-					STRINGS["ACCOUNTS.TAB_VERIFICATION"]
+					STRINGS['ACCOUNTS.TAB_VERIFICATION']
 				) : (
-						<CheckTitle
-							stringId="ACCOUNTS.TAB_VERIFICATION"
-							title={STRINGS["ACCOUNTS.TAB_VERIFICATION"]}
-							iconId="TAB_SUMMARY"
-							icon={ICONS["TAB_SUMMARY"]}
-						/>
-					),
+					<CheckTitle
+						stringId="ACCOUNTS.TAB_VERIFICATION"
+						title={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
+						iconId="TAB_SUMMARY"
+						icon={ICONS['TAB_SUMMARY']}
+					/>
+				),
 				notifications: verificationPending && !IS_XHT ? '!' : '',
-				content: <Verification router={this.props.router} />
+				content: <Verification router={this.props.router} />,
 			},
 			{
 				title: isMobile ? (
-					STRINGS["ACCOUNTS.TAB_SETTINGS"]
+					STRINGS['ACCOUNTS.TAB_SETTINGS']
 				) : (
 					<CheckTitle
 						stringId="ACCOUNTS.TAB_SETTINGS"
-						title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+						title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 						iconId="GEAR_GREY"
-						icon={ICONS["GEAR_GREY"]}
+						icon={ICONS['GEAR_GREY']}
 					/>
 				),
-				content: <UserSettings location={location} />
-			}
+				content: <UserSettings location={location} />,
+			},
 		];
 		this.setState({ tabs, activeTab });
 	};
@@ -231,11 +244,14 @@ const mapStateToProps = (state) => ({
 	phone_number: state.user.userData.phone_number,
 	full_name: state.user.userData.full_name,
 	activeLanguage: state.app.language,
-	enabledPlugins: state.app.enabledPlugins
+	enabledPlugins: state.app.enabledPlugins,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	openContactForm: bindActionCreators(openContactForm, dispatch)
+	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Account));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(Account));

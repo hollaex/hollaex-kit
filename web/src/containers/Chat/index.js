@@ -20,7 +20,7 @@ class Chat extends Component {
 		to: '',
 		messages: [],
 		showEmojiBox: false,
-		unreadMessages: 0
+		unreadMessages: 0,
 	};
 
 	componentWillMount() {
@@ -31,11 +31,13 @@ class Chat extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.enabledPlugins &&
+		if (
+			this.props.enabledPlugins &&
 			this.props.enabledPlugins.length &&
 			!this.props.fetchingAuth &&
-			!this.props.enabledPlugins.includes('chat')) {
-				this.props.router.push('/account');
+			!this.props.enabledPlugins.includes('chat')
+		) {
+			this.props.router.push('/account');
 		}
 	}
 
@@ -51,14 +53,16 @@ class Chat extends Component {
 			}
 		}
 		if (nextProps.username_set) {
-      chatWs.send(
-        JSON.stringify({
-          op: 'chat',
-          args: [{
-            action: 'changeUsername',
-          }]
-        })
-      )
+			chatWs.send(
+				JSON.stringify({
+					op: 'chat',
+					args: [
+						{
+							action: 'changeUsername',
+						},
+					],
+				})
+			);
 		}
 	}
 
@@ -67,98 +71,100 @@ class Chat extends Component {
 	}
 
 	initializeChatWs = (token = '') => {
-    this.isInitializing(true);
-    let url = `${WS_URL}/stream`;
-    if (token) {
-      url = `${WS_URL}/stream?authorization=Bearer ${token}`;
-    }
+		this.isInitializing(true);
+		let url = `${WS_URL}/stream`;
+		if (token) {
+			url = `${WS_URL}/stream?authorization=Bearer ${token}`;
+		}
 
-    const chatWs = new WebSocket(url);
+		const chatWs = new WebSocket(url);
 
-    this.setState({ chatWs });
+		this.setState({ chatWs });
 
-    chatWs.onopen = (evt) => {
-      console.info('Connected Chat Socket', evt);
-      chatWs.send(
-        JSON.stringify({
-          op: 'subscribe',
-          args: ['chat'],
-        })
-      );
-      this.wsInterval = setInterval(() => {
-        chatWs.send(
-          JSON.stringify({
-            op: 'ping'
-          })
-        );
-      }, 55000);
-    };
+		chatWs.onopen = (evt) => {
+			console.info('Connected Chat Socket', evt);
+			chatWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: ['chat'],
+				})
+			);
+			this.wsInterval = setInterval(() => {
+				chatWs.send(
+					JSON.stringify({
+						op: 'ping',
+					})
+				);
+			}, 55000);
+		};
 
-    chatWs.onmessage = (evt) => {
-      const data = JSON.parse(evt.data);
-      console.info('chatWs', data);
-      switch (data.action) {
-
+		chatWs.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			console.info('chatWs', data);
+			switch (data.action) {
 				case 'init': {
-          const { data: messages = [] } = data;
-          this.setState({
-            chatSocketInitializing: false,
-            messages,
-          }, () => {
-            this.setState({
-              chatSocketInitialized: true
-            });
-          });
-          break;
+					const { data: messages = [] } = data;
+					this.setState(
+						{
+							chatSocketInitializing: false,
+							messages,
+						},
+						() => {
+							this.setState({
+								chatSocketInitialized: true,
+							});
+						}
+					);
+					break;
 				}
 
 				case 'addMessage': {
-          const { data: newMessage } = data;
-          const messages = this.state.messages.concat(newMessage);
-          const unreadMessages = this.props.minimized
-            ? this.props.unreadMessages +
-            (messages.length - this.state.messages.length)
-            : 0;
-          this.props.setChatUnreadMessages(unreadMessages);
-          this.setState({ messages, unreadMessages });
-          break;
+					const { data: newMessage } = data;
+					const messages = this.state.messages.concat(newMessage);
+					const unreadMessages = this.props.minimized
+						? this.props.unreadMessages +
+						  (messages.length - this.state.messages.length)
+						: 0;
+					this.props.setChatUnreadMessages(unreadMessages);
+					this.setState({ messages, unreadMessages });
+					break;
 				}
 
 				case 'deleteMessage': {
-          const { data: idToDelete } = data;
-          const indexOfMessage = this.state.messages.findIndex(
-            ({ id }) => id === idToDelete
-          );
-          if (indexOfMessage > -1) {
-            const messages = [].concat(this.state.messages);
-            messages.splice(indexOfMessage, 1);
-            this.setState({ messages });
-          }
-          break;
+					const { data: idToDelete } = data;
+					const indexOfMessage = this.state.messages.findIndex(
+						({ id }) => id === idToDelete
+					);
+					if (indexOfMessage > -1) {
+						const messages = [].concat(this.state.messages);
+						messages.splice(indexOfMessage, 1);
+						this.setState({ messages });
+					}
+					break;
 				}
 
-        default:
-          break;
-      }
-    }
+				default:
+					break;
+			}
+		};
 
-    chatWs.onerror = (evt) => {
-      console.error('chat socket error', evt);
-    };
+		chatWs.onerror = (evt) => {
+			console.error('chat socket error', evt);
+		};
 
-    // this.isInitializing(true);
-    // let chatWs = '';
-    // if (token) {
-    // 	chatWs = io.connect(`${WS_URL}/chat`, {
-    // 		query: {
-    // 			token: token ? `Bearer ${token}` : ''
-    // 		}
-    // 	});
-    // } else {
-    // 	chatWs = io.connect(`${WS_URL}/chat`);
-    // }
-    //
-    // this.setState({ chatWs });
+		// this.isInitializing(true);
+		// let chatWs = '';
+		// if (token) {
+		// 	chatWs = io.connect(`${WS_URL}/chat`, {
+		// 		query: {
+		// 			token: token ? `Bearer ${token}` : ''
+		// 		}
+		// 	});
+		// } else {
+		// 	chatWs = io.connect(`${WS_URL}/chat`);
+		// }
+		//
+		// this.setState({ chatWs });
 
 		// chatWs.on('init', ({ messages = [], announcements = [] }) => {
 		// 	this.setState({
@@ -211,9 +217,7 @@ class Chat extends Component {
 		const { chatWs, chatSocketInitialized } = this.state;
 		if (chatWs) {
 			if (chatSocketInitialized) {
-        chatWs.send(
-          JSON.stringify({ op: 'unsubscribe', args: ['chat'] })
-        );
+				chatWs.send(JSON.stringify({ op: 'unsubscribe', args: ['chat'] }));
 			}
 			chatWs.close();
 		}
@@ -232,14 +236,16 @@ class Chat extends Component {
 			const message = this.chatMessageBox.value;
 			if (message.trim().length > 0) {
 				chatWs.send(
-          JSON.stringify({
-            op: 'chat',
-            args: [{
-              action: 'addMessage',
-              data: message,
-            }]
-          })
-        )
+					JSON.stringify({
+						op: 'chat',
+						args: [
+							{
+								action: 'addMessage',
+								data: message,
+							},
+						],
+					})
+				);
 
 				this.chatMessageBox.value = '';
 				this.chatMessageBox.style.height = isMobile ? '32px' : '36px';
@@ -258,15 +264,17 @@ class Chat extends Component {
 	removeMessage = (id) => {
 		const { chatWs } = this.state;
 
-    chatWs.send(
-      JSON.stringify({
-        op: 'chat',
-				args: [{
-        	action: 'deleteMessage',
-          data: id,
-				}]
-      })
-    )
+		chatWs.send(
+			JSON.stringify({
+				op: 'chat',
+				args: [
+					{
+						action: 'deleteMessage',
+						data: id,
+					},
+				],
+			})
+		);
 	};
 
 	handleEmojiBox = () => {
@@ -295,17 +303,17 @@ class Chat extends Component {
 			minimized,
 			chatIsClosed,
 			set_username,
-			enabledPlugins
+			enabledPlugins,
 		} = this.props;
 		const {
 			messages,
 			chatSocketInitialized,
 			chatSocketInitializing,
 			unreadMessages,
-			showEmojiBox
+			showEmojiBox,
 		} = this.state;
 		if (!enabledPlugins.includes('chat')) {
-			return <Fragment />
+			return <Fragment />;
 		}
 		return (
 			<ChatWrapper
@@ -343,16 +351,13 @@ const mapStateToProps = (store) => ({
 	unreadMessages: store.app.chatUnreadMessages,
 	set_username: store.user.settings.chat.set_username,
 	is_hap: store.user.is_hap,
-	enabledPlugins: store.app.enabledPlugins
+	enabledPlugins: store.app.enabledPlugins,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setAnnouncements: bindActionCreators(setAnnouncements, dispatch),
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
-	dispatch
+	dispatch,
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Chat);
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

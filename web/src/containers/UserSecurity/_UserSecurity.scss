@@ -160,16 +160,16 @@ $padding-input: 4rem;
 }
 
 .layout-mobile {
-	.user_security-wrapper{
-		.warning_text{
+	.user_security-wrapper {
+		.warning_text {
 			font-size: $font-size-mobile-txt !important;
 		}
 	}
-	.checkbutton-wrapper{
-		.checkbutton-input-wrapper{
-			.checkbutton-input-wrapper--label{
-			   font-size: $font-size-mobile-txt;
-         	   color: $link;
+	.checkbutton-wrapper {
+		.checkbutton-input-wrapper {
+			.checkbutton-input-wrapper--label {
+				font-size: $font-size-mobile-txt;
+				color: $link;
 			}
 		}
 	}
@@ -178,10 +178,10 @@ $padding-input: 4rem;
 		width: auto;
 		.otp_form-section-wrapper {
 			.otp_form-section-title {
-               font-size: $font-size-mobile-title;
+				font-size: $font-size-mobile-title;
 			}
 			.otp_form-section-text {
-                font-size: $font-size-mobile-txt!important;
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 		.otp_form-section-content {
@@ -193,8 +193,8 @@ $padding-input: 4rem;
 			}
 		}
 	}
-	.accordion_section_content{
-		.warning_text{
+	.accordion_section_content {
+		.warning_text {
 			font-size: $font-size-mobile-txt !important;
 		}
 	}

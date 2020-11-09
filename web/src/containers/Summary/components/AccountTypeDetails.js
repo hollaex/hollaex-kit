@@ -17,14 +17,19 @@ const AccountTypeDetails = ({
 	onFeesAndLimits,
 	onUpgradeAccount,
 	verification_level,
-	balance
+	balance,
 }) => {
 	let isAccountDetails = true;
 	const currentAccount = selectedAccount;
 	const selectedLevel = isAccountDetails
 		? currentAccount || user.verification_level
 		: 2;
-	const requirement = getRequirements(user, selectedLevel, lastMonthVolume, coins);
+	const requirement = getRequirements(
+		user,
+		selectedLevel,
+		lastMonthVolume,
+		coins
+	);
 	return (
 		<div className={classnames(className, 'mx-auto')}>
 			<TraderAccounts
@@ -38,30 +43,28 @@ const AccountTypeDetails = ({
 				verification_level={currentAccount}
 				selectedAccount={currentAccount}
 			/>
-			{
-				Object.keys(requirement).length ? (
-					<div>
-						<div className="requirement-header d-flex justify-content-between">
-							<div>
-								{selectedLevel === 3
-									? STRINGS["SUMMARY.ONE_REQUIREMENT"]
-									: STRINGS["SUMMARY.REQUIREMENTS"]
-								}
-							</div>
-							<div className="status-header">{STRINGS["STATUS"]}</div>
+			{Object.keys(requirement).length ? (
+				<div>
+					<div className="requirement-header d-flex justify-content-between">
+						<div>
+							{selectedLevel === 3
+								? STRINGS['SUMMARY.ONE_REQUIREMENT']
+								: STRINGS['SUMMARY.REQUIREMENTS']}
 						</div>
-						<SummaryRequirements
-							user={user}
-							coins={coins}
-							isAccountDetails={true}
-							balance={balance}
-							verificationLevel={currentAccount}
-							lastMonthVolume={lastMonthVolume}
-							onUpgradeAccount={onUpgradeAccount}
-							contentClassName="w-100"
-						/>
+						<div className="status-header">{STRINGS['STATUS']}</div>
 					</div>
-				) : null}
+					<SummaryRequirements
+						user={user}
+						coins={coins}
+						isAccountDetails={true}
+						balance={balance}
+						verificationLevel={currentAccount}
+						lastMonthVolume={lastMonthVolume}
+						onUpgradeAccount={onUpgradeAccount}
+						contentClassName="w-100"
+					/>
+				</div>
+			) : null}
 		</div>
 	);
 };

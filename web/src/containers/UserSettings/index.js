@@ -10,14 +10,14 @@ import {
 	changeTheme,
 	openContactForm,
 	openRiskPortfolioOrderWarning,
-	closeNotification
+	closeNotification,
 } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
 	updateUserSettings,
 	setUserData,
 	setUsername,
-	setUsernameStore
+	setUsernameStore,
 } from '../../actions/userAction';
 import {
 	IconTitle,
@@ -26,13 +26,13 @@ import {
 	CustomMobileTabs,
 	CustomTabBar,
 	MobileTabBar,
-	Loader
+	Loader,
 } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
 import NotificationForm, {
-	generateNotificationFormValues
+	generateNotificationFormValues,
 } from './NotificationForm';
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
 import RiskForm, { generateWarningFormValues } from './RiskForm';
@@ -49,7 +49,7 @@ class UserSettings extends Component {
 		dialogIsOpen: false,
 		modalText: '',
 		activeTab: 0,
-		totalAssets: ''
+		totalAssets: '',
 	};
 
 	componentDidMount() {
@@ -75,8 +75,7 @@ class UserSettings extends Component {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
 		if (
-			JSON.stringify(this.props.settings) !==
-			JSON.stringify(nextProps.settings)
+			JSON.stringify(this.props.settings) !== JSON.stringify(nextProps.settings)
 		) {
 			this.updateTabs(nextProps, this.state.activeTab);
 		}
@@ -117,7 +116,7 @@ class UserSettings extends Component {
 	onAdjustPortfolio = () => {
 		this.props.openRiskPortfolioOrderWarning({
 			onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'),
-			initialValues: this.props.settings.risk
+			initialValues: this.props.settings.risk,
 		});
 	};
 
@@ -132,7 +131,9 @@ class UserSettings extends Component {
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
 		);
-		const languageFormValue = generateLanguageFormValues(constants.valid_languages);
+		const languageFormValue = generateLanguageFormValues(
+			constants.valid_languages
+		);
 		const notificationFormValues = generateNotificationFormValues();
 		const audioFormValues = generateAudioCueFormValues();
 		const warningFormValues = generateWarningFormValues();
@@ -148,22 +149,22 @@ class UserSettings extends Component {
 			get_quote_quick_trade: true,
 			quick_trade_success: true,
 			quick_trade_timeout: true,
-			...settings.audio
-		}
+			...settings.audio,
+		};
 
 		const tabs = [
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS["USER_SETTINGS.TITLE_NOTIFICATION"]}
-						icon={ICONS["SETTING_NOTIFICATION_ICON"]}
+						title={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
+						icon={ICONS['SETTING_NOTIFICATION_ICON']}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_NOTIFICATION"
-						title={STRINGS["USER_SETTINGS.TITLE_NOTIFICATION"]}
+						title={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
 						iconId="SETTING_NOTIFICATION_ICON"
-						icon={ICONS["SETTING_NOTIFICATION_ICON"]}
+						icon={ICONS['SETTING_NOTIFICATION_ICON']}
 					/>
 				),
 				content: activeTab === 0 && (
@@ -174,20 +175,20 @@ class UserSettings extends Component {
 						formFields={notificationFormValues}
 						initialValues={settings.notification}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS["USER_SETTINGS.TITLE_INTERFACE"]}
-						icon={ICONS["SETTING_INTERFACE_ICON"]}
+						title={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
+						icon={ICONS['SETTING_INTERFACE_ICON']}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_INTERFACE"
-						title={STRINGS["USER_SETTINGS.TITLE_INTERFACE"]}
+						title={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
 						iconId="SETTING_INTERFACE_ICON"
-						icon={ICONS["SETTING_INTERFACE_ICON"]}
+						icon={ICONS['SETTING_INTERFACE_ICON']}
 					/>
 				),
 				content: activeTab === 1 && (
@@ -198,20 +199,20 @@ class UserSettings extends Component {
 						formFields={formValues}
 						initialValues={settings.interface}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS["USER_SETTINGS.TITLE_LANGUAGE"]}
-						icon={ICONS["SETTING_LANGUAGE_ICON"]}
+						title={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+						icon={ICONS['SETTING_LANGUAGE_ICON']}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_LANGUAGE"
-						title={STRINGS["USER_SETTINGS.TITLE_LANGUAGE"]}
+						title={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
 						iconId="SETTING_LANGUAGE_ICON"
-						icon={ICONS["SETTING_LANGUAGE_ICON"]}
+						icon={ICONS['SETTING_LANGUAGE_ICON']}
 					/>
 				),
 				content: activeTab === 2 && (
@@ -222,20 +223,20 @@ class UserSettings extends Component {
 						formFields={languageFormValue}
 						initialValues={{ language: settings.language }}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
-						icon={ICONS["SETTING_CHAT_ICON"]}
+						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+						icon={ICONS['SETTING_CHAT_ICON']}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_CHAT"
-						title={STRINGS["USER_SETTINGS.TITLE_CHAT"]}
+						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
 						iconId="SETTING_CHAT_ICON"
-						icon={ICONS["SETTING_CHAT_ICON"]}
+						icon={ICONS['SETTING_CHAT_ICON']}
 					/>
 				),
 				content: activeTab === 3 && (
@@ -244,44 +245,42 @@ class UserSettings extends Component {
 						formFields={usernameFormValues}
 						initialValues={{ username }}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"]}
-						icon={ICONS["SETTING_AUDIO_ICON"]}
+						title={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
+						icon={ICONS['SETTING_AUDIO_ICON']}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_AUDIO_CUE"
-						title={STRINGS["USER_SETTINGS.TITLE_AUDIO_CUE"]}
+						title={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
 						iconId="SETTING_AUDIO_ICON"
-						icon={ICONS["SETTING_AUDIO_ICON"]}
+						icon={ICONS['SETTING_AUDIO_ICON']}
 					/>
 				),
 				content: activeTab === 4 && (
 					<AudioCueForm
-						onSubmit={(formProps) =>
-							this.onSubmitSettings(formProps, 'audio')
-						}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'audio')}
 						formFields={audioFormValues}
 						initialValues={audioFormInitialValues}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS["USER_SETTINGS.TITLE_MANAGE_RISK"]}
-						icon={ICONS["SETTING_RISK_ICON"]}
+						title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
+						icon={ICONS['SETTING_RISK_ICON']}
 					/>
 				) : (
 					<CustomTabs
 						stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
-						title={STRINGS["USER_SETTINGS.TITLE_MANAGE_RISK"]}
+						title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
 						iconId="SETTING_RISK_ICON"
-						icon={ICONS["SETTING_RISK_ICON"]}
+						icon={ICONS['SETTING_RISK_ICON']}
 					/>
 				),
 				content: activeTab === 5 && (
@@ -289,14 +288,12 @@ class UserSettings extends Component {
 						coins={coins}
 						onAdjustPortfolio={this.onAdjustPortfolio}
 						totalAssets={this.state.totalAssets}
-						onSubmit={(formProps) =>
-							this.onSubmitSettings(formProps, 'risk')
-						}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
 						formFields={warningFormValues}
 						initialValues={settings.risk}
 					/>
-				)
-			}
+				),
+			},
 		];
 
 		this.setState({ tabs });
@@ -318,7 +315,10 @@ class UserSettings extends Component {
 				break;
 			case 'interface':
 				if (formProps.order_book_levels) {
-					formValues.order_book_levels = parseInt(formProps.order_book_levels, 10);
+					formValues.order_book_levels = parseInt(
+						formProps.order_book_levels,
+						10
+					);
 				}
 				settings.interface = formValues;
 				break;
@@ -333,7 +333,10 @@ class UserSettings extends Component {
 				break;
 			case 'risk':
 				if (formProps.order_portfolio_percentage) {
-					formValues.order_portfolio_percentage = parseInt(formProps.order_portfolio_percentage, 10);
+					formValues.order_portfolio_percentage = parseInt(
+						formProps.order_portfolio_percentage,
+						10
+					);
 				}
 				settings.risk = formValues;
 				break;
@@ -343,9 +346,9 @@ class UserSettings extends Component {
 			.then(({ data }) => {
 				this.props.setUserData(data);
 				if (data.settings) {
-					if (data.settings.language) this.props.changeLanguage(data.settings.language);
-					if (data.settings.interface &&
-						data.settings.interface.theme) {
+					if (data.settings.language)
+						this.props.changeLanguage(data.settings.language);
+					if (data.settings.interface && data.settings.interface.theme) {
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);
 					}
@@ -405,24 +408,24 @@ class UserSettings extends Component {
 				{!isMobile && (
 					<IconTitle
 						stringId="ACCOUNTS.TAB_SETTINGS"
-						text={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+						text={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 						textType="title"
 					/>
 				)}
 				<HeaderSection
 					stringId="ACCOUNTS.TAB_SETTINGS"
-					title={STRINGS["ACCOUNTS.TAB_SETTINGS"]}
+					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 					openContactForm={this.openContactForm}
 				>
 					<div className="header-content">
 						<div>
 							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
-                {STRINGS["USER_SETTINGS.TITLE_TEXT_1"]}
+								{STRINGS['USER_SETTINGS.TITLE_TEXT_1']}
 							</EditWrapper>
 						</div>
 						<div className="mb-3">
 							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_2">
-                {STRINGS["USER_SETTINGS.TITLE_TEXT_2"]}
+								{STRINGS['USER_SETTINGS.TITLE_TEXT_2']}
 							</EditWrapper>
 						</div>
 					</div>
@@ -463,7 +466,7 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	price: state.orderbook.price,
 	//orders: state.order.activeOrders,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -477,10 +480,10 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	closeNotification: bindActionCreators(closeNotification, dispatch),
-	logout: bindActionCreators(logout, dispatch)
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(UserSettings))
+)(withConfig(UserSettings));

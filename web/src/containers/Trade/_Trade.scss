@@ -12,7 +12,7 @@ $trade_title-border--color: $colors-main-black;
 $trade_title-border--size: 0.2rem;
 
 $trade-font-size: $font-size-subtext;
-$trade-post-font-size:12px;
+$trade-post-font-size: 12px;
 
 $side-column--width: 17.5rem;
 $side-column--width-sm: 16rem;
@@ -37,7 +37,7 @@ $order_entry-column--width-lg: 18rem;
 }
 
 .trade_history-row {
-	.trade_history-icon{
+	.trade_history-icon {
 		width: 1rem;
 		margin-right: 3px;
 	}
@@ -52,7 +52,7 @@ $order_entry-column--width-lg: 18rem;
 					fill: $sell;
 				}
 				polygon {
-					fill: $sell-bids-text
+					fill: $sell-bids-text;
 				}
 			}
 		}
@@ -68,14 +68,14 @@ $order_entry-column--width-lg: 18rem;
 					fill: $buy;
 				}
 				polygon {
-					fill: $buy-bids-text
+					fill: $buy-bids-text;
 				}
 			}
 		}
 	}
 }
 
-.layout-mobile{
+.layout-mobile {
 	.trade_active_orders-wrapper {
 		max-height: 35vh !important;
 		white-space: nowrap;
@@ -94,7 +94,7 @@ $order_entry-column--width-lg: 18rem;
 .trade_active_orders-wrapper {
 	overflow-y: auto;
 	flex: 1;
-	
+
 	.cell_box-type {
 		padding: 0.1rem;
 
@@ -182,6 +182,6 @@ $order_entry-column--width-lg: 18rem;
 }
 
 .mobile-chart__market-selector-wrapper {
-	font-family: "Open Sans" !important;
+	font-family: 'Open Sans' !important;
 	font-weight: normal;
 }

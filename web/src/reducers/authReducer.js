@@ -6,7 +6,7 @@ const VERIFICATION = {
 	fetching: false,
 	fetched: false,
 	hasValidData: false,
-	error: ''
+	error: '',
 };
 
 const INITIAL_STATE = {
@@ -21,7 +21,7 @@ const INITIAL_STATE = {
 	resetPasswordComplete: false,
 	verification: VERIFICATION,
 	logoutMessage: '',
-	userType: USER_TYPES.USER_TYPE_NORMAL
+	userType: USER_TYPES.USER_TYPE_NORMAL,
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -32,15 +32,15 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				...state,
 				fetching: false,
 				fetched: true,
-				userEmail: payload
+				userEmail: payload,
 			};
 		case 'CHECK_VERIFICATION_CODE_PENDING':
 			return {
 				...state,
 				verification: {
 					...VERIFICATION,
-					fetching: true
-				}
+					fetching: true,
+				},
 			};
 		case 'CHECK_VERIFICATION_CODE_FULFILLED':
 			return {
@@ -50,8 +50,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					fetching: true,
 					fetched: true,
 					data: payload,
-					hasValidData: true
-				}
+					hasValidData: true,
+				},
 			};
 		case 'CHECK_VERIFICATION_CODE_REJECTED':
 			return {
@@ -60,24 +60,24 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					...VERIFICATION,
 					fetching: false,
 					fetched: true,
-					error: payload.message
-				}
+					error: payload.message,
+				},
 			};
 		case 'VERIFY_VERIFICATION_CODE_PENDING':
 			return {
 				...state,
 				verification: {
 					...VERIFICATION,
-					fetching: true
-				}
+					fetching: true,
+				},
 			};
 		case 'VERIFY_VERIFICATION_CODE_FULFILLED':
 			return {
 				...state,
 				verification: {
 					...VERIFICATION,
-					fetched: true
-				}
+					fetched: true,
+				},
 			};
 		case 'VERIFY_VERIFICATION_CODE_REJECTED':
 			return {
@@ -85,8 +85,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				verification: {
 					...VERIFICATION,
 					fetched: true,
-					error: payload.message
-				}
+					error: payload.message,
+				},
 			};
 
 		// Verify token
@@ -94,13 +94,13 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 			return {
 				...state,
 				fetching: true,
-				verifyingToken: true
+				verifyingToken: true,
 			};
 		case 'VERIFY_TOKEN_REJECTED':
 			return {
 				...state,
 				fetching: false,
-				verifyingToken: false
+				verifyingToken: false,
 			};
 		case 'VERIFY_TOKEN_FULFILLED':
 			const decodedToken = decodeToken(payload);
@@ -116,23 +116,23 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				verifyingToken: false,
 				fetched: true,
 				token: payload,
-				userType
+				userType,
 			};
 		case 'LOAD_TOKEN':
 			return {
 				...state,
-				token: payload
+				token: payload,
 			};
 
 		case 'SET_LOGOUT_MESSAGE':
 			return {
 				...state,
-				logoutMessage: payload.message
+				logoutMessage: payload.message,
 			};
 		case 'LOGOUT':
 			return {
 				...INITIAL_STATE,
-				logoutMessage: payload.message
+				logoutMessage: payload.message,
 			};
 		default:
 			return state;

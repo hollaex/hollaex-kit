@@ -31,7 +31,7 @@ $container--padding-sm: 3rem;
 }
 
 .exchange-trial {
-	background-color: #FFF100;
+	background-color: #fff100;
 	color: #000000;
 }
 
@@ -141,7 +141,7 @@ $container--padding-sm: 3rem;
 	.icon_title-wrapper {
 		margin-top: 0;
 		&.underline:after {
-			height: 0.20rem;
+			height: 0.2rem;
 		}
 
 		.icon_title-text {
@@ -189,9 +189,10 @@ $container--padding-sm: 3rem;
 	.auth-wrapper {
 		.auth-container {
 			max-width: $content-wrapper-width-small-devices !important;
-			
+
 			.auth_wrapper {
-				padding: $container--padding-sm $container--padding $container--padding-sm;
+				padding: $container--padding-sm $container--padding
+					$container--padding-sm;
 			}
 			.auth_form-wrapper {
 				margin-top: 1rem;

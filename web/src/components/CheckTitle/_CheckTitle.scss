@@ -110,12 +110,15 @@ $notification-size: 1.5rem;
 .verification-stauts {
 	width: 1rem;
 
-	&.incomplete, &.pending {
+	&.incomplete,
+	&.pending {
 		svg {
 			circle {
 				fill: $colors-notification-pending;
 			}
-			path, polygon, polyline {
+			path,
+			polygon,
+			polyline {
 				fill: $colors-notification-pending-text;
 			}
 		}
@@ -126,7 +129,9 @@ $notification-size: 1.5rem;
 			circle {
 				fill: $colors-notifications-red;
 			}
-			path, polygon, polyline {
+			path,
+			polygon,
+			polyline {
 				fill: $colors-notification-alert-text;
 			}
 		}
@@ -137,12 +142,13 @@ $notification-size: 1.5rem;
 			circle {
 				fill: $colors-notifications-green;
 			}
-			path, polygon, polyline {
+			path,
+			polygon,
+			polyline {
 				fill: $colors-notification-green-text;
 			}
 		}
 	}
-
 }
 
 .empty-notification {
@@ -290,10 +296,10 @@ $notification-size: 1.5rem;
 	}
 }
 
-.layout-mobile{
+.layout-mobile {
 	.mobile_tab-wrapper {
-		.status_txt{
-			font-size:$font-size-mobile-txt;
+		.status_txt {
+			font-size: $font-size-mobile-txt;
 		}
 	}
 }

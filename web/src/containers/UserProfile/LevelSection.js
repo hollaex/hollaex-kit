@@ -22,7 +22,7 @@ export const LevelSection = ({
 	children,
 	limits,
 	fees,
-	verification_level
+	verification_level,
 }) => {
 	return (
 		<div>

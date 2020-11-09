@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { addBankData, approveBank, rejectBank } from './actions';
-import { CheckOutlined, CloseOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {
+	CheckOutlined,
+	CloseOutlined,
+	DeleteOutlined,
+	PlusCircleOutlined,
+} from '@ant-design/icons';
 import { Card, Button, Input, Popconfirm, message, Col, Row } from 'antd';
 import { ModalForm } from '../../../components';
 
@@ -10,16 +15,16 @@ const Form = ModalForm('BANK_DATA', 'bank_data');
 const BankFields = {
 	bank_name: {
 		type: 'text',
-		label: 'Bank Name'
+		label: 'Bank Name',
 	},
 	account_number: {
 		type: 'text',
-		label: 'Account Number'
-	}
+		label: 'Account Number',
+	},
 };
 
 const Fields = {
-	...BankFields
+	...BankFields,
 };
 
 // const generateInitialValues = (initialValues) => {
@@ -35,7 +40,7 @@ class BankData extends Component {
 		this.state = {
 			bank: [],
 			formVisible: false,
-			note: ''
+			note: '',
 		};
 	}
 
@@ -50,7 +55,7 @@ class BankData extends Component {
 		}
 		this.setState({
 			bank,
-			userId: this.props.initialValues.id
+			userId: this.props.initialValues.id,
 		});
 	}
 
@@ -59,13 +64,13 @@ class BankData extends Component {
 	};
 
 	onSubmit = (onChangeSuccess, bank, userId) => (values) => {
-		let bank_account = [ ...bank ];
+		let bank_account = [...bank];
 		values.id = values.account_number + '-man';
 		values.status = 3;
-		bank_account = [ ...bank_account, values];
+		bank_account = [...bank_account, values];
 		const submitData = {
 			id: userId,
-			bank_account
+			bank_account,
 		};
 		return addBankData(submitData)
 			.then((data) => {
@@ -74,14 +79,16 @@ class BankData extends Component {
 					onChangeSuccess({
 						...values,
 						...submitData,
-						...data
+						...data,
 					});
 				}
 				this.setState({ bank: data });
 			})
 			.catch((err) => {
 				message.error('error');
-				throw new SubmissionError({ _error: err && err.data ? err.data.message : err.message });
+				throw new SubmissionError({
+					_error: err && err.data ? err.data.message : err.message,
+				});
 			});
 	};
 
@@ -103,7 +110,7 @@ class BankData extends Component {
 		});
 		const submitData = {
 			id: userId,
-			bank_account: newBanks
+			bank_account: newBanks,
 		};
 		addBankData(submitData)
 			.then((data) => {
@@ -184,7 +191,7 @@ class BankData extends Component {
 														onClick={() =>
 															this.approveBank({
 																user_id: userId,
-																bank_id: bank.id
+																bank_id: bank.id,
 															})
 														}
 														type="primary"
@@ -200,7 +207,7 @@ class BankData extends Component {
 															this.rejectBank({
 																user_id: userId,
 																bank_id: bank.id,
-																message: this.state.note
+																message: this.state.note,
 															})
 														}
 														type="danger"
@@ -224,9 +231,9 @@ class BankData extends Component {
 												cancelText="No"
 											>
 												<DeleteOutlined
-                          style={{
+													style={{
 														fontSize: '20px',
-														color: '#08c'
+														color: '#08c',
 													}}
 												/>
 											</Popconfirm>

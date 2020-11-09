@@ -12,7 +12,13 @@ const InputField = (props) => {
 			type={type}
 			{...rest}
 		>
-			<div className={classnames('checkfield-input-wrapper', 'd-flex', reverse ? 'flex-row-reverse' : '')}>
+			<div
+				className={classnames(
+					'checkfield-input-wrapper',
+					'd-flex',
+					reverse ? 'flex-row-reverse' : ''
+				)}
+			>
 				<input type={type} {...input} className="checkfield-input" />
 				<div className="checkfield-label field-label">{label}</div>
 			</div>

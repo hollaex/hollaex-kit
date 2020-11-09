@@ -1,43 +1,43 @@
 $contact-form--icon-size: 6rem;
 
 .help-wrapper {
-  min-width: 30rem;
-  max-width: 38rem;
+	min-width: 30rem;
+	max-width: 38rem;
 
-  .icon_title-wrapper {
-    .icon_title-text.title {
-      text-transform: capitalize;
-      margin: 1.5rem auto;
-    }
+	.icon_title-wrapper {
+		.icon_title-text.title {
+			text-transform: capitalize;
+			margin: 1.5rem auto;
+		}
 
-    .icon_title-image {
-      height: $contact-form--icon-size;
-      width: $contact-form--icon-size;
-    }
-  }
-  .field-wrapper {
-    margin: 1rem 0;
-  }
-  .buttons-wrapper {
-    margin-top: 1.5rem;
-  }
-  .text {
-    font-size: 0.8rem;
-    flex: 6 ;
-    margin-left: 1rem;
-  }
-  .separator {
-    width: 2rem;
-  }
-  .help_icons {
-    width: 3rem;
-    height: 3rem;
-  }
+		.icon_title-image {
+			height: $contact-form--icon-size;
+			width: $contact-form--icon-size;
+		}
+	}
+	.field-wrapper {
+		margin: 1rem 0;
+	}
+	.buttons-wrapper {
+		margin-top: 1.5rem;
+	}
+	.text {
+		font-size: 0.8rem;
+		flex: 6;
+		margin-left: 1rem;
+	}
+	.separator {
+		width: 2rem;
+	}
+	.help_icons {
+		width: 3rem;
+		height: 3rem;
+	}
 }
 
 .layout-mobile {
-  .contact_form-wrapper {
-    min-width: auto;
-    flex: 1;
-  }
+	.contact_form-wrapper {
+		min-width: auto;
+		flex: 1;
+	}
 }

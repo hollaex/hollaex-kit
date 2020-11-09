@@ -11,7 +11,7 @@ import {
 	CrossHairCursor,
 	MouseCoordinateX,
 	MouseCoordinateY,
-	EdgeIndicator
+	EdgeIndicator,
 } from 'react-stockcharts/lib/coordinates';
 import { OHLCTooltip } from 'react-stockcharts/lib/tooltip';
 
@@ -23,14 +23,14 @@ import {
 	yExtents,
 	generateXExtents,
 	FORMAT_DATE_X_TICK,
-	FORMAT_Y_TICK
+	FORMAT_Y_TICK,
 } from './utils';
 
 import {
 	OHLCProps,
 	edgeIndicatorProps,
 	BarSeriesProps,
-	BarSeriesChartProps
+	BarSeriesChartProps,
 } from './props';
 
 import STRINGS from '../../config/localizedStrings';
@@ -46,7 +46,7 @@ class CustomChart extends Component {
 			seriesName,
 			modifier,
 			theme,
-			children
+			children,
 		} = this.props;
 
 		const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(
@@ -75,11 +75,13 @@ class CustomChart extends Component {
 					<YAxis height={height} theme={theme} />
 					<TXAxis width={width} theme={theme} />
 
-					{!isMobile && <MouseCoordinateX
-						at="top"
-						orient="top"
-						displayFormat={FORMAT_DATE_X_TICK}
-					/>}
+					{!isMobile && (
+						<MouseCoordinateX
+							at="top"
+							orient="top"
+							displayFormat={FORMAT_DATE_X_TICK}
+						/>
+					)}
 					<MouseCoordinateY
 						at="right"
 						orient="right"
@@ -87,7 +89,7 @@ class CustomChart extends Component {
 					/>
 
 					{children}
-					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS["CHART_TEXTS"]} />
+					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS['CHART_TEXTS']} />
 					<EdgeIndicator {...edgeIndicatorProps(theme)} />
 				</Chart>
 				<Chart id={2} {...BarSeriesChartProps(height, 4)}>
@@ -106,13 +108,13 @@ CustomChart.propTypes = {
 	ratio: PropTypes.number.isRequired,
 	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired,
 	dataCount: PropTypes.number,
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
 };
 
 CustomChart.defaultProps = {
 	type: 'svg',
 	seriesName: 'Chart',
-	dataCount: 0
+	dataCount: 0,
 };
 
 export default fitWidth(CustomChart);

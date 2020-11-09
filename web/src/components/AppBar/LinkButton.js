@@ -7,7 +7,7 @@ const COMMON_CLASSES = [
 	'text-uppercase',
 	'action_button',
 	'pointer',
-	...FLEX_CENTER_CLASSES
+	...FLEX_CENTER_CLASSES,
 ];
 
 export const LinkButton = ({ path, text, buttonClassName }) => {
@@ -23,5 +23,5 @@ export const LinkButton = ({ path, text, buttonClassName }) => {
 LinkButton.defaultProps = {
 	path: '',
 	text: '',
-	buttonClassName: ''
+	buttonClassName: '',
 };

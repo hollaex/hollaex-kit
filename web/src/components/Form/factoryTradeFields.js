@@ -7,7 +7,7 @@ import TabSelector from './TradeFormFields/TabSelector';
 
 const renderFields = ([key, values], index) => {
 	const props = {
-		...values
+		...values,
 	};
 
 	switch (values.type) {

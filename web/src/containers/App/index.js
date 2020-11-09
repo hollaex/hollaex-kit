@@ -8,14 +8,14 @@ import {
 	setUserOrders,
 	addOrder,
 	updateOrder,
-	removeOrder
+	removeOrder,
 } from '../../actions/orderAction';
 import {
 	setOrderbooks,
 	setTrades,
 	setOrderbook,
 	addTrades,
-	setPairsData
+	setPairsData,
 } from '../../actions/orderbookAction';
 
 import App from './App';
@@ -37,7 +37,7 @@ import {
 	setSnackDialog,
 	setValidBaseCurrency,
 	setConfig,
-	setInfo
+	setInfo,
 } from '../../actions/appActions';
 
 const mapStateToProps = (store) => ({
@@ -53,7 +53,7 @@ const mapStateToProps = (store) => ({
 	unreadMessages: store.app.chatUnreadMessages,
 	constants: store.app.constants,
 	info: store.app.info,
-	enabledPlugins: store.app.enabledPlugins
+	enabledPlugins: store.app.enabledPlugins,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -90,10 +90,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
-	setInfo: bindActionCreators(setInfo, dispatch)
+	setInfo: bindActionCreators(setInfo, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

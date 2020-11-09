@@ -13,36 +13,36 @@ const Section1 = ({
 	style = {},
 	onClickScrollTo = () => {},
 	onClickLearnMore,
-	token
+	token,
 }) => {
 	const { icons: ICONS } = this.props;
 	return (
 		<div
 			className={classnames(
-        ...FLEX_CENTER_CLASSES,
-        'flex-column',
-        'section_1-content'
-      )}
+				...FLEX_CENTER_CLASSES,
+				'flex-column',
+				'section_1-content'
+			)}
 			style={style}
 		>
 			<div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
 				<div className="home-title text-capitalize">
-          {STRINGS["HOME.SECTION_1_TITLE"]}
+					{STRINGS['HOME.SECTION_1_TITLE']}
 				</div>
 				<div className="text-section text-center">
-					<div>{STRINGS["HOME.SECTION_1_TEXT_1"]}</div>
-					<div>{STRINGS["HOME.SECTION_1_TEXT_2"]}</div>
+					<div>{STRINGS['HOME.SECTION_1_TEXT_1']}</div>
+					<div>{STRINGS['HOME.SECTION_1_TEXT_2']}</div>
 				</div>
 				<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
 					<div
 						className={classnames(...BUTTONS_CLASSES, {
-              pointer: onClickLearnMore
-            })}
+							pointer: onClickLearnMore,
+						})}
 						onClick={onClickLearnMore}
 					>
-            {STRINGS["HOME.SECTION_1_BUTTON_1"]}
+						{STRINGS['HOME.SECTION_1_BUTTON_1']}
 					</div>
-          {/*!token && (
+					{/*!token && (
 					<div
 						className={classnames(...BUTTONS_CLASSES, 'contrast', {
 							pointer: onClickRegister
@@ -59,11 +59,11 @@ const Section1 = ({
 					className={classnames('pointer', 'flex-0', 'scroll-button')}
 					onClick={onClickScrollTo}
 				>
-					<ReactSVG path={ICONS["ARROW_DOWN"]} />
+					<ReactSVG path={ICONS['ARROW_DOWN']} />
 				</div>
 			</EditWrapper>
 		</div>
-  )
-}
+	);
+};
 
 export default withConfig(Section1);

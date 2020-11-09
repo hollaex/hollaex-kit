@@ -10,32 +10,35 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 class Form extends Component {
 	state = {
-		formValues: {}
+		formValues: {},
 	};
 
 	componentWillMount() {
 		this.setFormValues();
 	}
 
-	UNSAFE_componentWillReceiveProps = (nextProps)=> {
-		if (this.props.dirty !== nextProps.dirty
-			|| this.props.submitFailed !== nextProps.submitFailed
-			|| this.props.valid !== nextProps.valid) {
-				if (nextProps.dirty && nextProps.submitFailed && !nextProps.valid) {
-					this.setFormRef(this.otpFormRef);
-				}
+	UNSAFE_componentWillReceiveProps = (nextProps) => {
+		if (
+			this.props.dirty !== nextProps.dirty ||
+			this.props.submitFailed !== nextProps.submitFailed ||
+			this.props.valid !== nextProps.valid
+		) {
+			if (nextProps.dirty && nextProps.submitFailed && !nextProps.valid) {
+				this.setFormRef(this.otpFormRef);
+			}
 		}
-	}
+	};
 	setFormValues = () => {
 		const formValues = {
 			otp_code: {
 				type: 'number',
-				stringId: 'OTP_FORM.OTP_LABEL,OTP_FORM.OTP_PLACEHOLDER,OTP_FORM.ERROR_INVALID',
-				label: STRINGS["OTP_FORM.OTP_LABEL"],
-				placeholder: STRINGS["OTP_FORM.OTP_PLACEHOLDER"],
-				validate: [required, validateOtp(STRINGS["OTP_FORM.ERROR_INVALID"])],
-				fullWidth: true
-			}
+				stringId:
+					'OTP_FORM.OTP_LABEL,OTP_FORM.OTP_PLACEHOLDER,OTP_FORM.ERROR_INVALID',
+				label: STRINGS['OTP_FORM.OTP_LABEL'],
+				placeholder: STRINGS['OTP_FORM.OTP_PLACEHOLDER'],
+				validate: [required, validateOtp(STRINGS['OTP_FORM.ERROR_INVALID'])],
+				fullWidth: true,
+			},
 		};
 
 		this.setState({ formValues });
@@ -44,9 +47,9 @@ class Form extends Component {
 	setFormRef = (el) => {
 		if (el) {
 			this.otpFormRef = el;
-			el.getElementsByTagName('input')[0].focus()
+			el.getElementsByTagName('input')[0].focus();
 		}
-	}
+	};
 
 	render() {
 		const {
@@ -64,23 +67,23 @@ class Form extends Component {
 			<div className="otp_form-wrapper">
 				<IconTitle
 					stringId="OTP_FORM.OTP_TITLE"
-					text={STRINGS["OTP_FORM.OTP_TITLE"]}
+					text={STRINGS['OTP_FORM.OTP_TITLE']}
 					iconId="OTP_CODE"
-					iconPath={ICONS["OTP_CODE"]}
+					iconPath={ICONS['OTP_CODE']}
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">
 						<EditWrapper stringId="OTP_FORM.OTP_FORM_TITLE">
-              {STRINGS["OTP_FORM.OTP_FORM_TITLE"]}
-					  </EditWrapper>
+							{STRINGS['OTP_FORM.OTP_FORM_TITLE']}
+						</EditWrapper>
 					</span>
 					{onClickHelp && (
 						<ActionNotification
 							stringId="NEED_HELP_TEXT"
-							text={STRINGS["NEED_HELP_TEXT"]}
+							text={STRINGS['NEED_HELP_TEXT']}
 							onClick={onClickHelp}
 							iconId="BLUE_QUESTION"
-							iconPath={ICONS["BLUE_QUESTION"]}
+							iconPath={ICONS['BLUE_QUESTION']}
 							status="information"
 						/>
 					)}
@@ -92,7 +95,7 @@ class Form extends Component {
 					</div>
 					<EditWrapper stringId="OTP_FORM.OTP_BUTTON" />
 					<Button
-						label={STRINGS["OTP_FORM.OTP_BUTTON"]}
+						label={STRINGS['OTP_FORM.OTP_BUTTON']}
 						disabled={pristine || submitting || !valid}
 					/>
 				</form>
@@ -102,5 +105,5 @@ class Form extends Component {
 }
 
 export default reduxForm({
-	form: 'OtpForm'
+	form: 'OtpForm',
 })(withConfig(Form));

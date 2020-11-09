@@ -13,11 +13,11 @@ export const renderInputField = ({
 	type,
 	meta: { touched, error, warning },
 	prefix,
-    placeholder,
-    className,
-	disabled = false
+	placeholder,
+	className,
+	disabled = false,
 }) => (
-	<div className={classname("input_field", className)}>
+	<div className={classname('input_field', className)}>
 		{label && <label>{label}</label>}
 		<div>
 			<Input
@@ -41,25 +41,25 @@ export const renderTextAreaField = ({
 	meta: { touched, error, warning },
 	prefix,
 	placeholder,
-	disabled = false
+	disabled = false,
 }) => (
-		<div className="input_field">
-			{label && <label>{label}</label>}
-			<div>
-				<TextArea
-					rows={3}
-					placeholder={placeholder}
-					prefix={prefix}
-					{...input}
-					type={type}
-					disabled={disabled}
-				/>
-				{touched &&
-					((error && <span className="red-text">{error}</span>) ||
-						(warning && <span className="red-text">{warning}</span>))}
-			</div>
+	<div className="input_field">
+		{label && <label>{label}</label>}
+		<div>
+			<TextArea
+				rows={3}
+				placeholder={placeholder}
+				prefix={prefix}
+				{...input}
+				type={type}
+				disabled={disabled}
+			/>
+			{touched &&
+				((error && <span className="red-text">{error}</span>) ||
+					(warning && <span className="red-text">{warning}</span>))}
 		</div>
-    );
+	</div>
+);
 
 export const renderNumberField = ({
 	input,
@@ -78,16 +78,15 @@ export const renderNumberField = ({
 	</div>
 );
 
-const renderDefaultOptions = (options) => (
+const renderDefaultOptions = (options) =>
 	options.map((option, index) => {
-		let value = (!option.value && option.value !== '') ? option : option.value;
+		let value = !option.value && option.value !== '' ? option : option.value;
 		return (
 			<Select.Option value={value} key={index}>
 				{option.label || option}
 			</Select.Option>
-		)
-	})
-);
+		);
+	});
 
 export const renderSelectField = ({
 	input: { onBlur, ...inputProps },
@@ -100,39 +99,40 @@ export const renderSelectField = ({
 	...rest
 }) => {
 	let value = inputProps.value || '';
-	if ((multiSelect || rest.mode === 'tags') && typeof inputProps.value === 'string') {
-		value = inputProps.value
-			? inputProps.value.split(',')
-			: [];
+	if (
+		(multiSelect || rest.mode === 'tags') &&
+		typeof inputProps.value === 'string'
+	) {
+		value = inputProps.value ? inputProps.value.split(',') : [];
 	}
 	return (
-	<div className="input_field">
-		{label && <label>{label}</label>}
-		<div>
-			<Select
-				mode={multiSelect ? 'multiple' : 'default'}
-				{...inputProps}
-				value={value}
-				placeholder={label}
-				disabled={disabled}
-				{...rest}
-			>
-				{renderOptions(options)}
-			</Select>
-			{touched &&
-				((error && <span className="red-text">{error}</span>) ||
-					(warning && <span className="red-text">{warning}</span>))}
+		<div className="input_field">
+			{label && <label>{label}</label>}
+			<div>
+				<Select
+					mode={multiSelect ? 'multiple' : 'default'}
+					{...inputProps}
+					value={value}
+					placeholder={label}
+					disabled={disabled}
+					{...rest}
+				>
+					{renderOptions(options)}
+				</Select>
+				{touched &&
+					((error && <span className="red-text">{error}</span>) ||
+						(warning && <span className="red-text">{warning}</span>))}
+			</div>
 		</div>
-	</div>
-);
-			}
+	);
+};
 
 export const renderDateField = ({
 	input,
 	label,
 	placeholder,
 	meta: { touched, error, warning },
-	disabled = false
+	disabled = false,
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
@@ -156,7 +156,7 @@ export const renderRangeField = ({
 	input,
 	label,
 	meta: { touched, error, warning },
-	disabled = false
+	disabled = false,
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
@@ -166,7 +166,7 @@ export const renderRangeField = ({
 				disabled={disabled}
 				defaultValue={[
 					moment(input.value[0], dateFormat),
-					moment(input.value[1], dateFormat)
+					moment(input.value[1], dateFormat),
 				]}
 				format={dateFormat}
 			/>
@@ -181,14 +181,12 @@ export const renderCheckField = ({
 	input,
 	label,
 	meta: { touched, error, warning },
-	disabled = false
+	disabled = false,
 }) => (
 	<div className="input_field">
 		<div className="check_field">
-			<Checkbox
-				{...input}
-				disabled={disabled}
-			>{label}
+			<Checkbox {...input} disabled={disabled}>
+				{label}
 			</Checkbox>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||

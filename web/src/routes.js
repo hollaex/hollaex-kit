@@ -52,7 +52,7 @@ import {
 	MoveToDash,
 	General,
 	Tiers,
-	Roles
+	Roles,
 } from './containers';
 
 import store from './store';
@@ -64,9 +64,13 @@ import {
 	getToken,
 	removeToken,
 	getTokenTimestamp,
-	isAdmin
+	isAdmin,
 } from './utils/token';
-import { getLanguage, getInterfaceLanguage, getLanguageFromLocal } from './utils/string';
+import {
+	getLanguage,
+	getInterfaceLanguage,
+	getLanguageFromLocal,
+} from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 
@@ -99,21 +103,24 @@ if (token) {
 function requireAuth(nextState, replace) {
 	const initialized = getExchangeInitialized();
 	const setup_completed = getSetupCompleted();
-	if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
+	if (
+		initialized === 'false' ||
+		(typeof initialized === 'boolean' && !initialized)
+	) {
 		replace({
-			pathname: '/init'
+			pathname: '/init',
 		});
 	} else if (!isLoggedIn() && setup_completed === 'false') {
 		replace({
-			pathname: '/admin-login'
+			pathname: '/admin-login',
 		});
 	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
 		replace({
-			pathname: '/admin'
+			pathname: '/admin',
 		});
 	} else if (!isLoggedIn()) {
 		replace({
-			pathname: '/login'
+			pathname: '/login',
 		});
 	}
 }
@@ -121,21 +128,24 @@ function requireAuth(nextState, replace) {
 function loggedIn(nextState, replace) {
 	const initialized = getExchangeInitialized();
 	const setup_completed = getSetupCompleted();
-	if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
+	if (
+		initialized === 'false' ||
+		(typeof initialized === 'boolean' && !initialized)
+	) {
 		replace({
-			pathname: '/init'
+			pathname: '/init',
 		});
 	} else if (!isLoggedIn() && setup_completed === 'false') {
 		replace({
-			pathname: '/admin-login'
+			pathname: '/admin-login',
 		});
 	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
 		replace({
-			pathname: '/admin'
+			pathname: '/admin',
 		});
 	} else if (isLoggedIn()) {
 		replace({
-			pathname: '/account'
+			pathname: '/account',
 		});
 	}
 }
@@ -143,10 +153,10 @@ function loggedIn(nextState, replace) {
 const checkLanding = (nextState, replace) => {
 	if (!DISPLAY_LANDING) {
 		replace({
-			pathname: '/login'
+			pathname: '/login',
 		});
 	}
-}
+};
 
 const logOutUser = () => {
 	if (getToken()) {
@@ -157,7 +167,7 @@ const logOutUser = () => {
 const setLogout = (nextState, replace) => {
 	removeToken();
 	replace({
-		pathname: '/login'
+		pathname: '/login',
 	});
 };
 
@@ -173,11 +183,11 @@ const NotFound = ({ router }) => {
 };
 
 const noAuthRoutesCommonProps = {
-	onEnter: loggedIn
+	onEnter: loggedIn,
 };
 
 const noLoggedUserCommonProps = {
-	onEnter: logOutUser
+	onEnter: logOutUser,
 };
 
 function withAdminProps(Component, key) {
@@ -189,14 +199,14 @@ function withAdminProps(Component, key) {
 		}
 		return 0;
 	});
-	return function(matchProps) {
+	return function (matchProps) {
 		return <Component {...adminProps} {...matchProps} />;
 	};
 }
 
 export default (
 	<Router history={browserHistory}>
-		<Route path="/" name="Home" component={Home} onEnter={checkLanding}/>
+		<Route path="/" name="Home" component={Home} onEnter={checkLanding} />
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			{isMobile ? (

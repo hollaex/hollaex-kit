@@ -7,7 +7,7 @@ import { getErrorLocalized } from '../../utils/errors';
 const createForm = (formName, otherProps = {}) => {
 	const formProperties = {
 		form: formName,
-		...otherProps
+		...otherProps,
 	};
 
 	const Form = ({
@@ -19,7 +19,7 @@ const createForm = (formName, otherProps = {}) => {
 		formFields = {},
 		buttonLabel,
 		extraButtonLabel = '',
-		extraButtonOnClick = ''
+		extraButtonOnClick = '',
 	}) => (
 		<form onSubmit={handleSubmit} className="w-100">
 			<div className="w-100">
@@ -31,16 +31,16 @@ const createForm = (formName, otherProps = {}) => {
 				)}
 			</div>
 			<div className="w-100 buttons-wrapper d-flex">
-				{extraButtonLabel &&
-					extraButtonOnClick && (
-						<Button
-							label={extraButtonLabel}
-							onClick={extraButtonOnClick}
-							type="html"
-						/>
-					)}
-				{extraButtonLabel &&
-					extraButtonOnClick && <div className="separator" />}
+				{extraButtonLabel && extraButtonOnClick && (
+					<Button
+						label={extraButtonLabel}
+						onClick={extraButtonOnClick}
+						type="html"
+					/>
+				)}
+				{extraButtonLabel && extraButtonOnClick && (
+					<div className="separator" />
+				)}
 				<Button
 					label={buttonLabel}
 					disabled={pristine || submitting || !valid}

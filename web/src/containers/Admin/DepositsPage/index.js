@@ -22,7 +22,7 @@ const DepositsPage = ({
 	if (!noQueryParams) {
 		if (currency) {
 			queryParams.currency = currency;
-		} 
+		}
 		// else if(currencies[0]){
 		// 	queryParams.currency = currencies[0];
 		// }
@@ -57,7 +57,7 @@ const DepositsPage = ({
 							// currency: currencies[0] ? currencies[0] : BASE_CURRENCY,
 							status: 'false',
 							dismissed: 'false',
-							rejected: 'false'
+							rejected: 'false',
 						}}
 					/>
 				</TabPane>
@@ -67,14 +67,14 @@ const DepositsPage = ({
 };
 
 const mapStateToProps = (state) => ({
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 DepositsPage.defaultProps = {
 	currency: '',
 	type: '',
 	noQueryParams: false,
-	showFilters: false
+	showFilters: false,
 };
 
 export default connect(mapStateToProps)(DepositsPage);

@@ -15,29 +15,29 @@ const FORM_FIELDS = {
 		label: 'Type',
 		options: [
 			{ label: 'National Id', value: 'id' },
-			{ label: 'Passport', value: 'passport' }
-		]
+			{ label: 'Passport', value: 'passport' },
+		],
 	},
 	number: {
 		type: 'text',
 		label: 'Document number',
-		validate: []
+		validate: [],
 	},
 	front: {
 		type: 'file',
 		label: 'Front',
-		validate: []
+		validate: [],
 	},
 	back: {
 		type: 'file',
 		label: 'Back',
-		validate: []
+		validate: [],
 	},
 	proof_of_residency: {
 		type: 'file',
 		label: 'Proof of Residence',
-		validate: []
-	}
+		validate: [],
+	},
 };
 
 class UploadIds extends Component {

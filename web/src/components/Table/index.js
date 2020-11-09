@@ -13,13 +13,18 @@ class Table extends Component {
 		page: 0,
 		// pageSize: 10,
 		data: [],
-		headers: []
+		headers: [],
 	};
 
 	componentDidMount() {
 		// this.setPageSize(this.props.pageSize);
 		if (this.props.jumpToPage) {
-			this.goToPage(this.props.jumpToPage, this.props.data, this.props.headers, this.props.count);
+			this.goToPage(
+				this.props.jumpToPage,
+				this.props.data,
+				this.props.headers,
+				this.props.count
+			);
 		} else {
 			this.goToPage(0, this.props.data, this.props.headers, this.props.count);
 		}
@@ -36,10 +41,11 @@ class Table extends Component {
 				nextProps.headers,
 				nextProps.count
 			);
-		} else if (JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)) {
+		} else if (
+			JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)
+		) {
 			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
 		}
-
 	}
 
 	// setPageSize = (pageSize = 10) => {
@@ -83,14 +89,17 @@ class Table extends Component {
 		if (count === 0) {
 			return (
 				<div className="no-data d-flex justify-content-center align-items-center">
-					<EditWrapper stringId="NO_DATA">
-            {STRINGS["NO_DATA"]}
-					</EditWrapper>
+					<EditWrapper stringId="NO_DATA">{STRINGS['NO_DATA']}</EditWrapper>
 				</div>
 			);
 		}
 
-		const { withIcon, displayPaginator, pageSize, cancelDelayData } = this.props;
+		const {
+			withIcon,
+			displayPaginator,
+			pageSize,
+			cancelDelayData,
+		} = this.props;
 		const { data, page, headers } = this.state;
 
 		return (
@@ -98,7 +107,12 @@ class Table extends Component {
 				<div className="table-content">
 					<table className={classnames('table-wrapper')}>
 						<TableHeader headers={headers} />
-						<TableBody cancelDelayData={cancelDelayData} headers={headers} data={data} withIcon={withIcon} />
+						<TableBody
+							cancelDelayData={cancelDelayData}
+							headers={headers}
+							data={data}
+							withIcon={withIcon}
+						/>
 					</table>
 				</div>
 				{displayPaginator && (
@@ -126,7 +140,7 @@ Table.defaultProps = {
 	cancelDelayData: [],
 	handleNext: () => {},
 	handlePrevious: () => {},
-	jumpToPage: 0
+	jumpToPage: 0,
 };
 
 export default Table;

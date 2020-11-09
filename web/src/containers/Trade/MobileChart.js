@@ -12,30 +12,30 @@ class MobileChart extends Component {
 	state = {
 		chartWidth: 0,
 		chartHeight: 0,
-	  	isMarketSelectorOpen: false,
+		isMarketSelectorOpen: false,
 	};
 
 	setChartRef = (el) => {
 		if (el) {
 			this.setState({
 				chartHeight: el.offsetHeight,
-				chartWidth: el.offsetWidth
+				chartWidth: el.offsetWidth,
 			});
 		}
 	};
 
 	toggleMarketSelector = () => {
 		this.setState((prevState) => ({
-		  ...prevState,
-          isMarketSelectorOpen: !prevState.isMarketSelectorOpen,
-        }))
-	}
+			...prevState,
+			isMarketSelectorOpen: !prevState.isMarketSelectorOpen,
+		}));
+	};
 
 	closeAddTabMenu = () => {
 		this.setState({
-		  isMarketSelectorOpen: false
-		})
-	}
+			isMarketSelectorOpen: false,
+		});
+	};
 
 	render() {
 		const {
@@ -46,7 +46,7 @@ class MobileChart extends Component {
 			goToPair,
 			symbol,
 			constants,
-          	goToMarkets
+			goToMarkets,
 		} = this.props;
 		const { chartHeight, isMarketSelectorOpen } = this.state;
 		const pairValue = pair || 'xht-usdt';
@@ -66,30 +66,33 @@ class MobileChart extends Component {
 							{/* {STRINGS["CHART"]} */}
 							<div
 								className={classnames(
-                                  'app_bar-pair-content',
-                                  'd-flex',
-                                  'justify-content-between',
-                                  'px-2',
-                                )}
+									'app_bar-pair-content',
+									'd-flex',
+									'justify-content-between',
+									'px-2'
+								)}
 							>
 								<div
 									className="d-flex align-items-center"
 									onClick={this.toggleMarketSelector}
 								>
 									<span className="pt-2">{pair}</span>
-									<i className={classnames('arrow small ml-3', (isMarketSelectorOpen ? 'up' : 'down'))}/>
+									<i
+										className={classnames(
+											'arrow small ml-3',
+											isMarketSelectorOpen ? 'up' : 'down'
+										)}
+									/>
 								</div>
-							  	{
-							  		isMarketSelectorOpen && (
-										<MarketSelector
-											triggerId="market-selector"
-											wrapperClassName="mobile-chart__market-selector-wrapper"
-											onViewMarketsClick={goToMarkets}
-											closeAddTabMenu={this.closeAddTabMenu}
-											addTradePairTab={goToPair}
-										/>
-									)
-								}
+								{isMarketSelectorOpen && (
+									<MarketSelector
+										triggerId="market-selector"
+										wrapperClassName="mobile-chart__market-selector-wrapper"
+										onViewMarketsClick={goToMarkets}
+										closeAddTabMenu={this.closeAddTabMenu}
+										addTradePairTab={goToPair}
+									/>
+								)}
 							</div>
 						</div>
 					}
@@ -97,21 +100,26 @@ class MobileChart extends Component {
 					className="f-1 overflow-x"
 					alignChildTitle={true}
 					tailHead={
-						constants.broker_enabled
-							? <div className="quick-trade-tab p-1 mt-1">
+						constants.broker_enabled ? (
+							<div className="quick-trade-tab p-1 mt-1">
 								<Link to={`/quick-trade/${pairValue}`}>
-									{STRINGS["QUICK_TRADE"]}
+									{STRINGS['QUICK_TRADE']}
 								</Link>
 							</div>
-							: <Fragment />
+						) : (
+							<Fragment />
+						)
 					}
 				>
-					{pair &&
-						chartHeight > 0 && (
-							<TVChartContainer activeTheme={activeTheme} symbol={symbol} pairData={pairData} />
-						)}
+					{pair && chartHeight > 0 && (
+						<TVChartContainer
+							activeTheme={activeTheme}
+							symbol={symbol}
+							pairData={pairData}
+						/>
+					)}
 				</TradeBlock>
-				<TradeBlock title={STRINGS["PUBLIC_SALES"]} className="f-1">
+				<TradeBlock title={STRINGS['PUBLIC_SALES']} className="f-1">
 					<TradeHistory language={activeLanguage} />
 				</TradeBlock>
 			</div>
@@ -120,7 +128,7 @@ class MobileChart extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(MobileChart);

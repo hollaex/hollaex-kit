@@ -19,11 +19,10 @@ $sections-font--color: $colors-deactivate-color2;
 }
 
 .wallet-wrapper {
-	
 	.donut-container {
 		height: 18rem;
 		.donut-label-pair {
-			font-size: .8rem;
+			font-size: 0.8rem;
 		}
 	}
 }
@@ -61,8 +60,8 @@ $sections-font--color: $colors-deactivate-color2;
 }
 
 .wallet_link {
-	margin: .5rem 0;
-	padding: 0 .5rem;
+	margin: 0.5rem 0;
+	padding: 0 0.5rem;
 	text-transform: uppercase;
 }
 
@@ -72,7 +71,11 @@ $sections-font--color: $colors-deactivate-color2;
 		.accordion_section_title
 		.wallet_section-title {
 		&:after {
-			@include css-triangle($colors-deactivate-color2, 'right', $accordion_arrow-size);
+			@include css-triangle(
+				$colors-deactivate-color2,
+				'right',
+				$accordion_arrow-size
+			);
 			right: -$accordion_arrow-size;
 			top: calc(50% - #{$accordion_arrow-size});
 		}
@@ -96,7 +99,11 @@ $sections-font--color: $colors-deactivate-color2;
 		.accordion_section_title
 		.wallet_section-title {
 		&:after {
-			@include css-triangle($colors-deactivate-color2, 'left', $accordion_arrow-size);
+			@include css-triangle(
+				$colors-deactivate-color2,
+				'left',
+				$accordion_arrow-size
+			);
 			left: -$accordion_arrow-size;
 			top: calc(50% - #{$accordion_arrow-size});
 		}

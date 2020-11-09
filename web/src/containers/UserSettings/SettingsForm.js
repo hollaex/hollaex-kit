@@ -7,7 +7,7 @@ import {
 	required,
 	minValue,
 	maxValue,
-	step
+	step,
 } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
@@ -21,8 +21,8 @@ export const generateFormValues = () => ({
 	theme: {
 		type: 'select',
 		stringId: 'SETTINGS_THEME_LABEL',
-		label: STRINGS["SETTINGS_THEME_LABEL"],
-		options: STRINGS["SETTINGS_THEME_OPTIONS"]
+		label: STRINGS['SETTINGS_THEME_LABEL'],
+		options: STRINGS['SETTINGS_THEME_OPTIONS'],
 	},
 	order_book_levels: {
 		type: 'number',
@@ -31,13 +31,13 @@ export const generateFormValues = () => ({
 			required,
 			minValue(orderbook_level_min),
 			maxValue(orderbook_level_max),
-			step(orderbook_level_step)
+			step(orderbook_level_step),
 		],
-		label: STRINGS["USER_SETTINGS.ORDERBOOK_LEVEL"],
+		label: STRINGS['USER_SETTINGS.ORDERBOOK_LEVEL'],
 		step: orderbook_level_step,
 		min: orderbook_level_min,
 		max: orderbook_level_max,
-		fullWidth: isMobile
+		fullWidth: isMobile,
 		// notification: {
 		// 		status: 'information',
 		// 		iconPath: ICONS.BLUE_PLUS,
@@ -45,7 +45,7 @@ export const generateFormValues = () => ({
 		// 		useSvg: true,
 		// 		onClick: calculateMin
 		// 	}
-	}
+	},
 });
 
 class Form extends Component {
@@ -65,7 +65,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			formFields
+			formFields,
 		} = this.props;
 		return (
 			<form onSubmit={handleSubmit}>
@@ -75,7 +75,7 @@ class Form extends Component {
 				)}
 				<EditWrapper stringId="SETTING_BUTTON" />
 				<Button
-					label={STRINGS["SETTING_BUTTON"]}
+					label={STRINGS['SETTING_BUTTON']}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>
@@ -84,5 +84,5 @@ class Form extends Component {
 }
 
 export default reduxForm({
-	form: 'SettingsForm'
+	form: 'SettingsForm',
 })(Form);

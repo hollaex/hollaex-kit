@@ -8,7 +8,7 @@ const renderMobileTab = ({
 	className = '',
 	active = false,
 	notifications = '',
-	onClick
+	onClick,
 }) => {
 	return (
 		<div
@@ -35,7 +35,7 @@ export const MobileBarTabs = ({
 	className,
 	activeTab,
 	setActiveTab,
-	renderTab = renderMobileTab
+	renderTab = renderMobileTab,
 }) => {
 	return (
 		<MobileBarWrapper className="d-flex justify-content-between">
@@ -43,7 +43,7 @@ export const MobileBarTabs = ({
 				const tabProps = {
 					key: `tab_item-${index}`,
 					active: index === activeTab,
-					...tab
+					...tab,
 				};
 				if (setActiveTab) {
 					tabProps.onClick = () => setActiveTab(index);
@@ -55,5 +55,5 @@ export const MobileBarTabs = ({
 };
 
 MobileBarWrapper.defaultProps = {
-	tabs: []
+	tabs: [],
 };

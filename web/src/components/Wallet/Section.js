@@ -1,19 +1,23 @@
 import React from 'react';
 import math from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
-import { BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+	BASE_CURRENCY,
+	CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA,
+} from '../../config/constants';
 import { formatToCurrency } from '../../utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	const ordersText =
 		ordersOfSymbol > 1
-			? STRINGS["WALLET.ORDERS_PLURAL"]
-			: STRINGS["WALLET.ORDERS_SINGULAR"];
+			? STRINGS['WALLET.ORDERS_PLURAL']
+			: STRINGS['WALLET.ORDERS_SINGULAR'];
 	const symbolComponent = <span className="text-uppercase">{name}</span>;
 	return (
 		<div>
 			{STRINGS.formatString(
-				STRINGS["WALLET.HOLD_ORDERS"],
+				STRINGS['WALLET.HOLD_ORDERS'],
 				ordersOfSymbol,
 				ordersText,
 				hold,
@@ -47,7 +51,7 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 		<div className="wallet_section-content-wrapper">
 			<div className="wallet_section-content d-flex flex-column">
 				<div className="d-flex flex-column">
-					<div>{STRINGS["WALLET.TOTAL_ASSETS"]}:</div>
+					<div>{STRINGS['WALLET.TOTAL_ASSETS']}:</div>
 					<div>
 						{STRINGS.formatString(
 							amountFormat,
@@ -65,7 +69,7 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 					/>
 				)}
 				<div className="d-flex flex-column">
-					<div>{STRINGS["WALLET.AVAILABLE_WITHDRAWAL"]}:</div>
+					<div>{STRINGS['WALLET.AVAILABLE_WITHDRAWAL']}:</div>
 					<div>
 						{STRINGS.formatString(
 							amountFormat,

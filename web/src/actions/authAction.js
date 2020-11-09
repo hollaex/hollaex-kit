@@ -19,13 +19,13 @@ export function checkVerificationCode(data) {
 			.then((response) => {
 				dispatch({
 					type: 'CHECK_VERIFICATION_CODE_FULFILLED',
-					payload: response.data
+					payload: response.data,
 				});
 			})
 			.catch((error) => {
 				dispatch({
 					type: 'CHECK_VERIFICATION_CODE_REJECTED',
-					payload: error.response.data
+					payload: error.response.data,
 				});
 			});
 	};
@@ -39,13 +39,13 @@ export function verifyVerificationCode(data) {
 			.then((response) => {
 				dispatch({
 					type: 'VERIFY_VERIFICATION_CODE_FULFILLED',
-					payload: response.data
+					payload: response.data,
 				});
 			})
 			.catch((error) => {
 				dispatch({
 					type: 'VERIFY_VERIFICATION_CODE_REJECTED',
-					payload: error.response.data
+					payload: error.response.data,
 				});
 			});
 	};
@@ -53,19 +53,19 @@ export function verifyVerificationCode(data) {
 
 export const performLogin = (values) =>
 	axios.post('/login', values).then((res) => {
-			storeLoginResult(res.data.token);
+		storeLoginResult(res.data.token);
 		return res;
 	});
 
-export const storeLoginResult = token => {
+export const storeLoginResult = (token) => {
 	if (token) {
 		setTokenInApp(token, true);
 		store.dispatch({
 			type: 'VERIFY_TOKEN_FULFILLED',
-			payload: token
+			payload: token,
 		});
 	}
-}
+};
 
 export const performSignup = (values) => axios.post('/signup', values);
 
@@ -90,14 +90,14 @@ export function verifyToken(token) {
 			method: 'GET',
 			url: '/verify-token',
 			headers: {
-				Authorization: `Bearer ${token}`
-			}
+				Authorization: `Bearer ${token}`,
+			},
 		})
 			.then((response) => {
 				setTokenInApp(token);
 				dispatch({
 					type: 'VERIFY_TOKEN_FULFILLED',
-					payload: token
+					payload: token,
 				});
 			})
 			.catch((error) => {
@@ -106,7 +106,7 @@ export function verifyToken(token) {
 					: 'Invalid token';
 				logout(message)(dispatch);
 				dispatch({
-					type: 'VERIFY_TOKEN_REJECTED'
+					type: 'VERIFY_TOKEN_REJECTED',
 				});
 				cleatTokenInApp(browserHistory, '/login');
 			});
@@ -117,8 +117,8 @@ export const logout = (message = '') => (dispatch) => {
 	dispatch({
 		type: 'LOGOUT',
 		payload: {
-			message
-		}
+			message,
+		},
 	});
 	cleatTokenInApp(browserHistory, message ? '/login' : '/');
 };
@@ -126,15 +126,15 @@ export const logout = (message = '') => (dispatch) => {
 export const setLogoutMessage = (message = '') => ({
 	type: 'SET_LOGOUT_MESSAGE',
 	payload: {
-		message
-	}
+		message,
+	},
 });
 
 export function loadToken() {
 	let token = getToken();
 	return {
 		type: 'LOAD_TOKEN',
-		payload: token
+		payload: token,
 	};
 }
 
@@ -148,7 +148,8 @@ export const requestResetPassword = (values) => {
 
 export const resetPassword = (data) => axios.post('/reset-password', data);
 
-export const storeAdminKey = (data) => axios.put('/admin/network-credentials', data);
+export const storeAdminKey = (data) =>
+	axios.put('/admin/network-credentials', data);
 
 export const adminSignup = (data) => axios.post('/admin/signup', data);
 

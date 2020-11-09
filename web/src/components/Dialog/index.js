@@ -5,10 +5,10 @@ import DesktopDialog from './DesktopDialog';
 
 const Dialog = (props) => {
 	if (isMobile) {
-		return <MobileDialog {...props} />
+		return <MobileDialog {...props} />;
 	} else {
-		return <DesktopDialog {...props} />
+		return <DesktopDialog {...props} />;
 	}
-}
+};
 
 export default Dialog;

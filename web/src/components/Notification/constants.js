@@ -49,9 +49,9 @@ const generateCryptoDepositTexts = (strings, status, currency, coins) => {
 					fullname
 					// name
 				)
-				.join('')
+				.join(''),
 		],
-		INFORMATION_COMPLETE: []
+		INFORMATION_COMPLETE: [],
 	};
 };
 
@@ -69,6 +69,6 @@ export const getDepositTexts = (currency, coins = {}, status = false) => {
 		subtitle: texts.SUBTITLE,
 		information: status
 			? texts.INFORMATION_COMPLETE
-			: texts.INFORMATION_PENDING
+			: texts.INFORMATION_PENDING,
 	};
 };

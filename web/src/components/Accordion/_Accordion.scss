@@ -18,80 +18,79 @@ $main-text--color: $colors-deactivate-color2;
 		.accordion_section {
 			.accordion_section_title {
 				font-size: 1.75rem;
-				}
-				.accordion_section_content{
-					font-size: $font-size-mobile-txt !important;
-				}
 			}
-
-			.action_notification-svg {
-				svg {
-					width: 1.75rem !important;
-					height: 1.75rem !important;
-				}
-			}
-
 			.accordion_section_content {
-				overflow-x: auto;
-				font-size: 1.2rem;
-				.information_section {
-					font-size: 1.2rem;
-				}
-				.field-wrapper {
-					font-size: 1.2rem;
-				}
-				table {
-					tbody {
-						.table-row {
-							font-size: 1.25rem;
+				font-size: $font-size-mobile-txt !important;
+			}
+		}
 
-							.td-levelball {
-								.td-levelball-content {
-									width: 2.5rem;
-									height: 2.5rem;
-								}
+		.action_notification-svg {
+			svg {
+				width: 1.75rem !important;
+				height: 1.75rem !important;
+			}
+		}
+
+		.accordion_section_content {
+			overflow-x: auto;
+			font-size: 1.2rem;
+			.information_section {
+				font-size: 1.2rem;
+			}
+			.field-wrapper {
+				font-size: 1.2rem;
+			}
+			table {
+				tbody {
+					.table-row {
+						font-size: 1.25rem;
+
+						.td-levelball {
+							.td-levelball-content {
+								width: 2.5rem;
+								height: 2.5rem;
 							}
 						}
-						td:not(:first-child) {
-							padding: 1.5rem 0.25rem;
-						}
+					}
+					td:not(:first-child) {
+						padding: 1.5rem 0.25rem;
 					}
 				}
 			}
 		}
-		.direction_ltr {
-			.accordion_wrapper .accordion_section {
-				.accordion_section_content_text {
-					&.with_arrow:after {
-						border: solid $trade-tabs-inactive-color !important;
-						border-width: 1px 0 0 1px !important;
-						display: inline-block !important;
-						padding: 3px !important;
-						transform: rotate(131deg)!important;
-						content: '';
-						margin-right: -0.6rem;
-						position: absolute;
-						right: -$accordion_arrow-size;
-						top: calc(50% - 0.3rem);
-					}
-				}
-				.accordion_section_title {
-					&.accordion_section--open .accordion_section_content_text:after {
-						transform: rotate(-135deg)!important;
-						right: -1.1rem;
-						top: calc(50% - 0.38rem);
-					}
-				}
-		
-		
-				&.disabled {
-					.accordion_section_content_text:after {
-						border-left-color: $colors-deactivate-color2;
-					}
+	}
+	.direction_ltr {
+		.accordion_wrapper .accordion_section {
+			.accordion_section_content_text {
+				&.with_arrow:after {
+					border: solid $trade-tabs-inactive-color !important;
+					border-width: 1px 0 0 1px !important;
+					display: inline-block !important;
+					padding: 3px !important;
+					transform: rotate(131deg) !important;
+					content: '';
+					margin-right: -0.6rem;
+					position: absolute;
+					right: -$accordion_arrow-size;
+					top: calc(50% - 0.3rem);
 				}
 			}
-		}		
+			.accordion_section_title {
+				&.accordion_section--open .accordion_section_content_text:after {
+					transform: rotate(-135deg) !important;
+					right: -1.1rem;
+					top: calc(50% - 0.38rem);
+				}
+			}
+
+			&.disabled {
+				.accordion_section_content_text:after {
+					border-left-color: $colors-deactivate-color2;
+				}
+			}
+		}
 	}
+}
 .accordion_wrapper .accordion_section {
 	border-top: $accordion-border;
 	font-size: $title--font-size;
@@ -111,14 +110,14 @@ $main-text--color: $colors-deactivate-color2;
 			svg path {
 				fill: transparent;
 				stroke: $sidebar-color;
-			}				
+			}
 		}
 
 		&.accordion_section--open {
 			.accordion_section_content {
 				margin-bottom: $accordion_content-margin-bottom;
 			}
-	
+
 			.accordion_section_content_text {
 				color: $colors-main-black;
 				&.with_arrow:after {
@@ -130,7 +129,7 @@ $main-text--color: $colors-deactivate-color2;
 				svg path {
 					fill: $sidebar-color-active;
 					stroke: $sidebar-color-active;
-				}				
+				}
 			}
 			.wallet_section-title-amount {
 				color: $colors-main-black !important;
@@ -173,7 +172,7 @@ $main-text--color: $colors-deactivate-color2;
 				border-width: 2px 0 0 2px !important;
 				display: inline-block !important;
 				padding: 3px !important;
-				transform: rotate(131deg)!important;
+				transform: rotate(131deg) !important;
 				content: '';
 				margin-right: -0.6rem;
 				position: absolute;
@@ -183,10 +182,9 @@ $main-text--color: $colors-deactivate-color2;
 		}
 		.accordion_section_title {
 			&.accordion_section--open .accordion_section_content_text:after {
-				transform: rotate(-135deg)!important;
+				transform: rotate(-135deg) !important;
 			}
 		}
-
 
 		&.disabled {
 			.accordion_section_content_text:after {
@@ -200,11 +198,11 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_wrapper .accordion_section {
 		.accordion_section_content_text {
 			&.with_arrow:after {
-				border: solid $trade-tabs-inactive-color ;
+				border: solid $trade-tabs-inactive-color;
 				border-width: 2px 0 0 2px !important;
 				display: inline-block !important;
 				padding: 3px !important;
-				transform: rotate(-50deg)!important;
+				transform: rotate(-50deg) !important;
 				content: '';
 				left: -$accordion_arrow-size;
 				top: calc(50% - 0.3rem);
@@ -212,7 +210,7 @@ $main-text--color: $colors-deactivate-color2;
 		}
 		.accordion_section_title {
 			&.accordion_section--open .accordion_section_content_text:after {
-				transform: rotate(-135deg)!important;
+				transform: rotate(-135deg) !important;
 				top: calc(50% - 0.4rem);
 			}
 			.sidebar_hub-section-icon {
