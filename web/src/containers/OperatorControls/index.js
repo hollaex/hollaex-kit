@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import debounce from 'lodash.debounce';
 import classnames from 'classnames';
@@ -7,7 +8,7 @@ import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input, Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SettingFilled } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -21,6 +22,7 @@ import UploadIcon from './components/UploadIcon';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
 import { pushTempContent, getTempLanguageKey, filterOverwrites } from 'utils/string';
+import { filterThemes } from 'utils/color';
 
 class OperatorControls extends Component {
 
@@ -264,14 +266,18 @@ class OperatorControls extends Component {
     const {
       overwrites,
       iconsOverwrites: icons,
-      colorOverwrites: color,
+      colorOverwrites,
       languageKeys
     } = this.state;
 
+    const { defaults } = this.props;
+
     const valid_languages = languageKeys.join();
-    const strings = filterOverwrites(overwrites)
+    const strings = filterOverwrites(overwrites);
+    const color = filterThemes(colorOverwrites);
 
     const configs = {
+      defaults,
       color,
       strings,
       icons,
@@ -418,11 +424,15 @@ class OperatorControls extends Component {
     })
   }
 
-  removeLanguage = (keys = []) => {
+  confirmStringSettings = (keys = [], language) => {
+    const { updateDefaults } = this.props;
     this.setState(prevState => ({
       ...prevState,
       languageKeys: prevState.languageKeys.filter((key) => !keys.includes(key))
-    }), () => this.closeStringSettingsModal(true));
+    }), () => {
+      updateDefaults({ language });
+      this.closeStringSettingsModal(true)
+    });
   }
 
   openExitConfirmationModal = () => {
@@ -516,8 +526,9 @@ class OperatorControls extends Component {
     })
   }
 
-  removeThemes = (keys = []) => {
+  confirmThemeSettings = (keys = [], theme) => {
     const { colorOverwrites: prevColorOverwrites } = this.state;
+    const { removeTheme, updateDefaults } = this.props;
     const colorOverwrites = {}
 
     Object.entries(prevColorOverwrites).forEach(([themeKey, theme]) => {
@@ -528,7 +539,11 @@ class OperatorControls extends Component {
 
     this.setState({
       colorOverwrites,
-    }, this.closeThemeSettings)
+    }, () => {
+      removeTheme(keys);
+      updateDefaults({ theme });
+      this.closeThemeSettings();
+    })
   }
 
   openAddTheme = (selectedTheme = '') => {
@@ -574,14 +589,36 @@ class OperatorControls extends Component {
       <div
         className={classnames("operator-controls__wrapper", { open: editMode })}
       >
-        <div
-          className="operator-controls__button"
-          onClick={this.toggleEditMode}
-        >
-          <EditFilled />
-          <span className="pl-1">
+        <div className="operator-controls__buttons-wrapper">
+          <div
+            className="operator-controls__button"
+            onClick={this.toggleEditMode}
+          >
+            <EditFilled />
+            <span className="pl-1">
             {`${ editMode ? 'Exit' : 'Enter' } edit mode`}
           </span>
+          </div>
+          <div className={classnames("operator-controls__button", { disabled: editMode })}>
+            {!editMode && (
+              <Link
+                to="/admin"
+              >
+                <SettingFilled />
+                <span className="pl-1">
+                Operator controls
+              </span>
+              </Link>
+            )}
+            {editMode && (
+              <div>
+                <SettingFilled />
+                <span className="pl-1">
+                  Operator controls
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="operator-controls__panel">
           <div className="operator-controls__panel-list">
@@ -702,7 +739,8 @@ class OperatorControls extends Component {
           onCloseDialog={this.closeStringSettingsModal}
           languages={languageOptions}
           onAddLanguageClick={this.openAddLanguageModal}
-          onConfirm={this.removeLanguage}
+          onConfirm={this.confirmStringSettings}
+          defaultLanguage={this.props.defaults.language}
         />
         <AddLanguageModal
           isOpen={editMode && isAddLanguageModalOpen}
@@ -723,7 +761,8 @@ class OperatorControls extends Component {
             onCloseDialog={this.closeThemeSettings}
             themes={themeOptions}
             onAddThemeClick={this.openAddTheme}
-            onConfirm={this.removeThemes}
+            onConfirm={this.confirmThemeSettings}
+            defaultTheme={this.props.defaults.theme}
           />
         )
         }

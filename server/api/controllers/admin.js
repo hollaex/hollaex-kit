@@ -554,6 +554,29 @@ const inviteNewOperator = (req, res) => {
 		});
 };
 
+const getExchangeGeneratedFees = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getExchangeGeneratedFees auth',
+		req.auth
+	);
+
+	const { limit, page, start_date, end_date } = req.swagger.params;
+
+	getNodeLib().getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getExchangeGeneratedFees catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -576,5 +599,6 @@ module.exports = {
 	putNetworkCredentials,
 	uploadImage,
 	getOperators,
-	inviteNewOperator
+	inviteNewOperator,
+	getExchangeGeneratedFees
 };

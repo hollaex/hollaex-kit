@@ -234,15 +234,6 @@ $title-icon--height: 10rem;
 			background-color: $coin-ltc;
 		}
 	}
-	.mobile_dropdown-section {
-		.mobile-drop-down {
-			color: $colors-main-black;
-			z-index: 1;
-			.option {
-				color:$dark-disabled-main;
-			}
-		}
-	}
 }
 
 @keyframes linear_loading {

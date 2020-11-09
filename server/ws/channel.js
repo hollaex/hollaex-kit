@@ -3,7 +3,7 @@
 const { findIndex } = require('lodash');
 const { loggerWebsocket } = require('../config/logger');
 
-var channels = {};
+let channels = {};
 
 const getChannels = () => {
 	return channels;
@@ -20,7 +20,7 @@ const addSubscriber = (channel, ws) => {
 
 	if (index === -1) {
 		channels[channel].push(ws);
-		loggerWebsocket.verbose('ws/channel/addSubscriber', channel, ws.id);
+		loggerWebsocket.verbose(ws.id, 'ws/channel/addSubscriber', channel, ws.id);
 	} else {
 		throw new Error(`Already subscribed to channel ${channel}`);
 	}
@@ -36,7 +36,7 @@ const removeSubscriber = (channel, ws, type = undefined) => {
 		if (type === 'private' && channels[channel].length === 0) {
 			delete channels[channel];
 		}
-		loggerWebsocket.verbose('ws/channel/removeSubscriber', channel, ws.id);
+		loggerWebsocket.verbose(ws.id, 'ws/channel/removeSubscriber', channel, ws.id);
 	} else {
 		throw new Error(`Not subscribed to channel ${channel}`);
 	}

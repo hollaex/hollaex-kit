@@ -39,7 +39,7 @@ class DropdownDateField extends Component {
 
   constructor(props) {
     super(props);
-    const { defaultLanguage: DEFAULT_LANGUAGE } = this.props;
+    const { defaults: { language: DEFAULT_LANGUAGE } } = this.props;
 
     this.state = {
       language: DEFAULT_LANGUAGE,
@@ -81,12 +81,12 @@ class DropdownDateField extends Component {
 		this.setState({ limits: limits || generateDateLimits() });
 	};
 
-	setDisplay = (limits, dateString = '', language = this.props.defaultLanguage) => {
+	setDisplay = (limits, dateString = '', language = this.props.defaults.language) => {
 		const display = {};
 		let dateUnixtime = moment(dateString || new Date()).valueOf();
 		moment.locale(language);
 		const date = moment(dateUnixtime);
-		moment.locale(this.props.defaultLanguage);
+		moment.locale(this.props.defaults.language);
 		display.en = {
 			...limits.en,
 			month: moment.months(),

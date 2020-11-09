@@ -4,6 +4,7 @@ import { CurrencyBall } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { formatPercentage } from '../../../utils/currency';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
+import { EditWrapper } from 'components';
 
 const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 	const { pair_base, pair_2, maker_fees, taker_fees } = pairs[pair];
@@ -76,13 +77,27 @@ const FeesBlock = ({ pairs, coins, level, discount }) => {
 				<thead>
 					<tr>
 						<th className="content-title limit-head-currency" colSpan={3}>
-							{STRINGS["SUMMARY.TRADING_FEE_STRUCTURE"]}
+							<EditWrapper stringId="SUMMARY.TRADING_FEE_STRUCTURE">
+                {STRINGS["SUMMARY.TRADING_FEE_STRUCTURE"]}
+							</EditWrapper>
 						</th>
 					</tr>
 					<tr>
-						<th className="limit-head-currency">{STRINGS["CURRENCY"]}</th>
-						<th className="limit-head-currency">{STRINGS["SUMMARY.MAKER"]}</th>
-						<th className="limit-head-currency">{STRINGS["SUMMARY.TAKER"]}</th>
+						<th className="limit-head-currency">
+							<EditWrapper stringId="CURRENCY">
+                {STRINGS["CURRENCY"]}
+							</EditWrapper>
+						</th>
+						<th className="limit-head-currency">
+							<EditWrapper stringId="SUMMARY.MAKER">
+                {STRINGS["SUMMARY.MAKER"]}
+							</EditWrapper>
+						</th>
+						<th className="limit-head-currency">
+							<EditWrapper stringId="SUMMARY.TAKER">
+                {STRINGS["SUMMARY.TAKER"]}
+							</EditWrapper>
+						</th>
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">

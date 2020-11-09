@@ -7,6 +7,17 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 
 class ThemeSettingsModal extends Component {
+
+  constructor(props) {
+    super(props);
+    const { defaultTheme } = this.props;
+
+    this.state = {
+      removedThemes: [],
+      defaultTheme,
+    }
+  }
+
   state = {
     removedThemes: []
   }
@@ -16,13 +27,23 @@ class ThemeSettingsModal extends Component {
       title: "Themes",
       dataIndex: "value",
       key: "value",
-      render: (_, {value, label}) => <span className="caps-first">{value}</span>
+      render: (_, { value }) => <span className="caps-first">{value} (edit)</span>,
+      onCell: ({ value }) => {
+        return {
+          onClick: () => this.props.onAddThemeClick(value)
+        };
+      }
     },
     {
       title: "Default theme",
       dataIndex: "value",
       key: "value",
       render: (_, { value }) => this.isDefault(value) ? "Default" : "",
+      onCell: ({ value }) => {
+        return {
+          onClick: () => this.setDefault(value)
+        };
+      }
     },
     {
       dataIndex: "value",
@@ -70,13 +91,21 @@ class ThemeSettingsModal extends Component {
   }
 
   isDefault = (theme) => {
-    const { defaultTheme: DEFAULT_THEME = 'dark' } = this.props;
-    return theme === DEFAULT_THEME
+    const { defaultTheme } = this.state;
+    return theme === defaultTheme
+  }
+
+  setDefault = (defaultTheme) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      defaultTheme,
+      removedThemes: prevState.removedThemes.filter(theme => theme !== defaultTheme)
+    }));
   }
 
   render() {
     const { isOpen, onCloseDialog, themes, onAddThemeClick, onConfirm } = this.props;
-    const { removedThemes } = this.state;
+    const { removedThemes, defaultTheme } = this.state;
     return (
       <Modal
         isOpen={isOpen}
@@ -111,11 +140,6 @@ class ThemeSettingsModal extends Component {
           scroll={{ y: 240 }}
           rowKey={({ value }) => value}
           style={{ width: '380px' }}
-          onRow={({ value }) => {
-            return {
-              onClick: () => onAddThemeClick(value)
-            };
-          }}
         />
         <div className="pt-3">
           <Button
@@ -133,7 +157,7 @@ class ThemeSettingsModal extends Component {
           <Button
             type="primary"
             className="operator-controls__save-button confirm"
-            onClick={() => onConfirm(removedThemes)}
+            onClick={() => onConfirm(removedThemes, defaultTheme)}
           >
             Confirm
           </Button>

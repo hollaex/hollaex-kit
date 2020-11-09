@@ -26,11 +26,11 @@ const getTiers = (req, res) => {
 const postTier = (req, res) => {
 	loggerTier.verbose(req.uuid, 'controllers/tier/postTier auth', req.auth);
 
-	const { level, name, icon, description, deposit_limit, withdrawal_limit, fees } = req.swagger.params.data.value;
+	const { level, name, icon, description, deposit_limit, withdrawal_limit, fees, note } = req.swagger.params.data.value;
 
 	loggerTier.info(req.uuid, 'controllers/tier/postTier new tier', level, name, description);
 
-	toolsLib.tier.createTier(level, name, icon, description, deposit_limit, withdrawal_limit, fees)
+	toolsLib.tier.createTier(level, name, icon, description, deposit_limit, withdrawal_limit, fees, note)
 		.then((tier) => {
 			loggerTier.info(req.uuid, 'controllers/tier/postTier new tier created', level);
 			return res.json(tier);
@@ -44,14 +44,15 @@ const postTier = (req, res) => {
 const putTier = (req, res) => {
 	loggerTier.verbose(req.uuid, 'controllers/tier/putTier auth', req.auth);
 
-	const { level, name, icon, description, deposit_limit, withdrawal_limit } = req.swagger.params.data.value;
+	const { level, name, icon, description, deposit_limit, withdrawal_limit, note } = req.swagger.params.data.value;
 
 	const updateData = {
 		name,
 		icon,
 		description,
 		deposit_limit,
-		withdrawal_limit
+		withdrawal_limit,
+		note
 	};
 
 	toolsLib.tier.updateTier(level, updateData)
@@ -99,9 +100,43 @@ const updatePairFees = (req, res) => {
 		});
 };
 
+const updateTiersLimits = (req, res) => {
+	loggerTier.verbose(
+		req.uuid,
+		'controllers/tier/updateTierLimits auth',
+		req.auth
+	);
+
+	const { limits } = req.swagger.params.data.value;
+
+	loggerTier.info(
+		req.uuid,
+		'controllers/tier/updateTierLimits tiers',
+		Object.keys(limits)
+	);
+
+	toolsLib.tier.updateTiersLimits(limits)
+		.then(() => {
+			loggerTier.info(
+				req.uuid,
+				'controllers/tier/updateTierLimits updated limits',
+			);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerTier.error(
+				req.uuid,
+				'controllers/tier/updatePairLimits err',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	getTiers,
 	postTier,
 	putTier,
-	updatePairFees
+	updatePairFees,
+	updateTiersLimits
 };

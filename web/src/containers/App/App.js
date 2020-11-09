@@ -99,7 +99,7 @@ class App extends Component {
 		if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
 			this.props.router.push('/init');
 		}
-		this.updateThemeToBody(this.props.activeTheme);
+
 		if (this.props.location && this.props.location.pathname) {
 			this.checkPath(this.props.location.pathname);
 			this.handleFitHeight(this.props.location.pathname);
@@ -129,9 +129,7 @@ class App extends Component {
 		// ) {
 		// this.goToAccountPage();
 		// }
-		if (this.props.activeTheme !== nextProps.activeTheme) {
-			this.updateThemeToBody(nextProps.activeTheme);
-		}
+
 		if (
 			this.props.location &&
 			nextProps.location &&
@@ -184,13 +182,6 @@ class App extends Component {
 			pathname = '/trade/add/tabs';
 		}
 		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
-	};
-
-	updateThemeToBody = (theme) => {
-		const themeName = theme === 'dark' ? 'dark-app-body' : '';
-		if (document.body) {
-			document.body.className = themeName;
-		}
 	};
 
 	goToPage = (path) => {

@@ -1670,6 +1670,51 @@ paths:
         - user
 
 # ADMIN ENDPOINTS
+  /admin/fees:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getExchangeGeneratedFees
+      description: Get exchange generated fees
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/FeesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/signup:
     x-swagger-router-controller: admin
     post:
@@ -2035,6 +2080,32 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/PairFeesPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/tiers/limits:
+    x-swagger-router-controller: tier
+    put:
+      operationId: updateTiersLimits
+      description: Update tier limits
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TiersLimitsPut"
       responses:
         200:
           description: Success
@@ -3879,6 +3950,47 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/OperatorResponse"
+  FeeResponse:
+    type: object
+    required:
+      - id
+      - transaction_id
+      - currency
+      - network_fee
+      - timestamp
+      - exchange_id
+    properties:
+      id:
+        type: number
+        format: int32
+      transaction_id:
+        type: string
+      currency:
+        type: string
+      network_fee:
+        type: number
+        format: double
+      timestamp:
+        type: string
+        format: date-time
+      exchange_id:
+        type: number
+        format: int32
+  FeesResponse:
+    type: object
+    required:
+      - count
+      - data
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: object
+        additionalProperties:
+          type: array
+          items:
+            $ref: "#/definitions/FeeResponse"
   UserResponse:
     type: object
     properties:
@@ -4663,14 +4775,10 @@ definitions:
         type: string
       icon:
         type: string
+      note:
+        type: string
       description:
         type: string
-      deposit_limit:
-        type: number
-        format: double
-      withdrawal_limit:
-        type: number
-        format: double
   PostTierBody:
     type: object
     required:
@@ -4690,6 +4798,8 @@ definitions:
       icon:
         type: string
       description:
+        type: string
+      note:
         type: string
       deposit_limit:
         type: number
@@ -4725,6 +4835,7 @@ definitions:
       - id
       - name
       - icon
+      - note
       - description
       - deposit_limit
       - withdrawal_limit
@@ -4736,6 +4847,8 @@ definitions:
       name:
         type: string
       icon:
+        type: string
+      note:
         type: string
       description:
         type: string
@@ -4757,6 +4870,35 @@ definitions:
         type: string
       fees:
         type: object
+        minProperties: 1
+        additionalProperties:
+          type: object
+          minProperties: 1
+          properties:
+            maker:
+              type: number
+              format: double
+            taker:
+              type: number
+              format: double
+  TiersLimitsPut:
+    type: object
+    required:
+      - limits
+    properties:
+      limits:
+        type: object
+        minProperties: 1
+        additionalProperties:
+          type: object
+          minProperties: 1
+          properties:
+            deposit_limit:
+              type: number
+              format: double
+            withdrawal_limit:
+              type: number
+              format: double
   OraclePriceResponse:
     type: object
     additionalProperties:

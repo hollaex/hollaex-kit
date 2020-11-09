@@ -39,7 +39,7 @@ class AddTradeTab extends Component {
 			this.state.searchValue
 		);
 
-		getSparklines(Object.keys(pairs)).then(hash => this.setState({ chartData: hash }))
+		getSparklines(Object.keys(pairs)).then(chartData => this.setState({ chartData }))
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {

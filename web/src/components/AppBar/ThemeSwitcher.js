@@ -17,7 +17,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
     const isSwitch = options.length < 3
 
     return (
-        <div>
+        <div className={classnames({ 'app_bar-quicktrade': !isSwitch })}>
             <div className={classnames('toggle_button-wrapper', 'd-flex')}>
                 { isSwitch && (
                   <div
@@ -64,8 +64,10 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
                 { !isSwitch && (
                   <Select
                     value={selected}
-                    size="default"
+                    size="small"
                     onSelect={toggle}
+                    bordered={false}
+                    style={{ height: '17px' }}
                   >
                     {
                       options.map(({ value }) => (

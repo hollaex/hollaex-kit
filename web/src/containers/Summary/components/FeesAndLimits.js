@@ -6,6 +6,7 @@ import FeesBlock from "./FeesBlock";
 import { IconTitle, Button } from "../../../components";
 import STRINGS from "../../../config/localizedStrings";
 import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {}, icons: ICONS }) => {
 	const { verification_level, discount = 0 } = data;
@@ -31,9 +32,15 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {}, icons: ICO
 			/>
 			<div className="content-txt">
 				<div className="my-3">
-					<div>{STRINGS["SUMMARY.FEES_AND_LIMIT_TXT_1"]}</div>
+					<div>
+						<EditWrapper stringId="SUMMARY.FEES_AND_LIMIT_TXT_1">
+							{STRINGS["SUMMARY.FEES_AND_LIMIT_TXT_1"]}
+						</EditWrapper>
+					</div>
 					<div className="mt-3">
-						{STRINGS["SUMMARY.FEES_AND_LIMIT_TXT_2"]}				
+						<EditWrapper stringId="SUMMARY.FEES_AND_LIMIT_TXT_2">
+							{STRINGS["SUMMARY.FEES_AND_LIMIT_TXT_2"]}
+						</EditWrapper>
 					</div>
 				</div>
 				<div>

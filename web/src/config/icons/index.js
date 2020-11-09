@@ -4,6 +4,11 @@ const options = { safe: true }
 const nestedIcons = {
   EXCHANGE_LOGO_LIGHT: '',
   EXCHANGE_LOGO_DARK: '',
+  FAV_ICON: '/favicon.ico',
+  LOADER_LIGHT: '/assets/loader-light.gif',
+  LOADER_DARK: '/assets/loader-dark.gif',
+  BOARDING_IMAGE_LIGHT: '/assets/background.png',
+  BOARDING_IMAGE_DARK: '/assets/dark-background.jpg',
   TRADE_HISTORY_DARK: '/assets/icons/trade-history-dark.svg',
   TRADE_HISTORY_LIGHT: '/assets/icons/trade-history-light.svg',
   ACTIVE_TRADE_DARK: '/assets/icons/active-trade-dark.svg',
@@ -313,7 +318,32 @@ const nestedIcons = {
   SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
   SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
   SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg',
-
+  HEX_PATTERN_ICON: '/assets/icons/hex-pattern-icon-05.svg',
+  GENERAL_SETUP: '/assets/images/general-setup.svg',
+  USERS_SETUP: '/assets/images/users.svg',
+  BLUE_SCREEN_EYE_ICON: '/assets/images/all-seeing-eye-admin-role-blue.png',
+  BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE: '/assets/images/communications-role-seal-02.svg',
+  BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE: '/assets/images/exchange-support-role-01.svg',
+  BLUE_SCREEN_SUPERVISOR: '/assets/images/supervisor.svg',
+  BLUE_SCREEN_KYC: '/assets/images/KYC-01.svg',
+  BLUE_SCREEN_LINK: '/assets/images/link.svg',
+  USER_DETAILS_ICON: '/assets/images/user-info-details-page.svg',
+  TWO_STEP_KEY_ICON: '/assets/images/2fa-01.svg',
+  ACC_FREEZE: '/assets/images/freeze.svg',
+  ACC_FLAG: '/assets/images/flag.svg',
+  ADMIN_PLUGINS: '/assets/images/plugins.svg',
+  ADMIN_TIERS: '/assets/images/tiers.svg',
+  ADMIN_ROLES: '/assets/images/roles.svg',
+  ADMIN_CUSTOMIZE: '/assets/images/customize.svg',
+  ADMIN_MISSING_GO_BACK: '/assets/images/missing-page-go-back-to-dash.svg',
+  HELP_DESCRIPTION_POPUP: '/assets/images/help-popup-description.png',
+  HELP_FOOTER_POPUP: '/assets/images/help-popup-footer.png',
+  DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
+  WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
+  TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
+  MAKER_TIERS_SECTION: '/assets/images/maker-tier-section.svg',
+  LIMITS_SECTION_ICON: '/assets/images/limits-coin-tiers.svg',
+  FEES_SECTION_ICON: '/assets/images/limits-pairs-tiers.svg',
   SOCIAL_ICONS: {
     FACEBOOK: '/assets/icons/facebook.png',
     LINKEDIN: '/assets/icons/linkedin.png',
@@ -342,7 +372,12 @@ const nestedIcons = {
     LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
     LEVEL_4: '/assets/summary/level-4.png',
     LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
-  }
+  },
+
+  ADMIN_ICON: {
+    EDIT_STRING: '/assets/icons/edit-string.svg',
+    EDIT_ICON: '/assets/icons/upload-graphic-edit.svg',
+  },
 };
 
 const icons = flatten(nestedIcons, options)

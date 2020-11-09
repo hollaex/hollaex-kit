@@ -5,8 +5,8 @@ import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, ActionNotification } from '../';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { EditWrapper } from 'components';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Form extends Component {
 	state = {
@@ -55,7 +55,8 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			onClickHelp
+			onClickHelp,
+			icons: ICONS,
 		} = this.props;
 		const { formValues } = this.state;
 
@@ -102,4 +103,4 @@ class Form extends Component {
 
 export default reduxForm({
 	form: 'OtpForm'
-})(Form);
+})(withConfig(Form));

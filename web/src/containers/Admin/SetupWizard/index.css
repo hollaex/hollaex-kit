@@ -158,19 +158,19 @@
     margin: auto;
     margin-top: 7px;
 }
-.sell {
+.wizard-container .sell {
     border: 1px solid #ffffff;
     width: 60px;
     height: 18px;
 }
-.sell .label {
+.wizard-container .sell .label {
     font-size: 10px;
     position: relative;
     bottom: 3px;
     left: 18px;
     color: #ffffff !important;
 }
-.buy {
+.wizard-container .buy {
     width: 60px;
     height: 18px;
     border: 1px solid #000000;
@@ -178,7 +178,7 @@
     color: #000000;
     background-color: #ffffff;
 }
-.buy .label {
+.wizard-container .buy .label {
     font-size: 10px;
     position: relative;
     bottom: 3px;
@@ -270,30 +270,31 @@
 	text-align: left;
 	width: 22rem;
 }
-.wizard-container .ant-input-affix-wrapper,
-.wizard-container .ant-input,
-.wizard-container .ant-input-number,
-.wizard-container .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+.ant-input-affix-wrapper,
+.ant-input,
+.ant-input-number,
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
 	background-color: #0000ff;
 	color: #c4c4c4;
 }
-.wizard-container .ant-input-affix-wrapper:hover,
-.wizard-container .ant-input-affix-wrapper:focus,
-.wizard-container .ant-input:hover,
-.wizard-container .ant-input:focus,
-.wizard-container .ant-input-number:hover,
-.wizard-container .ant-input-number:focus {
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper:focus,
+.ant-input:hover,
+.ant-input:focus,
+.ant-input:active,
+.ant-input-number:hover,
+.ant-input-number:focus {
 	border-color: #c4c4c4;
 	box-shadow: #c4c4c4;
 }
-.wizard-container .ant-input-password-icon {
+.ant-input-password-icon {
 	color: #c4c4c4;
 }
-.wizard-container .ant-radio-disabled .ant-radio-inner {
+.ant-radio-disabled .ant-radio-inner {
 	background-color: #050596;
 	border-color: #050596 !important;
 }
-.wizard-container .ant-radio-disabled + span {
+.ant-radio-disabled + span {
 	color: #808088;
 }
 .form-wrapper {

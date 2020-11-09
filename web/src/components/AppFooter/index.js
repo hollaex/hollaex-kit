@@ -4,6 +4,7 @@ import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getLogo } from 'utils/icon';
 
 const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 	const { api, contact, facebook, github, helpdesk, information, instagram, linkedin, youtube, privacy, telegram, terms, twitter, website, whitepaper } = links
@@ -129,6 +130,7 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 };
 
 const AppFooter = ({ className, theme, constants = { description: '' }, icons }) => {
+  const path = getLogo(theme, constants, icons);
 	return (
 		<div
 			className={classnames(
@@ -208,10 +210,8 @@ const AppFooter = ({ className, theme, constants = { description: '' }, icons })
 						)}
 						<div className="footer_separter">
 							<div className="footer-content">
-								<div
-									style={{ backgroundImage: `url(${constants.logo_black_path})` }}
-									className="footer-logo"
-								>
+								<div className="d-flex">
+									<div style={{ backgroundImage: `url(${path})` }} className="footer-logo" />
 								</div>
 								<div className="footer-txt">
 									{constants.description || ''}

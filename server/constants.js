@@ -23,6 +23,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `wallet:${symbolOrUserId}`;
 		case 'deposit':
 			return `deposit:${symbolOrUserId}`;
+		case 'chat':
+			return 'chat';
 		default:
 			return;
 	}
@@ -339,6 +341,8 @@ exports.AVAILABLE_PLUGINS = [
 	'announcement',
 	'zendesk'
 ];
+
+exports.HMAC_TOKEN_KEY = 'hmac:token';
 
 exports.REQUIRED_XHT = 100;
 

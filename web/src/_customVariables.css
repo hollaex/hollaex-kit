@@ -1,105 +1,58 @@
 :root {
-    /*_____common colors_____*/
-    --colors-main-black: #212121;
-    --colors-white: white;
-    --colors-black: #000000;
-    --colors-wave-phase-completed: #808000;
+    /*_________________________________*/
 
-    /*_____common colors for deactivate and disabled look_____*/
-    --colors-deactivate: #797779;
-    --colors-deactivate-color1: #cccbcb;
-    --colors-deactivate-color2: #777677;
-    --colors-deactivate-color3: #f2f2f3;
-    --colors-deactivate-color4: #f1f2f2;
+            /*COLOR MANAGEMENT*/
 
-    /*_____common colors for notifications and errors_____*/
-    --colors-notifications-red: #ed1c24;
-    --colors-notification-inactive-red: #e26171;
-    --colors-notifications-blue: #0000ff;
-    --colors-notifications-green: #00a651;
+    /*_________________________________*/
 
-    /*_____common colors for currencies_____*/
-    --color-currency-eur--main: #00a651;
-    --color-currency-eur--secondary: #52c2b8;
-    --color-currency-btc--main: #f15a29;
-    --color-currency-btc--secondary: #f7941e;
+    --base_background: #ffffff;
+    --base_top-bar-navigation: #000000;
+    --base_secondary-navigation-bar: #f2f2f3;
+    --base_wallet-sidebar-and-popup: #ffffff;
+    --base_footer: #000000;
+    --base_fields: #f0f1f1;
+    --base_inactive-button: #535353;
 
-    /*_____common colors for app bar_____*/
-    --dark-app-bar-add-tab-menu-background: #202020;
-    --app-bar-menu-list-color: #808080;
-    --app-bar-icon-inactive: #808080;
+    --labels_important-active-labels-text-graphics: #000000;
+    --labels_secondary-inactive-label-text-graphics: #808080;
 
+    --trading_selling-related-elements: #ee4036;
+    --trading_buying-related-elements: #00a69c;
 
-    /*_____Theme_____*/
-    --app-background-color: #ffffff;
-    --app-light-background: #F2F2F3;
-    --app-sidebar-background: white;
-    --auth-container-background: #ffffff;
+    --specials_buttons-links-and-highlights: #0066b4;
+    --specials_chat-messages: #98ccb2;
+    --specials_my-username-in-chat: #ffff00;
+    --specials_checks-okay-done: #008000;
+    --specials_pending-waiting-caution: #F6921E;
+    --specials_notifications-alerts-warnings: #ed1c24;
 
-    /*_____Quick trade_____*/
-    --quick-trade-background: #ebf3f1;
-    --quick-trade-container: #ffffff;
+    /*_________________________________*/
 
-    --app-modal-background: #ddddddbf;
-    --app-bar-background-color: #000000;
+            /*Calculated colors*/
+
+    /*_________________________________*/
 
 
-    --app-line-divider: #212121;
-    --box-fields: #f0f1f1;
+    --calculated_trading_buying-related-text: #000000;
+    --calculated_trading_selling-related-text: #ffffff;
+    --calculated_base_modal-overlay: #ffffffbf;
+    --calculated_specials_highlight-box: #0066b41a;
+    --calculated_base_top-bar-navigation_text: #ffffff;
+    --calculated_base_top-bar-navigation_text-inactive: #ffffffb3;
+    --calculated_base_footer_text: #ffffff;
+    --calculated_trad-view_watermark: #0000001a;
+    --calculated_trad-view_axis: #00000080;
+    --calculated_trad-view_text: #000000cc;
+    --calculated_specials_notifications-alerts-inactive: #ed1c24bf;
+    --calculated_specials_notifications-alerts-text: #ffffff;
+    --calculated_specials_notifications-pending-text: #ffffff;
+    --calculated_specials_notifications-success-text: #ffffff;
 
-    --buy: #6496AA;
-    --sell: #000000;
-    --color-sell-btc-light: #000000;
+    /*_________________________________*/
 
-    --link: #0000ff;
 
-    --trade-fields: #cccbcb;
-    --trade-fields-border: #212121;
-    --trade-fill-indicator: #000000;
-    --trade-fill-indicator-text: #878787;
-
-    --buy-bids-text: #000000;
-    --sell-bids-text: #ffffff;
-
-    --app-logo-color: #ffffff;
-    --sidebar-border--color: #797779;
-    --border-color: #777677;
-    --border-main: #212121;
-
-    /*_____form field colors_____*/
-    --form-color-underline-focus: #212121;
-    --form-color-underline: #cccbcb;
-    --form-color-placeholder: #cccbcb;
-    --form-arrow: #212121;
-    --form-label: #777677;
-
-    /*common colors for terms*/
-    --colors-terms-background: #f7f7f7;
-
-    /*_____theme tabs_____*/
-    --tab-active: #212121;
-    --tab-inactive: #777677;
-    --sidebar-color: #777677;
-    --sidebar-color-active: #212121;
-    --info-panel-background: #f5f5f5;
-    --info-panel-text: #777677;
-    --icon-hover: #212121;
-    --icon-unhover: #777677;
-    --trade-tabs-inactive-color: #808080;
-
-    /*_____footer_____*/
-    --footer-background-color: #000000;
-
-    /*_____chat color_____*/
-    --chat-message-background-even: #f0f1f1;
-    --chat-message-background-odd: #e6e6e6;
-    --chat-message-color: #4f4f4f;
-    --chat-box-border: #f0f1f1;
-
-    /*_____this is for transaction history_____*/
-    --history-color-buy: #d1d4dc;
-    --history-color-sell: #000000;
-
+    /*_____Remaining_____*/
+    --dark-accordion-arrow-active: #ffffff;
 
     /*______coins______*/
     --coin-eur: #06773d;
@@ -201,17 +154,4 @@
     --coin-dai: #f3c27a;
     --coin-dai-text: #000000;
 
-
-    /*_____Used Dark Remains_____*/
-    --dark-app-background-color: #202020; /* CHECK*/
-    --dark-app-light-background: #2b2b2b;
-    --dark-app-line-divider: #535353;
-    --dark-buy: #00A69C;
-    --dark-link: #0066B4;
-    --dark-border-main: #535353;
-    --dark-inactive-color: #2e2f37;
-    --dark-font-sub-text-color: #808080;
-    --dark-font-sub-text-1-color: #808080;
-    --dark-disabled-main: #2e2f37;
-    --dark-accordion-arrow-active: #ffffff;
 }

@@ -19,7 +19,7 @@ $close-button--margin: 1.5rem;
 	max-height: calc(100% - #{$dialog--padding});
 	overflow: auto;
 	border: none !important;
-	background-color: $app-background-color;
+	background-color: $app-sidebar-background !important;
 
 	.action_notification-wrapper.close-button {
 		margin-top: $close-button--margin;

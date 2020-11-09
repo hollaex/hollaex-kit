@@ -42,7 +42,7 @@ GeneralSettingsForm.defaultProps = {
 export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
     const fields = generateAdminSettings('email');
     return (
-        <div className="mb-4">
+        <div className="email-config-form mb-4">
             <h2>Email Configuration</h2>
             <EmailForm
                 initialValues={initialValues.configuration}
@@ -50,10 +50,9 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
                 buttonText="Save"
                 fields={fields.email_configuration}
             />
-            <Divider />
+            <div className='divider'></div>
             <div className="mb-4">
                 <h2>Email Audit</h2>
-                <Divider />
                 <p>This feature allows specific email to receive a copy of all important emails sent to the user for audit purposes. By filling the auditor email, the email will be in BCC of emails sent to the user.</p>
                 <EmailDistributionForm
                     initialValues={initialValues.distribution}

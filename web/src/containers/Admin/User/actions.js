@@ -88,3 +88,37 @@ export const requestUsersDownload = (values) => {
 	})
 	.catch((err) => {});
 }
+
+export const deactivateOtp = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values)
+	};
+
+	return requestAuthenticated('/admin/deactivate-otp', options);
+};
+
+export const flagUser = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values)
+	};
+	return requestAuthenticated(`/admin/flag-user/`, options);
+};
+
+export const activateUser = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values)
+	};
+
+	return requestAuthenticated('/admin/user/activate', options);
+};
+
+export const performVerificationLevelUpdate = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values)
+	};
+	return requestAuthenticated('/admin/upgrade-user', options);
+};

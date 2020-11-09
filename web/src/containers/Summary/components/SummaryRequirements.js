@@ -9,7 +9,7 @@ import STRINGS from '../../../config/localizedStrings';
 // import { getBonusRequirements } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-// const SucessStatus = ({ isAccountDetails }) => (
+// const SucessStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
 // 		{isAccountDetails && (
 // 			<div className="requirement-verified mr-2">
@@ -23,7 +23,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 // 	</div>
 // );
 
-// const IncompleteStatus = ({ isAccountDetails }) => (
+// const IncompleteStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
 // 		{isAccountDetails ? (
 // 			<div className="requirement-incomplete mr-2">
@@ -38,7 +38,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 // 	</div>
 // );
 
-// const PendingStatus = ({ isAccountDetails }) => (
+// const PendingStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
 // 		<ReactSvg
 // 			path={ICONS["VERIFICATION_PENDING"]}
@@ -47,7 +47,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 // 	</div>
 // );
 
-// const RejectedStatus = ({ isAccountDetails }) => (
+// const RejectedStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
 // 		<ReactSvg
 // 			path={ICONS["VERIFICATION_REJECTED"]}
@@ -266,26 +266,26 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 // 	);
 // };
 
-// const getStatusIcon = (reqObj, isAccountDetails) => {
+// const getStatusIcon = (reqObj, isAccountDetails, icons) => {
 // 	if (isAccountDetails) {
 // 		return reqObj.completed ? (
-// 			<SucessStatus isAccountDetails={isAccountDetails} />
+// 			<SucessStatus isAccountDetails={isAccountDetails} icons={icons} />
 // 		) : (
-// 				<IncompleteStatus isAccountDetails={isAccountDetails} />
+// 				<IncompleteStatus isAccountDetails={isAccountDetails} icons={icons} />
 // 			);
 // 	} else {
 // 		switch (reqObj.status) {
 // 			case 0:
-// 				return <IncompleteStatus isAccountDetails={isAccountDetails} />;
+// 				return <IncompleteStatus isAccountDetails={isAccountDetails} icons={icons} />;
 // 			case 1:
-// 				return <PendingStatus isAccountDetails={isAccountDetails} />;
+// 				return <PendingStatus isAccountDetails={isAccountDetails} icons={icons} />;
 // 			case 2:
-// 				return <RejectedStatus isAccountDetails={isAccountDetails} />;
+// 				return <RejectedStatus isAccountDetails={isAccountDetails} icons={icons} />;
 // 			case 3:
-// 				return <SucessStatus isAccountDetails={isAccountDetails} />;
+// 				return <SucessStatus isAccountDetails={isAccountDetails} icons={icons} />;
 // 			default:
 // 				if (reqObj.status === undefined && reqObj.completed === false) {
-// 					return <IncompleteStatus isAccountDetails={isAccountDetails} />;
+// 					return <IncompleteStatus isAccountDetails={isAccountDetails} icons={icons} />;
 // 				}
 // 				return '';
 // 		}
@@ -353,7 +353,7 @@ const SummaryRequirements = ({
 								)}
 							>
 							<div className="requirement-step">{step}. {reqObj.title}</div>
-								<div>{getStatusIcon(reqObj, isAccountDetails || isBonusSection)}</div>
+								<div>{getStatusIcon(reqObj, isAccountDetails || isBonusSection, ICONS)}</div>
 							</div>
 						);
 					})}
