@@ -168,3 +168,7 @@ table th {
 .underline-text {
 	text-decoration: underline;
 }
+
+.disabled-link {
+	pointer-events: none;
+}

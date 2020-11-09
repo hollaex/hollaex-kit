@@ -139,7 +139,6 @@ class VerifyEmailRequest extends Component {
 						text={STRINGS['VERIFICATION_EMAIL_REQUEST.TITLE']}
 						textType="title"
 						underline={true}
-						isLogo={true}
 						imageWrapperClassName="auth_logo-wrapper"
 						className="w-100 exir-logo"
 					/>

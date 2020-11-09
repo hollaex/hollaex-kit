@@ -217,6 +217,9 @@ table th {
 .underline-text {
   text-decoration: underline; }
 
+.disabled-link {
+  pointer-events: none; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -5683,7 +5686,6 @@ table th {
   max-height: 100%;
   position: absolute;
   pointer-events: none;
-  background: url("/assets/loader-light.gif");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center; }

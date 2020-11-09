@@ -5,6 +5,8 @@ import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getLogo } from 'utils/icon';
+import Image from 'components/Image';
+import { FOOTER_BACKGROUND } from 'utils/color';
 
 const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 	const {
@@ -165,7 +167,7 @@ const AppFooter = ({
 	constants = { description: '' },
 	icons,
 }) => {
-	const path = getLogo(theme, constants, icons);
+	const path = getLogo(theme, constants, icons, FOOTER_BACKGROUND);
 	return (
 		<div
 			className={classnames(
@@ -246,9 +248,10 @@ const AppFooter = ({
 						<div className="footer_separter">
 							<div className="footer-content">
 								<div className="d-flex">
-									<div
-										style={{ backgroundImage: `url(${path})` }}
-										className="footer-logo"
+									<Image
+										iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+										icon={path}
+										wrapperClassName="footer-logo"
 									/>
 								</div>
 								<div className="footer-txt">

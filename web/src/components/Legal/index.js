@@ -1,5 +1,6 @@
 import React from 'react';
 import STRINGS from 'config/localizedStrings';
+import Image from 'components/Image';
 
 const getType = (type) => {
 	switch (type) {
@@ -24,10 +25,11 @@ const Legal = ({ type, constants = {}, logoPath }) => {
 		<div className="d-flex legal-wrapper justify-content-center">
 			<div className="d-flex flex-column legal-content-wrapper">
 				<div className="legal-logo-wrapper">
-					<img
-						src={logoPath}
+					<Image
+						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+						icon={logoPath}
+						wrapperClassName="legal-logo"
 						alt={constants.api_name || ''}
-						className="legal-logo"
 					/>
 				</div>
 				<div className="legal-title">{TITLE}</div>
