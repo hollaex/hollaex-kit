@@ -5,7 +5,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
 const { verifyOtpBeforeAction, checkCaptcha } = require('./auth');
-const { subscribedToCoin, getKitCoin, getKitSecrets } = require('./common');
+const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig } = require('./common');
 const {
 	INVALID_OTP_CODE,
 	INVALID_WITHDRAWAL_TOKEN,
@@ -16,8 +16,7 @@ const {
 	UPGRADE_VERIFICATION_LEVEL
 } = require('../messages');
 const { getUserByKitId } = require('./user');
-const math = require('mathjs');
-const { findTier, estimateNativeCurrencyPrice } = require('./tier');
+const { findTier } = require('./tier');
 const { client } = require('./database/redis');
 const crypto = require('crypto');
 const uuid = require('uuid/v4');
@@ -45,10 +44,16 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 			}
 			return getUserByKitId(id);
 		})
-		.then((user) => {
+		.then(async (user) => {
 			if (user.verification_level < 1) {
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
+
+			const balance = await getNodeLib().getBalanceNetwork(user.network_id)
+			if (balance[`${currency}_available`] < amount) {
+				throw new Error('Insufficent balance for withdrawal');
+			}
+
 			return all([
 				user,
 				findTier(user.verification_level)
@@ -59,15 +64,9 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				const coinConvertedToNativeCurrency = await estimateNativeCurrencyPrice(currency);
-
-				if (coinConvertedToNativeCurrency > 0) {
-					const convertedAmount = math.number(math.multiply(math.bignumber(amount), math.bignumber(coinConvertedToNativeCurrency)));
-					if (convertedAmount > limit) {
-						throw new Error('Amount exceeds withdrawal limit');
-					}
-				} else {
-					throw new Error('Currency cannot be converted into native currency');
+				const convertedAmount = await getNodeLib().getOraclePrice(currency, getKitConfig().native_currency, amount);
+				if (convertedAmount[currency] > limit) {
+					throw new Error('Amount exceeds withdrawal limit');
 				}
 			}
 			return withdrawRequestEmail(
