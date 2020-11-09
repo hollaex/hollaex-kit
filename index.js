@@ -513,19 +513,19 @@ class HollaEx {
 			path += `&currency=${currency}`;
 		}
 		if (isBoolean(status)) {
-			path += `$status=${status}`;
+			path += `&status=${status}`;
 		}
 		if (isBoolean(dismissed)) {
-			path += `$dismissed=${dismissed}`;
+			path += `&dismissed=${dismissed}`;
 		}
 		if (isBoolean(rejected)) {
-			path += `$rejected=${rejected}`;
+			path += `&rejected=${rejected}`;
 		}
 		if (isBoolean(processing)) {
-			path += `$processing=${processing}`;
+			path += `&processing=${processing}`;
 		}
 		if (isBoolean(waiting)) {
-			path += `$waiting=${waiting}`;
+			path += `&waiting=${waiting}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -581,19 +581,19 @@ class HollaEx {
 			path += `&currency=${currency}`;
 		}
 		if (isBoolean(status)) {
-			path += `$status=${status}`;
+			path += `&status=${status}`;
 		}
 		if (isBoolean(dismissed)) {
-			path += `$dismissed=${dismissed}`;
+			path += `&dismissed=${dismissed}`;
 		}
 		if (isBoolean(rejected)) {
-			path += `$rejected=${rejected}`;
+			path += `&rejected=${rejected}`;
 		}
 		if (isBoolean(processing)) {
-			path += `$processing=${processing}`;
+			path += `&processing=${processing}`;
 		}
 		if (isBoolean(waiting)) {
-			path += `$waiting=${waiting}`;
+			path += `&waiting=${waiting}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
