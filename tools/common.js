@@ -359,7 +359,7 @@ const getAssetsPrices = (assets = [], quote, amount) => {
 		return reject(new Error('Amount must be greater than 0'));
 	}
 
-	return getNodeLib().getOraclePrice(assets, quote, amount);
+	return getNodeLib().getOraclePrices(assets, quote, amount);
 };
 
 module.exports = {

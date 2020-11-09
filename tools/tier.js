@@ -3,13 +3,11 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitConfig, getKitTiers, getKitPairs, getKitPairsConfig, subscribedToPair, getTierLevels } = require('./common');
+const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels } = require('./common');
 const { reject, all } = require('bluebird');
-const { difference, each, omit, isNumber } = require('lodash');
+const { difference, omit, isNumber } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const math = require('mathjs');
 const flatten = require('flat');
 
 const findTier = (level) => {
@@ -135,64 +133,6 @@ const updateTier = (level, updateData) => {
 		});
 };
 
-const estimateNativeCurrencyPrice = async (startingCurrency) => {
-
-	if (!getKitConfig().native_currency) {
-		throw new Error('Native currency is not set');
-	} else if (startingCurrency === getKitConfig().native_currency) {
-		return 1;
-	}
-
-	const pairs = Object.values(getKitPairsConfig());
-	const tickers = await getNodeLib().getAllTickersEngine();
-	const prices = {};
-
-	each(tickers, (ticker, key) => {
-		prices[key] = ticker.close;
-	});
-
-	if (prices[`${startingCurrency}-${getKitConfig().native_currency}`]) {
-		return prices[`${startingCurrency}-${getKitConfig().native_currency}`];
-	}
-
-	const path = findPath(pairs, startingCurrency)[0];
-
-	let estimatedPrice = 1;
-
-	if(path) {
-		convertPathToPairNames(path).forEach((pairKey) => {
-			const { close = 0 } = tickers[pairKey] || {};
-			estimatedPrice = math.number(math.multiply(math.bignumber(estimatedPrice), math.bignumber(close)));
-		});
-	} else {
-		estimatedPrice = 0;
-	}
-
-	return estimatedPrice;
-};
-
-const findPath = (connections = [], start, end = getKitConfig().native_currency, source_key = 'pair_base', target_key = 'pair_2') => {
-	const connectionsFromStart = connections.filter(({ [source_key]: source }) => source === start);
-	const connectionsFromStartToEnd = connectionsFromStart.filter(({ [target_key]: target }) => target === end);
-
-	if (connectionsFromStartToEnd.length !== 0) return [connectionsFromStartToEnd];
-
-	const paths = [];
-
-	connectionsFromStart.forEach((intermediaryNode) => {
-		const connectionsFromIntermediaryToEnd = findPath(connections, intermediaryNode[target_key], end);
-		connectionsFromIntermediaryToEnd.forEach((intermediaryConnections) => {
-			paths.push([intermediaryNode, ...intermediaryConnections]);
-		});
-	});
-
-	return paths;
-};
-
-const convertPathToPairNames = (path = [], from_key = 'pair_base', to_key = 'pair_2', separator = '-') =>{
-	return path.map(({ [from_key]: from, [to_key]: to}) => `${from}${separator}${to}`);
-};
-
 const updatePairFees = (pair, fees) => {
 	if (!subscribedToPair(pair)) {
 		return reject(new Error('Invalid pair'));
@@ -291,7 +231,6 @@ module.exports = {
 	findTier,
 	createTier,
 	updateTier,
-	estimateNativeCurrencyPrice,
 	updatePairFees,
 	updateTiersLimits
 };
