@@ -14,7 +14,7 @@ import {
 	TradeHistory,
 	// UploadIds,
 	Transactions,
-	ActiveOrders
+	ActiveOrders,
 } from '../';
 // import UserData from './UserData';
 import BankData from './BankData';
@@ -33,16 +33,15 @@ class UserContent extends Component {
 	disableOTP = () => {
 		const { userInformation = {}, refreshData } = this.props;
 		const postValues = {
-			user_id: parseInt(userInformation.id, 10)
+			user_id: parseInt(userInformation.id, 10),
 		};
 		return deactivateOtp(postValues)
 			.then((res) => {
 				refreshData({ otp_enabled: false });
 			})
 			.catch((err) => {
-				const _error = err.data && err.data.message
-					? err.data.message
-					: err.message
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
 				message.error(_error);
 			});
 	};
@@ -51,16 +50,15 @@ class UserContent extends Component {
 		const { userInformation = {}, refreshData } = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
-			flagged: value
+			flagged: value,
 		};
 		flagUser(postValues)
 			.then((res) => {
 				refreshData(postValues);
 			})
 			.catch((err) => {
-				const _error = err.data && err.data.message
-					? err.data.message
-					: err.message
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
 				message.error(_error);
 			});
 	};
@@ -69,16 +67,15 @@ class UserContent extends Component {
 		const { userInformation = {}, refreshData } = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
-			activated: value
+			activated: value,
 		};
 		activateUser(postValues)
 			.then((res) => {
 				refreshData(postValues);
 			})
 			.catch((err) => {
-				const _error = err.data && err.data.message
-					? err.data.message
-					: err.message
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
 				message.error(_error);
 			});
 	};
@@ -92,7 +89,7 @@ class UserContent extends Component {
 			// clearData,
 			refreshData,
 			refreshAllData,
-			onChangeUserDataSuccess
+			onChangeUserDataSuccess,
 		} = this.props;
 		const {
 			id,
@@ -104,7 +101,7 @@ class UserContent extends Component {
 			is_support,
 			is_supervisor,
 			is_kyc,
-			is_tech
+			is_tech,
 		} = userInformation;
 		const isSupportUser = isSupport();
 		const pairs = Object.keys(coins) || [];
@@ -129,13 +126,20 @@ class UserContent extends Component {
 		return (
 			<div className="app_container-content user-content">
 				<Breadcrumb>
-					<Item><Link to="/admin">Home</Link></Item>
-					<Item><Link to="/admin/user">Users</Link></Item>
+					<Item>
+						<Link to="/admin">Home</Link>
+					</Item>
+					<Item>
+						<Link to="/admin/user">Users</Link>
+					</Item>
 					<Item>User profile</Item>
 				</Breadcrumb>
 				<div className="d-flex justify-content-between">
 					<div className="d-flex align-items-center user-details">
-						<ReactSVG path={ICONS.USER_DETAILS_ICON} wrapperClassName="user-icon" />
+						<ReactSVG
+							path={ICONS.USER_DETAILS_ICON}
+							wrapperClassName="user-icon"
+						/>
 						<div>User Id: {userInformation.id}</div>
 						<div className="user-seperator"></div>
 						<div>{userInformation.email}</div>
@@ -219,11 +223,11 @@ class UserContent extends Component {
 							{/*/>*/}
 							<Transactions
 								initialData={{
-									user_id: id
+									user_id: id,
 								}}
 								queryParams={{
 									status: true,
-									type: 'deposit'
+									type: 'deposit',
 								}}
 								hideUserColumn={true}
 							/>
@@ -233,11 +237,11 @@ class UserContent extends Component {
 						<TabPane tab="Withdrawal" key="withdrawals">
 							<Transactions
 								initialData={{
-									user_id: id
+									user_id: id,
 								}}
 								queryParams={{
 									status: true,
-									type: "withdrawal"
+									type: 'withdrawal',
 								}}
 								hideUserColumn={true}
 							/>

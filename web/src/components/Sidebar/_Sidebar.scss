@@ -16,9 +16,9 @@
 	.sidebar-notifications {
 		flex: 1;
 		overflow-y: scroll;
-		
+
 		.sidebar-title {
-			font-size: $font-size-subhead3;;
+			font-size: $font-size-subhead3;
 			font-weight: bold;
 		}
 	}
@@ -78,7 +78,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	background-color: $bottom-bar--background;
 	color: white;
 	width: 100%;
-    padding: 0.5rem 0.5rem 0.8rem 0.5rem;
+	padding: 0.5rem 0.5rem 0.8rem 0.5rem;
 	.sidebar-bottom-button {
 		flex: 1;
 		&.active {
@@ -87,7 +87,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				svg {
 					fill: $bottom-bar--background;
 					stroke: $bottom-bar--background;
-					.post-icon{
+					.post-icon {
 						fill: $bottom-bar--background;
 						stroke: $bottom-bar--background;
 					}
@@ -97,7 +97,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 		.bottom-bar-text {
 			font-size: 12px;
 			text-align: center;
-			margin-top: -17PX;
+			margin-top: -17px;
 			font-weight: lighter;
 			color: $colors-deactivate-color2;
 			white-space: nowrap;
@@ -142,7 +142,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	}
 }
 
-@media screen and ( max-height: 600px ) {
+@media screen and (max-height: 600px) {
 	.sidebar-container {
 		.sidebar_hub-wrapper {
 			max-height: 35rem !important;

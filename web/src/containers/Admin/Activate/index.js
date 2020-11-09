@@ -18,7 +18,11 @@ const onSubmit = (refreshData) => (values) => {
 
 const OTP = ({ user_id, activated, refreshData }) => (
 	<div>
-		<span>{activated ? 'This account is active' : 'This account is deactivated (frozen)'}</span>
+		<span>
+			{activated
+				? 'This account is active'
+				: 'This account is deactivated (frozen)'}
+		</span>
 		<Divider />
 		<Form
 			onSubmit={() => onSubmit(refreshData)({ user_id, activated: !activated })}

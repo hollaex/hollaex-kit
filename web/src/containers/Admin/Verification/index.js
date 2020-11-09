@@ -4,7 +4,7 @@ import {
 	performVerificationLevelUpdate,
 	performUserRoleUpdate,
 	verifyData,
-	revokeData
+	revokeData,
 } from './actions';
 import { Card, Button, Modal } from 'antd';
 import { ClockCircleFilled } from '@ant-design/icons';
@@ -23,10 +23,7 @@ import UploadIds from '../UploadIds';
 import './index.css';
 
 import { isSupport, isSupervisor } from '../../../utils/token';
-import {
-	formatTimestampGregorian,
-	DATETIME_FORMAT,
-} from '../../../utils/date';
+import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
 
 // const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
 // const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
@@ -53,23 +50,21 @@ class Verification extends Component {
 		super(props);
 		this.state = {
 			note: '',
-			isConfirm: false
+			isConfirm: false,
 		};
 	}
 	onSubmit = (refreshData) => (values) => {
 		// redux form set numbers as string, se we have to parse them
 		const postValues = {
 			user_id: this.props.user_id,
-			verification_level: parseInt(values.verification_level, 10)
+			verification_level: parseInt(values.verification_level, 10),
 		};
 		return performVerificationLevelUpdate(postValues)
 			.then(() => {
 				refreshData(postValues);
 			})
 			.catch((err) => {
-				let error = err && err.data
-					? err.data.message
-					: err.message;
+				let error = err && err.data ? err.data.message : err.message;
 				throw new SubmissionError({ _error: error });
 			});
 	};
@@ -79,17 +74,15 @@ class Verification extends Component {
 		const postData = {
 			id_data: {
 				...id_data,
-				status: values.hasOwnProperty('id_data') ? values.id_data : 3
-			}
+				status: values.hasOwnProperty('id_data') ? values.id_data : 3,
+			},
 		};
 		return verifyData(values)
 			.then(() => {
 				refreshData(postData);
 			})
 			.catch((err) => {
-				let error = err && err.data
-					? err.data.message
-					: err.message;
+				let error = err && err.data ? err.data.message : err.message;
 				throw new SubmissionError({ _error: error });
 			});
 	};
@@ -99,8 +92,8 @@ class Verification extends Component {
 		const postData = {
 			id_data: {
 				...id_data,
-				status: values.hasOwnProperty('id_data') ? 2 : bank_account.provided
-			}
+				status: values.hasOwnProperty('id_data') ? 2 : bank_account.provided,
+			},
 		};
 		return revokeData(values)
 			.then(() => {
@@ -108,9 +101,7 @@ class Verification extends Component {
 				this.handleClose();
 			})
 			.catch((err) => {
-				let error = err && err.data
-					? err.data.message
-					: err.message;
+				let error = err && err.data ? err.data.message : err.message;
 				throw new SubmissionError({ _error: error });
 			});
 	};
@@ -122,7 +113,7 @@ class Verification extends Component {
 	onRoleChange = (refreshData) => (values) => {
 		const postValues = {
 			user_id: this.props.user_id,
-			role: values
+			role: values,
 		};
 		return performUserRoleUpdate(postValues)
 			.then((response) => {
@@ -130,9 +121,7 @@ class Verification extends Component {
 				refreshData({ ...res, user_id: this.props.user_id });
 			})
 			.catch((err) => {
-				let error = err && err.data
-					? err.data.message
-					: err.message;
+				let error = err && err.data ? err.data.message : err.message;
 				throw new SubmissionError({ _error: error });
 			});
 	};
@@ -152,7 +141,7 @@ class Verification extends Component {
 			userInformation,
 			refreshData,
 			isUpload,
-			closeUpload
+			closeUpload,
 			// constants
 		} = this.props;
 		const { id, id_data } = userInformation;
@@ -208,8 +197,8 @@ class Verification extends Component {
 							}}
 						/>
 					</Card> */}
-					{id_data.status === 3
-						? <div className="verified-container">
+					{id_data.status === 3 ? (
+						<div className="verified-container">
 							<p>Type: {id_data.type}</p>
 							<p>Number: {id_data.number}</p>
 							{id_data.issued_date && (
@@ -231,83 +220,81 @@ class Verification extends Component {
 								</p>
 							)}
 						</div>
-						: id_data.status === 1
-							? (
-								<Card
-									title={
-										<div>
-											<ClockCircleFilled style={{ color: '#F28041', marginRight: '5px' }} />
-											Pending ID data
-										</div>
-									}
-									style={{ width: 300 }}
-								>
-									<p>Type: {id_data.type}</p>
-									<p>Number: {id_data.number}</p>
-									{id_data.issued_date && (
-										<p>
-											Issue date:{' '}
-											{formatTimestampGregorian(
-												id_data.issued_date,
-												DATETIME_FORMAT
-											)}{' '}
-										</p>
-									)}
-									{id_data.expiration_date && (
-										<p>
-											Expire date:{' '}
-											{formatTimestampGregorian(
-												id_data.expiration_date,
-												DATETIME_FORMAT
-											)}{' '}
-										</p>
-									)}
-									<div className="verification_data_container--actions">
-										{(!isSupport() || !isSupervisor()) &&
-											id_data.status === 1 && (
-												<div>
-													<Button
-														// onSubmit={() =>
-														// 	this.onRevoke(refreshData)({
-														// 		user_id: id,
-														// 		message: this.state.note
-														// 	})
-														// }
-														// buttonText={'Reject'}
-														type="primary"
-														size="small"
-														danger
-														onClick={this.handleConfirmation}
-													>
-														Reject
-													</Button>
-													{/* <Input.TextArea
+					) : id_data.status === 1 ? (
+						<Card
+							title={
+								<div>
+									<ClockCircleFilled
+										style={{ color: '#F28041', marginRight: '5px' }}
+									/>
+									Pending ID data
+								</div>
+							}
+							style={{ width: 300 }}
+						>
+							<p>Type: {id_data.type}</p>
+							<p>Number: {id_data.number}</p>
+							{id_data.issued_date && (
+								<p>
+									Issue date:{' '}
+									{formatTimestampGregorian(
+										id_data.issued_date,
+										DATETIME_FORMAT
+									)}{' '}
+								</p>
+							)}
+							{id_data.expiration_date && (
+								<p>
+									Expire date:{' '}
+									{formatTimestampGregorian(
+										id_data.expiration_date,
+										DATETIME_FORMAT
+									)}{' '}
+								</p>
+							)}
+							<div className="verification_data_container--actions">
+								{(!isSupport() || !isSupervisor()) && id_data.status === 1 && (
+									<div>
+										<Button
+											// onSubmit={() =>
+											// 	this.onRevoke(refreshData)({
+											// 		user_id: id,
+											// 		message: this.state.note
+											// 	})
+											// }
+											// buttonText={'Reject'}
+											type="primary"
+											size="small"
+											danger
+											onClick={this.handleConfirmation}
+										>
+											Reject
+										</Button>
+										{/* <Input.TextArea
 														rows={4}
 														value={this.state.note}
 														onChange={this.handleNoteChange}
 													/> */}
-												</div>
-											)}
-										{id_data.status === 1 && (
-											<IDForm
-												onSubmit={() =>
-													this.onVerify(refreshData)({
-														user_id: id
-													})
-												}
-												buttonText={'Approve'}
-												small
-											/>
-										)}
 									</div>
-								</Card>
-							)
-							: null
-					}
+								)}
+								{id_data.status === 1 && (
+									<IDForm
+										onSubmit={() =>
+											this.onVerify(refreshData)({
+												user_id: id,
+											})
+										}
+										buttonText={'Approve'}
+										small
+									/>
+								)}
+							</div>
+						</Card>
+					) : null}
 				</div>
 				<div className="verification_data_container">
 					<DataDisplay
-						className={"d-flex flex-wrap"}
+						className={'d-flex flex-wrap'}
 						data={userImages}
 						renderRow={renderRowImages}
 					/>
@@ -318,37 +305,34 @@ class Verification extends Component {
 					/> */}
 				</div>
 				<Modal
-					title={
-						this.state.isConfirm
-							? 'Reject ID'
-							: 'Upload files'
-					}
+					title={this.state.isConfirm ? 'Reject ID' : 'Upload files'}
 					width={this.state.isConfirm ? 520 : 350}
 					visible={this.state.isConfirm || isUpload}
 					footer={null}
 					onCancel={this.handleClose}
 				>
-					{this.state.isConfirm
-						? <div className="verification-confirm-modal">
+					{this.state.isConfirm ? (
+						<div className="verification-confirm-modal">
 							<p>Are you sure you want to reject the ID?</p>
 							<IDRevokeForm
 								fields={{
 									message: {
 										type: 'textarea',
-										label: 'Reason (this will be sent to the user)'
-									}
+										label: 'Reason (this will be sent to the user)',
+									},
 								}}
 								onSubmit={(formProps) => {
 									this.onRevoke(refreshData)({
 										user_id: id,
-										message: formProps.message
+										message: formProps.message,
 									});
 								}}
 								buttonText="Confirm"
 								small
 							/>
 						</div>
-						: <div>
+					) : (
+						<div>
 							<p>Upload ID supporting files to user database</p>
 							<UploadIds
 								user_id={id}
@@ -356,7 +340,7 @@ class Verification extends Component {
 								closeUpload={closeUpload}
 							/>
 						</div>
-					}
+					)}
 				</Modal>
 			</div>
 		);
@@ -364,7 +348,7 @@ class Verification extends Component {
 }
 
 Verification.defaultProps = {
-	verificationInitialValues: {}
+	verificationInitialValues: {},
 };
 
 export default Verification;

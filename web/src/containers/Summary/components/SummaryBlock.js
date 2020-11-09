@@ -11,25 +11,23 @@ const SummaryBlock = (props) => {
 		title,
 		wrapperClassname = '',
 		secondaryTitle,
-		children
+		children,
 	} = props;
-	
+
 	return (
 		<div className={classnames(wrapperClassname, 'summary-block_wrapper')}>
 			<div className="d-flex align-items-center mb-2">
 				<Image
-				    iconId={iconId}
-				    icon={icon}
-						alt={title}
-				    wrapperClassName="summary-title-icon"
+					iconId={iconId}
+					icon={icon}
+					alt={title}
+					wrapperClassName="summary-title-icon"
 				/>
 				<EditWrapper stringId={stringId}>
 					<div className="summary-block-title">{title}</div>
 				</EditWrapper>
 				{secondaryTitle && (
-					<div className="summary-block-secondaryTitle">
-						: {secondaryTitle}
-					</div>
+					<div className="summary-block-secondaryTitle">: {secondaryTitle}</div>
 				)}
 			</div>
 			{children}

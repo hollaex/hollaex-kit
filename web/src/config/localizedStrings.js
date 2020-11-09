@@ -6,10 +6,10 @@ import fa from './lang/fa';
 import ar from './lang/ar';
 
 export const content = {
-  en,
-  ko,
-  fa,
-  ar,
+	en,
+	ko,
+	fa,
+	ar,
 };
 
 const strings = new LocalizedStrings(content);

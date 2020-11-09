@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {  playBackgroundAudioNotification } from '../utils/utils';
+import { playBackgroundAudioNotification } from '../utils/utils';
 
 const QUICK_TRADE = 'QUICK_TRADE';
 const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
@@ -16,41 +16,41 @@ export const ORDERBOOK_CONSTANTS = {
 	TRADE_QUOTE_REQUEST_REJECTED: `${TRADE_QUOTE_REQUEST}_REJECTED`,
 	TRADE_QUOTE_PERFORM_PENDING: `${TRADE_QUOTE_PERFORM}_PENDING`,
 	TRADE_QUOTE_PERFORM_FULFILLED: `${TRADE_QUOTE_PERFORM}_FULFILLED`,
-	TRADE_QUOTE_PERFORM_REJECTED: `${TRADE_QUOTE_PERFORM}_REJECTED`
+	TRADE_QUOTE_PERFORM_REJECTED: `${TRADE_QUOTE_PERFORM}_REJECTED`,
 };
 
 export function getOrderbook() {
 	return {
 		type: 'GET_ORDERBOOK',
-		payload: axios.get('/orderbooks')
+		payload: axios.get('/orderbooks'),
 	};
 }
 
 export function setOrderbook(orderbook) {
 	return {
 		type: 'SET_ORDERBOOK',
-		payload: orderbook // set only for btc at the moment
+		payload: orderbook, // set only for btc at the moment
 	};
 }
 
 export function setOrderbooks(orderbooks) {
 	return {
 		type: 'SET_ORDERBOOKS_DATA',
-		payload: orderbooks
+		payload: orderbooks,
 	};
 }
 
 export function setTrades(trades) {
 	return {
 		type: 'SET_TRADES_DATA',
-		payload: trades
+		payload: trades,
 	};
 }
 
 export function getTrades() {
 	return {
 		type: 'GET_TRADES',
-		payload: axios.get('/trade')
+		payload: axios.get('/trade'),
 	};
 }
 
@@ -59,42 +59,43 @@ export function addTrades(symbol, trades) {
 		type: 'ADD_TRADES',
 		payload: {
 			symbol,
-			trades
-		}
+			trades,
+		},
 	};
 }
 
 export const changeSymbol = (symbol) => ({
 	type: 'CHANGE_SYMBOL',
 	payload: {
-		symbol
-	}
+		symbol,
+	},
 });
 
 export const requestQuickTrade = (data = {}) => {
 	if (!data.size) {
 		return {
-			type: ORDERBOOK_CONSTANTS.QUICK_TRADE_CANCEL
+			type: ORDERBOOK_CONSTANTS.QUICK_TRADE_CANCEL,
 		};
 	}
 	return (dispatch) => {
 		dispatch({
-			type: ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING
+			type: ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING,
 		});
 		axios
 			.post('/quick-trade', data)
 			.then((body) => {
 				dispatch({
 					type: ORDERBOOK_CONSTANTS.QUICK_TRADE_FULFILLED,
-					payload: body.data
+					payload: body.data,
 				});
 			})
 			.catch((err) => {
 				dispatch({
 					type: ORDERBOOK_CONSTANTS.QUICK_TRADE_REJECTED,
-					payload: err.response && err.response.data
-						? err.response.data.message
-						: err.message
+					payload:
+						err.response && err.response.data
+							? err.response.data.message
+							: err.message,
 				});
 			});
 	};
@@ -103,19 +104,19 @@ export const requestQuickTrade = (data = {}) => {
 export const requestQuote = (data = {}) => {
 	if (!data.size) {
 		return {
-			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_CANCEL
+			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_CANCEL,
 		};
 	}
 	return (dispatch) => {
 		dispatch({
-			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_PENDING
+			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_PENDING,
 		});
 		axios
 			.post('/order/quote', data)
 			.then((body) => {
 				dispatch({
 					type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_FULFILLED,
-					payload: body.data
+					payload: body.data,
 				});
 			})
 			.catch((err) => {
@@ -126,8 +127,8 @@ export const requestQuote = (data = {}) => {
 						message:
 							err.response && err.response.data
 								? err.response.data.message
-								: err.message
-					}
+								: err.message,
+					},
 				});
 			});
 	};
@@ -136,21 +137,21 @@ export const requestQuote = (data = {}) => {
 export const executeQuote = (token, settings) => {
 	return (dispatch) => {
 		dispatch({
-			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING
+			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING,
 		});
 		axios
 			.post(`/order/quote/${token}`, {})
 			.then((body) => {
 				dispatch({
 					type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_FULFILLED,
-					payload: body.data
+					payload: body.data,
 				});
 				playBackgroundAudioNotification('quick_trade_complete', settings);
 			})
 			.catch((err) => {
 				dispatch({
 					type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_REJECTED,
-					payload: err.response ? err.response.data.message : err.message
+					payload: err.response ? err.response.data.message : err.message,
 				});
 			});
 	};
@@ -159,6 +160,6 @@ export const executeQuote = (token, settings) => {
 export const setPairsData = (pairs) => ({
 	type: 'SET_PAIRS_DATA',
 	payload: {
-		pairs
-	}
+		pairs,
+	},
 });

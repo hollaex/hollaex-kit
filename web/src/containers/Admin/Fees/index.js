@@ -9,7 +9,7 @@ class BlockchainTransaction extends Component {
 	state = {
 		data: {},
 		loading: true,
-		error: ''
+		error: '',
 	};
 
 	componentWillMount() {
@@ -18,19 +18,19 @@ class BlockchainTransaction extends Component {
 				.then((data) => {
 					this.setState({
 						loading: false,
-						data
+						data,
 					});
 				})
 				.catch((error) => {
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						loading: false,
-						error: message
+						error: message,
 					});
 				});
 		} else {
 			this.setState({
-				loading: false
+				loading: false,
 			});
 		}
 	}
@@ -40,8 +40,9 @@ class BlockchainTransaction extends Component {
 		if (loading) return <Spin size="large" />;
 		return (
 			<div className="app_container-content">
-				{loading && <div />
-				// <Spin size="large" />
+				{
+					loading && <div />
+					// <Spin size="large" />
 				}
 				{error && (
 					<Alert

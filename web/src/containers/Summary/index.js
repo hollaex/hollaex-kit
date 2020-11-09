@@ -18,13 +18,13 @@ import {
 	// openContactForm,
 	logoutconfirm,
 	setNotification,
-	NOTIFICATIONS
+	NOTIFICATIONS,
 } from '../../actions/appActions';
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
-	SHOW_TOTAL_ASSETS
+	SHOW_TOTAL_ASSETS,
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -34,7 +34,7 @@ import {
 	calculateBalancePrice,
 	donutFormatPercentage,
 	calculatePrice,
-	calculatePricePercentage
+	calculatePricePercentage,
 } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 import { getUserReferralCount } from '../../actions/userAction';
@@ -45,7 +45,7 @@ class Summary extends Component {
 		currentTradingAccount: this.props.verification_level,
 		chartData: [],
 		totalAssets: '',
-		lastMonthVolume: 0
+		lastMonthVolume: 0,
 	};
 
 	componentDidMount() {
@@ -106,7 +106,7 @@ class Summary extends Component {
 	onFeesAndLimits = (tradingAccount, discount) => {
 		this.props.openFeesStructureandLimits({
 			verification_level: tradingAccount,
-			discount: discount
+			discount: discount,
 		});
 	};
 
@@ -130,7 +130,7 @@ class Summary extends Component {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculatePrice(
 				balance[`${symbol}_balance`],
-        currency
+				currency
 			);
 			const balancePercent = calculatePricePercentage(
 				currencyBalance,
@@ -140,13 +140,13 @@ class Summary extends Component {
 				...coins[currency],
 				balance: balancePercent,
 				balanceFormat: formatToCurrency(currencyBalance, min),
-				balancePercentage: donutFormatPercentage(balancePercent)
+				balancePercentage: donutFormatPercentage(balancePercent),
 			});
 		});
 
 		this.setState({
 			chartData: data,
-			totalAssets: formatAverage(formatBaseAmount(totalAssets))
+			totalAssets: formatAverage(formatBaseAmount(totalAssets)),
 		});
 	};
 
@@ -155,14 +155,14 @@ class Summary extends Component {
 		if (user.verification_level) {
 			this.setState({
 				currentTradingAccount,
-				selectedAccount: user.verification_level
+				selectedAccount: user.verification_level,
 			});
 		}
 	};
 
 	onInviteFriends = () => {
 		this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, {
-			affiliation_code: this.props.user.affiliation_code
+			affiliation_code: this.props.user.affiliation_code,
 		});
 	};
 
@@ -180,17 +180,17 @@ class Summary extends Component {
 			isValidBase,
 			verification_level,
 			config_level,
-			affiliation
+			affiliation,
 		} = this.props;
 		const {
 			selectedAccount,
 			chartData,
 			totalAssets,
-			lastMonthVolume
+			lastMonthVolume,
 		} = this.state;
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		let traderAccTitle = STRINGS.formatString(
-			STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"],
+			STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 			verification_level
 		);
 		return (
@@ -198,7 +198,7 @@ class Summary extends Component {
 				{!isMobile && (
 					<IconTitle
 						stringId="SUMMARY.TITLE"
-						text={`${STRINGS["SUMMARY.TITLE"]}`}
+						text={`${STRINGS['SUMMARY.TITLE']}`}
 						textType="title"
 					/>
 				)}
@@ -261,7 +261,7 @@ class Summary extends Component {
 							>
 								<SummaryBlock
 									stringId="SUMMARY.ACCOUNT_ASSETS"
-									title={STRINGS["SUMMARY.ACCOUNT_ASSETS"]}
+									title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
 									secondaryTitle={
 										SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (
 											<span>
@@ -319,7 +319,7 @@ const mapStateToProps = (state) => ({
 	isValidBase: state.app.isValidBase,
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -329,10 +329,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch)
+	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Summary);
+export default connect(mapStateToProps, mapDispatchToProps)(Summary);

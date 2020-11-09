@@ -22,5 +22,5 @@ Tooltip.defaultProps = {
 	className: '',
 	text: 'Tooltip text',
 	placement: 'bottom',
-	destroyTooltipOnHide: true
+	destroyTooltipOnHide: true,
 };

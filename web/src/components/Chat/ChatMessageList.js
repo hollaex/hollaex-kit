@@ -10,7 +10,7 @@ import { isMobile } from 'react-device-detect';
 
 class ChatMessageList extends Component {
 	state = {
-		containerHeight: 0
+		containerHeight: 0,
 	};
 
 	componentDidUpdate(prevProps) {
@@ -40,7 +40,7 @@ class ChatMessageList extends Component {
 			this.scrollbarsRef.container.clientHeight < this.state.containerHeight
 		) {
 			this.setState({
-				containerHeight: this.scrollbarsRef.container.clientHeight
+				containerHeight: this.scrollbarsRef.container.clientHeight,
 			});
 			this.scrollbarsRef.scrollToBottom();
 		}
@@ -58,7 +58,7 @@ class ChatMessageList extends Component {
 
 	componentDidMount() {
 		this.setState({
-			containerHeight: this.scrollbarsRef.container.clientHeight
+			containerHeight: this.scrollbarsRef.container.clientHeight,
 		});
 		if (isMobile) {
 			this.scrollbarsRef.scrollToBottom();
@@ -125,7 +125,7 @@ class ChatMessageList extends Component {
 			usernameInitalized,
 			removeMessage,
 			is_hap,
-			onCloseEmoji
+			onCloseEmoji,
 		} = this.props;
 
 		return (
@@ -143,7 +143,7 @@ class ChatMessageList extends Component {
 						style={{
 							...style,
 							backgroundColor: '#333333',
-							opacity: '1'
+							opacity: '1',
 						}}
 					/>
 				)}
@@ -162,7 +162,7 @@ class ChatMessageList extends Component {
 								messageType,
 								message,
 								timestamp,
-								verification_level
+								verification_level,
 							},
 							index
 						) => (
@@ -193,7 +193,7 @@ class ChatMessageList extends Component {
 
 const mapStateToProps = (store) => ({
 	// activeTheme: store.app.theme,
-	is_hap: store.user.is_hap
+	is_hap: store.user.is_hap,
 });
 
 export default connect(mapStateToProps)(ChatMessageList);

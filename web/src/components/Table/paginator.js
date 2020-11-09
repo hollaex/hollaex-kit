@@ -9,7 +9,7 @@ const renderPageCount = (currentPage, totalPages) => {
 		return (
 			<div>
 				{STRINGS.formatString(
-					STRINGS["PAGINATOR_FORMAT"],
+					STRINGS['PAGINATOR_FORMAT'],
 					currentPage,
 					totalPages
 				)}
@@ -23,7 +23,7 @@ const Paginator = ({
 	goToNextPage,
 	currentPage,
 	count,
-	pageSize
+	pageSize,
 }) => {
 	const totalPages = Math.ceil(count / pageSize);
 	const previousIsDisabled = currentPage <= 1;
@@ -34,15 +34,15 @@ const Paginator = ({
 				onClick={!previousIsDisabled ? goToPreviousPage : undefined}
 				className={classnames({
 					disabled: previousIsDisabled,
-					pointer: !previousIsDisabled
+					pointer: !previousIsDisabled,
 				})}
 			>
 				<ActionNotification
 					stringId="PREVIOUS_PAGE"
-					text={STRINGS["PREVIOUS_PAGE"]}
+					text={STRINGS['PREVIOUS_PAGE']}
 					status="information"
 					iconId="BLUE_ARROW_LEFT"
-					iconPath={ICONS["BLUE_ARROW_LEFT"]}
+					iconPath={ICONS['BLUE_ARROW_LEFT']}
 					textPosition="left"
 					iconPosition="left"
 					rotateIfLtr={true}
@@ -53,15 +53,15 @@ const Paginator = ({
 				onClick={!nextIsDisabled ? goToNextPage : undefined}
 				className={classnames({
 					disabled: nextIsDisabled,
-					pointer: !nextIsDisabled
+					pointer: !nextIsDisabled,
 				})}
 			>
 				<ActionNotification
 					stringId="NEXT_PAGE"
-					text={STRINGS["NEXT_PAGE"]}
+					text={STRINGS['NEXT_PAGE']}
 					status="information"
 					iconId="BLUE_ARROW_RIGHT"
-					iconPath={ICONS["BLUE_ARROW_RIGHT"]}
+					iconPath={ICONS['BLUE_ARROW_RIGHT']}
 					rotateIfRtl={true}
 				/>
 			</div>

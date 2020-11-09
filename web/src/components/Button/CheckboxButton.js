@@ -5,9 +5,9 @@ import Image from 'components/Image';
 
 const renderCheckboxImage = (checked, ICONS = {}) => (
 	<Image
-	    iconId={checked ? "SUCCESS_BLACK" : "SECURE"}
-	    icon={checked ? ICONS["SUCCESS_BLACK"] : ICONS["SECURE"]}
-	    wrapperClassName="checkbutton-input-wrapper--image"
+		iconId={checked ? 'SUCCESS_BLACK' : 'SECURE'}
+		icon={checked ? ICONS['SUCCESS_BLACK'] : ICONS['SECURE']}
+		wrapperClassName="checkbutton-input-wrapper--image"
 	/>
 );
 
@@ -44,9 +44,7 @@ const CheckboxButton = ({
 				renderCheckboxImage(checked, icons)
 			)}
 			<span className="checkbutton-input-wrapper--label">
-				<EditWrapper stringId={stringId}>
-					{label}
-				</EditWrapper>
+				<EditWrapper stringId={stringId}>{label}</EditWrapper>
 			</span>
 		</div>
 		{children && <div className="checkbutton-content-wrapper">{children}</div>}

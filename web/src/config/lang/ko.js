@@ -4,8 +4,8 @@ import flatten from 'flat';
 
 const options = { safe: true };
 const nestedContent = {
-  APP_TITLE: 'HollaEx',
-  APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
+	APP_TITLE: 'HollaEx',
+	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',
@@ -74,13 +74,12 @@ const nestedContent = {
 		SECTION_3_CARD_6_TITLE: 'KYC 통합',
 		SECTION_3_CARD_6_TEXT:
 			'유연하고 통합가능한 모듈로 KYC 및 사용자 인증방법을 다른 관할구역에서 적용할 수 있습니다.',
-		SECTION_3_BUTTON_1: '데모 보기'
+		SECTION_3_BUTTON_1: '데모 보기',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_COPYRIGHT:
-			'Powered by bitHolla',
+		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -111,12 +110,12 @@ const nestedContent = {
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: '트위터',
-			SECTION_6_LINK_2: '텔레그램'
+			SECTION_6_LINK_2: '텔레그램',
 		},
 		XHT_DESCRIPTION:
 			'HollaEx는 비트홀라에서 개발 및 관리하는 HollaEx Kit기술에 기반하여 만들어진 오픈 암호화폐 거래소입니다. HollaEx 소프트웨어 Kit으로 만들어진 실시간 운영되고있는 거래소로 누구나 이와 같은 거래소를 직접 운영할 수 있다는 것을 보여주는 예입니다. 자신만의 거래소를 시작하기위해 {1}를 참조하시기바랍니다. HollaEx토큰은 HollaEx의 네이티브 토큰으로 웨이브옥션 시스템을 통해 HollaEx거래소에서 거래됩니다. 옥션이 어떻게 작동하는지 자세한 내용은 {0}에서 확인하실 수 있습니다.',
 		CLICK_HERE: '이곳을 클릭하세요.',
-		VISIT_HERE: '방문하기'
+		VISIT_HERE: '방문하기',
 	},
 	ACCOUNTS: {
 		TITLE: '계정',
@@ -128,7 +127,7 @@ const nestedContent = {
 		TAB_WALLET: '지갑',
 		TAB_SUMMARY: '마이페이지',
 		TAB_API: 'API',
-		TAB_SIGNOUT: '로그아웃'
+		TAB_SIGNOUT: '로그아웃',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
@@ -137,7 +136,7 @@ const nestedContent = {
 		CATEGORY_PLACEHOLDER: '회원님에게 해당하는 카테고리를 선택하시기바랍니다.',
 		INTRODUCTION_LABEL: '자기소개',
 		INTRODUCTION_PLACEHOLDER:
-			'베이스가 어디십니까? 거래소 운영에 관심이 있으십니까?'
+			'베이스가 어디십니까? 거래소 운영에 관심이 있으십니까?',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: '문의 유형',
@@ -149,7 +148,7 @@ const nestedContent = {
 			OPTION_BUG: '오류 보고',
 			OPTION_PERSONAL_INFO: '개인정보 변경', // ToDo:
 			OPTION_BANK_TRANSFER: '은행송금', // new
-			OPTION_REQUEST: 'HollaEx Exchange 초대요청' // new
+			OPTION_REQUEST: 'HollaEx Exchange 초대요청', // new
 		},
 		SUBJECT_LABEL: '문의 제목',
 		SUBJECT_PLACEHOLDER: '문의 제목을 작성하여 주시기바랍니다.',
@@ -161,7 +160,7 @@ const nestedContent = {
 		SUCCESS_MESSAGE: '고객센터로 이메일이 전송되었습니다.',
 		SUCCESS_TITLE: '전송완료',
 		SUCCESS_MESSAGE_1: '문의내용이 고객 센터로 전송되었습니다.',
-		SUCCESS_MESSAGE_2: '영업일기준 1~3일이 소요됩니다.'
+		SUCCESS_MESSAGE_2: '영업일기준 1~3일이 소요됩니다.',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
@@ -169,20 +168,20 @@ const nestedContent = {
 			DESTINATION_TAG: '{0} 데스티네이션 태그(Destination Tag)', // new
 			BTC: '비트코인 입금 주소',
 			ETH: '이더리움 입금 주소',
-			BCH: '비트코인캐시 입금 주소'
+			BCH: '비트코인캐시 입금 주소',
 		},
 		INCREASE_LIMIT: '한도 증액이 필요하십니까?',
 		QR_CODE:
 			'회원님에게 할당된 입금 전용주소로 입금을 위해 이 QR 코드를 스캔하실 수 있습니다.',
 		NO_DATA: '이용가능한 정보가 없습니다.',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: '{0} 로그인',
 		CANT_LOGIN: '로그인이 안되십니까?',
 		NO_ACCOUNT: '계정이 없으십니까?',
 		CREATE_ACCOUNT: '계정만들기',
-		HELP: 'Help'
+		HELP: 'Help',
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: '이메일',
@@ -190,7 +189,7 @@ const nestedContent = {
 		PASSWORD_LABEL: '비밀번호',
 		PASSWORD_PLACEHOLDER: '비밀번호 입력',
 		PASSWORD_REPEAT_LABEL: '비밀번호 확인',
-		PASSWORD_REPEAT_PLACEHOLDER: '비밀번호 확인'
+		PASSWORD_REPEAT_PLACEHOLDER: '비밀번호 확인',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: '로그인을 위해 OTP코드를 입력해주시기 바랍니다.',
@@ -213,7 +212,7 @@ const nestedContent = {
 		USER_EXIST: '이미 등록되어있는 이메일주소입니다.',
 		ACCEPT_TERMS: '이용약관 및 개인정보 보호 정책에 동의하지 않으셨습니다.',
 		STEP: '잘못된 값, step is {0}',
-		ONLY_NUMBERS: '숫자만 입력가능합니다.'
+		ONLY_NUMBERS: '숫자만 입력가능합니다.',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -227,8 +226,8 @@ const nestedContent = {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
 		},
 		GENERAL_TERMS: {
 			TITLE: 'General Terms of Service',
@@ -241,15 +240,15 @@ const nestedContent = {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
-		}
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
+		},
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
 			OKAY: 'Okay',
 			START_TRADING: '거래 시작하기',
-			SEE_HISTORY: '거래내역 보기'
+			SEE_HISTORY: '거래내역 보기',
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: '{0} 입금완료',
@@ -259,12 +258,12 @@ const nestedContent = {
 			INFORMATION_PENDING_1:
 				'거래를 시작하려면 {0}은 최소 1개의 확인이 필요합니다.',
 			INFORMATION_PENDING_2:
-				'입금이 완료되는데 약 10-30분이 소요되지만, 상황에 따라 지연될 수 있습니다. {0}이 블록체인상 확인이 완료되면 이메일을 보내드립니다.'
-		}
+				'입금이 완료되는데 약 10-30분이 소요되지만, 상황에 따라 지연될 수 있습니다. {0}이 블록체인상 확인이 완료되면 이메일을 보내드립니다.',
+		},
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: '요청을 보냈습니다.',
-		BUTTON_TEXT: 'Okay'
+		BUTTON_TEXT: 'Okay',
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: '인증번호를 입력하여 계속 진행하시기 바랍니다.',
@@ -273,14 +272,14 @@ const nestedContent = {
 		OTP_TITLE: '인증 번호',
 		OTP_HELP: '도움',
 		OTP_BUTTON: '확인',
-		ERROR_INVALID: 'OTP 번호가 유효하지 않습니다.'
+		ERROR_INVALID: 'OTP 번호가 유효하지 않습니다.',
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: '퀵트레이딩',
 		TOTAL_COST: '총 금액',
 		BUTTON: '{0} 주문 확인하기',
 		INPUT: '{0} {1}',
-		TRADE_TITLE: '{0} {1}' // quick buy
+		TRADE_TITLE: '{0} {1}', // quick buy
 	},
 	PREVIOUS_PAGE: '이전페이지',
 	NEXT_PAGE: '다음페이지',
@@ -291,27 +290,27 @@ const nestedContent = {
 		ORDERS_PLURAL: '주문',
 		ORDERS_SINGULAR: '주문',
 		HOLD_ORDERS:
-			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance'
+			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance',
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: '비밀번호 재설정',
 		SUBTITLE: `아래 계정의 비밀번호를 재설정하실 수 있습니다.`,
 		SUPPORT: '고객센터',
-		BUTTON: '재설정 링크 보내기'
+		BUTTON: '재설정 링크 보내기',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
 		TITLE: '비밀번호 재설정을 위한 이메일이 전송되었습니다.',
 		TEXT:
-			'이메일에 대한 계정이 등록되어있다면 재설정 지침이 포함된 메일을 받아보실 수 있습니다. 이메일을 확인하시어 링크를 따라 비밀번호 재설정을 완료하시기 바랍니다.'
+			'이메일에 대한 계정이 등록되어있다면 재설정 지침이 포함된 메일을 받아보실 수 있습니다. 이메일을 확인하시어 링크를 따라 비밀번호 재설정을 완료하시기 바랍니다.',
 	},
 	RESET_PASSWORD: {
 		TITLE: '새 비밀번호 설정',
 		SUBTITLE: '새 비밀번호 설정',
-		BUTTON: '새 비밀번호 설정'
+		BUTTON: '새 비밀번호 설정',
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: '새 비밀번호가 성공적으로 설정되었습니다.',
-		TEXT_2: '계속하려면 아래 로그인 버튼을 클릭하시기바랍니다.'
+		TEXT_2: '계속하려면 아래 로그인 버튼을 클릭하시기바랍니다.',
 	},
 	SIGN_UP: {
 		SIGNUP_TO: '{0}에 가입하기',
@@ -320,32 +319,32 @@ const nestedContent = {
 		HAVE_ACCOUNT: '이미 계정이 있으신가요?',
 		GOTO_LOGIN: '로그인 페이지로 이동',
 		AFFILIATION_CODE: '추천인코드(선택)',
-		AFFILIATION_CODE_PLACEHOLDER:'추천인코드입력',
+		AFFILIATION_CODE_PLACEHOLDER: '추천인코드입력',
 		TERMS: {
 			terms: '이용약관',
 			policy: '개인정보 처리방침',
-			text: '{0}과 {1}을 확인하였으며 이에 동의합니다'
-		}
+			text: '{0}과 {1}을 확인하였으며 이에 동의합니다',
+		},
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: '이메일 인증 링크가 전송되었습니다.',
 		TEXT_1: '전송된 이메일의 링크를 따라 인증을 진행하시기 바랍니다.',
 		TEXT_2:
-			'이메일을 받지 못했을 경우 스팸 메일함을 확인해주시기 바랍니다. 또한, 아래의 요청을 통해 이메일을 재전송하실 수 있습니다.'
+			'이메일을 받지 못했을 경우 스팸 메일함을 확인해주시기 바랍니다. 또한, 아래의 요청을 통해 이메일을 재전송하실 수 있습니다.',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: '이메일인증 재전송하기',
-		BUTTON: '전송하기'
+		BUTTON: '전송하기',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: '이메일이 재전송되었습니다.',
 		TEXT_1:
-			'몇 분 후에도 인증 이메일을 받지 못하셨을 경우에는 아래로 연락해주시기 바랍니다.'
+			'몇 분 후에도 인증 이메일을 받지 못하셨을 경우에는 아래로 연락해주시기 바랍니다.',
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: '유효하지 않은 코드',
 		TEXT_1: '성공적으로 이메일 인증되었습니다.',
-		TEXT_2: '로그인을 진행해주시기 바랍니다.'
+		TEXT_2: '로그인을 진행해주시기 바랍니다.',
 	},
 	USER_VERIFICATION: {
 		INFO_TXT: '개인정보 및 계정 업그레이드 진행상황을 확인하실 수 있습니다.',
@@ -433,7 +432,7 @@ const nestedContent = {
 				GENDER_PLACEHOLDER: '성별을 선택해주시기바랍니다.',
 				GENDER_OPTIONS: {
 					MAN: '남성',
-					WOMAN: '여성'
+					WOMAN: '여성',
 				},
 				NATIONALITY_LABEL: '국적',
 				NATIONALITY_PLACEHOLDER: '신분증 상의 국적을 선택해 주시기 바랍니다.',
@@ -455,7 +454,7 @@ const nestedContent = {
 				PHONE_NUMBER_PLACEHOLDER: '휴대폰 번호를 입력해주시기 바랍니다.',
 				SMS_SEND: 'SMS보내기',
 				SMS_CODE_LABEL: 'SMS코드',
-				SMS_CODE_PLACEHOLDER: '전송된 SMS코드를 입력해주시기 바랍니다.'
+				SMS_CODE_PLACEHOLDER: '전송된 SMS코드를 입력해주시기 바랍니다.',
 			},
 			INFORMATION: {
 				TEXT:
@@ -467,8 +466,8 @@ const nestedContent = {
 				PHONE_VERIFICATION_TXT_1:
 					'휴대폰 번호를 인증하여 회원님의 입출금내역을 실시간으로 제공받을 수 있습니다.',
 				PHONE_VERIFICATION_TXT_2:
-					'선택사항: LAN전화번호를 공유하여 추가인증을 하실 수 있습니다.'
-			}
+					'선택사항: LAN전화번호를 공유하여 추가인증을 하실 수 있습니다.',
+			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
@@ -480,14 +479,14 @@ const nestedContent = {
 				PROOF_OF_RESIDENCY:
 					'현재 거주지 주소를 증명하는 증빙서류를 첨부해주시기 바랍니다.',
 				SELFIE_PHOTO_ID:
-					'메모가 부착된 신분증을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
+					'메모가 부착된 신분증을 들고 있는 본인의 사진을 첨부해주시기바랍니다.',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: '신분증 유형',
 				TYPE_PLACEHOLDER: '신분증 문서 유형을 선택해주시기바랍니다.',
 				TYPE_OPTIONS: {
 					ID: '주민등록증,신분증',
-					PASSPORT: '여권'
+					PASSPORT: '여권',
 				},
 				ID_NUMBER_LABEL: '여권번호',
 				ID_NUMBER_PLACEHOLDER: '여권번호를 입력해주시기바랍니다.',
@@ -505,7 +504,7 @@ const nestedContent = {
 				POR_PLACEHOLDER: '거주지를 증명하는 서류를 첨부해주시기바랍니다.',
 				SELFIE_PHOTO_ID_LABEL: '여권을 들고있는 본인의 사진',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'메모가 부착된 여권을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
+					'메모가 부착된 여권을 들고 있는 본인의 사진을 첨부해주시기바랍니다.',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -519,7 +518,7 @@ const nestedContent = {
 						'유효한 여권만 허용됩니다. 고품질의 사진 또는 스캔된 이미지를 제출해주시기바랍니다:',
 					WARNING_2:
 						'회원 본인의 문서가 맞는지 확인하시기 바랍니다. 이유를 불문하고 잘못되거나 위조된 문서를 사용할 시 법적처벌을 받게되며 계좌는 즉시 동결됩니다.',
-					WARNING_3: '여권을 거주지 증빙서류로 제출하실 수 없습니다.'
+					WARNING_3: '여권을 거주지 증빙서류로 제출하실 수 없습니다.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -535,7 +534,7 @@ const nestedContent = {
 					SECTION_2_LIST_ITEM_2: '공공요금 지로용지(전기, 수도, 인터넷 등)',
 					SECTION_2_LIST_ITEM_3: '예금증명서',
 					WARNING:
-						'신분증 상에 나타난 주소를 거주지 증빙서류로 사용할 수 없습니다.'
+						'신분증 상에 나타난 주소를 거주지 증빙서류로 사용할 수 없습니다.',
 				},
 				SELFIE: {
 					TITLE: '메모가 부착된 여권을 들고있는 본인의 사진',
@@ -547,16 +546,16 @@ const nestedContent = {
 					INSTRUCTION_3: '메모내용: 직접 쓴 ‘hollaex.com',
 					INSTRUCTION_4: '메모내용: 신청 날짜',
 					INSTRUCTION_5: '메모내용: 본인서명',
-					WARNING: '첨부된 여권과 일치하지 않을 경우 거절됩니다.'
-				}
-			}
+					WARNING: '첨부된 여권과 일치하지 않을 경우 거절됩니다.',
+				},
+			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
 				ACCOUNT_OWNER: '은행계좌에 등록된 성과 이름을 입력해주시기바랍니다.',
 				ACCOUNT_NUMBER: '은행계좌번호는 50자 이내로 적어주시기바랍니다.',
 				ACCOUNT_NUMBER_MAX_LENGTH: '은행계좌번호는 50자 제한이 있습니다.',
-				CARD_NUMBER: '카드번호 형식이 바르지않습니다.'
+				CARD_NUMBER: '카드번호 형식이 바르지않습니다.',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: '은행명',
@@ -566,15 +565,15 @@ const nestedContent = {
 				ACCOUNT_OWNER_LABEL: '예금주명',
 				ACCOUNT_OWNER_PLACEHOLDER: '예금주명을 입력하세요.',
 				CARD_NUMBER_LABEL: '은행카드번호',
-				CARD_NUMBER_PLACEHOLDER: '은행카드번호를 입력하세요.'
-			}
+				CARD_NUMBER_PLACEHOLDER: '은행카드번호를 입력하세요.',
+			},
 		},
 		WARNING: {
 			TEXT_1: '본인인증을 통해 아래와 같은 서비스를 이용하실 수 있습니다:',
 			LIST_ITEM_1: '출금 한도 증가',
 			LIST_ITEM_2: '입금 한도 증가',
-			LIST_ITEM_3: '낮은 수수료'
-		}
+			LIST_ITEM_3: '낮은 수수료',
+		},
 	},
 	USER_SETTINGS: {
 		TITLE_TEXT_1: '환경설정을 하실 수 있습니다.',
@@ -601,13 +600,13 @@ const nestedContent = {
 			TRADE_POPUPS: '주문 알림창',
 			POPUP_ORDER_CONFIRMATION: '주문 실행시 확인알림창',
 			POPUP_ORDER_COMPLETED: '주문 완료시 알림창',
-			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림창'
+			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림창',
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO: '하나의 주문이 완전히 채워질 경우 알림사운드재생',
 			ORDERS_PARTIAL_AUDIO:
 				'주문 중 하나가 부분적으로 채워질 경우 알림사운드재생',
-			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 대해 알림사운드재생'
+			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 대해 알림사운드재생',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -616,8 +615,8 @@ const nestedContent = {
 			TOMAN_ASSET: '근사값',
 			ADJUST: '(백분율 설정하기)',
 			ACTIVATE_RISK_MANAGMENT: '리스크관리 실행',
-			WARNING_POP_UP: '경고알림창'
-		}
+			WARNING_POP_UP: '경고알림창',
+		},
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: '나의 거래 히스토리',
@@ -627,7 +626,7 @@ const nestedContent = {
 		TEXT_DOWNLOAD: '기록 다운로드',
 		TRADES: '주문체결',
 		DEPOSITS: '입금',
-		WITHDRAWALS: '출금'
+		WITHDRAWALS: '출금',
 	},
 	ACCOUNT_SECURITY: {
 		OTP: {
@@ -636,11 +635,11 @@ const nestedContent = {
 			OTP_DISABLED: '2FA를 활성화 하시기바랍니다.',
 			ENABLED_TEXTS: {
 				TEXT_1: '로그인시 OTP가 요구됩니다.',
-				TEXT_2: '자금 출금시 OTP가 요구됩니다.'
+				TEXT_2: '자금 출금시 OTP가 요구됩니다.',
 			},
 			DIALOG: {
 				SUCCESS: '성공적으로 OTP가 활성화 되었습니다',
-				REVOKE: '성공적으로 OTP가 해지되었습니다.'
+				REVOKE: '성공적으로 OTP가 해지되었습니다.',
 			},
 			CONTENT: {
 				TITLE: '2단계 인증(2FA) 활성화',
@@ -656,56 +655,59 @@ const nestedContent = {
 				WARNING:
 					'2단계 인증(2FA) 설정을 적극권장합니다. 이를 통해 회원님의 자산의 보안이 크게 향상됩니다.',
 				ENABLE: '2단계 인증(2FA)  사용함',
-				DISABLE: '2단계 인증(2FA) 사용안함'
+				DISABLE: '2단계 인증(2FA) 사용안함',
 			},
 			FORM: {
 				PLACEHOLDER:
 					'Google Authenticator에서 제공된 OTP를 입력해주시기바랍니다.',
-				BUTTON: '2단계 인증(2FA)활성화'
-			}
+				BUTTON: '2단계 인증(2FA)활성화',
+			},
 		},
 		CHANGE_PASSWORD: {
 			TITLE: '비밀번호 변경',
 			ACTIVE: '활성화',
 			DIALOG: {
-				SUCCESS: '비밀번호가 성공적으로 변경되었습니다'
+				SUCCESS: '비밀번호가 성공적으로 변경되었습니다',
 			},
 			FORM: {
 				BUTTON: '비밀번호 변경',
 				CURRENT_PASSWORD: {
 					label: '현재 비밀번호',
-					placeholder: '현재 사용중인 비밀번호를 입력해주시기바랍니다.'
+					placeholder: '현재 사용중인 비밀번호를 입력해주시기바랍니다.',
 				},
 				NEW_PASSWORD: {
 					label: '새 비밀번호',
-					placeholder: '새 비밀번호를 입력해주시기바랍니다.'
+					placeholder: '새 비밀번호를 입력해주시기바랍니다.',
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: '새 비밀번호 확인',
-					placeholder: '새 비밀번호를 다시한번 입력해주시기바랍니다.'
-				}
-			}
-		}
+					placeholder: '새 비밀번호를 다시한번 입력해주시기바랍니다.',
+				},
+			},
+		},
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
-		limit: 'limit'
+		limit: 'limit',
 	},
 	TYPES: [
 		{ value: 'market', label: 'market' },
-		{ value: 'limit', label: 'limit' }
+		{ value: 'limit', label: 'limit' },
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
 		buy: '매수',
-		sell: '매도'
+		sell: '매도',
 	},
-	SIDES: [{ value: 'buy', label: '매수' }, { value: 'sell', label: '매도' }],
+	SIDES: [
+		{ value: 'buy', label: '매수' },
+		{ value: 'sell', label: '매도' },
+	],
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' },
-		{ value: false, label: 'off' }
+		{ value: false, label: 'off' },
 	],
 	SIZE: 'Size',
 	PRICE: 'Price',
@@ -747,7 +749,7 @@ const nestedContent = {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume'
+		v: 'Volume',
 	},
 	QUICK_TRADE: '퀵트레이딩',
 	PRO_TRADE: '프로트레이딩',
@@ -774,8 +776,7 @@ const nestedContent = {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Transaction fee',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaction fee',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -834,7 +835,7 @@ const nestedContent = {
 		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal is confirmed and sent.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'If you’d like to view your withdrawal please visit your withdrawal history page.',
-		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
+		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History',
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
 	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
@@ -918,12 +919,12 @@ const nestedContent = {
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
-		{ value: true, label: 'YES' }
+		{ value: true, label: 'YES' },
 	],
 	SETTINGS_THEME_LABEL: '사용자 인터페이스 테마', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'White' },
-		{ value: 'dark', label: 'Dark' }
+		{ value: 'dark', label: 'Dark' },
 	],
 	SETTING_BUTTON: '저장',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
@@ -941,7 +942,7 @@ const nestedContent = {
 		GENERATE_KEY: 'API키 생성하기',
 		ACTIVE: '활성화',
 		INACTIVE: '비활성화',
-		INVALID_LEVEL: '해당 기능에 접근하기 위해서는 레벨업그레이드가 필요합니다.' // TODO
+		INVALID_LEVEL: '해당 기능에 접근하기 위해서는 레벨업그레이드가 필요합니다.', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'API키 생성',
@@ -958,7 +959,7 @@ const nestedContent = {
 		SECRET_KEY_LABEL: '시크릿 키',
 		CREATED_TITLE: 'API키 복사하기',
 		CREATED_TEXT_1: '다시 확인하실 수 없습니다. API키를 복사해두시기 바랍니다.',
-		CREATED_TEXT_2: '비공개로 보관하시기바랍니다.'
+		CREATED_TEXT_2: '비공개로 보관하시기바랍니다.',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: '이름',
@@ -967,7 +968,7 @@ const nestedContent = {
 		CREATED: '생성된 날짜',
 		REVOKE: '해지',
 		REVOKED: '해지됨',
-		REVOKE_TOOLTIP: '토큰을 해지하려면 이중인증(2FA) 활성화가 필요합니다.' // TODO
+		REVOKE_TOOLTIP: '토큰을 해지하려면 이중인증(2FA) 활성화가 필요합니다.', // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: '채팅',
@@ -979,7 +980,7 @@ const nestedContent = {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: '메세지',
 		SIGN_UP_CHAT: '로그인하여 채팅하기',
 		JOIN_CHAT: '채팅 유저명 설정하기',
-		TROLLBOX: 'Trollbox ({0})' // new
+		TROLLBOX: 'Trollbox ({0})', // new
 	},
 	INVALID_USERNAME: '유저명은 3~15자로 영문소문자, 숫자, _만 사용가능합니다.',
 	USERNAME_TAKEN: '이미 사용중인 유저명입니다. 다시 시도하시기바랍니다.',
@@ -1006,7 +1007,7 @@ const nestedContent = {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: '무제한',
-		BLOCKED: '0'
+		BLOCKED: '0',
 	},
 	WALLET_ADDRESS_TITLE: '{0} 지갑 생성하기',
 	WALLET_ADDRESS_GENERATE: '발급',
@@ -1156,7 +1157,7 @@ const nestedContent = {
 		LEARN_MORE_WAVE_AUCTION: '웨이브옥션에 대해 자세히 알아보기', // new
 		WAVE_NUMBER: '웨이브 번호', // new
 		DISCOUNT: '( {0}% 할인 )', // new
-		MY_FEES_LIMITS: ' 나의 수수료와 한도' // ne
+		MY_FEES_LIMITS: ' 나의 수수료와 한도', // ne
 	},
 	REFERRAL_LINK: {
 		TITLE: '친구초대하기', // new
@@ -1176,7 +1177,7 @@ const nestedContent = {
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earn:', // new
 		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'APPLY' // new
+		APPLY_BUTTON: 'APPLY', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'HollaEx토큰 지분증명', // new
@@ -1186,7 +1187,7 @@ const nestedContent = {
 			'비슷한 방식으로 HollaEx 토큰을 담보로 웨이브옥션 기간동안 팔리지않은 XHT를 얻을 수 있습니다.', // new
 		INFO_TXT3:
 			'간단하게 dash.bitholla.com를 방문하여 당신의 거래소를 실행하고 이를 담보로 XHT를 무료로 받으세요.', // new
-		BUTTON_TXT: '자세히알아보기' // new
+		BUTTON_TXT: '자세히알아보기', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
@@ -1219,7 +1220,7 @@ const nestedContent = {
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: '최근 거래를 보기위해 로그인하세요.', //new
 		XHT_TRADE_TXT_2: '최근 거래 내역을 보기위해 {0} 할 수 있습니다.', //new
-		LOGIN_HERE: '로그인하기'
+		LOGIN_HERE: '로그인하기',
 	},
 	WAVES: {
 		// new
@@ -1227,7 +1228,7 @@ const nestedContent = {
 		NEXT_WAVE: 'Next Wave',
 		WAVE_AMOUNT: 'Amount in Wave',
 		FLOOR: 'Floor',
-		LAST_WAVE: 'Last wave'
+		LAST_WAVE: 'Last wave',
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1240,7 +1241,7 @@ const nestedContent = {
 		SYSTEM_UPDATE_DURATION: '1 hour',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
 	},
 	USER_LEVEL: '사용자 레벨', // new
 	LIMIT_AMOUNT: '한도액', // new
@@ -1271,10 +1272,10 @@ const nestedContent = {
 			'이 페이지는 포스트는 회원님의 거래소의 공지사항입니다!',
 		ANNOUNCEMENT_TXT_2: '{0}의 모든 지갑에 무료 XHT가 배포됩니다.',
 		LEARN_MORE: '더 알아보기',
-		APPLY_TODAY: '지금신청하기' // new
+		APPLY_TODAY: '지금신청하기', // new
 	},
 	OPEN_WALLET: '오픈 지갑', // new
-	AGO: 'ago' // new
+	AGO: 'ago', // new
 };
 
 const content = flatten(nestedContent, options);

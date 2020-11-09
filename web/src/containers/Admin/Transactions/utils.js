@@ -25,15 +25,15 @@ export const renderValidation = ({ status, completeDeposit, updatingItem }) =>
 			</Button>
 		</Tooltip>
 	) : (
-			<ButtonNotAvailable />
-		);
+		<ButtonNotAvailable />
+	);
 
 export const renderDismiss = ({
 	status,
 	dismissed,
 	rejected,
 	dismissDeposit,
-	dismissingItem
+	dismissingItem,
 }) =>
 	!status && !rejected ? (
 		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
@@ -47,8 +47,8 @@ export const renderDismiss = ({
 			</Button>
 		</Tooltip>
 	) : (
-			<ButtonNotAvailable />
-		);
+		<ButtonNotAvailable />
+	);
 
 export const renderUser = (id) => (
 	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
@@ -66,18 +66,18 @@ export const COLUMNS = (currency, type) => {
 			title: 'User Id',
 			dataIndex: 'user_id',
 			key: 'user_id',
-			render: renderUser
+			render: renderUser,
 		},
 		{
 			title: transactionTitle,
 			dataIndex: 'transaction_id',
-			key: 'transaction_id'
+			key: 'transaction_id',
 		},
 		// { title: 'Address', dataIndex: 'address', key: 'address' },
 		{ title: 'Type', dataIndex: 'type', key: 'type' },
 		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
 
-		{ title: 'Amount', dataIndex: 'amount', key: 'amount' }
+		{ title: 'Amount', dataIndex: 'amount', key: 'amount' },
 		// { title: 'Fee', dataIndex: 'fee', key: 'fee' },
 		// { title: 'Timestamp', dataIndex: 'created_at', key: 'created_at' },
 	];
@@ -90,7 +90,7 @@ export const SELECT_KEYS = (currency) => {
 	} else {
 		return [
 			{ value: 'transaction_id', label: 'Transaction ID' },
-			{ value: 'address', label: 'Address' }
+			{ value: 'address', label: 'Address' },
 		];
 	}
 };
@@ -102,7 +102,7 @@ export const renderRowContent = ({
 	fee,
 	created_at,
 	currency,
-	type
+	type,
 }) => {
 	return (
 		<div>

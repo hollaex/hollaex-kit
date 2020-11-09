@@ -10,7 +10,7 @@ const TabSelector = (props) => {
 				<div
 					key={`type-${index}`}
 					className={classnames('text-uppercase', 'text-center', 'pointer', {
-						active: input.value === option.value
+						active: input.value === option.value,
 					})}
 					onClick={() => input.onChange(option.value)}
 				>

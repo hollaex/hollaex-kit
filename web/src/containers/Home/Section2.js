@@ -10,7 +10,7 @@ const Section2 = ({
 	onReviewQuickTrade,
 	onRequestMarketValue,
 	symbol,
-	quickTradeData
+	quickTradeData,
 }) => (
 	<div
 		className={classnames(...FLEX_CENTER_CLASSES, 'quick_trade-section')}

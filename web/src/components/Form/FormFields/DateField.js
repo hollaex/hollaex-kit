@@ -3,7 +3,7 @@ import moment from 'moment';
 import {
 	SingleDatePicker,
 	isInclusivelyAfterDay,
-	isInclusivelyBeforeDay
+	isInclusivelyBeforeDay,
 } from 'react-dates';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -11,7 +11,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
 	{ key: 'month', label: 'Month' },
-	{ key: 'day', label: 'Day' }
+	{ key: 'day', label: 'Day' },
 ];
 
 class DateField extends Component {
@@ -21,8 +21,8 @@ class DateField extends Component {
 		display: {
 			year: '',
 			month: '',
-			day: ''
-		}
+			day: '',
+		},
 	};
 
 	componentDidMount() {
@@ -107,10 +107,10 @@ class DateField extends Component {
 				// active = false,
 				// error,
 				// touched = false,
-				invalid
+				invalid,
 			},
 			startDate,
-			endDate
+			endDate,
 		} = this.props;
 		// const displayError = !active && touched && error;
 

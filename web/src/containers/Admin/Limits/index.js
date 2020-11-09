@@ -17,7 +17,7 @@ import './index.css';
 const Form = ModalForm('EditLimits', '');
 const openNotification = () => {
 	notification.open({
-		message: 'Successfully updated'
+		message: 'Successfully updated',
 	});
 };
 
@@ -37,7 +37,7 @@ class Limits extends Component {
 		isCustomContent: false,
 		Level_value: '',
 		customLevels: [],
-		isApplyChanges: false
+		isApplyChanges: false,
 	};
 
 	componentWillMount() {
@@ -57,9 +57,7 @@ class Limits extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (
-			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)
-		) {
+		if (JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)) {
 			this.requestLimits(this.props.coins);
 		}
 	}
@@ -87,7 +85,7 @@ class Limits extends Component {
 
 	onSearch = (value) => {
 		performLimitUpdate(this.state.verification_level, {
-			[this.state.update_type]: Number(value)
+			[this.state.update_type]: Number(value),
 		}).then((res) => {
 			this.requestLimits();
 			openNotification();
@@ -142,7 +140,7 @@ class Limits extends Component {
 			Fields,
 			initialValues,
 			isCustomContent,
-			customLevels
+			customLevels,
 		});
 	};
 
@@ -167,7 +165,9 @@ class Limits extends Component {
 			const tempData = {};
 			if (Object.keys(loopData).length) {
 				Object.keys(loopData).forEach((key) => {
-					if (key <= parseInt(this.props.constants.user_level_number || 0, 10)) {
+					if (
+						key <= parseInt(this.props.constants.user_level_number || 0, 10)
+					) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
 						if (levelValue >= 1 && values[`${keyIndex}_${key}_custom`]) {
 							levelValue = values[`${keyIndex}_${key}_custom`];
@@ -198,7 +198,7 @@ class Limits extends Component {
 					});
 					this.props.setCurrencies(newData);
 					this.setState({
-						limits: newData
+						limits: newData,
 					});
 					return;
 				})
@@ -220,7 +220,7 @@ class Limits extends Component {
 			Fields,
 			initialValues,
 			isCustomContent,
-			customLevels
+			customLevels,
 		} = this.state;
 		const COLUMNS_CURRENCY = getCurrencyColumns(this.handleEdit);
 		return (
@@ -248,11 +248,11 @@ class Limits extends Component {
 						/>
 						<div className="mb-3">
 							{STRINGS.formatString(
-								STRINGS["NOTE_FOR_EDIT_COIN"],
-								STRINGS["COINS"],
+								STRINGS['NOTE_FOR_EDIT_COIN'],
+								STRINGS['COINS'],
 								<BlueLink
 									href={API_DOCS_URL}
-									text={STRINGS["REFER_DOCS_LINK"]}
+									text={STRINGS['REFER_DOCS_LINK']}
 								/>
 							)}
 						</div>
@@ -311,14 +311,11 @@ class Limits extends Component {
 
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	setCurrencies: bindActionCreators(setCurrencies, dispatch)
+	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Limits);
+export default connect(mapStateToProps, mapDispatchToProps)(Limits);

@@ -7,7 +7,7 @@ import {
 	renderRangeField,
 	renderInputField,
 	renderTextAreaField,
-	renderCheckField
+	renderCheckField,
 } from './fields';
 import { FileField } from './FileField';
 import CaptchaField from './captchaField';
@@ -22,7 +22,7 @@ const renderFields = (fields) => {
 					...field,
 					validate: field.validate || [],
 					name: key,
-					key
+					key,
 				};
 
 				let component;

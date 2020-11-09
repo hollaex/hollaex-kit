@@ -9,15 +9,15 @@ $placeholder--font-size: $font-size-subtext;
 $placeholder--font-weight: bold;
 
 .input_icon {
-	margin-right: .25rem;
+	margin-right: 0.25rem;
 	width: 1.2rem;
 }
 
 .custom-field-width {
 	display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    width: 50%;
+	flex-direction: column;
+	justify-content: flex-end;
+	width: 50%;
 }
 
 .input_field-input {
@@ -128,7 +128,8 @@ $placeholder--font-weight: bold;
 	bottom: 0;
 }
 
-.file_wrapper, .multiple_file_wrapper {
+.file_wrapper,
+.multiple_file_wrapper {
 	display: flex;
 	justify-content: space-between;
 	padding-right: 0 !important;

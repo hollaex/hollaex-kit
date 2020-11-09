@@ -32,7 +32,7 @@ class General extends Component {
 			initialLanguageValues: {},
 			initialThemeValues: {},
 			initialEmailValues: {},
-			initialLinkValues: {}
+			initialLinkValues: {},
 		};
 	}
 
@@ -41,7 +41,10 @@ class General extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(prevState.constants) !== JSON.stringify(this.state.constants)) {
+		if (
+			JSON.stringify(prevState.constants) !==
+			JSON.stringify(this.state.constants)
+		) {
 			this.getSettingsValues();
 		}
 	}
@@ -53,26 +56,27 @@ class General extends Component {
 			})
 			.catch((err) => {
 				console.log('err', err);
-			})
-	}
+			});
+	};
 
 	getSettingsValues = () => {
 		let initialNameValues = { ...this.state.initialNameValues };
 		let initialLanguageValues = { ...this.state.initialLanguageValues };
 		let initialThemeValues = { ...this.state.initialThemeValues };
-		const {
-			kit = {},
-			secrets = { smtp: {}, captcha: {}, emails: {} },
-		} = this.state.constants || {};
+		const { kit = {}, secrets = { smtp: {}, captcha: {}, emails: {} } } =
+			this.state.constants || {};
 		const { api_name, defaults = {}, links = {} } = kit;
 		initialNameValues = { ...initialNameValues, api_name };
-		initialLanguageValues = { ...initialLanguageValues, language: defaults.language };
+		initialLanguageValues = {
+			...initialLanguageValues,
+			language: defaults.language,
+		};
 		initialThemeValues = { ...initialThemeValues, theme: defaults.theme };
 
-		const { configuration = {}, } = this.state.initialEmailValues || {};
+		const { configuration = {} } = this.state.initialEmailValues || {};
 		const initialEmailValues = {
 			configuration: { ...configuration, ...secrets.emails, ...secrets.smtp },
-			distribution: { ...secrets.emails }
+			distribution: { ...secrets.emails },
 		};
 		delete initialEmailValues.configuration.audit;
 		const initialLinkValues = { ...links };
@@ -81,7 +85,7 @@ class General extends Component {
 			initialLanguageValues,
 			initialThemeValues,
 			initialEmailValues,
-			initialLinkValues
+			initialLinkValues,
 		});
 	};
 
@@ -100,25 +104,27 @@ class General extends Component {
 					const formData = new FormData();
 					const { name: fileName } = file;
 					const extension = fileName.split('.').pop();
-					const name = `${key}.${extension}`
+					const name = `${key}.${extension}`;
 					formData.append('name', name);
 					formData.append('file', file);
 					try {
-						const { data: { path } } = await upload(formData)
+						const {
+							data: { path },
+						} = await upload(formData);
 						icons[key] = path;
 						this.setState({ currentIcon: {} });
 					} catch (error) {
 						this.setState({
 							loading: false,
 						});
-						message.error("Something went wrong!");
+						message.error('Something went wrong!');
 						return;
 					}
 				}
 			}
 		}
 		this.setState({
-			loading: false
+			loading: false,
 		});
 		updateIcons(icons);
 	};
@@ -129,20 +135,23 @@ class General extends Component {
 
 	handleChangeFile = (event) => {
 		if (event.target.files) {
-			this.setState({
-				currentIcon: {
-					...this.state.currentIcon,
-					[event.target.name]: event.target.files[0]
+			this.setState(
+				{
+					currentIcon: {
+						...this.state.currentIcon,
+						[event.target.name]: event.target.files[0],
+					},
+				},
+				() => {
+					Modal.confirm({
+						content: 'Do you want to save this icon?',
+						okText: 'Save',
+						cancelText: 'Cancel',
+						onOk: this.handleSaveIcon,
+						onCancel: this.handleCancelIcon,
+					});
 				}
-			}, () => {
-				Modal.confirm({
-					content: 'Do you want to save this icon?',
-					okText: 'Save',
-					cancelText: 'Cancel',
-					onOk: this.handleSaveIcon,
-					onCancel: this.handleCancelIcon
-				})
-			});
+			);
 		}
 	};
 
@@ -152,12 +161,10 @@ class General extends Component {
 				this.setState({ constants: res });
 				message.success('Updated successfully');
 			})
-			.catch(err => {
-				let error = err && err.data
-					? err.data.message
-					: err.message;
+			.catch((err) => {
+				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
-			})
+			});
 	};
 
 	handleSubmitName = (formProps) => {
@@ -167,8 +174,8 @@ class General extends Component {
 	handleSubmitDefault = (formProps) => {
 		this.handleSubmitGeneral({
 			kit: {
-				defaults: { ...formProps }
-			}
+				defaults: { ...formProps },
+			},
 		});
 	};
 
@@ -180,15 +187,19 @@ class General extends Component {
 			if (formProps.audit) {
 				formValues.secrets = {
 					emails: {
-						audit: formProps.audit
-					}
-				}
+						audit: formProps.audit,
+					},
+				};
 			}
 		} else if (formKey === 'email_configuration') {
 			formValues = {};
 			let compareValues = initialEmailValues.configuration || {};
 			Object.keys(formProps).forEach((val) => {
-				if (val === 'sender' || val === 'timezone' || val === 'send_email_to_support') {
+				if (
+					val === 'sender' ||
+					val === 'timezone' ||
+					val === 'send_email_to_support'
+				) {
 					if (compareValues[val] !== formProps[val]) {
 						if (!formValues.secrets) formValues.secrets = {};
 						if (!formValues.secrets.emails) formValues.secrets.emails = {};
@@ -216,7 +227,7 @@ class General extends Component {
 			});
 		} else if (formKey === 'links') {
 			formValues.kit = {
-				links: { ...formProps }
+				links: { ...formProps },
 			};
 		}
 		if (!Object.keys(formValues).length) {
@@ -225,14 +236,14 @@ class General extends Component {
 		}
 		this.handleSubmitGeneral(formValues);
 	};
-	
+
 	handleSubmitHelpDesk = (formProps) => {
 		this.handleSubmitGeneral({
 			kit: {
 				links: {
-					...formProps
-				}
-			}
+					...formProps,
+				},
+			},
 		});
 	};
 
@@ -241,10 +252,7 @@ class General extends Component {
 		return (
 			<div className="file-container">
 				<div className="file-img-content">
-					<Image
-						icon={icons[name]}
-						wrapperClassName='icon-img'
-					/>
+					<Image icon={icons[name]} wrapperClassName="icon-img" />
 				</div>
 				<label>
 					{label ? <p>{label}</p> : null}
@@ -264,9 +272,9 @@ class General extends Component {
 		this.handleSubmitGeneral({
 			kit: {
 				interface: {
-					type
-				}
-			}
+					type,
+				},
+			},
 		});
 	};
 
@@ -276,16 +284,16 @@ class General extends Component {
 			initialNameValues,
 			initialLanguageValues,
 			initialThemeValues,
-			initialLinkValues
+			initialLinkValues,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins } = this.props;
 		const generalFields = getGeneralFields(coins);
 		return (
 			<div>
-				<div className='general-wrapper'>
+				<div className="general-wrapper">
 					<div>
-						<div className='sub-title'>Exchange Name</div>
+						<div className="sub-title">Exchange Name</div>
 						<NameForm
 							initialValues={initialNameValues}
 							onSubmit={this.handleSubmitName}
@@ -294,14 +302,16 @@ class General extends Component {
 							fields={generalFields.section_1}
 						/>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='sub-title'>Language</div>
-						<div className='description'>
+						<div className="sub-title">Language</div>
+						<div className="description">
 							You can edit language and strings{' '}
-							<span className='general-edit-link'>here</span>.
+							<span className="general-edit-link">here</span>.
 						</div>
-						<span className='general-edit-link general-edit-link-position'>Edit</span>
+						<span className="general-edit-link general-edit-link-position">
+							Edit
+						</span>
 						<LanguageForm
 							initialValues={initialLanguageValues}
 							onSubmit={this.handleSubmitDefault}
@@ -310,14 +320,16 @@ class General extends Component {
 							fields={generalFields.section_2}
 						/>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='sub-title'>Theme</div>
-						<div className='description'>
+						<div className="sub-title">Theme</div>
+						<div className="description">
 							You can edit theme and create new themes{' '}
-							<span className='general-edit-link'>here</span>.
+							<span className="general-edit-link">here</span>.
 						</div>
-						<span className='general-edit-link general-edit-link-position'>Edit</span>
+						<span className="general-edit-link general-edit-link-position">
+							Edit
+						</span>
 						<ThemeForm
 							initialValues={initialThemeValues}
 							onSubmit={this.handleSubmitDefault}
@@ -326,17 +338,17 @@ class General extends Component {
 							fields={generalFields.section_3}
 						/>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='sub-title'>Native currency</div>
-						<div className='description'>
-							This currency unit will be used for valuing deposits/withdrawals and
-							other important areas.
+						<div className="sub-title">Native currency</div>
+						<div className="description">
+							This currency unit will be used for valuing deposits/withdrawals
+							and other important areas.
 						</div>
-						<div className='coins-list'>
+						<div className="coins-list">
 							<NativeCurrencyForm
 								initialValues={{
-									native_currency: kit.native_currency
+									native_currency: kit.native_currency,
 								}}
 								onSubmit={this.handleSubmitName}
 								buttonText={'Save'}
@@ -345,59 +357,67 @@ class General extends Component {
 							/>
 						</div>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='sub-title'>Exchange logo</div>
-						<div className='description'>
+						<div className="sub-title">Exchange logo</div>
+						<div className="description">
 							This logo will be applied to emails send to your users and login
 							screen, footer and other places. Any custom graphics uploaded via
 							the direct edit function will override the logo.
 						</div>
-						<div className='file-wrapper'>
+						<div className="file-wrapper">
 							{this.renderImageUpload('EXCHANGE_LOGO_LIGHT', 'Light theme')}
 							{this.renderImageUpload('EXCHANGE_LOGO_DARK', 'Dark theme')}
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">Save</Button>
+						<Button type="primary" className="green-btn minimal-btn">
+							Save
+						</Button>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='sub-title'>Loader</div>
-						<div className='description'>
+						<div className="sub-title">Loader</div>
+						<div className="description">
 							Used for areas that require loading.Also known as a spinner.
 						</div>
-						<div className='file-wrapper'>
+						<div className="file-wrapper">
 							{this.renderImageUpload('LOADER_LIGHT', 'Light theme')}
 							{this.renderImageUpload('LOADER_DARK', 'Dark theme')}
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">Save</Button>
+						<Button type="primary" className="green-btn minimal-btn">
+							Save
+						</Button>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='sub-title'>Exchange favicon</div>
-						<div className='file-wrapper'>
+						<div className="sub-title">Exchange favicon</div>
+						<div className="file-wrapper">
 							{this.renderImageUpload('FAV_ICON')}
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">Save</Button>
+						<Button type="primary" className="green-btn minimal-btn">
+							Save
+						</Button>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='sub-title'>Onboarding background image</div>
-						<div className='file-wrapper'>
+						<div className="sub-title">Onboarding background image</div>
+						<div className="file-wrapper">
 							{this.renderImageUpload('BOARDING_IMAGE_LIGHT', 'Light theme')}
 							{this.renderImageUpload('BOARDING_IMAGE_DARK', 'Dark theme')}
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">Save</Button>
+						<Button type="primary" className="green-btn minimal-btn">
+							Save
+						</Button>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<div>
-						<div className='form-wrapper'>
+						<div className="form-wrapper">
 							<EmailSettingsForm
 								initialValues={initialEmailValues}
 								handleSubmitSettings={this.submitSettings}
 							/>
 						</div>
 					</div>
-					<div className='divider'></div>
+					<div className="divider"></div>
 					<Description
 						descriptionFields={generalFields.section_5}
 						descriptionInitialValues={{ description: kit.description }}
@@ -405,22 +425,25 @@ class General extends Component {
 						footerInitialValues={{ description: kit.footer_description }}
 						handleSubmitDescription={this.handleSubmitName}
 					/>
-					<div className='divider'></div>
+					<div className="divider"></div>
 				</div>
 				<div>
-					<FooterConfig initialValues={initialLinkValues} handleSubmitFooter={this.submitSettings} />
+					<FooterConfig
+						initialValues={initialLinkValues}
+						handleSubmitFooter={this.submitSettings}
+					/>
 				</div>
-				<div className='divider'></div>
+				<div className="divider"></div>
 				<div className="general-wrapper">
-					<div className='sub-title'>Helpdesk link</div>
-					<div className='description'>
+					<div className="sub-title">Helpdesk link</div>
+					<div className="description">
 						This link will be used for your any help sections on your exchange.
 						You can put a direct link to your helpdesk service or your support
 						email address.
 					</div>
 					<HelpDeskForm
 						initialValues={{
-							helpdesk: initialLinkValues.helpdesk
+							helpdesk: initialLinkValues.helpdesk,
 						}}
 						fields={generalFields.section_7}
 						buttonText="Save"
@@ -428,7 +451,7 @@ class General extends Component {
 						onSubmit={this.handleSubmitHelpDesk}
 					/>
 				</div>
-				<div className='divider'></div>
+				<div className="divider"></div>
 				<InterfaceForm
 					initialValues={kit.interface}
 					handleSaveInterface={this.handleSaveInterface}
@@ -441,7 +464,7 @@ class General extends Component {
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	user: state.user,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(withConfig(General));

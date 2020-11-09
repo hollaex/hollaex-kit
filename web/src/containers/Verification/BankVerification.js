@@ -5,7 +5,7 @@ import {
 	required,
 	// exactLength,
 	// onlyNumbers,
-	maxLength
+	maxLength,
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, HeaderSection } from '../../components';
@@ -19,7 +19,7 @@ const FORM_NAME = 'BankVerification';
 
 class BankVerification extends Component {
 	state = {
-		formFields: {}
+		formFields: {},
 	};
 
 	componentDidMount() {
@@ -31,30 +31,42 @@ class BankVerification extends Component {
 
 		formFields.bank_name = {
 			type: 'text',
-			stringId: 'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL,USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_PLACEHOLDER',
+			stringId:
+				'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL,USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_PLACEHOLDER',
 			label:
-				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL"],
+				STRINGS[
+					'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL'
+				],
 			placeholder:
-				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_PLACEHOLDER"],
+				STRINGS[
+					'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_PLACEHOLDER'
+				],
 			validate: [required],
-			fullWidth: isMobile
+			fullWidth: isMobile,
 		};
 		formFields.account_number = {
 			type: 'text',
-			stringId: 'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL,USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER,USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH',
+			stringId:
+				'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL,USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER,USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH',
 			label:
-				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL"],
+				STRINGS[
+					'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL'
+				],
 			placeholder:
-				STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER"],
+				STRINGS[
+					'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER'
+				],
 			validate: [
 				required,
 				maxLength(
 					50,
-					STRINGS["USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH"]
-				)
+					STRINGS[
+						'USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH'
+					]
+				),
 			],
 			maxLength: 50,
-			fullWidth: isMobile
+			fullWidth: isMobile,
 		};
 		this.setState({ formFields });
 	};
@@ -74,7 +86,6 @@ class BankVerification extends Component {
 				}
 				throw new SubmissionError(error);
 			});
-	
 	};
 
 	onGoBack = () => {
@@ -98,44 +109,44 @@ class BankVerification extends Component {
 			<div className="presentation_container apply_rtl verification_container">
 				<IconTitle
 					stringId="USER_VERIFICATION.BANK_VERIFICATION"
-					text={STRINGS["USER_VERIFICATION.BANK_VERIFICATION"]}
+					text={STRINGS['USER_VERIFICATION.BANK_VERIFICATION']}
 					textType="title"
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
 						stringId="USER_VERIFICATION.TITLE_BANK_ACCOUNT"
-						title={STRINGS["USER_VERIFICATION.TITLE_BANK_ACCOUNT"]}
+						title={STRINGS['USER_VERIFICATION.TITLE_BANK_ACCOUNT']}
 						iconId={iconId}
 						icon={icon}
 						openContactForm={openContactForm}
 					>
-					<div className="my-2">
-						<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_1">
-							{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_1"]}
-						</EditWrapper>
-					</div>
-					<div className="my-2">
-						<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_2">
-							{STRINGS["USER_VERIFICATION.BANK_VERIFICATION_TEXT_2"]}
-						</EditWrapper>
-					</div>
-					<ul className="pl-4">
-						<li className="my-1">
-							<EditWrapper stringId="USER_VERIFICATION.BASE_WITHDRAWAL">
-								{STRINGS["USER_VERIFICATION.BASE_WITHDRAWAL"]}
+						<div className="my-2">
+							<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_1">
+								{STRINGS['USER_VERIFICATION.BANK_VERIFICATION_TEXT_1']}
 							</EditWrapper>
-						</li>
-						<li className="my-1">
-							<EditWrapper stringId="USER_VERIFICATION.BASE_DEPOSITS">
-								{STRINGS["USER_VERIFICATION.BASE_DEPOSITS"]}
+						</div>
+						<div className="my-2">
+							<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_2">
+								{STRINGS['USER_VERIFICATION.BANK_VERIFICATION_TEXT_2']}
 							</EditWrapper>
-						</li>
-						<li className="my-1">
-							<EditWrapper stringId="USER_VERIFICATION.WARNING.LIST_ITEM_3">
-                {STRINGS["USER_VERIFICATION.WARNING.LIST_ITEM_3"]}
-							</EditWrapper>
-						</li>
-					</ul>
+						</div>
+						<ul className="pl-4">
+							<li className="my-1">
+								<EditWrapper stringId="USER_VERIFICATION.BASE_WITHDRAWAL">
+									{STRINGS['USER_VERIFICATION.BASE_WITHDRAWAL']}
+								</EditWrapper>
+							</li>
+							<li className="my-1">
+								<EditWrapper stringId="USER_VERIFICATION.BASE_DEPOSITS">
+									{STRINGS['USER_VERIFICATION.BASE_DEPOSITS']}
+								</EditWrapper>
+							</li>
+							<li className="my-1">
+								<EditWrapper stringId="USER_VERIFICATION.WARNING.LIST_ITEM_3">
+									{STRINGS['USER_VERIFICATION.WARNING.LIST_ITEM_3']}
+								</EditWrapper>
+							</li>
+						</ul>
 					</HeaderSection>
 					{renderFields(formFields)}
 					{error && (
@@ -144,8 +155,8 @@ class BankVerification extends Component {
 					<div className="d-flex">
 						<div className="w-50">
 							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
-							<Button 
-								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
+							<Button
+								label={STRINGS['USER_VERIFICATION.GO_BACK']}
 								onClick={this.onGoBack}
 							/>
 						</div>
@@ -153,7 +164,7 @@ class BankVerification extends Component {
 						<div className="w-50">
 							<EditWrapper stringId="SUBMIT" />
 							<Button
-								label={STRINGS["SUBMIT"]}
+								label={STRINGS['SUBMIT']}
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
 								disabled={pristine || submitting || !valid || !!error}
@@ -167,7 +178,7 @@ class BankVerification extends Component {
 }
 
 const BankVerificationForm = reduxForm({
-	form: FORM_NAME
+	form: FORM_NAME,
 })(BankVerification);
 
 const mapStateToProps = (state) => {

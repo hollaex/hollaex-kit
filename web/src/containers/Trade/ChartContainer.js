@@ -5,13 +5,11 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import TVChartContainer from './Chart';
 import { tradeHistorySelector } from './utils';
 
-const ChartContainer = (props) => (
-    <TVChartContainer {...props} />
-);
+const ChartContainer = (props) => <TVChartContainer {...props} />;
 
 const mapStateToProps = (state) => ({
-    tradeHistory: tradeHistorySelector(state),
-    constants: state.app.constants
+	tradeHistory: tradeHistorySelector(state),
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(withConfig(ChartContainer));

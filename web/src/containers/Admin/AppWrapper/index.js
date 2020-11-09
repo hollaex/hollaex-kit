@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { CaretLeftOutlined} from '@ant-design/icons';
+import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
 import { debounce } from 'lodash';
 import ReactSVG from 'react-svg';
@@ -15,15 +15,16 @@ import {
 	isSupport,
 	isSupervisor,
 	isAdmin,
-	getTokenTimestamp
+	getTokenTimestamp,
 } from '../../../utils/token';
 import { checkUserSessionExpired } from '../../../utils/utils';
-import { getExchangeInitialized, getSetupCompleted } from '../../../utils/initialize';
+import {
+	getExchangeInitialized,
+	getSetupCompleted,
+} from '../../../utils/initialize';
 import { logout } from '../../../actions/authAction';
 import { getMe, setMe } from '../../../actions/userAction';
-import {
-	setPairsData
-} from '../../../actions/orderbookAction';
+import { setPairsData } from '../../../actions/orderbookAction';
 import {
 	setPairs,
 	changePair,
@@ -35,7 +36,7 @@ import {
 	changeTheme,
 	requestAvailPlugins,
 	requestInitial,
-	requestConstant
+	requestConstant,
 } from '../../../actions/appActions';
 import { SESSION_TIME, BASE_CURRENCY, ICONS } from '../../../config/constants';
 import { checkRole } from '../../../utils/token';
@@ -60,7 +61,7 @@ class AppWrapper extends React.Component {
 			appLoaded: false,
 			publicSocket: undefined,
 			idleTimer: undefined,
-			setupCompleted: true
+			setupCompleted: true,
 		};
 	}
 
@@ -77,19 +78,24 @@ class AppWrapper extends React.Component {
 		}
 		const initialized = getExchangeInitialized();
 		const setupCompleted = getSetupCompleted();
-		if (initialized === 'false' || (typeof initialized === 'boolean' && !initialized)) {
+		if (
+			initialized === 'false' ||
+			(typeof initialized === 'boolean' && !initialized)
+		) {
 			this.props.router.push('/init');
 		}
 		this._resetTimer();
 		this.props.requestAvailPlugins();
 		this.setState({
-			setupCompleted: (setupCompleted === 'false'
-				|| (typeof setupCompleted === 'boolean' && !setupCompleted))
-				? false : true,
+			setupCompleted:
+				setupCompleted === 'false' ||
+				(typeof setupCompleted === 'boolean' && !setupCompleted)
+					? false
+					: true,
 			isSupportUser: isSupport(),
 			isSupervisorUser: isSupervisor(),
 			isAdminUser: isAdmin(),
-			isLoaded: true
+			isLoaded: true,
 		});
 	}
 
@@ -110,7 +116,6 @@ class AppWrapper extends React.Component {
 	}
 
 	componentWillUnmount() {
-
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
 		}
@@ -131,10 +136,7 @@ class AppWrapper extends React.Component {
 			clearTimeout(this.idleTimer);
 		}
 		if (this.state.appLoaded) {
-			const idleTimer = setTimeout(
-				() => this.logout('Inactive'),
-				SESSION_TIME
-			); // no activity will log the user out automatically
+			const idleTimer = setTimeout(() => this.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
 	};
@@ -142,19 +144,18 @@ class AppWrapper extends React.Component {
 	resetTimer = debounce(this._resetTimer, 250);
 
 	setPublicWS = () => {
-
 		requestInitial()
-			.then(res => {
+			.then((res) => {
 				if (res && res.data) {
 					this.props.setConfig(res.data);
 				}
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error(err);
 			});
 
 		requestConstant()
-			.then(res => {
+			.then((res) => {
 				if (res && res.data) {
 					if (!this.props.pair) {
 						const pair = Object.keys(res.data.pairs)[0];
@@ -175,26 +176,27 @@ class AppWrapper extends React.Component {
 							PRICE: {
 								MIN: res.data.pairs[pair].min_price,
 								MAX: res.data.pairs[pair].max_price,
-								STEP: res.data.pairs[pair].increment_price
+								STEP: res.data.pairs[pair].increment_price,
 							},
 							SIZE: {
 								MIN: res.data.pairs[pair].min_size,
 								MAX: res.data.pairs[pair].max_size,
-								STEP: res.data.pairs[pair].increment_price
-							}
+								STEP: res.data.pairs[pair].increment_price,
+							},
 						};
 						return '';
 					});
 					this.props.setOrderLimits(orderLimits);
 				}
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error(err);
 			});
 	};
 
 	setUserSocket = (token) => {
-		this.props.getMe()
+		this.props
+			.getMe()
 			.then(({ value }) => {
 				if (value && value.data && value.data.id) {
 					const data = value.data;
@@ -223,7 +225,7 @@ class AppWrapper extends React.Component {
 				if (error.indexOf('Access Denied') > -1) {
 					this.logout('Token is expired');
 				}
-			})
+			});
 	};
 
 	isSocketDataReady = () => {
@@ -246,11 +248,14 @@ class AppWrapper extends React.Component {
 					<div
 						className={
 							this.props.location.pathname === '/admin'
-								? "sidebar-exchange-menu flex-menu active-exchange-menu"
-								: "sidebar-exchange-menu flex-menu"
+								? 'sidebar-exchange-menu flex-menu active-exchange-menu'
+								: 'sidebar-exchange-menu flex-menu'
 						}
 					>
-						<ReactSVG path={ICONS.HEX_PATTERN_ICON} wrapperClassName="sidebar-icon" />
+						<ReactSVG
+							path={ICONS.HEX_PATTERN_ICON}
+							wrapperClassName="sidebar-icon"
+						/>
 						<div>
 							<div>DASHBOARD</div>
 							<div className="exchange-title">{showLabel}</div>
@@ -264,15 +269,15 @@ class AppWrapper extends React.Component {
 				<div
 					className={
 						this.props.location.pathname.includes(path)
-							? "sidebar-menu active-side-menu"
-							: "sidebar-menu"
+							? 'sidebar-menu active-side-menu'
+							: 'sidebar-menu'
 					}
 				>
 					{showLabel}
 				</div>
 			</Link>
 		);
-	}
+	};
 
 	getTitle = () => {
 		const { location = {} } = this.props;
@@ -309,84 +314,80 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section bg-black">
 						<div>
-							<ReactSVG path={ICONS.BLUE_SCREEN_SUPERVISOR} wrapperClassName="sider-icons" />
+							<ReactSVG
+								path={ICONS.BLUE_SCREEN_SUPERVISOR}
+								wrapperClassName="sider-icons"
+							/>
 						</div>
 						<div>
-							<div className="main-label">
-								Role:
-							</div>
-							<div className="sub-label">
-								SuperVisor
-							</div>
+							<div className="main-label">Role:</div>
+							<div className="sub-label">SuperVisor</div>
 						</div>
 					</div>
-				)
+				);
 			case 'kyc':
 				return (
 					<div className="role-section bg-grey">
 						<div>
-							<ReactSVG path={ICONS.BLUE_SCREEN_KYC} wrapperClassName="sider-icons" />
+							<ReactSVG
+								path={ICONS.BLUE_SCREEN_KYC}
+								wrapperClassName="sider-icons"
+							/>
 						</div>
 						<div>
-							<div className="main-label black">
-								Role:
-							</div>
-							<div className="sub-label black">
-								KYC
-							</div>
+							<div className="main-label black">Role:</div>
+							<div className="sub-label black">KYC</div>
 						</div>
 					</div>
-				)
+				);
 			case 'tech':
 				return (
 					<div className="role-section bg-orange">
 						<div>
-							<ReactSVG path={ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE} wrapperClassName="sider-icons" />
+							<ReactSVG
+								path={ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								wrapperClassName="sider-icons"
+							/>
 						</div>
 						<div>
-							<div className="main-label">
-								Role:
-							</div>
-							<div className="sub-label">
-								Support
-							</div>
+							<div className="main-label">Role:</div>
+							<div className="sub-label">Support</div>
 						</div>
 					</div>
-				)
+				);
 			case 'support':
 				return (
 					<div className="role-section bg-yellow">
 						<div>
-							<ReactSVG path={ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE} wrapperClassName="sider-icons" />
+							<ReactSVG
+								path={ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								wrapperClassName="sider-icons"
+							/>
 						</div>
 						<div>
-							<div className="main-label black">
-								Role:
-							</div>
-							<div className="sub-label black">
-								Support
-							</div>
+							<div className="main-label black">Role:</div>
+							<div className="sub-label black">Support</div>
 						</div>
 					</div>
-				)
+				);
 			default:
 				return (
 					<div className="role-section">
 						<div>
-							<img src={ICONS.BLUE_SCREEN_EYE_ICON} className="sider-icons" alt="EyeIcon" />
+							<img
+								src={ICONS.BLUE_SCREEN_EYE_ICON}
+								className="sider-icons"
+								alt="EyeIcon"
+							/>
 						</div>
 						<div>
-							<div className="main-label">
-								Role:
-							</div>
-							<div className="sub-label">
-								Administrator
-							</div>
+							<div className="main-label">Role:</div>
+							<div className="sub-label">Administrator</div>
 						</div>
 					</div>
-				)
+				);
 		}
-	}
+	};
 
 	render() {
 		const { children, router } = this.props;
@@ -404,9 +405,7 @@ class AppWrapper extends React.Component {
 			router.replace('/summary');
 		}
 		if (!setupCompleted) {
-			return (
-				<SetupWizard />
-			);
+			return <SetupWizard />;
 		}
 		if (md.phone()) {
 			return (
@@ -433,10 +432,11 @@ class AppWrapper extends React.Component {
 							<Layout>
 								<Content style={{ marginLeft: 50, marginTop: 0 }}>
 									<div className="content-wrapper admin-content-wrapper">
-										{appLoaded && this.isSocketDataReady()
-											? children
-											: <Spin size="large" className="m-top" />
-										}
+										{appLoaded && this.isSocketDataReady() ? (
+											children
+										) : (
+											<Spin size="large" className="m-top" />
+										)}
 									</div>
 								</Content>
 							</Layout>
@@ -456,7 +456,11 @@ class AppWrapper extends React.Component {
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
 						<div className="top-box-menu">
-							<img src={ICONS.BLUE_SCREEN_LINK} className="link-icon" alt="Link-icon" />{' '}
+							<img
+								src={ICONS.BLUE_SCREEN_LINK}
+								className="link-icon"
+								alt="Link-icon"
+							/>{' '}
 							Go to master admin
 						</div>
 					</div>
@@ -469,29 +473,18 @@ class AppWrapper extends React.Component {
 									style={{ lineHeight: '64px' }}
 									// className="m-top"
 								>
-									<div>
-										{this.renderItems()}
-									</div>
+									<div>{this.renderItems()}</div>
 									{PATHS.filter(
-										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
-											true
+										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) => true
 									).map(this.renderMenuItem)}
 								</Menu>
 								<div>
 									<div className="bottom-side-top"></div>
-									<Menu
-										mode="vertical"
-										style={{ lineHeight: '64px' }}
-									>
-
+									<Menu mode="vertical" style={{ lineHeight: '64px' }}>
 										<Link to="/admin/resources">
-											<div
-												className={"sidebar-menu"}
-											>
-												Resources
-											</div>
+											<div className={'sidebar-menu'}>Resources</div>
 										</Link>
-											<div className={"sidebar-menu"} onClick={logout}>
+										<div className={'sidebar-menu'} onClick={logout}>
 											Logout
 										</div>
 									</Menu>
@@ -500,12 +493,13 @@ class AppWrapper extends React.Component {
 						</Sider>
 						<Layout>
 							<Content>
-									<div className="admin-content-head">{this.getTitle()}</div>
+								<div className="admin-content-head">{this.getTitle()}</div>
 								<div className="content-wrapper admin-content-wrapper">
-									{appLoaded && this.isSocketDataReady()
-										? children
-										: <Spin size="large" className="m-top" />
-									}
+									{appLoaded && this.isSocketDataReady() ? (
+										children
+									) : (
+										<Spin size="large" className="m-top" />
+									)}
 								</div>
 							</Content>
 						</Layout>
@@ -519,7 +513,7 @@ class AppWrapper extends React.Component {
 const mapStateToProps = (state) => ({
 	fetchingAuth: state.auth.fetching,
 	pairs: state.app.pairs,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -535,7 +529,7 @@ const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
-	logout: bindActionCreators(logout, dispatch)
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

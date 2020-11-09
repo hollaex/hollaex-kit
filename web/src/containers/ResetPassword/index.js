@@ -14,14 +14,14 @@ import withConfig from 'components/ConfigProvider/withConfig';
 class ResetPassword extends Component {
 	state = {
 		success: false,
-		showContactForm: false
+		showContactForm: false,
 	};
 
 	onSubmitResetPassword = ({ password }) => {
 		const { code } = this.props.params;
 		const values = {
 			code,
-			new_password: password
+			new_password: password,
 		};
 		return resetPassword(values)
 			.then((res) => {
@@ -82,18 +82,18 @@ class ResetPassword extends Component {
 						iconId="SET_NEW_PASSWORD"
 						iconPath={ICONS['SET_NEW_PASSWORD']}
 						stringId="RESET_PASSWORD.TITLE"
-						text={STRINGS["RESET_PASSWORD.TITLE"]}
+						text={STRINGS['RESET_PASSWORD.TITLE']}
 						textType="title"
 						underline={true}
 						className="w-100"
-						subtitle={STRINGS["RESET_PASSWORD.SUBTITLE"]}
+						subtitle={STRINGS['RESET_PASSWORD.SUBTITLE']}
 						actionProps={{
-							stringId: "HELP_TEXT",
-							text: STRINGS["HELP_TEXT"],
-							iconId: "BLUE_QUESTION",
+							stringId: 'HELP_TEXT',
+							text: STRINGS['HELP_TEXT'],
+							iconId: 'BLUE_QUESTION',
 							iconPath: ICONS['BLUE_QUESTION'],
 							onClick: this.onOpenDialog,
-							useSvg: true
+							useSvg: true,
 						}}
 					/>
 					<div
@@ -129,7 +129,7 @@ class ResetPassword extends Component {
 
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
-	constants: store.app.constants
+	constants: store.app.constants,
 });
 
 export default connect(mapStateToProps)(withConfig(ResetPassword));

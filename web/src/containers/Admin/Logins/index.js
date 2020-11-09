@@ -9,7 +9,7 @@ import Moment from 'react-moment';
 const INITIAL_STATE = {
 	logins: [],
 	total: 0,
-	loading: true
+	loading: true,
 };
 
 const formatDate = (value) => {
@@ -24,8 +24,8 @@ const LOGIN_COLUMNS = [
 		title: 'Time',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
-		render: formatDate
-	}
+		render: formatDate,
+	},
 ];
 // const SCV_LOGIN_COLUMNS = [
 // 	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
@@ -50,7 +50,7 @@ class Logins extends Component {
 					this.setState({
 						logins: res.data,
 						total: res.count,
-						loading: false
+						loading: false,
 					});
 				}
 			})
@@ -63,8 +63,8 @@ class Logins extends Component {
 	};
 
 	requestUserLoginsDownload = (userId) => {
-		return requestUserLoginsDownload({ format: 'csv', userId: userId })
-	}
+		return requestUserLoginsDownload({ format: 'csv', userId: userId });
+	};
 
 	render() {
 		const { logins, total, loading } = this.state;
@@ -80,10 +80,11 @@ class Logins extends Component {
 		return (
 			<div className="app_container-content my-2">
 				<div className="d-flex justify-content-between my-3">
-					<div>
-						Number of logins: {total}
-					</div>
-					<div className="pointer download-csv-table" onClick={() => this.requestUserLoginsDownload(this.props.userId)}>
+					<div>Number of logins: {total}</div>
+					<div
+						className="pointer download-csv-table"
+						onClick={() => this.requestUserLoginsDownload(this.props.userId)}
+					>
 						Download CSV table
 					</div>
 				</div>

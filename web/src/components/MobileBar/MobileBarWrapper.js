@@ -6,5 +6,5 @@ export const MobileBarWrapper = ({ className, children }) => {
 };
 
 MobileBarWrapper.defaultProps = {
-	className: ''
+	className: '',
 };

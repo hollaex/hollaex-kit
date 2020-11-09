@@ -12,14 +12,14 @@ import {
 	EXPLORERS_ENDPOINT,
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA
+	DEFAULT_COIN_DATA,
 } from '../../config/constants';
 import { getFormatTimestamp, isBlockchainTx } from '../../utils/utils';
 import { formatToCurrency } from '../../utils/currency';
 
 notification.config({
 	placement: 'topLeft',
-	duration: 3
+	duration: 3,
 });
 
 const calculateFeeAmount = (
@@ -30,22 +30,14 @@ const calculateFeeAmount = (
 	side = ''
 ) => {
 	if (!fee || fee <= 0) {
-		return STRINGS["NO_FEE"];
+		return STRINGS['NO_FEE'];
 	}
 	let feeAmount = 0;
 	if (side === 'buy') {
-		feeAmount = mathjs
-			.chain(size)
-			.multiply(fee)
-			.divide(100)
-			.done();
+		feeAmount = mathjs.chain(size).multiply(fee).divide(100).done();
 	} else if (side === 'sell') {
 		const amount = calculateAmount(quick, price, size);
-		feeAmount = mathjs
-			.chain(amount)
-			.multiply(fee)
-			.divide(100)
-			.done();
+		feeAmount = mathjs.chain(amount).multiply(fee).divide(100).done();
 	}
 	return feeAmount;
 };
@@ -54,19 +46,13 @@ const calculateAmount = (isQuick = false, price, size) => {
 	if (isQuick) {
 		return price;
 	}
-	const amount = mathjs
-		.chain(price)
-		.multiply(size)
-		.done();
+	const amount = mathjs.chain(price).multiply(size).done();
 	return amount;
 };
 
 const calculatePrice = (isQuick = false, price, size) => {
 	if (isQuick) {
-		const amount = mathjs
-			.chain(price)
-			.divide(size)
-			.done();
+		const amount = mathjs.chain(price).divide(size).done();
 		return amount;
 	}
 	return price;
@@ -76,7 +62,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 	return [
 		{
 			stringId: 'PAIR',
-			label: STRINGS["PAIR"],
+			label: STRINGS['PAIR'],
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			renderCell: ({ symbol }, key, index) => {
@@ -85,11 +71,11 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 						{symbol}
 					</td>
 				);
-			}
+			},
 		},
 		{
 			stringId: 'TYPE',
-			label: STRINGS["TYPE"],
+			label: STRINGS['TYPE'],
 			key: 'side',
 			exportToCsv: ({ side = '' }) => side,
 			renderCell: ({ side = '' }, key, index) => {
@@ -100,11 +86,11 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 						</div>
 					</td>
 				);
-			}
+			},
 		},
 		{
 			stringId: 'SIZE',
-			label: STRINGS["SIZE"],
+			label: STRINGS['SIZE'],
 			key: 'size',
 			exportToCsv: ({ size = 0, ...data }) => {
 				if (pairs[data.symbol]) {
@@ -139,11 +125,11 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 				} else {
 					return <td key={index}>{size}</td>;
 				}
-			}
+			},
 		},
 		{
 			stringId: 'PRICE',
-			label: STRINGS["PRICE"],
+			label: STRINGS['PRICE'],
 			key: 'price',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
@@ -152,7 +138,10 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 						coins[pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
-						formatToCurrency(calculatePrice(quick, price, size), increment_price),
+						formatToCurrency(
+							calculatePrice(quick, price, size),
+							increment_price
+						),
 						rest.symbol.toUpperCase()
 					).join('');
 				} else {
@@ -179,11 +168,11 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 				} else {
 					return <td key={index}>{calculatePrice(quick, price, size)}</td>;
 				}
-			}
+			},
 		},
 		{
 			stringId: 'AMOUNT',
-			label: STRINGS["AMOUNT"],
+			label: STRINGS['AMOUNT'],
 			key: 'amount',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
@@ -192,7 +181,10 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 						coins[pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
-						formatToCurrency(calculateAmount(quick, price, size), increment_price),
+						formatToCurrency(
+							calculateAmount(quick, price, size),
+							increment_price
+						),
 						rest.symbol.toUpperCase()
 					).join('');
 				} else {
@@ -219,30 +211,18 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 				} else {
 					return (
 						<td>
-							{formatToCurrency(
-								calculateAmount(quick, price, size),
-								0.0001
-							)}
+							{formatToCurrency(calculateAmount(quick, price, size), 0.0001)}
 						</td>
 					);
 				}
-			}
+			},
 		},
 		{
 			stringId: 'FEE,NO_FEE',
-			label: STRINGS["FEE"],
+			label: STRINGS['FEE'],
 			key: 'fee',
-			exportToCsv: ({
-				fee = 0,
-				price = 0,
-				size = 0,
-				quick,
-				symbol,
-				side
-			}) => {
-				let feeData =  discount
-					? (fee - (fee * discount / 100))
-					: fee;
+			exportToCsv: ({ fee = 0, price = 0, size = 0, quick, symbol, side }) => {
+				let feeData = discount ? fee - (fee * discount) / 100 : fee;
 				if (!feeData) {
 					return calculateFeeAmount(feeData);
 				}
@@ -263,14 +243,8 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 					calculateFeeAmount(feeData, quick, price, size, side);
 				}
 			},
-			renderCell: (
-				{ fee, price, size, quick, symbol, side },
-				key,
-				index
-			) => {
-				let feeData =  discount
-					? (fee - (fee * discount / 100))
-					: fee;
+			renderCell: ({ fee, price, size, quick, symbol, side }, key, index) => {
+				let feeData = discount ? fee - (fee * discount) / 100 : fee;
 				if (!feeData) {
 					return <td key={index}> {calculateFeeAmount(feeData)}</td>;
 				}
@@ -295,11 +269,11 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 				} else {
 					calculateFeeAmount(feeData, quick, price, size, side);
 				}
-			}
+			},
 		},
 		{
 			stringId: 'TIME',
-			label: STRINGS["TIME"],
+			label: STRINGS['TIME'],
 			key: 'timestamp',
 			className: isMobile ? 'text-center' : '',
 			exportToCsv: ({ timestamp = '' }) => timestamp,
@@ -309,8 +283,8 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 						{getFormatTimestamp(timestamp)}
 					</td>
 				);
-			}
-		}
+			},
+		},
 	];
 };
 
@@ -334,11 +308,11 @@ export const generateWithdrawalsHeaders = (
 						/>
 					</td>
 				);
-			}
+			},
 		},
 		{
 			stringId: 'CURRENCY',
-			label: STRINGS["CURRENCY"],
+			label: STRINGS['CURRENCY'],
 			key: 'currency',
 			exportToCsv: ({ currency }) => {
 				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
@@ -347,22 +321,18 @@ export const generateWithdrawalsHeaders = (
 			renderCell: ({ currency }, key, index) => {
 				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 				return <td key={index}>{fullname}</td>;
-			}
+			},
 		},
 		{
 			stringId: 'STATUS,COMPLETE,REJECTED,PENDING',
-			label: STRINGS["STATUS"],
+			label: STRINGS['STATUS'],
 			key: 'status',
-			exportToCsv: ({
-				status = false,
-				dismissed = false,
-				rejected = false
-			}) =>
+			exportToCsv: ({ status = false, dismissed = false, rejected = false }) =>
 				status
-					? STRINGS["COMPLETE"]
+					? STRINGS['COMPLETE']
 					: dismissed || rejected
-					? STRINGS["REJECTED"]
-					: STRINGS["PENDING"],
+					? STRINGS['REJECTED']
+					: STRINGS['PENDING'],
 			renderCell: (
 				{ status = false, dismissed = false, rejected = false },
 				key,
@@ -371,17 +341,17 @@ export const generateWithdrawalsHeaders = (
 				return (
 					<td key={index}>
 						{status
-							? STRINGS["COMPLETE"]
+							? STRINGS['COMPLETE']
 							: dismissed || rejected
-							? STRINGS["REJECTED"]
-							: STRINGS["PENDING"]}
+							? STRINGS['REJECTED']
+							: STRINGS['PENDING']}
 					</td>
 				);
-			}
+			},
 		},
 		{
 			stringId: 'AMOUNT',
-			label: STRINGS["AMOUNT"],
+			label: STRINGS['AMOUNT'],
 			key: 'amount',
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
 				const { min, ...rest } =
@@ -401,11 +371,11 @@ export const generateWithdrawalsHeaders = (
 						true
 					)} ${rest.symbol.toUpperCase()}`}</td>
 				);
-			}
+			},
 		},
 		{
 			stringId: 'FEE,NO_FEE',
-			label: STRINGS["FEE"],
+			label: STRINGS['FEE'],
 			key: 'fee',
 			exportToCsv: ({ fee = 0 }) => fee,
 			renderCell: ({ fee, price, size, currency }, key, index) => {
@@ -413,7 +383,7 @@ export const generateWithdrawalsHeaders = (
 				if (fee === 0) {
 					return <td key={index}>{calculateFeeAmount(fee)}</td>;
 				}
-				return ((
+				return (
 					// STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`]
 					// ?
 					<td key={index}>
@@ -422,23 +392,24 @@ export const generateWithdrawalsHeaders = (
 							fee,
 							data.symbol.toUpperCase()
 						)}
-					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
+					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
-				) /*: <td key={index}>{fee}</td>*/);
-			}
+					/*: <td key={index}>{fee}</td>*/
+				 /*: <td key={index}>{fee}</td>*/);
+			},
 		},
 		{
 			stringId: 'TIME',
-			label: STRINGS["TIME"],
+			label: STRINGS['TIME'],
 			key: 'created_at',
 			exportToCsv: ({ created_at = '' }) => created_at,
 			renderCell: ({ created_at = '' }, key, index) => {
 				return <td key={index}>{getFormatTimestamp(created_at)}</td>;
-			}
+			},
 		},
 		{
 			stringId: 'MORE,CANCEL,VIEW',
-			label: STRINGS["MORE"],
+			label: STRINGS['MORE'],
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
 			renderCell: (
@@ -452,7 +423,7 @@ export const generateWithdrawalsHeaders = (
 					waiting,
 					id,
 					amount,
-					type
+					type,
 				},
 				key,
 				index
@@ -473,13 +444,13 @@ export const generateWithdrawalsHeaders = (
 								onClick={() => withdrawalPopup(id, amount, currency)}
 								key={id}
 							>
-								{STRINGS["CANCEL"]}
+								{STRINGS['CANCEL']}
 							</div>
 						</td>
 					);
 				} else if (
 					status === false &&
-					((dismissed === true) || (rejected === true)) &&
+					(dismissed === true || rejected === true) &&
 					type === 'withdrawal'
 				) {
 					// Canceled Status
@@ -491,13 +462,11 @@ export const generateWithdrawalsHeaders = (
 								notification.open({
 									message: 'Transaction ID',
 									description: transaction_id,
-									icon: (
-										<InfoCircleTwoTone style={{ color: '#0000ff' }} />
-									)
+									icon: <InfoCircleTwoTone style={{ color: '#0000ff' }} />,
 								});
 							}}
 						>
-							{STRINGS["VIEW"]}
+							{STRINGS['VIEW']}
 						</td>
 					);
 				} else {
@@ -509,7 +478,7 @@ export const generateWithdrawalsHeaders = (
 								target="blank"
 								href={EXPLORERS_ENDPOINT(currency) + transaction_id}
 							>
-								{STRINGS["VIEW"]}
+								{STRINGS['VIEW']}
 							</a>
 						</td>
 					) : (
@@ -520,18 +489,16 @@ export const generateWithdrawalsHeaders = (
 								notification.open({
 									message: 'Transaction ID',
 									description: transaction_id,
-									icon: (
-										<InfoCircleTwoTone style={{ color: '#0000ff' }} />
-									)
+									icon: <InfoCircleTwoTone style={{ color: '#0000ff' }} />,
 								});
 							}}
 						>
-							{STRINGS["VIEW"]}
+							{STRINGS['VIEW']}
 						</td>
 					);
 				}
-			}
-		}
+			},
+		},
 	];
 };
 
@@ -541,7 +508,7 @@ export const filterData = (symbol, { count = 0, data = [] }) => {
 	const filteredData = data.filter((item) => item.symbol === symbol);
 	return {
 		count: filteredData.length,
-		data: filteredData
+		data: filteredData,
 	};
 };
 

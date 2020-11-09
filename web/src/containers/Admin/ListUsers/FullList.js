@@ -27,28 +27,23 @@ class FullListUsers extends Component {
 			pageSize: 10,
 			limit: 50,
 			currentTablePage: 1,
-			isRemaining: true
-		}
-	};
+			isRemaining: true,
+		};
+	}
 
 	componentWillMount() {
-		this.requestFullUsers(
-			this.state.page,
-			this.state.limit
-		);
+		this.requestFullUsers(this.state.page, this.state.limit);
 	}
 
 	requestFullUsers = (page = 1, limit = 50) => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 
 		requestUsers({ page, limit })
 			.then((res) => {
-				let temp = page === 1
-					? res.data
-					: [ ...this.state.users, ...res.data ];
+				let temp = page === 1 ? res.data : [...this.state.users, ...res.data];
 				let users = temp.sort((a, b) => {
 					return new Date(b.created_at) - new Date(a.created_at);
 				});
@@ -59,14 +54,14 @@ class FullListUsers extends Component {
 					total: res.count,
 					page,
 					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
-					isRemaining: res.count > page * limit
+					isRemaining: res.count > page * limit,
 				});
 			})
 			.catch((error) => {
 				const message = error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
 			});
 	};
@@ -80,10 +75,7 @@ class FullListUsers extends Component {
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
 		const apiPageTemp = Math.floor(count / 5);
 		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-			this.requestFullUsers(
-				page + 1,
-				limit
-			);
+			this.requestFullUsers(page + 1, limit);
 		}
 		this.setState({ currentTablePage: count });
 	};
@@ -120,15 +112,15 @@ class FullListUsers extends Component {
 			{
 				title: 'Level',
 				dataIndex: 'verification_level',
-				key: 'verification_level'
+				key: 'verification_level',
 			},
 			{
 				title: 'flagged users',
 				dataIndex: 'flagged',
 				key: 'flagged',
-				render: renderFlagIcon
+				render: renderFlagIcon,
 			},
-			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
+			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink },
 		];
 
 		const renderRowContent = ({
@@ -138,7 +130,7 @@ class FullListUsers extends Component {
 			bch_balance,
 			eth_balance,
 			xrp_balance,
-			fiat_balance
+			fiat_balance,
 		}) => {
 			btc_balance = formatCurrency(btc_balance);
 			bch_balance = formatCurrency(bch_balance);
@@ -148,9 +140,7 @@ class FullListUsers extends Component {
 
 			return (
 				<div>
-					<div>
-						Created at: {moment(created_at).format('YYYY/MM/DD HH:mm')}
-					</div>
+					<div>Created at: {moment(created_at).format('YYYY/MM/DD HH:mm')}</div>
 				</div>
 			);
 		};
@@ -183,7 +173,7 @@ class FullListUsers extends Component {
 							}}
 							pagination={{
 								current: currentTablePage,
-								onChange: this.pageChange
+								onChange: this.pageChange,
 							}}
 						/>
 					</div>

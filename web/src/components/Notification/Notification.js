@@ -16,13 +16,13 @@ export const NotificationWraperDesktop = ({
 	className = '',
 	titleClassName = '',
 	onClose,
-	onBack
+	onBack,
 }) => (
 	<div className={classnames('notification-content-wrapper', className)}>
 		<Image
-		    iconId={iconId}
-		    icon={icon}
-		    wrapperClassName="notification-content-icon"
+			iconId={iconId}
+			icon={icon}
+			wrapperClassName="notification-content-icon"
 		/>
 		<div
 			className={classnames(
@@ -30,19 +30,18 @@ export const NotificationWraperDesktop = ({
 				titleClassName
 			)}
 		>
-			<EditWrapper stringId={stringId}>
-        {title}
-			</EditWrapper>
+			<EditWrapper stringId={stringId}>{title}</EditWrapper>
 		</div>
 		{children}
-		{ onBack ?
+		{onBack ? (
 			<Button
-				label={STRINGS["NOTIFICATIONS.BUTTONS.OKAY"]}
+				label={STRINGS['NOTIFICATIONS.BUTTONS.OKAY']}
 				onClick={onClose}
 				autoFocus
-			>
-			</Button>
-		: '' }
+			></Button>
+		) : (
+			''
+		)}
 	</div>
 );
 
@@ -53,7 +52,7 @@ export const NotificationWraperMobile = ({
 	title,
 	children,
 	className = '',
-	titleClassName = ''
+	titleClassName = '',
 }) => (
 	<div className={classnames('notification-content-wrapper', className)}>
 		<Image
@@ -75,7 +74,11 @@ export const NotificationWraperMobile = ({
 	</div>
 );
 
-export const NotificationWraper = ({ onClose , compressOnMobile = false, ...props }) =>
+export const NotificationWraper = ({
+	onClose,
+	compressOnMobile = false,
+	...props
+}) =>
 	compressOnMobile && isMobile ? (
 		<NotificationWraperMobile {...props} />
 	) : (
@@ -91,9 +94,7 @@ export const NotificationContent = ({ children, className = '' }) => (
 export const InformationRow = ({ label, value, stringId }) => (
 	<div className="d-flex">
 		<div className="f-1 text_disabled">
-			<EditWrapper stringId={stringId}>
-        {label}:
-			</EditWrapper>
+			<EditWrapper stringId={stringId}>{label}:</EditWrapper>
 		</div>
 		<div className="f-1">{value}</div>
 	</div>

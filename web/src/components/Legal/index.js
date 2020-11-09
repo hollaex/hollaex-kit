@@ -16,7 +16,9 @@ const Legal = ({ type, constants = {}, logoPath }) => {
 	const keys = ['TITLE', 'SUBTITLE', 'TEXTS'];
 	const TYPE = getType(type);
 
-	const [TITLE, SUBTITLE, TEXTS] = keys.map(key => STRINGS[`LEGAL.${TYPE}.${key}`])
+	const [TITLE, SUBTITLE, TEXTS] = keys.map(
+		(key) => STRINGS[`LEGAL.${TYPE}.${key}`]
+	);
 
 	return (
 		<div className="d-flex legal-wrapper justify-content-center">
@@ -31,7 +33,9 @@ const Legal = ({ type, constants = {}, logoPath }) => {
 				<div className="legal-title">{TITLE}</div>
 				<div className="legal-subtitle">{SUBTITLE}</div>
 				<div className="legal-content">
-					{TEXTS.map((text, index) => <p key={index}>{text}</p>)}
+					{TEXTS.map((text, index) => (
+						<p key={index}>{text}</p>
+					))}
 				</div>
 			</div>
 		</div>

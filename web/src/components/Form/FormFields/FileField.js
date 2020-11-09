@@ -8,7 +8,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 class FileField extends Component {
 	state = {
 		filename: '',
-		fileArray: []
+		fileArray: [],
 	};
 	onClick = (ev) => {
 		if (this.fileInput) {
@@ -51,7 +51,7 @@ class FileField extends Component {
 			ref: this.setRef,
 			multiple: multiple ? multiple : false,
 			accept: 'image/*',
-			style: { display: 'none' }
+			style: { display: 'none' },
 		};
 
 		return (
@@ -69,7 +69,7 @@ class FileField extends Component {
 							<div
 								key={index}
 								className={classnames('text_overflow', {
-									placeholder: !file.name
+									placeholder: !file.name,
 								})}
 							>
 								{file.name}
@@ -78,7 +78,7 @@ class FileField extends Component {
 					) : (
 						<div
 							className={classnames('text_overflow', {
-								placeholder: !filename
+								placeholder: !filename,
 							})}
 						>
 							{filename ? filename : placeholder}
@@ -89,20 +89,20 @@ class FileField extends Component {
 						  multiple && (
 								<ActionNotification
 									stringId="ADD_FILES"
-									text={STRINGS["ADD_FILES"]}
+									text={STRINGS['ADD_FILES']}
 									status="information"
 									iconId="BLUE_CLIP"
-									iconPath={ICONS["BLUE_CLIP"]}
+									iconPath={ICONS['BLUE_CLIP']}
 									className="no_bottom pr-0 pl-0"
 								/>
 						  )
 						: !filename && (
 								<ActionNotification
 									stringId="ADD_FILES"
-									text={STRINGS["ADD_FILES"]}
+									text={STRINGS['ADD_FILES']}
 									status="information"
 									iconId="BLUE_CLIP"
-									iconPath={ICONS["BLUE_CLIP"]}
+									iconPath={ICONS['BLUE_CLIP']}
 									className="no_bottom pr-0 pl-0"
 								/>
 						  )}

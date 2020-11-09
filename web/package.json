@@ -26,7 +26,6 @@
 		"html-to-draftjs": "^1.5.0",
 		"jwt-decode": "2.2.0",
 		"keycode": "2.2.0",
-		"lint-staged": "8.2.1",
 		"lodash.debounce": "4.0.8",
 		"lodash.merge": "4.6.2",
 		"mathjs": "5.10.3",
@@ -80,15 +79,17 @@
 	},
 	"devDependencies": {
 		"cpy-cli": "3.1.1",
+		"husky": "4.3.0",
+		"lint-staged": "10.5.1",
 		"node-sass-chokidar": "1.5.0",
-		"prettier": "1.16.4",
+		"prettier": "2.1.2",
 		"react-scripts": "3.4.3",
 		"rimraf": "3.0.2",
 		"surge": "0.21.6"
 	},
 	"scripts": {
-		"prettier-commit": "lint-staged",
-		"prettier": "./node_modules/prettier/bin-prettier.js --write \"src/**/*.{js,json,css,scss,md}\"",
+		"prettify-project": "prettier --write .",
+		"prettify": "prettier --write",
 		"build-css": "node-sass-chokidar src/ -o src/",
 		"watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"copy-cname": "cpy CNAME build/",
@@ -110,18 +111,14 @@
 		"url": "git+https://github.com/bitholla/hollaex.git"
 	},
 	"homepage": "https://hollaex.com",
-	"prettier": {
-		"tabWidth": 2,
-		"useTabs": true,
-		"semi": true,
-		"singleQuote": true,
-		"bracketSpacing": true,
-		"arrowParens": "always"
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
 	},
 	"lint-staged": {
 		"*.{js,json,css,scss,md}": [
-			"prettier --write",
-			"git add"
+			"npm run prettify"
 		]
 	},
 	"author": "bitHolla Inc",

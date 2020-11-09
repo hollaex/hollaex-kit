@@ -9,7 +9,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
 	{ key: 'month', label: 'Month' },
-	{ key: 'day', label: 'Day' }
+	{ key: 'day', label: 'Day' },
 ];
 const LIMIT_YEARS = 100;
 
@@ -17,8 +17,8 @@ const FORMATS = {
 	en: {
 		year: 'YYYY',
 		month: 'MM',
-		day: 'DD'
-	}
+		day: 'DD',
+	},
 };
 
 const generateDateLimits = (yearsBack = LIMIT_YEARS, yearsForward = 0) => {
@@ -30,30 +30,31 @@ const generateDateLimits = (yearsBack = LIMIT_YEARS, yearsForward = 0) => {
 			year: range(
 				nowMoment.year() - yearsBack,
 				nowMoment.year() + (yearsForward || 1)
-			).reverse()
-		}
+			).reverse(),
+		},
 	};
 };
 
 class DropdownDateField extends Component {
+	constructor(props) {
+		super(props);
+		const {
+			defaults: { language: DEFAULT_LANGUAGE },
+		} = this.props;
 
-  constructor(props) {
-    super(props);
-    const { defaults: { language: DEFAULT_LANGUAGE } } = this.props;
-
-    this.state = {
-      language: DEFAULT_LANGUAGE,
-      focused: false,
-      display: {
-        year: '',
-        month: '',
-        day: ''
-      },
-      date: moment(),
-      unixtime: 0,
-      limits: {}
-    };
-  }
+		this.state = {
+			language: DEFAULT_LANGUAGE,
+			focused: false,
+			display: {
+				year: '',
+				month: '',
+				day: '',
+			},
+			date: moment(),
+			unixtime: 0,
+			limits: {},
+		};
+	}
 
 	componentWillMount() {
 		let limits = {};
@@ -81,7 +82,11 @@ class DropdownDateField extends Component {
 		this.setState({ limits: limits || generateDateLimits() });
 	};
 
-	setDisplay = (limits, dateString = '', language = this.props.defaults.language) => {
+	setDisplay = (
+		limits,
+		dateString = '',
+		language = this.props.defaults.language
+	) => {
 		const display = {};
 		let dateUnixtime = moment(dateString || new Date()).valueOf();
 		moment.locale(language);
@@ -90,12 +95,12 @@ class DropdownDateField extends Component {
 		display.en = {
 			...limits.en,
 			month: moment.months(),
-			day: range(1, date.daysInMonth() + 1)
+			day: range(1, date.daysInMonth() + 1),
 		};
 		display.ko = {
 			...limits.en,
 			month: moment.months(),
-			day: range(1, date.daysInMonth() + 1)
+			day: range(1, date.daysInMonth() + 1),
 		};
 		moment.locale(language);
 		this.setState({ display, date, unixtime: date.valueOf(), language });
@@ -143,7 +148,7 @@ class DropdownDateField extends Component {
 		const { display, date, language } = this.state;
 		const {
 			meta: { invalid },
-			disabled = false
+			disabled = false,
 		} = this.props;
 		return (
 			<FieldWrapper

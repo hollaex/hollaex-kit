@@ -8,9 +8,7 @@ import moment from 'moment';
 
 import { AppBar, AppFooter } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import {
-	FLEX_CENTER_CLASSES
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage, getExchangeInfo } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
@@ -28,8 +26,8 @@ class Home extends Component {
 	state = {
 		height: 0,
 		style: {
-			minHeight: MIN_HEIGHT
-		}
+			minHeight: MIN_HEIGHT,
+		},
 	};
 
 	componentDidMount() {
@@ -63,15 +61,15 @@ class Home extends Component {
 			} else {
 				is_expired = false;
 				is_warning = false;
-			}	
+			}
 		} else {
 			is_expired = true;
 		}
 		return {
 			is_expired,
 			is_warning,
-			daysLeft
-		}
+			daysLeft,
+		};
 	};
 
 	onResize = () => {
@@ -79,10 +77,10 @@ class Home extends Component {
 			const height = window.innerHeight - 45;
 			this.setState({
 				style: {
-					minHeight: height
+					minHeight: height,
 					// maxHeight: height,
 				},
-				height
+				height,
 			});
 			// this.onClickScrollTo(0)();
 		}
@@ -93,7 +91,7 @@ class Home extends Component {
 			const sections = this.container.children;
 			if (children < sections.length) {
 				sections[children].scrollIntoView({
-					behavior: 'smooth'
+					behavior: 'smooth',
 				});
 			}
 		}
@@ -129,7 +127,7 @@ class Home extends Component {
 			router,
 			info,
 			activeTheme,
-			constants = {}
+			constants = {},
 		} = this.props;
 		const { style } = this.state;
 		const expiryData = this.checkExchangeExpiry();
@@ -143,7 +141,7 @@ class Home extends Component {
 					getThemeClass(activeTheme),
 					{
 						'layout-mobile': isMobile,
-						'layout-desktop': isBrowser
+						'layout-desktop': isBrowser,
 					}
 				)}
 			>
@@ -160,13 +158,13 @@ class Home extends Component {
 					<div
 						className={classnames('w-100', 'p-1', ...FLEX_CENTER_CLASSES, {
 							'exchange-trial': info.is_trial,
-							'exchange-expired': expiryData.is_expired
+							'exchange-expired': expiryData.is_expired,
 						})}
 					>
 						{expiryData.is_expired
-							? STRINGS["EXPIRY_EXCHANGE_MSG"]
+							? STRINGS['EXPIRY_EXCHANGE_MSG']
 							: STRINGS.formatString(
-									STRINGS["TRIAL_EXCHANGE_MSG"],
+									STRINGS['TRIAL_EXCHANGE_MSG'],
 									constants.api_name || '',
 									expiryData.daysLeft
 							  )}
@@ -184,7 +182,7 @@ class Home extends Component {
 					<Section1
 						style={{
 							minHeight:
-								style.minHeight > MIN_HEIGHT ? style.minHeight : MIN_HEIGHT
+								style.minHeight > MIN_HEIGHT ? style.minHeight : MIN_HEIGHT,
 						}}
 						onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
 						onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
@@ -226,17 +224,14 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	info: store.app.info,
 	activeTheme: store.app.theme,
-	constants: store.app.constants
+	constants: store.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	// requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	logout: bindActionCreators(logout, dispatch),
-	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch)
+	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

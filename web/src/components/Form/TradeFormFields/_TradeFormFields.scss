@@ -53,13 +53,21 @@ $padding: 0.25rem;
 		}
 		/* Safari 4.0 - 8.0 */
 		@-webkit-keyframes bounce {
-			15%  {border-color: $link;}
-			75% {border-color: $input--border-color;}
+			15% {
+				border-color: $link;
+			}
+			75% {
+				border-color: $input--border-color;
+			}
 		}
 		/* Standard syntax */
 		@keyframes bounce {
-			15%  {border-color: $link;}
-			75% {border-color: $input--border-color;}
+			15% {
+				border-color: $link;
+			}
+			75% {
+				border-color: $input--border-color;
+			}
 		}
 	}
 }

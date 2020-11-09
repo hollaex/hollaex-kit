@@ -14,7 +14,7 @@
 	}
 	.header-content {
 		color: $colors-deactivate-color2;
-		font-size: .8rem;
+		font-size: 0.8rem;
 	}
 	.content-text {
 		font-size: 0.8rem;
@@ -33,7 +33,7 @@
 }
 
 .verification_link {
-	color: $link
+	color: $link;
 }
 
 .verification-info-txt {
@@ -66,13 +66,13 @@
 }
 
 .layout-mobile {
-	.verification_container{	
+	.verification_container {
 		.verification-info-txt {
 			width: 100%;
-			font-size: $font-size-mobile-txt!important;
+			font-size: $font-size-mobile-txt !important;
 		}
-		.exir-button{
-			font-size: $font-size-mobile-txt!important;
+		.exir-button {
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
 	.mobile-bar-tab .bartab-text-wrapper {
@@ -82,8 +82,8 @@
 	.presentation_container.verification_container {
 		padding-top: 0 !important;
 		max-height: $max-content-height-mobile;
-		.header-content{
-			font-size:$font-size-mobile-txt!important;
+		.header-content {
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
 	.header_title-wrapper {
@@ -91,17 +91,21 @@
 			font-size: $font-size-mobile-title;
 		}
 		.header_title-children {
-			font-size: $font-size-mobile-txt!important;
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
-	.field-wrapper{
-		.field-content{
-			.field-label,.field-children,.inner_container,.input_field-input,.placeholder{
-				font-size: $font-size-mobile-txt!important;
+	.field-wrapper {
+		.field-content {
+			.field-label,
+			.field-children,
+			.inner_container,
+			.input_field-input,
+			.placeholder {
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
-	.content-text{
+	.content-text {
 		font-size: $font-size-mobile-txt;
 	}
 }

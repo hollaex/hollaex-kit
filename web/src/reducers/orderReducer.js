@@ -4,7 +4,7 @@ const INITIAL_STATE = {
 	fetched: false,
 	fetching: false,
 	error: null,
-	activeOrders: []
+	activeOrders: [],
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -19,7 +19,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			}
 			return {
 				...state,
-				activeOrders: [newOrder].concat(state.activeOrders)
+				activeOrders: [newOrder].concat(state.activeOrders),
 			};
 
 		case 'UPDATE_ORDER': {
@@ -31,7 +31,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				let activeOrders = [].concat(...state.activeOrders);
 				activeOrders[indexOfOrder] = {
 					...activeOrders[indexOfOrder],
-					...order
+					...order,
 				};
 				return { ...state, activeOrders };
 			} else {
@@ -40,7 +40,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				}
 				return {
 					...state,
-					activeOrders: [order].concat(state.activeOrders)
+					activeOrders: [order].concat(state.activeOrders),
 				};
 			}
 		}
@@ -68,7 +68,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				fetching: false,
-				activeOrders: data
+				activeOrders: data,
 			};
 		}
 		// CANCEL_ALL_ORDERS

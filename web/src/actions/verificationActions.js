@@ -4,7 +4,7 @@ import querystring from 'query-string';
 const VERIFICATION_ENDPOINTS = {
 	VERIFY_SMS_CODE: '/plugins/sms/verify',
 	VERIFY_BANK: '/plugins/bank/user',
-	GET_USER: '/user'
+	GET_USER: '/user',
 };
 
 export const getUserData = () => axios.get(VERIFICATION_ENDPOINTS.GET_USER);
