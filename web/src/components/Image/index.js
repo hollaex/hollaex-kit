@@ -12,6 +12,7 @@ const Image = ({
 	imageWrapperClassName,
 	svgWrapperClassName,
 	stringId,
+	showUpload,
 }) => {
 	const useSvg = icon.indexOf('.svg') > 0;
 	const isBackground = isBackgroundIcon(iconId);
@@ -26,7 +27,7 @@ const Image = ({
 	}
 
 	return (
-		<EditWrapper iconId={iconId} stringId={stringId}>
+		<EditWrapper iconId={showUpload ? iconId : ''} stringId={stringId}>
 			{icon && useSvg && (
 				<ReactSVG
 					path={icon}
@@ -52,6 +53,7 @@ Image.defaultProps = {
 	wrapperClassName: '',
 	imageWrapperClassName: '',
 	svgWrapperClassName: '',
+	showUpload: true,
 };
 
 export default Image;

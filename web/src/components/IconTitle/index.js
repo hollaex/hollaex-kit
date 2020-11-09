@@ -24,6 +24,7 @@ const BasicIconTitle = ({
 					wrapperClassName={imageWrapperClassName}
 					imageWrapperClassName="icon_title-image"
 					svgWrapperClassName="icon_title-svg"
+					showUpload={false}
 				/>
 			)}
 			<EditWrapper stringId={stringId} iconId={iconId}>
