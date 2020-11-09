@@ -1140,7 +1140,7 @@ const setUsernameById = (userId, username) => {
 	}
 	return getUserByKitId(userId, false)
 		.then((user) =>{
-			if (user.settings.usernameIsSet) {
+			if (user.settings.chat.set_username) {
 				throw new Error(USERNAME_CANNOT_BE_CHANGED);
 			}
 			return all([ user, checkUsernameIsTaken(username) ]);
@@ -1151,7 +1151,9 @@ const setUsernameById = (userId, username) => {
 					username,
 					settings: {
 						...user.settings,
-						usernameIsSet: true
+						chat: {
+							set_username: true
+						}
 					}
 				},
 				{ fields: ['username', 'settings'] }
