@@ -673,7 +673,7 @@ class HollaEx {
 			data.fee_coin = feeData.fee_coin;
 		}
 
-		if (Object.keys(meta) > 0) {
+		if (Object.keys(meta).length > 0) {
 			data.meta = meta;
 		}
 
