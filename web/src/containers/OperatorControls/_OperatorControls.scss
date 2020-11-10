@@ -147,6 +147,13 @@ $operator-controls__panel-border-color: #a7a7a7;
 		text-overflow: ellipsis;
 	}
 
+	.rc-color-picker-trigger {
+		width: 20px;
+		height: 20px;
+		border: 1px solid #322d2d99;
+		border-radius: 38px;
+	}
+
 	.ReactModal__Content {
 		background-color: $operator-controls__panel-main-color !important;
 		color: $operator-controls__panel-text-color !important;

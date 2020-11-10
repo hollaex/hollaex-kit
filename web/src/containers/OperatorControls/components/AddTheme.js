@@ -14,6 +14,8 @@ import {
 	calculateBaseColors,
 } from 'utils/color';
 import validateColor from 'validate-color';
+import 'rc-color-picker/assets/index.css';
+import ColorPicker from 'rc-color-picker';
 
 const { Group } = Radio;
 
@@ -146,6 +148,11 @@ class AddTheme extends Component {
 		}
 	};
 
+	pickerHandler = (value, name) => {
+		this.updateTheme(value, name);
+		this.validateColor({ target: { value, name } });
+	};
+
 	render() {
 		const { isOpen, onCloseDialog } = this.props;
 		const {
@@ -225,17 +232,23 @@ class AddTheme extends Component {
 													{colorKey.split('_')[1].replace(/-/g, ' ')}
 												</div>
 												<div className="d-flex align-items-center">
-													<div
-														className="mr-2"
-														style={{
-															width: '20px',
-															height: '20px',
-															border: '1px solid #322D2D99',
-															borderRadius: '38px',
-															backgroundColor: colorValue,
-															visibility: isCalculated ? 'hidden' : 'visible',
-														}}
-													/>
+													{!isCalculated && (
+														<ColorPicker
+															color={colorValue}
+															enableAlpha={false}
+															onChange={({ color }) =>
+																this.pickerHandler(color, colorKey)
+															}
+															onClose={({ color }) =>
+																this.pickerHandler(color, colorKey)
+															}
+															placement="topLeft"
+															className="some-class"
+															style={{ zIndex: 10002 }}
+														>
+															<span className="mr-2 rc-color-picker-trigger" />
+														</ColorPicker>
+													)}
 													<Input
 														type={isCalculated ? 'number' : 'text'}
 														name={colorKey}
