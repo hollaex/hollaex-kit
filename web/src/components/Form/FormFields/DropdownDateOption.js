@@ -5,7 +5,7 @@ import { FieldContent } from './FieldWrapper';
 
 class DropdownDateOption extends Component {
 	state = {
-		isOpen: false
+		isOpen: false,
 	};
 
 	toogleOpen = () => {
@@ -50,7 +50,7 @@ class DropdownDateOption extends Component {
 				<FieldContent
 					contentClassName={classnames('dropdown-triangle', {
 						pointer: !disabled,
-						not_allowed_cursor: disabled
+						not_allowed_cursor: disabled,
 					})}
 					valid={valid}
 				>

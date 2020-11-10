@@ -10,12 +10,12 @@ const { Sider } = Layout;
 
 class MobileSider extends Component {
 	state = {
-		collapsed: false
+		collapsed: false,
 	};
 
 	toggleCollapsed = () => {
 		this.setState({
-			collapsed: !this.state.collapsed
+			collapsed: !this.state.collapsed,
 		});
 	};
 

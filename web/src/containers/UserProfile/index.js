@@ -6,7 +6,7 @@ import Form from './Form';
 import { generateFormValues as generateMobileFormValues } from './MobileFormValues';
 import {
 	prepareInitialValues,
-	generateFormValues as generateDataFormValues
+	generateFormValues as generateDataFormValues,
 } from './IdentificationFormValues';
 import { InformationSection } from './InformationSection';
 import { LevelSection } from './LevelSection';
@@ -22,7 +22,7 @@ class UserProfile extends Component {
 	state = {
 		sections: [],
 		dataFormValues: {},
-		mobileFormValues: {}
+		mobileFormValues: {},
 	};
 
 	componentDidMount() {
@@ -73,22 +73,24 @@ class UserProfile extends Component {
 		verified = false,
 		provided = false,
 		verifyText = '',
-    verifyTextId,
+		verifyTextId
 	) => {
 		const { icons: ICONS } = this.props;
 		return {
 			stringId: `USER_VERIFICATION.COMPLETED,USER_VERIFICATION.PENDING_VERIFICATION,${verifyTextId}`,
 			text: verified
-				? STRINGS["USER_VERIFICATION.COMPLETED"]
+				? STRINGS['USER_VERIFICATION.COMPLETED']
 				: provided
-					? STRINGS["USER_VERIFICATION.PENDING_VERIFICATION"]
-					: verifyText,
+				? STRINGS['USER_VERIFICATION.PENDING_VERIFICATION']
+				: verifyText,
 			status: verified ? 'success' : provided ? 'information' : 'warning',
-			iconId: "GREEN_CHECK,BLUE_TIMER,RED_ARROW",
+			iconId: 'GREEN_CHECK,BLUE_TIMER,RED_ARROW',
 			iconPath: verified
-				? ICONS["GREEN_CHECK"]
-				: provided ? ICONS["BLUE_TIMER"] : ICONS["RED_ARROW"],
-			allowClick: false
+				? ICONS['GREEN_CHECK']
+				: provided
+				? ICONS['BLUE_TIMER']
+				: ICONS['RED_ARROW'],
+			allowClick: false,
 		};
 	};
 
@@ -104,7 +106,7 @@ class UserProfile extends Component {
 		const dataFormValues = generateDataFormValues(
 			language,
 			userData.nationality,
-			ICONS,
+			ICONS
 		);
 		const mobileFormValues = generateMobileFormValues();
 		this.setState({ dataFormValues, mobileFormValues }, () => {
@@ -114,7 +116,7 @@ class UserProfile extends Component {
 
 	renderGoToVerification = () => (
 		<InformationSection
-			onChangeText={STRINGS["USER_VERIFICATION.GOTO_VERIFICATION"]}
+			onChangeText={STRINGS['USER_VERIFICATION.GOTO_VERIFICATION']}
 			onChangeValue={this.goToVerification}
 		/>
 	);
@@ -125,8 +127,8 @@ class UserProfile extends Component {
 
 		const sections = [
 			{
-				stringId: "USER_VERIFICATION.TITLE_EMAIL",
-				title: STRINGS["USER_VERIFICATION.TITLE_EMAIL"],
+				stringId: 'USER_VERIFICATION.TITLE_EMAIL',
+				title: STRINGS['USER_VERIFICATION.TITLE_EMAIL'],
 				subtitle: email,
 				content: (
 					<LevelSection
@@ -139,7 +141,7 @@ class UserProfile extends Component {
 								'category',
 								'level'
 							)}
-							onChangeText={STRINGS["UPGRADE_LEVEL"]}
+							onChangeText={STRINGS['UPGRADE_LEVEL']}
 						/>
 					</LevelSection>
 				),
@@ -147,13 +149,13 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					true,
 					true,
-					STRINGS["USER_VERIFICATION.VERIFY_EMAIL"],
-					"USER_VERIFICATION.VERIFY_EMAIL",
-				)
+					STRINGS['USER_VERIFICATION.VERIFY_EMAIL'],
+					'USER_VERIFICATION.VERIFY_EMAIL'
+				),
 			},
 			{
-				stringId: "USER_VERIFICATION.TITLE_MOBILE_PHONE",
-				title: STRINGS["USER_VERIFICATION.TITLE_MOBILE_PHONE"],
+				stringId: 'USER_VERIFICATION.TITLE_MOBILE_PHONE',
+				title: STRINGS['USER_VERIFICATION.TITLE_MOBILE_PHONE'],
 				subtitle: phone_number,
 				content: phone_number ? (
 					<MobileForm initialValues={userData} formValues={mobileFormValues}>
@@ -165,13 +167,13 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					!!phone_number,
 					!!phone_number,
-					STRINGS["USER_VERIFICATION.VERIFY_MOBILE_PHONE"],
-          "USER_VERIFICATION.VERIFY_MOBILE_PHONE",
-				)
+					STRINGS['USER_VERIFICATION.VERIFY_MOBILE_PHONE'],
+					'USER_VERIFICATION.VERIFY_MOBILE_PHONE'
+				),
 			},
 			{
-				stringId: "USER_VERIFICATION.TITLE_PERSONAL_INFORMATION",
-				title: STRINGS["USER_VERIFICATION.TITLE_PERSONAL_INFORMATION"],
+				stringId: 'USER_VERIFICATION.TITLE_PERSONAL_INFORMATION',
+				title: STRINGS['USER_VERIFICATION.TITLE_PERSONAL_INFORMATION'],
 				subtitle: full_name,
 				content: full_name ? (
 					<InformationForm
@@ -181,7 +183,9 @@ class UserProfile extends Component {
 						<InformationSection
 							text={
 								verification_level === 1
-									? STRINGS["USER_VERIFICATION.PENDING_VERIFICATION_PERSONAL_INFORMATION"]
+									? STRINGS[
+											'USER_VERIFICATION.PENDING_VERIFICATION_PERSONAL_INFORMATION'
+									  ]
 									: ''
 							}
 							onChangeValue={this.onOpenContactForm}
@@ -193,13 +197,13 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					verification_level > 1,
 					!!full_name,
-					STRINGS["USER_VERIFICATION.VERIFY_USER_DOCUMENTATION"],
-					"USER_VERIFICATION.VERIFY_USER_DOCUMENTATION",
-				)
+					STRINGS['USER_VERIFICATION.VERIFY_USER_DOCUMENTATION'],
+					'USER_VERIFICATION.VERIFY_USER_DOCUMENTATION'
+				),
 			},
 			{
-				stringId: "USER_VERIFICATION.TITLE_ID_DOCUMENTS",
-				title: STRINGS["USER_VERIFICATION.TITLE_ID_DOCUMENTS"],
+				stringId: 'USER_VERIFICATION.TITLE_ID_DOCUMENTS',
+				title: STRINGS['USER_VERIFICATION.TITLE_ID_DOCUMENTS'],
 				content: (
 					<div>
 						{id_data.provided ? (
@@ -207,7 +211,9 @@ class UserProfile extends Component {
 								text={
 									id_data.type
 										? ''
-										: STRINGS["USER_VERIFICATION.PENDING_VERIFICATION_DOCUMENTS"]
+										: STRINGS[
+												'USER_VERIFICATION.PENDING_VERIFICATION_DOCUMENTS'
+										  ]
 								}
 								onChangeValue={this.onOpenContactForm}
 							/>
@@ -220,10 +226,10 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					id_data.verified,
 					id_data.provided,
-					STRINGS["USER_VERIFICATION.VERIFY_ID_DOCUMENTS"],
-					"USER_VERIFICATION.VERIFY_ID_DOCUMENTS"
-				)
-			}
+					STRINGS['USER_VERIFICATION.VERIFY_ID_DOCUMENTS'],
+					'USER_VERIFICATION.VERIFY_ID_DOCUMENTS'
+				),
+			},
 		];
 
 		this.setState({ sections });
@@ -264,7 +270,7 @@ class UserProfile extends Component {
 				/>
 				{isMobile && (
 					<Button
-						label={STRINGS["LOGOUT"]}
+						label={STRINGS['LOGOUT']}
 						onClick={() => this.props.logout()}
 						className="mt-4"
 					/>
@@ -275,7 +281,7 @@ class UserProfile extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	logout: bindActionCreators(logout, dispatch)
+	logout: bindActionCreators(logout, dispatch),
 });
 
 const mapStateToProps = (state) => ({
@@ -286,7 +292,10 @@ const mapStateToProps = (state) => ({
 	limits: state.user.limits,
 	fees: state.user.feeValues,
 	activeLanguage: state.app.language,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withConfig(UserProfile));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(UserProfile));

@@ -17,13 +17,13 @@ export const FieldContent = ({
 	hideUnderline = false,
 	contentClassName = '',
 	hideCheck = false,
-	outlineClassName = ''
+	outlineClassName = '',
 }) => {
 	return (
 		<div className={classnames('field-content')}>
 			<div className="d-flex">
-        {label && <div className="field-label">{label}</div>}
-        <EditWrapper stringId={stringId} />
+				{label && <div className="field-label">{label}</div>}
+				<EditWrapper stringId={stringId} />
 			</div>
 			<div
 				className={classnames(
@@ -33,16 +33,14 @@ export const FieldContent = ({
 				)}
 			>
 				{children}
-				{!hideCheck &&
-					valid &&
-						hasValue && (
-							<ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="field-valid" />
-					)}
+				{!hideCheck && valid && hasValue && (
+					<ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="field-valid" />
+				)}
 			</div>
 			{!hideUnderline && (
 				<span
 					className={classnames('field-content-outline', outlineClassName, {
-						focused
+						focused,
 					})}
 				/>
 			)}
@@ -53,7 +51,7 @@ export const FieldContent = ({
 export const FieldError = ({ error, displayError, className, stringId }) => (
 	<div
 		className={classnames('field-error-content', className, {
-			'field-error-hidden': !displayError
+			'field-error-hidden': !displayError,
 		})}
 	>
 		{error && (
@@ -72,7 +70,7 @@ class FieldWrapper extends Component {
 		const {
 			children,
 			label,
-      stringId,
+			stringId,
 			input: { value },
 			meta: { active = false, error = '', touched = false, invalid = false },
 			focused = false,
@@ -83,7 +81,7 @@ class FieldWrapper extends Component {
 			onClick = () => {},
 			notification,
 			hideCheck = false,
-			outlineClassName = ''
+			outlineClassName = '',
 		} = this.props;
 
 		const displayError = !(active || focused) && (visited || touched) && error;
@@ -94,7 +92,7 @@ class FieldWrapper extends Component {
 					error: displayError,
 					inline: !fullWidth,
 					'with-notification': !!notification,
-					'field-valid': !invalid
+					'field-valid': !invalid,
 				})}
 			>
 				<FieldContent
@@ -109,21 +107,15 @@ class FieldWrapper extends Component {
 					onClick={onClick}
 				>
 					{children}
-					{notification &&
-						typeof notification === 'object' && (
-							<ActionNotification
-								{...notification}
-								className={
-									classnames(
-										"pr-0 pl-0 no_bottom",
-										{
-											"with-tick-icon": fullWidth && !invalid && !hideCheck
-										}
-									)
-								}
-								showActionText={true}
-							/>
-						)}
+					{notification && typeof notification === 'object' && (
+						<ActionNotification
+							{...notification}
+							className={classnames('pr-0 pl-0 no_bottom', {
+								'with-tick-icon': fullWidth && !invalid && !hideCheck,
+							})}
+							showActionText={true}
+						/>
+					)}
 				</FieldContent>
 				<FieldError displayError={displayError} error={error} />
 			</div>
@@ -134,8 +126,8 @@ class FieldWrapper extends Component {
 FieldWrapper.defaultProps = {
 	meta: {},
 	input: {
-		value: ''
-	}
+		value: '',
+	},
 };
 
 export default FieldWrapper;

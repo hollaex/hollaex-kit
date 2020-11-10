@@ -18,12 +18,20 @@ $colors-deactivate-color4: var(--base_inactive-button);
 
 //common colors for notifications and errors
 $colors-notifications-red: var(--specials_notifications-alerts-warnings);
-$colors-notification-inactive-red: var(--calculated_specials_notifications-alerts-inactive);
-$colors-notification-alert-text: var(--calculated_specials_notifications-alerts-text);
+$colors-notification-inactive-red: var(
+	--calculated_specials_notifications-alerts-inactive
+);
+$colors-notification-alert-text: var(
+	--calculated_specials_notifications-alerts-text
+);
 $colors-notifications-blue: var(--specials_buttons-links-and-highlights);
 $colors-notifications-green: var(--specials_checks-okay-done);
-$colors-notification-pending-text: var(--calculated_specials_notifications-pending-text);
-$colors-notification-green-text: var(--calculated_specials_notifications-success-text);
+$colors-notification-pending-text: var(
+	--calculated_specials_notifications-pending-text
+);
+$colors-notification-green-text: var(
+	--calculated_specials_notifications-success-text
+);
 $colors-notification-pending: var(--specials_pending-waiting-caution);
 $specials_highlight-box: var(--calculated_specials_highlight-box);
 $chat-own-message--color: var(--specials_my-username-in-chat);
@@ -60,12 +68,16 @@ $link: var(--specials_buttons-links-and-highlights);
 $trade-fields: var(--base_fields);
 $trade-fields-border: var(--labels_secondary-inactive-label-text-graphics);
 $trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
-$trade-fill-indicator-text: var(--labels_secondary-inactive-label-text-graphics);
+$trade-fill-indicator-text: var(
+	--labels_secondary-inactive-label-text-graphics
+);
 
 $buy-bids-text: var(--calculated_trading_buying-related-text);
 $sell-bids-text: var(--calculated_trading_selling-related-text);
 $base_top-bar-navigation_text: var(--calculated_base_top-bar-navigation_text);
-$base_top-bar-navigation_text-inactive: var(--calculated_base_top-bar-navigation_text-inactive);
+$base_top-bar-navigation_text-inactive: var(
+	--calculated_base_top-bar-navigation_text-inactive
+);
 $base_footer_text: var(--calculated_base_footer_text);
 
 $sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);
@@ -73,7 +85,9 @@ $border-color: var(--labels_secondary-inactive-label-text-graphics);
 $border-main: var(--labels_important-active-labels-text-graphics);
 
 // form field colors
-$form-color-underline-focus: var(--labels_important-active-labels-text-graphics);
+$form-color-underline-focus: var(
+	--labels_important-active-labels-text-graphics
+);
 $form-color-underline: var(--labels_secondary-inactive-label-text-graphics);
 $form-color-placeholder: var(--labels_secondary-inactive-label-text-graphics);
 $form-arrow: var(--labels_important-active-labels-text-graphics);
@@ -88,7 +102,9 @@ $info-panel-background: var(--base_fields);
 $info-panel-text: var(--labels_secondary-inactive-label-text-graphics);
 $icon-hover: var(--labels_important-active-labels-text-graphics);
 $icon-unhover: var(--labels_secondary-inactive-label-text-graphics);
-$trade-tabs-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
+$trade-tabs-inactive-color: var(
+	--labels_secondary-inactive-label-text-graphics
+);
 
 // theme footer
 $footer-background-color: var(--base_footer);
@@ -109,7 +125,9 @@ $dark-app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
 $dark-border-main: var(--labels_secondary-inactive-label-text-graphics);
 $dark-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-font-sub-text-color: var(--labels_secondary-inactive-label-text-graphics);
-$dark-font-sub-text-1-color: var(--labels_secondary-inactive-label-text-graphics);
+$dark-font-sub-text-1-color: var(
+	--labels_secondary-inactive-label-text-graphics
+);
 $dark-accordion-arrow-active: var(--dark-accordion-arrow-active);
 
 // coins for white theme
@@ -170,7 +188,7 @@ $coin-xrp: var(--coin-xrp);
 $coin-xrp-1: var(--coin-xrp);
 $coin-xrp-text: var(--coin-xrp-text);
 $coin-xht: var(--coin-xht);
-$coin-xht-1:var(--coin-xht);
+$coin-xht-1: var(--coin-xht);
 $coin-xht-text: var(--coin-xht-text);
 $coin-eos: var(--coin-eos);
 $coin-eos-1: var(--coin-eos);
@@ -334,10 +352,18 @@ $dark-navigation_bar-mobile--background: white;
 $bottom_bar--height: 6rem;
 $bottom-bar--background: $navigation_bar-mobile--background;
 $dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
-$max-content-height-mobile: calc(100vh - #{$navigation_bar-mobile--height + $bottom-bar--height});
-$max-content-height-double-bar-mobile: calc(100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height});
-$max-content-height-home-mobile: calc(100vh - #{$navigation_bar-mobile--height});
-$max-content-height-dialog-mobile: calc(100vh - #{$navigation_bar-mobile--height * 2});
+$max-content-height-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height + $bottom-bar--height}
+);
+$max-content-height-double-bar-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height}
+);
+$max-content-height-home-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height}
+);
+$max-content-height-dialog-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height * 2}
+);
 $max-content-width-mobile: 100vw;
 $table-header-column--font-size: 1rem;
 $regular--font-size: 1.2rem;
@@ -351,5 +377,7 @@ $input--height: 4.5rem;
 $max-content-height: calc(100vh - #{$navigation_bar-height});
 $max-content-secondary-height: calc(100vh - #{$navigation_bar-height * 2});
 $max-content-height-lg: calc(100vh - #{$navigation_bar-height-lg});
-$max-content-secondary-height-lg: calc(100vh - #{$navigation_bar-height-lg * 2});
+$max-content-secondary-height-lg: calc(
+	100vh - #{$navigation_bar-height-lg * 2}
+);
 $max-width-content: 50rem;

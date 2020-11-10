@@ -19,15 +19,15 @@ const AccountDetails = ({
 	onUpgradeAccount,
 	config,
 	verification_level,
-	balance
+	balance,
 }) => {
 	return (
 		<div className="account-details-wrapper summary-content-txt">
 			<div>
-				<div>{STRINGS["SUMMARY.ACCOUNT_DETAILS_TXT_1"]}</div>
-				<div>{STRINGS["SUMMARY.ACCOUNT_DETAILS_TXT_2"]}</div>
-				<div className="mt-2">{STRINGS["SUMMARY.ACCOUNT_DETAILS_TXT_3"]}</div>
-				<div className="mt-2">{STRINGS["SUMMARY.ACCOUNT_DETAILS_TXT_4"]}</div>
+				<div>{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_1']}</div>
+				<div>{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_2']}</div>
+				<div className="mt-2">{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_3']}</div>
+				<div className="mt-2">{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_4']}</div>
 			</div>
 			{isMobile ? (
 				<MobileAccountTypeList

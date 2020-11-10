@@ -10,18 +10,23 @@ import { checkTransaction } from './actions';
 const Form = AdminHocForm('TRANSACTION_FORM', 'transaction-form');
 const SERVER_TYPES = [
 	{ label: 'mainnet', value: '0' },
-	{ label: 'testnet', value: '1' }
+	{ label: 'testnet', value: '1' },
 ];
 
 class BlockchainTransaction extends Component {
 	state = {
 		data: {},
 		loading: false,
-		error: ''
+		error: '',
 	};
 
-	onSubmit = ({ currency, transaction_id = '', address = '', is_testnet = false }) => {
-		const testnet = is_testnet === '0' ? false :  true;
+	onSubmit = ({
+		currency,
+		transaction_id = '',
+		address = '',
+		is_testnet = false,
+	}) => {
+		const testnet = is_testnet === '0' ? false : true;
 		this.setState({ error: '', loading: true, data: {} });
 		return checkTransaction(currency, transaction_id, address, testnet)
 			.then((data) => {
@@ -30,9 +35,11 @@ class BlockchainTransaction extends Component {
 			.catch(({ err, message }) => {
 				let error = err
 					? err.message
-						? err.message : err
+						? err.message
+						: err
 					: message
-						? message : '';
+					? message
+					: '';
 				this.setState({ error: error, loading: false });
 			});
 	};
@@ -44,7 +51,8 @@ class BlockchainTransaction extends Component {
 			let temp = this.props.coins[data];
 			if (temp) {
 				coinOptions.push({
-					label: `${temp.fullname} (${temp.symbol})`, value: data
+					label: `${temp.fullname} (${temp.symbol})`,
+					value: data,
 				});
 			}
 		});
@@ -60,24 +68,24 @@ class BlockchainTransaction extends Component {
 							placeholder: 'Coin',
 							label: 'Coin',
 							validate: [validateRequired],
-							options: coinOptions
+							options: coinOptions,
 						},
 						transaction_id: {
 							type: 'input',
 							placeholder: 'Transaction Id',
 							validate: [validateRequired],
-							prefix: <AppstoreOutlined />
+							prefix: <AppstoreOutlined />,
 						},
 						address: {
 							type: 'input',
 							placeholder: 'Address',
-							prefix: <QrcodeOutlined />
+							prefix: <QrcodeOutlined />,
 						},
 						is_testnet: {
 							type: 'select',
 							options: SERVER_TYPES,
-							validate: [validateRequired]
-						}
+							validate: [validateRequired],
+						},
 					}}
 				/>
 				<div className="m-top">
@@ -109,11 +117,11 @@ class BlockchainTransaction extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 BlockchainTransaction.defaultProps = {
-	initialValues: { is_testnet: '0' }
+	initialValues: { is_testnet: '0' },
 };
 
 export default connect(mapStateToProps)(BlockchainTransaction);

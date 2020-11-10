@@ -1,24 +1,20 @@
 import * as React from 'react';
 import _isEqual from 'lodash/isEqual';
 import { widget } from '../../charting_library/charting_library.min';
-import {
-	getTheme,
-	getVolume,
-	getToolbarBG
-} from './ChartConfig';
+import { getTheme, getVolume, getToolbarBG } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
 	getChartConfig,
 	getChartSymbol,
-	getChartHistory
+	getChartHistory,
 } from '../../actions/chartAction';
 
 function getThemeOverrides(theme = 'white', color = {}) {
-  return getTheme(color[theme] || {});
+	return getTheme(color[theme] || {});
 }
 
 function getStudiesOverrides(theme = 'white', color = {}) {
-  return getVolume(color[theme] || {});
+	return getVolume(color[theme] || {});
 }
 
 class TVChartContainer extends React.PureComponent {
@@ -43,9 +39,9 @@ class TVChartContainer extends React.PureComponent {
 			// { text: "YTD", resolution: "YTD" },
 			{ text: '1Y', resolution: 'D' },
 			{ text: '3Y', resolution: 'D' },
-			{ text: '5Y', resolution: 'W' }
+			{ text: '5Y', resolution: 'W' },
 			// { text: "ALL", resolution: "ALL" },
-		]
+		],
 	};
 
 	constructor(props) {
@@ -60,8 +56,8 @@ class TVChartContainer extends React.PureComponent {
 				low: 0,
 				open: 0,
 				time: new Date().getTime(),
-				volume: 0
-			}
+				volume: 0,
+			},
 		};
 	}
 
@@ -114,7 +110,7 @@ class TVChartContainer extends React.PureComponent {
 
 				// onResolveErrorCallback('Not feeling it today')
 			},
-			getBars: function(
+			getBars: function (
 				symbolInfo,
 				resolution,
 				from,
@@ -139,12 +135,12 @@ class TVChartContainer extends React.PureComponent {
 									high: bar.high,
 									open: bar.open,
 									close: bar.close,
-									volume: bar.volume
+									volume: bar.volume,
 								};
 							});
 							if (firstDataRequest) {
 								that.setState({
-									lastBar: bars[bars.length - 1]
+									lastBar: bars[bars.length - 1],
 								});
 								// setBars[symbolInfo.ticker] = { lastBar: lastBar }
 							}
@@ -170,8 +166,8 @@ class TVChartContainer extends React.PureComponent {
 						resolution,
 						symbolInfo,
 						lastBar: that.state.lastBar,
-						listener: onRealtimeCallback
-					}
+						listener: onRealtimeCallback,
+					},
 				});
 				// stream.subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback);
 			},
@@ -204,7 +200,7 @@ class TVChartContainer extends React.PureComponent {
 			) => {
 				//optional
 			},
-			getServerTime: (cb) => {}
+			getServerTime: (cb) => {},
 		};
 	}
 
@@ -264,7 +260,7 @@ class TVChartContainer extends React.PureComponent {
 				'header_compare',
 				'header_settings',
 				'control_bar',
-				'header_screenshot'
+				'header_screenshot',
 			],
 			enabled_features: ['items_favoriting', 'support_multicharts'],
 			time_frames: [
@@ -285,11 +281,11 @@ class TVChartContainer extends React.PureComponent {
 			autosize: this.props.autosize,
 			studies_overrides: getStudiesOverrides(activeTheme, color),
 			favorites: {
-				chartTypes: ['Area', 'Candles', 'Bars']
+				chartTypes: ['Area', 'Candles', 'Bars'],
 			},
 			loading_screen: { backgroundColor: getToolbarBG(activeTheme, color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
-			overrides: getThemeOverrides(activeTheme, color)
+			overrides: getThemeOverrides(activeTheme, color),
 		};
 
 		const tvWidget = new widget(widgetOptions);
@@ -305,7 +301,7 @@ class TVChartContainer extends React.PureComponent {
 				.addClass('apply-common-tooltip screen-button')
 				.on('click', () => tvWidget.takeScreenshot());
 			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
-      tvWidget.changeTheme(activeTheme);
+			tvWidget.changeTheme(activeTheme);
 
 			button[0].innerHTML = `<div class='screen-container'><div class='screen-content'>Share Screenshot</div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
 		});
@@ -338,7 +334,7 @@ class TVChartContainer extends React.PureComponent {
 				high: lastBar.close ? lastBar.close : 0,
 				low: lastBar.close ? lastBar.close : 0,
 				close: data.price,
-				volume: data.size
+				volume: data.size,
 			};
 		} else {
 			// update lastBar candle!
@@ -363,7 +359,7 @@ class TVChartContainer extends React.PureComponent {
 		sub.listener(_lastBar);
 		sub.lastBar = _lastBar;
 		this.setState({
-			sub: sub
+			sub: sub,
 		});
 	}
 
@@ -377,7 +373,7 @@ class TVChartContainer extends React.PureComponent {
 					position: 'relative',
 					display: 'flex',
 					justifyContent: 'center',
-					alignItems: 'center'
+					alignItems: 'center',
 				}}
 			/>
 		);

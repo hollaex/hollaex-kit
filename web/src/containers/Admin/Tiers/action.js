@@ -4,7 +4,7 @@ import { requestAuthenticated } from '../../../utils';
 export const updateTier = (values) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify(values)
+		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(`/admin/tier`, options);
 };
@@ -12,30 +12,29 @@ export const updateTier = (values) => {
 export const addNewTier = (values) => {
 	const options = {
 		method: 'POST',
-		body: JSON.stringify(values)
+		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(`/admin/tier`, options);
 };
 
-export const requestTiers = () =>
-	requestAuthenticated('/tiers');
+export const requestTiers = () => requestAuthenticated('/tiers');
 
 export const upload = (formData) => {
 	const options = {
 		headers: {
-			'Content-Type': 'multipart/form-data'
+			'Content-Type': 'multipart/form-data',
 		},
 		data: formData,
-		method: 'POST'
+		method: 'POST',
 	};
 
-	return axios('/admin/upload', options)
+	return axios('/admin/upload', options);
 };
 
 export const updateFees = (values) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify(values)
+		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(`/admin/pair/fees`, options);
 };
@@ -43,7 +42,7 @@ export const updateFees = (values) => {
 export const updateLimits = (values) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify(values)
+		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(`/admin/pair/limits`, options);
 };

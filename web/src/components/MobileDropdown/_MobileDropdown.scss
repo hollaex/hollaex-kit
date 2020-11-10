@@ -13,10 +13,12 @@
 	font-weight: bold;
 	padding-right: 2rem;
 }
-.with_arrow_trade{
+.with_arrow_trade {
 	margin-top: -5px;
 }
-.mobile-drop-down,.drop-down,.option {
+.mobile-drop-down,
+.drop-down,
+.option {
 	&.default-coin {
 		color: $colors-black !important;
 	}
@@ -168,13 +170,13 @@
 		color: $coin-dai !important;
 	}
 }
-.with_arrow_trade:after  {	
+.with_arrow_trade:after {
 	border-bottom-color: $colors-main-black !important;
 	border-right-color: $colors-main-black !important;
 }
 .direction_ltr {
 	.with_arrow_trade:after {
-	    border: solid grey;
+		border: solid grey;
 		border-width: 0px 2px 2px 0;
 		display: inline-block;
 		content: '';
@@ -184,15 +186,19 @@
 		transform: rotate(46deg);
 		left: -1.5rem;
 		position: relative;
-		top: 0.1rem;	
+		top: 0.1rem;
 		z-index: 0;
 	}
-	
 }
 .direction_rtl {
 	.with_arrow_trade:after {
 		transform: rotate(90deg);
-		@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size, relative);
+		@include css-triangle(
+			$dark-accordion-arrow-active,
+			'left',
+			$accordion_arrow-size,
+			relative
+		);
 		right: -1rem;
 	}
 }

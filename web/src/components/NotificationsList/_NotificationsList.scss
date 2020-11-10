@@ -1,4 +1,4 @@
-.layout-mobile{
+.layout-mobile {
 	.trade_active_orders-wrapper {
 		max-height: 35vh !important;
 	}
@@ -7,9 +7,9 @@
 .trade_post_icon {
 	width: 1.5rem;
 
-	svg{
-		.wave-icon{
-			fill: $colors-black
+	svg {
+		.wave-icon {
+			fill: $colors-black;
 		}
 	}
 }
@@ -26,7 +26,8 @@
 		a {
 			color: $link;
 		}
-		span, p {
+		span,
+		p {
 			background-color: $app-sidebar-background !important;
 		}
 	}

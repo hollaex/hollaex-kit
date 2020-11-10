@@ -9,7 +9,12 @@ export { default as MessageDisplay } from './Dialog/MessageDisplay';
 export { default as SuccessDisplay } from './Dialog/SuccessDisplay';
 export { default as TabController } from './TabController';
 export { default as CheckTitle } from './CheckTitle';
-export { PanelInformationRow, renderStatusIcon, CustomTabs, CustomMobileTabs } from './CheckTitle';
+export {
+	PanelInformationRow,
+	renderStatusIcon,
+	CustomTabs,
+	CustomMobileTabs,
+} from './CheckTitle';
 export { default as HeaderSection } from './CheckTitle/HeaderSection';
 export { default as CustomTabBar } from './CheckTitle/CustomTabBar';
 export { default as MobileTabBar } from './CheckTitle/MobileTabBar';
@@ -41,7 +46,7 @@ export { default as WarningVerification } from './WarningVerification';
 export { FactoryChart, CHART_TYPES, DonutChart, BarChart } from './Chart';
 export { Tooltip } from './Tooltip';
 export { default as CurrencyList } from './CurrencyList';
-export { MobileDropdown } from './MobileDropdown'
+export { MobileDropdown } from './MobileDropdown';
 export { default as BlueLink } from './BlueLink';
 export { Sortable } from './Sortable';
 export * from './MobileBar';

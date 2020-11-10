@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { oneOfType, object, func, bool, string, array, number } from 'prop-types';
+import {
+	oneOfType,
+	object,
+	func,
+	bool,
+	string,
+	array,
+	number,
+} from 'prop-types';
 import classnames from 'classnames';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
@@ -11,7 +19,6 @@ import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
 
 class QuickTrade extends Component {
-
 	render() {
 		const {
 			targetAmount,
@@ -30,27 +37,42 @@ class QuickTrade extends Component {
 			forwardTargetError,
 			orderLimits: { SIZE, PRICE },
 			side,
-			icons: ICONS
+			icons: ICONS,
 		} = this.props;
 
 		return (
-			<div className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}>
+			<div
+				className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}
+			>
 				<div
 					className={classnames(
 						'quick_trade-section_wrapper',
-						'quick_trade-bottom-padded',
+						'quick_trade-bottom-padded'
 						// ...GROUP_CLASSES
 					)}
 				>
 					<div className="d-flex content-center">
 						<Image
-							iconId={isMobile ? "SIDEBAR_QUICK_TRADING_INACTIVE" : "QUICK_TRADE"}
-							icon={isMobile ? ICONS["SIDEBAR_QUICK_TRADING_INACTIVE"] : ICONS["QUICK_TRADE"]}
-							wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"}
+							iconId={
+								isMobile ? 'SIDEBAR_QUICK_TRADING_INACTIVE' : 'QUICK_TRADE'
+							}
+							icon={
+								isMobile
+									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
+									: ICONS['QUICK_TRADE']
+							}
+							wrapperClassName={
+								isMobile ? 'quick_trade-tab-icon' : 'quick_trade-icon'
+							}
 						/>
 					</div>
-					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
-						{STRINGS["QUICK_TRADE_COMPONENT.TITLE"]}
+					<div
+						className={classnames(
+							'title text-capitalize',
+							...FLEX_CENTER_CLASSES
+						)}
+					>
+						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
 					</div>
 				</div>
 				<InputGroup
@@ -61,7 +83,7 @@ class QuickTrade extends Component {
 					onSelect={onSelectSource}
 					onInputChange={onChangeSourceAmount}
 					forwardError={forwardSourceError}
-					limits={side === "buy" ? PRICE : SIZE}
+					limits={side === 'buy' ? PRICE : SIZE}
 				/>
 				<InputGroup
 					name="to"
@@ -71,7 +93,7 @@ class QuickTrade extends Component {
 					onSelect={onSelectTarget}
 					onInputChange={onChangeTargetAmount}
 					forwardError={forwardTargetError}
-					limits={side === "buy" ? SIZE : PRICE}
+					limits={side === 'buy' ? SIZE : PRICE}
 				/>
 				<div
 					className={classnames(
@@ -82,7 +104,7 @@ class QuickTrade extends Component {
 					)}
 				>
 					<Button
-						label={STRINGS["QUICK_TRADE_COMPONENT.BUTTON"]}
+						label={STRINGS['QUICK_TRADE_COMPONENT.BUTTON']}
 						onClick={onReviewQuickTrade}
 						disabled={disabled}
 						type="button"
@@ -97,32 +119,26 @@ QuickTrade.propTypes = {
 	onReviewQuickTrade: func.isRequired,
 	theme: string.isRequired,
 	disabled: bool.isRequired,
-  pairs: object.isRequired,
-  coins: object.isRequired,
-  orderLimits: object.isRequired,
+	pairs: object.isRequired,
+	coins: object.isRequired,
+	orderLimits: object.isRequired,
 	onSelectTarget: func.isRequired,
 	onSelectSource: func.isRequired,
 	targetOptions: array,
 	sourceOptions: array,
 	selectedSource: string,
 	selectedTarget: string,
-	targetAmount: oneOfType([
-    number,
-    string,
-  ]),
-	sourceAmount: oneOfType([
-    number,
-    string,
-  ]),
+	targetAmount: oneOfType([number, string]),
+	sourceAmount: oneOfType([number, string]),
 	onChangeTargetAmount: func.isRequired,
-  onChangeSourceAmount: func.isRequired,
-}
+	onChangeSourceAmount: func.isRequired,
+};
 
 QuickTrade.defaultProps = {
-  targetOptions: [],
-  sourceOptions: [],
+	targetOptions: [],
+	sourceOptions: [],
 	onReviewQuickTrade: () => {},
-	disabled: false
+	disabled: false,
 };
 
 export default withConfig(QuickTrade);

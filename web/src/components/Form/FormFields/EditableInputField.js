@@ -7,7 +7,7 @@ import STRINGS from '../../../config/localizedStrings';
 
 class EditableInputField extends Component {
 	state = {
-		isEditable: false
+		isEditable: false,
 	};
 
 	toogleEditable = () => {
@@ -48,7 +48,7 @@ class EditableInputField extends Component {
 					placeholder={placeholder}
 					className={classnames('input_field-input', {
 						error: displayError,
-						cursor_disabled: !isEditable
+						cursor_disabled: !isEditable,
 					})}
 					type={inputType}
 					{...input}
@@ -58,10 +58,10 @@ class EditableInputField extends Component {
 				/>
 				<ActionNotification
 					stringId="EDIT_TEXT"
-					text={STRINGS["EDIT_TEXT"]}
+					text={STRINGS['EDIT_TEXT']}
 					status="information"
 					iconId="BLUE_EDIT"
-					iconPath={ICONS["BLUE_EDIT"]}
+					iconPath={ICONS['BLUE_EDIT']}
 					className="no_bottom pr-0 pl-0"
 					onClick={this.toogleEditable}
 					showActionText={true}

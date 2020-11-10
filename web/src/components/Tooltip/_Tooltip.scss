@@ -1,4 +1,8 @@
-@mixin exir-tooltip($background-color, $border-color, $font-color: $border-color) {
+@mixin exir-tooltip(
+	$background-color,
+	$border-color,
+	$font-color: $border-color
+) {
 	&.exir-tooltip {
 		opacity: 1 !important;
 		background-color: transparent !important;

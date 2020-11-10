@@ -1,61 +1,60 @@
 .terms_wrapper {
-    width: 40rem;
+	width: 40rem;
 
-    .title_wrapper {
-        font-size: 2rem;
-        font-weight: bold;
-    }
-    .agreement_wrapper {
-        font-size: 1rem;
-        background-color: $colors-terms-background;
-        height: 32rem;
-        overflow-y: scroll;
+	.title_wrapper {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+	.agreement_wrapper {
+		font-size: 1rem;
+		background-color: $colors-terms-background;
+		height: 32rem;
+		overflow-y: scroll;
+	}
+	.download-wrapper {
+		color: $colors-notifications-blue;
+		display: flex;
+		align-items: center;
+		width: fit-content;
 
-    }
-    .download-wrapper {
-        color: $colors-notifications-blue;
-        display: flex;
-        align-items: center;
-        width: fit-content;
-
-        .download_pdf-svg {
-            > div {
-                display: flex;
-                align-items: center;
-            }
-            svg {
-                @include size(1rem);
-            }
-        }
-        .trans-history-1,
-        .trans-history-2,
-        .trans-history-3 {
-            fill: $colors-notifications-blue;
-        }
-        .trans-history-4 {
-            stroke: $colors-notifications-blue;
-        }
-    }
-    .checkfield-wrapper {
-        margin: 0.5rem 0;
-    }
+		.download_pdf-svg {
+			> div {
+				display: flex;
+				align-items: center;
+			}
+			svg {
+				@include size(1rem);
+			}
+		}
+		.trans-history-1,
+		.trans-history-2,
+		.trans-history-3 {
+			fill: $colors-notifications-blue;
+		}
+		.trans-history-4 {
+			stroke: $colors-notifications-blue;
+		}
+	}
+	.checkfield-wrapper {
+		margin: 0.5rem 0;
+	}
 }
 
 .deposit_funds-wrapper {
-    width: 42rem;
+	width: 42rem;
 
-    .funds-svg {
-        svg {
-            @include size(2rem);
-        }
-    }
+	.funds-svg {
+		svg {
+			@include size(2rem);
+		}
+	}
 
-    .icon_title-wrapper {
-        .icon_title-svg {
-            @include size(8rem);
-            svg {
-                @include size(8rem);
-            }
-        }
-    }
+	.icon_title-wrapper {
+		.icon_title-svg {
+			@include size(8rem);
+			svg {
+				@include size(8rem);
+			}
+		}
+	}
 }

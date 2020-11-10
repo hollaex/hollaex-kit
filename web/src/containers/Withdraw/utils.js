@@ -6,7 +6,7 @@ import {
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
 	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE,
 	BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE,
-	BASE_CURRENCY
+	BASE_CURRENCY,
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -17,14 +17,14 @@ export const generateBaseInformation = (currency, limits = {}) => {
 	const { currencySymbol, shortName, formatToCurrency } = currency;
 	return (
 		<div className="text">
-			<p>{STRINGS["WITHDRAW_PAGE.BASE_MESSAGE_1"]}</p>
+			<p>{STRINGS['WITHDRAW_PAGE.BASE_MESSAGE_1']}</p>
 			<p>{`${
-				STRINGS["WITHDRAW_PAGE.BASE_MESSAGE_2"]
+				STRINGS['WITHDRAW_PAGE.BASE_MESSAGE_2']
 			}: ${currencySymbol}${formatToCurrency(minAmount)} ${shortName}`}</p>
 			<p>{`${
-				STRINGS["WITHDRAW_PAGE.BASE_MESSAGE_3"]
+				STRINGS['WITHDRAW_PAGE.BASE_MESSAGE_3']
 			}: ${currencySymbol}${formatToCurrency(maxAmount)} ${shortName} (${
-				STRINGS["WITHDRAW_PAGE.MESSAGE_LIMIT"]
+				STRINGS['WITHDRAW_PAGE.MESSAGE_LIMIT']
 			})`}</p>
 		</div>
 	);
@@ -36,17 +36,17 @@ export const renderExtraInformation = (symbol, bank_account, icon) =>
 			<Accordion
 				sections={[
 					{
-						stringId: "WITHDRAW_PAGE.BANK_TO_WITHDRAW",
-						title: STRINGS["WITHDRAW_PAGE.BANK_TO_WITHDRAW"],
+						stringId: 'WITHDRAW_PAGE.BANK_TO_WITHDRAW',
+						title: STRINGS['WITHDRAW_PAGE.BANK_TO_WITHDRAW'],
 						content: renderBankInformation(bank_account),
 						notification: {
-							stringId: "NEED_HELP_TEXT",
-							text: STRINGS["NEED_HELP_TEXT"],
+							stringId: 'NEED_HELP_TEXT',
+							text: STRINGS['NEED_HELP_TEXT'],
 							status: 'information',
 							iconPath: icon,
-							allowClick: true
-						}
-					}
+							allowClick: true,
+						},
+					},
 				]}
 			/>
 		</div>

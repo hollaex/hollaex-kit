@@ -1,32 +1,32 @@
 .plugin-service {
-    height: 5rem;
-    border: 1px solid black;
-    width: 50%;
+	height: 5rem;
+	border: 1px solid black;
+	width: 50%;
 }
 
 .service-heading {
-    min-width: 25rem;
-    border-right: 1px solid black;
-    padding-right: 1rem
+	min-width: 25rem;
+	border-right: 1px solid black;
+	padding-right: 1rem;
 }
 
 .service-button-warning {
-    background-color: orange;
+	background-color: orange;
 }
 
 .service-connected {
-    background-color: green;
-    padding: 0.3rem 0.5rem;
-    border-radius: 5rem;
-    color: white;
-    width: 8rem;
-    text-align: center;
+	background-color: green;
+	padding: 0.3rem 0.5rem;
+	border-radius: 5rem;
+	color: white;
+	width: 8rem;
+	text-align: center;
 }
 
 .link {
-    text-align: center;
-    color: blue;
+	text-align: center;
+	color: blue;
 }
 .card-width {
-  width: 25rem;
+	width: 25rem;
 }

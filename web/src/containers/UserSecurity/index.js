@@ -8,7 +8,7 @@ import {
 	otpRequest,
 	otpActivate,
 	otpSetActivated,
-	otpRevoke
+	otpRevoke,
 } from '../../actions/userAction';
 import {
 	Accordion,
@@ -16,7 +16,7 @@ import {
 	SuccessDisplay,
 	OtpForm,
 	IconTitle,
-	Loader
+	Loader,
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
@@ -61,7 +61,7 @@ class UserVerification extends Component {
 			this.setState({
 				dialogIsOpen: true,
 				modalText: nextProps.user.otp.error,
-        stringId: '',
+				stringId: '',
 			});
 		}
 	}
@@ -73,8 +73,8 @@ class UserVerification extends Component {
 
 		const sections = [
 			{
-				stringId: "ACCOUNT_SECURITY.OTP.TITLE",
-				title: STRINGS["ACCOUNT_SECURITY.OTP.TITLE"],
+				stringId: 'ACCOUNT_SECURITY.OTP.TITLE',
+				title: STRINGS['ACCOUNT_SECURITY.OTP.TITLE'],
 				content: (
 					<OTP
 						requestOTP={this.handleOTPCheckbox}
@@ -97,19 +97,20 @@ class UserVerification extends Component {
 					</OTP>
 				),
 				notification: {
-					stringId: "ACCOUNT_SECURITY.OTP.OTP_ENABLED,ACCOUNT_SECURITY.OTP.OTP_DISABLED",
+					stringId:
+						'ACCOUNT_SECURITY.OTP.OTP_ENABLED,ACCOUNT_SECURITY.OTP.OTP_DISABLED',
 					text: otp_enabled
-						? STRINGS["ACCOUNT_SECURITY.OTP.OTP_ENABLED"]
-						: STRINGS["ACCOUNT_SECURITY.OTP.OTP_DISABLED"],
+						? STRINGS['ACCOUNT_SECURITY.OTP.OTP_ENABLED']
+						: STRINGS['ACCOUNT_SECURITY.OTP.OTP_DISABLED'],
 					status: otp_enabled ? 'success' : 'warning',
-					iconPath: otp_enabled ? ICONS["GREEN_CHECK"] : ICONS["RED_ARROW"],
-					iconId: "GREEN_CHECK,RED_ARROW",
-					allowClick: !otp_enabled
-				}
+					iconPath: otp_enabled ? ICONS['GREEN_CHECK'] : ICONS['RED_ARROW'],
+					iconId: 'GREEN_CHECK,RED_ARROW',
+					allowClick: !otp_enabled,
+				},
 			},
 			{
-				stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE",
-				title: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE"],
+				stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE',
+				title: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE'],
 				content: (
 					<ChangePasswordForm
 						onSubmit={this.onSubmitChangePassword}
@@ -118,17 +119,17 @@ class UserVerification extends Component {
 				),
 				disabled: false,
 				notification: {
-					stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE",
-					text: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE"],
+					stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE',
+					text: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE'],
 					status: 'success',
-					iconPath: ICONS["GREEN_CHECK"],
-					iconId: "GREEN_CHECK",
-					allowClick: true
-				}
+					iconPath: ICONS['GREEN_CHECK'],
+					iconId: 'GREEN_CHECK',
+					allowClick: true,
+				},
 			},
 			{
-				stringId: "DEVELOPER_SECTION.TITLE",
-				title: STRINGS["DEVELOPER_SECTION.TITLE"],
+				stringId: 'DEVELOPER_SECTION.TITLE',
+				title: STRINGS['DEVELOPER_SECTION.TITLE'],
 				content: (
 					<DeveloperSection
 						otp_enabled={otp_enabled}
@@ -140,13 +141,13 @@ class UserVerification extends Component {
 				notification: {
 					// text: STRINGS[`DEVELOPER_SECTION.${otp_enabled ? 'ACTIVE' : 'INACTIVE'}`],
 					status: otp_enabled ? 'success' : 'disabled',
-					iconId: "TOKENS_ACTIVE,TOKENS_INACTIVE",
+					iconId: 'TOKENS_ACTIVE,TOKENS_INACTIVE',
 					iconPath: otp_enabled
-						? ICONS["TOKENS_ACTIVE"]
-						: ICONS["TOKENS_INACTIVE"], // TODO check
-					allowClick: true
-				}
-			}
+						? ICONS['TOKENS_ACTIVE']
+						: ICONS['TOKENS_INACTIVE'], // TODO check
+					allowClick: true,
+				},
+			},
 		];
 
 		this.setState({ sections });
@@ -168,8 +169,8 @@ class UserVerification extends Component {
 				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS"],
-					stringId: "ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS",
+					modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS'],
+					stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS',
 				});
 			})
 			.catch((err) => {
@@ -183,15 +184,14 @@ class UserVerification extends Component {
 	onSubmitChangePassword = (values) => {
 		return resetPassword({
 			old_password: values.old_password,
-			new_password: values.new_password
+			new_password: values.new_password,
 		})
 			.then((res) => {
 				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
-					modalText:
-						STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS"],
-					stringId: "ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS",
+					modalText: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS'],
+					stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS',
 				});
 			})
 			.catch((err) => {
@@ -208,8 +208,8 @@ class UserVerification extends Component {
 				this.props.otpSetActivated(false);
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS["ACCOUNT_SECURITY.OTP.DIALOG.REVOKE"],
-					stringId: "ACCOUNT_SECURITY.OTP.DIALOG.REVOKE",
+					modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.REVOKE'],
+					stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.REVOKE',
 				});
 			})
 			.catch(errorHandler);
@@ -264,7 +264,13 @@ class UserVerification extends Component {
 		} else if (otp_enabled && !modalText) {
 			return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
 		} else if (requested && !activated) {
-			return renderOTPForm(secret, email, this.onSubmitActivateOtp, constants, ICONS);
+			return renderOTPForm(
+				secret,
+				email,
+				this.onSubmitActivateOtp,
+				constants,
+				ICONS
+			);
 		} else {
 			return (
 				<SuccessDisplay
@@ -288,7 +294,7 @@ class UserVerification extends Component {
 				{!isMobile && (
 					<IconTitle
 						stringId="ACCOUNTS.TAB_SECURITY"
-						text={STRINGS["ACCOUNTS.TAB_SECURITY"]}
+						text={STRINGS['ACCOUNTS.TAB_SECURITY']}
 						textType="title"
 					/>
 				)}
@@ -321,15 +327,15 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	activeLanguage: state.app.language,
 	activeTheme: state.app.theme,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	requestOTP: () => dispatch(otpRequest()),
-	otpSetActivated: (active) => dispatch(otpSetActivated(active))
+	otpSetActivated: (active) => dispatch(otpSetActivated(active)),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(UserVerification))
+)(withConfig(UserVerification));

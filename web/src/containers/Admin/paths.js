@@ -1,4 +1,3 @@
-
 import { APP_TITLE } from '../../config/constants';
 
 export const PATHS = [
@@ -6,67 +5,67 @@ export const PATHS = [
 		path: '/admin',
 		// component: Main,
 		label: APP_TITLE.toUpperCase(),
-		routeKey: 'main'
+		routeKey: 'main',
 	},
 	{
 		path: '/admin/general',
 		// component: User,
 		label: 'General',
-		routeKey: 'general'
+		routeKey: 'general',
 	},
 	{
 		path: '/admin/user',
 		// component: User,
 		label: 'Users',
-		routeKey: 'user'
+		routeKey: 'user',
 	},
 	{
 		path: '/admin/financials',
 		label: 'Financials',
-		routeKey: 'financials'
+		routeKey: 'financials',
 	},
 	{
 		path: '/admin/trade',
 		label: 'Trading',
-		routeKey: 'trade'
+		routeKey: 'trade',
 	},
 	{
 		path: '/admin/plugins',
 		// component: BlockchainTransaction,
 		label: 'Plugins',
-		routeKey: 'plugins'
+		routeKey: 'plugins',
 	},
 	{
 		path: '/admin/tiers',
 		// component: BlockchainTransaction,
 		label: 'Tiers',
-		routeKey: 'tiers'
+		routeKey: 'tiers',
 	},
 	{
 		path: '/admin/roles',
 		// component: BlockchainTransaction,
 		label: 'Roles',
-		routeKey: 'roles'
+		routeKey: 'roles',
 	},
 	{
 		path: '/admin/hosting',
 		label: 'Hosting',
-		routeKey: 'hosting'
+		routeKey: 'hosting',
 	},
 	{
 		path: '/admin/apikeys',
 		label: 'API Keys',
-		routeKey: 'apikeys'
+		routeKey: 'apikeys',
 	},
 	{
 		path: '/admin/billing',
 		label: 'Billing',
-		routeKey: 'billing'
+		routeKey: 'billing',
 	},
 	{
 		path: '/admin/collateral',
 		label: 'Collateral',
-		routeKey: 'collateral'
+		routeKey: 'collateral',
 	},
 	// {
 	// 	path: '/admin/wallets',

@@ -1,20 +1,19 @@
-
 .elapsed-timer-wrapper {
-    font-size: 0.8rem;
-    color: $colors-deactivate-color2;
+	font-size: 0.8rem;
+	color: $colors-deactivate-color2;
 
-    .timer-time {
-        color: $colors-black;
-        font-weight: bold;
-    }
+	.timer-time {
+		color: $colors-black;
+		font-weight: bold;
+	}
 
-    .timer-svg {
-        height: 1.2rem;
-        width: 1.2rem;
-        svg {
-            .pending-timer {
-                stroke: $colors-black;
-            }
-        }
-    }
+	.timer-svg {
+		height: 1.2rem;
+		width: 1.2rem;
+		svg {
+			.pending-timer {
+				stroke: $colors-black;
+			}
+		}
+	}
 }

@@ -25,7 +25,7 @@ const createForm = (name, fields, onSubmit, buttonText) => {
 		form: name,
 		// onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
 		onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
-		enableReinitialize: true
+		enableReinitialize: true,
 	})(Form);
 };
 

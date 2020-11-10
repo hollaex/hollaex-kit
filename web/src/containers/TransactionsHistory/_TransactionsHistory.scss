@@ -24,11 +24,11 @@
 			}
 		}
 	}
-	.display_table-wrapper{
+	.display_table-wrapper {
 		.display_table-cell {
 			min-height: 2rem !important;
 		}
-	} 
+	}
 }
 
 .icon-cell {
@@ -81,10 +81,10 @@
 	// }
 }
 
-.btn-tx, .withdrawal-cancel {
+.btn-tx,
+.withdrawal-cancel {
 	cursor: pointer;
 }
-
 
 .transaction-history-wrapper {
 	svg {
@@ -97,7 +97,7 @@
 		}
 	}
 }
-.display_table-wrapper{
+.display_table-wrapper {
 	.display_table-cell {
 		min-height: 1.2rem !important;
 		padding: 0 0.1rem !important;

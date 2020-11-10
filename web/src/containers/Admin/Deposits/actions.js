@@ -17,9 +17,9 @@ export const requestDeposits = (query = { type: 'deposit' }) => {
 	}
 	return requestAuthenticated(path);
 };
- 
-export const requestDepositDownload = (query = { type: 'deposit'} ) => {
-  const { type, currency, ...rest } = query;
+
+export const requestDepositDownload = (query = { type: 'deposit' }) => {
+	const { type, currency, ...rest } = query;
 	let formProps = { ...rest };
 	if (currency) {
 		formProps.currency = currency;
@@ -31,22 +31,23 @@ export const requestDepositDownload = (query = { type: 'deposit'} ) => {
 	if (type === 'withdrawal') {
 		path = `/admin/withdrawals?${queryValues}`;
 	}
-  return axios({
-    method: 'GET',
-    url: path
-  })
-  .then(res => {
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement('a'); link.href = url;
-    ( type === 'deposit'
-      ? link.setAttribute('download', 'deposit.csv')
-      : link.setAttribute('download', 'withdrawal.csv')
-    )
-    document.body.appendChild(link); link.click();
-  })
-  .catch(error => {
-    console.log("errorss", error);
-  })
+	return axios({
+		method: 'GET',
+		url: path,
+	})
+		.then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			type === 'deposit'
+				? link.setAttribute('download', 'deposit.csv')
+				: link.setAttribute('download', 'withdrawal.csv');
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch((error) => {
+			console.log('errorss', error);
+		});
 };
 
 export const requestdate = () => {
@@ -57,15 +58,21 @@ export const requestdate = () => {
 export const completeDeposits = (id, status) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify({ status })
+		body: JSON.stringify({ status }),
 	};
-	return requestAuthenticated(`/admin/deposit/verify?transaction_id=${id}`, options);
+	return requestAuthenticated(
+		`/admin/deposit/verify?transaction_id=${id}`,
+		options
+	);
 };
 
 export const dismissDeposit = (id, dismissed) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify({ dismissed })
+		body: JSON.stringify({ dismissed }),
 	};
-	return requestAuthenticated(`/admin/deposit/dismiss?transaction_id=${id}`, options);
+	return requestAuthenticated(
+		`/admin/deposit/dismiss?transaction_id=${id}`,
+		options
+	);
 };

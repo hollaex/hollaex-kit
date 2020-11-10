@@ -10,7 +10,7 @@ const getFilters = (coinOptions) => [
 		placeholder: 'Currency',
 		key: 'currency',
 		className: 'adjacent-fields',
-		options: coinOptions
+		options: coinOptions,
 	},
 	{
 		label: 'Status',
@@ -21,9 +21,9 @@ const getFilters = (coinOptions) => [
 			{ value: 'true', text: 'Confirmed' },
 			{ value: 'false', text: 'Pending' },
 			{ value: 'dismissed', text: 'Dismissed' },
-			{ value: 'rejected', text: 'Rejected' }
-		]
-	}
+			{ value: 'rejected', text: 'Rejected' },
+		],
+	},
 ];
 
 const getStatusValue = (key, params) => {
@@ -51,7 +51,7 @@ export const Filters = ({
 	onClick,
 	loading,
 	fetched,
-	hasChanges
+	hasChanges,
 }) => {
 	const coinOptions = [];
 	Object.keys(coins).forEach((data) => {

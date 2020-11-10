@@ -9,8 +9,8 @@ export const getTheme = (theme = '') => {
 };
 
 export const getThemeClass = (theme = '') => {
-  return `${getTheme(theme)}-theme`;
-}
+	return `${getTheme(theme)}-theme`;
+};
 
 export const getChatMinimized = () => {
 	const minimized = localStorage.getItem(CHAT_STATUS_KEY) || false;

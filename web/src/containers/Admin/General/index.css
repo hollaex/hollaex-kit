@@ -251,28 +251,28 @@ h2,
 	right: 7px;
 }
 .custom-form-wrapper {
-    display: flex;
-    margin-top: 1.5rem;
+	display: flex;
+	margin-top: 1.5rem;
 }
 .section-wrapper {
-    width: 220px;
+	width: 220px;
 }
 .center-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .divider-vertical {
-    display: inline-block;
-    width: 0px;
-    height: 18rem;
-    border-left: 1px solid #707070;
-    margin: 0rem 1rem;
+	display: inline-block;
+	width: 0px;
+	height: 18rem;
+	border-left: 1px solid #707070;
+	margin: 0rem 1rem;
 }
 .divider-horizontal {
-    display: inline-block;
-    width: 5rem;
-    height: 0px;
-    border-top: 1px solid #707070;
-    margin: 1rem 0rem;
+	display: inline-block;
+	width: 5rem;
+	height: 0px;
+	border-top: 1px solid #707070;
+	margin: 1rem 0rem;
 }

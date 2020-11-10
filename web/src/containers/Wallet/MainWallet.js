@@ -7,7 +7,7 @@ import {
 	Dialog,
 	Accordion,
 	Notification,
-	MobileBarTabs
+	MobileBarTabs,
 } from 'components';
 import { TransactionsHistory } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
@@ -16,7 +16,7 @@ import { createAddress, cleanCreateAddress } from 'actions/userAction';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA
+	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import { calculateBalancePrice, formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
@@ -68,19 +68,22 @@ class Wallet extends Component {
 		}
 	}
 
-	componentDidUpdate(_, prevState,) {
+	componentDidUpdate(_, prevState) {
 		const { searchValue, isZeroBalanceHidden } = this.state;
-		if (searchValue !== prevState.searchValue || isZeroBalanceHidden !== prevState.isZeroBalanceHidden) {
-      this.generateSections(
-        this.props.changeSymbol,
-        this.props.balance,
-        this.props.prices,
-        this.state.isOpen,
-        this.props.wallets,
-        this.props.bankaccount,
-        this.props.coins,
-        this.props.pairs
-      );
+		if (
+			searchValue !== prevState.searchValue ||
+			isZeroBalanceHidden !== prevState.isZeroBalanceHidden
+		) {
+			this.generateSections(
+				this.props.changeSymbol,
+				this.props.balance,
+				this.props.prices,
+				this.state.isOpen,
+				this.props.wallets,
+				this.props.bankaccount,
+				this.props.coins,
+				this.props.pairs
+			);
 		}
 	}
 
@@ -89,41 +92,40 @@ class Wallet extends Component {
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		return STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
-      symbol.toUpperCase(),
-			formatToCurrency(total, min),
+			symbol.toUpperCase(),
+			formatToCurrency(total, min)
 		);
 	};
 
 	getSearchResult = (coins, balance) => {
 		const { searchValue = '', isZeroBalanceHidden = false } = this.state;
 
-    const result = {};
-    const searchTerm = searchValue.toLowerCase().trim();
-    Object.keys(coins).map(key => {
-      const temp = coins[key];
-      const { fullname } = coins[key] || DEFAULT_COIN_DATA;
-      const coinName = fullname ? fullname.toLowerCase() : '';
-      const hasCoinBalance = !!balance[`${key}_balance`];
-      const isCoinHidden = isZeroBalanceHidden && !hasCoinBalance
-      if (
-      	!isCoinHidden && (
-          key.indexOf(searchTerm) !== -1 ||
-          coinName.indexOf(searchTerm) !== -1
-				)) {
-        result[key] = temp;
-      }
-      return key;
-    });
-    return { ...result }
-	}
+		const result = {};
+		const searchTerm = searchValue.toLowerCase().trim();
+		Object.keys(coins).map((key) => {
+			const temp = coins[key];
+			const { fullname } = coins[key] || DEFAULT_COIN_DATA;
+			const coinName = fullname ? fullname.toLowerCase() : '';
+			const hasCoinBalance = !!balance[`${key}_balance`];
+			const isCoinHidden = isZeroBalanceHidden && !hasCoinBalance;
+			if (
+				!isCoinHidden &&
+				(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
+			) {
+				result[key] = temp;
+			}
+			return key;
+		});
+		return { ...result };
+	};
 
-  handleSearch = (_, value) => {
-    this.setState({ searchValue: value })
-	}
+	handleSearch = (_, value) => {
+		this.setState({ searchValue: value });
+	};
 
-  handleCheck = (_, value) => {
-    this.setState({ isZeroBalanceHidden: value })
-  }
+	handleCheck = (_, value) => {
+		this.setState({ isZeroBalanceHidden: value });
+	};
 
 	generateSections = (
 		changeSymbol,
@@ -141,8 +143,8 @@ class Wallet extends Component {
 
 		const sections = [
 			{
-				stringId: "WALLET_ALL_ASSETS",
-				title: STRINGS["WALLET_ALL_ASSETS"],
+				stringId: 'WALLET_ALL_ASSETS',
+				title: STRINGS['WALLET_ALL_ASSETS'],
 				content: (
 					<AssetsBlock
 						balance={balance}
@@ -166,21 +168,21 @@ class Wallet extends Component {
 				allowClose: false,
 				notification: !isMobile && {
 					stringId: 'TRADE_HISTORY',
-					text: STRINGS["TRADE_HISTORY"],
+					text: STRINGS['TRADE_HISTORY'],
 					status: 'information',
 					iconId: 'BLUE_CLIP',
-					iconPath: ICONS["BLUE_CLIP"],
+					iconPath: ICONS['BLUE_CLIP'],
 					allowClick: true,
 					className: isOpen ? '' : 'wallet-notification',
 					onClick: () => {
 						this.props.router.push('/transactions');
-					}
-				}
-			}
+					},
+				},
+			},
 		];
 		const mobileTabs = [
 			{
-				title: STRINGS["WALLET_TAB_WALLET"],
+				title: STRINGS['WALLET_TAB_WALLET'],
 				content: (
 					<MobileWallet
 						sections={sections}
@@ -190,12 +192,12 @@ class Wallet extends Component {
 						navigate={this.goToPage}
 						coins={coins}
 					/>
-				)
+				),
 			},
 			{
-				title: STRINGS["WALLET_TAB_TRANSACTIONS"],
-				content: <TransactionsHistory />
-			}
+				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
+				content: <TransactionsHistory />,
+			},
 		];
 		this.setState({ sections, totalAssets, isOpen, mobileTabs });
 	};
@@ -228,7 +230,10 @@ class Wallet extends Component {
 
 	openContactUs = () => {
 		const { links = {} } = this.props.constants;
-		this.props.openContactForm({ category: 'bank_transfer', helpdesk: links.helpdesk });
+		this.props.openContactForm({
+			category: 'bank_transfer',
+			helpdesk: links.helpdesk,
+		});
 	};
 
 	render() {
@@ -237,7 +242,7 @@ class Wallet extends Component {
 			dialogIsOpen,
 			selectedCurrency,
 			activeTab,
-			mobileTabs
+			mobileTabs,
 		} = this.state;
 		const { activeTheme, addressRequest, coins } = this.props;
 		if (mobileTabs.length === 0) {
@@ -260,7 +265,7 @@ class Wallet extends Component {
 					<div className="presentation_container apply_rtl">
 						<IconTitle
 							stringId="WALLET_TITLE"
-							text={STRINGS["WALLET_TITLE"]}
+							text={STRINGS['WALLET_TITLE']}
 							// iconPath={ICONS.BITCOIN_WALLET}
 							textType="title"
 						/>
@@ -298,7 +303,7 @@ class Wallet extends Component {
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	constants: store.app.constants,
-  pairs: store.app.pairs,
+	pairs: store.app.pairs,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
 	addressRequest: store.user.addressRequest,
@@ -306,17 +311,14 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
 	wallets: store.user.crypto_wallet,
-	isValidBase: store.app.isValidBase
+	isValidBase: store.app.isValidBase,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	createAddress: bindActionCreators(createAddress, dispatch),
 	cleanCreateAddress: bindActionCreators(cleanCreateAddress, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
-	openContactForm: bindActionCreators(openContactForm, dispatch)
+	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(withConfig(Wallet));
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Wallet));

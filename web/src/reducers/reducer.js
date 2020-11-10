@@ -14,7 +14,7 @@ const appReducer = combineReducers({
 	user,
 	orderbook,
 	wallet,
-	form: formReducer
+	form: formReducer,
 });
 
 const rootReducer = (state, action) => {

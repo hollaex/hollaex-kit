@@ -17,7 +17,7 @@ export const renderValidation = ({
 	dismissed,
 	rejected,
 	completeDeposit,
-	updatingItem
+	updatingItem,
 }) =>
 	!status && !dismissed && !rejected ? (
 		<Tooltip placement="bottom" title="VALIDATE">
@@ -39,7 +39,7 @@ export const renderDismiss = ({
 	rejected,
 	dismissed,
 	dismissDeposit,
-	dismissingItem
+	dismissingItem,
 }) =>
 	!status && !dismissed && !rejected ? (
 		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
@@ -72,12 +72,12 @@ export const COLUMNS = (currency, type) => {
 			title: 'User Id',
 			dataIndex: 'user_id',
 			key: 'user_id',
-			render: renderUser
+			render: renderUser,
 		},
 		{
 			title: transactionTitle,
 			dataIndex: 'transaction_id',
-			key: 'transaction_id'
+			key: 'transaction_id',
 		},
 		// { title: 'Address', dataIndex: 'address', key: 'address' },
 		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
@@ -85,20 +85,20 @@ export const COLUMNS = (currency, type) => {
 			title: 'Completed',
 			dataIndex: 'status',
 			key: 'status',
-			render: renderBoolean
+			render: renderBoolean,
 		},
 		{
 			title: 'Dismissed',
 			dataIndex: 'dismissed',
 			key: 'dismissed',
-			render: renderBoolean
+			render: renderBoolean,
 		},
 		{
 			title: 'Rejected',
 			dataIndex: 'rejected',
 			key: 'rejected',
-			render: renderBoolean
-		}
+			render: renderBoolean,
+		},
 		// { title: 'Amount', dataIndex: 'amount', key: 'amount' },
 		// { title: 'Fee', dataIndex: 'fee', key: 'fee' },
 		// { title: 'Timestamp', dataIndex: 'created_at', key: 'created_at' },
@@ -109,14 +109,14 @@ export const COLUMNS = (currency, type) => {
 				title: 'Validate',
 				dataIndex: '',
 				key: 'completeDeposit',
-				render: renderValidation
+				render: renderValidation,
 			},
 			{
 				title: 'Dismiss',
 				dataIndex: '',
 				key: 'dismissDeposit',
-				render: renderDismiss
-			}
+				render: renderDismiss,
+			},
 		];
 		return columns.concat(adminColumns);
 	}
@@ -129,7 +129,7 @@ export const SELECT_KEYS = (currency) => {
 	} else {
 		return [
 			{ value: 'transaction_id', label: 'Transaction ID' },
-			{ value: 'address', label: 'Address' }
+			{ value: 'address', label: 'Address' },
 		];
 	}
 };
@@ -140,7 +140,7 @@ export const renderRowContent = ({
 	amount,
 	fee,
 	created_at,
-	currency
+	currency,
 }) => {
 	return (
 		<div>

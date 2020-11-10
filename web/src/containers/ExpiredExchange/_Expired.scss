@@ -1,25 +1,24 @@
 .expired_exchange_wrapper {
-    padding: 2rem;
+	padding: 2rem;
 
-    .flex-cloumn {
-        flex-direction: column;
-    }
-    .expired_img_icon {
-        width: 7rem;
-        height: 3.7rem;
-        margin-top: 15rem;
-        svg{
-            .expired_icon{
-                fill: #777677;
-            }
-        }
-    }
-    .expired_text {
-        font-size: 2rem;
-        font-weight: bold;
-    }
-    .expired_button {
-        padding: 2rem 3rem;
-    }
+	.flex-cloumn {
+		flex-direction: column;
+	}
+	.expired_img_icon {
+		width: 7rem;
+		height: 3.7rem;
+		margin-top: 15rem;
+		svg {
+			.expired_icon {
+				fill: #777677;
+			}
+		}
+	}
+	.expired_text {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+	.expired_button {
+		padding: 2rem 3rem;
+	}
 }
-

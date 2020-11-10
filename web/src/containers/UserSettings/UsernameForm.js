@@ -15,11 +15,11 @@ export const generateUsernameFormValues = (disabled = false) => ({
 		type: 'text',
 		stringId: 'USERNAME_LABEL,USERNAME_PLACEHOLDER',
 		validate: [required, username],
-		label: STRINGS["USERNAME_LABEL"],
-		placeholder: STRINGS["USERNAME_PLACEHOLDER"],
+		label: STRINGS['USERNAME_LABEL'],
+		placeholder: STRINGS['USERNAME_PLACEHOLDER'],
 		disabled,
-		fullWidth: isMobile
-	}
+		fullWidth: isMobile,
+	},
 });
 
 class Form extends Component {
@@ -39,7 +39,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			formFields
+			formFields,
 		} = this.props;
 		return (
 			<form onSubmit={handleSubmit}>
@@ -51,13 +51,13 @@ class Form extends Component {
 					<FieldError
 						className="warning_text mb-4"
 						displayError={true}
-						error={STRINGS["USERNAME_WARNING"]}
+						error={STRINGS['USERNAME_WARNING']}
 						stringId="USERNAME_WARNING"
 					/>
 				)}
 				<EditWrapper stringId="SETTING_BUTTON" />
 				<Button
-					label={STRINGS["SETTING_BUTTON"]}
+					label={STRINGS['SETTING_BUTTON']}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>
@@ -65,5 +65,5 @@ class Form extends Component {
 	}
 }
 export default reduxForm({
-	form: 'UsernameForm'
+	form: 'UsernameForm',
 })(Form);

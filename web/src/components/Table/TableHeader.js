@@ -6,9 +6,7 @@ const TableHeader = ({ headers }) => (
 		<tr className="table_header-row">
 			{headers.map(({ label, className = '', stringId }, index) => (
 				<th key={index} className={className}>
-					<EditWrapper stringId={stringId}>
-            {label}
-					</EditWrapper>
+					<EditWrapper stringId={stringId}>{label}</EditWrapper>
 				</th>
 			))}
 		</tr>

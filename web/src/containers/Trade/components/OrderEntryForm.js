@@ -40,7 +40,7 @@ const Form = ({
 	currencyName,
 	outsideFormError,
 	onReview,
-	formKeyDown
+	formKeyDown,
 }) => {
 	const fields = getFields(formValues, type);
 	const errorText = error || outsideFormError;
@@ -53,8 +53,7 @@ const Form = ({
 				onKeyDown={(e) => {
 					if (!submitting && valid && !errorText && isLoggedIn())
 						formKeyDown(e);
-					}
-				}
+				}}
 			>
 				<div className="trade_order_entry-form_fields-wrapper">
 					{Object.entries(fields).map(renderFields)}
@@ -69,7 +68,7 @@ const Form = ({
 					type="button"
 					onClick={onReview}
 					label={STRINGS.formatString(
-						STRINGS["ORDER_ENTRY_BUTTON"],
+						STRINGS['ORDER_ENTRY_BUTTON'],
 						STRINGS[`SIDES_VALUES.${side}`] || '',
 						currencyName
 					).join(' ')}
@@ -84,7 +83,7 @@ const Form = ({
 const EntryOrderForm = reduxForm({
 	form: FORM_NAME,
 	validate,
-	enableReinitialize: true
+	enableReinitialize: true,
 	// onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
 })(Form);
 

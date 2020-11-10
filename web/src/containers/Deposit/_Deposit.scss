@@ -39,7 +39,12 @@ $qr-code--size: 12rem;
 
 		&:before {
 			padding-top: $qr-text--pading;
-			@include css-triangle($qr-code--arrow-color, 'up', $qr-code--arrow-size, relative);
+			@include css-triangle(
+				$qr-code--arrow-color,
+				'up',
+				$qr-code--arrow-size,
+				relative
+			);
 			border-bottom: $qr-code--arrow-size * 1.5 solid $qr-code--arrow-color;
 		}
 	}

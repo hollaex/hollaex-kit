@@ -6,11 +6,9 @@ const dateFormat = 'YYYY/MM/DD';
 
 export const initialValues = {
 	dates: [
-		moment(new Date())
-			.subtract(7, 'days')
-			.format(dateFormat),
-		moment(new Date()).format(dateFormat)
-	]
+		moment(new Date()).subtract(7, 'days').format(dateFormat),
+		moment(new Date()).format(dateFormat),
+	],
 };
 
 export const INITIAL_STATE = {
@@ -21,7 +19,7 @@ export const INITIAL_STATE = {
 	error: '',
 	filteredInfo: null,
 	sortedInfo: null,
-	searchText: ''
+	searchText: '',
 };
 
 export const COLUMNS = [
@@ -29,29 +27,29 @@ export const COLUMNS = [
 		title: 'TrxID',
 		dataIndex: 'TrxID',
 		key: 'TrxID',
-		sorter: (a, b) => a.TrxID - b.TrxID
+		sorter: (a, b) => a.TrxID - b.TrxID,
 	},
 	{
 		title: 'Amount',
 		dataIndex: 'Amount',
 		key: 'Amount',
 		sorter: (a, b) => a.Amount - b.Amount,
-		render: formatCurrency
+		render: formatCurrency,
 	},
 	{
 		title: 'DateTime',
 		dataIndex: 'DateTime',
 		key: 'DateTime',
 		render: (value) => moment(value).format('LLL'),
-		sorter: (a, b) => (moment(a.DateTime).isBefore(b.DateTime) ? -1 : 1)
+		sorter: (a, b) => (moment(a.DateTime).isBefore(b.DateTime) ? -1 : 1),
 	},
 	{
 		title: 'TrxType',
 		dataIndex: 'TrxType',
 		key: 'TrxType',
 		filterMultiple: false,
-		onFilter: (value, record) => record.TrxType === value
-	}
+		onFilter: (value, record) => record.TrxType === value,
+	},
 	// { title: 'TrxStatus', dataIndex: 'TrxStatus', key: 'TrxStatus' },
 	// { title: 'Description', dataIndex: 'Description', key: 'Description' },
 	// { title: 'UID', dataIndex: 'UID', key: 'UID' },

@@ -4,13 +4,17 @@ import { requestAuthenticated } from '../../../utils';
 export const updateRole = (values, params) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify(values)
+		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(`/admin/user/role?${querystring.stringify(params)}`, options);
+	return requestAuthenticated(
+		`/admin/user/role?${querystring.stringify(params)}`,
+		options
+	);
 };
 
-export const requestRole = () =>
-	requestAuthenticated('/admin/operators');
+export const requestRole = () => requestAuthenticated('/admin/operators');
 
 export const inviteOperator = (values) =>
-	requestAuthenticated(`/admin/operator/invite?${querystring.stringify(values)}`);
+	requestAuthenticated(
+		`/admin/operator/invite?${querystring.stringify(values)}`
+	);

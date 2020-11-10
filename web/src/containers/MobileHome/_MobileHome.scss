@@ -1,49 +1,49 @@
 .layout-mobile {
-    &.home_container-mobile {
-        .app-icon {
-            margin: 1rem auto;
-            width: 15rem;
-        }
+	&.home_container-mobile {
+		.app-icon {
+			margin: 1rem auto;
+			width: 15rem;
+		}
 
-        .trade-tab-app-title {
-            font-family: "Raleway Light";
-            letter-spacing: .3rem;
-            font-size: 1.2rem;
-        }
+		.trade-tab-app-title {
+			font-family: 'Raleway Light';
+			letter-spacing: 0.3rem;
+			font-size: 1.2rem;
+		}
 
-        .market-button {
-            background-color: #ffffff !important;
-            border: 1px solid $colors-black;
-            color: $colors-black;
-        }
+		.market-button {
+			background-color: #ffffff !important;
+			border: 1px solid $colors-black;
+			color: $colors-black;
+		}
 
-        .post-wrapper {
-            max-height: 45rem;
-            overflow-y: auto;
-            border-top: 0.4rem solid $colors-black !important;
-            
-            .post-title {
-                font-size: $title--font-size;
-                font-weight: bold;
-                text-transform: uppercase;
-            }
-            .trade_post_icon {
-                width: 2rem;
-            }
-        
-            .post_header {
-                font-weight: bold;
-                font-size: $trade-post-font-size;
-            }
-            .post-content{
-                font-size: $trade-post-font-size;
-            }
-            .trade_announcement {
-                font-size: 1.5rem;
-            }
-        }
-        .exir-button {
-            font-size: 1.2rem;
-        }
-    }
+		.post-wrapper {
+			max-height: 45rem;
+			overflow-y: auto;
+			border-top: 0.4rem solid $colors-black !important;
+
+			.post-title {
+				font-size: $title--font-size;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+			.trade_post_icon {
+				width: 2rem;
+			}
+
+			.post_header {
+				font-weight: bold;
+				font-size: $trade-post-font-size;
+			}
+			.post-content {
+				font-size: $trade-post-font-size;
+			}
+			.trade_announcement {
+				font-size: 1.5rem;
+			}
+		}
+		.exir-button {
+			font-size: 1.2rem;
+		}
+	}
 }

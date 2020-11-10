@@ -18,7 +18,7 @@ $color-white: #ffffff;
 	}
 
 	.error {
-		background-color: #FF0000;
+		background-color: #ff0000;
 	}
 
 	.header {
@@ -75,7 +75,7 @@ $color-white: #ffffff;
 			to {
 				visibility: visible;
 			}
-		  }
+		}
 	}
 	.setup-container,
 	.welcome-screen {
@@ -164,10 +164,10 @@ $color-white: #ffffff;
 				100% {
 					height: 25rem;
 				}
-            }
-            .ant-btn {
-                width: 22rem;
-            }
+			}
+			.ant-btn {
+				width: 22rem;
+			}
 		}
 	}
 	.setup-container {
@@ -225,16 +225,16 @@ $color-white: #ffffff;
 			font-size: 15px;
 			color: $color-white;
 			margin-bottom: 0.25rem;
-        }
-        .btn-wrapper {
-            display: flex;
-            .separator {
-                margin: 0.5rem;
-            }
-            .ant-btn {
-                flex: 1;
-            }
-        }
+		}
+		.btn-wrapper {
+			display: flex;
+			.separator {
+				margin: 0.5rem;
+			}
+			.ant-btn {
+				flex: 1;
+			}
+		}
 	}
 }
 

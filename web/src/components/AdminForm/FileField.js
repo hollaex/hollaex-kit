@@ -6,7 +6,7 @@ import { Upload, Button } from 'antd';
 
 const INITIAL_STATE = {
 	fileList: [],
-	file: undefined
+	file: undefined,
 };
 export class FileField extends Component {
 	state = INITIAL_STATE;
@@ -27,7 +27,7 @@ export class FileField extends Component {
 			error,
 			warning,
 			input: { onChange },
-			label
+			label,
 		} = this.props;
 		const props = {
 			className: 'upload-wrapper',
@@ -44,11 +44,11 @@ export class FileField extends Component {
 			beforeUpload: (file) => {
 				this.setState({
 					fileList: [file],
-					file
+					file,
 				});
 				return false;
 			},
-			fileList: this.state.fileList
+			fileList: this.state.fileList,
 		};
 
 		return (

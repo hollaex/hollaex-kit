@@ -22,12 +22,12 @@ import './index.css';
 import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disable-line
 
 import {
-  setLocalVersions,
-  getLocalVersions,
-  initializeStrings,
-  setValidLanguages,
-  setExchangeInitialized,
-  setSetupCompleted
+	setLocalVersions,
+	getLocalVersions,
+	initializeStrings,
+	setValidLanguages,
+	setExchangeInitialized,
+	setSetupCompleted,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -38,72 +38,67 @@ console.info(name, version);
 console.info(API_URL);
 
 const getConfigs = async () => {
-  const localVersions = getLocalVersions();
+	const localVersions = getLocalVersions();
 
-  const kitData = await getKitData();
-  const {
-    meta: {
-      versions: remoteVersions = {}
-      },
-    valid_languages = '',
-    info: {
-      initialized
-    },
-    setup_completed
-  } = kitData;
+	const kitData = await getKitData();
+	const {
+		meta: { versions: remoteVersions = {} },
+		valid_languages = '',
+		info: { initialized },
+		setup_completed,
+	} = kitData;
 
+	const promises = {};
+	Object.keys(remoteVersions).forEach((key) => {
+		const localVersion = localVersions[key];
+		const remoteVersion = remoteVersions[key];
 
-  const promises = {};
-  Object.keys(remoteVersions).forEach((key) => {
-    const localVersion = localVersions[key];
-    const remoteVersion = remoteVersions[key];
+		if (localVersion !== remoteVersion) {
+			promises[key] = kitData[key];
+		} else {
+			promises[key] = JSON.parse(localStorage.getItem(key) || '{}');
+		}
+	});
 
-    if (localVersion !== remoteVersion) {
-      promises[key] = kitData[key];
-    } else {
-      promises[key] = JSON.parse(localStorage.getItem(key) || "{}");
-    }
-  })
+	const remoteConfigs = await hash(promises);
+	Object.keys(remoteConfigs).forEach((key) => {
+		if (key === 'color') {
+			Object.entries(remoteConfigs[key]).forEach(([themeKey, themeObj]) => {
+				if (typeof themeObj !== 'object') {
+					delete remoteConfigs[key][themeKey];
+				}
+			});
+		}
+		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
+	});
 
-  const remoteConfigs = await hash(promises);
-  Object.keys(remoteConfigs).forEach((key) => {
-    if (key === 'color') {
-      Object.entries(remoteConfigs[key]).forEach(([themeKey, themeObj]) => {
-        if (typeof themeObj !== "object") {
-          delete remoteConfigs[key][themeKey]
-        }
-      })
-    }
-    localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
-  })
+	setLocalVersions(remoteVersions);
+	setValidLanguages(valid_languages);
+	setExchangeInitialized(initialized);
+	setSetupCompleted(setup_completed);
 
-  setLocalVersions(remoteVersions);
-  setValidLanguages(valid_languages);
-  setExchangeInitialized(initialized);
-  setSetupCompleted(setup_completed);
-
-  return merge({}, defaultConfig, remoteConfigs);
-}
+	return merge({}, defaultConfig, remoteConfigs);
+};
 
 const bootstrapApp = (appConfig) => {
-  initializeStrings()
-  // window.appConfig = { ...appConfig }
+	initializeStrings();
+	// window.appConfig = { ...appConfig }
 
-  render(
+	render(
 		<Provider store={store}>
-      <EditProvider>
-        <ConfigProvider initialConfig={appConfig}>
-          <Router routes={routes} history={browserHistory} />
-        </ConfigProvider>
-      </EditProvider>
+			<EditProvider>
+				<ConfigProvider initialConfig={appConfig}>
+					<Router routes={routes} history={browserHistory} />
+				</ConfigProvider>
+			</EditProvider>
 		</Provider>,
-    document.getElementById('root')
-  );
-}
+		document.getElementById('root')
+	);
+};
 
 getConfigs()
 	.then(bootstrapApp)
-	.catch((err) => console.error('Initialization failed!\n', err))
+	.catch((err) => console.error('Initialization failed!\n', err));
 
 // import registerServiceWorker from './registerServiceWorker'
 // registerServiceWorker();

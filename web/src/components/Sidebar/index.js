@@ -16,33 +16,29 @@ const Sidebar = ({
 	theme,
 	unreadMessages = 0,
 	sidebarFitHeight = false,
-	enabledPlugins
+	enabledPlugins,
 }) => {
 	const sidebarHubProps = {
 		activePath,
 		pair,
 		isLogged,
-		theme
+		theme,
 	};
 	return (
-		<div className={
-			classnames(
-				"sidebar-container apply_rtl",
-				{
-					'sidebar-fit-to-screen': sidebarFitHeight
-				}
-			)}>
+		<div
+			className={classnames('sidebar-container apply_rtl', {
+				'sidebar-fit-to-screen': sidebarFitHeight,
+			})}
+		>
 			<SidebarHub {...sidebarHubProps} />
-			{
-				enabledPlugins.includes('announcement')
-					? <div className="sidebar-notifications m-3">
-						<div className="ml-3 my-3 sidebar-title">
-							{STRINGS["TRADE_TAB_POSTS"].toUpperCase()}
-						</div>
-						<NotificationsList />
+			{enabledPlugins.includes('announcement') ? (
+				<div className="sidebar-notifications m-3">
+					<div className="ml-3 my-3 sidebar-title">
+						{STRINGS['TRADE_TAB_POSTS'].toUpperCase()}
 					</div>
-					: null
-			}
+					<NotificationsList />
+				</div>
+			) : null}
 			{/* {isLogged ?
 			<div className="sidebar-row d-flex">
 				<Chat
@@ -61,7 +57,7 @@ const Sidebar = ({
 Sidebar.defaultProps = {
 	active: false,
 	activePath: '',
-	notifications: []
+	notifications: [],
 };
 
 export default Sidebar;

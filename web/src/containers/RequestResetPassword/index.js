@@ -18,11 +18,11 @@ let errorTimeOut = null;
 
 class RequestResetPassword extends Component {
 	constructor(props) {
-		super(props)
+		super(props);
 		this.state = {
 			success: false,
 			showContactForm: false,
-			formFields: generateFormFields(this.props.activeTheme)
+			formFields: generateFormFields(this.props.activeTheme),
 		};
 	}
 
@@ -71,14 +71,14 @@ class RequestResetPassword extends Component {
 	onClickLogin = () => {
 		this.props.router.replace('login');
 	};
-	
+
 	onGoBack = () => {
 		this.props.router.push(`/login`);
 	};
 
 	accountRecovery = () => {
 		this.setState({ success: false });
-	}
+	};
 
 	render() {
 		const { languageClasses, activeTheme, icons: ICONS } = this.props;
@@ -86,8 +86,11 @@ class RequestResetPassword extends Component {
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
-				{isMobile && !showContactForm && <MobileBarBack  onBackClick={success ? this.accountRecovery : this.onGoBack}>
-				</MobileBarBack>}
+				{isMobile && !showContactForm && (
+					<MobileBarBack
+						onBackClick={success ? this.accountRecovery : this.onGoBack}
+					></MobileBarBack>
+				)}
 				{success ? (
 					<RequestResetPasswordSuccess
 						onLoginClick={this.onClickLogin}
@@ -104,18 +107,18 @@ class RequestResetPassword extends Component {
 					>
 						<IconTitle
 							iconId="ACCOUNT_RECOVERY"
-							iconPath={ICONS["ACCOUNT_RECOVERY"]}
+							iconPath={ICONS['ACCOUNT_RECOVERY']}
 							stringId="REQUEST_RESET_PASSWORD.TITLE"
-							text={STRINGS["REQUEST_RESET_PASSWORD.TITLE"]}
+							text={STRINGS['REQUEST_RESET_PASSWORD.TITLE']}
 							textType="title"
 							underline={true}
 							className="w-100"
-							subtitle={STRINGS["REQUEST_RESET_PASSWORD.SUBTITLE"]}
+							subtitle={STRINGS['REQUEST_RESET_PASSWORD.SUBTITLE']}
 							actionProps={{
-								text: STRINGS["REQUEST_RESET_PASSWORD.SUPPORT"],
-								iconPath: ICONS["BLUE_QUESTION"],
+								text: STRINGS['REQUEST_RESET_PASSWORD.SUPPORT'],
+								iconPath: ICONS['BLUE_QUESTION'],
 								onClick: this.onOpenDialog,
-								useSvg: true
+								useSvg: true,
 							}}
 						/>
 						<div
@@ -155,11 +158,14 @@ class RequestResetPassword extends Component {
 
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
-	constants: store.app.constants
+	constants: store.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	change: bindActionCreators(change, dispatch)
+	change: bindActionCreators(change, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withConfig(RequestResetPassword));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(RequestResetPassword));

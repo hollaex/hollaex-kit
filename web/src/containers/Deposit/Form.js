@@ -7,5 +7,5 @@ const Form = (props) => <AuthForm {...props} />;
 
 export default reduxForm({
 	form: FORM_NAME,
-	onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME))
+	onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
 })(Form);

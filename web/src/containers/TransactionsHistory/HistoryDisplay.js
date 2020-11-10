@@ -5,7 +5,7 @@ import {
 	ActionNotification,
 	Table,
 	// CsvDownload,
-	Loader
+	Loader,
 } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
@@ -30,15 +30,13 @@ const HistoryDisplay = (props) => {
 		<div className="history_block-wrapper">
 			{!isMobile && (
 				<div className="title text-capitalize">
-					<EditWrapper stringId={stringId}>
-            {title}
-					</EditWrapper>
+					<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					{count > 0 && (
 						<ActionNotification
 							stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
-							text={STRINGS["TRANSACTION_HISTORY.TEXT_DOWNLOAD"]}
+							text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
 							iconId="DATA"
-							iconPath={ICONS["DATA"]}
+							iconPath={ICONS['DATA']}
 							className="csv-action"
 							onClick={handleDownload}
 						/>

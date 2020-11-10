@@ -34,8 +34,8 @@ $inner_container-border: 1px solid $border-color;
 			// max-height: $max-content-height;
 		}
 		// .app_container-secondary-content {
-			// min-height: $max-content-secondary-height !important;
-			// max-height: $max-content-secondary-height !important;
+		// min-height: $max-content-secondary-height !important;
+		// max-height: $max-content-secondary-height !important;
 		// }
 	}
 
@@ -76,7 +76,7 @@ $inner_container-border: 1px solid $border-color;
 		padding: 0;
 	}
 	.exchange-warning {
-		background-color: #FFF100;
+		background-color: #fff100;
 	}
 }
 
@@ -132,7 +132,7 @@ $inner_container-border: 1px solid $border-color;
 	max-width: 100vw;
 	position: -webkit-fixed;
 	position: fixed;
-    bottom: 0;
+	bottom: 0;
 	// position: -webkit-sticky;
 	// position: sticky;
 	// bottom: 5rem;
@@ -167,7 +167,7 @@ $inner_container-border: 1px solid $border-color;
 	.otp_secret {
 		font-size: 1rem !important;
 	}
-	
+
 	.presentation_container,
 	.trade_tabs-container {
 		width: $content-display-width !important;
