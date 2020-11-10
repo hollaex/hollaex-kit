@@ -139,7 +139,7 @@ export default class ExchangeSetup extends Component {
 						<Carousel items={menuItems} groupItems={1} />
 						<div className="btn-container">
 							<Button
-								className="exchange-btn"
+								className="exchange-complete-btn"
 								disabled={this.state.isLoading}
 								onClick={this.goToAccount}
 							>
