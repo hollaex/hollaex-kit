@@ -147,6 +147,10 @@ export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
 	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
 };
 
+export const calculateOraclePrice = (value = 0, price) => {
+	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
+};
+
 export const calculateBalancePrice = (balance, prices = {}, coins = {}) => {
 	let accumulated = math.fraction(0);
 	Object.keys(coins).forEach((key) => {
