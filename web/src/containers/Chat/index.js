@@ -59,6 +59,7 @@ class Chat extends Component {
 					args: [
 						{
 							action: 'changeUsername',
+							data: nextProps.user_id,
 						},
 					],
 				})
@@ -344,6 +345,7 @@ class Chat extends Component {
 
 const mapStateToProps = (store) => ({
 	fetchingAuth: store.auth.fetching,
+	user_id: store.user.id,
 	username: store.user.username,
 	username_set: store.user.username_set,
 	userType: store.auth.userType,
