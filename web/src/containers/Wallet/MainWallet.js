@@ -21,6 +21,7 @@ import {
 import { calculateBalancePrice, formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getPrices } from 'actions/walletActions';
 
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
@@ -34,32 +35,43 @@ class Wallet extends Component {
 		totalAssets: '',
 		dialogIsOpen: false,
 		selectedCurrency: '',
+		oraclePrices: {},
 	};
 
 	componentDidMount() {
-		this.generateSections(
-			this.props.changeSymbol,
-			this.props.balance,
-			this.props.prices,
-			this.state.isOpen,
-			this.props.wallets,
-			this.props.bankaccount,
-			this.props.coins,
-			this.props.pairs
+		const { coins } = this.props;
+		getPrices({ coins }).then((oraclePrices) =>
+			this.setState({ oraclePrices }, () => {
+				this.generateSections(
+					this.props.changeSymbol,
+					this.props.balance,
+					this.props.prices,
+					this.state.isOpen,
+					this.props.wallets,
+					this.props.bankaccount,
+					this.props.coins,
+					this.props.pairs
+				);
+			})
 		);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		this.generateSections(
-			nextProps.changeSymbol,
-			nextProps.balance,
-			nextProps.prices,
-			this.state.isOpen,
-			nextProps.wallets,
-			nextProps.bankaccount,
-			nextProps.coins,
-			nextProps.pairs
-		);
+		getPrices({ coins: nextProps.coins }).then((oraclePrices) => {
+			this.setState({ oraclePrices }, () => {
+				this.generateSections(
+					nextProps.changeSymbol,
+					nextProps.balance,
+					nextProps.prices,
+					this.state.isOpen,
+					nextProps.wallets,
+					nextProps.bankaccount,
+					nextProps.coins,
+					nextProps.pairs
+				);
+			});
+		});
+
 		if (
 			nextProps.addressRequest.success === true &&
 			nextProps.addressRequest.success !== this.props.addressRequest.success
@@ -98,7 +110,11 @@ class Wallet extends Component {
 	};
 
 	getSearchResult = (coins, balance) => {
-		const { searchValue = '', isZeroBalanceHidden = false } = this.state;
+		const {
+			searchValue = '',
+			isZeroBalanceHidden = false,
+			oraclePrices,
+		} = this.state;
 
 		const result = {};
 		const searchTerm = searchValue.toLowerCase().trim();
@@ -112,7 +128,7 @@ class Wallet extends Component {
 				!isCoinHidden &&
 				(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
 			) {
-				result[key] = temp;
+				result[key] = { ...temp, oraclePrice: oraclePrices[key] };
 			}
 			return key;
 		});

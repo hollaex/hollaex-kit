@@ -10,7 +10,7 @@ import {
 } from '../../config/constants';
 import {
 	calculateBalancePrice,
-	calculatePrice,
+	calculateOraclePrice,
 	calculatePricePercentage,
 	donutFormatPercentage,
 	formatToCurrency,
@@ -18,18 +18,24 @@ import {
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import { getPrices } from 'actions/walletActions';
 
 class Wallet extends Component {
 	state = {
 		sections: [],
 		totalAssets: 0,
 		chartData: [],
+		oraclePrices: {},
 	};
 
 	componentDidMount() {
-		const { user_id, symbol, prices } = this.props;
+		const { user_id, symbol, prices, coins } = this.props;
 		if (user_id && symbol && prices) {
-			this.calculateSections(this.props);
+			getPrices({ coins }).then((oraclePrices) =>
+				this.setState({ oraclePrices }, () => {
+					this.calculateSections(this.props);
+				})
+			);
 		}
 	}
 
@@ -42,7 +48,11 @@ class Wallet extends Component {
 			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
-			this.calculateSections(nextProps);
+			getPrices({ coins: nextProps.coins }).then((oraclePrices) =>
+				this.setState({ oraclePrices }, () => {
+					this.calculateSections(nextProps);
+				})
+			);
 		}
 	}
 
@@ -71,6 +81,7 @@ class Wallet extends Component {
 	};
 
 	calculateSections = ({ price, balance, orders, prices, coins }) => {
+		const { oraclePrices } = this.state;
 		const sections = [];
 		const data = [];
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -79,9 +90,9 @@ class Wallet extends Component {
 		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		Object.keys(coins).forEach((currency) => {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculatePrice(
+			const currencyBalance = calculateOraclePrice(
 				balance[`${symbol}_balance`],
-				currency
+				oraclePrices[symbol]
 			);
 			const balancePercent = calculatePricePercentage(
 				currencyBalance,
