@@ -208,8 +208,6 @@ const getSymbols = (req, res) => {
 };
 
 const getAssetPrice = (req, res) => {
-	loggerEngine.verbose(req.uuid, 'controllers/engine/getAssetPrice auth', req.auth);
-
 	const { asset, quote, amount } = req.swagger.params;
 
 	loggerEngine.info(req.uuid, 'controllers/engine/getAssetPrice asset', asset.value, 'quote', quote.value, 'amount', amount.value);
@@ -229,8 +227,6 @@ const getAssetPrice = (req, res) => {
 };
 
 const getAssetsPrices = (req, res) => {
-	loggerEngine.verbose(req.uuid, 'controllers/engine/getAssetsPrices auth', req.auth);
-
 	const { assets, quote, amount } = req.swagger.params;
 
 	loggerEngine.info(req.uuid, 'controllers/engine/getAssetsPrices assets', assets.value, 'quote', quote.value, 'amount', amount.value);
