@@ -683,6 +683,7 @@ const updateUserRole = (user_id, role) => {
 		},
 		attributes: [
 			'id',
+			'email',
 			'is_admin',
 			'is_support',
 			'is_supervisor',
@@ -1205,6 +1206,10 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		is_kyc: false,
 		is_communicator: false
 	};
+
+	if (!email || !isEmail(email)) {
+		return reject(new Error(PROVIDE_VALID_EMAIL));
+	}
 
 	role = role.toLowerCase();
 	const roleToUpdate = `is_${role}`;
