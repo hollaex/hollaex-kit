@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, message } from 'antd';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 import FooterConfig from './FooterConfig';
 import Description from './Description';
@@ -307,9 +308,22 @@ class General extends Component {
 						<div className="sub-title">Language</div>
 						<div className="description">
 							You can edit language and strings{' '}
-							<span className="general-edit-link">here</span>.
+							<span
+								onClick={() =>
+									browserHistory.push('/account?stringSettings=true')
+								}
+								className="general-edit-link"
+							>
+								here
+							</span>
+							.
 						</div>
-						<span className="general-edit-link general-edit-link-position">
+						<span
+							onClick={() =>
+								browserHistory.push('/account?stringSettings=true')
+							}
+							className="general-edit-link general-edit-link-position"
+						>
 							Edit
 						</span>
 						<LanguageForm
@@ -320,14 +334,25 @@ class General extends Component {
 							fields={generalFields.section_2}
 						/>
 					</div>
-					<div className="divider"></div>
+					<div className="divider" />
 					<div>
 						<div className="sub-title">Theme</div>
 						<div className="description">
 							You can edit theme and create new themes{' '}
-							<span className="general-edit-link">here</span>.
+							<span
+								onClick={() =>
+									browserHistory.push('/account?themeSettings=true')
+								}
+								className="general-edit-link"
+							>
+								here
+							</span>
+							.
 						</div>
-						<span className="general-edit-link general-edit-link-position">
+						<span
+							onClick={() => browserHistory.push('/account?themeSettings=true')}
+							className="general-edit-link general-edit-link-position"
+						>
 							Edit
 						</span>
 						<ThemeForm
@@ -357,7 +382,7 @@ class General extends Component {
 							/>
 						</div>
 					</div>
-					<div className="divider"></div>
+					<div className="divider" />
 					<div>
 						<div className="sub-title">Exchange logo</div>
 						<div className="description">

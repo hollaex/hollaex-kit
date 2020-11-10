@@ -715,6 +715,7 @@ class App extends Component {
 					<OperatorControls
 						onChangeEditMode={handleEditMode}
 						editMode={isEditMode}
+						initialData={this.props.location}
 					/>
 				)}
 			</ThemeProvider>
