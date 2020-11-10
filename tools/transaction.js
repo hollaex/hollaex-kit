@@ -22,8 +22,11 @@ const crypto = require('crypto');
 const uuid = require('uuid/v4');
 const { all, reject } = require('bluebird');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const moment = require('moment');
+const math = require('mathjs');
+const { each } = require('lodash');
 
-const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, captcha, ip, domain) => {
+const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, domain) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -36,8 +39,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
 	}
 
-	return checkCaptcha(captcha, ip)
-		.then(() => verifyOtpBeforeAction(id, otpCode))
+	return verifyOtpBeforeAction(id, otpCode)
 		.then((validOtp) => {
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
@@ -49,7 +51,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
 
-			const balance = await getNodeLib().getBalanceNetwork(user.network_id)
+			const balance = await getNodeLib().getBalanceNetwork(user.network_id);
 			if (balance[`${currency}_available`] < amount) {
 				throw new Error('Insufficent balance for withdrawal');
 			}
@@ -64,9 +66,10 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, capt
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				const convertedAmount = await getNodeLib().getOraclePrice(currency, getKitConfig().native_currency, amount);
-				if (convertedAmount[currency] > limit) {
-					throw new Error('Amount exceeds withdrawal limit');
+				let belowLimit = await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+
+				if (!belowLimit) {
+					throw new Error('Amount exceeds 24 hour withdrawal limit');
 				}
 			}
 			return withdrawRequestEmail(
@@ -152,8 +155,49 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 	}
 	return getUserByKitId(userId)
 		.then((user) => {
+			return all([
+				user,
+				findTier(user.verification_level)
+			]);
+		})
+		.then(async ([ user, tier ]) => {
+			const limit = tier.withdrawal_limit;
+			if (limit === -1) {
+				throw new Error('Withdrawals are disabled for this coin');
+			} else if (limit > 0) {
+				let belowLimit = await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+
+				if (!belowLimit) {
+					throw new Error('Amount exceeds 24 hour withdrawal limit');
+				}
+			}
 			return getNodeLib().createWithdrawalNetwork(user.network_id, address, currency, amount, fee);
 		});
+};
+
+const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
+	let accumulatedAmount = amount;
+	const withdrawals = await getNodeLib().getAllWithdrawalNetwork(
+		userId,
+		currency,
+		undefined,
+		false,
+		false,
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		moment().subtract(24, 'hours').toISOString()
+	);
+	each(withdrawals.data, (withdrawal) => {
+		accumulatedAmount = math.number(math.add(math.bignumber(accumulatedAmount), math.bignumber(withdrawal.amount)));
+	});
+
+	const convertedAmount = await getNodeLib().getOraclePrice(currency, getKitConfig().native_currency, accumulatedAmount);
+
+	return convertedAmount[currency] < limit;
 };
 
 module.exports = {
