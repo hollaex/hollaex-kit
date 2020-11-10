@@ -457,7 +457,7 @@ const getUserStats = (req, res) => {
 
 	toolsLib.user.getUserStats(user_id)
 		.then((stats) => {
-			return res.json({ data: stats, updatedAt: new Date() });
+			return res.json(stats);
 		})
 		.catch((err) => {
 			loggerUser.error('controllers/user/getUserStats', err.message);

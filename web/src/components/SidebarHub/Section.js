@@ -9,12 +9,12 @@ export const Section = ({
 	children,
 	childrenClassName,
 	active,
-	path
+	path,
 }) => {
 	return (
 		<div
 			className={classnames('sidebar_hub-section d-flex flex-column', {
-				'section-active': active
+				'section-active': active,
 			})}
 		>
 			<div className="sidebar_hub-section-header d-flex">
@@ -34,5 +34,5 @@ export const Section = ({
 
 Section.defaultProps = {
 	active: false,
-	childrenClassName: ''
+	childrenClassName: '',
 };

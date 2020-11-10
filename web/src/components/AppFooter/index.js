@@ -5,53 +5,77 @@ import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getLogo } from 'utils/icon';
+import Image from 'components/Image';
+import { FOOTER_BACKGROUND } from 'utils/color';
 
 const generateSectionsText = (strings, theme, links = {}, ICONS) => {
-	const { api, contact, facebook, github, helpdesk, information, instagram, linkedin, youtube, privacy, telegram, terms, twitter, website, whitepaper } = links
+	const {
+		api,
+		contact,
+		facebook,
+		github,
+		helpdesk,
+		information,
+		instagram,
+		linkedin,
+		youtube,
+		privacy,
+		telegram,
+		terms,
+		twitter,
+		website,
+		whitepaper,
+	} = links;
 
 	let sectionsText = [
 		{
-			TITLE: strings["FOOTER.SECTIONS.SECTION_4_TITLE"],
+			TITLE: strings['FOOTER.SECTIONS.SECTION_4_TITLE'],
 			LINKS: [
-				{ text: strings["FOOTER.SECTIONS.SECTION_4_LINK_1"], link: `${PUBLIC_URL}/login` },
-				{ text: strings["FOOTER.SECTIONS.SECTION_4_LINK_2"], link: `${PUBLIC_URL}/signup` }
-			]
+				{
+					text: strings['FOOTER.SECTIONS.SECTION_4_LINK_1'],
+					link: `${PUBLIC_URL}/login`,
+				},
+				{
+					text: strings['FOOTER.SECTIONS.SECTION_4_LINK_2'],
+					link: `${PUBLIC_URL}/signup`,
+				},
+			],
 		},
 		(contact || terms || privacy) && {
-			TITLE: strings["FOOTER.SECTIONS.SECTION_1_TITLE"],
+			TITLE: strings['FOOTER.SECTIONS.SECTION_1_TITLE'],
 			LINKS: [
 				contact && {
-					text: strings["FOOTER.SECTIONS.SECTION_1_LINK_4"],
-					link: contact
+					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_4'],
+					link: contact,
 				},
 				terms && {
-					text: strings["FOOTER.SECTIONS.SECTION_1_LINK_2"],
-					link: terms
+					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_2'],
+					link: terms,
 				},
 				privacy && {
-					text: strings["FOOTER.SECTIONS.SECTION_1_LINK_3"],
-					link: privacy
+					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_3'],
+					link: privacy,
 				},
 				website && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_6"],
-					link: website
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_6'],
+					link: website,
 				},
-			]
+			],
 		},
 		(github || api) && {
-			TITLE: strings["FOOTER.SECTIONS.SECTION_3_TITLE"],
+			TITLE: strings['FOOTER.SECTIONS.SECTION_3_TITLE'],
 			LINKS: [
 				github && {
-					text: strings["FOOTER.SECTIONS.SECTION_5_LINK_3"],
-					link: github
+					text: strings['FOOTER.SECTIONS.SECTION_5_LINK_3'],
+					link: github,
 				},
 				api && {
-					text: strings["FOOTER.SECTIONS.SECTION_3_LINK_6"],
-					link: api
+					text: strings['FOOTER.SECTIONS.SECTION_3_LINK_6'],
+					link: api,
 				},
 				information && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_8"],
-					link: information
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_8'],
+					link: information,
 				},
 				// {
 				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_7"],
@@ -61,14 +85,14 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_8"],
 				// 	link: 'https://docs.bitholla.com'
 				// }
-			]
+			],
 		},
-		(whitepaper) && {
-			TITLE: strings["FOOTER.SECTIONS.SECTION_5_TITLE"],
+		whitepaper && {
+			TITLE: strings['FOOTER.SECTIONS.SECTION_5_TITLE'],
 			LINKS: [
 				whitepaper && {
-					text: strings["FOOTER.SECTIONS.SECTION_5_LINK_1"],
-					link: whitepaper
+					text: strings['FOOTER.SECTIONS.SECTION_5_LINK_1'],
+					link: whitepaper,
 				},
 				// {
 				// 	text: strings["FOOTER.SECTIONS.SECTION_5_LINK_2"],
@@ -78,59 +102,72 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_2"],
 				// 	link: 'https://forum.bitholla.com'
 				// }
-			]
+			],
 		},
-		(twitter || telegram || facebook || instagram || linkedin || website || helpdesk || information || youtube) && {
-			TITLE: strings["FOOTER.SECTIONS.SECTION_6_TITLE"],
+		(twitter ||
+			telegram ||
+			facebook ||
+			instagram ||
+			linkedin ||
+			website ||
+			helpdesk ||
+			information ||
+			youtube) && {
+			TITLE: strings['FOOTER.SECTIONS.SECTION_6_TITLE'],
 			LINKS: [
 				twitter && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_1"],
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_1'],
 					icon: ICONS['SOCIAL_ICONS.TWITTER'],
-					link: twitter
+					link: twitter,
 				},
 				telegram && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_2"],
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_2'],
 					icon: ICONS['SOCIAL_ICONS.TELEGRAM'],
-					link: telegram
+					link: telegram,
 				},
 				facebook && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_3"],
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_3'],
 					icon: ICONS['SOCIAL_ICONS.FACEBOOK'],
-					link: facebook
+					link: facebook,
 				},
 				instagram && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_4"],
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_4'],
 					icon: ICONS['SOCIAL_ICONS.INSTAGRAM'],
-					link: instagram
+					link: instagram,
 				},
 				linkedin && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_5"],
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_5'],
 					icon: ICONS['SOCIAL_ICONS.LINKEDIN'],
-					link: linkedin
+					link: linkedin,
 				},
 				youtube && {
-					text: strings["FOOTER.SECTIONS.SECTION_6_LINK_9"],
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_9'],
 					icon: ICONS['SOCIAL_ICONS.YOUTUBE'],
-					link: youtube
-				}
-			]
-		}
+					link: youtube,
+				},
+			],
+		},
 	];
 
-	sectionsText = sectionsText.filter(item => (!!item));
+	sectionsText = sectionsText.filter((item) => !!item);
 	return sectionsText.map(({ TITLE, LINKS }) => {
 		let obj = {
 			TITLE,
-			LINKS: LINKS.filter(link => {
+			LINKS: LINKS.filter((link) => {
 				return !!link;
-			})
-		}
-		return obj
-	})
+			}),
+		};
+		return obj;
+	});
 };
 
-const AppFooter = ({ className, theme, constants = { description: '' }, icons }) => {
-  const path = getLogo(theme, constants, icons);
+const AppFooter = ({
+	className,
+	theme,
+	constants = { description: '' },
+	icons,
+}) => {
+	const path = getLogo(theme, constants, icons, FOOTER_BACKGROUND);
 	return (
 		<div
 			className={classnames(
@@ -154,12 +191,12 @@ const AppFooter = ({ className, theme, constants = { description: '' }, icons })
 						'd-flex',
 						'justify-content-center',
 						'align-items-start',
-						'footer-links-section',
+						'footer-links-section'
 					)}
 				>
 					<div
 						className={classnames('d-flex', 'flex-1', {
-							'flex-column': isMobile
+							'flex-column': isMobile,
 						})}
 					>
 						{generateSectionsText(STRINGS, theme, constants.links, icons).map(
@@ -211,7 +248,11 @@ const AppFooter = ({ className, theme, constants = { description: '' }, icons })
 						<div className="footer_separter">
 							<div className="footer-content">
 								<div className="d-flex">
-									<div style={{ backgroundImage: `url(${path})` }} className="footer-logo" />
+									<Image
+										iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+										icon={path}
+										wrapperClassName="footer-logo"
+									/>
 								</div>
 								<div className="footer-txt">
 									{constants.description || ''}
@@ -245,9 +286,7 @@ const AppFooter = ({ className, theme, constants = { description: '' }, icons })
 			</div>
 			<div className={classnames('footer-row-bottom')}>
 				<div className="d-flex my-2" />
-				<div>
-					{STRINGS["FOOTER.FOOTER_COPYRIGHT"]}
-				</div>
+				<div>{STRINGS['FOOTER.FOOTER_COPYRIGHT']}</div>
 			</div>
 		</div>
 	);
@@ -255,8 +294,8 @@ const AppFooter = ({ className, theme, constants = { description: '' }, icons })
 
 AppFooter.defaultProps = {
 	className: '',
-	onChangeLanguage: () => () => { },
-	activeLanguage: ''
+	onChangeLanguage: () => () => {},
+	activeLanguage: '',
 };
 
 export default withConfig(AppFooter);

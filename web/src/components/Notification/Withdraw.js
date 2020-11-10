@@ -8,9 +8,9 @@ import { EditWrapper } from 'components';
 
 const WithdrawNotification = ({ data, onClose, icons: ICONS }) => {
 	const notificationProps = {
-		iconId: "COIN_WITHDRAW_BTC,COIN_WITHDRAW_BASE",
+		iconId: 'COIN_WITHDRAW_BTC,COIN_WITHDRAW_BASE',
 		icon: ICONS['COIN_WITHDRAW_BTC'] || ICONS['COIN_WITHDRAW_BASE'],
-		title: STRINGS["SUCCESS_TEXT"],
+		title: STRINGS['SUCCESS_TEXT'],
 		stringId: 'SUCCESS_TEXT',
 	};
 
@@ -24,15 +24,12 @@ const WithdrawNotification = ({ data, onClose, icons: ICONS }) => {
 					<div>
 						<span>
 							<EditWrapper stringId="WITHDRAW_NOTIFICATION_TRANSACTION_ID">
-								{STRINGS["WITHDRAW_NOTIFICATION_TRANSACTION_ID"]}
+								{STRINGS['WITHDRAW_NOTIFICATION_TRANSACTION_ID']}
 							</EditWrapper>
 						</span>
 						<div className="notification-link-wrapper">
 							<a
-								href={
-									EXPLORERS_ENDPOINT(data.currency) +
-									data.transaction_id
-								}
+								href={EXPLORERS_ENDPOINT(data.currency) + data.transaction_id}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="notification-link"
@@ -43,7 +40,7 @@ const WithdrawNotification = ({ data, onClose, icons: ICONS }) => {
 					</div>
 				)}
 			</NotificationContent>
-			<Button label={STRINGS["CLOSE_TEXT"]} onClick={onClose} />
+			<Button label={STRINGS['CLOSE_TEXT']} onClick={onClose} />
 		</NotificationWraper>
 	);
 };

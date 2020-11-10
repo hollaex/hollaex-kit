@@ -22,7 +22,7 @@ $tabs-title--margin: 2rem;
 		.trade_block-title {
 			.action_notification-wrapper {
 				.action_notification-text {
-					font-size: $font-size-mobile-txt!important;
+					font-size: $font-size-mobile-txt !important;
 				}
 			}
 		}
@@ -31,7 +31,7 @@ $tabs-title--margin: 2rem;
 		height: 38vh;
 		.display_table-wrapper {
 			.display_table-body {
-				font-size: $font-size-mobile-txt;	
+				font-size: $font-size-mobile-txt;
 			}
 		}
 	}
@@ -48,12 +48,12 @@ $tabs-title--margin: 2rem;
 		margin-bottom: 1rem;
 		flex: none;
 		position: relative;
-		.trade_block-icon{
+		.trade_block-icon {
 			width: 1.4rem;
 			height: 1.4rem;
 			margin-top: 0.08rem;
 		}
-		.trade_block-title-currency{
+		.trade_block-title-currency {
 			color: $colors-main-black;
 			font-size: 0.9rem;
 			margin-left: 0.3rem;

@@ -10,11 +10,11 @@ const ButtonLink = ({ link, ...buttonProps }) => (
 );
 
 ButtonLink.propTypes = {
-	link: PropTypes.string.isRequired
+	link: PropTypes.string.isRequired,
 };
 
 ButtonLink.defaultProps = {
-	link: ''
+	link: '',
 };
 
 export default ButtonLink;

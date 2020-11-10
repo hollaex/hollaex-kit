@@ -45,7 +45,7 @@ class Dialog extends PureComponent {
 		label: PropTypes.string.isRequired,
 		closeButton: PropTypes.func,
 		onCloseDialog: PropTypes.func,
-		children: PropTypes.node.isRequired
+		children: PropTypes.node.isRequired,
 	};
 
 	onRequestClose = (e) => {
@@ -65,7 +65,7 @@ class Dialog extends PureComponent {
 			className,
 			useFullScreen = false,
 			compressed = false,
-			showBar = true
+			showBar = true,
 		} = this.props;
 
 		return (
@@ -83,7 +83,7 @@ class Dialog extends PureComponent {
 					{
 						compressed,
 						'dialog_full-screen': useFullScreen,
-						'LogoutModal': !isLoggedIn()
+						LogoutModal: !isLoggedIn(),
 					}
 				)}
 			>
@@ -107,7 +107,7 @@ Dialog.defaultProps = {
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
 	theme: '',
-	className: ''
+	className: '',
 };
 
 export default Dialog;

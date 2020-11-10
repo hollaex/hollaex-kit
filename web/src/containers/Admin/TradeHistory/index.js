@@ -15,7 +15,7 @@ const INITIAL_STATE = {
 	pageSize: 10,
 	limit: 50,
 	currentTablePage: 1,
-	isRemaining: true
+	isRemaining: true,
 };
 
 const formatDate = (value) => {
@@ -35,8 +35,8 @@ const COLUMNS = [
 		title: 'Time',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
-		render: formatDate
-	}
+		render: formatDate,
+	},
 ];
 
 // const SCV_COLUMNS = [
@@ -66,7 +66,7 @@ class TradeHistory extends Component {
 						loading: false,
 						total: res.count,
 						page: res.page,
-						isRemaining: res.isRemaining
+						isRemaining: res.isRemaining,
 					});
 				}
 			})
@@ -95,8 +95,8 @@ class TradeHistory extends Component {
 	};
 
 	requestTradesDownload = (userId) => {
-		return requestTradesDownload({format: 'csv', userId: userId});
-	}
+		return requestTradesDownload({ format: 'csv', userId: userId });
+	};
 
 	render() {
 		const { tradeHistory, currentTablePage, loading } = this.state;
@@ -113,7 +113,10 @@ class TradeHistory extends Component {
 				<Row gutter={16} style={{ marginTop: 16 }}>
 					<Col>
 						<div>
-							<span className="pointer" onClick={() => this.requestTradesDownload(this.props.userId)}>
+							<span
+								className="pointer"
+								onClick={() => this.requestTradesDownload(this.props.userId)}
+							>
 								Download table
 							</span>
 						</div>
@@ -125,7 +128,7 @@ class TradeHistory extends Component {
 							dataSource={tradeHistory ? tradeHistory : 'NO Data'}
 							pagination={{
 								current: currentTablePage,
-								onChange: this.pageChange
+								onChange: this.pageChange,
 							}}
 						/>
 					</Col>

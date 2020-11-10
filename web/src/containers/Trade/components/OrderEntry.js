@@ -13,9 +13,12 @@ import {
 	// formatBaseAmount,
 	roundNumber,
 	calculateBalancePrice,
-	formatToCurrency
+	formatToCurrency,
 } from '../../../utils/currency';
-import { getDecimals, playBackgroundAudioNotification } from '../../../utils/utils';
+import {
+	getDecimals,
+	playBackgroundAudioNotification,
+} from '../../../utils/utils';
 import {
 	evaluateOrder,
 	required,
@@ -23,7 +26,7 @@ import {
 	maxValue,
 	checkMarketPrice,
 	step,
-	normalizeFloat
+	normalizeFloat,
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
 import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
@@ -38,12 +41,12 @@ class OrderEntry extends Component {
 		formValues: {},
 		initialValues: {
 			side: STRINGS.SIDES[0].value,
-			type: STRINGS.TYPES[1].value
+			type: STRINGS.TYPES[1].value,
 		},
 		orderPrice: 0,
 		orderFees: 0,
 		outsideFormError: '',
-		totalAssets: ''
+		totalAssets: '',
 	};
 
 	componentDidMount() {
@@ -72,13 +75,16 @@ class OrderEntry extends Component {
 			this.setState({
 				initialValues: {
 					...this.state.initialValues,
-					price: this.props.marketPrice
-				}
+					price: this.props.marketPrice,
+				},
 			});
 		}
-		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
+		if (
+			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.balance) !==
+				JSON.stringify(nextProps.balance) ||
+			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
+		) {
 			this.calculateSections(nextProps);
 		}
 	}
@@ -89,20 +95,32 @@ class OrderEntry extends Component {
 	};
 
 	setMax = () => {
-		const { side, balance = {}, pair_base, increment_size, pair_2, asks, type} = this.props;
+		const {
+			side,
+			balance = {},
+			pair_base,
+			increment_size,
+			pair_2,
+			asks,
+			type,
+		} = this.props;
 		const size = parseFloat(this.props.size || 0);
 		let price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`] || 0;
 		if (side === 'buy') {
 			if (type === 'market') {
 				if (asks && asks.length) {
-					price = asks[asks.length-1][0];
+					price = asks[asks.length - 1][0];
 				}
 			}
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
 		if (maxSize !== size) {
-			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(increment_size)));
+			this.props.change(
+				FORM_NAME,
+				'size',
+				roundNumber(maxSize, getDecimals(increment_size))
+			);
 		}
 	};
 
@@ -113,7 +131,7 @@ class OrderEntry extends Component {
 
 		let orderPrice = 0;
 		if (
-			orderLimits[this.props.pair] && 
+			orderLimits[this.props.pair] &&
 			size >= orderLimits[this.props.pair].SIZE.MIN &&
 			!(type === 'limit' && price === 0)
 		) {
@@ -138,13 +156,13 @@ class OrderEntry extends Component {
 			orderPrice === 0 &&
 			size >= orderLimits[this.props.pair].SIZE.MIN
 		) {
-			outsideFormError = STRINGS["QUICK_TRADE_ORDER_NOT_FILLED"];
+			outsideFormError = STRINGS['QUICK_TRADE_ORDER_NOT_FILLED'];
 		} else if (type === 'market' && side === 'buy') {
 			const values = {
 				size,
 				side,
 				type,
-				price
+				price,
 			};
 			const { pair_base, pair_2, balance } = props;
 
@@ -173,26 +191,26 @@ class OrderEntry extends Component {
 
 		const order = {
 			...values,
-			size: formatNumber(
-				values.size,
-				getDecimals(increment_size)
-			),
-			symbol: this.props.pair
+			size: formatNumber(values.size, getDecimals(increment_size)),
+			symbol: this.props.pair,
 		};
 
 		if (values.type === 'market') {
 			delete order.price;
 		} else if (values.price) {
-			order.price = formatNumber(
-				values.price,
-				getDecimals(increment_price)
-			);
+			order.price = formatNumber(values.price, getDecimals(increment_price));
 		}
 
 		return this.props.submitOrder(order).then(() => {
-			if (values.type === 'market'
-				&& settings.audio && settings.audio.order_completed) {
-				playBackgroundAudioNotification('orderbook_market_order', this.props.settings);
+			if (
+				values.type === 'market' &&
+				settings.audio &&
+				settings.audio.order_completed
+			) {
+				playBackgroundAudioNotification(
+					'orderbook_market_order',
+					this.props.settings
+				);
 			}
 			// this.setState({ initialValues: values });
 		});
@@ -214,7 +232,7 @@ class OrderEntry extends Component {
 			onRiskyTrade,
 			submit,
 			settings: { risk = {}, notification = {} },
-			balance
+			balance,
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -227,7 +245,7 @@ class OrderEntry extends Component {
 			size: formatNumber(size, getDecimals(increment_size)),
 			symbol: pair_base,
 			orderPrice: orderTotal,
-			orderFees: this.state.orderFees
+			orderFees: this.state.orderFees,
 		};
 		// const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
 		let coin_balance = 0;
@@ -237,18 +255,18 @@ class OrderEntry extends Component {
 			coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
 		}
 		// const riskySize = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-		let riskySize = ((coin_balance / 100) * risk.order_portfolio_percentage);
+		let riskySize = (coin_balance / 100) * risk.order_portfolio_percentage;
 		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = formatNumber(price, getDecimals(increment_price))
+			order.price = formatNumber(price, getDecimals(increment_price));
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
 				if (risk.popup_warning && riskySize <= size) {
-					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+					order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
 					});
@@ -257,7 +275,7 @@ class OrderEntry extends Component {
 				}
 			});
 		} else if (risk.popup_warning && riskySize <= size) {
-			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+			order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
 			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
 			});
@@ -268,15 +286,13 @@ class OrderEntry extends Component {
 
 	generateFormValues = (pair = '', buyingPair = '') => {
 		const {
-
 			min_size,
 			max_size,
 			increment_size,
 			increment_price,
 			min_price,
 			max_price,
-			coins
-
+			coins,
 		} = this.props;
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
@@ -284,27 +300,27 @@ class OrderEntry extends Component {
 			type: {
 				name: 'type',
 				type: 'tab',
-				options: STRINGS["TYPES"],
-				validate: [required]
+				options: STRINGS['TYPES'],
+				validate: [required],
 			},
 			side: {
 				name: 'side',
 				type: 'select',
-				options: STRINGS["SIDES"],
-				validate: [required]
+				options: STRINGS['SIDES'],
+				validate: [required],
 			},
 			size: {
 				name: 'size',
 				label: (
 					<div style={{ display: 'flex' }}>
 						{STRINGS.formatString(
-							STRINGS["STRING_WITH_PARENTHESIS"],
-							STRINGS["SIZE"],
+							STRINGS['STRING_WITH_PARENTHESIS'],
+							STRINGS['SIZE'],
 							<div
 								className="pointer text-uppercase blue-link"
 								onClick={this.setMax}
 							>
-								{STRINGS["CALCULATE_MAX"]}
+								{STRINGS['CALCULATE_MAX']}
 							</div>
 						)}
 					</div>
@@ -315,11 +331,7 @@ class OrderEntry extends Component {
 				step: increment_size,
 				min: min_size,
 				max: max_size,
-				validate: [
-					required,
-					minValue(min_size),
-					maxValue(max_size)
-				],
+				validate: [required, minValue(min_size), maxValue(max_size)],
 				currency: symbol.toUpperCase(),
 				parse: (value = '') => {
 					let decimal = getDecimals(increment_size);
@@ -328,15 +340,20 @@ class OrderEntry extends Component {
 
 					let result = value;
 					if (decimal < valueDecimal) {
-						result = decValue.toString().substring(0, (decValue.toString().length - (valueDecimal - decimal)));
+						result = decValue
+							.toString()
+							.substring(
+								0,
+								decValue.toString().length - (valueDecimal - decimal)
+							);
 					}
 					return result;
 				},
-				setRef: this.props.setSizeRef
+				setRef: this.props.setSizeRef,
 			},
 			price: {
 				name: 'price',
-				label: STRINGS["PRICE"],
+				label: STRINGS['PRICE'],
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeFloat,
@@ -347,11 +364,11 @@ class OrderEntry extends Component {
 					required,
 					minValue(min_price),
 					maxValue(max_price),
-					step(increment_price)
+					step(increment_price),
 				],
 				currency: buyData.symbol.toUpperCase(),
-				setRef: this.props.setPriceRef
-			}
+				setRef: this.props.setPriceRef,
+			},
 		};
 
 		this.setState({ formValues });
@@ -367,18 +384,28 @@ class OrderEntry extends Component {
 	onFeeStructureAndLimits = () => {
 		this.props.openFeesStructureandLimits({
 			verification_level: this.props.user.verification_level,
-			discount: this.props.user.discount || 0
+			discount: this.props.user.discount || 0,
 		});
 	};
 
 	render() {
-		const { balance, type, side, pair_base, pair_2, price, coins, size, increment_price } = this.props;
+		const {
+			balance,
+			type,
+			side,
+			pair_base,
+			pair_2,
+			price,
+			coins,
+			size,
+			increment_price,
+		} = this.props;
 		const {
 			initialValues,
 			formValues,
 			orderPrice,
 			orderFees,
-			outsideFormError
+			outsideFormError,
 		} = this.state;
 		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
 		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
@@ -464,14 +491,17 @@ const mapStateToProps = (state) => {
 		coins: state.app.coins,
 		asks: asksSelector(state),
 		bids: bidsSelector(state),
-		marketPrice
+		marketPrice,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
 	submit: bindActionCreators(submit, dispatch),
 	change: bindActionCreators(change, dispatch),
-	openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
+	openFeesStructureandLimits: bindActionCreators(
+		openFeesStructureandLimits,
+		dispatch
+	),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);

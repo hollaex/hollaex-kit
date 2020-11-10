@@ -1,35 +1,35 @@
 .tiers-container {
-    border: 1px solid #C4C4C4;
-    border-bottom: none;
-    max-width: 50rem;
-    min-width: 25rem;
-    padding: 12px;
+	border: 1px solid #c4c4c4;
+	border-bottom: none;
+	max-width: 50rem;
+	min-width: 25rem;
+	padding: 12px;
 }
 .tiers-container:last-child {
-    border-bottom: 1px solid #C4C4C4;
+	border-bottom: 1px solid #c4c4c4;
 }
 .tiers-container .tier-icon {
-    height: 3rem;
-    width: 3rem;
+	height: 3rem;
+	width: 3rem;
 }
 .tiers-container .description {
-    width: auto;
+	width: auto;
 }
 .requirement-divider {
-    background-color: #C4C4C4;
-    height: 1px;
-    margin: 15px 0px;
+	background-color: #c4c4c4;
+	height: 1px;
+	margin: 15px 0px;
 }
 .new-tier-form .file-container {
-    width: 100%;
+	width: 100%;
 }
 .tiers-confirm-warning {
-    background-color: #0000d1;
-    padding: 8px;
-    margin: 10px 0px;
+	background-color: #0000d1;
+	padding: 8px;
+	margin: 10px 0px;
 }
 .warning-txt {
-    color: #F28041;
+	color: #f28041;
 }
 .new-tier-form .text-editor-wrapper {
 	border: 1px solid #d9d9d9;
@@ -37,27 +37,27 @@
 	min-height: 200px;
 }
 .table-tier-icon {
-    height: 2.5rem;
-    width: 2.5rem;
+	height: 2.5rem;
+	width: 2.5rem;
 }
 .limit-status-icon {
-    width: 2rem;
+	width: 2rem;
 }
 td.type-column {
-    padding: 0px !important;
+	padding: 0px !important;
 }
 .tiers-wrapper .ant-table-tbody > tr > td {
-    border-bottom: 1px solid #C4C4C4;
+	border-bottom: 1px solid #c4c4c4;
 }
 .custom-column-td {
-    padding: 8px 16px;
+	padding: 8px 16px;
 }
 .column-divider {
-    border-bottom: 1px solid #C4C4C4;
+	border-bottom: 1px solid #c4c4c4;
 }
 .fee-indicator-icon {
-    width: 8rem;
+	width: 8rem;
 }
 .tier-section-icon {
-    width: 4rem;
+	width: 4rem;
 }

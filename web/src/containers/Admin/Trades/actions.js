@@ -4,7 +4,7 @@ import { requestAuthenticated } from '../../../utils';
 
 export const requestTrades = (id) => {
 	const query = querystring.stringify({
-		user_id: id
+		user_id: id,
 	});
 	return requestAuthenticated(`/admin/trades?${query}`);
 };

@@ -7,21 +7,45 @@ import { EditWrapper } from 'components';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import ICONS from 'config/icons';
 
-export const renderStatusIcon = (statusCode = -1, className = "") => {
-
+export const renderStatusIcon = (statusCode = -1, className = '') => {
 	switch (statusCode) {
 		case -1:
 			return null;
 		case 0:
-			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={classnames(className, 'incomplete')} />;
+			return (
+				<ReactSVG
+					path={ICONS['VERIFICATION_INCOMPLETE']}
+					wrapperClassName={classnames(className, 'incomplete')}
+				/>
+			);
 		case 1:
-			return <ReactSVG path={ICONS["VERIFICATION_PENDING"]} wrapperClassName={classnames(className, 'pending')} />;
+			return (
+				<ReactSVG
+					path={ICONS['VERIFICATION_PENDING']}
+					wrapperClassName={classnames(className, 'pending')}
+				/>
+			);
 		case 2:
-			return <ReactSVG path={ICONS["VERIFICATION_REJECTED"]} wrapperClassName={classnames(className, 'rejected')} />;
+			return (
+				<ReactSVG
+					path={ICONS['VERIFICATION_REJECTED']}
+					wrapperClassName={classnames(className, 'rejected')}
+				/>
+			);
 		case 3:
-			return <ReactSVG path={ICONS["VERIFICATION_VERIFIED"]} wrapperClassName={classnames(className, 'verified')} />;
+			return (
+				<ReactSVG
+					path={ICONS['VERIFICATION_VERIFIED']}
+					wrapperClassName={classnames(className, 'verified')}
+				/>
+			);
 		default:
-			return <ReactSVG path={ICONS["VERIFICATION_INCOMPLETE"]} wrapperClassName={classnames(className, 'incomplete')} />;
+			return (
+				<ReactSVG
+					path={ICONS['VERIFICATION_INCOMPLETE']}
+					wrapperClassName={classnames(className, 'incomplete')}
+				/>
+			);
 	}
 };
 
@@ -33,30 +57,31 @@ const CheckTitle = ({
 	notifications,
 	className,
 	titleClassName,
-	statusCode = -1
+	statusCode = -1,
 }) => {
-	let notificationStatus = renderStatusIcon(statusCode, "verification-stauts");
+	let notificationStatus = renderStatusIcon(statusCode, 'verification-stauts');
 	return (
 		<div className={classnames('check_title-container', className)}>
-			<div className='verification-status-container w-100 d-flex justify-content-end'>
-				{!!notificationStatus
-					? notificationStatus
-					: <div className="empty-notification" />
-				}
+			<div className="verification-status-container w-100 d-flex justify-content-end">
+				{!!notificationStatus ? (
+					notificationStatus
+				) : (
+					<div className="empty-notification" />
+				)}
 			</div>
 			<EditWrapper stringId={stringId} iconId={iconId}>
-        {title && (
+				{title && (
 					<div className={classnames('check_title-label', titleClassName)}>
-            {title}
+						{title}
 					</div>
-        )}
+				)}
 			</EditWrapper>
 			<div className="check_title-icon">
-					<Image
-					    icon={icon}
-					    imageWrapperClassName="check_title-img"
-							svgWrapperClassName="check_title-svg"
-					/>
+				<Image
+					icon={icon}
+					imageWrapperClassName="check_title-img"
+					svgWrapperClassName="check_title-svg"
+				/>
 				{!!notifications && (
 					<div className="check_title-notification">{notifications}</div>
 				)}
@@ -70,7 +95,7 @@ CheckTitle.defaultProps = {
 	status: '',
 	notifications: '',
 	className: '',
-	titleClassName: ''
+	titleClassName: '',
 };
 
 export const PanelInformationRow = ({
@@ -79,7 +104,7 @@ export const PanelInformationRow = ({
 	information = '',
 	className,
 	bold = true,
-	disable = false
+	disable = false,
 }) => (
 	<div
 		className={classnames(
@@ -92,7 +117,8 @@ export const PanelInformationRow = ({
 		)}
 	>
 		<span style={{ wordBreak: 'normal' }}>
-			{bold ? <b>{label}</b> : label}: <span className='information-content'>{information}</span>
+			{bold ? <b>{label}</b> : label}:{' '}
+			<span className="information-content">{information}</span>
 		</span>
 		<EditWrapper stringId={stringId} />
 	</div>
@@ -105,34 +131,39 @@ export const CustomTabs = ({
 	icon,
 	notifications,
 	className,
-	statusCode = -1
+	statusCode = -1,
 }) => {
-	let notificationStatus = renderStatusIcon(statusCode, "verification-stauts");
+	let notificationStatus = renderStatusIcon(statusCode, 'verification-stauts');
 	return (
 		<div className={classnames('check_title-container', className)}>
 			<div className="check_title-icon">
-				<div className='verification-status-container w-100 d-flex justify-content-end'>
-					{!!notificationStatus
-						? notificationStatus
-						: <div className="empty-notification"></div>
-					}
+				<div className="verification-status-container w-100 d-flex justify-content-end">
+					{!!notificationStatus ? (
+						notificationStatus
+					) : (
+						<div className="empty-notification"></div>
+					)}
 				</div>
-						<Image
-						    icon={icon}
-						    imageWrapperClassName="custom_title-img"
-								svgWrapperClassName="custom_title-svg"
-						/>
+				<Image
+					icon={icon}
+					imageWrapperClassName="custom_title-img"
+					svgWrapperClassName="custom_title-svg"
+				/>
 				{!!notifications && (
 					<div className="check_title-notification">{notifications}</div>
 				)}
 			</div>
-      <EditWrapper stringId={stringId} iconId={iconId}>
-        {title && (
-					<div className={classnames('custom_title-label', { 'title-inactive': false })}>
-            {title}
+			<EditWrapper stringId={stringId} iconId={iconId}>
+				{title && (
+					<div
+						className={classnames('custom_title-label', {
+							'title-inactive': false,
+						})}
+					>
+						{title}
 					</div>
-        )}
-      </EditWrapper>
+				)}
+			</EditWrapper>
 		</div>
 	);
 };
@@ -152,34 +183,32 @@ const status = (key) => {
 		default:
 			return 'Incompleted';
 	}
-}
+};
 
 export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
 	const statusText = status(statusCode);
-	const statusIcon = renderStatusIcon(statusCode, "custom_tab_status-icon ml-1");
+	const statusIcon = renderStatusIcon(
+		statusCode,
+		'custom_tab_status-icon ml-1'
+	);
 	return (
-		<div className={
-			classnames(
-				"d-flex",
-				"justify-content-between"
-			)}
-		>
+		<div className={classnames('d-flex', 'justify-content-between')}>
 			<div className="d-flex">
-				<Image
-					icon={icon}
-					wrapperClassName="custom_tab_icon-mobile"
-				/>
-				<div className={classnames(FLEX_CENTER_CLASSES, "mobile-tab-title", "ml-3")}>
+				<Image icon={icon} wrapperClassName="custom_tab_icon-mobile" />
+				<div
+					className={classnames(
+						FLEX_CENTER_CLASSES,
+						'mobile-tab-title',
+						'ml-3'
+					)}
+				>
 					{title}
 				</div>
 			</div>
-			<div className={
-				classnames(
-					FLEX_CENTER_CLASSES,
-					statusText.toLowerCase()
-				)}
+			<div
+				className={classnames(FLEX_CENTER_CLASSES, statusText.toLowerCase())}
 			>
-				{!!statusText ? <div className='status_txt'>{statusText}</div> : null}
+				{!!statusText ? <div className="status_txt">{statusText}</div> : null}
 				{!!statusIcon ? statusIcon : null}
 			</div>
 		</div>

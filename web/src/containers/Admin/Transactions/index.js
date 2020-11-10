@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { requestDeposits, completeDeposits, dismissDeposit, requestDepositsDownload } from './actions';
+import {
+	requestDeposits,
+	completeDeposits,
+	dismissDeposit,
+	requestDepositsDownload,
+} from './actions';
 import { renderRowContent, COLUMNS } from './utils';
 import { Filters } from './Filters';
 
@@ -40,7 +45,7 @@ class Transactions extends Component {
 		pageSize: 10,
 		limit: 50,
 		currentTablePage: 1,
-		isRemaining: true
+		isRemaining: true,
 	};
 
 	componentWillMount() {
@@ -83,21 +88,21 @@ class Transactions extends Component {
 			return this.setState({
 				loading: false,
 				fetched: false,
-				queryParams: {}
+				queryParams: {},
 			});
 		}
 
 		this.setState({
 			loading: true,
 			error: '',
-			queryDone: JSON.stringify(queryParams)
+			queryDone: JSON.stringify(queryParams),
 		});
 
 		requestDeposits({
 			...values,
 			...queryParams,
 			page,
-			limit
+			limit,
 		})
 			.then((data) => {
 				this.setState({
@@ -107,14 +112,14 @@ class Transactions extends Component {
 					fetched: true,
 					page: page,
 					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
-					isRemaining: data.count > page * limit
+					isRemaining: data.count > page * limit,
 				});
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
 			});
 	};
@@ -126,7 +131,7 @@ class Transactions extends Component {
 		return requestDepositsDownload({
 			...values,
 			...queryParams,
-			format: 'csv'
+			format: 'csv',
 		});
 	};
 
@@ -144,7 +149,7 @@ class Transactions extends Component {
 							deposits.slice(indexItem + 1, deposits.length)
 						),
 						loadingItem: false,
-						indexItem: -1
+						indexItem: -1,
 					});
 				})
 				.catch((error) => {
@@ -152,7 +157,7 @@ class Transactions extends Component {
 					this.setState({
 						loadingItem: false,
 						error: message,
-						indexItem: -1
+						indexItem: -1,
 					});
 				});
 		}
@@ -172,7 +177,7 @@ class Transactions extends Component {
 							deposits.slice(indexItem + 1, deposits.length)
 						),
 						dismissingItem: false,
-						indexItem: -1
+						indexItem: -1,
 					});
 				})
 				.catch((error) => {
@@ -180,7 +185,7 @@ class Transactions extends Component {
 					this.setState({
 						dismissingItem: false,
 						error: message,
-						indexItem: -1
+						indexItem: -1,
 					});
 				});
 		}
@@ -215,7 +220,7 @@ class Transactions extends Component {
 
 	onChangeQuery = (key) => (value, option) => {
 		const queryParams = {
-			...this.state.queryParams
+			...this.state.queryParams,
 		};
 		if (value) {
 			queryParams[key] = value;
@@ -257,13 +262,13 @@ class Transactions extends Component {
 			queryParams,
 			queryDone,
 			currentTablePage,
-			pageSize
+			pageSize,
 		} = this.state;
 		const { showFilters, coins } = this.props;
 
 		const {
 			hideUserColumn,
-			queryParams: { currency, type }
+			queryParams: { currency, type },
 		} = this.props;
 		const columns = COLUMNS(currency, type);
 		return (
@@ -297,10 +302,7 @@ class Transactions extends Component {
 						)}
 
 						<div>
-							<span
-								className="pointer"
-								onClick={() => this.handleDownload()}
-							>
+							<span className="pointer" onClick={() => this.handleDownload()}>
 								Download transactions
 							</span>
 						</div>
@@ -311,10 +313,7 @@ class Transactions extends Component {
 									...deposit,
 									completeDeposit:
 										index !== indexItem
-											? this.completeDeposit(
-													deposit.transaction_id,
-													index
-											  )
+											? this.completeDeposit(deposit.transaction_id, index)
 											: () => {},
 									dismissDeposit:
 										index !== indexItem
@@ -325,7 +324,7 @@ class Transactions extends Component {
 											  )
 											: () => {},
 									updatingItem: loadingItem && index === indexItem,
-									dismissingItem: dismissingItem && index === indexItem
+									dismissingItem: dismissingItem && index === indexItem,
 								};
 							})}
 							expandedRowRender={renderRowContent}
@@ -336,7 +335,7 @@ class Transactions extends Component {
 							pagination={{
 								pageSize: pageSize,
 								current: currentTablePage,
-								onChange: this.pageChange
+								onChange: this.pageChange,
 							}}
 						/>
 					</div>
@@ -347,7 +346,7 @@ class Transactions extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(Transactions);

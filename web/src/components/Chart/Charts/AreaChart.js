@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AreaSeries } from 'react-stockcharts/lib/series';
-import { fitWidth } from "react-stockcharts/lib/helper";
+import { fitWidth } from 'react-stockcharts/lib/helper';
 import CustomChart from '../CustomChart';
 import { areaProps } from '../props';
 const AreaChart = (props) => (
@@ -15,12 +15,12 @@ AreaChart.propTypes = {
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
-	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired
+	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired,
 };
 
 AreaChart.defaultProps = {
 	type: 'svg',
-	seriesName: 'AreaChart'
+	seriesName: 'AreaChart',
 };
 
 export default fitWidth(AreaChart);

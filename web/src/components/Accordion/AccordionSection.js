@@ -28,14 +28,11 @@ const AccordionSection = ({
 		}
 	};
 	const headerProps = {
-		className: classnames(
-			'accordion_section_title d-flex',
-			{
-				'accordion_section--open': isOpen,
-				'justify-content-between': !icon,
-				pointer: !disabled && allowClose
-			}
-		)
+		className: classnames('accordion_section_title d-flex', {
+			'accordion_section--open': isOpen,
+			'justify-content-between': !icon,
+			pointer: !disabled && allowClose,
+		}),
 	};
 
 	if (allowClose) {
@@ -45,50 +42,53 @@ const AccordionSection = ({
 	return (
 		<div
 			className={classnames('accordion_section', accordionClassName, {
-				disabled: disabled
+				disabled: disabled,
 			})}
 		>
-			{<div {...headerProps}>
-				<span className={classnames('sidebar_hub-icon', {
-					'd-flex align-items-center justify-content-center': icon
-				})}>
-					<span>
-							<Image
-								icon={icon}
-								wrapperClassName="sidebar_hub-section-icon"
-							/>
-					</span>
-					<EditWrapper stringId={stringId} iconId={iconId}>
-						<span
-							className={classnames(
-                'accordion_section_content_text',
-                titleClassName,
-                { with_arrow: !disabled && allowClose }
-              )}
-						>
-						{title}{' '}
-              {subtitle && (
-								<span className="accordion_section_content_text-subtitle">
-								{subtitle}
+			{
+				<div {...headerProps}>
+					<span
+						className={classnames('sidebar_hub-icon', {
+							'd-flex align-items-center justify-content-center': icon,
+						})}
+					>
+						<span>
+							<Image icon={icon} wrapperClassName="sidebar_hub-section-icon" />
+						</span>
+						<EditWrapper stringId={stringId} iconId={iconId}>
+							<span
+								className={classnames(
+									'accordion_section_content_text',
+									titleClassName,
+									{ with_arrow: !disabled && allowClose }
+								)}
+							>
+								{title}{' '}
+								{subtitle && (
+									<span className="accordion_section_content_text-subtitle">
+										{subtitle}
+									</span>
+								)}
 							</span>
-              )}
+						</EditWrapper>
 					</span>
-					</EditWrapper>
-				</span>
-				{titleInformation}
-				{notification && (
-					<ActionNotification
-						{...notification}
-						onClick={
-							notification.allowClick
-								? notification.onClick ? notification.onClick : onClick
-								: openSection
-						}
-						showPointer={notification.allowClick}
-						showActionText={showActionText}
-					/>
-				)}
-			</div>}
+					{titleInformation}
+					{notification && (
+						<ActionNotification
+							{...notification}
+							onClick={
+								notification.allowClick
+									? notification.onClick
+										? notification.onClick
+										: onClick
+									: openSection
+							}
+							showPointer={notification.allowClick}
+							showActionText={showActionText}
+						/>
+					)}
+				</div>
+			}
 			{isOpen && <div className="accordion_section_content">{content}</div>}
 		</div>
 	);

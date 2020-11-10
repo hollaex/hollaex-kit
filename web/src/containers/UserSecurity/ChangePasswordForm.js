@@ -12,7 +12,7 @@ import { EditWrapper } from 'components';
 const validate = (values) => {
 	const errors = {};
 	if (values.new_password !== values.new_password_confirm) {
-		errors.new_password_confirm = STRINGS["VALIDATIONS.PASSWORDS_DONT_MATCH"];
+		errors.new_password_confirm = STRINGS['VALIDATIONS.PASSWORDS_DONT_MATCH'];
 	}
 
 	return errors;
@@ -21,28 +21,42 @@ const validate = (values) => {
 export const generateFormValues = () => ({
 	old_password: {
 		type: 'password',
-		stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.placeholder',
+		stringId:
+			'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.placeholder',
 		validate: [required, password],
-    label: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.label"],
-    placeholder: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.placeholder"],
-		fullWidth: isMobile
+		label:
+			STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.label'],
+		placeholder:
+			STRINGS[
+				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.placeholder'
+			],
+		fullWidth: isMobile,
 	},
 	new_password: {
 		type: 'password',
-		stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder',
+		stringId:
+			'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder',
 		validate: [required, password],
-    label: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.label"],
-    placeholder: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder"],
-		fullWidth: isMobile
+		label: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.label'],
+		placeholder:
+			STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder'],
+		fullWidth: isMobile,
 	},
 	new_password_confirm: {
 		type: 'password',
-		stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.placeholder',
+		stringId:
+			'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.placeholder',
 		validate: [required],
-    label: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.label"],
-    placeholder: STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.placeholder"],
-		fullWidth: isMobile
-	}
+		label:
+			STRINGS[
+				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.label'
+			],
+		placeholder:
+			STRINGS[
+				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.placeholder'
+			],
+		fullWidth: isMobile,
+	},
 });
 
 const Form = ({
@@ -52,14 +66,14 @@ const Form = ({
 	error,
 	valid,
 	initialValues,
-	formFields
+	formFields,
 }) => (
 	<form onSubmit={handleSubmit}>
 		{renderFields(formFields)}
 		{error && <div className="warning_text">{error}</div>}
 		<EditWrapper stringId="ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON" />
 		<Button
-			label={STRINGS["ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON"]}
+			label={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON']}
 			disabled={pristine || submitting || !valid}
 		/>
 	</form>
@@ -67,5 +81,5 @@ const Form = ({
 
 export default reduxForm({
 	form: 'ChangePasswordForm',
-	validate
+	validate,
 })(Form);

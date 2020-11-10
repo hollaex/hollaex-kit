@@ -99,7 +99,9 @@
 	height: 50px;
 	width: 20rem;
 }
-.coin-wrapper .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+.coin-wrapper
+	.ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector {
 	height: 50px;
 }
 .asset-list .select-coin-text,
@@ -127,91 +129,91 @@
 	justify-content: space-between;
 }
 .small-text {
-    font-size: 12px;
-    margin-left: 1.4rem;
-    color: #808083;
+	font-size: 12px;
+	margin-left: 1.4rem;
+	color: #808083;
 }
 .candle-icon {
-    position: absolute;
-    right: 7px;
-    top: 10px;
-    width: 74px;
+	position: absolute;
+	right: 7px;
+	top: 10px;
+	width: 74px;
 }
 .wallet-icon {
-    position: relative;
-    width: 36px;
-    margin: 5px auto;
+	position: relative;
+	width: 36px;
+	margin: 5px auto;
 }
 .box {
-    display: flex;
-    width: 75px;
-    height: 50px;
-    background-color: #050596;
-    position: relative;
-    bottom: 2rem;
-    right: 2.5rem;
+	display: flex;
+	width: 75px;
+	height: 50px;
+	background-color: #050596;
+	position: relative;
+	bottom: 2rem;
+	right: 2.5rem;
 }
 .interface {
 	left: 5px;
 }
 .box .interface_container {
-    margin: auto;
-    margin-top: 7px;
+	margin: auto;
+	margin-top: 7px;
 }
 .wizard-container .sell {
-    border: 1px solid #ffffff;
-    width: 60px;
-    height: 18px;
+	border: 1px solid #ffffff;
+	width: 60px;
+	height: 18px;
 }
 .wizard-container .sell .label {
-    font-size: 10px;
-    position: relative;
-    bottom: 3px;
-    left: 18px;
-    color: #ffffff !important;
+	font-size: 10px;
+	position: relative;
+	bottom: 3px;
+	left: 18px;
+	color: #ffffff !important;
 }
 .wizard-container .buy {
-    width: 60px;
-    height: 18px;
-    border: 1px solid #000000;
-    margin-top: 0.25rem;
-    color: #000000;
-    background-color: #ffffff;
+	width: 60px;
+	height: 18px;
+	border: 1px solid #000000;
+	margin-top: 0.25rem;
+	color: #000000;
+	background-color: #ffffff;
 }
 .wizard-container .buy .label {
-    font-size: 10px;
-    position: relative;
-    bottom: 3px;
-    left: 18px;
+	font-size: 10px;
+	position: relative;
+	bottom: 3px;
+	left: 18px;
 }
 .ant-radio-inner {
-    background-color: #000000;
+	background-color: #000000;
 }
 .ant-radio-checked .ant-radio-inner {
-    border-color: #000000;
+	border-color: #000000;
 }
 .ant-radio-inner::after {
-    background-color: #ffffff;
+	background-color: #ffffff;
 }
 .wizard-container .interface-box .ant-radio-wrapper {
-    padding: 12px 10px;
-    height: 70px;
-    color: #ffffff;
-    width: 100%;
+	padding: 12px 10px;
+	height: 70px;
+	color: #ffffff;
+	width: 100%;
 }
 .wizard-container .ant-radio-wrapper-checked {
-    border: 1px solid #c4c4c4;
+	border: 1px solid #c4c4c4;
 }
 .ant-radio-group {
-    width: 100%;
-    margin-top: 21px;
+	width: 100%;
+	margin-top: 21px;
 }
 .sub-radio {
-    margin-top: 12px;
+	margin-top: 12px;
 }
 .wizard-container .ant-radio-wrapper {
-    display: block;
-    padding: 24px 12px;
+	display: block;
+	padding: 24px 12px;
 }
 .ant-steps-item-icon {
 	width: 20px;
@@ -301,8 +303,8 @@
 	width: 22rem;
 }
 .setup-field-label-desc {
-    font-size: 12px;
-    color: #c4c4c4;
+	font-size: 12px;
+	color: #c4c4c4;
 }
 .setup-field-label {
 	font-size: 15px;
@@ -339,30 +341,30 @@
 	margin-left: 3rem;
 }
 .preview-container {
-    border-top: 1px solid #c4c4c4;
-    border-bottom: 1px solid #c4c4c4;
+	border-top: 1px solid #c4c4c4;
+	border-bottom: 1px solid #c4c4c4;
 }
 .preview-heading {
-    border-top: 1px solid #c4c4c4;
-    margin-top: 1px;
-    text-align: left;
+	border-top: 1px solid #c4c4c4;
+	margin-top: 1px;
+	text-align: left;
 }
 .preview-time {
-    text-align: right;
+	text-align: right;
 }
 .option-list {
-    display: flex;
+	display: flex;
 }
 .option-label {
-    color: #ffffff;
-    margin-right: 5px;
-    text-align: right;
-    width: 40%;
+	color: #ffffff;
+	margin-right: 5px;
+	text-align: right;
+	width: 40%;
 }
 .option-value {
-    flex: 1;
-    text-align: left;
+	flex: 1;
+	text-align: left;
 }
 .previewButton {
-    margin: 1rem 0rem;;
+	margin: 1rem 0rem;
 }

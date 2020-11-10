@@ -16,7 +16,7 @@ class TradeHistory extends Component {
 	state = {
 		headers: [],
 		data: [],
-		isprevious: false
+		isprevious: false,
 	};
 
 	componentWillMount() {
@@ -56,66 +56,70 @@ class TradeHistory extends Component {
 		this.setState({ data: constructedData });
 	};
 
-  generateHeaders = (pairs) => {
-  	const { icons: ICONS } = this.props;
-    return [
-      {
-        key: 'price',
-        label: STRINGS["PRICE"],
-        renderCell: ({ side, price = 0, isSameBefore, upDownRate, timestamp }, index) => {
-          const isArrow = upDownRate < 0;
-          return (
+	generateHeaders = (pairs) => {
+		const { icons: ICONS } = this.props;
+		return [
+			{
+				key: 'price',
+				label: STRINGS['PRICE'],
+				renderCell: (
+					{ side, price = 0, isSameBefore, upDownRate, timestamp },
+					index
+				) => {
+					const isArrow = upDownRate < 0;
+					return (
 						<div
 							className={classnames('trade_history-row d-flex flex-row', side)}
 							key={`time-${index}`}
 						>
-              {!isSameBefore
-                ? <ReactSVG
-									path={isArrow
-                    ? ICONS["DOWN_ARROW"]
-                    : ICONS["UP_ARROW"]
-                  }
+							{!isSameBefore ? (
+								<ReactSVG
+									path={isArrow ? ICONS['DOWN_ARROW'] : ICONS['UP_ARROW']}
 									wrapperClassName={'trade_history-icon'}
 								/>
-                : <div className='trade_history-icon' />
-              }
-              {price}
+							) : (
+								<div className="trade_history-icon" />
+							)}
+							{price}
 						</div>
-          )
-        }
-      },
-      {
-        key: 'size',
-        label: STRINGS["SIZE"],
-        renderCell: ({ size = 0, side }, index) => {
-          // const { increment_size } = pairs;
-          // const minSize = roundNumber(size, getDecimals(increment_size));
-          return (
-            IS_XHT
-              ? <div
-								className={classnames('trade_history-row', side)}
-								key={`size-${index}`}
-							>
-                {size}
-							</div>
-              : size
-          )
-        }
-      },
-      {
-        key: 'timestamp',
-        label: STRINGS["TIME"],
-        renderCell: ({ timestamp, side }, index) => IS_XHT
-          ? <div
-						className={classnames('trade_history-row', side)}
-						key={`timestamp-${index}`}
-					>
-            {getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])}
-					</div>
-          : getFormatTimestamp(timestamp, STRINGS["HOUR_FORMAT"])
-      }
-    ];
-  }
+					);
+				},
+			},
+			{
+				key: 'size',
+				label: STRINGS['SIZE'],
+				renderCell: ({ size = 0, side }, index) => {
+					// const { increment_size } = pairs;
+					// const minSize = roundNumber(size, getDecimals(increment_size));
+					return IS_XHT ? (
+						<div
+							className={classnames('trade_history-row', side)}
+							key={`size-${index}`}
+						>
+							{size}
+						</div>
+					) : (
+						size
+					);
+				},
+			},
+			{
+				key: 'timestamp',
+				label: STRINGS['TIME'],
+				renderCell: ({ timestamp, side }, index) =>
+					IS_XHT ? (
+						<div
+							className={classnames('trade_history-row', side)}
+							key={`timestamp-${index}`}
+						>
+							{getFormatTimestamp(timestamp, STRINGS['HOUR_FORMAT'])}
+						</div>
+					) : (
+						getFormatTimestamp(timestamp, STRINGS['HOUR_FORMAT'])
+					),
+			},
+		];
+	};
 
 	render() {
 		const { data } = this.state;
@@ -128,13 +132,13 @@ class TradeHistory extends Component {
 }
 
 TradeHistory.defaultProps = {
-	data: []
+	data: [],
 };
 
 const mapStateToProps = (store) => ({
 	pair: store.app.pair,
 	pairs: store.app.pairs,
-	data: tradeHistorySelector(store)
+	data: tradeHistorySelector(store),
 });
 
 export default connect(mapStateToProps)(withConfig(TradeHistory));

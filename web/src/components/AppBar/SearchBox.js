@@ -12,7 +12,7 @@ class SearchBox extends React.Component {
 			placeHolder,
 			className = '',
 			outlineClassName = '',
-			name
+			name,
 		} = this.props;
 		const searchField = {
 			search: {
@@ -25,8 +25,8 @@ class SearchBox extends React.Component {
 					? outlineClassName
 					: 'app-bar-search-field-outline',
 				placeholder: placeHolder,
-				onChange: handleSearch
-			}
+				onChange: handleSearch,
+			},
 		};
 
 		return renderFields(searchField);
@@ -34,5 +34,5 @@ class SearchBox extends React.Component {
 }
 
 export default reduxForm({
-	form: 'SearchForm'
+	form: 'SearchForm',
 })(SearchBox);

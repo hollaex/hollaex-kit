@@ -1,14 +1,19 @@
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import math from 'mathjs';
-import { TOKEN_TIME, TIMESTAMP_FORMAT, TIMESTAMP_FORMAT_FA, AUDIOS } from '../config/constants';
+import {
+	TOKEN_TIME,
+	TIMESTAMP_FORMAT,
+	TIMESTAMP_FORMAT_FA,
+	AUDIOS,
+} from '../config/constants';
 import { getLanguage } from './string';
 
 const bitcoin = {
 	COIN: 100000000,
 	PRECISION: 8,
 	DUST: 2730,
-	BASE_FEE: 10000
+	BASE_FEE: 10000,
 };
 
 /**
@@ -57,21 +62,31 @@ export const formatTimestampFarsi = (date, format = TIMESTAMP_FORMAT_FA) =>
 	momentJ(date).format(format);
 
 export const getDecimals = (value = 0) => {
-	let result = math.format(math.number(value), {notation: 'fixed'});
-	return value % 1 ? result.toString().split('.')[1] ? result.toString().split('.')[1].length : 0 : 0;
+	let result = math.format(math.number(value), { notation: 'fixed' });
+	return value % 1
+		? result.toString().split('.')[1]
+			? result.toString().split('.')[1].length
+			: 0
+		: 0;
 };
 
 export const isBlockchainTx = (transactionId) => {
-	return (transactionId.indexOf('-') === -1) ? true : false
-}
+	return transactionId.indexOf('-') === -1 ? true : false;
+};
 
 export const constructSettings = (state = {}, settings) => {
 	let settingsData = { ...state };
 	if (settings.notification) {
-		settingsData.notification = { ...settingsData.notification, ...settings.notification };
+		settingsData.notification = {
+			...settingsData.notification,
+			...settings.notification,
+		};
 	}
 	if (settings.interface) {
-		settingsData.interface = { ...settingsData.interface, ...settings.interface };
+		settingsData.interface = {
+			...settingsData.interface,
+			...settings.interface,
+		};
 	}
 	if (settings.audio) {
 		settingsData.audio = { ...settingsData.settingsData, ...settings.audio };
@@ -80,21 +95,33 @@ export const constructSettings = (state = {}, settings) => {
 		settingsData.risk = { ...settingsData.risk, ...settings.risk };
 	}
 	if (settings.chat) {
-		settingsData.chat = { ...settingsData.chat, ...settings.chat }
+		settingsData.chat = { ...settingsData.chat, ...settings.chat };
 	}
 	if (settings.language) {
-		settingsData.language = settings.language
+		settingsData.language = settings.language;
 	}
 
 	// ToDo: need to these code after end point update.
-	if (settings.popup_order_confirmation || settings.popup_order_confirmation === false) {
-		settingsData.notification.popup_order_confirmation = settings.popup_order_confirmation;
+	if (
+		settings.popup_order_confirmation ||
+		settings.popup_order_confirmation === false
+	) {
+		settingsData.notification.popup_order_confirmation =
+			settings.popup_order_confirmation;
 	}
-	if (settings.popup_order_completed || settings.popup_order_completed === false) {
-		settingsData.notification.popup_order_completed = settings.popup_order_completed;
+	if (
+		settings.popup_order_completed ||
+		settings.popup_order_completed === false
+	) {
+		settingsData.notification.popup_order_completed =
+			settings.popup_order_completed;
 	}
-	if (settings.popup_order_partially_filled || settings.popup_order_partially_filled === false) {
-		settingsData.notification.popup_order_partially_filled = settings.popup_order_partially_filled;
+	if (
+		settings.popup_order_partially_filled ||
+		settings.popup_order_partially_filled === false
+	) {
+		settingsData.notification.popup_order_partially_filled =
+			settings.popup_order_partially_filled;
 	}
 
 	if (settings.theme) {
@@ -107,31 +134,39 @@ export const constructSettings = (state = {}, settings) => {
 	if (settings.order_completed || settings.order_completed === false) {
 		settingsData.audio.order_completed = settings.order_completed;
 	}
-	if (settings.order_partially_completed || settings.order_partially_completed === false) {
-		settingsData.audio.order_partially_completed = settings.order_partially_completed;
+	if (
+		settings.order_partially_completed ||
+		settings.order_partially_completed === false
+	) {
+		settingsData.audio.order_partially_completed =
+			settings.order_partially_completed;
 	}
 	if (settings.public_trade || settings.public_trade === false) {
 		settingsData.audio.public_trade = settings.public_trade;
 	}
 
 	if (settings.order_portfolio_percentage) {
-		settingsData.risk.order_portfolio_percentage = settings.order_portfolio_percentage;
+		settingsData.risk.order_portfolio_percentage =
+			settings.order_portfolio_percentage;
 	}
 	if (settings.popup_warning || settings.popup_warning === false) {
 		settingsData.risk.popup_warning = settings.popup_warning;
 	}
 
 	if (settings.set_username) {
-		settingsData.chat.set_username = settings.set_username
+		settingsData.chat.set_username = settings.set_username;
 	}
 	if (settings.theme) {
-		settingsData.theme = settings.theme
+		settingsData.theme = settings.theme;
 	}
 
 	return settingsData;
 };
 
-export const playBackgroundAudioNotification = (type = '', audioSettings = { audio: {} }) => {
+export const playBackgroundAudioNotification = (
+	type = '',
+	audioSettings = { audio: {} }
+) => {
 	let audioSetup = {
 		all: true,
 		public_trade: false,
@@ -143,8 +178,8 @@ export const playBackgroundAudioNotification = (type = '', audioSettings = { aud
 		get_quote_quick_trade: true,
 		quick_trade_success: true,
 		quick_trade_timeout: true,
-		...audioSettings.audio
-	}
+		...audioSettings.audio,
+	};
 	let audioFile = '';
 	switch (type) {
 		case 'orderbook_market_order':
@@ -192,21 +227,21 @@ export const playBackgroundAudioNotification = (type = '', audioSettings = { aud
 			break;
 		case 'quick_trade_complete':
 			if (audioSetup.quick_trade_success) {
-				audioFile= AUDIOS.QUICK_TRADE_COMPLETE;
+				audioFile = AUDIOS.QUICK_TRADE_COMPLETE;
 			} else {
 				audioFile = '';
 			}
 			break;
 		case 'review_quick_trade_order':
 			if (audioSetup.get_quote_quick_trade) {
-				audioFile=AUDIOS.REVIEW_QUICK_TRADE_ORDER;
+				audioFile = AUDIOS.REVIEW_QUICK_TRADE_ORDER;
 			} else {
 				audioFile = '';
 			}
 			break;
 		case 'time_out_quick_trade':
 			if (audioSetup.quick_trade_timeout) {
-				audioFile=AUDIOS.TIME_OUT_QUICK_TRADE;
+				audioFile = AUDIOS.TIME_OUT_QUICK_TRADE;
 			} else {
 				audioFile = '';
 			}
@@ -214,7 +249,7 @@ export const playBackgroundAudioNotification = (type = '', audioSettings = { aud
 		default:
 	}
 	if (audioSetup.all === false) {
-		audioFile = ''
+		audioFile = '';
 	}
 	const audio = new Audio(audioFile);
 	if (audioFile) audio.play();

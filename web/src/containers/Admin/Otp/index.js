@@ -8,7 +8,7 @@ const Form = AdminHocForm('OTP_FORM');
 const onSubmit = (refreshData) => (values) => {
 	// redux form set numbers as string, se we have to parse them
 	const postValues = {
-		user_id: parseInt(values.user_id, 10)
+		user_id: parseInt(values.user_id, 10),
 	};
 
 	return deactivateOtp(postValues)

@@ -11,7 +11,7 @@ const Form = (props) => {
 		error,
 		valid,
 		formFields,
-		buttonLabel
+		buttonLabel,
 	} = props;
 	return (
 		<form onSubmit={handleSubmit} autoComplete="off" className="w-100">

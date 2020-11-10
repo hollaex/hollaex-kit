@@ -2,14 +2,14 @@ import React from 'react';
 
 import {
 	XAxis as BaseXAxis,
-	YAxis as BaseYAxis
+	YAxis as BaseYAxis,
 } from 'react-stockcharts/lib/axes';
 
 import { DARK_THEME_COLORS, WHITE_THEME_COLORS } from '../../config/constants';
 
 const TickProps = (theme) => ({
 	tickStroke: theme ? TXAxisStrokeColor[theme] : 'black',
-	stroke: 'transparent'
+	stroke: 'transparent',
 });
 
 export const YAxis = ({ height, theme, ...rest }) => {
@@ -17,7 +17,7 @@ export const YAxis = ({ height, theme, ...rest }) => {
 	const props = {
 		ticks,
 		...TickProps(theme),
-		...rest
+		...rest,
 	};
 
 	return <BaseYAxis {...props} />;
@@ -25,7 +25,7 @@ export const YAxis = ({ height, theme, ...rest }) => {
 
 YAxis.defaultProps = {
 	axisAt: 'right',
-	orient: 'right'
+	orient: 'right',
 };
 
 export const XAxis = ({ width, theme, ...rest }) => {
@@ -33,7 +33,7 @@ export const XAxis = ({ width, theme, ...rest }) => {
 	const props = {
 		ticks,
 		...TickProps(theme),
-		...rest
+		...rest,
 	};
 
 	return <BaseXAxis {...props} />;
@@ -41,17 +41,17 @@ export const XAxis = ({ width, theme, ...rest }) => {
 
 XAxis.defaultProps = {
 	axisAt: 'bottom',
-	orient: 'bottom'
+	orient: 'bottom',
 };
 
 const TXAxisStrokeColor = {
 	dark: DARK_THEME_COLORS.sub_text,
-	white: WHITE_THEME_COLORS.sub_text
+	white: WHITE_THEME_COLORS.sub_text,
 };
 
 const TXStrokeColor = {
 	dark: DARK_THEME_COLORS.border_main,
-	white: WHITE_THEME_COLORS.border_main
+	white: WHITE_THEME_COLORS.border_main,
 };
 
 export const TXAxis = ({ theme, ...rest }) => {
@@ -60,7 +60,7 @@ export const TXAxis = ({ theme, ...rest }) => {
 		showTicks: false,
 		stroke: theme ? TXStrokeColor[theme] : 'black',
 		axisAt: 'top',
-		orient: 'top'
+		orient: 'top',
 	};
 	return <XAxis {...props} />;
 };

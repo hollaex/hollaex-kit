@@ -4,7 +4,7 @@ import {
 	LANGUAGE_KEY,
 	DEFAULT_LANGUAGE,
 	TEMP_KEY_LANGUAGE_RTL,
-  TEMP_KEY_LANGUAGE_LTR,
+	TEMP_KEY_LANGUAGE_LTR,
 } from '../config/constants';
 import STRINGS, { content as CONTENT } from 'config/localizedStrings';
 import { getValidLanguages } from 'utils/initialize';
@@ -59,12 +59,12 @@ export const RTL_CLASSES_ARRAY = [DIRECTION_RTL, APPLY_RTL];
 export const RTL_CLASSES_OBJECT = {
 	[LANGUAGE_RTL]: true,
 	[DIRECTION_RTL]: true,
-	[APPLY_RTL]: true
+	[APPLY_RTL]: true,
 };
 
 export const LTR_CLASSES_ARRAY = [DIRECTION_LTR];
 export const LTR_CLASSES_OBJECT = {
-	[DIRECTION_LTR]: true
+	[DIRECTION_LTR]: true,
 };
 
 export const getClasesForLanguage = (language = '', type = 'object') => {
@@ -94,9 +94,9 @@ export const maskToken = (token = '') => {
 };
 
 export const setContent = (content) => {
-	const language = getLanguage()
-  STRINGS.setContent(content);
-	STRINGS.setLanguage(language)
+	const language = getLanguage();
+	STRINGS.setContent(content);
+	STRINGS.setLanguage(language);
 };
 
 export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
@@ -105,86 +105,92 @@ export const overwriteLocale = (key = DEFAULT_LANGUAGE, overwrites = {}) => {
 	const mergedContent = {
 		...content,
 		[key]: {
-      ...(content[key] ? content[key] : {}),
-      ...overwrites
-		}
-  }
+			...(content[key] ? content[key] : {}),
+			...overwrites,
+		},
+	};
 
-  setContent(mergedContent)
-}
+	setContent(mergedContent);
+};
 
 export const getTempLanguageKey = (key = DEFAULT_LANGUAGE) => {
-  switch (key) {
-    case 'fa':
-    case 'ar':
-      return TEMP_KEY_LANGUAGE_RTL;
-    default:
-      return TEMP_KEY_LANGUAGE_LTR;
-  }
-}
+	switch (key) {
+		case 'fa':
+		case 'ar':
+			return TEMP_KEY_LANGUAGE_RTL;
+		default:
+			return TEMP_KEY_LANGUAGE_LTR;
+	}
+};
 
 export const pushTempContent = (key = DEFAULT_LANGUAGE) => {
-  const content = STRINGS._props;
-  const TEMP_CONTENT_KEY = getTempLanguageKey(key);
+	const content = STRINGS._props;
+	const TEMP_CONTENT_KEY = getTempLanguageKey(key);
 
-  const withTempContent = {
-    ...content,
-    [TEMP_CONTENT_KEY]: {
-      ...(content[key] ? content[key] : {})
-    }
-	}
+	const withTempContent = {
+		...content,
+		[TEMP_CONTENT_KEY]: {
+			...(content[key] ? content[key] : {}),
+		},
+	};
 
-  setContent(withTempContent)
-}
+	setContent(withTempContent);
+};
 
-export const getStringByKey = (key, lang = DEFAULT_LANGUAGE, content = STRINGS._props) => {
-
+export const getStringByKey = (
+	key,
+	lang = DEFAULT_LANGUAGE,
+	content = STRINGS._props
+) => {
 	if (!content[lang]) {
 		return getStringByKey(key, 'en', CONTENT);
 	}
 
 	const string = content[lang][key];
-  if (typeof string === 'string') {
+	if (typeof string === 'string') {
 		return string;
 	}
-}
+};
 
-export const getAllStrings = (validLanguages = getValidLanguages(), content = STRINGS._props) => {
+export const getAllStrings = (
+	validLanguages = getValidLanguages(),
+	content = STRINGS._props
+) => {
 	const allStrings = [];
 
-  Object.entries(content['en']).forEach(([key]) => {
-    const stringObject = { key };
+	Object.entries(content['en']).forEach(([key]) => {
+		const stringObject = { key };
 		validLanguages.forEach((lang) => {
-      stringObject[lang] = getStringByKey(key, lang, content)
-		})
-    allStrings.push(stringObject)
-	})
+			stringObject[lang] = getStringByKey(key, lang, content);
+		});
+		allStrings.push(stringObject);
+	});
 
-	return allStrings.filter(({key}) => !EXCLUSIONS.includes(key));
-}
+	return allStrings.filter(({ key }) => !EXCLUSIONS.includes(key));
+};
 
 export const filterOverwrites = (overwrites) => {
-  const result = {}
-  Object.entries(overwrites).forEach(([lang, content]) => {
-  	result[lang] = {}
-  	Object.entries(content).forEach(([key, string]) => {
-  		if (!EXCLUSIONS.includes(key)) {
-  			result[lang][key] = string;
+	const result = {};
+	Object.entries(overwrites).forEach(([lang, content]) => {
+		result[lang] = {};
+		Object.entries(content).forEach(([key, string]) => {
+			if (!EXCLUSIONS.includes(key)) {
+				result[lang][key] = string;
 			}
-		})
-  })
+		});
+	});
 
 	return result;
-}
+};
 
 const EXCLUSIONS = [
-	"FOOTER.FOOTER_LEGAL",
-	"LEGAL.PRIVACY_POLICY.TEXTS",
-	"LEGAL.GENERAL_TERMS.TEXTS",
-	"TYPES",
-	"SIDES",
-	"DEFAULT_TOGGLE_OPTIONS",
-	"SETTINGS_LANGUAGE_OPTIONS",
-	"SETTINGS_ORDERPOPUP_OPTIONS",
-	"SETTINGS_THEME_OPTIONS",
+	'FOOTER.FOOTER_LEGAL',
+	'LEGAL.PRIVACY_POLICY.TEXTS',
+	'LEGAL.GENERAL_TERMS.TEXTS',
+	'TYPES',
+	'SIDES',
+	'DEFAULT_TOGGLE_OPTIONS',
+	'SETTINGS_LANGUAGE_OPTIONS',
+	'SETTINGS_ORDERPOPUP_OPTIONS',
+	'SETTINGS_THEME_OPTIONS',
 ];

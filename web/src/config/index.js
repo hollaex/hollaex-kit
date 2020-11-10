@@ -10,12 +10,12 @@ const generateEndpoint = (endpoint, path) => ({
 	WS_URL:
 		endpoint.split('://')[0] === 'https'
 			? `wss://${endpoint.split('://')[1]}` // websocket with ssl
-			: `ws://${endpoint.split('://')[1]}` // without ssl used for localhost
+			: `ws://${endpoint.split('://')[1]}`, // without ssl used for localhost
 });
 
 const VARIABLES = {
 	production: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH),
-	development: generateEndpoint(DEVELOPMENT_ENDPOINT, API_PATH)
+	development: generateEndpoint(DEVELOPMENT_ENDPOINT, API_PATH),
 };
 
 export default VARIABLES;

@@ -11,10 +11,10 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 		code: {
 			stringId: 'ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER',
 			type: 'number',
-			placeholder: STRINGS["ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER"],
+			placeholder: STRINGS['ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER'],
 			validate: [required],
-			fullWidth: true
-		}
+			fullWidth: true,
+		},
 	};
 
 	return (
@@ -25,7 +25,7 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 			</div>
 			<EditWrapper stringId="ACCOUNT_SECURITY.OTP.FORM.BUTTON" />
 			<Button
-				label={STRINGS["ACCOUNT_SECURITY.OTP.FORM.BUTTON"]}
+				label={STRINGS['ACCOUNT_SECURITY.OTP.FORM.BUTTON']}
 				className="mb-5"
 				disabled={pristine || submitting || !valid}
 			/>
@@ -34,5 +34,5 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 };
 
 export default reduxForm({
-	form: 'OTPActivationForm'
+	form: 'OTPActivationForm',
 })(Form);

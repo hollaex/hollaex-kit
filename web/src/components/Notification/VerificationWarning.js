@@ -8,7 +8,7 @@ import STRINGS from '../../config/localizedStrings';
 const VerificationWarningNotification = ({}) => {
 	return (
 		<NotificationWraper
-			title={STRINGS["VERIFICATION_WARNING_TITLE"]}
+			title={STRINGS['VERIFICATION_WARNING_TITLE']}
 			icon={ICONS.NOTIFICATION_VERIFICATION_WARNING}
 		/>
 	);

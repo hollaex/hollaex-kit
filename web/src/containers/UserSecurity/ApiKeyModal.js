@@ -18,7 +18,7 @@ class ApiKeyModal extends Component {
 		loading: false,
 		tokenName: '',
 		tokenKey: '',
-		secret: ''
+		secret: '',
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -55,14 +55,14 @@ class ApiKeyModal extends Component {
 					tokenKey: apiKey,
 					secret,
 					dialogOtpOpen: false,
-					loading: false
+					loading: false,
 				});
 			} else {
 				this.setState({
 					tokenKey: res,
 					secret: '',
 					dialogOtpOpen: false,
-					loading: false
+					loading: false,
 				});
 			}
 		});
@@ -73,31 +73,26 @@ class ApiKeyModal extends Component {
 	};
 
 	render() {
+		const { dialogOtpOpen, loading, tokenName, tokenKey, secret } = this.state;
 		const {
-			dialogOtpOpen,
-			loading,
-			tokenName,
-			tokenKey,
-			secret
-		} = this.state;
-		const { notificationType, openContactForm, activeTheme, icons: ICONS } = this.props;
+			notificationType,
+			openContactForm,
+			activeTheme,
+			icons: ICONS,
+		} = this.props;
 		if (dialogOtpOpen) {
-			return (
-				<OtpForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />
-			);
+			return <OtpForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />;
 		} else if (loading) {
 			return <Loader relative={true} background={false} />;
 		} else if (secret !== '') {
 			const token = {
 				tokenKey,
-				secret
+				secret,
 			};
 			return (
 				<Notification
 					iconId={`TOKEN_CREATED${activeTheme === 'dark' ? '_DARK' : ''}`}
-					icon={
-						ICONS[`TOKEN_CREATED${activeTheme === 'dark' ? '_DARK' : ''}`]
-					}
+					icon={ICONS[`TOKEN_CREATED${activeTheme === 'dark' ? '_DARK' : ''}`]}
 					onClose={this.onCloseDialog}
 					type={NOTIFICATIONS.CREATED_API_KEY}
 				>
@@ -107,20 +102,20 @@ class ApiKeyModal extends Component {
 		} else {
 			const icon =
 				notificationType === TYPE_REVOKE
-					? ICONS["TOKEN_TRASHED"]
-					: ICONS[
-							`TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`
-					  ];
-			const iconId = notificationType === TYPE_REVOKE
-        ? "TOKEN_TRASHED"
-        : `TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`;
+					? ICONS['TOKEN_TRASHED']
+					: ICONS[`TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`];
+			const iconId =
+				notificationType === TYPE_REVOKE
+					? 'TOKEN_TRASHED'
+					: `TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`;
 			const nextLabel =
 				notificationType === TYPE_REVOKE
-					? STRINGS["DEVELOPERS_TOKENS_POPUP.DELETE"]
-					: STRINGS["DEVELOPERS_TOKENS_POPUP.GENERATE"];
-			const stringId_nextLabel = notificationType === TYPE_REVOKE
-        ? "DEVELOPERS_TOKENS_POPUP.DELETE"
-        : "DEVELOPERS_TOKENS_POPUP.GENERATE"
+					? STRINGS['DEVELOPERS_TOKENS_POPUP.DELETE']
+					: STRINGS['DEVELOPERS_TOKENS_POPUP.GENERATE'];
+			const stringId_nextLabel =
+				notificationType === TYPE_REVOKE
+					? 'DEVELOPERS_TOKENS_POPUP.DELETE'
+					: 'DEVELOPERS_TOKENS_POPUP.GENERATE';
 			return (
 				<Notification
 					iconId={iconId}
@@ -136,9 +131,7 @@ class ApiKeyModal extends Component {
 					type={NOTIFICATIONS.GENERATE_API_KEY}
 				>
 					<PopupInfo
-						type={
-							notificationType === TYPE_REVOKE ? 'DELETE' : 'GENERATE'
-						}
+						type={notificationType === TYPE_REVOKE ? 'DELETE' : 'GENERATE'}
 					/>
 					<TokenForm formFields={generateFormValues(notificationType)} />
 				</Notification>
@@ -150,7 +143,7 @@ class ApiKeyModal extends Component {
 const selector = formValueSelector(FORM_NAME);
 const mapStateToForm = (state) => ({
 	tokenName: selector(state, 'name'),
-	activeTheme: state.app.theme
+	activeTheme: state.app.theme,
 });
 
 export default connect(mapStateToForm)(withConfig(ApiKeyModal));

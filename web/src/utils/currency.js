@@ -49,7 +49,7 @@ export const roundNumber = (number = 0, decimals = 4) => {
 };
 
 export const getFormat = (min = 0, fullFormat) => {
-	let value = math.format(min, {notation: 'fixed'});
+	let value = math.format(min, { notation: 'fixed' });
 	if (fullFormat) {
 		return { digit: 8, format: '0,0.[00000000]' };
 	} else if (min % 1) {
@@ -78,7 +78,9 @@ export const formatToSimple = (amount = 0, min = 0, fullFormat = false) => {
 
 export const formatToFixed = (amount = 0, min = 0, fullFormat = false) => {
 	let formatObj = getFormat(min, fullFormat);
-	return numbro(math.number(amount).toFixed(formatObj.digit)).format(formatObj.format);
+	return numbro(math.number(amount).toFixed(formatObj.digit)).format(
+		formatObj.format
+	);
 };
 
 export const formatCurrency = (
@@ -136,14 +138,14 @@ export const formatAverage = (amount = 0) =>
 	numbro(amount).format(AVERAGE_FORMAT);
 
 export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
-	let price
-	if(key === BASE_CURRENCY) {
-		price = 1
+	let price;
+	if (key === BASE_CURRENCY) {
+		price = 1;
 	} else {
-		price = estimatePrice(key)
+		price = estimatePrice(key);
 	}
 	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
-}
+};
 
 export const calculateBalancePrice = (balance, prices = {}, coins = {}) => {
 	let accumulated = math.fraction(0);
@@ -196,29 +198,31 @@ export const generateWalletActionsText = (
 
 	const depositText = `${
 		symbol === BASE_CURRENCY
-			? STRINGS["WALLET_BUTTON_BASE_DEPOSIT"]
-			: STRINGS["WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT"]
+			? STRINGS['WALLET_BUTTON_BASE_DEPOSIT']
+			: STRINGS['WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT']
 	} ${nameToDisplay}`;
 
 	const withdrawText = `${
 		symbol === BASE_CURRENCY
-			? STRINGS["WALLET_BUTTON_BASE_WITHDRAW"]
-			: STRINGS["WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW"]
+			? STRINGS['WALLET_BUTTON_BASE_WITHDRAW']
+			: STRINGS['WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW']
 	} ${nameToDisplay}`;
 
-	const stringId_withdraw = symbol === BASE_CURRENCY
-    ? "WALLET_BUTTON_BASE_WITHDRAW"
-    : "WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW"
+	const stringId_withdraw =
+		symbol === BASE_CURRENCY
+			? 'WALLET_BUTTON_BASE_WITHDRAW'
+			: 'WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW';
 
-	const stringId_deposit = symbol === BASE_CURRENCY
-    ? "WALLET_BUTTON_BASE_DEPOSIT"
-    : "WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT"
+	const stringId_deposit =
+		symbol === BASE_CURRENCY
+			? 'WALLET_BUTTON_BASE_DEPOSIT'
+			: 'WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT';
 
 	return {
 		depositText,
 		withdrawText,
-    stringId_withdraw,
-    stringId_deposit,
+		stringId_withdraw,
+		stringId_deposit,
 	};
 };
 
@@ -226,12 +230,13 @@ export const getCurrencyFromName = (name = '', coins) => {
 	let currency = '';
 	Object.keys(coins).forEach((key) => {
 		let coinData = coins[key];
-		if((coinData.fullname &&
-			coinData.fullname.toLowerCase() === name.toLowerCase()) ||
-			(coinData.symbol &&
-				coinData.symbol.toLowerCase() === name.toLowerCase())) {
-				currency = coinData.symbol
-			}
+		if (
+			(coinData.fullname &&
+				coinData.fullname.toLowerCase() === name.toLowerCase()) ||
+			(coinData.symbol && coinData.symbol.toLowerCase() === name.toLowerCase())
+		) {
+			currency = coinData.symbol;
+		}
 	});
 
 	return currency;
@@ -313,22 +318,25 @@ export const toFixed = (exponential) => {
 };
 
 export const estimatePrice = (key) => {
-	const { app: { pairs, tickers }, orderbook: { prices } } = store.getState();
+	const {
+		app: { pairs, tickers },
+		orderbook: { prices },
+	} = store.getState();
 
-  if(prices[key]) return prices[key];
+	if (prices[key]) return prices[key];
 
-	const pairsArray = Object.entries(pairs).map(([, pairObj]) => pairObj)
+	const pairsArray = Object.entries(pairs).map(([, pairObj]) => pairObj);
 	const path = findPath(pairsArray, key)[0];
 	let estimatedPrice = 1;
 
-	if(path) {
+	if (path) {
 		convertPathToPairNames(path).forEach((pairKey) => {
-			const { close = 0 } = tickers[pairKey] || {}
+			const { close = 0 } = tickers[pairKey] || {};
 			estimatedPrice *= close;
-		})
+		});
 	} else {
-		estimatedPrice = 0
+		estimatedPrice = 0;
 	}
 
-	return estimatedPrice
-}
+	return estimatedPrice;
+};

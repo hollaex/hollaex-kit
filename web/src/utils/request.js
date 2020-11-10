@@ -47,20 +47,26 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export const requestAuthenticated = (url, paramOptions, headers, apiUrl, method = 'GET') => {
+export const requestAuthenticated = (
+	url,
+	paramOptions,
+	headers,
+	apiUrl,
+	method = 'GET'
+) => {
 	const TOKEN = getToken();
 	const options = {
 		method,
 		headers: headers
 			? {
 					...headers,
-					authorization: `Bearer ${TOKEN}`
+					authorization: `Bearer ${TOKEN}`,
 			  }
 			: {
 					'Content-Type': 'application/json',
-					authorization: `Bearer ${TOKEN}`
+					authorization: `Bearer ${TOKEN}`,
 			  },
-		...paramOptions
+		...paramOptions,
 	};
 	return request(url, options, apiUrl);
 };
@@ -75,9 +81,7 @@ export const requestAuthenticated = (url, paramOptions, headers, apiUrl, method 
  * @return {object}           The response data
  */
 const request = (url, options, apiUrl = API_URL) => {
-	return fetch(`${apiUrl}${url}`, options)
-		.then(checkStatus)
-		.then(parseJSON);
+	return fetch(`${apiUrl}${url}`, options).then(checkStatus).then(parseJSON);
 };
 
 export default request;

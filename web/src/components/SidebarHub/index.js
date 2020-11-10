@@ -9,14 +9,16 @@ import { ButtonLink, Wallet } from '../';
 class SidebarHub extends Component {
 	render() {
 		const { activePath, isLogged, theme, icons: ICONS } = this.props;
-		const values = [{
-			accordionClassName: 'sidebar_hub-section-content f-1',
-			stringId: 'WALLET_TITLE',
-			title: STRINGS["WALLET_TITLE"],
-			iconId: "SIDEBAR_WALLET_ACTIVE",
-			icon: ICONS["SIDEBAR_WALLET_ACTIVE"],
-			content: <Wallet />
-		}];
+		const values = [
+			{
+				accordionClassName: 'sidebar_hub-section-content f-1',
+				stringId: 'WALLET_TITLE',
+				title: STRINGS['WALLET_TITLE'],
+				iconId: 'SIDEBAR_WALLET_ACTIVE',
+				icon: ICONS['SIDEBAR_WALLET_ACTIVE'],
+				content: <Wallet />,
+			},
+		];
 		return (
 			<div
 				className={classnames(
@@ -35,23 +37,23 @@ class SidebarHub extends Component {
 								iconId="DEMO_LOGIN_ICON_LIGHT,DEMO_LOGIN_ICON_DARK"
 								iconPath={
 									theme === 'white'
-										? ICONS["DEMO_LOGIN_ICON_LIGHT"]
-										: ICONS["DEMO_LOGIN_ICON_DARK"]
+										? ICONS['DEMO_LOGIN_ICON_LIGHT']
+										: ICONS['DEMO_LOGIN_ICON_DARK']
 								}
 								textType="title"
 								className="w-100"
 							/>
 
 							<ButtonLink
-								label={STRINGS["SIGN_IN"].toUpperCase()}
+								label={STRINGS['SIGN_IN'].toUpperCase()}
 								className={'log_in-btn'}
 								disabled={isLogged}
 								link={`/login`}
 							/>
-							<div className="text-center mt-3 mb-3">{STRINGS["OR_TEXT"]}</div>
+							<div className="text-center mt-3 mb-3">{STRINGS['OR_TEXT']}</div>
 
 							<ButtonLink
-								label={STRINGS["SIGNUP_TEXT"].toUpperCase()}
+								label={STRINGS['SIGNUP_TEXT'].toUpperCase()}
 								className={'sign_up-btn mb-5'}
 								disabled={isLogged}
 								link={`/signup`}

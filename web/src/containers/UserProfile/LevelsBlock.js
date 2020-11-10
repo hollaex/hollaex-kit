@@ -5,9 +5,9 @@ import { formatBaseAmount, formatBtcAmount } from '../../utils/currency';
 
 const getLimitValue = (limit = -1, format) => {
 	if (limit === 0) {
-		return STRINGS["LEVELS.UNLIMITED"];
+		return STRINGS['LEVELS.UNLIMITED'];
 	} else if (limit === -1) {
-		return STRINGS["LEVELS.BLOCKED"];
+		return STRINGS['LEVELS.BLOCKED'];
 	} else {
 		return format ? format(limit) : limit;
 	}
@@ -21,12 +21,12 @@ const LevelRow = ({ data = {}, isUserLevel = false }) => {
 		btc_deposit_daily,
 		btc_withdraw_daily,
 		eth_deposit_daily,
-		eth_withdraw_daily
+		eth_withdraw_daily,
 	} = data;
 	return (
 		<tr
 			className={classnames('table-row table-bottom-border', {
-				'user-level': isUserLevel
+				'user-level': isUserLevel,
 			})}
 		>
 			<td className="table-icon td-fit td-levelball">
@@ -65,13 +65,13 @@ export const LevelsBlock = ({ userLevel, limits }) => (
 			<thead>
 				<tr className="table-bottom-border">
 					<th />
-					<th>{STRINGS["LEVELS.LABEL_LEVEL"]}</th>
-					<th>{STRINGS["LEVELS.LABEL_BASE_DEPOSIT"]}</th>
-					<th>{STRINGS["LEVELS.LABEL_BASE_WITHDRAWAL"]}</th>
-					<th>{STRINGS["LEVELS.LABEL_BTC_DEPOSIT"]}</th>
-					<th>{STRINGS["LEVELS.LABEL_BTC_WITHDRAWAL"]}</th>
-					<th>{STRINGS["LEVELS.LABEL_ETH_DEPOSIT"]}</th>
-					<th>{STRINGS["LEVELS.LABEL_ETH_WITHDRAWAL"]}</th>
+					<th>{STRINGS['LEVELS.LABEL_LEVEL']}</th>
+					<th>{STRINGS['LEVELS.LABEL_BASE_DEPOSIT']}</th>
+					<th>{STRINGS['LEVELS.LABEL_BASE_WITHDRAWAL']}</th>
+					<th>{STRINGS['LEVELS.LABEL_BTC_DEPOSIT']}</th>
+					<th>{STRINGS['LEVELS.LABEL_BTC_WITHDRAWAL']}</th>
+					<th>{STRINGS['LEVELS.LABEL_ETH_DEPOSIT']}</th>
+					<th>{STRINGS['LEVELS.LABEL_ETH_WITHDRAWAL']}</th>
 				</tr>
 			</thead>
 			<tbody>

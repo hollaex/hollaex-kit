@@ -9,7 +9,7 @@ const CurrencyBallWithPrice = ({
 	amount,
 	price,
 	size = 'm',
-	coins = {}
+	coins = {},
 }) => {
 	const { name, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 	// const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -32,7 +32,7 @@ const CurrencyBallWithPrice = ({
 };
 
 const mapStateToProps = (state) => ({
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(CurrencyBallWithPrice);

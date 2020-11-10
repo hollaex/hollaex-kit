@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { isUUID } from 'validator';
 import {
 	verifyVerificationCode,
-	checkVerificationCode
+	checkVerificationCode,
 } from '../../actions/authAction';
 
 import { IconTitle, Loader, Button } from '../../components';
@@ -16,7 +16,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 class VerifyEmailCode extends Component {
 	state = {
 		success: false,
-		errorMessage: ''
+		errorMessage: '',
 	};
 
 	componentWillMount() {
@@ -24,7 +24,7 @@ class VerifyEmailCode extends Component {
 		if (isUUID(code)) {
 			this.props.checkVerificationData({ verification_code: code });
 		} else {
-			this.setError(STRINGS["VERIFICATION_EMAIL.INVALID_UUID"]);
+			this.setError(STRINGS['VERIFICATION_EMAIL.INVALID_UUID']);
 		}
 	}
 
@@ -42,7 +42,10 @@ class VerifyEmailCode extends Component {
 		this.props.router.replace('login');
 	};
 	render() {
-		const { data: { fetching, fetched, error }, icons: ICONS } = this.props;
+		const {
+			data: { fetching, fetched, error },
+			icons: ICONS,
+		} = this.props;
 		const { errorMessage } = this.state;
 
 		let childProps = {};
@@ -50,35 +53,35 @@ class VerifyEmailCode extends Component {
 		if (fetching || (!fetched && !errorMessage)) {
 			childProps = {
 				loading: true,
-				child: <Loader relative={true} background={false} />
+				child: <Loader relative={true} background={false} />,
 			};
 		} else if (error || errorMessage) {
 			childProps = {
 				titleSection: {
-					iconPath: ICONS["LETTER"],
-					text: STRINGS["ERROR_TEXT"]
+					iconPath: ICONS['LETTER'],
+					text: STRINGS['ERROR_TEXT'],
 				},
-				child: <div>{error || errorMessage}</div>
+				child: <div>{error || errorMessage}</div>,
 			};
 		} else {
 			childProps = {
 				titleSection: {
-					iconId: "SUCCESS_BLACK",
-					iconPath: ICONS["SUCCESS_BLACK"],
-					stringId: "SUCCESS_TEXT",
-					text: STRINGS["SUCCESS_TEXT"]
+					iconId: 'SUCCESS_BLACK',
+					iconPath: ICONS['SUCCESS_BLACK'],
+					stringId: 'SUCCESS_TEXT',
+					text: STRINGS['SUCCESS_TEXT'],
 				},
 				child: (
 					<div className="text-center w-100">
-						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_1"]}</div>
-						<div>{STRINGS["VERIFICATION_EMAIL.TEXT_2"]}</div>
+						<div>{STRINGS['VERIFICATION_EMAIL.TEXT_1']}</div>
+						<div>{STRINGS['VERIFICATION_EMAIL.TEXT_2']}</div>
 						<Button
-							label={STRINGS["LOGIN_TEXT"]}
+							label={STRINGS['LOGIN_TEXT']}
 							className="button-margin"
 							onClick={this.onClickLogin}
 						/>
 					</div>
-				)
+				),
 			};
 		}
 
@@ -114,12 +117,15 @@ class VerifyEmailCode extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	data: state.auth.verification
+	data: state.auth.verification,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	checkVerificationData: bindActionCreators(checkVerificationCode, dispatch),
-	verifyCode: bindActionCreators(verifyVerificationCode, dispatch)
+	verifyCode: bindActionCreators(verifyVerificationCode, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withConfig(VerifyEmailCode));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(VerifyEmailCode));

@@ -12,47 +12,47 @@ const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 const generateCardsContentFromStrings = () => {
 	return [
 		{
-			iconId: "FEATURES_ICONS.PRO_TRADING",
+			iconId: 'FEATURES_ICONS.PRO_TRADING',
 			icon: ICONS['FEATURES_ICONS.PRO_TRADING'],
-			stringId: "HOME.SECTION_3_CARD_1_TITLE,HOME.SECTION_3_CARD_1_TEXT",
-			title: STRINGS["HOME.SECTION_3_CARD_1_TITLE"],
-			text: STRINGS["HOME.SECTION_3_CARD_1_TEXT"]
+			stringId: 'HOME.SECTION_3_CARD_1_TITLE,HOME.SECTION_3_CARD_1_TEXT',
+			title: STRINGS['HOME.SECTION_3_CARD_1_TITLE'],
+			text: STRINGS['HOME.SECTION_3_CARD_1_TEXT'],
 		},
 		{
 			iconId: 'FEATURES_ICONS.PAYMENT',
 			icon: ICONS['FEATURES_ICONS.PAYMENT'],
 			stringId: 'HOME.SECTION_3_CARD_2_TITLE,HOME.SECTION_3_CARD_2_TEXT',
-			title: STRINGS["HOME.SECTION_3_CARD_2_TITLE"],
-			text: STRINGS["HOME.SECTION_3_CARD_2_TEXT"]
+			title: STRINGS['HOME.SECTION_3_CARD_2_TITLE'],
+			text: STRINGS['HOME.SECTION_3_CARD_2_TEXT'],
 		},
 		{
 			iconId: 'FEATURES_ICONS.SECURITY',
 			icon: ICONS['FEATURES_ICONS.SECURITY'],
 			stringId: 'HOME.SECTION_3_CARD_3_TITLE,HOME.SECTION_3_CARD_3_TEXT',
-			title: STRINGS["HOME.SECTION_3_CARD_3_TITLE"],
-			text: STRINGS["HOME.SECTION_3_CARD_3_TEXT"]
+			title: STRINGS['HOME.SECTION_3_CARD_3_TITLE'],
+			text: STRINGS['HOME.SECTION_3_CARD_3_TEXT'],
 		},
 		{
 			iconId: 'FEATURES_ICONS.REPORTING',
 			icon: ICONS['FEATURES_ICONS.REPORTING'],
-			stringId: "HOME.SECTION_3_CARD_4_TITLE,HOME.SECTION_3_CARD_4_TEXT",
-			title: STRINGS["HOME.SECTION_3_CARD_4_TITLE"],
-			text: STRINGS["HOME.SECTION_3_CARD_4_TEXT"]
+			stringId: 'HOME.SECTION_3_CARD_4_TITLE,HOME.SECTION_3_CARD_4_TEXT',
+			title: STRINGS['HOME.SECTION_3_CARD_4_TITLE'],
+			text: STRINGS['HOME.SECTION_3_CARD_4_TEXT'],
 		},
 		{
-			iconId: "FEATURES_ICONS.SUPPORT",
+			iconId: 'FEATURES_ICONS.SUPPORT',
 			icon: ICONS['FEATURES_ICONS.SUPPORT'],
-			stringId: "HOME.SECTION_3_CARD_5_TITLE,HOME.SECTION_3_CARD_5_TEXT",
-			title: STRINGS["HOME.SECTION_3_CARD_5_TITLE"],
-			text: STRINGS["HOME.SECTION_3_CARD_5_TEXT"]
+			stringId: 'HOME.SECTION_3_CARD_5_TITLE,HOME.SECTION_3_CARD_5_TEXT',
+			title: STRINGS['HOME.SECTION_3_CARD_5_TITLE'],
+			text: STRINGS['HOME.SECTION_3_CARD_5_TEXT'],
 		},
 		{
-			iconId: "FEATURES_ICONS.LEGAL",
+			iconId: 'FEATURES_ICONS.LEGAL',
 			icon: ICONS['FEATURES_ICONS.LEGAL'],
-			stringId: "HOME.SECTION_3_CARD_6_TITLE,HOME.SECTION_3_CARD_6_TEXT",
-			title: STRINGS["HOME.SECTION_3_CARD_6_TITLE"],
-			text: STRINGS["HOME.SECTION_3_CARD_6_TEXT"]
-		}
+			stringId: 'HOME.SECTION_3_CARD_6_TITLE,HOME.SECTION_3_CARD_6_TEXT',
+			title: STRINGS['HOME.SECTION_3_CARD_6_TITLE'],
+			text: STRINGS['HOME.SECTION_3_CARD_6_TEXT'],
+		},
 	];
 };
 
@@ -89,7 +89,7 @@ const Section = ({ style, onClickDemo, token }) => (
 		style={style}
 	>
 		<div className="text-center features-title">
-			{STRINGS["HOME.SECTION_3_TITLE"]}
+			{STRINGS['HOME.SECTION_3_TITLE']}
 		</div>
 		<div className="features-card_container d-flex flex-wrap justify-content-center">
 			{generateCardsContentFromStrings().map((card, index) => (
@@ -102,7 +102,7 @@ const Section = ({ style, onClickDemo, token }) => (
 					className={classnames(...BUTTONS_CLASSES, { pointer: onClickDemo })}
 					onClick={onClickDemo}
 				>
-					{STRINGS["HOME.SECTION_3_BUTTON_1"]}
+					{STRINGS['HOME.SECTION_3_BUTTON_1']}
 				</div>
 			}
 			{/*!token && (

@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, SubmissionError, stopSubmit } from 'redux-form';
+import {
+	reduxForm,
+	formValueSelector,
+	SubmissionError,
+	stopSubmit,
+} from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle, ElapsedTimer, HeaderSection } from '../../components';
+import {
+	Button,
+	IconTitle,
+	ElapsedTimer,
+	HeaderSection,
+} from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { PHONE_OPTIONS } from '../../utils/countries';
 import { getErrorLocalized } from '../../utils/errors';
 import {
 	verifySmsCode,
-	requestSmsCode
+	requestSmsCode,
 } from '../../actions/verificationActions';
 import { EditWrapper } from 'components';
 
@@ -25,7 +35,7 @@ class MobileVerification extends Component {
 		codeRequested: false,
 		codeRequestLoading: false,
 		isLoadingTimeUp: false,
-		isTimer: false
+		isTimer: false,
 	};
 
 	componentDidMount() {
@@ -43,54 +53,75 @@ class MobileVerification extends Component {
 			clearTimeout(loadingTimeOut);
 		}
 	}
-	
 
 	generateFormFields = (codeRequested = false, loading = false) => {
 		const { icons: ICONS } = this.props;
 		const formFields = {
 			phone_country: {
 				type: 'autocomplete',
-				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_PLACEHOLDER',
+				stringId:
+					'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_PLACEHOLDER',
 				label:
-					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_LABEL"],
+					STRINGS[
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_LABEL'
+					],
 				placeholder:
-					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_PLACEHOLDER"],
+					STRINGS[
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_PLACEHOLDER'
+					],
 				options: PHONE_OPTIONS,
 				validate: [required],
-				fullWidth: isMobile
+				fullWidth: isMobile,
 			},
 			phone_number: {
 				type: 'text',
-				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER,USER_VERIFICATION.CODE_EXPIRES_IN',
+				stringId:
+					'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER,USER_VERIFICATION.CODE_EXPIRES_IN',
 				label:
-					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL"],
+					STRINGS[
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL'
+					],
 				placeholder:
-					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER"],
+					STRINGS[
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER'
+					],
 				validate: [required], // TODO ^\+?[1-9]\d{1,14}$
 				notification: {
-					stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND',
+					stringId:
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND',
 					text: loading
-						? STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING"]
-						: STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND"],
+						? STRINGS[
+								'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING'
+						  ]
+						: STRINGS[
+								'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND'
+						  ],
 					status: loading ? 'loading' : 'information',
-					iconPath: loading ? ICONS["CONNECT_LOADING"] :ICONS["BLUE_ARROW_RIGHT"],
+					iconPath: loading
+						? ICONS['CONNECT_LOADING']
+						: ICONS['BLUE_ARROW_RIGHT'],
 					useSvg: loading ? true : false,
 					className: 'file_upload_icon',
-					onClick: loading ? () => {} : this.handleSendSmsCode
+					onClick: loading ? () => {} : this.handleSendSmsCode,
 				},
-				fullWidth: isMobile
+				fullWidth: isMobile,
 			},
 			code: {
 				type: 'text',
-				stringId: 'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_PLACEHOLDER',
+				stringId:
+					'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_LABEL,USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_PLACEHOLDER',
 				label:
-					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_LABEL"],
+					STRINGS[
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_LABEL'
+					],
 				placeholder:
-					STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_PLACEHOLDER"],
+					STRINGS[
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_CODE_PLACEHOLDER'
+					],
 				disabled: !codeRequested,
 				validate: [required],
-				fullWidth: isMobile
-			}
+				fullWidth: isMobile,
+			},
 		};
 
 		this.setState({ formFields });
@@ -99,12 +130,12 @@ class MobileVerification extends Component {
 	handleSubmit = ({ phone_number, phone_country, code }) => {
 		if (!this.state.codeRequested) {
 			throw new SubmissionError({
-				_error: 'Request sms code'
+				_error: 'Request sms code',
 			});
 		}
 		const values = {
 			phone: `${phone_country}${phone_number}`,
-			code
+			code,
 		};
 
 		return verifySmsCode(values)
@@ -125,28 +156,39 @@ class MobileVerification extends Component {
 		const { phone_number, phone_country } = this.props;
 		if (phone_country && phone_number) {
 			const phone = `${phone_country} ${phone_number}`;
-			this.setState({
-				codeRequestLoading: true,
-				codeRequested: false,
-				isLoadingTimeUp: false
-			}, () => {
-				this.generateFormFields(false, true);
-				this.checkLoadingTime();
-			});
+			this.setState(
+				{
+					codeRequestLoading: true,
+					codeRequested: false,
+					isLoadingTimeUp: false,
+				},
+				() => {
+					this.generateFormFields(false, true);
+					this.checkLoadingTime();
+				}
+			);
 			requestSmsCode(phone)
 				.then(({ data }) => {
 					// alert(STRINGS.formatString(STRINGS["SMS_SENT_TO"], phone).join(''));
-					this.setState({ 
-						codeRequested: true,
-						codeRequestLoading: false,
-						isTimer: this.state.isLoadingTimeUp
-					}, () => {
-						let loading = this.state.isLoadingTimeUp ? false : true;
-						this.generateFormFields(true, loading);
-					});
+					this.setState(
+						{
+							codeRequested: true,
+							codeRequestLoading: false,
+							isTimer: this.state.isLoadingTimeUp,
+						},
+						() => {
+							let loading = this.state.isLoadingTimeUp ? false : true;
+							this.generateFormFields(true, loading);
+						}
+					);
 				})
 				.catch((err) => {
-					const error = { _error: STRINGS.formatString(STRINGS["SMS_ERROR_SENT_TO"], phone).join('') };
+					const error = {
+						_error: STRINGS.formatString(
+							STRINGS['SMS_ERROR_SENT_TO'],
+							phone
+						).join(''),
+					};
 					this.setState({ codeRequestLoading: false }, () => {
 						this.generateFormFields();
 					});
@@ -192,38 +234,51 @@ class MobileVerification extends Component {
 			<div className="presentation_container apply_rtl verification_container">
 				<IconTitle
 					stringId="USER_VERIFICATION.PHONE_VERIFICATION"
-					text={STRINGS["USER_VERIFICATION.PHONE_VERIFICATION"]}
+					text={STRINGS['USER_VERIFICATION.PHONE_VERIFICATION']}
 					textType="title"
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<HeaderSection
 						stringId="USER_VERIFICATION.PHONE_DETAILS"
-						title={STRINGS["USER_VERIFICATION.PHONE_DETAILS"]}
+						title={STRINGS['USER_VERIFICATION.PHONE_DETAILS']}
 						openContactForm={openContactForm}
 						iconId="VERIFICATION_PHONE_NEW"
-						icon={ICONS["VERIFICATION_PHONE_NEW"]}
+						icon={ICONS['VERIFICATION_PHONE_NEW']}
 					>
 						<div>
 							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT">
-								{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT"]}
+								{
+									STRINGS[
+										'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT'
+									]
+								}
 							</EditWrapper>
 						</div>
 						<div>
 							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1">
-								{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1"]}
+								{
+									STRINGS[
+										'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1'
+									]
+								}
 							</EditWrapper>
 						</div>
 						<div>
 							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2">
-								{STRINGS["USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2"]}
+								{
+									STRINGS[
+										'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2'
+									]
+								}
 							</EditWrapper>
 						</div>
 					</HeaderSection>
 					{renderFields(formFields)}
 					<ElapsedTimer
-						timerText={STRINGS["USER_VERIFICATION.CODE_EXPIRES_IN"]}
+						timerText={STRINGS['USER_VERIFICATION.CODE_EXPIRES_IN']}
 						isLoading={isTimer}
-						timeoutCallback={this.onClearTimer} />
+						timeoutCallback={this.onClearTimer}
+					/>
 					<EditWrapper stringId="USER_VERIFICATION.CODE_EXPIRES_IN" />
 					{error && (
 						<div className="warning_text">{getErrorLocalized(error)}</div>
@@ -232,7 +287,7 @@ class MobileVerification extends Component {
 						<div className="w-50">
 							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button
-								label={STRINGS["USER_VERIFICATION.GO_BACK"]}
+								label={STRINGS['USER_VERIFICATION.GO_BACK']}
 								onClick={this.onGoBack}
 							/>
 						</div>
@@ -242,7 +297,7 @@ class MobileVerification extends Component {
 							<Button
 								type="button"
 								onClick={handleSubmit(this.handleSubmit)}
-								label={STRINGS["SUBMIT"]}
+								label={STRINGS['SUBMIT']}
 								disabled={
 									pristine || submitting || !valid || !!error || !codeRequested
 								}
@@ -256,7 +311,7 @@ class MobileVerification extends Component {
 }
 
 const MobileVerificationForm = reduxForm({
-	form: FORM_NAME
+	form: FORM_NAME,
 })(MobileVerification);
 
 const selector = formValueSelector(FORM_NAME);

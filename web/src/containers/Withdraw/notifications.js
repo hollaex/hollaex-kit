@@ -1,9 +1,7 @@
 import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
 
 export const setWithdrawNotificationSuccess = (data, dispatch) => {
-	dispatch(
-		setNotification(NOTIFICATIONS.WITHDRAWAL, { ...data })
-	);
+	dispatch(setNotification(NOTIFICATIONS.WITHDRAWAL, { ...data }));
 };
 
 export const setWithdrawNotificationError = (error, dispatch) => {

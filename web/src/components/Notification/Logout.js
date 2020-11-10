@@ -19,26 +19,26 @@ const getMessage = (message = '') => {
 
 	switch (errorMessage) {
 		case ERROR_TOKEN_EXPIRED:
-			return STRINGS["LOGOUT_ERROR_TOKEN_EXPIRED"];
+			return STRINGS['LOGOUT_ERROR_TOKEN_EXPIRED'];
 		case ERROR_INVALID_IP:
-			return STRINGS["LOGOUT_ERROR_LOGIN_AGAIN"];
+			return STRINGS['LOGOUT_ERROR_LOGIN_AGAIN'];
 		case ERROR_INACTIVE:
-			return STRINGS["LOGOUT_ERROR_INACTIVE"];
+			return STRINGS['LOGOUT_ERROR_INACTIVE'];
 		case ERROR_INVALID_TOKEN:
 		default:
-			return STRINGS["LOGOUT_ERROR_INVALID_TOKEN"];
+			return STRINGS['LOGOUT_ERROR_INVALID_TOKEN'];
 	}
 };
 
 const LogoutNotification = ({ data, onClose, icons: ICONS }) => {
 	return (
 		<NotificationWraper
-			title={STRINGS["LOGOUT_TITLE"]}
-			icon={ICONS["SESSION_TIMED_OUT"]}
+			title={STRINGS['LOGOUT_TITLE']}
+			icon={ICONS['SESSION_TIMED_OUT']}
 			className="logout-notification"
 		>
 			<NotificationContent>{getMessage(data.message)}</NotificationContent>
-			<Button label={STRINGS["CLOSE_TEXT"]} onClick={onClose} />
+			<Button label={STRINGS['CLOSE_TEXT']} onClick={onClose} />
 		</NotificationWraper>
 	);
 };

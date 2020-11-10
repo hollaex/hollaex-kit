@@ -117,73 +117,73 @@
 }
 
 .risky-trade-wrapper {
-    width: 32rem;
-    .icon_title-wrapper {
-        .icon_title-svg {
-            height: 10rem;
-            width: 10rem;
-        }
-        .icon_title-svg svg{
-            height: 10rem;
-            width: 10rem;
-        }
-        .icon_title-text.title {
-            font-size: 2rem;
-        }
-        .icon_title-text {
-            margin-top: 3rem;
-            text-align: left !important;
-            width: 100%;
-        }
+	width: 32rem;
+	.icon_title-wrapper {
+		.icon_title-svg {
+			height: 10rem;
+			width: 10rem;
+		}
+		.icon_title-svg svg {
+			height: 10rem;
+			width: 10rem;
+		}
+		.icon_title-text.title {
+			font-size: 2rem;
+		}
+		.icon_title-text {
+			margin-top: 3rem;
+			text-align: left !important;
+			width: 100%;
+		}
 	}
 	.risky_managment_percentage {
-        color: $colors-notifications-red
-    }
+		color: $colors-notifications-red;
+	}
 }
 
 .layout-mobile {
-	.trade_order_entry-selector{
-		font-size: $font-size-mobile-txt!important;
+	.trade_order_entry-selector {
+		font-size: $font-size-mobile-txt !important;
 	}
 	.trade_orderbook-bids {
 		.trade_orderbook-cell {
-			font-size: $font-size-mobile-txt!important;
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
 	.trade_input-wrapper {
 		.trade_input-label {
-			font-size: $font-size-mobile-innertxt!important;
+			font-size: $font-size-mobile-innertxt !important;
 		}
 		.trade_input-input-wrapper {
-			> input{
-				font-size: $font-size-mobile-txt!important;
+			> input {
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
 	.trade_order_entry-review {
 		> div {
-			font-size: $font-size-mobile-innertxt!important;
+			font-size: $font-size-mobile-innertxt !important;
 		}
 	}
-	.exir-button{
-		font-size: $font-size-mobile-txt!important;
+	.exir-button {
+		font-size: $font-size-mobile-txt !important;
 	}
 	.trade_orderbook-wrapper {
 		.trade_orderbook-headers {
 			.trade_orderbook-cell {
-				font-size: $font-size-mobile-innertxt!important;
+				font-size: $font-size-mobile-innertxt !important;
 			}
 		}
 		.trade_asks-limit_bar {
 			.orderbook-limit_bar-wrapper {
 				.orderbook-limit_bar-text {
-					font-size: $font-size-mobile-innertxt!important;
+					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
 		}
 	}
 
-    .risky-trade-wrapper {
-        margin: auto;
-    }
+	.risky-trade-wrapper {
+		margin: auto;
+	}
 }

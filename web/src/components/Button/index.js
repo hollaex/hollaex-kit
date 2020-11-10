@@ -4,7 +4,14 @@ import classnames from 'classnames';
 
 import '@material/button/dist/mdc.button.css';
 
-const Button = ({ label, onClick, type, disabled, className, autoFocus = false }) => (
+const Button = ({
+	label,
+	onClick,
+	type,
+	disabled,
+	className,
+	autoFocus = false,
+}) => (
 	<button
 		type={type}
 		onClick={onClick}
@@ -14,7 +21,7 @@ const Button = ({ label, onClick, type, disabled, className, autoFocus = false }
 			'mdc-button--unelevated',
 			'exir-button-font',
 			{
-				disabled
+				disabled,
 			},
 			className
 		)}
@@ -29,13 +36,13 @@ Button.propTypes = {
 	label: PropTypes.string.isRequired,
 	onClick: PropTypes.func,
 	type: PropTypes.string,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
 	type: 'submit',
 	disabled: false,
-	className: ''
+	className: '',
 };
 
 export default Button;

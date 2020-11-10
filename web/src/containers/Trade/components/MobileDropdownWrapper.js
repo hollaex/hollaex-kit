@@ -35,13 +35,14 @@ class MobileDropdownWrapper extends Component {
 
 const mapStateToProps = (store) => ({
 	pair: store.app.pair,
-	pairs: store.app.pairs
+	pairs: store.app.pairs,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	changePair: bindActionCreators(changePair, dispatch)
+	changePair: bindActionCreators(changePair, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-	MobileDropdownWrapper
-);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(MobileDropdownWrapper);

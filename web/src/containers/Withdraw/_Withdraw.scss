@@ -88,7 +88,7 @@ $content--margin: 2rem;
 					}
 					.field-children {
 						.custom {
-							font-size: $extra-thick--font-size;	
+							font-size: $extra-thick--font-size;
 						}
 					}
 				}
@@ -114,27 +114,28 @@ $content--margin: 2rem;
 					}
 				}
 			}
-			.field-label,.field-children,
+			.field-label,
+			.field-children,
 			.input_field-input {
 				font-size: $font-size-mobile-txt !important;
 			}
 			.field-error-content {
 				font-size: $regular--font-size;
 			}
-			
+
 			.action_notification-wrapper {
 				.action_notification-text {
 					font-size: $regular--font-size;
 				}
 			}
-			.exir-button{
+			.exir-button {
 				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
 	.review_email-wrapper {
-        margin: 0px auto !important;
-    }
+		margin: 0px auto !important;
+	}
 }
 
 .review_email-wrapper {

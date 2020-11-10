@@ -29,7 +29,7 @@ $colors-white: white;
 		.nondraggable {
 			height: 100%;
 		}
-		.timestamp { 
+		.timestamp {
 			font-size: $font-size-mobile-innertxt;
 		}
 		.chat-message-list {
@@ -38,14 +38,14 @@ $colors-white: white;
 				.message-content {
 					.username {
 						font-size: $mobile-regular--font-size;
-					    width: 100%;
+						width: 100%;
 					}
 
 					.message {
 						font-size: $font-size-mobile-txt;
 						line-height: unset !important;
 					}
-				}	
+				}
 				.item-options {
 					.item-options-wrapper {
 						min-width: 5rem;
@@ -73,10 +73,10 @@ $colors-white: white;
 					}
 				}
 			}
-			.chat-emoji-wrapper { 
+			.chat-emoji-wrapper {
 				background-color: $colors-white;
 				.chat-emoji-icon {
-					svg{
+					svg {
 						.emoji-face-icon {
 							fill: $chat-message-content-color;
 						}
@@ -98,7 +98,7 @@ $colors-white: white;
 	-webkit-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	-moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
-	font-family: "Open Sans" !important;
+	font-family: 'Open Sans' !important;
 	border: 1px solid $chat-box-border !important;
 
 	.timestamp {
@@ -108,14 +108,14 @@ $colors-white: white;
 		text-align: right;
 		margin-right: 0.3rem;
 	}
-	.chat-username-footer{
+	.chat-username-footer {
 		border-top: 1px solid gray;
 	}
 	.username-to-chat {
 		padding: 0.7rem !important;
 		color: $link !important;
 		font-size: 1rem !important;
-		font-family: "Open Sans"!important;
+		font-family: 'Open Sans' !important;
 	}
 
 	.nondraggable {
@@ -224,7 +224,7 @@ $colors-white: white;
 
 		> div {
 			// &:first-child {
-				// padding: 0.5rem;
+			// padding: 0.5rem;
 			// }
 			padding: 0.5rem 0;
 		}
@@ -385,13 +385,13 @@ $colors-white: white;
 			font-size: 0.9rem;
 			resize: none;
 			overflow: hidden;
-		    padding-left: 10px;
+			padding-left: 10px;
 
 			&::placeholder {
 				color: $chat-message-content-color;
 			}
 		}
-		.chat-emoji-wrapper { 
+		.chat-emoji-wrapper {
 			background-color: $colors-white;
 
 			.chat-emoji-icon {
@@ -414,7 +414,7 @@ $colors-white: white;
 				height: max-content;
 				width: 100%;
 
-				.top-background	{
+				.top-background {
 					.emoji-mart-emoji {
 						background-color: $light-emoji-content-top-background;
 					}
@@ -444,9 +444,9 @@ $colors-white: white;
 						}
 					}
 				}
-			
+
 				.activeEmoji {
-					border-bottom:2px solid $colors-notifications-blue;
+					border-bottom: 2px solid $colors-notifications-blue;
 				}
 
 				.emoji-mart-emoji {

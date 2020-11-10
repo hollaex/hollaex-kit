@@ -7,7 +7,7 @@ export const ENV = process.env.NODE_ENV || 'production';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 
 export const APP_TITLE =
-	process.env.REACT_APP_EXCHANGE_NAME || STRINGS["APP_TITLE"];
+	process.env.REACT_APP_EXCHANGE_NAME || STRINGS['APP_TITLE'];
 
 export const PUBLIC_URL =
 	process.env.REACT_APP_PUBLIC_URL || 'http://localhost:8080';
@@ -34,7 +34,7 @@ export const AUDIOS = {
 	CANCEL_ORDER: '/assets/audio/cancel_order.wav',
 	QUICK_TRADE_COMPLETE: '/assets/audio/quick-trade-complete.wav',
 	REVIEW_QUICK_TRADE_ORDER: '/assets/audio/review-quick-trade-order.wav',
-	TIME_OUT_QUICK_TRADE: '/assets/audio/time-out-quick-trade.wav'
+	TIME_OUT_QUICK_TRADE: '/assets/audio/time-out-quick-trade.wav',
 };
 
 export const CURRENCY_PRICE_FORMAT = '{0} {1}';
@@ -42,7 +42,7 @@ export const CURRENCY_PRICE_FORMAT = '{0} {1}';
 export const DEFAULT_COIN_DATA = {
 	fullname: '',
 	symbol: '',
-	min: 0.001
+	min: 0.001,
 };
 
 export const DEFAULT_PAIR = 'btc-usdt';
@@ -50,12 +50,13 @@ export const DEFAULT_PAIR = 'btc-usdt';
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
 	'justify-content-center',
-	'align-items-center'
+	'align-items-center',
 ];
 
-export const TIMESTAMP_FORMAT = STRINGS["TIMESTAMP_FORMAT"];
-export const HOUR_FORMAT = STRINGS["HOUR_FORMAT"];
-export const TIMESTAMP_FORMAT_FA = STRINGS["TIMESTAMP_FORMAT"].split('/')
+export const TIMESTAMP_FORMAT = STRINGS['TIMESTAMP_FORMAT'];
+export const HOUR_FORMAT = STRINGS['HOUR_FORMAT'];
+export const TIMESTAMP_FORMAT_FA = STRINGS['TIMESTAMP_FORMAT']
+	.split('/')
 	.map((s) => `j${s}`)
 	.join('/');
 
@@ -146,7 +147,7 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					: 'https://tronscan.org/#/transaction/';
 			break;
 		default:
-			endpoint = ''
+			endpoint = '';
 			break;
 	}
 	return endpoint;
@@ -154,10 +155,10 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY;
+export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
 
-export const DEFAULT_CAPTCHA_SITEKEY = '6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
+export const DEFAULT_CAPTCHA_SITEKEY =
+	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
 
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
@@ -200,9 +201,11 @@ export const EXCHANGE_EXPIRY_DAYS = 15;
 export const EXCHANGE_EXPIRY_SECONDS = EXCHANGE_EXPIRY_DAYS * 86400;
 export const SUPPORT_HELP_URL =
 	'https://info.hollaex.com/hc/en-us/requests/new';
-export const REQUEST_VAULT_SUPPORTED_COINS = 'https://api.vault.bitholla.com/v1/coins';
-export const ADMIN_GUIDE_DOWNLOAD_LINK = 'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/Admin+panel+manual.pdf';
-	
+export const REQUEST_VAULT_SUPPORTED_COINS =
+	'https://api.vault.bitholla.com/v1/coins';
+export const ADMIN_GUIDE_DOWNLOAD_LINK =
+	'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/Admin+panel+manual.pdf';
+
 export const MAX_NUMBER_BANKS = 3;
 
 export const CHART_MONTHS = [
@@ -217,19 +220,19 @@ export const CHART_MONTHS = [
 	{ key: 9, value: 'Sep' },
 	{ key: 10, value: 'Oct' },
 	{ key: 11, value: 'Nov' },
-	{ key: 12, value: 'Dec' }
+	{ key: 12, value: 'Dec' },
 ];
 
 export const DARK_THEME_COLORS = {
 	border_main: '#b7b5cd',
 	sub_text: '#a3a1ca',
-	sub_text_1: '#808184'
+	sub_text_1: '#808184',
 };
 
 export const WHITE_THEME_COLORS = {
 	border_main: '#000000',
 	sub_text: '#000000',
-	sub_text_1: '#000000'
+	sub_text_1: '#000000',
 };
 
 export const DARK_THEME_CHART_COLORS = {
@@ -241,7 +244,7 @@ export const DARK_THEME_CHART_COLORS = {
 	BUY_CANDLE: '#29abe2',
 	SELL_CANDLE: '#f69321',
 	BUY_VOLUME: '#29abe2',
-	SELL_VOLUME: '#f69321'
+	SELL_VOLUME: '#f69321',
 };
 export const WHITE_THEME_CHART_COLORS = {
 	SELL: 'red',
@@ -252,7 +255,7 @@ export const WHITE_THEME_CHART_COLORS = {
 	BUY_CANDLE: 'green',
 	SELL_CANDLE: '#ed1c24',
 	BUY_VOLUME: 'lightgreen',
-	SELL_VOLUME: '#ed1c24'
+	SELL_VOLUME: '#ed1c24',
 };
 
 export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;

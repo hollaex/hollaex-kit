@@ -21,28 +21,27 @@ const MobileTrade = ({
 	pair,
 	setPriceRef,
 	setSizeRef,
-	goToMarkets
+	goToMarkets,
 }) => {
+	const [isMarketSelectorOpen, setIsMarketSelectorOpen] = useState(false);
 
-  const [isMarketSelectorOpen, setIsMarketSelectorOpen] = useState(false);
+	const toggleMarketSelector = () => {
+		setIsMarketSelectorOpen(!isMarketSelectorOpen);
+	};
 
-  const toggleMarketSelector = () => {
-    setIsMarketSelectorOpen(!isMarketSelectorOpen)
-  }
+	const closeAddTabMenu = () => {
+		setIsMarketSelectorOpen(false);
+	};
 
-  const closeAddTabMenu = () => {
-    setIsMarketSelectorOpen(false)
-  }
-
-	return(
+	return (
 		<div
 			className={classnames(
-              'flex-row',
-              'd-flex',
-              'justify-content-between',
-              'f-1',
-              'apply_rtl'
-            )}
+				'flex-row',
+				'd-flex',
+				'justify-content-between',
+				'f-1',
+				'apply_rtl'
+			)}
 		>
 			<TradeBlock
 				title={''}
@@ -51,31 +50,34 @@ const MobileTrade = ({
 			>
 				<div
 					className={classnames(
-                      'app_bar-pair-content',
-                      'd-flex',
-                      'justify-content-between',
-                      'px-2',
-                    )}
+						'app_bar-pair-content',
+						'd-flex',
+						'justify-content-between',
+						'px-2'
+					)}
 				>
 					<div
 						className="d-flex align-items-center"
 						onClick={toggleMarketSelector}
 					>
 						<span className="pt-2 trade-tab__market-selector">{pair}</span>
-						<i className={classnames('arrow small ml-3', (isMarketSelectorOpen ? 'up' : 'down'))}/>
+						<i
+							className={classnames(
+								'arrow small ml-3',
+								isMarketSelectorOpen ? 'up' : 'down'
+							)}
+						/>
 					</div>
-                  {
-                    isMarketSelectorOpen && (
+					{isMarketSelectorOpen && (
 						<MarketSelector
 							triggerId="market-selector"
 							onViewMarketsClick={goToMarkets}
 							closeAddTabMenu={closeAddTabMenu}
 							addTradePairTab={goToPair}
 						/>
-                    )
-                  }
+					)}
 				</div>
-              {/* <Link className={classnames('blue-link', 'mb-2', 'caps')} to={`/quick-trade/${pair}`}>
+				{/* <Link className={classnames('blue-link', 'mb-2', 'caps')} to={`/quick-trade/${pair}`}>
 				{STRINGS["QUICK_TRADE_MODE"]}
 			</Link> */}
 				<OrderEntry
@@ -90,11 +92,11 @@ const MobileTrade = ({
 					setSizeRef={setSizeRef}
 				/>
 			</TradeBlock>
-			<TradeBlock title={STRINGS["ORDERBOOK"]} className="order-entry">
-              {orderbookReady && <Orderbook {...orderbookProps} />}
+			<TradeBlock title={STRINGS['ORDERBOOK']} className="order-entry">
+				{orderbookReady && <Orderbook {...orderbookProps} />}
 			</TradeBlock>
 		</div>
-    )
+	);
 };
 
 export default MobileTrade;

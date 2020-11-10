@@ -217,6 +217,16 @@ table th {
 .underline-text {
   text-decoration: underline; }
 
+.disabled-link {
+  pointer-events: none; }
+
+.object-fit-contain {
+  object-fit: contain; }
+
+.background-contain {
+  -webkit-background-size: contain;
+  background-size: contain; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -245,13 +255,13 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc(100vh - 10rem);
-    max-height: calc(100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc(100vh - 14rem);
-    max-height: calc(100vh - 14rem);
+    min-height: calc( 100vh - 14rem);
+    max-height: calc( 100vh - 14rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -270,7 +280,7 @@ table th {
     border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
     padding: 0; }
   .app_container .exchange-warning {
-    background-color: #FFF100; }
+    background-color: #fff100; }
 
 .layout-mobile .presentation_container {
   padding-top: 4rem !important; }
@@ -406,7 +416,7 @@ table th {
   color: #ffffff !important; }
 
 .exchange-trial {
-  background-color: #FFF100;
+  background-color: #fff100;
   color: #000000; }
 
 .layout-mobile.auth-wrapper .link_wrapper {
@@ -476,7 +486,7 @@ table th {
   .auth-wrapper .icon_title-wrapper {
     margin-top: 0; }
     .auth-wrapper .icon_title-wrapper.underline:after {
-      height: 0.20rem; }
+      height: 0.2rem; }
     .auth-wrapper .icon_title-wrapper .icon_title-text {
       margin: 1.5rem auto; }
       .auth-wrapper .icon_title-wrapper .icon_title-text.title {
@@ -804,8 +814,8 @@ table th {
   height: calc(100% - 4rem) !important; }
 
 .layout-mobile.home_container .app_container-content {
-  min-height: calc(100vh - 4rem);
-  max-height: calc(100vh - 4rem); }
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem); }
 
 .home_container {
   background: url("/assets/background.png");
@@ -815,7 +825,7 @@ table th {
     background-color: #ed1c24 !important;
     color: #ffffff !important; }
   .home_container .exchange-warning {
-    background-color: #FFF100;
+    background-color: #fff100;
     color: #000000; }
   .home_container .quick_trade-section {
     background-color: var(--base_background);
@@ -1141,7 +1151,8 @@ table th {
 .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
   font-size: 12px !important; }
 
-.layout-mobile .presentation_container .inner_container .field-label, .layout-mobile .presentation_container .inner_container .field-children,
+.layout-mobile .presentation_container .inner_container .field-label,
+.layout-mobile .presentation_container .inner_container .field-children,
 .layout-mobile .presentation_container .inner_container .input_field-input {
   font-size: 12px !important; }
 
@@ -1278,7 +1289,8 @@ table th {
   width: 2rem;
   height: 2rem; }
 
-.btn-tx, .withdrawal-cancel {
+.btn-tx,
+.withdrawal-cancel {
   cursor: pointer; }
 
 .transaction-history-wrapper svg .trade-history-1,
@@ -1822,7 +1834,7 @@ table th {
   font-family: "Raleway Extrabold"; }
 
 .mobile-chart__market-selector-wrapper {
-  font-family: "Open Sans" !important;
+  font-family: 'Open Sans' !important;
   font-weight: normal; }
 
 .quote-container {
@@ -1865,8 +1877,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc(100vh - 14rem);
-  max-height: calc(100vh - 14rem); }
+  min-height: calc( 100vh - 14rem);
+  max-height: calc( 100vh - 14rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1;
     min-width: 100vw;
@@ -1906,7 +1918,7 @@ table th {
     padding: 0; }
   .verification_container .header-content {
     color: var(--labels_secondary-inactive-label-text-graphics);
-    font-size: .8rem; }
+    font-size: 0.8rem; }
   .verification_container .content-text {
     font-size: 0.8rem; }
   .verification_container .document-note-icon {
@@ -1953,7 +1965,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc(100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 12px !important; }
 
@@ -1963,7 +1975,11 @@ table th {
 .layout-mobile .header_title-wrapper .header_title-children {
   font-size: 12px !important; }
 
-.layout-mobile .field-wrapper .field-content .field-label, .layout-mobile .field-wrapper .field-content .field-children, .layout-mobile .field-wrapper .field-content .inner_container, .layout-mobile .field-wrapper .field-content .input_field-input, .layout-mobile .field-wrapper .field-content .placeholder {
+.layout-mobile .field-wrapper .field-content .field-label,
+.layout-mobile .field-wrapper .field-content .field-children,
+.layout-mobile .field-wrapper .field-content .inner_container,
+.layout-mobile .field-wrapper .field-content .input_field-input,
+.layout-mobile .field-wrapper .field-content .placeholder {
   font-size: 12px !important; }
 
 .layout-mobile .content-text {
@@ -2067,7 +2083,7 @@ table th {
   .summary-container .summary-block_wrapper {
     border-top: 0.2rem solid var(--labels_secondary-inactive-label-text-graphics);
     color: var(--labels_secondary-inactive-label-text-graphics);
-    padding: .5rem; }
+    padding: 0.5rem; }
     .summary-container .summary-block_wrapper .summary-block-title {
       color: var(--labels_secondary-inactive-label-text-graphics);
       font-size: 1rem;
@@ -2111,37 +2127,47 @@ table th {
     color: var(--specials_checks-okay-done); }
     .summary-container .requirement-verified svg circle {
       fill: var(--specials_checks-okay-done); }
-    .summary-container .requirement-verified svg path, .summary-container .requirement-verified svg polygon, .summary-container .requirement-verified svg polyline {
+    .summary-container .requirement-verified svg path,
+    .summary-container .requirement-verified svg polygon,
+    .summary-container .requirement-verified svg polyline {
       fill: var(--calculated_specials_notifications-success-text); }
   .summary-container .requirement-not-verified {
     color: var(--specials_notifications-alerts-warnings); }
     .summary-container .requirement-not-verified svg circle {
       fill: var(--specials_notifications-alerts-warnings); }
-    .summary-container .requirement-not-verified svg path, .summary-container .requirement-not-verified svg polygon, .summary-container .requirement-not-verified svg polyline {
+    .summary-container .requirement-not-verified svg path,
+    .summary-container .requirement-not-verified svg polygon,
+    .summary-container .requirement-not-verified svg polyline {
       fill: var(--calculated_specials_notifications-alerts-text); }
   .summary-container .requirement-rejected {
     color: var(--specials_notifications-alerts-warnings); }
     .summary-container .requirement-rejected svg circle {
       fill: var(--specials_notifications-alerts-warnings); }
-    .summary-container .requirement-rejected svg path, .summary-container .requirement-rejected svg polygon, .summary-container .requirement-rejected svg polyline {
+    .summary-container .requirement-rejected svg path,
+    .summary-container .requirement-rejected svg polygon,
+    .summary-container .requirement-rejected svg polyline {
       fill: var(--calculated_specials_notifications-alerts-text); }
   .summary-container .requirement-pending {
     color: var(--specials_pending-waiting-caution); }
     .summary-container .requirement-pending svg circle {
       fill: var(--specials_pending-waiting-caution); }
-    .summary-container .requirement-pending svg path, .summary-container .requirement-pending svg polygon, .summary-container .requirement-pending svg polyline {
+    .summary-container .requirement-pending svg path,
+    .summary-container .requirement-pending svg polygon,
+    .summary-container .requirement-pending svg polyline {
       fill: var(--calculated_specials_notifications-pending-text); }
   .summary-container .requirement-incomplete {
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .summary-container .requirement-incomplete svg circle {
       fill: var(--labels_secondary-inactive-label-text-graphics); }
-    .summary-container .requirement-incomplete svg path, .summary-container .requirement-incomplete svg polygon, .summary-container .requirement-incomplete svg polyline {
+    .summary-container .requirement-incomplete svg path,
+    .summary-container .requirement-incomplete svg polygon,
+    .summary-container .requirement-incomplete svg polyline {
       fill: var(--labels_secondary-inactive-label-text-graphics); }
   .summary-container .requirement-wrapper {
     width: 50rem; }
     .summary-container .requirement-wrapper .requirement-doc-icon {
       width: 6rem;
-      margin: 1rem 1rem .5rem 0; }
+      margin: 1rem 1rem 0.5rem 0; }
       .summary-container .requirement-wrapper .requirement-doc-icon svg .verification-doc {
         fill: var(--labels_secondary-inactive-label-text-graphics); }
   .summary-container .requirement-stauts {
@@ -2162,7 +2188,7 @@ table th {
     line-height: 1;
     font-weight: bold; }
   .summary-container .assets-wrapper {
-    font-size: .8rem;
+    font-size: 0.8rem;
     margin-right: 1.5rem; }
     .summary-container .assets-wrapper .assets-description {
       width: 86%; }
@@ -2172,7 +2198,7 @@ table th {
     .summary-container .assets-wrapper .donut-container-xht {
       height: 40rem; }
     .summary-container .assets-wrapper .price-content {
-      padding: 0 .5rem; }
+      padding: 0 0.5rem; }
     .summary-container .assets-wrapper .price-text {
       color: var(--labels_secondary-inactive-label-text-graphics);
       font-weight: bold; }
@@ -2180,7 +2206,7 @@ table th {
       background: repeating-linear-gradient(-45deg, var(--base_background), var(--base_background) 2px, #cccbcb 2px, #cccbcb 4px);
       font-size: 1.2rem;
       font-weight: bold;
-      padding: .5rem;
+      padding: 0.5rem;
       color: var(--labels_secondary-inactive-label-text-graphics); }
     .summary-container .assets-wrapper .asset-changes {
       background-color: var(--specials_buttons-links-and-highlights); }
@@ -2188,9 +2214,11 @@ table th {
       height: 3.5rem; }
       .summary-container .assets-wrapper .coin-price-container .coin-price {
         width: 3rem; }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0,
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
           fill: var(--coin-btc); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0,
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
           fill: var(--coin-eth); }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
           fill: var(--coin-bch); }
@@ -2297,7 +2325,8 @@ table th {
   .fee-limits-wrapper table {
     border-collapse: collapse;
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
-  .fee-limits-wrapper td, .fee-limits-wrapper th {
+  .fee-limits-wrapper td,
+  .fee-limits-wrapper th {
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
   .fee-limits-wrapper .account-limits {
     margin: 1rem 0;
@@ -2314,21 +2343,22 @@ table th {
     border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
   .fee-limits-wrapper .account-limits-coin {
     border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    padding: .25rem .5rem;
+    padding: 0.25rem 0.5rem;
     width: 14rem; }
   .fee-limits-wrapper .account-limits-status {
-    padding: .25rem .5rem; }
+    padding: 0.25rem 0.5rem; }
   .fee-limits-wrapper .account-limits-value {
-    padding: .25rem 1rem; }
+    padding: 0.25rem 1rem; }
   .fee-limits-wrapper .limit-head-currency {
     font-weight: normal !important;
-    padding: .25rem .5rem; }
+    padding: 0.25rem 0.5rem; }
   .fee-limits-wrapper .limit-head {
     font-weight: normal !important;
-    padding: .25rem 1rem; }
+    padding: 0.25rem 1rem; }
 
 @media (max-width: 920px) {
-  .summary-container .summary-block_wrapper .summary-block-title, .summary-container .summary-block-secondaryTitle {
+  .summary-container .summary-block_wrapper .summary-block-title,
+  .summary-container .summary-block-secondaryTitle {
     font-size: 1.8rem; }
   .summary-container .summary-content-txt {
     font-size: 1.2rem !important; }
@@ -2376,10 +2406,12 @@ table th {
 
 .market-list__container .market-list__block .market-list__coin-icons {
   width: 2.8rem;
-  margin: .3rem .3rem 0 .3rem; }
-  .market-list__container .market-list__block .market-list__coin-icons svg .btc0, .market-list__container .market-list__block .market-list__coin-icons svg .btc1 {
+  margin: 0.3rem 0.3rem 0 0.3rem; }
+  .market-list__container .market-list__block .market-list__coin-icons svg .btc0,
+  .market-list__container .market-list__block .market-list__coin-icons svg .btc1 {
     fill: var(--coin-btc); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .eth0, .market-list__container .market-list__block .market-list__coin-icons svg .eth1 {
+  .market-list__container .market-list__block .market-list__coin-icons svg .eth0,
+  .market-list__container .market-list__block .market-list__coin-icons svg .eth1 {
     fill: var(--coin-eth); }
   .market-list__container .market-list__block .market-list__coin-icons svg .bch-icon {
     fill: var(--coin-bch); }
@@ -2477,15 +2509,15 @@ table th {
     width: 8rem; }
   .trade_tabs-container .trade-tab-app-title {
     font-family: "Raleway Light";
-    letter-spacing: .3rem;
-    font-size: .8rem; }
+    letter-spacing: 0.3rem;
+    font-size: 0.8rem; }
   .trade_tabs-container .trade_tabs-content {
     border-top: 2px solid var(--labels_important-active-labels-text-graphics);
-    font-size: .8rem; }
+    font-size: 0.8rem; }
   .trade_tabs-container .trade_tabs-link {
     color: var(--specials_buttons-links-and-highlights);
-    margin: .5rem 0;
-    padding: 0 .5rem;
+    margin: 0.5rem 0;
+    padding: 0 0.5rem;
     text-transform: uppercase; }
   .trade_tabs-container .link-separator {
     border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
@@ -2493,7 +2525,7 @@ table th {
     background-color: var(--base_background);
     color: var(--base_inactive-button);
     margin: 0;
-    padding-right: .5rem; }
+    padding-right: 0.5rem; }
     .trade_tabs-container .trade_tabs-search-field::placeholder {
       color: var(--base_inactive-button); }
   .trade_tabs-container .trade_tabs-search-outline {
@@ -2574,8 +2606,8 @@ table th {
       border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
       color: var(--labels_secondary-inactive-label-text-graphics);
       position: relative;
-      bottom: .5rem;
-      right: .5rem; }
+      bottom: 0.5rem;
+      right: 0.5rem; }
       .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: var(--labels_secondary-inactive-label-text-graphics) !important; }
       .trade_tabs-container .trade-tab-list:hover svg .btc0,
@@ -2730,8 +2762,8 @@ table th {
   width: 15rem; }
 
 .layout-mobile.home_container-mobile .trade-tab-app-title {
-  font-family: "Raleway Light";
-  letter-spacing: .3rem;
+  font-family: 'Raleway Light';
+  letter-spacing: 0.3rem;
   font-size: 1.2rem; }
 
 .layout-mobile.home_container-mobile .market-button {
@@ -2765,7 +2797,7 @@ table th {
   bottom: -106px;
   width: 100vw;
   transition: all 0.25s ease-out 0s;
-  color: #FFFFFF; }
+  color: #ffffff; }
   .operator-controls__wrapper.open {
     bottom: 0;
     z-index: 10002 !important; }
@@ -2777,7 +2809,7 @@ table th {
 .operator-controls__button {
   height: 30px;
   font-size: 16px;
-  background-color: #0000FF;
+  background-color: #0000ff;
   width: 162px;
   margin-right: 8px;
   cursor: pointer;
@@ -2785,7 +2817,7 @@ table th {
   justify-content: center;
   align-items: center; }
   .operator-controls__button.disabled {
-    color: #FFFFFFB3;
+    color: #ffffffb3;
     cursor: not-allowed; }
 
 .operator-controls__panel {
@@ -2793,8 +2825,8 @@ table th {
   justify-content: space-between;
   height: 106px;
   width: 100%;
-  border-top: solid #A7A7A7 1px;
-  background-color: #0000FF; }
+  border-top: solid #a7a7a7 1px;
+  background-color: #0000ff; }
 
 .operator-controls__panel-list {
   display: flex;
@@ -2810,9 +2842,9 @@ table th {
   margin: 0 35px; }
 
 .operator-controls__publish-button {
-  color: #FFFFFF;
-  background-color: #FF0000;
-  border: 1px solid #FF0000;
+  color: #ffffff;
+  background-color: #ff0000;
+  border: 1px solid #ff0000;
   border-radius: 10px;
   height: 50px;
   width: 145px;
@@ -2820,7 +2852,7 @@ table th {
   text-transform: uppercase; }
 
 .operator-controls__save-button {
-  color: #FFFFFF;
+  color: #ffffff;
   background-color: #288500;
   border: 1px solid #288500;
   font-weight: bold; }
@@ -2828,13 +2860,15 @@ table th {
     width: 101px; }
 
 .operator-controls__modal .ant-select-selector {
-  background-color: #FFFFFF !important; }
+  background-color: #ffffff !important; }
 
 .operator-controls__modal .ant-input {
   color: #0a0a0a !important;
-  background-color: #FFFFFF !important; }
+  background-color: #ffffff !important; }
 
-.operator-controls__modal .ant-radio, .operator-controls__modal .ant-radio-wrapper, .operator-controls__modal .ant-radio-group {
+.operator-controls__modal .ant-radio,
+.operator-controls__modal .ant-radio-wrapper,
+.operator-controls__modal .ant-radio-group {
   color: #ffffff; }
 
 .operator-controls__modal .ant-radio-inner {
@@ -2860,14 +2894,14 @@ table th {
 .operator-controls__modal .ant-divider-horizontal,
 .operator-controls__modal .ant-divider,
 .operator-controls__modal .ant-divider-inner-text {
-  color: #FFFFFFB3 !important;
+  color: #ffffffb3 !important;
   font-size: small !important;
   font-weight: 600;
-  border-color: #FFFFFFB3 !important; }
+  border-color: #ffffffb3 !important; }
 
 .operator-controls__modal .ant-divider-with-text::after,
 .operator-controls__modal .ant-divider-with-text::before {
-  border-color: #FFFFFFB3 !important; }
+  border-color: #ffffffb3 !important; }
 
 .operator-controls__modal .ant-divider-inner-text {
   width: 300px;
@@ -2875,22 +2909,28 @@ table th {
   overflow: hidden;
   text-overflow: ellipsis; }
 
+.operator-controls__modal .rc-color-picker-trigger {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #322D2D99;
+  border-radius: 38px; }
+
 .operator-controls__modal .ReactModal__Content {
-  background-color: #0000FF !important;
-  color: #FFFFFF !important;
+  background-color: #0000ff !important;
+  color: #ffffff !important;
   padding-top: 20px !important;
   margin-bottom: 136px !important;
   max-width: calc(100vw - 2rem) !important;
   max-height: calc(100vh - 160px) !important;
   z-index: 10001 !important; }
   .operator-controls__modal .ReactModal__Content .action_notification-image {
-    fill: #FFFFFF !important; }
+    fill: #ffffff !important; }
 
 .operator-controls__modal .ReactModal__Overlay {
   position: fixed;
   z-index: 10001 !important;
   background-color: transparent !important;
-  color: #FFFFFF !important; }
+  color: #ffffff !important; }
 
 .operator-controls__modal-open #root {
   filter: none !important;
@@ -2909,8 +2949,8 @@ table th {
     border-bottom: 1px solid white; }
   .operator-controls__all-strings-header .ant-input-search,
   .operator-controls__all-strings-header .ant-input {
-    color: #FFFFFF !important;
-    background-color: #0000FF !important; }
+    color: #ffffff !important;
+    background-color: #0000ff !important; }
 
 .operator-controls__modal-title {
   font-size: 28px;
@@ -2918,21 +2958,22 @@ table th {
   font-family: NHaasGroteskDSPro-95Blk; }
 
 .operator-controls__all-strings-settings-button {
-  color: #FFFFFF !important;
-  border-color: #FFFFFF !important; }
+  color: #ffffff !important;
+  border-color: #ffffff !important; }
 
 .operator-controls__table .ant-select-arrow,
 .operator-controls__table .ant-select-selector {
-  color: #FFFFFF !important;
-  background-color: #0000FF !important;
+  color: #ffffff !important;
+  background-color: #0000ff !important;
   font-weight: bold; }
 
 .operator-controls__tabletable {
   border-collapse: collapse !important; }
 
-.operator-controls__table thead > tr > th, .operator-controls__table tbody > tr > td {
-  background-color: #0000FF !important;
-  color: #FFFFFF !important; }
+.operator-controls__table thead > tr > th,
+.operator-controls__table tbody > tr > td {
+  background-color: #0000ff !important;
+  color: #ffffff !important; }
 
 .operator-controls__table tbody > tr > td {
   border: none !important; }
@@ -2950,7 +2991,7 @@ table th {
   .init-container .success {
     background-color: #288500; }
   .init-container .error {
-    background-color: #FF0000; }
+    background-color: #ff0000; }
   .init-container .header {
     font-size: 40px;
     font-weight: bold;
@@ -3211,7 +3252,7 @@ table th {
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 12px;
       text-align: center;
-      margin-top: -17PX;
+      margin-top: -17px;
       font-weight: lighter;
       color: var(--labels_secondary-inactive-label-text-graphics);
       white-space: nowrap; }
@@ -3316,7 +3357,7 @@ table th {
     background-repeat: no-repeat; }
   .app_bar .app_bar-icon {
     flex: 0;
-    margin: 0 .5rem;
+    margin: 0 0.5rem;
     padding-right: 8px;
     width: 100%; }
   .app_bar .app_bar-main {
@@ -3331,17 +3372,18 @@ table th {
     max-height: 36px;
     min-height: 36px; }
   .app_bar .app_bar-quicktrade-container {
-    margin: 0 .25rem; }
+    margin: 0 0.25rem; }
   .app_bar .app_bar-quicktrade {
     border: 1px solid var(--calculated_base_top-bar-navigation_text-inactive);
-    border-radius: .35rem;
+    border-radius: 0.35rem;
     color: var(--calculated_base_top-bar-navigation_text-inactive);
     font-weight: 400;
     margin: 0 6px;
-    padding: 0 .4rem;
+    padding: 0 0.4rem;
     text-transform: capitalize;
     white-space: nowrap; }
-    .app_bar .app_bar-quicktrade svg .trade-active-2, .app_bar .app_bar-quicktrade svg .st0 {
+    .app_bar .app_bar-quicktrade svg .trade-active-2,
+    .app_bar .app_bar-quicktrade svg .st0 {
       fill: var(--labels_secondary-inactive-label-text-graphics) !important;
       stroke: var(--calculated_base_top-bar-navigation_text-inactive) !important;
       stroke-width: 3 !important; }
@@ -3354,19 +3396,20 @@ table th {
   .app_bar .quick_trade-active {
     border: 1px solid var(--calculated_base_top-bar-navigation_text);
     color: var(--calculated_base_top-bar-navigation_text); }
-    .app_bar .quick_trade-active svg .trade-active-2, .app_bar .quick_trade-active svg .st0 {
+    .app_bar .quick_trade-active svg .trade-active-2,
+    .app_bar .quick_trade-active svg .st0 {
       fill: var(--calculated_base_top-bar-navigation_text) !important;
       stroke: var(--calculated_base_top-bar-navigation_text) !important;
       stroke-width: 3 !important; }
   .app_bar .quicktrade_icon {
-    margin-top: .2rem;
+    margin-top: 0.2rem;
     width: 1rem; }
   .app_bar .app-bar-account {
     color: var(--calculated_base_top-bar-navigation_text);
     cursor: pointer;
     margin-right: 0.8rem; }
   .app_bar .app_bar-pair-font {
-    font-size: .8rem; }
+    font-size: 0.8rem; }
   .app_bar .app_bar-pair-content {
     align-items: center;
     border-left: 1px solid var(--calculated_base_top-bar-navigation_text-inactive);
@@ -3413,7 +3456,7 @@ table th {
     font-size: 1rem;
     font-weight: 400;
     height: 100%;
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
     position: relative; }
   .app_bar .active-tab-pair {
     background-color: var(--base_background);
@@ -3437,7 +3480,9 @@ table th {
     .app_bar .active-tab-pair svg .dai-icon,
     .app_bar .active-tab-pair svg .ltc-icon {
       fill: var(--labels_important-active-labels-text-graphics); }
-    .app_bar .active-tab-pair svg .tab-close, .app_bar .active-tab-pair svg .plus, .app_bar .active-tab-pair svg .double-arrow {
+    .app_bar .active-tab-pair svg .tab-close,
+    .app_bar .active-tab-pair svg .plus,
+    .app_bar .active-tab-pair svg .double-arrow {
       stroke: var(--labels_important-active-labels-text-graphics); }
     .app_bar .active-tab-pair svg .st0 {
       fill: var(--labels_important-active-labels-text-graphics);
@@ -3450,16 +3495,16 @@ table th {
     .app_bar .active-tab-overflow svg .double-arrow {
       stroke: var(--labels_important-active-labels-text-graphics); }
   .app_bar .app-bar-currency-icon {
-    margin: .5rem .3rem 0 .3rem;
+    margin: 0.5rem 0.3rem 0 0.3rem;
     width: 1.5rem; }
   .app_bar .app-bar-tab-close {
-    margin: .2rem .4rem 0 .4rem;
-    width: .9rem; }
+    margin: 0.2rem 0.4rem 0 0.4rem;
+    width: 0.9rem; }
   .app_bar .app-bar-account-icon {
-    margin: .5rem .3rem 0 .3rem;
+    margin: 0.5rem 0.3rem 0 0.3rem;
     width: 1.5rem; }
   .app_bar .app-bar-account-moon-icon {
-    margin: .2rem .3rem 0 .3rem;
+    margin: 0.2rem 0.3rem 0 0.3rem;
     width: 1rem; }
     .app_bar .app-bar-account-moon-icon svg .moon-icon {
       fill: #808080; }
@@ -3469,7 +3514,7 @@ table th {
     border-radius: 5px; }
   .app_bar .toggle_button-wrapper .toggle-content {
     color: var(--calculated_base_top-bar-navigation_text);
-    border-radius: .35rem;
+    border-radius: 0.35rem;
     padding: 0px 0.1rem; }
     .app_bar .toggle_button-wrapper .toggle-content .dark .moon-icon {
       fill: var(--calculated_base_top-bar-navigation_text); }
@@ -3523,7 +3568,8 @@ table th {
   .app_bar .app_bar-pair-content .bnb-icon,
   .app_bar .app_bar-pair-content .tusd-icon,
   .app_bar .app_bar-pair-content .dai-icon,
-  .app_bar .app_bar-pair-content .ltc-icon, .app_bar .app-bar-tab-close .btc0,
+  .app_bar .app_bar-pair-content .ltc-icon,
+  .app_bar .app-bar-tab-close .btc0,
   .app_bar .app-bar-tab-close .btc1,
   .app_bar .app-bar-tab-close .eth0,
   .app_bar .app-bar-tab-close .eth1,
@@ -3538,7 +3584,8 @@ table th {
   .app_bar .app-bar-tab-close .bnb-icon,
   .app_bar .app-bar-tab-close .tusd-icon,
   .app_bar .app-bar-tab-close .dai-icon,
-  .app_bar .app-bar-tab-close .ltc-icon, .app_bar .app-bar-currency-icon .btc0,
+  .app_bar .app-bar-tab-close .ltc-icon,
+  .app_bar .app-bar-currency-icon .btc0,
   .app_bar .app-bar-currency-icon .btc1,
   .app_bar .app-bar-currency-icon .eth0,
   .app_bar .app-bar-currency-icon .eth1,
@@ -3553,7 +3600,8 @@ table th {
   .app_bar .app-bar-currency-icon .bnb-icon,
   .app_bar .app-bar-currency-icon .tusd-icon,
   .app_bar .app-bar-currency-icon .dai-icon,
-  .app_bar .app-bar-currency-icon .ltc-icon, .app_bar .app-bar-account-icon svg .btc0,
+  .app_bar .app-bar-currency-icon .ltc-icon,
+  .app_bar .app-bar-account-icon svg .btc0,
   .app_bar .app-bar-account-icon svg .btc1,
   .app_bar .app-bar-account-icon svg .eth0,
   .app_bar .app-bar-account-icon svg .eth1,
@@ -3570,9 +3618,19 @@ table th {
   .app_bar .app-bar-account-icon svg .dai-icon,
   .app_bar .app-bar-account-icon svg .ltc-icon {
     fill: var(--calculated_base_top-bar-navigation_text-inactive); }
-  .app_bar .app_bar-pair-content .tab-close, .app_bar .app_bar-pair-content .plus, .app_bar .app-bar-tab-close .tab-close, .app_bar .app-bar-tab-close .plus, .app_bar .app-bar-currency-icon .tab-close, .app_bar .app-bar-currency-icon .plus, .app_bar .app-bar-account-icon svg .tab-close, .app_bar .app-bar-account-icon svg .plus {
+  .app_bar .app_bar-pair-content .tab-close,
+  .app_bar .app_bar-pair-content .plus,
+  .app_bar .app-bar-tab-close .tab-close,
+  .app_bar .app-bar-tab-close .plus,
+  .app_bar .app-bar-currency-icon .tab-close,
+  .app_bar .app-bar-currency-icon .plus,
+  .app_bar .app-bar-account-icon svg .tab-close,
+  .app_bar .app-bar-account-icon svg .plus {
     stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
-  .app_bar .app_bar-pair-content .st0, .app_bar .app-bar-tab-close .st0, .app_bar .app-bar-currency-icon .st0, .app_bar .app-bar-account-icon svg .st0 {
+  .app_bar .app_bar-pair-content .st0,
+  .app_bar .app-bar-tab-close .st0,
+  .app_bar .app-bar-currency-icon .st0,
+  .app_bar .app-bar-account-icon svg .st0 {
     fill: var(--calculated_base_top-bar-navigation_text) !important;
     stroke-width: 0rem; }
   .app_bar .account-inactive .app-bar-account-icon svg .st0 {
@@ -3633,7 +3691,7 @@ table th {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: .8rem;
+    font-size: 0.8rem;
     line-height: 1;
     font-weight: bold; }
   .app_bar .app-bar-account-menu {
@@ -3652,35 +3710,64 @@ table th {
     .app_bar .app-bar-account-menu .app-bar-account-menu-list {
       color: var(--calculated_base_top-bar-navigation_text-inactive);
       cursor: pointer;
-      padding: .2rem 0; }
+      padding: 0.2rem 0; }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon {
-      margin-right: .4rem;
+      margin-right: 0.4rem;
       width: 1rem; }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .account-active-1 {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app_bar .app-bar-account-menu .menu-notification-active {
       color: var(--specials_notifications-alerts-warnings); }
-      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-summary0, .app_bar .app-bar-account-menu .menu-notification-active svg .tab-wallet0, .app_bar .app-bar-account-menu .menu-notification-active svg .tab-setting0, .app_bar .app-bar-account-menu .menu-notification-active svg .tab-verify0,
-      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-security0, .app_bar .app-bar-account-menu .menu-notification-active svg .tab-api0 {
+      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-summary0,
+      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-wallet0,
+      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-setting0,
+      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-verify0,
+      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-security0,
+      .app_bar .app-bar-account-menu .menu-notification-active svg .tab-api0 {
         fill: var(--specials_notifications-alerts-warnings); }
     .app_bar .app-bar-account-menu .menu-active {
       color: var(--labels_important-active-labels-text-graphics); }
-      .app_bar .app-bar-account-menu .menu-active svg .tab-summary0, .app_bar .app-bar-account-menu .menu-active svg .tab-wallet0, .app_bar .app-bar-account-menu .menu-active svg .tab-setting0, .app_bar .app-bar-account-menu .menu-active svg .tab-verify0,
-      .app_bar .app-bar-account-menu .menu-active svg .tab-security0, .app_bar .app-bar-account-menu .menu-active svg .tab-api0, .app_bar .app-bar-account-menu .menu-active svg .account-active-1 {
+      .app_bar .app-bar-account-menu .menu-active svg .tab-summary0,
+      .app_bar .app-bar-account-menu .menu-active svg .tab-wallet0,
+      .app_bar .app-bar-account-menu .menu-active svg .tab-setting0,
+      .app_bar .app-bar-account-menu .menu-active svg .tab-verify0,
+      .app_bar .app-bar-account-menu .menu-active svg .tab-security0,
+      .app_bar .app-bar-account-menu .menu-active svg .tab-api0,
+      .app_bar .app-bar-account-menu .menu-active svg .account-active-1 {
         fill: var(--labels_important-active-labels-text-graphics); }
     .app_bar .app-bar-account-menu .notification-content {
       width: 1.2rem; }
     .app_bar .app-bar-account-menu .notification {
       color: var(--specials_notifications-alerts-warnings); }
-      .app_bar .app-bar-account-menu .notification svg .tab-summary0, .app_bar .app-bar-account-menu .notification svg .tab-wallet0, .app_bar .app-bar-account-menu .notification svg .tab-setting0, .app_bar .app-bar-account-menu .notification svg .tab-verify0,
-      .app_bar .app-bar-account-menu .notification svg .tab-security0, .app_bar .app-bar-account-menu .notification svg .tab-api0 {
+      .app_bar .app-bar-account-menu .notification svg .tab-summary0,
+      .app_bar .app-bar-account-menu .notification svg .tab-wallet0,
+      .app_bar .app-bar-account-menu .notification svg .tab-setting0,
+      .app_bar .app-bar-account-menu .notification svg .tab-verify0,
+      .app_bar .app-bar-account-menu .notification svg .tab-security0,
+      .app_bar .app-bar-account-menu .notification svg .tab-api0 {
         fill: var(--specials_notifications-alerts-warnings); }
-    .app_bar .app-bar-account-menu .security_notification, .app_bar .app-bar-account-menu .verification_notification, .app_bar .app-bar-account-menu .wallet_notification {
+    .app_bar .app-bar-account-menu .security_notification,
+    .app_bar .app-bar-account-menu .verification_notification,
+    .app_bar .app-bar-account-menu .wallet_notification {
       color: var(--calculated_specials_notifications-alerts-inactive); }
-      .app_bar .app-bar-account-menu .security_notification svg .tab-summary0, .app_bar .app-bar-account-menu .security_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .security_notification svg .tab-setting0, .app_bar .app-bar-account-menu .security_notification svg .tab-verify0,
-      .app_bar .app-bar-account-menu .security_notification svg .tab-security0, .app_bar .app-bar-account-menu .security_notification svg .tab-api0, .app_bar .app-bar-account-menu .verification_notification svg .tab-summary0, .app_bar .app-bar-account-menu .verification_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .verification_notification svg .tab-setting0, .app_bar .app-bar-account-menu .verification_notification svg .tab-verify0,
-      .app_bar .app-bar-account-menu .verification_notification svg .tab-security0, .app_bar .app-bar-account-menu .verification_notification svg .tab-api0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-summary0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-setting0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-verify0,
-      .app_bar .app-bar-account-menu .wallet_notification svg .tab-security0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-api0 {
+      .app_bar .app-bar-account-menu .security_notification svg .tab-summary0,
+      .app_bar .app-bar-account-menu .security_notification svg .tab-wallet0,
+      .app_bar .app-bar-account-menu .security_notification svg .tab-setting0,
+      .app_bar .app-bar-account-menu .security_notification svg .tab-verify0,
+      .app_bar .app-bar-account-menu .security_notification svg .tab-security0,
+      .app_bar .app-bar-account-menu .security_notification svg .tab-api0,
+      .app_bar .app-bar-account-menu .verification_notification svg .tab-summary0,
+      .app_bar .app-bar-account-menu .verification_notification svg .tab-wallet0,
+      .app_bar .app-bar-account-menu .verification_notification svg .tab-setting0,
+      .app_bar .app-bar-account-menu .verification_notification svg .tab-verify0,
+      .app_bar .app-bar-account-menu .verification_notification svg .tab-security0,
+      .app_bar .app-bar-account-menu .verification_notification svg .tab-api0,
+      .app_bar .app-bar-account-menu .wallet_notification svg .tab-summary0,
+      .app_bar .app-bar-account-menu .wallet_notification svg .tab-wallet0,
+      .app_bar .app-bar-account-menu .wallet_notification svg .tab-setting0,
+      .app_bar .app-bar-account-menu .wallet_notification svg .tab-verify0,
+      .app_bar .app-bar-account-menu .wallet_notification svg .tab-security0,
+      .app_bar .app-bar-account-menu .wallet_notification svg .tab-api0 {
         fill: var(--calculated_specials_notifications-alerts-inactive); }
     .app_bar .app-bar-account-menu .app-bar-account-menu-notification {
       position: absolute;
@@ -3694,7 +3781,7 @@ table th {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: .8rem;
+      font-size: 0.8rem;
       line-height: 1;
       font-weight: bold; }
     .app_bar .app-bar-account-menu .security_selected,
@@ -3717,7 +3804,7 @@ table th {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: .8rem;
+      font-size: 0.8rem;
       line-height: 1;
       font-weight: bold; }
 
@@ -3745,7 +3832,7 @@ table th {
     justify-content: center;
     position: relative; }
   .app_bar-mobile .app-bar-currency-icon {
-    margin: .5rem .3rem 0 .3rem;
+    margin: 0.5rem 0.3rem 0 0.3rem;
     width: 1.5rem; }
     .app_bar-mobile .app-bar-currency-icon .st0 {
       fill: var(--calculated_base_top-bar-navigation_text) !important;
@@ -3762,7 +3849,7 @@ table th {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: .8rem;
+    font-size: 0.8rem;
     line-height: 1;
     font-weight: bold; }
 
@@ -3785,35 +3872,63 @@ table th {
     margin: auto;
     position: relative; }
   .app-menu-bar .app-menu-bar-icon {
-    margin-right: .4rem;
+    margin-right: 0.4rem;
     width: 1rem; }
   .app-menu-bar .active-menu {
     background-color: var(--base_background);
     color: var(--labels_important-active-labels-text-graphics);
     height: 2.5rem;
     position: relative; }
-    .app-menu-bar .active-menu svg .tab-summary0, .app-menu-bar .active-menu svg .tab-wallet0, .app-menu-bar .active-menu svg .tab-setting0, .app-menu-bar .active-menu svg .tab-verify0,
-    .app-menu-bar .active-menu svg .tab-security0, .app-menu-bar .active-menu svg .tab-api0 {
+    .app-menu-bar .active-menu svg .tab-summary0,
+    .app-menu-bar .active-menu svg .tab-wallet0,
+    .app-menu-bar .active-menu svg .tab-setting0,
+    .app-menu-bar .active-menu svg .tab-verify0,
+    .app-menu-bar .active-menu svg .tab-security0,
+    .app-menu-bar .active-menu svg .tab-api0 {
       fill: var(--labels_important-active-labels-text-graphics); }
   .app-menu-bar .menu-notification-active {
     background-color: var(--calculated_base_top-bar-navigation_text);
     height: 2.5rem;
     position: relative;
     color: var(--specials_notifications-alerts-warnings); }
-    .app-menu-bar .menu-notification-active svg .tab-summary0, .app-menu-bar .menu-notification-active svg .tab-wallet0, .app-menu-bar .menu-notification-active svg .tab-setting0, .app-menu-bar .menu-notification-active svg .tab-verify0,
-    .app-menu-bar .menu-notification-active svg .tab-security0, .app-menu-bar .menu-notification-active svg .tab-api0 {
+    .app-menu-bar .menu-notification-active svg .tab-summary0,
+    .app-menu-bar .menu-notification-active svg .tab-wallet0,
+    .app-menu-bar .menu-notification-active svg .tab-setting0,
+    .app-menu-bar .menu-notification-active svg .tab-verify0,
+    .app-menu-bar .menu-notification-active svg .tab-security0,
+    .app-menu-bar .menu-notification-active svg .tab-api0 {
       fill: var(--specials_notifications-alerts-warnings); }
   .app-menu-bar .notification {
     color: var(--specials_notifications-alerts-warnings); }
-    .app-menu-bar .notification svg .tab-summary0, .app-menu-bar .notification svg .tab-wallet0, .app-menu-bar .notification svg .tab-setting0, .app-menu-bar .notification svg .tab-verify0,
-    .app-menu-bar .notification svg .tab-security0, .app-menu-bar .notification svg .tab-api0 {
+    .app-menu-bar .notification svg .tab-summary0,
+    .app-menu-bar .notification svg .tab-wallet0,
+    .app-menu-bar .notification svg .tab-setting0,
+    .app-menu-bar .notification svg .tab-verify0,
+    .app-menu-bar .notification svg .tab-security0,
+    .app-menu-bar .notification svg .tab-api0 {
       fill: var(--specials_notifications-alerts-warnings); }
-  .app-menu-bar .security_notification, .app-menu-bar .verification_notification, .app-menu-bar .wallet_notification {
+  .app-menu-bar .security_notification,
+  .app-menu-bar .verification_notification,
+  .app-menu-bar .wallet_notification {
     color: var(--calculated_specials_notifications-alerts-inactive); }
-    .app-menu-bar .security_notification svg .tab-summary0, .app-menu-bar .security_notification svg .tab-wallet0, .app-menu-bar .security_notification svg .tab-setting0, .app-menu-bar .security_notification svg .tab-verify0,
-    .app-menu-bar .security_notification svg .tab-security0, .app-menu-bar .security_notification svg .tab-api0, .app-menu-bar .verification_notification svg .tab-summary0, .app-menu-bar .verification_notification svg .tab-wallet0, .app-menu-bar .verification_notification svg .tab-setting0, .app-menu-bar .verification_notification svg .tab-verify0,
-    .app-menu-bar .verification_notification svg .tab-security0, .app-menu-bar .verification_notification svg .tab-api0, .app-menu-bar .wallet_notification svg .tab-summary0, .app-menu-bar .wallet_notification svg .tab-wallet0, .app-menu-bar .wallet_notification svg .tab-setting0, .app-menu-bar .wallet_notification svg .tab-verify0,
-    .app-menu-bar .wallet_notification svg .tab-security0, .app-menu-bar .wallet_notification svg .tab-api0 {
+    .app-menu-bar .security_notification svg .tab-summary0,
+    .app-menu-bar .security_notification svg .tab-wallet0,
+    .app-menu-bar .security_notification svg .tab-setting0,
+    .app-menu-bar .security_notification svg .tab-verify0,
+    .app-menu-bar .security_notification svg .tab-security0,
+    .app-menu-bar .security_notification svg .tab-api0,
+    .app-menu-bar .verification_notification svg .tab-summary0,
+    .app-menu-bar .verification_notification svg .tab-wallet0,
+    .app-menu-bar .verification_notification svg .tab-setting0,
+    .app-menu-bar .verification_notification svg .tab-verify0,
+    .app-menu-bar .verification_notification svg .tab-security0,
+    .app-menu-bar .verification_notification svg .tab-api0,
+    .app-menu-bar .wallet_notification svg .tab-summary0,
+    .app-menu-bar .wallet_notification svg .tab-wallet0,
+    .app-menu-bar .wallet_notification svg .tab-setting0,
+    .app-menu-bar .wallet_notification svg .tab-verify0,
+    .app-menu-bar .wallet_notification svg .tab-security0,
+    .app-menu-bar .wallet_notification svg .tab-api0 {
       fill: var(--calculated_specials_notifications-alerts-inactive); }
   .app-menu-bar .app-menu-bar-icon-notification {
     position: absolute;
@@ -3843,7 +3958,7 @@ table th {
 .app-bar-add-tab-search {
   color: var(--labels_secondary-inactive-label-text-graphics);
   height: 2.2rem;
-  margin-bottom: .5rem; }
+  margin-bottom: 0.5rem; }
 
 .search-field {
   width: 100%; }
@@ -3851,10 +3966,10 @@ table th {
 .app-bar-search-field {
   flex-direction: row-reverse;
   margin: 0;
-  padding-right: .5rem; }
+  padding-right: 0.5rem; }
 
 .app-bar-search-field-outline {
-  height: .5px; }
+  height: 0.5px; }
 
 .app-bar-add-tab-menu {
   background-color: var(--base_background);
@@ -3873,9 +3988,9 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-menu-list {
     background-color: var(--base_top-bar-navigation);
     color: var(--labels_secondary-inactive-label-text-graphics);
-    font-size: .8rem;
+    font-size: 0.8rem;
     height: 2.5rem;
-    padding: .5rem .8rem;
+    padding: 0.5rem 0.8rem;
     width: 3.2rem;
     max-width: 3.2rem;
     /* (22 -6) / 5 */ }
@@ -3884,15 +3999,15 @@ table th {
     color: var(--labels_secondary-inactive-label-text-graphics);
     font-weight: bold; }
   .app-bar-add-tab-menu .app-bar-add-tab-content {
-    font-size: .8rem;
+    font-size: 0.8rem;
     overflow-y: scroll;
-    padding: .3rem 0; }
+    padding: 0.3rem 0; }
   .app-bar-add-tab-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
-    font-size: .8rem;
+    font-size: 0.8rem;
     overflow-y: scroll;
-    padding: .3rem 0; }
+    padding: 0.3rem 0; }
   .app-bar-add-tab-menu .app-bar-add-tab-content-list {
     color: var(--labels_secondary-inactive-label-text-graphics);
     height: 2.2rem; }
@@ -3921,11 +4036,11 @@ table th {
         fill: var(--labels_secondary-inactive-label-text-graphics) !important;
         stroke-width: 0rem; }
   .app-bar-add-tab-menu .app-bar-tab-setting {
-    margin: .3rem .4rem 0 .4rem;
+    margin: 0.3rem 0.4rem 0 0.4rem;
     width: 1rem; }
   .app-bar-add-tab-menu .app-bar-add-tab-icons {
     width: 1.2rem;
-    margin: .3rem .3rem 0 .3rem; }
+    margin: 0.3rem 0.3rem 0 0.3rem; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0,
@@ -3942,7 +4057,8 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-setting svg .tusd-icon,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .dai-icon,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .ltc-icon,
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1,
@@ -3960,24 +4076,32 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .ltc-icon,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .default-icon {
     fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .plus, .app-bar-add-tab-menu .app-bar-tab-setting svg .minus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .plus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .minus {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .plus,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .minus,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .plus,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .minus {
     stroke: var(--labels_secondary-inactive-label-text-graphics) !important;
-    stroke-width: .2rem; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .st0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .st0 {
+    stroke-width: 0.2rem; }
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .st0,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .st0 {
     fill: var(--calculated_base_top-bar-navigation_text);
     stroke-width: 0rem; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .icon-check-1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .icon-check-1 {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .icon-check-1,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .icon-check-1 {
     stroke: var(--calculated_base_top-bar-navigation_text); }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .xht-icon-1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xht-icon-1 {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .xht-icon-1,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xht-icon-1 {
     fill: var(--base_background) !important; }
-  .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-down, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-down {
+  .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-down,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-down {
     color: var(--trading_selling-related-elements); }
-  .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
+  .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
     color: var(--trading_buying-related-elements); }
 
 .app_bar-link {
-  margin: .5rem 0;
-  padding: 0 .5rem;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
   text-transform: uppercase; }
 
 .app-bar_add-tab-price {
@@ -4001,7 +4125,8 @@ table th {
     font-size: 1rem !important;
     height: 45px;
     min-height: 45px; }
-    .app-menu-bar .active-menu, .app-menu-bar .app-menu-bar-content {
+    .app-menu-bar .active-menu,
+    .app-menu-bar .app-menu-bar-content {
       height: 3rem; }
     .app-menu-bar .app-menu-bar-content {
       width: 12rem; }
@@ -4052,7 +4177,7 @@ table th {
     height: 4rem; }
 
 .direction_rtl .app-menu-bar .app-menu-bar-icon {
-  margin-left: .4rem;
+  margin-left: 0.4rem;
   margin-right: 0; }
 
 .direction_rtl .app-menu-bar .app-menu-bar-icon-notification {
@@ -4062,7 +4187,7 @@ table th {
 
 .direction_rtl .app_bar .app-bar-account-menu .app-bar-account-list-icon {
   margin-right: 0;
-  margin-left: .4rem; }
+  margin-left: 0.4rem; }
 
 .check_title-container {
   display: flex;
@@ -4147,15 +4272,23 @@ table th {
   width: 1rem; }
   .verification-stauts.incomplete svg circle, .verification-stauts.pending svg circle {
     fill: var(--specials_pending-waiting-caution); }
-  .verification-stauts.incomplete svg path, .verification-stauts.incomplete svg polygon, .verification-stauts.incomplete svg polyline, .verification-stauts.pending svg path, .verification-stauts.pending svg polygon, .verification-stauts.pending svg polyline {
+  .verification-stauts.incomplete svg path,
+  .verification-stauts.incomplete svg polygon,
+  .verification-stauts.incomplete svg polyline, .verification-stauts.pending svg path,
+  .verification-stauts.pending svg polygon,
+  .verification-stauts.pending svg polyline {
     fill: var(--calculated_specials_notifications-pending-text); }
   .verification-stauts.rejected svg circle {
     fill: var(--specials_notifications-alerts-warnings); }
-  .verification-stauts.rejected svg path, .verification-stauts.rejected svg polygon, .verification-stauts.rejected svg polyline {
+  .verification-stauts.rejected svg path,
+  .verification-stauts.rejected svg polygon,
+  .verification-stauts.rejected svg polyline {
     fill: var(--calculated_specials_notifications-alerts-text); }
   .verification-stauts.verified svg circle {
     fill: var(--specials_checks-okay-done); }
-  .verification-stauts.verified svg path, .verification-stauts.verified svg polygon, .verification-stauts.verified svg polyline {
+  .verification-stauts.verified svg path,
+  .verification-stauts.verified svg polygon,
+  .verification-stauts.verified svg polyline {
     fill: var(--calculated_specials_notifications-success-text); }
 
 .empty-notification {
@@ -4274,7 +4407,7 @@ table th {
 .wallet-wrapper .donut-container {
   height: 18rem; }
   .wallet-wrapper .donut-container .donut-label-pair {
-    font-size: .8rem; }
+    font-size: 0.8rem; }
 
 .wallet_section-title {
   text-transform: uppercase;
@@ -4299,8 +4432,8 @@ table th {
     margin-top: 0; }
 
 .wallet_link {
-  margin: .5rem 0;
-  padding: 0 .5rem;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
   text-transform: uppercase; }
 
 .direction_ltr .sidebar_section-container .wallet-wrapper .accordion_section_title .wallet_section-title:after {
@@ -4433,7 +4566,8 @@ table th {
         .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active .sidebar_hub-section-header .sidebar_hub-section-title {
           color: var(--labels_important-active-labels-text-graphics);
           font-weight: bold; }
-  .sidebar_hub-wrapper .sign_up-btn, .sidebar_hub-wrapper .log_in-btn {
+  .sidebar_hub-wrapper .sign_up-btn,
+  .sidebar_hub-wrapper .log_in-btn {
     background: var(--base_background) !important;
     color: var(--labels_important-active-labels-text-graphics) !important;
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
@@ -4669,7 +4803,8 @@ table th {
 .post-content .notifications_list-item-text a {
   color: var(--specials_buttons-links-and-highlights); }
 
-.post-content .notifications_list-item-text span, .post-content .notifications_list-item-text p {
+.post-content .notifications_list-item-text span,
+.post-content .notifications_list-item-text p {
   background-color: var(--base_wallet-sidebar-and-popup) !important; }
 
 .dropdown-content .dropdown-option {
@@ -4863,7 +4998,7 @@ table th {
   left: 1.5rem; }
 
 .input_icon {
-  margin-right: .25rem;
+  margin-right: 0.25rem;
   width: 1.2rem; }
 
 .custom-field-width {
@@ -4930,11 +5065,13 @@ table th {
 .no_bottom {
   bottom: 0; }
 
-.file_wrapper, .multiple_file_wrapper {
+.file_wrapper,
+.multiple_file_wrapper {
   display: flex;
   justify-content: space-between;
   padding-right: 0 !important; }
-  .file_wrapper > .action_notification-wrapper, .multiple_file_wrapper > .action_notification-wrapper {
+  .file_wrapper > .action_notification-wrapper,
+  .multiple_file_wrapper > .action_notification-wrapper {
     position: relative;
     top: 0 !important; }
 
@@ -5200,14 +5337,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc(100vh - 4rem);
-  max-height: calc(100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc(100vh - 8rem);
-    max-height: calc(100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -5562,7 +5699,6 @@ table th {
   max-height: 100%;
   position: absolute;
   pointer-events: none;
-  background: url("/assets/loader-light.gif");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center; }
@@ -5827,7 +5963,8 @@ table th {
     .table-wrapper .table_body-wrapper tr.table_body-row td {
       border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics);
       border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
-    .table-wrapper .table_body-wrapper .cancel-animate, .table-wrapper .table_body-wrapper .cancel-row-color, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .sell, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .buy, .table-wrapper .table_body-wrapper .cancel-row-color .action_notification-wrapper .notification-info, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper .cell_value-bar {
+    .table-wrapper .table_body-wrapper .cancel-animate, .table-wrapper .table_body-wrapper .cancel-row-color, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .sell,
+    .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .buy, .table-wrapper .table_body-wrapper .cancel-row-color .action_notification-wrapper .notification-info, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper .cell_value-bar {
       -webkit-animation: cancelRow 1.4s;
       -moz-animation: cancelRow 1.4s;
       -o-animation: cancelRow 1.4s;
@@ -5916,17 +6053,17 @@ table th {
     padding-left: 0.25rem; }
 
 .donut-label-percentage {
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: bold;
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .donut-label-link {
-  font-size: .7rem;
+  font-size: 0.7rem;
   font-weight: bold;
   fill: var(--specials_buttons-links-and-highlights); }
 
 .donut-label-no-price {
-  font-size: .7rem;
+  font-size: 0.7rem;
   font-weight: bold;
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
@@ -6194,7 +6331,7 @@ table th {
   .bar_wrapper .bar_yAxis line {
     fill: var(--labels_secondary-inactive-label-text-graphics);
     stroke-dasharray: 3 3;
-    stroke-width: .5px; }
+    stroke-width: 0.5px; }
   .bar_wrapper .bar_yAxis .tick text {
     color: var(--labels_important-active-labels-text-graphics);
     font-family: "Raleway";
@@ -6210,7 +6347,7 @@ table th {
     color: var(--labels_important-active-labels-text-graphics);
     font-weight: bold; }
   .bar_wrapper .bar_xAxis .axis_month-total {
-    font-size: .8rem;
+    font-size: 0.8rem;
     font-weight: bold; }
   .bar_wrapper .bar_xAxis .axis_month-total-active {
     color: var(--labels_important-active-labels-text-graphics); }
@@ -6222,22 +6359,26 @@ table th {
   .bar_wrapper .bar_axis_triangle {
     fill: var(--labels_important-active-labels-text-graphics); }
 
-.bar-tooltip, .bar-tooltip-dark {
+.bar-tooltip,
+.bar-tooltip-dark {
   padding: 5px;
   position: absolute;
   z-index: 10; }
-  .bar-tooltip .tool_tip-pair-volume, .bar-tooltip-dark .tool_tip-pair-volume {
-    padding-left: .8rem; }
+  .bar-tooltip .tool_tip-pair-volume,
+  .bar-tooltip-dark .tool_tip-pair-volume {
+    padding-left: 0.8rem; }
 
 .bar-tooltip {
   background-color: var(--base_background);
   border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
-.bar-tooltip::before, .bar-tooltip::after,
-.bar-tooltip-dark::before, .bar-tooltip-dark::after {
+.bar-tooltip::before,
+.bar-tooltip::after,
+.bar-tooltip-dark::before,
+.bar-tooltip-dark::after {
   border: solid transparent;
-  content: " ";
+  content: ' ';
   right: 100%;
   top: 50%;
   height: 0;
@@ -6303,9 +6444,11 @@ foreignObject {
   .input-group__coin-icons svg {
     margin: 0 auto;
     display: block; }
-    .input-group__coin-icons svg .btc0, .input-group__coin-icons svg .btc1 {
+    .input-group__coin-icons svg .btc0,
+    .input-group__coin-icons svg .btc1 {
       fill: var(--coin-btc); }
-    .input-group__coin-icons svg .eth0, .input-group__coin-icons svg .eth1 {
+    .input-group__coin-icons svg .eth0,
+    .input-group__coin-icons svg .eth1 {
       fill: var(--coin-eth); }
     .input-group__coin-icons svg .bch-icon {
       fill: var(--coin-bch); }
@@ -6734,154 +6877,254 @@ foreignObject {
 .with_arrow_trade {
   margin-top: -5px; }
 
-.mobile-drop-down.default-coin, .drop-down.default-coin, .option.default-coin {
+.mobile-drop-down.default-coin,
+.drop-down.default-coin,
+.option.default-coin {
   color: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
-.mobile-drop-down.btc, .drop-down.btc, .option.btc {
+.mobile-drop-down.btc,
+.drop-down.btc,
+.option.btc {
   color: var(--coin-btc) !important; }
 
-.mobile-drop-down.eur, .drop-down.eur, .option.eur {
+.mobile-drop-down.eur,
+.drop-down.eur,
+.option.eur {
   color: var(--coin-eur) !important; }
 
-.mobile-drop-down.bch, .drop-down.bch, .option.bch {
+.mobile-drop-down.bch,
+.drop-down.bch,
+.option.bch {
   color: var(--coin-bch) !important; }
 
-.mobile-drop-down.eth, .drop-down.eth, .option.eth {
+.mobile-drop-down.eth,
+.drop-down.eth,
+.option.eth {
   color: var(--coin-eth) !important; }
 
-.mobile-drop-down.ltc, .drop-down.ltc, .option.ltc {
+.mobile-drop-down.ltc,
+.drop-down.ltc,
+.option.ltc {
   color: var(--coin-ltc) !important; }
 
-.mobile-drop-down.xrp, .drop-down.xrp, .option.xrp {
+.mobile-drop-down.xrp,
+.drop-down.xrp,
+.option.xrp {
   color: var(--coin-xrp) !important; }
 
-.mobile-drop-down.xht, .drop-down.xht, .option.xht {
+.mobile-drop-down.xht,
+.drop-down.xht,
+.option.xht {
   color: var(--coin-xht) !important; }
 
-.mobile-drop-down.eos, .drop-down.eos, .option.eos {
+.mobile-drop-down.eos,
+.drop-down.eos,
+.option.eos {
   color: var(--coin-eos) !important; }
 
-.mobile-drop-down.bnb, .drop-down.bnb, .option.bnb {
+.mobile-drop-down.bnb,
+.drop-down.bnb,
+.option.bnb {
   color: var(--coin-bnb) !important; }
 
-.mobile-drop-down.link, .drop-down.link, .option.link {
+.mobile-drop-down.link,
+.drop-down.link,
+.option.link {
   color: var(--coin-link) !important; }
 
-.mobile-drop-down.trx, .drop-down.trx, .option.trx {
+.mobile-drop-down.trx,
+.drop-down.trx,
+.option.trx {
   color: var(--coin-trx) !important; }
 
-.mobile-drop-down.ada, .drop-down.ada, .option.ada {
+.mobile-drop-down.ada,
+.drop-down.ada,
+.option.ada {
   color: var(--coin-ada) !important; }
 
-.mobile-drop-down.matic, .drop-down.matic, .option.matic {
+.mobile-drop-down.matic,
+.drop-down.matic,
+.option.matic {
   color: var(--coin-matic) !important; }
 
-.mobile-drop-down.neo, .drop-down.neo, .option.neo {
+.mobile-drop-down.neo,
+.drop-down.neo,
+.option.neo {
   color: var(--coin-neo) !important; }
 
-.mobile-drop-down.etc, .drop-down.etc, .option.etc {
+.mobile-drop-down.etc,
+.drop-down.etc,
+.option.etc {
   color: var(--coin-etc) !important; }
 
-.mobile-drop-down.xlm, .drop-down.xlm, .option.xlm {
+.mobile-drop-down.xlm,
+.drop-down.xlm,
+.option.xlm {
   color: var(--coin-xlm) !important; }
 
-.mobile-drop-down.xmr, .drop-down.xmr, .option.xmr {
+.mobile-drop-down.xmr,
+.drop-down.xmr,
+.option.xmr {
   color: var(--coin-xmr) !important; }
 
-.mobile-drop-down.zec, .drop-down.zec, .option.zec {
+.mobile-drop-down.zec,
+.drop-down.zec,
+.option.zec {
   color: var(--coin-zec) !important; }
 
-.mobile-drop-down.one, .drop-down.one, .option.one {
+.mobile-drop-down.one,
+.drop-down.one,
+.option.one {
   color: var(--coin-one) !important; }
 
-.mobile-drop-down.pax, .drop-down.pax, .option.pax {
+.mobile-drop-down.pax,
+.drop-down.pax,
+.option.pax {
   color: var(--coin-pax) !important; }
 
-.mobile-drop-down.usdc, .drop-down.usdc, .option.usdc {
+.mobile-drop-down.usdc,
+.drop-down.usdc,
+.option.usdc {
   color: var(--coin-usdc) !important; }
 
-.mobile-drop-down.usdt, .drop-down.usdt, .option.usdt {
+.mobile-drop-down.usdt,
+.drop-down.usdt,
+.option.usdt {
   color: var(--coin-usdt) !important; }
 
-.mobile-drop-down.vet, .drop-down.vet, .option.vet {
+.mobile-drop-down.vet,
+.drop-down.vet,
+.option.vet {
   color: var(--coin-vet) !important; }
 
-.mobile-drop-down.btt, .drop-down.btt, .option.btt {
+.mobile-drop-down.btt,
+.drop-down.btt,
+.option.btt {
   color: var(--coin-btt) !important; }
 
-.mobile-drop-down.qtum, .drop-down.qtum, .option.qtum {
+.mobile-drop-down.qtum,
+.drop-down.qtum,
+.option.qtum {
   color: var(--coin-qtum) !important; }
 
-.mobile-drop-down.algo, .drop-down.algo, .option.algo {
+.mobile-drop-down.algo,
+.drop-down.algo,
+.option.algo {
   color: var(--coin-algo) !important; }
 
-.mobile-drop-down.rvn, .drop-down.rvn, .option.rvn {
+.mobile-drop-down.rvn,
+.drop-down.rvn,
+.option.rvn {
   color: var(--coin-rvn) !important; }
 
-.mobile-drop-down.iota, .drop-down.iota, .option.iota {
+.mobile-drop-down.iota,
+.drop-down.iota,
+.option.iota {
   color: var(--coin-iota) !important; }
 
-.mobile-drop-down.dash, .drop-down.dash, .option.dash {
+.mobile-drop-down.dash,
+.drop-down.dash,
+.option.dash {
   color: var(--coin-dash) !important; }
 
-.mobile-drop-down.bsv, .drop-down.bsv, .option.bsv {
+.mobile-drop-down.bsv,
+.drop-down.bsv,
+.option.bsv {
   color: var(--coin-bsv) !important; }
 
-.mobile-drop-down.ont, .drop-down.ont, .option.ont {
+.mobile-drop-down.ont,
+.drop-down.ont,
+.option.ont {
   color: var(--coin-ont) !important; }
 
-.mobile-drop-down.atom, .drop-down.atom, .option.atom {
+.mobile-drop-down.atom,
+.drop-down.atom,
+.option.atom {
   color: var(--coin-atom) !important; }
 
-.mobile-drop-down.celr, .drop-down.celr, .option.celr {
+.mobile-drop-down.celr,
+.drop-down.celr,
+.option.celr {
   color: var(--coin-celr) !important; }
 
-.mobile-drop-down.omg, .drop-down.omg, .option.omg {
+.mobile-drop-down.omg,
+.drop-down.omg,
+.option.omg {
   color: var(--coin-omg) !important; }
 
-.mobile-drop-down.hot, .drop-down.hot, .option.hot {
+.mobile-drop-down.hot,
+.drop-down.hot,
+.option.hot {
   color: var(--coin-hot) !important; }
 
-.mobile-drop-down.usd, .drop-down.usd, .option.usd {
+.mobile-drop-down.usd,
+.drop-down.usd,
+.option.usd {
   color: var(--coin-usd) !important; }
 
-.mobile-drop-down.jpy, .drop-down.jpy, .option.jpy {
+.mobile-drop-down.jpy,
+.drop-down.jpy,
+.option.jpy {
   color: var(--coin-jpy) !important; }
 
-.mobile-drop-down.gbp, .drop-down.gbp, .option.gbp {
+.mobile-drop-down.gbp,
+.drop-down.gbp,
+.option.gbp {
   color: var(--coin-gbp) !important; }
 
-.mobile-drop-down.chf, .drop-down.chf, .option.chf {
+.mobile-drop-down.chf,
+.drop-down.chf,
+.option.chf {
   color: var(--coin-chf) !important; }
 
-.mobile-drop-down.cad, .drop-down.cad, .option.cad {
+.mobile-drop-down.cad,
+.drop-down.cad,
+.option.cad {
   color: var(--coin-cad) !important; }
 
-.mobile-drop-down.aud, .drop-down.aud, .option.aud {
+.mobile-drop-down.aud,
+.drop-down.aud,
+.option.aud {
   color: var(--coin-aud) !important; }
 
-.mobile-drop-down.nzd, .drop-down.nzd, .option.nzd {
+.mobile-drop-down.nzd,
+.drop-down.nzd,
+.option.nzd {
   color: var(--coin-nzd) !important; }
 
-.mobile-drop-down.zar, .drop-down.zar, .option.zar {
+.mobile-drop-down.zar,
+.drop-down.zar,
+.option.zar {
   color: var(--coin-zar) !important; }
 
-.mobile-drop-down.hkd, .drop-down.hkd, .option.hkd {
+.mobile-drop-down.hkd,
+.drop-down.hkd,
+.option.hkd {
   color: var(--coin-hkd) !important; }
 
-.mobile-drop-down.krw, .drop-down.krw, .option.krw {
+.mobile-drop-down.krw,
+.drop-down.krw,
+.option.krw {
   color: var(--coin-krw) !important; }
 
-.mobile-drop-down.cny, .drop-down.cny, .option.cny {
+.mobile-drop-down.cny,
+.drop-down.cny,
+.option.cny {
   color: var(--coin-cny) !important; }
 
-.mobile-drop-down.sgd, .drop-down.sgd, .option.sgd {
+.mobile-drop-down.sgd,
+.drop-down.sgd,
+.option.sgd {
   color: var(--coin-sgd) !important; }
 
-.mobile-drop-down.tusd, .drop-down.tusd, .option.tusd {
+.mobile-drop-down.tusd,
+.drop-down.tusd,
+.option.tusd {
   color: var(--coin-tusd) !important; }
 
-.mobile-drop-down.dai, .drop-down.dai, .option.dai {
+.mobile-drop-down.dai,
+.drop-down.dai,
+.option.dai {
   color: var(--coin-dai) !important; }
 
 .with_arrow_trade:after {
@@ -6964,7 +7207,7 @@ foreignObject {
   -webkit-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
   -moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
   box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
-  font-family: "Open Sans" !important;
+  font-family: 'Open Sans' !important;
   border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
   .chat-wrapper .timestamp {
     color: #808080;
@@ -6978,7 +7221,7 @@ foreignObject {
     padding: 0.7rem !important;
     color: var(--specials_buttons-links-and-highlights) !important;
     font-size: 1rem !important;
-    font-family: "Open Sans" !important; }
+    font-family: 'Open Sans' !important; }
   .chat-wrapper .nondraggable {
     height: calc(100% - 2.5rem); }
   .chat-wrapper.unread-messages {
@@ -7230,7 +7473,7 @@ foreignObject {
   font-family: "Raleway";
   height: 3.5rem;
   left: calc(50vw - 10rem);
-  padding: .3rem .5rem !important;
+  padding: 0.3rem 0.5rem !important;
   position: absolute;
   width: 20rem;
   z-index: 9999;
@@ -7238,7 +7481,7 @@ foreignObject {
   -moz-box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
   box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4); }
   .snack_notification-wrapper .notification-text {
-    font-size: 1.20rem;
+    font-size: 1.2rem;
     font-weight: 400; }
   .snack_notification-wrapper .notification-icon {
     width: 1.5rem; }
@@ -7280,12 +7523,12 @@ foreignObject {
 .snack_dialog-wrapper {
   background-color: var(--labels_important-active-labels-text-graphics);
   font-family: "Raleway";
-  padding: .3rem .5rem !important;
+  padding: 0.3rem 0.5rem !important;
   position: absolute;
   width: 100%;
   z-index: 9998; }
   .snack_dialog-wrapper .notification-text {
-    font-size: 1.20rem;
+    font-size: 1.2rem;
     font-weight: 400; }
   .snack_dialog-wrapper .notification-icon {
     width: 1.5rem; }
@@ -7366,7 +7609,8 @@ foreignObject {
 .post-content .notifications_list-item-text a {
   color: var(--specials_buttons-links-and-highlights); }
 
-.post-content .notifications_list-item-text span, .post-content .notifications_list-item-text p {
+.post-content .notifications_list-item-text span,
+.post-content .notifications_list-item-text p {
   background-color: var(--base_wallet-sidebar-and-popup) !important; }
 
 .app_footer-container {
@@ -7405,7 +7649,7 @@ foreignObject {
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        height: 6rem;
+        height: 6rem !important;
         margin-left: 1rem;
         width: 7rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {

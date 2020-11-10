@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { debounce } from 'lodash';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY, LANGUAGE_KEY } from '../../config/constants';
+import {
+	WS_URL,
+	SESSION_TIME,
+	BASE_CURRENCY,
+	LANGUAGE_KEY,
+} from '../../config/constants';
 import { isMobile } from 'react-device-detect';
 
 import { getMe, setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -11,14 +16,14 @@ import {
 	setUserOrders,
 	addOrder,
 	updateOrder,
-	removeOrder
+	removeOrder,
 } from '../../actions/orderAction';
 import {
 	setOrderbooks,
 	setTrades,
 	setOrderbook,
 	addTrades,
-	setPairsData
+	setPairsData,
 } from '../../actions/orderbookAction';
 import {
 	setTickers,
@@ -40,7 +45,7 @@ import {
 	setConfig,
 	setInfo,
 	requestInitial,
-	requestConstant
+	requestConstant,
 } from '../../actions/appActions';
 
 import { playBackgroundAudioNotification } from '../../utils/utils';
@@ -54,8 +59,8 @@ class Container extends Component {
 			privateSocket: undefined,
 			idleTimer: undefined,
 			ordersQueued: [],
-			limitFilledOnOrder: ''
-		}
+			limitFilledOnOrder: '',
+		};
 		this.orderCache = {};
 		this.wsInterval = null;
 	}
@@ -102,7 +107,10 @@ class Container extends Component {
 			clearTimeout(this.idleTimer);
 		}
 		if (this.state.appLoaded) {
-			const idleTimer = setTimeout(() => this.props.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
+			const idleTimer = setTimeout(
+				() => this.props.logout('Inactive'),
+				SESSION_TIME
+			); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
 	};
@@ -148,10 +156,10 @@ class Container extends Component {
 							this.props.changeLanguage(res.data.defaults.language);
 						}
 					}
-				};
+				}
 				if (res.data.info) this.props.setInfo({ ...res.data.info });
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error(err);
 			});
 
@@ -178,21 +186,20 @@ class Container extends Component {
 							PRICE: {
 								MIN: res.data.pairs[pair].min_price,
 								MAX: res.data.pairs[pair].max_price,
-								STEP: res.data.pairs[pair].increment_price
+								STEP: res.data.pairs[pair].increment_price,
 							},
 							SIZE: {
 								MIN: res.data.pairs[pair].min_size,
 								MAX: res.data.pairs[pair].max_size,
-								STEP: res.data.pairs[pair].increment_price
-							}
+								STEP: res.data.pairs[pair].increment_price,
+							},
 						};
 						return '';
 					});
 					this.props.setOrderLimits(orderLimits);
 				}
 			})
-			.catch(err => console.error(err))
-
+			.catch((err) => console.error(err));
 	};
 
 	getUserDetails = () => {
@@ -214,8 +221,8 @@ class Container extends Component {
 								...data,
 								settings: {
 									...data.settings,
-									language: defaults.language
-								}
+									language: defaults.language,
+								},
 							};
 						} else if (data.settings.language !== this.props.activeLanguage) {
 							this.props.changeLanguage(data.settings.language);
@@ -234,11 +241,13 @@ class Container extends Component {
 										...data.settings,
 										interface: {
 											...data.settings.interface,
-											theme: defaults.theme
-										}
-									}
+											theme: defaults.theme,
+										},
+									},
 								};
-							} else if (data.settings.interface.theme !== this.props.activeTheme) {
+							} else if (
+								data.settings.interface.theme !== this.props.activeTheme
+							) {
 								this.props.changeTheme(data.settings.interface.theme);
 								localStorage.setItem('theme', data.settings.interface.theme);
 							}
@@ -275,7 +284,7 @@ class Container extends Component {
 			this.wsInterval = setInterval(() => {
 				privateSocket.send(
 					JSON.stringify({
-						op: 'ping'
+						op: 'ping',
 					})
 				);
 			}, 55000);
@@ -289,8 +298,8 @@ class Container extends Component {
 					if (data.action === 'partial') {
 						const tradesData = {
 							...data,
-							[data.symbol]: data.data
-						}
+							[data.symbol]: data.data,
+						};
 						delete tradesData.data;
 						this.props.setTrades(tradesData);
 						this.props.setTickers(tradesData);
@@ -302,14 +311,17 @@ class Container extends Component {
 							this.props.location.pathname.indexOf('/trade/') === 0 &&
 							this.props.router.params.pair
 						) {
-							playBackgroundAudioNotification('public_trade', this.props.settings);
+							playBackgroundAudioNotification(
+								'public_trade',
+								this.props.settings
+							);
 						}
 					}
 					break;
 				case 'orderbook':
 					const tempData = {
 						...data,
-						[data.symbol]: data.data
+						[data.symbol]: data.data,
 					};
 					delete tempData.data;
 					this.orderCache = { ...this.orderCache, ...tempData };
@@ -321,7 +333,10 @@ class Container extends Component {
 						this.props.setUserOrders(data.data);
 					} else if (data.action === 'insert') {
 						if (data.type === 'limit') {
-							playBackgroundAudioNotification('orderbook_limit_order', this.props.settings);
+							playBackgroundAudioNotification(
+								'orderbook_limit_order',
+								this.props.settings
+							);
 							this.setState({ limitFilledOnOrder: data.data.id });
 							this.limitTimeOut = setTimeout(() => {
 								if (this.state.limitFilledOnOrder)
@@ -349,14 +364,14 @@ class Container extends Component {
 										data: {
 											type: data.data.status,
 											order: data.data,
-											data: data.data
-										}
+											data: data.data,
+										},
 									});
 								} else {
 									this.props.setNotification(NOTIFICATIONS.ORDERS, {
 										type: data.data.status,
 										order: data.data,
-										data: data.data
+										data: data.data,
 									});
 								}
 							}
@@ -368,7 +383,7 @@ class Container extends Component {
 							}
 						} else if (data.data.status === 'filled') {
 							const ordersDeleted = this.props.orders.filter((order, index) => {
-								return (data.data.id === order.id);
+								return data.data.id === order.id;
 							});
 							this.props.removeOrder(data.data);
 							this.props.addUserTrades([data.data]);
@@ -385,17 +400,17 @@ class Container extends Component {
 												type: data.data.status,
 												data: {
 													...orderDeleted,
-													filled: orderDeleted.size
-												}
-											}
+													filled: orderDeleted.size,
+												},
+											},
 										});
 									} else {
 										this.props.setNotification(NOTIFICATIONS.ORDERS, {
 											type: data.data.status,
 											data: {
 												...orderDeleted,
-												filled: orderDeleted.size
-											}
+												filled: orderDeleted.size,
+											},
 										});
 									}
 								});
@@ -429,8 +444,8 @@ class Container extends Component {
 					break;
 				default:
 					break;
-			};
-		}
+			}
+		};
 
 		privateSocket.onerror = (evt) => {
 			console.log('public socket error', evt);
@@ -688,7 +703,7 @@ const mapStateToProps = (store) => ({
 	pairsTrades: store.orderbook.pairsTrades,
 	settings: store.user.settings,
 	constants: store.app.constants,
-	info: store.app.info
+	info: store.app.info,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -728,7 +743,4 @@ const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Container);
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

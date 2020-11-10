@@ -11,7 +11,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import {
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
 	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
-	DEFAULT_COIN_DATA
+	DEFAULT_COIN_DATA,
 } from '../../config/constants';
 import { getCurrencyFromName, roundNumber } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
@@ -35,7 +35,7 @@ class Withdraw extends Component {
 	state = {
 		formValues: {},
 		initialValues: {},
-		checked: false
+		checked: false,
 	};
 
 	componentWillMount() {
@@ -133,8 +133,8 @@ class Withdraw extends Component {
 			coins,
 			verification_level,
 			this.props.activeTheme,
-      ICONS["BLUE_PLUS"],
-			"BLUE_PLUS",
+			ICONS['BLUE_PLUS'],
+			'BLUE_PLUS'
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -144,14 +144,13 @@ class Withdraw extends Component {
 	onSubmitWithdraw = (currency) => (values) => {
 		const { destination_tag, ...rest } = values;
 		let address = rest.address;
-		if (destination_tag)
-			address = `${rest.address}:${destination_tag}`;
+		if (destination_tag) address = `${rest.address}:${destination_tag}`;
 		return performWithdraw(currency, {
 			...rest,
 			address,
 			amount: math.eval(values.amount),
 			fee: values.fee ? math.eval(values.fee) : 0,
-			currency
+			currency,
 		})
 			.then((response) => {
 				return { ...response.data, currency: this.state.currency };
@@ -160,10 +159,17 @@ class Withdraw extends Component {
 	};
 
 	onCalculateMax = () => {
-		const { balance, selectedFee = 0, dispatch, verification_level, coins } = this.props;
+		const {
+			balance,
+			selectedFee = 0,
+			dispatch,
+			verification_level,
+			coins,
+		} = this.props;
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit, withdrawal_limits = {} } =
+			coins[currency] || DEFAULT_COIN_DATA;
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -171,29 +177,30 @@ class Withdraw extends Component {
 		// 	);
 		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
 		// } else {
-			let amount = math.number(
+		let amount = math.number(
+			math.subtract(math.fraction(balanceAvailable), math.fraction(selectedFee))
+		);
+		if (amount < 0) {
+			amount = 0;
+		} else if (
+			math.larger(amount, math.number(withdrawal_limits[verification_level])) &&
+			withdrawal_limits[verification_level] !== 0 &&
+			withdrawal_limits[verification_level] !== -1
+		) {
+			amount = math.number(
 				math.subtract(
-					math.fraction(balanceAvailable),
+					math.fraction(withdrawal_limits[verification_level]),
 					math.fraction(selectedFee)
 				)
 			);
-			if (amount < 0) {
-				amount = 0;
-			} else if (
-				math.larger(
-					amount,
-					math.number(withdrawal_limits[verification_level])
-				)
-				&& withdrawal_limits[verification_level] !== 0
-				&& withdrawal_limits[verification_level] !== -1) {
-				amount = math.number(
-					math.subtract(
-						math.fraction(withdrawal_limits[verification_level]),
-						math.fraction(selectedFee)
-					)
-				);
-			}
-			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, getDecimals(increment_unit))));
+		}
+		dispatch(
+			change(
+				FORM_NAME,
+				'amount',
+				roundNumber(amount, getDecimals(increment_unit))
+			)
+		);
 		// }
 	};
 
@@ -224,7 +231,7 @@ class Withdraw extends Component {
 		if (
 			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			(balanceAvailable === undefined)
+			balanceAvailable === undefined
 		) {
 			return <Loader />;
 		}
@@ -240,33 +247,41 @@ class Withdraw extends Component {
 			activeLanguage,
 			balanceAvailable,
 			currentPrice: prices[currency],
-			router
+			router,
 		};
 
 		return (
 			<div>
-				{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
-				</MobileBarBack> }
+				{isMobile && (
+					<MobileBarBack onBackClick={this.onGoBack}></MobileBarBack>
+				)}
 				<div className="presentation_container apply_rtl">
-					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS['WITHDRAW'], coins, 'WITHDRAW')}
+					{!isMobile &&
+						renderTitleSection(
+							currency,
+							'withdraw',
+							ICONS['WITHDRAW'],
+							coins,
+							'WITHDRAW'
+						)}
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
-						<div className={classnames('inner_container', 'with_border_top')}>
-							{renderInformation(
-								currency,
-								balance,
-								openContactForm,
-								generateBaseInformation,
-								coins,
-								'withdraw',
-								links,
-                ICONS["BLUE_QUESTION"],
-								"BLUE_QUESTION",
-							)}
-							<WithdrawCryptocurrency {...formProps} />
-							{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}
-						</div>
+					<div className={classnames('inner_container', 'with_border_top')}>
+						{renderInformation(
+							currency,
+							balance,
+							openContactForm,
+							generateBaseInformation,
+							coins,
+							'withdraw',
+							links,
+							ICONS['BLUE_QUESTION'],
+							'BLUE_QUESTION'
+						)}
+						<WithdrawCryptocurrency {...formProps} />
+						{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}
+					</div>
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 						) : (
 						<div className={classnames('inner_container', 'with_border_top')}>
@@ -292,13 +307,16 @@ const mapStateToProps = (store) => ({
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	coins: store.app.coins,
 	activeTheme: store.app.theme,
-	constants: store.app.constants
+	constants: store.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
-	dispatch
+	dispatch,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Withdraw));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(Withdraw));

@@ -3,13 +3,17 @@ import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 
 import { Accordion, ControlledScrollbar } from 'components';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from '../../config/constants';
+import {
+	BASE_CURRENCY,
+	DEFAULT_COIN_DATA,
+	IS_XHT,
+} from '../../config/constants';
 import {
 	calculateBalancePrice,
 	calculatePrice,
 	calculatePricePercentage,
 	donutFormatPercentage,
-	formatToCurrency
+	formatToCurrency,
 } from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
@@ -19,7 +23,7 @@ class Wallet extends Component {
 	state = {
 		sections: [],
 		totalAssets: 0,
-		chartData: []
+		chartData: [],
 	};
 
 	componentDidMount() {
@@ -35,8 +39,7 @@ class Wallet extends Component {
 			nextProps.price !== this.props.price ||
 			nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !==
-			JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
 			this.calculateSections(nextProps);
@@ -63,7 +66,7 @@ class Wallet extends Component {
 					price={price}
 					coins={coins}
 				/>
-			)
+			),
 		};
 	};
 
@@ -78,7 +81,7 @@ class Wallet extends Component {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculatePrice(
 				balance[`${symbol}_balance`],
-        currency
+				currency
 			);
 			const balancePercent = calculatePricePercentage(
 				currencyBalance,
@@ -88,21 +91,21 @@ class Wallet extends Component {
 				...coins[currency],
 				balance: balancePercent,
 				balanceFormat: formatToCurrency(currencyBalance, min),
-				balancePercentage: donutFormatPercentage(balancePercent)
+				balancePercentage: donutFormatPercentage(balancePercent),
 			});
 
-      // Hide zero balances
-      if (balancePercent !== 0) {
-        sections.push(
-          this.generateSection(symbol, price, balance, orders, coins)
-        );
+			// Hide zero balances
+			if (balancePercent !== 0) {
+				sections.push(
+					this.generateSection(symbol, price, balance, orders, coins)
+				);
 			}
 		});
 
 		this.setState({
 			sections,
 			chartData: data,
-			totalAssets: formatToCurrency(totalAssets, baseCoin.min)
+			totalAssets: formatToCurrency(totalAssets, baseCoin.min),
 		});
 	};
 
@@ -121,14 +124,21 @@ class Wallet extends Component {
 		return (
 			<div className="wallet-wrapper">
 				<div className="donut-container">
-					{(!(Object.keys(balance).length)
-						|| !(Object.keys(coins).length)
-						|| !(Object.keys(prices).length)
-						|| !chartData.length
-						|| fetching)
-						? <div className="text-center mt-3">{STRINGS["WALLET.LOADING_ASSETS"]}</div>
-						: <DonutChart id="side-bar-donut" coins={coins} chartData={chartData} />
-					}
+					{!Object.keys(balance).length ||
+					!Object.keys(coins).length ||
+					!Object.keys(prices).length ||
+					!chartData.length ||
+					fetching ? (
+						<div className="text-center mt-3">
+							{STRINGS['WALLET.LOADING_ASSETS']}
+						</div>
+					) : (
+						<DonutChart
+							id="side-bar-donut"
+							coins={coins}
+							chartData={chartData}
+						/>
+					)}
 				</div>
 				<ControlledScrollbar
 					autoHideArrows={true}
@@ -137,15 +147,13 @@ class Wallet extends Component {
 				>
 					<Accordion sections={sections} />
 					<div className="d-flex justify-content-center wallet_link blue-link">
-						<Link to="/wallet">
-              {`view all`}
-						</Link>
+						<Link to="/wallet">{`view all`}</Link>
 					</div>
 				</ControlledScrollbar>
 				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
-							{STRINGS["WALLET.TOTAL_ASSETS"]}
+							{STRINGS['WALLET.TOTAL_ASSETS']}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
 							{symbol.toUpperCase()}

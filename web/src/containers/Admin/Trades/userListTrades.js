@@ -20,7 +20,7 @@ const COLUMNS = [
 	{ title: 'User name', dataIndex: 'username', key: 'username' },
 	{ title: 'name', dataIndex: 'full_name', key: 'full_name' },
 	{ title: 'Email', dataIndex: 'email', key: 'email' },
-	{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
+	{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink },
 ];
 
 // const TRADE_COLUMNS = [
@@ -40,7 +40,7 @@ class UserListTrades extends Component {
 		fetched: false,
 		loading: false,
 		error: '',
-		tradeData: []
+		tradeData: [],
 	};
 
 	componentWillMount() {
@@ -50,14 +50,14 @@ class UserListTrades extends Component {
 	requestFullUsers = () => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 
 		requestUsers().then((data) => {
 			this.setState({
 				users: data.data,
 				loading: false,
-				fetched: true
+				fetched: true,
 			});
 		});
 	};
