@@ -39,8 +39,6 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		&& deposit_limit !== -1
 	) {
 		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
-	} else if (Object.values(flatten(fees)).some(fee => fee < 0)) {
-		return reject(new Error('Fees cannot be negative'));
 	}
 
 	const givenMakerSymbols = Object.keys(omit(fees.maker, 'default'));
@@ -142,10 +140,6 @@ const updatePairFees = (pair, fees) => {
 
 	if (difference(tiersToUpdate, getTierLevels()).length > 0) {
 		return reject(new Error('Invalid tier level given'));
-	}
-
-	if (Object.values(flatten(fees)).some(fee => fee < 0)) {
-		return reject(new Error('Fees cannot be negative'));
 	}
 
 	return getModel('sequelize').transaction((transaction) => {
