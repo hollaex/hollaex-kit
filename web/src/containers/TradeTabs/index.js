@@ -14,6 +14,7 @@ import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getLogo } from 'utils/icon';
 import { EditWrapper } from 'components';
+import Image from 'components/Image';
 
 class AddTradeTab extends Component {
 	state = {
@@ -201,10 +202,11 @@ class AddTradeTab extends Component {
 			<div className="trade_tabs-container">
 				{!isMobile && (
 					<div className="mb-5">
-						<div
-							style={{ backgroundImage: `url(${path})` }}
-							className="app-icon d-flex"
-						></div>
+						<Image
+							iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+							icon={path}
+							wrapperClassName="app-icon d-flex"
+						/>
 						<div className="text-center trade-tab-app-title">
 							<EditWrapper
 								stringId="APP_SUB_TITLE"

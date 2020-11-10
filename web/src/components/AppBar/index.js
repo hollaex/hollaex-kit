@@ -27,6 +27,7 @@ import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getLogo } from 'utils/icon';
+import { TOPBAR_BACKGROUND } from 'utils/color';
 
 class AppBar extends Component {
 	state = {
@@ -295,35 +296,29 @@ class AppBar extends Component {
 	};
 
 	renderIcon = (isHome) => {
-		const { constants, icons: ICONS, isEditMode } = this.props;
-		const path = getLogo('dark', constants, ICONS);
+		const { constants, icons: ICONS, isEditMode, theme } = this.props;
+		const path = getLogo(theme, constants, ICONS, TOPBAR_BACKGROUND);
 		return (
-			<div className={classnames('app_bar-icon', 'text-uppercase')}>
-				{isHome || isEditMode ? (
-					<div className="d-flex">
-						<div
-							style={{ backgroundImage: `url(${path})` }}
-							className="app_bar-icon-logo"
-						/>
-						<EditWrapper
+			<div className={classnames('app_bar-icon', 'text-uppercase', 'h-100')}>
+				<div className="d-flex h-100">
+					<Link
+						to={DEFAULT_URL}
+						className={classnames(
+							{ 'disabled-link': isHome || isEditMode },
+							'h-100'
+						)}
+					>
+						<Image
 							iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
-							position={[-5, 5]}
+							icon={path}
+							wrapperClassName="app_bar-icon-logo h-100"
 						/>
-					</div>
-				) : (
-					<div className="d-flex">
-						<Link href={DEFAULT_URL}>
-							<div
-								style={{ backgroundImage: `url(${path})` }}
-								className="app_bar-icon-logo"
-							/>
-						</Link>
-						<EditWrapper
-							iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
-							position={[-5, 5]}
-						/>
-					</div>
-				)}
+					</Link>
+					<EditWrapper
+						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+						position={[-5, 5]}
+					/>
+				</div>
 			</div>
 		);
 	};

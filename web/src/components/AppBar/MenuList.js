@@ -289,7 +289,7 @@ class MenuList extends Component {
 						</div>
 
 						<div className="app-bar-account-menu-list d-flex">
-							<div class="d-flex" onClick={this.logout}>
+							<div className="d-flex" onClick={this.logout}>
 								<div className="notification-content" />
 								<Image
 									icon={ICONS['TAB_SIGNOUT']}

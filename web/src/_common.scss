@@ -168,3 +168,16 @@ table th {
 .underline-text {
 	text-decoration: underline;
 }
+
+.disabled-link {
+	pointer-events: none;
+}
+
+.object-fit-contain {
+	object-fit: contain;
+}
+
+.background-contain {
+	-webkit-background-size: contain;
+	background-size: contain;
+}

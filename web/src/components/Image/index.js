@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { EditWrapper } from 'components';
+import { isBackgroundIcon } from 'utils/icon';
 
 const Image = ({
 	icon,
@@ -11,10 +12,26 @@ const Image = ({
 	imageWrapperClassName,
 	svgWrapperClassName,
 	stringId,
+	showUpload,
 }) => {
 	const useSvg = icon.indexOf('.svg') > 0;
+	const isBackground = isBackgroundIcon(iconId);
+
+	if (isBackground) {
+		return (
+			<div
+				className={classnames(
+					wrapperClassName,
+					'background-size-contain',
+					'h-100'
+				)}
+				style={{ backgroundImage: `url(${icon})` }}
+			/>
+		);
+	}
+
 	return (
-		<EditWrapper iconId={iconId} stringId={stringId}>
+		<EditWrapper iconId={showUpload ? iconId : ''} stringId={stringId}>
 			{icon && useSvg && (
 				<ReactSVG
 					path={icon}
@@ -25,7 +42,11 @@ const Image = ({
 				<img
 					src={icon}
 					alt={alt}
-					className={classnames(wrapperClassName, imageWrapperClassName)}
+					className={classnames(
+						wrapperClassName,
+						imageWrapperClassName,
+						'object-fit-contain'
+					)}
 				/>
 			)}
 		</EditWrapper>
@@ -40,6 +61,7 @@ Image.defaultProps = {
 	wrapperClassName: '',
 	imageWrapperClassName: '',
 	svgWrapperClassName: '',
+	showUpload: true,
 };
 
 export default Image;

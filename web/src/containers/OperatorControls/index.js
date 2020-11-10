@@ -74,7 +74,20 @@ class OperatorControls extends Component {
 	}
 
 	componentDidMount() {
+		const {
+			initialData: {
+				query: { stringSettings = false, themeSettings = false } = {},
+			} = {},
+		} = this.props;
 		this.setupAdminListeners();
+
+		if (stringSettings) {
+			this.toggleEditMode();
+			this.openStringSettingsModal();
+		} else if (themeSettings) {
+			this.toggleEditMode();
+			this.openThemeSettings();
+		}
 	}
 
 	componentWillUnmount() {

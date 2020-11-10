@@ -191,7 +191,6 @@ class Signup extends Component {
 						text={STRINGS['SIGNUP_TEXT']}
 						textType="title"
 						underline={true}
-						isLogo={true}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
