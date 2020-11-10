@@ -220,6 +220,13 @@ table th {
 .disabled-link {
   pointer-events: none; }
 
+.object-fit-contain {
+  object-fit: contain; }
+
+.background-contain {
+  -webkit-background-size: contain;
+  background-size: contain; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -7636,7 +7643,7 @@ foreignObject {
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        height: 6rem;
+        height: 6rem !important;
         margin-left: 1rem;
         width: 7rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {

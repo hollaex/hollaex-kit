@@ -20,7 +20,11 @@ const Image = ({
 	if (isBackground) {
 		return (
 			<div
-				className={wrapperClassName}
+				className={classnames(
+					wrapperClassName,
+					'background-size-contain',
+					'h-100'
+				)}
 				style={{ backgroundImage: `url(${icon})` }}
 			/>
 		);
@@ -38,7 +42,11 @@ const Image = ({
 				<img
 					src={icon}
 					alt={alt}
-					className={classnames(wrapperClassName, imageWrapperClassName)}
+					className={classnames(
+						wrapperClassName,
+						imageWrapperClassName,
+						'object-fit-contain'
+					)}
 				/>
 			)}
 		</EditWrapper>
