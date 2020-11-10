@@ -4173,9 +4173,6 @@ definitions:
         type: number
         format: double
         description: Amount to transfer (in btc, eth, bch)
-      captcha:
-        type: string
-        description: captcha token
       otp_code:
         type: string
         description: OTP code when otp is enabled

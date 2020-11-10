@@ -39,14 +39,13 @@ const requestWithdrawal = (req, res) => {
 	const {
 		address,
 		otp_code,
-		captcha,
 		amount,
 		currency
 	} = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 	const ip = req.headers['x-real-ip'];
 
-	toolsLib.transaction.sendRequestWithdrawalEmail(id, address, amount, currency, otp_code, captcha, ip, domain)
+	toolsLib.transaction.sendRequestWithdrawalEmail(id, address, amount, currency, otp_code, ip, domain)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
