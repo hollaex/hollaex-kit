@@ -161,37 +161,37 @@
 	margin: auto;
 	margin-top: 7px;
 }
-.sell {
+.general-wrapper .sell {
 	border: 1px solid #ffffff;
 	width: 60px;
 	height: 18px;
 }
-.sell .label {
+.general-wrapper .sell .label {
 	font-size: 10px;
 	position: relative;
 	bottom: 3px;
 	left: 18px;
 	color: #ffffff !important;
 }
-.buy {
+.general-wrapper .buy {
 	width: 60px;
 	height: 18px;
 	border: 1px solid #000000;
 	margin-top: 0.25rem;
 	background-color: #ffffff;
 }
-.buy .label {
+.general-wrapper .buy .label {
 	font-size: 10px;
 	position: relative;
 	bottom: 3px;
 	left: 18px;
 	color: #000000 !important;
 }
-.ant-radio-wrapper {
+.general-wrapper .ant-radio-wrapper {
 	height: 100px;
 	width: 420px;
 }
-.ant-radio-wrapper span:last-child {
+.general-wrapper .ant-radio-wrapper span:last-child {
 	color: #ffffff;
 }
 .bottom-description {

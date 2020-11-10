@@ -603,6 +603,79 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /oracle/price:
+    x-swagger-router-controller: engine
+    get:
+      operationId: getAssetPrice
+      description: Convert asset price
+      tags:
+        - Oracle
+      parameters:
+        - name: asset
+          in: query
+          required: true
+          description: Asset to convert
+          type: string
+        - name: quote
+          in: query
+          required: false
+          description: Quote coin to convert to
+          type: string
+        - name: amount
+          in: query
+          required: false
+          description: Amount to convert
+          type: number
+          format: double
+          minimum: 0
+          exclusiveMinimum: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OraclePriceResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /oracle/prices:
+    x-swagger-router-controller: engine
+    get:
+      operationId: getAssetsPrices
+      description: Convert assets prices
+      tags:
+        - Oracle
+      parameters:
+        - name: assets
+          in: query
+          required: true
+          description: Assets to convert
+          type: array
+          items:
+            type: string
+            minItems: 1
+        - name: quote
+          in: query
+          required: false
+          description: Quote coin to convert to
+          type: string
+        - name: amount
+          in: query
+          required: false
+          description: Amount to convert
+          type: number
+          format: double
+          minimum: 0
+          exclusiveMinimum: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OraclePriceResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user:
     x-swagger-router-controller: user
     get:
@@ -4818,3 +4891,8 @@ definitions:
             withdrawal_limit:
               type: number
               format: double
+  OraclePriceResponse:
+    type: object
+    additionalProperties:
+      type: number
+      format: double

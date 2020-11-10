@@ -26,6 +26,7 @@ $colors-notification-pending-text: var(--calculated_specials_notifications-pendi
 $colors-notification-green-text: var(--calculated_specials_notifications-success-text);
 $colors-notification-pending: var(--specials_pending-waiting-caution);
 $specials_highlight-box: var(--calculated_specials_highlight-box);
+$chat-own-message--color: var(--specials_my-username-in-chat);
 
 //common colors for terms
 $colors-terms-background: $specials_highlight-box;

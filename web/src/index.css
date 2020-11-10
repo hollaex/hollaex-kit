@@ -2856,6 +2856,25 @@ table th {
   display: block;
   padding: 12px; }
 
+.operator-controls__modal .ant-divider-with-text,
+.operator-controls__modal .ant-divider-horizontal,
+.operator-controls__modal .ant-divider,
+.operator-controls__modal .ant-divider-inner-text {
+  color: #FFFFFFB3 !important;
+  font-size: small !important;
+  font-weight: 600;
+  border-color: #FFFFFFB3 !important; }
+
+.operator-controls__modal .ant-divider-with-text::after,
+.operator-controls__modal .ant-divider-with-text::before {
+  border-color: #FFFFFFB3 !important; }
+
+.operator-controls__modal .ant-divider-inner-text {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
 .operator-controls__modal .ReactModal__Content {
   background-color: #0000FF !important;
   color: #FFFFFF !important;
@@ -6966,10 +6985,10 @@ foreignObject {
     border-color: #b9b500;
     color: #b9b500; }
     .chat-wrapper.unread-messages:hover {
-      border-color: #d19f00;
-      color: #d19f00; }
+      border-color: var(--specials_my-username-in-chat);
+      color: var(--specials_my-username-in-chat); }
       .chat-wrapper.unread-messages:hover::before {
-        border-top-color: #d19f00; }
+        border-top-color: var(--specials_my-username-in-chat); }
     .chat-wrapper.unread-messages::before {
       border-top-color: #b9b500; }
   .chat-wrapper.minimized {
@@ -7018,7 +7037,7 @@ foreignObject {
     padding-bottom: 0.75rem;
     font-weight: bold;
     padding: 0.5rem 1rem;
-    background-color: white; }
+    background-color: var(--base_top-bar-navigation); }
     .chat-wrapper .chat-header .chat-header-icon {
       flex: 1;
       background-image: url("/assets/images/dotted-grip-chat-repeat-pattern.svg");
@@ -7054,9 +7073,9 @@ foreignObject {
         .chat-wrapper .chat-message-list .chat-message .message-content .nonmobile .own-message {
           line-height: 1.2rem;
           word-break: keep-all;
-          color: #d19f00; }
+          color: var(--specials_my-username-in-chat); }
       .chat-wrapper .chat-message-list .chat-message.user .own-message {
-        color: #d19f00;
+        color: var(--specials_my-username-in-chat);
         font-weight: bold; }
       .chat-wrapper .chat-message-list .chat-message .message-content span.toggle-content {
         position: relative;
