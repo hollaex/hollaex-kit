@@ -3,7 +3,7 @@ import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Ouvrir le Crypto Exchange', // slogan
+	APP_SUB_TITLE: 'Ouvrir votre Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'Êtes vous sûrs?. Voulez-vous vous déconnecter?',
 	ADD_TRADING_PAIR: 'Ajouter Trading Pair',
@@ -286,7 +286,7 @@ export default {
 		ERROR_INVALID: 'Code OTP invalide'
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'Échange rapide / Quick Trade',
+		TITLE: 'Quick Trade',
 		TOTAL_COST: 'Coût total',
 		BUTTON: 'Vérifier la commande {0}',
 		INPUT: '{0} à {1}',
@@ -351,7 +351,7 @@ export default {
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: 'Renvoyé email',
 		TEXT_1:
-		'Si après quelques minutes, vous n\'avez toujours pas reçu de vérification par e-mail, veuillez nous contacter ci-dessous.'
+		'Si après quelques minutes, vous n\'avez toujours pas reçu de vérification par email, veuillez nous contacter ci-dessous.'
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: 'Code invalide',
@@ -362,14 +362,14 @@ export default {
 		INFO_TXT:
 			'Vous pouvez suivre ici l\'évolution des vérifications et les mises à jour de comptes.',
 		INFO_TXT_1:
-			'Veuillez soumettre toutes les informations pertinentes nécessaires pour chaque section ci-dessous. Ce nn\'est que lorsque toutes les sections seront complétées que vos informations seront examinées et approuvées pour une mise à niveau de compte.',
+			'Veuillez soumettre toutes les informations pertinentes nécessaires pour chaque section ci-dessous. Ce n\'est que lorsque toutes les sections seront complétées que vos informations seront examinées et approuvées pour une mise à niveau de compte.',
 		INFO_TXT_2:
 			'* La vérification de la section d\'identité vous oblige à {0} certains documents.',
 		DOCUMENTATIONS: 'Télécharger',
 		COMPLETED: 'Completé',
 		PENDING_VERIFICATION: 'Vérification en attente',
 		TITLE_EMAIL: 'Email',
-		MY_EMAIL: 'Mon émail',
+		MY_EMAIL: 'Mon email',
 		MAKE_FIRST_DEPOSIT: 'Effectuer le premier dépôt', // new
 		OBTAIN_XHT: 'Obtenir des XHT', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
@@ -403,9 +403,9 @@ export default {
 		PHONE_VERIFICATION: 'Vérification du téléphone',
 		DOCUMENT_VERIFICATION: 'Document de vérification',
 		START_BANK_VERIFICATION: 'Lancer la vérification bancaire',
-		START_IDENTITY_VERIFICATION: 'Démarrer la vérification de l\'identité',
+		START_IDENTITY_VERIFICATION: 'Démarrer la vérification de votre identité',
 		START_PHONE_VERIFICATION: 'Démarrer la vérification du téléphone',
-		START_DOCUMENTATION_SUBMISSION: 'Commencer la soumission de la documentation',
+		START_DOCUMENTATION_SUBMISSION: 'Commencer la soumission des documents',
 		GO_BACK: 'Retour',
 		BANK_VERIFICATION_TEXT_1:
 			'Vous pouvez ajouter jusqu\'à 3 comptes bancaires. Les comptes bancaires internationaux vous obligeront à contacter le service client et auront des limites de retrait.',
@@ -605,7 +605,7 @@ export default {
 	USER_SETTINGS: {
 		TITLE_TEXT_1:
 			'Modifiez les paramètres de votre compte. Depuis l\'interface, les notifications, le nom d\'utilisateur et d\'autres personnalisations.',
-		TITLE_TEXT_2: 'L\'ienregistrement de vos paramètres appliquera les modifications et les enregistrera.',
+		TITLE_TEXT_2: 'L\'enregistrement de vos paramètres appliquera les modifications et les enregistrera.',
 		TITLE_NOTIFICATION: 'Notification',
 		TITLE_INTERFACE: 'Interface',
 		TITLE_LANGUAGE: 'Langues',
@@ -737,15 +737,15 @@ export default {
 		limit: 'limite'
 	},
 	TYPES: [
-		{ value: 'marché', label: 'marché' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limite', label: 'limite' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'market', label: 'marché' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'limite' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Acheter/Vendre',
 	SIDES_VALUES: {
 		buy: 'acheter',
 		sell: 'vendre'
 	},
-	SIDES: [{ value: 'acheter', label: 'acheter' }, { value: 'vendre', label: 'vendre' }], // DO NOT CHANGE value, ONLY TRANSLATE label
+	SIDES: [{ value: 'buy', label: 'acheter' }, { value: 'sell', label: 'vendre' }], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
@@ -975,8 +975,8 @@ export default {
 	],
 	SETTINGS_THEME_LABEL: 'Thème de l\'interface utilisateur', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
-		{ value: 'blanc', label: 'Blanc' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'sombre', label: 'Sombre' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'white', label: 'Blanc' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Sombre' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'sauvegarder',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
@@ -1127,7 +1127,7 @@ export default {
 		TRADING_VOLUME_TXT_2:
 			'Une activité de trading élevée vous donnera droit à une élévation de votre niveau de compte vous récompensant avec un badge unique et d\'autres avantages.',
 		ACCOUNT_DETAILS_TXT_1:
-			'Votre type de compte détermine votre badge de compte, les frais de trading, les dépôts et les limites de retrait.',
+			'Votre type de compte détermine votre badge, les frais de trading, les dépôts et les limites de retrait.',
 		ACCOUNT_DETAILS_TXT_2:
 			'L\'âge de votre compte de trading, le niveau d\'activité et le montant total des actifs du compte détermineront si votre compte est éligible pour une mise à niveau.',
 		ACCOUNT_DETAILS_TXT_3:
@@ -1185,7 +1185,7 @@ export default {
 		HAP_ACCOUNT: 'Compte HAP', // new
 		HAP_ACCOUNT_TXT:
 			'Votre compte est un compte de programme d\'affiliation HollaEx vérifié. Vous pouvez maintenant gagner 10% de bonus pour chaque personne que vous invitez qui achète XHT.', // new
-		EMAIL_VERIFICATION: 'Verification de l\'émail ', // new
+		EMAIL_VERIFICATION: 'Verification de l\'email ', // new
 		DOCUMENTS: 'Documents', // new
 		HAP_TEXT: 'Programme d\'affiliation HollaEx(HAP) {0}', // new
 		LOCK_AN_EXCHANGE: 'Verrouiller un échange {0}', // new
@@ -1209,7 +1209,7 @@ export default {
 		XHT_WAVE_DESC_2:
 			'L\'enchère Wave vend une quantité aléatoire de XHT à des moments aléatoires aux plus offrants de l\'Orderbook', // new
 		XHT_WAVE_DESC_3:
-			'Ci-dessous affiche les données historiques sur l\'historique de l\'enchère Wave', // new
+			'Ci-dessous s\'affiche les données sur l\'historique de l\'enchère Wave', // new
 		WAVE_AUCTION_PHASE: 'Phase Wave Auction {0}', // new
 		LEARN_MORE_WAVE_AUCTION: 'En savoir plus l\'enchère', // new
 		WAVE_NUMBER: 'Wave Number', // new
@@ -1313,7 +1313,7 @@ export default {
 	EXPIRY_EXCHANGE_MSG:
 		'Votre échange a expiré. Accédez à dash.bitholla.com pour l\'activer à nouveau.', // new
 	EXPIRED_INFO_1: 'Votre essai est terminé.', // new
-	EXPIRED_INFO_2: 'Garantissez votre échange pour l\'aactiver à nouveau.', // new
+	EXPIRED_INFO_2: 'Garantissez votre échange pour l\'activer à nouveau.', // new
 	EXPIRED_BUTTON_TXT: 'ACTIVER LES ÉCHANGES ', // new
 	TRADE_POSTS: {
 		// new
