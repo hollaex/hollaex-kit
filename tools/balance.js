@@ -24,7 +24,7 @@ const transferUserFunds = (senderId, receiverId, currency, amount, description =
 	])
 		.then(([ sender, receiver ]) => {
 			return all([
-				getNodeLib().transferAssetsNetwork(sender.network_id, receiver.network_id, currency, amount, description),
+				getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, description),
 				sender,
 				receiver
 			]);
@@ -64,7 +64,7 @@ const transferUserFunds = (senderId, receiverId, currency, amount, description =
 const getUserBalance = (userKitId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().getBalanceNetwork(user.network_id);
+			return getNodeLib().getBalance(user.network_id);
 		})
 		.then((data) => {
 			return {
