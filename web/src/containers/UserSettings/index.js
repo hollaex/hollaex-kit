@@ -52,11 +52,11 @@ class UserSettings extends Component {
 		totalAssets: '',
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		const { user } = this.props;
 
 		if (user.id) {
-			this.calculateSections(this.props);
+			await this.calculateSections(this.props);
 		}
 		if (this.props.location.query && this.props.location.query.tab) {
 			this.setState(
@@ -94,7 +94,7 @@ class UserSettings extends Component {
 		}
 	}
 
-	UNSAFE_componentWillUpdate(nextProps, nextState) {
+	async UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (
 			nextProps.user.id !== this.props.user.id ||
 			nextProps.price !== this.props.price ||
@@ -103,7 +103,7 @@ class UserSettings extends Component {
 			nextProps.activeLanguage !== this.props.activeLanguage ||
 			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
 		) {
-			this.calculateSections(nextProps);
+			await this.calculateSections(nextProps);
 		}
 		if (
 			this.state.activeTab !== nextState.activeTab &&
@@ -120,8 +120,8 @@ class UserSettings extends Component {
 		});
 	};
 
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
+	calculateSections = async ({ balance, prices, coins }) => {
+		const totalAssets = await calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets: totalAssets });
 	};
 

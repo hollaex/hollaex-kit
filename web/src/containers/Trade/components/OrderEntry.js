@@ -49,12 +49,12 @@ class OrderEntry extends Component {
 		totalAssets: '',
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		if (this.props.pair_base) {
 			this.generateFormValues(this.props.pair);
 		}
 		if (this.props.user.id) {
-			this.calculateSections(this.props);
+			await this.calculateSections(this.props);
 		}
 	}
 
@@ -89,8 +89,8 @@ class OrderEntry extends Component {
 		}
 	}
 
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
+	calculateSections = async ({ balance, prices, coins }) => {
+		const totalAssets = await calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets });
 	};
 

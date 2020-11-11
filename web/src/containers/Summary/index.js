@@ -33,11 +33,12 @@ import {
 	formatBaseAmount,
 	calculateBalancePrice,
 	donutFormatPercentage,
-	calculatePrice,
+	calculateOraclePrice,
 	calculatePricePercentage,
 } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 import { getUserReferralCount } from '../../actions/userAction';
+import { getPrices } from 'actions/walletActions';
 
 class Summary extends Component {
 	state = {
@@ -49,10 +50,14 @@ class Summary extends Component {
 	};
 
 	componentDidMount() {
-		const { user, tradeVolumes, pairs, prices } = this.props;
+		const { user, tradeVolumes, pairs, prices, coins } = this.props;
 
 		if (user.id) {
-			this.calculateSections(this.props);
+			getPrices({ coins }).then((oraclePrices) =>
+				this.setState({ oraclePrices }, () => {
+					this.calculateSections(this.props);
+				})
+			);
 			this.setCurrentTradeAccount(user);
 			this.props.getUserReferralCount();
 		}
@@ -76,7 +81,11 @@ class Summary extends Component {
 			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins) ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
-			this.calculateSections(nextProps);
+			getPrices({ coins: nextProps.coins }).then((oraclePrices) =>
+				this.setState({ oraclePrices }, () => {
+					this.calculateSections(nextProps);
+				})
+			);
 		}
 		if (
 			this.props.user.verification_level !== nextProps.user.verification_level
@@ -122,15 +131,16 @@ class Summary extends Component {
 		}
 	};
 
-	calculateSections = ({ price, balance, orders, prices, coins }) => {
+	calculateSections = async ({ price, balance, orders, prices, coins }) => {
+		const { oraclePrices } = this.state;
 		const data = [];
 
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
+		const totalAssets = await calculateBalancePrice(balance, prices, coins);
 		Object.keys(coins).forEach((currency) => {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculatePrice(
+			const currencyBalance = calculateOraclePrice(
 				balance[`${symbol}_balance`],
-				currency
+				oraclePrices[symbol]
 			);
 			const balancePercent = calculatePricePercentage(
 				currencyBalance,

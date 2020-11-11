@@ -80,14 +80,14 @@ class Wallet extends Component {
 		};
 	};
 
-	calculateSections = ({ price, balance, orders, prices, coins }) => {
+	calculateSections = async ({ price, balance, orders, prices, coins }) => {
 		const { oraclePrices } = this.state;
 		const sections = [];
 		const data = [];
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO calculate right price
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
+		const totalAssets = await calculateBalancePrice(balance, prices, coins);
 		Object.keys(coins).forEach((currency) => {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculateOraclePrice(
