@@ -28,6 +28,7 @@ import {
 	setValidLanguages,
 	setExchangeInitialized,
 	setSetupCompleted,
+	setBaseCurrency,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -46,6 +47,7 @@ const getConfigs = async () => {
 		valid_languages = '',
 		info: { initialized },
 		setup_completed,
+		native_currency,
 	} = kitData;
 
 	const promises = {};
@@ -72,6 +74,7 @@ const getConfigs = async () => {
 		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
 	});
 
+	setBaseCurrency(native_currency);
 	setLocalVersions(remoteVersions);
 	setValidLanguages(valid_languages);
 	setExchangeInitialized(initialized);
