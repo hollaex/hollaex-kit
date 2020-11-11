@@ -457,6 +457,13 @@ const kycUserUpload = (req, res) => {
 	if (!toolsLib.plugin.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	} else if (
+		!toolsLib.getKitSecrets().plugins.s3.id_docs_bucket
+		|| !toolsLib.getKitSecrets().plugins.s3.key
+		|| !toolsLib.getKitSecrets().plugins.s3.secret
+	) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycUserUpload', 'Not available');
+		return res.status(400).json({ message: 'Not available' });
 	}
 
 	const { id, email } = req.auth.sub;
@@ -555,6 +562,13 @@ const kycAdminUpload = (req, res) => {
 	if (!toolsLib.plugin.pluginIsEnabled('kyc')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload', PLUGIN_NOT_ENABLED('kyc'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('kyc') });
+	} else if (
+		!toolsLib.getKitSecrets().plugins.s3.id_docs_bucket
+		|| !toolsLib.getKitSecrets().plugins.s3.key
+		|| !toolsLib.getKitSecrets().plugins.s3.secret
+	) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/kycAdminUpload', 'S3 credentials not set');
+		return res.status(400).json({ message: 'S3 credentials not set' });
 	}
 
 	const user_id = req.swagger.params.user_id.value;
@@ -901,6 +915,13 @@ const sendSmsVerify = (req, res) => {
 	if (!toolsLib.plugin.pluginIsEnabled('sms')) {
 		loggerPlugin.error(req.uuid, 'controllers/plugins/sendSmsVerify', PLUGIN_NOT_ENABLED('sms'));
 		return res.status(400).json({ message: PLUGIN_NOT_ENABLED('sms') });
+	} else if (
+		!toolsLib.getKitSecrets().plugins.sns.region
+		|| !toolsLib.getKitSecrets().plugins.sns.key
+		|| !toolsLib.getKitSecrets().plugins.sns.secret
+	) {
+		loggerPlugin.error(req.uuid, 'controllers/plugins/sendSmsVerify', 'Not available');
+		return res.status(400).json({ message: 'Not available' });
 	}
 
 	const number = req.swagger.params.phone.value;
