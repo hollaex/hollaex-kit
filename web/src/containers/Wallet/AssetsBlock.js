@@ -9,7 +9,7 @@ import {
 	AssetsBlockForm,
 	EditWrapper,
 } from 'components';
-import { calculatePrice, formatToCurrency } from 'utils/currency';
+import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import {
 	BASE_CURRENCY,
@@ -39,8 +39,14 @@ const AssetsBlock = ({
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
 		.sort(([key_a], [key_b]) => {
-			const price_a = calculatePrice(balance[`${key_a}_balance`], key_a);
-			const price_b = calculatePrice(balance[`${key_b}_balance`], key_b);
+			const price_a = calculateOraclePrice(
+				balance[`${key_a}_balance`],
+				searchResult[key_a].oraclePrice
+			);
+			const price_b = calculateOraclePrice(
+				balance[`${key_b}_balance`],
+				searchResult[key_b].oraclePrice
+			);
 			return price_a < price_b ? 1 : -1; // descending order
 		});
 
@@ -175,7 +181,7 @@ const AssetsBlock = ({
 				</thead>
 				<tbody>
 					{sortedSearchResults.map(
-						([key, { min, allow_deposit, allow_withdrawal }]) => {
+						([key, { min, allow_deposit, allow_withdrawal, oraclePrice }]) => {
 							const balanceValue = balance[`${key}_balance`];
 							const pair = findPair(key);
 							const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
@@ -184,7 +190,7 @@ const AssetsBlock = ({
 								key === BASE_CURRENCY
 									? formatToCurrency(balanceValue, min)
 									: formatToCurrency(
-											calculatePrice(balanceValue, key),
+											calculateOraclePrice(balanceValue, oraclePrice),
 											baseCoin.min
 									  );
 							return (

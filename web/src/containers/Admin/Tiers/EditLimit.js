@@ -125,6 +125,7 @@ class EditLimit extends Component {
 			.then((res) => {
 				this.props.getTiers();
 				this.props.handleClose();
+				message.success('Limits updated successfully');
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;

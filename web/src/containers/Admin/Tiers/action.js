@@ -44,5 +44,5 @@ export const updateLimits = (values) => {
 		method: 'PUT',
 		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(`/admin/pair/limits`, options);
+	return requestAuthenticated(`/admin/tiers/limits`, options);
 };
