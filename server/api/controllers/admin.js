@@ -54,7 +54,7 @@ const createInitialAdmin = (req, res) => {
 			if (user) {
 				throw new Error('Admin already exists');
 			}
-			return toolsLib.user.createUser(email, password, 'admin');
+			return toolsLib.user.createUser(email, password, 'admin', 1);
 		})
 		.then(() => {
 			return toolsLib.setExchangeInitialized();
