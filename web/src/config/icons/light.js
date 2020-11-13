@@ -48,8 +48,8 @@ const nestedIcons = {
 		REVOKED: '/assets/images/api-key-revoked.svg',
 		ACTIVE: '/assets/images/api-key-active.svg',
 		TRASHED: '/assets/images/api-key-trashed.svg',
-		GENERATE: '/assets/images/api-key-generate-dark.svg',
-		CREATED: '/assets/images/api-key-created-dark.svg',
+		GENERATE: '/assets/images/api-key-generate.svg',
+		CREATED: '/assets/images/api-key-created.svg',
 	},
 
 	VERIFICATION: {
@@ -111,10 +111,10 @@ const nestedIcons = {
 	},
 
 	SUMMARY: {
-		LEVEL_1: '/assets/summary/level-1-dark.png',
-		LEVEL_2: '/assets/summary/level-2-dark.png',
-		LEVEL_3: '/assets/summary/level-3-dark.png',
-		LEVEL_4: '/assets/summary/level-4-dark.png',
+		LEVEL_1: '/assets/summary/level-1.png',
+		LEVEL_2: '/assets/summary/level-2.png',
+		LEVEL_3: '/assets/summary/level-3.png',
+		LEVEL_4: '/assets/summary/level-4.png',
 	},
 
 	ARROW: {
@@ -123,14 +123,14 @@ const nestedIcons = {
 		ARROW: '/assets/images/arrow-down.svg',
 	},
 
-	DEMO_LOGIN_ICON: '/assets/icons/demo-login-icon-dark.svg',
-	CANCEL_WITHDRAW: '/assets/icons/cancel-withdraw-dark-02-03.svg',
+	DEMO_LOGIN_ICON: '/assets/icons/demo-login-icon-light.svg',
+	CANCEL_WITHDRAW: '/assets/icons/cancel-withdraw-light-02.svg',
 	CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',
 	QUESTION_MARK: '/assets/icons/question-mark-black.svg',
 	LAPTOP: '/assets/icons/compute-play-black.svg',
 	TELEGRAM: '/assets/icons/telegram-black.svg',
 
-	CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
+	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
 	RED_ARROW: '/assets/acounts/account-icons-16.svg',
@@ -175,7 +175,7 @@ const nestedIcons = {
 
 	TRANSACTION_HISTORY: '/assets/images/transaction-history.svg',
 
-	VERIFICATION_SENT: '/assets/images/resend-email.svg',
+	VERIFICATION_SENT: '/assets/images/resend-email-light.svg',
 	WITHDRAW: '/assets/images/withdraw.svg',
 	WITHDRAW_HISTORY: '/assets/images/withdraw-history.svg',
 	BLUE_ARROW_LEFT: '/assets/images/blue-arrow-left.svg',
@@ -216,7 +216,7 @@ const nestedIcons = {
 	SEARCH: '/assets/images/search.svg',
 
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
-	VOLUME_PENDING: '/assets/images/volume-pending-dark.svg',
+	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',

@@ -8,7 +8,7 @@ import { ButtonLink, Wallet } from '../';
 
 class SidebarHub extends Component {
 	render() {
-		const { activePath, isLogged, theme, icons: ICONS } = this.props;
+		const { activePath, isLogged, icons: ICONS } = this.props;
 		const values = [
 			{
 				accordionClassName: 'sidebar_hub-section-content f-1',
@@ -34,12 +34,8 @@ class SidebarHub extends Component {
 					) : (
 						<div>
 							<IconTitle
-								iconId="DEMO_LOGIN_ICON_LIGHT,DEMO_LOGIN_ICON_DARK"
-								iconPath={
-									theme === 'white'
-										? ICONS['DEMO_LOGIN_ICON_LIGHT']
-										: ICONS['DEMO_LOGIN_ICON_DARK']
-								}
+								iconId="DEMO_LOGIN_ICON"
+								iconPath={ICONS['DEMO_LOGIN_ICON']}
 								textType="title"
 								className="w-100"
 							/>

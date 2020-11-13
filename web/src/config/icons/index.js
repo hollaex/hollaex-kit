@@ -1,8 +1,7 @@
-import flatten from 'flat';
+import DarkIcons from './dark';
 export { default as STATIC_ICONS } from './static';
 
-const options = { safe: true };
-const nestedIcons = {
+const icons = {
 	EXCHANGE_LOGO_LIGHT: '', //TODO: get logo, admin and calculated icons
 	EXCHANGE_LOGO_DARK: '', //TODO: get logo, admin and calculated icons
 	FAV_ICON: '/favicon.ico', //TODO: set
@@ -11,91 +10,56 @@ const nestedIcons = {
 	BOARDING_IMAGE_LIGHT: '/assets/background.png', //TODO: admin
 	BOARDING_IMAGE_DARK: '/assets/dark-background.jpg', //TODO: admin
 
-	DEMO_LOGIN_ICON_DARK: '/assets/icons/demo-login-icon-dark.svg',
-	DEMO_LOGIN_ICON_LIGHT: '/assets/icons/demo-login-icon-light.svg',
-	CANCEL_WITHDRAW_DARK: '/assets/icons/cancel-withdraw-dark-02-03.svg',
-	CANCEL_WITHDRAW_LIGHT: '/assets/icons/cancel-withdraw-light-02.svg',
-	BTC_ICON_DARK: '/assets/icons/btc-icon-dark-01.svg',
-	BTC_ICON: '/assets/icons/btc-icon-01.svg',
-	ETH_ICON: '/assets/icons/eth-icon-01.svg',
-	ETH_ICON_DARK: '/assets/icons/eth-icon-dark-01.svg',
-	EUR_ICON: '/assets/icons/eur-icon.svg',
-	LTC_ICON: '/assets/icons/ltc-icon.svg',
-	LTC_ICON_DARK: '/assets/icons/ltc-icon.svg',
-	TRX_ICON: '/assets/icons/trx-icon.svg',
-	TRX_ICON_DARK: '/assets/icons/trx-icon.svg',
-	TUSD_ICON: '/assets/icons/tusd-icon.svg',
-	TUSD_ICON_DARK: '/assets/icons/tusd-icon.svg',
-	XLM_ICON: '/assets/icons/xlm-icon.svg',
-	XLM_ICON_DARK: '/assets/icons/xlm-icon.svg',
-	EOS_ICON: '/assets/icons/eos-icon.svg',
-	EOS_ICON_DARK: '/assets/icons/eos-icon.svg',
-	DAI_ICON: '/assets/icons/dai-icon.svg',
-	DAI_ICON_DARK: '/assets/icons/dai-icon.svg',
-	BNB_ICON: '/assets/icons/bnb-icon.svg',
-	BNB_ICON_DARK: '/assets/icons/bnb-icon.svg',
-	ADA_ICON: '/assets/icons/ada-icon.svg',
-	ADA_ICON_DARK: '/assets/icons/ada-icon.svg',
+	// DEMO_LOGIN_ICON_DARK: '/assets/icons/demo-login-icon-dark.svg',
+	// DEMO_LOGIN_ICON_LIGHT: '/assets/icons/demo-login-icon-light.svg',
 
-	CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',
-	QUESTION_MARK: '/assets/icons/question-mark-black.svg',
-	QUESTION_MARK_COLOR: '/assets/icons/question-mark-color.svg',
-	LAPTOP: '/assets/icons/compute-play-black.svg',
-	LAPTOP_COLOR: '/assets/icons/compute-play-color.svg',
-	TELEGRAM: '/assets/icons/telegram-black.svg',
-	TELEGRAM_COLOR: '/assets/icons/telegram-color.svg',
-	BCH_ICON: '/assets/icons/bch-icon.svg',
-	BCH_ICON_DARK: '/assets/icons/bch-icon.svg',
-	BCH_NAV_ICON: '/assets/icons/bch-icon-nav.svg',
-	XRP_ICON: '/assets/icons/xrp-icon-01.svg',
-	XRP_ICON_DARK: '/assets/icons/xrp-icon-01.svg',
-	XRP_NAV_ICON: '/assets/icons/xrp-icon-01.svg',
-	KRW_ICON: '/assets/icons/krw-icon-01.svg',
-	XHT_ICON: '/assets/icons/xht-icon.svg',
-	XHT_ICON_DARK: '/assets/icons/xht-icon-dark.svg',
-	XMR_ICON: '/assets/icons/xmr-icon.svg',
-	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
-	USDT_ICON: '/assets/icons/usdt-icon.svg',
-	CHECK: '/assets/images/Orderbook scrolling-01.svg',
-	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
-	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
-	RED_WARNING: '/assets/acounts/account-icons-09.svg',
-	// GENDER_F: '/assets/acounts/account-icons-10.svg',
-	// GENDER_M: '/assets/acounts/account-icons-11.svg',
-	BITCOIN_CLEAR: '/assets/acounts/account-icons-13.svg',
-	RED_ARROW: '/assets/acounts/account-icons-16.svg',
-	BLUE_CLIP: '/assets/acounts/account-icons-17.svg',
-	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
-	KEYS: '/assets/acounts/account-icons-22.svg',
-	OTP_KEYS: '/assets/acounts/account-icons-29.svg',
-	GREEN_CHECK: '/assets/acounts/account-icons-23.svg',
-	LETTER: '/assets/acounts/account-icons-24.svg',
-	SQUARE_DOTS: '/assets/acounts/account-icons-25.svg',
-	OTP_CODE: '/assets/acounts/account-icons-28.svg',
-	COPY_NEW: '/assets/images/copy.svg',
-	COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
-	ACCOUNT_LINE: '/assets/images/account.svg',
-	ACCOUNT_RECOVERY: '/assets/images/account-recovery.svg',
-	BITCOIN_WALLET: '/assets/images/bitcoin-wallet.svg',
-	CHECK_SENDING_BITCOIN: '/assets/images/check-sending-bitcoin.svg',
-	DATA: '/assets/images/data.svg',
+	// CANCEL_WITHDRAW_DARK: '/assets/icons/cancel-withdraw-dark-02-03.svg',
+	// CANCEL_WITHDRAW_LIGHT: '/assets/icons/cancel-withdraw-light-02.svg',
 
-	DEPOSIT_BITCOIN: '/assets/images/deposit-bitcoin-dark-theme.svg',
-	DEPOSIT_HISTORY: '/assets/images/deposit-history.svg',
-	DEPOSIT_RECEIVED_BITCOIN: '/assets/images/deposit-received-bitcoin.svg',
+	// CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',
+	// QUESTION_MARK: '/assets/icons/question-mark-black.svg',
+	// LAPTOP: '/assets/icons/compute-play-black.svg',
+	// TELEGRAM: '/assets/icons/telegram-black.svg',
 
-	EMAIL_SENT: '/assets/images/email-sent.svg',
+	// CHECK: '/assets/images/Orderbook scrolling-01.svg',
+	// DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
+	// BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
+	// RED_WARNING: '/assets/acounts/account-icons-09.svg',
+	// // GENDER_F: '/assets/acounts/account-icons-10.svg',
+	// // GENDER_M: '/assets/acounts/account-icons-11.svg',
+	// RED_ARROW: '/assets/acounts/account-icons-16.svg',
+	// BLUE_CLIP: '/assets/acounts/account-icons-17.svg',
+	// BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
 
-	DEPOSIT_BASE_COIN_COMPLETE: '/assets/images/fiat-deposit-completed.svg',
-
-	GEAR_GREY: '/assets/images/gear-grey.svg',
-
-	ID_GREY: '/assets/images/id-grey.svg',
-
-	INCOMING_BTC: '/assets/images/incoming-btc.svg',
-	INCOMING_TOMAN: '/assets/images/incoming-toman.svg',
-
-	PASSWORD_RESET: '/assets/images/password-reset.svg',
+	// OTP_KEYS: '/assets/acounts/account-icons-29.svg',
+	// GREEN_CHECK: '/assets/acounts/account-icons-23.svg',
+	// LETTER: '/assets/acounts/account-icons-24.svg',
+	//
+	// OTP_CODE: '/assets/acounts/account-icons-28.svg',
+	// COPY_NEW: '/assets/images/copy.svg',
+	// COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
+	// ACCOUNT_LINE: '/assets/images/account.svg',
+	// ACCOUNT_RECOVERY: '/assets/images/account-recovery.svg',
+	// BITCOIN_WALLET: '/assets/images/bitcoin-wallet.svg',
+	// CHECK_SENDING_BITCOIN: '/assets/images/check-sending-bitcoin.svg',
+	// DATA: '/assets/images/data.svg',
+	//
+	// DEPOSIT_BITCOIN: '/assets/images/deposit-bitcoin-dark-theme.svg',
+	// DEPOSIT_HISTORY: '/assets/images/deposit-history.svg',
+	// DEPOSIT_RECEIVED_BITCOIN: '/assets/images/deposit-received-bitcoin.svg',
+	//
+	// EMAIL_SENT: '/assets/images/email-sent.svg',
+	//
+	// DEPOSIT_BASE_COIN_COMPLETE: '/assets/images/fiat-deposit-completed.svg',
+	//
+	// GEAR_GREY: '/assets/images/gear-grey.svg',
+	//
+	// ID_GREY: '/assets/images/id-grey.svg',
+	//
+	// INCOMING_BTC: '/assets/images/incoming-btc.svg',
+	// INCOMING_TOMAN: '/assets/images/incoming-toman.svg',
+	//
+	// PASSWORD_RESET: '/assets/images/password-reset.svg',
 
 	// all below icons are checked
 
@@ -105,45 +69,45 @@ const nestedIcons = {
 	// 	'/assets/icons/quick-trade-insufficient-funds.svg',
 	// QUICK_TRADE_SUCCESSFUL: '/assets/icons/quick-trade-success-coin-pile.svg',
 
-	SECURE: '/assets/images/secure.svg',
-
-	SECURITY_GREY: '/assets/images/security-grey.svg',
-	SET_NEW_PASSWORD: '/assets/images/set-new-password.svg',
-	SUCCESS_BLACK: '/assets/images/success-black.svg',
+	// SECURE: '/assets/images/secure.svg',
+	//
+	// SECURITY_GREY: '/assets/images/security-grey.svg',
+	// SET_NEW_PASSWORD: '/assets/images/set-new-password.svg',
+	// SUCCESS_BLACK: '/assets/images/success-black.svg',
 	// TRADE_HISTORY: '/assets/images/trade-history.svg',
 
-	TRANSACTION_HISTORY: '/assets/images/transaction-history.svg',
-
-	VERIFICATION_SENT: '/assets/images/resend-email-light.svg',
-	VERIFICATION_SENT_DARK: '/assets/images/resend-email.svg',
-	WITHDRAW: '/assets/images/withdraw.svg',
-	WITHDRAW_HISTORY: '/assets/images/withdraw-history.svg',
-	BLUE_ARROW_LEFT: '/assets/images/blue-arrow-left.svg',
-	BLUE_ARROW_RIGHT: '/assets/images/blue-arrow-right.svg',
-	SESSION_TIMED_OUT: '/assets/images/session-timed-out.svg',
-	BLUE_EDIT: '/assets/images/blue-edit-exir-icon.svg',
-	BLUE_PLUS: '/assets/images/max-plus-blue-icon.svg',
-	BLUE_TIMER: '/assets/images/timer-icon.svg',
-
-	NOTIFICATION_VERIFICATION_WARNING: '/assets/images/verification.svg',
+	// TRANSACTION_HISTORY: '/assets/images/transaction-history.svg',
+	//
+	// VERIFICATION_SENT: '/assets/images/resend-email-light.svg',
+	// VERIFICATION_SENT_DARK: '/assets/images/resend-email.svg',
+	// WITHDRAW: '/assets/images/withdraw.svg',
+	// WITHDRAW_HISTORY: '/assets/images/withdraw-history.svg',
+	// BLUE_ARROW_LEFT: '/assets/images/blue-arrow-left.svg',
+	// BLUE_ARROW_RIGHT: '/assets/images/blue-arrow-right.svg',
+	// SESSION_TIMED_OUT: '/assets/images/session-timed-out.svg',
+	// BLUE_EDIT: '/assets/images/blue-edit-exir-icon.svg',
+	// BLUE_PLUS: '/assets/images/max-plus-blue-icon.svg',
+	// BLUE_TIMER: '/assets/images/timer-icon.svg',
+	//
+	// NOTIFICATION_VERIFICATION_WARNING: '/assets/images/verification.svg',
 
 	// VERIFICATION_WARNING: '/assets/images/astrics.svg',
 	// VERIFICATION_SUCCESS: '/assets/images/success-check-box.svg',
 
-	COIN_WITHDRAW_BTC: '/assets/images/coin-withdraw-btc.svg',
-	LOGOUT_DOOR_INACTIVE: '/assets/images/logout-door-inactive.svg',
-	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
-	SIDEBAR_WALLET_ACTIVE: '/assets/images/wallet-selected.svg',
-	SIDEBAR_ACCOUNT_ACTIVE: '/assets/images/account_2-active.svg',
-	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
-	SIDEBAR_POST_ACTIVE: '/assets/images/post-active.svg',
-	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
-	SIDEBAR_QUICK_TRADING_ACTIVE:
-		'/assets/images/quick-trade-tab-selected-01.svg',
-	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
-	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
-	ARROW_TRANSFER_HISTORY_ACTIVE:
-		'/assets/images/arrow-trans-history-active.svg',
+	// COIN_WITHDRAW_BTC: '/assets/images/coin-withdraw-btc.svg',
+	// LOGOUT_DOOR_INACTIVE: '/assets/images/logout-door-inactive.svg',
+	// CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
+	// SIDEBAR_WALLET_ACTIVE: '/assets/images/wallet-selected.svg',
+	// SIDEBAR_ACCOUNT_ACTIVE: '/assets/images/account_2-active.svg',
+	// SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
+	// SIDEBAR_POST_ACTIVE: '/assets/images/post-active.svg',
+	// SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
+	// SIDEBAR_QUICK_TRADING_ACTIVE:
+	// 	'/assets/images/quick-trade-tab-selected-01.svg',
+	// SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
+	// SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
+	// ARROW_TRANSFER_HISTORY_ACTIVE:
+	// 	'/assets/images/arrow-trans-history-active.svg',
 	// ARROW_ARROW: '/assets/images/arrow-down.svg',
 
 	// TOKENS_INACTIVE: '/assets/images/dev-icon.svg',
@@ -151,17 +115,17 @@ const nestedIcons = {
 	// TOKEN_REVOKED: '/assets/images/api-key-revoked.svg',
 	// TOKEN_ACTIVE: '/assets/images/api-key-active.svg',
 	// TOKEN_TRASHED: '/assets/images/api-key-trashed.svg',
-	TOKEN_GENERATE: '/assets/images/api-key-generate.svg',
+	// TOKEN_GENERATE: '/assets/images/api-key-generate.svg',
 	// TOKEN_GENERATE_DARK: '/assets/images/api-key-generate-dark.svg',
-	TOKEN_CREATED: '/assets/images/api-key-created.svg',
+	// TOKEN_CREATED: '/assets/images/api-key-created.svg',
 	// TOKEN_CREATED_DARK: '/assets/images/api-key-created-dark.svg',
 
-	CHECK_ORDER: '/assets/images/check-order-popup-01.svg',
-	ITEM_OPTIONS: '/assets/images/item-options.svg',
-
-	CHAT: '/assets/images/chat-icon.svg',
-	WITHDRAW_MAIL_CONFIRMATION: '/assets/images/withdraw-mail-confirmation.svg',
-	CLOSE_CROSS: '/assets/images/close-cross-tab.svg',
+	// CHECK_ORDER: '/assets/images/check-order-popup-01.svg',
+	// ITEM_OPTIONS: '/assets/images/item-options.svg',
+	//
+	// CHAT: '/assets/images/chat-icon.svg',
+	// WITHDRAW_MAIL_CONFIRMATION: '/assets/images/withdraw-mail-confirmation.svg',
+	// CLOSE_CROSS: '/assets/images/close-cross-tab.svg',
 
 	// TAB_PLUS: '/assets/images/tab-plus.svg',
 	// TAB_SUMMARY: '/assets/images/tab-summary.svg',
@@ -172,11 +136,11 @@ const nestedIcons = {
 	// TAB_SETTING: '/assets/images/tab-setting.svg',
 	// TAB_API: '/assets/images/tab-api.svg',
 
-	TRADE_FILLED_SUCESSFUL: '/assets/images/Orderbook scrolling-01.svg',
-	TRADE_PARTIALLY_FILLED: '/assets/images/part-fill.svg',
-	TAB_SIGNOUT: '/assets/images/signout.svg',
-
-	SEARCH: '/assets/images/search.svg',
+	// TRADE_FILLED_SUCESSFUL: '/assets/images/Orderbook scrolling-01.svg',
+	// TRADE_PARTIALLY_FILLED: '/assets/images/part-fill.svg',
+	// TAB_SIGNOUT: '/assets/images/signout.svg',
+	//
+	// SEARCH: '/assets/images/search.svg',
 	// VERIFICATION_DOC_STATUS: '/assets/images/verification-doc-status.svg',
 	// VERIFICATION_PENDING: '/assets/images/verification-pending-orange.svg',
 	// VERIFICATION_REJECTED:
@@ -188,15 +152,15 @@ const nestedIcons = {
 	// VERIFICATION_ID_NEW: '/assets/images/verification-id.svg',
 	// VERIFICATION_BANK_NEW: '/assets/images/verification-bank.svg',
 	// VERIFICATION_DOCUMENT_NEW: '/assets/images/verification-document.svg',
-	PENDING_TIMER: '/assets/images/pending-timer.svg',
-	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
-	VOLUME_PENDING_DARK: '/assets/images/volume-pending-dark.svg',
-	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
-
-	NOTE_KYC: '/assets/images/note-KYC.svg',
-	SIDEBAR_CHAT: '/assets/images/bottom-chat-icon.svg',
-	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
-	CONNECT_LOADING: '/assets/images/connect-loading.svg',
+	// PENDING_TIMER: '/assets/images/pending-timer.svg',
+	// VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
+	// VOLUME_PENDING_DARK: '/assets/images/volume-pending-dark.svg',
+	// SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
+	//
+	// NOTE_KYC: '/assets/images/note-KYC.svg',
+	// SIDEBAR_CHAT: '/assets/images/bottom-chat-icon.svg',
+	// SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
+	// CONNECT_LOADING: '/assets/images/connect-loading.svg',
 	// SETTING_NOTIFICATION_ICON: '/assets/images/notification-settings-icon.svg',
 	// SETTING_INTERFACE_ICON: '/assets/images/interface-settings-icon.svg',
 	// SETTING_LANGUAGE_ICON: '/assets/images/language-settings-icon.svg',
@@ -206,10 +170,10 @@ const nestedIcons = {
 	// SETTING_RISK_ADJUST_ICON: '/assets/images/risk-management-pop-adjust.svg',
 	// SETTING_RISK_MANAGE_WARNING_ICON:
 	// 	'/assets/images/risk-manage-pop-warning.svg',
-	REFER_ICON: '/assets/images/refer-icon.svg',
-	STAKETOKEN_ICON: '/assets/images/stake.svg',
-	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
-	EXPIRED_ICON: '/assets/images/expired.svg',
+	// REFER_ICON: '/assets/images/refer-icon.svg',
+	// STAKETOKEN_ICON: '/assets/images/stake.svg',
+	// DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
+	// EXPIRED_ICON: '/assets/images/expired.svg',
 	// LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
 	// LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	// LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
@@ -222,19 +186,19 @@ const nestedIcons = {
 	// LEVEL_ACCOUNT_ICON_10: '/assets/images/level-10.svg',
 
 	// All below icons are checked
-	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
-	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
-	XHT_COIN_STACK: '/assets/images/XHT-coin-stack.svg',
-	XHT_DOCS: '/assets/images/XHT-docs.svg',
-	XHT_WAVES: '/assets/images/wave-icon.svg',
-	XHT_EMAIL: '/assets/images/XHT-email.svg',
-	XHT_FAQ: '/assets/images/XHT-FAQ.svg',
-	XHT_PDF: '/assets/images/XHT-pdf.svg',
-	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
-	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
-	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
-	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
-	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
+	// HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
+	// ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
+	// XHT_COIN_STACK: '/assets/images/XHT-coin-stack.svg',
+	// XHT_DOCS: '/assets/images/XHT-docs.svg',
+	// XHT_WAVES: '/assets/images/wave-icon.svg',
+	// XHT_EMAIL: '/assets/images/XHT-email.svg',
+	// XHT_FAQ: '/assets/images/XHT-FAQ.svg',
+	// XHT_PDF: '/assets/images/XHT-pdf.svg',
+	// REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
+	// INCOMING_WAVE: '/assets/images/incoming-wave.svg',
+	// TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
+	// CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
+	// BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	// UP_ARROW: '/assets/images/buy-trade.svg',
 	// DOWN_ARROW: '/assets/images/sell-trade.svg',
@@ -260,18 +224,17 @@ const nestedIcons = {
 	// 	LEGAL: '/assets/images/features-legal-icons.svg',
 	// },
 
-	SUMMMARY_ICON: {
-		LEVEL_1: '/assets/summary/level-1.png',
-		// LEVEL_1_DARK: '/assets/summary/level-1-dark.png',
-		LEVEL_2: '/assets/summary/level-2.png',
-		// LEVEL_2_DARK: '/assets/summary/level-2-dark.png',
-		LEVEL_3: '/assets/summary/level-3.png',
-		// LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
-		LEVEL_4: '/assets/summary/level-4.png',
-		// LEVEL_4_DARK: '/assets/summary/level-4-dark.png',
-	},
+	// SUMMMARY_ICON: {
+	// 	LEVEL_1: '/assets/summary/level-1.png',
+	// 	LEVEL_1_DARK: '/assets/summary/level-1-dark.png',
+	// 	LEVEL_2: '/assets/summary/level-2.png',
+	// 	LEVEL_2_DARK: '/assets/summary/level-2-dark.png',
+	// 	LEVEL_3: '/assets/summary/level-3.png',
+	// 	LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
+	// 	LEVEL_4: '/assets/summary/level-4.png',
+	// 	LEVEL_4_DARK: '/assets/summary/level-4-dark.png',
+	// },
+	...DarkIcons,
 };
-
-const icons = flatten(nestedIcons, options);
 
 export default icons;

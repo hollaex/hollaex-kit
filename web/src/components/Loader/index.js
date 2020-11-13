@@ -3,20 +3,8 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
-import { isLightColor, getColorFromTheme, BASE_BACKGROUND } from 'utils/color';
 
-const Loader = ({
-	relative,
-	className,
-	background,
-	icons: ICONS,
-	activeTheme,
-	color,
-}) => {
-	const isLight = isLightColor(
-		getColorFromTheme(BASE_BACKGROUND, activeTheme, color)
-	);
-
+const Loader = ({ relative, className, background, icons: ICONS }) => {
 	return (
 		<div
 			className={classnames(

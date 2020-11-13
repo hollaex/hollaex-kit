@@ -74,12 +74,7 @@ class ApiKeyModal extends Component {
 
 	render() {
 		const { dialogOtpOpen, loading, tokenName, tokenKey, secret } = this.state;
-		const {
-			notificationType,
-			openContactForm,
-			activeTheme,
-			icons: ICONS,
-		} = this.props;
+		const { notificationType, openContactForm, icons: ICONS } = this.props;
 		if (dialogOtpOpen) {
 			return <OtpForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />;
 		} else if (loading) {

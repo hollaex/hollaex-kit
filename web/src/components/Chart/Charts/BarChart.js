@@ -194,8 +194,7 @@ class BarChart extends Component {
 				let count = 0;
 				// if (d.key - 1 === currentMonth) {
 				//     barEnter.append("svg:image")
-				//         .attr("xlink:href", activeTheme === 'dark'
-				//             ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)
+				//         .attr("xlink:href", ICONS.VOLUME_PENDING)
 				//         .attr('class', 'bar_pending-icon')
 				//         .attr('x', (xScale(d.month) + 5))
 				//         .attr('y', (yScale(0) - 20))
