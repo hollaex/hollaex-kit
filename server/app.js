@@ -7,6 +7,9 @@ const { logEntryRequest, stream, logger } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
 var app = require('express')();
 const toolsLib = require('hollaex-tools-lib');
+const { checkStatus } = require('./init');
+
+checkStatus();
 // listen through pubsub for configuration/init
 
 //init runs, populates configuration/secrets

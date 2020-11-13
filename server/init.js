@@ -3,7 +3,6 @@
 const Kit = require('hollaex-node-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
-const cron = require('node-cron');
 const { loggerGeneral } = require('./config/logger');
 const { User, Status, Tier } = require('./db/models');
 
@@ -16,7 +15,7 @@ let nodeLib;
 const getNodeLib = () => nodeLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
-const { INIT_CHANNEL, CONFIGURATION_CHANNEL } = require('./constants');
+const { INIT_CHANNEL, CONFIGURATION_CHANNEL, WS_HUB_CHANNEL } = require('./constants');
 const { each } = require('lodash');
 
 subscriber.on('message', (channel, message) => {
@@ -24,7 +23,11 @@ subscriber.on('message', (channel, message) => {
 		const { type } = JSON.parse(message);
 		switch(type) {
 			case 'refreshInit':
-				checkStatus(true);
+				checkStatus();
+				publisher.publish(
+					WS_HUB_CHANNEL,
+					JSON.stringify({ action: 'restart' })
+				);
 				break;
 			default:
 				break;
@@ -35,7 +38,7 @@ subscriber.on('message', (channel, message) => {
 
 subscriber.subscribe(INIT_CHANNEL);
 
-const checkStatus = (restart = false) => {
+const checkStatus = () => {
 	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
 
 	let configuration = {
@@ -95,12 +98,13 @@ const checkStatus = (restart = false) => {
 				secrets = status.secrets;
 				configuration.kit = status.kit;
 				return all([
-					checkActivation(
+					checkActivation( // added kit
 						status.name,
 						status.url,
 						status.activation_code,
 						status.kit_version,
-						status.constants
+						status.constants,
+						status.kit
 					),
 					Tier.findAll({ raw: true }),
 					status.dataValues
@@ -136,13 +140,17 @@ const checkStatus = (restart = false) => {
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
-			return User.findAll({
-				where: {
-					activated: false
-				}
-			});
+			return all([
+				User.findAll({
+					where: {
+						activated: false
+					}
+				}),
+				exchange,
+				status
+			]);
 		})
-		.then((users) => {
+		.then(([ users, exchange, status ]) => {
 			loggerGeneral.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
 				frozenUsers[user.dataValues.id] = true;
@@ -154,15 +162,8 @@ const checkStatus = (restart = false) => {
 					data: { configuration, secrets, frozenUsers }
 				})
 			);
-		})
-		.then(() => {
-			if (restart) {
-				const { getWs, hubConnected } = require('./ws/hub');
-				if (hubConnected()) {
-					getWs().close();
-				}
-			}
 			loggerGeneral.info('init/checkStatus/activation complete');
+			return [ exchange, status ];
 		})
 		.catch((err) => {
 			let message = 'Initialization failed';
@@ -181,12 +182,13 @@ const stop = () => {
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
-const checkActivation = (name, url, activation_code, version, constants = {}) => {
+const checkActivation = (name, url, activation_code, version, constants = {}, kit = {}) => {
 	const body = {
 		name,
 		url,
 		activation_code,
-		constants
+		constants,
+		kit
 	};
 	if (version) {
 		// only sends version if its set
@@ -201,15 +203,6 @@ const checkActivation = (name, url, activation_code, version, constants = {}) =>
 	};
 	return rp(options);
 };
-
-checkStatus();
-const task = cron.schedule('0 15 * * *', () => {
-	checkStatus();
-}, {
-	timezone: 'Asia/Seoul'
-});
-
-task.start();
 
 module.exports = {
 	checkStatus,
