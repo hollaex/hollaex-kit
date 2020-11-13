@@ -5,6 +5,7 @@ const { loggerWebsocket } = require('../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { MULTIPLE_API_KEY } = require('../messages');
 const url = require('url');
+const { hubConnected } = require('./hub');
 
 const PORT = process.env.WEBSOCKET_PORT || 10080;
 
@@ -12,8 +13,6 @@ const wss = new WebSocket.Server({
 	port: PORT,
 	verifyClient: (info, next) => {
 		try {
-			const { hubConnected } = require('./hub');
-
 			if (!hubConnected()) {
 				throw new Error('Hub websocket is disconnected');
 			}

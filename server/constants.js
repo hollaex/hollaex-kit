@@ -1,7 +1,8 @@
 'use strict';
 const { toBool } = require('./utils/conversion');
+const { cloneDeep } = require('lodash');
 
-exports.NETWORK = process.env.NETWORK === 'mainnet' ? 'prod' : 'testnet';
+// exports.NETWORK = process.env.NETWORK === 'mainnet' ? 'prod' : 'testnet'; remove
 exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used for sending logs etc
 
 exports.API_HOST = process.env.API_HOST || 'localhost';
@@ -30,11 +31,11 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 	}
 };
 
-exports.WEBSOCKET_CHAT_CHANNEL = '/chat';
-exports.WEBSOCKET_CHAT_PUBLIC_ROOM = 'public';
+// exports.WEBSOCKET_CHAT_CHANNEL = '/chat';
+// exports.WEBSOCKET_CHAT_PUBLIC_ROOM = 'public';
 exports.CHAT_MAX_MESSAGES = 50;
-exports.ACTION_PARTIAL = 'partial';
-exports.ACTION_UPDATE = 'update';
+// exports.ACTION_PARTIAL = 'partial';
+// exports.ACTION_UPDATE = 'update';
 
 exports.CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
 
@@ -42,6 +43,9 @@ exports.INIT_CHANNEL = 'channel:init';
 
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 
+exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
+
+// double check to see if used
 exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
 exports.WS_USER_TRADE_TYPE = 'trade';
 exports.WS_USER_ORDER_QUEUED_TYPE = 'order_queued';
@@ -215,11 +219,9 @@ const updateFrozenUser = (action, userId) => {
 	setRedisData();
 };
 
-const setRedisData = () => {
+const setRedisData = () => { // review
 	client.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
-
-const { cloneDeep } = require('lodash');
 
 exports.GET_COINS = () => cloneDeep(configuration.coins);
 exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
@@ -228,12 +230,12 @@ exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
-exports.MAX_TRADES = process.env.MAX_TRADES
-	? parseInt(process.env.MAX_TRADES)
-	: 50;
+// exports.MAX_TRADES = process.env.MAX_TRADES
+// 	? parseInt(process.env.MAX_TRADES)
+// 	: 50;
 
 // TODO: need to check and make this dynamic only for trade volume data
-exports.MAIN_CURRENCY = 'eur';
+// exports.MAIN_CURRENCY = 'eur';
 
 exports.SECRET_MASK = '************************';
 
@@ -246,10 +248,10 @@ exports.AFFILIATION_CODE_LENGTH = 6;
 
 // ACCOUNTS CONSTANTS -----------------------------
 
-exports.ADMIN_ACCOUNT_ID = 1;
-exports.DEFAULT_TIER = 1;
+exports.ADMIN_ACCOUNT_ID = 1; // remove
+exports.DEFAULT_TIER = 1; // remove
 
-const ACCOUNTS = [
+const ACCOUNTS = [ // remove
 	{
 		email: process.env.ADMIN_EMAIL,
 		password: process.env.ADMIN_PASSWORD,
@@ -283,8 +285,8 @@ const ROLES = {
 };
 
 exports.TOKEN_TYPES = {
-	NORMAL: 'normal',
-	DEV: 'dev',
+	// NORMAL: 'normal', remove
+	// DEV: 'dev',
 	HMAC: 'hmac'
 };
 
@@ -298,13 +300,13 @@ exports.ROLES = ROLES;
 exports.BASE_SCOPES = [ROLES.USER, ROLES.HMAC];
 // ACCOUNTS CONSTANTS -----------------------------
 
-// ORDER TYPES --------------------------------------
-exports.ORDER_TYPE_QUOTE = 'quote';
-exports.ORDER_TYPE_LIMIT = 'limit';
-exports.ORDER_TYPE_MARKET = 'market';
+// // ORDER TYPES -------------------------------------- remove
+// exports.ORDER_TYPE_QUOTE = 'quote';
+// exports.ORDER_TYPE_LIMIT = 'limit';
+// exports.ORDER_TYPE_MARKET = 'market';
 
-exports.ORDER_SIDE_BUY = 'buy';
-exports.ORDER_SIDE_SELL = 'sell';
+// exports.ORDER_SIDE_BUY = 'buy';
+// exports.ORDER_SIDE_SELL = 'sell';
 // ORDER TYPES --------------------------------------
 
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
@@ -313,15 +315,13 @@ exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
 
 exports.SEND_CONTACT_US_EMAIL = true;
 
-exports.ZENDESK_HOST = process.env.ZENDESK_HOST || '';
-exports.ZENDESK_KEY = process.env.ZENDESK_KEY || '';
+// exports.ZENDESK_HOST = process.env.ZENDESK_HOST || ''; remove
+// exports.ZENDESK_KEY = process.env.ZENDESK_KEY || '';
 
-exports.TOKEN_USER_LEVEL = parseInt(process.env.TOKEN_USER_LEVEL || 2, 10);
-exports.MASK_CHARS = parseInt(process.env.MASK_CHARS || 5, 10);
+exports.TOKEN_USER_LEVEL = parseInt(process.env.TOKEN_USER_LEVEL || 2, 10); // remove
+exports.MASK_CHARS = parseInt(process.env.MASK_CHARS || 5, 10); // remove
 
-exports.MAX_ORDER_QUEUE = parseInt(process.env.MAX_ORDER_QUEUE) || 10;
-
-// WALLI CONSTANTS -----------------------------
+exports.MAX_ORDER_QUEUE = parseInt(process.env.MAX_ORDER_QUEUE) || 10; // remove
 
 exports.CONFIRMATION = {
 	btc: 1,
@@ -344,7 +344,8 @@ exports.AVAILABLE_PLUGINS = [
 
 exports.HMAC_TOKEN_KEY = 'hmac:token';
 
-exports.REQUIRED_XHT = 100;
+// move to plugins
+exports.REQUIRED_XHT = 100; // move to plugins
 
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
@@ -379,7 +380,7 @@ exports.VERIFY_STATUS = {
 	COMPLETED: 3
 };
 
-exports.ERC_TOKENS = [
+exports.ERC_TOKENS = [ // remove
 	'eth',
 	'xht',
 	'usdt',
@@ -442,7 +443,7 @@ exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 	'strings'
 ];
 
-const MAINNET_EXPLORERS = {
+const MAINNET_EXPLORERS = { // set to switch function
 	btc: [
 		{
 			name: 'Blockchain.info',
@@ -587,130 +588,130 @@ const MAINNET_EXPLORERS = {
 	],
 };
 
-const TESTNET_EXPLORERS = {
-	btc: [
-		{
-			name: 'Blockchain.info',
-			baseUrl: 'https://testnet.blockchain.info',
-			txPath: '/tx'
-		},
-		{
-			name: 'BlockCypher',
-			baseUrl: 'https://live.blockcypher.com',
-			txPath: '/bcy/tx'
-		},
-		{
-			name: 'Blockstream',
-			baseUrl: 'https://blockstream.info/testnet',
-			txPath: '/tx'
-		}
-	],
-	eth: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	xht: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	usdt: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	dai: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	sai: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	mkr: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	bnb: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	bat: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	leo: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	zrx: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	bch: [
-		{
-			name: 'Blockchain.info',
-			baseUrl: 'https://www.blockchain.com',
-			txPath: '/bchtest/tx'
-		}
-	],
-	xrp: [
-		{
-			name: 'Bithomp',
-			baseUrl: 'https://test.bithomp.com',
-			txPath: '/explorer'
-		}
-	],
-	xmr: [
-		{
-			name: 'xmrchain',
-			baseUrl: 'https://testnet.xmrchain.com',
-			txPath: '/tx'
-		}
-	],
-	xaut: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://ropsten.etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	xlm: [
-		{
-			name: 'steexp',
-			baseUrl: 'https://testnet.steexp.com',
-			txPath: '/tx'
-		}
-	],
-};
+// const TESTNET_EXPLORERS = { remove
+// 	btc: [
+// 		{
+// 			name: 'Blockchain.info',
+// 			baseUrl: 'https://testnet.blockchain.info',
+// 			txPath: '/tx'
+// 		},
+// 		{
+// 			name: 'BlockCypher',
+// 			baseUrl: 'https://live.blockcypher.com',
+// 			txPath: '/bcy/tx'
+// 		},
+// 		{
+// 			name: 'Blockstream',
+// 			baseUrl: 'https://blockstream.info/testnet',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	eth: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	xht: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	usdt: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	dai: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	sai: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	mkr: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	bnb: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	bat: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	leo: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	zrx: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	bch: [
+// 		{
+// 			name: 'Blockchain.info',
+// 			baseUrl: 'https://www.blockchain.com',
+// 			txPath: '/bchtest/tx'
+// 		}
+// 	],
+// 	xrp: [
+// 		{
+// 			name: 'Bithomp',
+// 			baseUrl: 'https://test.bithomp.com',
+// 			txPath: '/explorer'
+// 		}
+// 	],
+// 	xmr: [
+// 		{
+// 			name: 'xmrchain',
+// 			baseUrl: 'https://testnet.xmrchain.com',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	xaut: [
+// 		{
+// 			name: 'EtherScan',
+// 			baseUrl: 'https://ropsten.etherscan.io',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// 	xlm: [
+// 		{
+// 			name: 'steexp',
+// 			baseUrl: 'https://testnet.steexp.com',
+// 			txPath: '/tx'
+// 		}
+// 	],
+// };
 
-exports.EXPLORERS =
-	process.env.NETWORK === 'mainnet' ? MAINNET_EXPLORERS : TESTNET_EXPLORERS;
+exports.EXPLORERS = MAINNET_EXPLORERS;
+	// process.env.NETWORK === 'mainnet' ? MAINNET_EXPLORERS : TESTNET_EXPLORERS;
