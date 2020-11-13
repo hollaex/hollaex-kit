@@ -75,7 +75,7 @@ class IdentityVerification extends Component {
 							STRINGS[
 								'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN'
 							],
-						icon: ICONS['GENDER_M'],
+						icon: ICONS['GENDER_MALE'],
 					},
 					{
 						value: true,
@@ -85,7 +85,7 @@ class IdentityVerification extends Component {
 							STRINGS[
 								'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN'
 							],
-						icon: ICONS['GENDER_F'],
+						icon: ICONS['GENDER_FEMALE'],
 					},
 				],
 				validate: [requiredBoolean],

@@ -59,7 +59,7 @@ class QuickTrade extends Component {
 							icon={
 								isMobile
 									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
-									: ICONS['QUICK_TRADE']
+									: ICONS['QUICK_TRADE_ICON']
 							}
 							wrapperClassName={
 								isMobile ? 'quick_trade-tab-icon' : 'quick_trade-icon'

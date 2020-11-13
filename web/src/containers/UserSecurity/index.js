@@ -141,10 +141,10 @@ class UserVerification extends Component {
 				notification: {
 					// text: STRINGS[`DEVELOPER_SECTION.${otp_enabled ? 'ACTIVE' : 'INACTIVE'}`],
 					status: otp_enabled ? 'success' : 'disabled',
-					iconId: 'TOKENS_ACTIVE,TOKENS_INACTIVE',
+					iconId: 'TOKEN_TOKENS_ACTIVE,TOKEN_TOKENS_INACTIVE',
 					iconPath: otp_enabled
-						? ICONS['TOKENS_ACTIVE']
-						: ICONS['TOKENS_INACTIVE'], // TODO check
+						? ICONS['TOKEN_TOKENS_ACTIVE']
+						: ICONS['TOKEN_TOKENS_INACTIVE'], // TODO check
 					allowClick: true,
 				},
 			},

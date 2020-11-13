@@ -27,7 +27,7 @@ const EditWrapper = ({
 				{stringId && (
 					<div className="edit-wrapper__icon-wrapper" data-string-id={stringId}>
 						<ReactSVG
-							path={ICONS['ADMIN_ICON.EDIT_STRING']}
+							path={ICONS['EDIT_STRING']}
 							wrapperClassName="edit-wrapper__icon"
 						/>
 					</div>
@@ -35,7 +35,7 @@ const EditWrapper = ({
 				{iconId && (
 					<div className="edit-wrapper__icon-wrapper" data-icon-id={iconId}>
 						<ReactSVG
-							path={ICONS['ADMIN_ICON.EDIT_ICON']}
+							path={ICONS['OPERATOR_EDIT_ICON']}
 							wrapperClassName="edit-wrapper__icon"
 						/>
 					</div>

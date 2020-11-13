@@ -33,8 +33,8 @@ const Loader = ({
 			<div className={classnames({ loader_background: background })} />
 			<Image
 				wrapperClassName="loader"
-				iconId={isLight ? 'LOADER_LIGHT' : 'LOADER_DARK'}
-				icon={isLight ? ICONS['LOADER_LIGHT'] : ICONS['LOADER_DARK']}
+				iconId="EXCHANGE_LOADER"
+				icon={ICONS['EXCHANGE_LOADER']}
 			/>
 		</div>
 	);
