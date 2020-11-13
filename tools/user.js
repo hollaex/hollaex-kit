@@ -38,10 +38,10 @@ const {
 	VERIFICATION_CODE_USED
 } = require('../messages');
 const { publisher } = require('./database/redis');
-const { CONFIGURATION_CHANNEL, ADMIN_ACCOUNT_ID, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
+const { CONFIGURATION_CHANNEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins, getKitTiers, isValidTierLevel } = require('./common');
+const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel } = require('./common');
 const { isValidPassword } = require('./auth');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -149,7 +149,7 @@ const verifyUser = (email, code, domain) => {
 	});
 };
 
-const createUser = (email, password, role = 'user', domain) => {
+const createUser = (email, password, role = 'user', id) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return dbQuery.findOne('user', {
 			where: { email },
@@ -179,12 +179,18 @@ const createUser = (email, password, role = 'user', domain) => {
 					});
 				}
 
-				return getModel('user').create({
+				const opts = {
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
 					...roles
-				}, { transaction });
+				};
+
+				if (id) {
+					opts.id = id;
+				}
+
+				return getModel('user').create(opts, { transaction });
 			})
 			.then((user) => {
 				return all([
@@ -212,8 +218,7 @@ const createUser = (email, password, role = 'user', domain) => {
 				MAILTYPE.WELCOME,
 				user.email,
 				{},
-				user.settings,
-				domain
+				user.settings
 			);
 			return;
 		});
@@ -561,7 +566,7 @@ const getUserByNetworkId = (network_id, rawData = true, networkData = false) => 
 };
 
 const freezeUserById = (userId) => {
-	if (userId === ADMIN_ACCOUNT_ID) {
+	if (userId === 1) {
 		return reject(new Error(CANNOT_DEACTIVATE_ADMIN));
 	}
 	return getUserByKitId(userId, false)
@@ -588,7 +593,7 @@ const freezeUserById = (userId) => {
 const freezeUserByEmail = (email) => {
 	return getUserByEmail(email, false)
 		.then((user) => {
-			if (user.id === ADMIN_ACCOUNT_ID) {
+			if (user.id === 1) {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
@@ -674,7 +679,7 @@ const getUserRole = (opts = {}) => {
 };
 
 const updateUserRole = (user_id, role) => {
-	if (user_id === ADMIN_ACCOUNT_ID) {
+	if (user_id === 1) {
 		return reject(new Error(CANNOT_CHANGE_ADMIN_ROLE));
 	}
 	return dbQuery.findOne('user', {
