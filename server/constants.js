@@ -1,76 +1,17 @@
 'use strict';
+
 const { toBool } = require('./utils/conversion');
 const { cloneDeep } = require('lodash');
-
-// exports.NETWORK = process.env.NETWORK === 'mainnet' ? 'prod' : 'testnet'; remove
-exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used for sending logs etc
-
-exports.API_HOST = process.env.API_HOST || 'localhost';
-exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
-
-exports.HOLLAEX_NETWORK_URL = process.env.HOLLAEX_NETWORK_URL || 'https://api.testnet.hollaex.network/v2';
-
-// CHANNEL CONSTANTS -----------------------------
-
-exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
-	switch(topic) {
-		case 'orderbook':
-			return `orderbook:${symbolOrUserId}`;
-		case 'trade':
-			return `trade:${symbolOrUserId}`;
-		case 'order':
-			return `order:${symbolOrUserId}`;
-		case 'wallet':
-			return `wallet:${symbolOrUserId}`;
-		case 'deposit':
-			return `deposit:${symbolOrUserId}`;
-		case 'chat':
-			return 'chat';
-		default:
-			return;
-	}
-};
-
-// exports.WEBSOCKET_CHAT_CHANNEL = '/chat';
-// exports.WEBSOCKET_CHAT_PUBLIC_ROOM = 'public';
-exports.CHAT_MAX_MESSAGES = 50;
-// exports.ACTION_PARTIAL = 'partial';
-// exports.ACTION_UPDATE = 'update';
-
-exports.CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
-
-exports.INIT_CHANNEL = 'channel:init';
-
-exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
-
-exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
-
-// double check to see if used
-exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
-exports.WS_USER_TRADE_TYPE = 'trade';
-exports.WS_USER_ORDER_QUEUED_TYPE = 'order_queued';
-exports.WS_USER_ORDER_PROCESSED_TYPE = 'order_processed';
-exports.WS_USER_ORDER_CANCELED_TYPE = 'order_canceled';
-exports.WS_USER_ORDER_ADDED_TYPE = 'order_added';
-exports.WS_USER_ORDER_UPDATED_TYPE = 'order_updated';
-exports.WS_USER_ORDER_REMOVED_TYPE = 'order_removed';
-exports.WS_USER_ORDER_PARTIALLY_FILLED_TYPE = 'order_partialy_filled';
-exports.WS_USER_ORDER_FILLED_TYPE = 'order_filled';
-// CHANNEL CONSTANTS -----------------------------
-
-const CONFIGURATION_CHANNEL = 'channel:configuration';
-exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
-const STATUS_FROZENUSERS_DATA = 'status:frozenUsers:data';
-exports.STATUS_FROZENUSERS_DATA = STATUS_FROZENUSERS_DATA;
-
 const { subscriber } = require('./db/pubsub');
-
-// Needs to be refined, for flushRedis error
 const { promisifyAll } = require('bluebird');
 const redis = require('redis');
 const redisConfig = require('./config/redis');
 promisifyAll(redis.RedisClient.prototype);
 const client = redis.createClient(redisConfig.client);
+
+// CONFIGURATION CONSTANTS START--------------------------------------------------
+const CONFIGURATION_CHANNEL = 'channel:configuration';
+const STATUS_FROZENUSERS_DATA = 'status:frozenUsers:data';
 
 let configuration = {
 	coins: {},
@@ -230,169 +171,6 @@ exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
-// exports.MAX_TRADES = process.env.MAX_TRADES
-// 	? parseInt(process.env.MAX_TRADES)
-// 	: 50;
-
-// TODO: need to check and make this dynamic only for trade volume data
-// exports.MAIN_CURRENCY = 'eur';
-
-exports.SECRET_MASK = '************************';
-
-exports.NODE_ENV = process.env.NODE_ENV;
-
-exports.CURRENCIES = [];
-
-exports.SALT_ROUNDS = 10;
-exports.AFFILIATION_CODE_LENGTH = 6;
-
-// ACCOUNTS CONSTANTS -----------------------------
-
-exports.ADMIN_ACCOUNT_ID = 1; // remove
-exports.DEFAULT_TIER = 1; // remove
-
-const ACCOUNTS = [ // remove
-	{
-		email: process.env.ADMIN_EMAIL,
-		password: process.env.ADMIN_PASSWORD,
-		is_admin: true,
-		verification_level: exports.DEFAULT_TIER
-	},
-	{
-		email: process.env.HOLLAEX_EMAIL,
-		password: process.env.HOLLAEX_PASSWORD,
-		is_admin: true,
-		verification_level: exports.DEFAULT_TIER
-	},
-	{
-		email: process.env.TECH_EMAIL,
-		password: process.env.TECH_PASSWORD,
-		is_admin: true,
-		verification_level: exports.DEFAULT_TIER
-	}
-];
-
-exports.ACCOUNTS = ACCOUNTS;
-
-const ROLES = {
-	SUPERVISOR: 'supervisor',
-	SUPPORT: 'support',
-	ADMIN: 'admin',
-	KYC: 'kyc',
-	COMMUNICATOR: 'communicator',
-	USER: 'user',
-	HMAC: 'hmac'
-};
-
-exports.TOKEN_TYPES = {
-	// NORMAL: 'normal', remove
-	// DEV: 'dev',
-	HMAC: 'hmac'
-};
-
-exports.SECRET = process.env.SECRET || 'shhhh';
-exports.ISSUER = process.env.ISSUER || 'hollaex.com';
-
-exports.HMAC_TOKEN_EXPIRY = 5 * 12 * 30 * 24 * 60 * 60 * 1000; // 5 years
-
-
-exports.ROLES = ROLES;
-exports.BASE_SCOPES = [ROLES.USER, ROLES.HMAC];
-// ACCOUNTS CONSTANTS -----------------------------
-
-// // ORDER TYPES -------------------------------------- remove
-// exports.ORDER_TYPE_QUOTE = 'quote';
-// exports.ORDER_TYPE_LIMIT = 'limit';
-// exports.ORDER_TYPE_MARKET = 'market';
-
-// exports.ORDER_SIDE_BUY = 'buy';
-// exports.ORDER_SIDE_SELL = 'sell';
-// ORDER TYPES --------------------------------------
-
-exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
-
-exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
-
-exports.SEND_CONTACT_US_EMAIL = true;
-
-// exports.ZENDESK_HOST = process.env.ZENDESK_HOST || ''; remove
-// exports.ZENDESK_KEY = process.env.ZENDESK_KEY || '';
-
-exports.TOKEN_USER_LEVEL = parseInt(process.env.TOKEN_USER_LEVEL || 2, 10); // remove
-exports.MASK_CHARS = parseInt(process.env.MASK_CHARS || 5, 10); // remove
-
-exports.MAX_ORDER_QUEUE = parseInt(process.env.MAX_ORDER_QUEUE) || 10; // remove
-
-exports.CONFIRMATION = {
-	btc: 1,
-	eth: 15,
-	bch: 2,
-	xrp: 0
-};
-
-// PLUGIN VALUES
-exports.AVAILABLE_PLUGINS = [
-	'xht_fee',
-	'kyc',
-	'sms',
-	'freshdesk',
-	'chat',
-	'bank',
-	'announcement',
-	'zendesk'
-];
-
-exports.HMAC_TOKEN_KEY = 'hmac:token';
-
-// move to plugins
-exports.REQUIRED_XHT = 100; // move to plugins
-
-exports.SMS_CODE_KEY = 'user:sms';
-exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
-
-exports.S3_LINK_EXPIRATION_TIME = 300; // seconds
-
-exports.ID_FIELDS = [
-	'type',
-	'number',
-	'issued_date',
-	'expiration_date',
-	'status'
-];
-exports.USER_FIELD_ADMIN_LOG = [
-	'full_name',
-	'email',
-	'dob',
-	'gender',
-	'nationality',
-	'phone_number',
-	'address',
-	'id_data',
-	'bank_account',
-	'settings',
-	'username'
-];
-exports.ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
-exports.VERIFY_STATUS = {
-	EMPTY: 0,
-	PENDING: 1,
-	REJECTED: 2,
-	COMPLETED: 3
-};
-
-exports.ERC_TOKENS = [ // remove
-	'eth',
-	'xht',
-	'usdt',
-	'dai',
-	'mkr',
-	'tusd',
-	'usdc',
-	'leo',
-	'xaut',
-	'busd'
-];
-
 exports.KIT_CONFIG_KEYS = [
 	'captcha',
 	'plugins',
@@ -424,6 +202,63 @@ exports.KIT_SECRETS_KEYS = [
 	'plugins'
 ];
 
+exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
+	'icons',
+	'strings'
+];
+// CONFIGURATION CONSTANTS END --------------------------------------------------
+
+// MAIN CONSTANTS START--------------------------------------------------
+
+exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used for sending logs etc
+exports.API_HOST = process.env.API_HOST || 'localhost';
+exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+exports.NODE_ENV = process.env.NODE_ENV;
+exports.HOLLAEX_NETWORK_URL = process.env.HOLLAEX_NETWORK_URL || 'https://api.testnet.hollaex.network/v2';
+
+// MAIN CONSTANTS END --------------------------------------------------
+
+// CHANNEL CONSTANTS START --------------------------------------------------
+
+// API
+exports.INIT_CHANNEL = 'channel:init';
+exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
+exports.HMAC_TOKEN_KEY = 'hmac:token';
+exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
+exports.STATUS_FROZENUSERS_DATA = STATUS_FROZENUSERS_DATA;
+
+// Websocket
+exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
+	switch(topic) {
+		case 'orderbook':
+			return `orderbook:${symbolOrUserId}`;
+		case 'trade':
+			return `trade:${symbolOrUserId}`;
+		case 'order':
+			return `order:${symbolOrUserId}`;
+		case 'wallet':
+			return `wallet:${symbolOrUserId}`;
+		case 'deposit':
+			return `deposit:${symbolOrUserId}`;
+		case 'chat':
+			return 'chat';
+		default:
+			return;
+	}
+};
+exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
+exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
+
+// Chat
+exports.CHAT_MAX_MESSAGES = 50;
+exports.CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
+
+// CHANNEL CONSTANTS END --------------------------------------------------
+
+// UTIL CONSTANTS START --------------------------------------------------
+
+exports.AFFILIATION_CODE_LENGTH = 6;
+exports.SEND_CONTACT_US_EMAIL = true;
 //CSV Report keys
 exports.AUDIT_KEYS = [
 	'id',
@@ -438,280 +273,187 @@ exports.AUDIT_KEYS = [
 	'timestamp'
 ];
 
-exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
-	'icons',
-	'strings'
-];
+// UTIL CONSTANTS END --------------------------------------------------
 
-const MAINNET_EXPLORERS = { // set to switch function
-	btc: [
-		{
-			name: 'Blockchain.info',
-			baseUrl: 'https://www.blockchain.com',
-			txPath: '/btc/tx'
-		},
-		{
-			name: 'BlockCypher',
-			baseUrl: 'https://live.blockcypher.com',
-			txPath: '/btc/tx'
-		},
-		{
-			name: 'Blockstream',
-			baseUrl: 'https://blockstream.info',
-			txPath: '/tx'
-		},
-		{
-			name: 'Bitcoin.com',
-			baseUrl: 'https://explorer.bitcoin.com',
-			txPath: '/btc/tx'
-		}
-	],
-	eth: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		},
-		{
-			name: 'Blockchain.info',
-			baseUrl: 'https://www.blockchain.com',
-			txPath: '/eth/tx'
-		}
-	],
-	xht: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	usdt: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	dai: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	sai: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	mkr: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	bnb: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	bat: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	leo: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	zrx: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	bch: [
-		{
-			name: 'Blockchain.info',
-			baseUrl: 'https://www.blockchain.com',
-			txPath: '/bch/tx'
-		},
-		{
-			name: 'Bitcoin.com',
-			baseUrl: 'https://explorer.bitcoin.com',
-			txPath: '/bch/tx'
-		}
-	],
-	xrp: [
-		{
-			name: 'xrpscan',
-			baseUrl: 'https://xrpscan.com',
-			txPath: '/tx'
-		},
-		{
-			name: 'Bithomp',
-			baseUrl: 'https://bithomp.com',
-			txPath: '/explorer'
-		}
-	],
-	xmr: [
-		{
-			name: 'MoneroBlocks',
-			baseUrl: 'https://moneroblocks.info',
-			txPath: '/tx'
-		}
-	],
-	xaut: [
-		{
-			name: 'EtherScan',
-			baseUrl: 'https://etherscan.io',
-			txPath: '/tx'
-		}
-	],
-	xlm: [
-		{
-			name: 'stellarhain.io',
-			baseUrl: 'https://stellarchain.io',
-			txPath: '/tx'
-		}
-	],
+// ACCOUNTS CONSTANTS START --------------------------------------------------
+
+const ROLES = {
+	SUPERVISOR: 'supervisor',
+	SUPPORT: 'support',
+	ADMIN: 'admin',
+	KYC: 'kyc',
+	COMMUNICATOR: 'communicator',
+	USER: 'user',
+	HMAC: 'hmac'
+};
+exports.ROLES = ROLES;
+exports.BASE_SCOPES = [ROLES.USER, ROLES.HMAC];
+exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
+
+// ACCOUNTS CONSTANTS END --------------------------------------------------
+
+// SECURITY CONSTANTS START --------------------------------------------------
+
+exports.TOKEN_TYPES = {
+	HMAC: 'hmac'
+};
+exports.HMAC_TOKEN_EXPIRY = 5 * 12 * 30 * 24 * 60 * 60 * 1000; // 5 years
+exports.SECRET = process.env.SECRET || 'shhhh';
+exports.ISSUER = process.env.ISSUER || 'hollaex.com';
+exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
+exports.SECRET_MASK = '************************';
+exports.SALT_ROUNDS = 10;
+
+// SECURITY CONSTANTS END --------------------------------------------------
+
+// EMAIL CONSTANTS START --------------------------------------------------
+
+exports.CONFIRMATION = {
+	btc: 1,
+	eth: 15,
+	bch: 2,
+	xrp: 0
+};
+exports.EXPLORERS = (currency) => {
+	switch(currency) {
+		case 'btc':
+			return [
+				{
+					name: 'Blockchain.info',
+					baseUrl: 'https://www.blockchain.com',
+					txPath: '/btc/tx'
+				},
+				{
+					name: 'BlockCypher',
+					baseUrl: 'https://live.blockcypher.com',
+					txPath: '/btc/tx'
+				},
+				{
+					name: 'Blockstream',
+					baseUrl: 'https://blockstream.info',
+					txPath: '/tx'
+				},
+				{
+					name: 'Bitcoin.com',
+					baseUrl: 'https://explorer.bitcoin.com',
+					txPath: '/btc/tx'
+				}
+			];
+		case 'xrp':
+			return [
+				{
+					name: 'xrpscan',
+					baseUrl: 'https://xrpscan.com',
+					txPath: '/tx'
+				},
+				{
+					name: 'Bithomp',
+					baseUrl: 'https://bithomp.com',
+					txPath: '/explorer'
+				}
+			];
+		case 'bch':
+			return [
+				{
+					name: 'Blockchain.info',
+					baseUrl: 'https://www.blockchain.com',
+					txPath: '/bch/tx'
+				},
+				{
+					name: 'Bitcoin.com',
+					baseUrl: 'https://explorer.bitcoin.com',
+					txPath: '/bch/tx'
+				}
+			];
+		case 'xlm':
+			return [
+				{
+					name: 'stellarhain.io',
+					baseUrl: 'https://stellarchain.io',
+					txPath: '/tx'
+				}
+			];
+		case 'xmr':
+			return [
+				{
+					name: 'MoneroBlocks',
+					baseUrl: 'https://moneroblocks.info',
+					txPath: '/tx'
+				}
+			];
+		case 'eth':
+			return [
+				{
+					name: 'EtherScan',
+					baseUrl: 'https://etherscan.io',
+					txPath: '/tx'
+				},
+				{
+					name: 'Blockchain.info',
+					baseUrl: 'https://www.blockchain.com',
+					txPath: '/eth/tx'
+				}
+			];
+		default:
+			return [
+				{
+					name: 'EtherScan',
+					baseUrl: 'https://etherscan.io',
+					txPath: '/tx'
+				}
+			];
+	}
 };
 
-// const TESTNET_EXPLORERS = { remove
-// 	btc: [
-// 		{
-// 			name: 'Blockchain.info',
-// 			baseUrl: 'https://testnet.blockchain.info',
-// 			txPath: '/tx'
-// 		},
-// 		{
-// 			name: 'BlockCypher',
-// 			baseUrl: 'https://live.blockcypher.com',
-// 			txPath: '/bcy/tx'
-// 		},
-// 		{
-// 			name: 'Blockstream',
-// 			baseUrl: 'https://blockstream.info/testnet',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	eth: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	xht: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	usdt: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	dai: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	sai: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	mkr: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	bnb: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	bat: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	leo: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	zrx: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	bch: [
-// 		{
-// 			name: 'Blockchain.info',
-// 			baseUrl: 'https://www.blockchain.com',
-// 			txPath: '/bchtest/tx'
-// 		}
-// 	],
-// 	xrp: [
-// 		{
-// 			name: 'Bithomp',
-// 			baseUrl: 'https://test.bithomp.com',
-// 			txPath: '/explorer'
-// 		}
-// 	],
-// 	xmr: [
-// 		{
-// 			name: 'xmrchain',
-// 			baseUrl: 'https://testnet.xmrchain.com',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	xaut: [
-// 		{
-// 			name: 'EtherScan',
-// 			baseUrl: 'https://ropsten.etherscan.io',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// 	xlm: [
-// 		{
-// 			name: 'steexp',
-// 			baseUrl: 'https://testnet.steexp.com',
-// 			txPath: '/tx'
-// 		}
-// 	],
-// };
+// EMAIL CONSTANTS END --------------------------------------------------
 
-exports.EXPLORERS = MAINNET_EXPLORERS;
-	// process.env.NETWORK === 'mainnet' ? MAINNET_EXPLORERS : TESTNET_EXPLORERS;
+// PLUGIN CONSTANTS START------------------------------ to be moved
+exports.AVAILABLE_PLUGINS = [
+	'xht_fee',
+	'kyc',
+	'sms',
+	'freshdesk',
+	'chat',
+	'bank',
+	'announcement',
+	'zendesk'
+];
+
+exports.REQUIRED_XHT = 100;
+
+exports.SMS_CODE_KEY = 'user:sms';
+exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
+
+exports.S3_LINK_EXPIRATION_TIME = 300; // seconds
+
+exports.ID_FIELDS = [
+	'type',
+	'number',
+	'issued_date',
+	'expiration_date',
+	'status'
+];
+
+exports.USER_FIELD_ADMIN_LOG = [
+	'full_name',
+	'email',
+	'dob',
+	'gender',
+	'nationality',
+	'phone_number',
+	'address',
+	'id_data',
+	'bank_account',
+	'settings',
+	'username'
+];
+
+exports.ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
+
+exports.VERIFY_STATUS = {
+	EMPTY: 0,
+	PENDING: 1,
+	REJECTED: 2,
+	COMPLETED: 3
+};
+// PLUGIN CONSTANTS END ------------------------------ to be moved
