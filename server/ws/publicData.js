@@ -8,7 +8,7 @@ let publicData = {
 const resetPublicData = () => {
 	publicData = {
 		orderbook: {},
-		trades: {}
+		trade: {}
 	};
 };
 
