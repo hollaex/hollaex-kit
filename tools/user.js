@@ -50,6 +50,7 @@ const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/h
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
+const { verifyOtpBeforeAction } = require('./otp');
 
 	/* Onboarding*/
 
@@ -247,7 +248,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			} else {
 				return all([
 					user,
-					require('./auth').verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+					verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
