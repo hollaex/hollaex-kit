@@ -99,8 +99,8 @@ class Wallet extends Component {
 		}
 	}
 
-	calculateTotalAssets = async (balance, prices, coins) => {
-		const total = await calculateBalancePrice(balance, prices, coins);
+	calculateTotalAssets = (balance, prices, coins) => {
+		const total = calculateBalancePrice(balance, prices, coins);
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		return STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
@@ -143,7 +143,7 @@ class Wallet extends Component {
 		this.setState({ isZeroBalanceHidden: value });
 	};
 
-	generateSections = async (
+	generateSections = (
 		changeSymbol,
 		balance,
 		prices,
@@ -153,7 +153,7 @@ class Wallet extends Component {
 		coins,
 		pairs
 	) => {
-		const totalAssets = await this.calculateTotalAssets(balance, prices, coins);
+		const totalAssets = this.calculateTotalAssets(balance, prices, coins);
 		const searchResult = this.getSearchResult(coins, balance);
 		const { icons: ICONS } = this.props;
 

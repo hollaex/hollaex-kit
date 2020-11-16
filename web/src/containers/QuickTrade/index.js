@@ -68,9 +68,9 @@ class QuickTradeContainer extends PureComponent {
 		this.changePair(this.props.routeParams.pair);
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		if (this.props.user.id) {
-			await this.calculateSections(this.props);
+			this.calculateSections(this.props);
 		}
 		if (
 			this.props.constants &&
@@ -108,8 +108,8 @@ class QuickTradeContainer extends PureComponent {
 		this.setState({ showQuickTradeModal: false }, this.resetOrderData);
 	};
 
-	calculateSections = async ({ balance, prices, coins }) => {
-		const totalAssets = await calculateBalancePrice(balance, prices, coins);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets });
 	};
 
