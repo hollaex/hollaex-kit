@@ -924,7 +924,7 @@ const sendSmsVerify = (req, res) => {
 	}
 
 	const phone = phoneNumber.getNumber();
-	const code = toolsLib.auth.generateOtp();
+	const code = toolsLib.otp.generateOtp();
 	const SMS = languageFile(toolsLib.getKitConfig().defaults.language).SMS;
 
 	sendSMS(phone, {

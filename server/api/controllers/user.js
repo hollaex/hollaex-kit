@@ -31,7 +31,7 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	toolsLib.auth.checkCaptcha(captcha, ip)
+	toolsLib.security.checkCaptcha(captcha, ip)
 		.then(() => {
 			return toolsLib.user.signUpUser(email, password, referral);
 		})
@@ -182,7 +182,7 @@ const requestResetPassword = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	const captcha = req.swagger.params.captcha.value;
 
-	toolsLib.auth.sendResetPasswordCode(email, captcha, ip, domain)
+	toolsLib.security.sendResetPasswordCode(email, captcha, ip, domain)
 		.then(() => {
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
@@ -198,7 +198,7 @@ const requestResetPassword = (req, res) => {
 const resetPassword = (req, res) => {
 	const { code, new_password } = req.swagger.params.data.value;
 
-	toolsLib.auth.resetUserPassword(code, new_password)
+	toolsLib.security.resetUserPassword(code, new_password)
 		.then(() => {
 			return res.json({ message: 'Password updated.' });
 		})
@@ -251,7 +251,7 @@ const changePassword = (req, res) => {
 		req.swagger.params.data.value
 	);
 
-	toolsLib.auth.changeUserPassword(email, old_password, new_password)
+	toolsLib.security.changeUserPassword(email, old_password, new_password)
 		.then(() => res.json({ message: 'Success' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
