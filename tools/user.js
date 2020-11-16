@@ -42,7 +42,7 @@ const { CONFIGURATION_CHANNEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS,
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel } = require('./common');
-const { isValidPassword } = require('./auth');
+const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
@@ -51,6 +51,7 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { verifyOtpBeforeAction } = require('./otp');
+const { checkCaptcha, validatePassword } = require('./security');
 
 	/* Onboarding*/
 
@@ -235,7 +236,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 			return all([
 				user,
-				require('./auth').validatePassword(user.password, password)
+				validatePassword(user.password, password)
 			]);
 		})
 		.then(([ user, passwordIsValid ]) => {
@@ -244,7 +245,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 
 			if (!user.otp_enabled) {
-				return all([ user, require('./auth').checkCaptcha(captcha, ip) ]);
+				return all([ user, checkCaptcha(captcha, ip) ]);
 			} else {
 				return all([
 					user,
@@ -252,7 +253,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
-							return require('./auth').checkCaptcha(captcha, ip);
+							return checkCaptcha(captcha, ip);
 						}
 					})
 				]);
