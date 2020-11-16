@@ -18,10 +18,9 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
-import { calculateBalancePrice, formatToCurrency } from 'utils/currency';
+import { formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getPrices } from 'actions/walletActions';
 
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
@@ -32,45 +31,38 @@ class Wallet extends Component {
 		sections: [],
 		mobileTabs: [],
 		isOpen: true,
-		totalAssets: '',
 		dialogIsOpen: false,
 		selectedCurrency: '',
-		oraclePrices: {},
 	};
 
 	componentDidMount() {
-		const { coins } = this.props;
-		getPrices({ coins }).then((oraclePrices) =>
-			this.setState({ oraclePrices }, () => {
-				this.generateSections(
-					this.props.changeSymbol,
-					this.props.balance,
-					this.props.prices,
-					this.state.isOpen,
-					this.props.wallets,
-					this.props.bankaccount,
-					this.props.coins,
-					this.props.pairs
-				);
-			})
+		this.generateSections(
+			this.props.changeSymbol,
+			this.props.balance,
+			this.props.prices,
+			this.state.isOpen,
+			this.props.wallets,
+			this.props.bankaccount,
+			this.props.coins,
+			this.props.pairs,
+			this.props.totalAsset,
+			this.props.oraclePrices
 		);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		getPrices({ coins: nextProps.coins }).then((oraclePrices) => {
-			this.setState({ oraclePrices }, () => {
-				this.generateSections(
-					nextProps.changeSymbol,
-					nextProps.balance,
-					nextProps.prices,
-					this.state.isOpen,
-					nextProps.wallets,
-					nextProps.bankaccount,
-					nextProps.coins,
-					nextProps.pairs
-				);
-			});
-		});
+		this.generateSections(
+			nextProps.changeSymbol,
+			nextProps.balance,
+			nextProps.prices,
+			this.state.isOpen,
+			nextProps.wallets,
+			nextProps.bankaccount,
+			nextProps.coins,
+			nextProps.pairs,
+			nextProps.totalAsset,
+			nextProps.oraclePrices
+		);
 
 		if (
 			nextProps.addressRequest.success === true &&
@@ -94,27 +86,15 @@ class Wallet extends Component {
 				this.props.wallets,
 				this.props.bankaccount,
 				this.props.coins,
-				this.props.pairs
+				this.props.pairs,
+				this.props.totalAsset,
+				this.props.oraclePrices
 			);
 		}
 	}
 
-	calculateTotalAssets = (balance, prices, coins) => {
-		const total = calculateBalancePrice(balance, prices, coins);
-		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		return STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			symbol.toUpperCase(),
-			formatToCurrency(total, min)
-		);
-	};
-
-	getSearchResult = (coins, balance) => {
-		const {
-			searchValue = '',
-			isZeroBalanceHidden = false,
-			oraclePrices,
-		} = this.state;
+	getSearchResult = (coins, balance, oraclePrices) => {
+		const { searchValue = '', isZeroBalanceHidden = false } = this.state;
 
 		const result = {};
 		const searchTerm = searchValue.toLowerCase().trim();
@@ -151,10 +131,17 @@ class Wallet extends Component {
 		wallets,
 		bankaccount,
 		coins,
-		pairs
+		pairs,
+		total,
+		oraclePrices
 	) => {
-		const totalAssets = this.calculateTotalAssets(balance, prices, coins);
-		const searchResult = this.getSearchResult(coins, balance);
+		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const totalAssets = STRINGS.formatString(
+			CURRENCY_PRICE_FORMAT,
+			symbol.toUpperCase(),
+			formatToCurrency(total, min)
+		);
+		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
 		const { icons: ICONS } = this.props;
 
 		const sections = [
@@ -215,15 +202,12 @@ class Wallet extends Component {
 				content: <TransactionsHistory />,
 			},
 		];
-		this.setState({ sections, totalAssets, isOpen, mobileTabs });
+		this.setState({ sections, isOpen, mobileTabs });
 	};
 
 	goToPage = (path = '') => {
 		this.props.router.push(path);
 	};
-	goToDeposit = () => this.goToPage('deposit');
-	goToWithdraw = () => this.goToPage('withdraw');
-	goToTransactionsHistory = () => this.goToPage('transactions');
 
 	onOpenDialog = (selectedCurrency) => {
 		this.setState({ dialogIsOpen: true, selectedCurrency });
@@ -328,6 +312,8 @@ const mapStateToProps = (store) => ({
 	bankaccount: store.user.userData.bank_account,
 	wallets: store.user.crypto_wallet,
 	isValidBase: store.app.isValidBase,
+	totalAsset: store.asset.totalAsset,
+	oraclePrices: store.asset.oraclePrices,
 });
 
 const mapDispatchToProps = (dispatch) => ({

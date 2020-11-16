@@ -12,7 +12,6 @@ import {
 	formatNumber,
 	// formatBaseAmount,
 	roundNumber,
-	calculateBalancePrice,
 	formatToCurrency,
 } from '../../../utils/currency';
 import {
@@ -46,15 +45,11 @@ class OrderEntry extends Component {
 		orderPrice: 0,
 		orderFees: 0,
 		outsideFormError: '',
-		totalAssets: '',
 	};
 
 	componentDidMount() {
 		if (this.props.pair_base) {
 			this.generateFormValues(this.props.pair);
-		}
-		if (this.props.user.id) {
-			this.calculateSections(this.props);
 		}
 	}
 
@@ -79,20 +74,7 @@ class OrderEntry extends Component {
 				},
 			});
 		}
-		if (
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.balance) !==
-				JSON.stringify(nextProps.balance) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
-		) {
-			this.calculateSections(nextProps);
-		}
 	}
-
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
-		this.setState({ totalAssets });
-	};
 
 	setMax = () => {
 		const {
@@ -254,7 +236,7 @@ class OrderEntry extends Component {
 		} else {
 			coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
 		}
-		// const riskySize = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		// const riskySize = ((this.props.totalAsset / 100) * risk.order_portfolio_percentage);
 		let riskySize = (coin_balance / 100) * risk.order_portfolio_percentage;
 		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
@@ -492,6 +474,7 @@ const mapStateToProps = (state) => {
 		asks: asksSelector(state),
 		bids: bidsSelector(state),
 		marketPrice,
+		// totalAsset: state.asset.totalAsset
 	};
 };
 
