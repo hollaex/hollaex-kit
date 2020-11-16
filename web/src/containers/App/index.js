@@ -40,10 +40,16 @@ import {
 	setInfo,
 } from '../../actions/appActions';
 
+import { setPricesAndAsset } from 'actions/assetActions';
+
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
-	// prices: store.orderbook.prices,
+	prices: store.orderbook.prices,
+	balance: store.user.balance,
+	totalAsset: store.asset.totalAsset,
+	oraclePrices: store.asset.oraclePrices,
+	chartData: store.asset.chartData,
 	activeNotification: store.app.activeNotification,
 	// verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
@@ -91,6 +97,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
+	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
