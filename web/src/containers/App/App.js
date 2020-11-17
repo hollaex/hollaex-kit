@@ -12,6 +12,7 @@ import {
 	DEFAULT_CAPTCHA_SITEKEY,
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
+import isEqual from 'lodash.isequal';
 
 import {
 	NOTIFICATIONS,
@@ -110,6 +111,7 @@ class App extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { balance, prices, coins } = this.props;
 		if (
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp
@@ -140,6 +142,14 @@ class App extends Component {
 		) {
 			this.checkPath(nextProps.location.pathname);
 			this.handleFitHeight(nextProps.location.pathname);
+		}
+
+		if (
+			!isEqual(prices, nextProps.prices) ||
+			!isEqual(balance, nextProps.balance) ||
+			!isEqual(coins, nextProps.coins)
+		) {
+			this.props.setPricesAndAsset(nextProps.balance, nextProps.coins);
 		}
 	}
 

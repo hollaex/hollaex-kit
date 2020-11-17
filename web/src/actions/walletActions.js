@@ -1,7 +1,6 @@
 import axios from 'axios';
 import querystring from 'query-string';
 // import { all } from 'bluebird';
-import { BASE_CURRENCY } from 'config/constants';
 
 export const ACTION_KEYS = {
 	ADD_USER_TRADES: 'ADD_USER_TRADES',
@@ -35,7 +34,6 @@ const ENDPOINTS = {
 	WITHDRAW_FEE: (currency) => `/user/withdrawal?currency=${currency}`,
 	CANCEL_WITHDRAWAL: '/user/withdrawals',
 	CONFIRM_WITHDRAWAL: '/user/confirm-withdrawal',
-	GET_PRICE: '/oracle/price',
 };
 
 export const performWithdraw = (currency, values) => {
@@ -61,20 +59,6 @@ export const requestWithdrawFee = (currency = 'btc') => {
 				});
 			});
 	};
-};
-
-export const getPrices = async ({
-	amount = 1,
-	quote = BASE_CURRENCY,
-	coins = {},
-}) => {
-	const asset = Object.keys(coins)
-		.filter((key) => key !== quote)
-		.join();
-	const { data: prices = {} } = await axios.get(ENDPOINTS.GET_PRICE, {
-		params: { amount, quote, asset },
-	});
-	return { ...prices, [quote]: 1 };
 };
 
 export const withdrawalCancel = (transactionId) => {

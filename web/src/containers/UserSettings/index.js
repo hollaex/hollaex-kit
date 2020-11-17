@@ -39,7 +39,6 @@ import RiskForm, { generateWarningFormValues } from './RiskForm';
 
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { calculateBalancePrice } from '../../utils/currency';
 import { EditWrapper } from 'components';
 
 class UserSettings extends Component {
@@ -49,15 +48,9 @@ class UserSettings extends Component {
 		dialogIsOpen: false,
 		modalText: '',
 		activeTab: 0,
-		totalAssets: '',
 	};
 
 	componentDidMount() {
-		const { user } = this.props;
-
-		if (user.id) {
-			this.calculateSections(this.props);
-		}
 		if (this.props.location.query && this.props.location.query.tab) {
 			this.setState(
 				{ activeTab: parseInt(this.props.location.query.tab, 10) },
@@ -96,16 +89,6 @@ class UserSettings extends Component {
 
 	UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (
-			nextProps.user.id !== this.props.user.id ||
-			nextProps.price !== this.props.price ||
-			//nextProps.orders.length !== this.props.orders.length ||
-			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			nextProps.activeLanguage !== this.props.activeLanguage ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
-		) {
-			this.calculateSections(nextProps);
-		}
-		if (
 			this.state.activeTab !== nextState.activeTab &&
 			this.state.activeTab !== -1
 		) {
@@ -120,13 +103,8 @@ class UserSettings extends Component {
 		});
 	};
 
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
-		this.setState({ totalAssets: totalAssets });
-	};
-
 	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
-		const { constants = {}, icons: ICONS } = this.props;
+		const { constants = {}, icons: ICONS, totalAsset } = this.props;
 		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -287,7 +265,7 @@ class UserSettings extends Component {
 					<RiskForm
 						coins={coins}
 						onAdjustPortfolio={this.onAdjustPortfolio}
-						totalAssets={this.state.totalAssets}
+						totalAssets={totalAsset}
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
 						formFields={warningFormValues}
 						initialValues={settings.risk}
@@ -467,6 +445,7 @@ const mapStateToProps = (state) => ({
 	price: state.orderbook.price,
 	//orders: state.order.activeOrders,
 	constants: state.app.constants,
+	totalAsset: state.asset.totalAsset,
 });
 
 const mapDispatchToProps = (dispatch) => ({

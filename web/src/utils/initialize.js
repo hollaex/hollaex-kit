@@ -43,3 +43,7 @@ export const getSetupCompleted = () => {
 	const setup_completed = localStorage.getItem('setup_completed') || false;
 	return setup_completed;
 };
+
+export const setBaseCurrency = (native_currnecy) => {
+	localStorage.setItem('base_currnecy', native_currnecy);
+};
