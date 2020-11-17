@@ -1,11 +1,10 @@
 'use strict';
 
 const WebSocket = require('ws');
-const io = require('socket.io-client');
 const EventEmitter = require('events');
 const moment = require('moment');
-const { each } = require('lodash');
 const { createRequest, createSignature, generateHeaders } = require('./utils');
+const { setWsHeartbeat } = require('ws-heartbeat/client');
 
 class HollaExKit {
 	constructor(
@@ -306,9 +305,14 @@ class HollaExKit {
 	 * @return {class} A new socket class that listens to the hollaEx websocket server and emits the event being passed
 	 */
 	connect(events) {
+		const [ protocol, endpoint ] = this.apiUrl.split('://');
+		const wsUrl = protocol === 'https'
+			? `wss://${endpoint}/stream`
+			: `ws://${endpoint}/stream`;
+
 		const apiExpires = moment().toISOString() + this.apiExpiresAfter;
 		const signature = createSignature(this.apiSecret, 'CONNECT', '/stream', apiExpires);
-		return new Socket(events, this.apiUrl, this.apiKey, signature, apiExpires);
+		return new Socket(events, wsUrl, this.apiKey, signature, apiExpires);
 	}
 }
 
@@ -323,146 +327,130 @@ class Socket extends EventEmitter {
 		this.apiKey = apiKey;
 		this.apiSignature = apiSignature;
 		this.apiExpires = apiExpires;
-		this.connect(this.events, this.url, this.apiKey, this.apiSignature, this.apiExpires);
+		this.ws;
 	}
 
 	disconnect() {
-		each(this.ioLink, (ioLink) => {
-			ioLink.close();
-		});
-		this.ioLink = [];
+		if (this.ws.readyState === WebSocket.OPEN) {
+			this.ws.close();
+		}
 	}
 
-	connect(events, url, apiKey, apiSignature, apiExpires) {
+	connect(events) {
 		if (!Array.isArray(events)) {
-			this.subs = {};
-			this.ioLink = [];
-			events = events.split(':');
-			let [event, symbol] = events;
+			this.ws = new WebSocket(this.url);
+			this.ws.on('open', () => {
+				this.ws.on('error', (error) => {
+					error = JSON.parse(error);
+					this.emit('error', error);
+					this.ws.close();
+				});
+				this.ws.on('close', () => {
+					this.emit('disconnect', 'Websocket disconnected');
+				});
+				this.ws.on('unexpected-response', (data) => {
+					data = JSON.parse(data);
+					this.emit('error', data);
+					this.ws.close();
+				});
+				setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
+					pingTimeout: 60000,
+					pingInterval: 25000,
+				});
+				this.connect(this.events, this.url, this.apiKey, this.apiSignature, this.apiExpires);
+			});
+
+			const [ event ] = events.split(':');
 			switch (event) {
 				case 'orderbook':
-				case 'trades':
-					// case 'ticker':
-					if (symbol) {
-						this.ioLink.push(io(`${url}/realtime`, { query: { symbol } }));
-					} else {
-						this.ioLink.push(io(`${url}/realtime`));
-					}
-					this.ioLink[this.ioLink.length - 1].on(event, (data) => {
-						this.emit(event, data);
+				case 'trade':
+					this.ws.on('message', (data) => {
+						data = JSON.parse(data);
+						if (data.topic === event) {
+							this.emit(event, data);
+						}
 					});
-					this.ioLink[this.ioLink.length - 1].on('error', (error) => {
-						this.emit('error', error);
-					});
-					this.ioLink[this.ioLink.length - 1].on('connect_error', (data) => {
-						this.emit('connect_error', `Socket Connection Error: ${data}.`);
-					});
-					this.ioLink[this.ioLink.length - 1].on('connect_timeout', (data) => {
-						this.emit('connect_timeout', `Socket Connection Timeout : ${data}.`);
-					});
-					this.ioLink[this.ioLink.length - 1].once('disconnect', (data) => {
-						this.emit('disconnect', `Socket Disconnect: ${data}.`);
-						this.subs = this._events;
-						this.removeAllListeners();
-					});
-					this.ioLink[this.ioLink.length - 1].once('reconnect', (attempts) => {
-						this._events = this.subs;
-						this.emit('reconnect', `Successfully reconnected after ${attempts} attempts.`);
-					});
+
+					this.ws.send(JSON.stringify({
+						op: 'subscribe',
+						args: [events]
+					}));
 					break;
 				case 'user':
-					this.ioLink.push(io(`${url}/user`, {
-						query: {
-							'api-key': apiKey,
-							'api-signature': apiSignature,
-							'api-expires': apiExpires
-						}
+					this.ws.send(JSON.stringify({
+						op: 'auth',
+						args: [{
+							'api-key': this.apiKey,
+							'api-signature': this.apiSignature,
+							'api-expires': this.apiExpires
+						}]
 					}));
 
-					this.ioLink[this.ioLink.length - 1].on('user', (data) => {
-						this.emit('userInfo', data);
+					this.ws.on('message', (data) => {
+						data = JSON.parse(data);
+						switch (data.type) {
+							case 'order':
+								this.emit('userOrder', data);
+								break;
+							case 'wallet':
+								this.emit('userWallet', data);
+								break;
+							default:
+								break;
+						}
 					});
-					this.ioLink[this.ioLink.length - 1].on('wallet', (data) => {
-						this.emit('userWallet', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('orders', (data) => {
-						this.emit('userOrder', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('trades', (data) => {
-						this.emit('userTrade', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('update', (data) => {
-						this.emit('userUpdate', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('error', (error) => {
-						this.emit('error', error);
-					});
-					this.ioLink[this.ioLink.length - 1].on('connect_error', (data) => {
-						this.emit('connect_error', `Socket Connection Error: ${data}.`);
-					});
-					this.ioLink[this.ioLink.length - 1].on('connect_timeout', (data) => {
-						this.emit('connect_timeout', `Socket Connection Timeout : ${data}.`);
-					});
-					this.ioLink[this.ioLink.length - 1].once('disconnect', (data) => {
-						this.emit('disconnect', `Socket Disconnect: ${data}.`);
-						this.subs = this._events;
-						this.removeAllListeners();
-					});
-					this.ioLink[this.ioLink.length - 1].once('reconnect', (attempts) => {
-						this._events = this.subs;
-						this.emit('reconnect', `Successfully reconnected after ${attempts} attempts.`);
-					});
+
+					setTimeout(() => {
+						this.ws.send(JSON.stringify({
+							op: 'subscribe',
+							args: [
+								'order',
+								'wallet'
+							]
+						}));
+					}, 500);
 					break;
 				case 'all':
-					this.ioLink.push(io(`${url}/realtime`));
-
-					this.ioLink[this.ioLink.length - 1].on('orderbook', (data) => {
-						this.emit('orderbook', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('trades', (data) => {
-						this.emit('trades', data);
-					});
-
-					this.ioLink.push(io(`${url}/user`, {
-						query: {
-							'api-key': apiKey,
-							'api-signature': apiSignature,
-							'api-expires': apiExpires
-						}
+					this.ws.send(JSON.stringify({
+						op: 'auth',
+						args: [{
+							'api-key': this.apiKey,
+							'api-signature': this.apiSignature,
+							'api-expires': this.apiExpires
+						}]
 					}));
-					this.ioLink[this.ioLink.length - 1].on('user', (data) => {
-						this.emit('userInfo', data);
+
+					this.ws.on('message', (data) => {
+						data = JSON.parse(data);
+						switch (data.type) {
+							case 'orderbook':
+							case 'trade':
+								this.emit(data.type, data);
+								break;
+							case 'order':
+								this.emit('userOrder', data);
+								break;
+							case 'wallet':
+								this.emit('userWallet', data);
+								break;
+							default:
+								break;
+						}
 					});
-					this.ioLink[this.ioLink.length - 1].on('wallet', (data) => {
-						this.emit('userWallet', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('orders', (data) => {
-						this.emit('userOrder', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('trades', (data) => {
-						this.emit('userTrade', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('update', (data) => {
-						this.emit('userUpdate', data);
-					});
-					this.ioLink[this.ioLink.length - 1].on('error', (error) => {
-						this.emit('error', error);
-					});
-					this.ioLink[this.ioLink.length - 1].on('connect_error', (data) => {
-						this.emit('connect_error', `Socket Connection Error: ${data}.`);
-					});
-					this.ioLink[this.ioLink.length - 1].on('connect_timeout', (data) => {
-						this.emit('connect_timeout', `Socket Connection Timeout : ${data}.`);
-					});
-					this.ioLink[this.ioLink.length - 1].once('disconnect', (data) => {
-						this.emit('disconnect', `Socket Disconnect: ${data}.`);
-						this.subs = this._events;
-						this.removeAllListeners();
-					});
-					this.ioLink[this.ioLink.length - 1].once('reconnect', (attempts) => {
-						this._events = this.subs;
-						this.emit('reconnect', `Successfully reconnected after ${attempts} attempts.`);
-					});
+
+					setTimeout(() => {
+						this.ws.send(JSON.stringify({
+							op: 'subscribe',
+							args: [
+								'orderbook',
+								'trade',
+								'order',
+								'wallet'
+							]
+						}));
+					}, 500);
+					break;
+				default:
 					break;
 			}
 		}
