@@ -129,7 +129,7 @@ const verifyUser = (email, code, domain) => {
 				}
 				return all([
 					user,
-					getNodeLib().createUserNetwork(email),
+					getNodeLib().createUser(email),
 					verificationCode.update({ verified: true }, { fields: ['verified'], returning: true, transaction })
 				]);
 			})
@@ -197,7 +197,7 @@ const createUser = (email, password, role = 'user', id) => {
 			.then((user) => {
 				return all([
 					user,
-					getNodeLib().createUserNetwork(email)
+					getNodeLib().createUser(email)
 				]);
 			})
 			.then(([ kitUser, networkUser ]) => {
@@ -456,7 +456,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 					error.status = 404;
 					throw error;
 				} else {
-					const userNetworkData = await getNodeLib().getUserNetwork(data[0].network_id);
+					const userNetworkData = await getNodeLib().getUser(data[0].network_id);
 					data[0].balance = userNetworkData.balance;
 					data[0].crypto_wallet = userNetworkData.crypto_wallet;
 					return { count, data };
@@ -517,11 +517,11 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 			} else {
 				if (networkData) {
 					if (rawData) {
-						const networkData = await getNodeLib().getUserNetwork(user.network_id);
+						const networkData = await getNodeLib().getUser(user.network_id);
 						user.balance = networkData.balance;
 						user.crypto_wallet = networkData.crypto_wallet;
 					} else {
-						const networkData = await getNodeLib().getUserNetwork(user.network_id);
+						const networkData = await getNodeLib().getUser(user.network_id);
 						user.dataValues.balance = networkData.balance;
 						user.dataValues.crypto_wallet = networkData.crypto_wallet;
 					}
@@ -1064,19 +1064,19 @@ const getTransactions = (
 		if (type === 'deposit') {
 			promiseQuery = getUserByKitId(kitId, false)
 				.then((user) => {
-					return getNodeLib().getAllDepositNetwork(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+					return getNodeLib().getDeposits(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 				});
 		} else if (type === 'withdrawal') {
 			promiseQuery = getUserByKitId(kitId, false)
 				.then((user) => {
-					return getNodeLib().getAllWithdrawalNetwork(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+					return getNodeLib().getWithdrawals(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 				});
 		}
 	} else {
 		if (type === 'deposit') {
-			promiseQuery = getNodeLib().getAllDepositNetwork(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+			promiseQuery = getNodeLib().getDeposits(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 		} else if (type === 'withdrawal') {
-			promiseQuery = getNodeLib().getAllWithdrawalNetwork(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+			promiseQuery = getNodeLib().getWithdrawals(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
 		}
 	}
 	return promiseQuery
@@ -1179,7 +1179,7 @@ const createUserCryptoAddressByKitId = (kitId, crypto) => {
 const getUserStats = (userId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
-			return getNodeLib().getUserStatsNetwork(user.network_id);
+			return getNodeLib().getUserStats(user.network_id);
 		});
 };
 
@@ -1246,7 +1246,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		})
 			.then(async ([ user, created ]) => {
 				if (created) {
-					const networkUser = await getNodeLib().createUserNetwork(email);
+					const networkUser = await getNodeLib().createUser(email);
 					return all([
 						user.update(
 							{ network_id: networkUser.id },

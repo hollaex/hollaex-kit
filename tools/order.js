@@ -29,7 +29,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 			// if (feeCoin) {
 			// 	feeData.fee_coin = feeCoin;
 			// }
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData, stop, meta);
+			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, stop, meta);
 		});
 };
 
@@ -54,35 +54,35 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, stop
 			// if (feeCoin) {
 			// 	feeData.fee_coin = feeCoin;
 			// }
-			return getNodeLib().createOrderNetwork(user.network_id, symbol, side, size, type, price, feeData, stop, meta);
+			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, stop, meta);
 		});
 };
 
 const getUserOrderByKitId = (userKitId, orderId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().getOrderNetwork(user.network_id, orderId);
+			return getNodeLib().getOrder(user.network_id, orderId);
 		});
 };
 
 const getUserOrderByEmail = (email, orderId) => {
 	return getUserByEmail(email)
 		.then((user) => {
-			return getNodeLib().getOrderNetwork(user.network_id, orderId);
+			return getNodeLib().getOrder(user.network_id, orderId);
 		});
 };
 
 const cancelUserOrderByKitId = (userKitId, orderId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().cancelOrderNetwork(user.network_id, orderId);
+			return getNodeLib().cancelOrder(user.network_id, orderId);
 		});
 };
 
 const cancelUserOrderByEmail = (email, orderId) => {
 	return getUserByEmail(email)
 		.then((user) => {
-			return getNodeLib().cancelOrderNetwork(user.network_id, orderId);
+			return getNodeLib().cancelOrder(user.network_id, orderId);
 		});
 };
 
@@ -90,7 +90,7 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getNodeLib().getAllOrderNetwork(undefined, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate);
+	return getNodeLib().getOrders(undefined, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate);
 };
 
 const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
@@ -99,7 +99,7 @@ const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, p
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate);
+			return getNodeLib().getOrders(user.network_id, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate);
 		});
 };
 
@@ -109,7 +109,7 @@ const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page,
 	}
 	return getUserByEmail(email)
 		.then((user) => {
-			return getNodeLib().getAllOrderNetwork(user.network_id, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate);
+			return getNodeLib().getOrders(user.network_id, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate);
 		});
 };
 
@@ -119,7 +119,7 @@ const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().cancelAllOrderNetwork(user.network_id, symbol);
+			return getNodeLib().cancelOrders(user.network_id, symbol);
 		});
 };
 
@@ -129,7 +129,7 @@ const cancelAllUserOrdersByEmail = (email, symbol) => {
 	}
 	return getUserByEmail(email)
 		.then((user) => {
-			return getNodeLib().cancelAllOrderNetwork(user.network_id, symbol);
+			return getNodeLib().cancelOrders(user.network_id, symbol);
 		});
 };
 
@@ -137,7 +137,7 @@ const getAllTradesNetwork = (symbol, limit, page, order_by, order, start_date, e
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getNodeLib().getAllTradeNetwork(undefined, symbol, limit, page, order_by, order, start_date, end_date);
+	return getNodeLib().getTrades(undefined, symbol, limit, page, order_by, order, start_date, end_date);
 };
 
 const getAllUserTradesNetworkByKidId = (userKitId, symbol, limit, page, order_by, order, start_date, end_date, format) => {
@@ -146,7 +146,7 @@ const getAllUserTradesNetworkByKidId = (userKitId, symbol, limit, page, order_by
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
-			return getNodeLib().getAllTradeNetwork(user.network_id, symbol, limit, page, order_by, order, start_date, end_date);
+			return getNodeLib().getTrades(user.network_id, symbol, limit, page, order_by, order, start_date, end_date);
 		})
 		.then((trades) => {
 			if (format) {

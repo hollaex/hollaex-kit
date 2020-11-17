@@ -51,7 +51,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
 
-			const balance = await getNodeLib().getBalanceNetwork(user.network_id);
+			const balance = await getNodeLib().getBalance(user.network_id);
 			if (balance[`${currency}_available`] < amount) {
 				throw new Error('Insufficent balance for withdrawal');
 			}
@@ -137,7 +137,7 @@ const validateWithdrawalToken = (token) => {
 const cancelUserWithdrawal = (userId, transactionId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
-			return getNodeLib().cancelWithdrawalNetwork(user.network_id, transactionId);
+			return getNodeLib().cancelWithdrawal(user.network_id, transactionId);
 		});
 };
 
@@ -146,7 +146,7 @@ const checkTransaction = (currency, transactionId, address, isTestnet = false) =
 		return reject(new Error(INVALID_COIN(currency)));
 	}
 
-	return getNodeLib().checkTransactionNetwork(currency, transactionId, address, isTestnet);
+	return getNodeLib().checkTransaction(currency, transactionId, address, isTestnet);
 };
 
 const performWithdrawal = (userId, address, currency, amount, fee) => {
@@ -171,13 +171,13 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 					throw new Error('Amount exceeds 24 hour withdrawal limit');
 				}
 			}
-			return getNodeLib().createWithdrawalNetwork(user.network_id, address, currency, amount, fee);
+			return getNodeLib().createWithdrawal(user.network_id, address, currency, amount, fee);
 		});
 };
 
 const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	let accumulatedAmount = amount;
-	const withdrawals = await getNodeLib().getAllWithdrawalNetwork(
+	const withdrawals = await getNodeLib().getWithdrawals(
 		userId,
 		currency,
 		undefined,
