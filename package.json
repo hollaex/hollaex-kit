@@ -4,11 +4,11 @@
 	"description": "hollaex api and websocket library for nodejs",
 	"main": "index.js",
 	"dependencies": {
-		"moment": "2.24.0",
 		"lodash": "4.17.13",
+		"moment": "2.24.0",
 		"request": "2.88.0",
 		"request-promise": "4.2.2",
-		"socket.io-client": "2.2.0"
+		"ws": "7.4.0"
 	},
 	"devDependencies": {
 		"chai": "4.2.0",

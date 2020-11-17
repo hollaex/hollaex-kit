@@ -1,5 +1,6 @@
 'use strict';
 
+const WebSocket = require('ws');
 const io = require('socket.io-client');
 const EventEmitter = require('events');
 const moment = require('moment');
@@ -170,7 +171,7 @@ class HollaExKit {
 	requestWithdrawal(currency, amount, address) {
 		const verb = 'POST';
 		const path = `${this.baseUrl}/user/request-withdrawal`;
-		const data = { currency, amount, address, fee: 0 };
+		const data = { currency, amount, address };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 		return createRequest(
 			verb,
@@ -213,7 +214,7 @@ class HollaExKit {
 	 */
 	getOrder(orderId) {
 		const verb = 'GET';
-		const path = `${this.baseUrl}/user/orders/${orderId}`;
+		const path = `${this.baseUrl}/user/order?order_id=${orderId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -271,7 +272,7 @@ class HollaExKit {
 	 */
 	cancelOrder(orderId) {
 		const verb = 'DELETE';
-		const path = `${this.baseUrl}/user/orders/${orderId}`;
+		const path = `${this.baseUrl}/user/order?order_id=${orderId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -306,7 +307,7 @@ class HollaExKit {
 	 */
 	connect(events) {
 		const apiExpires = moment().toISOString() + this.apiExpiresAfter;
-		const signature = createSignature(this.apiSecret, 'CONNECT', '/socket', apiExpires);
+		const signature = createSignature(this.apiSecret, 'CONNECT', '/stream', apiExpires);
 		return new Socket(events, this.apiUrl, this.apiKey, signature, apiExpires);
 	}
 }
