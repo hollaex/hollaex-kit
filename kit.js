@@ -327,11 +327,14 @@ class Socket extends EventEmitter {
 		this.apiKey = apiKey;
 		this.apiSignature = apiSignature;
 		this.apiExpires = apiExpires;
-		this.ws;
+		this.reconnectInterval = 5000; // 5 seconds
+		this.ws = null;
+		this.reconnect = true;
 	}
 
 	disconnect() {
 		if (this.ws.readyState === WebSocket.OPEN) {
+			this.reconnect = false;
 			this.ws.close();
 		}
 	}
@@ -340,13 +343,19 @@ class Socket extends EventEmitter {
 		if (!Array.isArray(events)) {
 			this.ws = new WebSocket(this.url);
 			this.ws.on('open', () => {
+				this.emit('open');
 				this.ws.on('error', (error) => {
 					error = JSON.parse(error);
 					this.emit('error', error);
 					this.ws.close();
 				});
 				this.ws.on('close', () => {
-					this.emit('disconnect', 'Websocket disconnected');
+					if (this.reconnect) {
+						this.emit('close', 'Websocket closed. Attempting to reconnect...');
+						setTimeout(this.connect, this.reconnectInterval);
+					} else {
+						this.emit('close', 'Websocket closed');
+					}
 				});
 				this.ws.on('unexpected-response', (data) => {
 					data = JSON.parse(data);
