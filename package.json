@@ -8,7 +8,8 @@
 		"moment": "2.24.0",
 		"request": "2.88.0",
 		"request-promise": "4.2.2",
-		"ws": "7.4.0"
+		"ws": "7.4.0",
+		"ws-heartbeat": "1.1.0"
 	},
 	"devDependencies": {
 		"chai": "4.2.0",

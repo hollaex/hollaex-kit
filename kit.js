@@ -336,6 +336,7 @@ class Socket extends EventEmitter {
 	disconnect() {
 		if (this.ws.readyState === WebSocket.OPEN) {
 			this.reconnect = false;
+			this.removeAllListeners();
 			this.ws.close();
 		}
 	}
@@ -351,9 +352,12 @@ class Socket extends EventEmitter {
 					this.ws.close();
 				});
 				this.ws.on('close', () => {
+					this.ws = null;
 					if (this.reconnect) {
 						this.emit('close', 'Websocket closed. Attempting to reconnect...');
-						setTimeout(this.connect, this.reconnectInterval);
+						setTimeout(() => {
+							this.connect();
+						}, this.reconnectInterval);
 					} else {
 						this.emit('close', 'Websocket closed');
 					}
@@ -396,7 +400,7 @@ class Socket extends EventEmitter {
 
 						this.ws.on('message', (data) => {
 							data = JSON.parse(data);
-							switch (data.type) {
+							switch (data.topic) {
 								case 'order':
 									this.emit('userOrder', data);
 									break;
@@ -430,7 +434,7 @@ class Socket extends EventEmitter {
 
 						this.ws.on('message', (data) => {
 							data = JSON.parse(data);
-							switch (data.type) {
+							switch (data.topic) {
 								case 'orderbook':
 								case 'trade':
 									this.emit(data.type, data);
