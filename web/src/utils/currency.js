@@ -4,7 +4,6 @@ import store from 'store';
 import STRINGS from '../config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../config/constants';
 import { findPath, convertPathToPairNames } from './data';
-import { getPrices } from 'actions/walletActions';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -152,15 +151,10 @@ export const calculateOraclePrice = (value = 0, price) => {
 	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
 };
 
-export const calculateBalancePrice = async (
-	balance,
-	prices = {},
-	coins = {}
-) => {
+export const calculateBalancePrice = (balance, prices = {}, coins = {}) => {
 	let accumulated = math.fraction(0);
-	const oraclePrices = await getPrices({ coins });
 	Object.keys(coins).forEach((key) => {
-		const price = oraclePrices[key];
+		const price = prices[key] || 0;
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(
 				math.multiply(

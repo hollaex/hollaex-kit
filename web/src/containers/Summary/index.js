@@ -27,37 +27,21 @@ import {
 	SHOW_TOTAL_ASSETS,
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	formatToCurrency,
-	formatAverage,
-	formatBaseAmount,
-	calculateBalancePrice,
-	donutFormatPercentage,
-	calculateOraclePrice,
-	calculatePricePercentage,
-} from '../../utils/currency';
+import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
 import { getUserReferralCount } from '../../actions/userAction';
-import { getPrices } from 'actions/walletActions';
 
 class Summary extends Component {
 	state = {
 		selectedAccount: '',
 		currentTradingAccount: this.props.verification_level,
-		chartData: [],
-		totalAssets: '',
 		lastMonthVolume: 0,
 	};
 
 	componentDidMount() {
-		const { user, tradeVolumes, pairs, prices, coins } = this.props;
+		const { user, tradeVolumes, pairs, prices } = this.props;
 
 		if (user.id) {
-			getPrices({ coins }).then((oraclePrices) =>
-				this.setState({ oraclePrices }, () => {
-					this.calculateSections(this.props);
-				})
-			);
 			this.setCurrentTradeAccount(user);
 			this.props.getUserReferralCount();
 		}
@@ -72,21 +56,6 @@ class Summary extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.user.id !== this.props.user.id ||
-			nextProps.price !== this.props.price ||
-			nextProps.orders.length !== this.props.orders.length ||
-			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins) ||
-			nextProps.activeLanguage !== this.props.activeLanguage
-		) {
-			getPrices({ coins: nextProps.coins }).then((oraclePrices) =>
-				this.setState({ oraclePrices }, () => {
-					this.calculateSections(nextProps);
-				})
-			);
-		}
 		if (
 			this.props.user.verification_level !== nextProps.user.verification_level
 		) {
@@ -131,35 +100,6 @@ class Summary extends Component {
 		}
 	};
 
-	calculateSections = async ({ price, balance, orders, prices, coins }) => {
-		const { oraclePrices } = this.state;
-		const data = [];
-
-		const totalAssets = await calculateBalancePrice(balance, prices, coins);
-		Object.keys(coins).forEach((currency) => {
-			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculateOraclePrice(
-				balance[`${symbol}_balance`],
-				oraclePrices[symbol]
-			);
-			const balancePercent = calculatePricePercentage(
-				currencyBalance,
-				totalAssets
-			);
-			data.push({
-				...coins[currency],
-				balance: balancePercent,
-				balanceFormat: formatToCurrency(currencyBalance, min),
-				balancePercentage: donutFormatPercentage(balancePercent),
-			});
-		});
-
-		this.setState({
-			chartData: data,
-			totalAssets: formatAverage(formatBaseAmount(totalAssets)),
-		});
-	};
-
 	setCurrentTradeAccount = (user) => {
 		let currentTradingAccount = this.state.currentTradingAccount;
 		if (user.verification_level) {
@@ -191,14 +131,13 @@ class Summary extends Component {
 			verification_level,
 			config_level,
 			affiliation,
-		} = this.props;
-		const {
-			selectedAccount,
 			chartData,
-			totalAssets,
-			lastMonthVolume,
-		} = this.state;
+			totalAsset,
+		} = this.props;
+		const { selectedAccount, lastMonthVolume } = this.state;
+
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
 		let traderAccTitle = STRINGS.formatString(
 			STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 			verification_level
@@ -330,6 +269,8 @@ const mapStateToProps = (state) => ({
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation,
 	constants: state.app.constants,
+	chartData: state.asset.chartData,
+	totalAsset: state.asset.totalAsset,
 });
 
 const mapDispatchToProps = (dispatch) => ({
