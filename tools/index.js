@@ -10,5 +10,7 @@ module.exports = {
 	balance: require('./balance'),
 	image: require('./image'),
 	transaction: require('./transaction'),
-	tier: require('./tier')
+	tier: require('./tier'),
+	security: require('security'),
+	otp: require('otp')
 };

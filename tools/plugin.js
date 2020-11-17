@@ -14,7 +14,7 @@ const { publisher } = require('./database/redis');
 const flatten = require('flat');
 
 const getPluginsConfig = () => {
-return {
+	return {
 		available: AVAILABLE_PLUGINS,
 		enabled: getKitConfig().plugins.enabled.length !== 0 ? getKitConfig().plugins.enabled.split(',') : []
 	};

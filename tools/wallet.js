@@ -72,7 +72,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 					throw new Error('Amount exceeds 24 hour withdrawal limit');
 				}
 			}
-			return withdrawRequestEmail(
+			return withdrawalRequestEmail(
 				user,
 				{
 					user_id: id,
@@ -89,7 +89,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 		});
 };
 
-const withdrawRequestEmail = (user, data, domain, ip) => {
+const withdrawalRequestEmail = (user, data, domain, ip) => {
 	data.timestamp = Date.now();
 	let stringData = JSON.stringify(data);
 	const token = crypto.randomBytes(60).toString('hex');

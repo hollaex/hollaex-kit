@@ -219,7 +219,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	return joinedKitConfig;
 };
 
-const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
+const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
 	const newKeys = difference(Object.keys(newKitSecrets), KIT_SECRETS_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid secret keys given: ${newKeys}`);
