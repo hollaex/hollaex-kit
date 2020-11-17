@@ -16,7 +16,7 @@ const getTopOrderbooks = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	getNodeLib().getOrderbooksEngine(symbol)
+	getNodeLib().getEngineOrderbooks(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -42,7 +42,7 @@ const getTrades = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	getNodeLib().getTradesEngine(symbol)
+	getNodeLib().getEngineTrades(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -68,7 +68,7 @@ const getTicker = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	getNodeLib().getTickerEngine(symbol)
+	getNodeLib().getEngineTicker(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -83,7 +83,7 @@ const getTicker = (req, res) => {
 };
 
 const getAllTicker = (req, res) => {
-	getNodeLib().getAllTickersEngine()
+	getNodeLib().getEngineTickers()
 		.then((data) => {
 			return res.json(data);
 		})
@@ -109,7 +109,7 @@ const getChart = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	getNodeLib().getChartEngine(from.value, to.value, symbol.value, resolution.value)
+	getNodeLib().getEngineChart(from.value, to.value, symbol.value, resolution.value)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -126,7 +126,7 @@ const getChart = (req, res) => {
 const getCharts = (req, res) => {
 	const { from, to, resolution } = req.swagger.params;
 
-	getNodeLib().getAllChartsEngine(from.value, to.value, resolution.value)
+	getNodeLib().getEngineCharts(from.value, to.value, resolution.value)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -141,7 +141,7 @@ const getCharts = (req, res) => {
 };
 
 const getConfig = (req, res) => {
-	getNodeLib().getUdfConfigEngine()
+	getNodeLib().getEngineUdfConfig()
 		.then((data) => {
 			return res.json(data);
 		})
@@ -167,7 +167,7 @@ const getHistory = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	getNodeLib().getUdfHistoryEngine(from.value, to.value, symbol.value, resolution.value)
+	getNodeLib().getEngineUdfHistory(from.value, to.value, symbol.value, resolution.value)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -193,7 +193,7 @@ const getSymbols = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	getNodeLib().getUdfSymbolsEngine(symbol)
+	getNodeLib().getEngineUdfSymbols(symbol)
 		.then((data) => {
 			return res.json(data);
 		})

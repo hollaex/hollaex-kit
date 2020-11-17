@@ -1,6 +1,6 @@
 'use strict';
 
-const Kit = require('hollaex-node-lib');
+const { Network } = require('hollaex-node-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
 const { loggerGeneral } = require('./config/logger');
@@ -132,9 +132,7 @@ const checkStatus = () => {
 				status: true,
 				initialized: status.initialized
 			};
-			nodeLib = new Kit({
-				networkURL: HE_NETWORK_ENDPOINT,
-				networkBaseURL: HE_NETWORK_BASE_URL,
+			nodeLib = new Network({
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,

@@ -241,7 +241,7 @@ const getAdminBalance = (req, res) => {
 		req.auth
 	);
 
-	getNodeLib().getBalanceNetwork()
+	getNodeLib().getBalance()
 		.then((balance) => {
 			return res.json(balance);
 		})
