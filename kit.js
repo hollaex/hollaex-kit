@@ -330,6 +330,7 @@ class Socket extends EventEmitter {
 		this.reconnectInterval = 5000; // 5 seconds
 		this.ws = null;
 		this.reconnect = true;
+		this.connect();
 	}
 
 	disconnect() {
@@ -339,8 +340,8 @@ class Socket extends EventEmitter {
 		}
 	}
 
-	connect(events) {
-		if (!Array.isArray(events)) {
+	connect() {
+		if (!Array.isArray(this.events)) {
 			this.ws = new WebSocket(this.url);
 			this.ws.on('open', () => {
 				this.emit('open');
@@ -366,102 +367,101 @@ class Socket extends EventEmitter {
 					pingTimeout: 60000,
 					pingInterval: 25000,
 				});
-				this.connect(this.events, this.url, this.apiKey, this.apiSignature, this.apiExpires);
+
+				const [ event ] = this.events.split(':');
+				switch (event) {
+					case 'orderbook':
+					case 'trade':
+						this.ws.on('message', (data) => {
+							data = JSON.parse(data);
+							if (data.topic === event) {
+								this.emit(event, data);
+							}
+						});
+
+						this.ws.send(JSON.stringify({
+							op: 'subscribe',
+							args: [this.events]
+						}));
+						break;
+					case 'user':
+						this.ws.send(JSON.stringify({
+							op: 'auth',
+							args: [{
+								'api-key': this.apiKey,
+								'api-signature': this.apiSignature,
+								'api-expires': this.apiExpires
+							}]
+						}));
+
+						this.ws.on('message', (data) => {
+							data = JSON.parse(data);
+							switch (data.type) {
+								case 'order':
+									this.emit('userOrder', data);
+									break;
+								case 'wallet':
+									this.emit('userWallet', data);
+									break;
+								default:
+									break;
+							}
+						});
+
+						setTimeout(() => {
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: [
+									'order',
+									'wallet'
+								]
+							}));
+						}, 500);
+						break;
+					case 'all':
+						this.ws.send(JSON.stringify({
+							op: 'auth',
+							args: [{
+								'api-key': this.apiKey,
+								'api-signature': this.apiSignature,
+								'api-expires': this.apiExpires
+							}]
+						}));
+
+						this.ws.on('message', (data) => {
+							data = JSON.parse(data);
+							switch (data.type) {
+								case 'orderbook':
+								case 'trade':
+									this.emit(data.type, data);
+									break;
+								case 'order':
+									this.emit('userOrder', data);
+									break;
+								case 'wallet':
+									this.emit('userWallet', data);
+									break;
+								default:
+									break;
+							}
+						});
+
+						setTimeout(() => {
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: [
+									'orderbook',
+									'trade',
+									'order',
+									'wallet'
+								]
+							}));
+						}, 500);
+						break;
+					default:
+						break;
+				}
 			});
-
-			const [ event ] = events.split(':');
-			switch (event) {
-				case 'orderbook':
-				case 'trade':
-					this.ws.on('message', (data) => {
-						data = JSON.parse(data);
-						if (data.topic === event) {
-							this.emit(event, data);
-						}
-					});
-
-					this.ws.send(JSON.stringify({
-						op: 'subscribe',
-						args: [events]
-					}));
-					break;
-				case 'user':
-					this.ws.send(JSON.stringify({
-						op: 'auth',
-						args: [{
-							'api-key': this.apiKey,
-							'api-signature': this.apiSignature,
-							'api-expires': this.apiExpires
-						}]
-					}));
-
-					this.ws.on('message', (data) => {
-						data = JSON.parse(data);
-						switch (data.type) {
-							case 'order':
-								this.emit('userOrder', data);
-								break;
-							case 'wallet':
-								this.emit('userWallet', data);
-								break;
-							default:
-								break;
-						}
-					});
-
-					setTimeout(() => {
-						this.ws.send(JSON.stringify({
-							op: 'subscribe',
-							args: [
-								'order',
-								'wallet'
-							]
-						}));
-					}, 500);
-					break;
-				case 'all':
-					this.ws.send(JSON.stringify({
-						op: 'auth',
-						args: [{
-							'api-key': this.apiKey,
-							'api-signature': this.apiSignature,
-							'api-expires': this.apiExpires
-						}]
-					}));
-
-					this.ws.on('message', (data) => {
-						data = JSON.parse(data);
-						switch (data.type) {
-							case 'orderbook':
-							case 'trade':
-								this.emit(data.type, data);
-								break;
-							case 'order':
-								this.emit('userOrder', data);
-								break;
-							case 'wallet':
-								this.emit('userWallet', data);
-								break;
-							default:
-								break;
-						}
-					});
-
-					setTimeout(() => {
-						this.ws.send(JSON.stringify({
-							op: 'subscribe',
-							args: [
-								'orderbook',
-								'trade',
-								'order',
-								'wallet'
-							]
-						}));
-					}, 500);
-					break;
-				default:
-					break;
-			}
 		}
 	}
 }
