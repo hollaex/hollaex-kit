@@ -314,7 +314,7 @@ const getUserBalance = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.wallet.getUserBalance(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -455,7 +455,7 @@ const getUserStats = (req, res) => {
 	);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.user.getUserStats(user_id)
+	toolsLib.user.getUserStatsByKitId(user_id)
 		.then((stats) => {
 			return res.json(stats);
 		})
@@ -475,7 +475,7 @@ const cancelWithdrawal = (req, res) => {
 	const userId = req.auth.sub.id;
 	const { transaction_id } = req.swagger.params.data.value;
 
-	toolsLib.wallet.cancelUserWithdrawal(userId, transaction_id)
+	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, transaction_id)
 		.then((withdrawal) => {
 			return res.json(withdrawal);
 		})

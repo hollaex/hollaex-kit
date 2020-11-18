@@ -3,7 +3,6 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { getNodeLib } = require('../../init');
 const { all } = require('bluebird');
 
 const getAdminKit = (req, res) => {
@@ -187,7 +186,7 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.wallet.getUserBalance(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -241,7 +240,7 @@ const getAdminBalance = (req, res) => {
 		req.auth
 	);
 
-	getNodeLib().getBalance()
+	toolsLib.wallet.getKitBalance()
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -423,7 +422,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.wallet.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -563,7 +562,7 @@ const getExchangeGeneratedFees = (req, res) => {
 
 	const { limit, page, start_date, end_date } = req.swagger.params;
 
-	getNodeLib().getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
+	toolsLib.order.getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
 		.then((data) => {
 			return res.json(data);
 		})
