@@ -5,6 +5,10 @@ let publicData = {
 	trade: {}
 };
 
+const getPublicData = () => {
+	return publicData;
+};
+
 const resetPublicData = () => {
 	publicData = {
 		orderbook: {},
@@ -27,7 +31,7 @@ const updateTradeData = (data) => {
 };
 
 module.exports = {
-	publicData,
+	getPublicData,
 	resetPublicData,
 	updateOrderbookData,
 	updateTradeData

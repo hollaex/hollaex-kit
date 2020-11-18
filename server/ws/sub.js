@@ -1,6 +1,6 @@
 'use strict';
 
-const { publicData } = require('./publicData');
+const { getPublicData } = require('./publicData');
 const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, ROLES } = require('../constants');
 const { each } = require('lodash');
@@ -37,15 +37,15 @@ const initializeTopic = (topic, ws, symbol) => {
 					throw new Error('Invalid symbol');
 				}
 				addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
-				if (publicData[topic][symbol]) {
-					ws.send(JSON.stringify(publicData[topic][symbol]));
+				if (getPublicData()[topic][symbol]) {
+					ws.send(JSON.stringify(getPublicData()[topic][symbol]));
 				}
 			} else {
 				each(toolsLib.getKitPairs(), (pair) => {
 					try {
 						addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
-						if (publicData[topic][pair]) {
-							ws.send(JSON.stringify(publicData[topic][pair]));
+						if (getPublicData()[topic][pair]) {
+							ws.send(JSON.stringify(getPublicData()[topic][pair]));
 						}
 					} catch (err) {
 						ws.send(JSON.stringify({ message: err.message }));
