@@ -694,8 +694,10 @@ paths:
             $ref: "#/definitions/MessageResponse"
       security:
         - Bearer: []
+        - HmacKey: []
       x-security-scopes:
         - user
+        - hmac
   /user/stats:
     x-swagger-router-controller: user
     get:
