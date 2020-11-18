@@ -13,7 +13,8 @@ const {
 	INVALID_COIN,
 	INVALID_AMOUNT,
 	WITHDRAWAL_DISABLED_FOR_COIN,
-	UPGRADE_VERIFICATION_LEVEL
+	UPGRADE_VERIFICATION_LEVEL,
+	NO_DATA_FOR_CSV
 } = require('../messages');
 const { getUserByKitId } = require('./user');
 const { findTier } = require('./tier');
@@ -25,6 +26,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const moment = require('moment');
 const math = require('mathjs');
 const { each } = require('lodash');
+const { parse } = require('json2csv');
 
 const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, domain) => {
 	if (!subscribedToCoin(currency)) {
@@ -265,6 +267,95 @@ const getUserBalance = (userKitId) => {
 		});
 };
 
+const getTransactions = (
+	type,
+	kitId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+	format
+) => {
+	let promiseQuery;
+	if (kitId) {
+		if (type === 'deposit') {
+			promiseQuery = getUserByKitId(kitId, false)
+				.then((user) => {
+					return getNodeLib().getDeposits(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+				});
+		} else if (type === 'withdrawal') {
+			promiseQuery = getUserByKitId(kitId, false)
+				.then((user) => {
+					return getNodeLib().getWithdrawals(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+				});
+		}
+	} else {
+		if (type === 'deposit') {
+			promiseQuery = getNodeLib().getDeposits(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+		} else if (type === 'withdrawal') {
+			promiseQuery = getNodeLib().getWithdrawals(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+		}
+	}
+	return promiseQuery
+		.then((transactions) => {
+			if (format) {
+				if (transactions.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(transactions.data, Object.keys(transactions.data[0]));
+				return csv;
+			} else {
+				return transactions;
+			}
+		});
+};
+
+const getUserDepositsByKitId = (
+	kitId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+	format
+) => {
+	return getTransactions('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+};
+
+const getUserWithdrawalsByKitId = (
+	kitId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+	format
+) => {
+	return getTransactions('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+};
+
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawalToken,
@@ -272,5 +363,7 @@ module.exports = {
 	checkTransaction,
 	performWithdrawal,
 	transferUserFunds,
-	getUserBalance
+	getUserBalance,
+	getUserDepositsByKitId,
+	getUserWithdrawalsByKitId,
 };
