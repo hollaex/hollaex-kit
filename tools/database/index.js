@@ -1,6 +1,13 @@
+'use strict';
+
+const helpers = require('./helpers');
+const model = require('./model');
+const query = require('./query');
+const redis = require('./redis');
+
 module.exports = {
-	...require('./helpers'),
-	...require('./model'),
-	...require('./query'),
-	...require('./redis')
+	...helpers,
+	...model,
+	...query,
+	...redis
 };
