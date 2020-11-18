@@ -31,8 +31,8 @@ app.use(morgan(morganType, { stream }));
 var config = {
 	appRoot: './', // required config
 	swaggerSecurityHandlers: {
-		Bearer: toolsLib.auth.verifyBearerTokenMiddleware,
-		HmacKey: toolsLib.auth.verifyHmacTokenMiddleware
+		Bearer: toolsLib.security.verifyBearerTokenMiddleware,
+		HmacKey: toolsLib.security.verifyHmacTokenMiddleware
 	}
 };
 

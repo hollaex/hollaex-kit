@@ -146,7 +146,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 		// get authenticated user data and set as ws.auth.
 		// Function will throw an error if there is an issue which will be caught below
-		const auth = await toolsLib.auth.verifyBearerTokenPromise(bearerToken, ip);
+		const auth = await toolsLib.security.verifyBearerTokenPromise(bearerToken, ip);
 
 		// If authentication was successful, set ws.auth to new auth object and send authenticated message
 		ws.auth = auth;
@@ -159,7 +159,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 		// get authenticated user data and set as ws.auth.
 		// Function will throw an error if there is an issue which will be caught below
-		const auth = await toolsLib.auth.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
+		const auth = await toolsLib.security.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
 
 		// If authentication was successful, set ws.auth to new auth object and send authenticated message
 		ws.auth = auth;

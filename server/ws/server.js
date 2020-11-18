@@ -28,7 +28,7 @@ const wss = new WebSocket.Server({
 			} else if (bearerToken) {
 				// Function will set req.auth to authenticated token object if successful
 				info.req.headers.authorization = bearerToken;
-				toolsLib.auth.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
+				toolsLib.security.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
 						return next(false, 403, err.message);
@@ -43,7 +43,7 @@ const wss = new WebSocket.Server({
 				info.req.method = 'CONNECT';
 				info.req.originalUrl = '/stream';
 				// Function will set req.auth to authenticated token object if successful
-				toolsLib.auth.verifyHmacTokenMiddleware(info.req, null, hmacKey, (err) => {
+				toolsLib.security.verifyHmacTokenMiddleware(info.req, null, hmacKey, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
 						return next(false, 403, err.message);

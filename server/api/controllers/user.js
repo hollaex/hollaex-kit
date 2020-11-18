@@ -152,7 +152,7 @@ const loginPost = (req, res) => {
 				}
 			}
 			return res.status(201).json({
-				token: toolsLib.auth.issueToken(
+				token: toolsLib.security.issueToken(
 					user.id,
 					user.network_id,
 					email,
@@ -384,7 +384,7 @@ const getHmacToken = (req, res) => {
 
 	const { id } = req.auth.sub;
 
-	toolsLib.auth.getUserKitHmacTokens(id)
+	toolsLib.security.getUserKitHmacTokens(id)
 		.then((tokens) => {
 			return res.json(tokens);
 		})
@@ -409,7 +409,7 @@ const createHmacToken = (req, res) => {
 	const ip = req.headers['x-real-ip'];
 	const { name, otp_code } = req.swagger.params.data.value;
 
-	toolsLib.auth.createUserKitHmacToken(id, otp_code, ip, name)
+	toolsLib.security.createUserKitHmacToken(id, otp_code, ip, name)
 		.then((token) => {
 			return res.json(token);
 		})
@@ -433,7 +433,7 @@ const deleteHmacToken = (req, res) => {
 	const { id } = req.auth.sub;
 	const { token_id, otp_code } = req.swagger.params.data.value;
 
-	toolsLib.auth.deleteUserKitHmacToken(id, otp_code, token_id)
+	toolsLib.security.deleteUserKitHmacToken(id, otp_code, token_id)
 		.then(() => {
 			return res.json({ message: TOKEN_REMOVED });
 		})

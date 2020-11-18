@@ -41,7 +41,7 @@ const connect = () => {
 	checkStatus()
 		.then(([ exchange, status ]) => {
 			const apiExpires = moment().toISOString() + 60;
-			const signature = toolsLib.auth.createHmacSignature(status.api_secret, 'CONNECT', '/stream', apiExpires);
+			const signature = toolsLib.security.createHmacSignature(status.api_secret, 'CONNECT', '/stream', apiExpires);
 			ws = new WebSocket(`${HE_NETWORK_WS_ENDPOINT}?exchange_id=${exchange.id}`, {
 				headers : {
 					'api-key': status.api_key,
