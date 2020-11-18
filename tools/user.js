@@ -4,12 +4,7 @@ const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
 const { has, omit, pick, each, differenceWith, isEqual } = require('lodash');
 const { isEmail } = require('validator');
-const {
-	SERVER_PATH,
-	SETTING_KEYS,
-	OMITTED_USER_FIELDS,
-	DEFAULT_ORDER_RISK_PERCENTAGE
-} = require('../constants');
+const { SERVER_PATH } = require('../constants');
 const {
 	SIGNUP_NOT_AVAILABLE,
 	PROVIDE_VALID_EMAIL,
@@ -38,7 +33,16 @@ const {
 	VERIFICATION_CODE_USED
 } = require(`${SERVER_PATH}/messages`);
 const { publisher } = require('./database/redis');
-const { CONFIGURATION_CHANNEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
+const {
+	CONFIGURATION_CHANNEL,
+	AUDIT_KEYS,
+	USER_FIELD_ADMIN_LOG,
+	ADDRESS_FIELDS,
+	ID_FIELDS,
+	SETTING_KEYS,
+	OMITTED_USER_FIELDS,
+	DEFAULT_ORDER_RISK_PERCENTAGE
+} = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel } = require('./common');
