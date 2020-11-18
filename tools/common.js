@@ -16,7 +16,8 @@ const {
 	GET_TIERS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
-	GET_FROZEN_USERS
+	GET_FROZEN_USERS,
+	HOLLAEX_NETWORK_URL
 } = require(`${SERVER_PATH}/constants`);
 const { each, difference, isPlainObject } = require('lodash');
 const { publisher } = require('./database/redis');
@@ -26,6 +27,7 @@ const { reject, resolve } = require('bluebird');
 const { NO_NEW_DATA, SUPPORT_DISABLED, COMMUNICATOR_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
 const flatten = require('flat');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const rp = require('request-promise');
 
 /**
  * Checks if url given is a valid url.
@@ -362,6 +364,39 @@ const getAssetsPrices = (assets = [], quote, amount) => {
 	return getNodeLib().getOraclePrices(assets, quote, amount);
 };
 
+const storeImageOnNetwork = async (image, name) => {
+	if (image.mimetype.indexOf('image/') !== 0) {
+		return reject(new Error('Invalid file type'));
+	}
+
+	const { apiKey } = await getNetworkKeySecret();
+	const exchangeId = getNodeLib().exchange_id;
+	const exchangeName = getKitConfig().info.name;
+
+	const options = {
+		method: 'POST',
+		uri: `${HOLLAEX_NETWORK_URL}/exchange/icon`,
+		formData: {
+			exchange_id: exchangeId,
+			exchange_name: exchangeName,
+			file_name: name,
+			file: {
+				value: image.buffer,
+				options: {
+					filename: image.originalname
+				}
+			}
+		},
+		headers: {
+			'api-key': apiKey,
+			'Content-Type': 'multipart/form-data'
+		}
+	};
+
+	return rp(options)
+		.then(JSON.parse);
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -389,5 +424,6 @@ module.exports = {
 	isValidTierLevel,
 	getTierLevels,
 	getAssetPrice,
-	getAssetsPrices
+	getAssetsPrices,
+	storeImageOnNetwork
 };
