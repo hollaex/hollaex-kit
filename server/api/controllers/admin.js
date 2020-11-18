@@ -448,7 +448,7 @@ const adminCheckTransaction = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 	const isTestnet = req.swagger.params.is_testnet.value;
 
-	toolsLib.transaction.checkTransaction(currency, transactionId, address, isTestnet)
+	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})

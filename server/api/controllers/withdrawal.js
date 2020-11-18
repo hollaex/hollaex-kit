@@ -45,7 +45,7 @@ const requestWithdrawal = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	const ip = req.headers['x-real-ip'];
 
-	toolsLib.transaction.sendRequestWithdrawalEmail(id, address, amount, currency, otp_code, ip, domain)
+	toolsLib.wallet.sendRequestWithdrawalEmail(id, address, amount, currency, otp_code, ip, domain)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -74,7 +74,7 @@ const performWithdrawal = (req, res) => {
 		token
 	);
 
-	toolsLib.transaction.validateWithdrawalToken(token)
+	toolsLib.wallet.validateWithdrawalToken(token)
 		.then((withdrawal) => {
 			return all([ withdrawal, toolsLib.user.getUserByKitId(withdrawal.user_id) ]);
 		})
@@ -82,7 +82,7 @@ const performWithdrawal = (req, res) => {
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}
-			return all([ toolsLib.transaction.performWithdrawal(withdrawal.user_id, withdrawal.address, withdrawal.currency, withdrawal.amount, withdrawal.fee), withdrawal ]);
+			return all([ toolsLib.wallet.performWithdrawal(withdrawal.user_id, withdrawal.address, withdrawal.currency, withdrawal.amount, withdrawal.fee), withdrawal ]);
 		})
 		.then(([ { transaction_id }, { fee } ]) => {
 			return res.json({
