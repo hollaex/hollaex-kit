@@ -5,9 +5,7 @@ let publicData = {
 	trade: {}
 };
 
-const getPublicData = () => {
-	return publicData;
-};
+const getPublicData = () => publicData;
 
 const resetPublicData = () => {
 	publicData = {
