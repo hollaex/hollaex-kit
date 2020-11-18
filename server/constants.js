@@ -277,6 +277,25 @@ exports.AUDIT_KEYS = [
 
 // ACCOUNTS CONSTANTS START --------------------------------------------------
 
+exports.SETTING_KEYS = [
+	'language',
+	'notification',
+	'interface',
+	'audio',
+	'risk',
+	'chat'
+];
+
+exports.OMITTED_USER_FIELDS = [
+	'password',
+	'is_admin',
+	'is_support',
+	'is_supervisor',
+	'is_kyc',
+	'is_communicator',
+	'flagged'
+];
+
 const ROLES = {
 	SUPERVISOR: 'supervisor',
 	SUPPORT: 'support',
