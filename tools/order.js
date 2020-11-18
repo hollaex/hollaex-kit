@@ -3,10 +3,10 @@
 const { getUserByKitId, getUserByEmail } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, subscribedToCoin, getKitTier } = require('./common');
 const { reject } = require('bluebird');
-const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV } = require('../messages');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, stop, meta = {}, feeCoin) => {
 	if (symbol && !subscribedToPair(symbol)) {

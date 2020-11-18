@@ -27,7 +27,7 @@ const {
 	API_KEY_EXPIRED,
 	API_KEY_OUT_OF_SCOPE,
 	API_SIGNATURE_INVALID
-} = require('../messages');
+} = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
 	CAPTCHA_ENDPOINT,

@@ -1,7 +1,8 @@
 'use strict';
 
 const { SERVER_PATH } = require('../../constants');
-const { PROVIDE_TABLE_NAME } = require('../../messages');
+const models = require(`${SERVER_PATH}/db/models`);
+const { PROVIDE_TABLE_NAME } = require(`${SERVER_PATH}/messages`);
 
 /**
  * Get sequelize model of table.
@@ -20,8 +21,7 @@ const getModel = (table = '') => {
 			.join('');
 	}
 
-	const model = require(`${SERVER_PATH}/db/models`)[table];
-	return model;
+	return models[table];
 };
 
 module.exports = {

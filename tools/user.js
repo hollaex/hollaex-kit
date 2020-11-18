@@ -36,7 +36,7 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	VERIFICATION_CODE_USED
-} = require('../messages');
+} = require(`${SERVER_PATH}/messages`);
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);

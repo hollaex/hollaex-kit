@@ -15,7 +15,7 @@ const {
 	WITHDRAWAL_DISABLED_FOR_COIN,
 	UPGRADE_VERIFICATION_LEVEL,
 	NO_DATA_FOR_CSV
-} = require('../messages');
+} = require(`${SERVER_PATH}/messages`);
 const { getUserByKitId } = require('./user');
 const { findTier } = require('./tier');
 const { client } = require('./database/redis');

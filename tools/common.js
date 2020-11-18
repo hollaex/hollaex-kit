@@ -17,14 +17,17 @@ const {
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
 	GET_FROZEN_USERS,
-	HOLLAEX_NETWORK_URL
+	HOLLAEX_NETWORK_URL,
+	NO_NEW_DATA,
+	SUPPORT_DISABLED,
+	COMMUNICATOR_CANNOT_UPDATE,
+	MASK_VALUE_GIVEN
 } = require(`${SERVER_PATH}/constants`);
 const { each, difference, isPlainObject } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
-const { NO_NEW_DATA, SUPPORT_DISABLED, COMMUNICATOR_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
 const flatten = require('flat');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const rp = require('request-promise');

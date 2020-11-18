@@ -1,7 +1,7 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constants');
-const { INVALID_PLUGIN, PLUGIN_ALREADY_ENABELD, PLUGIN_ALREADY_DISABLED } = require('../messages');
+const { INVALID_PLUGIN, PLUGIN_ALREADY_ENABELD, PLUGIN_ALREADY_DISABLED } = require(`${SERVER_PATH}/messages`);
 const {
 	AVAILABLE_PLUGINS,
 	CONFIGURATION_CHANNEL,
