@@ -4,7 +4,7 @@ const { SERVER_PATH } = require('../constants');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
-const { verifyOtpBeforeAction } = require('./otp');
+const { verifyOtpBeforeAction } = require('./security');
 const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig } = require('./common');
 const {
 	INVALID_OTP_CODE,

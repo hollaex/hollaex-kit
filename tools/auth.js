@@ -39,7 +39,7 @@ const { client } = require('./database/redis');
 const { reject, promisify } = require('bluebird');
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
-const { checkUserOtpActive } = require('./otp');
+const { checkUserOtpActive } = require('./security');
 
 //Here we setup the security checks for the endpoints
 //that need it (in our case, only /protected). This

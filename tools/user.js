@@ -50,8 +50,7 @@ const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/h
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
-const { verifyOtpBeforeAction } = require('./otp');
-const { checkCaptcha, validatePassword } = require('./security');
+const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 
 	/* Onboarding*/
 
