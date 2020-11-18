@@ -140,7 +140,7 @@ const getAllTradesNetwork = (symbol, limit, page, order_by, order, start_date, e
 	return getNodeLib().getTrades(undefined, symbol, limit, page, order_by, order, start_date, end_date);
 };
 
-const getAllUserTradesNetworkByKidId = (userKitId, symbol, limit, page, order_by, order, start_date, end_date, format) => {
+const getAllUserTradesByKitId = (userKitId, symbol, limit, page, order_by, order, start_date, end_date, format) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -174,5 +174,5 @@ module.exports = {
 	cancelAllUserOrdersByKitId,
 	cancelAllUserOrdersByEmail,
 	getAllTradesNetwork,
-	getAllUserTradesNetworkByKidId
+	getAllUserTradesByKitId
 };
