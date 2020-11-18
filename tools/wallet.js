@@ -136,11 +136,15 @@ const validateWithdrawalToken = (token) => {
 		});
 };
 
-const cancelUserWithdrawal = (userId, transactionId) => {
+const cancelUserWithdrawalByKitId = (userId, transactionId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
 			return getNodeLib().cancelWithdrawal(user.network_id, transactionId);
 		});
+};
+
+const cancelUserWithdrawalByNetworkId = (networkId, transactionId) => {
+	return getNodeLib().cancelWithdrawal(networkId, transactionId);
 };
 
 const checkTransaction = (currency, transactionId, address, isTestnet = false) => {
@@ -177,6 +181,10 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 		});
 };
 
+const createWithdrawalNetwork = (networkId, address, currency, amount, fee) => {
+	return getNodeLib().createWithdrawal(networkId, address, currency, amount, fee);
+};
+
 const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	let accumulatedAmount = amount;
 	const withdrawals = await getNodeLib().getWithdrawals(
@@ -202,7 +210,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	return convertedAmount[currency] < limit;
 };
 
-const transferUserFunds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
+const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -254,7 +262,11 @@ const transferUserFunds = (senderId, receiverId, currency, amount, description =
 		});
 };
 
-const getUserBalance = (userKitId) => {
+const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
+	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, description);
+};
+
+const getUserBalanceByKitId = (userKitId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			return getNodeLib().getBalance(user.network_id);
@@ -267,7 +279,15 @@ const getUserBalance = (userKitId) => {
 		});
 };
 
-const getTransactions = (
+const getUserBalanceByNetworkId = (networkId) => {
+	return getNodeLib().getBalance(networkId);
+};
+
+const getKitBalance = () => {
+	return getNodeLib().getBalance();
+};
+
+const getUserTransactionsByKitId = (
 	type,
 	kitId,
 	currency,
@@ -334,7 +354,7 @@ const getUserDepositsByKitId = (
 	endDate,
 	format
 ) => {
-	return getTransactions('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+	return getUserTransactionsByKitId('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
 };
 
 const getUserWithdrawalsByKitId = (
@@ -353,17 +373,86 @@ const getUserWithdrawalsByKitId = (
 	endDate,
 	format
 ) => {
-	return getTransactions('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+	return getUserTransactionsByKitId('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+};
+
+const getExchangeDeposits = (
+	networkId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+) => {
+	return getNodeLib().getDeposits(networkId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+};
+
+const getExchangeWithdrawals = (
+	networkId,
+	currency,
+	status,
+	dismissed,
+	rejected,
+	processing,
+	waiting,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate,
+) => {
+	return getNodeLib().getWithdrawals(networkId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
+};
+
+const mintAssetByKitId = (kitId, currency, description, amount) => {
+	return getUserByKitId(kitId)
+		.then((user) => {
+			return getNodeLib().mintAsset(user.network_id, currency, description, amount);
+		});
+};
+
+const mintAssetByNetworkId = (networkId, currency, description, amount) => {
+	return getNodeLib().mintAsset(networkId, currency, description, amount);
+};
+
+const burnAssetByKitId = (kitId, currency, description, amount) => {
+	return getUserByKitId(kitId)
+		.then((user) => {
+			return getNodeLib().burnAsset(user.network_id, currency, description, amount);
+		});
+};
+
+const burnAssetByNetworkId = (networkId, currency, description, amount) => {
+	return getNodeLib().burnAsset(networkId, currency, description, amount);
 };
 
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawalToken,
-	cancelUserWithdrawal,
+	cancelUserWithdrawalByKitId,
 	checkTransaction,
 	performWithdrawal,
-	transferUserFunds,
-	getUserBalance,
+	transferAssetByKitIds,
+	getUserBalanceByKitId,
 	getUserDepositsByKitId,
 	getUserWithdrawalsByKitId,
+	createWithdrawalNetwork,
+	cancelUserWithdrawalByNetworkId,
+	getExchangeDeposits,
+	getExchangeWithdrawals,
+	getUserBalanceByNetworkId,
+	transferAssetByNetworkIds,
+	mintAssetByKitId,
+	mintAssetByNetworkId,
+	burnAssetByKitId,
+	burnAssetByNetworkId,
+	getKitBalance
 };

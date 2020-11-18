@@ -1,6 +1,6 @@
 'use strict';
 
-const { getUserByKitId, getUserByEmail } = require('./user');
+const { getUserByKitId, getUserByEmail, getUserByNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV } = require(`${SERVER_PATH}/messages`);
@@ -58,6 +58,35 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, stop
 		});
 };
 
+const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price = 0, stop, meta = {}, feeCoin) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return reject(new Error(INVALID_SYMBOL(symbol)));
+	}
+	// if (feeCoin && !subscribedToCoin(feeCoin)) {
+	// 	return reject(new Error(INVALID_COIN(feeCoin)));
+	// }
+	return getUserByNetworkId(networkId)
+		.then((user) => {
+			const tier = getKitTier(user.verification_level);
+			if (!tier) {
+				throw new Error('User tier not found');
+			}
+			const feeData = {};
+			feeData.fee_structure = {
+				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
+				taker: tier.fees.taker[symbol] || tier.fees.taker.default
+			};
+			// if (feeCoin) {
+			// 	feeData.fee_coin = feeCoin;
+			// }
+			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, stop, meta);
+		});
+};
+
+const createOrderNetwork = (networkId, symbol, side, size, type, price, feeData, stop, meta) => {
+	return getNodeLib().createOrder(networkId, symbol, side, size, type, price, feeData, stop, meta);
+};
+
 const getUserOrderByKitId = (userKitId, orderId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
@@ -72,6 +101,10 @@ const getUserOrderByEmail = (email, orderId) => {
 		});
 };
 
+const getUserOrderByNetworkId = (networkId, orderId) => {
+	return getNodeLib().getOrder(networkId, orderId);
+};
+
 const cancelUserOrderByKitId = (userKitId, orderId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
@@ -84,6 +117,10 @@ const cancelUserOrderByEmail = (email, orderId) => {
 		.then((user) => {
 			return getNodeLib().cancelOrder(user.network_id, orderId);
 		});
+};
+
+const cancelUserOrderByNetworkId = (networkId, orderId) => {
+	return getNodeLib().cancelOrder(networkId, orderId);
 };
 
 const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
@@ -113,6 +150,13 @@ const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page,
 		});
 };
 
+const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return reject(new Error(INVALID_SYMBOL(symbol)));
+	}
+	return getNodeLib().getOrders(networkId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate);
+};
+
 const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
@@ -131,6 +175,13 @@ const cancelAllUserOrdersByEmail = (email, symbol) => {
 		.then((user) => {
 			return getNodeLib().cancelOrders(user.network_id, symbol);
 		});
+};
+
+const cancelAllUserOrdersByNetworkId = (networkId, symbol) => {
+	if (symbol && !subscribedToPair(symbol)) {
+		return reject(new Error(INVALID_SYMBOL(symbol)));
+	}
+	return getNodeLib().cancelOrders(networkId, symbol);
 };
 
 const getAllTradesNetwork = (symbol, limit, page, order_by, order, start_date, end_date) => {
@@ -161,6 +212,14 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, order_by, order
 		});
 };
 
+const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, order_by, order, start_date, end_date) => {
+	return getNodeLib().getTrades(networkId, symbol, limit, page, order_by, order, start_date, end_date);
+};
+
+const getGeneratedFees = (limit, page, startDate, endDate) => {
+	return getNodeLib().getGeneratedFees(limit, page, startDate, endDate);
+};
+
 module.exports = {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
@@ -174,5 +233,13 @@ module.exports = {
 	cancelAllUserOrdersByKitId,
 	cancelAllUserOrdersByEmail,
 	getAllTradesNetwork,
-	getAllUserTradesByKitId
+	getAllUserTradesByKitId,
+	getAllUserTradesByNetworkId,
+	getUserOrderByNetworkId,
+	createUserOrderByNetworkId,
+	createOrderNetwork,
+	cancelUserOrderByNetworkId,
+	getAllUserOrdersByNetworkId,
+	cancelAllUserOrdersByNetworkId,
+	getGeneratedFees
 };

@@ -229,6 +229,13 @@ const createUser = (email, password, role = 'user', id) => {
 		});
 };
 
+const createUserOnNetwork = (email) => {
+	if (!isEmail(email)) {
+		return reject(new Error(PROVIDE_VALID_EMAIL));
+	}
+	return getNodeLib().createUser(email);
+};
+
 const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer) => {
 	return getUserByEmail(email.toLowerCase())
 		.then((user) => {
@@ -532,6 +539,14 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 				return user;
 			}
 		});
+};
+
+const getUserNetwork = (networkId) => {
+	return getNodeLib().getUser(networkId);
+};
+
+const getUsersNetwork = () => {
+	return getNodeLib().getUsers();
 };
 
 const getUserByEmail = (email, rawData = true, networkData = false) => {
@@ -1083,6 +1098,10 @@ const setUsernameById = (userId, username) => {
 		});
 };
 
+const createUserCryptoAddressByNetworkId = (networkId, crypto) => {
+	return getNodeLib().createUserCryptoAddress(networkId, crypto);
+};
+
 const createUserCryptoAddressByKitId = (kitId, crypto) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -1090,11 +1109,15 @@ const createUserCryptoAddressByKitId = (kitId, crypto) => {
 		});
 };
 
-const getUserStats = (userId) => {
+const getUserStatsByKitId = (userId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
 			return getNodeLib().getUserStats(user.network_id);
 		});
+};
+
+const getUserStatsByNetworkId = (networkId) => {
+	return getNodeLib().getUserStats(networkId);
 };
 
 const getExchangeOperators = (limit, page, orderBy, order) => {
@@ -1233,7 +1256,12 @@ module.exports = {
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
-	getUserStats,
+	getUserStatsByKitId,
 	getExchangeOperators,
-	inviteExchangeOperator
+	inviteExchangeOperator,
+	createUserOnNetwork,
+	getUserNetwork,
+	getUsersNetwork,
+	createUserCryptoAddressByNetworkId,
+	getUserStatsByNetworkId
 };

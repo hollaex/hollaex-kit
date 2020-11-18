@@ -400,6 +400,42 @@ const storeImageOnNetwork = async (image, name) => {
 		.then(JSON.parse);
 };
 
+const getEngineTrades = (symbol) => {
+	return getNodeLib().getEngineTrades(symbol);
+};
+
+const getEngineOrderbooks = (symbol) => {
+	return getNodeLib().getEngineOrderbooks(symbol);
+};
+
+const getEngineChart = (from, to, symbol, resolution) => {
+	return getNodeLib().getEngineChart(from, to, symbol, resolution);
+};
+
+const getEngineCharts = (from, to, resolution) => {
+	return getNodeLib().getEngineCharts(from, to, resolution);
+};
+
+const getEngineUdfConfig = () => {
+	return getNodeLib().getEngineUdfConfig();
+};
+
+const getEngineUdfHistory = (from, to, symbol, resolution) => {
+	return getNodeLib().getEngineUdfHistory(from, to, symbol, resolution);
+};
+
+const getEngineUdfSymbols = (symbol) => {
+	return getNodeLib().getEngineUdfSymbols(symbol);
+};
+
+const getEngineTicker = (symbol) => {
+	return getNodeLib().getEngineTicker(symbol);
+};
+
+const getEngineTickers = () => {
+	return getNodeLib().getEngineTickers();
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -428,5 +464,14 @@ module.exports = {
 	getTierLevels,
 	getAssetPrice,
 	getAssetsPrices,
-	storeImageOnNetwork
+	storeImageOnNetwork,
+	getEngineTrades,
+	getEngineOrderbooks,
+	getEngineChart,
+	getEngineCharts,
+	getEngineUdfConfig,
+	getEngineUdfHistory,
+	getEngineUdfSymbols,
+	getEngineTicker,
+	getEngineTickers
 };
