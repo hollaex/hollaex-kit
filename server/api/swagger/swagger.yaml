@@ -906,14 +906,7 @@ paths:
         200:
           description: Success
           schema:
-            type: object
-            properties:
-              message:
-                type: string
-              transaction_id:
-                type: string
-              fee:
-                type: string
+            $ref: "#/definitions/MessageResponse"
         default:
           description: Error
           schema:
@@ -950,7 +943,7 @@ paths:
               transaction_id:
                 type: string
               fee:
-                type: string
+                type: number
         default:
           description: Error
           schema:

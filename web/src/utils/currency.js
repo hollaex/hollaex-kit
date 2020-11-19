@@ -154,7 +154,7 @@ export const calculateOraclePrice = (value = 0, price) => {
 export const calculateBalancePrice = (balance, prices = {}, coins = {}) => {
 	let accumulated = math.fraction(0);
 	Object.keys(coins).forEach((key) => {
-		const price = estimatePrice(key);
+		const price = prices[key] || 0;
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(
 				math.multiply(
