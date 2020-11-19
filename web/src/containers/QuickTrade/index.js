@@ -12,19 +12,11 @@ import STRINGS from 'config/localizedStrings';
 import { QuickTrade, Dialog, Loader, MobileBarBack, Button } from 'components';
 import ReviewBlock from 'components/QuickTrade/ReviewBlock';
 import { changeSymbol } from 'actions/orderbookAction';
-import {
-	formatNumber,
-	calculateBalancePrice,
-	// formatToCurrency
-} from 'utils/currency';
+import { formatNumber } from 'utils/currency';
 import { isLoggedIn } from 'utils/token';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
-import {
-	changePair,
-	setNotification,
-	// RISKY_ORDER
-} from 'actions/appActions';
+import { changePair, setNotification } from 'actions/appActions';
 
 import QuoteResult from './QuoteResult';
 
@@ -48,7 +40,6 @@ class QuickTradeContainer extends PureComponent {
 			side: 'buy',
 			tickerClose,
 			showQuickTradeModal: false,
-			totalAssets: '',
 			targetOptions,
 			selectedSource,
 			selectedTarget,
@@ -69,9 +60,6 @@ class QuickTradeContainer extends PureComponent {
 	}
 
 	componentDidMount() {
-		if (this.props.user.id) {
-			this.calculateSections(this.props);
-		}
 		if (
 			this.props.constants &&
 			!this.props.constants.broker_enabled &&
@@ -84,14 +72,6 @@ class QuickTradeContainer extends PureComponent {
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
-		}
-		if (
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.balance) !==
-				JSON.stringify(nextProps.balance) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
-		) {
-			this.calculateSections(nextProps);
 		}
 	}
 
@@ -106,11 +86,6 @@ class QuickTradeContainer extends PureComponent {
 
 	onCloseDialog = () => {
 		this.setState({ showQuickTradeModal: false }, this.resetOrderData);
-	};
-
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
-		this.setState({ totalAssets });
 	};
 
 	onReviewQuickTrade = () => {
@@ -460,8 +435,6 @@ const mapStateToProps = (store) => {
 		activeTheme: store.app.theme,
 		activeLanguage: store.app.language,
 		orderLimits: store.app.orderLimits,
-		prices: store.orderbook.prices,
-		balance: store.user.balance,
 		user: store.user,
 		settings: store.user.settings,
 		constants: store.app.constants,
