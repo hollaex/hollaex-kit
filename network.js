@@ -2,9 +2,12 @@
 
 const moment = require('moment');
 const { isBoolean } = require('lodash');
-const { createRequest, generateHeaders, checkKit } = require('./utils');
+const { createRequest, generateHeaders, checkKit, createSignature } = require('./utils');
 const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
+const WebSocket = require('ws');
+const { setWsHeartbeat } = require('ws-heartbeat/client');
+const EventEmitter = require('events');
 
 class HollaExNetwork {
 	constructor(
@@ -818,6 +821,104 @@ class HollaExNetwork {
 			`${HOLLAEX_NETWORK_URL}${path}`,
 			headers
 		);
+	}
+
+	connect(events = []) {
+		const [ protocol, endpoint ] = HOLLAEX_NETWORK_URL.split('://');
+		const wsUrl = protocol === 'https'
+			? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
+			: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
+
+		const apiExpires = moment().toISOString() + this.apiExpiresAfter;
+		const signature = createSignature(this.apiSecret, 'CONNECT', '/stream', apiExpires);
+		return new Socket(events, wsUrl, this.apiKey, signature, apiExpires);
+	}
+}
+
+class Socket extends EventEmitter {
+	constructor(events, url, apiKey, apiSignature, apiExpires) {
+		super();
+		this.url = `${url}`;
+		this.apiKey = apiKey;
+		this.apiSignature = apiSignature;
+		this.apiExpires = apiExpires;
+		this.events = events;
+		this.ws = null;
+		this.reconnectInterval = 5000; // 5 seconds
+		this.reconnect = false;
+		this.connect();
+	}
+
+	disconnect() {
+		if (this.ws.readyState === WebSocket.OPEN) {
+			this.reconnect = false;
+			this.removeAllListeners();
+			this.ws.close();
+		}
+	}
+
+	connect() {
+		this.ws = new WebSocket(this.url, {
+			headers: {
+				'api-key': this.apiKey,
+				'api-signature': this.apiSignature,
+				'api-expires': this.apiExpires
+			}
+		});
+		this.ws.on('open', () => {
+			this.emit('open');
+			if (this.events.length > 0) {
+				this.ws.subscribe(this.events);
+			}
+
+			this.ws.on('close', () => {
+				this.ws = null;
+				this.emit('close');
+				if (this.reconnect) {
+					setTimeout(() => {
+						this.connect();
+					}, this.reconnectInterval);
+				}
+			});
+
+			this.ws.on('unexpected-response', (data) => {
+				console.log(data)
+				data = JSON.parse(data);
+				this.emit('error', data);
+				this.ws.close();
+			});
+
+			this.ws.on('error', (error) => {
+				console.log(error)
+				error = JSON.parse(error);
+				this.emit('error', error);
+				this.ws.close();
+			});
+
+			this.ws.on('message', (data) => {
+				data = JSON.parse(data);
+				this.emit('message', data);
+			});
+
+			setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
+		});
+	}
+
+	subscribe(events) {
+		this.ws.send(JSON.stringify({
+			op: 'subscribe',
+			args: events
+		}));
+	}
+
+	unsubscribe(events) {
+		this.ws.send(JSON.stringify({
+			op: 'unsubscribe',
+			args: events
+		}));
 	}
 }
 
