@@ -389,7 +389,7 @@ class Socket extends EventEmitter {
 			});
 
 			if (events.length > 0) {
-				this.ws.subscribe(events);
+				this.subscribe(events);
 			}
 
 			setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
