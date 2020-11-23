@@ -5,6 +5,7 @@ const EventEmitter = require('events');
 const moment = require('moment');
 const { createRequest, createSignature, generateHeaders } = require('./utils');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
+const { each, union } = require('lodash');
 
 class HollaExKit {
 	constructor(
@@ -304,7 +305,7 @@ class HollaExKit {
 	 * @param {string} event - The event to listen to
 	 * @return {class} A new socket class that listens to the hollaEx websocket server and emits the event being passed
 	 */
-	connect(events) {
+	connect(events = []) {
 		const [ protocol, endpoint ] = this.apiUrl.split('://');
 		const wsUrl = protocol === 'https'
 			? `wss://${endpoint}/stream`
@@ -320,13 +321,16 @@ class HollaExKit {
 Websocket
 **************************************/
 class Socket extends EventEmitter {
-	constructor(events = '', url, apiKey, apiSignature, apiExpires) {
+	constructor(events, url, apiKey, apiSignature, apiExpires) {
 		super();
 		this.events = events;
 		this.url = url;
 		this.apiKey = apiKey;
 		this.apiSignature = apiSignature;
 		this.apiExpires = apiExpires;
+		if (this.apiKey && this.apiSignature && this.apiExpires) {
+			this.url = `${this.url}?api-key=${this.apiKey}&api-signature=${this.apiSignature}&api-expires=${this.apiExpires}`;
+		}
 		this.reconnectInterval = 5000; // 5 seconds
 		this.ws = null;
 		this.reconnect = true;
@@ -334,7 +338,7 @@ class Socket extends EventEmitter {
 	}
 
 	disconnect() {
-		if (this.ws.readyState === WebSocket.OPEN) {
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.reconnect = false;
 			this.removeAllListeners();
 			this.ws.close();
@@ -342,130 +346,243 @@ class Socket extends EventEmitter {
 	}
 
 	connect() {
-		if (!Array.isArray(this.events)) {
-			this.ws = new WebSocket(this.url);
-			this.ws.on('open', () => {
-				this.emit('open');
-				this.ws.on('error', (error) => {
-					error = JSON.parse(error);
-					this.emit('error', error);
-					this.ws.close();
-				});
-				this.ws.on('close', () => {
-					this.ws = null;
-					if (this.reconnect) {
-						this.emit('close', 'Websocket closed. Attempting to reconnect...');
-						setTimeout(() => {
-							this.connect();
-						}, this.reconnectInterval);
-					} else {
-						this.emit('close', 'Websocket closed');
-					}
-				});
-				this.ws.on('unexpected-response', (data) => {
+		this.ws = new WebSocket(this.url);
+
+		this.ws.on('unexpected-response', (data) => {
+			this.emit('error', data);
+			if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+				this.ws.close();
+			} else {
+				this.ws = null;
+			}
+		});
+
+		this.ws.on('error', (error) => {
+			this.emit('error', error);
+			if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+				this.ws.close();
+			} else {
+				this.ws = null;
+			}
+		});
+
+		this.ws.on('open', () => {
+			this.emit('open');
+
+			this.ws.on('close', () => {
+				this.ws = null;
+				this.emit('close');
+				if (this.reconnect) {
+					setTimeout(() => {
+						this.connect();
+					}, this.reconnectInterval);
+				}
+			});
+
+			this.ws.on('message', (data) => {
+				try {
 					data = JSON.parse(data);
-					this.emit('error', data);
-					this.ws.close();
-				});
-				setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
-					pingTimeout: 60000,
-					pingInterval: 25000,
-				});
+				} catch (err) {
+					this.emit('error', err.message);
+				}
+				this.emit('message', data);
+			});
 
-				const [ event ] = this.events.split(':');
-				switch (event) {
-					case 'orderbook':
-					case 'trade':
-						this.ws.on('message', (data) => {
-							data = JSON.parse(data);
-							if (data.topic === event) {
-								this.emit(event, data);
+			if (this.events.length > 0) {
+				each(this.events, (event) => {
+					const [ topic, symbol ] = event.split(':');
+					switch(topic) {
+						case 'public':
+							if (symbol) {
+								this.ws.send(JSON.stringify({
+									op: 'subscribe',
+									args: [`orderbook:${symbol}`, `trade:${symbol}`]
+								}));
+							} else {
+								this.ws.send(JSON.stringify({
+									op: 'subscribe',
+									args: ['orderbook', 'trade']
+								}));
 							}
-						});
-
-						this.ws.send(JSON.stringify({
-							op: 'subscribe',
-							args: [this.events]
-						}));
-						break;
-					case 'user':
-						this.ws.send(JSON.stringify({
-							op: 'auth',
-							args: [{
-								'api-key': this.apiKey,
-								'api-signature': this.apiSignature,
-								'api-expires': this.apiExpires
-							}]
-						}));
-
-						this.ws.on('message', (data) => {
-							data = JSON.parse(data);
-							switch (data.topic) {
-								case 'order':
-									this.emit('userOrder', data);
-									break;
-								case 'wallet':
-									this.emit('userWallet', data);
-									break;
-								default:
-									break;
-							}
-						});
-
-						setTimeout(() => {
+							break;
+						case 'private':
 							this.ws.send(JSON.stringify({
 								op: 'subscribe',
-								args: [
-									'order',
-									'wallet'
-								]
+								args: ['order', 'wallet']
 							}));
-						}, 500);
+							break;
+						case 'all':
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: ['orderbook', 'trade', 'order', 'wallet']
+							}));
+							break;
+						case 'orderbook':
+						case 'trade':
+							if (symbol) {
+								this.ws.send(JSON.stringify({
+									op: 'subscribe',
+									args: [`${topic}:${symbol}`]
+								}));
+							} else {
+								this.ws.send(JSON.stringify({
+									op: 'subscribe',
+									args: [topic]
+								}));
+							}
+							break;
+						case 'order':
+						case 'wallet':
+						case 'deposit':
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: [topic]
+							}));
+							break;
+						default:
+							break;
+					}
+				});
+			}
+
+			setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
+		});
+	}
+
+	subscribe(events) {
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			each(events, (event) => {
+				const [ topic, symbol ] = event.split(':');
+				switch(topic) {
+					case 'public':
+						if (symbol) {
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: [`orderbook:${symbol}`, `trade:${symbol}`]
+							}));
+						} else {
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: ['orderbook', 'trade']
+							}));
+						}
+						this.events = union(this.events, [event]);
+						break;
+					case 'private':
+						this.ws.send(JSON.stringify({
+							op: 'subscribe',
+							args: ['order', 'wallet']
+						}));
+						this.events = union(this.events, [event]);
 						break;
 					case 'all':
 						this.ws.send(JSON.stringify({
-							op: 'auth',
-							args: [{
-								'api-key': this.apiKey,
-								'api-signature': this.apiSignature,
-								'api-expires': this.apiExpires
-							}]
+							op: 'subscribe',
+							args: ['orderbook', 'trade', 'order', 'wallet']
 						}));
-
-						this.ws.on('message', (data) => {
-							data = JSON.parse(data);
-							switch (data.topic) {
-								case 'orderbook':
-								case 'trade':
-									this.emit(data.type, data);
-									break;
-								case 'order':
-									this.emit('userOrder', data);
-									break;
-								case 'wallet':
-									this.emit('userWallet', data);
-									break;
-								default:
-									break;
-							}
-						});
-
-						setTimeout(() => {
+						this.events = union(this.events, [event]);
+						break;
+					case 'orderbook':
+					case 'trade':
+						if (symbol) {
 							this.ws.send(JSON.stringify({
 								op: 'subscribe',
-								args: [
-									'orderbook',
-									'trade',
-									'order',
-									'wallet'
-								]
+								args: [`${topic}:${symbol}`]
 							}));
-						}, 500);
+						} else {
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: [topic]
+							}));
+						}
+						this.events = union(this.events, [event]);
+						break;
+					case 'order':
+					case 'wallet':
+					case 'deposit':
+						this.ws.send(JSON.stringify({
+							op: 'subscribe',
+							args: [topic]
+						}));
+						this.events = union(this.events, [event]);
 						break;
 					default:
 						break;
 				}
 			});
+		}
+	}
+
+	unsubscribe(events) {
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			each(events, (event) => {
+				const [ topic, symbol ] = event.split(':');
+				switch(topic) {
+					case 'public':
+						if (symbol) {
+							this.ws.send(JSON.stringify({
+								op: 'unsubscribe',
+								args: [`orderbook:${symbol}`, `trade:${symbol}`]
+							}));
+						} else {
+							this.ws.send(JSON.stringify({
+								op: 'unsubscribe',
+								args: ['orderbook', 'trade']
+							}));
+						}
+						this.events = this.events.filter((e) => e !== event);
+						break;
+					case 'private':
+						this.ws.send(JSON.stringify({
+							op: 'unsubscribe',
+							args: ['order', 'wallet']
+						}));
+						this.events = this.events.filter((e) => e !== event);
+						break;
+					case 'all':
+						this.ws.send(JSON.stringify({
+							op: 'unsubscribe',
+							args: ['orderbook', 'trade', 'order', 'wallet']
+						}));
+						this.events = this.events.filter((e) => e !== event);
+						break;
+					case 'orderbook':
+					case 'trade':
+						if (symbol) {
+							this.ws.send(JSON.stringify({
+								op: 'unsubscribe',
+								args: [`${topic}:${symbol}`]
+							}));
+						} else {
+							this.ws.send(JSON.stringify({
+								op: 'unsubscribe',
+								args: [topic]
+							}));
+						}
+						this.events = this.events.filter((e) => e !== event);
+						break;
+					case 'order':
+					case 'wallet':
+					case 'deposit':
+						this.ws.send(JSON.stringify({
+							op: 'unsubscribe',
+							args: [topic]
+						}));
+						this.events = this.events.filter((e) => e !== event);
+						break;
+					default:
+						break;
+				}
+			});
+		}
+	}
+
+	close() {
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			this.ws.close();
 		}
 	}
 }

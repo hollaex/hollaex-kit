@@ -850,7 +850,7 @@ class Socket extends EventEmitter {
 	}
 
 	disconnect() {
-		if (this.ws.readyState === WebSocket.OPEN) {
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.reconnect = false;
 			this.removeAllListeners();
 			this.ws.close();
@@ -865,6 +865,25 @@ class Socket extends EventEmitter {
 				'api-expires': this.apiExpires
 			}
 		});
+
+		this.ws.on('unexpected-response', (data) => {
+			this.emit('error', data);
+			if (this.ws.readyState === WebSocket.OPEN) {
+				this.ws.close();
+			} else {
+				this.ws = null;
+			}
+		});
+
+		this.ws.on('error', (error) => {
+			this.emit('error', error);
+			if (this.ws.readyState === WebSocket.OPEN) {
+				this.ws.close();
+			} else {
+				this.ws = null;
+			}
+		});
+
 		this.ws.on('open', () => {
 			this.emit('open');
 
@@ -876,18 +895,6 @@ class Socket extends EventEmitter {
 						this.connect();
 					}, this.reconnectInterval);
 				}
-			});
-
-			this.ws.on('unexpected-response', (data) => {
-				data = JSON.parse(data);
-				this.emit('error', data);
-				this.ws.close();
-			});
-
-			this.ws.on('error', (error) => {
-				error = JSON.parse(error);
-				this.emit('error', error);
-				this.ws.close();
 			});
 
 			this.ws.on('message', (data) => {
@@ -913,25 +920,33 @@ class Socket extends EventEmitter {
 	}
 
 	subscribe(events) {
-		this.ws.send(JSON.stringify({
-			op: 'subscribe',
-			args: events
-		}));
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			this.ws.send(JSON.stringify({
+				op: 'subscribe',
+				args: events
+			}));
+		}
 	}
 
 	unsubscribe(events) {
-		this.ws.send(JSON.stringify({
-			op: 'unsubscribe',
-			args: events
-		}));
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			this.ws.send(JSON.stringify({
+				op: 'unsubscribe',
+				args: events
+			}));
+		}
 	}
 
 	send(message) {
-		this.ws.send(JSON.stringify(message));
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			this.ws.send(JSON.stringify(message));
+		}
 	}
 
 	close() {
-		this.ws.close();
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			this.ws.close();
+		}
 	}
 }
 
