@@ -3,7 +3,7 @@ import { Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { AdminHocForm } from '../../../components';
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 
 const DescriptionForm = AdminHocForm('DescriptionForm');
 const FooterTextForm = AdminHocForm('FooterDescriptionForm');
@@ -12,13 +12,13 @@ class Description extends Component {
 	handleImg = (type) => {
 		return type === 'description' ? (
 			<img
-				src={ICONS.HELP_DESCRIPTION_POPUP}
+				src={STATIC_ICONS.HELP_DESCRIPTION_POPUP}
 				className="help-icon description_note"
 				alt="description_note"
 			/>
 		) : type === 'footer' ? (
 			<img
-				src={ICONS.HELP_FOOTER_POPUP}
+				src={STATIC_ICONS.HELP_FOOTER_POPUP}
 				className="help-icon description_footer"
 				alt="footer"
 			/>

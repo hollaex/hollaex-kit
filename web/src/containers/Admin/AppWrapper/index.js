@@ -38,7 +38,8 @@ import {
 	requestInitial,
 	requestConstant,
 } from '../../../actions/appActions';
-import { SESSION_TIME, BASE_CURRENCY, ICONS } from '../../../config/constants';
+import { SESSION_TIME, BASE_CURRENCY } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import { checkRole } from '../../../utils/token';
 
 import MobileDetect from 'mobile-detect';
@@ -253,7 +254,7 @@ class AppWrapper extends React.Component {
 						}
 					>
 						<ReactSVG
-							path={ICONS.HEX_PATTERN_ICON}
+							path={STATIC_ICONS.HEX_PATTERN_ICON}
 							wrapperClassName="sidebar-icon"
 						/>
 						<div>
@@ -315,7 +316,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-black">
 						<div>
 							<ReactSVG
-								path={ICONS.BLUE_SCREEN_SUPERVISOR}
+								path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
 								wrapperClassName="sider-icons"
 							/>
 						</div>
@@ -330,7 +331,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-grey">
 						<div>
 							<ReactSVG
-								path={ICONS.BLUE_SCREEN_KYC}
+								path={STATIC_ICONS.BLUE_SCREEN_KYC}
 								wrapperClassName="sider-icons"
 							/>
 						</div>
@@ -345,7 +346,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-orange">
 						<div>
 							<ReactSVG
-								path={ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
 								wrapperClassName="sider-icons"
 							/>
 						</div>
@@ -360,7 +361,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-yellow">
 						<div>
 							<ReactSVG
-								path={ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
 								wrapperClassName="sider-icons"
 							/>
 						</div>
@@ -375,7 +376,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section">
 						<div>
 							<img
-								src={ICONS.BLUE_SCREEN_EYE_ICON}
+								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
 								className="sider-icons"
 								alt="EyeIcon"
 							/>
@@ -457,7 +458,7 @@ class AppWrapper extends React.Component {
 						<div className="admin-top-header">Operator Control Panel</div>
 						<div className="top-box-menu">
 							<img
-								src={ICONS.BLUE_SCREEN_LINK}
+								src={STATIC_ICONS.BLUE_SCREEN_LINK}
 								className="link-icon"
 								alt="Link-icon"
 							/>{' '}

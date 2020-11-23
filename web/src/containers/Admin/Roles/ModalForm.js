@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 
 import { OPERATORS, getOperatorFields } from './Utils';
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
 import { checkRole } from '../../../utils/token';
 
@@ -33,7 +33,7 @@ export const renderRoleImage = (
 		case 'supervisor':
 			return (
 				<img
-					src={ICONS.BLUE_SCREEN_SUPERVISOR}
+					src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
 					className={className}
 					alt="role-icon"
 				/>
@@ -41,7 +41,7 @@ export const renderRoleImage = (
 		case 'kyc':
 			return (
 				<img
-					src={ICONS.BLUE_SCREEN_KYC}
+					src={STATIC_ICONS.BLUE_SCREEN_KYC}
 					className={className}
 					alt="role-icon"
 				/>
@@ -49,7 +49,7 @@ export const renderRoleImage = (
 		case 'communicator':
 			return (
 				<img
-					src={ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+					src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
 					className={className}
 					alt="role-icon"
 				/>
@@ -57,7 +57,7 @@ export const renderRoleImage = (
 		case 'support':
 			return (
 				<img
-					src={ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+					src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
 					className={className}
 					alt="role-icon"
 				/>
@@ -65,7 +65,7 @@ export const renderRoleImage = (
 		default:
 			return (
 				<img
-					src={ICONS.BLUE_SCREEN_EYE_ICON}
+					src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
 					className={className}
 					alt="role-icon"
 				/>

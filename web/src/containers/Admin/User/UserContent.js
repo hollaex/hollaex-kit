@@ -20,7 +20,7 @@ import {
 import BankData from './BankData';
 import AboutData from './AboutData';
 import { isSupport, isAdmin, isKYC } from '../../../utils/token';
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import { deactivateOtp, flagUser, activateUser } from './actions';
 
 // import Flagger from '../Flaguser';
@@ -137,7 +137,7 @@ class UserContent extends Component {
 				<div className="d-flex justify-content-between">
 					<div className="d-flex align-items-center user-details">
 						<ReactSVG
-							path={ICONS.USER_DETAILS_ICON}
+							path={STATIC_ICONS.USER_DETAILS_ICON}
 							wrapperClassName="user-icon"
 						/>
 						<div>User Id: {userInformation.id}</div>

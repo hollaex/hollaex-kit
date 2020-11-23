@@ -2,7 +2,7 @@ import React from 'react';
 import { string, array, object, bool } from 'prop-types';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
-import ICONS from 'config/icons';
+import { STATIC_ICONS } from 'config/icons';
 
 const EditWrapper = ({
 	children,
@@ -27,7 +27,7 @@ const EditWrapper = ({
 				{stringId && (
 					<div className="edit-wrapper__icon-wrapper" data-string-id={stringId}>
 						<ReactSVG
-							path={ICONS['EDIT_STRING']}
+							path={STATIC_ICONS['EDIT_STRING']}
 							wrapperClassName="edit-wrapper__icon"
 						/>
 					</div>
@@ -35,7 +35,7 @@ const EditWrapper = ({
 				{iconId && (
 					<div className="edit-wrapper__icon-wrapper" data-icon-id={iconId}>
 						<ReactSVG
-							path={ICONS['OPERATOR_EDIT_ICON']}
+							path={STATIC_ICONS['OPERATOR_EDIT_ICON']}
 							wrapperClassName="edit-wrapper__icon"
 						/>
 					</div>

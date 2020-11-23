@@ -4,7 +4,7 @@ import { Select, Form, Button } from 'antd';
 
 import { minimalTimezoneSet } from '../Settings/Utils';
 import LANGUAGES from '../../../config/languages';
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -39,7 +39,10 @@ const TimeZone = ({ initialValues, handleNext, updateConstants }) => {
 	};
 	return (
 		<div>
-			<ReactSVG path={ICONS.TIMEZONE_WORLD_MAP} wrapperClassName="world-map" />
+			<ReactSVG
+				path={STATIC_ICONS.TIMEZONE_WORLD_MAP}
+				wrapperClassName="world-map"
+			/>
 			<div className="form-wrapper">
 				<Form
 					name="timezone"
