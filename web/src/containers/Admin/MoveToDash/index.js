@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import ReactSVG from 'react-svg';
 
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import './index.css';
 
 const MoveToDash = () => {
@@ -12,7 +12,7 @@ const MoveToDash = () => {
 				To view this page you must go back to master admin dashboard
 			</div>
 			<ReactSVG
-				path={ICONS.ADMIN_MISSING_GO_BACK}
+				path={STATIC_ICONS.ADMIN_MISSING_GO_BACK}
 				wrapperClassName="master-admin-img"
 			/>
 			<div>

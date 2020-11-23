@@ -7,7 +7,7 @@ import NetworkConfig from './NetworkConfig';
 import EmailSetup from './EmailSetup';
 import PasswordSetup, { ReTypePasswordContainer } from './PasswordSetup';
 import Login from './Login';
-import { ICONS } from '../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import { getExchangeInitialized } from '../../utils/initialize';
 
 class InitWizard extends Component {
@@ -64,7 +64,7 @@ class InitWizard extends Component {
 			case 'network-config':
 				return (
 					<NetworkConfig
-						icon={ICONS.SET_ADMIN_NETWORK_KEYS}
+						icon={STATIC_ICONS.SET_ADMIN_NETWORK_KEYS}
 						onChangeStep={this.handleStepChange}
 					/>
 				);
@@ -72,7 +72,7 @@ class InitWizard extends Component {
 				return (
 					<EmailSetup
 						initialValues={this.state.formValues}
-						icon={ICONS.SET_ADMIN_EMAIL}
+						icon={STATIC_ICONS.SET_ADMIN_EMAIL}
 						onChangeStep={this.handleStepChange}
 						onFieldChange={this.onFieldChange}
 					/>
@@ -80,7 +80,7 @@ class InitWizard extends Component {
 			case 'password':
 				return (
 					<PasswordSetup
-						icon={ICONS.SET_ADMIN_PASSWORD}
+						icon={STATIC_ICONS.SET_ADMIN_PASSWORD}
 						onChangeStep={this.handleStepChange}
 						onFieldChange={this.onFieldChange}
 					/>
@@ -89,7 +89,7 @@ class InitWizard extends Component {
 				return (
 					<ReTypePasswordContainer
 						initialValues={this.state.formValues}
-						icon={ICONS.SET_ADMIN_RETYPE_PASSWORD}
+						icon={STATIC_ICONS.SET_ADMIN_RETYPE_PASSWORD}
 						setMessage={this.setMessage}
 						onChangeStep={this.handleStepChange}
 					/>

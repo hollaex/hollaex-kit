@@ -56,7 +56,7 @@ class HelpfulResourcesForm extends Component {
 	};
 
 	render() {
-		const { onClose, activeTheme, icons: ICONS } = this.props;
+		const { onClose, icons: ICONS } = this.props;
 		const { submited } = this.state;
 		if (submited) {
 			return (
@@ -67,12 +67,8 @@ class HelpfulResourcesForm extends Component {
 		return (
 			<div className="help-wrapper">
 				<IconTitle
-					iconId="QUESTION_MARK,QUESTION_MARK_COLOR"
-					iconPath={
-						activeTheme === 'white'
-							? ICONS.QUESTION_MARK
-							: ICONS.QUESTION_MARK_COLOR
-					}
+					iconId="QUESTION_MARK"
+					iconPath={ICONS['QUESTION_MARK']}
 					stringId="HELPFUL_RESOURCES_TEXT"
 					text={STRINGS['HELPFUL_RESOURCES_TEXT']}
 					textType="title"
@@ -82,8 +78,8 @@ class HelpfulResourcesForm extends Component {
 				<div>
 					<div className="d-flex mt-5">
 						<Image
-							iconId={activeTheme === 'white' ? 'LAPTOP' : 'LAPTOP_COLOR'}
-							icon={activeTheme === 'white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR}
+							iconId="LAPTOP"
+							icon={ICONS['LAPTOP']}
 							wrapperClassName="help_icons ml-1 mr-1"
 						/>
 						<div className="text">
@@ -98,10 +94,8 @@ class HelpfulResourcesForm extends Component {
 					</div>
 					<div className="d-flex mt-5 mb-5">
 						<Image
-							iconId={activeTheme === 'white' ? 'TELEGRAM' : 'TELEGRAM_COLOR'}
-							icon={
-								activeTheme === 'white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR
-							}
+							iconId="TELEGRAM"
+							icon={ICONS['TELEGRAM']}
 							wrapperClassName="help_icons ml-1 mr-1"
 						/>
 						<div className="text">

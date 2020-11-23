@@ -4,6 +4,7 @@ import { Table } from 'antd';
 
 import { CurrencyBall } from '../../../components';
 import Image from '../../../components/Image';
+import { STATIC_ICONS } from 'config/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const limitStatus = (value, nativeCurrency) => {
@@ -18,7 +19,7 @@ const limitStatus = (value, nativeCurrency) => {
 	}
 };
 
-const getHeaders = (userTiers, icons, constants = {}, onEditLimit) => {
+const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 	const headers = [
 		{
 			title: 'Asset',
@@ -41,7 +42,7 @@ const getHeaders = (userTiers, icons, constants = {}, onEditLimit) => {
 					<div className="custom-column-td column-divider">
 						<div className="d-flex align-items-center">
 							<Image
-								icon={icons['DEPOSIT_TIERS_SECTION']}
+								icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
 								wrapperClassName="limit-status-icon mr-2"
 							/>
 							Deposit
@@ -50,7 +51,7 @@ const getHeaders = (userTiers, icons, constants = {}, onEditLimit) => {
 					<div className="custom-column-td">
 						<div className="d-flex align-items-center">
 							<Image
-								icon={icons['WITHDRAW_TIERS_SECTION']}
+								icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
 								wrapperClassName="limit-status-icon mr-2"
 							/>
 							Withdraw
@@ -67,7 +68,7 @@ const getHeaders = (userTiers, icons, constants = {}, onEditLimit) => {
 			title: (
 				<div className="d-flex align-items-center">
 					<Image
-						icon={icons[`LEVEL_ACCOUNT_ICON_${level}`]}
+						icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
 						wrapperClassName="table-tier-icon mr-2"
 					/>
 					{`Tiers ${level}`}
@@ -109,7 +110,7 @@ const getHeaders = (userTiers, icons, constants = {}, onEditLimit) => {
 const Limits = ({
 	coins,
 	userTiers,
-	icons = {},
+	icons: ICONS = {},
 	constants = {},
 	onEditLimit,
 }) => {
@@ -119,7 +120,7 @@ const Limits = ({
 			<div className="d-flex">
 				<div>
 					<Image
-						icon={icons.LIMITS_SECTION_ICON}
+						icon={STATIC_ICONS['LIMITS_SECTION_ICON']}
 						wrapperClassName="tier-section-icon mx-3"
 					/>
 				</div>
@@ -140,7 +141,7 @@ const Limits = ({
 			</div>
 			<div className="my-4">
 				<Table
-					columns={getHeaders(userTiers, icons, constants, onEditLimit)}
+					columns={getHeaders(userTiers, ICONS, constants, onEditLimit)}
 					dataSource={coinsData}
 					bordered
 				/>

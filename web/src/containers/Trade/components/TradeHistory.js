@@ -74,7 +74,7 @@ class TradeHistory extends Component {
 						>
 							{!isSameBefore ? (
 								<ReactSVG
-									path={isArrow ? ICONS['DOWN_ARROW'] : ICONS['UP_ARROW']}
+									path={isArrow ? ICONS['ARROW_DOWN'] : ICONS['ARROW_UP']}
 									wrapperClassName={'trade_history-icon'}
 								/>
 							) : (
