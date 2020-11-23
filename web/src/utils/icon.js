@@ -1,5 +1,6 @@
 import defaultIcons from 'config/icons';
 import { isLightColor, getColorFromTheme, BASE_BACKGROUND } from 'utils/color';
+import merge from 'lodash.merge';
 
 export const getIconByKey = (key, content = defaultIcons) => {
 	return content[key];
@@ -24,3 +25,20 @@ const BACKGROUND_ICON_IDS = ['EXCHANGE_LOGO', 'EXCHANGE_LOADER'];
 
 export const isBackgroundIcon = (iconId) =>
 	BACKGROUND_ICON_IDS.includes(iconId);
+
+export const generateAllIcons = (themes, icons) => {
+	const themeKeys = Object.keys(themes);
+
+	// missing keys and values are set from the default Icons Object
+	const defaultIconsKey = 'dark';
+	const defaultIconsObject = icons[defaultIconsKey];
+
+	const allIcons = {};
+
+	themeKeys.forEach((theme) => {
+		const themeSpecificIconsObject = icons[theme] || {};
+		allIcons[theme] = merge({}, defaultIconsObject, themeSpecificIconsObject);
+	});
+
+	return allIcons;
+};

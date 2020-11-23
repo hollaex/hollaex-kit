@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getIconByKey } from 'utils/icon';
+import { getIconByKey, generateAllIcons } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
 
 export const ProjectConfig = React.createContext('appConfig');
@@ -15,7 +15,7 @@ class ConfigProvider extends Component {
 		const calculatedThemes = calculateThemes(color);
 
 		this.state = {
-			icons,
+			icons: generateAllIcons(calculatedThemes, icons),
 			color: calculatedThemes,
 			themeOptions,
 			defaults,
@@ -23,7 +23,7 @@ class ConfigProvider extends Component {
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {
-		const { color } = this.state;
+		const { color, icons } = this.state;
 		if (JSON.stringify(color) !== JSON.stringify(nextState.color)) {
 			const themeOptions = Object.keys(nextState.color).map((value) => ({
 				value,
@@ -32,6 +32,7 @@ class ConfigProvider extends Component {
 			this.setState({
 				themeOptions,
 				color: calculatedThemes,
+				icons: generateAllIcons(calculatedThemes, icons),
 			});
 		}
 	}
