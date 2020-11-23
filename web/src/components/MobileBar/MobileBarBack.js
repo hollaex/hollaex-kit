@@ -13,7 +13,7 @@ export const MobileBarBack = ({ onBackClick, wrapperClassName, className }) => {
 				onClick={onBackClick}
 			>
 				<ReactSVG
-					path={ICONS.ARROW_DOWN}
+					path={ICONS.ARROW_ARROW}
 					wrapperClassName={classnames('bar-icon-back', wrapperClassName)}
 				/>
 			</div>

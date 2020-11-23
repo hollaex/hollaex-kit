@@ -4,7 +4,7 @@ import {
 	checkS3bucketUrl,
 	exchangeName,
 } from '../../../components/AdminForm/validations';
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 
 export const allPlugins = [
 	'kyc',
@@ -40,7 +40,7 @@ export const getAllPluginsData = (availablePlugins = []) => {
 					</div>
 				</div>
 			),
-			icon: ICONS.PLUGINS_VAULT,
+			icon: STATIC_ICONS.PLUGINS_VAULT,
 		},
 		kyc: {
 			key: 's3',
@@ -48,7 +48,7 @@ export const getAllPluginsData = (availablePlugins = []) => {
 			sub_title: 'Add a KYC verification module',
 			description:
 				'Upload documents, input identity info, send SMS verification (requires SMS plugin).',
-			icon: ICONS.PLUGINS_VERIFICATION,
+			icon: STATIC_ICONS.PLUGINS_VERIFICATION,
 		},
 		freshdesk: {
 			key: 'freshdesk',
@@ -69,7 +69,7 @@ export const getAllPluginsData = (availablePlugins = []) => {
 					</div>
 				</div>
 			),
-			icon: ICONS.PLUGINS_FRESHDESK,
+			icon: STATIC_ICONS.PLUGINS_FRESHDESK,
 		},
 		zendesk: {
 			key: 'zendesk',
@@ -90,7 +90,7 @@ export const getAllPluginsData = (availablePlugins = []) => {
 					</div>
 				</div>
 			),
-			icon: ICONS.PLUGINS_ZENDESK,
+			icon: STATIC_ICONS.PLUGINS_ZENDESK,
 		},
 		chat: {
 			key: 'chat',
@@ -98,7 +98,7 @@ export const getAllPluginsData = (availablePlugins = []) => {
 			sub_title:
 				'Add a troll box (chat system) for your traders to troll the crypto markets all day long.',
 			description: 'Admin can moderate all the chat messages and users.',
-			icon: ICONS.PLUGINS_CHAT,
+			icon: STATIC_ICONS.PLUGINS_CHAT,
 		},
 		sms: {
 			key: 'sns',
@@ -106,20 +106,20 @@ export const getAllPluginsData = (availablePlugins = []) => {
 			sub_title:
 				'Verify your users by SMS without making them deal with verification codes.',
 			description: 'Requires outside setup',
-			icon: ICONS.PLUGINS_SMS,
+			icon: STATIC_ICONS.PLUGINS_SMS,
 		},
 		bank: {
 			key: 'bank',
 			title: 'Bank',
 			sub_title:
 				'Add a bank service module to allow for fiat currency deposit and withdrawal into your exchange. This module is manual and requires your policy flow.',
-			icon: ICONS.PLUGINS_BANK,
+			icon: STATIC_ICONS.PLUGINS_BANK,
 		},
 		announcement: {
 			key: 'announcement',
 			title: 'Announcement',
 			sub_title: 'Add a announcement for display news and post to the users',
-			icon: ICONS.DEFAULT_PLUGINS,
+			icon: STATIC_ICONS.DEFAULT_PLUGINS,
 		},
 	};
 	let result = {};
@@ -131,7 +131,7 @@ export const getAllPluginsData = (availablePlugins = []) => {
 				key: plugin.toLowerCase(),
 				title: plugin,
 				sub_title: '',
-				icon: ICONS.DEFAULT_PLUGINS,
+				icon: STATIC_ICONS.DEFAULT_PLUGINS,
 			};
 		}
 	});

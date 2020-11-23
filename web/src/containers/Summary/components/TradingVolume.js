@@ -94,12 +94,7 @@ class TradingVolume extends Component {
 			TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 				if (index === 0) {
 					limitContent.push({
-						icon:
-							ICONS[
-								`SUMMMARY_ICON.${
-									activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'
-								}`
-							],
+						icon: ICONS['SUMMARY_LEVEL_3'],
 						text: STRINGS.formatString(
 							STRINGS['SUMMARY.TRADER_ACCOUNT_ELIGIBILITY'],
 							3
@@ -107,12 +102,7 @@ class TradingVolume extends Component {
 					});
 				} else if (index === 1) {
 					limitContent.push({
-						icon:
-							ICONS[
-								`SUMMMARY_ICON.${
-									activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'
-								}`
-							],
+						icon: ICONS['SUMMARY_LEVEL_4'],
 						text: STRINGS.formatString(
 							STRINGS['SUMMARY.TRADER_ACCOUNT_ELIGIBILITY'],
 							4
@@ -165,12 +155,7 @@ class TradingVolume extends Component {
 				TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 					if (index === 0) {
 						limitContent.push({
-							icon:
-								ICONS[
-									`SUMMMARY_ICON.${
-										activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'
-									}`
-								],
+							icon: ICONS['SUMMARY_LEVEL_3'],
 							text: STRINGS.formatString(
 								STRINGS['SUMMARY.TRADER_ACCOUNT_ELIGIBILITY'],
 								3
@@ -178,12 +163,7 @@ class TradingVolume extends Component {
 						});
 					} else if (index === 1) {
 						limitContent.push({
-							icon:
-								ICONS[
-									`SUMMMARY_ICON.${
-										activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'
-									}`
-								],
+							icon: ICONS['SUMMARY_LEVEL_4'],
 							text: STRINGS.formatString(
 								STRINGS['SUMMARY.TRADER_ACCOUNT_ELIGIBILITY'],
 								4

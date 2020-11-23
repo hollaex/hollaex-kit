@@ -186,7 +186,7 @@ class Signup extends Component {
 					)}
 				>
 					<IconTitle
-						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+						iconId="EXCHANGE_LOGO"
 						iconPath={path}
 						text={STRINGS['SIGNUP_TEXT']}
 						textType="title"

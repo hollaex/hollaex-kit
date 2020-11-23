@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import STRINGS from '../../../config/localizedStrings';
 
 export const BTC_COLUMNS_FEES = [
@@ -67,7 +67,10 @@ export const getPairsColumns = (handleClick) => [
 			<div className="d-flex">
 				<div>{v ? 'active' : 'inactive'}</div>
 				<div className="pointer" onClick={() => handleClick(v, data, 'active')}>
-					<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+					<ReactSVG
+						path={STATIC_ICONS.EDIT_ICON}
+						wrapperClassName="edit_icon mx-2"
+					/>
 				</div>
 			</div>
 		),
@@ -83,7 +86,10 @@ export const getPairsColumns = (handleClick) => [
 					className="pointer"
 					onClick={() => handleClick(v, data, 'increment_price')}
 				>
-					<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+					<ReactSVG
+						path={STATIC_ICONS.EDIT_ICON}
+						wrapperClassName="edit_icon mx-2"
+					/>
 				</div>
 			</div>
 		),
@@ -99,7 +105,10 @@ export const getPairsColumns = (handleClick) => [
 					className="pointer"
 					onClick={() => handleClick(v, data, 'increment_size')}
 				>
-					<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+					<ReactSVG
+						path={STATIC_ICONS.EDIT_ICON}
+						wrapperClassName="edit_icon mx-2"
+					/>
 				</div>
 			</div>
 		),
@@ -115,7 +124,10 @@ export const getPairsColumns = (handleClick) => [
 					className="pointer"
 					onClick={() => handleClick(v, data, 'max_price')}
 				>
-					<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+					<ReactSVG
+						path={STATIC_ICONS.EDIT_ICON}
+						wrapperClassName="edit_icon mx-2"
+					/>
 				</div>
 			</div>
 		),
@@ -131,7 +143,10 @@ export const getPairsColumns = (handleClick) => [
 					className="pointer"
 					onClick={() => handleClick(v, data, 'max_size')}
 				>
-					<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+					<ReactSVG
+						path={STATIC_ICONS.EDIT_ICON}
+						wrapperClassName="edit_icon mx-2"
+					/>
 				</div>
 			</div>
 		),
@@ -147,7 +162,10 @@ export const getPairsColumns = (handleClick) => [
 					className="pointer"
 					onClick={() => handleClick(v, data, 'min_price')}
 				>
-					<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+					<ReactSVG
+						path={STATIC_ICONS.EDIT_ICON}
+						wrapperClassName="edit_icon mx-2"
+					/>
 				</div>
 			</div>
 		),
@@ -163,7 +181,10 @@ export const getPairsColumns = (handleClick) => [
 					className="pointer"
 					onClick={() => handleClick(v, data, 'min_size')}
 				>
-					<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+					<ReactSVG
+						path={STATIC_ICONS.EDIT_ICON}
+						wrapperClassName="edit_icon mx-2"
+					/>
 				</div>
 			</div>
 		),

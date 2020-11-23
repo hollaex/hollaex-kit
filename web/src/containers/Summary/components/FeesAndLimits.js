@@ -38,7 +38,11 @@ const FeesAndLimits = ({
 						{Discount_percentage}
 					</label>
 				}
-				iconId={`LEVEL_ACCOUNT_ICON_${verification_level},LEVEL_ACCOUNT_ICON_4`}
+				iconId={
+					ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+						? `LEVEL_ACCOUNT_ICON_${verification_level}`
+						: 'LEVEL_ACCOUNT_ICON_4'
+				}
 				iconPath={
 					ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 						? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]

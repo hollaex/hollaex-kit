@@ -13,6 +13,7 @@ import {
 import { getClasesForLanguage } from '../../utils/string';
 import { formatToCurrency } from '../../utils/currency';
 
+// FIXME: DEAD COMPONENT
 class CurrencyList extends Component {
 	state = {
 		focusedSymbol: '',
@@ -42,7 +43,6 @@ class CurrencyList extends Component {
 			className,
 			pairs,
 			orderBookData,
-			activeTheme,
 			pair,
 			activeLanguage,
 			coins,
@@ -71,12 +71,7 @@ class CurrencyList extends Component {
 				onMouseLeave={this.removeFocus}
 			>
 				{symbols.map((coin, index) => {
-					let icon =
-						ICONS[
-							`${coin.toUpperCase()}_ICON${
-								activeTheme === 'dark' ? '_DARK' : ''
-							}`
-						];
+					let icon = ICONS[`${coin.toUpperCase()}_ICON}`];
 					if (coin === 'bch') {
 						icon = ICONS[`${coin.toUpperCase()}_NAV_ICON`];
 					}

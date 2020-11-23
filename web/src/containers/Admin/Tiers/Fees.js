@@ -4,11 +4,12 @@ import { Table } from 'antd';
 import _get from 'lodash/get';
 // import { PercentageOutlined } from '@ant-design/icons';
 
+import { STATIC_ICONS } from 'config/icons';
 import { CurrencyBall } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
 
-const getHeaders = (userTiers, icons, onEditFees) => {
+const getHeaders = (userTiers, ICONS, onEditFees) => {
 	const headers = [
 		{
 			title: 'Pairs',
@@ -30,13 +31,13 @@ const getHeaders = (userTiers, icons, onEditFees) => {
 				<div>
 					<div className="custom-column-td column-divider">
 						<Image
-							icon={icons['TAKER_TIERS_SECTION']}
+							icon={STATIC_ICONS['TAKER_TIERS_SECTION']}
 							wrapperClassName="fee-indicator-icon mr-2"
 						/>
 					</div>
 					<div className="custom-column-td">
 						<Image
-							icon={icons['MAKER_TIERS_SECTION']}
+							icon={STATIC_ICONS['MAKER_TIERS_SECTION']}
 							wrapperClassName="fee-indicator-icon mr-2"
 						/>
 					</div>
@@ -51,7 +52,7 @@ const getHeaders = (userTiers, icons, onEditFees) => {
 			title: (
 				<div className="d-flex align-items-center">
 					<Image
-						icon={icons[`LEVEL_ACCOUNT_ICON_${level}`]}
+						icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
 						wrapperClassName="table-tier-icon mr-2"
 					/>
 					{`Tiers ${level}`}
@@ -90,14 +91,14 @@ const getHeaders = (userTiers, icons, onEditFees) => {
 	return headers;
 };
 
-const Fees = ({ pairs, userTiers, icons = {}, onEditFees }) => {
+const Fees = ({ pairs, userTiers, icons: ICONS = {}, onEditFees }) => {
 	const coinsData = Object.keys(pairs).map((key) => pairs[key]);
 	return (
 		<div>
 			<div className="d-flex">
 				<div>
 					<Image
-						icon={icons.FEES_SECTION_ICON}
+						icon={STATIC_ICONS['FEES_SECTION_ICON']}
 						wrapperClassName="tier-section-icon mx-3"
 					/>
 				</div>
@@ -118,7 +119,7 @@ const Fees = ({ pairs, userTiers, icons = {}, onEditFees }) => {
 			</div>
 			<div className="my-4">
 				<Table
-					columns={getHeaders(userTiers, icons, onEditFees)}
+					columns={getHeaders(userTiers, ICONS, onEditFees)}
 					dataSource={coinsData}
 					bordered
 				/>

@@ -309,15 +309,12 @@ class AppBar extends Component {
 						)}
 					>
 						<Image
-							iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+							iconId="EXCHANGE_LOGO"
 							icon={path}
 							wrapperClassName="app_bar-icon-logo h-100"
 						/>
 					</Link>
-					<EditWrapper
-						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
-						position={[-5, 5]}
-					/>
+					<EditWrapper iconId="EXCHANGE_LOGO" position={[-5, 5]} />
 				</div>
 			</div>
 		);
