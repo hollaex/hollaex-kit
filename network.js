@@ -884,18 +884,18 @@ class Socket extends EventEmitter {
 			}
 		});
 
+		this.ws.on('close', () => {
+			this.ws = null;
+			this.emit('close');
+			if (this.reconnect) {
+				setTimeout(() => {
+					this.connect();
+				}, this.reconnectInterval);
+			}
+		});
+
 		this.ws.on('open', () => {
 			this.emit('open');
-
-			this.ws.on('close', () => {
-				this.ws = null;
-				this.emit('close');
-				if (this.reconnect) {
-					setTimeout(() => {
-						this.connect();
-					}, this.reconnectInterval);
-				}
-			});
 
 			this.ws.on('message', (data) => {
 				if (data !== 'pong') {
