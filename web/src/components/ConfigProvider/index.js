@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { getIconByKey } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
 
@@ -86,7 +87,7 @@ class ConfigProvider extends Component {
 	};
 
 	render() {
-		const { children } = this.props;
+		const { children, activeTheme } = this.props;
 		const { icons, color, themeOptions, defaults } = this.state;
 		const {
 			updateIcons,
@@ -100,7 +101,8 @@ class ConfigProvider extends Component {
 			<ProjectConfig.Provider
 				value={{
 					defaults,
-					icons,
+					icons: icons[activeTheme],
+					allIcons: icons,
 					color,
 					themeOptions,
 					updateIcons,
@@ -115,4 +117,9 @@ class ConfigProvider extends Component {
 		);
 	}
 }
-export default ConfigProvider;
+
+const mapStateToProps = ({ app: { theme: activeTheme } }) => ({
+	activeTheme,
+});
+
+export default connect(mapStateToProps)(ConfigProvider);

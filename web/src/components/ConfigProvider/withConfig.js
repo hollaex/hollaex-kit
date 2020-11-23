@@ -7,6 +7,7 @@ const withConfig = (Component) => {
 			{({
 				defaults,
 				icons,
+				allIcons,
 				updateIcons,
 				removeIcon,
 				color,
@@ -21,6 +22,7 @@ const withConfig = (Component) => {
 					color={color}
 					updateColor={updateColor}
 					icons={icons}
+					allIcons={allIcons}
 					updateIcons={updateIcons}
 					removeIcon={removeIcon}
 					themeOptions={themeOptions}

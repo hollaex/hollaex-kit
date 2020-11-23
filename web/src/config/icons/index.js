@@ -1,4 +1,5 @@
-import DarkIcons from './dark';
+import dark from './dark';
+import light from './light';
 export { default as STATIC_ICONS } from './static';
 
 const icons = {
@@ -234,7 +235,8 @@ const icons = {
 	// 	LEVEL_4: '/assets/summary/level-4.png',
 	// 	LEVEL_4_DARK: '/assets/summary/level-4-dark.png',
 	// },
-	...DarkIcons,
+	dark,
+	white: light,
 };
 
 export default icons;
