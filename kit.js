@@ -323,7 +323,6 @@ Websocket
 class Socket extends EventEmitter {
 	constructor(events, url, apiKey, apiSignature, apiExpires) {
 		super();
-		this.events = events;
 		this.url = url;
 		this.apiKey = apiKey;
 		this.apiSignature = apiSignature;
@@ -333,8 +332,9 @@ class Socket extends EventEmitter {
 		}
 		this.reconnectInterval = 5000; // 5 seconds
 		this.ws = null;
+		this.events = [];
 		this.reconnect = true;
-		this.connect();
+		this.connect(events);
 	}
 
 	disconnect() {
@@ -345,12 +345,12 @@ class Socket extends EventEmitter {
 		}
 	}
 
-	connect() {
+	connect(events) {
 		this.ws = new WebSocket(this.url);
 
 		this.ws.on('unexpected-response', (data) => {
 			this.emit('error', data);
-			if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			if (this.ws.readyState === WebSocket.OPEN) {
 				this.ws.close();
 			} else {
 				this.ws = null;
@@ -359,25 +359,25 @@ class Socket extends EventEmitter {
 
 		this.ws.on('error', (error) => {
 			this.emit('error', error);
-			if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			if (this.ws.readyState === WebSocket.OPEN) {
 				this.ws.close();
 			} else {
 				this.ws = null;
 			}
 		});
 
+		this.ws.on('close', () => {
+			this.ws = null;
+			this.emit('close');
+			if (this.reconnect) {
+				setTimeout(() => {
+					this.connect(this.events);
+				}, this.reconnectInterval);
+			}
+		});
+
 		this.ws.on('open', () => {
 			this.emit('open');
-
-			this.ws.on('close', () => {
-				this.ws = null;
-				this.emit('close');
-				if (this.reconnect) {
-					setTimeout(() => {
-						this.connect();
-					}, this.reconnectInterval);
-				}
-			});
 
 			this.ws.on('message', (data) => {
 				try {
@@ -388,61 +388,8 @@ class Socket extends EventEmitter {
 				this.emit('message', data);
 			});
 
-			if (this.events.length > 0) {
-				each(this.events, (event) => {
-					const [ topic, symbol ] = event.split(':');
-					switch(topic) {
-						case 'public':
-							if (symbol) {
-								this.ws.send(JSON.stringify({
-									op: 'subscribe',
-									args: [`orderbook:${symbol}`, `trade:${symbol}`]
-								}));
-							} else {
-								this.ws.send(JSON.stringify({
-									op: 'subscribe',
-									args: ['orderbook', 'trade']
-								}));
-							}
-							break;
-						case 'private':
-							this.ws.send(JSON.stringify({
-								op: 'subscribe',
-								args: ['order', 'wallet']
-							}));
-							break;
-						case 'all':
-							this.ws.send(JSON.stringify({
-								op: 'subscribe',
-								args: ['orderbook', 'trade', 'order', 'wallet']
-							}));
-							break;
-						case 'orderbook':
-						case 'trade':
-							if (symbol) {
-								this.ws.send(JSON.stringify({
-									op: 'subscribe',
-									args: [`${topic}:${symbol}`]
-								}));
-							} else {
-								this.ws.send(JSON.stringify({
-									op: 'subscribe',
-									args: [topic]
-								}));
-							}
-							break;
-						case 'order':
-						case 'wallet':
-						case 'deposit':
-							this.ws.send(JSON.stringify({
-								op: 'subscribe',
-								args: [topic]
-							}));
-							break;
-						default:
-							break;
-					}
-				});
+			if (events.length > 0) {
+				this.ws.subscribe(events);
 			}
 
 			setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
