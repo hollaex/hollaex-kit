@@ -54,6 +54,7 @@ const icons = {
 	EDIT_STRING: '/assets/icons/edit-string.svg',
 	OPERATOR_EDIT_ICON: '/assets/icons/upload-graphic-edit.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
+	SEARCH: '/assets/images/search.svg',
 };
 
 export default icons;

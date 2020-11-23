@@ -213,8 +213,6 @@ const nestedIcons = {
 	TRADE_PARTIALLY_FILLED: '/assets/images/part-fill.svg',
 	TAB_SIGNOUT: '/assets/images/signout.svg',
 
-	SEARCH: '/assets/images/search.svg',
-
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
 	VOLUME_PENDING: '/assets/images/volume-pending-dark.svg',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
