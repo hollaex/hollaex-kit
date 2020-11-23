@@ -845,7 +845,7 @@ class Socket extends EventEmitter {
 		this.events = events;
 		this.ws = null;
 		this.reconnectInterval = 5000; // 5 seconds
-		this.reconnect = false;
+		this.reconnect = true;
 		this.connect();
 	}
 
