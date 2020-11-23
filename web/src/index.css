@@ -3961,7 +3961,9 @@ table th {
   margin-bottom: 0.5rem; }
 
 .search-field {
-  width: 100%; }
+  width: 100%;
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: var(--base_background); }
 
 .app-bar-search-field {
   flex-direction: row-reverse;
