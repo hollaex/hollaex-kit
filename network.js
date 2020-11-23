@@ -838,7 +838,7 @@ class HollaExNetwork {
 class Socket extends EventEmitter {
 	constructor(events, url, apiKey, apiSignature, apiExpires) {
 		super();
-		this.url = `${url}`;
+		this.url = url;
 		this.apiKey = apiKey;
 		this.apiSignature = apiSignature;
 		this.apiExpires = apiExpires;
@@ -867,9 +867,6 @@ class Socket extends EventEmitter {
 		});
 		this.ws.on('open', () => {
 			this.emit('open');
-			if (this.events.length > 0) {
-				this.ws.subscribe(this.events);
-			}
 
 			this.ws.on('close', () => {
 				this.ws = null;
@@ -882,25 +879,33 @@ class Socket extends EventEmitter {
 			});
 
 			this.ws.on('unexpected-response', (data) => {
-				console.log(data)
 				data = JSON.parse(data);
 				this.emit('error', data);
 				this.ws.close();
 			});
 
 			this.ws.on('error', (error) => {
-				console.log(error)
 				error = JSON.parse(error);
 				this.emit('error', error);
 				this.ws.close();
 			});
 
 			this.ws.on('message', (data) => {
-				data = JSON.parse(data);
-				this.emit('message', data);
+				if (data !== 'pong') {
+					try {
+						data = JSON.parse(data);
+					} catch (err) {
+						this.emit('error', err.message);
+					}
+					this.emit('message', data);
+				}
 			});
 
-			setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
+			if (this.events.length > 0) {
+				this.ws.subscribe(this.events);
+			}
+
+			setWsHeartbeat(this.ws, 'ping', {
 				pingTimeout: 60000,
 				pingInterval: 25000,
 			});
@@ -919,6 +924,14 @@ class Socket extends EventEmitter {
 			op: 'unsubscribe',
 			args: events
 		}));
+	}
+
+	send(message) {
+		this.ws.send(JSON.stringify(message));
+	}
+
+	close() {
+		this.ws.close();
 	}
 }
 
