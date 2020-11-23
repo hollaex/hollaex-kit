@@ -3095,6 +3095,58 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/mint:
+    x-swagger-router-controller: admin
+    post:
+      operationId: mintAsset
+      description: Mint a user created asset to account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/burn:
+    x-swagger-router-controller: admin
+    post:
+      operationId: burnAsset
+      description: Burn a user created asset from account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
 
   # Plugin Endpoints
   /plugins:
@@ -4886,3 +4938,20 @@ definitions:
     additionalProperties:
       type: number
       format: double
+  MintBurnRequest:
+    type: object
+    required:
+      - user_id
+      - currency
+      - amount
+    properties:
+      user_id:
+        description: User that receives the deposit
+        type: number
+      currency:
+        type: string
+      description:
+        type: string
+      amount:
+        type: number
+        format: double
