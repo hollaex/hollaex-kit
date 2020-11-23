@@ -3,15 +3,9 @@
 const { toBool } = require('./utils/conversion');
 const { cloneDeep } = require('lodash');
 const { subscriber } = require('./db/pubsub');
-const { promisifyAll } = require('bluebird');
-const redis = require('redis');
-const redisConfig = require('./config/redis');
-promisifyAll(redis.RedisClient.prototype);
-const client = redis.createClient(redisConfig.client);
 
 // CONFIGURATION CONSTANTS START--------------------------------------------------
 const CONFIGURATION_CHANNEL = 'channel:configuration';
-const STATUS_FROZENUSERS_DATA = 'status:frozenUsers:data';
 
 let configuration = {
 	coins: {},
@@ -48,16 +42,6 @@ let secrets = {
 
 let frozenUsers = {};
 
-client.getAsync(STATUS_FROZENUSERS_DATA)
-	.then((data) => {
-		data = JSON.parse(data);
-		if (data) {
-			configuration = data.configuration;
-			secrets = data.secrets;
-			frozenUsers = data.frozenUsers;
-		}
-	});
-
 subscriber.subscribe(CONFIGURATION_CHANNEL);
 
 subscriber.on('message', (channel, message) => {
@@ -93,7 +77,6 @@ const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 	configuration = newConfigurations;
 	secrets = newSecrets;
 	frozenUsers = newFrozenUsers;
-	setRedisData();
 };
 
 const resetAllConfig = () => {
@@ -128,27 +111,22 @@ const resetAllConfig = () => {
 			meta: {}
 		}
 	};
-	setRedisData();
 };
 
 const updateTiers = (newTiers) => {
 	Object.assign(configuration.tiers, newTiers);
-	setRedisData();
 };
 
 const updateKitInfo = (newInfo) => {
 	Object.assign(configuration.kit.info, newInfo);
-	setRedisData();
 };
 
 const updateKit = (newKitConfig) => {
 	Object.assign(configuration.kit, newKitConfig);
-	setRedisData();
 };
 
 const updateSecrets = (newSecretsConfig) => {
 	Object.assign(secrets, newSecretsConfig);
-	setRedisData();
 };
 
 const updateFrozenUser = (action, userId) => {
@@ -157,11 +135,6 @@ const updateFrozenUser = (action, userId) => {
 	} else if (action === 'remove') {
 		delete frozenUsers[userId];
 	}
-	setRedisData();
-};
-
-const setRedisData = () => { // review
-	client.set(STATUS_FROZENUSERS_DATA, JSON.stringify({ configuration, secrets, frozenUsers }));
 };
 
 exports.GET_COINS = () => cloneDeep(configuration.coins);
@@ -225,7 +198,6 @@ exports.INIT_CHANNEL = 'channel:init';
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 exports.HMAC_TOKEN_KEY = 'hmac:token';
 exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
-exports.STATUS_FROZENUSERS_DATA = STATUS_FROZENUSERS_DATA;
 
 // Websocket
 exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
