@@ -33,15 +33,11 @@ subscriber.subscribe(WS_HUB_CHANNEL);
 const connect = () => {
 	checkStatus()
 		.then(() => {
-			ws = getNodeLib().connect();
+			ws = getNodeLib().connect(['orderbook', 'trade']);
 
 			ws.on('open', () => {
 				loggerWebsocket.info('ws/hub open');
 				connected = true;
-				ws.subscribe([
-					'orderbook',
-					'trade'
-				]);
 			});
 
 			ws.on('error', (err) => {
@@ -57,10 +53,6 @@ const connect = () => {
 			ws.on('message', (data) => {
 				handleHubData(data);
 			});
-
-			setTimeout(() => {
-				ws.close()
-			}, 5000)
 		});
 };
 
