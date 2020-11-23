@@ -32,14 +32,14 @@ const EditWrapper = ({
 						/>
 					</div>
 				)}
-				{iconId && (
-					<div className="edit-wrapper__icon-wrapper" data-icon-id={iconId}>
-						<ReactSVG
-							path={STATIC_ICONS['OPERATOR_EDIT_ICON']}
-							wrapperClassName="edit-wrapper__icon"
-						/>
-					</div>
-				)}
+				{/*{iconId && (*/}
+				{/*<div className="edit-wrapper__icon-wrapper" data-icon-id={iconId}>*/}
+				{/*<ReactSVG*/}
+				{/*path={STATIC_ICONS['OPERATOR_EDIT_ICON']}*/}
+				{/*wrapperClassName="edit-wrapper__icon"*/}
+				{/*/>*/}
+				{/*</div>*/}
+				{/*)}*/}
 			</div>
 		</div>
 	);
