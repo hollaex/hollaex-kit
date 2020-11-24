@@ -9,7 +9,7 @@ const MoveToDash = () => {
 	return (
 		<div className="Trade-wrapper">
 			<div className="content">
-				To view this page you must go back to master admin dashboard
+				To view this page you must go back to Holla Dash
 			</div>
 			<ReactSVG
 				path={STATIC_ICONS.ADMIN_MISSING_GO_BACK}
@@ -21,7 +21,7 @@ const MoveToDash = () => {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<Button type="primary">Go to master admin</Button>
+					<Button type="primary">Go to Holla Dash</Button>
 				</a>
 			</div>
 		</div>

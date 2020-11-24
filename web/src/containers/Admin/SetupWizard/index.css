@@ -329,8 +329,8 @@
 .icon-align {
 	width: 18rem;
 }
-.exchange-btn {
-	width: 50%;
+.exchange-complete-btn {
+	width: 25rem !important;
 	height: 50px;
 }
 .wizard-complete-status .anticon {

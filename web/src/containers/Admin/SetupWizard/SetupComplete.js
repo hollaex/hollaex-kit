@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 import { Button, message } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
-import { browserHistory } from 'react-router';
+import { withRouter } from 'react-router';
 
 import { STATIC_ICONS } from 'config/icons';
-import { Carousel } from 'components';
+import { Carousel } from '../../../components';
+import { setSetupCompleted } from '../../../utils/initialize';
 import { getCompleteSetup } from '../Settings/action';
 
 import './index.css';
@@ -55,11 +56,12 @@ const Carousel_items = [
 	},
 ];
 
-export default class ExchangeSetup extends Component {
+class ExchangeSetup extends Component {
 	constructor() {
 		super();
 		this.state = {
 			isLoading: true,
+			buttonLoading: false,
 		};
 	}
 
@@ -99,11 +101,15 @@ export default class ExchangeSetup extends Component {
 	};
 
 	goToAccount = () => {
+		this.setState({ buttonLoading: true });
 		getCompleteSetup()
 			.then((res) => {
-				browserHistory.push('/account');
+				this.setState({ buttonLoading: false });
+				setSetupCompleted(true);
+				this.props.router.push('/account');
 			})
 			.catch((err) => {
+				this.setState({ buttonLoading: false });
 				let errMsg = err.message;
 				if (
 					err.data &&
@@ -112,7 +118,7 @@ export default class ExchangeSetup extends Component {
 						'Exchange setup is already flagged as completed'
 					)
 				) {
-					browserHistory.push('/account');
+					this.props.router.push('/account');
 					errMsg = err.data.message;
 				}
 				message.error(errMsg);
@@ -141,9 +147,10 @@ export default class ExchangeSetup extends Component {
 						<Carousel items={menuItems} groupItems={1} />
 						<div className="btn-container">
 							<Button
-								className="exchange-btn"
+								className="exchange-complete-btn"
 								disabled={this.state.isLoading}
 								onClick={this.goToAccount}
+								loading={this.state.buttonLoading}
 							>
 								Enter Your Exchange
 							</Button>
@@ -154,3 +161,5 @@ export default class ExchangeSetup extends Component {
 		);
 	}
 }
+
+export default withRouter(ExchangeSetup);

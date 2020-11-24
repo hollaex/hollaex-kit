@@ -168,7 +168,7 @@ export default class SetupWizard extends Component {
 					<div>
 						<div className="header">OPERATOR EXCHANGE KIT SETUP</div>
 						<div className="description">
-							Follow the 6-step exchange configuration. Any steps you are
+							Follow the 5-step exchange configuration. Any steps you are
 							uncertain about you can complete at a later date.
 						</div>
 					</div>
