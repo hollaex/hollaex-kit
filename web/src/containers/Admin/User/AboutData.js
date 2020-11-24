@@ -21,8 +21,9 @@ import {
 	validateRequired,
 	validateRange,
 } from '../../../components/AdminForm/validations';
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import { checkRole, isSupervisor, isSupport } from 'utils/token';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
 
@@ -40,6 +41,7 @@ const RenderModalContent = ({
 	onChangeSuccess,
 	handleClose,
 	refreshData,
+	icons: ICONS,
 }) => {
 	let VERIFICATION_LEVELS =
 		isSupport() || isSupervisor()
@@ -99,7 +101,7 @@ const RenderModalContent = ({
 					<div className="d-flex align-items-center mb-3">
 						<div>
 							<ReactSVG
-								path={ICONS.USER_DETAILS_ICON}
+								path={STATIC_ICONS.USER_DETAILS_ICON}
 								wrapperClassName="user-edit-icon"
 							/>
 						</div>
@@ -152,6 +154,7 @@ const AboutData = ({
 	flagUser,
 	freezeAccount,
 	onChangeSuccess,
+	icons: ICONS,
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -218,7 +221,7 @@ const AboutData = ({
 								</div>
 								<div className={'about-icon-active'}>
 									<ReactSVG
-										path={ICONS.TWO_STEP_KEY_ICON}
+										path={STATIC_ICONS.TWO_STEP_KEY_ICON}
 										wrapperClassName={'about-icon'}
 									/>
 								</div>
@@ -230,7 +233,7 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={ICONS.TWO_STEP_KEY_ICON}
+										path={STATIC_ICONS.TWO_STEP_KEY_ICON}
 										wrapperClassName={'about-icon'}
 									/>
 								</div>
@@ -251,7 +254,7 @@ const AboutData = ({
 								</div>
 								<div className={'about-icon-active'}>
 									<ReactSVG
-										path={ICONS.ACC_FREEZE}
+										path={STATIC_ICONS.ACC_FREEZE}
 										wrapperClassName={'about-icon'}
 									/>
 								</div>
@@ -268,7 +271,7 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={ICONS.ACC_FREEZE}
+										path={STATIC_ICONS.ACC_FREEZE}
 										wrapperClassName={'about-icon'}
 									/>
 								</div>
@@ -289,7 +292,7 @@ const AboutData = ({
 								</div>
 								<div className="about-icon-active">
 									<ReactSVG
-										path={ICONS.ACC_FLAG}
+										path={STATIC_ICONS.ACC_FLAG}
 										wrapperClassName={'about-icon'}
 									/>
 								</div>
@@ -306,7 +309,7 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={ICONS.ACC_FLAG}
+										path={STATIC_ICONS.ACC_FLAG}
 										wrapperClassName={'about-icon'}
 									/>
 								</div>
@@ -385,7 +388,7 @@ const AboutData = ({
 					<div className="user-role-container">
 						<div>
 							<img
-								src={ICONS.BLUE_SCREEN_EYE_ICON}
+								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
 								className="user-info-icon"
 								alt="EyeIcon"
 							/>
@@ -460,10 +463,11 @@ const AboutData = ({
 					onChangeSuccess={onChangeSuccess}
 					handleClose={handleClose}
 					refreshData={refreshData}
+					icons={ICONS}
 				/>
 			</Modal>
 		</div>
 	);
 };
 
-export default AboutData;
+export default withConfig(AboutData);

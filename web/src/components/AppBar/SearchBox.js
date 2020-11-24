@@ -2,7 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import classnames from 'classnames';
 
-import { ICONS } from 'config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import renderFields from 'components/Form/factoryFields';
 
 class SearchBox extends React.Component {
@@ -18,7 +18,7 @@ class SearchBox extends React.Component {
 			search: {
 				name: name,
 				type: 'text',
-				options: { icon: ICONS.SEARCH, label: 'search' },
+				options: { icon: STATIC_ICONS.SEARCH, label: 'search' },
 				className: classnames('search-field', className),
 				hideCheck: true,
 				outlineClassName: outlineClassName

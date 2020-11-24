@@ -26,7 +26,7 @@ const Legal = ({ type, constants = {}, logoPath }) => {
 			<div className="d-flex flex-column legal-content-wrapper">
 				<div className="legal-logo-wrapper">
 					<Image
-						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+						iconId="EXCHANGE_LOGO"
 						icon={logoPath}
 						wrapperClassName="legal-logo"
 						alt={constants.api_name || ''}

@@ -133,7 +133,7 @@ class VerifyEmailRequest extends Component {
 					)}
 				>
 					<IconTitle
-						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+						iconId="EXCHANGE_LOGO"
 						iconPath={path}
 						stringId="VERIFICATION_EMAIL_REQUEST.TITLE"
 						text={STRINGS['VERIFICATION_EMAIL_REQUEST.TITLE']}

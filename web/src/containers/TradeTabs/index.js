@@ -203,15 +203,12 @@ class AddTradeTab extends Component {
 				{!isMobile && (
 					<div className="mb-5">
 						<Image
-							iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+							iconId="EXCHANGE_LOGO"
 							icon={path}
 							wrapperClassName="app-icon d-flex"
 						/>
 						<div className="text-center trade-tab-app-title">
-							<EditWrapper
-								stringId="APP_SUB_TITLE"
-								iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
-							>
+							<EditWrapper stringId="APP_SUB_TITLE" iconId="EXCHANGE_LOGO">
 								{STRINGS['APP_SUB_TITLE'].toUpperCase()}
 							</EditWrapper>
 						</div>

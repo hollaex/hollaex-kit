@@ -18,12 +18,8 @@ const EmailRequestSuccess = ({ onClick, icons: ICONS, ...rest }) => {
 		>
 			<IconTitle
 				stringId="VERIFICATION_EMAIL_REQUEST_SUCCESS.TITLE"
-				iconId="VERIFICATION_SENT_DARK,VERIFICATION_SENT"
-				iconPath={
-					rest.activeTheme === 'dark'
-						? ICONS['VERIFICATION_SENT_DARK']
-						: ICONS['VERIFICATION_SENT']
-				}
+				iconId="VERIFICATION_SENT"
+				iconPath={ICONS['VERIFICATION_SENT']}
 				text={STRINGS['VERIFICATION_EMAIL_REQUEST_SUCCESS.TITLE']}
 				textType="title"
 				className="w-100"
