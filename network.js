@@ -33,6 +33,7 @@ class HollaExNetwork {
 		this.wsReconnect = true;
 		this.wsReconnectInterval = 5000;
 		this.wsEventListeners = null;
+		this.wsConnected = () => this.ws && this.ws.readyState === WebSocket.OPEN;
 	}
 
 	/* Kit Operator Network Endpoints*/
@@ -893,7 +894,7 @@ class HollaExNetwork {
 
 	disconnect() {
 		checkKit(this.exchange_id);
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+		if (this.wsConnected()) {
 			this.wsReconnect = false;
 			this.ws.close();
 		} else {
@@ -903,7 +904,7 @@ class HollaExNetwork {
 
 	subscribe(events = []) {
 		checkKit(this.exchange_id);
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+		if (this.wsConnected()) {
 			this.ws.send(JSON.stringify({
 				op: 'subscribe',
 				args: events
@@ -915,7 +916,7 @@ class HollaExNetwork {
 
 	unsubscribe(events = []) {
 		checkKit(this.exchange_id);
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+		if (this.wsConnected()) {
 			this.ws.send(JSON.stringify({
 				op: 'unsubscribe',
 				args: events

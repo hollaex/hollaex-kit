@@ -35,6 +35,7 @@ class HollaExKit {
 		this.wsReconnect = true;
 		this.wsReconnectInterval = 5000;
 		this.wsEventListeners = null;
+		this.wsConnected = () => this.ws && this.ws.readyState === WebSocket.OPEN;
 	}
 
 	/* Public Endpoints*/
@@ -370,7 +371,7 @@ class HollaExKit {
 	}
 
 	disconnect() {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+		if (this.wsConnected()) {
 			this.wsReconnect = false;
 			this.ws.close();
 		} else {
@@ -379,7 +380,7 @@ class HollaExKit {
 	}
 
 	subscribe(events = []) {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+		if (this.wsConnected()) {
 			each(events, (event) => {
 				if (!this.wsEvents.includes(event)) {
 					const [ topic, symbol ] = event.split(':');
@@ -425,7 +426,7 @@ class HollaExKit {
 	}
 
 	unsubscribe(events = []) {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+		if (this.wsConnected()) {
 			each(events, (event) => {
 				if (this.wsEvents.includes(event)) {
 					const [ topic, symbol ] = event.split(':');
