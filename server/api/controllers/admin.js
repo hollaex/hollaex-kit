@@ -576,6 +576,80 @@ const getExchangeGeneratedFees = (req, res) => {
 		});
 };
 
+const mintAsset = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/mintAsset auth',
+		req.auth
+	);
+
+	const {
+		user_id,
+		currency,
+		amount,
+		description
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/mintAsset user_id',
+		user_id,
+		'currency',
+		currency,
+		'amount',
+		amount
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			return getNodeLib().mintAsset(user.network_id, currency, description, amount);
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			console.log(err);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const burnAsset = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/burnAsset auth',
+		req.auth
+	);
+
+	const {
+		user_id,
+		currency,
+		amount,
+		description
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/burnAsset user_id',
+		user_id,
+		'currency',
+		currency,
+		'amount',
+		amount
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			return getNodeLib().burnAsset(user.network_id, currency, description, amount);
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			console.log(err);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -599,5 +673,7 @@ module.exports = {
 	uploadImage,
 	getOperators,
 	inviteNewOperator,
-	getExchangeGeneratedFees
+	getExchangeGeneratedFees,
+	mintAsset,
+	burnAsset
 };

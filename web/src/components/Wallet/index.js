@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 
 import { Accordion, ControlledScrollbar } from 'components';
 import {
@@ -8,34 +8,20 @@ import {
 	DEFAULT_COIN_DATA,
 	IS_XHT,
 } from '../../config/constants';
-import {
-	calculateBalancePrice,
-	calculateOraclePrice,
-	calculatePricePercentage,
-	donutFormatPercentage,
-	formatToCurrency,
-} from '../../utils/currency';
+import { formatToCurrency } from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { getPrices } from 'actions/walletActions';
 
 class Wallet extends Component {
 	state = {
 		sections: [],
-		totalAssets: 0,
-		chartData: [],
-		oraclePrices: {},
 	};
 
 	componentDidMount() {
-		const { user_id, symbol, prices, coins } = this.props;
+		const { user_id, symbol, prices } = this.props;
 		if (user_id && symbol && prices) {
-			getPrices({ coins }).then((oraclePrices) =>
-				this.setState({ oraclePrices }, () => {
-					this.calculateSections(this.props);
-				})
-			);
+			this.calculateSections(this.props);
 		}
 	}
 
@@ -45,14 +31,13 @@ class Wallet extends Component {
 			nextProps.price !== this.props.price ||
 			nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
+			nextProps.totalAsset !== this.props.totalAsset ||
 			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.chartData) !==
+				JSON.stringify(nextProps.chartData) ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
-			getPrices({ coins: nextProps.coins }).then((oraclePrices) =>
-				this.setState({ oraclePrices }, () => {
-					this.calculateSections(nextProps);
-				})
-			);
+			this.calculateSections(nextProps);
 		}
 	}
 
@@ -80,32 +65,10 @@ class Wallet extends Component {
 		};
 	};
 
-	calculateSections = ({ price, balance, orders, prices, coins }) => {
-		const { oraclePrices } = this.state;
+	calculateSections = ({ price, balance, orders, coins, chartData }) => {
 		const sections = [];
-		const data = [];
-		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
-		// TODO calculate right price
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
-		Object.keys(coins).forEach((currency) => {
-			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculateOraclePrice(
-				balance[`${symbol}_balance`],
-				oraclePrices[symbol]
-			);
-			const balancePercent = calculatePricePercentage(
-				currencyBalance,
-				totalAssets
-			);
-			data.push({
-				...coins[currency],
-				balance: balancePercent,
-				balanceFormat: formatToCurrency(currencyBalance, min),
-				balancePercentage: donutFormatPercentage(balancePercent),
-			});
-
-			// Hide zero balances
+		chartData.forEach(({ symbol, balance: balancePercent }) => {
 			if (balancePercent !== 0) {
 				sections.push(
 					this.generateSection(symbol, price, balance, orders, coins)
@@ -115,20 +78,26 @@ class Wallet extends Component {
 
 		this.setState({
 			sections,
-			chartData: data,
-			totalAssets: formatToCurrency(totalAssets, baseCoin.min),
 		});
 	};
 
-	goToWallet = () => browserHistory.push('/wallet');
-
 	render() {
-		const { sections, totalAssets, chartData } = this.state;
-		const { isValidBase, fetching, balance, coins, prices } = this.props;
+		const { sections } = this.state;
+		const {
+			isValidBase,
+			fetching,
+			balance,
+			coins,
+			prices,
+			totalAsset,
+			chartData,
+		} = this.props;
 
 		if (Object.keys(balance).length === 0) {
 			return <div />;
 		}
+
+		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const { symbol = '' } = coins[BASE_CURRENCY] || {};
 		const hasScrollbar = sections.length > 7;
 
@@ -168,7 +137,7 @@ class Wallet extends Component {
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
 							{symbol.toUpperCase()}
-							<span>{totalAssets}</span>
+							<span>{formatToCurrency(totalAsset, baseCoin.min)}</span>
 						</div>
 					</div>
 				) : null}
@@ -184,6 +153,8 @@ const mapStateToProps = (state, ownProps) => ({
 	price: state.orderbook.price,
 	orders: state.order.activeOrders,
 	user_id: state.user.id,
+	chartData: state.asset.chartData,
+	totalAsset: state.asset.totalAsset,
 	activeLanguage: state.app.language,
 	coins: state.app.coins,
 	isValidBase: state.app.isValidBase,
