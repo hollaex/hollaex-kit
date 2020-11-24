@@ -60,7 +60,7 @@ const connect = () => {
 
 const sendNetworkWsMessage = (op, topic, networkId) => {
 	if (getNodeLib().ws && getNodeLib().ws.readyState === WebSocket.OPEN) {
-		getNodeLib().ws[op]([`${topic}:${networkId}`]);
+		getNodeLib()[op]([`${topic}:${networkId}`]);
 	}
 };
 
