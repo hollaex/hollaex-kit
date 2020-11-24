@@ -29,8 +29,8 @@ class HollaExKit {
 		this.ws = null;
 		const [ protocol, endpoint ] = this.apiUrl.split('://');
 		this.wsUrl = protocol === 'https'
-			? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
-			: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
+			? `wss://${endpoint}/stream`
+			: `ws://${endpoint}/stream`;
 		this.wsEvents = [];
 		this.wsReconnect = true;
 		this.wsReconnectInterval = 5000;
