@@ -7,7 +7,7 @@ const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
 const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
-const EventEmitter = require('events');
+const [ protocol, endpoint ] = HOLLAEX_NETWORK_URL.split('://');
 
 class HollaExNetwork {
 	constructor(
@@ -28,6 +28,13 @@ class HollaExNetwork {
 		};
 		this.activation_code = opts.activation_code;
 		this.exchange_id = opts.exchange_id;
+		this.ws = null;
+		this.wsUrl = protocol === 'https'
+			? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
+			: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
+		this.wsEvents = [];
+		this.wsReconnect = true;
+		this.wsReconnectInterval = 5000;
 	}
 
 	/* Kit Operator Network Endpoints*/
@@ -824,50 +831,20 @@ class HollaExNetwork {
 	}
 
 	connect(events = []) {
-		const [ protocol, endpoint ] = HOLLAEX_NETWORK_URL.split('://');
-		const wsUrl = protocol === 'https'
-			? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
-			: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
-
+		this.wsReconnect = true;
+		this.wsEvents = events;
 		const apiExpires = moment().toISOString() + this.apiExpiresAfter;
 		const signature = createSignature(this.apiSecret, 'CONNECT', '/stream', apiExpires);
-		return new Socket(events, wsUrl, this.apiKey, signature, apiExpires);
-	}
-}
 
-class Socket extends EventEmitter {
-	constructor(events, url, apiKey, apiSignature, apiExpires) {
-		super();
-		this.url = url;
-		this.apiKey = apiKey;
-		this.apiSignature = apiSignature;
-		this.apiExpires = apiExpires;
-		this.events = events;
-		this.ws = null;
-		this.reconnectInterval = 5000; // 5 seconds
-		this.reconnect = true;
-		this.connect();
-	}
-
-	disconnect() {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-			this.reconnect = false;
-			this.removeAllListeners();
-			this.ws.close();
-		}
-	}
-
-	connect() {
-		this.ws = new WebSocket(this.url, {
+		this.ws = new WebSocket(this.wsUrl, {
 			headers: {
 				'api-key': this.apiKey,
-				'api-signature': this.apiSignature,
-				'api-expires': this.apiExpires
+				'api-signature': signature,
+				'api-expires': apiExpires
 			}
 		});
 
-		this.ws.on('unexpected-response', (data) => {
-			this.emit('error', data);
+		this.ws.on('unexpected-response', () => {
 			if (this.ws.readyState === WebSocket.OPEN) {
 				this.ws.close();
 			} else {
@@ -875,8 +852,7 @@ class Socket extends EventEmitter {
 			}
 		});
 
-		this.ws.on('error', (error) => {
-			this.emit('error', error);
+		this.ws.on('error', () => {
 			if (this.ws.readyState === WebSocket.OPEN) {
 				this.ws.close();
 			} else {
@@ -886,30 +862,16 @@ class Socket extends EventEmitter {
 
 		this.ws.on('close', () => {
 			this.ws = null;
-			this.emit('close');
-			if (this.reconnect) {
+			if (this.wsReconnect) {
 				setTimeout(() => {
-					this.connect();
-				}, this.reconnectInterval);
+					this.connect(this.wsEvents);
+				}, this.wsReconnectInterval);
 			}
 		});
 
 		this.ws.on('open', () => {
-			this.emit('open');
-
-			this.ws.on('message', (data) => {
-				if (data !== 'pong') {
-					try {
-						data = JSON.parse(data);
-					} catch (err) {
-						this.emit('error', err.message);
-					}
-					this.emit('message', data);
-				}
-			});
-
-			if (this.events.length > 0) {
-				this.ws.subscribe(this.events);
+			if (this.wsEvents.length > 0) {
+				this.subscribe(this.wsEvents);
 			}
 
 			setWsHeartbeat(this.ws, 'ping', {
@@ -919,7 +881,14 @@ class Socket extends EventEmitter {
 		});
 	}
 
-	subscribe(events) {
+	disconnect() {
+		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+			this.wsReconnect = false;
+			this.ws.close();
+		}
+	}
+
+	subscribe(events = []) {
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.ws.send(JSON.stringify({
 				op: 'subscribe',
@@ -928,24 +897,12 @@ class Socket extends EventEmitter {
 		}
 	}
 
-	unsubscribe(events) {
+	unsubscribe(events = []) {
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.ws.send(JSON.stringify({
 				op: 'unsubscribe',
 				args: events
 			}));
-		}
-	}
-
-	send(message) {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-			this.ws.send(JSON.stringify(message));
-		}
-	}
-
-	close() {
-		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-			this.ws.close();
 		}
 	}
 }
