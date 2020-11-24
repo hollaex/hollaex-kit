@@ -55,6 +55,8 @@ const icons = {
 	OPERATOR_EDIT_ICON: '/assets/icons/upload-graphic-edit.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
 	SEARCH: '/assets/images/search.svg',
+	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
+	RED_WARNING: '/assets/acounts/account-icons-09.svg',
 };
 
 export default icons;

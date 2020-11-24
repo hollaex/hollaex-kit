@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getIconByKey, generateAllIcons } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
+import merge from 'lodash.merge';
 
 export const ProjectConfig = React.createContext('appConfig');
 
@@ -40,10 +41,7 @@ class ConfigProvider extends Component {
 	updateIcons = (icons = {}) => {
 		this.setState((prevState) => ({
 			...prevState,
-			icons: {
-				...prevState.icons,
-				...icons,
-			},
+			icons: merge({}, prevState.icons, icons),
 		}));
 	};
 
