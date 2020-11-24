@@ -137,20 +137,3 @@ export const calculateBaseColors = (
 
 	return baseColors;
 };
-
-export const isLightColor = (color = '#ffffff') => {
-	return Color(color).isLight();
-};
-
-export const getColorFromTheme = (
-	colorKey,
-	themekey = 'white',
-	themesObj = {}
-) => {
-	const themeObj = themesObj[themekey];
-	return getColorByKey(colorKey, themeObj);
-};
-
-export const BASE_BACKGROUND = 'base_background';
-export const TOPBAR_BACKGROUND = 'base_top-bar-navigation';
-export const FOOTER_BACKGROUND = 'base_footer';

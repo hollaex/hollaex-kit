@@ -4,9 +4,7 @@ import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getLogo } from 'utils/icon';
 import Image from 'components/Image';
-import { FOOTER_BACKGROUND } from 'utils/color';
 
 const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 	const {
@@ -165,9 +163,8 @@ const AppFooter = ({
 	className,
 	theme,
 	constants = { description: '' },
-	icons,
+	icons: ICONS,
 }) => {
-	const path = getLogo(theme, constants, icons, FOOTER_BACKGROUND);
 	return (
 		<div
 			className={classnames(
@@ -199,7 +196,7 @@ const AppFooter = ({
 							'flex-column': isMobile,
 						})}
 					>
-						{generateSectionsText(STRINGS, theme, constants.links, icons).map(
+						{generateSectionsText(STRINGS, theme, constants.links, ICONS).map(
 							({ TITLE, LINKS }, index) => (
 								<div
 									key={index}
@@ -250,7 +247,7 @@ const AppFooter = ({
 								<div className="d-flex">
 									<Image
 										iconId="EXCHANGE_LOGO"
-										icon={path}
+										icon={ICONS['EXCHANGE_LOGO']}
 										wrapperClassName="footer-logo"
 									/>
 								</div>

@@ -29,6 +29,7 @@ import {
 	setExchangeInitialized,
 	setSetupCompleted,
 	setBaseCurrency,
+	setDefaultLogo,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -48,6 +49,7 @@ const getConfigs = async () => {
 		info: { initialized },
 		setup_completed,
 		native_currency,
+		logo_black_path,
 	} = kitData;
 
 	const promises = {};
@@ -74,6 +76,7 @@ const getConfigs = async () => {
 		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
 	});
 
+	setDefaultLogo(logo_black_path);
 	setBaseCurrency(native_currency);
 	setLocalVersions(remoteVersions);
 	setValidLanguages(valid_languages);

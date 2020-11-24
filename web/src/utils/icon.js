@@ -1,5 +1,4 @@
 import defaultIcons from 'config/icons';
-import { isLightColor, getColorFromTheme, BASE_BACKGROUND } from 'utils/color';
 import merge from 'lodash.merge';
 
 const defaultIconsKey = 'dark';
@@ -10,21 +9,6 @@ export const getIconByKey = (
 	content = defaultIcons
 ) => {
 	return content[theme][key];
-};
-
-export const getLogo = (
-	theme,
-	{ logo_path, logo_black_path, color = {} },
-	{ EXCHANGE_LOGO_LIGHT, EXCHANGE_LOGO_DARK },
-	key = BASE_BACKGROUND
-) => {
-	const isLight = isLightColor(getColorFromTheme(key, theme, color));
-
-	if (isLight) {
-		return EXCHANGE_LOGO_LIGHT || logo_path;
-	} else {
-		return EXCHANGE_LOGO_DARK || logo_black_path;
-	}
 };
 
 const BACKGROUND_ICON_IDS = ['EXCHANGE_LOGO', 'EXCHANGE_LOADER'];
@@ -46,4 +30,11 @@ export const generateAllIcons = (themes, icons) => {
 	});
 
 	return allIcons;
+};
+
+export const addDefaultLogo = (defaultLogo, icons) => {
+	if (!icons[defaultIconsKey]['EXCHANGE_LOGO']) {
+		icons[defaultIconsKey]['EXCHANGE_LOGO'] = defaultLogo;
+	}
+	return icons;
 };
