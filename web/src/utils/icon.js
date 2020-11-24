@@ -2,8 +2,14 @@ import defaultIcons from 'config/icons';
 import { isLightColor, getColorFromTheme, BASE_BACKGROUND } from 'utils/color';
 import merge from 'lodash.merge';
 
-export const getIconByKey = (key, content = defaultIcons) => {
-	return content[key];
+const defaultIconsKey = 'dark';
+
+export const getIconByKey = (
+	key,
+	theme = defaultIconsKey,
+	content = defaultIcons
+) => {
+	return content[theme][key];
 };
 
 export const getLogo = (
@@ -30,7 +36,6 @@ export const generateAllIcons = (themes, icons) => {
 	const themeKeys = Object.keys(themes);
 
 	// missing keys and values are set from the default Icons Object
-	const defaultIconsKey = 'dark';
 	const defaultIconsObject = icons[defaultIconsKey];
 
 	const allIcons = {};
