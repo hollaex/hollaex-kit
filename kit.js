@@ -373,6 +373,8 @@ class HollaExKit {
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.wsReconnect = false;
 			this.ws.close();
+		} else {
+			throw new Error('Websocket not connected');
 		}
 	}
 
@@ -417,6 +419,8 @@ class HollaExKit {
 					}
 				}
 			});
+		} else {
+			throw new Error('Websocket not connected');
 		}
 	}
 
@@ -455,6 +459,8 @@ class HollaExKit {
 					}
 				}
 			});
+		} else {
+			throw new Error('Websocket not connected');
 		}
 	}
 }

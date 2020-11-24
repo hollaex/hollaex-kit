@@ -29,9 +29,6 @@ class HollaExNetwork {
 		this.activation_code = opts.activation_code;
 		this.exchange_id = opts.exchange_id;
 		this.ws = null;
-		this.wsUrl = protocol === 'https'
-			? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
-			: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
 		this.wsEvents = [];
 		this.wsReconnect = true;
 		this.wsReconnectInterval = 5000;
@@ -832,8 +829,12 @@ class HollaExNetwork {
 	}
 
 	connect(events = []) {
+		checkKit(this.exchange_id);
 		this.wsReconnect = true;
 		this.wsEvents = events;
+		this.wsUrl = protocol === 'https'
+			? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
+			: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
 		const apiExpires = moment().toISOString() + this.apiExpiresAfter;
 		const signature = createSignature(this.apiSecret, 'CONNECT', '/stream', apiExpires);
 
@@ -891,27 +892,36 @@ class HollaExNetwork {
 	}
 
 	disconnect() {
+		checkKit(this.exchange_id);
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.wsReconnect = false;
 			this.ws.close();
+		} else {
+			throw new Error('Websocket not connected');
 		}
 	}
 
 	subscribe(events = []) {
+		checkKit(this.exchange_id);
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.ws.send(JSON.stringify({
 				op: 'subscribe',
 				args: events
 			}));
+		} else {
+			throw new Error('Websocket not connected');
 		}
 	}
 
 	unsubscribe(events = []) {
+		checkKit(this.exchange_id);
 		if (this.ws && this.ws.readyState === WebSocket.OPEN) {
 			this.ws.send(JSON.stringify({
 				op: 'unsubscribe',
 				args: events
 			}));
+		} else {
+			throw new Error('Websocket not connected');
 		}
 	}
 }
