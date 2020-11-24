@@ -7,18 +7,15 @@ const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
 const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
-
-let connected = false;
-const hubConnected = () => connected;
-let ws;
+const WebSocket = require('ws');
 
 subscriber.on('message', (channel, message) => {
 	if (channel === WS_HUB_CHANNEL) {
 		const { action } = JSON.parse(message);
 		switch(action) {
 			case 'restart':
-				if (ws) {
-					ws.close();
+				if (getNodeLib().ws && getNodeLib().ws.readyState === WebSocket.OPEN) {
+					getNodeLib().ws.close();
 				}
 				break;
 			default:
@@ -33,32 +30,37 @@ subscriber.subscribe(WS_HUB_CHANNEL);
 const connect = () => {
 	checkStatus()
 		.then(() => {
-			ws = getNodeLib().connect(['orderbook', 'trade']);
+			getNodeLib().connect(['orderbook', 'trade']);
 
-			ws.on('open', () => {
+			getNodeLib().ws.on('open', () => {
 				loggerWebsocket.info('ws/hub open');
-				connected = true;
 			});
 
-			ws.on('error', (err) => {
+			getNodeLib().ws.on('error', (err) => {
 				loggerWebsocket.error('ws/hub err', err.message);
 			});
 
-			ws.on('close', () => {
-				loggerWebsocket.info('ws/hub close', ws.id);
-				connected = false;
+			getNodeLib().ws.on('close', () => {
+				loggerWebsocket.info('ws/hub close');
 				closeAllClients();
 			});
 
-			ws.on('message', (data) => {
-				handleHubData(data);
+			getNodeLib().ws.on('message', (data) => {
+				if (data !== 'pong') {
+					try {
+						data = JSON.parse(data);
+					} catch (err) {
+						loggerWebsocket.error('ws/hub message err', err.message);
+					}
+					handleHubData(data);
+				}
 			});
 		});
 };
 
 const sendNetworkWsMessage = (op, topic, networkId) => {
-	if (ws) {
-		ws[op]([`${topic}:${networkId}`]);
+	if (getNodeLib().ws && getNodeLib().ws.readyState === WebSocket.OPEN) {
+		getNodeLib().ws[op]([`${topic}:${networkId}`]);
 	}
 };
 
@@ -99,6 +101,5 @@ const closeAllClients = () => {
 
 module.exports = {
 	sendNetworkWsMessage,
-	connect,
-	hubConnected
+	connect
 };
