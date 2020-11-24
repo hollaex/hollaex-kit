@@ -7,14 +7,13 @@ const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
 const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
-const WebSocket = require('ws');
 
 subscriber.on('message', (channel, message) => {
 	if (channel === WS_HUB_CHANNEL) {
 		const { action } = JSON.parse(message);
 		switch(action) {
 			case 'restart':
-				if (getNodeLib().ws && getNodeLib().ws.readyState === WebSocket.OPEN) {
+				if (getNodeLib().wsConnected()) {
 					getNodeLib().ws.close();
 				}
 				break;
@@ -59,7 +58,7 @@ const connect = () => {
 };
 
 const sendNetworkWsMessage = (op, topic, networkId) => {
-	if (getNodeLib().ws && getNodeLib().ws.readyState === WebSocket.OPEN) {
+	if (getNodeLib().wsConnected()) {
 		getNodeLib()[op]([`${topic}:${networkId}`]);
 	}
 };

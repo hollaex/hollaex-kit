@@ -14,7 +14,6 @@ const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels,
 const { connect } = require('./hub');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
 const { getNodeLib } = require('../init');
-const WebSocket = require('ws');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -83,7 +82,7 @@ wss.on('connection', (ws, req) => {
 	});
 
 	ws.on('close', () => {
-		if (getNodeLib().ws && getNodeLib().ws.readyState === WebSocket.OPEN) {
+		if (getNodeLib().wsConnected()) {
 			terminateClosedChannels(ws);
 		}
 	});
