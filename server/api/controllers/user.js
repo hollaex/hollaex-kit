@@ -13,8 +13,13 @@ const {
 	USER_NOT_FOUND,
 	SERVICE_NOT_SUPPORTED,
 	VERIFICATION_EMAIL_MESSAGE,
-	TOKEN_REMOVED
+	TOKEN_REMOVED,
+	INVALID_CREDENTIALS,
+	USER_NOT_VERIFIED,
+	USER_NOT_ACTIVATED,
+	INVALID_OTP_CODE
 } = require('../../messages');
+const { all } = require('bluebird');
 
 const signUpUser = (req, res) => {
 	const {
@@ -128,8 +133,43 @@ const loginPost = (req, res) => {
 	const referer = req.headers.referer;
 	const time = new Date();
 
-	toolsLib.user.loginUser(email, password, otp_code, captcha, ip, device, domain, origin, referer)
+	toolsLib.user.getUserByEmail(email.toLowerCase())
 		.then((user) => {
+			if (user.verification_level === 0) {
+				throw new Error(USER_NOT_VERIFIED);
+			} else if (!user.activated) {
+				throw new Error(USER_NOT_ACTIVATED);
+			}
+
+			return all([
+				user,
+				toolsLib.security.validatePassword(user.password, password)
+			]);
+		})
+		.then(([ user, passwordIsValid ]) => {
+			if (!passwordIsValid) {
+				throw new Error(INVALID_CREDENTIALS);
+			}
+
+			if (!user.otp_enabled) {
+				return all([ user, toolsLib.security.checkCaptcha(captcha, ip) ]);
+			} else {
+				return all([
+					user,
+					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+						if (!validOtp) {
+							throw new Error(INVALID_OTP_CODE);
+						} else {
+							return toolsLib.security.checkCaptcha(captcha, ip);
+						}
+					})
+				]);
+			}
+		})
+		.then(([ user ]) => {
+			if (ip) {
+				toolsLib.user.registerUserLogin(user.id, ip, device, domain, origin, referer);
+			}
 			const data = {
 				ip,
 				time,
