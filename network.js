@@ -35,6 +35,7 @@ class HollaExNetwork {
 		this.wsEvents = [];
 		this.wsReconnect = true;
 		this.wsReconnectInterval = 5000;
+		this.wsEventListeners = null;
 	}
 
 	/* Kit Operator Network Endpoints*/
@@ -844,41 +845,49 @@ class HollaExNetwork {
 			}
 		});
 
-		this.ws.on('unexpected-response', () => {
-			if (this.ws.readyState === WebSocket.OPEN) {
-				this.ws.close();
-			} else {
-				this.ws = null;
-			}
-		});
-
-		this.ws.on('error', () => {
-			if (this.ws.readyState === WebSocket.OPEN) {
-				this.ws.close();
-			} else {
-				this.ws = null;
-			}
-		});
-
-		this.ws.on('close', () => {
-			this.ws = null;
-			if (this.wsReconnect) {
-				setTimeout(() => {
-					this.connect(this.wsEvents);
-				}, this.wsReconnectInterval);
-			}
-		});
-
-		this.ws.on('open', () => {
-			if (this.wsEvents.length > 0) {
-				this.subscribe(this.wsEvents);
-			}
-
-			setWsHeartbeat(this.ws, 'ping', {
-				pingTimeout: 60000,
-				pingInterval: 25000,
+		if (this.wsEventListeners) {
+			this.ws._events = this.wsEventListeners;
+		} else {
+			this.ws.on('unexpected-response', () => {
+				if (this.ws.readyState === WebSocket.OPEN) {
+					this.ws.close();
+				} else {
+					this.ws = null;
+				}
 			});
-		});
+
+			this.ws.on('error', () => {
+				if (this.ws.readyState === WebSocket.OPEN) {
+					this.ws.close();
+				} else {
+					this.ws = null;
+				}
+			});
+
+			this.ws.on('close', () => {
+				if (this.wsReconnect) {
+					this.wsEventListeners = this.ws._events;
+					this.ws = null;
+					setTimeout(() => {
+						this.connect(this.wsEvents);
+					}, this.wsReconnectInterval);
+				} else {
+					this.wsEventListeners = null;
+					this.ws = null;
+				}
+			});
+
+			this.ws.on('open', () => {
+				if (this.wsEvents.length > 0) {
+					this.subscribe(this.wsEvents);
+				}
+
+				setWsHeartbeat(this.ws, 'ping', {
+					pingTimeout: 60000,
+					pingInterval: 25000,
+				});
+			});
+		}
 	}
 
 	disconnect() {
