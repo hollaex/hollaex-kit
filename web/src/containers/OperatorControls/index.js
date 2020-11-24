@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import debounce from 'lodash.debounce';
 import classnames from 'classnames';
+import merge from 'lodash.merge';
 import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
@@ -27,6 +28,7 @@ import {
 	filterOverwrites,
 } from 'utils/string';
 import { filterThemes } from 'utils/color';
+import { getIconByKey } from 'utils/icon';
 
 class OperatorControls extends Component {
 	constructor(props) {
@@ -511,7 +513,7 @@ class OperatorControls extends Component {
 		const { updateIcons } = this.props;
 		this.setState(
 			(prevState) => ({
-				iconsOverwrites: { ...prevState.iconsOverwrites, ...icons },
+				iconsOverwrites: merge({}, prevState.iconsOverwrites, icons),
 			}),
 			() => {
 				updateIcons(icons);
@@ -530,10 +532,20 @@ class OperatorControls extends Component {
 	};
 
 	openUploadIcon = () => {
+		const { allIcons } = this.props;
 		const { editableIconIds } = this.state;
+		const iconsEditData = {};
 
 		if (editableIconIds.length > 0) {
+			Object.keys(allIcons).forEach((theme) => {
+				iconsEditData[theme] = {};
+				editableIconIds.forEach((key) => {
+					iconsEditData[theme][key] = getIconByKey(key, theme, allIcons);
+				});
+			});
+
 			this.setState({
+				iconsEditData,
 				isUploadIconOpen: true,
 			});
 		}
@@ -648,6 +660,7 @@ class OperatorControls extends Component {
 			isExitConfirmationOpen,
 			isAddLanguageModalOpen,
 			isPublishConfirmationOpen,
+			iconsEditData,
 			isUploadIconOpen,
 			editableIconIds,
 			isThemeSettingsOpen,
@@ -815,13 +828,17 @@ class OperatorControls extends Component {
 					)}
 					onSave={this.addLanguage}
 				/>
-				<UploadIcon
-					editId={editableIconIds}
-					isOpen={isUploadIconOpen}
-					onCloseDialog={this.closeUploadIcon}
-					onSave={this.addIcons}
-					onReset={this.removeIcon}
-				/>
+				{isUploadIconOpen && (
+					<UploadIcon
+						iconsEditData={iconsEditData}
+						themeOptions={themeOptions}
+						editId={editableIconIds}
+						isOpen={isUploadIconOpen}
+						onCloseDialog={this.closeUploadIcon}
+						onSave={this.addIcons}
+						onReset={this.removeIcon}
+					/>
+				)}
 				{isThemeSettingsOpen && (
 					<ThemeSettings
 						isOpen={editMode && isThemeSettingsOpen}

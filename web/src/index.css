@@ -2792,6 +2792,46 @@ table th {
 .layout-mobile.home_container-mobile .exir-button {
   font-size: 1.2rem; }
 
+.image-upload {
+  color: #ffffff;
+  margin: 10px 0; }
+
+.image-upload__anchor {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #ffffff; }
+
+.image-upload__input {
+  opacity: 0;
+  position: fixed;
+  left: -999px; }
+
+.image-upload__file-container {
+  border: 1px solid #ffffff;
+  width: 320px;
+  display: block;
+  padding-top: 20px;
+  padding-left: 120px;
+  white-space: nowrap;
+  position: relative;
+  height: 88px; }
+
+.image-upload__file-img-content,
+.image-upload_image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 90px;
+  height: 86px;
+  object-fit: fill; }
+
+.image-upload__file-img-content {
+  border-right: 1px solid #ffffff; }
+
+.image-upload_image {
+  padding: 5px; }
+
 .operator-controls__wrapper {
   position: fixed;
   bottom: -106px;
@@ -2858,6 +2898,21 @@ table th {
   font-weight: bold; }
   .operator-controls__save-button.confirm {
     width: 101px; }
+
+.operator-controls__modal .ant-collapse,
+.operator-controls__modal .ant-collapse-item,
+.operator-controls__modal .ant-collapse-header,
+.operator-controls__modal .ant-collapse-content {
+  color: #ffffff !important; }
+
+.operator-controls__modal .ant-collapse-header {
+  text-align: center; }
+
+.operator-controls__modal .ant-collapse-item-disabled {
+  cursor: auto !important; }
+
+.operator-controls__modal .ant-collapse .ant-collapse-item-disabled > .ant-collapse-header {
+  cursor: auto; }
 
 .operator-controls__modal .ant-select-selector {
   background-color: #ffffff !important; }
@@ -3961,7 +4016,9 @@ table th {
   margin-bottom: 0.5rem; }
 
 .search-field {
-  width: 100%; }
+  width: 100%;
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: var(--base_background); }
 
 .app-bar-search-field {
   flex-direction: row-reverse;

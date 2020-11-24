@@ -53,13 +53,11 @@ class QuickTrade extends Component {
 				>
 					<div className="d-flex content-center">
 						<Image
-							iconId={
-								isMobile ? 'SIDEBAR_QUICK_TRADING_INACTIVE' : 'QUICK_TRADE'
-							}
+							iconId="SIDEBAR_QUICK_TRADING_INACTIVE,QUICK_TRADE"
 							icon={
 								isMobile
 									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
-									: ICONS['QUICK_TRADE']
+									: ICONS['QUICK_TRADE_ICON']
 							}
 							wrapperClassName={
 								isMobile ? 'quick_trade-tab-icon' : 'quick_trade-icon'

@@ -147,7 +147,7 @@ export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
 	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
 };
 
-export const calculateOraclePrice = (value = 0, price) => {
+export const calculateOraclePrice = (value = 0, price = 0) => {
 	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
 };
 

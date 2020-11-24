@@ -23,13 +23,7 @@ const TradeBlock = ({
 }) => {
 	const pairs = pair ? pair.split('-').map((curr) => curr.toUpperCase()) : [];
 	const { pair_base } = pairData;
-	let ICON_PATH = pair_base
-		? ICONS[
-				`${pair_base.toUpperCase()}_ICON${
-					activeTheme === 'dark' ? '_DARK' : ''
-				}`
-		  ]
-		: ``;
+	let ICON_PATH = pair_base ? ICONS[`${pair_base.toUpperCase()}_ICON`] : ``;
 	return (
 		<div
 			className={classnames(

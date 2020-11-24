@@ -335,12 +335,8 @@ class TransactionsHistory extends Component {
 				>
 					<div>
 						<IconTitle
-							iconId="CANCEL_WITHDRAW_DARK,CANCEL_WITHDRAW_LIGHT"
-							iconPath={
-								activeTheme === 'dark'
-									? ICONS['CANCEL_WITHDRAW_DARK']
-									: ICONS['CANCEL_WITHDRAW_LIGHT']
-							}
+							iconId="CANCEL_WITHDRAW"
+							iconPath={ICONS['CANCEL_WITHDRAW']}
 							stringId="CANCEL_BASE_WITHDRAWAL"
 							text={STRINGS.formatString(
 								STRINGS['CANCEL_BASE_WITHDRAWAL'],

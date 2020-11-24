@@ -3,6 +3,8 @@ $operator-controls__panel-text-color: #ffffff;
 $operator-controls__panel-text-color-inactive: #ffffffb3;
 $operator-controls__panel-border-color: #a7a7a7;
 
+@import './components/ImageUpload';
+
 .operator-controls__wrapper {
 	position: fixed;
 	bottom: -106px;
@@ -85,6 +87,25 @@ $operator-controls__panel-border-color: #a7a7a7;
 }
 
 .operator-controls__modal {
+	.ant-collapse,
+	.ant-collapse-item,
+	.ant-collapse-header,
+	.ant-collapse-content {
+		color: $operator-controls__panel-text-color !important;
+	}
+
+	.ant-collapse-header {
+		text-align: center;
+	}
+
+	.ant-collapse-item-disabled {
+		cursor: auto !important;
+	}
+
+	.ant-collapse .ant-collapse-item-disabled > .ant-collapse-header {
+		cursor: auto;
+	}
+
 	.ant-select-selector {
 		background-color: $operator-controls__panel-text-color !important;
 	}

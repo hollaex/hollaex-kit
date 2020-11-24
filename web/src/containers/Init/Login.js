@@ -12,10 +12,10 @@ import {
 	email,
 } from '../../components/AdminForm/validations';
 import {
-	ICONS,
 	CAPTCHA_SITEKEY,
 	DEFAULT_CAPTCHA_SITEKEY,
 } from '../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import { getLanguage } from '../../utils/string';
 import { getExchangeInitialized } from '../../utils/initialize';
 import { isAdmin } from '../../utils/token';
@@ -73,7 +73,7 @@ const Login = (props) => {
 				<div className="content info-container">
 					<div>
 						<ReactSVG
-							path={ICONS.TIMEZONE_WORLD_MAP}
+							path={STATIC_ICONS.TIMEZONE_WORLD_MAP}
 							wrapperClassName="map-icon"
 						/>
 					</div>

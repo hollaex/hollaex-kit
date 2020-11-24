@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Input, Select, InputNumber, Button, message } from 'antd';
 import { connect } from 'react-redux';
 
+import { STATIC_ICONS } from 'config/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from '../../../components/Image';
 import { updateLimits } from './action';
@@ -134,7 +135,12 @@ class EditLimit extends Component {
 	};
 
 	render() {
-		const { constants = {}, icons, userTiers = {}, handleClose } = this.props;
+		const {
+			constants = {},
+			icons: ICONS,
+			userTiers = {},
+			handleClose,
+		} = this.props;
 		const { selectValues, formData } = this.state;
 
 		return (
@@ -147,7 +153,7 @@ class EditLimit extends Component {
 				<div className="my-3">
 					<div className="d-flex align-items-center">
 						<Image
-							icon={icons['DEPOSIT_TIERS_SECTION']}
+							icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
 							wrapperClassName="limit-status-icon mr-2"
 						/>
 						<div className="description">
@@ -156,7 +162,7 @@ class EditLimit extends Component {
 					</div>
 					<div className="d-flex align-items-center">
 						<Image
-							icon={icons['WITHDRAW_TIERS_SECTION']}
+							icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
 							wrapperClassName="limit-status-icon mr-2"
 						/>
 						<div className="description">
@@ -168,14 +174,14 @@ class EditLimit extends Component {
 					<div className="f-1"></div>
 					<div className="d-flex align-items-center f-1 px-2">
 						<Image
-							icon={icons['DEPOSIT_TIERS_SECTION']}
+							icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
 							wrapperClassName="limit-status-icon"
 						/>
 						<div className="sub-title">Deposit</div>
 					</div>
 					<div className="d-flex align-items-center f-1 px-2">
 						<Image
-							icon={icons['WITHDRAW_TIERS_SECTION']}
+							icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
 							wrapperClassName="limit-status-icon"
 						/>
 						<div className="sub-title">Withdraw</div>
@@ -190,7 +196,7 @@ class EditLimit extends Component {
 								<div className="f-1">
 									<div className="d-flex align-items-center">
 										<Image
-											icon={icons[`LEVEL_ACCOUNT_ICON_${level}`]}
+											icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
 											wrapperClassName="table-tier-icon mr-2"
 										/>
 										{`Tiers ${level}`}

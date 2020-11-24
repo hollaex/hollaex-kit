@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { getIconByKey } from 'utils/icon';
+import { connect } from 'react-redux';
+import { getIconByKey, generateAllIcons } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
+import merge from 'lodash.merge';
 
 export const ProjectConfig = React.createContext('appConfig');
 
@@ -14,7 +16,7 @@ class ConfigProvider extends Component {
 		const calculatedThemes = calculateThemes(color);
 
 		this.state = {
-			icons,
+			icons: generateAllIcons(calculatedThemes, icons),
 			color: calculatedThemes,
 			themeOptions,
 			defaults,
@@ -22,7 +24,7 @@ class ConfigProvider extends Component {
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {
-		const { color } = this.state;
+		const { color, icons } = this.state;
 		if (JSON.stringify(color) !== JSON.stringify(nextState.color)) {
 			const themeOptions = Object.keys(nextState.color).map((value) => ({
 				value,
@@ -31,6 +33,7 @@ class ConfigProvider extends Component {
 			this.setState({
 				themeOptions,
 				color: calculatedThemes,
+				icons: generateAllIcons(calculatedThemes, icons),
 			});
 		}
 	}
@@ -38,10 +41,7 @@ class ConfigProvider extends Component {
 	updateIcons = (icons = {}) => {
 		this.setState((prevState) => ({
 			...prevState,
-			icons: {
-				...prevState.icons,
-				...icons,
-			},
+			icons: merge({}, prevState.icons, icons),
 		}));
 	};
 
@@ -86,7 +86,7 @@ class ConfigProvider extends Component {
 	};
 
 	render() {
-		const { children } = this.props;
+		const { children, activeTheme } = this.props;
 		const { icons, color, themeOptions, defaults } = this.state;
 		const {
 			updateIcons,
@@ -100,7 +100,8 @@ class ConfigProvider extends Component {
 			<ProjectConfig.Provider
 				value={{
 					defaults,
-					icons,
+					icons: icons[activeTheme],
+					allIcons: icons,
 					color,
 					themeOptions,
 					updateIcons,
@@ -115,4 +116,9 @@ class ConfigProvider extends Component {
 		);
 	}
 }
-export default ConfigProvider;
+
+const mapStateToProps = ({ app: { theme: activeTheme } }) => ({
+	activeTheme,
+});
+
+export default connect(mapStateToProps)(ConfigProvider);

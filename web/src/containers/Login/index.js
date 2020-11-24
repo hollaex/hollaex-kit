@@ -229,7 +229,7 @@ class Login extends Component {
 					)}
 				>
 					<IconTitle
-						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
+						iconId="EXCHANGE_LOGO"
 						iconPath={path}
 						stringId="LOGIN_TEXT"
 						text={STRINGS['LOGIN_TEXT']}
