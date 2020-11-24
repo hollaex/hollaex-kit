@@ -1240,6 +1240,7 @@ module.exports = {
 	updateUserSettings,
 	omitUserFields,
 	signUpUser,
+	registerUserLogin,
 	verifyUser,
 	getVerificationCodeByUserEmail,
 	getUserEmailByVerificationCode,
