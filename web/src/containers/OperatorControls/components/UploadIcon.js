@@ -1,26 +1,40 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, func, array } from 'prop-types';
-import { Button, Divider } from 'antd';
+import { Button, Divider, Collapse } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { upload } from 'actions/operatorActions';
-import { DeleteOutlined } from '@ant-design/icons';
+import ImageUpload from './ImageUpload';
 
 class UploadIcon extends Component {
-	state = {
-		selectedFiles: {},
-		loading: false,
-		error: false,
-	};
+	constructor(props) {
+		super(props);
+		const { iconsEditData: editData } = this.props;
+		this.state = {
+			selectedFiles: {},
+			loading: false,
+			error: false,
+			editData,
+		};
+	}
 
 	onFileChange = ({ target: { name, files } }) => {
+		const [theme, iconKey] = name.split(',');
+
 		this.setState((prevState) => ({
 			...prevState,
 			selectedFiles: {
 				...prevState.selectedFiles,
-				[name]: files[0],
+				[theme]: {
+					...prevState.selectedFiles[theme],
+					[iconKey]: files[0],
+				},
 			},
 		}));
+	};
+
+	onReset = ({ target: { name } }) => {
+		return console.log('reset', name);
 	};
 
 	handleSave = async () => {
@@ -33,29 +47,35 @@ class UploadIcon extends Component {
 			loading: true,
 		});
 
-		for (const key in selectedFiles) {
-			if (selectedFiles.hasOwnProperty(key)) {
-				const file = selectedFiles[key];
-				if (file) {
-					const formData = new FormData();
-					const { name: fileName } = file;
-					const extension = fileName.split('.').pop();
-					const name = `${key}.${extension}`;
+		for (const themeKey in selectedFiles) {
+			if (selectedFiles.hasOwnProperty(themeKey)) {
+				icons[themeKey] = {};
 
-					formData.append('name', name);
-					formData.append('file', file);
+				for (const key in selectedFiles[themeKey]) {
+					if (selectedFiles[themeKey].hasOwnProperty(key)) {
+						const file = selectedFiles[themeKey][key];
+						if (file) {
+							const formData = new FormData();
+							const { name: fileName } = file;
+							const extension = fileName.split('.').pop();
+							const name = `${key}__${themeKey}.${extension}`;
 
-					try {
-						const {
-							data: { path },
-						} = await upload(formData);
-						icons[key] = path;
-					} catch (error) {
-						this.setState({
-							loading: false,
-							error: 'Something went wrong!',
-						});
-						return;
+							formData.append('name', name);
+							formData.append('file', file);
+
+							try {
+								const {
+									data: { path },
+								} = await upload(formData);
+								icons[themeKey][key] = path;
+							} catch (error) {
+								this.setState({
+									loading: false,
+									error: 'Something went wrong!',
+								});
+								return;
+							}
+						}
 					}
 				}
 			}
@@ -69,7 +89,13 @@ class UploadIcon extends Component {
 	};
 
 	render() {
-		const { isOpen, onCloseDialog, editId, onReset } = this.props;
+		const {
+			isOpen,
+			onCloseDialog,
+			editId,
+			iconsEditData: editData,
+			themeOptions,
+		} = this.props;
 		const { loading, error } = this.state;
 
 		return (
@@ -88,30 +114,48 @@ class UploadIcon extends Component {
 				</div>
 				<div>
 					{editId.map((id) => (
-						<div key={id} className="pb-3">
+						<div key={id}>
 							<Divider orientation="left">
 								<span className="operator-controls__string-key">
 									<KeyOutlined /> {id}
 								</span>
 							</Divider>
-							<div className="d-flex pt-1">
-								<input
-									name={id}
-									type="file"
-									accept="image/*"
-									style={{ width: '232px' }}
-									onChange={this.onFileChange}
-								/>
-								<Button
-									ghost
-									shape="circle"
-									size="small"
-									disabled={loading}
-									className="operator-controls__all-strings-settings-button"
-									onClick={() => onReset(id)}
-									icon={<DeleteOutlined />}
-								/>
-							</div>
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									{themeOptions
+										.filter(({ value: theme }) => theme === 'dark')
+										.map(({ value: theme }) => (
+											<ImageUpload
+												key={`${theme}-${id}`}
+												iconKey={id}
+												themeKey={theme}
+												iconPath={editData[theme][id]}
+												loading={loading}
+												onFileChange={this.onFileChange}
+												onReset={this.onReset}
+											/>
+										))}
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									{themeOptions
+										.filter(({ value: theme }) => theme !== 'dark')
+										.map(({ value: theme }) => (
+											<ImageUpload
+												key={`${theme}-${id}`}
+												iconKey={id}
+												themeKey={theme}
+												iconPath={editData[theme][id]}
+												loading={loading}
+												onFileChange={this.onFileChange}
+												onReset={this.onReset}
+											/>
+										))}
+								</Collapse.Panel>
+							</Collapse>
 						</div>
 					))}
 				</div>
