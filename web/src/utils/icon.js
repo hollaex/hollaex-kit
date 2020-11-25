@@ -38,3 +38,17 @@ export const addDefaultLogo = (defaultLogo, icons) => {
 	}
 	return icons;
 };
+
+export const getAllIconsArray = (themeKeys, content = defaultIcons) => {
+	const allIcons = [];
+
+	Object.keys(content[defaultIconsKey]).forEach((key) => {
+		const iconObject = { key };
+		themeKeys.forEach((theme) => {
+			iconObject[theme] = getIconByKey(key, theme, content);
+		});
+		allIcons.push(iconObject);
+	});
+
+	return allIcons;
+};
