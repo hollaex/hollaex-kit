@@ -50,6 +50,7 @@ import 'antd/dist/antd.css';
 const md = new MobileDetect(window.navigator.userAgent);
 
 const { Content, Sider } = Layout;
+const { Item } = Menu;
 
 class AppWrapper extends React.Component {
 	constructor(prop) {
@@ -245,38 +246,42 @@ class AppWrapper extends React.Component {
 		if (routeKey === 'main') {
 			showLabel = this.props.constants.api_name || '';
 			return (
-				<Link to={path} className="no-link" key={index}>
-					<div
-						className={
-							this.props.location.pathname === '/admin'
-								? 'sidebar-exchange-menu flex-menu active-exchange-menu'
-								: 'sidebar-exchange-menu flex-menu'
-						}
-					>
-						<ReactSVG
-							path={STATIC_ICONS.HEX_PATTERN_ICON}
-							wrapperClassName="sidebar-icon"
-						/>
-						<div>
-							<div>DASHBOARD</div>
-							<div className="exchange-title">{showLabel}</div>
+				<Item key={index} className="custom-side-menu">
+					<Link to={path} className="no-link" key={index}>
+						<div
+							className={
+								this.props.location.pathname === '/admin'
+									? 'sidebar-exchange-menu flex-menu active-exchange-menu'
+									: 'sidebar-exchange-menu flex-menu'
+							}
+						>
+							<ReactSVG
+								path={STATIC_ICONS.HEX_PATTERN_ICON}
+								wrapperClassName="sidebar-icon"
+							/>
+							<div>
+								<div>DASHBOARD</div>
+								<div className="exchange-title">{showLabel}</div>
+							</div>
 						</div>
-					</div>
-				</Link>
+					</Link>
+				</Item>
 			);
 		}
 		return (
-			<Link to={path} className="no-link" key={index}>
-				<div
-					className={
-						this.props.location.pathname.includes(path)
-							? 'sidebar-menu active-side-menu'
-							: 'sidebar-menu'
-					}
-				>
-					{showLabel}
-				</div>
-			</Link>
+			<Item key={index} className="custom-side-menu">
+				<Link to={path} className="no-link" key={index}>
+					<div
+						className={
+							this.props.location.pathname.includes(path)
+								? 'sidebar-menu active-side-menu'
+								: 'sidebar-menu'
+						}
+					>
+						{showLabel}
+					</div>
+				</Link>
+			</Item>
 		);
 	};
 
@@ -482,12 +487,16 @@ class AppWrapper extends React.Component {
 								<div>
 									<div className="bottom-side-top"></div>
 									<Menu mode="vertical" style={{ lineHeight: '64px' }}>
-										<Link to="/admin/resources">
-											<div className={'sidebar-menu'}>Resources</div>
-										</Link>
-										<div className={'sidebar-menu'} onClick={logout}>
-											Logout
-										</div>
+										<Item className="custom-side-menu">
+											<Link to="/admin/resources">
+												<div className={'sidebar-menu'}>Resources</div>
+											</Link>
+										</Item>
+										<Item className="custom-side-menu">
+											<div className={'sidebar-menu'} onClick={logout}>
+												Logout
+											</div>
+										</Item>
 									</Menu>
 								</div>
 							</div>

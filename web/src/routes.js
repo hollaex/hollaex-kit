@@ -36,7 +36,6 @@ import {
 	Wallets,
 	UserFees,
 	PATHS,
-	ExpiredExchange,
 	AdminOrders,
 	MobileHome,
 	Broker,
@@ -458,7 +457,6 @@ export default (
 			content="terms"
 			onEnter={requireAuth}
 		/>
-		<Route path="expired-exchange" component={ExpiredExchange} />
 		<Route path="admin-login" name="admin-login" component={AdminLogin} />
 		<Route path="init" name="initWizard" component={Init} />
 		<Route path="*" component={NotFound} />
