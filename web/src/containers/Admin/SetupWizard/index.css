@@ -34,6 +34,9 @@
 	display: flex;
 	margin-top: 3rem;
 }
+.step-container .ant-steps-item {
+	white-space: nowrap;
+}
 .steps,
 .step-content {
 	flex: 1;

@@ -64,11 +64,11 @@ const EmailConfiguration = ({
 						<Item name="sender">
 							<Input />
 						</Item>
-						<Item name="send_email_to_support" valuePropName="checked">
+						{/* <Item name="send_email_to_support" valuePropName="checked">
 							<Checkbox>
 								<span className="setup-field-label">Send email to support</span>
 							</Checkbox>
-						</Item>
+						</Item> */}
 						<div className="setup-field-label">Email timezone</div>
 						<Item name="timezone">
 							<Input />
@@ -104,7 +104,7 @@ const EmailConfiguration = ({
 							<Input />
 						</Item>
 					</div>
-					<div className="coin-wrapper last">
+					{/* <div className="coin-wrapper last">
 						<div className="title-text">reCAPTCHA</div>
 						<div className="setup-field-label">
 							Site key (Google reCAPTCHA V3)
@@ -118,7 +118,7 @@ const EmailConfiguration = ({
 						<Item name="secret_key">
 							<Input />
 						</Item>
-					</div>
+					</div> */}
 					<div className="btn-container">
 						<Button htmlType="submit">Proceed</Button>
 					</div>

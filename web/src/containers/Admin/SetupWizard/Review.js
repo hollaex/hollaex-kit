@@ -133,7 +133,7 @@ const ExchangeReview = ({
 								: ''}
 						</div>
 					</div>
-					<div className="option-list">
+					{/* <div className="option-list">
 						<div className="option-label">Site key (Google reCAPTHA V3): </div>
 						<div className="option-value">
 							{kit.captcha && kit.captcha.site_key !== 'null'
@@ -150,7 +150,7 @@ const ExchangeReview = ({
 								? secrets.captcha.secret_key
 								: ''}
 						</div>
-					</div>
+					</div> */}
 				</div>
 				<div className="option-list previewButton">
 					<Button onClick={() => setPreview()}>Back</Button>
