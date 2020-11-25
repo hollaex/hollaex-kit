@@ -2,7 +2,9 @@
 
 const { toBool } = require('./utils/conversion');
 const { cloneDeep } = require('lodash');
-const { subscriber } = require('./db/pubsub');
+const redis = require('redis');
+const config = require('./config/redis');
+const subscriber = redis.createClient(config.pubsub);
 
 // CONFIGURATION CONSTANTS START--------------------------------------------------
 const CONFIGURATION_CHANNEL = 'channel:configuration';
