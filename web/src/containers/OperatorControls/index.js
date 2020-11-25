@@ -19,6 +19,7 @@ import StringSettingsModal from './components/StringSettings';
 import AddLanguageModal from './components/AddLanguageModal';
 import ThemeSettings from './components/ThemeSettings';
 import AddTheme from './components/AddTheme';
+import AllIconsModal from './components/AllIconsModal';
 import UploadIcon from './components/UploadIcon';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
@@ -28,11 +29,13 @@ import {
 	filterOverwrites,
 } from 'utils/string';
 import { filterThemes } from 'utils/color';
-import { getIconByKey } from 'utils/icon';
+import { getIconByKey, getAllIconsArray } from 'utils/icon';
 
 class OperatorControls extends Component {
 	constructor(props) {
 		super(props);
+
+		const { themeOptions } = this.props;
 
 		const strings = localStorage.getItem('strings') || '{}';
 		const icons = localStorage.getItem('icons') || '{}';
@@ -45,6 +48,7 @@ class OperatorControls extends Component {
 			languageKeys.includes(value)
 		);
 		const selectedLanguages = this.getSelectedLanguages(languageKeys);
+		const selectedThemes = this.getSelectedThemes(themeOptions);
 
 		this.state = {
 			isPublishEnabled: false,
@@ -72,6 +76,9 @@ class OperatorControls extends Component {
 			iconsOverwrites,
 			colorOverwrites,
 			editableIconIds: [],
+			isAllIconsModalOpen: false,
+			selectedThemes,
+			allIconsArray: [],
 		};
 	}
 
@@ -133,6 +140,28 @@ class OperatorControls extends Component {
 		}
 
 		return selectedLanguages;
+	};
+
+	getSelectedThemes = (themeOptions) => {
+		const themeKeys = themeOptions.map(({ value }) => value);
+		const isDarkAvailable = !!themeKeys.find((theme) => theme === 'dark');
+		const themeCount = themeKeys.length;
+		const hasMultipleThemes = themeCount > 1;
+		let selectedThemes = [];
+
+		if (isDarkAvailable && hasMultipleThemes) {
+			selectedThemes[0] = 'dark';
+			selectedThemes[1] = themeKeys.filter((theme) => theme !== 'dark')[
+				themeCount - 2
+			];
+		} else if (hasMultipleThemes) {
+			selectedThemes[0] = themeKeys[0];
+			selectedThemes[1] = themeKeys[themeCount - 1];
+		} else {
+			selectedThemes = new Array(2).fill(themeKeys[0]);
+		}
+
+		return selectedThemes;
 	};
 
 	setupAdminListeners = () => {
@@ -375,6 +404,23 @@ class OperatorControls extends Component {
 		);
 	};
 
+	openAllIconsModal = () => {
+		const { themeOptions, allIcons } = this.props;
+		const themeKeys = themeOptions.map(({ value }) => value);
+		const allIconsArray = getAllIconsArray(themeKeys, allIcons);
+
+		this.setState({
+			allIconsArray,
+			isAllIconsModalOpen: true,
+		});
+	};
+
+	closeAllIconsModal = () => {
+		this.setState({
+			isAllIconsModalOpen: false,
+		});
+	};
+
 	closeAllStringsModal = () => {
 		this.setState({
 			isAllStringsModalOpen: false,
@@ -459,6 +505,18 @@ class OperatorControls extends Component {
 			return {
 				...prevState,
 				selectedLanguages: selection,
+			};
+		});
+	};
+
+	setSelectedThemes = (value, index) => {
+		this.setState((prevState) => {
+			let selection = prevState.selectedThemes;
+			selection[index] = value;
+
+			return {
+				...prevState,
+				selectedThemes: selection,
 			};
 		});
 	};
@@ -666,6 +724,9 @@ class OperatorControls extends Component {
 			isThemeSettingsOpen,
 			isAddThemeOpen,
 			selectedTheme,
+			isAllIconsModalOpen,
+			selectedThemes,
+			allIconsArray,
 		} = this.state;
 		const { editMode, color: themes, themeOptions } = this.props;
 
@@ -715,6 +776,12 @@ class OperatorControls extends Component {
 							onClick={this.openThemeSettings}
 						>
 							Themes
+						</div>
+						<div
+							className="operator-controls__panel-item"
+							onClick={this.openAllIconsModal}
+						>
+							Icons
 						</div>
 					</div>
 					<div className="d-flex align-items-center">
@@ -800,6 +867,19 @@ class OperatorControls extends Component {
 						</Button>
 					</div>
 				</Modal>
+				<AllIconsModal
+					isOpen={editMode && isAllIconsModalOpen}
+					icons={allIconsArray}
+					onCloseDialog={this.closeAllIconsModal}
+					// onSearch={this.handleSearch}
+					// searchValue={searchValue}
+					themeOptions={themeOptions}
+					onSelect={this.setSelectedThemes}
+					selectedThemes={selectedThemes}
+					onRowClick={this.handleEditButton}
+					// onSettingsClick={this.openStringSettingsModal}
+					onSave={this.addIcons}
+				/>
 				<AllStringsModal
 					isOpen={editMode && isAllStringsModalOpen}
 					strings={searchResults}
