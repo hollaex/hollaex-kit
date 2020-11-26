@@ -3,19 +3,34 @@
 const { loggerEngine } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 
-const getTopOrderbooks = (req, res) => {
+const getTopOrderbook = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
 		loggerEngine.error(
 			req.uuid,
-			'controller/engine/getTopOrderbooks',
+			'controller/engine/getTopOrderbook',
 			'Invalid symbol'
 		);
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineOrderbooks(symbol)
+	toolsLib.getEngineOrderbook(symbol)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerEngine.error(
+				req.uuid,
+				'controller/engine/getTopOrderbook',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getTopOrderbooks = (req, res) => {
+	toolsLib.getEngineOrderbooks()
 		.then((data) => {
 			return res.json(data);
 		})
@@ -245,6 +260,7 @@ const getAssetsPrices = (req, res) => {
 };
 
 module.exports = {
+	getTopOrderbook,
 	getTopOrderbooks,
 	getTrades,
 	getTicker,

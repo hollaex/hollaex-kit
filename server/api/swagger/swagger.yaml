@@ -42,7 +42,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /constant:
+  /constants:
     x-swagger-router-controller: general
     get:
       operationId: getConstants
@@ -368,6 +368,29 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /orderbook:
+    x-swagger-router-controller: engine
+    get:
+      description: Returns the top orderbooks
+      operationId: getTopOrderbook
+      tags:
+        - Public
+        - Engine
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderbooksResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /orderbooks:
     x-swagger-router-controller: engine
     get:
@@ -376,12 +399,6 @@ paths:
       tags:
         - Public
         - Engine
-      parameters:
-        - name: symbol
-          in: query
-          description: Currency symbol
-          required: false
-          type: string
       responses:
         200:
           description: Success
@@ -438,6 +455,23 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /ticker/all:
+    x-swagger-router-controller: engine
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getAllTicker
+      tags:
+        - Public
+        - Engine
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /tickers:
     x-swagger-router-controller: engine
     get:
       description: Get historic data, time interval is 5 minutes
