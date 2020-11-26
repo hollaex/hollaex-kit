@@ -602,7 +602,7 @@ const mintAsset = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
-			return getNodeLib().mintAsset(user.network_id, currency, description, amount);
+			return toolsLib.mintAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -639,7 +639,7 @@ const burnAsset = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
-			return getNodeLib().burnAsset(user.network_id, currency, description, amount);
+			return toolsLib.burnAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
