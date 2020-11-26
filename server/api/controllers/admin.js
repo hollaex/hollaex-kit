@@ -53,7 +53,10 @@ const createInitialAdmin = (req, res) => {
 			if (user) {
 				throw new Error('Admin already exists');
 			}
-			return toolsLib.user.createUser(email, password, 'admin', 1);
+			return toolsLib.user.createUser(email, password, {
+				role: 'admin',
+				id: 1
+			});
 		})
 		.then(() => {
 			return toolsLib.setExchangeInitialized();
@@ -103,18 +106,18 @@ const getUsersAdmin = (req, res) => {
 
 	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getAllUsersAdmin(
-		id.value,
-		search.value,
-		pending.value,
-		limit.value,
-		page.value,
-		order_by.value,
-		order.value,
-		start_date.value,
-		end_date.value,
-		format.value
-	)
+	toolsLib.user.getAllUsersAdmin({
+		id: id.value,
+		search: search.value,
+		pending: pending.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);

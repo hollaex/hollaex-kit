@@ -38,7 +38,7 @@ const signUpUser = (req, res) => {
 
 	toolsLib.security.checkCaptcha(captcha, ip)
 		.then(() => {
-			return toolsLib.user.signUpUser(email, password, referral);
+			return toolsLib.user.signUpUser(email, password, { referral });
 		})
 		.then(() => {
 			return res.status(201).json({ message: USER_REGISTERED });
@@ -108,8 +108,15 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	toolsLib.user.verifyUser(email, verification_code, domain)
-		.then(() => {
+	toolsLib.user.verifyUser(email, verification_code)
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				{},
+				user.settings,
+				domain
+			);
 			return res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {
@@ -168,7 +175,12 @@ const loginPost = (req, res) => {
 		})
 		.then(([ user ]) => {
 			if (ip) {
-				toolsLib.user.registerUserLogin(user.id, ip, device, domain, origin, referer);
+				toolsLib.user.registerUserLogin(user.id, ip, {
+					device,
+					domain,
+					origin,
+					referer
+				});
 			}
 			const data = {
 				ip,
