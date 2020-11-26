@@ -95,7 +95,7 @@ const DEPOSIT = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		PENDING: (amount, confirmation = 1, currency) =>
-			`Vous avez un nouveau dépôt pour ${amount} ${currency.toUpperCase()} en attente dans votre ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+			`Vous avez un nouveau dépôt pour ${amount} ${currency.toUpperCase()} en attente dans votre portefeuille ${API_NAME()}. Veuillez attendre que la transaction soit confirmée et vos fonds seront disponible dans votre portefeuille. Votre transaction nécessite  ${confirmation} confirmation(s) sur la blockchain.`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Votre ${
 				currency.toUpperCase()
@@ -236,7 +236,7 @@ const CONTACTFORM = {
 	BODY: {
 		1: 'Données du formulaire de contact',
 		2: (email) =>
-			`Le client avec email ${email} a soumis le formulaire de contact.`,
+			`Le client avec l\'email ${email} a soumis le formulaire de contact.`,
 		3: (data) => `${JSON.stringify(data, null, 2)}`
 	}
 };
@@ -255,7 +255,7 @@ const SUSPICIOUSDEPOSIT = {
 	BODY: {
 		1: 'Dépôt suspect',
 		2: (email, currency) =>
-			`Le client avec email ${email} a reçu un retrait de ${currency.toUpperCase()} ce qui est suspect.`,
+			`Le client avec l\'email ${email} a reçu un retrait de ${currency.toUpperCase()} ce qui est suspect.`,
 		3: (txid) => COMMON.TXID(txid),
 		4: 'Données de la transaction:',
 		5: (data) => `${JSON.stringify(data)}`
