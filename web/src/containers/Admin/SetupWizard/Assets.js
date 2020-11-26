@@ -95,9 +95,9 @@ const Assets = ({
 				<div className="btn-container">
 					<Button onClick={handleStore}>Proceed</Button>
 				</div>
-				<span className="step-link" onClick={() => handleNext(3)}>
+				{/* <span className="step-link" onClick={() => handleNext(3)}>
 					Skip this step
-				</span>
+				</span> */}
 			</div>
 		</div>
 	);

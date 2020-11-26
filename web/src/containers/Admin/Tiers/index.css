@@ -4,6 +4,7 @@
 	max-width: 50rem;
 	min-width: 25rem;
 	padding: 12px;
+	color: #ffffff;
 }
 .tiers-container:last-child {
 	border-bottom: 1px solid #c4c4c4;

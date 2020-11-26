@@ -177,11 +177,7 @@ export default class SetupWizard extends Component {
 							<div className="step-title title-text">
 								Steps <span className="description">(optional)</span>
 							</div>
-							<Steps
-								current={this.state.currentTab}
-								direction="vertical"
-								onChange={this.onTabChange}
-							>
+							<Steps current={this.state.currentTab} direction="vertical">
 								<Step title="1. Time zone & language" />
 								<Step title="2. Admin account security" />
 								<Step title="3. Assets & trading" />

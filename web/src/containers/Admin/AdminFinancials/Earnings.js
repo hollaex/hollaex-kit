@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 
 import { getFees } from '../AdminFees/action';
 
@@ -50,7 +50,7 @@ const descriptionColumn = [
 	},
 ];
 
-class Fees extends Component {
+class Earnings extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -119,12 +119,14 @@ class Fees extends Component {
 	render() {
 		const { currentTablePage, earningsData } = this.state;
 		return (
-			<div className="fees-container">
+			<div className="admin-earnings-container">
 				<div className="table-container">
 					<div className="title-wrapper">
 						<div className="title">Earnings</div>
-						<div className="download-btn-wrapper">
-							<span className="download-btn">Download</span>
+						<div>
+							<Button size="small" className="download-btn">
+								Download
+							</Button>
 						</div>
 					</div>
 					<div>
@@ -156,4 +158,4 @@ class Fees extends Component {
 	}
 }
 
-export default Fees;
+export default Earnings;

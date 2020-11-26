@@ -467,7 +467,13 @@ class AppWrapper extends React.Component {
 								className="link-icon"
 								alt="Link-icon"
 							/>{' '}
-							Go to Holla Dash
+							<a
+								href="https://dash.testnet.hollaex.com/"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Go to master admin
+							</a>
 						</div>
 					</div>
 					<Layout>

@@ -197,7 +197,7 @@ const AboutData = ({
 	const userInfo = {
 		email,
 		full_name,
-		gender,
+		gender: gender ? 'Woman' : 'Man',
 		nationality,
 		dob,
 		phone_number,
@@ -206,6 +206,48 @@ const AboutData = ({
 		postal_code: address.postal_code,
 		city: address.city,
 	};
+
+	const renderIcons = () => {
+		switch (checkRole()) {
+			case 'supervisor':
+				return (
+					<ReactSVG
+						path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+						wrapperClassName="user-info-icon"
+					/>
+				);
+			case 'kyc':
+				return (
+					<ReactSVG
+						path={STATIC_ICONS.BLUE_SCREEN_KYC}
+						wrapperClassName="user-info-icon"
+					/>
+				);
+			case 'tech':
+				return (
+					<ReactSVG
+						path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+						wrapperClassName="user-info-icon"
+					/>
+				);
+			case 'support':
+				return (
+					<ReactSVG
+						path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+						wrapperClassName="user-info-icon"
+					/>
+				);
+			default:
+				return (
+					<img
+						src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
+						className="user-info-icon"
+						alt="EyeIcon"
+					/>
+				);
+		}
+	};
+
 	return (
 		<div className="about-wrapper">
 			<div className="d-flex justify-content-end">
@@ -386,13 +428,7 @@ const AboutData = ({
 					</div>
 					<div className="user-info-separator"></div>
 					<div className="user-role-container">
-						<div>
-							<img
-								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
-								className="user-info-icon"
-								alt="EyeIcon"
-							/>
-						</div>
+						<div>{renderIcons()}</div>
 						<div className="user-info-label">Role: {checkRole()}</div>
 						<div className="ml-4">
 							<Link to="/admin/roles">

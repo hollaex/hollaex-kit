@@ -1,74 +1,63 @@
-.tab-contents {
+.admin-earnings-container .tab-contents {
 	margin-top: 4rem;
 }
-.content-wrapper .w-100 {
+.admin-earnings-container .content-wrapper .w-100 {
 	width: 100%;
 }
-.content-wrapper .ant-tabs {
+.admin-earnings-container .content-wrapper .ant-tabs {
 	color: #ffffff;
 }
-.filter-title {
-	font-size: 14px;
-	margin-left: 1rem;
-	color: #000000;
-}
-.fees-container .ant-tabs-nav .ant-tabs-tab {
+.admin-earnings-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
 	color: #ffffff;
 	font-weight: bold;
 }
-.fees-container .ant-tabs-nav .ant-tabs-ink-bar {
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
 	height: 6px;
 	background-color: #ffffff;
 }
-.fees-container .ant-tabs-nav .ant-tabs-ink-bar {
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
 	top: 0px;
 }
-.fees-container .ant-tabs-nav .ant-tabs-tab {
+.admin-earnings-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
 	color: #ffffff;
 	font-weight: bold;
 }
-.fees-container .ant-tabs-nav .ant-tabs-tab:hover {
+.admin-earnings-container .ant-tabs-nav .ant-tabs-tab:hover {
 	color: #ffffff;
 }
-.fees-container .ant-tabs-nav::before {
+.admin-earnings-container .ant-tabs-nav::before {
 	border-bottom: none;
 }
-.title {
+.admin-earnings-container .title {
 	font-size: 22px;
 	font-weight: bold;
 	margin-bottom: 0.5rem;
 }
-.table-container {
+.admin-earnings-container .table-container {
 	margin-top: 2rem;
 }
-.ant-table-thead > tr > th {
+.admin-earnings-container .ant-table-thead > tr > th {
 	padding: 0rem 1rem;
 }
-.title-wrapper {
+.admin-earnings-container .title-wrapper {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 1rem;
 }
-.download-btn-wrapper {
-	border: 1px solid #ffffff;
-	height: 26px;
+.admin-earnings-container .download-btn {
 	width: 100px;
-	text-align: center;
-}
-.download-btn-wrapper .download-btn {
 	font-weight: bold;
+	background-color: #0000ff;
+	color: #ffffff;
+	border-color: #ffffff;
 }
-.download-btn {
-	width: 100px;
-	border-color: #0000ff;
-}
-.ant-table-row-expand-icon {
+.admin-earnings-container .ant-table-row-expand-icon {
 	color: #2930ff;
 	border-color: #2930ff;
 }
-.id-wrapper {
+.admin-earnings-container .id-wrapper {
 	background-color: #288500;
 	width: 35px;
 	height: 25px;

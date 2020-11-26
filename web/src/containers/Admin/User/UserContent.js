@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Button, Breadcrumb, message } from 'antd';
+import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 
@@ -35,15 +35,20 @@ class UserContent extends Component {
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
 		};
-		return deactivateOtp(postValues)
-			.then((res) => {
-				refreshData({ otp_enabled: false });
-			})
-			.catch((err) => {
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
-			});
+		Modal.confirm({
+			content: <div>Are you sure want to disable 2FA?</div>,
+			onOk() {
+				deactivateOtp(postValues)
+					.then((res) => {
+						refreshData({ otp_enabled: false });
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
 	};
 
 	flagUser = (value) => {
@@ -52,15 +57,20 @@ class UserContent extends Component {
 			user_id: parseInt(userInformation.id, 10),
 			flagged: value,
 		};
-		flagUser(postValues)
-			.then((res) => {
-				refreshData(postValues);
-			})
-			.catch((err) => {
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
-			});
+		Modal.confirm({
+			content: <div>Are you sure want to flag this user?</div>,
+			onOk() {
+				flagUser(postValues)
+					.then((res) => {
+						refreshData(postValues);
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
 	};
 
 	freezeAccount = (value) => {
@@ -69,15 +79,20 @@ class UserContent extends Component {
 			user_id: parseInt(userInformation.id, 10),
 			activated: value,
 		};
-		activateUser(postValues)
-			.then((res) => {
-				refreshData(postValues);
-			})
-			.catch((err) => {
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
-			});
+		Modal.confirm({
+			content: <div>Are you sure want to freeze this account?</div>,
+			onOk() {
+				activateUser(postValues)
+					.then((res) => {
+						refreshData(postValues);
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
 	};
 
 	render() {

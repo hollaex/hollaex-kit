@@ -52,7 +52,7 @@ const Carousel_items = [
 		icon: STATIC_ICONS.SETUP_QUICK_TRADE,
 		title: 'Quick trade',
 		description:
-			'Give your users a quick and easy way to trade crypto. Simple amount input and buying/selling',
+			'Give your users a quick and easy way to trade crypto. Simple amount input and buying/selling.',
 	},
 ];
 

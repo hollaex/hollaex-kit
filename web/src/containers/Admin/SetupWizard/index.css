@@ -136,9 +136,9 @@
 	margin-left: 1.4rem;
 	color: #808083;
 }
-.candle-icon {
+.asset-content .candle-icon {
 	position: absolute;
-	right: 7px;
+	right: 0;
 	top: 10px;
 	width: 74px;
 }

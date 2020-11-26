@@ -57,10 +57,10 @@ const ExchangeReview = ({
 						<div className="option-label">2FA: </div>
 						<div className="option-value">false</div>
 					</div>
-					<div className="option-list">
+					{/* <div className="option-list">
 						<div className="option-label">Exchange network key: </div>
 						<div className="option-value"> </div>
-					</div>
+					</div> */}
 					<div className="option-list">
 						<div className="option-label">Assets: </div>
 						<div className="option-value">{coinData}</div>
