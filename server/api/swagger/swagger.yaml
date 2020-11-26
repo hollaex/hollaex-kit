@@ -1091,6 +1091,56 @@ paths:
         - user
   /order:
     x-swagger-router-controller: order
+    get:
+      operationId: getUserOrder
+      description: Get order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+    delete:
+      operationId: cancelUserOrder
+      description: Cancel order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
     post:
       description: Create a new order
       operationId: createOrder
@@ -1284,58 +1334,6 @@ paths:
             type: array
             items:
               $ref: "#/definitions/OrdersResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-        - HmacKey: []
-      x-security-scopes:
-        - user
-        - hmac
-  /user/order:
-    x-swagger-router-controller: order
-    get:
-      operationId: getUserOrder
-      description: Get order of authenticated user
-      tags:
-        - User
-      parameters:
-        - name: order_id
-          in: query
-          required: true
-          type: string
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/OrderResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-        - HmacKey: []
-      x-security-scopes:
-        - user
-        - hmac
-    delete:
-      operationId: cancelUserOrder
-      description: Cancel order of authenticated user
-      tags:
-        - User
-      parameters:
-        - name: order_id
-          in: query
-          required: true
-          type: string
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/OrderResponse"
         default:
           description: Error
           schema:
