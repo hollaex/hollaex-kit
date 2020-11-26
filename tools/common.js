@@ -392,6 +392,10 @@ const getEngineTrades = (symbol) => {
 	return getNodeLib().getPublicTrades({ symbol });
 };
 
+const getEngineOrderbook = (symbol) => {
+	return getNodeLib().getOrderbook(symbol);
+};
+
 const getEngineOrderbooks = () => {
 	return getNodeLib().getOrderbooks();
 };
@@ -453,6 +457,7 @@ module.exports = {
 	getAssetsPrices,
 	storeImageOnNetwork,
 	getEngineTrades,
+	getEngineOrderbook,
 	getEngineOrderbooks,
 	getEngineChart,
 	getEngineCharts,

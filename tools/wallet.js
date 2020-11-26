@@ -136,15 +136,15 @@ const validateWithdrawalToken = (token) => {
 		});
 };
 
-const cancelUserWithdrawalByKitId = (userId, transactionId) => {
+const cancelUserWithdrawalByKitId = (userId, withdrawalId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
-			return getNodeLib().cancelWithdrawal(user.network_id, transactionId);
+			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId);
 		});
 };
 
-const cancelUserWithdrawalByNetworkId = (networkId, transactionId) => {
-	return getNodeLib().cancelWithdrawal(networkId, transactionId);
+const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId) => {
+	return getNodeLib().cancelWithdrawal(networkId, withdrawalId);
 };
 
 const checkTransaction = (currency, transactionId, address, isTestnet = false) => {
@@ -177,11 +177,11 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 					throw new Error('Amount exceeds 24 hour withdrawal limit');
 				}
 			}
-			return getNodeLib().createWithdrawal(user.network_id, address, currency, amount, fee);
+			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, fee);
 		});
 };
 
-const createWithdrawalNetwork = (networkId, address, currency, amount, fee) => {
+const performWithdrawalNetwork = (networkId, address, currency, amount, fee) => {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, fee);
 };
 
@@ -521,7 +521,7 @@ module.exports = {
 	getUserBalanceByKitId,
 	getUserDepositsByKitId,
 	getUserWithdrawalsByKitId,
-	createWithdrawalNetwork,
+	performWithdrawalNetwork,
 	cancelUserWithdrawalByNetworkId,
 	getExchangeDeposits,
 	getExchangeWithdrawals,
