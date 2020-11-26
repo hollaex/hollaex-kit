@@ -513,9 +513,9 @@ const cancelWithdrawal = (req, res) => {
 	);
 
 	const userId = req.auth.sub.id;
-	const { transaction_id } = req.swagger.params.data.value;
+	const id = req.swagger.params.id.value;
 
-	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, transaction_id)
+	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, id)
 		.then((withdrawal) => {
 			return res.json(withdrawal);
 		})

@@ -1715,17 +1715,11 @@ paths:
       tags:
         - User
       parameters:
-        - name: data
-          in: body
+        - name: id
+          in: query
           required: true
-          schema:
-            type: object
-            required:
-              - transaction_id
-            properties:
-              transaction_id:
-                type: number
-                description: Transaction Id to be cancelled.
+          type: number
+          format: int32
       responses:
         200:
           description: Success
