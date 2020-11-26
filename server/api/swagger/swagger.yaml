@@ -1396,27 +1396,8 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
-  /user/tokens:
+  /user/token:
     x-swagger-router-controller: user
-    get:
-      operationId: getHmacToken
-      description: Get user active HMAC tokens
-      tags:
-        - User
-        - Token
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/TokensResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - user
     post:
       operationId: createHmacToken
       description: Create an HMAC token. It requires OTP to create a token
@@ -1476,6 +1457,27 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/tokens:
+    x-swagger-router-controller: user
+    get:
+      operationId: getHmacToken
+      description: Get user active HMAC tokens
+      tags:
+        - User
+        - Token
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TokensResponse"
         default:
           description: Error
           schema:
