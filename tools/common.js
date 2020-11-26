@@ -388,47 +388,47 @@ const storeImageOnNetwork = async (image, name) => {
 		.then(JSON.parse);
 };
 
-const getEngineTrades = (symbol) => {
+const getPublicTrades = (symbol) => {
 	return getNodeLib().getPublicTrades({ symbol });
 };
 
-const getEngineOrderbook = (symbol) => {
+const getOrderbook = (symbol) => {
 	return getNodeLib().getOrderbook(symbol);
 };
 
-const getEngineOrderbooks = () => {
+const getOrderbooks = () => {
 	return getNodeLib().getOrderbooks();
 };
 
-const getEngineChart = (from, to, symbol, resolution) => {
+const getChart = (from, to, symbol, resolution) => {
 	return getNodeLib().getChart(from, to, symbol, resolution);
 };
 
-const getEngineCharts = (from, to, resolution) => {
+const getCharts = (from, to, resolution) => {
 	return getNodeLib().getCharts(from, to, resolution);
 };
 
-const getEngineUdfConfig = () => {
+const getUdfConfig = () => {
 	return getNodeLib().getUdfConfig();
 };
 
-const getEngineUdfHistory = (from, to, symbol, resolution) => {
+const getUdfHistory = (from, to, symbol, resolution) => {
 	return getNodeLib().getUdfHistory(from, to, symbol, resolution);
 };
 
-const getEngineUdfSymbols = (symbol) => {
+const getUdfSymbols = (symbol) => {
 	return getNodeLib().getUdfSymbols(symbol);
 };
 
-const getEngineTicker = (symbol) => {
+const getTicker = (symbol) => {
 	return getNodeLib().getTicker(symbol);
 };
 
-const getEngineTickers = () => {
+const getTickers = () => {
 	return getNodeLib().getTickers();
 };
 
-const getEngineTradesHistory = (
+const getTradesHistory = (
 	symbol,
 	side,
 	limit,
@@ -478,15 +478,15 @@ module.exports = {
 	getTierLevels,
 	getAssetsPrices,
 	storeImageOnNetwork,
-	getEngineTrades,
-	getEngineOrderbook,
-	getEngineOrderbooks,
-	getEngineChart,
-	getEngineCharts,
-	getEngineUdfConfig,
-	getEngineUdfHistory,
-	getEngineUdfSymbols,
-	getEngineTicker,
-	getEngineTickers,
-	getEngineTradesHistory
+	getPublicTrades,
+	getOrderbook,
+	getOrderbooks,
+	getChart,
+	getCharts,
+	getUdfConfig,
+	getUdfHistory,
+	getUdfSymbols,
+	getTicker,
+	getTickers,
+	getTradesHistory
 };
