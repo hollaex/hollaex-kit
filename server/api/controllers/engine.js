@@ -221,25 +221,6 @@ const getSymbols = (req, res) => {
 		});
 };
 
-const getAssetPrice = (req, res) => {
-	const { asset, quote, amount } = req.swagger.params;
-
-	loggerEngine.info(req.uuid, 'controllers/engine/getAssetPrice asset', asset.value, 'quote', quote.value, 'amount', amount.value);
-
-	toolsLib.getAssetPrice(asset.value, quote.value, amount.value)
-		.then((data) => {
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerEngine.error(
-				req.uuid,
-				'controller/engine/getAssetPrice',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
 const getAssetsPrices = (req, res) => {
 	const { assets, quote, amount } = req.swagger.params;
 
@@ -270,6 +251,5 @@ module.exports = {
 	getConfig,
 	getHistory,
 	getSymbols,
-	getAssetPrice,
 	getAssetsPrices
 };
