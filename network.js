@@ -89,7 +89,7 @@ class HollaExNetwork {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
-	getTrades(
+	getUserTrades(
 		opts = {
 			userId: null,
 			symbol: null,
@@ -663,7 +663,7 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get trades for. Leave blank to get trades of all symbols
 	 * @return {object} Object with trades
 	 */
-	getEngineTrades(opts = { symbol: null }) {
+	getPublicTrades(opts = { symbol: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/trades`;
@@ -686,7 +686,7 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
 	 * @return {object} Object with orderbook
 	 */
-	getEngineOrderbook(symbol) {
+	getOrderbook(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orderbook`;
@@ -709,7 +709,7 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
 	 * @return {object} Object with orderbook
 	 */
-	getEngineOrderbooks() {
+	getOrderbooks() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orderbooks`;
@@ -731,7 +731,7 @@ class HollaExNetwork {
 	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
 	 * @return {object} Object with trade history info
 	 */
-	getEngineChart(from, to, symbol, resolution) {
+	getChart(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
@@ -751,7 +751,7 @@ class HollaExNetwork {
 	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
 	 * @return {array} Array of objects with trade history info
 	 */
-	getEngineCharts(from, to, resolution) {
+	getCharts(from, to, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/charts?from=${from}&to=${to}&resolution=${resolution}`;
@@ -768,7 +768,7 @@ class HollaExNetwork {
 	 * Get TradingView udf config
 	 * @return {object} Object with TradingView udf config
 	 */
-	getEngineUdfConfig() {
+	getUdfConfig() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/udf/config`;
@@ -789,7 +789,7 @@ class HollaExNetwork {
 	 * @param {string} resolution - Resolution of query. 1d, 1W, etc
 	 * @return {object} Object with TradingView udf history HOLCV
 	 */
-	getEngineUdfHistory(from, to, symbol, resolution) {
+	getUdfHistory(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
@@ -807,7 +807,7 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get
 	 * @return {object} Object with TradingView udf symbols
 	 */
-	getEngineUdfSymbols(symbol) {
+	getUdfSymbols(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/udf/symbols?symbol=${symbol}`;
@@ -825,7 +825,7 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get
 	 * @return {object} Object with historical data
 	 */
-	getEngineTicker(symbol) {
+	getTicker(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/ticker`;
@@ -847,7 +847,7 @@ class HollaExNetwork {
 	 * Get historical data for all symbols, time interval is 5 minutes
 	 * @return {object} Object with historical data for all symbols
 	 */
-	getEngineTickers() {
+	getTickers() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/tickers`;
