@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const { isBoolean } = require('lodash');
+const { isBoolean, isPlainObject, isNumber } = require('lodash');
 const { createRequest, generateHeaders, checkKit, createSignature } = require('./utils');
 const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
@@ -89,16 +89,27 @@ class HollaExNetwork {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
-	getTrades(userId, symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getTrades(
+		opts = {
+			userId: null,
+			symbol: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'desc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
+	) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
-		if (userId) {
-			path += `&user_id=${userId}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
 		}
-		if (symbol) {
-			path += `&symbol=${symbol}`;
+		if (opts.symbol) {
+			path += `&symbol=${opts.symbol}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -162,7 +173,7 @@ class HollaExNetwork {
 	 * @param {number} fee - The withdrawal fee
 	 * @return {object} Withdrawal made on the network
 	 */
-	createWithdrawal(userId, address, currency, amount, fee) {
+	performWithdrawal(userId, address, currency, amount, fee) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${userId}`;
@@ -210,45 +221,47 @@ class HollaExNetwork {
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
 	getDeposits(
-		userId,
-		currency,
-		status,
-		dismissed,
-		rejected,
-		processing,
-		waiting,
-		limit = 50,
-		page = 1,
-		orderBy = 'id',
-		order = 'asc',
-		startDate = 0,
-		endDate = moment().toISOString()
+		opts = {
+			userId: null,
+			currency: null,
+			status: null,
+			dismissed: null,
+			rejected: null,
+			processing: null,
+			waiting: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'asc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
 	) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 
-		if (userId) {
-			path += `&user_id=${userId}`;
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
 		}
-		if (currency) {
-			path += `&currency=${currency}`;
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
 		}
-		if (isBoolean(status)) {
-			path += `&status=${status}`;
+		if (isBoolean(opts.status)) {
+			path += `&status=${opts.status}`;
 		}
-		if (isBoolean(dismissed)) {
-			path += `&dismissed=${dismissed}`;
+		if (isBoolean(opts.dismissed)) {
+			path += `&dismissed=${opts.dismissed}`;
 		}
-		if (isBoolean(rejected)) {
-			path += `&rejected=${rejected}`;
+		if (isBoolean(opts.rejected)) {
+			path += `&rejected=${opts.rejected}`;
 		}
-		if (isBoolean(processing)) {
-			path += `&processing=${processing}`;
+		if (isBoolean(opts.processing)) {
+			path += `&processing=${opts.processing}`;
 		}
-		if (isBoolean(waiting)) {
-			path += `&waiting=${waiting}`;
+		if (isBoolean(opts.waiting)) {
+			path += `&waiting=${opts.waiting}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -278,45 +291,47 @@ class HollaExNetwork {
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
 	getWithdrawals(
-		userId,
-		currency,
-		status,
-		dismissed,
-		rejected,
-		processing,
-		waiting,
-		limit = 50,
-		page = 1,
-		orderBy = 'id',
-		order = 'asc',
-		startDate = 0,
-		endDate = moment().toISOString()
+		opts = {
+			userId: null,
+			currency: null,
+			status: null,
+			dismissed: null,
+			rejected: null,
+			processing: null,
+			waiting: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'asc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
 	) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 
-		if (userId) {
-			path += `&user_id=${userId}`;
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
 		}
-		if (currency) {
-			path += `&currency=${currency}`;
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
 		}
-		if (isBoolean(status)) {
-			path += `&status=${status}`;
+		if (isBoolean(opts.status)) {
+			path += `&status=${opts.status}`;
 		}
-		if (isBoolean(dismissed)) {
-			path += `&dismissed=${dismissed}`;
+		if (isBoolean(opts.dismissed)) {
+			path += `&dismissed=${opts.dismissed}`;
 		}
-		if (isBoolean(rejected)) {
-			path += `&rejected=${rejected}`;
+		if (isBoolean(opts.rejected)) {
+			path += `&rejected=${opts.rejected}`;
 		}
-		if (isBoolean(processing)) {
-			path += `&processing=${processing}`;
+		if (isBoolean(opts.processing)) {
+			path += `&processing=${opts.processing}`;
 		}
-		if (isBoolean(waiting)) {
-			path += `&waiting=${waiting}`;
+		if (isBoolean(opts.waiting)) {
+			path += `&waiting=${opts.waiting}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -333,13 +348,18 @@ class HollaExNetwork {
 	 * @param {number} userId - User id on network. Leave blank to get balance for exchange
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
-	getBalance(userId) {
+	getBalance(
+		opts = {
+			userId: null
+		}
+	) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/balance`;
-		if (userId) {
-			path += `?user_id=${userId}`;
+
+		if (opts.userId) {
+			path += `?user_id=${opts.userId}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -380,28 +400,41 @@ class HollaExNetwork {
 	 * @param {number} price - The price at which to order (only required if type is 'limit')
 	 * @return {object} Newly created order values e.g. symbol, id, side, status, etc.
 	 */
-	createOrder(userId, symbol, side, size, type, price = 0, feeData = {}, stop, meta = {}) {
+	createOrder(
+		userId,
+		symbol,
+		side,
+		size,
+		type,
+		price = 0,
+		feeData = {
+			fee_structure: null,
+			fee_coin: null
+		},
+		opts = {
+			stop: null,
+			meta: null
+		}
+	) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}`;
 		const data = { symbol, side, size, type, price };
 
-		if (feeData.fee !== undefined) {
-			data.fee = feeData.fee;
-		} else if (feeData.fee_structure !== undefined) {
+		if (isPlainObject(feeData.fee_structure)) {
 			data.fee_structure = feeData.fee_structure;
 		}
 
-		if (feeData.fee_coin !== undefined) {
+		if (feeData.fee_coin) {
 			data.fee_coin = feeData.fee_coin;
 		}
 
-		if (Object.keys(meta).length > 0) {
-			data.meta = meta;
+		if (isPlainObject(opts.meta)) {
+			data.meta = opts.meta;
 		}
 
-		if (stop !== undefined) {
-			data.stop = stop;
+		if (isNumber(opts.stop)) {
+			data.stop = opts.stop;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
@@ -447,25 +480,39 @@ class HollaExNetwork {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {array} Array of queried orders
 	 */
-	getOrders(userId, symbol, side, status, open, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getOrders(
+		opts = {
+			userId: null,
+			symbol: null,
+			side: null,
+			status: null,
+			open: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'desc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
+	) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
-		if (userId) {
-			path += `&user_id=${userId}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
 		}
-		if (symbol) {
-			path += `&symbol=${symbol}`;
+		if (opts.symbol) {
+			path += `&symbol=${opts.symbol}`;
 		}
-		if (side) {
-			path += `&side=${side}`;
+		if (opts.side) {
+			path += `&side=${opts.side}`;
 		}
-		if (status) {
-			path += `&status=${status}`;
+		if (opts.status) {
+			path += `&status=${opts.status}`;
 		}
-		if (open) {
-			path += `&open=${open}`;
+		if (isBoolean(opts.open)) {
+			path += `&open=${opts.open}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -483,13 +530,13 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
 	 * @return {array} Array of canceled orders
 	 */
-	cancelOrders(userId, symbol) {
+	cancelOrders(userId, opts = { symbol: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
 
 		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?user_id=${userId}`;
-		if (symbol) {
-			path += `&symbol=${symbol}`;
+		if (opts.symbol) {
+			path += `&symbol=${opts.symbol}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -527,10 +574,15 @@ class HollaExNetwork {
 	 * @param {boolean} isTestnet - Network transaction was made on. Default: false
 	 * @return {object} Success or failed message
 	 */
-	checkTransaction(currency, transactionId, address, isTestnet = false) {
+	checkTransaction(currency, transactionId, address, opts = { isTestnet: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/check-transaction?currency=${currency}&transaction_id=${transactionId}&address=${address}&is_testnet=${isTestnet}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/check-transaction?currency=${currency}&transaction_id=${transactionId}&address=${address}`;
+
+		if (isBoolean(opts.isTestnet)) {
+			path += `&is_testnet=${opts.isTestnet}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -549,7 +601,7 @@ class HollaExNetwork {
 	 * @param {string} description - Description of transfer. Default: Empty string
 	 * @return {object} Object with field transaction_id
 	 */
-	transferAsset(senderId, receiverId, currency, amount, description = '') {
+	transferAsset(senderId, receiverId, currency, amount, opts = { description: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/transfer`;
@@ -557,9 +609,13 @@ class HollaExNetwork {
 			sender_id: senderId,
 			receiver_id: receiverId,
 			currency,
-			description,
 			amount
 		};
+
+		if (opts.description) {
+			data.description = opts.description;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
@@ -577,13 +633,13 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get trades for. Leave blank to get trades of all symbols
 	 * @return {object} Object with trades
 	 */
-	getEngineTrades(symbol) {
+	getEngineTrades(opts = { symbol: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/trades`;
 
-		if (symbol) {
-			path += `?symbol=${symbol}`;
+		if (opts.symbol) {
+			path += `?symbol=${opts.symbol}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -600,13 +656,13 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
 	 * @return {object} Object with orderbook
 	 */
-	getEngineOrderbooks(symbol) {
+	getEngineOrderbooks(opts = { symbol: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/orderbooks`;
 
-		if (symbol) {
-			path += `?symbol=${symbol}`;
+		if (opts.symbol) {
+			path += `?symbol=${opts.symbol}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
@@ -750,15 +806,19 @@ class HollaExNetwork {
 		);
 	}
 
-	mintAsset(userId, currency, description, amount) {
+	mintAsset(userId, currency, amount, opts = { description: null }) {
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/mint`;
 		const data = {
 			user_id: userId,
 			currency,
-			description,
 			amount
 		};
+
+		if (opts.description) {
+			data.description = opts.description;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
@@ -769,15 +829,19 @@ class HollaExNetwork {
 		);
 	}
 
-	burnAsset(userId, currency, description, amount) {
+	burnAsset(userId, currency, amount, opts = { description: null }) {
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/burn`;
 		const data = {
 			user_id: userId,
 			currency,
-			description,
 			amount
 		};
+
+		if (opts.description) {
+			data.description = opts.description;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
 		return createRequest(
@@ -788,10 +852,15 @@ class HollaExNetwork {
 		);
 	}
 
-	getGeneratedFees(limit = 50, page = 1, startDate = 0, endDate = moment().toISOString()) {
+	getGeneratedFees(opts = {
+		limit: 50,
+		page: 1,
+		startDate: 0,
+		endDate: moment().toISOString()
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/fee?exchange_id=${this.exchange_id}&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/fee?exchange_id=${this.exchange_id}&limit=${opts.limit}&page=${opts.page}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -801,10 +870,19 @@ class HollaExNetwork {
 		);
 	}
 
-	getOraclePrice(asset, quote = 'usdt', amount = 1) {
+	getOraclePrice(asset, opts = { quote: null, amount: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/oracle/price?exchange_id=${this.exchange_id}&asset=${asset}&quote=${quote}&amount=${amount}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/oracle/price?exchange_id=${this.exchange_id}&asset=${asset}`;
+
+		if (opts.quote) {
+			path += `&quote=${opts.quote}`;
+		}
+
+		if (isNumber(opts.amount)) {
+			path += `&amount=${opts.amount}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -814,12 +892,21 @@ class HollaExNetwork {
 		);
 	}
 
-	getOraclePrices(assets = [], quote = 'usdt', amount = 1) {
+	getOraclePrices(assets = [], opts = { quote: null, amount: null }) {
 		checkKit(this.exchange_id);
 		assets = assets.join(',');
 
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/oracle/prices?exchange_id=${this.exchange_id}&assets=${assets}&quote=${quote}&amount=${amount}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/oracle/prices?exchange_id=${this.exchange_id}&assets=${assets}`;
+
+		if (opts.quote) {
+			path += `&quote=${opts.quote}`;
+		}
+
+		if (isNumber(opts.amount)) {
+			path += `&amount=${opts.amount}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
