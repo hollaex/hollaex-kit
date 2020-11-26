@@ -15,7 +15,7 @@ const getTopOrderbook = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineOrderbook(symbol)
+	toolsLib.getOrderbook(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -30,7 +30,7 @@ const getTopOrderbook = (req, res) => {
 };
 
 const getTopOrderbooks = (req, res) => {
-	toolsLib.getEngineOrderbooks()
+	toolsLib.getOrderbooks()
 		.then((data) => {
 			return res.json(data);
 		})
@@ -56,7 +56,7 @@ const getTrades = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineTrades(symbol)
+	toolsLib.getPublicTrades(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -71,7 +71,6 @@ const getTrades = (req, res) => {
 };
 
 const getTradesHistory = (req, res) => {
-
 	const { symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	if (symbol.value && !toolsLib.subscribedToPair(symbol.value)) {
@@ -83,7 +82,7 @@ const getTradesHistory = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineTradesHistory(
+	toolsLib.getTradesHistory(
 		symbol.value,
 		side.value,
 		limit.value,
@@ -118,7 +117,7 @@ const getTicker = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineTicker(symbol)
+	toolsLib.getTicker(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -133,7 +132,7 @@ const getTicker = (req, res) => {
 };
 
 const getAllTicker = (req, res) => {
-	toolsLib.getEngineTickers()
+	toolsLib.getTickers()
 		.then((data) => {
 			return res.json(data);
 		})
@@ -159,7 +158,7 @@ const getChart = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineChart(from.value, to.value, symbol.value, resolution.value)
+	toolsLib.getChart(from.value, to.value, symbol.value, resolution.value)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -176,7 +175,7 @@ const getChart = (req, res) => {
 const getCharts = (req, res) => {
 	const { from, to, resolution } = req.swagger.params;
 
-	toolsLib.getEngineCharts(from.value, to.value, resolution.value)
+	toolsLib.getCharts(from.value, to.value, resolution.value)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -191,7 +190,7 @@ const getCharts = (req, res) => {
 };
 
 const getConfig = (req, res) => {
-	toolsLib.getEngineUdfConfig()
+	toolsLib.getUdfConfig()
 		.then((data) => {
 			return res.json(data);
 		})
@@ -217,7 +216,7 @@ const getHistory = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineUdfHistory(from.value, to.value, symbol.value, resolution.value)
+	toolsLib.getUdfHistory(from.value, to.value, symbol.value, resolution.value)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -243,7 +242,7 @@ const getSymbols = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getEngineUdfSymbols(symbol)
+	toolsLib.getUdfSymbols(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
