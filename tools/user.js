@@ -2,7 +2,7 @@
 
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
-const { has, omit, pick, each, differenceWith, isEqual } = require('lodash');
+const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean } = require('lodash');
 const { isEmail } = require('validator');
 const { SERVER_PATH } = require('../constants');
 const {
@@ -58,7 +58,7 @@ const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./sec
 
 	/* Onboarding*/
 
-const signUpUser = (email, password, referral) => {
+const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
 		return reject(new Error(SIGNUP_NOT_AVAILABLE));
 	}
@@ -98,18 +98,17 @@ const signUpUser = (email, password, referral) => {
 				verificationCode.code,
 				{}
 			);
-			if (referral) {
-				checkAffiliation(referral, user.id);
+			if (isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
 			}
 			return user;
 		});
 };
 
-const verifyUser = (email, code, domain) => {
+const verifyUser = (email, code) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return dbQuery.findOne('user',
-			{ where: { email } },
-			{ transaction }
+			{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
 		)
 			.then((user) => {
 				return all([
@@ -117,8 +116,7 @@ const verifyUser = (email, code, domain) => {
 						{
 							where: { user_id: user.id },
 							attributes: ['id', 'code', 'verified', 'user_id']
-						},
-						{ transaction }
+						}
 					),
 					user
 				]);
@@ -140,25 +138,21 @@ const verifyUser = (email, code, domain) => {
 				return user.update({
 					network_id: networkUser.id
 				}, { fields: ['network_id'], returning: true, transaction });
-			})
-			.then((user) => {
-				sendEmail(
-					MAILTYPE.WELCOME,
-					user.email,
-					{},
-					user.settings,
-					domain
-				);
-				return;
 			});
 	});
 };
 
-const createUser = (email, password, role = 'user', id) => {
+const createUser = (
+	email,
+	password,
+	opts = {
+		role: 'user',
+		id: null
+	}
+) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return dbQuery.findOne('user', {
-			where: { email },
-			transaction
+			where: { email }
 		})
 			.then((user) => {
 				if (user) {
@@ -172,8 +166,8 @@ const createUser = (email, password, role = 'user', id) => {
 					is_communicator: false
 				};
 
-				if (role !== 'user') {
-					const userRole = 'is_' + role.toLowerCase();
+				if (opts.role !== 'user') {
+					const userRole = 'is_' + opts.role.toLowerCase();
 					if (roles[userRole] === undefined) {
 						throw new Error('Role does not exist');
 					}
@@ -184,18 +178,18 @@ const createUser = (email, password, role = 'user', id) => {
 					});
 				}
 
-				const opts = {
+				const options = {
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
 					...roles
 				};
 
-				if (id) {
-					opts.id = id;
+				if (isNumber(opts.id)) {
+					options.id = opts.id;
 				}
 
-				return getModel('user').create(opts, { transaction });
+				return getModel('user').create(options, { transaction });
 			})
 			.then((user) => {
 				return all([
@@ -277,15 +271,38 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 		});
 };
 
-const registerUserLogin = (userId, ip, device = '', domain = '', origin = '', referer = '') => {
-	return getModel('login').create({
+const registerUserLogin = (
+	userId,
+	ip,
+	opts = {
+		device: null,
+		domain: null,
+		origin: null,
+		referer: null
+	}
+) => {
+	const login = {
 		user_id: userId,
-		ip,
-		device,
-		domain,
-		origin,
-		referer
-	});
+		ip
+	};
+
+	if (isString(opts.device)) {
+		login.device = opts.device;
+	}
+
+	if (isString(opts.domain)) {
+		login.domain = opts.domain;
+	}
+
+	if (isString(opts.origin)) {
+		login.origin = opts.origin;
+	}
+
+	if (isString(opts.referer)) {
+		login.referer = opts.referer;
+	}
+
+	return getModel('login').create(login);
 };
 
 	/* Public Endpoints*/
@@ -375,50 +392,61 @@ const getAllUsers = () => {
 	});
 };
 
-const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, start_date, end_date, format) => {
-	const pagination = paginationQuery(limit, page);
-	const timeframe = timeframeQuery(start_date, end_date);
-	const ordering = orderingQuery(order_by, order);
+const getAllUsersAdmin = (opts = {
+	id: null,
+	search: null,
+	pending: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+	const ordering = orderingQuery(opts.order_by, opts.order);
 	let query = {
 		where: {
 			created_at: timeframe
 		}
 	};
-	if (id || search) {
+	if (opts.id || opts.search) {
 		query.attributes = {
 			exclude: ['balance', 'password', 'updated_at']
 		};
-		if (id) {
-			query.where.id = id;
+		if (opts.id) {
+			query.where.id = opts.id;
 		} else {
 			query.where = {
 				$or: [
 					{
 						email: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
 					{
 						username: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
 					{
 						full_name: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
 					{
 						phone_number: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
-					getModel('sequelize').literal(`id_data ->> 'number'='${search}'`),
-					...getKitCoins().map((coin) => getModel('sequelize').literal(`crypto_wallet ->> '${coin}'='${search}'`))
+					getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`),
+					...getKitCoins().map((coin) => getModel('sequelize').literal(`crypto_wallet ->> '${coin}'='${opts.search}'`))
 				]
 			};
 		}
-	} else if (pending) {
+	} else if (isBoolean(opts.pending) && opts.pending) {
 		query = {
 			where: {
 				$or: [
@@ -452,14 +480,16 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 			order: [ordering]
 		};
 	}
-	if (!format) {
+
+	if (!opts.format) {
 		query = {...query, ...pagination};
-	} else if (!pending) {
+	} else if (isBoolean(opts.pending) && !opts.pending) {
 		query.attributes.exclude.push('settings');
 	}
+
 	return dbQuery.findAndCountAllWithRows('user', query)
 		.then(async ({ count, data }) => {
-			if (id || search) {
+			if (opts.id || opts.search) {
 				if (count === 0) {
 					// Need to throw error if query was for one user and the user is not found
 					const error = new Error(USER_NOT_FOUND);
@@ -475,7 +505,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 			return { count, data };
 		})
 		.then(async (users) => {
-			if (format) {
+			if (opts.format) {
 				if (users.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
