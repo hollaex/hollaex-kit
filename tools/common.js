@@ -341,18 +341,6 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 		});
 };
 
-const getAssetPrice = (asset, quote = 'usdt', amount = 1) => {
-	if (!subscribedToCoin(asset)) {
-		return reject(new Error('Invalid asset'));
-	}
-
-	if (amount <= 0) {
-		return reject(new Error('Amount must be greater than 0'));
-	}
-
-	return getNodeLib().getOraclePrice(asset, quote, amount);
-};
-
 const getAssetsPrices = (assets = [], quote, amount) => {
 	each(assets, (asset) => {
 		if (!subscribedToCoin(asset)) {
@@ -364,7 +352,7 @@ const getAssetsPrices = (assets = [], quote, amount) => {
 		return reject(new Error('Amount must be greater than 0'));
 	}
 
-	return getNodeLib().getOraclePrices(assets, quote, amount);
+	return getNodeLib().getOraclePrices(assets, { quote, amount });
 };
 
 const storeImageOnNetwork = async (image, name) => {
@@ -401,39 +389,39 @@ const storeImageOnNetwork = async (image, name) => {
 };
 
 const getEngineTrades = (symbol) => {
-	return getNodeLib().getEngineTrades(symbol);
+	return getNodeLib().getPublicTrades({ symbol });
 };
 
-const getEngineOrderbooks = (symbol) => {
-	return getNodeLib().getEngineOrderbooks(symbol);
+const getEngineOrderbooks = () => {
+	return getNodeLib().getOrderbooks();
 };
 
 const getEngineChart = (from, to, symbol, resolution) => {
-	return getNodeLib().getEngineChart(from, to, symbol, resolution);
+	return getNodeLib().getChart(from, to, symbol, resolution);
 };
 
 const getEngineCharts = (from, to, resolution) => {
-	return getNodeLib().getEngineCharts(from, to, resolution);
+	return getNodeLib().getCharts(from, to, resolution);
 };
 
 const getEngineUdfConfig = () => {
-	return getNodeLib().getEngineUdfConfig();
+	return getNodeLib().getUdfConfig();
 };
 
 const getEngineUdfHistory = (from, to, symbol, resolution) => {
-	return getNodeLib().getEngineUdfHistory(from, to, symbol, resolution);
+	return getNodeLib().getUdfHistory(from, to, symbol, resolution);
 };
 
 const getEngineUdfSymbols = (symbol) => {
-	return getNodeLib().getEngineUdfSymbols(symbol);
+	return getNodeLib().getUdfSymbols(symbol);
 };
 
 const getEngineTicker = (symbol) => {
-	return getNodeLib().getEngineTicker(symbol);
+	return getNodeLib().getTicker(symbol);
 };
 
 const getEngineTickers = () => {
-	return getNodeLib().getEngineTickers();
+	return getNodeLib().getTickers();
 };
 
 module.exports = {
@@ -462,7 +450,6 @@ module.exports = {
 	updateNetworkKeySecret,
 	isValidTierLevel,
 	getTierLevels,
-	getAssetPrice,
 	getAssetsPrices,
 	storeImageOnNetwork,
 	getEngineTrades,
