@@ -1237,7 +1237,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-  /user/orders:
+  /orders:
     x-swagger-router-controller: order
     get:
       operationId: getAllUserOrders
@@ -1316,6 +1316,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /order/all:
+    x-swagger-router-controller: order
     delete:
       operationId: cancelAllUserOrders
       description: Cancel all orders of authenticated user
