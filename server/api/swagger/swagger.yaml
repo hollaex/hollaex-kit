@@ -431,6 +431,72 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /trades/history:
+    x-swagger-router-controller: engine
+    get:
+      description: Returns the trades
+      operationId: getTradesHistory
+      tags:
+        - Public
+        - Engine
+      parameters:
+        - in: query
+          name: symbol
+          description: Symbol pair
+          required: false
+          type: string
+        - in: query
+          name: side
+          description: Symbol pair
+          required: false
+          type: string
+          enum: [ 'buy', 'sell' ]
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PublicTradesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /ticker:
     x-swagger-router-controller: engine
     get:

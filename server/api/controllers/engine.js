@@ -70,6 +70,42 @@ const getTrades = (req, res) => {
 		});
 };
 
+const getTradesHistory = (req, res) => {
+
+	const { symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (symbol.value && !toolsLib.subscribedToPair(symbol.value)) {
+		loggerEngine.error(
+			req.uuid,
+			'controller/engine/getTopOrderbooks',
+			'Invalid symbol'
+		);
+		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
+	toolsLib.getEngineTradesHistory(
+		symbol.value,
+		side.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		start_date.value,
+		end_date.value
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerEngine.error(
+				req.uuid,
+				'controller/engine/getTrades',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 const getTicker = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
@@ -251,5 +287,6 @@ module.exports = {
 	getConfig,
 	getHistory,
 	getSymbols,
-	getAssetsPrices
+	getAssetsPrices,
+	getTradesHistory
 };
