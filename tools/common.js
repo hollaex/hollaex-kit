@@ -428,6 +428,28 @@ const getEngineTickers = () => {
 	return getNodeLib().getTickers();
 };
 
+const getEngineTradesHistory = (
+	symbol,
+	side,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate
+) => {
+	return getNodeLib().getTradesHistory({
+		symbol,
+		side,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate
+	});
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -465,5 +487,6 @@ module.exports = {
 	getEngineUdfHistory,
 	getEngineUdfSymbols,
 	getEngineTicker,
-	getEngineTickers
+	getEngineTickers,
+	getEngineTradesHistory
 };
