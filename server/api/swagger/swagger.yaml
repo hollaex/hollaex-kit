@@ -1707,6 +1707,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /user/withdrawal:
+    x-swagger-router-controller: withdrawal
     delete:
       operationId: cancelWithdrawal
       description: Cancel a user's withdrawal which is pending
