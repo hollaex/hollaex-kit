@@ -45,7 +45,7 @@ class HollaExNetwork {
 	async init() {
 		checkKit(this.activation_code);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/init/${this.activation_code}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/init/${this.activation_code}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		let exchange = await createRequest(
@@ -65,7 +65,7 @@ class HollaExNetwork {
 	createUser(email) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/signup`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/signup`;
 		const data = { email };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
@@ -104,7 +104,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/user/trades?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
 		}
@@ -124,7 +124,7 @@ class HollaExNetwork {
 	getUser(userId) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/user?user_id=${userId}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/user?user_id=${userId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -141,7 +141,7 @@ class HollaExNetwork {
 	getUsers() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/users`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/users`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -176,7 +176,7 @@ class HollaExNetwork {
 	performWithdrawal(userId, address, currency, amount, fee) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${userId}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/withdraw?user_id=${userId}`;
 		const data = { address, currency, amount, fee };
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 
@@ -188,18 +188,16 @@ class HollaExNetwork {
 		);
 	}
 
-	cancelWithdrawal(userId, transactionId) {
+	cancelWithdrawal(userId, withdrawalId) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdraw?user_id=${userId}`;
-		const data = { transaction_id: transactionId };
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/withdraw?user_id=${userId}&id=${withdrawalId}`;
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
 			verb,
 			`${HOLLAEX_NETWORK_URL}${path}`,
-			headers,
-			data
+			headers
 		);
 	}
 
@@ -240,7 +238,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/deposits?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/deposits?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
@@ -310,7 +308,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/withdrawals?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/withdrawals?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
@@ -356,7 +354,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/balance`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/balance`;
 
 		if (opts.userId) {
 			path += `?user_id=${opts.userId}`;
@@ -380,7 +378,7 @@ class HollaExNetwork {
 	getOrder(userId, orderId) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}&order_id=${orderId}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -418,7 +416,7 @@ class HollaExNetwork {
 	) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/order?user_id=${userId}`;
 		const data = { symbol, side, size, type, price };
 
 		if (isPlainObject(feeData.fee_structure)) {
@@ -456,7 +454,7 @@ class HollaExNetwork {
 	cancelOrder(userId, orderId) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/order?user_id=${userId}&order_id=${orderId}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -498,7 +496,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orders?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
 		}
@@ -534,7 +532,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/orders?user_id=${userId}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/order/all?user_id=${userId}`;
 		if (opts.symbol) {
 			path += `&symbol=${opts.symbol}`;
 		}
@@ -556,7 +554,7 @@ class HollaExNetwork {
 	getUserStats(userId) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/user/stats?user_id=${userId}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/user/stats?user_id=${userId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -604,7 +602,7 @@ class HollaExNetwork {
 	transferAsset(senderId, receiverId, currency, amount, opts = { description: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/transfer`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/transfer`;
 		const data = {
 			sender_id: senderId,
 			receiver_id: receiverId,
@@ -626,6 +624,38 @@ class HollaExNetwork {
 		);
 	}
 
+	getTradesHistory(
+		opts = {
+			symbol: null,
+			side: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'asc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
+	) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/trades/history?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		if (opts.symbol) {
+			path += `&symbol=${opts.symbol}`;
+		}
+		if (opts.side) {
+			path += `&side=${opts.side}`;
+		}
+
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
 	/* Network Engine Endpoints*/
 
 	/**
@@ -636,7 +666,7 @@ class HollaExNetwork {
 	getEngineTrades(opts = { symbol: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		let path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/trades`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/trades`;
 
 		if (opts.symbol) {
 			path += `?symbol=${opts.symbol}`;
@@ -656,14 +686,33 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
 	 * @return {object} Object with orderbook
 	 */
-	getEngineOrderbooks(opts = { symbol: null }) {
+	getEngineOrderbook(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		let path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/orderbooks`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orderbook`;
 
-		if (opts.symbol) {
-			path += `?symbol=${opts.symbol}`;
+		if (symbol) {
+			path += `?symbol=${symbol}`;
 		}
+
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	/**
+	 * Get top orderbooks
+	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
+	 * @return {object} Object with orderbook
+	 */
+	getEngineOrderbooks() {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orderbooks`;
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
@@ -685,7 +734,7 @@ class HollaExNetwork {
 	getEngineChart(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -705,7 +754,7 @@ class HollaExNetwork {
 	getEngineCharts(from, to, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/charts?from=${from}&to=${to}&resolution=${resolution}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/charts?from=${from}&to=${to}&resolution=${resolution}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -722,7 +771,7 @@ class HollaExNetwork {
 	getEngineUdfConfig() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/config`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/udf/config`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -743,7 +792,7 @@ class HollaExNetwork {
 	getEngineUdfHistory(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -761,7 +810,7 @@ class HollaExNetwork {
 	getEngineUdfSymbols(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/udf/symbols?symbol=${symbol}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/udf/symbols?symbol=${symbol}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -779,7 +828,12 @@ class HollaExNetwork {
 	getEngineTicker(symbol) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/ticker?symbol=${symbol}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/ticker`;
+
+		if (symbol) {
+			path += `?symbol=${symbol}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -796,7 +850,7 @@ class HollaExNetwork {
 	getEngineTickers() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/engine/${this.exchange_id}/ticker/all`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/tickers`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
@@ -808,7 +862,7 @@ class HollaExNetwork {
 
 	mintAsset(userId, currency, amount, opts = { description: null }) {
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/mint`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/mint`;
 		const data = {
 			user_id: userId,
 			currency,
@@ -831,7 +885,7 @@ class HollaExNetwork {
 
 	burnAsset(userId, currency, amount, opts = { description: null }) {
 		const verb = 'POST';
-		const path = `${HOLLAEX_NETWORK_VERSION}/burn`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/burn`;
 		const data = {
 			user_id: userId,
 			currency,
@@ -860,29 +914,7 @@ class HollaExNetwork {
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/fee?exchange_id=${this.exchange_id}&limit=${opts.limit}&page=${opts.page}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-
-		return createRequest(
-			verb,
-			`${HOLLAEX_NETWORK_URL}${path}`,
-			headers
-		);
-	}
-
-	getOraclePrice(asset, opts = { quote: null, amount: null }) {
-		checkKit(this.exchange_id);
-		const verb = 'GET';
-		let path = `${HOLLAEX_NETWORK_VERSION}/oracle/price?exchange_id=${this.exchange_id}&asset=${asset}`;
-
-		if (opts.quote) {
-			path += `&quote=${opts.quote}`;
-		}
-
-		if (isNumber(opts.amount)) {
-			path += `&amount=${opts.amount}`;
-		}
-
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/fee?limit=${opts.limit}&page=${opts.page}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
