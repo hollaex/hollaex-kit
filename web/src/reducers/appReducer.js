@@ -16,7 +16,6 @@ import {
 	SET_ORDER_LIMITS,
 	SET_TICKER_FROM_TRADE,
 	SET_CURRENCIES,
-	SET_VALID_BASE_CURRENCY,
 	SET_CONFIG,
 	SET_INFO,
 	SET_WAVE_AUCTION,
@@ -130,7 +129,6 @@ const INITIAL_STATE = {
 			withdrawal_limits: {},
 		},
 	},
-	isValidBase: false,
 	constants: {},
 	config_level: [],
 	info: { is_trial: false, active: true, status: true },
@@ -323,11 +321,6 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				orderLimits: payload,
-			};
-		case SET_VALID_BASE_CURRENCY:
-			return {
-				...state,
-				isValidBase: payload.isValidBase,
 			};
 		case SET_CONFIG:
 			return {

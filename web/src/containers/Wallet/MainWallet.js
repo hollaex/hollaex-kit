@@ -11,7 +11,7 @@ import {
 } from 'components';
 import { TransactionsHistory } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
-import { NOTIFICATIONS, openContactForm } from 'actions/appActions';
+import { NOTIFICATIONS } from 'actions/appActions';
 import { createAddress, cleanCreateAddress } from 'actions/userAction';
 import {
 	BASE_CURRENCY,
@@ -155,13 +155,11 @@ class Wallet extends Component {
 						coins={coins}
 						pairs={pairs}
 						totalAssets={totalAssets}
-						isValidBase={this.props.isValidBase}
 						changeSymbol={changeSymbol}
 						wallets={wallets}
 						onOpenDialog={this.onOpenDialog}
 						bankaccount={bankaccount}
 						navigate={this.goToPage}
-						openContactUs={this.openContactUs}
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
 						handleCheck={this.handleCheck}
@@ -226,14 +224,6 @@ class Wallet extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
-	};
-
-	openContactUs = () => {
-		const { links = {} } = this.props.constants;
-		this.props.openContactForm({
-			category: 'bank_transfer',
-			helpdesk: links.helpdesk,
-		});
 	};
 
 	render() {
@@ -311,7 +301,6 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
 	wallets: store.user.crypto_wallet,
-	isValidBase: store.app.isValidBase,
 	totalAsset: store.asset.totalAsset,
 	oraclePrices: store.asset.oraclePrices,
 });
@@ -320,7 +309,6 @@ const mapDispatchToProps = (dispatch) => ({
 	createAddress: bindActionCreators(createAddress, dispatch),
 	cleanCreateAddress: bindActionCreators(cleanCreateAddress, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
-	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Wallet));
