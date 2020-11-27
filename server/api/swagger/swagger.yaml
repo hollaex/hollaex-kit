@@ -27,7 +27,7 @@ securityDefinitions:
 
 paths:
   /health:
-    x-swagger-router-controller: general
+    x-swagger-router-controller: public
     get:
       operationId: getHealth
       description: Get health of server
@@ -43,7 +43,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /constants:
-    x-swagger-router-controller: general
+    x-swagger-router-controller: public
     get:
       operationId: getConstants
       description: Get the system constants such as pairs and currencies
@@ -59,7 +59,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /kit:
-    x-swagger-router-controller: general
+    x-swagger-router-controller: public
     get:
       operationId: getKitConfigurations
       description: Get kit configurations
@@ -75,7 +75,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /support:
-    x-swagger-router-controller: general
+    x-swagger-router-controller: public
     post:
       operationId: sendSupportEmail
       description: Send email to support
@@ -369,13 +369,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /orderbook:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Returns the top orderbooks
       operationId: getTopOrderbook
       tags:
         - Public
-        - Engine
       parameters:
         - name: symbol
           in: query
@@ -392,13 +391,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /orderbooks:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Returns the top orderbooks
       operationId: getTopOrderbooks
       tags:
         - Public
-        - Engine
       responses:
         200:
           description: Success
@@ -409,7 +407,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /trades:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Returns the trades
       operationId: getTrades
@@ -421,7 +419,6 @@ paths:
           type: string
       tags:
         - Public
-        - Engine
       responses:
         200:
           description: Success
@@ -432,13 +429,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /trades/history:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Returns the trades
       operationId: getTradesHistory
       tags:
         - Public
-        - Engine
       parameters:
         - in: query
           name: symbol
@@ -498,13 +494,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /ticker:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get historic data, time interval is 5 minutes
       operationId: getTicker
       tags:
         - Public
-        - Engine
       parameters:
         - in: query
           name: symbol
@@ -521,13 +516,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /ticker/all:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get historic data, time interval is 5 minutes
       operationId: getAllTicker
       tags:
         - Public
-        - Engine
       responses:
         200:
           description: Success
@@ -538,13 +532,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /tickers:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get historic data, time interval is 5 minutes
       operationId: getAllTicker
       tags:
         - Public
-        - Engine
       responses:
         200:
           description: Success
@@ -555,12 +548,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /chart:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get trade history HOLCV
       operationId: getChart
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -593,12 +586,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /charts:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get trade history HOLCV for all pairs
       operationId: getCharts
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -626,12 +619,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/config:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get tradingview udf config
       operationId: getConfig
       tags:
-        - Engine
+        - Public
         - Chart
       responses:
         200:
@@ -643,12 +636,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/history:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get tradingview udf history HOLCV
       operationId: getHistory
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -681,12 +674,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/symbols:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get tradingview udf symbols
       operationId: getSymbols
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -704,11 +697,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /oracle/prices:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       operationId: getAssetsPrices
       description: Convert assets prices
       tags:
+        - Public
         - Oracle
       parameters:
         - name: assets

@@ -1,28 +1,69 @@
 'use strict';
 
-const { loggerEngine } = require('../../config/logger');
+const packageJson = require('../../package.json');
+const { API_HOST } = require('../../constants');
+const { loggerPublic } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
+
+const getHealth = (req, res) => {
+	try {
+		return res.json({
+			name: toolsLib.getKitConfig().api_name || packageJson.name,
+			version: packageJson.version,
+			host: API_HOST,
+			basePath: req.swagger.swaggerObject.basePath,
+			status: toolsLib.getKitConfig().status
+		});
+	} catch (err) {
+		loggerPublic.verbose('controller/public/getHealth', err.message);
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
+const getConstants = (req, res) => {
+	try {
+		return res.json({
+			coins: toolsLib.getKitCoinsConfig(),
+			pairs: toolsLib.getKitPairsConfig()
+		});
+	} catch (err) {
+		loggerPublic.verbose('controller/public/getConstants', err.message);
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
+const getKitConfigurations = (req, res) => {
+	try {
+		return res.json(toolsLib.getKitConfig());
+	} catch (err) {
+		loggerPublic.verbose('controller/public/getKitConfigurations', err.message);
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
+const sendSupportEmail = (req, res) => {
+	const { email, category, subject, description }  = req.swagger.params;
+	return toolsLib.sendEmailToSupport(email.value, category.value, subject.value, description.value)
+		.then(() => {
+			return res.json({ message: 'Email was sent to support' });
+		})
+		.catch((err) => {
+			loggerPublic.verbose('controller/public/sendSupportEmail', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
 
 const getTopOrderbook = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
-
-	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerEngine.error(
-			req.uuid,
-			'controller/engine/getTopOrderbook',
-			'Invalid symbol'
-		);
-		return res.status(400).json({ message: 'Invalid symbol' });
-	}
 
 	toolsLib.getOrderbook(symbol)
 		.then((data) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getTopOrderbook',
+				'controller/public/getTopOrderbook',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -35,9 +76,9 @@ const getTopOrderbooks = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getTopOrderbooks',
+				'controller/public/getTopOrderbooks',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -48,9 +89,9 @@ const getTrades = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
-		loggerEngine.error(
+		loggerPublic.error(
 			req.uuid,
-			'controller/engine/getTopOrderbooks',
+			'controller/public/getTopOrderbooks',
 			'Invalid symbol'
 		);
 		return res.status(400).json({ message: 'Invalid symbol' });
@@ -61,9 +102,9 @@ const getTrades = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getTrades',
+				'controller/public/getTrades',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -74,9 +115,9 @@ const getTradesHistory = (req, res) => {
 	const { symbol, side, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	if (symbol.value && !toolsLib.subscribedToPair(symbol.value)) {
-		loggerEngine.error(
+		loggerPublic.error(
 			req.uuid,
-			'controller/engine/getTopOrderbooks',
+			'controller/public/getTopOrderbooks',
 			'Invalid symbol'
 		);
 		return res.status(400).json({ message: 'Invalid symbol' });
@@ -96,9 +137,9 @@ const getTradesHistory = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getTrades',
+				'controller/public/getTrades',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -113,9 +154,9 @@ const getTicker = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getTicker',
+				'controller/public/getTicker',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -128,9 +169,9 @@ const getAllTicker = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getAllTicker',
+				'controller/public/getAllTicker',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -141,9 +182,9 @@ const getChart = (req, res) => {
 	const { from, to, symbol, resolution } = req.swagger.params;
 
 	if (!toolsLib.subscribedToPair(symbol.value)) {
-		loggerEngine.error(
+		loggerPublic.error(
 			req.uuid,
-			'controller/engine/getChart',
+			'controller/public/getChart',
 			'Invalid symbol'
 		);
 		return res.status(400).json({ message: 'Invalid symbol' });
@@ -154,9 +195,9 @@ const getChart = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getChart',
+				'controller/public/getChart',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -171,9 +212,9 @@ const getCharts = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getCharts',
+				'controller/public/getCharts',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -186,9 +227,9 @@ const getConfig = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getConfig',
+				'controller/public/getConfig',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -199,9 +240,9 @@ const getHistory = (req, res) => {
 	const { symbol, from, to, resolution } = req.swagger.params;
 
 	if (!toolsLib.subscribedToPair(symbol.value)) {
-		loggerEngine.error(
+		loggerPublic.error(
 			req.uuid,
-			'controller/engine/getHistory',
+			'controller/public/getHistory',
 			'Invalid symbol'
 		);
 		return res.status(400).json({ message: 'Invalid symbol' });
@@ -212,9 +253,9 @@ const getHistory = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getHistory',
+				'controller/public/getHistory',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -225,9 +266,9 @@ const getSymbols = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
 	if (!toolsLib.subscribedToPair(symbol)) {
-		loggerEngine.error(
+		loggerPublic.error(
 			req.uuid,
-			'controller/engine/getSymbols',
+			'controller/public/getSymbols',
 			'Invalid symbol'
 		);
 		return res.status(400).json({ message: 'Invalid symbol' });
@@ -238,9 +279,9 @@ const getSymbols = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getSymbols',
+				'controller/public/getSymbols',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -250,16 +291,16 @@ const getSymbols = (req, res) => {
 const getAssetsPrices = (req, res) => {
 	const { assets, quote, amount } = req.swagger.params;
 
-	loggerEngine.info(req.uuid, 'controllers/engine/getAssetsPrices assets', assets.value, 'quote', quote.value, 'amount', amount.value);
+	loggerPublic.info(req.uuid, 'controllers/public/getAssetsPrices assets', assets.value, 'quote', quote.value, 'amount', amount.value);
 
 	toolsLib.getAssetsPrices(assets.value, quote.value, amount.value)
 		.then((data) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerEngine.error(
+			loggerPublic.error(
 				req.uuid,
-				'controller/engine/getAssetsPrices',
+				'controller/public/getAssetsPrices',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -267,6 +308,10 @@ const getAssetsPrices = (req, res) => {
 };
 
 module.exports = {
+	getHealth,
+	getConstants,
+	getKitConfigurations,
+	sendSupportEmail,
 	getTopOrderbook,
 	getTopOrderbooks,
 	getTrades,

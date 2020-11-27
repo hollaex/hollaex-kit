@@ -93,10 +93,9 @@ const LOGGER_NAMES = {
 	deposits: 'deposits',
 	withdrawals: 'withdrawals',
 	notification: 'notification',
-	engine: 'engine',
+	public: 'public',
 	chat: 'chat',
 	auth: 'auth',
-	general: 'general',
 	plugin: 'plugin',
 	tier: 'tier'
 };
