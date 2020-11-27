@@ -79,7 +79,7 @@ const signUpUser = (req, res) => {
 				throw new Error(PROVIDE_VALID_EMAIL);
 			}
 
-			if (!toolsLib.isValidPassword(password)) {
+			if (!toolsLib.security.isValidPassword(password)) {
 				throw new Error(INVALID_PASSWORD);
 			}
 
@@ -92,7 +92,7 @@ const signUpUser = (req, res) => {
 			if (user) {
 				throw new Error(USER_EXISTS);
 			}
-			return toolsLib.getModel('user').create({
+			return toolsLib.database.getModel('user').create({
 				email,
 				password,
 				settings: INITIAL_SETTINGS()
@@ -184,7 +184,7 @@ const verifyUser = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 
 	toolsLib.database.getModel('sequelize').transaction((transaction) => {
-		return toolsLib.findOne('user', {
+		return toolsLib.database.findOne('user', {
 			where: { email },
 			attributes: ['id', 'email', 'settings', 'network_id']
 		})
