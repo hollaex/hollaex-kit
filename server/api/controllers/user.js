@@ -17,9 +17,40 @@ const {
 	INVALID_CREDENTIALS,
 	USER_NOT_VERIFIED,
 	USER_NOT_ACTIVATED,
-	INVALID_OTP_CODE
+	INVALID_OTP_CODE,
+	SIGNUP_NOT_AVAILABLE,
+	PROVIDE_VALID_EMAIL,
+	INVALID_PASSWORD,
+	USER_EXISTS
 } = require('../../messages');
+const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
 const { all } = require('bluebird');
+const { isString } = require('lodash');
+const INITIAL_SETTINGS = () => {
+	return {
+		notification: {
+			popup_order_confirmation: true,
+			popup_order_completed: true,
+			popup_order_partially_filled: true
+		},
+		interface: {
+			order_book_levels: 10,
+			theme: toolsLib.getKitConfig().defaults.theme
+		},
+		language: toolsLib.getKitConfig().defaults.language,
+		audio: {
+			order_completed: true,
+			order_partially_completed: true,
+			public_trade: false
+		},
+		risk: {
+			order_portfolio_percentage: DEFAULT_ORDER_RISK_PERCENTAGE
+		},
+		chat: {
+			set_username: false
+		}
+	};
+};
 
 const signUpUser = (req, res) => {
 	const {
@@ -38,9 +69,51 @@ const signUpUser = (req, res) => {
 
 	toolsLib.security.checkCaptcha(captcha, ip)
 		.then(() => {
-			return toolsLib.user.signUpUser(email, password, { referral });
+			if (!toolsLib.getKitConfig().new_user_is_activated) {
+				throw new Error(SIGNUP_NOT_AVAILABLE);
+			}
+
+			if (!email || !isEmail(email)) {
+				throw new Error(PROVIDE_VALID_EMAIL);
+			}
+
+			if (!toolsLib.isValidPassword(password)) {
+				throw new Error(INVALID_PASSWORD);
+			}
+
+			return toolsLib.database.findOne('user', {
+				where: { email: email.toLowerCase() },
+				attributes: ['email']
+			});
 		})
-		.then(() => {
+		.then((user) => {
+			if (user) {
+				throw new Error(USER_EXISTS);
+			}
+			return toolsLib.getModel('user').create({
+				email,
+				password,
+				settings: INITIAL_SETTINGS()
+			});
+		})
+		.then((user) => {
+			return all([
+				toolsLib.user.getVerificationCodeByUserId(user.id),
+				user
+			]);
+		})
+		.then(([ verificationCode, user ]) => {
+			sendEmail(
+				MAILTYPE.SIGNUP,
+				email,
+				verificationCode.code,
+				{}
+			);
+
+			if (isString(referral)) {
+				toolsLib.user.checkAffiliation(referral, user.id);
+			}
+
 			return res.status(201).json({ message: USER_REGISTERED });
 		})
 		.catch((err) => {
