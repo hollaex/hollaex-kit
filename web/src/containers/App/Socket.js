@@ -41,7 +41,6 @@ import {
 	setOrderLimits,
 	NOTIFICATIONS,
 	setSnackDialog,
-	setValidBaseCurrency,
 	setConfig,
 	setInfo,
 	requestInitial,
@@ -174,12 +173,6 @@ class Container extends Component {
 					this.props.setPairsData(res.data.pairs);
 					this.props.setCurrencies(res.data.coins);
 
-					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
-						let temp = res.data.pairs[key];
-						return temp.pair_2 === BASE_CURRENCY;
-					});
-					const isValidPair = pairWithBase.length > 0;
-					this.props.setValidBaseCurrency(isValidPair);
 					const orderLimits = {};
 					Object.keys(res.data.pairs).map((pair, index) => {
 						orderLimits[pair] = {
@@ -737,7 +730,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),

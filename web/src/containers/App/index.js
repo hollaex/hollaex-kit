@@ -35,7 +35,6 @@ import {
 	setChatUnreadMessages,
 	setOrderLimits,
 	setSnackDialog,
-	setValidBaseCurrency,
 	setConfig,
 	setInfo,
 } from '../../actions/appActions';
@@ -94,7 +93,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
