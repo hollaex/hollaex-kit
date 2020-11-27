@@ -260,7 +260,7 @@ export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
 
 export const requestInitial = () => axios.get('/kit');
-export const requestConstant = () => axios.get('/constant');
+export const requestConstant = () => axios.get('/constants');
 export const requestAdminData = () => axios.get('/admin/kit');
 
 export const getExchangeInfo = () => {
