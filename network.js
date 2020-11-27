@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const { isBoolean, isPlainObject, isNumber } = require('lodash');
+const { isBoolean, isPlainObject, isNumber, isString } = require('lodash');
 const { createRequest, generateHeaders, checkKit, createSignature } = require('./utils');
 const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
@@ -104,10 +104,36 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/user/trades?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/user/trades?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
 		}
+
 		if (opts.symbol) {
 			path += `&symbol=${opts.symbol}`;
 		}
@@ -238,26 +264,56 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/deposits?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/deposits?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
 
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
 		}
+
 		if (opts.currency) {
 			path += `&currency=${opts.currency}`;
 		}
+
 		if (isBoolean(opts.status)) {
 			path += `&status=${opts.status}`;
 		}
+
 		if (isBoolean(opts.dismissed)) {
 			path += `&dismissed=${opts.dismissed}`;
 		}
+
 		if (isBoolean(opts.rejected)) {
 			path += `&rejected=${opts.rejected}`;
 		}
+
 		if (isBoolean(opts.processing)) {
 			path += `&processing=${opts.processing}`;
 		}
+
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
 		}
@@ -308,26 +364,56 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/withdrawals?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/withdrawals?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
 
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
 		}
+
 		if (opts.currency) {
 			path += `&currency=${opts.currency}`;
 		}
+
 		if (isBoolean(opts.status)) {
 			path += `&status=${opts.status}`;
 		}
+
 		if (isBoolean(opts.dismissed)) {
 			path += `&dismissed=${opts.dismissed}`;
 		}
+
 		if (isBoolean(opts.rejected)) {
 			path += `&rejected=${opts.rejected}`;
 		}
+
 		if (isBoolean(opts.processing)) {
 			path += `&processing=${opts.processing}`;
 		}
+
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
 		}
@@ -496,19 +582,48 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orders?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orders?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
 		}
+
 		if (opts.symbol) {
 			path += `&symbol=${opts.symbol}`;
 		}
+
 		if (opts.side) {
 			path += `&side=${opts.side}`;
 		}
+
 		if (opts.status) {
 			path += `&status=${opts.status}`;
 		}
+
 		if (isBoolean(opts.open)) {
 			path += `&open=${opts.open}`;
 		}
@@ -528,7 +643,7 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
 	 * @return {array} Array of canceled orders
 	 */
-	cancelOrders(userId, opts = { symbol: null }) {
+	cancelAllOrders(userId, opts = { symbol: null }) {
 		checkKit(this.exchange_id);
 		const verb = 'DELETE';
 
@@ -639,10 +754,36 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/trades/history?limit=${opts.limit}&page=${opts.page}&order_by=${opts.orderBy}&order=${opts.order}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/trades/history?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		if (opts.symbol) {
 			path += `&symbol=${opts.symbol}`;
 		}
+
 		if (opts.side) {
 			path += `&side=${opts.side}`;
 		}
@@ -914,7 +1055,25 @@ class HollaExNetwork {
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/fee?limit=${opts.limit}&page=${opts.page}&start_date=${opts.startDate}&end_date=${opts.endDate}`;
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/fee?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
