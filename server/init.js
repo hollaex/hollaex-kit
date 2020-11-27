@@ -3,7 +3,7 @@
 const { Network } = require('hollaex-node-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
-const { loggerGeneral } = require('./config/logger');
+const { loggerInit } = require('./config/logger');
 const { User, Status, Tier } = require('./db/models');
 
 const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
@@ -39,7 +39,7 @@ subscriber.on('message', (channel, message) => {
 subscriber.subscribe(INIT_CHANNEL);
 
 const checkStatus = () => {
-	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
+	loggerInit.verbose('init/checkStatus', 'checking exchange status');
 
 	let configuration = {
 		coins: {},
@@ -78,7 +78,7 @@ const checkStatus = () => {
 
 	return Status.findOne({})
 		.then((status) => {
-			loggerGeneral.info('init/checkStatus');
+			loggerInit.info('init/checkStatus');
 			if (!status) {
 				stop();
 				throw new Error('Exchange is not initialized yet');
@@ -112,7 +112,7 @@ const checkStatus = () => {
 			}
 		})
 		.then(([exchange, tiers, status]) => {
-			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
+			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
 			each(tiers, (tier) => {
 				configuration.tiers[tier.id] = tier;
 			});
@@ -149,7 +149,7 @@ const checkStatus = () => {
 			]);
 		})
 		.then(([ users, exchange, status ]) => {
-			loggerGeneral.info('init/checkStatus/activation', users.length, 'users deactivated');
+			loggerInit.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
 				frozenUsers[user.dataValues.id] = true;
 			});
@@ -160,7 +160,7 @@ const checkStatus = () => {
 					data: { configuration, secrets, frozenUsers }
 				})
 			);
-			loggerGeneral.info('init/checkStatus/activation complete');
+			loggerInit.info('init/checkStatus/activation complete');
 			return [ exchange, status ];
 		})
 		.catch((err) => {
@@ -171,7 +171,7 @@ const checkStatus = () => {
 			if (err.statusCode && err.statusCode === 402) {
 				message = err.error.message;
 			}
-			loggerGeneral.error('init/checkStatus Error ', message);
+			loggerInit.error('init/checkStatus Error ', message);
 			setTimeout(() => { process.exit(1); }, 60 * 1000 * 5);
 		});
 };
