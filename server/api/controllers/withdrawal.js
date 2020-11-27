@@ -3,6 +3,7 @@
 const { loggerWithdrawals } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
+const { USER_NOT_FOUND } = require('../../messages');
 
 const getWithdrawalFee = (req, res) => {
 	const currency = req.swagger.params.currency.value;
@@ -79,6 +80,9 @@ const performWithdrawal = (req, res) => {
 			return all([ withdrawal, toolsLib.user.getUserByKitId(withdrawal.user_id) ]);
 		})
 		.then(([ withdrawal, user ]) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}

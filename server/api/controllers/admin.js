@@ -4,6 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
 const { all } = require('bluebird');
+const { USER_NOT_FOUND } = require('../../messages');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -628,6 +629,9 @@ const mintAsset = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return toolsLib.mintAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {
@@ -665,6 +669,9 @@ const burnAsset = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return toolsLib.burnAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {

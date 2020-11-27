@@ -143,6 +143,9 @@ const activateXhtFee = (req, res) => {
 
 	toolsLib.user.getUserByKitId(id, false, true)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.dataValues.custom_fee) {
 				throw new Error('XHT fee is already activated');
 			}
@@ -177,7 +180,12 @@ const postBankUser = (req, res) => {
 	const bank_account = req.swagger.params.data.value;
 
 	toolsLib.user.getUserByEmail(email, false)
-		.then(addBankAccount(bank_account))
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			addBankAccount(bank_account)(user);
+		})
 		.then(() => toolsLib.user.getUserByEmail(email))
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
@@ -209,7 +217,12 @@ const postBankAdmin = (req, res) => {
 	);
 
 	toolsLib.user.getUserByKitId(id, false)
-		.then(adminAddUserBanks(bank_account))
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			adminAddUserBanks(bank_account)(user);
+		})
 		.then(() => toolsLib.user.getUserByKitId(id))
 		.then((user) => res.json(user.bank_account))
 		.catch((err) => {
@@ -243,6 +256,9 @@ const bankVerify = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return approveBankAccount(bank_id)(user);
 		})
 		.then((user) => {
@@ -278,7 +294,9 @@ const bankRevoke = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id, false)
 		.then((user) => {
-			if (!user) throw new Error(USER_NOT_FOUND);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return rejectBankAccount(bank_id)(user);
 		})
 		.then((user) => {
@@ -321,7 +339,12 @@ const putKycUser = (req, res) => {
 	const { email } = req.auth.sub;
 
 	toolsLib.user.getUserByEmail(email, false)
-		.then(updateUserData(newData, ROLES.USER))
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			updateUserData(newData, ROLES.USER)(user);
+		})
 		.then(() => toolsLib.user.getUserByEmail(email))
 		.then((user) => res.json(user))
 		.catch((err) => {
@@ -384,6 +407,9 @@ const putKycAdmin = (req, res) => {
 			let prevUserData = {}; // for audit
 			return toolsLib.user.getUserByKitId(id, false)
 				.then((user) => {
+					if (!user) {
+						throw new Error(USER_NOT_FOUND);
+					}
 					prevUserData = cloneDeep(user.dataValues);
 					loggerPlugin.debug(
 						req.uuid,
@@ -509,6 +535,9 @@ const kycUserUpload = (req, res) => {
 
 	toolsLib.user.getUserByKitId(id, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			let { status } = user.dataValues.id_data || 0;
 			if (status === 3) {
 				throw new Error(
@@ -629,7 +658,12 @@ const kycAdminUpload = (req, res) => {
 	const ts = Date.now();
 
 	toolsLib.user.getUserByKitId(user_id, false)
-		.then((user) => getImagesData(user.id, 'admin'))
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			getImagesData(user.id, 'admin');
+		})
 		.then((data) => {
 			return all([
 				front.value
@@ -734,6 +768,9 @@ const kycIdVerify = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return approveDocuments(user);
 		})
 		.then((user) => {
@@ -772,6 +809,9 @@ const kycIdRevoke = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return revokeDocuments(user, message);
 		})
 		.then((user) => {

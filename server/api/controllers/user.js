@@ -190,10 +190,7 @@ const verifyUser = (req, res) => {
 		})
 			.then((user) => {
 				return all([
-					toolsLib.database.findOne('verification code', {
-						where: { user_id: user.id },
-						attributes: ['id', 'code', 'verified', 'user_id']
-					}),
+					toolsLib.user.getVerificationCodeByUserId(user.id),
 					user
 				]);
 			})
@@ -255,6 +252,9 @@ const loginPost = (req, res) => {
 
 	toolsLib.user.getUserByEmail(email.toLowerCase())
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level === 0) {
 				throw new Error(USER_NOT_VERIFIED);
 			} else if (!user.activated) {
@@ -379,6 +379,9 @@ const getUser = (req, res) => {
 
 	toolsLib.user.getUserByEmail(email, true, true)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			delete user.password;
 			return res.json(user);
 		})
