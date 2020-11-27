@@ -1,35 +1,54 @@
 import defaultIcons from 'config/icons';
-import { isLightColor, getColorFromTheme, BASE_BACKGROUND } from 'utils/color';
+import merge from 'lodash.merge';
 
-export const getIconByKey = (key, content = defaultIcons) => {
-	return content[key];
-};
+const defaultIconsKey = 'dark';
 
-export const getLogo = (
-	theme,
-	{ logo_path, logo_black_path, color = {} },
-	{ EXCHANGE_LOGO_LIGHT, EXCHANGE_LOGO_DARK },
-	key = BASE_BACKGROUND
+export const getIconByKey = (
+	key,
+	theme = defaultIconsKey,
+	content = defaultIcons
 ) => {
-	const isLight = isLightColor(getColorFromTheme(key, theme, color));
-
-	if (isLight) {
-		return EXCHANGE_LOGO_LIGHT || logo_path;
-	} else {
-		return EXCHANGE_LOGO_DARK || logo_black_path;
-	}
+	return content[theme][key];
 };
 
-const BACKGROUND_ICON_IDS = [
-	'EXCHANGE_LOGO_LIGHT',
-	'EXCHANGE_LOGO_DARK',
-	'LOADER_LIGHT',
-	'LOADER_DARK',
-	'EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK',
-	'EXCHANGE_LOGO_DARK,EXCHANGE_LOGO_LIGHT',
-	'LOADER_LIGHT,LOADER_DARK',
-	'LOADER_DARK,LOADER_LIGHT',
-];
+const BACKGROUND_ICON_IDS = ['EXCHANGE_LOGO', 'EXCHANGE_LOADER'];
 
 export const isBackgroundIcon = (iconId) =>
 	BACKGROUND_ICON_IDS.includes(iconId);
+
+export const generateAllIcons = (themes, icons) => {
+	const themeKeys = Object.keys(themes);
+
+	// missing keys and values are set from the default Icons Object
+	const defaultIconsObject = icons[defaultIconsKey];
+
+	const allIcons = {};
+
+	themeKeys.forEach((theme) => {
+		const themeSpecificIconsObject = icons[theme] || {};
+		allIcons[theme] = merge({}, defaultIconsObject, themeSpecificIconsObject);
+	});
+
+	return allIcons;
+};
+
+export const addDefaultLogo = (defaultLogo, icons) => {
+	if (!icons[defaultIconsKey]['EXCHANGE_LOGO']) {
+		icons[defaultIconsKey]['EXCHANGE_LOGO'] = defaultLogo;
+	}
+	return icons;
+};
+
+export const getAllIconsArray = (themeKeys, content = defaultIcons) => {
+	const allIcons = [];
+
+	Object.keys(content[defaultIconsKey]).forEach((key) => {
+		const iconObject = { key };
+		themeKeys.forEach((theme) => {
+			iconObject[theme] = getIconByKey(key, theme, content);
+		});
+		allIcons.push(iconObject);
+	});
+
+	return allIcons;
+};

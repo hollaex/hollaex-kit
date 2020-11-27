@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { InputNumber, Button, message } from 'antd';
 
+import { STATIC_ICONS } from 'config/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from '../../../components/Image';
 import { updateFees } from './action';
@@ -60,14 +61,14 @@ class EditFees extends Component {
 	};
 
 	render() {
-		const { icons = {}, userTiers = {}, handleClose } = this.props;
+		const { icons: ICONS = {}, userTiers = {}, handleClose } = this.props;
 		const { feeData } = this.state;
 		return (
 			<div>
 				<h3>Edit fees for account tiers</h3>
 				<div>
 					<Image
-						icon={icons['TAKER_TIERS_SECTION']}
+						icon={STATIC_ICONS['TAKER_TIERS_SECTION']}
 						wrapperClassName="fee-indicator-icon"
 					/>
 					<div className="description">
@@ -77,7 +78,7 @@ class EditFees extends Component {
 				</div>
 				<div>
 					<Image
-						icon={icons['MAKER_TIERS_SECTION']}
+						icon={STATIC_ICONS['MAKER_TIERS_SECTION']}
 						wrapperClassName="fee-indicator-icon"
 					/>
 					<div className="description">
@@ -89,13 +90,13 @@ class EditFees extends Component {
 					<div className="f-1"></div>
 					<div className="f-1 px-2 text-center">
 						<Image
-							icon={icons['TAKER_TIERS_SECTION']}
+							icon={STATIC_ICONS['TAKER_TIERS_SECTION']}
 							wrapperClassName="fee-indicator-icon mr-2"
 						/>
 					</div>
 					<div className="f-1 px-2 text-center">
 						<Image
-							icon={icons['MAKER_TIERS_SECTION']}
+							icon={STATIC_ICONS['MAKER_TIERS_SECTION']}
 							wrapperClassName="fee-indicator-icon mr-2"
 						/>
 					</div>
@@ -108,7 +109,7 @@ class EditFees extends Component {
 								<div className="f-1">
 									<div className="d-flex align-items-center">
 										<Image
-											icon={icons[`LEVEL_ACCOUNT_ICON_${level}`]}
+											icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
 											wrapperClassName="table-tier-icon mr-2"
 										/>
 										{`Tiers ${level}`}

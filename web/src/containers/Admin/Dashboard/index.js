@@ -3,48 +3,48 @@ import ReactSVG from 'react-svg';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 
 import './index.css';
 
 const CARD_LIST = [
 	{
-		icon: ICONS.GENERAL_SETUP,
+		icon: STATIC_ICONS.GENERAL_SETUP,
 		title: 'General exchange setup',
 		description:
 			'Access the general setup of your exchange such as emails, footer and IP whitelisting.',
 		path: '/admin/general',
 	},
 	{
-		icon: ICONS.USERS_SETUP,
+		icon: STATIC_ICONS.USERS_SETUP,
 		title: 'Users',
 		description:
 			'Access all the users registered on your exchange. Verify their documents, upgrade their accounts and more.',
 		path: '/admin/user',
 	},
 	{
-		icon: ICONS.ADMIN_PLUGINS,
+		icon: STATIC_ICONS.ADMIN_PLUGINS,
 		title: 'Exchange plugins',
 		description:
 			'Give your exchange extra features such as chat, customer support and more through exchange plugins.',
 		path: '/admin/plugins',
 	},
 	{
-		icon: ICONS.ADMIN_TIERS,
+		icon: STATIC_ICONS.ADMIN_TIERS,
 		title: 'Account level tiers',
 		description:
 			'Setup user account level tiers and calibrate each account level deposit/withdrawals limits and trading fees.',
 		path: '/admin/tiers',
 	},
 	{
-		icon: ICONS.ADMIN_ROLES,
+		icon: STATIC_ICONS.ADMIN_ROLES,
 		title: 'Exchange member roles',
 		description:
 			'Invite a team to help you manage your exchange. Designate roles to your team with specific exchange setting access.',
 		path: '/admin/roles',
 	},
 	{
-		icon: ICONS.ADMIN_CUSTOMIZE,
+		icon: STATIC_ICONS.ADMIN_CUSTOMIZE,
 		title: 'Customize your exchange',
 		description:
 			'Change strings, icons, add languages to customize your exchange in real-time.',
@@ -58,7 +58,7 @@ const Dashboard = ({ constants = {} }) => {
 		<div className="admin-content-wrapper">
 			<div className="flex-menu">
 				<ReactSVG
-					path={ICONS.HEX_PATTERN_ICON}
+					path={STATIC_ICONS.HEX_PATTERN_ICON}
 					wrapperClassName="sidebar-icon"
 				/>
 				<div className="exchange-title">{showLabel}</div>

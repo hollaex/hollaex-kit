@@ -2,7 +2,7 @@ import React from 'react';
 import { Radio, Form, Button } from 'antd';
 import ReactSVG from 'react-svg';
 
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 
 const { Item } = Form;
 
@@ -54,7 +54,7 @@ const TradingInterface = ({
 									</div>
 									<div>
 										<ReactSVG
-											path={ICONS.CANDLES_LOGO}
+											path={STATIC_ICONS.CANDLES_LOGO}
 											wrapperClassName="candle-icon"
 										/>
 									</div>
@@ -66,7 +66,7 @@ const TradingInterface = ({
 									(Chart, orderbook, limit orders with wallet)
 								</div>
 								<ReactSVG
-									path={ICONS.CANDLES_LOGO}
+									path={STATIC_ICONS.CANDLES_LOGO}
 									wrapperClassName="candle-icon"
 								/>
 							</Radio>
@@ -96,7 +96,7 @@ const TradingInterface = ({
 									</div>
 									<div className="box interface">
 										<ReactSVG
-											path={ICONS.WALLET_BTC_ICON}
+											path={STATIC_ICONS.WALLET_BTC_ICON}
 											wrapperClassName="wallet-icon"
 										/>
 									</div>

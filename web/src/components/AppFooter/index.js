@@ -4,9 +4,7 @@ import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getLogo } from 'utils/icon';
 import Image from 'components/Image';
-import { FOOTER_BACKGROUND } from 'utils/color';
 
 const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 	const {
@@ -117,32 +115,32 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 			LINKS: [
 				twitter && {
 					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_1'],
-					icon: ICONS['SOCIAL_ICONS.TWITTER'],
+					icon: ICONS['SOCIAL_TWITTER'],
 					link: twitter,
 				},
 				telegram && {
 					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_2'],
-					icon: ICONS['SOCIAL_ICONS.TELEGRAM'],
+					icon: ICONS['SOCIAL_TELEGRAM'],
 					link: telegram,
 				},
 				facebook && {
 					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_3'],
-					icon: ICONS['SOCIAL_ICONS.FACEBOOK'],
+					icon: ICONS['SOCIAL_FACEBOOK'],
 					link: facebook,
 				},
 				instagram && {
 					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_4'],
-					icon: ICONS['SOCIAL_ICONS.INSTAGRAM'],
+					icon: ICONS['SOCIAL_INSTAGRAM'],
 					link: instagram,
 				},
 				linkedin && {
 					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_5'],
-					icon: ICONS['SOCIAL_ICONS.LINKEDIN'],
+					icon: ICONS['SOCIAL_LINKEDIN'],
 					link: linkedin,
 				},
 				youtube && {
 					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_9'],
-					icon: ICONS['SOCIAL_ICONS.YOUTUBE'],
+					icon: ICONS['SOCIAL_YOUTUBE'],
 					link: youtube,
 				},
 			],
@@ -165,9 +163,8 @@ const AppFooter = ({
 	className,
 	theme,
 	constants = { description: '' },
-	icons,
+	icons: ICONS,
 }) => {
-	const path = getLogo(theme, constants, icons, FOOTER_BACKGROUND);
 	return (
 		<div
 			className={classnames(
@@ -199,7 +196,7 @@ const AppFooter = ({
 							'flex-column': isMobile,
 						})}
 					>
-						{generateSectionsText(STRINGS, theme, constants.links, icons).map(
+						{generateSectionsText(STRINGS, theme, constants.links, ICONS).map(
 							({ TITLE, LINKS }, index) => (
 								<div
 									key={index}
@@ -249,8 +246,8 @@ const AppFooter = ({
 							<div className="footer-content">
 								<div className="d-flex">
 									<Image
-										iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
-										icon={path}
+										iconId="EXCHANGE_LOGO"
+										icon={ICONS['EXCHANGE_LOGO']}
 										wrapperClassName="footer-logo"
 									/>
 								</div>

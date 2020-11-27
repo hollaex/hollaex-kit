@@ -13,7 +13,6 @@ import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getLogo } from 'utils/icon';
 
 let errorTimeOut = null;
 
@@ -170,7 +169,6 @@ class Signup extends Component {
 			constants.links,
 			isReferral
 		);
-		const path = getLogo(activeTheme, constants, ICONS);
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -186,8 +184,8 @@ class Signup extends Component {
 					)}
 				>
 					<IconTitle
-						iconId="EXCHANGE_LOGO_LIGHT,EXCHANGE_LOGO_DARK"
-						iconPath={path}
+						iconId="EXCHANGE_LOGO"
+						iconPath={ICONS['EXCHANGE_LOGO']}
 						text={STRINGS['SIGNUP_TEXT']}
 						textType="title"
 						underline={true}

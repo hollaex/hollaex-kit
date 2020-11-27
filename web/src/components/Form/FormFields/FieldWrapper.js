@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 
-import { ICONS } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import { ActionNotification } from '../../';
 import { getErrorLocalized } from '../../../utils/errors';
 import { EditWrapper } from 'components';
@@ -34,7 +34,10 @@ export const FieldContent = ({
 			>
 				{children}
 				{!hideCheck && valid && hasValue && (
-					<ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="field-valid" />
+					<ReactSVG
+						path={STATIC_ICONS.BLACK_CHECK}
+						wrapperClassName="field-valid"
+					/>
 				)}
 			</div>
 			{!hideUnderline && (
@@ -55,7 +58,11 @@ export const FieldError = ({ error, displayError, className, stringId }) => (
 		})}
 	>
 		{error && (
-			<img src={ICONS.RED_WARNING} className="field-error-icon" alt="error" />
+			<img
+				src={STATIC_ICONS.RED_WARNING}
+				className="field-error-icon"
+				alt="error"
+			/>
 		)}
 		{error && (
 			<EditWrapper stringId={stringId}>

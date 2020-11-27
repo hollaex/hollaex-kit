@@ -54,12 +54,12 @@ const Section1 = ({
 				)*/}
 				</div>
 			</div>
-			<EditWrapper iconId="ARROW_DOWN">
+			<EditWrapper iconId="ARROW_ARROW">
 				<div
 					className={classnames('pointer', 'flex-0', 'scroll-button')}
 					onClick={onClickScrollTo}
 				>
-					<ReactSVG path={ICONS['ARROW_DOWN']} />
+					<ReactSVG path={ICONS['ARROW_ARROW']} />
 				</div>
 			</EditWrapper>
 		</div>
