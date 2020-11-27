@@ -396,7 +396,7 @@ class AppWrapper extends React.Component {
 	};
 
 	render() {
-		const { children, router } = this.props;
+		const { children, router, user } = this.props;
 		const logout = () => {
 			removeToken();
 			router.replace('/login');
@@ -411,7 +411,7 @@ class AppWrapper extends React.Component {
 			router.replace('/summary');
 		}
 		if (!setupCompleted) {
-			return <SetupWizard />;
+			return <SetupWizard user={user} />;
 		}
 		if (md.phone()) {
 			return (
@@ -530,6 +530,7 @@ const mapStateToProps = (state) => ({
 	fetchingAuth: state.auth.fetching,
 	pairs: state.app.pairs,
 	constants: state.app.constants,
+	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -143,6 +143,7 @@ const Limits = ({
 				<Table
 					columns={getHeaders(userTiers, ICONS, constants, onEditLimit)}
 					dataSource={coinsData}
+					rowKey={(data) => data.id}
 					bordered
 				/>
 			</div>

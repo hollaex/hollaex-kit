@@ -121,6 +121,7 @@ const Fees = ({ pairs, userTiers, icons: ICONS = {}, onEditFees }) => {
 				<Table
 					columns={getHeaders(userTiers, ICONS, onEditFees)}
 					dataSource={coinsData}
+					rowKey={(data) => data.id}
 					bordered
 				/>
 			</div>

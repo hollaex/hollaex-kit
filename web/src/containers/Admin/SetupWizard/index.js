@@ -19,6 +19,7 @@ export default class SetupWizard extends Component {
 		super(props);
 		this.state = {
 			currentTab: 0,
+			finished: 0,
 			isReview: false,
 			isConfirmScreen: false,
 			constants: {},
@@ -41,7 +42,7 @@ export default class SetupWizard extends Component {
 	}
 
 	onTabChange = (tab) => {
-		this.setState({ currentTab: tab });
+		this.setState({ currentTab: tab, finished: tab });
 	};
 
 	setConstants = (data) => {
@@ -67,10 +68,13 @@ export default class SetupWizard extends Component {
 				timezone:
 					secrets.emails.timezone !== 'null' ? secrets.emails.timezone : '',
 				audit: secrets.emails.audit !== 'null' ? secrets.emails.audit : '',
-				send_email_to_support: secrets.emails.send_email_to_support
-					? secrets.emails.send_email_to_support
-					: false,
+				// send_email_to_support: secrets.emails.send_email_to_support
+				// 	? secrets.emails.send_email_to_support
+				// 	: false,
 			};
+		}
+		if (this.props.user && this.props.user.email && !emailInitialvalues.audit) {
+			emailInitialvalues.audit = this.props.user.email;
 		}
 		if (secrets.smtp) {
 			emailInitialvalues = {
@@ -149,8 +153,15 @@ export default class SetupWizard extends Component {
 		}
 	};
 
+	tabClick = (tab) => {
+		if (tab > this.state.finished) {
+			return;
+		}
+		this.setState({ currentTab: tab });
+	};
+
 	render() {
-		const { isReview, isConfirmScreen, constants } = this.state;
+		const { isReview, isConfirmScreen, constants, currentTab } = this.state;
 		if (isReview) {
 			return (
 				<ExchangeReview
@@ -177,12 +188,28 @@ export default class SetupWizard extends Component {
 							<div className="step-title title-text">
 								Steps <span className="description">(optional)</span>
 							</div>
-							<Steps current={this.state.currentTab} direction="vertical">
-								<Step title="1. Time zone & language" />
-								<Step title="2. Admin account security" />
-								<Step title="3. Assets & trading" />
-								<Step title="4. Trading interface" />
-								<Step title="5. Email" />
+							<Steps
+								current={currentTab}
+								direction="vertical"
+								// onChange={this.onTabChange}
+							>
+								<Step
+									title="1. Time zone & language"
+									onClick={() => this.tabClick(0)}
+								/>
+								<Step
+									title="2. Admin account security"
+									onClick={() => this.tabClick(1)}
+								/>
+								<Step
+									title="3. Assets & trading"
+									onClick={() => this.tabClick(2)}
+								/>
+								<Step
+									title="4. Trading interface"
+									onClick={() => this.tabClick(3)}
+								/>
+								<Step title="5. Email" onClick={() => this.tabClick(4)} />
 							</Steps>
 						</div>
 						<div className="step-separator"></div>

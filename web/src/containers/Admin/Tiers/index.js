@@ -114,6 +114,14 @@ const Tiers = () => {
 			icon: '',
 			deposit_limit: 0,
 			withdrawal_limit: 0,
+			fees: {
+				taker: {
+					default: 0,
+				},
+				maker: {
+					default: 0,
+				},
+			},
 		});
 	};
 	const handleClose = () => {

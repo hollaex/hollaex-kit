@@ -33,7 +33,7 @@ const Assets = ({
 		updateConstants(formValues, () => handleNext(3));
 	};
 	return (
-		<div className="asset-content">
+		<div className="asset-content show-scroll">
 			<div className="title-text">Native currency</div>
 			<div>
 				The selected native currency will be used as the currency unit to value

@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 
 import {
-	Balance,
+	// Balance,
 	// Logins,
 	// Audits,
 	// Verification,
@@ -19,7 +19,7 @@ import {
 // import UserData from './UserData';
 import BankData from './BankData';
 import AboutData from './AboutData';
-import { isSupport, isAdmin, isKYC } from '../../../utils/token';
+import { isSupport, isKYC } from '../../../utils/token';
 import { STATIC_ICONS } from 'config/icons';
 import { deactivateOtp, flagUser, activateUser } from './actions';
 
@@ -58,7 +58,13 @@ class UserContent extends Component {
 			flagged: value,
 		};
 		Modal.confirm({
-			content: <div>Are you sure want to flag this user?</div>,
+			content: (
+				<div>
+					{value
+						? 'Are you sure want to flag this user?'
+						: 'Are you sure want to unflag this user?'}
+				</div>
+			),
 			onOk() {
 				flagUser(postValues)
 					.then((res) => {
@@ -80,7 +86,13 @@ class UserContent extends Component {
 			activated: value,
 		};
 		Modal.confirm({
-			content: <div>Are you sure want to freeze this account?</div>,
+			content: (
+				<div>
+					{value
+						? 'Are you sure want to unfreeze this account?'
+						: 'Are you sure want to freeze this account?'}
+				</div>
+			),
 			onOk() {
 				activateUser(postValues)
 					.then((res) => {
@@ -97,7 +109,7 @@ class UserContent extends Component {
 
 	render() {
 		const {
-			coins,
+			// coins,
 			constants,
 			userInformation,
 			userImages,
@@ -119,7 +131,7 @@ class UserContent extends Component {
 			is_tech,
 		} = userInformation;
 		const isSupportUser = isSupport();
-		const pairs = Object.keys(coins) || [];
+		// const pairs = Object.keys(coins) || [];
 		const verificationInitialValues = {};
 		const roleInitialValues = {};
 		if (verification_level) {
@@ -220,11 +232,11 @@ class UserContent extends Component {
 							<TradeHistory userId={userInformation.id} />
 						</TabPane>
 					)}
-					{isAdmin() && (
+					{/* {isAdmin() && (
 						<TabPane tab="Funding" key="deposit">
 							<Balance user_id={id} pairs={pairs} />
 						</TabPane>
-					)}
+					)} */}
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Deposits" key="deposits">
 							{/*<Deposits*/}
