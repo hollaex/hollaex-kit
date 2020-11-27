@@ -417,7 +417,12 @@ const putKycAdmin = (req, res) => {
 					);
 					return all([
 						user,
-						toolsLib.user.createAudit(admin_id, user.id, 'userUpdate', prevUserData, user.dataValues, ip, domain)
+						toolsLib.user.createAudit(admin_id, 'userUpdate', ip, {
+							userId: user.id,
+							prevUserData,
+							newUserDate: user.dataValues,
+							domain
+						})
 					]);
 				});
 		})
