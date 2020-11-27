@@ -1,74 +1,50 @@
 'use strict';
 
-const WebSocket = require('ws');
-const moment = require('moment');
-const toolsLib = require('hollaex-tools-lib');
-const { handleHubData, closeAllClients } = require('./sub');
-const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { loggerWebsocket } = require('../config/logger');
-const { all } = require('bluebird');
-const rp = require('request-promise');
+const { checkStatus, getNodeLib } = require('../init');
+const { subscriber } = require('../db/pubsub');
+const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL } = require('../constants');
+const { each } = require('lodash');
+const { getChannels, resetChannels } = require('./channel');
+const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
 
-const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
-const HE_NETWORK_BASE_URL = '/v2';
-const PATH_ACTIVATE = '/exchange/activate';
-const HE_NETWORK_WS_ENDPOINT = 'wss://api.testnet.hollaex.network/stream';
+subscriber.on('message', (channel, message) => {
+	if (channel === WS_HUB_CHANNEL) {
+		const { action } = JSON.parse(message);
+		switch(action) {
+			case 'restart':
+				if (getNodeLib().wsConnected()) {
+					getNodeLib().ws.close();
+				}
+				break;
+			default:
+				break;
+		}
+	}
+	return;
+});
 
-let connected = false;
-const hubConnected = () => connected;
-
-const apiExpires = moment().toISOString() + 60;
-let ws;
-const getWs = () => ws;
-
-const reconnectInterval = 5000; // 5 seconds
+subscriber.subscribe(WS_HUB_CHANNEL);
 
 const connect = () => {
-	toolsLib.database.findOne('status', { raw: true })
-		.then((status) => {
-			return all([
-				checkActivation(
-					status.name,
-					status.url,
-					status.activation_code,
-					status.version,
-					status.constants
-				),
-				status
-			]);
-		})
-		.then(([ exchange, status ]) => {
-			const signature = toolsLib.auth.createHmacSignature(status.api_secret, 'CONNECT', '/stream', apiExpires);
-			ws = new WebSocket(`${HE_NETWORK_WS_ENDPOINT}?exchange_id=${exchange.id}`, {
-				headers : {
-					'api-key': status.api_key,
-					'api-signature': signature,
-					'api-expires': apiExpires
-				}
-			});
+	checkStatus()
+		.then(() => {
+			getNodeLib().connect(['orderbook', 'trade']);
 
-			ws.on('open', () => {
+			getNodeLib().ws.on('open', () => {
 				loggerWebsocket.info('ws/hub open');
-				connected = true;
-				ws.send(JSON.stringify({
-					op: 'subscribe',
-					args: ['orderbook', 'trade']
-				}));
 			});
 
-			ws.on('error', (err) => {
+			getNodeLib().ws.on('error', (err) => {
 				loggerWebsocket.error('ws/hub err', err.message);
-				ws.close();
 			});
 
-			ws.on('close', () => {
-				loggerWebsocket.info('ws/hub close', ws.id);
-				connected = false;
+			getNodeLib().ws.on('close', () => {
+				loggerWebsocket.info('ws/hub close');
 				closeAllClients();
-				setTimeout(connect, reconnectInterval);
 			});
 
-			ws.on('message', (data) => {
+			getNodeLib().ws.on('message', (data) => {
 				if (data !== 'pong') {
 					try {
 						data = JSON.parse(data);
@@ -78,39 +54,51 @@ const connect = () => {
 					handleHubData(data);
 				}
 			});
-
-			setWsHeartbeat(ws, 'ping', {
-				pingTimeout: 60000,
-				pingInterval: 25000,
-			});
 		});
 };
 
 const sendNetworkWsMessage = (op, topic, networkId) => {
-	if (ws) {
-		ws.send(JSON.stringify({ op, args: [`${topic}:${networkId}`] }));
+	if (getNodeLib().wsConnected()) {
+		getNodeLib()[op]([`${topic}:${networkId}`]);
 	}
 };
 
-const checkActivation = (name, url, activation_code, version, constants = {}) => {
-	const options = {
-		method: 'POST',
-		body: {
-			name,
-			url,
-			activation_code,
-			version,
-			constants
-		},
-		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
-		json: true
-	};
-	return rp(options);
+const handleHubData = (data) => {
+	switch (data.topic) {
+		case 'orderbook':
+			updateOrderbookData(data);
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		case 'trade':
+			updateTradeData(data);
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		case 'order':
+		case 'wallet':
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		default:
+			break;
+	}
+};
+
+const closeAllClients = () => {
+	each(getChannels(), (channel) => {
+		each(channel, (ws) => {
+			ws.close();
+		});
+	});
+	resetChannels();
+	resetPublicData();
 };
 
 module.exports = {
 	sendNetworkWsMessage,
-	connect,
-	hubConnected,
-	getWs
+	connect
 };

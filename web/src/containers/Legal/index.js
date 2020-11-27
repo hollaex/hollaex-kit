@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Legal } from '../../components';
 import { getClasesForLanguage } from '../../utils/string';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getLogo } from 'utils/icon';
 
 const LegalPage = ({
 	route: { content = '' },
@@ -13,8 +12,6 @@ const LegalPage = ({
 	constants = {},
 	icons: ICONS,
 }) => {
-	const path = getLogo('white', constants, ICONS);
-
 	return (
 		<div
 			className={classnames(
@@ -23,7 +20,11 @@ const LegalPage = ({
 			)}
 		>
 			{content && (
-				<Legal type={content} constants={constants} logoPath={path} />
+				<Legal
+					type={content}
+					constants={constants}
+					logoPath={ICONS['EXCHANGE_LOGO']}
+				/>
 			)}
 		</div>
 	);

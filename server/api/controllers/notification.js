@@ -13,7 +13,7 @@ const applyKitChanges = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	loggerNotification.verbose('controller/notification/applyKitChanges ip domain', ip, domain);
 
-	toolsLib.auth.verifyNetworkHmacToken(req)
+	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
 			return publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 		})
@@ -34,7 +34,7 @@ const handleCurrencyDeposit = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 	const { user_id, amount, txid, address, is_confirmed } = req.swagger.params.data.value;
 
-	toolsLib.auth.verifyNetworkHmacToken(req)
+	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
 			if (!toolsLib.subscribedToCoin(currency)) {
 				throw new Error('Invalid currency');
@@ -88,7 +88,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 	const { user_id, amount, txid, address, is_confirmed, fee } = req.swagger.params.data.value;
 
-	toolsLib.auth.verifyNetworkHmacToken(req)
+	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
 			if (!toolsLib.subscribedToCoin(currency)) {
 				throw new Error('Invalid currency');

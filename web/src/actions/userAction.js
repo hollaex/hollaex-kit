@@ -220,7 +220,7 @@ export const requestTokens = () => {
 	};
 };
 
-export const generateToken = (values) => axios.post(`/user/tokens`, values);
+export const generateToken = (values) => axios.post(`/user/token`, values);
 export const tokenGenerated = (token) => ({
 	type: 'TOKEN_GENERATED',
 	payload: {
@@ -229,7 +229,7 @@ export const tokenGenerated = (token) => ({
 });
 
 export const revokeToken = (id, otp_code = '') =>
-	axios.delete(`/user/tokens`, {
+	axios.delete(`/user/token`, {
 		data: { token_id: id, otp_code: otp_code },
 	});
 export const tokenRevoked = (token) => ({

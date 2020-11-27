@@ -32,7 +32,7 @@ const ENDPOINTS = {
 	WITHDRAW_BANK: '/user/withdraw/bank',
 	WITHDRAW: (currency) => `/user/request-withdrawal`,
 	WITHDRAW_FEE: (currency) => `/user/withdrawal?currency=${currency}`,
-	CANCEL_WITHDRAWAL: '/user/withdrawals',
+	CANCEL_WITHDRAWAL: '/user/withdrawal',
 	CONFIRM_WITHDRAWAL: '/user/confirm-withdrawal',
 };
 
@@ -66,7 +66,7 @@ export const withdrawalCancel = (transactionId) => {
 		dispatch({ type: ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING });
 		axios
 			.delete(ENDPOINTS.CANCEL_WITHDRAWAL, {
-				data: { transaction_id: parseInt(transactionId.transactionId, 10) },
+				data: { id: parseInt(transactionId.transactionId, 10) },
 			})
 			.then((body) => {
 				dispatch({

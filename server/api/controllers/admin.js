@@ -3,8 +3,8 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { getNodeLib } = require('../../init');
 const { all } = require('bluebird');
+const { USER_NOT_FOUND } = require('../../messages');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -54,7 +54,10 @@ const createInitialAdmin = (req, res) => {
 			if (user) {
 				throw new Error('Admin already exists');
 			}
-			return toolsLib.user.createUser(email, password, 'admin');
+			return toolsLib.user.createUser(email, password, {
+				role: 'admin',
+				id: 1
+			});
 		})
 		.then(() => {
 			return toolsLib.setExchangeInitialized();
@@ -104,18 +107,18 @@ const getUsersAdmin = (req, res) => {
 
 	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getAllUsersAdmin(
-		id.value,
-		search.value,
-		pending.value,
-		limit.value,
-		page.value,
-		order_by.value,
-		order.value,
-		start_date.value,
-		end_date.value,
-		format.value
-	)
+	toolsLib.user.getAllUsersAdmin({
+		id: id.value,
+		search: search.value,
+		pending: pending.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
@@ -187,7 +190,7 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.balance.getUserBalance(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -241,7 +244,7 @@ const getAdminBalance = (req, res) => {
 		req.auth
 	);
 
-	getNodeLib().getBalanceNetwork()
+	toolsLib.wallet.getKitBalance()
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -297,7 +300,16 @@ const getAdminUserLogins = (req, res) => {
 	);
 	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getUserLogins(user_id.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.user.getUserLogins({
+		userId: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
@@ -326,7 +338,16 @@ const getUserAudits = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getUserAudits(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.user.getUserAudits({
+		userId: user_id,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
@@ -423,7 +444,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.balance.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -448,7 +469,7 @@ const adminCheckTransaction = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 	const isTestnet = req.swagger.params.is_testnet.value;
 
-	toolsLib.transaction.checkTransaction(currency, transactionId, address, isTestnet)
+	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})
@@ -493,7 +514,7 @@ const uploadImage = (req, res) => {
 	const name = req.swagger.params.name.value;
 	const file = req.swagger.params.file.value;
 
-	toolsLib.image.storeImageOnNetwork(file, name)
+	toolsLib.storeImageOnNetwork(file, name)
 		.then((result) => {
 			return res.json(result);
 		})
@@ -516,7 +537,12 @@ const getOperators = (req, res) => {
 
 	const { limit, page, order_by, order } = req.swagger.params;
 
-	toolsLib.user.getExchangeOperators(limit.value, page.value, order_by.value, order.value)
+	toolsLib.user.getExchangeOperators({
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value
+	})
 		.then((operators) => {
 			return res.json(operators);
 		})
@@ -563,7 +589,7 @@ const getExchangeGeneratedFees = (req, res) => {
 
 	const { limit, page, start_date, end_date } = req.swagger.params;
 
-	getNodeLib().getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
+	toolsLib.order.getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
 		.then((data) => {
 			return res.json(data);
 		})
@@ -603,7 +629,10 @@ const mintAsset = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
-			return getNodeLib().mintAsset(user.network_id, currency, description, amount);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return toolsLib.mintAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -640,7 +669,10 @@ const burnAsset = (req, res) => {
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
-			return getNodeLib().burnAsset(user.network_id, currency, description, amount);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return toolsLib.burnAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
