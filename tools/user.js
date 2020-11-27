@@ -1370,5 +1370,6 @@ module.exports = {
 	getUsersNetwork,
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
-	getVerificationCodeByUserId
+	getVerificationCodeByUserId,
+	checkAffiliation
 };
