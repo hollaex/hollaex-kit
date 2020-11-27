@@ -39,6 +39,22 @@ const ws = {
 	}
 };
 
+const plugin = {
+	// ws application
+	name      : 'plugin',
+	script    : 'plugin.js',
+	error_file: '/dev/null',
+	out_file: '/dev/null',
+	watch,
+	ignore_watch: ignore_watch.concat(['tools', 'queue']),
+	max_memory_restart,
+	node_args,
+	env: {
+		COMMON_VARIABLE: 'true',
+		PORT: process.env.PLUGIN_PORT || 10090,
+	}
+}
+
 var apps = [];
 const modes = initializeMode(mode);
 for (let m of modes) {
