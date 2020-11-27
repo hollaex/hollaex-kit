@@ -6,7 +6,6 @@ const { loggerEmail } = require('../config/logger');
 const { getValidLanguage } = require('./utils');
 const { MAILTYPE } = require('./strings');
 const generateMessageContent = require('./templates');
-const { sendSMSDeposit } = require('../api/helpers/plugins');
 const getStatusText = (status) => {
 	return status ? 'COMPLETED' : 'PENDING';
 };
@@ -60,7 +59,8 @@ const sendEmail = (
 		case MAILTYPE.DEPOSIT:
 		case MAILTYPE.WITHDRAWAL: {
 			data.status = getStatusText(data.status);
-			if (data.phoneNumber && data.status === 'COMPLETED')
+			if (data.phoneNumber && data.status === 'COMPLETED') {
+				const { sendSMSDeposit } = require('../api/helpers/plugins');
 				sendSMSDeposit(
 					type,
 					data.currency,
@@ -69,6 +69,7 @@ const sendEmail = (
 					formatDate(),
 					language
 				);
+			}
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}

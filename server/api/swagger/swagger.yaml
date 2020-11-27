@@ -27,7 +27,7 @@ securityDefinitions:
 
 paths:
   /health:
-    x-swagger-router-controller: general
+    x-swagger-router-controller: public
     get:
       operationId: getHealth
       description: Get health of server
@@ -42,8 +42,8 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /constant:
-    x-swagger-router-controller: general
+  /constants:
+    x-swagger-router-controller: public
     get:
       operationId: getConstants
       description: Get the system constants such as pairs and currencies
@@ -59,7 +59,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /kit:
-    x-swagger-router-controller: general
+    x-swagger-router-controller: public
     get:
       operationId: getKitConfigurations
       description: Get kit configurations
@@ -75,7 +75,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /support:
-    x-swagger-router-controller: general
+    x-swagger-router-controller: public
     post:
       operationId: sendSupportEmail
       description: Send email to support
@@ -368,14 +368,13 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /orderbooks:
-    x-swagger-router-controller: engine
+  /orderbook:
+    x-swagger-router-controller: public
     get:
       description: Returns the top orderbooks
-      operationId: getTopOrderbooks
+      operationId: getTopOrderbook
       tags:
         - Public
-        - Engine
       parameters:
         - name: symbol
           in: query
@@ -391,8 +390,24 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /orderbooks:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the top orderbooks
+      operationId: getTopOrderbooks
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderbooksResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /trades:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Returns the trades
       operationId: getTrades
@@ -404,7 +419,71 @@ paths:
           type: string
       tags:
         - Public
-        - Engine
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PublicTradesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /trades/history:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the trades
+      operationId: getTradesHistory
+      tags:
+        - Public
+      parameters:
+        - in: query
+          name: symbol
+          description: Symbol pair
+          required: false
+          type: string
+        - in: query
+          name: side
+          description: Symbol pair
+          required: false
+          type: string
+          enum: [ 'buy', 'sell' ]
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
       responses:
         200:
           description: Success
@@ -415,18 +494,17 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /ticker:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get historic data, time interval is 5 minutes
       operationId: getTicker
       tags:
         - Public
-        - Engine
       parameters:
         - in: query
           name: symbol
           description: Currency symbol
-          required: true
+          required: false
           type: string
       responses:
         200:
@@ -438,13 +516,28 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /ticker/all:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get historic data, time interval is 5 minutes
       operationId: getAllTicker
       tags:
         - Public
-        - Engine
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /tickers:
+    x-swagger-router-controller: public
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getAllTicker
+      tags:
+        - Public
       responses:
         200:
           description: Success
@@ -455,12 +548,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /chart:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get trade history HOLCV
       operationId: getChart
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -493,12 +586,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /charts:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get trade history HOLCV for all pairs
       operationId: getCharts
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -526,12 +619,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/config:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get tradingview udf config
       operationId: getConfig
       tags:
-        - Engine
+        - Public
         - Chart
       responses:
         200:
@@ -543,12 +636,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/history:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get tradingview udf history HOLCV
       operationId: getHistory
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -581,12 +674,12 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
   /udf/symbols:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       description: Get tradingview udf symbols
       operationId: getSymbols
       tags:
-        - Engine
+        - Public
         - Chart
       parameters:
         - in: query
@@ -603,47 +696,13 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /oracle/price:
-    x-swagger-router-controller: engine
-    get:
-      operationId: getAssetPrice
-      description: Convert asset price
-      tags:
-        - Oracle
-      parameters:
-        - name: asset
-          in: query
-          required: true
-          description: Asset to convert
-          type: string
-        - name: quote
-          in: query
-          required: false
-          description: Quote coin to convert to
-          type: string
-        - name: amount
-          in: query
-          required: false
-          description: Amount to convert
-          type: number
-          format: double
-          minimum: 0
-          exclusiveMinimum: true
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/OraclePriceResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
   /oracle/prices:
-    x-swagger-router-controller: engine
+    x-swagger-router-controller: public
     get:
       operationId: getAssetsPrices
       description: Convert assets prices
       tags:
+        - Public
         - Oracle
       parameters:
         - name: assets
@@ -694,8 +753,10 @@ paths:
             $ref: "#/definitions/MessageResponse"
       security:
         - Bearer: []
+        - HmacKey: []
       x-security-scopes:
         - user
+        - hmac
   /user/stats:
     x-swagger-router-controller: user
     get:
@@ -1090,6 +1151,56 @@ paths:
         - user
   /order:
     x-swagger-router-controller: order
+    get:
+      operationId: getUserOrder
+      description: Get order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+    delete:
+      operationId: cancelUserOrder
+      description: Cancel order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
     post:
       description: Create a new order
       operationId: createOrder
@@ -1186,7 +1297,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-  /user/orders:
+  /orders:
     x-swagger-router-controller: order
     get:
       operationId: getAllUserOrders
@@ -1265,6 +1376,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /order/all:
+    x-swagger-router-controller: order
     delete:
       operationId: cancelAllUserOrders
       description: Cancel all orders of authenticated user
@@ -1283,58 +1396,6 @@ paths:
             type: array
             items:
               $ref: "#/definitions/OrdersResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-        - HmacKey: []
-      x-security-scopes:
-        - user
-        - hmac
-  /user/order:
-    x-swagger-router-controller: order
-    get:
-      operationId: getUserOrder
-      description: Get order of authenticated user
-      tags:
-        - User
-      parameters:
-        - name: order_id
-          in: query
-          required: true
-          type: string
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/OrderResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-        - HmacKey: []
-      x-security-scopes:
-        - user
-        - hmac
-    delete:
-      operationId: cancelUserOrder
-      description: Cancel order of authenticated user
-      tags:
-        - User
-      parameters:
-        - name: order_id
-          in: query
-          required: true
-          type: string
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/OrderResponse"
         default:
           description: Error
           schema:
@@ -1395,27 +1456,8 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
-  /user/tokens:
+  /user/token:
     x-swagger-router-controller: user
-    get:
-      operationId: getHmacToken
-      description: Get user active HMAC tokens
-      tags:
-        - User
-        - Token
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/TokensResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - user
     post:
       operationId: createHmacToken
       description: Create an HMAC token. It requires OTP to create a token
@@ -1475,6 +1517,27 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/tokens:
+    x-swagger-router-controller: user
+    get:
+      operationId: getHmacToken
+      description: Get user active HMAC tokens
+      tags:
+        - User
+        - Token
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TokensResponse"
         default:
           description: Error
           schema:
@@ -1704,23 +1767,19 @@ paths:
       x-security-scopes:
         - user
         - hmac
+  /user/withdrawal:
+    x-swagger-router-controller: withdrawal
     delete:
       operationId: cancelWithdrawal
       description: Cancel a user's withdrawal which is pending
       tags:
         - User
       parameters:
-        - name: data
-          in: body
+        - name: id
+          in: query
           required: true
-          schema:
-            type: object
-            required:
-              - transaction_id
-            properties:
-              transaction_id:
-                type: number
-                description: Transaction Id to be cancelled.
+          type: number
+          format: int32
       responses:
         200:
           description: Success

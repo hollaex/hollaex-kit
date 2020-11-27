@@ -19,7 +19,7 @@ const getUserTrades = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.order.getAllUserTradesNetworkByKidId(user_id, symbol, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.order.getAllUserTradesByKitId(user_id, symbol, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-trades.csv`);
@@ -43,7 +43,7 @@ const getAdminUserTrades = (req, res) => {
 	let promiseQuery;
 
 	if (user_id.value) {
-		promiseQuery = toolsLib.order.getAllUserTradesNetworkByKidId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
+		promiseQuery = toolsLib.order.getAllUserTradesByKitId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
 	} else {
 		promiseQuery = 	toolsLib.order.getAllTradesNetwork(symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
 	}

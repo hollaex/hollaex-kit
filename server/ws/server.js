@@ -5,6 +5,7 @@ const { loggerWebsocket } = require('../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { MULTIPLE_API_KEY } = require('../messages');
 const url = require('url');
+const { getNodeLib } = require('../init');
 
 const PORT = process.env.WEBSOCKET_PORT || 10080;
 
@@ -12,9 +13,7 @@ const wss = new WebSocket.Server({
 	port: PORT,
 	verifyClient: (info, next) => {
 		try {
-			const { hubConnected } = require('./hub');
-
-			if (!hubConnected()) {
+			if (!getNodeLib().ws || !getNodeLib().ws.readyState === WebSocket.OPEN) {
 				throw new Error('Hub websocket is disconnected');
 			}
 
@@ -29,7 +28,7 @@ const wss = new WebSocket.Server({
 			} else if (bearerToken) {
 				// Function will set req.auth to authenticated token object if successful
 				info.req.headers.authorization = bearerToken;
-				toolsLib.auth.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
+				toolsLib.security.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
 						return next(false, 403, err.message);
@@ -44,7 +43,7 @@ const wss = new WebSocket.Server({
 				info.req.method = 'CONNECT';
 				info.req.originalUrl = '/stream';
 				// Function will set req.auth to authenticated token object if successful
-				toolsLib.auth.verifyHmacTokenMiddleware(info.req, null, hmacKey, (err) => {
+				toolsLib.security.verifyHmacTokenMiddleware(info.req, null, hmacKey, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
 						return next(false, 403, err.message);

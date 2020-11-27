@@ -1,6 +1,7 @@
 'use strict';
 
-const { addSubscriber, removeSubscriber, getChannels, resetChannels } = require('./channel');
+const { getPublicData } = require('./publicData');
+const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, ROLES } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
@@ -17,19 +18,15 @@ const { subscriber } = require('../db/pubsub');
 const { sendInitialMessages, addMessage, deleteMessage } = require('./chat');
 const { getUsername, changeUsername } = require('./chat/username');
 const { sendBannedUsers, banUser, unbanUser } = require('./chat/ban');
+const { sendNetworkWsMessage } = require('./hub');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.on('message', (channel, data) => {
 	if (channel === WS_PUBSUB_DEPOSIT_CHANNEL) {
 		data = JSON.parse(data);
-		handleHubData(data);
+		handleDepositData(data);
 	}
 });
-
-let publicData = {
-	orderbook: {},
-	trade: {}
-};
 
 const initializeTopic = (topic, ws, symbol) => {
 	switch (topic) {
@@ -40,15 +37,15 @@ const initializeTopic = (topic, ws, symbol) => {
 					throw new Error('Invalid symbol');
 				}
 				addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
-				if (publicData[topic][symbol]) {
-					ws.send(JSON.stringify(publicData[topic][symbol]));
+				if (getPublicData()[topic][symbol]) {
+					ws.send(JSON.stringify(getPublicData()[topic][symbol]));
 				}
 			} else {
 				each(toolsLib.getKitPairs(), (pair) => {
 					try {
 						addSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
-						if (publicData[topic][pair]) {
-							ws.send(JSON.stringify(publicData[topic][pair]));
+						if (getPublicData()[topic][pair]) {
+							ws.send(JSON.stringify(getPublicData()[topic][pair]));
 						}
 					} catch (err) {
 						ws.send(JSON.stringify({ message: err.message }));
@@ -63,11 +60,11 @@ const initializeTopic = (topic, ws, symbol) => {
 			}
 			if (!getChannels()[WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId)]) {
 				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
-				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
+				sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			} else {
-				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
+				sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 				addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
-				require('./hub').sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
+				sendNetworkWsMessage('subscribe', topic, ws.auth.sub.networkId);
 			}
 			break;
 		case 'deposit':
@@ -113,7 +110,7 @@ const terminateTopic = (topic, ws, symbol) => {
 			}
 			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws, 'private');
 			if (!getChannels()[WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId)]) {
-				require('./hub').sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
+				sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 			}
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
 			break;
@@ -149,7 +146,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 		// get authenticated user data and set as ws.auth.
 		// Function will throw an error if there is an issue which will be caught below
-		const auth = await toolsLib.auth.verifyBearerTokenPromise(bearerToken, ip);
+		const auth = await toolsLib.security.verifyBearerTokenPromise(bearerToken, ip);
 
 		// If authentication was successful, set ws.auth to new auth object and send authenticated message
 		ws.auth = auth;
@@ -162,7 +159,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 		// get authenticated user data and set as ws.auth.
 		// Function will throw an error if there is an issue which will be caught below
-		const auth = await toolsLib.auth.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
+		const auth = await toolsLib.security.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
 
 		// If authentication was successful, set ws.auth to new auth object and send authenticated message
 		ws.auth = auth;
@@ -190,7 +187,7 @@ const terminateClosedChannels = (ws) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws, 'private');
 			if (!getChannels()[WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId)]) {
-				require('./hub').sendNetworkWsMessage('unsubscribe', 'order', ws.auth.sub.networkId);
+				sendNetworkWsMessage('unsubscribe', 'order', ws.auth.sub.networkId);
 			}
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
@@ -199,7 +196,7 @@ const terminateClosedChannels = (ws) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId), ws, 'private');
 			if (!getChannels()[WEBSOCKET_CHANNEL('wallet', ws.auth.sub.networkId)]) {
-				require('./hub').sendNetworkWsMessage('unsubscribe', 'wallet', ws.auth.sub.networkId);
+				sendNetworkWsMessage('unsubscribe', 'wallet', ws.auth.sub.networkId);
 			}
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
@@ -216,39 +213,6 @@ const terminateClosedChannels = (ws) => {
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
-	}
-};
-
-const handleHubData = (data) => {
-	switch (data.topic) {
-		case 'orderbook':
-			publicData[data.topic][data.symbol] = { ...data, action: 'parital' };
-
-			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
-				ws.send(JSON.stringify(data));
-			});
-			break;
-		case 'trade':
-			if (data.action === 'partial') {
-				publicData[data.topic][data.symbol] = data;
-			} else {
-				const updatedTrades = data.data.concat(publicData[data.topic][data.symbol].data);
-				publicData[data.topic][data.symbol].time = data.time;
-				publicData[data.topic][data.symbol].data = updatedTrades.length <= 50 ? updatedTrades : updatedTrades.slice(0, 50);
-			}
-			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
-				ws.send(JSON.stringify(data));
-			});
-			break;
-		case 'order':
-		case 'wallet':
-		case 'deposit':
-			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
-				ws.send(JSON.stringify(data));
-			});
-			break;
-		default:
-			break;
 	}
 };
 
@@ -295,25 +259,22 @@ const handleChatData = (action, ws, data) => {
 		});
 };
 
-const closeAllClients = () => {
-	each(getChannels(), (channel) => {
-		each(channel, (ws) => {
-			ws.close();
-		});
-	});
-	resetChannels();
-	publicData = {
-		orderbook: {},
-		trade: {}
-	};
+const handleDepositData = (data) => {
+	switch (data.topic) {
+		case 'deposit':
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
+				ws.send(JSON.stringify(data));
+			});
+			break;
+		default:
+			break;
+	}
 };
 
 module.exports = {
 	initializeTopic,
 	terminateTopic,
-	handleHubData,
 	authorizeUser,
 	terminateClosedChannels,
-	closeAllClients,
 	handleChatData
 };
