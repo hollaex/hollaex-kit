@@ -4,7 +4,6 @@ import coinIcons from './coins';
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
 	EXCHANGE: {
-		LOGO: '',
 		FAV_ICON: '/favicon.ico',
 		LOADER: '/assets/loader-dark.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',

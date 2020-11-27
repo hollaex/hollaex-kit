@@ -47,3 +47,7 @@ export const getSetupCompleted = () => {
 export const setBaseCurrency = (native_currnecy) => {
 	localStorage.setItem('base_currnecy', native_currnecy);
 };
+
+export const setDefaultLogo = (logo_black_path) => {
+	localStorage.setItem('default_logo', logo_black_path);
+};
