@@ -14,7 +14,8 @@ const {
 	INVALID_AMOUNT,
 	WITHDRAWAL_DISABLED_FOR_COIN,
 	UPGRADE_VERIFICATION_LEVEL,
-	NO_DATA_FOR_CSV
+	NO_DATA_FOR_CSV,
+	USER_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const { getUserByKitId } = require('./user');
 const { findTier } = require('./tier');
@@ -49,6 +50,9 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 			return getUserByKitId(id);
 		})
 		.then(async (user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level < 1) {
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
@@ -139,6 +143,9 @@ const validateWithdrawalToken = (token) => {
 const cancelUserWithdrawalByKitId = (userId, withdrawalId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId);
 		});
 };
@@ -161,6 +168,9 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 	}
 	return getUserByKitId(userId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return all([
 				user,
 				findTier(user.verification_level)
@@ -220,6 +230,9 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 		getUserByKitId(receiverId)
 	])
 		.then(([ sender, receiver ]) => {
+			if (!sender || !receiver) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return all([
 				getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description }),
 				sender,
@@ -265,6 +278,9 @@ const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, descr
 const getUserBalanceByKitId = (userKitId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().getBalance({ userId: user.network_id });
 		})
 		.then((data) => {
@@ -305,6 +321,9 @@ const getUserTransactionsByKitId = (
 		if (type === 'deposit') {
 			promiseQuery = getUserByKitId(kitId, false)
 				.then((user) => {
+					if (!user) {
+						throw new Error(USER_NOT_FOUND);
+					}
 					return getNodeLib().getDeposits({
 						userId: user.network_id,
 						currency,
@@ -324,6 +343,9 @@ const getUserTransactionsByKitId = (
 		} else if (type === 'withdrawal') {
 			promiseQuery = getUserByKitId(kitId, false)
 				.then((user) => {
+					if (!user) {
+						throw new Error(USER_NOT_FOUND);
+					}
 					return getNodeLib().getWithdrawals({
 						userId: user.network_id,
 						currency,
@@ -492,6 +514,9 @@ const getExchangeWithdrawals = (
 const mintAssetByKitId = (kitId, currency, amount, description) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().mintAsset(user.network_id, currency, amount, { description });
 		});
 };
@@ -503,6 +528,9 @@ const mintAssetByNetworkId = (networkId, currency, amount, description) => {
 const burnAssetByKitId = (kitId, currency, amount, description) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().burnAsset(user.network_id, currency, amount, { description });
 		});
 };

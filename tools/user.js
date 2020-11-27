@@ -233,6 +233,9 @@ const createUserOnNetwork = (email) => {
 const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer) => {
 	return getUserByEmail(email.toLowerCase())
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level === 0) {
 				throw new Error(USER_NOT_VERIFIED);
 			} else if (!user.activated) {
@@ -311,6 +314,9 @@ const registerUserLogin = (
 const getVerificationCodeByUserEmail = (email) => {
 	return getUserByEmail(email)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getVerificationCodeByUserId(user.id);
 		});
 };
@@ -319,11 +325,6 @@ const getVerificationCodeByUserId = (user_id) => {
 	return dbQuery.findOne('verification code', {
 		where: { user_id },
 		attributes: ['id', 'code', 'verified', 'user_id']
-	}).then((verificationCode) => {
-		if (verificationCode.verified) {
-			throw new Error(USER_IS_VERIFIED);
-		}
-		return verificationCode;
 	});
 };
 
@@ -552,22 +553,18 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 		raw: rawData
 	})
 		.then(async (user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else {
-				if (networkData) {
-					if (rawData) {
-						const networkData = await getNodeLib().getUser(user.network_id);
-						user.balance = networkData.balance;
-						user.crypto_wallet = networkData.crypto_wallet;
-					} else {
-						const networkData = await getNodeLib().getUser(user.network_id);
-						user.dataValues.balance = networkData.balance;
-						user.dataValues.crypto_wallet = networkData.crypto_wallet;
-					}
+			if (networkData) {
+				if (rawData) {
+					const networkData = await getNodeLib().getUser(user.network_id);
+					user.balance = networkData.balance;
+					user.crypto_wallet = networkData.crypto_wallet;
+				} else {
+					const networkData = await getNodeLib().getUser(user.network_id);
+					user.dataValues.balance = networkData.balance;
+					user.dataValues.crypto_wallet = networkData.crypto_wallet;
 				}
-				return user;
 			}
+			return user;
 		});
 };
 
@@ -596,6 +593,9 @@ const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
 const getUserTier = (user_id) => {
 	return getUser({ user_id }, true)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level < 1) {
 				throw new Error('User is not verified');
 			}
@@ -621,6 +621,9 @@ const freezeUserById = (userId) => {
 	}
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
@@ -643,6 +646,9 @@ const freezeUserById = (userId) => {
 const freezeUserByEmail = (email) => {
 	return getUserByEmail(email, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.id === 1) {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
@@ -668,6 +674,9 @@ const freezeUserByEmail = (email) => {
 const unfreezeUserById = (userId) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.activated) {
 				throw new Error(USER_NOT_DEACTIVATED);
 			}
@@ -690,6 +699,9 @@ const unfreezeUserById = (userId) => {
 const unfreezeUserByEmail = (email) => {
 	return getUserByEmail(email, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.activated) {
 				throw new Error(USER_NOT_DEACTIVATED);
 			}
@@ -712,6 +724,9 @@ const unfreezeUserByEmail = (email) => {
 const getUserRole = (opts = {}) => {
 	return getUser(opts, true)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.is_admin) {
 				return 'admin';
 			} else if (user.is_supervisor) {
@@ -818,6 +833,9 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 const updateUserSettings = (userOpts = {}, settings = {}, rawData = true) => {
 	return getUser(userOpts, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (Object.keys(settings).length > 0) {
 				settings = joinSettings(user.dataValues.settings, settings);
 			}
@@ -884,6 +902,9 @@ const getUserEmailByVerificationCode = (code) => {
 const updateUserNote = (userId, note) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return user.update({ note }, { fields: ['note']});
 		});
 };
@@ -896,6 +917,9 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 	let currentVerificationLevel = 0;
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level === 0) {
 				throw new Error(ACCOUNT_NOT_VERIFIED);
 			}
@@ -933,6 +957,9 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 const deactivateUserOtpById = (userId) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return user.update(
 				{ otp_enabled: false },
 				{ fields: [ 'otp_enabled' ]}
@@ -943,6 +970,9 @@ const deactivateUserOtpById = (userId) => {
 const toggleFlaggedUserById = (userId) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return user.update(
 				{ flagged: !user.flagged },
 				{ fields: ['flagged'] }
@@ -1138,6 +1168,9 @@ const setUsernameById = (userId, username) => {
 	}
 	return getUserByKitId(userId, false)
 		.then((user) =>{
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.settings.chat.set_username) {
 				throw new Error(USERNAME_CANNOT_BE_CHANGED);
 			}
@@ -1166,6 +1199,9 @@ const createUserCryptoAddressByNetworkId = (networkId, crypto) => {
 const createUserCryptoAddressByKitId = (kitId, crypto) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().createUserCryptoAddress(user.network_id, crypto);
 		});
 };
@@ -1173,6 +1209,9 @@ const createUserCryptoAddressByKitId = (kitId, crypto) => {
 const getUserStatsByKitId = (userId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().getUserStats(user.network_id);
 		});
 };

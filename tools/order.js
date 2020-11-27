@@ -3,7 +3,7 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV, USER_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, subscribedToCoin, getKitTier } = require('./common');
 const { reject } = require('bluebird');
@@ -17,6 +17,9 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 	// }
 	return getUserByKitId(userKitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			const tier = getKitTier(user.verification_level);
 			if (!tier) {
 				throw new Error('User tier not found');
@@ -42,6 +45,9 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, stop
 	// }
 	return getUserByEmail(email)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			const tier = getKitTier(user.verification_level);
 			if (!tier) {
 				throw new Error('User tier not found');
@@ -90,6 +96,9 @@ const createOrderNetwork = (networkId, symbol, side, size, type, price, feeData 
 const getUserOrderByKitId = (userKitId, orderId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().getOrder(user.network_id, orderId);
 		});
 };
@@ -97,6 +106,9 @@ const getUserOrderByKitId = (userKitId, orderId) => {
 const getUserOrderByEmail = (email, orderId) => {
 	return getUserByEmail(email)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().getOrder(user.network_id, orderId);
 		});
 };
@@ -108,6 +120,9 @@ const getUserOrderByNetworkId = (networkId, orderId) => {
 const cancelUserOrderByKitId = (userKitId, orderId) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().cancelOrder(user.network_id, orderId);
 		});
 };
@@ -115,6 +130,9 @@ const cancelUserOrderByKitId = (userKitId, orderId) => {
 const cancelUserOrderByEmail = (email, orderId) => {
 	return getUserByEmail(email)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().cancelOrder(user.network_id, orderId);
 		});
 };
@@ -147,6 +165,9 @@ const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, p
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().getOrders({
 				userId: user.network_id,
 				symbol,
@@ -169,6 +190,9 @@ const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page,
 	}
 	return getUserByEmail(email)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().getOrders({
 				userId: user.network_id,
 				symbol,
@@ -210,6 +234,9 @@ const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().cancelAllOrders(user.network_id, { symbol });
 		});
 };
@@ -220,6 +247,9 @@ const cancelAllUserOrdersByEmail = (email, symbol) => {
 	}
 	return getUserByEmail(email)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().cancelAllOrders(user.network_id, { symbol });
 		});
 };
@@ -252,6 +282,9 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 	}
 	return getUserByKitId(userKitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().getUserTrades({
 				userId: user.network_id,
 				symbol,
