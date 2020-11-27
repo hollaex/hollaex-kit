@@ -21,7 +21,9 @@ const {
 	SIGNUP_NOT_AVAILABLE,
 	PROVIDE_VALID_EMAIL,
 	INVALID_PASSWORD,
-	USER_EXISTS
+	USER_EXISTS,
+	USER_IS_VERIFIED,
+	INVALID_VERIFICATION_CODE
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
 const { all } = require('bluebird');
@@ -181,7 +183,45 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	toolsLib.user.verifyUser(email, verification_code)
+	toolsLib.database.getModel('sequelize').transaction((transaction) => {
+		return toolsLib.findOne('user', {
+			where: { email },
+			attributes: ['id', 'email', 'settings', 'network_id']
+		})
+			.then((user) => {
+				return all([
+					toolsLib.database.findOne('verification code', {
+						where: { user_id: user.id },
+						attributes: ['id', 'code', 'verified', 'user_id']
+					}),
+					user
+				]);
+			})
+			.then(([ verificationCode, user ]) => {
+				if (verificationCode.verified) {
+					throw new Error(USER_IS_VERIFIED);
+				}
+
+				if (verification_code !== verificationCode.code) {
+					throw new Error(INVALID_VERIFICATION_CODE);
+				}
+
+				return all([
+					user,
+					toolsLib.user.createUserOnNetwork(email),
+					verificationCode.update(
+						{ verified: true },
+						{ fields: ['verified'], transaction }
+					)
+				]);
+			})
+			.then(([ user, networkUser ]) => {
+				return user.update(
+					{ network_id: networkUser.id },
+					{ fields: ['network_id'], returning: true, transaction }
+				);
+			});
+	})
 		.then((user) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
