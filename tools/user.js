@@ -2,14 +2,9 @@
 
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
-const { has, omit, pick, each, differenceWith, isEqual } = require('lodash');
+const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean } = require('lodash');
 const { isEmail } = require('validator');
-const {
-	SERVER_PATH,
-	SETTING_KEYS,
-	OMITTED_USER_FIELDS,
-	DEFAULT_ORDER_RISK_PERCENTAGE
-} = require('../constants');
+const { SERVER_PATH } = require('../constants');
 const {
 	SIGNUP_NOT_AVAILABLE,
 	PROVIDE_VALID_EMAIL,
@@ -36,13 +31,22 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	VERIFICATION_CODE_USED
-} = require('../messages');
+} = require(`${SERVER_PATH}/messages`);
 const { publisher } = require('./database/redis');
-const { CONFIGURATION_CHANNEL, ADMIN_ACCOUNT_ID, AUDIT_KEYS, USER_FIELD_ADMIN_LOG, ADDRESS_FIELDS, ID_FIELDS } = require(`${SERVER_PATH}/constants`);
+const {
+	CONFIGURATION_CHANNEL,
+	AUDIT_KEYS,
+	USER_FIELD_ADMIN_LOG,
+	ADDRESS_FIELDS,
+	ID_FIELDS,
+	SETTING_KEYS,
+	OMITTED_USER_FIELDS,
+	DEFAULT_ORDER_RISK_PERCENTAGE
+} = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins, getKitTiers, isValidTierLevel } = require('./common');
-const { isValidPassword } = require('./auth');
+const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel } = require('./common');
+const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
@@ -50,10 +54,11 @@ const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/h
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
+const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 
 	/* Onboarding*/
 
-const signUpUser = (email, password, referral) => {
+const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
 		return reject(new Error(SIGNUP_NOT_AVAILABLE));
 	}
@@ -93,18 +98,17 @@ const signUpUser = (email, password, referral) => {
 				verificationCode.code,
 				{}
 			);
-			if (referral) {
-				checkAffiliation(referral, user.id);
+			if (isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
 			}
 			return user;
 		});
 };
 
-const verifyUser = (email, code, domain) => {
+const verifyUser = (email, code) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return dbQuery.findOne('user',
-			{ where: { email } },
-			{ transaction }
+			{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
 		)
 			.then((user) => {
 				return all([
@@ -112,8 +116,7 @@ const verifyUser = (email, code, domain) => {
 						{
 							where: { user_id: user.id },
 							attributes: ['id', 'code', 'verified', 'user_id']
-						},
-						{ transaction }
+						}
 					),
 					user
 				]);
@@ -127,7 +130,7 @@ const verifyUser = (email, code, domain) => {
 				}
 				return all([
 					user,
-					getNodeLib().createUserNetwork(email),
+					getNodeLib().createUser(email),
 					verificationCode.update({ verified: true }, { fields: ['verified'], returning: true, transaction })
 				]);
 			})
@@ -135,25 +138,21 @@ const verifyUser = (email, code, domain) => {
 				return user.update({
 					network_id: networkUser.id
 				}, { fields: ['network_id'], returning: true, transaction });
-			})
-			.then((user) => {
-				sendEmail(
-					MAILTYPE.WELCOME,
-					user.email,
-					{},
-					user.settings,
-					domain
-				);
-				return;
 			});
 	});
 };
 
-const createUser = (email, password, role = 'user', domain) => {
+const createUser = (
+	email,
+	password,
+	opts = {
+		role: 'user',
+		id: null
+	}
+) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return dbQuery.findOne('user', {
-			where: { email },
-			transaction
+			where: { email }
 		})
 			.then((user) => {
 				if (user) {
@@ -167,8 +166,8 @@ const createUser = (email, password, role = 'user', domain) => {
 					is_communicator: false
 				};
 
-				if (role !== 'user') {
-					const userRole = 'is_' + role.toLowerCase();
+				if (opts.role !== 'user') {
+					const userRole = 'is_' + opts.role.toLowerCase();
 					if (roles[userRole] === undefined) {
 						throw new Error('Role does not exist');
 					}
@@ -179,17 +178,23 @@ const createUser = (email, password, role = 'user', domain) => {
 					});
 				}
 
-				return getModel('user').create({
+				const options = {
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
 					...roles
-				}, { transaction });
+				};
+
+				if (isNumber(opts.id)) {
+					options.id = opts.id;
+				}
+
+				return getModel('user').create(options, { transaction });
 			})
 			.then((user) => {
 				return all([
 					user,
-					getNodeLib().createUserNetwork(email)
+					getNodeLib().createUser(email)
 				]);
 			})
 			.then(([ kitUser, networkUser ]) => {
@@ -212,16 +217,25 @@ const createUser = (email, password, role = 'user', domain) => {
 				MAILTYPE.WELCOME,
 				user.email,
 				{},
-				user.settings,
-				domain
+				user.settings
 			);
 			return;
 		});
 };
 
+const createUserOnNetwork = (email) => {
+	if (!isEmail(email)) {
+		return reject(new Error(PROVIDE_VALID_EMAIL));
+	}
+	return getNodeLib().createUser(email);
+};
+
 const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer) => {
 	return getUserByEmail(email.toLowerCase())
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level === 0) {
 				throw new Error(USER_NOT_VERIFIED);
 			} else if (!user.activated) {
@@ -229,7 +243,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 			return all([
 				user,
-				require('./auth').validatePassword(user.password, password)
+				validatePassword(user.password, password)
 			]);
 		})
 		.then(([ user, passwordIsValid ]) => {
@@ -238,15 +252,15 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 
 			if (!user.otp_enabled) {
-				return all([ user, require('./auth').checkCaptcha(captcha, ip) ]);
+				return all([ user, checkCaptcha(captcha, ip) ]);
 			} else {
 				return all([
 					user,
-					require('./auth').verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+					verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
-							return require('./auth').checkCaptcha(captcha, ip);
+							return checkCaptcha(captcha, ip);
 						}
 					})
 				]);
@@ -260,15 +274,38 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 		});
 };
 
-const registerUserLogin = (userId, ip, device = '', domain = '', origin = '', referer = '') => {
-	return getModel('login').create({
+const registerUserLogin = (
+	userId,
+	ip,
+	opts = {
+		device: null,
+		domain: null,
+		origin: null,
+		referer: null
+	}
+) => {
+	const login = {
 		user_id: userId,
-		ip,
-		device,
-		domain,
-		origin,
-		referer
-	});
+		ip
+	};
+
+	if (isString(opts.device)) {
+		login.device = opts.device;
+	}
+
+	if (isString(opts.domain)) {
+		login.domain = opts.domain;
+	}
+
+	if (isString(opts.origin)) {
+		login.origin = opts.origin;
+	}
+
+	if (isString(opts.referer)) {
+		login.referer = opts.referer;
+	}
+
+	return getModel('login').create(login);
 };
 
 	/* Public Endpoints*/
@@ -277,6 +314,9 @@ const registerUserLogin = (userId, ip, device = '', domain = '', origin = '', re
 const getVerificationCodeByUserEmail = (email) => {
 	return getUserByEmail(email)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getVerificationCodeByUserId(user.id);
 		});
 };
@@ -285,11 +325,6 @@ const getVerificationCodeByUserId = (user_id) => {
 	return dbQuery.findOne('verification code', {
 		where: { user_id },
 		attributes: ['id', 'code', 'verified', 'user_id']
-	}).then((verificationCode) => {
-		if (verificationCode.verified) {
-			throw new Error(USER_IS_VERIFIED);
-		}
-		return verificationCode;
 	});
 };
 
@@ -358,50 +393,61 @@ const getAllUsers = () => {
 	});
 };
 
-const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, start_date, end_date, format) => {
-	const pagination = paginationQuery(limit, page);
-	const timeframe = timeframeQuery(start_date, end_date);
-	const ordering = orderingQuery(order_by, order);
+const getAllUsersAdmin = (opts = {
+	id: null,
+	search: null,
+	pending: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+	const ordering = orderingQuery(opts.order_by, opts.order);
 	let query = {
 		where: {
 			created_at: timeframe
 		}
 	};
-	if (id || search) {
+	if (opts.id || opts.search) {
 		query.attributes = {
 			exclude: ['balance', 'password', 'updated_at']
 		};
-		if (id) {
-			query.where.id = id;
+		if (opts.id) {
+			query.where.id = opts.id;
 		} else {
 			query.where = {
 				$or: [
 					{
 						email: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
 					{
 						username: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
 					{
 						full_name: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
 					{
 						phone_number: {
-							[Op.like]: `%${search}%`
+							[Op.like]: `%${opts.search}%`
 						}
 					},
-					getModel('sequelize').literal(`id_data ->> 'number'='${search}'`),
-					...getKitCoins().map((coin) => getModel('sequelize').literal(`crypto_wallet ->> '${coin}'='${search}'`))
+					getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`),
+					...getKitCoins().map((coin) => getModel('sequelize').literal(`crypto_wallet ->> '${coin}'='${opts.search}'`))
 				]
 			};
 		}
-	} else if (pending) {
+	} else if (isBoolean(opts.pending) && opts.pending) {
 		query = {
 			where: {
 				$or: [
@@ -435,21 +481,23 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 			order: [ordering]
 		};
 	}
-	if (!format) {
+
+	if (!opts.format) {
 		query = {...query, ...pagination};
-	} else if (!pending) {
+	} else if (isBoolean(opts.pending) && !opts.pending) {
 		query.attributes.exclude.push('settings');
 	}
+
 	return dbQuery.findAndCountAllWithRows('user', query)
 		.then(async ({ count, data }) => {
-			if (id || search) {
+			if (opts.id || opts.search) {
 				if (count === 0) {
 					// Need to throw error if query was for one user and the user is not found
 					const error = new Error(USER_NOT_FOUND);
 					error.status = 404;
 					throw error;
 				} else {
-					const userNetworkData = await getNodeLib().getUserNetwork(data[0].network_id);
+					const userNetworkData = await getNodeLib().getUser(data[0].network_id);
 					data[0].balance = userNetworkData.balance;
 					data[0].crypto_wallet = userNetworkData.crypto_wallet;
 					return { count, data };
@@ -458,7 +506,7 @@ const getAllUsersAdmin = (id, search, pending, limit, page, order_by, order, sta
 			return { count, data };
 		})
 		.then(async (users) => {
-			if (format) {
+			if (opts.format) {
 				if (users.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -505,23 +553,27 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 		raw: rawData
 	})
 		.then(async (user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else {
-				if (networkData) {
-					if (rawData) {
-						const networkData = await getNodeLib().getUserNetwork(user.network_id);
-						user.balance = networkData.balance;
-						user.crypto_wallet = networkData.crypto_wallet;
-					} else {
-						const networkData = await getNodeLib().getUserNetwork(user.network_id);
-						user.dataValues.balance = networkData.balance;
-						user.dataValues.crypto_wallet = networkData.crypto_wallet;
-					}
+			if (networkData) {
+				if (rawData) {
+					const networkData = await getNodeLib().getUser(user.network_id);
+					user.balance = networkData.balance;
+					user.crypto_wallet = networkData.crypto_wallet;
+				} else {
+					const networkData = await getNodeLib().getUser(user.network_id);
+					user.dataValues.balance = networkData.balance;
+					user.dataValues.crypto_wallet = networkData.crypto_wallet;
 				}
-				return user;
 			}
+			return user;
 		});
+};
+
+const getUserNetwork = (networkId) => {
+	return getNodeLib().getUser(networkId);
+};
+
+const getUsersNetwork = () => {
+	return getNodeLib().getUsers();
 };
 
 const getUserByEmail = (email, rawData = true, networkData = false) => {
@@ -541,6 +593,9 @@ const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
 const getUserTier = (user_id) => {
 	return getUser({ user_id }, true)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level < 1) {
 				throw new Error('User is not verified');
 			}
@@ -561,11 +616,14 @@ const getUserByNetworkId = (network_id, rawData = true, networkData = false) => 
 };
 
 const freezeUserById = (userId) => {
-	if (userId === ADMIN_ACCOUNT_ID) {
+	if (userId === 1) {
 		return reject(new Error(CANNOT_DEACTIVATE_ADMIN));
 	}
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
@@ -588,7 +646,10 @@ const freezeUserById = (userId) => {
 const freezeUserByEmail = (email) => {
 	return getUserByEmail(email, false)
 		.then((user) => {
-			if (user.id === ADMIN_ACCOUNT_ID) {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			if (user.id === 1) {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
@@ -613,6 +674,9 @@ const freezeUserByEmail = (email) => {
 const unfreezeUserById = (userId) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.activated) {
 				throw new Error(USER_NOT_DEACTIVATED);
 			}
@@ -635,6 +699,9 @@ const unfreezeUserById = (userId) => {
 const unfreezeUserByEmail = (email) => {
 	return getUserByEmail(email, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.activated) {
 				throw new Error(USER_NOT_DEACTIVATED);
 			}
@@ -657,6 +724,9 @@ const unfreezeUserByEmail = (email) => {
 const getUserRole = (opts = {}) => {
 	return getUser(opts, true)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.is_admin) {
 				return 'admin';
 			} else if (user.is_supervisor) {
@@ -674,7 +744,7 @@ const getUserRole = (opts = {}) => {
 };
 
 const updateUserRole = (user_id, role) => {
-	if (user_id === ADMIN_ACCOUNT_ID) {
+	if (user_id === 1) {
 		return reject(new Error(CANNOT_CHANGE_ADMIN_ROLE));
 	}
 	return dbQuery.findOne('user', {
@@ -760,9 +830,12 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 	return joinedSettings;
 };
 
-const updateUserSettings = (opts = {}, settings = {}, rawData = true) => {
-	return getUser(opts, false)
+const updateUserSettings = (userOpts = {}, settings = {}, rawData = true) => {
+	return getUser(userOpts, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (Object.keys(settings).length > 0) {
 				settings = joinSettings(user.dataValues.settings, settings);
 			}
@@ -829,6 +902,9 @@ const getUserEmailByVerificationCode = (code) => {
 const updateUserNote = (userId, note) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return user.update({ note }, { fields: ['note']});
 		});
 };
@@ -841,6 +917,9 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 	let currentVerificationLevel = 0;
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.verification_level === 0) {
 				throw new Error(ACCOUNT_NOT_VERIFIED);
 			}
@@ -878,6 +957,9 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 const deactivateUserOtpById = (userId) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return user.update(
 				{ otp_enabled: false },
 				{ fields: [ 'otp_enabled' ]}
@@ -888,6 +970,9 @@ const deactivateUserOtpById = (userId) => {
 const toggleFlaggedUserById = (userId) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return user.update(
 				{ flagged: !user.flagged },
 				{ fields: ['flagged'] }
@@ -895,10 +980,19 @@ const toggleFlaggedUserById = (userId) => {
 		});
 };
 
-const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, format) => {
-	const pagination = paginationQuery(limit, page);
-	const timeframe = timeframeQuery(startDate, endDate);
-	const ordering = orderingQuery(orderBy, order);
+const getUserLogins = (opts = {
+	userId: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
 			timestamp: timeframe
@@ -908,15 +1002,15 @@ const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, 
 		},
 		order: [ordering]
 	};
-	if (!format) {
+	if (!opts.format) {
 		options = { ...options, ...pagination};
 	}
 
-	if (userId) options.where.user_id = userId;
+	if (opts.userId) options.where.user_id = opts.userId;
 
 	return dbQuery.findAndCountAllWithRows('login', options)
 		.then((logins) => {
-			if (format) {
+			if (opts.format) {
 				if (logins.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -993,20 +1087,42 @@ const createAuditDescription = (userId, prevData = {}, newData = {}) => {
 	return description;
 };
 
-const createAudit = (adminId, userId, event, prevUserData, newUserData, ip, domain) => {
+const createAudit = (adminId, event, ip, opts = {
+	userId: null,
+	prevUserData: null,
+	newUserData: null,
+	domain: null
+}) => {
+	const options = {
+		admin_id: adminId,
+		event,
+		description: createAuditDescription(opts.userId, opts.prevUserData, opts.newUserData),
+		ip,
+	};
+	if (opts.domain) {
+		options.domain = opts.domain;
+	}
 	return getModel('audit').create({
 		admin_id: adminId,
 		event,
-		description: createAuditDescription(userId, prevUserData, newUserData),
-		ip,
-		domain
+		description: createAuditDescription(opts.userId, opts.prevUserData, opts.newUserData),
+		ip
 	});
 };
 
-const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, format) => {
-	const pagination = paginationQuery(limit, page);
-	const timeframe = timeframeQuery(startDate, endDate);
-	const ordering = orderingQuery(orderBy, order);
+const getUserAudits = (opts = {
+	userId: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
 			timestamp: timeframe
@@ -1014,15 +1130,15 @@ const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, 
 		order: [ordering]
 	};
 
-	if (!format) {
+	if (!opts.format) {
 		options = { ...options, ...pagination };
 	}
 
-	if (userId) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${userId}'`);
+	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
 	return dbQuery.findAndCountAllWithRows('audit', options)
 		.then((audits) => {
-			if (format) {
+			if (opts.format) {
 				if (audits.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1033,95 +1149,6 @@ const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, 
 				return audits;
 			}
 		});
-};
-
-const getTransactions = (
-	type,
-	kitId,
-	currency,
-	status,
-	dismissed,
-	rejected,
-	processing,
-	waiting,
-	limit,
-	page,
-	orderBy,
-	order,
-	startDate,
-	endDate,
-	format
-) => {
-	let promiseQuery;
-	if (kitId) {
-		if (type === 'deposit') {
-			promiseQuery = getUserByKitId(kitId, false)
-				.then((user) => {
-					return getNodeLib().getAllDepositNetwork(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
-				});
-		} else if (type === 'withdrawal') {
-			promiseQuery = getUserByKitId(kitId, false)
-				.then((user) => {
-					return getNodeLib().getAllWithdrawalNetwork(user.network_id, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
-				});
-		}
-	} else {
-		if (type === 'deposit') {
-			promiseQuery = getNodeLib().getAllDepositNetwork(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
-		} else if (type === 'withdrawal') {
-			promiseQuery = getNodeLib().getAllWithdrawalNetwork(undefined, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate);
-		}
-	}
-	return promiseQuery
-		.then((transactions) => {
-			if (format) {
-				if (transactions.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
-				}
-				const csv = parse(transactions.data, Object.keys(transactions.data[0]));
-				return csv;
-			} else {
-				return transactions;
-			}
-		});
-};
-
-const getUserDepositsByKitId = (
-	kitId,
-	currency,
-	status,
-	dismissed,
-	rejected,
-	processing,
-	waiting,
-	limit,
-	page,
-	orderBy,
-	order,
-	startDate,
-	endDate,
-	format
-) => {
-	return getTransactions('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
-};
-
-const getUserWithdrawalsByKitId = (
-	kitId,
-	currency,
-	status,
-	dismissed,
-	rejected,
-	processing,
-	waiting,
-	limit,
-	page,
-	orderBy,
-	order,
-	startDate,
-	endDate,
-	format
-) => {
-	return getTransactions('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
 };
 
 const checkUsernameIsTaken = (username) => {
@@ -1141,6 +1168,9 @@ const setUsernameById = (userId, username) => {
 	}
 	return getUserByKitId(userId, false)
 		.then((user) =>{
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.settings.chat.set_username) {
 				throw new Error(USERNAME_CANNOT_BE_CHANGED);
 			}
@@ -1162,23 +1192,42 @@ const setUsernameById = (userId, username) => {
 		});
 };
 
+const createUserCryptoAddressByNetworkId = (networkId, crypto) => {
+	return getNodeLib().createUserCryptoAddress(networkId, crypto);
+};
+
 const createUserCryptoAddressByKitId = (kitId, crypto) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			return getNodeLib().createUserCryptoAddress(user.network_id, crypto);
 		});
 };
 
-const getUserStats = (userId) => {
+const getUserStatsByKitId = (userId) => {
 	return getUserByKitId(userId)
 		.then((user) => {
-			return getNodeLib().getUserStatsNetwork(user.network_id);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return getNodeLib().getUserStats(user.network_id);
 		});
 };
 
-const getExchangeOperators = (limit, page, orderBy, order) => {
-	const pagination = paginationQuery(limit, page);
-	const ordering = orderingQuery(orderBy, order);
+const getUserStatsByNetworkId = (networkId) => {
+	return getNodeLib().getUserStats(networkId);
+};
+
+const getExchangeOperators = (opts = {
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
 
 	const options = {
 		where: {
@@ -1239,7 +1288,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		})
 			.then(async ([ user, created ]) => {
 				if (created) {
-					const networkUser = await getNodeLib().createUserNetwork(email);
+					const networkUser = await getNodeLib().createUser(email);
 					return all([
 						user.update(
 							{ network_id: networkUser.id },
@@ -1296,6 +1345,7 @@ module.exports = {
 	updateUserSettings,
 	omitUserFields,
 	signUpUser,
+	registerUserLogin,
 	verifyUser,
 	getVerificationCodeByUserEmail,
 	getUserEmailByVerificationCode,
@@ -1307,14 +1357,19 @@ module.exports = {
 	toggleFlaggedUserById,
 	getUserLogins,
 	getUserAudits,
-	getUserDepositsByKitId,
-	getUserWithdrawalsByKitId,
 	setUsernameById,
 	getAffiliationCount,
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
-	getUserStats,
+	getUserStatsByKitId,
 	getExchangeOperators,
-	inviteExchangeOperator
+	inviteExchangeOperator,
+	createUserOnNetwork,
+	getUserNetwork,
+	getUsersNetwork,
+	createUserCryptoAddressByNetworkId,
+	getUserStatsByNetworkId,
+	getVerificationCodeByUserId,
+	checkAffiliation
 };

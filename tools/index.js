@@ -1,14 +1,21 @@
 'use strict';
 
+const common = require('./common');
+const database = require('./database');
+const order = require('./order');
+const plugin = require('./plugin');
+const user = require('./user');
+const wallet = require('./wallet');
+const tier = require('./tier');
+const security = require('./security');
+
 module.exports = {
-	...require('./common'),
-	auth: require('./auth'),
-	database: require('./database'),
-	order: require('./order'),
-	plugin: require('./plugin'),
-	user: require('./user'),
-	balance: require('./balance'),
-	image: require('./image'),
-	transaction: require('./transaction'),
-	tier: require('./tier')
+	...common,
+	database,
+	order,
+	plugin,
+	user,
+	wallet,
+	tier,
+	security
 };

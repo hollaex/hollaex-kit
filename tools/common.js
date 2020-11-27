@@ -16,16 +16,21 @@ const {
 	GET_TIERS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
-	GET_FROZEN_USERS
+	GET_FROZEN_USERS,
+	HOLLAEX_NETWORK_URL,
+	NO_NEW_DATA,
+	SUPPORT_DISABLED,
+	COMMUNICATOR_CANNOT_UPDATE,
+	MASK_VALUE_GIVEN
 } = require(`${SERVER_PATH}/constants`);
 const { each, difference, isPlainObject } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
-const { NO_NEW_DATA, SUPPORT_DISABLED, COMMUNICATOR_CANNOT_UPDATE, MASK_VALUE_GIVEN } = require('../messages');
 const flatten = require('flat');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const rp = require('request-promise');
 
 /**
  * Checks if url given is a valid url.
@@ -219,7 +224,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	return joinedKitConfig;
 };
 
-const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, role) => {
+const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
 	const newKeys = difference(Object.keys(newKitSecrets), KIT_SECRETS_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid secret keys given: ${newKeys}`);
@@ -336,18 +341,6 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 		});
 };
 
-const getAssetPrice = (asset, quote = 'usdt', amount = 1) => {
-	if (!subscribedToCoin(asset)) {
-		return reject(new Error('Invalid asset'));
-	}
-
-	if (amount <= 0) {
-		return reject(new Error('Amount must be greater than 0'));
-	}
-
-	return getNodeLib().getOraclePrice(asset, quote, amount);
-};
-
 const getAssetsPrices = (assets = [], quote, amount) => {
 	each(assets, (asset) => {
 		if (!subscribedToCoin(asset)) {
@@ -359,7 +352,102 @@ const getAssetsPrices = (assets = [], quote, amount) => {
 		return reject(new Error('Amount must be greater than 0'));
 	}
 
-	return getNodeLib().getOraclePrices(assets, quote, amount);
+	return getNodeLib().getOraclePrices(assets, { quote, amount });
+};
+
+const storeImageOnNetwork = async (image, name) => {
+	if (image.mimetype.indexOf('image/') !== 0) {
+		return reject(new Error('Invalid file type'));
+	}
+
+	const { apiKey } = await getNetworkKeySecret();
+	const exchangeId = getNodeLib().exchange_id;
+	const exchangeName = getKitConfig().info.name;
+
+	const options = {
+		method: 'POST',
+		uri: `${HOLLAEX_NETWORK_URL}/exchange/icon`,
+		formData: {
+			exchange_id: exchangeId,
+			exchange_name: exchangeName,
+			file_name: name,
+			file: {
+				value: image.buffer,
+				options: {
+					filename: image.originalname
+				}
+			}
+		},
+		headers: {
+			'api-key': apiKey,
+			'Content-Type': 'multipart/form-data'
+		}
+	};
+
+	return rp(options)
+		.then(JSON.parse);
+};
+
+const getPublicTrades = (symbol) => {
+	return getNodeLib().getPublicTrades({ symbol });
+};
+
+const getOrderbook = (symbol) => {
+	return getNodeLib().getOrderbook(symbol);
+};
+
+const getOrderbooks = () => {
+	return getNodeLib().getOrderbooks();
+};
+
+const getChart = (from, to, symbol, resolution) => {
+	return getNodeLib().getChart(from, to, symbol, resolution);
+};
+
+const getCharts = (from, to, resolution) => {
+	return getNodeLib().getCharts(from, to, resolution);
+};
+
+const getUdfConfig = () => {
+	return getNodeLib().getUdfConfig();
+};
+
+const getUdfHistory = (from, to, symbol, resolution) => {
+	return getNodeLib().getUdfHistory(from, to, symbol, resolution);
+};
+
+const getUdfSymbols = (symbol) => {
+	return getNodeLib().getUdfSymbols(symbol);
+};
+
+const getTicker = (symbol) => {
+	return getNodeLib().getTicker(symbol);
+};
+
+const getTickers = () => {
+	return getNodeLib().getTickers();
+};
+
+const getTradesHistory = (
+	symbol,
+	side,
+	limit,
+	page,
+	orderBy,
+	order,
+	startDate,
+	endDate
+) => {
+	return getNodeLib().getTradesHistory({
+		symbol,
+		side,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate
+	});
 };
 
 module.exports = {
@@ -388,6 +476,17 @@ module.exports = {
 	updateNetworkKeySecret,
 	isValidTierLevel,
 	getTierLevels,
-	getAssetPrice,
-	getAssetsPrices
+	getAssetsPrices,
+	storeImageOnNetwork,
+	getPublicTrades,
+	getOrderbook,
+	getOrderbooks,
+	getChart,
+	getCharts,
+	getUdfConfig,
+	getUdfHistory,
+	getUdfSymbols,
+	getTicker,
+	getTickers,
+	getTradesHistory
 };
