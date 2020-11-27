@@ -815,8 +815,8 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 	return joinedSettings;
 };
 
-const updateUserSettings = (opts = {}, settings = {}, rawData = true) => {
-	return getUser(opts, false)
+const updateUserSettings = (userOpts = {}, settings = {}, rawData = true) => {
+	return getUser(userOpts, false)
 		.then((user) => {
 			if (Object.keys(settings).length > 0) {
 				settings = joinSettings(user.dataValues.settings, settings);
@@ -950,10 +950,19 @@ const toggleFlaggedUserById = (userId) => {
 		});
 };
 
-const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, format) => {
-	const pagination = paginationQuery(limit, page);
-	const timeframe = timeframeQuery(startDate, endDate);
-	const ordering = orderingQuery(orderBy, order);
+const getUserLogins = (opts = {
+	userId: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
 			timestamp: timeframe
@@ -963,15 +972,15 @@ const getUserLogins = (userId, limit, page, orderBy, order, startDate, endDate, 
 		},
 		order: [ordering]
 	};
-	if (!format) {
+	if (!opts.format) {
 		options = { ...options, ...pagination};
 	}
 
-	if (userId) options.where.user_id = userId;
+	if (opts.userId) options.where.user_id = opts.userId;
 
 	return dbQuery.findAndCountAllWithRows('login', options)
 		.then((logins) => {
-			if (format) {
+			if (opts.format) {
 				if (logins.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1048,20 +1057,42 @@ const createAuditDescription = (userId, prevData = {}, newData = {}) => {
 	return description;
 };
 
-const createAudit = (adminId, userId, event, prevUserData, newUserData, ip, domain) => {
+const createAudit = (adminId, event, ip, opts = {
+	userId: null,
+	prevUserData: null,
+	newUserData: null,
+	domain: null
+}) => {
+	const options = {
+		admin_id: adminId,
+		event,
+		description: createAuditDescription(opts.userId, opts.prevUserData, opts.newUserData),
+		ip,
+	};
+	if (opts.domain) {
+		options.domain = opts.domain;
+	}
 	return getModel('audit').create({
 		admin_id: adminId,
 		event,
-		description: createAuditDescription(userId, prevUserData, newUserData),
-		ip,
-		domain
+		description: createAuditDescription(opts.userId, opts.prevUserData, opts.newUserData),
+		ip
 	});
 };
 
-const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, format) => {
-	const pagination = paginationQuery(limit, page);
-	const timeframe = timeframeQuery(startDate, endDate);
-	const ordering = orderingQuery(orderBy, order);
+const getUserAudits = (opts = {
+	userId: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
 			timestamp: timeframe
@@ -1069,15 +1100,15 @@ const getUserAudits = (userId, limit, page, orderBy, order, startDate, endDate, 
 		order: [ordering]
 	};
 
-	if (!format) {
+	if (!opts.format) {
 		options = { ...options, ...pagination };
 	}
 
-	if (userId) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${userId}'`);
+	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
 	return dbQuery.findAndCountAllWithRows('audit', options)
 		.then((audits) => {
-			if (format) {
+			if (opts.format) {
 				if (audits.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1150,9 +1181,14 @@ const getUserStatsByNetworkId = (networkId) => {
 	return getNodeLib().getUserStats(networkId);
 };
 
-const getExchangeOperators = (limit, page, orderBy, order) => {
-	const pagination = paginationQuery(limit, page);
-	const ordering = orderingQuery(orderBy, order);
+const getExchangeOperators = (opts = {
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
 
 	const options = {
 		where: {
