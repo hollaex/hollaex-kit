@@ -526,30 +526,6 @@ const getUserStats = (req, res) => {
 		});
 };
 
-const cancelWithdrawal = (req, res) => {
-	loggerUser.verbose(
-		req.uuid,
-		'controllers/user/cancelWithdrawal auth',
-		req.auth
-	);
-
-	const userId = req.auth.sub.id;
-	const id = req.swagger.params.id.value;
-
-	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, id)
-		.then((withdrawal) => {
-			return res.json(withdrawal);
-		})
-		.catch((err) => {
-			loggerUser.error(
-				req.uuid,
-				'controllers/user/cancelWithdrawal',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -570,6 +546,5 @@ module.exports = {
 	getHmacToken,
 	createHmacToken,
 	deleteHmacToken,
-	getUserStats,
-	cancelWithdrawal
+	getUserStats
 };

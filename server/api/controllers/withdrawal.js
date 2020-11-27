@@ -156,10 +156,35 @@ const getUserWithdrawals = (req, res) => {
 		});
 };
 
+const cancelWithdrawal = (req, res) => {
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controllers/withdrawal/cancelWithdrawal auth',
+		req.auth
+	);
+
+	const userId = req.auth.sub.id;
+	const id = req.swagger.params.id.value;
+
+	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, id)
+		.then((withdrawal) => {
+			return res.json(withdrawal);
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controllers/withdrawal/cancelWithdrawal',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	requestWithdrawal,
 	getWithdrawalFee,
 	performWithdrawal,
 	getAdminWithdrawals,
-	getUserWithdrawals
+	getUserWithdrawals,
+	cancelWithdrawal
 };
