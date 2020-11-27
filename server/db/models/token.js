@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
 		type: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			defaultValue: TOKEN_TYPES.NORMAL
+			defaultValue: TOKEN_TYPES.HMAC
 		},
 		name: {
 			type: DataTypes.STRING,

@@ -8,12 +8,12 @@ const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
 	const { id } = req.auth.sub;
 
-	toolsLib.auth.checkOtp(id)
+	toolsLib.security.checkOtp(id)
 		.then((otpCode) => {
 			if (otpCode) {
 				return otpCode.secret;
 			}
-			return toolsLib.auth.createOtp(id);
+			return toolsLib.security.createOtp(id);
 		})
 		.then((secret) => {
 			loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', secret);
@@ -35,16 +35,16 @@ const activateOtp = (req, res) => {
 		req.swagger.params.data
 	);
 
-	toolsLib.auth.checkOtp(id)
+	toolsLib.security.checkOtp(id)
 		.then((otpCode) => {
-			return toolsLib.auth.verifyOtp(otpCode.secret, code);
+			return toolsLib.security.verifyOtp(otpCode.secret, code);
 		})
 		.then((validOtp) => {
 			loggerOtp.verbose(req.uuid, 'controllers/otp/activateOtp', validOtp);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
-			return toolsLib.auth.setActiveUserOtp(id);
+			return toolsLib.security.setActiveUserOtp(id);
 		})
 		.then((user) => {
 			loggerOtp.verbose(
@@ -70,15 +70,15 @@ const deactivateOtp = (req, res) => {
 		req.swagger.params.data
 	);
 
-	toolsLib.auth.hasUserOtpEnabled(id)
+	toolsLib.security.hasUserOtpEnabled(id)
 		.then((otp_enabled) => {
 			if (!otp_enabled) {
 				throw new Error('OTP is not enabled');
 			}
-			return toolsLib.auth.verifyOtpBeforeAction(id, code);
+			return toolsLib.security.verifyOtpBeforeAction(id, code);
 		})
 		.then(() => {
-			return toolsLib.auth.updateUserOtpEnabled(id, false);
+			return toolsLib.security.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
 			res.json({ message: 'OTP disabled' });

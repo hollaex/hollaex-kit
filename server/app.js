@@ -7,6 +7,9 @@ const { logEntryRequest, stream, logger } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
 var app = require('express')();
 const toolsLib = require('hollaex-tools-lib');
+const { checkStatus } = require('./init');
+
+checkStatus();
 // listen through pubsub for configuration/init
 
 //init runs, populates configuration/secrets
@@ -28,8 +31,8 @@ app.use(morgan(morganType, { stream }));
 var config = {
 	appRoot: './', // required config
 	swaggerSecurityHandlers: {
-		Bearer: toolsLib.auth.verifyBearerTokenMiddleware,
-		HmacKey: toolsLib.auth.verifyHmacTokenMiddleware
+		Bearer: toolsLib.security.verifyBearerTokenMiddleware,
+		HmacKey: toolsLib.security.verifyHmacTokenMiddleware
 	}
 };
 
