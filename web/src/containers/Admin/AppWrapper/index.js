@@ -462,7 +462,7 @@ class AppWrapper extends React.Component {
 								className="link-icon"
 								alt="Link-icon"
 							/>{' '}
-							Go to master admin
+							Go to Holla Dash
 						</div>
 					</div>
 					<Layout>

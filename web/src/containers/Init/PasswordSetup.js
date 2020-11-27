@@ -3,6 +3,7 @@ import { Input, Form, Button, message } from 'antd';
 import ReactSVG from 'react-svg';
 
 import { adminSignup } from '../../actions/authAction';
+import { setExchangeInitialized } from '../../utils/initialize';
 
 const { Item } = Form;
 
@@ -71,6 +72,7 @@ export const ReTypePasswordContainer = (props) => {
 				.then((res) => {
 					props.setMessage('Account successfully created');
 					props.onChangeStep('login');
+					setExchangeInitialized(true);
 				})
 				.catch((error) => {
 					let errMsg = '';

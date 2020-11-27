@@ -16,7 +16,7 @@ const findUsername = (id) => {
 	}).then((user) => {
 		return [
 			user.username,
-			user.settings.usernameIsSet,
+			user.settings.chat.set_username,
 			user.verification_level
 		];
 	});
@@ -32,8 +32,8 @@ const getUsername = (id) => {
 
 const changeUsername = async (id) => {
 	return findUsername(id).then(
-		([username, usernameIsSet = false, verification_level = 1]) => {
-			if (usernameIsSet) {
+		([username, set_username = false, verification_level = 1]) => {
+			if (set_username) {
 				usernames[id] = { username, verification_level };
 			}
 			return { username, verification_level };
