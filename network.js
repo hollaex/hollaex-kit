@@ -1056,7 +1056,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/fee?`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/fees?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
