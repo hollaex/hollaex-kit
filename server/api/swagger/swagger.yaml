@@ -380,7 +380,7 @@ paths:
         - name: symbol
           in: query
           description: Currency symbol
-          required: true
+          required: false
           type: string
       responses:
         200:
@@ -509,7 +509,7 @@ paths:
         - in: query
           name: symbol
           description: Currency symbol
-          required: true
+          required: false
           type: string
       responses:
         200:

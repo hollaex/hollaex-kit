@@ -108,15 +108,6 @@ const getTradesHistory = (req, res) => {
 const getTicker = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
-	if (!toolsLib.subscribedToPair(symbol)) {
-		loggerEngine.error(
-			req.uuid,
-			'controller/engine/getTopOrderbooks',
-			'Invalid symbol'
-		);
-		return res.status(400).json({ message: 'Invalid symbol' });
-	}
-
 	toolsLib.getTicker(symbol)
 		.then((data) => {
 			return res.json(data);
