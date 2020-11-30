@@ -26,7 +26,11 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.TEXT,
 				allowNull: false
 			},
-			//enabled 
+			enabled: {
+				type: DataTypes.BOOLEAN,
+				allowNull: false,
+				defaultValue: true
+			}
 		},
 		{
 			timestamps: true,
