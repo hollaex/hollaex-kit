@@ -63,7 +63,10 @@ class OrderEntry extends Component {
 		) {
 			this.calculateOrderPrice(nextProps);
 		}
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+		if (
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			nextProps.side !== this.props.side
+		) {
 			this.generateFormValues(nextProps.pair);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
@@ -282,7 +285,12 @@ class OrderEntry extends Component {
 			min_price,
 			max_price,
 			coins,
+			pair_base,
+			pair_2,
+			balance = {},
+			side,
 		} = this.props;
+
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
@@ -319,17 +327,30 @@ class OrderEntry extends Component {
 			size: {
 				name: 'size',
 				label: (
-					<div style={{ display: 'flex' }}>
-						{STRINGS.formatString(
-							STRINGS['STRING_WITH_PARENTHESIS'],
-							STRINGS['SIZE'],
-							<div
-								className="pointer text-uppercase blue-link"
-								onClick={() => this.setMax()}
-							>
-								{STRINGS['CALCULATE_MAX']}
-							</div>
-						)}
+					<div className="d-flex justify-content-between">
+						<div className="d-flex">
+							{STRINGS.formatString(
+								STRINGS['STRING_WITH_PARENTHESIS'],
+								STRINGS['SIZE'],
+								<div
+									className="pointer text-uppercase blue-link"
+									onClick={() => this.setMax()}
+								>
+									{STRINGS['CALCULATE_MAX']}
+								</div>
+							)}
+						</div>
+						<div>
+							Balance{' '}
+							<span>
+								{balance[`${side === 'sell' ? pair_2 : pair_base}_available`]}
+							</span>{' '}
+							<span>
+								{side === 'sell'
+									? pair_2.toUpperCase()
+									: pair_base.toUpperCase()}
+							</span>
+						</div>
 					</div>
 				),
 				type: 'number',
