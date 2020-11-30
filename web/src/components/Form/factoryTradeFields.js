@@ -5,6 +5,7 @@ import InputField from './TradeFormFields/InputField';
 import ChoiceSelector from './TradeFormFields/ChoiceSelector';
 import TabSelector from './TradeFormFields/TabSelector';
 import Slider from './TradeFormFields/Slider';
+import CheckField from './FormFields/CheckField';
 
 const renderFields = ([key, values], index) => {
 	const props = {
@@ -20,6 +21,9 @@ const renderFields = ([key, values], index) => {
 			break;
 		case 'slider':
 			props.component = Slider;
+			break;
+		case 'checkbox':
+			props.component = CheckField;
 			break;
 		default:
 			props.component = InputField;

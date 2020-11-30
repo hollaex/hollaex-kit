@@ -214,6 +214,9 @@ table th {
 .align-center {
   align-items: center; }
 
+.align-start {
+  align-items: flex-start; }
+
 .underline-text {
   text-decoration: underline; }
 

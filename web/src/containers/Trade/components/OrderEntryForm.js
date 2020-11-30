@@ -21,6 +21,7 @@ const getFields = (formValues = {}, type = '') => {
 	if (type === 'market') {
 		const fields = { ...formValues };
 		delete fields.price;
+		delete fields.postOnly;
 		return fields;
 	}
 	return formValues;

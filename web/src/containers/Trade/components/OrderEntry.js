@@ -363,6 +363,12 @@ class OrderEntry extends Component {
 				type: 'slider',
 				onClick: this.setMax,
 			},
+			postOnly: {
+				name: 'post_only',
+				label: 'Post only',
+				type: 'checkbox',
+				className: 'align-start my-0',
+			},
 		};
 
 		this.setState({ formValues });
