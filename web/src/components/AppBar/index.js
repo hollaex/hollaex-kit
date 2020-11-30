@@ -26,8 +26,6 @@ import ThemeSwitcher from './ThemeSwitcher';
 import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getLogo } from 'utils/icon';
-import { TOPBAR_BACKGROUND } from 'utils/color';
 
 class AppBar extends Component {
 	state = {
@@ -296,8 +294,7 @@ class AppBar extends Component {
 	};
 
 	renderIcon = (isHome) => {
-		const { constants, icons: ICONS, isEditMode, theme } = this.props;
-		const path = getLogo(theme, constants, ICONS, TOPBAR_BACKGROUND);
+		const { icons: ICONS, isEditMode } = this.props;
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase', 'h-100')}>
 				<div className="d-flex h-100">
@@ -310,7 +307,7 @@ class AppBar extends Component {
 					>
 						<Image
 							iconId="EXCHANGE_LOGO"
-							icon={path}
+							icon={ICONS['EXCHANGE_LOGO']}
 							wrapperClassName="app_bar-icon-logo h-100"
 						/>
 					</Link>

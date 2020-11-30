@@ -47,7 +47,7 @@ module.exports = {
 					type: {
 						type: Sequelize.STRING,
 						allowNull: false,
-						defaultValue: TOKEN_TYPES.DEV
+						defaultValue: TOKEN_TYPES.HMAC
 					},
 					active: {
 						type: Sequelize.BOOLEAN,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getIconByKey, generateAllIcons } from 'utils/icon';
+import { getIconByKey, generateAllIcons, addDefaultLogo } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
 import merge from 'lodash.merge';
 
@@ -12,11 +12,15 @@ class ConfigProvider extends Component {
 		const { initialConfig } = this.props;
 		const { icons = {}, color = {}, defaults = {} } = { ...initialConfig };
 
+		const defaultLogo = localStorage.getItem('default_logo') || '';
 		const themeOptions = Object.keys(color).map((value) => ({ value }));
 		const calculatedThemes = calculateThemes(color);
 
 		this.state = {
-			icons: generateAllIcons(calculatedThemes, icons),
+			icons: generateAllIcons(
+				calculatedThemes,
+				addDefaultLogo(defaultLogo, icons)
+			),
 			color: calculatedThemes,
 			themeOptions,
 			defaults,

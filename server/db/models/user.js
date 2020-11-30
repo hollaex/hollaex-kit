@@ -60,10 +60,6 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				defaultValue: ''
 			},
-			name_verified: {
-				type: DataTypes.BOOLEAN,
-				defaultValue: false
-			},
 			gender: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false

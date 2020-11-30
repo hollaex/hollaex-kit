@@ -12,7 +12,6 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getLogo } from 'utils/icon';
 import { EditWrapper } from 'components';
 import Image from 'components/Image';
 
@@ -144,14 +143,7 @@ class AddTradeTab extends Component {
 	};
 
 	render() {
-		const {
-			activeTheme,
-			pairs,
-			tickers,
-			coins,
-			constants = {},
-			icons: ICONS,
-		} = this.props;
+		const { pairs, tickers, coins, constants = {}, icons: ICONS } = this.props;
 		const {
 			page,
 			pageSize,
@@ -167,7 +159,6 @@ class AddTradeTab extends Component {
 		if (!this.props.pair && Object.keys(pairs).length) {
 			quickPair = Object.keys(pairs)[0];
 		}
-		const path = getLogo(activeTheme, constants, ICONS);
 
 		const processedData = data.map((key) => {
 			let pair = pairs[key] || {};
@@ -204,7 +195,7 @@ class AddTradeTab extends Component {
 					<div className="mb-5">
 						<Image
 							iconId="EXCHANGE_LOGO"
-							icon={path}
+							icon={ICONS['EXCHANGE_LOGO']}
 							wrapperClassName="app-icon d-flex"
 						/>
 						<div className="text-center trade-tab-app-title">

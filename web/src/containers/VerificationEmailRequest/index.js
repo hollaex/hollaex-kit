@@ -12,7 +12,6 @@ import { ContactForm } from '../';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getLogo } from 'utils/icon';
 
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
@@ -71,12 +70,7 @@ class VerifyEmailRequest extends Component {
 	};
 
 	render() {
-		const {
-			languageClasses,
-			activeTheme,
-			constants = {},
-			icons: ICONS,
-		} = this.props;
+		const { languageClasses, activeTheme, icons: ICONS } = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		if (success) {
@@ -110,7 +104,6 @@ class VerifyEmailRequest extends Component {
 				</div>
 			);
 		}
-		const path = getLogo(activeTheme, constants, ICONS);
 
 		return (
 			<div
@@ -134,7 +127,7 @@ class VerifyEmailRequest extends Component {
 				>
 					<IconTitle
 						iconId="EXCHANGE_LOGO"
-						iconPath={path}
+						iconPath={ICONS['EXCHANGE_LOGO']}
 						stringId="VERIFICATION_EMAIL_REQUEST.TITLE"
 						text={STRINGS['VERIFICATION_EMAIL_REQUEST.TITLE']}
 						textType="title"

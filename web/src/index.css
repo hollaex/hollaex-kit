@@ -2830,7 +2830,8 @@ table th {
   border-right: 1px solid #ffffff; }
 
 .image-upload_image {
-  padding: 5px; }
+  padding: 5px;
+  overflow: hidden; }
 
 .operator-controls__wrapper {
   position: fixed;
@@ -3032,6 +3033,10 @@ table th {
 
 .operator-controls__table tbody > tr > td {
   border: none !important; }
+
+.ant-modal-wrap,
+.all-icons-confirmation {
+  z-index: 10003 !important; }
 
 .init-container {
   flex: 1;
