@@ -39,32 +39,36 @@ const ws = {
 	}
 };
 
-const plugin = {
+const plugins = {
 	// ws application
-	name      : 'plugin',
+	name      : 'plugins',
 	script    : 'plugin.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
-	ignore_watch: ignore_watch.concat(['tools', 'queue']),
+	exec_mode : 'cluster',
+	instance_var: 'INSTANCE_ID',
+	instances : '1',
 	max_memory_restart,
 	node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
 		PORT: process.env.PLUGIN_PORT || 10090,
 	}
-}
+};
 
 var apps = [];
 const modes = initializeMode(mode);
 for (let m of modes) {
 	if (m === 'all') {
-		apps = [api, ws];
+		apps = [api, ws, plugins];
 		break;
 	} else if (m === 'api') {
 		apps.push(api);
 	} else if (m === 'ws') {
 		apps.push(ws);
+	} else if (m === 'plugins') {
+		apps.push(plugins);
 	}
 }
 
