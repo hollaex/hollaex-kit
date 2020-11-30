@@ -13,7 +13,7 @@ const SizeSlider = (props) => {
 	const { onClick } = props;
 
 	return (
-		<div className="px-1">
+		<div className="size-slider px-1">
 			<Slider
 				marks={marks}
 				step={null}

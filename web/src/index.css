@@ -5293,6 +5293,9 @@ table th {
 .direction_rtl .trade_input-input-currency {
   left: 0; }
 
+.size-slider .ant-slider-with-marks {
+  margin-bottom: 10px; }
+
 .exir-button {
   width: 100%;
   font-size: 0.9rem;
