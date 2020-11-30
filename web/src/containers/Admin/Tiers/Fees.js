@@ -83,7 +83,7 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 		key: 'action',
 		align: 'right',
 		render: (name) => (
-			<span className="pointer" onClick={() => onEditFees(name)}>
+			<span className="admin-link-highlight" onClick={() => onEditFees(name)}>
 				Adjust fees
 			</span>
 		),

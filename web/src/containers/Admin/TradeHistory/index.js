@@ -110,7 +110,7 @@ class TradeHistory extends Component {
 
 		return (
 			<Row>
-				<Row gutter={16} style={{ marginTop: 16 }}>
+				<div className="f-1 mt-4">
 					<Col>
 						<div>
 							<span
@@ -132,7 +132,7 @@ class TradeHistory extends Component {
 							}}
 						/>
 					</Col>
-				</Row>
+				</div>
 			</Row>
 		);
 	}

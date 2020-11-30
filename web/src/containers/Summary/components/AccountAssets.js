@@ -41,7 +41,7 @@ const AccountAssets = ({
 	};
 
 	return (
-		<div className="summary-section_2">
+		<div>
 			<div className="summary-content-txt assets-description">
 				<div>
 					<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">

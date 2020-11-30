@@ -52,6 +52,7 @@ import {
 	General,
 	Tiers,
 	Roles,
+	Resources,
 } from './containers';
 
 import store from './store';
@@ -443,6 +444,11 @@ export default (
 				path="/admin/settings"
 				name="Admin settings"
 				component={withAdminProps(Settings, 'settings')}
+			/>
+			<Route
+				path="/admin/resources"
+				name="Admin resources"
+				component={withAdminProps(Resources, 'resources')}
 			/>
 		</Route>
 		<Route

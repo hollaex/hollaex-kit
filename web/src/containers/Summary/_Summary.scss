@@ -1,3 +1,5 @@
+$app-bar--arrow-size: 0.4rem;
+
 .direction_ltr {
 	.summary-container {
 		.trader-account-icon {
@@ -140,6 +142,7 @@
 	}
 
 	.trader-account-icon {
+		height: 4.5rem;
 		width: 4.5rem;
 		margin-right: 1rem;
 	}
@@ -148,7 +151,14 @@
 		font-weight: bold;
 	}
 	.summary-section_1 {
-		height: 20rem;
+		height: 26rem;
+
+		.assets-wrapper {
+			.donut-container {
+				height: 16rem;
+				width: 100%;
+			}
+		}
 	}
 	.summary-section_2 {
 		height: 40rem;
@@ -529,6 +539,44 @@
 	}
 }
 
+.markets-section-wrapper {
+	.market-coin {
+		width: 3rem;
+	}
+	.price-diff-down {
+		color: $sell;
+	}
+
+	.price-diff-up {
+		color: $buy;
+	}
+
+	.app-price_diff_up {
+		margin-left: 0.5rem;
+	}
+
+	.app-price_diff_up:before {
+		@include css-triangle($buy, 'up', $app-bar--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.app-price_diff_down {
+		margin-left: 0.5rem;
+	}
+
+	.app-price_diff_down:before {
+		@include css-triangle($sell, 'down', $app-bar--arrow-size);
+		display: inline-block;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+}
+
 @media (max-width: 920px) {
 	.summary-container {
 		.summary-block_wrapper .summary-block-title,
@@ -575,7 +623,7 @@
 			width: 65% !important;
 		}
 		.summary-section_1 {
-			height: 23rem !important;
+			height: 29rem !important;
 		}
 		.summary-section_2 {
 			height: 43rem !important;
@@ -596,7 +644,7 @@
 			font-size: 0.9rem;
 		}
 		.summary-section_1 {
-			height: 25rem !important;
+			height: 29rem !important;
 		}
 		.summary-section_2 {
 			height: 44rem !important;

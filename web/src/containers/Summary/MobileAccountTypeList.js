@@ -10,7 +10,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 const MobileAccountTypeList = ({
 	user,
 	coins,
-	config,
+	config = {},
 	activeTheme,
 	selectedAccount,
 	lastMonthVolume,
@@ -23,7 +23,7 @@ const MobileAccountTypeList = ({
 }) => {
 	return (
 		<div className="mobile-account-type my-4">
-			{config.map((key, index) => {
+			{Object.keys(config).map((key, index) => {
 				return (
 					<div
 						key={index}
@@ -69,6 +69,7 @@ const MobileAccountTypeList = ({
 								<AccountTypeDetails
 									user={user}
 									coins={coins}
+									config={config}
 									balance={balance}
 									activeTheme={activeTheme}
 									selectedAccount={selectedAccount}

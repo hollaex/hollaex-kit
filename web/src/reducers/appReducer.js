@@ -23,6 +23,7 @@ import {
 	SET_PLUGINS_REQUEST,
 	SET_PLUGINS_SUCCESS,
 	SET_PLUGINS_FAILURE,
+	SET_CONFIG_LEVEL,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -132,7 +133,7 @@ const INITIAL_STATE = {
 	},
 	isValidBase: false,
 	constants: {},
-	config_level: [],
+	config_level: {},
 	info: { is_trial: false, active: true, status: true },
 	wave: [],
 	enabledPlugins: [],
@@ -333,7 +334,6 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				constants: payload.constants,
-				config_level: payload.config_level,
 				enabledPlugins: payload.enabledPlugins,
 			};
 		case SET_INFO:
@@ -362,6 +362,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				getPluginLoading: false,
+			};
+		case SET_CONFIG_LEVEL:
+			return {
+				...state,
+				config_level: payload,
 			};
 		default:
 			return state;

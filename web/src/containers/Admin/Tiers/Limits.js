@@ -99,7 +99,7 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 		key: 'type',
 		align: 'right',
 		render: () => (
-			<span className="pointer" onClick={onEditLimit}>
+			<span className="admin-link-highlight" onClick={onEditLimit}>
 				Adjust limits
 			</span>
 		),

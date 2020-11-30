@@ -251,7 +251,7 @@ const AboutData = ({
 	return (
 		<div className="about-wrapper">
 			<div className="d-flex justify-content-end">
-				<div className="d-flex align-items-center">
+				<div className="d-flex align-items-center my-5">
 					<div className="about-info d-flex align-items-center justify-content-center">
 						{userData.otp_enabled ? (
 							<Fragment>

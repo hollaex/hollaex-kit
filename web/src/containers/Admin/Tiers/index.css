@@ -62,3 +62,11 @@ td.type-column {
 .tier-section-icon {
 	width: 4rem;
 }
+.admin-link-highlight {
+	color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.admin-link-highlight:hover {
+	text-decoration: none;
+}

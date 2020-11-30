@@ -4,6 +4,7 @@ import ReactSvg from 'react-svg';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 
+import { Image } from '../../../components';
 import { calculatePrice } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { BASE_CURRENCY } from '../../../config/constants';
@@ -265,6 +266,72 @@ export const generateWaveHeaders = (ICONS) => [
 					{statusTxt} {updated}
 				</td>
 			);
+		},
+	},
+];
+
+export const generateMarketHeaders = (pairs, coins, icons = {}) => [
+	{
+		label: STRINGS['AMOUNT'],
+		key: 'symbol',
+		renderCell: ({ symbol = '' }, key, index) => {
+			let currentCoin = pairs[symbol] || {};
+			let baseCoin = coins[currentCoin.pair_base] || {};
+			return (
+				<td key={index}>
+					<div className="d-flex align-items-center py-2">
+						<Image
+							icon={
+								icons[`${baseCoin.symbol.toUpperCase()}_ICON`]
+									? icons[`${baseCoin.symbol.toUpperCase()}_ICON`]
+									: icons['DEFAULT_ICON']
+							}
+							wrapperClassName="market-coin"
+						/>
+						{symbol}
+					</div>
+				</td>
+			);
+		},
+	},
+	{
+		label: STRINGS['PRICE'],
+		key: 'price',
+		renderCell: ({ price = 0 }, key, index) => {
+			return <td key={index}>{price}</td>;
+		},
+	},
+	{
+		label: STRINGS['SUMMARY.CHANGE_24H'],
+		key: 'price',
+		renderCell: ({ price = 0 }, key, index) => {
+			return (
+				<td key={index}>
+					<div
+						className={
+							price < 0
+								? 'price-diff-down app-price_diff_down'
+								: 'app-price_diff_up price-diff-up'
+						}
+					>
+						{price}
+					</div>
+				</td>
+			);
+		},
+	},
+	{
+		label: STRINGS['SUMMARY.VOLUME_24H'],
+		key: 'price',
+		renderCell: ({ price = 0 }, key, index) => {
+			return <td key={index}>{price}</td>;
+		},
+	},
+	{
+		label: STRINGS['SUMMARY.PRICE_GRAPH_24H'],
+		key: 'price',
+		renderCell: ({ price = 0 }, key, index) => {
+			return <td key={index}>{price}</td>;
 		},
 	},
 ];

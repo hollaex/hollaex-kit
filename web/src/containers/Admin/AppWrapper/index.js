@@ -309,6 +309,8 @@ class AppWrapper extends React.Component {
 			return 'Billing';
 		} else if (location.pathname.includes('/admin/collateral')) {
 			return 'Collateral';
+		} else if (location.pathname.includes('/admin/resources')) {
+			return 'Resources';
 		} else {
 			return 'Dashboard';
 		}
