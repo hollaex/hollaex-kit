@@ -76,7 +76,7 @@ class OrderEntry extends Component {
 		}
 	}
 
-	setMax = () => {
+	setMax = (percent = 100) => {
 		const {
 			side,
 			balance = {},
@@ -89,6 +89,7 @@ class OrderEntry extends Component {
 		const size = parseFloat(this.props.size || 0);
 		let price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`] || 0;
+
 		if (side === 'buy') {
 			if (type === 'market') {
 				if (asks && asks.length) {
@@ -97,11 +98,17 @@ class OrderEntry extends Component {
 			}
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
-		if (maxSize !== size) {
+
+		const calculatedSize = mathjs.multiply(
+			maxSize,
+			mathjs.divide(percent, 100)
+		);
+
+		if (calculatedSize !== size) {
 			this.props.change(
 				FORM_NAME,
 				'size',
-				roundNumber(maxSize, getDecimals(increment_size))
+				roundNumber(calculatedSize, getDecimals(increment_size))
 			);
 		}
 	};
@@ -291,6 +298,24 @@ class OrderEntry extends Component {
 				options: STRINGS['SIDES'],
 				validate: [required],
 			},
+			price: {
+				name: 'price',
+				label: STRINGS['PRICE'],
+				type: 'number',
+				placeholder: '0',
+				normalize: normalizeFloat,
+				step: increment_price,
+				min: min_price,
+				max: max_price,
+				validate: [
+					required,
+					minValue(min_price),
+					maxValue(max_price),
+					step(increment_price),
+				],
+				currency: buyData.symbol.toUpperCase(),
+				setRef: this.props.setPriceRef,
+			},
 			size: {
 				name: 'size',
 				label: (
@@ -300,7 +325,7 @@ class OrderEntry extends Component {
 							STRINGS['SIZE'],
 							<div
 								className="pointer text-uppercase blue-link"
-								onClick={this.setMax}
+								onClick={() => this.setMax()}
 							>
 								{STRINGS['CALCULATE_MAX']}
 							</div>
@@ -333,23 +358,10 @@ class OrderEntry extends Component {
 				},
 				setRef: this.props.setSizeRef,
 			},
-			price: {
-				name: 'price',
-				label: STRINGS['PRICE'],
-				type: 'number',
-				placeholder: '0',
-				normalize: normalizeFloat,
-				step: increment_price,
-				min: min_price,
-				max: max_price,
-				validate: [
-					required,
-					minValue(min_price),
-					maxValue(max_price),
-					step(increment_price),
-				],
-				currency: buyData.symbol.toUpperCase(),
-				setRef: this.props.setPriceRef,
+			slider: {
+				name: 'size-slider',
+				type: 'slider',
+				onClick: this.setMax,
 			},
 		};
 

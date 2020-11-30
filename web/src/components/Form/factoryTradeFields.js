@@ -4,6 +4,7 @@ import { Field } from 'redux-form';
 import InputField from './TradeFormFields/InputField';
 import ChoiceSelector from './TradeFormFields/ChoiceSelector';
 import TabSelector from './TradeFormFields/TabSelector';
+import Slider from './TradeFormFields/Slider';
 
 const renderFields = ([key, values], index) => {
 	const props = {
@@ -16,6 +17,9 @@ const renderFields = ([key, values], index) => {
 			break;
 		case 'tab':
 			props.component = TabSelector;
+			break;
+		case 'slider':
+			props.component = Slider;
 			break;
 		default:
 			props.component = InputField;
