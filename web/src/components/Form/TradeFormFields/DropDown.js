@@ -3,27 +3,23 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-const ORDER_OPTIONS = [
-	{
-		label: 'Regular',
-		value: 'regular',
-	},
-	{
-		label: 'Stops',
-		value: 'stops',
-	},
-];
+// todo: add antd component to redux form
 
-const DropDown = () => {
+const DropDown = (props) => {
+	const {
+		input: { onChange },
+		options,
+	} = props;
 	return (
 		<div className="trade-form-select">
 			<Select
-				defaultValue={ORDER_OPTIONS[0].value}
+				defaultValue={options[0].value}
 				showArrow={false}
 				bordered={false}
 				size="small"
+				onChange={onChange}
 			>
-				{ORDER_OPTIONS.map(({ value, label }, index) => (
+				{options.map(({ value, label }, index) => (
 					<Option
 						name="selectedPairBase"
 						value={value}

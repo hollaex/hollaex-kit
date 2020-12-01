@@ -35,6 +35,17 @@ import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
 import { asksSelector, bidsSelector, tradeHistorySelector } from '../utils';
 
+const ORDER_OPTIONS = [
+	{
+		label: 'Regular',
+		value: 'regular',
+	},
+	{
+		label: 'Stops',
+		value: 'stops',
+	},
+];
+
 class OrderEntry extends Component {
 	state = {
 		formValues: {},
@@ -45,6 +56,7 @@ class OrderEntry extends Component {
 		orderPrice: 0,
 		orderFees: 0,
 		outsideFormError: '',
+		orderType: 'regular',
 	};
 
 	componentDidMount() {
@@ -294,8 +306,11 @@ class OrderEntry extends Component {
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
-			order: {
+			orderType: {
+				name: 'order-type',
 				type: 'dropdown',
+				options: ORDER_OPTIONS,
+				onChange: (orderType) => this.setState({ orderType }),
 			},
 			type: {
 				name: 'type',
@@ -308,6 +323,23 @@ class OrderEntry extends Component {
 				type: 'select',
 				options: STRINGS['SIDES'],
 				validate: [required],
+			},
+			trigger: {
+				name: 'trigger',
+				label: 'Trigger price',
+				type: 'number',
+				placeholder: '0',
+				normalize: normalizeFloat,
+				step: increment_price,
+				...(side === 'buy'
+					? {
+							min: min_price,
+							validate: [required, minValue(min_price), step(increment_price)],
+					  }
+					: {
+							max: max_price,
+							validate: [required, maxValue(max_price), step(increment_price)],
+					  }),
 			},
 			price: {
 				name: 'price',
@@ -430,6 +462,7 @@ class OrderEntry extends Component {
 			orderPrice,
 			orderFees,
 			outsideFormError,
+			orderType,
 		} = this.state;
 		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
 		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
@@ -458,6 +491,7 @@ class OrderEntry extends Component {
 					formKeyDown={this.formKeyDown}
 					initialValues={initialValues}
 					outsideFormError={outsideFormError}
+					orderType={orderType}
 				>
 					<Review
 						price={price}
@@ -479,7 +513,14 @@ class OrderEntry extends Component {
 const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
-	const formValues = selector(state, 'price', 'size', 'side', 'type');
+	const formValues = selector(
+		state,
+		'price',
+		'size',
+		'side',
+		'type',
+		'trigger'
+	);
 	const pair = state.app.pair;
 	const {
 		pair_base,
