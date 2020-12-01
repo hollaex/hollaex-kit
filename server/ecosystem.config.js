@@ -40,12 +40,13 @@ const ws = {
 };
 
 const plugins = {
-	// ws application
+	// plugins application
 	name      : 'plugins',
-	script    : 'plugin.js',
+	script    : 'plugins.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
+	ignore_watch,
 	exec_mode : 'cluster',
 	instance_var: 'INSTANCE_ID',
 	instances : '1',
