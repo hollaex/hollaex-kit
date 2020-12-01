@@ -294,6 +294,9 @@ class OrderEntry extends Component {
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
+			order: {
+				type: 'dropdown',
+			},
 			type: {
 				name: 'type',
 				type: 'tab',

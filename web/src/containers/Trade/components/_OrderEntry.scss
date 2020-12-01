@@ -10,6 +10,8 @@
 	.trade_order_entry-selector {
 		border-top: 1px solid $trade-section-border--color;
 		position: relative;
+		width: 60% !important;
+		margin-left: 40% !important;
 
 		> div {
 			line-height: 2rem;

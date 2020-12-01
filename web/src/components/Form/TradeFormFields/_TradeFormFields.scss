@@ -101,3 +101,50 @@ $padding: 0.25rem;
 		margin-bottom: 10px;
 	}
 }
+
+.trade-form-select {
+	border: 1.5px solid $colors-black;
+	border-radius: 7px;
+	width: 35% !important;
+	transform: translateY(2.2rem);
+
+	.ant-select-selection,
+	.ant-select,
+	.ant-select-single,
+	.ant-input,
+	.ant-select-arrow,
+	.ant-select-selector,
+	.ant-select-selection-search-input {
+		background-color: $app-background-color;
+		color: $colors-black;
+		font-size: 1rem;
+		line-height: 1rem !important;
+		height: 1rem;
+		width: 100%;
+	}
+
+	.ant-select-selector {
+		border-color: $colors-black;
+		width: 100%;
+	}
+
+	.ant-select-selection-item {
+		height: 17px !important;
+		display: flex;
+		align-items: center;
+	}
+}
+
+.layout-mobile {
+	.ant-select-selection,
+	.ant-select,
+	.ant-select-single,
+	.ant-input,
+	.ant-select-arrow,
+	.ant-select-selector,
+	.ant-select-selection-search-input {
+		height: 2rem !important;
+		line-height: 2rem !important;
+		font-size: 1.5rem !important;
+	}
+}
