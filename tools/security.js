@@ -572,6 +572,58 @@ const verifyNetworkHmacToken = (req) => {
 		});
 };
 
+
+const verifyBearerTokenExpressMiddleware = (scopes = []) => (req, res, next) => {
+	const sendError = (msg) => {
+		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+	};
+
+	const token = req.headers['authorization'];
+
+	if (token && token.indexOf('Bearer ') === 0) {
+		let tokenString = token.split(' ')[1];
+
+		jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+			if (!verificationError && decodedToken) {
+
+				const issuerMatch = decodedToken.iss == ISSUER;
+
+				if (!issuerMatch) {
+					return sendError(TOKEN_EXPIRED);
+				}
+
+				if (scopes.lengt > 0 && intersection(decodedToken.scopes, scopes).length === 0) {
+					loggerAuth.error(
+						'verifyToken',
+						'not permission',
+						decodedToken.sub.email,
+						decodedToken.scopes,
+						scopes
+					);
+
+					return sendError(NOT_AUTHORIZED);
+				}
+
+				if (getFrozenUsers()[decodedToken.sub.id]) {
+					loggerAuth.error(
+						'helpers/auth/verifyToken deactivated account',
+						decodedToken.sub.email
+					);
+					//return the error in the callback if there is one
+					return sendError(DEACTIVATED_USER);
+				}
+
+				req.auth = decodedToken;
+				return next();
+			} else {
+				return sendError(INVALID_TOKEN);
+			}
+		});
+	} else {
+		return sendError(MISSING_HEADER);
+	}
+};
+
 const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	if (token && token.indexOf('Bearer ') === 0) {
 		const tokenString = token.split(' ')[1];
@@ -929,6 +981,14 @@ const checkHmacSignature = (
 	return calculatedSignature === signature;
 };
 
+const isValidScope = (endpointScopes, userScopes) => {
+	if (intersection(endpointScopes, userScopes).length === 0) {
+		return false;
+	} else {
+		return true;
+	}
+};
+
 module.exports = {
 	checkCaptcha,
 	resetUserPassword,
@@ -961,5 +1021,7 @@ module.exports = {
 	createUserKitHmacToken,
 	deleteUserKitHmacToken,
 	checkHmacSignature,
-	createHmacSignature
+	createHmacSignature,
+	isValidScope,
+	verifyBearerTokenExpressMiddleware
 };

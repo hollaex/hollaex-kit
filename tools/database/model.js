@@ -24,6 +24,11 @@ const getModel = (table = '') => {
 	return models[table];
 };
 
+const create = (table, query = {}) => {
+	return getModel(table).create(query);
+};
+
 module.exports = {
-	getModel
+	getModel,
+	create
 };
