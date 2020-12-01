@@ -24,16 +24,18 @@ const MobileAccountTypeList = ({
 	return (
 		<div className="mobile-account-type my-4">
 			{Object.keys(config).map((key, index) => {
+				let configData = config[key];
 				return (
 					<div
 						key={index}
 						className={classnames('account-type-menu', {
-							'account-type-menu-active': selectedAccount === key,
-							'accounnt-type-menu-last-active': index === config.length - 1,
+							'account-type-menu-active': `${selectedAccount}` === key,
+							'accounnt-type-menu-last-active':
+								index === Object.keys(config).length - 1,
 						})}
 						onClick={() => onAccountTypeChange(key)}
 					>
-						{selectedAccount !== key ? (
+						{`${selectedAccount}` !== key ? (
 							<div className="d-flex">
 								<div className="mr-4">
 									<Image
@@ -43,18 +45,20 @@ const MobileAccountTypeList = ({
 												: 'LEVEL_ACCOUNT_ICON_4'
 										}
 										icon={
-											ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+											configData.icon ||
+											(ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
 												? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
-												: ICONS['LEVEL_ACCOUNT_ICON_4']
+												: ICONS['LEVEL_ACCOUNT_ICON_4'])
 										}
 										wrapperClassName="trader-account-icon"
 									/>
 								</div>
 								<div className={classnames(FLEX_CENTER_CLASSES)}>
-									{STRINGS.formatString(
-										STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
-										key
-									)}
+									{configData.name ||
+										STRINGS.formatString(
+											STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
+											key
+										)}
 									{key === verification_level && (
 										<div className="account-current summary-content-txt ml-2">
 											{' '}
@@ -64,7 +68,7 @@ const MobileAccountTypeList = ({
 								</div>
 							</div>
 						) : null}
-						{key === selectedAccount && (
+						{key === `${selectedAccount}` && (
 							<div className="my-4">
 								<AccountTypeDetails
 									user={user}
