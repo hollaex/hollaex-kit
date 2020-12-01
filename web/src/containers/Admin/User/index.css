@@ -223,3 +223,12 @@
 	.ant-select-selector {
 	height: 50px;
 }
+.header-section {
+	border-bottom: 1px solid rgb(211, 211, 211, 0.3);
+	background-color: #0000c1;
+}
+.modal-confirm-title {
+	font-size: 20px;
+	font-weight: bold;
+	color: #ffffff;
+}

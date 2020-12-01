@@ -16,7 +16,8 @@ class Carousel extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		this.setState({ currentIndex: 0 }, this.slidePrev);
+		const { isActive } = this.props;
+		this.setState({ currentIndex: 0 }, isActive ? this.slidePrev : null);
 	}
 
 	onInitialized = ({

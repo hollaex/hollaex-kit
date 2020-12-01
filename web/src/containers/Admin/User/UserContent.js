@@ -36,7 +36,19 @@ class UserContent extends Component {
 			user_id: parseInt(userInformation.id, 10),
 		};
 		Modal.confirm({
-			content: <div>Are you sure want to disable 2FA?</div>,
+			title: <div className="modal-confirm-title">Disable 2FA</div>,
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
+			content: (
+				<div>
+					<div>
+						Disabling 2FA to this user will may leave this account vulnerable.
+					</div>
+					<div className="mt-3">
+						Are you sure want to disable 2FA for this account?
+					</div>
+				</div>
+			),
 			onOk() {
 				deactivateOtp(postValues)
 					.then((res) => {
@@ -58,6 +70,17 @@ class UserContent extends Component {
 			flagged: value,
 		};
 		Modal.confirm({
+			title: (
+				<div>
+					{value ? (
+						<div className="modal-confirm-title">Flag user</div>
+					) : (
+						<div className="modal-confirm-title">Unflag user</div>
+					)}
+				</div>
+			),
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
 			content: (
 				<div>
 					{value
@@ -86,11 +109,31 @@ class UserContent extends Component {
 			activated: value,
 		};
 		Modal.confirm({
+			title: (
+				<div>
+					{!value ? (
+						<div className="modal-confirm-title">Freeze account</div>
+					) : (
+						<div className="modal-confirm-title">Unfreeze account</div>
+					)}
+				</div>
+			),
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
 			content: (
 				<div>
-					{value
-						? 'Are you sure want to unfreeze this account?'
-						: 'Are you sure want to freeze this account?'}
+					{!value ? (
+						<div>
+							Freezing this user will make this account inaccessible.
+							<div className="mt-3">
+								Are you sure want to freeze this account?
+							</div>
+						</div>
+					) : (
+						<div className="mt-3">
+							Are you sure want to unfreeze this account?
+						</div>
+					)}
 				</div>
 			),
 			onOk() {

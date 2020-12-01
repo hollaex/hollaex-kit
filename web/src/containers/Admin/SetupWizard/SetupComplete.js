@@ -144,7 +144,12 @@ class ExchangeSetup extends Component {
 								</div>
 							</div>
 						)}
-						<Carousel items={menuItems} groupItems={1} isInfinite={true} />
+						<Carousel
+							items={menuItems}
+							groupItems={1}
+							isInfinite={true}
+							isActive={false}
+						/>
 						<div className="btn-container">
 							<Button
 								className="exchange-complete-btn"
