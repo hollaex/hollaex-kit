@@ -100,6 +100,19 @@ $padding: 0.25rem;
 	.ant-slider-with-marks {
 		margin-bottom: 10px;
 	}
+
+	.ant-slider-rail,
+	.ant-slider-dot {
+		background-color: $colors-black;
+		border-color: $colors-black;
+	}
+
+	.ant-slider-dot-active,
+	.ant-slider-track,
+	.ant-slider-handle {
+		background-color: $link;
+		border-color: $link;
+	}
 }
 
 .trade-form-select {

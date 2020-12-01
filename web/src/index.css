@@ -5300,6 +5300,17 @@ table th {
 .size-slider .ant-slider-with-marks {
   margin-bottom: 10px; }
 
+.size-slider .ant-slider-rail,
+.size-slider .ant-slider-dot {
+  background-color: var(--labels_secondary-inactive-label-text-graphics);
+  border-color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.size-slider .ant-slider-dot-active,
+.size-slider .ant-slider-track,
+.size-slider .ant-slider-handle {
+  background-color: var(--specials_buttons-links-and-highlights);
+  border-color: var(--specials_buttons-links-and-highlights); }
+
 .trade-form-select {
   border: 1.5px solid var(--labels_secondary-inactive-label-text-graphics);
   border-radius: 7px;
