@@ -29,7 +29,6 @@ const MobileSummary = ({
 	chartData,
 	logout,
 	totalAssets,
-	isValidBase,
 	lastMonthVolume,
 	traderAccTitle,
 	onFeesAndLimits,
@@ -87,7 +86,7 @@ const MobileSummary = ({
 				<SummaryBlock
 					title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
 					secondaryTitle={
-						SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (
+						SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
 							<span>
 								<span className="title-font">{totalAssets}</span>
 								{` ${fullname}`}
