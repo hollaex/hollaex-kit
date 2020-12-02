@@ -327,8 +327,8 @@ class OrderEntry extends Component {
 				options: STRINGS['SIDES'],
 				validate: [required],
 			},
-			trigger: {
-				name: 'trigger',
+			stop: {
+				name: 'stop',
 				label: 'Trigger price',
 				type: 'number',
 				placeholder: '0',
@@ -514,14 +514,7 @@ class OrderEntry extends Component {
 const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
-	const formValues = selector(
-		state,
-		'price',
-		'size',
-		'side',
-		'type',
-		'trigger'
-	);
+	const formValues = selector(state, 'price', 'size', 'side', 'type', 'stop');
 	const pair = state.app.pair;
 	const {
 		pair_base,

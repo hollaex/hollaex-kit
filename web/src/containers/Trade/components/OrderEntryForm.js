@@ -26,7 +26,7 @@ const getFields = (formValues = {}, type = '', orderType = '') => {
 	}
 
 	if (orderType !== 'stops') {
-		delete fields.trigger;
+		delete fields.stop;
 	}
 
 	return fields;
