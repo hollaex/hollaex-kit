@@ -573,7 +573,7 @@ const verifyNetworkHmacToken = (req) => {
 };
 
 
-const verifyBearerTokenExpressMiddleware = (scopes = []) => (req, res, next) => {
+const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, next) => {
 	const sendError = (msg) => {
 		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
 	};
@@ -592,7 +592,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = []) => (req, res, next) => 
 					return sendError(TOKEN_EXPIRED);
 				}
 
-				if (scopes.lengt > 0 && intersection(decodedToken.scopes, scopes).length === 0) {
+				if (intersection(decodedToken.scopes, scopes).length === 0) {
 					loggerAuth.error(
 						'verifyToken',
 						'not permission',
