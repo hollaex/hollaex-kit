@@ -23,6 +23,8 @@ import {
 	required,
 	minValue,
 	maxValue,
+	minValueNE,
+	maxValueNE,
 	checkMarketPrice,
 	step,
 	normalizeFloat,
@@ -60,8 +62,9 @@ class OrderEntry extends Component {
 	};
 
 	componentDidMount() {
+		const { side } = this.props;
 		if (this.props.pair_base) {
-			this.generateFormValues(this.props.pair);
+			this.generateFormValues(this.props.pair, '', side);
 		}
 	}
 
@@ -79,7 +82,7 @@ class OrderEntry extends Component {
 			nextProps.activeLanguage !== this.props.activeLanguage ||
 			nextProps.side !== this.props.side
 		) {
-			this.generateFormValues(nextProps.pair);
+			this.generateFormValues(nextProps.pair, '', nextProps.side);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
 			this.setState({
@@ -288,7 +291,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '', buyingPair = '') => {
+	generateFormValues = (pair = '', buyingPair = '', side = 'buy') => {
 		const {
 			min_size,
 			max_size,
@@ -300,7 +303,7 @@ class OrderEntry extends Component {
 			pair_base,
 			pair_2,
 			balance = {},
-			side,
+			marketPrice,
 		} = this.props;
 
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
@@ -333,12 +336,20 @@ class OrderEntry extends Component {
 				step: increment_price,
 				...(side === 'buy'
 					? {
-							min: min_price,
-							validate: [required, minValue(min_price), step(increment_price)],
+							min: marketPrice,
+							validate: [
+								required,
+								minValueNE(marketPrice),
+								step(increment_price),
+							],
 					  }
 					: {
-							max: max_price,
-							validate: [required, maxValue(max_price), step(increment_price)],
+							max: marketPrice,
+							validate: [
+								required,
+								maxValueNE(marketPrice),
+								step(increment_price),
+							],
 					  }),
 			},
 			price: {
@@ -370,8 +381,8 @@ class OrderEntry extends Component {
 								className="pointer text-uppercase blue-link"
 								onClick={() => this.setMax()}
 							>
-								{balance[`${side === 'sell' ? pair_2 : pair_base}_available`]}{' '}
-								{side === 'sell'
+								{balance[`${side === 'buy' ? pair_2 : pair_base}_available`]}{' '}
+								{side === 'buy'
 									? pair_2.toUpperCase()
 									: pair_base.toUpperCase()}
 							</span>
