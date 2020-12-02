@@ -1,6 +1,8 @@
 import React from 'react';
 import { Slider } from 'antd';
 
+// todo: connect antd slider to redux form
+
 const marks = {
 	0: {},
 	25: {},
