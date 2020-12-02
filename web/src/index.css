@@ -5321,22 +5321,35 @@ table th {
   .trade-form-select .ant-select,
   .trade-form-select .ant-select-single,
   .trade-form-select .ant-input,
-  .trade-form-select .ant-select-arrow,
   .trade-form-select .ant-select-selector,
   .trade-form-select .ant-select-selection-search-input {
-    background-color: var(--base_background);
     color: var(--labels_important-active-labels-text-graphics) !important;
     font-size: 1rem;
     line-height: 1rem !important;
-    height: 1rem;
+    height: 1rem; }
+  .trade-form-select .ant-select-selection,
+  .trade-form-select .ant-select,
+  .trade-form-select .ant-select-single,
+  .trade-form-select .ant-input,
+  .trade-form-select .ant-select-selector,
+  .trade-form-select .ant-select-selection-search-input {
     width: 100%; }
+  .trade-form-select .ant-select-arrow {
+    color: var(--labels_important-active-labels-text-graphics) !important;
+    line-height: 1rem !important;
+    vertical-align: middle;
+    transform: translateY(0.2rem); }
   .trade-form-select .ant-select-selector {
     border-color: var(--labels_important-active-labels-text-graphics);
     width: 100%; }
   .trade-form-select .ant-select-selection-item {
+    width: auto;
     height: 17px !important;
     display: flex;
-    align-items: center; }
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
 
 .layout-mobile .ant-select-selection,
 .layout-mobile .ant-select,
@@ -5348,6 +5361,10 @@ table th {
   height: 2rem !important;
   line-height: 2rem !important;
   font-size: 1.5rem !important; }
+
+.layout-mobile .ant-select-arrow {
+  line-height: 2rem !important;
+  vertical-align: middle; }
 
 .exir-button {
   width: 100%;

@@ -14,7 +14,6 @@ const DropDown = (props) => {
 		<div className="trade-form-select">
 			<Select
 				defaultValue={options[0].value}
-				showArrow={false}
 				bordered={false}
 				size="small"
 				onChange={onChange}

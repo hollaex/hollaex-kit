@@ -125,15 +125,28 @@ $padding: 0.25rem;
 	.ant-select,
 	.ant-select-single,
 	.ant-input,
-	.ant-select-arrow,
 	.ant-select-selector,
 	.ant-select-selection-search-input {
-		background-color: $app-background-color;
 		color: $colors-main-black !important;
 		font-size: 1rem;
 		line-height: 1rem !important;
 		height: 1rem;
+	}
+
+	.ant-select-selection,
+	.ant-select,
+	.ant-select-single,
+	.ant-input,
+	.ant-select-selector,
+	.ant-select-selection-search-input {
 		width: 100%;
+	}
+
+	.ant-select-arrow {
+		color: $colors-main-black !important;
+		line-height: 1rem !important;
+		vertical-align: middle;
+		transform: translateY(0.2rem);
 	}
 
 	.ant-select-selector {
@@ -142,9 +155,13 @@ $padding: 0.25rem;
 	}
 
 	.ant-select-selection-item {
+		width: auto;
 		height: 17px !important;
 		display: flex;
 		align-items: center;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 }
 
@@ -159,5 +176,10 @@ $padding: 0.25rem;
 		height: 2rem !important;
 		line-height: 2rem !important;
 		font-size: 1.5rem !important;
+	}
+
+	.ant-select-arrow {
+		line-height: 2rem !important;
+		vertical-align: middle;
 	}
 }
