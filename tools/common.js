@@ -25,7 +25,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { each, difference, isPlainObject } = require('lodash');
 const { publisher } = require('./database/redis');
-const { sendEmail } = require(`${SERVER_PATH}/mail`);
+const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
 const flatten = require('flat');
@@ -262,7 +262,7 @@ const sendEmailToSupport = (email, category, subject, description) => {
 		subject,
 		description
 	};
-	sendEmail(MAILTYPE.CONTACT_FORM, email, emailData, {});
+	sendSmtpEmail(MAILTYPE.CONTACT_FORM, email, emailData, {});
 	return resolve();
 };
 
@@ -450,6 +450,16 @@ const getTradesHistory = (
 	});
 };
 
+const sendEmail = (
+	type,
+	receiver,
+	data,
+	userSettings = {},
+	domain
+) => {
+	return sendSmtpEmail(MAILTYPE[type], receiver, data, userSettings, domain);
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -488,5 +498,6 @@ module.exports = {
 	getUdfSymbols,
 	getTicker,
 	getTickers,
-	getTradesHistory
+	getTradesHistory,
+	sendEmail
 };
