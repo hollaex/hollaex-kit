@@ -3,8 +3,7 @@
 const {
 	API_NAME,
 	API_HOST,
-	LOGO_PATH,
-	LOGO_BLACK_PATH,
+	LOGO_IMAGE,
 	EMAILS_TIMEZONE,
 	VALID_LANGUAGES,
 	NEW_USER_DEFAULT_LANGUAGE,
@@ -68,9 +67,8 @@ const status = [{
 		},
 		setup_completed: false,
 		native_currency: NATIVE_CURRENCY,
-		logo_path: LOGO_PATH,
-		logo_black_path: LOGO_BLACK_PATH,
-		valid_languages: VALID_LANGUAGES || (NEW_USER_DEFAULT_LANGUAGE ? NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),
+		logo_image: LOGO_IMAGE,
+		valid_languages: VALID_LANGUAGES || 'en,fa,ko,ar,fr',
 		new_user_is_activated: (NEW_USER_IS_ACTIVATED && NEW_USER_IS_ACTIVATED === 'true') || false,
 		captcha: {
 			site_key: CAPTCHA_SITE_KEY

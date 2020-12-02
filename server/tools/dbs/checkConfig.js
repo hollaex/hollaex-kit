@@ -35,9 +35,8 @@ Status.findOne()
 			},
 			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
 			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY,
-			logo_path: existingKitConfigurations.logo_path || process.env.LOGO_PATH,
-			logo_black_path: existingKitConfigurations.logo_black_path || process.env.LOGO_BLACK_PATH,
-			valid_languages: existingKitConfigurations.valid_languages || process.env.VALID_LANGUAGES || (process.env.NEW_USER_DEFAULT_LANGUAGE ? process.env.NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),
+			logo_image: existingKitConfigurations.logo_image || existingKitConfigurations.logo_path || process.env.LOGO_IMAGE,
+			valid_languages: existingKitConfigurations.valid_languages || process.env.VALID_LANGUAGES || 'en,fa,ko,ar,fr',
 			new_user_is_activated: existingKitConfigurations.new_user_is_activated || (process.env.NEW_USER_IS_ACTIVATED && process.env.NEW_USER_IS_ACTIVATED === 'true') || false,
 			captcha: {
 				site_key: existingKitConfigurations.captcha.site_key || process.env.CAPTCHA_SITE_KEY
