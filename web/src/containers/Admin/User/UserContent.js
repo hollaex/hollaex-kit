@@ -42,7 +42,7 @@ class UserContent extends Component {
 			content: (
 				<div>
 					<div>
-						Disabling 2FA to this user will may leave this account vulnerable.
+						Disabling 2FA on this account may leave this account vulnerable.
 					</div>
 					<div className="mt-3">
 						Are you sure want to disable 2FA for this account?
@@ -124,7 +124,7 @@ class UserContent extends Component {
 				<div>
 					{!value ? (
 						<div>
-							Freezing this user will make this account inaccessible.
+							Freezing this account will make this account inaccessible
 							<div className="mt-3">
 								Are you sure want to freeze this account?
 							</div>

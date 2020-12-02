@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formatPercentage } from 'utils/currency';
+import { isMobile } from 'react-device-detect';
 
+import { SearchBox } from 'components';
 import MarketList from '../../TradeTabs/components/MarketList';
 import withConfig from 'components/ConfigProvider/withConfig';
+import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
 
@@ -13,14 +16,18 @@ class Markets extends Component {
 		this.state = {
 			data: [],
 			chartData: {},
-			pageSize: 12,
+			pageSize: 10,
 			page: 0,
 			searchValue: '',
 		};
 	}
 
 	componentDidMount() {
-		this.constructData(this.state.page, this.state.searchValue);
+		this.constructData(
+			this.props.pairs,
+			this.state.page,
+			this.state.searchValue
+		);
 		getSparklines(Object.keys(this.props.pairs)).then((chartData) =>
 			this.setState({ chartData })
 		);
@@ -31,16 +38,18 @@ class Markets extends Component {
 			JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs) ||
 			JSON.stringify(this.props.tickers) !== JSON.stringify(prevProps.tickers)
 		) {
-			this.constructData(this.state.page, this.state.searchValue);
+			this.constructData(
+				this.props.pairs,
+				this.state.page,
+				this.state.searchValue
+			);
 		}
 	}
 
-	constructData = (page, searchValue) => {
+	constructData = (pairData, page, searchValue) => {
 		const { tickers } = this.props;
 		const { pageSize } = this.state;
-		const pairs = searchValue
-			? this.getSearchPairs(searchValue)
-			: this.props.pairs;
+		const pairs = searchValue ? this.getSearchPairs(searchValue) : pairData;
 		const pairKeys = Object.keys(pairs).sort((a, b) => {
 			let tickA = tickers[a] || {};
 			let tickB = tickers[b] || {};
@@ -49,18 +58,57 @@ class Markets extends Component {
 		const count = pairKeys.length;
 		const initItem = page * pageSize;
 		if (initItem < count) {
-			const data = pairKeys.slice(initItem, initItem + pageSize);
+			const data = pairKeys.slice(0, initItem + pageSize);
 			this.setState({ data, page, count });
 		} else {
 			this.setState({ data: pairKeys, page, count });
 		}
 	};
 
+	getSearchPairs = (value) => {
+		const { pairs, coins } = this.props;
+		let result = {};
+		let searchValue = value.toLowerCase().trim();
+		Object.keys(pairs).map((key) => {
+			let temp = pairs[key];
+			const { fullname } = coins[temp.pair_base] || DEFAULT_COIN_DATA;
+			let cashName = fullname ? fullname.toLowerCase() : '';
+			if (
+				key.indexOf(searchValue) !== -1 ||
+				temp.pair_base.indexOf(searchValue) !== -1 ||
+				temp.pair_2.indexOf(searchValue) !== -1 ||
+				cashName.indexOf(searchValue) !== -1
+			) {
+				result[key] = temp;
+			}
+			return key;
+		});
+		return result;
+	};
+
+	handleTabSearch = (_, value) => {
+		if (value) {
+			const result = this.getSearchPairs(value);
+			this.constructData(result, 0, value);
+		} else {
+			this.constructData(this.props.pairs, this.state.page, value);
+		}
+		this.setState({ searchValue: value });
+	};
+
+	handleLoadMore = () => {
+		this.constructData(
+			this.props.pairs,
+			this.state.page + 1,
+			this.state.searchValue
+		);
+	};
+
 	handleClick = (pair) => {};
 
 	render() {
 		const { pairs, tickers, coins } = this.props;
-		const { data, chartData } = this.state;
+		const { data, chartData, page, pageSize, count } = this.state;
 
 		const processedData = data.map((key) => {
 			let pair = pairs[key] || {};
@@ -93,11 +141,32 @@ class Markets extends Component {
 
 		return (
 			<div>
+				<div className="d-flex justify-content-end">
+					<div className={isMobile ? '' : 'w-25'}>
+						<SearchBox
+							name={STRINGS['SEARCH_ASSETS']}
+							className="trade_tabs-search-field"
+							outlineClassName="trade_tabs-search-outline"
+							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+							handleSearch={this.handleTabSearch}
+						/>
+					</div>
+				</div>
 				<MarketList
 					markets={processedData}
 					chartData={chartData}
 					handleClick={this.handleClick}
 				/>
+				<div className="text-right">
+					{page * pageSize + pageSize < count ? (
+						<span
+							className="trade-account-link pointer"
+							onClick={this.handleLoadMore}
+						>
+							{STRINGS['SUMMARY.VIEW_MORE_MARKETS']}
+						</span>
+					) : null}
+				</div>
 			</div>
 		);
 	}

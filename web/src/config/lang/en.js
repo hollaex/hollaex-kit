@@ -1228,6 +1228,7 @@ const nestedContent = {
 		CHANGE_24H: '24H Change', // new
 		VOLUME_24H: '24H Volume', // new
 		PRICE_GRAPH_24H: '24H Price graph', // new
+		VIEW_MORE_MARKETS: 'View more markets', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new

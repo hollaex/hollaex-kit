@@ -1,4 +1,5 @@
 $app-bar--arrow-size: 0.4rem;
+$trade-tab--arrow-size: 0.4rem;
 
 .direction_ltr {
 	.summary-container {
@@ -448,6 +449,56 @@ $app-bar--arrow-size: 0.4rem;
 		.status-header {
 			width: 6rem;
 		}
+	}
+	.price-diff-down {
+		color: $sell;
+	}
+
+	.price-diff-up {
+		color: $buy;
+	}
+
+	.trade-tab-price_diff_up {
+		margin: auto 0;
+	}
+
+	.trade-tab-price_diff_up:before {
+		@include css-triangle($buy, 'up', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.trade-tab-price_diff_down {
+		margin: auto 0;
+	}
+
+	.trade-tab-price_diff_down:before {
+		@include css-triangle($sell, 'down', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+	.trade_tabs-search-field {
+		background-color: $app-background-color;
+		color: $colors-deactivate-color1;
+		margin: 0;
+		padding-right: 0.5rem;
+
+		&::placeholder {
+			color: $colors-deactivate-color1;
+		}
+
+		.field-error-content {
+			display: none;
+		}
+	}
+
+	.trade_tabs-search-outline {
+		background: $trade-tabs-inactive-color;
 	}
 }
 

@@ -2299,6 +2299,54 @@ table th {
     font-weight: bold; }
   .summary-container .account-details-wrapper .status-header {
     width: 6rem; }
+  .summary-container .price-diff-down {
+    color: var(--trading_selling-related-elements); }
+  .summary-container .price-diff-up {
+    color: var(--trading_buying-related-elements); }
+  .summary-container .trade-tab-price_diff_up {
+    margin: auto 0; }
+  .summary-container .trade-tab-price_diff_up:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-bottom: 0.4rem solid var(--trading_buying-related-elements);
+    margin-bottom: 0rem;
+    display: inline-block;
+    margin-bottom: 0.2rem;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
+  .summary-container .trade-tab-price_diff_down {
+    margin: auto 0; }
+  .summary-container .trade-tab-price_diff_down:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-top: 0.4rem solid var(--trading_selling-related-elements);
+    margin-top: 0rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
+  .summary-container .trade_tabs-search-field {
+    background-color: var(--base_background);
+    color: var(--base_inactive-button);
+    margin: 0;
+    padding-right: 0.5rem; }
+    .summary-container .trade_tabs-search-field::placeholder {
+      color: var(--base_inactive-button); }
+    .summary-container .trade_tabs-search-field .field-error-content {
+      display: none; }
+  .summary-container .trade_tabs-search-outline {
+    background: var(--labels_secondary-inactive-label-text-graphics); }
 
 .fee-limits-wrapper {
   width: 38rem; }
