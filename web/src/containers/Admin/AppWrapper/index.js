@@ -30,7 +30,6 @@ import {
 	changePair,
 	setCurrencies,
 	setOrderLimits,
-	setValidBaseCurrency,
 	setConfig,
 	setLanguage,
 	changeTheme,
@@ -38,7 +37,7 @@ import {
 	requestInitial,
 	requestConstant,
 } from '../../../actions/appActions';
-import { SESSION_TIME, BASE_CURRENCY } from '../../../config/constants';
+import { SESSION_TIME } from '../../../config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import { checkRole } from '../../../utils/token';
 
@@ -166,12 +165,7 @@ class AppWrapper extends React.Component {
 					this.props.setPairs(res.data.pairs);
 					this.props.setPairsData(res.data.pairs);
 					this.props.setCurrencies(res.data.coins);
-					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
-						let temp = res.data.pairs[key];
-						return temp.pair_2 === BASE_CURRENCY;
-					});
-					const isValidPair = pairWithBase.length > 0;
-					this.props.setValidBaseCurrency(isValidPair);
+
 					const orderLimits = {};
 					Object.keys(res.data.pairs).map((pair, index) => {
 						orderLimits[pair] = {
@@ -541,7 +535,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setPairsData: bindActionCreators(setPairsData, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),

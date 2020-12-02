@@ -131,7 +131,6 @@ class Summary extends Component {
 			activeTheme,
 			pairs,
 			coins,
-			isValidBase,
 			verification_level,
 			config_level,
 			affiliation,
@@ -170,7 +169,6 @@ class Summary extends Component {
 						logout={this.logoutConfirm}
 						balance={balance}
 						chartData={chartData}
-						isValidBase={isValidBase}
 						totalAssets={totalAssets}
 						lastMonthVolume={lastMonthVolume}
 						traderAccTitle={traderAccTitle}
@@ -221,7 +219,7 @@ class Summary extends Component {
 										stringId="SUMMARY.ACCOUNT_ASSETS"
 										title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
 										secondaryTitle={
-											SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (
+											SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
 												<span>
 													<span className="title-font">{totalAssets}</span>
 													{` ${fullname}`}
@@ -309,7 +307,6 @@ const mapStateToProps = (state) => ({
 	orders: state.order.activeOrders,
 	activeLanguage: state.app.language,
 	tradeVolumes: state.user.tradeVolumes,
-	isValidBase: state.app.isValidBase,
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation,
 	constants: state.app.constants,

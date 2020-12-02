@@ -15,7 +15,6 @@ import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-	IS_XHT,
 } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -29,8 +28,6 @@ const AssetsBlock = ({
 	onOpenDialog,
 	bankaccount,
 	navigate,
-	isValidBase,
-	openContactUs,
 	handleSearch,
 	searchResult,
 	handleCheck,
@@ -117,18 +114,9 @@ const AssetsBlock = ({
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
-				<EditWrapper stringId="WALLET_DEPOSIT_USD,CONTACT_US_TEXT,WALLET_ESTIMATED_TOTAL_BALANCE">
+				<EditWrapper stringId="WALLET_ESTIMATED_TOTAL_BALANCE">
 					<div className="wallet-search-improvement">
-						{BASE_CURRENCY && IS_XHT ? (
-							<div>
-								{STRINGS.formatString(
-									STRINGS['WALLET_DEPOSIT_USD'],
-									<span className="blue-link pointer" onClick={openContactUs}>
-										{STRINGS['CONTACT_US_TEXT']}
-									</span>
-								)}
-							</div>
-						) : BASE_CURRENCY && isValidBase ? (
+						{BASE_CURRENCY ? (
 							<div>
 								<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
 								<div className="font-title">{totalAssets}</div>

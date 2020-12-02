@@ -49,7 +49,6 @@ export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_CONFIG = 'SET_CONFIG';
 export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
-export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
@@ -236,13 +235,6 @@ export const setInfo = (info) => ({
 	type: SET_INFO,
 	payload: {
 		info,
-	},
-});
-
-export const setValidBaseCurrency = (isValidBase) => ({
-	type: SET_VALID_BASE_CURRENCY,
-	payload: {
-		isValidBase,
 	},
 });
 
