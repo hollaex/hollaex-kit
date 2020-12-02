@@ -11,8 +11,8 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	border-top: 1px solid $footer-wrapper--border-color;
 	font-size: $font-size-subtext;
 	background-color: $footer-background-color;
-	color: $colors-white;
-	
+	color: $base_footer_text;
+
 	.footer-row-content {
 		margin-bottom: $footer-wrapper--margin-bottom;
 		padding: $footer-wrapper--margin-top $footer-wrapper--margin 0;
@@ -22,7 +22,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			.footer-links-group {
 				margin: 0 $footer-wrapper--margin;
 				font-size: $font-size-main;
-				align-self: 'center';
+				align-self: center;
 
 				.footer-links-section--title {
 					font-weight: bold;
@@ -32,7 +32,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 
 				.footer-links-section--list {
 					min-width: 8rem;
-					
+
 					.social_icon {
 						width: 1rem;
 						margin-right: 0.25rem;
@@ -43,9 +43,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 							color: grey;
 						}
 					}
-
 				}
-				
 			}
 		}
 		.footer_separter {
@@ -58,13 +56,13 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				background-size: contain;
 				background-position: center;
 				background-repeat: no-repeat;
-				height: 6rem;
+				height: 6rem !important;
 				margin-left: 1rem;
 				width: 7rem;
 			}
 			svg {
 				.hollaEX_logo_gray {
-					fill: $colors-white;
+					fill: $base_footer_text;
 				}
 			}
 			.blue-link {
@@ -123,13 +121,11 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			.footer-links-section {
 				.footer-links-group {
 					.footer-links-section--list {
-						
 						.social_icon {
 							margin-right: 0;
 							margin-left: 0.25rem;
-						}	
+						}
 					}
-					
 				}
 			}
 			.footer_separter {
@@ -210,42 +206,6 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	}
 }
 
-.dark-theme {
-	.app_footer-container {
-		background-color: $dark-footer-background-color;
-		color: $dark-font-sub-text-1-color;
-
-		.footer-row-content {
-			.footer-links-section {
-				.footer-links-group {
-					.footer-links-section--title {
-						color: $colors-white;
-					}
-					.footer-links-section--list {
-						.link-section {
-							&:hover {
-								color: $colors-white;
-							}
-						}
-	
-					}
-				}
-			}
-			.footer_separter {
-				.footer-logo {
-					svg {
-						.hollaEX_logo_gray {
-							fill: $footer-logo-color !important;
-						}
-					}
-				}
-				.blue-link {
-					color: $dark-link !important;
-				}
-			}
-		}
-	}
-}
 .layout-mobile {
 	.app_footer-container {
 		.footer-row-content {
@@ -253,7 +213,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				width: 100%;
 				.footer-links-group {
 					margin-left: 3rem;
-					margin-bottom:3rem !important;
+					margin-bottom: 3rem !important;
 					font-size: $footer-content-size;
 					.footer-links-section--list {
 						.link-section {
@@ -283,7 +243,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 					}
 					svg {
 						.hollaEX_logo_gray {
-							fill: $colors-white;
+							fill: $base_footer_text;
 						}
 					}
 					.blue-link {
@@ -296,8 +256,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			}
 		}
 		.footer-links-group {
-			margin: 10rem
+			margin: 10rem;
 		}
 	}
 }
-

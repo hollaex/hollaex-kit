@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
@@ -9,26 +8,26 @@ import { USER_TYPES } from '../../actions/appActions';
 import ReactSVG from 'react-svg';
 
 moment.updateLocale('en', {
-    relativeTime : {
-        s: '1 S',
-        ss: '%d S',
-        m:  "1 M",
-        mm: "%d M",
-        h:  "1 H",
-        hh: "%d H",
-        d:  "1 D",
-        dd: "%d D",
-        M:  "1 MO",
-        MM: "%d MO",
-        y:  "1 Y",
-        yy: "%d Y"
-    }
+	relativeTime: {
+		s: '1 S',
+		ss: '%d S',
+		m: '1 M',
+		mm: '%d M',
+		h: '1 H',
+		hh: '%d H',
+		d: '1 D',
+		dd: '%d D',
+		M: '1 MO',
+		MM: '%d MO',
+		y: '1 Y',
+		yy: '%d Y',
+	},
 });
 
 const MAX_LINES = 5;
 
 const MESSAGE_OPTIONS = {
-	DELETE_MESSAGE: 'Remove'
+	DELETE_MESSAGE: 'Remove',
 };
 
 const TIME_LIMIT = 10000;
@@ -37,7 +36,7 @@ const ReadMore = ({ onClick }) => (
 	<div className="d-inline">
 		<span>...</span>
 		<span className="toggle-content" onClick={onClick}>
-			<span>{STRINGS.CHAT.READ_MORE}</span>
+			<span>{STRINGS['CHAT.READ_MORE']}</span>
 		</span>
 	</div>
 );
@@ -45,14 +44,14 @@ const ReadMore = ({ onClick }) => (
 const Timestamp = ({ timestamp }) => (
 	<div className="timestamp">
 		{Math.abs(moment().diff(timestamp)) < TIME_LIMIT
-			? STRINGS.JUST_NOW
+			? STRINGS['JUST_NOW']
 			: moment(timestamp).fromNow(true)}
 	</div>
 );
 
 class ChatMessageWithText extends Component {
 	state = {
-		maxLines: MAX_LINES
+		maxLines: MAX_LINES,
 	};
 
 	showMore = () => {
@@ -76,21 +75,20 @@ class ChatMessageWithText extends Component {
 			<div className={classnames('nonmobile')}>
 				<div className="d-flex">
 					<div className="mx-2">
-						{verification_level >= 3
-							? <ReactSVG
-								path={icon}
-								wrapperClassName="user-icon mr-1" />
-							: <div className="user-icon mr-1"></div>}
+						{verification_level >= 3 ? (
+							<ReactSVG path={icon} wrapperClassName="user-icon mr-1" />
+						) : (
+							<div className="user-icon mr-1"></div>
+						)}
 					</div>
-					<div className='d-flex flex-1'>
+					<div className="d-flex flex-1">
 						{ownMessage ? (
 							<div className="mr-1 my-1 own-message username">
-								<div className="mr-1 d-inline-block">
-									{`${username}:`}
-								</div>
+								<div className="mr-1 d-inline-block">{`${username}:`}</div>
 								{to && <span className="mr-1">{`${to}:`}</span>}
 								<span className="d-inline message">{messageContent}</span>
 							</div>
+						) : (
 							// <div className="mr-1 my-1 own-message username d-flex">
 							// 	<div className="mr-1 f-none">
 							// 		{`${username}:`}
@@ -99,34 +97,33 @@ class ChatMessageWithText extends Component {
 							// 	<span className="d-inline message">{messageContent}</span>
 							// </div>
 
-						) : (
-								<div className="mr-1 my-1 username ">
-									<div className="mr-1 apply_rtl d-inline-block " >
-										{`${username}:`}
-									</div>
-									{to && <span className="mr-1">{`${to}:`}</span>}
-									<TruncateMarkup
-										className="d-inline message"
-										lines={maxLines}
-										ellipsis={<ReadMore onClick={() => this.showMore()} />}
-									>
-										<span className="d-inline message">{messageContent}</span>
-									</TruncateMarkup>
+							<div className="mr-1 my-1 username ">
+								<div className="mr-1 apply_rtl d-inline-block ">
+									{`${username}:`}
 								</div>
-								// <div className="mr-1 my-1 username d-flex">
-								// 	<div className="mr-1 apply_rtl f-none" >
-								// 		{`${username}:`}
-								// 	</div>
-								// 	{to && <span className="mr-1">{`${to}:`}</span>}
-								// 	<TruncateMarkup
-								// 		className="d-inline message"
-								// 		lines={maxLines}
-								// 		ellipsis={<ReadMore onClick={() => this.showMore()} />}
-								// 	>
-								// 		<span className="d-inline message">{messageContent}</span>
-								// 	</TruncateMarkup>
-								// </div>
-							)}
+								{to && <span className="mr-1">{`${to}:`}</span>}
+								<TruncateMarkup
+									className="d-inline message"
+									lines={maxLines}
+									ellipsis={<ReadMore onClick={() => this.showMore()} />}
+								>
+									<span className="d-inline message">{messageContent}</span>
+								</TruncateMarkup>
+							</div>
+							// <div className="mr-1 my-1 username d-flex">
+							// 	<div className="mr-1 apply_rtl f-none" >
+							// 		{`${username}:`}
+							// 	</div>
+							// 	{to && <span className="mr-1">{`${to}:`}</span>}
+							// 	<TruncateMarkup
+							// 		className="d-inline message"
+							// 		lines={maxLines}
+							// 		ellipsis={<ReadMore onClick={() => this.showMore()} />}
+							// 	>
+							// 		<span className="d-inline message">{messageContent}</span>
+							// 	</TruncateMarkup>
+							// </div>
+						)}
 					</div>
 				</div>
 			</div>
@@ -136,7 +133,7 @@ class ChatMessageWithText extends Component {
 
 class ChatMessageWithImage extends Component {
 	state = {
-		hideImage: false
+		hideImage: false,
 	};
 
 	toggleImage = (condition) => {
@@ -153,9 +150,10 @@ class ChatMessageWithImage extends Component {
 			verification_level,
 		} = this.props;
 		const { hideImage } = this.state;
-		let icon = verification_level >= 4
-			? ICONS.LEVEL_ACCOUNT_ICON_4
-			: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`];
+		let icon =
+			verification_level >= 4
+				? ICONS.LEVEL_ACCOUNT_ICON_4
+				: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`];
 
 		return (
 			<div>
@@ -168,17 +166,19 @@ class ChatMessageWithImage extends Component {
 						onClick={() => this.toggleImage(!hideImage)}
 					>
 						<span className="toggle-content">
-							{hideImage ? STRINGS.CHAT.SHOW_IMAGE : STRINGS.CHAT.HIDE_IMAGE}
+							{hideImage
+								? STRINGS['CHAT.SHOW_IMAGE']
+								: STRINGS['CHAT.HIDE_IMAGE']}
 						</span>
 					</div>
 				</div>
 				<div className="d-flex">
 					<div className="mx-2">
-						{verification_level === 3 || verification_level === 4
-							? <ReactSVG 
-								path={icon}
-								wrapperClassName="user-icon mr-1" />
-							: <div className="user-icon mr-1"></div>}
+						{verification_level === 3 || verification_level === 4 ? (
+							<ReactSVG path={icon} wrapperClassName="user-icon mr-1" />
+						) : (
+							<div className="user-icon mr-1"></div>
+						)}
 					</div>
 					<div>
 						<div>
@@ -186,7 +186,12 @@ class ChatMessageWithImage extends Component {
 							{to && <div className="d-inline mr-1">{`${to}:`}</div>}
 						</div>
 						{!hideImage && (
-							<img className={messageType} src={messageContent} style={{ width: '4rem', height: "4rem" }} alt="img" />
+							<img
+								className={messageType}
+								src={messageContent}
+								style={{ width: '4rem', height: '4rem' }}
+								alt="img"
+							/>
 						)}
 					</div>
 				</div>
@@ -197,7 +202,7 @@ class ChatMessageWithImage extends Component {
 
 export class ChatMessage extends Component {
 	state = {
-		showOptions: false
+		showOptions: false,
 	};
 
 	toggleOptions = () => {
@@ -223,11 +228,13 @@ export class ChatMessage extends Component {
 			ownMessage,
 			timestamp,
 			verification_level,
-			onCloseEmoji
+			onCloseEmoji,
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
-		const username = this.props.username.username ? this.props.username.username : this.props.username;
+		const username = this.props.username.username
+			? this.props.username.username
+			: this.props.username;
 		return (
 			<div
 				className={classnames(

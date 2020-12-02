@@ -1,18 +1,20 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { TABLE_PAGE_SIZE } from './constants';
-import { ICONS } from '../../config/constants';
 import {
 	ActionNotification,
 	Table,
 	// CsvDownload,
-	Loader
+	Loader,
 } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const HistoryDisplay = (props) => {
 	const {
+		stringId,
 		title,
 		headers,
 		data: { data, count, loading },
@@ -20,19 +22,21 @@ const HistoryDisplay = (props) => {
 		withIcon,
 		handleNext,
 		jumpToPage,
-		handleDownload
+		handleDownload,
+		icons: ICONS,
 	} = props;
 
 	return (
 		<div className="history_block-wrapper">
 			{!isMobile && (
 				<div className="title text-capitalize">
-					{title}
+					<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					{count > 0 && (
 						<ActionNotification
-							text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
-							iconPath={ICONS.DATA}
-							useSvg={true}
+							stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
+							text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
+							iconId="DATA"
+							iconPath={ICONS['DATA']}
 							className="csv-action"
 							onClick={handleDownload}
 						/>
@@ -60,4 +64,4 @@ const HistoryDisplay = (props) => {
 	);
 };
 
-export default HistoryDisplay;
+export default withConfig(HistoryDisplay);

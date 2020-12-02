@@ -11,257 +11,257 @@ $large-modifier: 2.25;
 	color: $app-background-color;
 
 	&.default-coin {
-		border:1px solid $colors-black;
+		border: 1px solid $colors-black;
 		color: $colors-black;
 	}
-	
+
 	&.btc {
 		background-color: $coin-btc;
-		border : none !important;
+		border: none !important;
 		color: $coin-btc-text !important;
 	}
 
 	&.eur {
 		background-color: $coin-eur;
-		border : none !important;
+		border: none !important;
 		color: $coin-eur-text !important;
 	}
 
 	&.bch {
 		background-color: $coin-bch;
-		border : none !important;
+		border: none !important;
 		color: $coin-bch-text !important;
 	}
 
 	&.eth {
 		background-color: $coin-eth;
-		border : none !important;
+		border: none !important;
 		color: $coin-eth-text !important;
 	}
 
 	&.ltc {
 		background-color: $coin-ltc;
-		border : none !important;
+		border: none !important;
 		color: $coin-ltc-text !important;
 	}
 	&.xrp {
 		background-color: $coin-xrp;
-		border : none !important;
+		border: none !important;
 		color: $coin-xrp-text !important;
 	}
 	&.xht {
 		background-color: $coin-xht;
-		border : none !important;
+		border: none !important;
 		color: $coin-xht-text !important;
 	}
 	&.eos {
 		background-color: $coin-eos;
-		border : none !important;
+		border: none !important;
 		color: $coin-eos-text !important;
 	}
 	&.bnb {
 		background-color: $coin-bnb;
-		border : none !important;
+		border: none !important;
 		color: $coin-bnb-text !important;
 	}
 	&.link {
 		background-color: $coin-link;
-		border : none !important;
+		border: none !important;
 		color: $coin-link-text !important;
 	}
 	&.trx {
 		background-color: $coin-trx;
-		border : none !important;
+		border: none !important;
 		color: $coin-trx-text !important;
 	}
 	&.ada {
 		background-color: $coin-ada;
-		border : none !important;
+		border: none !important;
 		color: $coin-ada-text !important;
 	}
 	&.matic {
 		background-color: $coin-matic;
-		border : none !important;
+		border: none !important;
 		color: $coin-matic-text !important;
 	}
 	&.neo {
 		background-color: $coin-neo;
-		border : none !important;
+		border: none !important;
 		color: $coin-neo-text !important;
 	}
 	&.etc {
 		background-color: $coin-etc;
-		border : none !important;
+		border: none !important;
 		color: $coin-etc-text !important;
 	}
 	&.xlm {
 		background-color: $coin-xlm;
-		border : none !important;
+		border: none !important;
 		color: $coin-xlm-text !important;
 	}
 	&.xmr {
 		background-color: $coin-xmr;
-		border : none !important;
+		border: none !important;
 		color: $coin-xmr-text !important;
 	}
 	&.zec {
 		background-color: $coin-zec;
-		border : none !important;
+		border: none !important;
 		color: $coin-zec-text !important;
 	}
 	&.one {
 		background-color: $coin-one;
-		border : none !important;
+		border: none !important;
 		color: $coin-one-text !important;
 	}
 	&.pax {
 		background-color: $coin-pax;
-		border : none !important;
+		border: none !important;
 		color: $coin-pax-text !important;
 	}
 	&.usdc {
 		background-color: $coin-usdc;
-		border : none !important;
+		border: none !important;
 		color: $coin-usdc-text !important;
 	}
 	&.usdt {
 		background-color: $coin-usdt;
-		border : none !important;
+		border: none !important;
 		color: $coin-usdt-text !important;
 	}
 	&.vet {
 		background-color: $coin-vet;
-		border : none !important;
+		border: none !important;
 		color: $coin-vet-text !important;
 	}
 	&.btt {
 		background-color: $coin-btt;
-		border : none !important;
+		border: none !important;
 		color: $coin-btt-text !important;
 	}
 	&.qtum {
 		background-color: $coin-qtum;
-		border : none !important;
+		border: none !important;
 		color: $coin-qtum-text !important;
 	}
 	&.algo {
 		background-color: $coin-algo;
-		border : none !important;
+		border: none !important;
 		color: $coin-algo-text !important;
 	}
 	&.rvn {
 		background-color: $coin-rvn;
-		border : none !important;
+		border: none !important;
 		color: $coin-rvn-text !important;
 	}
 	&.iota {
 		background-color: $coin-iota;
-		border : none !important;
+		border: none !important;
 		color: $coin-iota-text !important;
 	}
 	&.dash {
 		background-color: $coin-dash;
-		border : none !important;
+		border: none !important;
 		color: $coin-dash-text !important;
 	}
 	&.bsv {
 		background-color: $coin-bsv;
-		border : none !important;
+		border: none !important;
 		color: $coin-bsv-text !important;
 	}
 	&.ont {
 		background-color: $coin-ont;
-		border : none !important;
+		border: none !important;
 		color: $coin-ont-text !important;
 	}
 	&.atom {
 		background-color: $coin-atom;
-		border : none !important;
+		border: none !important;
 		color: $coin-atom-text !important;
 	}
 	&.celr {
 		background-color: $coin-celr;
-		border : none !important;
+		border: none !important;
 		color: $coin-celr-text !important;
 	}
 	&.omg {
 		background-color: $coin-omg;
-		border : none !important;
+		border: none !important;
 		color: $coin-omg-text !important;
 	}
 	&.hot {
 		background-color: $coin-hot;
-		border : none !important;
+		border: none !important;
 		color: $coin-hot-text !important;
 	}
 	&.usd {
 		background-color: $coin-usd;
-		border : none !important;
+		border: none !important;
 		color: $coin-usd-text !important;
 	}
 	&.jpy {
 		background-color: $coin-jpy;
-		border : none !important;
+		border: none !important;
 		color: $coin-jpy-text !important;
 	}
 	&.gbp {
 		background-color: $coin-gbp;
-		border : none !important;
+		border: none !important;
 		color: $coin-gbp-text !important;
 	}
 	&.chf {
 		background-color: $coin-chf;
-		border : none !important;
+		border: none !important;
 		color: $coin-chf-text !important;
 	}
 	&.cad {
 		background-color: $coin-cad;
-		border : none !important;
+		border: none !important;
 		color: $coin-cad-text !important;
 	}
 	&.aud {
 		background-color: $coin-aud;
-		border : none !important;
+		border: none !important;
 		color: $coin-aud-text !important;
 	}
 	&.nzd {
 		background-color: $coin-nzd;
-		border : none !important;
+		border: none !important;
 		color: $coin-nzd-text !important;
 	}
 	&.zar {
 		background-color: $coin-zar;
-		border : none !important;
+		border: none !important;
 		color: $coin-zar-text !important;
 	}
 	&.hkd {
 		background-color: $coin-hkd;
-		border : none !important;
+		border: none !important;
 		color: $coin-hkd-text !important;
 	}
 	&.krw {
 		background-color: $coin-krw;
-		border : none !important;
+		border: none !important;
 		color: $coin-krw-text !important;
 	}
 	&.cny {
 		background-color: $coin-cny;
-		border : none !important;
+		border: none !important;
 		color: $coin-cny-text !important;
 	}
 	&.sgd {
 		background-color: $coin-sgd;
-		border : none !important;
+		border: none !important;
 		color: $coin-sgd-text !important;
 	}
 	&.tusd {
 		background-color: $coin-tusd;
-		border : none !important;
+		border: none !important;
 		color: $coin-tusd-text !important;
 	}
 	&.dai {
 		background-color: $coin-dai;
-		border : none !important;
+		border: none !important;
 		color: $coin-dai-text !important;
 	}
 
@@ -305,23 +305,5 @@ $large-modifier: 2.25;
 .direction_rtl {
 	.with_price-block_amount {
 		justify-content: flex-end;
-	}
-}
-
-.dark-theme {
-	.with_price-block_amount {
-		color: $dark-font-main-text-color;
-		.with_price-block_amount-value-eur {
-			color: $dark-font-sub-text-color;
-		}
-	}
-	.currency_ball-wrapper {
-		color: $dark-app-background-color;
-		font-weight: bold;
-
-		&.default-coin{
-			border:1px solid $colors-white;
-			color: $colors-white;
-		}
 	}
 }

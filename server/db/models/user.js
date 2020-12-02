@@ -60,10 +60,6 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				defaultValue: ''
 			},
-			name_verified: {
-				type: DataTypes.BOOLEAN,
-				defaultValue: false
-			},
 			gender: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
@@ -150,7 +146,7 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},
-			is_tech: {
+			is_communicator: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},

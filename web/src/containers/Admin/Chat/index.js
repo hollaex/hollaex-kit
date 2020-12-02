@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import { WS_URL } from '../../../config/constants';
@@ -16,116 +15,216 @@ class Chat extends Component {
 	state = {
 		chatWs: undefined,
 		messages: [],
-		announcements: [],
 		bannedUsers: {},
 		bannedUsersUsernames: {},
-		ready: false
+		ready: false,
 	};
 
 	componentDidMount() {
 		this.connectToChat(getToken());
 	}
 
+	componentWillUnmount() {
+		this.disconnectFromChat();
+	}
+
 	connectToChat = (token) => {
-		const chatWs = io(`${WS_URL}/chat`, {
-			query: {
-				token: `Bearer ${token}`
-			}
-		});
-
-		chatWs.on('init', ({ messages = [], announcements = [] }) => {
-			this.setState({ messages, announcements, ready: true });
-			this.getBannedUsers();
-		});
-
-		chatWs.on('message', (message) => {
-			this.setState({ messages: this.state.messages.concat(message) });
-		});
-
-		chatWs.on('announcement', (announcement) => {
-			this.setState({
-				announcements: this.state.announcements.concat(announcement)
-			});
-		});
-
-		chatWs.on('deleteMessage', (idToDelete) => {
-			const indexOfMessage = this.state.messages.findIndex(
-				({ id }) => id === idToDelete
-			);
-			if (indexOfMessage > -1) {
-				const messages = [].concat(this.state.messages);
-				messages.splice(indexOfMessage, 1);
-				this.setState({ messages });
-			}
-		});
-
-		chatWs.on('bannedUsers', ({ bannedUsers }) => {
-			const bannedUsersUsernames = {};
-			Object.values(bannedUsers).forEach((username) => {
-				bannedUsersUsernames[username] = 1;
-			});
-			this.setState({ bannedUsers, bannedUsersUsernames });
-		});
-
+		const url = `${WS_URL}/stream?authorization=Bearer ${token}`;
+		const chatWs = new WebSocket(url);
 		this.setState({ chatWs });
+
+		chatWs.onopen = (evt) => {
+			console.info('Connected Chat Socket', evt);
+			chatWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: ['chat'],
+				})
+			);
+			this.wsInterval = setInterval(() => {
+				chatWs.send(
+					JSON.stringify({
+						op: 'ping',
+					})
+				);
+			}, 55000);
+		};
+
+		chatWs.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			console.info('chatWs', data);
+			switch (data.action) {
+				case 'init': {
+					const { data: messages = [] } = data;
+					this.setState({
+						messages,
+						ready: true,
+					});
+					this.getBannedUsers();
+					break;
+				}
+
+				case 'addMessage': {
+					const { data: newMessage } = data;
+					this.setState((prevState) => ({
+						messages: [...prevState.messages, newMessage],
+					}));
+					break;
+				}
+
+				case 'deleteMessage': {
+					const { data: idToDelete } = data;
+					const indexOfMessage = this.state.messages.findIndex(
+						({ id }) => id === idToDelete
+					);
+					if (indexOfMessage > -1) {
+						const messages = [].concat(this.state.messages);
+						messages.splice(indexOfMessage, 1);
+						this.setState({ messages });
+					}
+					break;
+				}
+
+				case 'bannedUsers': {
+					const { data: bannedUsers } = data;
+					const bannedUsersUsernames = {};
+					Object.values(bannedUsers).forEach((username) => {
+						bannedUsersUsernames[username] = 1;
+					});
+					this.setState({ bannedUsers, bannedUsersUsernames });
+					break;
+				}
+
+				default:
+					break;
+			}
+		};
+
+		chatWs.onerror = (evt) => {
+			console.error('chat socket error', evt);
+		};
+
+		// const chatWs = io(`${WS_URL}/chat`, {
+		// 	query: {
+		// 		token: `Bearer ${token}`
+		// 	}
+		// });
+
+		// chatWs.on('init', ({ messages = [], announcements = [] }) => {
+		// 	this.setState({ messages, announcements, ready: true });
+		// 	this.getBannedUsers();
+		// });
+
+		// chatWs.on('message', (message) => {
+		// 	this.setState({ messages: this.state.messages.concat(message) });
+		// });
+
+		// chatWs.on('deleteMessage', (idToDelete) => {
+		// 	const indexOfMessage = this.state.messages.findIndex(
+		// 		({ id }) => id === idToDelete
+		// 	);
+		// 	if (indexOfMessage > -1) {
+		// 		const messages = [].concat(this.state.messages);
+		// 		messages.splice(indexOfMessage, 1);
+		// 		this.setState({ messages });
+		// 	}
+		// });
+
+		// chatWs.on('bannedUsers', ({ bannedUsers }) => {
+		// 	const bannedUsersUsernames = {};
+		// 	Object.values(bannedUsers).forEach((username) => {
+		// 		bannedUsersUsernames[username] = 1;
+		// 	});
+		// 	this.setState({ bannedUsers, bannedUsersUsernames });
+		// });
 	};
 
 	addMessage = (message) => {
-		const { username } = this.props;
-		this.state.chatWs.emit('message', {
-			message,
-			username
-		});
+		const { chatWs } = this.state;
+		chatWs.send(
+			JSON.stringify({
+				op: 'chat',
+				args: [
+					{
+						action: 'addMessage',
+						data: message,
+					},
+				],
+			})
+		);
 	};
 
 	deleteMessage = (idToDelete) => {
-		this.state.chatWs.emit('deleteMessage', idToDelete);
-	};
-
-	addAnnouncement = (message) => {
-		this.state.chatWs.emit('announcement', {
-			message,
-			type: 'announcement'
-		});
-	};
-
-	deleteAnnouncement = (idToDelete) => {
-		this.state.chatWs.emit('deleteAnnouncement', idToDelete);
-		const indexOfAnnouncement = this.state.announcements.findIndex(
-			({ id }) => id === idToDelete
+		const { chatWs } = this.state;
+		chatWs.send(
+			JSON.stringify({
+				op: 'chat',
+				args: [
+					{
+						action: 'deleteMessage',
+						data: idToDelete,
+					},
+				],
+			})
 		);
-		if (indexOfAnnouncement > -1) {
-			const announcements = [].concat(this.state.announcements);
-			announcements.splice(indexOfAnnouncement, 1);
-			this.setState({ announcements });
-		}
 	};
 
 	getBannedUsers = () => {
-		this.state.chatWs.emit('getBannedUsers');
+		const { chatWs } = this.state;
+		chatWs.send(
+			JSON.stringify({
+				op: 'chat',
+				args: [
+					{
+						action: 'getBannedUsers',
+					},
+				],
+			})
+		);
 	};
 
 	banUser = (username) => {
-		this.state.chatWs.emit('banUser', { username });
+		const { chatWs } = this.state;
+		chatWs.send(
+			JSON.stringify({
+				op: 'chat',
+				args: [
+					{
+						action: 'banUser',
+						data: username,
+					},
+				],
+			})
+		);
 	};
 
 	unbanUser = (user_id) => {
-		this.state.chatWs.emit('unbanUser', { user_id });
+		const { chatWs } = this.state;
+		chatWs.send(
+			JSON.stringify({
+				op: 'chat',
+				args: [
+					{
+						action: 'unbanUser',
+						data: user_id,
+					},
+				],
+			})
+		);
 	};
 
 	disconnectFromChat = () => {
-		if (this.state.chatWs) {
-			this.state.chatWs.disconnect();
+		const { chatWs, ready } = this.state;
+		if (chatWs) {
+			if (ready) {
+				chatWs.send(JSON.stringify({ op: 'unsubscribe', args: ['chat'] }));
+			}
+			chatWs.close();
 		}
 	};
 
 	render() {
-		const {
-			ready,
-			messages,
-			bannedUsers,
-			bannedUsersUsernames
-		} = this.state;
+		const { ready, messages, bannedUsers, bannedUsersUsernames } = this.state;
 
 		return (
 			<div className="app_container-content">
@@ -143,13 +242,6 @@ class Chat extends Component {
 									bannedUsers={bannedUsersUsernames}
 								/>
 							</TabPane>
-							{/* <TabPane tab="Announcements" key="announcements">
-								<Announcements
-									announcements={announcements}
-									deleteAnnouncement={this.deleteAnnouncement}
-									addAnnouncement={this.addAnnouncement}
-								/>
-							</TabPane> */}
 							<TabPane tab="Banned Users" key="banuser">
 								<Ban
 									bannedUsers={bannedUsers}
@@ -165,7 +257,7 @@ class Chat extends Component {
 	}
 }
 const mapStateToProps = (store) => ({
-	username : store.user.username
+	username: store.user.username,
 });
 
 export default connect(mapStateToProps)(Chat);

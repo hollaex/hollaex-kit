@@ -14,7 +14,8 @@ const Form = (name, className = '', allowPristine = false) => {
 		onSubmit,
 		buttonText,
 		buttonType,
-		small
+		small,
+		buttonClass = '',
 	}) => {
 		return (
 			<form className={className}>
@@ -34,7 +35,7 @@ const Form = (name, className = '', allowPristine = false) => {
 						error
 					}
 					size={small ? 'small' : 'large'}
-					className={small ? '' : 'w-100'}
+					className={small ? `${buttonClass}` : `w-100 ${buttonClass}`}
 					style={small ? { float: 'right' } : null}
 				>
 					{buttonText}
@@ -47,7 +48,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		form: name,
 		// onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
 		onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
-		enableReinitialize: true
+		enableReinitialize: true,
 	})(HocForm);
 };
 

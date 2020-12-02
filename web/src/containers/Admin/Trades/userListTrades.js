@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Icon, Spin, Button, Card } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
+import { Table, Spin, Button, Card } from 'antd';
 import { Link } from 'react-router';
 
 import { requestUsers } from '../ListUsers/actions';
@@ -9,7 +10,7 @@ const renderLink = (value) => (
 	<Button type="primary" onClick={(e) => refreshPage(e)}>
 		<Link to={`user?id=${value}`}>
 			GO
-			<Icon type="right" />
+			<RightOutlined />
 		</Link>
 	</Button>
 );
@@ -19,7 +20,7 @@ const COLUMNS = [
 	{ title: 'User name', dataIndex: 'username', key: 'username' },
 	{ title: 'name', dataIndex: 'full_name', key: 'full_name' },
 	{ title: 'Email', dataIndex: 'email', key: 'email' },
-	{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
+	{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink },
 ];
 
 // const TRADE_COLUMNS = [
@@ -39,7 +40,7 @@ class UserListTrades extends Component {
 		fetched: false,
 		loading: false,
 		error: '',
-		tradeData: []
+		tradeData: [],
 	};
 
 	componentWillMount() {
@@ -49,14 +50,14 @@ class UserListTrades extends Component {
 	requestFullUsers = () => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 
 		requestUsers().then((data) => {
 			this.setState({
 				users: data.data,
 				loading: false,
-				fetched: true
+				fetched: true,
 			});
 		});
 	};

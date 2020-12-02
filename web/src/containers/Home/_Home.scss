@@ -22,13 +22,13 @@ $no-background--color: white;
 	background-size: cover;
 
 	.exchange-expired {
-		background-color: $colors-notifications-red !important;
-		color: $colors-white !important;
+		background-color: #ed1c24 !important;
+		color: #ffffff !important;
 	}
-	
+
 	.exchange-warning {
-		background-color: #FFF100;
-		color: $colors-black;
+		background-color: #fff100;
+		color: #000000;
 	}
 
 	.quick_trade-section {
@@ -98,7 +98,7 @@ $no-background--color: white;
 
 		.home-card-text-container {
 			font-size: $font-size-subtext;
-			color:$colors-black;
+			color: $colors-black;
 			.home-card-title {
 				margin: 0.5rem 0 0.25rem;
 				font-weight: bold;
@@ -148,36 +148,6 @@ $no-background--color: white;
 .direction_rtl {
 	.home-card-text-container {
 		margin-right: $card-text--margin;
-	}
-}
-
-.dark-theme {
-	&.home_container{
-		.section_1-content {
-			background: url($background-image-dark);
-		}
-		.features-container {
-			background-color: #020202;
-		}
-		.home-card-container {
-			border-color:#f9f9f9;
-			.home-card-icon-wrapper {
-				> div {
-					.home-card-icon {
-						fill:#f9f9f9
-					}
-				}
-			}
-			.home-card-text-container {
-				color:#f9f9f9;
-			}
-		}
-		.buttons-section--button {
-			border-color:#f9f9f9;
-		}
-	}
-	.arrow-down {
-		stroke: #f9f9f9;
 	}
 }
 

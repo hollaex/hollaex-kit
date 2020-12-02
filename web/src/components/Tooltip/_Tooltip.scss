@@ -1,4 +1,8 @@
-@mixin exir-tooltip($background-color, $border-color, $font-color: $border-color) {
+@mixin exir-tooltip(
+	$background-color,
+	$border-color,
+	$font-color: $border-color
+) {
 	&.exir-tooltip {
 		opacity: 1 !important;
 		background-color: transparent !important;
@@ -19,9 +23,5 @@
 }
 
 .light-theme {
-	@include exir-tooltip($colors-white, $colors-main-black);
-}
-
-.dark-theme {
-	@include exir-tooltip($colors-main-black, $colors-deactivate-color1, $colors-white);
+	@include exir-tooltip($app-background-color, $colors-main-black);
 }

@@ -15,7 +15,7 @@ const DumbForm = (formName) => {
 	};
 
 	return reduxForm({
-		form: formName
+		form: formName,
 	})(Form);
 };
 

@@ -18,24 +18,16 @@ import {
 	// openContactForm,
 	logoutconfirm,
 	setNotification,
-	NOTIFICATIONS
+	NOTIFICATIONS,
 } from '../../actions/appActions';
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
-	SHOW_TOTAL_ASSETS
+	SHOW_TOTAL_ASSETS,
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	formatToCurrency,
-	formatAverage,
-	formatBaseAmount,
-	calculateBalancePrice,
-	donutFormatPercentage,
-	calculatePrice,
-	calculatePricePercentage
-} from '../../utils/currency';
+import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
 import { getUserReferralCount } from '../../actions/userAction';
 
@@ -43,16 +35,13 @@ class Summary extends Component {
 	state = {
 		selectedAccount: '',
 		currentTradingAccount: this.props.verification_level,
-		chartData: [],
-		totalAssets: '',
-		lastMonthVolume: 0
+		lastMonthVolume: 0,
 	};
 
 	componentDidMount() {
 		const { user, tradeVolumes, pairs, prices } = this.props;
 
 		if (user.id) {
-			this.calculateSections(this.props);
 			this.setCurrentTradeAccount(user);
 			this.props.getUserReferralCount();
 		}
@@ -66,18 +55,7 @@ class Summary extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.user.id !== this.props.user.id ||
-			nextProps.price !== this.props.price ||
-			nextProps.orders.length !== this.props.orders.length ||
-			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins) ||
-			nextProps.activeLanguage !== this.props.activeLanguage
-		) {
-			this.calculateSections(nextProps);
-		}
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			this.props.user.verification_level !== nextProps.user.verification_level
 		) {
@@ -106,7 +84,7 @@ class Summary extends Component {
 	onFeesAndLimits = (tradingAccount, discount) => {
 		this.props.openFeesStructureandLimits({
 			verification_level: tradingAccount,
-			discount: discount
+			discount: discount,
 		});
 	};
 
@@ -122,47 +100,19 @@ class Summary extends Component {
 		}
 	};
 
-	calculateSections = ({ price, balance, orders, prices, coins }) => {
-		const data = [];
-
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
-		Object.keys(coins).forEach((currency) => {
-			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculatePrice(
-				balance[`${symbol}_balance`],
-				prices[currency]
-			);
-			const balancePercent = calculatePricePercentage(
-				currencyBalance,
-				totalAssets
-			);
-			data.push({
-				...coins[currency],
-				balance: balancePercent,
-				balanceFormat: formatToCurrency(currencyBalance, min),
-				balancePercentage: donutFormatPercentage(balancePercent)
-			});
-		});
-
-		this.setState({
-			chartData: data,
-			totalAssets: formatAverage(formatBaseAmount(totalAssets))
-		});
-	};
-
 	setCurrentTradeAccount = (user) => {
 		let currentTradingAccount = this.state.currentTradingAccount;
 		if (user.verification_level) {
 			this.setState({
 				currentTradingAccount,
-				selectedAccount: user.verification_level
+				selectedAccount: user.verification_level,
 			});
 		}
 	};
 
 	onInviteFriends = () => {
 		this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, {
-			affiliation_code: this.props.user.affiliation_code
+			affiliation_code: this.props.user.affiliation_code,
 		});
 	};
 
@@ -180,23 +130,26 @@ class Summary extends Component {
 			isValidBase,
 			verification_level,
 			config_level,
-			affiliation
-		} = this.props;
-		const {
-			selectedAccount,
+			affiliation,
 			chartData,
-			totalAssets,
-			lastMonthVolume
-		} = this.state;
+			totalAsset,
+		} = this.props;
+		const { selectedAccount, lastMonthVolume } = this.state;
+
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
 		let traderAccTitle = STRINGS.formatString(
-			STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,
+			STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 			verification_level
 		);
 		return (
 			<div className="summary-container">
 				{!isMobile && (
-					<IconTitle text={`${STRINGS.SUMMARY.TITLE}`} textType="title" />
+					<IconTitle
+						stringId="SUMMARY.TITLE"
+						text={`${STRINGS['SUMMARY.TITLE']}`}
+						textType="title"
+					/>
 				)}
 				{isMobile ? (
 					<MobileSummary
@@ -239,7 +192,7 @@ class Summary extends Component {
 							</div>
 							<div className="summary-section_1 requirement-wrapper d-flex">
 								<SummaryBlock
-									title={STRINGS.SUMMARY.TASKS}
+									title={STRINGS["SUMMARY.TASKS"]}
 									wrapperClassname="w-100"
 								>
 									<SummaryRequirements
@@ -256,7 +209,8 @@ class Summary extends Component {
 								className={classnames('assets-wrapper', 'asset_wrapper_width')}
 							>
 								<SummaryBlock
-									title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
+									stringId="SUMMARY.ACCOUNT_ASSETS"
+									title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
 									secondaryTitle={
 										SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (
 											<span>
@@ -279,12 +233,12 @@ class Summary extends Component {
 							</div>
 							{/*<div className="trading-volume-wrapper">
                                 <SummaryBlock
-                                    title={STRINGS.SUMMARY.TRADING_VOLUME}
+                                    title={STRINGS["SUMMARY.TRADING_VOLUME"]}
                                     // secondaryTitle={<span>
                                     //     <span className="title-font">
                                     //         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                     //     </span>
-                                    //     {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                    //     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     // </span>
                                     // }
                                 >
@@ -314,7 +268,9 @@ const mapStateToProps = (state) => ({
 	isValidBase: state.app.isValidBase,
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation,
-	constants: state.app.constants
+	constants: state.app.constants,
+	chartData: state.asset.chartData,
+	totalAsset: state.asset.totalAsset,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -324,10 +280,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch)
+	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Summary);
+export default connect(mapStateToProps, mapDispatchToProps)(Summary);

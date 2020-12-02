@@ -37,7 +37,7 @@
 
 		.otp_secret {
 			font-size: $font-size-subtext;
-			background-color: $colors-deactivate-color1;
+			background-color: $specials_highlight-box;
 			padding: 0.25rem 0.5rem;
 		}
 	}
@@ -159,57 +159,17 @@ $padding-input: 4rem;
 	}
 }
 
-.dark-theme {
-	.logout-menu-wrapper {
-		color: $dark-font-main-text-color;
-		border-bottom: 1px solid $dark-font-main-text-color;
-
-		.logout-icon {
-			.tab-signout {
-				fill: $dark-font-main-text-color;
-			}
-		}
-	}
-	.otp_form-section-wrapper {
-		border-top: 1px solid $dark-font-main-text-color;
-	}
-	.otp_form-wrapper {
-		.otp_form-section-title {
-			color: $dark-font-main-text-color;
-		}
-		.otp_form-section-wrapper {
-			border-top-color: $dark-font-main-text-color;
-		}
-		.otp_form-section-text {
-			color: $dark-font-sub-text-color;
-		}
-		.otp_secret {
-			background-color: $dark-inactive-color;
-			color: $dark-font-sub-text-color !important;
-		}
-
-		.otp_form-section-wrapper svg path {
-			fill: $dark-tab-active;
-		}
-	}
-	.tokens-icon-svg {
-		path, rect {
-			fill: $dark-font-sub-text-color;
-		}
-	}
-}
-
 .layout-mobile {
-	.user_security-wrapper{
-		.warning_text{
+	.user_security-wrapper {
+		.warning_text {
 			font-size: $font-size-mobile-txt !important;
 		}
 	}
-	.checkbutton-wrapper{
-		.checkbutton-input-wrapper{
-			.checkbutton-input-wrapper--label{
-			   font-size: $font-size-mobile-txt;
-         	   color: $dark-link;
+	.checkbutton-wrapper {
+		.checkbutton-input-wrapper {
+			.checkbutton-input-wrapper--label {
+				font-size: $font-size-mobile-txt;
+				color: $link;
 			}
 		}
 	}
@@ -218,10 +178,10 @@ $padding-input: 4rem;
 		width: auto;
 		.otp_form-section-wrapper {
 			.otp_form-section-title {
-               font-size: $font-size-mobile-title;
+				font-size: $font-size-mobile-title;
 			}
 			.otp_form-section-text {
-                font-size: $font-size-mobile-txt!important;
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 		.otp_form-section-content {
@@ -233,8 +193,8 @@ $padding-input: 4rem;
 			}
 		}
 	}
-	.accordion_section_content{
-		.warning_text{
+	.accordion_section_content {
+		.warning_text {
 			font-size: $font-size-mobile-txt !important;
 		}
 	}

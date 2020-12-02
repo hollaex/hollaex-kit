@@ -12,3 +12,214 @@
 .list_users {
 	padding-top: 30px;
 }
+
+.tiers-wrapper .ant-tabs-nav .ant-tabs-ink-bar,
+.user-content .ant-tabs-nav .ant-tabs-ink-bar,
+.user-container .ant-tabs-nav .ant-tabs-ink-bar {
+	height: 6px;
+	background-color: #ffffff;
+}
+.user-container .ant-tabs-nav .ant-tabs-ink-bar {
+	top: 0px;
+}
+.tiers-wrapper .ant-tabs-nav .ant-tabs-tab,
+.user-container .ant-tabs-nav .ant-tabs-tab {
+	font-size: 15px;
+	color: #ffffff;
+	font-weight: bold;
+}
+.user-container .ant-tabs-nav .ant-tabs-tab:hover {
+	color: #ffffff;
+}
+.tiers-wrapper .ant-tabs-nav::before,
+.user-content .ant-tabs-nav::before,
+.user-container .ant-tabs-nav::before {
+	border-bottom: none;
+}
+.ant-table-thead > tr > th {
+	background-color: #4e4efb;
+	color: #ffffff;
+}
+.ant-table-tbody > tr > td {
+	background-color: #0000d1;
+	color: #ffffff;
+	border-bottom: 1px solid #0000d1;
+}
+.ant-table-tbody > tr.ant-table-row:hover > td {
+	background-color: #0000ff;
+}
+.user-content {
+	margin: 24px 0px;
+}
+.ant-breadcrumb,
+.ant-breadcrumb-separator {
+	color: #c4c4c4;
+}
+.ant-breadcrumb a:hover {
+	color: #ffffff;
+}
+.ant-breadcrumb > span:last-child {
+	color: #ffffff;
+}
+.user-icon {
+	margin-right: 5px;
+	width: 3rem;
+}
+.user-details {
+	color: #ffffff;
+	font-size: 18px;
+	margin: 10px 0px;
+}
+.user-details .user-seperator {
+	background-color: #ffffff;
+	height: 20px;
+	margin: 0px 14px;
+	width: 1px;
+}
+.about-icon .freeze-icon {
+	fill: #c4c4c4;
+}
+.about-icon .flag-icon,
+.about-icon .otp-key {
+	fill: none;
+	stroke: #c4c4c4;
+}
+.about-info {
+	padding: 15px 10px;
+	border-left: 1px solid #c4c4c4;
+	width: 16rem;
+}
+.about-icon {
+	width: 3rem;
+	margin-left: 5px;
+}
+.about-icon-active .about-icon .flag-icon {
+	fill: #ff0000;
+}
+.about-icon-active .freeze-icon {
+	fill: #00edff;
+}
+.about-icon-active .about-icon .otp-key {
+	fill: #ffffff;
+}
+.info-link {
+	cursor: pointer;
+	text-decoration: underline;
+}
+.about-info-content {
+	text-align: right;
+}
+.about-wrapper {
+	padding: 0px 15px;
+}
+.about-verification-content {
+	flex: 1;
+	margin-right: 12px;
+}
+.about-notes-content {
+	width: 18rem;
+}
+.about-notes-text {
+	margin-bottom: 2rem;
+}
+.about-notes-content .ant-btn {
+	width: auto;
+}
+.about-title {
+	border-bottom: 1px solid #c4c4c4;
+	font-weight: bold;
+	padding: 10px;
+	margin-bottom: 8px;
+}
+.verification-docs-container {
+	margin-bottom: 5px;
+	width: 20rem;
+}
+.ant-modal-confirm-btns {
+	display: flex;
+}
+.admin-content-wrapper .blue-link {
+	color: #ffffff !important;
+	text-decoration: underline;
+}
+.admin-content-wrapper h1,
+.admin-content-wrapper h2,
+.admin-content-wrapper h3,
+.admin-content-wrapper h4,
+.admin-content-wrapper h5,
+.admin-content-wrapper h6,
+.ant-modal-body h1,
+.ant-modal-body h3 {
+	color: #ffffff;
+}
+.user-info-container,
+.user-role-container,
+.user-level-container {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 10px;
+}
+.user-info-container {
+	width: 25rem;
+}
+.user-role-container {
+}
+.user-level-container {
+}
+.user-info-separator {
+	border-right: 1px solid #c4c4c4;
+	margin: 0rem 2rem;
+	width: 1px;
+	height: 4rem;
+}
+.user-data-form .user-edit-icon {
+	margin-right: 1rem;
+	width: 3rem;
+}
+.user-data-form .ant-picker .ant-picker-clear path,
+.user-data-form .ant-picker .ant-picker-suffix path,
+.user-data-form .ant-select .ant-select-arrow path {
+	fill: #ffffff;
+}
+.user-data-form
+	.ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector,
+.user-data-form .ant-input,
+.user-data-form .ant-picker-input > input,
+.user-data-form .ant-picker {
+	background-color: #0000ff;
+	color: #ffffff;
+}
+.download-csv-table {
+	border: 1px solid #ffffff;
+	padding: 2px 5px;
+}
+.user-info-icon {
+	width: 35px;
+	position: relative;
+	bottom: 5px;
+}
+.user-info-label {
+	margin-left: 15px;
+}
+.ant-table-pagination.ant-pagination {
+	margin: 16px 0;
+	background: #ffffff;
+	border-radius: 31%;
+	padding: 15px;
+}
+.levels-icon {
+	width: 57px;
+	position: relative;
+	bottom: 15px;
+}
+.select-level-icon {
+	width: 3rem;
+	position: relative;
+	top: 0.2rem;
+}
+.user-data-form
+	.ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector {
+	height: 50px;
+}

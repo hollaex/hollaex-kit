@@ -20,10 +20,10 @@ const TextAreaField = (props) => {
 	return (
 		<FieldWrapper {...props}>
 			<textarea
-				rows={rows ? rows : "1" }
+				rows={rows ? rows : '1'}
 				placeholder={placeholder}
 				className={classnames('input_field-input', {
-					error: displayError
+					error: displayError,
 				})}
 				type={type}
 				{...input}

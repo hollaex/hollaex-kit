@@ -54,43 +54,13 @@ $title--margin: 1rem;
 	}
 }
 
-.dark-theme {
-	.icon_title-wrapper {
-		color: $dark-font-main-text-color !important;
-		.icon_title-svg svg {
-			.g1_3 {
-				fill: $dark-icon-color;
-			}
-			.otp-code,
-			.dots-2,
-			.warning-icon,
-			.risk-order-warning,
-			.coin-btc-1,
-			.coin-btc-5,
-			.level_icon,
-			.xht-coin-stack,
-			.send-request {
-				fill: $dark-icon-color;
-			}
-			.dots-1,
-			.coin-btc-4	 {
-				stroke: $dark-icon-color;
-			}
-		}
-		&.underline:after {
-			background: $dark-trade-row-highlight;
-		}
-	}
-}
-
-
 .layout-mobile {
 	.icon_title-wrapper {
 		// .auth_logo-wrapper {
 		// 	height: 7rem !important;
 		// 	width: 7rem !important;
 		// }
-		
+
 		.auth_logo-wrapper svg {
 			height: 8rem !important;
 			width: 15rem !important;

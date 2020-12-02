@@ -2,27 +2,38 @@ import React from 'react';
 import { CheckboxButton, IconTitle } from '../../components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
-import { ICONS } from '../../config/constants';
+import { EditWrapper } from 'components';
 
 import STRINGS from '../../config/localizedStrings';
 
-export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
+export const renderOTPForm = (
+	secret,
+	email,
+	activateOTP,
+	constants = {},
+	ICONS
+) => {
 	const app_name = constants.api_name.replace(' ', '').trim() || '';
 	return (
 		<div className="otp_form-wrapper">
 			<IconTitle
-				text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.TITLE}
-				iconPath={ICONS.OTP_KEYS}
+				stringId="ACCOUNT_SECURITY.OTP.CONTENT.TITLE"
+				text={STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.TITLE']}
+				iconId="OTP_KEYS"
+				iconPath={ICONS['OTP_KEYS']}
 				className="w-100"
 				textType="title"
-				useSvg={true}
 			/>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1}</span>
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1">
+						<span>{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1']}</span>
+					</EditWrapper>
 				</div>
 				<div className="otp_form-section-text">
-					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_2}
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_2">
+						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_2']}
+					</EditWrapper>
 				</div>
 				<div className="d-flex justify-content-center otp_form-section-content">
 					<div className="qr-code-wrapper d-flex justify-content-center align-items-center">
@@ -35,40 +46,58 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 			</div>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5}</span>
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5">
+						<span>{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5']}</span>
+					</EditWrapper>
 				</div>
 				<div className="otp_form-section-text">
-					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3}
-					<br />
-					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4}
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3,ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4">
+						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3']}
+						<br />
+						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4']}
+					</EditWrapper>
 				</div>
 				<div className="otp_form-section-content otp_secret">{secret}</div>
 			</div>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT}</span>
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.INPUT">
+						<span>{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.INPUT']}</span>
+					</EditWrapper>
 				</div>
 				<OTPForm onSubmit={activateOTP} />
 			</div>
 		</div>
 	);
-}
+};
 
-export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
+export const OTP = ({
+	requestOTP,
+	data,
+	otp_enabled,
+	children,
+	icons = {},
+}) => (
 	<div className="user_security-wrapper">
 		{!otp_enabled && (
 			<div className="warning_text">
-				{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.WARNING}
+				<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.WARNING">
+					{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.WARNING']}
+				</EditWrapper>
 			</div>
 		)}
 		<CheckboxButton
+			stringId="ACCOUNT_SECURITY.OTP.CONTENT.ENABLE,ACCOUNT_SECURITY.OTP.CONTENT.DISABLE"
 			label={
-				STRINGS.ACCOUNT_SECURITY.OTP.CONTENT[otp_enabled ? 'DISABLE' : 'ENABLE']
+				STRINGS[
+					`ACCOUNT_SECURITY.OTP.CONTENT.${otp_enabled ? 'DISABLE' : 'ENABLE'}`
+				]
 			}
 			onClick={requestOTP}
 			disabled={data.requesting}
 			loading={data.requesting}
 			checked={otp_enabled}
+			icons={icons}
 		>
 			{children}
 		</CheckboxButton>

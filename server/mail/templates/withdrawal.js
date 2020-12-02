@@ -18,13 +18,12 @@ const html = (email, data, language, domain) => {
 
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		let explorers = '';
-		if (EXPLORERS[data.currency]){
-			EXPLORERS[data.currency].forEach((explorer) => {
-				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-					data.transaction_id
-				}>${explorer.name}</a></li>`;
-			});
-		}
+		EXPLORERS(data.currency).forEach((explorer) => {
+			explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+				data.transaction_id
+			}>${explorer.name}</a></li>`;
+		});
+
 		result += `
 			<p>
 				${WITHDRAWAL.BODY[data.status](

@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
+import { EditWrapper } from 'components';
 
 const getClassNames = (status) => {
 	switch (status) {
@@ -21,10 +22,11 @@ const getClassNames = (status) => {
 };
 
 const ActionNotification = ({
-	useSvg,
 	text,
+	stringId,
 	status,
 	onClick,
+	iconId,
 	iconPath,
 	className,
 	reverseImage,
@@ -35,7 +37,7 @@ const ActionNotification = ({
 	rotateIfLtr,
 	rotateIfRtl,
 	showActionText,
-	disable = false
+	disable = false,
 }) => (
 	<div
 		className={classnames(
@@ -46,42 +48,41 @@ const ActionNotification = ({
 				right: textPosition === 'right',
 				'icon_on-right': iconPosition === 'right',
 				'icon_on-left': iconPosition === 'left',
-				disabled: disable
+				disabled: disable,
 			},
 			className
 		)}
 		onClick={disable ? () => {} : onClick}
 	>
 		{(showActionText || !isMobile) && (
-			<div
-				className={classnames(
-					'action_notification-text',
-					getClassNames(status)
-				)}
-			>
-				{text}
-			</div>
+			<EditWrapper>
+				<div
+					className={classnames(
+						'action_notification-text',
+						getClassNames(status)
+					)}
+				>
+					{text}
+				</div>
+			</EditWrapper>
 		)}
-		{iconPath &&
-			(useSvg ? (
-				<ReactSVG path={iconPath} wrapperClassName="action_notification-svg" />
-			) : (
-				<img
-					src={iconPath}
-					alt={text}
-					className={classnames('action_notification-image', {
-						rotate_ltr: rotateIfLtr,
-						rotate_rtl: rotateIfRtl,
-						rotate,
-						reverse: reverseImage
-					})}
-				/>
-			))}
+		<Image
+			iconId={iconId}
+			stringId={stringId}
+			icon={iconPath}
+			alt={text}
+			svgWrapperClassName="action_notification-svg"
+			imageWrapperClassName={classnames('action_notification-image', {
+				rotate_ltr: rotateIfLtr,
+				rotate_rtl: rotateIfRtl,
+				rotate,
+				reverse: reverseImage,
+			})}
+		/>
 	</div>
 );
 
 ActionNotification.defaultProps = {
-	useSvg: false,
 	text: '',
 	status: 'information',
 	iconPath: '',
@@ -92,6 +93,6 @@ ActionNotification.defaultProps = {
 	showPointer: true,
 	rotate: false,
 	rotateIfRtl: false,
-	rotateIfLtr: false
+	rotateIfLtr: false,
 };
 export default ActionNotification;

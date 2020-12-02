@@ -20,7 +20,7 @@ const convertCountry = (value = {}) => {
 					'icon'
 				)}
 			/>
-		)
+		),
 	};
 };
 
@@ -39,16 +39,17 @@ export default COUNTRIES;
 export const COUNTRIES_OPTIONS = COUNTRIES.map((country) => ({
 	label: country.name,
 	value: country.value,
-	icon: country.flag
+	icon: country.flag,
 }));
 
 export const PHONE_OPTIONS = COUNTRIES.map((country) => ({
 	label: STRINGS.formatString(
-		STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-			.PHONE_CODE_DISPLAY,
+		STRINGS[
+			'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_DISPLAY'
+		],
 		country.phoneCode,
 		country.name
 	).join(''),
 	value: country.phoneCode,
-	icon: country.flag
+	icon: country.flag,
 }));

@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ReCaptcha } from 'react-recaptcha-v3';
 import { connect } from 'react-redux';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY, DEFAULT_LANGUAGE } from '../../../config/constants';
+import {
+	CAPTCHA_SITEKEY,
+	DEFAULT_CAPTCHA_SITEKEY,
+} from '../../../config/constants';
 
 class CaptchaField extends Component {
 	state = {
 		active: true,
-		ready: false
+		ready: false,
 	};
 
 	componentDidMount() {
@@ -17,7 +21,7 @@ class CaptchaField extends Component {
 		}, 120000);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.input.value === '' &&
 			nextProps.input.value !== this.props.input.value
@@ -46,19 +50,26 @@ class CaptchaField extends Component {
 	}
 
 	render() {
-		const { language, constants: { captcha = {} } } = this.props;
+		const {
+			language,
+			constants: { captcha = {} },
+			defaults: { language: DEFAULT_LANGUAGE },
+		} = this.props;
 		const { ready, active } = this.state;
+
 		return (
 			active && (
 				<div
 					className={classnames('field-wrapper', 'captcha-wrapper', {
-						hidden: !ready
+						hidden: !ready,
 					})}
 				>
 					<ReCaptcha
 						ref={this.setRef}
 						// sitekey={captcha.site_key || CAPTCHA_SITEKEY}
-						sitekey={CAPTCHA_SITEKEY || captcha.sitekey || DEFAULT_CAPTCHA_SITEKEY}
+						sitekey={
+							CAPTCHA_SITEKEY || captcha.sitekey || DEFAULT_CAPTCHA_SITEKEY
+						}
 						verifyCallback={this.onVerifyCallback}
 						expiredCallback={this.onExpiredCallback}
 						lang={language || DEFAULT_LANGUAGE}
@@ -70,7 +81,7 @@ class CaptchaField extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(CaptchaField);
+export default connect(mapStateToProps)(withConfig(CaptchaField));

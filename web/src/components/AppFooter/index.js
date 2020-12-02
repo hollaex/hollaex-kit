@@ -1,135 +1,170 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
+import Image from 'components/Image';
 
-const generateSectionsText = (strings, theme, links = {}) => {
-	const { api, contact, facebook, github, helpdesk, information, instagram, linkedin, youtube, privacy, telegram, terms, twitter, website, whitepaper } = links
-	const { SECTIONS } = strings.FOOTER;
+const generateSectionsText = (strings, theme, links = {}, ICONS) => {
+	const {
+		api,
+		contact,
+		facebook,
+		github,
+		helpdesk,
+		information,
+		instagram,
+		linkedin,
+		youtube,
+		privacy,
+		telegram,
+		terms,
+		twitter,
+		website,
+		whitepaper,
+	} = links;
 
 	let sectionsText = [
 		{
-			TITLE: SECTIONS.SECTION_4_TITLE,
+			TITLE: strings['FOOTER.SECTIONS.SECTION_4_TITLE'],
 			LINKS: [
-				{ text: SECTIONS.SECTION_4_LINK_1, link: `${PUBLIC_URL}/login` },
-				{ text: SECTIONS.SECTION_4_LINK_2, link: `${PUBLIC_URL}/signup` }
-			]
+				{
+					text: strings['FOOTER.SECTIONS.SECTION_4_LINK_1'],
+					link: `${PUBLIC_URL}/login`,
+				},
+				{
+					text: strings['FOOTER.SECTIONS.SECTION_4_LINK_2'],
+					link: `${PUBLIC_URL}/signup`,
+				},
+			],
 		},
 		(contact || terms || privacy) && {
-			TITLE: SECTIONS.SECTION_1_TITLE,
+			TITLE: strings['FOOTER.SECTIONS.SECTION_1_TITLE'],
 			LINKS: [
 				contact && {
-					text: SECTIONS.SECTION_1_LINK_4,
-					link: contact
+					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_4'],
+					link: contact,
 				},
 				terms && {
-					text: SECTIONS.SECTION_1_LINK_2,
-					link: terms
+					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_2'],
+					link: terms,
 				},
 				privacy && {
-					text: SECTIONS.SECTION_1_LINK_3,
-					link: privacy
+					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_3'],
+					link: privacy,
 				},
 				website && {
-					text: SECTIONS.SECTION_6_LINK_6,
-					link: website
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_6'],
+					link: website,
 				},
-			]
+			],
 		},
 		(github || api) && {
-			TITLE: SECTIONS.SECTION_3_TITLE,
+			TITLE: strings['FOOTER.SECTIONS.SECTION_3_TITLE'],
 			LINKS: [
 				github && {
-					text: SECTIONS.SECTION_5_LINK_3,
-					link: github
+					text: strings['FOOTER.SECTIONS.SECTION_5_LINK_3'],
+					link: github,
 				},
 				api && {
-					text: SECTIONS.SECTION_3_LINK_6,
-					link: api
+					text: strings['FOOTER.SECTIONS.SECTION_3_LINK_6'],
+					link: api,
 				},
 				information && {
-					text: SECTIONS.SECTION_6_LINK_8,
-					link: information
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_8'],
+					link: information,
 				},
 				// {
-				// 	text: SECTIONS.SECTION_3_LINK_7,
+				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_7"],
 				// 	link: 'https://www.npmjs.com/package/hollaex-node-lib'
 				// },
 				// {
-				// 	text: SECTIONS.SECTION_3_LINK_8,
+				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_8"],
 				// 	link: 'https://docs.bitholla.com'
 				// }
-			]
+			],
 		},
-		(whitepaper) && {
-			TITLE: SECTIONS.SECTION_5_TITLE,
+		whitepaper && {
+			TITLE: strings['FOOTER.SECTIONS.SECTION_5_TITLE'],
 			LINKS: [
 				whitepaper && {
-					text: SECTIONS.SECTION_5_LINK_1,
-					link: whitepaper
+					text: strings['FOOTER.SECTIONS.SECTION_5_LINK_1'],
+					link: whitepaper,
 				},
 				// {
-				// 	text: SECTIONS.SECTION_5_LINK_2,
+				// 	text: strings["FOOTER.SECTIONS.SECTION_5_LINK_2"],
 				// 	link: 'http://bitholla.com/xht'
 				// },
 				// {
-				// 	text: SECTIONS.SECTION_3_LINK_2,
+				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_2"],
 				// 	link: 'https://forum.bitholla.com'
 				// }
-			]
+			],
 		},
-		(twitter || telegram || facebook || instagram || linkedin || website || helpdesk || information || youtube) && {
-			TITLE: SECTIONS.SECTION_6_TITLE,
+		(twitter ||
+			telegram ||
+			facebook ||
+			instagram ||
+			linkedin ||
+			website ||
+			helpdesk ||
+			information ||
+			youtube) && {
+			TITLE: strings['FOOTER.SECTIONS.SECTION_6_TITLE'],
 			LINKS: [
 				twitter && {
-					text: SECTIONS.SECTION_6_LINK_1,
-					icon: SOCIAL_ICONS.TWITTER,
-					link: twitter
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_1'],
+					icon: ICONS['SOCIAL_TWITTER'],
+					link: twitter,
 				},
 				telegram && {
-					text: SECTIONS.SECTION_6_LINK_2,
-					icon: SOCIAL_ICONS.TELEGRAM,
-					link: telegram
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_2'],
+					icon: ICONS['SOCIAL_TELEGRAM'],
+					link: telegram,
 				},
 				facebook && {
-					text: SECTIONS.SECTION_6_LINK_3,
-					icon: SOCIAL_ICONS.FACEBOOK,
-					link: facebook
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_3'],
+					icon: ICONS['SOCIAL_FACEBOOK'],
+					link: facebook,
 				},
 				instagram && {
-					text: SECTIONS.SECTION_6_LINK_4,
-					icon: SOCIAL_ICONS.INSTAGRAM,
-					link: instagram
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_4'],
+					icon: ICONS['SOCIAL_INSTAGRAM'],
+					link: instagram,
 				},
 				linkedin && {
-					text: SECTIONS.SECTION_6_LINK_5,
-					icon: SOCIAL_ICONS.LINKEDIN,
-					link: linkedin
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_5'],
+					icon: ICONS['SOCIAL_LINKEDIN'],
+					link: linkedin,
 				},
 				youtube && {
-					text: SECTIONS.SECTION_6_LINK_9,
-					icon: SOCIAL_ICONS.YOUTUBE,
-					link: youtube
-				}
-			]
-		}
+					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_9'],
+					icon: ICONS['SOCIAL_YOUTUBE'],
+					link: youtube,
+				},
+			],
+		},
 	];
 
-	sectionsText = sectionsText.filter(item => (!!item));
+	sectionsText = sectionsText.filter((item) => !!item);
 	return sectionsText.map(({ TITLE, LINKS }) => {
 		let obj = {
 			TITLE,
-			LINKS: LINKS.filter(link => {
+			LINKS: LINKS.filter((link) => {
 				return !!link;
-			})
-		}
-		return obj
-	})
+			}),
+		};
+		return obj;
+	});
 };
 
-const AppFooter = ({ className, theme, constants = { description: '' } }) => {
+const AppFooter = ({
+	className,
+	theme,
+	constants = { description: '' },
+	icons: ICONS,
+}) => {
 	return (
 		<div
 			className={classnames(
@@ -153,15 +188,15 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 						'd-flex',
 						'justify-content-center',
 						'align-items-start',
-						'footer-links-section',
+						'footer-links-section'
 					)}
 				>
 					<div
 						className={classnames('d-flex', 'flex-1', {
-							'flex-column': isMobile
+							'flex-column': isMobile,
 						})}
 					>
-						{generateSectionsText(STRINGS, theme, constants.links).map(
+						{generateSectionsText(STRINGS, theme, constants.links, ICONS).map(
 							({ TITLE, LINKS }, index) => (
 								<div
 									key={index}
@@ -209,15 +244,17 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 						)}
 						<div className="footer_separter">
 							<div className="footer-content">
-								<div
-									style={{ backgroundImage: `url(${constants.logo_black_path})` }}
-									className="footer-logo"
-								>
+								<div className="d-flex">
+									<Image
+										iconId="EXCHANGE_LOGO"
+										icon={ICONS['EXCHANGE_LOGO']}
+										wrapperClassName="footer-logo"
+									/>
 								</div>
 								<div className="footer-txt">
 									{constants.description || ''}
 									{/* {STRINGS.formatString(
-										STRINGS.FOOTER.XHT_DESCRIPTION,
+										STRINGS["FOOTER.XHT_DESCRIPTION"],
 										<a
 											href={
 												'https://info.hollaex.com/hc/en-us/articles/360040098633-What-is-the-Wave-Auction-'
@@ -227,7 +264,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 											className="blue-link pointer"
 										>
 											{' '}
-											{STRINGS.FOOTER.CLICK_HERE}{' '}
+											{STRINGS["FOOTER.CLICK_HERE"]}{' '}
 										</a>,
 										<a
 											href={'https://bitholla.com/hollaex-kit/'}
@@ -235,7 +272,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 											rel="noopener noreferrer"
 											className="blue-link pointer"
 										>
-											{STRINGS.FOOTER.VISIT_HERE}
+											{STRINGS["FOOTER.VISIT_HERE"]}
 										</a>
 									)} */}
 								</div>
@@ -246,9 +283,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 			</div>
 			<div className={classnames('footer-row-bottom')}>
 				<div className="d-flex my-2" />
-				<div>
-					{STRINGS.FOOTER.FOOTER_COPYRIGHT}
-				</div>
+				<div>{STRINGS['FOOTER.FOOTER_COPYRIGHT']}</div>
 			</div>
 		</div>
 	);
@@ -256,8 +291,8 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 
 AppFooter.defaultProps = {
 	className: '',
-	onChangeLanguage: () => () => { },
-	activeLanguage: ''
+	onChangeLanguage: () => () => {},
+	activeLanguage: '',
 };
 
-export default AppFooter;
+export default withConfig(AppFooter);

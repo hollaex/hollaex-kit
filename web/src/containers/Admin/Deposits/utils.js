@@ -1,21 +1,23 @@
 import React from 'react';
-import { Icon, Button, Tooltip } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { BankOutlined, CloseSquareOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency, formatDate } from '../../../utils/index';
 
 import { isSupport } from '../../../utils/token';
 
 export const renderBoolean = (value) => (
-	<Icon type={value ? 'check-circle' : 'close-circle-o'} />
+	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
 );
 
-const ButtonNotAvailable = () => <Icon type="close-square" />;
+const ButtonNotAvailable = () => <CloseSquareOutlined />;
 export const renderValidation = ({
 	status,
 	dismissed,
 	rejected,
 	completeDeposit,
-	updatingItem
+	updatingItem,
 }) =>
 	!status && !dismissed && !rejected ? (
 		<Tooltip placement="bottom" title="VALIDATE">
@@ -25,7 +27,7 @@ export const renderValidation = ({
 				loading={updatingItem}
 				shape="circle"
 			>
-				{!updatingItem && <Icon type="bank" />}
+				{!updatingItem && <BankOutlined />}
 			</Button>
 		</Tooltip>
 	) : (
@@ -37,7 +39,7 @@ export const renderDismiss = ({
 	rejected,
 	dismissed,
 	dismissDeposit,
-	dismissingItem
+	dismissingItem,
 }) =>
 	!status && !dismissed && !rejected ? (
 		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
@@ -47,7 +49,7 @@ export const renderDismiss = ({
 				loading={dismissingItem}
 				shape="circle"
 			>
-				{!dismissingItem && <Icon type={dismissed ? 'eye' : 'eye-o'} />}
+				{!dismissingItem && <LegacyIcon type={dismissed ? 'eye' : 'eye-o'} />}
 			</Button>
 		</Tooltip>
 	) : (
@@ -70,12 +72,12 @@ export const COLUMNS = (currency, type) => {
 			title: 'User Id',
 			dataIndex: 'user_id',
 			key: 'user_id',
-			render: renderUser
+			render: renderUser,
 		},
 		{
 			title: transactionTitle,
 			dataIndex: 'transaction_id',
-			key: 'transaction_id'
+			key: 'transaction_id',
 		},
 		// { title: 'Address', dataIndex: 'address', key: 'address' },
 		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
@@ -83,20 +85,20 @@ export const COLUMNS = (currency, type) => {
 			title: 'Completed',
 			dataIndex: 'status',
 			key: 'status',
-			render: renderBoolean
+			render: renderBoolean,
 		},
 		{
 			title: 'Dismissed',
 			dataIndex: 'dismissed',
 			key: 'dismissed',
-			render: renderBoolean
+			render: renderBoolean,
 		},
 		{
 			title: 'Rejected',
 			dataIndex: 'rejected',
 			key: 'rejected',
-			render: renderBoolean
-		}
+			render: renderBoolean,
+		},
 		// { title: 'Amount', dataIndex: 'amount', key: 'amount' },
 		// { title: 'Fee', dataIndex: 'fee', key: 'fee' },
 		// { title: 'Timestamp', dataIndex: 'created_at', key: 'created_at' },
@@ -107,14 +109,14 @@ export const COLUMNS = (currency, type) => {
 				title: 'Validate',
 				dataIndex: '',
 				key: 'completeDeposit',
-				render: renderValidation
+				render: renderValidation,
 			},
 			{
 				title: 'Dismiss',
 				dataIndex: '',
 				key: 'dismissDeposit',
-				render: renderDismiss
-			}
+				render: renderDismiss,
+			},
 		];
 		return columns.concat(adminColumns);
 	}
@@ -127,7 +129,7 @@ export const SELECT_KEYS = (currency) => {
 	} else {
 		return [
 			{ value: 'transaction_id', label: 'Transaction ID' },
-			{ value: 'address', label: 'Address' }
+			{ value: 'address', label: 'Address' },
 		];
 	}
 };
@@ -138,7 +140,7 @@ export const renderRowContent = ({
 	amount,
 	fee,
 	created_at,
-	currency
+	currency,
 }) => {
 	return (
 		<div>

@@ -4,6 +4,7 @@ import MessageDisplay from './MessageDisplay';
 
 export default ({ success = true, ...rest }) => (
 	<MessageDisplay
+		iconId={success ? 'CHECK' : 'RED_WARNING'}
 		iconPath={success ? ICONS.CHECK : ICONS.RED_WARNING}
 		{...rest}
 	/>

@@ -4,6 +4,7 @@ import { CurrencyBall } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { formatPercentage } from '../../../utils/currency';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
+import { EditWrapper } from 'components';
 
 const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 	const { pair_base, pair_2, maker_fees, taker_fees } = pairs[pair];
@@ -12,9 +13,11 @@ const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 	const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
 	const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 	const makersData = discount
-		? (makersFee - (makersFee * discount / 100)) : makersFee;
+		? makersFee - (makersFee * discount) / 100
+		: makersFee;
 	const takersData = discount
-		? (takersFee - (takersFee * discount / 100)) : takersFee;
+		? takersFee - (takersFee * discount) / 100
+		: takersFee;
 	return (
 		<tr key={index}>
 			<td className="account-limits-coin">
@@ -30,16 +33,10 @@ const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 				</div>
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{level
-					? formatPercentage(makersData)
-					: 'N/A'
-				}
+				{level ? formatPercentage(makersData) : 'N/A'}
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{level
-					? formatPercentage(takersData)
-					: 'N/A'
-				}
+				{level ? formatPercentage(takersData) : 'N/A'}
 			</td>
 		</tr>
 	);
@@ -51,7 +48,7 @@ const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 // 	return (
 // 		<tr key={`${index}_1`}>
 // 			<td className="account-limits-taker account-limits-status">
-// 				{STRINGS.SUMMARY.TAKER}:
+// 				{STRINGS["SUMMARY.TAKER"]}:
 // 			</td>
 // 			<td className="account-limits-taker account-limits-value">
 // 				{formatPercentage(feeData)}
@@ -76,13 +73,27 @@ const FeesBlock = ({ pairs, coins, level, discount }) => {
 				<thead>
 					<tr>
 						<th className="content-title limit-head-currency" colSpan={3}>
-							{STRINGS.SUMMARY.TRADING_FEE_STRUCTURE}
+							<EditWrapper stringId="SUMMARY.TRADING_FEE_STRUCTURE">
+								{STRINGS['SUMMARY.TRADING_FEE_STRUCTURE']}
+							</EditWrapper>
 						</th>
 					</tr>
 					<tr>
-						<th className="limit-head-currency">{STRINGS.CURRENCY}</th>
-						<th className="limit-head-currency">{STRINGS.SUMMARY.MAKER}</th>
-						<th className="limit-head-currency">{STRINGS.SUMMARY.TAKER}</th>
+						<th className="limit-head-currency">
+							<EditWrapper stringId="CURRENCY">
+								{STRINGS['CURRENCY']}
+							</EditWrapper>
+						</th>
+						<th className="limit-head-currency">
+							<EditWrapper stringId="SUMMARY.MAKER">
+								{STRINGS['SUMMARY.MAKER']}
+							</EditWrapper>
+						</th>
+						<th className="limit-head-currency">
+							<EditWrapper stringId="SUMMARY.TAKER">
+								{STRINGS['SUMMARY.TAKER']}
+							</EditWrapper>
+						</th>
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">

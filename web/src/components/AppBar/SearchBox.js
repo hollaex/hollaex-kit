@@ -2,8 +2,8 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import classnames from 'classnames';
 
-import { ICONS } from '../../config/constants';
-import renderFields from '../../components/Form/factoryFields';
+import { STATIC_ICONS } from 'config/icons';
+import renderFields from 'components/Form/factoryFields';
 
 class SearchBox extends React.Component {
 	render() {
@@ -12,21 +12,21 @@ class SearchBox extends React.Component {
 			placeHolder,
 			className = '',
 			outlineClassName = '',
-			name
+			name,
 		} = this.props;
 		const searchField = {
 			search: {
 				name: name,
 				type: 'text',
-				options: { icon: ICONS.SEARCH, label: 'search' },
+				options: { icon: STATIC_ICONS.SEARCH, label: 'search' },
 				className: classnames('search-field', className),
 				hideCheck: true,
 				outlineClassName: outlineClassName
 					? outlineClassName
 					: 'app-bar-search-field-outline',
 				placeholder: placeHolder,
-				onChange: handleSearch
-			}
+				onChange: handleSearch,
+			},
 		};
 
 		return renderFields(searchField);
@@ -34,5 +34,5 @@ class SearchBox extends React.Component {
 }
 
 export default reduxForm({
-	form: 'SearchForm'
+	form: 'SearchForm',
 })(SearchBox);

@@ -93,11 +93,12 @@ const LOGGER_NAMES = {
 	deposits: 'deposits',
 	withdrawals: 'withdrawals',
 	notification: 'notification',
-	engine: 'engine',
+	public: 'public',
 	chat: 'chat',
 	auth: 'auth',
-	general: 'general',
-	plugin: 'plugin'
+	plugin: 'plugin',
+	tier: 'tier',
+	init: 'init'
 };
 
 winston.loggers.add('default', generateLoggerConfiguration('all', false));
@@ -149,7 +150,8 @@ module.exports = {
 	loggerNotification: winston.loggers.get(LOGGER_NAMES.notification),
 	loggerChat: winston.loggers.get(LOGGER_NAMES.chat),
 	loggerAuth: winston.loggers.get(LOGGER_NAMES.auth),
-	loggerGeneral: winston.loggers.get(LOGGER_NAMES.general),
+	loggerInit: winston.loggers.get(LOGGER_NAMES.init),
 	loggerPlugin: winston.loggers.get(LOGGER_NAMES.plugin),
-	loggerEngine: winston.loggers.get(LOGGER_NAMES.engine)
+	loggerPublic: winston.loggers.get(LOGGER_NAMES.public),
+	loggerTier: winston.loggers.get(LOGGER_NAMES.tier)
 };

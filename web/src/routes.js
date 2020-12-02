@@ -30,7 +30,7 @@ import {
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
-	Main,
+	// Main,
 	DepositsPage,
 	Limits,
 	Wallets,
@@ -44,7 +44,15 @@ import {
 	PluginServices,
 	Settings,
 	Transfer,
-	AdminFees
+	AdminFees,
+	Init,
+	AdminLogin,
+	AdminDashboard,
+	AdminFinancials,
+	MoveToDash,
+	General,
+	Tiers,
+	Roles,
 } from './containers';
 
 import store from './store';
@@ -55,10 +63,16 @@ import {
 	isLoggedIn,
 	getToken,
 	removeToken,
-	getTokenTimestamp
+	getTokenTimestamp,
+	isAdmin,
 } from './utils/token';
-import { getLanguage, getInterfaceLanguage, getLanguageFromLocal } from './utils/string';
+import {
+	getLanguage,
+	getInterfaceLanguage,
+	getLanguageFromLocal,
+} from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
+import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
@@ -87,17 +101,51 @@ if (token) {
 }
 
 function requireAuth(nextState, replace) {
-	if (!isLoggedIn()) {
+	const initialized = getExchangeInitialized();
+	const setup_completed = getSetupCompleted();
+	if (
+		initialized === 'false' ||
+		(typeof initialized === 'boolean' && !initialized)
+	) {
 		replace({
-			pathname: '/login'
+			pathname: '/init',
+		});
+	} else if (!isLoggedIn() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin-login',
+		});
+	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin',
+		});
+	} else if (!isLoggedIn()) {
+		replace({
+			pathname: '/login',
 		});
 	}
 }
 
 function loggedIn(nextState, replace) {
-	if (isLoggedIn()) {
+	const initialized = getExchangeInitialized();
+	const setup_completed = getSetupCompleted();
+	if (
+		initialized === 'false' ||
+		(typeof initialized === 'boolean' && !initialized)
+	) {
 		replace({
-			pathname: '/account'
+			pathname: '/init',
+		});
+	} else if (!isLoggedIn() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin-login',
+		});
+	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+		replace({
+			pathname: '/admin',
+		});
+	} else if (isLoggedIn()) {
+		replace({
+			pathname: '/account',
 		});
 	}
 }
@@ -105,10 +153,10 @@ function loggedIn(nextState, replace) {
 const checkLanding = (nextState, replace) => {
 	if (!DISPLAY_LANDING) {
 		replace({
-			pathname: '/login'
+			pathname: '/login',
 		});
 	}
-}
+};
 
 const logOutUser = () => {
 	if (getToken()) {
@@ -119,7 +167,7 @@ const logOutUser = () => {
 const setLogout = (nextState, replace) => {
 	removeToken();
 	replace({
-		pathname: '/login'
+		pathname: '/login',
 	});
 };
 
@@ -135,11 +183,11 @@ const NotFound = ({ router }) => {
 };
 
 const noAuthRoutesCommonProps = {
-	onEnter: loggedIn
+	onEnter: loggedIn,
 };
 
 const noLoggedUserCommonProps = {
-	onEnter: logOutUser
+	onEnter: logOutUser,
 };
 
 function withAdminProps(Component, key) {
@@ -151,14 +199,14 @@ function withAdminProps(Component, key) {
 		}
 		return 0;
 	});
-	return function(matchProps) {
+	return function (matchProps) {
 		return <Component {...adminProps} {...matchProps} />;
 	};
 }
 
 export default (
 	<Router history={browserHistory}>
-		<Route path="/" name="Home" component={Home} onEnter={checkLanding}/>
+		<Route path="/" name="Home" component={Home} onEnter={checkLanding} />
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			{isMobile ? (
@@ -286,11 +334,56 @@ export default (
 			<Route path="logout" name="LogOut" onEnter={setLogout} />
 		</Route>
 		<Route component={AdminContainer}>
-			<Route path="/admin" name="Admin Main" component={Main} />
+			<Route path="/admin" name="Admin Main" component={AdminDashboard} />
+			<Route
+				path="/admin/general"
+				name="Admin General"
+				component={withAdminProps(General, 'general')}
+			/>
+			<Route
+				path="/admin/tiers"
+				name="Admin Tiers"
+				component={withAdminProps(Tiers, 'tiers')}
+			/>
+			<Route
+				path="/admin/roles"
+				name="Admin Roles"
+				component={withAdminProps(Roles, 'roles')}
+			/>
 			<Route
 				path="/admin/user"
 				name="Admin User"
 				component={withAdminProps(User, 'user')}
+			/>
+			<Route
+				path="/admin/financials"
+				name="Admin Financials"
+				component={withAdminProps(AdminFinancials, 'financials')}
+			/>
+			<Route
+				path="/admin/trade"
+				name="Admin Trade"
+				component={withAdminProps(MoveToDash, 'trade')}
+			/>
+			<Route
+				path="/admin/hosting"
+				name="Admin Hosting"
+				component={withAdminProps(MoveToDash, 'hosting')}
+			/>
+			<Route
+				path="/admin/apikeys"
+				name="Admin APIkeys"
+				component={withAdminProps(MoveToDash, 'apikeys')}
+			/>
+			<Route
+				path="/admin/billing"
+				name="Admin Billing"
+				component={withAdminProps(MoveToDash, 'billing')}
+			/>
+			<Route
+				path="/admin/collateral"
+				name="Admin Collateral"
+				component={withAdminProps(MoveToDash, 'collateral')}
 			/>
 			<Route
 				path="/admin/wallets"
@@ -366,6 +459,8 @@ export default (
 			onEnter={requireAuth}
 		/>
 		<Route path="expired-exchange" component={ExpiredExchange} />
+		<Route path="admin-login" name="admin-login" component={AdminLogin} />
+		<Route path="init" name="initWizard" component={Init} />
 		<Route path="*" component={NotFound} />
 	</Router>
 );

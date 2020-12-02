@@ -1,7 +1,7 @@
 import axios from 'axios';
 import math from 'mathjs';
-
-import { getDecimals } from '../utils/utils'
+import moment from 'moment';
+import { getDecimals } from '../utils/utils';
 
 export const getChartConfig = () => {
 	// return axios({
@@ -13,11 +13,11 @@ export const getChartConfig = () => {
 		supports_group_request: false,
 		supports_marks: false,
 		supports_search: true,
-		supports_timescale_marks: false
+		supports_timescale_marks: false,
 	};
 	return new Promise((resolve) => {
 		resolve(config);
-	})
+	});
 };
 
 export const getChartSymbol = (symbol, tickSize, api_name = '') => {
@@ -42,14 +42,37 @@ export const getChartSymbol = (symbol, tickSize, api_name = '') => {
 			regular_session: '24x7',
 			pricescale,
 			volume_precision: 4,
-			has_empty_bars: true
+			has_empty_bars: true,
 		});
-	})
+	});
 };
 
-export const getChartHistory = (symbol, resolution, from, to, firstDataRequest) => {
+export const getChartHistory = (
+	symbol,
+	resolution,
+	from,
+	to,
+	firstDataRequest
+) => {
 	return axios({
 		url: `/chart?symbol=${symbol}&resolution=${resolution}&from=${from}&to=${to}`,
-		method: 'GET'
+		method: 'GET',
 	});
+};
+
+export const getSparklines = async () => {
+	const from = moment().subtract('1', 'month').format('X');
+	const to = moment().format('X');
+
+	const { data = {} } = await axios({
+		url: `/charts?resolution=D&from=${from}&to=${to}`,
+		method: 'GET',
+	});
+
+	const chartData = {};
+	Object.entries(data).forEach(([pairKey, pairData = []]) => {
+		chartData[pairKey] = pairData.map(({ close }) => close);
+	});
+
+	return chartData;
 };

@@ -5,14 +5,15 @@ const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { publisher } = require('../../db/pubsub');
-const { INIT_CHANNEL } = require('../../constants');
+const { INIT_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL } = require('../../constants');
+const moment = require('moment');
 
 const applyKitChanges = (req, res) => {
 	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
 	const domain = req.headers['x-real-origin'];
 	loggerNotification.verbose('controller/notification/applyKitChanges ip domain', ip, domain);
 
-	toolsLib.auth.verifyNetworkHmacToken(req)
+	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
 			return publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 		})
@@ -33,23 +34,35 @@ const handleCurrencyDeposit = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 	const { user_id, amount, txid, address, is_confirmed } = req.swagger.params.data.value;
 
-	toolsLib.auth.verifyNetworkHmacToken(req)
+	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
-			if (!toolsLib.subscribeToCoin(currency)) {
+			if (!toolsLib.subscribedToCoin(currency)) {
 				throw new Error('Invalid currency');
 			}
 			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
+			const depositData = {
+				amount,
+				currency,
+				status: is_confirmed ? 'COMPLETED' : 'PENDING',
+				address,
+				transaction_id: txid
+			};
+
+			publisher.publish(WS_PUBSUB_DEPOSIT_CHANNEL, JSON.stringify({
+				topic: 'deposit',
+				action: 'insert',
+				user_id: user.network_id,
+				data: depositData,
+				time: moment().unix()
+			}));
+
 			sendEmail(
 				MAILTYPE.DEPOSIT,
 				user.email,
 				{
-					amount,
-					currency,
-					status: is_confirmed ? 'COMPLETED' : 'PENDING',
-					address,
-					transaction_id: txid,
+					...depositData,
 					phoneNumber: user.phone_number
 				},
 				user.settings,
@@ -75,9 +88,9 @@ const handleCurrencyWithdrawal = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 	const { user_id, amount, txid, address, is_confirmed, fee } = req.swagger.params.data.value;
 
-	toolsLib.auth.verifyNetworkHmacToken(req)
+	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
-			if (!toolsLib.subscribeToCoin(currency)) {
+			if (!toolsLib.subscribedToCoin(currency)) {
 				throw new Error('Invalid currency');
 			}
 			return toolsLib.user.getUserByNetworkId(user_id);

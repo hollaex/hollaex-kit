@@ -1,0 +1,147 @@
+.market-list__container {
+	.market-list__block {
+		.market-list__coin-icons {
+			width: 2.8rem;
+			margin: 0.3rem 0.3rem 0 0.3rem;
+
+			svg {
+				.btc0,
+				.btc1 {
+					fill: $coin-btc;
+				}
+				.eth0,
+				.eth1 {
+					fill: $coin-eth;
+				}
+				.bch-icon {
+					fill: $coin-bch;
+				}
+				.xrp-icon {
+					fill: $coin-xrp;
+				}
+				.xmr-icon {
+					fill: $coin-xmr;
+				}
+				.ada-icon {
+					fill: $coin-ada;
+				}
+				.bnb-icon {
+					fill: $coin-bnb;
+				}
+				.dai-icon {
+					fill: $coin-dai;
+				}
+				.eos-icon {
+					fill: $coin-eos;
+				}
+				.ltc-icon {
+					fill: $coin-ltc;
+				}
+				.trx-icon {
+					fill: $coin-trx;
+				}
+				.tusd-icon {
+					fill: $coin-tusd;
+				}
+				.xlm-icon {
+					fill: $coin-xlm;
+				}
+				.default-icon {
+					fill: $colors-black !important;
+				}
+			}
+		}
+
+		.market-list__block-table {
+			width: 100%;
+			font-size: $font-size-subtext;
+			margin-bottom: 3rem;
+
+			thead {
+				color: $colors-black;
+				& tr {
+					height: 3.5rem;
+					vertical-align: bottom;
+				}
+			}
+
+			.table-row {
+				color: $colors-deactivate-color2;
+				height: 2.5rem;
+				cursor: pointer;
+
+				&:hover {
+					background-color: $app-light-background;
+					color: $colors-black;
+				}
+			}
+
+			.table-bottom-border td,
+			th {
+				position: relative;
+				border-bottom: 1px solid $border-main;
+				padding: 0 0.25rem;
+			}
+
+			.td-fit {
+				width: 1%;
+				white-space: nowrap;
+			}
+
+			.td-name {
+				min-width: 200px !important;
+			}
+			.table-icon {
+				& > div {
+					vertical-align: middle;
+					margin: auto;
+				}
+			}
+			.td-amount {
+				min-width: 150px !important;
+				direction: ltr;
+			}
+		}
+	}
+}
+
+.direction_ltr {
+	.market-list__container {
+		.market-list__block {
+			.market-list__block-table {
+				th {
+					font-family: $raleway--font-family;
+				}
+				th,
+				td {
+					text-align: left;
+				}
+				.align-opposite {
+					text-align: right;
+				}
+				.table-icon {
+					padding-right: 0.5rem;
+				}
+			}
+		}
+	}
+}
+
+.direction_rtl {
+	.market-list__container {
+		.market-list__block {
+			.market-list__block-table {
+				th,
+				td {
+					text-align: right;
+				}
+				.align-opposite {
+					text-align: left;
+				}
+				.table-icon {
+					padding-left: 0.5rem;
+				}
+			}
+		}
+	}
+}

@@ -5,11 +5,13 @@ import ko from './lang/ko';
 import fa from './lang/fa';
 import ar from './lang/ar';
 
-const strings = new LocalizedStrings({
+export const content = {
 	en,
 	ko,
 	fa,
-	ar
-});
+	ar,
+};
+
+const strings = new LocalizedStrings(content);
 
 export default strings;

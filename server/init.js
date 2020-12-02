@@ -1,11 +1,10 @@
 'use strict';
 
-const Kit = require('hollaex-node-lib');
+const { Network } = require('hollaex-node-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
-const cron = require('node-cron');
-const { loggerGeneral } = require('./config/logger');
-const { User, Status } = require('./db/models');
+const { loggerInit } = require('./config/logger');
+const { User, Status, Tier } = require('./db/models');
 
 const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
@@ -16,7 +15,7 @@ let nodeLib;
 const getNodeLib = () => nodeLib;
 
 const { subscriber, publisher } = require('./db/pubsub');
-const { INIT_CHANNEL, CONFIGURATION_CHANNEL } = require('./constants');
+const { INIT_CHANNEL, CONFIGURATION_CHANNEL, WS_HUB_CHANNEL } = require('./constants');
 const { each } = require('lodash');
 
 subscriber.on('message', (channel, message) => {
@@ -25,6 +24,10 @@ subscriber.on('message', (channel, message) => {
 		switch(type) {
 			case 'refreshInit':
 				checkStatus();
+				publisher.publish(
+					WS_HUB_CHANNEL,
+					JSON.stringify({ action: 'restart' })
+				);
 				break;
 			default:
 				break;
@@ -36,11 +39,12 @@ subscriber.on('message', (channel, message) => {
 subscriber.subscribe(INIT_CHANNEL);
 
 const checkStatus = () => {
-	loggerGeneral.verbose('init/checkStatus', 'checking exchange status');
+	loggerInit.verbose('init/checkStatus', 'checking exchange status');
 
 	let configuration = {
 		coins: {},
 		pairs: {},
+		tiers: {},
 		kit: {
 			info: {},
 			color: {},
@@ -58,7 +62,6 @@ const checkStatus = () => {
 	};
 
 	let secrets = {
-		broker: {},
 		security: {},
 		accounts: {},
 		captcha: {},
@@ -75,7 +78,7 @@ const checkStatus = () => {
 
 	return Status.findOne({})
 		.then((status) => {
-			loggerGeneral.info('init/checkStatus');
+			loggerInit.info('init/checkStatus');
 			if (!status) {
 				stop();
 				throw new Error('Exchange is not initialized yet');
@@ -85,6 +88,9 @@ const checkStatus = () => {
 			} else if (!status.activation_code) {
 				stop();
 				throw new Error('Exchange activation code is not set');
+			} else if (!status.api_key || !status.api_secret) {
+				stop();
+				throw new Error('Exchange keys are not set.');
 			} else if (!status.activated) {
 				stop();
 				throw new Error('Exchange is expired');
@@ -92,18 +98,24 @@ const checkStatus = () => {
 				secrets = status.secrets;
 				configuration.kit = status.kit;
 				return all([
-					checkActivation(
+					checkActivation( // added kit
 						status.name,
 						status.url,
 						status.activation_code,
-						status.constants
+						status.kit_version,
+						status.constants,
+						status.kit
 					),
+					Tier.findAll({ raw: true }),
 					status.dataValues
 				]);
 			}
 		})
-		.then(([exchange, status]) => {
-			loggerGeneral.info('init/checkStatus/activation', exchange.name, exchange.active);
+		.then(([exchange, tiers, status]) => {
+			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
+			each(tiers, (tier) => {
+				configuration.tiers[tier.id] = tier;
+			});
 			each(exchange.coins, (coin) => {
 				configuration.coins[coin.symbol] = coin;
 			});
@@ -120,22 +132,24 @@ const checkStatus = () => {
 				status: true,
 				initialized: status.initialized
 			};
-			nodeLib = new Kit({
-				networkURL: HE_NETWORK_ENDPOINT,
-				networkBaseURL: HE_NETWORK_BASE_URL,
+			nodeLib = new Network({
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
-			return User.findAll({
-				where: {
-					activated: false
-				}
-			});
+			return all([
+				User.findAll({
+					where: {
+						activated: false
+					}
+				}),
+				exchange,
+				status
+			]);
 		})
-		.then((users) => {
-			loggerGeneral.info('init/checkStatus/activation', users.length, 'users deactivated');
+		.then(([ users, exchange, status ]) => {
+			loggerInit.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
 				frozenUsers[user.dataValues.id] = true;
 			});
@@ -146,9 +160,8 @@ const checkStatus = () => {
 					data: { configuration, secrets, frozenUsers }
 				})
 			);
-		})
-		.then(() => {
-			loggerGeneral.info('init/checkStatus/activation complete');
+			loggerInit.info('init/checkStatus/activation complete');
+			return [ exchange, status ];
 		})
 		.catch((err) => {
 			let message = 'Initialization failed';
@@ -158,7 +171,7 @@ const checkStatus = () => {
 			if (err.statusCode && err.statusCode === 402) {
 				message = err.error.message;
 			}
-			loggerGeneral.error('init/checkStatus Error ', message);
+			loggerInit.error('init/checkStatus Error ', message);
 			setTimeout(() => { process.exit(1); }, 60 * 1000 * 5);
 		});
 };
@@ -167,29 +180,27 @@ const stop = () => {
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
-const checkActivation = (name, url, activation_code, constants = {}) => {
+const checkActivation = (name, url, activation_code, version, constants = {}, kit = {}) => {
+	const body = {
+		name,
+		url,
+		activation_code,
+		constants,
+		kit
+	};
+	if (version) {
+		// only sends version if its set
+		body.version = version;
+	}
+
 	const options = {
 		method: 'POST',
-		body: {
-			name,
-			url,
-			activation_code,
-			constants
-		},
+		body,
 		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
 		json: true
 	};
 	return rp(options);
 };
-
-checkStatus();
-const task = cron.schedule('0 15 * * *', () => {
-	checkStatus();
-}, {
-	timezone: 'Asia/Seoul'
-});
-
-task.start();
 
 module.exports = {
 	checkStatus,

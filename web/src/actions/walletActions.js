@@ -21,7 +21,7 @@ export const ACTION_KEYS = {
 	DEPOSIT_VERIFICATION_REJECTED: 'DEPOSIT_VERIFICATION_REJECTED',
 	WITHDRAWAL_CANCEL_PENDING: 'WITHDRAWAL_CANCEL_PENDING',
 	WITHDRAWAL_CANCEL_FULFILLED: 'WITHDRAWAL_CANCEL_FULFILLED',
-	WITHDRAWAL_CANCEL_REJECTED: 'WITHDRAWAL_CANCEL_REJECTED'
+	WITHDRAWAL_CANCEL_REJECTED: 'WITHDRAWAL_CANCEL_REJECTED',
 };
 
 const ENDPOINTS = {
@@ -31,9 +31,9 @@ const ENDPOINTS = {
 	DEPOSIT_BANK: '/user/deposit/bank',
 	WITHDRAW_BANK: '/user/withdraw/bank',
 	WITHDRAW: (currency) => `/user/request-withdrawal`,
-	WITHDRAW_FEE: (currency) => `/user/withdraw/${currency}/fee`,
-	CANCEL_WITHDRAWAL: '/user/withdrawals',
-	CONFIRM_WITHDRAWAL: '/user/confirm-withdrawal'
+	WITHDRAW_FEE: (currency) => `/user/withdrawal?currency=${currency}`,
+	CANCEL_WITHDRAWAL: '/user/withdrawal',
+	CONFIRM_WITHDRAWAL: '/user/confirm-withdrawal',
 };
 
 export const performWithdraw = (currency, values) => {
@@ -48,14 +48,14 @@ export const requestWithdrawFee = (currency = 'btc') => {
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED,
-					payload: body.data
+					payload: body.data,
 				});
 			})
 			.catch((err) => {
 				const payload = err.response.data || { message: err.message };
 				dispatch({
 					type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_REJECTED,
-					payload
+					payload,
 				});
 			});
 	};
@@ -65,36 +65,33 @@ export const withdrawalCancel = (transactionId) => {
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING });
 		axios
-			.delete(ENDPOINTS.CANCEL_WITHDRAWAL, {data: { transaction_id: parseInt(transactionId.transactionId, 10)}} )
+			.delete(ENDPOINTS.CANCEL_WITHDRAWAL, {
+				data: { id: parseInt(transactionId.transactionId, 10) },
+			})
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.WITHDRAWAL_CANCEL_FULFILLED,
-					payload: body.data
+					payload: body.data,
 				});
 			})
 			.catch((err) => {
 				const payload = err.response.data || { message: err.message };
 				dispatch({
 					type: ACTION_KEYS.WITHDRAWAL_CANCEL_REJECTED,
-					payload
+					payload,
 				});
-			}); 
+			});
 	};
 };
 
 export const addUserTrades = (trades) => ({
 	type: ACTION_KEYS.ADD_USER_TRADES,
 	payload: {
-		trades
-	}
+		trades,
+	},
 });
 
-export const getUserTrades = ({
-	symbol,
-	limit = 50,
-	page = 1,
-	...rest
-}) => {
+export const getUserTrades = ({ symbol, limit = 50, page = 1, ...rest }) => {
 	let dataParams = { page, limit };
 	if (symbol) {
 		dataParams.symbol = symbol;
@@ -111,8 +108,8 @@ export const getUserTrades = ({
 					payload: {
 						...body.data,
 						page,
-						isRemaining: body.data.count > page * limit
-					}
+						isRemaining: body.data.count > page * limit,
+					},
 				});
 				// if (body.data.count > page * limit) {
 				// 	dispatch(getUserTrades({ symbol, limit, page: page + 1 }));
@@ -121,7 +118,7 @@ export const getUserTrades = ({
 			.catch((err) => {
 				dispatch({
 					type: ACTION_KEYS.USER_TRADES_REJECTED,
-					payload: err.response
+					payload: err.response,
 				});
 			});
 	};
@@ -129,13 +126,13 @@ export const getUserTrades = ({
 
 export const downloadUserTrades = (key) => {
 	const query = querystring.stringify({
-		format: 'csv'
+		format: 'csv',
 	});
 	let path = ENDPOINTS.TRADES;
 	if (key === 'deposit') {
 		path = ENDPOINTS.DEPOSITS;
 	} else if (key === 'withdrawal') {
-		path = ENDPOINTS.WITHDRAWALS
+		path = ENDPOINTS.WITHDRAWALS;
 	}
 
 	return (dispatch) => {
@@ -143,9 +140,11 @@ export const downloadUserTrades = (key) => {
 			.get(`${path}?${query}`)
 			.then((res) => {
 				const url = window.URL.createObjectURL(new Blob([res.data]));
-				const link = document.createElement('a'); link.href = url;
+				const link = document.createElement('a');
+				link.href = url;
 				link.setAttribute('download', `user_${key}.csv`);
-				document.body.appendChild(link); link.click();
+				document.body.appendChild(link);
+				link.click();
 			})
 			.catch((err) => {
 				// dispatch({
@@ -159,7 +158,7 @@ export const downloadUserTrades = (key) => {
 export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
 	const query = querystring.stringify({
 		page,
-		limit
+		limit,
 	});
 
 	return (dispatch) => {
@@ -172,8 +171,8 @@ export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
 					payload: {
 						...body.data,
 						page,
-						isRemaining: body.data.count > page * limit
-					}
+						isRemaining: body.data.count > page * limit,
+					},
 				});
 				// if (body.data.count > page * limit) {
 				// 	dispatch(getUserDeposits({ limit, page: page + 1 }));
@@ -182,7 +181,7 @@ export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
 			.catch((err) => {
 				dispatch({
 					type: ACTION_KEYS.USER_DEPOSITS_REJECTED,
-					payload: err.response
+					payload: err.response,
 				});
 			});
 	};
@@ -191,7 +190,7 @@ export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
 export const getUserWithdrawals = ({ limit = 50, page = 1, ...rest }) => {
 	const query = querystring.stringify({
 		page,
-		limit
+		limit,
 	});
 
 	return (dispatch) => {
@@ -204,8 +203,8 @@ export const getUserWithdrawals = ({ limit = 50, page = 1, ...rest }) => {
 					payload: {
 						...body.data,
 						page,
-						isRemaining: body.data.count > page * limit
-					}
+						isRemaining: body.data.count > page * limit,
+					},
 				});
 				// if (body.data.count > page * limit) {
 				// 	dispatch(getUserWithdrawals({ limit, page: page + 1 }));
@@ -214,7 +213,7 @@ export const getUserWithdrawals = ({ limit = 50, page = 1, ...rest }) => {
 			.catch((err) => {
 				dispatch({
 					type: ACTION_KEYS.USER_WITHDRAWALS_REJECTED,
-					payload: err.response
+					payload: err.response,
 				});
 			});
 	};

@@ -9,15 +9,15 @@ $placeholder--font-size: $font-size-subtext;
 $placeholder--font-weight: bold;
 
 .input_icon {
-	margin-right: .25rem;
+	margin-right: 0.25rem;
 	width: 1.2rem;
 }
 
 .custom-field-width {
 	display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    width: 50%;
+	flex-direction: column;
+	justify-content: flex-end;
+	width: 50%;
 }
 
 .input_field-input {
@@ -128,7 +128,8 @@ $placeholder--font-weight: bold;
 	bottom: 0;
 }
 
-.file_wrapper, .multiple_file_wrapper {
+.file_wrapper,
+.multiple_file_wrapper {
 	display: flex;
 	justify-content: space-between;
 	padding-right: 0 !important;
@@ -250,65 +251,6 @@ $placeholder--font-weight: bold;
 			font-family: inherit;
 			.selected {
 				font-family: inherit;
-			}
-		}
-	}
-}
-
-.dark-theme {
-	.input_field-input {
-		color: $colors-white !important;
-		&::placeholder {
-			color: $dark-form-placeholder !important;
-		}
-	}
-	.dropdown-triangle:after {
-		border-bottom-color: $dark-form-arrow !important;
-	}
-	.placeholder {
-		color: $dark-form-placeholder !important;
-	}
-	&.direction_ltr {
-		.dropdown-triangle:after {
-			border-right-color: $dark-form-arrow !important;
-		}
-	}
-
-	&.direction_rtl {
-		.dropdown-triangle:after {
-			border-left-color: $dark-form-arrow !important;
-		}
-	}
-	.datefield-wrapper {
-		.field-children {
-			color: $dark-form-text !important;
-		}
-	}
-	.file_wrapper, .multiple_file_wrapper {
-		.text_overflow {
-			color: $dark-font-sub-text-color;
-		}
-	}
-	.toggle_button-wrapper {
-		.toggle-content {
-			color: $dark-font-sub-text-1-color;
-
-			.selected {
-				color: $dark-font-main-text-color;
-			}
-
-			.toggle-action_button {
-				border-color: $dark-font-main-text-color;
-
-				.toggle-action_button-display {
-					background: $dark-font-main-text-color;
-				}
-			}
-		}
-
-		.toggle-side_line {
-			&::after {
-				background-color: $dark-border-main;
 			}
 		}
 	}

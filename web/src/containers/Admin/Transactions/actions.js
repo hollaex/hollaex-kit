@@ -28,34 +28,38 @@ export const requestDepositsDownload = (query) => {
 	}
 	return axios({
 		method: 'GET',
-		url: path
-	  })
-	  .then(res => {
-		const url = window.URL.createObjectURL(new Blob([res.data]));
-		const link = document.createElement('a'); link.href = url;
-		( type === 'deposit'
-		  ? link.setAttribute('download', 'deposit.csv')
-		  : link.setAttribute('download', 'withdrawal.csv')
-		)
-		document.body.appendChild(link); link.click();
-	  })
-	  .catch(error => {
-		console.log("errors", error);
-	  })
+		url: path,
+	})
+		.then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			type === 'deposit'
+				? link.setAttribute('download', 'deposit.csv')
+				: link.setAttribute('download', 'withdrawal.csv');
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch((error) => {
+			console.log('errors', error);
+		});
 };
 
 export const completeDeposits = (values) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify(values)
+		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(`/admin/deposit/verify?transaction_id=${values.transaction_id}`, options);
+	return requestAuthenticated(
+		`/admin/deposit/verify?transaction_id=${values.transaction_id}`,
+		options
+	);
 };
 
 export const dismissDeposit = (transaction_id, dismissed) => {
 	const options = {
 		method: 'PUT',
-		body: JSON.stringify({ dismissed })
+		body: JSON.stringify({ dismissed }),
 	};
 	return requestAuthenticated(
 		`/admin/deposit/dismiss?transaction_id=${transaction_id}`,

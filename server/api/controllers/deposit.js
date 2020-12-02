@@ -12,12 +12,9 @@ const getAdminDeposits = (req, res) => {
 
 	const { user_id, currency, limit, page, order_by, order, start_date, end_date, status, dismissed, rejected, processing, waiting, format } = req.swagger.params;
 
-	toolsLib.user.getUserDepositsByKitId(user_id.value, currency.value, status.value, dismissed.value, rejected.value, processing.value, waiting.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.wallet.getUserDepositsByKitId(user_id.value, currency.value, status.value, dismissed.value, rejected.value, processing.value, waiting.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
-				if (data.data.length === 0) {
-					throw new Error('No data found');
-				}
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -45,12 +42,9 @@ const getUserDeposits = (req, res) => {
 	const currency = req.swagger.params.currency.value || '';
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getUserDepositsByKitId(user_id, currency, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.wallet.getUserDepositsByKitId(user_id, currency, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
 		.then((data) => {
 			if (format.value) {
-				if (data.data.length === 0) {
-					throw new Error('No data found');
-				}
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);

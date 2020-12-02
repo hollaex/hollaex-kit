@@ -3,7 +3,6 @@ $notification--max-width: 40rem;
 $image--margin: 1rem;
 $image--width: 10rem;
 $logout--size-difference: 3rem;
-$dark-api-icon-color: #808080;
 
 .notification-wrapper {
 	min-width: $notification--min-width;
@@ -19,6 +18,12 @@ $dark-api-icon-color: #808080;
 			margin: 2rem 0;
 			svg {
 				@include size(8rem);
+				path {
+					fill: $colors-main-black;
+				}
+				polyline {
+					fill: transparent;
+				}
 			}
 		}
 
@@ -26,6 +31,7 @@ $dark-api-icon-color: #808080;
 			flex: 0;
 			text-align: center;
 			font-size: $font-size-subhead3;
+			color: $colors-main-black;
 		}
 	}
 
@@ -35,6 +41,7 @@ $dark-api-icon-color: #808080;
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+		color: $colors-black;
 		.notification-content-title {
 			&.with-border-bottom {
 				border-bottom: 1px solid $border-main;
@@ -91,7 +98,8 @@ $dark-api-icon-color: #808080;
 
 		.notification-content-header {
 			position: relative;
-			font-size: $font-size-subtext;
+			font-size: $font-size-subhead3;
+			color: $colors-main-black;
 		}
 	}
 	.notification-buttons-wrapper {
@@ -134,7 +142,7 @@ $dark-api-icon-color: #808080;
 		width: 36rem;
 
 		.user_refer_info {
-			background-color: $info-panel-background;
+			background-color: $specials_highlight-box;
 			height: 5.5rem;
 		}
 
@@ -143,12 +151,92 @@ $dark-api-icon-color: #808080;
 				height: 8rem;
 				width: 8rem;
 			}
-			.icon_title-svg svg{
+			.icon_title-svg svg {
 				height: 8rem;
 				width: 8rem;
 			}
 			.icon_title-text.title {
 				font-size: 2rem;
+			}
+		}
+	}
+
+	svg {
+		.check-order-1,
+		.check-order-2,
+		.coin-btc-4,
+		.coin-base-4 {
+			stroke: $colors-main-black;
+		}
+		.market-buy,
+		.check-order-2,
+		.coin-btc-1,
+		.coin-btc-5,
+		.coin-base-1,
+		.coin-base-5,
+		.email_sent,
+		.limit-sell-03,
+		.limit-sell-04,
+		.limit-buy-03,
+		.limit-buy-04,
+		.refer-icon,
+		.stake_icon {
+			fill: $colors-main-black;
+		}
+		.limit-sell-01,
+		.limit-buy-01,
+		.limit-buy-02,
+		.limit-sell-02,
+		.wallet-selected-2 {
+			stroke: $colors-main-black;
+			fill: transparent;
+		}
+		g .wallet-selected-2 {
+			stroke: transparent;
+			fill: $colors-main-black;
+		}
+	}
+
+	.partial-fill {
+		fill: $colors-main-black;
+	}
+	.limit-trade-tick {
+		fill: $colors-black;
+	}
+	.new-order-notification {
+		svg {
+			fill: $colors-main-black;
+
+			.newWave-icon {
+				fill: $colors-main-black;
+			}
+			.generate_api {
+				fill: $colors-main-black;
+			}
+		}
+	}
+	.notification-wrapper {
+		color: $dark-font-sub-text-color;
+
+		.notification-title-wrapper {
+			border-bottom-color: $dark-border-main;
+			.notification-title-icon {
+				svg {
+					.deposit-02,
+					.deposit-complete-01,
+					.deposit-complete-btc-01 {
+						fill: $colors-main-black;
+					}
+				}
+			}
+			.notification-title-text {
+				color: $colors-main-black;
+			}
+		}
+
+		.notification-content-information {
+			.text_disabled {
+				color: $dark-font-sub-text-color;
 			}
 		}
 	}
@@ -173,99 +261,6 @@ $dark-api-icon-color: #808080;
 	}
 }
 
-.dark-theme {
-	.partial-fill {
-		fill: $dark-icon-color;
-	}
-	.limit-trade-tick {
-		fill: $dark-icon-color;
-	}
-	.new-order-notification {
-		svg {
-			fill: $dark-icon-color;
-
-			.newWave-icon {
-				fill: $dark-icon-color;
-			}
-			.generate_api{
-				fill: $dark-api-icon-color;
-			}
-		}
-
-	}
-	.notification-wrapper {
-		color: $dark-font-sub-text-color;
-
-		.notification-content-title {
-			&.with-border-bottom {
-				border-bottom-color: $dark-border-main;
-			}
-		}
-		.notification-title-wrapper {
-			border-bottom-color: $dark-border-main;
-			.notification-title-icon {
-				svg {
-					.deposit-02,
-					.deposit-complete-01,
-					.deposit-complete-btc-01 {
-						fill: $dark-icon-color;
-					}
-				}
-			}
-			.notification-title-text {
-				color: $dark-font-main-text-color;
-			}
-		}
-
-		.notification-content-information {
-			.text_disabled {
-				color: $dark-font-sub-text-color;
-			}
-		}
-		svg {
-			.check-order-1,
-			.check-order-2,
-			.coin-btc-4,
-			.coin-base-4 {
-				stroke: $dark-icon-color;
-			}
-			.market-buy,
-			.check-order-2,
-			.coin-btc-1,
-			.coin-btc-5,
-			.coin-base-1,
-			.coin-base-5,
-			.email_sent,
-			.limit-sell-03,
-			.limit-sell-04,
-			.limit-buy-03,
-			.limit-buy-04,
-			.refer-icon,
-			.stake_icon {
-				fill: $dark-icon-color;
-			}
-			.limit-sell-01,
-			.limit-buy-01,
-			.limit-buy-02,
-			.limit-sell-02,
-			.wallet-selected-2 {
-				stroke: $dark-icon-color;
-				fill: transparent;
-			}
-			g .wallet-selected-2 {
-				stroke: transparent;
-				fill: $dark-icon-color;
-			}
-		}
-
-		.invite_friends_wrapper {
-			.user_refer_info {
-				background-color: $dark-info-panel-background;
-			}
-		}
-	}
-}
-
 .layout-mobile {
 	.notification-wrapper {
 		flex: 1;
@@ -279,7 +274,7 @@ $dark-api-icon-color: #808080;
 		.order-notification {
 			margin: 0.75rem;
 			flex-direction: row;
-			color: white;
+			color: $colors-main-black;
 			.notification-content-icon {
 				margin: 0;
 				padding: 1rem;
@@ -288,9 +283,6 @@ $dark-api-icon-color: #808080;
 				justify-content: center;
 				svg {
 					@include size(6rem);
-				}
-				.limit-trade-tick {
-					fill: #BBBDBF;
 				}
 			}
 			.notification-content-title {

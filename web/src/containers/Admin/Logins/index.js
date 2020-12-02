@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Table, Spin } from 'antd';
+import { Table, Spin } from 'antd';
 import { requestUserLogins, requestUserLoginsDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
@@ -7,8 +7,9 @@ import { SubmissionError } from 'redux-form';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
-	tradeHistory: '',
-	loading: true
+	logins: [],
+	total: 0,
+	loading: true,
 };
 
 const formatDate = (value) => {
@@ -23,8 +24,8 @@ const LOGIN_COLUMNS = [
 		title: 'Time',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
-		render: formatDate
-	}
+		render: formatDate,
+	},
 ];
 // const SCV_LOGIN_COLUMNS = [
 // 	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
@@ -48,7 +49,8 @@ class Logins extends Component {
 				if (res) {
 					this.setState({
 						logins: res.data,
-						loading: false
+						total: res.count,
+						loading: false,
 					});
 				}
 			})
@@ -61,11 +63,11 @@ class Logins extends Component {
 	};
 
 	requestUserLoginsDownload = (userId) => {
-		return requestUserLoginsDownload({ format: 'csv', userId: userId })
-	}
+		return requestUserLoginsDownload({ format: 'csv', userId: userId });
+	};
 
 	render() {
-		const { logins, loading } = this.state;
+		const { logins, total, loading } = this.state;
 
 		if (loading) {
 			return (
@@ -76,25 +78,25 @@ class Logins extends Component {
 		}
 
 		return (
-			<Row gutter={16} style={{ marginTop: 16 }}>
-				<Col>
-					<div>
-						<span className="pointer" onClick={() => this.requestUserLoginsDownload(this.props.userId)}>
-							Download table
-						</span>
+			<div className="app_container-content my-2">
+				<div className="d-flex justify-content-between my-3">
+					<div>Number of logins: {total}</div>
+					<div
+						className="pointer download-csv-table"
+						onClick={() => this.requestUserLoginsDownload(this.props.userId)}
+					>
+						Download CSV table
 					</div>
-					<span style={{ float: 'right' }}>
-						Number of logins:{logins ? logins.length : null}
-					</span>
-					<Table
-						columns={LOGIN_COLUMNS}
-						dataSource={logins ? logins : 'No Data'}
-						rowKey={(data, index) => {
-							return `${data.id}_${index}`;
-						}}
-					/>
-				</Col>
-			</Row>
+				</div>
+				<Table
+					columns={LOGIN_COLUMNS}
+					dataSource={logins ? logins : 'No Data'}
+					rowKey={(data, index) => {
+						return `${data.id}_${index}`;
+					}}
+					pagination={{ pageSize: 5 }}
+				/>
+			</div>
 		);
 	}
 }

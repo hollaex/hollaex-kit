@@ -1,4 +1,3 @@
-
 import { APP_TITLE } from '../../config/constants';
 
 export const PATHS = [
@@ -6,85 +5,139 @@ export const PATHS = [
 		path: '/admin',
 		// component: Main,
 		label: APP_TITLE.toUpperCase(),
-		routeKey: 'main'
+		routeKey: 'main',
+	},
+	{
+		path: '/admin/general',
+		// component: User,
+		label: 'General',
+		routeKey: 'general',
 	},
 	{
 		path: '/admin/user',
 		// component: User,
-		label: 'User',
-		routeKey: 'user'
+		label: 'Users',
+		routeKey: 'user',
 	},
 	{
-		path: '/admin/wallets',
-		// component: Wallets,
-		label: 'Wallets',
-		hideIfSupport: true,
-		hideIfSupervisor: true,
-		hideIfKYC: true,
-		routeKey: 'wallets'
+		path: '/admin/financials',
+		label: 'Financials',
+		routeKey: 'financials',
 	},
 	{
-		path: '/admin/fees',
-		label: 'Fees',
-		routeKey: 'fees'
+		path: '/admin/trade',
+		label: 'Trading',
+		routeKey: 'trade',
 	},
 	{
-		path: '/admin/transfer',
-		label: 'Transfer',
-		routeKey: 'transfer'
+		path: '/admin/plugins',
+		// component: BlockchainTransaction,
+		label: 'Plugins',
+		routeKey: 'plugins',
 	},
 	{
-		path: '/admin/deposits',
-		// component: Deposits,
-		label: 'Deposits',
-		hideIfSupport: true,
-		hideIfKYC: true,
-		hideIfSupervisor: false,
-		pathProps: {
-			type: 'deposit',
-			showFilters: true
-		},
-		routeKey: 'deposit'
+		path: '/admin/tiers',
+		// component: BlockchainTransaction,
+		label: 'Tiers',
+		routeKey: 'tiers',
 	},
 	{
-		path: '/admin/withdrawals',
-		// component: Deposits,
-		label: 'Withdrawals',
-		pathProps: {
-			type: 'withdrawal',
-			showFilters: true
-		},
-		hideIfSupport: true,
-		hideIfKYC: true,
-		hideIfSupervisor: false,
-		routeKey: 'withdrawal'
+		path: '/admin/roles',
+		// component: BlockchainTransaction,
+		label: 'Roles',
+		routeKey: 'roles',
 	},
 	{
-		path: '/admin/activeorders',
-		label: 'Active Orders',
-		hideIfSupport: true,
-		hideIfKYC: true,
-		hideIfSupervisor: true,
-		routeKey: 'orders'
+		path: '/admin/hosting',
+		label: 'Hosting',
+		routeKey: 'hosting',
 	},
 	{
-		path: '/admin/pair',
-		// component: UserFees,
-		label: 'Trading Pairs',
-		hideIfSupport: true,
-		hideIfKYC: true,
-		hideIfSupervisor: true,
-		routeKey: 'pair'
+		path: '/admin/apikeys',
+		label: 'API Keys',
+		routeKey: 'apikeys',
 	},
 	{
-		path: '/admin/coin',
-		// component: Limits,
-		label: 'Coins',
-		hideIfSupport: true,
-		hideIfKYC: true,
-		hideIfSupervisor: true,
-		routeKey: 'coin'
+		path: '/admin/billing',
+		label: 'Billing',
+		routeKey: 'billing',
 	},
+	{
+		path: '/admin/collateral',
+		label: 'Collateral',
+		routeKey: 'collateral',
+	},
+	// {
+	// 	path: '/admin/wallets',
+	// 	// component: Wallets,
+	// 	label: 'Wallets',
+	// 	hideIfSupport: true,
+	// 	hideIfSupervisor: true,
+	// 	hideIfKYC: true,
+	// 	routeKey: 'wallets'
+	// },
+	// {
+	// 	path: '/admin/fees',
+	// 	label: 'Fees',
+	// 	routeKey: 'fees'
+	// },
+	// {
+	// 	path: '/admin/transfer',
+	// 	label: 'Transfer',
+	// 	routeKey: 'transfer'
+	// },
+	// {
+	// 	path: '/admin/deposits',
+	// 	// component: Deposits,
+	// 	label: 'Deposits',
+	// 	hideIfSupport: true,
+	// 	hideIfKYC: true,
+	// 	hideIfSupervisor: false,
+	// 	pathProps: {
+	// 		type: 'deposit',
+	// 		showFilters: true
+	// 	},
+	// 	routeKey: 'deposit'
+	// },
+	// {
+	// 	path: '/admin/withdrawals',
+	// 	// component: Deposits,
+	// 	label: 'Withdrawals',
+	// 	pathProps: {
+	// 		type: 'withdrawal',
+	// 		showFilters: true
+	// 	},
+	// 	hideIfSupport: true,
+	// 	hideIfKYC: true,
+	// 	hideIfSupervisor: false,
+	// 	routeKey: 'withdrawal'
+	// },
+	// {
+	// 	path: '/admin/activeorders',
+	// 	label: 'Active Orders',
+	// 	hideIfSupport: true,
+	// 	hideIfKYC: true,
+	// 	hideIfSupervisor: true,
+	// 	routeKey: 'orders'
+	// },
+	// {
+	// 	path: '/admin/pair',
+	// 	// component: UserFees,
+	// 	label: 'Trading Pairs',
+	// 	hideIfSupport: true,
+	// 	hideIfKYC: true,
+	// 	hideIfSupervisor: true,
+	// 	routeKey: 'pair'
+	// },
+	// {
+	// 	path: '/admin/coin',
+	// 	// component: Limits,
+	// 	label: 'Coins',
+	// 	hideIfSupport: true,
+	// 	hideIfKYC: true,
+	// 	hideIfSupervisor: true,
+	// 	routeKey: 'coin'
+	// },
 	// {
 	// 	path: '/admin/chat',
 	// 	// component: Chat,
@@ -100,21 +153,15 @@ export const PATHS = [
 	// 	label: 'Vault',
 	// 	routeKey: 'blockChain'
 	// },
-	{
-		path: '/admin/broker',
-		label: 'Broker',
-		routeKey: 'broker'
-	},
-	{
-		path: '/admin/plugins',
-		// component: BlockchainTransaction,
-		label: 'Plugins',
-		routeKey: 'plugins'
-	},
-	{
-		path: '/admin/settings',
-		// component: BlockchainTransaction,
-		label: 'Settings',
-		routeKey: 'settings'
-	},
+	// {
+	// 	path: '/admin/broker',
+	// 	label: 'Broker',
+	// 	routeKey: 'broker'
+	// },
+	// {
+	// 	path: '/admin/settings',
+	// 	// component: BlockchainTransaction,
+	// 	label: 'Settings',
+	// 	routeKey: 'settings'
+	// },
 ];

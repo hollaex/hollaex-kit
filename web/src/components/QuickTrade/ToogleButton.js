@@ -21,7 +21,7 @@ const ToogleButton = ({ onToogle, values, selected }) => (
 				onClick={onToogle}
 				className={classnames('toogle-action_button', {
 					left: values[0].value === selected,
-					right: values[1].value === selected
+					right: values[1].value === selected,
 				})}
 			>
 				<div className="toogle-action_button-display" />

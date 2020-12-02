@@ -21,7 +21,7 @@ const renderItem = (deleteMessage, banUser, bannedUsers) => ({
 					disabled={bannedUsers[username]}
 				>
 					BAN USER
-				</Button>
+				</Button>,
 			]}
 		>
 			<List.Item.Meta
@@ -37,7 +37,7 @@ export const Messages = ({
 	deleteMessage,
 	addMessage,
 	banUser,
-	bannedUsers
+	bannedUsers,
 }) => {
 	return (
 		<div>

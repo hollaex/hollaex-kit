@@ -13,6 +13,8 @@ $input-bottom_line--animation--width: 100px;
 
 $title-icon--height: 10rem;
 
+@import './_InputGroup.scss';
+
 .language_rtl {
 	.quick_trade-wrapper {
 		font-family: inherit;
@@ -153,9 +155,10 @@ $title-icon--height: 10rem;
 		}
 	}
 
-	.input_block-error-wrapper {
+	.input-group__error-wrapper {
 		color: red;
 		margin-top: 0.5rem;
+		float: right;
 	}
 
 	.input_block-wrapper {
@@ -170,7 +173,7 @@ $title-icon--height: 10rem;
 		border-bottom: $input-bottom_line--height solid $border-main;
 		width: 100%;
 		&.has_error {
-			border-bottom-color: $error-color;
+			border-bottom-color: $colors-notifications-red;
 		}
 
 		.input_block-input-wrapper {
@@ -231,15 +234,6 @@ $title-icon--height: 10rem;
 			background-color: $coin-ltc;
 		}
 	}
-	.mobile_dropdown-section {
-		.mobile-drop-down {
-			color: $colors-main-black;
-			z-index: 1;
-			.option {
-				color:$dark-disabled-main;
-			}
-		}
-	}
 }
 
 @keyframes linear_loading {
@@ -261,102 +255,6 @@ $title-icon--height: 10rem;
 	}
 }
 
-.dark-theme {
-	.quick_trade-wrapper {
-		background-color: $dark-quick-trade-container;
-
-		.title,
-		.input_block-title {
-			color: $dark-font-main-text-color;
-		}
-		> .quick_trade-section_wrapper {
-			&.fetching {
-				color: $dark-disabled-main;
-			}
-		}
-
-		.quick_trade-section_wrapper {
-			.exir-button {
-				&.disabled {
-					background-color: $dark-app-background-color !important;
-					color: $dark-inactive-color !important;
-				}
-			}
-			.input_block-inputbox {
-				background-color: $dark-quick-trade-container;
-			}
-		}
-
-		.quick_trade-tab-icon {
-			fill: #808083 !important;
-		}
-
-		.toogle_button-wrapper {
-			.toogle-content {
-				color: $dark-font-sub-text-1-color;
-
-				.selected {
-					color: $dark-font-main-text-color;
-				}
-
-				.toogle-action_button {
-					border-color: $dark-font-main-text-color;
-
-					.toogle-action_button-display {
-						background: $dark-font-main-text-color;
-					}
-				}
-			}
-
-			.toogle-side_line {
-				&::after {
-					background-color: $dark-border-main;
-				}
-			}
-		}
-
-		.input_block-content {
-			border-bottom-color: $dark-border-main;
-
-			&.loading {
-				border-bottom-color: $dark-disabled-main;
-				&:after {
-					background-color: $dark-border-main;
-				}
-			}
-		}
-		.input_block-inputbox {
-			background-color: $dark-quick-trade-container;
-			color: $dark-font-main-text-color;
-		}
-		.mobile_dropdown-section {
-			.mobile-drop-down {
-				color:$dark-font-main-text-color;	
-				z-index: 1;
-				.option {
-					background: $dark-quick-trade-background;
-					color:$colors-deactivate-color2;	
-				}
-			}
-		}
-	}
-
-	svg {
-		.quick-trade-1 {
-			stroke: $dark-main-title-icon-color-3;
-		}
-		.quick-trade-2 {
-			fill: $dark-main-title-icon-color-1;
-		}
-		.quick-trade-3 {
-			stroke: $dark-icon-color;
-		}
-		.quick-trade-4 {
-			fill: $dark-main-title-icon-color-2;
-		}
-	}
-}
-
 .layout-mobile {
 	.quick_trade-wrapper {
 		margin-top: 0;
@@ -365,27 +263,31 @@ $title-icon--height: 10rem;
 	.quick_trade-section_wrapper {
 		.toogle_button-wrapper {
 			.toogle-content {
-				font-size:$font-size-mobile-txt!important;
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 		.input_block-wrapper {
 			.input_block-content {
-				.input_block-title{
-					font-size:$font-size-mobile-txt!important;
+				.input_block-title {
+					font-size: $font-size-mobile-txt !important;
 				}
 			}
-			.field-error-content{
-				width:auto;
-				font-size:$font-size-mobile-innertxt;
+			.field-error-content {
+				width: auto;
+				font-size: $font-size-mobile-innertxt;
 			}
 		}
-		.review-block-wrapper{
+		.review-block-wrapper {
 			.input_block-title {
-				font-size:$font-size-mobile-txt;
+				font-size: $font-size-mobile-txt;
 			}
 		}
 	}
 }
 .mobile_dropdown-section {
 	border-top: solid;
+}
+
+.review-block-wrapper {
+	border-top: $colors-black solid 1px;
 }

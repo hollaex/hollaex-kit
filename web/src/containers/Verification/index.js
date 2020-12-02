@@ -12,9 +12,9 @@ import {
 	// Logout,
 	Notification,
 	// MobileBarTabs,
-	PanelInformationRow
+	PanelInformationRow,
 } from '../../components';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
 import { logout } from '../../actions/authAction';
 
@@ -27,11 +27,11 @@ import DocumentsVerification from './DocumentsVerification';
 import {
 	mobileInitialValues,
 	identityInitialValues,
-	documentInitialValues
+	documentInitialValues,
 } from './utils';
 import {
 	getClasesForLanguage,
-	getFontClassForLanguage
+	getFontClassForLanguage,
 } from '../../utils/string';
 import { ContactForm } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
@@ -53,7 +53,7 @@ class Verification extends Component {
 		currentTabs: [],
 		dialogIsOpen: false,
 		user: {},
-		activePage: 'email'
+		activePage: 'email',
 	};
 
 	componentDidMount() {
@@ -62,19 +62,23 @@ class Verification extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.user.email !== this.props.user.email ||
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (
+			nextProps.user.email !== this.props.user.email ||
 			nextProps.user.phone_number !== this.props.user.phone_number ||
-			JSON.stringify(nextProps.user.address) !== JSON.stringify(this.props.user.address) ||
-			JSON.stringify(nextProps.user.id_data) !== JSON.stringify(this.props.user.id_data)) {
-				this.setUserData(nextProps.user);
+			JSON.stringify(nextProps.user.address) !==
+				JSON.stringify(this.props.user.address) ||
+			JSON.stringify(nextProps.user.id_data) !==
+				JSON.stringify(this.props.user.id_data)
+		) {
+			this.setUserData(nextProps.user);
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.state.user, nextProps.activeLanguage);
 		}
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (
 			this.state.activeTab !== nextState.activeTab &&
 			this.state.activeTab !== -1
@@ -101,7 +105,7 @@ class Verification extends Component {
 			this.setState({
 				user,
 				activeTab: calculatedData.activeTab,
-				currentTabs: calculatedData.currentTabs
+				currentTabs: calculatedData.currentTabs,
 			});
 		}
 	};
@@ -112,17 +116,19 @@ class Verification extends Component {
 		address,
 		phone_number,
 		id_data,
-		full_name
+		full_name,
 	}) => {
 		const { enabledPlugins } = this.props;
-		const availablePlugins = ['kyc', 'bank', 'sms']
+		const availablePlugins = ['kyc', 'bank', 'sms'];
 		let currentTabs = ['email'];
 		if (enabledPlugins.length) {
-			const temp = enabledPlugins.filter(val => availablePlugins.includes(val));
-			currentTabs = [ ...currentTabs, ...temp ];
+			const temp = enabledPlugins.filter((val) =>
+				availablePlugins.includes(val)
+			);
+			currentTabs = [...currentTabs, ...temp];
 		}
 		if (enabledPlugins.includes('kyc')) {
-			currentTabs = [ ...currentTabs, 'document' ];
+			currentTabs = [...currentTabs, 'document'];
 		}
 		let activeTab = 0;
 		if (!email && currentTabs.indexOf('email') !== -1) {
@@ -148,24 +154,28 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
+		const { icons: ICONS } = this.props;
 		const { email, bank_account, address, id_data, phone_number } = user;
 		let bank_status = 0;
 		if (bank_account.length) {
-			if (bank_account.filter(data => data.status === 3).length) {
+			if (bank_account.filter((data) => data.status === 3).length) {
 				bank_status = 3;
-			} else if (bank_account.filter(data => data.status === 1).length) {
+			} else if (bank_account.filter((data) => data.status === 1).length) {
 				bank_status = 1;
-			} else if (bank_account.filter(data => data.status === 2).length) {
+			} else if (bank_account.filter((data) => data.status === 2).length) {
 				bank_status = 2;
 			}
 			if (id_data.status !== 3) {
 				bank_status = 1;
 			}
-			if (bank_account.length === bank_account.filter(data => data.status === 0).length) {
+			if (
+				bank_account.length ===
+				bank_account.filter((data) => data.status === 0).length
+			) {
 				bank_status = 0;
 			}
 		}
-		const identity_status = address.country 
+		const identity_status = address.country
 			? id_data.status && id_data.status === 3
 				? 3
 				: 1
@@ -174,60 +184,67 @@ class Verification extends Component {
 			email: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
-						icon={ICONS.VERIFICATION_EMAIL_NEW}
+						title={STRINGS['USER_VERIFICATION.TITLE_EMAIL']}
+						icon={ICONS['VERIFICATION_EMAIL_NEW']}
 						statusCode={email ? 3 : 0}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
-						icon={ICONS.VERIFICATION_EMAIL_NEW}
+						stringId="USER_VERIFICATION.TITLE_EMAIL"
+						title={STRINGS['USER_VERIFICATION.TITLE_EMAIL']}
+						iconId="VERIFICATION_EMAIL_NEW"
+						icon={ICONS['VERIFICATION_EMAIL_NEW']}
 						statusCode={email ? 3 : 0}
 					/>
 				),
 				content: activeTab === 0 && (
 					<div>
 						<PanelInformationRow
-							label={STRINGS.USER_VERIFICATION.MY_EMAIL}
+							label={STRINGS['USER_VERIFICATION.MY_EMAIL']}
 							information={email}
 							className={'title-font'}
 							disable
 						/>
 					</div>
-				)
+				),
 			},
 			bank: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
-						icon={ICONS.VERIFICATION_BANK_NEW}
+						title={STRINGS['USER_VERIFICATION.TITLE_BANK']}
+						icon={ICONS['VERIFICATION_BANK_NEW']}
 						statusCode={bank_status}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
-						icon={ICONS.VERIFICATION_BANK_NEW}
+						stringId="USER_VERIFICATION.TITLE_BANK"
+						title={STRINGS['USER_VERIFICATION.TITLE_BANK']}
+						iconId="VERIFICATION_BANK_NEW"
+						icon={ICONS['VERIFICATION_BANK_NEW']}
 						statusCode={bank_status}
 					/>
 				),
-				content: (<BankVerificationHome
-							user={user}
-							handleBack={this.handleBack}
-							setActivePageContent={this.setActivePageContent}
-						/>
-				)
+				content: (
+					<BankVerificationHome
+						user={user}
+						handleBack={this.handleBack}
+						setActivePageContent={this.setActivePageContent}
+					/>
+				),
 			},
 			kyc: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
-						icon={ICONS.VERIFICATION_ID_NEW}
+						title={STRINGS['USER_VERIFICATION.TITLE_IDENTITY']}
+						icon={ICONS['VERIFICATION_ID_NEW']}
 						statusCode={identity_status}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
-						icon={ICONS.VERIFICATION_ID_NEW}
+						stringId="USER_VERIFICATION.TITLE_IDENTITY"
+						title={STRINGS['USER_VERIFICATION.TITLE_IDENTITY']}
+						iconId="VERIFICATION_ID_NEW"
+						icon={ICONS['VERIFICATION_ID_NEW']}
 						statusCode={identity_status}
 					/>
 				),
@@ -238,25 +255,29 @@ class Verification extends Component {
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
 					/>
-				)
+				),
 			},
 			sms: {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-								.TITLE_PHONE
+							STRINGS[
+								'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE'
+							]
 						}
-						icon={ICONS.VERIFICATION_PHONE_NEW}
+						icon={ICONS['VERIFICATION_PHONE_NEW']}
 						statusCode={!phone_number ? 0 : 3}
 					/>
 				) : (
 					<CustomTabs
+						stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE"
 						title={
-							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-								.TITLE_PHONE
+							STRINGS[
+								'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE'
+							]
 						}
-						icon={ICONS.VERIFICATION_PHONE_NEW}
+						iconId="VERIFICATION_PHONE_NEW"
+						icon={ICONS['VERIFICATION_PHONE_NEW']}
 						statusCode={!phone_number ? 0 : 3}
 					/>
 				),
@@ -265,19 +286,21 @@ class Verification extends Component {
 						user={user}
 						setActivePageContent={this.setActivePageContent}
 					/>
-				)
+				),
 			},
 			document: {
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
-						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
+						title={STRINGS['USER_VERIFICATION.TITLE_ID_DOCUMENTS']}
+						icon={ICONS['VERIFICATION_DOCUMENT_NEW']}
 						statusCode={id_data.status}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
-						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
+						stringId="USER_VERIFICATION.TITLE_ID_DOCUMENTS"
+						title={STRINGS['USER_VERIFICATION.TITLE_ID_DOCUMENTS']}
+						iconId="VERIFICATION_DOCUMENT_NEW"
+						icon={ICONS['VERIFICATION_DOCUMENT_NEW']}
 						statusCode={id_data.status}
 					/>
 				),
@@ -286,13 +309,12 @@ class Verification extends Component {
 						user={user}
 						setActivePageContent={this.setActivePageContent}
 					/>
-				)
-			}
+				),
+			},
 		};
 		let tabs = [];
 		currentTabs.forEach((key) => {
-			if (tabUtils[key])
-				tabs = [...tabs, tabUtils[key]];
+			if (tabUtils[key]) tabs = [...tabs, tabUtils[key]];
 		});
 
 		this.setState({ tabs, activeTab });
@@ -305,7 +327,7 @@ class Verification extends Component {
 		} else if (type === 'identity') {
 			user = {
 				...this.state.user,
-				...data
+				...data,
 			};
 		} else if (type === 'mobile') {
 			user.phone_number = data.phone;
@@ -354,7 +376,7 @@ class Verification extends Component {
 
 	renderPageContent = (tabProps) => {
 		const { activePage, activeTab, tabs, user } = this.state;
-		const { activeLanguage } = this.props;
+		const { activeLanguage, icons: ICONS } = this.props;
 		switch (activePage) {
 			case 'email':
 				return (
@@ -370,7 +392,8 @@ class Verification extends Component {
 			case 'bank':
 				return (
 					<BankVerification
-						icon={ICONS.VERIFICATION_BANK_NEW}
+						iconId="VERIFICATION_BANK_NEW"
+						icon={ICONS['VERIFICATION_BANK_NEW']}
 						openContactForm={this.openContactForm}
 						setActivePageContent={this.setActivePageContent}
 						handleBack={this.handleBack}
@@ -380,7 +403,7 @@ class Verification extends Component {
 			case 'kyc':
 				return (
 					<IdentityVerification
-						icon={ICONS.VERIFICATION_BANK_NEW}
+						icon={ICONS['VERIFICATION_BANK_NEW']}
 						fullName={user.full_name}
 						moveToNextStep={this.goNextTab}
 						activeLanguage={activeLanguage}
@@ -439,7 +462,7 @@ class Verification extends Component {
 			case 'complete':
 				const data = {
 					type,
-					onClick: this.goToExir
+					onClick: this.goToExir,
 				};
 				return <Notification type={NOTIFICATIONS.VERIFICATION} data={data} />;
 			case 'contact':
@@ -458,7 +481,7 @@ class Verification extends Component {
 	onLogout = () => this.props.logout('');
 
 	render() {
-		const { activeLanguage, activeTheme } = this.props;
+		const { activeLanguage, activeTheme, icons: ICONS } = this.props;
 		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
@@ -472,8 +495,8 @@ class Verification extends Component {
 		const fontClass = getFontClassForLanguage(activeLanguage);
 		const tabProps = {
 			tabs: activeTab < tabs.length ? tabs : [],
-			title: STRINGS.ACCOUNTS.TAB_VERIFICATION,
-			titleIcon: ICONS.ID_GREY
+			title: STRINGS['ACCOUNTS.TAB_VERIFICATION'],
+			titleIcon: ICONS['ID_GREY'],
 		};
 		return (
 			<div
@@ -485,7 +508,7 @@ class Verification extends Component {
 					languageClasses[0],
 					{
 						'layout-mobile': isMobile,
-						'layout-desktop': isBrowser
+						'layout-desktop': isBrowser,
 					}
 				)}
 			>
@@ -527,15 +550,15 @@ const mapStateToProps = (state) => ({
 	activeTheme: state.app.theme,
 	user: state.user,
 	enabledPlugins: state.app.enabledPlugins,
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
-	logout: bindActionCreators(logout, dispatch)
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Verification);
+)(withConfig(Verification));

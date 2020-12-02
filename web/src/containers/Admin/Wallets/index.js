@@ -5,7 +5,6 @@ import { requestTotalBalance, requestConstants } from './actions';
 import { Card, Alert } from 'antd';
 import { formatCurrency } from '../../../utils';
 
-
 class Wallets extends Component {
 	state = {
 		users: [],
@@ -14,7 +13,7 @@ class Wallets extends Component {
 		error: '',
 		showSweep: null,
 		walletNum: null,
-		constants: {}
+		constants: {},
 	};
 
 	componentWillMount() {
@@ -26,25 +25,25 @@ class Wallets extends Component {
 	requestConstants = () => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 		requestConstants()
-			.then(res => {
-				this.setState({ loading: false, constants: res.constants });
+			.then((res) => {
+				this.setState({ loading: false, constants: res.kit });
 			})
-			.catch(error => {
+			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
-			})
+			});
 	};
 
 	requestTotalBalance = () => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 
 		requestTotalBalance()
@@ -52,14 +51,14 @@ class Wallets extends Component {
 				this.setState({
 					balance: res.data.balances,
 					loading: false,
-					fetched: true
+					fetched: true,
 				});
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
 			});
 	};
@@ -90,16 +89,16 @@ class Wallets extends Component {
 						<div className="d-flex align-items-center justify-content-between">
 							<h1>USER WALLETS</h1>
 							<div className="my-3">
-								{!plugins.enabled.includes('vault')
-									? <Button type="primary" onClick={this.goToVault}>Activate Vault</Button>
-									: <Tag color="green">Vault Activated</Tag>
-								}
+								{!plugins.enabled.includes('vault') ? (
+									<Button type="primary" onClick={this.goToVault}>
+										Activate Vault
+									</Button>
+								) : (
+									<Tag color="green">Vault Activated</Tag>
+								)}
 							</div>
 						</div>
-						<Card
-							className="card-title"
-							title="TOTAL BALANCE OF USERS WALLETS"
-						>
+						<Card className="card-title" title="TOTAL BALANCE OF USERS WALLETS">
 							{!balance ? (
 								<Alert
 									message="Error"
@@ -126,7 +125,7 @@ class Wallets extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(Wallets);

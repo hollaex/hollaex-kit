@@ -80,8 +80,8 @@ $notification-size: 1.5rem;
 		height: $notification-size;
 		width: $notification-size;
 		border-radius: $notification-size;
-		background-color: red;
-		color: white;
+		background-color: $colors-notifications-red;
+		color: $colors-notification-alert-text;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -109,6 +109,46 @@ $notification-size: 1.5rem;
 
 .verification-stauts {
 	width: 1rem;
+
+	&.incomplete,
+	&.pending {
+		svg {
+			circle {
+				fill: $colors-notification-pending;
+			}
+			path,
+			polygon,
+			polyline {
+				fill: $colors-notification-pending-text;
+			}
+		}
+	}
+
+	&.rejected {
+		svg {
+			circle {
+				fill: $colors-notifications-red;
+			}
+			path,
+			polygon,
+			polyline {
+				fill: $colors-notification-alert-text;
+			}
+		}
+	}
+
+	&.verified {
+		svg {
+			circle {
+				fill: $colors-notifications-green;
+			}
+			path,
+			polygon,
+			polyline {
+				fill: $colors-notification-green-text;
+			}
+		}
+	}
 }
 
 .empty-notification {
@@ -207,16 +247,16 @@ $notification-size: 1.5rem;
 	}
 
 	.verified {
-		color: #00A551;
+		color: $colors-notifications-green;
 	}
 	.pending {
-		color: #F6921E;
-	}
-	.rejected {
-		color: #FFF100;
+		color: $colors-notification-pending;
 	}
 	.incompleted {
-		color: #EC1C24;
+		color: $colors-notification-pending;
+	}
+	.rejected {
+		color: $colors-notifications-red;
 	}
 }
 
@@ -256,120 +296,10 @@ $notification-size: 1.5rem;
 	}
 }
 
-.dark-theme {
-	.header_title-wrapper {
-		border-top-color: $dark-border-main !important;
-
-		.header_title-children {
-			color: $dark-font-sub-text-color !important;
-		}
-
-		.header_title-icon {
-			svg {
-				.verification-email,
-				.verification-id,
-				.verification-document,
-				.verification-phone,
-				.verification-bank {
-					fill: $dark-icon-color;
-				}
-			}
-		}
-	}
-	.check_title-notification {
-		background-color: $dark-tab-notification;
-	}
-	.panel-information-row {
-		background-color: $dark-info-panel-background;
-		color: $dark-font-main-text-color;
-		.information-content {
-			color: $dark-font-sub-text-color;
-		}
-	}
-	.panel-information-row-disable {
-		color: $dar-info-panel-text !important;
-		.information-content {
-			color: $dar-info-panel-text;
-		}
-	}
-
-	.custom-tab-wrapper {
-		.tab_item {
-			color: $dark-tab-inactive;
-
-			svg path, svg rect {
-				fill: $dark-tab-inactive;
-				stroke: $dark-tab-inactive;
-			}
-
-			&.tab_item-active {
-				border: 1px solid $dark-tab-active !important;
-				color: $dark-tab-active !important;
-				svg path, svg rect {
-					fill: $dark-tab-active;
-					stroke: $dark-tab-active;
-				}
-			}
-		}
-	}
+.layout-mobile {
 	.mobile_tab-wrapper {
-		color: $dark-button-active;
-		border-top: 1px solid $dark-button-active;
-
-		svg {
-			.verification-email,
-			.verification-id,
-			.verification-document,
-			.verification-phone,
-			.verification-bank,
-			.notification-setting,
-			.language-setting,
-			.interface-setting,
-			.chat-setting,
-			.audio-setting,
-			.risk-setting {
-				fill: $dark-button-active;
-			}
-			.pending-timer {
-				stroke: $dark-icon-color;
-			}
-		}
-	}
-
-	.active_mobile_tab {
-		color: $dark-font-main-text-color;
-		border-top: 2px solid $dark-font-main-text-color;
-		border-bottom: 1.5px solid $dark-font-main-text-color;
-
-		svg {
-			.verification-email,
-			.verification-id,
-			.verification-document,
-			.verification-phone,
-			.verification-bank,
-			.notification-setting,
-			.language-setting,
-			.interface-setting,
-			.chat-setting,
-			.audio-setting,
-			.risk-setting {
-				fill: $dark-font-main-text-color;
-			}
-		}
-	}
-
-	.mobile_tab_last {
-		border-bottom: 1px solid $dark-button-active;
-	}
-
-	.mobile_tab_last-active {
-		border-bottom: 2px solid $dark-font-main-text-color !important;
-	}
-}
-.layout-mobile{
-	.mobile_tab-wrapper {
-		.status_txt{
-			font-size:$font-size-mobile-txt;
+		.status_txt {
+			font-size: $font-size-mobile-txt;
 		}
 	}
 }

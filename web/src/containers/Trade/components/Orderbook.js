@@ -8,10 +8,13 @@ import { formatToFixed, formatToCurrency } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
-const PriceRow = (side, increment_price, increment_size, onPriceClick, onAmountClick) => (
-	[price, amount],
-	index
-) => (
+const PriceRow = (
+	side,
+	increment_price,
+	increment_size,
+	onPriceClick,
+	onAmountClick
+) => ([price, amount], index) => (
 	<div key={`${side}-${price}`} className="d-flex value-row align-items-center">
 		<div
 			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
@@ -32,7 +35,10 @@ const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
 	if (lowerAsk && higherBid) {
-		return formatToFixed(subtract(lowerAsk, higherBid), pairData.increment_price);
+		return formatToFixed(
+			subtract(lowerAsk, higherBid),
+			pairData.increment_price
+		);
 	}
 	return '-';
 };
@@ -46,14 +52,14 @@ const LimitBar = ({ text }) => (
 
 class Orderbook extends Component {
 	state = {
-		dataBlockHeight: 0
+		dataBlockHeight: 0,
 	};
 
 	componentDidMount() {
 		this.scrollTop();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		// this.scrollTop();
 	}
 
@@ -94,7 +100,7 @@ class Orderbook extends Component {
 			dataBlockHeight > 0
 				? {
 						// maxHeight: dataBlockHeight,
-						minHeight: dataBlockHeight
+						minHeight: dataBlockHeight,
 				  }
 				: {};
 
@@ -105,14 +111,17 @@ class Orderbook extends Component {
 				<EventListener target="window" onResize={this.scrollTop} />
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS.PRICE_CURRENCY, symbol.toUpperCase())}
+						{STRINGS.formatString(
+							STRINGS['PRICE_CURRENCY'],
+							symbol.toUpperCase()
+						)}
 					</div>
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, pairBase)}
+						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
 					</div>
 				</div>
 				<div className="trade_asks-limit_bar">
-					<LimitBar text={STRINGS.ORDERBOOK_SELLERS} />
+					<LimitBar text={STRINGS['ORDERBOOK_SELLERS']} />
 				</div>
 				<div
 					ref={this.setRefs('wrapper')}
@@ -142,10 +151,10 @@ class Orderbook extends Component {
 						ref={this.setRefs('spreadWrapper')}
 					>
 						{STRINGS.formatString(
-							STRINGS.ORDERBOOK_SPREAD,
+							STRINGS['ORDERBOOK_SPREAD'],
 							<div className="trade_orderbook-spread-text">
 								{STRINGS.formatString(
-									STRINGS.ORDERBOOK_SPREAD_PRICE,
+									STRINGS['ORDERBOOK_SPREAD_PRICE'],
 									calculateSpread(asks, bids, pair, pairData),
 									symbol.toUpperCase()
 								)}
@@ -173,7 +182,7 @@ class Orderbook extends Component {
 					</div>
 				</div>
 				<div className="trade_bids-limit_bar">
-					<LimitBar text={STRINGS.ORDERBOOK_BUYERS} />
+					<LimitBar text={STRINGS['ORDERBOOK_BUYERS']} />
 				</div>
 			</div>
 		);
@@ -185,13 +194,13 @@ Orderbook.defaultProps = {
 	bids: [],
 	ready: false,
 	onPriceClick: () => {},
-	onAmountClick: () => {}
+	onAmountClick: () => {},
 };
 
 const mapStateToProps = (store) => ({
 	pair: store.app.pair,
 	asks: asksSelector(store),
-	bids: bidsSelector(store)
+	bids: bidsSelector(store),
 });
 
 export default connect(mapStateToProps)(Orderbook);

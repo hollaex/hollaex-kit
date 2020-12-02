@@ -8,25 +8,30 @@ import { ICONS } from '../../config/constants';
 import { getAnnouncement } from '../../actions/appActions';
 
 const createMarkup = (msg) => {
-	return {__html: msg};
+	return { __html: msg };
 };
 
 export const NotificationItem = ({
 	title = '',
 	message = '',
 	type,
-	created_at
+	created_at,
 }) => {
 	return (
 		<div>
 			<div>
 				<div className="d-flex my-2">
 					<div className="mr-2">
-						<ReactSvg path={ICONS.TRADE_ANNOUNCEMENT} wrapperClassName="trade_post_icon" />
+						<ReactSvg
+							path={ICONS.TRADE_ANNOUNCEMENT}
+							wrapperClassName="trade_post_icon"
+						/>
 					</div>
 					<div>
 						<div className="post_header">{title}</div>
-						{type && <div className="notifications_list-item-title">{type}</div>}
+						{type && (
+							<div className="notifications_list-item-title">{type}</div>
+						)}
 						<div className="post-content">
 							<div className="notifications_list-item-timestamp">
 								{moment(created_at).format('MMMM DD, YYYY')}
@@ -57,26 +62,28 @@ export const NotificationItem = ({
 const NotificationsList = ({ announcements, getAnnouncement }) => {
 	useEffect(() => {
 		getAnnouncement();
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	if (!announcements.length) {
-		return <div className="notifications_list-wrapper" >No data</div>
+		return <div className="notifications_list-wrapper">No data</div>;
 	}
 	return (
-		<div className="notifications_list-wrapper" >
+		<div className="notifications_list-wrapper">
 			{announcements.map(({ id, ...rest }, index) => (
 				<NotificationItem key={id} {...rest} />
 			))}
-		</div >
+		</div>
 	);
-}
+};
 
 const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
-	announcements: store.app.announcements
+	announcements: store.app.announcements,
 });
 
-const mapDispatchToProps = dispatch => ({
-	getAnnouncement: bindActionCreators(getAnnouncement, dispatch)
+const mapDispatchToProps = (dispatch) => ({
+	getAnnouncement: bindActionCreators(getAnnouncement, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationsList);

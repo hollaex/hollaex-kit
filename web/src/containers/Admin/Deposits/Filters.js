@@ -1,4 +1,5 @@
 import React from 'react';
+import { SearchOutlined } from '@ant-design/icons';
 import { Button, Alert } from 'antd';
 import { SelectValue } from './SelectValues';
 import { FilterInput, FilterDate } from './FilterInput';
@@ -9,7 +10,7 @@ const getFilters = (coinOptions) => [
 		placeholder: 'Currency',
 		key: 'currency',
 		className: 'adjacent-fields',
-		options: coinOptions
+		options: coinOptions,
 	},
 	{
 		label: 'Status',
@@ -20,9 +21,9 @@ const getFilters = (coinOptions) => [
 			{ value: 'true', text: 'Confirmed' },
 			{ value: 'false', text: 'Pending' },
 			{ value: 'dismissed', text: 'Dismissed' },
-			{ value: 'rejected', text: 'Rejected' }
-		]
-	}
+			{ value: 'rejected', text: 'Rejected' },
+		],
+	},
 ];
 
 const getStatusValue = (key, params) => {
@@ -50,7 +51,7 @@ export const Filters = ({
 	onClick,
 	loading,
 	fetched,
-	hasChanges
+	hasChanges,
 }) => {
 	const coinOptions = [];
 	Object.keys(coins).forEach((data) => {
@@ -132,7 +133,7 @@ export const Filters = ({
 					<Button
 						onClick={onClick}
 						type="primary"
-						icon="search"
+						icon={<SearchOutlined />}
 						className="filter-button"
 						disabled={!allowQuery}
 					>

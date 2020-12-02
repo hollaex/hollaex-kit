@@ -9,7 +9,12 @@ export { default as MessageDisplay } from './Dialog/MessageDisplay';
 export { default as SuccessDisplay } from './Dialog/SuccessDisplay';
 export { default as TabController } from './TabController';
 export { default as CheckTitle } from './CheckTitle';
-export { PanelInformationRow, renderStatusIcon, CustomTabs, CustomMobileTabs } from './CheckTitle';
+export {
+	PanelInformationRow,
+	renderStatusIcon,
+	CustomTabs,
+	CustomMobileTabs,
+} from './CheckTitle';
 export { default as HeaderSection } from './CheckTitle/HeaderSection';
 export { default as CustomTabBar } from './CheckTitle/CustomTabBar';
 export { default as MobileTabBar } from './CheckTitle/MobileTabBar';
@@ -17,6 +22,7 @@ export { default as Sidebar } from './Sidebar';
 export { SidebarBottom } from './Sidebar/SidebarBottom';
 export { Logout } from './Sidebar/rows';
 export { default as Wallet } from './Wallet';
+export { default as AssetsBlockForm } from './Wallet/AssetsBlockForm';
 export { default as SidebarHub } from './SidebarHub';
 export { default as Notification } from './Notification';
 export { default as NotificationsList } from './NotificationsList';
@@ -40,7 +46,7 @@ export { default as WarningVerification } from './WarningVerification';
 export { FactoryChart, CHART_TYPES, DonutChart, BarChart } from './Chart';
 export { Tooltip } from './Tooltip';
 export { default as CurrencyList } from './CurrencyList';
-export { MobileDropdown } from './MobileDropdown'
+export { MobileDropdown } from './MobileDropdown';
 export { default as BlueLink } from './BlueLink';
 export { Sortable } from './Sortable';
 export * from './MobileBar';
@@ -48,7 +54,12 @@ export * from './Chat';
 export { default as ElapsedTimer } from './ElapsedTimer';
 export { default as SnackNotification } from './SnackNotification';
 export { default as SnackDialog } from './SnackNotification/SnackDialog';
+export { default as Carousel } from './Carousel';
+export { default as Slider } from './Carousel/Slider';
+export { default as ControlledScrollbar } from './Carousel/ControlledScrollbar';
+export { default as EditWrapper } from './EditWrapper';
 
 export { default as AdminHocForm } from './AdminForm/hoc';
 export { default as ModalForm } from './AdminForm/modal';
 export { default as AppFooter } from './AppFooter';
+export { default as Image } from './Image';

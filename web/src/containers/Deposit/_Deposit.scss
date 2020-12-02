@@ -39,7 +39,12 @@ $qr-code--size: 12rem;
 
 		&:before {
 			padding-top: $qr-text--pading;
-			@include css-triangle($qr-code--arrow-color, 'up', $qr-code--arrow-size, relative);
+			@include css-triangle(
+				$qr-code--arrow-color,
+				'up',
+				$qr-code--arrow-size,
+				relative
+			);
 			border-bottom: $qr-code--arrow-size * 1.5 solid $qr-code--arrow-color;
 		}
 	}
@@ -77,49 +82,5 @@ $qr-code--size: 12rem;
 	}
 	.block-wrapper {
 		margin: 1rem;
-	}
-}
-
-.dark-theme {
-	svg {
-		.deposit-bitcoin-1 {
-			fill: $dark-main-title-icon-color-1;
-		}
-		.deposit-bitcoin-2 {
-			fill: $dark-main-title-icon-color-2;
-		}
-		.deposit-bitcoin-3 {
-			fill: $dark-main-title-icon-color-3;
-		}
-	}
-	.qr_code-wrapper {
-		margin: 2rem;
-		$qr-code-margin: 1rem;
-		width: $qr-code--size;
-		max-width: $qr-code--size;
-		.qr-code-bg {
-			background-color: white;
-			margin: $qr-code-margin;
-			> *:first-child {
-				@include size-important($qr-code--size - $qr-code-margin);
-			}
-		}
-	
-		.qr-text {
-			color: $dark-font-sub-text-color;
-			display: flex;
-			font-size: $font-size-subtext;
-			padding-top: $qr-text--pading;
-			margin-left: $qr-code-margin;
-	
-			&:before {
-				padding-top: $qr-text--pading;
-				@include css-triangle($qr-code--arrow-color, 'up', $qr-code--arrow-size, relative);
-				border-bottom: $qr-code--arrow-size * 1.5 solid $qr-code--arrow-color;
-			}
-		}
-	}
-	.review-wrapper {
-		color: $dark-font-main-text-color;
 	}
 }

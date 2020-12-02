@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Table, Spin } from 'antd';
+import { Table, Spin } from 'antd';
 import { requestUserAudits, requestUserAuditsDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
@@ -7,8 +7,9 @@ import { SubmissionError } from 'redux-form';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
-	tradeHistory: '',
-	loading: true
+	audits: [],
+	total: 0,
+	loading: true,
 };
 
 const formatDate = (value) => {
@@ -20,7 +21,7 @@ const formatDescription = (value) => {
 		return Object.keys(value.old).map((item, key) => {
 			return (
 				<div key={item}>
-					{item}: {JSON.stringify(value.old[item])} ->{' '}
+					{item}: {JSON.stringify(value.old[item])} {'->'}{' '}
 					{JSON.stringify(value.new[item])}
 				</div>
 			);
@@ -39,13 +40,13 @@ const AUDIT_COLUMNS = [
 		title: 'Change',
 		dataIndex: 'description',
 		key: 'old',
-		render: formatDescription
+		render: formatDescription,
 	},
 	{
 		title: 'Note',
 		dataIndex: 'description',
 		key: 'note',
-		render: formatDescriptionNote
+		render: formatDescriptionNote,
 	},
 	{ title: 'Admin', dataIndex: 'admin_id', key: 'admin_id' },
 	{ title: 'IP', dataIndex: 'ip', key: 'ip' },
@@ -54,8 +55,8 @@ const AUDIT_COLUMNS = [
 		title: 'Time',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
-		render: formatDate
-	}
+		render: formatDate,
+	},
 ];
 // const CSV_AUDIT_COLUMNS = [
 // 	{ label: 'Event', dataIndex: 'event', key: 'event' },
@@ -79,7 +80,8 @@ class Audits extends Component {
 				if (res) {
 					this.setState({
 						audits: res.data,
-						loading: false
+						total: res.count,
+						loading: false,
 					});
 				}
 			})
@@ -92,8 +94,8 @@ class Audits extends Component {
 	};
 
 	requestUserAuditsDownload = (userId) => {
-		return requestUserAuditsDownload({format: 'csv', userId: userId})
-	}
+		return requestUserAuditsDownload({ format: 'csv', userId: userId });
+	};
 
 	render() {
 		const { audits, loading } = this.state;
@@ -107,22 +109,25 @@ class Audits extends Component {
 		}
 
 		return (
-			<Row gutter={16} style={{ marginTop: 16 }}>
-				<Col>
-					<div>
-						<span className="pointer" onClick={() => this.requestUserAuditsDownload(this.props.userId)}>
-							Download table
-						</span>
+			<div className="app_container-content my-2">
+				<div className="d-flex justify-content-between my-3">
+					<div>Number of events: {this.state.total}</div>
+					<div
+						className="pointer download-csv-table"
+						onClick={() => this.requestUserAuditsDownload(this.props.userId)}
+					>
+						Download CSV table
 					</div>
-					<Table
-						rowKey={(data) => {
-							return data.id;
-						}}
-						columns={AUDIT_COLUMNS}
-						dataSource={audits ? audits : 'No Data'}
-					/>
-				</Col>
-			</Row>
+				</div>
+				<Table
+					rowKey={(data) => {
+						return data.id;
+					}}
+					columns={AUDIT_COLUMNS}
+					dataSource={audits ? audits : 'No Data'}
+					pagination={{ pageSize: 5 }}
+				/>
+			</div>
 		);
 	}
 }

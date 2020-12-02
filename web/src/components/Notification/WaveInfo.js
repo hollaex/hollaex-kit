@@ -6,7 +6,7 @@ import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
 	NotificationContent,
-	InformationRow
+	InformationRow,
 } from './Notification';
 import { Button } from '../';
 
@@ -17,27 +17,27 @@ const generateRows = ({ wave, pair }, pairs, coins) => {
 	const rows = [];
 
 	rows.push({
-		label: STRINGS.WAVES.NEXT_WAVE,
-		value: no
+		label: STRINGS['WAVES.NEXT_WAVE'],
+		value: no,
 	});
 
 	rows.push({
-		label: STRINGS.WAVES.WAVE_AMOUNT,
-		value: `${amount} XHT`
+		label: STRINGS['WAVES.WAVE_AMOUNT'],
+		value: `${amount} XHT`,
 	});
 
 	rows.push({
-		label: STRINGS.WAVES.FLOOR,
-		value: floor
+		label: STRINGS['WAVES.FLOOR'],
+		value: floor,
 	});
 
 	rows.push({
-		label: STRINGS.FILLED,
-		value: filled
+		label: STRINGS['FILLED'],
+		value: filled,
 	});
 
 	// rows.push({
-	//     label: STRINGS.WAVES.LAST_WAVE,
+	//     label: STRINGS["WAVES.LAST_WAVE"],
 	//     value: filled
 	// });
 
@@ -69,16 +69,16 @@ const WaveNotification = ({ type, data, coins, pairs, onBack, onConfirm }) => {
 
 	return (
 		<NotificationWraper
-			title={STRINGS.WAVES.TITLE}
+			title={STRINGS['WAVES.TITLE']}
 			icon={ICONS.INCOMING_WAVE}
 			className="new-order-notification"
 		>
 			<EventListener target="document" onKeydown={onKeydown} />
 			<OrderDisplay rows={rows} />
 			<div className="d-flex">
-				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
+				<Button label={STRINGS['BACK_TEXT']} onClick={onBack} />
 				<div className="separator" />
-				<Button label={STRINGS.GOTO_XHT_MARKET} onClick={onConfirmClick} />
+				<Button label={STRINGS['GOTO_XHT_MARKET']} onClick={onConfirmClick} />
 			</div>
 		</NotificationWraper>
 	);
@@ -86,7 +86,7 @@ const WaveNotification = ({ type, data, coins, pairs, onBack, onConfirm }) => {
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
-	pairs: state.app.pairs
+	pairs: state.app.pairs,
 });
 
 export default connect(mapStateToProps)(WaveNotification);

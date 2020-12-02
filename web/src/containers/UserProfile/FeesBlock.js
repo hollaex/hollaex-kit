@@ -8,7 +8,7 @@ const FeeRow = ({ data = {}, headers = [], isUserLevel = false, row }) => {
 	return (
 		<tr
 			className={classnames('table-row table-bottom-border', {
-				'user-level': isUserLevel
+				'user-level': isUserLevel,
 			})}
 		>
 			<td className="table-icon td-fit td-levelball">
@@ -17,7 +17,7 @@ const FeeRow = ({ data = {}, headers = [], isUserLevel = false, row }) => {
 				</div>
 			</td>
 			<td className="td-name td-amount">
-				{STRINGS.LEVELS[`LABEL_LEVEL_${verification_level}`]}
+				{STRINGS[`LEVELS.LABEL_LEVEL_${verification_level}]`]}
 			</td>
 			{headers.map((headerKey, index) => (
 				<td className="td-name td-amount" key={`row-${index}-${row}`}>
@@ -29,21 +29,21 @@ const FeeRow = ({ data = {}, headers = [], isUserLevel = false, row }) => {
 };
 
 const generateRowsData = (pairsFees) => {
-	const headers = [STRINGS.LEVELS.LABEL_LEVEL];
+	const headers = [STRINGS['LEVELS.LABEL_LEVEL']];
 	const keys = [];
 	const temporalData = {};
 	Object.entries(pairsFees).forEach(
 		([pairName, { maker_fees, taker_fees }]) => {
 			headers.push(
 				STRINGS.formatString(
-					STRINGS.LEVELS.LABEL_PAIR_MAKER_FEE,
+					STRINGS['LEVELS.LABEL_PAIR_MAKER_FEE'],
 					pairName.toUpperCase()
 				)
 			);
 			keys.push(`${pairName}_maker_fee`);
 			headers.push(
 				STRINGS.formatString(
-					STRINGS.LEVELS.LABEL_PAIR_TAKER_FEE,
+					STRINGS['LEVELS.LABEL_PAIR_TAKER_FEE'],
 					pairName.toUpperCase()
 				)
 			);
@@ -52,7 +52,7 @@ const generateRowsData = (pairsFees) => {
 			Object.entries(maker_fees).forEach(([level, value]) => {
 				if (!temporalData[level]) {
 					temporalData[level] = {
-						verification_level: parseInt(level, 10)
+						verification_level: parseInt(level, 10),
 					};
 				}
 				temporalData[level][`${pairName}_maker_fee`] = value;
@@ -60,7 +60,7 @@ const generateRowsData = (pairsFees) => {
 			Object.entries(taker_fees).forEach(([level, value]) => {
 				if (!temporalData[level]) {
 					temporalData[level] = {
-						verification_level: parseInt(level, 10)
+						verification_level: parseInt(level, 10),
 					};
 				}
 				temporalData[level][`${pairName}_taker_fee`] = value;

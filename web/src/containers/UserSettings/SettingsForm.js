@@ -7,10 +7,11 @@ import {
 	required,
 	minValue,
 	maxValue,
-	step
+	step,
 } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 const orderbook_level_step = 1;
 const orderbook_level_min = 1;
@@ -19,22 +20,24 @@ const orderbook_level_max = 20;
 export const generateFormValues = () => ({
 	theme: {
 		type: 'select',
-		label: STRINGS.SETTINGS_THEME_LABEL,
-		options: STRINGS.SETTINGS_THEME_OPTIONS
+		stringId: 'SETTINGS_THEME_LABEL',
+		label: STRINGS['SETTINGS_THEME_LABEL'],
+		options: STRINGS['SETTINGS_THEME_OPTIONS'],
 	},
 	order_book_levels: {
 		type: 'number',
+		stringId: 'USER_SETTINGS.ORDERBOOK_LEVEL',
 		validate: [
 			required,
 			minValue(orderbook_level_min),
 			maxValue(orderbook_level_max),
-			step(orderbook_level_step)
+			step(orderbook_level_step),
 		],
-		label: STRINGS.USER_SETTINGS.ORDERBOOK_LEVEL,
+		label: STRINGS['USER_SETTINGS.ORDERBOOK_LEVEL'],
 		step: orderbook_level_step,
 		min: orderbook_level_min,
 		max: orderbook_level_max,
-		fullWidth: isMobile
+		fullWidth: isMobile,
 		// notification: {
 		// 		status: 'information',
 		// 		iconPath: ICONS.BLUE_PLUS,
@@ -42,7 +45,7 @@ export const generateFormValues = () => ({
 		// 		useSvg: true,
 		// 		onClick: calculateMin
 		// 	}
-	}
+	},
 });
 
 class Form extends Component {
@@ -62,7 +65,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			formFields
+			formFields,
 		} = this.props;
 		return (
 			<form onSubmit={handleSubmit}>
@@ -70,8 +73,9 @@ class Form extends Component {
 				{error && (
 					<div className="warning_text">{getErrorLocalized(error)}</div>
 				)}
+				<EditWrapper stringId="SETTING_BUTTON" />
 				<Button
-					label={STRINGS.SETTING_BUTTON}
+					label={STRINGS['SETTING_BUTTON']}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>
@@ -80,5 +84,5 @@ class Form extends Component {
 }
 
 export default reduxForm({
-	form: 'SettingsForm'
+	form: 'SettingsForm',
 })(Form);

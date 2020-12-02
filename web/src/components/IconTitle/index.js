@@ -1,32 +1,40 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
 import { ActionNotification } from '../';
+import { EditWrapper } from 'components';
+import Image from 'components/Image';
 
 const BasicIconTitle = ({
 	text,
+	stringId,
 	iconPath,
+	iconId,
 	textType,
 	underline,
 	className,
 	imageWrapperClassName = '',
-	useSvg = false,
-	isLogo = false,
-}) => (
-	<div className={classnames('icon_title-wrapper', { underline }, className)}>
-		{iconPath &&
-			(useSvg ? (
-				<ReactSVG path={iconPath} wrapperClassName={classnames('icon_title-svg', imageWrapperClassName)} />
-			) : (
-				isLogo
-					? (<div style={{ backgroundImage: `url(${iconPath})` }} className={classnames(imageWrapperClassName)}></div>)
-					: (<img src={iconPath} alt={text} className={classnames("icon_title-image", imageWrapperClassName)} />)
-			))}
-		<div className={classnames('icon_title-text', 'text-center', textType)}>
-			{text}
+}) => {
+	return (
+		<div className={classnames('icon_title-wrapper', { underline }, className)}>
+			{iconPath && (
+				<Image
+					iconId={iconId}
+					icon={iconPath}
+					alt={text}
+					wrapperClassName={imageWrapperClassName}
+					imageWrapperClassName="icon_title-image"
+					svgWrapperClassName="icon_title-svg"
+					showUpload={false}
+				/>
+			)}
+			<EditWrapper stringId={stringId} iconId={iconId}>
+				<div className={classnames('icon_title-text', 'text-center', textType)}>
+					{text}
+				</div>
+			</EditWrapper>
 		</div>
-	</div>
-);
+	);
+};
 
 const EnhancedIconTitle = ({ subtitle, actionProps, ...rest }) => (
 	<div className={classnames('w-100')}>
@@ -50,7 +58,7 @@ const IconTitle = (props) => {
 IconTitle.defaultProps = {
 	iconPath: '',
 	textType: '',
-	underline: false
+	underline: false,
 };
 
 export default IconTitle;

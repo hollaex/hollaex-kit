@@ -3,8 +3,8 @@
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
-const { getNodeLib } = require('../../init');
 const { all } = require('bluebird');
+const { USER_NOT_FOUND } = require('../../messages');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -54,7 +54,10 @@ const createInitialAdmin = (req, res) => {
 			if (user) {
 				throw new Error('Admin already exists');
 			}
-			return toolsLib.user.createUser(email, password, 'admin');
+			return toolsLib.user.createUser(email, password, {
+				role: 'admin',
+				id: 1
+			});
 		})
 		.then(() => {
 			return toolsLib.setExchangeInitialized();
@@ -72,21 +75,20 @@ const putAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putAdminKit', req.auth.sub);
 	const data = req.swagger.params.data.value;
 
-	if (data.kit && data.kit.plugins) {
-		loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
-		return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
+	if (data.kit) {
+		if (data.kit.plugins) {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
+			return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
+		} else if (data.kit.setup_completed) {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
+			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
+		}
 	}
 
 	if (data.secrets) {
 		if (data.secrets.plugins) {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
 			return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
-		} else if (data.secrets.exchange_credentials_set) {
-			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update exchange_credentials_set value through this endpoint');
-			return res.status(400).json({ message: 'Cannot update exchange_credentials_set value through this endpoint'});
-		} else if (data.secrets.setup_completed) {
-			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
-			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
 		}
 	}
 
@@ -105,18 +107,18 @@ const getUsersAdmin = (req, res) => {
 
 	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getAllUsersAdmin(
-		id.value,
-		search.value,
-		pending.value,
-		limit.value,
-		page.value,
-		order_by.value,
-		order.value,
-		start_date.value,
-		end_date.value,
-		format.value
-	)
+	toolsLib.user.getAllUsersAdmin({
+		id: id.value,
+		search: search.value,
+		pending: pending.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
@@ -188,7 +190,7 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.user.getUserBalanceByKitId(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id)
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -242,7 +244,7 @@ const getAdminBalance = (req, res) => {
 		req.auth
 	);
 
-	getNodeLib().getBalanceNetwork()
+	toolsLib.wallet.getKitBalance()
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -298,7 +300,16 @@ const getAdminUserLogins = (req, res) => {
 	);
 	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getUserLogins(user_id.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.user.getUserLogins({
+		userId: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
@@ -327,7 +338,16 @@ const getUserAudits = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	toolsLib.user.getUserAudits(user_id, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.user.getUserAudits({
+		userId: user_id,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
@@ -424,7 +444,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.user.transferUserFunds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -449,7 +469,7 @@ const adminCheckTransaction = (req, res) => {
 	const currency = req.swagger.params.currency.value;
 	const isTestnet = req.swagger.params.is_testnet.value;
 
-	toolsLib.transaction.checkTransaction(currency, transactionId, address, isTestnet)
+	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})
@@ -484,30 +504,184 @@ const completeExchangeSetup = (req, res) => {
 		});
 };
 
-// const uploadImage = (req, res) => {
-// 	loggerAdmin.verbose(
-// 		req.uuid,
-// 		'controllers/admin/uploadImage auth',
-// 		req.auth
-// 	);
+const uploadImage = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/uploadImage auth',
+		req.auth
+	);
 
+	const name = req.swagger.params.name.value;
+	const file = req.swagger.params.file.value;
 
-// 	const name = req.swagger.params.name.value;
-// 	const file = req.swagger.params.file.value;
+	toolsLib.storeImageOnNetwork(file, name)
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/uploadImage catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
 
-// 	toolsLib.image.storeImage(file, name)
-// 		.then((path) => {
-// 			return res.json({ path });
-// 		})
-// 		.catch((err) => {
-// 			loggerAdmin.error(
-// 				req.uuid,
-// 				'controllers/admin/uploadImage catch',
-// 				err.message
-// 			);
-// 			return res.status(err.status || 400).json({ message: err.message });
-// 		});
-// };
+const getOperators = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getOperators auth',
+		req.auth
+	);
+
+	const { limit, page, order_by, order } = req.swagger.params;
+
+	toolsLib.user.getExchangeOperators({
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value
+	})
+		.then((operators) => {
+			return res.json(operators);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getOperators catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const inviteNewOperator = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/inviteNewOperator auth',
+		req.auth
+	);
+
+	const invitingEmail = req.auth.sub.email;
+	const { email, role } = req.swagger.params;
+
+	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/inviteNewOperator err',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getExchangeGeneratedFees = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getExchangeGeneratedFees auth',
+		req.auth
+	);
+
+	const { limit, page, start_date, end_date } = req.swagger.params;
+
+	toolsLib.order.getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getExchangeGeneratedFees catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const mintAsset = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/mintAsset auth',
+		req.auth
+	);
+
+	const {
+		user_id,
+		currency,
+		amount,
+		description
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/mintAsset user_id',
+		user_id,
+		'currency',
+		currency,
+		'amount',
+		amount
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return toolsLib.mintAssetByNetworkId(user.network_id, currency, amount, description);
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			console.log(err);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const burnAsset = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/burnAsset auth',
+		req.auth
+	);
+
+	const {
+		user_id,
+		currency,
+		amount,
+		description
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/burnAsset user_id',
+		user_id,
+		'currency',
+		currency,
+		'amount',
+		amount
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return toolsLib.burnAssetByNetworkId(user.network_id, currency, amount, description);
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			console.log(err);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
 
 module.exports = {
 	createInitialAdmin,
@@ -529,5 +703,10 @@ module.exports = {
 	adminCheckTransaction,
 	completeExchangeSetup,
 	putNetworkCredentials,
-// 	uploadImage
+	uploadImage,
+	getOperators,
+	inviteNewOperator,
+	getExchangeGeneratedFees,
+	mintAsset,
+	burnAsset
 };

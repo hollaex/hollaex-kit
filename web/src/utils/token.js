@@ -42,7 +42,7 @@ export const checkRole = () => {
 	} else if (roles.includes('kyc')) {
 		role = 'kyc';
 	} else if (roles.includes('tech')) {
-		role = 'tech';
+		role = 'communicator';
 	}
 	return role;
 };

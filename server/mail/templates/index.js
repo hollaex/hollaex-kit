@@ -4,7 +4,7 @@ const { DOMAIN, GET_KIT_CONFIG } = require('../../constants');
 const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const { TemplateEmail } = require('./helpers/common');
-const { MAILTYPE } = require('../strings');
+const { MAILTYPE, languageFile } = require('../strings');
 
 const generateMessageContent = (
 	type,
@@ -13,7 +13,7 @@ const generateMessageContent = (
 	language = DEFAULT_LANGUAGE(),
 	domain = DOMAIN
 ) => {
-	const STRINGS = require('../strings').languageFile(language);
+	const STRINGS = languageFile(language);
 	let title;
 	if (
 		type === MAILTYPE.WITHDRAWAL ||

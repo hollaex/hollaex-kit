@@ -1,5 +1,4 @@
 import { requestAuthenticated } from '../../../utils';
-import { WS_URL } from '../../../config/constants';
 
 export const uploadFiles = (id, values) => {
 	const formData = new FormData();
@@ -9,8 +8,16 @@ export const uploadFiles = (id, values) => {
 
 	const options = {
 		method: 'POST',
-		body: formData
+		body: formData,
 	};
 
-	return requestAuthenticated(`/plugins/kyc/admin/upload?user_id=${id}`, options, {}, WS_URL);
+	const headers = {
+		'Content-Type': 'multipart/form-data',
+	};
+
+	return requestAuthenticated(
+		`/plugins/kyc/admin/upload?user_id=${id}`,
+		options,
+		headers
+	);
 };

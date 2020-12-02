@@ -6,15 +6,13 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import { getThemeClass } from '../../utils/theme';
 
-import {
-	ICONS,
-	FLEX_CENTER_CLASSES,
-	EXCHANGE_URL
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES, EXCHANGE_URL } from '../../config/constants';
 import { getExchangeInfo } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import STRINGS from '../../config/localizedStrings';
 import { Button } from '../../components';
+
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Expired extends Component {
 	componentDidMount() {
@@ -37,14 +35,14 @@ class Expired extends Component {
 				}
 			} else {
 				this.goToAccount();
-			}	
+			}
 		}
-	}
+	};
 
 	goToAccount = () => this.props.router.replace('/account');
 
 	render() {
-		const { activeTheme } = this.props;
+		const { activeTheme, icons: ICONS } = this.props;
 		return (
 			<div
 				className={classnames(
@@ -64,26 +62,26 @@ class Expired extends Component {
 				>
 					<div>
 						<ReactSvg
-							path={ICONS.EXPIRED_ICON}
+							path={ICONS['EXPIRED_ICON']}
 							wrapperClassName="expired_img_icon"
 						/>
 					</div>
-					<div className="expired_text mt-5">{STRINGS.EXPIRED_INFO_1}</div>
-					<div className="expired_text">{STRINGS.EXPIRED_INFO_2}</div>
+					<div className="expired_text mt-5">{STRINGS['EXPIRED_INFO_1']}</div>
+					<div className="expired_text">{STRINGS['EXPIRED_INFO_2']}</div>
 					<div className="expired_button">
 						<a
 							href={EXCHANGE_URL}
 							target="blank"
 							className="exir-button mdc-button mdc-button--unelevated exir-button-font"
 						>
-							<Button label={STRINGS.EXPIRED_BUTTON_TXT} />
+							<Button label={STRINGS['EXPIRED_BUTTON_TXT']} />
 						</a>
 					</div>
 					<div
 						className="blue-link pointer"
 						onClick={() => this.props.logout('Exchange expired')}
 					>
-						{STRINGS.SIGN_UP.GOTO_LOGIN}
+						{STRINGS['SIGN_UP.GOTO_LOGIN']}
 					</div>
 				</div>
 			</div>
@@ -93,15 +91,15 @@ class Expired extends Component {
 
 const mapStateToProps = (store) => ({
 	info: store.app.info,
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
-	logout: bindActionCreators(logout, dispatch)
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Expired);
+)(withConfig(Expired));

@@ -12,7 +12,7 @@ const colors_currencies = {
 	bch: '#9ec51e',
 	eth: '#2e3192',
 	ltc: '#58595b',
-	noData: '#cccbcb'
+	noData: '#cccbcb',
 };
 
 function translate(x, y) {
@@ -29,7 +29,7 @@ class DonutChart extends Component {
 		height: 0,
 		isData: true,
 		hoverId: '',
-		higherId: ''
+		higherId: '',
 	};
 
 	componentDidMount() {
@@ -42,11 +42,11 @@ class DonutChart extends Component {
 		this.setState({
 			width: rect.width,
 			height: rect.height,
-			isData: checkFilter
+			isData: checkFilter,
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			JSON.stringify(this.props.chartData) !==
 			JSON.stringify(nextProps.chartData)
@@ -91,9 +91,7 @@ class DonutChart extends Component {
 			}
 			return null;
 		});
-		const pieMax = [
-			...pieData.sort((a, b) => b.data.balance - a.data.balance)
-		];
+		const pieMax = [...pieData.sort((a, b) => b.data.balance - a.data.balance)];
 		let pieMin = pieMax.splice(pieMax.length / 2, pieMax.length);
 		pieMin = pieMin.sort((a, b) => a.data.balance - b.data.balance);
 		let temp = pieMax.length > pieMin.length ? pieMax : pieMin;
@@ -113,8 +111,8 @@ class DonutChart extends Component {
 						startAngle: nextStartAngle,
 						endAngle: nextStartAngle + diffangle,
 						data: maxData.data,
-						value: maxData.value
-					}
+						value: maxData.value,
+					},
 				];
 				nextStartAngle += diffangle;
 			}
@@ -130,8 +128,8 @@ class DonutChart extends Component {
 						startAngle: nextStartAngle,
 						endAngle: nextStartAngle + diffangle,
 						data: minData.data,
-						value: minData.value
-					}
+						value: minData.value,
+					},
 				];
 				nextStartAngle += diffangle;
 			}
@@ -190,7 +188,7 @@ class DonutChart extends Component {
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<tspan>{STRINGS.ZERO_ASSET}</tspan>
+						<tspan>{STRINGS['ZERO_ASSET']}</tspan>
 					</text>
 					<text
 						transform={translate(0, 10)}
@@ -199,19 +197,20 @@ class DonutChart extends Component {
 						textAnchor="middle"
 					>
 						<Link to="/wallet" className="deposit-asset">
-							{STRINGS.DEPOSIT_ASSETS.toUpperCase()}
+							{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
 						</Link>
 					</text>
 				</g>
 			);
 		} else if (data.balance > 0) {
-			const { symbol = '' } = this.props.coins[data.symbol || BASE_CURRENCY] || {};
+			const { symbol = '' } =
+				this.props.coins[data.symbol || BASE_CURRENCY] || {};
 			return (
 				<g key={i}>
 					<path
 						d={arcj(value)}
 						className={classnames(`chart_${data.symbol}`, {
-							slice_active: activeSlice
+							slice_active: activeSlice,
 						})}
 						onMouseOver={() => this.handleHover(data.symbol)}
 						onMouseOut={this.handleOut}
@@ -236,7 +235,7 @@ class DonutChart extends Component {
 							</text>
 							<text dy="5px" textAnchor="middle" className="donut-label-link">
 								<Link to="/wallet" className="deposit-asset">
-									{STRINGS.OPEN_WALLET.toUpperCase()}
+									{STRINGS['OPEN_WALLET'].toUpperCase()}
 								</Link>
 							</text>
 						</Fragment>
@@ -250,7 +249,7 @@ class DonutChart extends Component {
 }
 
 DonutChart.defaultProps = {
-	id: "donut-container"
+	id: 'donut-container',
 };
 
 export default DonutChart;

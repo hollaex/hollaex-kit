@@ -9,13 +9,13 @@ import './index.css';
 
 class Plugins extends Component {
 	constructor(props) {
-		super(props)
+		super(props);
 		this.state = {
 			activeTab: '',
 			myPlugins: [],
 			otherPlugins: [],
 			loading: false,
-			constants: {}
+			constants: {},
 		};
 	}
 
@@ -23,30 +23,37 @@ class Plugins extends Component {
 		this.generateCards();
 		this.setState({ loading: true });
 		getConstants()
-			.then(res => {
-				this.setState({ loading: false, constants: res.constants });
+			.then((res) => {
+				this.setState({ loading: false, constants: res });
 			})
-			.catch(err => {
+			.catch((err) => {
 				this.setState({ loading: false });
 			});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants))
-			|| (JSON.stringify(this.props.availablePlugins) !== JSON.stringify(prevProps.availablePlugins))) {
+		if (
+			JSON.stringify(this.state.constants) !==
+				JSON.stringify(prevState.constants) ||
+			JSON.stringify(this.props.availablePlugins) !==
+				JSON.stringify(prevProps.availablePlugins)
+		) {
 			this.generateCards();
 		}
 	}
 
 	generateCards = () => {
-		const { plugins = { enabled: '' } } = this.state.constants;
-		if (plugins) {
-			let enabledPlugins = plugins.enabled.split(',');
-			let allPluginsData = getAllPluginsData(this.props.availablePlugins);
-			let myPlugins = Object.keys(allPluginsData).filter((data) => enabledPlugins.includes(data));
-			const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
-			this.setState({ myPlugins, otherPlugins, allPluginsData });
-		}
+		const { enabled = [] } = this.state.constants;
+		// if (plugins) {
+		let allPluginsData = getAllPluginsData(this.props.availablePlugins);
+		let myPlugins = Object.keys(allPluginsData).filter((data) =>
+			enabled.includes(data)
+		);
+		const otherPlugins = Object.keys(allPluginsData).filter(
+			(data) => !enabled.includes(data)
+		);
+		this.setState({ myPlugins, otherPlugins, allPluginsData });
+		// }
 	};
 
 	tabChange = (activeTab) => {
@@ -70,65 +77,71 @@ class Plugins extends Component {
 		}
 		return (
 			<div className="app_container-content">
-				{(!this.props.availablePlugins.length) ? (
+				{!this.props.availablePlugins.length ? (
 					<div>
 						<h1>Plugins</h1>
 						<div>No Available plugins</div>
 					</div>
 				) : (
 					<Fragment>
-						{myPlugins.length
-							? <div className="mb-4">
+						{myPlugins.length ? (
+							<div className="mb-4">
 								<h1>My Plugins</h1>
 								<Divider />
 								<div className="d-flex flex-wrap">
 									{myPlugins.map((key) => {
 										let plugin = allPluginsData[key] || {};
-										return <Card className="card-width mb-4 mx-3"
-											key={plugin.title}
-											hoverable
-											cover={<img src={plugin.icon} alt={plugin.title} />}
-											onClick={() => this.onHandleCard(key)}>
-											<h4>{plugin.title}</h4>
-											<h6>{plugin.sub_title}</h6>
-											<h6>{plugin.description}</h6>
-										</Card>
+										return (
+											<Card
+												className="card-width mb-4 mx-3"
+												key={plugin.title}
+												hoverable
+												cover={<img src={plugin.icon} alt={plugin.title} />}
+												onClick={() => this.onHandleCard(key)}
+											>
+												<h4>{plugin.title}</h4>
+												<h6>{plugin.sub_title}</h6>
+												<h6>{plugin.description}</h6>
+											</Card>
+										);
 									})}
 								</div>
 							</div>
-							: null
-						}
-						{otherPlugins.length
-							? <div className="my-2">
+						) : null}
+						{otherPlugins.length ? (
+							<div className="my-2">
 								<h1>{myPlugins.length ? 'Other Plugins' : 'Plugins'}</h1>
 								<Divider />
 								<div className="d-flex flex-wrap">
 									{otherPlugins.map((key) => {
 										let plugin = allPluginsData[key] || {};
-										return <Card className="card-width mb-4 mx-3"
-											key={plugin.title}
-											hoverable
-											cover={<img src={plugin.icon} alt={plugin.title} />}
-											onClick={() => this.onHandleCard(key)}>
-											<h4>{plugin.title}</h4>
-											<h6>{plugin.sub_title}</h6>
-											<h6>{plugin.description}</h6>
-										</Card>
+										return (
+											<Card
+												className="card-width mb-4 mx-3"
+												key={plugin.title}
+												hoverable
+												cover={<img src={plugin.icon} alt={plugin.title} />}
+												onClick={() => this.onHandleCard(key)}
+											>
+												<h4>{plugin.title}</h4>
+												<h6>{plugin.sub_title}</h6>
+												<h6>{plugin.description}</h6>
+											</Card>
+										);
 									})}
 								</div>
 							</div>
-							: null
-						}
+						) : null}
 					</Fragment>
 				)}
 			</div>
-		)
+		);
 	}
 }
 
 const mapStateToProps = (state) => ({
 	availablePlugins: state.app.availablePlugins,
-	pluginsLoading: state.app.getPluginLoading
+	pluginsLoading: state.app.getPluginLoading,
 });
 
 export default connect(mapStateToProps)(Plugins);

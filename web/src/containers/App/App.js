@@ -3,16 +3,16 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import moment from 'moment';
 import { loadReCaptcha } from 'react-recaptcha-v3';
-import { Helmet } from "react-helmet";
+import { Helmet } from 'react-helmet';
 import STRINGS from '../../config/localizedStrings';
 import {
-	ICONS,
 	FLEX_CENTER_CLASSES,
 	FIT_SCREEN_HEIGHT,
 	CAPTCHA_SITEKEY,
-	DEFAULT_CAPTCHA_SITEKEY
+	DEFAULT_CAPTCHA_SITEKEY,
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
+import isEqual from 'lodash.isequal';
 
 import {
 	NOTIFICATIONS,
@@ -21,16 +21,16 @@ import {
 	FEES_STRUCTURE_AND_LIMITS,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
-	LOGOUT_CONFORMATION
+	LOGOUT_CONFORMATION,
 } from '../../actions/appActions';
 
 import {
 	getThemeClass,
 	getChatMinimized,
-	setChatMinimized
+	setChatMinimized,
 } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getTokenTimestamp, isLoggedIn } from '../../utils/token';
+import { getTokenTimestamp, isLoggedIn, isAdmin } from '../../utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -39,16 +39,15 @@ import {
 	Dialog,
 	Notification,
 	MessageDisplay,
-	CurrencyList,
 	SnackNotification,
-	SnackDialog
+	SnackDialog,
 } from '../../components';
 import {
 	ContactForm,
 	HelpfulResourcesForm,
 	Chat as ChatComponent,
 	DepositFunds,
-	ThemeProvider
+	ThemeProvider,
 } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
@@ -56,15 +55,19 @@ import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
 import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
+import OperatorControls from 'containers/OperatorControls';
 
 import {
 	getClasesForLanguage,
-	getFontClassForLanguage
+	getFontClassForLanguage,
 } from '../../utils/string';
+import { getExchangeInitialized } from '../../utils/initialize';
 
 import Socket from './Socket';
 import Container from './Container';
 import GetSocketState from './GetSocketState';
+import withEdit from 'components/EditProvider/withEdit';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class App extends Component {
 	state = {
@@ -77,7 +80,7 @@ class App extends Component {
 		idleTimer: undefined,
 		ordersQueued: [],
 		limitFilledOnOrder: '',
-		sidebarFitHeight: false
+		sidebarFitHeight: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -85,7 +88,7 @@ class App extends Component {
 	componentWillMount() {
 		const chatIsClosed = getChatMinimized();
 		this.setState({
-			chatIsClosed
+			chatIsClosed,
 		});
 		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
 			this.logout('Token is expired');
@@ -93,14 +96,22 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		this.updateThemeToBody(this.props.activeTheme);
+		const initialized = getExchangeInitialized();
+		if (
+			initialized === 'false' ||
+			(typeof initialized === 'boolean' && !initialized)
+		) {
+			this.props.router.push('/init');
+		}
+
 		if (this.props.location && this.props.location.pathname) {
 			this.checkPath(this.props.location.pathname);
 			this.handleFitHeight(this.props.location.pathname);
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { balance, prices, coins } = this.props;
 		if (
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp
@@ -123,9 +134,7 @@ class App extends Component {
 		// ) {
 		// this.goToAccountPage();
 		// }
-		if (this.props.activeTheme !== nextProps.activeTheme) {
-			this.updateThemeToBody(nextProps.activeTheme);
-		}
+
 		if (
 			this.props.location &&
 			nextProps.location &&
@@ -133,6 +142,14 @@ class App extends Component {
 		) {
 			this.checkPath(nextProps.location.pathname);
 			this.handleFitHeight(nextProps.location.pathname);
+		}
+
+		if (
+			!isEqual(prices, nextProps.prices) ||
+			!isEqual(balance, nextProps.balance) ||
+			!isEqual(coins, nextProps.coins)
+		) {
+			this.props.setPricesAndAsset(nextProps.balance, nextProps.coins);
 		}
 	}
 
@@ -153,8 +170,13 @@ class App extends Component {
 
 	checkPath = (path) => {
 		var sheet = document.createElement('style');
-		if (path === 'login' || path === 'signup'
-			|| (path === '/reset-password') || path.includes('/withdraw')) {
+		if (
+			path === 'login' ||
+			path === 'signup' ||
+			path === '/reset-password' ||
+			path.includes('/withdraw') ||
+			path.includes('/init')
+		) {
 			sheet.innerHTML = '.grecaptcha-badge { visibility: visible !important;}';
 			sheet.id = 'addCap';
 			if (document.getElementById('rmvCap') !== null) {
@@ -176,13 +198,6 @@ class App extends Component {
 			pathname = '/trade/add/tabs';
 		}
 		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
-	};
-
-	updateThemeToBody = (theme) => {
-		const themeName = theme === 'dark' ? 'dark-app-body' : '';
-		if (document.body) {
-			document.body.className = themeName;
-		}
 	};
 
 	goToPage = (path) => {
@@ -258,10 +273,11 @@ class App extends Component {
 
 	openContactForm = (data = {}) => {
 		const { links = {} } = this.props.constants;
-		this.props.openContactForm({ ...data, helpdesk: links.helpdesk })
-	}
+		this.props.openContactForm({ ...data, helpdesk: links.helpdesk });
+	};
 
 	renderDialogContent = ({ type, data }, prices = {}) => {
+		const { icons: ICONS } = this.props;
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
@@ -281,7 +297,7 @@ class App extends Component {
 						data={{
 							...data,
 							// price: prices[data.currency],
-							coins: this.props.coins
+							coins: this.props.coins,
 						}}
 						onClose={this.onCloseDialog}
 						goToPage={this.goToPage}
@@ -291,7 +307,8 @@ class App extends Component {
 			case NOTIFICATIONS.ERROR:
 				return (
 					<MessageDisplay
-						iconPath={ICONS.RED_WARNING}
+						iconId="RED_WARNING"
+						iconPath={ICONS['RED_WARNING']}
 						onClick={this.onCloseDialog}
 						text={data}
 					/>
@@ -358,7 +375,7 @@ class App extends Component {
 					<RiskyOrder
 						data={{
 							coins: this.props.coins,
-							...rest
+							...rest,
 						}}
 						onConfirm={onConfirm}
 						onClose={this.onCloseDialog}
@@ -413,7 +430,7 @@ class App extends Component {
 		// 	orderbooks[pairTemp] &&
 		// 	Object.keys(pairsTrades).length
 		// );
-	};
+	}
 
 	connectionCallBack = (value) => {
 		this.setState({ appLoaded: value });
@@ -450,8 +467,8 @@ class App extends Component {
 		return {
 			is_expired,
 			is_warning,
-			daysLeft
-		}
+			daysLeft,
+		};
 	};
 
 	render() {
@@ -471,15 +488,18 @@ class App extends Component {
 			location,
 			info,
 			enabledPlugins,
-			constants = { captcha: {} }
-			// user
+			constants = { captcha: {} },
+			isEditMode,
+			handleEditMode,
+			// user,
 		} = this.props;
+
 		const {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
 			sidebarFitHeight,
-			isSocketDataReady
+			isSocketDataReady,
 		} = this.state;
 		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
 		if (CAPTCHA_SITEKEY) {
@@ -513,7 +533,8 @@ class App extends Component {
 					<GetSocketState
 						router={router}
 						isDataReady={isSocketDataReady}
-						socketDataCallback={this.socketDataCallback} />
+						socketDataCallback={this.socketDataCallback}
+					/>
 					<div
 						className={classnames(
 							getThemeClass(activeTheme),
@@ -523,7 +544,8 @@ class App extends Component {
 							languageClasses[0],
 							{
 								'layout-mobile': isMobile,
-								'layout-desktop': isBrowser
+								'layout-desktop': isBrowser,
+								'layout-edit': isEditMode && isBrowser,
 							}
 						)}
 					>
@@ -538,7 +560,8 @@ class App extends Component {
 								languageClasses[0],
 								{
 									'layout-mobile': isMobile,
-									'layout-desktop': isBrowser
+									'layout-desktop': isBrowser,
+									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
 						>
@@ -558,12 +581,6 @@ class App extends Component {
 									logout={this.logout}
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
-									rightChildren={
-										<CurrencyList
-											className="horizontal-currency-list justify-content-end"
-											activeLanguage={activeLanguage}
-										/>
-									}
 								/>
 								{info.is_trial ? (
 									<div
@@ -575,7 +592,7 @@ class App extends Component {
 										)}
 									>
 										{STRINGS.formatString(
-											STRINGS.TRIAL_EXCHANGE_MSG,
+											STRINGS['TRIAL_EXCHANGE_MSG'],
 											constants.api_name || '',
 											expiryData.daysLeft
 										)}
@@ -590,7 +607,7 @@ class App extends Component {
 										'd-flex',
 										'justify-content-between',
 										{
-											'app_container-secondary-content': isMenubar
+											'app_container-secondary-content': isMenubar,
 										}
 									)}
 								>
@@ -601,7 +618,7 @@ class App extends Component {
 											'flex-column',
 											'justify-content-between',
 											{
-												'overflow-y': !isMobile
+												'overflow-y': !isMobile,
 											}
 										)}
 									>
@@ -635,7 +652,7 @@ class App extends Component {
 										label="hollaex-modal"
 										className={classnames('app-dialog', {
 											'app-dialog-flex':
-												activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO
+												activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO,
 										})}
 										onCloseDialog={this.onCloseDialog}
 										shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
@@ -660,20 +677,19 @@ class App extends Component {
 									>
 										{dialogIsOpen &&
 											this.renderDialogContent(
-												activeNotification,
+												activeNotification
 												// prices,
 												// activeTheme
 											)}
 									</Dialog>
-									{!isMobile &&
-										enabledPlugins.includes('chat') && (
-											<ChatComponent
-												activeLanguage={activeLanguage}
-												minimized={chatIsClosed}
-												onMinimize={this.minimizeChat}
-												chatIsClosed={chatIsClosed}
-											/>
-										)}
+									{!isMobile && enabledPlugins.includes('chat') && (
+										<ChatComponent
+											activeLanguage={activeLanguage}
+											minimized={chatIsClosed}
+											onMinimize={this.minimizeChat}
+											chatIsClosed={chatIsClosed}
+										/>
+									)}
 								</div>
 								{isMobile && (
 									<div className="app_container-bottom_bar">
@@ -696,16 +712,25 @@ class App extends Component {
 							languageClasses[0],
 							{
 								'layout-mobile': isMobile,
-								'layout-desktop': isBrowser
+								'layout-desktop': isBrowser,
 							}
 						)}
 					>
-						{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
+						{!isMobile && (
+							<AppFooter theme={activeTheme} constants={constants} />
+						)}
 					</div>
 				</div>
+				{isAdmin() && isBrowser && (
+					<OperatorControls
+						onChangeEditMode={handleEditMode}
+						editMode={isEditMode}
+						initialData={this.props.location}
+					/>
+				)}
 			</ThemeProvider>
 		);
 	}
 }
 
-export default App;
+export default withEdit(withConfig(App));

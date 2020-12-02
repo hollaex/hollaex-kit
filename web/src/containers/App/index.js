@@ -8,14 +8,14 @@ import {
 	setUserOrders,
 	addOrder,
 	updateOrder,
-	removeOrder
+	removeOrder,
 } from '../../actions/orderAction';
 import {
 	setOrderbooks,
 	setTrades,
 	setOrderbook,
 	addTrades,
-	setPairsData
+	setPairsData,
 } from '../../actions/orderbookAction';
 
 import App from './App';
@@ -37,13 +37,19 @@ import {
 	setSnackDialog,
 	setValidBaseCurrency,
 	setConfig,
-	setInfo
+	setInfo,
 } from '../../actions/appActions';
+
+import { setPricesAndAsset } from 'actions/assetActions';
 
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
-	// prices: store.orderbook.prices,
+	prices: store.orderbook.prices,
+	balance: store.user.balance,
+	totalAsset: store.asset.totalAsset,
+	oraclePrices: store.asset.oraclePrices,
+	chartData: store.asset.chartData,
 	activeNotification: store.app.activeNotification,
 	// verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
@@ -53,7 +59,7 @@ const mapStateToProps = (store) => ({
 	unreadMessages: store.app.chatUnreadMessages,
 	constants: store.app.constants,
 	info: store.app.info,
-	enabledPlugins: store.app.enabledPlugins
+	enabledPlugins: store.app.enabledPlugins,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -90,10 +96,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
-	setInfo: bindActionCreators(setInfo, dispatch)
+	setInfo: bindActionCreators(setInfo, dispatch),
+	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

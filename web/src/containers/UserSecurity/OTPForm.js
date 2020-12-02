@@ -4,15 +4,17 @@ import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 	const formFields = {
 		code: {
+			stringId: 'ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER',
 			type: 'number',
-			placeholder: STRINGS.ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER,
+			placeholder: STRINGS['ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER'],
 			validate: [required],
-			fullWidth: true
-		}
+			fullWidth: true,
+		},
 	};
 
 	return (
@@ -21,8 +23,9 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 				{renderFields(formFields)}
 				{error && <div className="warning_text">{error}</div>}
 			</div>
+			<EditWrapper stringId="ACCOUNT_SECURITY.OTP.FORM.BUTTON" />
 			<Button
-				label={STRINGS.ACCOUNT_SECURITY.OTP.FORM.BUTTON}
+				label={STRINGS['ACCOUNT_SECURITY.OTP.FORM.BUTTON']}
 				className="mb-5"
 				disabled={pristine || submitting || !valid}
 			/>
@@ -31,5 +34,5 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 };
 
 export default reduxForm({
-	form: 'OTPActivationForm'
+	form: 'OTPActivationForm',
 })(Form);
