@@ -363,24 +363,14 @@ class OrderEntry extends Component {
 				name: 'size',
 				label: (
 					<div className="d-flex justify-content-between">
-						<div className="d-flex">
-							{STRINGS.formatString(
-								STRINGS['STRING_WITH_PARENTHESIS'],
-								STRINGS['SIZE'],
-								<div
-									className="pointer text-uppercase blue-link"
-									onClick={() => this.setMax()}
-								>
-									{STRINGS['CALCULATE_MAX']}
-								</div>
-							)}
-						</div>
+						<div className="d-flex">{STRINGS['SIZE']}</div>
 						<div>
 							Balance{' '}
-							<span>
-								{balance[`${side === 'sell' ? pair_2 : pair_base}_available`]}
-							</span>{' '}
-							<span>
+							<span
+								className="pointer text-uppercase blue-link"
+								onClick={() => this.setMax()}
+							>
+								{balance[`${side === 'sell' ? pair_2 : pair_base}_available`]}{' '}
 								{side === 'sell'
 									? pair_2.toUpperCase()
 									: pair_base.toUpperCase()}
