@@ -17,9 +17,9 @@ $trade-post-font-size: 12px;
 $side-column--width: 17.5rem;
 $side-column--width-sm: 16rem;
 $side-column--width-lg: 20rem;
-$order_entry-column--width: 15rem;
-$order_entry-column--width-sm: 14rem;
-$order_entry-column--width-lg: 18rem;
+$order_entry-column--width: 20rem;
+$order_entry-column--width-sm: 20rem;
+$order_entry-column--width-lg: 20rem;
 
 @import './_TradeContainer.scss';
 @import './components/_TradeBlock.scss';
