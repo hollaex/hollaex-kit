@@ -28,7 +28,17 @@ const create = (table, query = {}) => {
 	return getModel(table).create(query);
 };
 
+const destroy = (table, query = {}) => {
+	return getModel(table).destroy(query);
+};
+
+const update = (table, query = {}) => {
+	return getModel(table).update(query);
+};
+
 module.exports = {
 	getModel,
-	create
+	create,
+	destroy,
+	update
 };
