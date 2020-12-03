@@ -98,9 +98,17 @@ class Wallet extends Component {
 						<div
 							className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}
 						>
-						<ButtonLink label={depositText} link={`/wallet/${currency}/deposit`} />
+						{
+						(coins[currency].allow_deposit)
+							? <ButtonLink label={depositText} link={`/wallet/${currency}/deposit`} />
+							: null
+						}
 						<div className="separator" />
-							<ButtonLink label={withdrawText} link={`/wallet/${currency}/withdraw`} />
+							{
+							(coins[currency].allow_withdrawal)
+								? <ButtonLink label={withdrawText} link={`/wallet/${currency}/withdraw`} />
+								: null
+							}
 						</div>
 					</div>
 				</div>
