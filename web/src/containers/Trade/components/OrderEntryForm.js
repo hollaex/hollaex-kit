@@ -17,13 +17,19 @@ const validate = (values, props) => {
 	return error;
 };
 
-const getFields = (formValues = {}, type = '') => {
+const getFields = (formValues = {}, type = '', orderType = '') => {
+	const fields = { ...formValues };
+
 	if (type === 'market') {
-		const fields = { ...formValues };
 		delete fields.price;
-		return fields;
+		delete fields.postOnly;
 	}
-	return formValues;
+
+	if (orderType !== 'stops') {
+		delete fields.stop;
+	}
+
+	return fields;
 };
 
 const Form = ({
@@ -37,12 +43,13 @@ const Form = ({
 	formValues,
 	side,
 	type,
+	orderType,
 	currencyName,
 	outsideFormError,
 	onReview,
 	formKeyDown,
 }) => {
-	const fields = getFields(formValues, type);
+	const fields = getFields(formValues, type, orderType);
 	const errorText = error || outsideFormError;
 	return (
 		<div className="trade_order_entry-form d-flex">

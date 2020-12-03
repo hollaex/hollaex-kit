@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { formValueSelector, submit, change } from 'redux-form';
+import { formValueSelector, submit, change, reset } from 'redux-form';
 import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
@@ -23,6 +23,8 @@ import {
 	required,
 	minValue,
 	maxValue,
+	minValueNE,
+	maxValueNE,
 	checkMarketPrice,
 	step,
 	normalizeFloat,
@@ -35,6 +37,17 @@ import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
 import { asksSelector, bidsSelector, tradeHistorySelector } from '../utils';
 
+const ORDER_OPTIONS = [
+	{
+		label: 'Regular',
+		value: 'regular',
+	},
+	{
+		label: 'Stops',
+		value: 'stops',
+	},
+];
+
 class OrderEntry extends Component {
 	state = {
 		formValues: {},
@@ -45,11 +58,13 @@ class OrderEntry extends Component {
 		orderPrice: 0,
 		orderFees: 0,
 		outsideFormError: '',
+		orderType: 'regular',
 	};
 
 	componentDidMount() {
+		const { side } = this.props;
 		if (this.props.pair_base) {
-			this.generateFormValues(this.props.pair);
+			this.generateFormValues(this.props.pair, '', side);
 		}
 	}
 
@@ -63,8 +78,11 @@ class OrderEntry extends Component {
 		) {
 			this.calculateOrderPrice(nextProps);
 		}
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormValues(nextProps.pair);
+		if (
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			nextProps.side !== this.props.side
+		) {
+			this.generateFormValues(nextProps.pair, '', nextProps.side);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
 			this.setState({
@@ -76,7 +94,7 @@ class OrderEntry extends Component {
 		}
 	}
 
-	setMax = () => {
+	setMax = (percent = 100) => {
 		const {
 			side,
 			balance = {},
@@ -89,6 +107,7 @@ class OrderEntry extends Component {
 		const size = parseFloat(this.props.size || 0);
 		let price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`] || 0;
+
 		if (side === 'buy') {
 			if (type === 'market') {
 				if (asks && asks.length) {
@@ -97,11 +116,17 @@ class OrderEntry extends Component {
 			}
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
-		if (maxSize !== size) {
+
+		const calculatedSize = mathjs.multiply(
+			maxSize,
+			mathjs.divide(percent, 100)
+		);
+
+		if (calculatedSize !== size) {
 			this.props.change(
 				FORM_NAME,
 				'size',
-				roundNumber(maxSize, getDecimals(increment_size))
+				roundNumber(calculatedSize, getDecimals(increment_size))
 			);
 		}
 	};
@@ -266,7 +291,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '', buyingPair = '') => {
+	generateFormValues = (pair = '', buyingPair = '', side = 'buy') => {
 		const {
 			min_size,
 			max_size,
@@ -275,10 +300,22 @@ class OrderEntry extends Component {
 			min_price,
 			max_price,
 			coins,
+			pair_base,
+			pair_2,
+			balance = {},
+			marketPrice,
+			reset,
 		} = this.props;
+
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
+			orderType: {
+				name: 'order-type',
+				type: 'dropdown',
+				options: ORDER_OPTIONS,
+				onChange: (orderType) => this.setState({ orderType }),
+			},
 			type: {
 				name: 'type',
 				type: 'tab',
@@ -291,20 +328,70 @@ class OrderEntry extends Component {
 				options: STRINGS['SIDES'],
 				validate: [required],
 			},
+			clear: {
+				type: 'clear',
+				onClick: () => reset(FORM_NAME),
+			},
+			stop: {
+				name: 'stop',
+				label: 'Trigger price',
+				type: 'number',
+				placeholder: '0',
+				normalize: normalizeFloat,
+				step: increment_price,
+				...(side === 'buy'
+					? {
+							min: marketPrice,
+							validate: [
+								required,
+								minValueNE(marketPrice),
+								step(increment_price),
+							],
+					  }
+					: {
+							max: marketPrice,
+							validate: [
+								required,
+								maxValueNE(marketPrice),
+								step(increment_price),
+							],
+					  }),
+			},
+			price: {
+				name: 'price',
+				label: STRINGS['PRICE'],
+				type: 'number',
+				placeholder: '0',
+				normalize: normalizeFloat,
+				step: increment_price,
+				min: min_price,
+				max: max_price,
+				validate: [
+					required,
+					minValue(min_price),
+					maxValue(max_price),
+					step(increment_price),
+				],
+				currency: buyData.symbol.toUpperCase(),
+				setRef: this.props.setPriceRef,
+			},
 			size: {
 				name: 'size',
 				label: (
-					<div style={{ display: 'flex' }}>
-						{STRINGS.formatString(
-							STRINGS['STRING_WITH_PARENTHESIS'],
-							STRINGS['SIZE'],
-							<div
+					<div className="d-flex justify-content-between">
+						<div className="d-flex">{STRINGS['SIZE']}</div>
+						<div>
+							Balance{' '}
+							<span
 								className="pointer text-uppercase blue-link"
-								onClick={this.setMax}
+								onClick={() => this.setMax()}
 							>
-								{STRINGS['CALCULATE_MAX']}
-							</div>
-						)}
+								{balance[`${side === 'buy' ? pair_2 : pair_base}_available`]}{' '}
+								{side === 'buy'
+									? pair_2.toUpperCase()
+									: pair_base.toUpperCase()}
+							</span>
+						</div>
 					</div>
 				),
 				type: 'number',
@@ -333,23 +420,16 @@ class OrderEntry extends Component {
 				},
 				setRef: this.props.setSizeRef,
 			},
-			price: {
-				name: 'price',
-				label: STRINGS['PRICE'],
-				type: 'number',
-				placeholder: '0',
-				normalize: normalizeFloat,
-				step: increment_price,
-				min: min_price,
-				max: max_price,
-				validate: [
-					required,
-					minValue(min_price),
-					maxValue(max_price),
-					step(increment_price),
-				],
-				currency: buyData.symbol.toUpperCase(),
-				setRef: this.props.setPriceRef,
+			slider: {
+				name: 'size-slider',
+				type: 'slider',
+				onClick: this.setMax,
+			},
+			postOnly: {
+				name: 'post_only',
+				label: <span className="px-1">Post only</span>,
+				type: 'checkbox',
+				className: 'align-start my-0',
 			},
 		};
 
@@ -388,6 +468,7 @@ class OrderEntry extends Component {
 			orderPrice,
 			orderFees,
 			outsideFormError,
+			orderType,
 		} = this.state;
 		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
 		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
@@ -416,6 +497,7 @@ class OrderEntry extends Component {
 					formKeyDown={this.formKeyDown}
 					initialValues={initialValues}
 					outsideFormError={outsideFormError}
+					orderType={orderType}
 				>
 					<Review
 						price={price}
@@ -437,7 +519,7 @@ class OrderEntry extends Component {
 const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
-	const formValues = selector(state, 'price', 'size', 'side', 'type');
+	const formValues = selector(state, 'price', 'size', 'side', 'type', 'stop');
 	const pair = state.app.pair;
 	const {
 		pair_base,
@@ -479,6 +561,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+	reset: bindActionCreators(reset, dispatch),
 	submit: bindActionCreators(submit, dispatch),
 	change: bindActionCreators(change, dispatch),
 	openFeesStructureandLimits: bindActionCreators(

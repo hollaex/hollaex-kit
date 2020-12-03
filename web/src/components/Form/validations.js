@@ -82,11 +82,25 @@ export const minValue = (minValue, message) => (value = 0) =>
 		? message ||
 		  STRINGS.formatString(STRINGS['VALIDATIONS.MIN_VALUE'], minValue)
 		: undefined;
+
+export const minValueNE = (minValue, message) => (value = 0) =>
+	value <= minValue
+		? message ||
+		  STRINGS.formatString(STRINGS['VALIDATIONS.MIN_VALUE_NE'], minValue)
+		: undefined;
+
 export const maxValue = (maxValue, message) => (value = 0) =>
 	value > maxValue
 		? message ||
 		  STRINGS.formatString(STRINGS['VALIDATIONS.MAX_VALUE'], maxValue)
 		: undefined;
+
+export const maxValueNE = (maxValue, message) => (value = 0) =>
+	value >= maxValue
+		? message ||
+		  STRINGS.formatString(STRINGS['VALIDATIONS.MAX_VALUE_NE'], maxValue)
+		: undefined;
+
 export const step = (step, message) => (value = 0) =>
 	math.larger(math.mod(math.bignumber(value), math.bignumber(step)), 0)
 		? message || STRINGS.formatString(STRINGS['VALIDATIONS.STEP'], step)
