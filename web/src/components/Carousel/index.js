@@ -16,7 +16,8 @@ class Carousel extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		this.setState({ currentIndex: 0 }, this.slidePrev);
+		const { isActive } = this.props;
+		this.setState({ currentIndex: 0 }, isActive ? this.slidePrev : null);
 	}
 
 	onInitialized = ({
@@ -52,7 +53,7 @@ class Carousel extends React.PureComponent {
 	};
 
 	render() {
-		const { items, containerClass, containerStyle } = this.props;
+		const { items, containerClass, containerStyle, isInfinite } = this.props;
 		const {
 			responsive,
 			currentIndex,
@@ -80,7 +81,7 @@ class Carousel extends React.PureComponent {
 
 				<div className="carousel__alice-wrapper">
 					<AliceCarousel
-						infinite={false}
+						infinite={isInfinite}
 						dotsDisabled={true}
 						buttonsDisabled={true}
 						items={items}
@@ -116,6 +117,7 @@ Carousel.defaultProps = {
 	groupItems: 5,
 	containerStyle: {},
 	containerClass: false,
+	isInfinite: false,
 };
 
 export default Carousel;

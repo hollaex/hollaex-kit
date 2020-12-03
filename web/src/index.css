@@ -255,13 +255,13 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 14rem);
-    max-height: calc( 100vh - 14rem);
+    min-height: calc( 100vh - 14rem);
+    max-height: calc( 100vh - 14rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -814,8 +814,8 @@ table th {
   height: calc(100% - 4rem) !important; }
 
 .layout-mobile.home_container .app_container-content {
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem); }
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem); }
 
 .home_container {
   background: url("/assets/background.png");
@@ -1877,8 +1877,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 14rem);
-  max-height: calc( 100vh - 14rem); }
+  min-height: calc( 100vh - 14rem);
+  max-height: calc( 100vh - 14rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1;
     min-width: 100vw;
@@ -1965,7 +1965,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 12px !important; }
 
@@ -2110,13 +2110,17 @@ table th {
     .summary-container .trader-acc-detail-icon svg .level_icon {
       fill: var(--labels_secondary-inactive-label-text-graphics); }
   .summary-container .trader-account-icon {
+    height: 4.5rem;
     width: 4.5rem;
     margin-right: 1rem; }
   .summary-container .trade-account-link {
     color: var(--specials_buttons-links-and-highlights);
     font-weight: bold; }
   .summary-container .summary-section_1 {
-    height: 20rem; }
+    height: 26rem; }
+    .summary-container .summary-section_1 .assets-wrapper .donut-container {
+      height: 16rem;
+      width: 100%; }
   .summary-container .summary-section_2 {
     height: 40rem; }
   .summary-container .requirements-content-text {
@@ -2295,6 +2299,54 @@ table th {
     font-weight: bold; }
   .summary-container .account-details-wrapper .status-header {
     width: 6rem; }
+  .summary-container .price-diff-down {
+    color: var(--trading_selling-related-elements); }
+  .summary-container .price-diff-up {
+    color: var(--trading_buying-related-elements); }
+  .summary-container .trade-tab-price_diff_up {
+    margin: auto 0; }
+  .summary-container .trade-tab-price_diff_up:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-bottom: 0.4rem solid var(--trading_buying-related-elements);
+    margin-bottom: 0rem;
+    display: inline-block;
+    margin-bottom: 0.2rem;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
+  .summary-container .trade-tab-price_diff_down {
+    margin: auto 0; }
+  .summary-container .trade-tab-price_diff_down:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-top: 0.4rem solid var(--trading_selling-related-elements);
+    margin-top: 0rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
+  .summary-container .trade_tabs-search-field {
+    background-color: var(--base_background);
+    color: var(--base_inactive-button);
+    margin: 0;
+    padding-right: 0.5rem; }
+    .summary-container .trade_tabs-search-field::placeholder {
+      color: var(--base_inactive-button); }
+    .summary-container .trade_tabs-search-field .field-error-content {
+      display: none; }
+  .summary-container .trade_tabs-search-outline {
+    background: var(--labels_secondary-inactive-label-text-graphics); }
 
 .fee-limits-wrapper {
   width: 38rem; }
@@ -2356,6 +2408,52 @@ table th {
     font-weight: normal !important;
     padding: 0.25rem 1rem; }
 
+.markets-section-wrapper .market-coin {
+  width: 3rem; }
+
+.markets-section-wrapper .price-diff-down {
+  color: var(--trading_selling-related-elements); }
+
+.markets-section-wrapper .price-diff-up {
+  color: var(--trading_buying-related-elements); }
+
+.markets-section-wrapper .app-price_diff_up {
+  margin-left: 0.5rem; }
+
+.markets-section-wrapper .app-price_diff_up:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 0.4rem solid transparent;
+  border-right: 0.4rem solid transparent;
+  border-bottom: 0.4rem solid var(--trading_buying-related-elements);
+  margin-bottom: 0rem;
+  display: inline-block;
+  margin-bottom: 0.2rem;
+  margin-right: 0.5rem;
+  position: relative;
+  top: calc(50% - 0.6rem); }
+
+.markets-section-wrapper .app-price_diff_down {
+  margin-left: 0.5rem; }
+
+.markets-section-wrapper .app-price_diff_down:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 0.4rem solid transparent;
+  border-right: 0.4rem solid transparent;
+  border-top: 0.4rem solid var(--trading_selling-related-elements);
+  margin-top: 0rem;
+  display: inline-block;
+  margin-right: 0.5rem;
+  position: relative;
+  top: calc(50% - 0.6rem); }
+
 @media (max-width: 920px) {
   .summary-container .summary-block_wrapper .summary-block-title,
   .summary-container .summary-block-secondaryTitle {
@@ -2385,7 +2483,7 @@ table th {
     .summary-container .requirement-wrapper {
       width: 65% !important; }
     .summary-container .summary-section_1 {
-      height: 23rem !important; }
+      height: 29rem !important; }
     .summary-container .summary-section_2 {
       height: 43rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -2398,7 +2496,7 @@ table th {
   .summary-container .trader-account-wrapper {
     font-size: 0.9rem; }
   .summary-container .summary-section_1 {
-    height: 25rem !important; }
+    height: 29rem !important; }
   .summary-container .summary-section_2 {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -5399,14 +5497,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {

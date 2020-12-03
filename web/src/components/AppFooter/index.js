@@ -12,7 +12,7 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 		contact,
 		facebook,
 		github,
-		helpdesk,
+		// helpdesk,
 		information,
 		instagram,
 		linkedin,
@@ -39,7 +39,7 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 				},
 			],
 		},
-		(contact || terms || privacy) && {
+		(contact || terms || privacy || website) && {
 			TITLE: strings['FOOTER.SECTIONS.SECTION_1_TITLE'],
 			LINKS: [
 				contact && {
@@ -60,7 +60,7 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 				},
 			],
 		},
-		(github || api) && {
+		(github || api || information) && {
 			TITLE: strings['FOOTER.SECTIONS.SECTION_3_TITLE'],
 			LINKS: [
 				github && {
@@ -102,15 +102,7 @@ const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 				// }
 			],
 		},
-		(twitter ||
-			telegram ||
-			facebook ||
-			instagram ||
-			linkedin ||
-			website ||
-			helpdesk ||
-			information ||
-			youtube) && {
+		(twitter || telegram || facebook || instagram || linkedin || youtube) && {
 			TITLE: strings['FOOTER.SECTIONS.SECTION_6_TITLE'],
 			LINKS: [
 				twitter && {

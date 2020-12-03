@@ -114,6 +114,14 @@ const Tiers = () => {
 			icon: '',
 			deposit_limit: 0,
 			withdrawal_limit: 0,
+			fees: {
+				taker: {
+					default: 0,
+				},
+				maker: {
+					default: 0,
+				},
+			},
 		});
 	};
 	const handleClose = () => {
@@ -176,11 +184,14 @@ const Tiers = () => {
 	return (
 		<div className="tiers-wrapper w-100">
 			<Tabs>
-				<TabPane tab="Account tiers" key="tiers">
-					<TiersContainer
+				<TabPane tab="Fees" key="fees">
+					<Fees
 						userTiers={userTiers}
-						handleEdit={handleEdit}
-						handleAdd={handleAdd}
+						onEditFees={(pair) => {
+							setOpen(true);
+							onTypeChange('edit-fees');
+							setPair(pair);
+						}}
 					/>
 				</TabPane>
 				<TabPane tab="Limits" key="limits">
@@ -192,14 +203,11 @@ const Tiers = () => {
 						}}
 					/>
 				</TabPane>
-				<TabPane tab="Fees" key="fees">
-					<Fees
+				<TabPane tab="Account tiers" key="tiers">
+					<TiersContainer
 						userTiers={userTiers}
-						onEditFees={(pair) => {
-							setOpen(true);
-							onTypeChange('edit-fees');
-							setPair(pair);
-						}}
+						handleEdit={handleEdit}
+						handleAdd={handleAdd}
 					/>
 				</TabPane>
 			</Tabs>

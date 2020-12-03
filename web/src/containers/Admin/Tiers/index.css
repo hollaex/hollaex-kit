@@ -4,6 +4,7 @@
 	max-width: 50rem;
 	min-width: 25rem;
 	padding: 12px;
+	color: #ffffff;
 }
 .tiers-container:last-child {
 	border-bottom: 1px solid #c4c4c4;
@@ -60,4 +61,12 @@ td.type-column {
 }
 .tier-section-icon {
 	width: 4rem;
+}
+.admin-link-highlight {
+	color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.admin-link-highlight:hover {
+	text-decoration: none;
 }

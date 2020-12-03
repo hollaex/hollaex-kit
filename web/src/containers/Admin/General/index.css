@@ -140,8 +140,8 @@
 }
 .candle-icon {
 	position: absolute;
-	right: 7px;
-	top: 23px;
+	right: 0;
+	top: 0;
 	width: 74px;
 }
 .wallet-icon {
@@ -190,6 +190,12 @@
 .general-wrapper .ant-radio-wrapper {
 	height: 100px;
 	width: 420px;
+}
+.general-wrapper .ant-radio-group {
+	width: 100%;
+	margin-top: 21px;
+	display: flex;
+	flex-direction: column;
 }
 .general-wrapper .ant-radio-wrapper span:last-child {
 	color: #ffffff;
@@ -253,6 +259,7 @@ h2,
 .custom-form-wrapper {
 	display: flex;
 	margin-top: 1.5rem;
+	width: 70%;
 }
 .section-wrapper {
 	width: 220px;

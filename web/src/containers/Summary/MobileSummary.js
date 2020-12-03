@@ -3,11 +3,12 @@ import classnames from 'classnames';
 // import moment from 'moment';
 
 import SummaryBlock from './components/SummaryBlock';
-// import TraderAccounts from './components/TraderAccounts';
+import TraderAccounts from './components/TraderAccounts';
 // import RewardsBonus from './components/RewardsBonus';
 import AccountAssets from './components/AccountAssets';
 // import TradingVolume from './components/TradingVolume';
-// import AccountDetails from './components/AccountDetails';
+import AccountDetails from './components/AccountDetails';
+import Markets from './components/Markets';
 // import AccountWaveAuction from './components/AccountWaveAuction';
 
 import {
@@ -51,12 +52,13 @@ const MobileSummary = ({
 				'apply_rtl'
 			)}
 		>
-			{/*<div className="summary-section_1 trader-account-wrapper d-flex w-100">
+			<div className="summary-section_1 trader-account-wrapper d-flex w-100">
 				<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
 					<TraderAccounts
 						user={user}
 						coins={coins}
 						pairs={pairs}
+						config={config}
 						logout={logout}
 						activeTheme={activeTheme}
 						onInviteFriends={onInviteFriends}
@@ -65,7 +67,7 @@ const MobileSummary = ({
 						verification_level={verification_level}
 					/>
 				</SummaryBlock>
-			</div>*/}
+			</div>
 			{/*<div className="summary-section_1 requirement-wrapper d-flex w-100">
 				<SummaryBlock
 					title={STRINGS["SUMMARY.URGENT_REQUIREMENTS"]}
@@ -104,6 +106,19 @@ const MobileSummary = ({
 					/>
 				</SummaryBlock>
 			</div>
+			<div className="w-100">
+				<SummaryBlock
+					stringId="SUMMARY.MARKETS"
+					title={STRINGS['SUMMARY.MARKETS']}
+				>
+					<Markets
+						user={user}
+						coins={coins}
+						pairs={pairs}
+						activeTheme={activeTheme}
+					/>
+				</SummaryBlock>
+			</div>
 			{/*<div className="trading-volume-wrapper w-100">
 				<SummaryBlock
 					title={
@@ -137,8 +152,8 @@ const MobileSummary = ({
 					)}
 				</SummaryBlock>
 			</div>*/}
-			{/*<SummaryBlock
-				title={STRINGS["SUMMARY.ACCOUNT_DETAILS"]}
+			<SummaryBlock
+				title={STRINGS['SUMMARY.ACCOUNT_DETAILS']}
 				secondaryTitle={traderAccTitle}
 				wrapperClassname="w-100"
 			>
@@ -155,7 +170,7 @@ const MobileSummary = ({
 					onUpgradeAccount={onUpgradeAccount}
 					verification_level={verification_level}
 				/>
-			</SummaryBlock>*/}
+			</SummaryBlock>
 		</div>
 	);
 };
