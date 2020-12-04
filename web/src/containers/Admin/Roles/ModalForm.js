@@ -169,7 +169,11 @@ export const RoleAccess = ({ handleClose }) => {
 				</div>
 			</div>
 			<div className="mt-4">
-				<Button type="primary" className="green-btn" onClick={handleClose}>
+				<Button
+					type="primary"
+					className="green-btn w-100"
+					onClick={handleClose}
+				>
 					Back
 				</Button>
 			</div>

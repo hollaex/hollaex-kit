@@ -5,10 +5,12 @@ import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
-// import TraderAccounts from './components/TraderAccounts';
+import TraderAccounts from './components/TraderAccounts';
 // import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 // import TradingVolume from './components/TradingVolume';
+import AccountDetails from './components/AccountDetails';
+import Markets from './components/Markets';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
@@ -19,6 +21,7 @@ import {
 	logoutconfirm,
 	setNotification,
 	NOTIFICATIONS,
+	requestTiers,
 } from '../../actions/appActions';
 import {
 	BASE_CURRENCY,
@@ -44,6 +47,7 @@ class Summary extends Component {
 		if (user.id) {
 			this.setCurrentTradeAccount(user);
 			this.props.getUserReferralCount();
+			this.props.requestTiers();
 		}
 		if (tradeVolumes.fetched) {
 			let lastMonthVolume = getLastMonthVolume(
@@ -133,7 +137,11 @@ class Summary extends Component {
 			chartData,
 			totalAsset,
 		} = this.props;
-		const { selectedAccount, lastMonthVolume } = this.state;
+		const {
+			selectedAccount,
+			lastMonthVolume,
+			currentTradingAccount,
+		} = this.state;
 
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
@@ -173,13 +181,14 @@ class Summary extends Component {
 					/>
 				) : (
 					<div>
-						{/*<div className="d-flex align-items-center">
+						<div className="d-flex align-items-center">
 							<div className="summary-section_1 trader-account-wrapper d-flex">
-								<SummaryBlock title={traderAccTitle}>
+								<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
 									<TraderAccounts
 										user={user}
 										pairs={pairs}
 										coins={coins}
+										config={config_level}
 										activeTheme={activeTheme}
 										onFeesAndLimits={this.onFeesAndLimits}
 										onUpgradeAccount={this.onUpgradeAccount}
@@ -189,7 +198,7 @@ class Summary extends Component {
 								</SummaryBlock>
 							</div>
 							<div className="summary-section_1 requirement-wrapper d-flex">
-								<SummaryBlock
+								{/* <SummaryBlock
 									title={STRINGS["SUMMARY.TASKS"]}
 									wrapperClassname="w-100"
 								>
@@ -199,36 +208,50 @@ class Summary extends Component {
 										lastMonthVolume={lastMonthVolume}
 										contentClassName="requirements-content"
 									/>
-								</SummaryBlock>
-							</div>
-						</div>*/}
-						<div className="d-flex align-items-center">
-							<div
-								className={classnames('assets-wrapper', 'asset_wrapper_width')}
-							>
-								<SummaryBlock
-									stringId="SUMMARY.ACCOUNT_ASSETS"
-									title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
-									secondaryTitle={
-										SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
-											<span>
-												<span className="title-font">{totalAssets}</span>
-												{` ${fullname}`}
-											</span>
-										) : null
-									}
-									// wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
+								</SummaryBlock> */}
+								<div
+									className={classnames(
+										'assets-wrapper',
+										'asset_wrapper_width'
+									)}
 								>
-									<AccountAssets
-										user={user}
-										chartData={chartData}
-										totalAssets={totalAssets}
-										balance={balance}
-										coins={coins}
-										activeTheme={activeTheme}
-									/>
-								</SummaryBlock>
+									<SummaryBlock
+										stringId="SUMMARY.ACCOUNT_ASSETS"
+										title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
+										secondaryTitle={
+											SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
+												<span>
+													<span className="title-font">{totalAssets}</span>
+													{` ${fullname}`}
+												</span>
+											) : null
+										}
+										// wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
+									>
+										<AccountAssets
+											user={user}
+											chartData={chartData}
+											totalAssets={totalAssets}
+											balance={balance}
+											coins={coins}
+											activeTheme={activeTheme}
+										/>
+									</SummaryBlock>
+								</div>
 							</div>
+						</div>
+						<div className="w-100">
+							<SummaryBlock
+								stringId="SUMMARY.MARKETS"
+								title={STRINGS['SUMMARY.MARKETS']}
+							>
+								<Markets
+									user={user}
+									coins={coins}
+									pairs={pairs}
+									activeTheme={activeTheme}
+								/>
+							</SummaryBlock>
 							{/*<div className="trading-volume-wrapper">
                                 <SummaryBlock
                                     title={STRINGS["SUMMARY.TRADING_VOLUME"]}
@@ -243,6 +266,27 @@ class Summary extends Component {
                                     <TradingVolume user={user} />
                                 </SummaryBlock>
                             </div>*/}
+						</div>
+						<div className="w-100">
+							<SummaryBlock
+								stringId="SUMMARY.ACCOUNT_DETAILS"
+								title={STRINGS['SUMMARY.ACCOUNT_DETAILS']}
+								secondaryTitle={currentTradingAccount.name}
+							>
+								<AccountDetails
+									user={user}
+									coins={coins}
+									pairs={pairs}
+									activeTheme={activeTheme}
+									config={config_level}
+									currentTradingAccount={currentTradingAccount.symbol}
+									selectedAccount={selectedAccount}
+									lastMonthVolume={lastMonthVolume}
+									onAccountTypeChange={this.onAccountTypeChange}
+									onFeesAndLimits={this.onFeesAndLimits}
+									onUpgradeAccount={this.onUpgradeAccount}
+								/>
+							</SummaryBlock>
 						</div>
 					</div>
 				)}
@@ -278,6 +322,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
+	requestTiers: bindActionCreators(requestTiers, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

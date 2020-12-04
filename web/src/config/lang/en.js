@@ -220,6 +220,8 @@ const nestedContent = {
 			'Insufficient balance available ({0}) to perform the operation ({1}).',
 		MIN_VALUE: 'Value must be {0} or higher.',
 		MAX_VALUE: 'Value must be {0} or lower.',
+		MIN_VALUE_NE: 'Value must be higher than {0}.',
+		MAX_VALUE_NE: 'Value must be lower than {0}.',
 		INSUFFICIENT_BALANCE: 'Insufficient balance',
 		PASSWORDS_DONT_MATCH: "Password don't match",
 		USER_EXIST: 'Email has already been registered',
@@ -1224,6 +1226,11 @@ const nestedContent = {
 		WAVE_NUMBER: 'Wave Number', // new
 		DISCOUNT: '( {0}% discount )', // new
 		MY_FEES_LIMITS: ' My Fees and Limits', // new
+		MARKETS: 'Markets', // new
+		CHANGE_24H: '24H Change', // new
+		VOLUME_24H: '24H Volume', // new
+		PRICE_GRAPH_24H: '24H Price graph', // new
+		VIEW_MORE_MARKETS: 'View more markets', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new

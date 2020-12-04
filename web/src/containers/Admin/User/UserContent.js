@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Tabs, Button, Breadcrumb, message } from 'antd';
+import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 
 import {
-	Balance,
+	// Balance,
 	// Logins,
 	// Audits,
 	// Verification,
@@ -19,7 +19,7 @@ import {
 // import UserData from './UserData';
 import BankData from './BankData';
 import AboutData from './AboutData';
-import { isSupport, isAdmin, isKYC } from '../../../utils/token';
+import { isSupport, isKYC } from '../../../utils/token';
 import { STATIC_ICONS } from 'config/icons';
 import { deactivateOtp, flagUser, activateUser } from './actions';
 
@@ -35,15 +35,32 @@ class UserContent extends Component {
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
 		};
-		return deactivateOtp(postValues)
-			.then((res) => {
-				refreshData({ otp_enabled: false });
-			})
-			.catch((err) => {
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
-			});
+		Modal.confirm({
+			title: <div className="modal-confirm-title">Disable 2FA</div>,
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
+			content: (
+				<div>
+					<div>
+						Disabling 2FA on this account may leave this account vulnerable.
+					</div>
+					<div className="mt-3">
+						Are you sure want to disable 2FA for this account?
+					</div>
+				</div>
+			),
+			onOk() {
+				deactivateOtp(postValues)
+					.then((res) => {
+						refreshData({ otp_enabled: false });
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
 	};
 
 	flagUser = (value) => {
@@ -52,15 +69,37 @@ class UserContent extends Component {
 			user_id: parseInt(userInformation.id, 10),
 			flagged: value,
 		};
-		flagUser(postValues)
-			.then((res) => {
-				refreshData(postValues);
-			})
-			.catch((err) => {
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
-			});
+		Modal.confirm({
+			title: (
+				<div>
+					{value ? (
+						<div className="modal-confirm-title">Flag user</div>
+					) : (
+						<div className="modal-confirm-title">Unflag user</div>
+					)}
+				</div>
+			),
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
+			content: (
+				<div>
+					{value
+						? 'Are you sure want to flag this user?'
+						: 'Are you sure want to unflag this user?'}
+				</div>
+			),
+			onOk() {
+				flagUser(postValues)
+					.then((res) => {
+						refreshData(postValues);
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
 	};
 
 	freezeAccount = (value) => {
@@ -69,20 +108,51 @@ class UserContent extends Component {
 			user_id: parseInt(userInformation.id, 10),
 			activated: value,
 		};
-		activateUser(postValues)
-			.then((res) => {
-				refreshData(postValues);
-			})
-			.catch((err) => {
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
-			});
+		Modal.confirm({
+			title: (
+				<div>
+					{!value ? (
+						<div className="modal-confirm-title">Freeze account</div>
+					) : (
+						<div className="modal-confirm-title">Unfreeze account</div>
+					)}
+				</div>
+			),
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
+			content: (
+				<div>
+					{!value ? (
+						<div>
+							Freezing this account will make this account inaccessible
+							<div className="mt-3">
+								Are you sure want to freeze this account?
+							</div>
+						</div>
+					) : (
+						<div className="mt-3">
+							Are you sure want to unfreeze this account?
+						</div>
+					)}
+				</div>
+			),
+			onOk() {
+				activateUser(postValues)
+					.then((res) => {
+						refreshData(postValues);
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
 	};
 
 	render() {
 		const {
-			coins,
+			// coins,
 			constants,
 			userInformation,
 			userImages,
@@ -104,7 +174,7 @@ class UserContent extends Component {
 			is_tech,
 		} = userInformation;
 		const isSupportUser = isSupport();
-		const pairs = Object.keys(coins) || [];
+		// const pairs = Object.keys(coins) || [];
 		const verificationInitialValues = {};
 		const roleInitialValues = {};
 		if (verification_level) {
@@ -205,11 +275,11 @@ class UserContent extends Component {
 							<TradeHistory userId={userInformation.id} />
 						</TabPane>
 					)}
-					{isAdmin() && (
+					{/* {isAdmin() && (
 						<TabPane tab="Funding" key="deposit">
 							<Balance user_id={id} pairs={pairs} />
 						</TabPane>
-					)}
+					)} */}
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Deposits" key="deposits">
 							{/*<Deposits*/}

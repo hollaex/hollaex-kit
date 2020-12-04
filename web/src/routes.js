@@ -36,7 +36,6 @@ import {
 	Wallets,
 	UserFees,
 	PATHS,
-	ExpiredExchange,
 	AdminOrders,
 	MobileHome,
 	Broker,
@@ -53,6 +52,7 @@ import {
 	General,
 	Tiers,
 	Roles,
+	Resources,
 } from './containers';
 
 import store from './store';
@@ -445,6 +445,11 @@ export default (
 				name="Admin settings"
 				component={withAdminProps(Settings, 'settings')}
 			/>
+			<Route
+				path="/admin/resources"
+				name="Admin resources"
+				component={withAdminProps(Resources, 'resources')}
+			/>
 		</Route>
 		<Route
 			path="privacy-policy"
@@ -458,7 +463,6 @@ export default (
 			content="terms"
 			onEnter={requireAuth}
 		/>
-		<Route path="expired-exchange" component={ExpiredExchange} />
 		<Route path="admin-login" name="admin-login" component={AdminLogin} />
 		<Route path="init" name="initWizard" component={Init} />
 		<Route path="*" component={NotFound} />

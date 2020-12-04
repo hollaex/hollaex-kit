@@ -23,7 +23,7 @@ const TradingInterface = ({
 		}
 	};
 	return (
-		<div className="asset-content">
+		<div className="asset-content show-scroll">
 			<div>
 				Select the trading interface that will be available on your exchange.
 				All interfaces includes a crypto wallet.

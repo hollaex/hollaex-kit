@@ -59,7 +59,11 @@ const TiersContainer = ({
 								onClick={() => {
 									handleEdit({
 										level: parseInt(tier, 10),
-										...tierData,
+										id: tierData.id,
+										name: tierData.name,
+										description: tierData.description,
+										icon: tierData.icon,
+										note: tierData.note,
 									});
 								}}
 							>

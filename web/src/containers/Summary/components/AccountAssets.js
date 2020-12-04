@@ -41,7 +41,7 @@ const AccountAssets = ({
 	};
 
 	return (
-		<div className="summary-section_2">
+		<div>
 			<div className="summary-content-txt assets-description">
 				<div>
 					<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">
@@ -71,7 +71,7 @@ const AccountAssets = ({
 							<DonutChart coins={coins} chartData={chartData} />
 						)}
 					</div>
-					<Carousel items={assetCards()} groupItems={7} />
+					<Carousel items={assetCards()} groupItems={7} isActive={true} />
 				</div>
 			</div>
 			{SHOW_TOTAL_ASSETS ? (

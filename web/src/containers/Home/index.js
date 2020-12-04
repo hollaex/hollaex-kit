@@ -4,11 +4,8 @@ import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
 import { isBrowser, isMobile } from 'react-device-detect';
-import moment from 'moment';
 
 import { AppBar, AppFooter } from '../../components';
-import STRINGS from '../../config/localizedStrings';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage, getExchangeInfo } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
@@ -39,37 +36,6 @@ class Home extends Component {
 			this.container = el;
 			this.onResize();
 		}
-	};
-
-	checkExchangeExpiry = () => {
-		const { info = {} } = this.props;
-		let is_expired = false;
-		let is_warning = false;
-		let daysLeft = 0;
-		if (info.status) {
-			if (info.is_trial) {
-				if (info.active) {
-					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
-						is_warning = true;
-						daysLeft = moment(info.expiry).diff(moment(), 'days');
-					} else if (info.expiry && moment().isAfter(info.expiry, 'second')) {
-						is_expired = true;
-					}
-				} else {
-					is_expired = true;
-				}
-			} else {
-				is_expired = false;
-				is_warning = false;
-			}
-		} else {
-			is_expired = true;
-		}
-		return {
-			is_expired,
-			is_warning,
-			daysLeft,
-		};
 	};
 
 	onResize = () => {
@@ -125,12 +91,10 @@ class Home extends Component {
 			// requestQuickTrade,
 			activeLanguage,
 			router,
-			info,
 			activeTheme,
 			constants = {},
 		} = this.props;
 		const { style } = this.state;
-		const expiryData = this.checkExchangeExpiry();
 		return (
 			<div
 				className={classnames(
@@ -154,22 +118,6 @@ class Home extends Component {
 					router={router}
 					logout={this.onLogout}
 				/>
-				{info.is_trial || !Object.keys(info).length ? (
-					<div
-						className={classnames('w-100', 'p-1', ...FLEX_CENTER_CLASSES, {
-							'exchange-trial': info.is_trial,
-							'exchange-expired': expiryData.is_expired,
-						})}
-					>
-						{expiryData.is_expired
-							? STRINGS['EXPIRY_EXCHANGE_MSG']
-							: STRINGS.formatString(
-									STRINGS['TRIAL_EXCHANGE_MSG'],
-									constants.api_name || '',
-									expiryData.daysLeft
-							  )}
-					</div>
-				) : null}
 				<div
 					className={classnames(
 						'app_container-content',
