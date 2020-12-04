@@ -24,21 +24,26 @@ const getModel = (table = '') => {
 	return models[table];
 };
 
-const create = (table, query = {}) => {
-	return getModel(table).create(query);
+const create = (table, query = {}, options = {}) => {
+	return getModel(table).create(query, options);
 };
 
-const destroy = (table, query = {}) => {
-	return getModel(table).destroy(query);
+const destroy = (table, query = {}, options = {}) => {
+	return getModel(table).destroy(query, options);
 };
 
-const update = (table, query = {}) => {
-	return getModel(table).update(query);
+const update = (table, query = {}, options = {}) => {
+	return getModel(table).update(query, options);
+};
+
+const findOrCreate = (table, query = {}, options = {}) => {
+	return getModel(table).findOrCreate(query, options);
 };
 
 module.exports = {
 	getModel,
 	create,
 	destroy,
-	update
+	update,
+	findOrCreate
 };
