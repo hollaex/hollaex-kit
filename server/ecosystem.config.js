@@ -54,7 +54,7 @@ const plugins = {
 	node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
-		PORT: process.env.PLUGIN_PORT || 10090,
+		PORT: process.env.PLUGIN_PORT || 10011,
 	}
 };
 
