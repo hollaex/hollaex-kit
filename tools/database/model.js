@@ -36,14 +36,9 @@ const update = (table, query = {}, options = {}) => {
 	return getModel(table).update(query, options);
 };
 
-const findOrCreate = (table, query = {}, options = {}) => {
-	return getModel(table).findOrCreate(query, options);
-};
-
 module.exports = {
 	getModel,
 	create,
 	destroy,
-	update,
-	findOrCreate
+	update
 };
