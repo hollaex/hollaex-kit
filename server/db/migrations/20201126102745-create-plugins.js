@@ -19,7 +19,8 @@ module.exports = {
 				},
 				name: {
 					type: Sequelize.STRING,
-					allowNull: false
+					allowNull: false,
+					unique: true
 				},
 				description: {
 					type: Sequelize.STRING,
@@ -41,6 +42,23 @@ module.exports = {
 					type: Sequelize.BOOLEAN,
 					allowNull: false,
 					defaultValue: true
+				},
+				prescript: {
+					type: Sequelize.JSONB,
+					defaultValue: {
+						install: [],
+						run: null
+					}
+				},
+				postscript: {
+					type: Sequelize.JSONB,
+					defaultValue: {
+						run: null
+					}
+				},
+				meta: {
+					type: Sequelize.JSONB,
+					defaultValue: {}
 				},
 				created_at: {
 					allowNull: false,
