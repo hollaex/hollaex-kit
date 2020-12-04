@@ -3,7 +3,7 @@
 var app = require('express')();
 const _eval = require('eval');
 const lodash = require('lodash');
-const PORT = process.env.PLUGIN_PORT || 10090;
+const PORT = process.env.PLUGIN_PORT || 10011;
 const toolsLib = require('hollaex-tools-lib');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
@@ -13,10 +13,19 @@ const { logEntryRequest, stream, loggerPlugin } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
 const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const npmi = require('npmi');
+const multer = require('multer');
+const moment = require('moment');
 
 const installLibrary = (library) => {
 	return new Promise((resolve, reject) => {
-		npmi({ name: library }, (err, result) => {
+		npmi({
+			name: library,
+			npmLoad: {
+				save: false,
+				forceInstall: false,
+				loglevel: 'silent'
+			}
+		}, (err, result) => {
 			if (err) {
 				reject(err);
 			} else {
@@ -35,6 +44,13 @@ app.use(bodyParser.json());
 app.use(logEntryRequest);
 app.use(domainMiddleware);
 helmetMiddleware(app);
+
+// Deposit/Withdrawal Event Emitted in controller
+// ToolsLib has a listener
+
+// test to see if model.index can be updates
+// can announcement model be created in plugin script
+// have to run associate (test outo)
 
 app.get('/plugins', (req, res) => {
 	res.json({ message: 'Welcome to HollaEx Plugins' });
@@ -76,7 +92,7 @@ app.put('/plugins/meta', [
 		req.auth.sub
 	);
 
-	const { name, meta } = req.query;
+	const { name, meta } = req.body;
 
 	loggerPlugin.info(req.uuid, 'PUT /plugins/meta name', name);
 
@@ -341,7 +357,7 @@ app.put('/plugins', [
 							}
 						});
 					}
-					if (value.run && lodash.isString(value.run)) {
+					if (value.run && !lodash.isString(value.run)) {
 						return false;
 					}
 					return true;
@@ -539,7 +555,7 @@ app.post('/plugins', [
 							}
 						});
 					}
-					if (value.run && lodash.isString(value.run)) {
+					if (value.run && !lodash.isString(value.run)) {
 						return false;
 					}
 					return true;
@@ -555,7 +571,7 @@ app.post('/plugins', [
 					if (!lodash.isPlainObject(value)) {
 						return false;
 					}
-					if (value.run && lodash.isString(value.run)) {
+					if (value.run && !lodash.isString(value.run)) {
 						return false;
 					}
 					return true;
@@ -633,7 +649,7 @@ app.post('/plugins', [
 					}
 
 					loggerPlugin.info(req.uuid, 'POST /plugins enabled', name);
-					_eval(plugin.script, plugin.name, { app, toolsLib, lodash, expressValidator }, true);
+					_eval(plugin.script, plugin.name, { app, moment, toolsLib, multer, lodash, expressValidator }, true);
 				} catch (err) {
 					loggerPlugin.error(req.uuid, 'POST /plugins error while running script', err.message);
 					throw err;
@@ -653,26 +669,29 @@ toolsLib.database.findAll('plugin', {
 })
 	.then(async (plugins) => {
 		for (let plugin of plugins) {
-			console.log(plugin.name)
-			loggerPlugin.verbose('plugin', plugin.name, 'enabled');
 			try {
+				loggerPlugin.verbose('plugin', plugin.name, 'enabling');
 				const context = {
 					app,
 					toolsLib,
 					lodash,
 					expressValidator,
 					loggerPlugin,
+					multer,
+					moment,
 					meta: plugin.meta,
 					installedLibraries: {}
 				};
-
 				if (plugin.prescript.install) {
+					loggerPlugin.verbose('plugin', plugin.name, 'installing packages');
 					for (let library of plugin.prescript.install) {
 						context.installedLibraries[library] = await installLibrary(library);
 					}
+					loggerPlugin.verbose('plugin', plugin.name, 'packages installed');
 				}
 
 				_eval(plugin.script, plugin.name, context, true);
+				loggerPlugin.verbose('plugin', plugin.name, 'enabled');
 			} catch (err) {
 				loggerPlugin.error('plugin', plugin.name, 'error while installing prepackages', err.message);
 			}
