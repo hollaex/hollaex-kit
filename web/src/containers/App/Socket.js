@@ -9,6 +9,7 @@ import {
 	LANGUAGE_KEY,
 } from '../../config/constants';
 import { isMobile } from 'react-device-detect';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
 
 import { getMe, setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
@@ -274,13 +275,17 @@ class Container extends Component {
 					args: ['orderbook', 'trade', 'wallet', 'order', 'deposit'],
 				})
 			);
-			this.wsInterval = setInterval(() => {
-				privateSocket.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+			// this.wsInterval = setInterval(() => {
+			// 	privateSocket.send(
+			// 		JSON.stringify({
+			// 			op: 'ping',
+			// 		})
+			// 	);
+			// }, 55000);
+			setWsHeartbeat(privateSocket, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
 		};
 
 		privateSocket.onmessage = (evt) => {
