@@ -13,8 +13,8 @@ const nestedColors = {
 	},
 
 	labels: {
-		'important-active-labels-text-graphics': '#000000',
-		'secondary-inactive-label-text-graphics': '#808080',
+		'important-active-labels-text-graphics': '#e1e2d8',
+		'secondary-inactive-label-text-graphics': '#beb3b3',
 	},
 
 	trading: {
