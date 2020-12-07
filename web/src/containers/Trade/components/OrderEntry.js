@@ -291,6 +291,12 @@ class OrderEntry extends Component {
 		}
 	};
 
+	reset = () => {
+		const { reset, change } = this.props;
+		reset(FORM_NAME);
+		change(FORM_NAME, 'price', '');
+	};
+
 	generateFormValues = (pair = '', buyingPair = '', side = 'buy') => {
 		const {
 			min_size,
@@ -304,7 +310,6 @@ class OrderEntry extends Component {
 			pair_2,
 			balance = {},
 			marketPrice,
-			reset,
 		} = this.props;
 
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
@@ -329,8 +334,9 @@ class OrderEntry extends Component {
 				validate: [required],
 			},
 			clear: {
+				name: 'clear',
 				type: 'clear',
-				onClick: () => reset(FORM_NAME),
+				onClick: this.reset,
 			},
 			stop: {
 				name: 'stop',
