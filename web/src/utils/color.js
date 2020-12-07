@@ -17,6 +17,16 @@ export const calculateThemes = (themes) => {
 
 const pushCalculatedColors = (themeData) => {
 	const calculatedColors = {
+		'calculated_trading_buying-orderbook-bar': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.12)
+			.string(),
+		'calculated_trading_selling-orderbook-bar': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.12)
+			.string(),
 		'calculated_trading_buying-related-text': Color(
 			themeData['trading_buying-related-elements']
 		).isLight()

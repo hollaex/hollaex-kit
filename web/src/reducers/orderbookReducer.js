@@ -50,6 +50,7 @@ const INITIAL_STATE = {
 	pairsOrderbooks: {},
 	pairsTrades: {},
 	pairs: {},
+	depth: parseInt(localStorage.getItem('orderbook_depth') || 1, 10),
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
@@ -297,6 +298,11 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			return {
 				...state,
 				pairs: payload.pairs,
+			};
+		case ORDERBOOK_CONSTANTS.SET_ORDERBOOK_DEPTH:
+			return {
+				...state,
+				depth: payload,
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

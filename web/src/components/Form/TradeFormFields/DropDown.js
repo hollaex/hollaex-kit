@@ -1,5 +1,6 @@
 import React from 'react';
 import { Select } from 'antd';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -17,6 +18,7 @@ const DropDown = (props) => {
 				bordered={false}
 				size="small"
 				onChange={onChange}
+				suffixIcon={<CaretDownOutlined />}
 			>
 				{options.map(({ value, label }, index) => (
 					<Option
