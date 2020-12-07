@@ -199,6 +199,7 @@ exports.HOLLAEX_NETWORK_URL = process.env.HOLLAEX_NETWORK_URL || 'https://api.te
 exports.INIT_CHANNEL = 'channel:init';
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 exports.HMAC_TOKEN_KEY = 'hmac:token';
+exports.EVENTS_CHANNEL = 'channel:events';
 exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
 
 // Websocket

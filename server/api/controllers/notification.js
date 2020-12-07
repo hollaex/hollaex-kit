@@ -5,7 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { publisher } = require('../../db/pubsub');
-const { INIT_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL } = require('../../constants');
+const { INIT_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, EVENTS_CHANNEL } = require('../../constants');
 const moment = require('moment');
 
 const applyKitChanges = (req, res) => {
@@ -58,13 +58,18 @@ const handleCurrencyDeposit = (req, res) => {
 				time: moment().unix()
 			}));
 
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'deposit',
+				data: {
+					...depositData,
+					user_id: user.id
+				}
+			}));
+
 			sendEmail(
 				MAILTYPE.DEPOSIT,
 				user.email,
-				{
-					...depositData,
-					phoneNumber: user.phone_number
-				},
+				depositData,
 				user.settings,
 				domain
 			);
@@ -96,21 +101,31 @@ const handleCurrencyWithdrawal = (req, res) => {
 			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
+			const data = {
+				amount,
+				currency,
+				status: is_confirmed ? 'COMPLETED' : 'PENDING',
+				address,
+				fee,
+				transaction_id: txid
+			};
+
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'withdrawal',
+				data: {
+					...data,
+					user_id: user.id
+				}
+			}));
+
 			sendEmail(
 				MAILTYPE.WITHDRAWAL,
 				user.email,
-				{
-					amount,
-					currency,
-					status: is_confirmed ? 'COMPLETED' : 'PENDING',
-					address,
-					fee,
-					transaction_id: txid,
-					phoneNumber: user.phone_number
-				},
+				data,
 				user.settings,
 				domain
 			);
+
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
