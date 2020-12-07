@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			name: {
 				type: DataTypes.STRING,
-				allowNull: false
+				allowNull: false,
+				unique: true
 			},
 			description: {
 				type: DataTypes.STRING,
@@ -30,7 +31,24 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
 				defaultValue: true
-			}
+			},
+			prescript: {
+				type: DataTypes.JSONB,
+				defaultValue: {
+					install: [],
+					run: null
+				}
+			},
+			postscript: {
+				type: DataTypes.JSONB,
+				defaultValue: {
+					run: null
+				}
+			},
+			meta: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
+			},
 		},
 		{
 			timestamps: true,
