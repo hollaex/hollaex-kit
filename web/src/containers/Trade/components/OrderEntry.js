@@ -35,7 +35,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
-import { asksSelector, bidsSelector, tradeHistorySelector } from '../utils';
+import { orderbookSelector, tradeHistorySelector } from '../utils';
 
 const ORDER_OPTIONS = [
 	{
@@ -520,6 +520,7 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type', 'stop');
+	const { asks, bids } = orderbookSelector(state);
 	const pair = state.app.pair;
 	const {
 		pair_base,
@@ -553,8 +554,8 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		settings: state.user.settings,
 		coins: state.app.coins,
-		asks: asksSelector(state),
-		bids: bidsSelector(state),
+		asks,
+		bids,
 		marketPrice,
 		// totalAsset: state.asset.totalAsset
 	};

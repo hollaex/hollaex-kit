@@ -1,35 +1,79 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import {
+	PlusSquareOutlined,
+	MinusSquareOutlined,
+	CaretDownOutlined,
+} from '@ant-design/icons';
+import { Button, Select } from 'antd';
 
-import { subtract, asksSelector, bidsSelector } from '../utils';
+import { calcPercentage } from 'utils/math';
+import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
 import { formatToFixed, formatToCurrency } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
-import { DEFAULT_COIN_DATA } from '../../../config/constants';
+import { DEFAULT_COIN_DATA, BASE_CURRENCY } from '../../../config/constants';
+import { setOrderbookDepth } from 'actions/orderbookAction';
+
+const { Option } = Select;
+
+const DEPTH_LEVELS = [1, 10, 100, 1000];
 
 const PriceRow = (
 	side,
 	increment_price,
 	increment_size,
 	onPriceClick,
-	onAmountClick
-) => ([price, amount], index) => (
-	<div key={`${side}-${price}`} className="d-flex value-row align-items-center">
+	onAmountClick,
+	maxCumulative,
+	isBase
+) => ([price, amount, cumulative, cumulativePrice], index) => {
+	const ACCFillClassName = `fill fill-${side}`;
+	const ACCFillStyle = {
+		backgroundSize: `${calcPercentage(cumulative, maxCumulative)}% 100%`,
+	};
+
+	const fillClassName = `fill fill-${side}`;
+	const fillStyle = {
+		backgroundSize: `${calcPercentage(amount, maxCumulative)}% 100%`,
+	};
+
+	return (
 		<div
-			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
-			onClick={onPriceClick(price)}
+			key={`${side}-${price}`}
+			className={classnames('price-row-wrapper', ACCFillClassName)}
+			style={ACCFillStyle}
 		>
-			{formatToCurrency(price, increment_price)}
+			<div
+				className={classnames(
+					'd-flex value-row align-items-center',
+					fillClassName
+				)}
+				style={fillStyle}
+			>
+				<div
+					className={`f-1 trade_orderbook-cell trade_orderbook-cell pointer`}
+					onClick={onPriceClick(price)}
+				>
+					{formatToCurrency(price, increment_price)}
+				</div>
+				<div
+					className="f-1 trade_orderbook-cell pointer"
+					onClick={onAmountClick(amount)}
+				>
+					{formatToCurrency(amount, increment_size)}
+				</div>
+				<div className="f-1 trade_orderbook-cell trade_orderbook-cell_total">
+					{isBase
+						? formatToCurrency(cumulative, increment_size)
+						: formatToCurrency(cumulativePrice, increment_price)}
+				</div>
+			</div>
 		</div>
-		<div
-			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
-			onClick={onAmountClick(amount)}
-		>
-			{formatToCurrency(amount, increment_size)}
-		</div>
-	</div>
-);
+	);
+};
 
 const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
@@ -53,6 +97,7 @@ const LimitBar = ({ text }) => (
 class Orderbook extends Component {
 	state = {
 		dataBlockHeight: 0,
+		isBase: true,
 	};
 
 	componentDidMount() {
@@ -61,6 +106,11 @@ class Orderbook extends Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		// this.scrollTop();
+	}
+
+	componentWillUnmount() {
+		const { depth } = this.props;
+		localStorage.setItem('orderbook_depth', depth);
 	}
 
 	setRefs = (key) => (el) => {
@@ -92,8 +142,60 @@ class Orderbook extends Component {
 		this.props.onAmountClick(price);
 	};
 
+	increaseDepth = () => {
+		const { depth, setOrderbookDepth } = this.props;
+		const lastIndex = DEPTH_LEVELS.length - 1;
+		const depthIndex = DEPTH_LEVELS.findIndex(
+			(depthLevel) => depthLevel === depth
+		);
+		if (depthIndex < lastIndex) {
+			setOrderbookDepth(DEPTH_LEVELS[depthIndex + 1]);
+		}
+	};
+
+	decreaseDepth = () => {
+		const { depth, setOrderbookDepth } = this.props;
+		const depthIndex = DEPTH_LEVELS.findIndex(
+			(depthLevel) => depthLevel === depth
+		);
+		if (depthIndex > 0) {
+			setOrderbookDepth(DEPTH_LEVELS[depthIndex - 1]);
+		}
+	};
+
+	disableIncrease = () => {
+		const { depth } = this.props;
+		const lastIndex = DEPTH_LEVELS.length - 1;
+		const depthIndex = DEPTH_LEVELS.findIndex(
+			(depthLevel) => depthLevel === depth
+		);
+		return depthIndex === lastIndex;
+	};
+
+	disableDecrease = () => {
+		const { depth } = this.props;
+		const depthIndex = DEPTH_LEVELS.findIndex(
+			(depthLevel) => depthLevel === depth
+		);
+		return depthIndex === 0;
+	};
+
+	onSelect = (isBase) => this.setState({ isBase });
+
 	render() {
-		const { asks, bids, pairData = {}, pair, coins } = this.props;
+		const {
+			asks,
+			bids,
+			pairData = {},
+			pair,
+			coins,
+			maxCumulative,
+			increment_price,
+			depth,
+			lastPrice,
+		} = this.props;
+
+		const { isBase } = this.state;
 		// const blockStyle = {};
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
@@ -109,6 +211,25 @@ class Orderbook extends Component {
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				<EventListener target="window" onResize={this.scrollTop} />
+				<div className="trade_orderbook-depth-selector d-flex align-center">
+					<Button
+						type="text"
+						disabled={this.disableDecrease()}
+						onClick={() => this.decreaseDepth()}
+					>
+						<MinusSquareOutlined />
+					</Button>
+					<div className="trade_orderbook-depth bold">
+						{increment_price * depth}
+					</div>
+					<Button
+						type="text"
+						disabled={this.disableIncrease()}
+						onClick={() => this.increaseDepth()}
+					>
+						<PlusSquareOutlined />
+					</Button>
+				</div>
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(
@@ -118,6 +239,20 @@ class Orderbook extends Component {
 					</div>
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
+					</div>
+					<div className="f-1 trade_orderbook-cell">
+						{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+						<Select
+							bordered={false}
+							defaultValue={false}
+							size="small"
+							suffixIcon={<CaretDownOutlined />}
+							value={isBase}
+							onSelect={this.onSelect}
+						>
+							<Option value={false}>{BASE_CURRENCY.toUpperCase()}</Option>
+							<Option value={true}>{pairBase}</Option>
+						</Select>
 					</div>
 				</div>
 				<div className="trade_asks-limit_bar">
@@ -142,24 +277,32 @@ class Orderbook extends Component {
 								pairData.increment_price,
 								pairData.increment_size,
 								this.onPriceClick,
-								this.onAmountClick
+								this.onAmountClick,
+								maxCumulative,
+								isBase
 							)
 						)}
 					</div>
 					<div
-						className="trade_orderbook-spread d-flex align-items-center"
+						className="trade_orderbook-spread d-flex align-items-center justify-content-between"
 						ref={this.setRefs('spreadWrapper')}
 					>
-						{STRINGS.formatString(
-							STRINGS['ORDERBOOK_SPREAD'],
-							<div className="trade_orderbook-spread-text">
-								{STRINGS.formatString(
-									STRINGS['ORDERBOOK_SPREAD_PRICE'],
-									calculateSpread(asks, bids, pair, pairData),
-									symbol.toUpperCase()
-								)}
-							</div>
-						)}
+						<div className="d-flex align-items-center">
+							{STRINGS.formatString(
+								STRINGS['ORDERBOOK_LAST_PRICE'],
+								<div className="trade_orderbook-market-price">
+									{formatToFixed(lastPrice, increment_price)}
+								</div>
+							)}
+						</div>
+						<div className="d-flex align-items-center">
+							{STRINGS.formatString(
+								STRINGS['ORDERBOOK_SPREAD'],
+								<div className="trade_orderbook-spread-text">
+									{calculateSpread(asks, bids, pair, pairData)}
+								</div>
+							)}
+						</div>
 					</div>
 					<div
 						className={classnames(
@@ -172,11 +315,13 @@ class Orderbook extends Component {
 					>
 						{bids.map(
 							PriceRow(
-								'bids',
+								'bid',
 								pairData.increment_price,
 								pairData.increment_size,
 								this.onPriceClick,
-								this.onAmountClick
+								this.onAmountClick,
+								maxCumulative,
+								isBase
 							)
 						)}
 					</div>
@@ -197,10 +342,28 @@ Orderbook.defaultProps = {
 	onAmountClick: () => {},
 };
 
-const mapStateToProps = (store) => ({
-	pair: store.app.pair,
-	asks: asksSelector(store),
-	bids: bidsSelector(store),
+const mapStateToProps = (store) => {
+	const { asks, bids, maxCumulative } = orderbookSelector(store);
+	const lastPrice = marketPriceSelector(store);
+	const {
+		app: { pair, pairs },
+		orderbook: { depth },
+	} = store;
+	const { increment_price } = pairs[pair];
+
+	return {
+		pair,
+		increment_price,
+		asks,
+		bids,
+		maxCumulative,
+		depth,
+		lastPrice,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+	setOrderbookDepth: bindActionCreators(setOrderbookDepth, dispatch),
 });
 
-export default connect(mapStateToProps)(Orderbook);
+export default connect(mapStateToProps, mapDispatchToProps)(Orderbook);
