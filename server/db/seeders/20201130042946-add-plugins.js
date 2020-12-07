@@ -22,8 +22,6 @@ const plugins = [
 		script: 'const helloWorld = installedLibraries[\'hello-world-npm\']; app.get(\'/plugins/hello-exchange\', (req, res) => res.json({ message: \'Hello Exchange\', other: helloWorld(), meta }));'
 	},
 	{
-		// Migration, model out of databse, move to script (create on script)
-		// minify sript
 		name: 'Announcements',
 		version: 1,
 		description: 'Enables getting, posting, and deleting announcements',
@@ -33,6 +31,33 @@ const plugins = [
 		prescript: JSON.stringify({}),
 		postscript: JSON.stringify({}),
 		script: `
+			const announcementModel = toolsLib.database.createModel(
+				'announcement',
+				properties = {
+					created_by: {
+						type: 'integer',
+						onDelete: 'CASCADE',
+						allowNull: false,
+						references: {
+							model: 'Users',
+							key: 'id'
+						}
+					},
+					title: {
+						type: 'string',
+						allowNull: false
+					},
+					message: {
+						type: 'text',
+						allowNull: false
+					},
+					type: {
+						type: 'string',
+						allowNull: false,
+						defaultValue: 'info'
+					}
+				}
+			);
 			const { checkSchema } = expressValidator;
 			app.get('/plugins/announcements', [
 				checkSchema({
@@ -82,12 +107,6 @@ const plugins = [
 					return res.status(400).json({ errors: errors.array() });
 				}
 
-				loggerPlugin.verbose(
-					req.uuid,
-					'GET /plugins/announcements auth',
-					req.auth.sub
-				);
-
 				const { limit, page, order_by, order, start_date, end_date } = req.query;
 
 				loggerPlugin.info(
@@ -116,7 +135,8 @@ const plugins = [
 
 				if (timeframe) query.where.created_at = timeframe;
 
-				toolsLib.database.findAndCountAllWithRows('announcement', query)
+				announcementModel.findAndCountAll(query)
+					.then(toolsLib.database.convertSequelizeCountAndRows)
 					.then((announcements) => {
 						return res.json(announcements);
 					})
@@ -188,7 +208,7 @@ const plugins = [
 					type
 				);
 
-				toolsLib.database.create('announcement', {
+				announcementModel.create({
 					created_by: req.auth.sub.id,
 					title,
 					message,
@@ -237,7 +257,7 @@ const plugins = [
 					id
 				);
 
-				toolsLib.database.findOne('announcement', {
+				announcementModel.findOne({
 					where: { id }
 				})
 					.then((announcement) => {
@@ -627,9 +647,9 @@ const plugins = [
 		author: 'bitHolla',
 		enabled: true,
 		meta: JSON.stringify({
-			accessKeyId: 'accessKeyId',
-			secretAccessKey: 'secretAccessKey',
-			region: 'region'
+			accessKeyId: '',
+			secretAccessKey: '',
+			region: ''
 		}),
 		prescript: JSON.stringify({
 			install: ['awesome-phonenumber', 'aws-sdk']
@@ -665,6 +685,26 @@ const plugins = [
 					});
 				});
 			};
+
+			toolsLib.database.subscriber.subscribe('channel:events');
+
+			toolsLib.database.subscriber.on('message', (channel, message) => {
+				if (channel === 'channel:events') {
+					const { type, data } = JSON.parse(message);
+					if (type === 'deposit' || type === 'withdrawal') {
+						if (data.status === 'COMPLETED') {
+							toolsLib.user.getUserByKitId(data.user_id, false)
+								.then(async (user) => {
+									if (user && user.phone_number) {
+										const phoneNumber = new PhoneNumber(user.phone_number);
+										const message = \`Your \${data.currency.toUpperCase()} \${type} for amount \${data.amount} is confirmed\`
+										const res = await sendAwsSMS(phoneNumber.getNumber(), message);
+									}
+								})
+						}
+					}
+				}
+			});
 
 			app.get('/plugins/sms/verify', [
 				toolsLib.security.verifyBearerTokenExpressMiddleware(['user']),
@@ -837,64 +877,6 @@ const plugins = [
 						loggerPlugin.error(
 							req.uuid,
 							'POST /plugins/sms/verify err',
-							err.message
-						);
-						return res.status(err.statusCode || 400).json({ message: err.message });
-					});
-			});
-
-			app.post('/plugins/sms/send', [
-				expressValidator.checkSchema({
-					user_id: {
-						in: ['body'],
-						errorMessage: 'must be a string',
-						isInt: true,
-						optional: false
-					},
-					message: {
-						in: ['body'],
-						errorMessage: 'must be a string',
-						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 1',
-							options: { min: 1 }
-						},
-						optional: false
-					}
-				})
-			], (req, res) => {
-				const ip = req.headers ? req.headers['x-real-ip'] : undefined;
-				const domain = req.headers['x-real-origin'];
-				loggerPlugin.verbose(req.uuid, 'POST /plugins/sms/send ip domain', ip, domain);
-
-				const { user_id, message } = req.body;
-
-				loggerPlugin.verbose(req.uuid, 'POST /plugins/sms/send user_id', user_id, 'message', message);
-
-				toolsLib.security.verifyNetworkHmacToken(req)
-					.then(() => {
-						return toolsLib.user.getUserByKitId(user_id, false);
-					})
-					.then((user) => {
-						if (!user) {
-							throw new Error('User not found');
-						}
-						if (!user.phone_number) {
-							throw new Error('User phone number does not found');
-						}
-
-						const phoneNumber = new PhoneNumber(user.phone_number);
-
-						return sendAwsSMS(phoneNumber.getNumber(), message);
-					})
-					.then(() => {
-						loggerPlugin.info(req.uuid, 'POST /plugins/sms/send sent');
-						return res.json({ message: 'Success' });
-					})
-					.catch((err) => {
-						loggerPlugin.error(
-							req.uuid,
-							'POST /plugins/sms/send err',
 							err.message
 						);
 						return res.status(err.statusCode || 400).json({ message: err.message });
