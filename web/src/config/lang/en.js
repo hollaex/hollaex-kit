@@ -1345,6 +1345,8 @@ const nestedContent = {
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
 	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	POST_ONLY: 'Post only',
+	CLEAR: 'Clear',
 };
 
 const content = flatten(nestedContent, options);

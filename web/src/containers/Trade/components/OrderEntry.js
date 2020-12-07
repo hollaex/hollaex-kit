@@ -433,7 +433,7 @@ class OrderEntry extends Component {
 			},
 			postOnly: {
 				name: 'post_only',
-				label: <span className="px-1">Post only</span>,
+				label: <span className="px-1">{STRINGS['POST_ONLY']}</span>,
 				type: 'checkbox',
 				className: 'align-start my-0',
 			},
