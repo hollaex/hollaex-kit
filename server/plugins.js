@@ -15,6 +15,7 @@ const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const npmi = require('npmi');
 const multer = require('multer');
 const moment = require('moment');
+const { update } = require('lodash');
 
 const installLibrary = (library) => {
 	return new Promise((resolve, reject) => {
@@ -34,8 +35,6 @@ const installLibrary = (library) => {
 		});
 	});
 };
-// url returns json file
-// if url is set, plugins is upgrades automatically
 
 app.use(morgan(morganType, { stream }));
 app.listen(PORT);
@@ -45,39 +44,19 @@ app.use(logEntryRequest);
 app.use(domainMiddleware);
 helmetMiddleware(app);
 
-// Deposit/Withdrawal Event Emitted in controller
-// ToolsLib has a listener
-
-// test to see if model.index can be updates
-// can announcement model be created in plugin script
-// have to run associate (test outo)
-
-app.get('/plugins', (req, res) => {
-	res.json({ message: 'Welcome to HollaEx Plugins' });
-});
-
-app.put('/plugins/meta', [
-	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+app.get('/plugins', [
 	checkSchema({
-		name: {
-			in: ['body'],
-			errorMessage: 'must be a string',
-			isString: true,
-			isLength: {
-				errorMessage: 'must be minimum length of 1',
-				options: { min: 1 }
-			},
-			optional: false
+		limit: {
+			in: ['query'],
+			errorMessage: 'must be an integer',
+			isInt: true,
+			optional: true
 		},
-		meta: {
-			in: ['body'],
-			custom: {
-				options: (value) => {
-					return lodash.isPlainObject(value);
-				},
-				errorMessage: 'must be an object'
-			},
-			optional: false
+		page: {
+			in: ['query'],
+			errorMessage: 'must be an integer',
+			isInt: true,
+			optional: true
 		}
 	})
 ], (req, res) => {
@@ -86,41 +65,19 @@ app.put('/plugins/meta', [
 		return res.status(400).json({ errors: errors.array() });
 	}
 
-	loggerPlugin.verbose(
-		req.uuid,
-		'PUT /plugins/meta auth',
-		req.auth.sub
-	);
+	const { limit, page } = req.query;
 
-	const { name, meta } = req.body;
-
-	loggerPlugin.info(req.uuid, 'PUT /plugins/meta name', name);
-
-	toolsLib.database.findOne('plugin', {
-		where: { name }
-	})
-		.then((plugin) => {
-			if (!plugin) {
-				throw new Error('Plugin not found');
-			}
-
-			return plugin.update({ meta }, { fields: ['meta']});
-		})
-		.then(() => {
-			loggerPlugin.info(req.uuid, 'PUT /plugins/meta updated', name);
-
-			// restart plugin
-
-			return res.json({ message: 'Success' });
+	toolsLib.plugin.getPaginatedPlugins(limit, page)
+		.then((plugins) => {
+			return res.json(plugins);
 		})
 		.catch((err) => {
-			loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', err.name);
+			loggerPlugin.error(req.uuid, 'GET /plugins err', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 });
 
-app.get('/plugins/disable', [
-	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+app.get('/plugin', [
 	checkSchema({
 		name: {
 			in: ['query'],
@@ -139,104 +96,28 @@ app.get('/plugins/disable', [
 		return res.status(400).json({ errors: errors.array() });
 	}
 
-	loggerPlugin.verbose(
-		req.uuid,
-		'GET /plugins/disable auth',
-		req.auth.sub
-	);
+	const name = req.query.name;
 
-	const { name } = req.query;
-
-	loggerPlugin.info(req.uuid, 'GET /plugins/disable name', name);
-
-	toolsLib.database.findOne('plugin', {
-		where: { name }
+	toolsLib.plugin.getPlugin(name, {
+		raw: true
 	})
 		.then((plugin) => {
 			if (!plugin) {
 				throw new Error('Plugin not found');
 			}
-
-			if (!plugin.enabled) {
-				throw new Error('Plugin is already disabled');
-			}
-
-			// stop plugin
-
-			return plugin.update({ enabled: false }, { fields: ['enabled']});
-		})
-		.then(() => {
-			loggerPlugin.info(req.uuid, 'GET /plugins/disable disabled plugin', name);
-
-			return res.json({ message: 'Success' });
+			return res.json(plugin);
 		})
 		.catch((err) => {
-			loggerPlugin.error(req.uuid, 'GET /plugins/disable err', err.name);
+			loggerPlugin.error(req.uuid, 'GET /plugin err', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 });
 
-app.get('/plugins/enable', [
+app.delete('/plugin', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
 			in: ['query'],
-			errorMessage: 'must be a string',
-			isString: true,
-			isLength: {
-				errorMessage: 'must be minimum length of 1',
-				options: { min: 1 }
-			},
-			optional: false
-		}
-	})
-], (req, res) => {
-	const errors = expressValidator.validationResult(req);
-	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
-	}
-
-	loggerPlugin.verbose(
-		req.uuid,
-		'GET /plugins/enable auth',
-		req.auth.sub
-	);
-
-	const { name } = req.query;
-
-	loggerPlugin.info(req.uuid, 'GET /plugins/enable name', name);
-
-	toolsLib.database.findOne('plugin', {
-		where: { name }
-	})
-		.then((plugin) => {
-			if (!plugin) {
-				throw new Error('Plugin not found');
-			}
-
-			if (plugin.enabled) {
-				throw new Error('Plugin is already enabled');
-			}
-
-			return plugin.update({ enabled: true }, { fields: ['enabled']});
-		})
-		.then(() => {
-			// start plugin
-			loggerPlugin.info(req.uuid, 'GET /plugins/enable enabled plugin', name);
-
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerPlugin.error(req.uuid, 'GET /plugins/enable err', err.name);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-});
-
-app.delete('/plugins', [
-	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
-	checkSchema({
-		name: {
-			in: ['body'],
 			errorMessage: 'must be a string',
 			isString: true,
 			isLength: {
@@ -258,7 +139,7 @@ app.delete('/plugins', [
 		req.auth.sub
 	);
 
-	const { name } = req.body;
+	const { name } = req.query;
 
 	loggerPlugin.info(req.uuid, 'DELETE /plugins name', name);
 
@@ -279,12 +160,12 @@ app.delete('/plugins', [
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
-			loggerPlugin.error(req.uuid, 'DELETE /plugins err', err.name);
+			loggerPlugin.error(req.uuid, 'DELETE /plugins err', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 });
 
-app.put('/plugins', [
+app.put('/plugin', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
@@ -331,16 +212,48 @@ app.put('/plugins', [
 			isString: true,
 			optional: true
 		},
+		bio: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			optional: true
+		},
+		documentation: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			optional: true
+		},
+		icon: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			optional: true
+		},
 		logo: {
 			in: ['body'],
 			errorMessage: 'must be a string',
 			isString: true,
 			optional: true
 		},
-		enabled: {
+		admin_view: {
 			in: ['body'],
-			errorMessage: 'must be a boolean',
-			isBoolean: true,
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 5',
+				options: { min: 5 }
+			},
+			optional: true
+		},
+		web_view: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 5',
+				options: { min: 5 }
+			},
 			optional: true
 		},
 		prescript: {
@@ -395,7 +308,22 @@ app.put('/plugins', [
 		req.auth.sub
 	);
 
-	const { name, script, version, description, author, url, logo, enabled, prescript, postscript } = req.body;
+	const {
+		name,
+		script,
+		version,
+		description,
+		author,
+		url,
+		icon,
+		documentation,
+		bio,
+		web_view,
+		admin_view,
+		logo,
+		prescript,
+		postscript
+	} = req.body;
 
 	loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
 
@@ -423,6 +351,18 @@ app.put('/plugins', [
 				updatedPlugin.author = author;
 			}
 
+			if (bio) {
+				updatedPlugin.bio = bio;
+			}
+
+			if (documentation) {
+				updatedPlugin.documentation = documentation;
+			}
+
+			if (icon) {
+				updatedPlugin.icon = icon;
+			}
+
 			if (url) {
 				updatedPlugin.url = url;
 			}
@@ -431,8 +371,12 @@ app.put('/plugins', [
 				updatedPlugin.logo = logo;
 			}
 
-			if (lodash.isBoolean(enabled)) {
-				updatedPlugin.enabled = enabled;
+			if (web_view) {
+				updatedPlugin.web_view = web_view;
+			}
+
+			if (admin_view) {
+				updatedPlugin.admin_view = admin_view;
 			}
 
 			if (lodash.isPlainObject(prescript)) {
@@ -447,42 +391,20 @@ app.put('/plugins', [
 		})
 		.then(async (plugin) => {
 			loggerPlugin.info(req.uuid, 'PUT /plugins updated', name);
-			// if (plugin.enabled) {
-			// 	try {
-			// 		const context = {
-			// 			app,
-			// 			toolsLib,
-			// 			lodash,
-			// 			expressValidator,
-			// 			loggerPlugin,
-			// 			meta: plugin.meta,
-			// 			installedLibraries: {}
-			// 		};
 
-			// 		if (plugin.prescript.install) {
-			// 			for (let library of plugin.prescript.install) {
-			// 				context.installedLibraries[library] = await installLibrary(library);
-			// 			}
-			// 		}
+			if (plugin.enabled) {
+				//restart
+			}
 
-			// 		loggerPlugin.info(req.uuid, 'POST /plugins enabled', name);
-			// 		_eval(plugin.script, plugin.name, { app, toolsLib, lodash, expressValidator }, true);
-			// 	} catch (err) {
-			// 		loggerPlugin.error(req.uuid, 'POST /plugins error while running script', err.message);
-			// 		throw err;
-			// 	}
-			// }
-
-			// stop plugin and restart
 			return res.json(plugin);
 		})
 		.catch((err) => {
-			loggerPlugin.error(req.uuid, 'POST /plugins err', err.name);
+			loggerPlugin.error(req.uuid, 'POST /plugins err', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 });
 
-app.post('/plugins', [
+app.post('/plugin', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
@@ -523,6 +445,24 @@ app.post('/plugins', [
 			isString: true,
 			optional: true
 		},
+		bio: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			optional: true
+		},
+		documentation: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			optional: true
+		},
+		icon: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			optional: true
+		},
 		url: {
 			in: ['body'],
 			errorMessage: 'must be a string',
@@ -539,6 +479,26 @@ app.post('/plugins', [
 			in: ['body'],
 			errorMessage: 'must be a boolean',
 			isBoolean: true,
+			optional: true
+		},
+		admin_view: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 5',
+				options: { min: 5 }
+			},
+			optional: true
+		},
+		web_view: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 5',
+				options: { min: 5 }
+			},
 			optional: true
 		},
 		prescript: {
@@ -603,7 +563,24 @@ app.post('/plugins', [
 		req.auth.sub
 	);
 
-	const { name, script, version, description, author, url, logo, enabled, prescript, postscript, meta } = req.body;
+	const {
+		name,
+		script,
+		version,
+		description,
+		author,
+		icon,
+		bio,
+		documentation,
+		web_view,
+		admin_view,
+		url,
+		logo,
+		enabled,
+		prescript,
+		postscript,
+		meta
+	} = req.body;
 
 	loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
 
@@ -618,6 +595,11 @@ app.post('/plugins', [
 				name,
 				script,
 				version,
+				icon,
+				bio,
+				documentation,
+				web_view,
+				admin_view,
 				description,
 				author,
 				url,
@@ -631,34 +613,182 @@ app.post('/plugins', [
 		.then(async (plugin) => {
 			loggerPlugin.info(req.uuid, 'POST /plugins installed', name);
 			if (plugin.enabled) {
-				try {
-					const context = {
-						app,
-						toolsLib,
-						lodash,
-						expressValidator,
-						loggerPlugin,
-						meta: plugin.meta,
-						installedLibraries: {}
-					};
-
-					if (plugin.prescript.install) {
-						for (let library of plugin.prescript.install) {
-							context.installedLibraries[library] = await installLibrary(library);
-						}
-					}
-
-					loggerPlugin.info(req.uuid, 'POST /plugins enabled', name);
-					_eval(plugin.script, plugin.name, { app, moment, toolsLib, multer, lodash, expressValidator }, true);
-				} catch (err) {
-					loggerPlugin.error(req.uuid, 'POST /plugins error while running script', err.message);
-					throw err;
-				}
+				// restart process
 			}
 			return res.json(plugin);
 		})
 		.catch((err) => {
-			loggerPlugin.error(req.uuid, 'POST /plugins err', err.name);
+			loggerPlugin.error(req.uuid, 'POST /plugins err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+});
+
+app.put('/plugins/meta', [
+	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+	checkSchema({
+		name: {
+			in: ['body'],
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 1',
+				options: { min: 1 }
+			},
+			optional: false
+		},
+		meta: {
+			in: ['body'],
+			custom: {
+				options: (value) => {
+					return lodash.isPlainObject(value);
+				},
+				errorMessage: 'must be an object'
+			},
+			optional: false
+		}
+	})
+], (req, res) => {
+	const errors = expressValidator.validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'PUT /plugins/meta auth',
+		req.auth.sub
+	);
+
+	const { name, meta } = req.body;
+
+	loggerPlugin.info(req.uuid, 'PUT /plugins/meta name', name);
+
+	toolsLib.plugin.getPlugin(name)
+		.then((plugin) => {
+			if (!plugin) {
+				throw new Error('Plugin not found');
+			}
+
+			return plugin.update({ meta }, { fields: ['meta']});
+		})
+		.then(() => {
+			loggerPlugin.info(req.uuid, 'PUT /plugins/meta updated', name);
+
+			// restart plugin
+
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+});
+
+app.get('/plugin/disable', [
+	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+	checkSchema({
+		name: {
+			in: ['query'],
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 1',
+				options: { min: 1 }
+			},
+			optional: false
+		}
+	})
+], (req, res) => {
+	const errors = expressValidator.validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'GET /plugins/disable auth',
+		req.auth.sub
+	);
+
+	const { name } = req.query;
+
+	loggerPlugin.info(req.uuid, 'GET /plugins/disable name', name);
+
+	toolsLib.plugin.getPlugin(name)
+		.then((plugin) => {
+			if (!plugin) {
+				throw new Error('Plugin not found');
+			}
+
+			if (!plugin.enabled) {
+				throw new Error('Plugin is already disabled');
+			}
+
+			return plugin.update({ enabled: false }, { fields: ['enabled']});
+		})
+		.then(() => {
+			loggerPlugin.info(req.uuid, 'GET /plugins/disable disabled plugin', name);
+
+			// stop plugin
+
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'GET /plugins/disable err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+});
+
+app.get('/plugin/enable', [
+	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+	checkSchema({
+		name: {
+			in: ['query'],
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 1',
+				options: { min: 1 }
+			},
+			optional: false
+		}
+	})
+], (req, res) => {
+	const errors = expressValidator.validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'GET /plugins/enable auth',
+		req.auth.sub
+	);
+
+	const { name } = req.query;
+
+	loggerPlugin.info(req.uuid, 'GET /plugins/enable name', name);
+
+	toolsLib.plugin.getPlugin(name)
+		.then((plugin) => {
+			if (!plugin) {
+				throw new Error('Plugin not found');
+			}
+
+			if (plugin.enabled) {
+				throw new Error('Plugin is already enabled');
+			}
+
+			return plugin.update({ enabled: true }, { fields: ['enabled']});
+		})
+		.then(() => {
+			// start plugin
+			loggerPlugin.info(req.uuid, 'GET /plugins/enable enabled plugin', name);
+
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'GET /plugins/enable err', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 });
