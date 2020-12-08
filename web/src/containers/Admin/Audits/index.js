@@ -79,7 +79,7 @@ class Audits extends Component {
 			.then((res) => {
 				if (res) {
 					this.setState({
-						audits: res.data,
+						audits: res.data || [],
 						total: res.count,
 						loading: false,
 					});
@@ -89,7 +89,9 @@ class Audits extends Component {
 				if (err.status === 403) {
 					this.setState({ loading: false });
 				}
-				throw new SubmissionError({ _error: err.data.message });
+				if (err.data && err.data.message) {
+					throw new SubmissionError({ _error: err.data.message });
+				}
 			});
 	};
 

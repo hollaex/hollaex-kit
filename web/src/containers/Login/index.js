@@ -5,7 +5,6 @@ import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import moment from 'moment';
 
 import {
 	performLogin,
@@ -93,24 +92,6 @@ class Login extends Component {
 		return service;
 	};
 
-	checkExchangeExpiry = (info = {}) => {
-		if (info.status) {
-			if (info.is_trial) {
-				if (info.active) {
-					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
-						this.navigateToExpiry();
-					}
-				} else {
-					this.navigateToExpiry();
-				}
-			}
-		} else {
-			this.navigateToExpiry();
-		}
-	};
-
-	navigateToExpiry = () => this.props.router.replace('/expired-exchange');
-
 	// checkLogin = () => {
 	// 	// const termsAccepted = localStorage.getItem('termsAccepted');
 	// 	// if (!termsAccepted) {
@@ -128,7 +109,6 @@ class Login extends Component {
 		return performLogin(values)
 			.then((res) => {
 				if (res.data.token) this.setState({ token: res.data.token });
-				this.checkExchangeExpiry(this.props.info);
 				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
 				// 	|| (this.props.info.is_trial && this.props.info.active
 				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
@@ -172,7 +152,6 @@ class Login extends Component {
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
 				if (res.data.token) this.setState({ token: res.data.token });
-				this.checkExchangeExpiry(this.props.info);
 				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
 				// 	|| (this.props.info.is_trial && this.props.info.active
 				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))

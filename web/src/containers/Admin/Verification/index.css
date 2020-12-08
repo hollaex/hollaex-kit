@@ -47,7 +47,8 @@
 	color: #ffffff;
 }
 .ant-card,
-.ant-card-head {
+.ant-card-head,
+.ant-card-type-inner .ant-card-head {
 	background-color: #0000ff;
 	color: #ffffff;
 }

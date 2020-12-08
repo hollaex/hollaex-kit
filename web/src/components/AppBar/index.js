@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
-import moment from 'moment';
 import math from 'mathjs';
 import { DEFAULT_URL, IS_XHT } from 'config/constants';
 import { LinkButton } from './LinkButton';
@@ -50,9 +49,6 @@ class AppBar extends Component {
 		if (this.props.isHome && this.props.token) {
 			this.getUserDetails();
 		}
-		if ((this.props.isHome && this.props.token) || !this.props.isHome) {
-			this.checkExchangeExpiry(this.props.info);
-		}
 		this.props.getTickers();
 		if (this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
@@ -81,11 +77,6 @@ class AppBar extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (JSON.stringify(this.props.info) !== JSON.stringify(prevProps.info)) {
-			if ((this.props.isHome && this.props.token) || !this.props.isHome) {
-				this.checkExchangeExpiry(this.props.info);
-			}
-		}
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
@@ -98,24 +89,6 @@ class AppBar extends Component {
 		).value;
 		this.setState({ selected });
 	};
-
-	checkExchangeExpiry = (info = {}) => {
-		if (info.status) {
-			if (info.is_trial) {
-				if (info.active) {
-					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
-						this.navigateToExpiry();
-					}
-				} else {
-					this.navigateToExpiry();
-				}
-			}
-		} else {
-			this.navigateToExpiry();
-		}
-	};
-
-	navigateToExpiry = () => this.props.router.push('/expired-exchange');
 
 	getUserDetails = () => {
 		return this.props
