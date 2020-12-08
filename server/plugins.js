@@ -97,9 +97,7 @@ app.get('/plugin', [
 
 	const name = req.query.name;
 
-	toolsLib.plugin.getPlugin(name, {
-		raw: true
-	})
+	toolsLib.plugin.getPlugin(name, { raw: true })
 		.then((plugin) => {
 			if (!plugin) {
 				throw new Error('Plugin not found');
@@ -142,9 +140,7 @@ app.delete('/plugin', [
 
 	loggerPlugin.info(req.uuid, 'DELETE /plugins name', name);
 
-	toolsLib.database.findOne('plugin', {
-		where: { name }
-	})
+	toolsLib.plugin.getPlugin(name)
 		.then((plugin) => {
 			if (!plugin) {
 				throw new Error('Plugin not found');
@@ -327,9 +323,7 @@ app.put('/plugin', [
 
 	loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
 
-	toolsLib.database.findOne('plugin', {
-		where: { name }
-	})
+	toolsLib.plugin.getPlugin(name)
 		.then((plugin) => {
 			if (!plugin) {
 				throw new Error('Plugin not installed');
@@ -584,9 +578,7 @@ app.post('/plugin', [
 
 	loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
 
-	toolsLib.database.findOne('plugin', {
-		where: { name }
-	})
+	toolsLib.plugin.getPlugin(name)
 		.then((plugin) => {
 			if (plugin) {
 				throw new Error('Plugin is already installed');
