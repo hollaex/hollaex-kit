@@ -15,7 +15,6 @@ const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const npmi = require('npmi');
 const multer = require('multer');
 const moment = require('moment');
-const { update } = require('lodash');
 
 const installLibrary = (library) => {
 	return new Promise((resolve, reject) => {
@@ -151,13 +150,14 @@ app.delete('/plugin', [
 				throw new Error('Plugin not found');
 			}
 
-			//Stop plugin from running
-
 			return plugin.destroy();
 		})
 		.then(() => {
 			loggerPlugin.info(req.uuid, 'DELETE /plugins deleted plugin', name);
-			return res.json({ message: 'Success' });
+
+			res.json({ message: 'Success' });
+
+			process.exit();
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'DELETE /plugins err', err.message);
@@ -392,11 +392,11 @@ app.put('/plugin', [
 		.then(async (plugin) => {
 			loggerPlugin.info(req.uuid, 'PUT /plugins updated', name);
 
-			if (plugin.enabled) {
-				//restart
-			}
+			res.json(plugin);
 
-			return res.json(plugin);
+			if (plugin.enabled) {
+				process.exit();
+			}
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'POST /plugins err', err.message);
@@ -612,10 +612,12 @@ app.post('/plugin', [
 		})
 		.then(async (plugin) => {
 			loggerPlugin.info(req.uuid, 'POST /plugins installed', name);
+
+			res.json(plugin);
+
 			if (plugin.enabled) {
-				// restart process
+				process.exit();
 			}
-			return res.json(plugin);
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'POST /plugins err', err.message);
@@ -674,9 +676,9 @@ app.put('/plugins/meta', [
 		.then(() => {
 			loggerPlugin.info(req.uuid, 'PUT /plugins/meta updated', name);
 
-			// restart plugin
+			res.json({ message: 'Success' });
 
-			return res.json({ message: 'Success' });
+			process.exit();
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', err.message);
@@ -729,9 +731,9 @@ app.get('/plugin/disable', [
 		.then(() => {
 			loggerPlugin.info(req.uuid, 'GET /plugins/disable disabled plugin', name);
 
-			// stop plugin
+			res.json({ message: 'Success' });
 
-			return res.json({ message: 'Success' });
+			process.exit();
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'GET /plugins/disable err', err.message);
@@ -782,10 +784,11 @@ app.get('/plugin/enable', [
 			return plugin.update({ enabled: true }, { fields: ['enabled']});
 		})
 		.then(() => {
-			// start plugin
 			loggerPlugin.info(req.uuid, 'GET /plugins/enable enabled plugin', name);
 
-			return res.json({ message: 'Success' });
+			res.json({ message: 'Success' });
+
+			process.exit();
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'GET /plugins/enable err', err.message);
