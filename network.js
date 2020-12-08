@@ -1129,32 +1129,34 @@ class HollaExNetwork {
 			this.ws._events = this.wsEventListeners;
 		} else {
 			this.ws.on('unexpected-response', () => {
-				if (this.ws.readyState === WebSocket.OPEN) {
-					this.ws.close();
-				} else {
-					if (this.wsReconnect) {
+				if (this.ws.readyState !== WebSocket.CLOSING) {
+					if (this.ws.readyState === WebSocket.OPEN) {
+						this.ws.close();
+					} else if (this.wsReconnect) {
 						this.wsEventListeners = this.ws._events;
 						this.ws = null;
 						setTimeout(() => {
 							this.connect(this.wsEvents);
 						}, this.wsReconnectInterval);
 					} else {
+						this.wsEventListeners = null;
 						this.ws = null;
 					}
 				}
 			});
 
 			this.ws.on('error', () => {
-				if (this.ws.readyState === WebSocket.OPEN) {
-					this.ws.close();
-				} else {
-					if (this.wsReconnect) {
+				if (this.ws.readyState !== WebSocket.CLOSING) {
+					if (this.ws.readyState === WebSocket.OPEN) {
+						this.ws.close();
+					} else if (this.wsReconnect) {
 						this.wsEventListeners = this.ws._events;
 						this.ws = null;
 						setTimeout(() => {
 							this.connect(this.wsEvents);
 						}, this.wsReconnectInterval);
 					} else {
+						this.wsEventListeners = null;
 						this.ws = null;
 					}
 				}
