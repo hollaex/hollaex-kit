@@ -1132,7 +1132,15 @@ class HollaExNetwork {
 				if (this.ws.readyState === WebSocket.OPEN) {
 					this.ws.close();
 				} else {
-					this.ws = null;
+					if (this.wsReconnect) {
+						this.wsEventListeners = this.ws._events;
+						this.ws = null;
+						setTimeout(() => {
+							this.connect(this.wsEvents);
+						}, this.wsReconnectInterval);
+					} else {
+						this.ws = null;
+					}
 				}
 			});
 
@@ -1140,7 +1148,15 @@ class HollaExNetwork {
 				if (this.ws.readyState === WebSocket.OPEN) {
 					this.ws.close();
 				} else {
-					this.ws = null;
+					if (this.wsReconnect) {
+						this.wsEventListeners = this.ws._events;
+						this.ws = null;
+						setTimeout(() => {
+							this.connect(this.wsEvents);
+						}, this.wsReconnectInterval);
+					} else {
+						this.ws = null;
+					}
 				}
 			});
 
