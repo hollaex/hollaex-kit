@@ -397,7 +397,6 @@ table th {
     margin: 1.3rem !important; } }
 
 .light-auth-body {
-  background: url("/assets/background.png") !important;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative; }
@@ -405,8 +404,7 @@ table th {
     position: absolute;
     content: '';
     width: 100%;
-    height: 130%;
-    background-color: rgba(241, 242, 242, 0.6); }
+    height: 130%; }
 
 .exchange-warning {
   position: absolute;
@@ -444,8 +442,6 @@ table th {
       font-size: 1.2rem; }
 
 .auth-wrapper {
-  background: url("/assets/background.png");
-  background-color: #d9dee5;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -454,8 +450,7 @@ table th {
     position: fixed;
     content: '';
     width: 100%;
-    height: 100%;
-    background-color: rgba(241, 242, 242, 0.6); }
+    height: 100%; }
   .auth-wrapper.white-theme {
     color: var(--labels_important-active-labels-text-graphics); }
   .auth-wrapper .auth-container {
@@ -821,7 +816,6 @@ table th {
   max-height: calc( 100vh - 4rem); }
 
 .home_container {
-  background: url("/assets/background.png");
   background-repeat: no-repeat;
   background-size: cover; }
   .home_container .exchange-expired {
@@ -3801,7 +3795,7 @@ table th {
     -moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4); }
     .app_bar .app-bar-account-menu .app-bar-account-menu-list {
-      color: var(--calculated_base_top-bar-navigation_text-inactive);
+      color: var(--labels_secondary-inactive-label-text-graphics);
       cursor: pointer;
       padding: 0.2rem 0; }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon {
@@ -3955,7 +3949,7 @@ table th {
   position: relative;
   width: 100%; }
   .app-menu-bar .app-menu-bar-content {
-    color: var(--calculated_base_top-bar-navigation_text-inactive);
+    color: var(--labels_secondary-inactive-label-text-graphics);
     cursor: pointer;
     height: 2.5rem;
     position: relative;
@@ -8059,6 +8053,7 @@ html {
 body {
   height: 100%;
   background-color: var(--base_background) !important;
+  color: var(--labels_important-active-labels-text-graphics);
   font-size: 1rem !important;
   font-family: "Open Sans" !important;
   height: 100%; }

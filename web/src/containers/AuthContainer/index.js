@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { loadReCaptcha } from 'react-recaptcha-v3';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 import { AppFooter } from '../../components';
 import {
@@ -96,6 +97,7 @@ class AuthContainer extends Component {
 			children,
 			info,
 			constants = { captcha: {} },
+			icons: ICONS = {},
 			...rest
 		} = this.props;
 		const languageClasses = getClasesForLanguage(activeLanguage);
@@ -154,6 +156,7 @@ class AuthContainer extends Component {
 							},
 							...FLEX_CENTER_CLASSES
 						)}
+						style={{ background: `url(${ICONS['EXCHANGE_BOARDING_IMAGE']})` }}
 					>
 						<div
 							className={classnames('auth-container', 'f-1', languageClasses)}
@@ -188,4 +191,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthContainer);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(AuthContainer));

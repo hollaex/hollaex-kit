@@ -49,7 +49,7 @@ const getConfigs = async () => {
 		info: { initialized },
 		setup_completed,
 		native_currency,
-		logo_black_path,
+		logo_image,
 	} = kitData;
 
 	const promises = {};
@@ -76,7 +76,7 @@ const getConfigs = async () => {
 		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
 	});
 
-	setDefaultLogo(logo_black_path);
+	setDefaultLogo(logo_image);
 	setBaseCurrency(native_currency);
 	setLocalVersions(remoteVersions);
 	setValidLanguages(valid_languages);

@@ -18,6 +18,7 @@ import { getThemeClass } from '../../utils/theme';
 import Section1 from './Section1';
 // import Section2 from './Section2';
 import Section3 from './Section3';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
@@ -128,6 +129,7 @@ class Home extends Component {
 			info,
 			activeTheme,
 			constants = {},
+			icons: ICONS = {},
 		} = this.props;
 		const { style } = this.state;
 		const expiryData = this.checkExchangeExpiry();
@@ -144,6 +146,7 @@ class Home extends Component {
 						'layout-desktop': isBrowser,
 					}
 				)}
+				style={{ background: `url(${ICONS['EXCHANGE_BOARDING_IMAGE']})` }}
 			>
 				<EventListener target="window" onResize={this.onResize} />
 				<AppBar
@@ -234,4 +237,4 @@ const mapDispatchToProps = (dispatch) => ({
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Home));
