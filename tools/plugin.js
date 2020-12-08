@@ -11,6 +11,7 @@ const {
 const { getKitConfig, getKitSecrets, maskSecrets } = require('./common');
 const dbQuery = require('./database/query');
 const { publisher } = require('./database/redis');
+const { paginationQuery } = require('./database/helpers');
 const flatten = require('flat');
 
 const getPluginsConfig = () => {
@@ -137,11 +138,30 @@ const disablePlugin = (plugin) => {
 	return enableOrDisablePlugin('disable', plugin);
 };
 
+const getPaginatedPlugins = (limit, page) => {
+	return dbQuery.findAndCountAll('plugin', {
+		raw: true,
+		attributes: ['name', 'version', 'enabled', 'author', 'description', 'bio', 'url', 'logo', 'icon', 'documentation'],
+		...paginationQuery(limit, page)
+	});
+};
+
+const getPlugin = (name, opts = {}) => {
+	return dbQuery.findOne({
+		where: { name: name.toLowerCase() },
+		...opts
+	});
+};
+
+
+
 module.exports = {
 	getPluginsConfig,
 	getPluginsSecrets,
 	pluginIsEnabled,
 	updatePluginConfig,
 	enablePlugin,
-	disablePlugin
+	disablePlugin,
+	getPaginatedPlugins,
+	getPlugin
 };
