@@ -8059,6 +8059,7 @@ html {
 body {
   height: 100%;
   background-color: var(--base_background) !important;
+  color: var(--labels_important-active-labels-text-graphics);
   font-size: 1rem !important;
   font-family: "Open Sans" !important;
   height: 100%; }
