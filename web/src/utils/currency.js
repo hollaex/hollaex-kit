@@ -148,18 +148,22 @@ export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
 };
 
 export const calculateOraclePrice = (value = 0, price = 0) => {
-	return math.number(math.multiply(math.fraction(value), math.fraction(price)));
+	const effectivePrice = price >= 0 ? price : 0;
+	return math.number(
+		math.multiply(math.fraction(value), math.fraction(effectivePrice))
+	);
 };
 
 export const calculateBalancePrice = (balance, prices = {}, coins = {}) => {
 	let accumulated = math.fraction(0);
 	Object.keys(coins).forEach((key) => {
 		const price = prices[key] || 0;
+		const effectivePrice = price >= 0 ? price : 0;
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(
 				math.multiply(
 					math.fraction(balance[`${key}_balance`]),
-					math.fraction(price)
+					math.fraction(effectivePrice)
 				),
 				accumulated
 			);
