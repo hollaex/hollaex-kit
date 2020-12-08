@@ -4,7 +4,6 @@ $container--padding: 4rem;
 $container--padding-sm: 3rem;
 
 .light-auth-body {
-	background: url($background-image) !important;
 	background-repeat: no-repeat;
 	background-size: cover;
 	position: relative;
@@ -14,7 +13,6 @@ $container--padding-sm: 3rem;
 		content: '';
 		width: 100%;
 		height: 130%;
-		background-color: rgba(241, 242, 242, 0.6);
 	}
 }
 
@@ -72,8 +70,6 @@ $container--padding-sm: 3rem;
 	}
 }
 .auth-wrapper {
-	background: url($background-image);
-	background-color: #d9dee5;
 	background-repeat: no-repeat;
 	background-size: cover;
 	// background-repeat: repeat;
@@ -85,7 +81,6 @@ $container--padding-sm: 3rem;
 		content: '';
 		width: 100%;
 		height: 100%;
-		background-color: rgba(241, 242, 242, 0.6);
 	}
 
 	&.white-theme {

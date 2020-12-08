@@ -449,7 +449,7 @@ $app-menu-notification-size: 1.2rem;
 		box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 		.app-bar-account-menu-list {
-			color: $app-bar-icon-inactive;
+			color: $colors-black;
 			cursor: pointer;
 			padding: 0.2rem 0;
 		}
@@ -642,7 +642,7 @@ $app-menu-notification-size: 1.2rem;
 	width: 100%;
 
 	.app-menu-bar-content {
-		color: $app-bar-icon-inactive;
+		color: $colors-black;
 		cursor: pointer;
 		height: 2.5rem;
 		position: relative;

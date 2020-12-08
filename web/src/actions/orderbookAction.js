@@ -4,6 +4,7 @@ import { playBackgroundAudioNotification } from '../utils/utils';
 const QUICK_TRADE = 'QUICK_TRADE';
 const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
 const TRADE_QUOTE_PERFORM = 'TRADE_QUOTE_PERFORM';
+const SET_ORDERBOOK_DEPTH = 'CHANGE_ORDERBOOK_DEPTH';
 
 export const ORDERBOOK_CONSTANTS = {
 	QUICK_TRADE_CANCEL: `${QUICK_TRADE}_CANCEL`,
@@ -17,6 +18,14 @@ export const ORDERBOOK_CONSTANTS = {
 	TRADE_QUOTE_PERFORM_PENDING: `${TRADE_QUOTE_PERFORM}_PENDING`,
 	TRADE_QUOTE_PERFORM_FULFILLED: `${TRADE_QUOTE_PERFORM}_FULFILLED`,
 	TRADE_QUOTE_PERFORM_REJECTED: `${TRADE_QUOTE_PERFORM}_REJECTED`,
+	SET_ORDERBOOK_DEPTH,
+};
+
+export const setOrderbookDepth = (depth) => {
+	return {
+		type: SET_ORDERBOOK_DEPTH,
+		payload: depth,
+	};
 };
 
 export function getOrderbook() {

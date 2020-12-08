@@ -32,6 +32,8 @@
 
 	/*_________________________________*/
 
+	--calculated_trading_selling-orderbook-bar: #ee40361f;
+	--calculated_trading_buying-orderbook-bar: #00a69c1f;
 	--calculated_trading_buying-related-text: #000000;
 	--calculated_trading_selling-related-text: #ffffff;
 	--calculated_base_modal-overlay: #ffffffbf;

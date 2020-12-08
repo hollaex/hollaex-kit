@@ -6,7 +6,7 @@ const nestedIcons = {
 	EXCHANGE: {
 		FAV_ICON: '/favicon.ico',
 		LOADER: '/assets/loader-dark.gif',
-		BOARDING_IMAGE: '/assets/dark-background.jpg',
+		BOARDING_IMAGE: '/assets/background.png',
 	},
 
 	TRADE: {

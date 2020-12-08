@@ -4,6 +4,7 @@ import Image from 'components/Image';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Select } from 'antd';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -72,6 +73,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						onSelect={toggle}
 						bordered={false}
 						style={{ height: '17px' }}
+						suffixIcon={<CaretDownOutlined />}
 					>
 						{options.map(({ value }) => (
 							<Option value={value} key={value}>
