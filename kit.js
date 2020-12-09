@@ -316,6 +316,8 @@ class HollaExKit {
 	 */
 	connect(events = []) {
 		this.wsReconnect = true;
+		this.wsEvents = events;
+		this.initialConnection = true;
 		let url = this.wsUrl;
 		if (this.apiKey && this.apiSecret) {
 			const apiExpires = moment().toISOString() + this.apiExpiresAfter;
@@ -329,18 +331,36 @@ class HollaExKit {
 			this.ws._events = this.wsEventListeners;
 		} else {
 			this.ws.on('unexpected-response', () => {
-				if (this.ws.readyState === WebSocket.OPEN) {
-					this.ws.close();
-				} else {
-					this.ws = null;
+				if (this.ws.readyState !== WebSocket.CLOSING) {
+					if (this.ws.readyState === WebSocket.OPEN) {
+						this.ws.close();
+					} else if (this.wsReconnect) {
+						this.wsEventListeners = this.ws._events;
+						this.ws = null;
+						setTimeout(() => {
+							this.connect(this.wsEvents);
+						}, this.wsReconnectInterval);
+					} else {
+						this.wsEventListeners = null;
+						this.ws = null;
+					}
 				}
 			});
 
 			this.ws.on('error', () => {
-				if (this.ws.readyState === WebSocket.OPEN) {
-					this.ws.close();
-				} else {
-					this.ws = null;
+				if (this.ws.readyState !== WebSocket.CLOSING) {
+					if (this.ws.readyState === WebSocket.OPEN) {
+						this.ws.close();
+					} else if (this.wsReconnect) {
+						this.wsEventListeners = this.ws._events;
+						this.ws = null;
+						setTimeout(() => {
+							this.connect(this.wsEvents);
+						}, this.wsReconnectInterval);
+					} else {
+						this.wsEventListeners = null;
+						this.ws = null;
+					}
 				}
 			});
 
@@ -358,9 +378,11 @@ class HollaExKit {
 			});
 
 			this.ws.on('open', () => {
-				if (events.length > 0) {
-					this.subscribe(events);
+				if (this.wsEvents.length > 0) {
+					this.subscribe(this.wsEvents);
 				}
+
+				this.initialConnection = false;
 
 				setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
 					pingTimeout: 60000,
@@ -382,41 +404,45 @@ class HollaExKit {
 	subscribe(events = []) {
 		if (this.wsConnected()) {
 			each(events, (event) => {
-				if (!this.wsEvents.includes(event)) {
+				if (!this.wsEvents.includes(event) || this.initialConnection) {
 					const [ topic, symbol ] = event.split(':');
-					if (
-						!symbol ||
-						!this.wsEvents.includes(topic)
-					) {
-						switch(topic) {
-							case 'orderbook':
-							case 'trade':
-								if (symbol) {
+					switch(topic) {
+						case 'orderbook':
+						case 'trade':
+							if (symbol) {
+								if (!this.wsEvents.includes(topic)) {
 									this.ws.send(JSON.stringify({
 										op: 'subscribe',
 										args: [`${topic}:${symbol}`]
 									}));
-								} else {
-									this.ws.send(JSON.stringify({
-										op: 'subscribe',
-										args: [topic]
-									}));
-									this.wsEvents = this.wsEvents.filter((e) => e.includes(`${topic}:`));
+									if (!this.initialConnection) {
+										this.wsEvents = union(this.wsEvents, [event]);
+									}
 								}
-								this.wsEvents = union(this.wsEvents, [event]);
-								break;
-							case 'order':
-							case 'wallet':
-							case 'deposit':
+							} else {
 								this.ws.send(JSON.stringify({
 									op: 'subscribe',
 									args: [topic]
 								}));
+								if (!this.initialConnection) {
+									this.wsEvents = this.wsEvents.filter((e) => !e.includes(`${topic}:`));
+									this.wsEvents = union(this.wsEvents, [event]);
+								}
+							}
+							break;
+						case 'order':
+						case 'wallet':
+						case 'deposit':
+							this.ws.send(JSON.stringify({
+								op: 'subscribe',
+								args: [topic]
+							}));
+							if (!this.initialConnection) {
 								this.wsEvents = union(this.wsEvents, [event]);
-								break;
-							default:
-								break;
-						}
+							}
+							break;
+						default:
+							break;
 					}
 				}
 			});
