@@ -29,7 +29,12 @@ const installLibrary = (library) => {
 			if (err) {
 				reject(err);
 			} else {
-				resolve(require(library));
+				try {
+					const lib = require(library);
+					resolve(lib);
+				} catch (err) {
+					reject(err);
+				}
 			}
 		});
 	});
@@ -45,6 +50,16 @@ helmetMiddleware(app);
 
 app.get('/plugins', [
 	checkSchema({
+		name: {
+			in: ['query'],
+			errorMessage: 'must be a string',
+			isString: true,
+			isLength: {
+				errorMessage: 'must be minimum length of 1',
+				options: { min: 1 }
+			},
+			optional: true
+		},
 		limit: {
 			in: ['query'],
 			errorMessage: 'must be an integer',
@@ -64,10 +79,19 @@ app.get('/plugins', [
 		return res.status(400).json({ errors: errors.array() });
 	}
 
-	const { limit, page } = req.query;
+	const { limit, page, name } = req.query;
 
-	toolsLib.plugin.getPaginatedPlugins(limit, page)
+	let promiseQuery = toolsLib.plugin.getPaginatedPlugins(limit, page);
+
+	if (name) {
+		promiseQuery = toolsLib.plugin.getPlugin(name, { raw: true });
+	}
+
+	promiseQuery
 		.then((plugins) => {
+			if (name && !plugins) {
+				throw new Error('Plugin not found');
+			}
 			return res.json(plugins);
 		})
 		.catch((err) => {
@@ -76,41 +100,7 @@ app.get('/plugins', [
 		});
 });
 
-app.get('/plugin', [
-	checkSchema({
-		name: {
-			in: ['query'],
-			errorMessage: 'must be a string',
-			isString: true,
-			isLength: {
-				errorMessage: 'must be minimum length of 1',
-				options: { min: 1 }
-			},
-			optional: false
-		}
-	})
-], (req, res) => {
-	const errors = expressValidator.validationResult(req);
-	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
-	}
-
-	const name = req.query.name;
-
-	toolsLib.plugin.getPlugin(name, { raw: true })
-		.then((plugin) => {
-			if (!plugin) {
-				throw new Error('Plugin not found');
-			}
-			return res.json(plugin);
-		})
-		.catch((err) => {
-			loggerPlugin.error(req.uuid, 'GET /plugin err', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-});
-
-app.delete('/plugin', [
+app.delete('/plugins', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
@@ -161,7 +151,7 @@ app.delete('/plugin', [
 		});
 });
 
-app.put('/plugin', [
+app.put('/plugins', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
@@ -192,65 +182,65 @@ app.put('/plugin', [
 		},
 		description: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		author: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		url: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		bio: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		documentation: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		icon: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		logo: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		admin_view: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
 			isLength: {
 				errorMessage: 'must be minimum length of 5',
 				options: { min: 5 }
 			},
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		web_view: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
 			isLength: {
 				errorMessage: 'must be minimum length of 5',
 				options: { min: 5 }
 			},
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		prescript: {
 			in: ['body'],
@@ -290,6 +280,16 @@ app.put('/plugin', [
 				errorMessage: 'must be an object. run value must be a string'
 			},
 			optional: true
+		},
+		meta: {
+			in: ['body'],
+			custom: {
+				options: (value) => {
+					return lodash.isPlainObject(value);
+				},
+				errorMessage: 'must be an object'
+			},
+			optional: true
 		}
 	})
 ], (req, res) => {
@@ -318,7 +318,8 @@ app.put('/plugin', [
 		admin_view,
 		logo,
 		prescript,
-		postscript
+		postscript,
+		meta
 	} = req.body;
 
 	loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
@@ -341,12 +342,12 @@ app.put('/plugin', [
 				updatedPlugin.description = description;
 			}
 
-			if (author) {
-				updatedPlugin.author = author;
-			}
-
 			if (bio) {
 				updatedPlugin.bio = bio;
+			}
+
+			if (author) {
+				updatedPlugin.author = author;
 			}
 
 			if (documentation) {
@@ -381,6 +382,15 @@ app.put('/plugin', [
 				updatedPlugin.postscript = postscript;
 			}
 
+			if (lodash.isPlainObject(meta)) {
+				const existingMeta = lodash.pick(plugin.meta, Object.keys(meta));
+
+				updatedPlugin.meta = {
+					...meta,
+					...existingMeta
+				};
+			}
+
 			return plugin.update(updatedPlugin);
 		})
 		.then(async (plugin) => {
@@ -398,7 +408,7 @@ app.put('/plugin', [
 		});
 });
 
-app.post('/plugin', [
+app.post('/plugins', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
@@ -429,71 +439,71 @@ app.post('/plugin', [
 		},
 		description: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		author: {
 			in: ['body'],
 			errorMessage: 'must be a string',
 			isString: true,
-			optional: true
+			optional: false
 		},
 		bio: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		documentation: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		icon: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		url: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		logo: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		enabled: {
 			in: ['body'],
 			errorMessage: 'must be a boolean',
 			isBoolean: true,
-			optional: true
+			optional: false
 		},
 		admin_view: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
 			isLength: {
 				errorMessage: 'must be minimum length of 5',
 				options: { min: 5 }
 			},
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		web_view: {
 			in: ['body'],
-			errorMessage: 'must be a string',
+			errorMessage: 'must be a string or null',
 			isString: true,
 			isLength: {
 				errorMessage: 'must be minimum length of 5',
 				options: { min: 5 }
 			},
-			optional: true
+			optional: { options: { nullable: true } }
 		},
 		prescript: {
 			in: ['body'],
@@ -678,7 +688,7 @@ app.put('/plugins/meta', [
 		});
 });
 
-app.get('/plugin/disable', [
+app.get('/plugins/disable', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
@@ -733,7 +743,7 @@ app.get('/plugin/disable', [
 		});
 });
 
-app.get('/plugin/enable', [
+app.get('/plugins/enable', [
 	toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 	checkSchema({
 		name: {
