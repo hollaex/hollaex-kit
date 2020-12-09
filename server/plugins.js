@@ -673,14 +673,23 @@ app.put('/plugins/meta', [
 				throw new Error('Plugin not found');
 			}
 
-			return plugin.update({ meta }, { fields: ['meta']});
+			const updatedMeta = lodash.pick(meta, Object.keys(plugin.meta));
+
+			const newMeta = {
+				...plugin.meta,
+				...updatedMeta
+			};
+
+			return plugin.update({ meta: newMeta }, { fields: ['meta']});
 		})
-		.then(() => {
+		.then((plugin) => {
 			loggerPlugin.info(req.uuid, 'PUT /plugins/meta updated', name);
 
 			res.json({ message: 'Success' });
 
-			process.exit();
+			if (plugin.enabled) {
+				process.exit();
+			}
 		})
 		.catch((err) => {
 			loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', err.message);
