@@ -48,8 +48,8 @@ const nestedIcons = {
 		REVOKED: '/assets/images/api-key-revoked.svg',
 		ACTIVE: '/assets/images/api-key-active.svg',
 		TRASHED: '/assets/images/api-key-trashed.svg',
-		GENERATE: '/assets/images/api-key-generate-dark.svg',
-		CREATED: '/assets/images/api-key-created-dark.svg',
+		GENERATE: '/assets/images/api-key-generate.svg',
+		CREATED: '/assets/images/api-key-created.svg',
 	},
 
 	VERIFICATION: {
@@ -214,7 +214,7 @@ const nestedIcons = {
 	TAB_SIGNOUT: '/assets/images/signout.svg',
 
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
-	VOLUME_PENDING: '/assets/images/volume-pending-dark.svg',
+	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',

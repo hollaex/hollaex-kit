@@ -726,6 +726,13 @@ table th {
 .tokens-icon.small-icon svg {
   padding: 0.325rem 0; }
 
+.tokens-icon-svg svg {
+  fill: var(--labels_important-active-labels-text-graphics); }
+
+.checkbutton-input-wrapper--image svg {
+  stroke: var(--labels_important-active-labels-text-graphics);
+  stroke-width: 1rem; }
+
 .popup_info-wrapper .popup_info-title {
   font-family: "Raleway";
   font-size: 1.25rem;
@@ -1767,6 +1774,9 @@ table th {
 .layout-mobile .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .value-row .trade_orderbook-cell {
   font-size: 1.5rem !important; }
 
+.trade_orderbook-cell .ant-select-selector {
+  color: var(--labels_important-active-labels-text-graphics) !important; }
+
 .ask,
 .buy {
   color: var(--trading_selling-related-elements); }
@@ -2629,7 +2639,7 @@ table th {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    height: 5rem;
+    height: 5rem !important;
     margin: 1rem auto;
     width: 8rem; }
   .trade_tabs-container .trade-tab-app-title {
@@ -3420,29 +3430,29 @@ table th {
 .sidebar-bottom-wrapper {
   min-height: 6rem;
   max-height: 6rem;
-  background-color: var(--labels_important-active-labels-text-graphics);
-  color: white;
+  background-color: var(--base_top-bar-navigation);
+  color: var(--calculated_base_top-bar-navigation_text);
   width: 100%;
   padding: 0.5rem 0.5rem 0.8rem 0.5rem; }
   .sidebar-bottom-wrapper .sidebar-bottom-button {
     flex: 1; }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active {
-      background-color: white; }
+      background-color: var(--base_background); }
       .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg {
-        fill: var(--labels_important-active-labels-text-graphics);
-        stroke: var(--labels_important-active-labels-text-graphics); }
+        fill: var(--base_top-bar-navigation);
+        stroke: var(--base_top-bar-navigation); }
         .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon {
-          fill: var(--labels_important-active-labels-text-graphics);
-          stroke: var(--labels_important-active-labels-text-graphics); }
+          fill: var(--base_top-bar-navigation);
+          stroke: var(--base_top-bar-navigation); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 12px;
       text-align: center;
       margin-top: -17px;
       font-weight: lighter;
-      color: var(--labels_secondary-inactive-label-text-graphics);
+      color: var(--calculated_base_top-bar-navigation_text);
       white-space: nowrap; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-text-acttive {
-      color: black !important;
+      color: var(--labels_important-active-labels-text-graphics) !important;
       font-weight: bolder; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon {
       height: 100%; }
@@ -3691,10 +3701,9 @@ table th {
   .app_bar .app-bar-account-moon-icon {
     margin: 0.2rem 0.3rem 0 0.3rem;
     width: 1rem; }
-    .app_bar .app-bar-account-moon-icon svg .moon-icon {
-      fill: #808080; }
+    .app_bar .app-bar-account-moon-icon svg .moon-icon,
     .app_bar .app-bar-account-moon-icon svg .sun-icon {
-      fill: #808080; }
+      fill: var(--calculated_base_top-bar-navigation_text-inactive); }
   .app_bar .app-bar-account-moon-content {
     border-radius: 5px; }
   .app_bar .toggle_button-wrapper .toggle-content {
@@ -3899,6 +3908,16 @@ table th {
     .app_bar .app-bar-account-menu .app-bar-account-list-icon {
       margin-right: 0.4rem;
       width: 1rem; }
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-summary0,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-wallet0,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-setting0,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-verify0,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-security0,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-history-st,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .help-question,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-signout,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-api0 {
+        fill: var(--labels_secondary-inactive-label-text-graphics); }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .account-active-1 {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app_bar .app-bar-account-menu .menu-notification-active {
@@ -4059,6 +4078,13 @@ table th {
   .app-menu-bar .app-menu-bar-icon {
     margin-right: 0.4rem;
     width: 1rem; }
+    .app-menu-bar .app-menu-bar-icon svg .tab-summary0,
+    .app-menu-bar .app-menu-bar-icon svg .tab-wallet0,
+    .app-menu-bar .app-menu-bar-icon svg .tab-setting0,
+    .app-menu-bar .app-menu-bar-icon svg .tab-verify0,
+    .app-menu-bar .app-menu-bar-icon svg .tab-security0,
+    .app-menu-bar .app-menu-bar-icon svg .tab-api0 {
+      fill: var(--labels_secondary-inactive-label-text-graphics); }
   .app-menu-bar .active-menu {
     background-color: var(--base_background);
     color: var(--labels_important-active-labels-text-graphics);
@@ -4404,6 +4430,22 @@ table th {
       max-width: 100%;
       height: 4rem;
       width: 4rem; }
+      .check_title-container .check_title-svg svg .trade-history-3,
+      .check_title-container .check_title-svg svg .deposit-history-1,
+      .check_title-container .check_title-svg svg .withdrawals-history-1 {
+        fill: var(--labels_important-active-labels-text-graphics); }
+      .check_title-container .check_title-svg svg .trade-history-1,
+      .check_title-container .check_title-svg svg .deposit-history-3,
+      .check_title-container .check_title-svg svg .withdrawals-history-3 {
+        fill: var(--labels_secondary-inactive-label-text-graphics); }
+      .check_title-container .check_title-svg svg .trade-history-2,
+      .check_title-container .check_title-svg svg .trade-history-4,
+      .check_title-container .check_title-svg svg .trade-history-5,
+      .check_title-container .check_title-svg svg .deposit-history-2,
+      .check_title-container .check_title-svg svg .deposit-history-4,
+      .check_title-container .check_title-svg svg .withdrawals-history-2,
+      .check_title-container .check_title-svg svg .withdrawals-history-4 {
+        stroke: none; }
     .check_title-container .check_title-svg .st0,
     .check_title-container .check_title-svg .g1_4,
     .check_title-container .check_title-svg .g1_2 {
@@ -4420,6 +4462,18 @@ table th {
       max-width: 100%;
       height: 6rem;
       width: 6rem; }
+      .check_title-container .custom_title-svg svg .verification-email,
+      .check_title-container .custom_title-svg svg .verification-id,
+      .check_title-container .custom_title-svg svg .verification-document,
+      .check_title-container .custom_title-svg svg .verification-phone,
+      .check_title-container .custom_title-svg svg .verification-bank,
+      .check_title-container .custom_title-svg svg .notification-setting,
+      .check_title-container .custom_title-svg svg .language-setting,
+      .check_title-container .custom_title-svg svg .interface-setting,
+      .check_title-container .custom_title-svg svg .chat-setting,
+      .check_title-container .custom_title-svg svg .audio-setting,
+      .check_title-container .custom_title-svg svg .risk-setting {
+        fill: var(--labels_secondary-inactive-label-text-graphics); }
     .check_title-container .custom_title-svg .st0,
     .check_title-container .custom_title-svg .g1_4,
     .check_title-container .custom_title-svg .g1_2 {
@@ -5886,6 +5940,85 @@ table th {
   .icon_title-wrapper .icon_title-svg {
     width: 5rem;
     height: 5rem; }
+    .icon_title-wrapper .icon_title-image svg .risk-order-warning,
+    .icon_title-wrapper .icon_title-image svg .otp-key,
+    .icon_title-wrapper .icon_title-image svg .refer-icon,
+    .icon_title-wrapper .icon_title-image svg .send-request,
+    .icon_title-wrapper .icon_title-image svg .stake_icon,
+    .icon_title-wrapper .icon_title-image svg .otp-code,
+    .icon_title-wrapper .icon_title-image svg .st0,
+    .icon_title-wrapper .icon_title-image svg .st9,
+    .icon_title-wrapper .icon_title-image svg .st10,
+    .icon_title-wrapper .icon_title-image svg .trade-history-3,
+    .icon_title-wrapper .icon_title-image svg .contact-us-icon,
+    .icon_title-wrapper .icon_title-image svg .xht-coin-stack,
+    .icon_title-wrapper .icon_title-image svg .account-recovery-1,
+    .icon_title-wrapper .icon_title-image svg .account-recovery-success-1,
+    .icon_title-wrapper .icon_title-image svg .password-reset-1,
+    .icon_title-wrapper .icon_title-image svg .success-black-1,
+    .icon_title-wrapper .icon_title-image svg .check-st,
+    .icon_title-wrapper .icon_title-image svg .level_icon,
+    .icon_title-wrapper .icon_title-image svg .warning-icon,
+    .icon_title-wrapper .icon_title-image svg .transaction-history-2,
+    .icon_title-wrapper .icon_title-image svg .transaction-history-3,
+    .icon_title-wrapper .icon_title-image svg .resend-email-st,
+    .icon_title-wrapper .icon_title-image svg .email-confirmation,
+    .icon_title-wrapper .icon_title-svg svg .risk-order-warning,
+    .icon_title-wrapper .icon_title-svg svg .otp-key,
+    .icon_title-wrapper .icon_title-svg svg .refer-icon,
+    .icon_title-wrapper .icon_title-svg svg .send-request,
+    .icon_title-wrapper .icon_title-svg svg .stake_icon,
+    .icon_title-wrapper .icon_title-svg svg .otp-code,
+    .icon_title-wrapper .icon_title-svg svg .st0,
+    .icon_title-wrapper .icon_title-svg svg .st9,
+    .icon_title-wrapper .icon_title-svg svg .st10,
+    .icon_title-wrapper .icon_title-svg svg .trade-history-3,
+    .icon_title-wrapper .icon_title-svg svg .contact-us-icon,
+    .icon_title-wrapper .icon_title-svg svg .xht-coin-stack,
+    .icon_title-wrapper .icon_title-svg svg .account-recovery-1,
+    .icon_title-wrapper .icon_title-svg svg .account-recovery-success-1,
+    .icon_title-wrapper .icon_title-svg svg .password-reset-1,
+    .icon_title-wrapper .icon_title-svg svg .success-black-1,
+    .icon_title-wrapper .icon_title-svg svg .check-st,
+    .icon_title-wrapper .icon_title-svg svg .level_icon,
+    .icon_title-wrapper .icon_title-svg svg .warning-icon,
+    .icon_title-wrapper .icon_title-svg svg .transaction-history-2,
+    .icon_title-wrapper .icon_title-svg svg .transaction-history-3,
+    .icon_title-wrapper .icon_title-svg svg .resend-email-st,
+    .icon_title-wrapper .icon_title-svg svg .email-confirmation {
+      fill: var(--labels_important-active-labels-text-graphics); }
+    .icon_title-wrapper .icon_title-image svg .st1,
+    .icon_title-wrapper .icon_title-image svg .trade-history-1,
+    .icon_title-wrapper .icon_title-image svg .account-recovery-success-2,
+    .icon_title-wrapper .icon_title-image svg .password-reset-2,
+    .icon_title-wrapper .icon_title-image svg .transaction-history-1,
+    .icon_title-wrapper .icon_title-image svg .transaction-history-4,
+    .icon_title-wrapper .icon_title-image svg .st11,
+    .icon_title-wrapper .icon_title-image svg .wallet-coins-2,
+    .icon_title-wrapper .icon_title-svg svg .st1,
+    .icon_title-wrapper .icon_title-svg svg .trade-history-1,
+    .icon_title-wrapper .icon_title-svg svg .account-recovery-success-2,
+    .icon_title-wrapper .icon_title-svg svg .password-reset-2,
+    .icon_title-wrapper .icon_title-svg svg .transaction-history-1,
+    .icon_title-wrapper .icon_title-svg svg .transaction-history-4,
+    .icon_title-wrapper .icon_title-svg svg .st11,
+    .icon_title-wrapper .icon_title-svg svg .wallet-coins-2 {
+      fill: var(--labels_secondary-inactive-label-text-graphics); }
+    .icon_title-wrapper .icon_title-image svg .trade-history-2,
+    .icon_title-wrapper .icon_title-image svg .trade-history-4,
+    .icon_title-wrapper .icon_title-image svg .trade-history-5,
+    .icon_title-wrapper .icon_title-image svg .transaction-history-4,
+    .icon_title-wrapper .icon_title-svg svg .trade-history-2,
+    .icon_title-wrapper .icon_title-svg svg .trade-history-4,
+    .icon_title-wrapper .icon_title-svg svg .trade-history-5,
+    .icon_title-wrapper .icon_title-svg svg .transaction-history-4 {
+      stroke: none; }
+    .icon_title-wrapper .icon_title-image svg .wallet-coins-1,
+    .icon_title-wrapper .icon_title-svg svg .wallet-coins-1 {
+      stroke: var(--labels_important-active-labels-text-graphics); }
+    .icon_title-wrapper .icon_title-image svg .transaction-history-5,
+    .icon_title-wrapper .icon_title-svg svg .transaction-history-5 {
+      fill: none; }
   .icon_title-wrapper .icon_title-svg svg {
     width: 5rem;
     height: 5rem; }
@@ -7052,15 +7185,15 @@ foreignObject {
   max-width: 100vw;
   min-height: 4rem;
   max-height: 4rem;
-  background-color: var(--labels_important-active-labels-text-graphics);
-  color: white; }
+  background-color: var(--base_top-bar-navigation);
+  color: var(--calculated_base_top-bar-navigation_text-inactive); }
 
 .mobile-bar-tab {
   font-size: 2rem;
   font-weight: bold; }
   .mobile-bar-tab.active {
     position: relative;
-    color: white; }
+    color: var(--calculated_base_top-bar-navigation_text); }
     .mobile-bar-tab.active:after {
       content: '';
       bottom: 0;
@@ -8222,3 +8355,162 @@ a {
   .ReactModal__Body--open #root {
     filter: none !important;
     background: transparent !important; } }
+
+svg .tab-summary0,
+svg .tab-wallet0,
+svg .tab-setting0,
+svg .tab-verify0,
+svg .tab-security0,
+svg .tab-history-st,
+svg .help-question,
+svg .tab-signout,
+svg .tab-api0,
+svg .trade-history-1,
+svg .deposit-history-3,
+svg .withdrawals-history-3,
+svg .verification-email,
+svg .verification-id,
+svg .verification-document,
+svg .verification-phone,
+svg .verification-bank,
+svg .notification-setting,
+svg .language-setting,
+svg .interface-setting,
+svg .chat-setting,
+svg .audio-setting,
+svg .risk-setting,
+svg .st1,
+svg .trade-history-1,
+svg .account-recovery-success-2,
+svg .password-reset-2,
+svg .transaction-history-1,
+svg .transaction-history-4,
+svg .st11,
+svg .wallet-coins-2,
+svg .verification-doc,
+svg .copy-notification-0,
+svg .account-svg-1 {
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
+
+svg .withdraw-2,
+svg .withdraw-3,
+svg .deposit-bitcoin-2,
+svg .deposit-bitcoin-3,
+svg .trade-history-3,
+svg .deposit-history-1,
+svg .withdrawals-history-1,
+svg .risk-order-warning,
+svg .otp-key,
+svg .refer-icon,
+svg .send-request,
+svg .stake_icon,
+svg .otp-code,
+svg .st0,
+svg .st9,
+svg .st10,
+svg .trade-history-3,
+svg .contact-us-icon,
+svg .xht-coin-stack,
+svg .account-recovery-1,
+svg .account-recovery-success-1,
+svg .password-reset-1,
+svg .success-black-1,
+svg .check-st,
+svg .level_icon,
+svg .warning-icon,
+svg .transaction-history-2,
+svg .transaction-history-3,
+svg .resend-email-st,
+svg .email-confirmation,
+svg .secure-1,
+svg .wallet-coins-1,
+svg .api-key-active,
+svg .api-key-st,
+svg .generate_api,
+svg .key-trashed,
+svg .api-key-revoked,
+svg .risk-order-warning,
+svg .bonus-offer-icon,
+svg .announcement,
+svg .newWave-icon,
+svg .xht-pdf,
+svg .xht-faq,
+svg .xht-email,
+svg .wave-icon,
+svg .xht-docs,
+svg .account-summary1,
+svg .hap-icon,
+svg .expired_icon,
+svg .default-icon,
+svg .connect-loading,
+svg .bottom-chat,
+svg .note-kyc,
+svg .partial-fill,
+svg .limit-trade-tick,
+svg .chat-0,
+svg .trans-history-1,
+svg .quick-trade-insufficient-funds,
+svg .quick-trade-success,
+svg .gender-female,
+svg .gender-male,
+svg .volume-pending,
+svg .quick-trade-4,
+svg .quick_trade-tab-icon,
+svg .features-pro-trade-icons,
+svg .features-payment,
+svg .features-legal,
+svg .features-lock,
+svg .features-support-1,
+svg .features-data,
+svg .check-send-btc-1,
+svg .copy-notification-1,
+svg .data-1 {
+  fill: var(--labels_important-active-labels-text-graphics); }
+
+svg .trade-history-2,
+svg .trade-history-4,
+svg .trade-history-5,
+svg .deposit-history-2,
+svg .deposit-history-4,
+svg .withdrawals-history-2,
+svg .withdrawals-history-4,
+svg .trade-history-2,
+svg .trade-history-4,
+svg .trade-history-5,
+svg .transaction-history-4,
+svg .wallet-coins-1,
+svg .quick-trade-3 {
+  stroke: none; }
+
+svg .deposit-bitcoin-1,
+svg .withdraw-1,
+svg .transaction-history-5,
+svg .pending-timer,
+svg .quick-trade-2 {
+  fill: none; }
+
+svg .pending-timer,
+svg .tab-close,
+svg .trans-history-4,
+svg .icon-check-1,
+svg .quick-trade-1,
+svg .success-check-box-0 {
+  stroke: var(--labels_important-active-labels-text-graphics); }
+
+svg .quick-trade-tab-active {
+  stroke: var(--calculated_base_top-bar-navigation_text-inactive);
+  fill: var(--calculated_base_top-bar-navigation_text-inactive); }
+
+svg .astrics-1 {
+  fill: var(--labels_important-active-labels-text-graphics); }
+
+svg .red-warning-0,
+svg .astrics-3,
+svg .astrics-2 {
+  fill: var(--specials_notifications-alerts-warnings); }
+
+svg .success-check-box-1 {
+  stroke: var(--specials_checks-okay-done); }
+
+svg .red-warning-1 {
+  fill: var(--calculated_specials_notifications-alerts-text); }

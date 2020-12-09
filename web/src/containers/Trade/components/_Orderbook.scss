@@ -178,3 +178,9 @@ $limit-bar-side--padding: 0.5rem;
 		}
 	}
 }
+
+.trade_orderbook-cell {
+	.ant-select-selector {
+		color: $colors-main-black !important;
+	}
+}
