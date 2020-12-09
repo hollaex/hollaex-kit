@@ -13,7 +13,7 @@ const wss = new WebSocket.Server({
 	port: PORT,
 	verifyClient: (info, next) => {
 		try {
-			if (!getNodeLib().ws || !getNodeLib().ws.readyState === WebSocket.OPEN) {
+			if (!getNodeLib().wsConnected()) {
 				throw new Error('Hub websocket is disconnected');
 			}
 
