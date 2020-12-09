@@ -6,6 +6,7 @@ import {
 	ExclamationCircleFilled,
 	CaretUpFilled,
 	CaretDownFilled,
+	UserOutlined,
 } from '@ant-design/icons';
 import { SubmissionError } from 'redux-form';
 
@@ -22,7 +23,7 @@ import {
 	validateRange,
 } from '../../../components/AdminForm/validations';
 import { STATIC_ICONS } from 'config/icons';
-import { checkRole, isSupervisor, isSupport } from 'utils/token';
+import { isSupervisor, isSupport } from 'utils/token';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
@@ -208,43 +209,60 @@ const AboutData = ({
 	};
 
 	const renderIcons = () => {
-		switch (checkRole()) {
-			case 'supervisor':
-				return (
-					<ReactSVG
-						path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
-						wrapperClassName="user-info-icon"
-					/>
-				);
-			case 'kyc':
-				return (
-					<ReactSVG
-						path={STATIC_ICONS.BLUE_SCREEN_KYC}
-						wrapperClassName="user-info-icon"
-					/>
-				);
-			case 'tech':
-				return (
-					<ReactSVG
-						path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
-						wrapperClassName="user-info-icon"
-					/>
-				);
-			case 'support':
-				return (
-					<ReactSVG
-						path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
-						wrapperClassName="user-info-icon"
-					/>
-				);
-			default:
-				return (
-					<img
-						src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
-						className="user-info-icon"
-						alt="EyeIcon"
-					/>
-				);
+		if (userData.is_admin) {
+			return (
+				<img
+					src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
+					className="user-info-icon"
+					alt="EyeIcon"
+				/>
+			);
+		} else if (userData.is_communicator) {
+			return (
+				<ReactSVG
+					path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+					wrapperClassName="user-info-icon"
+				/>
+			);
+		} else if (userData.is_kyc) {
+			return (
+				<ReactSVG
+					path={STATIC_ICONS.BLUE_SCREEN_KYC}
+					wrapperClassName="user-info-icon"
+				/>
+			);
+		} else if (userData.is_supervisor) {
+			return (
+				<ReactSVG
+					path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+					wrapperClassName="user-info-icon"
+				/>
+			);
+		} else if (userData.is_support) {
+			return (
+				<ReactSVG
+					path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+					wrapperClassName="user-info-icon"
+				/>
+			);
+		} else {
+			return <UserOutlined className="user-icon" />;
+		}
+	};
+
+	const renderRole = () => {
+		if (userData.is_admin) {
+			return 'admin';
+		} else if (userData.is_communicator) {
+			return 'communicator';
+		} else if (userData.is_kyc) {
+			return 'kyc';
+		} else if (userData.is_supervisor) {
+			return 'supervisor';
+		} else if (userData.is_support) {
+			return 'support';
+		} else {
+			return 'user';
 		}
 	};
 
@@ -430,7 +448,7 @@ const AboutData = ({
 						<div className="user-info-separator"></div>
 						<div className="user-role-container">
 							<div>{renderIcons()}</div>
-							<div className="user-info-label">Role: {checkRole()}</div>
+							<div className="user-info-label">Role: {renderRole()}</div>
 							<div className="ml-4">
 								<Link to="/admin/roles">
 									<Button type="primary" className="green-btn" size="small">

@@ -30,10 +30,13 @@ const EmailConfiguration = ({
 			if (server) formProps.secrets.smtp.server = server;
 			if (port) formProps.secrets.smtp.port = port;
 			if (user) formProps.secrets.smtp.user = user;
-			if (password) formProps.secrets.smtp.password = password;
+			if (password && !password.includes('*')) {
+				formProps.secrets.smtp.password = password;
+			}
 		}
 		if (Object.keys(rest).filter((key) => rest[key]).length) {
-			formProps.secrets = { emails: {} };
+			if (!formProps.secrets) formProps.secrets = { emails: {} };
+			if (!formProps.secrets.emails) formProps.secrets.emails = {};
 			if (rest.sender) formProps.secrets.emails.sender = rest.sender;
 			// if (rest.timezone) formProps.secrets.emails.timezone = rest.timezone;
 			if (rest.audit) formProps.secrets.emails.audit = rest.audit;
