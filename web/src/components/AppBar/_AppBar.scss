@@ -256,11 +256,9 @@ $app-menu-notification-size: 1.2rem;
 		margin: 0.2rem 0.3rem 0 0.3rem;
 		width: 1rem;
 		svg {
-			.moon-icon {
-				fill: #808080;
-			}
+			.moon-icon,
 			.sun-icon {
-				fill: #808080;
+				fill: $base_top-bar-navigation_text-inactive;
 			}
 		}
 	}

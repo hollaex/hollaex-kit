@@ -76,13 +76,13 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	min-height: $bottom_bar--height;
 	max-height: $bottom_bar--height;
 	background-color: $bottom-bar--background;
-	color: white;
+	color: $base_top-bar-navigation_text;
 	width: 100%;
 	padding: 0.5rem 0.5rem 0.8rem 0.5rem;
 	.sidebar-bottom-button {
 		flex: 1;
 		&.active {
-			background-color: white;
+			background-color: $app-background-color;
 			.sidebar-bottom-icon {
 				svg {
 					fill: $bottom-bar--background;
@@ -99,11 +99,11 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			text-align: center;
 			margin-top: -17px;
 			font-weight: lighter;
-			color: $colors-deactivate-color2;
+			color: $base_top-bar-navigation_text;
 			white-space: nowrap;
 		}
 		.bottom-text-acttive {
-			color: black !important;
+			color: $colors-main-black !important;
 			font-weight: bolder;
 		}
 		.sidebar-bottom-icon {
