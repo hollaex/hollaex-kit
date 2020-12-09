@@ -147,7 +147,7 @@ const getPaginatedPlugins = (limit, page) => {
 };
 
 const getPlugin = (name, opts = {}) => {
-	return dbQuery.findOne({
+	return dbQuery.findOne('plugin', {
 		where: { name: name.toLowerCase() },
 		...opts
 	});
