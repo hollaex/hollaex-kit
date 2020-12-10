@@ -16,6 +16,7 @@ const npmi = require('npmi');
 const multer = require('multer');
 const moment = require('moment');
 const { checkStatus } = require('./init');
+const UglifyJS = require('uglify-es');
 
 const installLibrary = (library) => {
 	return new Promise((resolve, reject) => {
@@ -347,8 +348,14 @@ checkStatus()
 							throw new Error('Version is already installed');
 						}
 
+						const minifiedScript = UglifyJS.minify(script);
+
+						if (minifiedScript.error) {
+							throw new Error('Error while minifying script');
+						}
+
 						const updatedPlugin = {
-							script,
+							script: minifiedScript.code,
 							version
 						};
 
@@ -607,9 +614,16 @@ checkStatus()
 						if (plugin) {
 							throw new Error('Plugin is already installed');
 						}
+
+						const minifiedScript = UglifyJS.minify(script);
+
+						if (minifiedScript.error) {
+							throw new Error('Error while minifying script');
+						}
+
 						return toolsLib.database.create('plugin', {
 							name,
-							script,
+							script: minifiedScript.code,
 							version,
 							icon,
 							bio,
