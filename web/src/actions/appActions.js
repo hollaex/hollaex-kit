@@ -328,3 +328,4 @@ export const requestAvailPlugins = () => dispatch => {
 		dispatch({ type: SET_PLUGINS_FAILURE });
 	});
 };
+

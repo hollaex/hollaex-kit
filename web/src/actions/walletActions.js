@@ -78,7 +78,7 @@ export const withdrawalCancel = (transactionId) => {
 					type: ACTION_KEYS.WITHDRAWAL_CANCEL_REJECTED,
 					payload
 				});
-			}); 
+			});
 	};
 };
 
