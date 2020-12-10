@@ -57,6 +57,7 @@
 		"request-promise": "4.2.2",
 		"sequelize": "4.37.7",
 		"swagger-express-mw": "0.1.0",
+		"uglify-es": "^3.3.9",
 		"uuid": "3.2.1",
 		"validator": "9.4.1",
 		"winston": "3.2.1",
