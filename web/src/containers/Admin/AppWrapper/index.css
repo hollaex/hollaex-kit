@@ -119,6 +119,12 @@
 	background-color: #0000ff;
 	color: #ffffff;
 }
+.ant-layout-sider
+	.ant-layout-sider-children
+	.ant-menu
+	.ant-menu-item:last-child {
+	font-size: 14px;
+}
 .ant-layout-sider .ant-layout-sider-children {
 	background-color: #0000ff;
 }
