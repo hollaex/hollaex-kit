@@ -39,6 +39,28 @@ $notification-size: 1.5rem;
 			max-width: 100%;
 			height: $check-title-img-size;
 			width: $check-title-img-size;
+
+			.trade-history-3,
+			.deposit-history-1,
+			.withdrawals-history-1 {
+				fill: $colors-main-black;
+			}
+
+			.trade-history-1,
+			.deposit-history-3,
+			.withdrawals-history-3 {
+				fill: $colors-black;
+			}
+
+			.trade-history-2,
+			.trade-history-4,
+			.trade-history-5,
+			.deposit-history-2,
+			.deposit-history-4,
+			.withdrawals-history-2,
+			.withdrawals-history-4 {
+				stroke: none;
+			}
 		}
 		.st0,
 		.g1_4,
@@ -62,6 +84,19 @@ $notification-size: 1.5rem;
 			max-width: 100%;
 			height: $custom-title-img-size;
 			width: $custom-title-img-size;
+			.verification-email,
+			.verification-id,
+			.verification-document,
+			.verification-phone,
+			.verification-bank,
+			.notification-setting,
+			.language-setting,
+			.interface-setting,
+			.chat-setting,
+			.audio-setting,
+			.risk-setting {
+				fill: $colors-black;
+			}
 		}
 		.st0,
 		.g1_4,

@@ -7,7 +7,7 @@ $mobile-notification-size: 1.75rem;
 	min-height: $navigation_bar-mobile--height;
 	max-height: $navigation_bar-mobile--height;
 	background-color: $navigation_bar-mobile--background;
-	color: white;
+	color: $base_top-bar-navigation_text_inactive;
 }
 
 .mobile-bar-tab {
@@ -15,7 +15,7 @@ $mobile-notification-size: 1.75rem;
 	font-weight: bold;
 	&.active {
 		position: relative;
-		color: white;
+		color: $base_top-bar-navigation_text;
 		&:after {
 			content: '';
 			bottom: 0;

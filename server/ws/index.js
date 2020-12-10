@@ -11,9 +11,8 @@ const {
 	WS_USER_AUTHENTICATED
 } = require('../messages');
 const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, handleChatData } = require('./sub');
-const { connect } = require('./hub');
+const { connect, hubConnected } = require('./hub');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
-const { getNodeLib } = require('../init');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -82,7 +81,7 @@ wss.on('connection', (ws, req) => {
 	});
 
 	ws.on('close', () => {
-		if (getNodeLib().wsConnected()) {
+		if (hubConnected()) {
 			terminateClosedChannels(ws);
 		}
 	});
