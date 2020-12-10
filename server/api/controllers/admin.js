@@ -632,7 +632,7 @@ const mintAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.mintAssetByNetworkId(user.network_id, currency, amount, description);
+			return toolsLib.wallet.mintAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -672,7 +672,7 @@ const burnAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.burnAssetByNetworkId(user.network_id, currency, amount, description);
+			return toolsLib.wallet.burnAssetByNetworkId(user.network_id, currency, amount, description);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
