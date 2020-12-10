@@ -24,6 +24,59 @@ $title--margin: 1rem;
 	.icon_title-image,
 	.icon_title-svg {
 		@include size($tab_controller-title-img-size);
+		svg {
+			.risk-order-warning,
+			.otp-key,
+			.refer-icon,
+			.send-request,
+			.stake_icon,
+			.otp-code,
+			.st0,
+			.st9,
+			.st10,
+			.trade-history-3,
+			.contact-us-icon,
+			.xht-coin-stack,
+			.account-recovery-1,
+			.account-recovery-success-1,
+			.password-reset-1,
+			.success-black-1,
+			.check-st,
+			.level_icon,
+			.warning-icon,
+			.transaction-history-2,
+			.transaction-history-3,
+			.resend-email-st,
+			.email-confirmation {
+				fill: $colors-main-black;
+			}
+
+			.st1,
+			.trade-history-1,
+			.account-recovery-success-2,
+			.password-reset-2,
+			.transaction-history-1,
+			.transaction-history-4,
+			.st11,
+			.wallet-coins-2 {
+				fill: $colors-black;
+			}
+
+			.trade-history-2,
+			.trade-history-4,
+			.trade-history-5,
+			.transaction-history-4 {
+				stroke: none;
+			}
+
+			.wallet-coins-1 {
+				stroke: $colors-main-black;
+			}
+
+			.transaction-history-5 {
+				fill: none;
+			}
+		}
 	}
 
 	.icon_title-svg svg {

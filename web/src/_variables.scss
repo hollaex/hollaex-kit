@@ -344,11 +344,9 @@ $tab-selected-line-height: 4px;
 
 // MOBILE
 $navigation_bar-mobile--height: 4rem;
-$navigation_bar-mobile--background: $colors-main-black;
-$dark-navigation_bar-mobile--background: white;
+$navigation_bar-mobile--background: $app-bar-background-color;
 $bottom_bar--height: 6rem;
 $bottom-bar--background: $navigation_bar-mobile--background;
-$dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
 $max-content-height-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height + $bottom-bar--height}
 );
