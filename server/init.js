@@ -14,6 +14,10 @@ const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, WS_HUB_CHANNEL } = require('./constants');
 const { each } = require('lodash');
 
+let nodeLib;
+
+const getNodeLib = () => nodeLib;
+
 subscriber.on('message', (channel, message) => {
 	if (channel === INIT_CHANNEL) {
 		const { type } = JSON.parse(message);
@@ -128,12 +132,14 @@ const checkStatus = () => {
 				status: true,
 				initialized: status.initialized
 			};
-			const nodeLib = new Network({
+			const networkNodeLib = new Network({
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
+
+			nodeLib = networkNodeLib;
 
 			return all([
 				User.findAll({
@@ -141,10 +147,10 @@ const checkStatus = () => {
 						activated: false
 					}
 				}),
-				nodeLib
+				networkNodeLib
 			]);
 		})
-		.then(([ users, nodeLib ]) => {
+		.then(([ users, networkNodeLib ]) => {
 			loggerInit.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
 				frozenUsers[user.dataValues.id] = true;
@@ -157,7 +163,7 @@ const checkStatus = () => {
 				})
 			);
 			loggerInit.info('init/checkStatus/activation complete');
-			return nodeLib;
+			return networkNodeLib;
 		})
 		.catch((err) => {
 			let message = 'Initialization failed';
@@ -200,5 +206,6 @@ const checkActivation = (name, url, activation_code, version, constants = {}, ki
 
 module.exports = {
 	checkStatus,
-	checkActivation
+	checkActivation,
+	getNodeLib
 };
