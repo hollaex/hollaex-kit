@@ -13,6 +13,7 @@ const dbQuery = require('./database/query');
 const { publisher } = require('./database/redis');
 const { paginationQuery } = require('./database/helpers');
 const flatten = require('flat');
+const { Op } = require('sequelize');
 
 const getPluginsConfig = () => {
 	return {
@@ -138,12 +139,21 @@ const disablePlugin = (plugin) => {
 	return enableOrDisablePlugin('disable', plugin);
 };
 
-const getPaginatedPlugins = (limit, page) => {
-	return dbQuery.findAndCountAll('plugin', {
+const getPaginatedPlugins = (limit, page, search) => {
+	const options = {
+		where: {},
 		raw: true,
 		attributes: ['name', 'version', 'enabled', 'author', 'description', 'bio', 'url', 'logo', 'icon', 'documentation'],
 		...paginationQuery(limit, page)
-	});
+	};
+
+	if (search) {
+		options.where = {
+			name: { [Op.like]: `%${search.toLowerCase()}%` }
+		};
+	}
+
+	return dbQuery.findAndCountAll('plugin', options);
 };
 
 const getPlugin = (name, opts = {}) => {
