@@ -75,6 +75,16 @@ checkStatus()
 						errorMessage: 'must be an integer',
 						isInt: true,
 						optional: true
+					},
+					search: {
+						in: ['query'],
+						errorMessage: 'must be a string',
+						isString: true,
+						isLength: {
+							errorMessage: 'must be minimum length of 1',
+							options: { min: 1 }
+						},
+						optional: true
 					}
 				})
 			], (req, res) => {
@@ -83,9 +93,9 @@ checkStatus()
 					return res.status(400).json({ errors: errors.array() });
 				}
 
-				const { limit, page, name } = req.query;
+				const { limit, page, name, search } = req.query;
 
-				let promiseQuery = toolsLib.plugin.getPaginatedPlugins(limit, page);
+				let promiseQuery = toolsLib.plugin.getPaginatedPlugins(limit, page, search);
 
 				if (name) {
 					promiseQuery = toolsLib.plugin.getPlugin(name, { raw: true });
