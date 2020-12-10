@@ -106,6 +106,19 @@ $svg--padding: $svg--size - $svg-small--size;
 	}
 }
 
+.tokens-icon-svg {
+	svg {
+		fill: $colors-main-black;
+	}
+}
+
+.checkbutton-input-wrapper--image {
+	svg {
+		stroke: $colors-main-black;
+		stroke-width: 1rem;
+	}
+}
+
 .popup_info-wrapper {
 	.popup_info-title {
 		font-family: $raleway--font-family;

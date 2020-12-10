@@ -256,11 +256,9 @@ $app-menu-notification-size: 1.2rem;
 		margin: 0.2rem 0.3rem 0 0.3rem;
 		width: 1rem;
 		svg {
-			.moon-icon {
-				fill: #808080;
-			}
+			.moon-icon,
 			.sun-icon {
-				fill: #808080;
+				fill: $base_top-bar-navigation_text-inactive;
 			}
 		}
 	}
@@ -449,7 +447,7 @@ $app-menu-notification-size: 1.2rem;
 		box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 		.app-bar-account-menu-list {
-			color: $app-bar-icon-inactive;
+			color: $colors-black;
 			cursor: pointer;
 			padding: 0.2rem 0;
 		}
@@ -457,6 +455,20 @@ $app-menu-notification-size: 1.2rem;
 		.app-bar-account-list-icon {
 			margin-right: 0.4rem;
 			width: 1rem;
+
+			svg {
+				.tab-summary0,
+				.tab-wallet0,
+				.tab-setting0,
+				.tab-verify0,
+				.tab-security0,
+				.tab-history-st,
+				.help-question,
+				.tab-signout,
+				.tab-api0 {
+					fill: $colors-black;
+				}
+			}
 		}
 		.app-bar-account-list-icon svg {
 			.account-active-1 {
@@ -642,7 +654,7 @@ $app-menu-notification-size: 1.2rem;
 	width: 100%;
 
 	.app-menu-bar-content {
-		color: $app-bar-icon-inactive;
+		color: $colors-black;
 		cursor: pointer;
 		height: 2.5rem;
 		position: relative;
@@ -658,6 +670,17 @@ $app-menu-notification-size: 1.2rem;
 	.app-menu-bar-icon {
 		margin-right: 0.4rem;
 		width: 1rem;
+
+		svg {
+			.tab-summary0,
+			.tab-wallet0,
+			.tab-setting0,
+			.tab-verify0,
+			.tab-security0,
+			.tab-api0 {
+				fill: $colors-black;
+			}
+		}
 	}
 
 	.active-menu {

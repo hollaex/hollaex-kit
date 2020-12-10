@@ -72,6 +72,8 @@ $trade-fill-indicator-text: var(
 	--labels_secondary-inactive-label-text-graphics
 );
 
+$selling-orderbook-bar: var(--calculated_trading_selling-orderbook-bar);
+$buying-orderbook-bar: var(--calculated_trading_buying-orderbook-bar);
 $buy-bids-text: var(--calculated_trading_buying-related-text);
 $sell-bids-text: var(--calculated_trading_selling-related-text);
 $base_top-bar-navigation_text: var(--calculated_base_top-bar-navigation_text);
@@ -306,11 +308,6 @@ $raleway-medium--font-family: 'Raleway Medium';
 $raleway-light--font-family: 'Raleway Light';
 $title--font-family: $raleway-extrabold--font-family;
 
-$backgound-pattern: '/assets/pattern-grey.jpg';
-$background-image: '/assets/background.png';
-$background-image-dark: '/assets/HollaEx-dark-theme.jpg';
-$dark-background-image: '/assets/dark-background.jpg';
-
 // DIALOG
 $dialog-min-width: 25rem;
 $dialog-min-height: 30rem;
@@ -347,11 +344,9 @@ $tab-selected-line-height: 4px;
 
 // MOBILE
 $navigation_bar-mobile--height: 4rem;
-$navigation_bar-mobile--background: $colors-main-black;
-$dark-navigation_bar-mobile--background: white;
+$navigation_bar-mobile--background: $app-bar-background-color;
 $bottom_bar--height: 6rem;
 $bottom-bar--background: $navigation_bar-mobile--background;
-$dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
 $max-content-height-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height + $bottom-bar--height}
 );

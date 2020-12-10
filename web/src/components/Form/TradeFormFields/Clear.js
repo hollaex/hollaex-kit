@@ -1,4 +1,5 @@
 import React from 'react';
+import STRINGS from 'config/localizedStrings';
 
 const Clear = (props) => {
 	const { onClick } = props;
@@ -6,7 +7,7 @@ const Clear = (props) => {
 	return (
 		<div className="d-flex justify-content-end">
 			<span className="pointer text-uppercase blue-link" onClick={onClick}>
-				clear
+				{STRINGS['CLEAR']}
 			</span>
 		</div>
 	);

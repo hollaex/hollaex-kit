@@ -3,14 +3,14 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="-449 252.3 59.6 57.7" style="enable-background:new -449 252.3 59.6 57.7;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#000000;stroke-width:3.0862;stroke-linecap:round;stroke-linejoin:round;}
-	.st1{fill:none;stroke:#00A551;stroke-width:3.0862;stroke-linecap:round;stroke-linejoin:round;}
+	.success-check-box-0{fill:none;stroke:#000000;stroke-width:3.0862;stroke-linecap:round;stroke-linejoin:round;}
+	.success-check-box-1{fill:none;stroke:#00A551;stroke-width:3.0862;stroke-linecap:round;stroke-linejoin:round;}
 </style>
 <g id="XMLID_1469_">
 	<g id="XMLID_1470_">
-		<path id="XMLID_1471_" class="st0" d="M-401.2,281.3v14.6l0,0c0,2.3-1.9,4.2-4.2,4.2h-27.1l0,0c-2.3,0-4.2-1.9-4.2-4.2v-27.1l0,0
+		<path id="XMLID_1471_" class="success-check-box-0" d="M-401.2,281.3v14.6l0,0c0,2.3-1.9,4.2-4.2,4.2h-27.1l0,0c-2.3,0-4.2-1.9-4.2-4.2v-27.1l0,0
 			c0-2.3,1.9-4.2,4.2-4.2h14.6"/>
 	</g>
 </g>
-<polyline id="XMLID_1468_" class="st1" points="-399,264.4 -415,280.3 -420.9,274.4 "/>
+<polyline id="XMLID_1468_" class="success-check-box-1" points="-399,264.4 -415,280.3 -420.9,274.4 "/>
 </svg>

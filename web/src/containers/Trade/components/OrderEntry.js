@@ -35,7 +35,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
-import { asksSelector, bidsSelector, tradeHistorySelector } from '../utils';
+import { orderbookSelector, tradeHistorySelector } from '../utils';
 
 const ORDER_OPTIONS = [
 	{
@@ -291,6 +291,12 @@ class OrderEntry extends Component {
 		}
 	};
 
+	reset = () => {
+		const { reset, change } = this.props;
+		reset(FORM_NAME);
+		change(FORM_NAME, 'price', '');
+	};
+
 	generateFormValues = (pair = '', buyingPair = '', side = 'buy') => {
 		const {
 			min_size,
@@ -304,7 +310,6 @@ class OrderEntry extends Component {
 			pair_2,
 			balance = {},
 			marketPrice,
-			reset,
 		} = this.props;
 
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
@@ -329,8 +334,9 @@ class OrderEntry extends Component {
 				validate: [required],
 			},
 			clear: {
+				name: 'clear',
 				type: 'clear',
-				onClick: () => reset(FORM_NAME),
+				onClick: this.reset,
 			},
 			stop: {
 				name: 'stop',
@@ -427,7 +433,7 @@ class OrderEntry extends Component {
 			},
 			postOnly: {
 				name: 'post_only',
-				label: <span className="px-1">Post only</span>,
+				label: <span className="px-1">{STRINGS['POST_ONLY']}</span>,
 				type: 'checkbox',
 				className: 'align-start my-0',
 			},
@@ -520,6 +526,7 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type', 'stop');
+	const { asks, bids } = orderbookSelector(state);
 	const pair = state.app.pair;
 	const {
 		pair_base,
@@ -553,8 +560,8 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		settings: state.user.settings,
 		coins: state.app.coins,
-		asks: asksSelector(state),
-		bids: bidsSelector(state),
+		asks,
+		bids,
 		marketPrice,
 		// totalAsset: state.asset.totalAsset
 	};

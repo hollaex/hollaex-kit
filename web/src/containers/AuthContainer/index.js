@@ -4,6 +4,7 @@ import { isBrowser, isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
 import { loadReCaptcha } from 'react-recaptcha-v3';
 import { bindActionCreators } from 'redux';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 import { AppFooter } from '../../components';
 import {
@@ -59,6 +60,7 @@ class AuthContainer extends Component {
 			activeTheme,
 			children,
 			constants = { captcha: {} },
+      icons: ICONS = {},
 		} = this.props;
 		const languageClasses = getClasesForLanguage(activeLanguage);
 		const childWithLanguageClasses = React.Children.map(children, (child) =>
@@ -86,6 +88,7 @@ class AuthContainer extends Component {
 							},
 							...FLEX_CENTER_CLASSES
 						)}
+						style={{ background: `url(${ICONS['EXCHANGE_BOARDING_IMAGE']})` }}
 					>
 						<div
 							className={classnames('auth-container', 'f-1', languageClasses)}
@@ -120,4 +123,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthContainer);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(AuthContainer));
