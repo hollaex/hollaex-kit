@@ -176,8 +176,16 @@ svg {
 	.wallet-coins-2,
 	.verification-doc,
 	.copy-notification-0,
-	.account-svg-1 {
+	.account-svg-1,
+	.incoming-btc-01,
+	.incoming-toman-01,
+	.coin-btc-5 {
 		fill: $colors-black;
+	}
+
+	.logout-door,
+	.account-inactive {
+		stroke: $colors-black;
 	}
 
 	.withdraw-2,
@@ -252,7 +260,21 @@ svg {
 	.features-data,
 	.check-send-btc-1,
 	.copy-notification-1,
-	.data-1 {
+	.data-1,
+	.deposit-complete-btc-01,
+	.deposit-complete-01,
+	.email_sent,
+	.gear-grey-1,
+	.g1_3,
+	.incoming-btc-2,
+	.incoming-toman-02,
+	.security-grey-1,
+	.coin-btc-1,
+	.wallet-selected-2,
+	.account-active-1,
+	.post-icon,
+	.item-options,
+	.check-order {
 		fill: $colors-main-black;
 	}
 
@@ -276,7 +298,13 @@ svg {
 	.withdraw-1,
 	.transaction-history-5,
 	.pending-timer,
-	.quick-trade-2 {
+	.quick-trade-2,
+	.coin-btc-6,
+	.coin-btc-4,
+	.logout-door,
+	.cancel-cross-3,
+	.cancel-cross-2,
+	.account-inactive {
 		fill: none;
 	}
 
@@ -285,7 +313,11 @@ svg {
 	.trans-history-4,
 	.icon-check-1,
 	.quick-trade-1,
-	.success-check-box-0 {
+	.success-check-box-0,
+	.coin-btc-6,
+	.coin-btc-4,
+	.cancel-cross-3,
+	.cancel-cross-2 {
 		stroke: $colors-main-black;
 	}
 
@@ -310,5 +342,18 @@ svg {
 
 	.red-warning-1 {
 		fill: $colors-notification-alert-text;
+	}
+
+	.session-timeout-1 {
+		fill: $colors-notification-pending;
+	}
+
+	.session-timeout-0 {
+		fill: $colors-notification-pending-text;
+	}
+
+	.deposit-complete-02,
+	.deposit-complete-btc-02 {
+		fill: $colors-notifications-green;
 	}
 }

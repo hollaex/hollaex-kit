@@ -230,6 +230,58 @@ table th {
   -webkit-background-size: contain;
   background-size: contain; }
 
+.custom-select-style .ant-select-item-option-selected:not(.ant-select-item-option-disabled),
+.custom-select-style .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  color: var(--labels_important-active-labels-text-graphics);
+  background-color: var(--base_wallet-sidebar-and-popup); }
+
+.custom-select-style .ant-select-item,
+.custom-select-style .ant-select-item-option {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.custom-select-style .ant-select-item-option-disabled {
+  color: var(--base_inactive-button); }
+
+.custom-select-style.ant-select-dropdown {
+  background-color: var(--base_background); }
+
+.custom-select-input-style.no-border .ant-select-selector {
+  border: none !important; }
+
+.custom-select-input-style .ant-select-selector {
+  border-radius: 0.35rem !important;
+  border-color: var(--labels_important-active-labels-text-graphics) !important;
+  background-color: transparent !important;
+  color: var(--labels_important-active-labels-text-graphics) !important;
+  height: 20px !important;
+  font-weight: 400 !important;
+  font-size: 0.9rem !important; }
+
+.custom-select-input-style .ant-select-selection-item {
+  line-height: 20px !important;
+  text-transform: capitalize; }
+
+.custom-select-input-style .ant-select-selection-search-input {
+  height: 20px !important; }
+
+.custom-select-input-style .anticon {
+  color: var(--labels_important-active-labels-text-graphics) !important; }
+
+.custom-select-input-style.appbar.ant-select {
+  margin: 0 0.4rem !important;
+  max-width: 100px !important;
+  min-width: 70px; }
+
+.custom-select-input-style.appbar .ant-select-selector {
+  border-color: var(--calculated_base_top-bar-navigation_text-inactive) !important;
+  color: var(--calculated_base_top-bar-navigation_text-inactive) !important; }
+
+.custom-select-input-style.appbar .anticon {
+  color: var(--calculated_base_top-bar-navigation_text-inactive) !important; }
+
+.custom-select-input-style.order-entry.ant-select {
+  width: 100% !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -3505,6 +3557,9 @@ table th {
     color: var(--calculated_base_top-bar-navigation_text);
     cursor: pointer;
     margin-right: 0.8rem; }
+    .app_bar .app-bar-account svg .account-inactive {
+      fill: var(--calculated_base_top-bar-navigation_text-inactive);
+      stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
   .app_bar .app_bar-pair-font {
     font-size: 0.8rem; }
   .app_bar .app_bar-pair-content {
@@ -3630,25 +3685,6 @@ table th {
         height: 9px;
         width: 9px;
         margin: 1.2px 3px 1px 0 !important; }
-  .app_bar .toggle_button-wrapper .ant-select {
-    max-height: 100%; }
-  .app_bar .toggle_button-wrapper .ant-select-selection,
-  .app_bar .toggle_button-wrapper .ant-select,
-  .app_bar .toggle_button-wrapper .ant-select-single,
-  .app_bar .toggle_button-wrapper .ant-input,
-  .app_bar .toggle_button-wrapper .ant-select-arrow,
-  .app_bar .toggle_button-wrapper .ant-select-selector,
-  .app_bar .toggle_button-wrapper .ant-select-selection-search-input {
-    background-color: var(--base_top-bar-navigation);
-    color: var(--calculated_base_top-bar-navigation_text-inactive);
-    font-size: 0.9rem;
-    line-height: 17px !important; }
-  .app_bar .toggle_button-wrapper .ant-select-selector {
-    border-color: var(--calculated_base_top-bar-navigation_text-inactive); }
-  .app_bar .toggle_button-wrapper .ant-select-selection-item {
-    height: 17px !important;
-    display: flex;
-    align-items: center; }
   .app_bar .app_bar-pair-content .btc0,
   .app_bar .app_bar-pair-content .btc1,
   .app_bar .app_bar-pair-content .eth0,
@@ -4077,6 +4113,8 @@ table th {
   width: 100%;
   color: var(--labels_secondary-inactive-label-text-graphics);
   background-color: var(--base_background); }
+  .search-field ::placeholder {
+    color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .app-bar-search-field {
   flex-direction: row-reverse;
@@ -5386,58 +5424,8 @@ table th {
   border-color: var(--specials_buttons-links-and-highlights); }
 
 .trade-form-select {
-  border: 1.5px solid var(--labels_important-active-labels-text-graphics);
-  border-radius: 7px;
   width: 35% !important;
   transform: translateY(1.4rem); }
-  .trade-form-select .ant-select-selection,
-  .trade-form-select .ant-select,
-  .trade-form-select .ant-select-single,
-  .trade-form-select .ant-input,
-  .trade-form-select .ant-select-selector,
-  .trade-form-select .ant-select-selection-search-input {
-    color: var(--labels_important-active-labels-text-graphics) !important;
-    font-size: 1rem;
-    line-height: 1rem !important;
-    height: 1rem; }
-  .trade-form-select .ant-select-selection,
-  .trade-form-select .ant-select,
-  .trade-form-select .ant-select-single,
-  .trade-form-select .ant-input,
-  .trade-form-select .ant-select-selector,
-  .trade-form-select .ant-select-selection-search-input {
-    width: 100%; }
-  .trade-form-select .ant-select-arrow {
-    color: var(--labels_important-active-labels-text-graphics) !important;
-    line-height: 1rem !important;
-    vertical-align: middle;
-    transform: translateY(0.2rem); }
-  .trade-form-select .ant-select-selector {
-    border-color: var(--labels_important-active-labels-text-graphics);
-    width: 100%; }
-  .trade-form-select .ant-select-selection-item {
-    width: auto;
-    height: 17px !important;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis; }
-
-.layout-mobile .ant-select-selection,
-.layout-mobile .ant-select,
-.layout-mobile .ant-select-single,
-.layout-mobile .ant-input,
-.layout-mobile .ant-select-arrow,
-.layout-mobile .ant-select-selector,
-.layout-mobile .ant-select-selection-search-input {
-  height: 2rem !important;
-  line-height: 2rem !important;
-  font-size: 1.5rem !important; }
-
-.layout-mobile .ant-select-arrow {
-  line-height: 2rem !important;
-  vertical-align: middle; }
 
 .exir-button {
   width: 100%;
@@ -8291,8 +8279,15 @@ svg .st11,
 svg .wallet-coins-2,
 svg .verification-doc,
 svg .copy-notification-0,
-svg .account-svg-1 {
+svg .account-svg-1,
+svg .incoming-btc-01,
+svg .incoming-toman-01,
+svg .coin-btc-5 {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
+
+svg .logout-door,
+svg .account-inactive {
+  stroke: var(--labels_secondary-inactive-label-text-graphics); }
 
 svg .withdraw-2,
 svg .withdraw-3,
@@ -8366,7 +8361,21 @@ svg .features-support-1,
 svg .features-data,
 svg .check-send-btc-1,
 svg .copy-notification-1,
-svg .data-1 {
+svg .data-1,
+svg .deposit-complete-btc-01,
+svg .deposit-complete-01,
+svg .email_sent,
+svg .gear-grey-1,
+svg .g1_3,
+svg .incoming-btc-2,
+svg .incoming-toman-02,
+svg .security-grey-1,
+svg .coin-btc-1,
+svg .wallet-selected-2,
+svg .account-active-1,
+svg .post-icon,
+svg .item-options,
+svg .check-order {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,
@@ -8388,7 +8397,13 @@ svg .deposit-bitcoin-1,
 svg .withdraw-1,
 svg .transaction-history-5,
 svg .pending-timer,
-svg .quick-trade-2 {
+svg .quick-trade-2,
+svg .coin-btc-6,
+svg .coin-btc-4,
+svg .logout-door,
+svg .cancel-cross-3,
+svg .cancel-cross-2,
+svg .account-inactive {
   fill: none; }
 
 svg .pending-timer,
@@ -8396,7 +8411,11 @@ svg .tab-close,
 svg .trans-history-4,
 svg .icon-check-1,
 svg .quick-trade-1,
-svg .success-check-box-0 {
+svg .success-check-box-0,
+svg .coin-btc-6,
+svg .coin-btc-4,
+svg .cancel-cross-3,
+svg .cancel-cross-2 {
   stroke: var(--labels_important-active-labels-text-graphics); }
 
 svg .quick-trade-tab-active {
@@ -8416,3 +8435,13 @@ svg .success-check-box-1 {
 
 svg .red-warning-1 {
   fill: var(--calculated_specials_notifications-alerts-text); }
+
+svg .session-timeout-1 {
+  fill: var(--specials_pending-waiting-caution); }
+
+svg .session-timeout-0 {
+  fill: var(--calculated_specials_notifications-pending-text); }
+
+svg .deposit-complete-02,
+svg .deposit-complete-btc-02 {
+  fill: var(--specials_checks-okay-done); }

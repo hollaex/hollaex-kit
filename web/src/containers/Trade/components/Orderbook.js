@@ -249,6 +249,8 @@ class Orderbook extends Component {
 							suffixIcon={<CaretDownOutlined />}
 							value={isBase}
 							onSelect={this.onSelect}
+							className="custom-select-input-style order-entry no-border"
+							dropdownClassName="custom-select-style"
 						>
 							<Option value={false}>{BASE_CURRENCY.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>
