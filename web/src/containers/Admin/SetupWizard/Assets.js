@@ -33,7 +33,7 @@ const Assets = ({
 		updateConstants(formValues, () => handleNext(3));
 	};
 	return (
-		<div className="asset-content">
+		<div className="asset-content show-scroll">
 			<div className="title-text">Native currency</div>
 			<div>
 				The selected native currency will be used as the currency unit to value
@@ -95,9 +95,9 @@ const Assets = ({
 				<div className="btn-container">
 					<Button onClick={handleStore}>Proceed</Button>
 				</div>
-				<span className="step-link" onClick={() => handleNext(3)}>
+				{/* <span className="step-link" onClick={() => handleNext(3)}>
 					Skip this step
-				</span>
+				</span> */}
 			</div>
 		</div>
 	);

@@ -3660,9 +3660,7 @@ definitions:
             type: string
           api_name:
             type: string
-          logo_path:
-            type: string
-          logo_black_path:
+          logo_image:
             type: string
           valid_languages:
             type: string

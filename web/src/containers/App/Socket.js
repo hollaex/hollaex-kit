@@ -9,6 +9,7 @@ import {
 	LANGUAGE_KEY,
 } from '../../config/constants';
 import { isMobile } from 'react-device-detect';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
 
 import { getMe, setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
@@ -41,7 +42,6 @@ import {
 	setOrderLimits,
 	NOTIFICATIONS,
 	setSnackDialog,
-	setValidBaseCurrency,
 	setConfig,
 	setInfo,
 	requestInitial,
@@ -174,12 +174,6 @@ class Container extends Component {
 					this.props.setPairsData(res.data.pairs);
 					this.props.setCurrencies(res.data.coins);
 
-					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
-						let temp = res.data.pairs[key];
-						return temp.pair_2 === BASE_CURRENCY;
-					});
-					const isValidPair = pairWithBase.length > 0;
-					this.props.setValidBaseCurrency(isValidPair);
 					const orderLimits = {};
 					Object.keys(res.data.pairs).map((pair, index) => {
 						orderLimits[pair] = {
@@ -281,13 +275,17 @@ class Container extends Component {
 					args: ['orderbook', 'trade', 'wallet', 'order', 'deposit'],
 				})
 			);
-			this.wsInterval = setInterval(() => {
-				privateSocket.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+			// this.wsInterval = setInterval(() => {
+			// 	privateSocket.send(
+			// 		JSON.stringify({
+			// 			op: 'ping',
+			// 		})
+			// 	);
+			// }, 55000);
+			setWsHeartbeat(privateSocket, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
 		};
 
 		privateSocket.onmessage = (evt) => {
@@ -737,7 +735,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),

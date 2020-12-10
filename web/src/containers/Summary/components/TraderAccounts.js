@@ -8,6 +8,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 const TraderAccounts = ({
 	user = {},
+	config = {},
 	isAccountDetails = false,
 	onFeesAndLimits,
 	onUpgradeAccount,
@@ -19,16 +20,24 @@ const TraderAccounts = ({
 	icons: ICONS,
 }) => {
 	const level = selectedAccount ? selectedAccount : verification_level;
-	const Title = STRINGS.formatString(
-		STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
-		verification_level
-	);
-	let description = STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
-		? STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
-		: STRINGS['SUMMARY.LEVEL_TXT_DEFAULT'];
-	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-		: ICONS['LEVEL_ACCOUNT_ICON_4'];
+	const accountData = config[level] || {};
+	const Title =
+		accountData.name ||
+		STRINGS.formatString(
+			STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
+			verification_level
+		);
+
+	let description =
+		accountData.description ||
+		(STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
+			? STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
+			: STRINGS['SUMMARY.LEVEL_TXT_DEFAULT']);
+	let icon =
+		accountData.icon ||
+		(ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+			? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+			: ICONS['LEVEL_ACCOUNT_ICON_4']);
 	// if (!isAccountDetails) {
 	// 	description = user.is_hap
 	// 		? STRINGS["SUMMARY.HAP_ACCOUNT_TXT"]

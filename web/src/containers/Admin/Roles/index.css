@@ -17,6 +17,7 @@
 }
 .roles-wrapper .role-description-box {
 	border-bottom: 1px solid #c4c4c4;
+	height: 135px;
 }
 .roles-wrapper .role-label {
 	font-size: 20px;
@@ -39,4 +40,9 @@
 }
 .edit-role-icon {
 	width: 3rem;
+}
+.roles-wrapper .divider {
+	border-top: 1px solid #c4c4c4;
+	margin: 2rem 0;
+	width: 100%;
 }

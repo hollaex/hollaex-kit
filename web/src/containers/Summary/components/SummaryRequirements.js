@@ -9,6 +9,10 @@ import STRINGS from '../../../config/localizedStrings';
 // import { getBonusRequirements } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 
+const createMarkup = (msg) => {
+	return { __html: msg };
+};
+
 // const SucessStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
 // 		{isAccountDetails && (
@@ -292,6 +296,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 const SummaryRequirements = ({
 	coins,
 	user,
+	config = {},
 	isAccountDetails = false,
 	isBonusSection = false,
 	contentClassName = '',
@@ -311,6 +316,7 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
+	const accountData = config[selectedLevel] || {};
 	// const requirement = isBonusSection
 	// 	? getBonusRequirements(user, coins, affiliation)
 	// 	: getRequirements(user, selectedLevel, balance, coins);
@@ -332,6 +338,9 @@ const SummaryRequirements = ({
 					'summary-content-txt'
 				)}
 			>
+				<div className="my-2">
+					<div dangerouslySetInnerHTML={createMarkup(accountData.note)} />
+				</div>
 				{/* <div className="my-2">
 					{Object.keys(requirement).map((step, index) => {
 						let reqObj = requirement[step];

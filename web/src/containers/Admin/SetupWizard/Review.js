@@ -32,19 +32,18 @@ const ExchangeReview = ({
 					</div>
 				</div>
 				<div className="preview-container">
-					<div className="preview-heading description">{kit.api_name}</div>
-					<div className="preview-time">
+					<div className="preview-heading">{kit.api_name}</div>
+					<div className="preview-time description">
 						<div>{moment().format('YYYY-MM-DD')}</div>
-						<div>{moment().format('HH-MM-SS')}</div>
 					</div>
 				</div>
 				<div>
-					<div className="option-list">
+					{/* <div className="option-list">
 						<div className="option-label">Time zone: </div>
 						<div className="option-value">
 							{kit && kit.timezone !== 'null' ? kit.timezone : ''}
 						</div>
-					</div>
+					</div> */}
 					<div className="option-list">
 						<div className="option-label">Language: </div>
 						<div className="option-value">
@@ -57,10 +56,10 @@ const ExchangeReview = ({
 						<div className="option-label">2FA: </div>
 						<div className="option-value">false</div>
 					</div>
-					<div className="option-list">
+					{/* <div className="option-list">
 						<div className="option-label">Exchange network key: </div>
 						<div className="option-value"> </div>
-					</div>
+					</div> */}
 					<div className="option-list">
 						<div className="option-label">Assets: </div>
 						<div className="option-value">{coinData}</div>
@@ -93,7 +92,7 @@ const ExchangeReview = ({
 								: ''}
 						</div>
 					</div>
-					<div className="option-list">
+					{/* <div className="option-list">
 						<div className="option-label">SMTP server: </div>
 						<div className="option-value">
 							{secrets.smtp && secrets.smtp.server !== 'null'
@@ -124,7 +123,7 @@ const ExchangeReview = ({
 								? secrets.smtp.password
 								: ''}
 						</div>
-					</div>
+					</div> */}
 					<div className="option-list">
 						<div className="option-label">Auditor email: </div>
 						<div className="option-value">
@@ -133,7 +132,7 @@ const ExchangeReview = ({
 								: ''}
 						</div>
 					</div>
-					<div className="option-list">
+					{/* <div className="option-list">
 						<div className="option-label">Site key (Google reCAPTHA V3): </div>
 						<div className="option-value">
 							{kit.captcha && kit.captcha.site_key !== 'null'
@@ -150,7 +149,7 @@ const ExchangeReview = ({
 								? secrets.captcha.secret_key
 								: ''}
 						</div>
-					</div>
+					</div> */}
 				</div>
 				<div className="option-list previewButton">
 					<Button onClick={() => setPreview()}>Back</Button>

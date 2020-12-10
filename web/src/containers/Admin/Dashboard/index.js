@@ -64,7 +64,7 @@ const Dashboard = ({ constants = {} }) => {
 				<div className="exchange-title">{showLabel}</div>
 			</div>
 			{CARD_LIST.map((list, index) => (
-				<div className="admin-dash-card flex-menu">
+				<div key={index} className="admin-dash-card flex-menu">
 					<div>
 						<ReactSVG path={list.icon} wrapperClassName="card-icon" />
 					</div>

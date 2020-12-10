@@ -95,3 +95,91 @@ $padding: 0.25rem;
 		left: 0;
 	}
 }
+
+.size-slider {
+	.ant-slider-with-marks {
+		margin-bottom: 10px;
+	}
+
+	.ant-slider-rail,
+	.ant-slider-dot {
+		background-color: $colors-black;
+		border-color: $colors-black;
+	}
+
+	.ant-slider-dot-active,
+	.ant-slider-track,
+	.ant-slider-handle {
+		background-color: $link;
+		border-color: $link;
+	}
+}
+
+.trade-form-select {
+	border: 1.5px solid $colors-main-black;
+	border-radius: 7px;
+	width: 35% !important;
+	transform: translateY(1.4rem);
+
+	.ant-select-selection,
+	.ant-select,
+	.ant-select-single,
+	.ant-input,
+	.ant-select-selector,
+	.ant-select-selection-search-input {
+		color: $colors-main-black !important;
+		font-size: 1rem;
+		line-height: 1rem !important;
+		height: 1rem;
+	}
+
+	.ant-select-selection,
+	.ant-select,
+	.ant-select-single,
+	.ant-input,
+	.ant-select-selector,
+	.ant-select-selection-search-input {
+		width: 100%;
+	}
+
+	.ant-select-arrow {
+		color: $colors-main-black !important;
+		line-height: 1rem !important;
+		vertical-align: middle;
+		transform: translateY(0.2rem);
+	}
+
+	.ant-select-selector {
+		border-color: $colors-main-black;
+		width: 100%;
+	}
+
+	.ant-select-selection-item {
+		width: auto;
+		height: 17px !important;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+}
+
+.layout-mobile {
+	.ant-select-selection,
+	.ant-select,
+	.ant-select-single,
+	.ant-input,
+	.ant-select-arrow,
+	.ant-select-selector,
+	.ant-select-selection-search-input {
+		height: 2rem !important;
+		line-height: 2rem !important;
+		font-size: 1.5rem !important;
+	}
+
+	.ant-select-arrow {
+		line-height: 2rem !important;
+		vertical-align: middle;
+	}
+}

@@ -220,6 +220,8 @@ const nestedContent = {
 			'Insufficient balance available ({0}) to perform the operation ({1}).',
 		MIN_VALUE: 'Value must be {0} or higher.',
 		MAX_VALUE: 'Value must be {0} or lower.',
+		MIN_VALUE_NE: 'Value must be higher than {0}.',
+		MAX_VALUE_NE: 'Value must be lower than {0}.',
 		INSUFFICIENT_BALANCE: 'Insufficient balance',
 		PASSWORDS_DONT_MATCH: "Password don't match",
 		USER_EXIST: 'Email has already been registered',
@@ -910,8 +912,9 @@ const nestedContent = {
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
 	ORDERBOOK_BUYERS: 'Buyers',
-	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+	ORDERBOOK_SPREAD: 'spread {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
+	ORDERBOOK_LAST_PRICE: 'Last price: {0}',
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
@@ -1224,6 +1227,11 @@ const nestedContent = {
 		WAVE_NUMBER: 'Wave Number', // new
 		DISCOUNT: '( {0}% discount )', // new
 		MY_FEES_LIMITS: ' My Fees and Limits', // new
+		MARKETS: 'Markets', // new
+		CHANGE_24H: '24H Change', // new
+		VOLUME_24H: '24H Volume', // new
+		PRICE_GRAPH_24H: '24H Price graph', // new
+		VIEW_MORE_MARKETS: 'View more markets', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1341,6 +1349,9 @@ const nestedContent = {
 	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
+	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	POST_ONLY: 'Post only',
+	CLEAR: 'Clear',
 };
 
 const content = flatten(nestedContent, options);
