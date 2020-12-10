@@ -326,7 +326,7 @@ export default {
 	},
 	SIGN_UP: {
 		SIGNUP_TO: 'Inscrivez-vous pour {0}',
-		NO_EMAIL: "Vous n\'avez pas reçu l\'e-mail?",
+		NO_EMAIL: 'Vous n\'avez pas reçu l\'e-mail?',
 		REQUEST_EMAIL: 'Demandez-en un autre ici',
 		HAVE_ACCOUNT: 'Vous avez déjà un compte?',
 		GOTO_LOGIN: 'Aller à la page Connexion',
@@ -561,7 +561,7 @@ export default {
 				SELFIE: {
 					TITLE: 'Selfie avec passeport et note',
 					INFO_TEXT:
-						"Veuillez fournir une photo de vous tenant votre passeport. Sur la même photo mettre la référence à l\'url de l\'échange, la date du jour et votre signature. Assurez-vous que votre visage est clairement visible et que les détails de votre identité sont clairement lisibles.",
+						'Veuillez fournir une photo de vous tenant votre passeport. Sur la même photo mettre la référence à l\'url de l\'échange, la date du jour et votre signature. Assurez-vous que votre visage est clairement visible et que les détails de votre identité sont clairement lisibles.',
 					REQUIRED: 'Obligatoire:',
 					INSTRUCTION_1: 'Votre visage doit être clairement visible',
 					INSTRUCTION_2: 'Votre passeport doit être clairement lisible',
