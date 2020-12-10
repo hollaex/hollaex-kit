@@ -342,11 +342,11 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 };
 
 const getAssetsPrices = (assets = [], quote, amount) => {
-	each(assets, (asset) => {
+	for (let asset of assets) {
 		if (!subscribedToCoin(asset)) {
 			return reject(new Error('Invalid asset'));
 		}
-	});
+	}
 
 	if (amount <= 0) {
 		return reject(new Error('Amount must be greater than 0'));
