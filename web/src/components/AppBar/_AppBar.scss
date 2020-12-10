@@ -116,6 +116,13 @@ $app-menu-notification-size: 1.2rem;
 		color: $base_top-bar-navigation_text;
 		cursor: pointer;
 		margin-right: 0.8rem;
+
+		svg {
+			.account-inactive {
+				fill: $base_top-bar-navigation_text-inactive;
+				stroke: $base_top-bar-navigation_text-inactive;
+			}
+		}
 	}
 
 	.app_bar-pair-font {
@@ -302,32 +309,6 @@ $app-menu-notification-size: 1.2rem;
 					margin: 1.2px 3px 1px 0 !important;
 				}
 			}
-		}
-		.ant-select {
-			max-height: 100%;
-		}
-
-		.ant-select-selection,
-		.ant-select,
-		.ant-select-single,
-		.ant-input,
-		.ant-select-arrow,
-		.ant-select-selector,
-		.ant-select-selection-search-input {
-			background-color: $app-bar-background-color;
-			color: $base_top-bar-navigation_text-inactive;
-			font-size: $navigation_bar-font_size;
-			line-height: 17px !important;
-		}
-
-		.ant-select-selector {
-			border-color: $base_top-bar-navigation_text-inactive;
-		}
-
-		.ant-select-selection-item {
-			height: 17px !important;
-			display: flex;
-			align-items: center;
 		}
 	}
 
@@ -789,6 +770,10 @@ $app-menu-notification-size: 1.2rem;
 	width: 100%;
 	color: $colors-black;
 	background-color: $app-background-color;
+
+	::placeholder {
+		color: $colors_black;
+	}
 }
 
 .app-bar-search-field {

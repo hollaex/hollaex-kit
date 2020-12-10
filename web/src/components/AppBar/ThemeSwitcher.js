@@ -18,7 +18,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 	const isSwitch = options.length < 3;
 
 	return (
-		<div className={classnames({ 'app_bar-quicktrade': !isSwitch })}>
+		<div>
 			<div className={classnames('toggle_button-wrapper', 'd-flex')}>
 				{isSwitch && (
 					<div
@@ -72,8 +72,9 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						size="small"
 						onSelect={toggle}
 						bordered={false}
-						style={{ height: '17px' }}
 						suffixIcon={<CaretDownOutlined />}
+						className="custom-select-input-style appbar"
+						dropdownClassName="custom-select-style"
 					>
 						{options.map(({ value }) => (
 							<Option value={value} key={value}>
