@@ -143,7 +143,7 @@ const getPaginatedPlugins = (limit, page, search) => {
 	const options = {
 		where: {},
 		raw: true,
-		attributes: ['name', 'version', 'enabled', 'author', 'description', 'bio', 'url', 'logo', 'icon', 'documentation'],
+		attributes: ['name', 'version', 'enabled', 'author', 'description', 'bio', 'url', 'logo', 'icon', 'documentation', 'created_at', 'updated_at'],
 		...paginationQuery(limit, page)
 	};
 
@@ -153,7 +153,13 @@ const getPaginatedPlugins = (limit, page, search) => {
 		};
 	}
 
-	return dbQuery.findAndCountAll('plugin', options);
+	return dbQuery.findAndCountAll('plugin', options)
+		.then((data) => {
+			return {
+				count: data.count,
+				data: data.rows
+			};
+		});
 };
 
 const getPlugin = (name, opts = {}) => {
