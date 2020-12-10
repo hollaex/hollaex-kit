@@ -3,13 +3,13 @@ import light from './light';
 export { default as STATIC_ICONS } from './static';
 
 const icons = {
-	EXCHANGE_LOGO_LIGHT: '', //TODO: get logo, admin and calculated icons
-	EXCHANGE_LOGO_DARK: '', //TODO: get logo, admin and calculated icons
-	FAV_ICON: '/favicon.ico', //TODO: set
-	LOADER_LIGHT: '/assets/loader-light.gif', //TODO: admin
-	LOADER_DARK: '/assets/loader-dark.gif', //TODO: admin
-	BOARDING_IMAGE_LIGHT: '/assets/background.png', //TODO: admin
-	BOARDING_IMAGE_DARK: '/assets/dark-background.jpg', //TODO: admin
+	// EXCHANGE_LOGO_LIGHT: '',
+	// EXCHANGE_LOGO_DARK: '',
+	// FAV_ICON: '/favicon.ico',
+	// LOADER_LIGHT: '/assets/loader-light.gif',
+	// LOADER_DARK: '/assets/loader-dark.gif',
+	// BOARDING_IMAGE_LIGHT: '/assets/background.png',
+	// BOARDING_IMAGE_DARK: '/assets/dark-background.jpg',
 
 	// DEMO_LOGIN_ICON_DARK: '/assets/icons/demo-login-icon-dark.svg',
 	// DEMO_LOGIN_ICON_LIGHT: '/assets/icons/demo-login-icon-light.svg',
