@@ -10,10 +10,6 @@ const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
 const HE_NETWORK_BASE_URL = '/v2';
 const PATH_ACTIVATE = '/exchange/activate';
 
-let nodeLib;
-
-const getNodeLib = () => nodeLib;
-
 const { subscriber, publisher } = require('./db/pubsub');
 const { INIT_CHANNEL, CONFIGURATION_CHANNEL, WS_HUB_CHANNEL } = require('./constants');
 const { each } = require('lodash');
@@ -132,23 +128,23 @@ const checkStatus = () => {
 				status: true,
 				initialized: status.initialized
 			};
-			nodeLib = new Network({
+			const nodeLib = new Network({
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code
 			});
+
 			return all([
 				User.findAll({
 					where: {
 						activated: false
 					}
 				}),
-				exchange,
-				status
+				nodeLib
 			]);
 		})
-		.then(([ users, exchange, status ]) => {
+		.then(([ users, nodeLib ]) => {
 			loggerInit.info('init/checkStatus/activation', users.length, 'users deactivated');
 			each(users, (user) => {
 				frozenUsers[user.dataValues.id] = true;
@@ -161,7 +157,7 @@ const checkStatus = () => {
 				})
 			);
 			loggerInit.info('init/checkStatus/activation complete');
-			return [ exchange, status ];
+			return nodeLib;
 		})
 		.catch((err) => {
 			let message = 'Initialization failed';
@@ -204,6 +200,5 @@ const checkActivation = (name, url, activation_code, version, constants = {}, ki
 
 module.exports = {
 	checkStatus,
-	checkActivation,
-	getNodeLib
+	checkActivation
 };
