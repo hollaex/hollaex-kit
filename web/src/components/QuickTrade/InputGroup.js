@@ -4,6 +4,7 @@ import { Select, Input } from 'antd';
 import Image from 'components/Image';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
@@ -82,6 +83,8 @@ class InputGroup extends React.PureComponent {
 						bordered={false}
 						listItemHeight={35}
 						listHeight={35 * 6}
+						dropdownClassName="custom-select-style"
+						suffixIcon={<CaretDownOutlined />}
 					>
 						{options.map((symbol, index) => (
 							<Option

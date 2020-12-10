@@ -104,30 +104,32 @@ class OrderEntry extends Component {
 			asks,
 			type,
 		} = this.props;
-		const size = parseFloat(this.props.size || 0);
-		let price = parseFloat(this.props.price || 0);
-		let maxSize = balance[`${pair_base}_available`] || 0;
+		if (this.props.price) {
+			const size = parseFloat(this.props.size || 0);
+			let price = parseFloat(this.props.price || 0);
+			let maxSize = balance[`${pair_base}_available`] || 0;
 
-		if (side === 'buy') {
-			if (type === 'market') {
-				if (asks && asks.length) {
-					price = asks[asks.length - 1][0];
+			if (side === 'buy') {
+				if (type === 'market') {
+					if (asks && asks.length) {
+						price = asks[asks.length - 1][0];
+					}
 				}
+				maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 			}
-			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
-		}
 
-		const calculatedSize = mathjs.multiply(
-			maxSize,
-			mathjs.divide(percent, 100)
-		);
-
-		if (calculatedSize !== size) {
-			this.props.change(
-				FORM_NAME,
-				'size',
-				roundNumber(calculatedSize, getDecimals(increment_size))
+			const calculatedSize = mathjs.multiply(
+				maxSize,
+				mathjs.divide(percent, 100)
 			);
+
+			if (calculatedSize !== size) {
+				this.props.change(
+					FORM_NAME,
+					'size',
+					roundNumber(calculatedSize, getDecimals(increment_size))
+				);
+			}
 		}
 	};
 
