@@ -265,11 +265,11 @@ checkStatus()
 									return false;
 								}
 								if (value.install && lodash.isArray(value.install)) {
-									lodash.each(value.install, (lib) => {
+									for (let lib of value.install) {
 										if (!lodash.isString(lib)) {
 											return false;
 										}
-									});
+									}
 								}
 								if (value.run && !lodash.isString(value.run)) {
 									return false;
@@ -534,11 +534,11 @@ checkStatus()
 									return false;
 								}
 								if (value.install && lodash.isArray(value.install)) {
-									lodash.each(value.install, (lib) => {
+									for (let lib of value.install) {
 										if (!lodash.isString(lib)) {
 											return false;
 										}
-									});
+									}
 								}
 								if (value.run && !lodash.isString(value.run)) {
 									return false;
