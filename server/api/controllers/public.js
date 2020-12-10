@@ -4,26 +4,8 @@ const packageJson = require('../../package.json');
 const { API_HOST } = require('../../constants');
 const { loggerPublic } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
-const { Status, User } = require('../../db/models');
 
 const getHealth = (req, res) => {
-	// Status.findOne({})
-	// 	.then((data) => {
-	// 		data.update({
-	// 			api_key: 'e06c90f78b6c335ed2b91315b55f3bb298cad3a0',
-	// 			api_secret: 'e5d44d9676d9d8160e84c61042e0aa79dd6ee32ad38ee06595',
-	// 			activation_code: '733ef374-6eb9-464e-be48-02c8b099b939'
-	// 		})
-	// 	})
-
-	// User.findAll().then(console.log)
-
-	User.findOne({ where: { email: 'brandon@bitholla.com'}})
-		.then((user) => {
-			user.update({ 
-				verification_level: 2
-			})
-		})
 	try {
 		return res.json({
 			name: toolsLib.getKitConfig().api_name || packageJson.name,
