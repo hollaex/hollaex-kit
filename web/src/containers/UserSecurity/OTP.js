@@ -6,6 +6,7 @@ import { ICONS } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
+
 export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 	const app_name = constants.api_name.replace(' ', '').trim() || '';
 	return (
@@ -43,13 +44,28 @@ export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
 					{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4}
 				</div>
 				<div className="otp_form-section-content otp_secret">{secret}</div>
-			</div>
-			<div className="otp_form-section-wrapper">
-				<div className="otp_form-section-title">
-					<span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT}</span>
+				<div className="otp_form-wrapper">
+				  <IconTitle
+				    text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.TITLE_2}
+				    iconPath={ICONS.OTP_KEYS}
+				    className="w-100"
+				    textType="title"
+				    useSvg={true}
+				  />
+				  <div className="otp_form-section-wrapper">
+				    <div className="otp_form-section-text">
+				      {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_6}
+				      <br />
+				      <br />
+				    </div>
+				    <div className="otp_form-section-title">
+				      <span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT_2}</span>
+				    </div>
+				    <OTPForm onSubmit={activateOTP} />
+				  </div>
 				</div>
-				<OTPForm onSubmit={activateOTP} />
 			</div>
+
 		</div>
 	);
 }
