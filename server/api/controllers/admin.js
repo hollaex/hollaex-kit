@@ -638,7 +638,6 @@ const mintAsset = (req, res) => {
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
-			console.log(err);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -678,7 +677,6 @@ const burnAsset = (req, res) => {
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
-			console.log(err);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
