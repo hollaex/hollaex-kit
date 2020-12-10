@@ -180,7 +180,7 @@ class HollaExNetwork {
 	createUserCryptoAddress(userId, crypto) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/create-address?user_id=${userId}&crypto=${crypto}`;
+		const path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/create-address?user_id=${userId}&crypto=${crypto}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
 		return createRequest(
