@@ -834,7 +834,7 @@ checkStatus()
 
 				loggerPlugin.info(req.uuid, 'GET /plugins/meta name', name);
 
-				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'meta'] })
+				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta'] })
 					.then((plugin) => {
 						if (!plugin) {
 							throw new Error('Plugin not found');
@@ -843,7 +843,51 @@ checkStatus()
 						return res.json(plugin);
 					})
 					.catch((err) => {
-						loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', err.message);
+						loggerPlugin.error(req.uuid, 'GET /plugins/meta err', err.message);
+						return res.status(err.status || 400).json({ message: err.message });
+					});
+			});
+
+			app.get('/plugins/script', [
+				toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+				checkSchema({
+					name: {
+						in: ['query'],
+						errorMessage: 'must be a string',
+						isString: true,
+						isLength: {
+							errorMessage: 'must be minimum length of 1',
+							options: { min: 1 }
+						},
+						optional: false
+					}
+				})
+			], (req, res) => {
+				const errors = expressValidator.validationResult(req);
+				if (!errors.isEmpty()) {
+					return res.status(400).json({ errors: errors.array() });
+				}
+
+				loggerPlugin.verbose(
+					req.uuid,
+					'GET /plugins/script auth',
+					req.auth.sub
+				);
+
+				const { name } = req.query;
+
+				loggerPlugin.info(req.uuid, 'GET /plugins/script name', name);
+
+				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'script', 'prescript', 'postscript', 'admin_view'] })
+					.then((plugin) => {
+						if (!plugin) {
+							throw new Error('Plugin not found');
+						}
+
+						return res.json(plugin);
+					})
+					.catch((err) => {
+						loggerPlugin.error(req.uuid, 'GET /plugins/script err', err.message);
 						return res.status(err.status || 400).json({ message: err.message });
 					});
 			});
