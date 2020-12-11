@@ -99,13 +99,39 @@ checkStatus()
 				let promiseQuery = toolsLib.plugin.getPaginatedPlugins(limit, page, search);
 
 				if (name) {
-					promiseQuery = toolsLib.plugin.getPlugin(name, { raw: true });
+					promiseQuery = toolsLib.plugin.getPlugin(
+						name,
+						{
+							raw: true,
+							attributes: [
+								'name',
+								'version',
+								'enabled',
+								'author',
+								'description',
+								'bio',
+								'url',
+								'logo',
+								'icon',
+								'documentation',
+								'web_view',
+								'admin_view',
+								'created_at',
+								'updated_at'
+							]
+						}
+					);
 				}
 
 				promiseQuery
 					.then((plugins) => {
-						if (name && !plugins) {
-							throw new Error('Plugin not found');
+						if (name) {
+							if (!plugins) {
+								throw new Error('Plugin not found');
+							} else {
+								plugins.enabled_admin_view = !!plugins.admin_view;
+								delete plugins.admin_view;
+							}
 						}
 						return res.json(plugins);
 					})
@@ -241,20 +267,12 @@ checkStatus()
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					web_view: {
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					prescript: {
@@ -278,7 +296,7 @@ checkStatus()
 							},
 							errorMessage: 'must be an object. install value must be an array of strings. run value must be a string'
 						},
-						optional: true
+						optional: { options: { nullable: true } }
 					},
 					postscript: {
 						in: ['body'],
@@ -304,7 +322,7 @@ checkStatus()
 							},
 							errorMessage: 'must be an object'
 						},
-						optional: true
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -387,11 +405,11 @@ checkStatus()
 							updatedPlugin.logo = logo;
 						}
 
-						if (web_view) {
+						if (!lodash.isUndefined(web_view)) {
 							updatedPlugin.web_view = web_view;
 						}
 
-						if (admin_view) {
+						if (!lodash.isUndefined(admin_view)) {
 							updatedPlugin.admin_view = admin_view;
 						}
 
@@ -417,7 +435,18 @@ checkStatus()
 					.then(async (plugin) => {
 						loggerPlugin.info(req.uuid, 'PUT /plugins updated', name);
 
-						res.json(plugin);
+						plugin = plugin.dataValues;
+
+						plugin.enabled_admin_view = !!plugin.admin_view;
+
+						res.json(lodash.omit(plugin, [
+							'id',
+							'meta',
+							'admin_view',
+							'script',
+							'prescript',
+							'postscript'
+						]));
 
 						if (plugin.enabled) {
 							process.exit();
@@ -458,17 +487,23 @@ checkStatus()
 						isNumeric: true,
 						optional: false
 					},
-					description: {
-						in: ['body'],
-						errorMessage: 'must be a string or null',
-						isString: true,
-						optional: { options: { nullable: true } }
-					},
 					author: {
 						in: ['body'],
 						errorMessage: 'must be a string',
 						isString: true,
 						optional: false
+					},
+					enabled: {
+						in: ['body'],
+						errorMessage: 'must be a boolean',
+						isBoolean: true,
+						optional: false
+					},
+					description: {
+						in: ['body'],
+						errorMessage: 'must be a string or null',
+						isString: true,
+						optional: { options: { nullable: true } }
 					},
 					bio: {
 						in: ['body'],
@@ -500,30 +535,16 @@ checkStatus()
 						isString: true,
 						optional: { options: { nullable: true } }
 					},
-					enabled: {
-						in: ['body'],
-						errorMessage: 'must be a boolean',
-						isBoolean: true,
-						optional: false
-					},
 					admin_view: {
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					web_view: {
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					prescript: {
@@ -547,7 +568,7 @@ checkStatus()
 							},
 							errorMessage: 'must be an object. install value must be an array of strings. run value must be a string'
 						},
-						optional: true
+						optional: { options: { nullable: true } }
 					},
 					postscript: {
 						in: ['body'],
@@ -563,7 +584,7 @@ checkStatus()
 							},
 							errorMessage: 'must be an object. run value must be a string'
 						},
-						optional: true
+						optional: { options: { nullable: true } }
 					},
 					meta: {
 						in: ['body'],
@@ -573,7 +594,7 @@ checkStatus()
 							},
 							errorMessage: 'must be an object'
 						},
-						optional: true
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -621,29 +642,75 @@ checkStatus()
 							throw new Error('Error while minifying script');
 						}
 
-						return toolsLib.database.create('plugin', {
+						const newPlugin = {
 							name,
 							script: minifiedScript.code,
 							version,
-							icon,
-							bio,
-							documentation,
-							web_view,
-							admin_view,
-							description,
 							author,
-							url,
-							logo,
-							enabled,
-							prescript,
-							postscript,
-							meta
-						});
+							enabled
+						};
+
+						if (description) {
+							newPlugin.description = description;
+						}
+
+						if (bio) {
+							newPlugin.bio = bio;
+						}
+
+						if (documentation) {
+							newPlugin.documentation = documentation;
+						}
+
+						if (icon) {
+							newPlugin.icon = icon;
+						}
+
+						if (url) {
+							newPlugin.url = url;
+						}
+
+						if (logo) {
+							newPlugin.logo = logo;
+						}
+
+						if (!lodash.isUndefined(web_view)) {
+							newPlugin.web_view = web_view;
+						}
+
+						if (!lodash.isUndefined(admin_view)) {
+							newPlugin.admin_view = admin_view;
+						}
+
+						if (lodash.isPlainObject(prescript)) {
+							newPlugin.prescript = prescript;
+						}
+
+						if (lodash.isPlainObject(postscript)) {
+							newPlugin.postscript = postscript;
+						}
+
+						if (lodash.isPlainObject(meta)) {
+							newPlugin.meta = meta;
+						}
+
+						return toolsLib.database.create('plugin', newPlugin);
 					})
-					.then(async (plugin) => {
+					.then((plugin) => {
 						loggerPlugin.info(req.uuid, 'POST /plugins installed', name);
 
-						res.json(plugin);
+						plugin = plugin.dataValues;
+
+						plugin.enabled_admin_view = !!plugin.admin_view;
+
+						res.json(lodash.omit(plugin, [
+							'id',
+							'meta',
+							'admin_view',
+							'script',
+							'prescript',
+							'postscript'
+						]));
 
 						if (plugin.enabled) {
 							process.exit();
@@ -721,6 +788,94 @@ checkStatus()
 					})
 					.catch((err) => {
 						loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', err.message);
+						return res.status(err.status || 400).json({ message: err.message });
+					});
+			});
+
+			app.get('/plugins/meta', [
+				toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+				checkSchema({
+					name: {
+						in: ['query'],
+						errorMessage: 'must be a string',
+						isString: true,
+						isLength: {
+							errorMessage: 'must be minimum length of 1',
+							options: { min: 1 }
+						},
+						optional: false
+					}
+				})
+			], (req, res) => {
+				const errors = expressValidator.validationResult(req);
+				if (!errors.isEmpty()) {
+					return res.status(400).json({ errors: errors.array() });
+				}
+
+				loggerPlugin.verbose(
+					req.uuid,
+					'GET /plugins/meta auth',
+					req.auth.sub
+				);
+
+				const { name } = req.query;
+
+				loggerPlugin.info(req.uuid, 'GET /plugins/meta name', name);
+
+				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta'] })
+					.then((plugin) => {
+						if (!plugin) {
+							throw new Error('Plugin not found');
+						}
+
+						return res.json(plugin);
+					})
+					.catch((err) => {
+						loggerPlugin.error(req.uuid, 'GET /plugins/meta err', err.message);
+						return res.status(err.status || 400).json({ message: err.message });
+					});
+			});
+
+			app.get('/plugins/script', [
+				toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+				checkSchema({
+					name: {
+						in: ['query'],
+						errorMessage: 'must be a string',
+						isString: true,
+						isLength: {
+							errorMessage: 'must be minimum length of 1',
+							options: { min: 1 }
+						},
+						optional: false
+					}
+				})
+			], (req, res) => {
+				const errors = expressValidator.validationResult(req);
+				if (!errors.isEmpty()) {
+					return res.status(400).json({ errors: errors.array() });
+				}
+
+				loggerPlugin.verbose(
+					req.uuid,
+					'GET /plugins/script auth',
+					req.auth.sub
+				);
+
+				const { name } = req.query;
+
+				loggerPlugin.info(req.uuid, 'GET /plugins/script name', name);
+
+				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'script', 'prescript', 'postscript', 'admin_view'] })
+					.then((plugin) => {
+						if (!plugin) {
+							throw new Error('Plugin not found');
+						}
+
+						return res.json(plugin);
+					})
+					.catch((err) => {
+						loggerPlugin.error(req.uuid, 'GET /plugins/script err', err.message);
 						return res.status(err.status || 400).json({ message: err.message });
 					});
 			});
