@@ -99,13 +99,39 @@ checkStatus()
 				let promiseQuery = toolsLib.plugin.getPaginatedPlugins(limit, page, search);
 
 				if (name) {
-					promiseQuery = toolsLib.plugin.getPlugin(name, { raw: true });
+					promiseQuery = toolsLib.plugin.getPlugin(
+						name,
+						{
+							raw: true,
+							attributes: [
+								'name',
+								'version',
+								'enabled',
+								'author',
+								'description',
+								'bio',
+								'url',
+								'logo',
+								'icon',
+								'documentation',
+								'web_view',
+								'admin_view',
+								'created_at',
+								'updated_at'
+							]
+						}
+					);
 				}
 
 				promiseQuery
 					.then((plugins) => {
-						if (name && !plugins) {
-							throw new Error('Plugin not found');
+						if (name) {
+							if (!plugins) {
+								throw new Error('Plugin not found');
+							} else {
+								plugins.enabled_admin_view = !!plugins.admin_view;
+								delete plugins.admin_view;
+							}
 						}
 						return res.json(plugins);
 					})
