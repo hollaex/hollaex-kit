@@ -11,7 +11,9 @@ const {
 const { getKitConfig, getKitSecrets, maskSecrets } = require('./common');
 const dbQuery = require('./database/query');
 const { publisher } = require('./database/redis');
+const { paginationQuery } = require('./database/helpers');
 const flatten = require('flat');
+const { Op } = require('sequelize');
 
 const getPluginsConfig = () => {
 	return {
@@ -137,11 +139,45 @@ const disablePlugin = (plugin) => {
 	return enableOrDisablePlugin('disable', plugin);
 };
 
+const getPaginatedPlugins = (limit, page, search) => {
+	const options = {
+		where: {},
+		raw: true,
+		attributes: ['name', 'version', 'enabled', 'author', 'description', 'bio', 'url', 'logo', 'icon', 'documentation', 'created_at', 'updated_at'],
+		...paginationQuery(limit, page)
+	};
+
+	if (search) {
+		options.where = {
+			name: { [Op.like]: `%${search.toLowerCase()}%` }
+		};
+	}
+
+	return dbQuery.findAndCountAll('plugin', options)
+		.then((data) => {
+			return {
+				count: data.count,
+				data: data.rows
+			};
+		});
+};
+
+const getPlugin = (name, opts = {}) => {
+	return dbQuery.findOne('plugin', {
+		where: { name: name.toLowerCase() },
+		...opts
+	});
+};
+
+
+
 module.exports = {
 	getPluginsConfig,
 	getPluginsSecrets,
 	pluginIsEnabled,
 	updatePluginConfig,
 	enablePlugin,
-	disablePlugin
+	disablePlugin,
+	getPaginatedPlugins,
+	getPlugin
 };

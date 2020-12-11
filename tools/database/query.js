@@ -9,8 +9,12 @@ const { convertSequelizeCountAndRows } = require('./helpers');
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query.
  */
-const findOne = (table, query = {}) => {
-	return Model(table).findOne(query);
+const findOne = (table, query = {}, model) => {
+	if (model) {
+		return model.findOne(query);
+	} else {
+		return Model(table).findOne(query);
+	}
 };
 
 /**
@@ -19,8 +23,12 @@ const findOne = (table, query = {}) => {
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query.
  */
-const findAll = (table, query = {}) => {
-	return Model(table).findAll(query);
+const findAll = (table, query = {}, model) => {
+	if (model) {
+		return model.findAll(query);
+	} else {
+		return Model(table).findAll(query);
+	}
 };
 
 /**
@@ -29,8 +37,12 @@ const findAll = (table, query = {}) => {
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query.
  */
-const findAndCountAll = (table, query = {}) => {
-	return Model(table).findAndCountAll(query);
+const findAndCountAll = (table, query = {}, model) => {
+	if (model) {
+		return model.findAndCountAll(query);
+	} else {
+		return Model(table).findAndCountAll(query);
+	}
 };
 
 /**
@@ -39,8 +51,12 @@ const findAndCountAll = (table, query = {}) => {
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query in count/data format.
  */
-const findAndCountAllWithRows = (table, query = {}) => {
-	return Model(table).findAndCountAll(query).then(convertSequelizeCountAndRows);
+const findAndCountAllWithRows = (table, query = {}, model) => {
+	if (model) {
+		return model.findAndCountAll(query).then(convertSequelizeCountAndRows);
+	} else {
+		return Model(table).findAndCountAll(query).then(convertSequelizeCountAndRows);
+	}
 };
 
 module.exports = {
