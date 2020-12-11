@@ -267,20 +267,12 @@ checkStatus()
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					web_view: {
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					prescript: {
@@ -413,11 +405,11 @@ checkStatus()
 							updatedPlugin.logo = logo;
 						}
 
-						if (web_view) {
+						if (!lodash.isUndefined(web_view)) {
 							updatedPlugin.web_view = web_view;
 						}
 
-						if (admin_view) {
+						if (!lodash.isUndefined(admin_view)) {
 							updatedPlugin.admin_view = admin_view;
 						}
 
@@ -444,6 +436,8 @@ checkStatus()
 						loggerPlugin.info(req.uuid, 'PUT /plugins updated', name);
 
 						plugin = plugin.dataValues;
+
+						plugin.enabled_admin_view = !!plugin.admin_view;
 
 						res.json(lodash.omit(plugin, [
 							'id',
@@ -545,20 +539,12 @@ checkStatus()
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					web_view: {
 						in: ['body'],
 						errorMessage: 'must be a string or null',
 						isString: true,
-						isLength: {
-							errorMessage: 'must be minimum length of 5',
-							options: { min: 5 }
-						},
 						optional: { options: { nullable: true } }
 					},
 					prescript: {
@@ -688,11 +674,11 @@ checkStatus()
 							newPlugin.logo = logo;
 						}
 
-						if (web_view) {
+						if (!lodash.isUndefined(web_view)) {
 							newPlugin.web_view = web_view;
 						}
 
-						if (admin_view) {
+						if (!lodash.isUndefined(admin_view)) {
 							newPlugin.admin_view = admin_view;
 						}
 
@@ -714,6 +700,8 @@ checkStatus()
 						loggerPlugin.info(req.uuid, 'POST /plugins installed', name);
 
 						plugin = plugin.dataValues;
+
+						plugin.enabled_admin_view = !!plugin.admin_view;
 
 						res.json(lodash.omit(plugin, [
 							'id',
