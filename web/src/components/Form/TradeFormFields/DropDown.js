@@ -19,6 +19,8 @@ const DropDown = (props) => {
 				size="small"
 				onChange={onChange}
 				suffixIcon={<CaretDownOutlined />}
+				className="custom-select-input-style order-entry"
+				dropdownClassName="custom-select-style"
 			>
 				{options.map(({ value, label }, index) => (
 					<Option

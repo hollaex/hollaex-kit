@@ -464,11 +464,11 @@ class AppWrapper extends React.Component {
 								alt="Link-icon"
 							/>{' '}
 							<a
-								href="https://dash.testnet.hollaex.com/"
+								href="https://dash.testnet.bitholla.com/"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								Go to master admin
+								Go to Holla Dash
 							</a>
 						</div>
 					</div>
