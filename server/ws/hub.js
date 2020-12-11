@@ -34,40 +34,42 @@ subscriber.subscribe(WS_HUB_CHANNEL);
 const connect = () => {
 	checkStatus()
 		.then((nodeLib) => {
-			networkNodeLib = nodeLib;
-			networkNodeLib.connect(['orderbook', 'trade']);
+			if (nodeLib) {
+				networkNodeLib = nodeLib;
+				networkNodeLib.connect(['orderbook', 'trade']);
 
-			networkNodeLib.ws.on('open', () => {
-				wsConnected = true;
-				loggerWebsocket.info('ws/hub open');
-			});
+				networkNodeLib.ws.on('open', () => {
+					wsConnected = true;
+					loggerWebsocket.info('ws/hub open');
+				});
 
-			networkNodeLib.ws.on('unexpected-response', () => {
-				wsConnected = false;
-				loggerWebsocket.error('ws/hub unexpected-response');
-			});
+				networkNodeLib.ws.on('unexpected-response', () => {
+					wsConnected = false;
+					loggerWebsocket.error('ws/hub unexpected-response');
+				});
 
-			networkNodeLib.ws.on('error', (err) => {
-				wsConnected = false;
-				loggerWebsocket.error('ws/hub err', err.message);
-			});
+				networkNodeLib.ws.on('error', (err) => {
+					wsConnected = false;
+					loggerWebsocket.error('ws/hub err', err.message);
+				});
 
-			networkNodeLib.ws.on('close', () => {
-				wsConnected = false;
-				loggerWebsocket.info('ws/hub close');
-				closeAllClients();
-			});
+				networkNodeLib.ws.on('close', () => {
+					wsConnected = false;
+					loggerWebsocket.info('ws/hub close');
+					closeAllClients();
+				});
 
-			networkNodeLib.ws.on('message', (data) => {
-				if (data !== 'pong') {
-					try {
-						data = JSON.parse(data);
-					} catch (err) {
-						loggerWebsocket.error('ws/hub message err', err.message);
+				networkNodeLib.ws.on('message', (data) => {
+					if (data !== 'pong') {
+						try {
+							data = JSON.parse(data);
+						} catch (err) {
+							loggerWebsocket.error('ws/hub message err', err.message);
+						}
+						handleHubData(data);
 					}
-					handleHubData(data);
-				}
-			});
+				});
+			}
 		});
 };
 
