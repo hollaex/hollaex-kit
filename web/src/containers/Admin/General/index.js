@@ -13,6 +13,8 @@ import withConfig from '../../../components/ConfigProvider/withConfig';
 import { requestAdminData } from '../../../actions/appActions';
 import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
+import { publish } from 'actions/operatorActions';
+import merge from 'lodash.merge';
 
 import './index.css';
 
@@ -25,6 +27,7 @@ const HelpDeskForm = AdminHocForm('HelpDeskForm');
 class General extends Component {
 	constructor() {
 		super();
+
 		this.state = {
 			constants: {},
 			currentIcon: {},
@@ -34,6 +37,7 @@ class General extends Component {
 			initialThemeValues: {},
 			initialEmailValues: {},
 			initialLinkValues: {},
+			pendingPublishIcons: {},
 		};
 	}
 
@@ -90,7 +94,7 @@ class General extends Component {
 		});
 	};
 
-	handleSaveIcon = async () => {
+	handleSaveIcon = async (iconKey) => {
 		const { currentIcon } = this.state;
 		const { updateIcons } = this.props;
 		const icons = {};
@@ -133,9 +137,12 @@ class General extends Component {
 				}
 			}
 		}
-		this.setState({
-			loading: false,
-		});
+		this.setState((prevState) => ({
+			...prevState,
+			pendingPublishIcons: merge({}, prevState.pendingPublishIcons, {
+				[iconKey]: icons,
+			}),
+		}));
 
 		updateIcons(icons);
 	};
@@ -164,7 +171,7 @@ class General extends Component {
 						content: 'Do you want to save this icon?',
 						okText: 'Save',
 						cancelText: 'Cancel',
-						onOk: this.handleSaveIcon,
+						onOk: () => this.handleSaveIcon(iconKey),
 						onCancel: this.handleCancelIcon,
 					});
 				}
@@ -295,6 +302,19 @@ class General extends Component {
 		});
 	};
 
+	handlePublish = (id) => {
+		const {
+			pendingPublishIcons: { [id]: published = {} },
+		} = this.state;
+		const iconsOverwrites = JSON.parse(localStorage.getItem('icons') || '{}');
+
+		const icons = merge({}, iconsOverwrites, published);
+		const configs = { icons };
+		publish(configs).then(this.reload);
+	};
+
+	reload = () => window.location.reload(false);
+
 	render() {
 		const {
 			initialEmailValues,
@@ -413,7 +433,11 @@ class General extends Component {
 								)}
 							</div>
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_LOGO')}
+						>
 							Save
 						</Button>
 					</div>
@@ -428,7 +452,11 @@ class General extends Component {
 								this.renderImageUpload('EXCHANGE_LOADER', theme)
 							)}
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_LOADER')}
+						>
 							Save
 						</Button>
 					</div>
@@ -438,7 +466,11 @@ class General extends Component {
 						<div className="file-wrapper">
 							{this.renderImageUpload('EXCHANGE_FAV_ICON', 'dark', false)}
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_FAV_ICON')}
+						>
 							Save
 						</Button>
 					</div>
@@ -452,7 +484,11 @@ class General extends Component {
 								)}
 							</div>
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_BOARDING_IMAGE')}
+						>
 							Save
 						</Button>
 					</div>
