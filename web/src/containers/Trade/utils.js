@@ -74,7 +74,10 @@ export const tradeHistorySelector = createSelector(
 	getPairsTrades,
 	getPair,
 	(pairsTrades, pair) => {
-		return pairsTrades[pair] || {};
+		const data = pairsTrades[pair] || [];
+		const sizeArray = data.map(({ size }) => size);
+		const maxAmount = Math.max(...sizeArray);
+		return { data, maxAmount };
 	}
 );
 
