@@ -30,7 +30,7 @@ RUN npm install pm2@3.2.7 sequelize-cli@5.4.0 mocha -g
 ENV NODE_ENV=production
 
 # SERVER PORT
-EXPOSE 10010 10080
+EXPOSE 10010 10080 10011
 
 WORKDIR /app
 

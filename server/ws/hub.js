@@ -1,20 +1,25 @@
 'use strict';
 
 const { loggerWebsocket } = require('../config/logger');
-const { checkStatus, getNodeLib } = require('../init');
+const { checkStatus } = require('../init');
 const { subscriber } = require('../db/pubsub');
 const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
 const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
 
+let networkNodeLib = null;
+let wsConnected = false;
+const hubConnected = () => wsConnected;
+
 subscriber.on('message', (channel, message) => {
 	if (channel === WS_HUB_CHANNEL) {
 		const { action } = JSON.parse(message);
 		switch(action) {
 			case 'restart':
-				if (getNodeLib().wsConnected()) {
-					getNodeLib().ws.close();
+				if (hubConnected() && networkNodeLib && networkNodeLib.wsConnected()) {
+					networkNodeLib.disconnect();
+					connect();
 				}
 				break;
 			default:
@@ -28,38 +33,49 @@ subscriber.subscribe(WS_HUB_CHANNEL);
 
 const connect = () => {
 	checkStatus()
-		.then(() => {
-			getNodeLib().connect(['orderbook', 'trade']);
+		.then((nodeLib) => {
+			if (nodeLib) {
+				networkNodeLib = nodeLib;
+				networkNodeLib.connect(['orderbook', 'trade']);
 
-			getNodeLib().ws.on('open', () => {
-				loggerWebsocket.info('ws/hub open');
-			});
+				networkNodeLib.ws.on('open', () => {
+					wsConnected = true;
+					loggerWebsocket.info('ws/hub open');
+				});
 
-			getNodeLib().ws.on('error', (err) => {
-				loggerWebsocket.error('ws/hub err', err.message);
-			});
+				networkNodeLib.ws.on('unexpected-response', () => {
+					wsConnected = false;
+					loggerWebsocket.error('ws/hub unexpected-response');
+				});
 
-			getNodeLib().ws.on('close', () => {
-				loggerWebsocket.info('ws/hub close');
-				closeAllClients();
-			});
+				networkNodeLib.ws.on('error', (err) => {
+					wsConnected = false;
+					loggerWebsocket.error('ws/hub err', err.message);
+				});
 
-			getNodeLib().ws.on('message', (data) => {
-				if (data !== 'pong') {
-					try {
-						data = JSON.parse(data);
-					} catch (err) {
-						loggerWebsocket.error('ws/hub message err', err.message);
+				networkNodeLib.ws.on('close', () => {
+					wsConnected = false;
+					loggerWebsocket.info('ws/hub close');
+					closeAllClients();
+				});
+
+				networkNodeLib.ws.on('message', (data) => {
+					if (data !== 'pong') {
+						try {
+							data = JSON.parse(data);
+						} catch (err) {
+							loggerWebsocket.error('ws/hub message err', err.message);
+						}
+						handleHubData(data);
 					}
-					handleHubData(data);
-				}
-			});
+				});
+			}
 		});
 };
 
 const sendNetworkWsMessage = (op, topic, networkId) => {
-	if (getNodeLib().wsConnected()) {
-		getNodeLib()[op]([`${topic}:${networkId}`]);
+	if (hubConnected()) {
+		networkNodeLib[op]([`${topic}:${networkId}`]);
 	}
 };
 
@@ -100,5 +116,6 @@ const closeAllClients = () => {
 
 module.exports = {
 	sendNetworkWsMessage,
-	connect
+	connect,
+	hubConnected
 };

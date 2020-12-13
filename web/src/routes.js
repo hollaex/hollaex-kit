@@ -110,11 +110,20 @@ function requireAuth(nextState, replace) {
 		replace({
 			pathname: '/init',
 		});
-	} else if (!isLoggedIn() && setup_completed === 'false') {
+	} else if (
+		!isLoggedIn() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin-login',
 		});
-	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+	} else if (
+		isLoggedIn() &&
+		isAdmin() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin',
 		});
@@ -135,11 +144,20 @@ function loggedIn(nextState, replace) {
 		replace({
 			pathname: '/init',
 		});
-	} else if (!isLoggedIn() && setup_completed === 'false') {
+	} else if (
+		!isLoggedIn() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin-login',
 		});
-	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+	} else if (
+		isLoggedIn() &&
+		isAdmin() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin',
 		});

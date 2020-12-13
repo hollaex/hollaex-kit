@@ -41,7 +41,7 @@ services:
       - ./api:/app/api
       - ./config:/app/config
       - ./db:/app/db
-      - ./plugins:/app/plugins
+      - ./plugins.js:/app/plugins.js
       - ./mail:/app/mail
       - ./ws:/app/ws
       - ./app.js:/app/app.js
@@ -53,7 +53,6 @@ services:
       - ./tools:/app/tools
       - ./utils:/app/utils
       - ./init.js:/app/init.js
-      - ./node_modules:/app/node_modules
     depends_on:
       - hollaex-kit-db
       - hollaex-kit-redis
