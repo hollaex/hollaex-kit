@@ -10,6 +10,7 @@ const AccountTypeDetails = ({
 	user,
 	coins,
 	pairs,
+	config,
 	className = '',
 	activeTheme,
 	selectedAccount,
@@ -36,6 +37,7 @@ const AccountTypeDetails = ({
 				user={user}
 				coins={coins}
 				pairs={pairs}
+				config={config}
 				activeTheme={activeTheme}
 				account={currentAccount}
 				isAccountDetails={true}
@@ -58,6 +60,7 @@ const AccountTypeDetails = ({
 						coins={coins}
 						isAccountDetails={true}
 						balance={balance}
+						config={config}
 						verificationLevel={currentAccount}
 						lastMonthVolume={lastMonthVolume}
 						onUpgradeAccount={onUpgradeAccount}

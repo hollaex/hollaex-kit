@@ -1227,6 +1227,11 @@ const nestedContent = {
 		WAVE_NUMBER: 'Wave Number', // new
 		DISCOUNT: '( {0}% discount )', // new
 		MY_FEES_LIMITS: ' My Fees and Limits', // new
+		MARKETS: 'Markets', // new
+		CHANGE_24H: '24H Change', // new
+		VOLUME_24H: '24H Volume', // new
+		PRICE_GRAPH_24H: '24H Price graph', // new
+		VIEW_MORE_MARKETS: 'View more markets', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new

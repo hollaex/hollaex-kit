@@ -394,12 +394,12 @@ class FooterConfig extends Component {
 						this.props.handleSubmitFooter(formProps, 'links')
 					}
 				/>
-				<p className="bottom-description">
+				{/* <p className="bottom-description">
 					Add/change footer description and small text{' '}
-					<span className="link" onClick={() => this.props.moveToTab('1')}>
+					<span>
 						<span>here.</span>
 					</span>
-				</p>
+				</p> */}
 				<Modal
 					visible={isAddColumn || isAddLink}
 					title={isAddColumn ? 'Add Column' : 'Add Link'}

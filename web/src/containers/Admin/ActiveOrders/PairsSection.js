@@ -255,11 +255,11 @@ class PairsSection extends Component {
 		} = this.state;
 		const COLUMNS = getColumns(this.props.userId, this.onCancelOrder);
 		return (
-			<div>
+			<div className="f-1">
 				<Tabs onChange={this.tabChange}>
 					<TabPane tab="Bids" key="buy">
 						<Row>
-							<Row gutter={16} style={{ marginTop: 16 }}>
+							<div className="f-1 mt-4">
 								{buyOrders.loading ? (
 									<Spin size="large" />
 								) : (
@@ -284,12 +284,12 @@ class PairsSection extends Component {
 										/>
 									</Col>
 								)}
-							</Row>
+							</div>
 						</Row>
 					</TabPane>
 					<TabPane tab="Asks" key="sell">
 						<Row>
-							<Row gutter={16} style={{ marginTop: 16 }}>
+							<div className="f-1 mt-4">
 								{sellOrders.loading ? (
 									<Spin size="large" />
 								) : (
@@ -314,7 +314,7 @@ class PairsSection extends Component {
 										/>
 									</Col>
 								)}
-							</Row>
+							</div>
 						</Row>
 					</TabPane>
 				</Tabs>

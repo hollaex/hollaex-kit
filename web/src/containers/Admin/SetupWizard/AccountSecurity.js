@@ -29,8 +29,7 @@ const AccountSecurity = ({
 		}
 	}, [user.otp]);
 	const handleSubmit = (values) => {
-		console.log('values', values);
-		return otpActivate(values)
+		return otpActivate({ code: values.code.toString() })
 			.then((res) => {
 				otpSetActivated(true);
 				message.success('OTP activated successfully');

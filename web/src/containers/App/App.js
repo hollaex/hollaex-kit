@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
-import moment from 'moment';
 import { loadReCaptcha } from 'react-recaptcha-v3';
 import { Helmet } from 'react-helmet';
-import STRINGS from '../../config/localizedStrings';
 import {
-	FLEX_CENTER_CLASSES,
 	FIT_SCREEN_HEIGHT,
 	CAPTCHA_SITEKEY,
 	DEFAULT_CAPTCHA_SITEKEY,
@@ -443,37 +440,6 @@ class App extends Component {
 		this.setState({ isSocketDataReady: value });
 	};
 
-	checkExchangeExpiry = () => {
-		const { info = {} } = this.props;
-		let is_expired = false;
-		let is_warning = false;
-		let daysLeft = 0;
-		if (info.status) {
-			if (info.is_trial) {
-				if (info.active) {
-					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
-						is_warning = true;
-						daysLeft = moment(info.expiry).diff(moment(), 'days');
-					} else if (info.expiry && moment().isAfter(info.expiry, 'second')) {
-						is_expired = true;
-					}
-				} else {
-					is_expired = true;
-				}
-			} else {
-				is_expired = false;
-				is_warning = false;
-			}
-		} else {
-			is_expired = true;
-		}
-		return {
-			is_expired,
-			is_warning,
-			daysLeft,
-		};
-	};
-
 	toggleSidebar = () => {
 		this.setState((prevState) => ({
 			...prevState,
@@ -496,7 +462,6 @@ class App extends Component {
 			unreadMessages,
 			router,
 			location,
-			info,
 			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
@@ -527,7 +492,6 @@ class App extends Component {
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
 		const isMenubar = activePath === 'account' || activePath === 'wallet';
-		const expiryData = this.checkExchangeExpiry();
 		return (
 			<ThemeProvider>
 				<div>
@@ -593,22 +557,6 @@ class App extends Component {
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
 								/>
-								{info.is_trial ? (
-									<div
-										className={classnames(
-											'w-100',
-											'p-1',
-											...FLEX_CENTER_CLASSES,
-											'exchange-trial'
-										)}
-									>
-										{STRINGS.formatString(
-											STRINGS['TRIAL_EXCHANGE_MSG'],
-											constants.api_name || '',
-											expiryData.daysLeft
-										)}
-									</div>
-								) : null}
 								{isBrowser && isMenubar && isLoggedIn() ? (
 									<AppMenuBar router={router} location={location} />
 								) : null}

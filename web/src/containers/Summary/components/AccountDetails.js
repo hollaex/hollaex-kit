@@ -58,6 +58,7 @@ const AccountDetails = ({
 						coins={coins}
 						pairs={pairs}
 						balance={balance}
+						config={config}
 						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
 						lastMonthVolume={lastMonthVolume}
