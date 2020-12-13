@@ -329,11 +329,35 @@ table th {
       width: 75rem;
       height: inherit; }
   .app_container .app_container-sidebar {
-    min-width: 20rem;
-    max-width: 20rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 22rem;
+    max-width: 22rem;
     background-color: var(--base_wallet-sidebar-and-popup);
     border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    padding: 0; }
+    padding: 0;
+    transition: all 0.2s ease-out 0s; }
+    .app_container .app_container-sidebar .sidebar-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      width: 0 !important;
+      overflow: visible; }
+    .app_container .app_container-sidebar .sidebar-toggle {
+      transform: translateX(-50%); }
+      .app_container .app_container-sidebar .sidebar-toggle.ant-btn-primary {
+        background-color: var(--base_secondary-navigation-bar);
+        border-color: var(--labels_secondary-inactive-label-text-graphics); }
+      .app_container .app_container-sidebar .sidebar-toggle .anticon {
+        color: var(--labels_important-active-labels-text-graphics); }
+      .app_container .app_container-sidebar .sidebar-toggle.ant-btn-icon-only {
+        height: 30px;
+        width: 18px; }
+    .app_container .app_container-sidebar.close-sidebar {
+      min-width: 0;
+      max-width: 0; }
+      .app_container .app_container-sidebar.close-sidebar .sidebar-toggle {
+        transform: translateX(-90%); }
   .app_container .exchange-warning {
     background-color: #fff100; }
 
@@ -406,8 +430,8 @@ table th {
     min-width: 25rem !important;
     max-width: 25rem !important; }
   .app_container .app_container-sidebar {
-    min-width: 25rem;
-    max-width: 25rem; } }
+    min-width: 27rem;
+    max-width: 27rem; } }
 
 @media screen and (max-width: 1096px) {
   .font-small,
@@ -443,8 +467,8 @@ table th {
   .trade_tabs-container {
     width: 65rem !important; }
   .app_container .app_container-sidebar {
-    min-width: 18rem;
-    max-width: 18rem; }
+    min-width: 20rem;
+    max-width: 20rem; }
   .app_container .sidebar_hub-content {
     margin: 1.3rem !important; } }
 
@@ -1560,13 +1584,22 @@ table th {
   margin-left: 2rem; }
 
 .trade_history-wrapper {
-  height: 85vh; }
+  height: 100vh; }
   .trade_history-wrapper .display_table-wrapper .display_table-header :nth-child(2) {
     text-align: center; }
-  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell :nth-child(2) {
-    text-align: center; }
+  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell :nth-child(2),
+  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell :nth-child(3) {
+    text-align: right; }
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell div {
     overflow: unset !important; }
+  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill {
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: 0; }
+  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-buy {
+    background-image: linear-gradient(var(--calculated_trading_buying-orderbook-bar), var(--calculated_trading_buying-orderbook-bar)); }
+  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-sell {
+    background-image: linear-gradient(var(--calculated_trading_selling-orderbook-bar), var(--calculated_trading_selling-orderbook-bar)); }
 
 .trade_order_entry-wrapper.order_side-selector-sell {
   flex: 1;
@@ -3333,7 +3366,8 @@ table th {
 .sidebar-container {
   display: flex;
   flex-direction: column;
-  height: 100%; }
+  height: 100%;
+  transform: translateX(-1rem); }
   .sidebar-container .sidebar-row {
     border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics);
     flex: 0; }
@@ -4096,8 +4130,8 @@ table th {
     font-weight: bold; }
 
 .app-menu-bar-side {
-  min-width: 20rem;
-  max-width: 20rem; }
+  min-width: 22rem;
+  max-width: 22rem; }
 
 .tab-menu-left {
   left: -1px !important;

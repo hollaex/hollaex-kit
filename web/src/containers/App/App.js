@@ -13,6 +13,8 @@ import {
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
+import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 
 import {
 	NOTIFICATIONS,
@@ -81,6 +83,7 @@ class App extends Component {
 		ordersQueued: [],
 		limitFilledOnOrder: '',
 		sidebarFitHeight: false,
+		isSidebarOpen: true,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -471,6 +474,13 @@ class App extends Component {
 		};
 	};
 
+	toggleSidebar = () => {
+		this.setState((prevState) => ({
+			...prevState,
+			isSidebarOpen: !prevState.isSidebarOpen,
+		}));
+	};
+
 	render() {
 		const {
 			symbol,
@@ -500,6 +510,7 @@ class App extends Component {
 			chatIsClosed,
 			sidebarFitHeight,
 			isSocketDataReady,
+			isSidebarOpen,
 		} = this.state;
 		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
 		if (CAPTCHA_SITEKEY) {
@@ -630,7 +641,26 @@ class App extends Component {
 										/>
 									</div>
 									{isBrowser && (
-										<div className="app_container-sidebar">
+										<div
+											className={classnames('app_container-sidebar', {
+												'close-sidebar': !isSidebarOpen,
+											})}
+										>
+											<div classname="sidebar-toggle-wrapper">
+												<Button
+													type="primary"
+													size="small"
+													icon={
+														isSidebarOpen ? (
+															<CaretRightOutlined />
+														) : (
+															<CaretLeftOutlined />
+														)
+													}
+													onClick={this.toggleSidebar}
+													className="sidebar-toggle"
+												/>
+											</div>
 											<Sidebar
 												activePath={activePath}
 												logout={this.logout}
