@@ -39,16 +39,37 @@ const ws = {
 	}
 };
 
+const plugins = {
+	// plugins application
+	name      : 'plugins',
+	script    : 'plugins.js',
+	error_file: '/dev/null',
+	out_file: '/dev/null',
+	watch,
+	ignore_watch,
+	exec_mode : 'cluster',
+	instance_var: 'INSTANCE_ID',
+	instances : '1',
+	max_memory_restart,
+	node_args,
+	env: {
+		COMMON_VARIABLE: 'true',
+		PORT: process.env.PLUGIN_PORT || 10011,
+	}
+};
+
 var apps = [];
 const modes = initializeMode(mode);
 for (let m of modes) {
 	if (m === 'all') {
-		apps = [api, ws];
+		apps = [api, ws, plugins];
 		break;
 	} else if (m === 'api') {
 		apps.push(api);
 	} else if (m === 'ws') {
 		apps.push(ws);
+	} else if (m === 'plugins') {
+		apps.push(plugins);
 	}
 }
 
