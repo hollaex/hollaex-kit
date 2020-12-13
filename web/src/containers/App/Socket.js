@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import {
 	WS_URL,
 	SESSION_TIME,
@@ -20,7 +20,6 @@ import {
 	removeOrder,
 } from '../../actions/orderAction';
 import {
-	setOrderbooks,
 	setTrades,
 	setOrderbook,
 	addTrades,
@@ -129,13 +128,6 @@ class Container extends Component {
 			this._resetTimer();
 		});
 	};
-
-	storeData = (data) => {
-		this.props.setOrderbooks(data);
-		this.orderCache = {};
-	};
-
-	storeOrderData = debounce(this.storeData, 250);
 
 	setPublicWS = () => {
 		// const publicSocket = new WebSocket(`${WS_URL}/stream`);
@@ -272,7 +264,7 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['orderbook', 'trade', 'wallet', 'order', 'deposit'],
+					args: ['trade', 'wallet', 'order', 'deposit'],
 				})
 			);
 			// this.wsInterval = setInterval(() => {
@@ -315,16 +307,6 @@ class Container extends Component {
 							);
 						}
 					}
-					break;
-				case 'orderbook':
-					const tempData = {
-						...data,
-						[data.symbol]: data.data,
-					};
-					delete tempData.data;
-					this.orderCache = { ...this.orderCache, ...tempData };
-					this.storeOrderData(this.orderCache);
-					// this.props.setOrderbooks(data);
 					break;
 				case 'order':
 					if (data.action === 'partial') {
@@ -727,7 +709,6 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	setPairs: bindActionCreators(setPairs, dispatch),
 	setPairsData: bindActionCreators(setPairsData, dispatch),
-	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),

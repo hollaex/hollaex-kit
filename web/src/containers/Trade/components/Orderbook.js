@@ -14,7 +14,7 @@ import { calcPercentage } from 'utils/math';
 import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
 import { formatToFixed, formatToCurrency } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
-import { DEFAULT_COIN_DATA, BASE_CURRENCY } from '../../../config/constants';
+import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import { setOrderbookDepth } from 'actions/orderbookAction';
 
 const { Option } = Select;
@@ -252,7 +252,7 @@ class Orderbook extends Component {
 							className="custom-select-input-style order-entry no-border"
 							dropdownClassName="custom-select-style"
 						>
-							<Option value={false}>{BASE_CURRENCY.toUpperCase()}</Option>
+							<Option value={false}>{symbol.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>
 						</Select>
 					</div>
