@@ -6,8 +6,11 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { createSelector } from 'reselect';
+import debounce from 'lodash.debounce';
+import { setOrderbooks } from 'actions/orderbookAction';
 
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { getToken } from 'utils/token';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
 import { submitOrder } from '../../actions/orderAction';
 import { getUserTrades } from '../../actions/walletActions';
 import {
@@ -38,6 +41,7 @@ class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			orderbookWs: null,
 			activeTab: 0,
 			chartHeight: 0,
 			chartWidth: 0,
@@ -49,6 +53,9 @@ class Trade extends PureComponent {
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
+		if (!this.props.fetchingAuth) {
+			this.initializeOrderbookWs(getToken());
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -60,6 +67,7 @@ class Trade extends PureComponent {
 	componentWillUnmount() {
 		clearTimeout(this.priceTimeOut);
 		clearTimeout(this.sizeTimeOut);
+		this.closeOrderbookSocket();
 	}
 
 	setSymbol = (symbol = '') => {
@@ -168,6 +176,85 @@ class Trade extends PureComponent {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+	};
+
+	storeData = (data) => {
+		this.props.setOrderbooks(data);
+		this.orderCache = {};
+	};
+
+	storeOrderData = debounce(this.storeData, 250);
+
+	initializeOrderbookWs = (token = '') => {
+		const {
+			routeParams: { pair },
+		} = this.props;
+		let url = `${WS_URL}/stream`;
+		if (token) {
+			url = `${WS_URL}/stream?authorization=Bearer ${token}`;
+		}
+
+		const orderbookWs = new WebSocket(url);
+
+		this.setState({ orderbookWs });
+
+		orderbookWs.onopen = (evt) => {
+			console.info('Connected orderbook Socket', evt);
+			orderbookWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: [`orderbook:${pair}`],
+				})
+			);
+			this.wsInterval = setInterval(() => {
+				orderbookWs.send(
+					JSON.stringify({
+						op: 'ping',
+					})
+				);
+			}, 55000);
+		};
+
+		orderbookWs.onmessage = (evt) => {
+			this.setState({ orderbookSocketInitialized: true });
+			const data = JSON.parse(evt.data);
+			console.info('orderbookWs', data);
+			if (data.topic === 'orderbook')
+				switch (data.action) {
+					case 'partial':
+						const tempData = {
+							...data,
+							[data.symbol]: data.data,
+						};
+						delete tempData.data;
+						this.orderCache = { ...this.orderCache, ...tempData };
+						this.storeOrderData(this.orderCache);
+						break;
+
+					default:
+						break;
+				}
+		};
+
+		orderbookWs.onerror = (evt) => {
+			console.error('orderbook socket error', evt);
+		};
+	};
+
+	closeOrderbookSocket = () => {
+		const {
+			routeParams: { pair },
+		} = this.props;
+		const { orderbookWs, orderbookSocketInitialized } = this.state;
+		if (orderbookWs) {
+			if (orderbookSocketInitialized) {
+				orderbookWs.send(
+					JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
+				);
+			}
+			clearInterval(this.wsInterval);
+			orderbookWs.close();
+		}
 	};
 
 	render() {
@@ -394,7 +481,7 @@ class Trade extends PureComponent {
 								pairData={pairData}
 								pair={pair}
 							>
-								<TradeHistory language={activeLanguage} />
+								<TradeHistory pairData={pairData} language={activeLanguage} />
 							</TradeBlock>
 						</div>
 					</div>
@@ -454,6 +541,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch),
+	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);

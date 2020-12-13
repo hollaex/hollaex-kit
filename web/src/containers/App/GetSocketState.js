@@ -25,10 +25,7 @@ class GetSocketState extends Component {
 			if (router && router.params && router.params.pair) {
 				pairTemp = router.params.pair;
 			}
-			let isReady =
-				Object.keys(orderbooks).length &&
-				orderbooks[pairTemp] &&
-				Object.keys(pairsTrades).length;
+			let isReady = Object.keys(pairsTrades).length;
 			this.props.socketDataCallback(isReady);
 		}
 	};
