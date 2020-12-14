@@ -830,7 +830,7 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 	return joinedSettings;
 };
 
-const updateUserSettings = (userOpts = {}, settings = {}, rawData = true) => {
+const updateUserSettings = (userOpts = {}, settings = {}) => {
 	return getUser(userOpts, false)
 		.then((user) => {
 			if (!user) {
@@ -840,15 +840,12 @@ const updateUserSettings = (userOpts = {}, settings = {}, rawData = true) => {
 				settings = joinSettings(user.dataValues.settings, settings);
 			}
 			return user.update({ settings }, {
-				fields: [
-					'settings'
-				],
-				returning: true,
-				raw: rawData
+				fields: [ 'settings' ],
+				returning: true
 			});
 		})
 		.then((user) => {
-			return user;
+			return pick(user.dataValues, [ 'id', 'email', 'settings' ]);
 		});
 };
 
