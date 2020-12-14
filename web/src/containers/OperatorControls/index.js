@@ -547,6 +547,7 @@ class OperatorControls extends Component {
 			() => {
 				updateDefaults({ language });
 				this.closeStringSettingsModal(true);
+				this.enablePublish();
 			}
 		);
 	};
@@ -680,6 +681,7 @@ class OperatorControls extends Component {
 				removeTheme(keys);
 				updateDefaults({ theme });
 				this.closeThemeSettings();
+				this.enablePublish();
 			}
 		);
 	};
