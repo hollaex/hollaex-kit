@@ -382,8 +382,7 @@ const getUser = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			delete user.password;
-			return res.json(user);
+			return res.json(toolsLib.user.omitUserFields(user));
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', err.message);
