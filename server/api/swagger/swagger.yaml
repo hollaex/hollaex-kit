@@ -4157,13 +4157,13 @@ definitions:
             type: boolean
           order_portfolio_percentage:
             type: number
-            format: int32
-            minimum: 1
+            format: double
+            minimum: 0.001
             maximum: 99
       audio:
         type: object
         properties:
-          putblic_trade:
+          public_trade:
             type: boolean
           order_completed:
             type: boolean
