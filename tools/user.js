@@ -415,7 +415,7 @@ const getAllUsersAdmin = (opts = {
 	};
 	if (opts.id || opts.search) {
 		query.attributes = {
-			exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_communicator', 'updated_at']
+			exclude: ['balance', 'password', 'updated_at']
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
