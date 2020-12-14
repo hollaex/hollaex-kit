@@ -845,7 +845,7 @@ const updateUserSettings = (userOpts = {}, settings = {}) => {
 			});
 		})
 		.then((user) => {
-			return pick(user.dataValues, [ 'id', 'email', 'settings' ]);
+			return omitUserFields(user.dataValues);
 		});
 };
 
