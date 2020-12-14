@@ -125,7 +125,7 @@ $tabs-title--margin: 2rem;
 }
 
 .trade_history-wrapper {
-	height: 85vh;
+	height: 100vh;
 
 	.display_table-wrapper {
 		.display_table-header {
@@ -136,11 +136,32 @@ $tabs-title--margin: 2rem;
 
 		.display_table-body {
 			.display_table-cell {
-				:nth-child(2) {
-					text-align: center;
+				:nth-child(2),
+				:nth-child(3) {
+					text-align: right;
 				}
 				div {
 					overflow: unset !important;
+				}
+
+				.fill {
+					background-repeat: no-repeat;
+					background-position: 100% 100%;
+					background-size: 0;
+				}
+
+				.fill-buy {
+					background-image: linear-gradient(
+						$buying-orderbook-bar,
+						$buying-orderbook-bar
+					);
+				}
+
+				.fill-sell {
+					background-image: linear-gradient(
+						$selling-orderbook-bar,
+						$selling-orderbook-bar
+					);
 				}
 			}
 		}

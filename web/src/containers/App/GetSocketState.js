@@ -20,15 +20,8 @@ class GetSocketState extends Component {
 
 	checkConnection = () => {
 		if (!this.props.isDataReady) {
-			const { orderbooks, pairsTrades, pair, router } = this.props;
-			let pairTemp = pair;
-			if (router && router.params && router.params.pair) {
-				pairTemp = router.params.pair;
-			}
-			let isReady =
-				Object.keys(orderbooks).length &&
-				orderbooks[pairTemp] &&
-				Object.keys(pairsTrades).length;
+			const { pairsTrades } = this.props;
+			let isReady = Object.keys(pairsTrades).length;
 			this.props.socketDataCallback(isReady);
 		}
 	};

@@ -5,18 +5,25 @@ import ReactSVG from 'react-svg';
 import { DisplayTable } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
-import { IS_XHT } from '../../../config/constants';
 import { formatToCurrency } from '../../../utils/currency';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 // import { roundNumber } from '../../../utils/currency';
 // import { getDecimals } from '../../../utils/utils';
 import { tradeHistorySelector } from '../utils';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { calcPercentage } from 'utils/math';
+import { Select } from 'antd';
+import { CaretDownOutlined } from '@ant-design/icons';
+import math from 'mathjs';
+
+const { Option } = Select;
 
 class TradeHistory extends Component {
 	state = {
 		headers: [],
 		data: [],
 		isprevious: false,
+		isBase: true,
 	};
 
 	componentWillMount() {
@@ -32,9 +39,13 @@ class TradeHistory extends Component {
 		}
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		if (JSON.stringify(this.props.data) !== JSON.stringify(prevProps.data)) {
 			this.generateData(this.props.data);
+		}
+
+		if (prevState.isBase !== this.state.isBase) {
+			this.calculateHeaders();
 		}
 	}
 
@@ -51,13 +62,24 @@ class TradeHistory extends Component {
 			let isSameBefore = tempRate.price === value.price;
 			let upDownRate = value.price - (tempRate.price || 0);
 			let price = formatToCurrency(value.price, pairData.increment_price);
-			return { ...value, isSameBefore, upDownRate, price };
+			const sizePrice = formatToCurrency(
+				math.multiply(math.fraction(value.size), math.fraction(value.price)),
+				pairData.increment_price
+			);
+			return { ...value, isSameBefore, upDownRate, price, sizePrice };
 		});
 		this.setState({ data: constructedData });
 	};
 
+	onSelect = (isBase) => this.setState({ isBase });
+
 	generateHeaders = (pairs) => {
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, maxAmount } = this.props;
+		const { isBase } = this.state;
+		const { coins, pairData } = this.props;
+		const pairBase = pairData.pair_base.toUpperCase();
+		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+
 		return [
 			{
 				key: 'price',
@@ -87,36 +109,52 @@ class TradeHistory extends Component {
 			},
 			{
 				key: 'size',
-				label: STRINGS['SIZE'],
-				renderCell: ({ size = 0, side }, index) => {
-					// const { increment_size } = pairs;
-					// const minSize = roundNumber(size, getDecimals(increment_size));
-					return IS_XHT ? (
+				label: (
+					<div>
+						{STRINGS['SIZE']}
+						<Select
+							bordered={false}
+							defaultValue={false}
+							size="small"
+							suffixIcon={<CaretDownOutlined />}
+							value={isBase}
+							onSelect={this.onSelect}
+							className="custom-select-input-style order-entry no-border"
+							dropdownClassName="custom-select-style"
+						>
+							<Option value={false}>{symbol.toUpperCase()}</Option>
+							<Option value={true}>{pairBase}</Option>
+						</Select>
+					</div>
+				),
+				renderCell: ({ size = 0, side, sizePrice = 0 }, index) => {
+					const fillClassName = `fill fill-${side}`;
+					const fillStyle = {
+						backgroundSize: `${calcPercentage(size, maxAmount)}% 100%`,
+					};
+
+					return (
 						<div
-							className={classnames('trade_history-row', side)}
+							className={classnames('trade_history-row', side, fillClassName)}
+							style={fillStyle}
 							key={`size-${index}`}
 						>
-							{size}
+							{isBase ? size : sizePrice}
 						</div>
-					) : (
-						size
 					);
 				},
 			},
 			{
 				key: 'timestamp',
 				label: STRINGS['TIME'],
-				renderCell: ({ timestamp, side }, index) =>
-					IS_XHT ? (
-						<div
-							className={classnames('trade_history-row', side)}
-							key={`timestamp-${index}`}
-						>
-							{getFormatTimestamp(timestamp, STRINGS['HOUR_FORMAT'])}
-						</div>
-					) : (
-						getFormatTimestamp(timestamp, STRINGS['HOUR_FORMAT'])
-					),
+				renderCell: ({ timestamp, side }, index) => (
+					<div
+						className={classnames('trade_history-row', side)}
+						key={`timestamp-${index}`}
+					>
+						{getFormatTimestamp(timestamp, STRINGS['HOUR_FORMAT'])}
+					</div>
+				),
 			},
 		];
 	};
@@ -124,7 +162,7 @@ class TradeHistory extends Component {
 	render() {
 		const { data } = this.state;
 		return (
-			<div className="flex-auto d-flex apply_rtl trade_history-wrapper">
+			<div className="apply_rtl trade_history-wrapper">
 				<DisplayTable headers={this.state.headers} data={data} />
 			</div>
 		);
@@ -135,10 +173,15 @@ TradeHistory.defaultProps = {
 	data: [],
 };
 
-const mapStateToProps = (store) => ({
-	pair: store.app.pair,
-	pairs: store.app.pairs,
-	data: tradeHistorySelector(store),
-});
+const mapStateToProps = (store) => {
+	const { data, maxAmount } = tradeHistorySelector(store);
+	return {
+		pair: store.app.pair,
+		pairs: store.app.pairs,
+		data,
+		maxAmount,
+		coins: store.app.coins,
+	};
+};
 
 export default connect(mapStateToProps)(withConfig(TradeHistory));
