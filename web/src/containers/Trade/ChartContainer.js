@@ -7,9 +7,13 @@ import { tradeHistorySelector } from './utils';
 
 const ChartContainer = (props) => <TVChartContainer {...props} />;
 
-const mapStateToProps = (state) => ({
-	tradeHistory: tradeHistorySelector(state),
-	constants: state.app.constants,
-});
+const mapStateToProps = (state) => {
+	const { data: tradeHistory } = tradeHistorySelector(state);
+
+	return {
+		tradeHistory,
+		constants: state.app.constants,
+	};
+};
 
 export default connect(mapStateToProps)(withConfig(ChartContainer));
