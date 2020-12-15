@@ -321,7 +321,7 @@ class HollaExKit {
 	 */
 	cancelAllOrder(symbol) {
 		const verb = 'DELETE';
-		let path = `${this.baseUrl}/orders`;
+		let path = `${this.baseUrl}/order/all`;
 		if (symbol) {
 			path += `?symbol=${symbol}`;
 		}
