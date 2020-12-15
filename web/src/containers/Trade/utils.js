@@ -83,7 +83,7 @@ export const tradeHistorySelector = createSelector(
 
 export const marketPriceSelector = createSelector(
 	[tradeHistorySelector],
-	(tradeHistory) => {
+	({ data: tradeHistory }) => {
 		const marketPrice =
 			tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 		return marketPrice;

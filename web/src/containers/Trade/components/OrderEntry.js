@@ -35,7 +35,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
-import { orderbookSelector, tradeHistorySelector } from '../utils';
+import { orderbookSelector, marketPriceSelector } from '../utils';
 
 const ORDER_OPTIONS = [
 	{
@@ -540,9 +540,7 @@ const mapStateToProps = (state) => {
 		increment_size,
 		increment_price,
 	} = state.app.pairs[pair];
-	const tradeHistory = tradeHistorySelector(state);
-	const marketPrice =
-		tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
+	const marketPrice = marketPriceSelector(state);
 
 	return {
 		...formValues,

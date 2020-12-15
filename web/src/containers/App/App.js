@@ -594,7 +594,7 @@ class App extends Component {
 												'close-sidebar': !isSidebarOpen,
 											})}
 										>
-											<div classname="sidebar-toggle-wrapper">
+											<div className="sidebar-toggle-wrapper">
 												<Button
 													type="primary"
 													size="small"

@@ -272,7 +272,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 						prices[keyPrice] = rest[key][0].price;
 					}
 				});
-			} else if (action === 'update') {
+			} else if (action === 'update' || 'insert') {
 				pairsTrades = {
 					...state.pairsTrades,
 				};
