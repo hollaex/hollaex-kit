@@ -40,15 +40,31 @@ class HollaExKit {
 
 	/* Public Endpoints*/
 
+	getKit() {
+		return createRequest(
+			'GET',
+			`${this.apiUrl}${this.baseUrl}/kit`,
+			this.headers
+		);
+	}
+
 	/**
 	 * Retrieve last, high, low, open and close price and volume within last 24 hours
 	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @return {string} A stringified JSON object with keys high(number), low(number), open(number), close(number), volume(number), last(number)
 	 */
-	getTicker(symbol) {
+	getTicker(symbol = '') {
 		return createRequest(
 			'GET',
 			`${this.apiUrl}${this.baseUrl}/ticker?symbol=${symbol}`,
+			this.headers
+		);
+	}
+
+	getTickers() {
+		return createRequest(
+			'GET',
+			`${this.apiUrl}${this.baseUrl}/tickers`,
 			this.headers
 		);
 	}
@@ -61,7 +77,15 @@ class HollaExKit {
 	getOrderbook(symbol = '') {
 		return createRequest(
 			'GET',
-			`${this.apiUrl}${this.baseUrl}/orderbooks?symbol=${symbol}`,
+			`${this.apiUrl}${this.baseUrl}/orderbook?symbol=${symbol}`,
+			this.headers
+		);
+	}
+
+	getOrderbooks() {
+		return createRequest(
+			'GET',
+			`${this.apiUrl}${this.baseUrl}/orderbooks`,
 			this.headers
 		);
 	}
@@ -71,7 +95,7 @@ class HollaExKit {
 	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get trades for all symbol-pairs
 	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are arrays of objects with keys size(number), price(number), side(string), and timestamp(string)
 	 */
-	getTrade(symbol = '') {
+	getTrades(symbol = '') {
 		return createRequest(
 			'GET',
 			`${this.apiUrl}${this.baseUrl}/trades?symbol=${symbol}`,
@@ -83,8 +107,8 @@ class HollaExKit {
 	 * Retrieve tick size, min price, max price, min size, and max size of each symbol-pair
 	 * @return {string} A stringified JSON object with the keys pairs(information on each symbol-pair such as tick_size, min/max price, and min/max size) and currencies(array of all currencies involved in hollaEx)
 	 */
-	getConstant() {
-		return createRequest('GET', `${this.apiUrl}${this.baseUrl}/constant`, this.headers);
+	getConstants() {
+		return createRequest('GET', `${this.apiUrl}${this.baseUrl}/constants`, this.headers);
 	}
 
 	/* Private Endpoints*/
@@ -320,7 +344,7 @@ class HollaExKit {
 		this.initialConnection = true;
 		let url = this.wsUrl;
 		if (this.apiKey && this.apiSecret) {
-			const apiExpires = moment().toISOString() + this.apiExpiresAfter;
+			const apiExpires = moment().unix() + this.apiExpiresAfter;
 			const signature = createSignature(this.apiSecret, 'CONNECT', '/stream', apiExpires);
 			url = `${url}?api-key=${this.apiKey}&api-signature=${signature}&api-expires=${apiExpires}`;
 		}
