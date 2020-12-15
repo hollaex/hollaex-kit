@@ -154,7 +154,7 @@ class HollaExKit {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposit(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
+	getDeposits(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (currency) {
@@ -180,7 +180,7 @@ class HollaExKit {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getWithdrawal(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
+	getWithdrawals(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
 		if (currency) {
@@ -225,7 +225,7 @@ class HollaExKit {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
-	getUserTrade(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getUserTrades(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/trades?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
 		if (symbol) {
@@ -267,7 +267,7 @@ class HollaExKit {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
-	getAllOrder(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
+	getOrders(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
 		const verb = 'GET';
 		let path = `${this.baseUrl}/user/orders?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
 		if (symbol) {
@@ -319,7 +319,7 @@ class HollaExKit {
 	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to cancel orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the cancelled orders
 	 */
-	cancelAllOrder(symbol) {
+	cancelAllOrders(symbol) {
 		const verb = 'DELETE';
 		let path = `${this.baseUrl}/order/all`;
 		if (symbol) {
