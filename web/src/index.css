@@ -1768,7 +1768,7 @@ table th {
   margin: auto; }
 
 .trade_orderbook-wrapper {
-  height: 84vh; }
+  height: 100vh; }
   .trade_orderbook-wrapper .trade_orderbook-cell {
     padding: 0 0.25rem; }
     .trade_orderbook-wrapper .trade_orderbook-cell .ant-select-arrow {
