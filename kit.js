@@ -281,7 +281,7 @@ class HollaExKit {
 	 */
 	cancelOrder(orderId) {
 		const verb = 'DELETE';
-		const path = `${this.baseUrl}/user/order?order_id=${orderId}`;
+		const path = `${this.baseUrl}/order?order_id=${orderId}`;
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -297,7 +297,7 @@ class HollaExKit {
 	 */
 	cancelAllOrder(symbol) {
 		const verb = 'DELETE';
-		let path = `${this.baseUrl}/user/orders`;
+		let path = `${this.baseUrl}/orders`;
 		if (symbol) {
 			path += `?symbol=${symbol}`;
 		}
