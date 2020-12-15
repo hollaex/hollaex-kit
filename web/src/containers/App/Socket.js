@@ -285,7 +285,7 @@ class Container extends Component {
 			console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
-					if (data.action === 'partial') {
+					if (data.action === 'partial' || 'insert') {
 						const tradesData = {
 							...data,
 							[data.symbol]: data.data,
