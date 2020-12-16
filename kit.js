@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const moment = require('moment');
 const { createRequest, createSignature, generateHeaders } = require('./utils');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
-const { each, union } = require('lodash');
+const { each, union, isNumber, isString, isPlainObject } = require('lodash');
 
 class HollaExKit {
 	constructor(
@@ -40,6 +40,10 @@ class HollaExKit {
 
 	/* Public Endpoints*/
 
+	/**
+	 * Get exchange information
+	 * @return {object} A json object with the exchange information
+	 */
 	getKit() {
 		return createRequest(
 			'GET',
@@ -49,9 +53,9 @@ class HollaExKit {
 	}
 
 	/**
-	 * Retrieve last, high, low, open and close price and volume within last 24 hours
+	 * Retrieve last, high, low, open and close price and volume within last 24 hours for a symbol
 	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
-	 * @return {string} A stringified JSON object with keys high(number), low(number), open(number), close(number), volume(number), last(number)
+	 * @return {object} A JSON object with keys high(number), low(number), open(number), close(number), volume(number), last(number)
 	 */
 	getTicker(symbol = '') {
 		return createRequest(
@@ -61,6 +65,10 @@ class HollaExKit {
 		);
 	}
 
+	/**
+	 * Retrieve last, high, low, open and close price and volume within last 24 hours for all symbols
+	 * @return {object} A JSON object with symbols as keys which contain high(number), low(number), open(number), close(number), volume(number), last(number)
+	 */
 	getTickers() {
 		return createRequest(
 			'GET',
@@ -70,9 +78,9 @@ class HollaExKit {
 	}
 
 	/**
-	 * Retrieve orderbook containing lists of up to the last 20 bids and asks
-	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get orderbook for all symbol-pairs
-	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are objects with keys bids(array of active buy orders), asks(array of active sell orders), and timestamp(string)
+	 * Retrieve orderbook containing lists of up to the last 20 bids and asks for a symbol
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
+	 * @return {object} A JSON object with keys bids(array of active buy orders), asks(array of active sell orders), and timestamp(string)
 	 */
 	getOrderbook(symbol = '') {
 		return createRequest(
@@ -82,6 +90,10 @@ class HollaExKit {
 		);
 	}
 
+	/**
+	 * Retrieve orderbook containing lists of up to the last 20 bids and asks for all symbols
+	 * @return {object} A JSON object with the symbol-pairs as keys where the values are objects with keys bids(array of active buy orders), asks(array of active sell orders), and timestamp(string)
+	 */
 	getOrderbooks() {
 		return createRequest(
 			'GET',
@@ -93,7 +105,7 @@ class HollaExKit {
 	/**
 	 * Retrieve list of up to the last 50 trades
 	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get trades for all symbol-pairs
-	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are arrays of objects with keys size(number), price(number), side(string), and timestamp(string)
+	 * @return {object} A JSON object with the symbol-pairs as keys where the values are arrays of objects with keys size(number), price(number), side(string), and timestamp(string)
 	 */
 	getTrades(symbol = '') {
 		return createRequest(
@@ -105,7 +117,7 @@ class HollaExKit {
 
 	/**
 	 * Retrieve tick size, min price, max price, min size, and max size of each symbol-pair
-	 * @return {string} A stringified JSON object with the keys pairs(information on each symbol-pair such as tick_size, min/max price, and min/max size) and currencies(array of all currencies involved in hollaEx)
+	 * @return {object} A JSON object with the keys pairs(information on each symbol-pair such as tick_size, min/max price, and min/max size) and currencies(array of all currencies involved in hollaEx)
 	 */
 	getConstants() {
 		return createRequest('GET', `${this.apiUrl}${this.baseUrl}/constants`, this.headers);
@@ -115,7 +127,7 @@ class HollaExKit {
 
 	/**
 	 * Retrieve user's personal information
-	 * @return {string} A stringified JSON object showing user's information such as id, email, bank_account, crypto_wallet, balance, etc
+	 * @return {string} A JSON object showing user's information such as id, email, bank_account, crypto_wallet, balance, etc
 	 */
 	getUser() {
 		const verb = 'GET';
@@ -130,7 +142,7 @@ class HollaExKit {
 
 	/**
 	 * Retrieve user's wallet balance
-	 * @return {string} A stringified JSON object with the keys updated_at(string), usdt_balance(number), usdt_pending(number), usdt_available(number), hex_balance, hex_pending, hex_available, eth_balance, eth_pending, eth_available, bch_balance, bch_pending, bch_available
+	 * @return {object} A JSON object with the keys updated_at(string), usdt_balance(number), usdt_pending(number), usdt_available(number), hex_balance, hex_pending, hex_available, eth_balance, eth_pending, eth_available, bch_balance, bch_pending, bch_available
 	 */
 	getBalance() {
 		const verb = 'GET';
@@ -145,21 +157,58 @@ class HollaExKit {
 
 	/**
 	 * Retrieve list of the user's deposits
-	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
-	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
+	 * @param {object} opts Optional parameters
+	 * @param {string} opts.currency The currency to filter by, pass undefined to receive data on all currencies
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} A JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposits(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
-		const verb = 'GET';
-		let path = `${this.baseUrl}/user/deposits?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
-		if (currency) {
-			path += `&currency=${currency}`;
+	getDeposits(
+		opts = {
+			currency: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'asc',
+			startDate: 0,
+			endDate: moment().toISOString()
 		}
+	) {
+		const verb = 'GET';
+		let path = `${this.baseUrl}/user/deposits?`;
+
+		if (isString(opts.currency)) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -171,21 +220,58 @@ class HollaExKit {
 	/****** Withdrawals ******/
 	/**
 	 * Retrieve list of the user's withdrawals
-	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
-	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
+	 * @param {object} opts Optional parameters
+	 * @param {string} opts.currency The currency to filter by, pass undefined to receive data on all currencies
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} A JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getWithdrawals(currency, limit = 50, page = 1, orderBy = 'id', order = 'asc', startDate = 0, endDate = moment().toISOString()) {
-		const verb = 'GET';
-		let path = `${this.baseUrl}/user/withdrawals?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date=${endDate}`;
-		if (currency) {
-			path += `&currency=${currency}`;
+	getWithdrawals(
+		opts = {
+			currency: '',
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'asc',
+			startDate: 0,
+			endDate: moment().toISOString()
 		}
+	) {
+		const verb = 'GET';
+		let path = `${this.baseUrl}/user/withdrawals?`;
+
+		if (isString(opts.currency)) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -199,7 +285,7 @@ class HollaExKit {
 	 * @param {string} currency - The currency to withdrawal
 	 * @param {number} amount - The amount of currency to withdrawal
 	 * @param {string} address - The recipient's wallet address
-	 * @return {string} A stringified JSON object {message:"Success"}
+	 * @return {object} A JSON object {message:"Success"}
 	 */
 	requestWithdrawal(currency, amount, address) {
 		const verb = 'POST';
@@ -216,21 +302,58 @@ class HollaExKit {
 
 	/**
 	 * Retrieve list of the user's completed trades
-	 * @param {string} symbol The symbol-pair to filter by, pass undefined to receive data on all currencies
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
-	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
+	 * @param {object} opts Optional parameters
+	 * @param {string} opts.symbol The symbol-pair to filter by, pass undefined to receive data on all currencies
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} A JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
-	getUserTrades(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
-		const verb = 'GET';
-		let path = `${this.baseUrl}/user/trades?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
-		if (symbol) {
-			path += `&symbol=${symbol}`;
+	getUserTrades(
+		opts = {
+			symbol: '',
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'desc',
+			startDate: 0,
+			endDate: moment().toISOString()
 		}
+	) {
+		const verb = 'GET';
+		let path = `${this.baseUrl}/user/trades?`;
+
+		if (isString(opts.symbol)) {
+			path += `&symbol=${opts.symbol}`;
+		}
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -243,7 +366,7 @@ class HollaExKit {
 	/**
 	 * Retrieve information of a user's specific order
 	 * @param {string} orderId - The id of the desired order
-	 * @return {string} The selected order as a stringified JSON object with keys created_at(string), title(string), symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), filled(number)
+	 * @return {object} The selected order as a JSON object with keys created_at(string), title(string), symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), filled(number)
 	 */
 	getOrder(orderId) {
 		const verb = 'GET';
@@ -258,21 +381,58 @@ class HollaExKit {
 
 	/**
 	 * Retrieve information of all the user's active orders
-	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
-	 * @return {string} A stringified JSON array of objects containing the user's active orders
+	 * @param {object} opts Optional parameters
+	 * @param {string} opts.symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} A JSON array of objects containing the user's active orders
 	 */
-	getOrders(symbol, limit = 50, page = 1, orderBy = 'id', order = 'desc', startDate = 0, endDate = moment().toISOString()) {
-		const verb = 'GET';
-		let path = `${this.baseUrl}/user/orders?limit=${limit}&page=${page}&order_by=${orderBy}&order=${order}&start_date=${startDate}&end_date${endDate}`;
-		if (symbol) {
-			path += `&symbol=${symbol}`;
+	getOrders(
+		opts = {
+			symbol: '',
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'desc',
+			startDate: 0,
+			endDate: moment().toISOString()
 		}
+	) {
+		const verb = 'GET';
+		let path = `${this.baseUrl}/user/orders?`;
+
+		if (isString(opts.symbol)) {
+			path += `&symbol=${opts.symbol}`;
+		}
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -288,12 +448,34 @@ class HollaExKit {
 	 * @param {number} size - The amount of currency to order
 	 * @param {string} type - The type of order to create e.g. 'market', 'limit'
 	 * @param {number} price - The price at which to order (only required if type is 'limit')
-	 * @return {string} The new order as a stringified JSON object with keys symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), and filled(number)
+	 * @param {object} opts - Optional parameters
+	 * @param {number} opts.stop - Stop order price
+	 * @param {object} opts.meta - Additional meta parameters in an object
+	 * @return {object} The new order as a JSON object with keys symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), and filled(number)
 	 */
-	createOrder(symbol, side, size, type, price) {
+	createOrder(
+		symbol,
+		side,
+		size,
+		type,
+		price = 0,
+		opts = {
+			stop: null,
+			meta: null
+		}
+	) {
 		const verb = 'POST';
 		const path = `${this.baseUrl}/order`;
 		const data = { symbol, side, size, type, price };
+
+		if (isPlainObject(opts.meta)) {
+			data.meta = opts.meta;
+		}
+
+		if (isNumber(opts.stop)) {
+			data.stop = opts.stop;
+		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
@@ -301,7 +483,7 @@ class HollaExKit {
 	/**
 	 * Cancel a user's specific order
 	 * @param {string} orderId - The id of the order to be cancelled
-	 * @return {string} The cancelled order as a stringified JSON object with keys symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), and filled(number)
+	 * @return {object} The cancelled order as a JSON object with keys symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), and filled(number)
 	 */
 	cancelOrder(orderId) {
 		const verb = 'DELETE';
@@ -316,15 +498,18 @@ class HollaExKit {
 
 	/**
 	 * Cancel all the user's active orders, can filter by currency pair symbol
-	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to cancel orders of all symbols
-	 * @return {string} A stringified JSON array of objects containing the cancelled orders
+	 * @param {object} opts Optional parameters
+	 * @param {string} opts.symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to cancel orders of all symbols
+	 * @return {array} A JSON array of objects containing the cancelled orders
 	 */
-	cancelAllOrders(symbol) {
+	cancelAllOrders(opts = { symbol: '' }) {
 		const verb = 'DELETE';
 		let path = `${this.baseUrl}/order/all`;
-		if (symbol) {
-			path += `?symbol=${symbol}`;
+
+		if (isString(opts.symbol)) {
+			path += `?symbol=${opts.symbol}`;
 		}
+
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
@@ -335,8 +520,7 @@ class HollaExKit {
 
 	/**
 	 * Connect to hollaEx websocket and listen to an event
-	 * @param {string} event - The event to listen to
-	 * @return {class} A new socket class that listens to the hollaEx websocket server and emits the event being passed
+	 * @param {array} event - The events to listen to
 	 */
 	connect(events = []) {
 		this.wsReconnect = true;
@@ -416,6 +600,9 @@ class HollaExKit {
 		}
 	}
 
+	/**
+	 * Disconnect from hollaEx websocket
+	 */
 	disconnect() {
 		if (this.wsConnected()) {
 			this.wsReconnect = false;
@@ -425,6 +612,10 @@ class HollaExKit {
 		}
 	}
 
+	/**
+	 * Subscribe to hollaEx websocket events
+	 * @param {array} event - The events to listen to
+	 */
 	subscribe(events = []) {
 		if (this.wsConnected()) {
 			each(events, (event) => {
@@ -475,6 +666,10 @@ class HollaExKit {
 		}
 	}
 
+	/**
+	 * Unsubscribe to hollaEx websocket events
+	 * @param {array} event - The events to unsub from
+	 */
 	unsubscribe(events = []) {
 		if (this.wsConnected()) {
 			each(events, (event) => {
