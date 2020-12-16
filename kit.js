@@ -13,7 +13,7 @@ class HollaExKit {
 			baseURL: '/v2',
 			apiKey: '',
 			apiSecret: '',
-			apiExpiresAfter: 60,
+			apiExpiresAfter: 60
 		}
 	) {
 		this.apiUrl = opts.apiURL || 'https://api.hollaex.com';
@@ -24,13 +24,14 @@ class HollaExKit {
 		this.headers = {
 			'content-type': 'application/json',
 			Accept: 'application/json',
-			'api-key': opts.apiKey,
+			'api-key': opts.apiKey
 		};
 		this.ws = null;
-		const [ protocol, endpoint ] = this.apiUrl.split('://');
-		this.wsUrl = protocol === 'https'
-			? `wss://${endpoint}/stream`
-			: `ws://${endpoint}/stream`;
+		const [protocol, endpoint] = this.apiUrl.split('://');
+		this.wsUrl =
+			protocol === 'https'
+				? `wss://${endpoint}/stream`
+				: `ws://${endpoint}/stream`;
 		this.wsEvents = [];
 		this.wsReconnect = true;
 		this.wsReconnectInterval = 5000;
@@ -115,11 +116,7 @@ class HollaExKit {
 			path += `?symbol=${opts.symbol}`;
 		}
 
-		return createRequest(
-			'GET',
-			path,
-			this.headers
-		);
+		return createRequest('GET', path, this.headers);
 	}
 
 	/**
@@ -127,7 +124,11 @@ class HollaExKit {
 	 * @return {object} A JSON object with the keys pairs(information on each symbol-pair such as tick_size, min/max price, and min/max size) and currencies(array of all currencies involved in hollaEx)
 	 */
 	getConstants() {
-		return createRequest('GET', `${this.apiUrl}${this.baseUrl}/constants`, this.headers);
+		return createRequest(
+			'GET',
+			`${this.apiUrl}${this.baseUrl}/constants`,
+			this.headers
+		);
 	}
 
 	/* Private Endpoints*/
@@ -139,12 +140,14 @@ class HollaExKit {
 	getUser() {
 		const verb = 'GET';
 		const path = `${this.baseUrl}/user`;
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -154,12 +157,14 @@ class HollaExKit {
 	getBalance() {
 		const verb = 'GET';
 		const path = `${this.baseUrl}/user/balance`;
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -216,12 +221,14 @@ class HollaExKit {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/****** Withdrawals ******/
@@ -279,12 +286,14 @@ class HollaExKit {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -298,13 +307,15 @@ class HollaExKit {
 		const verb = 'POST';
 		const path = `${this.baseUrl}/user/request-withdrawal`;
 		const data = { currency, amount, address };
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers,
+			path,
+			this.apiExpiresAfter,
 			data
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
 	/**
@@ -361,12 +372,14 @@ class HollaExKit {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/****** Orders ******/
@@ -378,12 +391,14 @@ class HollaExKit {
 	getOrder(orderId) {
 		const verb = 'GET';
 		const path = `${this.baseUrl}/user/order?order_id=${orderId}`;
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -440,12 +455,14 @@ class HollaExKit {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -483,7 +500,14 @@ class HollaExKit {
 			data.stop = opts.stop;
 		}
 
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
@@ -495,12 +519,14 @@ class HollaExKit {
 	cancelOrder(orderId) {
 		const verb = 'DELETE';
 		const path = `${this.baseUrl}/order?order_id=${orderId}`;
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -517,12 +543,14 @@ class HollaExKit {
 			path += `?symbol=${opts.symbol}`;
 		}
 
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
-		return createRequest(
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
 			verb,
-			`${this.apiUrl}${path}`,
-			headers
+			path,
+			this.apiExpiresAfter
 		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -536,8 +564,15 @@ class HollaExKit {
 		let url = this.wsUrl;
 		if (this.apiKey && this.apiSecret) {
 			const apiExpires = moment().unix() + this.apiExpiresAfter;
-			const signature = createSignature(this.apiSecret, 'CONNECT', '/stream', apiExpires);
-			url = `${url}?api-key=${this.apiKey}&api-signature=${signature}&api-expires=${apiExpires}`;
+			const signature = createSignature(
+				this.apiSecret,
+				'CONNECT',
+				'/stream',
+				apiExpires
+			);
+			url = `${url}?api-key=${
+				this.apiKey
+			}&api-signature=${signature}&api-expires=${apiExpires}`;
 		}
 
 		this.ws = new WebSocket(url);
@@ -599,9 +634,9 @@ class HollaExKit {
 
 				this.initialConnection = false;
 
-				setWsHeartbeat(this.ws, JSON.stringify({ 'op': 'ping' }), {
+				setWsHeartbeat(this.ws, JSON.stringify({ op: 'ping' }), {
 					pingTimeout: 60000,
-					pingInterval: 25000,
+					pingInterval: 25000
 				});
 			});
 		}
@@ -627,27 +662,33 @@ class HollaExKit {
 		if (this.wsConnected()) {
 			each(events, (event) => {
 				if (!this.wsEvents.includes(event) || this.initialConnection) {
-					const [ topic, symbol ] = event.split(':');
-					switch(topic) {
+					const [topic, symbol] = event.split(':');
+					switch (topic) {
 						case 'orderbook':
 						case 'trade':
 							if (symbol) {
 								if (!this.wsEvents.includes(topic)) {
-									this.ws.send(JSON.stringify({
-										op: 'subscribe',
-										args: [`${topic}:${symbol}`]
-									}));
+									this.ws.send(
+										JSON.stringify({
+											op: 'subscribe',
+											args: [`${topic}:${symbol}`]
+										})
+									);
 									if (!this.initialConnection) {
 										this.wsEvents = union(this.wsEvents, [event]);
 									}
 								}
 							} else {
-								this.ws.send(JSON.stringify({
-									op: 'subscribe',
-									args: [topic]
-								}));
+								this.ws.send(
+									JSON.stringify({
+										op: 'subscribe',
+										args: [topic]
+									})
+								);
 								if (!this.initialConnection) {
-									this.wsEvents = this.wsEvents.filter((e) => !e.includes(`${topic}:`));
+									this.wsEvents = this.wsEvents.filter(
+										(e) => !e.includes(`${topic}:`)
+									);
 									this.wsEvents = union(this.wsEvents, [event]);
 								}
 							}
@@ -655,10 +696,12 @@ class HollaExKit {
 						case 'order':
 						case 'wallet':
 						case 'deposit':
-							this.ws.send(JSON.stringify({
-								op: 'subscribe',
-								args: [topic]
-							}));
+							this.ws.send(
+								JSON.stringify({
+									op: 'subscribe',
+									args: [topic]
+								})
+							);
 							if (!this.initialConnection) {
 								this.wsEvents = union(this.wsEvents, [event]);
 							}
@@ -681,30 +724,36 @@ class HollaExKit {
 		if (this.wsConnected()) {
 			each(events, (event) => {
 				if (this.wsEvents.includes(event)) {
-					const [ topic, symbol ] = event.split(':');
-					switch(topic) {
+					const [topic, symbol] = event.split(':');
+					switch (topic) {
 						case 'orderbook':
 						case 'trade':
 							if (symbol) {
-								this.ws.send(JSON.stringify({
-									op: 'unsubscribe',
-									args: [`${topic}:${symbol}`]
-								}));
+								this.ws.send(
+									JSON.stringify({
+										op: 'unsubscribe',
+										args: [`${topic}:${symbol}`]
+									})
+								);
 							} else {
-								this.ws.send(JSON.stringify({
-									op: 'unsubscribe',
-									args: [topic]
-								}));
+								this.ws.send(
+									JSON.stringify({
+										op: 'unsubscribe',
+										args: [topic]
+									})
+								);
 							}
 							this.wsEvents = this.wsEvents.filter((e) => e !== event);
 							break;
 						case 'order':
 						case 'wallet':
 						case 'deposit':
-							this.ws.send(JSON.stringify({
-								op: 'unsubscribe',
-								args: [topic]
-							}));
+							this.ws.send(
+								JSON.stringify({
+									op: 'unsubscribe',
+									args: [topic]
+								})
+							);
 							this.wsEvents = this.wsEvents.filter((e) => e !== event);
 							break;
 						default:

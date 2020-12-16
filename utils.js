@@ -35,7 +35,9 @@ const generateHeaders = (headers, secret, verb, path, expiresAfter, data) => {
 
 const checkKit = (kit) => {
 	if (!kit) {
-		throw new Error('Missing Kit ID. ID of the exchange Kit should be initialized in HollaEx constructor');
+		throw new Error(
+			'Missing Kit ID. ID of the exchange Kit should be initialized in HollaEx constructor'
+		);
 	}
 	return true;
 };
