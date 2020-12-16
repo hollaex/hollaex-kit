@@ -2,7 +2,7 @@
 
 Nodejs library for HollaEx Kit enabled exchanges.
 
-**This documentation is specifically for using this library to connect to HollaEx Kit enabled exchanges. If you are an exchange operator and would like to use this library for the HollaEx Network, [click here]()**
+**This documentation is specifically for using this library to connect to HollaEx Kit enabled exchanges. If you are an exchange operator and would like to use this library for the HollaEx Network, [click here](NETWORK_README.md)**
 
 ## Usage
 
