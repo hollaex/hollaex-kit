@@ -104,13 +104,20 @@ class HollaExKit {
 
 	/**
 	 * Retrieve list of up to the last 50 trades
-	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get trades for all symbol-pairs
+	 * @param {object} opts - Optional parameters
+	 * @param {string} opts.symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @return {object} A JSON object with the symbol-pairs as keys where the values are arrays of objects with keys size(number), price(number), side(string), and timestamp(string)
 	 */
-	getTrades(symbol = '') {
+	getTrades(opts = { symbol: null }) {
+		let path = `${this.apiUrl}${this.baseUrl}/trades`;
+
+		if (isString(opts.symbol)) {
+			path += `?symbol=${opts.symbol}`;
+		}
+
 		return createRequest(
 			'GET',
-			`${this.apiUrl}${this.baseUrl}/trades?symbol=${symbol}`,
+			path,
 			this.headers
 		);
 	}
@@ -232,7 +239,7 @@ class HollaExKit {
 	 */
 	getWithdrawals(
 		opts = {
-			currency: '',
+			currency: null,
 			limit: 50,
 			page: 1,
 			orderBy: 'id',
@@ -314,7 +321,7 @@ class HollaExKit {
 	 */
 	getUserTrades(
 		opts = {
-			symbol: '',
+			symbol: null,
 			limit: 50,
 			page: 1,
 			orderBy: 'id',
@@ -393,7 +400,7 @@ class HollaExKit {
 	 */
 	getOrders(
 		opts = {
-			symbol: '',
+			symbol: null,
 			limit: 50,
 			page: 1,
 			orderBy: 'id',
@@ -502,7 +509,7 @@ class HollaExKit {
 	 * @param {string} opts.symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to cancel orders of all symbols
 	 * @return {array} A JSON array of objects containing the cancelled orders
 	 */
-	cancelAllOrders(opts = { symbol: '' }) {
+	cancelAllOrders(opts = { symbol: null }) {
 		const verb = 'DELETE';
 		let path = `${this.baseUrl}/order/all`;
 
