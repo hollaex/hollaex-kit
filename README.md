@@ -41,9 +41,20 @@ client
 	.catch((err) => {
 		console.log(err);
 	});
+
+client
+	.getTrades({ symbol: 'xht-usdt' })
+	.then((res) => {
+		console.log('Public trades: ', res);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 ```
 
 ### Available functions:
+
+- **Optional parameters are all contained within an object parameter called `opts`**
 
 | Command             | Parameters                                                                                                                                                                         | Description                                                                                                                                                            |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -56,23 +67,23 @@ client
 | `getTrades`          | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | List of last trades                                                                                                                                                    |
 | `getUser`           |                                                                                                                                                                                    | User's personal information                                                                                                                                            |
 | `getBalance`        |                                                                                                                                                                                    | User's wallet balance                                                                                                                                                  |
-| `getDeposits`        | **currency** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`), **orderBy** (_optional_) e.g. `amount`, **order** (_asc_ or _desc_, _default_=`asc`) | User's list of all deposits                                                                                                                                            |
-| `getWithdrawals`     | **currency** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`), **orderBy** (_optional_) e.g. `amount`, **order** (_asc_ or _desc_, _default_=`asc`) | User's list of all withdrawals                                                                                                                                         |
+| `getDeposits`        | **currency** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`asc`, `asc` or `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`) | User's list of all deposits                                                                                                                                            |
+| `getWithdrawals`     |  **currency** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`asc`, `asc` or `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`) | User's list of all withdrawals                                                                                                                                         |
 | `requestWithdrawal` | **currency**, **amount**, **address** (_receipient's_)                                                                                                                             | Create a new withdrawal request. **Disable Two-Factor Authentication to be able to use this function. Must confirm within 5 minutes via email to complete withdrawal** |
-| `getUserTrades`      | **symbol** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`)                                                                                         | User's list of all trades                                                                                                                                              |
+| `getUserTrades`      |  **symbol** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`desc`, `asc` or `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`)                                                                                          | User's list of all trades                                                                                                                                              |
 | `getOrder`          | **orderId**                                                                                                                                                                        | Get specific information about a certain order                                                                                                                         |
-| `getOrders`       | **symbol** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`), **orderBy** (_optional_) e.g. `amount`, **order** (_asc_ or _desc_, _default_=`asc`) | Get the list of all user orders. It can be filter by passing the symbol                                                                                                |
-| `createOrder`       | **symbol**, **side** (_buy_ or _sell_), **size** (amount), **type** (_market_ or _limit_), **price**                                                                               | Create a new order                                                                                                                                                     |
+| `getOrders`       |  **symbol** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`desc`, _enum_=`asc`, `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`) | Get the list of all user orders. It can be filter by passing the symbol                                                                                                |
+| `createOrder`       | **symbol**, **side** (`buy` or `sell`), **size**, **type** (`market` or `limit`), **price**, **stop** (_optional_), **meta** (_optional_, object with optional properties e.g. `post_only`)                                                                               | Create a new order                                                                                                                                                     |
 | `cancelOrder`       | **orderId**                                                                                                                                                                        | Cancel a specific order with its ID                                                                                                                                    |
 | `cancelAllOrders`    | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | Cancel all open order. It can be filter by passing the symbol                                                                                                          |
 
 ### Websocket
 
-#### Connecting
+#### Functions
 
 You can connect and subscribe to different websocket channels for realtime updates.
 
-To connect, use the `connect` function with the channels you want to subscribe to in an array as the parameter.
+To connect, use the `connect` function with the channels you want to subscribe to in an array as the parameter. The connection will reconnect on it's own unless you call `disconnect`.
 
 ```javascript
 client.connect(['orderbook', 'trade']);
@@ -82,6 +93,18 @@ To disconnect the websocket, call `disconnect`.
 
 ```javascript
 client.disconnect();
+```
+
+To subscribe to more channels after connection, use `subscribe`.
+
+```javascript
+client.subscribe(['order', 'wallet']);
+```
+
+To unsubscribe from channels after connection, use `unsubscribe`.
+
+```javascript
+client.unsubscribe(['orderbook']);
 ```
 
 #### Channels
