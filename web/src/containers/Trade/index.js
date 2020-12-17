@@ -53,13 +53,11 @@ class Trade extends PureComponent {
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
-		if (!this.props.fetchingAuth) {
-			this.initializeOrderbookWs(getToken());
-		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
+			this.closeOrderbookSocket();
 			this.setSymbol(nextProps.routeParams.pair);
 		}
 	}
@@ -72,6 +70,9 @@ class Trade extends PureComponent {
 
 	setSymbol = (symbol = '') => {
 		this.props.getUserTrades(symbol);
+		if (!this.props.fetchingAuth) {
+			this.initializeOrderbookWs(symbol, getToken());
+		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
 			setTimeout(() => {
@@ -185,10 +186,7 @@ class Trade extends PureComponent {
 
 	storeOrderData = debounce(this.storeData, 250);
 
-	initializeOrderbookWs = (token = '') => {
-		const {
-			routeParams: { pair },
-		} = this.props;
+	initializeOrderbookWs = (symbol, token = '') => {
 		let url = `${WS_URL}/stream`;
 		if (token) {
 			url = `${WS_URL}/stream?authorization=Bearer ${token}`;
@@ -203,7 +201,7 @@ class Trade extends PureComponent {
 			orderbookWs.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: [`orderbook:${pair}`],
+					args: [`orderbook:${symbol}`],
 				})
 			);
 			this.wsInterval = setInterval(() => {
@@ -255,6 +253,7 @@ class Trade extends PureComponent {
 			clearInterval(this.wsInterval);
 			orderbookWs.close();
 		}
+		this.setState({ orderbookSocketInitialized: false });
 	};
 
 	render() {

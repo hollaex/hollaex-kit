@@ -125,64 +125,6 @@ $app-menu-notification-size: 1.2rem;
 		}
 	}
 
-	.app_bar-pair-font {
-		font-size: 0.8rem;
-	}
-
-	.app_bar-pair-content {
-		align-items: center;
-		border-left: 1px solid $base_top-bar-navigation_text-inactive;
-		color: $base_top-bar-navigation_text-inactive;
-		cursor: pointer;
-		display: flex;
-		font-size: $font-size-main;
-		font-weight: 400;
-		height: 100%;
-		position: relative;
-	}
-
-	.app_bar-pair-tab {
-		min-width: 19rem;
-		max-width: 19rem;
-	}
-
-	.transition_open {
-		left: -3.5rem;
-		-webkit-animation: slide 0.5s forwards;
-		animation: slide 0.5s forwards;
-	}
-
-	.transition_close {
-		left: 0;
-		-webkit-animation: slideRev 0.5s backwards;
-		animation: slideRev 0.5s backwards;
-		z-index: 99;
-	}
-
-	@-webkit-keyframes slide {
-		100% {
-			left: 0;
-		}
-	}
-
-	@keyframes slide {
-		100% {
-			left: 0;
-		}
-	}
-
-	@-webkit-keyframes slideRev {
-		100% {
-			left: -4rem;
-		}
-	}
-
-	@keyframes slideRev {
-		100% {
-			left: -4rem;
-		}
-	}
-
 	.app_bar-pair-overflow {
 		align-items: center;
 		color: $app-bar-icon-inactive;
@@ -193,43 +135,6 @@ $app-menu-notification-size: 1.2rem;
 		height: 100%;
 		padding: 0 0.5rem;
 		position: relative;
-	}
-
-	.active-tab-pair {
-		background-color: $app-background-color;
-		border-left: 1px solid $base_top-bar-navigation_text;
-		color: $colors-black;
-		top: 1px;
-
-		svg {
-			.btc0,
-			.btc1,
-			.eth0,
-			.eth1,
-			.bch-icon,
-			.xrp-icon,
-			.xht-icon,
-			.xmr-icon,
-			.xlm-icon,
-			.eos-icon,
-			.trx-icon,
-			.ada-icon,
-			.bnb-icon,
-			.tusd-icon,
-			.dai-icon,
-			.ltc-icon {
-				fill: $colors-main-black;
-			}
-			.tab-close,
-			.plus,
-			.double-arrow {
-				stroke: $colors-main-black;
-			}
-			.st0 {
-				fill: $colors-main-black;
-				stroke-width: 0rem;
-			}
-		}
 	}
 
 	.active-tab-overflow {
@@ -248,11 +153,6 @@ $app-menu-notification-size: 1.2rem;
 	.app-bar-currency-icon {
 		margin: 0.5rem 0.3rem 0 0.3rem;
 		width: 1.5rem;
-	}
-
-	.app-bar-tab-close {
-		margin: 0.2rem 0.4rem 0 0.4rem;
-		width: 0.9rem;
 	}
 
 	.app-bar-account-icon {
@@ -626,7 +526,6 @@ $app-menu-notification-size: 1.2rem;
 }
 
 .app-menu-bar {
-	background: $app-light-background;
 	display: flex;
 	font-size: $navigation_bar-font_size;
 	height: $navigation_bar-height;
@@ -635,7 +534,7 @@ $app-menu-notification-size: 1.2rem;
 	width: 100%;
 
 	.app-menu-bar-content {
-		color: $colors-black;
+		color: $base_top-bar-navigation_text-inactive;
 		cursor: pointer;
 		height: 2.5rem;
 		position: relative;
@@ -659,14 +558,14 @@ $app-menu-notification-size: 1.2rem;
 			.tab-verify0,
 			.tab-security0,
 			.tab-api0 {
-				fill: $colors-black;
+				fill: $base_top-bar-navigation_text-inactive;
 			}
 		}
 	}
 
 	.active-menu {
-		background-color: $app-background-color;
-		color: $colors-main-black;
+		border-bottom: 1px solid $dark-app-line-divider;
+		color: $base_top-bar-navigation_text;
 		height: 2.5rem;
 		position: relative;
 		// top: 1px;
@@ -678,7 +577,7 @@ $app-menu-notification-size: 1.2rem;
 			.tab-verify0,
 			.tab-security0,
 			.tab-api0 {
-				fill: $colors-main-black;
+				fill: $base_top-bar-navigation_text;
 			}
 		}
 	}
@@ -700,8 +599,27 @@ $app-menu-notification-size: 1.2rem;
 			}
 		}
 	}
+	.active-menu {
+		&.notification {
+			color: $colors-notifications-red;
+
+			svg {
+				.tab-summary0,
+				.tab-wallet0,
+				.tab-setting0,
+				.tab-verify0,
+				.tab-security0,
+				.tab-api0 {
+					fill: $colors-notifications-red;
+				}
+			}
+		}
+		.app-menu-bar-icon-notification {
+			background-color: $colors-notifications-red;
+		}
+	}
 	.notification {
-		color: $colors-notifications-red;
+		color: $colors-notification-inactive-red;
 
 		svg {
 			.tab-summary0,
@@ -710,7 +628,7 @@ $app-menu-notification-size: 1.2rem;
 			.tab-verify0,
 			.tab-security0,
 			.tab-api0 {
-				fill: $colors-notifications-red;
+				fill: $colors-notification-inactive-red;
 			}
 		}
 	}
@@ -738,7 +656,7 @@ $app-menu-notification-size: 1.2rem;
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
 		border-radius: $app-menu-notification-size;
-		background-color: $colors-notifications-red;
+		background-color: $colors-notification-inactive-red;
 		color: $colors-notification-alert-text;
 		display: flex;
 		justify-content: center;
@@ -749,15 +667,221 @@ $app-menu-notification-size: 1.2rem;
 	}
 }
 
-.app-menu-bar-side {
-	min-width: $sidebar-width;
-	max-width: $sidebar-width;
+.favourite-list {
+	padding-left: 0.5rem;
+	border-bottom: 1px solid $dark-app-line-divider;
+	&.border-left {
+		border-left: 1px solid $dark-app-line-divider;
+	}
 }
 
-.tab-menu-left {
-	left: -1px !important;
-	right: 0 !important;
-	width: fit-content;
+.market-bar {
+	background: $app-light-background;
+	display: flex;
+	font-size: $navigation_bar-font_size;
+	height: $navigation_bar-height;
+	min-height: $navigation_bar-height;
+	position: relative;
+	width: 100%;
+
+	svg {
+		.plus {
+			stroke: $colors-black !important;
+		}
+	}
+
+	.selector-trigger {
+		.active-tab-pair {
+			background-color: $app-background-color;
+		}
+		.app_bar-pair-tab {
+			min-width: 17rem;
+			max-width: 17rem;
+		}
+	}
+
+	.app_bar-currency-txt {
+		font-weight: 600;
+	}
+
+	.app-price-diff-down {
+		color: $sell;
+	}
+
+	.app-price-diff-up {
+		color: $buy;
+	}
+
+	.app-bar-price_diff_up {
+		margin-left: 0.5rem;
+	}
+
+	.app-bar-price_diff_up:before {
+		@include css-triangle($buy, 'up', $app-bar--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.app-bar-price_diff_down {
+		margin-left: 0.5rem;
+	}
+
+	.app-bar-price_diff_down:before {
+		@include css-triangle($sell, 'down', $app-bar--arrow-size);
+		display: inline-block;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.app_bar-pair-content,
+	.app-bar-tab-close,
+	.app-bar-currency-icon,
+	.app-bar-account-icon svg {
+		.btc0,
+		.btc1,
+		.eth0,
+		.eth1,
+		.bch-icon,
+		.xrp-icon,
+		.xht-icon,
+		.xmr-icon,
+		.xlm-icon,
+		.eos-icon,
+		.trx-icon,
+		.ada-icon,
+		.bnb-icon,
+		.tusd-icon,
+		.dai-icon,
+		.ltc-icon {
+			fill: $app-bar-icon-inactive;
+		}
+		.tab-close,
+		.plus {
+			stroke: $app-bar-icon-inactive;
+		}
+		.st0 {
+			fill: $base_top-bar-navigation_text !important;
+			stroke-width: 0rem;
+		}
+	}
+
+	.app_bar-pair-font {
+		font-size: 0.8rem;
+	}
+
+	.app-bar-tab-close {
+		margin: 0.2rem 0.4rem 0 0.4rem;
+		width: 0.9rem;
+	}
+
+	.app_bar-pair-content {
+		align-items: center;
+		color: $colors-black;
+		cursor: pointer;
+		display: flex;
+		font-size: $font-size-main;
+		font-weight: 400;
+		height: 100%;
+		position: relative;
+	}
+
+	.app_bar-pair-tab {
+		padding: 0 0.5rem;
+		min-width: 13rem;
+		max-width: 13rem;
+	}
+
+	.transition_open {
+		left: -3.5rem;
+		-webkit-animation: slide 0.5s forwards;
+		animation: slide 0.5s forwards;
+	}
+
+	.transition_close {
+		left: 0;
+		-webkit-animation: slideRev 0.5s backwards;
+		animation: slideRev 0.5s backwards;
+		z-index: 99;
+	}
+
+	@-webkit-keyframes slide {
+		100% {
+			left: 0;
+		}
+	}
+
+	@keyframes slide {
+		100% {
+			left: 0;
+		}
+	}
+
+	@-webkit-keyframes slideRev {
+		100% {
+			left: -4rem;
+		}
+	}
+
+	@keyframes slideRev {
+		100% {
+			left: -4rem;
+		}
+	}
+
+	.favourite-tab {
+		padding: 0.2rem 0;
+		border-radius: 0.7rem;
+		&:hover {
+			background-color: $app-background-color;
+		}
+	}
+
+	.active-tab-pair {
+		color: $colors-main-black;
+
+		.favourite-tab {
+			background-color: $app-background-color;
+		}
+
+		svg {
+			.btc0,
+			.btc1,
+			.eth0,
+			.eth1,
+			.bch-icon,
+			.xrp-icon,
+			.xht-icon,
+			.xmr-icon,
+			.xlm-icon,
+			.eos-icon,
+			.trx-icon,
+			.ada-icon,
+			.bnb-icon,
+			.tusd-icon,
+			.dai-icon,
+			.ltc-icon {
+				fill: $colors-main-black;
+			}
+			.tab-close,
+			.plus,
+			.double-arrow {
+				stroke: $colors-main-black;
+			}
+			.st0 {
+				fill: $colors-main-black;
+				stroke-width: 0rem;
+			}
+		}
+	}
+}
+
+.market-bar-side {
+	min-width: $sidebar-width;
+	max-width: $sidebar-width;
 }
 
 .app-bar-add-tab-search {
@@ -790,12 +914,8 @@ $app-menu-notification-size: 1.2rem;
 	background-color: $app-background-color;
 	border: 1px solid $border-color;
 	color: $app-bar-menu-list-color;
-	display: block;
 	width: 22rem;
 	min-height: 8rem;
-	position: absolute;
-	top: 34px;
-	right: -1px;
 	z-index: 20;
 	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 	-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -958,6 +1078,13 @@ $app-menu-notification-size: 1.2rem;
 			margin: 1rem 0 1rem;
 		}
 	}
+	.market-bar {
+		font-size: 1rem;
+
+		.app_bar-pair-font {
+			font-size: 1rem;
+		}
+	}
 	.app-menu-bar {
 		font-size: 1rem !important;
 		height: $navigation_bar-height-lg;
@@ -991,6 +1118,13 @@ $app-menu-notification-size: 1.2rem;
 
 @media screen and (max-width: 1096px) {
 	.app_bar {
+		font-size: 0.9rem;
+
+		.app_bar-pair-font {
+			font-size: 0.9rem;
+		}
+	}
+	.market-bar {
 		font-size: 0.9rem;
 
 		.app_bar-pair-font {
@@ -1061,5 +1195,12 @@ $app-menu-notification-size: 1.2rem;
 				margin-left: 0.4rem;
 			}
 		}
+	}
+}
+
+.market-selector-dropdown {
+	&.ant-dropdown-trigger {
+		height: 100% !important;
+		width: 100% !important;
 	}
 }

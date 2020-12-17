@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { object, string, func } from 'prop-types';
 import Image from 'components/Image';
 import classnames from 'classnames';
+import { StarFilled, StarOutlined } from '@ant-design/icons';
 
 import { Slider } from 'components';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
@@ -14,6 +16,7 @@ import {
 	calculatePrice,
 } from 'utils/currency';
 import SearchBox from './SearchBox';
+import { removeFromFavourites, addToFavourites } from 'actions/appActions';
 
 class MarketSelector extends Component {
 	constructor(props) {
@@ -39,22 +42,6 @@ class MarketSelector extends Component {
 			const selectedTabMenu = symbols[0];
 			this.setState({ symbols, selectedTabMenu });
 		}
-	}
-
-	componentDidMount() {
-		document.addEventListener('click', this.onOutsideClick);
-	}
-
-	onOutsideClick = ({ target }) => {
-		const { triggerId } = this.props;
-		const element = document.getElementById(triggerId);
-		if (element && target !== element && !element.contains(target)) {
-			this.closeAddTabMenu();
-		}
-	};
-
-	componentWillUnmount() {
-		document.removeEventListener('click', this.onOutsideClick);
 	}
 
 	tabListMenuItems = () => {
@@ -121,11 +108,22 @@ class MarketSelector extends Component {
 	};
 
 	closeAddTabMenu = () => {
-		this.props.closeAddTabMenu();
 		this.setState({
 			searchValue: '',
 			searchResult: {},
 		});
+	};
+
+	isFavourite = (pair) => {
+		const { favourites } = this.props;
+		return favourites.includes(pair);
+	};
+
+	toggleFavourite = (pair) => {
+		const { addToFavourites, removeFromFavourites } = this.props;
+		return this.isFavourite(pair)
+			? removeFromFavourites(pair)
+			: addToFavourites(pair);
 	};
 
 	render() {
@@ -134,7 +132,6 @@ class MarketSelector extends Component {
 			coins = {},
 			tickers = {},
 			addTradePairTab,
-			triggerId,
 			wrapperClassName,
 			icons: ICONS,
 		} = this.props;
@@ -210,18 +207,9 @@ class MarketSelector extends Component {
 		}
 
 		return (
-			<div
-				id={triggerId}
-				className={classnames('app-bar-add-tab-menu', wrapperClassName)}
-			>
+			<div className={classnames('app-bar-add-tab-menu', wrapperClassName)}>
 				<div className="app-bar-tab-menu">
 					<Slider small>{this.tabListMenuItems()}</Slider>
-					{/*<div className="d-flex align-items-center mr-2">*/}
-					{/*<Image*/}
-					{/*icon={ICONS.TAB_SETTING}*/}
-					{/*wrapperClassName="app-bar-tab-setting"*/}
-					{/*/>*/}
-					{/*</div>*/}
 				</div>
 				<div className="app-bar-add-tab-content">
 					<div className="app-bar-add-tab-search">
@@ -250,48 +238,62 @@ class MarketSelector extends Component {
 								return (
 									<div
 										key={index}
-										className="app-bar-add-tab-content-list d-flex align-items-center justify-content-between"
-										onClick={() => addTradePairTab(pair)}
+										className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start"
 									>
-										<div className="d-flex align-items-center">
-											<Image
-												iconId={
-													ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-														? `${menu.pair_base.toUpperCase()}_ICON`
-														: 'DEFAULT_ICON'
-												}
-												icon={
-													ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-														? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-														: ICONS.DEFAULT_ICON
-												}
-												wrapperClassName="app-bar-add-tab-icons"
-											/>
-											<div className="app_bar-pair-font">
-												{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
-											</div>
-											<div className="title-font ml-1 app-bar_add-tab-price">
-												{formatToCurrency(ticker.close, increment_price)}
-											</div>
+										<div
+											className="pl-3 pr-2"
+											onClick={() => this.toggleFavourite(pair)}
+										>
+											{this.isFavourite(pair) ? (
+												<StarFilled />
+											) : (
+												<StarOutlined />
+											)}
 										</div>
-										<div className="d-flex align-items-center mr-4">
-											<div
-												className={
-													priceDifference < 0
-														? 'app-price-diff-down app-bar-price_diff_down'
-														: 'app-bar-price_diff_up app-price-diff-up'
-												}
-											>
-												{/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
+										<div
+											className="d-flex align-items-center justify-content-between w-100"
+											onClick={() => addTradePairTab(pair)}
+										>
+											<div className="d-flex align-items-center">
+												<Image
+													iconId={
+														ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+															? `${menu.pair_base.toUpperCase()}_ICON`
+															: 'DEFAULT_ICON'
+													}
+													icon={
+														ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+															? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+															: ICONS.DEFAULT_ICON
+													}
+													wrapperClassName="app-bar-add-tab-icons"
+												/>
+												<div className="app_bar-pair-font">
+													{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+												</div>
+												<div className="title-font ml-1 app-bar_add-tab-price">
+													{formatToCurrency(ticker.close, increment_price)}
+												</div>
 											</div>
-											<div
-												className={
-													priceDifference < 0
-														? 'title-font app-price-diff-down'
-														: 'title-font app-price-diff-up'
-												}
-											>
-												{priceDifferencePercent}
+											<div className="d-flex align-items-center mr-4">
+												<div
+													className={
+														priceDifference < 0
+															? 'app-price-diff-down app-bar-price_diff_down'
+															: 'app-bar-price_diff_up app-price-diff-up'
+													}
+												>
+													{/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
+												</div>
+												<div
+													className={
+														priceDifference < 0
+															? 'title-font app-price-diff-down'
+															: 'title-font app-price-diff-up'
+													}
+												>
+													{priceDifferencePercent}
+												</div>
 											</div>
 										</div>
 									</div>
@@ -313,27 +315,33 @@ class MarketSelector extends Component {
 }
 
 MarketSelector.propTypes = {
-	triggerId: string.isRequired,
 	pairs: object.isRequired,
 	coins: object.isRequired,
 	tickers: object.isRequired,
 	onViewMarketsClick: func,
 	addTradePairTab: func,
-	closeAddTabMenu: func,
 	wrapperClassName: string,
 };
 
 MarketSelector.defaultProps = {
 	addTradePairTab: () => {},
-	closeAddTabMenu: () => {},
 	onViewMarketsClick: () => {},
 	wrapperClassName: '',
 };
 
-const mapStateToProps = ({ app: { pairs, tickers, coins } }) => ({
+const mapDispatchToProps = (dispatch) => ({
+	addToFavourites: bindActionCreators(addToFavourites, dispatch),
+	removeFromFavourites: bindActionCreators(removeFromFavourites, dispatch),
+});
+
+const mapStateToProps = ({ app: { pairs, tickers, coins, favourites } }) => ({
 	pairs,
 	tickers,
 	coins,
+	favourites,
 });
 
-export default connect(mapStateToProps)(withConfig(MarketSelector));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(MarketSelector));

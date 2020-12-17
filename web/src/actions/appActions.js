@@ -54,6 +54,8 @@ export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
 export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
 export const SET_CONFIG_LEVEL = 'SET_CONFIG_LEVEL';
+export const ADD_TO_FAVOURITES = 'ADD_TO_FAVOURITES';
+export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -334,3 +336,13 @@ export const requestTiers = () => (dispatch) => {
 		})
 		.catch((err) => {});
 };
+
+export const addToFavourites = (payload) => ({
+	type: ADD_TO_FAVOURITES,
+	payload,
+});
+
+export const removeFromFavourites = (payload) => ({
+	type: REMOVE_FROM_FAVOURITES,
+	payload,
+});
