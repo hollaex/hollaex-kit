@@ -10,6 +10,7 @@ import {
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
@@ -40,6 +41,7 @@ import {
 	MessageDisplay,
 	SnackNotification,
 	SnackDialog,
+	PairTabs,
 } from '../../components';
 import {
 	ContactForm,
@@ -108,6 +110,11 @@ class App extends Component {
 			this.checkPath(this.props.location.pathname);
 			this.handleFitHeight(this.props.location.pathname);
 		}
+
+		setTimeout(
+			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
+			5000
+		);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -149,7 +156,10 @@ class App extends Component {
 			!isEqual(balance, nextProps.balance) ||
 			!isEqual(coins, nextProps.coins)
 		) {
-			this.props.setPricesAndAsset(nextProps.balance, nextProps.coins);
+			debounce(
+				() => this.props.setPricesAndAsset(nextProps.balance, nextProps.coins),
+				15000
+			);
 		}
 	}
 
@@ -491,7 +501,7 @@ class App extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
-		const isMenubar = activePath === 'account' || activePath === 'wallet';
+		const isMenubar = true;
 		return (
 			<ThemeProvider>
 				<div>
@@ -556,10 +566,18 @@ class App extends Component {
 									logout={this.logout}
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
-								/>
-								{isBrowser && isMenubar && isLoggedIn() ? (
-									<AppMenuBar router={router} location={location} />
-								) : null}
+								>
+									{isBrowser && isMenubar && isLoggedIn() ? (
+										<AppMenuBar router={router} location={location} />
+									) : null}
+								</AppBar>
+								{isBrowser && isLoggedIn() && (
+									<PairTabs
+										activePath={activePath}
+										location={location}
+										router={router}
+									/>
+								)}
 								<div
 									className={classnames(
 										'app_container-content',
