@@ -10,6 +10,7 @@ import {
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
@@ -109,6 +110,11 @@ class App extends Component {
 			this.checkPath(this.props.location.pathname);
 			this.handleFitHeight(this.props.location.pathname);
 		}
+
+		setTimeout(
+			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
+			5000
+		);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -150,7 +156,10 @@ class App extends Component {
 			!isEqual(balance, nextProps.balance) ||
 			!isEqual(coins, nextProps.coins)
 		) {
-			this.props.setPricesAndAsset(nextProps.balance, nextProps.coins);
+			debounce(
+				() => this.props.setPricesAndAsset(nextProps.balance, nextProps.coins),
+				15000
+			);
 		}
 	}
 
