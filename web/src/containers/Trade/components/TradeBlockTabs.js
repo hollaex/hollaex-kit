@@ -97,7 +97,7 @@ class TradeBlockTabs extends Component {
 }
 
 TradeBlockTabs.defaultProps = {
-	maxHeight: 300,
+	maxHeight: Infinity,
 	overflowY: false,
 };
 export default TradeBlockTabs;
