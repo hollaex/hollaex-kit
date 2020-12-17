@@ -40,6 +40,7 @@ import {
 	MessageDisplay,
 	SnackNotification,
 	SnackDialog,
+	PairTabs,
 } from '../../components';
 import {
 	ContactForm,
@@ -491,7 +492,7 @@ class App extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
-		const isMenubar = activePath === 'account' || activePath === 'wallet';
+		const isMenubar = true;
 		return (
 			<ThemeProvider>
 				<div>
@@ -556,10 +557,18 @@ class App extends Component {
 									logout={this.logout}
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
-								/>
-								{isBrowser && isMenubar && isLoggedIn() ? (
-									<AppMenuBar router={router} location={location} />
-								) : null}
+								>
+									{isBrowser && isMenubar && isLoggedIn() ? (
+										<AppMenuBar router={router} location={location} />
+									) : null}
+								</AppBar>
+								{isBrowser && isLoggedIn() && (
+									<PairTabs
+										activePath={activePath}
+										location={location}
+										router={router}
+									/>
+								)}
 								<div
 									className={classnames(
 										'app_container-content',

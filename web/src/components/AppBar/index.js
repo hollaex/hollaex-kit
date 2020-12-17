@@ -5,10 +5,8 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
-import math from 'mathjs';
 import { DEFAULT_URL, IS_XHT } from 'config/constants';
 import { LinkButton } from './LinkButton';
-import PairTabs from './PairTabs';
 import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
@@ -35,7 +33,6 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
-		tabCount: 1,
 	};
 
 	componentDidMount() {
@@ -354,35 +351,14 @@ class AppBar extends Component {
 		this.handleTheme(theme);
 	};
 
-	calculateTabs = () => {
-		const tradeNav = document.getElementById('trade-nav-container');
-		const homeNav = document.getElementById('home-nav-container');
-		let tabCount = 1;
-		if (tradeNav && homeNav) {
-			const tradeBounds = tradeNav.getBoundingClientRect();
-			const homeBounds = homeNav.getBoundingClientRect();
-			const documentBounds = document.body.getBoundingClientRect();
-			const tabContainer = document.getElementById('trade-tab-0');
-			if (tabContainer) {
-				const tabBounds = tabContainer.getBoundingClientRect();
-				const tabTotal =
-					documentBounds.width -
-					(tradeBounds.width + homeBounds.width + tabBounds.width / 2);
-				tabCount = math.floor(tabTotal / tabBounds.width);
-			}
-			this.setState({ tabCount });
-		}
-	};
-
 	render() {
 		const {
-			noBorders,
+			// noBorders,
 			token,
 			verifyingToken,
 			isHome,
 			theme,
 			logout,
-			router,
 			activePath,
 			location,
 			pairs,
@@ -391,13 +367,13 @@ class AppBar extends Component {
 			constants = {},
 			isEditMode,
 			icons: ICONS,
+			children,
 		} = this.props;
 		const {
 			selectedMenu,
 			securityPending,
 			verificationPending,
 			walletPending,
-			tabCount,
 		} = this.state;
 
 		let pair = '';
@@ -406,8 +382,8 @@ class AppBar extends Component {
 		} else {
 			pair = this.props.pair;
 		}
-		let disableBorder =
-			noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
+		let disableBorder = false;
+		// noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		const { selected } = this.state;
 		const { themeOptions } = this.props;
 		return isMobile ? (
@@ -444,15 +420,7 @@ class AppBar extends Component {
 					>
 						{this.renderIcon(isHome, theme)}
 					</div>
-					{!isHome && (
-						<PairTabs
-							activePath={activePath}
-							location={location}
-							router={router}
-							tabCount={tabCount}
-							calculateTabs={this.calculateTabs}
-						/>
-					)}
+					{children}
 				</div>
 				{!isLoggedIn() ? (
 					<div id="trade-nav-container">
