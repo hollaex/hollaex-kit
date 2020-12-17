@@ -275,7 +275,6 @@ class AppMenuBar extends Component {
                         </div>
                     </div> */}
 				</div>
-				<div className="app-menu-bar app-menu-bar-side"></div>
 			</div>
 		);
 	}
