@@ -120,7 +120,7 @@ class MobileChart extends Component {
 					)}
 				</TradeBlock>
 				<TradeBlock title={STRINGS['PUBLIC_SALES']} className="f-1">
-					<TradeHistory language={activeLanguage} />
+					<TradeHistory pairData={pairData} language={activeLanguage} />
 				</TradeBlock>
 			</div>
 		);
