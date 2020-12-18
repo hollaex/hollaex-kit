@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { loadReCaptcha } from 'react-recaptcha-v3';
 import { getIconByKey, generateAllIcons, addDefaultLogo } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
 import merge from 'lodash.merge';
+import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from 'config/constants';
 
 export const ProjectConfig = React.createContext('appConfig');
 
@@ -25,6 +27,16 @@ class ConfigProvider extends Component {
 			themeOptions,
 			defaults,
 		};
+	}
+
+	componentDidMount() {
+		const { captcha: { site_key = DEFAULT_CAPTCHA_SITEKEY } = {} } = this.props;
+
+		// ReCaptcha Initialization
+		const siteKey = CAPTCHA_SITEKEY || site_key;
+		loadReCaptcha(siteKey, () =>
+			console.info('grepcaptcha is correctly loadeddddd')
+		);
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {

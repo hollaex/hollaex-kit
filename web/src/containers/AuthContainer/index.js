@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
-import { loadReCaptcha } from 'react-recaptcha-v3';
 import { bindActionCreators } from 'redux';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 import { AppFooter } from '../../components';
-import {
-	FLEX_CENTER_CLASSES,
-	CAPTCHA_SITEKEY,
-	DEFAULT_CAPTCHA_SITEKEY,
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 import { getExchangeInfo } from '../../actions/appActions';
@@ -51,17 +46,7 @@ class AuthContainer extends Component {
 	}
 
 	componentDidMount() {
-		const { constants = { captcha: {} } } = this.props;
 		this.props.getExchangeInfo();
-		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
-		if (CAPTCHA_SITEKEY) {
-			siteKey = CAPTCHA_SITEKEY;
-		} else if (constants.captcha && constants.captcha.site_key) {
-			siteKey = constants.captcha.site_key;
-		}
-		loadReCaptcha(siteKey, () =>
-			console.info('grepcaptcha is correctly loaded')
-		);
 	}
 
 	render() {
