@@ -104,11 +104,13 @@ $inner_container-border: 1px solid $border-color;
 
 		&.close-sidebar {
 			.sidebar-toggle {
-				transform: translateX(-90%);
+				transform: translateX(-100%);
 			}
 			min-width: 0;
 			max-width: 0;
-			overflow: hidden;
+			.sidebar-container {
+				overflow: hidden;
+			}
 		}
 	}
 	.exchange-warning {
