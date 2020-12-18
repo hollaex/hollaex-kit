@@ -358,10 +358,11 @@ table th {
         width: 18px; }
     .app_container .app_container-sidebar.close-sidebar {
       min-width: 0;
-      max-width: 0;
-      overflow: hidden; }
+      max-width: 0; }
       .app_container .app_container-sidebar.close-sidebar .sidebar-toggle {
-        transform: translateX(-90%); }
+        transform: translateX(-100%); }
+      .app_container .app_container-sidebar.close-sidebar .sidebar-container {
+        overflow: hidden; }
   .app_container .exchange-warning {
     background-color: #fff100; }
 
