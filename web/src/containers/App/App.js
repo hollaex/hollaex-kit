@@ -98,7 +98,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		const { constants } = this.props;
+		const { constants = { captcha: {} } } = this.props;
 		const initialized = getExchangeInitialized();
 
 		// ReCaptcha Initialization

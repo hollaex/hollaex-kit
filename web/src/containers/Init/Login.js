@@ -26,6 +26,8 @@ const LoginForm = AdminHocForm(
 );
 
 const Login = (props) => {
+	const { constants = { captcha: {} } } = props;
+
 	useEffect(() => {
 		const initialized = getExchangeInitialized();
 		if (
@@ -34,6 +36,18 @@ const Login = (props) => {
 		) {
 			browserHistory.push('/init');
 		}
+
+		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
+		if (CAPTCHA_SITEKEY) {
+			siteKey = CAPTCHA_SITEKEY;
+		} else if (constants.captcha && constants.captcha.site_key) {
+			siteKey = constants.captcha.site_key;
+		}
+		loadReCaptcha(siteKey, () =>
+			console.info('grepcaptcha is correctly loaded')
+		);
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	const handleSubmit = (values) => {
 		if (values) {
@@ -59,14 +73,7 @@ const Login = (props) => {
 				});
 		}
 	};
-	const { constants } = props;
-	let siteKey = DEFAULT_CAPTCHA_SITEKEY;
-	if (CAPTCHA_SITEKEY) {
-		siteKey = CAPTCHA_SITEKEY;
-	} else if (constants.captcha && constants.captcha.site_key) {
-		siteKey = constants.captcha.site_key;
-	}
-	loadReCaptcha(siteKey);
+
 	return (
 		<div className="init-container">
 			<div className="setup-container">
