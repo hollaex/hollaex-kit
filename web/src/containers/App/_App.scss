@@ -108,6 +108,7 @@ $inner_container-border: 1px solid $border-color;
 			}
 			min-width: 0;
 			max-width: 0;
+			overflow: hidden;
 		}
 	}
 	.exchange-warning {
