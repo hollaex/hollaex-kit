@@ -670,6 +670,7 @@ $app-menu-notification-size: 1.2rem;
 .favourite-list {
 	padding-left: 0.5rem;
 	border-bottom: 1px solid $dark-app-line-divider;
+	overflow-y: auto;
 	&.border-left {
 		border-left: 1px solid $dark-app-line-divider;
 	}

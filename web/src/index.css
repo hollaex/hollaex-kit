@@ -358,7 +358,8 @@ table th {
         width: 18px; }
     .app_container .app_container-sidebar.close-sidebar {
       min-width: 0;
-      max-width: 0; }
+      max-width: 0;
+      overflow: hidden; }
       .app_container .app_container-sidebar.close-sidebar .sidebar-toggle {
         transform: translateX(-90%); }
   .app_container .exchange-warning {
@@ -4169,7 +4170,8 @@ table th {
 
 .favourite-list {
   padding-left: 0.5rem;
-  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  overflow-y: auto; }
   .favourite-list.border-left {
     border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
 
