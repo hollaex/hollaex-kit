@@ -68,7 +68,7 @@ class CaptchaField extends Component {
 						ref={this.setRef}
 						// sitekey={captcha.site_key || CAPTCHA_SITEKEY}
 						sitekey={
-							CAPTCHA_SITEKEY || captcha.sitekey || DEFAULT_CAPTCHA_SITEKEY
+							CAPTCHA_SITEKEY || captcha.site_key || DEFAULT_CAPTCHA_SITEKEY
 						}
 						verifyCallback={this.onVerifyCallback}
 						expiredCallback={this.onExpiredCallback}
