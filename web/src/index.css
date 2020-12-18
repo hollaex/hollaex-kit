@@ -360,7 +360,9 @@ table th {
       min-width: 0;
       max-width: 0; }
       .app_container .app_container-sidebar.close-sidebar .sidebar-toggle {
-        transform: translateX(-90%); }
+        transform: translateX(-100%); }
+      .app_container .app_container-sidebar.close-sidebar .sidebar-container {
+        overflow: hidden; }
   .app_container .exchange-warning {
     background-color: #fff100; }
 
@@ -4169,7 +4171,8 @@ table th {
 
 .favourite-list {
   padding-left: 0.5rem;
-  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  overflow-y: auto; }
   .favourite-list.border-left {
     border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
 

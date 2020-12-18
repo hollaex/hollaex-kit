@@ -98,7 +98,20 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		const { constants = { captcha: {} } } = this.props;
 		const initialized = getExchangeInitialized();
+
+		// ReCaptcha Initialization
+		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
+		if (CAPTCHA_SITEKEY) {
+			siteKey = CAPTCHA_SITEKEY;
+		} else if (constants.captcha && constants.captcha.site_key) {
+			siteKey = constants.captcha.site_key;
+		}
+		loadReCaptcha(siteKey, () =>
+			console.info('grepcaptcha is correctly loaded')
+		);
+
 		if (
 			initialized === 'false' ||
 			(typeof initialized === 'boolean' && !initialized)
@@ -487,13 +500,7 @@ class App extends Component {
 			isSocketDataReady,
 			isSidebarOpen,
 		} = this.state;
-		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
-		if (CAPTCHA_SITEKEY) {
-			siteKey = CAPTCHA_SITEKEY;
-		} else if (constants.captcha && constants.captcha.site_key) {
-			siteKey = constants.captcha.site_key;
-		}
-		loadReCaptcha(siteKey);
+
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
