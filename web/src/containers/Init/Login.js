@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { message } from 'antd';
 import { browserHistory } from 'react-router';
-import { loadReCaptcha } from 'react-recaptcha-v3';
 import { connect } from 'react-redux';
 import ReactSVG from 'react-svg';
 
@@ -11,10 +10,6 @@ import {
 	validateRequired,
 	email,
 } from '../../components/AdminForm/validations';
-import {
-	CAPTCHA_SITEKEY,
-	DEFAULT_CAPTCHA_SITEKEY,
-} from '../../config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import { getLanguage } from '../../utils/string';
 import { getExchangeInitialized } from '../../utils/initialize';
@@ -26,8 +21,6 @@ const LoginForm = AdminHocForm(
 );
 
 const Login = (props) => {
-	const { constants = { captcha: {} } } = props;
-
 	useEffect(() => {
 		const initialized = getExchangeInitialized();
 		if (
@@ -36,19 +29,8 @@ const Login = (props) => {
 		) {
 			browserHistory.push('/init');
 		}
-
-		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
-		if (CAPTCHA_SITEKEY) {
-			siteKey = CAPTCHA_SITEKEY;
-		} else if (constants.captcha && constants.captcha.site_key) {
-			siteKey = constants.captcha.site_key;
-		}
-		loadReCaptcha(siteKey, () =>
-			console.info('grepcaptcha is correctly loaded')
-		);
-		//  TODO: Fix react-hooks/exhaustive-deps
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	const handleSubmit = (values) => {
 		if (values) {
 			performLogin(values)
