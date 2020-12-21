@@ -1,11 +1,14 @@
-import React, { Component, Fragment } from 'react';
-import { Card, Divider, Spin } from 'antd';
+import React, { Component } from 'react';
+import { Spin, Tabs, message } from 'antd';
 import { connect } from 'react-redux';
 
-import { getConstants } from './action';
+import { getPlugin, removePlugin, addPlugin } from './action';
 import { getAllPluginsData } from './Utils';
+import PluginList from './PluginList';
 
 import './index.css';
+
+const TabPane = Tabs.TabPane;
 
 class Plugins extends Component {
 	constructor(props) {
@@ -16,20 +19,32 @@ class Plugins extends Component {
 			otherPlugins: [],
 			loading: false,
 			constants: {},
+			isOpen: false,
+			selectedPlugin: {},
+			type: '',
+			isActive: false,
+			pluginData: [],
 		};
 	}
 
 	componentDidMount() {
 		this.generateCards();
 		this.setState({ loading: true });
-		getConstants()
+		this.getPlugin();
+	}
+
+	getPlugin = (page = 1, limit = 50, params = {}) => {
+		this.setState({ isLoading: true });
+		return getPlugin({ page, limit, ...params })
 			.then((res) => {
-				this.setState({ loading: false, constants: res });
+				if (res && res.data) {
+					this.setState({ loading: false, pluginData: res.data });
+				}
 			})
 			.catch((err) => {
 				this.setState({ loading: false });
 			});
-	}
+	};
 
 	componentDidUpdate(prevProps, prevState) {
 		if (
@@ -66,8 +81,19 @@ class Plugins extends Component {
 		}
 	};
 
+	handleOpenAdd = (plugin) => {
+		this.setState({
+			isOpen: true,
+			selectedPlugin: plugin,
+		});
+	};
+
+	handleClose = () => {
+		this.setState({ isOpen: false, selectedPlugin: {}, type: '' });
+	};
+
 	render() {
-		const { myPlugins, otherPlugins, loading, allPluginsData } = this.state;
+		const { loading, constants, selectedPlugin, pluginData } = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
 				<div className="app_container-content">
@@ -75,65 +101,25 @@ class Plugins extends Component {
 				</div>
 			);
 		}
+
 		return (
-			<div className="app_container-content">
-				{!this.props.availablePlugins.length ? (
-					<div>
-						<h1>Plugins</h1>
-						<div>No Available plugins</div>
-					</div>
-				) : (
-					<Fragment>
-						{myPlugins.length ? (
-							<div className="mb-4">
-								<h1>My Plugins</h1>
-								<Divider />
-								<div className="d-flex flex-wrap">
-									{myPlugins.map((key) => {
-										let plugin = allPluginsData[key] || {};
-										return (
-											<Card
-												className="card-width mb-4 mx-3"
-												key={plugin.title}
-												hoverable
-												cover={<img src={plugin.icon} alt={plugin.title} />}
-												onClick={() => this.onHandleCard(key)}
-											>
-												<h4>{plugin.title}</h4>
-												<h6>{plugin.sub_title}</h6>
-												<h6>{plugin.description}</h6>
-											</Card>
-										);
-									})}
-								</div>
-							</div>
-						) : null}
-						{otherPlugins.length ? (
-							<div className="my-2">
-								<h1>{myPlugins.length ? 'Other Plugins' : 'Plugins'}</h1>
-								<Divider />
-								<div className="d-flex flex-wrap">
-									{otherPlugins.map((key) => {
-										let plugin = allPluginsData[key] || {};
-										return (
-											<Card
-												className="card-width mb-4 mx-3"
-												key={plugin.title}
-												hoverable
-												cover={<img src={plugin.icon} alt={plugin.title} />}
-												onClick={() => this.onHandleCard(key)}
-											>
-												<h4>{plugin.title}</h4>
-												<h6>{plugin.sub_title}</h6>
-												<h6>{plugin.description}</h6>
-											</Card>
-										);
-									})}
-								</div>
-							</div>
-						) : null}
-					</Fragment>
-				)}
+			<div className="app_container-content admin-earnings-container">
+				<Tabs>
+					<TabPane tab="Explore" key="explore">
+						<PluginList
+							pluginData={pluginData}
+							constants={constants}
+							selectedPlugin={selectedPlugin}
+							getAllPlugins={this.getAllPlugins}
+							handleOpenAdd={this.handleOpenAdd}
+							getPlugin={this.getPlugin}
+						/>
+					</TabPane>
+
+					<TabPane tab="My plugins" key="my_plugin">
+						<div>My plugin</div>
+					</TabPane>
+				</Tabs>
 			</div>
 		);
 	}

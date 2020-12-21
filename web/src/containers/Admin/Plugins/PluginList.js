@@ -1,0 +1,125 @@
+import React, { Component } from 'react';
+import { Input, Spin } from 'antd';
+import _debounce from 'lodash/debounce';
+import { connect } from 'react-redux';
+import { STATIC_ICONS } from 'config/icons';
+
+import './index.css';
+
+const PLUGIN_CARDS = [
+	{ icon: STATIC_ICONS.PLUGIN_CARD_ROBELLA, name: 'robolla' },
+	{ icon: STATIC_ICONS.PLUGIN_CARD_RECAPTCHA, name: 'recaptcha' },
+	{ icon: STATIC_ICONS.PLUGIN_CARD_CHAT, name: 'chat' },
+];
+
+class PluginList extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			mobileToggle: false,
+			isLoading: false,
+			plugins: [],
+			page: 1,
+			limit: 50,
+		};
+	}
+
+	searchPlugin = _debounce(this.props.getPlugin, 800);
+
+	handleSearch = (e) => {
+		this.searchPlugin(1, 50, { search: e.target.value });
+	};
+
+	renderList = () => {
+		if (this.state.isLoading) {
+			return (
+				<div className="loading-container">
+					<Spin />
+				</div>
+			);
+		}
+		return this.props.pluginData.map((item, index) => {
+			return (
+				<div
+					key={index}
+					className="flex-space-between plugin-list-item"
+					// onClick={() => this.handleOpenAdd(item)}
+				>
+					<div className="flex-center">
+						<div>
+							<img
+								src={
+									item.icon ? item.icon : STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
+								}
+								alt={`plugin-${index}`}
+								className="plugin-list-icon"
+							/>
+						</div>
+						<div>
+							<div className="plugin-list-title">{item.name}</div>
+							<div className="plugin-list-author">{`By ${item.author}`}</div>
+							<div className="plugin-list-bio">{item.bio}</div>
+						</div>
+					</div>
+					<div
+						className="add-btn"
+						onClick={() => this.props.handleOpenAdd(item)}
+					>
+						Add
+					</div>
+				</div>
+			);
+		});
+	};
+
+	render() {
+		return (
+			<div className="plugin-wrapper">
+				<div className="flex-center">
+					<div>
+						<img
+							src={STATIC_ICONS.PLUGIN_IMAGE}
+							alt="Plugin"
+							className="plugin-icon"
+						/>
+					</div>
+					<div>
+						<div className="small-font">TEAM PICKS</div>
+						<div className="plugin-title">Explore hand-picked plugins</div>
+						<div>
+							Run your exchange super smooth with exchange plugins. Applications
+							that save big on development time.
+						</div>
+					</div>
+				</div>
+				<div className="ml-4">
+					<div className="card-container flex-center">
+						{PLUGIN_CARDS.map((card, index) => (
+							<div
+								key={index}
+								className="card"
+								style={{ backgroundImage: `url(${card.icon})` }}
+								onClick={() => this.props.handleOpenAdd(card)}
+							/>
+						))}
+					</div>
+					<div>
+						<div className="flex-space-between plugin-header">
+							<div className="plugin-title">Explore</div>
+							<div className="search-plugin-input">
+								<Input placeholder="Search..." onChange={this.handleSearch} />
+							</div>
+						</div>
+						<div className="plugin-list">{this.renderList()}</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
+
+const mapStateToProps = (state) => ({
+	exchange: state.exchange && state.exchange.length ? state.exchange[0] : {},
+});
+
+export default connect(mapStateToProps)(PluginList);

@@ -57,6 +57,22 @@ const icons = {
 	SEARCH: '/assets/images/search.svg',
 	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
+	PLUGIN_IMAGE: '/assets/images/plugin-board-page.svg',
+	PLUGIN_CARD_ROBELLA: '/assets/images/robolla-card-plugins.png',
+	PLUGIN_CARD_RECAPTCHA: '/assets/images/reCAPTCHA-card-plugins.png',
+	PLUGIN_CARD_CHAT: '/assets/images/chat-troll-box-plugins.png',
+	DEFAULT_PLUGIN_THUMBNAIL: '/assets/images/default-plugin-thumbnail.png',
+	DEFAULT_PLUGIN_PREVIEW: '/assets/images/default-plugin-preview-image.png',
+	PLUGIN_THUMBNAIL: {
+		chat: `/assets/images/chat-plugin-thumbnail.png`,
+		recaptcha: `/assets/images/recaptcha-plugin-thubnail.png`,
+		robolla: `/assets/images/robolla-plugin-thumbnail.png`,
+	},
+	PLUGIN_PREVIEW: {
+		chat: `/assets/images/chat-preview-image-plugin.png`,
+		recaptcha: `/assets/images/reCAPTCHA-preview-image-plugin.png`,
+		robolla: `/assets/images/robolla-preview-image-plugin.png`,
+	},
 };
 
 export default icons;

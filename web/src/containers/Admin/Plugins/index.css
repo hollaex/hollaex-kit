@@ -30,3 +30,145 @@
 .card-width {
 	width: 25rem;
 }
+.plugin-wrapper {
+	padding: 2rem 10rem;
+	color: #ffffff;
+}
+.plugin-wrapper .loading-container {
+	justify-content: center;
+	height: 5rem;
+}
+.plugin-wrapper .helper-modal-wrapper {
+	padding: 0.5rem 1rem;
+}
+.plugin-wrapper .requirement-icon {
+	width: 0.75rem;
+	/* margin-right: 0.25rem; */
+}
+.plugin-wrapper .description {
+	margin: 0.5rem 0rem;
+}
+.plugin-wrapper .plugin-header {
+	padding: 0.25rem 0rem 1rem 0rem;
+	border-bottom: 1px solid rgb(255, 255, 255, 0.4);
+}
+.plugin-wrapper .loading-container,
+.plugin-wrapper .flex-center {
+	display: flex;
+	align-items: center;
+}
+.myplugin-container .flex-space-between,
+.plugin-wrapper .flex-space-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.plugin-wrapper .small-font {
+	font-size: 9px;
+	font-weight: bold;
+}
+.plugin-wrapper .plugin-title,
+.myplugin-container .plugin-title,
+.myplugin-container .header {
+	font-size: 18px;
+	font-weight: bold;
+}
+.plugin-wrapper .card-container,
+.myplugin-container .card-container {
+	padding: 2rem 0rem;
+	border-bottom: 1px solid #ffffff;
+	margin-bottom: 0.5rem;
+}
+.plugin-wrapper .card {
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	cursor: pointer;
+	height: 9rem;
+	width: 18rem;
+	margin: 1rem;
+}
+.plugin-wrapper .search-plugin-input .ant-input,
+.myplugin-container .search-plugin-input .ant-input {
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-bottom: 1px solid #ffffff;
+	border-radius: 0px;
+	background-color: #0000d1;
+	color: #c4c4c4;
+}
+.plugin-wrapper .search-plugin-input .ant-input:focus {
+	box-shadow: none;
+}
+.plugin-wrapper p {
+	line-height: 1.6;
+	font-size: 12px;
+	margin-bottom: 4px;
+	letter-spacing: -0.1px;
+	color: #7f7f7f;
+}
+.plugin-wrapper b {
+	font-size: 14px;
+}
+.plugin-wrapper .plugin-icon {
+	height: 5rem;
+	margin: 0rem 1rem 0rem 0.5rem;
+	width: 8rem;
+}
+.plugin-wrapper .cloud-icon {
+	height: 3rem;
+	width: 3rem;
+}
+.plugin-wrapper .back-btn {
+	margin-top: 2rem;
+	width: 100%;
+}
+.plugin-wrapper .plugin-list {
+	height: 350px;
+	overflow: auto;
+	overflow-x: hidden;
+}
+.plugin-wrapper .plugin-list .plugin-list-item {
+	margin: 8px 0px;
+	cursor: pointer;
+}
+.plugin-wrapper .plugin-list .plugin-list-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.plugin-wrapper .plugin-list.plugin-list-author {
+	color: #444444;
+	font-size: 11px;
+}
+.plugin-wrapper .plugin-list .plugin-list-bio {
+	font-size: 13px;
+}
+.plugin-wrapper .plugin-list .plugin-list-icon {
+	height: 4rem;
+	margin: 5px 12px 5px 3px;
+	width: 4rem;
+}
+.plugin-wrapper .plugin-list .icon-placeholder {
+	background-color: #dfdfdf;
+	border-radius: 5px;
+}
+.plugin-wrapper .plugin-list .add-btn {
+	padding: 2px 10px;
+	background-color: #00781b;
+	border-radius: 13px;
+	color: #ffffff;
+	cursor: pointer;
+	min-width: 7.5rem;
+	text-align: center;
+}
+
+.myplugin-container {
+	margin: 0 auto;
+	width: 55rem;
+}
+
+.myplugin-container .ant-btn {
+	color: #ffffff;
+	background-color: #00781b;
+	border-color: #00781b;
+}

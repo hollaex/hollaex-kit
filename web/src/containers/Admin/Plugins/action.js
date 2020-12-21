@@ -2,6 +2,7 @@ import axios from 'axios';
 import querystring from 'query-string';
 import { REQUEST_VAULT_SUPPORTED_COINS } from '../../../config/constants';
 import { requestAuthenticated } from '../../../utils';
+import { PLUGIN_URL, NETWORK_API_URL } from '../../../config/constants';
 
 export const updatePlugins = (values) => {
 	const options = {
@@ -11,7 +12,22 @@ export const updatePlugins = (values) => {
 	return requestAuthenticated(`/plugins`, options);
 };
 
-export const getConstants = () => requestAuthenticated('/plugins');
+// export const getConstants = (query) => requestAuthenticated(`/plugins?${querystring.stringify(query)}`);
+export const getPlugin = (query) =>
+	requestAuthenticated(
+		`/plugins?${querystring.stringify(query)}`,
+		{},
+		null,
+		NETWORK_API_URL
+	);
+
+export const getConstants = (query) =>
+	requestAuthenticated(
+		`/plugins?${querystring.stringify(query)}`,
+		{},
+		null,
+		PLUGIN_URL
+	);
 
 export const getPlugins = (service) =>
 	requestAuthenticated(`/plugins?${service}`, {});
