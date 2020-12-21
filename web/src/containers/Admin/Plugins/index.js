@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import { Spin, Tabs, message } from 'antd';
+import { Spin, Tabs, Breadcrumb } from 'antd';
 import { connect } from 'react-redux';
+import { RightOutlined } from '@ant-design/icons';
 
-import { getPlugin, removePlugin, addPlugin } from './action';
 import { getAllPluginsData } from './Utils';
 import PluginList from './PluginList';
+import PluginDetails from './PluginDetails';
+import PluginConfigure from './PluginConfigure';
+import { removePlugin, requestPlugins } from './action';
 
 import './index.css';
 
 const TabPane = Tabs.TabPane;
+const { Item } = Breadcrumb;
 
 class Plugins extends Component {
 	constructor(props) {
@@ -24,18 +28,19 @@ class Plugins extends Component {
 			type: '',
 			isActive: false,
 			pluginData: [],
+			plugin: {},
 		};
 	}
 
 	componentDidMount() {
 		this.generateCards();
 		this.setState({ loading: true });
-		this.getPlugin();
+		this.getPlugins();
 	}
 
-	getPlugin = (page = 1, limit = 50, params = {}) => {
+	getPlugins = (page = 1, limit = 50, params = {}) => {
 		this.setState({ isLoading: true });
-		return getPlugin({ page, limit, ...params })
+		return requestPlugins({ page, limit, ...params })
 			.then((res) => {
 				if (res && res.data) {
 					this.setState({ loading: false, pluginData: res.data });
@@ -43,6 +48,16 @@ class Plugins extends Component {
 			})
 			.catch((err) => {
 				this.setState({ loading: false });
+			});
+	};
+
+	removePlugin = () => {
+		return removePlugin({ name: this.state.selectedPlugin.name })
+			.then((res) => {
+				console.log('res', res);
+			})
+			.catch((err) => {
+				console.log('err', err);
 			});
 	};
 
@@ -89,11 +104,28 @@ class Plugins extends Component {
 	};
 
 	handleClose = () => {
-		this.setState({ isOpen: false, selectedPlugin: {}, type: '' });
+		this.setState({
+			isOpen: false,
+			selectedPlugin: {},
+			type: '',
+			isActive: false,
+		});
+	};
+
+	handleBreadcrumb = () => {
+		this.setState({ isActive: true, type: 'configure' });
 	};
 
 	render() {
-		const { loading, constants, selectedPlugin, pluginData } = this.state;
+		const {
+			loading,
+			constants,
+			selectedPlugin,
+			pluginData,
+			isActive,
+			isOpen,
+			type,
+		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
 				<div className="app_container-content">
@@ -103,23 +135,54 @@ class Plugins extends Component {
 		}
 
 		return (
-			<div className="app_container-content admin-earnings-container">
-				<Tabs>
-					<TabPane tab="Explore" key="explore">
-						<PluginList
-							pluginData={pluginData}
-							constants={constants}
-							selectedPlugin={selectedPlugin}
-							getAllPlugins={this.getAllPlugins}
-							handleOpenAdd={this.handleOpenAdd}
-							getPlugin={this.getPlugin}
-						/>
-					</TabPane>
+			<div>
+				{isOpen ? (
+					<div className="plugins-wrapper">
+						<Breadcrumb separator={<RightOutlined />}>
+							<Item onClick={this.handleClose}>Explore</Item>
+							<Item
+								onClick={() =>
+									this.setState({ type: 'pluginDetails', isActive: false })
+								}
+							>
+								Plugin details
+							</Item>
+							{isActive ? (
+								<Item onClick={() => this.setState({ type: 'configure' })}>
+									Configure
+								</Item>
+							) : null}
+						</Breadcrumb>
+						{type === 'configure' ? (
+							<PluginConfigure selectedPlugin={selectedPlugin} />
+						) : (
+							<PluginDetails
+								handleBreadcrumb={this.handleBreadcrumb}
+								selectedPlugin={selectedPlugin}
+								addPlugin={this.handleaddPlugin}
+								removePlugin={this.removePlugin}
+							/>
+						)}
+					</div>
+				) : (
+					<div className="app_container-content admin-earnings-container">
+						<Tabs>
+							<TabPane tab="Explore" key="explore">
+								<PluginList
+									pluginData={pluginData}
+									constants={constants}
+									selectedPlugin={selectedPlugin}
+									handleOpenAdd={this.handleOpenAdd}
+									getPlugins={this.getPlugins}
+								/>
+							</TabPane>
 
-					<TabPane tab="My plugins" key="my_plugin">
-						<div>My plugin</div>
-					</TabPane>
-				</Tabs>
+							<TabPane tab="My plugins" key="my_plugin">
+								<div>My plugins</div>
+							</TabPane>
+						</Tabs>
+					</div>
+				)}
 			</div>
 		);
 	}

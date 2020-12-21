@@ -12,8 +12,10 @@ export const updatePlugins = (values) => {
 	return requestAuthenticated(`/plugins`, options);
 };
 
-// export const getConstants = (query) => requestAuthenticated(`/plugins?${querystring.stringify(query)}`);
-export const getPlugin = (query) =>
+export const getConstants = (query) =>
+	requestAuthenticated(`/plugins?${querystring.stringify(query)}`);
+
+export const requestPlugins = (query) =>
 	requestAuthenticated(
 		`/plugins?${querystring.stringify(query)}`,
 		{},
@@ -21,13 +23,39 @@ export const getPlugin = (query) =>
 		NETWORK_API_URL
 	);
 
-export const getConstants = (query) =>
+export const getPlugin = (query) =>
 	requestAuthenticated(
-		`/plugins?${querystring.stringify(query)}`,
+		`/plugin?${querystring.stringify(query)}`,
 		{},
 		null,
-		PLUGIN_URL
+		NETWORK_API_URL
 	);
+
+export const addPlugin = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/plugins', options, null, PLUGIN_URL);
+};
+
+export const removePlugin = (values) => {
+	const options = {
+		method: 'DELETE',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/plugins', options, null, PLUGIN_URL);
+};
+
+// export const getConstants = (query) =>
+// 	requestAuthenticated(
+// 		`/plugins?${querystring.stringify(query)}`,
+// 		{},
+// 		null,
+// 		PLUGIN_URL
+// 	);
 
 export const getPlugins = (service) =>
 	requestAuthenticated(`/plugins?${service}`, {});

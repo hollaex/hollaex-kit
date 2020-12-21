@@ -24,7 +24,7 @@ class PluginList extends Component {
 		};
 	}
 
-	searchPlugin = _debounce(this.props.getPlugin, 800);
+	searchPlugin = _debounce(this.props.getPlugins, 800);
 
 	handleSearch = (e) => {
 		this.searchPlugin(1, 50, { search: e.target.value });
@@ -43,7 +43,7 @@ class PluginList extends Component {
 				<div
 					key={index}
 					className="flex-space-between plugin-list-item"
-					// onClick={() => this.handleOpenAdd(item)}
+					onClick={() => this.props.handleOpenAdd(item)}
 				>
 					<div className="flex-center">
 						<div>
@@ -56,7 +56,12 @@ class PluginList extends Component {
 							/>
 						</div>
 						<div>
-							<div className="plugin-list-title">{item.name}</div>
+							<div className="d-flex">
+								<div className="plugin-list-title">{item.name}</div>
+								<div className="plugin-list-author plugin-author-align">
+									v{item.version}.0
+								</div>
+							</div>
 							<div className="plugin-list-author">{`By ${item.author}`}</div>
 							<div className="plugin-list-bio">{item.bio}</div>
 						</div>

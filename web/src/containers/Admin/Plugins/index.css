@@ -136,9 +136,14 @@
 	font-size: 16px;
 	font-weight: bold;
 }
-.plugin-wrapper .plugin-list.plugin-list-author {
-	color: #444444;
+.plugin-wrapper .plugin-list .plugin-list-author {
+	color: #b6b6b6;
 	font-size: 11px;
+}
+.plugin-wrapper .plugin-list .plugin-author-align {
+	position: relative;
+	top: 5px;
+	left: 3px;
 }
 .plugin-wrapper .plugin-list .plugin-list-bio {
 	font-size: 13px;
@@ -160,6 +165,137 @@
 	cursor: pointer;
 	min-width: 7.5rem;
 	text-align: center;
+}
+.plugins-wrapper .ant-breadcrumb {
+	font-size: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	margin-top: 1rem;
+}
+
+.plugin-divider {
+	width: 100%;
+	position: relative;
+	top: 26.5rem;
+	border-bottom: 1px solid #000000;
+}
+.plugin-details-wrapper {
+	color: #ffffff;
+	margin: 1rem auto;
+	width: 85rem;
+	padding-bottom: 5rem;
+}
+.plugin-details-wrapper .plugin-icon {
+	width: 65px;
+	height: 65px;
+}
+.plugin-details-wrapper .main-content {
+	margin: 2rem auto;
+	width: 50rem;
+}
+.plugin-details-wrapper .main-content .plugin-card {
+	height: 210px;
+	width: 320px;
+}
+.plugin-details-wrapper .main-content .anticon {
+	position: relative;
+	top: 3px;
+	right: 3px;
+}
+.plugin-details-wrapper .main-content .anticon-clock-circle {
+	font-size: 18px;
+	top: 0px;
+}
+.plugin-details-wrapper .btn-wrapper {
+	width: 310px;
+}
+.plugin-details-wrapper .btn-wrapper .small-txt {
+	font-size: 11px;
+	position: relative;
+	left: 38px;
+}
+.plugin-details-wrapper .btn-wrapper .ant-btn {
+	margin: 2rem 0 1rem 0;
+	width: 150px;
+	height: 33px;
+	border-radius: 15px;
+}
+.plugin-details-wrapper .btn-wrapper .add-btn {
+	width: 150px;
+	height: 33px;
+	background-color: #00781b;
+}
+.plugin-details-wrapper .btn-wrapper .remove-btn,
+.modal-wrapper .remove-btn {
+	background-color: #780000;
+}
+.plugin-details-wrapper .btn-wrapper .config-btn {
+	background-color: #00781b;
+}
+.plugin-details-wrapper .icon-wrapper {
+	display: flex;
+	justify-content: center;
+}
+.plugin-details-wrapper .icon-wrapper .card-icons {
+	width: 18rem;
+}
+.plugin-details-wrapper .about-contents {
+	color: #ffffff;
+	font-size: 12px;
+	margin: 2rem 0;
+}
+.plugin-details-wrapper .about-contents h2 {
+	font-size: 12px;
+}
+.plugin-details-wrapper .about-label {
+	margin-top: 2rem;
+	font-size: 20px;
+	border-bottom: 3px solid #ffffff;
+	width: 60px;
+}
+
+.modal-wrapper .plugin-icon {
+	width: 70px;
+	height: 70px;
+}
+.modal-wrapper .add-btn {
+	background-color: #00781b;
+	width: 100%;
+}
+.modal-wrapper .ant-divider {
+	border-color: rgb(255, 255, 255, 0.3);
+}
+.modal-wrapper .remove-wrapper {
+	text-align: center;
+}
+.modal-wrapper .remove-wrapper .ant-btn,
+.modal-wrapper .confirm-plugin-wrapper .ant-btn {
+	width: 190px;
+}
+.modal-wrapper h5 {
+	color: #ffffff;
+	margin: 1rem 0;
+}
+.modal-wrapper .plugins-icon,
+.config-wrapper .plugins-icon {
+	width: 70px;
+	height: 70px;
+	position: relative;
+	top: 2.5rem;
+}
+
+.config-wrapper {
+	margin-top: 2rem;
+	color: #ffffff;
+}
+.config-wrapper .config-content {
+	margin-top: 4rem;
+	border-top: 1px solid rgb(255, 255, 255, 0.3);
+}
+.config-wrapper .config-content .btn-wrapper .restart-btn {
+	width: 50%;
+	margin-top: 3rem;
+	background-color: #00781b;
 }
 
 .myplugin-container {
