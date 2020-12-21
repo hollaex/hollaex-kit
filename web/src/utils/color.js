@@ -53,8 +53,8 @@ const pushCalculatedColors = (themeData) => {
 		'calculated_base_top-bar-navigation_text-inactive': Color(
 			themeData['base_top-bar-navigation']
 		).isLight()
-			? '#000000b3'
-			: '#ffffffb3',
+			? '#00000099'
+			: '#ffffff99',
 		calculated_base_footer_text: Color(themeData['base_footer']).isLight()
 			? 'black'
 			: 'white',
