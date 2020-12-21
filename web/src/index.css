@@ -8191,6 +8191,8 @@ foreignObject {
   font-size: 0.9rem;
   background-color: var(--base_footer);
   color: var(--calculated_base_footer_text); }
+  .app_footer-container.deep-footer {
+    padding-bottom: 136px; }
   .app_footer-container .footer-row-content {
     margin-bottom: 2rem;
     padding: 4rem 1rem 0; }

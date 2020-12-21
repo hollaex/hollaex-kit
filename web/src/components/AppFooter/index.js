@@ -5,6 +5,7 @@ import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
+import withEdit from 'components/EditProvider/withEdit';
 
 const generateSectionsText = (strings, theme, links = {}, ICONS) => {
 	const {
@@ -156,6 +157,7 @@ const AppFooter = ({
 	theme,
 	constants = { description: '' },
 	icons: ICONS,
+	isEditMode,
 }) => {
 	return (
 		<div
@@ -164,6 +166,7 @@ const AppFooter = ({
 				'd-flex',
 				'flex-column',
 				'apply_rtl',
+				{ 'deep-footer': isEditMode },
 				className
 			)}
 		>
@@ -287,4 +290,4 @@ AppFooter.defaultProps = {
 	activeLanguage: '',
 };
 
-export default withConfig(AppFooter);
+export default withEdit(withConfig(AppFooter));
