@@ -3073,7 +3073,8 @@ table th {
   margin-left: 57px; }
 
 .operator-controls__button {
-  height: 30px;
+  height: 31px;
+  transform: translateY(1px);
   font-size: 16px;
   background-color: #0000ff;
   width: 162px;
@@ -3084,7 +3085,9 @@ table th {
   align-items: center; }
   .operator-controls__button.disabled {
     color: #ffffffb3;
-    cursor: not-allowed; }
+    cursor: not-allowed;
+    height: 31px;
+    transform: translateY(0); }
 
 .operator-controls__panel {
   display: flex;
