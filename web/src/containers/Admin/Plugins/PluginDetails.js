@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Modal, Divider, Input, Spin } from 'antd';
-import { StarFilled } from '@ant-design/icons';
+import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
 import { addPlugin, getPlugin } from './action';
@@ -13,11 +13,11 @@ const PluginDetails = ({
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
 	const [isConfirm, setConfirm] = useState(true);
-	const [isLoading, setLoading] = useState(false);
+	const [isLoading, setLoading] = useState(true);
+	const [isAddLoading, setAddLoading] = useState(false);
 	const [pluginData, setPlugin] = useState({});
 
 	const requestPlugin = useCallback(() => {
-		setLoading(true);
 		getPlugin({ name: selectedPlugin.name })
 			.then((res) => {
 				setLoading(false);
@@ -26,6 +26,7 @@ const PluginDetails = ({
 				}
 			})
 			.catch((err) => {
+				setPlugin({});
 				setLoading(false);
 			});
 	}, [selectedPlugin]);
@@ -43,12 +44,14 @@ const PluginDetails = ({
 			author: pluginData.author,
 			enabled: true,
 		};
+		setAddLoading(true);
 		addPlugin(body)
 			.then((res) => {
-				console.log('res', res);
+				setAddLoading(false);
 			})
 			.catch((err) => {
 				console.log('err', err);
+				setAddLoading(false);
 			});
 	};
 
@@ -69,7 +72,7 @@ const PluginDetails = ({
 
 	const handleRemove = (type) => {
 		setType(type);
-		removePlugin();
+		removePlugin({ name: pluginData.name });
 		handleClose();
 	};
 
@@ -85,7 +88,7 @@ const PluginDetails = ({
 		switch (type) {
 			case 'remove':
 				return (
-					<div className="modal-wrapper">
+					<div className="admin-plugin-modal-wrapper">
 						<div className="remove-wrapper">
 							<img
 								src={STATIC_ICONS.PLUGIN_THUMBNAIL.robolla}
@@ -121,7 +124,7 @@ const PluginDetails = ({
 				);
 			case 'confirm-plugin':
 				return (
-					<div className="modal-wrapper">
+					<div className="admin-plugin-modal-wrapper">
 						<div className="confirm-plugin-wrapper">
 							<h5>
 								<b>Confirm plugin removal</b>
@@ -176,7 +179,7 @@ const PluginDetails = ({
 			case 'add':
 			default:
 				return (
-					<div className="modal-wrapper">
+					<div className="admin-plugin-modal-wrapper">
 						<h2>Add plugin</h2>
 						<div className="d-flex">
 							<img
@@ -219,8 +222,54 @@ const PluginDetails = ({
 		}
 	};
 
+	const renderButtonContent = () => {
+		if (isAddLoading) {
+			return (
+				<div className="d-flex mt-5">
+					<ClockCircleOutlined /> <div>Installation in progress...</div>
+				</div>
+			);
+		} else if (selectedPlugin.enabled) {
+			return (
+				<div className="btn-wrapper d-flex justify-content-between">
+					<Button
+						type="primary"
+						className="remove-btn"
+						onClick={() => handleType('remove')}
+					>
+						Remove
+					</Button>
+					<Button
+						type="primary"
+						className="config-btn"
+						onClick={handleBreadcrumb}
+					>
+						Configure
+					</Button>
+				</div>
+			);
+		} else {
+			return (
+				<div className="btn-wrapper">
+					<Button
+						type="primary"
+						className="add-btn"
+						onClick={() => setOpen(true)}
+					>
+						Add
+					</Button>
+					<div className="small-txt">Free to install</div>
+				</div>
+			);
+		}
+	};
+
 	if (isLoading) {
-		return <Spin></Spin>;
+		return (
+			<div className="app_container-content d-flex justify-content-center">
+				<Spin size="large" />
+			</div>
+		);
 	}
 
 	return (
@@ -228,55 +277,28 @@ const PluginDetails = ({
 			<div className="plugin-divider"></div>
 			<div className="plugin-details-wrapper">
 				<div className="main-content">
-					<div className="d-flex">
-						<img
-							src={
-								pluginData && pluginData.icon
-									? pluginData.icon
-									: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
-							}
-							alt="Plugin"
-							className="plugin-icon"
-						/>
-						<div className="ml-3 inner-content">
-							<h3>{pluginData.name}</h3>
-							<p>{pluginData.bio}</p>
-							<div>
-								<b>Version:</b> {pluginData.version}
+					<div className="d-flex justify-content-between">
+						<div className="d-flex">
+							<img
+								src={
+									pluginData && pluginData.icon
+										? pluginData.icon
+										: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
+								}
+								alt="Plugin"
+								className="plugin-icon"
+							/>
+							<div className="ml-3 inner-content">
+								<h3>{pluginData.name}</h3>
+								<p>{pluginData.bio}</p>
+								<div>
+									<b>Version:</b> {pluginData.version}
+								</div>
+								<div>
+									<b>Author:</b> {pluginData.author}
+								</div>
+								{renderButtonContent()}
 							</div>
-							<div>
-								<b>Author:</b> {pluginData.author}
-							</div>
-							<div className="btn-wrapper">
-								<Button
-									type="primary"
-									className="add-btn"
-									onClick={() => setOpen(true)}
-								>
-									Add
-								</Button>
-								<div className="small-txt">Free to install</div>
-							</div>
-							{/* <div className="btn-wrapper d-flex justify-content-between">
-								<Button
-									type="primary"
-									className="remove-btn"
-									onClick={() => handleType('remove')}
-								>
-									Remove
-								</Button>
-								<Button
-									type="primary"
-									className="config-btn"
-									onClick={handleBreadcrumb}
-								>
-									Configure
-								</Button>
-							</div>
-							<div className="d-flex mt-5">
-								<ClockCircleOutlined />{' '}
-								<div>Installation in progress...</div>
-							</div> */}
 						</div>
 						<div className="ml-3">
 							<img

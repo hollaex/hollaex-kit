@@ -23,6 +23,14 @@ export const requestPlugins = (query) =>
 		NETWORK_API_URL
 	);
 
+export const requestMyPlugins = (query) =>
+	requestAuthenticated(
+		`/plugins?${querystring.stringify(query)}`,
+		{},
+		null,
+		PLUGIN_URL
+	);
+
 export const getPlugin = (query) =>
 	requestAuthenticated(
 		`/plugin?${querystring.stringify(query)}`,
@@ -43,10 +51,14 @@ export const addPlugin = (values) => {
 export const removePlugin = (values) => {
 	const options = {
 		method: 'DELETE',
-		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/plugins', options, null, PLUGIN_URL);
+	return requestAuthenticated(
+		`/plugins?${querystring.stringify(values)}`,
+		options,
+		null,
+		PLUGIN_URL
+	);
 };
 
 // export const getConstants = (query) =>

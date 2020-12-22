@@ -2,14 +2,27 @@ import React, { Component } from 'react';
 import { Input, Spin } from 'antd';
 import _debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
+import { CheckCircleFilled } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 
 import './index.css';
 
 const PLUGIN_CARDS = [
-	{ icon: STATIC_ICONS.PLUGIN_CARD_ROBELLA, name: 'robolla' },
-	{ icon: STATIC_ICONS.PLUGIN_CARD_RECAPTCHA, name: 'recaptcha' },
-	{ icon: STATIC_ICONS.PLUGIN_CARD_CHAT, name: 'chat' },
+	{
+		icon: STATIC_ICONS.PLUGIN_THUMBNAIL.robolla,
+		logo: STATIC_ICONS.PLUGIN_CARD_ROBELLA,
+		name: 'robolla',
+	},
+	{
+		icon: STATIC_ICONS.PLUGIN_THUMBNAIL.recaptcha,
+		logo: STATIC_ICONS.PLUGIN_CARD_RECAPTCHA,
+		name: 'recaptcha',
+	},
+	{
+		icon: STATIC_ICONS.PLUGIN_THUMBNAIL.chat,
+		logo: STATIC_ICONS.PLUGIN_CARD_CHAT,
+		name: 'chat',
+	},
 ];
 
 class PluginList extends Component {
@@ -33,7 +46,7 @@ class PluginList extends Component {
 	renderList = () => {
 		if (this.state.isLoading) {
 			return (
-				<div className="loading-container">
+				<div className="loading-container d-flex align-items-center justify-content-center">
 					<Spin />
 				</div>
 			);
@@ -42,10 +55,10 @@ class PluginList extends Component {
 			return (
 				<div
 					key={index}
-					className="flex-space-between plugin-list-item"
+					className="plugin-list-item d-flex align-items-center justify-content-between"
 					onClick={() => this.props.handleOpenAdd(item)}
 				>
-					<div className="flex-center">
+					<div className="d-flex align-items-center">
 						<div>
 							<img
 								src={
@@ -58,20 +71,23 @@ class PluginList extends Component {
 						<div>
 							<div className="d-flex">
 								<div className="plugin-list-title">{item.name}</div>
-								<div className="plugin-list-author plugin-author-align">
-									v{item.version}.0
-								</div>
+								{item.version ? (
+									<div className="plugin-list-author plugin-author-align">
+										v{item.version}
+									</div>
+								) : null}
 							</div>
 							<div className="plugin-list-author">{`By ${item.author}`}</div>
 							<div className="plugin-list-bio">{item.bio}</div>
 						</div>
 					</div>
-					<div
-						className="add-btn"
-						onClick={() => this.props.handleOpenAdd(item)}
-					>
-						Add
-					</div>
+					{item.enabled ? (
+						<div className="install-icon-content">
+							<CheckCircleFilled className="check-icon-verified" />
+						</div>
+					) : (
+						<div className="add-btn">Add</div>
+					)}
 				</div>
 			);
 		});
@@ -79,8 +95,8 @@ class PluginList extends Component {
 
 	render() {
 		return (
-			<div className="plugin-wrapper">
-				<div className="flex-center">
+			<div className="plugin-list-container">
+				<div className="d-flex align-items-center">
 					<div>
 						<img
 							src={STATIC_ICONS.PLUGIN_IMAGE}
@@ -98,18 +114,18 @@ class PluginList extends Component {
 					</div>
 				</div>
 				<div className="ml-4">
-					<div className="card-container flex-center">
+					<div className="card-container d-flex align-items-center justify-content-between">
 						{PLUGIN_CARDS.map((card, index) => (
 							<div
 								key={index}
 								className="card"
-								style={{ backgroundImage: `url(${card.icon})` }}
+								style={{ backgroundImage: `url(${card.logo})` }}
 								onClick={() => this.props.handleOpenAdd(card)}
 							/>
 						))}
 					</div>
 					<div>
-						<div className="flex-space-between plugin-header">
+						<div className="plugin-header d-flex align-items-center justify-content-between">
 							<div className="plugin-title">Explore</div>
 							<div className="search-plugin-input">
 								<Input placeholder="Search..." onChange={this.handleSearch} />
