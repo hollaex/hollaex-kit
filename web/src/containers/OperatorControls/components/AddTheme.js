@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
 import { Input, Button, Radio, Divider, Collapse } from 'antd';
-import { BgColorsOutlined } from '@ant-design/icons';
+import { UndoOutlined, BgColorsOutlined } from '@ant-design/icons';
 import initialTheme, {
 	nestedColors as nestedStructure,
 } from 'config/colors/light';
+import systemThemes from 'config/colors';
 import {
 	getColorByKey,
 	filterTheme,
@@ -152,6 +153,20 @@ class AddTheme extends Component {
 		this.validateColor({ target: { value, name } });
 	};
 
+	resetTheme = () => {
+		const { themeKey } = this.state;
+		const defaultTheme = systemThemes[themeKey];
+		this.setState((prevState) => ({
+			...prevState,
+			theme: defaultTheme,
+		}));
+	};
+
+	isSystemDefined = () => {
+		const { themeKey } = this.state;
+		return Object.keys(systemThemes).includes(themeKey);
+	};
+
 	render() {
 		const { isOpen, onCloseDialog } = this.props;
 		const {
@@ -186,9 +201,18 @@ class AddTheme extends Component {
 						type="text"
 						name="theme-key"
 						placeholder="Please enter a theme name"
-						className="operator-controls__input mr-5"
+						className="operator-controls__input mr-2"
 						value={themeKey}
 						onChange={this.handleThemeKey}
+					/>
+					<Button
+						ghost
+						shape="circle"
+						size="small"
+						className="operator-controls__all-strings-settings-button"
+						disabled={!this.isSystemDefined()}
+						onClick={this.resetTheme}
+						icon={<UndoOutlined />}
 					/>
 				</div>
 				<div className="mb-5">
