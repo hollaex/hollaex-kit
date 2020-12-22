@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
-import { Input, Button, Radio, Divider } from 'antd';
+import { Input, Button, Radio, Divider, Collapse } from 'antd';
 import { BgColorsOutlined } from '@ant-design/icons';
 import initialTheme, {
 	nestedColors as nestedStructure,
@@ -14,7 +14,6 @@ import {
 	calculateBaseColors,
 } from 'utils/color';
 import validateColor from 'validate-color';
-import 'rc-color-picker/assets/index.css';
 import ColorInput from './ColorInput';
 
 const { Group } = Radio;
@@ -208,6 +207,8 @@ class AddTheme extends Component {
 				</div>
 				<div>
 					{Object.entries(nestedStructure).map(([clusterKey, clusterObj]) => {
+						const renderCollapse = clusterKey === 'base' && isSingleBase;
+
 						return (
 							<div className="pb-4" key={clusterKey}>
 								<Divider orientation="left">
@@ -215,27 +216,86 @@ class AddTheme extends Component {
 										<BgColorsOutlined /> {clusterKey}
 									</span>
 								</Divider>
-								<div className="pt-2">
-									{Object.keys(clusterObj).map((localColorKey) => {
-										const colorKey = `${clusterKey}_${localColorKey}`;
-										const isCalculated = this.isCalculated(colorKey);
-										const colorValue = isCalculated
-											? baseRatios[colorKey]
-											: theme[colorKey];
+								{renderCollapse ? (
+									<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+										<Collapse.Panel showArrow={false} key="1" disabled={true}>
+											{Object.keys(clusterObj)
+												.filter(
+													(localColorKey) => localColorKey === 'background'
+												)
+												.map((localColorKey) => {
+													const colorKey = `${clusterKey}_${localColorKey}`;
+													const isCalculated = this.isCalculated(colorKey);
+													const colorValue = isCalculated
+														? baseRatios[colorKey]
+														: theme[colorKey];
 
-										return (
-											<ColorInput
-												colorKey={colorKey}
-												isCalculated={isCalculated}
-												colorValue={colorValue}
-												pickerHandler={this.pickerHandler}
-												onReset={this.onReset}
-												validateColor={this.validateColor}
-												onChange={this.handleInputChange}
-											/>
-										);
-									})}
-								</div>
+													return (
+														<ColorInput
+															colorKey={colorKey}
+															isCalculated={isCalculated}
+															colorValue={colorValue}
+															pickerHandler={this.pickerHandler}
+															onReset={this.onReset}
+															validateColor={this.validateColor}
+															onChange={this.handleInputChange}
+														/>
+													);
+												})}
+										</Collapse.Panel>
+										<Collapse.Panel
+											showArrow={false}
+											header="Modify theme breakdown"
+											key="2"
+										>
+											{Object.keys(clusterObj)
+												.filter(
+													(localColorKey) => localColorKey !== 'background'
+												)
+												.map((localColorKey) => {
+													const colorKey = `${clusterKey}_${localColorKey}`;
+													const isCalculated = this.isCalculated(colorKey);
+													const colorValue = isCalculated
+														? baseRatios[colorKey]
+														: theme[colorKey];
+
+													return (
+														<ColorInput
+															colorKey={colorKey}
+															isCalculated={isCalculated}
+															colorValue={colorValue}
+															pickerHandler={this.pickerHandler}
+															onReset={this.onReset}
+															validateColor={this.validateColor}
+															onChange={this.handleInputChange}
+														/>
+													);
+												})}
+										</Collapse.Panel>
+									</Collapse>
+								) : (
+									<div className="pt-2">
+										{Object.keys(clusterObj).map((localColorKey) => {
+											const colorKey = `${clusterKey}_${localColorKey}`;
+											const isCalculated = this.isCalculated(colorKey);
+											const colorValue = isCalculated
+												? baseRatios[colorKey]
+												: theme[colorKey];
+
+											return (
+												<ColorInput
+													colorKey={colorKey}
+													isCalculated={isCalculated}
+													colorValue={colorValue}
+													pickerHandler={this.pickerHandler}
+													onReset={this.onReset}
+													validateColor={this.validateColor}
+													onChange={this.handleInputChange}
+												/>
+											);
+										})}
+									</div>
+								)}
 							</div>
 						);
 					})}
