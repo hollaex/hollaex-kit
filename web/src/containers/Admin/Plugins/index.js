@@ -6,6 +6,7 @@ import { RightOutlined } from '@ant-design/icons';
 import PluginList from './PluginList';
 import PluginDetails from './PluginDetails';
 import PluginConfigure from './PluginConfigure';
+import MyPlugins from './MyPlugins';
 import { removePlugin, requestPlugins, requestMyPlugins } from './action';
 import { STATIC_ICONS } from 'config/icons';
 
@@ -30,6 +31,7 @@ class Plugins extends Component {
 			plugin: {},
 			isVisible: false,
 			isRemovePlugin: false,
+			tabKey: 'explore',
 		};
 	}
 
@@ -65,7 +67,7 @@ class Plugins extends Component {
 	};
 
 	getPlugins = (page = 1, limit = 50, params = {}) => {
-		this.setState({ loading: true });
+		// this.setState({ loading: true });
 		return requestPlugins({ page, limit, ...params })
 			.then((res) => {
 				if (res && res.data) {
@@ -92,10 +94,12 @@ class Plugins extends Component {
 			isRemovePlugin: true,
 			showSelected: false,
 			isConfigure: false,
+			tabKey: 'my_plugin',
 		});
 		return removePlugin(params)
 			.then((res) => {
 				this.setState({ isRemovePlugin: false });
+				this.getPluginsData();
 			})
 			.catch((err) => {
 				this.setState({ isRemovePlugin: false });
@@ -155,6 +159,8 @@ class Plugins extends Component {
 			showSelected,
 			type,
 			isVisible,
+			myPlugins,
+			tabKey,
 		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
@@ -194,8 +200,8 @@ class Plugins extends Component {
 						)}
 					</div>
 				) : (
-					<div className="app_container-content admin-earnings-container">
-						<Tabs>
+					<div className="app_container-content admin-earnings-container admin-plugin-container">
+						<Tabs defaultActiveKey={tabKey}>
 							<TabPane tab="Explore" key="explore">
 								<PluginList
 									pluginData={pluginData}
@@ -207,7 +213,13 @@ class Plugins extends Component {
 							</TabPane>
 
 							<TabPane tab="My plugins" key="my_plugin">
-								<div>My plugins</div>
+								<MyPlugins
+									selectedPlugin={selectedPlugin}
+									getPlugins={this.getPlugins}
+									getMyPlugins={this.getMyPlugins}
+									myPlugins={myPlugins}
+									pluginData={pluginData}
+								/>
 							</TabPane>
 						</Tabs>
 					</div>

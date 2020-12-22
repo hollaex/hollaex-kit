@@ -73,6 +73,8 @@ const icons = {
 		recaptcha: `/assets/images/reCAPTCHA-preview-image-plugin.png`,
 		robolla: `/assets/images/robolla-preview-image-plugin.png`,
 	},
+	ADD_THIRD_PARTY_PLUGIN: `/assets/images/add-third-party-plugin-black-01.svg`,
+	PLUGIN_REMOVAL_WHITE: `/assets/images/plugin-removal-white-01.svg`,
 };
 
 export default icons;

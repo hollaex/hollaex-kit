@@ -48,9 +48,9 @@ const PluginDetails = ({
 		addPlugin(body)
 			.then((res) => {
 				setAddLoading(false);
+				requestPlugin();
 			})
 			.catch((err) => {
-				console.log('err', err);
 				setAddLoading(false);
 			});
 	};
@@ -60,7 +60,7 @@ const PluginDetails = ({
 		setType('');
 	};
 
-	const handleAdd = (value) => {
+	const handleAdd = () => {
 		handleClose();
 		handleAddPlugin();
 	};
@@ -91,7 +91,7 @@ const PluginDetails = ({
 					<div className="admin-plugin-modal-wrapper">
 						<div className="remove-wrapper">
 							<img
-								src={STATIC_ICONS.PLUGIN_THUMBNAIL.robolla}
+								src={STATIC_ICONS.PLUGIN_REMOVAL_WHITE}
 								alt="Plugin"
 								className="plugin-icon"
 							/>
@@ -166,7 +166,6 @@ const PluginDetails = ({
 								<Button
 									type="primary"
 									className="remove-btn"
-									// onClick={() => handleType('confirm-plugin')}
 									onClick={() => handleRemove('confirm-plugin')}
 									disabled={isConfirm}
 								>
@@ -209,11 +208,7 @@ const PluginDetails = ({
 						<Divider />
 						<div>Are you sure you want to add this plugin?</div>
 						<div className="my-4">
-							<Button
-								type="primary"
-								className="add-btn"
-								onClick={() => handleAdd(true)}
-							>
+							<Button type="primary" className="add-btn" onClick={handleAdd}>
 								Add
 							</Button>
 						</div>

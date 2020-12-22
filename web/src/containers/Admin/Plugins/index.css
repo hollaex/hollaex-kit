@@ -52,7 +52,8 @@
 .plugin-list-container .description {
 	margin: 0.5rem 0rem;
 }
-.plugin-list-container .plugin-header {
+.plugin-list-container .plugin-header,
+.myplugin-container .plugin-header {
 	padding: 0.25rem 0rem 1rem 0rem;
 	border-bottom: 1px solid rgb(255, 255, 255, 0.4);
 }
@@ -89,6 +90,7 @@
 	border-radius: 0px;
 	background-color: #0000d1;
 	color: #c4c4c4;
+	box-shadow: none;
 }
 .plugin-list-container .search-plugin-input .ant-input:focus {
 	box-shadow: none;
@@ -199,8 +201,8 @@
 	height: 65px;
 }
 .plugin-details-wrapper .main-content {
-	/* margin: 2rem auto; */
-	/* width: 50rem; */
+	margin: 2rem auto;
+	width: 50rem;
 }
 .plugin-details-wrapper .main-content .plugin-card {
 	height: 210px;
@@ -264,8 +266,7 @@
 }
 
 .admin-plugin-modal-wrapper .plugin-icon {
-	width: 70px;
-	height: 70px;
+	width: 150px;
 }
 .admin-plugin-modal-wrapper h2 {
 	font-size: 19px;
@@ -281,7 +282,8 @@
 	text-align: center;
 }
 .admin-plugin-modal-wrapper .remove-wrapper .ant-btn,
-.admin-plugin-modal-wrapper .confirm-plugin-wrapper .ant-btn {
+.admin-plugin-modal-wrapper .confirm-plugin-wrapper .ant-btn,
+.admin-plugin-modal-wrapper .btn-wrapper .ant-btn {
 	width: 190px;
 }
 .admin-plugin-modal-wrapper h5 {
@@ -293,6 +295,11 @@
 }
 .admin-plugin-modal-wrapper .plugin-file-wrapper {
 	margin: 1rem 0rem;
+}
+.admin-plugin-modal-wrapper .plugin-file-wrapper input {
+	opacity: 0;
+	position: fixed;
+	left: -999px;
 }
 .admin-plugin-modal-wrapper .plugin-file-container {
 	width: 100%;
@@ -327,6 +334,7 @@
 	left: 120px;
 	font-size: 14px;
 	text-decoration: underline;
+	cursor: pointer;
 }
 .admin-plugin-modal-wrapper .url-path {
 	font-size: 13px;
@@ -341,6 +349,7 @@
 
 .config-wrapper {
 	margin-top: 2rem;
+	width: 50%;
 	color: #ffffff;
 }
 .config-wrapper .config-content {
