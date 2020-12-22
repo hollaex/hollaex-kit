@@ -243,7 +243,7 @@ table th {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .custom-select-style .ant-select-item-option-disabled {
-  color: var(--base_inactive-button); }
+  color: var(--labels_inactive-button); }
 
 .custom-select-style.ant-select-dropdown {
   background-color: var(--base_background); }
@@ -687,7 +687,7 @@ table th {
     .user-limits .user-limits-table .table-row.user-level {
       color: var(--labels_important-active-labels-text-graphics); }
       .user-limits .user-limits-table .table-row.user-level td:not(:first-child) {
-        background-color: var(--base_inactive-button); }
+        background-color: var(--labels_inactive-button); }
       .user-limits .user-limits-table .table-row.user-level .td-levelball .td-levelball-content {
         color: white;
         background-color: var(--labels_important-active-labels-text-graphics); }
@@ -823,7 +823,7 @@ table th {
   font-size: 0.9rem; }
 
 .token-no-otp {
-  color: var(--base_inactive-button);
+  color: var(--labels_inactive-button);
   cursor: not-allowed !important; }
 
 .dumb-field-wrapper.token-value-input .copy-wrapper {
@@ -914,7 +914,7 @@ table th {
     color: #000000; }
   .home_container .quick_trade-section {
     background-color: var(--base_background);
-    border: 1px solid var(--base_inactive-button); }
+    border: 1px solid var(--labels_inactive-button); }
     .home_container .quick_trade-section > .quick_trade-wrapper {
       flex: 1; }
   .home_container .quick_trade-section,
@@ -1658,7 +1658,7 @@ table th {
     color: var(--calculated_trading_selling-related-text);
     font-weight: bold; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
-      background-color: var(--base_inactive-button) !important;
+      background-color: var(--labels_inactive-button) !important;
       color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .warning_text {
     margin-top: 0.25rem; }
@@ -1719,7 +1719,7 @@ table th {
     color: var(--calculated_trading_buying-related-text);
     font-weight: bold; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
-      background-color: var(--base_inactive-button) !important;
+      background-color: var(--labels_inactive-button) !important;
       color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .warning_text {
     margin-top: 0.25rem; }
@@ -2465,11 +2465,11 @@ table th {
     top: calc(50% - 0.6rem); }
   .summary-container .trade_tabs-search-field {
     background-color: var(--base_background);
-    color: var(--base_inactive-button);
+    color: var(--labels_inactive-button);
     margin: 0;
     padding-right: 0.5rem; }
     .summary-container .trade_tabs-search-field::placeholder {
-      color: var(--base_inactive-button); }
+      color: var(--labels_inactive-button); }
     .summary-container .trade_tabs-search-field .field-error-content {
       display: none; }
   .summary-container .trade_tabs-search-outline {
@@ -2748,11 +2748,11 @@ table th {
     border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
   .trade_tabs-container .trade_tabs-search-field {
     background-color: var(--base_background);
-    color: var(--base_inactive-button);
+    color: var(--labels_inactive-button);
     margin: 0;
     padding-right: 0.5rem; }
     .trade_tabs-container .trade_tabs-search-field::placeholder {
-      color: var(--base_inactive-button); }
+      color: var(--labels_inactive-button); }
   .trade_tabs-container .trade_tabs-search-outline {
     background: var(--labels_secondary-inactive-label-text-graphics); }
   .trade_tabs-container .tabs-pair-details {
@@ -2879,8 +2879,8 @@ table th {
     width: 11rem; } }
 
 .toggle-wrapper {
-  border-top: 1px solid var(--base_inactive-button);
-  border-bottom: 1px solid var(--base_inactive-button); }
+  border-top: 1px solid var(--labels_inactive-button);
+  border-bottom: 1px solid var(--labels_inactive-button); }
 
 .toggle-wrapper-all {
   border-bottom: 2px solid var(--labels_secondary-inactive-label-text-graphics);
@@ -4735,7 +4735,7 @@ table th {
     font-weight: bold; }
 
 .panel-information-row {
-  background-color: var(--base_fields);
+  background-color: var(--labels_fields);
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   flex: 1; }
@@ -4965,7 +4965,7 @@ table th {
     .sidebar_hub-wrapper .currency-selector .tab-action .tab-colors {
       height: 6px; }
     .sidebar_hub-wrapper .currency-selector .tab-action.not-active {
-      background-color: var(--base_inactive-button);
+      background-color: var(--labels_inactive-button);
       position: relative;
       color: var(--labels_secondary-inactive-label-text-graphics); }
       .sidebar_hub-wrapper .currency-selector .tab-action.not-active:after {
@@ -5657,7 +5657,7 @@ table th {
       position: relative;
       width: 100%;
       height: 2.5rem;
-      background: var(--base_fields);
+      background: var(--labels_fields);
       border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
       border-radius: 2px;
       color: var(--labels_important-active-labels-text-graphics); }
@@ -5735,7 +5735,7 @@ table th {
   .exir-button.button-fail {
     background-color: var(--specials_notifications-alerts-warnings) !important; }
   .exir-button.disabled {
-    background-color: var(--base_inactive-button) !important; }
+    background-color: var(--labels_inactive-button) !important; }
   .exir-button:active, .exir-button:focus {
     outline: none;
     border: none; }
@@ -5958,7 +5958,7 @@ table th {
     position: relative;
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .accordion_wrapper .accordion_section .accordion_section_content_text .accordion_section_content_text-subtitle {
-      color: var(--base_inactive-button); }
+      color: var(--labels_inactive-button); }
   .accordion_wrapper .accordion_section.disabled {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .accordion_wrapper .accordion_section:last-child {
@@ -6280,7 +6280,7 @@ table th {
   background-position: center; }
 
 .loader_background {
-  background-color: var(--base_inactive-button);
+  background-color: var(--labels_inactive-button);
   filter: opacity(0.75);
   width: 100%;
   height: 100%; }
@@ -6587,9 +6587,9 @@ table th {
     cursor: default;
     pointer-events: none; }
     .table_controllers-wrapper .disabled .action_notification-wrapper .notification-info {
-      color: var(--base_inactive-button); }
+      color: var(--labels_inactive-button); }
     .table_controllers-wrapper .disabled .action_notification-wrapper .action_notification-svg .arrow-1 {
-      fill: var(--base_inactive-button); }
+      fill: var(--labels_inactive-button); }
 
 .direction_ltr .cell_box-type > div {
   margin-right: 0.5rem; }
