@@ -7919,7 +7919,7 @@ foreignObject {
         margin: 0.5rem 0;
         max-width: 100%; }
       .chat-wrapper .chat-message-list .chat-message .username {
-        color: black;
+        color: var(--labels_important-active-labels-text-graphics);
         font-weight: bold;
         margin-bottom: 0.5rem;
         width: 100%; }
@@ -7963,7 +7963,7 @@ foreignObject {
     .chat-wrapper .chat-footer .chat-message-box {
       outline: none !important;
       border: none;
-      background-color: white;
+      background-color: var(--labels_fields);
       width: 100%;
       height: 100%;
       min-height: 3rem;
@@ -7975,13 +7975,14 @@ foreignObject {
       overflow: hidden;
       padding-left: 10px; }
       .chat-wrapper .chat-footer .chat-message-box::placeholder {
-        color: #b6b4cc; }
+        color: var(--labels_secondary-inactive-label-text-graphics); }
     .chat-wrapper .chat-footer .chat-emoji-wrapper {
-      background-color: white; }
+      background-color: var(--labels_fields);
+      cursor: pointer; }
       .chat-wrapper .chat-footer .chat-emoji-wrapper .chat-emoji-icon {
         width: 2rem; }
         .chat-wrapper .chat-footer .chat-emoji-wrapper .chat-emoji-icon svg .emoji-face-icon {
-          fill: #b6b4cc; }
+          fill: var(--labels_secondary-inactive-label-text-graphics); }
     .chat-wrapper .chat-footer .emoji-container {
       width: 23rem !important;
       height: 15rem;
