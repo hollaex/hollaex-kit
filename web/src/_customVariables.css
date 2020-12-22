@@ -10,11 +10,11 @@
 	--base_secondary-navigation-bar: #f2f2f3;
 	--base_wallet-sidebar-and-popup: #ffffff;
 	--base_footer: #000000;
-	--base_fields: #f0f1f1;
-	--base_inactive-button: #535353;
 
 	--labels_important-active-labels-text-graphics: #000000;
 	--labels_secondary-inactive-label-text-graphics: #808080;
+	--labels_fields: #f0f1f1;
+	--labels_inactive-button: #535353;
 
 	--trading_selling-related-elements: #ee4036;
 	--trading_buying-related-elements: #00a69c;

@@ -12,6 +12,9 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	font-size: $font-size-subtext;
 	background-color: $footer-background-color;
 	color: $base_footer_text;
+	&.deep-footer {
+		padding-bottom: 136px;
+	}
 
 	.footer-row-content {
 		margin-bottom: $footer-wrapper--margin-bottom;

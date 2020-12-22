@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
-import { Input, Button, Radio, Divider } from 'antd';
-import { DeleteOutlined, BgColorsOutlined } from '@ant-design/icons';
+import { Input, Button, Radio, Divider, Collapse } from 'antd';
+import { UndoOutlined, BgColorsOutlined } from '@ant-design/icons';
 import initialTheme, {
 	nestedColors as nestedStructure,
 } from 'config/colors/light';
+import systemThemes from 'config/colors';
 import {
 	getColorByKey,
 	filterTheme,
@@ -14,8 +15,7 @@ import {
 	calculateBaseColors,
 } from 'utils/color';
 import validateColor from 'validate-color';
-import 'rc-color-picker/assets/index.css';
-import ColorPicker from 'rc-color-picker';
+import ColorInput from './ColorInput';
 
 const { Group } = Radio;
 
@@ -153,6 +153,20 @@ class AddTheme extends Component {
 		this.validateColor({ target: { value, name } });
 	};
 
+	resetTheme = () => {
+		const { themeKey } = this.state;
+		const defaultTheme = systemThemes[themeKey];
+		this.setState((prevState) => ({
+			...prevState,
+			theme: defaultTheme,
+		}));
+	};
+
+	isSystemDefined = () => {
+		const { themeKey } = this.state;
+		return Object.keys(systemThemes).includes(themeKey);
+	};
+
 	render() {
 		const { isOpen, onCloseDialog } = this.props;
 		const {
@@ -187,9 +201,18 @@ class AddTheme extends Component {
 						type="text"
 						name="theme-key"
 						placeholder="Please enter a theme name"
-						className="operator-controls__input mr-5"
+						className="operator-controls__input mr-2"
 						value={themeKey}
 						onChange={this.handleThemeKey}
+					/>
+					<Button
+						ghost
+						shape="circle"
+						size="small"
+						className="operator-controls__all-strings-settings-button"
+						disabled={!this.isSystemDefined()}
+						onClick={this.resetTheme}
+						icon={<UndoOutlined />}
 					/>
 				</div>
 				<div className="mb-5">
@@ -208,6 +231,8 @@ class AddTheme extends Component {
 				</div>
 				<div>
 					{Object.entries(nestedStructure).map(([clusterKey, clusterObj]) => {
+						const renderCollapse = clusterKey === 'base' && isSingleBase;
+
 						return (
 							<div className="pb-4" key={clusterKey}>
 								<Divider orientation="left">
@@ -215,70 +240,86 @@ class AddTheme extends Component {
 										<BgColorsOutlined /> {clusterKey}
 									</span>
 								</Divider>
-								<div className="pt-2">
-									{Object.keys(clusterObj).map((localColorKey) => {
-										const colorKey = `${clusterKey}_${localColorKey}`;
-										const isCalculated = this.isCalculated(colorKey);
-										const colorValue = isCalculated
-											? baseRatios[colorKey]
-											: theme[colorKey];
+								{renderCollapse ? (
+									<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+										<Collapse.Panel showArrow={false} key="1" disabled={true}>
+											{Object.keys(clusterObj)
+												.filter(
+													(localColorKey) => localColorKey === 'background'
+												)
+												.map((localColorKey) => {
+													const colorKey = `${clusterKey}_${localColorKey}`;
+													const isCalculated = this.isCalculated(colorKey);
+													const colorValue = isCalculated
+														? baseRatios[colorKey]
+														: theme[colorKey];
 
-										return (
-											<div
-												className="d-flex justify-content-between align-items-center py-1"
-												key={colorKey}
-											>
-												<div className="bold">
-													{colorKey.split('_')[1].replace(/-/g, ' ')}
-												</div>
-												<div className="d-flex align-items-center">
-													{!isCalculated && (
-														<ColorPicker
-															color={colorValue}
-															enableAlpha={false}
-															onChange={({ color }) =>
-																this.pickerHandler(color, colorKey)
-															}
-															onClose={({ color }) =>
-																this.pickerHandler(color, colorKey)
-															}
-															placement="topLeft"
-															className="some-class"
-															style={{ zIndex: 10002 }}
-														>
-															<span className="mr-2 rc-color-picker-trigger" />
-														</ColorPicker>
-													)}
-													<Input
-														type={isCalculated ? 'number' : 'text'}
-														name={colorKey}
-														placeholder="Please pick a color"
-														className="operator-controls__input mr-2"
-														value={colorValue}
-														onChange={this.handleInputChange}
-														onBlur={this.validateColor}
-														{...(isCalculated
-															? {
-																	min: 0,
-																	max: 1,
-																	step: 0.05,
-															  }
-															: {})}
-													/>
-													<Button
-														ghost
-														shape="circle"
-														size="small"
-														className="operator-controls__all-strings-settings-button"
-														disabled={isCalculated}
-														onClick={() => this.onReset(colorKey)}
-														icon={<DeleteOutlined />}
-													/>
-												</div>
-											</div>
-										);
-									})}
-								</div>
+													return (
+														<ColorInput
+															colorKey={colorKey}
+															isCalculated={isCalculated}
+															colorValue={colorValue}
+															pickerHandler={this.pickerHandler}
+															onReset={this.onReset}
+															validateColor={this.validateColor}
+															onChange={this.handleInputChange}
+														/>
+													);
+												})}
+										</Collapse.Panel>
+										<Collapse.Panel
+											showArrow={false}
+											header="Modify theme breakdown"
+											key="2"
+										>
+											{Object.keys(clusterObj)
+												.filter(
+													(localColorKey) => localColorKey !== 'background'
+												)
+												.map((localColorKey) => {
+													const colorKey = `${clusterKey}_${localColorKey}`;
+													const isCalculated = this.isCalculated(colorKey);
+													const colorValue = isCalculated
+														? baseRatios[colorKey]
+														: theme[colorKey];
+
+													return (
+														<ColorInput
+															colorKey={colorKey}
+															isCalculated={isCalculated}
+															colorValue={colorValue}
+															pickerHandler={this.pickerHandler}
+															onReset={this.onReset}
+															validateColor={this.validateColor}
+															onChange={this.handleInputChange}
+														/>
+													);
+												})}
+										</Collapse.Panel>
+									</Collapse>
+								) : (
+									<div className="pt-2">
+										{Object.keys(clusterObj).map((localColorKey) => {
+											const colorKey = `${clusterKey}_${localColorKey}`;
+											const isCalculated = this.isCalculated(colorKey);
+											const colorValue = isCalculated
+												? baseRatios[colorKey]
+												: theme[colorKey];
+
+											return (
+												<ColorInput
+													colorKey={colorKey}
+													isCalculated={isCalculated}
+													colorValue={colorValue}
+													pickerHandler={this.pickerHandler}
+													onReset={this.onReset}
+													validateColor={this.validateColor}
+													onChange={this.handleInputChange}
+												/>
+											);
+										})}
+									</div>
+								)}
 							</div>
 						);
 					})}

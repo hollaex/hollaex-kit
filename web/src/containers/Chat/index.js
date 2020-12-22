@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
+
 import { ChatWrapper } from '../../components';
 import { WS_URL } from '../../config/constants';
 import {
@@ -90,13 +92,11 @@ class Chat extends Component {
 					args: ['chat'],
 				})
 			);
-			this.wsInterval = setInterval(() => {
-				chatWs.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+
+			setWsHeartbeat(chatWs, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
 		};
 
 		chatWs.onmessage = (evt) => {
