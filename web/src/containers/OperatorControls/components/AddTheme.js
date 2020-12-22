@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
 import { Input, Button, Radio, Divider } from 'antd';
-import { DeleteOutlined, BgColorsOutlined } from '@ant-design/icons';
+import { BgColorsOutlined } from '@ant-design/icons';
 import initialTheme, {
 	nestedColors as nestedStructure,
 } from 'config/colors/light';
@@ -15,7 +15,7 @@ import {
 } from 'utils/color';
 import validateColor from 'validate-color';
 import 'rc-color-picker/assets/index.css';
-import ColorPicker from 'rc-color-picker';
+import ColorInput from './ColorInput';
 
 const { Group } = Radio;
 
@@ -224,58 +224,15 @@ class AddTheme extends Component {
 											: theme[colorKey];
 
 										return (
-											<div
-												className="d-flex justify-content-between align-items-center py-1"
-												key={colorKey}
-											>
-												<div className="bold">
-													{colorKey.split('_')[1].replace(/-/g, ' ')}
-												</div>
-												<div className="d-flex align-items-center">
-													{!isCalculated && (
-														<ColorPicker
-															color={colorValue}
-															enableAlpha={false}
-															onChange={({ color }) =>
-																this.pickerHandler(color, colorKey)
-															}
-															onClose={({ color }) =>
-																this.pickerHandler(color, colorKey)
-															}
-															placement="topLeft"
-															className="some-class"
-															style={{ zIndex: 10002 }}
-														>
-															<span className="mr-2 rc-color-picker-trigger" />
-														</ColorPicker>
-													)}
-													<Input
-														type={isCalculated ? 'number' : 'text'}
-														name={colorKey}
-														placeholder="Please pick a color"
-														className="operator-controls__input mr-2"
-														value={colorValue}
-														onChange={this.handleInputChange}
-														onBlur={this.validateColor}
-														{...(isCalculated
-															? {
-																	min: 0,
-																	max: 1,
-																	step: 0.05,
-															  }
-															: {})}
-													/>
-													<Button
-														ghost
-														shape="circle"
-														size="small"
-														className="operator-controls__all-strings-settings-button"
-														disabled={isCalculated}
-														onClick={() => this.onReset(colorKey)}
-														icon={<DeleteOutlined />}
-													/>
-												</div>
-											</div>
+											<ColorInput
+												colorKey={colorKey}
+												isCalculated={isCalculated}
+												colorValue={colorValue}
+												pickerHandler={this.pickerHandler}
+												onReset={this.onReset}
+												validateColor={this.validateColor}
+												onChange={this.handleInputChange}
+											/>
 										);
 									})}
 								</div>
