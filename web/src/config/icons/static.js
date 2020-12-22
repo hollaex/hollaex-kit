@@ -57,6 +57,8 @@ const icons = {
 	SEARCH: '/assets/images/search.svg',
 	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
+	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
+	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
 };
 
 export default icons;

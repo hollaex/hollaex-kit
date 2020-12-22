@@ -238,7 +238,6 @@ const nestedIcons = {
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
 	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
-	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	...coinIcons,
