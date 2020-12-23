@@ -1,59 +1,109 @@
-import React, { Component, Fragment } from 'react';
-import { Card, Divider, Spin } from 'antd';
+import React, { Component } from 'react';
+import { Spin, Tabs, Breadcrumb, Modal } from 'antd';
 import { connect } from 'react-redux';
+import { RightOutlined } from '@ant-design/icons';
 
-import { getConstants } from './action';
-import { getAllPluginsData } from './Utils';
+import PluginList from './PluginList';
+import PluginDetails from './PluginDetails';
+import PluginConfigure from './PluginConfigure';
+import MyPlugins from './MyPlugins';
+import { removePlugin, requestPlugins, requestMyPlugins } from './action';
+import { STATIC_ICONS } from 'config/icons';
 
 import './index.css';
+
+const TabPane = Tabs.TabPane;
+const { Item } = Breadcrumb;
 
 class Plugins extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			activeTab: '',
-			myPlugins: [],
-			otherPlugins: [],
 			loading: false,
 			constants: {},
+			showSelected: false,
+			selectedPlugin: {},
+			type: '',
+			isConfigure: false,
+			pluginData: [],
+			myPlugins: [],
+			plugin: {},
+			isVisible: false,
+			isRemovePlugin: false,
+			tabKey: 'explore',
 		};
 	}
 
 	componentDidMount() {
-		this.generateCards();
-		this.setState({ loading: true });
-		getConstants()
-			.then((res) => {
-				this.setState({ loading: false, constants: res });
-			})
-			.catch((err) => {
-				this.setState({ loading: false });
-			});
+		this.getPluginsData();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if (
-			JSON.stringify(this.state.constants) !==
-				JSON.stringify(prevState.constants) ||
-			JSON.stringify(this.props.availablePlugins) !==
-				JSON.stringify(prevProps.availablePlugins)
+			JSON.stringify(prevState.pluginData) !==
+				JSON.stringify(this.state.pluginData) ||
+			JSON.stringify(prevState.myPlugins) !==
+				JSON.stringify(this.state.myPlugins)
 		) {
-			this.generateCards();
+			this.constructPluginsData();
 		}
 	}
 
-	generateCards = () => {
-		const { enabled = [] } = this.state.constants;
-		// if (plugins) {
-		let allPluginsData = getAllPluginsData(this.props.availablePlugins);
-		let myPlugins = Object.keys(allPluginsData).filter((data) =>
-			enabled.includes(data)
-		);
-		const otherPlugins = Object.keys(allPluginsData).filter(
-			(data) => !enabled.includes(data)
-		);
-		this.setState({ myPlugins, otherPlugins, allPluginsData });
-		// }
+	getPluginsData = async () => {
+		await this.getPlugins();
+		await this.getMyPlugins();
+	};
+
+	getMyPlugins = (page = 1, limit = 50, params = {}) => {
+		return requestMyPlugins({ page, limit, ...params })
+			.then((res) => {
+				console.log('requestMyPlugins', res);
+				if (res && res.data) {
+					this.setState({ myPlugins: res.data });
+				}
+			})
+			.catch((err) => {});
+	};
+
+	getPlugins = (page = 1, limit = 50, params = {}) => {
+		// this.setState({ loading: true });
+		return requestPlugins({ page, limit, ...params })
+			.then((res) => {
+				if (res && res.data) {
+					this.setState({ loading: false, pluginData: res.data });
+				}
+			})
+			.catch((err) => {
+				this.setState({ loading: false });
+			});
+	};
+
+	constructPluginsData = () => {
+		const { pluginData, myPlugins } = this.state;
+		const selectedPlugins = myPlugins.map((plugin) => plugin.name);
+		const constructedPluginData = pluginData.map((plugin) => ({
+			...plugin,
+			enabled: selectedPlugins.includes(plugin.name),
+		}));
+		this.setState({ pluginData: constructedPluginData });
+	};
+
+	removePlugin = (params = {}) => {
+		this.setState({
+			isRemovePlugin: true,
+			showSelected: false,
+			isConfigure: false,
+			tabKey: 'my_plugin',
+		});
+		return removePlugin(params)
+			.then((res) => {
+				this.setState({ isRemovePlugin: false });
+				this.getPluginsData();
+			})
+			.catch((err) => {
+				this.setState({ isRemovePlugin: false });
+			});
 	};
 
 	tabChange = (activeTab) => {
@@ -66,8 +116,52 @@ class Plugins extends Component {
 		}
 	};
 
+	handleOpenAdd = (plugin) => {
+		if (
+			this.state.pluginData.filter((value) => value.name === plugin.name).length
+		) {
+			this.setState({
+				showSelected: true,
+				selectedPlugin: plugin,
+			});
+		} else {
+			this.setState({
+				isVisible: true,
+				selectedPlugin: plugin,
+			});
+		}
+	};
+
+	handleClose = () => {
+		this.setState({
+			showSelected: false,
+			selectedPlugin: {},
+			type: '',
+			isConfigure: false,
+		});
+	};
+
+	handleBreadcrumb = () => {
+		this.setState({ isConfigure: true, type: 'configure' });
+	};
+
+	onCancelModal = () => {
+		this.setState({ isVisible: false, selectedPlugin: {} });
+	};
+
 	render() {
-		const { myPlugins, otherPlugins, loading, allPluginsData } = this.state;
+		const {
+			loading,
+			constants,
+			selectedPlugin,
+			pluginData,
+			isConfigure,
+			showSelected,
+			type,
+			isVisible,
+			myPlugins,
+			tabKey,
+		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
 				<div className="app_container-content">
@@ -75,65 +169,86 @@ class Plugins extends Component {
 				</div>
 			);
 		}
+
 		return (
-			<div className="app_container-content">
-				{!this.props.availablePlugins.length ? (
-					<div>
-						<h1>Plugins</h1>
-						<div>No Available plugins</div>
+			<div className="admin-plugins-wrapper">
+				{showSelected ? (
+					<div className="plugins-wrapper">
+						<Breadcrumb separator={<RightOutlined />}>
+							<Item onClick={this.handleClose}>Explore</Item>
+							<Item
+								onClick={() =>
+									this.setState({ type: 'pluginDetails', isConfigure: false })
+								}
+							>
+								Plugin details
+							</Item>
+							{isConfigure ? (
+								<Item onClick={() => this.setState({ type: 'configure' })}>
+									Configure
+								</Item>
+							) : null}
+						</Breadcrumb>
+						{type === 'configure' ? (
+							<PluginConfigure selectedPlugin={selectedPlugin} />
+						) : (
+							<PluginDetails
+								handleBreadcrumb={this.handleBreadcrumb}
+								selectedPlugin={selectedPlugin}
+								removePlugin={this.removePlugin}
+							/>
+						)}
 					</div>
 				) : (
-					<Fragment>
-						{myPlugins.length ? (
-							<div className="mb-4">
-								<h1>My Plugins</h1>
-								<Divider />
-								<div className="d-flex flex-wrap">
-									{myPlugins.map((key) => {
-										let plugin = allPluginsData[key] || {};
-										return (
-											<Card
-												className="card-width mb-4 mx-3"
-												key={plugin.title}
-												hoverable
-												cover={<img src={plugin.icon} alt={plugin.title} />}
-												onClick={() => this.onHandleCard(key)}
-											>
-												<h4>{plugin.title}</h4>
-												<h6>{plugin.sub_title}</h6>
-												<h6>{plugin.description}</h6>
-											</Card>
-										);
-									})}
-								</div>
-							</div>
-						) : null}
-						{otherPlugins.length ? (
-							<div className="my-2">
-								<h1>{myPlugins.length ? 'Other Plugins' : 'Plugins'}</h1>
-								<Divider />
-								<div className="d-flex flex-wrap">
-									{otherPlugins.map((key) => {
-										let plugin = allPluginsData[key] || {};
-										return (
-											<Card
-												className="card-width mb-4 mx-3"
-												key={plugin.title}
-												hoverable
-												cover={<img src={plugin.icon} alt={plugin.title} />}
-												onClick={() => this.onHandleCard(key)}
-											>
-												<h4>{plugin.title}</h4>
-												<h6>{plugin.sub_title}</h6>
-												<h6>{plugin.description}</h6>
-											</Card>
-										);
-									})}
-								</div>
-							</div>
-						) : null}
-					</Fragment>
+					<div className="app_container-content admin-earnings-container admin-plugin-container">
+						<Tabs defaultActiveKey={tabKey}>
+							<TabPane tab="Explore" key="explore">
+								<PluginList
+									pluginData={pluginData}
+									constants={constants}
+									selectedPlugin={selectedPlugin}
+									handleOpenAdd={this.handleOpenAdd}
+									getPlugins={this.getPlugins}
+								/>
+							</TabPane>
+
+							<TabPane tab="My plugins" key="my_plugin">
+								<MyPlugins
+									selectedPlugin={selectedPlugin}
+									getPlugins={this.getPlugins}
+									getMyPlugins={this.getMyPlugins}
+									myPlugins={myPlugins}
+									pluginData={pluginData}
+								/>
+							</TabPane>
+						</Tabs>
+					</div>
 				)}
+				<Modal visible={isVisible} footer={null} onCancel={this.onCancelModal}>
+					<div className="p-2 modal-wrapper">
+						<div className="d-flex align-items-center">
+							<div>
+								{selectedPlugin.icon ? (
+									<img
+										src={selectedPlugin.icon}
+										className="plugin-icon"
+										alt="plugin-icon"
+									/>
+								) : (
+									<img
+										src={STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL}
+										className="plugin-icon"
+										alt="plugin-icon"
+									/>
+								)}
+							</div>
+							<div className="ml-3">
+								<h2>{selectedPlugin.name}</h2>
+								<div>This plugin is coming soon!</div>
+							</div>
+						</div>
+					</div>
+				</Modal>
 			</div>
 		);
 	}

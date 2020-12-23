@@ -17,6 +17,8 @@ export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
 export const API_URL = config[ENV].API_URL;
 export const WS_URL = config[ENV].WS_URL;
+export const PLUGIN_URL = config[ENV].PLUGIN_URL;
+export const NETWORK_API_URL = config[ENV].NETWORK_API_URL;
 
 export const HOLLAEX_LOGO =
 	process.env.REACT_APP_LOGO_PATH ||
