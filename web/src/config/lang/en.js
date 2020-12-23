@@ -914,7 +914,6 @@ const nestedContent = {
 	ORDERBOOK_BUYERS: 'Buyers',
 	ORDERBOOK_SPREAD: 'spread {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-	ORDERBOOK_LAST_PRICE: 'Last price: {0}',
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',

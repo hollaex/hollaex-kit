@@ -28,7 +28,7 @@ const EmailConfiguration = ({
 			formProps.secrets = { smtp: {} };
 			if (secret_key) formProps.secrets.captcha = { secret_key };
 			if (server) formProps.secrets.smtp.server = server;
-			if (port) formProps.secrets.smtp.port = port;
+			if (port) formProps.secrets.smtp.port = parseInt(port, 10);
 			if (user) formProps.secrets.smtp.user = user;
 			if (password && !password.includes('*')) {
 				formProps.secrets.smtp.password = password;

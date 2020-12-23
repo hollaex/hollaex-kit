@@ -8,6 +8,7 @@ import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { setSideBarState, getSideBarState } from 'utils/sideBar';
 
 import {
 	NOTIFICATIONS,
@@ -77,7 +78,7 @@ class App extends Component {
 		ordersQueued: [],
 		limitFilledOnOrder: '',
 		sidebarFitHeight: false,
-		isSidebarOpen: true,
+		isSidebarOpen: getSideBarState(),
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -447,10 +448,16 @@ class App extends Component {
 	};
 
 	toggleSidebar = () => {
-		this.setState((prevState) => ({
-			...prevState,
-			isSidebarOpen: !prevState.isSidebarOpen,
-		}));
+		this.setState(
+			(prevState) => ({
+				...prevState,
+				isSidebarOpen: !prevState.isSidebarOpen,
+			}),
+			() => {
+				const { isSidebarOpen } = this.state;
+				setSideBarState(isSidebarOpen);
+			}
+		);
 	};
 
 	render() {

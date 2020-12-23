@@ -8,6 +8,7 @@ import { isMobile } from 'react-device-detect';
 import { createSelector } from 'reselect';
 import debounce from 'lodash.debounce';
 import { setOrderbooks } from 'actions/orderbookAction';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
 
 import { getToken } from 'utils/token';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
@@ -204,13 +205,11 @@ class Trade extends PureComponent {
 					args: [`orderbook:${symbol}`],
 				})
 			);
-			this.wsInterval = setInterval(() => {
-				orderbookWs.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+
+			setWsHeartbeat(orderbookWs, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
 		};
 
 		orderbookWs.onmessage = (evt) => {
@@ -250,7 +249,6 @@ class Trade extends PureComponent {
 					JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
 				);
 			}
-			clearInterval(this.wsInterval);
 			orderbookWs.close();
 		}
 		this.setState({ orderbookSocketInitialized: false });

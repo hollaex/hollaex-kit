@@ -8,13 +8,13 @@ const nestedColors = {
 		'secondary-navigation-bar': '#2B2B2B',
 		'wallet-sidebar-and-popup': '#333333',
 		footer: '#000000',
-		fields: '#191919',
-		'inactive-button': '#535353',
 	},
 
 	labels: {
 		'important-active-labels-text-graphics': '#e1e2d8',
 		'secondary-inactive-label-text-graphics': '#beb3b3',
+		fields: '#191919',
+		'inactive-button': '#535353',
 	},
 
 	trading: {

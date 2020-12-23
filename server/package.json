@@ -21,6 +21,7 @@
 		"bluebird": "3.5.3",
 		"body-parser": "1.19.0",
 		"chai": "4.2.0",
+		"cors": "2.8.5",
 		"elastic-apm-node": "3.5.0",
 		"eval": "0.1.4",
 		"expect-ct": "0.1.0",

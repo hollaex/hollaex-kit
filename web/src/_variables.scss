@@ -12,9 +12,9 @@ $colors-wave-phase-completed: var(--specials_checks-okay-done);
 
 // common colors for deactivate and disabled look
 $colors-deactivate: var(--labels_secondary-inactive-label-text-graphics);
-$colors-deactivate-color1: var(--base_inactive-button);
+$colors-deactivate-color1: var(--labels_inactive-button);
 $colors-deactivate-color2: var(--labels_secondary-inactive-label-text-graphics);
-$colors-deactivate-color4: var(--base_inactive-button);
+$colors-deactivate-color4: var(--labels_inactive-button);
 
 //common colors for notifications and errors
 $colors-notifications-red: var(--specials_notifications-alerts-warnings);
@@ -58,14 +58,14 @@ $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);
 
 $app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
-$box-fields: var(--base_fields);
+$box-fields: var(--labels_fields);
 
 $buy: var(--trading_buying-related-elements);
 $sell: var(--trading_selling-related-elements);
 
 $link: var(--specials_buttons-links-and-highlights);
 
-$trade-fields: var(--base_fields);
+$trade-fields: var(--labels_fields);
 $trade-fields-border: var(--labels_secondary-inactive-label-text-graphics);
 $trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
 $trade-fill-indicator-text: var(
@@ -100,7 +100,7 @@ $tab-active: var(--labels_important-active-labels-text-graphics);
 $tab-inactive: var(--labels_secondary-inactive-label-text-graphics);
 $sidebar-color: var(--labels_secondary-inactive-label-text-graphics);
 $sidebar-color-active: var(--labels_important-active-labels-text-graphics);
-$info-panel-background: var(--base_fields);
+$info-panel-background: var(--labels_fields);
 $info-panel-text: var(--labels_secondary-inactive-label-text-graphics);
 $icon-hover: var(--labels_important-active-labels-text-graphics);
 $icon-unhover: var(--labels_secondary-inactive-label-text-graphics);
