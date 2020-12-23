@@ -45,11 +45,11 @@ const installLibrary = (library) => {
 
 app.use(morgan(morganType, { stream }));
 app.listen(PORT);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logEntryRequest);
 app.use(domainMiddleware);
-app.use(cors());
 helmetMiddleware(app);
 
 checkStatus()
