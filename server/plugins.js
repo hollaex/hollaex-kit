@@ -17,6 +17,7 @@ const multer = require('multer');
 const moment = require('moment');
 const { checkStatus } = require('./init');
 const UglifyJS = require('uglify-es');
+const cors = require('cors');
 
 const installLibrary = (library) => {
 	return new Promise((resolve, reject) => {
@@ -48,6 +49,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logEntryRequest);
 app.use(domainMiddleware);
+app.use(cors());
 helmetMiddleware(app);
 
 checkStatus()
