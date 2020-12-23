@@ -27,7 +27,7 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 				<Radio.Group onChange={handleChange} value={type}>
 					<Radio value="full">
 						Full interface
-						<div className="flex-container">
+						<div className="d-flex justify-content-between">
 							<div className="small-text">(Pro & quick trade with wallet)</div>
 							<div className="box">
 								<div className="interface_container">
@@ -59,7 +59,7 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 					</Radio>
 					<Radio value="quick-trade">
 						Quick trade only
-						<div className="flex-container">
+						<div className="d-flex justify-content-between">
 							<div className="small-text">
 								(Simple buy/sell interface with wallet)
 							</div>
@@ -77,7 +77,7 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 					</Radio>
 					<Radio value="wallet">
 						Wallet only
-						<div className="flex-container">
+						<div className="d-flex justify-content-between">
 							<div className="small-text">(No trading. Only crypto wallet)</div>
 							<div className="box interface">
 								<ReactSVG

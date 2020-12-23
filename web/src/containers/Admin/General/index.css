@@ -129,10 +129,6 @@
 .text-area-wrapper .description {
 	font-size: 12px;
 }
-.flex-container {
-	display: flex;
-	justify-content: space-between;
-}
 .small-text {
 	font-size: 12px;
 	margin-left: 1.4rem;

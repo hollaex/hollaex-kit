@@ -37,7 +37,7 @@
 	color: #ffffff;
 	margin: 0rem auto;
 	padding: 2rem 0rem;
-	width: 50%;
+	width: 65rem;
 }
 .plugin-list-container .loading-container {
 	height: 5rem;
@@ -132,6 +132,9 @@
 	font-size: 24px;
 	color: #00781b;
 }
+.myplugin-container .plugin-list .removing-item {
+	opacity: 0.3;
+}
 .plugin-list-container .plugin-list .plugin-list-item,
 .myplugin-container .plugin-list-item {
 	margin: 8px 0px;
@@ -202,7 +205,7 @@
 }
 .plugin-details-wrapper .main-content {
 	margin: 2rem auto;
-	width: 50rem;
+	/* width: 50rem; */
 }
 .plugin-details-wrapper .main-content .plugin-card {
 	height: 210px;
@@ -364,7 +367,7 @@
 
 .admin-plugin-container .ant-tabs-content-holder {
 	margin: 0 auto;
-	width: 88rem;
+	width: 100%;
 }
 
 .myplugin-container {

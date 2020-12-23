@@ -5,7 +5,7 @@ import _debounce from 'lodash/debounce';
 import { DownloadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
-import { getPlugin, addPlugin } from './action';
+import { addPlugin } from './action';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -20,8 +20,8 @@ class MyPlugins extends Component {
 	}
 
 	componentDidMount() {
-		this.props.getMyPlugins();
-		this.props.getPlugins();
+		// this.props.getMyPlugins();
+		// this.props.getPlugins();
 	}
 
 	searchPlugin = _debounce(this.props.getMyPlugins, 800);
@@ -61,18 +61,6 @@ class MyPlugins extends Component {
 			this.setState({ isConfirm: true });
 		}
 	};
-
-	// requestPlugin = async () => {
-	// 	getPlugin({ name: this.props.selectedPlugin.name })
-	// 		.then((res) => {
-	// 			if (res) {
-	//                 this.setState({ pluginData: res })
-	// 			}
-	// 		})
-	// 		.catch((err) => {
-	//             this.setState({ pluginData: {} })
-	// 		});
-	// };
 
 	handleAddPlugin = async () => {
 		const { pluginData } = this.props;
@@ -243,11 +231,17 @@ class MyPlugins extends Component {
 	};
 
 	renderList = () => {
-		return this.props.myPlugins.map((item, index) => {
+		const { myPlugins, removePluginName, handleOpenPlugin } = this.props;
+		return myPlugins.map((item, index) => {
 			return (
 				<div
 					key={index}
-					className="plugin-list-item d-flex align-items-center justify-content-between"
+					className={
+						item.name === removePluginName
+							? 'plugin-list-item removing-item d-flex align-items-center justify-content-between'
+							: 'plugin-list-item d-flex align-items-center justify-content-between'
+					}
+					onClick={() => handleOpenPlugin(item)}
 				>
 					<div className="d-flex justify-content-center">
 						<div>
@@ -262,9 +256,11 @@ class MyPlugins extends Component {
 						<div>
 							<div className="d-flex">
 								<div className="plugin-list-title">{item.name}</div>
-								<div className="plugin-list-author plugin-author-align">
-									{item.version}
-								</div>
+								{item.version ? (
+									<div className="plugin-list-author plugin-author-align">
+										v{item.version}
+									</div>
+								) : null}
 							</div>
 							<div className="plugin-list-author">{`By ${item.author}`}</div>
 							<div className="plugin-list-bio">{item.bio}</div>
@@ -307,52 +303,6 @@ class MyPlugins extends Component {
 					</div>
 					<div className="plugin-list">{this.renderList()}</div>
 				</div>
-				{/* <div className="d-flex flex-space-between plugin-header pb-4">
-					<div className="plugin-title">My installed plugins</div>
-					<div className="search-plugin-input">
-						<Input placeholder="Search..." onChange={this.handleSearch} />
-					</div>
-				</div>
-				<div className="plugin-list">
-					{this.props.myPlugins.map((item, index) => {
-						return (
-							<div
-								key={index}
-								className="d-flex flex-space-between plugin-list-item"
-								onClick={() => this.props.handleConfig(true)}
-							>
-								<div className="d-flex justify-content-center">
-									<div>
-										<img
-											src={
-												item.icon
-													? item.icon
-													: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
-											}
-											alt={`plugin-${index}`}
-											className="plugin-list-icon"
-										/>
-									</div>
-									<div>
-										<div className="d-flex">
-											<div className="plugin-list-title">{item.name}</div>
-											<div className="plugin-list-author plugin-author-align">
-												v{item.version}.0
-											</div>
-										</div>
-										<div className="plugin-list-author">{`By ${item.author}`}</div>
-										<div className="plugin-list-bio">{item.bio}</div>
-									</div>
-								</div>
-								<div
-									className="add-btn"
-								>
-									Configure
-								</div>
-							</div>
-						);
-					})}
-				</div> */}
 				<Modal
 					visible={isVisible}
 					width={450}

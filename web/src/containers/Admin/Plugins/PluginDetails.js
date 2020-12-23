@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Modal, Divider, Input, Spin } from 'antd';
+import { Button, Modal, Divider, Input, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -8,6 +8,7 @@ import { addPlugin, getPlugin } from './action';
 const PluginDetails = ({
 	handleBreadcrumb,
 	selectedPlugin = {},
+	handlePluginList,
 	removePlugin,
 }) => {
 	const [isOpen, setOpen] = useState(false);
@@ -48,10 +49,14 @@ const PluginDetails = ({
 		addPlugin(body)
 			.then((res) => {
 				setAddLoading(false);
-				requestPlugin();
+				message.success('Plugin installed successfully');
+				handlePluginList(res);
 			})
 			.catch((err) => {
 				setAddLoading(false);
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
 			});
 	};
 
@@ -234,13 +239,15 @@ const PluginDetails = ({
 					>
 						Remove
 					</Button>
-					<Button
-						type="primary"
-						className="config-btn"
-						onClick={handleBreadcrumb}
-					>
-						Configure
-					</Button>
+					{pluginData.web_view ? (
+						<Button
+							type="primary"
+							className="config-btn"
+							onClick={handleBreadcrumb}
+						>
+							Configure
+						</Button>
+					) : null}
 				</div>
 			);
 		} else {
