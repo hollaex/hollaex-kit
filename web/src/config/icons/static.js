@@ -57,7 +57,7 @@ const icons = {
 	SEARCH: '/assets/images/search.svg',
 	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
-	PLUGIN_IMAGE: '/assets/images/plugin-board-page.svg',
+  PLUGIN_IMAGE: '/assets/images/plugin-board-page.svg',
 	PLUGIN_CARD_ROBELLA: '/assets/images/robolla-card-plugins.png',
 	PLUGIN_CARD_RECAPTCHA: '/assets/images/reCAPTCHA-card-plugins.png',
 	PLUGIN_CARD_CHAT: '/assets/images/chat-troll-box-plugins.png',
@@ -75,6 +75,8 @@ const icons = {
 	},
 	ADD_THIRD_PARTY_PLUGIN: `/assets/images/add-third-party-plugin-black-01.svg`,
 	PLUGIN_REMOVAL_WHITE: `/assets/images/plugin-removal-white-01.svg`,
+  CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
+	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
 };
 
 export default icons;
