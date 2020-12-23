@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Input, Spin, Modal, Radio } from 'antd';
+import { Button, Input, Spin, Modal, Radio, message } from 'antd';
 import { Link } from 'react-router';
 import _debounce from 'lodash/debounce';
 import { DownloadOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 import { STATIC_ICONS } from 'config/icons';
 import { addPlugin } from './action';
@@ -16,6 +17,9 @@ class MyPlugins extends Component {
 			thirdPartyType: 'upload_json',
 			isConfirm: true,
 			pluginData: {},
+			thirdParty: {},
+			thirdPartyError: '',
+			jsonURL: '',
 		};
 	}
 
@@ -52,6 +56,7 @@ class MyPlugins extends Component {
 		} else {
 			this.setState({ thirdPartyType: 'input_url' });
 		}
+		this.setState({ thirdPartyError: '', jsonURL: '' });
 	};
 
 	handleInput = (e) => {
@@ -63,24 +68,88 @@ class MyPlugins extends Component {
 	};
 
 	handleAddPlugin = async () => {
-		const { pluginData } = this.props;
 		const body = {
-			name: pluginData.name,
-			script: pluginData.script,
-			version: pluginData.version,
-			description: pluginData.description,
-			author: pluginData.author,
+			...this.state.thirdParty,
+			author: 'test',
 			enabled: true,
 		};
 		addPlugin(body)
 			.then((res) => {
 				if (res) {
 					this.setState({ isVisible: false });
+					this.props.handlePluginList(res);
+					message.success('Added third party plugin successfully');
 				}
 			})
 			.catch((err) => {
 				this.setState({ isVisible: false });
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
 			});
+	};
+
+	handleURL = (e) => {
+		this.setState({ jsonURL: e.target.value });
+	};
+
+	getJsonFromFile = async (file) => {
+		return await new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = (function () {
+				return function (e) {
+					try {
+						let json = JSON.parse(e.target.result);
+						resolve(json);
+					} catch (err) {
+						message.error(err);
+						reject(err);
+					}
+				};
+			})(file);
+			reader.readAsText(file);
+		});
+	};
+
+	handleFileChange = async (event) => {
+		const file = event.target.files[0];
+		if (file) {
+			const res = await this.getJsonFromFile(file);
+			const check = this.checkJSON(res);
+			if (check) {
+				this.setState({ thirdParty: res });
+			} else {
+				this.setState({ thirdPartyError: 'JSON file is not valid' });
+			}
+		}
+	};
+
+	checkJSON = (json) => {
+		if (json && json.name && json.script && json.version && json.description) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	getJSONFromURL = async () => {
+		if (this.state.jsonURL) {
+			const res = await axios.get(this.state.jsonURL);
+			if (res.data) {
+				const check = this.checkJSON(res.data);
+				if (check) {
+					this.setState({ thirdParty: res.data });
+					this.handleStep(3);
+				} else {
+					this.setState({ thirdPartyError: 'JSON file is not valid' });
+				}
+			}
+		}
+	};
+
+	handleBack = () => {
+		this.setState({ thirdParty: {}, thirdPartyError: '' });
+		this.handleStep(1);
 	};
 
 	renderPopup = () => {
@@ -95,7 +164,13 @@ class MyPlugins extends Component {
 			whiteSpace: 'normal',
 			letterSpacing: '-0.15px',
 		};
-		const { step, thirdPartyType, isConfirm } = this.state;
+		const {
+			step,
+			thirdPartyType,
+			isConfirm,
+			thirdParty,
+			thirdPartyError,
+		} = this.state;
 		switch (step) {
 			case 2:
 				return (
@@ -119,7 +194,12 @@ class MyPlugins extends Component {
 												<DownloadOutlined />
 												<label className="upload-link">
 													<span>Upload</span>
-													<input type="file" accept="image/*" name="upload" />
+													<input
+														type="file"
+														accept="application/JSON"
+														name="upload"
+														onChange={this.handleFileChange}
+													/>
 												</label>
 											</div>
 										</div>
@@ -131,23 +211,40 @@ class MyPlugins extends Component {
 								{thirdPartyType === 'input_url' ? (
 									<div>
 										<span className="url-path">URL path</span>
-										<Input placeholder="Input URL path" className="mt-2" />
+										<Input
+											placeholder="Input URL path"
+											className="mt-2"
+											onChange={this.handleURL}
+										/>
 									</div>
 								) : null}
 							</Radio.Group>
+							{thirdPartyError ? (
+								<div className="field-wrapper error">{thirdPartyError}</div>
+							) : null}
 						</div>
 						<div className="my-4 btn-wrapper d-flex justify-content-between">
 							<Button
 								type="primary"
 								className="add-btn"
-								onClick={() => this.handleStep(1)}
+								onClick={this.handleBack}
 							>
 								Back
 							</Button>
 							<Button
 								type="primary"
 								className="add-btn"
-								onClick={() => this.handleStep(3)}
+								onClick={() => {
+									if (
+										thirdPartyType === 'upload_json' &&
+										thirdParty.name &&
+										!thirdPartyError
+									) {
+										this.handleStep(3);
+									} else if (thirdPartyType === 'input_url') {
+										this.getJSONFromURL();
+									}
+								}}
 							>
 								Next
 							</Button>

@@ -254,6 +254,7 @@ class Plugins extends Component {
 									removePluginName={removePluginName}
 									selectedPlugin={selectedPlugin}
 									handleOpenPlugin={this.handleOpenPlugin}
+									handlePluginList={this.handlePluginList}
 									getPlugins={this.getPlugins}
 									getMyPlugins={this.getMyPlugins}
 									myPlugins={myPlugins}

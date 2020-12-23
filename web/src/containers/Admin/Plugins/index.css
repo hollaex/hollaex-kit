@@ -188,10 +188,11 @@
 }
 
 .plugin-divider {
-	width: 100%;
-	position: relative;
-	top: 26.5rem;
 	border-bottom: 1px solid #000000;
+	position: relative;
+	right: 24px;
+	top: 5rem;
+	width: calc(100% + 48px);
 }
 .plugin-details-wrapper {
 	color: #ffffff;
@@ -219,6 +220,9 @@
 .plugin-details-wrapper .main-content .anticon-clock-circle {
 	font-size: 18px;
 	top: 0px;
+}
+.plugin-details-wrapper .plugin-carousel-wrapper {
+	width: 33rem;
 }
 .plugin-details-wrapper .btn-wrapper {
 	width: 310px;

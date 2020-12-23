@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Modal, Divider, Input, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
+import { Carousel } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 import { addPlugin, getPlugin } from './action';
 
@@ -266,6 +267,26 @@ const PluginDetails = ({
 		}
 	};
 
+	const getCards = () => {
+		const cardData = [
+			{
+				icon:
+					pluginData && pluginData.icon
+						? pluginData.icon
+						: STATIC_ICONS.DEFAULT_PLUGIN_PREVIEW,
+			},
+		];
+		return cardData.map((data) => (
+			<div>
+				<img src={data.icon} alt="PluginCard" className="plugin-card" />
+				<div className="d-flex mt-2 ml-1">
+					<StarFilled />
+					<div>Featured plugin</div>
+				</div>
+			</div>
+		));
+	};
+
 	if (isLoading) {
 		return (
 			<div className="app_container-content d-flex justify-content-center">
@@ -276,7 +297,6 @@ const PluginDetails = ({
 
 	return (
 		<div>
-			<div className="plugin-divider"></div>
 			<div className="plugin-details-wrapper">
 				<div className="main-content">
 					<div className="d-flex justify-content-between">
@@ -302,28 +322,23 @@ const PluginDetails = ({
 								{renderButtonContent()}
 							</div>
 						</div>
-						<div className="ml-3">
-							<img
-								src={
-									pluginData && pluginData.icon
-										? pluginData.icon
-										: STATIC_ICONS.DEFAULT_PLUGIN_PREVIEW
-								}
-								alt="PluginCard"
-								className="plugin-card"
-							/>
-							<div className="d-flex mt-2">
-								<StarFilled />
-								<div>Featured plugin</div>
-							</div>
+						<div className="plugin-carousel-wrapper ml-3">
+							<Carousel items={getCards()} />
 						</div>
 					</div>
-					<div className="about-label">About</div>
-					<div className="about-contents">
-						<b>OverView</b>
-						<div className="my-3">{pluginData.description}</div>
-						<div className="my-5">
-							<h2>Main features</h2>
+				</div>
+			</div>
+			<div className="plugin-divider"></div>
+			<div className="plugin-details-wrapper">
+				<div>
+					<div>
+						<div className="about-label">About</div>
+						<div className="about-contents">
+							<b>OverView</b>
+							<div className="my-3">{pluginData.description}</div>
+							<div className="my-5">
+								<h2>Main features</h2>
+							</div>
 						</div>
 					</div>
 				</div>
