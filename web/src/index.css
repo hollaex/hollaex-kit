@@ -3909,6 +3909,10 @@ table th {
     .app_bar .app-bar-account-menu .app-bar-account-list-icon {
       margin-right: 0.4rem;
       width: 1rem; }
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .trade-active-2 {
+        stroke: var(--labels_secondary-inactive-label-text-graphics); }
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .trade-active-2,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .quick-trade-tab-active,
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-summary0,
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-wallet0,
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-setting0,
@@ -3932,6 +3936,10 @@ table th {
         fill: var(--specials_notifications-alerts-warnings); }
     .app_bar .app-bar-account-menu .menu-active {
       color: var(--labels_important-active-labels-text-graphics); }
+      .app_bar .app-bar-account-menu .menu-active svg .trade-active-2 {
+        stroke: var(--labels_important-active-labels-text-graphics); }
+      .app_bar .app-bar-account-menu .menu-active svg .trade-active-2,
+      .app_bar .app-bar-account-menu .menu-active svg .quick-trade-tab-active,
       .app_bar .app-bar-account-menu .menu-active svg .tab-summary0,
       .app_bar .app-bar-account-menu .menu-active svg .tab-wallet0,
       .app_bar .app-bar-account-menu .menu-active svg .tab-setting0,
@@ -4078,6 +4086,10 @@ table th {
   .app-menu-bar .app-menu-bar-icon {
     margin-right: 0.4rem;
     width: 1rem; }
+    .app-menu-bar .app-menu-bar-icon svg .trade-active-2 {
+      stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
+    .app-menu-bar .app-menu-bar-icon svg .trade-active-2,
+    .app-menu-bar .app-menu-bar-icon svg .quick-trade-tab-active,
     .app-menu-bar .app-menu-bar-icon svg .tab-summary0,
     .app-menu-bar .app-menu-bar-icon svg .tab-wallet0,
     .app-menu-bar .app-menu-bar-icon svg .tab-setting0,
@@ -4090,6 +4102,10 @@ table th {
     color: var(--calculated_base_top-bar-navigation_text);
     height: 2.5rem;
     position: relative; }
+    .app-menu-bar .active-menu svg .trade-active-2 {
+      stroke: var(--calculated_base_top-bar-navigation_text); }
+    .app-menu-bar .active-menu svg .trade-active-2,
+    .app-menu-bar .active-menu svg .quick-trade-tab-active,
     .app-menu-bar .active-menu svg .tab-summary0,
     .app-menu-bar .active-menu svg .tab-wallet0,
     .app-menu-bar .active-menu svg .tab-setting0,

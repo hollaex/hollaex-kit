@@ -338,6 +338,11 @@ $app-menu-notification-size: 1.2rem;
 			width: 1rem;
 
 			svg {
+				.trade-active-2 {
+					stroke: $colors-black;
+				}
+				.trade-active-2,
+				.quick-trade-tab-active,
 				.tab-summary0,
 				.tab-wallet0,
 				.tab-setting0,
@@ -374,6 +379,11 @@ $app-menu-notification-size: 1.2rem;
 			color: $colors-main-black;
 
 			svg {
+				.trade-active-2 {
+					stroke: $colors-main-black;
+				}
+				.trade-active-2,
+				.quick-trade-tab-active,
 				.tab-summary0,
 				.tab-wallet0,
 				.tab-setting0,
@@ -552,6 +562,11 @@ $app-menu-notification-size: 1.2rem;
 		width: 1rem;
 
 		svg {
+			.trade-active-2 {
+				stroke: $base_top-bar-navigation_text-inactive;
+			}
+			.trade-active-2,
+			.quick-trade-tab-active,
 			.tab-summary0,
 			.tab-wallet0,
 			.tab-setting0,
@@ -571,6 +586,11 @@ $app-menu-notification-size: 1.2rem;
 		// top: 1px;
 
 		svg {
+			.trade-active-2 {
+				stroke: $base_top-bar-navigation_text;
+			}
+			.trade-active-2,
+			.quick-trade-tab-active,
 			.tab-summary0,
 			.tab-wallet0,
 			.tab-setting0,
