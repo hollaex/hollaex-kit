@@ -80,6 +80,7 @@ class MenuList extends Component {
 			activePath,
 			icons: ICONS,
 			constants,
+			location,
 		} = this.props;
 		const { isOpen } = this.state;
 		const totalPending = IS_XHT
@@ -117,6 +118,23 @@ class MenuList extends Component {
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY" iconId="TAB_SUMMARY">
 								{STRINGS['ACCOUNTS.TAB_SUMMARY']}
+							</EditWrapper>
+						</div>
+						<div
+							className={classnames('app-bar-account-menu-list d-flex', {
+								'menu-active':
+									location.pathname === '/trade/add/tabs' &&
+									selectedMenu === 'pro-trade',
+							})}
+							onClick={() => this.handleMenu('pro-trade')}
+						>
+							<div className="notification-content" />
+							<Image
+								icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
+								wrapperClassName="app-bar-account-list-icon"
+							/>
+							<EditWrapper stringId="PRO_TRADE" iconId="SIDEBAR_TRADING_ACTIVE">
+								{STRINGS['PRO_TRADE']}
 							</EditWrapper>
 						</div>
 						{constants.broker_enabled && (

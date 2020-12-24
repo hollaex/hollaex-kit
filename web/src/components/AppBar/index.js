@@ -320,6 +320,8 @@ class AppBar extends Component {
 			this.props.router.push('/summary');
 		} else if (menu === 'quick-trade') {
 			this.props.router.push(`/quick-trade/${pair}`);
+		} else if (menu === 'pro-trade') {
+			this.props.router.push('/trade/add/tabs');
 		}
 		this.setState({ selectedMenu: menu, isAccountMenu: false });
 	};
@@ -351,9 +353,17 @@ class AppBar extends Component {
 			case '/api':
 				selectedMenu = 'api';
 				break;
+			case '/trade/add/tabs':
+				selectedMenu = 'pro-trade';
+				break;
 			default:
 				break;
 		}
+
+		if (path.includes('quick-trade')) {
+			selectedMenu = 'quick-trade';
+		}
+
 		this.setState({ selectedMenu });
 	};
 
@@ -498,6 +508,7 @@ class AppBar extends Component {
 								activePath={activePath}
 								closeAccountMenu={this.closeAccountMenu}
 								onHelp={onHelp}
+								location={location}
 							/>
 						</div>
 					) : null
