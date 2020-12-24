@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
-import { Input, Button, Radio, Divider, Collapse } from 'antd';
+import { Input, Button, Radio, Divider, Collapse, Tooltip } from 'antd';
 import { UndoOutlined, BgColorsOutlined } from '@ant-design/icons';
 import initialTheme, {
 	nestedColors as nestedStructure,
@@ -217,8 +217,22 @@ class AddTheme extends Component {
 				</div>
 				<div className="mb-5">
 					<Group onChange={this.handleBaseMode} value={isSingleBase}>
-						<Radio value={false}>Use separated base</Radio>
-						<Radio value={true}>Use single base</Radio>
+						<Radio value={false}>
+							<Tooltip
+								overlayStyle={{ zIndex: 10001 }}
+								title="Separated base theme definition"
+							>
+								Use separated base
+							</Tooltip>
+						</Radio>
+						<Radio value={true}>
+							<Tooltip
+								overlayStyle={{ zIndex: 10001 }}
+								title="single base theme definition"
+							>
+								Use single base
+							</Tooltip>
+						</Radio>
 					</Group>
 					{isSingleBase && (
 						<div className="pl-5">
