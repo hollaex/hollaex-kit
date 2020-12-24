@@ -291,6 +291,15 @@ class AppBar extends Component {
 		this.props.router.push('/summary');
 	};
 	handleMenu = (menu) => {
+		const { pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
 		if (menu === 'account') {
 			this.props.router.push('/account');
 		} else if (menu === 'security') {
@@ -309,6 +318,8 @@ class AppBar extends Component {
 			menu === 'summary'
 		) {
 			this.props.router.push('/summary');
+		} else if (menu === 'quick-trade') {
+			this.props.router.push(`/quick-trade/${pair}`);
 		}
 		this.setState({ selectedMenu: menu, isAccountMenu: false });
 	};
