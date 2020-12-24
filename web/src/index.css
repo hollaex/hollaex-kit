@@ -3262,10 +3262,6 @@ table th {
 .operator-controls__table tbody > tr > td {
   border: none !important; }
 
-.ant-modal-wrap,
-.all-icons-confirmation {
-  z-index: 10003 !important; }
-
 .init-container {
   flex: 1;
   height: 100%; }
