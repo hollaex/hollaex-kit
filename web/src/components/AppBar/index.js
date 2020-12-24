@@ -476,27 +476,6 @@ class AppBar extends Component {
 										</div>
 									</Link>
 								) : null}
-								<Link to="/trade/add/tabs">
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active':
-												location.pathname === '/trade/add/tabs',
-										})}
-									>
-										<Image
-											icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
-											wrapperClassName="quicktrade_icon mx-1"
-										/>
-										<EditWrapper
-											stringId="PRO_TRADE"
-											iconId="SIDEBAR_TRADING_ACTIVE"
-										>
-											<div className="d-flex align-items-center overflow">
-												{STRINGS['PRO_TRADE']}
-											</div>
-										</EditWrapper>
-									</div>
-								</Link>
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}
