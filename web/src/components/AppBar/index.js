@@ -361,7 +361,6 @@ class AppBar extends Component {
 			logout,
 			activePath,
 			location,
-			pairs,
 			onHelp,
 			// user,
 			constants = {},
@@ -376,12 +375,6 @@ class AppBar extends Component {
 			walletPending,
 		} = this.state;
 
-		let pair = '';
-		if (Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
-		} else {
-			pair = this.props.pair;
-		}
 		let disableBorder = false;
 		// noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		const { selected } = this.state;
@@ -483,28 +476,6 @@ class AppBar extends Component {
 										</EditWrapper>
 									</div>
 								</Link>
-								{constants.broker_enabled ? (
-									<Link to={`/quick-trade/${pair}`}>
-										<div
-											className={classnames('app_bar-quicktrade', 'd-flex', {
-												'quick_trade-active': activePath === 'quick-trade',
-											})}
-										>
-											<Image
-												icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
-												wrapperClassName="quicktrade_icon"
-											/>
-											<EditWrapper
-												stringId="QUICK_TRADE"
-												iconId="QUICK_TRADE_TAB_ACTIVE"
-											>
-												<div className="d-flex align-items-center overflow">
-													{STRINGS['QUICK_TRADE']}
-												</div>
-											</EditWrapper>
-										</div>
-									</Link>
-								) : null}
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}
