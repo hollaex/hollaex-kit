@@ -4374,9 +4374,7 @@ table th {
     .market-bar .favourite-tab:hover {
       background-color: var(--base_background); }
   .market-bar .active-tab-pair {
-    color: var(--labels_important-active-labels-text-graphics); }
-    .market-bar .active-tab-pair .favourite-tab {
-      background-color: var(--base_background); }
+    color: var(--labels_secondary-inactive-label-text-graphics); }
     .market-bar .active-tab-pair svg .btc0,
     .market-bar .active-tab-pair svg .btc1,
     .market-bar .active-tab-pair svg .eth0,
