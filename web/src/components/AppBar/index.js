@@ -10,7 +10,7 @@ import { LinkButton } from './LinkButton';
 import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
-import { isLoggedIn, isAdmin } from '../../utils/token';
+import { isLoggedIn } from '../../utils/token';
 import { getMe, setMe } from '../../actions/userAction';
 import {
 	getTickers,
@@ -291,6 +291,15 @@ class AppBar extends Component {
 		this.props.router.push('/summary');
 	};
 	handleMenu = (menu) => {
+		const { pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
 		if (menu === 'account') {
 			this.props.router.push('/account');
 		} else if (menu === 'security') {
@@ -309,6 +318,10 @@ class AppBar extends Component {
 			menu === 'summary'
 		) {
 			this.props.router.push('/summary');
+		} else if (menu === 'quick-trade') {
+			this.props.router.push(`/quick-trade/${pair}`);
+		} else if (menu === 'pro-trade') {
+			this.props.router.push('/trade/add/tabs');
 		}
 		this.setState({ selectedMenu: menu, isAccountMenu: false });
 	};
@@ -340,9 +353,17 @@ class AppBar extends Component {
 			case '/api':
 				selectedMenu = 'api';
 				break;
+			case '/trade/add/tabs':
+				selectedMenu = 'pro-trade';
+				break;
 			default:
 				break;
 		}
+
+		if (path.includes('quick-trade')) {
+			selectedMenu = 'quick-trade';
+		}
+
 		this.setState({ selectedMenu });
 	};
 
@@ -361,12 +382,9 @@ class AppBar extends Component {
 			logout,
 			activePath,
 			location,
-			pairs,
 			onHelp,
 			// user,
 			constants = {},
-			isEditMode,
-			icons: ICONS,
 			children,
 		} = this.props;
 		const {
@@ -376,12 +394,6 @@ class AppBar extends Component {
 			walletPending,
 		} = this.state;
 
-		let pair = '';
-		if (Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
-		} else {
-			pair = this.props.pair;
-		}
 		let disableBorder = false;
 		// noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		const { selected } = this.state;
@@ -440,71 +452,6 @@ class AppBar extends Component {
 									options={themeOptions}
 									toggle={this.onToggle}
 								/>
-								{isAdmin() ? (
-									<Link to={isEditMode ? '/' : '/admin'}>
-										<div
-											className={classnames('app_bar-quicktrade', 'd-flex', {
-												'quick_trade-active': location.pathname === '/admin',
-											})}
-										>
-											<Image
-												icon={ICONS['SIDEBAR_ADMIN_DASH_ACTIVE']}
-												wrapperClassName="quicktrade_icon mx-1"
-											/>
-											<EditWrapper
-												stringId="ADMIN_DASH"
-												iconId="SIDEBAR_ADMIN_DASH_ACTIVE"
-											>
-												<div className="d-flex align-items-center">
-													{STRINGS['ADMIN_DASH']}
-												</div>
-											</EditWrapper>
-										</div>
-									</Link>
-								) : null}
-								<Link to="/trade/add/tabs">
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active':
-												location.pathname === '/trade/add/tabs',
-										})}
-									>
-										<Image
-											icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
-											wrapperClassName="quicktrade_icon mx-1"
-										/>
-										<EditWrapper
-											stringId="PRO_TRADE"
-											iconId="SIDEBAR_TRADING_ACTIVE"
-										>
-											<div className="d-flex align-items-center overflow">
-												{STRINGS['PRO_TRADE']}
-											</div>
-										</EditWrapper>
-									</div>
-								</Link>
-								{constants.broker_enabled ? (
-									<Link to={`/quick-trade/${pair}`}>
-										<div
-											className={classnames('app_bar-quicktrade', 'd-flex', {
-												'quick_trade-active': activePath === 'quick-trade',
-											})}
-										>
-											<Image
-												icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
-												wrapperClassName="quicktrade_icon"
-											/>
-											<EditWrapper
-												stringId="QUICK_TRADE"
-												iconId="QUICK_TRADE_TAB_ACTIVE"
-											>
-												<div className="d-flex align-items-center overflow">
-													{STRINGS['QUICK_TRADE']}
-												</div>
-											</EditWrapper>
-										</div>
-									</Link>
-								) : null}
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}
@@ -516,6 +463,7 @@ class AppBar extends Component {
 								activePath={activePath}
 								closeAccountMenu={this.closeAccountMenu}
 								onHelp={onHelp}
+								location={location}
 							/>
 						</div>
 					) : null

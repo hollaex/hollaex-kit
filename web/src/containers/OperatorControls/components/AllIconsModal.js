@@ -81,7 +81,7 @@ class AllIconsModal extends Component {
 			cancelText: 'Cancel',
 			onOk: this.handleSave,
 			onCancel: () => this.setState({ selectedFiles: {} }),
-			className: 'all-icons-confirmation',
+			zIndex: 10003,
 		});
 	};
 

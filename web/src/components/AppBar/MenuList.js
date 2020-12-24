@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Image from 'components/Image';
 import classnames from 'classnames';
 
@@ -78,6 +79,8 @@ class MenuList extends Component {
 			walletPending,
 			activePath,
 			icons: ICONS,
+			constants,
+			location,
 		} = this.props;
 		const { isOpen } = this.state;
 		const totalPending = IS_XHT
@@ -117,6 +120,45 @@ class MenuList extends Component {
 								{STRINGS['ACCOUNTS.TAB_SUMMARY']}
 							</EditWrapper>
 						</div>
+						<div
+							className={classnames('app-bar-account-menu-list d-flex', {
+								'menu-active':
+									location.pathname === '/trade/add/tabs' &&
+									selectedMenu === 'pro-trade',
+							})}
+							onClick={() => this.handleMenu('pro-trade')}
+						>
+							<div className="notification-content" />
+							<Image
+								icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
+								wrapperClassName="app-bar-account-list-icon"
+							/>
+							<EditWrapper stringId="PRO_TRADE" iconId="SIDEBAR_TRADING_ACTIVE">
+								{STRINGS['PRO_TRADE']}
+							</EditWrapper>
+						</div>
+						{constants.broker_enabled && (
+							<div
+								className={classnames('app-bar-account-menu-list d-flex', {
+									'menu-active':
+										activePath === 'quick-trade' &&
+										selectedMenu === 'quick-trade',
+								})}
+								onClick={() => this.handleMenu('quick-trade')}
+							>
+								<div className="notification-content" />
+								<Image
+									icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
+									wrapperClassName="app-bar-account-list-icon"
+								/>
+								<EditWrapper
+									stringId="QUICK_TRADE"
+									iconId="QUICK_TRADE_TAB_ACTIVE"
+								>
+									{STRINGS['QUICK_TRADE']}
+								</EditWrapper>
+							</div>
+						)}
 						<div
 							className={classnames(
 								'app-bar-account-menu-list d-flex',
@@ -309,4 +351,10 @@ class MenuList extends Component {
 	}
 }
 
-export default withConfig(MenuList);
+const mapStateToProps = (state) => {
+	return {
+		constants: state.app.constants,
+	};
+};
+
+export default connect(mapStateToProps)(withConfig(MenuList));
