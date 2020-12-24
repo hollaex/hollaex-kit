@@ -10,7 +10,7 @@ import { LinkButton } from './LinkButton';
 import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
-import { isLoggedIn, isAdmin } from '../../utils/token';
+import { isLoggedIn } from '../../utils/token';
 import { getMe, setMe } from '../../actions/userAction';
 import {
 	getTickers,
@@ -385,8 +385,6 @@ class AppBar extends Component {
 			onHelp,
 			// user,
 			constants = {},
-			isEditMode,
-			icons: ICONS,
 			children,
 		} = this.props;
 		const {
@@ -454,28 +452,6 @@ class AppBar extends Component {
 									options={themeOptions}
 									toggle={this.onToggle}
 								/>
-								{isAdmin() ? (
-									<Link to={isEditMode ? '/' : '/admin'}>
-										<div
-											className={classnames('app_bar-quicktrade', 'd-flex', {
-												'quick_trade-active': location.pathname === '/admin',
-											})}
-										>
-											<Image
-												icon={ICONS['SIDEBAR_ADMIN_DASH_ACTIVE']}
-												wrapperClassName="quicktrade_icon mx-1"
-											/>
-											<EditWrapper
-												stringId="ADMIN_DASH"
-												iconId="SIDEBAR_ADMIN_DASH_ACTIVE"
-											>
-												<div className="d-flex align-items-center">
-													{STRINGS['ADMIN_DASH']}
-												</div>
-											</EditWrapper>
-										</div>
-									</Link>
-								) : null}
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}
