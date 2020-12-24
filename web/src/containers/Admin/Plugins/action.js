@@ -48,6 +48,15 @@ export const addPlugin = (values) => {
 	return requestAuthenticated('/plugins', options, null, PLUGIN_URL);
 };
 
+export const updatePlugin = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/plugins/meta', options, null, PLUGIN_URL);
+};
+
 export const removePlugin = (values) => {
 	const options = {
 		method: 'DELETE',

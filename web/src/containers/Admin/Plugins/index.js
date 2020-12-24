@@ -146,8 +146,10 @@ class Plugins extends Component {
 	};
 
 	handleOpenPlugin = (plugin) => {
+		const { pluginData, myPlugins } = this.state;
 		if (
-			this.state.pluginData.filter((value) => value.name === plugin.name).length
+			pluginData.filter((value) => value.name === plugin.name).length ||
+			myPlugins.filter((value) => value.name === plugin.name).length
 		) {
 			this.setState({
 				showSelected: true,
@@ -181,6 +183,21 @@ class Plugins extends Component {
 	handlePluginList = (plugin) => {
 		this.setState({
 			myPlugins: [...this.state.myPlugins, plugin],
+		});
+	};
+
+	handleUpdatePluginList = (plugin) => {
+		let currentPlugin = this.state.selectedPlugin;
+		const myPlugins = this.state.myPlugins.map((value) => {
+			if (plugin.name === value.name) {
+				currentPlugin = plugin;
+				return plugin;
+			}
+			return value;
+		});
+		this.setState({
+			myPlugins,
+			selectedPlugin: currentPlugin,
 		});
 	};
 
@@ -232,6 +249,7 @@ class Plugins extends Component {
 								handleBreadcrumb={this.handleBreadcrumb}
 								selectedPlugin={selectedPlugin}
 								handlePluginList={this.handlePluginList}
+								updatePluginList={this.handleUpdatePluginList}
 								removePlugin={this.removePlugin}
 							/>
 						)}
@@ -252,7 +270,6 @@ class Plugins extends Component {
 							<TabPane tab="My plugins" key="my_plugin">
 								<MyPlugins
 									removePluginName={removePluginName}
-									selectedPlugin={selectedPlugin}
 									handleOpenPlugin={this.handleOpenPlugin}
 									handlePluginList={this.handlePluginList}
 									getPlugins={this.getPlugins}

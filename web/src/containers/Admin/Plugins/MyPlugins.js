@@ -70,7 +70,6 @@ class MyPlugins extends Component {
 	handleAddPlugin = async () => {
 		const body = {
 			...this.state.thirdParty,
-			author: 'test',
 			enabled: true,
 		};
 		addPlugin(body)
@@ -125,7 +124,14 @@ class MyPlugins extends Component {
 	};
 
 	checkJSON = (json) => {
-		if (json && json.name && json.script && json.version && json.description) {
+		if (
+			json &&
+			json.name &&
+			json.script &&
+			json.version &&
+			json.description &&
+			json.author
+		) {
 			return true;
 		} else {
 			return false;
@@ -295,7 +301,7 @@ class MyPlugins extends Component {
 							<img
 								src={STATIC_ICONS.ADD_THIRD_PARTY_PLUGIN}
 								alt="Plugin"
-								className="plugin-icon"
+								className="plugin-removal-icon"
 							/>
 							<h5>
 								<b>Add third party plugin</b>
@@ -328,8 +334,16 @@ class MyPlugins extends Component {
 	};
 
 	renderList = () => {
-		const { myPlugins, removePluginName, handleOpenPlugin } = this.props;
+		const {
+			myPlugins,
+			removePluginName,
+			handleOpenPlugin,
+			pluginData,
+		} = this.props;
+
 		return myPlugins.map((item, index) => {
+			const networkPlugin =
+				pluginData.filter((data) => data.name === item.name)[0] || {};
 			return (
 				<div
 					key={index}
@@ -363,7 +377,18 @@ class MyPlugins extends Component {
 							<div className="plugin-list-bio">{item.bio}</div>
 						</div>
 					</div>
-					<div className="add-btn">Configure</div>
+					<div className="d-flex justify-content-between align-items-start">
+						<div className="add-btn">Configure</div>
+						{networkPlugin.version > item.version ? (
+							<div className="ml-2">
+								<div className="update-btn">Update</div>
+								<div className="d-flex">
+									<div className="small-circle"></div>
+									<div className="update-txt">{`v${networkPlugin.version} available`}</div>
+								</div>
+							</div>
+						) : null}
+					</div>
 				</div>
 			);
 		});

@@ -119,7 +119,7 @@ class PluginList extends Component {
 						{PLUGIN_CARDS.map((card, index) => (
 							<div
 								key={index}
-								className="card"
+								className="plugin-card"
 								style={{ backgroundImage: `url(${card.logo})` }}
 								onClick={() => this.props.handleOpenPlugin(card)}
 							/>
