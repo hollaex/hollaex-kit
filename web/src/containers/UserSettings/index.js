@@ -104,8 +104,15 @@ class UserSettings extends Component {
 	};
 
 	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
-		const { constants = {}, icons: ICONS, totalAsset } = this.props;
-		const formValues = generateFormValues({});
+		const {
+			constants = {},
+			icons: ICONS,
+			totalAsset,
+			themeOptions,
+		} = this.props;
+		const formValues = generateFormValues({
+			options: themeOptions.map(({ value }) => ({ value, label: value })),
+		});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
 		);
