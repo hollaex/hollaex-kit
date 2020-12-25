@@ -6,14 +6,16 @@ import fa from './lang/fa';
 import ar from './lang/ar';
 import fr from './lang/fr';
 import es from './lang/es';
+import ja from './lang/ja';
 
 const strings = new LocalizedStrings({
 	en,
 	ko,
+	ja,
 	fa,
 	ar,
 	fr,
-	es
+	es,
 });
 
 export default strings;
