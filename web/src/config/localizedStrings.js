@@ -7,6 +7,8 @@ import ar from './lang/ar';
 import fr from './lang/fr';
 import es from './lang/es';
 import ja from './lang/ja';
+import vi from './lang/vi';
+import id from './lang/id';
 
 const strings = new LocalizedStrings({
 	en,
@@ -16,6 +18,8 @@ const strings = new LocalizedStrings({
 	ar,
 	fr,
 	es,
+	vi,
+	id,
 });
 
 export default strings;
