@@ -2,15 +2,15 @@ import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
 
 export default {
-	APP_TITLE: 'HollaEx',
+	APP_TITLE: 'XIVeX',
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
-	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
-	ADD_TRADING_PAIR: '거래통화페어 추가',
+	LOGOUT_CONFIRM_TEXT: '정말로 로그아웃 하시겠습니까?',
+	ADD_TRADING_PAIR: '거래 통화 페어 추가',
 	ACTIVE_TRADES: '실제 거래를 이용하기 위해 {0}을 해주시기바랍니다.',
 	CANCEL_FIAT_WITHDRAWAL: '{0} 출금 취소',
 	CANCEL_WITHDRAWAL: '출금 취소',
-	CANCEL_WITHDRAWAL_POPUP_CONFIRM: '진행중인 출금 거래를 취소하시겠습니까?:',
+	CANCEL_WITHDRAWAL_POPUP_CONFIRM: '진행 중인 출금 거래를 취소하시겠습니까?:',
 	CANT_BE_CANCELLED: '-',
 	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss',
@@ -20,7 +20,7 @@ export default {
 	SIGNUP_TEXT: '회원가입',
 	REGISTER_TEXT: '가입하기',
 	ACCOUNT_TEXT: '계정',
-	HOME_TEXT: 'Home',
+	HOME_TEXT: '홈',
 	CLOSE_TEXT: '닫기',
 	COPY_TEXT: '복사',
 	COPY_SUCCESS_TEXT: '성공적으로 복사되었습니다.',
@@ -31,9 +31,9 @@ export default {
 	CONTACT_US_TEXT: '문의하기',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
-		'문의사항은 support@hollaex.com로 연락해주시기바랍니다.',
-	HELP_TELEGRAM_TEXT: 'HollaEx의 오픈API 확인하기:',
-	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
+		'문의사항은 support@XIVex.com로 연락해주시기바랍니다.',
+	HELP_TELEGRAM_TEXT: 'XIVex 오픈API 확인하기:',
+	HELP_TELEGRAM_LINK: 'https://apidocs.XIVex.com',
 	NEED_HELP_TEXT: '도움이 필요하십니까?', // new
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: '성공',
@@ -41,15 +41,15 @@ export default {
 	PROCEED: '실행',
 	EDIT_TEXT: '편집',
 	BACK_TEXT: '돌아가기',
-	NO_OPTIONS: '사용가능한 옵션이 없습니다.',
+	NO_OPTIONS: '사용 가능한 옵션이 없습니다.',
 	SECONDS: 'seconds',
-	VIEW_MARKET: '마켓보기', // new
-	GO_TRADE: '거래하러가기', // new
-	VIEW_INFO: '정보페이지보기', // new
+	VIEW_MARKET: '마켓 보기', // new
+	GO_TRADE: '거래하러 가기', // new
+	VIEW_INFO: '정보 페이지 보기', // new
 	HOME: {
-		SECTION_1_TITLE: 'HollaEx Exchange Kit에 오신 것을 환영합니다.',
+		SECTION_1_TITLE: 'XIVex Exchange Kit에 오신 것을 환영합니다.',
 		SECTION_1_TEXT_1:
-			'HollaEx Kit으로 자신만의 확장 가능한 디지털 자산 거래소를 구축하여 미래금융을 이끌어보세요.',
+			'XIVex Kit으로 자신만의 확장 가능한 디지털 자산 거래소를 구축하여 미래금융을 이끌어보세요.',
 		SECTION_1_TEXT_2:
 			'트레이딩 기술을 간단한 접근과 알맞은 가격으로 구현하여 금융 기술 발전을 위해 노력합니다.',
 		SECTION_1_BUTTON_1: '더 알아보기',
@@ -62,7 +62,7 @@ export default {
 			'사용자 맞춤형 모듈의 플러그인을 통해 은행과의 통합이 가능합니다. 현지 시장에 맞추어 거래소를 만들 수 있도록 도울 수 있습니다.',
 		SECTION_3_CARD_3_TITLE: '강력한 보안시스템',
 		SECTION_3_CARD_3_TEXT:
-			'보안을 최우선 순위로 두고 주의를 기울입니다. HollaEx는 자금을 안전하게 유지하기 위해 최상의 보안관행과 가장 안전하고 신뢰할 수 있는 알고리즘을 사용합니다.',
+			'보안을 최우선 순위로 두고 주의를 기울입니다. XIVex 자금을 안전하게 유지하기 위해 최상의 보안관행과 가장 안전하고 신뢰할 수 있는 알고리즘을 사용합니다.',
 		SECTION_3_CARD_4_TITLE: '고급 리포팅 기능',
 		SECTION_3_CARD_4_TEXT:
 			'어드민 패널을 통해 시스템 및 트랜잭션 상태를 서포터 및 관리자에게 통지하기 위한 맞춤형의 이메일과 보고서 등을 제공합니다.',
@@ -105,14 +105,14 @@ export default {
 			SECTION_4_LINK_4: 'Terms of Use',
 			SECTION_5_TITLE: 'RESOURCES',
 			SECTION_5_LINK_1: 'Whitepaper',
-			SECTION_5_LINK_2: 'HollaEx Token(XHT) ',
+			SECTION_5_LINK_2: 'XIVex Token(XHT) ',
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: '트위터',
 			SECTION_6_LINK_2: '텔레그램'
 		},
 		XHT_DESCRIPTION:
-			'HollaEx는 비트홀라에서 개발 및 관리하는 HollaEx Kit기술에 기반하여 만들어진 오픈 암호화폐 거래소입니다. HollaEx 소프트웨어 Kit으로 만들어진 실시간 운영되고있는 거래소로 누구나 이와 같은 거래소를 직접 운영할 수 있다는 것을 보여주는 예입니다. 자신만의 거래소를 시작하기위해 {1}를 참조하시기바랍니다. HollaEx토큰은 HollaEx의 네이티브 토큰으로 웨이브옥션 시스템을 통해 HollaEx거래소에서 거래됩니다. 옥션이 어떻게 작동하는지 자세한 내용은 {0}에서 확인하실 수 있습니다.',
+			'XIVeX는 비트홀라에서 개발 및 관리하는 XIVex Kit기술에 기반하여 만들어진 오픈 암호화폐 거래소입니다. XIVex 소프트웨어 Kit으로 만들어진 실시간 운영되고있는 거래소로 누구나 이와 같은 거래소를 직접 운영할 수 있다는 것을 보여주는 예입니다. 자신만의 거래소를 시작하기위해 {1}를 참조하시기바랍니다. XIVeX토큰은 XIVex 네이티브 토큰으로 웨이브옥션 시스템을 통해 XIVeX 거래소에서 거래됩니다. 옥션이 어떻게 작동하는지 자세한 내용은 {0}에서 확인하실 수 있습니다.',
 		CLICK_HERE: '이곳을 클릭하세요.',
 		VISIT_HERE: '방문하기'
 	},
@@ -135,7 +135,7 @@ export default {
 		CATEGORY_PLACEHOLDER: '회원님에게 해당하는 카테고리를 선택하시기바랍니다.',
 		INTRODUCTION_LABEL: '자기소개',
 		INTRODUCTION_PLACEHOLDER:
-			'베이스가 어디십니까? 거래소 운영에 관심이 있으십니까?'
+			'위치가 어디십니까? 거래소 운영에 관심이 있으십니까?'
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: '문의 유형',
@@ -146,14 +146,14 @@ export default {
 			OPTION_DEPOSIT: '입금 & 출금',
 			OPTION_BUG: '오류 보고',
 			OPTION_PERSONAL_INFO: '개인정보 변경', // ToDo:
-			OPTION_BANK_TRANSFER: '은행송금', // new
-			OPTION_REQUEST: 'HollaEx Exchange 초대요청' // new
+			OPTION_BANK_TRANSFER: '은행 송금', // new
+			OPTION_REQUEST: 'XIVeX Exchange 초대요청' // new
 		},
 		SUBJECT_LABEL: '문의 제목',
 		SUBJECT_PLACEHOLDER: '문의 제목을 작성하여 주시기바랍니다.',
 		DESCRIPTION_LABEL: '문의 내용',
 		DESCRIPTION_PLACEHOLDER: '문의내용을 상세하게 작성하여 주시기바랍니다.',
-		ATTACHMENT_LABEL: '첨부파일(최대3개)',
+		ATTACHMENT_LABEL: '첨부파일(최대 3개)',
 		ATTACHMENT_PLACEHOLDER:
 			'더 나은 상담을 위하여 문의내용과 관련된 이미지 파일을 첨부해주시기바랍니다.(PDF, JPG, PNG, GIF 파일첨부가능)',
 		SUCCESS_MESSAGE: '고객센터로 이메일이 전송되었습니다.',
@@ -167,11 +167,11 @@ export default {
 			DESTINATION_TAG: '{0} 데스티네이션 태그(Destination Tag)', // new
 			BTC: '비트코인 입금 주소',
 			ETH: '이더리움 입금 주소',
-			BCH: '비트코인캐시 입금 주소'
+			BCH: '비트코인 캐시 입금 주소'
 		},
 		INCREASE_LIMIT: '한도 증액이 필요하십니까?',
 		QR_CODE:
-			'회원님에게 할당된 입금 전용주소로 입금을 위해 이 QR 코드를 스캔하실 수 있습니다.',
+			'회원님의 입금 전용주소로 입금을 위해 이 QR 코드를 스캔하실 수 있습니다.',
 		NO_DATA: '이용가능한 정보가 없습니다.',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
@@ -179,8 +179,8 @@ export default {
 		LOGIN_TO: '{0} 로그인',
 		CANT_LOGIN: '로그인이 안되십니까?',
 		NO_ACCOUNT: '계정이 없으십니까?',
-		CREATE_ACCOUNT: '계정만들기',
-		HELP: 'Help'
+		CREATE_ACCOUNT: '계정 만들기',
+		HELP: '도움말'
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: '이메일',
@@ -192,11 +192,11 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: '로그인을 위해 OTP코드를 입력해주시기 바랍니다.',
-		CAPTCHA: 'Expired Session. Please refresh the page', // new
-		FROZEN_ACCOUNT: 'This account is frozen.',
+		CAPTCHA: '세션이 종료되었습니다. 페이지를 새로고침하여 주십시오.', // new
+		FROZEN_ACCOUNT: '이 계정은 동결되었습니다.',
 		INVALID_EMAIL: '사용할 수 없는 이메일 주소입니다.',
 		TYPE_EMAIL: '이메일주소를 입력하세요.',
-		REQUIRED: '필수입력란',
+		REQUIRED: '필수 입력란',
 		INVALID_DATE: '유효하지 않은 날짜',
 		INVALID_PASSWORD:
 			'사용할 수 없는 비밀번호입니다.(비밀번호는 최소 8자 이상, 숫자 및 특수문자 사용)',
@@ -215,12 +215,12 @@ export default {
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
-			TITLE: 'Privacy Policy',
+			TITLE: '개인정보 처리방침',
 			SUBTITLE:
 				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
-				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'XIVeX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this XIVeX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
@@ -229,12 +229,12 @@ export default {
 			]
 		},
 		GENERAL_TERMS: {
-			TITLE: 'General Terms of Service',
+			TITLE: '이용약관',
 			SUBTITLE:
 				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
-				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'XIVeX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this XIVeX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
@@ -245,7 +245,7 @@ export default {
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
-			OKAY: 'Okay',
+			OKAY: '확인',
 			START_TRADING: '거래 시작하기',
 			SEE_HISTORY: '거래내역 보기'
 		},
@@ -253,16 +253,16 @@ export default {
 			TITLE_RECEIVED: '{0} 입금완료',
 			TITLE_INCOMING: '{0} 입금진행중',
 			SUBTITLE_RECEIVED: '{0} 입금이 완료되었습니다.',
-			SUBTITLE_INCOMING: '{0}입금이 진행 중입니다.',
+			SUBTITLE_INCOMING: '{0} 입금이 진행 중입니다.',
 			INFORMATION_PENDING_1:
 				'거래를 시작하려면 {0}은 최소 1개의 확인이 필요합니다.',
 			INFORMATION_PENDING_2:
-				'입금이 완료되는데 약 10-30분이 소요되지만, 상황에 따라 지연될 수 있습니다. {0}이 블록체인상 확인이 완료되면 이메일을 보내드립니다.'
+				'입금이 완료되는데에 약 10-30분이 소요되지만, 상황에 따라 지연될 수 있습니다. {0}이 블록체인상 확인이 완료되면 이메일을 보내드립니다.'
 		}
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: '요청을 보냈습니다.',
-		BUTTON_TEXT: 'Okay'
+		BUTTON_TEXT: '확인'
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: '인증번호를 입력하여 계속 진행하시기 바랍니다.',
@@ -309,7 +309,7 @@ export default {
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: '새 비밀번호가 성공적으로 설정되었습니다.',
-		TEXT_2: '계속하려면 아래 로그인 버튼을 클릭하시기바랍니다.'
+		TEXT_2: '계속하려면 아래 로그인 버튼을 클릭하시기 바랍니다.'
 	},
 	SIGN_UP: {
 		SIGNUP_TO: '{0}에 가입하기',
@@ -348,11 +348,11 @@ export default {
 	USER_VERIFICATION: {
 		INFO_TXT: '개인정보 및 계정 업그레이드 진행상황을 확인하실 수 있습니다.',
 		INFO_TXT_1:
-			'아래 각 부문에 필요한 정보를 작성해주시기바랍니다. 모든 부문의 제출의 완료된 이후에 해당 정보를 검토하여 계정업그레이드 승인이 이루어집니다.',
+			'아래 각 부문에 필요한 정보를 작성해주시기바랍니다. 모든 부문의 제출의 완료된 이후에 해당 정보를 검토하여 계정 업그레이드 승인이 이루어집니다.',
 		INFO_TXT_2: '*인증을 위해 {0}가 필수적입니다.',
-		DOCUMENTATIONS: '문서업로드',
+		DOCUMENTATIONS: '문서 업로드',
 		COMPLETED: '완료',
-		PENDING_VERIFICATION: '인증진행중',
+		PENDING_VERIFICATION: '인증 진행중',
 		TITLE_EMAIL: '이메일',
 		MY_EMAIL: '나의 이메일',
 		MAKE_FIRST_DEPOSIT: '첫 입금하기', // new
@@ -363,31 +363,31 @@ export default {
 		TITLE_MOBILE_PHONE: '휴대폰',
 		TITLE_PERSONAL_INFORMATION: '개인정보',
 		VERIFY_EMAIL: '이메일 확인',
-		VERIFY_MOBILE_PHONE: '휴대폰번호 확인',
+		VERIFY_MOBILE_PHONE: '휴대폰 번호 확인',
 		VERIFY_USER_DOCUMENTATION: '인증문서 확인',
 		VERIFY_ID_DOCUMENTS: '신분증 확인',
 		VERIFY_BANK_ACCOUNT: '은행계좌 확인',
-		BUTTON: '인증요청제출하기',
+		BUTTON: '인증요청 제출하기',
 		TITLE_IDENTITY: '개인정보',
 		TITLE_MOBILE: '휴대폰',
-		TITLE_MOBILE_HEADER: '휴대폰번호',
+		TITLE_MOBILE_HEADER: '휴대폰 번호',
 		TITLE_BANK: '은행',
-		TITLE_BANK_HEADER: '은행상세정보',
+		TITLE_BANK_HEADER: '은행 상세정보',
 		CHANGE_VALUE: '값 변경하기',
 		PENDING_VERIFICATION_PERSONAL_INFORMATION: '개인정보 인증처리중입니다.',
-		PENDING_VERIFICATION_BANK: '은행정보인증이 처리중입니다.',
-		PENDING_VERIFICATION_DOCUMENTS: '문서인증이 처리중입니다.',
+		PENDING_VERIFICATION_BANK: '은행정보 인증이 처리중입니다.',
+		PENDING_VERIFICATION_DOCUMENTS: '문서 인증이 처리중입니다.',
 		GOTO_VERIFICATION: '인증페이지로 이동',
 		GOTO_WALLET: '지갑으로 이동', // new
-		CONNECT_BANK_ACCOUNT: '은행계좌연결',
+		CONNECT_BANK_ACCOUNT: '은행계좌 연결',
 		ACTIVATE_2FA: '이중인증(2FA) 활성화',
 		INCOMPLETED: '완료되지않음',
 		BANK_VERIFICATION: '은행인증',
 		IDENTITY_VERIFICATION: '개인정보확인',
-		PHONE_VERIFICATION: '휴대폰인증',
-		DOCUMENT_VERIFICATION: '개인정보제출',
-		START_BANK_VERIFICATION: '은행인증시작하기',
-		START_IDENTITY_VERIFICATION: '개인정보작성하기',
+		PHONE_VERIFICATION: '휴대폰 인증',
+		DOCUMENT_VERIFICATION: '개인정보 제출',
+		START_BANK_VERIFICATION: '은행인증 시작하기',
+		START_IDENTITY_VERIFICATION: '개인정보 작성하기',
 		START_PHONE_VERIFICATION: '휴대폰 인증시작하기 ',
 		START_DOCUMENTATION_SUBMISSION: '문서업로드 시작하기',
 		GO_BACK: '되돌아가기',
@@ -395,8 +395,8 @@ export default {
 			'은행계좌는 3개까지 추가하실 수 있습니다. 해외은행계좌는 고객센터에 문의하여주시고, 출금한도에 제한이 있습니다.',
 		BANK_VERIFICATION_TEXT_2:
 			'은행계좌등록을 하시면 아래와 같은 서비스를 이용하실 수 있습니다:',
-		FIAT_WITHDRAWAL: '화폐출금',
-		FIAT_DEPOSITS: '화폐입금',
+		FIAT_WITHDRAWAL: '명목화폐 출금',
+		FIAT_DEPOSITS: '명목화폐 입금',
 		ADD_ANOTHER_BANK_ACCOUNT: '은행계좌 추가하기',
 		BANK_NAME: '은행이름',
 		ACCOUNT_NUMBER: '계좌번호',
@@ -409,7 +409,7 @@ export default {
 		PHONE_COUNTRY_ORIGIN: '개통국가',
 		MOBILE_NUMBER: '휴대폰번호',
 		DOCUMENT_PROOF_SUBMISSION: '개인정보인증',
-		START_DOCUMENTATION_RESUBMISSION: '문서 다시제출하기',
+		START_DOCUMENTATION_RESUBMISSION: '문서 다시 제출하기',
 		SUBMISSION_PENDING_TXT:
 			'*해당 정보는 이미 제출되었습니다. 변경사항 수정 후 다시 제출하시면 변경된 정보로 저장됩니다.',
 		CUSTOMER_SUPPORT_MESSAGE: '고객센터 메세지',
@@ -417,7 +417,7 @@ export default {
 			'문서가 제출되었으며 검토를 진행중입니다. 기다려주시기바랍니다.',
 		DOCUMENT_VERIFIED_NOTE: '문서검토가 완료되었습니다.',
 		NOTE_FROM_VERIFICATION_DEPARTMENT: '검증부서로부터의 참고사항',
-		CODE_EXPIRES_IN: '코드 만료',
+		CODE_EXPIRES_IN: '코드 만료까지 남은 시간',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: '이름',
@@ -451,7 +451,7 @@ export default {
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: '휴대폰 번호',
 				PHONE_NUMBER_PLACEHOLDER: '휴대폰 번호를 입력해주시기 바랍니다.',
-				SMS_SEND: 'SMS보내기',
+				SMS_SEND: 'SMS 보내기',
 				SMS_CODE_LABEL: 'SMS코드',
 				SMS_CODE_PLACEHOLDER: '전송된 SMS코드를 입력해주시기 바랍니다.'
 			},
@@ -461,7 +461,7 @@ export default {
 				TITLE_PERSONAL_INFORMATION: '개인 정보',
 				TITLE_PHONE: '연락처',
 				PHONE_VERIFICATION_TXT:
-					'유효한 세부 연락처를 제공하여 회원님의 계정에서 이뤄질 수 있는 원치않는 거래를 방지하고, HollaEx가 문제를 해결하는데 도움이 될 수 있습니다.',
+					'유효한 세부 연락처를 제공하여 회원님의 계정에서 이뤄질 수 있는 원치 않는 거래를 방지하고, XIVeX가 문제를 해결하는데 도움이 될 수 있습니다.',
 				PHONE_VERIFICATION_TXT_1:
 					'휴대폰 번호를 인증하여 회원님의 입출금내역을 실시간으로 제공받을 수 있습니다.',
 				PHONE_VERIFICATION_TXT_2:
@@ -473,7 +473,7 @@ export default {
 				ID_TYPE: '신분증 유형을 선택해주시기 바랍니다.',
 				ID_NUMBER: ' 신분증 번호를 입력해주시기 바랍니다.',
 				ISSUED_DATE: '신분증 발급 날짜를 선택해주시기 바랍니다.',
-				EXPIRATION_DATE: '신분증 만료날짜를 입력해주시기바랍니다.',
+				EXPIRATION_DATE: '신분증 만료 날짜를 입력해주시기바랍니다.',
 				FRONT: '신분증 복사본을 첨부해주시기바랍니다.',
 				PROOF_OF_RESIDENCY:
 					'현재 거주지 주소를 증명하는 증빙서류를 첨부해주시기 바랍니다.',
@@ -506,12 +506,12 @@ export default {
 					'메모가 부착된 여권을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
 			},
 			INFORMATION: {
-				IDENTITY_DOCUMENT: 'Identity Document',
+				IDENTITY_DOCUMENT: '신분증 문서',
 				PROOF_OF_RESIDENCY: '거주지 증빙서류',
 				ID_SECTION: {
 					TITLE: '다음사항을 확인 후 제출하시기 바랍니다.',
 					LIST_ITEM_1: '고화질(컬러이미지, 300dpi 이상의 해상도)의 문서',
-					LIST_ITEM_2: '문서전체가 명백히 보일것(워터마크허용)',
+					LIST_ITEM_2: '문서 전체가 명백히 보일것(워터마크허용)',
 					LIST_ITEM_3: '유효한 기간내의 파일로 만료 날짜가 선명하게 표시될 것',
 					WARNING_1:
 						'유효한 여권만 허용됩니다. 고품질의 사진 또는 스캔된 이미지를 제출해주시기바랍니다:',
@@ -524,9 +524,9 @@ export default {
 						'본인인증 검토과정의 지연을 방지하기 위해 다음의 내용을 확인해주시기 바랍니다:',
 					SECTION_1_TEXT_2:
 						'이름, 주소, 발급 날짜 및 발급인 등의 정보가 선명하게 보일것',
-					SECTION_1_TEXT_3: '거증빙서류의 발급일로부터 3개월이 지나지 않은것.',
+					SECTION_1_TEXT_3: '거주지 증빙서류의 발급일로부터 3개월이 지나지 않은것.',
 					SECTION_1_TEXT_4:
-						'컬러 사진 또는 스캔 이미지가 고화질일것  (최소 300dpi)',
+						'컬러 사진 또는 스캔 이미지가 고화질일 것  (최소 300dpi)',
 					SECTION_2_TITLE: '제출가능한 거주지 증빙서류:',
 					SECTION_2_LIST_ITEM_1:
 						'정부에서 발행한 문서(납세증명서, 주민등록등본 등)',
@@ -538,11 +538,11 @@ export default {
 				SELFIE: {
 					TITLE: '메모가 부착된 여권을 들고있는 본인의 사진',
 					INFO_TEXT:
-						'아래의 예시를 확인하시어 해당내용을 포함한 메모가 부착된 여권을 들고있는 사진을 제출하시기바랍니다. 얼굴이 선명하게 보이고 여권의 세부정보를 명확하게 읽을 수 있어야합니다.',
+						'아래의 예시를 확인하시어 해당내용을 포함한 메모가 부착된 여권을 들고있는 사진을 제출하시기바랍니다. 사진안에 거래소 사이트 주소, 해당일 날짜, 서명이 보여야 합니다. 얼굴이 선명하게 보이고 여권의 세부정보를 명확하게 읽을 수 있어야합니다.',
 					REQUIRED: '필요조건:',
 					INSTRUCTION_1: '얼굴이 선명히 보일것',
 					INSTRUCTION_2: '여권의 세부정보가 명확히 보일것',
-					INSTRUCTION_3: '메모내용: 직접 쓴 ‘hollaex.com',
+					INSTRUCTION_3: '메모내용: 직접 쓴 ‘XIVeX.com',
 					INSTRUCTION_4: '메모내용: 신청 날짜',
 					INSTRUCTION_5: '메모내용: 본인서명',
 					WARNING: '첨부된 여권과 일치하지 않을 경우 거절됩니다.'
@@ -582,30 +582,30 @@ export default {
 		TITLE_LANGUAGE: '언어',
 		TITLE_CHAT: '채팅',
 		TITLE_AUDIO_CUE: '사운드',
-		TITLE_MANAGE_RISK: '리스크관리',
-		ORDERBOOK_LEVEL: '주문장 높이(최대20)',
+		TITLE_MANAGE_RISK: '리스크 관리',
+		ORDERBOOK_LEVEL: '주문장 레벨(최대20)',
 		SET_TXT: '설정',
 		CREATE_ORDER_WARING: '주문경고생성',
-		RISKY_TRADE_DETECTED: '위험거래 탐지',
+		RISKY_TRADE_DETECTED: '위험거래 감지',
 		RISKY_WARNING_TEXT_1: '이 주문 값이 지정해둔 주문한도 금액 {0} 을 초과함',
 		RISKY_WARNING_TEXT_2: '(포트폴리오의 {0})',
 		RISKY_WARNING_TEXT_3:
-			'정말 이 거래를 실행하실지 다시한번 확인하시기 바랍니다.',
-		GO_TO_RISK_MANAGMENT: '리스크관리로 가기',
+			'정말 이 거래를 실행하실지 다시 한번 확인하시기 바랍니다.',
+		GO_TO_RISK_MANAGMENT: '리스크 관리로 가기',
 		CREATE_ORDER_WARING_TEXT:
 			'주문 값이 포트폴리오의 {0}을 초과하는 경우 경고 알림창을 만들 수 있습니다.',
 		ORDER_PORTFOLIO_LABEL: '포트폴리오의 백분율 값:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: '주문 알림창',
-			POPUP_ORDER_CONFIRMATION: '주문 실행시 확인알림창',
+			POPUP_ORDER_CONFIRMATION: '주문 실행시 확인 알림창',
 			POPUP_ORDER_COMPLETED: '주문 완료시 알림창',
 			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림창'
 		},
 		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO: '하나의 주문이 완전히 채워질 경우 알림사운드재생',
+			ORDERS_COMPLETED_AUDIO: '하나의 주문이 완전히 채워질 경우 알림 사운드 재생',
 			ORDERS_PARTIAL_AUDIO:
-				'주문 중 하나가 부분적으로 채워질 경우 알림사운드재생',
-			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 대해 알림사운드재생'
+				'주문 중 하나가 부분적으로 채워질 경우 알림 사운드 재생',
+			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 대해 알림 사운드 재생'
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -613,16 +613,16 @@ export default {
 			PORTFOLIO: '포트폴리오 백분율',
 			TOMAN_ASSET: '근사값',
 			ADJUST: '(백분율 설정하기)',
-			ACTIVATE_RISK_MANAGMENT: '리스크관리 실행',
-			WARNING_POP_UP: '경고알림창'
+			ACTIVATE_RISK_MANAGMENT: '리스크 관리 실행',
+			WARNING_POP_UP: '경고 알림창'
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: '나의 거래 히스토리',
-		TITLE_TRADES: '주문체결내역',
+		TITLE: '나의 거래 내역',
+		TITLE_TRADES: '주문체결 내역',
 		TITLE_DEPOSITS: '입금 내역',
 		TITLE_WITHDRAWALS: '출금 내역',
-		TEXT_DOWNLOAD: '기록 다운로드',
+		TEXT_DOWNLOAD: '내역 다운로드',
 		TRADES: '주문체결',
 		DEPOSITS: '입금',
 		WITHDRAWALS: '출금'
@@ -652,8 +652,8 @@ export default {
 				MESSAGE_5: '수동',
 				INPUT: 'OTP 코드를 입력해주시기바랍니다.',
 				WARNING:
-					'2단계 인증(2FA) 설정을 적극권장합니다. 이를 통해 회원님의 자산의 보안이 크게 향상됩니다.',
-				ENABLE: '2단계 인증(2FA)  사용함',
+					'2단계 인증(2FA) 설정을 적극 권장합니다. 이를 통해 회원님의 자산의 보안이 크게 향상됩니다.',
+				ENABLE: '2단계 인증(2FA) 사용함',
 				DISABLE: '2단계 인증(2FA) 사용안함'
 			},
 			FORM: {
@@ -680,20 +680,20 @@ export default {
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: '새 비밀번호 확인',
-					placeholder: '새 비밀번호를 다시한번 입력해주시기바랍니다.'
+					placeholder: '새 비밀번호를 다시 한번 입력해주시기바랍니다.'
 				}
 			}
 		}
 	},
-	CURRENCY: 'Currency',
-	TYPE: 'Type',
+	CURRENCY: '통화',
+	TYPE: '유형',
 	TYPES_VALUES: {
-		market: 'market',
-		limit: 'limit'
+		market: '시장',
+		limit: '한도'
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' },
-		{ value: 'limit', label: 'limit' }
+		{ value: 'market', label: '시장' },
+		{ value: 'limit', label: '한도' }
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -705,42 +705,42 @@ export default {
 		{ value: true, label: 'on' },
 		{ value: false, label: 'off' }
 	],
-	SIZE: 'Size',
-	PRICE: 'Price',
-	FEE: 'Fee',
-	FEES: 'Fees',
-	LIMIT: 'Limit',
-	TIME: 'Time',
+	SIZE: '크기',
+	PRICE: '가격',
+	FEE: '수수료',
+	FEES: '수수료',
+	LIMIT: '한도',
+	TIME: '시간',
 	TIMESTAMP: 'Timestamp',
-	MORE: 'More',
-	VIEW: 'View',
+	MORE: '더보기',
+	VIEW: '보기',
 	STATUS: '상태',
 	AMOUNT: '수량',
-	COMPLETE: 'Complete',
-	PENDING: 'Pending',
-	REJECTED: 'Rejected',
-	ORDERBOOK: 'Order Book',
-	CANCEL: 'Cancel',
-	CANCEL_ALL: 'Cancel All',
+	COMPLETE: '완료',
+	PENDING: '보류 중',
+	REJECTED: '거절됨',
+	ORDERBOOK: 'ORDERBOOK',
+	CANCEL: '취소',
+	CANCEL_ALL: '모두 취소',
 	GO_TRADE_HISTORY: '거래내역 보러가기',
-	ORDER_ENTRY: 'order entry',
-	TRADE_HISTORY: 'trade history',
-	CHART: 'price chart',
+	ORDER_ENTRY: '주문 입력',
+	TRADE_HISTORY: '거래 내역',
+	CHART: '가격 챠트',
 	ORDERS: '진행중인 주문',
 	TRADES: '나의 거래 내역',
 	RECENT_TRADES: '최근 체결 내역', // ToDo
 	PUBLIC_SALES: 'public sales', // ToDo
-	REMAINING: 'Remaining',
+	REMAINING: '남음',
 	FULLFILLED: '{0} % Fullfilled',
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: '가격 ({0})',
+	AMOUNT_SYMBOL: '금액 ({0})',
 	MARKET_PRICE: '시장가',
 	ORDER_PRICE: '지정가',
 	TOTAL_ORDER: '총액',
 	NO_DATA: '거래 내역이 없습니다.',
-	LOADING: 'Loading',
+	LOADING: '처리중',
 	CHART_TEXTS: {
-		d: 'Date',
+		d: '날짜',
 		o: 'Open',
 		h: 'High',
 		l: 'Low',
@@ -759,32 +759,32 @@ export default {
 	WITHDRAWALS_MAX_VALUE_ERROR:
 		'최대 출금액을 초과하여 보낼 수 없습니다. 변경 후 다시 시도하시기 바랍니다.',
 	WITHDRAWALS_LOWER_BALANCE:
-		'You don’t have enough {0} in your balance to send that transaction',
+		'{0} 의 잔액이 부족하여 거래를 보낼 수 없습니다.',
 	WITHDRAWALS_FEE_TOO_LARGE:
-		'The fee is more than {0}% of your total transaction',
+		'수수료가 총 거래의 {0}% 를 초과하였습니다.',
 	WITHDRAWALS_BTC_INVALID_ADDRESS:
 		'비트코인 주소가 유효하지않습니다. 확인 후 다시 입력하시기바랍니다.',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'이더리움 주소가 유효하지않습니다. 확인 후 다시 입력하시기바랍니다.',
-	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
+	WITHDRAWALS_BUTTON_TEXT: '출금 내용 검토',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: '보내실 주소',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: '주소 입력하기',
+	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} 금액 출금',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
-		'Type the amount of {0} you wish to withdraw',
+		'출금하시려는 {0}의 금액을 입력하세요',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Transaction fee',
-	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
+		'거래 수수료',
+	WITHDRAWALS_FORM_FEE_FIAT_LABEL: '은행 출금 수수료',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
-		'Type the amount of {0} you wish to use in the fee of the transaction',
-	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'Optimal fee: {0} {1}', // TODO {0} -> amount {1} -> currency name
-	DEPOSITS_FORM_AMOUNT_LABEL: '{0} amount to deposit',
+		'거래 수수료로 사용될 {0}의 금액을 입력하십시오.',
+	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: '최적 수수료: {0} {1}', // TODO {0} -> amount {1} -> currency name
+	DEPOSITS_FORM_AMOUNT_LABEL: '{0} 금액 입금',
 	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
-		'Type the amount of {0} you wish to withdraw',
-	DEPOSITS_BUTTON_TEXT: 'review deposit',
-	DEPOSIT_PROCEED_PAYMENT: 'Pay',
+		'입금하실  {0}의 금액을 입력하십시오.',
+	DEPOSITS_BUTTON_TEXT: '입금 내용 검토',
+	DEPOSIT_PROCEED_PAYMENT: '지불하기',
 	DEPOSIT_BANK_REFERENCE:
-		'Add this "{0}" code to the bank transation to identify the deposit',
+		'Add this "{0}" 의 코드를 은행 거래에 추가하여 입금을 확인하세요',
 	DEPOSIT_METHOD: '결제 수단{0}',
 	DEPOSIT_METHOD_DIRECT_PAYMENT: '신용카드',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: '신용카드 결제를 진행합니다.',
@@ -796,7 +796,7 @@ export default {
 	DEPOSIT_VERIFICATION_WARNING_MESSAGE:
 		'결제 진행과정에 문제가 있다면, 고객센터로 연락주시기 바랍니다.',
 	DEPOSIT_VERIFICATION_WARNING_INFORMATION:
-		'This is the ID of the operation: "{0}", please provide us this ID to help you.',
+		'다음이 이 작업의 ID입니다: "{0}", 도움을 원하시면 이 ID를 제시해주세요.',
 	DEPOSIT_VERIFICATION_SUCCESS: '결제 완료',
 	DEPOSIT_VERIFICATION_ERROR: '입금을 진행하는데 오류가 발생하였습니다.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: '입금이 이미 확인되었습니다.',
@@ -804,116 +804,116 @@ export default {
 	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
 		'결제에 사용된 카드가 회원님께서 등록한 카드정보와 같지 않습니다. 해당 입금은 거절되었으며 한시간 이내로 환불됩니다.',
 	QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
-	QUOTE_BUTTON: 'Accept',
-	QUOTE_REVIEW: 'Review',
-	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
-	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
-	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
+	QUOTE_BUTTON: '수락',
+	QUOTE_REVIEW: '검토',
+	QUOTE_COUNTDOWN_MESSAGE: '거래를 완료하실 때까지 {0} 초가 남았습니다',
+	QUOTE_EXPIRED_TOKEN: 'The quote token이 만료되었습니다.',
+	QUOTE_SUCCESS_REVIEW_TITLE: '퀵트레이딩',
 	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
-	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
+	COUNTDOWN_ERROR_MESSAGE: '카운트 다운이 종료되었습니다',
 	WITHDRAW_PAGE: {
-		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
-		MESSAGE_ABOUT_SEND: 'You are about to send',
+		BANK_TO_WITHDRAW: '출금하실 은행',
+		MESSAGE_ABOUT_SEND: '보내시려는 금액',
 		MESSAGE_BTC_WARNING:
-			'Please ensure the accuracy of this address since {0} transfers are irreversible',
-		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
-		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
-		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
+			'{0} 이체는 되돌릴 수 없습니다. 주소를 정확히 입력해주세요.',
+		MESSAGE_ABOUT_WITHDRAW: '은행 계좌로 이체하시려고 합니다.',
+		MESSAGE_FEE: '{0} ({1}) 의 거래 수수료가 포함되었습니다',
+		MESSAGE_FEE_BASE: '{0} 의 거래 수수료가 포함되었습니다',
 		BASE_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your HollaEx account.',
-		BASE_MESSAGE_2: 'Withdrawal min amount',
-		BASE_MESSAGE_3: 'Daily withdrawal max amount',
-		BASE_INCREASE_LIMIT: 'Increase your daily limit',
-		CONFIRM_VIA_EMAIL: 'Confirm via Email',
-		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
+			'XIVeX 계정에 등록된 이름과 일치하는 은행 계좌로만 출금이 가능합니다.',
+		BASE_MESSAGE_2: '최소 출금 금액',
+		BASE_MESSAGE_3: '일일 최대 출금 금액',
+		BASE_INCREASE_LIMIT: '일일 한도 증액',
+		CONFIRM_VIA_EMAIL: '이메일로 확인',
+		CONFIRM_VIA_EMAIL_1: '출금 확인 이메일을 보내드렸습니다.',
 		CONFIRM_VIA_EMAIL_2:
-			'In order to complete the withdrawal process please confirm',
-		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal is confirmed and sent.',
+			'출금 처리를 완료하기 위해',
+		CONFIRM_VIA_EMAIL_3: '5분 내로 이메일을 확인해주시기 바랍니다.',
+		WITHDRAW_CONFIRM_SUCCESS_1: '출금이 확인되어 전송되었습니다.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
-			'If you’d like to view your withdrawal please visit your withdrawal history page.',
-		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
+			'출금 내역을 확인하시려면 출금 내역 페이지를 방문하시기 바랍니다.',
+		GO_WITHDRAWAL_HISTORY: '출금 내역으로 이동'
 	},
-	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
-	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
-	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
-	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
-	AVAILABLE_TEXT: 'Available',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
-	BALANCE_TEXT: 'Balance',
-	CURRENCY_BALANCE_TEXT: '{0} Balance',
-	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
-	WALLET_TABLE_TOTAL: 'Grand Total',
-	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_BUTTON_BASE_DEPOSIT: '입금',
+	WALLET_BUTTON_BASE_WITHDRAW: '출금',
+	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: '받기',
+	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: '보내기',
+	AVAILABLE_TEXT: '사용 가능',
+	AVAILABLE_BALANCE_TEXT: '사용 가능 잔고 {0} : {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	BALANCE_TEXT: '잔고',
+	CURRENCY_BALANCE_TEXT: '{0} 잔고',
+	WALLET_TABLE_AMOUNT_IN: `{0} 의 금액`,
+	WALLET_TABLE_TOTAL: '총 합계',
+	WALLET_ALL_ASSETS: '모든 자산',
 	WALLET_DEPOSIT_USD:
-		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
-	HIDE_TEXT: 'Hide',
+		'다른 국가의 명목 화폐의 입/출금 및 기타 지갑 문의 {0}.', // new
+	HIDE_TEXT: '숨기기',
 	PAGINATOR_FORMAT: '{0} / {1}',
-	ORDERBOOK_SELLERS: 'Sellers',
-	ORDERBOOK_BUYERS: 'Buyers',
+	ORDERBOOK_SELLERS: '매도자',
+	ORDERBOOK_BUYERS: '매수자',
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-	CALCULATE_MAX: 'Max',
-	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
-	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
+	CALCULATE_MAX: '최대',
+	DATEFIELD_TOOGLE_DATE_GR: '그레고리력',
+	VERIFICATION_WARNING_TITLE: '은행 세부 정보를 인증',
 	VERIFICATION_WARNING_MESSAGE:
-		'Before you withdraw, you need to verify your bank details.',
-	ORDER_SPENT: 'Spent',
-	ORDER_RECEIVED: 'Received',
-	ORDER_SOLD: 'Sold',
-	ORDER_BOUGHT: 'Bought',
-	ORDER_AVERAGE_PRICE: 'Average price',
-	ORDER_TITLE_CREATED: 'Successfully created a limit {0}', // 0 -> buy / sell
-	ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // 0 -> buy / sell
-	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
-	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
-	LOGOUT_TITLE: 'You have been logged out',
-	LOGOUT_ERROR_TOKEN_EXPIRED: 'Token is expired',
-	LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
-	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
+		'출금하시기 전에 은행 세부 정보를 인증하셔야 합니다.',
+	ORDER_SPENT: '사용됨',
+	ORDER_RECEIVED: '받음',
+	ORDER_SOLD: '매도함',
+	ORDER_BOUGHT: '매수함',
+	ORDER_AVERAGE_PRICE: '평균 가격',
+	ORDER_TITLE_CREATED: '성공적으로 {0} 한도가 설정되었습니다.', // 0 -> buy / sell
+	ORDER_TITLE_FULLY_FILLED: '{0} 주문이 성공적으로 완료되었습니다', // 0 -> buy / sell
+	ORDER_TITLE_PARTIALLY_FILLED: '{0} 주문이 부분적으로 완료되었습니다', // 0 -> buy / sell
+	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} 주문이 성공적으로 완료되었습니다', // 0 -> buy / sell
+	LOGOUT_TITLE: '로그아웃 되었습니다',
+	LOGOUT_ERROR_TOKEN_EXPIRED: '토큰이 만료되었습니다',
+	LOGOUT_ERROR_LOGIN_AGAIN: '다시 로그인하시기 바랍니다', // ip doesnt match
+	LOGOUT_ERROR_INVALID_TOKEN: '유효하지 않은 토큰',
 	LOGOUT_ERROR_INACTIVE:
-		'You have been logged out because you have been inactive',
+		'비활성 상태로 확인되어 로그아웃 되었습니다',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
-	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
-	QUICK_TRADE_TOKEN_USED: 'Token has been used',
-	QUICK_TRADE_QUOTE_EXPIRED: 'Quote has expired',
-	QUICK_TRADE_QUOTE_INVALID: 'Invalid quote',
-	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'Error calculating the quote',
+	QUICK_TRADE_OUT_OF_LIMITS: '주문 사이즈가 한도를 초과하였습니다',
+	QUICK_TRADE_TOKEN_USED: '토큰이 사용되었습니다',
+	QUICK_TRADE_QUOTE_EXPIRED: '견적이 만료되었습니다',
+	QUICK_TRADE_QUOTE_INVALID: '유효하지 않은 견적',
+	QUICK_TRADE_QUOTE_CALCULATING_ERROR: '견적 계산 오류',
 	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED:
-		'The order with the current size can not be filled',
-	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
-	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
-	YES: 'Yes',
-	NO: 'No',
-	NEXT: 'Next',
-	SKIP_FOR_NOW: 'Skip for now',
+		'현재 사이즈의 주문은 진행할 수 없습니다',
+	QUICK_TRADE_ORDER_NOT_FILLED: '주문이 완료되지 않았습니다',
+	QUICK_TRADE_NO_BALANCE: '주문을 진행할 수 있는 잔액이 부족합니다',
+	YES: '네',
+	NO: '아니오',
+	NEXT: '다음',
+	SKIP_FOR_NOW: '지금은 건너뛰기',
 	SUBMIT: '제출하기',
 	RESUBMIT: '다시제출하기',
-	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
+	VERIFICATION_NOTIFICATION_SKIP_TITLE: '제출되지 않은 서류!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on HollaEx you must submit your identity documents in your account page.',
-	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
+		'XIVeX의 입출금 기능의 전체 엑세스 권한을 위해 계정 페이지에서 신원 증빙서류를 제출하여야 합니다.',
+	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: '성공!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
-		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HollaEx',
-	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
-	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
-	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
-	ERROR_LOGIN_USER_NOT_VERIFIED: 'User is not verified',
-	ERROR_LOGIN_USER_NOT_ACTIVATED: 'User is not activated',
-	ERROR_LOGIN_INVALID_CREDENTIALS: 'Credentials incorrect',
-	SMS_SENT_TO: 'SMS sent to {0}', // TODO check msg
+		'귀하의 정보가 처리되면 이메일로 알림을 받으시게 됩니다. 처리기간은 보통 1-3일 정도 걸립니다.',
+	VERIFICATION_NOTIFICATION_BUTTON: 'XIVeX로 계속하기',
+	ERROR_USER_ALREADY_VERIFIED: '사용자가 이미 인증되었습니다',
+	ERROR_INVALID_CARD_USER: '제공하신 은행 또는 카드 정보가 올바르지 않습니다',
+	ERROR_INVALID_CARD_NUMBER: '유효하지 않은 카드 번호',
+	ERROR_LOGIN_USER_NOT_VERIFIED: '사용자가 인증되지 않았습니다',
+	ERROR_LOGIN_USER_NOT_ACTIVATED: '사용자가 활성화되지 않았습니다',
+	ERROR_LOGIN_INVALID_CREDENTIALS: '올바르지 않은 자격증명',
+	SMS_SENT_TO: '{0}로 SMS가 전송되었습니다', // TODO check msg
 	SMS_ERROR_SENT_TO:
-		'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO check msg
+		'{0}로 SMS 전송에 실패하였습니다. 페이지를 새로고침하여 다시 시도해주세요.', // TODO check msg
 	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
-	CHECK_ORDER: 'Check and confirm your order',
+	CHECK_ORDER: '주문을 검토하시고 확인해주세요',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
-	CONFIRM_TEXT: 'Confirm',
-	INVALID_CAPTCHA: 'Invalid captcha',
+	CONFIRM_TEXT: '확인',
+	INVALID_CAPTCHA: '유효하지 않은 captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: '언어설정 (이메일수신포함)',
 	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
-	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
+	SETTINGS_ORDERPOPUP_LABEL: '주문 확인 팝업창 표시',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
@@ -939,7 +939,7 @@ export default {
 		GENERATE_KEY: 'API키 생성하기',
 		ACTIVE: '활성화',
 		INACTIVE: '비활성화',
-		INVALID_LEVEL: '해당 기능에 접근하기 위해서는 레벨업그레이드가 필요합니다.' // TODO
+		INVALID_LEVEL: '해당 기능에 접근하기 위해서는 레벨 업그레이드가 필요합니다.' // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'API키 생성',
@@ -949,9 +949,9 @@ export default {
 		DELETE_TITLE: 'API키 삭제',
 		DELETE_TEXT:
 			'언제든지 새로운 API키를 생성하실 수 있지만, 이미 생성된 API키를 삭제하는 것은 다시 되돌릴 수 없습니다. API키를 삭제하시겠습니까? ',
-		DELETE: 'DELETE',
+		DELETE: '삭제',
 		FORM_NAME_LABEL: '이름',
-		FORM_LABLE_PLACEHOLDER: 'Api키 이름',
+		FORM_LABLE_PLACEHOLDER: 'API키 이름',
 		API_KEY_LABEL: 'API 키',
 		SECRET_KEY_LABEL: '시크릿 키',
 		CREATED_TITLE: 'API키 복사하기',
@@ -972,8 +972,8 @@ export default {
 		MARKET_CHAT: 'Market Chat',
 		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
 		READ_MORE: '더 읽기',
-		SHOW_IMAGE: '이미지보기',
-		HIDE_IMAGE: '이미지숨기기',
+		SHOW_IMAGE: '이미지 보기',
+		HIDE_IMAGE: '이미지 숨기기',
 		CHAT_MESSAGE_BOX_PLACEHOLDER: '메세지',
 		SIGN_UP_CHAT: '로그인하여 채팅하기',
 		JOIN_CHAT: '채팅 유저명 설정하기',
@@ -987,7 +987,7 @@ export default {
 	USERNAME_WARNING:
 		'유저명은 한번만 변경가능합니다. 설정하신 유저명이 올바른지 다시한번 확인하시기바랍니다.',
 	USERNAME_CANNOT_BE_CHANGED: '유저명을 변경하실 수 없습니다.',
-	UPGRADE_LEVEL: '계정 레벨업그레이드',
+	UPGRADE_LEVEL: '계정 레벨 업그레이드',
 	LEVELS: {
 		LABEL_LEVEL: '레벨',
 		LABEL_LEVEL_1: 'One',
@@ -1018,14 +1018,14 @@ export default {
 	TRADE_TAB_ORDERS: '주문',
 	TRADE_TAB_POSTS: 'Posts', // new
 	WALLET_TAB_WALLET: '지갑',
-	WALLET_TAB_TRANSACTIONS: 'Transactions',
-	RECEIVE_CURRENCY: '{0}받기',
-	SEND_CURRENCY: '{0}보내기',
-	COPY_ADDRESS: '주소복사',
+	WALLET_TAB_TRANSACTIONS: '거래',
+	RECEIVE_CURRENCY: '{0} 받기',
+	SEND_CURRENCY: '{0} 보내기',
+	COPY_ADDRESS: '주소 복사',
 	SUCCESFUL_COPY: '성공적으로 복사되었습니다!',
-	QUICK_TRADE_MODE: '퀵트레이드모드',
-	JUST_NOW: 'just now',
-	PAIR: 'Pair',
+	QUICK_TRADE_MODE: '퀵트레이드 모드',
+	JUST_NOW: '방금 전',
+	PAIR: '페어링',
 	ZERO_ASSET: '자산이 없습니다.',
 	DEPOSIT_ASSETS: '입금하기',
 	SEARCH_TXT: '찾기',
@@ -1033,19 +1033,19 @@ export default {
 	TOTAL_ASSETS_VALUE: '{0}의 총 자산값: {1}',
 	SUMMARY: {
 		TITLE: '요약',
-		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
-		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
-		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
-		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper Trader Account',
-		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken Trading',
-		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken Trading Account',
-		BLACK_LEVIATHAN_TRADING: 'Black Leviathan Trading',
-		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
-		URGENT_REQUIREMENTS: 'Urgent Requirements',
-		TRADING_VOLUME: 'Trading Volume',
-		ACCOUNT_ASSETS: 'Account Assets',
-		ACCOUNT_DETAILS: 'Account Details',
-		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
+		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp 거래자',
+		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp 거래자 계정',
+		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper 거래자',
+		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper 거래자 계정',
+		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken 거래',
+		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken 거래 계정',
+		BLACK_LEVIATHAN_TRADING: 'Black Leviathan 거래',
+		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan 거래 계정',
+		URGENT_REQUIREMENTS: '긴급 요구사항',
+		TRADING_VOLUME: '거래량',
+		ACCOUNT_ASSETS: '계정 자산',
+		ACCOUNT_DETAILS: '계정 세부사항',
+		SHRIMP_ACCOUNT_TXT_1: '여기서 당신의 여정이 시작됩니다!',
 		SHRIMP_ACCOUNT_TXT_2:
 			'Keep swimming true, you’ll soon stand out from the rest of the shoal',
 		SNAPPER_ACCOUNT_TXT_1:
@@ -1088,17 +1088,17 @@ export default {
 		TAKER: '테이커',
 		MAKER: '메이커',
 		WEBSITE: '웹사이트',
-		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP 트레이더레벨 업그레이드자격',
-		PRO_TRADER_ACCOUNT_ELIGIBLITY: '프로 트레이더레벨 업그레이드자격',
+		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP 트레이더 레벨 업그레이드 자격',
+		PRO_TRADER_ACCOUNT_ELIGIBLITY: '프로 트레이더 레벨 업그레이드 자격',
 		TRADER_ACCOUNT_ELIGIBILITY: '{0}레벨 자격',
 		NOMINAL_TRADING: '명목상의 거래',
 		NOMINAL_TRADING_WITH_MONTH: '지난 {0}의 명목상의 거래',
 		ACCOUNT_AGE_OF_MONTHS: '계정활동기간 {0} 개월',
-		TRADING_VOLUME_EQUIVALENT: '{0} {1} 거래볼륨 등가',
+		TRADING_VOLUME_EQUIVALENT: '{0} {1} 거래량 등가',
 		LEVEL_OF_ACCOUNT: '레벨 {0} 계정',
 		LEVEL_TXT_DEFAULT: '이곳에 레벨 설명을 추가하세요.',
 		LEVEL_1_TXT:
-			'크립토 트레이더로서의 여정이 이곳에서 시작되었습니다. 회원님의 개인정보인증을 통해 보너스도 받고 입출금한도 증액 및 수수료인하를 받으실 수 있습니다.', // new
+			'암호화폐 트레이더로서의 여정이 이곳에서 시작되었습니다. 회원님의 개인정보인증을 통해 보너스도 받고 입출금한도 증액 및 수수료인하를 받으실 수 있습니다.', // new
 		LEVEL_2_TXT:
 			'월 3,000USDT 이상의 거래를 하거나 5,000XHT 이상의 잔고를 유지하시고 보다 낮아진 수수료를 즐겨보시기바랍니다.', // new
 		LEVEL_3_TXT:
@@ -1106,7 +1106,7 @@ export default {
 		LEVEL_4_TXT:
 			'월 10,000USDT 이상의 거래를 하거나 10,000XHT 이상의 잔고를 유지하시고 보다 저렴한 수수료를 즐기시기바랍니다..', // new
 		LEVEL_5_TXT:
-			'해내셨네요! 레벨 5 계정은 오직 거래소 운영자, Vault사용자 또는 HollaEx Affiliate Program(HAP) 회원들에게만 적용되는 특별한 레벨입니다. 입출금한도는 더 높아졌고 메이커 수수료는 무료로 이용하실 수 있습니다.', // new
+			'해내셨네요! 레벨 5 계정은 오직 거래소 운영자, Vault사용자 또는 XIVex Affiliate Program 회원들에게만 적용되는 특별한 레벨입니다. 입출금한도는 더 높아졌고 메이커 수수료는 무료로 이용하실 수 있습니다.', // new
 		LEVEL_6_TXT:
 			'월 300,000USDT 이상의 거래를 하거나 100,000XHT 이상의 잔고를 유지하시고 더 낮아진 수수료를 즐기시기바랍니다. 출금액이 증가되었습니다. ', // new
 		LEVEL_7_TXT:
@@ -1116,18 +1116,18 @@ export default {
 		LEVEL_9_TXT:
 			'월 2,000,000USDT 이상의 거래를 하거나 1,000,000XHT 이상의 잔고를 유지하시고 더 낮아진 수수료를 즐기시기바랍니다.', // new
 		LEVEL_10_TXT:
-			'웨일스 트레이더 계정은 마켓메이킹을 통해 이익을 얻을 수 있는 계정입니다. 이 특별 계정을 얻기 위해선 저희에게 연락해주시기바랍니다.', // new
+			'Whale 트레이더 계정은 마켓메이킹을 통해 이익을 얻을 수 있는 계정입니다. 이 특별 계정을 얻기 위해선 저희에게 연락해주시기바랍니다.', // new
 		CURRENT_TXT: '현재',
 		TRADER_ACCOUNT_XHT_TEXT:
 			'회원님의 계정은 XHT 사전판매 그룹에 속해있으며 이는 1XHT를 $0,10에 얻는다는 것을 의미합니다. 모든 입금액은 거래가 종료되면 XHT로 전환됩니다.',
 		TRADER_ACCOUNT_TITLE: '계정 - 사전판매기간', // new
 		HAP_ACCOUNT: 'HAP 계정', // new
 		HAP_ACCOUNT_TXT:
-			'회원님의 계정은 인증된 HollaEx 가입프로그램(HAP) 계정입니다. 이제 XHT 구매를 원하는 모든 사람을 초대하여 10%의 보너스를 얻으시기바랍니다.', // new
+			'회원님의 계정은 인증된 XIVex 가입프로그램 계정입니다. 이제 XHT 구매를 원하는 모든 사람을 초대하여 10%의 보너스를 얻으시기바랍니다.', // new
 		EMAIL_VERIFICATION: '이메일 인증', // new
 		DOCUMENTS: '문서', // new
-		HAP_TEXT: 'HollaEx 가입프로그램 (HAP) {0}', // new
-		LOCK_AN_EXCHANGE: '거래소잠금 {0}', // new
+		HAP_TEXT: 'XIVex 가입프로그램 {0}', // new
+		LOCK_AN_EXCHANGE: '거래소 잠금 {0}', // new
 		WALLET_SUBSCRIPTION_USERS: 'Vault 가입사용자 {0}', // new
 		TRADE_OVER_XHT: '{0} USDT 이상의 거래', // new
 		TRADE_OVER_BTC: '{0} BTC 이상의 거래', // new
@@ -1141,12 +1141,12 @@ export default {
 			'개인정보인증을 완료하시고 보너스 20XHT를 받으세요.', // new
 		INVITE_USER: '사용자를 초대하고 그들의 거래를 통해서 커미션을 받으세요.', // new
 		JOIN_HAP:
-			'HAP에 가입하시어 판매하는 모든 HollaEx Kit에 대해 10%의 이익을 얻으세요.', // new
+			'HAP에 가입하시어 판매하는 모든 XIVeX Kit에 대해 10%의 이익을 얻으세요.', // new
 		EARN_RUNNING_EXCHANGE:
 			'자신의 거래소를 실행하여 지분증명으로 이익을 얻으세요.', // new
 		XHT_WAVE_AUCTION: 'XHT 웨이브옥션 데이터', // new
 		XHT_WAVE_DESC_1:
-			'HollaEx 토큰(XHT)의 배포는 웨이브옥션을 통해 이루어집니다.', // new
+			'XIVex 토큰(XHT)의 배포는 웨이브옥션을 통해 이루어집니다.', // new
 		XHT_WAVE_DESC_2:
 			'웨이브 옥션은 XHT 수량과 시간이 랜덤으로 정해지며 주문서에서 가장 높은 가격을 호가한 매수자에게 판매됩니다.', // new
 		XHT_WAVE_DESC_3: '아래에서 웨이브옥션의 내역이 기록된 것을 확인해보세요.', // new
@@ -1169,7 +1169,7 @@ export default {
 		XHT_INFO_TEXT: '친구를 초대하여 커미션 수익을 얻으세요.', // new
 		XHT_INFO_TEXT_1: '커미션 수익은 주기적으로 회원님의 지갑으로 입금됩니다.', // new
 		APPLICATION_TXT:
-			'HollaEx Kit 배급자가 되려면 지원서를 작성해주시기바랍니다.', // new
+			'XIVex Kit 배급자가 되려면 지원서를 작성해주시기바랍니다.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earn:', // new
@@ -1177,42 +1177,42 @@ export default {
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
-		TITLE: 'HollaEx토큰 지분증명', // new
+		TITLE: 'XIVex 토큰 지분증명', // new
 		INFO_TXT1:
-			'HollaEx Kit 거래소 소프트웨어를 실행하기 위해 HollaEx 토큰(XHT)이 담보로 요구됩니다.', // new
+			'XIVex Kit 거래소 소프트웨어를 실행하기 위해 XIVex 토큰(XHT)이 담보로 요구됩니다.', // new
 		INFO_TXT2:
-			'비슷한 방식으로 HollaEx 토큰을 담보로 웨이브옥션 기간동안 팔리지않은 XHT를 얻을 수 있습니다.', // new
+			'비슷한 방식으로 XIVex 토큰을 담보로 웨이브옥션 기간동안 팔리지않은 XHT를 얻을 수 있습니다.', // new
 		INFO_TXT3:
 			'간단하게 dash.bitholla.com를 방문하여 당신의 거래소를 실행하고 이를 담보로 XHT를 무료로 받으세요.', // new
 		BUTTON_TXT: '자세히알아보기' // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
-		TITLE: 'HollaEx 토큰 구매 계약',
+		TITLE: 'XIVex 토큰 구매 계약',
 		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: '진행하기',
 		AGREE_TERMS_LABEL:
-			'나는 HollaEx 토큰 구매 계약서를 읽었으며 해당 내용에 동의합니다.',
+			'나는 XIVex 토큰 구매 계약서를 읽었으며 해당 내용에 동의합니다.',
 		RISK_INVOLVED_LABEL: '나는 이와 관련된 위험이 있는 것을 이해합니다.',
 		DOWNLOAD_PDF: 'PDF 다운로드',
 		DEPOSIT_FUNDS:
-			'HollaEx 토큰(XHT)을 얻기 위해 지갑에 입금을 하시기바랍니다.',
-		READ_FAG: 'HollaEx FAQ 보기 : {0}',
-		READ_DOCUMENTATION: 'HollaEx whitepaper 보기: {0}',
+			'XIVex 토큰(XHT)을 얻기 위해 지갑에 입금을 하시기바랍니다.',
+		READ_FAG: 'XIVex FAQ 보기 : {0}',
+		READ_DOCUMENTATION: 'XIVex whitepaper 보기: {0}',
 		READ_WAVES: '웨이브옥션 규정보기 {0}', // new
 		DOWNLOAD_BUY_XHT:
 			'PDF를 다운로드하여 {0} 단계별 프로세스를 확인하시기바랍니다.',
-		HOW_TO_BUY: 'HollaEx 토큰(XHT)을 어떻게 살수있나요?',
+		HOW_TO_BUY: 'XIVex 토큰(XHT)을 어떻게 살수있나요?',
 		PUBLIC_SALES: '공개 웨이브옥션', // new
 		CONTACT_US: '문의사항이 있으시다면 {0}으로 언제든지 메일주시기바랍니다.',
 		VISUAL_STEP: '{0}에 대한 시각적인 단계별 프로세스보기', // new
 		WARNING_TXT:
-			'회원님의 요청을 검토한 이후 HollaEx거래소에 접근하는 법에 대한 추가 설명을 이메일로 보내드리도록하겠습니다.', // new
+			'회원님의 요청을 검토한 이후 XIVeX 거래소에 접근하는 법에 대한 추가 설명을 이메일로 보내드리도록하겠습니다.', // new
 		WARNING_TXT1:
-			'그 동안 아래의 지원을 통해 HollaEx 네트워크에 대해 더 알아보실 수 있습니다.', // new
-		XHT_ORDER_TXT_1: 'HollaEx 토큰(XHT) 거래를 위해선 로그인이 필요합니다.', // new
+			'그 동안 아래의 지원을 통해 XIVex 네트워크에 대해 더 알아보실 수 있습니다.', // new
+		XHT_ORDER_TXT_1: 'XIVex 토큰(XHT) 거래를 위해선 로그인이 필요합니다.', // new
 		XHT_ORDER_TXT_2:
-			'HollaEx 토큰은 매일 랜덤으로 정해진 수량이 랜덤으로 정해진 시간에 주문서에서 가장 높은 금액을 호가한 매수자에게 판매되는 웨이브옥션을 통해 배포됩니다.', // new
+			'XIVex 토큰은 매일 랜덤으로 정해진 수량이 랜덤으로 정해진 시간에 주문서에서 가장 높은 금액을 호가한 매수자에게 판매되는 웨이브 옥션을 통해 배포됩니다.', // new
 		XHT_ORDER_TXT_3: '{0} 웨이브옥션에 가입 또는 {1}', // new
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: '최근 거래를 보기위해 로그인하세요.', //new
@@ -1253,18 +1253,18 @@ export default {
 		'회원님은 {0}의 테스트 버전을 사용중이며 {1}일 뒤에 만료됩니다.', // new
 	EXPIRY_EXCHANGE_MSG:
 		'회원님의 거래소 기한이 만료되었습니다. 다시 활성화하기위해 dash.bitholla.com로 이동하시기바랍니다.', // new
-	EXPIRED_INFO_1: 'HollaEx 테스트 버전이 만료되었습니다.', // new
+	EXPIRED_INFO_1: 'XIVex 테스트 버전이 만료되었습니다.', // new
 	EXPIRED_INFO_2: '거래소를 다시 활성화하려면 담보가 필요합니다.', // new
 	EXPIRED_BUTTON_TXT: '거래소 활성화하기', // new
 	TRADE_POSTS: {
 		// new
 		ANNOUNCEMENT: '공지사항',
 		ANNOUNCEMNT_TXT_3:
-			'웨이브옥션과 HollaEx 공개오픈은 2020년 1월1일로 재조정되었습니다. 지갑과 입출금은 현재도 이용가능합니다.',
+			'웨이브옥션과 XIVex 공개 오픈은 2020년 1월1일로 재조정되었습니다. 지갑과 입출금은 현재도 이용가능합니다.',
 		ANNOUNCEMNT_TXT_4:
 			'홀러즈 여러분! 새해복 많이받으시기바랍니다. 드디어 2020년부터 런칭하는 가장 개방적인 거래 플랫폼의 시작에 많은 활동부탁드립니다.',
 		ANNOUNCEMNT_TXT_1:
-			'친구들을 hollaex.com에 소개하여 HAP프로그램과 함께 XHT를 얻으세요. {0}.',
+			'친구들을 XIVex.com에 소개하여 HAP프로그램과 함께 XHT를 얻으세요. {0}.',
 		DEFAULT_ANNOUNCEMENT:
 			'이 페이지는 포스트는 회원님의 거래소의 공지사항입니다!',
 		ANNOUNCEMENT_TXT_2: '{0}의 모든 지갑에 무료 XHT가 배포됩니다.',

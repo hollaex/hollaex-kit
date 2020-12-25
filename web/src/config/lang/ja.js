@@ -2,7 +2,7 @@ import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
 
 export default {
-	APP_TITLE: 'HollaEx',
+	APP_TITLE: 'XIVeX',
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: '本当にログアウトしますか？',
@@ -34,7 +34,7 @@ export default {
 	HELP_RESOURCE_GUIDE_TEXT:
 		'お問い合わせはサポートセンターまでご連絡ください。',
 	HELP_TELEGRAM_TEXT: 'オープンAPIドキュメント：',
-	HELP_TELEGRAM_LINK: 'https://apidocs.HollaEx.com',
+	HELP_TELEGRAM_LINK: 'https://apidocs.XIVeX.com',
 	NEED_HELP_TEXT: 'ヘルプが必要ですか？', // new
 	HELP_TEXT: 'ヘルプ',
 	SUCCESS_TEXT: '成功',
@@ -49,9 +49,9 @@ export default {
 	VIEW_INFO: 'インフォメーション', // new
 	APPLY_HERE: 'Apply Here', // new
 	HOME: {
-		SECTION_1_TITLE: 'HollaEx Exchange Kitへようこそ！',
+		SECTION_1_TITLE: 'XIVeX Exchange Kitへようこそ！',
 		SECTION_1_TEXT_1:
-			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
+			'Build your own scalable digital asset exchange with XIVeX Kit and be part of the future of finance.',
 		SECTION_1_TEXT_2:
 			'We strive to bring the financial technology forward through affordable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
@@ -64,7 +64,7 @@ export default {
 			'Plugins with customizable modules available for bank integration. We know the traditional finance and can help you to make your exchange local',
 		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
 		SECTION_3_CARD_3_TEXT:
-			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
+			'XIVeX uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
 		SECTION_3_CARD_4_TITLE: 'ADVANCED REPORTING',
 		SECTION_3_CARD_4_TEXT:
 			'Admin panel with customizable email and reports for notifying support and administrator about the status of the system and transactions.',
@@ -121,7 +121,7 @@ export default {
 			SECTION_6_LINK_9: 'YouTube', // new
 		},
 		XHT_DESCRIPTION:
-			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
+			'XIVeX Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
 	},
@@ -157,7 +157,7 @@ export default {
 			OPTION_BUG: 'エラー報告', // ToDo:
 			OPTION_PERSONAL_INFO: '個人情報の変更', // ToDo:
 			OPTION_BANK_TRANSFER: '銀行送金', // new
-			OPTION_REQUEST: 'HollaEx招待リクエスト' // new
+			OPTION_REQUEST: 'XIVeX招待リクエスト' // new
 		},
 		SUBJECT_LABEL: '件名',
 		SUBJECT_PLACEHOLDER: 'お問い合わせの件名を入力してください。',
@@ -231,8 +231,8 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
-				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'XIVeX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this XIVeX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
@@ -245,8 +245,8 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
-				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'XIVeX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this XIVeX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
@@ -479,7 +479,7 @@ export default {
 				TITLE_PERSONAL_INFORMATION: '個人情報',
 				TITLE_PHONE: '連絡先',
 				PHONE_VERIFICATION_TXT:
-					'有効な連絡先情報を提供することで、お客様のアカウントで行われる不正な取引を防止し、HollaExが問題を解決するのに役に立ちます。',
+					'有効な連絡先情報を提供することで、お客様のアカウントで行われる不正な取引を防止し、XIVeXが問題を解決するのに役に立ちます。',
 				PHONE_VERIFICATION_TXT_1:
 					'携帯電話番号を認証することで、お客様の入出金履歴がリアルタイムで提供されます。',
 				PHONE_VERIFICATION_TXT_2:
@@ -1166,7 +1166,7 @@ export default {
 		LEVEL_4_TXT:
 			'毎月10,000USDT以上の取引または、10,000XHT以上の残高を維持し、より低い取引手数料をお楽しみください。', // new
 		LEVEL_5_TXT:
-			'おめでとうございます！レベル５は取引所の管理者、Vaultユーザー、またはHollaExアフィリエイトプログラム(HAP)専用の特別なレベルです。高い入出金限度額と、無料のメイカ―手数料をお楽しみください。', // new
+			'おめでとうございます！レベル５は取引所の管理者、Vaultユーザー、またはXIVeXアフィリエイトプログラム(HAP)専用の特別なレベルです。高い入出金限度額と、無料のメイカ―手数料をお楽しみください。', // new
 		LEVEL_6_TXT:
 			'毎月300,000USDT以上の取引または、100,000XHT以上の残高を維持し、より低い取引手数料と増加された入出金限度額をお楽しみください。', // new
 		LEVEL_7_TXT:
@@ -1183,10 +1183,10 @@ export default {
 		TRADER_ACCOUNT_TITLE: 'アカウント - 先行販売期間', // new
 		HAP_ACCOUNT: 'HAPアカウント', // new
 		HAP_ACCOUNT_TXT:
-			'お客様のアカウントは認証済みのHollaEx登録プログラム(HAP)アカウントです。XHTの購入を希望する全員を招待して10％のボーナスを獲得できます。', // new
+			'お客様のアカウントは認証済みのXIVeX登録プログラム(HAP)アカウントです。XHTの購入を希望する全員を招待して10％のボーナスを獲得できます。', // new
 		EMAIL_VERIFICATION: 'メールアカウント認証', // new
 		DOCUMENTS: 'ドキュメント', // new
-		HAP_TEXT: 'HollaEx登録プログラム(HAP) {0}', // new
+		HAP_TEXT: 'XIVeX登録プログラム(HAP) {0}', // new
 		LOCK_AN_EXCHANGE: '取引所ロック {0}', // new
 		WALLET_SUBSCRIPTION_USERS: 'Vault登録利用者 {0}', // new
 		TRADE_OVER_XHT: '{0} USDT以上の取引', // new
@@ -1200,11 +1200,11 @@ export default {
 		COMPLETE_ACC_VERIFICATION:
 			'アカウントの認証を完了して、20XHTのボーナスを受け取れます。', // new
 		INVITE_USER: '招待した友達の取引から発生する報酬を受け取れます。', // new
-		JOIN_HAP: 'HAPに参加して、販売するHollaExキットごとに10％の報酬を受け取れます。', // new
+		JOIN_HAP: 'HAPに参加して、販売するXIVeXキットごとに10％の報酬を受け取れます。', // new
 		EARN_RUNNING_EXCHANGE: '自分の取引所を実行してパッシブ・インカムを受け取れます。', // new
 		XHT_WAVE_AUCTION: 'XHTウェーブオークションデータ', // new
 		XHT_WAVE_DESC_1:
-			'HollaExトークン(XHT)の配布は、ウェーブオークションを通じて行われます。', // new
+			'XIVeXトークン(XHT)の配布は、ウェーブオークションを通じて行われます。', // new
 		XHT_WAVE_DESC_2:
 			'ウェーブオークションは、ランダムな量のXHTをランダムな時間に最高入札者に販売されます。', // new
 		XHT_WAVE_DESC_3:
@@ -1226,7 +1226,7 @@ export default {
 		XHT_INFO_TEXT: '友達を招待してコミッションを獲得しましょう。', // new
 		XHT_INFO_TEXT_1: 'コミッションは定期的にウォレットに支払われます。', // new
 		APPLICATION_TXT:
-			'HollaEx Kitのディストリビューターになるには、申請書に記入してください。', // new
+			'XIVeX Kitのディストリビューターになるには、申請書に記入してください。', // new
 		TOTAL_REFERRAL: '招待した人の購入合計:', // new
 		PENDING_REFERRAL: '保留中のコミッション：', // new
 		EARN_REFERRAL: '獲得したコミッション：', // new
@@ -1234,40 +1234,40 @@ export default {
 		APPLY_BUTTON: '適用' // new
 	},
 	STAKE_TOKEN: {
-		TITLE: 'HollaExトークンのステーキング', // new
+		TITLE: 'XIVeXトークンのステーキング', // new
 		INFO_TXT1:
-			'HollaEx Kitの取引所ソフトウェアを実行するためにはHollaExトークン(XHT)が担保として必要です。', // new
+			'XIVeX Kitの取引所ソフトウェアを実行するためにはXIVeXトークン(XHT)が担保として必要です。', // new
 		INFO_TXT2:
-			'同じ方法でHollaExトークンを担保し、ウェーブオークション中に販売されなかったXHTを獲得できます。', // new
+			'同じ方法でXIVeXトークンを担保し、ウェーブオークション中に販売されなかったXHTを獲得できます。', // new
 		INFO_TXT3:
 			'dash.bitholla.comにアクセスして、今すぐ自分の取引所を実行し、それを担保に無料のXHTを獲得してください。', // new
 		BUTTON_TXT: '詳細を見る' // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
-		TITLE: 'HollaExトークン購入規約',
+		TITLE: 'XIVeXトークン購入規約',
 		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: '続行',
 		AGREE_TERMS_LABEL:
-			'HollaExトークンの購入規約を読み、同意します。',
+			'XIVeXトークンの購入規約を読み、同意します。',
 		RISK_INVOLVED_LABEL: 'リスクについて理解しました。',
 		DOWNLOAD_PDF: 'PDFをダウンロードする',
 		DEPOSIT_FUNDS:
-			'HollaExトークン(XHT)を取得するには、ウォレットに資金を入金してください。',
-		READ_FAG: 'HollaExのFAQを読む：{0}',
-		READ_DOCUMENTATION: 'HollaExの白書を読む：{0}',
+			'XIVeXトークン(XHT)を取得するには、ウォレットに資金を入金してください。',
+		READ_FAG: 'XIVeXのFAQを読む：{0}',
+		READ_DOCUMENTATION: 'XIVeXの白書を読む：{0}',
 		READ_WAVES: 'パブリックウェーブオークションの規約を読む {0}', // new
 		DOWNLOAD_BUY_XHT:
 			'PDFをダウンロードして、{0}の段階別プロセスを確認できます。',
-		HOW_TO_BUY: 'HollaExトークン(XHT)の購入方法 ',
+		HOW_TO_BUY: 'XIVeXトークン(XHT)の購入方法 ',
 		PUBLIC_SALES: 'パブリックウェーブオークション', // new
 		CONTACT_US:
 			'何かご不明な点がございましたら、いつでもお気軽に{0}までお問い合わせください。',
 		VISUAL_STEP: '{0}の段階別プロセスを確認する。', // new
 		WARNING_TXT:
-			'お客様のリクエストを確認し、HollaEx取引所へのアクセス方法に関する詳細な手順をメールで送信いたします。', // new
+			'お客様のリクエストを確認し、XIVeX取引所へのアクセス方法に関する詳細な手順をメールで送信いたします。', // new
 		WARNING_TXT1:
-			'それまでの間に、以下のリソースを使用してHollaExのネットワークを体験できます。', // new
+			'それまでの間に、以下のリソースを使用してXIVeXのネットワークを体験できます。', // new
 		XHT_ORDER_TXT_1: '取引を始めるにはログインしてください。', // new
 		XHT_ORDER_TXT_2: '', // new
 		XHT_ORDER_TXT_3: '{0}または、{1}', // new
@@ -1318,7 +1318,7 @@ export default {
 		// new
 		ANNOUNCEMENT: 'お知らせ',
 		ANNOUNCEMNT_TXT_3:
-			'HollaExとウェーブオークションの公開は2020年1月1日に再スケジュールされます。ウォレットの入出金は現在もご利用できます。',
+			'XIVeXとウェーブオークションの公開は2020年1月1日に再スケジュールされます。ウォレットの入出金は現在もご利用できます。',
 		ANNOUNCEMNT_TXT_4:
 			'明けましておめでとうございます。 私たちは2020年からローンチされる最も開放的な取引プラットフォームのオープンで様々な活動をお願い致します。',
 		ANNOUNCEMNT_TXT_1:
