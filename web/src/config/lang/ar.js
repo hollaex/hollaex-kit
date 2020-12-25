@@ -80,7 +80,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	FOOTER: {
 		FOOTER_LEGAL: ['با افتخار توسعه داده شده در سئول ، کره جنوبی'],
 		FOOTER_LANGUAGE_TEXT: 'زبان',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
+		FOOTER_COPYRIGHT: '',
 		SECTIONS: {
 			SECTION_1_TITLE: 'درباره',
 			SECTION_1_LINK_1: 'درباره ما',

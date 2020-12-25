@@ -1,13 +1,13 @@
 module.exports = {
 	body:
 		'background-color: #f3f3f3; padding: 1rem 0; font-family: arial; color: #000 !important',
-	logo: 'text-align: center; margin-bottom: 1.5rem;',
+	logo: 'text-align: center; margin-bottom: 1rem;',
 	wrapper: 'align-items:center; max-width: 45rem; margin: 0 auto;',
 	header:
 		'padding-top: 3rem; padding-bottom: 1rem; background-color: #333333; text-align: center',
 	header_icon: 'width: 60px',
 	header_icon_wrapper: 'text-align: center; margin-bottom:0.5rem;',
-	header_icon_title: 'color: #FFF; text-align: center; font-size: 1.3rem',
+	header_icon_title: 'color: #FFF; text-align: center; font-size: 1.3rem',	
 	container:
 		'background-color: #fff; color: #000 !important; padding: 5rem; padding-top: 30px; padding-bottom: 15px;',
 	box_shadow:

@@ -39,9 +39,6 @@ const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 							<img src="${EMAIL_ICONS.FACEBOOK}" height="20"/>
 						</a>
 					</div>
-					<div style="${styles.poweredby}">
-						${FOOTER.POWERED_BY} <a href="${BITHOLLA_DOMAIN}"><img src="${BITHOLLA_LOGO_BLACK}" height="10"/></a>
-					</div>
 				</div>
 			</div>
 		`;
@@ -51,7 +48,7 @@ const RTL = 'direction: rtl;';
 
 const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_PATH() }) => `
   <div style="${styles.logo}">
-    <a href="${domain}"><img src="${logoPath}" height="40"/></a>
+    <a href="${domain}"><img src="${logoPath}" height="80"/></a>
   </div>
 `;
 

@@ -5,8 +5,8 @@ import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
-// import TraderAccounts from './components/TraderAccounts';
-// import SummaryRequirements from './components/SummaryRequirements';
+import TraderAccounts from './components/TraderAccounts';
+import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 // import TradingVolume from './components/TradingVolume';
 import MobileSummary from './MobileSummary';
@@ -222,7 +222,7 @@ class Summary extends Component {
 					/>
 				) : (
 					<div>
-						{/*<div className="d-flex align-items-center">
+						<div className="d-flex align-items-center">
 							<div className="summary-section_1 trader-account-wrapper d-flex">
 								<SummaryBlock title={traderAccTitle}>
 									<TraderAccounts
@@ -250,7 +250,7 @@ class Summary extends Component {
 									/>
 								</SummaryBlock>
 							</div>
-						</div>*/}
+						</div>
 						<div className="d-flex align-items-center">
 							<div
 								className={classnames('assets-wrapper', 'asset_wrapper_width')}

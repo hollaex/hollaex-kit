@@ -3,7 +3,7 @@ import classnames from 'classnames';
 // import moment from 'moment';
 
 import SummaryBlock from './components/SummaryBlock';
-// import TraderAccounts from './components/TraderAccounts';
+import TraderAccounts from './components/TraderAccounts';
 // import RewardsBonus from './components/RewardsBonus';
 import AccountAssets from './components/AccountAssets';
 // import TradingVolume from './components/TradingVolume';
@@ -52,7 +52,7 @@ const MobileSummary = ({
 				'apply_rtl'
 			)}
 		>
-			{/*<div className="summary-section_1 trader-account-wrapper d-flex w-100">
+			<div className="summary-section_1 trader-account-wrapper d-flex w-100">
 				<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
 					<TraderAccounts
 						user={user}
@@ -66,7 +66,7 @@ const MobileSummary = ({
 						verification_level={verification_level}
 					/>
 				</SummaryBlock>
-			</div>*/}
+			</div>
 			{/*<div className="summary-section_1 requirement-wrapper d-flex w-100">
 				<SummaryBlock
 					title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
