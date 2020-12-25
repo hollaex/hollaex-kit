@@ -5,6 +5,7 @@ import ko from './lang/ko';
 import fa from './lang/fa';
 import ar from './lang/ar';
 import fr from './lang/fr';
+import es from './lang/es';
 
 const strings = new LocalizedStrings({
 	en,
@@ -12,6 +13,7 @@ const strings = new LocalizedStrings({
 	fa,
 	ar,
 	fr,
+	es
 });
 
 export default strings;
