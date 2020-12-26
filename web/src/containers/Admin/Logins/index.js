@@ -63,7 +63,7 @@ class Logins extends Component {
 	};
 
 	requestUserLoginsDownload = (userId) => {
-		return requestUserLoginsDownload({ format: 'csv', userId: userId });
+		return requestUserLoginsDownload({ format: 'csv', user_id: userId });
 	};
 
 	render() {
