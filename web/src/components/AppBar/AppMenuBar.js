@@ -99,6 +99,15 @@ class AppMenuBar extends Component {
 	};
 
 	handleMenuChange = (menu) => {
+		const { pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
 		if (menu === 'account') {
 			this.props.router.push('/account');
 		} else if (menu === 'security') {
@@ -115,6 +124,10 @@ class AppMenuBar extends Component {
 			menu === 'summary'
 		) {
 			this.props.router.push('/summary');
+		} else if (menu === 'quick-trade') {
+			this.props.router.push(`/quick-trade/${pair}`);
+		} else if (menu === 'pro-trade') {
+			this.props.router.push('/trade/add/tabs');
 		}
 		this.setState({ activeMenu: menu });
 	};
@@ -141,15 +154,23 @@ class AppMenuBar extends Component {
 			case '/api':
 				activeMenu = 'api';
 				break;
+			case '/trade/add/tabs':
+				activeMenu = 'pro-trade';
+				break;
 			default:
 				activeMenu = '';
 				break;
 		}
+
+		if (path.includes('quick-trade')) {
+			activeMenu = 'quick-trade';
+		}
+
 		this.setState({ activeMenu });
 	};
 
 	render() {
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, constants } = this.props;
 		const {
 			activeMenu,
 			securityPending,
@@ -175,6 +196,43 @@ class AppMenuBar extends Component {
 							</EditWrapper>
 						</div>
 					</div>
+					<div
+						className={classnames('app-menu-bar-content d-flex', {
+							'active-menu': activeMenu === 'pro-trade',
+						})}
+						onClick={() => this.handleMenuChange('pro-trade')}
+					>
+						<div className="app-menu-bar-content-item d-flex">
+							<Image
+								icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
+								wrapperClassName="app-menu-bar-icon"
+							/>
+							<EditWrapper stringId="PRO_TRADE" iconId="SIDEBAR_TRADING_ACTIVE">
+								{STRINGS['PRO_TRADE']}
+							</EditWrapper>
+						</div>
+					</div>
+					{constants.broker_enabled && (
+						<div
+							className={classnames('app-menu-bar-content d-flex', {
+								'active-menu': activeMenu === 'quick-trade',
+							})}
+							onClick={() => this.handleMenuChange('quick-trade')}
+						>
+							<div className="app-menu-bar-content-item d-flex">
+								<Image
+									icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
+									wrapperClassName="app-menu-bar-icon"
+								/>
+								<EditWrapper
+									stringId="QUICK_TRADE"
+									iconId="QUICK_TRADE_TAB_ACTIVE"
+								>
+									{STRINGS['QUICK_TRADE']}
+								</EditWrapper>
+							</div>
+						</div>
+					)}
 					<div
 						className={classnames('app-menu-bar-content d-flex', {
 							notification: !!walletPending && IS_XHT,
@@ -283,6 +341,9 @@ class AppMenuBar extends Component {
 const mapStateToProps = (state) => ({
 	user: state.user,
 	coins: state.app.coins,
+	pair: state.app.pair,
+	pairs: state.app.pairs,
+	constants: state.app.constants,
 	activeLanguage: state.app.language,
 	enabledPlugins: state.app.enabledPlugins,
 });
