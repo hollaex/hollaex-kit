@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Tabs, Breadcrumb, Modal } from 'antd';
+import { Spin, Tabs, Breadcrumb, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 import { RightOutlined } from '@ant-design/icons';
 
@@ -31,8 +31,10 @@ class Plugins extends Component {
 			plugin: {},
 			isVisible: false,
 			isRemovePlugin: false,
+			removePluginName: '',
 			tabKey: 'explore',
 		};
+		this.removeTimeout = null;
 	}
 
 	componentDidMount() {
@@ -50,6 +52,12 @@ class Plugins extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.removeTimeout) {
+			clearTimeout(this.removeTimeout);
+		}
+	}
+
 	getPluginsData = async () => {
 		await this.getPlugins();
 		await this.getMyPlugins();
@@ -58,7 +66,6 @@ class Plugins extends Component {
 	getMyPlugins = (page = 1, limit = 50, params = {}) => {
 		return requestMyPlugins({ page, limit, ...params })
 			.then((res) => {
-				console.log('requestMyPlugins', res);
 				if (res && res.data) {
 					this.setState({ myPlugins: res.data });
 				}
@@ -80,13 +87,23 @@ class Plugins extends Component {
 	};
 
 	constructPluginsData = () => {
-		const { pluginData, myPlugins } = this.state;
-		const selectedPlugins = myPlugins.map((plugin) => plugin.name);
-		const constructedPluginData = pluginData.map((plugin) => ({
-			...plugin,
-			enabled: selectedPlugins.includes(plugin.name),
-		}));
-		this.setState({ pluginData: constructedPluginData });
+		const { pluginData, myPlugins, selectedPlugin } = this.state;
+		let currentPlugin = selectedPlugin;
+		const myPluginsName = myPlugins.map((plugin) => plugin.name);
+		const constructedPluginData = pluginData.map((plugin) => {
+			const pluginValue = {
+				...plugin,
+				enabled: myPluginsName.includes(plugin.name),
+			};
+			if (plugin.name === selectedPlugin.name) {
+				currentPlugin = pluginValue;
+			}
+			return pluginValue;
+		});
+		this.setState({
+			pluginData: constructedPluginData,
+			selectedPlugin: currentPlugin,
+		});
 	};
 
 	removePlugin = (params = {}) => {
@@ -98,11 +115,23 @@ class Plugins extends Component {
 		});
 		return removePlugin(params)
 			.then((res) => {
-				this.setState({ isRemovePlugin: false });
-				this.getPluginsData();
+				this.setState({
+					isRemovePlugin: false,
+					removePluginName: params.name,
+				});
+				this.removeTimeout = setTimeout(() => {
+					const myPlugins = this.state.myPlugins.filter(
+						(plugin) => plugin.name !== this.state.removePluginName
+					);
+					this.setState({ removePluginName: '', myPlugins });
+					message.success('Removed plugin successfully');
+				}, 2000);
 			})
 			.catch((err) => {
 				this.setState({ isRemovePlugin: false });
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
 			});
 	};
 
@@ -116,9 +145,11 @@ class Plugins extends Component {
 		}
 	};
 
-	handleOpenAdd = (plugin) => {
+	handleOpenPlugin = (plugin) => {
+		const { pluginData, myPlugins } = this.state;
 		if (
-			this.state.pluginData.filter((value) => value.name === plugin.name).length
+			pluginData.filter((value) => value.name === plugin.name).length ||
+			myPlugins.filter((value) => value.name === plugin.name).length
 		) {
 			this.setState({
 				showSelected: true,
@@ -149,6 +180,27 @@ class Plugins extends Component {
 		this.setState({ isVisible: false, selectedPlugin: {} });
 	};
 
+	handlePluginList = (plugin) => {
+		this.setState({
+			myPlugins: [...this.state.myPlugins, plugin],
+		});
+	};
+
+	handleUpdatePluginList = (plugin) => {
+		let currentPlugin = this.state.selectedPlugin;
+		const myPlugins = this.state.myPlugins.map((value) => {
+			if (plugin.name === value.name) {
+				currentPlugin = plugin;
+				return plugin;
+			}
+			return value;
+		});
+		this.setState({
+			myPlugins,
+			selectedPlugin: currentPlugin,
+		});
+	};
+
 	render() {
 		const {
 			loading,
@@ -161,6 +213,7 @@ class Plugins extends Component {
 			isVisible,
 			myPlugins,
 			tabKey,
+			removePluginName,
 		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
@@ -195,6 +248,8 @@ class Plugins extends Component {
 							<PluginDetails
 								handleBreadcrumb={this.handleBreadcrumb}
 								selectedPlugin={selectedPlugin}
+								handlePluginList={this.handlePluginList}
+								updatePluginList={this.handleUpdatePluginList}
 								removePlugin={this.removePlugin}
 							/>
 						)}
@@ -207,14 +262,16 @@ class Plugins extends Component {
 									pluginData={pluginData}
 									constants={constants}
 									selectedPlugin={selectedPlugin}
-									handleOpenAdd={this.handleOpenAdd}
+									handleOpenPlugin={this.handleOpenPlugin}
 									getPlugins={this.getPlugins}
 								/>
 							</TabPane>
 
 							<TabPane tab="My plugins" key="my_plugin">
 								<MyPlugins
-									selectedPlugin={selectedPlugin}
+									removePluginName={removePluginName}
+									handleOpenPlugin={this.handleOpenPlugin}
+									handlePluginList={this.handlePluginList}
 									getPlugins={this.getPlugins}
 									getMyPlugins={this.getMyPlugins}
 									myPlugins={myPlugins}
