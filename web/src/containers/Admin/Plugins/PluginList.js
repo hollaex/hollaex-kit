@@ -44,6 +44,7 @@ class PluginList extends Component {
 	};
 
 	renderList = () => {
+		const { pluginData, handleOpenPlugin } = this.props;
 		if (this.state.isLoading) {
 			return (
 				<div className="loading-container d-flex align-items-center justify-content-center">
@@ -51,12 +52,12 @@ class PluginList extends Component {
 				</div>
 			);
 		}
-		return this.props.pluginData.map((item, index) => {
+		return pluginData.map((item, index) => {
 			return (
 				<div
 					key={index}
 					className="plugin-list-item d-flex align-items-center justify-content-between"
-					onClick={() => this.props.handleOpenAdd(item)}
+					onClick={() => handleOpenPlugin(item)}
 				>
 					<div className="d-flex align-items-center">
 						<div>
@@ -118,9 +119,9 @@ class PluginList extends Component {
 						{PLUGIN_CARDS.map((card, index) => (
 							<div
 								key={index}
-								className="card"
+								className="plugin-card"
 								style={{ backgroundImage: `url(${card.logo})` }}
-								onClick={() => this.props.handleOpenAdd(card)}
+								onClick={() => this.props.handleOpenPlugin(card)}
 							/>
 						))}
 					</div>

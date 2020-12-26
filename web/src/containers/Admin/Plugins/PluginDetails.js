@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Modal, Divider, Input, Spin } from 'antd';
+import { Button, Modal, Divider, Input, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
+import { Carousel } from 'components';
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin, getPlugin } from './action';
+import { addPlugin, getPlugin, updatePlugin } from './action';
 
 const PluginDetails = ({
 	handleBreadcrumb,
 	selectedPlugin = {},
+	handlePluginList,
+	updatePluginList,
 	removePlugin,
 }) => {
 	const [isOpen, setOpen] = useState(false);
@@ -15,6 +18,8 @@ const PluginDetails = ({
 	const [isConfirm, setConfirm] = useState(true);
 	const [isLoading, setLoading] = useState(true);
 	const [isAddLoading, setAddLoading] = useState(false);
+	const [isVersionUpdate, setUpdate] = useState(false);
+	const [isUpdateLoading, setUpdateLoading] = useState(false);
 	const [pluginData, setPlugin] = useState({});
 
 	const requestPlugin = useCallback(() => {
@@ -26,7 +31,11 @@ const PluginDetails = ({
 				}
 			})
 			.catch((err) => {
-				setPlugin({});
+				if (selectedPlugin.enabled) {
+					setPlugin(selectedPlugin);
+				} else {
+					setPlugin({});
+				}
 				setLoading(false);
 			});
 	}, [selectedPlugin]);
@@ -37,27 +46,51 @@ const PluginDetails = ({
 
 	const handleAddPlugin = async () => {
 		const body = {
-			name: pluginData.name,
-			script: pluginData.script,
-			version: pluginData.version,
-			description: pluginData.description,
-			author: pluginData.author,
+			...pluginData,
 			enabled: true,
 		};
 		setAddLoading(true);
 		addPlugin(body)
 			.then((res) => {
 				setAddLoading(false);
-				requestPlugin();
+				message.success('Plugin installed successfully');
+				handlePluginList(res);
 			})
 			.catch((err) => {
 				setAddLoading(false);
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
+			});
+	};
+
+	const handleUpdatePlugin = () => {
+		handleClose();
+		const body = {
+			name: pluginData.name,
+			meta: {
+				version: pluginData.version,
+			},
+		};
+		setUpdateLoading(true);
+		updatePlugin(body)
+			.then((res) => {
+				setUpdateLoading(false);
+				message.success('Plugin updated successfully');
+				updatePluginList(pluginData);
+			})
+			.catch((err) => {
+				setUpdateLoading(false);
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
 			});
 	};
 
 	const handleClose = () => {
 		setOpen(false);
 		setType('');
+		setUpdate(false);
 	};
 
 	const handleAdd = () => {
@@ -84,6 +117,11 @@ const PluginDetails = ({
 		}
 	};
 
+	const handleUpdate = () => {
+		setOpen(true);
+		setUpdate(true);
+	};
+
 	const renderPopup = () => {
 		switch (type) {
 			case 'remove':
@@ -93,7 +131,7 @@ const PluginDetails = ({
 							<img
 								src={STATIC_ICONS.PLUGIN_REMOVAL_WHITE}
 								alt="Plugin"
-								className="plugin-icon"
+								className="plugin-removal-icon"
 							/>
 							<h5>
 								<b>Plugin removal</b>
@@ -179,8 +217,10 @@ const PluginDetails = ({
 			default:
 				return (
 					<div className="admin-plugin-modal-wrapper">
-						<h2>Add plugin</h2>
-						<div className="d-flex">
+						<h2>
+							{isVersionUpdate ? <b>Update plugin</b> : <b>Add plugin</b>}
+						</h2>
+						<div className="d-flex mt-4">
 							<img
 								src={
 									pluginData && pluginData.icon
@@ -197,50 +237,107 @@ const PluginDetails = ({
 								<div className="my-2">
 									<b>Description:</b> {pluginData.description}
 								</div>
-								<div>
-									<b>Version:</b> {pluginData.version}
-								</div>
 								<div className="my-2">
 									<b>Author:</b> {pluginData.author}
 								</div>
+								{isVersionUpdate ? (
+									<div>
+										<div>
+											<b>Currently installed versions:</b>{' '}
+											{selectedPlugin.version}
+										</div>
+										<div className="my-2 d-flex">
+											<b>Newest version:</b> {pluginData.version}
+										</div>
+									</div>
+								) : (
+									<div>
+										<b>Version:</b> {pluginData.version}
+									</div>
+								)}
 							</div>
 						</div>
 						<Divider />
-						<div>Are you sure you want to add this plugin?</div>
+						{isVersionUpdate ? (
+							<div>Are you sure you want to update this plugin?</div>
+						) : (
+							<div>Are you sure you want to add this plugin?</div>
+						)}
 						<div className="my-4">
-							<Button type="primary" className="add-btn" onClick={handleAdd}>
-								Add
-							</Button>
+							{isVersionUpdate ? (
+								<Button
+									type="primary"
+									className="add-btn"
+									onClick={handleUpdatePlugin}
+								>
+									Update
+								</Button>
+							) : (
+								<Button type="primary" className="add-btn" onClick={handleAdd}>
+									Add
+								</Button>
+							)}
 						</div>
 					</div>
 				);
 		}
 	};
 
+	const handleOpenConfirmation = () => {
+		setOpen(true);
+		setUpdate(false);
+	};
+
 	const renderButtonContent = () => {
-		if (isAddLoading) {
+		if (isAddLoading || isUpdateLoading) {
 			return (
 				<div className="d-flex mt-5">
-					<ClockCircleOutlined /> <div>Installation in progress...</div>
+					<ClockCircleOutlined />
+					<div>
+						{isUpdateLoading
+							? 'Update is in progress...'
+							: 'Installation in progress...'}
+					</div>
 				</div>
 			);
 		} else if (selectedPlugin.enabled) {
 			return (
-				<div className="btn-wrapper d-flex justify-content-between">
-					<Button
-						type="primary"
-						className="remove-btn"
-						onClick={() => handleType('remove')}
-					>
-						Remove
-					</Button>
-					<Button
-						type="primary"
-						className="config-btn"
-						onClick={handleBreadcrumb}
-					>
-						Configure
-					</Button>
+				<div className="btn-wrapper d-flex mt-3">
+					<div>
+						<Button
+							type="primary"
+							className="remove-btn mr-2"
+							onClick={() => handleType('remove')}
+						>
+							Remove
+						</Button>
+					</div>
+					<div className="d-flex align-items-center flex-column">
+						{pluginData.web_view ? (
+							<Button
+								type="primary"
+								className="config-btn"
+								onClick={handleBreadcrumb}
+							>
+								Configure
+							</Button>
+						) : null}
+						{pluginData.version > selectedPlugin.version ? (
+							<div className="d-flex align-items-center flex-column">
+								<Button
+									type="primary"
+									className="update-btn"
+									onClick={handleUpdate}
+								>
+									Update
+								</Button>
+								<div className="d-flex">
+									<div className="small-circle"></div>
+									<div className="update-txt">{`v${pluginData.version} available`}</div>
+								</div>
+							</div>
+						) : null}
+					</div>
 				</div>
 			);
 		} else {
@@ -249,7 +346,7 @@ const PluginDetails = ({
 					<Button
 						type="primary"
 						className="add-btn"
-						onClick={() => setOpen(true)}
+						onClick={handleOpenConfirmation}
 					>
 						Add
 					</Button>
@@ -257,6 +354,26 @@ const PluginDetails = ({
 				</div>
 			);
 		}
+	};
+
+	const getCards = () => {
+		const cardData = [
+			{
+				icon:
+					pluginData && pluginData.icon
+						? pluginData.icon
+						: STATIC_ICONS.DEFAULT_PLUGIN_PREVIEW,
+			},
+		];
+		return cardData.map((data) => (
+			<div>
+				<img src={data.icon} alt="PluginCard" className="plugin-card" />
+				<div className="d-flex mt-2 ml-1">
+					<StarFilled />
+					<div>Featured plugin</div>
+				</div>
+			</div>
+		));
 	};
 
 	if (isLoading) {
@@ -269,7 +386,6 @@ const PluginDetails = ({
 
 	return (
 		<div>
-			<div className="plugin-divider"></div>
 			<div className="plugin-details-wrapper">
 				<div className="main-content">
 					<div className="d-flex justify-content-between">
@@ -295,28 +411,23 @@ const PluginDetails = ({
 								{renderButtonContent()}
 							</div>
 						</div>
-						<div className="ml-3">
-							<img
-								src={
-									pluginData && pluginData.icon
-										? pluginData.icon
-										: STATIC_ICONS.DEFAULT_PLUGIN_PREVIEW
-								}
-								alt="PluginCard"
-								className="plugin-card"
-							/>
-							<div className="d-flex mt-2">
-								<StarFilled />
-								<div>Featured plugin</div>
-							</div>
+						<div className="plugin-carousel-wrapper ml-3">
+							<Carousel items={getCards()} />
 						</div>
 					</div>
-					<div className="about-label">About</div>
-					<div className="about-contents">
-						<b>OverView</b>
-						<div className="my-3">{pluginData.description}</div>
-						<div className="my-5">
-							<h2>Main features</h2>
+				</div>
+			</div>
+			<div className="plugin-divider"></div>
+			<div className="plugin-details-wrapper">
+				<div>
+					<div>
+						<div className="about-label">About</div>
+						<div className="about-contents">
+							<b>OverView</b>
+							<div className="my-3">{pluginData.description}</div>
+							<div className="my-5">
+								<h2>Main features</h2>
+							</div>
 						</div>
 					</div>
 				</div>
