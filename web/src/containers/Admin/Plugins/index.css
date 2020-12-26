@@ -30,3 +30,394 @@
 .card-width {
 	width: 25rem;
 }
+.admin-plugins-wrapper {
+	width: 100%;
+}
+.plugin-list-container {
+	color: #ffffff;
+	margin: 0rem auto;
+	padding: 2rem 0rem;
+	width: 65rem;
+}
+.plugin-list-container .loading-container {
+	height: 5rem;
+}
+.plugin-list-container .helper-modal-wrapper {
+	padding: 0.5rem 1rem;
+}
+.plugin-list-container .requirement-icon {
+	width: 0.75rem;
+	/* margin-right: 0.25rem; */
+}
+.plugin-list-container .description {
+	margin: 0.5rem 0rem;
+}
+.plugin-list-container .plugin-header,
+.myplugin-container .plugin-header {
+	padding: 0.25rem 0rem 1rem 0rem;
+	border-bottom: 1px solid rgb(255, 255, 255, 0.4);
+}
+.plugin-list-container .small-font {
+	font-size: 9px;
+	font-weight: bold;
+}
+.plugin-list-container .plugin-title,
+.myplugin-container .plugin-title,
+.myplugin-container .header {
+	font-size: 18px;
+	font-weight: bold;
+}
+.plugin-list-container .card-container,
+.myplugin-container .card-container {
+	padding: 2rem 0rem;
+	border-bottom: 1px solid #ffffff;
+	margin-bottom: 0.5rem;
+}
+.plugin-list-container .plugin-card {
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	cursor: pointer;
+	height: 9rem;
+	width: 18rem;
+	margin: 1rem;
+}
+.plugin-list-container .search-plugin-input .ant-input,
+.myplugin-container .search-plugin-input .ant-input {
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-bottom: 1px solid #ffffff;
+	border-radius: 0px;
+	background-color: #0000d1;
+	color: #c4c4c4;
+	box-shadow: none;
+}
+.plugin-list-container .search-plugin-input .ant-input:focus {
+	box-shadow: none;
+}
+.plugin-list-container p {
+	line-height: 1.6;
+	font-size: 12px;
+	margin-bottom: 4px;
+	letter-spacing: -0.1px;
+	color: #7f7f7f;
+}
+.plugin-list-container b {
+	font-size: 14px;
+}
+.plugin-list-container .plugin-icon {
+	height: 5rem;
+	margin: 0rem 1rem 0rem 0.5rem;
+	width: 8rem;
+}
+.plugin-list-container .cloud-icon {
+	height: 3rem;
+	width: 3rem;
+}
+.plugin-list-container .back-btn {
+	margin-top: 2rem;
+	width: 100%;
+}
+.plugin-list-container .plugin-list,
+.myplugin-container .plugin-list {
+	height: 350px;
+	overflow: auto;
+	overflow-x: hidden;
+}
+.plugin-list-container .plugin-list .plugin-list-item .install-icon-content {
+	text-align: center;
+	width: 7.2rem;
+}
+.plugin-list-container .plugin-list .plugin-list-item .check-icon-verified {
+	font-size: 24px;
+	color: #00781b;
+}
+.myplugin-container .plugin-list .removing-item {
+	opacity: 0.3;
+}
+.plugin-list-container .plugin-list .plugin-list-item,
+.myplugin-container .plugin-list-item {
+	margin: 8px 0px;
+	cursor: pointer;
+}
+.plugin-list-container .plugin-list .plugin-list-title,
+.myplugin-container .plugin-list-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.plugin-list-container .plugin-list .plugin-list-author,
+.myplugin-container .plugin-list-author {
+	color: #b6b6b6;
+	font-size: 11px;
+}
+.plugin-list-container .plugin-list .plugin-author-align,
+.myplugin-container .plugin-author-align {
+	position: relative;
+	top: 5px;
+	left: 3px;
+}
+.plugin-list-container .plugin-list .plugin-list-bio,
+.myplugin-container .plugin-list-bio {
+	font-size: 13px;
+}
+.plugin-list-container .plugin-list .plugin-list-icon,
+.myplugin-container .plugin-list-icon {
+	height: 5rem;
+	margin: 5px 12px 5px 3px;
+	width: 5rem;
+}
+.plugin-list-container .plugin-list .icon-placeholder {
+	background-color: #dfdfdf;
+	border-radius: 5px;
+}
+.plugin-list-container .plugin-list .add-btn,
+.myplugin-container .plugin-list-item .add-btn {
+	padding: 2px 10px;
+	background-color: #00781b;
+	border-radius: 13px;
+	color: #ffffff;
+	cursor: pointer;
+	min-width: 7.5rem;
+	text-align: center;
+}
+.plugins-wrapper .ant-breadcrumb {
+	font-size: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	margin-top: 1rem;
+}
+
+.plugin-divider {
+	border-bottom: 1px solid rgb(0, 0, 0, 0.3);
+	position: relative;
+	right: 24px;
+	top: 5rem;
+	width: calc(100% + 48px);
+}
+.plugin-details-wrapper {
+	color: #ffffff;
+	margin: 1rem auto;
+	width: 65rem;
+	padding-bottom: 5rem;
+}
+.plugin-details-wrapper .plugin-icon,
+.admin-plugin-modal-wrapper .plugin-icon {
+	width: 65px;
+	height: 65px;
+}
+.plugin-details-wrapper .main-content {
+	margin: 2rem auto;
+}
+.plugin-details-wrapper .main-content .plugin-card {
+	height: 210px;
+	width: 320px;
+}
+.plugin-details-wrapper .main-content .anticon {
+	position: relative;
+	top: 3px;
+	right: 3px;
+}
+.plugin-details-wrapper .main-content .anticon-clock-circle {
+	font-size: 18px;
+	top: 0px;
+}
+.plugin-details-wrapper .plugin-carousel-wrapper {
+	width: 33rem;
+}
+.plugin-details-wrapper .btn-wrapper {
+	width: 310px;
+}
+.plugin-details-wrapper .btn-wrapper .small-txt {
+	font-size: 11px;
+	position: relative;
+	left: 38px;
+}
+.plugin-details-wrapper .btn-wrapper .ant-btn {
+	margin: 1rem 0 1rem 0;
+	width: 150px;
+	height: 33px;
+	border-radius: 15px;
+}
+.plugin-details-wrapper .btn-wrapper .add-btn {
+	width: 150px;
+	height: 33px;
+	background-color: #00781b;
+}
+.plugin-details-wrapper .btn-wrapper .update-btn {
+	width: 150px;
+	height: 33px;
+	background-color: #cb7300;
+}
+.plugin-details-wrapper .btn-wrapper .remove-btn,
+.admin-plugin-modal-wrapper .remove-btn {
+	background-color: #780000;
+}
+.plugin-details-wrapper .btn-wrapper .config-btn {
+	background-color: #00781b;
+}
+.plugin-details-wrapper .icon-wrapper {
+	display: flex;
+	justify-content: center;
+}
+.plugin-details-wrapper .icon-wrapper .card-icons {
+	width: 18rem;
+}
+.plugin-details-wrapper .about-contents {
+	color: #ffffff;
+	font-size: 12px;
+	margin: 2rem 0;
+}
+.plugin-details-wrapper .about-contents h2 {
+	font-size: 12px;
+}
+.plugin-details-wrapper .about-label {
+	margin-top: 2rem;
+	font-size: 20px;
+	border-bottom: 3px solid #ffffff;
+	width: 60px;
+}
+
+.admin-plugin-modal-wrapper .plugin-removal-icon {
+	width: 150px;
+}
+.admin-plugin-modal-wrapper h2 {
+	font-size: 19px;
+}
+.admin-plugin-modal-wrapper .add-btn {
+	background-color: #00781b;
+	width: 100%;
+}
+.admin-plugin-modal-wrapper .ant-divider {
+	border-color: rgb(255, 255, 255, 0.3);
+}
+.admin-plugin-modal-wrapper .remove-wrapper {
+	text-align: center;
+}
+.admin-plugin-modal-wrapper .remove-wrapper .ant-btn,
+.admin-plugin-modal-wrapper .confirm-plugin-wrapper .ant-btn,
+.admin-plugin-modal-wrapper .btn-wrapper .ant-btn {
+	width: 190px;
+}
+.admin-plugin-modal-wrapper h5 {
+	color: #ffffff;
+	margin: 1rem 0;
+}
+.admin-plugin-modal-wrapper .ant-radio-wrapper {
+	color: #ffffff;
+}
+.admin-plugin-modal-wrapper .plugin-file-wrapper {
+	margin: 1rem 0rem;
+}
+.admin-plugin-modal-wrapper .plugin-file-wrapper input {
+	opacity: 0;
+	position: fixed;
+	left: -999px;
+}
+.admin-plugin-modal-wrapper .plugin-file-container {
+	width: 100%;
+	padding-left: 100px;
+	border: 1px solid #b9b9b9;
+	display: block;
+	white-space: nowrap;
+	position: relative;
+	height: 88px;
+}
+.admin-plugin-modal-wrapper .plugin-img-content {
+	top: 0px;
+	left: 0px;
+	display: block;
+	height: 86px;
+	object-fit: fill;
+	cursor: pointer;
+	border-left: 1px solid #b9b9b9;
+}
+.admin-plugin-modal-wrapper .anticon-download {
+	font-size: 64px;
+	position: absolute;
+	left: 18px;
+	top: 10px;
+}
+.admin-plugin-modal-wrapper .ant-radio-group {
+	color: #ffffff;
+}
+.admin-plugin-modal-wrapper .upload-link {
+	position: absolute;
+	top: 27px;
+	left: 120px;
+	font-size: 14px;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.admin-plugin-modal-wrapper .url-path {
+	font-size: 13px;
+}
+.admin-plugin-modal-wrapper .plugins-icon,
+.config-wrapper .plugins-icon {
+	width: 70px;
+	height: 70px;
+	position: relative;
+	top: 2.5rem;
+}
+
+.config-wrapper {
+	margin-top: 2rem;
+	width: 50%;
+	color: #ffffff;
+}
+.config-wrapper .config-content {
+	margin-top: 4rem;
+	border-top: 1px solid rgb(255, 255, 255, 0.3);
+}
+.config-wrapper .config-content .btn-wrapper .restart-btn {
+	width: 50%;
+	margin-top: 3rem;
+	background-color: #00781b;
+}
+
+.admin-plugin-container .ant-tabs-content-holder {
+	margin: 0 auto;
+	width: 100%;
+}
+
+.myplugin-container {
+	margin: 0 auto;
+	width: 65rem;
+}
+
+.myplugin-container .ant-btn {
+	color: #ffffff;
+	background-color: #00781b;
+	border-color: #00781b;
+}
+
+.myplugin-container .my-plugin-content {
+	padding-bottom: 2rem;
+	border-bottom: 1px solid #ffffff;
+	margin-bottom: 0.5rem;
+}
+.myplugin-container .plugin-list-item .update-btn {
+	padding: 2px 10px;
+	border-radius: 13px;
+	color: #ffffff;
+	background-color: #cb7300;
+	border-color: #cb7300;
+	cursor: pointer;
+	min-width: 7.5rem;
+	text-align: center;
+}
+.myplugin-container .plugin-list-item .small-circle,
+.plugin-details-wrapper .btn-wrapper .small-circle {
+	height: 10px;
+	width: 10px;
+	border-radius: 50%;
+	background-color: #f28041;
+	margin: 4px;
+}
+.myplugin-container .plugin-list-item .update-txt,
+.plugin-details-wrapper .btn-wrapper .update-txt {
+	color: #f28041;
+	font-size: 12px;
+}
+.plugin-details-wrapper .btn-wrapper .update-warning {
+	width: 280px;
+}
