@@ -17,12 +17,12 @@ const orderbook_level_step = 1;
 const orderbook_level_min = 1;
 const orderbook_level_max = 20;
 
-export const generateFormValues = () => ({
+export const generateFormValues = ({ options = [] }) => ({
 	theme: {
 		type: 'select',
 		stringId: 'SETTINGS_THEME_LABEL',
 		label: STRINGS['SETTINGS_THEME_LABEL'],
-		options: STRINGS['SETTINGS_THEME_OPTIONS'],
+		options,
 	},
 	order_book_levels: {
 		type: 'number',

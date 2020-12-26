@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Input, Spin, Modal, Radio } from 'antd';
+import { Button, Input, Spin, Modal, Radio, message } from 'antd';
 import { Link } from 'react-router';
 import _debounce from 'lodash/debounce';
 import { DownloadOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 import { STATIC_ICONS } from 'config/icons';
-import { getPlugin, addPlugin } from './action';
+import { addPlugin } from './action';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -16,12 +17,15 @@ class MyPlugins extends Component {
 			thirdPartyType: 'upload_json',
 			isConfirm: true,
 			pluginData: {},
+			thirdParty: {},
+			thirdPartyError: '',
+			jsonURL: '',
 		};
 	}
 
 	componentDidMount() {
-		this.props.getMyPlugins();
-		this.props.getPlugins();
+		// this.props.getMyPlugins();
+		// this.props.getPlugins();
 	}
 
 	searchPlugin = _debounce(this.props.getMyPlugins, 800);
@@ -52,6 +56,7 @@ class MyPlugins extends Component {
 		} else {
 			this.setState({ thirdPartyType: 'input_url' });
 		}
+		this.setState({ thirdPartyError: '', jsonURL: '' });
 	};
 
 	handleInput = (e) => {
@@ -62,37 +67,95 @@ class MyPlugins extends Component {
 		}
 	};
 
-	// requestPlugin = async () => {
-	// 	getPlugin({ name: this.props.selectedPlugin.name })
-	// 		.then((res) => {
-	// 			if (res) {
-	//                 this.setState({ pluginData: res })
-	// 			}
-	// 		})
-	// 		.catch((err) => {
-	//             this.setState({ pluginData: {} })
-	// 		});
-	// };
-
 	handleAddPlugin = async () => {
-		const { pluginData } = this.props;
 		const body = {
-			name: pluginData.name,
-			script: pluginData.script,
-			version: pluginData.version,
-			description: pluginData.description,
-			author: pluginData.author,
+			...this.state.thirdParty,
 			enabled: true,
 		};
 		addPlugin(body)
 			.then((res) => {
 				if (res) {
 					this.setState({ isVisible: false });
+					this.props.handlePluginList(res);
+					message.success('Added third party plugin successfully');
 				}
 			})
 			.catch((err) => {
 				this.setState({ isVisible: false });
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
 			});
+	};
+
+	handleURL = (e) => {
+		this.setState({ jsonURL: e.target.value });
+	};
+
+	getJsonFromFile = async (file) => {
+		return await new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = (function () {
+				return function (e) {
+					try {
+						let json = JSON.parse(e.target.result);
+						resolve(json);
+					} catch (err) {
+						message.error(err);
+						reject(err);
+					}
+				};
+			})(file);
+			reader.readAsText(file);
+		});
+	};
+
+	handleFileChange = async (event) => {
+		const file = event.target.files[0];
+		if (file) {
+			const res = await this.getJsonFromFile(file);
+			const check = this.checkJSON(res);
+			if (check) {
+				this.setState({ thirdParty: res });
+			} else {
+				this.setState({ thirdPartyError: 'JSON file is not valid' });
+			}
+		}
+	};
+
+	checkJSON = (json) => {
+		if (
+			json &&
+			json.name &&
+			json.script &&
+			json.version &&
+			json.description &&
+			json.author
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	getJSONFromURL = async () => {
+		if (this.state.jsonURL) {
+			const res = await axios.get(this.state.jsonURL);
+			if (res.data) {
+				const check = this.checkJSON(res.data);
+				if (check) {
+					this.setState({ thirdParty: res.data });
+					this.handleStep(3);
+				} else {
+					this.setState({ thirdPartyError: 'JSON file is not valid' });
+				}
+			}
+		}
+	};
+
+	handleBack = () => {
+		this.setState({ thirdParty: {}, thirdPartyError: '' });
+		this.handleStep(1);
 	};
 
 	renderPopup = () => {
@@ -107,7 +170,13 @@ class MyPlugins extends Component {
 			whiteSpace: 'normal',
 			letterSpacing: '-0.15px',
 		};
-		const { step, thirdPartyType, isConfirm } = this.state;
+		const {
+			step,
+			thirdPartyType,
+			isConfirm,
+			thirdParty,
+			thirdPartyError,
+		} = this.state;
 		switch (step) {
 			case 2:
 				return (
@@ -131,7 +200,12 @@ class MyPlugins extends Component {
 												<DownloadOutlined />
 												<label className="upload-link">
 													<span>Upload</span>
-													<input type="file" accept="image/*" name="upload" />
+													<input
+														type="file"
+														accept="application/JSON"
+														name="upload"
+														onChange={this.handleFileChange}
+													/>
 												</label>
 											</div>
 										</div>
@@ -143,23 +217,40 @@ class MyPlugins extends Component {
 								{thirdPartyType === 'input_url' ? (
 									<div>
 										<span className="url-path">URL path</span>
-										<Input placeholder="Input URL path" className="mt-2" />
+										<Input
+											placeholder="Input URL path"
+											className="mt-2"
+											onChange={this.handleURL}
+										/>
 									</div>
 								) : null}
 							</Radio.Group>
+							{thirdPartyError ? (
+								<div className="field-wrapper error">{thirdPartyError}</div>
+							) : null}
 						</div>
 						<div className="my-4 btn-wrapper d-flex justify-content-between">
 							<Button
 								type="primary"
 								className="add-btn"
-								onClick={() => this.handleStep(1)}
+								onClick={this.handleBack}
 							>
 								Back
 							</Button>
 							<Button
 								type="primary"
 								className="add-btn"
-								onClick={() => this.handleStep(3)}
+								onClick={() => {
+									if (
+										thirdPartyType === 'upload_json' &&
+										thirdParty.name &&
+										!thirdPartyError
+									) {
+										this.handleStep(3);
+									} else if (thirdPartyType === 'input_url') {
+										this.getJSONFromURL();
+									}
+								}}
 							>
 								Next
 							</Button>
@@ -210,7 +301,7 @@ class MyPlugins extends Component {
 							<img
 								src={STATIC_ICONS.ADD_THIRD_PARTY_PLUGIN}
 								alt="Plugin"
-								className="plugin-icon"
+								className="plugin-removal-icon"
 							/>
 							<h5>
 								<b>Add third party plugin</b>
@@ -243,11 +334,25 @@ class MyPlugins extends Component {
 	};
 
 	renderList = () => {
-		return this.props.myPlugins.map((item, index) => {
+		const {
+			myPlugins,
+			removePluginName,
+			handleOpenPlugin,
+			pluginData,
+		} = this.props;
+
+		return myPlugins.map((item, index) => {
+			const networkPlugin =
+				pluginData.filter((data) => data.name === item.name)[0] || {};
 			return (
 				<div
 					key={index}
-					className="plugin-list-item d-flex align-items-center justify-content-between"
+					className={
+						item.name === removePluginName
+							? 'plugin-list-item removing-item d-flex align-items-center justify-content-between'
+							: 'plugin-list-item d-flex align-items-center justify-content-between'
+					}
+					onClick={() => handleOpenPlugin(item)}
 				>
 					<div className="d-flex justify-content-center">
 						<div>
@@ -262,15 +367,28 @@ class MyPlugins extends Component {
 						<div>
 							<div className="d-flex">
 								<div className="plugin-list-title">{item.name}</div>
-								<div className="plugin-list-author plugin-author-align">
-									{item.version}
-								</div>
+								{item.version ? (
+									<div className="plugin-list-author plugin-author-align">
+										v{item.version}
+									</div>
+								) : null}
 							</div>
 							<div className="plugin-list-author">{`By ${item.author}`}</div>
 							<div className="plugin-list-bio">{item.bio}</div>
 						</div>
 					</div>
-					<div className="add-btn">Configure</div>
+					<div className="d-flex justify-content-between align-items-start">
+						<div className="add-btn">Configure</div>
+						{networkPlugin.version > item.version ? (
+							<div className="ml-2">
+								<div className="update-btn">Update</div>
+								<div className="d-flex">
+									<div className="small-circle"></div>
+									<div className="update-txt">{`v${networkPlugin.version} available`}</div>
+								</div>
+							</div>
+						) : null}
+					</div>
 				</div>
 			);
 		});
@@ -307,52 +425,6 @@ class MyPlugins extends Component {
 					</div>
 					<div className="plugin-list">{this.renderList()}</div>
 				</div>
-				{/* <div className="d-flex flex-space-between plugin-header pb-4">
-					<div className="plugin-title">My installed plugins</div>
-					<div className="search-plugin-input">
-						<Input placeholder="Search..." onChange={this.handleSearch} />
-					</div>
-				</div>
-				<div className="plugin-list">
-					{this.props.myPlugins.map((item, index) => {
-						return (
-							<div
-								key={index}
-								className="d-flex flex-space-between plugin-list-item"
-								onClick={() => this.props.handleConfig(true)}
-							>
-								<div className="d-flex justify-content-center">
-									<div>
-										<img
-											src={
-												item.icon
-													? item.icon
-													: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
-											}
-											alt={`plugin-${index}`}
-											className="plugin-list-icon"
-										/>
-									</div>
-									<div>
-										<div className="d-flex">
-											<div className="plugin-list-title">{item.name}</div>
-											<div className="plugin-list-author plugin-author-align">
-												v{item.version}.0
-											</div>
-										</div>
-										<div className="plugin-list-author">{`By ${item.author}`}</div>
-										<div className="plugin-list-bio">{item.bio}</div>
-									</div>
-								</div>
-								<div
-									className="add-btn"
-								>
-									Configure
-								</div>
-							</div>
-						);
-					})}
-				</div> */}
 				<Modal
 					visible={isVisible}
 					width={450}

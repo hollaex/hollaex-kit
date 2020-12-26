@@ -127,10 +127,6 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-.flex-container {
-	display: flex;
-	justify-content: space-between;
-}
 .small-text {
 	font-size: 12px;
 	margin-left: 1.4rem;

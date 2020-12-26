@@ -37,7 +37,7 @@
 	color: #ffffff;
 	margin: 0rem auto;
 	padding: 2rem 0rem;
-	width: 50%;
+	width: 65rem;
 }
 .plugin-list-container .loading-container {
 	height: 5rem;
@@ -73,7 +73,7 @@
 	border-bottom: 1px solid #ffffff;
 	margin-bottom: 0.5rem;
 }
-.plugin-list-container .card {
+.plugin-list-container .plugin-card {
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	cursor: pointer;
@@ -132,6 +132,9 @@
 	font-size: 24px;
 	color: #00781b;
 }
+.myplugin-container .plugin-list .removing-item {
+	opacity: 0.3;
+}
 .plugin-list-container .plugin-list .plugin-list-item,
 .myplugin-container .plugin-list-item {
 	margin: 8px 0px;
@@ -185,24 +188,25 @@
 }
 
 .plugin-divider {
-	width: 100%;
+	border-bottom: 1px solid rgb(0, 0, 0, 0.3);
 	position: relative;
-	top: 26.5rem;
-	border-bottom: 1px solid #000000;
+	right: 24px;
+	top: 5rem;
+	width: calc(100% + 48px);
 }
 .plugin-details-wrapper {
 	color: #ffffff;
 	margin: 1rem auto;
-	width: 75rem;
+	width: 65rem;
 	padding-bottom: 5rem;
 }
-.plugin-details-wrapper .plugin-icon {
+.plugin-details-wrapper .plugin-icon,
+.admin-plugin-modal-wrapper .plugin-icon {
 	width: 65px;
 	height: 65px;
 }
 .plugin-details-wrapper .main-content {
 	margin: 2rem auto;
-	width: 50rem;
 }
 .plugin-details-wrapper .main-content .plugin-card {
 	height: 210px;
@@ -217,6 +221,9 @@
 	font-size: 18px;
 	top: 0px;
 }
+.plugin-details-wrapper .plugin-carousel-wrapper {
+	width: 33rem;
+}
 .plugin-details-wrapper .btn-wrapper {
 	width: 310px;
 }
@@ -226,7 +233,7 @@
 	left: 38px;
 }
 .plugin-details-wrapper .btn-wrapper .ant-btn {
-	margin: 2rem 0 1rem 0;
+	margin: 1rem 0 1rem 0;
 	width: 150px;
 	height: 33px;
 	border-radius: 15px;
@@ -235,6 +242,11 @@
 	width: 150px;
 	height: 33px;
 	background-color: #00781b;
+}
+.plugin-details-wrapper .btn-wrapper .update-btn {
+	width: 150px;
+	height: 33px;
+	background-color: #cb7300;
 }
 .plugin-details-wrapper .btn-wrapper .remove-btn,
 .admin-plugin-modal-wrapper .remove-btn {
@@ -265,7 +277,7 @@
 	width: 60px;
 }
 
-.admin-plugin-modal-wrapper .plugin-icon {
+.admin-plugin-modal-wrapper .plugin-removal-icon {
 	width: 150px;
 }
 .admin-plugin-modal-wrapper h2 {
@@ -364,7 +376,7 @@
 
 .admin-plugin-container .ant-tabs-content-holder {
 	margin: 0 auto;
-	width: 88rem;
+	width: 100%;
 }
 
 .myplugin-container {
@@ -382,4 +394,30 @@
 	padding-bottom: 2rem;
 	border-bottom: 1px solid #ffffff;
 	margin-bottom: 0.5rem;
+}
+.myplugin-container .plugin-list-item .update-btn {
+	padding: 2px 10px;
+	border-radius: 13px;
+	color: #ffffff;
+	background-color: #cb7300;
+	border-color: #cb7300;
+	cursor: pointer;
+	min-width: 7.5rem;
+	text-align: center;
+}
+.myplugin-container .plugin-list-item .small-circle,
+.plugin-details-wrapper .btn-wrapper .small-circle {
+	height: 10px;
+	width: 10px;
+	border-radius: 50%;
+	background-color: #f28041;
+	margin: 4px;
+}
+.myplugin-container .plugin-list-item .update-txt,
+.plugin-details-wrapper .btn-wrapper .update-txt {
+	color: #f28041;
+	font-size: 12px;
+}
+.plugin-details-wrapper .btn-wrapper .update-warning {
+	width: 280px;
 }

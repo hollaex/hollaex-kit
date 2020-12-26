@@ -38,7 +38,7 @@ const TradingInterface = ({
 						<Radio.Group>
 							<Radio value="full">
 								Full interface
-								<div className="flex-container">
+								<div className="d-flex justify-content-between">
 									<div className="small-text">
 										(Pro & quick trade with wallet)
 									</div>
@@ -72,7 +72,7 @@ const TradingInterface = ({
 							</Radio>
 							<Radio value="quick-trade" disabled>
 								Quick trade only (coming soon)
-								<div className="flex-container">
+								<div className="d-flex justify-content-between">
 									<div className="small-text">
 										(Simple buy/sell interface with wallet)
 									</div>
@@ -90,7 +90,7 @@ const TradingInterface = ({
 							</Radio>
 							<Radio value="wallet" disabled>
 								Wallet only (coming soon)
-								<div className="flex-container">
+								<div className="d-flex justify-content-between">
 									<div className="small-text">
 										(No trading. Only crypto wallet)
 									</div>
