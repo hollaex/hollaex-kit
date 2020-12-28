@@ -3738,7 +3738,8 @@ table th {
       border-color: var(--calculated_base_top-bar-navigation_text);
       width: 34px;
       height: 75.5%;
-      margin: 0; }
+      margin: 0;
+      cursor: pointer; }
       .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button.left .toggle-action_button-display {
         right: calc(100% - 14px); }
       .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button.right .toggle-action_button-display {
@@ -5600,7 +5601,8 @@ table th {
     margin: 0 0.5rem;
     display: flex;
     align-items: center;
-    position: relative; }
+    position: relative;
+    cursor: pointer; }
     .toggle_button-wrapper .toggle-content .toggle-action_button.left .toggle-action_button-display {
       right: calc(100% - 18px); }
     .toggle_button-wrapper .toggle-content .toggle-action_button.right .toggle-action_button-display {

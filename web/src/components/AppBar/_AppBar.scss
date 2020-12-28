@@ -194,6 +194,7 @@ $app-menu-notification-size: 1.2rem;
 				width: 34px;
 				height: 75.5%;
 				margin: 0;
+				cursor: pointer;
 
 				&.left .toggle-action_button-display {
 					right: calc(100% - 14px);
