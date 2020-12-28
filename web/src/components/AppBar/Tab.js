@@ -60,7 +60,7 @@ const Tab = ({
 								? 'app-price-diff-down app-bar-price_diff_down'
 								: 'app-bar-price_diff_up app-price-diff-up'
 						}
-					></div>
+					/>
 					<div
 						className={
 							priceDifference < 0

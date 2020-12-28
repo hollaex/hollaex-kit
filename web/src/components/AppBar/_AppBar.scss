@@ -8,7 +8,6 @@ $app-menu-notification-size: 1.2rem;
 	width: 100%;
 	min-height: $navigation_bar-height;
 	height: $navigation_bar-height;
-	display: flex;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
 	background: $app-bar-background-color;
@@ -116,6 +115,7 @@ $app-menu-notification-size: 1.2rem;
 		color: $base_top-bar-navigation_text;
 		cursor: pointer;
 		margin-right: 0.8rem;
+		width: 15rem;
 
 		svg {
 			.account-inactive {
@@ -194,6 +194,7 @@ $app-menu-notification-size: 1.2rem;
 				width: 34px;
 				height: 75.5%;
 				margin: 0;
+				cursor: pointer;
 
 				&.left .toggle-action_button-display {
 					right: calc(100% - 14px);
@@ -814,6 +815,11 @@ $app-menu-notification-size: 1.2rem;
 		padding: 0 0.5rem;
 		min-width: 13rem;
 		max-width: 13rem;
+
+		&.selector-trigger {
+			min-width: 17rem;
+			max-width: 17rem;
+		}
 	}
 
 	.transition_open {
@@ -1220,4 +1226,22 @@ $app-menu-notification-size: 1.2rem;
 		height: 100% !important;
 		width: 100% !important;
 	}
+}
+
+.app-menu-bar-wrapper {
+	flex-grow: 1;
+	flex-shrink: 1;
+	overflow-y: auto;
+}
+
+.stared-market {
+	svg {
+		fill: $favourite-star;
+	}
+}
+
+.active-market-trigger {
+	color: $colors-main-black;
+	background-color: $app-background-color;
+	font-weight: bold;
 }

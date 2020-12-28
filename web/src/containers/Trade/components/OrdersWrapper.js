@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import { Modal as ConfirmationModal } from 'antd';
 
 import ActiveOrders from './ActiveOrders';
 import UserTrades from './UserTrades';
@@ -23,6 +24,17 @@ class OrdersWrapper extends Component {
 			cancelDelayData: [],
 		};
 	}
+
+	openConfirm = () => {
+		ConfirmationModal.confirm({
+			content: 'Do you want cancel all orders?',
+			okText: 'Yes',
+			cancelText: 'No',
+			onOk: this.cancelAllOrders,
+			onCancel: () => {},
+			className: 'trade_cancel-All-confirmation',
+		});
+	};
 
 	cancelAllOrders = () => {
 		let cancelDelayData = [];
@@ -66,22 +78,23 @@ class OrdersWrapper extends Component {
 						cancelDelayData={cancelDelayData}
 						orders={activeOrders}
 						onCancel={this.handleCancelOrders}
+						onCancelAll={this.openConfirm}
 					/>
 				) : (
 					<LogoutInfoOrder activeTheme={activeTheme} />
 				),
-				titleAction: isLoggedIn()
-					? activeOrders.length > 0 && (
-							<ActionNotification
-								stringId="CANCEL_ALL"
-								text={STRINGS['CANCEL_ALL']}
-								iconId="CANCEL_CROSS_ACTIVE"
-								iconPath={ICONS['CANCEL_CROSS_ACTIVE']}
-								onClick={this.cancelAllOrders}
-								status="information"
-							/>
-					  )
-					: '',
+				titleAction: isLoggedIn() ? (
+					<ActionNotification
+						stringId="TRANSACTION_HISTORY.TITLE"
+						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
+						iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
+						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
+						onClick={this.props.goToTransactionsHistory}
+						status="information"
+					/>
+				) : (
+					''
+				),
 			},
 			{
 				stringId: 'RECENT_TRADES',

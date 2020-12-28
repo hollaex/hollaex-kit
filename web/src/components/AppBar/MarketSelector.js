@@ -54,6 +54,7 @@ class MarketSelector extends Component {
 					'app-bar-tab-menu-list',
 					'd-flex',
 					'align-items-center',
+					'pointer',
 					{ 'active-tab': symbol === selectedTabMenu }
 				)}
 				onClick={() => this.onAddTabClick(symbol)}
@@ -238,14 +239,14 @@ class MarketSelector extends Component {
 								return (
 									<div
 										key={index}
-										className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start"
+										className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
 									>
 										<div
-											className="pl-3 pr-2"
+											className="pl-3 pr-2 pointer"
 											onClick={() => this.toggleFavourite(pair)}
 										>
 											{this.isFavourite(pair) ? (
-												<StarFilled />
+												<StarFilled className="stared-market" />
 											) : (
 												<StarOutlined />
 											)}
@@ -305,7 +306,7 @@ class MarketSelector extends Component {
 							No data...
 						</div>
 					)}
-					<div className="d-flex justify-content-center app_bar-link blue-link">
+					<div className="d-flex justify-content-center app_bar-link blue-link pointer">
 						<div onClick={this.onViewMarketsClick}>{`view markets`}</div>
 					</div>
 				</div>
