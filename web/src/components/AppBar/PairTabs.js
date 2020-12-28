@@ -11,6 +11,8 @@ import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { CaretDownOutlined } from '@ant-design/icons';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
 
 class PairTabs extends Component {
 	state = {
@@ -84,6 +86,22 @@ class PairTabs extends Component {
 			pairs,
 		} = this.props;
 
+		const pair = pairs[activePairTab] || {};
+		const ticker = tickers[activePairTab] || {};
+		const { symbol } =
+			coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { increment_price } = pair;
+		const priceDifference =
+			ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
+		const tickerPercent =
+			priceDifference === 0 || ticker.open === 0
+				? 0
+				: (priceDifference / ticker.open) * 100;
+		const priceDifferencePercent = isNaN(tickerPercent)
+			? donutFormatPercentage(0)
+			: donutFormatPercentage(tickerPercent);
+
 		return (
 			<div className="d-flex justify-content-between">
 				<div className="market-bar d-flex align-items-center title-font apply_rtl">
@@ -96,6 +114,9 @@ class PairTabs extends Component {
 								'px-2',
 								{
 									'active-tab-pair': location.pathname === '/trade/add/tabs',
+								},
+								{
+									'active-market-trigger': activePairTab,
 								}
 							)}
 						>
@@ -113,16 +134,43 @@ class PairTabs extends Component {
 								trigger={['hover']}
 							>
 								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
-									<div className="d-flex align-items-center">
-										<Image
-											iconId={'TAB_PLUS'}
-											icon={ICONS['TAB_PLUS']}
-											wrapperClassName="app-bar-tab-close"
-										/>
-										<EditWrapper stringId="ADD_TRADING_PAIR">
-											{STRINGS['ADD_TRADING_PAIR']}
-										</EditWrapper>
-									</div>
+									{activePairTab ? (
+										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
+											<div className="app_bar-currency-txt">
+												{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+											</div>
+											<div className="title-font ml-1">
+												{formatToCurrency(ticker.close, increment_price)}
+											</div>
+											<div
+												className={
+													priceDifference < 0
+														? 'app-price-diff-down app-bar-price_diff_down'
+														: 'app-bar-price_diff_up app-price-diff-up'
+												}
+											/>
+											<div
+												className={
+													priceDifference < 0
+														? 'title-font app-price-diff-down'
+														: 'title-font app-price-diff-up'
+												}
+											>
+												{priceDifferencePercent}
+											</div>
+										</div>
+									) : (
+										<div className="d-flex align-items-center">
+											<Image
+												iconId={'TAB_PLUS'}
+												icon={ICONS['TAB_PLUS']}
+												wrapperClassName="app-bar-tab-close"
+											/>
+											<EditWrapper stringId="ADD_TRADING_PAIR">
+												{STRINGS['ADD_TRADING_PAIR']}
+											</EditWrapper>
+										</div>
+									)}
 									<CaretDownOutlined />
 								</div>
 							</Dropdown>

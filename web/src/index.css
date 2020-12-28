@@ -4353,6 +4353,9 @@ table th {
     padding: 0 0.5rem;
     min-width: 13rem;
     max-width: 13rem; }
+    .market-bar .app_bar-pair-tab.selector-trigger {
+      min-width: 17rem;
+      max-width: 17rem; }
   .market-bar .transition_open {
     left: -3.5rem;
     -webkit-animation: slide 0.5s forwards;
@@ -4664,6 +4667,14 @@ table th {
   flex-grow: 1;
   flex-shrink: 1;
   overflow-y: auto; }
+
+.stared-market svg {
+  fill: var(--specials_my-username-in-chat); }
+
+.active-market-trigger {
+  color: var(--labels_important-active-labels-text-graphics);
+  background-color: var(--base_background);
+  font-weight: bold; }
 
 .check_title-container {
   display: flex;

@@ -815,6 +815,11 @@ $app-menu-notification-size: 1.2rem;
 		padding: 0 0.5rem;
 		min-width: 13rem;
 		max-width: 13rem;
+
+		&.selector-trigger {
+			min-width: 17rem;
+			max-width: 17rem;
+		}
 	}
 
 	.transition_open {
@@ -1227,4 +1232,16 @@ $app-menu-notification-size: 1.2rem;
 	flex-grow: 1;
 	flex-shrink: 1;
 	overflow-y: auto;
+}
+
+.stared-market {
+	svg {
+		fill: $favourite-star;
+	}
+}
+
+.active-market-trigger {
+	color: $colors-main-black;
+	background-color: $app-background-color;
+	font-weight: bold;
 }
