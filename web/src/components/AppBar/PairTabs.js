@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
+import { Slider } from 'components';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
@@ -180,16 +181,18 @@ class PairTabs extends Component {
 						id="favourite-nav-container"
 						className="h-100 w-100 favourite-list border-left"
 					>
-						{favourites && favourites.length > 0 && (
-							<TabList
-								items={favourites}
-								pairs={pairs}
-								tickers={tickers}
-								coins={coins}
-								activePairTab={activePairTab}
-								onTabClick={this.onTabClick}
-							/>
-						)}
+						<Slider small autoHideArrows={true} containerClass="h-100">
+							{favourites && favourites.length > 0 && (
+								<TabList
+									items={favourites}
+									pairs={pairs}
+									tickers={tickers}
+									coins={coins}
+									activePairTab={activePairTab}
+									onTabClick={this.onTabClick}
+								/>
+							)}
+						</Slider>
 					</div>
 				</div>
 			</div>

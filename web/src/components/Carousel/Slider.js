@@ -78,11 +78,17 @@ class Slider extends React.PureComponent {
 			isLeftButtonDisabled,
 			isArrowVisible,
 		} = this.state;
-		const { autoHideArrows, steps, small, ...restProps } = this.props;
+		const {
+			autoHideArrows,
+			steps,
+			containerClass,
+			small,
+			...restProps
+		} = this.props;
 		const { onUpdate, scrollLeft, scrollRight, slider } = this;
 
 		return (
-			<div className="slider__container">
+			<div className={classnames('slider__container', containerClass)}>
 				{isArrowVisible && (
 					<div
 						className={classnames('slider__button', {
