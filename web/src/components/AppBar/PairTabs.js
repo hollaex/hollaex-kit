@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Image from 'components/Image';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
+import { Slider } from 'components';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
@@ -11,6 +11,8 @@ import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { CaretDownOutlined } from '@ant-design/icons';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
 
 class PairTabs extends Component {
 	state = {
@@ -75,14 +77,23 @@ class PairTabs extends Component {
 	render() {
 		const { activePairTab } = this.state;
 
-		const {
-			tickers,
-			location,
-			coins,
-			icons: ICONS,
-			favourites,
-			pairs,
-		} = this.props;
+		const { tickers, location, coins, favourites, pairs } = this.props;
+
+		const pair = pairs[activePairTab] || {};
+		const ticker = tickers[activePairTab] || {};
+		const { symbol } =
+			coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { increment_price } = pair;
+		const priceDifference =
+			ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
+		const tickerPercent =
+			priceDifference === 0 || ticker.open === 0
+				? 0
+				: (priceDifference / ticker.open) * 100;
+		const priceDifferencePercent = isNaN(tickerPercent)
+			? donutFormatPercentage(0)
+			: donutFormatPercentage(tickerPercent);
 
 		return (
 			<div className="d-flex justify-content-between">
@@ -96,6 +107,9 @@ class PairTabs extends Component {
 								'px-2',
 								{
 									'active-tab-pair': location.pathname === '/trade/add/tabs',
+								},
+								{
+									'active-market-trigger': activePairTab,
 								}
 							)}
 						>
@@ -110,19 +124,41 @@ class PairTabs extends Component {
 										addTradePairTab={this.onTabClick}
 									/>
 								}
-								trigger={['hover']}
+								trigger={['hover', 'click']}
 							>
 								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
-									<div className="d-flex align-items-center">
-										<Image
-											iconId={'TAB_PLUS'}
-											icon={ICONS['TAB_PLUS']}
-											wrapperClassName="app-bar-tab-close"
-										/>
-										<EditWrapper stringId="ADD_TRADING_PAIR">
-											{STRINGS['ADD_TRADING_PAIR']}
-										</EditWrapper>
-									</div>
+									{activePairTab ? (
+										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
+											<div className="app_bar-currency-txt">
+												{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+											</div>
+											<div className="title-font ml-1">
+												{formatToCurrency(ticker.close, increment_price)}
+											</div>
+											<div
+												className={
+													priceDifference < 0
+														? 'app-price-diff-down app-bar-price_diff_down'
+														: 'app-bar-price_diff_up app-price-diff-up'
+												}
+											/>
+											<div
+												className={
+													priceDifference < 0
+														? 'title-font app-price-diff-down'
+														: 'title-font app-price-diff-up'
+												}
+											>
+												{priceDifferencePercent}
+											</div>
+										</div>
+									) : (
+										<div className="d-flex align-items-center">
+											<EditWrapper stringId="ADD_TRADING_PAIR">
+												{STRINGS['ADD_TRADING_PAIR']}
+											</EditWrapper>
+										</div>
+									)}
 									<CaretDownOutlined />
 								</div>
 							</Dropdown>
@@ -132,16 +168,18 @@ class PairTabs extends Component {
 						id="favourite-nav-container"
 						className="h-100 w-100 favourite-list border-left"
 					>
-						{favourites && favourites.length > 0 && (
-							<TabList
-								items={favourites}
-								pairs={pairs}
-								tickers={tickers}
-								coins={coins}
-								activePairTab={activePairTab}
-								onTabClick={this.onTabClick}
-							/>
-						)}
+						<Slider small autoHideArrows={true} containerClass="h-100">
+							{favourites && favourites.length > 0 && (
+								<TabList
+									items={favourites}
+									pairs={pairs}
+									tickers={tickers}
+									coins={coins}
+									activePairTab={activePairTab}
+									onTabClick={this.onTabClick}
+								/>
+							)}
+						</Slider>
 					</div>
 				</div>
 			</div>
