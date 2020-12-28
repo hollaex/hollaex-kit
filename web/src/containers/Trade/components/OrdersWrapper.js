@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import { Modal as ConfirmationModal } from 'antd';
 
 import ActiveOrders from './ActiveOrders';
 import UserTrades from './UserTrades';
@@ -23,6 +24,17 @@ class OrdersWrapper extends Component {
 			cancelDelayData: [],
 		};
 	}
+
+	openConfirm = () => {
+		ConfirmationModal.confirm({
+			content: 'Do you want cancel all orders?',
+			okText: 'Yes',
+			cancelText: 'No',
+			onOk: this.cancelAllOrders,
+			onCancel: () => {},
+			className: 'trade_cancel-All-confirmation',
+		});
+	};
 
 	cancelAllOrders = () => {
 		let cancelDelayData = [];
@@ -66,7 +78,7 @@ class OrdersWrapper extends Component {
 						cancelDelayData={cancelDelayData}
 						orders={activeOrders}
 						onCancel={this.handleCancelOrders}
-						onCancelAll={this.cancelAllOrders}
+						onCancelAll={this.openConfirm}
 					/>
 				) : (
 					<LogoutInfoOrder activeTheme={activeTheme} />

@@ -3,6 +3,15 @@ $tabs-title--margin: 2rem;
 	min-width: 6rem;
 }
 
+.trade_cancel-All-confirmation {
+	.ant-modal-header,
+	.ant-modal-content,
+	.ant-modal-confirm-body .ant-modal-confirm-content {
+		background-color: $app-sidebar-background;
+		color: $colors-main-black;
+	}
+}
+
 .layout-mobile {
 	.action_notification-wrapper {
 		.action_notification-svg {

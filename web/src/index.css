@@ -1514,6 +1514,12 @@ table th {
 .trade__active-orders_cancel-All {
   min-width: 6rem; }
 
+.trade_cancel-All-confirmation .ant-modal-header,
+.trade_cancel-All-confirmation .ant-modal-content,
+.trade_cancel-All-confirmation .ant-modal-confirm-body .ant-modal-confirm-content {
+  background-color: var(--base_wallet-sidebar-and-popup);
+  color: var(--labels_important-active-labels-text-graphics); }
+
 .layout-mobile .action_notification-wrapper .action_notification-svg svg {
   width: 1.5rem;
   height: 1.5rem; }
