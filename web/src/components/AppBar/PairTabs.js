@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Image from 'components/Image';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
@@ -78,14 +77,7 @@ class PairTabs extends Component {
 	render() {
 		const { activePairTab } = this.state;
 
-		const {
-			tickers,
-			location,
-			coins,
-			icons: ICONS,
-			favourites,
-			pairs,
-		} = this.props;
+		const { tickers, location, coins, favourites, pairs } = this.props;
 
 		const pair = pairs[activePairTab] || {};
 		const ticker = tickers[activePairTab] || {};
@@ -132,7 +124,7 @@ class PairTabs extends Component {
 										addTradePairTab={this.onTabClick}
 									/>
 								}
-								trigger={['hover']}
+								trigger={['hover', 'click']}
 							>
 								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
 									{activePairTab ? (
@@ -162,11 +154,6 @@ class PairTabs extends Component {
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
-											<Image
-												iconId={'TAB_PLUS'}
-												icon={ICONS['TAB_PLUS']}
-												wrapperClassName="app-bar-tab-close"
-											/>
 											<EditWrapper stringId="ADD_TRADING_PAIR">
 												{STRINGS['ADD_TRADING_PAIR']}
 											</EditWrapper>
