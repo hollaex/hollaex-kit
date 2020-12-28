@@ -564,9 +564,9 @@ class App extends Component {
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
 								>
-									{isBrowser && isMenubar && isLoggedIn() ? (
+									{isBrowser && isMenubar && isLoggedIn() && (
 										<AppMenuBar router={router} location={location} />
-									) : null}
+									)}
 								</AppBar>
 								{isBrowser && isLoggedIn() && (
 									<PairTabs

@@ -186,6 +186,7 @@ $placeholder--font-weight: bold;
 			display: flex;
 			align-items: center;
 			position: relative;
+			cursor: pointer;
 
 			&.left .toggle-action_button-display {
 				$right-pos: $toggle-size + $toggle-margin * 2;
