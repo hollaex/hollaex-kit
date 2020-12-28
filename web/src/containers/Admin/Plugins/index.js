@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { RightOutlined } from '@ant-design/icons';
 
 import PluginList from './PluginList';
-import PluginDetails from './PluginDetails';
 import PluginConfigure from './PluginConfigure';
 import MyPlugins from './MyPlugins';
 import { removePlugin, requestPlugins, requestMyPlugins } from './action';
@@ -248,17 +247,14 @@ class Plugins extends Component {
 								</Item>
 							) : null}
 						</Breadcrumb>
-						{type === 'configure' ? (
-							<PluginConfigure selectedPlugin={selectedPlugin} />
-						) : (
-							<PluginDetails
-								handleBreadcrumb={this.handleBreadcrumb}
-								selectedPlugin={selectedPlugin}
-								handlePluginList={this.handlePluginList}
-								updatePluginList={this.handleUpdatePluginList}
-								removePlugin={this.removePlugin}
-							/>
-						)}
+						<PluginConfigure
+							handleBreadcrumb={this.handleBreadcrumb}
+							type={type}
+							selectedPlugin={selectedPlugin}
+							handlePluginList={this.handlePluginList}
+							updatePluginList={this.handleUpdatePluginList}
+							removePlugin={this.removePlugin}
+						/>
 					</div>
 				) : (
 					<div className="app_container-content admin-earnings-container admin-plugin-container">

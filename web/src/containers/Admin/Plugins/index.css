@@ -371,10 +371,13 @@
 	margin-top: 4rem;
 	border-top: 1px solid rgb(255, 255, 255, 0.3);
 }
-.config-wrapper .config-content .btn-wrapper .restart-btn {
-	width: 50%;
+.config-wrapper .config-content .plugin-config-btn {
+	width: 240px;
 	margin-top: 3rem;
 	background-color: #00781b;
+}
+.config-wrapper .config-content .plugin-config-labels {
+	color: #ffffff;
 }
 
 .admin-plugin-container .ant-tabs-content-holder {
