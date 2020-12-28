@@ -66,22 +66,23 @@ class OrdersWrapper extends Component {
 						cancelDelayData={cancelDelayData}
 						orders={activeOrders}
 						onCancel={this.handleCancelOrders}
+						onCancelAll={this.cancelAllOrders}
 					/>
 				) : (
 					<LogoutInfoOrder activeTheme={activeTheme} />
 				),
-				titleAction: isLoggedIn()
-					? activeOrders.length > 0 && (
-							<ActionNotification
-								stringId="CANCEL_ALL"
-								text={STRINGS['CANCEL_ALL']}
-								iconId="CANCEL_CROSS_ACTIVE"
-								iconPath={ICONS['CANCEL_CROSS_ACTIVE']}
-								onClick={this.cancelAllOrders}
-								status="information"
-							/>
-					  )
-					: '',
+				titleAction: isLoggedIn() ? (
+					<ActionNotification
+						stringId="TRANSACTION_HISTORY.TITLE"
+						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
+						iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
+						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
+						onClick={this.props.goToTransactionsHistory}
+						status="information"
+					/>
+				) : (
+					''
+				),
 			},
 			{
 				stringId: 'RECENT_TRADES',

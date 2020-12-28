@@ -10,7 +10,7 @@ import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const generateHeaders = (pairData = {}, onCancel, ICONS) => [
+const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 	{
 		label: STRINGS['PAIR'],
 		key: 'pair',
@@ -105,7 +105,18 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 		},
 	},
 	{
-		label: STRINGS['CANCEL'],
+		label: (
+			<div className="trade__active-orders_cancel-All">
+				<ActionNotification
+					stringId="CANCEL_ALL"
+					text={STRINGS['CANCEL_ALL']}
+					iconId="CANCEL_CROSS_ACTIVE"
+					iconPath={ICONS['CANCEL_CROSS_ACTIVE']}
+					onClick={() => onCancelAll()}
+					status="information"
+				/>
+			</div>
+		),
 		key: 'cancel',
 		renderCell: ({ size = 0, filled = 0, id }, key, index) => {
 			return (
@@ -131,6 +142,7 @@ const ActiveOrders = ({
 	pairData,
 	orders,
 	onCancel,
+	onCancelAll,
 	maxHeight,
 	height,
 	cancelDelayData,
@@ -145,7 +157,7 @@ const ActiveOrders = ({
 			}
 		>
 			<Table
-				headers={generateHeaders(pairData, onCancel, ICONS)}
+				headers={generateHeaders(pairData, onCancel, onCancelAll, ICONS)}
 				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}

@@ -1511,6 +1511,9 @@ table th {
     min-width: 20rem;
     max-width: 20rem; } }
 
+.trade__active-orders_cancel-All {
+  min-width: 6rem; }
+
 .layout-mobile .action_notification-wrapper .action_notification-svg svg {
   width: 1.5rem;
   height: 1.5rem; }
