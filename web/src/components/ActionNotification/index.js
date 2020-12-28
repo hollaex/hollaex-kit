@@ -42,10 +42,9 @@ const ActionNotification = ({
 	const onActionClick = ({ target: { dataset = {} } }) => {
 		const { stringId, iconId } = dataset;
 
-		if (disable || stringId || iconId) {
-			return (() => {})();
+		if (!disable && !stringId && !iconId && onClick) {
+			return onClick();
 		}
-		return onClick();
 	};
 
 	return (
