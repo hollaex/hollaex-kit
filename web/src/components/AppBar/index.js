@@ -412,29 +412,27 @@ class AppBar extends Component {
 				<Link to="/">
 					<div
 						style={{
-							backgroundImage: `url(${constants.logo_black_path})`,
+							backgroundImage: `url(${constants.logo_image})`,
 						}}
 						className="homeicon-svg"
-					></div>
+					/>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
 		) : (
 			<div
-				className={classnames('app_bar justify-content-between', {
+				className={classnames('app_bar d-flex justify-content-between', {
 					'no-borders': disableBorder,
 				})}
 			>
-				<div className="d-flex">
-					<div
-						id="home-nav-container"
-						className="d-flex align-items-center justify-content-center h-100"
-					>
-						{this.renderIcon(isHome, theme)}
-					</div>
-					{children}
+				<div
+					id="home-nav-container"
+					className="d-flex align-items-center justify-content-center h-100"
+				>
+					{this.renderIcon(isHome, theme)}
 				</div>
-				{!isLoggedIn() ? (
+				{children}
+				{!isLoggedIn() && (
 					<div id="trade-nav-container">
 						<ThemeSwitcher
 							selected={selected}
@@ -442,10 +440,13 @@ class AppBar extends Component {
 							toggle={this.onToggle}
 						/>
 					</div>
-				) : null}
+				)}
 				{!isHome ? (
 					isLoggedIn() ? (
-						<div id="trade-nav-container" className="d-flex app-bar-account">
+						<div
+							id="trade-nav-container"
+							className="d-flex app-bar-account justify-content-end"
+						>
 							<div className="d-flex app_bar-quicktrade-container">
 								<ThemeSwitcher
 									selected={selected}

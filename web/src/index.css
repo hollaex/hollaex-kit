@@ -3629,7 +3629,6 @@ table th {
   width: 100%;
   min-height: 36px;
   height: 36px;
-  display: flex;
   font-size: 0.9rem;
   font-weight: bold;
   background: var(--base_top-bar-navigation);
@@ -3700,7 +3699,8 @@ table th {
   .app_bar .app-bar-account {
     color: var(--calculated_base_top-bar-navigation_text);
     cursor: pointer;
-    margin-right: 0.8rem; }
+    margin-right: 0.8rem;
+    width: 15rem; }
     .app_bar .app-bar-account svg .account-inactive {
       fill: var(--calculated_base_top-bar-navigation_text-inactive);
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
@@ -4659,6 +4659,11 @@ table th {
 .market-selector-dropdown.ant-dropdown-trigger {
   height: 100% !important;
   width: 100% !important; }
+
+.app-menu-bar-wrapper {
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-y: auto; }
 
 .check_title-container {
   display: flex;
@@ -8220,7 +8225,8 @@ foreignObject {
     padding-bottom: 136px; }
   .app_footer-container .footer-row-content {
     margin-bottom: 2rem;
-    padding: 4rem 1rem 0; }
+    padding: 4rem 1rem 0;
+    width: 100%; }
     .app_footer-container .footer-row-content .footer-links-section {
       width: 60%; }
       .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
