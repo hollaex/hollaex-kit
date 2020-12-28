@@ -147,7 +147,13 @@ class Plugins extends Component {
 
 	handleOpenPlugin = (plugin) => {
 		const { pluginData, myPlugins } = this.state;
-		if (
+		if (plugin.version === 0) {
+			this.setState({
+				isVisible: true,
+				showSelected: false,
+				selectedPlugin: plugin,
+			});
+		} else if (
 			pluginData.filter((value) => value.name === plugin.name).length ||
 			myPlugins.filter((value) => value.name === plugin.name).length
 		) {
