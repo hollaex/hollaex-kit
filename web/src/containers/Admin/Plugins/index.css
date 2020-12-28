@@ -80,6 +80,8 @@
 	height: 9rem;
 	width: 18rem;
 	margin: 1rem;
+	border-radius: 15px;
+	background-color: #0000d1;
 }
 .plugin-list-container .search-plugin-input .ant-input,
 .myplugin-container .search-plugin-input .ant-input {
@@ -211,6 +213,7 @@
 .plugin-details-wrapper .main-content .plugin-card {
 	height: 210px;
 	width: 320px;
+	background-color: #0000d1;
 }
 .plugin-details-wrapper .main-content .anticon {
 	position: relative;
