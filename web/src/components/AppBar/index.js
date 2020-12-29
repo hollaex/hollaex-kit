@@ -26,7 +26,6 @@ import {
 	NOTIFICATIONS
 } from '../../actions/appActions';
 import { updateUserSettings, setUserData } from '../../actions/userAction';
-import ThemeSwitcher from './ThemeSwitcher';
 
 class AppBar extends Component {
 	state = {
@@ -421,7 +420,6 @@ class AppBar extends Component {
 		}
 		let disableBorder =
 			noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
-		const { selected, options } = this.state;
 		return isMobile ? (
 			<MobileBarWrapper
 				className={classnames(
@@ -467,24 +465,10 @@ class AppBar extends Component {
 						/>
 					)}
 				</div>
-				{!isLoggedIn() ? (
-					<div id="trade-nav-container">
-						<ThemeSwitcher
-							selected={selected}
-							options={options}
-							toggle={this.onToggle}
-						/>
-					</div>
-				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
 						<div id="trade-nav-container" className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
-								<ThemeSwitcher
-									selected={selected}
-									options={options}
-									toggle={this.onToggle}
-								/>
 								{isAdmin() ? (
 									<Link to="/admin">
 										<div

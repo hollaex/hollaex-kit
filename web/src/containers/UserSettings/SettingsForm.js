@@ -17,11 +17,11 @@ const orderbook_level_min = 1;
 const orderbook_level_max = 20;
 
 export const generateFormValues = () => ({
-	theme: {
-		type: 'select',
-		label: STRINGS.SETTINGS_THEME_LABEL,
-		options: STRINGS.SETTINGS_THEME_OPTIONS
-	},
+	// theme: {
+	// 	type: 'select',
+	// 	label: STRINGS.SETTINGS_THEME_LABEL,
+	// 	options: STRINGS.SETTINGS_THEME_OPTIONS
+	// },
 	order_book_levels: {
 		type: 'number',
 		validate: [

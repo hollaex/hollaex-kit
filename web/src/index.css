@@ -3232,7 +3232,7 @@ table th {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    height: 5rem;
+    height: 10rem;
     margin: 1rem auto;
     width: 8rem; }
   .trade_tabs-container .trade-tab-app-title {
@@ -3898,7 +3898,7 @@ table th {
     align-items: center;
     padding: 0 8px; }
   .app_bar .app_bar-icon-logo {
-    height: 4rem;
+    height: 5rem;
     width: 5rem;
     background-size: contain;
     background-position: center;
@@ -6435,8 +6435,8 @@ table th {
       font-size: 3.5rem;
       text-transform: capitalize; }
   .icon_title-wrapper .auth_logo-wrapper {
-    height: 6rem !important;
-    width: 10rem !important;
+    height: 13rem !important;
+    width: 13rem !important;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat; }
