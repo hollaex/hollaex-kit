@@ -7,31 +7,12 @@ import { STATIC_ICONS } from 'config/icons';
 
 import './index.css';
 
-const PLUGIN_CARDS = [
-	{
-		icon: STATIC_ICONS.PLUGIN_THUMBNAIL.robolla,
-		logo: STATIC_ICONS.PLUGIN_CARD_ROBELLA,
-		name: 'robolla',
-	},
-	{
-		icon: STATIC_ICONS.PLUGIN_THUMBNAIL.recaptcha,
-		logo: STATIC_ICONS.PLUGIN_CARD_RECAPTCHA,
-		name: 'recaptcha',
-	},
-	{
-		icon: STATIC_ICONS.PLUGIN_THUMBNAIL.chat,
-		logo: STATIC_ICONS.PLUGIN_CARD_CHAT,
-		name: 'chat',
-	},
-];
-
 class PluginList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			mobileToggle: false,
 			isLoading: false,
-			plugins: [],
 			page: 1,
 			limit: 50,
 		};
@@ -116,14 +97,18 @@ class PluginList extends Component {
 				</div>
 				<div className="ml-4">
 					<div className="card-container d-flex align-items-center justify-content-between">
-						{PLUGIN_CARDS.map((card, index) => (
-							<div
-								key={index}
-								className="plugin-card"
-								style={{ backgroundImage: `url(${card.logo})` }}
-								onClick={() => this.props.handleOpenPlugin(card)}
-							/>
-						))}
+						{this.props.pluginData
+							.filter((val, key) => key <= 2)
+							.map((card, index) => {
+								return (
+									<div
+										key={index}
+										className="plugin-card"
+										style={{ backgroundImage: `url(${card.logo})` }}
+										onClick={() => this.props.handleOpenPlugin(card)}
+									/>
+								);
+							})}
 					</div>
 					<div>
 						<div className="plugin-header d-flex align-items-center justify-content-between">

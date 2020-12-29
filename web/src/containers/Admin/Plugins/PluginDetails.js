@@ -359,15 +359,15 @@ const PluginDetails = ({
 	const getCards = () => {
 		const cardData = [
 			{
-				icon:
-					pluginData && pluginData.icon
-						? pluginData.icon
+				logo:
+					pluginData && pluginData.logo
+						? pluginData.logo
 						: STATIC_ICONS.DEFAULT_PLUGIN_PREVIEW,
 			},
 		];
 		return cardData.map((data) => (
 			<div>
-				<img src={data.icon} alt="PluginCard" className="plugin-card" />
+				<img src={data.logo} alt="PluginCard" className="plugin-card" />
 				<div className="d-flex mt-2 ml-1">
 					<StarFilled />
 					<div>Featured plugin</div>
