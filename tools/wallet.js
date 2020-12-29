@@ -202,13 +202,13 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		currency,
 		dismissed: false,
 		rejected: false,
-		endDate: moment().subtract(24, 'hours').toISOString()
+		startDate: moment().subtract(24, 'hours').toISOString()
 	});
 	each(withdrawals.data, (withdrawal) => {
 		accumulatedAmount = math.number(math.add(math.bignumber(accumulatedAmount), math.bignumber(withdrawal.amount)));
 	});
 
-	const convertedAmount = await getNodeLib().getOraclePrices(currency, {
+	const convertedAmount = await getNodeLib().getOraclePrices([currency], {
 		quote: getKitConfig().native_currency,
 		amount: accumulatedAmount
 	});
