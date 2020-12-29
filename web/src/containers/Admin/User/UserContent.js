@@ -194,7 +194,7 @@ class UserContent extends Component {
 			roleInitialValues.role = 'user';
 		}
 		return (
-			<div className="app_container-content user-content">
+			<div className="app_container-content admin-user-content">
 				<Breadcrumb>
 					<Item>
 						<Link to="/admin">Home</Link>

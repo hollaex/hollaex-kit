@@ -94,7 +94,7 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 const Fees = ({ pairs, userTiers, icons: ICONS = {}, onEditFees }) => {
 	const coinsData = Object.keys(pairs).map((key) => pairs[key]);
 	return (
-		<div>
+		<div className="admin-tiers-wrapper">
 			<div className="d-flex">
 				<div>
 					<Image

@@ -110,7 +110,7 @@ class TradeHistory extends Component {
 
 		return (
 			<Row>
-				<div className="f-1 mt-4">
+				<div className="f-1 mt-4 admin-user-container">
 					<Col>
 						<div>
 							<span

@@ -218,6 +218,7 @@ const link_sections = (
 				block
 				type="primary"
 				onClick={() => addColumn(`section_${count}`)}
+				className="green-btn"
 			>
 				Add column
 			</Button>

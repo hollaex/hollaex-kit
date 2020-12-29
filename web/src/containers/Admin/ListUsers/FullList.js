@@ -149,7 +149,7 @@ class FullListUsers extends Component {
 		// const { coins } = this.props;
 		// const HEADERS = generateHeaders(coins);
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content admin-user-container">
 				{loading ? (
 					<Spin size="large" />
 				) : (

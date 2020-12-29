@@ -427,3 +427,14 @@
 .plugin-details-wrapper .btn-wrapper .update-warning {
 	width: 280px;
 }
+
+.admin-plugins-wrapper .ant-breadcrumb,
+.admin-plugins-wrapper .ant-breadcrumb-separator {
+	color: #c4c4c4;
+}
+.admin-plugins-wrapper .ant-breadcrumb a:hover {
+	color: #ffffff;
+}
+.admin-plugins-wrapper .ant-breadcrumb > span:last-child {
+	color: #ffffff;
+}

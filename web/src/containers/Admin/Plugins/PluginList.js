@@ -97,18 +97,16 @@ class PluginList extends Component {
 				</div>
 				<div className="ml-4">
 					<div className="card-container d-flex align-items-center justify-content-between">
-						{this.props.pluginData
-							.filter((val, key) => key <= 2)
-							.map((card, index) => {
-								return (
-									<div
-										key={index}
-										className="plugin-card"
-										style={{ backgroundImage: `url(${card.logo})` }}
-										onClick={() => this.props.handleOpenPlugin(card)}
-									/>
-								);
-							})}
+						{this.props.pluginCards.map((card, index) => {
+							return (
+								<div
+									key={index}
+									className="plugin-card"
+									style={{ backgroundImage: `url(${card.logo})` }}
+									onClick={() => this.props.handleOpenPlugin(card)}
+								/>
+							);
+						})}
 					</div>
 					<div>
 						<div className="plugin-header d-flex align-items-center justify-content-between">

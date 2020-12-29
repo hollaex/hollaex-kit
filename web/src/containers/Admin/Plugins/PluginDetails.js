@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Divider, Input, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
 import { Carousel } from 'components';
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin, getPlugin, updatePlugin } from './action';
+import { addPlugin, updatePlugin } from './action';
 
 const PluginDetails = ({
 	handleBreadcrumb,

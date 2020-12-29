@@ -32,6 +32,7 @@ class Plugins extends Component {
 			isRemovePlugin: false,
 			removePluginName: '',
 			tabKey: 'explore',
+			pluginCards: [],
 		};
 		this.removeTimeout = null;
 	}
@@ -77,7 +78,11 @@ class Plugins extends Component {
 		return requestPlugins({ page, limit, ...params })
 			.then((res) => {
 				if (res && res.data) {
-					this.setState({ loading: false, pluginData: res.data });
+					let pluginCards = this.state.pluginCards;
+					if (!params.search) {
+						pluginCards = res.data.filter((val, key) => key <= 2);
+					}
+					this.setState({ loading: false, pluginData: res.data, pluginCards });
 				}
 			})
 			.catch((err) => {
@@ -219,6 +224,7 @@ class Plugins extends Component {
 			myPlugins,
 			tabKey,
 			removePluginName,
+			pluginCards,
 		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
@@ -266,6 +272,7 @@ class Plugins extends Component {
 									selectedPlugin={selectedPlugin}
 									handleOpenPlugin={this.handleOpenPlugin}
 									getPlugins={this.getPlugins}
+									pluginCards={pluginCards}
 								/>
 							</TabPane>
 
