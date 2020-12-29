@@ -496,7 +496,7 @@ const getAllUsersAdmin = (opts = {
 					const error = new Error(USER_NOT_FOUND);
 					error.status = 404;
 					throw error;
-				} else {
+				} else if (data[0].verification_level > 0 && data[0].network_id) {
 					const userNetworkData = await getNodeLib().getUser(data[0].network_id);
 					data[0].balance = userNetworkData.balance;
 					data[0].crypto_wallet = userNetworkData.crypto_wallet;
