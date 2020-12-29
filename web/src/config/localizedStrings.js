@@ -9,6 +9,7 @@ import es from './lang/es';
 import ja from './lang/ja';
 import vi from './lang/vi';
 import id from './lang/id';
+import zh from './lang/zh';
 
 const strings = new LocalizedStrings({
 	en,
@@ -20,6 +21,7 @@ const strings = new LocalizedStrings({
 	es,
 	vi,
 	id,
+	zh
 });
 
 export default strings;
