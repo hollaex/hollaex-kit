@@ -24,6 +24,14 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 		},
 	},
 	{
+		label: STRINGS['ORDER_TYPE'],
+		key: 'type',
+		exportToCsv: ({ type, stop }) => (stop ? `Stop ${type}` : type),
+		renderCell: ({ type, stop }, key, index) => {
+			return <td key={index}>{stop ? `Stop ${type}` : type}</td>;
+		},
+	},
+	{
 		label: STRINGS['SIDE'],
 		key: 'side',
 		renderCell: ({ side = '' }, key, index) => {
