@@ -221,22 +221,19 @@ h2,
 .custom-form-wrapper {
 	color: #ffffff;
 }
-.ant-tooltip-arrow {
+.admin-general-description-tip .ant-tooltip-arrow {
 	display: none;
 }
 
-.ant-tooltip-inner {
+.admin-general-description-tip .ant-tooltip-inner {
 	padding: 0px;
 	min-width: 0px;
 }
-.ant-tooltip {
+.admin-general-description-tip {
 	max-width: 0px;
 }
-.ant-tooltip .ant-tooltip-placement-right {
-	left: 566px;
-	top: 104px;
-}
-.ant-tooltip-placement-right {
+
+.general-description-tip-right {
 	padding-left: 0px;
 }
 .help-icon {
