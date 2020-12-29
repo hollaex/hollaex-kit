@@ -82,7 +82,7 @@ class Trade extends PureComponent {
 		});
 	};
 
-	onSubmitOrder = ({ post_only, ...values }) => {
+	onSubmitOrder = ({ post_only, order_type, ...values }) => {
 		if (post_only) {
 			values.meta = {
 				post_only,
