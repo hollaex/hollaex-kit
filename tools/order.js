@@ -3,18 +3,15 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, INVALID_COIN, NO_DATA_FOR_CSV, USER_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, subscribedToCoin, getKitTier } = require('./common');
+const { subscribedToPair, getKitTier } = require('./common');
 const { reject } = require('bluebird');
 
-const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, stop, meta = {}, feeCoin) => {
+const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	// if (feeCoin && !subscribedToCoin(feeCoin)) {
-	// 	return reject(new Error(INVALID_COIN(feeCoin)));
-	// }
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			if (!user) {
@@ -29,20 +26,14 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
 				taker: tier.fees.taker[symbol] || tier.fees.taker.default
 			};
-			// if (feeCoin) {
-			// 	feeData.fee_coin = feeCoin;
-			// }
-			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData);
+			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
 
-const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, stop, meta = {}, feeCoin) => {
+const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	// if (feeCoin && !subscribedToCoin(feeCoin)) {
-	// 	return reject(new Error(INVALID_COIN(feeCoin)));
-	// }
 	return getUserByEmail(email)
 		.then((user) => {
 			if (!user) {
@@ -57,20 +48,14 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, stop
 				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
 				taker: tier.fees.taker[symbol] || tier.fees.taker.default
 			};
-			// if (feeCoin) {
-			// 	feeData.fee_coin = feeCoin;
-			// }
-			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData);
+			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
 
-const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price = 0, stop, meta = {}, feeCoin) => {
+const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	// if (feeCoin && !subscribedToCoin(feeCoin)) {
-	// 	return reject(new Error(INVALID_COIN(feeCoin)));
-	// }
 	return getUserByNetworkId(networkId)
 		.then((user) => {
 			const tier = getKitTier(user.verification_level);
@@ -82,10 +67,7 @@ const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price =
 				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
 				taker: tier.fees.taker[symbol] || tier.fees.taker.default
 			};
-			// if (feeCoin) {
-			// 	feeData.fee_coin = feeCoin;
-			// }
-			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData);
+			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
 
