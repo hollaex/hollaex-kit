@@ -10,189 +10,46 @@ const AddLinkForm = AdminHocForm('ADD_LINK_FORM');
 
 const link_sections = (
 	fields = {},
+	links = {},
 	addLink = () => {},
 	addColumn = () => {}
 ) => {
-	const section_1 = {
-		className: 'section-wrapper',
-		header: {
-			className: 'section-header',
-			fields: {
-				column_header_1: {
+	const sectionFields = {};
+	Object.keys(links)
+		.filter((sectionKey) => typeof links[sectionKey] === 'object')
+		.forEach((key) => {
+			let section = links[key];
+			let headerFields = {};
+			let contentFields = {};
+			Object.keys(section.header).forEach((key) => {
+				headerFields[key] = {
 					type: 'input',
-					label: 'Column 1 heading',
-					placeholder: 'Column 1 heading',
-					// disabled: !is_custom
-				},
-			},
-		},
-		content: {
-			className: 'section-header',
-			fields: {
-				login: {
+					label: key,
+					placeholder: key,
+				};
+			});
+			Object.keys(section.content).forEach((key) => {
+				contentFields[key] = {
 					type: 'input',
-					label: 'Login',
-					placeholder: 'http://',
-					// disabled: !is_custom
+					label: key,
+					placeholder: key,
+				};
+			});
+			sectionFields[key] = {
+				className: 'section-wrapper',
+				header: {
+					className: 'section-header',
+					fields: headerFields,
 				},
-				register: {
-					type: 'input',
-					label: 'Register',
-					placeholder: 'http://',
-					// disabled: !is_custom
+				content: {
+					className: 'section-header',
+					fields: contentFields,
 				},
-			},
-		},
-	};
-	const section_2 = {
-		className: 'section-wrapper',
-		header: {
-			className: 'section-header',
-			fields: {
-				column_header_2: {
-					type: 'input',
-					label: 'Column 2 heading',
-					placeholder: 'Column 2 heading',
-				},
-			},
-		},
-		content: {
-			className: 'section-header',
-			fields: {
-				contact: {
-					type: 'input',
-					label: 'Contact',
-					placeholder: 'http://',
-				},
-				privacy: {
-					type: 'input',
-					label: 'Privacy',
-					placeholder: 'http://',
-				},
-				terms: {
-					type: 'input',
-					label: 'Terms & conditions',
-					placeholder: 'http://',
-				},
-				website: {
-					type: 'input',
-					label: 'Website',
-					placeholder: 'http://',
-				},
-			},
-		},
-	};
-	const section_3 = {
-		className: 'section-wrapper',
-		header: {
-			className: 'section-header',
-			fields: {
-				column_header_3: {
-					type: 'input',
-					label: 'Column 3 heading',
-					placeholder: 'Column 3 heading',
-				},
-			},
-		},
-		content: {
-			className: 'section-header',
-			fields: {
-				api: {
-					type: 'input',
-					label: 'API',
-					placeholder: 'http://',
-				},
-				github: {
-					type: 'input',
-					label: 'Github',
-					placeholder: 'http://',
-				},
-				information: {
-					type: 'input',
-					label: 'Information',
-					placeholder: 'http://',
-				},
-			},
-		},
-	};
-	const section_4 = {
-		className: 'section-wrapper',
-		header: {
-			className: 'section-header',
-			fields: {
-				column_header_4: {
-					type: 'input',
-					label: 'Column 4 heading',
-					placeholder: 'Column 4 heading',
-				},
-			},
-		},
-		content: {
-			className: 'section-header',
-			fields: {
-				whitepaper: {
-					type: 'input',
-					label: 'Whitepaper',
-					placeholder: 'http://',
-				},
-			},
-		},
-	};
-	const section_5 = {
-		className: 'section-wrapper',
-		header: {
-			className: 'section-header',
-			fields: {
-				column_header_5: {
-					type: 'input',
-					label: 'Column 5 heading',
-					placeholder: 'Column 5 heading',
-				},
-			},
-		},
-		content: {
-			className: 'section-header',
-			fields: {
-				instagram: {
-					type: 'input',
-					label: 'Instagram',
-					placeholder: 'http://',
-				},
-				facebook: {
-					type: 'input',
-					label: 'Facebook',
-					placeholder: 'http://',
-				},
-				youTube: {
-					type: 'input',
-					label: 'YouTube',
-					placeholder: 'http://',
-				},
-				twitter: {
-					type: 'input',
-					label: 'Twitter',
-					placeholder: 'http://',
-				},
-				telegram: {
-					type: 'input',
-					label: 'Telegram',
-					placeholder: 'http://',
-				},
-				linkedIn: {
-					type: 'input',
-					label: 'LinkedIn',
-					placeholder: 'http://',
-				},
-			},
-		},
-	};
+			};
+		});
 	// if (is_custom) {
 	const formFields = {
-		section_1,
-		section_2,
-		section_3,
-		section_4,
-		section_5,
+		...sectionFields,
 		...fields,
 	};
 	let count = 1;
@@ -251,15 +108,12 @@ class FooterConfig extends Component {
 		super(props);
 		this.state = {
 			isCustom: true,
-			default_fields: link_sections(),
-			custom_fields: link_sections({}, this.addLink, this.addColumn),
-			initialDefault: {
-				column_header_1: 'EXCHANGE',
-				column_header_2: 'ABOUT',
-				column_header_3: 'DEVELOPERS',
-				column_header_4: 'RESOURCES',
-				column_header_5: 'SOCIAL',
-			},
+			custom_fields: link_sections(
+				{},
+				this.props.links,
+				this.addLink,
+				this.addColumn
+			),
 			initialCustom: {
 				column_header_1: 'EXCHANGE',
 			},
@@ -271,11 +125,16 @@ class FooterConfig extends Component {
 
 	componentDidMount() {
 		if (this.props.initialValues) {
+			this.generateInitialValues();
+		}
+		if (this.props.links && Object.keys(this.props.links).length) {
 			this.setState({
-				initialCustom: {
-					...this.state.initialCustom,
-					...this.props.initialValues,
-				},
+				custom_fields: link_sections(
+					{},
+					this.props.links,
+					this.addLink,
+					this.addColumn
+				),
 			});
 		}
 	}
@@ -285,21 +144,48 @@ class FooterConfig extends Component {
 			JSON.stringify(this.props.initialValues) !==
 			JSON.stringify(prevProps.initialValues)
 		) {
+			this.generateInitialValues();
+		}
+		if (JSON.stringify(this.props.links) !== JSON.stringify(prevProps.links)) {
+			let prevFields = {};
+			if (prevProps.links && Object.keys(prevProps.links).length) {
+				prevFields = this.state.custom_fields;
+			}
 			this.setState({
-				initialCustom: {
-					...this.state.initialCustom,
-					...this.props.initialValues,
-				},
+				custom_fields: link_sections(
+					prevFields,
+					this.props.links,
+					this.addLink,
+					this.addColumn
+				),
 			});
 		}
 	}
 
+	generateInitialValues = () => {
+		const { initialValues } = this.props;
+		let initialCustom = {
+			...this.state.initialCustom,
+		};
+		Object.keys(initialValues)
+			.filter((sectionKey) => typeof initialValues[sectionKey] === 'object')
+			.forEach((key) => {
+				let tempSection = initialValues[key];
+				initialCustom = {
+					...initialCustom,
+					...tempSection.header,
+					...tempSection.content,
+				};
+			});
+		this.setState({ initialCustom });
+	};
+
 	handleToggle = (checked) => {
 		this.setState({
 			isCustom: checked,
-			default_fields: link_sections(),
 			custom_fields: link_sections(
 				this.state.custom_fields,
+				this.props.links,
 				this.addLink,
 				this.addColumn
 			),
@@ -352,7 +238,12 @@ class FooterConfig extends Component {
 		initialCustom[`column_header_${count}`] = formProps.column;
 		this.setState({
 			initialCustom,
-			custom_fields: link_sections(custom_fields, this.addLink, this.addColumn),
+			custom_fields: link_sections(
+				custom_fields,
+				this.props.links,
+				this.addLink,
+				this.addColumn
+			),
 		});
 		this.onCancel();
 	};
@@ -382,6 +273,29 @@ class FooterConfig extends Component {
 		this.onCancel();
 	};
 
+	handleSubmitLinks = (formProps) => {
+		const { custom_fields } = this.state;
+		const formValues = {};
+		Object.keys(custom_fields).forEach((sectionKey) => {
+			let section = custom_fields[sectionKey] || {};
+			let header = {};
+			let content = {};
+			if (section.header) {
+				Object.keys(section.header.fields).forEach((headerKey) => {
+					header[headerKey] = formProps[headerKey];
+				});
+				Object.keys(section.content.fields).forEach((contentKey) => {
+					content[contentKey] = formProps[contentKey];
+				});
+				formValues[sectionKey] = {
+					header,
+					content,
+				};
+			}
+		});
+		this.props.handleSubmitFooter(formValues, 'links');
+	};
+
 	render() {
 		const { custom_fields, initialCustom, isAddColumn, isAddLink } = this.state;
 		return (
@@ -391,9 +305,7 @@ class FooterConfig extends Component {
 					fields={custom_fields}
 					initialValues={initialCustom}
 					customFields={true}
-					handleSubmitLinks={(formProps) =>
-						this.props.handleSubmitFooter(formProps, 'links')
-					}
+					handleSubmitLinks={this.handleSubmitLinks}
 				/>
 				{/* <p className="bottom-description">
 					Add/change footer description and small text{' '}
