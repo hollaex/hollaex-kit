@@ -2,6 +2,7 @@
 
 const { loggerOrders } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
+const { isPlainObject, isNumber } = require('lodash');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -18,7 +19,17 @@ const createOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order = req.swagger.params.order.value;
 
-	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price, order.stop, order.meta)
+	const opts = {};
+
+	if (isPlainObject(order.meta)) {
+		opts.meta = order.meta;
+	}
+
+	if (isNumber(order.stop)) {
+		opts.stop = order.stop;
+	}
+
+	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price, opts)
 		.then((order) => {
 			return res.json(order);
 		})
