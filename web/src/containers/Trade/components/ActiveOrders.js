@@ -113,6 +113,19 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 		},
 	},
 	{
+		label: STRINGS['TRIGGER_CONDITIONS'],
+		key: 'type',
+		exportToCsv: ({ stop }) =>
+			stop && formatToCurrency(stop, pairData.increment_price),
+		renderCell: ({ stop }, key, index) => {
+			return (
+				<td key={index}>
+					{stop && formatToCurrency(stop, pairData.increment_price)}
+				</td>
+			);
+		},
+	},
+	{
 		label: (
 			<div className="trade__active-orders_cancel-All">
 				<ActionNotification
