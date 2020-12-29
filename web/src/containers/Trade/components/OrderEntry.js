@@ -318,7 +318,7 @@ class OrderEntry extends Component {
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
 			orderType: {
-				name: 'order-type',
+				name: 'order_type',
 				type: 'dropdown',
 				options: ORDER_OPTIONS,
 				onChange: (orderType) => this.setState({ orderType }),
