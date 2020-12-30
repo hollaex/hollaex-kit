@@ -104,7 +104,12 @@ class Markets extends Component {
 		);
 	};
 
-	handleClick = (pair) => {};
+	handleClick = (pair) => {
+		const { router } = this.props;
+		if (pair && router) {
+			router.push(`/trade/${pair}`);
+		}
+	};
 
 	render() {
 		const { pairs, tickers, coins } = this.props;

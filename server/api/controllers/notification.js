@@ -91,7 +91,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 	loggerNotification.verbose('controller/notification/handleCurrencyWithdrawal ip domain', ip, domain);
 
 	const currency = req.swagger.params.currency.value;
-	const { user_id, amount, txid, address, is_confirmed, fee } = req.swagger.params.data.value;
+	const { user_id, amount, txid, address, is_confirmed, fee, rejected } = req.swagger.params.data.value;
 
 	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
@@ -101,30 +101,46 @@ const handleCurrencyWithdrawal = (req, res) => {
 			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
-			const data = {
-				amount,
-				currency,
-				status: is_confirmed ? 'COMPLETED' : 'PENDING',
-				address,
-				fee,
-				transaction_id: txid
-			};
+			if (rejected) {
+				const data = {
+					amount,
+					currency,
+					address
+				};
 
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'withdrawal',
-				data: {
-					...data,
-					user_id: user.id
-				}
-			}));
+				sendEmail(
+					MAILTYPE.INVALID_ADDRESS,
+					user.email,
+					data,
+					user.settings,
+					domain
+				);
+			} else {
+				const data = {
+					amount,
+					currency,
+					status: is_confirmed ? 'COMPLETED' : 'PENDING',
+					address,
+					fee,
+					transaction_id: txid
+				};
 
-			sendEmail(
-				MAILTYPE.WITHDRAWAL,
-				user.email,
-				data,
-				user.settings,
-				domain
-			);
+				publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+					type: 'withdrawal',
+					data: {
+						...data,
+						user_id: user.id
+					}
+				}));
+
+				sendEmail(
+					MAILTYPE.WITHDRAWAL,
+					user.email,
+					data,
+					user.settings,
+					domain
+				);
+			}
 
 			return res.json({ message: 'Success' });
 		})
