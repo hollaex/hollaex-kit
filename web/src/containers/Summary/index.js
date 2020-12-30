@@ -136,6 +136,7 @@ class Summary extends Component {
 			affiliation,
 			chartData,
 			totalAsset,
+			router,
 		} = this.props;
 		const {
 			selectedAccount,
@@ -250,6 +251,7 @@ class Summary extends Component {
 									coins={coins}
 									pairs={pairs}
 									activeTheme={activeTheme}
+									router={router}
 								/>
 							</SummaryBlock>
 							{/*<div className="trading-volume-wrapper">
