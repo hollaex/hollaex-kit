@@ -1351,6 +1351,8 @@ const nestedContent = {
 	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
+	ORDER_TYPE: 'type',
+	TRIGGER_CONDITIONS: 'Trigger conditions',
 };
 
 const content = flatten(nestedContent, options);

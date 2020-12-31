@@ -106,11 +106,10 @@ class Markets extends Component {
 	};
 
 	handleClick = (pair) => {
-		let tabs = localStorage.getItem('tabs');
-		tabs = tabs ? JSON.parse(tabs) : [];
-		tabs.push(pair);
-		localStorage.setItem('tabs', JSON.stringify(tabs));
-		this.props.router.push(`/trade/${pair}`);
+		const { router } = this.props;
+		if (pair && router) {
+			router.push(`/trade/${pair}`);
+		}
 	};
 
 	render() {

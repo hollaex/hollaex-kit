@@ -135,7 +135,7 @@ class Account extends Component {
 						icon={ICONS['TAB_SUMMARY']}
 					/>
 				),
-				content: <Summary />,
+				content: <Summary router={this.props.router} />,
 			},
 			{
 				title: isMobile ? (
