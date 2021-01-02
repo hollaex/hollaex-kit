@@ -502,8 +502,7 @@ class AppBar extends Component {
 										</div>
 									</div>
 								</Link>
-								{constants.broker_enabled
-									? <Link to={`/quick-trade/${pair}`}>
+								<Link to={`/quick-trade/${pair}`}>
 										<div
 											className={classnames('app_bar-quicktrade', 'd-flex', {
 												'quick_trade-active': activePath === 'quick-trade'
@@ -517,9 +516,7 @@ class AppBar extends Component {
 												{STRINGS.QUICK_TRADE}
 											</div>
 										</div>
-									</Link>
-									: null
-								}
+								</Link>
 							</div>							
 							<MenuList
 								selectedMenu={selectedMenu}

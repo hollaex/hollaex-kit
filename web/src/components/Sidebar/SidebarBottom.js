@@ -26,19 +26,19 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPl
 					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
 					active={activePath === 'account'}
 				/>
-				{/* <SidebarButton
+				<SidebarButton
 					path={`/quick-trade/${pair}`}
 					title={STRINGS.QUICK_TRADE}
 					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
 					active={activePath === 'quick-trade'}
-				/> */}
+				/>
 				<SidebarButton
 					path={`/trade/${pair}`}
 					title={STRINGS.PRO_TRADE}
 					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
 					active={activePath === 'trade'}
 				/>
-				{enabledPlugins.includes('chat')
+				{/*enabledPlugins.includes('chat')
 					? <SidebarButton
 						path={`/chat`}
 						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
@@ -46,19 +46,19 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPl
 						active={activePath === 'chat'}
 					/>
 					: <Fragment />
-				}
+				*/}
 				<SidebarButton
 					path="/wallet"
 					title={STRINGS.WALLET_TITLE}
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
 				/>
-				<SidebarButton
+				{/*<SidebarButton
 					path={"/home"}
 					title={STRINGS.TRADE_TAB_POSTS}
 					iconPath={ICONS.SIDEBAR_POST_ACTIVE}
 					active={activePath === 'home'}
-				/>
+				/>*/}
 			</div> :
 			<div className="d-flex w-100 p-4">
 				<div className="w-50">

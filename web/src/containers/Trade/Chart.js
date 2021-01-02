@@ -44,7 +44,7 @@ function getStudiesOverrides(theme = 'white', color = {}) {
 class TVChartContainer extends React.PureComponent {
 	static defaultProps = {
 		symbol: 'xht-usdt', // the trading tab we are in should be passed here
-		interval: '60',
+		interval: '1D',
 		containerId: 'tv_chart_container',
 		libraryPath: '/charting_library/',
 		// chartsStorageUrl: 'https://saveload.tradingview.com',

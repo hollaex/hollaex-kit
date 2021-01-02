@@ -247,20 +247,20 @@ class OrderEntry extends Component {
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && riskySize <= size) {
-					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
-					onRiskyTrade(order, () => {
-						submit(FORM_NAME);
-					});
-				} else {
+				// if (risk.popup_warning && riskySize <= size) {
+				// 	order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+				// 	onRiskyTrade(order, () => {
+				// 		submit(FORM_NAME);
+				// 	});
+				// } else {
 					submit(FORM_NAME);
-				}
+				// }
 			});
 		} else if (risk.popup_warning && riskySize <= size) {
 			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
-			onRiskyTrade(order, () => {
+			// onRiskyTrade(order, () => {
 				submit(FORM_NAME);
-			});
+			// });
 		} else {
 			submit(FORM_NAME);
 		}

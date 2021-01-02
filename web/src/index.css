@@ -3898,7 +3898,7 @@ table th {
     align-items: center;
     padding: 0 8px; }
   .app_bar .app_bar-icon-logo {
-    height: 5rem;
+    height: 10rem;
     width: 5rem;
     background-size: contain;
     background-position: center;
@@ -4831,7 +4831,7 @@ table th {
       stroke: var(--dark-tab-active); }
 
 .dark-theme .mobile_tab-wrapper {
-  color: var(--dark-button-active);
+  color: #999;
   border-top: 1px solid var(--dark-button-active); }
   .dark-theme .mobile_tab-wrapper svg .verification-email,
   .dark-theme .mobile_tab-wrapper svg .verification-id,
@@ -4844,9 +4844,9 @@ table th {
   .dark-theme .mobile_tab-wrapper svg .chat-setting,
   .dark-theme .mobile_tab-wrapper svg .audio-setting,
   .dark-theme .mobile_tab-wrapper svg .risk-setting {
-    fill: var(--dark-button-active); }
+    fill: #999; }
   .dark-theme .mobile_tab-wrapper svg .pending-timer {
-    stroke: var(--dark-icon-color); }
+    stroke: #999; }
 
 .dark-theme .active_mobile_tab {
   color: var(--dark-font-main-text-color);

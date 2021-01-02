@@ -258,31 +258,6 @@ class UserSettings extends Component {
 						initialValues={audioFormInitialValues}
 					/>
 				)
-			},
-			{
-				title: isMobile ? (
-					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
-						icon={ICONS.SETTING_RISK_ICON}
-					/>
-				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
-						icon={ICONS.SETTING_RISK_ICON}
-					/>
-				),
-				content: activeTab === 5 && (
-					<RiskForm
-						coins={coins}
-						onAdjustPortfolio={this.onAdjustPortfolio}
-						totalAssets={this.state.totalAssets}
-						onSubmit={(formProps) =>
-							this.onSubmitSettings(formProps, 'risk')
-						}
-						formFields={warningFormValues}
-						initialValues={settings.risk}
-					/>
-				)
 			}
 		];
 

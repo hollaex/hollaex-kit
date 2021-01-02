@@ -313,7 +313,7 @@ $notification-size: 1.5rem;
 		}
 	}
 	.mobile_tab-wrapper {
-		color: $dark-button-active;
+		color: #999;
 		border-top: 1px solid $dark-button-active;
 
 		svg {
@@ -328,10 +328,10 @@ $notification-size: 1.5rem;
 			.chat-setting,
 			.audio-setting,
 			.risk-setting {
-				fill: $dark-button-active;
+				fill: #999;
 			}
 			.pending-timer {
-				stroke: $dark-icon-color;
+				stroke: #999;
 			}
 		}
 	}
