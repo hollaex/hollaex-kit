@@ -69,7 +69,7 @@ const sendSMTPEmail = (params) => {
 };
 
 const getValidLanguage = (language = DEFAULT_LANGUAGE()) => {
-	if (VALID_LANGUAGES().indexOf(language) > -1) {
+	if (VALID_LANGUAGES() && VALID_LANGUAGES().indexOf(language) > -1) {
 		return language;
 	}
 	return DEFAULT_LANGUAGE();
