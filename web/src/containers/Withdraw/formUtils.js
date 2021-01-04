@@ -64,7 +64,7 @@ export const generateFormValues = (
 	};
 	if (symbol === 'xrp') {
 		fields.destination_tag = {
-			type: 'text',
+			type: 'number',
 			stringId:
 				'WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER',
 			label: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_LABEL'],
