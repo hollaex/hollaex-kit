@@ -38,7 +38,10 @@ const PluginConfigure = ({
 	}, [requestPlugin]);
 
 	return type === 'configure' ? (
-		<PluginConfigureForm selectedPlugin={pluginData} />
+		<PluginConfigureForm
+			selectedPlugin={pluginData}
+			requestPlugin={requestPlugin}
+		/>
 	) : (
 		<PluginDetails
 			isLoading={isLoading}

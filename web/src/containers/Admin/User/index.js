@@ -190,7 +190,7 @@ class App extends Component {
 		const renderLink = (value) => (
 			<Button
 				type="primary"
-				onClick={() => this.requestUserData({ id: value })}
+				// onClick={() => this.requestUserData({ id: value })}
 			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO

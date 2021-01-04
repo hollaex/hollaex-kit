@@ -46,7 +46,9 @@ class Plugins extends Component {
 			JSON.stringify(prevState.pluginData) !==
 				JSON.stringify(this.state.pluginData) ||
 			JSON.stringify(prevState.myPlugins) !==
-				JSON.stringify(this.state.myPlugins)
+				JSON.stringify(this.state.myPlugins) ||
+			JSON.stringify(prevState.pluginCards) !==
+				JSON.stringify(this.state.pluginCards)
 		) {
 			this.constructPluginsData();
 		}
@@ -91,7 +93,7 @@ class Plugins extends Component {
 	};
 
 	constructPluginsData = () => {
-		const { pluginData, myPlugins, selectedPlugin } = this.state;
+		const { pluginData, myPlugins, selectedPlugin, pluginCards } = this.state;
 		let currentPlugin = selectedPlugin;
 		const myPluginsName = myPlugins.map((plugin) => plugin.name);
 		const constructedPluginData = pluginData.map((plugin) => {
@@ -104,8 +106,13 @@ class Plugins extends Component {
 			}
 			return pluginValue;
 		});
+		const constructedCards = pluginCards.map((plugin) => ({
+			...plugin,
+			enabled: myPluginsName.includes(plugin.name),
+		}));
 		this.setState({
 			pluginData: constructedPluginData,
+			pluginCards: constructedCards,
 			selectedPlugin: currentPlugin,
 		});
 	};

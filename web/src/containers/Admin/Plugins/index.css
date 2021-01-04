@@ -364,11 +364,9 @@
 
 .config-wrapper {
 	margin-top: 2rem;
-	width: 50%;
 	color: #ffffff;
 }
 .config-wrapper .config-content {
-	margin-top: 4rem;
 	border-top: 1px solid rgb(255, 255, 255, 0.3);
 }
 .config-wrapper .config-content .plugin-config-btn {
@@ -377,6 +375,16 @@
 	background-color: #00781b;
 }
 .config-wrapper .config-content .plugin-config-labels {
+	color: #ffffff;
+}
+.config-wrapper .config-content .plugin-script-container {
+	border: none;
+	height: 80vh;
+	width: 100%;
+}
+.config-wrapper .config-content .plugin-script-container,
+.config-wrapper .config-content .plugin-script-container .table {
+	background-color: #0000d1;
 	color: #ffffff;
 }
 

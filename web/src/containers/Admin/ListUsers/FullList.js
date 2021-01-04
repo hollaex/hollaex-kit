@@ -82,7 +82,10 @@ class FullListUsers extends Component {
 
 	render() {
 		const renderLink = (value) => (
-			<Button type="primary" onClick={() => this.requestUser(value)}>
+			<Button
+				type="primary"
+				// onClick={() => this.requestUser(value)}
+			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO
 					<RightOutlined />
