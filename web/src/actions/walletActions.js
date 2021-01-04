@@ -124,6 +124,59 @@ export const getUserTrades = ({ symbol, limit = 50, page = 1, ...rest }) => {
 	};
 };
 
+export const getUserOrders = ({
+	symbol,
+	limit = 50,
+	page = 1,
+	start_date,
+	end_date,
+	open,
+	...rest
+}) => {
+	let dataParams = { page, limit };
+	if (symbol) {
+		dataParams.symbol = symbol;
+	}
+
+	if (start_date) {
+		dataParams.start_date = start_date;
+	}
+
+	if (end_date) {
+		dataParams.end_date = end_date;
+	}
+
+	if (open !== undefined) {
+		dataParams.open = open;
+	}
+	const query = querystring.stringify(dataParams);
+
+	return (dispatch) => {
+		dispatch({ type: ACTION_KEYS.USER_TRADES_PENDING, payload: { page } });
+		axios
+			.get(`${ENDPOINTS.TRADES}?${query}`)
+			.then((body) => {
+				dispatch({
+					type: ACTION_KEYS.USER_TRADES_FULFILLED,
+					payload: {
+						...body.data,
+						page,
+						isRemaining: body.data.count > page * limit,
+					},
+				});
+				// if (body.data.count > page * limit) {
+				// 	dispatch(getUserTrades({ symbol, limit, page: page + 1 }));
+				// }
+			})
+			.catch((err) => {
+				dispatch({
+					type: ACTION_KEYS.USER_TRADES_REJECTED,
+					payload: err.response,
+				});
+			});
+	};
+};
+
 export const downloadUserTrades = (key) => {
 	const query = querystring.stringify({
 		format: 'csv',
@@ -155,10 +208,18 @@ export const downloadUserTrades = (key) => {
 	};
 };
 
-export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
+export const getUserDeposits = ({
+	limit = 50,
+	page = 1,
+	status,
+	currency,
+	...rest
+}) => {
 	const query = querystring.stringify({
 		page,
 		limit,
+		...(status ? { status } : {}),
+		...(currency ? { currency } : {}),
 	});
 
 	return (dispatch) => {
@@ -187,10 +248,18 @@ export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
 	};
 };
 
-export const getUserWithdrawals = ({ limit = 50, page = 1, ...rest }) => {
+export const getUserWithdrawals = ({
+	limit = 50,
+	page = 1,
+	status,
+	currency,
+	...rest
+}) => {
 	const query = querystring.stringify({
 		page,
 		limit,
+		...(status ? { status } : {}),
+		...(currency ? { currency } : {}),
 	});
 
 	return (dispatch) => {
