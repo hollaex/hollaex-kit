@@ -251,7 +251,7 @@ h2,
 }
 .custom-form-wrapper {
 	display: flex;
-	margin-top: 1.5rem;
+	margin: 1.5rem 0rem;
 	width: 70%;
 }
 .section-wrapper {

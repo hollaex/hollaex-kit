@@ -74,7 +74,7 @@ class ListUsers extends Component {
 		const { users, loading, error, currentTablePage } = this.state;
 		const { columns } = this.props;
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content admin-user-container">
 				{loading ? (
 					<Spin size="large" />
 				) : (
