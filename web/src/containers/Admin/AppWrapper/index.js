@@ -33,7 +33,7 @@ import {
 	setConfig,
 	setLanguage,
 	changeTheme,
-	requestAvailPlugins,
+	// requestAvailPlugins,
 	requestInitial,
 	requestConstant,
 } from '../../../actions/appActions';
@@ -86,7 +86,7 @@ class AppWrapper extends React.Component {
 			this.props.router.push('/init');
 		}
 		this._resetTimer();
-		this.props.requestAvailPlugins();
+		// this.props.requestAvailPlugins();
 		this.setState({
 			setupCompleted:
 				setupCompleted === 'false' ||
@@ -540,7 +540,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
+	// requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
 	logout: bindActionCreators(logout, dispatch),
 });
 

@@ -79,7 +79,7 @@ export const OperatorRole = ({ handleInvite }) => {
 	};
 
 	return (
-		<div className="roles-wrapper">
+		<div className="admin-roles-wrapper">
 			<h3>Add operator</h3>
 			<OperatorRoleFrom
 				onSubmit={handleSubmitOperator}
@@ -94,7 +94,7 @@ export const OperatorRole = ({ handleInvite }) => {
 
 export const RoleAccess = ({ handleClose }) => {
 	return (
-		<div className="roles-wrapper">
+		<div className="admin-roles-wrapper">
 			<h3>Operator role access</h3>
 			<div className="role-type-container">
 				<div className="d-flex role-description-box">
@@ -187,7 +187,7 @@ export const EditModal = ({ onTypeChange, handleUpdateRole, editData }) => {
 	};
 
 	return (
-		<div className="roles-wrapper">
+		<div className="admin-roles-wrapper">
 			<h3>Edit operator role</h3>
 			<div className="d-flex align-items-center my-3">
 				{renderRoleImage('edit-role-icon', getRoleType(editData))}
@@ -229,7 +229,7 @@ export const RevokeRole = ({ editData, handleClose, handleUpdateRole }) => {
 		);
 	};
 	return (
-		<div className="roles-wrapper">
+		<div className="admin-roles-wrapper">
 			<h3>Revoke role</h3>
 			<div>
 				{`Are you sure you want to revoke this role from ${editData.email}?`}

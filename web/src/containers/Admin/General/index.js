@@ -271,10 +271,10 @@ class General extends Component {
 		});
 	};
 
-	renderImageUpload = (id, theme, showLable = true) => {
+	renderImageUpload = (id, theme, index, showLable = true) => {
 		const { allIcons } = this.props;
 		return (
-			<div className="file-container">
+			<div key={index} className="file-container">
 				<div className="file-img-content">
 					<Image icon={allIcons[theme][id]} wrapperClassName="icon-img" />
 				</div>
@@ -428,8 +428,8 @@ class General extends Component {
 						</div>
 						<div className="file-wrapper">
 							<div className="file-wrapper">
-								{themeOptions.map(({ value: theme }) =>
-									this.renderImageUpload('EXCHANGE_LOGO', theme)
+								{themeOptions.map(({ value: theme }, index) =>
+									this.renderImageUpload('EXCHANGE_LOGO', theme, index)
 								)}
 							</div>
 						</div>
@@ -448,8 +448,8 @@ class General extends Component {
 							Used for areas that require loading.Also known as a spinner.
 						</div>
 						<div className="file-wrapper">
-							{themeOptions.map(({ value: theme }) =>
-								this.renderImageUpload('EXCHANGE_LOADER', theme)
+							{themeOptions.map(({ value: theme }, index) =>
+								this.renderImageUpload('EXCHANGE_LOADER', theme, index)
 							)}
 						</div>
 						<Button
@@ -464,7 +464,12 @@ class General extends Component {
 					<div>
 						<div className="sub-title">Exchange favicon</div>
 						<div className="file-wrapper">
-							{this.renderImageUpload('EXCHANGE_FAV_ICON', 'dark', false)}
+							{this.renderImageUpload(
+								'EXCHANGE_FAV_ICON',
+								'dark',
+								'EXCHANGE_1',
+								false
+							)}
 						</div>
 						<Button
 							type="primary"
@@ -479,8 +484,12 @@ class General extends Component {
 						<div className="sub-title">Onboarding background image</div>
 						<div className="file-wrapper">
 							<div className="file-wrapper">
-								{themeOptions.map(({ value: theme }) =>
-									this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme)
+								{themeOptions.map(({ value: theme }, index) =>
+									this.renderImageUpload(
+										'EXCHANGE_BOARDING_IMAGE',
+										theme,
+										index
+									)
 								)}
 							</div>
 						</div>
@@ -513,6 +522,7 @@ class General extends Component {
 				</div>
 				<div>
 					<FooterConfig
+						links={kit.links}
 						initialValues={initialLinkValues}
 						handleSubmitFooter={this.submitSettings}
 					/>

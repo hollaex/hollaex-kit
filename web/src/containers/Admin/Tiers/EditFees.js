@@ -64,7 +64,7 @@ class EditFees extends Component {
 		const { icons: ICONS = {}, userTiers = {}, handleClose } = this.props;
 		const { feeData } = this.state;
 		return (
-			<div>
+			<div className="admin-tiers-wrapper">
 				<h3>Edit fees for account tiers</h3>
 				<div>
 					<Image

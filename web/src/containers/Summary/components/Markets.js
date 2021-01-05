@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formatPercentage } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
+import { withRouter } from 'react-router';
 
 import { SearchBox } from 'components';
 import MarketList from '../../TradeTabs/components/MarketList';
@@ -182,4 +183,6 @@ const mapStateToProps = (state) => ({
 	tickers: state.app.tickers,
 });
 
-export default connect(mapStateToProps)(withConfig(Markets));
+const MarketWrapper = withConfig(Markets);
+
+export default connect(mapStateToProps)(withRouter(MarketWrapper));
