@@ -73,7 +73,7 @@ export const getTitleAndIcon = (type, { side, filled }, ICONS) => {
 
 export const generateRows = (type, order, pairs, coins) => {
 	const rows = [];
-	const pair = pairs[order.symbol];
+	const pair = pairs[order.symbol] || {};
 	const { min } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseValue = coins[pair.pair_base] || DEFAULT_COIN_DATA;
 	const payValue = coins[pair.pair_2] || DEFAULT_COIN_DATA;

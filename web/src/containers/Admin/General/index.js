@@ -271,10 +271,10 @@ class General extends Component {
 		});
 	};
 
-	renderImageUpload = (id, theme, showLable = true) => {
+	renderImageUpload = (id, theme, index, showLable = true) => {
 		const { allIcons } = this.props;
 		return (
-			<div className="file-container">
+			<div key={index} className="file-container">
 				<div className="file-img-content">
 					<Image icon={allIcons[theme][id]} wrapperClassName="icon-img" />
 				</div>
@@ -432,8 +432,8 @@ class General extends Component {
 									<div className="file-wrapper">
 										{themeOptions
 											.filter(({ value: theme }) => theme === 'dark')
-											.map(({ value: theme }) =>
-												this.renderImageUpload('EXCHANGE_LOGO', theme)
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -445,8 +445,8 @@ class General extends Component {
 									<div className="file-wrapper">
 										{themeOptions
 											.filter(({ value: theme }) => theme !== 'dark')
-											.map(({ value: theme }) =>
-												this.renderImageUpload('EXCHANGE_LOGO', theme)
+											.map(({ value: theme }. index) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -471,8 +471,8 @@ class General extends Component {
 								<Collapse.Panel showArrow={false} key="1" disabled={true}>
 									{themeOptions
 										.filter(({ value: theme }) => theme === 'dark')
-										.map(({ value: theme }) =>
-											this.renderImageUpload('EXCHANGE_LOADER', theme)
+										.map(({ value: theme }, index) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
 										)}
 								</Collapse.Panel>
 								<Collapse.Panel
@@ -482,8 +482,8 @@ class General extends Component {
 								>
 									{themeOptions
 										.filter(({ value: theme }) => theme !== 'dark')
-										.map(({ value: theme }) =>
-											this.renderImageUpload('EXCHANGE_LOADER', theme)
+										.map(({ value: theme }, index) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
 										)}
 								</Collapse.Panel>
 							</Collapse>
@@ -502,7 +502,7 @@ class General extends Component {
 						<Collapse defaultActiveKey={['1']} bordered={false} ghost>
 							<Collapse.Panel showArrow={false} key="1" disabled={true}>
 								<div className="file-wrapper">
-									{this.renderImageUpload('EXCHANGE_FAV_ICON', 'dark', false)}
+									{this.renderImageUpload('EXCHANGE_FAV_ICON', 'dark', 'EXCHANGE_1', false)}
 								</div>
 							</Collapse.Panel>
 						</Collapse>
@@ -523,8 +523,8 @@ class General extends Component {
 									<div className="file-wrapper">
 										{themeOptions
 											.filter(({ value: theme }) => theme === 'dark')
-											.map(({ value: theme }) =>
-												this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme)
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme, index)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -536,8 +536,8 @@ class General extends Component {
 									<div className="file-wrapper">
 										{themeOptions
 											.filter(({ value: theme }) => theme !== 'dark')
-											.map(({ value: theme }) =>
-												this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme)
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme, index)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -572,6 +572,7 @@ class General extends Component {
 				</div>
 				<div>
 					<FooterConfig
+						links={kit.links}
 						initialValues={initialLinkValues}
 						handleSubmitFooter={this.submitSettings}
 					/>

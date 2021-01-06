@@ -182,7 +182,7 @@ const Tiers = () => {
 		}
 	};
 	return (
-		<div className="tiers-wrapper w-100">
+		<div className="admin-tiers-wrapper w-100">
 			<Tabs>
 				<TabPane tab="Fees" key="fees">
 					<Fees

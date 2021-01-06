@@ -289,7 +289,7 @@ class Transactions extends Component {
 				{loading ? (
 					<div />
 				) : (
-					<div className="app-wrapper">
+					<div className="app-wrapper admin-user-container">
 						{error && (
 							<Alert
 								message={error}
