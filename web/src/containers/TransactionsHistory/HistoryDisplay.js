@@ -17,6 +17,7 @@ const HistoryDisplay = (props) => {
 		stringId,
 		title,
 		headers,
+		filters,
 		data: { data, count, loading },
 		// filename,
 		withIcon,
@@ -43,6 +44,7 @@ const HistoryDisplay = (props) => {
 					)}
 				</div>
 			)}
+			{filters}
 			{loading ? (
 				<Loader />
 			) : (

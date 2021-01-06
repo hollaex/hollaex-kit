@@ -1,0 +1,87 @@
+.transaction-history-wrapper {
+	.ant-row {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		padding: 0.5rem;
+	}
+
+	.ant-form-item {
+		margin-bottom: 0;
+	}
+
+	.ant-radio-button-wrapper {
+		color: $colors-black;
+		background-color: transparent !important;
+		border: none !important;
+
+		&:active,
+		&:hover {
+			color: $colors-main-black;
+		}
+	}
+
+	.ant-radio-button-wrapper-checked::before,
+	.ant-radio-button-wrapper::before {
+		background-color: transparent !important;
+	}
+
+	.ant-radio-button-wrapper-checked {
+		color: $colors-main-black;
+		border: $colors-main-black 1px solid !important;
+		border-radius: 0.2rem;
+	}
+
+	.ant-picker {
+		color: $colors-black;
+		background-color: transparent;
+		border-bottom: 1px solid $colors-black;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		margin: 0 15px;
+	}
+
+	.ant-picker-separator {
+		color: $colors-black;
+	}
+
+	.ant-picker-input > input {
+		color: $colors-main-black;
+	}
+
+	.ant-picker-focused,
+	.ant-picker:hover,
+	.ant-picker:active {
+		border-color: $colors-main-black;
+	}
+
+	.ant-picker-clear {
+		color: $colors-black;
+	}
+
+	.ant-picker-active-bar {
+		background: $link;
+	}
+
+	.ant-form-item-label > label {
+		color: $colors-main-black;
+	}
+
+	.ant-radio-group {
+		margin-top: 0;
+		padding: 0 15px;
+		border-right: 1px $colors-black solid;
+		border-left: 1px $colors-black solid;
+	}
+
+	.ant-btn-ghost {
+		color: $colors-black;
+		border-color: $colors-black;
+
+		&:hover,
+		:active {
+			color: $colors-main-black;
+			border-color: $colors-main-black;
+		}
+	}
+}

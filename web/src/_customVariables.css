@@ -32,6 +32,8 @@
 
 	/*_________________________________*/
 
+	--calculated_trading_selling-sparkline-fill: #ee40364d;
+	--calculated_trading_buying-sparkline-fill: #00a69c4d;
 	--calculated_trading_selling-orderbook-bar: #ee40361f;
 	--calculated_trading_buying-orderbook-bar: #00a69c1f;
 	--calculated_trading_buying-related-text: #000000;

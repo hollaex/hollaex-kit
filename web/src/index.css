@@ -1,4 +1,5 @@
 @import url(_customVariables.css);
+@import 'https://code.highcharts.com/css/highcharts.css';
 @import url(_customVariables.css);
 @import url(_customVariables.css);
 @font-face {
@@ -313,13 +314,13 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 14rem);
-    max-height: calc( 100vh - 14rem);
+    min-height: calc( 100vh - 14rem);
+    max-height: calc( 100vh - 14rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -900,8 +901,8 @@ table th {
   height: calc(100% - 4rem) !important; }
 
 .layout-mobile.home_container .app_container-content {
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem); }
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem); }
 
 .home_container {
   background-repeat: no-repeat;
@@ -1319,6 +1320,73 @@ table th {
 
 .verification-wrapper .block-wrapper {
   margin: 1rem; }
+
+.transaction-history-wrapper .ant-row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0.5rem; }
+
+.transaction-history-wrapper .ant-form-item {
+  margin-bottom: 0; }
+
+.transaction-history-wrapper .ant-radio-button-wrapper {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: transparent !important;
+  border: none !important; }
+  .transaction-history-wrapper .ant-radio-button-wrapper:active, .transaction-history-wrapper .ant-radio-button-wrapper:hover {
+    color: var(--labels_important-active-labels-text-graphics); }
+
+.transaction-history-wrapper .ant-radio-button-wrapper-checked::before,
+.transaction-history-wrapper .ant-radio-button-wrapper::before {
+  background-color: transparent !important; }
+
+.transaction-history-wrapper .ant-radio-button-wrapper-checked {
+  color: var(--labels_important-active-labels-text-graphics);
+  border: var(--labels_important-active-labels-text-graphics) 1px solid !important;
+  border-radius: 0.2rem; }
+
+.transaction-history-wrapper .ant-picker {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: transparent;
+  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  margin: 0 15px; }
+
+.transaction-history-wrapper .ant-picker-separator {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.transaction-history-wrapper .ant-picker-input > input {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.transaction-history-wrapper .ant-picker-focused,
+.transaction-history-wrapper .ant-picker:hover,
+.transaction-history-wrapper .ant-picker:active {
+  border-color: var(--labels_important-active-labels-text-graphics); }
+
+.transaction-history-wrapper .ant-picker-clear {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.transaction-history-wrapper .ant-picker-active-bar {
+  background: var(--specials_buttons-links-and-highlights); }
+
+.transaction-history-wrapper .ant-form-item-label > label {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.transaction-history-wrapper .ant-radio-group {
+  margin-top: 0;
+  padding: 0 15px;
+  border-right: 1px var(--labels_secondary-inactive-label-text-graphics) solid;
+  border-left: 1px var(--labels_secondary-inactive-label-text-graphics) solid; }
+
+.transaction-history-wrapper .ant-btn-ghost {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  border-color: var(--labels_secondary-inactive-label-text-graphics); }
+  .transaction-history-wrapper .ant-btn-ghost:hover,
+  .transaction-history-wrapper .ant-btn-ghost :active {
+    color: var(--labels_important-active-labels-text-graphics);
+    border-color: var(--labels_important-active-labels-text-graphics); }
 
 .layout-mobile .tab_controller-wrapper {
   height: auto; }
@@ -2013,8 +2081,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 14rem);
-  max-height: calc( 100vh - 14rem); }
+  min-height: calc( 100vh - 14rem);
+  max-height: calc( 100vh - 14rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1;
     min-width: 100vw;
@@ -2101,7 +2169,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 12px !important; }
 
@@ -2637,6 +2705,29 @@ table th {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
     font-size: 0.9rem; } }
+
+.highcharts-graph {
+  stroke: var(--trading_buying-related-elements); }
+  .highcharts-graph.highcharts-negative {
+    stroke: var(--trading_selling-related-elements); }
+
+.highcharts-area {
+  fill: var(--calculated_trading_buying-sparkline-fill); }
+  .highcharts-area.highcharts-negative {
+    fill: var(--calculated_trading_selling-sparkline-fill); }
+
+.highcharts-point {
+  stroke: var(--trading_buying-related-elements);
+  fill: var(--trading_buying-related-elements); }
+  .highcharts-point.highcharts-negative {
+    stroke: var(--trading_selling-related-elements);
+    fill: var(--trading_selling-related-elements); }
+
+.highcharts-background {
+  fill: transparent; }
+
+.highcharts-credits {
+  display: none; }
 
 .market-list__container .market-list__block .market-list__coin-icons {
   width: 2.8rem;
@@ -5871,14 +5962,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {

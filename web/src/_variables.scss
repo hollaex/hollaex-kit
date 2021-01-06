@@ -73,6 +73,8 @@ $trade-fill-indicator-text: var(
 	--labels_secondary-inactive-label-text-graphics
 );
 
+$sparkline-fill: var(--calculated_trading_buying-sparkline-fill);
+$negative-sparkline-fill: var(--calculated_trading_selling-sparkline-fill);
 $selling-orderbook-bar: var(--calculated_trading_selling-orderbook-bar);
 $buying-orderbook-bar: var(--calculated_trading_buying-orderbook-bar);
 $buy-bids-text: var(--calculated_trading_buying-related-text);
