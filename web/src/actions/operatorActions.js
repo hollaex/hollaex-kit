@@ -33,8 +33,14 @@ export const getVersions = async () => {
 	return meta.versions ? meta.versions : {};
 };
 
-export const publish = async (configs) => {
-	await updateConfigs(configs);
+export const publish = async (configs = {}) => {
+	const { icons = {} } = configs;
+	const { dark: { EXCHANGE_LOGO: logo_image } = {} } = icons;
+
+	await updateConfigs({
+		...configs,
+		...(logo_image ? { logo_image } : {}),
+	});
 	console.info('Published Successfully');
 };
 
