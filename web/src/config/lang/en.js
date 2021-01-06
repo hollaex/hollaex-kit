@@ -1353,6 +1353,11 @@ const nestedContent = {
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'type',
 	TRIGGER_CONDITIONS: 'Trigger conditions',
+	TRANSACTION_STATUS: {
+		PENDING: 'Pending',
+		REJECTED: 'Rejected',
+		COMPLETED: 'Completed',
+	},
 };
 
 const content = flatten(nestedContent, options);

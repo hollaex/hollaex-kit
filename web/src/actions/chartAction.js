@@ -71,7 +71,9 @@ export const getSparklines = async () => {
 
 	const chartData = {};
 	Object.entries(data).forEach(([pairKey, pairData = []]) => {
-		chartData[pairKey] = pairData.map(({ close }) => close);
+		chartData[pairKey] = {};
+		chartData[pairKey]['close'] = pairData.map(({ close }) => close);
+		chartData[pairKey]['open'] = (pairData[0] && pairData[0]['open']) || 0;
 	});
 
 	return chartData;

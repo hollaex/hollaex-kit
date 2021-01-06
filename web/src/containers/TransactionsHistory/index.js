@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 
 import {
-	getUserTrades,
+	getUserOrders as getUserTrades,
 	getUserDeposits,
 	getUserWithdrawals,
 	withdrawalCancel,
@@ -28,6 +28,8 @@ import {
 	generateDepositsHeaders,
 	generateWithdrawalsHeaders,
 } from './utils';
+import TradeAndOrderFilters from './components/TradeAndOrderFilters';
+import DepositAndWithdrawlFilters from './components/DepositAndWithdrawlFilters';
 import { RECORD_LIMIT } from './constants';
 import HistoryDisplay from './HistoryDisplay';
 
@@ -39,21 +41,23 @@ const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 class TransactionsHistory extends Component {
 	state = {
 		headers: [],
+		filters: {},
 		activeTab: 0,
 		dialogIsOpen: false,
 		amount: 0,
 		transactionId: 0,
 		jumpToPage: 0,
 		currency: BASE_CURRENCY,
+		params: {},
 	};
 
 	componentDidMount() {
-		this.requestData(this.props.symbol);
 		this.generateHeaders(
 			this.props.symbol,
 			this.props.coins,
 			this.props.discount
 		);
+		this.generateFilters();
 		if (
 			this.props.location &&
 			this.props.location.query &&
@@ -94,19 +98,35 @@ class TransactionsHistory extends Component {
 		this.setState({ dialogIsOpen: true });
 	};
 
-	requestData = (symbol) => {
-		switch (this.state.activeTab) {
+	requestData = () => {
+		const { params, activeTab } = this.state;
+		const { getUserTrades, getUserDeposits, getUserWithdrawals } = this.props;
+
+		switch (activeTab) {
 			case 0:
-				this.props.getUserTrades(RECORD_LIMIT);
+				getUserTrades(RECORD_LIMIT, 1, { ...params, open: false });
 				break;
 			case 1:
-				this.props.getUserDeposits(symbol, RECORD_LIMIT);
+				getUserTrades(RECORD_LIMIT, 1, params);
 				break;
 			case 2:
-				this.props.getUserWithdrawals(symbol, RECORD_LIMIT);
+				getUserDeposits(RECORD_LIMIT, 1, params);
+				break;
+			case 3:
+				getUserWithdrawals(RECORD_LIMIT, 1, params);
 				break;
 			default:
 		}
+	};
+
+	onSearch = ({ range = [], ...rest }) => {
+		const [startDate, endDate] = range;
+		const start_date = startDate ? moment.utc(startDate).format() : undefined;
+		const end_date = endDate ? moment.utc(endDate).format() : undefined;
+		this.setState(
+			{ params: { start_date, end_date, ...rest } },
+			this.requestData
+		);
 	};
 
 	generateHeaders(symbol, coins, discount) {
@@ -114,6 +134,9 @@ class TransactionsHistory extends Component {
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
+				orderHistory: isMobile
+					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
+					: generateTradeHeaders(symbol, pairs, coins, discount),
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
 					: generateTradeHeaders(symbol, pairs, coins, discount),
@@ -122,6 +145,24 @@ class TransactionsHistory extends Component {
 			},
 		});
 	}
+
+	generateFilters = () => {
+		const { pairs, coins } = this.props;
+		this.setState({
+			filters: {
+				orderHistory: (
+					<TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />
+				),
+				trades: <TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />,
+				deposits: (
+					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
+				),
+				withdrawals: (
+					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
+				),
+			},
+		});
+	};
 
 	setActiveTab = (activeTab = 0) => {
 		const { symbol, trades, withdrawals, deposits } = this.props;
@@ -157,7 +198,8 @@ class TransactionsHistory extends Component {
 	};
 
 	handleNext = (pageCount, pageNumber) => {
-		const { trades, symbol, deposits, withdrawals } = this.props;
+		const { trades, deposits, withdrawals } = this.props;
+		const { params } = this.state;
 		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
 		const apiPageTemp = Math.floor((pageNumber + 1) / 2);
 		switch (this.state.activeTab) {
@@ -167,7 +209,10 @@ class TransactionsHistory extends Component {
 					apiPageTemp >= trades.page &&
 					trades.isRemaining
 				) {
-					this.props.getUserTrades(RECORD_LIMIT, trades.page + 1);
+					this.props.getUserTrades(RECORD_LIMIT, trades.page + 1, {
+						...params,
+						open: false,
+					});
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
@@ -177,7 +222,7 @@ class TransactionsHistory extends Component {
 					apiPageTemp >= deposits.page &&
 					deposits.isRemaining
 				) {
-					this.props.getUserDeposits(symbol, RECORD_LIMIT, deposits.page + 1);
+					this.props.getUserDeposits(RECORD_LIMIT, deposits.page + 1, params);
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
@@ -188,9 +233,9 @@ class TransactionsHistory extends Component {
 					withdrawals.isRemaining
 				) {
 					this.props.getUserWithdrawals(
-						symbol,
 						RECORD_LIMIT,
-						withdrawals.page + 1
+						withdrawals.page + 1,
+						params
 					);
 					this.setState({ jumpToPage: pageNumber });
 				}
@@ -209,7 +254,7 @@ class TransactionsHistory extends Component {
 			downloadUserWithdrawal,
 			downloadUserDeposit,
 		} = this.props;
-		const { headers, activeTab } = this.state;
+		const { headers, activeTab, filters } = this.state;
 		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
@@ -219,6 +264,18 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
+				props.stringId = 'RECENT_TRADES';
+				props.title = `${STRINGS['RECENT_TRADES']}`;
+				props.headers = headers.trades;
+				props.data = trades;
+				props.filename = `order-history-${moment().unix()}`;
+				props.withIcon = false;
+				props.handleNext = this.handleNext;
+				props.jumpToPage = this.state.jumpToPage;
+				props.handleDownload = downloadUserTrades;
+				props.filters = filters.orderHistory;
+				break;
+			case 1:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
 				props.title = `${STRINGS['TRANSACTION_HISTORY.TITLE_TRADES']}`;
 				props.headers = headers.trades;
@@ -228,8 +285,9 @@ class TransactionsHistory extends Component {
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 				props.handleDownload = downloadUserTrades;
+				props.filters = filters.trades;
 				break;
-			case 1:
+			case 2:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
 				props.title = STRINGS['TRANSACTION_HISTORY.TITLE_DEPOSITS'];
 				props.headers = headers.deposits;
@@ -238,8 +296,9 @@ class TransactionsHistory extends Component {
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 				props.handleDownload = downloadUserDeposit;
+				props.filters = filters.deposits;
 				break;
-			case 2:
+			case 3:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_WITHDRAWALS';
 				props.title = STRINGS['TRANSACTION_HISTORY.TITLE_WITHDRAWALS'];
 				props.headers = headers.withdrawals;
@@ -248,6 +307,7 @@ class TransactionsHistory extends Component {
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 				props.handleDownload = downloadUserWithdrawal;
+				props.filters = filters.withdrawals;
 				break;
 			default:
 				return <div />;
@@ -285,6 +345,18 @@ class TransactionsHistory extends Component {
 				)}
 				<TabController
 					tabs={[
+						{
+							title: isMobile ? (
+								STRINGS['RECENT_TRADES']
+							) : (
+								<CheckTitle
+									stringId="RECENT_TRADES"
+									title={STRINGS['RECENT_TRADES']}
+									iconId="TRADE_HISTORY"
+									icon={ICONS['TRADE_HISTORY']}
+								/>
+							),
+						},
 						{
 							title: isMobile ? (
 								STRINGS['TRANSACTION_HISTORY.TRADES']
@@ -391,11 +463,12 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getUserTrades: (limit, page = 1) => dispatch(getUserTrades({ limit, page })),
-	getUserDeposits: (coin, limit, page = 1) =>
-		dispatch(getUserDeposits({ coin, limit, page })),
-	getUserWithdrawals: (coin, limit, page = 1) =>
-		dispatch(getUserWithdrawals({ coin, limit, page })),
+	getUserTrades: (limit, page = 1, params) =>
+		dispatch(getUserTrades({ limit, page, ...params })),
+	getUserDeposits: (limit, page = 1, params) =>
+		dispatch(getUserDeposits({ limit, page, ...params })),
+	getUserWithdrawals: (limit, page = 1, params) =>
+		dispatch(getUserWithdrawals({ limit, page, ...params })),
 	withdrawalCancel: (transactionId) =>
 		dispatch(withdrawalCancel({ transactionId })),
 	downloadUserTrades: () => dispatch(downloadUserTrades('trade')),

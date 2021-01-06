@@ -17,6 +17,16 @@ export const calculateThemes = (themes) => {
 
 const pushCalculatedColors = (themeData) => {
 	const calculatedColors = {
+		'calculated_trading_buying-sparkline-fill': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.3)
+			.string(),
+		'calculated_trading_selling-sparkline-fill': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.3)
+			.string(),
 		'calculated_trading_buying-orderbook-bar': Color(
 			themeData['trading_buying-related-elements']
 		)

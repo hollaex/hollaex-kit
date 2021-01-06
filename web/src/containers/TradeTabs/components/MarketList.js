@@ -9,17 +9,14 @@ import {
 	string,
 	func,
 } from 'prop-types';
-import { Sparklines, SparklinesLine } from 'react-sparklines';
 import Image from 'components/Image';
 
-import { THEME_DEFAULT } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
+import SparkLine from './SparkLine';
 
 const MarketList = ({ markets, handleClick, chartData, icons: ICONS }) => {
-	const stroke = THEME_DEFAULT === 'dark' ? '#0066B4' : '#0000ff';
-
 	return (
 		<div className="market-list__container">
 			<div className="market-list__block">
@@ -92,14 +89,8 @@ const MarketList = ({ markets, handleClick, chartData, icons: ICONS }) => {
 										</div>
 									</td>
 									<td>{ticker.volume}</td>
-									<td>
-										<div className="m-2">
-											<Sparklines data={chartData[key] || []}>
-												<SparklinesLine
-													style={{ strokeWidth: 2, stroke, fill: 'none' }}
-												/>
-											</Sparklines>
-										</div>
+									<td style={{ width: '150px' }}>
+										<SparkLine data={chartData[key] || []} />
 									</td>
 								</tr>
 							);

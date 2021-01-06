@@ -47,6 +47,19 @@ const renderContent = (selectedPlugin, requestPlugin) => {
 				</div>
 			</div>
 		);
+	} else if (selectedPlugin.admin_view) {
+		return (
+			<div className="config-content mt-5 pb-5">
+				<div className="mt-2">Configure</div>
+				<div className="mt-5">
+					<iframe
+						title="test"
+						srcDoc={selectedPlugin.admin_view}
+						className="plugin-script-container"
+					/>
+				</div>
+			</div>
+		);
 	} else {
 		return <div></div>;
 	}

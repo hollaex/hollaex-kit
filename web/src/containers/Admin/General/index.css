@@ -63,6 +63,10 @@
 	align-items: center;
 	height: 86px;
 	border-left: 1px solid #b9b9b9;
+	color: #ffffff;
+}
+.general-wrapper .ant-collapse-header {
+	color: #ffffff !important;
 }
 .file-container .ant-spin {
 	position: absolute;
