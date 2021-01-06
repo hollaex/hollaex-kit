@@ -13,8 +13,8 @@
 	padding-top: 30px;
 }
 
-.tiers-wrapper .ant-tabs-nav .ant-tabs-ink-bar,
-.user-content .ant-tabs-nav .ant-tabs-ink-bar,
+.admin-tiers-wrapper .ant-tabs-nav .ant-tabs-ink-bar,
+.admin-user-content .ant-tabs-nav .ant-tabs-ink-bar,
 .user-container .ant-tabs-nav .ant-tabs-ink-bar {
 	height: 6px;
 	background-color: #ffffff;
@@ -22,7 +22,7 @@
 .user-container .ant-tabs-nav .ant-tabs-ink-bar {
 	top: 0px;
 }
-.tiers-wrapper .ant-tabs-nav .ant-tabs-tab,
+.admin-tiers-wrapper .ant-tabs-nav .ant-tabs-tab,
 .user-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
 	color: #ffffff;
@@ -31,47 +31,47 @@
 .user-container .ant-tabs-nav .ant-tabs-tab:hover {
 	color: #ffffff;
 }
-.tiers-wrapper .ant-tabs-nav::before,
-.user-content .ant-tabs-nav::before,
+.admin-tiers-wrapper .ant-tabs-nav::before,
+.admin-user-content .ant-tabs-nav::before,
 .user-container .ant-tabs-nav::before {
 	border-bottom: 1px solid #ffffff;
 }
-.ant-table-thead > tr > th {
+.admin-user-container .ant-table-thead > tr > th {
 	background-color: #4e4efb;
 	color: #ffffff;
 }
-.ant-table-tbody > tr > td {
+.admin-user-container .ant-table-tbody > tr > td {
 	background-color: #0000d1;
 	color: #ffffff;
 	border-bottom: 1px solid #0000d1;
 }
-.ant-table-tbody > tr.ant-table-placeholder:hover > td {
+.admin-user-container .ant-table-tbody > tr.ant-table-placeholder:hover > td {
 	background-color: #0000ff;
 }
-.ant-table-tbody > tr.ant-table-row:hover > td {
+.admin-user-container .ant-table-tbody > tr.ant-table-row:hover > td {
 	background-color: #0000ff;
 }
-.ant-empty .ant-empty-image .ant-empty-img-simple-ellipse,
-.ant-empty .ant-empty-image .ant-empty-img-simple-path {
+.admin-user-container .ant-empty .ant-empty-image .ant-empty-img-simple-ellipse,
+.admin-user-container .ant-empty .ant-empty-image .ant-empty-img-simple-path {
 	fill: #7d9ac9;
 }
-.ant-empty .ant-empty-image .ant-empty-img-simple-g {
+.admin-user-container .ant-empty .ant-empty-image .ant-empty-img-simple-g {
 	stroke: #7d9ac9;
 }
-.ant-empty .ant-empty-description {
+.admin-user-container .ant-empty .ant-empty-description {
 	color: #ffffff;
 }
-.user-content {
+.admin-user-content {
 	margin: 24px 0px;
 }
-.ant-breadcrumb,
-.ant-breadcrumb-separator {
+.admin-user-content .ant-breadcrumb,
+.admin-user-content .ant-breadcrumb-separator {
 	color: #c4c4c4;
 }
-.ant-breadcrumb a:hover {
+.admin-user-content .ant-breadcrumb a:hover {
 	color: #ffffff;
 }
-.ant-breadcrumb > span:last-child {
+.admin-user-content .ant-breadcrumb > span:last-child {
 	color: #ffffff;
 }
 .user-icon {
@@ -148,7 +148,7 @@
 	margin-bottom: 5px;
 	width: 20rem;
 }
-.ant-modal-confirm-btns {
+.admin-user-container .ant-modal-confirm-btns {
 	display: flex;
 }
 .admin-content-wrapper .blue-link {
@@ -161,8 +161,10 @@
 .admin-content-wrapper h4,
 .admin-content-wrapper h5,
 .admin-content-wrapper h6,
-.ant-modal-body h1,
-.ant-modal-body h3 {
+.admin-user-container .ant-modal-body h1,
+.admin-user-container .ant-modal-body h3,
+.user-data-form h1,
+.user-data-form h3 {
 	color: #ffffff;
 }
 .user-info-container,
@@ -215,10 +217,10 @@
 .user-info-label {
 	margin-left: 15px;
 }
-.ant-table-pagination.ant-pagination {
+.admin-user-container .ant-table-pagination.ant-pagination {
 	margin: 16px 0;
 	background: #ffffff;
-	border-radius: 31%;
+	border-radius: 50px;
 	padding: 15px;
 }
 .levels-icon {

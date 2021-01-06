@@ -219,7 +219,7 @@ const Roles = () => {
 	};
 
 	return (
-		<div className="roles-wrapper w-100 my-4">
+		<div className="admin-roles-wrapper w-100 my-4">
 			<div className="d-flex justify-content-between">
 				<div>
 					<h3>Designate operator roles</h3>

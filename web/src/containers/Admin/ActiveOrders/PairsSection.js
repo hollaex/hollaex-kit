@@ -255,7 +255,7 @@ class PairsSection extends Component {
 		} = this.state;
 		const COLUMNS = getColumns(this.props.userId, this.onCancelOrder);
 		return (
-			<div className="f-1">
+			<div className="f-1 admin-user-container">
 				<Tabs onChange={this.tabChange}>
 					<TabPane tab="Bids" key="buy">
 						<Row>

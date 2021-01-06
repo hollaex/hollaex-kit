@@ -52,7 +52,7 @@ const Preview = ({
 	...rest
 }) => {
 	return (
-		<div>
+		<div className="admin-tiers-wrapper">
 			<h3>Check and confirm tier</h3>
 			<div className="mb-3">
 				Please carefully check that the details of this account tier are
@@ -309,7 +309,7 @@ class NewTierForm extends Component {
 		const { tierData, editorState } = this.state;
 		const { icons = {}, isNew = false } = this.props;
 		return (
-			<div className="new-tier-form">
+			<div className="new-tier-form admin-tiers-wrapper">
 				<h3>Account tier details</h3>
 				<div>
 					<div>Name</div>

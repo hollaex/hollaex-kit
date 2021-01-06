@@ -2,143 +2,25 @@ import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
-import { PUBLIC_URL } from '../../config/constants';
+// import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 import withEdit from 'components/EditProvider/withEdit';
 
-const generateSectionsText = (strings, theme, links = {}, ICONS) => {
-	const {
-		api,
-		contact,
-		facebook,
-		github,
-		// helpdesk,
-		information,
-		instagram,
-		linkedin,
-		youtube,
-		privacy,
-		telegram,
-		terms,
-		twitter,
-		website,
-		whitepaper,
-	} = links;
-
-	let sectionsText = [
-		{
-			TITLE: strings['FOOTER.SECTIONS.SECTION_4_TITLE'],
-			LINKS: [
-				{
-					text: strings['FOOTER.SECTIONS.SECTION_4_LINK_1'],
-					link: `${PUBLIC_URL}/login`,
-				},
-				{
-					text: strings['FOOTER.SECTIONS.SECTION_4_LINK_2'],
-					link: `${PUBLIC_URL}/signup`,
-				},
-			],
-		},
-		(contact || terms || privacy || website) && {
-			TITLE: strings['FOOTER.SECTIONS.SECTION_1_TITLE'],
-			LINKS: [
-				contact && {
-					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_4'],
-					link: contact,
-				},
-				terms && {
-					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_2'],
-					link: terms,
-				},
-				privacy && {
-					text: strings['FOOTER.SECTIONS.SECTION_1_LINK_3'],
-					link: privacy,
-				},
-				website && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_6'],
-					link: website,
-				},
-			],
-		},
-		(github || api || information) && {
-			TITLE: strings['FOOTER.SECTIONS.SECTION_3_TITLE'],
-			LINKS: [
-				github && {
-					text: strings['FOOTER.SECTIONS.SECTION_5_LINK_3'],
-					link: github,
-				},
-				api && {
-					text: strings['FOOTER.SECTIONS.SECTION_3_LINK_6'],
-					link: api,
-				},
-				information && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_8'],
-					link: information,
-				},
-				// {
-				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_7"],
-				// 	link: 'https://www.npmjs.com/package/hollaex-node-lib'
-				// },
-				// {
-				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_8"],
-				// 	link: 'https://docs.bitholla.com'
-				// }
-			],
-		},
-		whitepaper && {
-			TITLE: strings['FOOTER.SECTIONS.SECTION_5_TITLE'],
-			LINKS: [
-				whitepaper && {
-					text: strings['FOOTER.SECTIONS.SECTION_5_LINK_1'],
-					link: whitepaper,
-				},
-				// {
-				// 	text: strings["FOOTER.SECTIONS.SECTION_5_LINK_2"],
-				// 	link: 'http://bitholla.com/xht'
-				// },
-				// {
-				// 	text: strings["FOOTER.SECTIONS.SECTION_3_LINK_2"],
-				// 	link: 'https://forum.bitholla.com'
-				// }
-			],
-		},
-		(twitter || telegram || facebook || instagram || linkedin || youtube) && {
-			TITLE: strings['FOOTER.SECTIONS.SECTION_6_TITLE'],
-			LINKS: [
-				twitter && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_1'],
-					icon: ICONS['SOCIAL_TWITTER'],
-					link: twitter,
-				},
-				telegram && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_2'],
-					icon: ICONS['SOCIAL_TELEGRAM'],
-					link: telegram,
-				},
-				facebook && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_3'],
-					icon: ICONS['SOCIAL_FACEBOOK'],
-					link: facebook,
-				},
-				instagram && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_4'],
-					icon: ICONS['SOCIAL_INSTAGRAM'],
-					link: instagram,
-				},
-				linkedin && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_5'],
-					icon: ICONS['SOCIAL_LINKEDIN'],
-					link: linkedin,
-				},
-				youtube && {
-					text: strings['FOOTER.SECTIONS.SECTION_6_LINK_9'],
-					icon: ICONS['SOCIAL_YOUTUBE'],
-					link: youtube,
-				},
-			],
-		},
-	];
+const generateSectionsText = (links = {}, ICONS) => {
+	let sectionsText = Object.keys(links)
+		.filter((sectionKey) => typeof links[sectionKey] === 'object')
+		.map((key) => {
+			const section = links[key];
+			let heading = Object.keys(section.header)[0];
+			return {
+				TITLE: section.header[heading],
+				LINKS: Object.keys(section.content).map((contentKey) => ({
+					text: contentKey,
+					link: section.content[contentKey],
+				})),
+			};
+		});
 
 	sectionsText = sectionsText.filter((item) => !!item);
 	return sectionsText.map(({ TITLE, LINKS }) => {
@@ -191,7 +73,7 @@ const AppFooter = ({
 							'flex-column': isMobile,
 						})}
 					>
-						{generateSectionsText(STRINGS, theme, constants.links, ICONS).map(
+						{generateSectionsText(constants.links, ICONS).map(
 							({ TITLE, LINKS }, index) => (
 								<div
 									key={index}

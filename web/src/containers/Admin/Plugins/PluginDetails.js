@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Divider, Input, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
 import { Carousel } from 'components';
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin, getPlugin, updatePlugin } from './action';
+import { addPlugin, updatePlugin } from './action';
 
 const PluginDetails = ({
 	handleBreadcrumb,
@@ -12,37 +12,15 @@ const PluginDetails = ({
 	handlePluginList,
 	updatePluginList,
 	removePlugin,
+	pluginData,
+	isLoading,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
 	const [isConfirm, setConfirm] = useState(true);
-	const [isLoading, setLoading] = useState(true);
 	const [isAddLoading, setAddLoading] = useState(false);
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
-	const [pluginData, setPlugin] = useState({});
-
-	const requestPlugin = useCallback(() => {
-		getPlugin({ name: selectedPlugin.name })
-			.then((res) => {
-				setLoading(false);
-				if (res) {
-					setPlugin(res);
-				}
-			})
-			.catch((err) => {
-				if (selectedPlugin.enabled) {
-					setPlugin(selectedPlugin);
-				} else {
-					setPlugin({});
-				}
-				setLoading(false);
-			});
-	}, [selectedPlugin]);
-
-	useEffect(() => {
-		requestPlugin();
-	}, [requestPlugin]);
 
 	const handleAddPlugin = async () => {
 		const body = {
@@ -313,15 +291,13 @@ const PluginDetails = ({
 						</Button>
 					</div>
 					<div className="d-flex align-items-center flex-column">
-						{pluginData.web_view ? (
-							<Button
-								type="primary"
-								className="config-btn"
-								onClick={handleBreadcrumb}
-							>
-								Configure
-							</Button>
-						) : null}
+						<Button
+							type="primary"
+							className="config-btn"
+							onClick={handleBreadcrumb}
+						>
+							Configure
+						</Button>
 						{pluginData.version > selectedPlugin.version ? (
 							<div className="d-flex align-items-center flex-column">
 								<Button

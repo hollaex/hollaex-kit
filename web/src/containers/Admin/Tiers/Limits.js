@@ -116,7 +116,7 @@ const Limits = ({
 }) => {
 	const coinsData = Object.keys(coins).map((key) => coins[key]);
 	return (
-		<div>
+		<div className="admin-tiers-wrapper">
 			<div className="d-flex">
 				<div>
 					<Image

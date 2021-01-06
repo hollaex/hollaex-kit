@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { RightOutlined } from '@ant-design/icons';
 
 import PluginList from './PluginList';
-import PluginDetails from './PluginDetails';
 import PluginConfigure from './PluginConfigure';
 import MyPlugins from './MyPlugins';
 import { removePlugin, requestPlugins, requestMyPlugins } from './action';
@@ -33,6 +32,7 @@ class Plugins extends Component {
 			isRemovePlugin: false,
 			removePluginName: '',
 			tabKey: 'explore',
+			pluginCards: [],
 		};
 		this.removeTimeout = null;
 	}
@@ -46,7 +46,9 @@ class Plugins extends Component {
 			JSON.stringify(prevState.pluginData) !==
 				JSON.stringify(this.state.pluginData) ||
 			JSON.stringify(prevState.myPlugins) !==
-				JSON.stringify(this.state.myPlugins)
+				JSON.stringify(this.state.myPlugins) ||
+			JSON.stringify(prevState.pluginCards) !==
+				JSON.stringify(this.state.pluginCards)
 		) {
 			this.constructPluginsData();
 		}
@@ -78,7 +80,11 @@ class Plugins extends Component {
 		return requestPlugins({ page, limit, ...params })
 			.then((res) => {
 				if (res && res.data) {
-					this.setState({ loading: false, pluginData: res.data });
+					let pluginCards = this.state.pluginCards;
+					if (!params.search) {
+						pluginCards = res.data.filter((val, key) => key <= 2);
+					}
+					this.setState({ loading: false, pluginData: res.data, pluginCards });
 				}
 			})
 			.catch((err) => {
@@ -87,7 +93,7 @@ class Plugins extends Component {
 	};
 
 	constructPluginsData = () => {
-		const { pluginData, myPlugins, selectedPlugin } = this.state;
+		const { pluginData, myPlugins, selectedPlugin, pluginCards } = this.state;
 		let currentPlugin = selectedPlugin;
 		const myPluginsName = myPlugins.map((plugin) => plugin.name);
 		const constructedPluginData = pluginData.map((plugin) => {
@@ -100,8 +106,13 @@ class Plugins extends Component {
 			}
 			return pluginValue;
 		});
+		const constructedCards = pluginCards.map((plugin) => ({
+			...plugin,
+			enabled: myPluginsName.includes(plugin.name),
+		}));
 		this.setState({
 			pluginData: constructedPluginData,
+			pluginCards: constructedCards,
 			selectedPlugin: currentPlugin,
 		});
 	};
@@ -220,6 +231,7 @@ class Plugins extends Component {
 			myPlugins,
 			tabKey,
 			removePluginName,
+			pluginCards,
 		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
@@ -248,17 +260,14 @@ class Plugins extends Component {
 								</Item>
 							) : null}
 						</Breadcrumb>
-						{type === 'configure' ? (
-							<PluginConfigure selectedPlugin={selectedPlugin} />
-						) : (
-							<PluginDetails
-								handleBreadcrumb={this.handleBreadcrumb}
-								selectedPlugin={selectedPlugin}
-								handlePluginList={this.handlePluginList}
-								updatePluginList={this.handleUpdatePluginList}
-								removePlugin={this.removePlugin}
-							/>
-						)}
+						<PluginConfigure
+							handleBreadcrumb={this.handleBreadcrumb}
+							type={type}
+							selectedPlugin={selectedPlugin}
+							handlePluginList={this.handlePluginList}
+							updatePluginList={this.handleUpdatePluginList}
+							removePlugin={this.removePlugin}
+						/>
 					</div>
 				) : (
 					<div className="app_container-content admin-earnings-container admin-plugin-container">
@@ -270,6 +279,7 @@ class Plugins extends Component {
 									selectedPlugin={selectedPlugin}
 									handleOpenPlugin={this.handleOpenPlugin}
 									getPlugins={this.getPlugins}
+									pluginCards={pluginCards}
 								/>
 							</TabPane>
 
