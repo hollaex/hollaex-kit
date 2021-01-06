@@ -35,10 +35,15 @@ const Filters = ({ pairs, onSearch }) => {
 			className="ant-advanced-search-form"
 			onFinish={onFinish}
 			onValuesChange={onValuesChange}
+			initialValues={{
+				symbol: null,
+				size: 'all',
+			}}
 		>
 			<Row gutter={24}>
 				<Form.Item
 					name="symbol"
+					label="Pair"
 					rules={[
 						{
 							message: 'Input something!',
@@ -47,7 +52,7 @@ const Filters = ({ pairs, onSearch }) => {
 				>
 					<Select
 						style={{
-							width: 150,
+							width: 100,
 						}}
 						size="small"
 						className="custom-select-input-style no-border"
@@ -55,12 +60,11 @@ const Filters = ({ pairs, onSearch }) => {
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
-						<Option value={null}>Pair: All</Option>
+						<Option value={null}>All</Option>
 						{Object.entries(pairs).map(([_, { name }]) => (
-							<Option
-								key={name}
-								value={name}
-							>{`Pair: ${name.toUpperCase()}`}</Option>
+							<Option key={name} value={name}>
+								{name.toUpperCase()}
+							</Option>
 						))}
 					</Select>
 				</Form.Item>

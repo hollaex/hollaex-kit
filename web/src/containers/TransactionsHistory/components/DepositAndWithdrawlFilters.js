@@ -39,10 +39,15 @@ const Filters = ({ coins = {}, onSearch }) => {
 			name="deposit-and-withdrawal-filters"
 			className="ant-advanced-search-form"
 			onFinish={onFinish}
+			initialValues={{
+				status: null,
+				currency: null,
+			}}
 		>
 			<Row gutter={24}>
 				<Form.Item
 					name="status"
+					label="Status"
 					rules={[
 						{
 							message: 'Input something!',
@@ -51,7 +56,7 @@ const Filters = ({ coins = {}, onSearch }) => {
 				>
 					<Select
 						style={{
-							width: 150,
+							width: 100,
 						}}
 						size="small"
 						className="custom-select-input-style no-border"
@@ -59,14 +64,17 @@ const Filters = ({ coins = {}, onSearch }) => {
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
-						<Option value={null}>Status: All</Option>
+						<Option value={null}>All</Option>
 						{Object.entries(STATUS_OPTIONS).map(([_, { name, value }]) => (
-							<Option key={value} value={value}>{`Status: ${name}`}</Option>
+							<Option key={value} value={value}>
+								{name}
+							</Option>
 						))}
 					</Select>
 				</Form.Item>
 				<Form.Item
 					name="currency"
+					label="Asset"
 					rules={[
 						{
 							message: 'Input something!',
@@ -75,7 +83,7 @@ const Filters = ({ coins = {}, onSearch }) => {
 				>
 					<Select
 						style={{
-							width: 150,
+							width: 100,
 						}}
 						size="small"
 						className="custom-select-input-style no-border"
@@ -85,10 +93,9 @@ const Filters = ({ coins = {}, onSearch }) => {
 					>
 						<Option value={null}>Asset: All</Option>
 						{Object.entries(coins).map(([_, { symbol, fullname }]) => (
-							<Option
-								key={symbol}
-								value={symbol}
-							>{`Asset: ${fullname}`}</Option>
+							<Option key={symbol} value={symbol}>
+								{fullname}
+							</Option>
 						))}
 					</Select>
 				</Form.Item>
