@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, message } from 'antd';
+import { Button, Modal, message, Collapse } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
@@ -427,11 +427,30 @@ class General extends Component {
 							the direct edit function will override the logo.
 						</div>
 						<div className="file-wrapper">
-							<div className="file-wrapper">
-								{themeOptions.map(({ value: theme }) =>
-									this.renderImageUpload('EXCHANGE_LOGO', theme)
-								)}
-							</div>
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme === 'dark')
+											.map(({ value: theme }) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme)
+											)}
+									</div>
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme !== 'dark')
+											.map(({ value: theme }) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme)
+											)}
+									</div>
+								</Collapse.Panel>
+							</Collapse>
 						</div>
 						<Button
 							type="primary"
@@ -448,9 +467,26 @@ class General extends Component {
 							Used for areas that require loading.Also known as a spinner.
 						</div>
 						<div className="file-wrapper">
-							{themeOptions.map(({ value: theme }) =>
-								this.renderImageUpload('EXCHANGE_LOADER', theme)
-							)}
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									{themeOptions
+										.filter(({ value: theme }) => theme === 'dark')
+										.map(({ value: theme }) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme)
+										)}
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									{themeOptions
+										.filter(({ value: theme }) => theme !== 'dark')
+										.map(({ value: theme }) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme)
+										)}
+								</Collapse.Panel>
+							</Collapse>
 						</div>
 						<Button
 							type="primary"
@@ -463,9 +499,13 @@ class General extends Component {
 					<div className="divider"></div>
 					<div>
 						<div className="sub-title">Exchange favicon</div>
-						<div className="file-wrapper">
-							{this.renderImageUpload('EXCHANGE_FAV_ICON', 'dark', false)}
-						</div>
+						<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+							<Collapse.Panel showArrow={false} key="1" disabled={true}>
+								<div className="file-wrapper">
+									{this.renderImageUpload('EXCHANGE_FAV_ICON', 'dark', false)}
+								</div>
+							</Collapse.Panel>
+						</Collapse>
 						<Button
 							type="primary"
 							className="green-btn minimal-btn"
@@ -478,11 +518,30 @@ class General extends Component {
 					<div>
 						<div className="sub-title">Onboarding background image</div>
 						<div className="file-wrapper">
-							<div className="file-wrapper">
-								{themeOptions.map(({ value: theme }) =>
-									this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme)
-								)}
-							</div>
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme === 'dark')
+											.map(({ value: theme }) =>
+												this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme)
+											)}
+									</div>
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme !== 'dark')
+											.map(({ value: theme }) =>
+												this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme)
+											)}
+									</div>
+								</Collapse.Panel>
+							</Collapse>
 						</div>
 						<Button
 							type="primary"
