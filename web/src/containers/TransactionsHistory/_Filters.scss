@@ -1,4 +1,14 @@
 .transaction-history-wrapper {
+	.ant-row {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		padding: 0.5rem;
+	}
+
+	.ant-form-item {
+		margin-bottom: 0;
+	}
+
 	.ant-radio-button-wrapper {
 		color: $colors-black;
 		background-color: transparent !important;

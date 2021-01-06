@@ -1,4 +1,5 @@
 @import url(_customVariables.css);
+@import 'https://code.highcharts.com/css/highcharts.css';
 @import url(_customVariables.css);
 @import url(_customVariables.css);
 @font-face {
@@ -1319,6 +1320,14 @@ table th {
 
 .verification-wrapper .block-wrapper {
   margin: 1rem; }
+
+.transaction-history-wrapper .ant-row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0.5rem; }
+
+.transaction-history-wrapper .ant-form-item {
+  margin-bottom: 0; }
 
 .transaction-history-wrapper .ant-radio-button-wrapper {
   color: var(--labels_secondary-inactive-label-text-graphics);
@@ -2696,6 +2705,29 @@ table th {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
     font-size: 0.9rem; } }
+
+.highcharts-graph {
+  stroke: var(--trading_buying-related-elements); }
+  .highcharts-graph.highcharts-negative {
+    stroke: var(--trading_selling-related-elements); }
+
+.highcharts-area {
+  fill: var(--calculated_trading_buying-sparkline-fill); }
+  .highcharts-area.highcharts-negative {
+    fill: var(--calculated_trading_selling-sparkline-fill); }
+
+.highcharts-point {
+  stroke: var(--trading_buying-related-elements);
+  fill: var(--trading_buying-related-elements); }
+  .highcharts-point.highcharts-negative {
+    stroke: var(--trading_selling-related-elements);
+    fill: var(--trading_selling-related-elements); }
+
+.highcharts-background {
+  fill: transparent; }
+
+.highcharts-credits {
+  display: none; }
 
 .market-list__container .market-list__block .market-list__coin-icons {
   width: 2.8rem;

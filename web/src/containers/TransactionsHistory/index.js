@@ -150,16 +150,14 @@ class TransactionsHistory extends Component {
 		const { pairs, coins } = this.props;
 		this.setState({
 			filters: {
-				orderHistory: !isMobile && (
+				orderHistory: (
 					<TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />
 				),
-				trades: !isMobile && (
-					<TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />
-				),
-				deposits: !isMobile && (
+				trades: <TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />,
+				deposits: (
 					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
 				),
-				withdrawals: !isMobile && (
+				withdrawals: (
 					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
 				),
 			},
