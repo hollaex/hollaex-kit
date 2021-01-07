@@ -210,7 +210,7 @@ table th {
   justify-content: flex-end; }
 
 .justify-content-start {
-  justify-content: start; }
+  justify-content: flex-start; }
 
 .justify-content-between {
   justify-content: space-between; }
@@ -2504,11 +2504,39 @@ table th {
   .summary-container .account-details-wrapper .status-header {
     width: 6rem; }
   .summary-container .price-diff-down {
-    color: var(--trading_selling-related-elements); }
+    color: var(--trading_selling-related-elements);
+    padding: 0 5px;
+    border-radius: 2px;
+    transition: all 0.2s ease-out 0s; }
+    .summary-container .price-diff-down.entering, .summary-container .price-diff-down.exiting {
+      color: var(--calculated_trading_selling-related-text);
+      background-color: var(--trading_selling-related-elements); }
   .summary-container .price-diff-up {
-    color: var(--trading_buying-related-elements); }
+    color: var(--trading_buying-related-elements);
+    padding: 0 5px;
+    border-radius: 2px;
+    transition: all 0.2s ease-out 0s; }
+    .summary-container .price-diff-up.entering, .summary-container .price-diff-up.exiting {
+      color: var(--calculated_trading_buying-related-text);
+      background-color: var(--trading_buying-related-elements); }
   .summary-container .trade-tab-price_diff_up {
     margin: auto 0; }
+  .summary-container .entering.trade-tab-price_diff_up:before,
+  .summary-container .exiting.trade-tab-price_diff_up:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-bottom: 0.4rem solid var(--calculated_trading_buying-related-text);
+    margin-bottom: 0rem;
+    display: inline-block;
+    margin-bottom: 0.2rem;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
   .summary-container .trade-tab-price_diff_up:before {
     content: "";
     display: block;
@@ -2526,6 +2554,21 @@ table th {
     top: calc(50% - 0.6rem); }
   .summary-container .trade-tab-price_diff_down {
     margin: auto 0; }
+  .summary-container .entering.trade-tab-price_diff_down:before,
+  .summary-container .exiting.trade-tab-price_diff_down:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-top: 0.4rem solid var(--calculated_trading_selling-related-text);
+    margin-top: 0rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
   .summary-container .trade-tab-price_diff_down:before {
     content: "";
     display: block;
@@ -2729,6 +2772,12 @@ table th {
 .highcharts-credits {
   display: none; }
 
+.highcharts-container {
+  width: 100% !important; }
+
+.highcharts-root {
+  width: 100% !important; }
+
 .market-list__container .market-list__block .market-list__coin-icons {
   width: 2.8rem;
   margin: 0.3rem 0.3rem 0 0.3rem; }
@@ -2857,9 +2906,9 @@ table th {
     background: var(--labels_secondary-inactive-label-text-graphics); }
   .trade_tabs-container .tabs-pair-details {
     font-size: 1.2rem;
-    width: 15rem; }
+    width: 32rem; }
   .trade_tabs-container .trade_tab-icons {
-    width: 5rem; }
+    width: 3rem; }
     .trade_tabs-container .trade_tab-icons svg .btc0,
     .trade_tabs-container .trade_tab-icons svg .btc1,
     .trade_tabs-container .trade_tab-icons svg .eth0,
@@ -2882,14 +2931,56 @@ table th {
       fill: var(--labels_secondary-inactive-label-text-graphics) !important;
       stroke-width: 0rem; }
   .trade_tabs-container .trade_tab-pair-title {
+    color: var(--labels_important-active-labels-text-graphics);
+    font-size: 1rem;
+    font-weight: bold; }
+  .trade_tabs-container .trade_tab-pair-sub-title {
+    font-size: 0.9rem; }
+  .trade_tabs-container .trade_tab-pair-volume {
+    font-size: 0.9rem;
+    text-align: right;
+    padding-right: 0.3rem; }
+  .trade_tabs-container .trade_tab-pair-price {
+    color: var(--labels_important-active-labels-text-graphics);
     font-size: 1.75rem;
     font-weight: bold; }
+  .trade_tabs-container .trade_tab-ticker-container {
+    flex-direction: column;
+    align-items: flex-end; }
   .trade_tabs-container .price-diff-down {
-    color: var(--trading_selling-related-elements); }
+    color: var(--trading_selling-related-elements);
+    padding: 0 5px;
+    border-radius: 2px;
+    transition: all 0.2s ease-out 0s; }
+    .trade_tabs-container .price-diff-down.entering, .trade_tabs-container .price-diff-down.exiting {
+      color: var(--calculated_trading_selling-related-text);
+      background-color: var(--trading_selling-related-elements); }
   .trade_tabs-container .price-diff-up {
-    color: var(--trading_buying-related-elements); }
+    color: var(--trading_buying-related-elements);
+    padding: 0 5px;
+    border-radius: 2px;
+    transition: all 0.2s ease-out 0s; }
+    .trade_tabs-container .price-diff-up.entering, .trade_tabs-container .price-diff-up.exiting {
+      color: var(--calculated_trading_buying-related-text);
+      background-color: var(--trading_buying-related-elements); }
   .trade_tabs-container .trade-tab-price_diff_up {
     margin: auto 0; }
+  .trade_tabs-container .entering.trade-tab-price_diff_up:before,
+  .trade_tabs-container .exiting.trade-tab-price_diff_up:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-bottom: 0.4rem solid var(--calculated_trading_buying-related-text);
+    margin-bottom: 0rem;
+    display: inline-block;
+    margin-bottom: 0.2rem;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-price_diff_up:before {
     content: "";
     display: block;
@@ -2907,6 +2998,21 @@ table th {
     top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-price_diff_down {
     margin: auto 0; }
+  .trade_tabs-container .entering.trade-tab-price_diff_down:before,
+  .trade_tabs-container .exiting.trade-tab-price_diff_down:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-top: 0.4rem solid var(--calculated_trading_selling-related-text);
+    margin-top: 0rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+    position: relative;
+    top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-price_diff_down:before {
     content: "";
     display: block;
@@ -2922,8 +3028,8 @@ table th {
     position: relative;
     top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-list {
-    border: 1px solid var(--base_background);
-    padding: 1rem 0;
+    border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    padding: 1rem 0 0;
     margin: 2rem 1.5rem; }
     .trade_tabs-container .trade-tab-list svg .xht-icon-1 {
       fill: var(--base_background) !important; }
@@ -2933,8 +3039,6 @@ table th {
       position: relative;
       bottom: 0.5rem;
       right: 0.5rem; }
-      .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
-        color: var(--labels_secondary-inactive-label-text-graphics) !important; }
       .trade_tabs-container .trade-tab-list:hover svg .btc0,
       .trade_tabs-container .trade-tab-list:hover svg .btc1,
       .trade_tabs-container .trade-tab-list:hover svg .eth0,
@@ -2956,6 +3060,9 @@ table th {
       .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: var(--labels_secondary-inactive-label-text-graphics) !important;
         stroke-width: 0rem; }
+  .trade_tabs-container .market-card__sparkline-wrapper {
+    padding-top: 10px;
+    height: 12rem; }
 
 .layout-mobile .trade_tabs-container {
   overflow-y: scroll; }
@@ -2964,19 +3071,21 @@ table th {
   .trade_tabs-container .trade-tab-list {
     margin: 1.5rem 1rem; }
   .trade_tabs-container .trade_tab-icons {
-    width: 4rem; }
-  .trade_tabs-container .trade_tab-pair-title {
-    font-size: 1.5rem; }
+    width: 2.25rem; }
   .trade_tabs-container .tabs-pair-details {
     font-size: 1rem;
-    width: 13rem; } }
+    width: 26rem; }
+  .trade_tabs-container .market-card__sparkline-wrapper {
+    height: 9rem; } }
 
 @media screen and (max-width: 575px) {
   .trade_tabs-container .trade_tab-icons {
-    width: 3.5rem; }
+    width: 1.5rem; }
   .trade_tabs-container .tabs-pair-details {
     font-size: 1rem;
-    width: 11rem; } }
+    width: 20.5rem; }
+  .trade_tabs-container .market-card__sparkline-wrapper {
+    height: 7rem; } }
 
 .toggle-wrapper {
   border-top: 1px solid var(--labels_inactive-button);

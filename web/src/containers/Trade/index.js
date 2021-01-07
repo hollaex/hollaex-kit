@@ -70,7 +70,9 @@ class Trade extends PureComponent {
 	}
 
 	setSymbol = (symbol = '') => {
-		this.props.getUserTrades(symbol);
+		if (isLoggedIn()) {
+			this.props.getUserTrades(symbol);
+		}
 		if (!this.props.fetchingAuth) {
 			this.initializeOrderbookWs(symbol, getToken());
 		}
