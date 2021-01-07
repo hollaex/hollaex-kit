@@ -778,6 +778,7 @@ const nestedContent = {
 	ORDERS: 'my active orders',
 	TRADES: 'my transaction history',
 	RECENT_TRADES: 'my recent trades', // ToDo
+	ORDER_HISTORY: 'Order history',
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
