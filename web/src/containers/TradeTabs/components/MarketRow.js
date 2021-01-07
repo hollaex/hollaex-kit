@@ -6,7 +6,7 @@ import { formatToCurrency } from 'utils/currency';
 
 class MarketRow extends Component {
 	state = {
-		in: false,
+		inProp: false,
 	};
 
 	UNSAFE_componentWillUpdate(nextProp) {
@@ -68,7 +68,7 @@ class MarketRow extends Component {
 					</span>
 				</td>
 				<td>
-					<Transition in={inProp} timeout={2000}>
+					<Transition in={inProp} timeout={1000}>
 						{(state) => (
 							<div className="d-flex">
 								<div
