@@ -22,18 +22,19 @@ const MarketCards = ({
 	goToPreviousPage,
 	goToNextPage,
 	markets,
+	chartData,
 	icons: ICONS,
 }) => {
 	return (
 		<Fragment>
-			<div className="d-flex flex-wrap p-3 my-5">
+			<div className="d-flex flex-wrap p-3 my-5 justify-content-center">
 				{markets.map((market, index) => (
 					<MarketCard
 						index={index}
 						key={index}
 						icons={ICONS}
 						handleClick={handleClick}
-						// chartData={chartData}
+						chartData={chartData}
 						market={market}
 					/>
 				))}

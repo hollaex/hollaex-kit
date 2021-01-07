@@ -85,8 +85,11 @@ class MarketRow extends Component {
 					</Transition>
 				</td>
 				<td>{ticker.volume}</td>
-				<td style={{ width: '150px' }}>
-					<SparkLine data={chartData[key] || []} />
+				<td style={{ width: '150px', height: '50px' }}>
+					<SparkLine
+						data={chartData[key] || []}
+						containerProps={{ style: { height: '100%', width: '100%' } }}
+					/>
 				</td>
 			</tr>
 		);
