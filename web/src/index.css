@@ -2910,26 +2910,35 @@ table th {
   .trade_tabs-container .trade_tab-icons {
     width: 3rem; }
     .trade_tabs-container .trade_tab-icons svg .btc0,
-    .trade_tabs-container .trade_tab-icons svg .btc1,
+    .trade_tabs-container .trade_tab-icons svg .btc1 {
+      fill: var(--coin-btc); }
     .trade_tabs-container .trade_tab-icons svg .eth0,
-    .trade_tabs-container .trade_tab-icons svg .eth1,
-    .trade_tabs-container .trade_tab-icons svg .bch-icon,
-    .trade_tabs-container .trade_tab-icons svg .xrp-icon,
-    .trade_tabs-container .trade_tab-icons svg .xht-icon,
-    .trade_tabs-container .trade_tab-icons svg .xmr-icon,
-    .trade_tabs-container .trade_tab-icons svg .xlm-icon,
-    .trade_tabs-container .trade_tab-icons svg .eos-icon,
-    .trade_tabs-container .trade_tab-icons svg .trx-icon,
-    .trade_tabs-container .trade_tab-icons svg .ada-icon,
-    .trade_tabs-container .trade_tab-icons svg .bnb-icon,
-    .trade_tabs-container .trade_tab-icons svg .tusd-icon,
-    .trade_tabs-container .trade_tab-icons svg .dai-icon,
-    .trade_tabs-container .trade_tab-icons svg .ltc-icon,
+    .trade_tabs-container .trade_tab-icons svg .eth1 {
+      fill: var(--coin-eth); }
+    .trade_tabs-container .trade_tab-icons svg .bch-icon {
+      fill: var(--coin-bch); }
+    .trade_tabs-container .trade_tab-icons svg .xrp-icon {
+      fill: var(--coin-xrp); }
+    .trade_tabs-container .trade_tab-icons svg .xmr-icon {
+      fill: var(--coin-xmr); }
+    .trade_tabs-container .trade_tab-icons svg .ada-icon {
+      fill: var(--coin-ada); }
+    .trade_tabs-container .trade_tab-icons svg .bnb-icon {
+      fill: var(--coin-bnb); }
+    .trade_tabs-container .trade_tab-icons svg .dai-icon {
+      fill: var(--coin-dai); }
+    .trade_tabs-container .trade_tab-icons svg .eos-icon {
+      fill: var(--coin-eos); }
+    .trade_tabs-container .trade_tab-icons svg .ltc-icon {
+      fill: var(--coin-ltc); }
+    .trade_tabs-container .trade_tab-icons svg .trx-icon {
+      fill: var(--coin-trx); }
+    .trade_tabs-container .trade_tab-icons svg .tusd-icon {
+      fill: var(--coin-tusd); }
+    .trade_tabs-container .trade_tab-icons svg .xlm-icon {
+      fill: var(--coin-xlm); }
     .trade_tabs-container .trade_tab-icons svg .default-icon {
       fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
-    .trade_tabs-container .trade_tab-icons svg .st0 {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important;
-      stroke-width: 0rem; }
   .trade_tabs-container .trade_tab-pair-title {
     color: var(--labels_important-active-labels-text-graphics);
     font-size: 1rem;
@@ -3028,7 +3037,9 @@ table th {
     position: relative;
     top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-list {
+    background-image: linear-gradient(var(--base_background), var(--calculated_market-card_gradient_background));
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    border-radius: 0.5rem;
     padding: 1rem 0 0;
     margin: 2rem 1.5rem; }
     .trade_tabs-container .trade-tab-list svg .xht-icon-1 {
@@ -3040,26 +3051,35 @@ table th {
       bottom: 0.5rem;
       right: 0.5rem; }
       .trade_tabs-container .trade-tab-list:hover svg .btc0,
-      .trade_tabs-container .trade-tab-list:hover svg .btc1,
+      .trade_tabs-container .trade-tab-list:hover svg .btc1 {
+        fill: var(--coin-btc); }
       .trade_tabs-container .trade-tab-list:hover svg .eth0,
-      .trade_tabs-container .trade-tab-list:hover svg .eth1,
-      .trade_tabs-container .trade-tab-list:hover svg .bch-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .xrp-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .xht-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .xmr-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .xlm-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .eos-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .trx-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .ada-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .bnb-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .tusd-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .dai-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .ltc-icon,
+      .trade_tabs-container .trade-tab-list:hover svg .eth1 {
+        fill: var(--coin-eth); }
+      .trade_tabs-container .trade-tab-list:hover svg .bch-icon {
+        fill: var(--coin-bch); }
+      .trade_tabs-container .trade-tab-list:hover svg .xrp-icon {
+        fill: var(--coin-xrp); }
+      .trade_tabs-container .trade-tab-list:hover svg .xmr-icon {
+        fill: var(--coin-xmr); }
+      .trade_tabs-container .trade-tab-list:hover svg .ada-icon {
+        fill: var(--coin-ada); }
+      .trade_tabs-container .trade-tab-list:hover svg .bnb-icon {
+        fill: var(--coin-bnb); }
+      .trade_tabs-container .trade-tab-list:hover svg .dai-icon {
+        fill: var(--coin-dai); }
+      .trade_tabs-container .trade-tab-list:hover svg .eos-icon {
+        fill: var(--coin-eos); }
+      .trade_tabs-container .trade-tab-list:hover svg .ltc-icon {
+        fill: var(--coin-ltc); }
+      .trade_tabs-container .trade-tab-list:hover svg .trx-icon {
+        fill: var(--coin-trx); }
+      .trade_tabs-container .trade-tab-list:hover svg .tusd-icon {
+        fill: var(--coin-tusd); }
+      .trade_tabs-container .trade-tab-list:hover svg .xlm-icon {
+        fill: var(--coin-xlm); }
       .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
-      .trade_tabs-container .trade-tab-list:hover svg .st0 {
-        fill: var(--labels_secondary-inactive-label-text-graphics) !important;
-        stroke-width: 0rem; }
   .trade_tabs-container .market-card__sparkline-wrapper {
     padding-top: 10px;
     height: 12rem; }

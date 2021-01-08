@@ -32,6 +32,7 @@
 
 	/*_________________________________*/
 
+	--calculated_market-card_gradient_background: #ffffff;
 	--calculated_trading_selling-sparkline-fill: #ee40364d;
 	--calculated_trading_buying-sparkline-fill: #00a69c4d;
 	--calculated_trading_selling-orderbook-bar: #ee40361f;

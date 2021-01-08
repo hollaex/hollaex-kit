@@ -65,27 +65,48 @@ $trade-tab--arrow-size: 0.4rem;
 
 		svg {
 			.btc0,
-			.btc1,
-			.eth0,
-			.eth1,
-			.bch-icon,
-			.xrp-icon,
-			.xht-icon,
-			.xmr-icon,
-			.xlm-icon,
-			.eos-icon,
-			.trx-icon,
-			.ada-icon,
-			.bnb-icon,
-			.tusd-icon,
-			.dai-icon,
-			.ltc-icon,
-			.default-icon {
-				fill: $trade-tabs-inactive-color !important;
+			.btc1 {
+				fill: $coin-btc;
 			}
-			.st0 {
-				fill: $trade-tabs-inactive-color !important;
-				stroke-width: 0rem;
+			.eth0,
+			.eth1 {
+				fill: $coin-eth;
+			}
+			.bch-icon {
+				fill: $coin-bch;
+			}
+			.xrp-icon {
+				fill: $coin-xrp;
+			}
+			.xmr-icon {
+				fill: $coin-xmr;
+			}
+			.ada-icon {
+				fill: $coin-ada;
+			}
+			.bnb-icon {
+				fill: $coin-bnb;
+			}
+			.dai-icon {
+				fill: $coin-dai;
+			}
+			.eos-icon {
+				fill: $coin-eos;
+			}
+			.ltc-icon {
+				fill: $coin-ltc;
+			}
+			.trx-icon {
+				fill: $coin-trx;
+			}
+			.tusd-icon {
+				fill: $coin-tusd;
+			}
+			.xlm-icon {
+				fill: $coin-xlm;
+			}
+			.default-icon {
+				fill: $colors-black !important;
 			}
 		}
 	}
@@ -192,7 +213,12 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.trade-tab-list {
+		background-image: linear-gradient(
+			$app-background-color,
+			$market-card_gradient_background
+		);
 		border: 1px solid $colors-black;
+		border-radius: 0.5rem;
 		padding: 1rem 0 0;
 		margin: 2rem 1.5rem;
 
@@ -211,27 +237,48 @@ $trade-tab--arrow-size: 0.4rem;
 
 			svg {
 				.btc0,
-				.btc1,
+				.btc1 {
+					fill: $coin-btc;
+				}
 				.eth0,
-				.eth1,
-				.bch-icon,
-				.xrp-icon,
-				.xht-icon,
-				.xmr-icon,
-				.xlm-icon,
-				.eos-icon,
-				.trx-icon,
-				.ada-icon,
-				.bnb-icon,
-				.tusd-icon,
-				.dai-icon,
-				.ltc-icon,
+				.eth1 {
+					fill: $coin-eth;
+				}
+				.bch-icon {
+					fill: $coin-bch;
+				}
+				.xrp-icon {
+					fill: $coin-xrp;
+				}
+				.xmr-icon {
+					fill: $coin-xmr;
+				}
+				.ada-icon {
+					fill: $coin-ada;
+				}
+				.bnb-icon {
+					fill: $coin-bnb;
+				}
+				.dai-icon {
+					fill: $coin-dai;
+				}
+				.eos-icon {
+					fill: $coin-eos;
+				}
+				.ltc-icon {
+					fill: $coin-ltc;
+				}
+				.trx-icon {
+					fill: $coin-trx;
+				}
+				.tusd-icon {
+					fill: $coin-tusd;
+				}
+				.xlm-icon {
+					fill: $coin-xlm;
+				}
 				.default-icon {
 					fill: $colors-black !important;
-				}
-				.st0 {
-					fill: $colors-black !important;
-					stroke-width: 0rem;
 				}
 			}
 		}
