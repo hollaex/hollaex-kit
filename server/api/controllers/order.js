@@ -17,7 +17,7 @@ const createOrder = (req, res) => {
 	);
 
 	const user_id = req.auth.sub.id;
-	const order = req.swagger.params.order.value;
+	let order = req.swagger.params.order.value;
 
 	const opts = {};
 
@@ -27,6 +27,10 @@ const createOrder = (req, res) => {
 
 	if (isNumber(order.stop)) {
 		opts.stop = order.stop;
+	}
+
+	if (order.type === 'market') {
+		delete order.price;
 	}
 
 	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price, opts)
