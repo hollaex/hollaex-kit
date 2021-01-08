@@ -15,7 +15,8 @@ const {
 	WITHDRAWAL_DISABLED_FOR_COIN,
 	UPGRADE_VERIFICATION_LEVEL,
 	NO_DATA_FOR_CSV,
-	USER_NOT_FOUND
+	USER_NOT_FOUND,
+	USER_NOT_REGISTERED_ON_NETWORK
 } = require(`${SERVER_PATH}/messages`);
 const { getUserByKitId } = require('./user');
 const { findTier } = require('./tier');
@@ -52,12 +53,14 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 		.then(async (user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 			if (user.verification_level < 1) {
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
 
-			const balance = await getNodeLib().getBalance({ userId: user.network_id });
+			const balance = await getNodeLib().getUserBalance(user.network_id);
 			if (balance[`${currency}_available`] < amount) {
 				throw new Error('Insufficent balance for withdrawal');
 			}
@@ -145,12 +148,17 @@ const cancelUserWithdrawalByKitId = (userId, withdrawalId) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId);
 		});
 };
 
 const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId) => {
+	if (!networkId) {
+		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
+	}
 	return getNodeLib().cancelWithdrawal(networkId, withdrawalId);
 };
 
@@ -170,6 +178,8 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 			return all([
 				user,
@@ -197,8 +207,7 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, fee) => 
 
 const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	let accumulatedAmount = amount;
-	const withdrawals = await getNodeLib().getWithdrawals({
-		userId,
+	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
 		currency,
 		dismissed: false,
 		rejected: false,
@@ -280,8 +289,10 @@ const getUserBalanceByKitId = (userKitId) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getBalance({ userId: user.network_id });
+			return getNodeLib().getUserBalance(user.network_id);
 		})
 		.then((data) => {
 			return {
@@ -292,7 +303,10 @@ const getUserBalanceByKitId = (userKitId) => {
 };
 
 const getUserBalanceByNetworkId = (networkId) => {
-	return getNodeLib().getBalance({ userId: networkId });
+	if (!networkId) {
+		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
+	}
+	return getNodeLib().getUserBalance(networkId);
 };
 
 const getKitBalance = () => {
@@ -323,9 +337,10 @@ const getUserTransactionsByKitId = (
 				.then((user) => {
 					if (!user) {
 						throw new Error(USER_NOT_FOUND);
+					} else if (!user.network_id) {
+						throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 					}
-					return getNodeLib().getDeposits({
-						userId: user.network_id,
+					return getNodeLib().getUserDeposits(user.network_id, {
 						currency,
 						status,
 						dismissed,
@@ -345,9 +360,10 @@ const getUserTransactionsByKitId = (
 				.then((user) => {
 					if (!user) {
 						throw new Error(USER_NOT_FOUND);
+					} else if (!user.network_id) {
+						throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 					}
-					return getNodeLib().getWithdrawals({
-						userId: user.network_id,
+					return getNodeLib().getUserWithdrawals(user.network_id, {
 						currency,
 						status,
 						dismissed,
@@ -449,7 +465,6 @@ const getUserWithdrawalsByKitId = (
 };
 
 const getExchangeDeposits = (
-	networkId,
 	currency,
 	status,
 	dismissed,
@@ -464,7 +479,6 @@ const getExchangeDeposits = (
 	endDate,
 ) => {
 	return getNodeLib().getDeposits({
-		userId: networkId,
 		currency,
 		status,
 		dismissed,
@@ -481,7 +495,6 @@ const getExchangeDeposits = (
 };
 
 const getExchangeWithdrawals = (
-	networkId,
 	currency,
 	status,
 	dismissed,
@@ -496,7 +509,6 @@ const getExchangeWithdrawals = (
 	endDate,
 ) => {
 	return getNodeLib().getWithdrawals({
-		userId: networkId,
 		currency,
 		status,
 		dismissed,
@@ -509,13 +521,16 @@ const getExchangeWithdrawals = (
 		order,
 		startDate,
 		endDate
-	});};
+	});
+};
 
 const mintAssetByKitId = (kitId, currency, amount, description) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 			return getNodeLib().mintAsset(user.network_id, currency, amount, { description });
 		});
@@ -530,6 +545,8 @@ const burnAssetByKitId = (kitId, currency, amount, description) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 			return getNodeLib().burnAsset(user.network_id, currency, amount, { description });
 		});

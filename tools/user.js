@@ -30,7 +30,8 @@ const {
 	USER_ALREADY_DEACTIVATED,
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
-	VERIFICATION_CODE_USED
+	VERIFICATION_CODE_USED,
+	USER_NOT_REGISTERED_ON_NETWORK
 } = require(`${SERVER_PATH}/messages`);
 const { publisher } = require('./database/redis');
 const {
@@ -553,7 +554,7 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 		raw: rawData
 	})
 		.then(async (user) => {
-			if (networkData) {
+			if (networkData && user.network_id) {
 				if (rawData) {
 					const networkData = await getNodeLib().getUser(user.network_id);
 					user.balance = networkData.balance;
@@ -1190,6 +1191,9 @@ const setUsernameById = (userId, username) => {
 };
 
 const createUserCryptoAddressByNetworkId = (networkId, crypto) => {
+	if (!networkId) {
+		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
+	}
 	return getNodeLib().createUserCryptoAddress(networkId, crypto);
 };
 
@@ -1198,6 +1202,8 @@ const createUserCryptoAddressByKitId = (kitId, crypto) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 			return getNodeLib().createUserCryptoAddress(user.network_id, crypto);
 		});
@@ -1208,12 +1214,17 @@ const getUserStatsByKitId = (userId) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 			return getNodeLib().getUserStats(user.network_id);
 		});
 };
 
 const getUserStatsByNetworkId = (networkId) => {
+	if (!networkId) {
+		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
+	}
 	return getNodeLib().getUserStats(networkId);
 };
 
