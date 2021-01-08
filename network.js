@@ -1,18 +1,26 @@
 'use strict';
 
 const moment = require('moment');
-const { isBoolean, isPlainObject, isNumber, isString } = require('lodash');
+const {
+	isBoolean,
+	isPlainObject,
+	isNumber,
+	isString,
+	isArray
+} = require('lodash');
 const {
 	createRequest,
 	generateHeaders,
 	checkKit,
-	createSignature
+	createSignature,
+	parameterError
 } = require('./utils');
 const HOLLAEX_NETWORK_URL = 'https://api.testnet.hollaex.network';
 const HOLLAEX_NETWORK_VERSION = '/v2';
 const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
-const [protocol, endpoint] = HOLLAEX_NETWORK_URL.split('://');
+const [ protocol, endpoint ] = HOLLAEX_NETWORK_URL.split('://');
+const { reject } = require('bluebird');
 
 class HollaExNetwork {
 	constructor(
@@ -77,6 +85,11 @@ class HollaExNetwork {
 	 */
 	createUser(email) {
 		checkKit(this.exchange_id);
+
+		if (!email) {
+			return reject(parameterError('email', 'cannot be null'));
+		}
+
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -96,7 +109,6 @@ class HollaExNetwork {
 
 	/**
 	 * Get all trades for the exchange on the network
-	 * @param {number} userId - User id on network. Leave blank to get all trades for the exchange
 	 * @param {string} symbol - Symbol of trades. Leave blank to get trades for all symbols
 	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} page - Page of trades data. Default: 1
@@ -106,9 +118,8 @@ class HollaExNetwork {
 	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
-	getUserTrades(
+	getTrades(
 		opts = {
-			userId: null,
 			symbol: null,
 			limit: 50,
 			page: 1,
@@ -121,9 +132,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${HOLLAEX_NETWORK_VERSION}/network/${
-			this.exchange_id
-		}/user/trades?`;
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/user/trades?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -149,8 +158,75 @@ class HollaExNetwork {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		if (opts.userId) {
-			path += `&user_id=${opts.userId}`;
+		if (opts.symbol) {
+			path += `&symbol=${opts.symbol}`;
+		}
+
+		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${path}`,
+			headers
+		);
+	}
+
+	/**
+	 * Get all trades for a user on the network
+	 * @param {number} userId - User id on network. Leave blank to get all trades for the exchange
+	 * @param {string} symbol - Symbol of trades. Leave blank to get trades for all symbols
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
+	 */
+	getUserTrades(
+		userId,
+		opts = {
+			symbol: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'desc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		}
+
+		const verb = 'GET';
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/user/trades?user_id=${userId}`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.symbol) {
@@ -170,6 +246,11 @@ class HollaExNetwork {
 
 	getUser(userId) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -206,6 +287,13 @@ class HollaExNetwork {
 
 	createUserCryptoAddress(userId, crypto) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!crypto) {
+			return reject(parameterError('crypto', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -227,16 +315,24 @@ class HollaExNetwork {
 	 * @param {string} address - Address to send withdrawal to
 	 * @param {string} currency - Curreny to withdraw
 	 * @param {number} amount - Amount to withdraw
-	 * @param {number} fee - The withdrawal fee
 	 * @return {object} Withdrawal made on the network
 	 */
-	performWithdrawal(userId, address, currency, amount, fee) {
+	performWithdrawal(userId, address, currency, amount) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!address) {
+			return reject(parameterError('address', 'cannot be null'));
+		} else if (!currency) {
+			return reject(parameterError('currency', 'cannot be null'));
+		}
+
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
 		}/withdraw?user_id=${userId}`;
-		const data = { address, currency, amount, fee };
+		const data = { address, currency, amount };
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -251,6 +347,13 @@ class HollaExNetwork {
 
 	cancelWithdrawal(userId, withdrawalId) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!withdrawalId) {
+			return reject(parameterError('withdrawalId', 'cannot be null'));
+		}
+
 		const verb = 'DELETE';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -268,7 +371,6 @@ class HollaExNetwork {
 
 	/**
 	 * Get all deposits for the exchange on the network
-	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
 	 * @param {string} currency - Currency of deposits. Leave blank to get deposits for all currencies
 	 * @param {boolean} status - Confirmed status of the deposits to get. Leave blank to get all confirmed and unconfirmed deposits
 	 * @param {boolean} dismissed - Dismissed status of the deposits to get. Leave blank to get all dismissed and undismissed deposits
@@ -285,7 +387,6 @@ class HollaExNetwork {
 	 */
 	getDeposits(
 		opts = {
-			userId: null,
 			currency: null,
 			status: null,
 			dismissed: null,
@@ -331,8 +432,109 @@ class HollaExNetwork {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		if (opts.userId) {
-			path += `&user_id=${opts.userId}`;
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (isBoolean(opts.status)) {
+			path += `&status=${opts.status}`;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			path += `&dismissed=${opts.dismissed}`;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			path += `&rejected=${opts.rejected}`;
+		}
+
+		if (isBoolean(opts.processing)) {
+			path += `&processing=${opts.processing}`;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			path += `&waiting=${opts.waiting}`;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${HOLLAEX_NETWORK_URL}${path}`, headers);
+	}
+
+		/**
+	 * Get all deposits for a user on the network
+	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
+	 * @param {string} currency - Currency of deposits. Leave blank to get deposits for all currencies
+	 * @param {boolean} status - Confirmed status of the deposits to get. Leave blank to get all confirmed and unconfirmed deposits
+	 * @param {boolean} dismissed - Dismissed status of the deposits to get. Leave blank to get all dismissed and undismissed deposits
+	 * @param {boolean} rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
+	 * @param {boolean} processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
+	 * @param {boolean} waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
+	 */
+	getUserDeposits(
+		userId,
+		opts = {
+			currency: null,
+			status: null,
+			dismissed: null,
+			rejected: null,
+			processing: null,
+			waiting: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'asc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		}
+
+		const verb = 'GET';
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${
+			this.exchange_id
+		}/deposits?user_id=${userId}`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.currency) {
@@ -389,7 +591,6 @@ class HollaExNetwork {
 	 */
 	getWithdrawals(
 		opts = {
-			userId: null,
 			currency: null,
 			status: null,
 			dismissed: null,
@@ -435,8 +636,109 @@ class HollaExNetwork {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		if (opts.userId) {
-			path += `&user_id=${opts.userId}`;
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (isBoolean(opts.status)) {
+			path += `&status=${opts.status}`;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			path += `&dismissed=${opts.dismissed}`;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			path += `&rejected=${opts.rejected}`;
+		}
+
+		if (isBoolean(opts.processing)) {
+			path += `&processing=${opts.processing}`;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			path += `&waiting=${opts.waiting}`;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${HOLLAEX_NETWORK_URL}${path}`, headers);
+	}
+
+	/**
+	 * Get all withdrawals for a user on the network
+	 * @param {number} userId - User id on network. Leave blank to get all withdrawals for the exchange
+	 * @param {string} currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
+	 * @param {boolean} status - Confirmed status of the depowithdrawalssits to get. Leave blank to get all confirmed and unconfirmed withdrawals
+	 * @param {boolean} dismissed - Dismissed status of the withdrawals to get. Leave blank to get all dismissed and undismissed withdrawals
+	 * @param {boolean} rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
+	 * @param {boolean} processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
+	 * @param {boolean} waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
+	 */
+	getUserWithdrawals(
+		userId,
+		opts = {
+			currency: null,
+			status: null,
+			dismissed: null,
+			rejected: null,
+			processing: null,
+			waiting: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'asc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		}
+
+		const verb = 'GET';
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${
+			this.exchange_id
+		}/withdrawals?user_id=${userId}`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.currency) {
@@ -475,23 +777,42 @@ class HollaExNetwork {
 	}
 
 	/**
-	 * Get the balance for the exchange or exchange's user on the network
+	 * Get the balance for the exchange on the network
 	 * @param {number} userId - User id on network. Leave blank to get balance for exchange
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
-	getBalance(
-		opts = {
-			userId: null
-		}
-	) {
+	getBalance() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/balance`;
 
-		if (opts.userId) {
-			path += `?user_id=${opts.userId}`;
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${HOLLAEX_NETWORK_URL}${path}`, headers);
+	}
+
+	/**
+	 * Get the balance for an exchange's user on the network
+	 * @param {number} userId - User id on network
+	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
+	 */
+	getUserBalance(userId) {
+		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
 		}
+
+		const verb = 'GET';
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/balance?user_id=${userId}`;
 
 		const headers = generateHeaders(
 			this.headers,
@@ -512,6 +833,13 @@ class HollaExNetwork {
 	 */
 	getOrder(userId, orderId) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!orderId) {
+			return reject(parameterError('orderId', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -554,6 +882,23 @@ class HollaExNetwork {
 		}
 	) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (side !== 'buy' && side !== 'sell') {
+			return reject(parameterError('side', 'must be buy or sell'));
+		} else if (!size) {
+			return reject(parameterError('size', 'cannot be null'));
+		} else if (type !== 'market' && type !== 'limit') {
+			return reject(parameterError('type', 'must be limit or market'));
+		} else if (!price && type !== 'market') {
+			return reject(parameterError('price', 'cannot be null for limit orders'));
+		} else if (!isPlainObject(feeData) || !isPlainObject(feeData.fee_structure)) {
+			return reject(parameterError('feeData', 'feeData must be an object and contain fee_structure'));
+		}
+
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -596,6 +941,13 @@ class HollaExNetwork {
 	 */
 	cancelOrder(userId, orderId) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!orderId) {
+			return reject(parameterError('orderId', 'cannot be null'));
+		}
+
 		const verb = 'DELETE';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -669,8 +1021,94 @@ class HollaExNetwork {
 			path += `&end_date=${opts.endDate}`;
 		}
 
-		if (opts.userId) {
-			path += `&user_id=${opts.userId}`;
+		if (opts.symbol) {
+			path += `&symbol=${opts.symbol}`;
+		}
+
+		if (opts.side) {
+			path += `&side=${opts.side}`;
+		}
+
+		if (opts.status) {
+			path += `&status=${opts.status}`;
+		}
+
+		if (isBoolean(opts.open)) {
+			path += `&open=${opts.open}`;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${HOLLAEX_NETWORK_URL}${path}`, headers);
+	}
+
+	/**
+	 * Get all orders for a user on the network
+	 * @param {number} userId - User id on network. Leave blank to get all orders for the exchange
+	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
+	 * @param {string} side - Side of orders to query e.g. buy, sell
+	 * @param {string} type - Type of orders to query e.g. active, stop
+	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} page - Page of trades data. Default: 1
+	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
+	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
+	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {array} Array of queried orders
+	 */
+	getUserOrders(
+		userId,
+		opts = {
+			symbol: null,
+			side: null,
+			status: null,
+			open: null,
+			limit: 50,
+			page: 1,
+			orderBy: 'id',
+			order: 'desc',
+			startDate: 0,
+			endDate: moment().toISOString()
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		}
+
+		const verb = 'GET';
+
+		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/orders?user_id=${userId}`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
+		}
+
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.symbol) {
@@ -708,6 +1146,11 @@ class HollaExNetwork {
 	 */
 	cancelAllOrders(userId, opts = { symbol: null }) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		}
+
 		const verb = 'DELETE';
 
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${
@@ -735,6 +1178,11 @@ class HollaExNetwork {
 	 */
 	getUserStats(userId) {
 		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -765,6 +1213,15 @@ class HollaExNetwork {
 		opts = { isTestnet: null }
 	) {
 		checkKit(this.exchange_id);
+
+		if (!currency) {
+			return reject(parameterError('currency', 'cannot be null'));
+		} else if (!transactionId) {
+			return reject(parameterError('transactionId', 'cannot be null'));
+		} else if (!address) {
+			return reject(parameterError('address', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/check-transaction?currency=${currency}&transaction_id=${transactionId}&address=${address}`;
 
@@ -800,6 +1257,17 @@ class HollaExNetwork {
 		opts = { description: null }
 	) {
 		checkKit(this.exchange_id);
+
+		if (!senderId) {
+			return reject(parameterError('senderId', 'cannot be null'));
+		} else if (!receiverId) {
+			return reject(parameterError('receiverId', 'cannot be null'));
+		} else if (!currency) {
+			return reject(parameterError('currency', 'cannot be null'));
+		} else if (!amount) {
+			return reject(parameterError('amount', 'cannot be null'));
+		}
+
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -923,6 +1391,11 @@ class HollaExNetwork {
 	 */
 	getOrderbook(symbol) {
 		checkKit(this.exchange_id);
+
+		if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -976,6 +1449,17 @@ class HollaExNetwork {
 	 */
 	getChart(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
+
+		if (!from) {
+			return reject(parameterError('from', 'cannot be null'));
+		} else if (!to) {
+			return reject(parameterError('to', 'cannot be null'));
+		} else if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!resolution) {
+			return reject(parameterError('resolution', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -1000,6 +1484,15 @@ class HollaExNetwork {
 	 */
 	getCharts(from, to, resolution) {
 		checkKit(this.exchange_id);
+
+		if (!from) {
+			return reject(parameterError('from', 'cannot be null'));
+		} else if (!to) {
+			return reject(parameterError('to', 'cannot be null'));
+		} else if (!resolution) {
+			return reject(parameterError('resolution', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -1046,6 +1539,17 @@ class HollaExNetwork {
 	 */
 	getUdfHistory(from, to, symbol, resolution) {
 		checkKit(this.exchange_id);
+
+		if (!from) {
+			return reject(parameterError('from', 'cannot be null'));
+		} else if (!to) {
+			return reject(parameterError('to', 'cannot be null'));
+		} else if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!resolution) {
+			return reject(parameterError('resolution', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -1068,6 +1572,11 @@ class HollaExNetwork {
 	 */
 	getUdfSymbols(symbol) {
 		checkKit(this.exchange_id);
+
+		if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/${
 			this.exchange_id
@@ -1090,6 +1599,11 @@ class HollaExNetwork {
 	 */
 	getTicker(symbol) {
 		checkKit(this.exchange_id);
+
+		if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		}
+
 		const verb = 'GET';
 		let path = `${HOLLAEX_NETWORK_VERSION}/network/${this.exchange_id}/ticker`;
 
@@ -1130,6 +1644,14 @@ class HollaExNetwork {
 	}
 
 	mintAsset(userId, currency, amount, opts = { description: null }) {
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!currency) {
+			return reject(parameterError('currency', 'cannot be null'));
+		} else if (!amount) {
+			return reject(parameterError('amount', 'cannot be null'));
+		}
+
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/mint`;
 		const data = {
@@ -1155,6 +1677,14 @@ class HollaExNetwork {
 	}
 
 	burnAsset(userId, currency, amount, opts = { description: null }) {
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!currency) {
+			return reject(parameterError('currency', 'cannot be null'));
+		} else if (!amount) {
+			return reject(parameterError('amount', 'cannot be null'));
+		}
+
 		const verb = 'POST';
 		const path = `${HOLLAEX_NETWORK_VERSION}/network/burn`;
 		const data = {
@@ -1221,6 +1751,11 @@ class HollaExNetwork {
 
 	getOraclePrices(assets = [], opts = { quote: null, amount: null }) {
 		checkKit(this.exchange_id);
+
+		if (!assets || !isArray(assets) || assets.length === 0) {
+			return reject(parameterError('assets', 'must be an array with length greater than one'));
+		}
+
 		assets = assets.join(',');
 
 		const verb = 'GET';
