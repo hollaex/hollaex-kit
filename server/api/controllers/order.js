@@ -125,8 +125,8 @@ const cancelAllUserOrders = (req, res) => {
 		});
 };
 
-const getAdminUserOrders = (req, res) => {
-	loggerOrders.verbose(req.uuid, 'controllers/order/getAdminUserOrders/auth', req.auth);
+const getAdminOrders = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/order/getAdminOrders/auth', req.auth);
 	const { user_id, symbol, side, status, open, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	let promiseQuery;
@@ -165,7 +165,7 @@ const getAdminUserOrders = (req, res) => {
 			return res.json(orders);
 		})
 		.catch((err) => {
-			loggerOrders.debug(req.uuid, 'controllers/order/getAdminUserOrder', err.message);
+			loggerOrders.debug(req.uuid, 'controllers/order/getAdminOrders', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -196,6 +196,6 @@ module.exports = {
 	cancelUserOrder,
 	getAllUserOrders,
 	cancelAllUserOrders,
-	getAdminUserOrders,
+	getAdminOrders,
 	adminCancelOrder
 };
