@@ -17,16 +17,22 @@ const AdminFinancials = () => {
 					</div>
 				</TabPane>
 				<TabPane tab="Deposits" key="deposits">
-					<div>Deposits</div>
+					<div className="tab-contents">
+						<MoveToDash />
+					</div>
 				</TabPane>
 				<TabPane tab="Withdrawals" key="withdrawals">
-					<div>Withdrawals</div>
+					<div className="tab-contents">
+						<MoveToDash />
+					</div>
 				</TabPane>
 				<TabPane tab="Earnings" key="earnings">
 					<Earnings />
 				</TabPane>
 				<TabPane tab="Transfers" key="transfers">
-					<div>Transfers</div>
+					<div className="tab-contents">
+						<MoveToDash />
+					</div>
 				</TabPane>
 			</Tabs>
 		</div>

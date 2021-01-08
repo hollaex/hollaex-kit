@@ -21,6 +21,7 @@ const icons = {
 	SETUP_SECTION_LIQUIDITY: '/assets/images/setup-section-liquidity.svg',
 	SETUP_SECTION_QUICK_TRADE: '/assets/images/setup-section-quick-trade.svg',
 	SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
+	USER_SECTION_WALLET: '/assets/images/admin-user-wallet.svg',
 	SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
 	SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg',
 	HEX_PATTERN_ICON: '/assets/icons/hex-pattern-icon-05.svg',

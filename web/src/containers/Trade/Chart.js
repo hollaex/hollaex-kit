@@ -3,6 +3,7 @@ import _isEqual from 'lodash/isEqual';
 import { widget } from '../../charting_library/charting_library.min';
 import { getTheme, getVolume, getToolbarBG } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
+import { getChartResolution, setChartResolution } from '../../utils/utils';
 import {
 	getChartConfig,
 	getChartSymbol,
@@ -160,6 +161,9 @@ class TVChartContainer extends React.PureComponent {
 				subscribeUID,
 				onResetCacheNeededCallback
 			) => {
+				if (resolution) {
+					setChartResolution(resolution);
+				}
 				that.setState({
 					sub: {
 						uid: subscribeUID,
@@ -237,13 +241,14 @@ class TVChartContainer extends React.PureComponent {
 		interval,
 		color = {},
 	}) => {
+		const resolution = getChartResolution();
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme,
 			toolbar_bg: getToolbarBG(activeTheme, color),
 			datafeed: this.chartConfig,
-			interval: interval,
+			interval: resolution,
 			container_id: containerId,
 			library_path: libraryPath,
 			timeframe: '1m',

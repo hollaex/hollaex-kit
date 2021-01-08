@@ -152,7 +152,7 @@ class UserContent extends Component {
 
 	render() {
 		const {
-			// coins,
+			coins,
 			constants,
 			userInformation,
 			userImages,
@@ -262,7 +262,7 @@ class UserContent extends Component {
 					</TabPane>
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Balance" key="balance">
-							<UserBalance userData={userInformation} />
+							<UserBalance coins={coins} userData={userInformation} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
