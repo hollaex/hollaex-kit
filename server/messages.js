@@ -5,6 +5,7 @@ exports.INSUFFICIENT_BALANCE_ORDER =
 exports.MISSING_ORDER = 'Missing order';
 exports.INVALID_USER_ID = 'Invalid user.';
 exports.USER_NOT_FOUND = 'User not found';
+exports.USER_NOT_REGISTERED_ON_NETWORK = 'User is not registered on the network';
 exports.SIGNUP_NOT_AVAILABLE = 'Sign up not available';
 exports.USER_NOT_VERIFIED = 'User is not verified';
 exports.USER_NOT_ACTIVATED = 'User is not activated';

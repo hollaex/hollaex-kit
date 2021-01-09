@@ -257,7 +257,9 @@ class Container extends Component {
 
 		this.setState({ privateSocket });
 
-		this.getUserDetails();
+		if (isLoggedIn()) {
+			this.getUserDetails();
+		}
 
 		privateSocket.onopen = (evt) => {
 			console.log('Connected Private Socket', evt);

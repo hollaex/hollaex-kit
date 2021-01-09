@@ -264,8 +264,8 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
-				props.stringId = 'RECENT_TRADES';
-				props.title = `${STRINGS['RECENT_TRADES']}`;
+				props.stringId = 'ORDER_HISTORY';
+				props.title = `${STRINGS['ORDER_HISTORY']}`;
 				props.headers = headers.trades;
 				props.data = trades;
 				props.filename = `order-history-${moment().unix()}`;
@@ -347,11 +347,11 @@ class TransactionsHistory extends Component {
 					tabs={[
 						{
 							title: isMobile ? (
-								STRINGS['RECENT_TRADES']
+								STRINGS['ORDER_HISTORY']
 							) : (
 								<CheckTitle
-									stringId="RECENT_TRADES"
-									title={STRINGS['RECENT_TRADES']}
+									stringId="ORDER_HISTORY"
+									title={STRINGS['ORDER_HISTORY']}
 									iconId="TRADE_HISTORY"
 									icon={ICONS['TRADE_HISTORY']}
 								/>
