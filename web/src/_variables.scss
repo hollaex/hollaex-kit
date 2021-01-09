@@ -45,6 +45,9 @@ $app-background-color: var(--base_background);
 $app-light-background: var(--base_secondary-navigation-bar);
 $app-sidebar-background: var(--base_wallet-sidebar-and-popup);
 $auth-container-background: var(--base_wallet-sidebar-and-popup);
+$market-card_gradient_background: var(
+	--calculated_market-card_gradient_background
+);
 
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $app-background-color;

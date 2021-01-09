@@ -251,6 +251,7 @@ class AddTradeTab extends Component {
 						) : (
 							<MarketCards
 								markets={processedData}
+								chartData={chartData}
 								page={page}
 								pageSize={pageSize}
 								count={count}
