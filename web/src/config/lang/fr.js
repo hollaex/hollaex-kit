@@ -728,6 +728,28 @@ export default {
 					placeholder: 'Veuillez reconfimer votre nouveau mot de passe'
 				}
 			}
+		},
+		LOGIN: {
+			TITLE: 'Login History',
+			CONTENT: {
+				TITLE: 'Logins History',
+				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
+			}
+		},
+		FREEZE: {
+			TITLE: 'Freeze Account',
+			CONTENT: {
+				MESSAGE_1: 'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1: 'Use only if you fear that your account has been compromised',
+				TITLE_1: 'Freeze your Account',
+				TITLE_2: 'Account freezing',
+				MESSAGE_2: 'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3: 'The following will occur if you choose to freeze your account:',
+				MESSAGE_4: '1. Pending withdrawals will be canceled.',
+				MESSAGE_5: '2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6: '3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?'
+			}
 		}
 	},
 	CURRENCY: 'Devise',

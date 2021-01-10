@@ -747,6 +747,8 @@ export default {
 		},
 		LOGIN: {
 			TITLE: 'Login History',
+			IP_ADDRESS: 'IP Address',
+			TIME: 'Date/Time',
 			CONTENT: {
 				TITLE: 'Logins History',
 				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
