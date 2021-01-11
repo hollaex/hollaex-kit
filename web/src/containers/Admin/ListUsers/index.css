@@ -134,3 +134,14 @@ body {
 .justify-content-between {
 	justify-content: space-between;
 }
+
+.admin-user-container .ant-table .green-btn {
+	background-color: #288500 !important;
+	color: #ffffff;
+}
+
+.admin-user-container .ant-pagination-item-active,
+.admin-user-container .ant-pagination-item-active:focus,
+.admin-user-container .ant-pagination-item-active:hover {
+	border-color: #288500 !important;
+}

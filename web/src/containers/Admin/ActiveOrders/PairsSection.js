@@ -59,7 +59,11 @@ const getColumns = (userId, onCancel) => {
 				key: '',
 				render: (e) => (
 					<Tooltip placement="bottom" title={`Cancel order`}>
-						<Button type="primary" onClick={() => onCancel(e)}>
+						<Button
+							type="primary"
+							onClick={() => onCancel(e)}
+							className="green-btn"
+						>
 							Cancel
 						</Button>
 					</Tooltip>

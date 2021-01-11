@@ -33,7 +33,7 @@ import {
 	// Main,
 	DepositsPage,
 	Limits,
-	Wallets,
+	// Wallets,
 	UserFees,
 	PATHS,
 	AdminOrders,
@@ -403,11 +403,11 @@ export default (
 				name="Admin Collateral"
 				component={withAdminProps(MoveToDash, 'collateral')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/wallets"
 				name="Admin Wallets"
 				component={withAdminProps(Wallets, 'wallets')}
-			/>
+			/> */}
 			<Route
 				path="/admin/transfer"
 				name="Admin Transfer"

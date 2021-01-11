@@ -191,6 +191,7 @@ class App extends Component {
 			<Button
 				type="primary"
 				// onClick={() => this.requestUserData({ id: value })}
+				className="green-btn"
 			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO

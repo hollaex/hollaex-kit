@@ -85,6 +85,7 @@ class FullListUsers extends Component {
 			<Button
 				type="primary"
 				// onClick={() => this.requestUser(value)}
+				className="green-btn"
 			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO

@@ -1452,7 +1452,7 @@ table th {
       right: 100%;
       background-color: #008509;
       padding: 0 7px;
-      color: #FFFFFF;
+      color: #ffffff;
       border-radius: 20px;
       margin-right: 10px; }
   .history_block-wrapper .check-deposit-txt {
@@ -8744,7 +8744,7 @@ foreignObject {
 
 .check-deposit-modal-wrapper h2 {
   font-size: 20px;
-  color: #FFFFFF; }
+  color: #ffffff; }
 
 .check-deposit-modal-wrapper .search-icon {
   width: 70px; }
@@ -8754,14 +8754,14 @@ foreignObject {
   margin-top: 3rem;
   padding: 10px 0; }
   .check-deposit-modal-wrapper .inner-content span {
-    color: #FFFFFF; }
+    color: #ffffff; }
   .check-deposit-modal-wrapper .inner-content .success-msg {
     width: 320px;
     color: #008509;
     margin: 0 3px; }
   .check-deposit-modal-wrapper .inner-content .error-msg {
     width: 320px;
-    color: #F19C0B; }
+    color: #f19c0b; }
   .check-deposit-modal-wrapper .inner-content .verification_icon {
     width: 15px; }
 

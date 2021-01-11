@@ -220,6 +220,7 @@ class UserContent extends Component {
 							type="primary"
 							style={{ marginRight: 5 }}
 							onClick={refreshAllData}
+							className="green-btn"
 						>
 							Refresh
 						</Button>
