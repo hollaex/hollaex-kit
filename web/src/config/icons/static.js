@@ -65,6 +65,7 @@ const icons = {
 	PLUGIN_REMOVAL_WHITE: `/assets/images/plugin-removal-white-01.svg`,
 	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
+	VERIFICATION_ICON: '/assets/images/verification-green-tick.svg',
 };
 
 export default icons;

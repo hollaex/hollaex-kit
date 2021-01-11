@@ -334,17 +334,22 @@ export const generateWithdrawalsHeaders = (
 					? STRINGS['REJECTED']
 					: STRINGS['PENDING'],
 			renderCell: (
-				{ status = false, dismissed = false, rejected = false },
+				{ status = false, dismissed = false, rejected = false, is_new = false },
 				key,
 				index
 			) => {
 				return (
 					<td key={index}>
-						{status
-							? STRINGS['COMPLETE']
-							: dismissed || rejected
-							? STRINGS['REJECTED']
-							: STRINGS['PENDING']}
+						<div className="d-flex new-tag-wrapper">
+							{is_new ? (
+								<div className="new-tag">{STRINGS['DEPOSIT_STATUS.NEW']}</div>
+							) : null}
+							{status
+								? STRINGS['COMPLETE']
+								: dismissed || rejected
+								? STRINGS['REJECTED']
+								: STRINGS['PENDING']}
+						</div>
 					</td>
 				);
 			},
@@ -394,6 +399,7 @@ export const generateWithdrawalsHeaders = (
 						)}
 					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
+					/*: <td key={index}>{fee}</td>*/
 					/*: <td key={index}>{fee}</td>*/
 				 /*: <td key={index}>{fee}</td>*/);
 			},

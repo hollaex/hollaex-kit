@@ -1,0 +1,29 @@
+.check-deposit-modal-wrapper {
+	h2 {
+		font-size: 20px;
+		color: #ffffff;
+	}
+	.search-icon {
+		width: 70px;
+	}
+	.inner-content {
+		border-top: 1px solid #707070;
+		margin-top: 3rem;
+		padding: 10px 0;
+		span {
+			color: #ffffff;
+		}
+		.success-msg {
+			width: 320px;
+			color: #008509;
+			margin: 0 3px;
+		}
+		.error-msg {
+			width: 320px;
+			color: #f19c0b;
+		}
+		.verification_icon {
+			width: 15px;
+		}
+	}
+}

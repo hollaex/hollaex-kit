@@ -250,6 +250,14 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					loading: false,
 				},
 			};
+		case ACTION_KEYS.DEPOSIT_STATUS_SUCCESS:
+			return {
+				...state,
+				trades: {
+					...state.trades,
+					data: [payload, ...state.trades.data],
+				},
+			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

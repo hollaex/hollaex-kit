@@ -1437,6 +1437,26 @@ table th {
   .history_block-wrapper .action_notification-svg svg {
     width: 1.2rem !important;
     height: 1.2rem !important; }
+  .history_block-wrapper .check-deposit-wrapper {
+    position: absolute;
+    right: 100px;
+    top: 2px;
+    text-transform: uppercase;
+    color: var(--specials_buttons-links-and-highlights);
+    font-size: 11px;
+    cursor: pointer; }
+  .history_block-wrapper .new-tag-wrapper {
+    position: relative; }
+    .history_block-wrapper .new-tag-wrapper .new-tag {
+      position: absolute;
+      right: 100%;
+      background-color: #008509;
+      padding: 0 7px;
+      color: #FFFFFF;
+      border-radius: 20px;
+      margin-right: 10px; }
+  .history_block-wrapper .check-deposit-txt {
+    right: 100px !important; }
 
 .action_notification-svg svg {
   width: 2rem;
@@ -8721,6 +8741,29 @@ foreignObject {
 
 .layout-edit .edit-wrapper__icons-container {
   display: inline-flex !important; }
+
+.check-deposit-modal-wrapper h2 {
+  font-size: 20px;
+  color: #FFFFFF; }
+
+.check-deposit-modal-wrapper .search-icon {
+  width: 70px; }
+
+.check-deposit-modal-wrapper .inner-content {
+  border-top: 1px solid #707070;
+  margin-top: 3rem;
+  padding: 10px 0; }
+  .check-deposit-modal-wrapper .inner-content span {
+    color: #FFFFFF; }
+  .check-deposit-modal-wrapper .inner-content .success-msg {
+    width: 320px;
+    color: #008509;
+    margin: 0 3px; }
+  .check-deposit-modal-wrapper .inner-content .error-msg {
+    width: 320px;
+    color: #F19C0B; }
+  .check-deposit-modal-wrapper .inner-content .verification_icon {
+    width: 15px; }
 
 html {
   font-size: 12px !important;
