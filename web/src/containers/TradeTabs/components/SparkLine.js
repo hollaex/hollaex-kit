@@ -20,8 +20,6 @@ class SparkLine extends Component {
 				},
 				chart: {
 					styledMode: true,
-					height: 50,
-					width: 130,
 				},
 				xAxis: {
 					type: 'linear',
@@ -81,11 +79,14 @@ class SparkLine extends Component {
 
 	render() {
 		const { chartOptions } = this.state;
+		const { containerProps } = this.props;
 
 		return (
-			<div>
-				<HighchartsReact highcharts={Highcharts} options={chartOptions} />
-			</div>
+			<HighchartsReact
+				highcharts={Highcharts}
+				options={chartOptions}
+				containerProps={containerProps}
+			/>
 		);
 	}
 }

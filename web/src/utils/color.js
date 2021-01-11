@@ -17,6 +17,11 @@ export const calculateThemes = (themes) => {
 
 const pushCalculatedColors = (themeData) => {
 	const calculatedColors = {
+		'calculated_market-card_gradient_background': Color(
+			themeData['base_background']
+		)
+			.darken(0.4)
+			.hex(),
 		'calculated_trading_buying-sparkline-fill': Color(
 			themeData['trading_buying-related-elements']
 		)
