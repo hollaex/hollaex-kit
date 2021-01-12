@@ -31,7 +31,7 @@ import {
 	User,
 	AppWrapper as AdminContainer,
 	// Main,
-	DepositsPage,
+	// DepositsPage,
 	Limits,
 	// Wallets,
 	UserFees,
@@ -42,7 +42,7 @@ import {
 	Plugins,
 	PluginServices,
 	Settings,
-	Transfer,
+	// Transfer,
 	AdminFees,
 	Init,
 	AdminLogin,
@@ -408,17 +408,17 @@ export default (
 				name="Admin Wallets"
 				component={withAdminProps(Wallets, 'wallets')}
 			/> */}
-			<Route
+			{/* <Route
 				path="/admin/transfer"
 				name="Admin Transfer"
 				component={withAdminProps(Transfer, 'transfer')}
-			/>
+			/> */}
 			<Route
 				path="/admin/fees"
 				name="Admin Fees"
 				component={withAdminProps(AdminFees, 'fees')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/withdrawals"
 				name="Admin Withdrawals"
 				component={withAdminProps(DepositsPage, 'withdrawal')}
@@ -427,7 +427,7 @@ export default (
 				path="/admin/deposits"
 				name="Admin Deposits"
 				component={withAdminProps(DepositsPage, 'deposit')}
-			/>
+			/> */}
 			<Route
 				path="/admin/pair"
 				name="Admin Pairs"

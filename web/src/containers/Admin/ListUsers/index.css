@@ -140,8 +140,17 @@ body {
 	color: #ffffff;
 }
 
-.admin-user-container .ant-pagination-item-active,
-.admin-user-container .ant-pagination-item-active:focus,
-.admin-user-container .ant-pagination-item-active:hover {
+.blue-admin-table .ant-pagination-item-active,
+.blue-admin-table .ant-pagination-item-active:focus,
+.blue-admin-table .ant-pagination-item-active:hover {
 	border-color: #288500 !important;
+	color: #288500;
+}
+.blue-admin-table .ant-pagination-item:focus,
+.blue-admin-table .ant-pagination-item:hover {
+	border-color: #288500 !important;
+}
+.blue-admin-table .ant-pagination-item:focus a,
+.blue-admin-table .ant-pagination-item:hover a {
+	color: #288500;
 }

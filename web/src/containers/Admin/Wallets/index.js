@@ -51,7 +51,7 @@ class Wallets extends Component {
 		requestTotalBalance()
 			.then((res) => {
 				this.setState({
-					balance: res.data.balances,
+					balance: res,
 					loading: false,
 					fetched: true,
 				});

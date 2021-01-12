@@ -7,17 +7,19 @@
 .admin-earnings-container .content-wrapper .ant-tabs {
 	color: #ffffff;
 }
-.admin-earnings-container .ant-tabs-nav .ant-tabs-tab {
-	font-size: 15px;
-	color: #ffffff;
-	font-weight: bold;
-}
 .admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
 	height: 6px;
 	background-color: #ffffff;
 }
 .admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
 	top: 0px;
+}
+.admin-earnings-container .ant-tabs-tab .ant-tabs-tab-btn {
+	opacity: 0.6;
+}
+.admin-earnings-container .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	font-weight: bold;
+	opacity: 1;
 }
 .admin-earnings-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
@@ -103,4 +105,18 @@
 	background: #ffffff;
 	border-radius: 50px;
 	padding: 15px;
+}
+.transfer-confirmation-popup {
+	padding: 1rem;
+}
+.transfer-confirmation-popup .confirm-container {
+	border: 1px solid #ffffff;
+	padding: 1.5rem;
+}
+.transfer-confirmation-popup .legend {
+	background-color: #0000ff;
+	left: 1rem;
+	top: 12px;
+	padding: 5px;
+	position: relative;
 }

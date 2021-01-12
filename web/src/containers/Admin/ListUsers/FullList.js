@@ -168,6 +168,7 @@ class FullListUsers extends Component {
 							</span>
 						</div>
 						<Table
+							className="blue-admin-table"
 							columns={COLUMNS}
 							dataSource={users}
 							expandedRowRender={renderRowContent}

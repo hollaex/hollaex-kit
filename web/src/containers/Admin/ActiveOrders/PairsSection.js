@@ -276,6 +276,7 @@ class PairsSection extends Component {
 											Download table
 										</CSVLink>
 										<Table
+											className="blue-admin-table"
 											columns={COLUMNS}
 											rowKey={(data) => {
 												return data.id;
@@ -307,6 +308,7 @@ class PairsSection extends Component {
 										</CSVLink>
 										<Table
 											columns={COLUMNS}
+											className="blue-admin-table"
 											rowKey={(data) => {
 												return data.id;
 											}}

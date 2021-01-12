@@ -77,6 +77,9 @@
 .verification-confirm-modal .ant-btn {
 	width: 9rem;
 }
+.green-btn.ant-btn-primary[disabled] {
+	opacity: 0.7;
+}
 .verification-confirm-modal .ant-btn,
 .green-btn {
 	background-color: #288500 !important;

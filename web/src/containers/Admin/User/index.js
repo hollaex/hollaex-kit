@@ -245,6 +245,7 @@ class App extends Component {
 						<Form
 							onSubmit={this.searchUser}
 							buttonText="Search"
+							buttonClass="green-btn"
 							fields={{
 								id: {
 									type: 'number',
@@ -263,6 +264,7 @@ class App extends Component {
 						/>
 						{userInformationList.length ? (
 							<Table
+								className="blue-admin-table"
 								columns={COLUMNS}
 								dataSource={userInformationList}
 								rowKey={(data) => {
