@@ -339,8 +339,13 @@ export const generateWithdrawalsHeaders = (
 				index
 			) => {
 				return (
-					<td key={index}>
-						<div className="d-flex new-tag-wrapper">
+					<td key={index} className="transaction-status">
+						<div
+							className={classnames(
+								'd-flex new-tag-wrapper',
+								getClassNameByStatus(status, dismissed, rejected, is_new)
+							)}
+						>
 							{is_new ? (
 								<div className="new-tag">{STRINGS['DEPOSIT_STATUS.NEW']}</div>
 							) : null}
@@ -399,6 +404,8 @@ export const generateWithdrawalsHeaders = (
 						)}
 					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
+					/*: <td key={index}>{fee}</td>*/
+					/*: <td key={index}>{fee}</td>*/
 					/*: <td key={index}>{fee}</td>*/
 					/*: <td key={index}>{fee}</td>*/
 				 /*: <td key={index}>{fee}</td>*/);
@@ -530,4 +537,16 @@ export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
 	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
 		({ key }) => KEYS.indexOf(key) > -1
 	);
+};
+
+const getClassNameByStatus = (
+	status = false,
+	dismissed = false,
+	rejected = false,
+	is_new = false
+) => {
+	if (is_new) {
+		return '';
+	}
+	return status ? 'completed' : dismissed || rejected ? 'rejected' : 'pending';
 };

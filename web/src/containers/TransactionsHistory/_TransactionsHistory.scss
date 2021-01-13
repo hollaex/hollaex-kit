@@ -132,3 +132,19 @@
 		padding-top: 0.1rem !important;
 	}
 }
+
+.transaction-status {
+	font-weight: bold;
+
+	.completed {
+		color: $colors-notifications-green;
+	}
+
+	.pending {
+		color: $colors-notification-pending;
+	}
+
+	.rejected {
+		color: $colors-notifications-red;
+	}
+}
