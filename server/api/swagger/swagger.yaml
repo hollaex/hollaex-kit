@@ -2556,7 +2556,7 @@ paths:
     x-swagger-router-controller: order
     get:
       description: Get user orders for admin
-      operationId: getAdminUserOrders
+      operationId: getAdminOrders
       parameters:
         - in: query
           name: user_id
@@ -2672,7 +2672,7 @@ paths:
     x-swagger-router-controller: trade
     get:
       description: Get user trades for admin
-      operationId: getAdminUserTrades
+      operationId: getAdminTrades
       parameters:
         - in: query
           name: user_id

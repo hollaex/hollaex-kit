@@ -48,6 +48,17 @@ class Table extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.jumpToPage !== prevProps.jumpToPage) {
+			this.goToPage(
+				this.props.jumpToPage,
+				this.props.data,
+				this.props.headers,
+				this.props.count
+			);
+		}
+	}
+
 	// setPageSize = (pageSize = 10) => {
 	//   this.setState({ pageSize });
 	// }

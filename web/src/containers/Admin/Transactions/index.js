@@ -272,7 +272,7 @@ class Transactions extends Component {
 		} = this.props;
 		const columns = COLUMNS(currency, type);
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content admin-user-container">
 				<div>
 					{showFilters && (
 						<Filters
@@ -307,6 +307,7 @@ class Transactions extends Component {
 							</span>
 						</div>
 						<Table
+							className="blue-admin-table"
 							columns={hideUserColumn ? columns.slice(1) : columns}
 							dataSource={deposits.map((deposit, index) => {
 								return {

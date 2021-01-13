@@ -28,6 +28,7 @@ export const getTheme = ({
 		rest['calculated_trad-view_text'] || TRADING_VIEW_TEXT,
 	'scalesProperties.backgroundColor':
 		rest['base_background'] || BACKGROUND_COLOR,
+	'mainSeriesProperties.showPriceLine': true,
 	// Candles-property
 	'mainSeriesProperties.candleStyle.upColor': buy,
 	'mainSeriesProperties.candleStyle.downColor': sell,

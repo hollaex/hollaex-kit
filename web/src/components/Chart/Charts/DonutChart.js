@@ -190,16 +190,18 @@ class DonutChart extends Component {
 					>
 						<tspan>{STRINGS['ZERO_ASSET']}</tspan>
 					</text>
-					<text
-						transform={translate(0, 10)}
-						dy=".35em"
-						className="donut-label-no-price"
-						textAnchor="middle"
-					>
-						<Link to="/wallet" className="deposit-asset">
-							{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
-						</Link>
-					</text>
+					{this.props.showOpenWallet ? (
+						<text
+							transform={translate(0, 10)}
+							dy=".35em"
+							className="donut-label-no-price"
+							textAnchor="middle"
+						>
+							<Link to="/wallet" className="deposit-asset">
+								{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
+							</Link>
+						</text>
+					) : null}
 				</g>
 			);
 		} else if (data.balance > 0) {
@@ -233,11 +235,13 @@ class DonutChart extends Component {
 							>
 								{symbol.toUpperCase()}
 							</text>
-							<text dy="5px" textAnchor="middle" className="donut-label-link">
-								<Link to="/wallet" className="deposit-asset">
-									{STRINGS['OPEN_WALLET'].toUpperCase()}
-								</Link>
-							</text>
+							{this.props.showOpenWallet ? (
+								<text dy="5px" textAnchor="middle" className="donut-label-link">
+									<Link to="/wallet" className="deposit-asset">
+										{STRINGS['OPEN_WALLET'].toUpperCase()}
+									</Link>
+								</text>
+							) : null}
 						</Fragment>
 					) : null}
 				</g>
@@ -250,6 +254,7 @@ class DonutChart extends Component {
 
 DonutChart.defaultProps = {
 	id: 'donut-container',
+	showOpenWallet: true,
 };
 
 export default DonutChart;

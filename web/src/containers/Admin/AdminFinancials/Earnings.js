@@ -132,6 +132,7 @@ class Earnings extends Component {
 					<div>
 						<Table
 							columns={earningsColumns}
+							className="blue-admin-table"
 							dataSource={earningsData.map((data) => {
 								return data;
 							})}
@@ -143,6 +144,7 @@ class Earnings extends Component {
 							expandedRowRender={(record) => {
 								return (
 									<Table
+										className="blue-admin-table"
 										columns={descriptionColumn}
 										dataSource={record.fields}
 										rowKey={(data) => data.id}

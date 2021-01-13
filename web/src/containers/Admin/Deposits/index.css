@@ -29,19 +29,50 @@
 }
 
 .filters-wrapper-filters {
-	flex: 2;
+	/* flex: 2; */
 	display: flex;
 	flex-direction: column;
 }
 
 .filters-wrapper-buttons {
-	flex: 1;
+	/* flex: 1; */
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
 }
 
+.admin-deposit-wrapper
+	.filters-wrapper-filters
+	.ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector,
+.admin-deposit-wrapper .filters-wrapper-filters .ant-picker {
+	background-color: #0000ff;
+	color: #ffffff;
+}
+.admin-deposit-wrapper .filters-wrapper-filters {
+	flex-direction: row;
+}
+.admin-deposit-wrapper .filters-wrapper-buttons {
+	align-self: flex-end;
+	flex: none;
+	margin-bottom: 8px;
+}
+.blue-admin-table .ant-table-row-expand-icon {
+	background-color: #0000ff;
+	border-color: #c4c4c4;
+}
+.admin-deposit-wrapper .ant-select .ant-select-selection-placeholder {
+	opacity: 0.6;
+}
+.admin-deposit-wrapper .ant-select .ant-select-arrow,
+.admin-deposit-wrapper .ant-picker .ant-picker-suffix {
+	color: #ffffff;
+}
+.blue-admin-table .ant-table-row-expand-icon::before,
+.blue-admin-table .ant-table-row-expand-icon::after {
+	background-color: #ffffff;
+}
 .filter-button {
 	min-width: 50%;
 }
@@ -50,8 +81,9 @@
 	margin-bottom: 16px;
 }
 
-.filter-alert {
+.admin-deposit-wrapper .filter-alert {
 	margin-bottom: 8px;
+	opacity: 0.95;
 }
 
 .filter-select-wrapper,
