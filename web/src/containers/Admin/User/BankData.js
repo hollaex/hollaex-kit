@@ -195,6 +195,7 @@ class BankData extends Component {
 															})
 														}
 														type="primary"
+														className="green-btn"
 														icon={<CheckOutlined />}
 														// size={10}
 													>

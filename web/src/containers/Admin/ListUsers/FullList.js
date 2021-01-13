@@ -85,6 +85,7 @@ class FullListUsers extends Component {
 			<Button
 				type="primary"
 				// onClick={() => this.requestUser(value)}
+				className="green-btn"
 			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO
@@ -167,6 +168,7 @@ class FullListUsers extends Component {
 							</span>
 						</div>
 						<Table
+							className="blue-admin-table"
 							columns={COLUMNS}
 							dataSource={users}
 							expandedRowRender={renderRowContent}
