@@ -61,6 +61,14 @@
 .admin-user-container .ant-empty .ant-empty-description {
 	color: #ffffff;
 }
+.admin-user-container .admin-wallet-icon {
+	margin-right: 1rem;
+	width: 5rem;
+}
+.admin-user-container .user-donut-chart-wrapper {
+	border-top: 1px solid grey;
+	height: 25rem;
+}
 .admin-user-content {
 	margin: 24px 0px;
 }

@@ -1,6 +1,6 @@
 import { requestAuthenticated } from '../../../utils';
 
-export const requestTotalBalance = () => requestAuthenticated('/admin/stats');
+export const requestTotalBalance = () => requestAuthenticated('/admin/balance');
 
 export const requestEthSweep = (value) =>
 	requestAuthenticated(`/admin/eth/sweep?wallets=${value}`);

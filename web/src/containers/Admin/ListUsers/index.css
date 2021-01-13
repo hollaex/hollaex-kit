@@ -134,3 +134,23 @@ body {
 .justify-content-between {
 	justify-content: space-between;
 }
+
+.admin-user-container .ant-table .green-btn {
+	background-color: #288500 !important;
+	color: #ffffff;
+}
+
+.blue-admin-table .ant-pagination-item-active,
+.blue-admin-table .ant-pagination-item-active:focus,
+.blue-admin-table .ant-pagination-item-active:hover {
+	border-color: #288500 !important;
+	color: #288500;
+}
+.blue-admin-table .ant-pagination-item:focus,
+.blue-admin-table .ant-pagination-item:hover {
+	border-color: #288500 !important;
+}
+.blue-admin-table .ant-pagination-item:focus a,
+.blue-admin-table .ant-pagination-item:hover a {
+	color: #288500;
+}

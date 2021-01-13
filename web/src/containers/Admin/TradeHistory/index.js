@@ -122,6 +122,7 @@ class TradeHistory extends Component {
 						</div>
 						<Table
 							columns={COLUMNS}
+							className="blue-admin-table"
 							rowKey={(data, index) => {
 								return `${data.symbol}_${index}`;
 							}}

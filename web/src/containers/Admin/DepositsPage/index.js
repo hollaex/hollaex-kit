@@ -1,12 +1,12 @@
 import React from 'react';
-import { Tabs } from 'antd';
+// import { Tabs } from 'antd';
 import { connect } from 'react-redux';
 
 // import { BASE_CURRENCY } from '../../../config/constants';
 import { Deposits } from '../';
 import './index.css';
 
-const TabPane = Tabs.TabPane;
+// const TabPane = Tabs.TabPane;
 
 const DepositsPage = ({
 	currency,
@@ -36,16 +36,16 @@ const DepositsPage = ({
 
 	return (
 		<div className="app_container-content">
-			<Tabs>
-				<TabPane tab="Transactions" key="transactions">
-					<Deposits
-						coins={coins}
-						type={type}
-						queryParams={queryParams}
-						showFilters={showFilters}
-						noQueryParams={noQueryParams}
-					/>
-				</TabPane>
+			{/* <Tabs> */}
+			{/* <TabPane tab="Transactions" key="transactions"> */}
+			<Deposits
+				coins={coins}
+				type={type}
+				queryParams={queryParams}
+				showFilters={showFilters}
+				noQueryParams={noQueryParams}
+			/>
+			{/* </TabPane>
 				<TabPane tab="Validate" key="validate">
 					<Deposits
 						queryParams={queryParams}
@@ -60,8 +60,8 @@ const DepositsPage = ({
 							rejected: 'false',
 						}}
 					/>
-				</TabPane>
-			</Tabs>
+				</TabPane> */}
+			{/* </Tabs> */}
 		</div>
 	);
 };

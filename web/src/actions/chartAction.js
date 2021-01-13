@@ -41,6 +41,7 @@ export const getChartSymbol = (symbol, tickSize, api_name = '') => {
 			session: '24x7',
 			regular_session: '24x7',
 			pricescale,
+			minmov: 1,
 			volume_precision: 4,
 			has_empty_bars: true,
 		});

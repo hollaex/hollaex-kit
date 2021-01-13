@@ -89,6 +89,7 @@ class ListUsers extends Component {
 							</span>
 						</div>
 						<Table
+							className="blue-admin-table"
 							columns={columns}
 							dataSource={users}
 							rowKey={(data) => {

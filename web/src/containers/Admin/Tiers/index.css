@@ -103,3 +103,9 @@
 .admin-tiers-wrapper h3 {
 	color: #ffffff;
 }
+
+.admin-tiers-wrapper .ant-pagination-item-active,
+.admin-tiers-wrapper .ant-pagination-item-active:focus,
+.admin-tiers-wrapper .ant-pagination-item-active:hover {
+	border-color: #288500 !important;
+}
