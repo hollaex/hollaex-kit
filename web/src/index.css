@@ -3058,7 +3058,7 @@ table th {
     top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-list {
     background-image: linear-gradient(var(--base_background), var(--calculated_market-card_gradient_background));
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    border: 1px solid var(--calculated_super-pale_label-text-graphics);
     border-radius: 0.5rem;
     padding: 1rem 0 0;
     margin: 2rem 1.5rem; }
