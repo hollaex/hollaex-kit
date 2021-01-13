@@ -3061,7 +3061,10 @@ table th {
     border: 1px solid var(--calculated_super-pale_label-text-graphics);
     border-radius: 0.5rem;
     padding: 1rem 0 0;
-    margin: 2rem 1.5rem; }
+    margin: 2rem 1.5rem;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16); }
     .trade_tabs-container .trade-tab-list svg .xht-icon-1 {
       fill: var(--base_background) !important; }
     .trade_tabs-container .trade-tab-list:hover {
