@@ -49,7 +49,20 @@ class AuthContainer extends Component {
 	}
 
 	componentDidMount() {
+    const { constants = { captcha: {} } } = this.props;
 		this.props.getExchangeInfo();
+
+    // ReCaptcha Initialization
+
+    let siteKey = DEFAULT_CAPTCHA_SITEKEY;
+    if (CAPTCHA_SITEKEY) {
+      siteKey = CAPTCHA_SITEKEY;
+    } else if (constants.captcha && constants.captcha.site_key) {
+      siteKey = constants.captcha.site_key;
+    }
+    loadReCaptcha(siteKey, () =>
+      console.info('grepcaptcha is correctly loaded')
+    );
 	}
 
 	checkExchangeExpiry = () => {
@@ -92,13 +105,7 @@ class AuthContainer extends Component {
 		const childWithLanguageClasses = React.Children.map(children, (child) =>
 			React.cloneElement(child, { activeLanguage, languageClasses })
 		);
-		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
-		if (CAPTCHA_SITEKEY) {
-			siteKey = CAPTCHA_SITEKEY;
-		} else if (constants.captcha && constants.captcha.site_key) {
-			siteKey = constants.captcha.site_key;
-		}
-		loadReCaptcha(siteKey);
+
 		updateThemeToBody(activeTheme);
 		const expiryData = this.checkExchangeExpiry();
 		let isWarning = false;
