@@ -64,7 +64,7 @@ const getConfigs = async () => {
 
 	const kitData = await getKitData();
 	const {
-		meta: { versions: remoteVersions = {} },
+		meta: { versions: remoteVersions = {} } = {},
 		valid_languages = '',
 		info: { initialized },
 		setup_completed,
