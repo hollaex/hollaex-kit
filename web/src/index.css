@@ -1480,6 +1480,15 @@ table th {
 .display_table-wrapper:first-child .display_table-body {
   padding-top: 0.1rem !important; }
 
+.transaction-status {
+  font-weight: bold; }
+  .transaction-status .completed {
+    color: var(--specials_checks-okay-done); }
+  .transaction-status .pending {
+    color: var(--specials_pending-waiting-caution); }
+  .transaction-status .rejected {
+    color: var(--specials_notifications-alerts-warnings); }
+
 .trade-container {
   flex: 1; }
   .trade-container .dialog-link {
