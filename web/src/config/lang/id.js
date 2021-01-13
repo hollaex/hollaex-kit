@@ -30,7 +30,7 @@ export default {
 	ADD_FILES: 'TAMBAH FILE', // ToDo
 	OR_TEXT: 'Atau',
 	CONTACT_US_TEXT: 'Hubungi kami',
-	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
+	HELPFUL_RESOURCES_TEXT: 'Sumber Bermanfaat',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Jangan ragu hubungi kami untuk informasi lebih lanjut',
 	HELP_TELEGRAM_TEXT: 'Cek dokumen API terbuka:',
@@ -191,7 +191,7 @@ export default {
 		CANT_LOGIN: "Tidak bisa masuk?",
 		NO_ACCOUNT: "Tidak punya akun?",
 		CREATE_ACCOUNT: 'Buatlah di sini',
-		HELP: 'Help'
+		HELP: 'Bantuan'
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: 'Email',
@@ -289,7 +289,7 @@ export default {
 		TITLE: 'Cepat',
 		TOTAL_COST: 'Jumlah biaya',
 		BUTTON: 'Lihat pesan {0}',
-		INPUT: '{0} ke {1}',
+		INPUT: 'Pembelian {0} {1}',
 		TRADE_TITLE: '{0} {1}' // quick buy
 	},
 	PREVIOUS_PAGE: 'halaman sebelumnya',
@@ -640,7 +640,7 @@ export default {
 			ORDERS_PLACED_AUDIO:
 				'Apabila pesan dibuat',
 			ORDERS_CANCELED_AUDIO:
-				'Apabila When an order is canceled',
+				'Apabila pesan Anda dibatalkan',
 			ORDERS_COMPLETED_AUDIO:
 				'Apabila salah satu pesan Anda terisi penuh',
 			CLICK_AMOUNTS_AUDIO:
@@ -674,6 +674,7 @@ export default {
 		WITHDRAWALS: 'Penarikan'
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: 'Autentikasi Dua-Faktor',
 			OTP_ENABLED: 'otp diaktifkan',
@@ -687,7 +688,7 @@ export default {
 				REVOKE: 'OTP Anda telah berhasil dinonaktifkan'
 			},
 			CONTENT: {
-				TITLE: 'Actifkan Autentikasi Dua-Faktor',
+				TITLE: 'Aktifkan Autentikasi Dua-Faktof',
 				MESSAGE_1: 'Pindai',
 				MESSAGE_2:
 					'Pindai koed QR di bawah dengan Autentikasi Google atau Authy untuk mengatur autentikasi dua-faktor secara otomatis di perangkat Anda.',
@@ -700,7 +701,15 @@ export default {
 				WARNING:
 					'Kami sangat menyarankan Anda mengaktifkan autentikasi 2 faktor (2FA). Dengan mengaktifkannya, tingkat keamanan dana Anda akan sangat ditingkatkan.',
 				ENABLE: 'Aktifkan Autentikasi Dua-Faktor',
-				DISABLE: 'Nonaktifkan Autentikasi Dua-Faktor'
+				DISABLE: 'Nonaktifkan Autentikasi Dua-Faktor',
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'Enter One-Time Password (OTP)',
+				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
+				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {
 				PLACEHOLDER: 'Masukkan OTP yang ditunjukkan di aplikasi Autentikasi Google.',
@@ -730,9 +739,9 @@ export default {
 			}
 		},
 		LOGIN: {
-			TITLE: 'Login History',
+			TITLE: 'Riwayat Masuk',
 			CONTENT: {
-				TITLE: 'Logins History',
+				TITLE: 'Riwayat Masuk',
 				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
 			}
 		},
@@ -772,8 +781,8 @@ export default {
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'Size',
-	PRICE: 'Price',
+	SIZE: 'Jumlah',
+	PRICE: 'Harga',
 	FEE: 'Fee',
 	FEES: 'Fees',
 	LIMIT: 'Limit',
@@ -791,12 +800,12 @@ export default {
 	CANCEL_ALL: 'Cancel All',
 	GO_TRADE_HISTORY: 'Pergi ke Riwayat Transaksi',
 	ORDER_ENTRY: 'order entry',
-	TRADE_HISTORY: 'history',
-	CHART: 'price chart',
+	TRADE_HISTORY: 'Riwayat',
+	CHART: 'GRAFIK HARGA',
 	ORDERS: 'pesan aktif saya',
 	TRADES: 'riwayat transaksi saya',
 	RECENT_TRADES: 'perdagangan saya baru-baru ini', // ToDo
-	PUBLIC_SALES: 'public sales', // ToDo
+	PUBLIC_SALES: 'PENJUALAN PUBLIK', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
 	FILLED: 'Filled', // new
@@ -837,18 +846,18 @@ export default {
 		'Alamat Bitcoin tidak valid. Silakan cek dengan teliti dan masukkan lagi',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'Alamat Ethereum tidak valid. Silakan cek dengan teliti dan masukkan lagi',
-	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_BUTTON_TEXT: 'LIHAI PENARIKAN',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Alamat penerima',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Masukkan alamat',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
 	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'Type the transaction memo', // new
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
+	WITHDRAWALS_FORM_AMOUNT_LABEL: 'Jumlan penarikan {0}',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Transaction fee',
+		'Biaya transaksi',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -911,16 +920,16 @@ export default {
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
-	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
-	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
-	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
+	WALLET_BUTTON_BASE_WITHDRAW: 'Penarikan',
+	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'Terima',
+	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'Kirim',
 	AVAILABLE_TEXT: 'Available',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	AVAILABLE_BALANCE_TEXT: 'Saldo {0} yang ttersedia: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
-	WALLET_TABLE_TOTAL: 'Grand Total',
-	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_TABLE_TOTAL: 'Jumlah',
+	WALLET_ALL_ASSETS: 'Semua Aset',
 	WALLET_DEPOSIT_USD:
 		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
@@ -1125,7 +1134,7 @@ export default {
 		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
 		URGENT_REQUIREMENTS: 'Urgent Requirements',
 		TRADING_VOLUME: 'Trading Volume',
-		ACCOUNT_ASSETS: 'Account Assets',
+		ACCOUNT_ASSETS: 'Aset Akun',
 		ACCOUNT_DETAILS: 'Account Details',
 		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
 		SHRIMP_ACCOUNT_TXT_2:
