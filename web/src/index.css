@@ -3720,7 +3720,8 @@ table th {
 .sidebar-container {
   display: flex;
   flex-direction: column;
-  height: 100%; }
+  height: 100%;
+  width: 100%; }
   .sidebar-container .sidebar-row {
     border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics);
     flex: 0; }
