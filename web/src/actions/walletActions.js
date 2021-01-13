@@ -22,6 +22,7 @@ export const ACTION_KEYS = {
 	WITHDRAWAL_CANCEL_PENDING: 'WITHDRAWAL_CANCEL_PENDING',
 	WITHDRAWAL_CANCEL_FULFILLED: 'WITHDRAWAL_CANCEL_FULFILLED',
 	WITHDRAWAL_CANCEL_REJECTED: 'WITHDRAWAL_CANCEL_REJECTED',
+	DEPOSIT_STATUS_SUCCESS: 'DEPOSIT_STATUS_SUCCESS',
 };
 
 const ENDPOINTS = {
@@ -290,4 +291,15 @@ export const getUserWithdrawals = ({
 
 export const performConfirmWithdrawal = (token) => {
 	return axios.post(ENDPOINTS.CONFIRM_WITHDRAWAL, { token });
+};
+
+export const searchUserDeposits = (params) => {
+	const query = querystring.stringify(params);
+	return axios.get(`${ENDPOINTS.DEPOSITS}?${query}`);
+};
+
+export const setDeposit = (deposit) => {
+	return (dispatch) => {
+		dispatch({ type: ACTION_KEYS.DEPOSIT_STATUS_SUCCESS, payload: deposit });
+	};
 };

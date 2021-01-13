@@ -102,3 +102,8 @@
 	border-radius: 50px;
 	padding: 15px;
 }
+.admin-roles-wrapper .ant-pagination-item-active,
+.admin-roles-wrapper .ant-pagination-item-active:focus,
+.admin-roles-wrapper .ant-pagination-item-active:hover {
+	border-color: #288500 !important;
+}

@@ -75,6 +75,30 @@
 		width: 1.2rem !important;
 		height: 1.2rem !important;
 	}
+	.check-deposit-wrapper {
+		position: absolute;
+		right: 100px;
+		top: 2px;
+		text-transform: uppercase;
+		color: var(--specials_buttons-links-and-highlights);
+		font-size: 11px;
+		cursor: pointer;
+	}
+	.new-tag-wrapper {
+		position: relative;
+		.new-tag {
+			position: absolute;
+			right: 100%;
+			background-color: #008509;
+			padding: 0 7px;
+			color: #ffffff;
+			border-radius: 20px;
+			margin-right: 10px;
+		}
+	}
+	.check-deposit-txt {
+		right: 100px !important;
+	}
 }
 
 .action_notification-svg svg {

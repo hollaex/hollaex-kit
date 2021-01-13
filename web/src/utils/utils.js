@@ -16,6 +16,8 @@ const bitcoin = {
 	BASE_FEE: 10000,
 };
 
+const CHART_RESOLUTION_KEY = 'chart_resolution';
+
 /**
  * convert a BTC value to Satoshi
  *
@@ -253,4 +255,12 @@ export const playBackgroundAudioNotification = (
 	}
 	const audio = new Audio(audioFile);
 	if (audioFile) audio.play();
+};
+
+export const setChartResolution = (resolution) => {
+	localStorage.setItem(CHART_RESOLUTION_KEY, resolution);
+};
+
+export const getChartResolution = () => {
+	return localStorage.getItem(CHART_RESOLUTION_KEY);
 };
