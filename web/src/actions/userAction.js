@@ -295,3 +295,30 @@ export function getUserReferralCount() {
 			});
 	};
 }
+
+export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
+
+	return (dispatch) => {
+		axios
+			.get('/user/logins')
+			.then((body) => {
+				dispatch({
+					type: 'USER_DEPOSITS_FULFILLED',
+					payload: {
+						...body.data,
+						page,
+						isRemaining: body.data.count > page * limit
+					}
+				});
+				// if (body.data.count > page * limit) {
+				// 	dispatch(getUserDeposits({ limit, page: page + 1 }));
+				// }
+			})
+			.catch((err) => {
+				dispatch({
+					type:'USER_DEPOSITS_REJECTED',
+					payload: err.response
+				});
+			});
+	};
+};

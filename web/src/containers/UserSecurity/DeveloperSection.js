@@ -4,7 +4,7 @@ import STRINGS from '../../config/localizedStrings';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import ApiKeyContainer from './ApiKey';
 import DumbField from '../../components/Form/FormFields/DumbField';
-
+import { Button } from '../../components';
 const NoLevel = () => (
 	<div className="mt-4 mb-4 apply_rtl">
 		{STRINGS.DEVELOPER_SECTION.INVALID_LEVEL}
@@ -21,8 +21,11 @@ export const NoOtpEnabled = ({ openOtp }) => (
 				className="input_block-error-wrapper apply_rtl warning_text"
 			/>
 		</div>
-		<div className="mb-4 mt-4 blue-link pointer" onClick={openOtp}>
-			{STRINGS.DEVELOPER_SECTION.ENABLE_2FA}
+		<div className="mb-4 mt-4 blue-link pointer">
+		<Button
+		 onClick={openOtp}
+			label={STRINGS.DEVELOPER_SECTION.ENABLE_2FA}
+			/>
 		</div>
 	</div>
 );
