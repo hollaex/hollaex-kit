@@ -16,12 +16,12 @@ export const calculateThemes = (themes) => {
 };
 
 const pushCalculatedColors = (themeData) => {
+	const base_color = Color(themeData['base_background']);
+
 	const calculatedColors = {
-		'calculated_market-card_gradient_background': Color(
-			themeData['base_background']
-		)
-			.darken(0.4)
-			.hex(),
+		'calculated_market-card_gradient_background': base_color.isLight()
+			? base_color.darken(0.1).hex()
+			: base_color.darken(0.4).hex(),
 		'calculated_trading_buying-sparkline-fill': Color(
 			themeData['trading_buying-related-elements']
 		)
