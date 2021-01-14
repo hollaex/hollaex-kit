@@ -9,7 +9,7 @@
 }
 
 .carousel__button {
-	color: blue;
+	color: $link;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -19,7 +19,7 @@
 	overflow: hidden;
 
 	&.disabled {
-		color: grey;
+		color: $colors-deactivate-color2;
 		cursor: default;
 	}
 }

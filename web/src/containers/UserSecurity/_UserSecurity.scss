@@ -11,7 +11,7 @@
 	width: 30rem;
 
 	.otp_form-section-wrapper {
-		border-top: 1px solid $colors-main-black;
+		border-top: 1px solid $colors-main-border;
 		padding: 0.75rem 0;
 
 		.otp_form-section-content {
@@ -123,7 +123,7 @@ $svg--padding: $svg--size - $svg-small--size;
 	.popup_info-title {
 		font-family: $raleway--font-family;
 		font-size: $font-size-subhead3;
-		border-bottom: 1px solid $border-color;
+		border-bottom: 1px solid $colors-border;
 	}
 	.popup_info-text {
 		font-size: $font-size-subtext;
@@ -165,7 +165,7 @@ $padding-input: 4rem;
 	color: $colors-deactivate-color2;
 	font-size: 1.75rem;
 	padding: 0.5rem 0;
-	border-bottom: 1px solid $colors-main-black;
+	border-bottom: 1px solid $colors-main-border;
 
 	.logout-icon {
 		width: 1.5rem;
