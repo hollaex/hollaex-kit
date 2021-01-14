@@ -286,6 +286,15 @@ table th {
 .custom-select-input-style.order-entry.ant-select {
   width: 100% !important; }
 
+.border {
+  border-color: var(--calculated_secondary-border) !important; }
+
+.border-main {
+  border-color: var(--calculated_important-border) !important; }
+
+.border-pale {
+  border-color: var(--calculated_super-pale_label-text-graphics) !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);

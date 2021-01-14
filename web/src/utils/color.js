@@ -19,6 +19,16 @@ const pushCalculatedColors = (themeData) => {
 	const base_color = Color(themeData['base_background']);
 
 	const calculatedColors = {
+		'calculated_important-border': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.7)
+			.string(),
+		'calculated_secondary-border': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.33)
+			.string(),
 		'calculated_super-pale_label-text-graphics': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)

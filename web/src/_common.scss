@@ -263,3 +263,15 @@ table th {
 		}
 	}
 }
+
+.border {
+	border-color: $colors-border !important;
+}
+
+.border-main {
+	border-color: $colors-main-border !important;
+}
+
+.border-pale {
+	border-color: $colors-super-pale-black !important;
+}
