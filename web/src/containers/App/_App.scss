@@ -1,4 +1,4 @@
-$inner_container-border: 1px solid $colors-border;
+$inner_container-border: 1px solid $colors-super-pale-black;
 
 .app_container {
 	// height: 100%;
@@ -75,7 +75,7 @@ $inner_container-border: 1px solid $colors-border;
 		min-width: $sidebar-width;
 		max-width: $sidebar-width;
 		background-color: $app-sidebar-background;
-		border-left: 1px solid $colors-border;
+		border-left: 1px solid $colors-super-pale-black;
 		padding: 0;
 		transition: all 0.2s ease-out 0s;
 

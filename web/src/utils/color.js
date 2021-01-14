@@ -19,6 +19,9 @@ const pushCalculatedColors = (themeData) => {
 	const base_color = Color(themeData['base_background']);
 
 	const calculatedColors = {
+		calculated_footer_border: Color(themeData['base_footer']).isLight()
+			? '#00000026'
+			: '#ffffff26',
 		'calculated_important-border': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)

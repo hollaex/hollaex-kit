@@ -1,7 +1,7 @@
 $footer-wrapper--margin-top: 4rem;
 $footer-wrapper--margin: 1rem;
 $footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
-$footer-wrapper--border-color: $dark-border-main;
+$footer-wrapper--border-color: $footer-border-color;
 $footer-social-icon--dimension: 2rem;
 $footer-icons--side-margin: 1.5rem;
 $footer-content-size: 12px;
@@ -50,7 +50,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			}
 		}
 		.footer_separter {
-			border-left: 1px solid $colors-border;
+			border-left: 1px solid $footer-wrapper--border-color;
 			.footer-txt {
 				width: 25rem;
 				margin-left: 1rem;
@@ -133,7 +133,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			}
 			.footer_separter {
 				border-left: 0;
-				border-right: 1px solid $colors-border;
+				border-right: 1px solid $footer-wrapper--border-color;
 				.footer-txt {
 					margin-left: 0;
 					margin-right: 1rem;
@@ -229,7 +229,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				}
 				.footer_separter {
 					border-left: none !important;
-					border-top: 1px solid $colors-border !important;
+					border-top: 1px solid $footer-wrapper--border-color !important;
 					.footer-content {
 						display: flex;
 						flex-direction: column;
