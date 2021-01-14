@@ -75,7 +75,7 @@ $inner_container-border: 1px solid $colors-border;
 		min-width: $sidebar-width;
 		max-width: $sidebar-width;
 		background-color: $app-sidebar-background;
-		border-left: 1px solid $colors-deactivate-color2;
+		border-left: 1px solid $colors-border;
 		padding: 0;
 		transition: all 0.2s ease-out 0s;
 
@@ -90,7 +90,7 @@ $inner_container-border: 1px solid $colors-border;
 			transform: translateX(-50%);
 			&.ant-btn-primary {
 				background-color: $app-light-background;
-				border-color: $colors-black;
+				border-color: $colors-border;
 			}
 			.anticon {
 				color: $colors-main-black;

@@ -68,7 +68,7 @@ $information--color: $colors-deactivate-color2;
 
 			.td-levelball {
 				.td-levelball-content {
-					border: 1px solid $colors-main-black;
+					border: 1px solid $colors-main-border;
 					border-radius: 50%;
 					@include size(1.5rem);
 				}

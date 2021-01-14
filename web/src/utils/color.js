@@ -91,17 +91,17 @@ const pushCalculatedColors = (themeData) => {
 		'calculated_trad-view_watermark': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)
-			.alpha(0.1)
+			.alpha(0.15)
 			.string(),
 		'calculated_trad-view_axis': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)
-			.alpha(0.5)
+			.alpha(0.3)
 			.string(),
 		'calculated_trad-view_text': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)
-			.alpha(0.85)
+			.alpha(0.7)
 			.string(),
 		'calculated_specials_notifications-alerts-inactive': Color(
 			themeData['specials_notifications-alerts-warnings']

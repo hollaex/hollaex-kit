@@ -64,7 +64,7 @@ $quick-trade-container: var(--base_wallet-sidebar-and-popup);
 $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);
 
-$app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
+$app-line-divider: $colors-main-border;
 $box-fields: var(--labels_fields);
 
 $buy: var(--trading_buying-related-elements);
@@ -73,7 +73,7 @@ $sell: var(--trading_selling-related-elements);
 $link: var(--specials_buttons-links-and-highlights);
 
 $trade-fields: var(--labels_fields);
-$trade-fields-border: var(--labels_secondary-inactive-label-text-graphics);
+$trade-fields-border: $colors-border;
 $trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
 $trade-fill-indicator-text: var(
 	--labels_secondary-inactive-label-text-graphics
@@ -120,7 +120,7 @@ $footer-background-color: var(--base_footer);
 $chat-message-background-even: var(--base_background);
 $chat-message-background-odd: var(--base_secondary-navigation-bar);
 $chat-message-color: var(--labels_secondary-inactive-label-text-graphics);
-$chat-box-border: var(--labels_important-active-labels-text-graphics);
+$chat-box-border: $colors-main-border;
 
 // this is for transaction history- ToDo: need to customize for common theme
 $history-color-buy: var(--trading_buying-related-elements);
@@ -128,8 +128,8 @@ $history-color-sell: var(--trading_selling-related-elements);
 
 // remaining dark colors
 $dark-app-background-color: var(--base_background);
-$dark-app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
-$dark-border-main: var(--labels_secondary-inactive-label-text-graphics);
+$dark-app-line-divider: $colors-main-border;
+$dark-border-main: $colors-main-border;
 $dark-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-font-sub-text-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-font-sub-text-1-color: var(

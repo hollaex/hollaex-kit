@@ -93,7 +93,7 @@ $trade-tab--arrow-size: 0.4rem;
 	width: 75rem;
 
 	.summary-block_wrapper {
-		border-top: 0.2rem solid $colors-black;
+		border-top: 0.2rem solid $colors-border;
 		color: $colors-deactivate-color2;
 		// margin: 0 .5rem;
 		padding: 0.5rem;
@@ -380,7 +380,7 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		.wave-action-phase {
-			border-top: 1px solid $colors-black;
+			border-top: 1px solid $colors-border;
 
 			.table-wrapper {
 				margin: 0.5rem 0 2rem;
@@ -405,7 +405,7 @@ $trade-tab--arrow-size: 0.4rem;
 			width: 4rem;
 		}
 		.account-type-menu {
-			border-top: 1px solid $colors-deactivate;
+			border-top: 1px solid $colors-border;
 			color: $link;
 			cursor: pointer;
 			font-weight: bold;
@@ -419,8 +419,8 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		.account-type-menu-active {
-			border-top: 2px solid $colors-black;
-			border-bottom: 1px solid $colors-black;
+			border-top: 2px solid $colors-border;
+			border-bottom: 1px solid $colors-border;
 			color: $colors-black;
 			font-size: 1rem;
 			text-transform: capitalize;

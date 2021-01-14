@@ -50,7 +50,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			}
 		}
 		.footer_separter {
-			border-left: 1px solid $footer-wrapper--border-color;
+			border-left: 1px solid $colors-border;
 			.footer-txt {
 				width: 25rem;
 				margin-left: 1rem;
@@ -133,7 +133,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			}
 			.footer_separter {
 				border-left: 0;
-				border-right: 1px solid $footer-wrapper--border-color;
+				border-right: 1px solid $colors-border;
 				.footer-txt {
 					margin-left: 0;
 					margin-right: 1rem;
@@ -229,7 +229,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				}
 				.footer_separter {
 					border-left: none !important;
-					border-top: 1px solid white !important;
+					border-top: 1px solid $colors-border !important;
 					.footer-content {
 						display: flex;
 						flex-direction: column;

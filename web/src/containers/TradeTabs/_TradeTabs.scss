@@ -37,7 +37,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.link-separator {
-		border-right: 1px solid $dark-font-sub-text-1-color;
+		border-right: 1px solid $colors-border;
 	}
 
 	.trade_tabs-search-field {
@@ -232,7 +232,7 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		&:hover {
-			border: 1px solid $colors-black;
+			border: 1px solid $colors-border;
 			color: $colors-black;
 			position: relative;
 			bottom: 0.5rem;
