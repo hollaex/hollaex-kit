@@ -125,7 +125,7 @@ export default {
 		TAB_PROFILE: '프로필',
 		TAB_WALLET: '지갑',
 		TAB_SUMMARY: '개요',
-		TAB_HISTORY: 'History',
+		TAB_HISTORY: '내역',
 		TAB_API: 'API',
 		TAB_SIGNOUT: '로그아웃'
 	},
@@ -603,24 +603,24 @@ export default {
 			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림창'
 		},
 		AUDIO_CUE_FORM: {
-				ALL_AUDIO: 'All Audio cues',
-			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 대해 알림사운드재생',
+				ALL_AUDIO: '모든 사운드',
+			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 대해 알림사운드 재생',
 			ORDERS_PARTIAL_AUDIO:
-				'주문 중 하나가 부분적으로 채워질 경우 알림사운드재생',
+				'주문 중 하나가 부분적으로 채워질 경우 알림사운드 재생',
 			ORDERS_PLACED_AUDIO:
-				'When an order is placed',
+				'주문 요청 시',
 			ORDERS_CANCELED_AUDIO:
-				'When an order is canceled',
+				'주문 취소 시',
 			ORDERS_COMPLETED_AUDIO:
-				'W하나의 주문이 완전히 채워질 경우 알림 사운드 재생',
+				'하나의 주문이 완전히 채워질 경우 알림 사운드 재생',
 			CLICK_AMOUNTS_AUDIO:
-				'When clicking amounts and prices on the orderbook',
+				'주문 목록에 금액과 가격 클릭 시',
 			GET_QUICK_TRADE_AUDIO:
-				'When getting a quote for quick trading',
+				'퀵 트레이딩 요청 받을 시',
 			SUCCESS_QUICK_TRADE_AUDIO:
-				'When a successful quick trade occurs',
+				'퀵 트레이딩 성공 시',
 			QUICK_TRADE_TIMEOUT_AUDIO:
-				'When quick trade timeout',
+				'퀵 트레이딩 시간 만료 시',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -643,7 +643,7 @@ export default {
 		WITHDRAWALS: '출금'
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:'계정의 보안 설정을 변경하세요. 이중인증, 비밀번호, API 키 및 관련 보안기능',
 		OTP: {
 			TITLE: '2단계 인증(2FA)',
 			OTP_ENABLED: ' OTP 사용',
@@ -676,9 +676,9 @@ export default {
 				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
-				TITLE_2: 'Enter One-Time Password (OTP)',
-				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
-				INPUT_2: 'One-Time Password (OTP)',
+				TITLE_2: 'OTP 입력',
+				MESSAGE_6: '6자리 OTP 숫자를 입력하세요.',
+				INPUT_2: 'OTP 입력',
 			},
 			FORM: {
 				PLACEHOLDER:
@@ -748,8 +748,8 @@ export default {
 	},
 	SIDES: [{ value: 'buy', label: '매수' }, { value: 'sell', label: '매도' }],
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'on' },
-		{ value: false, label: 'off' }
+		{ value: true, label: '켜기' },
+		{ value: false, label: '끄기' }
 	],
 	SIZE: 'Size',
 	PRICE: 'Price',
@@ -783,7 +783,7 @@ export default {
 	MARKET_PRICE: '시장가',
 	ORDER_PRICE: '지정가',
 	TOTAL_ORDER: '총액',
-	NO_DATA: '거래 내역이 없습니다.',
+	NO_DATA: '데이터 없음',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -791,7 +791,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume'
+		v: '거래량'
 	},
 	QUICK_TRADE: '퀵트레이딩',
 	PRO_TRADE: '프로트레이딩',
@@ -813,9 +813,9 @@ export default {
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'이더리움 주소가 유효하지않습니다. 확인 후 다시 입력하시기바랍니다.',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: '보내실 주소',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
+	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} 출금 금액',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
@@ -880,12 +880,12 @@ export default {
 			'If you’d like to view your withdrawal please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 	},
-	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
-	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
-	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
-	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
+	WALLET_BUTTON_BASE_DEPOSIT: '입금',
+	WALLET_BUTTON_BASE_WITHDRAW: '출금',
+	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: '받기',
+	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: '보내기',
 	AVAILABLE_TEXT: 'Available',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	AVAILABLE_BALANCE_TEXT: '사용가능 {0} 잔고: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
@@ -1066,8 +1066,8 @@ export default {
 	TRADE_TAB_POSTS: 'Posts', // new
 	WALLET_TAB_WALLET: '지갑',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
-	RECEIVE_CURRENCY: '{0}받기',
-	SEND_CURRENCY: '{0}보내기',
+	RECEIVE_CURRENCY: '{0} 받기',
+	SEND_CURRENCY: '{0} 보내기',
 	COPY_ADDRESS: '주소복사',
 	SUCCESFUL_COPY: '성공적으로 복사되었습니다!',
 	QUICK_TRADE_MODE: '퀵트레이드모드',

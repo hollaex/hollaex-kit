@@ -278,7 +278,7 @@ export default {
 		TITLE: '快速',
 		TOTAL_COST: '总费用',
 		BUTTON: '审阅{0}订单',
-		INPUT: '{0}至{1}',
+		INPUT: '{0}{1}',
 		TRADE_TITLE: '{0} {1}' // quick buy
 	},
 	PREVIOUS_PAGE: '上一页',
@@ -603,24 +603,24 @@ export default {
 			POPUP_ORDER_PARTIALLY_FILLED: '部分订单已满时弹窗'
 		},
 		AUDIO_CUE_FORM: { // new
-			ALL_AUDIO: 'All Audio cues',
+			ALL_AUDIO: '所有声音提示',
 			PUBLIC_TRADE_AUDIO: '公开交易播放提醒',
 			ORDERS_PARTIAL_AUDIO:
 				'当一个订单部分已满时，播放提醒',
 			ORDERS_PLACED_AUDIO:
-				'When an order is placed',
+				'创建订单时',
 			ORDERS_CANCELED_AUDIO:
-				'When an order is canceled',
+				'取消订单时',
 			ORDERS_COMPLETED_AUDIO:
 				'当一个订单已满时，播放提醒',
 			CLICK_AMOUNTS_AUDIO:
-				'When clicking amounts and prices on the orderbook',
+				'在订单页面点击数量和金额时',
 			GET_QUICK_TRADE_AUDIO:
-				'When getting a quote for quick trading',
+				'获得快速交易报价时 ',
 			SUCCESS_QUICK_TRADE_AUDIO:
-				'When a successful quick trade occurs',
+				'成功进行快速交易时',
 			QUICK_TRADE_TIMEOUT_AUDIO:
-				'When quick trade timeout',
+				'快速交易超时时',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -643,7 +643,7 @@ export default {
 		WITHDRAWALS: '提款'
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:'调整账户的安全设置，谷歌验证、密码、API密钥等安全相关功能。',
 		OTP: {
 			TITLE: '谷歌验证（2FA）',
 			OTP_ENABLED: '启用OTP',
@@ -783,7 +783,7 @@ export default {
 	MARKET_PRICE: '市场价格',
 	ORDER_PRICE: '订购价格',
 	TOTAL_ORDER: '订单总数',
-	NO_DATA: '无数据',
+	NO_DATA: '暂无数据',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -974,7 +974,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: '提款失效',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: '你的账户已被禁止提款',
 	UP_TO_MARKET: 'Up to market',
-	VIEW_MY_FEES: 'View my fees', // new
+	VIEW_MY_FEES: '查看我的手续费', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'API密钥',
 		INFORMATION_TEXT:

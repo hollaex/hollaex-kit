@@ -674,7 +674,7 @@ export default {
 		WITHDRAWALS: 'Rút tiền'
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:'Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.',
 		OTP: {
 			TITLE: 'Xác thực 2 yếu tố',
 			OTP_ENABLED: 'Bật OTP',
@@ -707,9 +707,9 @@ export default {
 				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
-				TITLE_2: 'Enter One-Time Password (OTP)',
-				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
-				INPUT_2: 'One-Time Password (OTP)',
+				TITLE_2: 'Nhập mật khẩu một lần (OTP)',
+				MESSAGE_6: 'Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.',
+				INPUT_2: 'Mật khẩu một lần (OTP)',
 			},
 			FORM: {
 				PLACEHOLDER: 'Vui lòng nhập OTP được cung cấp bởi Google Authenticator.',
@@ -817,7 +817,7 @@ export default {
 	MARKET_PRICE: 'Giá thị trường',
 	ORDER_PRICE: 'Giá chỉ định',
 	TOTAL_ORDER: 'Tổng',
-	NO_DATA: 'Không có dữ liệu.',
+	NO_DATA: 'KHÔNG CÓ DỮ LIỆU',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -825,7 +825,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume'
+		v: 'Khối lượng'
 	},
 	QUICK_TRADE: 'Giao dịch nhanh',
 	PRO_TRADE: 'Giao dịch chuyên nghiệp',

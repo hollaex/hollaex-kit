@@ -674,7 +674,7 @@ export default {
 		WITHDRAWALS: 'Penarikan'
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:'Atur pengaturan keamanan akun Anda. Mulai dari Autentikasi dua-faktor, kata sandi, Kunci API, dan fungsi lain yang berkaitan dengan keamanan.',
 		OTP: {
 			TITLE: 'Autentikasi Dua-Faktor',
 			OTP_ENABLED: 'otp diaktifkan',
@@ -707,8 +707,8 @@ export default {
 				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
-				TITLE_2: 'Enter One-Time Password (OTP)',
-				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
+				TITLE_2: 'Masukkan One-Time Password (OTP)',
+				MESSAGE_6: 'Silakan masukkan 6 digit one-time password di bawah.',
 				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {

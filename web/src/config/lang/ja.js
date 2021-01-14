@@ -288,8 +288,8 @@ export default {
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'クイック取引',
 		TOTAL_COST: '総額',
-		BUTTON: '{0}注文を確認する',
-		INPUT: '{0}から{1}',
+		BUTTON: '{0}',
+		INPUT: '{0}を{1}',
 		TRADE_TITLE: '{0} {1}' // quick buy
 	},
 	PREVIOUS_PAGE: '前のページ',
@@ -673,7 +673,7 @@ export default {
 		WITHDRAWALS: '出金'
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:'2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。',
 		OTP: {
 			TITLE: '2段階認証(2FA)',
 			OTP_ENABLED: '2段階認証設定',
@@ -706,9 +706,9 @@ export default {
 				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
-				TITLE_2: 'Enter One-Time Password (OTP)',
-				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
-				INPUT_2: 'One-Time Password (OTP)',
+				TITLE_2: 'OTP(One-Time Password)コード入力',
+				MESSAGE_6: '下に6桁のOTPコードを入力してください。',
+				INPUT_2: 'OTPコード',
 			},
 			FORM: {
 				PLACEHOLDER: 'Google Authenticatorから発行されたOTPコードを入力してください。',
@@ -816,7 +816,7 @@ export default {
 	MARKET_PRICE: '市場価格',
 	ORDER_PRICE: '注文価格',
 	TOTAL_ORDER: '総額',
-	NO_DATA: '履歴がありません。',
+	NO_DATA: 'データがありません。',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -824,7 +824,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume'
+		v: '取引量'
 	},
 	QUICK_TRADE: 'クイック取引',
 	PRO_TRADE: 'プロ向け取引',
