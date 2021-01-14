@@ -220,7 +220,7 @@ table th {
 
 	.ant-select-selector {
 		border-radius: 0.35rem !important;
-		border-color: $colors-main-black !important;
+		border-color: $colors-main-border !important;
 		background-color: transparent !important;
 		color: $colors-main-black !important;
 		height: 20px !important;
@@ -262,4 +262,16 @@ table th {
 			width: 100% !important;
 		}
 	}
+}
+
+.border {
+	border-color: $colors-border !important;
+}
+
+.border-main {
+	border-color: $colors-main-border !important;
+}
+
+.border-pale {
+	border-color: $colors-super-pale-black !important;
 }

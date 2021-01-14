@@ -11,7 +11,7 @@ $logout--size-difference: 3rem;
 	.notification-title-wrapper {
 		height: 15rem;
 		padding: 0.5rem;
-		border-bottom: 1px solid $border-main;
+		border-bottom: 1px solid $colors-main-border;
 
 		.notification-title-icon {
 			max-height: 8rem;
@@ -44,7 +44,7 @@ $logout--size-difference: 3rem;
 		color: $colors-black;
 		.notification-content-title {
 			&.with-border-bottom {
-				border-bottom: 1px solid $border-main;
+				border-bottom: 1px solid $colors-main-border;
 			}
 		}
 		&.notification_verification {

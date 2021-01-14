@@ -1,8 +1,8 @@
 $tab_lines-height: 6px;
 $bottom_line-height: 4px;
 $font-color: $colors-deactivate-color2;
-$border--color: $sidebar-border--color;
-$border-active--color: $colors-main-black;
+$border--color: $colors-super-pale-black;
+$border-active--color: $colors-main-border;
 $boder--width: 1px;
 $icon--height: 2rem;
 $content--margin: 2rem;
@@ -154,7 +154,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 		}
 	}
 
-	@include bottom-border($border-main, $bottom_line-height);
+	@include bottom-border($colors-super-pale-black, $bottom_line-height);
 
 	.sign_up-btn,
 	.log_in-btn {
