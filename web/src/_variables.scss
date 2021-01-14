@@ -91,9 +91,9 @@ $base_top-bar-navigation_text-inactive: var(
 );
 $base_footer_text: var(--calculated_base_footer_text);
 
-$sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);
-$border-color: var(--labels_secondary-inactive-label-text-graphics);
-$border-main: var(--labels_important-active-labels-text-graphics);
+$sidebar-border--color: $colors-border;
+$border-color: $colors-border;
+$border-main: $colors-main-border;
 
 // form field colors
 $form-color-underline-focus: var(

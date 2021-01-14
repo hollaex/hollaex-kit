@@ -387,9 +387,9 @@ table th {
   .presentation_container .inner_container {
     position: relative; }
     .presentation_container .inner_container.with_border_top {
-      border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+      border-top: 1px solid var(--calculated_secondary-border); }
     .presentation_container .inner_container.with_border_bottom {
-      border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+      border-bottom: 1px solid var(--calculated_secondary-border); }
     .presentation_container .inner_container .information_block {
       position: relative;
       margin-bottom: 1rem; }
@@ -706,7 +706,7 @@ table th {
     position: relative; }
     .user-limits .user-limits-table .table-bottom-border td:not(:first-child),
     .user-limits .user-limits-table th:not(:first-child) {
-      border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+      border-bottom: 1px solid var(--calculated_important-border);
       padding: 0 0.25rem;
       min-width: 25%; }
   .user-limits .user-limits-table .td-fit {
@@ -827,7 +827,7 @@ table th {
 .popup_info-wrapper .popup_info-title {
   font-family: "Raleway";
   font-size: 1.25rem;
-  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  border-bottom: 1px solid var(--calculated_secondary-border); }
 
 .popup_info-wrapper .popup_info-text {
   font-size: 0.9rem; }
@@ -1072,7 +1072,7 @@ table th {
   .wallet-container .accordion_wrapper .accordion_section_content_text {
     color: var(--labels_important-active-labels-text-graphics) !important; }
     .wallet-container .accordion_wrapper .accordion_section_content_text:after {
-      border-left-color: var(--labels_important-active-labels-text-graphics) !important; }
+      border-left-color: var(--calculated_important-border) !important; }
   .wallet-container .wallet-assets_block .action_notification-wrapper {
     margin: 0 !important; }
   .wallet-container .wallet-assets_block .td-wallet {
@@ -1099,7 +1099,7 @@ table th {
       position: relative; }
       .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td:not(:first-child),
       .wallet-container .wallet-assets_block .wallet-assets_block-table th:not(:first-child) {
-        border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+        border-bottom: 1px solid var(--calculated_important-border);
         padding: 0 0.25rem; }
     .wallet-container .wallet-assets_block .wallet-assets_block-table .td-fit {
       width: 1%;
@@ -1910,7 +1910,7 @@ table th {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .trade_orderbook-wrapper .trade_orderbook-headers {
     font-weight: bold;
-    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+    border-bottom: 1px solid var(--calculated_important-border);
     text-transform: uppercase;
     min-height: 1.5rem; }
     .trade_orderbook-wrapper .trade_orderbook-headers .waves-icon {
@@ -2536,7 +2536,7 @@ table th {
   .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
-    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    border-bottom: 1px solid var(--calculated_secondary-border);
     color: var(--labels_secondary-inactive-label-text-graphics);
     font-weight: bold; }
   .summary-container .account-details-wrapper .status-header {
@@ -2661,25 +2661,25 @@ table th {
         font-size: 2rem; }
   .fee-limits-wrapper table {
     border-collapse: collapse;
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper td,
   .fee-limits-wrapper th {
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .account-limits {
     margin: 1rem 0;
     width: 100%; }
   .fee-limits-wrapper .account-limits-content {
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .account-limits-maker {
-    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    border-left: 1px solid var(--calculated_secondary-border);
+    border-right: 1px solid var(--calculated_secondary-border);
+    border-top: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .account-limits-taker {
-    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    border-bottom: 1px solid var(--calculated_secondary-border);
+    border-left: 1px solid var(--calculated_secondary-border);
+    border-right: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .account-limits-coin {
-    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    border-bottom: 1px solid var(--calculated_secondary-border);
     padding: 0.25rem 0.5rem;
     width: 14rem; }
   .fee-limits-wrapper .account-limits-status {
@@ -2869,7 +2869,7 @@ table th {
   .market-list__container .market-list__block .market-list__block-table .table-bottom-border td,
   .market-list__container .market-list__block .market-list__block-table th {
     position: relative;
-    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+    border-bottom: 1px solid var(--calculated_important-border);
     padding: 0 0.25rem; }
   .market-list__container .market-list__block .market-list__block-table .td-fit {
     width: 1%;
@@ -2924,7 +2924,7 @@ table th {
     letter-spacing: 0.3rem;
     font-size: 0.8rem; }
   .trade_tabs-container .trade_tabs-content {
-    border-top: 2px solid var(--labels_important-active-labels-text-graphics);
+    border-top: 2px solid var(--calculated_important-border);
     font-size: 0.8rem; }
   .trade_tabs-container .trade_tabs-link {
     color: var(--specials_buttons-links-and-highlights);
@@ -3741,7 +3741,7 @@ table th {
   height: 100%;
   width: 100%; }
   .sidebar-container .sidebar-row {
-    border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    border-top: 1px solid var(--calculated_secondary-border);
     flex: 0; }
   .sidebar-container .sidebar-notifications {
     flex: 1;
@@ -3827,10 +3827,10 @@ table th {
         fill: transparent; }
 
 .direction_ltr .sidebar-row .cell-wrapper:not(:last-child) {
-  border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  border-right: 1px solid var(--calculated_secondary-border); }
 
 .direction_rtl .sidebar-row .cell-wrapper:not(:last-child) {
-  border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  border-left: 1px solid var(--calculated_secondary-border); }
 
 @media screen and (max-height: 600px) {
   .sidebar-container .sidebar_hub-wrapper {
@@ -3857,7 +3857,7 @@ table th {
   display: flex;
   justify-content: space-between;
   align-content: center;
-  border-top: 2px solid var(--labels_secondary-inactive-label-text-graphics);
+  border-top: 2px solid var(--calculated_secondary-border);
   margin-bottom: 1rem; }
   .tab_controller-tabs .tab_item {
     border-top: 4px solid transparent;
@@ -3872,7 +3872,7 @@ table th {
   .tab_controller-tabs .tab-trade {
     padding: 0 1px 12px !important; }
   .tab_controller-tabs .tab_item-active {
-    border-top: 4px solid var(--labels_secondary-inactive-label-text-graphics);
+    border-top: 4px solid var(--calculated_secondary-border);
     color: var(--labels_important-active-labels-text-graphics); }
     .tab_controller-tabs .tab_item-active svg path {
       opacity: 1; }
@@ -4701,7 +4701,7 @@ table th {
 
 .app-bar-add-tab-menu {
   background-color: var(--base_background);
-  border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  border: 1px solid var(--calculated_secondary-border);
   color: var(--labels_secondary-inactive-label-text-graphics);
   width: 22rem;
   min-height: 8rem;
@@ -5072,7 +5072,7 @@ table th {
   height: 1.5rem; }
 
 .header_title-wrapper {
-  border-top: 1px solid var(--labels_important-active-labels-text-graphics);
+  border-top: 1px solid var(--calculated_important-border);
   margin-bottom: 1rem;
   padding-top: 0.5rem;
   position: relative; }
@@ -5097,7 +5097,7 @@ table th {
   min-width: 10rem; }
 
 .custom-tab-wrapper .tab_item-active {
-  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  border: 1px solid var(--calculated_important-border);
   color: var(--labels_important-active-labels-text-graphics) !important;
   font-weight: bold; }
   .custom-tab-wrapper .tab_item-active svg path {
@@ -5257,7 +5257,7 @@ table th {
 
 .sidebar_hub-wrapper {
   overflow-y: scroll;
-  border-bottom: 4px solid var(--labels_important-active-labels-text-graphics); }
+  border-bottom: 4px solid var(--calculated_important-border); }
   .sidebar_hub-wrapper .currency-selector .tab-action {
     height: 36px; }
     .sidebar_hub-wrapper .currency-selector .tab-action .tab-colors {
@@ -5273,8 +5273,8 @@ table th {
         bottom: 0;
         right: -1px;
         left: -1px;
-        border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-        background-color: var(--labels_secondary-inactive-label-text-graphics); }
+        border-bottom: 1px solid var(--calculated_secondary-border);
+        background-color: var(--calculated_secondary-border); }
     .sidebar_hub-wrapper .currency-selector .tab-action.tab-active {
       font-weight: bold;
       position: relative;
@@ -5284,8 +5284,8 @@ table th {
         position: absolute;
         width: 100%;
         height: 100%;
-        border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-        border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+        border-right: 1px solid var(--calculated_secondary-border);
+        border-left: 1px solid var(--calculated_secondary-border); }
       .sidebar_hub-wrapper .currency-selector .tab-action.tab-active:first-child:after {
         border-left: none; }
       .sidebar_hub-wrapper .currency-selector .tab-action.tab-active:last-child:after {
@@ -5315,7 +5315,7 @@ table th {
   .sidebar_hub-wrapper .sidebar_hub-content {
     margin: 1.5rem 2rem; }
     .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section {
-      border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+      border-top: 1px solid var(--calculated_secondary-border); }
       .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section:not(:last-child) {
         margin-bottom: 1.5rem; }
       .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section > div:nth-child(n + 2) {
@@ -5347,11 +5347,11 @@ table th {
   .sidebar_hub-wrapper .log_in-btn {
     background: var(--base_background) !important;
     color: var(--labels_important-active-labels-text-graphics) !important;
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    border: 1px solid var(--calculated_secondary-border); }
   .sidebar_hub-wrapper .sidebar_hub-trade .sidebar_hub-button.not-active {
     background: var(--base_background) !important;
     color: var(--labels_important-active-labels-text-graphics) !important;
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    border: 1px solid var(--calculated_secondary-border); }
   .sidebar_hub-wrapper .sidebar_hub-trade .sidebar_hub-button.active {
     background: var(--labels_important-active-labels-text-graphics) !important;
     border: 1px solid var(--labels_important-active-labels-text-graphics); }
@@ -5383,7 +5383,7 @@ table th {
   .notification-wrapper .notification-title-wrapper {
     height: 15rem;
     padding: 0.5rem;
-    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+    border-bottom: 1px solid var(--calculated_important-border); }
     .notification-wrapper .notification-title-wrapper .notification-title-icon {
       max-height: 8rem;
       margin: 2rem 0; }
@@ -5407,7 +5407,7 @@ table th {
     flex: 1;
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .notification-wrapper .notification-content-wrapper .notification-content-title.with-border-bottom {
-      border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+      border-bottom: 1px solid var(--calculated_important-border); }
     .notification-wrapper .notification-content-wrapper.notification_verification {
       text-align: center; }
       .notification-wrapper .notification-content-wrapper.notification_verification .notification-content-title {
@@ -5911,7 +5911,7 @@ table th {
     height: 1px;
     width: 100%;
     position: absolute;
-    background-color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--calculated_important-border);
     left: 0;
     right: 0;
     top: 50%; }
@@ -6419,7 +6419,7 @@ table th {
     content: '';
     width: 100%;
     height: 1px;
-    background: var(--labels_important-active-labels-text-graphics);
+    background: var(--calculated_important-border);
     position: absolute;
     bottom: 0;
     left: 0; }
@@ -6537,7 +6537,7 @@ table th {
   width: 38rem; }
 
 .otp_form-title-wrapper {
-  border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  border-top: 1px solid var(--calculated_secondary-border);
   margin: 1rem 0;
   position: relative; }
   .otp_form-title-wrapper .otp_form-title-text {
@@ -6836,8 +6836,8 @@ table th {
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
       border: none !important; }
     .table-wrapper .table_body-wrapper tr.table_body-row td {
-      border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-      border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+      border-top: 1px solid var(--calculated_secondary-border);
+      border-bottom: 1px solid var(--calculated_secondary-border); }
     .table-wrapper .table_body-wrapper .cancel-animate, .table-wrapper .table_body-wrapper .cancel-row-color, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .sell,
     .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .buy, .table-wrapper .table_body-wrapper .cancel-row-color .action_notification-wrapper .notification-info, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper .cell_value-bar {
       -webkit-animation: cancelRow 1.4s;
@@ -6880,7 +6880,7 @@ table th {
 .table_controllers-wrapper {
   margin: 2rem 0;
   color: var(--labels_important-active-labels-text-graphics);
-  border-top: 2px solid var(--labels_secondary-inactive-label-text-graphics);
+  border-top: 2px solid var(--calculated_secondary-border);
   position: relative; }
   .table_controllers-wrapper .disabled {
     cursor: default;
@@ -6907,7 +6907,7 @@ table th {
   height: 100%; }
   .display_table-wrapper .display_table-header {
     font-weight: bold;
-    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+    border-bottom: 1px solid var(--calculated_important-border); }
   .display_table-wrapper .display_table-body {
     overflow-y: auto; }
   .display_table-wrapper .display_table-cell {
@@ -7432,7 +7432,7 @@ foreignObject {
       height: 1px;
       width: 100%;
       position: absolute;
-      background-color: var(--labels_important-active-labels-text-graphics);
+      background-color: var(--calculated_important-border);
       left: 0;
       right: 0;
       top: 50%; }
@@ -7455,7 +7455,7 @@ foreignObject {
     font-size: 1.25rem;
     font-family: "Raleway Medium"; }
   .quick_trade-wrapper .input_block-content {
-    border-bottom: 2px solid var(--labels_important-active-labels-text-graphics);
+    border-bottom: 2px solid var(--calculated_important-border);
     width: 100%; }
     .quick_trade-wrapper .input_block-content.has_error {
       border-bottom-color: var(--specials_notifications-alerts-warnings); }
