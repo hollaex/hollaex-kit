@@ -25,7 +25,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.trade_tabs-content {
-		border-top: 2px solid $border-main;
+		border-top: 2px solid $colors-main-border;
 		font-size: 0.8rem;
 	}
 
@@ -37,7 +37,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.link-separator {
-		border-right: 1px solid $dark-font-sub-text-1-color;
+		border-right: 1px solid $colors-border;
 	}
 
 	.trade_tabs-search-field {
@@ -217,10 +217,13 @@ $trade-tab--arrow-size: 0.4rem;
 			$app-background-color,
 			$market-card_gradient_background
 		);
-		border: 1px solid $colors-black;
+		border: 1px solid $colors-super-pale-black;
 		border-radius: 0.5rem;
 		padding: 1rem 0 0;
 		margin: 2rem 1.5rem;
+		-webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+		-moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
 
 		svg {
 			.xht-icon-1 {
@@ -229,7 +232,7 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		&:hover {
-			border: 1px solid $colors-black;
+			border: 1px solid $colors-border;
 			color: $colors-black;
 			position: relative;
 			bottom: 0.5rem;

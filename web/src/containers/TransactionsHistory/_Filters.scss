@@ -34,7 +34,7 @@
 	.ant-picker {
 		color: $colors-black;
 		background-color: transparent;
-		border-bottom: 1px solid $colors-black;
+		border-bottom: 1px solid $colors-border;
 		border-top: none;
 		border-left: none;
 		border-right: none;
@@ -52,7 +52,7 @@
 	.ant-picker-focused,
 	.ant-picker:hover,
 	.ant-picker:active {
-		border-color: $colors-main-black;
+		border-color: $colors-main-border;
 	}
 
 	.ant-picker-clear {
@@ -70,8 +70,8 @@
 	.ant-radio-group {
 		margin-top: 0;
 		padding: 0 15px;
-		border-right: 1px $colors-black solid;
-		border-left: 1px $colors-black solid;
+		border-right: 1px $colors-border solid;
+		border-left: 1px $colors-border solid;
 	}
 
 	.ant-btn-ghost {

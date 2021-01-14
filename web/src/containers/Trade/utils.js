@@ -52,7 +52,7 @@ const getDepth = (state) => state.orderbook.depth;
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
 	(pairsOrders, pair, level, pairs, depthLevel) => {
-		const { increment_price } = pairs[pair];
+		const { increment_price } = pairs[pair] || {};
 		const { asks: rawAsks = [], bids: rawBids = [] } = pairsOrders[pair] || {};
 
 		const depth = depthLevel * increment_price;

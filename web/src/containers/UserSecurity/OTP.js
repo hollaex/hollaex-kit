@@ -73,7 +73,7 @@ export const renderOTPForm = (
 
 export const OTP = ({
 	requestOTP,
-	data,
+	data = {},
 	otp_enabled,
 	children,
 	icons = {},
