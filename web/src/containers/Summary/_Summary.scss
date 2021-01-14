@@ -442,7 +442,7 @@ $trade-tab--arrow-size: 0.4rem;
 			border-bottom: none !important;
 		}
 		.requirement-header {
-			border-bottom: 1px solid $border-color;
+			border-bottom: 1px solid $colors-border;
 			color: $colors-black;
 			font-weight: bold;
 		}
@@ -585,32 +585,32 @@ $trade-tab--arrow-size: 0.4rem;
 
 	table {
 		border-collapse: collapse;
-		border: 1px solid $border-color;
+		border: 1px solid $colors-border;
 	}
 
 	td,
 	th {
-		border: 1px solid $border-color;
+		border: 1px solid $colors-border;
 	}
 	.account-limits {
 		margin: 1rem 0;
 		width: 100%;
 	}
 	.account-limits-content {
-		border: 1px solid $border-color;
+		border: 1px solid $colors-border;
 	}
 	.account-limits-maker {
-		border-left: 1px solid $border-color;
-		border-right: 1px solid $border-color;
-		border-top: 1px solid $border-color;
+		border-left: 1px solid $colors-border;
+		border-right: 1px solid $colors-border;
+		border-top: 1px solid $colors-border;
 	}
 	.account-limits-taker {
-		border-bottom: 1px solid $border-color;
-		border-left: 1px solid $border-color;
-		border-right: 1px solid $border-color;
+		border-bottom: 1px solid $colors-border;
+		border-left: 1px solid $colors-border;
+		border-right: 1px solid $colors-border;
 	}
 	.account-limits-coin {
-		border-bottom: 1px solid $border-color;
+		border-bottom: 1px solid $colors-border;
 		padding: 0.25rem 0.5rem;
 		width: 14rem;
 	}

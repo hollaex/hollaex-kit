@@ -132,7 +132,7 @@ $title-icon--height: 10rem;
 				height: 1px;
 				width: 100%;
 				position: absolute;
-				background-color: $border-main;
+				background-color: $colors-main-border;
 				left: 0;
 				right: 0;
 				top: 50%;
@@ -170,7 +170,7 @@ $title-icon--height: 10rem;
 	}
 
 	.input_block-content {
-		border-bottom: $input-bottom_line--height solid $border-main;
+		border-bottom: $input-bottom_line--height solid $colors-main-border;
 		width: 100%;
 		&.has_error {
 			border-bottom-color: $colors-notifications-red;

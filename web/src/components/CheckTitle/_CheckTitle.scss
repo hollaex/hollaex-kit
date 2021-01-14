@@ -191,7 +191,7 @@ $notification-size: 1.5rem;
 }
 
 .header_title-wrapper {
-	border-top: 1px solid $border-main;
+	border-top: 1px solid $colors-main-border;
 	margin-bottom: 1rem;
 	padding-top: 0.5rem;
 	position: relative;
@@ -226,7 +226,7 @@ $notification-size: 1.5rem;
 	}
 
 	.tab_item-active {
-		border: 1px solid $border-main;
+		border: 1px solid $colors-main-border;
 		color: $tab-active !important;
 		font-weight: bold;
 
