@@ -33,6 +33,7 @@ import {
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
+import { requestConstant } from 'actions/appActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
@@ -96,6 +97,9 @@ const getConfigs = async () => {
 		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
 	});
 
+	const { data: { coins = {} } = {} } = await requestConstant();
+	const coin_keys = Object.keys(coins);
+
 	setDefaultLogo(logo_image);
 	setBaseCurrency(native_currency);
 	setLocalVersions(remoteVersions);
@@ -103,7 +107,7 @@ const getConfigs = async () => {
 	setExchangeInitialized(initialized);
 	setSetupCompleted(setup_completed);
 
-	return merge({}, defaultConfig, remoteConfigs);
+	return merge({}, defaultConfig, remoteConfigs, { coin_keys });
 };
 
 const bootstrapApp = (appConfig) => {
