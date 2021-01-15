@@ -747,6 +747,8 @@ export default {
 		},
 		LOGIN: {
 			TITLE: 'Login History',
+			IP_ADDRESS: 'IP Address',
+			TIME: 'Date/Time',
 			CONTENT: {
 				TITLE: 'Logins History',
 				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
@@ -1106,7 +1108,7 @@ export default {
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
 	WALLET_ADDRESS_MESSAGE:
-		'When you generate a wallet you create a deposit and withdrawal address.',
+		'When you generate a wallet, you create a deposit and withdrawal address.',
 	WALLET_ADDRESS_ERROR:
 		'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',

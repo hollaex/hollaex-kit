@@ -67,6 +67,8 @@ export const ICONS = {
 	XMR_ICON: '/assets/icons/xmr-icon.svg',
 	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
+	BTCV_ICON: '/assets/icons/btcv-icon.svg',
+	BTCV_ICON_DARK: '/assets/icons/btcv-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -262,6 +264,10 @@ export const ICONS = {
 	SETTING_RISK_ADJUST_ICON: '/assets/images/risk-management-pop-adjust.svg',
 	SETTING_RISK_MANAGE_WARNING_ICON:
 		'/assets/images/risk-manage-pop-warning.svg',
+	SECURITY_2FA_ICON: '/assets/images/2fa-security-icon.svg',
+	SECURITY_CHANGE_PASSWORD_ICON: '/assets/images/password-security-icon.svg',
+	SECURITY_API_ICON: '/assets/images/api-security-icon.svg',
+
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
