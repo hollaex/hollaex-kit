@@ -34,7 +34,7 @@ export default {
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Feel free to contact us for more information and any issues by sending us an email',
 	HELP_TELEGRAM_TEXT: 'Check out open API documentation:',
-	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
+	HELP_TELEGRAM_LINK: 'https://apidocs.xivex.com',
 	NEED_HELP_TEXT: 'Need help?', // new
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
@@ -747,6 +747,8 @@ export default {
 		},
 		LOGIN: {
 			TITLE: 'Login History',
+			IP_ADDRESS: 'IP Address',
+			TIME: 'Date/Time',
 			CONTENT: {
 				TITLE: 'Logins History',
 				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
@@ -1106,7 +1108,7 @@ export default {
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
 	WALLET_ADDRESS_MESSAGE:
-		'When you generate a wallet you create a deposit and withdrawal address.',
+		'When you generate a wallet, you create a deposit and withdrawal address.',
 	WALLET_ADDRESS_ERROR:
 		'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
@@ -1197,7 +1199,7 @@ export default {
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		LEVEL_TXT_DEFAULT: 'Add your level description here',
 		LEVEL_1_TXT:
-			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
+			' Your journey starts here XIVeX crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
 		LEVEL_2_TXT:
 			'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
 		LEVEL_3_TXT:

@@ -217,26 +217,26 @@ class UserSettings extends Component {
 					/>
 				)
 			},
-			{
-				title: isMobile ? (
-					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
-						icon={ICONS.SETTING_CHAT_ICON}
-					/>
-				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
-						icon={ICONS.SETTING_CHAT_ICON}
-					/>
-				),
-				content: activeTab === 3 && (
-					<UsernameForm
-						onSubmit={this.onSubmitUsername}
-						formFields={usernameFormValues}
-						initialValues={{ username }}
-					/>
-				)
-			},
+			// {
+			// 	title: isMobile ? (
+			// 		<CustomMobileTabs
+			// 			title={STRINGS.USER_SETTINGS.TITLE_CHAT}
+			// 			icon={ICONS.SETTING_CHAT_ICON}
+			// 		/>
+			// 	) : (
+			// 		<CustomTabs
+			// 			title={STRINGS.USER_SETTINGS.TITLE_CHAT}
+			// 			icon={ICONS.SETTING_CHAT_ICON}
+			// 		/>
+			// 	),
+			// 	content: activeTab === 3 && (
+			// 		<UsernameForm
+			// 			onSubmit={this.onSubmitUsername}
+			// 			formFields={usernameFormValues}
+			// 			initialValues={{ username }}
+			// 		/>
+			// 	)
+			// },
 			{
 				title: isMobile ? (
 					<CustomMobileTabs

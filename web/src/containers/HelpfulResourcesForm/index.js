@@ -78,7 +78,6 @@ class HelpfulResourcesForm extends Component {
 								text={STRINGS.HELP_EXIR_TUTORIAL_LINK}
 							/>
 						</div>
-						<div className="w-25" />
 					</div>
 					<div className='d-flex mt-5 mb-5'>
 						<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
@@ -89,7 +88,6 @@ class HelpfulResourcesForm extends Component {
 								text={STRINGS.HELP_TELEGRAM_LINK}
 							/>
 						</div>
-						<div className="w-25" />
 					</div>
 					<div className='w-100 buttons-wrapper d-flex' >
 						<Button label={STRINGS.BACK_TEXT} onClick={onClose}/>

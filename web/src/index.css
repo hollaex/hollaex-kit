@@ -2603,7 +2603,7 @@ table th {
   .help-wrapper .buttons-wrapper {
     margin-top: 1.5rem; }
   .help-wrapper .text {
-    font-size: 0.8rem;
+    font-size: 1rem;
     flex: 6;
     margin-left: 1rem; }
   .help-wrapper .separator {
@@ -4623,7 +4623,8 @@ table th {
   .check_title-container .custom_title-label {
     font-size: 1.25rem;
     line-height: 1.25rem;
-    padding: 0.25rem 0; }
+    padding: 0.25rem 0;
+    text-align: center; }
   .check_title-container .check_title-icon {
     flex-direction: column;
     justify-content: center;
@@ -7806,7 +7807,6 @@ foreignObject {
   .dark-theme .quick_trade-wrapper > .quick_trade-section_wrapper.fetching {
     color: var(--dark-disabled-main); }
   .dark-theme .quick_trade-wrapper .quick_trade-section_wrapper .exir-button.disabled {
-    background-color: var(--dark-app-background-color) !important;
     color: var(--dark-inactive-color) !important; }
   .dark-theme .quick_trade-wrapper .quick_trade-section_wrapper .input_block-inputbox {
     background-color: var(--dark-quick-trade-container); }
