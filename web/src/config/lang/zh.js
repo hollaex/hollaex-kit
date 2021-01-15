@@ -36,7 +36,7 @@ export default {
 	HELP_TELEGRAM_TEXT: '确认HollaEx的开放API:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: '需要帮助吗?', // new
-	HELP_TEXT: 'help',
+	HELP_TEXT: '帮助',
 	SUCCESS_TEXT: '成功',			
 	ERROR_TEXT: '错误',
 	PROCEED: '实行',
@@ -119,7 +119,7 @@ export default {
 	},
 	ACCOUNTS: {
 		TITLE: '账号',
-		TAB_VERIFICATION: '核查',
+		TAB_VERIFICATION: '审核',
 		TAB_SECURITY: '安全性',
 		TAB_NOTIFICATIONS: '通知',
 		TAB_SETTINGS: '设置',
@@ -278,7 +278,7 @@ export default {
 		TITLE: '快速',
 		TOTAL_COST: '总费用',
 		BUTTON: '审阅{0}订单',
-		INPUT: '{0}至{1}',
+		INPUT: '{0}{1}',
 		TRADE_TITLE: '{0} {1}' // quick buy
 	},
 	PREVIOUS_PAGE: '上一页',
@@ -347,7 +347,7 @@ export default {
 		TEXT_2: '请继续登录'
 	},
 	USER_VERIFICATION: {
-		INFO_TXT: '可在这里确认验证和账号升级速度',
+		INFO_TXT: '在此页面可查看验证及账户升级进度 ',
 		INFO_TXT_1:
 			'请提交以下各部分所需的相关信息，只有在所有部分提交完成后，你的信息才会被审查和批准账户升级。',
 		INFO_TXT_2: '*身份认证部分需要{0}某些文件',
@@ -418,7 +418,7 @@ export default {
 			'文件已提交，正在等待审核，请耐心等待。',
 		DOCUMENT_VERIFIED_NOTE: '文件审核完成',
 		NOTE_FROM_VERIFICATION_DEPARTMENT: '核查部门的说明',
-		CODE_EXPIRES_IN: '代码到期',
+		CODE_EXPIRES_IN: '验证码有效时间 ',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: '名字',
@@ -460,9 +460,9 @@ export default {
 				TEXT:
 					'*重要: 请按照身份证上的姓名准确填写，如果您是企业账号，请联系客服以获得企业账号。',
 				TITLE_PERSONAL_INFORMATION: '个人资料',
-				TITLE_PHONE: '联系人',
+				TITLE_PHONE: '手机绑定',
 				PHONE_VERIFICATION_TXT:
-					'提供有效的联系人将极大地帮助我们解决问题，同时防止用户账户发生不必要的交易。',
+					'提供有效的手机绑定将极大地帮助我们解决问题，同时防止用户账户发生不必要的交易。',
 				PHONE_VERIFICATION_TXT_1:
 					'通过认证手机号码，可以实时接收充值和取款信息。',
 				PHONE_VERIFICATION_TXT_2:
@@ -602,11 +602,25 @@ export default {
 			POPUP_ORDER_COMPLETED: '订单完成时弹窗',
 			POPUP_ORDER_PARTIALLY_FILLED: '部分订单已满时弹窗'
 		},
-		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO: '当一个订单已满时，播放提醒',
+		AUDIO_CUE_FORM: { // new
+			ALL_AUDIO: '所有声音提示',
+			PUBLIC_TRADE_AUDIO: '公开交易播放提醒',
 			ORDERS_PARTIAL_AUDIO:
 				'当一个订单部分已满时，播放提醒',
-			PUBLIC_TRADE_AUDIO: '公开交易播放提醒'
+			ORDERS_PLACED_AUDIO:
+				'创建订单时',
+			ORDERS_CANCELED_AUDIO:
+				'取消订单时',
+			ORDERS_COMPLETED_AUDIO:
+				'当一个订单已满时，播放提醒',
+			CLICK_AMOUNTS_AUDIO:
+				'在订单页面点击数量和金额时',
+			GET_QUICK_TRADE_AUDIO:
+				'获得快速交易报价时 ',
+			SUCCESS_QUICK_TRADE_AUDIO:
+				'成功进行快速交易时',
+			QUICK_TRADE_TIMEOUT_AUDIO:
+				'快速交易超时时',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -629,8 +643,9 @@ export default {
 		WITHDRAWALS: '提款'
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'调整账户的安全设置，谷歌验证、密码、API密钥等安全相关功能。',
 		OTP: {
-			TITLE: '双因素认证（2FA）',
+			TITLE: '谷歌验证（2FA）',
 			OTP_ENABLED: '启用OTP',
 			OTP_DISABLED: '请激活2FA',
 			ENABLED_TEXTS: {
@@ -653,9 +668,17 @@ export default {
 				MESSAGE_5: '指南',
 				INPUT: '输入一次性密码（OTP)',
 				WARNING:
-					'强烈建议你设置双因素认证（2FA），这将会非常提高资金的安全性。',
-				ENABLE: '启用双因素认证（2FA）',
-				DISABLE: '禁用双因素认证（2FA）'
+					'强烈建议你设置谷歌验证（2FA），这将大幅提高资金的安全性。 ',
+				ENABLE: '启用谷歌验证（2FA）',
+				DISABLE: '禁用双因素认证（2FA）',
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'Enter One-Time Password (OTP)',
+				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
+				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {
 				PLACEHOLDER:
@@ -686,9 +709,9 @@ export default {
 			}
 		},
 		LOGIN: {
-			TITLE: 'Login History',
+			TITLE: '登录记录',
 			CONTENT: {
-				TITLE: 'Logins History',
+				TITLE: '交易记录',
 				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
 			}
 		},
@@ -708,15 +731,15 @@ export default {
 			}
 		}
 	},
-	CURRENCY: 'Currency',
+	CURRENCY: '加密货币',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
 		limit: 'limit'
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' },
-		{ value: 'limit', label: 'limit' }
+		{ value: 'market', label: '市价' },
+		{ value: 'limit', label: '限价' }
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -728,10 +751,10 @@ export default {
 		{ value: true, label: 'on' },
 		{ value: false, label: 'off' }
 	],
-	SIZE: 'Size',
-	PRICE: 'Price',
+	SIZE: '数量',
+	PRICE: '价格',
 	FEE: 'Fee',
-	FEES: 'Fees',
+	FEES: '手续费',
 	LIMIT: 'Limit',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
@@ -746,13 +769,13 @@ export default {
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
 	GO_TRADE_HISTORY: '前往交易历史',
-	ORDER_ENTRY: 'order entry',
-	TRADE_HISTORY: 'trade history',
-	CHART: 'price chart',
+	ORDER_ENTRY: '委托',
+	TRADE_HISTORY: '交易记录',
+	CHART: '价格表',
 	ORDERS: '我的有效订单',
 	TRADES: '我的交易记录',
 	RECENT_TRADES: '最近交易', // ToDo
-	PUBLIC_SALES: 'public sales', // ToDo
+	PUBLIC_SALES: '实时成交', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
 	PRICE_CURRENCY: 'PRICE ({0})',
@@ -760,7 +783,7 @@ export default {
 	MARKET_PRICE: '市场价格',
 	ORDER_PRICE: '订购价格',
 	TOTAL_ORDER: '订单总数',
-	NO_DATA: '无数据',
+	NO_DATA: '暂无数据',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -857,8 +880,8 @@ export default {
 			'If you’d like to view your withdrawal please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 	},
-	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
-	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
+	WALLET_BUTTON_BASE_DEPOSIT: '充值',
+	WALLET_BUTTON_BASE_WITHDRAW: '提款',
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
 	AVAILABLE_TEXT: 'Available',
@@ -866,8 +889,8 @@ export default {
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
-	WALLET_TABLE_TOTAL: 'Grand Total',
-	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_TABLE_TOTAL: '总计',
+	WALLET_ALL_ASSETS: '全部资产',
 	WALLET_DEPOSIT_USD:
 		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
@@ -951,13 +974,14 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: '提款失效',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: '你的账户已被禁止提款',
 	UP_TO_MARKET: 'Up to market',
+	VIEW_MY_FEES: '查看我的手续费', // new
 	DEVELOPER_SECTION: {
-		TITLE: 'API Key',
+		TITLE: 'API密钥',
 		INFORMATION_TEXT:
 			'该API提供的功能包括获取钱包余额、管理买入/卖出订单、请求提款以及最近交易、订单簿和行情等市场数据。',
 		ERROR_INACTIVE_OTP:
 			'若要生成API Kye，需要启用双因素认证（2FA）。',
-		ENABLE_2FA: '启用2FA',
+		ENABLE_2FA: '启用谷歌验证',
 		WARNING_TEXT: '不要与他人分享你的API Key',
 		GENERATE_KEY: '生成API Kye',
 		ACTIVE: '激活',
@@ -1066,7 +1090,7 @@ export default {
 		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
 		URGENT_REQUIREMENTS: 'Urgent Requirements',
 		TRADING_VOLUME: 'Trading Volume',
-		ACCOUNT_ASSETS: 'Account Assets',
+		ACCOUNT_ASSETS: '账户资产',
 		ACCOUNT_DETAILS: 'Account Details',
 		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
 		SHRIMP_ACCOUNT_TXT_2:
@@ -1081,7 +1105,7 @@ export default {
 			'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
 		VIEW_FEE_STRUCTURE: '查看手续费结构和限额',
 		UPGRADE_ACCOUNT: '升级账号',
-		ACTIVE_2FA_SECURITY: '启用2FA安全',
+		ACTIVE_2FA_SECURITY: '启用2FA验证',
 		ACCOUNT_ASSETS_TXT_1: '显示的是所有资产的摘要',
 		ACCOUNT_ASSETS_TXT_2:
 			'持有大量资产将使你有权获得账户升级，其中包括一个独特的徽章和较低的交易手续费。',
@@ -1118,7 +1142,7 @@ export default {
 		NOMINAL_TRADING_WITH_MONTH: '过去{0}名义上的交易',
 		ACCOUNT_AGE_OF_MONTHS: '账户年龄为{0}个月',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1}交易量等值',
-		LEVEL_OF_ACCOUNT: '级别{0}账户',
+		LEVEL_OF_ACCOUNT: '{0}级账户',
 		LEVEL_TXT_DEFAULT: '在此处添加你的等级描述',
 		LEVEL_1_TXT:
 			'加密交易员的旅程从这里开始！为了获得奖金，你可以验证身份，并获得更高的充值和提款限额、降低交易手续费。', // new
@@ -1177,7 +1201,7 @@ export default {
 		LEARN_MORE_WAVE_AUCTION: '了解更多关于波段拍卖的信息', // new
 		WAVE_NUMBER: '波段号', // new
 		DISCOUNT: '( {0}%折扣 )', // new
-		MY_FEES_LIMITS: ' 我的手续费限额' // ne
+		MY_FEES_LIMITS: ' 我的手续费及限额' // ne
 	},
 	REFERRAL_LINK: {
 		TITLE: '邀请好友', // new

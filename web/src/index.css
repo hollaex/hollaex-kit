@@ -4623,7 +4623,8 @@ table th {
   .check_title-container .custom_title-label {
     font-size: 1.25rem;
     line-height: 1.25rem;
-    padding: 0.25rem 0; }
+    padding: 0.25rem 0;
+    text-align: center; }
   .check_title-container .check_title-icon {
     flex-direction: column;
     justify-content: center;

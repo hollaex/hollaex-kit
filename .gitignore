@@ -3,11 +3,18 @@
 # dependencies
 node_modules
 
+# idea
+.idea/
+
 # testing
 web/coverage
 
 # production
 build
+
+# surge
+web/CNAME
+server/tools/hollaex-kit.env.local
 
 # misc
 web/.DS_Store

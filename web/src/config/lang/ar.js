@@ -648,6 +648,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		WITHDRAWALS: 'برداشت ها'
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: 'رمز دو عاملی',
 			OTP_ENABLED: 'رمز یکبار مصرف را فعال کنید',
@@ -674,7 +675,15 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 				WARNING:
 					'اکیدا توصیه می کنیم رمز دو عاملی حساب خود را فعال کنید. این کار امنیت حساب شما را به طور قابل توجهی افزایش می دهد.',
 				ENABLE: 'رمز دو عاملی را فعال کنید',
-				DISABLE: 'غیر فعال کردن رمز دو عاملی'
+				DISABLE: 'غیر فعال کردن رمز دو عاملی',
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'Enter One-Time Password (OTP)',
+				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
+				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {
 				PLACEHOLDER: ' ارائه شده توسط Google Authenticator را وارد کنید',

@@ -30,7 +30,7 @@ export default {
 	ADD_FILES: 'ファイルを追加', // ToDo
 	OR_TEXT: 'または',
 	CONTACT_US_TEXT: 'お問い合わせ',
-	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
+	HELPFUL_RESOURCES_TEXT: '有用なリソース',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'お問い合わせはサポートセンターまでご連絡ください。',
 	HELP_TELEGRAM_TEXT: 'オープンAPIドキュメント：',
@@ -43,7 +43,7 @@ export default {
 	EDIT_TEXT: '編集',
 	BACK_TEXT: '戻る',
 	NO_OPTIONS: '利用できるオプションがありません。',
-	SECONDS: 'seconds',
+	SECONDS: '秒',
 	VIEW_MARKET: '取引所', // new
 	GO_TRADE: '取引を始める', // new
 	VIEW_INFO: 'インフォメーション', // new
@@ -126,10 +126,10 @@ export default {
 		VISIT_HERE: 'visit here'
 	},
 	ACCOUNTS: {
-		TITLE: 'アカウント',
+		TITLE: 'マイページ',
 		TAB_VERIFICATION: '会員情報',
 		TAB_SECURITY: 'セキュリティ',
-		TAB_NOTIFICATIONS: '通知',
+		TAB_NOTIFICATIONS: 'アラート',
 		TAB_SETTINGS: '設定',
 		TAB_PROFILE: 'プロファイル',
 		TAB_WALLET: 'ウォレット',
@@ -188,9 +188,9 @@ export default {
 	},
 	LOGIN: {
 		LOGIN_TO: '{0}にログイン',
-		CANT_LOGIN: "ログインができませんか？",
+		CANT_LOGIN: "ログインにお困りですか？",
 		NO_ACCOUNT: "アカウントをお持ちでないですか？",
-		CREATE_ACCOUNT: 'アカウントを作成する',
+		CREATE_ACCOUNT: 'アカウント作成',
 		HELP: 'ヘルプ'
 	},
 	FORM_FIELDS: {
@@ -288,8 +288,8 @@ export default {
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'クイック取引',
 		TOTAL_COST: '総額',
-		BUTTON: '{0}注文を確認する',
-		INPUT: '{0}から{1}',
+		BUTTON: '{0}',
+		INPUT: '{0}を{1}',
 		TRADE_TITLE: '{0} {1}' // quick buy
 	},
 	PREVIOUS_PAGE: '前のページ',
@@ -468,7 +468,7 @@ export default {
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: '携帯電話番号',
 				PHONE_NUMBER_PLACEHOLDER: '電話番号を入力してください。',
-				CONNECTING_LOADING: 'Connecting',
+				CONNECTING_LOADING: '接続中',
 				SMS_SEND: 'SMSを送る',
 				SMS_CODE_LABEL: 'SMSコード',
 				SMS_CODE_PLACEHOLDER: '受信されたSMSコードを入力してください。'
@@ -625,31 +625,31 @@ export default {
 			'注文値がポートフォリオの{0}を超える場合に警告通知を表示させることができます。',
 		ORDER_PORTFOLIO_LABEL: 'ポートフォリオのパーセンテージ：',
 		NOTIFICATION_FORM: {
-			TRADE_POPUPS: '注文通知',
-			POPUP_ORDER_CONFIRMATION: '注文を入れる時に確認の通知を表示する',
-			POPUP_ORDER_COMPLETED: '注文が完了した時に通知を表示する',
+			TRADE_POPUPS: '注文アラート',
+			POPUP_ORDER_CONFIRMATION: '注文を入れる前に確認する時',
+			POPUP_ORDER_COMPLETED: '注文が完了した時',
 			POPUP_ORDER_PARTIALLY_FILLED:
-				'注文が一部成立された時に通知を表示する'
+				'注文が一部成立した時'
 		},
 		AUDIO_CUE_FORM: { // new
-			ALL_AUDIO: 'All Audio cues',
-			PUBLIC_TRADE_AUDIO: '全ての一般取引に対してアラームを再生する',
+			ALL_AUDIO: '全てのサウンド',
+			PUBLIC_TRADE_AUDIO: '全ての取引に対して',
 			ORDERS_PARTIAL_AUDIO:
-				'注文が一部成立された時にアラームを再生する',
+				'注文が一部成立した時',
 			ORDERS_PLACED_AUDIO:
-				'When an order is placed',
+				'注文が入った時',
 			ORDERS_CANCELED_AUDIO:
-				'When an order is canceled',
+				'注文がキャンセルされた時',
 			ORDERS_COMPLETED_AUDIO:
-				'1つの注文が全て成立された時にアラームを再生する',
+				'注文が全て成立した時',
 			CLICK_AMOUNTS_AUDIO:
-				'When clicking amounts and prices on the orderbook',
+				'注文一覧の数量と価格をクリックする時',
 			GET_QUICK_TRADE_AUDIO:
-				'When getting a quote for quick trading',
+				'クイック取引の注文',
 			SUCCESS_QUICK_TRADE_AUDIO:
-				'When a successful quick trade occurs',
+				'クイック取引の注文成立',
 			QUICK_TRADE_TIMEOUT_AUDIO:
-				'When quick trade timeout',
+				'クイック取引のタイムアウト',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -673,6 +673,7 @@ export default {
 		WITHDRAWALS: '出金'
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。',
 		OTP: {
 			TITLE: '2段階認証(2FA)',
 			OTP_ENABLED: '2段階認証設定',
@@ -699,7 +700,15 @@ export default {
 				WARNING:
 					'アカウントのセキュリティをより強化するため、認証アプリによる2段階認証(2FA)の設定を強く推奨いたします。',
 				ENABLE: '2段階認証を設定する',
-				DISABLE: '2段階認証を解除する'
+				DISABLE: '2段階認証を解除する',
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'OTP(One-Time Password)コード入力',
+				MESSAGE_6: '下に6桁のOTPコードを入力してください。',
+				INPUT_2: 'OTPコード',
 			},
 			FORM: {
 				PLACEHOLDER: 'Google Authenticatorから発行されたOTPコードを入力してください。',
@@ -751,15 +760,15 @@ export default {
 			}
 		}
 	},
-	CURRENCY: 'Currency',
+	CURRENCY: '通貨',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
 		limit: 'limit'
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'limit' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'market', label: '成行' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: '指値' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -771,12 +780,12 @@ export default {
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'Size',
-	PRICE: 'Price',
+	SIZE: ' 数量',
+	PRICE: '価格',
 	FEE: 'Fee',
-	FEES: 'Fees',
+	FEES: '手数料',
 	LIMIT: 'Limit',
-	TIME: 'Time',
+	TIME: '時間',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
 	VIEW: 'View',
@@ -785,29 +794,29 @@ export default {
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
 	REJECTED: 'Rejected',
-	ORDERBOOK: 'Order book',
+	ORDERBOOK: '注文一覧',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
 	GO_TRADE_HISTORY: '取引履歴を見る',
-	ORDER_ENTRY: 'order entry',
-	TRADE_HISTORY: 'trade history',
-	CHART: 'price chart',
-	ORDERS: '注文一覧',
+	ORDER_ENTRY: '注文',
+	TRADE_HISTORY: '取引履歴',
+	CHART: ' 価格チャート',
+	ORDERS: '注文',
 	TRADES: '取引履歴',
 	RECENT_TRADES: '最近の取引履歴', // ToDo
-	PUBLIC_SALES: 'public sales', // ToDo
+	PUBLIC_SALES: '全取引履歴', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
 	FILLED: 'Filled', // new
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: '価格 ({0})',
+	AMOUNT_SYMBOL: '数量 ({0})',
 	MARKET_PRICE: '市場価格',
 	ORDER_PRICE: '注文価格',
 	TOTAL_ORDER: '総額',
-	NO_DATA: '履歴がありません。',
+	NO_DATA: 'データがありません。',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -815,7 +824,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume'
+		v: '取引量'
 	},
 	QUICK_TRADE: 'クイック取引',
 	PRO_TRADE: 'プロ向け取引',
@@ -836,18 +845,18 @@ export default {
 		'無効なビットコインアドレスです。確認後、もう一度お試しください。',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'無効なイーサリアムアドレスです。確認後、もう一度お試しください。',
-	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_BUTTON_TEXT: '送金内容を確認',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: '送金先',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: '送金先のアドレスを入力',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
 	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'Type the transaction memo', // new
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
+	WITHDRAWALS_FORM_AMOUNT_LABEL: '送金する {0} 金額',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Transaction fee',
+		'取引手数料',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -909,26 +918,26 @@ export default {
 			'In order to view your withdrawal status please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 	},
-	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
-	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
-	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
-	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
+	WALLET_BUTTON_BASE_DEPOSIT: '入金',
+	WALLET_BUTTON_BASE_WITHDRAW: '出金',
+	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: '受取',
+	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: '送金',
 	AVAILABLE_TEXT: 'Available',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	AVAILABLE_BALANCE_TEXT: '使用可能な {0} 残高 : {1} {2}', // Available Bitcoin Balance: 2.6 BTC
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
-	WALLET_TABLE_TOTAL: 'Grand Total',
-	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_TABLE_TOTAL: '総額',
+	WALLET_ALL_ASSETS: '総資産',
 	WALLET_DEPOSIT_USD:
 		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
-	ORDERBOOK_SELLERS: 'Sellers',
-	ORDERBOOK_BUYERS: 'Buyers',
+	ORDERBOOK_SELLERS: '売却',
+	ORDERBOOK_BUYERS: '購入',
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-	CALCULATE_MAX: 'Max',
+	CALCULATE_MAX: '最大',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
@@ -948,7 +957,7 @@ export default {
 	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
 	LOGOUT_ERROR_INACTIVE:
 		'You have been logged out because you have been inactive',
-	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
+	ORDER_ENTRY_BUTTON: '{1} {0}', // 0 -> buy/sell 1 -> btc/..
 	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
 	QUICK_TRADE_TOKEN_USED: 'Token has been used',
 	QUICK_TRADE_QUOTE_EXPIRED: 'Quote has expired',
@@ -976,7 +985,7 @@ export default {
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
 	ERROR_LOGIN_USER_NOT_VERIFIED: 'User is not verified',
 	ERROR_LOGIN_USER_NOT_ACTIVATED: 'User is not activated',
-	ERROR_LOGIN_INVALID_CREDENTIALS: 'Credentials incorrect',
+	ERROR_LOGIN_INVALID_CREDENTIALS: 'メールまたはパスワードが間違っています。',
 	SMS_SENT_TO: 'SMS sent to {0}', // TODO check msg
 	SMS_ERROR_SENT_TO:
 		'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO check msg
@@ -987,7 +996,7 @@ export default {
 	GOTO_XHT_MARKET: 'Go to XHT market', // new
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
-	SETTINGS_LANGUAGE_LABEL: '言語設 (メールを含む)',
+	SETTINGS_LANGUAGE_LABEL: '言語設定 (メールを含む)',
 	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
@@ -1004,7 +1013,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: '出金停止設定',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: 'お客様のアカウントが出金停止に設定されました。',
 	UP_TO_MARKET: 'Up to market',
-	VIEW_MY_FEES: 'View my fees', // new
+	VIEW_MY_FEES: 'マイ手数料を見る', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'APIキー',
 		INFORMATION_TEXT:
@@ -1040,7 +1049,7 @@ export default {
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: '名前',
 		API_KEY: 'APIキー',
-		SECRET: 'シークレット',
+		SECRET: 'シークレットキー',
 		CREATED: '生成日',
 		REVOKE: '解除',
 		REVOKED: '解除済み',
@@ -1113,7 +1122,7 @@ export default {
 	SEARCH_ASSETS: '資産検索',
 	TOTAL_ASSETS_VALUE: '{0}の総額資産：{1}',
 	SUMMARY: {
-		TITLE: '要約',
+		TITLE: 'マイページ',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
@@ -1124,7 +1133,7 @@ export default {
 		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
 		URGENT_REQUIREMENTS: 'Urgent Requirements',
 		TRADING_VOLUME: 'Trading Volume',
-		ACCOUNT_ASSETS: 'Account Assets',
+		ACCOUNT_ASSETS: 'アカウントの資産',
 		ACCOUNT_DETAILS: 'Account Details',
 		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
 		SHRIMP_ACCOUNT_TXT_2:
@@ -1177,7 +1186,7 @@ export default {
 		NOMINAL_TRADING_WITH_MONTH: '過去{0}の名目取引',
 		ACCOUNT_AGE_OF_MONTHS: 'アカウント活動期間{0}ヶ月',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1}取引ボリューム等価',
-		LEVEL_OF_ACCOUNT: 'レベル{0}アカウント',
+		LEVEL_OF_ACCOUNT: 'アカウントレベル {0}',
 		LEVEL_TXT_DEFAULT: 'ここにレベルの説明を追加してください。',
 		LEVEL_1_TXT:
 			'仮想通貨のトレーダーとしてのあなたの旅はここから始まります。ボーナスを取得するには、本人確認を完了し、取引手数料の低下と入出金限度額の上げられます。', // new
