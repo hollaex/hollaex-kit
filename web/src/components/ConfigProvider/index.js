@@ -12,7 +12,9 @@ class ConfigProvider extends Component {
 	constructor(props) {
 		super(props);
 		const { initialConfig } = this.props;
-		const { icons = {}, color = {}, defaults = {} } = { ...initialConfig };
+		const { icons = {}, color = {}, defaults = {}, coin_keys } = {
+			...initialConfig,
+		};
 
 		const defaultLogo = localStorage.getItem('default_logo') || '';
 		const themeOptions = Object.keys(color).map((value) => ({ value }));
@@ -21,7 +23,8 @@ class ConfigProvider extends Component {
 		this.state = {
 			icons: generateAllIcons(
 				calculatedThemes,
-				addDefaultLogo(defaultLogo, icons)
+				addDefaultLogo(defaultLogo, icons),
+				coin_keys
 			),
 			color: calculatedThemes,
 			themeOptions,
