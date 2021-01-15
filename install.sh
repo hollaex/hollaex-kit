@@ -215,6 +215,9 @@ elif command yum --version > /dev/null 2>&1; then
 
             fi
 
+            systemctl start docker
+            systemctl enable docker
+
         else
 
             printf "\n\033[91mFailed to install Docker.\033[39m\n"
