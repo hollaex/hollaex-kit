@@ -143,12 +143,12 @@ class UserVerification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.ACCOUNT_SECURITY.OTP.TITLE}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						icon={ICONS.SECURITY_2FA_ICON}
 					/>
 				) : (
 					<CustomTabs
 						title={STRINGS.ACCOUNT_SECURITY.OTP.TITLE}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						icon={ICONS.SECURITY_2FA_ICON}
 					/>
 				),
 				content: activeTab === 0 && (
@@ -185,12 +185,12 @@ class UserVerification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE}
-						icon={ICONS.SETTING_INTERFACE_ICON}
+						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
 					/>
 				) : (
 					<CustomTabs
 						title={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE}
-						icon={ICONS.SETTING_INTERFACE_ICON}
+						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
 					/>
 				),
 				content: activeTab === 1 && (
@@ -212,12 +212,12 @@ class UserVerification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.DEVELOPER_SECTION.TITLE}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
+						icon={ICONS.SECURITY_API_ICON}
 					/>
 				) : (
 					<CustomTabs
 						title={STRINGS.DEVELOPER_SECTION.TITLE}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
+						icon={ICONS.SECURITY_API_ICON}
 					/>
 				),
 				content: activeTab === 2 && (

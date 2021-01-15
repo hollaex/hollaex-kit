@@ -264,6 +264,10 @@ export const ICONS = {
 	SETTING_RISK_ADJUST_ICON: '/assets/images/risk-management-pop-adjust.svg',
 	SETTING_RISK_MANAGE_WARNING_ICON:
 		'/assets/images/risk-manage-pop-warning.svg',
+	SECURITY_2FA_ICON: '/assets/images/2fa-security-icon.svg',
+	SECURITY_CHANGE_PASSWORD_ICON: '/assets/images/password-security-icon.svg',
+	SECURITY_API_ICON: '/assets/images/api-security-icon.svg',
+
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
