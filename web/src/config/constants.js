@@ -67,6 +67,8 @@ export const ICONS = {
 	XMR_ICON: '/assets/icons/xmr-icon.svg',
 	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
+	BTCV_ICON: '/assets/icons/btcv-icon.svg',
+	BTCV_ICON_DARK: '/assets/icons/btcv-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
