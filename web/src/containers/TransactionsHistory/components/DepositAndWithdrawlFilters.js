@@ -91,7 +91,7 @@ const Filters = ({ coins = {}, onSearch }) => {
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
-						<Option value={null}>Asset: All</Option>
+						<Option value={null}>All</Option>
 						{Object.entries(coins).map(([_, { symbol, fullname }]) => (
 							<Option key={symbol} value={symbol}>
 								{fullname}
