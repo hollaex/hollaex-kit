@@ -101,7 +101,7 @@
 		"copy-cname": "cpy CNAME build/",
 		"remove-build": "rimraf ./build",
 		"start-js": "react-scripts --max_old_space_size=3072 start",
-		"start": "npm-run-all -p watch-css start-js",
+		"start": "npm install && npm-run-all -p watch-css start-js",
 		"build": "npm run build-css && react-scripts --max_old_space_size=3072 build",
 		"pre-build": "npm run remove-build && npm install",
 		"build:demo": "REACT_APP_SERVER_ENDPOINT=https://api.sandbox.hollaex.com npm run build",

@@ -257,10 +257,18 @@ table th {
 		}
 	}
 
+	&.elevated {
+		z-index: 1;
+	}
+
 	&.order-entry {
 		&.ant-select {
 			width: 100% !important;
 		}
+	}
+
+	.ant-select-arrow {
+		z-index: -1;
 	}
 }
 

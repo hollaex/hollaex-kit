@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { formValueSelector, submit, change, reset } from 'redux-form';
+import { formValueSelector, submit, change } from 'redux-form';
 import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
@@ -294,9 +294,10 @@ class OrderEntry extends Component {
 	};
 
 	reset = () => {
-		const { reset, change } = this.props;
-		reset(FORM_NAME);
+		const { change } = this.props;
+		change(FORM_NAME, 'stop', '');
 		change(FORM_NAME, 'price', '');
+		change(FORM_NAME, 'size', '');
 	};
 
 	generateFormValues = (pair = '', buyingPair = '', side = 'buy') => {
@@ -568,7 +569,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	reset: bindActionCreators(reset, dispatch),
 	submit: bindActionCreators(submit, dispatch),
 	change: bindActionCreators(change, dispatch),
 	openFeesStructureandLimits: bindActionCreators(

@@ -283,8 +283,14 @@ table th {
 .custom-select-input-style.appbar .anticon {
   color: var(--calculated_base_top-bar-navigation_text-inactive) !important; }
 
+.custom-select-input-style.elevated {
+  z-index: 1; }
+
 .custom-select-input-style.order-entry.ant-select {
   width: 100% !important; }
+
+.custom-select-input-style .ant-select-arrow {
+  z-index: -1; }
 
 .border {
   border-color: var(--calculated_secondary-border) !important; }
@@ -1676,13 +1682,14 @@ table th {
   position: relative; }
   .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items {
     display: flex;
-    font-weight: normal; }
+    font-weight: normal;
+    line-height: 25px; }
     .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items .active {
       font-weight: bold;
       position: relative; }
       .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items .active:after {
         content: '';
-        height: 3px;
+        height: 6px;
         width: 100%;
         background-color: var(--calculated_important-border);
         top: -2px;
@@ -2050,7 +2057,7 @@ table th {
           left: 0;
           top: 0;
           bottom: 0;
-          background-color: var(--labels_important-active-labels-text-graphics);
+          background-color: var(--calculated_specials_highlight-box);
           z-index: -1; }
 
 .quick-trade-tab {
@@ -3354,7 +3361,7 @@ table th {
   justify-content: center;
   align-items: center; }
   .operator-controls__button.disabled {
-    color: #ffffffb3;
+    color: #ffffff80;
     cursor: not-allowed;
     height: 31px;
     transform: translateY(0); }
@@ -3448,14 +3455,14 @@ table th {
 .operator-controls__modal .ant-divider-horizontal,
 .operator-controls__modal .ant-divider,
 .operator-controls__modal .ant-divider-inner-text {
-  color: #ffffffb3 !important;
+  color: #ffffff80 !important;
   font-size: small !important;
   font-weight: 600;
-  border-color: #ffffffb3 !important; }
+  border-color: #ffffff80 !important; }
 
 .operator-controls__modal .ant-divider-with-text::after,
 .operator-controls__modal .ant-divider-with-text::before {
-  border-color: #ffffffb3 !important; }
+  border-color: #ffffff80 !important; }
 
 .operator-controls__modal .ant-divider-inner-text {
   width: 300px;
@@ -4362,6 +4369,7 @@ table th {
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app-menu-bar .app-menu-bar-icon svg .trade-active-2,
     .app-menu-bar .app-menu-bar-icon svg .quick-trade-tab-active,
+    .app-menu-bar .app-menu-bar-icon svg .tab-history-st,
     .app-menu-bar .app-menu-bar-icon svg .tab-summary0,
     .app-menu-bar .app-menu-bar-icon svg .tab-wallet0,
     .app-menu-bar .app-menu-bar-icon svg .tab-setting0,
@@ -4378,6 +4386,7 @@ table th {
       stroke: var(--calculated_base_top-bar-navigation_text); }
     .app-menu-bar .active-menu svg .trade-active-2,
     .app-menu-bar .active-menu svg .quick-trade-tab-active,
+    .app-menu-bar .active-menu svg .tab-history-st,
     .app-menu-bar .active-menu svg .tab-summary0,
     .app-menu-bar .active-menu svg .tab-wallet0,
     .app-menu-bar .active-menu svg .tab-setting0,
@@ -9068,3 +9077,51 @@ svg .session-timeout-0 {
 svg .deposit-complete-02,
 svg .deposit-complete-btc-02 {
   fill: var(--specials_checks-okay-done); }
+
+svg .btc0 {
+  fill: var(--coin-btc); }
+
+svg .btc1 {
+  fill: var(--coin-btc); }
+
+svg .eth0 {
+  fill: var(--coin-eth); }
+
+svg .eth1 {
+  fill: var(--coin-eth); }
+
+svg .bch-icon {
+  fill: var(--coin-bch); }
+
+svg .xrp-icon {
+  fill: var(--coin-xrp); }
+
+svg .xht-icon {
+  fill: var(--coin-xht); }
+
+svg .xmr-icon {
+  fill: var(--coin-xmr); }
+
+svg .xlm-icon {
+  fill: var(--coin-xlm); }
+
+svg .eos-icon {
+  fill: var(--coin-eos); }
+
+svg .trx-icon {
+  fill: var(--coin-trx); }
+
+svg .ada-icon {
+  fill: var(--coin-ada); }
+
+svg .bnb-icon {
+  fill: var(--coin-bnb); }
+
+svg .tusd-icon {
+  fill: var(--coin-tusd); }
+
+svg .dai-icon {
+  fill: var(--coin-dai); }
+
+svg .ltc-icon {
+  fill: var(--coin-ltc); }
