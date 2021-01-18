@@ -3361,7 +3361,7 @@ table th {
   justify-content: center;
   align-items: center; }
   .operator-controls__button.disabled {
-    color: #ffffffb3;
+    color: #ffffff80;
     cursor: not-allowed;
     height: 31px;
     transform: translateY(0); }
@@ -3455,14 +3455,14 @@ table th {
 .operator-controls__modal .ant-divider-horizontal,
 .operator-controls__modal .ant-divider,
 .operator-controls__modal .ant-divider-inner-text {
-  color: #ffffffb3 !important;
+  color: #ffffff80 !important;
   font-size: small !important;
   font-weight: 600;
-  border-color: #ffffffb3 !important; }
+  border-color: #ffffff80 !important; }
 
 .operator-controls__modal .ant-divider-with-text::after,
 .operator-controls__modal .ant-divider-with-text::before {
-  border-color: #ffffffb3 !important; }
+  border-color: #ffffff80 !important; }
 
 .operator-controls__modal .ant-divider-inner-text {
   width: 300px;
