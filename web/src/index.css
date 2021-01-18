@@ -1682,13 +1682,14 @@ table th {
   position: relative; }
   .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items {
     display: flex;
-    font-weight: normal; }
+    font-weight: normal;
+    line-height: 25px; }
     .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items .active {
       font-weight: bold;
       position: relative; }
       .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items .active:after {
         content: '';
-        height: 3px;
+        height: 6px;
         width: 100%;
         background-color: var(--calculated_important-border);
         top: -2px;
