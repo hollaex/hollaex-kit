@@ -4369,6 +4369,7 @@ table th {
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app-menu-bar .app-menu-bar-icon svg .trade-active-2,
     .app-menu-bar .app-menu-bar-icon svg .quick-trade-tab-active,
+    .app-menu-bar .app-menu-bar-icon svg .tab-history-st,
     .app-menu-bar .app-menu-bar-icon svg .tab-summary0,
     .app-menu-bar .app-menu-bar-icon svg .tab-wallet0,
     .app-menu-bar .app-menu-bar-icon svg .tab-setting0,
@@ -4385,6 +4386,7 @@ table th {
       stroke: var(--calculated_base_top-bar-navigation_text); }
     .app-menu-bar .active-menu svg .trade-active-2,
     .app-menu-bar .active-menu svg .quick-trade-tab-active,
+    .app-menu-bar .active-menu svg .tab-history-st,
     .app-menu-bar .active-menu svg .tab-summary0,
     .app-menu-bar .active-menu svg .tab-wallet0,
     .app-menu-bar .active-menu svg .tab-setting0,
