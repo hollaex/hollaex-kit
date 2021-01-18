@@ -88,6 +88,7 @@ $tabs-title--margin: 2rem;
 	.trade_block-title-items {
 		display: flex;
 		font-weight: normal;
+		line-height: 25px;
 
 		.active {
 			font-weight: bold;
@@ -95,7 +96,7 @@ $tabs-title--margin: 2rem;
 
 			&:after {
 				content: '';
-				height: 3px;
+				height: 6px;
 				width: 100%;
 				background-color: $trade_title-border--color;
 				top: -2px;
