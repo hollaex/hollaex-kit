@@ -283,8 +283,14 @@ table th {
 .custom-select-input-style.appbar .anticon {
   color: var(--calculated_base_top-bar-navigation_text-inactive) !important; }
 
+.custom-select-input-style.elevated {
+  z-index: 1; }
+
 .custom-select-input-style.order-entry.ant-select {
   width: 100% !important; }
+
+.custom-select-input-style .ant-select-arrow {
+  z-index: -1; }
 
 .border {
   border-color: var(--calculated_secondary-border) !important; }
