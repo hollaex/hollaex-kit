@@ -262,6 +262,7 @@ exports.SETTING_KEYS = [
 
 exports.OMITTED_USER_FIELDS = [
 	'password',
+	'note',
 	'is_admin',
 	'is_support',
 	'is_supervisor',
