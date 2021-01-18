@@ -75,7 +75,7 @@ $link: var(--specials_buttons-links-and-highlights);
 
 $trade-fields: var(--labels_fields);
 $trade-fields-border: $colors-border;
-$trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
+$trade-fill-indicator: $specials_highlight-box;
 $trade-fill-indicator-text: var(
 	--labels_secondary-inactive-label-text-graphics
 );

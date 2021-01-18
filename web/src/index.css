@@ -2050,7 +2050,7 @@ table th {
           left: 0;
           top: 0;
           bottom: 0;
-          background-color: var(--labels_important-active-labels-text-graphics);
+          background-color: var(--calculated_specials_highlight-box);
           z-index: -1; }
 
 .quick-trade-tab {
