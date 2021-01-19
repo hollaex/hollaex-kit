@@ -13,6 +13,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
+import { isMobile } from 'react-device-detect';
 
 class PairTabs extends Component {
 	state = {
@@ -124,7 +125,7 @@ class PairTabs extends Component {
 										addTradePairTab={this.onTabClick}
 									/>
 								}
-								trigger={['hover', 'click']}
+								trigger={[isMobile ? 'click' : 'hover']}
 							>
 								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
 									{activePairTab ? (

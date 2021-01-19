@@ -69,6 +69,7 @@ class TransactionsHistory extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { pairs, coins } = this.props;
 		// if (nextProps.symbol !== this.props.symbol) {
 		// this.requestData(nextProps.symbol);
 		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
@@ -86,6 +87,12 @@ class TransactionsHistory extends Component {
 		) {
 			this.onCloseDialog();
 			this.requestData(nextProps.symbol);
+		}
+		if (
+			JSON.stringify(nextProps.pairs) !== JSON.stringify(pairs) ||
+			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
+		) {
+			this.generateFilters();
 		}
 	}
 

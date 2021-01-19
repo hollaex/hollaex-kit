@@ -76,19 +76,9 @@ const putAdminKit = (req, res) => {
 	const data = req.swagger.params.data.value;
 
 	if (data.kit) {
-		if (data.kit.plugins) {
-			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
-			return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
-		} else if (data.kit.setup_completed) {
+		if (data.kit.setup_completed) {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
 			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
-		}
-	}
-
-	if (data.secrets) {
-		if (data.secrets.plugins) {
-			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update plugins values through this endpoint');
-			return res.status(400).json({ message: 'Cannot update plugins values through this endpoint'});
 		}
 	}
 
