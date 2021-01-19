@@ -4944,8 +4944,10 @@ table th {
 
 .active-market-trigger {
   color: var(--labels_important-active-labels-text-graphics);
-  background-color: var(--base_background);
   font-weight: bold; }
+
+.market-trigger {
+  background-color: var(--base_background); }
 
 .check_title-container {
   display: flex;
