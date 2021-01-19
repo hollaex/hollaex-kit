@@ -261,6 +261,7 @@ class TVChartContainer extends React.PureComponent {
 		interval,
 		constants = {}
 	}) => {
+		const locale = getLanguage();
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
@@ -272,7 +273,7 @@ class TVChartContainer extends React.PureComponent {
 			library_path: libraryPath,
 			timeframe: '1m',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-			locale: getLanguage(),
+			locale: locale === 'id' ? 'en' : locale,
 			withdateranges: true,
 			range: 'ytd',
 			disabled_features: [

@@ -6,6 +6,8 @@ import TableBody from './TableBody';
 // import TableFooter from './TableFooter';
 import Paginator from './paginator';
 
+import STRINGS from '../../config/localizedStrings';
+
 class Table extends Component {
 	state = {
 		page: 0,
@@ -81,7 +83,7 @@ class Table extends Component {
 		if (count === 0) {
 			return (
 				<div className="no-data d-flex justify-content-center align-items-center">
-					NO DATA
+					{STRINGS['NO_DATA']}
 				</div>
 			);
 		}
