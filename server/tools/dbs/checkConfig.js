@@ -35,7 +35,7 @@ Status.findOne()
 			},
 			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
 			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY,
-			logo_image: existingKitConfigurations.logo_image || existingKitConfigurations.logo_path || process.env.LOGO_IMAGE,
+			logo_image: existingKitConfigurations.logo_image || existingKitConfigurations.logo_path || process.env.LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',
 			valid_languages: existingKitConfigurations.valid_languages || process.env.VALID_LANGUAGES || 'en,fa,ko,ar,fr',
 			new_user_is_activated: existingKitConfigurations.new_user_is_activated || (process.env.NEW_USER_IS_ACTIVATED && process.env.NEW_USER_IS_ACTIVATED === 'true') || false,
 			captcha: {
@@ -45,12 +45,7 @@ Status.findOne()
 				language: existingKitConfigurations.defaults.language || process.env.NEW_USER_DEFAULT_LANGUAGE || 'en',
 				theme: existingKitConfigurations.defaults.theme || process.env.DEFAULT_THEME || 'white'
 			},
-			plugins: {
-				enabled: existingKitConfigurations.plugins.enabled || process.env.PLUGINS || '',
-				configuration: {
-					...existingKitConfigurations.plugins.configuration
-				}
-			},
+			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},
 		};
 
@@ -75,28 +70,6 @@ Status.findOne()
 				port: existingSecrets.smtp.port || process.env.SMTP_PORT || 587,
 				user: existingSecrets.smtp.user || process.env.SMTP_USER,
 				password: existingSecrets.smtp.password || process.env.SMTP_PASSWORD
-			},
-			plugins: {
-				s3: {
-					id_docs_bucket: process.env.ID_DOCS_BUCKET || '',
-					key: process.env.S3_WRITE_ACCESSKEYID || '',
-					secret: process.env.S3_WRITE_SECRETACCESSKEY
-				},
-				sns: {
-					region: process.env.SNS_REGION || '',
-					key: process.env.SNS_ACCESSKEYID || '',
-					secret: process.env.SNS_SECRETACCESSKEY || ''
-				},
-				freshdesk: {
-					host: process.env.FRESHDESK_HOST || '',
-					key: process.env.FRESHDESK_KEY || '',
-					auth: process.env.FRESHDESK_AUTH || ''
-				},
-				zendesk: {
-					host: process.env.ZENDESK_HOST || '',
-					key: process.env.ZENDESK_KEY || ''
-				},
-				...existingSecrets.plugins
 			}
 		};
 

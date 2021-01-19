@@ -54,9 +54,7 @@ const checkStatus = () => {
 			strings: {},
 			captcha: {},
 			defaults: {},
-			plugins: {
-				configuration: {}
-			},
+			features: {},
 			meta: {}
 		}
 	};
@@ -66,12 +64,7 @@ const checkStatus = () => {
 		accounts: {},
 		captcha: {},
 		emails: {},
-		smtp: {},
-		plugins: {
-			s3: {},
-			sns: {},
-			freshdesk: {}
-		}
+		smtp: {}
 	};
 
 	let frozenUsers = {};

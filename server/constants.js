@@ -22,9 +22,7 @@ let configuration = {
 		links: {},
 		captcha: {},
 		defaults: {},
-		plugins: {
-			configuration: {}
-		},
+		features: {},
 		meta: {}
 	}
 };
@@ -34,12 +32,7 @@ let secrets = {
 	accounts: {},
 	captcha: {},
 	emails: {},
-	smtp: {},
-	plugins: {
-		s3: {},
-		sns: {},
-		freshdesk: {}
-	}
+	smtp: {}
 };
 
 let frozenUsers = {};
@@ -88,12 +81,7 @@ const resetAllConfig = () => {
 		accounts: {},
 		captcha: {},
 		emails: {},
-		smtp: {},
-		plugins: {
-			s3: {},
-			sns: {},
-			freshdesk: {}
-		}
+		smtp: {}
 	};
 	configuration = {
 		coins: {},
@@ -107,9 +95,7 @@ const resetAllConfig = () => {
 			links: {},
 			captcha: {},
 			defaults: {},
-			plugins: {
-				configuration: {}
-			},
+			features: {},
 			meta: {}
 		}
 	};
@@ -148,7 +134,6 @@ exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
 exports.KIT_CONFIG_KEYS = [
 	'captcha',
-	'plugins',
 	'api_name',
 	'description',
 	'color',
@@ -163,6 +148,7 @@ exports.KIT_CONFIG_KEYS = [
 	'icons',
 	'strings',
 	'meta',
+	'features',
 	'setup_completed'
 ];
 
@@ -172,8 +158,7 @@ exports.KIT_SECRETS_KEYS = [
 	'emails',
 	'security',
 	'captcha',
-	'smtp',
-	'plugins'
+	'smtp'
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
