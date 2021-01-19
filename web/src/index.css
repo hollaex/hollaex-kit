@@ -8199,7 +8199,7 @@ foreignObject {
       .chat-wrapper .chat-message-list .chat-message .message-content {
         width: 100%; }
         .chat-wrapper .chat-message-list .chat-message .message-content .message {
-          color: var(--labels_secondary-inactive-label-text-graphics);
+          color: var(--specials_chat-messages);
           word-break: break-word;
           line-height: 1.5rem;
           font-size: 1rem;
