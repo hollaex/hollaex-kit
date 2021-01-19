@@ -106,6 +106,7 @@ class PairTabs extends Component {
 								'd-flex',
 								'justify-content-between',
 								'px-2',
+								'market-trigger',
 								{
 									'active-tab-pair': location.pathname === '/trade/add/tabs',
 								},

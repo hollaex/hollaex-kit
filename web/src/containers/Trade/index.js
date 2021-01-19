@@ -301,8 +301,6 @@ class Trade extends PureComponent {
 						activeLanguage={activeLanguage}
 						activeTheme={activeTheme}
 						symbol={symbol}
-						goToPair={this.goToPair}
-						goToMarkets={() => this.setActiveTab(3)}
 						orderLimits={orderLimits}
 					/>
 				),
@@ -320,8 +318,6 @@ class Trade extends PureComponent {
 						openCheckOrder={this.openCheckOrder}
 						onRiskyTrade={this.onRiskyTrade}
 						onSubmitOrder={this.onSubmitOrder}
-						goToPair={this.goToPair}
-						goToMarkets={() => this.setActiveTab(3)}
 						pair={pair}
 						setPriceRef={this.setPriceRef}
 						setSizeRef={this.setSizeRef}
@@ -338,7 +334,6 @@ class Trade extends PureComponent {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
-						goToPair={this.goToPair}
 						activeTheme={activeTheme}
 					/>
 				),
@@ -361,6 +356,9 @@ class Trade extends PureComponent {
 							tabs={mobileTabs}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
+							pair={pair}
+							goToPair={this.goToPair}
+							goToMarkets={() => this.setActiveTab(3)}
 						/>
 						<div className="content-with-bar d-flex">
 							{mobileTabs[activeTab].content}

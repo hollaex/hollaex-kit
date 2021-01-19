@@ -3,6 +3,8 @@ import { message } from 'antd';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import ReactSVG from 'react-svg';
+import { change } from 'redux-form';
+import { bindActionCreators } from 'redux';
 
 import { AdminHocForm } from '../../components';
 import { performLogin } from '../../actions/authAction';
@@ -105,4 +107,8 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch) => ({
+	change: bindActionCreators(change, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
