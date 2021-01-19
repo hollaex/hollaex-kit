@@ -241,42 +241,10 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 		.then(([ sender, receiver ]) => {
 			if (!sender || !receiver) {
 				throw new Error(USER_NOT_FOUND);
+			} else if (!sender.network_id || !receiver.network_id) {
+				throw new Error('User not registered on network');
 			}
-			return all([
-				getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description }),
-				sender,
-				receiver
-			]);
-		})
-		.then(([ transaction, sender, receiver ]) => {
-			sendEmail(
-				MAILTYPE.WITHDRAWAL,
-				sender.email,
-				{
-					amount: amount,
-					fee: 0,
-					currency: currency,
-					status: true,
-					transaction_id: transaction.transaction_id,
-					// address: deposit.address,
-					phoneNumber: sender.phone_number
-				},
-				sender.settings
-			);
-			sendEmail(
-				MAILTYPE.DEPOSIT,
-				receiver.email,
-				{
-					amount: amount,
-					currency: currency,
-					status: true,
-					transaction_id: transaction.transaction_id,
-					// address: address,
-					phoneNumber: receiver.phone_number
-				},
-				receiver.settings,
-			);
-			return;
+			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description });
 		});
 };
 
