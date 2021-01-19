@@ -1932,7 +1932,8 @@ table th {
       margin-left: 0.25rem; }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-spread .trade_orderbook-market-price {
       margin-left: 0.25rem;
-      font-size: 1.75rem;
+      font-size: 1.25rem;
+      font-weight: bold;
       color: var(--labels_important-active-labels-text-graphics); }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks .value-row,
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .value-row {
