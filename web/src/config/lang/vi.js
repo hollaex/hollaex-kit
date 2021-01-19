@@ -30,13 +30,13 @@ export default {
 	ADD_FILES: 'THÊM TẬP TIN', // ToDo
 	OR_TEXT: 'Hoặc',
 	CONTACT_US_TEXT: 'Liên hệ',
-	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
+	HELPFUL_RESOURCES_TEXT: 'Các nguồn hỗ trợ',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Hãy liên hệ tới địa chỉ email của chúng tôi nếu quý khách có bất kỳ thắc mắc hay vấn đề nào.',
 	HELP_TELEGRAM_TEXT: 'Xác nhận tài liệu ứng dụng mở(open API):',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Quý khách cần giúp đỡ?', // new
-	HELP_TEXT: 'help',
+	HELP_TEXT: 'Hỗ trợ',
 	SUCCESS_TEXT: 'Thành công',
 	ERROR_TEXT: 'Lỗi',
 	PROCEED: 'THỰC HIỆN',
@@ -133,7 +133,7 @@ export default {
 		TAB_SETTINGS: 'Cài đặt',
 		TAB_PROFILE: 'Thông tin cá nhân',
 		TAB_WALLET: 'Ví',
-		TAB_SUMMARY: 'Tóm tắt',
+		TAB_SUMMARY: 'Khái quát',
 		TAB_HISTORY: 'Lịch sử',
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Đăng xuất',
@@ -289,8 +289,8 @@ export default {
 		TITLE: 'Nhanh',
 		TOTAL_COST: 'Tổng chi phí',
 		BUTTON: 'Kiểm tra yêu cầu đặt hàng {0}',
-		INPUT: '{0} đến {1}',
-		TRADE_TITLE: '{0} {1}', // quick buy
+		INPUT: 'Số lượng {0} muốn {1}',
+		TRADE_TITLE: '{1} {0}' // quick buy
 	},
 	PREVIOUS_PAGE: 'Trang trước',
 	NEXT_PAGE: 'Trang tiếp theo',
@@ -465,9 +465,8 @@ export default {
 				ADDRESS_PLACEHOLDER: 'Vui lòng nhập địa chỉ nơi quý khách đang cư trú',
 				POSTAL_CODE_LABEL: 'Mã bưu điện',
 				POSTAL_CODE_PLACEHOLDER: 'Vui lòng nhập mã bưu điện',
-				PHONE_CODE_LABEL: 'Quốc Giao',
-				PHONE_CODE_PLACEHOLDER:
-					'Vui lòng chọn quốc gia nơi số điện thoại của bạn được hòa mạng',
+				PHONE_CODE_LABEL: 'Quốc Gia',
+				PHONE_CODE_PLACEHOLDER: 'Vui lòng chọn quốc gia nơi số điện thoại của bạn được hòa mạng',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Số điện thoại',
 				PHONE_NUMBER_PLACEHOLDER: 'Vui lòng nhập số điện thoại của quý khách',
@@ -614,7 +613,7 @@ export default {
 		TITLE_NOTIFICATION: 'Thông báo',
 		TITLE_INTERFACE: 'Giao diện',
 		TITLE_LANGUAGE: 'Ngôn ngữ',
-		TITLE_CHAT: 'TRò chuyện',
+		TITLE_CHAT: 'Trò chuyện',
 		TITLE_AUDIO_CUE: 'Âm thanh', // new
 		TITLE_MANAGE_RISK: 'Quản lý nguy hiểm',
 		ORDERBOOK_LEVEL: 'Cấp bậc sổ lệnh (Tối đa 20)',
@@ -638,20 +637,25 @@ export default {
 			POPUP_ORDER_PARTIALLY_FILLED:
 				'Hiển thị cửa sổ thông báo khi đơn đặt hàng được tiến hành từng phần',
 		},
-		AUDIO_CUE_FORM: {
-			// new
-			ALL_AUDIO: 'All Audio cues',
+		AUDIO_CUE_FORM: { // new
+			ALL_AUDIO: 'Bật âm thanh cho tất cả',
 			PUBLIC_TRADE_AUDIO: 'KHi giao dịch công khai được thực hiện',
 			ORDERS_PARTIAL_AUDIO:
 				'KHi một trong những đơn đặt hàng được tiến hành từng phần',
-			ORDERS_PLACED_AUDIO: 'When an order is placed',
-			ORDERS_CANCELED_AUDIO: 'When an order is canceled',
+			ORDERS_PLACED_AUDIO:
+				'Khi một đơn đặt hàng được tạo',
+			ORDERS_CANCELED_AUDIO:
+				'Khi một đơn đặt hàng bị hủy',
 			ORDERS_COMPLETED_AUDIO:
 				'Khi một trong những đơn đặt hàng hoàn tất thành công',
-			CLICK_AMOUNTS_AUDIO: 'When clicking amounts and prices on the orderbook',
-			GET_QUICK_TRADE_AUDIO: 'When getting a quote for quick trading',
-			SUCCESS_QUICK_TRADE_AUDIO: 'When a successful quick trade occurs',
-			QUICK_TRADE_TIMEOUT_AUDIO: 'When quick trade timeout',
+			CLICK_AMOUNTS_AUDIO:
+				'Khi nhấn chọn số lượng và giá trong sổ lệnh',
+			GET_QUICK_TRADE_AUDIO:
+				'Khi có một lời nhẳn trong giao dịch nhanh',
+			SUCCESS_QUICK_TRADE_AUDIO:
+				'Khi có một giao dịch nhanh diễn ra thành công',
+			QUICK_TRADE_TIMEOUT_AUDIO:
+				'Khi hết thời gian giao dịch nhanh',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -675,6 +679,7 @@ export default {
 		WITHDRAWALS: 'Rút tiền',
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.',
 		OTP: {
 			TITLE: 'Xác thực 2 yếu tố',
 			OTP_ENABLED: 'Bật OTP',
@@ -702,6 +707,14 @@ export default {
 					'Chúng tôi khuyến khích quý khách cài đặt Xác thực 2 yếu tố (2FA). Điều này sẽ giúp nâng cao độ bảo mật cho tài khoản của quý khách.',
 				ENABLE: 'Bật Xác thực 2 yếu tố',
 				DISABLE: 'Tắt Xác thực 2 yếu Tối',
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'Nhập mật khẩu một lần (OTP)',
+				MESSAGE_6: 'Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.',
+				INPUT_2: 'Mật khẩu một lần (OTP)',
 			},
 			FORM: {
 				PLACEHOLDER:
@@ -732,12 +745,11 @@ export default {
 			},
 		},
 		LOGIN: {
-			TITLE: 'Login History',
+			TITLE: 'Lịch sử đăng nhập',
 			CONTENT: {
-				TITLE: 'Logins History',
-				MESSAGE:
-					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
-			},
+				TITLE: 'Lịch sử đăng nhập',
+				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
+			}
 		},
 		FREEZE: {
 			TITLE: 'Freeze Account',
@@ -761,15 +773,15 @@ export default {
 			},
 		},
 	},
-	CURRENCY: 'Currency',
+	CURRENCY: 'Loại tiền',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
 		limit: 'limit',
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'limit' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'market', label: 'Thị trường' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'Giới hạn' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -784,12 +796,12 @@ export default {
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'Size',
-	PRICE: 'Price',
+	SIZE: 'Độ lớn',
+	PRICE: 'Giá',
 	FEE: 'Fee',
-	FEES: 'Fees',
+	FEES: 'Phí giao dịch',
 	LIMIT: 'Limit',
-	TIME: 'Time',
+	TIME: 'Thời gian',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
 	VIEW: 'View',
@@ -798,17 +810,17 @@ export default {
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
 	REJECTED: 'Rejected',
-	ORDERBOOK: 'Order book',
+	ORDERBOOK: 'SỔ LỆNH',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
 	GO_TRADE_HISTORY: 'Xem lịch sử giao dịch',
-	ORDER_ENTRY: 'order entry',
-	TRADE_HISTORY: 'history',
-	CHART: 'price chart',
+	ORDER_ENTRY: 'NHẬP ĐƠN ĐẶT HÀNG',
+	TRADE_HISTORY: 'Lịch sử',
+	CHART: 'BẢNG XẾP HẠNG GIÁ',
 	ORDERS: 'Đơn đặt hàng đang chờ',
 	TRADES: 'Lịch sử giao dịch của tôi',
 	RECENT_TRADES: 'Giao dịch gần đây của tôi', // ToDo
-	PUBLIC_SALES: 'public sales', // ToDo
+	PUBLIC_SALES: 'BÁN CÔNG KHAI', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
 	FILLED: 'Filled', // new
@@ -820,7 +832,7 @@ export default {
 	MARKET_PRICE: 'Giá thị trường',
 	ORDER_PRICE: 'Giá chỉ định',
 	TOTAL_ORDER: 'Tổng',
-	NO_DATA: 'Không có dữ liệu.',
+	NO_DATA: 'KHÔNG CÓ DỮ LIỆU',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -828,7 +840,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume',
+		v: 'Khối lượng'
 	},
 	QUICK_TRADE: 'Giao dịch nhanh',
 	PRO_TRADE: 'Giao dịch chuyên nghiệp',
@@ -849,17 +861,18 @@ export default {
 		'Địa chỉ Bitcoin không hợp lệ. Vui lòng kiểm tra và nhập lại.',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'Địa chỉ Ethereum không hợp lệ. Vui lòng kiểm tra và nhập lạiTĐịa chỉ Bitcoin không hợp lệ. Vui lòng kiểm tra và nhập lại.',
-	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_BUTTON_TEXT: 'Kiểm tra chi tiết rút tiền',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Địa chỉ nhận',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Nhập địa chỉ',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
 	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'Type the transaction memo', // new
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
+	WITHDRAWALS_FORM_AMOUNT_LABEL: 'Số lượng {0} muốn rút',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaction fee',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
+		'Phí giao dịch',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -923,26 +936,26 @@ export default {
 			'In order to view your withdrawal status please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History',
 	},
-	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
-	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
-	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
-	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
+	WALLET_BUTTON_BASE_DEPOSIT: 'Nạp tiền',
+	WALLET_BUTTON_BASE_WITHDRAW: 'Rút tiền',
+	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'Nhận',
+	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'Gửi',
 	AVAILABLE_TEXT: 'Available',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	AVAILABLE_BALANCE_TEXT: 'Số dư {0} khả dụng : {1} {2}', // Available Bitcoin Balance: 2.6 BTC
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
-	WALLET_TABLE_TOTAL: 'Grand Total',
-	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_TABLE_TOTAL: 'Tổng',
+	WALLET_ALL_ASSETS: 'Tất cả tài sản',
 	WALLET_DEPOSIT_USD:
 		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
-	ORDERBOOK_SELLERS: 'Sellers',
-	ORDERBOOK_BUYERS: 'Buyers',
+	ORDERBOOK_SELLERS: 'Người bán',
+	ORDERBOOK_BUYERS: 'Người Mua',
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-	CALCULATE_MAX: 'Max',
+	CALCULATE_MAX: 'Tối đa',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
@@ -1019,11 +1032,11 @@ export default {
 	VERIFICATION_NO_WITHDRAW_MESSAGE:
 		'Chức năng rút tiền trên tài khoản của quý khách đã bị vô hiệu hóa.',
 	UP_TO_MARKET: 'Up to market',
-	VIEW_MY_FEES: 'View my fees', // new
+	VIEW_MY_FEES: 'Xem phí giao dịch của tôi', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'Khóa API',
 		INFORMATION_TEXT:
-			'API mang tới các chức năng ví dụ như: thông tin số dư ví, quản lý đơn đặt hàng Mua/Bán, yêu cầu rút tiền cũng như các dữ liệu thị trường như các giao dịch gần đây, such as recent trades, sổ lệnh và ticker.',
+			'API mang tới các chức năng ví dụ như: thông tin số dư ví, quản lý đơn đặt hàng Mua/Bán, yêu cầu rút tiền cũng như các dữ liệu thị trường như các giao dịch gần đây, sổ lệnh và ticker.',
 		ERROR_INACTIVE_OTP:
 			'Để tạo một khóa API, quý khách cần bật Xác thực 2 yếu tố.',
 		ENABLE_2FA: 'Bật 2FA',
@@ -1128,7 +1141,7 @@ export default {
 	SEARCH_ASSETS: 'Tìm tài sản',
 	TOTAL_ASSETS_VALUE: 'Tổng giá trị tài sản bằng {0}: {1}',
 	SUMMARY: {
-		TITLE: 'Tóm tắt',
+		TITLE: 'Khái quát',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
@@ -1262,7 +1275,7 @@ export default {
 		INFO_TEXT:
 			'Mời bạn bè của quý khách tham gia bằng cách gửi liên kết này và nhận lợi ích từ sự gia nhập của họ.',
 		COPY_FIELD_LABEL: 'Chia sẻ liên kết phía dưới với bạn bè và nhận hoa hồng:', // new
-		REFERRED_USER_COUT: 'Quý khách vừa giới thiệu người dùng {0}', // new
+		REFERRED_USER_COUT: 'Quý khách đã giới thiệu được {0} người dùng.', // new
 		COPY_LINK_BUTTON: 'SAO CHÉP LIÊN KẾT GIỚI THIỆU', // new
 		XHT_TITLE: 'NGƯỜI DÙNG DO TÔI GIỚI THIỆU', // new
 		XHT_INFO_TEXT: 'Nhận hoa hồng bằng cách mời bạn bè.', // new

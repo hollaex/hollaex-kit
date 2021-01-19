@@ -15,8 +15,6 @@
 	"license": "bitHolla Inc.",
 	"main": "app.js",
 	"dependencies": {
-		"awesome-phonenumber": "2.2.5",
-		"aws-sdk": "2.205.0",
 		"bcryptjs": "2.4.3",
 		"bluebird": "3.5.3",
 		"body-parser": "1.19.0",
