@@ -55,7 +55,7 @@ const Filters = ({ pairs, onSearch }) => {
 							width: 100,
 						}}
 						size="small"
-						className="custom-select-input-style no-border"
+						className="custom-select-input-style no-border elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}

@@ -59,7 +59,7 @@ const Filters = ({ coins = {}, onSearch }) => {
 							width: 100,
 						}}
 						size="small"
-						className="custom-select-input-style no-border"
+						className="custom-select-input-style no-border elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
@@ -86,12 +86,12 @@ const Filters = ({ coins = {}, onSearch }) => {
 							width: 100,
 						}}
 						size="small"
-						className="custom-select-input-style no-border"
+						className="custom-select-input-style no-border elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
-						<Option value={null}>Asset: All</Option>
+						<Option value={null}>All</Option>
 						{Object.entries(coins).map(([_, { symbol, fullname }]) => (
 							<Option key={symbol} value={symbol}>
 								{fullname}

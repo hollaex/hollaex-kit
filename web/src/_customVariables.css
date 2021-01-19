@@ -13,6 +13,10 @@
 
 	--labels_important-active-labels-text-graphics: #000000;
 	--labels_secondary-inactive-label-text-graphics: #808080;
+	--calculated_important-border: #000000b3;
+	--calculated_secondary-border: #00000054;
+	--calculated_footer_border: #ffffff26;
+	--calculated_super-pale_label-text-graphics: #00000026;
 	--labels_fields: #f0f1f1;
 	--labels_inactive-button: #535353;
 
