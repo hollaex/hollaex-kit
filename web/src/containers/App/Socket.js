@@ -314,7 +314,7 @@ class Container extends Component {
 					if (data.action === 'partial') {
 						this.props.setUserOrders(data.data);
 					} else if (data.action === 'insert') {
-						if (data.type === 'limit') {
+						if (data.data.type === 'limit') {
 							playBackgroundAudioNotification(
 								'orderbook_limit_order',
 								this.props.settings
