@@ -29,7 +29,7 @@ export default {
 	ADD_FILES: 'AGREGAR ARCHIVOS', // ToDo
 	OR_TEXT: 'O',
 	CONTACT_US_TEXT: 'Contáctenos',
-	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
+	HELPFUL_RESOURCES_TEXT: 'Recursos de Ayuda',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Contáctar support@hollaex.com para más información y enviar correo si hay algún problema',
 	HELP_TELEGRAM_TEXT: 'Revisar documentación API abierta:',
@@ -364,7 +364,7 @@ export default {
 		INFO_TXT:
 			'Aquí puede monitorear su progreso hacia la verificación y una mejora de cuenta.',
 		INFO_TXT_1:
-			'Por favor enviar la inforción relevante requerida para cada sección debajo. Solo cuando todas las secciones tienen envíos completos su información va a ser revisada y aprobada para ascender su cuenta.',
+			'Por favor enviar la información relevante requerida para cada sección debajo. Solo cuando todas las secciones tienen envíos completos su información va a ser revisada y aprobada para ascender su cuenta.',
 		INFO_TXT_2:
 			'* Verificación de su sección de identidad requiere a {0} ciertos documentos.',
 		DOCUMENTATIONS: 'Subir',
@@ -680,6 +680,7 @@ export default {
 		WITHDRAWALS: 'Retiros',
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: 'Autenticación de dos factores',
 			OTP_ENABLED: 'habilitar otp',
@@ -707,6 +708,14 @@ export default {
 					'Le recomendamos encarecidamente que establezca una autenticación de dos factores (2FA). Haciendo esto aumentará enormemente la seguridad de sus fondos.',
 				ENABLE: 'Habilitar la autenticación de dos factores',
 				DISABLE: 'Desactivar la autenticación de dos factores',
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'Enter One-Time Password (OTP)',
+				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
+				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {
 				PLACEHOLDER:
@@ -786,10 +795,10 @@ export default {
 		{ value: 'sell', label: 'venta' },
 	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'Sí' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'No' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'Tamaño',
+	SIZE: 'Cantidad',
 	PRICE: 'Precio',
 	FEE: 'Tarifa',
 	FEES: 'Tarifas',
@@ -803,11 +812,11 @@ export default {
 	COMPLETE: 'Completar',
 	PENDING: 'Pendiente',
 	REJECTED: 'Rechazado',
-	ORDERBOOK: 'Libro de pedidos',
+	ORDERBOOK: 'Libro de órdenes',
 	CANCEL: 'Cancelar',
 	CANCEL_ALL: 'Cancelar todo',
 	GO_TRADE_HISTORY: 'Ir a la historia de la transacción',
-	ORDER_ENTRY: 'entrada de pedidos',
+	ORDER_ENTRY: 'entrada de órdenes',
 	TRADE_HISTORY: 'historia',
 	CHART: 'tabla de precios',
 	ORDERS: 'mis órdenes activas',
@@ -823,7 +832,7 @@ export default {
 	PRICE_CURRENCY: 'PRECIO ({0})',
 	AMOUNT_SYMBOL: 'CANTIDAD ({0})',
 	MARKET_PRICE: 'Precio de mercado',
-	ORDER_PRICE: 'Precio del pedido',
+	ORDER_PRICE: 'Predio de la orden',
 	TOTAL_ORDER: 'Orden total',
 	NO_DATA: 'Sin datos',
 	LOADING: 'Cargando',
@@ -853,17 +862,18 @@ export default {
 		'La direcciòn de Bitcoin es invàlida. Por favor revisar cuidadosamente e introducir otra vez',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'La direcciòn de Ethereum es invàlida. Por favor revisar cuidadosamente e introducir otra vez',
-	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
+	WITHDRAWALS_BUTTON_TEXT: 'Revisar Retiro',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Dirección Destinatario',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
 	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'Type the transaction memo', // new
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
+	WITHDRAWALS_FORM_AMOUNT_LABEL: 'Cantidad de {0} para retirar',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaction fee',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
+		'Tarifa de Transacción',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -935,7 +945,7 @@ export default {
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'recibir',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'enviar',
 	AVAILABLE_TEXT: 'Disponible',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	AVAILABLE_BALANCE_TEXT: 'Balance Disponible {0} : {1} {2}', // Available Bitcoin Balance: 2.6 BTC
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Cantidad en {0}`,
@@ -982,7 +992,7 @@ export default {
 	NO: 'No',
 	NEXT: 'Next',
 	SKIP_FOR_NOW: 'Skip for now',
-	SUBMIT: 'submit',
+	SUBMIT: 'Enviar',
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
@@ -1013,7 +1023,7 @@ export default {
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'YES' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'Si' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'Tema de Interface de Usuario', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
@@ -1146,7 +1156,7 @@ export default {
 		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
 		URGENT_REQUIREMENTS: 'Urgent Requirements',
 		TRADING_VOLUME: 'Trading Volume',
-		ACCOUNT_ASSETS: 'Account Assets',
+		ACCOUNT_ASSETS: 'Cuenta de Activos',
 		ACCOUNT_DETAILS: 'Account Details',
 		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
 		SHRIMP_ACCOUNT_TXT_2:

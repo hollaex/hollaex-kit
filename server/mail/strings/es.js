@@ -7,7 +7,7 @@ const COMMON = {
 	GREETING: (name) => `Estimado/ Estimada ${name}`,
 	CLOSING: {
 		1: 'Saludos',
-		2: () => `${API_NAME()} equipo`
+		2: () => `Equipo de ${API_NAME()}`
 	},
 	IP_ADDRESS: (ip) => `Dirección IP: ${ip}`,
 	IP_REQUEST_FROM: (ip) => `Solicitud iniciada de: ${ip}`,
