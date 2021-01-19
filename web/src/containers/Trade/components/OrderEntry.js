@@ -213,11 +213,22 @@ class OrderEntry extends Component {
 		return this.props.submitOrder(order).then(() => {
 			if (
 				values.type === 'market' &&
+				!values.stop &&
 				settings.audio &&
 				settings.audio.order_completed
 			) {
 				playBackgroundAudioNotification(
 					'orderbook_market_order',
+					this.props.settings
+				);
+			} else if (
+				values.type === 'market' &&
+				values.stop &&
+				settings.audio &&
+				settings.audio.order_completed
+			) {
+				playBackgroundAudioNotification(
+					'orderbook_limit_order',
 					this.props.settings
 				);
 			}
