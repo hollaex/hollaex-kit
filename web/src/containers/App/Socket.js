@@ -408,6 +408,8 @@ class Container extends Component {
 								{ type: data.data.status, data: data.data },
 								false
 							);
+						} else if (data.data.status === 'triggered') {
+							this.props.removeOrder(data.data);
 						}
 					}
 					break;
