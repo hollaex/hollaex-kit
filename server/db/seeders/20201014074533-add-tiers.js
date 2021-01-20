@@ -25,8 +25,8 @@ module.exports = {
 	up: (queryInterface) => {
 		return checkActivation(process.env.ACTIVATION_CODE)
 			.then((exchange) => {
-				let makerFee = 0;
-				let takerFee = 0;
+				let makerFee = 0.3;
+				let takerFee = 0.3;
 
 				if (exchange.collateral_level === 'zero') {
 					makerFee = 0.3;
