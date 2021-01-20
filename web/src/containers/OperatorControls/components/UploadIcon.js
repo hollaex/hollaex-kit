@@ -113,6 +113,10 @@ class UploadIcon extends Component {
 					<div className="operator-controls__modal-title pb-3">Upload Icon</div>
 				</div>
 				<div>
+					<b>When uploading new content a file size under 1mb</b> is
+					recommended.
+				</div>
+				<div>
 					{editId.map((id) => (
 						<div key={id}>
 							<Divider orientation="left">

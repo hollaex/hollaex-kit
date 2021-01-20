@@ -160,6 +160,11 @@ class AllIconsModal extends Component {
 						<div className="operator-controls__all-strings-header">
 							<div className="operator-controls__modal-title">All icons</div>
 						</div>
+						<div>Upload a graphic to a specific theme.</div>
+						<div>
+							<b>When uploading new content a file size under 1mb</b> is
+							recommended.
+						</div>
 						<Table
 							className="operator-controls__table"
 							columns={this.getColumns()}
