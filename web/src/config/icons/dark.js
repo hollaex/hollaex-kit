@@ -136,6 +136,8 @@ const nestedIcons = {
 	LAPTOP: '/assets/icons/compute-play-black.svg',
 	TELEGRAM: '/assets/icons/telegram-black.svg',
 
+	OTP_ACTIVE: '/assets/icons/2fa-active.svg',
+	OTP_DEACTIVATED: '/assets/icons/2fa-deactivated.svg',
 	CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
