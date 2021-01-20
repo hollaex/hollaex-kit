@@ -133,9 +133,6 @@
 	color: #808083;
 }
 .asset-content .candle-icon {
-	position: absolute;
-	right: 0;
-	top: 10px;
 	width: 74px;
 }
 .wallet-icon {
@@ -184,6 +181,7 @@
 	position: relative;
 	bottom: 3px;
 	left: 18px;
+	color: #000000;
 }
 .ant-radio-inner {
 	background-color: #000000;

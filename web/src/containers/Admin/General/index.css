@@ -139,7 +139,16 @@
 	margin-left: 1.4rem;
 	color: #ffffff;
 }
-.candle-icon {
+.interface-box .feature-icon {
+	width: 74px;
+}
+.interface-box .ant-checkbox-wrapper {
+	display: flex;
+	align-items: center;
+	margin-left: 8px;
+}
+.interface-box .candle-icon,
+.radio-btn-wrapper .candle-icon {
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -150,6 +159,12 @@
 	width: 36px;
 	margin: 5px auto;
 }
+.feature-trade-box {
+	display: flex;
+	width: 75px;
+	height: 50px;
+	background-color: #050596;
+}
 .box {
 	display: flex;
 	width: 75px;
@@ -158,6 +173,7 @@
 	position: relative;
 	bottom: 2rem;
 }
+.feature-trade-box .interface_container,
 .box .interface_container {
 	margin: auto;
 	margin-top: 7px;
