@@ -262,7 +262,6 @@ class Container extends Component {
 		}
 
 		privateSocket.onopen = (evt) => {
-			console.log('Connected Private Socket', evt);
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
@@ -284,7 +283,6 @@ class Container extends Component {
 
 		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
 					if (data.action === 'partial' || 'insert') {
@@ -430,7 +428,7 @@ class Container extends Component {
 		};
 
 		privateSocket.onerror = (evt) => {
-			console.log('public socket error', evt);
+			console.error('public socket error', evt);
 		};
 
 		// privateSocket.on('error', (error) => {
