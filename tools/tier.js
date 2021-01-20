@@ -56,8 +56,8 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
 	}
 
-	let minMakerFee = 0;
-	let minTakerFee = 0;
+	let minMakerFee = 0.3;
+	let minTakerFee = 0.3;
 
 	if (getKitConfig().info.collateral_level === 'zero') {
 		minMakerFee = 0.3;
@@ -166,8 +166,8 @@ const updatePairFees = (pair, fees) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return all(tiersToUpdate.map(async (level) => {
 
-			let minMakerFee = 0;
-			let minTakerFee = 0;
+			let minMakerFee = 0.3;
+			let minTakerFee = 0.3;
 
 			if (getKitConfig().info.collateral_level === 'zero') {
 				minMakerFee = 0.3;
