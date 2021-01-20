@@ -44,7 +44,7 @@ class UserVerification extends Component {
 		headers: [],
 		dialogIsOpen: false,
 		modalText: '',
-    iconId: '',
+		iconId: '',
 		icon: '',
 		activeTab: 0,
 		jumpToPage: 0,
@@ -412,9 +412,8 @@ class UserVerification extends Component {
 		constants,
 		icons
 	) => {
-    const { icons: ICONS } = this.props;
 		const { stringId, icon, iconId } = this.state;
-    
+
 		if (error) {
 			return (
 				<SuccessDisplay
@@ -441,6 +440,7 @@ class UserVerification extends Component {
 					success={!error}
 					iconId={iconId}
 					iconPath={icon}
+					stringId={stringId}
 				/>
 			);
 		}
