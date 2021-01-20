@@ -2,7 +2,7 @@
 
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
-const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean } = require('lodash');
+const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject } = require('lodash');
 const { isEmail } = require('validator');
 const { SERVER_PATH } = require('../constants');
 const {
@@ -821,6 +821,16 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 	const joinedSettings = {};
 	SETTING_KEYS.forEach((key) => {
 		if (has(newSettings, key)) {
+			if (
+				key === 'chat' &&
+				(!isPlainObject(newSettings[key]) || !isBoolean(newSettings[key].set_username))
+			) {
+				throw new Error('set-username must be a boolean value');
+			} else if (
+				key === 'language' && !isString(newSettings[key] && !getKitConfig().valid_languages.includes(newSettings[key]))
+			) {
+				throw new Error('Invalid language given');
+			}
 			joinedSettings[key] = newSettings[key];
 		} else if (has(userSettings, key)) {
 			joinedSettings[key] = userSettings[key];
