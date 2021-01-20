@@ -249,6 +249,7 @@ class TVChartContainer extends React.PureComponent {
 		const resolution = getChartResolution();
 		const toolbar_bg = getToolbarBG(activeTheme, color);
 		const widgetTheme = getWidgetTheme(toolbar_bg);
+		const locale = getLanguage();
 
 		const widgetOptions = {
 			symbol: symbol,
@@ -261,7 +262,7 @@ class TVChartContainer extends React.PureComponent {
 			library_path: libraryPath,
 			timeframe: '1m',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-			locale: getLanguage(),
+			locale: locale === 'id' ? 'en' : locale,
 			withdateranges: true,
 			range: 'ytd',
 			disabled_features: [

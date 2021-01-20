@@ -13,7 +13,13 @@ const SEND_EMAIL_COPY = () => GET_KIT_SECRETS().emails.send_email_to_support;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const SUPPORT_SOURCE = () => `'${API_NAME()} Support <${SENDER_EMAIL()}>'`;
 const BCC_ADDRESSES = () => SEND_EMAIL_COPY() ? [AUDIT_EMAIL()] : [];
-const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
+const DEFAULT_LANGUAGE = () => {
+	try {
+		return GET_KIT_CONFIG().defaults.language;
+	} catch (err) {
+		return 'en';
+	}
+};
 
 const sendEmail = (
 	type,

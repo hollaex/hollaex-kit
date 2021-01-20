@@ -54,9 +54,7 @@ const checkStatus = () => {
 			strings: {},
 			captcha: {},
 			defaults: {},
-			plugins: {
-				configuration: {}
-			},
+			features: {},
 			meta: {}
 		}
 	};
@@ -66,12 +64,7 @@ const checkStatus = () => {
 		accounts: {},
 		captcha: {},
 		emails: {},
-		smtp: {},
-		plugins: {
-			s3: {},
-			sns: {},
-			freshdesk: {}
-		}
+		smtp: {}
 	};
 
 	let frozenUsers = {};
@@ -129,6 +122,7 @@ const checkStatus = () => {
 				is_trial: exchange.is_trial,
 				created_at: exchange.created_at,
 				expiry: exchange.expiry,
+				collateral_level: exchange.collateral_level,
 				status: true,
 				initialized: status.initialized
 			};

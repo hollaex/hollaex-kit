@@ -78,6 +78,12 @@ const nestedIcons = {
 		RISK_MANAGE_WARNING_ICON: '/assets/images/risk-manage-pop-warning.svg',
 	},
 
+	SECURITY: {
+		OTP_ICON: '/assets/images/2fa-security-icon.svg',
+		CHANGE_PASSWORD_ICON: '/assets/images/password-security-icon.svg',
+		API_ICON: '/assets/images/api-security-icon.svg',
+	},
+
 	LEVEL_ACCOUNT: {
 		ICON_1: '/assets/images/level-1.svg',
 		ICON_2: '/assets/images/level-2.svg',

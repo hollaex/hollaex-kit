@@ -1,7 +1,6 @@
 'use strict';
 
 const { isEmail, isUUID } = require('validator');
-const { signFreshdesk, signZendesk } = require('../helpers/plugins');
 const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -301,20 +300,7 @@ const loginPost = (req, res) => {
 				device
 			};
 			if (!service) {
-				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
-			} else {
-				// This login is for a third party service e.g. FreshDesk
-				if (service === 'freshdesk') {
-					const url = signFreshdesk(user);
-					// in case login is through freshdesk
-					return res.status(201).json({ service, callbackUrl: url });
-				} else if (service === 'zendesk') {
-					const url = signZendesk(user);
-					// in case login is through zendesk
-					return res.status(201).json({ service, callbackUrl: url });
-				} else {
-					throw new Error(SERVICE_NOT_SUPPORTED);
-				}
+				sendEmail(MAILTYPE.LOGIN, email, data, {}, domain);
 			}
 			return res.status(201).json({
 				token: toolsLib.security.issueToken(
