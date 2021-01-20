@@ -827,7 +827,8 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 			) {
 				throw new Error('set-username must be a boolean value');
 			} else if (
-				key === 'language' && !isString(newSettings[key] && !getKitConfig().valid_languages.includes(newSettings[key]))
+				key === 'language' &&
+				(!isString(newSettings[key]) || getKitConfig().valid_languages.indexOf(newSettings[key]) === -1)
 			) {
 				throw new Error('Invalid language given');
 			}
