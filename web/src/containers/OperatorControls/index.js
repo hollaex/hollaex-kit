@@ -64,6 +64,8 @@ class OperatorControls extends Component {
 			allStrings: [],
 			searchValue: '',
 			searchResults: [],
+			iconSearchResults: [],
+			iconSearchValue: '',
 			source: false,
 			isStringsSettingsOpen: false,
 			isAddLanguageModalOpen: false,
@@ -409,10 +411,13 @@ class OperatorControls extends Component {
 		const themeKeys = themeOptions.map(({ value }) => value);
 		const allIconsArray = getAllIconsArray(themeKeys, allIcons);
 
-		this.setState({
-			allIconsArray,
-			isAllIconsModalOpen: true,
-		});
+		this.setState(
+			{
+				allIconsArray,
+				isAllIconsModalOpen: true,
+			},
+			this._doIconSearch
+		);
 	};
 
 	closeAllIconsModal = () => {
@@ -494,6 +499,29 @@ class OperatorControls extends Component {
 	handleSearch = ({ target: { value: searchValue } }) => {
 		this.setState({ searchValue }, () => {
 			this.doSearch();
+		});
+	};
+
+	doIconSearch = debounce(() => this._doIconSearch(), 300);
+
+	_doIconSearch = () => {
+		const { iconSearchValue, allIconsArray } = this.state;
+
+		const searchTerm = iconSearchValue.toLowerCase().trim();
+		const iconSearchResults = [];
+
+		allIconsArray.forEach((iconObject = {}) => {
+			if (iconObject.key.toLowerCase().includes(searchTerm)) {
+				iconSearchResults.push(iconObject);
+			}
+		});
+
+		this.setState({ iconSearchResults });
+	};
+
+	handleIconSearch = ({ target: { value: iconSearchValue } }) => {
+		this.setState({ iconSearchValue }, () => {
+			this.doIconSearch();
 		});
 	};
 
@@ -728,7 +756,8 @@ class OperatorControls extends Component {
 			selectedTheme,
 			isAllIconsModalOpen,
 			selectedThemes,
-			allIconsArray,
+			iconSearchValue,
+			iconSearchResults,
 		} = this.state;
 		const { editMode, color: themes, themeOptions } = this.props;
 
@@ -871,10 +900,10 @@ class OperatorControls extends Component {
 				</Modal>
 				<AllIconsModal
 					isOpen={editMode && isAllIconsModalOpen}
-					icons={allIconsArray}
+					icons={iconSearchResults}
 					onCloseDialog={this.closeAllIconsModal}
-					// onSearch={this.handleSearch}
-					// searchValue={searchValue}
+					onSearch={this.handleIconSearch}
+					searchValue={iconSearchValue}
 					themeOptions={themeOptions}
 					onSelect={this.setSelectedThemes}
 					selectedThemes={selectedThemes}

@@ -9017,7 +9017,9 @@ svg .wallet-selected-2,
 svg .account-active-1,
 svg .post-icon,
 svg .item-options,
-svg .check-order {
+svg .check-order,
+svg .otp-inactive,
+svg .otp-active {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,
