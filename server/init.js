@@ -122,6 +122,7 @@ const checkStatus = () => {
 				is_trial: exchange.is_trial,
 				created_at: exchange.created_at,
 				expiry: exchange.expiry,
+				collateral_level: exchange.collateral_level,
 				status: true,
 				initialized: status.initialized
 			};
