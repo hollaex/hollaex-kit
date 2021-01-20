@@ -56,6 +56,27 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
 	}
 
+	let minMakerFee = 0;
+	let minTakerFee = 0;
+
+	if (getKitConfig().info.collateral_level === 'zero') {
+		minMakerFee = 0.3;
+		minTakerFee = 0.3;
+	} else if (getKitConfig().info.collateral_level === 'lite') {
+		minMakerFee = 0.1;
+		minTakerFee = 0.2;
+	} else if (getKitConfig().info.collateral_level === 'member') {
+		minMakerFee = 0;
+		minTakerFee = 0.05;
+	}
+
+	const invalidMakerFees = Object.values(flatten(fees.maker)).some(fee => fee < minMakerFee);
+	const invalidTakerFees = Object.values(flatten(fees.taker)).some(fee => fee < minTakerFee);
+
+	if (invalidMakerFees || invalidTakerFees) {
+		return reject(new Error(`Invalid fee given. Minimum maker fee: ${minMakerFee}. Minimum taker fee: ${minTakerFee}`));
+	}
+
 	return getModel('tier').create({
 		id: level,
 		name,
