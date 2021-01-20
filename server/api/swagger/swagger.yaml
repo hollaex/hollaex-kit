@@ -3683,13 +3683,6 @@ definitions:
             properties:
               site_key:
                 type: string
-          plugins:
-            type: object
-            properties:
-              enabled:
-                type: string
-              configuration:
-                type: object
           defaults:
             type: object
             properties:
@@ -3708,6 +3701,8 @@ definitions:
           meta:
             type: object
           icons:
+            type: object
+          features:
             type: object
           description:
             type: string
@@ -3770,8 +3765,6 @@ definitions:
                 type: string
               password:
                 type: string
-          plugins:
-            type: object
   AdminUsersResponse:
     type: object
     properties:
