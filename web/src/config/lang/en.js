@@ -680,8 +680,8 @@ const nestedContent = {
 				TEXT_2: 'Require OTP when withdrawing funds',
 			},
 			DIALOG: {
-				SUCCESS: 'You have successfully activated the OTP',
-				REVOKE: 'You have successfully revoked your OTP',
+				SUCCESS: 'You have successfully activated 2FA',
+				REVOKE: 'You have successfully deactivated 2FA',
 			},
 			CONTENT: {
 				TITLE: 'Activate Two-Factor Authentication',

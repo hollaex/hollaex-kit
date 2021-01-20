@@ -32,6 +32,8 @@ class UserVerification extends Component {
 		dialogIsOpen: false,
 		modalText: '',
 		stringId: '',
+		iconId: '',
+		icon: '',
 	};
 
 	componentDidMount() {
@@ -163,12 +165,15 @@ class UserVerification extends Component {
 	};
 
 	onSubmitActivateOtp = (values) => {
+		const { icons: ICONS } = this.props;
 		return otpActivate(values)
 			.then((res) => {
 				this.props.otpSetActivated(true);
 				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
+					iconId: 'OTP_ACTIVE',
+					icon: ICONS['OTP_ACTIVE'],
 					modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS'],
 					stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS',
 				});
@@ -203,11 +208,14 @@ class UserVerification extends Component {
 	};
 
 	onSubmitCancelOTP = (values) => {
+		const { icons: ICONS } = this.props;
 		return otpRevoke({ code: values.otp_code })
 			.then(() => {
 				this.props.otpSetActivated(false);
 				this.setState({
 					dialogIsOpen: true,
+					iconId: 'OTP_DEACTIVATED',
+					icon: ICONS['OTP_DEACTIVATED'],
 					modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.REVOKE'],
 					stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.REVOKE',
 				});
@@ -232,17 +240,8 @@ class UserVerification extends Component {
 		}, 250);
 	};
 
-	renderModalContent = () => {
-		return (
-			<SuccessDisplay
-				onClick={this.onCloseDialog}
-				text={this.state.modalText}
-			/>
-		);
-	};
-
 	onCloseDialog = () => {
-		this.setState({ dialogIsOpen: false });
+		this.setState({ dialogIsOpen: false, iconId: '', icon: '' });
 	};
 
 	renderModalContent = (
@@ -252,7 +251,9 @@ class UserVerification extends Component {
 		modalText,
 		constants
 	) => {
-		const { icons: ICONS, stringId } = this.props;
+		const { icons: ICONS } = this.props;
+		const { stringId, icon, iconId } = this.state;
+
 		if (error) {
 			return (
 				<SuccessDisplay
@@ -278,6 +279,8 @@ class UserVerification extends Component {
 					stringId={stringId}
 					text={modalText}
 					success={!error}
+					iconId={iconId}
+					iconPath={icon}
 				/>
 			);
 		}
