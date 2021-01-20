@@ -75,7 +75,7 @@ $link: var(--specials_buttons-links-and-highlights);
 
 $trade-fields: var(--labels_fields);
 $trade-fields-border: $colors-border;
-$trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
+$trade-fill-indicator: $specials_highlight-box;
 $trade-fill-indicator-text: var(
 	--labels_secondary-inactive-label-text-graphics
 );
@@ -120,7 +120,7 @@ $footer-background-color: var(--base_footer);
 // chat color
 $chat-message-background-even: var(--base_background);
 $chat-message-background-odd: var(--base_secondary-navigation-bar);
-$chat-message-color: var(--labels_secondary-inactive-label-text-graphics);
+$chat-message-color: var(--specials_chat-messages);
 $chat-box-border: $colors-main-border;
 
 // this is for transaction history- ToDo: need to customize for common theme
@@ -349,6 +349,7 @@ $tab-text-padding: 0 8px 8px;
 $tab-selected-line-height: 4px;
 
 // MOBILE
+$market-selector--height: 3rem;
 $navigation_bar-mobile--height: 4rem;
 $navigation_bar-mobile--background: $app-bar-background-color;
 $bottom_bar--height: 6rem;
@@ -357,7 +358,8 @@ $max-content-height-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height + $bottom-bar--height}
 );
 $max-content-height-double-bar-mobile: calc(
-	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height}
+	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height +
+		$market-selector--height}
 );
 $max-content-height-home-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height}
