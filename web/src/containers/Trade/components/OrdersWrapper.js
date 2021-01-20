@@ -139,7 +139,6 @@ class OrdersWrapper extends Component {
 					pairData={pairData}
 					pairs={pairs}
 					coins={coins}
-					goToPair={this.props.goToPair}
 					userTrades={userTrades}
 					activeTheme={activeTheme}
 				/>

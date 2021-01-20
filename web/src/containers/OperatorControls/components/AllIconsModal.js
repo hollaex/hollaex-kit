@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, array, func } from 'prop-types';
-import { Select, Button, Table, Modal as ConfirmationModal } from 'antd';
+import { Input, Select, Button, Table, Modal as ConfirmationModal } from 'antd';
 import ImageUpload from './ImageUpload';
 import { KeyOutlined } from '@ant-design/icons';
 import { upload } from 'actions/operatorActions';
 
 const { Option } = Select;
+const { Search } = Input;
 
 class AllIconsModal extends Component {
 	state = {
@@ -142,7 +143,7 @@ class AllIconsModal extends Component {
 	};
 
 	render() {
-		const { isOpen, icons, onCloseDialog } = this.props;
+		const { isOpen, icons, onCloseDialog, searchValue, onSearch } = this.props;
 
 		return (
 			<Modal
@@ -159,6 +160,21 @@ class AllIconsModal extends Component {
 					<div>
 						<div className="operator-controls__all-strings-header">
 							<div className="operator-controls__modal-title">All icons</div>
+							<div className="d-flex justify-content-end mr-3">
+								<Search
+									style={{ width: '134px' }}
+									defaultValue={searchValue}
+									onChange={onSearch}
+									enterButton={false}
+									bordered={false}
+									placeholder="Search..."
+								/>
+							</div>
+						</div>
+						<div>Upload a graphic to a specific theme.</div>
+						<div>
+							<b>When uploading new content a file size under 1mb</b> is
+							recommended.
 						</div>
 						<Table
 							className="operator-controls__table"

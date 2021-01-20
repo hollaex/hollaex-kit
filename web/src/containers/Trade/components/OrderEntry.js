@@ -62,13 +62,13 @@ class OrderEntry extends Component {
 	};
 
 	componentDidMount() {
-		const { side } = this.props;
 		if (this.props.pair_base) {
-			this.generateFormValues(this.props.pair, '', side);
+			this.generateFormValues(this.props);
 		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { pair_2, pair_base } = this.props;
 		if (
 			nextProps.size !== this.props.size ||
 			nextProps.side !== this.props.side ||
@@ -80,9 +80,13 @@ class OrderEntry extends Component {
 		}
 		if (
 			nextProps.activeLanguage !== this.props.activeLanguage ||
-			nextProps.side !== this.props.side
+			nextProps.side !== this.props.side ||
+			nextProps.balance[`${nextProps.pair_base}_available`] !==
+				this.props.balance[`${pair_base}_available`] ||
+			nextProps.balance[`${nextProps.pair_2}_available`] !==
+				this.props.balance[`${pair_2}_available`]
 		) {
-			this.generateFormValues(nextProps.pair, '', nextProps.side);
+			this.generateFormValues(nextProps);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
 			this.setState({
@@ -213,11 +217,22 @@ class OrderEntry extends Component {
 		return this.props.submitOrder(order).then(() => {
 			if (
 				values.type === 'market' &&
+				!values.stop &&
 				settings.audio &&
 				settings.audio.order_completed
 			) {
 				playBackgroundAudioNotification(
 					'orderbook_market_order',
+					this.props.settings
+				);
+			} else if (
+				values.type === 'market' &&
+				values.stop &&
+				settings.audio &&
+				settings.audio.order_completed
+			) {
+				playBackgroundAudioNotification(
+					'orderbook_limit_order',
 					this.props.settings
 				);
 			}
@@ -300,7 +315,7 @@ class OrderEntry extends Component {
 		change(FORM_NAME, 'size', '');
 	};
 
-	generateFormValues = (pair = '', buyingPair = '', side = 'buy') => {
+	generateFormValues = (props, buyingPair = '') => {
 		const {
 			min_size,
 			max_size,
@@ -313,7 +328,9 @@ class OrderEntry extends Component {
 			pair_2,
 			balance = {},
 			marketPrice,
-		} = this.props;
+			pair = '',
+			side = 'buy',
+		} = props;
 
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
