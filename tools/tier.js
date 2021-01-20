@@ -3,9 +3,9 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels } = require('./common');
+const { getKitTiers, getKitPairs, getKitConfig, subscribedToPair, getTierLevels } = require('./common');
 const { reject, all } = require('bluebird');
-const { difference, omit, isNumber } = require('lodash');
+const { difference, omit, isNumber, each } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const flatten = require('flat');
@@ -145,6 +145,24 @@ const updatePairFees = (pair, fees) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return all(tiersToUpdate.map(async (level) => {
 
+			let minMakerFee = 0;
+			let minTakerFee = 0;
+
+			if (getKitConfig().info.collateral_level === 'zero') {
+				minMakerFee = 0.3;
+				minTakerFee = 0.3;
+			} else if (getKitConfig().info.collateral_level === 'lite') {
+				minMakerFee = 0.1;
+				minTakerFee = 0.2;
+			} else if (getKitConfig().info.collateral_level === 'member') {
+				minMakerFee = 0;
+				minTakerFee = 0.05;
+			}
+
+			if (fees[level].maker < minMakerFee || fees[level].taker < minTakerFee) {
+				throw new Error(`Invalid fee given. Minimum maker fee: ${minMakerFee}. Minimum taker fee: ${minTakerFee}`);
+			}
+
 			const tier = await dbQuery.findOne('tier', { where: { id: level } });
 
 			const updatedFees = {
@@ -154,26 +172,30 @@ const updatePairFees = (pair, fees) => {
 			updatedFees.maker[pair] = fees[level].maker;
 			updatedFees.taker[pair] = fees[level].taker;
 
-			const updatedTier = await tier.update(
+			return tier.update(
 				{ fees: updatedFees },
 				{ fields: ['fees'], transaction }
 			);
+		}));
+	})
+		.then((data) => {
+			const updatedTiers = {};
+			each(data, (tier) => {
+				updatedTiers[tier.id] = {
+					...tier.dataValues
+				};
+			});
 
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
 					type: 'update',
 					data: {
-						tiers: {
-							[updatedTier.id]: updatedTier
-						}
+						tiers: updatedTiers
 					}
 				})
 			);
-
-			return updatedTier;
-		}));
-	});
+		});
 };
 
 const updateTiersLimits = (limits) => {
@@ -199,26 +221,30 @@ const updateTiersLimits = (limits) => {
 			const deposit_limit = isNumber(limits[level].deposit_limit) ? limits[level].deposit_limit : tier.deposit_limit;
 			const withdrawal_limit = isNumber(limits[level].withdrawal_limit) ? limits[level].withdrawal_limit : tier.withdrawal_limit;
 
-			const updatedTier = await tier.update(
+			return tier.update(
 				{ deposit_limit, withdrawal_limit },
 				{ fields: [ 'deposit_limit', 'withdrawal_limit' ], transaction }
 			);
+		}));
+	})
+		.then((data) => {
+			const updatedTiers = {};
+			each(data, (tier) => {
+				updatedTiers[tier.id] = {
+					...tier.dataValues
+				};
+			});
 
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
 					type: 'update',
 					data: {
-						tiers: {
-							[updatedTier.id]: updatedTier
-						}
+						tiers: updatedTiers
 					}
 				})
 			);
-
-			return updatedTier;
-		}));
-	});
+		});
 };
 
 module.exports = {
