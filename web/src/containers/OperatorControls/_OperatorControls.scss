@@ -97,6 +97,10 @@ $operator-controls__panel-border-color: #a7a7a7;
 		color: $operator-controls__panel-text-color !important;
 	}
 
+	.ant-table-container {
+		background-color: $operator-controls__panel-main-color;
+	}
+
 	.ant-pagination,
 	.ant-pagination-item,
 	.ant-pagination-next,

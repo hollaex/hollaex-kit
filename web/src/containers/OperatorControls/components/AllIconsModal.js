@@ -193,17 +193,17 @@ class AllIconsModal extends Component {
 							scroll={{ y: 240 }}
 							style={{ width: '820px' }}
 						/>
+						<div className="d-flex justify-content-end pt-4 mt-4">
+							<Button
+								type="primary"
+								onClick={onCloseDialog}
+								className="operator-controls__save-button confirm"
+							>
+								Confirm
+							</Button>
+						</div>
 					</div>
 				)}
-				<div className="d-flex justify-content-end pt-4 mt-4">
-					<Button
-						type="primary"
-						onClick={onCloseDialog}
-						className="operator-controls__save-button confirm"
-					>
-						Confirm
-					</Button>
-				</div>
 			</Modal>
 		);
 	}
