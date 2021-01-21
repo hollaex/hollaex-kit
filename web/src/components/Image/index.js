@@ -36,6 +36,13 @@ const Image = ({
 				<ReactSVG
 					src={icon}
 					className={classnames(wrapperClassName, svgWrapperClassName)}
+					fallback={() => (
+						<img
+							src={icon}
+							alt={alt}
+							className={classnames(wrapperClassName, svgWrapperClassName)}
+						/>
+					)}
 				/>
 			)}
 			{icon && !useSvg && (
