@@ -6,12 +6,15 @@ const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
 const { User, Status, Tier } = require('./db/models');
 
-const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
-const HE_NETWORK_BASE_URL = '/v2';
-const PATH_ACTIVATE = '/exchange/activate';
-
 const { subscriber, publisher } = require('./db/pubsub');
-const { INIT_CHANNEL, CONFIGURATION_CHANNEL, WS_HUB_CHANNEL } = require('./constants');
+const {
+	INIT_CHANNEL,
+	CONFIGURATION_CHANNEL,
+	WS_HUB_CHANNEL,
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
+	HOLLAEX_NETWORK_PATH_ACTIVATE
+} = require('./constants');
 const { each } = require('lodash');
 
 let nodeLib;
@@ -127,6 +130,8 @@ const checkStatus = () => {
 				initialized: status.initialized
 			};
 			const networkNodeLib = new Network({
+				apiUrl: HOLLAEX_NETWORK_ENDPOINT,
+				baseUrl: HOLLAEX_NETWORK_BASE_URL,
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
@@ -192,7 +197,7 @@ const checkActivation = (name, url, activation_code, version, constants = {}, ki
 	const options = {
 		method: 'POST',
 		body,
-		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
+		uri: `${HOLLAEX_NETWORK_ENDPOINT}${HOLLAEX_NETWORK_BASE_URL}${HOLLAEX_NETWORK_PATH_ACTIVATE}`,
 		json: true
 	};
 	return rp(options);
