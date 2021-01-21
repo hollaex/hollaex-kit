@@ -183,8 +183,8 @@ class AllIconsModal extends Component {
 							size="small"
 							sticky={true}
 							pagination={{
-								pageSize: 1000,
-								hideOnSinglePage: true,
+								pageSize: icons.length ? Math.ceil(icons.length / 4) : 0,
+								hideOnSinglePage: false,
 								showSizeChanger: false,
 								showQuickJumper: false,
 								showLessItems: false,
