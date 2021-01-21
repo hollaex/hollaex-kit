@@ -3495,6 +3495,9 @@ table th {
   .operator-controls__modal .ReactModal__Content .action_notification-image {
     fill: #ffffff !important; }
 
+.operator-controls__modal.extended .ReactModal__Content {
+  height: calc(100vh - 160px) !important; }
+
 .operator-controls__modal .ReactModal__Overlay {
   position: fixed;
   z-index: 10001 !important;

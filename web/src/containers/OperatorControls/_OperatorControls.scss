@@ -192,6 +192,12 @@ $operator-controls__panel-border-color: #a7a7a7;
 		}
 	}
 
+	&.extended {
+		.ReactModal__Content {
+			height: calc(100vh - 160px) !important;
+		}
+	}
+
 	.ReactModal__Overlay {
 		position: fixed;
 		z-index: 10001 !important;

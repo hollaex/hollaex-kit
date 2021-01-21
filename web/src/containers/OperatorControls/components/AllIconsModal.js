@@ -149,7 +149,7 @@ class AllIconsModal extends Component {
 			<Modal
 				isOpen={isOpen}
 				label="operator-controls-modal"
-				className="operator-controls__modal"
+				className="operator-controls__modal extended"
 				disableTheme={true}
 				onCloseDialog={onCloseDialog}
 				shouldCloseOnOverlayClick={true}
