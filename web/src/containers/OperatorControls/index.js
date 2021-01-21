@@ -812,7 +812,7 @@ class OperatorControls extends Component {
 							className="operator-controls__panel-item"
 							onClick={this.openAllIconsModal}
 						>
-							Icons
+							All graphics
 						</div>
 					</div>
 					<div className="d-flex align-items-center">

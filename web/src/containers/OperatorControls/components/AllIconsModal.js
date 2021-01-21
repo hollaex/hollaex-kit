@@ -159,7 +159,7 @@ class AllIconsModal extends Component {
 				{isOpen && (
 					<div>
 						<div className="operator-controls__all-strings-header">
-							<div className="operator-controls__modal-title">All icons</div>
+							<div className="operator-controls__modal-title">All graphics</div>
 							<div className="d-flex justify-content-end mr-3">
 								<Search
 									style={{ width: '134px' }}
