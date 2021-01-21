@@ -135,7 +135,7 @@ class AllIconsModal extends Component {
 			loading: false,
 		});
 
-		onSave(icons);
+		onSave(icons, true);
 
 		this.setState({
 			selectedFiles: {},
