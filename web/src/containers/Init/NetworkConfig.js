@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Form, Button, message } from 'antd';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { storeAdminKey } from '../../actions/authAction';
 
@@ -27,7 +27,7 @@ const NetworkConfig = (props) => {
 		<div className="setup-container">
 			<div className="content info-container">
 				<div>
-					<ReactSVG path={props.icon} wrapperClassName="email-icon" />
+					<ReactSVG src={props.icon} className="email-icon" />
 				</div>
 				<div className="wrapper">
 					<div className="header">Exchange operator network keys</div>

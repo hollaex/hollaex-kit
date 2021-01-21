@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { EditWrapper } from 'components';
 import { isBackgroundIcon } from 'utils/icon';
 
@@ -34,8 +34,8 @@ const Image = ({
 		<EditWrapper iconId={showUpload ? iconId : ''} stringId={stringId}>
 			{icon && useSvg && (
 				<ReactSVG
-					path={icon}
-					wrapperClassName={classnames(wrapperClassName, svgWrapperClassName)}
+					src={icon}
+					className={classnames(wrapperClassName, svgWrapperClassName)}
 				/>
 			)}
 			{icon && !useSvg && (

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import ReactSvg from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import moment from 'moment';
 import { bindActionCreators } from 'redux';
 
@@ -22,9 +22,9 @@ export const NotificationItem = ({
 			<div>
 				<div className="d-flex my-2">
 					<div className="mr-2">
-						<ReactSvg
-							path={ICONS.TRADE_ANNOUNCEMENT}
-							wrapperClassName="trade_post_icon"
+						<ReactSVG
+							src={ICONS.TRADE_ANNOUNCEMENT}
+							className="trade_post_icon"
 						/>
 					</div>
 					<div>

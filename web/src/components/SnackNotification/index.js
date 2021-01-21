@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
@@ -56,8 +56,8 @@ class SnackNotification extends Component {
 					{snackProps.icon ? (
 						snackProps.useSvg ? (
 							<ReactSVG
-								path={snackProps.icon}
-								wrapperClassName="notification-icon mx-2"
+								src={snackProps.icon}
+								className="notification-icon mx-2"
 							/>
 						) : (
 							<img

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Select, Form, Button } from 'antd';
 
 import { minimalTimezoneSet } from '../Settings/Utils';
@@ -39,10 +39,7 @@ const TimeZone = ({ initialValues, handleNext, updateConstants }) => {
 	};
 	return (
 		<div>
-			<ReactSVG
-				path={STATIC_ICONS.TIMEZONE_WORLD_MAP}
-				wrapperClassName="world-map"
-			/>
+			<ReactSVG src={STATIC_ICONS.TIMEZONE_WORLD_MAP} className="world-map" />
 			<div className="form-wrapper">
 				<Form
 					name="timezone"

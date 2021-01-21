@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Button, Modal, Select } from 'antd';
 import { Link } from 'react-router';
 import {
@@ -76,8 +76,8 @@ const RenderModalContent = ({
 			<Select.Option key={index} value={level}>
 				<div className="asset-list">
 					<ReactSVG
-						path={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
-						wrapperClassName="select-level-icon"
+						src={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
+						className="select-level-icon"
 					/>
 					<div className="select-coin-text">{`Account tier ${level}`}</div>
 				</div>
@@ -102,8 +102,8 @@ const RenderModalContent = ({
 					<div className="d-flex align-items-center mb-3">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.USER_DETAILS_ICON}
-								wrapperClassName="user-edit-icon"
+								src={STATIC_ICONS.USER_DETAILS_ICON}
+								className="user-edit-icon"
 							/>
 						</div>
 						<h3>{`Edit user ${userData.id} data`}</h3>
@@ -220,29 +220,29 @@ const AboutData = ({
 		} else if (userData.is_communicator) {
 			return (
 				<ReactSVG
-					path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
-					wrapperClassName="user-info-icon"
+					src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+					className="user-info-icon"
 				/>
 			);
 		} else if (userData.is_kyc) {
 			return (
 				<ReactSVG
-					path={STATIC_ICONS.BLUE_SCREEN_KYC}
-					wrapperClassName="user-info-icon"
+					src={STATIC_ICONS.BLUE_SCREEN_KYC}
+					className="user-info-icon"
 				/>
 			);
 		} else if (userData.is_supervisor) {
 			return (
 				<ReactSVG
-					path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
-					wrapperClassName="user-info-icon"
+					src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+					className="user-info-icon"
 				/>
 			);
 		} else if (userData.is_support) {
 			return (
 				<ReactSVG
-					path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
-					wrapperClassName="user-info-icon"
+					src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+					className="user-info-icon"
 				/>
 			);
 		} else {
@@ -281,8 +281,8 @@ const AboutData = ({
 								</div>
 								<div className={'about-icon-active'}>
 									<ReactSVG
-										path={STATIC_ICONS.TWO_STEP_KEY_ICON}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.TWO_STEP_KEY_ICON}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -293,8 +293,8 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={STATIC_ICONS.TWO_STEP_KEY_ICON}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.TWO_STEP_KEY_ICON}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -314,8 +314,8 @@ const AboutData = ({
 								</div>
 								<div className={'about-icon-active'}>
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FREEZE}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FREEZE}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -331,8 +331,8 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FREEZE}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FREEZE}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -352,8 +352,8 @@ const AboutData = ({
 								</div>
 								<div className="about-icon-active">
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FLAG}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FLAG}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -369,8 +369,8 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FLAG}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FLAG}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -461,10 +461,10 @@ const AboutData = ({
 						<div className="user-level-container">
 							<div>
 								<ReactSVG
-									path={
+									src={
 										ICONS[`LEVEL_ACCOUNT_ICON_${userData.verification_level}`]
 									}
-									wrapperClassName="levels-icon"
+									className="levels-icon"
 								/>
 							</div>
 							<div className="user-info-label">

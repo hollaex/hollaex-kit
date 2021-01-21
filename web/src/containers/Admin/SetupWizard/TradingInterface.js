@@ -1,6 +1,6 @@
 import React from 'react';
 import { Radio, Form, Button } from 'antd';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 
@@ -54,8 +54,8 @@ const TradingInterface = ({
 									</div>
 									<div>
 										<ReactSVG
-											path={STATIC_ICONS.CANDLES_LOGO}
-											wrapperClassName="candle-icon"
+											src={STATIC_ICONS.CANDLES_LOGO}
+											className="candle-icon"
 										/>
 									</div>
 								</div>
@@ -66,8 +66,8 @@ const TradingInterface = ({
 									(Chart, orderbook, limit orders with wallet)
 								</div>
 								<ReactSVG
-									path={STATIC_ICONS.CANDLES_LOGO}
-									wrapperClassName="candle-icon"
+									src={STATIC_ICONS.CANDLES_LOGO}
+									className="candle-icon"
 								/>
 							</Radio>
 							<Radio value="quick-trade" disabled>
@@ -96,8 +96,8 @@ const TradingInterface = ({
 									</div>
 									<div className="box interface">
 										<ReactSVG
-											path={STATIC_ICONS.WALLET_BTC_ICON}
-											wrapperClassName="wallet-icon"
+											src={STATIC_ICONS.WALLET_BTC_ICON}
+											className="wallet-icon"
 										/>
 									</div>
 								</div>

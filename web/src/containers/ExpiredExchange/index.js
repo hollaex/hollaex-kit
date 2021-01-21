@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ReactSvg from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
@@ -61,9 +61,9 @@ class Expired extends Component {
 					)}
 				>
 					<div>
-						<ReactSvg
-							path={ICONS['EXPIRED_ICON']}
-							wrapperClassName="expired_img_icon"
+						<ReactSVG
+							src={ICONS['EXPIRED_ICON']}
+							className="expired_img_icon"
 						/>
 					</div>
 					<div className="expired_text mt-5">{STRINGS['EXPIRED_INFO_1']}</div>
