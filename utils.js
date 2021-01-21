@@ -42,9 +42,14 @@ const checkKit = (kit) => {
 	return true;
 };
 
+const parameterError = (parameter, msg) => {
+	return new Error(`Parameter ${parameter} error: ${msg}`);
+};
+
 module.exports = {
 	createRequest,
 	createSignature,
 	generateHeaders,
-	checkKit
+	checkKit,
+	parameterError
 };
