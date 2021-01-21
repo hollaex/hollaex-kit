@@ -296,24 +296,27 @@ class Chat extends Component {
 								</span>
 							</div>
 						</div>
-						<Tabs className="chat-tabs mt-5">
-							<TabPane tab="Messages" key="messages">
-								<Messages
-									messages={messages.slice().reverse()}
-									deleteMessage={this.deleteMessage}
-									addMessage={this.addMessage}
-									banUser={this.banUser}
-									bannedUsers={bannedUsersUsernames}
-								/>
-							</TabPane>
-							<TabPane tab="Banned Users" key="banuser">
-								<Ban
-									bannedUsers={bannedUsers}
-									unbanUser={this.unbanUser}
-									banUser={this.banUser}
-								/>
-							</TabPane>
-						</Tabs>
+						{isActive ?
+							<Tabs className="chat-tabs mt-5">
+								<TabPane tab="Messages" key="messages">
+									<Messages
+										messages={messages.slice().reverse()}
+										deleteMessage={this.deleteMessage}
+										addMessage={this.addMessage}
+										banUser={this.banUser}
+										bannedUsers={bannedUsersUsernames}
+									/>
+								</TabPane>
+								<TabPane tab="Banned Users" key="banuser">
+									<Ban
+										bannedUsers={bannedUsers}
+										unbanUser={this.unbanUser}
+										banUser={this.banUser}
+									/>
+								</TabPane>
+							</Tabs>
+							: null
+						}
 					</div>
 				)}
 			</div>
