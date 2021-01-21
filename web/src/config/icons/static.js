@@ -66,6 +66,7 @@ const icons = {
 	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
 	VERIFICATION_ICON: '/assets/images/verification-green-tick.svg',
+	CHAT_FEATURE_ICON: '/assets/images/chat-feature-icon.svg',
 };
 
 export default icons;

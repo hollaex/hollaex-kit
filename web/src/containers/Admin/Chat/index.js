@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Spin } from 'antd';
+import { Spin, Switch, message } from 'antd';
 import { WS_URL } from '../../../config/constants';
 import { getToken } from '../../../utils/token';
 import { Tabs } from 'antd';
 import { Ban } from './ban';
 import { Messages } from './messages';
+import { updateConstants } from '../General/action';
 
 import './index.css';
 
@@ -18,14 +19,28 @@ class Chat extends Component {
 		bannedUsers: {},
 		bannedUsersUsernames: {},
 		ready: false,
+		isActive: false,
 	};
 
 	componentDidMount() {
 		this.connectToChat(getToken());
+		if (this.props.constants.features) {
+			this.setState({ isActive: this.props.constants.features.chat });
+		}
 	}
 
 	componentWillUnmount() {
 		this.disconnectFromChat();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (
+			JSON.stringify(this.props.constants) !==
+				JSON.stringify(prevProps.constants) &&
+			this.props.constants.features
+		) {
+			this.setState({ isActive: this.props.constants.features.chat });
+		}
 	}
 
 	connectToChat = (token) => {
@@ -223,16 +238,65 @@ class Chat extends Component {
 		}
 	};
 
-	render() {
-		const { ready, messages, bannedUsers, bannedUsersUsernames } = this.state;
+	handleToggle = (checked) => {
+		let formProps = {};
+		formProps.kit = {
+			features: {
+				chat: !!checked,
+			},
+		};
+		updateConstants(formProps)
+			.then((res) => {
+				this.setState({ constants: res });
+				message.success('Updated successfully');
+				this.setState({ isActive: checked });
+			})
+			.catch((err) => {
+				let error = err && err.data ? err.data.message : err.message;
+				message.error(error);
+			});
+	};
 
+	render() {
+		const {
+			ready,
+			messages,
+			bannedUsers,
+			bannedUsersUsernames,
+			isActive,
+		} = this.state;
 		return (
 			<div className="app_container-content">
 				{!ready ? (
 					<Spin size="large" />
 				) : (
-					<div>
-						<Tabs className="chat-tabs">
+					<div className="mt-5">
+						<div className="ml-2 chat-header">
+							Chat system feature
+							<div className="small-text">
+								(Usernames, text and emoji communication)
+							</div>
+						</div>
+						<div className="switch-wrapper">
+							<div className="d-flex">
+								<span
+									className={
+										!isActive ? 'switch-label' : 'switch-label label-inactive'
+									}
+								>
+									Off
+								</span>
+								<Switch checked={isActive} onChange={this.handleToggle} />
+								<span
+									className={
+										isActive ? 'switch-label' : 'switch-label label-inactive'
+									}
+								>
+									On
+								</span>
+							</div>
+						</div>
+						<Tabs className="chat-tabs mt-5">
 							<TabPane tab="Messages" key="messages">
 								<Messages
 									messages={messages.slice().reverse()}
@@ -258,6 +322,7 @@ class Chat extends Component {
 }
 const mapStateToProps = (store) => ({
 	username: store.user.username,
+	constants: store.app.constants,
 });
 
 export default connect(mapStateToProps)(Chat);

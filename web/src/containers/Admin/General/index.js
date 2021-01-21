@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Modal, message, Collapse, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import { bindActionCreators } from 'redux';
 
 import FooterConfig from './FooterConfig';
 import Description from './Description';
@@ -10,7 +11,7 @@ import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
-import { requestAdminData } from '../../../actions/appActions';
+import { requestAdminData, setConfig } from '../../../actions/appActions';
 import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
@@ -185,6 +186,7 @@ class General extends Component {
 		updateConstants(formProps)
 			.then((res) => {
 				this.setState({ constants: res });
+				this.props.setConfig(res.kit);
 				message.success('Updated successfully');
 			})
 			.catch((err) => {
@@ -632,4 +634,11 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(withConfig(General));
+const mapDispatchToProps = (dispatch) => ({
+	setConfig: bindActionCreators(setConfig, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(General));

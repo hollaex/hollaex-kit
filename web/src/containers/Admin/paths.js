@@ -63,6 +63,11 @@ export const PATHS = [
 		routeKey: 'billing',
 	},
 	{
+		path: '/admin/chat',
+		label: 'Chat',
+		routeKey: 'chat',
+	},
+	{
 		path: '/admin/collateral',
 		label: 'Collateral',
 		routeKey: 'collateral',

@@ -36,7 +36,7 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 									path={STATIC_ICONS.CANDLES_LOGO}
 									wrapperClassName="feature-icon mr-1"
 								/>
-								<div className="ml-2">
+								<div className="ml-2 checkbox-txt">
 									Pro trade
 									<div className="small-text">
 										(Chart, orderbook, limit orders with wallet)
@@ -58,7 +58,7 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 										</div>
 									</div>
 								</div>
-								<div className="ml-2">
+								<div className="ml-2 checkbox-txt">
 									Quick trade
 									<div className="d-flex justify-content-between">
 										<div className="small-text">
@@ -72,13 +72,13 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 					<Item name="chat" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
-								<div>
+								<div className="feature-trade-box mr-1">
 									<ReactSVG
-										path={STATIC_ICONS.WALLET_BTC_ICON}
-										wrapperClassName="feature-icon mr-1"
+										path={STATIC_ICONS.CHAT_FEATURE_ICON}
+										wrapperClassName="feature-chat-icon"
 									/>
 								</div>
-								<div className="ml-2">
+								<div className="ml-2 checkbox-txt">
 									Chat system
 									<div className="d-flex justify-content-between">
 										<div className="small-text">
