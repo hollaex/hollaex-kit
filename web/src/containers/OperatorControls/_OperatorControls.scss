@@ -97,6 +97,30 @@ $operator-controls__panel-border-color: #a7a7a7;
 		color: $operator-controls__panel-text-color !important;
 	}
 
+	.ant-pagination,
+	.ant-pagination-item,
+	.ant-pagination-next,
+	.ant-pagination-item-active,
+	.ant-pagination-item-active :focus {
+		color: $operator-controls__panel-text-color;
+		background-color: transparent;
+
+		.anticon {
+			color: $operator-controls__panel-text-color;
+		}
+	}
+
+	.ant-pagination-item-active {
+		font-weight: bolder;
+		border-color: $operator-controls__panel-text-color;
+	}
+
+	.ant-pagination-item:focus a,
+	.ant-pagination-item:hover a {
+		font-weight: bolder;
+		color: $operator-controls__panel-text-color;
+	}
+
 	.ant-collapse-header {
 		text-align: center;
 	}
