@@ -37,7 +37,7 @@ class Chat extends Component {
 			this.props.enabledPlugins &&
 			this.props.enabledPlugins.length &&
 			!this.props.fetchingAuth &&
-			!this.props.enabledPlugins.includes('chat')
+			!this.props.features.chat
 		) {
 			this.props.router.push('/account');
 		}
@@ -302,7 +302,8 @@ class Chat extends Component {
 			minimized,
 			chatIsClosed,
 			set_username,
-			enabledPlugins,
+			// enabledPlugins,
+			features,
 		} = this.props;
 		const {
 			messages,
@@ -311,7 +312,7 @@ class Chat extends Component {
 			unreadMessages,
 			showEmojiBox,
 		} = this.state;
-		if (!enabledPlugins.includes('chat')) {
+		if (!features.chat) {
 			return <Fragment />;
 		}
 		return (
@@ -352,6 +353,7 @@ const mapStateToProps = (store) => ({
 	set_username: store.user.settings.chat.set_username,
 	is_hap: store.user.is_hap,
 	enabledPlugins: store.app.enabledPlugins,
+	features: store.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({

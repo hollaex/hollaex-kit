@@ -62,7 +62,7 @@ class QuickTradeContainer extends PureComponent {
 	componentDidMount() {
 		if (
 			this.props.constants &&
-			!this.props.constants.broker_enabled &&
+			!this.props.constants.features.quick_trade &&
 			!this.props.fetchingAuth
 		) {
 			this.props.router.push('/account');

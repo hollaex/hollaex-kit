@@ -480,6 +480,7 @@ class App extends Component {
 			isEditMode,
 			handleEditMode,
 			// user,
+			features,
 		} = this.props;
 
 		const {
@@ -675,7 +676,7 @@ class App extends Component {
 												// activeTheme
 											)}
 									</Dialog>
-									{!isMobile && enabledPlugins.includes('chat') && (
+									{!isMobile && features && features.chat && (
 										<ChatComponent
 											activeLanguage={activeLanguage}
 											minimized={chatIsClosed}
@@ -691,6 +692,7 @@ class App extends Component {
 											activePath={activePath}
 											pair={pair}
 											enabledPlugins={enabledPlugins}
+											features={features}
 										/>
 									</div>
 								)}

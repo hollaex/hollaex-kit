@@ -6,11 +6,11 @@ const DEVELOPMENT_ENDPOINT =
 	'https://api.sandbox.hollaex.com';
 
 const PRODUCTION_NETWORK_ENDPOINT =
-	process.env.REACT_APP_SERVER_ENDPOINT ||
+	process.env.REACT_APP_SERVER_NETWORK_ENDPOINT ||
 	'https://api.testnet.hollaex.network';
 
 const DEVELOPMENT_NETWORK_ENDPOINT =
-	process.env.REACT_APP_DEVELOPMENT_ENDPOINT ||
+	process.env.REACT_APP_DEVELOPMENT_NETWORK_ENDPOINT ||
 	'https://api.testnet.hollaex.network';
 
 const API_PATH = '/v2';

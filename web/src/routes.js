@@ -54,6 +54,7 @@ import {
 	Roles,
 	Resources,
 } from './containers';
+import chat from './containers/Admin/Chat';
 
 import store from './store';
 import { verifyToken } from './actions/authAction';
@@ -397,6 +398,11 @@ export default (
 				path="/admin/billing"
 				name="Admin Billing"
 				component={withAdminProps(MoveToDash, 'billing')}
+			/>
+			<Route
+				path="/admin/chat"
+				name="Admin Chat"
+				component={withAdminProps(chat, 'chat')}
 			/>
 			<Route
 				path="/admin/collateral"
