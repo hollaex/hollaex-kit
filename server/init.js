@@ -130,6 +130,8 @@ const checkStatus = () => {
 				initialized: status.initialized
 			};
 			const networkNodeLib = new Network({
+				apiUrl: HOLLAEX_NETWORK_ENDPOINT,
+				baseUrl: HOLLAEX_NETWORK_BASE_URL,
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
