@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -88,8 +88,8 @@ class CurrencyList extends Component {
 							onClick={() => this.loadMarkets(coin)}
 						>
 							<ReactSVG
-								path={icon}
-								wrapperClassName="app_bar_currency-icon ml-2 mr-2"
+								src={icon}
+								className="app_bar_currency-icon ml-2 mr-2"
 							/>
 							{fullname}:
 							<div className="ml-1">

@@ -47,11 +47,15 @@ class AllStringsModal extends Component {
 			onSettingsClick,
 		} = this.props;
 
+		const modalContent = document.getElementById('all-strings-content');
+		const modalContentHeight = modalContent ? modalContent.clientHeight : 0;
+		const tableContentHeight = Math.max(0, modalContentHeight - 205);
+
 		return (
 			<Modal
 				isOpen={isOpen}
 				label="operator-controls-modal"
-				className="operator-controls__modal"
+				className="operator-controls__modal extended"
 				disableTheme={true}
 				onCloseDialog={onCloseDialog}
 				shouldCloseOnOverlayClick={true}
@@ -59,7 +63,7 @@ class AllStringsModal extends Component {
 				bodyOpenClassName="operator-controls__modal-open"
 			>
 				{isOpen && (
-					<div>
+					<div className="h-100" id="all-strings-content">
 						<div className="operator-controls__all-strings-header">
 							<div className="operator-controls__modal-title">All strings</div>
 							<div className="d-flex justify-content-end">
@@ -91,14 +95,14 @@ class AllStringsModal extends Component {
 							size="small"
 							sticky={true}
 							pagination={{
-								pageSize: 1000,
-								hideOnSinglePage: true,
+								pageSize: strings.length ? Math.ceil(strings.length / 4) : 0,
+								hideOnSinglePage: false,
 								showSizeChanger: false,
 								showQuickJumper: false,
 								showLessItems: false,
 								showTotal: false,
 							}}
-							scroll={{ y: 240 }}
+							scroll={{ y: tableContentHeight }}
 							onRow={({ key }) => {
 								return {
 									onClick: () => this.handleRowClick(key),
@@ -106,17 +110,17 @@ class AllStringsModal extends Component {
 							}}
 							style={{ width: '820px' }}
 						/>
+						<div className="d-flex justify-content-end pt-4 mt-4">
+							<Button
+								type="primary"
+								onClick={onCloseDialog}
+								className="operator-controls__save-button confirm"
+							>
+								Confirm
+							</Button>
+						</div>
 					</div>
 				)}
-				<div className="d-flex justify-content-end pt-4 mt-4">
-					<Button
-						type="primary"
-						onClick={onCloseDialog}
-						className="operator-controls__save-button confirm"
-					>
-						Confirm
-					</Button>
-				</div>
 			</Modal>
 		);
 	}

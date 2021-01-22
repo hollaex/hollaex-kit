@@ -5,7 +5,7 @@ import STRINGS from '../../config/localizedStrings';
 import TruncateMarkup from 'react-truncate-markup';
 import { ICONS } from '../../config/constants';
 import { USER_TYPES } from '../../actions/appActions';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 moment.updateLocale('en', {
 	relativeTime: {
@@ -76,7 +76,7 @@ class ChatMessageWithText extends Component {
 				<div className="d-flex">
 					<div className="mx-2">
 						{verification_level >= 3 ? (
-							<ReactSVG path={icon} wrapperClassName="user-icon mr-1" />
+							<ReactSVG src={icon} className="user-icon mr-1" />
 						) : (
 							<div className="user-icon mr-1"></div>
 						)}
@@ -175,7 +175,7 @@ class ChatMessageWithImage extends Component {
 				<div className="d-flex">
 					<div className="mx-2">
 						{verification_level === 3 || verification_level === 4 ? (
-							<ReactSVG path={icon} wrapperClassName="user-icon mr-1" />
+							<ReactSVG src={icon} className="user-icon mr-1" />
 						) : (
 							<div className="user-icon mr-1"></div>
 						)}
@@ -273,9 +273,11 @@ export class ChatMessage extends Component {
 					{userType === USER_TYPES.USER_TYPE_ADMIN && (
 						<div className="d-flex item-options" onClick={this.toggleOptions}>
 							<ReactSVG
-								path={ICONS.ITEM_OPTIONS}
-								className="item-options-icon"
-								wrapperClassName="item-options-icon-wrapper"
+								src={ICONS.ITEM_OPTIONS}
+								beforeInjection={(svg) => {
+									svg.classList.add('item-options-icon');
+								}}
+								className="item-options-icon-wrapper"
 							/>
 							{showOptions && (
 								<div className="item-options-wrapper">

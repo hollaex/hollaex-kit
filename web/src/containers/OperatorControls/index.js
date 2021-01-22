@@ -596,7 +596,7 @@ class OperatorControls extends Component {
 		this.setState({ isPublishConfirmationOpen: false });
 	};
 
-	addIcons = (icons = {}) => {
+	addIcons = (icons = {}, updateSearchResults = false) => {
 		const { updateIcons } = this.props;
 		this.setState(
 			(prevState) => ({
@@ -607,6 +607,10 @@ class OperatorControls extends Component {
 				this.forceRender();
 				this.closeUploadIcon();
 				this.enablePublish();
+				// FIXME
+				if (updateSearchResults) {
+					setTimeout(() => this.openAllIconsModal(), 2500);
+				}
 			}
 		);
 	};
@@ -812,7 +816,7 @@ class OperatorControls extends Component {
 							className="operator-controls__panel-item"
 							onClick={this.openAllIconsModal}
 						>
-							Icons
+							All graphics
 						</div>
 					</div>
 					<div className="d-flex align-items-center">
@@ -898,31 +902,35 @@ class OperatorControls extends Component {
 						</Button>
 					</div>
 				</Modal>
-				<AllIconsModal
-					isOpen={editMode && isAllIconsModalOpen}
-					icons={iconSearchResults}
-					onCloseDialog={this.closeAllIconsModal}
-					onSearch={this.handleIconSearch}
-					searchValue={iconSearchValue}
-					themeOptions={themeOptions}
-					onSelect={this.setSelectedThemes}
-					selectedThemes={selectedThemes}
-					onRowClick={this.handleEditButton}
-					// onSettingsClick={this.openStringSettingsModal}
-					onSave={this.addIcons}
-				/>
-				<AllStringsModal
-					isOpen={editMode && isAllStringsModalOpen}
-					strings={searchResults}
-					onCloseDialog={this.closeAllStringsModal}
-					onSearch={this.handleSearch}
-					searchValue={searchValue}
-					languageOptions={languageOptions}
-					onSelect={this.setSelectedLanguages}
-					selectedLanguages={selectedLanguages}
-					onRowClick={this.handleEditButton}
-					onSettingsClick={this.openStringSettingsModal}
-				/>
+				{isAllIconsModalOpen && (
+					<AllIconsModal
+						isOpen={editMode && isAllIconsModalOpen}
+						icons={iconSearchResults}
+						onCloseDialog={this.closeAllIconsModal}
+						onSearch={this.handleIconSearch}
+						searchValue={iconSearchValue}
+						themeOptions={themeOptions}
+						onSelect={this.setSelectedThemes}
+						selectedThemes={selectedThemes}
+						onRowClick={this.handleEditButton}
+						// onSettingsClick={this.openStringSettingsModal}
+						onSave={this.addIcons}
+					/>
+				)}
+				{isAllStringsModalOpen && (
+					<AllStringsModal
+						isOpen={editMode && isAllStringsModalOpen}
+						strings={searchResults}
+						onCloseDialog={this.closeAllStringsModal}
+						onSearch={this.handleSearch}
+						searchValue={searchValue}
+						languageOptions={languageOptions}
+						onSelect={this.setSelectedLanguages}
+						selectedLanguages={selectedLanguages}
+						onRowClick={this.handleEditButton}
+						onSettingsClick={this.openStringSettingsModal}
+					/>
+				)}
 				<StringSettingsModal
 					isOpen={editMode && isStringsSettingsOpen}
 					onCloseDialog={this.closeStringSettingsModal}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
@@ -105,8 +105,8 @@ class SnackDialog extends Component {
 					onClick={(e) => this.closeDialog(data.id, e)}
 				>
 					<ReactSVG
-						path={ICONS['CANCEL_CROSS_ACTIVE']}
-						wrapperClassName="bar-icon-back"
+						src={ICONS['CANCEL_CROSS_ACTIVE']}
+						className="bar-icon-back"
 					/>
 				</div>
 			</div>

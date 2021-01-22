@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Emoji } from 'emoji-mart';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
 
 import { customEmojis } from './utils';
@@ -53,8 +53,8 @@ class ChatEmoji extends Component {
 						</div>
 						<div className="emoji-close" onClick={handleEmojiBox}>
 							<ReactSVG
-								path={STATIC_ICONS.CANCEL_CROSS_ACTIVE}
-								wrapperClassName="cross-icon-back"
+								src={STATIC_ICONS.CANCEL_CROSS_ACTIVE}
+								className="cross-icon-back"
 							/>
 						</div>
 					</div>

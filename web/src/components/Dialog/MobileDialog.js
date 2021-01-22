@@ -7,7 +7,7 @@ import { MobileBarBack } from '../';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 import { ICONS } from '../../config/constants';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 const CompressedContent = ({ children, onClose }) => {
 	return (
@@ -15,10 +15,7 @@ const CompressedContent = ({ children, onClose }) => {
 			<div className="dialog-compressed-content f-1">{children}</div>
 			<div className="dialog-compressed-close f-0 d-flex justify-content-center align-items-center">
 				<div className="close-dialog pointer" onClick={onClose}>
-					<ReactSVG
-						path={ICONS.CANCEL_CROSS_ACTIVE}
-						wrapperClassName="bar-icon-back"
-					/>
+					<ReactSVG src={ICONS.CANCEL_CROSS_ACTIVE} className="bar-icon-back" />
 				</div>
 			</div>
 		</div>

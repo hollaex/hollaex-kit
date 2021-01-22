@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import STRINGS from '../../config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
@@ -59,7 +59,7 @@ const Section1 = ({
 					className={classnames('pointer', 'flex-0', 'scroll-button')}
 					onClick={onClickScrollTo}
 				>
-					<ReactSVG path={ICONS['ARROW_ARROW']} />
+					<ReactSVG src={ICONS['ARROW_ARROW']} />
 				</div>
 			</EditWrapper>
 		</div>

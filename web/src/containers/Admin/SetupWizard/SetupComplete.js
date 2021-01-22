@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Button, message } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { withRouter } from 'react-router';
@@ -85,8 +85,8 @@ class ExchangeSetup extends Component {
 				<div key={index}>
 					<div className="icon-wrapper">
 						<ReactSVG
-							path={value.icon}
-							wrapperClassName={
+							src={value.icon}
+							className={
 								value.icon === STATIC_ICONS.SETUP_QUICK_TRADE
 									? null
 									: 'icon-align'

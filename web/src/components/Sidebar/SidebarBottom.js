@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
@@ -14,7 +14,7 @@ const SidebarButton = ({
 }) => {
 	return (
 		<Link to={path} className={classnames('sidebar-bottom-button', { active })}>
-			<ReactSVG path={iconPath} wrapperClassName="sidebar-bottom-icon" />
+			<ReactSVG src={iconPath} className="sidebar-bottom-icon" />
 			<div
 				className={
 					active ? 'bottom-text-acttive bottom-bar-text' : 'bottom-bar-text'

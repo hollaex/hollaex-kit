@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Spin, Table } from 'antd';
 import { SubmissionError } from 'redux-form';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import Moment from 'react-moment';
 
 import { DonutChart, CurrencyBall } from '../../../components';
@@ -137,8 +137,8 @@ class UserBalance extends Component {
 				<div className="d-flex align-items-center mb-4">
 					<div>
 						<ReactSVG
-							path={STATIC_ICONS['USER_SECTION_WALLET']}
-							wrapperClassName="admin-wallet-icon"
+							src={STATIC_ICONS['USER_SECTION_WALLET']}
+							className="admin-wallet-icon"
 						/>
 					</div>
 					<div>

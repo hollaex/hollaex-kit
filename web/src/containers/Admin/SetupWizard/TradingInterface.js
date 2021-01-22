@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, Form, Button } from 'antd';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 
@@ -29,12 +29,12 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 				onFinish={handleSubmit}
 			>
 				<div className="interface-box">
-					<Item name="pro_trade" valuePropName="checked">
+    					<Item name="pro_trade" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
 								<ReactSVG
-									path={STATIC_ICONS.CANDLES_LOGO}
-									wrapperClassName="feature-icon mr-1"
+									src={STATIC_ICONS.CANDLES_LOGO}
+									className="feature-icon mr-1"
 								/>
 								<div className="ml-2 checkbox-txt">
 									Pro trade
@@ -65,7 +65,7 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 											(Simple buy/sell interface with wallet)
 										</div>
 									</div>
-								</div>
+  </div>
 							</div>
 						</Checkbox>
 					</Item>
@@ -74,8 +74,8 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 							<div className="d-flex align-items-center">
 								<div className="feature-trade-box mr-1">
 									<ReactSVG
-										path={STATIC_ICONS.CHAT_FEATURE_ICON}
-										wrapperClassName="feature-chat-icon"
+										src={STATIC_ICONS.CHAT_FEATURE_ICON}
+										className="feature-chat-icon"
 									/>
 								</div>
 								<div className="ml-2 checkbox-txt">

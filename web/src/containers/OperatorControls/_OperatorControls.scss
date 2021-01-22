@@ -97,6 +97,34 @@ $operator-controls__panel-border-color: #a7a7a7;
 		color: $operator-controls__panel-text-color !important;
 	}
 
+	.ant-table-container {
+		background-color: $operator-controls__panel-main-color;
+	}
+
+	.ant-pagination,
+	.ant-pagination-item,
+	.ant-pagination-next,
+	.ant-pagination-item-active,
+	.ant-pagination-item-active :focus {
+		color: $operator-controls__panel-text-color;
+		background-color: transparent;
+
+		.anticon {
+			color: $operator-controls__panel-text-color;
+		}
+	}
+
+	.ant-pagination-item-active {
+		font-weight: bolder;
+		border-color: $operator-controls__panel-text-color;
+	}
+
+	.ant-pagination-item:focus a,
+	.ant-pagination-item:hover a {
+		font-weight: bolder;
+		color: $operator-controls__panel-text-color;
+	}
+
 	.ant-collapse-header {
 		text-align: center;
 	}
@@ -189,6 +217,12 @@ $operator-controls__panel-border-color: #a7a7a7;
 
 		.action_notification-image {
 			fill: $operator-controls__panel-text-color !important;
+		}
+	}
+
+	&.extended {
+		.ReactModal__Content {
+			height: calc(100vh - 160px) !important;
 		}
 	}
 

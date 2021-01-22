@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import STRINGS from '../../config/localizedStrings';
 
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
@@ -59,9 +59,11 @@ const generateCardsContentFromStrings = () => {
 const Card = ({ icon, title, text, stringId, iconId }) => (
 	<div className={classnames(...FLEX_CENTER_CLASSES, 'home-card-container')}>
 		<ReactSVG
-			path={icon}
-			className="home-card-icon"
-			wrapperClassName="home-card-icon-wrapper"
+			src={icon}
+			beforeInjection={(svg) => {
+				svg.classList.add('home-card-icon');
+			}}
+			className="home-card-icon-wrapper"
 		/>
 		<div
 			className={classnames(
