@@ -13,6 +13,7 @@ const Image = ({
 	svgWrapperClassName,
 	stringId,
 	showUpload,
+	beforeInjection = () => {},
 }) => {
 	const useSvg = icon.indexOf('.svg') > 0;
 	const isBackground = isBackgroundIcon(iconId);
@@ -36,6 +37,7 @@ const Image = ({
 				<ReactSVG
 					src={icon}
 					className={classnames(wrapperClassName, svgWrapperClassName)}
+					beforeInjection={beforeInjection}
 					fallback={() => (
 						<img
 							src={icon}
