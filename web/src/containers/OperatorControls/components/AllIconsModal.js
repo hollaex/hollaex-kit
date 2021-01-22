@@ -149,6 +149,10 @@ class AllIconsModal extends Component {
 	render() {
 		const { isOpen, icons, onCloseDialog, searchValue, onSearch } = this.props;
 
+		const modalContent = document.getElementById('all-icons-content');
+		const modalContentHeight = modalContent ? modalContent.clientHeight : 0;
+		const tableContentHeight = Math.max(0, modalContentHeight - 240);
+
 		return (
 			<Modal
 				isOpen={isOpen}
@@ -161,7 +165,7 @@ class AllIconsModal extends Component {
 				bodyOpenClassName="operator-controls__modal-open"
 			>
 				{isOpen && (
-					<div>
+					<div className="h-100" id="all-icons-content">
 						<div className="operator-controls__all-strings-header">
 							<div className="operator-controls__modal-title">All graphics</div>
 							<div className="d-flex justify-content-end mr-3">
@@ -194,7 +198,7 @@ class AllIconsModal extends Component {
 								showLessItems: false,
 								showTotal: false,
 							}}
-							scroll={{ y: 240 }}
+							scroll={{ y: tableContentHeight }}
 							style={{ width: '820px' }}
 						/>
 						<div className="d-flex justify-content-end pt-4 mt-4">
