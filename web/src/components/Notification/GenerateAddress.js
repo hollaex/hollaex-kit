@@ -27,6 +27,8 @@ const GenerateAddressNotification = ({
 	return (
 		<NotificationWraper
 			title={title}
+			stringId="WALLET_ADDRESS_TITLE"
+			iconId="SIDEBAR_WALLET_ACTIVE"
 			icon={ICONS['SIDEBAR_WALLET_ACTIVE']}
 			className="new-order-notification"
 			titleClassName="with-border-bottom"

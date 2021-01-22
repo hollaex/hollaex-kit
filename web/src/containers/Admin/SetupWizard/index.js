@@ -135,6 +135,7 @@ export default class SetupWizard extends Component {
 			case 3:
 				return (
 					<TradingInterface
+						initialValues={constants.kit.features}
 						handleNext={this.onTabChange}
 						updateConstants={this.updateConstants}
 					/>
@@ -205,10 +206,7 @@ export default class SetupWizard extends Component {
 									title="3. Assets & trading"
 									onClick={() => this.tabClick(2)}
 								/>
-								<Step
-									title="4. Trading interface"
-									onClick={() => this.tabClick(3)}
-								/>
+								<Step title="4. Features" onClick={() => this.tabClick(3)} />
 								<Step title="5. Email" onClick={() => this.tabClick(4)} />
 							</Steps>
 						</div>

@@ -203,7 +203,6 @@ class Trade extends PureComponent {
 		this.setState({ orderbookWs });
 
 		orderbookWs.onopen = (evt) => {
-			console.info('Connected orderbook Socket', evt);
 			orderbookWs.send(
 				JSON.stringify({
 					op: 'subscribe',
@@ -220,7 +219,6 @@ class Trade extends PureComponent {
 		orderbookWs.onmessage = (evt) => {
 			this.setState({ orderbookSocketInitialized: true });
 			const data = JSON.parse(evt.data);
-			console.info('orderbookWs', data);
 			if (data.topic === 'orderbook')
 				switch (data.action) {
 					case 'partial':

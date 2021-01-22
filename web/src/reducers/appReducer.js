@@ -142,6 +142,7 @@ const INITIAL_STATE = {
 	enabledPlugins: [],
 	availablePlugins: [],
 	getPluginLoading: false,
+	features: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -333,6 +334,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				constants: payload.constants,
 				enabledPlugins: payload.enabledPlugins,
+				features: payload.features,
 			};
 		case SET_INFO:
 			return {
