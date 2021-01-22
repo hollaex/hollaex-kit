@@ -3334,7 +3334,7 @@ table th {
   display: block;
   width: 90px;
   height: 86px;
-  object-fit: fill; }
+  object-fit: contain; }
 
 .image-upload__file-img-content {
   border-right: 1px solid #ffffff; }
@@ -3419,6 +3419,32 @@ table th {
 .operator-controls__modal .ant-collapse-content {
   color: #ffffff !important; }
 
+.operator-controls__modal .ant-table-container {
+  background-color: #0000ff; }
+
+.operator-controls__modal .ant-pagination,
+.operator-controls__modal .ant-pagination-item,
+.operator-controls__modal .ant-pagination-next,
+.operator-controls__modal .ant-pagination-item-active,
+.operator-controls__modal .ant-pagination-item-active :focus {
+  color: #ffffff;
+  background-color: transparent; }
+  .operator-controls__modal .ant-pagination .anticon,
+  .operator-controls__modal .ant-pagination-item .anticon,
+  .operator-controls__modal .ant-pagination-next .anticon,
+  .operator-controls__modal .ant-pagination-item-active .anticon,
+  .operator-controls__modal .ant-pagination-item-active :focus .anticon {
+    color: #ffffff; }
+
+.operator-controls__modal .ant-pagination-item-active {
+  font-weight: bolder;
+  border-color: #ffffff; }
+
+.operator-controls__modal .ant-pagination-item:focus a,
+.operator-controls__modal .ant-pagination-item:hover a {
+  font-weight: bolder;
+  color: #ffffff; }
+
 .operator-controls__modal .ant-collapse-header {
   text-align: center; }
 
@@ -3494,6 +3520,9 @@ table th {
   z-index: 10001 !important; }
   .operator-controls__modal .ReactModal__Content .action_notification-image {
     fill: #ffffff !important; }
+
+.operator-controls__modal.extended .ReactModal__Content {
+  height: calc(100vh - 160px) !important; }
 
 .operator-controls__modal .ReactModal__Overlay {
   position: fixed;

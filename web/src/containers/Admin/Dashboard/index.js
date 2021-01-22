@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -58,15 +58,15 @@ const Dashboard = ({ constants = {} }) => {
 		<div className="admin-content-wrapper">
 			<div className="flex-menu">
 				<ReactSVG
-					path={STATIC_ICONS.HEX_PATTERN_ICON}
-					wrapperClassName="sidebar-icon"
+					src={STATIC_ICONS.HEX_PATTERN_ICON}
+					className="sidebar-icon"
 				/>
 				<div className="exchange-title">{showLabel}</div>
 			</div>
 			{CARD_LIST.map((list, index) => (
 				<div key={index} className="admin-dash-card flex-menu">
 					<div>
-						<ReactSVG path={list.icon} wrapperClassName="card-icon" />
+						<ReactSVG src={list.icon} className="card-icon" />
 					</div>
 					<div>
 						<div className="card-title">{list.title}</div>

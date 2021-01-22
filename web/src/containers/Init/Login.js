@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { message } from 'antd';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 
@@ -64,8 +64,8 @@ const Login = (props) => {
 				<div className="content info-container">
 					<div>
 						<ReactSVG
-							path={STATIC_ICONS.TIMEZONE_WORLD_MAP}
-							wrapperClassName="map-icon"
+							src={STATIC_ICONS.TIMEZONE_WORLD_MAP}
+							className="map-icon"
 						/>
 					</div>
 					<div className="wrapper">

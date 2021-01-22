@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Spin, Button, Tag, Card, Alert } from 'antd';
 import { connect } from 'react-redux';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 import { requestTotalBalance, requestConstants } from './actions';
@@ -91,8 +91,8 @@ class Wallets extends Component {
 						<div className="d-flex align-items-center justify-content-between">
 							<div className="d-flex align-items-center">
 								<ReactSVG
-									path={STATIC_ICONS['USER_SECTION_WALLET']}
-									wrapperClassName="admin-wallet-icon"
+									src={STATIC_ICONS['USER_SECTION_WALLET']}
+									className="admin-wallet-icon"
 								/>
 								<h1>USER WALLETS</h1>
 							</div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Form, Button, message } from 'antd';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { adminSignup } from '../../actions/authAction';
 import { setExchangeInitialized } from '../../utils/initialize';
@@ -18,7 +18,7 @@ const PasswordSetup = (props) => {
 		<div className="setup-container">
 			<div className="content info-container">
 				<div>
-					<ReactSVG path={props.icon} wrapperClassName="email-icon" />
+					<ReactSVG src={props.icon} className="email-icon" />
 				</div>
 				<div className="wrapper">
 					<div className="header">Create a memorable password</div>
@@ -89,7 +89,7 @@ export const ReTypePasswordContainer = (props) => {
 		<div className="setup-container">
 			<div className="content info-container">
 				<div>
-					<ReactSVG path={props.icon} wrapperClassName="email-icon" />
+					<ReactSVG src={props.icon} className="email-icon" />
 				</div>
 				<div className="wrapper">
 					<div className="header">Retype your password</div>

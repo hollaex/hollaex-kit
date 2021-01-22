@@ -67,7 +67,7 @@ const Preview = ({
 						/>
 						{/* {tierData.icon
                             ? <img src={tierData.icon} className="tier-icon" alt={`Account Tier ${tierData.id}`} />
-                            : <ReactSVG path={ICONS[`LEVEL_ACCOUNT_ICON_${tierData.id}`]} wrapperClassName="tier-icon" />
+                            : <ReactSVG src={ICONS[`LEVEL_ACCOUNT_ICON_${tierData.id}`]} className="tier-icon" />
                         } */}
 					</div>
 					<div className="mx-3 f-1">

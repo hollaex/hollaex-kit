@@ -110,7 +110,9 @@ class UploadIcon extends Component {
 				bodyOpenClassName="operator-controls__modal-open"
 			>
 				<div className="operator-controls__all-strings-header">
-					<div className="operator-controls__modal-title pb-3">Upload Icon</div>
+					<div className="operator-controls__modal-title pb-3">
+						Upload graphic
+					</div>
 				</div>
 				<div>
 					<b>When uploading new content a file size under 1mb</b> is

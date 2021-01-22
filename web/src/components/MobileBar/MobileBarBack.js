@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { MobileBarWrapper } from '.';
 import { ICONS } from '../../config/constants';
@@ -13,8 +13,8 @@ export const MobileBarBack = ({ onBackClick, wrapperClassName, className }) => {
 				onClick={onBackClick}
 			>
 				<ReactSVG
-					path={ICONS.ARROW_ARROW}
-					wrapperClassName={classnames('bar-icon-back', wrapperClassName)}
+					src={ICONS.ARROW_ARROW}
+					className={classnames('bar-icon-back', wrapperClassName)}
 				/>
 			</div>
 		</MobileBarWrapper>
