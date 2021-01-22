@@ -149,7 +149,7 @@ const getPaginatedPlugins = (limit, page, search) => {
 
 	if (search) {
 		options.where = {
-			name: { [Op.like]: `%${search.toLowerCase()}%` }
+			name: { [Op.like]: `%${search}%` }
 		};
 	}
 
@@ -164,12 +164,10 @@ const getPaginatedPlugins = (limit, page, search) => {
 
 const getPlugin = (name, opts = {}) => {
 	return dbQuery.findOne('plugin', {
-		where: { name: name.toLowerCase() },
+		where: { name },
 		...opts
 	});
 };
-
-
 
 module.exports = {
 	getPluginsConfig,
