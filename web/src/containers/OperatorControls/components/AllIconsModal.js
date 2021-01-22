@@ -46,6 +46,10 @@ class AllIconsModal extends Component {
 							themeKey={theme}
 							iconPath={iconPath}
 							onFileChange={this.onFileChange}
+							beforeInjection={(svg) => {
+								svg.setAttribute('width', '80px');
+								svg.setAttribute('height', '76px');
+							}}
 						/>
 					</Fragment>
 				);
