@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import _isEqual from 'lodash/isEqual';
 
 import Form from './FooterForm';
 import { AdminHocForm } from '../../../components';
@@ -12,7 +13,9 @@ const link_sections = (
 	fields = {},
 	links = {},
 	addLink = () => {},
-	addColumn = () => {}
+	addColumn = () => {},
+	handleRemoveHeader = () => {},
+	handleRemoveLinks = () => {}
 ) => {
 	const sectionFields = {};
 	Object.keys(links)
@@ -26,6 +29,8 @@ const link_sections = (
 					type: 'input',
 					label: key,
 					placeholder: key,
+					isClosable: true,
+					closeCallback: () => handleRemoveHeader(key),
 				};
 			});
 			Object.keys(section.content).forEach((key) => {
@@ -33,6 +38,8 @@ const link_sections = (
 					type: 'input',
 					label: key,
 					placeholder: key,
+					isClosable: true,
+					closeCallback: () => handleRemoveLinks(headerFields, key),
 				};
 			});
 			sectionFields[key] = {
@@ -112,7 +119,9 @@ class FooterConfig extends Component {
 				{},
 				this.props.links,
 				this.addLink,
-				this.addColumn
+				this.addColumn,
+				this.handleRemoveHeader,
+				this.handleRemoveLinks
 			),
 			initialCustom: {
 				column_header_1: 'EXCHANGE',
@@ -133,7 +142,9 @@ class FooterConfig extends Component {
 					{},
 					this.props.links,
 					this.addLink,
-					this.addColumn
+					this.addColumn,
+					this.handleRemoveHeader,
+					this.handleRemoveLinks
 				),
 			});
 		}
@@ -156,7 +167,9 @@ class FooterConfig extends Component {
 					prevFields,
 					this.props.links,
 					this.addLink,
-					this.addColumn
+					this.addColumn,
+					this.handleRemoveHeader,
+					this.handleRemoveLinks
 				),
 			});
 		}
@@ -187,7 +200,9 @@ class FooterConfig extends Component {
 				this.state.custom_fields,
 				this.props.links,
 				this.addLink,
-				this.addColumn
+				this.addColumn,
+				this.handleRemoveHeader,
+				this.handleRemoveLinks
 			),
 		});
 	};
@@ -204,6 +219,53 @@ class FooterConfig extends Component {
 			isAddColumn: true,
 			currentSection: section,
 		});
+	};
+
+	handleRemoveHeader = (headerName) => {
+		let data = {};
+		Object.entries(this.state.custom_fields).forEach(([key, section]) => {
+			let headerKeys =
+				section.header && section.header.fields
+					? Object.keys(section.header.fields)
+					: [];
+			if (!headerKeys.includes(headerName)) {
+				data[key] = section;
+			}
+		});
+		this.setState({ custom_fields: data });
+	};
+
+	handleRemoveLinks = (headerFields = {}, fieldName) => {
+		let data = {};
+		const headerKeys = Object.keys(headerFields);
+		Object.entries(this.state.custom_fields).forEach(([key, section]) => {
+			let headerFields =
+				section.header && section.header.fields
+					? Object.keys(section.header.fields)
+					: [];
+			if (_isEqual(headerFields, headerKeys)) {
+				let contentFields =
+					section.content && section.content.fields
+						? section.content.fields
+						: {};
+				let resultContent = {};
+				Object.entries(contentFields).forEach(([label, value]) => {
+					if (label !== fieldName) {
+						resultContent[label] = value;
+					}
+				});
+				data[key] = {
+					...section,
+					content: {
+						...section.content,
+						fields: resultContent,
+					},
+				};
+			} else {
+				data[key] = section;
+			}
+		});
+		this.setState({ custom_fields: data });
 	};
 
 	onCancel = () => {
@@ -226,6 +288,9 @@ class FooterConfig extends Component {
 						type: 'input',
 						label: `Column ${count} heading`,
 						placeholder: `Column ${count} heading`,
+						isClosable: true,
+						closeCallback: () =>
+							this.handleRemoveHeader(`column_header_${count}`),
 					},
 				},
 			},
@@ -242,7 +307,9 @@ class FooterConfig extends Component {
 				custom_fields,
 				this.props.links,
 				this.addLink,
-				this.addColumn
+				this.addColumn,
+				this.handleRemoveHeader,
+				this.handleRemoveLinks
 			),
 		});
 		this.onCancel();
@@ -252,6 +319,7 @@ class FooterConfig extends Component {
 		const custom_fields = { ...this.state.custom_fields };
 		let currentField = custom_fields[this.state.currentSection];
 		let currentFieldContent = currentField.content || {};
+		let currentFieldHeader = currentField.header || {};
 		let currentContentFields = currentFieldContent.fields || {};
 		custom_fields[this.state.currentSection] = {
 			...currentField,
@@ -263,6 +331,12 @@ class FooterConfig extends Component {
 						type: 'input',
 						label: formProps.link,
 						placeholder: 'http://',
+						isClosable: true,
+						closeCallback: () =>
+							this.handleRemoveLinks(
+								currentFieldHeader.fields,
+								formProps.link.toLowerCase()
+							),
 					},
 				},
 			},

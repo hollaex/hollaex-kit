@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Modal, message, Collapse } from 'antd';
+import { Button, Modal, message, Collapse, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import { bindActionCreators } from 'redux';
 
 import FooterConfig from './FooterConfig';
 import Description from './Description';
@@ -10,7 +11,7 @@ import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
-import { requestAdminData } from '../../../actions/appActions';
+import { requestAdminData, setConfig } from '../../../actions/appActions';
 import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
@@ -27,7 +28,6 @@ const HelpDeskForm = AdminHocForm('HelpDeskForm');
 class General extends Component {
 	constructor() {
 		super();
-
 		this.state = {
 			constants: {},
 			currentIcon: {},
@@ -38,6 +38,7 @@ class General extends Component {
 			initialEmailValues: {},
 			initialLinkValues: {},
 			pendingPublishIcons: {},
+			loading: false,
 		};
 	}
 
@@ -55,12 +56,14 @@ class General extends Component {
 	}
 
 	requestInitial = () => {
+		this.setState({ loading: true });
 		requestAdminData()
 			.then((res) => {
-				this.setState({ constants: res.data });
+				this.setState({ constants: res.data, loading: false });
 			})
 			.catch((err) => {
 				console.log('err', err);
+				this.setState({ loading: false });
 			});
 	};
 
@@ -183,6 +186,7 @@ class General extends Component {
 		updateConstants(formProps)
 			.then((res) => {
 				this.setState({ constants: res });
+				this.props.setConfig(res.kit);
 				message.success('Updated successfully');
 			})
 			.catch((err) => {
@@ -292,12 +296,10 @@ class General extends Component {
 		);
 	};
 
-	handleSaveInterface = (type) => {
+	handleSaveInterface = (features) => {
 		this.handleSubmitGeneral({
 			kit: {
-				interface: {
-					type,
-				},
+				features,
 			},
 		});
 	};
@@ -322,10 +324,18 @@ class General extends Component {
 			initialLanguageValues,
 			initialThemeValues,
 			initialLinkValues,
+			loading,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins, themeOptions } = this.props;
 		const generalFields = getGeneralFields(coins);
+		if (loading) {
+			return (
+				<div className="d-flex align-items-center">
+					<Spin />
+				</div>
+			);
+		}
 		return (
 			<div>
 				<div className="general-wrapper">
@@ -610,7 +620,7 @@ class General extends Component {
 				</div>
 				<div className="divider"></div>
 				<InterfaceForm
-					initialValues={kit.interface}
+					initialValues={kit.features}
 					handleSaveInterface={this.handleSaveInterface}
 				/>
 			</div>
@@ -624,4 +634,11 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(withConfig(General));
+const mapDispatchToProps = (dispatch) => ({
+	setConfig: bindActionCreators(setConfig, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(General));

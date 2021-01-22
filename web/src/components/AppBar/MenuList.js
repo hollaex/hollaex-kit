@@ -137,7 +137,7 @@ class MenuList extends Component {
 								{STRINGS['PRO_TRADE']}
 							</EditWrapper>
 						</div>
-						{constants.broker_enabled && (
+						{constants && constants.features && constants.features.quick_trade && (
 							<div
 								className={classnames('app-bar-account-menu-list d-flex', {
 									'menu-active':
