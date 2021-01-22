@@ -14,7 +14,7 @@ $cell-height: 1.5rem;
 		// flex: 0;
 		// height: $cell-height;
 		font-weight: bold;
-		border-bottom: 1px solid $border-main;
+		border-bottom: 1px solid $colors-border;
 
 		.display_table-cell {
 		}
@@ -35,16 +35,4 @@ $cell-height: 1.5rem;
 
 .f-1 {
 	flex: 1;
-}
-
-.dark-theme {
-	.display_table-wrapper {
-		.display_table-header {
-			border-bottom-color: $dark-border-main;
-			color: $dark-font-main-text-color;
-		}
-		.display_table-body {
-			color: $dark-font-sub-text-color;
-		}
-	}
 }

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Menu, Icon, Button } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { LogoutOutlined } from '@ant-design/icons';
+import { Menu, Button } from 'antd';
 import { PATHS } from '../index';
 
 import { Layout } from 'antd/lib/index';
@@ -8,12 +10,12 @@ const { Sider } = Layout;
 
 class MobileSider extends Component {
 	state = {
-		collapsed: false
+		collapsed: false,
 	};
 
 	toggleCollapsed = () => {
 		this.setState({
-			collapsed: !this.state.collapsed
+			collapsed: !this.state.collapsed,
 		});
 	};
 
@@ -25,7 +27,7 @@ class MobileSider extends Component {
 					onClick={this.toggleCollapsed}
 					style={{ marginBottom: 16 }}
 				>
-					<Icon
+					<LegacyIcon
 						type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
 					/>
 				</Button>
@@ -40,7 +42,7 @@ class MobileSider extends Component {
 					{PATHS.map(this.props.menuItem)}
 					<Menu.Item key="logout">
 						<div onClick={this.props.logout}>
-							<Icon type="logout" />
+							<LogoutOutlined />
 							LOGOUT
 						</div>
 					</Menu.Item>

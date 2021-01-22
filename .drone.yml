@@ -44,3 +44,52 @@ trigger:
   - testnet
   event:
   - push
+
+---
+
+kind: pipeline
+type: docker
+name: kit_v2_sandbox_deployment
+
+steps:
+- name: slack_noti_job_start
+  image: plugins/slack
+  settings:
+    channel: deployment
+    webhook:
+      from_secret: slack_webhook
+    template: "<{{build.link}}|HollaEx v2 Sandbox Deployment> - #{{build.number}} started on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}} / {{build.branch}}> by {{build.author}}"
+
+- name: partymaker_version_tag
+  image: alpine
+  commands:
+  - echo "$(cat version)-sandbox" > .tags
+  - echo "Current version tag is :" && cat .tags
+
+- name: request_hollacloud_to_run_upgrade
+  image: bitholla/devops-tools:drone_hollacloud-201007
+  environment:
+    HOLLAEX_EMAIL:
+      from_secret: hollaex_email
+    HOLLAEX_PASSWORD:
+      from_secret: hollaex_password
+  settings:
+    exchange_id: 176
+    exchange_name: "Sandbox HollaEx"
+
+- name: slack_noti_job_end
+  image: plugins/slack
+  settings:
+    channel: deployment
+    webhook:
+      from_secret: slack_webhook
+  when:
+    status: [success, failure]
+
+trigger:
+  branch:
+  - 2.0
+  event:
+  - push
+
+  

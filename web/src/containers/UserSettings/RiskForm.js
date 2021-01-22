@@ -1,81 +1,83 @@
-import React, { Component } from "react";
-import { reduxForm } from "redux-form";
+import React, { Component } from 'react';
+import { reduxForm } from 'redux-form';
 
-import { Accordion, Table, Button } from "../../components";
-import renderFields from "../../components/Form/factoryFields";
-import STRINGS from "../../config/localizedStrings";
-import { formatBaseAmount } from "../../utils/currency";
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from "../../config/constants";
+import { Accordion, Table, Button } from '../../components';
+import renderFields from '../../components/Form/factoryFields';
+import STRINGS from '../../config/localizedStrings';
+import { formatBaseAmount } from '../../utils/currency';
+import {
+	BASE_CURRENCY,
+	DEFAULT_COIN_DATA,
+	IS_XHT,
+} from '../../config/constants';
+import { EditWrapper } from 'components';
 
-export const generateHeaders = onAdjustPortfolio => {
+export const generateHeaders = (onAdjustPortfolio) => {
 	return [
 		{
-			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO,
-			key: "percentage",
+			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO',
+			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO'],
+			key: 'percentage',
 			renderCell: ({ id, percentage }, key, index) => (
 				<td key={`${key}-${id}-percentage`}>
-					<span
-						className={
-							percentage.popupWarning ? "" : "deactive_risk_data"
-						}
-					>
+					<span className={percentage.popupWarning ? '' : 'deactive_risk_data'}>
 						{percentage.portfolioPercentage}
 						<span
 							className={
 								percentage.popupWarning
-									? "ml-2 pointer blue-link"
-									: "ml-2 deactive_risk_data"
+									? 'ml-2 pointer blue-link'
+									: 'ml-2 deactive_risk_data'
 							}
-							onClick={
-								percentage.popupWarning ? onAdjustPortfolio : () => { }
-							}
+							onClick={percentage.popupWarning ? onAdjustPortfolio : () => {}}
 						>
-							{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ADJUST}
+							{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ADJUST']}
 						</span>
+						<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST" />
 					</span>
 				</td>
-			)
+			),
 		},
 		!IS_XHT
 			? {
-				label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET,
-				key: "assetValue",
-				renderCell: ({ id, assetValue }, key, index) => (
-					<td key={`${key}-${id}-assetValue.percentPrice`}>
-						<span
-							className={
-								assetValue.popupWarning ? "" : "deactive_risk_data"
-							}
-						>
-							{" "}
-							{assetValue.percentPrice}
-						</span>
-					</td>
-				)
-			}
+					stringId: 'USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET',
+					label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET'],
+					key: 'assetValue',
+					renderCell: ({ id, assetValue }, key, index) => (
+						<td key={`${key}-${id}-assetValue.percentPrice`}>
+							<span
+								className={assetValue.popupWarning ? '' : 'deactive_risk_data'}
+							>
+								{' '}
+								{assetValue.percentPrice}
+							</span>
+						</td>
+					),
+			  }
 			: {},
 		{
-			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT,
-			key: "adjust",
-			className: "text-right",
+			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT',
+			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT'],
+			key: 'adjust',
+			className: 'text-right',
 			renderCell: ({ id, adjust }, key, index) => (
 				<td key={`${key}-${id}-adjusted`}>
 					<div className="d-flex justify-content-end">
 						{renderFields(adjust)}
 					</div>
 				</td>
-			)
-		}
+			),
+		},
 	];
 };
 
 export const generateWarningFormValues = () => ({
 	popup_warning: {
-		type: "toggle",
-		label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP,
-		className: "toggle-wrapper",
-		toggleOnly: true
-	}
+		type: 'toggle',
+		stringId: 'USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP',
+		label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP'],
+		className: 'toggle-wrapper',
+		toggleOnly: true,
+	},
 });
 
 class RiskForm extends Component {
@@ -98,7 +100,7 @@ class RiskForm extends Component {
 			// error,
 			valid,
 			formFields,
-			coins
+			coins,
 		} = this.props;
 		const percentPrice =
 			(totalAssets / 100) * initialValues.order_portfolio_percentage;
@@ -109,35 +111,42 @@ class RiskForm extends Component {
 				percentage: {
 					portfolioPercentage: initialValues.order_portfolio_percentage
 						? `${initialValues.order_portfolio_percentage}%`
-						: "",
-					popupWarning: initialValues.popup_warning
+						: '',
+					popupWarning: initialValues.popup_warning,
 				},
 				assetValue: {
 					percentPrice: percentPrice
 						? `${formatBaseAmount(percentPrice)} ${symbol.toUpperCase()}`
 						: 0,
-					popupWarning: initialValues.popup_warning
+					popupWarning: initialValues.popup_warning,
 				},
 				adjust: formFields,
-				warning: initialValues.popup_warning
-			}
+				warning: initialValues.popup_warning,
+			},
 		];
 		const sections = [
 			{
-				title: STRINGS.USER_SETTINGS.CREATE_ORDER_WARING,
+				stringId:
+					'USER_SETTINGS.CREATE_ORDER_WARING,USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT,USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1',
+				title: STRINGS['USER_SETTINGS.CREATE_ORDER_WARING'],
 				content: (
 					<div>
-						<p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
-						{!IS_XHT
-							? <p>
-								{STRINGS.formatString(
-									STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1,
-									fullname,
-									totalAssets
-								).join("")}
+						<p>
+							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT">
+								{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT']}
+							</EditWrapper>
+						</p>
+						{!IS_XHT ? (
+							<p>
+								<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1">
+									{STRINGS.formatString(
+										STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
+										fullname,
+										totalAssets
+									).join('')}
+								</EditWrapper>
 							</p>
-							: null
-						}
+						) : null}
 						<Table
 							rowClassName="pt-2 pb-2"
 							headers={generateHeaders(onAdjustPortfolio)}
@@ -147,16 +156,17 @@ class RiskForm extends Component {
 						/>
 					</div>
 				),
-				isOpen: true
-			}
+				isOpen: true,
+			},
 		];
 		return (
 			<div>
 				<form onSubmit={handleSubmit}>
 					<Accordion sections={sections} />
+					<EditWrapper stringId="SETTING_BUTTON" />
 					<Button
 						className="mt-4"
-						label={STRINGS.SETTING_BUTTON}
+						label={STRINGS['SETTING_BUTTON']}
 						disabled={pristine || submitting || !valid}
 					/>
 				</form>
@@ -166,6 +176,6 @@ class RiskForm extends Component {
 }
 
 export default reduxForm({
-	form: "WarningForm",
-	enableReinitialize: true
+	form: 'WarningForm',
+	enableReinitialize: true,
 })(RiskForm);

@@ -6,180 +6,137 @@ $bp-md: 991px;
 $bp-lg: 1199px;
 
 // common colors
-$colors-main-black: var(--colors-main-black);
-$colors-white: var(--colors-white);
-$colors-black: var(--colors-black);
-$colors-wave-phase-completed: var(--colors-wave-phase-completed);
+$colors-main-black: var(--labels_important-active-labels-text-graphics);
+$colors-black: var(--labels_secondary-inactive-label-text-graphics);
+$colors-border: var(--calculated_secondary-border);
+$colors-main-border: var(--calculated_important-border);
+$footer-border-color: var(--calculated_footer_border);
+$colors-super-pale-black: var(--calculated_super-pale_label-text-graphics);
+$colors-wave-phase-completed: var(--specials_checks-okay-done);
+
 // common colors for deactivate and disabled look
-$colors-deactivate: var(--colors-deactivate);
-$colors-deactivate-color1: var(--colors-deactivate-color1);
-$colors-deactivate-color2: var(--colors-deactivate-color2);
-$colors-deactivate-color3: var( --colors-deactivate-color3);
-$colors-deactivate-color4: var( --colors-deactivate-color4);
+$colors-deactivate: var(--labels_secondary-inactive-label-text-graphics);
+$colors-deactivate-color1: var(--labels_inactive-button);
+$colors-deactivate-color2: var(--labels_secondary-inactive-label-text-graphics);
+$colors-deactivate-color4: var(--labels_inactive-button);
 
-$colors-notifications-red: var(--colors-notifications-red);
-$colors-notification-inactive-red: var(--colors-notification-inactive-red);
-$colors-notifications-blue: var(--colors-notifications-blue); // for Hollaex
-$colors-notifications-green: var(--colors-notifications-green);
-$error-color: $colors-notifications-red;
+//common colors for notifications and errors
+$colors-notifications-red: var(--specials_notifications-alerts-warnings);
+$colors-notification-inactive-red: var(
+	--calculated_specials_notifications-alerts-inactive
+);
+$colors-notification-alert-text: var(
+	--calculated_specials_notifications-alerts-text
+);
+$colors-notifications-blue: var(--specials_buttons-links-and-highlights);
+$colors-notifications-green: var(--specials_checks-okay-done);
+$colors-notification-pending-text: var(
+	--calculated_specials_notifications-pending-text
+);
+$colors-notification-green-text: var(
+	--calculated_specials_notifications-success-text
+);
+$colors-notification-pending: var(--specials_pending-waiting-caution);
+$specials_highlight-box: var(--calculated_specials_highlight-box);
+$chat-own-message--color: var(--specials_my-username-in-chat);
+$favourite-star: var(--specials_my-username-in-chat);
 
-$color-currency-eur--main: var(--color-currency-eur--main);
-$color-currency-eur--secondary: var(--color-currency-eur--secondary);
-$color-currency-btc--main: var(--color-currency-btc--main);
-$color-currency-btc--secondary: var(--color-currency-btc--secondary);
+//common colors for terms
+$colors-terms-background: $specials_highlight-box;
 
-$colors-currencies-eur: $color-currency-eur--main;
-$colors-currencies-btc: $color-currency-btc--secondary;
-// $colors-orderbook-red-light: #ed1c24;
-$colors-currencies-bch: var(--colors-currencies-bch);
-$colors-currencies-eth: var(--colors-currencies-eth);
-$colors-currencies-ltc: var(--colors-currencies-ltc);
-$colors-currencies-xrp: var(--colors-currencies-xrp);
-$colors-terms-background: var(--colors-terms-background); // for Hollaex
-$dark-colors-terms-background: var(--dark-colors-terms-background); // for Hollaex
+// theme colors
+$app-background-color: var(--base_background);
+$app-light-background: var(--base_secondary-navigation-bar);
+$app-sidebar-background: var(--base_wallet-sidebar-and-popup);
+$auth-container-background: var(--base_wallet-sidebar-and-popup);
+$market-card_gradient_background: var(
+	--calculated_market-card_gradient_background
+);
 
 // common colors for app bar
-$dark-app-bar-add-tab-menu-background: var(--dark-app-bar-add-tab-menu-background);
-$dark-app-bar-tab-active-menu-list-background: var(--dark-app-bar-tab-active-menu-list-background);
-$app-bar-menu-list-color: var(--app-bar-menu-list-color);
-$app-bar-icon-inactive: var(--app-bar-icon-inactive);
-$app-bar--quicktrade-active-color: var(--app-bar--quicktrade-active-color);
-$app-bar--quicktrade-inactive-color: var(--app-bar--quicktrade-inactive-color);
-$app-bar-pairs-up: var(--app-bar-pairs-up);
-$app-bar-pairs-down: var(--app-bar-pairs-down);
-$dark-app-bar-pairs-up: var(--dark-app-bar-pairs-up);
-$dark-app-bar-pairs-down: var(--dark-app-bar-pairs-down);
-// $app-menu-bar-border--color: #CCCBCA;
+$dark-app-bar-add-tab-menu-background: $app-background-color;
+$app-bar-menu-list-color: var(--labels_secondary-inactive-label-text-graphics);
+$app-bar-icon-inactive: var(--calculated_base_top-bar-navigation_text-inactive);
 
-// colors for white theme
-$app-background-color: var(--app-background-color);
-$app-light-background: var(--app-light-background);
-$app-sidebar-background: var(--app-sidebar-background);
-$auth-container-background: var(--auth-container-background);
-$quick-trade-background: var(--quick-trade-background);
-$quick-trade-container: var(--quick-trade-container);
-$app-modal-background: var(--app-modal-background);
-$app-bar-background-color: var(--app-bar-background-color);
-$app-line-divider: var(--app-line-divider);
-$box-fields: var(--box-fields);
-$buy: var(--buy); // for Hollaex
-$sell: var(--sell); // for Hollaex
-$color-sell-btc-light: var(--color-sell-btc-light); // for Hollaex
-// $color-buy-btc-light: $colors-black; // for Hollaex
-$link: var(--link);
-$trade-fields: var(--trade-fields);
-$trade-fields-border: var(--trade-fields-border);
-$trade-fill-indicator: var(--trade-fill-indicator); // for Hollaex
-$trade-fill-indicator-text: var(--trade-fill-indicator-text); // for Hollaex
-$buy-bids-text: var(--buy-bids-text); // for Hollaex
-$sell-bids-text: var(--sell-bids-text);
-$app-logo-color: var(--app-logo-color);
-$sidebar-border--color: var(--sidebar-border--color);
-$border-color: var(--border-color);
-$border-main: var(--border-main);
-// white form field colors
-$form-color-underline-focus: var(--form-color-underline-focus);
-$form-color-underline: var(--form-color-underline);
-$form-color-placeholder: var(--form-color-placeholder);
-$form-arrow: var(--form-arrow);
-$form-label: var(--form-label);
-$form-text-disabled: var(--form-text-disabled);
-// White theme tabs
-$tab-active: var(--tab-active);
-$tab-inactive: var(--tab-inactive);
-$sidebar-color: var(--sidebar-color);
-$sidebar-color-active: var(--sidebar-color-active);
-$info-panel-background: var(--info-panel-background);
-$info-panel-text: var(--info-panel-text);
-$icon-hover: var(--icon-hover);
-$icon-unhover: var(--icon-unhover);
-$trade-tabs-inactive-color: var(--trade-tabs-inactive-color);
-// $bitcoin-color-main: $colors-currencies-btc;
-// White theme footer
-$footer-background-color: var(--footer-background-color);
-// white chat color
-$chat-message-background-even: var(--chat-message-background-even);
-$chat-message-background-odd: var(--chat-message-background-odd);
-$chat-message-color: var(--chat-message-color);
-$chat-box-border: var(--chat-box-border);
+// Quick trade
+$quick-trade-background: $app-background-color;
+$quick-trade-container: var(--base_wallet-sidebar-and-popup);
+
+$app-modal-background: var(--calculated_base_modal-overlay);
+$app-bar-background-color: var(--base_top-bar-navigation);
+
+$app-line-divider: $colors-main-border;
+$box-fields: var(--labels_fields);
+
+$buy: var(--trading_buying-related-elements);
+$sell: var(--trading_selling-related-elements);
+
+$link: var(--specials_buttons-links-and-highlights);
+
+$trade-fields: var(--labels_fields);
+$trade-fields-border: $colors-border;
+$trade-fill-indicator: $specials_highlight-box;
+$trade-fill-indicator-text: var(
+	--labels_secondary-inactive-label-text-graphics
+);
+
+$sparkline-fill: var(--calculated_trading_buying-sparkline-fill);
+$negative-sparkline-fill: var(--calculated_trading_selling-sparkline-fill);
+$selling-orderbook-bar: var(--calculated_trading_selling-orderbook-bar);
+$buying-orderbook-bar: var(--calculated_trading_buying-orderbook-bar);
+$buy-bids-text: var(--calculated_trading_buying-related-text);
+$sell-bids-text: var(--calculated_trading_selling-related-text);
+$base_top-bar-navigation_text: var(--calculated_base_top-bar-navigation_text);
+$base_top-bar-navigation_text-inactive: var(
+	--calculated_base_top-bar-navigation_text-inactive
+);
+$base_footer_text: var(--calculated_base_footer_text);
+
+// form field colors
+$form-color-underline-focus: var(
+	--labels_important-active-labels-text-graphics
+);
+$form-color-underline: var(--labels_secondary-inactive-label-text-graphics);
+$form-color-placeholder: var(--labels_secondary-inactive-label-text-graphics);
+$form-arrow: var(--labels_important-active-labels-text-graphics);
+$form-label: var(--labels_important-active-labels-text-graphics);
+
+// theme tabs
+$tab-active: var(--labels_important-active-labels-text-graphics);
+$tab-inactive: var(--labels_secondary-inactive-label-text-graphics);
+$sidebar-color: var(--labels_secondary-inactive-label-text-graphics);
+$sidebar-color-active: var(--labels_important-active-labels-text-graphics);
+$info-panel-background: var(--labels_fields);
+$info-panel-text: var(--labels_secondary-inactive-label-text-graphics);
+$icon-hover: var(--labels_important-active-labels-text-graphics);
+$icon-unhover: var(--labels_secondary-inactive-label-text-graphics);
+$trade-tabs-inactive-color: var(
+	--labels_secondary-inactive-label-text-graphics
+);
+
+// theme footer
+$footer-background-color: var(--base_footer);
+
+// chat color
+$chat-message-background-even: var(--base_background);
+$chat-message-background-odd: var(--base_secondary-navigation-bar);
+$chat-message-color: var(--specials_chat-messages);
+$chat-box-border: $colors-main-border;
 
 // this is for transaction history- ToDo: need to customize for common theme
-$history-color-buy: var(--history-color-buy);
-$history-color-sell: var(--history-color-sell);
+$history-color-buy: var(--trading_buying-related-elements);
+$history-color-sell: var(--trading_selling-related-elements);
 
-// colors for dark theme
-$colors-username-set-dark: var(--colors-username-set-dark);
-
-$dark-app-background-color: var(--dark-app-background-color);
-$dark-app-light-background: var(--dark-app-light-background);
-$dark-app-sidebar-background: var(--dark-app-sidebar-background);
-$dark-auth-container-background: var(--dark-auth-container-background);
-$dark-quick-trade-background: var(--dark-quick-trade-background);
-$dark-quick-trade-container: var(--dark-quick-trade-container);
-$dark-app-modal-background: var(--dark-app-modal-background);
-$dark-app-bar-background-color: var(--dark-app-bar-background-color);
-$dark-app-line-divider: var(--dark-app-line-divider);
-// $dark-app-link-highlight: #ed507b;
-$dark-box-fields: var(--dark-box-fields);
-$dark-buy: var(--dark-buy);
-$dark-sell: var(--dark-sell);
-$dark-color-sell-btc-light: var(--dark-color-sell-btc-light);
-$dark-link: var(--dark-link);
-$dark-trade-fields: var(--dark-trade-fields);
-$dark-trade-fields-border: var(--dark-trade-fields-border);
-$dark-trade-fill-indicator: var(--dark-trade-fill-indicator);
-$dark-buy-bids-text: var(--dark-buy-bids-text);
-$dark-sell-asks-text: var(--dark-sell-asks-text);
-$dark-app-logo-color: var(--dark-app-logo-color);
-// dark-border-button
-$dark-border-main: var(--dark-border-main);
-$dark-inactive-color: var(--dark-inactive-color);
-$dark-icon-color: var(--dark-icon-color);
-$dark-font-main-text-color: var(--dark-font-main-text-color);
-$dark-font-sub-text-color: var(--dark-font-sub-text-color);
-$dark-font-sub-text-1-color: var(--dark-font-sub-text-1-color);
-$dark-button-active: var(--dark-button-active);
-$dark-button-text: var(--dark-button-text);
-$dark-button-disabled: var(--dark-button-disabled);
-$dark-button-text-disabled: var(--dark-button-text-disabled);
-// dark-form-fields
-$dark-form-color-underline-focus: var(--dark-form-color-underline-focus);
-$dark-form-color-underline: var(--dark-form-color-underline);
-$dark-form-placeholder: var(--dark-form-placeholder);
-$dark-form-arrow: var(--dark-form-arrow);
-$dark-form-label: var(--dark-form-label);
-$dark-form-text-disabled: var(--dark-form-text-disabled);
-$dark-form-text: var(--dark-form-text);
-// dark-tabs
-$dark-tab-active: var(--dark-tab-active);
-$dark-tab-inactive: var(--dark-tab-inactive);
-$dark-sidebar-color: var(--dark-sidebar-color);
-$dark-sidebar-color-active: var(--dark-sidebar-color-active);
-$dark-info-panel-background: var(--dark-info-panel-background);
-$dar-info-panel-text: var(--dar-info-panel-text);
-$dark-icon-hover: var(--dark-icon-hover);
-$dark-icon-unhover: var(--dark-icon-unhover);
-$dark-tab-notification: var(--dark-tab-notification); // need to check this
-$dark-disabled-main: var(--dark-disabled-main);
-$dark-disabled-secondary: var(--dark-disabled-secondary);
-$dark-trade-row-highlight: var(--dark-trade-row-highlight);
+// remaining dark colors
+$dark-app-background-color: var(--base_background);
+$dark-app-line-divider: $colors-super-pale-black;
+$dark-border-main: $colors-main-border;
+$dark-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
+$dark-font-sub-text-color: var(--labels_secondary-inactive-label-text-graphics);
+$dark-font-sub-text-1-color: var(
+	--labels_secondary-inactive-label-text-graphics
+);
 $dark-accordion-arrow-active: var(--dark-accordion-arrow-active);
-$dark-accordion-arrow-inactive: var(--dark-accordion-arrow-inactive);
-// $dark-trade-text-highlight: #838383;
-
-// dark theme footer
-$dark-footer-background-color: var(--dark-footer-background-color);
-// colors for chat
-$dark-chat-message-background-even: var(--dark-chat-message-background-even);
-$dark-chat-message-background-odd: var(--dark-chat-message-background-odd);
-$dark-chat-message-color: var(--dark-chat-message-color);
-$dark-chat-box-border: var(--dark-chat-box-border);
-
-// main title icons fill(quick trade, deposit, withdrawal)
-$dark-main-title-icon-color-1: $dark-app-bar-background-color;
-$dark-main-title-icon-color-2: $dark-icon-color;
-$dark-main-title-icon-color-3: $dark-icon-color;
-
 
 // coins for white theme
 // fiat coins
@@ -239,7 +196,7 @@ $coin-xrp: var(--coin-xrp);
 $coin-xrp-1: var(--coin-xrp);
 $coin-xrp-text: var(--coin-xrp-text);
 $coin-xht: var(--coin-xht);
-$coin-xht-1:var(--coin-xht);
+$coin-xht-1: var(--coin-xht);
 $coin-xht-text: var(--coin-xht-text);
 $coin-eos: var(--coin-eos);
 $coin-eos-1: var(--coin-eos);
@@ -332,157 +289,6 @@ $coin-dai: var(--coin-dai);
 $coin-dai-1: var(--coin-dai);
 $coin-dai-text: var(--coin-dai-text);
 
-// coins for dark theme
-// fiat coins
-$dark-coin-eur: var(--dark-coin-eur);
-$dark-coin-eur-1: var(--dark-coin-eur);
-$dark-coin-eur-text: var(--dark-coin-eur-text);
-$dark-coin-usd: var(--dark-coin-usd);
-$dark-coin-usd-1: var(--dark-coin-usd);
-$dark-coin-usd-text: var(--dark-coin-usd-text);
-$dark-coin-jpy: var(--dark-coin-jpy);
-$dark-coin-jpy-1: var(--dark-coin-jpy);
-$dark-coin-jpy-text: var(--dark-coin-jpy-text);
-$dark-coin-gbp: var(--dark-coin-gbp);
-$dark-coin-gbp-1: var(--dark-coin-gbp);
-$dark-coin-gbp-text: var(--dark-coin-gbp-text);
-$dark-coin-chf: var(--dark-coin-chf);
-$dark-coin-chf-1: var(--dark-coin-chf);
-$dark-coin-chf-text: var(--dark-coin-chf-text);
-$dark-coin-cad: var(--dark-coin-cad);
-$dark-coin-cad-1: var(--dark-coin-cad);
-$dark-coin-cad-text: var(--dark-coin-cad-text);
-$dark-coin-aud: var(--dark-coin-aud);
-$dark-coin-aud-1: var(--dark-coin-aud);
-$dark-coin-aud-text: var(--dark-coin-aud-text);
-$dark-coin-nzd: var(--dark-coin-nzd);
-$dark-coin-nzd-1: var(--dark-coin-nzd);
-$dark-coin-nzd-text: var(--dark-coin-nzd-text);
-$dark-coin-zar: var(--dark-coin-zar);
-$dark-coin-zar-1: var(--dark-coin-zar);
-$dark-coin-zar-text: var(--dark-coin-zar-text);
-$dark-coin-hkd: var(--dark-coin-hkd);
-$dark-coin-hkd-1: var(--dark-coin-hkd);
-$dark-coin-hkd-text: var(--dark-coin-hkd-text);
-$dark-coin-krw: var(--dark-coin-krw);
-$dark-coin-krw-1: var(--dark-coin-krw);
-$dark-coin-krw-text: var(--dark-coin-krw-text);
-$dark-coin-cny: var(--dark-coin-cny);
-$dark-coin-cny-1: var(--dark-coin-cny);
-$dark-coin-cny-text: var(--dark-coin-cny-text);
-$dark-coin-sgd: var(--dark-coin-sgd);
-$dark-coin-sgd-1: var(--dark-coin-sgd);
-$dark-coin-sgd-text: var(--dark-coin-sgd-text);
-// crypto coins
-$dark-coin-btc: var(--dark-coin-btc);
-$dark-coin-btc-1: var(--dark-coin-btc);
-$dark-coin-btc-text: var(--dark-coin-btc-text);
-$dark-coin-eth: var(--dark-coin-eth);
-$dark-coin-eth-1: var(--dark-coin-eth);
-$dark-coin-eth-text: var(--dark-coin-eth-text);
-$dark-coin-ltc: var(--dark-coin-ltc);
-$dark-coin-ltc-1: var(--dark-coin-ltc);
-$dark-coin-ltc-text: var(--dark-coin-ltc-text);
-$dark-coin-bch: var(--dark-coin-bch);
-$dark-coin-bch-1: var(--dark-coin-bch);
-$dark-coin-bch-text: var(--dark-coin-bch-text);
-$dark-coin-xrp: var(--dark-coin-xrp);
-$dark-coin-xrp-1: var(--dark-coin-xrp);
-$dark-coin-xrp-text: var(--dark-coin-xrp-text);
-$dark-coin-xht: var(--dark-coin-xht);
-$dark-coin-xht-1:var(--dark-coin-xht);
-$dark-coin-xht-text:var(--dark-coin-xht-text);
-$dark-coin-eos: var(--dark-coin-eos);
-$dark-coin-eos-1: var(--dark-coin-eos);
-$dark-coin-eos-text: var(--dark-coin-eos-text);
-$dark-coin-bnb: var(--dark-coin-bnb);
-$dark-coin-bnb-1: var(--dark-coin-bnb);
-$dark-coin-bnb-text: var(--dark-coin-bnb-text);
-$dark-coin-link: var(--dark-coin-link);
-$dark-coin-link-1: var(--dark-coin-link);
-$dark-coin-link-text: var(--dark-coin-link-text);
-$dark-coin-trx: var(--dark-coin-trx);
-$dark-coin-trx-1: var(--dark-coin-trx);
-$dark-coin-trx-text: var(--dark-coin-trx-text);
-$dark-coin-ada: var(--dark-coin-ada);
-$dark-coin-ada-1: var(--dark-coin-ada);
-$dark-coin-ada-text: var(--dark-coin-ada-text);
-$dark-coin-matic: var(--dark-coin-matic);
-$dark-coin-matic-1: var(--dark-coin-matic);
-$dark-coin-matic-text: var(--dark-coin-matic-text);
-$dark-coin-neo: var(--dark-coin-neo);
-$dark-coin-neo-1: var(--dark-coin-neo);
-$dark-coin-neo-text: var(--dark-coin-neo-text);
-$dark-coin-etc: var(--dark-coin-etc);
-$dark-coin-etc-1: var(--dark-coin-etc);
-$dark-coin-etc-text: var(--dark-coin-etc-text);
-$dark-coin-xlm: var(--dark-coin-xlm);
-$dark-coin-xlm-1: var(--dark-coin-xlm);
-$dark-coin-xlm-text: var(--dark-coin-xlm-text);
-$dark-coin-xmr: var(--dark-coin-xmr);
-$dark-coin-xmr-1: var(--dark-coin-xmr);
-$dark-coin-xmr-text: var(--dark-coin-xmr-text);
-$dark-coin-zec: var(--dark-coin-zec);
-$dark-coin-zec-1: var(--dark-coin-zec);
-$dark-coin-zec-text: var(--dark-coin-zec-text);
-$dark-coin-one: var(--dark-coin-one);
-$dark-coin-one-1: var(--dark-coin-one);
-$dark-coin-one-text: var(--dark-coin-one-text);
-$dark-coin-pax: var(--dark-coin-pax);
-$dark-coin-pax-1: var(--dark-coin-pax);
-$dark-coin-pax-text: var(--dark-coin-pax-text);
-$dark-coin-usdc: var(--dark-coin-usdc);
-$dark-coin-usdc-1: var(--dark-coin-usdc);
-$dark-coin-usdc-text: var(--dark-coin-usdc-text);
-$dark-coin-usdt: var(--dark-coin-usdt);
-$dark-coin-usdt-1: var(--dark-coin-usdt);
-$dark-coin-usdt-text: var(--dark-coin-usdt-text);
-$dark-coin-vet: var(--dark-coin-vet);
-$dark-coin-vet-1: var(--dark-coin-vet);
-$dark-coin-vet-text: var(--dark-coin-vet-text);
-$dark-coin-btt: var(--dark-coin-btt);
-$dark-coin-btt-1: var(--dark-coin-btt);
-$dark-coin-btt-text: var(--dark-coin-btt-text);
-$dark-coin-qtum: var(--dark-coin-qtum);
-$dark-coin-qtum-1: var(--dark-coin-qtum);
-$dark-coin-qtum-text: var(--dark-coin-qtum-text);
-$dark-coin-algo: var(--dark-coin-algo);
-$dark-coin-algo-1: var(--dark-coin-algo);
-$dark-coin-algo-text: var(--dark-coin-algo-text);
-$dark-coin-rvn: var(--dark-coin-rvn);
-$dark-coin-rvn-1: var(--dark-coin-rvn);
-$dark-coin-rvn-text: var(--dark-coin-rvn-text);
-$dark-coin-iota: var(--dark-coin-iota);
-$dark-coin-iota-1: var(--dark-coin-iota);
-$dark-coin-iota-text: var(--dark-coin-iota-text);
-$dark-coin-dash: var(--dark-coin-dash);
-$dark-coin-dash-1: var(--dark-coin-dash);
-$dark-coin-dash-text: var(--dark-coin-dash-text);
-$dark-coin-bsv: var(--dark-coin-bsv);
-$dark-coin-bsv-1: var(--dark-coin-bsv);
-$dark-coin-bsv-text: var(--dark-coin-bsv-text);
-$dark-coin-ont: var(--dark-coin-ont);
-$dark-coin-ont-1: var(--dark-coin-ont);
-$dark-coin-ont-text: var(--dark-coin-ont-text);
-$dark-coin-atom: var(--dark-coin-atom);
-$dark-coin-atom-1: var(--dark-coin-atom);
-$dark-coin-atom-text: var(--dark-coin-atom-text);
-$dark-coin-celr: var(--dark-coin-celr);
-$dark-coin-celr-1: var(--dark-coin-celr);
-$dark-coin-celr-text: var(--dark-coin-celr-text);
-$dark-coin-omg: var(--dark-coin-omg);
-$dark-coin-omg-1: var(--dark-coin-omg);
-$dark-coin-omg-text: var(--dark-coin-omg-text);
-$dark-coin-hot: var(--dark-coin-hot);
-$dark-coin-hot-1: var(--dark-coin-hot);
-$dark-coin-hot-text: var(--dark-coin-hot-text);
-$dark-coin-tusd: var(--dark-coin-tusd);
-$dark-coin-tusd-1: var(--dark-coin-tusd);
-$dark-coin-tusd-text: var(--dark-coin-tusd-text);
-$dark-coin-dai: var(--dark-coin-dai);
-$dark-coin-dai-1: var(--dark-coin-dai);
-$dark-coin-dai-text: var(--dark-coin-dai-text);
-
 $content-display-width: 100rem;
 $app-content-display-width: 75rem;
 $content-display-vertical-margin: 1rem;
@@ -507,11 +313,6 @@ $raleway-extrabold--font-family: 'Raleway Extrabold';
 $raleway-medium--font-family: 'Raleway Medium';
 $raleway-light--font-family: 'Raleway Light';
 $title--font-family: $raleway-extrabold--font-family;
-
-$backgound-pattern: '/assets/pattern-grey.jpg';
-$background-image: '/assets/background.png';
-$background-image-dark: '/assets/HollaEx-dark-theme.jpg';
-$dark-background-image: '/assets/dark-background.jpg';
 
 // DIALOG
 $dialog-min-width: 25rem;
@@ -539,8 +340,6 @@ $sidebar-borderbottom-color: $colors-deactivate-color2;
 $sidebar-borderbottom-color-active: $colors-deactivate-color2;
 $sidebar-borderbottom-height: 4px;
 
-$btc-color: $colors-currencies-btc;
-
 $currency-color: inherit;
 
 // TAB CONTROLLER
@@ -550,16 +349,24 @@ $tab-text-padding: 0 8px 8px;
 $tab-selected-line-height: 4px;
 
 // MOBILE
+$market-selector--height: 3rem;
 $navigation_bar-mobile--height: 4rem;
-$navigation_bar-mobile--background: $colors-main-black;
-$dark-navigation_bar-mobile--background: white;
+$navigation_bar-mobile--background: $app-bar-background-color;
 $bottom_bar--height: 6rem;
 $bottom-bar--background: $navigation_bar-mobile--background;
-$dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
-$max-content-height-mobile: calc(100vh - #{$navigation_bar-mobile--height + $bottom-bar--height});
-$max-content-height-double-bar-mobile: calc(100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height});
-$max-content-height-home-mobile: calc(100vh - #{$navigation_bar-mobile--height});
-$max-content-height-dialog-mobile: calc(100vh - #{$navigation_bar-mobile--height * 2});
+$max-content-height-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height + $bottom-bar--height}
+);
+$max-content-height-double-bar-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height +
+		$market-selector--height}
+);
+$max-content-height-home-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height}
+);
+$max-content-height-dialog-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height * 2}
+);
 $max-content-width-mobile: 100vw;
 $table-header-column--font-size: 1rem;
 $regular--font-size: 1.2rem;
@@ -573,5 +380,7 @@ $input--height: 4.5rem;
 $max-content-height: calc(100vh - #{$navigation_bar-height});
 $max-content-secondary-height: calc(100vh - #{$navigation_bar-height * 2});
 $max-content-height-lg: calc(100vh - #{$navigation_bar-height-lg});
-$max-content-secondary-height-lg: calc(100vh - #{$navigation_bar-height-lg * 2});
+$max-content-secondary-height-lg: calc(
+	100vh - #{$navigation_bar-height-lg * 2}
+);
 $max-width-content: 50rem;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, Spin, Alert, Table, Input } from 'antd';
+import { BarcodeOutlined } from '@ant-design/icons';
+import { Spin, Alert, Table, Input } from 'antd';
 
 import { HocForm } from '../../components';
 import { getTransactions } from './actions';
@@ -8,7 +9,7 @@ import {
 	initialValues,
 	INITIAL_STATE,
 	COLUMNS,
-	expandedRowRender
+	expandedRowRender,
 } from './utils';
 
 const Form = HocForm('TRANSACTIONS_FORM', 'transactions-form', true);
@@ -21,7 +22,7 @@ class BankTransactions extends Component {
 		const values = {
 			startDate: dates[0],
 			endDate: dates[1],
-			...rest
+			...rest,
 		};
 		return getTransactions(values)
 			.then(({ transactions }) => {
@@ -29,7 +30,7 @@ class BankTransactions extends Component {
 					data: transactions,
 					filteredData: transactions,
 					loading: false,
-					success: true
+					success: true,
 				});
 			})
 			.catch(({ data }) => {
@@ -40,7 +41,7 @@ class BankTransactions extends Component {
 	handleChange = (pagination, filters, sorter) => {
 		this.setState({
 			filteredInfo: filters,
-			sortedInfo: sorter
+			sortedInfo: sorter,
 		});
 	};
 
@@ -51,7 +52,7 @@ class BankTransactions extends Component {
 		);
 		this.setState({
 			searchText: value,
-			filteredData
+			filteredData,
 		});
 	};
 
@@ -71,25 +72,20 @@ class BankTransactions extends Component {
 					fields={{
 						dates: {
 							type: 'range',
-							validate: []
+							validate: [],
 						},
 						transaction_id: {
 							type: 'string',
 							placeholder: 'Transaction ID',
 							validate: [],
-							prefix: <Icon type="barcode" />
-						}
+							prefix: <BarcodeOutlined />,
+						},
 					}}
 				/>
 				<div className="m-top">
 					{loading && <Spin size="large" />}
 					{error && (
-						<Alert
-							message="Error"
-							description={error}
-							type="error"
-							showIcon
-						/>
+						<Alert message="Error" description={error} type="error" showIcon />
 					)}
 					{success && (
 						<div className="w-100">

@@ -1,83 +1,98 @@
-
 .snack_notification-wrapper {
-    background-color: $app-background-color;
-    border-top: .3rem solid $colors-deactivate;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    font-family: $raleway--font-family;
-    height: 3.5rem;
-    left: calc(50vw - 10rem);
-    padding: .3rem .5rem !important;
-    position: absolute;
-    // top: 1rem;
-    width: 20rem;
-    z-index: 9999;
-    -webkit-box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
+	background-color: $app-background-color;
+	border-top: 0.3rem solid $colors-border;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	font-family: $raleway--font-family;
+	height: 3.5rem;
+	left: calc(50vw - 10rem);
+	padding: 0.3rem 0.5rem !important;
+	position: absolute;
+	// top: 1rem;
+	width: 20rem;
+	z-index: 9999;
+	-webkit-box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
 	-moz-box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
-    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
-    
-    .notification-text {
-        font-size: 1.20rem;
-        font-weight: 400;
-    }
+	box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
 
-    .notification-icon {
-        width: 1.5rem;
-    }
+	.notification-text {
+		font-size: 1.2rem;
+		font-weight: 400;
+	}
+
+	.notification-icon {
+		width: 1.5rem;
+	}
 }
 
 .snack_open {
-    top: -1rem;
-    -webkit-animation: snackSlide 0.7s forwards;
-    animation: snackSlide 0.7s forwards;
+	top: -1rem;
+	-webkit-animation: snackSlide 0.7s forwards;
+	animation: snackSlide 0.7s forwards;
 }
 
 .snack_close {
-    top: 1rem;
-    -webkit-animation: slideClose 1s forwards;
-    animation: slideClose 1s forwards;
+	top: 1rem;
+	-webkit-animation: slideClose 1s forwards;
+	animation: slideClose 1s forwards;
 }
 
 @-webkit-keyframes snackSlide {
-    0% { top: -2rem; }
-    100% { top: 1rem; }
+	0% {
+		top: -2rem;
+	}
+	100% {
+		top: 1rem;
+	}
 }
 
 @keyframes snackSlide {
-    0% { top: -2rem; }
-    100% { top: 1rem; }
+	0% {
+		top: -2rem;
+	}
+	100% {
+		top: 1rem;
+	}
 }
 
 @-webkit-keyframes slideClose {
-    0% { top: 1rem; }
-    100% { top: -4rem; }
+	0% {
+		top: 1rem;
+	}
+	100% {
+		top: -4rem;
+	}
 }
 
 @keyframes slideClose {
-    0% { top: 1rem; }
-    100% { top: -4rem; }
+	0% {
+		top: 1rem;
+	}
+	100% {
+		top: -4rem;
+	}
 }
 
 .snack_dialog-wrapper {
-    background-color: $colors-main-black;
-    font-family: $raleway--font-family;
-    padding: .3rem .5rem !important;
-    position: absolute;
-    width: 100%;
-    z-index: 9998;
-    
-    .notification-text {
-        font-size: 1.20rem;
-        font-weight: 400;
-    }
+	background-color: $colors-main-black;
+	font-family: $raleway--font-family;
+	padding: 0.3rem 0.5rem !important;
+	position: absolute;
+	width: 100%;
+	z-index: 9998;
 
-    .notification-icon {
-        width: 1.5rem;
-    }
-    .close-dialog {
+	.notification-text {
+		font-size: 1.2rem;
+		font-weight: 400;
+	}
+
+	.notification-icon {
+		width: 1.5rem;
+	}
+	.close-dialog {
 		margin-left: 0;
 		@include size(7.5rem);
-        height: auto;
+		height: auto;
 		svg {
 			@include size(7.5rem);
 			.cancel-cross-3 {
@@ -91,72 +106,68 @@
 }
 
 .snack_dialog_open {
-    bottom: 0rem;
-    -webkit-animation: dialogSlide 1.5s backwards;
-    animation: dialogSlide 1.5s backwards;
+	bottom: 0rem;
+	-webkit-animation: dialogSlide 1.5s backwards;
+	animation: dialogSlide 1.5s backwards;
 }
 
 .snack_dialog_close {
-    bottom: 5.5rem;
-    -webkit-animation: dialogClose 0.8s backwards;
-    animation: dialogClose 0.8s backwards;
+	bottom: 5.5rem;
+	-webkit-animation: dialogClose 0.8s backwards;
+	animation: dialogClose 0.8s backwards;
 }
 
 @-webkit-keyframes dialogSlide {
-    0% { bottom: 0rem; }
-    100% { bottom: 7.5rem; }
+	0% {
+		bottom: 0rem;
+	}
+	100% {
+		bottom: 7.5rem;
+	}
 }
 
 @keyframes dialogSlide {
-    0% { bottom: 0rem; }
-    100% { bottom: 7.5rem; }
+	0% {
+		bottom: 0rem;
+	}
+	100% {
+		bottom: 7.5rem;
+	}
 }
 
 @-webkit-keyframes dialogClose {
-    0% { bottom: 7.5rem; }
-    100% { bottom: 5.5rem; }
+	0% {
+		bottom: 7.5rem;
+	}
+	100% {
+		bottom: 5.5rem;
+	}
 }
 
 @keyframes dialogClose {
-    0% { bottom: 7.5rem; }
-    100% { bottom: 5.5rem; }
-}
-
-.dark-theme {
-    .snack_notification-wrapper {
-        background-color: $dark-app-background-color;
-        border-top-color: $dark-app-line-divider;
-        border-left: 1px solid $dark-app-line-divider;
-        border-right: 1px solid $dark-app-line-divider;
-        border-bottom: 1px solid $dark-app-line-divider;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
-    .mobile-notification {
-        border-left: 1px solid $dark-app-line-divider;
-        border-right: 1px solid $dark-app-line-divider;
-        border-top: 1px solid $dark-app-line-divider;
-        border-bottom: .5rem solid $dark-app-line-divider;
-    }
+	0% {
+		bottom: 7.5rem;
+	}
+	100% {
+		bottom: 5.5rem;
+	}
 }
 
 .mobile-notification {
-    border-top: 0;
-    border-bottom: .5rem solid $colors-black;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    width: 22rem;
-    left: calc(50vw - 11rem);
+	border-top: 0;
+	border-bottom: 0.5rem solid $colors-border;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	width: 22rem;
+	left: calc(50vw - 11rem);
 }
 
 .layout-mobile {
-    .snack_dialog-wrapper {
-        .notification-content-mobile-wrapper {
-            font-size: 1rem !important;
-        }
-
-    }
+	.snack_dialog-wrapper {
+		.notification-content-mobile-wrapper {
+			font-size: 1rem !important;
+		}
+	}
 }

@@ -1,0 +1,298 @@
+$operator-controls__panel-main-color: #0000ff;
+$operator-controls__panel-text-color: #ffffff;
+$operator-controls__panel-text-color-inactive: #ffffff80;
+$operator-controls__panel-border-color: #a7a7a7;
+
+@import './components/ImageUpload';
+
+.operator-controls__wrapper {
+	position: fixed;
+	bottom: -106px;
+	width: 100vw;
+	transition: all 0.25s ease-out 0s;
+	color: $operator-controls__panel-text-color;
+
+	&.open {
+		bottom: 0;
+		z-index: 10002 !important;
+	}
+}
+
+.operator-controls__buttons-wrapper {
+	display: flex;
+	margin-left: 57px;
+}
+
+.operator-controls__button {
+	height: 31px;
+	transform: translateY(1px);
+	font-size: 16px;
+	background-color: $operator-controls__panel-main-color;
+	width: 162px;
+	margin-right: 8px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&.disabled {
+		color: $operator-controls__panel-text-color-inactive;
+		cursor: not-allowed;
+		height: 31px;
+		transform: translateY(0);
+	}
+}
+
+.operator-controls__panel {
+	display: flex;
+	justify-content: space-between;
+	height: 106px;
+	width: 100%;
+	border-top: solid $operator-controls__panel-border-color 1px;
+	background-color: $operator-controls__panel-main-color;
+}
+
+.operator-controls__panel-list {
+	display: flex;
+	margin: 0 35px;
+}
+
+.operator-controls__panel-item {
+	display: flex;
+	font-size: 21px;
+	font-family: NHaasGroteskDSPro-95Blk;
+	text-align: center;
+	cursor: pointer;
+	align-items: center;
+	margin: 0 35px;
+}
+
+.operator-controls__publish-button {
+	color: $operator-controls__panel-text-color;
+	background-color: #ff0000;
+	border: 1px solid #ff0000;
+	border-radius: 10px;
+	height: 50px;
+	width: 145px;
+	margin-right: 37px;
+	text-transform: uppercase;
+}
+
+.operator-controls__save-button {
+	color: $operator-controls__panel-text-color;
+	background-color: #288500;
+	border: 1px solid #288500;
+	font-weight: bold;
+
+	&.confirm {
+		width: 101px;
+	}
+}
+
+.operator-controls__modal {
+	.ant-collapse,
+	.ant-collapse-item,
+	.ant-collapse-header,
+	.ant-collapse-content {
+		color: $operator-controls__panel-text-color !important;
+	}
+
+	.ant-table-container {
+		background-color: $operator-controls__panel-main-color;
+	}
+
+	.ant-pagination,
+	.ant-pagination-item,
+	.ant-pagination-next,
+	.ant-pagination-item-active,
+	.ant-pagination-item-active :focus {
+		color: $operator-controls__panel-text-color;
+		background-color: transparent;
+
+		.anticon {
+			color: $operator-controls__panel-text-color;
+		}
+	}
+
+	.ant-pagination-item-active {
+		font-weight: bolder;
+		border-color: $operator-controls__panel-text-color;
+	}
+
+	.ant-pagination-item:focus a,
+	.ant-pagination-item:hover a {
+		font-weight: bolder;
+		color: $operator-controls__panel-text-color;
+	}
+
+	.ant-collapse-header {
+		text-align: center;
+	}
+
+	.ant-collapse-item-disabled {
+		cursor: auto !important;
+	}
+
+	.ant-collapse .ant-collapse-item-disabled > .ant-collapse-header {
+		cursor: auto;
+	}
+
+	.ant-select-selector {
+		background-color: $operator-controls__panel-text-color !important;
+	}
+
+	.ant-input {
+		color: #0a0a0a !important;
+		background-color: $operator-controls__panel-text-color !important;
+	}
+
+	.ant-radio,
+	.ant-radio-wrapper,
+	.ant-radio-group {
+		color: #ffffff;
+	}
+
+	.ant-radio-inner {
+		background-color: #0a0a0a;
+	}
+
+	.ant-radio-checked .ant-radio-inner {
+		border-color: #0a0a0a;
+	}
+
+	.ant-radio-inner::after {
+		background-color: #ffffff;
+	}
+
+	.ant-radio-wrapper-checked {
+		border: 1px solid #c4c4c4;
+	}
+
+	.ant-radio-group {
+		width: 100%;
+	}
+
+	.ant-radio-wrapper {
+		display: block;
+		padding: 12px;
+	}
+
+	.ant-divider-with-text,
+	.ant-divider-horizontal,
+	.ant-divider,
+	.ant-divider-inner-text {
+		color: $operator-controls__panel-text-color-inactive !important;
+		font-size: small !important;
+		font-weight: 600;
+		border-color: $operator-controls__panel-text-color-inactive !important;
+	}
+
+	.ant-divider-with-text::after,
+	.ant-divider-with-text::before {
+		border-color: $operator-controls__panel-text-color-inactive !important;
+	}
+
+	.ant-divider-inner-text {
+		width: 300px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.rc-color-picker-trigger {
+		width: 20px;
+		height: 20px;
+		border: 1px solid #322d2d99;
+		border-radius: 38px;
+	}
+
+	.ReactModal__Content {
+		background-color: $operator-controls__panel-main-color !important;
+		color: $operator-controls__panel-text-color !important;
+		padding-top: 20px !important;
+		margin-bottom: 136px !important;
+		max-width: calc(100vw - 2rem) !important;
+		max-height: calc(100vh - 160px) !important;
+		z-index: 10001 !important;
+
+		.action_notification-image {
+			fill: $operator-controls__panel-text-color !important;
+		}
+	}
+
+	&.extended {
+		.ReactModal__Content {
+			height: calc(100vh - 160px) !important;
+		}
+	}
+
+	.ReactModal__Overlay {
+		position: fixed;
+		z-index: 10001 !important;
+		background-color: transparent !important;
+		color: $operator-controls__panel-text-color !important;
+	}
+}
+
+.operator-controls__modal-open #root {
+	filter: none !important;
+	background-color: transparent !important;
+}
+
+.operator-controls__modal-open {
+	overflow: hidden;
+}
+
+.operator-controls__all-strings-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.ant-input-suffix {
+		display: none !important;
+	}
+
+	.ant-input-search {
+		border-bottom: 1px solid white;
+	}
+
+	.ant-input-search,
+	.ant-input {
+		color: $operator-controls__panel-text-color !important;
+		background-color: $operator-controls__panel-main-color !important;
+	}
+}
+
+.operator-controls__modal-title {
+	font-size: 28px;
+	font-weight: bold;
+	font-family: NHaasGroteskDSPro-95Blk;
+}
+
+.operator-controls__all-strings-settings-button {
+	color: $operator-controls__panel-text-color !important;
+	border-color: $operator-controls__panel-text-color !important;
+}
+
+.operator-controls__table {
+	.ant-select-arrow,
+	.ant-select-selector {
+		color: $operator-controls__panel-text-color !important;
+		background-color: $operator-controls__panel-main-color !important;
+		font-weight: bold;
+	}
+
+	&table {
+		border-collapse: collapse !important;
+	}
+
+	& thead > tr > th,
+	& tbody > tr > td {
+		background-color: $operator-controls__panel-main-color !important;
+		color: $operator-controls__panel-text-color !important;
+	}
+
+	& tbody > tr > td {
+		border: none !important;
+	}
+}

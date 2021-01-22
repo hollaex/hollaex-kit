@@ -10,8 +10,7 @@ export default {
 	ACTIVE_TRADES: '仮想通貨の取引を利用するためには、{0}を完了してください。',
 	CANCEL_BASE_WITHDRAWAL: '{0}出金キャンセル',
 	CANCEL_WITHDRAWAL: '出金キャンセル',
-	CANCEL_WITHDRAWAL_POPUP_CONFIRM:
-		'保留中の出金をキャンセルしますか？',
+	CANCEL_WITHDRAWAL_POPUP_CONFIRM: '保留中の出金をキャンセルしますか？',
 	CANT_BE_CANCELLED: '-',
 	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss',
@@ -74,7 +73,7 @@ export default {
 		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
 			'Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.',
-		SECTION_3_BUTTON_1: 'View Demo'
+		SECTION_3_BUTTON_1: 'View Demo',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
@@ -123,7 +122,7 @@ export default {
 		XHT_DESCRIPTION:
 			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
 		CLICK_HERE: 'click here',
-		VISIT_HERE: 'visit here'
+		VISIT_HERE: 'visit here',
 	},
 	ACCOUNTS: {
 		TITLE: 'マイページ',
@@ -136,7 +135,7 @@ export default {
 		TAB_SUMMARY: 'マイページ',
 		TAB_HISTORY: '履歴',
 		TAB_API: 'API',
-		TAB_SIGNOUT: 'ログアウト'
+		TAB_SIGNOUT: 'ログアウト',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
@@ -145,7 +144,7 @@ export default {
 		CATEGORY_PLACEHOLDER: 'お客様に当てはまるカテゴリーを選択してください。',
 		INTRODUCTION_LABEL: '自己紹介',
 		INTRODUCTION_PLACEHOLDER:
-			'ベースはどこですか？取引所の運営に興味がありますか？'
+			'ベースはどこですか？取引所の運営に興味がありますか？',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'お問い合わせの種類',
@@ -157,7 +156,7 @@ export default {
 			OPTION_BUG: 'エラー報告', // ToDo:
 			OPTION_PERSONAL_INFO: '個人情報の変更', // ToDo:
 			OPTION_BANK_TRANSFER: '銀行送金', // new
-			OPTION_REQUEST: 'HollaEx招待リクエスト' // new
+			OPTION_REQUEST: 'HollaEx招待リクエスト', // new
 		},
 		SUBJECT_LABEL: '件名',
 		SUBJECT_PLACEHOLDER: 'お問い合わせの件名を入力してください。',
@@ -168,8 +167,9 @@ export default {
 			'より正確な問題解決のため、お問い合わせ内容に関したイメージファイルを添付してください。(PDF, JPG, PNG, GIF ファイル添付可能)',
 		SUCCESS_MESSAGE: 'サポートセンターにお問い合わせが受付されました。',
 		SUCCESS_TITLE: '受付完了',
-		SUCCESS_MESSAGE_1: 'お客様のお問い合わせがサポートセンターに受付されました。',
-		SUCCESS_MESSAGE_2: '営業日基準1～3日が掛かります。'
+		SUCCESS_MESSAGE_1:
+			'お客様のお問い合わせがサポートセンターに受付されました。',
+		SUCCESS_MESSAGE_2: '営業日基準1～3日が掛かります。',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
@@ -178,13 +178,13 @@ export default {
 			MEMO: 'Your{0}memo', // new
 			BTC: 'ビットコイン入金アドレス',
 			ETH: 'イーサリアム入金アドレス',
-			BCH: 'ビットコインキャッシュ入金アドレス'
+			BCH: 'ビットコインキャッシュ入金アドレス',
 		},
 		INCREASE_LIMIT: '限度額の増加が必要ですか？',
 		QR_CODE:
 			'このQRコードをスキャンして、お客様専用の入金アドレスへ入金できます。',
 		NO_DATA: '利用可能な情報がありません。',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: '{0}にログイン',
@@ -199,7 +199,7 @@ export default {
 		PASSWORD_LABEL: 'パスワード',
 		PASSWORD_PLACEHOLDER: 'パスワードを入力',
 		PASSWORD_REPEAT_LABEL: 'パスワードの確認',
-		PASSWORD_REPEAT_PLACEHOLDER: 'パスワードをもう一度入力'
+		PASSWORD_REPEAT_PLACEHOLDER: 'パスワードをもう一度入力',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'ログインのためOTPコードを入力してください。',
@@ -219,11 +219,11 @@ export default {
 		MIN_VALUE: '値は必ず{0}または、これより高い必要があります。',
 		MAX_VALUE: '値は必ず{0}または、これより低い必要があります。',
 		INSUFFICIENT_BALANCE: '残高が足りません',
-		PASSWORDS_DONT_MATCH: "パスワードが間違っています。",
+		PASSWORDS_DONT_MATCH: 'パスワードが間違っています。',
 		USER_EXIST: '既に登録されたメールアドレスです。',
 		ACCEPT_TERMS: '利用規約およびプライバシーポリシーに同意してください。',
 		STEP: '間違った値, step is {0}',
-		ONLY_NUMBERS: '数字のみ入力可能です。'
+		ONLY_NUMBERS: '数字のみ入力可能です。',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -237,8 +237,8 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
 		},
 		GENERAL_TERMS: {
 			TITLE: 'General Terms of Service',
@@ -251,15 +251,15 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
-		}
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
+		},
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
 			OKAY: 'Okay',
 			START_TRADING: '取引を始める',
-			SEE_HISTORY: '取引履歴を見る'
+			SEE_HISTORY: '取引履歴を見る',
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: '{0}入金完了',
@@ -269,12 +269,12 @@ export default {
 			INFORMATION_PENDING_1:
 				'取引を始めるためには{0}には少なくとも１つ以上の確認が必要です。',
 			INFORMATION_PENDING_2:
-				'通常の入金完了には10～30分が所要されますが、状況によってはもっと時間が掛かる場合もあります。{0}がブロックチェーン上で完了され次第メールをお送りいたします。'
-		}
+				'通常の入金完了には10～30分が所要されますが、状況によってはもっと時間が掛かる場合もあります。{0}がブロックチェーン上で完了され次第メールをお送りいたします。',
+		},
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: 'リクエストを送りました。',
-		BUTTON_TEXT: 'Okay'
+		BUTTON_TEXT: 'Okay',
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: '認証番号を入力し、手続きを続行してください。',
@@ -283,7 +283,7 @@ export default {
 		OTP_TITLE: '認証番号',
 		OTP_HELP: 'ヘルプ',
 		OTP_BUTTON: '確認',
-		ERROR_INVALID: '無効なOTPコードです。'
+		ERROR_INVALID: '無効なOTPコードです。',
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'クイック取引',
@@ -302,69 +302,66 @@ export default {
 		ORDERS_PLURAL: '注文',
 		ORDERS_SINGULAR: '注文',
 		HOLD_ORDERS:
-			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance'
+			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance',
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'パスワードの再設定',
 		SUBTITLE: `以下のアカウントのパスワードを再設定できます。`,
 		SUPPORT: 'お問い合わせ',
-		BUTTON: '再設定リンクを送る'
+		BUTTON: '再設定リンクを送る',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
 		TITLE: 'パスワード再設定のメールを送信しました。',
 		TEXT:
-			'アカウントに登録されたメールアドレスから再設定の手続きが含まれたメールを受け取れます。メールを確認してリンクに接続し、パスワードの再設定を完了してください。'
+			'アカウントに登録されたメールアドレスから再設定の手続きが含まれたメールを受け取れます。メールを確認してリンクに接続し、パスワードの再設定を完了してください。',
 	},
 	RESET_PASSWORD: {
 		TITLE: '新しいパスワードの設定',
 		SUBTITLE: '新しいパスワードを設定します。',
-		BUTTON: '新しいパスワードに設定する'
+		BUTTON: '新しいパスワードに設定する',
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: '新しいパスワードが正常に設定されました。',
-		TEXT_2: '続けるにはログインボタンを押してください。'
+		TEXT_2: '続けるにはログインボタンを押してください。',
 	},
 	SIGN_UP: {
 		SIGNUP_TO: '{0}に登録する',
-		NO_EMAIL: "メールが届きませんか？",
+		NO_EMAIL: 'メールが届きませんか？',
 		REQUEST_EMAIL: 'メールをもう一度要請する',
 		HAVE_ACCOUNT: '既にアカウントをお持ちですか？',
 		GOTO_LOGIN: 'ログインページに移動する',
 		AFFILIATION_CODE: '紹介者コード(選択)',
-		AFFILIATION_CODE_PLACEHOLDER:'紹介者コードを入力',
+		AFFILIATION_CODE_PLACEHOLDER: '紹介者コードを入力',
 		TERMS: {
 			terms: '利用規約',
 			policy: 'プライバシーポリシー',
-			text: '{0}と{1}を確認し、これに同意します。'
-		}
+			text: '{0}と{1}を確認し、これに同意します。',
+		},
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: '認証メールが送信されました。',
 		TEXT_1: '送られたメールにあるリンクで認証手続きを続行してください。',
 		TEXT_2:
-			'メールが届かない場合、迷惑メールを確認してみてください。または、下からメールを再送信できます。'
+			'メールが届かない場合、迷惑メールを確認してみてください。または、下からメールを再送信できます。',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: '認証メールの再送信',
-		BUTTON: '認証メールを再送信する'
+		BUTTON: '認証メールを再送信する',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: '認証メールが再送信されました。',
-		TEXT_1:
-			'引き続きメールが届かない場合は下からお問い合わせください。'
+		TEXT_1: '引き続きメールが届かない場合は下からお問い合わせください。',
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: '無効なコード',
-		TEXT_1: "メールアカウントが正常に認証されました。",
-		TEXT_2: 'ログインしてください。'
+		TEXT_1: 'メールアカウントが正常に認証されました。',
+		TEXT_2: 'ログインしてください。',
 	},
 	USER_VERIFICATION: {
-		INFO_TXT:
-			'ここから個人情報およびアップグレード状況を確認できます。',
+		INFO_TXT: 'ここから個人情報およびアップグレード状況を確認できます。',
 		INFO_TXT_1:
 			'以下の各部分に必要な情報を記入してください。全部分の提出が完了した後、審査を通してアカウントのアップグレードが承認されます。',
-		INFO_TXT_2:
-			'*認証には{0}が必要です。',
+		INFO_TXT_2: '*認証には{0}が必要です。',
 		DOCUMENTATIONS: 'アップロード',
 		COMPLETED: '完了',
 		PENDING_VERIFICATION: '認証中',
@@ -389,8 +386,7 @@ export default {
 		TITLE_BANK: '銀行',
 		TITLE_BANK_HEADER: '銀行の詳細情報',
 		CHANGE_VALUE: '値を変更する',
-		PENDING_VERIFICATION_PERSONAL_INFORMATION:
-			'個人情報の認証を処理中です。',
+		PENDING_VERIFICATION_PERSONAL_INFORMATION: '個人情報の認証を処理中です。',
 		PENDING_VERIFICATION_BANK: '銀行情報の認証を処理中です。',
 		PENDING_VERIFICATION_DOCUMENTS: '書類の認証を処理中です。',
 		GOTO_VERIFICATION: '認証ページに移動する',
@@ -417,8 +413,7 @@ export default {
 		BANK_NAME: '銀行名',
 		ACCOUNT_NUMBER: '口座番号',
 		CARD_NUMBER: 'カード番号',
-		BANK_VERIFICATION_HELP_TEXT:
-			'{0}を完了した後、認証が続行可能です。',
+		BANK_VERIFICATION_HELP_TEXT: '{0}を完了した後、認証が続行可能です。',
 		DOCUMENT_SUBMISSION: '書類の提出',
 		REVIEW_IDENTITY_VERIFICATION: '個人情報の編集',
 		PHONE_DETAILS: '連絡先情報',
@@ -437,19 +432,16 @@ export default {
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: '名',
-				FIRST_NAME_PLACEHOLDER:
-					'身分証明書の表記と同じく入力してください。',
+				FIRST_NAME_PLACEHOLDER: '身分証明書の表記と同じく入力してください。',
 				LAST_NAME_LABEL: '姓',
-				LAST_NAME_PLACEHOLDER:
-					'身分証明書の表記と同じく入力してください。',
+				LAST_NAME_PLACEHOLDER: '身分証明書の表記と同じく入力してください。',
 				FULL_NAME_LABEL: 'フルネーム',
-				FULL_NAME_PLACEHOLDER:
-					'身分証明書の表記と同じく入力してください。',
+				FULL_NAME_PLACEHOLDER: '身分証明書の表記と同じく入力してください。',
 				GENDER_LABEL: '性別',
 				GENDER_PLACEHOLDER: '性別を選択してください。',
 				GENDER_OPTIONS: {
 					MAN: '男性',
-					WOMAN: '女性'
+					WOMAN: '女性',
 				},
 				NATIONALITY_LABEL: '国籍',
 				NATIONALITY_PLACEHOLDER:
@@ -464,14 +456,15 @@ export default {
 				POSTAL_CODE_LABEL: '郵便番号',
 				POSTAL_CODE_PLACEHOLDER: '郵便番号を入力してください。',
 				PHONE_CODE_LABEL: '国家',
-				PHONE_CODE_PLACEHOLDER: '利用している携帯電話が開通されている国家を選択してください。',
+				PHONE_CODE_PLACEHOLDER:
+					'利用している携帯電話が開通されている国家を選択してください。',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: '携帯電話番号',
 				PHONE_NUMBER_PLACEHOLDER: '電話番号を入力してください。',
 				CONNECTING_LOADING: '接続中',
 				SMS_SEND: 'SMSを送る',
 				SMS_CODE_LABEL: 'SMSコード',
-				SMS_CODE_PLACEHOLDER: '受信されたSMSコードを入力してください。'
+				SMS_CODE_PLACEHOLDER: '受信されたSMSコードを入力してください。',
 			},
 			INFORMATION: {
 				TEXT:
@@ -483,27 +476,26 @@ export default {
 				PHONE_VERIFICATION_TXT_1:
 					'携帯電話番号を認証することで、お客様の入出金履歴がリアルタイムで提供されます。',
 				PHONE_VERIFICATION_TXT_2:
-					'選択事項：LAN電話番号を共有して追加認証ができます。'
-			}
+					'選択事項：LAN電話番号を共有して追加認証ができます。',
+			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
 				ID_TYPE: '本人確認書類の種類を選択してください。',
 				ID_NUMBER: '本人確認書類の番号を入力してください。',
 				ISSUED_DATE: '本人確認書類の発行日を選択してください。',
-				EXPIRATION_DATE:
-					'本人確認書類の有効期限満了日を入力してください。',
+				EXPIRATION_DATE: '本人確認書類の有効期限満了日を入力してください。',
 				FRONT: '本人確認書類の表面のコピーを提出してください。',
-				PROOF_OF_RESIDENCY:
-					'現在の居住地を証明できる書類を提出してください。',
-				SELFIE_PHOTO_ID: '本人確認書類の原本とメモを手に持ち、顔と内容が鮮明に見える写真を提出してください。'
+				PROOF_OF_RESIDENCY: '現在の居住地を証明できる書類を提出してください。',
+				SELFIE_PHOTO_ID:
+					'本人確認書類の原本とメモを手に持ち、顔と内容が鮮明に見える写真を提出してください。',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: '本人確認書類の種類',
 				TYPE_PLACEHOLDER: '本人確認書類の種類を選択してください。',
 				TYPE_OPTIONS: {
 					ID: '身分証明書',
-					PASSPORT: 'パスポート'
+					PASSPORT: 'パスポート',
 				},
 				ID_NUMBER_LABEL: 'パスポート番号',
 				ID_NUMBER_PLACEHOLDER: 'パスポート番号を入力してください。',
@@ -514,39 +506,34 @@ export default {
 				FRONT_LABEL: '身分証明書の表面',
 				FRONT_PLACEHOLDER: '身分証明書の表面のコピーを提出してください。',
 				BACK_LABEL: '身分証明書の裏面',
-				BACK_PLACEHOLDER:
-					'身分証明書の裏面のコピーを提出してください。',
+				BACK_PLACEHOLDER: '身分証明書の裏面のコピーを提出してください。',
 				PASSPORT_LABEL: 'パスポート',
 				PASSPORT_PLACEHOLDER: 'パスポートのコピーを提出してください。',
 				POR_LABEL: '居住証明書',
 				POR_PLACEHOLDER: '現在の居住地を証明できる書類を提出してください。',
 				SELFIE_PHOTO_ID_LABEL: '本人確認書類とメモを持っているお客様の写真',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'本人確認書類の原本とメモを手に持ち、顔と内容が鮮明に見える写真を提出してください。'
+					'本人確認書類の原本とメモを手に持ち、顔と内容が鮮明に見える写真を提出してください。',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
 				PROOF_OF_RESIDENCY: '居住証明書',
 				ID_SECTION: {
 					TITLE: '次の事項を確認した上で提出してください。',
-					LIST_ITEM_1:
-						'高画質(カラーイメージ、300dpi以上の解像度)のファイル',
+					LIST_ITEM_1: '高画質(カラーイメージ、300dpi以上の解像度)のファイル',
 					LIST_ITEM_2: '書類全体が鮮明に見えること(ウォーターマーク許可)',
 					LIST_ITEM_3: '有効期間内の書類であり、満了日が鮮明に見えること',
 					WARNING_1:
 						'有効なパスポートのみ許可されます。高画質の写真またはスキャンされたイメージファイルを提出してください。：',
 					WARNING_2:
 						'提出する書類が本人の物か確認してください。間違った書類や偽造された書類の使用は法的処分およびアカウントが凍結処理されますのでご注意ください。',
-					WARNING_3:
-						'パスポートは居住証明書として提出できません。'
+					WARNING_3: 'パスポートは居住証明書として提出できません。',
 				},
 				POR: {
-					SECTION_1_TEXT_1:
-						'本人確認手続きを早めるため、次をご確認ください：',
+					SECTION_1_TEXT_1: '本人確認手続きを早めるため、次をご確認ください：',
 					SECTION_1_TEXT_2:
 						'氏名、住所、発行日および発行官庁などの表記が鮮明に見えること',
-					SECTION_1_TEXT_3:
-						'居住証明書は発行日より3ヶ月が過ぎていないこと',
+					SECTION_1_TEXT_3: '居住証明書は発行日より3ヶ月が過ぎていないこと',
 					SECTION_1_TEXT_4:
 						'提出する書類がカラーおよび高画質であること(最小300dpi)',
 					SECTION_2_TITLE: '有効な居住証明書：',
@@ -556,31 +543,28 @@ export default {
 					SECTION_2_LIST_ITEM_3:
 						'政府機関が発行した書類(納税証明書、住民票など)',
 					WARNING:
-						'身分証明書に表記された住所は居住証明書として使用できません。'
+						'身分証明書に表記された住所は居住証明書として使用できません。',
 				},
 				SELFIE: {
 					TITLE: '顔と本人確認書類の撮影',
 					INFO_TEXT:
-						"以下の規格を確認して、メモとパスポートを手にもった写真を提出してください。顔と本人確認書類の詳細情報が鮮明に見えるように撮影してください。",
+						'以下の規格を確認して、メモとパスポートを手にもった写真を提出してください。顔と本人確認書類の詳細情報が鮮明に見えるように撮影してください。',
 					REQUIRED: '必要規格：',
 					INSTRUCTION_1: '顔が鮮明に見えること',
 					INSTRUCTION_2: 'パスポートの詳細情報が鮮明に見えること',
 					INSTRUCTION_3: 'メモの内容：直接書いた取引所名',
-					INSTRUCTION_4: "メモの内容：申請する日付",
+					INSTRUCTION_4: 'メモの内容：申請する日付',
 					INSTRUCTION_5: 'メモの内容：本人の署名',
-					WARNING: '提出した本人確認書類と一致しない場合には拒否されます。'
-				}
-			}
+					WARNING: '提出した本人確認書類と一致しない場合には拒否されます。',
+				},
+			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
-				ACCOUNT_OWNER:
-					'銀行口座に登録された氏名を入力してください。',
-				ACCOUNT_NUMBER:
-					'銀行の口座番号は50字以内で入力してください。',
-				ACCOUNT_NUMBER_MAX_LENGTH:
-					'銀行の口座番号は50字まで入力が可能です。',
-				CARD_NUMBER: '入力したカード番号の形式が間違っています。'
+				ACCOUNT_OWNER: '銀行口座に登録された氏名を入力してください。',
+				ACCOUNT_NUMBER: '銀行の口座番号は50字以内で入力してください。',
+				ACCOUNT_NUMBER_MAX_LENGTH: '銀行の口座番号は50字まで入力が可能です。',
+				CARD_NUMBER: '入力したカード番号の形式が間違っています。',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: '銀行名',
@@ -590,20 +574,18 @@ export default {
 				ACCOUNT_OWNER_LABEL: '口座の名義',
 				ACCOUNT_OWNER_PLACEHOLDER: '口座の名義を入力してください。',
 				CARD_NUMBER_LABEL: '銀行のカード番号',
-				CARD_NUMBER_PLACEHOLDER:
-					'銀行のカード番号を入力してください。'
-			}
+				CARD_NUMBER_PLACEHOLDER: '銀行のカード番号を入力してください。',
+			},
 		},
 		WARNING: {
 			TEXT_1: '本人確認を完了すると以下のサービスがご利用できます。',
 			LIST_ITEM_1: '出金限度額の増加',
 			LIST_ITEM_2: '入金限度額の増加',
-			LIST_ITEM_3: '低い手数料'
-		}
+			LIST_ITEM_3: '低い手数料',
+		},
 	},
 	USER_SETTINGS: {
-		TITLE_TEXT_1:
-			'環境設定ができます。',
+		TITLE_TEXT_1: '環境設定ができます。',
 		TITLE_TEXT_2: '設定後に保存すると変更内容が適用されます。',
 		TITLE_NOTIFICATION: '通知',
 		TITLE_INTERFACE: 'インターフェース',
@@ -615,11 +597,9 @@ export default {
 		SET_TXT: '設定',
 		CREATE_ORDER_WARING: '注文警告の設定',
 		RISKY_TRADE_DETECTED: '危ない取引感知',
-		RISKY_WARNING_TEXT_1:
-			'この注文は設定された注文限度額{0}を超えています。',
+		RISKY_WARNING_TEXT_1: 'この注文は設定された注文限度額{0}を超えています。',
 		RISKY_WARNING_TEXT_2: '(ポートフォリオの{0})',
-		RISKY_WARNING_TEXT_3:
-			'この取引を本当に実行するかもう一度ご確認ください。',
+		RISKY_WARNING_TEXT_3: 'この取引を本当に実行するかもう一度ご確認ください。',
 		GO_TO_RISK_MANAGMENT: 'リスク管理に移動',
 		CREATE_ORDER_WARING_TEXT:
 			'注文値がポートフォリオの{0}を超える場合に警告通知を表示させることができます。',
@@ -659,8 +639,8 @@ export default {
 			TOMAN_ASSET: '概算価額',
 			ADJUST: '(パーセンテージの設定)',
 			ACTIVATE_RISK_MANAGMENT: 'リスク管理の実行',
-			WARNING_POP_UP: '警告メッセージ'
-		}
+			WARNING_POP_UP: '警告メッセージ',
+		},
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: '履歴',
@@ -670,7 +650,7 @@ export default {
 		TEXT_DOWNLOAD: '履歴をダウンロード',
 		TRADES: '取引',
 		DEPOSITS: '入金',
-		WITHDRAWALS: '出金'
+		WITHDRAWALS: '出金',
 	},
 	ACCOUNT_SECURITY: {
 		TITLE_TEXT:'2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。',
@@ -680,11 +660,11 @@ export default {
 			OTP_DISABLED: '2段階認証を設定する',
 			ENABLED_TEXTS: {
 				TEXT_1: 'ログインする時にOTPコードが必要になります。',
-				TEXT_2: '出金をする時にOTPコードが必要になります。'
+				TEXT_2: '出金をする時にOTPコードが必要になります。',
 			},
 			DIALOG: {
 				SUCCESS: '2段階認証が正常に設定されました。',
-				REVOKE: '2段階認証が正常に解除されました。'
+				REVOKE: '2段階認証が正常に解除されました。',
 			},
 			CONTENT: {
 				TITLE: '2段階認証の設定',
@@ -711,60 +691,68 @@ export default {
 				INPUT_2: 'OTPコード',
 			},
 			FORM: {
-				PLACEHOLDER: 'Google Authenticatorから発行されたOTPコードを入力してください。',
-				BUTTON: '2段階認証を設定する'
-			}
+				PLACEHOLDER:
+					'Google Authenticatorから発行されたOTPコードを入力してください。',
+				BUTTON: '2段階認証を設定する',
+			},
 		},
 		CHANGE_PASSWORD: {
 			TITLE: 'パスワードの変更',
 			ACTIVE: '設定',
 			DIALOG: {
-				SUCCESS: 'パスワードが正常に変更されました。'
+				SUCCESS: 'パスワードが正常に変更されました。',
 			},
 			FORM: {
 				BUTTON: 'パスワードを変更する',
 				CURRENT_PASSWORD: {
 					label: '現在のパスワード',
-					placeholder: '使用中のパスワードを入力してください。'
+					placeholder: '使用中のパスワードを入力してください。',
 				},
 				NEW_PASSWORD: {
 					label: '新しいパスワード',
-					placeholder: '新しいパスワードを入力してください。'
+					placeholder: '新しいパスワードを入力してください。',
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: '新しいパスワード確認',
-					placeholder: '新しいパスワードをもう一度入力してください。'
-				}
-			}
+					placeholder: '新しいパスワードをもう一度入力してください。',
+				},
+			},
 		},
 		LOGIN: {
 			TITLE: 'Login History',
 			CONTENT: {
 				TITLE: 'Logins History',
-				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
-			}
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
 		},
 		FREEZE: {
 			TITLE: 'Freeze Account',
 			CONTENT: {
-				MESSAGE_1: 'Freezing your account will stop whitdrawals and halts all tradings.',
-				WARNING_1: 'Use only if you fear that your account has been compromised',
+				MESSAGE_1:
+					'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1:
+					'Use only if you fear that your account has been compromised',
 				TITLE_1: 'Freeze your Account',
 				TITLE_2: 'Account freezing',
-				MESSAGE_2: 'Freezing your account may help guard your account from cyber attacks.',
-				MESSAGE_3: 'The following will occur if you choose to freeze your account:',
+				MESSAGE_2:
+					'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3:
+					'The following will occur if you choose to freeze your account:',
 				MESSAGE_4: '1. Pending withdrawals will be canceled.',
-				MESSAGE_5: '2. All tradings will be halted and unfilled orders will be canceled.',
-				MESSAGE_6: '3. Containing support will be required to reactivate your account.',
-				WARNING_2: 'Do you really want to freeze your account?'
-			}
-		}
+				MESSAGE_5:
+					'2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6:
+					'3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?',
+			},
+		},
 	},
 	CURRENCY: '通貨',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
-		limit: 'limit'
+		limit: 'limit',
 	},
 	TYPES: [
 		{ value: 'market', label: '成行' }, // DO NOT CHANGE value, ONLY TRANSLATE label
@@ -773,12 +761,15 @@ export default {
 	SIDE: 'Side',
 	SIDES_VALUES: {
 		buy: '買う',
-		sell: '売る'
+		sell: '売る',
 	},
-	SIDES: [{ value: 'buy', label: '買う' }, { value: 'sell', label: '売る' }], // DO NOT CHANGE value, ONLY TRANSLATE label
+	SIDES: [
+		{ value: 'buy', label: '買う' },
+		{ value: 'sell', label: '売る' },
+	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: ' 数量',
 	PRICE: '価格',
@@ -913,10 +904,11 @@ export default {
 		CONFIRM_VIA_EMAIL_2:
 			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal request is confirmed. It will be processed shortly.',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'Your withdrawal request is confirmed. It will be processed shortly.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'In order to view your withdrawal status please visit your withdrawal history page.',
-		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
+		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History',
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: '入金',
 	WALLET_BUTTON_BASE_WITHDRAW: '出金',
@@ -1001,17 +993,18 @@ export default {
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'YES' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'YES' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'テーマ設定', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'White' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'dark', label: 'Dark' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Dark' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: '保存',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: '出金停止設定',
-	VERIFICATION_NO_WITHDRAW_MESSAGE: 'お客様のアカウントが出金停止に設定されました。',
+	VERIFICATION_NO_WITHDRAW_MESSAGE:
+		'お客様のアカウントが出金停止に設定されました。',
 	UP_TO_MARKET: 'Up to market',
 	VIEW_MY_FEES: 'マイ手数料を見る', // new
 	DEVELOPER_SECTION: {
@@ -1026,7 +1019,7 @@ export default {
 		ACTIVE: '設定する',
 		INACTIVE: '解除する',
 		INVALID_LEVEL:
-			'この機能を使用するためには、アカウントレベルのアップグレードが必要です。' // TODO
+			'この機能を使用するためには、アカウントレベルのアップグレードが必要です。', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'APIキーの生成',
@@ -1044,7 +1037,7 @@ export default {
 		CREATED_TITLE: 'APIキーをコピー',
 		CREATED_TEXT_1:
 			'APIキーは再度確認することができませんので、必ずコピーしておいてください。',
-		CREATED_TEXT_2: '安全な場所に保管してください。'
+		CREATED_TEXT_2: '安全な場所に保管してください。',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: '名前',
@@ -1053,7 +1046,8 @@ export default {
 		CREATED: '生成日',
 		REVOKE: '解除',
 		REVOKED: '解除済み',
-		REVOKE_TOOLTIP: 'トークンを解除するためには、2段階認証を設定する必要があります。' // TODO
+		REVOKE_TOOLTIP:
+			'トークンを解除するためには、2段階認証を設定する必要があります。', // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: 'チャット',
@@ -1065,11 +1059,12 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'メッセージ',
 		SIGN_UP_CHAT: 'ログインしてチャットする',
 		JOIN_CHAT: 'チャットユーザー名の設定',
-		TROLLBOX: 'Trollbox ({0})' // new
+		TROLLBOX: 'Trollbox ({0})', // new
 	},
 	INVALID_USERNAME:
 		'ユーザー名には3～15文字の半角英小文字、数字、_のみご利用可能です。',
-	USERNAME_TAKEN: 'このユーザー名は既に使用されています。別のユーザー名でお試しください。',
+	USERNAME_TAKEN:
+		'このユーザー名は既に使用されています。別のユーザー名でお試しください。',
 	USERNAME_LABEL: 'ユーザー名(チャット名として使用されます)',
 	USERNAME_PLACEHOLDER: 'ユーザー名',
 	TAB_USERNAME: 'ユーザー名',
@@ -1093,7 +1088,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: '無制限',
-		BLOCKED: '0'
+		BLOCKED: '0',
 	},
 	WALLET_ADDRESS_TITLE: '{0}ウォレット作成',
 	WALLET_ADDRESS_GENERATE: '作成',
@@ -1224,15 +1219,18 @@ export default {
 		TRADE_OVER_BTC: '{0} BTC以上の取引', // new
 		XHT_IN_WALLET: '{0} XHTの残高', // new
 		REWARDS_BONUS: 'リワードとボーナス', // new
-		COMPLETE_TASK_DESC: 'タスクを完了し、10,000ドル以上のボーナスを獲得してください。', // new
+		COMPLETE_TASK_DESC:
+			'タスクを完了し、10,000ドル以上のボーナスを獲得してください。', // new
 		TASKS: 'タスク', // new
 		MAKE_FIRST_DEPOSIT: '初めての入金で、1XHTを受け取れます。', // new
 		BUY_FIRST_XHT: 'XHTを初購入すると、5XHTのボーナスを受け取れます。', // new
 		COMPLETE_ACC_VERIFICATION:
 			'アカウントの認証を完了して、20XHTのボーナスを受け取れます。', // new
 		INVITE_USER: '招待した友達の取引から発生する報酬を受け取れます。', // new
-		JOIN_HAP: 'HAPに参加して、販売するHollaExキットごとに10％の報酬を受け取れます。', // new
-		EARN_RUNNING_EXCHANGE: '自分の取引所を実行してパッシブ・インカムを受け取れます。', // new
+		JOIN_HAP:
+			'HAPに参加して、販売するHollaExキットごとに10％の報酬を受け取れます。', // new
+		EARN_RUNNING_EXCHANGE:
+			'自分の取引所を実行してパッシブ・インカムを受け取れます。', // new
 		XHT_WAVE_AUCTION: 'XHTウェーブオークションデータ', // new
 		XHT_WAVE_DESC_1:
 			'HollaExトークン(XHT)の配布は、ウェーブオークションを通じて行われます。', // new
@@ -1244,13 +1242,14 @@ export default {
 		LEARN_MORE_WAVE_AUCTION: 'ウェーブオークションの詳細', // new
 		WAVE_NUMBER: 'ウェーブナンバー', // new
 		DISCOUNT: '( {0}%割引 )', // new
-		MY_FEES_LIMITS: '手数料と限度額' // new
+		MY_FEES_LIMITS: '手数料と限度額', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'お友達招待', // new
 		INFO_TEXT:
 			'リンクをシェアして友達に紹介できます。このリンクを通して登録すると、{0}%が割引されます。',
-		COPY_FIELD_LABEL: '以下のリンクを友達と共有してコミッションを獲得できます：', // new
+		COPY_FIELD_LABEL:
+			'以下のリンクを友達と共有してコミッションを獲得できます：', // new
 		REFERRED_USER_COUT: '{0}ユーザーを招待しました', // new
 		COPY_LINK_BUTTON: '招待リンクをコピーする', // new
 		XHT_TITLE: '招待履歴', // new
@@ -1262,7 +1261,7 @@ export default {
 		PENDING_REFERRAL: '保留中のコミッション：', // new
 		EARN_REFERRAL: '獲得したコミッション：', // new
 		XHT_COUNT: '{0}XHT', // new
-		APPLY_BUTTON: '適用' // new
+		APPLY_BUTTON: '適用', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'HollaExトークンのステーキング', // new
@@ -1272,15 +1271,14 @@ export default {
 			'同じ方法でHollaExトークンを担保し、ウェーブオークション中に販売されなかったXHTを獲得できます。', // new
 		INFO_TXT3:
 			'dash.bitholla.comにアクセスして、今すぐ自分の取引所を実行し、それを担保に無料のXHTを獲得してください。', // new
-		BUTTON_TXT: '詳細を見る' // new
+		BUTTON_TXT: '詳細を見る', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
 		TITLE: 'HollaExトークン購入規約',
 		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: '続行',
-		AGREE_TERMS_LABEL:
-			'HollaExトークンの購入規約を読み、同意します。',
+		AGREE_TERMS_LABEL: 'HollaExトークンの購入規約を読み、同意します。',
 		RISK_INVOLVED_LABEL: 'リスクについて理解しました。',
 		DOWNLOAD_PDF: 'PDFをダウンロードする',
 		DEPOSIT_FUNDS:
@@ -1305,7 +1303,7 @@ export default {
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: '取引履歴を表示するにはログインしてください。', //new
 		XHT_TRADE_TXT_2: '{0}して、取引履歴を表示できます。', //new
-		LOGIN_HERE: 'ログインする'
+		LOGIN_HERE: 'ログインする',
 	},
 	WAVES: {
 		// new
@@ -1313,7 +1311,7 @@ export default {
 		NEXT_WAVE: 'Next Wave',
 		WAVE_AMOUNT: 'Amount in Wave',
 		FLOOR: 'Floor',
-		LAST_WAVE: 'Last wave'
+		LAST_WAVE: 'Last wave',
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1326,7 +1324,7 @@ export default {
 		SYSTEM_UPDATE_DURATION: '1 hour',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
 	},
 	USER_LEVEL: 'ユーザーレベル', // new
 	LIMIT_AMOUNT: '限度額', // new
@@ -1354,12 +1352,11 @@ export default {
 			'明けましておめでとうございます。 私たちは2020年からローンチされる最も開放的な取引プラットフォームのオープンで様々な活動をお願い致します。',
 		ANNOUNCEMNT_TXT_1:
 			'友達に取引所を紹介して、HAPプログラムと共にXHTを獲得しましょう。 {0}。',
-		DEFAULT_ANNOUNCEMENT:
-			'このセクションには、取引所の公示が表示されます！',
+		DEFAULT_ANNOUNCEMENT: 'このセクションには、取引所の公示が表示されます！',
 		ANNOUNCEMENT_TXT_2: '無料のXHTは、{0}のすべてのウォレットに配布されます。',
 		LEARN_MORE: 'さらに詳しく',
-		APPLY_TODAY: '今すぐ登録' // new
+		APPLY_TODAY: '今すぐ登録', // new
 	},
 	OPEN_WALLET: 'Open wallet', // new
-	AGO: 'ago' // new
+	AGO: 'ago', // new
 };

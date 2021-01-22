@@ -74,7 +74,7 @@ export default {
 		SECTION_3_CARD_6_TITLE: 'INTEGRASI KYC',
 		SECTION_3_CARD_6_TEXT:
 			'Dengan modul yang fleksibel dan dapat diintegrasikan untuk menerapkan KYC dan cara verifikasi pengguna dalam yurisdiksi yang berbeda.',
-		SECTION_3_BUTTON_1: 'Lihat Demo'
+		SECTION_3_BUTTON_1: 'Lihat Demo',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
@@ -123,7 +123,7 @@ export default {
 		XHT_DESCRIPTION:
 			'HollaeX Kit adalah platform perdagangan sumber terbuka yang dibuat oleh bitHolla Inc. Anda dapat membuat dan mendaftarkan aset digital apa pun dan para pengguna dapat berdagang di bursa Anda menggunakan Kit Bursa. Untuk mulainya silakan rujukan {1}.',
 		CLICK_HERE: 'klik di sini',
-		VISIT_HERE: 'kunjungi sini'
+		VISIT_HERE: 'kunjungi sini',
 	},
 	ACCOUNTS: {
 		TITLE: 'Akun',
@@ -136,7 +136,7 @@ export default {
 		TAB_SUMMARY: 'Ringkasan',
 		TAB_HISTORY: 'Riwayat',
 		TAB_API: 'API',
-		TAB_SIGNOUT: 'Keluar'
+		TAB_SIGNOUT: 'Keluar',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
@@ -145,7 +145,7 @@ export default {
 		CATEGORY_PLACEHOLDER: 'Pilih kategori yang tepat untuk isu Anda',
 		INTRODUCTION_LABEL: 'Kenalkan Anda sendiri',
 		INTRODUCTION_PLACEHOLDER:
-			'Di mana Anda berbasis, apakah Anda terminat dalam menjalankan bursa?'
+			'Di mana Anda berbasis, apakah Anda terminat dalam menjalankan bursa?',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Kategori',
@@ -157,7 +157,7 @@ export default {
 			OPTION_BUG: 'Laporkan bug', // ToDo:
 			OPTION_PERSONAL_INFO: 'Ganti informasi pribadi', // ToDo:
 			OPTION_BANK_TRANSFER: 'Transfer kawat bank', // new
-			OPTION_REQUEST: 'Permintaan undangan untuk Bursa HollaeX' // new
+			OPTION_REQUEST: 'Permintaan undangan untuk Bursa HollaeX', // new
 		},
 		SUBJECT_LABEL: 'Judul',
 		SUBJECT_PLACEHOLDER: 'Masukkan judul isu Anda',
@@ -169,7 +169,7 @@ export default {
 		SUCCESS_MESSAGE: 'Email telah terkirim ke dukungan pelanggan kami',
 		SUCCESS_TITLE: 'Pesan Terkirim',
 		SUCCESS_MESSAGE_1: 'Isu Anda telah terkirim ke dukungan pelanggan kami.',
-		SUCCESS_MESSAGE_2: 'Pertanyaan Anda akan dibalas dalam 1-3 hari.'
+		SUCCESS_MESSAGE_2: 'Pertanyaan Anda akan dibalas dalam 1-3 hari.',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
@@ -178,18 +178,18 @@ export default {
 			MEMO: 'Memo {0} Anda', // new
 			BTC: 'Alamat penerima Bitcoin Anda',
 			ETH: 'Alamat penerima Ethereum Anda',
-			BCH: 'Alamat penerima Bitcoin Cash Anda'
+			BCH: 'Alamat penerima Bitcoin Cash Anda',
 		},
 		INCREASE_LIMIT: 'Apakah Anda ingin meningkatkan batas harian Anda?',
 		QR_CODE:
 			'Kode QR ini dapat dipindai oleh siapa yang ingin mengirimkan dana kepada Anda',
 		NO_DATA: 'Tidak tersedia informasi',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'Masuk {0}',
-		CANT_LOGIN: "Tidak bisa masuk?",
-		NO_ACCOUNT: "Tidak punya akun?",
+		CANT_LOGIN: 'Tidak bisa masuk?',
+		NO_ACCOUNT: 'Tidak punya akun?',
 		CREATE_ACCOUNT: 'Buatlah di sini',
 		HELP: 'Bantuan'
 	},
@@ -199,7 +199,7 @@ export default {
 		PASSWORD_LABEL: 'Kata sandi',
 		PASSWORD_PLACEHOLDER: 'Masukkan kata sandi Anda',
 		PASSWORD_REPEAT_LABEL: 'Masukkan kata sandi Anda sekali lagi',
-		PASSWORD_REPEAT_PLACEHOLDER: 'Masukkan kata sandi Anda sekali lagi'
+		PASSWORD_REPEAT_PLACEHOLDER: 'Masukkan kata sandi Anda sekali lagi',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Masukkan kode OTP untuk masuk',
@@ -214,16 +214,16 @@ export default {
 		INVALID_PASSWORD_2:
 			'Kata sandi yang tidak valid. Kata sandi perlu memiliki setidaknya 8 karakter, termasuk satu angka dan satu karakter khusus.',
 		INVALID_CURRENCY: 'Alamat {0} yang tidak valid ({1})',
-		INVALID_BALANCE:
-			'Saldo tidak cukup ({0}) untuk mengoperasikan ({1}).',
+		INVALID_BALANCE: 'Saldo tidak cukup ({0}) untuk mengoperasikan ({1}).',
 		MIN_VALUE: 'Nilai harus {0} atau lebih tinggi.',
 		MAX_VALUE: 'Nilai harus {0} atau lebih rendah.',
 		INSUFFICIENT_BALANCE: 'Saldo tidak cukup',
-		PASSWORDS_DONT_MATCH: "Kata sandi yang salah",
+		PASSWORDS_DONT_MATCH: 'Kata sandi yang salah',
 		USER_EXIST: 'Email ini telah terdaftar',
-		ACCEPT_TERMS: 'Anda tidak menyetujui Syarat dan Ketentuan dan Kebijakan Pribadi',
+		ACCEPT_TERMS:
+			'Anda tidak menyetujui Syarat dan Ketentuan dan Kebijakan Pribadi',
 		STEP: 'Nilai yang tidak valid, step is {0}',
-		ONLY_NUMBERS: 'Anda hanya dapat masukkan angka'
+		ONLY_NUMBERS: 'Anda hanya dapat masukkan angka',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -237,8 +237,8 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
 		},
 		GENERAL_TERMS: {
 			TITLE: 'General Terms of Service',
@@ -251,15 +251,15 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
-		}
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
+		},
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
 			OKAY: 'Okay',
 			START_TRADING: 'Mulai pertukaran',
-			SEE_HISTORY: 'Lihat riwayat'
+			SEE_HISTORY: 'Lihat riwayat',
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: '{0} Deposit diterima',
@@ -269,12 +269,12 @@ export default {
 			INFORMATION_PENDING_1:
 				'{0} Anda perlu 1 konfirmasi sebelum Anda mulai berdagang.',
 			INFORMATION_PENDING_2:
-				'Proses ini membutuhkan waktu 10-30 menit. Kami akan kirim email setelah {0} Anda sudah dikonfirmasi pada blockchain.'
-		}
+				'Proses ini membutuhkan waktu 10-30 menit. Kami akan kirim email setelah {0} Anda sudah dikonfirmasi pada blockchain.',
+		},
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: 'Permintaan Terkirim',
-		BUTTON_TEXT: 'Okay'
+		BUTTON_TEXT: 'Okay',
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'Masukkan kode autentikasi untuk lanjutkan',
@@ -283,7 +283,7 @@ export default {
 		OTP_TITLE: 'Kode Autentikasi',
 		OTP_HELP: 'bantuan',
 		OTP_BUTTON: 'serahkan',
-		ERROR_INVALID: 'Kode OTP yang tidak valid'
+		ERROR_INVALID: 'Kode OTP yang tidak valid',
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Cepat',
@@ -302,65 +302,64 @@ export default {
 		ORDERS_PLURAL: 'Pesan',
 		ORDERS_SINGULAR: 'Pesan',
 		HOLD_ORDERS:
-			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance'
+			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance',
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'Pemulihan Akun',
 		SUBTITLE: `Pulihkan akun Anda di bawah`,
 		SUPPORT: 'Hubungi Dukungan pelanggan',
-		BUTTON: 'Kirim tautan pemulihan'
+		BUTTON: 'Kirim tautan pemulihan',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
 		TITLE: 'Reset kata sandi terkirim',
 		TEXT:
-			'Jika sudah ada akun yang menggunakan alamat email tersebut, email akan dikirm dengan instruksi pemulihan kata sandi. Silakan cek email Anda dan klik tautan untuk menyelesaikan proses pemulihan kata sandi.'
+			'Jika sudah ada akun yang menggunakan alamat email tersebut, email akan dikirm dengan instruksi pemulihan kata sandi. Silakan cek email Anda dan klik tautan untuk menyelesaikan proses pemulihan kata sandi.',
 	},
 	RESET_PASSWORD: {
 		TITLE: 'Buat kata sandi baru',
 		SUBTITLE: 'Buat kata sandi baru',
-		BUTTON: 'Buat kata sandi baru'
+		BUTTON: 'Buat kata sandi baru',
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: 'Kata sandi baru Anda telah berhasil dibuat.',
-		TEXT_2: 'Klik masuk di bawah untuk melanjutkan.'
+		TEXT_2: 'Klik masuk di bawah untuk melanjutkan.',
 	},
 	SIGN_UP: {
 		SIGNUP_TO: 'Daftar di {0}',
-		NO_EMAIL: "Email tidak masuk??",
+		NO_EMAIL: 'Email tidak masuk??',
 		REQUEST_EMAIL: 'Cobalah kirim ulang di sini',
 		HAVE_ACCOUNT: 'Sudah punya akun?',
 		GOTO_LOGIN: 'Pergi ke halaman masuk',
 		AFFILIATION_CODE: 'Kode Referral(opsional)',
-		AFFILIATION_CODE_PLACEHOLDER:'Masukkan kode referral Anda',
+		AFFILIATION_CODE_PLACEHOLDER: 'Masukkan kode referral Anda',
 		TERMS: {
 			terms: 'Syarat dan Ketentuan',
 			policy: 'Kebijakan Pribadi',
-			text: 'Saya telah membaca dan menyetujui {0} dan {1}'
-		}
+			text: 'Saya telah membaca dan menyetujui {0} dan {1}',
+		},
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: 'Email terkirim',
 		TEXT_1: 'Cek email Anda dan klik tautan untuk verifikasi email Anda.',
 		TEXT_2:
-			'Jika email verifikasi tidak masuk dan Anda sudah cek folder SPAM, cobalah klik kirim lagi di bawah.'
+			'Jika email verifikasi tidak masuk dan Anda sudah cek folder SPAM, cobalah klik kirim lagi di bawah.',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: 'Permintaan Kirim Ulang Email',
-		BUTTON: 'Kirim Email'
+		BUTTON: 'Kirim Email',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: 'Kirim Ulang Email',
 		TEXT_1:
-			'Jika email verifikasi tidak masuk setelah beberapa menit, silakan hubungi saya di bawah.'
+			'Jika email verifikasi tidak masuk setelah beberapa menit, silakan hubungi saya di bawah.',
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: 'Kode tidak valid',
-		TEXT_1: "Email Anda telah berhasil diverifikasi.",
-		TEXT_2: 'Anda bisa masuk sekarang'
+		TEXT_1: 'Email Anda telah berhasil diverifikasi.',
+		TEXT_2: 'Anda bisa masuk sekarang',
 	},
 	USER_VERIFICATION: {
-		INFO_TXT:
-			'Anda dapat melihat prosedur verifikasi dan pembaruan akun Anda.',
+		INFO_TXT: 'Anda dapat melihat prosedur verifikasi dan pembaruan akun Anda.',
 		INFO_TXT_1:
 			'Silakan masukkan informasi pada kolom di bawah. Akun Anda akan diperbarui setelah informasi yang Anda serahkan diidentifikasikan.',
 		INFO_TXT_2:
@@ -391,8 +390,10 @@ export default {
 		CHANGE_VALUE: 'Ubah nilai',
 		PENDING_VERIFICATION_PERSONAL_INFORMATION:
 			'Informasi pribadi Anda sedang dalam proses',
-		PENDING_VERIFICATION_BANK: 'Detail bank Anda sedang dalam proses verifikasi',
-		PENDING_VERIFICATION_DOCUMENTS: 'Dokumen Anda sedang dalam proses verifikasi',
+		PENDING_VERIFICATION_BANK:
+			'Detail bank Anda sedang dalam proses verifikasi',
+		PENDING_VERIFICATION_DOCUMENTS:
+			'Dokumen Anda sedang dalam proses verifikasi',
 		GOTO_VERIFICATION: 'Pergi ke verifikasi',
 		GOTO_WALLET: 'Pergi ke dompet', // new
 		CONNECT_BANK_ACCOUNT: 'Hubungkan Rekening Bank',
@@ -449,7 +450,7 @@ export default {
 				GENDER_PLACEHOLDER: 'Pilih jenis kelamin Anda',
 				GENDER_OPTIONS: {
 					MAN: 'Laki-laki',
-					WOMAN: 'Perempuan'
+					WOMAN: 'Perempuan',
 				},
 				NATIONALITY_LABEL: 'Kewarganegaraan',
 				NATIONALITY_PLACEHOLDER:
@@ -471,7 +472,7 @@ export default {
 				CONNECTING_LOADING: 'Loading',
 				SMS_SEND: 'Kirim SMS',
 				SMS_CODE_LABEL: 'Kode SMS',
-				SMS_CODE_PLACEHOLDER: 'Masukkan kode SMS Anda'
+				SMS_CODE_PLACEHOLDER: 'Masukkan kode SMS Anda',
 			},
 			INFORMATION: {
 				TEXT:
@@ -483,27 +484,26 @@ export default {
 				PHONE_VERIFICATION_TXT_1:
 					'Dapatkan pembaruan deposit dan penarikan secara real-time dengan berbagi nomor telepon.',
 				PHONE_VERIFICATION_TXT_2:
-					'Buktikan lebih lanjut identitas dan alamat Anda dengan berbagi nomor telepon LAN (opsional).'
-			}
+					'Buktikan lebih lanjut identitas dan alamat Anda dengan berbagi nomor telepon LAN (opsional).',
+			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
 				ID_TYPE: 'Silakan pilih tipe dokumen identitas',
 				ID_NUMBER: 'Silakan masukkan nomor dokumen Anda',
 				ISSUED_DATE: 'Silakan pilih tanggal penerbitan dokumen Anda',
-				EXPIRATION_DATE:
-					'Silakan pilih tanggal ekspirasi dokumen Anda',
+				EXPIRATION_DATE: 'Silakan pilih tanggal ekspirasi dokumen Anda',
 				FRONT: 'Silakan upload pemindaian paspor Anda',
 				PROOF_OF_RESIDENCY:
 					'Silakan upload pemindaian dokumen yang tertulis alamat tempat tinggal Anda saat ini',
-				SELFIE_PHOTO_ID: 'Silakan upload selfie dengan paspor dan catatan'
+				SELFIE_PHOTO_ID: 'Silakan upload selfie dengan paspor dan catatan',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'Tipe Dokumen ID',
 				TYPE_PLACEHOLDER: 'Pilih Tipe dokumen identitas',
 				TYPE_OPTIONS: {
 					ID: 'ID',
-					PASSPORT: 'Paspor'
+					PASSPORT: 'Paspor',
 				},
 				ID_NUMBER_LABEL: 'Nomor Paspor',
 				ID_NUMBER_PLACEHOLDER: 'Masukkan nomor paspor Anda',
@@ -514,15 +514,14 @@ export default {
 				FRONT_LABEL: 'Paspor',
 				FRONT_PLACEHOLDER: 'Tambahkan salinan paspor Anda',
 				BACK_LABEL: 'Simpul paspor',
-				BACK_PLACEHOLDER:
-					'Tambahkan bagian belakang ID Anda(jika ada)',
+				BACK_PLACEHOLDER: 'Tambahkan bagian belakang ID Anda(jika ada)',
 				PASSPORT_LABEL: 'Dokumen Paspor',
 				PASSPORT_PLACEHOLDER: 'Tambahkan dokumen Paspor Anda',
 				POR_LABEL: 'Dokumen yang tertulis alamat Anda',
 				POR_PLACEHOLDER: 'Tambahkan dokumen yang membuktikan alamat Anda',
 				SELFIE_PHOTO_ID_LABEL: 'Selfie Anda dengan paspor dan catatan',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Tambahkan Selfie Anda dengan pasopr dan catatan'
+					'Tambahkan Selfie Anda dengan pasopr dan catatan',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Dokumen Identitas',
@@ -531,14 +530,16 @@ export default {
 					TITLE: 'Tolong pastikan dokumen Anda yang diserahkan:',
 					LIST_ITEM_1:
 						'BERKUALITAS TINGGI (gambar berwarna, resolusi 300 dpi atau lebih tinggi).',
-					LIST_ITEM_2: 'DAPAT DILIHAT SECARA KESELURUHAN (watermark diizinkan).',
-					LIST_ITEM_3: 'VALID, dengan terlihatnya tanggal ekspirasi secara jelas.',
+					LIST_ITEM_2:
+						'DAPAT DILIHAT SECARA KESELURUHAN (watermark diizinkan).',
+					LIST_ITEM_3:
+						'VALID, dengan terlihatnya tanggal ekspirasi secara jelas.',
 					WARNING_1:
 						'Hanya paspor valid dapat diterima; foto atau gambar pemindaian dokumen yang berkualitas tinggi dapat diterima:',
 					WARNING_2:
 						'Pastikan Anda mengupload dokumen Anda sendiri. Penggunaan dokumen yang salah atau palsu akan menimbulkan konsekuensi hukum dan pemblokiran akun Anda dengan segera.',
 					WARNING_3:
-						'Mohon jangan serahkan paspor sebagai bukti tempat tinggal Anda.'
+						'Mohon jangan serahkan paspor sebagai bukti tempat tinggal Anda.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -556,22 +557,22 @@ export default {
 					SECTION_2_LIST_ITEM_3:
 						'Dokumen yang diterbitkan oleh Pemerintah(surat tagihan pajak, sertifikat tempat tinggal, dll.).',
 					WARNING:
-						'Kami tidak bisa menerima alamat yang tertulis di dokumen identitas yang Anda serahkan sebagai bukti tempat tinggal yang valid.'
+						'Kami tidak bisa menerima alamat yang tertulis di dokumen identitas yang Anda serahkan sebagai bukti tempat tinggal yang valid.',
 				},
 				SELFIE: {
 					TITLE: 'Selfie dengan paspor dan catatan',
 					INFO_TEXT:
-						"Harap berikan foto Anda memegang paspor Anda. Pastikan tautan bursa, tanggal hari ini, dan tanda tangan Anda terlihat dalam foto yang sama. Pastikan muka dan detail ID Anda terlihat secara jelas.",
+						'Harap berikan foto Anda memegang paspor Anda. Pastikan tautan bursa, tanggal hari ini, dan tanda tangan Anda terlihat dalam foto yang sama. Pastikan muka dan detail ID Anda terlihat secara jelas.',
 					REQUIRED: 'Yang diperlukan:',
 					INSTRUCTION_1: 'Muka Anda yang terlihat jelas',
 					INSTRUCTION_2: 'Paspor yang terlihat jelas',
 					INSTRUCTION_3: 'Tuliskan nama bursa',
-					INSTRUCTION_4: "Tuliskan tanggal hari ini",
+					INSTRUCTION_4: 'Tuliskan tanggal hari ini',
 					INSTRUCTION_5: 'Berikan tanda tangan Anda',
 					WARNING:
-						'Selfie dengan paspor yang berbeda dengan apa yang diuplad akan dibatalkan'
-				}
-			}
+						'Selfie dengan paspor yang berbeda dengan apa yang diuplad akan dibatalkan',
+				},
+			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
@@ -581,7 +582,7 @@ export default {
 					'Nomor rekening bank Anda tidak boleh melebihi 50 digit',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Nomor rekening bank Anda tidak boleh melebihi 50 karakter',
-				CARD_NUMBER: 'Format nomor kartu Anda salah'
+				CARD_NUMBER: 'Format nomor kartu Anda salah',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'Nama Bank',
@@ -589,23 +590,25 @@ export default {
 				ACCOUNT_NUMBER_LABEL: 'Nomor Rekening Bank',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Masukkan nomor rekening bank Anda',
 				ACCOUNT_OWNER_LABEL: 'Nama Pemilik Rekening Bank',
-				ACCOUNT_OWNER_PLACEHOLDER: 'Masukkan nama sesuai dengan apa yang tertulis pada rekening bank Anda',
+				ACCOUNT_OWNER_PLACEHOLDER:
+					'Masukkan nama sesuai dengan apa yang tertulis pada rekening bank Anda',
 				CARD_NUMBER_LABEL: 'Nomor Kartu Bank',
 				CARD_NUMBER_PLACEHOLDER:
-					'Masukkan nomor 16 digit yang tertulis di depan kartu bank Anda'
-			}
+					'Masukkan nomor 16 digit yang tertulis di depan kartu bank Anda',
+			},
 		},
 		WARNING: {
 			TEXT_1: 'Dengan verifikasi identitas Anda, Anda dapat mendapatkan:',
 			LIST_ITEM_1: 'Batas penarikan yang ditingkatkan',
 			LIST_ITEM_2: 'Batas deposit yang ditingkatkan',
-			LIST_ITEM_3: 'Biaya lebih rendah'
-		}
+			LIST_ITEM_3: 'Biaya lebih rendah',
+		},
 	},
 	USER_SETTINGS: {
 		TITLE_TEXT_1:
 			'Ubah pengaturan akun Anda. Dari interface, notifikasi, nama pengguna dan kustomisasi lainnya.',
-		TITLE_TEXT_2: 'Simpan setelah mengubah pengaturan dan penggantian akan diterapkan.',
+		TITLE_TEXT_2:
+			'Simpan setelah mengubah pengaturan dan penggantian akan diterapkan.',
 		TITLE_NOTIFICATION: 'Notifikasi',
 		TITLE_INTERFACE: 'Interface',
 		TITLE_LANGUAGE: 'Bahasa',
@@ -630,9 +633,10 @@ export default {
 			POPUP_ORDER_CONFIRMATION: 'Minta konfirmasi sebelum mengirim pesan',
 			POPUP_ORDER_COMPLETED: 'Tunjukkan pop up apabila pesan telah selesai',
 			POPUP_ORDER_PARTIALLY_FILLED:
-				'Tunjukkan pop up apabila sebagian pesan telah terisi'
+				'Tunjukkan pop up apabila sebagian pesan telah terisi',
 		},
-		AUDIO_CUE_FORM: { // new
+		AUDIO_CUE_FORM: {
+			// new
 			ALL_AUDIO: 'Semua Audio cue',
 			PUBLIC_TRADE_AUDIO: 'Apabila perdagangan publik dibuat',
 			ORDERS_PARTIAL_AUDIO:
@@ -649,8 +653,7 @@ export default {
 				'Apabila mendapatkan kutipan untuk perdagangan cepat',
 			SUCCESS_QUICK_TRADE_AUDIO:
 				'Apabila dilakukan perdagangan cepat dengan sukses',
-			QUICK_TRADE_TIMEOUT_AUDIO:
-				'Apabila perdagangan cepat timeout',
+			QUICK_TRADE_TIMEOUT_AUDIO: 'Apabila perdagangan cepat timeout',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -660,8 +663,8 @@ export default {
 			TOMAN_ASSET: 'Nilai Perkiraan',
 			ADJUST: '(SESUAIKAN PERSENTASE)',
 			ACTIVATE_RISK_MANAGMENT: 'Aktifkan Manajemen Risiko',
-			WARNING_POP_UP: 'Pop up peringatan'
-		}
+			WARNING_POP_UP: 'Pop up peringatan',
+		},
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'Riwayat',
@@ -671,7 +674,7 @@ export default {
 		TEXT_DOWNLOAD: 'UNDUH RIWAYAT',
 		TRADES: 'Perdagangan',
 		DEPOSITS: 'Deposit',
-		WITHDRAWALS: 'Penarikan'
+		WITHDRAWALS: 'Penarikan',
 	},
 	ACCOUNT_SECURITY: {
 		TITLE_TEXT:'Atur pengaturan keamanan akun Anda. Mulai dari Autentikasi dua-faktor, kata sandi, Kunci API, dan fungsi lain yang berkaitan dengan keamanan.',
@@ -681,11 +684,11 @@ export default {
 			OTP_DISABLED: 'HARAP AKTIFKAN 2FA',
 			ENABLED_TEXTS: {
 				TEXT_1: 'Membutuhkan OTP saat masuk',
-				TEXT_2: 'Membutuhkan OTP saat menarik dana'
+				TEXT_2: 'Membutuhkan OTP saat menarik dana',
 			},
 			DIALOG: {
 				SUCCESS: 'OTP Anda telah berhasil diaktifkan',
-				REVOKE: 'OTP Anda telah berhasil dinonaktifkan'
+				REVOKE: 'OTP Anda telah berhasil dinonaktifkan',
 			},
 			CONTENT: {
 				TITLE: 'Aktifkan Autentikasi Dua-Faktof',
@@ -712,31 +715,32 @@ export default {
 				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {
-				PLACEHOLDER: 'Masukkan OTP yang ditunjukkan di aplikasi Autentikasi Google.',
-				BUTTON: 'Aktifkan 2FA'
-			}
+				PLACEHOLDER:
+					'Masukkan OTP yang ditunjukkan di aplikasi Autentikasi Google.',
+				BUTTON: 'Aktifkan 2FA',
+			},
 		},
 		CHANGE_PASSWORD: {
 			TITLE: 'Ubah Kata Sandi',
 			ACTIVE: 'AKTIFKAN',
 			DIALOG: {
-				SUCCESS: 'Kata sandi Anda telah berhasil diubah'
+				SUCCESS: 'Kata sandi Anda telah berhasil diubah',
 			},
 			FORM: {
 				BUTTON: 'Ubah Kata Sandi',
 				CURRENT_PASSWORD: {
 					label: 'Kata Sandi Saat Ini ',
-					placeholder: 'Masukkan kata sandi Anda saat ini'
+					placeholder: 'Masukkan kata sandi Anda saat ini',
 				},
 				NEW_PASSWORD: {
 					label: 'Kata Sandi Baru',
-					placeholder: 'Masukkan kata sandi baru'
+					placeholder: 'Masukkan kata sandi baru',
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: 'Konfirmasi Kata Sandi Baru',
-					placeholder: 'Masukkan ulang kata sandi baru Anda'
-				}
-			}
+					placeholder: 'Masukkan ulang kata sandi baru Anda',
+				},
+			},
 		},
 		LOGIN: {
 			TITLE: 'Riwayat Masuk',
@@ -748,38 +752,47 @@ export default {
 		FREEZE: {
 			TITLE: 'Freeze Account',
 			CONTENT: {
-				MESSAGE_1: 'Freezing your account will stop whitdrawals and halts all tradings.',
-				WARNING_1: 'Use only if you fear that your account has been compromised',
+				MESSAGE_1:
+					'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1:
+					'Use only if you fear that your account has been compromised',
 				TITLE_1: 'Freeze your Account',
 				TITLE_2: 'Account freezing',
-				MESSAGE_2: 'Freezing your account may help guard your account from cyber attacks.',
-				MESSAGE_3: 'The following will occur if you choose to freeze your account:',
+				MESSAGE_2:
+					'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3:
+					'The following will occur if you choose to freeze your account:',
 				MESSAGE_4: '1. Pending withdrawals will be canceled.',
-				MESSAGE_5: '2. All tradings will be halted and unfilled orders will be canceled.',
-				MESSAGE_6: '3. Containing support will be required to reactivate your account.',
-				WARNING_2: 'Do you really want to freeze your account?'
-			}
-		}
+				MESSAGE_5:
+					'2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6:
+					'3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?',
+			},
+		},
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
-		limit: 'limit'
+		limit: 'limit',
 	},
 	TYPES: [
 		{ value: 'market', label: 'market' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'limit' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'limit' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
 		buy: 'beli',
-		sell: 'jual'
+		sell: 'jual',
 	},
-	SIDES: [{ value: 'buy', label: 'beli' }, { value: 'sell', label: 'jual' }], // DO NOT CHANGE value, ONLY TRANSLATE label
+	SIDES: [
+		{ value: 'buy', label: 'beli' },
+		{ value: 'sell', label: 'jual' },
+	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: 'Jumlah',
 	PRICE: 'Harga',
@@ -825,7 +838,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume'
+		v: 'Volume',
 	},
 	QUICK_TRADE: 'Perdagangan cepat',
 	PRO_TRADE: 'Perdagangan pro',
@@ -875,7 +888,8 @@ export default {
 		'Lanjutkan dengan metode pembayaran kartu kredit.',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
 		'Anda akan keluar dari platform ini untuk melakukan pembayaran.',
-	DEPOSIT_VERIFICATION_WAITING_TITLE: 'Sedang dalam proses verifikasi pembayaran',
+	DEPOSIT_VERIFICATION_WAITING_TITLE:
+		'Sedang dalam proses verifikasi pembayaran',
 	DEPOSIT_VERIFICATION_WAITING_MESSAGE:
 		'Jangan tutup aplikasi apabila sedang dalam proses verifikasi pembayaran',
 	DEPOSIT_VERIFICATION_WARNING_MESSAGE:
@@ -914,10 +928,11 @@ export default {
 		CONFIRM_VIA_EMAIL_2:
 			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal request is confirmed. It will be processed shortly.',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'Your withdrawal request is confirmed. It will be processed shortly.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'In order to view your withdrawal status please visit your withdrawal history page.',
-		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
+		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History',
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
 	WALLET_BUTTON_BASE_WITHDRAW: 'Penarikan',
@@ -1002,12 +1017,12 @@ export default {
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'YES' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'YES' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'Tema Interface Pengguna', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'White' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'dark', label: 'Dark' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Dark' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'simpan',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
@@ -1027,7 +1042,7 @@ export default {
 		ACTIVE: 'Aktifkan',
 		INACTIVE: 'Nonaktifkan',
 		INVALID_LEVEL:
-			'Untuk mengakses fitur tersebut, Anda harus meningkatkan level verifikasi' // TODO
+			'Untuk mengakses fitur tersebut, Anda harus meningkatkan level verifikasi', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Buat Kunci API',
@@ -1045,7 +1060,7 @@ export default {
 		CREATED_TITLE: 'Mengkopi Kunci API',
 		CREATED_TEXT_1:
 			'Harap mengkopi kunci API Anda. Anda tidak bisa mengkonfirmasinya lagi .',
-		CREATED_TEXT_2: 'Jaga kerahasiaan kunci Anda.'
+		CREATED_TEXT_2: 'Jaga kerahasiaan kunci Anda.',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Nama',
@@ -1054,7 +1069,8 @@ export default {
 		CREATED: 'Tanggal Dibuat',
 		REVOKE: 'Batalkan',
 		REVOKED: 'Telah dibatalkan',
-		REVOKE_TOOLTIP: 'Untuk membatalkan token, Anda harus mengaktifkan 2FA terlebih dahulu' // TODO
+		REVOKE_TOOLTIP:
+			'Untuk membatalkan token, Anda harus mengaktifkan 2FA terlebih dahulu', // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: 'chat',
@@ -1066,7 +1082,7 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Pesan',
 		SIGN_UP_CHAT: 'Daftar Untuk Chat',
 		JOIN_CHAT: 'Atur Nama Pengguna Untuk Chat',
-		TROLLBOX: 'Trollbox ({0})' // new
+		TROLLBOX: 'Trollbox ({0})', // new
 	},
 	INVALID_USERNAME:
 		'Nama pengguna harus lebih dari 3 karakter hingga 15 karakter. Dapat berisi hanya huruf kecil, angka dan garis bawah',
@@ -1094,7 +1110,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Tidak terbatas',
-		BLOCKED: '0'
+		BLOCKED: '0',
 	},
 	WALLET_ADDRESS_TITLE: 'Buat Dompet {0}',
 	WALLET_ADDRESS_GENERATE: 'Buat',
@@ -1225,33 +1241,36 @@ export default {
 		TRADE_OVER_BTC: 'Perdagangan senilai melebihi {0} BTC', // new
 		XHT_IN_WALLET: '{0} XHT dalam dompet', // new
 		REWARDS_BONUS: 'Hadiah dan Bonus', // new
-		COMPLETE_TASK_DESC: 'Selesaikan tugas dan dapatkan bonus senilai lebih dari $10.000.', // new
+		COMPLETE_TASK_DESC:
+			'Selesaikan tugas dan dapatkan bonus senilai lebih dari $10.000.', // new
 		TASKS: 'Tugas', // new
 		MAKE_FIRST_DEPOSIT: 'Lakukan deposit pertama dan terima 1 XHT', // new
 		BUY_FIRST_XHT: 'Beli XHT Anda pertama dan dapatkan bonus sebesar 5 XHT', // new
 		COMPLETE_ACC_VERIFICATION:
 			'Selesaikan verifikasi akun dan dapatkan bonus sebesar 20 XHT', // new
 		INVITE_USER: 'Undang pengguna lain dan nikmati komisi dari perdagangannya', // new
-		JOIN_HAP: 'Bergabunglah HAP dan dapatkan 10% untuk setiap HollaeX Kit yang Anda jual', // new
-		EARN_RUNNING_EXCHANGE: 'Hasilkan penghasilan pasif untuk menjalankan bursa Anda sendiri', // new
+		JOIN_HAP:
+			'Bergabunglah HAP dan dapatkan 10% untuk setiap HollaeX Kit yang Anda jual', // new
+		EARN_RUNNING_EXCHANGE:
+			'Hasilkan penghasilan pasif untuk menjalankan bursa Anda sendiri', // new
 		XHT_WAVE_AUCTION: 'Data Wave Auction XHT', // new
 		XHT_WAVE_DESC_1:
 			'Distribusi token HollaeX(XHT) akan dilakukan melalui Wave Auction.', // new
 		XHT_WAVE_DESC_2:
 			'Wave Auction menjual XHT dalam jumlah acak pada waktu yang ditentukan secara acak kepada penawar tertinggi di orderbook', // new
-		XHT_WAVE_DESC_3:
-			'Di bawah ini menampilkan data historis Wave Auction', // new
+		XHT_WAVE_DESC_3: 'Di bawah ini menampilkan data historis Wave Auction', // new
 		WAVE_AUCTION_PHASE: 'Wave Auction Tahap {0}', // new
 		LEARN_MORE_WAVE_AUCTION: 'Pelajari lebih lanjut tentang Wave Auction', // new
 		WAVE_NUMBER: 'Nomor Wave', // new
 		DISCOUNT: '( diskon {0}% )', // new
-		MY_FEES_LIMITS: 'Biaya dan Batas Saya' // new
+		MY_FEES_LIMITS: 'Biaya dan Batas Saya', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Undang teman Anda', // new
 		INFO_TEXT:
 			'Referensikan teman Anda dengan memberikan tautan ini dan dapatkan keuntungan dari onboardingnya.',
-		COPY_FIELD_LABEL: 'Bagikan tautan di bawah dengan teman Anda dan dapatkan komisi:', // new
+		COPY_FIELD_LABEL:
+			'Bagikan tautan di bawah dengan teman Anda dan dapatkan komisi:', // new
 		REFERRED_USER_COUT: 'Anda telah mereferensikan {0} pengguna', // new
 		COPY_LINK_BUTTON: 'MENGKOPI TAUTAN REFERRAL', // new
 		XHT_TITLE: 'REFERRAL ANDA', // new
@@ -1263,7 +1282,7 @@ export default {
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earn:', // new
 		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'APPLY' // new
+		APPLY_BUTTON: 'APPLY', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaeX Token', // new
@@ -1273,7 +1292,7 @@ export default {
 			'Anda dapat menjaminkan token HollaeX Anda dengan cara yang sama dan dapatkan XHT yang tidak dapat dijual selama Wave Auction.', // new
 		INFO_TXT3:
 			'Pergi ke dash.bitholla.com dan menjaminkan bursa Anda sendiri hari ini dan dapatkan XHT gratis', // new
-		BUTTON_TXT: 'TEMUKAN LEBIH BANYAK LAGI' // new
+		BUTTON_TXT: 'TEMUKAN LEBIH BANYAK LAGI', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
@@ -1306,7 +1325,7 @@ export default {
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'Masuk untuk lihat perdagangan Anda terkini', //new
 		XHT_TRADE_TXT_2: 'Anda dapat {0} untuk melihat riwayat perdagangan terkini', //new
-		LOGIN_HERE: 'Masuk di sini'
+		LOGIN_HERE: 'Masuk di sini',
 	},
 	WAVES: {
 		// new
@@ -1314,7 +1333,7 @@ export default {
 		NEXT_WAVE: 'Next Wave',
 		WAVE_AMOUNT: 'Amount in Wave',
 		FLOOR: 'Floor',
-		LAST_WAVE: 'Last wave'
+		LAST_WAVE: 'Last wave',
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1327,7 +1346,7 @@ export default {
 		SYSTEM_UPDATE_DURATION: '1 hour',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
 	},
 	USER_LEVEL: 'Level pengguna', // new
 	LIMIT_AMOUNT: 'Jumlah batas', // new
@@ -1357,10 +1376,11 @@ export default {
 			'Dapatkan XHT dengan program HAP dengan memperkenalkan teman Anda ke bursa. {0}.',
 		DEFAULT_ANNOUNCEMENT:
 			'Bagian ini menampilkan pengumuman bursa publik Anda!',
-		ANNOUNCEMENT_TXT_2: 'XHT gratis akan didistribusikan ke semua dompet yang {0}.',
+		ANNOUNCEMENT_TXT_2:
+			'XHT gratis akan didistribusikan ke semua dompet yang {0}.',
 		LEARN_MORE: 'Pelajari lebih lanjut',
-		APPLY_TODAY: 'Ajukan hari ini' // new
+		APPLY_TODAY: 'Ajukan hari ini', // new
 	},
 	OPEN_WALLET: 'dompet terbuka', // new
-	AGO: 'ago' // new
+	AGO: 'ago', // new
 };

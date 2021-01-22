@@ -6,7 +6,7 @@ export const InputBox = ({
 	placeholder = '',
 	onSearch = () => {},
 	type = 'text',
-	enterButton = 'SEND'
+	enterButton = 'SEND',
 }) => (
 	<Search
 		placeholder={placeholder}

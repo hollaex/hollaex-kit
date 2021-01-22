@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import keycode from 'keycode';
-import ReactSVG from 'react-svg'
+import { ReactSVG } from 'react-svg';
 import FieldWrapper from './FieldWrapper';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -11,7 +11,7 @@ class DropdownField extends Component {
 		isOpen: false,
 		visited: false,
 		selectedItem: undefined,
-		filter: ''
+		filter: '',
 	};
 
 	componentWillMount() {
@@ -22,7 +22,7 @@ class DropdownField extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.input.value !== this.props.input.value) {
 			this.setValue(nextProps.input.value);
 		}
@@ -75,9 +75,15 @@ class DropdownField extends Component {
 
 	renderIcon = ({ icon = '', label = '' }) => {
 		if (icon && typeof icon === 'string') {
-			return icon.indexOf('.svg') > 0
-				? <ReactSVG path={icon} alt={label} wrapperClassName={classnames("icon", "option-icon")} />
-				: <img className="icon" src={icon} alt={label} />;
+			return icon.indexOf('.svg') > 0 ? (
+				<ReactSVG
+					src={icon}
+					fallback={() => <span>{label}</span>}
+					className={classnames('icon', 'option-icon')}
+				/>
+			) : (
+				<img className="icon" src={icon} alt={label} />
+			);
 		}
 		return icon;
 	};
@@ -88,7 +94,7 @@ class DropdownField extends Component {
 			key={`${this.props.input.name}-${option.value}-${index}`}
 			onClick={this.onSelectOption(option)}
 			className={classnames('dropdown-option', {
-				pointer: !this.props.disabled
+				pointer: !this.props.disabled,
 			})}
 		>
 			{this.renderIcon(option)}
@@ -100,7 +106,10 @@ class DropdownField extends Component {
 		<div className={classnames('dropdown-options-wrapper')}>
 			{options.length > 0
 				? options.map(this.renderOption)
-				: this.renderOption({ value: undefined, label: STRINGS.NO_OPTIONS }, 0)}
+				: this.renderOption(
+						{ value: undefined, label: STRINGS['NO_OPTIONS'] },
+						0
+				  )}
 		</div>
 	);
 
@@ -153,17 +162,13 @@ class DropdownField extends Component {
 		return (
 			<FieldWrapper {...this.props} focused={isOpen} visited={visited}>
 				<EventListener target="document" onClick={this.clickAwayListener} />
-				{autocomplete &&
-					isOpen && (
-						<EventListener
-							target="document"
-							onKeyDown={this.onKeyDownHandler}
-						/>
-					)}
+				{autocomplete && isOpen && (
+					<EventListener target="document" onKeyDown={this.onKeyDownHandler} />
+				)}
 				<div
 					className={classnames('dropdown-content', {
 						'dropdown-triangle': !disabled,
-						disabled
+						disabled,
 					})}
 					onClick={this.onToogleOpen}
 				>
@@ -183,7 +188,7 @@ class DropdownField extends Component {
 					) : (
 						<div
 							className={classnames('dropdown-placeholder placeholder', {
-								hidden: autocomplete && isOpen
+								hidden: autocomplete && isOpen,
 							})}
 						>
 							{placeholder}
@@ -197,6 +202,6 @@ class DropdownField extends Component {
 }
 
 DropdownField.defaultProps = {
-	autocomplete: false
+	autocomplete: false,
 };
 export default DropdownField;

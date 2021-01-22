@@ -10,7 +10,7 @@ const USER_DATA_KEYS = [
 	'address',
 	'phone_number',
 	'id_data',
-	'bank_account'
+	'bank_account',
 ];
 
 const INITIAL_OTP_OBJECT = {
@@ -18,18 +18,18 @@ const INITIAL_OTP_OBJECT = {
 	requested: false,
 	error: '',
 	secret: '',
-	activated: false
+	activated: false,
 };
 
 const INITIAL_ADDRESS_OBJECT = {
 	fetching: false,
 	success: false,
-	error: false
+	error: false,
 };
 
 const extractuserData = (data) => {
 	const userData = {
-		timestamp: Date.now()
+		timestamp: Date.now(),
 	};
 	USER_DATA_KEYS.forEach((key) => {
 		if (data.hasOwnProperty(key)) {
@@ -51,32 +51,32 @@ const INITIAL_LIMIT_OBJECT = {
 	data: [],
 	fetching: false,
 	fetched: false,
-	error: ''
+	error: '',
 };
 
 const INITIAL_FEES_OBJECT = {
 	data: {},
 	fetching: false,
 	fetched: false,
-	error: ''
+	error: '',
 };
 
 const INITIAL_TRADE_VOLUME_OBJECT = {
 	data: {},
 	fetching: false,
 	fetched: false,
-	error: ''
+	error: '',
 };
 
 const INITIAL_STATE = {
 	id: null,
 	email: null,
 	balance: {
-		timestamp: Date.now()
+		timestamp: Date.now(),
 	},
 	crypto_wallet: {},
 	userData: {
-		timestamp: Date.now()
+		timestamp: Date.now(),
 	},
 	fetching: false,
 	fee: 0,
@@ -85,7 +85,7 @@ const INITIAL_STATE = {
 	otp: INITIAL_OTP_OBJECT,
 	fees: {
 		maker_fee: 0,
-		taker_fee: 0
+		taker_fee: 0,
 	},
 	tokens: [],
 	username: '',
@@ -97,31 +97,31 @@ const INITIAL_STATE = {
 		notification: {
 			popup_order_confirmation: true,
 			popup_order_completed: true,
-			popup_order_partially_filled: true
+			popup_order_partially_filled: true,
 		},
 		interface: {
 			theme: THEME_DEFAULT,
-			order_book_levels: 10
+			order_book_levels: 10,
 		},
 		chat: {
-			set_username: false
+			set_username: false,
 		},
 		audio: {
 			order_completed: true,
 			order_partially_completed: true,
-			public_trade: false
+			public_trade: false,
 		},
 		risk: {
 			order_portfolio_percentage: 80,
-			popup_warning: true
-		}
+			popup_warning: true,
+		},
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,
 	feeValues: INITIAL_FEES_OBJECT,
 	tradeVolumes: INITIAL_TRADE_VOLUME_OBJECT,
 	affiliation: {},
-	is_hap: false
+	is_hap: false,
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -162,7 +162,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				balance: {
 					...state.balance,
 					...balance,
-					timestamp: Date.now()
+					timestamp: Date.now(),
 				},
 				crypto_wallet,
 				verification_level,
@@ -181,7 +181,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				discount,
 				full_name,
 				dob,
-				gender
+				gender,
 			};
 		}
 		case 'SET_USER_DATA': {
@@ -195,10 +195,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				userData: {
 					...state.userData,
-					...userData
+					...userData,
 				},
 				fees,
-				settings
+				settings,
 			};
 		}
 		case 'SET_BALANCE':
@@ -207,8 +207,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				balance: {
 					...state.balance,
 					...action.payload,
-					timestamp: Date.now()
-				}
+					timestamp: Date.now(),
+				},
 			};
 
 		// WITHDRAW
@@ -221,7 +221,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				fetching: false,
 				fetched: true,
-				data: action.payload.data
+				data: action.payload.data,
 			};
 		// USER_IDENTITY
 		case 'USER_IDENTITY_PENDING':
@@ -233,7 +233,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				fetching: false,
 				fetched: true,
-				userData: action.payload.data
+				userData: action.payload.data,
 			};
 		// UPLOAD_FILE
 		case 'UPLOAD_FILE_PENDING':
@@ -245,7 +245,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				fetching: false,
 				fetched: true,
-				userData: action.payload.data
+				userData: action.payload.data,
 			};
 
 		// REQUEST_OTP
@@ -254,16 +254,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				otp: {
 					...INITIAL_OTP_OBJECT,
-					requesting: true
-				}
+					requesting: true,
+				},
 			};
 		case 'REQUEST_OTP_REJECTED':
 			return {
 				...state,
 				otp: {
 					...INITIAL_OTP_OBJECT,
-					error: action.payload.message
-				}
+					error: action.payload.message,
+				},
 			};
 		case 'REQUEST_OTP_FULFILLED':
 			return {
@@ -271,8 +271,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				otp: {
 					...INITIAL_OTP_OBJECT,
 					requested: true,
-					secret: action.payload.secret
-				}
+					secret: action.payload.secret,
+				},
 			};
 
 		case 'ACTIVATE_OTP':
@@ -280,16 +280,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				otp: {
 					...state.otp,
-					activated: true
+					activated: true,
 				},
-				otp_enabled: true
+				otp_enabled: true,
 			};
 
 		case 'REVOKE_OTP':
 			return {
 				...state,
 				otp: INITIAL_OTP_OBJECT,
-				otp_enabled: false
+				otp_enabled: false,
 			};
 
 		// ACTIVATE_OTP
@@ -299,7 +299,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				fetching: false,
-				otpError: action.payload.response.data.message
+				otpError: action.payload.response.data.message,
 			};
 		case 'ACTIVATE_OTP_FULFILLED':
 			return { ...state, fetching: false, activateOtp: action.payload.data };
@@ -312,7 +312,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				fetching: false,
-				deactivateOtp: action.payload.data
+				deactivateOtp: action.payload.data,
 			};
 		case 'REQUEST_TOKENS_PENDING':
 			return { ...state, fetching: true, error: null, tokens: [] };
@@ -332,7 +332,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 		case 'TOKEN_GENERATED':
 			return {
 				...state,
-				tokens: [action.payload.token].concat(state.tokens)
+				tokens: [action.payload.token].concat(state.tokens),
 			};
 		case 'SET_USERNAME':
 			return {
@@ -342,9 +342,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				settings: {
 					...state.settings,
 					chat: {
-						set_username: true
-					}
-				}
+						set_username: true,
+					},
+				},
 			};
 		// case 'REQUEST_LIMITS_PENDING':
 		// 	return {
@@ -402,16 +402,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				addressRequest: {
 					...INITIAL_ADDRESS_OBJECT,
-					fetching: true
-				}
+					fetching: true,
+				},
 			};
 		case 'CREATE_ADDRESS_REJECTED':
 			return {
 				...state,
 				addressRequest: {
 					...INITIAL_ADDRESS_OBJECT,
-					error: action.payload.response.data.message
-				}
+					error: action.payload.response.data.message,
+				},
 			};
 		case 'CREATE_ADDRESS_FULFILLED':
 			const { address, crypto } = action.payload.data;
@@ -423,21 +423,21 @@ export default function reducer(state = INITIAL_STATE, action) {
 				crypto_wallet,
 				addressRequest: {
 					...INITIAL_ADDRESS_OBJECT,
-					success: true
-				}
+					success: true,
+				},
 			};
 		case 'CLEAN_CREATE_ADDRESS':
 			return {
 				...state,
-				addressRequest: INITIAL_ADDRESS_OBJECT
+				addressRequest: INITIAL_ADDRESS_OBJECT,
 			};
 		case 'GET_TRADE_VOLUME_PENDING':
 			return {
 				...state,
 				tradeVolumes: {
 					...INITIAL_TRADE_VOLUME_OBJECT,
-					fetching: true
-				}
+					fetching: true,
+				},
 			};
 		case 'GET_TRADE_VOLUME_FULFILLED':
 			return {
@@ -445,26 +445,26 @@ export default function reducer(state = INITIAL_STATE, action) {
 				tradeVolumes: {
 					...INITIAL_TRADE_VOLUME_OBJECT,
 					fetched: true,
-					data: action.payload.data.data
-				}
+					data: action.payload.data.data,
+				},
 			};
 		case 'GET_TRADE_VOLUME_REJECTED':
 			return {
 				...state,
 				tradeVolumes: {
 					...INITIAL_TRADE_VOLUME_OBJECT,
-					error: action.payload.response
-				}
+					error: action.payload.response,
+				},
 			};
 		case 'REFERRAL_COUNT_FULFILLED':
 			return {
 				...state,
-				affiliation: action.payload
+				affiliation: action.payload,
 			};
 		case 'REFERRAL_COUNT_REJECTED':
 			return {
 				...state,
-				affiliation: {}
+				affiliation: {},
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

@@ -1,22 +1,10 @@
-$inner_container-border: 1px solid $border-color;
-
-.dark-app-body {
-	background: $dark-app-background-color !important;
-}
+$inner_container-border: 1px solid $colors-super-pale-black;
 
 .app_container {
 	// height: 100%;
 	min-height: 100vh;
-
-	&.white-theme {
-		background-color: $app-background-color;
-		color: $colors-main-black;
-	}
-
-	&.dark-theme {
-		background: $dark-app-background-color !important;
-		min-height: 100vh;
-	}
+	background-color: $app-background-color;
+	color: $colors-main-black;
 
 	&.btc {
 		@include currency-color($coin-btc);
@@ -46,8 +34,8 @@ $inner_container-border: 1px solid $border-color;
 			// max-height: $max-content-height;
 		}
 		// .app_container-secondary-content {
-			// min-height: $max-content-secondary-height !important;
-			// max-height: $max-content-secondary-height !important;
+		// min-height: $max-content-secondary-height !important;
+		// max-height: $max-content-secondary-height !important;
 		// }
 	}
 
@@ -81,14 +69,52 @@ $inner_container-border: 1px solid $border-color;
 	}
 
 	.app_container-sidebar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 		min-width: $sidebar-width;
 		max-width: $sidebar-width;
 		background-color: $app-sidebar-background;
-		border-left: 1px solid $colors-deactivate-color2;
+		border-left: 1px solid $colors-super-pale-black;
 		padding: 0;
+		transition: all 0.2s ease-out 0s;
+
+		.sidebar-toggle-wrapper {
+			display: flex;
+			align-items: center;
+			width: 0 !important;
+			overflow: visible;
+		}
+
+		.sidebar-toggle {
+			transform: translateX(-50%);
+			&.ant-btn-primary {
+				background-color: $app-light-background;
+				border-color: $colors-border;
+			}
+			.anticon {
+				color: $colors-main-black;
+			}
+
+			&.ant-btn-icon-only {
+				height: 30px;
+				width: 18px;
+			}
+		}
+
+		&.close-sidebar {
+			.sidebar-toggle {
+				transform: translateX(-100%);
+			}
+			min-width: 0;
+			max-width: 0;
+			.sidebar-container {
+				overflow: hidden;
+			}
+		}
 	}
 	.exchange-warning {
-		background-color: #FFF100;
+		background-color: #fff100;
 	}
 }
 
@@ -137,65 +163,6 @@ $inner_container-border: 1px solid $border-color;
 	}
 }
 
-.dark-theme {
-	.presentation_container {
-		.inner_container {
-			&.with_border_top {
-				border-top-color: $dark-border-main;
-			}
-			&.with_border_bottom {
-				border-bottom-color: $dark-border-main;
-			}
-
-			.information_block {
-				.information_block-text_wrapper {
-					.title,
-					.text {
-						color: $dark-font-sub-text-color;
-					}
-				}
-			}
-		}
-	}
-
-	.app_container {
-		.app_container-sidebar {
-			background-color: $dark-app-sidebar-background;
-			border-left: 1px solid $dark-app-line-divider;
-		}
-	}
-	svg {
-		.leviathan-trader0 {
-			fill: $colors-black;
-		}
-		.incoming-btc-01,
-		.incoming-toman-01 {
-			fill: $dark-app-background-color;
-		}
-		.incoming-toman-02,
-		.incoming-btc-2,
-		.buy-order-filled-1,
-		.buy-order-filled-3,
-		.buy-filled-01,
-		.buy-filled-03,
-		.sell-order-01,
-		.sell-order-03,
-		.sell-part-01,
-		.sell-part-03,
-		.key-trashed {
-			fill: $dark-icon-color;
-		}
-		.buy-order-filled-4,
-		.sell-order-04 {
-			stroke: $dark-app-background-color;
-		}
-		.copy-notification-0,
-		.copy-notification-1 {
-			fill: $dark-icon-color;
-		}
-	}
-}
-
 .app_container-bottom_bar {
 	display: flex;
 	flex: 0;
@@ -203,7 +170,7 @@ $inner_container-border: 1px solid $border-color;
 	max-width: 100vw;
 	position: -webkit-fixed;
 	position: fixed;
-    bottom: 0;
+	bottom: 0;
 	// position: -webkit-sticky;
 	// position: sticky;
 	// bottom: 5rem;
@@ -238,7 +205,7 @@ $inner_container-border: 1px solid $border-color;
 	.otp_secret {
 		font-size: 1rem !important;
 	}
-	
+
 	.presentation_container,
 	.trade_tabs-container {
 		width: $content-display-width !important;

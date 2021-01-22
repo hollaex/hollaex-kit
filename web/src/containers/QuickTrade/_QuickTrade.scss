@@ -3,8 +3,11 @@
 	overflow-y: scroll;
 }
 
+.base_negative_balance,
+.success-review,
 .quote-review-wrapper {
 	margin: 1rem 0;
+	width: 30rem;
 }
 
 .quote-countdown-wrapper {
@@ -21,18 +24,25 @@
 .quote-success-review-text {
 	margin: 1rem 0 2rem;
 	font-size: $font-size-main;
+	text-align: center;
 }
 
-.dark-theme {
-	.quote-container {
-		background-color: $dark-quick-trade-background;
-	}
+.quote-success__title {
+	text-transform: uppercase;
+	font-family: Raleway;
+	font-weight: bold;
+	font-size: 24px;
+	text-align: center;
+}
+.quick-trade__icon {
+	height: 7rem;
+	width: 7rem;
+	margin-bottom: 2rem;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .layout-mobile {
-	.base_negative_balance {
-		margin: auto
-	}
 	.quote-container {
 		background-color: transparent;
 		overflow-y: scroll;
@@ -44,7 +54,9 @@
 			max-width: 100vw;
 		}
 	}
-	.success-review{
+	.base_negative_balance,
+	.success-review,
+	.quote-review-wrapper {
 		margin: auto;
 	}
 }

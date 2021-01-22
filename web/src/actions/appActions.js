@@ -1,5 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE, LANGUAGE_KEY , WS_URL} from '../config/constants';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -27,7 +27,7 @@ export const NOTIFICATIONS = {
 	INVITE_FRIENDS: 'INVITE_FRIENDS',
 	STAKE_TOKEN: 'STAKE_TOKEN',
 	DEPOSIT_INFO: 'DEPOSIT_INFO',
-	XHT_SUCCESS_ACCESS: 'XHT_SUCCESS_ACCESS'
+	XHT_SUCCESS_ACCESS: 'XHT_SUCCESS_ACCESS',
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -49,23 +49,25 @@ export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_CONFIG = 'SET_CONFIG';
 export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
-export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
 export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
+export const SET_CONFIG_LEVEL = 'SET_CONFIG_LEVEL';
+export const ADD_TO_FAVOURITES = 'ADD_TO_FAVOURITES';
+export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
 	USER_TYPE_ADMIN: 'admin',
-	USER_TYPE_HAP: 'hap'
+	USER_TYPE_HAP: 'hap',
 };
 
 export const MESSAGE_TYPES = {
 	MESSAGE_TYPE_NORMAL: 'normal',
 	MESSAGE_TYPE_REPLY: 'reply',
 	MESSAGE_TYPE_ANNOUNCEMENT: 'announcement',
-	MESSAGE_TYPE_IMAGE: 'image'
+	MESSAGE_TYPE_IMAGE: 'image',
 };
 
 export const setNotification = (type = '', data = {}, show = true) => ({
@@ -74,38 +76,38 @@ export const setNotification = (type = '', data = {}, show = true) => ({
 		type,
 		data,
 		show,
-		timestamp: Date.now()
-	}
+		timestamp: Date.now(),
+	},
 });
 
 export const closeNotification = () => ({
 	type: CLOSE_NOTIFICATION,
-	payload: {}
+	payload: {},
 });
 
 export const closeAllNotification = () => ({
 	type: CLOSE_ALL_NOTIFICATION,
-	payload: {}
+	payload: {},
 });
 
 export const setSnackNotification = (data = {}) => ({
 	type: SET_SNACK_NOTIFICATION,
-	payload: data
+	payload: data,
 });
 
 export const closeSnackNotification = () => ({
 	type: CLOSE_SNACK_NOTIFICATION,
-	payload: {}
+	payload: {},
 });
 
 export const setSnackDialog = (data = {}) => ({
 	type: SET_SNACK_DIALOG,
-	payload: data
+	payload: data,
 });
 
 export const closeSnackDialog = (id) => ({
 	type: CLOSE_SNACK_DIALOG,
-	payload: { dialogId: id }
+	payload: { dialogId: id },
 });
 
 export const openContactForm = (data = { helpdesk: '' }) => {
@@ -123,8 +125,8 @@ export const setLanguage = (value = DEFAULT_LANGUAGE) => {
 	return {
 		type: CHANGE_LANGUAGE,
 		payload: {
-			language
-		}
+			language,
+		},
 	};
 };
 
@@ -144,47 +146,47 @@ export const sendSupportMail = (values = {}) => {
 
 	return axios({
 		headers: {
-			'Content-Type': 'multipart/form-data'
+			'Content-Type': 'multipart/form-data',
 		},
 		data: formData,
 		url: '/support',
-		method: 'POST'
+		method: 'POST',
 	});
 };
 
 export const setAnnouncements = (announcements) => ({
 	type: SET_ANNOUNCEMENT,
 	payload: {
-		announcements
-	}
+		announcements,
+	},
 });
 
 export const setChatUnreadMessages = (chatUnreadMessages = 0) => ({
 	type: SET_UNREAD,
 	payload: {
-		chatUnreadMessages
-	}
+		chatUnreadMessages,
+	},
 });
 
 export const changeTheme = (theme = '') => ({
 	type: CHANGE_THEME,
 	payload: {
-		theme
-	}
+		theme,
+	},
 });
 
 export const setPairs = (pairs) => ({
 	type: SET_PAIRS,
 	payload: {
-		pairs
-	}
+		pairs,
+	},
 });
 
 export const changePair = (pair) => ({
 	type: CHANGE_PAIR,
 	payload: {
-		pair
-	}
+		pair,
+	},
 });
 
 export const getTickers = () => {
@@ -192,7 +194,7 @@ export const getTickers = () => {
 		axios.get('/ticker/all').then((res) => {
 			dispatch({
 				type: SET_TICKERS,
-				payload: res.data
+				payload: res.data,
 			});
 		});
 	};
@@ -200,54 +202,49 @@ export const getTickers = () => {
 
 export const setTickers = (data) => ({
 	type: SET_TICKER_FROM_TRADE,
-	payload: data
+	payload: data,
 });
 
 export const setOrderLimits = (data) => ({
 	type: SET_ORDER_LIMITS,
-	payload: data
+	payload: data,
 });
 
 export const setCurrencies = (coins) => ({
 	type: SET_CURRENCIES,
 	payload: {
-		coins
-	}
+		coins,
+	},
 });
 
 export const setConfig = (constants = {}) => {
-	let config_level = [];
 	let enabledPlugins = [];
+	let features = {};
 	if (constants) {
-		for (let i = 1; i <= parseInt(constants.user_level_number, 10); i++) {
-			config_level = [...config_level, i];
-		}
 		if (constants.plugins && constants.plugins.enabled) {
 			enabledPlugins = constants.plugins.enabled.split(',');
+		}
+	}
+	if (constants) {
+		if (constants.features) {
+			features = constants.features;
 		}
 	}
 	return {
 		type: SET_CONFIG,
 		payload: {
 			constants,
-			config_level,
-			enabledPlugins
-		}
+			enabledPlugins,
+			features,
+		},
 	};
 };
 
 export const setInfo = (info) => ({
 	type: SET_INFO,
 	payload: {
-		info
-	}
-});
-
-export const setValidBaseCurrency = (isValidBase) => ({
-	type: SET_VALID_BASE_CURRENCY,
-	payload: {
-		isValidBase
-	}
+		info,
+	},
 });
 
 export const openFeesStructureandLimits = (data = {}) =>
@@ -259,28 +256,30 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
 
+export const requestInitial = () => axios.get('/kit');
+export const requestConstant = () => axios.get('/constants');
+export const requestAdminData = () => axios.get('/admin/kit');
+
 export const getExchangeInfo = () => {
 	return (dispatch) => {
-		axios.get('/constant').then((res) => {
+		axios.get('/kit').then((res) => {
 			if (res && res.data) {
-				if (res.data.constants) {
-					dispatch(setConfig(res.data.constants));
-					if (res.data.constants.defaults) {
-						const themeColor = localStorage.getItem('theme');
-						const language = localStorage.getItem(LANGUAGE_KEY);
-						if (!themeColor && res.data.constants.defaults.theme) {
-							dispatch(changeTheme(res.data.constants.defaults.theme));
-							localStorage.setItem('theme', res.data.constants.defaults.theme);
-						}
-						if (!language && res.data.constants.defaults.language) {
-							dispatch(setLanguage(res.data.constants.defaults.language));
-						}
+				dispatch(setConfig(res.data));
+				if (res.data.defaults) {
+					const themeColor = localStorage.getItem('theme');
+					const language = localStorage.getItem(LANGUAGE_KEY);
+					if (!themeColor && res.data.defaults.theme) {
+						dispatch(changeTheme(res.data.defaults.theme));
+						localStorage.setItem('theme', res.data.defaults.theme);
+					}
+					if (!language && res.data.defaults.language) {
+						dispatch(setLanguage(res.data.defaults.language));
 					}
 				}
 				if (res.data.info) {
 					dispatch({
 						type: SET_INFO,
-						payload: { info: { ...res.data.info, status: res.data.status } }
+						payload: { info: { ...res.data.info } },
 					});
 				}
 			}
@@ -294,38 +293,63 @@ export const getWaveAuction = () => {
 			if (res && res.data && res.data.data) {
 				dispatch({
 					type: SET_WAVE_AUCTION,
-					payload: { data: res.data.data }
+					payload: { data: res.data.data },
 				});
 			}
 		});
 	};
 };
 
-export const getAnnouncement = () => dispatch => {
-	return axios({
-		url: `${WS_URL}/plugins/announcements`,
-		method: 'GET'
-	}).then((res) => {
-		if (res.data && res.data.data) {
-			dispatch({ type: SET_APP_ANNOUNCEMENT, payload: { announcements: res.data.data } });
-		}
-	})
-	.catch((err) => {});
+export const getAnnouncement = () => (dispatch) => {
+	return axios
+		.get('/plugins/announcement')
+		.then((res) => {
+			if (res.data && res.data.data) {
+				dispatch({
+					type: SET_APP_ANNOUNCEMENT,
+					payload: { announcements: res.data.data },
+				});
+			}
+		})
+		.catch((err) => {});
 };
 
-export const requestAvailPlugins = () => dispatch => {
+export const requestAvailPlugins = () => (dispatch) => {
 	dispatch({ type: SET_PLUGINS_REQUEST });
-	return axios({
-		url: `${WS_URL}/plugins`,
-		method: 'GET'
-	}).then((res) => {
-		if (res.data) {
-			let available = res.data.available ? [...res.data.available] : [];
-			let enabled = res.data.enabled.filter((val) => !available.includes(val));
-			dispatch({ type: SET_PLUGINS_SUCCESS, payload: [...available, ...enabled] });
-		}
-	}).catch(err => {
-		dispatch({ type: SET_PLUGINS_FAILURE });
-	});
+	return axios
+		.get('/plugins')
+		.then((res) => {
+			if (res.data) {
+				let available = res.data.available ? [...res.data.available] : [];
+				let enabled = res.data.enabled.filter(
+					(val) => !available.includes(val)
+				);
+				dispatch({
+					type: SET_PLUGINS_SUCCESS,
+					payload: [...available, ...enabled],
+				});
+			}
+		})
+		.catch((err) => {
+			dispatch({ type: SET_PLUGINS_FAILURE });
+		});
 };
 
+export const requestTiers = () => (dispatch) => {
+	return axios
+		.get('/tiers')
+		.then((res) => {
+			dispatch({ type: SET_CONFIG_LEVEL, payload: res.data });
+		})
+		.catch((err) => {});
+};
+
+export const addToFavourites = (payload) => ({
+	type: ADD_TO_FAVOURITES,
+	payload,
+});
+
+export const removeFromFavourites = (payload) => ({
+	type: REMOVE_FROM_FAVOURITES,
+	payload,
+});

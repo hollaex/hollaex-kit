@@ -1,49 +1,48 @@
 import axios from 'axios';
-import { WS_URL } from '../config/constants';
 
 export function getMe() {
 	return {
 		type: 'GET_ME',
-		payload: axios.get('/user')
+		payload: axios.get('/user'),
 	};
 }
 
 export function setMe(user) {
 	return {
 		type: 'SET_ME',
-		payload: user
+		payload: user,
 	};
 }
 
 export const setUserData = (data) => ({
 	type: 'SET_USER_DATA',
-	payload: data
+	payload: data,
 });
 
 export function setBalance(balance) {
 	return {
 		type: 'SET_BALANCE',
-		payload: balance
+		payload: balance,
 	};
 }
 
 export function processWithdraw(data) {
 	return (dispatch) => {
 		dispatch({
-			type: 'PROCESS_WITHDRAW_PENDING'
+			type: 'PROCESS_WITHDRAW_PENDING',
 		});
 		axios
 			.post('/withdraw', data)
 			.then((res) => {
 				dispatch({
 					type: 'PROCESS_WITHDRAW_FULFILLED',
-					payload: res
+					payload: res,
 				});
 			})
 			.catch((err) => {
 				dispatch({
 					type: 'PROCESS_WITHDRAW_REJECTED',
-					payload: err.response
+					payload: err.response,
 				});
 			});
 	};
@@ -65,7 +64,7 @@ export const updateUser = (values) => {
 			address: values.address,
 			city: values.city,
 			country: values.country,
-			postal_code: values.postal_code
+			postal_code: values.postal_code,
 		};
 	}
 
@@ -74,7 +73,7 @@ export const updateUser = (values) => {
 			// type: values.nationality === 'IR' ? 'id' : 'passport',
 			number: values.id_number,
 			issued_date: values.id_issued_date,
-			expiration_date: values.id_expiration_date
+			expiration_date: values.id_expiration_date,
 		};
 	}
 
@@ -82,18 +81,14 @@ export const updateUser = (values) => {
 		userValues.settings = values.settings;
 	}
 
-	return axios({
-		data: userValues,
-		url: `${WS_URL}/plugins/kyc/user`,
-		method: 'PUT'
-	});
+	return axios.put('/plugins/kyc/user', userValues);
 };
 
 export const updateUserSettings = (values) => {
 	return axios({
 		data: values,
 		url: '/user/settings',
-		method: 'PUT'
+		method: 'PUT',
 	});
 };
 
@@ -106,44 +101,44 @@ export const updateDocuments = (values) => {
 
 	return axios({
 		headers: {
-			'Content-Type': 'multipart/form-data'
+			'Content-Type': 'multipart/form-data',
 		},
 		data: formData,
-		url: `${WS_URL}/plugins/kyc/user/upload`,
-		method: 'POST'
+		url: '/plugins/kyc/user/upload',
+		method: 'POST',
 	});
 };
 
-export const otpActivate = (values) => axios.post('/user/activateOTP', values);
-export const otpRevoke = (values) => axios.post('/user/deactivateOTP', values);
+export const otpActivate = (values) => axios.post('/user/activate-otp', values);
+export const otpRevoke = (values) => axios.post('/user/deactivate-otp', values);
 export const resetPassword = (values) =>
 	axios.post('/user/change-password', values);
 export const otpSetActivated = (active = true) =>
 	active
 		? {
-				type: 'ACTIVATE_OTP'
+				type: 'ACTIVATE_OTP',
 		  }
 		: {
-				type: 'REVOKE_OTP'
+				type: 'REVOKE_OTP',
 		  };
 
 export function userIdentity(data) {
 	return (dispatch) => {
 		dispatch({
-			type: 'USER_IDENTITY_PENDING'
+			type: 'USER_IDENTITY_PENDING',
 		});
 		axios
 			.put('/user', data)
 			.then((res) => {
 				dispatch({
 					type: 'USER_IDENTITY_FULFILLED',
-					payload: res
+					payload: res,
 				});
 			})
 			.catch((err) => {
 				dispatch({
 					type: 'USER_IDENTITY_REJECTED',
-					payload: err.response
+					payload: err.response,
 				});
 			});
 	};
@@ -156,24 +151,24 @@ export function uploadFile(data) {
 
 	return (dispatch) => {
 		dispatch({
-			type: 'UPLOAD_FILE_PENDING'
+			type: 'UPLOAD_FILE_PENDING',
 		});
 		axios({
 			headers: { 'Content-Type': 'multipart/form-data' },
 			data: formData,
 			url: '/user/verification',
-			method: 'POST'
+			method: 'POST',
 		})
 			.then((res) => {
 				dispatch({
 					type: 'UPLOAD_FILE_FULFILLED',
-					payload: res
+					payload: res,
 				});
 			})
 			.catch((err) => {
 				dispatch({
 					type: 'UPLOAD_FILE_REJECTED',
-					payload: err.response
+					payload: err.response,
 				});
 			});
 	};
@@ -182,13 +177,13 @@ export function uploadFile(data) {
 export function userDeposits() {
 	return {
 		type: 'USER_DEPOSITS',
-		payload: axios.get('/user/deposits')
+		payload: axios.get('/user/deposits'),
 	};
 }
 export function userWithdrawals() {
 	return {
 		type: 'USER_WITHDRAWALS',
-		payload: axios.get('/user/withdrawals')
+		payload: axios.get('/user/withdrawals'),
 	};
 }
 
@@ -196,17 +191,17 @@ export function otpRequest() {
 	return (dispatch) => {
 		dispatch({ type: 'REQUEST_OTP_PENDING' });
 		axios
-			.get('/user/requestOTP')
+			.get('/user/request-otp')
 			.then((body) => {
 				dispatch({
 					type: 'REQUEST_OTP_FULFILLED',
-					payload: body.data
+					payload: body.data,
 				});
 			})
 			.catch((err) => {
 				dispatch({
 					type: 'REQUEST_OTP_REJECTED',
-					payload: err.response.data
+					payload: err.response.data,
 				});
 			});
 	};
@@ -214,34 +209,34 @@ export function otpRequest() {
 export function deactivateOTP() {
 	return {
 		type: 'DEACTIVATE_OTP',
-		payload: axios.get('/deactivateOTP')
+		payload: axios.get('/deactivateOTP'),
 	};
 }
 
 export const requestTokens = () => {
 	return {
 		type: 'REQUEST_TOKENS',
-		payload: axios.get('/user/tokens')
+		payload: axios.get('/user/tokens'),
 	};
 };
 
-export const generateToken = (values) => axios.post(`/user/tokens`, values);
+export const generateToken = (values) => axios.post(`/user/token`, values);
 export const tokenGenerated = (token) => ({
 	type: 'TOKEN_GENERATED',
 	payload: {
-		token
-	}
+		token,
+	},
 });
 
 export const revokeToken = (id, otp_code = '') =>
-	axios.delete(`/user/tokens`, {
-		data: { token_id: id, otp_code: otp_code }
+	axios.delete(`/user/token`, {
+		data: { token_id: id, otp_code: otp_code },
 	});
 export const tokenRevoked = (token) => ({
 	type: 'TOKEN_REVOKED',
 	payload: {
-		token
-	}
+		token,
+	},
 });
 
 export const setUsername = (values) => axios.post('/user/username', values);
@@ -249,8 +244,8 @@ export const setUsernameStore = (username) => ({
 	type: 'SET_USERNAME',
 	payload: {
 		username_set: true,
-		username
-	}
+		username,
+	},
 });
 
 // export const requestLimits = () => ({
@@ -265,16 +260,16 @@ export const setUsernameStore = (username) => ({
 
 export const createAddress = (addressType = '') => ({
 	type: 'CREATE_ADDRESS',
-	payload: axios.post(`/user/address/${addressType}`, {})
+	payload: axios.get(`/user/create-address?crypto=${addressType}`),
 });
 
 export const cleanCreateAddress = () => ({
-	type: 'CLEAN_CREATE_ADDRESS'
+	type: 'CLEAN_CREATE_ADDRESS',
 });
 
 export const getTradeVolume = () => ({
 	type: 'GET_TRADE_VOLUME',
-	payload: axios.get(`/user/stats`)
+	payload: axios.get(`/user/stats`),
 });
 
 export function getUserReferralCount() {
@@ -284,20 +279,19 @@ export function getUserReferralCount() {
 			.then((res) => {
 				dispatch({
 					type: 'REFERRAL_COUNT_FULFILLED',
-					payload: res.data
+					payload: res.data,
 				});
 			})
 			.catch((err) => {
 				dispatch({
 					type: 'REFERRAL_COUNT_REJECTED',
-					payload: err.response
+					payload: err.response,
 				});
 			});
 	};
 }
 
 export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
-
 	return (dispatch) => {
 		axios
 			.get('/user/logins')
@@ -307,8 +301,8 @@ export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
 					payload: {
 						...body.data,
 						page,
-						isRemaining: body.data.count > page * limit
-					}
+						isRemaining: body.data.count > page * limit,
+					},
 				});
 				// if (body.data.count > page * limit) {
 				// 	dispatch(getUserDeposits({ limit, page: page + 1 }));
@@ -316,8 +310,8 @@ export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
 			})
 			.catch((err) => {
 				dispatch({
-					type:'USER_DEPOSITS_REJECTED',
-					payload: err.response
+					type: 'USER_DEPOSITS_REJECTED',
+					payload: err.response,
 				});
 			});
 	};

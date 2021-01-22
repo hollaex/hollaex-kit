@@ -1,4 +1,4 @@
-$row--border-color: $border-color;
+$row--border-color: $colors-border;
 $row--border: 1px solid $row--border-color;
 
 $table-cell_box-background: grey;
@@ -41,7 +41,8 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		.cancel-row-color {
 			@extend .cancel-animate;
 			.cell_box-type {
-				.sell, .buy {
+				.sell,
+				.buy {
 					@extend .cancel-animate;
 				}
 			}
@@ -61,13 +62,14 @@ $controllers--color-disabled: $colors-deactivate-color2;
 
 		.cancel-animate {
 			-webkit-animation: cancelRow 1.4s;
-			-moz-animation:    cancelRow 1.4s;
-			-o-animation:      cancelRow 1.4s;
-			animation:         cancelRow 1.4s;
+			-moz-animation: cancelRow 1.4s;
+			-o-animation: cancelRow 1.4s;
+			animation: cancelRow 1.4s;
 		}
-		
+
 		@-webkit-keyframes cancelRow {
-			from {}
+			from {
+			}
 			to {
 				color: $app-background-color;
 				background-color: $app-background-color;
@@ -75,7 +77,8 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			}
 		}
 		@-moz-keyframes cancelRow {
-			from {}
+			from {
+			}
 			to {
 				color: $app-background-color;
 				background-color: $app-background-color;
@@ -83,13 +86,14 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			}
 		}
 		@keyframes cancelRow {
-			from {}
+			from {
+			}
 			to {
 				color: $app-background-color;
 				background-color: $app-background-color;
 				border-color: $app-background-color;
 			}
-		}		
+		}
 	}
 
 	.cell_box-type {
@@ -103,7 +107,7 @@ $controllers--color-disabled: $colors-deactivate-color2;
 }
 
 .layout-mobile {
-	.table_controllers-wrapper { 
+	.table_controllers-wrapper {
 		font-size: $regular--font-size;
 
 		.action_notification-wrapper {
@@ -155,85 +159,5 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		> div {
 			margin-left: 0.5rem;
 		}
-	}
-}
-
-.dark-theme {
-	.table-wrapper {
-		color: $dark-font-main-text-color;
-		.table_header-wrapper {
-			color: $dark-font-main-text-color;
-		}
-		.table_body-wrapper {
-			color: $dark-font-sub-text-color;
-			tr.table_body-row td {
-				border-top-color: $dark-border-main;
-				border-bottom-color: $dark-border-main;
-			}
-			.cancel-animate {
-				-webkit-animation: cancelRowDark 1.4s;
-				-moz-animation:    cancelRowDark 1.4s;
-				-o-animation:      cancelRowDark 1.4s;
-				animation:         cancelRowDark 1.4s;
-			}
-			
-			@-webkit-keyframes cancelRowDark {
-				from {}
-				to {
-					color: $dark-app-background-color;
-					background-color: $dark-app-background-color;
-					border-color: $dark-app-background-color;
-				}
-			}
-			@-moz-keyframes cancelRowDark {
-				from {}
-				to {
-					color: $dark-app-background-color;
-					background-color: $dark-app-background-color;
-					border-color: $dark-app-background-color;
-				}
-			}
-			@keyframes cancelRowDark {
-				from {}
-				to {
-					color: $dark-app-background-color;
-					background-color: $dark-app-background-color;
-					border-color: $dark-app-background-color;
-				}
-			}
-		}
-		.cell_box-type {
-			.sell {
-				background-color: $dark-sell !important;
-				color: $dark-sell-asks-text !important;
-			}
-			
-			.buy {
-				background-color: $dark-buy !important;
-				color: $dark-buy-bids-text !important;
-			}
-		}
-	}
-
-	.table_controllers-wrapper {
-		color: $dark-font-sub-text-color;
-		border-top-color: $dark-border-main;
-
-		.disabled {
-			.action_notification-wrapper {
-				.notification-info {
-					color: $dark-font-sub-text-1-color;;
-				}
-				.action_notification-svg {
-					.arrow-1 {
-						fill: $dark-font-sub-text-1-color;;
-					}
-				}
-			}
-		}
-	}
-
-	.no-data {
-		color: $dark-font-sub-text-color;
 	}
 }

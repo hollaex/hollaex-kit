@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import { connect } from 'react-redux';
+import Image from 'components/Image';
 import classnames from 'classnames';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, IS_XHT } from '../../config/constants';
+import { IS_XHT } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 class MenuList extends Component {
 	state = {
-		isOpen: false
+		isOpen: false,
 	};
 
 	element = null;
@@ -74,7 +77,10 @@ class MenuList extends Component {
 			securityPending,
 			verificationPending,
 			walletPending,
-			activePath
+			activePath,
+			icons: ICONS,
+			constants,
+			location,
 		} = this.props;
 		const { isOpen } = this.state;
 		const totalPending = IS_XHT
@@ -84,12 +90,13 @@ class MenuList extends Component {
 			<div
 				className={classnames('app-bar-account-content', {
 					'account-inactive':
-						activePath !== 'account' && activePath !== 'wallet'
+						activePath !== 'account' && activePath !== 'wallet',
 				})}
 				ref={(el) => (this.element = el)}
 			>
-				<ReactSVG
-					path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+				<Image
+					iconId="SIDEBAR_ACCOUNT_INACTIVE"
+					icon={ICONS['SIDEBAR_ACCOUNT_INACTIVE']}
 					wrapperClassName="app-bar-account-icon"
 				/>
 				{!!totalPending && (
@@ -100,17 +107,58 @@ class MenuList extends Component {
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
 								'menu-active':
-									activePath === 'account' && selectedMenu === 'summary'
+									activePath === 'account' && selectedMenu === 'summary',
 							})}
 							onClick={() => this.handleMenu('summary')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SUMMARY}
+							<Image
+								icon={ICONS['TAB_SUMMARY']}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SUMMARY}
+							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY" iconId="TAB_SUMMARY">
+								{STRINGS['ACCOUNTS.TAB_SUMMARY']}
+							</EditWrapper>
 						</div>
+						<div
+							className={classnames('app-bar-account-menu-list d-flex', {
+								'menu-active':
+									location.pathname === '/trade/add/tabs' &&
+									selectedMenu === 'pro-trade',
+							})}
+							onClick={() => this.handleMenu('pro-trade')}
+						>
+							<div className="notification-content" />
+							<Image
+								icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
+								wrapperClassName="app-bar-account-list-icon"
+							/>
+							<EditWrapper stringId="PRO_TRADE" iconId="SIDEBAR_TRADING_ACTIVE">
+								{STRINGS['PRO_TRADE']}
+							</EditWrapper>
+						</div>
+						{constants && constants.features && constants.features.quick_trade && (
+							<div
+								className={classnames('app-bar-account-menu-list d-flex', {
+									'menu-active':
+										activePath === 'quick-trade' &&
+										selectedMenu === 'quick-trade',
+								})}
+								onClick={() => this.handleMenu('quick-trade')}
+							>
+								<div className="notification-content" />
+								<Image
+									icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
+									wrapperClassName="app-bar-account-list-icon"
+								/>
+								<EditWrapper
+									stringId="QUICK_TRADE"
+									iconId="QUICK_TRADE_TAB_ACTIVE"
+								>
+									{STRINGS['QUICK_TRADE']}
+								</EditWrapper>
+							</div>
+						)}
 						<div
 							className={classnames(
 								'app-bar-account-menu-list d-flex',
@@ -118,11 +166,11 @@ class MenuList extends Component {
 									? {
 											'menu-notification-active':
 												activePath === 'wallet' && selectedMenu === 'wallet',
-											wallet_notification: selectedMenu !== 'wallet'
+											wallet_notification: selectedMenu !== 'wallet',
 									  }
 									: {
 											'menu-active':
-												activePath === 'wallet' && selectedMenu === 'wallet'
+												activePath === 'wallet' && selectedMenu === 'wallet',
 									  }
 							)}
 							onClick={() => this.handleMenu('wallet')}
@@ -140,25 +188,28 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_WALLET}
+							<Image
+								icon={ICONS['TAB_WALLET']}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_WALLET}
+							<EditWrapper stringId="ACCOUNTS.TAB_WALLET" iconId="TAB_WALLET">
+								{STRINGS['ACCOUNTS.TAB_WALLET']}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
-								'menu-active':
-									selectedMenu === 'history'
+								'menu-active': selectedMenu === 'history',
 							})}
 							onClick={() => this.handleMenu('history')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_HISTORY}
+							<Image
+								icon={ICONS['TAB_HISTORY']}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_HISTORY}
+							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY" iconId="TAB_HISTORY">
+								{STRINGS['ACCOUNTS.TAB_HISTORY']}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -167,11 +218,11 @@ class MenuList extends Component {
 									? {
 											'menu-notification-active':
 												activePath === 'account' && selectedMenu === 'security',
-											security_notification: selectedMenu !== 'security'
+											security_notification: selectedMenu !== 'security',
 									  }
 									: {
 											'menu-active':
-												activePath === 'account' && selectedMenu === 'security'
+												activePath === 'account' && selectedMenu === 'security',
 									  }
 							)}
 							onClick={() => this.handleMenu('security')}
@@ -189,11 +240,16 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_SECURITY}
+							<Image
+								icon={ICONS['TAB_SECURITY']}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SECURITY}
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SECURITY"
+								iconId="TAB_SECURITY"
+							>
+								{STRINGS['ACCOUNTS.TAB_SECURITY']}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames(
@@ -203,12 +259,13 @@ class MenuList extends Component {
 											'menu-notification-active':
 												activePath === 'account' &&
 												selectedMenu === 'verification',
-											verification_notification: selectedMenu !== 'verification'
+											verification_notification:
+												selectedMenu !== 'verification',
 									  }
 									: {
 											'menu-active':
 												activePath === 'account' &&
-												selectedMenu === 'verification'
+												selectedMenu === 'verification',
 									  }
 							)}
 							onClick={() => this.handleMenu('verification')}
@@ -226,51 +283,66 @@ class MenuList extends Component {
 									</div>
 								)}
 							</div>
-							<ReactSVG
-								path={ICONS.TAB_VERIFY}
+							<Image
+								icon={ICONS['TAB_VERIFY']}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_VERIFICATION}
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_VERIFICATION"
+								iconId="TAB_VERIFY"
+							>
+								{STRINGS['ACCOUNTS.TAB_VERIFICATION']}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
 								'menu-active':
-									activePath === 'account' && selectedMenu === 'settings'
+									activePath === 'account' && selectedMenu === 'settings',
 							})}
 							onClick={() => this.handleMenu('settings')}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SETTING}
+							<Image
+								icon={ICONS['TAB_SETTING']}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SETTINGS}
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SETTINGS"
+								iconId="TAB_SETTING"
+							>
+								{STRINGS['ACCOUNTS.TAB_SETTINGS']}
+							</EditWrapper>
 						</div>
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
 								'menu-active':
-									activePath === 'account' && selectedMenu === 'help'
+									activePath === 'account' && selectedMenu === 'help',
 							})}
 							onClick={this.onHelp}
 						>
 							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.SIDEBAR_HELP}
+							<Image
+								icon={ICONS['SIDEBAR_HELP']}
 								wrapperClassName="app-bar-account-list-icon"
 							/>
-							{STRINGS.LOGIN.HELP}
+							<EditWrapper stringId="LOGIN.HELP" iconId="SIDEBAR_HELP">
+								{STRINGS['LOGIN.HELP']}
+							</EditWrapper>
 						</div>
 
-						<div
-							className="app-bar-account-menu-list d-flex"
-							onClick={this.logout}
-						>
-							<div className="notification-content" />
-							<ReactSVG
-								path={ICONS.TAB_SIGNOUT}
-								wrapperClassName="app-bar-account-list-icon"
+						<div className="app-bar-account-menu-list d-flex">
+							<div className="d-flex" onClick={this.logout}>
+								<div className="notification-content" />
+								<Image
+									icon={ICONS['TAB_SIGNOUT']}
+									wrapperClassName="app-bar-account-list-icon"
+								/>
+								{STRINGS['ACCOUNTS.TAB_SIGNOUT']}
+							</div>
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SIGNOUT"
+								iconId="TAB_SIGNOUT"
 							/>
-							{STRINGS.ACCOUNTS.TAB_SIGNOUT}
 						</div>
 					</div>
 				)}
@@ -279,4 +351,10 @@ class MenuList extends Component {
 	}
 }
 
-export default MenuList;
+const mapStateToProps = (state) => {
+	return {
+		constants: state.app.constants,
+	};
+};
+
+export default connect(mapStateToProps)(withConfig(MenuList));

@@ -32,7 +32,7 @@ $dropdown-option--padding: 0.25rem;
 	z-index: 10000;
 	max-height: $dropdown-menu--max-height;
 	overflow-y: auto;
-	border: 1px solid grey;
+	border: 1px solid $colors-border;
 	border-bottom-right-radius: $dropdown-menu--border-radius;
 	border-bottom-left-radius: $dropdown-menu--border-radius;
 	border-top: 0;
@@ -72,28 +72,6 @@ $dropdown-option--padding: 0.25rem;
 	.dropdown-option {
 		> .icon {
 			margin-left: $dropdown-option--padding;
-		}
-	}
-}
-
-.dark-theme {
-	.dropdown-options-wrapper {
-		background: $dark-app-background-color !important;
-	}
-	.disabled {
-		.field-children {
-			color: $dark-form-text-disabled !important;
-		}
-	}
-	.dropdown-option {
-		color: $dark-form-text !important;
-
-		.option-icon {
-			svg {
-				path {
-					fill: $dark-font-sub-text-color;
-				}
-			}
 		}
 	}
 }

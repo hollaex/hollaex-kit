@@ -4,7 +4,6 @@ $container--padding: 4rem;
 $container--padding-sm: 3rem;
 
 .light-auth-body {
-	background: url($background-image) !important;
 	background-repeat: no-repeat;
 	background-size: cover;
 	position: relative;
@@ -14,12 +13,7 @@ $container--padding-sm: 3rem;
 		content: '';
 		width: 100%;
 		height: 130%;
-		background-color: rgba(241, 242, 242, 0.6);
 	}
-}
-
-.dark-auth-body {
-	background: $dark-app-light-background !important;
 }
 
 .exchange-warning {
@@ -30,13 +24,13 @@ $container--padding-sm: 3rem;
 }
 
 .exchange-expired {
-	background-color: $colors-notifications-red !important;
-	color: $colors-white !important;
+	background-color: #ed1c24 !important;
+	color: #ffffff !important;
 }
 
 .exchange-trial {
-	background-color: #FFF100;
-	color: $colors-black;
+	background-color: #fff100;
+	color: #000000;
 }
 
 .layout-mobile {
@@ -76,8 +70,6 @@ $container--padding-sm: 3rem;
 	}
 }
 .auth-wrapper {
-	background: url($background-image);
-	background-color: #d9dee5;
 	background-repeat: no-repeat;
 	background-size: cover;
 	// background-repeat: repeat;
@@ -89,7 +81,6 @@ $container--padding-sm: 3rem;
 		content: '';
 		width: 100%;
 		height: 100%;
-		background-color: rgba(241, 242, 242, 0.6);
 	}
 
 	&.white-theme {
@@ -145,7 +136,7 @@ $container--padding-sm: 3rem;
 	.icon_title-wrapper {
 		margin-top: 0;
 		&.underline:after {
-			height: 0.20rem;
+			height: 0.2rem;
 		}
 
 		.icon_title-text {
@@ -189,51 +180,14 @@ $container--padding-sm: 3rem;
 	position: relative;
 }
 
-.dark-theme {
-	&.auth-wrapper {
-		background: $dark-app-light-background;
-		background: url($dark-background-image);
-		background-size: cover;
-		&:before {
-			background-color: transparent;
-		}
-
-		.auth-container {
-			.auth_wrapper {
-				background-color: $dark-auth-container-background;
-
-				.icon_title-svg {
-					.hollaEX_logo_gray {
-						fill: $colors-white;
-					}
-				}
-			}
-		}
-		.exir-button {
-			&.disabled {
-				background-color: #535353 !important;
-				color: gray !important;
-			}
-		}
-	}
-	.exir-logo-01,
-	.account-recovery-1,
-	.account-recovery-success-1,
-	.account-recovery-success-2,
-	.password-reset-1,
-	.password-reset-2,
-	.success-black-1 {
-		fill: $dark-icon-color;
-	}
-}
-
 @media screen and (max-width: 1096px) {
 	.auth-wrapper {
 		.auth-container {
 			max-width: $content-wrapper-width-small-devices !important;
-			
+
 			.auth_wrapper {
-				padding: $container--padding-sm $container--padding $container--padding-sm;
+				padding: $container--padding-sm $container--padding
+					$container--padding-sm;
 			}
 			.auth_form-wrapper {
 				margin-top: 1rem;

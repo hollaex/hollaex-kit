@@ -1,10 +1,17 @@
 import React from 'react';
-import { ICONS } from '../../config/constants';
 import MessageDisplay from './MessageDisplay';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-export default ({ success = true, ...rest }) => (
-	<MessageDisplay
-		iconPath={success ? ICONS.CHECK : ICONS.RED_WARNING}
-		{...rest}
-	/>
+export default withConfig(
+	({ icons: ICONS, iconId, iconPath, success = true, ...rest }) => {
+		return (
+			<MessageDisplay
+				iconId={iconId ? iconId : success ? 'CHECK' : 'RED_WARNING'}
+				iconPath={
+					iconPath ? iconPath : success ? ICONS.CHECK : ICONS.RED_WARNING
+				}
+				{...rest}
+			/>
+		);
+	}
 );

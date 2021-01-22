@@ -5,10 +5,12 @@ import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
-// import TraderAccounts from './components/TraderAccounts';
+import TraderAccounts from './components/TraderAccounts';
 // import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 // import TradingVolume from './components/TradingVolume';
+import AccountDetails from './components/AccountDetails';
+import Markets from './components/Markets';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
@@ -18,24 +20,17 @@ import {
 	// openContactForm,
 	logoutconfirm,
 	setNotification,
-	NOTIFICATIONS
+	NOTIFICATIONS,
+	requestTiers,
 } from '../../actions/appActions';
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
-	SHOW_TOTAL_ASSETS
+	SHOW_TOTAL_ASSETS,
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	formatToCurrency,
-	formatAverage,
-	formatBaseAmount,
-	calculateBalancePrice,
-	donutFormatPercentage,
-	calculatePrice,
-	calculatePricePercentage
-} from '../../utils/currency';
+import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
 import { getUserReferralCount } from '../../actions/userAction';
 
@@ -43,18 +38,16 @@ class Summary extends Component {
 	state = {
 		selectedAccount: '',
 		currentTradingAccount: this.props.verification_level,
-		chartData: [],
-		totalAssets: '',
-		lastMonthVolume: 0
+		lastMonthVolume: 0,
 	};
 
 	componentDidMount() {
 		const { user, tradeVolumes, pairs, prices } = this.props;
 
 		if (user.id) {
-			this.calculateSections(this.props);
 			this.setCurrentTradeAccount(user);
 			this.props.getUserReferralCount();
+			this.props.requestTiers();
 		}
 		if (tradeVolumes.fetched) {
 			let lastMonthVolume = getLastMonthVolume(
@@ -66,18 +59,7 @@ class Summary extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.user.id !== this.props.user.id ||
-			nextProps.price !== this.props.price ||
-			nextProps.orders.length !== this.props.orders.length ||
-			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins) ||
-			nextProps.activeLanguage !== this.props.activeLanguage
-		) {
-			this.calculateSections(nextProps);
-		}
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			this.props.user.verification_level !== nextProps.user.verification_level
 		) {
@@ -106,7 +88,7 @@ class Summary extends Component {
 	onFeesAndLimits = (tradingAccount, discount) => {
 		this.props.openFeesStructureandLimits({
 			verification_level: tradingAccount,
-			discount: discount
+			discount: discount,
 		});
 	};
 
@@ -122,47 +104,19 @@ class Summary extends Component {
 		}
 	};
 
-	calculateSections = ({ price, balance, orders, prices, coins }) => {
-		const data = [];
-
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
-		Object.keys(coins).forEach((currency) => {
-			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculatePrice(
-				balance[`${symbol}_balance`],
-				prices[currency]
-			);
-			const balancePercent = calculatePricePercentage(
-				currencyBalance,
-				totalAssets
-			);
-			data.push({
-				...coins[currency],
-				balance: balancePercent,
-				balanceFormat: formatToCurrency(currencyBalance, min),
-				balancePercentage: donutFormatPercentage(balancePercent)
-			});
-		});
-
-		this.setState({
-			chartData: data,
-			totalAssets: formatAverage(formatBaseAmount(totalAssets))
-		});
-	};
-
 	setCurrentTradeAccount = (user) => {
 		let currentTradingAccount = this.state.currentTradingAccount;
 		if (user.verification_level) {
 			this.setState({
 				currentTradingAccount,
-				selectedAccount: user.verification_level
+				selectedAccount: user.verification_level,
 			});
 		}
 	};
 
 	onInviteFriends = () => {
 		this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, {
-			affiliation_code: this.props.user.affiliation_code
+			affiliation_code: this.props.user.affiliation_code,
 		});
 	};
 
@@ -177,26 +131,33 @@ class Summary extends Component {
 			activeTheme,
 			pairs,
 			coins,
-			isValidBase,
 			verification_level,
 			config_level,
-			affiliation
+			affiliation,
+			chartData,
+			totalAsset,
+			router,
 		} = this.props;
 		const {
 			selectedAccount,
-			chartData,
-			totalAssets,
-			lastMonthVolume
+			lastMonthVolume,
+			currentTradingAccount,
 		} = this.state;
+
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
 		let traderAccTitle = STRINGS.formatString(
-			STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,
+			STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 			verification_level
 		);
 		return (
 			<div className="summary-container">
 				{!isMobile && (
-					<IconTitle text={`${STRINGS.SUMMARY.TITLE}`} textType="title" />
+					<IconTitle
+						stringId="SUMMARY.TITLE"
+						text={`${STRINGS['SUMMARY.TITLE']}`}
+						textType="title"
+					/>
 				)}
 				{isMobile ? (
 					<MobileSummary
@@ -209,7 +170,6 @@ class Summary extends Component {
 						logout={this.logoutConfirm}
 						balance={balance}
 						chartData={chartData}
-						isValidBase={isValidBase}
 						totalAssets={totalAssets}
 						lastMonthVolume={lastMonthVolume}
 						traderAccTitle={traderAccTitle}
@@ -222,13 +182,14 @@ class Summary extends Component {
 					/>
 				) : (
 					<div>
-						{/*<div className="d-flex align-items-center">
+						<div className="d-flex align-items-center">
 							<div className="summary-section_1 trader-account-wrapper d-flex">
-								<SummaryBlock title={traderAccTitle}>
+								<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
 									<TraderAccounts
 										user={user}
 										pairs={pairs}
 										coins={coins}
+										config={config_level}
 										activeTheme={activeTheme}
 										onFeesAndLimits={this.onFeesAndLimits}
 										onUpgradeAccount={this.onUpgradeAccount}
@@ -238,8 +199,8 @@ class Summary extends Component {
 								</SummaryBlock>
 							</div>
 							<div className="summary-section_1 requirement-wrapper d-flex">
-								<SummaryBlock
-									title={STRINGS.SUMMARY.TASKS}
+								{/* <SummaryBlock
+									title={STRINGS["SUMMARY.TASKS"]}
 									wrapperClassname="w-100"
 								>
 									<SummaryRequirements
@@ -248,49 +209,86 @@ class Summary extends Component {
 										lastMonthVolume={lastMonthVolume}
 										contentClassName="requirements-content"
 									/>
-								</SummaryBlock>
-							</div>
-						</div>*/}
-						<div className="d-flex align-items-center">
-							<div
-								className={classnames('assets-wrapper', 'asset_wrapper_width')}
-							>
-								<SummaryBlock
-									title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-									secondaryTitle={
-										SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ? (
-											<span>
-												<span className="title-font">{totalAssets}</span>
-												{` ${fullname}`}
-											</span>
-										) : null
-									}
-									// wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
+								</SummaryBlock> */}
+								<div
+									className={classnames(
+										'assets-wrapper',
+										'asset_wrapper_width'
+									)}
 								>
-									<AccountAssets
-										user={user}
-										chartData={chartData}
-										totalAssets={totalAssets}
-										balance={balance}
-										coins={coins}
-										activeTheme={activeTheme}
-									/>
-								</SummaryBlock>
+									<SummaryBlock
+										stringId="SUMMARY.ACCOUNT_ASSETS"
+										title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
+										secondaryTitle={
+											SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
+												<span>
+													<span className="title-font">{totalAssets}</span>
+													{` ${fullname}`}
+												</span>
+											) : null
+										}
+										// wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
+									>
+										<AccountAssets
+											user={user}
+											chartData={chartData}
+											totalAssets={totalAssets}
+											balance={balance}
+											coins={coins}
+											activeTheme={activeTheme}
+										/>
+									</SummaryBlock>
+								</div>
 							</div>
+						</div>
+						<div className="w-100">
+							<SummaryBlock
+								stringId="SUMMARY.MARKETS"
+								title={STRINGS['SUMMARY.MARKETS']}
+							>
+								<Markets
+									user={user}
+									coins={coins}
+									pairs={pairs}
+									activeTheme={activeTheme}
+									router={router}
+								/>
+							</SummaryBlock>
 							{/*<div className="trading-volume-wrapper">
                                 <SummaryBlock
-                                    title={STRINGS.SUMMARY.TRADING_VOLUME}
+                                    title={STRINGS["SUMMARY.TRADING_VOLUME"]}
                                     // secondaryTitle={<span>
                                     //     <span className="title-font">
                                     //         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                     //     </span>
-                                    //     {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                    //     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     // </span>
                                     // }
                                 >
                                     <TradingVolume user={user} />
                                 </SummaryBlock>
                             </div>*/}
+						</div>
+						<div className="w-100">
+							<SummaryBlock
+								stringId="SUMMARY.ACCOUNT_DETAILS"
+								title={STRINGS['SUMMARY.ACCOUNT_DETAILS']}
+								secondaryTitle={currentTradingAccount.name}
+							>
+								<AccountDetails
+									user={user}
+									coins={coins}
+									pairs={pairs}
+									activeTheme={activeTheme}
+									config={config_level}
+									currentTradingAccount={currentTradingAccount.symbol}
+									selectedAccount={selectedAccount}
+									lastMonthVolume={lastMonthVolume}
+									onAccountTypeChange={this.onAccountTypeChange}
+									onFeesAndLimits={this.onFeesAndLimits}
+									onUpgradeAccount={this.onUpgradeAccount}
+								/>
+							</SummaryBlock>
 						</div>
 					</div>
 				)}
@@ -311,10 +309,11 @@ const mapStateToProps = (state) => ({
 	orders: state.order.activeOrders,
 	activeLanguage: state.app.language,
 	tradeVolumes: state.user.tradeVolumes,
-	isValidBase: state.app.isValidBase,
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation,
-	constants: state.app.constants
+	constants: state.app.constants,
+	chartData: state.asset.chartData,
+	totalAsset: state.asset.totalAsset,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -324,10 +323,8 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch)
+	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
+	requestTiers: bindActionCreators(requestTiers, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Summary);
+export default connect(mapStateToProps, mapDispatchToProps)(Summary);

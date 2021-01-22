@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Layout, Menu, Icon, Row, Col, Spin } from 'antd';
-import io from 'socket.io-client';
+import { CaretLeftOutlined } from '@ant-design/icons';
+import { Layout, Menu, Row, Col, Spin } from 'antd';
 import { debounce } from 'lodash';
+import { ReactSVG } from 'react-svg';
 
 import { PATHS } from '../paths';
+import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
 	isLoggedIn,
@@ -14,26 +16,30 @@ import {
 	isSupervisor,
 	isAdmin,
 	getTokenTimestamp,
-	getToken
 } from '../../../utils/token';
 import { checkUserSessionExpired } from '../../../utils/utils';
-import { logout } from '../../../actions/authAction';
-import { setMe } from '../../../actions/userAction';
 import {
-	setPairsData
-} from '../../../actions/orderbookAction';
+	getExchangeInitialized,
+	getSetupCompleted,
+} from '../../../utils/initialize';
+import { logout } from '../../../actions/authAction';
+import { getMe, setMe } from '../../../actions/userAction';
+import { setPairsData } from '../../../actions/orderbookAction';
 import {
 	setPairs,
 	changePair,
 	setCurrencies,
 	setOrderLimits,
-	setValidBaseCurrency,
 	setConfig,
 	setLanguage,
 	changeTheme,
-	requestAvailPlugins
+	// requestAvailPlugins,
+	requestInitial,
+	requestConstant,
 } from '../../../actions/appActions';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
+import { SESSION_TIME } from '../../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
+import { checkRole } from '../../../utils/token';
 
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
@@ -43,6 +49,7 @@ import 'antd/dist/antd.css';
 const md = new MobileDetect(window.navigator.userAgent);
 
 const { Content, Sider } = Layout;
+const { Item } = Menu;
 
 class AppWrapper extends React.Component {
 	constructor(prop) {
@@ -54,8 +61,8 @@ class AppWrapper extends React.Component {
 			isLoaded: false,
 			appLoaded: false,
 			publicSocket: undefined,
-			privateSocket: undefined,
-			idleTimer: undefined
+			idleTimer: undefined,
+			setupCompleted: true,
 		};
 	}
 
@@ -70,17 +77,30 @@ class AppWrapper extends React.Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
+		const initialized = getExchangeInitialized();
+		const setupCompleted = getSetupCompleted();
+		if (
+			initialized === 'false' ||
+			(typeof initialized === 'boolean' && !initialized)
+		) {
+			this.props.router.push('/init');
+		}
 		this._resetTimer();
-		this.props.requestAvailPlugins();
+		// this.props.requestAvailPlugins();
 		this.setState({
+			setupCompleted:
+				setupCompleted === 'false' ||
+				(typeof setupCompleted === 'boolean' && !setupCompleted)
+					? false
+					: true,
 			isSupportUser: isSupport(),
 			isSupervisorUser: isSupervisor(),
 			isAdminUser: isAdmin(),
-			isLoaded: true
+			isLoaded: true,
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		// if (
 		// 	!nextProps.fetchingAuth &&
 		// 	nextProps.fetchingAuth !== this.props.fetchingAuth &&
@@ -97,14 +117,6 @@ class AppWrapper extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.state.publicSocket) {
-			this.state.publicSocket.close();
-		}
-
-		if (this.state.privateSocket) {
-			this.state.privateSocket.close();
-		}
-
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
 		}
@@ -113,7 +125,7 @@ class AppWrapper extends React.Component {
 	initSocketConnections = () => {
 		this.setPublicWS();
 		if (isLoggedIn()) {
-			this.setUserSocket(getToken());
+			this.setUserSocket();
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -125,10 +137,7 @@ class AppWrapper extends React.Component {
 			clearTimeout(this.idleTimer);
 		}
 		if (this.state.appLoaded) {
-			const idleTimer = setTimeout(
-				() => this.logout('Inactive'),
-				SESSION_TIME
-			); // no activity will log the user out automatically
+			const idleTimer = setTimeout(() => this.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
 	};
@@ -136,86 +145,83 @@ class AppWrapper extends React.Component {
 	resetTimer = debounce(this._resetTimer, 250);
 
 	setPublicWS = () => {
-		// TODO change when added more cryptocurrencies
-
-		const publicSocket = io(`${WS_URL}/realtime`, {
-			query: {
-				// symbol: 'btc'
-			}
-		});
-
-		this.setState({ publicSocket });
-
-		publicSocket.on('initial', (data) => {
-			if (!this.props.pair) {
-				const pair = Object.keys(data.pairs)[0];
-				this.props.changePair(pair);
-			}
-			this.props.setPairs(data.pairs);
-			this.props.setPairsData(data.pairs);
-			this.props.setCurrencies(data.coins);
-			this.props.setConfig(data.constants);
-			const pairWithBase = Object.keys(data.pairs).filter((key) => {
-				let temp = data.pairs[key];
-				return temp.pair_2 === BASE_CURRENCY;
+		requestInitial()
+			.then((res) => {
+				if (res && res.data) {
+					this.props.setConfig(res.data);
+				}
+			})
+			.catch((err) => {
+				console.error(err);
 			});
-			const isValidPair = pairWithBase.length > 0;
-			this.props.setValidBaseCurrency(isValidPair);
-			const orderLimits = {};
-			Object.keys(data.pairs).map((pair, index) => {
-				orderLimits[pair] = {
-					PRICE: {
-						MIN: data.pairs[pair].min_price,
-						MAX: data.pairs[pair].max_price,
-						STEP: data.pairs[pair].increment_price
-					},
-					SIZE: {
-						MIN: data.pairs[pair].min_size,
-						MAX: data.pairs[pair].max_size,
-						STEP: data.pairs[pair].increment_price
+
+		requestConstant()
+			.then((res) => {
+				if (res && res.data) {
+					if (!this.props.pair) {
+						const pair = Object.keys(res.data.pairs)[0];
+						this.props.changePair(pair);
 					}
-				};
-				return '';
+					this.props.setPairs(res.data.pairs);
+					this.props.setPairsData(res.data.pairs);
+					this.props.setCurrencies(res.data.coins);
+
+					const orderLimits = {};
+					Object.keys(res.data.pairs).map((pair, index) => {
+						orderLimits[pair] = {
+							PRICE: {
+								MIN: res.data.pairs[pair].min_price,
+								MAX: res.data.pairs[pair].max_price,
+								STEP: res.data.pairs[pair].increment_price,
+							},
+							SIZE: {
+								MIN: res.data.pairs[pair].min_size,
+								MAX: res.data.pairs[pair].max_size,
+								STEP: res.data.pairs[pair].increment_price,
+							},
+						};
+						return '';
+					});
+					this.props.setOrderLimits(orderLimits);
+				}
+			})
+			.catch((err) => {
+				console.error(err);
 			});
-			this.props.setOrderLimits(orderLimits);
-		});
 	};
 
 	setUserSocket = (token) => {
-		const privateSocket = io.connect(`${WS_URL}/user`, {
-			query: {
-				token: `Bearer ${token}`
-			}
-		});
-
-		this.setState({ privateSocket });
-
-		privateSocket.on('error', (error) => {
-			if (
-				error &&
-				typeof error === 'string' &&
-				error.indexOf('Access Denied') > -1
-			) {
-				this.logout('Token is expired');
-			}
-		});
-
-		privateSocket.on('user', ({ action, data }) => {
-			this.props.setMe(data);
-			if (
-				data.settings &&
-				data.settings.language !== this.props.activeLanguage
-			) {
-				this.props.changeLanguage(data.settings.language);
-			}
-			if (
-				data.settings.interface &&
-				data.settings.interface.theme !== this.props.activeTheme
-			) {
-				this.props.changeTheme(data.settings.interface.theme);
-				localStorage.setItem('theme', data.settings.interface.theme);
-			}
-		});
+		this.props
+			.getMe()
+			.then(({ value }) => {
+				if (value && value.data && value.data.id) {
+					const data = value.data;
+					this.props.setMe(data);
+					if (
+						data.settings &&
+						data.settings.language !== this.props.activeLanguage
+					) {
+						this.props.changeLanguage(data.settings.language);
+					}
+					if (
+						data.settings.interface &&
+						data.settings.interface.theme !== this.props.activeTheme
+					) {
+						this.props.changeTheme(data.settings.interface.theme);
+						localStorage.setItem('theme', data.settings.interface.theme);
+					}
+				}
+			})
+			.catch((err) => {
+				console.log('err', err);
+				let error = err.message;
+				if (err.data && err.data.message) {
+					error = err.data.message;
+				}
+				if (error.indexOf('Access Denied') > -1) {
+					this.logout('Token is expired');
+				}
+			});
 	};
 
 	isSocketDataReady = () => {
@@ -232,24 +238,166 @@ class AppWrapper extends React.Component {
 	renderMenuItem = ({ path, label, routeKey, ...rest }, index) => {
 		let showLabel = label;
 		if (routeKey === 'main') {
-			showLabel = this.props.constants.api_name || ''
+			showLabel = this.props.constants.api_name || '';
+			return (
+				<Item key={index} className="custom-side-menu">
+					<Link to={path} className="no-link" key={index}>
+						<div
+							className={
+								this.props.location.pathname === '/admin'
+									? 'sidebar-exchange-menu flex-menu active-exchange-menu'
+									: 'sidebar-exchange-menu flex-menu'
+							}
+						>
+							<ReactSVG
+								src={STATIC_ICONS.HEX_PATTERN_ICON}
+								className="sidebar-icon"
+							/>
+							<div>
+								<div>DASHBOARD</div>
+								<div className="exchange-title">{showLabel}</div>
+							</div>
+						</div>
+					</Link>
+				</Item>
+			);
 		}
 		return (
-			<Menu.Item key={index}>
-				<Link to={path} className="no-link">
-					{showLabel}
+			<Item key={index} className="custom-side-menu">
+				<Link to={path} className="no-link" key={index}>
+					<div
+						className={
+							this.props.location.pathname.includes(path)
+								? 'sidebar-menu active-side-menu'
+								: 'sidebar-menu'
+						}
+					>
+						{showLabel}
+					</div>
 				</Link>
-			</Menu.Item>
+			</Item>
 		);
-	}
+	};
+
+	getTitle = () => {
+		const { location = {} } = this.props;
+		if (location.pathname.includes('/admin/user')) {
+			return 'Users';
+		} else if (location.pathname.includes('/admin/general')) {
+			return 'General';
+		} else if (location.pathname.includes('/admin/financial')) {
+			return 'Financial';
+		} else if (location.pathname.includes('/admin/trade')) {
+			return 'Trade';
+		} else if (location.pathname.includes('/admin/plugins')) {
+			return 'Plugins';
+		} else if (location.pathname.includes('/admin/tiers')) {
+			return 'Tiers';
+		} else if (location.pathname.includes('/admin/roles')) {
+			return 'Roles';
+		} else if (location.pathname.includes('/admin/hosting')) {
+			return 'Hosting';
+		} else if (location.pathname.includes('/admin/apikey')) {
+			return 'API keys';
+		} else if (location.pathname.includes('/admin/billing')) {
+			return 'Billing';
+		} else if (location.pathname.includes('/admin/collateral')) {
+			return 'Collateral';
+		} else if (location.pathname.includes('/admin/resources')) {
+			return 'Resources';
+		} else {
+			return 'Dashboard';
+		}
+	};
+
+	renderItems = () => {
+		switch (checkRole()) {
+			case 'supervisor':
+				return (
+					<div className="role-section bg-black">
+						<div>
+							<ReactSVG
+								src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+								className="sider-icons"
+							/>
+						</div>
+						<div>
+							<div className="main-label">Role:</div>
+							<div className="sub-label">SuperVisor</div>
+						</div>
+					</div>
+				);
+			case 'kyc':
+				return (
+					<div className="role-section bg-grey">
+						<div>
+							<ReactSVG
+								src={STATIC_ICONS.BLUE_SCREEN_KYC}
+								className="sider-icons"
+							/>
+						</div>
+						<div>
+							<div className="main-label black">Role:</div>
+							<div className="sub-label black">KYC</div>
+						</div>
+					</div>
+				);
+			case 'tech':
+				return (
+					<div className="role-section bg-orange">
+						<div>
+							<ReactSVG
+								src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								className="sider-icons"
+							/>
+						</div>
+						<div>
+							<div className="main-label">Role:</div>
+							<div className="sub-label">Support</div>
+						</div>
+					</div>
+				);
+			case 'support':
+				return (
+					<div className="role-section bg-yellow">
+						<div>
+							<ReactSVG
+								src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								className="sider-icons"
+							/>
+						</div>
+						<div>
+							<div className="main-label black">Role:</div>
+							<div className="sub-label black">Support</div>
+						</div>
+					</div>
+				);
+			default:
+				return (
+					<div className="role-section">
+						<div>
+							<img
+								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
+								className="sider-icons"
+								alt="EyeIcon"
+							/>
+						</div>
+						<div>
+							<div className="main-label">Role:</div>
+							<div className="sub-label">Administrator</div>
+						</div>
+					</div>
+				);
+		}
+	};
 
 	render() {
-		const { children, router } = this.props;
+		const { children, router, user } = this.props;
 		const logout = () => {
 			removeToken();
 			router.replace('/login');
 		};
-		const { isAdminUser, isLoaded, appLoaded } = this.state;
+		const { isAdminUser, isLoaded, appLoaded, setupCompleted } = this.state;
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {
@@ -257,6 +405,9 @@ class AppWrapper extends React.Component {
 		}
 		if (isLoggedIn() && !isAdminUser) {
 			router.replace('/summary');
+		}
+		if (!setupCompleted) {
+			return <SetupWizard user={user} />;
 		}
 		if (md.phone()) {
 			return (
@@ -282,11 +433,12 @@ class AppWrapper extends React.Component {
 						<Col span={16}>
 							<Layout>
 								<Content style={{ marginLeft: 50, marginTop: 0 }}>
-									<div className="content-wrapper">
-										{appLoaded && this.isSocketDataReady()
-											? children
-											: <Spin size="large" className="m-top" />
-										}
+									<div className="content-wrapper admin-content-wrapper">
+										{appLoaded && this.isSocketDataReady() ? (
+											children
+										) : (
+											<Spin size="large" className="m-top" />
+										)}
 									</div>
 								</Content>
 							</Layout>
@@ -296,61 +448,75 @@ class AppWrapper extends React.Component {
 			);
 		} else {
 			return (
-				<Layout>
-					<Sider>
-						<div className="d-flex flex-column justify-content-between">
-							<Menu
-								theme="dark"
-								mode="vertical"
-								style={{ lineHeight: '64px' }}
-								className="m-top"
-							>
-								{PATHS.filter(
-									({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
-										true
-								).map(this.renderMenuItem)}
-								<Menu.Item>
-									<Link to="/summary">
-										<Icon type="home" />
-										Go To HollaEx-WEB
-									</Link>
-								</Menu.Item>
-								<Menu.Item key="logout">
-									<div onClick={logout}>
-										<Icon type="logout" />
-										LOGOUT
-									</div>
-								</Menu.Item>
-							</Menu>
-							<Menu
-								theme="dark"
-								mode="vertical"
-								style={{ lineHeight: '64px' }}
-								className="m-top"
-							>
-								<Menu.Item style={{ fontSize: '14px', fontWeight: 'normal' }}>
-									<Link
-										href={ADMIN_GUIDE_DOWNLOAD_LINK}
-										target="blank"
-									>
-										<Icon type="download" />
-										Admin Panel Guide
-									</Link>
-								</Menu.Item>
-							</Menu>
-						</div>
-					</Sider>
-					<Layout>
-						<Content>
-							<div className="content-wrapper">
-								{appLoaded && this.isSocketDataReady()
-									? children
-									: <Spin size="large" className="m-top" />
-								}
+				<Fragment>
+					<div className="admin-top-bar">
+						<Link to="/summary">
+							<div className="top-box-menu">
+								<CaretLeftOutlined />
+								Back to Exchange web
 							</div>
-						</Content>
+						</Link>
+						<div className="admin-top-header">Operator Control Panel</div>
+						<div className="top-box-menu">
+							<img
+								src={STATIC_ICONS.BLUE_SCREEN_LINK}
+								className="link-icon"
+								alt="Link-icon"
+							/>{' '}
+							<a
+								href="https://dash.testnet.bitholla.com/"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Go to Holla Dash
+							</a>
+						</div>
+					</div>
+					<Layout>
+						<Sider width={310}>
+							<div className="d-flex flex-column justify-content-between menu-wrapper">
+								<Menu
+									// theme="dark"
+									mode="vertical"
+									style={{ lineHeight: '64px' }}
+									// className="m-top"
+								>
+									<div>{this.renderItems()}</div>
+									{PATHS.filter(
+										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) => true
+									).map(this.renderMenuItem)}
+								</Menu>
+								<div>
+									<div className="bottom-side-top"></div>
+									<Menu mode="vertical" style={{ lineHeight: '64px' }}>
+										<Item className="custom-side-menu">
+											<Link to="/admin/resources">
+												<div className={'sidebar-menu'}>Resources</div>
+											</Link>
+										</Item>
+										<Item className="custom-side-menu">
+											<div className={'sidebar-menu'} onClick={logout}>
+												Logout
+											</div>
+										</Item>
+									</Menu>
+								</div>
+							</div>
+						</Sider>
+						<Layout>
+							<Content>
+								<div className="admin-content-head">{this.getTitle()}</div>
+								<div className="content-wrapper admin-content-wrapper">
+									{appLoaded && this.isSocketDataReady() ? (
+										children
+									) : (
+										<Spin size="large" className="m-top" />
+									)}
+								</div>
+							</Content>
+						</Layout>
 					</Layout>
-				</Layout>
+				</Fragment>
 			);
 		}
 	}
@@ -359,7 +525,8 @@ class AppWrapper extends React.Component {
 const mapStateToProps = (state) => ({
 	fetchingAuth: state.auth.fetching,
 	pairs: state.app.pairs,
-	constants: state.app.constants
+	constants: state.app.constants,
+	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -368,13 +535,13 @@ const mapDispatchToProps = (dispatch) => ({
 	setPairsData: bindActionCreators(setPairsData, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
+	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
-	logout: bindActionCreators(logout, dispatch)
+	// requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

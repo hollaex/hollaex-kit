@@ -1,6 +1,6 @@
 
-.theme-dark .layout__area--top div {
-    background-color: var(--dark-app-background-color) !important;
+.layout__area--top div {
+    background-color: var(--base_background) !important;
 }
 
 .screen-container {

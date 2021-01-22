@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
-import { BASE_CURRENCY, ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+	BASE_CURRENCY,
+	ICONS,
+	CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA,
+} from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
 import { formatToCurrency } from '../../utils/currency';
 
+// FIXME: DEAD COMPONENT
 class CurrencyList extends Component {
 	state = {
 		focusedSymbol: '',
-		markets: {}
+		markets: {},
 	};
 
 	loadMarkets = (symbol = '', pair) => {
@@ -28,12 +34,19 @@ class CurrencyList extends Component {
 	removeFocus = () => {
 		this.setState({
 			focusedSymbol: '',
-			markets: {}
+			markets: {},
 		});
 	};
 
 	render() {
-		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage, coins } = this.props;
+		const {
+			className,
+			pairs,
+			orderBookData,
+			pair,
+			activeLanguage,
+			coins,
+		} = this.props;
 		const { markets, focusedSymbol } = this.state;
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const obj = {};
@@ -42,19 +55,23 @@ class CurrencyList extends Component {
 		});
 		const symbols = Object.keys(obj).map((key) => key);
 		let marketPrice = {};
-		Object.keys(orderBookData).forEach(order => {
+		Object.keys(orderBookData).forEach((order) => {
 			const currency = order.split('-')[0];
-			if(orderBookData[order].length && order.includes(symbol.toLowerCase())) {
+			if (orderBookData[order].length && order.includes(symbol.toLowerCase())) {
 				marketPrice[currency] = orderBookData[order][0].price;
 			}
 		});
 		return (
 			<div
-				className={classnames('currency-list f-0', className, getClasesForLanguage(activeLanguage))}
+				className={classnames(
+					'currency-list f-0',
+					className,
+					getClasesForLanguage(activeLanguage)
+				)}
 				onMouseLeave={this.removeFocus}
 			>
 				{symbols.map((coin, index) => {
-					let icon = ICONS[`${coin.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK' : ''}`];
+					let icon = ICONS[`${coin.toUpperCase()}_ICON}`];
 					if (coin === 'bch') {
 						icon = ICONS[`${coin.toUpperCase()}_NAV_ICON`];
 					}
@@ -70,7 +87,10 @@ class CurrencyList extends Component {
 							onMouseEnter={() => this.loadMarkets(coin)}
 							onClick={() => this.loadMarkets(coin)}
 						>
-							<ReactSVG path={icon} wrapperClassName="app_bar_currency-icon ml-2 mr-2" />
+							<ReactSVG
+								src={icon}
+								className="app_bar_currency-icon ml-2 mr-2"
+							/>
 							{fullname}:
 							<div className="ml-1">
 								{STRINGS.formatString(
@@ -81,9 +101,9 @@ class CurrencyList extends Component {
 							</div>
 							<div className="ml-1 mr-1">{symbol.toUpperCase()}</div>
 						</div>
-					)
+					);
 				})}
-				{focusedSymbol && <MarketList markets={markets}  />}
+				{focusedSymbol && <MarketList markets={markets} />}
 			</div>
 		);
 	}
@@ -95,7 +115,7 @@ const mapStateToProps = (store) => ({
 	orderBookData: store.orderbook.pairsTrades,
 	activeTheme: store.app.theme,
 	pair: store.app.pair,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
 });
 
 export default connect(mapStateToProps)(CurrencyList);

@@ -1,0 +1,23 @@
+.Trade-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+}
+.content {
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.master-admin-img {
+	width: 150px;
+	margin: 30px 0px;
+}
+
+.Trade-wrapper .ant-btn {
+	width: 300px;
+	background-color: #288500;
+	color: #ffffff;
+}

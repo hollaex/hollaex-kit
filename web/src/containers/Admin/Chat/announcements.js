@@ -12,7 +12,7 @@ const renderItem = (deleteAnnouncement) => ({ id, message, ...rest }) => {
 					size="small"
 				>
 					DELETE
-				</Button>
+				</Button>,
 			]}
 		>
 			<List.Item.Meta title={`${message}`} description={JSON.stringify(rest)} />
@@ -23,7 +23,7 @@ const renderItem = (deleteAnnouncement) => ({ id, message, ...rest }) => {
 export const Announcements = ({
 	announcements,
 	deleteAnnouncement,
-	addAnnouncement
+	addAnnouncement,
 }) => {
 	return (
 		<div>

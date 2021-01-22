@@ -18,7 +18,7 @@ export const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
 
 const DesktopMargins = { left: 0, right: 75, top: 35, bottom: 30 };
 const MobileMargins = { left: 0, right: 50, top: 15, bottom: 25 };
-export const margins = isMobile ? MobileMargins: DesktopMargins;
+export const margins = isMobile ? MobileMargins : DesktopMargins;
 
 export const yExtents = (modifier = 1) => (data) => {
 	return [data.high + Y_GAP * modifier, data.low - Y_GAP * modifier];
@@ -39,7 +39,10 @@ const LabelData = ({ label, value = '-' }) => (
 );
 
 export const OHLCChildren = (props, moreProps, itemsToDisplay) => {
-	const { displayTexts: { o, h, l, c, v }, className } = props;
+	const {
+		displayTexts: { o, h, l, c, v },
+		className,
+	} = props;
 	const { open, high, low, close, volume, x, y } = itemsToDisplay;
 	return (
 		<g className={classnames(className)} transform={`translate(${x}, ${y})`}>
@@ -60,9 +63,7 @@ export const FORMAT_DATE_X_TICK = timeFormat('%m/%d %H:%m %p');
 export const FORMAT_Y_TICK = format(',.0d');
 
 export const XAxisTickFormat = (date) => {
-	const endPeriod = moment(date)
-		.add({ hours: 1 })
-		.toDate();
+	const endPeriod = moment(date).add({ hours: 1 }).toDate();
 	return `${FORMAT_DATE_X_TICK(date)} - ${FORMAT_DATE_X_TICK(endPeriod)}`;
 };
 export const yAccessor = ({ close }) => close;

@@ -5,25 +5,32 @@ import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 // import TableFooter from './TableFooter';
 import Paginator from './paginator';
+import { EditWrapper } from 'components';
+import STRINGS from '../../config/localizedStrings';
 
 class Table extends Component {
 	state = {
 		page: 0,
 		// pageSize: 10,
 		data: [],
-		headers: []
+		headers: [],
 	};
 
 	componentDidMount() {
 		// this.setPageSize(this.props.pageSize);
 		if (this.props.jumpToPage) {
-			this.goToPage(this.props.jumpToPage, this.props.data, this.props.headers, this.props.count);
+			this.goToPage(
+				this.props.jumpToPage,
+				this.props.data,
+				this.props.headers,
+				this.props.count
+			);
 		} else {
 			this.goToPage(0, this.props.data, this.props.headers, this.props.count);
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.title === this.props.title &&
 			nextProps.data.length !== this.props.data.length
@@ -34,10 +41,22 @@ class Table extends Component {
 				nextProps.headers,
 				nextProps.count
 			);
-		} else if (JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)) {
+		} else if (
+			JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)
+		) {
 			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
 		}
+	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.jumpToPage !== prevProps.jumpToPage) {
+			this.goToPage(
+				this.props.jumpToPage,
+				this.props.data,
+				this.props.headers,
+				this.props.count
+			);
+		}
 	}
 
 	// setPageSize = (pageSize = 10) => {
@@ -81,12 +100,17 @@ class Table extends Component {
 		if (count === 0) {
 			return (
 				<div className="no-data d-flex justify-content-center align-items-center">
-					NO DATA
+					<EditWrapper stringId="NO_DATA">{STRINGS['NO_DATA']}</EditWrapper>
 				</div>
 			);
 		}
 
-		const { withIcon, displayPaginator, pageSize, cancelDelayData } = this.props;
+		const {
+			withIcon,
+			displayPaginator,
+			pageSize,
+			cancelDelayData,
+		} = this.props;
 		const { data, page, headers } = this.state;
 
 		return (
@@ -94,7 +118,12 @@ class Table extends Component {
 				<div className="table-content">
 					<table className={classnames('table-wrapper')}>
 						<TableHeader headers={headers} />
-						<TableBody cancelDelayData={cancelDelayData} headers={headers} data={data} withIcon={withIcon} />
+						<TableBody
+							cancelDelayData={cancelDelayData}
+							headers={headers}
+							data={data}
+							withIcon={withIcon}
+						/>
 					</table>
 				</div>
 				{displayPaginator && (
@@ -122,7 +151,7 @@ Table.defaultProps = {
 	cancelDelayData: [],
 	handleNext: () => {},
 	handlePrevious: () => {},
-	jumpToPage: 0
+	jumpToPage: 0,
 };
 
 export default Table;

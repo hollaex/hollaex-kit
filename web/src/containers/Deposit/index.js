@@ -6,13 +6,13 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
-import { ICONS, BALANCE_ERROR } from '../../config/constants';
+import { BALANCE_ERROR } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
 
 import {
 	openContactForm,
-	setSnackNotification
+	setSnackNotification,
 } from '../../actions/appActions';
 
 import { Button, MobileBarBack } from '../../components';
@@ -20,12 +20,14 @@ import { renderInformation, renderTitleSection } from '../Wallet/components';
 
 import { generateBaseInformation, renderContent } from './utils';
 
+import withConfig from 'components/ConfigProvider/withConfig';
+
 class Deposit extends Component {
 	state = {
 		depositPrice: 0,
 		currency: '',
 		checked: false,
-		copied: false
+		copied: false,
 	};
 
 	componentWillMount() {
@@ -42,7 +44,7 @@ class Deposit extends Component {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
 			this.setCurrency(nextProps.routeParams.currency);
 		} else if (!this.state.checked) {
@@ -80,9 +82,10 @@ class Deposit extends Component {
 	};
 
 	onCopy = () => {
-		this.props.setSnackNotification({
+		const { icons: ICONS, setSnackNotification } = this.props;
+		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
-			content: STRINGS.COPY_SUCCESS_TEXT
+			content: STRINGS['COPY_SUCCESS_TEXT'],
 		});
 	};
 
@@ -91,7 +94,15 @@ class Deposit extends Component {
 	};
 
 	render() {
-		const { id, crypto_wallet, openContactForm, balance, coins, constants = { links: {} } } = this.props;
+		const {
+			id,
+			crypto_wallet,
+			openContactForm,
+			balance,
+			coins,
+			constants = { links: {} },
+			icons: ICONS,
+		} = this.props;
 		const { currency, checked, copied } = this.state;
 		if (!id || !currency || !checked) {
 			return <div />;
@@ -104,8 +115,9 @@ class Deposit extends Component {
 						renderTitleSection(
 							currency,
 							'deposit',
-							ICONS.DEPOSIT_BITCOIN,
-							coins
+							ICONS['DEPOSIT_BITCOIN'],
+							coins,
+							'DEPOSIT_BITCOIN'
 						)}
 					<div
 						className={classnames(
@@ -121,7 +133,9 @@ class Deposit extends Component {
 							generateBaseInformation,
 							coins,
 							'deposit',
-							constants.links
+							constants.links,
+							ICONS['BLUE_QUESTION'],
+							'BLUE_QUESTION'
 						)}
 						{renderContent(currency, crypto_wallet, coins, this.onCopy)}
 						{isMobile && (
@@ -132,9 +146,7 @@ class Deposit extends Component {
 								<Button
 									onClick={this.onCopy}
 									label={
-										copied
-											? STRINGS.SUCCESFUL_COPY
-											: STRINGS.COPY_ADDRESS
+										copied ? STRINGS['SUCCESFUL_COPY'] : STRINGS['COPY_ADDRESS']
 									}
 								/>
 							</CopyToClipboard>
@@ -153,15 +165,15 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	quoteData: store.orderbook.quoteData,
 	coins: store.app.coins,
-	constants: store.app.constants
+	constants: store.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
-	setSnackNotification: bindActionCreators(setSnackNotification, dispatch)
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Deposit);
+)(withConfig(Deposit));

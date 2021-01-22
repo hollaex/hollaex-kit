@@ -5,12 +5,12 @@ import {
 	checkBalance,
 	validAddress,
 	normalizeBTC,
-	normalizeBTCFee
-} from "../../components/Form/validations";
-import STRINGS from "../../config/localizedStrings";
-import { ICONS, DEFAULT_COIN_DATA } from "../../config/constants";
+	normalizeBTCFee,
+} from '../../components/Form/validations';
+import STRINGS from '../../config/localizedStrings';
+import { DEFAULT_COIN_DATA } from '../../config/constants';
 import { getLanguage } from '../../utils/string';
-import { getTheme } from "../../utils/theme";
+import { getTheme } from '../../utils/theme';
 import { toFixed } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
 
@@ -36,70 +36,81 @@ export const generateFormValues = (
 	calculateMax,
 	coins = {},
 	verification_level,
-	theme = getTheme()
+	theme = getTheme(),
+	icon,
+	iconId
 ) => {
-	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
-		symbol
-	] || DEFAULT_COIN_DATA;
+	const { fullname, min, increment_unit, withdrawal_limits = {} } =
+		coins[symbol] || DEFAULT_COIN_DATA;
 	let MAX = withdrawal_limits[verification_level];
-	if (withdrawal_limits[verification_level] === 0) MAX = "";
+	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 	const fields = {};
 
-
 	fields.address = {
-		type: "text",
-		label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
-		placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
+		type: 'text',
+		stringId:
+			'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
+		label: STRINGS['WITHDRAWALS_FORM_ADDRESS_LABEL'],
+		placeholder: STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER'],
 		validate: [
 			required,
 			validAddress(
 				symbol,
 				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
-			)
+			),
 		],
-		fullWidth: true
+		fullWidth: true,
 	};
 	if (symbol === 'xrp') {
 		fields.destination_tag = {
-			type: "text",
-			label: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,
-			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
-			fullWidth: true
+			type: 'number',
+			stringId:
+				'WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER',
+			label: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_LABEL'],
+			placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
+			fullWidth: true,
 		};
 	} else if (symbol === 'xlm') {
 		fields.destination_tag = {
-			type: "text",
-			label: STRINGS.WITHDRAWALS_FORM_MEMO_LABEL,
-			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
-			fullWidth: true
+			type: 'text',
+			stringId:
+				'WITHDRAWALS_FORM_MEMO_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER',
+			label: STRINGS['WITHDRAWALS_FORM_MEMO_LABEL'],
+			placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
+			fullWidth: true,
 		};
 	}
 
 	const amountValidate = [required];
 	if (min) {
-		amountValidate.push(minValue(min, STRINGS.WITHDRAWALS_MIN_VALUE_ERROR));
+		amountValidate.push(minValue(min, STRINGS['WITHDRAWALS_MIN_VALUE_ERROR']));
 	}
 	if (MAX) {
-		amountValidate.push(maxValue(MAX, STRINGS.WITHDRAWALS_MAX_VALUE_ERROR));
+		amountValidate.push(maxValue(MAX, STRINGS['WITHDRAWALS_MAX_VALUE_ERROR']));
 	}
 	// FIX add according fee
-	// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, fullname), fee));
+	// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname), fee));
 	amountValidate.push(
 		checkBalance(
 			available,
-			STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, fullname),
+			STRINGS.formatString(STRINGS['WITHDRAWALS_LOWER_BALANCE'], fullname),
 			0
 		)
 	);
 
 	fields.amount = {
-		type: "number",
-		label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, fullname),
-		placeholder: STRINGS.formatString(
-			STRINGS.WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER,
+		type: 'number',
+		stringId:
+			'WITHDRAWALS_FORM_AMOUNT_LABEL,WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER',
+		label: STRINGS.formatString(
+			STRINGS['WITHDRAWALS_FORM_AMOUNT_LABEL'],
 			fullname
-		).join(""),
+		),
+		placeholder: STRINGS.formatString(
+			STRINGS['WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER'],
+			fullname
+		).join(''),
 		min: min,
 		max: MAX,
 		step: increment_unit,
@@ -107,12 +118,14 @@ export const generateFormValues = (
 		normalize: normalizeBTC,
 		fullWidth: true,
 		notification: {
-			text: STRINGS.CALCULATE_MAX,
-			status: "information",
-			iconPath: ICONS.BLUE_PLUS,
-			className: "file_upload_icon",
+			stringId: 'CALCULATE_MAX',
+			text: STRINGS['CALCULATE_MAX'],
+			status: 'information',
+			iconPath: icon,
+			iconId,
+			className: 'file_upload_icon',
 			useSvg: true,
-			onClick: calculateMax
+			onClick: calculateMax,
 		},
 		parse: (value = '') => {
 			let decimal = getDecimals(increment_unit);
@@ -121,49 +134,54 @@ export const generateFormValues = (
 
 			let result = value;
 			if (decimal < valueDecimal) {
-				result = decValue.toString().substring(0, (decValue.toString().length - (valueDecimal - decimal)));
+				result = decValue
+					.toString()
+					.substring(0, decValue.toString().length - (valueDecimal - decimal));
 			}
 			return result;
-		}
+		},
 	};
 
 	if (coins[symbol]) {
 		fields.fee = {
-			type: "number",
+			type: 'number',
+			stringId:
+				'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
 			// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			label: STRINGS.formatString(
-				STRINGS.WITHDRAWALS_FORM_FEE_COMMON_LABEL,
+				STRINGS['WITHDRAWALS_FORM_FEE_COMMON_LABEL'],
 				fullname
 			),
 			placeholder: STRINGS.formatString(
-				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
+				STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
 				fullname
-			).join(""),
+			).join(''),
 			disabled: true,
-			fullWidth: true
+			fullWidth: true,
 		};
 	} else {
 		fields.fee = {
-			type: "editable",
-			inputType: "number",
+			type: 'editable',
+			stringId: `WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER`,
+			inputType: 'number',
 			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
-				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
+				STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
 				fullname
-			).join(""),
+			).join(''),
 			min: min,
 			max: MAX,
 			step: min,
-			validate: [required, minValue(min), MAX ? maxValue(MAX) : ""],
+			validate: [required, minValue(min), MAX ? maxValue(MAX) : ''],
 			normalize: normalizeBTCFee,
-			fullWidth: true
+			fullWidth: true,
 		};
 	}
 	fields.captcha = {
 		type: 'captcha',
 		language: getLanguage(),
 		theme: theme,
-		validate: [required]
+		validate: [required],
 	};
 
 	return fields;

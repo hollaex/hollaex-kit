@@ -12,12 +12,12 @@ export const requestUsers = (values) => {
 		url = `/admin/users?${toQueryString(values)}`;
 	}
 	return requestAuthenticated(url);
-}
+};
 
 export const flagUser = (values) => {
 	const options = {
 		method: 'POST',
-		body: JSON.stringify(values)
+		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(`/admin/flag-user/`, options);
 };

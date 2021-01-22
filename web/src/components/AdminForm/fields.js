@@ -3,6 +3,7 @@ import { InputNumber, Input, DatePicker, Select, Checkbox } from 'antd';
 import moment from 'moment';
 import TextArea from 'antd/lib/input/TextArea';
 import classname from 'classnames';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import './index.css';
 
 const dateFormat = 'YYYY/MM/DD';
@@ -13,20 +14,27 @@ export const renderInputField = ({
 	type,
 	meta: { touched, error, warning },
 	prefix,
-    placeholder,
-    className,
-	disabled = false
+	placeholder,
+	className,
+	disabled = false,
+	isClosable = false,
+	closeCallback = () => {},
 }) => (
-	<div className={classname("input_field", className)}>
+	<div className={classname('input_field', className)}>
 		{label && <label>{label}</label>}
 		<div>
-			<Input
-				placeholder={placeholder}
-				prefix={prefix}
-				{...input}
-				type={type}
-				disabled={disabled}
-			/>
+			<div className="d-flex align-items-center">
+				<Input
+					placeholder={placeholder}
+					prefix={prefix}
+					{...input}
+					type={type}
+					disabled={disabled}
+				/>
+				{isClosable ? (
+					<CloseCircleOutlined className="close-icon" onClick={closeCallback} />
+				) : null}
+			</div>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
 					(warning && <span className="red-text">{warning}</span>))}
@@ -41,25 +49,25 @@ export const renderTextAreaField = ({
 	meta: { touched, error, warning },
 	prefix,
 	placeholder,
-	disabled = false
+	disabled = false,
 }) => (
-		<div className="input_field">
-			{label && <label>{label}</label>}
-			<div>
-				<TextArea
-					rows={3}
-					placeholder={placeholder}
-					prefix={prefix}
-					{...input}
-					type={type}
-					disabled={disabled}
-				/>
-				{touched &&
-					((error && <span className="red-text">{error}</span>) ||
-						(warning && <span className="red-text">{warning}</span>))}
-			</div>
+	<div className="input_field">
+		{label && <label>{label}</label>}
+		<div>
+			<TextArea
+				rows={3}
+				placeholder={placeholder}
+				prefix={prefix}
+				{...input}
+				type={type}
+				disabled={disabled}
+			/>
+			{touched &&
+				((error && <span className="red-text">{error}</span>) ||
+					(warning && <span className="red-text">{warning}</span>))}
 		</div>
-    );
+	</div>
+);
 
 export const renderNumberField = ({
 	input,
@@ -78,57 +86,61 @@ export const renderNumberField = ({
 	</div>
 );
 
+const renderDefaultOptions = (options) =>
+	options.map((option, index) => {
+		let value = !option.value && option.value !== '' ? option : option.value;
+		return (
+			<Select.Option value={value} key={index}>
+				{option.label || option}
+			</Select.Option>
+		);
+	});
+
 export const renderSelectField = ({
-	input,
+	input: { onBlur, ...inputProps },
 	options = [],
 	label,
 	meta: { touched, error, warning },
 	disabled = false,
 	multiSelect = false,
+	renderOptions = renderDefaultOptions,
 	...rest
 }) => {
-	let value = input.value || '';
-	if ((multiSelect || rest.mode === 'tags') && typeof input.value === 'string') {
-		value = input.value
-			? input.value.split(',')
-			: [];
+	let value = inputProps.value || '';
+	if (
+		(multiSelect || rest.mode === 'tags') &&
+		typeof inputProps.value === 'string'
+	) {
+		value = inputProps.value ? inputProps.value.split(',') : [];
 	}
 	return (
-	<div className="input_field">
-		{label && <label>{label}</label>}
-		<div>
-			<Select
-				mode={multiSelect ? 'multiple' : 'default'}
-				{...input}
-				value={value}
-				placeholder={label}
-				disabled={disabled}
-				{...rest}
-			>
-				{options.map((option, index) => {
-					let value = (!option.value && option.value !== '') ? option : option.value;
-					return (
-						<Select.Option value={value} key={index}>
-							{option.label || option}
-						</Select.Option>
-					)
-				}
-				)}
-			</Select>
-			{touched &&
-				((error && <span className="red-text">{error}</span>) ||
-					(warning && <span className="red-text">{warning}</span>))}
+		<div className="input_field">
+			{label && <label>{label}</label>}
+			<div>
+				<Select
+					mode={multiSelect ? 'multiple' : 'default'}
+					{...inputProps}
+					value={value}
+					placeholder={label}
+					disabled={disabled}
+					{...rest}
+				>
+					{renderOptions(options)}
+				</Select>
+				{touched &&
+					((error && <span className="red-text">{error}</span>) ||
+						(warning && <span className="red-text">{warning}</span>))}
+			</div>
 		</div>
-	</div>
-);
-			}
+	);
+};
 
 export const renderDateField = ({
 	input,
 	label,
 	placeholder,
 	meta: { touched, error, warning },
-	disabled = false
+	disabled = false,
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
@@ -152,7 +164,7 @@ export const renderRangeField = ({
 	input,
 	label,
 	meta: { touched, error, warning },
-	disabled = false
+	disabled = false,
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
@@ -162,7 +174,7 @@ export const renderRangeField = ({
 				disabled={disabled}
 				defaultValue={[
 					moment(input.value[0], dateFormat),
-					moment(input.value[1], dateFormat)
+					moment(input.value[1], dateFormat),
 				]}
 				format={dateFormat}
 			/>
@@ -177,14 +189,12 @@ export const renderCheckField = ({
 	input,
 	label,
 	meta: { touched, error, warning },
-	disabled = false
+	disabled = false,
 }) => (
 	<div className="input_field">
 		<div className="check_field">
-			<Checkbox
-				{...input}
-				disabled={disabled}
-			>{label}
+			<Checkbox {...input} disabled={disabled}>
+				{label}
 			</Checkbox>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||

@@ -3,14 +3,11 @@ import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
-import MobileDropdownWrapper from './components/MobileDropdownWrapper';
 import { ActionNotification } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import LogoutInfoOrder from './components/LogoutInfoOrder';
-import LogoutInfoTrade from './components/LogoutInfoTrade'
-
-
+import LogoutInfoTrade from './components/LogoutInfoTrade';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const MobileOrders = ({
 	activeOrders,
@@ -24,8 +21,8 @@ const MobileOrders = ({
 	isLoggedIn,
 	pairs,
 	coins,
-	goToPair,
-	cancelDelayData
+	cancelDelayData,
+	icons: ICONS,
 }) => (
 	<div
 		className={classnames(
@@ -37,57 +34,67 @@ const MobileOrders = ({
 			'w-100'
 		)}
 	>
-		<MobileDropdownWrapper className='' goToPair={goToPair}  />
 		<TradeBlock
-			title={STRINGS.ORDERS}
+			title={STRINGS['ORDERS']}
 			action={
-				isLoggedIn ?
-				<ActionNotification
-					text={STRINGS.CANCEL_ALL}
-					iconPath={ICONS.CANCEL_CROSS_ACTIVE}
-					onClick={cancelAllOrders}
-					status=""
-					useSvg={true}
-					showActionText={true}
-				/> : ''
+				isLoggedIn ? (
+					<ActionNotification
+						text={STRINGS['CANCEL_ALL']}
+						iconPath={ICONS['CANCEL_CROSS_ACTIVE']}
+						onClick={cancelAllOrders}
+						status=""
+						showActionText={true}
+					/>
+				) : (
+					''
+				)
 			}
 			className="f-1"
 		>
-		{	isLoggedIn ?
-			<ActiveOrders pairData={pairData} cancelDelayData={cancelDelayData} orders={activeOrders} onCancel={cancelOrder} />
-			:
-			<LogoutInfoOrder activeTheme={activeTheme} />
-			}
+			{isLoggedIn ? (
+				<ActiveOrders
+					pairData={pairData}
+					cancelDelayData={cancelDelayData}
+					orders={activeOrders}
+					onCancel={cancelOrder}
+				/>
+			) : (
+				<LogoutInfoOrder activeTheme={activeTheme} />
+			)}
 		</TradeBlock>
 		<TradeBlock
-			title={STRINGS.RECENT_TRADES}
+			title={STRINGS['RECENT_TRADES']}
 			active={true}
-			action={ isLoggedIn ? 
-				<ActionNotification
-					text={STRINGS.TRANSACTION_HISTORY.TITLE}
-					iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
-					onClick={goToTransactionsHistory}
-					status=""
-					useSvg={true}
-					showActionText={true}
-				/> 
-				: ''
+			action={
+				isLoggedIn ? (
+					<ActionNotification
+						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
+						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
+						onClick={goToTransactionsHistory}
+						status=""
+						showActionText={true}
+					/>
+				) : (
+					''
+				)
 			}
 			className="f-1"
 		>
-			{isLoggedIn ? <UserTrades
-				pageSize={10}
-				trades={userTrades}
-				pair={pair}
-				pairData={pairData}
-				lessHeaders={true}
-				pairs={pairs}
-				coins={coins}
-			/>:
-			<LogoutInfoTrade />
-			}
+			{isLoggedIn ? (
+				<UserTrades
+					pageSize={10}
+					trades={userTrades}
+					pair={pair}
+					pairData={pairData}
+					lessHeaders={true}
+					pairs={pairs}
+					coins={coins}
+				/>
+			) : (
+				<LogoutInfoTrade />
+			)}
 		</TradeBlock>
 	</div>
 );
 
-export default MobileOrders;
+export default withConfig(MobileOrders);

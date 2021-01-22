@@ -5,61 +5,94 @@ import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 
 import {
-	getUserTrades,
+	getUserOrders as getUserTrades,
 	getUserDeposits,
 	getUserWithdrawals,
 	withdrawalCancel,
 	downloadUserTrades,
+	setDeposit,
 } from '../../actions/walletActions';
 
-import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
+import {
+	IconTitle,
+	TabController,
+	Loader,
+	CheckTitle,
+	Dialog,
+	Button,
+	CurrencyBallWithPrice,
+} from '../../components';
+import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
 	generateDepositsHeaders,
-	generateWithdrawalsHeaders
+	generateWithdrawalsHeaders,
 } from './utils';
-import { RECORD_LIMIT } from './constants';
+import TradeAndOrderFilters from './components/TradeAndOrderFilters';
+import DepositAndWithdrawlFilters from './components/DepositAndWithdrawlFilters';
+import { RECORD_LIMIT, TABLE_PAGE_SIZE } from './constants';
 import HistoryDisplay from './HistoryDisplay';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
 class TransactionsHistory extends Component {
 	state = {
 		headers: [],
+		filters: {},
 		activeTab: 0,
 		dialogIsOpen: false,
 		amount: 0,
 		transactionId: 0,
 		jumpToPage: 0,
-		currency: BASE_CURRENCY
+		currency: BASE_CURRENCY,
+		params: {},
 	};
 
 	componentDidMount() {
-		this.requestData(this.props.symbol);
-		this.generateHeaders(this.props.symbol, this.props.coins, this.props.discount);
-		if (this.props.location
-			&& this.props.location.query
-			&& this.props.location.query.tab) {
+		this.generateHeaders(
+			this.props.symbol,
+			this.props.coins,
+			this.props.discount
+		);
+		this.generateFilters();
+		if (
+			this.props.location &&
+			this.props.location.query &&
+			this.props.location.query.tab
+		) {
 			this.setActiveTab(parseInt(this.props.location.query.tab, 10));
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { pairs, coins } = this.props;
 		// if (nextProps.symbol !== this.props.symbol) {
 		// this.requestData(nextProps.symbol);
 		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
 		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateHeaders(nextProps.symbol, nextProps.coins, nextProps.discount);
+			this.generateHeaders(
+				nextProps.symbol,
+				nextProps.coins,
+				nextProps.discount
+			);
 		}
-		if ((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed === true) {
-			this.onCloseDialog()
+		if (
+			this.props.cancelData.dismissed !== nextProps.cancelData.dismissed &&
+			nextProps.cancelData.dismissed === true
+		) {
+			this.onCloseDialog();
 			this.requestData(nextProps.symbol);
-
+		}
+		if (
+			JSON.stringify(nextProps.pairs) !== JSON.stringify(pairs) ||
+			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
+		) {
+			this.generateFilters();
 		}
 	}
 
@@ -73,47 +106,86 @@ class TransactionsHistory extends Component {
 		this.setState({ dialogIsOpen: true });
 	};
 
-	requestData = (symbol) => {
-		switch (this.state.activeTab) {
+	requestData = () => {
+		const { params, activeTab } = this.state;
+		const { getUserTrades, getUserDeposits, getUserWithdrawals } = this.props;
+
+		switch (activeTab) {
 			case 0:
-				this.props.getUserTrades(RECORD_LIMIT);
+				getUserTrades(RECORD_LIMIT, 1, { ...params, open: false });
 				break;
 			case 1:
-				this.props.getUserDeposits(symbol, RECORD_LIMIT);
+				getUserTrades(RECORD_LIMIT, 1, params);
 				break;
 			case 2:
-				this.props.getUserWithdrawals(symbol, RECORD_LIMIT);
+				getUserDeposits(RECORD_LIMIT, 1, params);
+				break;
+			case 3:
+				getUserWithdrawals(RECORD_LIMIT, 1, params);
 				break;
 			default:
 		}
 	};
 
+	onSearch = ({ range = [], ...rest }) => {
+		const [startDate, endDate] = range;
+		const start_date = startDate ? moment.utc(startDate).format() : undefined;
+		const end_date = endDate ? moment.utc(endDate).format() : undefined;
+		this.setState(
+			{ params: { start_date, end_date, ...rest } },
+			this.requestData
+		);
+	};
+
 	generateHeaders(symbol, coins, discount) {
-		const { withdrawalPopup } = this
+		const { withdrawalPopup } = this;
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
+				orderHistory: isMobile
+					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
+					: generateTradeHeaders(symbol, pairs, coins, discount),
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
 					: generateTradeHeaders(symbol, pairs, coins, discount),
 				deposits: generateDepositsHeaders(symbol, coins, withdrawalPopup),
-				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup)
-			}
+				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup),
+			},
 		});
 	}
 
+	generateFilters = () => {
+		const { pairs, coins } = this.props;
+		this.setState({
+			filters: {
+				orderHistory: (
+					<TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />
+				),
+				trades: <TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />,
+				deposits: (
+					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
+				),
+				withdrawals: (
+					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
+				),
+			},
+		});
+	};
+
 	setActiveTab = (activeTab = 0) => {
 		const { symbol, trades, withdrawals, deposits } = this.props;
-		const { jumpToPage } = this.state
+		const { jumpToPage } = this.state;
 		if (jumpToPage !== 0) {
 			this.setState({
 				jumpToPage: 0,
-			})
+			});
 		}
 		this.setState({ activeTab }, () => {
-			if ((trades.page === 1 && trades.fetched === false)
-				|| (withdrawals.page === 1 && withdrawals.fetched === false)
-				|| (deposits.page === 1 && deposits.fetched === false)) {
+			if (
+				(trades.page === 1 && trades.fetched === false) ||
+				(withdrawals.page === 1 && withdrawals.fetched === false) ||
+				(deposits.page === 1 && deposits.fetched === false)
+			) {
 				this.requestData(symbol);
 			}
 		});
@@ -121,44 +193,73 @@ class TransactionsHistory extends Component {
 	withdrawalPopup = (id, amount, currency) => {
 		if (id) {
 			this.setState({ amount: amount, transactionId: id, currency: currency });
-			this.openDialog()
+			this.openDialog();
 		}
 	};
 
 	withdrawalCancel = () => {
-		const { transactionId } = this.state
+		const { transactionId } = this.state;
 		this.props.withdrawalCancel(transactionId);
-	}
+	};
 	onClose = () => {
-		this.onCloseDialog()
-	}
+		this.onCloseDialog();
+	};
+
+	setDepositStatusPage = (transactionId) => {
+		const { deposits } = this.props;
+		const index = deposits.data.findIndex(
+			(element) => element.transactionId === transactionId
+		);
+		const page = index / TABLE_PAGE_SIZE;
+		if (this.state.jumpToPage === parseInt(page)) {
+			this.setState({ jumpToPage: 0 }, () => {
+				this.setState({ jumpToPage: parseInt(page) });
+			});
+		} else {
+			this.setState({ jumpToPage: parseInt(page) });
+		}
+	};
 
 	handleNext = (pageCount, pageNumber) => {
-		const { trades, symbol, deposits, withdrawals } = this.props;
-		const pageTemp = (pageNumber % 2) === 0 ? 2 : 1;
-		const apiPageTemp = Math.floor(((pageNumber + 1) / 2));
+		const { trades, deposits, withdrawals } = this.props;
+		const { params } = this.state;
+		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
+		const apiPageTemp = Math.floor((pageNumber + 1) / 2);
 		switch (this.state.activeTab) {
 			case 0:
-				if (RECORD_LIMIT === (pageCount * pageTemp)
-					&& apiPageTemp >= trades.page
-					&& trades.isRemaining) {
-					this.props.getUserTrades(RECORD_LIMIT, trades.page + 1);
+				if (
+					RECORD_LIMIT === pageCount * pageTemp &&
+					apiPageTemp >= trades.page &&
+					trades.isRemaining
+				) {
+					this.props.getUserTrades(RECORD_LIMIT, trades.page + 1, {
+						...params,
+						open: false,
+					});
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
 			case 1:
-				if (RECORD_LIMIT === (pageCount * pageTemp)
-					&& apiPageTemp >= deposits.page
-					&& deposits.isRemaining) {
-					this.props.getUserDeposits(symbol, RECORD_LIMIT, deposits.page + 1);
+				if (
+					RECORD_LIMIT === pageCount * pageTemp &&
+					apiPageTemp >= deposits.page &&
+					deposits.isRemaining
+				) {
+					this.props.getUserDeposits(RECORD_LIMIT, deposits.page + 1, params);
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
 			case 2:
-				if (RECORD_LIMIT === (pageCount * pageTemp)
-					&& apiPageTemp >= withdrawals.page
-					&& withdrawals.isRemaining) {
-					this.props.getUserWithdrawals(symbol, RECORD_LIMIT, withdrawals.page + 1);
+				if (
+					RECORD_LIMIT === pageCount * pageTemp &&
+					apiPageTemp >= withdrawals.page &&
+					withdrawals.isRemaining
+				) {
+					this.props.getUserWithdrawals(
+						RECORD_LIMIT,
+						withdrawals.page + 1,
+						params
+					);
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
@@ -174,54 +275,79 @@ class TransactionsHistory extends Component {
 			symbol,
 			downloadUserTrades,
 			downloadUserWithdrawal,
-			downloadUserDeposit
+			downloadUserDeposit,
 		} = this.props;
-		const { headers, activeTab } = this.state;
+		const { headers, activeTab, filters, jumpToPage } = this.state;
 		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
 			symbol,
-			withIcon: true
+			withIcon: true,
 		};
 
 		switch (activeTab) {
 			case 0:
-				props.title = `${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
+				props.stringId = 'ORDER_HISTORY';
+				props.title = `${STRINGS['ORDER_HISTORY']}`;
+				props.headers = headers.trades;
+				props.data = trades;
+				props.filename = `order-history-${moment().unix()}`;
+				props.withIcon = false;
+				props.handleNext = this.handleNext;
+				props.jumpToPage = jumpToPage;
+				props.handleDownload = downloadUserTrades;
+				props.filters = filters.orderHistory;
+				break;
+			case 1:
+				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
+				props.title = `${STRINGS['TRANSACTION_HISTORY.TITLE_TRADES']}`;
 				props.headers = headers.trades;
 				props.data = trades;
 				props.filename = `trade-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
-				props.jumpToPage = this.state.jumpToPage;
+				props.jumpToPage = jumpToPage;
 				props.handleDownload = downloadUserTrades;
+				props.filters = filters.trades;
 				break;
-			case 1:
-				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;
+			case 2:
+				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
+				props.title = STRINGS['TRANSACTION_HISTORY.TITLE_DEPOSITS'];
 				props.headers = headers.deposits;
 				props.data = deposits;
 				props.filename = `deposit-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
-				props.jumpToPage = this.state.jumpToPage;
+				props.jumpToPage = jumpToPage;
 				props.handleDownload = downloadUserDeposit;
+				props.filters = filters.deposits;
 				break;
-			case 2:
-				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWALS;
+			case 3:
+				props.stringId = 'TRANSACTION_HISTORY.TITLE_WITHDRAWALS';
+				props.title = STRINGS['TRANSACTION_HISTORY.TITLE_WITHDRAWALS'];
 				props.headers = headers.withdrawals;
 				props.data = withdrawals;
 				props.filename = `withdrawal-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
-				props.jumpToPage = this.state.jumpToPage;
+				props.jumpToPage = jumpToPage;
 				props.handleDownload = downloadUserWithdrawal;
+				props.filters = filters.withdrawals;
 				break;
 			default:
 				return <div />;
 		}
 
-		return <HistoryDisplay {...props} />;
+		return (
+			<HistoryDisplay
+				{...props}
+				activeTab={activeTab}
+				setDepositStatusPage={this.setDepositStatusPage}
+				setDeposit={this.props.setDeposit}
+			/>
+		);
 	};
 
 	render() {
-		const { id, activeTheme, coins } = this.props;
+		const { id, activeTheme, coins, icons: ICONS } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
@@ -240,44 +366,63 @@ class TransactionsHistory extends Component {
 			>
 				{!isMobile && (
 					<IconTitle
-						text={STRINGS.TRANSACTION_HISTORY.TITLE}
-						iconPath={ICONS.TRANSACTION_HISTORY}
+						stringId="TRANSACTION_HISTORY.TITLE"
+						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
+						iconId="TRANSACTION_HISTORY"
+						iconPath={ICONS['TRANSACTION_HISTORY']}
 						textType="title"
-						useSvg={true}
 					/>
 				)}
 				<TabController
 					tabs={[
 						{
 							title: isMobile ? (
-								STRINGS.TRANSACTION_HISTORY.TRADES
+								STRINGS['ORDER_HISTORY']
 							) : (
-									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.TRADES}
-										icon={ICONS.TRADE_HISTORY}
-									/>
-								)
+								<CheckTitle
+									stringId="ORDER_HISTORY"
+									title={STRINGS['ORDER_HISTORY']}
+									iconId="TRADE_HISTORY"
+									icon={ICONS['TRADE_HISTORY']}
+								/>
+							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS.TRANSACTION_HISTORY.DEPOSITS
+								STRINGS['TRANSACTION_HISTORY.TRADES']
 							) : (
-									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
-										icon={ICONS.DEPOSIT_HISTORY}
-									/>
-								)
+								<CheckTitle
+									stringId="TRANSACTION_HISTORY.TRADES"
+									title={STRINGS['TRANSACTION_HISTORY.TRADES']}
+									iconId="TRADE_HISTORY"
+									icon={ICONS['TRADE_HISTORY']}
+								/>
+							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS.TRANSACTION_HISTORY.WITHDRAWALS
+								STRINGS['TRANSACTION_HISTORY.DEPOSITS']
 							) : (
-									<CheckTitle
-										title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
-										icon={ICONS.WITHDRAW_HISTORY}
-									/>
-								)
-						}
+								<CheckTitle
+									stringId="TRANSACTION_HISTORY.DEPOSITS"
+									title={STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+									iconId="DEPOSIT_HISTORY"
+									icon={ICONS['DEPOSIT_HISTORY']}
+								/>
+							),
+						},
+						{
+							title: isMobile ? (
+								STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']
+							) : (
+								<CheckTitle
+									stringId="TRANSACTION_HISTORY.WITHDRAWALS"
+									title={STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+									iconId="WITHDRAW_HISTORY"
+									icon={ICONS['WITHDRAW_HISTORY']}
+								/>
+							),
+						},
 					]}
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
@@ -292,9 +437,11 @@ class TransactionsHistory extends Component {
 				>
 					<div>
 						<IconTitle
-							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
+							iconId="CANCEL_WITHDRAW"
+							iconPath={ICONS['CANCEL_WITHDRAW']}
+							stringId="CANCEL_BASE_WITHDRAWAL"
 							text={STRINGS.formatString(
-								STRINGS.CANCEL_BASE_WITHDRAWAL,
+								STRINGS['CANCEL_BASE_WITHDRAWAL'],
 								coins[currency].fullname
 							)}
 							textType="title"
@@ -302,16 +449,23 @@ class TransactionsHistory extends Component {
 							className="w-100"
 						/>
 						<div>
-							<div className='text-center mt-5 mb-5'>
-								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div>
+							<div className="text-center mt-5 mb-5">
+								<div>{STRINGS['CANCEL_WITHDRAWAL_POPUP_CONFIRM']}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
-									<CurrencyBallWithPrice symbol={coins[currency].symbol} amount={amount} price={1} />
+									<CurrencyBallWithPrice
+										symbol={coins[currency].symbol}
+										amount={amount}
+										price={1}
+									/>
 								</div>
 							</div>
-							<div className='w-100 buttons-wrapper d-flex' >
-								<Button label={STRINGS.BACK_TEXT} onClick={this.onClose} />
-								<div className='separator' />
-								<Button label={STRINGS.CANCEL_WITHDRAWAL} onClick={this.withdrawalCancel} />
+							<div className="w-100 buttons-wrapper d-flex">
+								<Button label={STRINGS['BACK_TEXT']} onClick={this.onClose} />
+								<div className="separator" />
+								<Button
+									label={STRINGS['CANCEL_WITHDRAWAL']}
+									onClick={this.withdrawalCancel}
+								/>
 							</div>
 						</div>
 					</div>
@@ -335,19 +489,25 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,
 	cancelData: store.wallet.withdrawalCancelData,
-	discount: store.user.discount || 0
+	discount: store.user.discount || 0,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getUserTrades: (limit, page = 1) => dispatch(getUserTrades({ limit, page })),
-	getUserDeposits: (coin, limit, page = 1) => dispatch(getUserDeposits({ coin, limit, page })),
-	getUserWithdrawals: (coin, limit, page = 1) => dispatch(getUserWithdrawals({ coin, limit, page })),
-	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId })),
+	getUserTrades: (limit, page = 1, params) =>
+		dispatch(getUserTrades({ limit, page, ...params })),
+	getUserDeposits: (limit, page = 1, params) =>
+		dispatch(getUserDeposits({ limit, page, ...params })),
+	getUserWithdrawals: (limit, page = 1, params) =>
+		dispatch(getUserWithdrawals({ limit, page, ...params })),
+	withdrawalCancel: (transactionId) =>
+		dispatch(withdrawalCancel({ transactionId })),
 	downloadUserTrades: () => dispatch(downloadUserTrades('trade')),
 	downloadUserDeposit: () => dispatch(downloadUserTrades('deposit')),
 	downloadUserWithdrawal: () => dispatch(downloadUserTrades('withdrawal')),
+	setDeposit: (params) => dispatch(setDeposit(params)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-	TransactionsHistory
-);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(TransactionsHistory));

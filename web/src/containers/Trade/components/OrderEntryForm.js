@@ -17,13 +17,19 @@ const validate = (values, props) => {
 	return error;
 };
 
-const getFields = (formValues = {}, type = '') => {
+const getFields = (formValues = {}, type = '', orderType = '') => {
+	const fields = { ...formValues };
+
 	if (type === 'market') {
-		const fields = { ...formValues };
 		delete fields.price;
-		return fields;
+		delete fields.postOnly;
 	}
-	return formValues;
+
+	if (orderType !== 'stops') {
+		delete fields.stop;
+	}
+
+	return fields;
 };
 
 const Form = ({
@@ -37,12 +43,13 @@ const Form = ({
 	formValues,
 	side,
 	type,
+	orderType,
 	currencyName,
 	outsideFormError,
 	onReview,
-	formKeyDown
+	formKeyDown,
 }) => {
-	const fields = getFields(formValues, type);
+	const fields = getFields(formValues, type, orderType);
 	const errorText = error || outsideFormError;
 	return (
 		<div className="trade_order_entry-form d-flex">
@@ -53,8 +60,7 @@ const Form = ({
 				onKeyDown={(e) => {
 					if (!submitting && valid && !errorText && isLoggedIn())
 						formKeyDown(e);
-					}
-				}
+				}}
 			>
 				<div className="trade_order_entry-form_fields-wrapper">
 					{Object.entries(fields).map(renderFields)}
@@ -69,8 +75,8 @@ const Form = ({
 					type="button"
 					onClick={onReview}
 					label={STRINGS.formatString(
-						STRINGS.ORDER_ENTRY_BUTTON,
-						STRINGS.SIDES_VALUES[side] || '',
+						STRINGS['ORDER_ENTRY_BUTTON'],
+						STRINGS[`SIDES_VALUES.${side}`] || '',
 						currencyName
 					).join(' ')}
 					disabled={submitting || !valid || !!errorText || !isLoggedIn()}
@@ -84,7 +90,7 @@ const Form = ({
 const EntryOrderForm = reduxForm({
 	form: FORM_NAME,
 	validate,
-	enableReinitialize: true
+	enableReinitialize: true,
 	// onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
 })(Form);
 

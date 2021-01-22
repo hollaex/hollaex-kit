@@ -1,0 +1,329 @@
+.general-wrapper {
+	color: #ffffff;
+	margin-top: 2rem;
+}
+.general-wrapper .ant-input,
+.general-wrapper .ant-select {
+	width: 300px;
+	margin: 1rem 0rem;
+}
+.minimal-btn {
+	width: 10rem !important;
+}
+.wizard-container .sub-title,
+.ant-modal-body .sub-title,
+.admin-content-wrapper .sub-title {
+	color: #ffffff;
+	font-size: 15px;
+	font-weight: bold;
+}
+.admin-content-wrapper .divider,
+.ant-modal-body .divider {
+	border-top: 1px solid #c4c4c4;
+	margin: 2rem 0;
+	width: 500px;
+}
+.wizard-container .description {
+	/* width: 550px; */
+}
+.ant-modal-body .description,
+.admin-content-wrapper .description,
+.wizard-container .description {
+	color: #ffffff;
+	margin: 5px 0px;
+	font-size: 13px;
+}
+.file-wrapper {
+	margin: 1rem 0rem;
+}
+.new-tier-form .file-container {
+	padding-left: 100px;
+}
+.new-tier-form .file-wrapper .icon-img {
+	width: 90px;
+}
+.file-wrapper .icon-img {
+	width: 150px;
+}
+.file-wrapper .file-img-content,
+.file-wrapper img {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	display: block;
+	width: 90px;
+	height: 86px;
+	object-fit: fill;
+	cursor: pointer;
+}
+.file-wrapper label {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 86px;
+	border-left: 1px solid #b9b9b9;
+	color: #ffffff;
+}
+.general-wrapper .ant-collapse-header {
+	color: #ffffff !important;
+}
+.file-container .ant-spin {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+}
+.file-container label .anchor {
+	color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.file-container .ant-form-item-control {
+	line-height: 1;
+}
+.file-container input {
+	opacity: 0;
+	position: fixed;
+	left: -999px;
+}
+.file-container::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+.general-edit-link,
+.general-edit-link-position {
+	color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.general-edit-link-position {
+	position: relative;
+	left: 310px;
+	top: 35px;
+}
+.file-wrapper input {
+	opacity: 0;
+	position: fixed;
+	left: -999px;
+}
+.file-wrapper input::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+.file-container {
+	border: 1px solid #b9b9b9;
+	width: 420px;
+	display: block;
+	padding-left: 150px;
+	white-space: nowrap;
+	position: relative;
+	height: 88px;
+}
+.general-wrapper .ant-btn {
+	height: 40px;
+	width: 250px;
+	background-color: #288500;
+	color: #ffffff;
+	border-color: #1890ff;
+}
+.text-area-wrapper {
+	margin-bottom: 10px;
+}
+.text-area-wrapper .description {
+	font-size: 12px;
+}
+.small-text {
+	font-size: 12px;
+	margin-left: 1.4rem;
+	color: #ffffff;
+}
+.interface-box .feature-icon {
+	width: 74px;
+	stroke: #808080;
+	fill-opacity: 0.5;
+}
+.interface-box .feature-chat-icon {
+	width: 42px;
+	margin: 4px 16px;
+	stroke: #808080;
+	fill-opacity: 0.5;
+}
+.interface-box .ant-checkbox-wrapper-checked .feature-icon,
+.interface-box .ant-checkbox-wrapper-checked .feature-chat-icon {
+	stroke: #ffffff;
+	fill-opacity: 1;
+}
+.interface-box .checkbox-txt,
+.interface-box .small-text {
+	color: #808080;
+}
+.interface-box .ant-checkbox-wrapper-checked .checkbox-txt,
+.interface-box .ant-checkbox-wrapper-checked .small-text {
+	color: #ffffff;
+}
+.interface-box .ant-checkbox-wrapper {
+	display: flex;
+	align-items: center;
+	margin-left: 8px;
+}
+.interface-box .candle-icon,
+.radio-btn-wrapper .candle-icon {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 74px;
+}
+.wallet-icon {
+	position: relative;
+	width: 36px;
+	margin: 5px auto;
+}
+.feature-trade-box {
+	display: flex;
+	width: 75px;
+	height: 50px;
+	background-color: #050596;
+}
+.box {
+	display: flex;
+	width: 75px;
+	height: 50px;
+	background-color: #050596;
+	position: relative;
+	bottom: 2rem;
+}
+.feature-trade-box .interface_container,
+.box .interface_container {
+	margin: auto;
+	margin-top: 7px;
+}
+.general-wrapper .sell {
+	border: 1px solid #808080;
+	width: 60px;
+	height: 18px;
+}
+.general-wrapper .sell .label {
+	font-size: 10px;
+	position: relative;
+	bottom: 3px;
+	left: 18px;
+	color: #808080;
+}
+.general-wrapper .buy {
+	width: 60px;
+	height: 18px;
+	border: 1px solid #000000;
+	margin-top: 0.25rem;
+	background-color: #808080;
+}
+.general-wrapper .buy .label {
+	font-size: 10px;
+	position: relative;
+	bottom: 3px;
+	left: 18px;
+	color: #000000 !important;
+}
+.ant-checkbox-wrapper-checked .buy {
+	background-color: #ffffff;
+}
+.ant-checkbox-wrapper-checked .sell {
+	border: 1px solid #ffffff;
+}
+.ant-checkbox-wrapper-checked .sell .label {
+	color: #ffffff;
+}
+.general-wrapper .ant-radio-wrapper {
+	height: 100px;
+	width: 420px;
+}
+.general-wrapper .ant-radio-group {
+	width: 100%;
+	margin-top: 21px;
+	display: flex;
+	flex-direction: column;
+}
+.general-wrapper .ant-radio-wrapper span:last-child {
+	color: #ffffff;
+}
+.bottom-description {
+	margin-top: 1rem;
+}
+.file-container p {
+	color: #a8a8ef;
+}
+.section-wrapper {
+	width: 220px;
+}
+.center-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.coins-list .ant-select-selector {
+	height: 48px !important;
+}
+h2,
+.email-config-form,
+.ant-checkbox-wrapper span,
+.description-wrapper,
+.bottom-description,
+.custom-form-wrapper {
+	color: #ffffff;
+}
+.admin-general-description-tip .ant-tooltip-arrow {
+	display: none;
+}
+
+.admin-general-description-tip .ant-tooltip-inner {
+	padding: 0px;
+	min-width: 0px;
+}
+.admin-general-description-tip {
+	max-width: 0px;
+}
+
+.general-description-tip-right {
+	padding-left: 0px;
+}
+.help-icon {
+	width: 600px;
+	height: 150px;
+	position: relative;
+}
+.description_note {
+	right: 8px;
+	bottom: 3px;
+}
+.description_footer {
+	bottom: 60px;
+	right: 7px;
+}
+.custom-form-wrapper {
+	display: flex;
+	margin: 1.5rem 0rem;
+	width: 70%;
+}
+.section-wrapper {
+	width: 220px;
+}
+.center-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.divider-vertical {
+	display: inline-block;
+	width: 0px;
+	height: 18rem;
+	border-left: 1px solid #707070;
+	margin: 0rem 1rem;
+}
+.divider-horizontal {
+	display: inline-block;
+	width: 5rem;
+	height: 0px;
+	border-top: 1px solid #707070;
+	margin: 1rem 0rem;
+}

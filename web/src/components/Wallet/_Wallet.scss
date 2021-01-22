@@ -19,11 +19,10 @@ $sections-font--color: $colors-deactivate-color2;
 }
 
 .wallet-wrapper {
-	
 	.donut-container {
 		height: 18rem;
 		.donut-label-pair {
-			font-size: .8rem;
+			font-size: 0.8rem;
 		}
 	}
 }
@@ -60,13 +59,23 @@ $sections-font--color: $colors-deactivate-color2;
 	}
 }
 
+.wallet_link {
+	margin: 0.5rem 0;
+	padding: 0 0.5rem;
+	text-transform: uppercase;
+}
+
 .direction_ltr {
 	.sidebar_section-container
 		.wallet-wrapper
 		.accordion_section_title
 		.wallet_section-title {
 		&:after {
-			@include css-triangle($colors-deactivate-color2, 'right', $accordion_arrow-size);
+			@include css-triangle(
+				$colors-deactivate-color2,
+				'right',
+				$accordion_arrow-size
+			);
 			right: -$accordion_arrow-size;
 			top: calc(50% - #{$accordion_arrow-size});
 		}
@@ -90,7 +99,11 @@ $sections-font--color: $colors-deactivate-color2;
 		.accordion_section_title
 		.wallet_section-title {
 		&:after {
-			@include css-triangle($colors-deactivate-color2, 'left', $accordion_arrow-size);
+			@include css-triangle(
+				$colors-deactivate-color2,
+				'left',
+				$accordion_arrow-size
+			);
 			left: -$accordion_arrow-size;
 			top: calc(50% - #{$accordion_arrow-size});
 		}
@@ -104,59 +117,6 @@ $sections-font--color: $colors-deactivate-color2;
 		color: $colors-main-black;
 		&:after {
 			border-right-color: $colors-main-black;
-		}
-	}
-}
-
-.dark-theme {
-	.wallet-wrapper,
-	.wallet_section-title,
-	.wallet_section-title-amount,
-	.wallet_section-total_asset {
-		color: $dark-font-sub-text-color !important;
-	}
-
-	.direction_ltr {
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section_title
-			.wallet_section-title {
-			&:after {
-				@include css-triangle($dark-font-sub-text-color, 'left', $accordion_arrow-size);
-			}
-		}
-
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section--open
-			.accordion_section_title
-			.wallet_section-title {
-			color: $dark-font-sub-text-color;
-			&:after {
-				border-right-color: $dark-border-main;
-			}
-		}
-	}
-
-	.direction_rtl {
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section_title
-			.wallet_section-title {
-			&:after {
-				@include css-triangle($dark-font-sub-text-color, 'left', $accordion_arrow-size);
-			}
-		}
-
-		.sidebar_section-container
-			.wallet-wrapper
-			.accordion_section--open
-			.accordion_section_title
-			.wallet_section-title {
-			color: $dark-font-sub-text-color;
-			&:after {
-				border-right-color: $dark-border-main;
-			}
 		}
 	}
 }

@@ -1,5 +1,5 @@
 $input--height: 2.5rem;
-$input--border-color: $colors-main-black;
+$input--border-color: $colors-main-border;
 $input--color: $colors-main-black;
 
 $padding: 0.25rem;
@@ -53,13 +53,21 @@ $padding: 0.25rem;
 		}
 		/* Safari 4.0 - 8.0 */
 		@-webkit-keyframes bounce {
-			15%  {border-color: $link;}
-			75% {border-color: $input--border-color;}
+			15% {
+				border-color: $link;
+			}
+			75% {
+				border-color: $input--border-color;
+			}
 		}
 		/* Standard syntax */
 		@keyframes bounce {
-			15%  {border-color: $link;}
-			75% {border-color: $input--border-color;}
+			15% {
+				border-color: $link;
+			}
+			75% {
+				border-color: $input--border-color;
+			}
 		}
 	}
 }
@@ -88,43 +96,26 @@ $padding: 0.25rem;
 	}
 }
 
-.dark-theme {
-	.trade_input-wrapper {
-		.trade_input-input-wrapper {
-			> input {
-				background: $dark-trade-fields;
-				border-color: $dark-trade-fields-border;
-				color: $dark-font-sub-text-color;
-
-				&:focus {
-					border-color: $dark-font-main-text-color;
-					color: $dark-font-main-text-color;
-				}
-			}
-		}
-
-		.trade_input-input-currency {
-			color: $dark-font-sub-text-color;
-		}
-
-		.initialize-animation {
-			> input {
-				-webkit-animation-name: bounceDark; /* Safari 4.0 - 8.0 */
-				-webkit-animation-duration: 3s; /* Safari 4.0 - 8.0 */
-				animation-name: bounceDark;
-				animation-duration: 3s;
-				border: 1px solid $dark-trade-fields;
-			}
-			/* Safari 4.0 - 8.0 */
-			@-webkit-keyframes bounceDark {
-				15%  {border-color: $dark-link;}
-				75% {border-color: $dark-trade-fields;}
-			}
-			/* Standard syntax */
-			@keyframes bounceDark {
-				15%  {border-color:  $dark-link;}
-				75% {border-color: $dark-trade-fields;}
-			}
-		}
+.size-slider {
+	.ant-slider-with-marks {
+		margin-bottom: 10px;
 	}
+
+	.ant-slider-rail,
+	.ant-slider-dot {
+		background-color: $colors-black;
+		border-color: $colors-black;
+	}
+
+	.ant-slider-dot-active,
+	.ant-slider-track,
+	.ant-slider-handle {
+		background-color: $link;
+		border-color: $link;
+	}
+}
+
+.trade-form-select {
+	width: 35% !important;
+	transform: translateY(1.4rem);
 }

@@ -15,7 +15,7 @@ const INITIAL_STATE = {
 	pageSize: 10,
 	limit: 50,
 	currentTablePage: 1,
-	isRemaining: true
+	isRemaining: true,
 };
 
 const formatDate = (value) => {
@@ -35,8 +35,8 @@ const COLUMNS = [
 		title: 'Time',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
-		render: formatDate
-	}
+		render: formatDate,
+	},
 ];
 
 // const SCV_COLUMNS = [
@@ -66,7 +66,7 @@ class TradeHistory extends Component {
 						loading: false,
 						total: res.count,
 						page: res.page,
-						isRemaining: res.isRemaining
+						isRemaining: res.isRemaining,
 					});
 				}
 			})
@@ -95,8 +95,8 @@ class TradeHistory extends Component {
 	};
 
 	requestTradesDownload = (userId) => {
-		return requestTradesDownload({format: 'csv', userId: userId});
-	}
+		return requestTradesDownload({ format: 'csv', userId: userId });
+	};
 
 	render() {
 		const { tradeHistory, currentTablePage, loading } = this.state;
@@ -110,26 +110,30 @@ class TradeHistory extends Component {
 
 		return (
 			<Row>
-				<Row gutter={16} style={{ marginTop: 16 }}>
+				<div className="f-1 mt-4 admin-user-container">
 					<Col>
 						<div>
-							<span className="pointer" onClick={() => this.requestTradesDownload(this.props.userId)}>
+							<span
+								className="pointer"
+								onClick={() => this.requestTradesDownload(this.props.userId)}
+							>
 								Download table
 							</span>
 						</div>
 						<Table
 							columns={COLUMNS}
+							className="blue-admin-table"
 							rowKey={(data, index) => {
 								return `${data.symbol}_${index}`;
 							}}
 							dataSource={tradeHistory ? tradeHistory : 'NO Data'}
 							pagination={{
 								current: currentTablePage,
-								onChange: this.pageChange
+								onChange: this.pageChange,
 							}}
 						/>
 					</Col>
-				</Row>
+				</div>
 			</Row>
 		);
 	}

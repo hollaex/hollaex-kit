@@ -3,9 +3,9 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="-480.4 271.8 42 40" style="enable-background:new -480.4 271.8 42 40;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#787678;}
+	.logout-door{fill:#787678;}
 </style>
-<path id="XMLID_1_" class="st0" d="M-446.9,274.1c0-0.5-0.4-0.9-0.9-0.9h-22.4c-0.5,0-0.9,0.4-0.9,0.9v30.4l-8,0l0,1.8l8.9,0h0
+<path id="XMLID_1_" class="logout-door" d="M-446.9,274.1c0-0.5-0.4-0.9-0.9-0.9h-22.4c-0.5,0-0.9,0.4-0.9,0.9v30.4l-8,0l0,1.8l8.9,0h0
 	c0.2,0,0.5-0.1,0.6-0.3c0.2-0.2,0.3-0.4,0.3-0.6V275h16l-8.2,2.7c-0.4,0.1-0.6,0.5-0.6,0.8v31.3c0,0.3,0.1,0.6,0.4,0.7
 	c0.2,0.1,0.3,0.2,0.5,0.2c0.1,0,0.2,0,0.3,0l13.3-4.4h8.8v-1.8h-8V274.1z M-460.3,294.7h3.6v-1.8h-3.6v-13.7l11.6-3.9v29.4
 	l-11.6,3.9V294.7z"/>

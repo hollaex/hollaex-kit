@@ -4,7 +4,7 @@
 	width: 100%;
 	font-size: $font-size-subtext;
 	padding: 0 4px;
-	background-color: $colors-main-black !important;
+	background-color: $colors-notifications-blue !important;
 
 	&.button-success {
 		background-color: $colors-notifications-green !important;
@@ -62,24 +62,5 @@
 .direction_rtl {
 	.exir-button-font {
 		font-family: inherit !important;
-	}
-}
-
-.dark-theme {
-	.exir-button {
-		color: $dark-button-text;
-		background-color: $dark-button-active !important;
-
-		&.disabled {
-			background-color: $dark-button-disabled !important;
-			color: $dark-button-text-disabled !important;
-			font-weight: bold;
-		}
-	}
-	.checkbutton-wrapper {
-		color: $dark-font-main-text-color;
-		.success-black-1, .secure-1 {
-			fill: $dark-font-main-text-color;
-		}
 	}
 }

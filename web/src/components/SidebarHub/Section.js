@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router';
 export const Section = ({
 	title,
@@ -9,16 +9,16 @@ export const Section = ({
 	children,
 	childrenClassName,
 	active,
-	path
+	path,
 }) => {
 	return (
 		<div
 			className={classnames('sidebar_hub-section d-flex flex-column', {
-				'section-active': active
+				'section-active': active,
 			})}
 		>
 			<div className="sidebar_hub-section-header d-flex">
-				<ReactSVG path={icon} wrapperClassName="sidebar_hub-section-icon" />
+				<ReactSVG src={icon} className="sidebar_hub-section-icon" />
 				<div className="sidebar_hub-section-title f-1 text-uppercase title-font">
 					<Link to={path}>{title}</Link>
 				</div>
@@ -34,5 +34,5 @@ export const Section = ({
 
 Section.defaultProps = {
 	active: false,
-	childrenClassName: ''
+	childrenClassName: '',
 };

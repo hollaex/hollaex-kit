@@ -6,7 +6,7 @@ import { AdminHocForm } from '../../../components';
 import {
 	validateRequired,
 	validatePositiveNumber,
-	validateRange
+	validateRange,
 } from '../../../components/AdminForm/validations';
 
 import { isSupport } from '../../../utils/token';
@@ -20,7 +20,7 @@ const onSubmit = (values) => {
 	const postValues = {
 		...values,
 		user_id: parseInt(values.user_id, 10),
-		amount: parseFloat(values.amount)
+		amount: parseFloat(values.amount),
 	};
 
 	return performBalanceUpdate(postValues)
@@ -46,30 +46,30 @@ const Balance = ({ user_id, pairs = [] }) =>
 						label: 'Amount',
 						min: 0.00000001,
 						max: 100000000000,
-						validate: [validateRequired, validatePositiveNumber(0)]
+						validate: [validateRequired, validatePositiveNumber(0)],
 					},
 					currency: {
 						type: 'select',
 						label: 'Currency',
 						options: pairs,
-						validate: [validateRequired, validateRange(pairs)]
+						validate: [validateRequired, validateRange(pairs)],
 					},
 					type: {
 						type: 'select',
 						label: 'Type',
 						options: TYPES,
-						validate: [validateRequired, validateRange(TYPES)]
+						validate: [validateRequired, validateRange(TYPES)],
 					},
 					description: {
 						type: 'text',
-						label: 'Description'
-					}
+						label: 'Description',
+					},
 				}}
 				initialValues={{
 					user_id,
 					currency: pairs[0] ? pairs[0] : '',
 					type: 'deposit',
-					amount: 0
+					amount: 0,
 				}}
 			/>
 		</div>

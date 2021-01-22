@@ -19,7 +19,7 @@ const Form = ModalForm('EditFees', '');
 
 const openNotification = () => {
 	notification.open({
-		message: 'Successfully updated'
+		message: 'Successfully updated',
 		// description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
 	});
 };
@@ -41,7 +41,7 @@ class UserFees extends Component {
 		isEdit: false,
 		editData: {},
 		initialValues: {},
-		isCustomContent: false
+		isCustomContent: false,
 	};
 
 	componentDidMount() {
@@ -52,7 +52,8 @@ class UserFees extends Component {
 	componentDidUpdate(prevProps) {
 		if (
 			JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs) ||
-			JSON.stringify(prevProps.constants) !== JSON.stringify(this.props.constants)
+			JSON.stringify(prevProps.constants) !==
+				JSON.stringify(this.props.constants)
 		) {
 			this.constructData(this.props.pairs, this.props.constants);
 		}
@@ -68,7 +69,7 @@ class UserFees extends Component {
 				fees = [...fees, pairs[key]];
 			});
 			this.setState({
-				fees
+				fees,
 			});
 		}
 	};
@@ -88,7 +89,7 @@ class UserFees extends Component {
 		levels[verification_level] = Number(value);
 
 		feeUpdate(selectedKey, {
-			[fee_type]: { ...levels }
+			[fee_type]: { ...levels },
 		})
 			.then((res) => {
 				this.renderData(res, this.props.constants);
@@ -119,7 +120,7 @@ class UserFees extends Component {
 			Fields,
 			editData: { keyIndex, data },
 			initialValues,
-			isCustomContent
+			isCustomContent,
 		});
 	};
 
@@ -137,7 +138,9 @@ class UserFees extends Component {
 			const tempData = {};
 			if (Object.keys(loopData).length) {
 				Object.keys(loopData).forEach((key) => {
-					if (key <= parseInt(this.props.constants.user_level_number || 0, 10)) {
+					if (
+						key <= parseInt(this.props.constants.user_level_number || 0, 10)
+					) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
 						tempData[key] = levelValue;
 					}
@@ -183,7 +186,7 @@ class UserFees extends Component {
 			editData,
 			Fields,
 			initialValues,
-			isCustomContent
+			isCustomContent,
 		} = this.state;
 		const pairColumns = getPairsColumns(this.handleClick);
 		return (
@@ -211,11 +214,11 @@ class UserFees extends Component {
 						/>
 						<div className="mb-3">
 							{STRINGS.formatString(
-								STRINGS.NOTE_FOR_EDIT_COIN,
-								STRINGS.PAIRS,
+								STRINGS['NOTE_FOR_EDIT_COIN'],
+								STRINGS['PAIRS'],
 								<BlueLink
 									href={API_DOCS_URL}
-									text={STRINGS.REFER_DOCS_LINK}
+									text={STRINGS['REFER_DOCS_LINK']}
 								/>
 							)}
 						</div>
@@ -245,14 +248,11 @@ class UserFees extends Component {
 
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
-	pairs: state.app.pairs
+	pairs: state.app.pairs,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	setPairs: bindActionCreators(setPairs, dispatch)
+	setPairs: bindActionCreators(setPairs, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(UserFees);
+export default connect(mapStateToProps, mapDispatchToProps)(UserFees);

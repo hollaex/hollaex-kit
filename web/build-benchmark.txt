@@ -1,0 +1,40 @@
+
+
+ SMP  ⏱  
+General output time took 6 mins, 40.43 secs
+
+ SMP  ⏱  Plugins
+TerserPlugin took 2 mins, 20.43 secs
+IgnorePlugin took 42.85 secs
+OptimizeCssAssetsWebpackPlugin took 9.88 secs
+MiniCssExtractPlugin took 7.91 secs
+HtmlWebpackPlugin took 6.25 secs
+ManifestPlugin took 4.34 secs
+GenerateSW took 0.067 secs
+InterpolateHtmlPlugin took 0.018 secs
+InlineChunkHtmlPlugin took 0.017 secs
+DefinePlugin took 0.014 secs
+ModuleNotFoundPlugin took 0.01 secs
+
+ SMP  ⏱  Loaders
+babel-loader took 3 mins, 36.58 secs
+  module count = 3751
+babel-loader, and 
+eslint-loader took 1 min, 59.18 secs
+  module count = 402
+mini-css-extract-plugin, and 
+css-loader, and 
+postcss-loader took 36.24 secs
+  module count = 19
+css-loader, and 
+postcss-loader took 20.39 secs
+  module count = 23
+modules with no loaders took 15.52 secs
+  module count = 65
+file-loader took 7.88 secs
+  module count = 514
+html-webpack-plugin took 0.056 secs
+  module count = 1
+
+
+

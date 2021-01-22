@@ -1,56 +1,65 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 import { Button } from '../';
 import STRINGS from '../../config/localizedStrings';
+import Image from 'components/Image';
+import { EditWrapper } from 'components';
 
 export const NotificationWraperDesktop = ({
 	icon,
+	iconId,
 	iconType,
+	stringId,
 	title,
 	children,
 	className = '',
 	titleClassName = '',
 	onClose,
-	onBack
+	onBack,
 }) => (
 	<div className={classnames('notification-content-wrapper', className)}>
-		{icon && (
-			<ReactSVG path={icon} wrapperClassName="notification-content-icon" />
-		)}
+		<Image
+			iconId={iconId}
+			icon={icon}
+			wrapperClassName="notification-content-icon"
+		/>
 		<div
 			className={classnames(
 				'font-weight-bold notification-content-title',
 				titleClassName
 			)}
 		>
-			{title}
+			<EditWrapper stringId={stringId}>{title}</EditWrapper>
 		</div>
 		{children}
-		{ onBack ?
+		{onBack ? (
 			<Button
-				label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
+				label={STRINGS['NOTIFICATIONS.BUTTONS.OKAY']}
 				onClick={onClose}
 				autoFocus
-			>
-			</Button>
-		: '' }
+			></Button>
+		) : (
+			''
+		)}
 	</div>
 );
 
 export const NotificationWraperMobile = ({
 	icon,
+	iconId,
 	iconType,
 	title,
 	children,
 	className = '',
-	titleClassName = ''
+	titleClassName = '',
 }) => (
 	<div className={classnames('notification-content-wrapper', className)}>
-		{icon && (
-			<ReactSVG path={icon} wrapperClassName="notification-content-icon" />
-		)}
+		<Image
+			iconId={iconId}
+			icon={icon}
+			wrapperClassName="notification-content-icon"
+		/>
 		<div className="notification-content-mobile-wrapper">
 			<div
 				className={classnames(
@@ -65,7 +74,11 @@ export const NotificationWraperMobile = ({
 	</div>
 );
 
-export const NotificationWraper = ({ onClose , compressOnMobile = false, ...props }) =>
+export const NotificationWraper = ({
+	onClose,
+	compressOnMobile = false,
+	...props
+}) =>
 	compressOnMobile && isMobile ? (
 		<NotificationWraperMobile {...props} />
 	) : (
@@ -78,9 +91,11 @@ export const NotificationContent = ({ children, className = '' }) => (
 	</div>
 );
 
-export const InformationRow = ({ label, value }) => (
+export const InformationRow = ({ label, value, stringId }) => (
 	<div className="d-flex">
-		<div className="f-1 text_disabled">{label}:</div>
+		<div className="f-1 text_disabled">
+			<EditWrapper stringId={stringId}>{label}:</EditWrapper>
+		</div>
 		<div className="f-1">{value}</div>
 	</div>
 );

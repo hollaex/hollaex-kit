@@ -7,7 +7,7 @@ import { MobileBarBack } from '../';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 import { ICONS } from '../../config/constants';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 const CompressedContent = ({ children, onClose }) => {
 	return (
@@ -15,10 +15,7 @@ const CompressedContent = ({ children, onClose }) => {
 			<div className="dialog-compressed-content f-1">{children}</div>
 			<div className="dialog-compressed-close f-0 d-flex justify-content-center align-items-center">
 				<div className="close-dialog pointer" onClick={onClose}>
-					<ReactSVG
-						path={ICONS.CANCEL_CROSS_ACTIVE}
-						wrapperClassName="bar-icon-back"
-					/>
+					<ReactSVG src={ICONS.CANCEL_CROSS_ACTIVE} className="bar-icon-back" />
 				</div>
 			</div>
 		</div>
@@ -45,7 +42,7 @@ class Dialog extends PureComponent {
 		label: PropTypes.string.isRequired,
 		closeButton: PropTypes.func,
 		onCloseDialog: PropTypes.func,
-		children: PropTypes.node.isRequired
+		children: PropTypes.node.isRequired,
 	};
 
 	onRequestClose = (e) => {
@@ -65,7 +62,7 @@ class Dialog extends PureComponent {
 			className,
 			useFullScreen = false,
 			compressed = false,
-			showBar = true
+			showBar = true,
 		} = this.props;
 
 		return (
@@ -83,7 +80,7 @@ class Dialog extends PureComponent {
 					{
 						compressed,
 						'dialog_full-screen': useFullScreen,
-						'LogoutModal': !isLoggedIn()
+						LogoutModal: !isLoggedIn(),
 					}
 				)}
 			>
@@ -107,7 +104,7 @@ Dialog.defaultProps = {
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
 	theme: '',
-	className: ''
+	className: '',
 };
 
 export default Dialog;

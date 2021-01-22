@@ -1,54 +1,180 @@
 import React, { Component } from 'react';
-import { Tabs, Button, Tag, Icon } from 'antd';
+import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
+import { Link } from 'react-router';
+import { ReactSVG } from 'react-svg';
 
 import {
-	Balance,
-	Logins,
-	Audits,
-	Verification,
-	Otp,
+	// Balance,
+	// Logins,
+	// Audits,
+	// Verification,
+	// Otp,
 	UserBalance,
-	Activate,
+	// Activate,
 	TradeHistory,
-	UploadIds,
+	// UploadIds,
 	Transactions,
-	ActiveOrders
+	ActiveOrders,
 } from '../';
-import UserData from './UserData';
+// import UserData from './UserData';
 import BankData from './BankData';
-import { isSupport, isAdmin, isKYC } from '../../../utils/token';
+import AboutData from './AboutData';
+import { isSupport, isKYC } from '../../../utils/token';
+import { STATIC_ICONS } from 'config/icons';
+import { deactivateOtp, flagUser, activateUser } from './actions';
 
-import Flagger from '../Flaguser';
-import Notes from './Notes';
+// import Flagger from '../Flaguser';
+// import Notes from './Notes';
 
 const TabPane = Tabs.TabPane;
+const { Item } = Breadcrumb;
 
 class UserContent extends Component {
+	disableOTP = () => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+		};
+		Modal.confirm({
+			title: <div className="modal-confirm-title">Disable 2FA</div>,
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
+			content: (
+				<div>
+					<div>
+						Disabling 2FA on this account may leave this account vulnerable.
+					</div>
+					<div className="mt-3">
+						Are you sure want to disable 2FA for this account?
+					</div>
+				</div>
+			),
+			onOk() {
+				deactivateOtp(postValues)
+					.then((res) => {
+						refreshData({ otp_enabled: false });
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
+	};
+
+	flagUser = (value) => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+			flagged: value,
+		};
+		Modal.confirm({
+			title: (
+				<div>
+					{value ? (
+						<div className="modal-confirm-title">Flag user</div>
+					) : (
+						<div className="modal-confirm-title">Unflag user</div>
+					)}
+				</div>
+			),
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
+			content: (
+				<div>
+					{value
+						? 'Are you sure want to flag this user?'
+						: 'Are you sure want to unflag this user?'}
+				</div>
+			),
+			onOk() {
+				flagUser(postValues)
+					.then((res) => {
+						refreshData(postValues);
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
+	};
+
+	freezeAccount = (value) => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+			activated: value,
+		};
+		Modal.confirm({
+			title: (
+				<div>
+					{!value ? (
+						<div className="modal-confirm-title">Freeze account</div>
+					) : (
+						<div className="modal-confirm-title">Unfreeze account</div>
+					)}
+				</div>
+			),
+			width: '450px',
+			maskStyle: { background: 'rgba(0, 0, 0, 0.7)' },
+			content: (
+				<div>
+					{!value ? (
+						<div>
+							Freezing this account will make this account inaccessible
+							<div className="mt-3">
+								Are you sure want to freeze this account?
+							</div>
+						</div>
+					) : (
+						<div className="mt-3">
+							Are you sure want to unfreeze this account?
+						</div>
+					)}
+				</div>
+			),
+			onOk() {
+				activateUser(postValues)
+					.then((res) => {
+						refreshData(postValues);
+					})
+					.catch((err) => {
+						const _error =
+							err.data && err.data.message ? err.data.message : err.message;
+						message.error(_error);
+					});
+			},
+		});
+	};
+
 	render() {
 		const {
 			coins,
 			constants,
 			userInformation,
 			userImages,
-			clearData,
+			// clearData,
 			refreshData,
 			refreshAllData,
-			onChangeUserDataSuccess
+			onChangeUserDataSuccess,
 		} = this.props;
 		const {
 			id,
-			activated,
-			otp_enabled,
-			flagged,
+			// activated,
+			// otp_enabled,
+			// flagged,
 			verification_level,
 			is_admin,
 			is_support,
 			is_supervisor,
 			is_kyc,
-			is_tech
+			is_tech,
 		} = userInformation;
 		const isSupportUser = isSupport();
-		const pairs = Object.keys(coins) || [];
+		// const pairs = Object.keys(coins) || [];
 		const verificationInitialValues = {};
 		const roleInitialValues = {};
 		if (verification_level) {
@@ -68,45 +194,64 @@ class UserContent extends Component {
 			roleInitialValues.role = 'user';
 		}
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content admin-user-content">
+				<Breadcrumb>
+					<Item>
+						<Link to="/admin">Home</Link>
+					</Item>
+					<Item>
+						<Link to="/admin/user">Users</Link>
+					</Item>
+					<Item>User profile</Item>
+				</Breadcrumb>
 				<div className="d-flex justify-content-between">
-					<div className="d-flex">
-						<Tag color="red">User Id: {userInformation.id}</Tag>
-						<Tag>{userInformation.email}</Tag>
-						{userInformation.flagged ? (
-							<Tag color="red" style={{ fontWeight: 'bold' }}>
-								<Icon type="flag" /> flagged user
-							</Tag>
-						) : null}
+					<div className="d-flex align-items-center user-details">
+						<ReactSVG
+							src={STATIC_ICONS.USER_DETAILS_ICON}
+							className="user-icon"
+						/>
+						<div>User Id: {userInformation.id}</div>
+						<div className="user-seperator"></div>
+						<div>{userInformation.email}</div>
 					</div>
 					<div className="d-flex">
 						<Button
-							size="small"
+							size="medium"
 							type="primary"
 							style={{ marginRight: 5 }}
 							onClick={refreshAllData}
+							className="green-btn"
 						>
-							Refresh data
+							Refresh
 						</Button>
-						<Flagger
-							user_id={id}
-							flagged={flagged}
-							refreshData={refreshData}
-							small={true}
-						/>
 					</div>
 				</div>
 				<Tabs
-					tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
+				// tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
 				>
-					<TabPane tab="Data" key="data">
+					<TabPane tab="About" key="about">
+						<div>
+							<AboutData
+								user_id={userInformation.id}
+								userData={userInformation}
+								userImages={userImages}
+								constants={constants}
+								refreshData={refreshData}
+								onChangeSuccess={onChangeUserDataSuccess}
+								disableOTP={this.disableOTP}
+								flagUser={this.flagUser}
+								freezeAccount={this.freezeAccount}
+							/>
+						</div>
+					</TabPane>
+					{/* <TabPane tab="Data" key="data">
 						<div>
 							<UserData
 								initialValues={userInformation}
 								onChangeSuccess={onChangeUserDataSuccess}
 							/>
 						</div>
-					</TabPane>
+					</TabPane> */}
 					<TabPane tab="Bank" key="bank">
 						<div>
 							<BankData
@@ -118,7 +263,7 @@ class UserContent extends Component {
 					</TabPane>
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Balance" key="balance">
-							<UserBalance userData={userInformation} />
+							<UserBalance coins={coins} userData={userInformation} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
@@ -131,11 +276,11 @@ class UserContent extends Component {
 							<TradeHistory userId={userInformation.id} />
 						</TabPane>
 					)}
-					{isAdmin() && (
+					{/* {isAdmin() && (
 						<TabPane tab="Funding" key="deposit">
 							<Balance user_id={id} pairs={pairs} />
 						</TabPane>
-					)}
+					)} */}
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Deposits" key="deposits">
 							{/*<Deposits*/}
@@ -149,11 +294,11 @@ class UserContent extends Component {
 							{/*/>*/}
 							<Transactions
 								initialData={{
-									user_id: id
+									user_id: id,
 								}}
 								queryParams={{
 									status: true,
-									type: 'deposit'
+									type: 'deposit',
 								}}
 								hideUserColumn={true}
 							/>
@@ -163,66 +308,16 @@ class UserContent extends Component {
 						<TabPane tab="Withdrawal" key="withdrawals">
 							<Transactions
 								initialData={{
-									user_id: id
+									user_id: id,
 								}}
 								queryParams={{
 									status: true,
-									type: "withdrawal"
+									type: 'withdrawal',
 								}}
 								hideUserColumn={true}
 							/>
 						</TabPane>
 					)}
-					<TabPane tab="Verification" key="verification">
-						<Verification
-							constants={constants}
-							user_id={userInformation.id}
-							userImages={userImages}
-							userInformation={userInformation}
-							verificationInitialValues={verificationInitialValues}
-							roleInitialValues={roleInitialValues}
-							refreshData={refreshData}
-						/>
-					</TabPane>
-					<TabPane tab="Logins" key="logins">
-						<Logins userId={userInformation.id} />
-					</TabPane>
-					{!isSupportUser && !isKYC() && (
-						<TabPane tab="OTP" key="otp">
-							<Otp
-								user_id={id}
-								otp_enabled={otp_enabled}
-								refreshData={refreshData}
-							/>
-						</TabPane>
-					)}
-					<TabPane tab="Status" key="activate">
-						<Activate
-							user_id={id}
-							activated={activated}
-							refreshData={refreshData}
-						/>
-					</TabPane>
-					{!isSupportUser && !isKYC() && (
-						<TabPane tab="Upload" key="upload">
-							<UploadIds user_id={id} refreshData={refreshData} />
-						</TabPane>
-					)}
-					{isAdmin() && (
-						<TabPane tab="Audits" key="audits">
-							<Audits userId={userInformation.id} />
-						</TabPane>
-					)}				
-					<TabPane tab="Notes" key="notes">
-						<Notes 
-							initialValues={{
-								id: userInformation.id,
-								note: userInformation.note
-							}}
-							userInfo={userInformation}
-							onChangeSuccess={onChangeUserDataSuccess}
-						/>
-					</TabPane>
 				</Tabs>
 			</div>
 		);

@@ -14,11 +14,13 @@ export const generateFormValues = (type) => {
 			name: {
 				type: 'text',
 				validate: [tokenKeyValidation],
-				label: STRINGS.DEVELOPERS_TOKENS_POPUP.FORM_NAME_LABEL,
-				placeholder: STRINGS.DEVELOPERS_TOKENS_POPUP.FORM_LABLE_PLACEHOLDER,
+				stringId:
+					'DEVELOPERS_TOKENS_POPUP.FORM_NAME_LABEL,DEVELOPERS_TOKENS_POPUP.FORM_LABLE_PLACEHOLDER',
+				label: STRINGS['DEVELOPERS_TOKENS_POPUP.FORM_NAME_LABEL'],
+				placeholder: STRINGS['DEVELOPERS_TOKENS_POPUP.FORM_LABLE_PLACEHOLDER'],
 				fullWidth: true,
-				maxLength: 64
-			}
+				maxLength: 64,
+			},
 		};
 	} else {
 		return {};
@@ -35,5 +37,5 @@ const BasicTokenForm = ({ handleSubmit, error, formFields }) => (
 );
 
 export const TokenForm = reduxForm({
-	form: FORM_NAME
+	form: FORM_NAME,
 })(BasicTokenForm);

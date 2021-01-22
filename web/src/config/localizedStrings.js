@@ -11,7 +11,7 @@ import vi from './lang/vi';
 import id from './lang/id';
 import zh from './lang/zh';
 
-const strings = new LocalizedStrings({
+export const content = {
 	en,
 	ko,
 	ja,
@@ -21,7 +21,9 @@ const strings = new LocalizedStrings({
 	es,
 	vi,
 	id,
-	zh
-});
+	zh,
+};
+
+const strings = new LocalizedStrings(content);
 
 export default strings;
