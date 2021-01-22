@@ -217,7 +217,7 @@ class AppMenuBar extends Component {
 							</EditWrapper>
 						</div>
 					</div>
-					{constants.broker_enabled && (
+					{constants && constants.features && constants.features.quick_trade && (
 						<div
 							className={classnames('app-menu-bar-content d-flex', {
 								'active-menu': activeMenu === 'quick-trade',

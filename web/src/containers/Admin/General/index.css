@@ -139,7 +139,37 @@
 	margin-left: 1.4rem;
 	color: #ffffff;
 }
-.candle-icon {
+.interface-box .feature-icon {
+	width: 74px;
+	stroke: #808080;
+	fill-opacity: 0.5;
+}
+.interface-box .feature-chat-icon {
+	width: 42px;
+	margin: 4px 16px;
+	stroke: #808080;
+	fill-opacity: 0.5;
+}
+.interface-box .ant-checkbox-wrapper-checked .feature-icon,
+.interface-box .ant-checkbox-wrapper-checked .feature-chat-icon {
+	stroke: #ffffff;
+	fill-opacity: 1;
+}
+.interface-box .checkbox-txt,
+.interface-box .small-text {
+	color: #808080;
+}
+.interface-box .ant-checkbox-wrapper-checked .checkbox-txt,
+.interface-box .ant-checkbox-wrapper-checked .small-text {
+	color: #ffffff;
+}
+.interface-box .ant-checkbox-wrapper {
+	display: flex;
+	align-items: center;
+	margin-left: 8px;
+}
+.interface-box .candle-icon,
+.radio-btn-wrapper .candle-icon {
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -150,6 +180,12 @@
 	width: 36px;
 	margin: 5px auto;
 }
+.feature-trade-box {
+	display: flex;
+	width: 75px;
+	height: 50px;
+	background-color: #050596;
+}
 .box {
 	display: flex;
 	width: 75px;
@@ -158,12 +194,13 @@
 	position: relative;
 	bottom: 2rem;
 }
+.feature-trade-box .interface_container,
 .box .interface_container {
 	margin: auto;
 	margin-top: 7px;
 }
 .general-wrapper .sell {
-	border: 1px solid #ffffff;
+	border: 1px solid #808080;
 	width: 60px;
 	height: 18px;
 }
@@ -172,14 +209,14 @@
 	position: relative;
 	bottom: 3px;
 	left: 18px;
-	color: #ffffff !important;
+	color: #808080;
 }
 .general-wrapper .buy {
 	width: 60px;
 	height: 18px;
 	border: 1px solid #000000;
 	margin-top: 0.25rem;
-	background-color: #ffffff;
+	background-color: #808080;
 }
 .general-wrapper .buy .label {
 	font-size: 10px;
@@ -187,6 +224,15 @@
 	bottom: 3px;
 	left: 18px;
 	color: #000000 !important;
+}
+.ant-checkbox-wrapper-checked .buy {
+	background-color: #ffffff;
+}
+.ant-checkbox-wrapper-checked .sell {
+	border: 1px solid #ffffff;
+}
+.ant-checkbox-wrapper-checked .sell .label {
+	color: #ffffff;
 }
 .general-wrapper .ant-radio-wrapper {
 	height: 100px;

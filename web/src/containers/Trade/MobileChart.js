@@ -53,7 +53,9 @@ class MobileChart extends Component {
 					className="f-1 overflow-x"
 					alignChildTitle={true}
 					tailHead={
-						constants.broker_enabled ? (
+						constants &&
+						constants.features &&
+						constants.features.quick_trade ? (
 							<div className="quick-trade-tab p-1 mt-1">
 								<Link to={`/quick-trade/${pairValue}`}>
 									{STRINGS['QUICK_TRADE']}

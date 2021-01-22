@@ -219,9 +219,15 @@ export const setCurrencies = (coins) => ({
 
 export const setConfig = (constants = {}) => {
 	let enabledPlugins = [];
+	let features = {};
 	if (constants) {
 		if (constants.plugins && constants.plugins.enabled) {
 			enabledPlugins = constants.plugins.enabled.split(',');
+		}
+	}
+	if (constants) {
+		if (constants.features) {
+			features = constants.features;
 		}
 	}
 	return {
@@ -229,6 +235,7 @@ export const setConfig = (constants = {}) => {
 		payload: {
 			constants,
 			enabledPlugins,
+			features,
 		},
 	};
 };

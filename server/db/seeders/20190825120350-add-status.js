@@ -1,5 +1,7 @@
 'use strict';
 
+const rp = require('request-promise');
+
 const {
 	API_NAME,
 	API_HOST,
@@ -27,10 +29,11 @@ const {
 	KIT_VERSION
 } = process.env;
 
-const HE_NETWORK_ENDPOINT = 'https://api.testnet.hollaex.network';
-const HE_NETWORK_BASE_URL = '/v2';
-const PATH_ACTIVATE = '/exchange/activate';
-const rp = require('request-promise');
+const {
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
+	HOLLAEX_NETWORK_PATH_ACTIVATE
+} = require('../../constants');
 
 const checkActivation = (activation_code) => {
 	const body = {
@@ -40,7 +43,7 @@ const checkActivation = (activation_code) => {
 	const options = {
 		method: 'POST',
 		body,
-		uri: `${HE_NETWORK_ENDPOINT}${HE_NETWORK_BASE_URL}${PATH_ACTIVATE}`,
+		uri: `${HOLLAEX_NETWORK_ENDPOINT}${HOLLAEX_NETWORK_BASE_URL}${HOLLAEX_NETWORK_PATH_ACTIVATE}`,
 		json: true
 	};
 	return rp(options);

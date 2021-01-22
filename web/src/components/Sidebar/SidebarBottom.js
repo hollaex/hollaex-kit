@@ -31,6 +31,7 @@ export const SidebarBottom = ({
 	pair = '',
 	isLogged,
 	enabledPlugins = [],
+	features = {},
 }) => {
 	return isLogged ? (
 		<div className="sidebar-bottom-wrapper d-flex justify-content-between">
@@ -52,7 +53,7 @@ export const SidebarBottom = ({
 				iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
 				active={activePath === 'trade'}
 			/>
-			{enabledPlugins.includes('chat') ? (
+			{features && features.chat ? (
 				<SidebarButton
 					path={`/chat`}
 					title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
