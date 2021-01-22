@@ -9,7 +9,10 @@ import withEdit from 'components/EditProvider/withEdit';
 
 const generateSectionsText = (links = {}, ICONS) => {
 	let sectionsText = Object.keys(links)
-		.filter((sectionKey) => typeof links[sectionKey] === 'object')
+		.filter(
+			(sectionKey) =>
+				typeof links[sectionKey] === 'object' && links[sectionKey].header
+		)
 		.map((key) => {
 			const section = links[key];
 			let heading = Object.keys(section.header)[0];
@@ -73,8 +76,9 @@ const AppFooter = ({
 							'flex-column': isMobile,
 						})}
 					>
-						{generateSectionsText(constants.links, ICONS).map(
-							({ TITLE, LINKS }, index) => (
+						{generateSectionsText(constants.links, ICONS)
+							.filter(({ LINKS }) => LINKS.length)
+							.map(({ TITLE, LINKS }, index) => (
 								<div
 									key={index}
 									className={classnames(
@@ -117,8 +121,7 @@ const AppFooter = ({
 										))}
 									</div>
 								</div>
-							)
-						)}
+							))}
 						<div className="footer_separter">
 							<div className="footer-content">
 								<div className="d-flex">
