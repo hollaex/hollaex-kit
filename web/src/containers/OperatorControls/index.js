@@ -596,7 +596,7 @@ class OperatorControls extends Component {
 		this.setState({ isPublishConfirmationOpen: false });
 	};
 
-	addIcons = (icons = {}) => {
+	addIcons = (icons = {}, updateSearchResults = false) => {
 		const { updateIcons } = this.props;
 		this.setState(
 			(prevState) => ({
@@ -607,6 +607,10 @@ class OperatorControls extends Component {
 				this.forceRender();
 				this.closeUploadIcon();
 				this.enablePublish();
+				// FIXME
+				if (updateSearchResults) {
+					setTimeout(() => this.openAllIconsModal(), 2500);
+				}
 			}
 		);
 	};
@@ -812,7 +816,7 @@ class OperatorControls extends Component {
 							className="operator-controls__panel-item"
 							onClick={this.openAllIconsModal}
 						>
-							Icons
+							All graphics
 						</div>
 					</div>
 					<div className="d-flex align-items-center">

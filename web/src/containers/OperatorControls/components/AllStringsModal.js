@@ -51,7 +51,7 @@ class AllStringsModal extends Component {
 			<Modal
 				isOpen={isOpen}
 				label="operator-controls-modal"
-				className="operator-controls__modal"
+				className="operator-controls__modal extended"
 				disableTheme={true}
 				onCloseDialog={onCloseDialog}
 				shouldCloseOnOverlayClick={true}
@@ -91,8 +91,8 @@ class AllStringsModal extends Component {
 							size="small"
 							sticky={true}
 							pagination={{
-								pageSize: 1000,
-								hideOnSinglePage: true,
+								pageSize: strings.length ? Math.ceil(strings.length / 4) : 0,
+								hideOnSinglePage: false,
 								showSizeChanger: false,
 								showQuickJumper: false,
 								showLessItems: false,

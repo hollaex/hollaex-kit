@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import ReactSvg from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 
@@ -155,9 +155,9 @@ export const generateWaveHeaders = (ICONS) => [
 					})}
 				>
 					<div className="d-flex">
-						<ReactSvg
-							path={ICONS['INCOMING_WAVE']}
-							wrapperClassName="wave-auction-icon"
+						<ReactSVG
+							src={ICONS['INCOMING_WAVE']}
+							className="wave-auction-icon"
 						/>
 						<div className="ml-1">{no}</div>
 					</div>

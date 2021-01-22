@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Button, Radio } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -41,8 +41,8 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 							</div>
 							<div>
 								<ReactSVG
-									path={STATIC_ICONS.CANDLES_LOGO}
-									wrapperClassName="candle-icon"
+									src={STATIC_ICONS.CANDLES_LOGO}
+									className="candle-icon"
 								/>
 							</div>
 						</div>
@@ -52,10 +52,7 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 						<div className="small-text">
 							(Chart, orderbook, limit orders with wallet)
 						</div>
-						<ReactSVG
-							path={STATIC_ICONS.CANDLES_LOGO}
-							wrapperClassName="candle-icon"
-						/>
+						<ReactSVG src={STATIC_ICONS.CANDLES_LOGO} className="candle-icon" />
 					</Radio>
 					<Radio value="quick-trade">
 						Quick trade only
@@ -81,8 +78,8 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 							<div className="small-text">(No trading. Only crypto wallet)</div>
 							<div className="box interface">
 								<ReactSVG
-									path={STATIC_ICONS.WALLET_BTC_ICON}
-									wrapperClassName="wallet-icon"
+									src={STATIC_ICONS.WALLET_BTC_ICON}
+									className="wallet-icon"
 								/>
 							</div>
 						</div>

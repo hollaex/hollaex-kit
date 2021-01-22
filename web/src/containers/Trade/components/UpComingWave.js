@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import ReactSvg from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import moment from 'moment';
 
 import { getWaveAuction } from '../../../actions/appActions';
@@ -59,10 +59,7 @@ class UpComingWave extends Component {
 		return (
 			<div className="trade_orderbook-headers d-flex">
 				<div>
-					<ReactSvg
-						path={ICONS['INCOMING_WAVE']}
-						wrapperClassName="waves-icon"
-					/>
+					<ReactSVG src={ICONS['INCOMING_WAVE']} className="waves-icon" />
 				</div>
 				<div className="ml-3">
 					<div className=" f-1 trade_orderbook-cell mb-2">

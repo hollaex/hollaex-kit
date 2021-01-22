@@ -135,7 +135,7 @@ class AllIconsModal extends Component {
 			loading: false,
 		});
 
-		onSave(icons);
+		onSave(icons, true);
 
 		this.setState({
 			selectedFiles: {},
@@ -149,7 +149,7 @@ class AllIconsModal extends Component {
 			<Modal
 				isOpen={isOpen}
 				label="operator-controls-modal"
-				className="operator-controls__modal"
+				className="operator-controls__modal extended"
 				disableTheme={true}
 				onCloseDialog={onCloseDialog}
 				shouldCloseOnOverlayClick={true}
@@ -159,7 +159,7 @@ class AllIconsModal extends Component {
 				{isOpen && (
 					<div>
 						<div className="operator-controls__all-strings-header">
-							<div className="operator-controls__modal-title">All icons</div>
+							<div className="operator-controls__modal-title">All graphics</div>
 							<div className="d-flex justify-content-end mr-3">
 								<Search
 									style={{ width: '134px' }}
@@ -183,8 +183,8 @@ class AllIconsModal extends Component {
 							size="small"
 							sticky={true}
 							pagination={{
-								pageSize: 1000,
-								hideOnSinglePage: true,
+								pageSize: icons.length ? Math.ceil(icons.length / 4) : 0,
+								hideOnSinglePage: false,
 								showSizeChanger: false,
 								showQuickJumper: false,
 								showLessItems: false,
@@ -193,17 +193,17 @@ class AllIconsModal extends Component {
 							scroll={{ y: 240 }}
 							style={{ width: '820px' }}
 						/>
+						<div className="d-flex justify-content-end pt-4 mt-4">
+							<Button
+								type="primary"
+								onClick={onCloseDialog}
+								className="operator-controls__save-button confirm"
+							>
+								Confirm
+							</Button>
+						</div>
 					</div>
 				)}
-				<div className="d-flex justify-content-end pt-4 mt-4">
-					<Button
-						type="primary"
-						onClick={onCloseDialog}
-						className="operator-controls__save-button confirm"
-					>
-						Confirm
-					</Button>
-				</div>
 			</Modal>
 		);
 	}

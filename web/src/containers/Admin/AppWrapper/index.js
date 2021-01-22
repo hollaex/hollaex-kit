@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
 import { debounce } from 'lodash';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { PATHS } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -250,8 +250,8 @@ class AppWrapper extends React.Component {
 							}
 						>
 							<ReactSVG
-								path={STATIC_ICONS.HEX_PATTERN_ICON}
-								wrapperClassName="sidebar-icon"
+								src={STATIC_ICONS.HEX_PATTERN_ICON}
+								className="sidebar-icon"
 							/>
 							<div>
 								<div>DASHBOARD</div>
@@ -317,8 +317,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-black">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -332,8 +332,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-grey">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_KYC}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_KYC}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -347,8 +347,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-orange">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -362,8 +362,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-yellow">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								className="sider-icons"
 							/>
 						</div>
 						<div>

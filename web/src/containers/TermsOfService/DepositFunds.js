@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { IconTitle, BlueLink, Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -20,7 +20,7 @@ const DepositFunds = (props) => {
 			/>
 			<div className="mx-3">
 				<div className="d-flex align-items-center my-4">
-					<ReactSVG path={ICONS['XHT_FAQ']} wrapperClassName="funds-svg" />
+					<ReactSVG src={ICONS['XHT_FAQ']} className="funds-svg" />
 					<div className="ml-2 font-weight-bold">
 						{STRINGS.formatString(
 							STRINGS['TERMS_OF_SERVICES.READ_FAG'],
@@ -32,7 +32,7 @@ const DepositFunds = (props) => {
 					</div>
 				</div>
 				<div className="d-flex align-items-center my-4">
-					<ReactSVG path={ICONS['XHT_DOCS']} wrapperClassName="funds-svg" />
+					<ReactSVG src={ICONS['XHT_DOCS']} className="funds-svg" />
 					<div className="ml-2 font-weight-bold">
 						{STRINGS.formatString(
 							STRINGS['TERMS_OF_SERVICES.READ_DOCUMENTATION'],
@@ -44,7 +44,7 @@ const DepositFunds = (props) => {
 					</div>
 				</div>
 				<div className="d-flex align-items-center my-4">
-					<ReactSVG path={ICONS['XHT_PDF']} wrapperClassName="funds-svg" />
+					<ReactSVG src={ICONS['XHT_PDF']} className="funds-svg" />
 					<div className="ml-2 font-weight-bold">
 						{STRINGS.formatString(
 							STRINGS['TERMS_OF_SERVICES.DOWNLOAD_BUY_XHT'],
@@ -56,7 +56,7 @@ const DepositFunds = (props) => {
 					</div>
 				</div>
 				<div className="d-flex align-items-center my-4">
-					<ReactSVG path={ICONS['XHT_EMAIL']} wrapperClassName="funds-svg" />
+					<ReactSVG src={ICONS['XHT_EMAIL']} className="funds-svg" />
 					<div className="ml-2 font-weight-bold">
 						{STRINGS.formatString(
 							STRINGS['TERMS_OF_SERVICES.CONTACT_US'],
