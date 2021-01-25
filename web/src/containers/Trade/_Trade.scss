@@ -36,7 +36,13 @@ $order_entry-column--width-lg: 20rem;
 	color: $trade-bids-color-font;
 }
 
+.trade_history-row-wrapper {
+	margin: 1px 0;
+}
+
 .trade_history-row {
+	height: 100%;
+
 	.trade_history-icon {
 		width: 1rem;
 		margin-right: 3px;
