@@ -81,7 +81,7 @@ module.exports = {
 							information: '',
 						},
 						setup_completed: false,
-						native_currency: NATIVE_CURRENCY || exchange.coins[0].symbol,
+						native_currency: NATIVE_CURRENCY,
 						logo_image: LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',
 						valid_languages: VALID_LANGUAGES || 'en,fa,ko,ar,fr',
 						new_user_is_activated: (NEW_USER_IS_ACTIVATED && NEW_USER_IS_ACTIVATED === 'true') || false,
