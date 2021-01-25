@@ -6,7 +6,8 @@ const {
 	isPlainObject,
 	isNumber,
 	isString,
-	isArray
+	isArray,
+	isDate
 } = require('lodash');
 const {
 	createRequest,
@@ -131,8 +132,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'desc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -156,12 +157,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.symbol) {
@@ -197,8 +198,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'desc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -227,12 +228,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.symbol) {
@@ -403,8 +404,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'asc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -430,12 +431,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.currency) {
@@ -503,8 +504,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'asc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -535,12 +536,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.currency) {
@@ -607,8 +608,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'asc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -634,12 +635,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.currency) {
@@ -707,8 +708,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'asc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -739,12 +740,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.currency) {
@@ -994,8 +995,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'desc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1019,12 +1020,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.symbol) {
@@ -1079,8 +1080,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'desc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1109,12 +1110,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.symbol) {
@@ -1309,8 +1310,8 @@ class HollaExNetwork {
 			page: 1,
 			orderBy: 'id',
 			order: 'asc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1336,12 +1337,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		if (opts.symbol) {
@@ -1719,8 +1720,8 @@ class HollaExNetwork {
 		opts = {
 			limit: 50,
 			page: 1,
-			startDate: 0,
-			endDate: moment().toISOString()
+			startDate: null,
+			endDate: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1736,12 +1737,12 @@ class HollaExNetwork {
 			path += `&page=${opts.page}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
 		const headers = generateHeaders(
