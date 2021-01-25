@@ -1711,7 +1711,7 @@ table th {
   margin-left: 2rem; }
 
 .trade_history-wrapper {
-  height: 100vh; }
+  height: 84vh; }
   .trade_history-wrapper .display_table-wrapper .display_table-header :nth-child(2) {
     text-align: center; }
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell :nth-child(2),
@@ -1895,7 +1895,7 @@ table th {
   margin: auto; }
 
 .trade_orderbook-wrapper {
-  height: 100vh; }
+  height: 84vh; }
   .trade_orderbook-wrapper .trade_orderbook-cell {
     padding: 0 0.25rem; }
     .trade_orderbook-wrapper .trade_orderbook-cell .ant-select-arrow {
