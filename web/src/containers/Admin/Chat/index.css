@@ -1,36 +1,36 @@
-.chat-tabs.ant-tabs {
+.admin-chat-feature-wrapper .chat-tabs.ant-tabs {
 	width: 100%;
 }
 
-.banlist {
+.admin-chat-feature-wrapper .banlist {
 	max-width: 250px;
 }
 
-.chat-header {
+.admin-chat-feature-wrapper .chat-header {
 	color: #ffffff;
 	font-size: 18px;
 }
 
-.chat-header .small-text {
+.admin-chat-feature-wrapper .chat-header .small-text {
 	color: #ffffff;
 	font-size: 13px;
 	margin: 0 !important;
 }
-.switch-label {
+.admin-chat-feature-wrapper .switch-label {
 	margin: 0px 5px;
 	font-weight: bold;
 	font-size: 14px;
 	color: #ffffff;
 }
-.switch-wrapper {
+.admin-chat-feature-wrapper .switch-wrapper {
 	margin: 1rem 0rem 5rem 0rem;
 }
-.switch-wrapper .ant-switch {
+.admin-chat-feature-wrapper .switch-wrapper .ant-switch {
 	background-color: #000000;
 }
-.switch-label::after {
+.admin-chat-feature-wrapper .switch-label::after {
 	color: #808080;
 }
-.switch-wrapper .label-inactive {
+.admin-chat-feature-wrapper .switch-wrapper .label-inactive {
 	color: #808080;
 }

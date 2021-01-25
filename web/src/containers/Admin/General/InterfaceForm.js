@@ -20,10 +20,9 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 	};
 	return (
 		<div className="general-wrapper mb-4">
-			<div className="sub-title">Trading Interface</div>
+			<div className="sub-title">Features</div>
 			<div className="description">
-				Select the trading interface that will be available on your exchange.
-				All interfaces includes a crypto wallet.
+				Select the features that will be available on your exchange.
 			</div>
 			<Form
 				name="interface-form"
@@ -35,7 +34,7 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
 								<ReactSVG
-    src={STATIC_ICONS.CANDLES_LOGO}
+									src={STATIC_ICONS.CANDLES_LOGO}
 									className="feature-icon mr-1"
 								/>
 								<div className="ml-2 checkbox-txt">
@@ -45,7 +44,7 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 									</div>
 								</div>
 							</div>
-  						</Checkbox>
+						</Checkbox>
 					</Item>
 					<Item name="quick_trade" valuePropName="checked">
 						<Checkbox className="mt-3">
@@ -69,7 +68,7 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 									</div>
 								</div>
 							</div>
-  						</Checkbox>
+						</Checkbox>
 					</Item>
 					<Item name="chat" valuePropName="checked">
 						<Checkbox className="mt-3">

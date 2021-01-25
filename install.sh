@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Parameter support to specify version of the CLI to install.
-export HOLLAEX_INSTALLER_VERSION_TARGET=${1:-"2.0.0"}
+export HOLLAEX_INSTALLER_VERSION_TARGET=${1:-"master"}
 
 echo "Pulling HollaEx CLI from Github..."
 curl -s https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh > cli_installer.sh && \
