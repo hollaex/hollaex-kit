@@ -220,7 +220,7 @@ class AddTheme extends Component {
 						<Radio value={false}>
 							<Tooltip
 								overlayStyle={{ zIndex: 10001 }}
-								title="Separated base theme definition"
+								title="Edit multiple colors in the theme separately"
 							>
 								Use separated base
 							</Tooltip>
@@ -228,7 +228,7 @@ class AddTheme extends Component {
 						<Radio value={true}>
 							<Tooltip
 								overlayStyle={{ zIndex: 10001 }}
-								title="single base theme definition"
+								title="Easily edit the whole theme through a single base background color"
 							>
 								Use single base
 							</Tooltip>
