@@ -266,7 +266,7 @@ class Chat extends Component {
 			isActive,
 		} = this.state;
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content admin-chat-feature-wrapper">
 				{!ready ? (
 					<Spin size="large" />
 				) : (
@@ -296,7 +296,7 @@ class Chat extends Component {
 								</span>
 							</div>
 						</div>
-						{isActive ?
+						{isActive ? (
 							<Tabs className="chat-tabs mt-5">
 								<TabPane tab="Messages" key="messages">
 									<Messages
@@ -315,8 +315,7 @@ class Chat extends Component {
 									/>
 								</TabPane>
 							</Tabs>
-							: null
-						}
+						) : null}
 					</div>
 				)}
 			</div>
