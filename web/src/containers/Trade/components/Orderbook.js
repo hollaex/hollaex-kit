@@ -348,7 +348,7 @@ const mapStateToProps = (store) => {
 		app: { pair, pairs },
 		orderbook: { depth },
 	} = store;
-	const { increment_price } = pairs[pair];
+	const { increment_price } = pairs[pair] || { pair_base: '', pair_2: '' };
 
 	return {
 		pair,

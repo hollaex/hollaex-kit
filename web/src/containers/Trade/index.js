@@ -54,12 +54,14 @@ class Trade extends PureComponent {
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
+		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
-			this.closeOrderbookSocket();
 			this.setSymbol(nextProps.routeParams.pair);
+			this.subscribe(nextProps.routeParams.pair);
+			this.unsubscribe(this.props.routeParams.pair);
 		}
 	}
 
@@ -72,9 +74,6 @@ class Trade extends PureComponent {
 	setSymbol = (symbol = '') => {
 		if (isLoggedIn()) {
 			this.props.getUserTrades(symbol);
-		}
-		if (!this.props.fetchingAuth) {
-			this.initializeOrderbookWs(symbol, getToken());
 		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
@@ -203,12 +202,7 @@ class Trade extends PureComponent {
 		this.setState({ orderbookWs });
 
 		orderbookWs.onopen = (evt) => {
-			orderbookWs.send(
-				JSON.stringify({
-					op: 'subscribe',
-					args: [`orderbook:${symbol}`],
-				})
-			);
+			this.subscribe(symbol);
 
 			setWsHeartbeat(orderbookWs, JSON.stringify({ op: 'ping' }), {
 				pingTimeout: 60000,
@@ -217,7 +211,6 @@ class Trade extends PureComponent {
 		};
 
 		orderbookWs.onmessage = (evt) => {
-			this.setState({ orderbookSocketInitialized: true });
 			const data = JSON.parse(evt.data);
 			if (data.topic === 'orderbook')
 				switch (data.action) {
@@ -241,20 +234,32 @@ class Trade extends PureComponent {
 		};
 	};
 
-	closeOrderbookSocket = () => {
-		const {
-			routeParams: { pair },
-		} = this.props;
-		const { orderbookWs, orderbookSocketInitialized } = this.state;
+	subscribe = (pair) => {
+		const { orderbookWs } = this.state;
 		if (orderbookWs) {
-			if (orderbookSocketInitialized) {
-				orderbookWs.send(
-					JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
-				);
-			}
+			orderbookWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: [`orderbook:${pair}`],
+				})
+			);
+		}
+	};
+
+	unsubscribe = (pair) => {
+		const { orderbookWs } = this.state;
+		if (orderbookWs) {
+			orderbookWs.send(
+				JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
+			);
+		}
+	};
+
+	closeOrderbookSocket = () => {
+		const { orderbookWs } = this.state;
+		if (orderbookWs) {
 			orderbookWs.close();
 		}
-		this.setState({ orderbookSocketInitialized: false });
 	};
 
 	render() {

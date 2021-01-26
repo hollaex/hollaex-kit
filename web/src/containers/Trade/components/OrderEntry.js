@@ -557,7 +557,7 @@ const mapStateToProps = (state) => {
 		min_price,
 		increment_size,
 		increment_price,
-	} = state.app.pairs[pair];
+	} = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
 	const marketPrice = marketPriceSelector(state);
 
 	return {
