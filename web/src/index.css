@@ -3579,6 +3579,13 @@ table th {
 .operator-controls__table tbody > tr > td {
   border: none !important; }
 
+.operator-button_underline.ant-btn > span {
+  text-decoration: underline; }
+
+.operator-button_underline.ant-btn-link {
+  padding: 4px 8px;
+  color: white; }
+
 .init-container {
   flex: 1;
   height: 100%; }

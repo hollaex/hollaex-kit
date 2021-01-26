@@ -296,3 +296,13 @@ $operator-controls__panel-border-color: #a7a7a7;
 		border: none !important;
 	}
 }
+
+.operator-button_underline {
+	&.ant-btn > span {
+		text-decoration: underline;
+	}
+	&.ant-btn-link {
+		padding: 4px 8px;
+		color: white;
+	}
+}

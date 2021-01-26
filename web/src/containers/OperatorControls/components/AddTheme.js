@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, object, func, string } from 'prop-types';
 import { Input, Button, Radio, Divider, Collapse, Tooltip } from 'antd';
-import { UndoOutlined, BgColorsOutlined } from '@ant-design/icons';
+import {
+	UndoOutlined,
+	BgColorsOutlined,
+	CaretDownOutlined,
+} from '@ant-design/icons';
 import initialTheme, {
 	nestedColors as nestedStructure,
 } from 'config/colors/light';
@@ -244,99 +248,128 @@ class AddTheme extends Component {
 					)}
 				</div>
 				<div>
-					{Object.entries(nestedStructure).map(([clusterKey, clusterObj]) => {
-						const renderCollapse = clusterKey === 'base' && isSingleBase;
+					{Object.entries(nestedStructure)
+						.filter(
+							([clusterKey, clusterObj]) =>
+								!isSingleBase || clusterKey === 'base'
+						)
+						.map(([clusterKey, clusterObj]) => {
+							const renderCollapse = clusterKey === 'base' && isSingleBase;
 
-						return (
-							<div className="pb-4" key={clusterKey}>
-								<Divider orientation="left">
-									<span className="caps">
-										<BgColorsOutlined /> {clusterKey}
-									</span>
-								</Divider>
-								{renderCollapse ? (
-									<Collapse defaultActiveKey={['1']} bordered={false} ghost>
-										<Collapse.Panel showArrow={false} key="1" disabled={true}>
-											{Object.keys(clusterObj)
-												.filter(
-													(localColorKey) => localColorKey === 'background'
-												)
-												.map((localColorKey) => {
-													const colorKey = `${clusterKey}_${localColorKey}`;
-													const isCalculated = this.isCalculated(colorKey);
-													const colorValue = isCalculated
-														? baseRatios[colorKey]
-														: theme[colorKey];
+							return (
+								<div className="pb-4" key={clusterKey}>
+									<Divider orientation="left">
+										<span className="caps">
+											<BgColorsOutlined /> {clusterKey}
+										</span>
+									</Divider>
+									{renderCollapse ? (
+										<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+											<Collapse.Panel showArrow={false} key="1" disabled={true}>
+												{Object.keys(clusterObj)
+													.filter(
+														(localColorKey) => localColorKey === 'background'
+													)
+													.map((localColorKey) => {
+														const colorKey = `${clusterKey}_${localColorKey}`;
+														const isCalculated = this.isCalculated(colorKey);
+														const colorValue = isCalculated
+															? baseRatios[colorKey]
+															: theme[colorKey];
 
-													return (
-														<ColorInput
-															colorKey={colorKey}
-															isCalculated={isCalculated}
-															colorValue={colorValue}
-															pickerHandler={this.pickerHandler}
-															onReset={this.onReset}
-															validateColor={this.validateColor}
-															onChange={this.handleInputChange}
-														/>
-													);
-												})}
-										</Collapse.Panel>
-										<Collapse.Panel
-											showArrow={false}
-											header="Modify theme breakdown"
-											key="2"
-										>
-											{Object.keys(clusterObj)
-												.filter(
-													(localColorKey) => localColorKey !== 'background'
-												)
-												.map((localColorKey) => {
-													const colorKey = `${clusterKey}_${localColorKey}`;
-													const isCalculated = this.isCalculated(colorKey);
-													const colorValue = isCalculated
-														? baseRatios[colorKey]
-														: theme[colorKey];
+														return (
+															<ColorInput
+																colorKey={colorKey}
+																isCalculated={isCalculated}
+																colorValue={colorValue}
+																pickerHandler={this.pickerHandler}
+																onReset={this.onReset}
+																validateColor={this.validateColor}
+																onChange={this.handleInputChange}
+															/>
+														);
+													})}
+											</Collapse.Panel>
+											<Collapse.Panel
+												showArrow={false}
+												header={
+													<span>
+														<CaretDownOutlined /> Modify theme breakdown
+													</span>
+												}
+												key="2"
+											>
+												{Object.keys(clusterObj)
+													.filter(
+														(localColorKey) => localColorKey !== 'background'
+													)
+													.map((localColorKey) => {
+														const colorKey = `${clusterKey}_${localColorKey}`;
+														const isCalculated = this.isCalculated(colorKey);
+														const colorValue = isCalculated
+															? baseRatios[colorKey]
+															: theme[colorKey];
 
-													return (
-														<ColorInput
-															colorKey={colorKey}
-															isCalculated={isCalculated}
-															colorValue={colorValue}
-															pickerHandler={this.pickerHandler}
-															onReset={this.onReset}
-															validateColor={this.validateColor}
-															onChange={this.handleInputChange}
-														/>
-													);
-												})}
-										</Collapse.Panel>
-									</Collapse>
-								) : (
-									<div className="pt-2">
-										{Object.keys(clusterObj).map((localColorKey) => {
-											const colorKey = `${clusterKey}_${localColorKey}`;
-											const isCalculated = this.isCalculated(colorKey);
-											const colorValue = isCalculated
-												? baseRatios[colorKey]
-												: theme[colorKey];
+														return (
+															<ColorInput
+																colorKey={colorKey}
+																isCalculated={isCalculated}
+																colorValue={colorValue}
+																pickerHandler={this.pickerHandler}
+																onReset={this.onReset}
+																validateColor={this.validateColor}
+																onChange={this.handleInputChange}
+															/>
+														);
+													})}
+												{isSingleBase && (
+													<div className="pt-2">
+														<span>
+															To edit more colors directly try switching to the
+														</span>
+														<Button
+															type="link"
+															value={false}
+															className="operator-button_underline"
+															onClick={() =>
+																this.setState({
+																	isSingleBase: false,
+																})
+															}
+														>
+															separated base color
+														</Button>
+														<span>configuration</span>
+													</div>
+												)}
+											</Collapse.Panel>
+										</Collapse>
+									) : (
+										<div className="pt-2">
+											{Object.keys(clusterObj).map((localColorKey) => {
+												const colorKey = `${clusterKey}_${localColorKey}`;
+												const isCalculated = this.isCalculated(colorKey);
+												const colorValue = isCalculated
+													? baseRatios[colorKey]
+													: theme[colorKey];
 
-											return (
-												<ColorInput
-													colorKey={colorKey}
-													isCalculated={isCalculated}
-													colorValue={colorValue}
-													pickerHandler={this.pickerHandler}
-													onReset={this.onReset}
-													validateColor={this.validateColor}
-													onChange={this.handleInputChange}
-												/>
-											);
-										})}
-									</div>
-								)}
-							</div>
-						);
-					})}
+												return (
+													<ColorInput
+														colorKey={colorKey}
+														isCalculated={isCalculated}
+														colorValue={colorValue}
+														pickerHandler={this.pickerHandler}
+														onReset={this.onReset}
+														validateColor={this.validateColor}
+														onChange={this.handleInputChange}
+													/>
+												);
+											})}
+										</div>
+									)}
+								</div>
+							);
+						})}
 				</div>
 				<div className="pt-4">
 					<Button
