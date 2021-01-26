@@ -119,7 +119,7 @@ class ConfigProvider extends Component {
 			<ProjectConfig.Provider
 				value={{
 					defaults,
-					icons: icons[activeTheme],
+					icons: icons[activeTheme] || {},
 					allIcons: icons,
 					color,
 					themeOptions,
