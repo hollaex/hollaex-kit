@@ -226,6 +226,12 @@ $operator-controls__panel-border-color: #a7a7a7;
 		}
 	}
 
+	&.add-theme {
+		.ReactModal__Content {
+			width: 532px !important;
+		}
+	}
+
 	.ReactModal__Overlay {
 		position: fixed;
 		z-index: 10001 !important;
@@ -294,5 +300,15 @@ $operator-controls__panel-border-color: #a7a7a7;
 
 	& tbody > tr > td {
 		border: none !important;
+	}
+}
+
+.operator-button_underline {
+	&.ant-btn > span {
+		text-decoration: underline;
+	}
+	&.ant-btn-link {
+		padding: 4px 8px;
+		color: white;
 	}
 }

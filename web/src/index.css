@@ -3527,6 +3527,9 @@ table th {
 .operator-controls__modal.extended .ReactModal__Content {
   height: calc(100vh - 160px) !important; }
 
+.operator-controls__modal.add-theme .ReactModal__Content {
+  width: 532px !important; }
+
 .operator-controls__modal .ReactModal__Overlay {
   position: fixed;
   z-index: 10001 !important;
@@ -3578,6 +3581,13 @@ table th {
 
 .operator-controls__table tbody > tr > td {
   border: none !important; }
+
+.operator-button_underline.ant-btn > span {
+  text-decoration: underline; }
+
+.operator-button_underline.ant-btn-link {
+  padding: 4px 8px;
+  color: white; }
 
 .init-container {
   flex: 1;

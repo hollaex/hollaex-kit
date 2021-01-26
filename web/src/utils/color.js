@@ -155,10 +155,10 @@ export const filterTheme = (theme) => {
 };
 
 export const CALCULATED_COLOR_RATIO_OBJECT = {
-	'base_top-bar-navigation': 0.7,
-	'base_secondary-navigation-bar': 0.5,
-	'base_wallet-sidebar-and-popup': 0.3,
-	base_footer: 0.6,
+	'base_top-bar-navigation': 1,
+	'base_secondary-navigation-bar': 0.1,
+	'base_wallet-sidebar-and-popup': 0,
+	base_footer: 1,
 };
 
 export const CALCULATED_COLOR_KEYS = Object.keys(CALCULATED_COLOR_RATIO_OBJECT);
