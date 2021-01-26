@@ -7,9 +7,11 @@ import {
 	BgColorsOutlined,
 	CaretDownOutlined,
 } from '@ant-design/icons';
-import initialTheme, {
+import Color from 'color';
+import initialLightTheme, {
 	nestedColors as nestedStructure,
 } from 'config/colors/light';
+import initialDarkTheme from 'config/colors/dark';
 import systemThemes from 'config/colors';
 import {
 	getColorByKey,
@@ -29,7 +31,7 @@ class AddTheme extends Component {
 		const { themes, selectedTheme: themeKey = '' } = this.props;
 		const isEditTheme = !!themeKey;
 		const theme =
-			themeKey && themes[themeKey] ? themes[themeKey] : initialTheme;
+			themeKey && themes[themeKey] ? themes[themeKey] : initialLightTheme;
 		const filteredTheme = filterTheme(theme);
 		const baseRatios = CALCULATED_COLOR_RATIO_OBJECT;
 		const isSingleBase = !isEditTheme;
@@ -116,7 +118,12 @@ class AddTheme extends Component {
 	};
 
 	onReset = (name) => {
-		const value = getColorByKey(name);
+		const { theme } = this.state;
+		const baseColor = theme['base_background'];
+		const upstreamTheme = Color(baseColor).isLight()
+			? initialLightTheme
+			: initialDarkTheme;
+		const value = getColorByKey(name, upstreamTheme);
 		this.updateTheme(value, name);
 	};
 
