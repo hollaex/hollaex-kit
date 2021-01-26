@@ -3527,6 +3527,9 @@ table th {
 .operator-controls__modal.extended .ReactModal__Content {
   height: calc(100vh - 160px) !important; }
 
+.operator-controls__modal.add-theme .ReactModal__Content {
+  width: 532px !important; }
+
 .operator-controls__modal .ReactModal__Overlay {
   position: fixed;
   z-index: 10001 !important;

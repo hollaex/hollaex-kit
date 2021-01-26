@@ -32,12 +32,13 @@ class AddTheme extends Component {
 			themeKey && themes[themeKey] ? themes[themeKey] : initialTheme;
 		const filteredTheme = filterTheme(theme);
 		const baseRatios = CALCULATED_COLOR_RATIO_OBJECT;
+		const isSingleBase = !isEditTheme;
 
 		this.state = {
 			isEditTheme,
 			themeKey,
 			theme: filteredTheme,
-			isSingleBase: false,
+			isSingleBase,
 			isDarken: true,
 			baseRatios,
 		};
@@ -134,11 +135,11 @@ class AddTheme extends Component {
 		}
 	};
 
-	handleColorMode = ({ target: { value } }) => {
-		this.setState({
-			isDarken: value,
-		});
-	};
+	// handleColorMode = ({ target: { value } }) => {
+	// 	this.setState({
+	// 		isDarken: value,
+	// 	});
+	// };
 
 	validateRatio = (value) => {
 		return value >= 0 && value <= 1;
@@ -179,14 +180,14 @@ class AddTheme extends Component {
 			theme,
 			isSingleBase,
 			baseRatios,
-			isDarken,
+			// isDarken,
 		} = this.state;
 
 		return (
 			<Modal
 				isOpen={isOpen}
 				label="operator-controls-modal"
-				className="operator-controls__modal"
+				className="operator-controls__modal add-theme"
 				disableTheme={true}
 				onCloseDialog={() => onCloseDialog(true)}
 				shouldCloseOnOverlayClick={true}
@@ -238,14 +239,14 @@ class AddTheme extends Component {
 							</Tooltip>
 						</Radio>
 					</Group>
-					{isSingleBase && (
-						<div className="pl-5">
-							<Group onChange={this.handleColorMode} value={isDarken}>
-								<Radio value={true}>Darken</Radio>
-								<Radio value={false}>Lighten</Radio>
-							</Group>
-						</div>
-					)}
+					{/*{isSingleBase && (*/}
+					{/*<div className="pl-5">*/}
+					{/*<Group onChange={this.handleColorMode} value={isDarken}>*/}
+					{/*<Radio value={true}>Darken</Radio>*/}
+					{/*<Radio value={false}>Lighten</Radio>*/}
+					{/*</Group>*/}
+					{/*</div>*/}
+					{/*)}*/}
 				</div>
 				<div>
 					{Object.entries(nestedStructure)
@@ -323,7 +324,7 @@ class AddTheme extends Component {
 														);
 													})}
 												{isSingleBase && (
-													<div className="pt-2">
+													<div className="pt-3">
 														<span>
 															To edit more colors directly try switching to the
 														</span>
@@ -371,7 +372,7 @@ class AddTheme extends Component {
 							);
 						})}
 				</div>
-				<div className="pt-4">
+				<div className="pt-3">
 					<Button
 						block
 						type="primary"
