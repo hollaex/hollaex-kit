@@ -163,7 +163,11 @@ class TradeHistory extends Component {
 		const { data } = this.state;
 		return (
 			<div className="apply_rtl trade_history-wrapper">
-				<DisplayTable headers={this.state.headers} data={data} />
+				<DisplayTable
+					headers={this.state.headers}
+					data={data}
+					rowClassName="trade_history-row-wrapper"
+				/>
 			</div>
 		);
 	}

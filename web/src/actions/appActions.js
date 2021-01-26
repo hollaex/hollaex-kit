@@ -1,4 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
+import { hasTheme } from 'utils/theme';
 import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
 import axios from 'axios';
 
@@ -267,8 +268,9 @@ export const getExchangeInfo = () => {
 				dispatch(setConfig(res.data));
 				if (res.data.defaults) {
 					const themeColor = localStorage.getItem('theme');
+					const isThemeValid = hasTheme(themeColor, res.data.color);
 					const language = localStorage.getItem(LANGUAGE_KEY);
-					if (!themeColor && res.data.defaults.theme) {
+					if (res.data.defaults.theme && (!themeColor || !isThemeValid)) {
 						dispatch(changeTheme(res.data.defaults.theme));
 						localStorage.setItem('theme', res.data.defaults.theme);
 					}

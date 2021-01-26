@@ -20,3 +20,8 @@ export const getChatMinimized = () => {
 export const setChatMinimized = (minimized) => {
 	localStorage.setItem(CHAT_STATUS_KEY, minimized);
 };
+
+export const hasTheme = (theme = '', themes = {}) => {
+	const themeKeys = Object.keys(themes);
+	return themeKeys.includes(theme);
+};
