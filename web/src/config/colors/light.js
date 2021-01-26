@@ -4,7 +4,7 @@ const options = { safe: true, delimiter: '_' };
 export const nestedColors = {
 	base: {
 		background: '#f8f8f8',
-		'top-bar-navigation': '#f3f3f3',
+		'top-bar-navigation': '#000000',
 		'secondary-navigation-bar': '#e9e9e9',
 		'wallet-sidebar-and-popup': '#f8f8f8',
 		footer: '#000000',
