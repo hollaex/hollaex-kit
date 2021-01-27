@@ -6,6 +6,7 @@ import {
 	UndoOutlined,
 	BgColorsOutlined,
 	CaretDownOutlined,
+	QuestionCircleOutlined,
 } from '@ant-design/icons';
 import Color from 'color';
 import initialLightTheme, {
@@ -268,19 +269,29 @@ class AddTheme extends Component {
 						<div className="mb-5">
 							<Group onChange={this.handleBaseMode} value={isSingleBase}>
 								<Radio value={false}>
+									Use separated base
 									<Tooltip
-										overlayStyle={{ zIndex: 10001 }}
+										overlayStyle={{ zIndex: 10001, maxWidth: '350px' }}
 										title="Edit multiple colors in the theme separately"
+										placement="right"
 									>
-										Use separated base
+										<QuestionCircleOutlined
+											style={{ color: '#ffffff' }}
+											className="ml-2"
+										/>
 									</Tooltip>
 								</Radio>
 								<Radio value={true}>
+									Use single base
 									<Tooltip
-										overlayStyle={{ zIndex: 10001 }}
+										overlayStyle={{ zIndex: 10001, maxWidth: '300px' }}
 										title="Easily edit the whole theme through a single base background color"
+										placement="right"
 									>
-										Use single base
+										<QuestionCircleOutlined
+											style={{ color: '#ffffff' }}
+											className="ml-2"
+										/>
 									</Tooltip>
 								</Radio>
 							</Group>
