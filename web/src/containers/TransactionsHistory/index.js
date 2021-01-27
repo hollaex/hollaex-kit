@@ -154,7 +154,7 @@ class TransactionsHistory extends Component {
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
-				orderHistory: isMobile
+				orders: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
 					: generateTradeHeaders(symbol, pairs, coins, discount),
 				trades: isMobile
@@ -170,15 +170,33 @@ class TransactionsHistory extends Component {
 		const { pairs, coins } = this.props;
 		this.setState({
 			filters: {
-				orderHistory: (
-					<TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />
+				orders: (
+					<TradeAndOrderFilters
+						pairs={pairs}
+						onSearch={this.onSearch}
+						formName="orders"
+					/>
 				),
-				trades: <TradeAndOrderFilters pairs={pairs} onSearch={this.onSearch} />,
+				trades: (
+					<TradeAndOrderFilters
+						pairs={pairs}
+						onSearch={this.onSearch}
+						formName="trades"
+					/>
+				),
 				deposits: (
-					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
+					<DepositAndWithdrawlFilters
+						coins={coins}
+						onSearch={this.onSearch}
+						formName="deposits"
+					/>
 				),
 				withdrawals: (
-					<DepositAndWithdrawlFilters coins={coins} onSearch={this.onSearch} />
+					<DepositAndWithdrawlFilters
+						coins={coins}
+						onSearch={this.onSearch}
+						formName="withdrawals"
+					/>
 				),
 			},
 		});
@@ -323,7 +341,7 @@ class TransactionsHistory extends Component {
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
 				props.handleDownload = downloadUserTrades;
-				props.filters = filters.orderHistory;
+				props.filters = filters.orders;
 				break;
 			case 1:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
