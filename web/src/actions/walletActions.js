@@ -7,6 +7,9 @@ export const ACTION_KEYS = {
 	USER_TRADES_PENDING: 'USER_TRADES_PENDING',
 	USER_TRADES_FULFILLED: 'USER_TRADES_FULFILLED',
 	USER_TRADES_REJECTED: 'USER_TRADES_REJECTED',
+	ORDER_HISTORY_PENDING: 'ORDER_HISTORY_PENDING',
+	ORDER_HISTORY_FULFILLED: 'ORDER_HISTORY_FULFILLED',
+	ORDER_HISTORY_REJECTED: 'ORDER_HISTORY_REJECTED',
 	USER_DEPOSITS_PENDING: 'USER_DEPOSITS_PENDING',
 	USER_DEPOSITS_FULFILLED: 'USER_DEPOSITS_FULFILLED',
 	USER_DEPOSITS_REJECTED: 'USER_DEPOSITS_REJECTED',
@@ -172,6 +175,59 @@ export const getUserOrders = ({
 			.catch((err) => {
 				dispatch({
 					type: ACTION_KEYS.USER_TRADES_REJECTED,
+					payload: err.response,
+				});
+			});
+	};
+};
+
+export const getOrdersHistory = ({
+	symbol,
+	limit = 50,
+	page = 1,
+	start_date,
+	end_date,
+	open,
+	...rest
+}) => {
+	let dataParams = { page, limit };
+	if (symbol) {
+		dataParams.symbol = symbol;
+	}
+
+	if (start_date) {
+		dataParams.start_date = start_date;
+	}
+
+	if (end_date) {
+		dataParams.end_date = end_date;
+	}
+
+	if (open !== undefined) {
+		dataParams.open = open;
+	}
+	const query = querystring.stringify(dataParams);
+
+	return (dispatch) => {
+		dispatch({ type: ACTION_KEYS.ORDER_HISTORY_PENDING, payload: { page } });
+		axios
+			.get(`${ENDPOINTS.TRADES}?${query}`)
+			.then((body) => {
+				dispatch({
+					type: ACTION_KEYS.ORDER_HISTORY_FULFILLED,
+					payload: {
+						...body.data,
+						page,
+						isRemaining: body.data.count > page * limit,
+					},
+				});
+				// if (body.data.count > page * limit) {
+				// 	dispatch(getUserTrades({ symbol, limit, page: page + 1 }));
+				// }
+			})
+			.catch((err) => {
+				dispatch({
+					type: ACTION_KEYS.ORDER_HISTORY_REJECTED,
 					payload: err.response,
 				});
 			});

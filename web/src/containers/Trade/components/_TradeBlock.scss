@@ -96,10 +96,10 @@ $tabs-title--margin: 2rem;
 
 			&:after {
 				content: '';
-				height: 6px;
+				height: 4px;
 				width: 100%;
 				background-color: $trade_title-border--color;
-				top: -2px;
+				top: 0;
 				left: 0;
 				right: 0;
 				position: absolute;
