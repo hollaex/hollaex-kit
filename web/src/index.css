@@ -1689,10 +1689,10 @@ table th {
       position: relative; }
       .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items .active:after {
         content: '';
-        height: 6px;
+        height: 4px;
         width: 100%;
         background-color: var(--calculated_important-border);
-        top: -2px;
+        top: 0;
         left: 0;
         right: 0;
         position: absolute; }

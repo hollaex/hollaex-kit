@@ -20,7 +20,7 @@ const STATUS_OPTIONS = {
 	},
 };
 
-const Filters = ({ coins = {}, onSearch }) => {
+const Filters = ({ coins = {}, onSearch, formName }) => {
 	const [form] = Form.useForm();
 
 	useEffect(() => {
@@ -36,7 +36,7 @@ const Filters = ({ coins = {}, onSearch }) => {
 	return (
 		<Form
 			form={form}
-			name="deposit-and-withdrawal-filters"
+			name={`${formName}-filters`}
 			className="ant-advanced-search-form"
 			onFinish={onFinish}
 			initialValues={{

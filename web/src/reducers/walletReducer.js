@@ -35,6 +35,7 @@ const joinData = (stateData = [], payloadData = []) =>
 	stateData.concat(payloadData);
 
 const INITIAL_STATE = {
+	orderHistory: INITIAL_API_OBJECT,
 	trades: INITIAL_API_OBJECT,
 	latestUserTrades: [],
 	deposits: INITIAL_API_OBJECT,
@@ -80,6 +81,42 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					page: payload.page,
 					isRemaining: payload.isRemaining,
 					data: joinData(state.trades.data, payload.data),
+				},
+			};
+
+		case ACTION_KEYS.ORDER_HISTORY_PENDING: {
+			const { page = 1 } = payload;
+			const data = page > 1 ? state.orderHistory.data : INITIAL_API_OBJECT.data;
+			return {
+				...state,
+				orderHistory: {
+					...INITIAL_API_OBJECT,
+					loading: true,
+					data,
+				},
+			};
+		}
+		case ACTION_KEYS.ORDER_HISTORY_REJECTED:
+			return {
+				...state,
+				orderHistory: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					error: payload,
+				},
+			};
+		case ACTION_KEYS.ORDER_HISTORY_FULFILLED:
+			return {
+				...state,
+				orderHistory: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					count: payload.count,
+					page: payload.page,
+					isRemaining: payload.isRemaining,
+					data: joinData(state.orderHistory.data, payload.data),
 				},
 			};
 
