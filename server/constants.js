@@ -149,7 +149,8 @@ exports.KIT_CONFIG_KEYS = [
 	'strings',
 	'meta',
 	'features',
-	'setup_completed'
+	'setup_completed',
+	'email_verification_required'
 ];
 
 exports.KIT_SECRETS_KEYS = [

@@ -11,6 +11,7 @@ const {
 	USER_REGISTERED,
 	USER_NOT_FOUND,
 	SERVICE_NOT_SUPPORTED,
+	USER_EMAIL_NOT_VERIFIED,
 	VERIFICATION_EMAIL_MESSAGE,
 	TOKEN_REMOVED,
 	INVALID_CREDENTIALS,
@@ -21,7 +22,7 @@ const {
 	PROVIDE_VALID_EMAIL,
 	INVALID_PASSWORD,
 	USER_EXISTS,
-	USER_IS_VERIFIED,
+	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
@@ -91,10 +92,25 @@ const signUpUser = (req, res) => {
 			if (user) {
 				throw new Error(USER_EXISTS);
 			}
-			return toolsLib.database.getModel('user').create({
-				email,
-				password,
-				settings: INITIAL_SETTINGS()
+			return toolsLib.database.getModel('sequelize').transaction((transaction) => {
+				return toolsLib.database.getModel('user').create({
+					email,
+					password,
+					verification_level: 1,
+					settings: INITIAL_SETTINGS()
+				}, { transaction })
+					.then((user) => {
+						return all([
+							toolsLib.user.createUserOnNetwork(email),
+							user
+						]);
+					})
+					.then(([ networkUser, user ]) => {
+						return user.update(
+							{ network_id: networkUser.id },
+							{ fields: ['network_id'], returning: true, transaction }
+						);
+					});
 			});
 		})
 		.then((user) => {
@@ -182,43 +198,34 @@ const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	toolsLib.database.getModel('sequelize').transaction((transaction) => {
-		return toolsLib.database.findOne('user', {
-			where: { email },
-			attributes: ['id', 'email', 'settings', 'network_id']
-		})
-			.then((user) => {
-				return all([
-					toolsLib.user.getVerificationCodeByUserId(user.id),
-					user
-				]);
-			})
-			.then(([ verificationCode, user ]) => {
-				if (verificationCode.verified) {
-					throw new Error(USER_IS_VERIFIED);
-				}
-
-				if (verification_code !== verificationCode.code) {
-					throw new Error(INVALID_VERIFICATION_CODE);
-				}
-
-				return all([
-					user,
-					toolsLib.user.createUserOnNetwork(email),
-					verificationCode.update(
-						{ verified: true },
-						{ fields: ['verified'], transaction }
-					)
-				]);
-			})
-			.then(([ user, networkUser ]) => {
-				return user.update(
-					{ network_id: networkUser.id },
-					{ fields: ['network_id'], returning: true, transaction }
-				);
-			});
+	return toolsLib.database.findOne('user', {
+		where: { email },
+		attributes: ['id', 'email', 'settings', 'network_id']
 	})
 		.then((user) => {
+			return all([
+				toolsLib.user.getVerificationCodeByUserId(user.id),
+				user
+			]);
+		})
+		.then(([ verificationCode, user ]) => {
+			if (verificationCode.verified) {
+				throw new Error(USER_EMAIL_IS_VERIFIED);
+			}
+
+			if (verification_code !== verificationCode.code) {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+
+			return all([
+				user,
+				verificationCode.update(
+					{ verified: true },
+					{ fields: ['verified'] }
+				)
+			]);
+		})
+		.then(([ user ]) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
@@ -256,6 +263,8 @@ const loginPost = (req, res) => {
 			}
 			if (user.verification_level === 0) {
 				throw new Error(USER_NOT_VERIFIED);
+			} else if (toolsLib.getKitConfig().email_verification_required && !user.email_verified) {
+				throw new Error(USER_EMAIL_NOT_VERIFIED);
 			} else if (!user.activated) {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
