@@ -1,5 +1,5 @@
 const watch = process.env.NODE_ENV === 'production' ? false : true;
-const ignore_watch = ['logs', 'node_modules', 'tools', 'db/functions', 'db/triggers', 'storage'];
+const ignore_watch = ['logs', 'node_modules', 'tools', 'db/functions', 'db/triggers', 'storage', 'package.json', 'package.json.*', 'package-lock.json', 'package-lock.json.*'];
 const max_memory_restart = '4000M';
 const node_args = ['--max_old_space_size=4096'];
 const mode = process.env.DEPLOYMENT_MODE || 'all';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import _isEqual from 'lodash/isEqual';
 
@@ -13,46 +13,56 @@ const link_sections = (
 	fields = {},
 	links = {},
 	addLink = () => {},
-	addColumn = () => {},
 	handleRemoveHeader = () => {},
-	handleRemoveLinks = () => {}
+	handleRemoveLinks = () => {},
+	isInitial = false
 ) => {
 	const sectionFields = {};
 	Object.keys(links)
-		.filter((sectionKey) => typeof links[sectionKey] === 'object')
+		.filter((sectionKey) => {
+			let value = typeof links[sectionKey] === 'object';
+			if (!isInitial) {
+				value =
+					typeof links[sectionKey] === 'object' &&
+					typeof fields[sectionKey] === 'object';
+			}
+			return value;
+		})
 		.forEach((key) => {
 			let section = links[key];
 			let headerFields = {};
 			let contentFields = {};
-			Object.keys(section.header).forEach((key) => {
-				headerFields[key] = {
-					type: 'input',
-					label: key,
-					placeholder: key,
-					isClosable: true,
-					closeCallback: () => handleRemoveHeader(key),
+			if (section.header) {
+				Object.keys(section.header).forEach((key) => {
+					headerFields[key] = {
+						type: 'input',
+						label: key,
+						placeholder: key,
+						isClosable: true,
+						closeCallback: () => handleRemoveHeader(key),
+					};
+				});
+				Object.keys(section.content).forEach((key) => {
+					contentFields[key] = {
+						type: 'input',
+						label: key,
+						placeholder: key,
+						isClosable: true,
+						closeCallback: () => handleRemoveLinks(headerFields, key),
+					};
+				});
+				sectionFields[key] = {
+					className: 'section-wrapper',
+					header: {
+						className: 'section-header',
+						fields: headerFields,
+					},
+					content: {
+						className: 'section-header',
+						fields: contentFields,
+					},
 				};
-			});
-			Object.keys(section.content).forEach((key) => {
-				contentFields[key] = {
-					type: 'input',
-					label: key,
-					placeholder: key,
-					isClosable: true,
-					closeCallback: () => handleRemoveLinks(headerFields, key),
-				};
-			});
-			sectionFields[key] = {
-				className: 'section-wrapper',
-				header: {
-					className: 'section-header',
-					fields: headerFields,
-				},
-				content: {
-					className: 'section-header',
-					fields: contentFields,
-				},
-			};
+			}
 		});
 	// if (is_custom) {
 	const formFields = {
@@ -63,31 +73,20 @@ const link_sections = (
 	Object.keys(formFields).forEach((key) => {
 		const field = formFields[key];
 		count = count + (field.header ? 1 : 0);
-		formFields[key] = {
-			...field,
-			bottomLink: (
-				<div className="admin-link pointer">
-					<span onClick={() => addLink(key)}>
-						<PlusOutlined style={{ color: '#FFFFFF' }} />
-						Add link
-					</span>
-				</div>
-			),
-		};
+		if (typeof field === 'object' && field.header) {
+			formFields[key] = {
+				...field,
+				bottomLink: (
+					<div className="admin-link pointer">
+						<span onClick={() => addLink(key)}>
+							<PlusOutlined style={{ color: '#FFFFFF' }} />
+							Add link
+						</span>
+					</div>
+				),
+			};
+		}
 	});
-	formFields[`section_${count}`] = {
-		className: 'section-wrapper center-content',
-		bottomLink: (
-			<Button
-				block
-				type="primary"
-				onClick={() => addColumn(`section_${count}`)}
-				className="green-btn"
-			>
-				Add column
-			</Button>
-		),
-	};
 	return formFields;
 	// } else {
 	//     return { section_1, section_2, section_3, section_4, section_5 };
@@ -119,9 +118,9 @@ class FooterConfig extends Component {
 				{},
 				this.props.links,
 				this.addLink,
-				this.addColumn,
 				this.handleRemoveHeader,
-				this.handleRemoveLinks
+				this.handleRemoveLinks,
+				true
 			),
 			initialCustom: {
 				column_header_1: 'EXCHANGE',
@@ -142,9 +141,9 @@ class FooterConfig extends Component {
 					{},
 					this.props.links,
 					this.addLink,
-					this.addColumn,
 					this.handleRemoveHeader,
-					this.handleRemoveLinks
+					this.handleRemoveLinks,
+					true
 				),
 			});
 		}
@@ -167,7 +166,6 @@ class FooterConfig extends Component {
 					prevFields,
 					this.props.links,
 					this.addLink,
-					this.addColumn,
 					this.handleRemoveHeader,
 					this.handleRemoveLinks
 				),
@@ -200,7 +198,6 @@ class FooterConfig extends Component {
 				this.state.custom_fields,
 				this.props.links,
 				this.addLink,
-				this.addColumn,
 				this.handleRemoveHeader,
 				this.handleRemoveLinks
 			),
@@ -230,9 +227,19 @@ class FooterConfig extends Component {
 					: [];
 			if (!headerKeys.includes(headerName)) {
 				data[key] = section;
+			} else {
+				data[key] = '';
 			}
 		});
-		this.setState({ custom_fields: data });
+		this.setState({
+			custom_fields: link_sections(
+				data,
+				this.props.links,
+				this.addLink,
+				this.handleRemoveHeader,
+				this.handleRemoveLinks
+			),
+		});
 	};
 
 	handleRemoveLinks = (headerFields = {}, fieldName) => {
@@ -307,7 +314,6 @@ class FooterConfig extends Component {
 				custom_fields,
 				this.props.links,
 				this.addLink,
-				this.addColumn,
 				this.handleRemoveHeader,
 				this.handleRemoveLinks
 			),
@@ -365,6 +371,8 @@ class FooterConfig extends Component {
 					header,
 					content,
 				};
+			} else {
+				formValues[sectionKey] = '';
 			}
 		});
 		this.props.handleSubmitFooter(formValues, 'links');
@@ -379,6 +387,7 @@ class FooterConfig extends Component {
 					fields={custom_fields}
 					initialValues={initialCustom}
 					customFields={true}
+					addColumn={this.addColumn}
 					handleSubmitLinks={this.handleSubmitLinks}
 				/>
 				{/* <p className="bottom-description">

@@ -247,6 +247,8 @@ const nestedIcons = {
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
+	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
+
 	...coinIcons,
 };
 

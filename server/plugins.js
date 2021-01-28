@@ -12,35 +12,67 @@ const morgan = require('morgan');
 const { logEntryRequest, stream, loggerPlugin } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
 const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
-const npmi = require('npmi');
 const multer = require('multer');
 const moment = require('moment');
 const { checkStatus } = require('./init');
 const UglifyJS = require('uglify-es');
 const cors = require('cors');
+const mathjs = require('mathjs');
+const bluebird = require('bluebird');
+const rp = require('request-promise');
+const uuid = require('uuid/v4');
+const fs = require('fs');
+const path = require('path');
+const latestVersion = require('latest-version');
+const { resolve } = bluebird;
+const npm = require('npm-programmatic');
+
+const getInstalledLibrary = async (name, version) => {
+	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
+
+	let fileData = fs.readFileSync(jsonFilePath);
+	fileData = JSON.parse(fileData);
+
+	loggerPlugin.verbose(`${name} library found`);
+	if (version === 'latest') {
+		const v = await latestVersion(name);
+		if (fileData.version === v) {
+			loggerPlugin.verbose(`${name} version ${version} found`);
+			const lib = require(name);
+			return resolve(lib);
+		} else {
+			throw new Error('Version does not match');
+		}
+	} else {
+		if (fileData.version === version) {
+			loggerPlugin.verbose(`${name} version ${version} found`);
+			const lib = require(name);
+			return resolve(lib);
+		} else {
+			throw new Error('Version does not match');
+		}
+	}
+};
 
 const installLibrary = (library) => {
-	return new Promise((resolve, reject) => {
-		npmi({
-			name: library,
-			npmLoad: {
-				save: false,
-				forceInstall: false,
-				loglevel: 'silent'
-			}
-		}, (err, result) => {
-			if (err) {
-				reject(err);
-			} else {
-				try {
-					const lib = require(library);
-					resolve(lib);
-				} catch (err) {
-					reject(err);
-				}
-			}
+	const [name, version = 'latest'] = library.split('@');
+	return getInstalledLibrary(name, version)
+		.then((data) => {
+			return data;
+		})
+		.catch((err) => {
+			loggerPlugin.verbose(`${name} version ${version} installing`);
+			return npm.install([`${name}@${version}`], {
+				cwd: path.resolve(__dirname, './'),
+				save: true,
+				output: true
+			});
+		})
+		.then(() => {
+			loggerPlugin.verbose(`${name} version ${version} installed`);
+			const lib = require(name);
+			return lib;
 		});
-	});
 };
 
 app.use(morgan(morganType, { stream }));
@@ -1008,6 +1040,10 @@ checkStatus()
 								loggerPlugin,
 								multer,
 								moment,
+								mathjs,
+								bluebird,
+								rp,
+								uuid,
 								meta: plugin.meta,
 								installedLibraries: {}
 							};
