@@ -80,6 +80,7 @@ module.exports = {
 							website: '',
 							information: '',
 						},
+						email_verification_required: false,
 						setup_completed: false,
 						native_currency: NATIVE_CURRENCY,
 						logo_image: LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',

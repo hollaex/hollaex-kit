@@ -3716,6 +3716,8 @@ definitions:
             type: string
           new_user_is_activated:
             type: boolean
+          email_verification_required:
+            type: boolean
           native_currency:
             type: string
       secrets:

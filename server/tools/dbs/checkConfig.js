@@ -33,6 +33,7 @@ Status.findOne()
 				website: '',
 				information: '',
 			},
+			email_verification_required: isBoolean(existingKitConfigurations.email_verification_required) ? existingKitConfigurations.email_verification_required : false,
 			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
 			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY,
 			logo_image: existingKitConfigurations.logo_image || existingKitConfigurations.logo_path || process.env.LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',
