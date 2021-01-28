@@ -5,17 +5,24 @@ import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
 
 class MarketRow extends Component {
-	state = {
-		inProp: false,
-	};
+	constructor(props) {
+		super(props);
+		const { market: { priceDifference = 0 } = {} } = this.props;
+		this.state = {
+			tickerDiff: priceDifference,
+			inProp: false,
+		};
+	}
 
 	UNSAFE_componentWillUpdate(nextProp) {
 		const {
-			market: { priceDifference },
+			market: { ticker },
 		} = this.props;
-		if (priceDifference !== nextProp.market.priceDifference) {
+		if (nextProp.market.ticker.close !== ticker.close) {
+			const tickerDiff = nextProp.market.ticker.close - ticker.close;
 			this.setState((prevState) => ({
 				...prevState,
+				tickerDiff,
 				inProp: !prevState.inProp,
 			}));
 		}
@@ -23,7 +30,7 @@ class MarketRow extends Component {
 
 	render() {
 		const { icons: ICONS, market, chartData, handleClick } = this.props;
-		const { inProp } = this.state;
+		const { inProp, tickerDiff } = this.state;
 
 		const {
 			key,
@@ -32,7 +39,6 @@ class MarketRow extends Component {
 			pairTwo,
 			ticker,
 			increment_price,
-			priceDifference,
 			priceDifferencePercent,
 		} = market;
 
@@ -73,7 +79,7 @@ class MarketRow extends Component {
 							<div className="d-flex">
 								<div
 									className={
-										priceDifference < 0
+										tickerDiff < 0
 											? `title-font price-diff-down trade-tab-price_diff_down ${state}`
 											: `title-font price-diff-up trade-tab-price_diff_up ${state}`
 									}

@@ -19,7 +19,7 @@ const ColorInput = ({
 			key={colorKey}
 		>
 			<div className="bold">{colorKey.split('_')[1].replace(/-/g, ' ')}</div>
-			<div className="d-flex align-items-center">
+			<div className="d-flex align-items-center pl-2">
 				{!isCalculated && (
 					<ColorPicker
 						color={colorValue}

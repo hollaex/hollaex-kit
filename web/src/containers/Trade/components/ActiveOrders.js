@@ -119,7 +119,7 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 			stop && formatToCurrency(stop, pairData.increment_price),
 		renderCell: ({ stop }, key, index) => {
 			return (
-				<td key={index}>
+				<td key={index} className="px-2">
 					{stop && formatToCurrency(stop, pairData.increment_price)}
 				</td>
 			);

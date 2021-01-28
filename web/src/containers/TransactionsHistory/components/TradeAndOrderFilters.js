@@ -6,7 +6,7 @@ import { dateFilters } from '../filterUtils';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const Filters = ({ pairs, onSearch }) => {
+const Filters = ({ pairs, onSearch, formName }) => {
 	const [form] = Form.useForm();
 
 	useEffect(() => {
@@ -31,7 +31,7 @@ const Filters = ({ pairs, onSearch }) => {
 	return (
 		<Form
 			form={form}
-			name="trade-and-order-filters"
+			name={`${formName}-filters`}
 			className="ant-advanced-search-form"
 			onFinish={onFinish}
 			onValuesChange={onValuesChange}
