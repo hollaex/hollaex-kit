@@ -98,7 +98,11 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			verification_level: {
 				type: DataTypes.INTEGER,
-				defaultValue: 0
+				defaultValue: 1
+			},
+			email_verified: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false
 			},
 			otp_enabled: {
 				type: DataTypes.BOOLEAN,
