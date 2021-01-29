@@ -13,13 +13,26 @@ const Assets = ({
 	handleNext,
 	updateConstants,
 }) => {
-	const [native_currency, setCurrency] = useState('');
+	const getDefaultNativeCurrency = () => {
+		if (Object.keys(coins).length !== 0) {
+			if (coins['usdt']) {
+				return coins['usdt'].symbol;
+			} else {
+				const firstCoinKey = Object.keys(coins)[0];
+				return coins[firstCoinKey].symbol;
+			}
+		}
+	};
+
+	const [native_currency, setCurrency] = useState(getDefaultNativeCurrency());
 	useEffect(() => {
 		let base_coin = Object.keys(coins).length ? Object.keys(coins)[0] : '';
 		setCurrency(base_coin);
 	}, [coins]);
 	useEffect(() => {
-		setCurrency(constants.native_currency);
+		setCurrency(constants.native_currency || getDefaultNativeCurrency());
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [constants.native_currency]);
 	const onChange = (key) => {
 		setCurrency(key);
@@ -93,7 +106,9 @@ const Assets = ({
 			</div>
 			<div className="asset-btn-wrapper">
 				<div className="btn-container">
-					<Button onClick={handleStore}>Proceed</Button>
+					<Button onClick={handleStore} disabled={!native_currency}>
+						Proceed
+					</Button>
 				</div>
 				{/* <span className="step-link" onClick={() => handleNext(3)}>
 					Skip this step
