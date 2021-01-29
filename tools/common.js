@@ -17,7 +17,8 @@ const {
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
 	GET_FROZEN_USERS,
-	HOLLAEX_NETWORK_URL,
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
 	NO_NEW_DATA,
 	SUPPORT_DISABLED,
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -353,7 +354,7 @@ const storeImageOnNetwork = async (image, name) => {
 
 	const options = {
 		method: 'POST',
-		uri: `${HOLLAEX_NETWORK_URL}/exchange/icon`,
+		uri: `${HOLLAEX_NETWORK_ENDPOINT}${HOLLAEX_NETWORK_BASE_URL}/exchange/icon`,
 		formData: {
 			exchange_id: exchangeId,
 			exchange_name: exchangeName,
