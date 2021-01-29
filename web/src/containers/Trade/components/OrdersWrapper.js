@@ -66,6 +66,7 @@ class OrdersWrapper extends Component {
 			pairs,
 			coins,
 			discount,
+			prices,
 			icons: ICONS,
 		} = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
@@ -109,6 +110,7 @@ class OrdersWrapper extends Component {
 						pairs={pairs}
 						coins={coins}
 						discount={discount}
+						prices={prices}
 					/>
 				) : (
 					<LogoutInfoTrade />
@@ -206,6 +208,7 @@ OrdersWrapper.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+	prices: state.asset.oraclePrices,
 	activeOrders: activeOrdersSelector(state),
 	userTrades: userTradesSelector(state),
 	settings: state.user.settings,
