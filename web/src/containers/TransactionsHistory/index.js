@@ -57,7 +57,8 @@ class TransactionsHistory extends Component {
 		this.generateHeaders(
 			this.props.symbol,
 			this.props.coins,
-			this.props.discount
+			this.props.discount,
+			this.props.prices
 		);
 		this.generateFilters();
 		if (
@@ -70,16 +71,20 @@ class TransactionsHistory extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { pairs, coins } = this.props;
+		const { pairs, coins, prices } = this.props;
 		// if (nextProps.symbol !== this.props.symbol) {
 		// this.requestData(nextProps.symbol);
 		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
 		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+		if (
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			JSON.stringify(nextProps.prices) !== JSON.stringify(prices)
+		) {
 			this.generateHeaders(
 				nextProps.symbol,
 				nextProps.coins,
-				nextProps.discount
+				nextProps.discount,
+				nextProps.prices
 			);
 		}
 		if (
@@ -149,17 +154,17 @@ class TransactionsHistory extends Component {
 		);
 	};
 
-	generateHeaders(symbol, coins, discount) {
+	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
 				orders: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
-					: generateTradeHeaders(symbol, pairs, coins, discount),
+					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
-					: generateTradeHeaders(symbol, pairs, coins, discount),
+					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
 				deposits: generateDepositsHeaders(symbol, coins, withdrawalPopup),
 				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup),
 			},
@@ -524,6 +529,7 @@ class TransactionsHistory extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	prices: store.asset.oraclePrices,
 	pairs: store.app.pairs,
 	coins: store.app.coins,
 	id: store.user.id,

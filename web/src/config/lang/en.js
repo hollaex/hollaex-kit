@@ -1411,6 +1411,7 @@ const nestedContent = {
 		INFO_1: 'This will cancel your open orders for this markets.',
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
+	AMOUNT_IN: 'Amount in',
 };
 
 const content = flatten(nestedContent, options);
