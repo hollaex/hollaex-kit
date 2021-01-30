@@ -1,6 +1,7 @@
 import LocalizedStrings from 'react-localization';
 
 import en from './lang/en';
+import de from './lang/de';
 import ko from './lang/ko';
 import fa from './lang/fa';
 import ar from './lang/ar';
@@ -13,6 +14,7 @@ import zh from './lang/zh';
 
 export const content = {
 	en,
+	de,
 	ko,
 	ja,
 	fa,
