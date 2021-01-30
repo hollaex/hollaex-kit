@@ -1,9 +1,10 @@
 import axios from 'axios';
 import querystring from 'query-string';
+import { PLUGIN_URL } from '../config/constants';
 
 const VERIFICATION_ENDPOINTS = {
-	VERIFY_SMS_CODE: '/plugins/sms/verify',
-	VERIFY_BANK: '/plugins/bank/user',
+	VERIFY_SMS_CODE: `${PLUGIN_URL}/plugins/sms/verify`,
+	VERIFY_BANK: `${PLUGIN_URL}/plugins/bank/user`,
 	GET_USER: '/user',
 };
 
