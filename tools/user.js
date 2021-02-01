@@ -21,7 +21,8 @@ const {
 	INVALID_USERNAME,
 	ACCOUNT_NOT_VERIFIED,
 	INVALID_VERIFICATION_LEVEL,
-	USER_IS_VERIFIED,
+	USER_EMAIL_NOT_VERIFIED,
+	USER_EMAIL_IS_VERIFIED,
 	NO_DATA_FOR_CSV,
 	PROVIDE_USER_CREDENTIALS,
 	PROVIDE_KIT_ID,
@@ -80,10 +81,25 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 			if (user) {
 				throw new Error(USER_EXISTS);
 			}
-			return getModel('user').create({
-				email,
-				password,
-				settings: INITIAL_SETTINGS()
+			return getModel('sequelize').transaction((transaction) => {
+				return getModel('user').create({
+					email,
+					password,
+					verification_level: 1,
+					settings: INITIAL_SETTINGS()
+				}, { transaction })
+					.then((user) => {
+						return all([
+							createUserOnNetwork(email),
+							user
+						]);
+					})
+					.then(([ networkUser, user ]) => {
+						return user.update(
+							{ network_id: networkUser.id },
+							{ fields: ['network_id'], returning: true, transaction }
+						);
+					});
 			});
 		})
 		.then((user) => {
@@ -107,40 +123,35 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 };
 
 const verifyUser = (email, code) => {
-	return getModel('sequelize').transaction((transaction) => {
-		return dbQuery.findOne('user',
-			{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
-		)
-			.then((user) => {
-				return all([
-					dbQuery.findOne('verification code',
-						{
-							where: { user_id: user.id },
-							attributes: ['id', 'code', 'verified', 'user_id']
-						}
-					),
-					user
-				]);
-			})
-			.then(([ verificationCode, user ]) => {
-				if (verificationCode.verified) {
-					throw new Error(USER_IS_VERIFIED);
-				}
-				if (code !== verificationCode.code) {
-					throw new Error(INVALID_VERIFICATION_CODE);
-				}
-				return all([
-					user,
-					getNodeLib().createUser(email),
-					verificationCode.update({ verified: true }, { fields: ['verified'], returning: true, transaction })
-				]);
-			})
-			.then(([ user, networkUser ]) => {
-				return user.update({
-					network_id: networkUser.id
-				}, { fields: ['network_id'], returning: true, transaction });
-			});
-	});
+	return dbQuery.findOne('user',
+		{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
+	)
+		.then((user) => {
+			return all([
+				dbQuery.findOne('verification code',
+					{
+						where: { user_id: user.id },
+						attributes: ['id', 'code', 'verified', 'user_id']
+					}
+				),
+				user
+			]);
+		})
+		.then(([ verificationCode, user ]) => {
+			if (verificationCode.verified) {
+				throw new Error(USER_EMAIL_IS_VERIFIED);
+			}
+			if (code !== verificationCode.code) {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+			return all([
+				user,
+				verificationCode.update({ verified: true }, { fields: ['verified'], returning: true })
+			]);
+		})
+		.then(([ user ]) => {
+			return user;
+		});
 };
 
 const createUser = (
@@ -239,6 +250,8 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 			if (user.verification_level === 0) {
 				throw new Error(USER_NOT_VERIFIED);
+			} else if (getKitConfig().email_verification_required && !user.email_verified) {
+				throw new Error(USER_EMAIL_NOT_VERIFIED);
 			} else if (!user.activated) {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
@@ -908,6 +921,22 @@ const getUserEmailByVerificationCode = (code) => {
 		});
 };
 
+const verifyUserEmailByKitId = (kitId) => {
+	return getUserByKitId(kitId, false)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			if (user.email_verified) {
+				throw new Error('User email already verified');
+			}
+			return user.update(
+				{ email_verified: true },
+				{ fields: ['email_verified'], returning: true }
+			);
+		});
+};
+
 const updateUserNote = (userId, note) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
@@ -1390,5 +1419,6 @@ module.exports = {
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
 	getVerificationCodeByUserId,
-	checkAffiliation
+	checkAffiliation,
+	verifyUserEmailByKitId
 };
