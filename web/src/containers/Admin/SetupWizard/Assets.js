@@ -17,10 +17,26 @@ const Assets = ({
 		if (Object.keys(coins).length !== 0) {
 			if (coins['usdt']) {
 				return coins['usdt'].symbol;
-			} else {
-				const firstCoinKey = Object.keys(coins)[0];
-				return coins[firstCoinKey].symbol;
 			}
+
+			const [firstFiatCoinKey] =
+				Object.entries(coins).find(
+					([_, { meta: { is_fiat } = {} }]) => is_fiat
+				) || [];
+			if (firstFiatCoinKey) {
+				return coins[firstFiatCoinKey].symbol;
+			}
+
+			if (coins['btc']) {
+				return coins['btc'].symbol;
+			}
+
+			if (coins['eth']) {
+				return coins['eth'].symbol;
+			}
+
+			const firstCoinKey = Object.keys(coins)[0];
+			return coins[firstCoinKey].symbol;
 		}
 	};
 
