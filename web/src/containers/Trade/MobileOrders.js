@@ -57,6 +57,7 @@ const MobileOrders = ({
 					cancelDelayData={cancelDelayData}
 					orders={activeOrders}
 					onCancel={cancelOrder}
+					onCancelAll={cancelAllOrders}
 				/>
 			) : (
 				<LogoutInfoOrder activeTheme={activeTheme} />

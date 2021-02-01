@@ -4,7 +4,7 @@ RETURNS TRIGGER AS $update_userlevel_after_verify$
 BEGIN
   IF new.verified IS TRUE THEN
     UPDATE "Users"
-    SET verification_level = 1, updated_at = current_timestamp
+    SET email_verified = true, updated_at = current_timestamp
     WHERE id = new.user_id;
   END IF;
   RETURN NEW;

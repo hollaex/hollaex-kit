@@ -5,6 +5,8 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
+const { sendEmail } = require('../../mail');
+const { MAILTYPE } = require('../../mail/strings');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -262,6 +264,35 @@ const upgradeUser = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/upgradeUser',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const verifyEmailUser = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/verifyEmailUser auth',
+		req.auth
+	);
+
+	const { user_id } = req.swagger.params.data.value;
+
+	toolsLib.user.verifyUserEmailByKitId(user_id)
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				{},
+				user.settings
+			);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/verifyEmailUser',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -696,5 +727,6 @@ module.exports = {
 	inviteNewOperator,
 	getExchangeGeneratedFees,
 	mintAsset,
-	burnAsset
+	burnAsset,
+	verifyEmailUser
 };
