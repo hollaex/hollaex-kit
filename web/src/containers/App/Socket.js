@@ -43,6 +43,8 @@ import {
 	setSnackDialog,
 	setConfig,
 	setInfo,
+	setPlugins,
+	requestPlugins,
 	requestInitial,
 	requestConstant,
 } from '../../actions/appActions';
@@ -70,6 +72,9 @@ class Container extends Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
+		requestPlugins().then(({ data = {} }) => {
+			if (data.data && data.data.length !== 0) this.props.setPlugins(data.data);
+		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -722,6 +727,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
+	setPlugins: bindActionCreators(setPlugins, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
