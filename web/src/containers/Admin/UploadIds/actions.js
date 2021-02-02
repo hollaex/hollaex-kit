@@ -1,3 +1,4 @@
+import { PLUGIN_URL } from 'config/constants';
 import { requestAuthenticated } from '../../../utils';
 
 export const uploadFiles = (id, values) => {
@@ -18,6 +19,7 @@ export const uploadFiles = (id, values) => {
 	return requestAuthenticated(
 		`/plugins/kyc/admin/upload?user_id=${id}`,
 		options,
-		headers
+		headers,
+		PLUGIN_URL
 	);
 };

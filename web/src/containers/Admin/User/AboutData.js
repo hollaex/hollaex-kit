@@ -192,7 +192,7 @@ const AboutData = ({
 		nationality,
 		dob,
 		phone_number,
-		address,
+		address = {},
 		...rest
 	} = userData;
 	const userInfo = {
