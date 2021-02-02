@@ -2,6 +2,7 @@ import { setLanguage as storeLanguageInBrowser } from '../utils/string';
 import { hasTheme } from 'utils/theme';
 import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
 import axios from 'axios';
+import { PLUGIN_URL } from 'config/constants';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
 export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
@@ -48,6 +49,7 @@ export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_CONFIG = 'SET_CONFIG';
+export const SET_PLUGINS = 'SET_PLUGINS';
 export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
 export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
@@ -219,13 +221,7 @@ export const setCurrencies = (coins) => ({
 });
 
 export const setConfig = (constants = {}) => {
-	let enabledPlugins = [];
 	let features = {};
-	if (constants) {
-		if (constants.plugins && constants.plugins.enabled) {
-			enabledPlugins = constants.plugins.enabled.split(',');
-		}
-	}
 	if (constants) {
 		if (constants.features) {
 			features = constants.features;
@@ -235,8 +231,16 @@ export const setConfig = (constants = {}) => {
 		type: SET_CONFIG,
 		payload: {
 			constants,
-			enabledPlugins,
 			features,
+		},
+	};
+};
+
+export const setPlugins = (enabledPlugins) => {
+	return {
+		type: SET_PLUGINS,
+		payload: {
+			enabledPlugins,
 		},
 	};
 };
@@ -257,6 +261,7 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
 
+export const requestPlugins = () => axios.get(`${PLUGIN_URL}/plugins`);
 export const requestInitial = () => axios.get('/kit');
 export const requestConstant = () => axios.get('/constants');
 export const requestAdminData = () => axios.get('/admin/kit');

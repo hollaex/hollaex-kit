@@ -95,6 +95,7 @@ const Login = (props) => {
 							}}
 							onSubmit={handleSubmit}
 							buttonText={'Proceed'}
+							submitOnKeyDown={true}
 						/>
 					</div>
 				</div>

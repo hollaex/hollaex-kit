@@ -367,6 +367,7 @@ class NewTierForm extends Component {
 					<Editor
 						wrapperClassName="text-editor-wrapper"
 						editorClassName="text-editor"
+						toolbarClassName="text-editor-toolbar"
 						editorState={editorState}
 						onEditorStateChange={this.onEditorStateChange}
 					/>

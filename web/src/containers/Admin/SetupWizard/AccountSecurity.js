@@ -62,6 +62,16 @@ const AccountSecurity = ({
 				message.error(_error);
 			});
 	};
+
+	const open = () => {
+		if (window) {
+			window.open(
+				'https://support.google.com/accounts/answer/1066447?hl=en',
+				'_blank'
+			);
+		}
+	};
+
 	return (
 		<div className="security-content">
 			{user.otp_enabled ? (
@@ -98,7 +108,9 @@ const AccountSecurity = ({
 					<div>{user.otp.secret ? user.otp.secret : ''}</div>
 					<div>
 						Don't know what to do?{' '}
-						<span className="step-link">Click here for directions.</span>
+						<span className="step-link" onClick={open}>
+							Click here for directions.
+						</span>
 					</div>
 					<div className="form-wrapper">
 						<Form name="security-form" onFinish={handleSubmit}>

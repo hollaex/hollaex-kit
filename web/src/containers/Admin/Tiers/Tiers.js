@@ -42,7 +42,9 @@ const TiersContainer = ({
 							</div>
 							<div className="mx-3 f-1">
 								<div>
-									<div>Account Tier {tier}</div>
+									<div>
+										{tierData.name ? tierData.name : `Account Tier ${tier}`}
+									</div>
 									<div className="description">{tierData.description}</div>
 								</div>
 								<div className="requirement-divider"></div>
