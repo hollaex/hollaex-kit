@@ -37,6 +37,9 @@
 	border-radius: 4px;
 	min-height: 200px;
 }
+.new-tier-form .text-editor-toolbar {
+	color: black;
+}
 .table-tier-icon {
 	height: 2.5rem;
 	width: 2.5rem;
