@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError} from 'redux-form';
 import { isMobile } from 'react-device-detect';
-import classnames from 'classnames';
+// import classnames from 'classnames';
 import { ICONS } from '../../config/constants';
 import {openContactForm} from '../../actions/appActions';
 import {
@@ -31,11 +31,11 @@ import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
 import { OTP , renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
-import { FreezeSection } from './FreezeSection';
+// import { FreezeSection } from './FreezeSection';
 
 import { generateLogins } from './utils_logins';
 import { RECORD_LIMIT } from './constants';
-import HistoryDisplay  from './HistoryDisplay';
+import LoginDisplay  from './LoginDisplay';
 import { getUserLogins } from '../../actions/userAction';
 
 import STRINGS from '../../config/localizedStrings';
@@ -110,7 +110,7 @@ class UserVerification extends Component {
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 
-		return <HistoryDisplay {...props} />;
+		return <LoginDisplay {...props} />;
 	};
 
 	openLogins() {
@@ -134,7 +134,7 @@ class UserVerification extends Component {
 	};
 
 	calculateTabs = (user , activeTab) => {
-		const {freeze}= this.state;
+		// const {freeze}= this.state;
 		const formValues = generateFormValues();
 		const { otp_enabled, otp, verification_level } = user;
 
@@ -143,12 +143,12 @@ class UserVerification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.ACCOUNT_SECURITY.OTP.TITLE}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						icon={ICONS.SECURITY_2FA_ICON}
 					/>
 				) : (
 					<CustomTabs
 						title={STRINGS.ACCOUNT_SECURITY.OTP.TITLE}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						icon={ICONS.SECURITY_2FA_ICON}
 					/>
 				),
 				content: activeTab === 0 && (
@@ -185,12 +185,12 @@ class UserVerification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE}
-						icon={ICONS.SETTING_INTERFACE_ICON}
+						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
 					/>
 				) : (
 					<CustomTabs
 						title={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE}
-						icon={ICONS.SETTING_INTERFACE_ICON}
+						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
 					/>
 				),
 				content: activeTab === 1 && (
@@ -212,12 +212,12 @@ class UserVerification extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.DEVELOPER_SECTION.TITLE}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
+						icon={ICONS.SECURITY_API_ICON}
 					/>
 				) : (
 					<CustomTabs
 						title={STRINGS.DEVELOPER_SECTION.TITLE}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
+						icon={ICONS.SECURITY_API_ICON}
 					/>
 				),
 				content: activeTab === 2 && (
@@ -237,7 +237,8 @@ class UserVerification extends Component {
 					allowClick: true
 				}
 			},
-
+			// TODO Login history feature
+			/*
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
@@ -256,7 +257,9 @@ class UserVerification extends Component {
 					</div>
 				)
 			},
-			{
+			*/
+			// TODO Freezing feature
+			/*{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.ACCOUNT_SECURITY.FREEZE.TITLE}
@@ -273,7 +276,7 @@ class UserVerification extends Component {
 					handleSubmit={this.openFreeze}
 					/>
 				)
-			}
+			}*/
 
 		];
 

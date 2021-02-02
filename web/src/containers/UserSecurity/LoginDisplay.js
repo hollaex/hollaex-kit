@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from '../../components';
 import {TABLE_PAGE_SIZE} from './constants';
 
-const HistoryDisplay = (props) => {
+const LoginDisplay = (props) => {
 	const {
 		title,
 		headers,
@@ -34,4 +34,4 @@ const HistoryDisplay = (props) => {
 	);
 };
 
-export default HistoryDisplay;
+export default LoginDisplay;
