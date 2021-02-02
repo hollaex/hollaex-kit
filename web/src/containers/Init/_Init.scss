@@ -4,6 +4,15 @@ $color-white: #ffffff;
 	flex: 1;
 	height: 100%;
 
+	input {
+		border: 1px solid #c4c4c4;
+	}
+
+	input:focus {
+		border: 1px solid #ffffff;
+		outline: 1px solid #ffffff;
+	}
+
 	.message {
 		color: $color-white;
 		width: 100%;
