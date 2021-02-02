@@ -4,6 +4,7 @@ const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
 const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject } = require('lodash');
 const { isEmail } = require('validator');
+const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
 const {
 	SIGNUP_NOT_AVAILABLE,
@@ -43,7 +44,8 @@ const {
 	ID_FIELDS,
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
-	DEFAULT_ORDER_RISK_PERCENTAGE
+	DEFAULT_ORDER_RISK_PERCENTAGE,
+	AFFILIATION_CODE_LENGTH
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -333,6 +335,14 @@ const getVerificationCodeByUserEmail = (email) => {
 			}
 			return getVerificationCodeByUserId(user.id);
 		});
+};
+
+const generateAffiliationCode = () => {
+	return randomString({
+		length: AFFILIATION_CODE_LENGTH,
+		numeric: true,
+		letters: true
+	}).toUpperCase();
 };
 
 const getVerificationCodeByUserId = (user_id) => {
@@ -1420,5 +1430,6 @@ module.exports = {
 	getUserStatsByNetworkId,
 	getVerificationCodeByUserId,
 	checkAffiliation,
-	verifyUserEmailByKitId
+	verifyUserEmailByKitId,
+	generateAffiliationCode
 };

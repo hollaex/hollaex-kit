@@ -32,6 +32,7 @@ const { reject, resolve } = require('bluebird');
 const flatten = require('flat');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const rp = require('request-promise');
+const { isEmail: isValidEmail } = require('validator');
 
 /**
  * Checks if url given is a valid url.
@@ -449,6 +450,10 @@ const sendEmail = (
 	return sendSmtpEmail(MAILTYPE[type], receiver, data, userSettings, domain);
 };
 
+const isEmail = (email) => {
+	return isValidEmail(email);
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -488,5 +493,6 @@ module.exports = {
 	getTicker,
 	getTickers,
 	getTradesHistory,
-	sendEmail
+	sendEmail,
+	isEmail
 };
