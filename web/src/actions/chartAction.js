@@ -62,7 +62,7 @@ export const getChartHistory = (
 };
 
 export const getSparklines = async () => {
-	const from = moment().subtract('1', 'month').format('X');
+	const from = moment().subtract('1', 'days').format('X');
 	const to = moment().format('X');
 
 	const { data = {} } = await axios({

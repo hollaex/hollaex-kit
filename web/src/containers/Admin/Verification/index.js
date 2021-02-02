@@ -144,7 +144,7 @@ class Verification extends Component {
 			closeUpload,
 			// constants
 		} = this.props;
-		const { id, id_data } = userInformation;
+		const { id, id_data = {} } = userInformation;
 		// let VERIFICATION_LEVELS =
 		// 	isSupport() || isSupervisor()
 		// 		? VERIFICATION_LEVELS_SUPPORT

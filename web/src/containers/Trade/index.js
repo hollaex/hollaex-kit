@@ -42,6 +42,7 @@ class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			wsInitialized: false,
 			orderbookWs: null,
 			activeTab: 0,
 			chartHeight: 0,
@@ -202,7 +203,12 @@ class Trade extends PureComponent {
 		this.setState({ orderbookWs });
 
 		orderbookWs.onopen = (evt) => {
-			this.subscribe(symbol);
+			this.setState({ wsInitialized: true }, () => {
+				const {
+					routeParams: { pair },
+				} = this.props;
+				this.subscribe(pair);
+			});
 
 			setWsHeartbeat(orderbookWs, JSON.stringify({ op: 'ping' }), {
 				pingTimeout: 60000,
@@ -235,8 +241,8 @@ class Trade extends PureComponent {
 	};
 
 	subscribe = (pair) => {
-		const { orderbookWs } = this.state;
-		if (orderbookWs) {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
 			orderbookWs.send(
 				JSON.stringify({
 					op: 'subscribe',
@@ -247,8 +253,8 @@ class Trade extends PureComponent {
 	};
 
 	unsubscribe = (pair) => {
-		const { orderbookWs } = this.state;
-		if (orderbookWs) {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
 			orderbookWs.send(
 				JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
 			);
@@ -256,8 +262,8 @@ class Trade extends PureComponent {
 	};
 
 	closeOrderbookSocket = () => {
-		const { orderbookWs } = this.state;
-		if (orderbookWs) {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
 			orderbookWs.close();
 		}
 	};

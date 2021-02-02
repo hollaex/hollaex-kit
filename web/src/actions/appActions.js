@@ -1,6 +1,6 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
 import { hasTheme } from 'utils/theme';
-import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -304,7 +304,7 @@ export const getWaveAuction = () => {
 
 export const getAnnouncement = () => (dispatch) => {
 	return axios
-		.get('/plugins/announcement')
+		.get(`${PLUGIN_URL}/plugins/announcement`)
 		.then((res) => {
 			if (res.data && res.data.data) {
 				dispatch({
@@ -319,7 +319,7 @@ export const getAnnouncement = () => (dispatch) => {
 export const requestAvailPlugins = () => (dispatch) => {
 	dispatch({ type: SET_PLUGINS_REQUEST });
 	return axios
-		.get('/plugins')
+		.get(`${PLUGIN_URL}/plugins`)
 		.then((res) => {
 			if (res.data) {
 				let available = res.data.available ? [...res.data.available] : [];

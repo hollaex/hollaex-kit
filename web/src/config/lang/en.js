@@ -1405,6 +1405,13 @@ const nestedContent = {
 		SEARCH_ERROR:
 			'Transaction not found. Please check the ID and try again. If your believe there is a problem please contact support.',
 	},
+	CANCEL_ORDERS: {
+		HEADING: 'Cancel orders',
+		SUB_HEADING: 'Cancel all orders',
+		INFO_1: 'This will cancel your open orders for this markets.',
+		INFO_2: 'Are you sure you want to cancel all your open orders?',
+	},
+	AMOUNT_IN: 'Amount in',
 };
 
 const content = flatten(nestedContent, options);

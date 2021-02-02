@@ -58,7 +58,13 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
+export const generateTradeHeaders = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices = {}
+) => {
 	return [
 		{
 			stringId: 'PAIR',
@@ -202,6 +208,51 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 								CURRENCY_PRICE_FORMAT,
 								formatToCurrency(
 									calculateAmount(quick, price, size),
+									increment_price
+								),
+								rest.symbol.toUpperCase()
+							)}
+						</td>
+					);
+				} else {
+					return (
+						<td>
+							{formatToCurrency(calculateAmount(quick, price, size), 0.0001)}
+						</td>
+					);
+				}
+			},
+		},
+		{
+			stringId: 'AMOUNT_IN',
+			label: `${STRINGS['AMOUNT_IN']} ${BASE_CURRENCY.toUpperCase()}`,
+			key: 'amount-in',
+			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
+				if (pairs[symbol]) {
+					const { increment_price, pair_base } = pairs[symbol];
+					const { min, ...rest } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+					return STRINGS.formatString(
+						CURRENCY_PRICE_FORMAT,
+						formatToCurrency(
+							calculateAmount(quick, prices[pair_base] || 0, size),
+							increment_price
+						),
+						rest.symbol.toUpperCase()
+					).join('');
+				} else {
+					return calculateAmount(quick, price, size);
+				}
+			},
+			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
+				if (pairs[symbol]) {
+					const { increment_price, pair_base } = pairs[symbol];
+					const { min, ...rest } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+					return (
+						<td key={index}>
+							{STRINGS.formatString(
+								CURRENCY_PRICE_FORMAT,
+								formatToCurrency(
+									calculateAmount(quick, prices[pair_base] || 0, size),
 									increment_price
 								),
 								rest.symbol.toUpperCase()
@@ -404,6 +455,8 @@ export const generateWithdrawalsHeaders = (
 						)}
 					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
+					/*: <td key={index}>{fee}</td>*/
+					/*: <td key={index}>{fee}</td>*/
 					/*: <td key={index}>{fee}</td>*/
 					/*: <td key={index}>{fee}</td>*/
 					/*: <td key={index}>{fee}</td>*/
