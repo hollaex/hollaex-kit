@@ -17,10 +17,26 @@ const Assets = ({
 		if (Object.keys(coins).length !== 0) {
 			if (coins['usdt']) {
 				return coins['usdt'].symbol;
-			} else {
-				const firstCoinKey = Object.keys(coins)[0];
-				return coins[firstCoinKey].symbol;
 			}
+
+			const [firstFiatCoinKey] =
+				Object.entries(coins).find(
+					([_, { meta: { is_fiat } = {} }]) => is_fiat
+				) || [];
+			if (firstFiatCoinKey) {
+				return coins[firstFiatCoinKey].symbol;
+			}
+
+			if (coins['btc']) {
+				return coins['btc'].symbol;
+			}
+
+			if (coins['eth']) {
+				return coins['eth'].symbol;
+			}
+
+			const firstCoinKey = Object.keys(coins)[0];
+			return coins[firstCoinKey].symbol;
 		}
 	};
 
@@ -45,6 +61,13 @@ const Assets = ({
 		};
 		updateConstants(formValues, () => handleNext(3));
 	};
+
+	const open = (link) => {
+		if (window) {
+			window.open(link, '_blank');
+		}
+	};
+
 	return (
 		<div className="asset-content show-scroll">
 			<div className="title-text">Native currency</div>
@@ -70,7 +93,12 @@ const Assets = ({
 			<div className="title-text">Review assets</div>
 			<div>
 				Don't see your asset?{' '}
-				<span className="step-link">Create or add your asset here.</span>
+				<span
+					className="step-link"
+					onClick={() => open('https://dash.bitholla.com/financial')}
+				>
+					Create or add your asset here.
+				</span>
 			</div>
 			<div className="coin-wrapper">
 				{Object.keys(coins).map((symbol, index) => {
@@ -86,7 +114,12 @@ const Assets = ({
 			<div className="title-text">Review pairs</div>
 			<div>
 				Don't see your pair?{' '}
-				<span className="step-link">Create or add your pair here.</span>
+				<span
+					className="step-link"
+					onClick={() => open('https://dash.bitholla.com/trade')}
+				>
+					Create or add your pair here.
+				</span>
 			</div>
 			<div className="coin-wrapper last">
 				{Object.keys(pairs).map((pair, index) => {

@@ -3592,6 +3592,11 @@ table th {
 .init-container {
   flex: 1;
   height: 100%; }
+  .init-container input {
+    border: 1px solid #c4c4c4; }
+  .init-container input:focus {
+    border: 1px solid #ffffff;
+    outline: 1px solid #ffffff; }
   .init-container .message {
     color: #ffffff;
     width: 100%;
