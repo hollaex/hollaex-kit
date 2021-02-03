@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.0.2"
+  version: "2.0.4"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2833,6 +2833,37 @@ paths:
         - admin
         - supervisor
         - kyc
+  /admin/verify-email:
+    x-swagger-router-controller: admin
+    post:
+      description: Verify email of user
+      operationId: verifyEmailUser
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: Upgrade data
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - kyc
   /admin/deactivate-otp:
     x-swagger-router-controller: otp
     post:
@@ -3715,6 +3746,8 @@ definitions:
           valid_languages:
             type: string
           new_user_is_activated:
+            type: boolean
+          email_verification_required:
             type: boolean
           native_currency:
             type: string

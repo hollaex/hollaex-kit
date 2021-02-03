@@ -48,6 +48,15 @@ export const addPlugin = (values) => {
 	return requestAuthenticated('/plugins', options, null, PLUGIN_URL);
 };
 
+export const getPluginMeta = (params) => {
+	return requestAuthenticated(
+		`/plugins/meta?${querystring.stringify(params)}`,
+		{},
+		null,
+		PLUGIN_URL
+	);
+};
+
 export const updatePlugin = (values) => {
 	const options = {
 		method: 'PUT',
@@ -82,17 +91,32 @@ export const getPlugins = (service) =>
 	requestAuthenticated(`/plugins?${service}`, {});
 
 export const connectPlugin = (service) =>
-	requestAuthenticated(`/plugins/enable?plugin=${service}`);
+	requestAuthenticated(
+		`/plugins/enable?plugin=${service}`,
+		{},
+		null,
+		PLUGIN_URL
+	);
 
 export const disconnectPlugin = (service) =>
-	requestAuthenticated(`/plugins/disable?plugin=${service}`);
+	requestAuthenticated(
+		`/plugins/disable?plugin=${service}`,
+		{},
+		null,
+		PLUGIN_URL
+	);
 
 export const updatePluginsService = (service, values) => {
 	const options = {
 		method: 'PUT',
 		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(`/plugins?plugin=${service}`, options);
+	return requestAuthenticated(
+		`/plugins?plugin=${service}`,
+		options,
+		null,
+		PLUGIN_URL
+	);
 };
 
 export const connectVault = (values) => {
@@ -101,17 +125,26 @@ export const connectVault = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/plugins/vault/connect', options);
+	return requestAuthenticated(
+		'/plugins/vault/connect',
+		options,
+		null,
+		PLUGIN_URL
+	);
 };
 
 export const disconnectVault = () =>
-	requestAuthenticated('/plugins/vault/disconnect');
+	requestAuthenticated('/plugins/vault/disconnect', null, PLUGIN_URL);
 
 export const requestVaultSupportCoins = () =>
 	axios.get(REQUEST_VAULT_SUPPORTED_COINS);
 
 export const requestAnnouncements = (query) =>
-	requestAuthenticated(`/plugins/announcement?${querystring.stringify(query)}`);
+	requestAuthenticated(
+		`/plugins/announcement?${querystring.stringify(query)}`,
+		null,
+		PLUGIN_URL
+	);
 
 export const requestPostAnnouncement = (values) => {
 	const options = {
@@ -119,7 +152,12 @@ export const requestPostAnnouncement = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/plugins/announcement', options);
+	return requestAuthenticated(
+		'/plugins/announcement',
+		options,
+		null,
+		PLUGIN_URL
+	);
 };
 export const requestDeleteAnnouncement = (query) => {
 	const options = {
@@ -128,6 +166,8 @@ export const requestDeleteAnnouncement = (query) => {
 
 	return requestAuthenticated(
 		`/plugins/announcement?${querystring.stringify(query)}`,
-		options
+		options,
+		null,
+		PLUGIN_URL
 	);
 };
