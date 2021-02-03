@@ -4,7 +4,7 @@ import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
 import { Carousel } from 'components';
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin, updatePlugin } from './action';
+import { addPlugin, updatePlugins } from './action';
 
 const PluginDetails = ({
 	handleBreadcrumb,
@@ -45,13 +45,14 @@ const PluginDetails = ({
 	const handleUpdatePlugin = () => {
 		handleClose();
 		const body = {
-			name: pluginData.name,
+			...pluginData,
 			meta: {
+				...pluginData.meta,
 				version: pluginData.version,
 			},
 		};
 		setUpdateLoading(true);
-		updatePlugin(body)
+		updatePlugins({ name: pluginData.name }, body)
 			.then((res) => {
 				setUpdateLoading(false);
 				message.success('Plugin updated successfully');
