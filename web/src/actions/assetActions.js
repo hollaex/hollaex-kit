@@ -31,7 +31,11 @@ const ENDPOINTS = {
 	GET_PRICE: '/oracle/prices',
 };
 
-const getPrices = async ({ amount = 1, quote = BASE_CURRENCY, coins = {} }) => {
+export const getPrices = async ({
+	amount = 1,
+	quote = BASE_CURRENCY,
+	coins = {},
+}) => {
 	const assets = Object.keys(coins).join();
 	const { data: prices = {} } = await axios.get(ENDPOINTS.GET_PRICE, {
 		params: { amount, quote, assets },
@@ -39,7 +43,7 @@ const getPrices = async ({ amount = 1, quote = BASE_CURRENCY, coins = {} }) => {
 	return prices;
 };
 
-const generateChartData = (balance, prices, coins, totalAsset) => {
+export const generateChartData = (balance, prices, coins, totalAsset) => {
 	const data = [];
 
 	Object.keys(coins).forEach((currency) => {

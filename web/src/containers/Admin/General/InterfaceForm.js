@@ -1,99 +1,102 @@
-import React, { useEffect, useState } from 'react';
-import ReactSVG from 'react-svg';
-import { Button, Radio } from 'antd';
+import React from 'react';
+import { ReactSVG } from 'react-svg';
+import { Button, Checkbox, Form } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
 
+const { Item } = Form;
+
 const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
-	const [type, setType] = useState('full');
-	useEffect(() => {
-		if (initialValues.type) {
-			setType(initialValues.type);
-		}
-	}, [initialValues]);
-	const handleChange = (event) => {
-		if (event.target.value) {
-			setType(event.target.value);
+	const handleSubmit = (values) => {
+		let formValues = {};
+		if (values) {
+			formValues = {
+				chat: !!values.chat,
+				quick_trade: !!values.quick_trade,
+				pro_trade: !!values.pro_trade,
+			};
+			handleSaveInterface(formValues);
 		}
 	};
 	return (
 		<div className="general-wrapper mb-4">
-			<div className="sub-title">Trading Interface</div>
+			<div className="sub-title">Features</div>
 			<div className="description">
-				Select the trading interface that will be available on your exchange.
-				All interfaces includes a crypto wallet.
+				Select the features that will be available on your exchange.
 			</div>
-			<div className="radio-btn-wrapper">
-				<Radio.Group onChange={handleChange} value={type}>
-					<Radio value="full">
-						Full interface
-						<div className="d-flex justify-content-between">
-							<div className="small-text">(Pro & quick trade with wallet)</div>
-							<div className="box">
-								<div className="interface_container">
-									<div className="sell">
-										<span className="label">SELL</span>
-									</div>
-									<div className="buy">
-										<span className="label">BUY</span>
+			<Form
+				name="interface-form"
+				initialValues={initialValues}
+				onFinish={handleSubmit}
+			>
+				<div className="interface-box">
+					<Item name="pro_trade" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<ReactSVG
+									src={STATIC_ICONS.CANDLES_LOGO}
+									className="feature-icon mr-1"
+								/>
+								<div className="ml-2 checkbox-txt">
+									Pro trade
+									<div className="small-text">
+										(Chart, orderbook, limit orders with wallet)
 									</div>
 								</div>
 							</div>
-							<div>
-								<ReactSVG
-									path={STATIC_ICONS.CANDLES_LOGO}
-									wrapperClassName="candle-icon"
-								/>
-							</div>
-						</div>
-					</Radio>
-					<Radio value="pro-trade">
-						Pro trade only
-						<div className="small-text">
-							(Chart, orderbook, limit orders with wallet)
-						</div>
-						<ReactSVG
-							path={STATIC_ICONS.CANDLES_LOGO}
-							wrapperClassName="candle-icon"
-						/>
-					</Radio>
-					<Radio value="quick-trade">
-						Quick trade only
-						<div className="d-flex justify-content-between">
-							<div className="small-text">
-								(Simple buy/sell interface with wallet)
-							</div>
-							<div className="box interface">
-								<div className="interface_container">
-									<div className="sell">
-										<span className="label">SELL</span>
+						</Checkbox>
+					</Item>
+					<Item name="quick_trade" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<div className="interface_container">
+										<div className="sell">
+											<span className="label">SELL</span>
+										</div>
+										<div className="buy">
+											<span className="label">BUY</span>
+										</div>
 									</div>
-									<div className="buy">
-										<span className="label">BUY</span>
+								</div>
+								<div className="ml-2 checkbox-txt">
+									Quick trade
+									<div className="d-flex justify-content-between">
+										<div className="small-text">
+											(Simple buy/sell interface with wallet)
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</Radio>
-					<Radio value="wallet">
-						Wallet only
-						<div className="d-flex justify-content-between">
-							<div className="small-text">(No trading. Only crypto wallet)</div>
-							<div className="box interface">
-								<ReactSVG
-									path={STATIC_ICONS.WALLET_BTC_ICON}
-									wrapperClassName="wallet-icon"
-								/>
+						</Checkbox>
+					</Item>
+					<Item name="chat" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<ReactSVG
+										src={STATIC_ICONS.CHAT_FEATURE_ICON}
+										className="feature-chat-icon"
+									/>
+								</div>
+								<div className="ml-2 checkbox-txt">
+									Chat system
+									<div className="d-flex justify-content-between">
+										<div className="small-text">
+											(Usernames, text and emoji communication)
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
-					</Radio>
-				</Radio.Group>
-			</div>
-			<div>
-				<Button type="primary" onClick={() => handleSaveInterface(type)}>
-					Save
-				</Button>
-			</div>
+						</Checkbox>
+					</Item>
+				</div>
+				<div>
+					<Button type="primary" htmlType="submit">
+						Save
+					</Button>
+				</div>
+			</Form>
 		</div>
 	);
 };

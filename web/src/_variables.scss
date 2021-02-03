@@ -8,6 +8,10 @@ $bp-lg: 1199px;
 // common colors
 $colors-main-black: var(--labels_important-active-labels-text-graphics);
 $colors-black: var(--labels_secondary-inactive-label-text-graphics);
+$colors-border: var(--calculated_secondary-border);
+$colors-main-border: var(--calculated_important-border);
+$footer-border-color: var(--calculated_footer_border);
+$colors-super-pale-black: var(--calculated_super-pale_label-text-graphics);
 $colors-wave-phase-completed: var(--specials_checks-okay-done);
 
 // common colors for deactivate and disabled look
@@ -45,6 +49,9 @@ $app-background-color: var(--base_background);
 $app-light-background: var(--base_secondary-navigation-bar);
 $app-sidebar-background: var(--base_wallet-sidebar-and-popup);
 $auth-container-background: var(--base_wallet-sidebar-and-popup);
+$market-card_gradient_background: var(
+	--calculated_market-card_gradient_background
+);
 
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $app-background-color;
@@ -58,7 +65,7 @@ $quick-trade-container: var(--base_wallet-sidebar-and-popup);
 $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);
 
-$app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
+$app-line-divider: $colors-main-border;
 $box-fields: var(--labels_fields);
 
 $buy: var(--trading_buying-related-elements);
@@ -67,12 +74,14 @@ $sell: var(--trading_selling-related-elements);
 $link: var(--specials_buttons-links-and-highlights);
 
 $trade-fields: var(--labels_fields);
-$trade-fields-border: var(--labels_secondary-inactive-label-text-graphics);
-$trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
+$trade-fields-border: $colors-border;
+$trade-fill-indicator: $specials_highlight-box;
 $trade-fill-indicator-text: var(
 	--labels_secondary-inactive-label-text-graphics
 );
 
+$sparkline-fill: var(--calculated_trading_buying-sparkline-fill);
+$negative-sparkline-fill: var(--calculated_trading_selling-sparkline-fill);
 $selling-orderbook-bar: var(--calculated_trading_selling-orderbook-bar);
 $buying-orderbook-bar: var(--calculated_trading_buying-orderbook-bar);
 $buy-bids-text: var(--calculated_trading_buying-related-text);
@@ -82,10 +91,6 @@ $base_top-bar-navigation_text-inactive: var(
 	--calculated_base_top-bar-navigation_text-inactive
 );
 $base_footer_text: var(--calculated_base_footer_text);
-
-$sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);
-$border-color: var(--labels_secondary-inactive-label-text-graphics);
-$border-main: var(--labels_important-active-labels-text-graphics);
 
 // form field colors
 $form-color-underline-focus: var(
@@ -115,8 +120,8 @@ $footer-background-color: var(--base_footer);
 // chat color
 $chat-message-background-even: var(--base_background);
 $chat-message-background-odd: var(--base_secondary-navigation-bar);
-$chat-message-color: var(--labels_secondary-inactive-label-text-graphics);
-$chat-box-border: var(--labels_important-active-labels-text-graphics);
+$chat-message-color: var(--specials_chat-messages);
+$chat-box-border: $colors-main-border;
 
 // this is for transaction history- ToDo: need to customize for common theme
 $history-color-buy: var(--trading_buying-related-elements);
@@ -124,8 +129,8 @@ $history-color-sell: var(--trading_selling-related-elements);
 
 // remaining dark colors
 $dark-app-background-color: var(--base_background);
-$dark-app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
-$dark-border-main: var(--labels_secondary-inactive-label-text-graphics);
+$dark-app-line-divider: $colors-super-pale-black;
+$dark-border-main: $colors-main-border;
 $dark-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-font-sub-text-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-font-sub-text-1-color: var(
@@ -344,6 +349,7 @@ $tab-text-padding: 0 8px 8px;
 $tab-selected-line-height: 4px;
 
 // MOBILE
+$market-selector--height: 3rem;
 $navigation_bar-mobile--height: 4rem;
 $navigation_bar-mobile--background: $app-bar-background-color;
 $bottom_bar--height: 6rem;
@@ -352,7 +358,8 @@ $max-content-height-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height + $bottom-bar--height}
 );
 $max-content-height-double-bar-mobile: calc(
-	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height}
+	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height +
+		$market-selector--height}
 );
 $max-content-height-home-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height}

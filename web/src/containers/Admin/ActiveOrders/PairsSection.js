@@ -59,7 +59,11 @@ const getColumns = (userId, onCancel) => {
 				key: '',
 				render: (e) => (
 					<Tooltip placement="bottom" title={`Cancel order`}>
-						<Button type="primary" onClick={() => onCancel(e)}>
+						<Button
+							type="primary"
+							onClick={() => onCancel(e)}
+							className="green-btn"
+						>
 							Cancel
 						</Button>
 					</Tooltip>
@@ -255,7 +259,7 @@ class PairsSection extends Component {
 		} = this.state;
 		const COLUMNS = getColumns(this.props.userId, this.onCancelOrder);
 		return (
-			<div className="f-1">
+			<div className="f-1 admin-user-container">
 				<Tabs onChange={this.tabChange}>
 					<TabPane tab="Bids" key="buy">
 						<Row>
@@ -272,6 +276,7 @@ class PairsSection extends Component {
 											Download table
 										</CSVLink>
 										<Table
+											className="blue-admin-table"
 											columns={COLUMNS}
 											rowKey={(data) => {
 												return data.id;
@@ -303,6 +308,7 @@ class PairsSection extends Component {
 										</CSVLink>
 										<Table
 											columns={COLUMNS}
+											className="blue-admin-table"
 											rowKey={(data) => {
 												return data.id;
 											}}

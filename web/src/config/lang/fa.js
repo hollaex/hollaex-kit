@@ -652,6 +652,7 @@ const nestedContent = {
 		WITHDRAWALS: 'برداشت ها',
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: 'رمز یکبار مصرف',
 			OTP_ENABLED: 'رمز یکبار مصرف را فعال کنید',
@@ -679,6 +680,14 @@ const nestedContent = {
 					'اکیدا توصیه می کنیم رمز یکبار مصرف حساب خود را فعال کنید. این کار امنیت حساب شما را به طور قابل توجهی افزایش می دهد.',
 				ENABLE: 'رمز یکبار مصرف را فعال کنید',
 				DISABLE: 'غیر فعال کردن رمز یکبار مصرف',
+				SECRET_1: 'Enter yor secret key',
+				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
+				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				INPUT_1: 'Secret Key',
+
+				TITLE_2: 'Enter One-Time Password (OTP)',
+				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
+				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {
 				PLACEHOLDER: ' ارائه شده توسط Google Authenticator را وارد کنید',
@@ -705,6 +714,35 @@ const nestedContent = {
 					label: 'تایید رمز جدید',
 					placeholder: 'رمز عبور جدید خود را دوباره وارد کنید',
 				},
+			},
+		},
+		LOGIN: {
+			TITLE: 'Login History',
+			CONTENT: {
+				TITLE: 'Logins History',
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
+		},
+		FREEZE: {
+			TITLE: 'Freeze Account',
+			CONTENT: {
+				MESSAGE_1:
+					'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1:
+					'Use only if you fear that your account has been compromised',
+				TITLE_1: 'Freeze your Account',
+				TITLE_2: 'Account freezing',
+				MESSAGE_2:
+					'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3:
+					'The following will occur if you choose to freeze your account:',
+				MESSAGE_4: '1. Pending withdrawals will be canceled.',
+				MESSAGE_5:
+					'2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6:
+					'3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?',
 			},
 		},
 	},

@@ -2,6 +2,7 @@
 
 const { loggerOrders } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
+const { isPlainObject, isNumber } = require('lodash');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -16,9 +17,23 @@ const createOrder = (req, res) => {
 	);
 
 	const user_id = req.auth.sub.id;
-	const order = req.swagger.params.order.value;
+	let order = req.swagger.params.order.value;
 
-	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price, order.stop, order.meta)
+	const opts = {};
+
+	if (isPlainObject(order.meta)) {
+		opts.meta = order.meta;
+	}
+
+	if (isNumber(order.stop)) {
+		opts.stop = order.stop;
+	}
+
+	if (order.type === 'market') {
+		delete order.price;
+	}
+
+	toolsLib.order.createUserOrderByKitId(user_id, order.symbol, order.side, order.size, order.type, order.price, opts)
 		.then((order) => {
 			return res.json(order);
 		})
@@ -114,8 +129,8 @@ const cancelAllUserOrders = (req, res) => {
 		});
 };
 
-const getAdminUserOrders = (req, res) => {
-	loggerOrders.verbose(req.uuid, 'controllers/order/getAdminUserOrders/auth', req.auth);
+const getAdminOrders = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/order/getAdminOrders/auth', req.auth);
 	const { user_id, symbol, side, status, open, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	let promiseQuery;
@@ -154,7 +169,7 @@ const getAdminUserOrders = (req, res) => {
 			return res.json(orders);
 		})
 		.catch((err) => {
-			loggerOrders.debug(req.uuid, 'controllers/order/getAdminUserOrder', err.message);
+			loggerOrders.debug(req.uuid, 'controllers/order/getAdminOrders', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -185,6 +200,6 @@ module.exports = {
 	cancelUserOrder,
 	getAllUserOrders,
 	cancelAllUserOrders,
-	getAdminUserOrders,
+	getAdminOrders,
 	adminCancelOrder
 };

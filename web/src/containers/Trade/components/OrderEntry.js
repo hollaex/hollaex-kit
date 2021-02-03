@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { formValueSelector, submit, change, reset } from 'redux-form';
+import { formValueSelector, submit, change } from 'redux-form';
 import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
@@ -62,13 +62,13 @@ class OrderEntry extends Component {
 	};
 
 	componentDidMount() {
-		const { side } = this.props;
 		if (this.props.pair_base) {
-			this.generateFormValues(this.props.pair, '', side);
+			this.generateFormValues(this.props);
 		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { pair_2, pair_base } = this.props;
 		if (
 			nextProps.size !== this.props.size ||
 			nextProps.side !== this.props.side ||
@@ -80,9 +80,13 @@ class OrderEntry extends Component {
 		}
 		if (
 			nextProps.activeLanguage !== this.props.activeLanguage ||
-			nextProps.side !== this.props.side
+			nextProps.side !== this.props.side ||
+			nextProps.balance[`${nextProps.pair_base}_available`] !==
+				this.props.balance[`${pair_base}_available`] ||
+			nextProps.balance[`${nextProps.pair_2}_available`] !==
+				this.props.balance[`${pair_2}_available`]
 		) {
-			this.generateFormValues(nextProps.pair, '', nextProps.side);
+			this.generateFormValues(nextProps);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
 			this.setState({
@@ -213,11 +217,22 @@ class OrderEntry extends Component {
 		return this.props.submitOrder(order).then(() => {
 			if (
 				values.type === 'market' &&
+				!values.stop &&
 				settings.audio &&
 				settings.audio.order_completed
 			) {
 				playBackgroundAudioNotification(
 					'orderbook_market_order',
+					this.props.settings
+				);
+			} else if (
+				values.type === 'market' &&
+				values.stop &&
+				settings.audio &&
+				settings.audio.order_completed
+			) {
+				playBackgroundAudioNotification(
+					'orderbook_limit_order',
 					this.props.settings
 				);
 			}
@@ -294,12 +309,13 @@ class OrderEntry extends Component {
 	};
 
 	reset = () => {
-		const { reset, change } = this.props;
-		reset(FORM_NAME);
+		const { change } = this.props;
+		change(FORM_NAME, 'stop', '');
 		change(FORM_NAME, 'price', '');
+		change(FORM_NAME, 'size', '');
 	};
 
-	generateFormValues = (pair = '', buyingPair = '', side = 'buy') => {
+	generateFormValues = (props, buyingPair = '') => {
 		const {
 			min_size,
 			max_size,
@@ -312,13 +328,15 @@ class OrderEntry extends Component {
 			pair_2,
 			balance = {},
 			marketPrice,
-		} = this.props;
+			pair = '',
+			side = 'buy',
+		} = props;
 
 		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
 		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
 			orderType: {
-				name: 'order-type',
+				name: 'order_type',
 				type: 'dropdown',
 				options: ORDER_OPTIONS,
 				onChange: (orderType) => this.setState({ orderType }),
@@ -539,7 +557,7 @@ const mapStateToProps = (state) => {
 		min_price,
 		increment_size,
 		increment_price,
-	} = state.app.pairs[pair];
+	} = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
 	const marketPrice = marketPriceSelector(state);
 
 	return {
@@ -568,7 +586,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	reset: bindActionCreators(reset, dispatch),
 	submit: bindActionCreators(submit, dispatch),
 	change: bindActionCreators(change, dispatch),
 	openFeesStructureandLimits: bindActionCreators(

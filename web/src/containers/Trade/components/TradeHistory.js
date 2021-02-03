@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { DisplayTable } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
@@ -96,8 +96,8 @@ class TradeHistory extends Component {
 						>
 							{!isSameBefore ? (
 								<ReactSVG
-									path={isArrow ? ICONS['ARROW_DOWN'] : ICONS['ARROW_UP']}
-									wrapperClassName={'trade_history-icon'}
+									src={isArrow ? ICONS['ARROW_DOWN'] : ICONS['ARROW_UP']}
+									className={'trade_history-icon'}
 								/>
 							) : (
 								<div className="trade_history-icon" />
@@ -163,7 +163,11 @@ class TradeHistory extends Component {
 		const { data } = this.state;
 		return (
 			<div className="apply_rtl trade_history-wrapper">
-				<DisplayTable headers={this.state.headers} data={data} />
+				<DisplayTable
+					headers={this.state.headers}
+					data={data}
+					rowClassName="trade_history-row-wrapper"
+				/>
 			</div>
 		);
 	}

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { PLUGIN_URL } from '../config/constants';
 
 export function getMe() {
 	return {
@@ -81,7 +82,7 @@ export const updateUser = (values) => {
 		userValues.settings = values.settings;
 	}
 
-	return axios.put('/plugins/kyc/user', userValues);
+	return axios.put(`${PLUGIN_URL}/plugins/kyc/user`, userValues);
 };
 
 export const updateUserSettings = (values) => {
@@ -104,7 +105,7 @@ export const updateDocuments = (values) => {
 			'Content-Type': 'multipart/form-data',
 		},
 		data: formData,
-		url: '/plugins/kyc/user/upload',
+		url: `${PLUGIN_URL}/plugins/kyc/user/upload`,
 		method: 'POST',
 	});
 };
@@ -290,3 +291,29 @@ export function getUserReferralCount() {
 			});
 	};
 }
+
+export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
+	return (dispatch) => {
+		axios
+			.get('/user/logins')
+			.then((body) => {
+				dispatch({
+					type: 'USER_DEPOSITS_FULFILLED',
+					payload: {
+						...body.data,
+						page,
+						isRemaining: body.data.count > page * limit,
+					},
+				});
+				// if (body.data.count > page * limit) {
+				// 	dispatch(getUserDeposits({ limit, page: page + 1 }));
+				// }
+			})
+			.catch((err) => {
+				dispatch({
+					type: 'USER_DEPOSITS_REJECTED',
+					payload: err.response,
+				});
+			});
+	};
+};

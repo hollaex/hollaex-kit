@@ -1,5 +1,6 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
+import { hasTheme } from 'utils/theme';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from 'config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -47,6 +48,7 @@ export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_CONFIG = 'SET_CONFIG';
+export const SET_PLUGINS = 'SET_PLUGINS';
 export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
 export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
@@ -218,16 +220,25 @@ export const setCurrencies = (coins) => ({
 });
 
 export const setConfig = (constants = {}) => {
-	let enabledPlugins = [];
+	let features = {};
 	if (constants) {
-		if (constants.plugins && constants.plugins.enabled) {
-			enabledPlugins = constants.plugins.enabled.split(',');
+		if (constants.features) {
+			features = constants.features;
 		}
 	}
 	return {
 		type: SET_CONFIG,
 		payload: {
 			constants,
+			features,
+		},
+	};
+};
+
+export const setPlugins = (enabledPlugins) => {
+	return {
+		type: SET_PLUGINS,
+		payload: {
 			enabledPlugins,
 		},
 	};
@@ -249,6 +260,7 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
 
+export const requestPlugins = () => axios.get(`${PLUGIN_URL}/plugins`);
 export const requestInitial = () => axios.get('/kit');
 export const requestConstant = () => axios.get('/constants');
 export const requestAdminData = () => axios.get('/admin/kit');
@@ -260,8 +272,9 @@ export const getExchangeInfo = () => {
 				dispatch(setConfig(res.data));
 				if (res.data.defaults) {
 					const themeColor = localStorage.getItem('theme');
+					const isThemeValid = hasTheme(themeColor, res.data.color);
 					const language = localStorage.getItem(LANGUAGE_KEY);
-					if (!themeColor && res.data.defaults.theme) {
+					if (res.data.defaults.theme && (!themeColor || !isThemeValid)) {
 						dispatch(changeTheme(res.data.defaults.theme));
 						localStorage.setItem('theme', res.data.defaults.theme);
 					}
@@ -295,7 +308,7 @@ export const getWaveAuction = () => {
 
 export const getAnnouncement = () => (dispatch) => {
 	return axios
-		.get('/plugins/announcement')
+		.get(`${PLUGIN_URL}/plugins/announcement`)
 		.then((res) => {
 			if (res.data && res.data.data) {
 				dispatch({
@@ -310,7 +323,7 @@ export const getAnnouncement = () => (dispatch) => {
 export const requestAvailPlugins = () => (dispatch) => {
 	dispatch({ type: SET_PLUGINS_REQUEST });
 	return axios
-		.get('/plugins')
+		.get(`${PLUGIN_URL}/plugins`)
 		.then((res) => {
 			if (res.data) {
 				let available = res.data.available ? [...res.data.available] : [];

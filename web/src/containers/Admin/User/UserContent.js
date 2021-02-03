@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 import { Link } from 'react-router';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import {
 	// Balance,
@@ -152,7 +152,7 @@ class UserContent extends Component {
 
 	render() {
 		const {
-			// coins,
+			coins,
 			constants,
 			userInformation,
 			userImages,
@@ -194,7 +194,7 @@ class UserContent extends Component {
 			roleInitialValues.role = 'user';
 		}
 		return (
-			<div className="app_container-content user-content">
+			<div className="app_container-content admin-user-content">
 				<Breadcrumb>
 					<Item>
 						<Link to="/admin">Home</Link>
@@ -207,8 +207,8 @@ class UserContent extends Component {
 				<div className="d-flex justify-content-between">
 					<div className="d-flex align-items-center user-details">
 						<ReactSVG
-							path={STATIC_ICONS.USER_DETAILS_ICON}
-							wrapperClassName="user-icon"
+							src={STATIC_ICONS.USER_DETAILS_ICON}
+							className="user-icon"
 						/>
 						<div>User Id: {userInformation.id}</div>
 						<div className="user-seperator"></div>
@@ -220,6 +220,7 @@ class UserContent extends Component {
 							type="primary"
 							style={{ marginRight: 5 }}
 							onClick={refreshAllData}
+							className="green-btn"
 						>
 							Refresh
 						</Button>
@@ -262,7 +263,7 @@ class UserContent extends Component {
 					</TabPane>
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Balance" key="balance">
-							<UserBalance userData={userInformation} />
+							<UserBalance coins={coins} userData={userInformation} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (

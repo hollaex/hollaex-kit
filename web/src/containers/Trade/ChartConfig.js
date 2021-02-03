@@ -1,3 +1,5 @@
+import Color from 'color';
+
 const UP_COLOR_WHITE = '#6496AA';
 const DOWN_COLOR_WHITE = '#000000';
 const BACKGROUND_COLOR = '#ffffff';
@@ -8,6 +10,10 @@ const TRADING_VIEW_TEXT = '#292b2c';
 export const getToolbarBG = (theme, colors = {}) => {
 	const themeData = colors[theme] || {};
 	return themeData['base_background'] || BACKGROUND_COLOR;
+};
+
+export const getWidgetTheme = (base_background = BACKGROUND_COLOR) => {
+	return Color(base_background).isLight() ? 'light' : 'dark';
 };
 
 export const getTheme = ({
@@ -28,6 +34,7 @@ export const getTheme = ({
 		rest['calculated_trad-view_text'] || TRADING_VIEW_TEXT,
 	'scalesProperties.backgroundColor':
 		rest['base_background'] || BACKGROUND_COLOR,
+	'mainSeriesProperties.showPriceLine': true,
 	// Candles-property
 	'mainSeriesProperties.candleStyle.upColor': buy,
 	'mainSeriesProperties.candleStyle.downColor': sell,

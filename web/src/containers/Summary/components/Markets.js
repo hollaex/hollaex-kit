@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formatPercentage } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
+import { withRouter } from 'react-router';
 
 import { SearchBox } from 'components';
 import MarketList from '../../TradeTabs/components/MarketList';
@@ -104,7 +105,12 @@ class Markets extends Component {
 		);
 	};
 
-	handleClick = (pair) => {};
+	handleClick = (pair) => {
+		const { router } = this.props;
+		if (pair && router) {
+			router.push(`/trade/${pair}`);
+		}
+	};
 
 	render() {
 		const { pairs, tickers, coins } = this.props;
@@ -177,4 +183,6 @@ const mapStateToProps = (state) => ({
 	tickers: state.app.tickers,
 });
 
-export default connect(mapStateToProps)(withConfig(Markets));
+const MarketWrapper = withConfig(Markets);
+
+export default connect(mapStateToProps)(withRouter(MarketWrapper));

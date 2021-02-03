@@ -17,6 +17,7 @@ import {
 	SET_TICKER_FROM_TRADE,
 	SET_CURRENCIES,
 	SET_CONFIG,
+	SET_PLUGINS,
 	SET_INFO,
 	SET_WAVE_AUCTION,
 	SET_PLUGINS_REQUEST,
@@ -142,6 +143,7 @@ const INITIAL_STATE = {
 	enabledPlugins: [],
 	availablePlugins: [],
 	getPluginLoading: false,
+	features: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -332,8 +334,15 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				constants: payload.constants,
-				enabledPlugins: payload.enabledPlugins,
+				features: payload.features,
 			};
+
+		case SET_PLUGINS: {
+			return {
+				...state,
+				enabledPlugins: payload.enabledPlugins.map(({ name }) => name),
+			};
+		}
 		case SET_INFO:
 			return {
 				...state,

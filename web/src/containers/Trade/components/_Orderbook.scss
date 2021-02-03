@@ -1,5 +1,5 @@
 .trade_orderbook-wrapper {
-	height: 100vh;
+	height: 84vh;
 	.trade_orderbook-cell {
 		padding: 0 0.25rem;
 		.ant-select-arrow {
@@ -43,7 +43,7 @@
 
 	.trade_orderbook-headers {
 		font-weight: bold;
-		border-bottom: 1px solid $border-main;
+		border-bottom: 1px solid $colors-border;
 		text-transform: uppercase;
 		min-height: 1.5rem;
 
@@ -67,7 +67,8 @@
 
 			.trade_orderbook-market-price {
 				margin-left: 0.25rem;
-				font-size: $font-size-subhead2;
+				font-size: $font-size-subhead3;
+				font-weight: bold;
 				color: $colors-main-black;
 			}
 		}

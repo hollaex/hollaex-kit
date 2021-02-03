@@ -5,10 +5,10 @@ $trade-asks-color-main: $sell;
 $trade-asks-color-font: $sell;
 $trade-order-asks-color-font: $colors-black;
 
-$trade-section-border--color: $colors-main-black;
-$trade-section-border-disabled--color: $colors-black;
+$trade-section-border--color: $colors-main-border;
+$trade-section-border-disabled--color: $colors-border;
 
-$trade_title-border--color: $colors-main-black;
+$trade_title-border--color: $colors-main-border;
 $trade_title-border--size: 0.2rem;
 
 $trade-font-size: $font-size-subtext;
@@ -36,7 +36,13 @@ $order_entry-column--width-lg: 20rem;
 	color: $trade-bids-color-font;
 }
 
+.trade_history-row-wrapper {
+	margin: 1px 0;
+}
+
 .trade_history-row {
+	height: 100%;
+
 	.trade_history-icon {
 		width: 1rem;
 		margin-right: 3px;
@@ -111,7 +117,7 @@ $order_entry-column--width-lg: 20rem;
 		}
 
 		&.fullfilled .cell-wrapper {
-			border: 1px solid $trade-fill-indicator;
+			border: 1px solid $colors-main-border;
 			margin: 0;
 			padding: 1px;
 			min-width: 5rem;
@@ -138,7 +144,7 @@ $order_entry-column--width-lg: 20rem;
 }
 
 .quick-trade-tab {
-	border: 1px solid $colors-black;
+	border: 1px solid $colors-border;
 	border-radius: 9px;
 	vertical-align: middle;
 	text-align: center;
@@ -184,4 +190,12 @@ $order_entry-column--width-lg: 20rem;
 .mobile-chart__market-selector-wrapper {
 	font-family: 'Open Sans' !important;
 	font-weight: normal;
+}
+
+.mobile-market-selector-trigger {
+	width: 100%;
+	min-width: 100vw;
+	max-width: 100vw;
+	min-height: $market-selector--height;
+	max-height: $market-selector--height;
 }

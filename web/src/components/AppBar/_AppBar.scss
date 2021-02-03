@@ -568,6 +568,7 @@ $app-menu-notification-size: 1.2rem;
 			}
 			.trade-active-2,
 			.quick-trade-tab-active,
+			.tab-history-st,
 			.tab-summary0,
 			.tab-wallet0,
 			.tab-setting0,
@@ -592,6 +593,7 @@ $app-menu-notification-size: 1.2rem;
 			}
 			.trade-active-2,
 			.quick-trade-tab-active,
+			.tab-history-st,
 			.tab-summary0,
 			.tab-wallet0,
 			.tab-setting0,
@@ -935,7 +937,7 @@ $app-menu-notification-size: 1.2rem;
 
 .app-bar-add-tab-menu {
 	background-color: $app-background-color;
-	border: 1px solid $border-color;
+	border: 1px solid $colors-border;
 	color: $app-bar-menu-list-color;
 	width: 22rem;
 	min-height: 8rem;
@@ -1242,6 +1244,9 @@ $app-menu-notification-size: 1.2rem;
 
 .active-market-trigger {
 	color: $colors-main-black;
-	background-color: $app-background-color;
 	font-weight: bold;
+}
+
+.market-trigger {
+	background-color: $app-background-color;
 }

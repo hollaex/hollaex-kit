@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
 import { debounce } from 'lodash';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { PATHS } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -33,7 +33,7 @@ import {
 	setConfig,
 	setLanguage,
 	changeTheme,
-	requestAvailPlugins,
+	// requestAvailPlugins,
 	requestInitial,
 	requestConstant,
 } from '../../../actions/appActions';
@@ -86,7 +86,7 @@ class AppWrapper extends React.Component {
 			this.props.router.push('/init');
 		}
 		this._resetTimer();
-		this.props.requestAvailPlugins();
+		// this.props.requestAvailPlugins();
 		this.setState({
 			setupCompleted:
 				setupCompleted === 'false' ||
@@ -236,6 +236,7 @@ class AppWrapper extends React.Component {
 	};
 
 	renderMenuItem = ({ path, label, routeKey, ...rest }, index) => {
+		const { constants: { logo_image } = {} } = this.props;
 		let showLabel = label;
 		if (routeKey === 'main') {
 			showLabel = this.props.constants.api_name || '';
@@ -250,8 +251,15 @@ class AppWrapper extends React.Component {
 							}
 						>
 							<ReactSVG
-								path={STATIC_ICONS.HEX_PATTERN_ICON}
-								wrapperClassName="sidebar-icon"
+								src={logo_image || STATIC_ICONS.HEX_PATTERN_ICON}
+								className="sidebar-icon"
+								fallback={() => (
+									<img
+										src={logo_image || STATIC_ICONS.HEX_PATTERN_ICON}
+										alt="exchange-logo"
+										className="sidebar-icon"
+									/>
+								)}
 							/>
 							<div>
 								<div>DASHBOARD</div>
@@ -317,8 +325,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-black">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -332,8 +340,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-grey">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_KYC}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_KYC}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -347,8 +355,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-orange">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -362,8 +370,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-yellow">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -464,7 +472,7 @@ class AppWrapper extends React.Component {
 								alt="Link-icon"
 							/>{' '}
 							<a
-								href="https://dash.testnet.bitholla.com/"
+								href="https://dash.bitholla.com/"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
@@ -540,7 +548,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
+	// requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
 	logout: bindActionCreators(logout, dispatch),
 });
 

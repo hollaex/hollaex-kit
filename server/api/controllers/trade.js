@@ -35,8 +35,8 @@ const getUserTrades = (req, res) => {
 		});
 };
 
-const getAdminUserTrades = (req, res) => {
-	loggerTrades.verbose(req.uuid, 'controllers/trade/getAdminUserTrades auth', req.auth);
+const getAdminTrades = (req, res) => {
+	loggerTrades.verbose(req.uuid, 'controllers/trade/getAdminTrades auth', req.auth);
 
 	const { user_id, symbol, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -59,12 +59,12 @@ const getAdminUserTrades = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerTrades.error(req.uuid, 'controllers/trade/getAdminUserTrades', err.message);
+			loggerTrades.error(req.uuid, 'controllers/trade/getAdminTrades', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
 
 module.exports = {
 	getUserTrades,
-	getAdminUserTrades
+	getAdminTrades
 };

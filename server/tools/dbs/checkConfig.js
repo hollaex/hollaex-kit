@@ -33,24 +33,20 @@ Status.findOne()
 				website: '',
 				information: '',
 			},
+			email_verification_required: isBoolean(existingKitConfigurations.email_verification_required) ? existingKitConfigurations.email_verification_required : false,
 			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
-			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY,
-			logo_image: existingKitConfigurations.logo_image || existingKitConfigurations.logo_path || process.env.LOGO_IMAGE,
+			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY || 'usdt',
+			logo_image: existingKitConfigurations.logo_image || existingKitConfigurations.logo_path || process.env.LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',
 			valid_languages: existingKitConfigurations.valid_languages || process.env.VALID_LANGUAGES || 'en,fa,ko,ar,fr',
 			new_user_is_activated: existingKitConfigurations.new_user_is_activated || (process.env.NEW_USER_IS_ACTIVATED && process.env.NEW_USER_IS_ACTIVATED === 'true') || false,
 			captcha: {
-				site_key: existingKitConfigurations.captcha.site_key || process.env.CAPTCHA_SITE_KEY
+				site_key: existingKitConfigurations.captcha ? (existingKitConfigurations.captcha.site_key || process.env.CAPTCHA_SITE_KEY) : process.env.CAPTCHA_SITE_KEY
 			},
 			defaults: {
-				language: existingKitConfigurations.defaults.language || process.env.NEW_USER_DEFAULT_LANGUAGE || 'en',
-				theme: existingKitConfigurations.defaults.theme || process.env.DEFAULT_THEME || 'white'
+				language: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.language || process.env.NEW_USER_DEFAULT_LANGUAGE || 'en') : (process.env.NEW_USER_DEFAULT_LANGUAGE || 'en'),
+				theme: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.theme || process.env.DEFAULT_THEME || 'white') : (process.env.DEFAULT_THEME || 'white')
 			},
-			plugins: {
-				enabled: existingKitConfigurations.plugins.enabled || process.env.PLUGINS || '',
-				configuration: {
-					...existingKitConfigurations.plugins.configuration
-				}
-			},
+			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},
 		};
 
@@ -58,45 +54,23 @@ Status.findOne()
 			allowed_domains: existingSecrets.allowed_domains || (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []),
 			admin_whitelist: existingSecrets.admin_whitelist || (process.env.ADMIN_WHITELIST_IP ? process.env.ADMIN_WHITELIST_IP.split(',') : []),
 			security: {
-				token_time: existingSecrets.security.token_time || '24h',
-				withdrawal_token_expiry: existingSecrets.security.withdrawal_token_expiry || 300000
+				token_time: existingSecrets.security ? (existingSecrets.security.token_time || '24h') : '24h',
+				withdrawal_token_expiry: existingSecrets.security ? (existingSecrets.security.withdrawal_token_expiry || 300000) : 300000
 			},
 			emails: {
-				timezone: existingSecrets.emails.timzeone || process.env.EMAILS_TIMEZONE || '',
-				send_email_to_support: existingSecrets.emails.send_email_to_support || (process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false,
-				sender: existingSecrets.emails.sender || process.env.SENDER_EMAIL || '',
-				audit: existingSecrets.emails.audit || process.env.ADMIN_EMAIL || ''
+				timezone: existingSecrets.emails ? (existingSecrets.emails.timzeone || process.env.EMAILS_TIMEZONE || '') : (process.env.EMAILS_TIMEZONE || ''),
+				send_email_to_support: existingSecrets.emails ? (existingSecrets.emails.send_email_to_support || (process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false) : ((process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false),
+				sender: existingSecrets.emails ? (existingSecrets.emails.sender || process.env.SENDER_EMAIL || '') : (process.env.SENDER_EMAIL || ''),
+				audit: existingSecrets.audit ? (existingSecrets.emails.audit || process.env.ADMIN_EMAIL || '') : (process.env.ADMIN_EMAIL || '')
 			},
 			captcha: {
-				secret_key: existingSecrets.captcha.secret_key || process.env.CAPTCHA_SECRET_KEY
+				secret_key: existingSecrets.captcha ? (existingSecrets.captcha.secret_key || process.env.CAPTCHA_SECRET_KEY) : process.env.CAPTCHA_SECRET_KEY
 			},
 			smtp: {
-				server: existingSecrets.smtp.server || process.env.SMTP_SERVER || '',
-				port: existingSecrets.smtp.port || process.env.SMTP_PORT || 587,
-				user: existingSecrets.smtp.user || process.env.SMTP_USER,
-				password: existingSecrets.smtp.password || process.env.SMTP_PASSWORD
-			},
-			plugins: {
-				s3: {
-					id_docs_bucket: process.env.ID_DOCS_BUCKET || '',
-					key: process.env.S3_WRITE_ACCESSKEYID || '',
-					secret: process.env.S3_WRITE_SECRETACCESSKEY
-				},
-				sns: {
-					region: process.env.SNS_REGION || '',
-					key: process.env.SNS_ACCESSKEYID || '',
-					secret: process.env.SNS_SECRETACCESSKEY || ''
-				},
-				freshdesk: {
-					host: process.env.FRESHDESK_HOST || '',
-					key: process.env.FRESHDESK_KEY || '',
-					auth: process.env.FRESHDESK_AUTH || ''
-				},
-				zendesk: {
-					host: process.env.ZENDESK_HOST || '',
-					key: process.env.ZENDESK_KEY || ''
-				},
-				...existingSecrets.plugins
+				server: existingSecrets.smtp ? (existingSecrets.smtp.server || process.env.SMTP_SERVER || '') : (process.env.SMTP_SERVER || ''),
+				port: existingSecrets.smtp ? (existingSecrets.smtp.port || process.env.SMTP_PORT || 587) : (process.env.SMTP_PORT || 587),
+				user: existingSecrets.smtp ? (existingSecrets.smtp.user || process.env.SMTP_USER) : process.env.SMTP_USER,
+				password: existingSecrets.smtp ? (existingSecrets.smtp.password || process.env.SMTP_PASSWORD) : (process.env.SMTP_PASSWORD)
 			}
 		};
 

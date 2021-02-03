@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { message } from 'antd';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
+import { change } from 'redux-form';
+import { bindActionCreators } from 'redux';
 
 import { AdminHocForm } from '../../components';
 import { performLogin } from '../../actions/authAction';
@@ -62,8 +64,8 @@ const Login = (props) => {
 				<div className="content info-container">
 					<div>
 						<ReactSVG
-							path={STATIC_ICONS.TIMEZONE_WORLD_MAP}
-							wrapperClassName="map-icon"
+							src={STATIC_ICONS.TIMEZONE_WORLD_MAP}
+							className="map-icon"
 						/>
 					</div>
 					<div className="wrapper">
@@ -93,6 +95,7 @@ const Login = (props) => {
 							}}
 							onSubmit={handleSubmit}
 							buttonText={'Proceed'}
+							submitOnKeyDown={true}
 						/>
 					</div>
 				</div>
@@ -105,4 +108,8 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch) => ({
+	change: bindActionCreators(change, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

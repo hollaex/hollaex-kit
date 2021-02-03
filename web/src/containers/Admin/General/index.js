@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Modal, message } from 'antd';
+import { Button, Modal, message, Collapse, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import { bindActionCreators } from 'redux';
 
 import FooterConfig from './FooterConfig';
 import Description from './Description';
@@ -10,7 +11,7 @@ import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
-import { requestAdminData } from '../../../actions/appActions';
+import { requestAdminData, setConfig } from '../../../actions/appActions';
 import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
@@ -27,7 +28,6 @@ const HelpDeskForm = AdminHocForm('HelpDeskForm');
 class General extends Component {
 	constructor() {
 		super();
-
 		this.state = {
 			constants: {},
 			currentIcon: {},
@@ -38,6 +38,7 @@ class General extends Component {
 			initialEmailValues: {},
 			initialLinkValues: {},
 			pendingPublishIcons: {},
+			loading: false,
 		};
 	}
 
@@ -55,12 +56,14 @@ class General extends Component {
 	}
 
 	requestInitial = () => {
+		this.setState({ loading: true });
 		requestAdminData()
 			.then((res) => {
-				this.setState({ constants: res.data });
+				this.setState({ constants: res.data, loading: false });
 			})
 			.catch((err) => {
 				console.log('err', err);
+				this.setState({ loading: false });
 			});
 	};
 
@@ -139,6 +142,7 @@ class General extends Component {
 		}
 		this.setState((prevState) => ({
 			...prevState,
+			loading: false,
 			pendingPublishIcons: merge({}, prevState.pendingPublishIcons, {
 				[iconKey]: icons,
 			}),
@@ -183,6 +187,7 @@ class General extends Component {
 		updateConstants(formProps)
 			.then((res) => {
 				this.setState({ constants: res });
+				this.props.setConfig(res.kit);
 				message.success('Updated successfully');
 			})
 			.catch((err) => {
@@ -271,10 +276,10 @@ class General extends Component {
 		});
 	};
 
-	renderImageUpload = (id, theme, showLable = true) => {
+	renderImageUpload = (id, theme, index, showLable = true) => {
 		const { allIcons } = this.props;
 		return (
-			<div className="file-container">
+			<div key={index} className="file-container">
 				<div className="file-img-content">
 					<Image icon={allIcons[theme][id]} wrapperClassName="icon-img" />
 				</div>
@@ -292,12 +297,10 @@ class General extends Component {
 		);
 	};
 
-	handleSaveInterface = (type) => {
+	handleSaveInterface = (features) => {
 		this.handleSubmitGeneral({
 			kit: {
-				interface: {
-					type,
-				},
+				features,
 			},
 		});
 	};
@@ -322,10 +325,18 @@ class General extends Component {
 			initialLanguageValues,
 			initialThemeValues,
 			initialLinkValues,
+			loading,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins, themeOptions } = this.props;
 		const generalFields = getGeneralFields(coins);
+		if (loading) {
+			return (
+				<div className="d-flex align-items-center">
+					<Spin />
+				</div>
+			);
+		}
 		return (
 			<div>
 				<div className="general-wrapper">
@@ -427,11 +438,30 @@ class General extends Component {
 							the direct edit function will override the logo.
 						</div>
 						<div className="file-wrapper">
-							<div className="file-wrapper">
-								{themeOptions.map(({ value: theme }) =>
-									this.renderImageUpload('EXCHANGE_LOGO', theme)
-								)}
-							</div>
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme === 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+											)}
+									</div>
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme !== 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+											)}
+									</div>
+								</Collapse.Panel>
+							</Collapse>
 						</div>
 						<Button
 							type="primary"
@@ -448,9 +478,26 @@ class General extends Component {
 							Used for areas that require loading.Also known as a spinner.
 						</div>
 						<div className="file-wrapper">
-							{themeOptions.map(({ value: theme }) =>
-								this.renderImageUpload('EXCHANGE_LOADER', theme)
-							)}
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									{themeOptions
+										.filter(({ value: theme }) => theme === 'dark')
+										.map(({ value: theme }, index) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+										)}
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									{themeOptions
+										.filter(({ value: theme }) => theme !== 'dark')
+										.map(({ value: theme }, index) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+										)}
+								</Collapse.Panel>
+							</Collapse>
 						</div>
 						<Button
 							type="primary"
@@ -463,9 +510,18 @@ class General extends Component {
 					<div className="divider"></div>
 					<div>
 						<div className="sub-title">Exchange favicon</div>
-						<div className="file-wrapper">
-							{this.renderImageUpload('EXCHANGE_FAV_ICON', 'dark', false)}
-						</div>
+						<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+							<Collapse.Panel showArrow={false} key="1" disabled={true}>
+								<div className="file-wrapper">
+									{this.renderImageUpload(
+										'EXCHANGE_FAV_ICON',
+										'dark',
+										'EXCHANGE_1',
+										false
+									)}
+								</div>
+							</Collapse.Panel>
+						</Collapse>
 						<Button
 							type="primary"
 							className="green-btn minimal-btn"
@@ -478,11 +534,38 @@ class General extends Component {
 					<div>
 						<div className="sub-title">Onboarding background image</div>
 						<div className="file-wrapper">
-							<div className="file-wrapper">
-								{themeOptions.map(({ value: theme }) =>
-									this.renderImageUpload('EXCHANGE_BOARDING_IMAGE', theme)
-								)}
-							</div>
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme === 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload(
+													'EXCHANGE_BOARDING_IMAGE',
+													theme,
+													index
+												)
+											)}
+									</div>
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme !== 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload(
+													'EXCHANGE_BOARDING_IMAGE',
+													theme,
+													index
+												)
+											)}
+									</div>
+								</Collapse.Panel>
+							</Collapse>
 						</div>
 						<Button
 							type="primary"
@@ -513,6 +596,7 @@ class General extends Component {
 				</div>
 				<div>
 					<FooterConfig
+						links={kit.links}
 						initialValues={initialLinkValues}
 						handleSubmitFooter={this.submitSettings}
 					/>
@@ -537,7 +621,7 @@ class General extends Component {
 				</div>
 				<div className="divider"></div>
 				<InterfaceForm
-					initialValues={kit.interface}
+					initialValues={kit.features}
 					handleSaveInterface={this.handleSaveInterface}
 				/>
 			</div>
@@ -551,4 +635,11 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(withConfig(General));
+const mapDispatchToProps = (dispatch) => ({
+	setConfig: bindActionCreators(setConfig, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(General));

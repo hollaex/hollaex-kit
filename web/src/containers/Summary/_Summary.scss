@@ -93,7 +93,7 @@ $trade-tab--arrow-size: 0.4rem;
 	width: 75rem;
 
 	.summary-block_wrapper {
-		border-top: 0.2rem solid $colors-black;
+		border-top: 0.2rem solid $colors-border;
 		color: $colors-deactivate-color2;
 		// margin: 0 .5rem;
 		padding: 0.5rem;
@@ -380,7 +380,7 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		.wave-action-phase {
-			border-top: 1px solid $colors-black;
+			border-top: 1px solid $colors-border;
 
 			.table-wrapper {
 				margin: 0.5rem 0 2rem;
@@ -405,7 +405,7 @@ $trade-tab--arrow-size: 0.4rem;
 			width: 4rem;
 		}
 		.account-type-menu {
-			border-top: 1px solid $colors-deactivate;
+			border-top: 1px solid $colors-border;
 			color: $link;
 			cursor: pointer;
 			font-weight: bold;
@@ -419,8 +419,8 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		.account-type-menu-active {
-			border-top: 2px solid $colors-black;
-			border-bottom: 1px solid $colors-black;
+			border-top: 2px solid $colors-border;
+			border-bottom: 1px solid $colors-border;
 			color: $colors-black;
 			font-size: 1rem;
 			text-transform: capitalize;
@@ -442,7 +442,7 @@ $trade-tab--arrow-size: 0.4rem;
 			border-bottom: none !important;
 		}
 		.requirement-header {
-			border-bottom: 1px solid $border-color;
+			border-bottom: 1px solid $colors-border;
 			color: $colors-black;
 			font-weight: bold;
 		}
@@ -452,14 +452,44 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 	.price-diff-down {
 		color: $sell;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $sell-bids-text;
+			background-color: $sell;
+		}
 	}
 
 	.price-diff-up {
 		color: $buy;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $buy-bids-text;
+			background-color: $buy;
+		}
 	}
 
 	.trade-tab-price_diff_up {
 		margin: auto 0;
+	}
+
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_up:before {
+			@include css-triangle($buy-bids-text, 'up', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-bottom: 0.2rem;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
 	}
 
 	.trade-tab-price_diff_up:before {
@@ -473,6 +503,17 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.trade-tab-price_diff_down {
 		margin: auto 0;
+	}
+
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_down:before {
+			@include css-triangle($sell-bids-text, 'down', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
 	}
 
 	.trade-tab-price_diff_down:before {
@@ -544,32 +585,32 @@ $trade-tab--arrow-size: 0.4rem;
 
 	table {
 		border-collapse: collapse;
-		border: 1px solid $border-color;
+		border: 1px solid $colors-border;
 	}
 
 	td,
 	th {
-		border: 1px solid $border-color;
+		border: 1px solid $colors-border;
 	}
 	.account-limits {
 		margin: 1rem 0;
 		width: 100%;
 	}
 	.account-limits-content {
-		border: 1px solid $border-color;
+		border: 1px solid $colors-border;
 	}
 	.account-limits-maker {
-		border-left: 1px solid $border-color;
-		border-right: 1px solid $border-color;
-		border-top: 1px solid $border-color;
+		border-left: 1px solid $colors-border;
+		border-right: 1px solid $colors-border;
+		border-top: 1px solid $colors-border;
 	}
 	.account-limits-taker {
-		border-bottom: 1px solid $border-color;
-		border-left: 1px solid $border-color;
-		border-right: 1px solid $border-color;
+		border-bottom: 1px solid $colors-border;
+		border-left: 1px solid $colors-border;
+		border-right: 1px solid $colors-border;
 	}
 	.account-limits-coin {
-		border-bottom: 1px solid $border-color;
+		border-bottom: 1px solid $colors-border;
 		padding: 0.25rem 0.5rem;
 		width: 14rem;
 	}

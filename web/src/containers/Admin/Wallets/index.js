@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Spin, Button, Tag } from 'antd';
+import { Spin, Button, Tag, Card, Alert } from 'antd';
 import { connect } from 'react-redux';
+import { ReactSVG } from 'react-svg';
+
+import { STATIC_ICONS } from 'config/icons';
 import { requestTotalBalance, requestConstants } from './actions';
-import { Card, Alert } from 'antd';
 import { formatCurrency } from '../../../utils';
 
 class Wallets extends Component {
@@ -49,7 +51,7 @@ class Wallets extends Component {
 		requestTotalBalance()
 			.then((res) => {
 				this.setState({
-					balance: res.data.balances,
+					balance: res,
 					loading: false,
 					fetched: true,
 				});
@@ -84,13 +86,23 @@ class Wallets extends Component {
 				{loading ? (
 					<Spin size="large" />
 				) : (
-					<div style={{ width: '60%' }}>
+					<div style={{ width: '60%' }} className="admin-user-container">
 						{error && <p>-{error}-</p>}
 						<div className="d-flex align-items-center justify-content-between">
-							<h1>USER WALLETS</h1>
+							<div className="d-flex align-items-center">
+								<ReactSVG
+									src={STATIC_ICONS['USER_SECTION_WALLET']}
+									className="admin-wallet-icon"
+								/>
+								<h1>USER WALLETS</h1>
+							</div>
 							<div className="my-3">
 								{!plugins.enabled.includes('vault') ? (
-									<Button type="primary" onClick={this.goToVault}>
+									<Button
+										type="primary"
+										className="green-btn"
+										onClick={this.goToVault}
+									>
 										Activate Vault
 									</Button>
 								) : (

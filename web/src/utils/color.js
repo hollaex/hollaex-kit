@@ -16,7 +16,40 @@ export const calculateThemes = (themes) => {
 };
 
 const pushCalculatedColors = (themeData) => {
+	const base_color = Color(themeData['base_background']);
+
 	const calculatedColors = {
+		calculated_footer_border: Color(themeData['base_footer']).isLight()
+			? '#00000026'
+			: '#ffffff26',
+		'calculated_important-border': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.7)
+			.string(),
+		'calculated_secondary-border': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.33)
+			.string(),
+		'calculated_super-pale_label-text-graphics': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.15)
+			.string(),
+		'calculated_market-card_gradient_background': base_color.isLight()
+			? base_color.darken(0.05).hex()
+			: base_color.darken(0.4).hex(),
+		'calculated_trading_buying-sparkline-fill': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.3)
+			.string(),
+		'calculated_trading_selling-sparkline-fill': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.3)
+			.string(),
 		'calculated_trading_buying-orderbook-bar': Color(
 			themeData['trading_buying-related-elements']
 		)
@@ -61,17 +94,17 @@ const pushCalculatedColors = (themeData) => {
 		'calculated_trad-view_watermark': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)
-			.alpha(0.1)
+			.alpha(0.15)
 			.string(),
 		'calculated_trad-view_axis': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)
-			.alpha(0.5)
+			.alpha(0.3)
 			.string(),
 		'calculated_trad-view_text': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)
-			.alpha(0.85)
+			.alpha(0.7)
 			.string(),
 		'calculated_specials_notifications-alerts-inactive': Color(
 			themeData['specials_notifications-alerts-warnings']
@@ -122,10 +155,10 @@ export const filterTheme = (theme) => {
 };
 
 export const CALCULATED_COLOR_RATIO_OBJECT = {
-	'base_top-bar-navigation': 0.7,
-	'base_secondary-navigation-bar': 0.5,
-	'base_wallet-sidebar-and-popup': 0.3,
-	base_footer: 0.6,
+	'base_top-bar-navigation': 1,
+	'base_secondary-navigation-bar': 0.1,
+	'base_wallet-sidebar-and-popup': 0,
+	base_footer: 1,
 };
 
 export const CALCULATED_COLOR_KEYS = Object.keys(CALCULATED_COLOR_RATIO_OBJECT);

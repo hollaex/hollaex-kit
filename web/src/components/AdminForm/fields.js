@@ -3,6 +3,7 @@ import { InputNumber, Input, DatePicker, Select, Checkbox } from 'antd';
 import moment from 'moment';
 import TextArea from 'antd/lib/input/TextArea';
 import classname from 'classnames';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import './index.css';
 
 const dateFormat = 'YYYY/MM/DD';
@@ -16,17 +17,24 @@ export const renderInputField = ({
 	placeholder,
 	className,
 	disabled = false,
+	isClosable = false,
+	closeCallback = () => {},
 }) => (
 	<div className={classname('input_field', className)}>
 		{label && <label>{label}</label>}
 		<div>
-			<Input
-				placeholder={placeholder}
-				prefix={prefix}
-				{...input}
-				type={type}
-				disabled={disabled}
-			/>
+			<div className="d-flex align-items-center">
+				<Input
+					placeholder={placeholder}
+					prefix={prefix}
+					{...input}
+					type={type}
+					disabled={disabled}
+				/>
+				{isClosable ? (
+					<CloseCircleOutlined className="close-icon" onClick={closeCallback} />
+				) : null}
+			</div>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
 					(warning && <span className="red-text">{warning}</span>))}

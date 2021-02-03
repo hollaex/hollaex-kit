@@ -114,6 +114,8 @@ class AppMenuBar extends Component {
 			this.props.router.push('/security');
 		} else if (menu === 'verification') {
 			this.props.router.push('/verification');
+		} else if (menu === 'transactions') {
+			this.props.router.push('/transactions');
 		} else if (menu === 'wallet') {
 			this.props.router.push('/wallet');
 		} else if (menu === 'settings') {
@@ -141,6 +143,9 @@ class AppMenuBar extends Component {
 				break;
 			case '/wallet':
 				activeMenu = 'wallet';
+				break;
+			case '/transactions':
+				activeMenu = 'transactions';
 				break;
 			case '/security':
 				activeMenu = 'security';
@@ -212,7 +217,7 @@ class AppMenuBar extends Component {
 							</EditWrapper>
 						</div>
 					</div>
-					{constants.broker_enabled && (
+					{constants && constants.features && constants.features.quick_trade && (
 						<div
 							className={classnames('app-menu-bar-content d-flex', {
 								'active-menu': activeMenu === 'quick-trade',
@@ -252,6 +257,22 @@ class AppMenuBar extends Component {
 							/>
 							<EditWrapper stringId="ACCOUNTS.TAB_WALLET" iconId="TAB_WALLET">
 								{STRINGS['ACCOUNTS.TAB_WALLET']}
+							</EditWrapper>
+						</div>
+					</div>
+					<div
+						className={classnames('app-menu-bar-content d-flex', {
+							'active-menu': activeMenu === 'transactions',
+						})}
+						onClick={() => this.handleMenuChange('transactions')}
+					>
+						<div className="app-menu-bar-content-item d-flex">
+							<Image
+								icon={ICONS['TAB_HISTORY']}
+								wrapperClassName="app-menu-bar-icon"
+							/>
+							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY" iconId="TAB_HISTORY">
+								{STRINGS['ACCOUNTS.TAB_HISTORY']}
 							</EditWrapper>
 						</div>
 					</div>

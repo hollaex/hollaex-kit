@@ -73,7 +73,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						onSelect={toggle}
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
-						className="custom-select-input-style appbar"
+						className="custom-select-input-style appbar elevated"
 						dropdownClassName="custom-select-style"
 					>
 						{options.map(({ value }) => (

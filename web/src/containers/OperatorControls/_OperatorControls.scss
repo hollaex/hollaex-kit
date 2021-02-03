@@ -1,6 +1,6 @@
 $operator-controls__panel-main-color: #0000ff;
 $operator-controls__panel-text-color: #ffffff;
-$operator-controls__panel-text-color-inactive: #ffffffb3;
+$operator-controls__panel-text-color-inactive: #ffffff80;
 $operator-controls__panel-border-color: #a7a7a7;
 
 @import './components/ImageUpload';
@@ -95,6 +95,34 @@ $operator-controls__panel-border-color: #a7a7a7;
 	.ant-collapse-header,
 	.ant-collapse-content {
 		color: $operator-controls__panel-text-color !important;
+	}
+
+	.ant-table-container {
+		background-color: $operator-controls__panel-main-color;
+	}
+
+	.ant-pagination,
+	.ant-pagination-item,
+	.ant-pagination-next,
+	.ant-pagination-item-active,
+	.ant-pagination-item-active :focus {
+		color: $operator-controls__panel-text-color;
+		background-color: transparent;
+
+		.anticon {
+			color: $operator-controls__panel-text-color;
+		}
+	}
+
+	.ant-pagination-item-active {
+		font-weight: bolder;
+		border-color: $operator-controls__panel-text-color;
+	}
+
+	.ant-pagination-item:focus a,
+	.ant-pagination-item:hover a {
+		font-weight: bolder;
+		color: $operator-controls__panel-text-color;
 	}
 
 	.ant-collapse-header {
@@ -192,6 +220,18 @@ $operator-controls__panel-border-color: #a7a7a7;
 		}
 	}
 
+	&.extended {
+		.ReactModal__Content {
+			height: calc(100vh - 160px) !important;
+		}
+	}
+
+	&.add-theme {
+		.ReactModal__Content {
+			width: 532px !important;
+		}
+	}
+
 	.ReactModal__Overlay {
 		position: fixed;
 		z-index: 10001 !important;
@@ -260,5 +300,15 @@ $operator-controls__panel-border-color: #a7a7a7;
 
 	& tbody > tr > td {
 		border: none !important;
+	}
+}
+
+.operator-button_underline {
+	&.ant-btn > span {
+		text-decoration: underline;
+	}
+	&.ant-btn-link {
+		padding: 4px 8px;
+		color: white;
 	}
 }

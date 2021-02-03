@@ -1,5 +1,5 @@
 import React from 'react';
-// import ReactSVG from 'react-svg';
+// import { ReactSVG } from 'react-svg';
 import { Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
@@ -37,12 +37,14 @@ const TiersContainer = ({
 								/>
 								{/* {tierData.icon
                                     ? <img src={tierData.icon} className="tier-icon" alt={`Account Tier ${tier}`} />
-                                    : <ReactSVG path={icons[`LEVEL_ACCOUNT_ICON_${tier}`]} wrapperClassName="tier-icon" />
+                                    : <ReactSVG src={icons[`LEVEL_ACCOUNT_ICON_${tier}`]} className="tier-icon" />
                                 } */}
 							</div>
 							<div className="mx-3 f-1">
 								<div>
-									<div>Account Tier {tier}</div>
+									<div>
+										{tierData.name ? tierData.name : `Account Tier ${tier}`}
+									</div>
 									<div className="description">{tierData.description}</div>
 								</div>
 								<div className="requirement-divider"></div>

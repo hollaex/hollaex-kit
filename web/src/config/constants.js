@@ -17,8 +17,39 @@ export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
 export const API_URL = config[ENV].API_URL;
 export const WS_URL = config[ENV].WS_URL;
+
 export const PLUGIN_URL = config[ENV].PLUGIN_URL;
 export const NETWORK_API_URL = config[ENV].NETWORK_API_URL;
+
+export const SOCIAL_ICONS = {
+	FACEBOOK: '/assets/icons/facebook.png',
+	LINKEDIN: '/assets/icons/linkedin.png',
+	TWITTER: '/assets/icons/twitter.png',
+	INSTAGRAM: '/assets/icons/instagram.svg',
+	TELEGRAM: '/assets/icons/telegram.png',
+	GOOGLE: '/assets/icons/google.png',
+	YOUTUBE: '/assets/icons/youtube.png'
+};
+
+export const FEATURES_ICONS = {
+	PRO_TRADING: '/assets/images/features-pro-trade-icons.svg',
+	PAYMENT: '/assets/images/features-payment-card-icons.svg',
+	SECURITY: '/assets/images/features-lock-icons.svg',
+	REPORTING: '/assets/images/features-data-icons.svg',
+	SUPPORT: '/assets/images/features-support-icons.svg',
+	LEGAL: '/assets/images/features-legal-icons.svg'
+};
+
+export const SUMMMARY_ICON = {
+	LEVEL_1: '/assets/summary/level-1.png',
+	LEVEL_1_DARK: '/assets/summary/level-1-dark.png',
+	LEVEL_2: '/assets/summary/level-2.png',
+	LEVEL_2_DARK: '/assets/summary/level-2-dark.png',
+	LEVEL_3: '/assets/summary/level-3.png',
+	LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
+	LEVEL_4: '/assets/summary/level-4.png',
+	LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
+};
 
 export const HOLLAEX_LOGO =
 	process.env.REACT_APP_LOGO_PATH ||

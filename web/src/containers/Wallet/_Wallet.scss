@@ -116,7 +116,7 @@ $header-margin: 2rem;
 		.accordion_section_content_text {
 			color: $colors-main-black !important;
 			&:after {
-				border-left-color: $border-main !important;
+				border-left-color: $colors-main-border !important;
 			}
 		}
 	}
@@ -162,7 +162,7 @@ $header-margin: 2rem;
 			th {
 				position: relative;
 				&:not(:first-child) {
-					border-bottom: 1px solid $border-main;
+					border-bottom: 1px solid $colors-main-border;
 					padding: 0 0.25rem;
 				}
 			}

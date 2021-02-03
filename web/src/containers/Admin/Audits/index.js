@@ -111,7 +111,7 @@ class Audits extends Component {
 		}
 
 		return (
-			<div className="app_container-content my-2">
+			<div className="app_container-content my-2 admin-user-container">
 				<div className="d-flex justify-content-between my-3">
 					<div>Number of events: {this.state.total}</div>
 					<div

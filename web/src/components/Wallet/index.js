@@ -131,8 +131,8 @@ class Wallet extends Component {
 							{STRINGS['WALLET.TOTAL_ASSETS']}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
-							{symbol.toUpperCase()}
 							<span>{formatToCurrency(totalAsset, baseCoin.min)}</span>
+							{symbol.toUpperCase()}
 						</div>
 					</div>
 				) : null}

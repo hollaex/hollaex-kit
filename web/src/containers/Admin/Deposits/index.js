@@ -304,7 +304,7 @@ class Deposits extends Component {
 		const { showFilters, coins } = this.props;
 		const columns = COLUMNS(undefined);
 		return (
-			<div>
+			<div className="admin-deposit-wrapper">
 				{loading ? (
 					<Spin size="large" />
 				) : (
@@ -381,6 +381,7 @@ class Deposits extends Component {
 						</div>
 						<Table
 							columns={columns}
+							className="blue-admin-table"
 							dataSource={deposits.map((deposit, index) => {
 								return {
 									...deposit,

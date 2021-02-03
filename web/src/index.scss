@@ -274,7 +274,10 @@ svg {
 	.account-active-1,
 	.post-icon,
 	.item-options,
-	.check-order {
+	.check-order,
+	.otp-inactive,
+	.otp-active,
+	.cancel-all {
 		fill: $colors-main-black;
 	}
 
@@ -355,5 +358,54 @@ svg {
 	.deposit-complete-02,
 	.deposit-complete-btc-02 {
 		fill: $colors-notifications-green;
+	}
+
+	.btc0 {
+		fill: $coin-btc;
+	}
+	.btc1 {
+		fill: $coin-btc;
+	}
+	.eth0 {
+		fill: $coin-eth;
+	}
+	.eth1 {
+		fill: $coin-eth;
+	}
+	.bch-icon {
+		fill: $coin-bch;
+	}
+	.xrp-icon {
+		fill: $coin-xrp;
+	}
+	.xht-icon {
+		fill: $coin-xht;
+	}
+	.xmr-icon {
+		fill: $coin-xmr;
+	}
+	.xlm-icon {
+		fill: $coin-xlm;
+	}
+	.eos-icon {
+		fill: $coin-eos;
+	}
+	.trx-icon {
+		fill: $coin-trx;
+	}
+	.ada-icon {
+		fill: $coin-ada;
+	}
+	.bnb-icon {
+		fill: $coin-bnb;
+	}
+	.tusd-icon {
+		fill: $coin-tusd;
+	}
+	.dai-icon {
+		fill: $coin-dai;
+	}
+	.ltc-icon {
+		fill: $coin-ltc;
 	}
 }

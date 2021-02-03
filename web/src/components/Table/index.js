@@ -5,8 +5,8 @@ import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 // import TableFooter from './TableFooter';
 import Paginator from './paginator';
-import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
+import STRINGS from '../../config/localizedStrings';
 
 class Table extends Component {
 	state = {
@@ -45,6 +45,17 @@ class Table extends Component {
 			JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)
 		) {
 			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.jumpToPage !== prevProps.jumpToPage) {
+			this.goToPage(
+				this.props.jumpToPage,
+				this.props.data,
+				this.props.headers,
+				this.props.count
+			);
 		}
 	}
 

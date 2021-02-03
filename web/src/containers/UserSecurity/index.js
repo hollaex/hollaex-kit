@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
-
+import { openContactForm } from '../../actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -11,45 +12,58 @@ import {
 	otpRevoke,
 } from '../../actions/userAction';
 import {
-	Accordion,
+	CustomTabs,
+	CustomMobileTabs,
+	CustomTabBar,
+	MobileTabBar,
 	Dialog,
 	SuccessDisplay,
 	OtpForm,
 	IconTitle,
 	Loader,
+	HeaderSection,
+	Button,
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
+// import { FreezeSection } from './FreezeSection';
+
+import { generateLogins } from './utils_logins';
+import { RECORD_LIMIT } from './constants';
+import LoginDisplay from './LoginDisplay';
+import { getUserLogins } from '../../actions/userAction';
 
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 class UserVerification extends Component {
 	state = {
-		sections: [],
+		tabs: [],
+		headers: [],
 		dialogIsOpen: false,
 		modalText: '',
-		stringId: '',
+		iconId: '',
+		icon: '',
+		activeTab: 0,
+		jumpToPage: 0,
+		freeze: false,
 	};
 
 	componentDidMount() {
-		this.calculateSections(this.props.user);
+		this.calculateTabs(this.props.user, this.state.activeTab);
 		if (this.props.openApiKey) {
 			this.openDevelopers();
 		}
+
+		this.props.getUserLogins(RECORD_LIMIT);
+		this.openLogins();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.user.otp.requested !== this.props.user.otp.requested ||
-			nextProps.user.otp.requesting !== this.props.user.otp.requesting ||
-			nextProps.user.otp.activated !== this.props.user.otp.activated ||
-			nextProps.user.otp_enabled !== this.props.user.otp_enabled ||
-			nextProps.activeLanguage !== this.props.activeLanguage
-		) {
-			this.calculateSections(nextProps.user);
+		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+			this.openLogins();
 		}
 
 		if (
@@ -66,16 +80,78 @@ class UserVerification extends Component {
 		}
 	}
 
-	calculateSections = (user) => {
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			prevProps.user.otp.requested !== this.props.user.otp.requested ||
+			prevProps.user.otp.requesting !== this.props.user.otp.requesting ||
+			prevProps.user.otp.activated !== this.props.user.otp.activated ||
+			prevProps.user.otp_enabled !== this.props.user.otp_enabled ||
+			prevProps.activeLanguage !== this.props.activeLanguage ||
+			this.state.activeTab !== prevState.activeTab
+		) {
+			this.calculateTabs(this.props.user, this.state.activeTab);
+		}
+	}
+
+	renderLoginsTab = () => {
+		const { logins } = this.props;
+		const { headers } = this.state;
+
+		const props = {};
+
+		props.title = STRINGS.ACCOUNT_SECURITY.LOGIN.CONTENT.TITLE;
+		props.headers = headers.logins;
+		props.data = logins;
+		props.handleNext = this.handleNext;
+		props.jumpToPage = this.state.jumpToPage;
+
+		return <LoginDisplay {...props} />;
+	};
+
+	openLogins() {
+		this.setState({
+			headers: {
+				logins: generateLogins(),
+			},
+		});
+	}
+
+	handleNext = (pageCount, pageNumber) => {
+		const { logins } = this.props;
+		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
+		const apiPageTemp = Math.floor((pageNumber + 1) / 2);
+		if (
+			RECORD_LIMIT === pageCount * pageTemp &&
+			apiPageTemp >= logins.page &&
+			logins.isRemaining
+		) {
+			this.props.getUserLogins(RECORD_LIMIT, logins.page + 1);
+			this.setState({ jumpToPage: pageNumber });
+		}
+	};
+
+	calculateTabs = (user, activeTab) => {
+		// const {freeze}= this.state;
 		const formValues = generateFormValues();
 		const { otp_enabled, otp, verification_level } = user;
 		const { icons: ICONS } = this.props;
 
-		const sections = [
+		const tabs = [
 			{
-				stringId: 'ACCOUNT_SECURITY.OTP.TITLE',
-				title: STRINGS['ACCOUNT_SECURITY.OTP.TITLE'],
-				content: (
+				title: isMobile ? (
+					<CustomMobileTabs
+						stringId={'ACCOUNT_SECURITY.OTP.TITLE'}
+						title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
+						icon={ICONS.SETTING_NOTIFICATION_ICON}
+					/>
+				) : (
+					<CustomTabs
+						stringId={'ACCOUNT_SECURITY.OTP.TITLE'}
+						title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
+						icon={ICONS.SECURITY_OTP_ICON}
+					/>
+				),
+				content: activeTab === 0 && (
 					<OTP
 						requestOTP={this.handleOTPCheckbox}
 						data={otp}
@@ -108,10 +184,22 @@ class UserVerification extends Component {
 					allowClick: !otp_enabled,
 				},
 			},
+
 			{
-				stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE',
-				title: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE'],
-				content: (
+				title: isMobile ? (
+					<CustomMobileTabs
+						stringId={'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE'}
+						title={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
+						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
+					/>
+				) : (
+					<CustomTabs
+						stringId={'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE'}
+						title={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
+						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
+					/>
+				),
+				content: activeTab === 1 && (
 					<ChangePasswordForm
 						onSubmit={this.onSubmitChangePassword}
 						formFields={formValues}
@@ -127,10 +215,22 @@ class UserVerification extends Component {
 					allowClick: true,
 				},
 			},
+
 			{
-				stringId: 'DEVELOPER_SECTION.TITLE',
-				title: STRINGS['DEVELOPER_SECTION.TITLE'],
-				content: (
+				title: isMobile ? (
+					<CustomMobileTabs
+						stringId={'DEVELOPER_SECTION.TITLE'}
+						title={STRINGS['DEVELOPER_SECTION.TITLE']}
+						icon={ICONS.SECURITY_API_ICON}
+					/>
+				) : (
+					<CustomTabs
+						stringId={'DEVELOPER_SECTION.TITLE'}
+						title={STRINGS['DEVELOPER_SECTION.TITLE']}
+						icon={ICONS.SECURITY_API_ICON}
+					/>
+				),
+				content: activeTab === 2 && (
 					<DeveloperSection
 						otp_enabled={otp_enabled}
 						openOtp={this.openOtp}
@@ -148,9 +248,75 @@ class UserVerification extends Component {
 					allowClick: true,
 				},
 			},
+			// TODO Login history feature
+			/*
+			{
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS.ACCOUNT_SECURITY.LOGIN.TITLE}
+						icon={ICONS.SETTING_INTERFACE_ICON}
+					/>
+				) : (
+					<CustomTabs
+						title={STRINGS.ACCOUNT_SECURITY.LOGIN.TITLE}
+						icon={ICONS.DEPOSIT_HISTORY}
+					/>
+				),
+				content: activeTab === 3 && (
+					<div className={classnames('inner_container', 'with_border_top')}>
+						{this.renderLoginsTab()}
+					</div>
+				)
+			},
+			*/
+			// TODO Freezing feature
+			/*{
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS.ACCOUNT_SECURITY.FREEZE.TITLE}
+						icon={ICONS.SETTING_LANGUAGE_ICON}
+					/>
+				) : (
+					<CustomTabs
+						title={STRINGS.ACCOUNT_SECURITY.FREEZE.TITLE}
+						icon={ICONS.SETTING_LANGUAGE_ICON}
+					/>
+				),
+				content: activeTab === 4 && freeze === false && (
+					<FreezeSection
+					handleSubmit={this.openFreeze}
+					/>
+				)
+			}*/
 		];
 
-		this.setState({ sections });
+		this.setState({ tabs });
+	};
+
+	openFreeze = () => {
+		this.setState({
+			freeze: true,
+		});
+	};
+
+	renderContent = (tabs, activeTab) =>
+		tabs[activeTab] && tabs[activeTab].content ? (
+			tabs[activeTab].content
+		) : (
+			<div />
+		);
+
+	setActiveTab = (activeTab) => {
+		this.setState({ activeTab });
+	};
+
+	/*logout = (message = '') => {
+			this.props.logout(typeof message === 'string' ? message : '');
+	};*/
+
+	openContactForm = () => {
+		const { links = {} } = this.props.constants;
+		this.props.openContactForm({ helpdesk: links.helpdesk });
 	};
 
 	handleOTPCheckbox = (checked = false) => {
@@ -163,20 +329,23 @@ class UserVerification extends Component {
 	};
 
 	onSubmitActivateOtp = (values) => {
+		const { icons: ICONS } = this.props;
 		return otpActivate(values)
 			.then((res) => {
 				this.props.otpSetActivated(true);
-				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
+					iconId: 'OTP_ACTIVE',
+					icon: ICONS['OTP_ACTIVE'],
 					modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS'],
 					stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS',
 				});
 			})
 			.catch((err) => {
-				const _error = err.response.data
-					? err.response.data.message
-					: err.message;
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
 				throw new SubmissionError({ code: _error });
 			});
 	};
@@ -187,7 +356,6 @@ class UserVerification extends Component {
 			new_password: values.new_password,
 		})
 			.then((res) => {
-				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
 					modalText: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS'],
@@ -203,11 +371,14 @@ class UserVerification extends Component {
 	};
 
 	onSubmitCancelOTP = (values) => {
+		const { icons: ICONS } = this.props;
 		return otpRevoke({ code: values.otp_code })
 			.then(() => {
 				this.props.otpSetActivated(false);
 				this.setState({
 					dialogIsOpen: true,
+					iconId: 'OTP_DEACTIVATED',
+					icon: ICONS['OTP_DEACTIVATED'],
 					modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.REVOKE'],
 					stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.REVOKE',
 				});
@@ -215,44 +386,34 @@ class UserVerification extends Component {
 			.catch(errorHandler);
 	};
 
-	setRef = (el) => {
-		this.accordion = el;
-	};
-
 	openOtp = () => {
-		this.accordion.openSection(2, false);
-		setTimeout(() => {
-			this.accordion.openSection(0);
-		}, 250);
+		this.setActiveTab(0);
 	};
 
 	openDevelopers = () => {
-		setTimeout(() => {
-			this.accordion.openSection(2);
-		}, 250);
-	};
-
-	renderModalContent = () => {
-		return (
-			<SuccessDisplay
-				onClick={this.onCloseDialog}
-				text={this.state.modalText}
-			/>
-		);
+		this.setActiveTab(2);
 	};
 
 	onCloseDialog = () => {
-		this.setState({ dialogIsOpen: false });
+		this.setState({ dialogIsOpen: false, iconId: '', icon: '' });
 	};
+
+	// onSubmitotp = (values) => {
+	// 	this.props.otpSetActivated(true);
+	// 	return renderOTPForm(this.onSubmitActivateOtp);
+
+	// };
 
 	renderModalContent = (
 		{ requested, activated, secret, error },
 		otp_enabled,
 		email,
 		modalText,
-		constants
+		constants,
+		icons
 	) => {
-		const { icons: ICONS, stringId } = this.props;
+		const { stringId, icon, iconId } = this.state;
+
 		if (error) {
 			return (
 				<SuccessDisplay
@@ -269,15 +430,17 @@ class UserVerification extends Component {
 				email,
 				this.onSubmitActivateOtp,
 				constants,
-				ICONS
+				icons
 			);
 		} else {
 			return (
 				<SuccessDisplay
 					onClick={this.onCloseDialog}
-					stringId={stringId}
 					text={modalText}
 					success={!error}
+					iconId={iconId}
+					iconPath={icon}
+					stringId={stringId}
 				/>
 			);
 		}
@@ -287,8 +450,50 @@ class UserVerification extends Component {
 		if (this.props.user.verification_level === 0) {
 			return <Loader />;
 		}
-		const { sections, dialogIsOpen, modalText } = this.state;
+		const { dialogIsOpen, modalText, activeTab, tabs, freeze } = this.state;
 		const { otp, email, otp_enabled } = this.props.user;
+		//const { onCloseDialog } = this;
+
+		if (freeze === true) {
+			return (
+				<div>
+					{!isMobile && (
+						<IconTitle
+							stringId="ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_1"
+							text={STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_1']}
+							textType="title"
+						/>
+					)}
+					<HeaderSection
+						stringId="ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_2"
+						title={STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_2']}
+						openContactForm={this.openContactForm}
+					>
+						<div> {STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.MESSAGE_2']}</div>
+						<div className="mb-2">
+							{' '}
+							{STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.MESSAGE_3']}{' '}
+						</div>
+
+						<div> {STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.MESSAGE_4']} </div>
+						<div> {STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.MESSAGE_5']} </div>
+						<div className="mb-2">
+							{' '}
+							{STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.MESSAGE_6']}{' '}
+						</div>
+						<div className="warning_text">
+							{STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.WARNING_2']}
+						</div>
+					</HeaderSection>
+					<div className="mb-4 mt-4 blue-link pointer">
+						<Button
+							//onClick={}
+							label={'YES,FREEZE'}
+						/>
+					</div>
+				</div>
+			);
+		}
 		return (
 			<div>
 				{!isMobile && (
@@ -298,7 +503,16 @@ class UserVerification extends Component {
 						textType="title"
 					/>
 				)}
-				<Accordion sections={sections} ref={this.setRef} />
+				<HeaderSection
+					stringId="ACCOUNTS.TAB_SETTINGS"
+					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
+					openContactForm={this.openContactForm}
+				>
+					<div className="header-content">
+						<div>{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}</div>
+					</div>
+				</HeaderSection>
+
 				<Dialog
 					isOpen={dialogIsOpen && !otp.requesting}
 					label="security-modal"
@@ -312,18 +526,36 @@ class UserVerification extends Component {
 							otp_enabled,
 							email,
 							modalText,
-							this.props.constants
+							this.props.constants,
+							this.props.icons
 						)
 					) : (
 						<div />
 					)}
 				</Dialog>
+
+				{!isMobile ? (
+					<CustomTabBar
+						activeTab={activeTab}
+						setActiveTab={this.setActiveTab}
+						tabs={tabs}
+					/>
+				) : (
+					<MobileTabBar
+						activeTab={activeTab}
+						renderContent={this.renderContent}
+						setActiveTab={this.setActiveTab}
+						tabs={tabs}
+					/>
+				)}
+				{!isMobile ? this.renderContent(tabs, activeTab) : null}
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state) => ({
+	logins: state.wallet.deposits,
 	user: state.user,
 	activeLanguage: state.app.language,
 	activeTheme: state.app.theme,
@@ -331,8 +563,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	getUserLogins: (limit, page = 1) => dispatch(getUserLogins({ limit, page })),
 	requestOTP: () => dispatch(otpRequest()),
 	otpSetActivated: (active) => dispatch(otpSetActivated(active)),
+	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
 export default connect(

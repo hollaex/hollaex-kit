@@ -220,7 +220,7 @@ $main-text--color: $colors-deactivate-color2;
 
 		&.disabled {
 			.accordion_section_content_text:after {
-				border-top-color: $colors-deactivate-color2;
+				border-top-color: $colors-border;
 			}
 		}
 	}

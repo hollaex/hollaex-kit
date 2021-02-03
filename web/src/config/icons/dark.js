@@ -78,6 +78,12 @@ const nestedIcons = {
 		RISK_MANAGE_WARNING_ICON: '/assets/images/risk-manage-pop-warning.svg',
 	},
 
+	SECURITY: {
+		OTP_ICON: '/assets/images/2fa-security-icon.svg',
+		CHANGE_PASSWORD_ICON: '/assets/images/password-security-icon.svg',
+		API_ICON: '/assets/images/api-security-icon.svg',
+	},
+
 	LEVEL_ACCOUNT: {
 		ICON_1: '/assets/images/level-1.svg',
 		ICON_2: '/assets/images/level-2.svg',
@@ -130,6 +136,8 @@ const nestedIcons = {
 	LAPTOP: '/assets/icons/compute-play-black.svg',
 	TELEGRAM: '/assets/icons/telegram-black.svg',
 
+	OTP_ACTIVE: '/assets/icons/2fa-active.svg',
+	OTP_DEACTIVATED: '/assets/icons/2fa-deactivated.svg',
 	CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
@@ -239,6 +247,8 @@ const nestedIcons = {
 	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
+
+	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
 
 	...coinIcons,
 };

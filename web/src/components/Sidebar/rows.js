@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -29,11 +29,8 @@ export const Cell = ({
 		{iconPath && (
 			<div className="sidebar-row--right">
 				<ReactSVG
-					path={iconPath}
-					wrapperClassName={classnames(
-						'sidebar-row--right-icon',
-						iconClassName
-					)}
+					src={iconPath}
+					className={classnames('sidebar-row--right-icon', iconClassName)}
 				/>
 			</div>
 		)}

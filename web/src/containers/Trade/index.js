@@ -42,6 +42,7 @@ class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			wsInitialized: false,
 			orderbookWs: null,
 			activeTab: 0,
 			chartHeight: 0,
@@ -54,12 +55,14 @@ class Trade extends PureComponent {
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
+		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
-			this.closeOrderbookSocket();
 			this.setSymbol(nextProps.routeParams.pair);
+			this.subscribe(nextProps.routeParams.pair);
+			this.unsubscribe(this.props.routeParams.pair);
 		}
 	}
 
@@ -70,9 +73,8 @@ class Trade extends PureComponent {
 	}
 
 	setSymbol = (symbol = '') => {
-		this.props.getUserTrades(symbol);
-		if (!this.props.fetchingAuth) {
-			this.initializeOrderbookWs(symbol, getToken());
+		if (isLoggedIn()) {
+			this.props.getUserTrades(symbol);
 		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
@@ -82,14 +84,17 @@ class Trade extends PureComponent {
 		});
 	};
 
-	onSubmitOrder = ({ post_only, ...values }) => {
+	onSubmitOrder = ({ post_only, order_type, stop, ...values }) => {
 		if (post_only) {
 			values.meta = {
 				post_only,
 			};
 		}
 
-		return submitOrder(values)
+		return submitOrder({
+			...values,
+			...(order_type === 'stops' ? { stop } : {}),
+		})
 			.then((body) => {})
 			.catch((err) => {
 				const _error =
@@ -198,13 +203,12 @@ class Trade extends PureComponent {
 		this.setState({ orderbookWs });
 
 		orderbookWs.onopen = (evt) => {
-			console.info('Connected orderbook Socket', evt);
-			orderbookWs.send(
-				JSON.stringify({
-					op: 'subscribe',
-					args: [`orderbook:${symbol}`],
-				})
-			);
+			this.setState({ wsInitialized: true }, () => {
+				const {
+					routeParams: { pair },
+				} = this.props;
+				this.subscribe(pair);
+			});
 
 			setWsHeartbeat(orderbookWs, JSON.stringify({ op: 'ping' }), {
 				pingTimeout: 60000,
@@ -213,9 +217,7 @@ class Trade extends PureComponent {
 		};
 
 		orderbookWs.onmessage = (evt) => {
-			this.setState({ orderbookSocketInitialized: true });
 			const data = JSON.parse(evt.data);
-			console.info('orderbookWs', data);
 			if (data.topic === 'orderbook')
 				switch (data.action) {
 					case 'partial':
@@ -238,20 +240,32 @@ class Trade extends PureComponent {
 		};
 	};
 
+	subscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: [`orderbook:${pair}`],
+				})
+			);
+		}
+	};
+
+	unsubscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
+			);
+		}
+	};
+
 	closeOrderbookSocket = () => {
-		const {
-			routeParams: { pair },
-		} = this.props;
-		const { orderbookWs, orderbookSocketInitialized } = this.state;
-		if (orderbookWs) {
-			if (orderbookSocketInitialized) {
-				orderbookWs.send(
-					JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
-				);
-			}
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
 			orderbookWs.close();
 		}
-		this.setState({ orderbookSocketInitialized: false });
 	};
 
 	render() {
@@ -296,8 +310,6 @@ class Trade extends PureComponent {
 						activeLanguage={activeLanguage}
 						activeTheme={activeTheme}
 						symbol={symbol}
-						goToPair={this.goToPair}
-						goToMarkets={() => this.setActiveTab(3)}
 						orderLimits={orderLimits}
 					/>
 				),
@@ -315,8 +327,6 @@ class Trade extends PureComponent {
 						openCheckOrder={this.openCheckOrder}
 						onRiskyTrade={this.onRiskyTrade}
 						onSubmitOrder={this.onSubmitOrder}
-						goToPair={this.goToPair}
-						goToMarkets={() => this.setActiveTab(3)}
 						pair={pair}
 						setPriceRef={this.setPriceRef}
 						setSizeRef={this.setSizeRef}
@@ -333,7 +343,6 @@ class Trade extends PureComponent {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
-						goToPair={this.goToPair}
 						activeTheme={activeTheme}
 					/>
 				),
@@ -356,6 +365,9 @@ class Trade extends PureComponent {
 							tabs={mobileTabs}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
+							pair={pair}
+							goToPair={this.goToPair}
+							goToMarkets={() => this.setActiveTab(3)}
 						/>
 						<div className="content-with-bar d-flex">
 							{mobileTabs[activeTab].content}

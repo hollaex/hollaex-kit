@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Parameter support to specify version of the CLI to install.
-export HOLLAEX_INSTALLER_VERSION_TARGET=${1:-"2.0.0"}
+export HOLLAEX_INSTALLER_VERSION_TARGET=${1:-"master"}
 
 echo "Pulling HollaEx CLI from Github..."
 curl -s https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh > cli_installer.sh && \
@@ -214,6 +214,9 @@ elif command yum --version > /dev/null 2>&1; then
                     DOCKER_USERGROUP_ADDED=true
 
             fi
+
+            systemctl start docker
+            systemctl enable docker
 
         else
 

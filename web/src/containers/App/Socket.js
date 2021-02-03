@@ -43,10 +43,12 @@ import {
 	setSnackDialog,
 	setConfig,
 	setInfo,
+	setPlugins,
+	requestPlugins,
 	requestInitial,
 	requestConstant,
 } from '../../actions/appActions';
-
+import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, isLoggedIn } from '../../utils/token';
 
@@ -70,6 +72,9 @@ class Container extends Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
+		requestPlugins().then(({ data = {} }) => {
+			if (data.data && data.data.length !== 0) this.props.setPlugins(data.data);
+		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -139,8 +144,9 @@ class Container extends Component {
 					this.props.setConfig(res.data);
 					if (res.data.defaults) {
 						const themeColor = localStorage.getItem('theme');
+						const isThemeValid = hasTheme(themeColor, res.data.color);
 						const language = localStorage.getItem(LANGUAGE_KEY);
-						if (!themeColor && res.data.defaults.theme) {
+						if (res.data.defaults.theme && (!themeColor || !isThemeValid)) {
 							this.props.changeTheme(res.data.defaults.theme);
 							localStorage.setItem('theme', res.data.defaults.theme);
 						}
@@ -257,10 +263,11 @@ class Container extends Component {
 
 		this.setState({ privateSocket });
 
-		this.getUserDetails();
+		if (isLoggedIn()) {
+			this.getUserDetails();
+		}
 
 		privateSocket.onopen = (evt) => {
-			console.log('Connected Private Socket', evt);
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
@@ -282,7 +289,6 @@ class Container extends Component {
 
 		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
 					if (data.action === 'partial' || 'insert') {
@@ -312,7 +318,7 @@ class Container extends Component {
 					if (data.action === 'partial') {
 						this.props.setUserOrders(data.data);
 					} else if (data.action === 'insert') {
-						if (data.type === 'limit') {
+						if (data.data.type === 'limit') {
 							playBackgroundAudioNotification(
 								'orderbook_limit_order',
 								this.props.settings
@@ -408,6 +414,8 @@ class Container extends Component {
 								{ type: data.data.status, data: data.data },
 								false
 							);
+						} else if (data.data.status === 'triggered') {
+							this.props.removeOrder(data.data);
 						}
 					}
 					break;
@@ -428,7 +436,7 @@ class Container extends Component {
 		};
 
 		privateSocket.onerror = (evt) => {
-			console.log('public socket error', evt);
+			console.error('public socket error', evt);
 		};
 
 		// privateSocket.on('error', (error) => {
@@ -719,6 +727,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
+	setPlugins: bindActionCreators(setPlugins, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
