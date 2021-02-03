@@ -91,6 +91,12 @@ class ExchangeSetup extends Component {
 									? null
 									: 'icon-align'
 							}
+							beforeInjection={(svg) => {
+								if (value.icon === STATIC_ICONS.SETUP_QUICK_TRADE) {
+									svg.setAttribute('width', '216px');
+									svg.setAttribute('height', '216px');
+								}
+							}}
 						/>
 					</div>
 					<div className="setup-field-label">{value.title}</div>
