@@ -142,6 +142,7 @@ class General extends Component {
 		}
 		this.setState((prevState) => ({
 			...prevState,
+			loading: false,
 			pendingPublishIcons: merge({}, prevState.pendingPublishIcons, {
 				[iconKey]: icons,
 			}),
