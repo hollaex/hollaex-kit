@@ -1,8 +1,7 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
 import { hasTheme } from 'utils/theme';
-import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from '../config/constants';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from 'config/constants';
 import axios from 'axios';
-import { PLUGIN_URL } from 'config/constants';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
 export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
