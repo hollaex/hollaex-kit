@@ -126,6 +126,9 @@ const checkStatus = () => {
 				created_at: exchange.created_at,
 				expiry: exchange.expiry,
 				collateral_level: exchange.collateral_level,
+				type: exchange.type,
+				plan: exchange.plan,
+				period: exchange.period,
 				status: true,
 				initialized: status.initialized
 			};
