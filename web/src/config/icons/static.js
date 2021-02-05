@@ -67,6 +67,9 @@ const icons = {
 	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
 	VERIFICATION_ICON: '/assets/images/verification-green-tick.svg',
 	CHAT_FEATURE_ICON: '/assets/images/chat-feature-icon.svg',
+	USER_EMAIL: '/assets/images/user-email.svg',
+	USER_EMAIL_VERIFIED: '/assets/images/user-email-verified.svg',
+	USER_EMAIL_UNVERIFIED: '/assets/images/user-email-unverified.svg',
 };
 
 export default icons;
