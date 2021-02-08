@@ -438,6 +438,11 @@ const nestedContent = {
 		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
 		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department',
 		CODE_EXPIRES_IN: 'Code expires in',
+		EMAIL_VERIFICATION: 'Send verification email',
+		VERIFICATION_SENT: 'Verification Sent',
+		VERIFICATION_SENT_INFO:
+			'Check your email and click the link to verify email.',
+		OKAY: 'Okay',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',

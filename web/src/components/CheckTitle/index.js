@@ -5,7 +5,7 @@ import Image from 'components/Image';
 import { EditWrapper } from 'components';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import ICONS from 'config/icons';
+import { STATIC_ICONS as ICONS } from 'config/icons';
 
 export const renderStatusIcon = (statusCode = -1, className = '') => {
 	switch (statusCode) {
