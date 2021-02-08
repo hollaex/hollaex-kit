@@ -36,7 +36,8 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 								}
 							>
 								<Image
-									icon={ICONS['THEME_SUN']}
+									iconId="THEME_SUN,THEME_MOON"
+									icon={ICONS['THEME_MOON']}
 									wrapperClassName="app-bar-account-moon-icon"
 								/>
 							</div>
@@ -57,8 +58,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 								}
 							>
 								<Image
-									iconId="THEME_SUN,THEME_MOON"
-									icon={ICONS['THEME_MOON']}
+									icon={ICONS['THEME_SUN']}
 									wrapperClassName="app-bar-account-moon-icon"
 								/>
 							</div>
