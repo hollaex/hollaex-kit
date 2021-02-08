@@ -159,7 +159,6 @@ class UserContent extends Component {
 		const { userInformation = {}, refreshData } = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
-			email_verified: true,
 		};
 
 		verifyUser(postValues)
