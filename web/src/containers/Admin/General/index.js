@@ -18,7 +18,6 @@ import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
 import merge from 'lodash.merge';
-import { delay } from 'utils/devUtils';
 
 import './index.css';
 
@@ -86,7 +85,7 @@ class General extends Component {
 			api_name,
 			defaults = {},
 			links = {},
-			isSignUpActive,
+			new_user_is_activated: isSignUpActive,
 			email_verification_required,
 		} = kit;
 		initialNameValues = { ...initialNameValues, api_name };
@@ -115,6 +114,7 @@ class General extends Component {
 			initialLinkValues,
 			isSignUpActive,
 			initialEmailVerificationValues,
+			showDisableSignUpsConfirmation: false,
 		});
 	};
 
@@ -305,6 +305,14 @@ class General extends Component {
 		});
 	};
 
+	handleSubmitSignUps = (new_user_is_activated) => {
+		return this.handleSubmitGeneral({
+			kit: {
+				new_user_is_activated,
+			},
+		});
+	};
+
 	renderImageUpload = (id, theme, index, showLable = true) => {
 		const { allIcons } = this.props;
 		return (
@@ -354,19 +362,12 @@ class General extends Component {
 				showDisableSignUpsConfirmation: true,
 			});
 		} else {
-			this.setState({
-				isSignUpActive: true,
-			});
+			this.handleSubmitSignUps(true);
 		}
 	};
 
 	disableSignUpsConfirmation = () => {
-		delay(3000).then(() => {
-			this.setState({
-				isSignUpActive: false,
-				showDisableSignUpsConfirmation: false,
-			});
-		});
+		this.handleSubmitSignUps(false);
 	};
 
 	render() {
