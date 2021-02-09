@@ -67,6 +67,8 @@ class TransactionsHistory extends Component {
 			this.props.location.query.tab
 		) {
 			this.setActiveTab(parseInt(this.props.location.query.tab, 10));
+		} else {
+			this.setActiveTab();
 		}
 	}
 
