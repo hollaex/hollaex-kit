@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Input, InputNumber, message, Modal } from 'antd';
+import { Button, Input, InputNumber, message, Modal, Collapse } from 'antd';
 import { WarningFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
@@ -7,7 +7,9 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import _get from 'lodash/get';
+import merge from 'lodash.merge';
 
+import { publish } from 'actions/operatorActions';
 import withConfig from '../../../components/ConfigProvider/withConfig';
 import Image from '../../../components/Image';
 import { upload } from './action';
@@ -48,7 +50,7 @@ const Preview = ({
 	tierData = {},
 	onTypeChange,
 	handleSave,
-	icons = {},
+	allIcons = {},
 	...rest
 }) => {
 	return (
@@ -62,7 +64,7 @@ const Preview = ({
 				<div className="d-flex tiers-container">
 					<div>
 						<Image
-							icon={icons[`LEVEL_ACCOUNT_ICON_${tierData.id}`]}
+							icon={allIcons['dark'][`LEVEL_ACCOUNT_ICON_${tierData.id}`]}
 							wrapperClassName="tier-icon"
 						/>
 						{/* {tierData.icon
@@ -156,9 +158,10 @@ class NewTierForm extends Component {
 		this.state = {
 			requirements: [{ id: 1, point: '' }],
 			tierData: this.props.editData || {},
-			tierIcon: {},
+			currentIcon: {},
 			editorState: EditorState.createEmpty(),
 			loading: false,
+			pendingPublishIcons: {},
 		};
 	}
 
@@ -179,71 +182,87 @@ class NewTierForm extends Component {
 		});
 	}
 
-	handleSaveIcon = async () => {
-		const { tierIcon } = this.state;
+	handleSaveIcon = async (iconKey) => {
+		const { currentIcon } = this.state;
 		const { updateIcons } = this.props;
 		const icons = {};
+
 		this.setState({
-			error: false,
 			loading: true,
 		});
 
-		for (const key in tierIcon) {
-			if (tierIcon.hasOwnProperty(key)) {
-				const file = tierIcon[key];
-				if (file) {
-					const formData = new FormData();
-					const { name: fileName } = file;
-					const extension = fileName.split('.').pop();
-					const name = `${key}.${extension}`;
-					formData.append('name', name);
-					formData.append('file', file);
-					try {
-						const {
-							data: { path },
-						} = await upload(formData);
-						icons[key] = path;
-						this.setState({
-							tierData: {
-								...this.state.tierData,
-								icon: path,
-							},
-						});
-					} catch (error) {
-						this.setState({
-							loading: false,
-						});
-						message.error('Something went wrong!');
-						return;
+		for (const themeKey in currentIcon) {
+			if (currentIcon.hasOwnProperty(themeKey)) {
+				icons[themeKey] = {};
+
+				for (const key in currentIcon[themeKey]) {
+					if (currentIcon[themeKey].hasOwnProperty(key)) {
+						const file = currentIcon[themeKey][key];
+						if (file) {
+							const formData = new FormData();
+							const { name: fileName } = file;
+							const extension = fileName.split('.').pop();
+							const name = `${key}__${themeKey}.${extension}`;
+
+							formData.append('name', name);
+							formData.append('file', file);
+
+							try {
+								const {
+									data: { path },
+								} = await upload(formData);
+								icons[themeKey][key] = path;
+								this.setState((prevState) => ({
+									currentIcon: {},
+								}));
+							} catch (error) {
+								this.setState({
+									loading: false,
+								});
+								message.error('Something went wrong!');
+								return;
+							}
+						}
 					}
 				}
 			}
 		}
-		this.setState({
+		this.setState((prevState) => ({
+			...prevState,
 			loading: false,
-		});
+			pendingPublishIcons: merge({}, prevState.pendingPublishIcons, {
+				[iconKey]: icons,
+			}),
+		}));
+
 		updateIcons(icons);
 	};
 
 	handleCancelIcon = () => {
-		this.setState({ tierIcon: {} });
+		this.setState({ currentIcon: {} });
 	};
 
-	handleChangeFile = (event) => {
-		if (event.target.files) {
+	handleChangeFile = ({ target: { name, files } }) => {
+		const [theme, iconKey] = name.split(',');
+
+		if (files) {
 			this.setState(
-				{
-					tierIcon: {
-						...this.state.tierIcon,
-						[event.target.name]: event.target.files[0],
+				(prevState) => ({
+					...prevState,
+					currentIcon: {
+						...prevState.currentIcon,
+						[theme]: {
+							...prevState.currentIcon[theme],
+							[iconKey]: files[0],
+						},
 					},
-				},
+				}),
 				() => {
 					Modal.confirm({
 						content: 'Do you want to save this icon?',
 						okText: 'Save',
 						cancelText: 'Cancel',
-						onOk: this.handleSaveIcon,
+						onOk: () => this.handleSaveIcon(iconKey),
 						onCancel: this.handleCancelIcon,
 					});
 				}
@@ -289,9 +308,21 @@ class NewTierForm extends Component {
 		});
 	};
 
-	saveForm = () => {
-		this.props.handleNext(this.state.tierData);
-		this.props.onTypeChange('preview');
+	saveForm = (id) => {
+		const {
+			pendingPublishIcons: { [id]: published = {} },
+		} = this.state;
+		const iconsOverwrites = JSON.parse(localStorage.getItem('icons') || '{}');
+
+		const icons = merge({}, iconsOverwrites, published);
+		const configs = { icons };
+
+		publish(configs).then(() => {
+			localStorage.setItem('icons', JSON.stringify(icons));
+			this.setState({ pendingPublishIcons: {} });
+			this.props.handleNext(this.state.tierData);
+			this.props.onTypeChange('preview');
+		});
 	};
 
 	onEditorStateChange = (edState) => {
@@ -305,9 +336,30 @@ class NewTierForm extends Component {
 		});
 	};
 
+	renderImageUpload = (id, theme, index, showLable = true) => {
+		const { allIcons } = this.props;
+		return (
+			<div key={index} className="file-container">
+				<div className="file-img-content">
+					<Image icon={allIcons[theme][id]} wrapperClassName="icon-img" />
+				</div>
+				<label>
+					{showLable && `${theme} theme`}
+					<span className="anchor">Upload</span>
+					<input
+						type="file"
+						accept="image/*"
+						onChange={this.handleChangeFile}
+						name={`${theme},${id}`}
+					/>
+				</label>
+			</div>
+		);
+	};
+
 	render() {
 		const { tierData, editorState } = this.state;
-		const { icons = {}, isNew = false } = this.props;
+		const { isNew = false, themeOptions } = this.props;
 		return (
 			<div className="new-tier-form admin-tiers-wrapper">
 				<h3>Account tier details</h3>
@@ -322,23 +374,38 @@ class NewTierForm extends Component {
 				</div>
 				<div className="requirement-divider"></div>
 				<div className="file-wrapper">
-					<div className="file-container">
-						<div className="file-img-content">
-							<Image
-								icon={icons[`LEVEL_ACCOUNT_ICON_${tierData.id}`]}
-								wrapperClassName="icon-img"
-							/>
-						</div>
-						<label>
-							<span className="anchor">Upload</span>
-							<input
-								type="file"
-								accept="image/*"
-								onChange={this.handleChangeFile}
-								name={`LEVEL_ACCOUNT_ICON_${tierData.id}`}
-							/>
-						</label>
-					</div>
+					<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+						<Collapse.Panel showArrow={false} key="1" disabled={true}>
+							<div className="file-wrapper">
+								{themeOptions
+									.filter(({ value: theme }) => theme === 'dark')
+									.map(({ value: theme }, index) =>
+										this.renderImageUpload(
+											`LEVEL_ACCOUNT_ICON_${tierData.id}`,
+											theme,
+											index
+										)
+									)}
+							</div>
+						</Collapse.Panel>
+						<Collapse.Panel
+							showArrow={false}
+							header="Theme Specific Icons"
+							key="2"
+						>
+							<div className="file-wrapper">
+								{themeOptions
+									.filter(({ value: theme }) => theme !== 'dark')
+									.map(({ value: theme }, index) =>
+										this.renderImageUpload(
+											`LEVEL_ACCOUNT_ICON_${tierData.id}`,
+											theme,
+											index
+										)
+									)}
+							</div>
+						</Collapse.Panel>
+					</Collapse>
 				</div>
 				<div className="requirement-divider"></div>
 				<div>
@@ -425,7 +492,7 @@ class NewTierForm extends Component {
 				<Button
 					type="primary"
 					className="green-btn my-2"
-					onClick={this.saveForm}
+					onClick={() => this.saveForm(`LEVEL_ACCOUNT_ICON_${tierData.id}`)}
 				>
 					Next
 				</Button>
