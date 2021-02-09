@@ -191,7 +191,7 @@ export default {
 		CANT_LOGIN: 'Tidak bisa masuk?',
 		NO_ACCOUNT: 'Tidak punya akun?',
 		CREATE_ACCOUNT: 'Buatlah di sini',
-		HELP: 'Bantuan'
+		HELP: 'Bantuan',
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: 'Email',
@@ -290,7 +290,7 @@ export default {
 		TOTAL_COST: 'Jumlah biaya',
 		BUTTON: 'Lihat pesan {0}',
 		INPUT: 'Pembelian {0} {1}',
-		TRADE_TITLE: '{0} {1}' // quick buy
+		TRADE_TITLE: '{0} {1}', // quick buy
 	},
 	PREVIOUS_PAGE: 'halaman sebelumnya',
 	NEXT_PAGE: 'halaman berikutnya',
@@ -639,16 +639,11 @@ export default {
 			// new
 			ALL_AUDIO: 'Semua Audio cue',
 			PUBLIC_TRADE_AUDIO: 'Apabila perdagangan publik dibuat',
-			ORDERS_PARTIAL_AUDIO:
-				'Apabila salah satu pesan Anda terisi sebagian',
-			ORDERS_PLACED_AUDIO:
-				'Apabila pesan dibuat',
-			ORDERS_CANCELED_AUDIO:
-				'Apabila pesan Anda dibatalkan',
-			ORDERS_COMPLETED_AUDIO:
-				'Apabila salah satu pesan Anda terisi penuh',
-			CLICK_AMOUNTS_AUDIO:
-				'Apabila klik jumlah dan harga di orderbook',
+			ORDERS_PARTIAL_AUDIO: 'Apabila salah satu pesan Anda terisi sebagian',
+			ORDERS_PLACED_AUDIO: 'Apabila pesan dibuat',
+			ORDERS_CANCELED_AUDIO: 'Apabila pesan Anda dibatalkan',
+			ORDERS_COMPLETED_AUDIO: 'Apabila salah satu pesan Anda terisi penuh',
+			CLICK_AMOUNTS_AUDIO: 'Apabila klik jumlah dan harga di orderbook',
 			GET_QUICK_TRADE_AUDIO:
 				'Apabila mendapatkan kutipan untuk perdagangan cepat',
 			SUCCESS_QUICK_TRADE_AUDIO:
@@ -677,7 +672,8 @@ export default {
 		WITHDRAWALS: 'Penarikan',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Atur pengaturan keamanan akun Anda. Mulai dari Autentikasi dua-faktor, kata sandi, Kunci API, dan fungsi lain yang berkaitan dengan keamanan.',
+		TITLE_TEXT:
+			'Atur pengaturan keamanan akun Anda. Mulai dari Autentikasi dua-faktor, kata sandi, Kunci API, dan fungsi lain yang berkaitan dengan keamanan.',
 		OTP: {
 			TITLE: 'Autentikasi Dua-Faktor',
 			OTP_ENABLED: 'otp diaktifkan',
@@ -707,7 +703,8 @@ export default {
 				DISABLE: 'Nonaktifkan Autentikasi Dua-Faktor',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'Masukkan One-Time Password (OTP)',
@@ -746,8 +743,9 @@ export default {
 			TITLE: 'Riwayat Masuk',
 			CONTENT: {
 				TITLE: 'Riwayat Masuk',
-				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
-			}
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
 		},
 		FREEZE: {
 			TITLE: 'Freeze Account',
@@ -820,7 +818,7 @@ export default {
 	RECENT_TRADES: 'perdagangan saya baru-baru ini', // ToDo
 	PUBLIC_SALES: 'PENJUALAN PUBLIK', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	FILLED: 'Filled', // new
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
@@ -869,8 +867,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: 'Jumlan penarikan {0}',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Biaya transaksi',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Biaya transaksi',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
