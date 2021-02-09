@@ -9,7 +9,6 @@ const {
 	EMAILS_TIMEZONE,
 	VALID_LANGUAGES,
 	NEW_USER_DEFAULT_LANGUAGE,
-	SENDER_EMAIL,
 	DEFAULT_THEME,
 	NEW_USER_IS_ACTIVATED,
 	SMTP_SERVER,
@@ -19,7 +18,6 @@ const {
 	SEND_EMAIL_TO_SUPPORT,
 	ALLOWED_DOMAINS,
 	CAPTCHA_SECRET_KEY,
-	ADMIN_EMAIL,
 	CAPTCHA_SITE_KEY,
 	ADMIN_WHITELIST_IP,
 	ACTIVATION_CODE,
@@ -106,8 +104,8 @@ module.exports = {
 						emails: {
 							timezone: EMAILS_TIMEZONE || '',
 							send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
-							sender: SENDER_EMAIL || '',
-							audit: ADMIN_EMAIL || ''
+							sender: '',
+							audit: ''
 						},
 						captcha: {
 							secret_key: CAPTCHA_SECRET_KEY

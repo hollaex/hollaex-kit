@@ -60,8 +60,8 @@ Status.findOne()
 			emails: {
 				timezone: existingSecrets.emails ? (existingSecrets.emails.timzeone || process.env.EMAILS_TIMEZONE || '') : (process.env.EMAILS_TIMEZONE || ''),
 				send_email_to_support: existingSecrets.emails ? (existingSecrets.emails.send_email_to_support || (process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false) : ((process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false),
-				sender: existingSecrets.emails ? (existingSecrets.emails.sender || process.env.SENDER_EMAIL || '') : (process.env.SENDER_EMAIL || ''),
-				audit: existingSecrets.audit ? (existingSecrets.emails.audit || process.env.ADMIN_EMAIL || '') : (process.env.ADMIN_EMAIL || '')
+				sender: existingSecrets.emails ? (existingSecrets.emails.sender || '') : '',
+				audit: existingSecrets.emails ? (existingSecrets.emails.audit || '') : ''
 			},
 			captcha: {
 				secret_key: existingSecrets.captcha ? (existingSecrets.captcha.secret_key || process.env.CAPTCHA_SECRET_KEY) : process.env.CAPTCHA_SECRET_KEY
@@ -70,7 +70,7 @@ Status.findOne()
 				server: existingSecrets.smtp ? (existingSecrets.smtp.server || process.env.SMTP_SERVER || '') : (process.env.SMTP_SERVER || ''),
 				port: existingSecrets.smtp ? (existingSecrets.smtp.port || process.env.SMTP_PORT || 587) : (process.env.SMTP_PORT || 587),
 				user: existingSecrets.smtp ? (existingSecrets.smtp.user || process.env.SMTP_USER) : process.env.SMTP_USER,
-				password: existingSecrets.smtp ? (existingSecrets.smtp.password || process.env.SMTP_PASSWORD) : (process.env.SMTP_PASSWORD)
+				password: existingSecrets.smtp ? (existingSecrets.smtp.password || process.env.SMTP_PASSWORD) : process.env.SMTP_PASSWORD
 			}
 		};
 
