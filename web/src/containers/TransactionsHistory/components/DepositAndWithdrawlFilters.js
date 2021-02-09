@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Select, Form, Row, Button } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
@@ -22,12 +22,6 @@ const STATUS_OPTIONS = {
 
 const Filters = ({ coins = {}, onSearch, formName }) => {
 	const [form] = Form.useForm();
-
-	useEffect(() => {
-		form.submit();
-		//  TODO: Fix react-hooks/exhaustive-deps
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	const onFinish = (values) => {
 		onSearch(values);
