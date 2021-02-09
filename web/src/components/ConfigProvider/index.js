@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { loadReCaptcha } from 'react-recaptcha-v3';
 import { getIconByKey, generateAllIcons, addDefaultLogo } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
 import merge from 'lodash.merge';
+import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from 'config/constants';
 
 export const ProjectConfig = React.createContext('appConfig');
 
@@ -10,7 +12,9 @@ class ConfigProvider extends Component {
 	constructor(props) {
 		super(props);
 		const { initialConfig } = this.props;
-		const { icons = {}, color = {}, defaults = {} } = { ...initialConfig };
+		const { icons = {}, color = {}, defaults = {}, coin_keys } = {
+			...initialConfig,
+		};
 
 		const defaultLogo = localStorage.getItem('default_logo') || '';
 		const themeOptions = Object.keys(color).map((value) => ({ value }));
@@ -19,12 +23,23 @@ class ConfigProvider extends Component {
 		this.state = {
 			icons: generateAllIcons(
 				calculatedThemes,
-				addDefaultLogo(defaultLogo, icons)
+				addDefaultLogo(defaultLogo, icons),
+				coin_keys
 			),
 			color: calculatedThemes,
 			themeOptions,
 			defaults,
 		};
+	}
+
+	componentDidMount() {
+		const { captcha: { site_key = DEFAULT_CAPTCHA_SITEKEY } = {} } = this.props;
+
+		// ReCaptcha Initialization
+		const siteKey = CAPTCHA_SITEKEY || site_key;
+		loadReCaptcha(siteKey, () =>
+			console.info('grepcaptcha is correctly loaded')
+		);
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {
@@ -104,7 +119,7 @@ class ConfigProvider extends Component {
 			<ProjectConfig.Provider
 				value={{
 					defaults,
-					icons: icons[activeTheme],
+					icons: icons[activeTheme] || {},
 					allIcons: icons,
 					color,
 					themeOptions,

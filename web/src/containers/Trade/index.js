@@ -6,8 +6,12 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { createSelector } from 'reselect';
+import debounce from 'lodash.debounce';
+import { setOrderbooks } from 'actions/orderbookAction';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
 
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { getToken } from 'utils/token';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
 import { submitOrder } from '../../actions/orderAction';
 import { getUserTrades } from '../../actions/walletActions';
 import {
@@ -38,6 +42,8 @@ class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			wsInitialized: false,
+			orderbookWs: null,
 			activeTab: 0,
 			chartHeight: 0,
 			chartWidth: 0,
@@ -49,21 +55,27 @@ class Trade extends PureComponent {
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
+		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.setSymbol(nextProps.routeParams.pair);
+			this.subscribe(nextProps.routeParams.pair);
+			this.unsubscribe(this.props.routeParams.pair);
 		}
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.priceTimeOut);
 		clearTimeout(this.sizeTimeOut);
+		this.closeOrderbookSocket();
 	}
 
 	setSymbol = (symbol = '') => {
-		this.props.getUserTrades(symbol);
+		if (isLoggedIn()) {
+			this.props.getUserTrades(symbol);
+		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
 			setTimeout(() => {
@@ -72,8 +84,17 @@ class Trade extends PureComponent {
 		});
 	};
 
-	onSubmitOrder = (values) => {
-		return submitOrder(values)
+	onSubmitOrder = ({ post_only, order_type, stop, ...values }) => {
+		if (post_only) {
+			values.meta = {
+				post_only,
+			};
+		}
+
+		return submitOrder({
+			...values,
+			...(order_type === 'stops' ? { stop } : {}),
+		})
 			.then((body) => {})
 			.catch((err) => {
 				const _error =
@@ -164,6 +185,89 @@ class Trade extends PureComponent {
 		this.setState({ activeTab });
 	};
 
+	storeData = (data) => {
+		this.props.setOrderbooks(data);
+		this.orderCache = {};
+	};
+
+	storeOrderData = debounce(this.storeData, 250);
+
+	initializeOrderbookWs = (symbol, token = '') => {
+		let url = `${WS_URL}/stream`;
+		if (token) {
+			url = `${WS_URL}/stream?authorization=Bearer ${token}`;
+		}
+
+		const orderbookWs = new WebSocket(url);
+
+		this.setState({ orderbookWs });
+
+		orderbookWs.onopen = (evt) => {
+			this.setState({ wsInitialized: true }, () => {
+				const {
+					routeParams: { pair },
+				} = this.props;
+				this.subscribe(pair);
+			});
+
+			setWsHeartbeat(orderbookWs, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
+		};
+
+		orderbookWs.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			if (data.topic === 'orderbook')
+				switch (data.action) {
+					case 'partial':
+						const tempData = {
+							...data,
+							[data.symbol]: data.data,
+						};
+						delete tempData.data;
+						this.orderCache = { ...this.orderCache, ...tempData };
+						this.storeOrderData(this.orderCache);
+						break;
+
+					default:
+						break;
+				}
+		};
+
+		orderbookWs.onerror = (evt) => {
+			console.error('orderbook socket error', evt);
+		};
+	};
+
+	subscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: [`orderbook:${pair}`],
+				})
+			);
+		}
+	};
+
+	unsubscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
+			);
+		}
+	};
+
+	closeOrderbookSocket = () => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.close();
+		}
+	};
+
 	render() {
 		const {
 			pair,
@@ -206,8 +310,6 @@ class Trade extends PureComponent {
 						activeLanguage={activeLanguage}
 						activeTheme={activeTheme}
 						symbol={symbol}
-						goToPair={this.goToPair}
-						goToMarkets={() => this.setActiveTab(3)}
 						orderLimits={orderLimits}
 					/>
 				),
@@ -225,8 +327,6 @@ class Trade extends PureComponent {
 						openCheckOrder={this.openCheckOrder}
 						onRiskyTrade={this.onRiskyTrade}
 						onSubmitOrder={this.onSubmitOrder}
-						goToPair={this.goToPair}
-						goToMarkets={() => this.setActiveTab(3)}
 						pair={pair}
 						setPriceRef={this.setPriceRef}
 						setSizeRef={this.setSizeRef}
@@ -243,7 +343,6 @@ class Trade extends PureComponent {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
-						goToPair={this.goToPair}
 						activeTheme={activeTheme}
 					/>
 				),
@@ -266,6 +365,9 @@ class Trade extends PureComponent {
 							tabs={mobileTabs}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
+							pair={pair}
+							goToPair={this.goToPair}
+							goToMarkets={() => this.setActiveTab(3)}
 						/>
 						<div className="content-with-bar d-flex">
 							{mobileTabs[activeTab].content}
@@ -388,7 +490,7 @@ class Trade extends PureComponent {
 								pairData={pairData}
 								pair={pair}
 							>
-								<TradeHistory language={activeLanguage} />
+								<TradeHistory pairData={pairData} language={activeLanguage} />
 							</TradeBlock>
 						</div>
 					</div>
@@ -448,6 +550,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch),
+	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);

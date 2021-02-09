@@ -16,17 +16,22 @@ import {
 	SET_ORDER_LIMITS,
 	SET_TICKER_FROM_TRADE,
 	SET_CURRENCIES,
-	SET_VALID_BASE_CURRENCY,
 	SET_CONFIG,
+	SET_PLUGINS,
 	SET_INFO,
 	SET_WAVE_AUCTION,
 	SET_PLUGINS_REQUEST,
 	SET_PLUGINS_SUCCESS,
 	SET_PLUGINS_FAILURE,
+	SET_CONFIG_LEVEL,
+	ADD_TO_FAVOURITES,
+	REMOVE_FROM_FAVOURITES,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
+import { unique } from 'utils/data';
+import { getFavourites, setFavourites } from 'utils/favourites';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -46,6 +51,7 @@ const EMPTY_SNACK_NOTIFICATION = {
 };
 
 const INITIAL_STATE = {
+	favourites: getFavourites() || [],
 	announcements: [],
 	notifications: [],
 	notificationsQueue: [],
@@ -130,14 +136,14 @@ const INITIAL_STATE = {
 			withdrawal_limits: {},
 		},
 	},
-	isValidBase: false,
 	constants: {},
-	config_level: [],
+	config_level: {},
 	info: { is_trial: false, active: true, status: true },
 	wave: [],
 	enabledPlugins: [],
 	availablePlugins: [],
 	getPluginLoading: false,
+	features: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -324,18 +330,19 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				orderLimits: payload,
 			};
-		case SET_VALID_BASE_CURRENCY:
-			return {
-				...state,
-				isValidBase: payload.isValidBase,
-			};
 		case SET_CONFIG:
 			return {
 				...state,
 				constants: payload.constants,
-				config_level: payload.config_level,
-				enabledPlugins: payload.enabledPlugins,
+				features: payload.features,
 			};
+
+		case SET_PLUGINS: {
+			return {
+				...state,
+				enabledPlugins: payload.enabledPlugins.map(({ name }) => name),
+			};
+		}
 		case SET_INFO:
 			return {
 				...state,
@@ -363,6 +370,27 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				getPluginLoading: false,
 			};
+		case SET_CONFIG_LEVEL:
+			return {
+				...state,
+				config_level: payload,
+			};
+		case ADD_TO_FAVOURITES: {
+			const favourites = unique([...state.favourites, payload]);
+			setFavourites(favourites);
+			return {
+				...state,
+				favourites,
+			};
+		}
+		case REMOVE_FROM_FAVOURITES: {
+			const favourites = state.favourites.filter((pair) => pair !== payload);
+			setFavourites(favourites);
+			return {
+				...state,
+				favourites,
+			};
+		}
 		default:
 			return state;
 	}

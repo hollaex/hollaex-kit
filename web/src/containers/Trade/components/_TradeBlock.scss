@@ -1,4 +1,16 @@
 $tabs-title--margin: 2rem;
+.trade__active-orders_cancel-All {
+	min-width: 6rem;
+}
+
+.trade_cancel-All-confirmation {
+	.ant-modal-header,
+	.ant-modal-content,
+	.ant-modal-confirm-body .ant-modal-confirm-content {
+		background-color: $app-sidebar-background;
+		color: $colors-main-black;
+	}
+}
 
 .layout-mobile {
 	.action_notification-wrapper {
@@ -66,6 +78,7 @@ $tabs-title--margin: 2rem;
 		font-size: $trade-font-size;
 		overflow-y: scroll;
 		height: 100%;
+		transform: translateY(-1rem);
 	}
 }
 
@@ -75,6 +88,7 @@ $tabs-title--margin: 2rem;
 	.trade_block-title-items {
 		display: flex;
 		font-weight: normal;
+		line-height: 25px;
 
 		.active {
 			font-weight: bold;
@@ -82,10 +96,10 @@ $tabs-title--margin: 2rem;
 
 			&:after {
 				content: '';
-				height: 3px;
+				height: 4px;
 				width: 100%;
 				background-color: $trade_title-border--color;
-				top: -2px;
+				top: 0;
 				left: 0;
 				right: 0;
 				position: absolute;
@@ -124,7 +138,7 @@ $tabs-title--margin: 2rem;
 }
 
 .trade_history-wrapper {
-	height: 85vh;
+	height: 84vh;
 
 	.display_table-wrapper {
 		.display_table-header {
@@ -135,11 +149,32 @@ $tabs-title--margin: 2rem;
 
 		.display_table-body {
 			.display_table-cell {
-				:nth-child(2) {
-					text-align: center;
+				:nth-child(2),
+				:nth-child(3) {
+					text-align: right;
 				}
 				div {
 					overflow: unset !important;
+				}
+
+				.fill {
+					background-repeat: no-repeat;
+					background-position: 100% 100%;
+					background-size: 0;
+				}
+
+				.fill-buy {
+					background-image: linear-gradient(
+						$buying-orderbook-bar,
+						$buying-orderbook-bar
+					);
+				}
+
+				.fill-sell {
+					background-image: linear-gradient(
+						$selling-orderbook-bar,
+						$selling-orderbook-bar
+					);
 				}
 			}
 		}

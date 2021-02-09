@@ -5,6 +5,8 @@ exports.INSUFFICIENT_BALANCE_ORDER =
 exports.MISSING_ORDER = 'Missing order';
 exports.INVALID_USER_ID = 'Invalid user.';
 exports.USER_NOT_FOUND = 'User not found';
+exports.USER_NOT_REGISTERED_ON_NETWORK = 'User is not registered on the network';
+exports.USER_EMAIL_NOT_VERIFIED = 'User email is not verified';
 exports.SIGNUP_NOT_AVAILABLE = 'Sign up not available';
 exports.USER_NOT_VERIFIED = 'User is not verified';
 exports.USER_NOT_ACTIVATED = 'User is not activated';
@@ -166,7 +168,7 @@ exports.SUPPORT_DISABLED = 'Cannot send email to support at this time';
 exports.COMMUNICATOR_CANNOT_UPDATE = (value) => `Communicator operators cannot update value: ${value}`;
 exports.MASK_VALUE_GIVEN = 'Masked value given';
 exports.NO_DATA_FOR_CSV = 'No data to convert to CSV';
-exports.USER_IS_VERIFIED = 'User is already verified';
+exports.USER_EMAIL_IS_VERIFIED = 'User email is already verified';
 exports.PROVIDE_USER_CREDENTIALS = 'Please provide a a user\'s kit id, network id, or email';
 exports.PROVIDE_KIT_ID = 'Please provide a user\'s kit id';
 exports.PROVIDE_NETWORK_ID = 'Please provide a user\'s network id';

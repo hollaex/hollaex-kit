@@ -1,4 +1,6 @@
-import { requestAuthenticated } from '../../../utils';
+import { PLUGIN_URL } from 'config/constants';
+// import { requestAuthenticated } from '../../../utils';
+import axios from 'axios';
 
 export const uploadFiles = (id, values) => {
 	const formData = new FormData();
@@ -6,18 +8,12 @@ export const uploadFiles = (id, values) => {
 		formData.append(key, value);
 	});
 
-	const options = {
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+		data: formData,
+		url: `${PLUGIN_URL}/plugins/kyc/admin/upload?user_id=${id}`,
 		method: 'POST',
-		body: formData,
-	};
-
-	const headers = {
-		'Content-Type': 'multipart/form-data',
-	};
-
-	return requestAuthenticated(
-		`/plugins/kyc/admin/upload?user_id=${id}`,
-		options,
-		headers
-	);
+	});
 };

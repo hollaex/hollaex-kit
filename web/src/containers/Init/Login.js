@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { message } from 'antd';
 import { browserHistory } from 'react-router';
-import { loadReCaptcha } from 'react-recaptcha-v3';
 import { connect } from 'react-redux';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
+import { change } from 'redux-form';
+import { bindActionCreators } from 'redux';
 
 import { AdminHocForm } from '../../components';
 import { performLogin } from '../../actions/authAction';
@@ -11,10 +12,6 @@ import {
 	validateRequired,
 	email,
 } from '../../components/AdminForm/validations';
-import {
-	CAPTCHA_SITEKEY,
-	DEFAULT_CAPTCHA_SITEKEY,
-} from '../../config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import { getLanguage } from '../../utils/string';
 import { getExchangeInitialized } from '../../utils/initialize';
@@ -35,6 +32,7 @@ const Login = (props) => {
 			browserHistory.push('/init');
 		}
 	}, []);
+
 	const handleSubmit = (values) => {
 		if (values) {
 			performLogin(values)
@@ -59,22 +57,15 @@ const Login = (props) => {
 				});
 		}
 	};
-	const { constants } = props;
-	let siteKey = DEFAULT_CAPTCHA_SITEKEY;
-	if (CAPTCHA_SITEKEY) {
-		siteKey = CAPTCHA_SITEKEY;
-	} else if (constants.captcha && constants.captcha.site_key) {
-		siteKey = constants.captcha.site_key;
-	}
-	loadReCaptcha(siteKey);
+
 	return (
 		<div className="init-container">
 			<div className="setup-container">
 				<div className="content info-container">
 					<div>
 						<ReactSVG
-							path={STATIC_ICONS.TIMEZONE_WORLD_MAP}
-							wrapperClassName="map-icon"
+							src={STATIC_ICONS.TIMEZONE_WORLD_MAP}
+							className="map-icon"
 						/>
 					</div>
 					<div className="wrapper">
@@ -91,10 +82,10 @@ const Login = (props) => {
 									label: 'Password',
 									validate: [validateRequired],
 								},
-								otp_code: {
-									type: 'number',
-									label: '2FA (if active)',
-								},
+								// otp_code: {
+								// 	type: 'number',
+								// 	label: '2FA (if active)',
+								// },
 								captcha: {
 									type: 'captcha',
 									language: getLanguage(),
@@ -104,6 +95,7 @@ const Login = (props) => {
 							}}
 							onSubmit={handleSubmit}
 							buttonText={'Proceed'}
+							submitOnKeyDown={true}
 						/>
 					</div>
 				</div>
@@ -116,4 +108,8 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch) => ({
+	change: bindActionCreators(change, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,3 +1,4 @@
+import { PLUGIN_URL } from 'config/constants';
 import { requestAuthenticated } from '../../../utils';
 
 export const performVerificationLevelUpdate = (values) => {
@@ -25,7 +26,12 @@ export const verifyData = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/plugins/kyc/id/verify', options);
+	return requestAuthenticated(
+		'/plugins/kyc/id/verify',
+		options,
+		null,
+		PLUGIN_URL
+	);
 };
 
 export const revokeData = (values) => {
@@ -34,5 +40,10 @@ export const revokeData = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/plugins/kyc/id/revoke', options);
+	return requestAuthenticated(
+		'/plugins/kyc/id/revoke',
+		options,
+		null,
+		PLUGIN_URL
+	);
 };

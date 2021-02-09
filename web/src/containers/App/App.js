@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
-import moment from 'moment';
-import { loadReCaptcha } from 'react-recaptcha-v3';
 import { Helmet } from 'react-helmet';
-import STRINGS from '../../config/localizedStrings';
-import {
-	FLEX_CENTER_CLASSES,
-	FIT_SCREEN_HEIGHT,
-	CAPTCHA_SITEKEY,
-	DEFAULT_CAPTCHA_SITEKEY,
-} from '../../config/constants';
+import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
+import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { setSideBarState, getSideBarState } from 'utils/sideBar';
 
 import {
 	NOTIFICATIONS,
@@ -41,6 +37,7 @@ import {
 	MessageDisplay,
 	SnackNotification,
 	SnackDialog,
+	PairTabs,
 } from '../../components';
 import {
 	ContactForm,
@@ -81,6 +78,7 @@ class App extends Component {
 		ordersQueued: [],
 		limitFilledOnOrder: '',
 		sidebarFitHeight: false,
+		isSidebarOpen: getSideBarState(),
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -97,6 +95,7 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
+
 		if (
 			initialized === 'false' ||
 			(typeof initialized === 'boolean' && !initialized)
@@ -108,6 +107,11 @@ class App extends Component {
 			this.checkPath(this.props.location.pathname);
 			this.handleFitHeight(this.props.location.pathname);
 		}
+
+		setTimeout(
+			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
+			5000
+		);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -149,7 +153,10 @@ class App extends Component {
 			!isEqual(balance, nextProps.balance) ||
 			!isEqual(coins, nextProps.coins)
 		) {
-			this.props.setPricesAndAsset(nextProps.balance, nextProps.coins);
+			debounce(
+				() => this.props.setPricesAndAsset(nextProps.balance, nextProps.coins),
+				15000
+			);
 		}
 	}
 
@@ -440,35 +447,17 @@ class App extends Component {
 		this.setState({ isSocketDataReady: value });
 	};
 
-	checkExchangeExpiry = () => {
-		const { info = {} } = this.props;
-		let is_expired = false;
-		let is_warning = false;
-		let daysLeft = 0;
-		if (info.status) {
-			if (info.is_trial) {
-				if (info.active) {
-					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
-						is_warning = true;
-						daysLeft = moment(info.expiry).diff(moment(), 'days');
-					} else if (info.expiry && moment().isAfter(info.expiry, 'second')) {
-						is_expired = true;
-					}
-				} else {
-					is_expired = true;
-				}
-			} else {
-				is_expired = false;
-				is_warning = false;
+	toggleSidebar = () => {
+		this.setState(
+			(prevState) => ({
+				...prevState,
+				isSidebarOpen: !prevState.isSidebarOpen,
+			}),
+			() => {
+				const { isSidebarOpen } = this.state;
+				setSideBarState(isSidebarOpen);
 			}
-		} else {
-			is_expired = true;
-		}
-		return {
-			is_expired,
-			is_warning,
-			daysLeft,
-		};
+		);
 	};
 
 	render() {
@@ -486,12 +475,12 @@ class App extends Component {
 			unreadMessages,
 			router,
 			location,
-			info,
 			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
 			handleEditMode,
 			// user,
+			features,
 		} = this.props;
 
 		const {
@@ -500,14 +489,9 @@ class App extends Component {
 			chatIsClosed,
 			sidebarFitHeight,
 			isSocketDataReady,
+			isSidebarOpen,
 		} = this.state;
-		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
-		if (CAPTCHA_SITEKEY) {
-			siteKey = CAPTCHA_SITEKEY;
-		} else if (constants.captcha && constants.captcha.site_key) {
-			siteKey = constants.captcha.site_key;
-		}
-		loadReCaptcha(siteKey);
+
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -515,8 +499,7 @@ class App extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
-		const isMenubar = activePath === 'account' || activePath === 'wallet';
-		const expiryData = this.checkExchangeExpiry();
+		const isMenubar = true;
 		return (
 			<ThemeProvider>
 				<div>
@@ -581,26 +564,18 @@ class App extends Component {
 									logout={this.logout}
 									activePath={activePath}
 									onHelp={openHelpfulResourcesForm}
-								/>
-								{info.is_trial ? (
-									<div
-										className={classnames(
-											'w-100',
-											'p-1',
-											...FLEX_CENTER_CLASSES,
-											'exchange-trial'
-										)}
-									>
-										{STRINGS.formatString(
-											STRINGS['TRIAL_EXCHANGE_MSG'],
-											constants.api_name || '',
-											expiryData.daysLeft
-										)}
-									</div>
-								) : null}
-								{isBrowser && isMenubar && isLoggedIn() ? (
-									<AppMenuBar router={router} location={location} />
-								) : null}
+								>
+									{isBrowser && isMenubar && isLoggedIn() && (
+										<AppMenuBar router={router} location={location} />
+									)}
+								</AppBar>
+								{isBrowser && isLoggedIn() && (
+									<PairTabs
+										activePath={activePath}
+										location={location}
+										router={router}
+									/>
+								)}
 								<div
 									className={classnames(
 										'app_container-content',
@@ -630,7 +605,26 @@ class App extends Component {
 										/>
 									</div>
 									{isBrowser && (
-										<div className="app_container-sidebar">
+										<div
+											className={classnames('app_container-sidebar', {
+												'close-sidebar': !isSidebarOpen,
+											})}
+										>
+											<div className="sidebar-toggle-wrapper">
+												<Button
+													type="primary"
+													size="small"
+													icon={
+														isSidebarOpen ? (
+															<CaretRightOutlined />
+														) : (
+															<CaretLeftOutlined />
+														)
+													}
+													onClick={this.toggleSidebar}
+													className="sidebar-toggle"
+												/>
+											</div>
 											<Sidebar
 												activePath={activePath}
 												logout={this.logout}
@@ -682,7 +676,7 @@ class App extends Component {
 												// activeTheme
 											)}
 									</Dialog>
-									{!isMobile && enabledPlugins.includes('chat') && (
+									{!isMobile && features && features.chat && (
 										<ChatComponent
 											activeLanguage={activeLanguage}
 											minimized={chatIsClosed}
@@ -698,6 +692,7 @@ class App extends Component {
 											activePath={activePath}
 											pair={pair}
 											enabledPlugins={enabledPlugins}
+											features={features}
 										/>
 									</div>
 								)}

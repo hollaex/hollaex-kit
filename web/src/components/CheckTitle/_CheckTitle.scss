@@ -18,6 +18,7 @@ $notification-size: 1.5rem;
 		font-size: $font-size-subhead3;
 		line-height: $font-size-subhead3;
 		padding: 0.25rem 0;
+		text-align: center;
 	}
 
 	.check_title-icon {
@@ -39,6 +40,28 @@ $notification-size: 1.5rem;
 			max-width: 100%;
 			height: $check-title-img-size;
 			width: $check-title-img-size;
+
+			.trade-history-3,
+			.deposit-history-1,
+			.withdrawals-history-1 {
+				fill: $colors-main-black;
+			}
+
+			.trade-history-1,
+			.deposit-history-3,
+			.withdrawals-history-3 {
+				fill: $colors-black;
+			}
+
+			.trade-history-2,
+			.trade-history-4,
+			.trade-history-5,
+			.deposit-history-2,
+			.deposit-history-4,
+			.withdrawals-history-2,
+			.withdrawals-history-4 {
+				stroke: none;
+			}
 		}
 		.st0,
 		.g1_4,
@@ -62,6 +85,19 @@ $notification-size: 1.5rem;
 			max-width: 100%;
 			height: $custom-title-img-size;
 			width: $custom-title-img-size;
+			.verification-email,
+			.verification-id,
+			.verification-document,
+			.verification-phone,
+			.verification-bank,
+			.notification-setting,
+			.language-setting,
+			.interface-setting,
+			.chat-setting,
+			.audio-setting,
+			.risk-setting {
+				fill: $colors-black;
+			}
 		}
 		.st0,
 		.g1_4,
@@ -156,7 +192,7 @@ $notification-size: 1.5rem;
 }
 
 .header_title-wrapper {
-	border-top: 1px solid $border-main;
+	border-top: 1px solid $colors-main-border;
 	margin-bottom: 1rem;
 	padding-top: 0.5rem;
 	position: relative;
@@ -191,7 +227,7 @@ $notification-size: 1.5rem;
 	}
 
 	.tab_item-active {
-		border: 1px solid $border-main;
+		border: 1px solid $colors-main-border;
 		color: $tab-active !important;
 		font-weight: bold;
 
@@ -227,7 +263,7 @@ $notification-size: 1.5rem;
 }
 
 .mobile_tab-wrapper {
-	border-top: 1px solid $colors-deactivate-color2;
+	border-top: 1px solid $colors-border;
 	color: $colors-deactivate-color2;
 	padding: 0.5rem;
 	font-size: 1.2rem;
@@ -261,17 +297,17 @@ $notification-size: 1.5rem;
 }
 
 .mobile_tab_last {
-	border-bottom: 1px solid $colors-deactivate-color2;
+	border-bottom: 1px solid $colors-border;
 }
 
 .mobile_tab_last-active {
-	border-bottom: 2px solid $colors-black !important;
+	border-bottom: 2px solid $colors-border !important;
 }
 
 .active_mobile_tab {
 	color: $colors-black;
-	border-top: 2px solid $colors-black;
-	border-bottom: 1px solid $colors-black;
+	border-top: 2px solid $colors-border;
+	border-bottom: 1px solid $colors-border;
 
 	svg {
 		.verification-email,

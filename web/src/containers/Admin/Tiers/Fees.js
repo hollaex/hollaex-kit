@@ -83,7 +83,7 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 		key: 'action',
 		align: 'right',
 		render: (name) => (
-			<span className="pointer" onClick={() => onEditFees(name)}>
+			<span className="admin-link-highlight" onClick={() => onEditFees(name)}>
 				Adjust fees
 			</span>
 		),
@@ -94,7 +94,7 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 const Fees = ({ pairs, userTiers, icons: ICONS = {}, onEditFees }) => {
 	const coinsData = Object.keys(pairs).map((key) => pairs[key]);
 	return (
-		<div>
+		<div className="admin-tiers-wrapper">
 			<div className="d-flex">
 				<div>
 					<Image
@@ -121,6 +121,7 @@ const Fees = ({ pairs, userTiers, icons: ICONS = {}, onEditFees }) => {
 				<Table
 					columns={getHeaders(userTiers, ICONS, onEditFees)}
 					dataSource={coinsData}
+					rowKey={(data) => data.id}
 					bordered
 				/>
 			</div>

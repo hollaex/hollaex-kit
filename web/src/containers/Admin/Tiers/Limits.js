@@ -99,7 +99,7 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 		key: 'type',
 		align: 'right',
 		render: () => (
-			<span className="pointer" onClick={onEditLimit}>
+			<span className="admin-link-highlight" onClick={onEditLimit}>
 				Adjust limits
 			</span>
 		),
@@ -116,7 +116,7 @@ const Limits = ({
 }) => {
 	const coinsData = Object.keys(coins).map((key) => coins[key]);
 	return (
-		<div>
+		<div className="admin-tiers-wrapper">
 			<div className="d-flex">
 				<div>
 					<Image
@@ -143,6 +143,7 @@ const Limits = ({
 				<Table
 					columns={getHeaders(userTiers, ICONS, constants, onEditLimit)}
 					dataSource={coinsData}
+					rowKey={(data) => data.id}
 					bordered
 				/>
 			</div>

@@ -1,108 +1,93 @@
 import React from 'react';
-import { Radio, Form, Button } from 'antd';
-import ReactSVG from 'react-svg';
+import { Checkbox, Form, Button } from 'antd';
+import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 
 const { Item } = Form;
 
-const TradingInterface = ({
-	initialValues = {},
-	handleNext,
-	updateConstants,
-}) => {
+const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 	const handleSubmit = (values) => {
-		const formValues = {
-			kit: {},
-		};
-		if (values.interface) {
-			formValues.kit.interface = {
-				type: values.interface,
+		const formValues = {};
+		if (values) {
+			formValues.kit = {
+				features: {
+					chat: !!values.chat,
+					quick_trade: !!values.quick_trade,
+					pro_trade: !!values.pro_trade,
+				},
 			};
 			updateConstants(formValues, () => handleNext(4));
 		}
 	};
 	return (
-		<div className="asset-content">
-			<div>
-				Select the trading interface that will be available on your exchange.
-				All interfaces includes a crypto wallet.
-			</div>
+		<div className="asset-content show-scroll">
+			<div>Select the features that will be available on your exchange.</div>
 			<Form
 				name="interface-form"
 				initialValues={initialValues}
 				onFinish={handleSubmit}
 			>
 				<div className="interface-box">
-					<Item name="interface">
-						<Radio.Group>
-							<Radio value="full">
-								Full interface
-								<div className="flex-container">
-									<div className="small-text">
-										(Pro & quick trade with wallet)
-									</div>
-									<div className="box">
-										<div className="interface_container">
-											<div className="sell">
-												<span className="label">SELL</span>
-											</div>
-											<div className="buy">
-												<span className="label">BUY</span>
-											</div>
-										</div>
-									</div>
-									<div>
-										<ReactSVG
-											path={STATIC_ICONS.CANDLES_LOGO}
-											wrapperClassName="candle-icon"
-										/>
-									</div>
-								</div>
-							</Radio>
-							<Radio value="pro-trade" disabled>
-								Pro trade only (coming soon)
-								<div className="small-text">
-									(Chart, orderbook, limit orders with wallet)
-								</div>
+    					<Item name="pro_trade" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
 								<ReactSVG
-									path={STATIC_ICONS.CANDLES_LOGO}
-									wrapperClassName="candle-icon"
+									src={STATIC_ICONS.CANDLES_LOGO}
+									className="feature-icon mr-1"
 								/>
-							</Radio>
-							<Radio value="quick-trade" disabled>
-								Quick trade only (coming soon)
-								<div className="flex-container">
+								<div className="ml-2 checkbox-txt">
+									Pro trade
 									<div className="small-text">
-										(Simple buy/sell interface with wallet)
+										(Chart, orderbook, limit orders with wallet)
 									</div>
-									<div className="box interface">
-										<div className="interface_container">
-											<div className="sell">
-												<span className="label">SELL</span>
-											</div>
-											<div className="buy">
-												<span className="label">BUY</span>
-											</div>
+								</div>
+							</div>
+						</Checkbox>
+					</Item>
+					<Item name="quick_trade" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<div className="interface_container">
+										<div className="sell">
+											<span className="label">SELL</span>
+										</div>
+										<div className="buy">
+											<span className="label">BUY</span>
 										</div>
 									</div>
 								</div>
-							</Radio>
-							<Radio value="wallet" disabled>
-								Wallet only (coming soon)
-								<div className="flex-container">
-									<div className="small-text">
-										(No trading. Only crypto wallet)
+								<div className="ml-2 checkbox-txt">
+									Quick trade
+									<div className="d-flex justify-content-between">
+										<div className="small-text">
+											(Simple buy/sell interface with wallet)
+										</div>
 									</div>
-									<div className="box interface">
-										<ReactSVG
-											path={STATIC_ICONS.WALLET_BTC_ICON}
-											wrapperClassName="wallet-icon"
-										/>
+  </div>
+							</div>
+						</Checkbox>
+					</Item>
+					<Item name="chat" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<ReactSVG
+										src={STATIC_ICONS.CHAT_FEATURE_ICON}
+										className="feature-chat-icon"
+									/>
+								</div>
+								<div className="ml-2 checkbox-txt">
+									Chat system
+									<div className="d-flex justify-content-between">
+										<div className="small-text">
+											(Usernames, text and emoji communication)
+										</div>
 									</div>
 								</div>
-							</Radio>
-						</Radio.Group>
+							</div>
+						</Checkbox>
 					</Item>
 				</div>
 				<div className="asset-btn-wrapper">
@@ -118,10 +103,4 @@ const TradingInterface = ({
 	);
 };
 
-TradingInterface.defaultProps = {
-	initialValues: {
-		interface: 'full',
-	},
-};
-
-export default TradingInterface;
+export default Features;

@@ -47,7 +47,8 @@
 	color: #ffffff;
 }
 .ant-card,
-.ant-card-head {
+.ant-card-head,
+.ant-card-type-inner .ant-card-head {
 	background-color: #0000ff;
 	color: #ffffff;
 }
@@ -75,6 +76,9 @@
 }
 .verification-confirm-modal .ant-btn {
 	width: 9rem;
+}
+.green-btn.ant-btn-primary[disabled] {
+	opacity: 0.7;
 }
 .verification-confirm-modal .ant-btn,
 .green-btn {

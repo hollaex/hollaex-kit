@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Button, message } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { withRouter } from 'react-router';
@@ -16,7 +16,7 @@ const Carousel_items = [
 		icon: STATIC_ICONS.SETUP_SECTION_PRO_TRADING,
 		title: 'Pro trading',
 		description:
-			'Provide the full crypto trading experience with charts,orderBook and order management.',
+			'Manage users accounts and wallets on your exchange from the admin operator control panel. Easy-to-use powerful controls for smooth exchange operations.',
 	},
 	{
 		icon: STATIC_ICONS.SETUP_SECTION_PRICE_DISCOVERY,
@@ -28,19 +28,19 @@ const Carousel_items = [
 		icon: STATIC_ICONS.SETUP_SECTION_QUICK_TRADE,
 		title: 'Trade matching engine',
 		description:
-			'Match up various crypto assets and create new trading pairs.Allow the HollaEx engine to rapidly organize all orders and match all trades.',
+			'Match up various crypto assets and create new trading pairs. Allow the HollaEx engine to rapidly organize all orders and match all trades.',
 	},
 	{
 		icon: STATIC_ICONS.SETUP_SECTION_LIQUIDITY,
 		title: 'Crypto liquidity',
 		description:
-			'No more dry orderbooks.Tab into the HollaEx network crypto liquidity pool and provide your users fair pricing for major crypto assets globally.',
+			'No more dry orderbooks. Tap into the HollaEx network crypto liquidity pool and provide your users fair pricing for major crypto assets globally.',
 	},
 	{
 		icon: STATIC_ICONS.SETUP_SECTION_BACKOFFICE,
 		title: 'Back office operator controls',
 		description:
-			'Manage users, wallet and other monitor the your exchange form the admin operator controls.Easy-to-use powerful controls for smooth exchange operations.',
+			'Manage users, wallet and other monitor the your exchange form the admin operator controls. Easy-to-use powerful controls for smooth exchange operations.',
 	},
 	{
 		icon: STATIC_ICONS.SETUP_SECTION_CRYPTO_WALLET,
@@ -52,7 +52,7 @@ const Carousel_items = [
 		icon: STATIC_ICONS.SETUP_QUICK_TRADE,
 		title: 'Quick trade',
 		description:
-			'Give your users a quick and easy way to trade crypto.Simple amount input and buying/selling',
+			'Give your users a quick and easy way to trade crypto. Simple amount input and buying/selling.',
 	},
 ];
 
@@ -85,12 +85,18 @@ class ExchangeSetup extends Component {
 				<div key={index}>
 					<div className="icon-wrapper">
 						<ReactSVG
-							path={value.icon}
-							wrapperClassName={
+							src={value.icon}
+							className={
 								value.icon === STATIC_ICONS.SETUP_QUICK_TRADE
 									? null
 									: 'icon-align'
 							}
+							beforeInjection={(svg) => {
+								if (value.icon === STATIC_ICONS.SETUP_QUICK_TRADE) {
+									svg.setAttribute('width', '216px');
+									svg.setAttribute('height', '216px');
+								}
+							}}
 						/>
 					</div>
 					<div className="setup-field-label">{value.title}</div>
@@ -144,7 +150,12 @@ class ExchangeSetup extends Component {
 								</div>
 							</div>
 						)}
-						<Carousel items={menuItems} groupItems={1} />
+						<Carousel
+							items={menuItems}
+							groupItems={1}
+							isInfinite={true}
+							isActive={false}
+						/>
 						<div className="btn-container">
 							<Button
 								className="exchange-complete-btn"

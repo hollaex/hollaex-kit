@@ -1,8 +1,14 @@
 import * as React from 'react';
 import _isEqual from 'lodash/isEqual';
 import { widget } from '../../charting_library/charting_library.min';
-import { getTheme, getVolume, getToolbarBG } from './ChartConfig';
+import {
+	getTheme,
+	getVolume,
+	getToolbarBG,
+	getWidgetTheme,
+} from './ChartConfig';
 import { getLanguage } from '../../utils/string';
+import { getChartResolution, setChartResolution } from '../../utils/utils';
 import {
 	getChartConfig,
 	getChartSymbol,
@@ -160,6 +166,9 @@ class TVChartContainer extends React.PureComponent {
 				subscribeUID,
 				onResetCacheNeededCallback
 			) => {
+				if (resolution) {
+					setChartResolution(resolution);
+				}
 				that.setState({
 					sub: {
 						uid: subscribeUID,
@@ -237,18 +246,23 @@ class TVChartContainer extends React.PureComponent {
 		interval,
 		color = {},
 	}) => {
+		const resolution = getChartResolution();
+		const toolbar_bg = getToolbarBG(activeTheme, color);
+		const widgetTheme = getWidgetTheme(toolbar_bg);
+		const locale = getLanguage();
+
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
-			theme: activeTheme,
-			toolbar_bg: getToolbarBG(activeTheme, color),
+			theme: widgetTheme,
+			toolbar_bg,
 			datafeed: this.chartConfig,
-			interval: interval,
+			interval: resolution,
 			container_id: containerId,
 			library_path: libraryPath,
 			timeframe: '1m',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-			locale: getLanguage(),
+			locale: locale === 'id' ? 'en' : locale,
 			withdateranges: true,
 			range: 'ytd',
 			disabled_features: [
@@ -301,7 +315,7 @@ class TVChartContainer extends React.PureComponent {
 				.addClass('apply-common-tooltip screen-button')
 				.on('click', () => tvWidget.takeScreenshot());
 			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
-			tvWidget.changeTheme(activeTheme);
+			tvWidget.changeTheme(widgetTheme);
 
 			button[0].innerHTML = `<div class='screen-container'><div class='screen-content'>Share Screenshot</div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
 		});

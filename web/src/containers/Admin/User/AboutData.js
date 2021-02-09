@@ -1,11 +1,12 @@
 import React, { Fragment, useState } from 'react';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import { Button, Modal, Select } from 'antd';
 import { Link } from 'react-router';
 import {
 	ExclamationCircleFilled,
 	CaretUpFilled,
 	CaretDownFilled,
+	UserOutlined,
 } from '@ant-design/icons';
 import { SubmissionError } from 'redux-form';
 
@@ -22,7 +23,7 @@ import {
 	validateRange,
 } from '../../../components/AdminForm/validations';
 import { STATIC_ICONS } from 'config/icons';
-import { checkRole, isSupervisor, isSupport } from 'utils/token';
+import { isSupervisor, isSupport } from 'utils/token';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
@@ -75,8 +76,8 @@ const RenderModalContent = ({
 			<Select.Option key={index} value={level}>
 				<div className="asset-list">
 					<ReactSVG
-						path={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
-						wrapperClassName="select-level-icon"
+						src={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
+						className="select-level-icon"
 					/>
 					<div className="select-coin-text">{`Account tier ${level}`}</div>
 				</div>
@@ -101,8 +102,8 @@ const RenderModalContent = ({
 					<div className="d-flex align-items-center mb-3">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.USER_DETAILS_ICON}
-								wrapperClassName="user-edit-icon"
+								src={STATIC_ICONS.USER_DETAILS_ICON}
+								className="user-edit-icon"
 							/>
 						</div>
 						<h3>{`Edit user ${userData.id} data`}</h3>
@@ -191,13 +192,13 @@ const AboutData = ({
 		nationality,
 		dob,
 		phone_number,
-		address,
+		address = {},
 		...rest
 	} = userData;
 	const userInfo = {
 		email,
 		full_name,
-		gender,
+		gender: gender ? 'Woman' : 'Man',
 		nationality,
 		dob,
 		phone_number,
@@ -206,10 +207,69 @@ const AboutData = ({
 		postal_code: address.postal_code,
 		city: address.city,
 	};
+
+	const renderIcons = () => {
+		if (userData.is_admin) {
+			return (
+				<img
+					src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
+					className="user-info-icon"
+					alt="EyeIcon"
+				/>
+			);
+		} else if (userData.is_communicator) {
+			return (
+				<ReactSVG
+					src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+					className="user-info-icon"
+				/>
+			);
+		} else if (userData.is_kyc) {
+			return (
+				<ReactSVG
+					src={STATIC_ICONS.BLUE_SCREEN_KYC}
+					className="user-info-icon"
+				/>
+			);
+		} else if (userData.is_supervisor) {
+			return (
+				<ReactSVG
+					src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+					className="user-info-icon"
+				/>
+			);
+		} else if (userData.is_support) {
+			return (
+				<ReactSVG
+					src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+					className="user-info-icon"
+				/>
+			);
+		} else {
+			return <UserOutlined className="user-icon" />;
+		}
+	};
+
+	const renderRole = () => {
+		if (userData.is_admin) {
+			return 'admin';
+		} else if (userData.is_communicator) {
+			return 'communicator';
+		} else if (userData.is_kyc) {
+			return 'kyc';
+		} else if (userData.is_supervisor) {
+			return 'supervisor';
+		} else if (userData.is_support) {
+			return 'support';
+		} else {
+			return 'user';
+		}
+	};
+
 	return (
-		<div className="about-wrapper">
-			<div className="d-flex justify-content-end">
-				<div className="d-flex align-items-center">
+		<div>
+			<div className="d-flex justify-content-end header-section mb-5">
+				<div className="d-flex align-items-center my-5">
 					<div className="about-info d-flex align-items-center justify-content-center">
 						{userData.otp_enabled ? (
 							<Fragment>
@@ -221,8 +281,8 @@ const AboutData = ({
 								</div>
 								<div className={'about-icon-active'}>
 									<ReactSVG
-										path={STATIC_ICONS.TWO_STEP_KEY_ICON}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.TWO_STEP_KEY_ICON}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -233,8 +293,8 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={STATIC_ICONS.TWO_STEP_KEY_ICON}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.TWO_STEP_KEY_ICON}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -254,8 +314,8 @@ const AboutData = ({
 								</div>
 								<div className={'about-icon-active'}>
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FREEZE}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FREEZE}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -271,8 +331,8 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FREEZE}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FREEZE}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -292,8 +352,8 @@ const AboutData = ({
 								</div>
 								<div className="about-icon-active">
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FLAG}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FLAG}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -309,8 +369,8 @@ const AboutData = ({
 								</div>
 								<div>
 									<ReactSVG
-										path={STATIC_ICONS.ACC_FLAG}
-										wrapperClassName={'about-icon'}
+										src={STATIC_ICONS.ACC_FLAG}
+										className={'about-icon'}
 									/>
 								</div>
 							</Fragment>
@@ -318,154 +378,150 @@ const AboutData = ({
 					</div>
 				</div>
 			</div>
-			<div className="d-flex">
-				<div className="about-verification-content">
-					<div className="about-title">User identification files</div>
-					<div className="d-flex justify-content-between">
-						<div className="d-flex">
-							<Verification
-								isUpload={isUpload}
-								constants={constants}
-								user_id={userData.id}
-								userImages={userDocs}
-								userInformation={userData}
-								refreshData={refreshData}
-								closeUpload={() => setUpload(false)}
-							/>
+			<div className="about-wrapper">
+				<div className="d-flex">
+					<div className="about-verification-content">
+						<div className="about-title">User identification files</div>
+						<div className="d-flex justify-content-between">
+							<div className="d-flex">
+								<Verification
+									isUpload={isUpload}
+									constants={constants}
+									user_id={userData.id}
+									userImages={userDocs}
+									userInformation={userData}
+									refreshData={refreshData}
+									closeUpload={() => setUpload(false)}
+								/>
+							</div>
+							<div>
+								<Button
+									type="primary"
+									className="green-btn"
+									onClick={() => setUpload(true)}
+								>
+									Upload
+								</Button>
+							</div>
 						</div>
-						<div>
+					</div>
+					<div className="about-notes-content">
+						<div className="about-title">Notes</div>
+						<div className="about-notes-text">{userData.note}</div>
+						<div className="d-flex justify-content-end">
 							<Button
 								type="primary"
-								className="green-btn"
-								onClick={() => setUpload(true)}
+								size="small"
+								danger
+								onClick={handleNotesRemove}
 							>
-								Upload
+								Delete
 							</Button>
-						</div>
-					</div>
-				</div>
-				<div className="about-notes-content">
-					<div className="about-title">Notes</div>
-					<div className="about-notes-text">{userData.note}</div>
-					<div className="d-flex justify-content-end">
-						<Button
-							type="primary"
-							size="small"
-							danger
-							onClick={handleNotesRemove}
-						>
-							Delete
-						</Button>
-						<div className="separator"></div>
-						<Button
-							type="primary"
-							className="green-btn"
-							size="small"
-							onClick={() => handleOpenModal('notes')}
-						>
-							Edit
-						</Button>
-					</div>
-				</div>
-			</div>
-			<div>
-				<div className="about-title">User info</div>
-				<div className="d-flex m-4">
-					<div className="user-info-container">
-						<DataDisplay data={userInfo} renderRow={renderRowInformation} />
-						<div>
+							<div className="separator"></div>
 							<Button
 								type="primary"
 								className="green-btn"
 								size="small"
-								onClick={() => handleOpenModal('users')}
+								onClick={() => handleOpenModal('notes')}
 							>
 								Edit
 							</Button>
 						</div>
 					</div>
-					<div className="user-info-separator"></div>
-					<div className="user-role-container">
-						<div>
-							<img
-								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
-								className="user-info-icon"
-								alt="EyeIcon"
-							/>
-						</div>
-						<div className="user-info-label">Role: {checkRole()}</div>
-						<div className="ml-4">
-							<Link to="/admin/roles">
-								<Button type="primary" className="green-btn" size="small">
+				</div>
+				<div>
+					<div className="about-title">User info</div>
+					<div className="d-flex m-4">
+						<div className="user-info-container">
+							<DataDisplay data={userInfo} renderRow={renderRowInformation} />
+							<div>
+								<Button
+									type="primary"
+									className="green-btn"
+									size="small"
+									onClick={() => handleOpenModal('users')}
+								>
 									Edit
 								</Button>
-							</Link>
+							</div>
 						</div>
+						<div className="user-info-separator"></div>
+						<div className="user-role-container">
+							<div>{renderIcons()}</div>
+							<div className="user-info-label">Role: {renderRole()}</div>
+							<div className="ml-4">
+								<Link to="/admin/roles">
+									<Button type="primary" className="green-btn" size="small">
+										Edit
+									</Button>
+								</Link>
+							</div>
+						</div>
+						<div className="user-info-separator"></div>
+						<div className="user-level-container">
+							<div>
+								<ReactSVG
+									src={
+										ICONS[`LEVEL_ACCOUNT_ICON_${userData.verification_level}`]
+									}
+									className="levels-icon"
+								/>
+							</div>
+							<div className="user-info-label">
+								Verification level: {userData.verification_level}
+							</div>
+							<div className="ml-4">
+								<Button
+									type="primary"
+									className="green-btn"
+									size="small"
+									onClick={() => handleOpenModal('verification-levels')}
+								>
+									Edit
+								</Button>
+							</div>
+						</div>
+						<div className="user-info-separator"></div>
 					</div>
-					<div className="user-info-separator"></div>
-					<div className="user-level-container">
-						<div>
-							<ReactSVG
-								path={
-									ICONS[`LEVEL_ACCOUNT_ICON_${userData.verification_level}`]
-								}
-								wrapperClassName="levels-icon"
-							/>
-						</div>
-						<div className="user-info-label">
-							Verification level: {userData.verification_level}
-						</div>
-						<div className="ml-4">
-							<Button
-								type="primary"
-								className="green-btn"
-								size="small"
-								onClick={() => handleOpenModal('verification-levels')}
-							>
-								Edit
-							</Button>
-						</div>
-					</div>
-					<div className="user-info-separator"></div>
-				</div>
-				<div className="m-4">
-					{showRemaining ? (
-						<DataDisplay data={rest} renderRow={renderRowInformation} />
-					) : null}
-					<div onClick={() => setShow(!showRemaining)}>
+					<div className="m-4">
 						{showRemaining ? (
-							<Fragment>
-								<span className="info-link">View less details</span>
-								<CaretUpFilled />
-							</Fragment>
-						) : (
-							<Fragment>
-								<span className="info-link">View details</span>
-								<CaretDownFilled />
-							</Fragment>
-						)}
+							<DataDisplay data={rest} renderRow={renderRowInformation} />
+						) : null}
+						<div onClick={() => setShow(!showRemaining)}>
+							{showRemaining ? (
+								<Fragment>
+									<span className="info-link">View less details</span>
+									<CaretUpFilled />
+								</Fragment>
+							) : (
+								<Fragment>
+									<span className="info-link">View details</span>
+									<CaretDownFilled />
+								</Fragment>
+							)}
+						</div>
 					</div>
 				</div>
+				<div>
+					<div className="about-title">Audit</div>
+					<Audits userId={userData.id} />
+				</div>
+				<div>
+					<div className="about-title">Login</div>
+					<Logins userId={userData.id} />
+				</div>
+				<Modal visible={isEdit} footer={null} onCancel={handleClose}>
+					<RenderModalContent
+						modalKey={modalKey}
+						userData={userData}
+						constants={constants}
+						onChangeSuccess={onChangeSuccess}
+						handleClose={handleClose}
+						refreshData={refreshData}
+						icons={ICONS}
+					/>
+				</Modal>
 			</div>
-			<div>
-				<div className="about-title">Audit</div>
-				<Audits userId={userData.id} />
-			</div>
-			<div>
-				<div className="about-title">Login</div>
-				<Logins userId={userData.id} />
-			</div>
-			<Modal visible={isEdit} footer={null} onCancel={handleClose}>
-				<RenderModalContent
-					modalKey={modalKey}
-					userData={userData}
-					constants={constants}
-					onChangeSuccess={onChangeSuccess}
-					handleClose={handleClose}
-					refreshData={refreshData}
-					icons={ICONS}
-				/>
-			</Modal>
 		</div>
 	);
 };

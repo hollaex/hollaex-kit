@@ -31,19 +31,18 @@ import {
 	User,
 	AppWrapper as AdminContainer,
 	// Main,
-	DepositsPage,
+	// DepositsPage,
 	Limits,
-	Wallets,
+	// Wallets,
 	UserFees,
 	PATHS,
-	ExpiredExchange,
 	AdminOrders,
 	MobileHome,
 	Broker,
 	Plugins,
-	PluginServices,
+	// PluginServices,
 	Settings,
-	Transfer,
+	// Transfer,
 	AdminFees,
 	Init,
 	AdminLogin,
@@ -53,7 +52,9 @@ import {
 	General,
 	Tiers,
 	Roles,
+	Resources,
 } from './containers';
+import chat from './containers/Admin/Chat';
 
 import store from './store';
 import { verifyToken } from './actions/authAction';
@@ -110,11 +111,20 @@ function requireAuth(nextState, replace) {
 		replace({
 			pathname: '/init',
 		});
-	} else if (!isLoggedIn() && setup_completed === 'false') {
+	} else if (
+		!isLoggedIn() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin-login',
 		});
-	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+	} else if (
+		isLoggedIn() &&
+		isAdmin() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin',
 		});
@@ -135,11 +145,20 @@ function loggedIn(nextState, replace) {
 		replace({
 			pathname: '/init',
 		});
-	} else if (!isLoggedIn() && setup_completed === 'false') {
+	} else if (
+		!isLoggedIn() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin-login',
 		});
-	} else if (isLoggedIn() && isAdmin() && setup_completed === 'false') {
+	} else if (
+		isLoggedIn() &&
+		isAdmin() &&
+		(setup_completed === 'false' ||
+			(typeof setup_completed === 'boolean' && !setup_completed))
+	) {
 		replace({
 			pathname: '/admin',
 		});
@@ -381,26 +400,31 @@ export default (
 				component={withAdminProps(MoveToDash, 'billing')}
 			/>
 			<Route
+				path="/admin/chat"
+				name="Admin Chat"
+				component={withAdminProps(chat, 'chat')}
+			/>
+			<Route
 				path="/admin/collateral"
 				name="Admin Collateral"
 				component={withAdminProps(MoveToDash, 'collateral')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/wallets"
 				name="Admin Wallets"
 				component={withAdminProps(Wallets, 'wallets')}
-			/>
-			<Route
+			/> */}
+			{/* <Route
 				path="/admin/transfer"
 				name="Admin Transfer"
 				component={withAdminProps(Transfer, 'transfer')}
-			/>
+			/> */}
 			<Route
 				path="/admin/fees"
 				name="Admin Fees"
 				component={withAdminProps(AdminFees, 'fees')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/withdrawals"
 				name="Admin Withdrawals"
 				component={withAdminProps(DepositsPage, 'withdrawal')}
@@ -409,7 +433,7 @@ export default (
 				path="/admin/deposits"
 				name="Admin Deposits"
 				component={withAdminProps(DepositsPage, 'deposit')}
-			/>
+			/> */}
 			<Route
 				path="/admin/pair"
 				name="Admin Pairs"
@@ -435,15 +459,20 @@ export default (
 				name="Admin plugins"
 				component={withAdminProps(Plugins, 'plugins')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/plugins/:services"
 				name="Admin plugins"
 				component={withAdminProps(PluginServices, 'plugins')}
-			/>
+			/> */}
 			<Route
 				path="/admin/settings"
 				name="Admin settings"
 				component={withAdminProps(Settings, 'settings')}
+			/>
+			<Route
+				path="/admin/resources"
+				name="Admin resources"
+				component={withAdminProps(Resources, 'resources')}
 			/>
 		</Route>
 		<Route
@@ -458,7 +487,6 @@ export default (
 			content="terms"
 			onEnter={requireAuth}
 		/>
-		<Route path="expired-exchange" component={ExpiredExchange} />
 		<Route path="admin-login" name="admin-login" component={AdminLogin} />
 		<Route path="init" name="initWizard" component={Init} />
 		<Route path="*" component={NotFound} />

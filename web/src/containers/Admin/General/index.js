@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Modal, message } from 'antd';
+import { Button, Modal, message, Collapse, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import { bindActionCreators } from 'redux';
 
 import FooterConfig from './FooterConfig';
 import Description from './Description';
@@ -10,9 +11,11 @@ import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
-import { requestAdminData } from '../../../actions/appActions';
+import { requestAdminData, setConfig } from '../../../actions/appActions';
 import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
+import { publish } from 'actions/operatorActions';
+import merge from 'lodash.merge';
 
 import './index.css';
 
@@ -34,6 +37,8 @@ class General extends Component {
 			initialThemeValues: {},
 			initialEmailValues: {},
 			initialLinkValues: {},
+			pendingPublishIcons: {},
+			loading: false,
 		};
 	}
 
@@ -51,12 +56,14 @@ class General extends Component {
 	}
 
 	requestInitial = () => {
+		this.setState({ loading: true });
 		requestAdminData()
 			.then((res) => {
-				this.setState({ constants: res.data });
+				this.setState({ constants: res.data, loading: false });
 			})
 			.catch((err) => {
 				console.log('err', err);
+				this.setState({ loading: false });
 			});
 	};
 
@@ -90,43 +97,57 @@ class General extends Component {
 		});
 	};
 
-	handleSaveIcon = async () => {
+	handleSaveIcon = async (iconKey) => {
 		const { currentIcon } = this.state;
 		const { updateIcons } = this.props;
 		const icons = {};
+
 		this.setState({
 			loading: true,
 		});
 
-		for (const key in currentIcon) {
-			if (currentIcon.hasOwnProperty(key)) {
-				const file = currentIcon[key];
-				if (file) {
-					const formData = new FormData();
-					const { name: fileName } = file;
-					const extension = fileName.split('.').pop();
-					const name = `${key}.${extension}`;
-					formData.append('name', name);
-					formData.append('file', file);
-					try {
-						const {
-							data: { path },
-						} = await upload(formData);
-						icons[key] = path;
-						this.setState({ currentIcon: {} });
-					} catch (error) {
-						this.setState({
-							loading: false,
-						});
-						message.error('Something went wrong!');
-						return;
+		for (const themeKey in currentIcon) {
+			if (currentIcon.hasOwnProperty(themeKey)) {
+				icons[themeKey] = {};
+
+				for (const key in currentIcon[themeKey]) {
+					if (currentIcon[themeKey].hasOwnProperty(key)) {
+						const file = currentIcon[themeKey][key];
+						if (file) {
+							const formData = new FormData();
+							const { name: fileName } = file;
+							const extension = fileName.split('.').pop();
+							const name = `${key}__${themeKey}.${extension}`;
+
+							formData.append('name', name);
+							formData.append('file', file);
+
+							try {
+								const {
+									data: { path },
+								} = await upload(formData);
+								icons[themeKey][key] = path;
+								this.setState({ currentIcon: {} });
+							} catch (error) {
+								this.setState({
+									loading: false,
+								});
+								message.error('Something went wrong!');
+								return;
+							}
+						}
 					}
 				}
 			}
 		}
-		this.setState({
+		this.setState((prevState) => ({
+			...prevState,
 			loading: false,
-		});
+			pendingPublishIcons: merge({}, prevState.pendingPublishIcons, {
+				[iconKey]: icons,
+			}),
+		}));
+
 		updateIcons(icons);
 	};
 
@@ -134,21 +155,27 @@ class General extends Component {
 		this.setState({ currentIcon: {} });
 	};
 
-	handleChangeFile = (event) => {
-		if (event.target.files) {
+	handleChangeFile = ({ target: { name, files } }) => {
+		const [theme, iconKey] = name.split(',');
+
+		if (files) {
 			this.setState(
-				{
+				(prevState) => ({
+					...prevState,
 					currentIcon: {
-						...this.state.currentIcon,
-						[event.target.name]: event.target.files[0],
+						...prevState.currentIcon,
+						[theme]: {
+							...prevState.currentIcon[theme],
+							[iconKey]: files[0],
+						},
 					},
-				},
+				}),
 				() => {
 					Modal.confirm({
 						content: 'Do you want to save this icon?',
 						okText: 'Save',
 						cancelText: 'Cancel',
-						onOk: this.handleSaveIcon,
+						onOk: () => this.handleSaveIcon(iconKey),
 						onCancel: this.handleCancelIcon,
 					});
 				}
@@ -160,6 +187,7 @@ class General extends Component {
 		updateConstants(formProps)
 			.then((res) => {
 				this.setState({ constants: res });
+				this.props.setConfig(res.kit);
 				message.success('Updated successfully');
 			})
 			.catch((err) => {
@@ -248,36 +276,47 @@ class General extends Component {
 		});
 	};
 
-	renderImageUpload = (name, label) => {
-		const { icons } = this.props;
+	renderImageUpload = (id, theme, index, showLable = true) => {
+		const { allIcons } = this.props;
 		return (
-			<div className="file-container">
+			<div key={index} className="file-container">
 				<div className="file-img-content">
-					<Image icon={icons[name]} wrapperClassName="icon-img" />
+					<Image icon={allIcons[theme][id]} wrapperClassName="icon-img" />
 				</div>
 				<label>
-					{label ? <p>{label}</p> : null}
+					{showLable && `${theme} theme`}
 					<span className="anchor">Upload</span>
 					<input
 						type="file"
 						accept="image/*"
 						onChange={this.handleChangeFile}
-						name={name}
+						name={`${theme},${id}`}
 					/>
 				</label>
 			</div>
 		);
 	};
 
-	handleSaveInterface = (type) => {
+	handleSaveInterface = (features) => {
 		this.handleSubmitGeneral({
 			kit: {
-				interface: {
-					type,
-				},
+				features,
 			},
 		});
 	};
+
+	handlePublish = (id) => {
+		const {
+			pendingPublishIcons: { [id]: published = {} },
+		} = this.state;
+		const iconsOverwrites = JSON.parse(localStorage.getItem('icons') || '{}');
+
+		const icons = merge({}, iconsOverwrites, published);
+		const configs = { icons };
+		publish(configs).then(this.reload);
+	};
+
+	reload = () => window.location.reload(false);
 
 	render() {
 		const {
@@ -286,10 +325,18 @@ class General extends Component {
 			initialLanguageValues,
 			initialThemeValues,
 			initialLinkValues,
+			loading,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
-		const { coins } = this.props;
+		const { coins, themeOptions } = this.props;
 		const generalFields = getGeneralFields(coins);
+		if (loading) {
+			return (
+				<div className="d-flex align-items-center">
+					<Spin />
+				</div>
+			);
+		}
 		return (
 			<div>
 				<div className="general-wrapper">
@@ -391,10 +438,36 @@ class General extends Component {
 							the direct edit function will override the logo.
 						</div>
 						<div className="file-wrapper">
-							{this.renderImageUpload('EXCHANGE_LOGO_LIGHT', 'Light theme')}
-							{this.renderImageUpload('EXCHANGE_LOGO_DARK', 'Dark theme')}
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme === 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+											)}
+									</div>
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme !== 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+											)}
+									</div>
+								</Collapse.Panel>
+							</Collapse>
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_LOGO')}
+						>
 							Save
 						</Button>
 					</div>
@@ -405,20 +478,55 @@ class General extends Component {
 							Used for areas that require loading.Also known as a spinner.
 						</div>
 						<div className="file-wrapper">
-							{this.renderImageUpload('LOADER_LIGHT', 'Light theme')}
-							{this.renderImageUpload('LOADER_DARK', 'Dark theme')}
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									{themeOptions
+										.filter(({ value: theme }) => theme === 'dark')
+										.map(({ value: theme }, index) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+										)}
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									{themeOptions
+										.filter(({ value: theme }) => theme !== 'dark')
+										.map(({ value: theme }, index) =>
+											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+										)}
+								</Collapse.Panel>
+							</Collapse>
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_LOADER')}
+						>
 							Save
 						</Button>
 					</div>
 					<div className="divider"></div>
 					<div>
 						<div className="sub-title">Exchange favicon</div>
-						<div className="file-wrapper">
-							{this.renderImageUpload('FAV_ICON')}
-						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+							<Collapse.Panel showArrow={false} key="1" disabled={true}>
+								<div className="file-wrapper">
+									{this.renderImageUpload(
+										'EXCHANGE_FAV_ICON',
+										'dark',
+										'EXCHANGE_1',
+										false
+									)}
+								</div>
+							</Collapse.Panel>
+						</Collapse>
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_FAV_ICON')}
+						>
 							Save
 						</Button>
 					</div>
@@ -426,10 +534,44 @@ class General extends Component {
 					<div>
 						<div className="sub-title">Onboarding background image</div>
 						<div className="file-wrapper">
-							{this.renderImageUpload('BOARDING_IMAGE_LIGHT', 'Light theme')}
-							{this.renderImageUpload('BOARDING_IMAGE_DARK', 'Dark theme')}
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme === 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload(
+													'EXCHANGE_BOARDING_IMAGE',
+													theme,
+													index
+												)
+											)}
+									</div>
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header="Theme Specific Icons"
+									key="2"
+								>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme !== 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload(
+													'EXCHANGE_BOARDING_IMAGE',
+													theme,
+													index
+												)
+											)}
+									</div>
+								</Collapse.Panel>
+							</Collapse>
 						</div>
-						<Button type="primary" className="green-btn minimal-btn">
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							onClick={() => this.handlePublish('EXCHANGE_BOARDING_IMAGE')}
+						>
 							Save
 						</Button>
 					</div>
@@ -454,6 +596,7 @@ class General extends Component {
 				</div>
 				<div>
 					<FooterConfig
+						links={kit.links}
 						initialValues={initialLinkValues}
 						handleSubmitFooter={this.submitSettings}
 					/>
@@ -478,7 +621,7 @@ class General extends Component {
 				</div>
 				<div className="divider"></div>
 				<InterfaceForm
-					initialValues={kit.interface}
+					initialValues={kit.features}
 					handleSaveInterface={this.handleSaveInterface}
 				/>
 			</div>
@@ -492,4 +635,11 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(withConfig(General));
+const mapDispatchToProps = (dispatch) => ({
+	setConfig: bindActionCreators(setConfig, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(General));

@@ -13,7 +13,7 @@ $trade-tab--arrow-size: 0.4rem;
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
-		height: 5rem;
+		height: 5rem !important;
 		margin: 1rem auto;
 		width: 8rem;
 	}
@@ -25,7 +25,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.trade_tabs-content {
-		border-top: 2px solid $border-main;
+		border-top: 2px solid $colors-main-border;
 		font-size: 0.8rem;
 	}
 
@@ -37,7 +37,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.link-separator {
-		border-right: 1px solid $dark-font-sub-text-1-color;
+		border-right: 1px solid $colors-border;
 	}
 
 	.trade_tabs-search-field {
@@ -57,54 +57,127 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.tabs-pair-details {
 		font-size: 1.2rem;
-		width: 15rem;
+		width: 32rem;
 	}
 
 	.trade_tab-icons {
-		width: 5rem;
+		width: 3rem;
 
 		svg {
 			.btc0,
-			.btc1,
-			.eth0,
-			.eth1,
-			.bch-icon,
-			.xrp-icon,
-			.xht-icon,
-			.xmr-icon,
-			.xlm-icon,
-			.eos-icon,
-			.trx-icon,
-			.ada-icon,
-			.bnb-icon,
-			.tusd-icon,
-			.dai-icon,
-			.ltc-icon,
-			.default-icon {
-				fill: $trade-tabs-inactive-color !important;
+			.btc1 {
+				fill: $coin-btc;
 			}
-			.st0 {
-				fill: $trade-tabs-inactive-color !important;
-				stroke-width: 0rem;
+			.eth0,
+			.eth1 {
+				fill: $coin-eth;
+			}
+			.bch-icon {
+				fill: $coin-bch;
+			}
+			.xrp-icon {
+				fill: $coin-xrp;
+			}
+			.xmr-icon {
+				fill: $coin-xmr;
+			}
+			.ada-icon {
+				fill: $coin-ada;
+			}
+			.bnb-icon {
+				fill: $coin-bnb;
+			}
+			.dai-icon {
+				fill: $coin-dai;
+			}
+			.eos-icon {
+				fill: $coin-eos;
+			}
+			.ltc-icon {
+				fill: $coin-ltc;
+			}
+			.trx-icon {
+				fill: $coin-trx;
+			}
+			.tusd-icon {
+				fill: $coin-tusd;
+			}
+			.xlm-icon {
+				fill: $coin-xlm;
+			}
+			.default-icon {
+				fill: $colors-black !important;
 			}
 		}
 	}
 
 	.trade_tab-pair-title {
+		color: $colors-main-black;
+		font-size: $font-size-main;
+		font-weight: bold;
+	}
+
+	.trade_tab-pair-sub-title {
+		font-size: $font-size-subtext;
+	}
+
+	.trade_tab-pair-volume {
+		font-size: $font-size-subtext;
+		text-align: right;
+		padding-right: 0.3rem;
+	}
+
+	.trade_tab-pair-price {
+		color: $colors-main-black;
 		font-size: $font-size-subhead2;
 		font-weight: bold;
 	}
 
+	.trade_tab-ticker-container {
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
 	.price-diff-down {
 		color: $sell;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $sell-bids-text;
+			background-color: $sell;
+		}
 	}
 
 	.price-diff-up {
 		color: $buy;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $buy-bids-text;
+			background-color: $buy;
+		}
 	}
 
 	.trade-tab-price_diff_up {
 		margin: auto 0;
+	}
+
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_up:before {
+			@include css-triangle($buy-bids-text, 'up', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-bottom: 0.2rem;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
 	}
 
 	.trade-tab-price_diff_up:before {
@@ -120,6 +193,17 @@ $trade-tab--arrow-size: 0.4rem;
 		margin: auto 0;
 	}
 
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_down:before {
+			@include css-triangle($sell-bids-text, 'down', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+	}
+
 	.trade-tab-price_diff_down:before {
 		@include css-triangle($sell, 'down', $trade-tab--arrow-size);
 		display: inline-block;
@@ -129,9 +213,17 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.trade-tab-list {
-		border: 1px solid $app-background-color;
-		padding: 1rem 0;
+		background-image: linear-gradient(
+			$app-background-color,
+			$market-card_gradient_background
+		);
+		border: 1px solid $colors-super-pale-black;
+		border-radius: 0.5rem;
+		padding: 1rem 0 0;
 		margin: 2rem 1.5rem;
+		-webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+		-moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
 
 		svg {
 			.xht-icon-1 {
@@ -140,42 +232,64 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		&:hover {
-			border: 1px solid $colors-black;
+			border: 1px solid $colors-border;
 			color: $colors-black;
 			position: relative;
 			bottom: 0.5rem;
 			right: 0.5rem;
 
-			.trade_tab-pair-title {
-				color: $colors-black !important;
-			}
-
 			svg {
 				.btc0,
-				.btc1,
+				.btc1 {
+					fill: $coin-btc;
+				}
 				.eth0,
-				.eth1,
-				.bch-icon,
-				.xrp-icon,
-				.xht-icon,
-				.xmr-icon,
-				.xlm-icon,
-				.eos-icon,
-				.trx-icon,
-				.ada-icon,
-				.bnb-icon,
-				.tusd-icon,
-				.dai-icon,
-				.ltc-icon,
+				.eth1 {
+					fill: $coin-eth;
+				}
+				.bch-icon {
+					fill: $coin-bch;
+				}
+				.xrp-icon {
+					fill: $coin-xrp;
+				}
+				.xmr-icon {
+					fill: $coin-xmr;
+				}
+				.ada-icon {
+					fill: $coin-ada;
+				}
+				.bnb-icon {
+					fill: $coin-bnb;
+				}
+				.dai-icon {
+					fill: $coin-dai;
+				}
+				.eos-icon {
+					fill: $coin-eos;
+				}
+				.ltc-icon {
+					fill: $coin-ltc;
+				}
+				.trx-icon {
+					fill: $coin-trx;
+				}
+				.tusd-icon {
+					fill: $coin-tusd;
+				}
+				.xlm-icon {
+					fill: $coin-xlm;
+				}
 				.default-icon {
 					fill: $colors-black !important;
 				}
-				.st0 {
-					fill: $colors-black !important;
-					stroke-width: 0rem;
-				}
 			}
 		}
+	}
+
+	.market-card__sparkline-wrapper {
+		padding-top: 10px;
+		height: 12rem;
 	}
 }
 
@@ -191,14 +305,14 @@ $trade-tab--arrow-size: 0.4rem;
 			margin: 1.5rem 1rem;
 		}
 		.trade_tab-icons {
-			width: 4rem;
-		}
-		.trade_tab-pair-title {
-			font-size: 1.5rem;
+			width: 2.25rem;
 		}
 		.tabs-pair-details {
 			font-size: 1rem;
-			width: 13rem;
+			width: 26rem;
+		}
+		.market-card__sparkline-wrapper {
+			height: 9rem;
 		}
 	}
 }
@@ -206,11 +320,14 @@ $trade-tab--arrow-size: 0.4rem;
 @media screen and (max-width: $bp-xs) {
 	.trade_tabs-container {
 		.trade_tab-icons {
-			width: 3.5rem;
+			width: 1.5rem;
 		}
 		.tabs-pair-details {
 			font-size: 1rem;
-			width: 11rem;
+			width: 20.5rem;
+		}
+		.market-card__sparkline-wrapper {
+			height: 7rem;
 		}
 	}
 }

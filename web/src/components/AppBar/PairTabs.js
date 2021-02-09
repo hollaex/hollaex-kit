@@ -1,100 +1,48 @@
 import React, { Component } from 'react';
-import Image from 'components/Image';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { SortableContainer } from 'react-sortable-hoc';
 import { browserHistory } from 'react-router';
+import { Dropdown } from 'antd';
+import { Slider } from 'components';
 
-import Tab from './Tab';
+import TabList from './TabList';
 import MarketSelector from './MarketSelector';
-import { DEFAULT_TRADING_PAIRS } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-
-let timeOut = '';
-
-const TabList = SortableContainer(
-	({
-		items,
-		activeTabs,
-		tickers,
-		coins,
-		selectedToOpen,
-		selectedToRemove,
-		activePairTab,
-		onTabClick,
-		onTabChange,
-	}) => (
-		<div className="d-flex">
-			{items.map((tab, index) => {
-				const pair = activeTabs[tab];
-				const ticker = tickers[tab];
-				return (
-					<Tab
-						key={`item-${index}`}
-						index={index}
-						tab={tab}
-						pair={pair}
-						ticker={ticker}
-						coins={coins}
-						selectedToOpen={selectedToOpen}
-						selectedToRemove={selectedToRemove}
-						activePairTab={activePairTab}
-						sortId={index}
-						onTabClick={onTabClick}
-						onTabChange={onTabChange}
-					/>
-				);
-			})}
-		</div>
-	)
-);
+import { CaretDownOutlined } from '@ant-design/icons';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
+import { isMobile } from 'react-device-detect';
 
 class PairTabs extends Component {
 	state = {
-		selectedTabs: {},
-		activeTabs: {},
-		activeItems: [],
 		activePairTab: '',
-		isAddTab: false,
-		selectedToRemove: '',
-		selectedToOpen: '',
 	};
 
 	componentDidMount() {
-		const { router, pairs, location } = this.props;
+		const { router, pairs } = this.props;
 		let active = '';
 		if (router && router.params.pair) {
-			let tabs = localStorage.getItem('tabs');
-			if (
-				tabs !== null &&
-				tabs !== '' &&
-				!JSON.parse(tabs).length &&
-				location.pathname.indexOf('/trade/') === 0
-			) {
-				// this.setNoTabs();
-			}
 			active = router.params.pair;
-			this.setState({ activePairTab: active, selectedToOpen: active });
-		} else {
-			active = '';
-			this.setState({ activePairTab: '' });
 		}
+		this.setState({ activePairTab: active });
 		this.initTabs(pairs, active);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { activePath, pairs, router, location } = nextProps;
 		let active = this.state.activePairTab;
-		let selectedToOpen = '';
+
 		if (this.props.activePath !== activePath && activePath !== 'trade') {
 			active = '';
-			this.setState({ activePairTab: active, selectedToOpen: active });
+			this.setState({ activePairTab: active });
 		}
+
 		if (JSON.stringify(this.props.pairs) !== JSON.stringify(pairs)) {
 			this.initTabs(pairs, active);
 		}
+
 		if (
 			this.props.location &&
 			location &&
@@ -106,17 +54,10 @@ class PairTabs extends Component {
 				location.pathname.indexOf('/trade/') === 0
 			) {
 				active = router.params.pair;
-				if (!this.state.activeTabs[active]) {
-					selectedToOpen = active;
-				}
-				this.setState({ activePairTab: active, selectedToOpen });
-				let tabs = localStorage.getItem('tabs');
-				if (tabs !== null && tabs !== '' && !JSON.parse(tabs).length) {
-					this.setNoTabs();
-				}
+				this.setState({ activePairTab: active });
 			} else if (router && !router.params.pair) {
 				active = '';
-				this.setState({ activePairTab: active, selectedToOpen: active });
+				this.setState({ activePairTab: active });
 			}
 			this.initTabs(pairs, active);
 		}
@@ -125,69 +66,7 @@ class PairTabs extends Component {
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		const { tabCount, pairs, calculateTabs } = this.props;
-		const { activePairTab, selectedTabs } = this.state;
-
-		if (tabCount !== prevProps.tabCount) {
-			this.initTabs(pairs, activePairTab);
-		}
-
-		if (
-			JSON.stringify(prevState.selectedTabs) !== JSON.stringify(selectedTabs) &&
-			!Object.keys(prevState.selectedTabs).length
-		) {
-			calculateTabs();
-		}
-	}
-
-	componentWillUnmount() {
-		if (timeOut) {
-			clearTimeout(timeOut);
-		}
-	}
-
-	initTabs = (pairs, activePair) => {
-		let tabs = localStorage.getItem('tabs');
-		if (tabs === null || tabs === '') {
-			tabs = DEFAULT_TRADING_PAIRS;
-		} else if (tabs) {
-			tabs = JSON.parse(tabs);
-		} else {
-			tabs = [];
-		}
-		if (Object.keys(pairs).length) {
-			const tempTabs = {};
-			if (
-				activePair &&
-				!Object.keys(pairs).filter((value) => value === activePair).length
-			) {
-				this.props.router.push('/trade/add/tabs');
-			}
-			tabs.map((key, index) => {
-				if (pairs[key]) {
-					if (index <= this.props.tabCount - 1) tempTabs[key] = pairs[key];
-				}
-				return key;
-			});
-			if (activePair && !tempTabs[activePair]) {
-				const temp = pairs[activePair];
-				const pairKeys = Object.keys(tempTabs);
-				if (pairKeys.length < this.props.tabCount) {
-					tempTabs[activePair] = temp;
-				} else {
-					delete tempTabs[pairKeys[pairKeys.length - 1]];
-					tempTabs[activePair] = temp;
-				}
-			}
-			this.setState({
-				selectedTabs: tempTabs,
-				activeTabs: tempTabs,
-				activeItems: Object.keys(tempTabs),
-			});
-			this.setTabsLocal(tempTabs);
-		}
-	};
+	initTabs = (pairs, activePair) => {};
 
 	onTabClick = (pair) => {
 		if (pair) {
@@ -196,267 +75,114 @@ class PairTabs extends Component {
 		}
 	};
 
-	openAddTabMenu = () => {
-		this.setState((prevState) => ({
-			isAddTab: !prevState.isAddTab,
-		}));
-	};
-
-	addTradePairTab = (pair) => {
-		const {
-			selectedTabs,
-			activeTabs,
-			activePairTab,
-			selectedToOpen,
-		} = this.state;
-		const { pairs, tabCount } = this.props;
-		let localTabs = {};
-		let tabPairs = [];
-
-		// if the pair is not in active tabs, add it to state and local storage
-		if (!selectedTabs[pair]) {
-			const temp = pairs[pair];
-			if (temp && temp.pair_base) {
-				localTabs = { ...selectedTabs, [pair]: temp };
-				tabPairs = Object.keys(localTabs);
-				this.setState({
-					selectedTabs: { ...localTabs },
-					selectedToOpen: pair,
-					selectedToRemove: '',
-				});
-			}
-			this.setTabsLocal(localTabs);
-			this.onTabClick(pair);
-		}
-		if (!activeTabs[pair]) {
-			let tempActive = activeTabs;
-			let activeKeys = Object.keys(activeTabs);
-			timeOut = setTimeout(() => {
-				if (tabPairs.length <= tabCount) {
-					this.setState({
-						activeTabs: { ...localTabs },
-						activeItems: Object.keys(localTabs),
-					});
-				} else {
-					delete tempActive[activeKeys[activeKeys.length - 1]];
-					tempActive[pair] = localTabs[pair];
-					this.setState({
-						activeTabs: { ...tempActive },
-						activeItems: Object.keys(tempActive),
-					});
-				}
-			}, 300);
-		}
-
-		if (
-			activeTabs[pair] &&
-			pair !== activePairTab &&
-			selectedToOpen === activePairTab
-		) {
-			this.setState({ selectedToOpen: '' });
-		}
-		// this.setTabsLocal(localTabs);
-		this.closeAddTabMenu();
-	};
-
-	onTabChange = (pair) => {
-		const {
-			selectedTabs,
-			activeTabs,
-			activePairTab,
-			selectedToOpen,
-		} = this.state;
-		const { pairs } = this.props;
-		let localTabs = {};
-		let tabPairs = [];
-
-		// if the pair is in active tabs, remove it from state and local storage
-		if (selectedTabs[pair]) {
-			localTabs = { ...selectedTabs };
-			tabPairs = Object.keys(localTabs);
-			delete localTabs[pair];
-			this.setTabsLocal(localTabs);
-
-			// if the tab is currently active Go to the next available one. if it is the last tab, go to previous one.
-			if (activePairTab === pair) {
-				const index = tabPairs.indexOf(pair);
-				let tabValue = '';
-				if (index < tabPairs.length - 1) {
-					tabValue = tabPairs[index + 1];
-				} else {
-					tabValue = tabPairs[index - 1];
-				}
-				timeOut = setTimeout(() => {
-					this.onTabClick(tabValue);
-				}, 300);
-			}
-			tabPairs = Object.keys(localTabs);
-			this.setState({
-				selectedTabs: { ...localTabs },
-				selectedToRemove: pair,
-				selectedToOpen: '',
-			});
-		} else {
-			// if the pair is not in active tabs, add it to state and local storage
-			const temp = pairs[pair];
-			if (temp && temp.pair_base) {
-				localTabs = { ...selectedTabs, [pair]: temp };
-				tabPairs = Object.keys(localTabs);
-				this.setState({
-					selectedTabs: { ...localTabs },
-					selectedToOpen: pair,
-					selectedToRemove: '',
-				});
-			}
-			this.setTabsLocal(localTabs);
-			this.onTabClick(pair);
-		}
-		if (activeTabs[pair]) {
-			let tempActive = {};
-			tabPairs.map((key, index) => {
-				if (index <= this.props.tabCount - 1) {
-					tempActive = { ...tempActive, [key]: localTabs[key] };
-				}
-				return key;
-			});
-			timeOut = setTimeout(() => {
-				this.setState({
-					activeTabs: { ...tempActive },
-					activeItems: Object.keys(tempActive),
-				});
-			}, 300);
-		} else if (!activeTabs[pair] && localTabs[pair]) {
-			let tempActive = activeTabs;
-			let activeKeys = Object.keys(activeTabs);
-			timeOut = setTimeout(() => {
-				if (tabPairs.length <= this.props.tabCount) {
-					this.setState({
-						activeTabs: { ...localTabs },
-						activeItems: Object.keys(localTabs),
-					});
-				} else {
-					delete tempActive[activeKeys[activeKeys.length - 1]];
-					tempActive[pair] = localTabs[pair];
-					this.setState({
-						activeTabs: { ...tempActive },
-						activeItems: Object.keys(tempActive),
-					});
-				}
-			}, 300);
-		}
-		if (!tabPairs.length) {
-			this.setNoTabs();
-		}
-		if (
-			activeTabs[pair] &&
-			pair !== activePairTab &&
-			selectedToOpen === activePairTab
-		) {
-			this.setState({ selectedToOpen: '' });
-		}
-		// this.setTabsLocal(localTabs);
-		this.closeAddTabMenu();
-	};
-
-	closeAddTabMenu = () => {
-		this.setState({ isAddTab: false });
-	};
-
-	setTabsLocal = (tabs) => {
-		localStorage.setItem('tabs', JSON.stringify(Object.keys(tabs)));
-	};
-
-	setNoTabs = () => {
-		this.props.router.push('/account');
-	};
-
-	onSortEnd = ({ oldIndex, newIndex }) => {
-		const { activeItems, selectedTabs } = this.state;
-		const startIndex = newIndex < 0 ? activeItems.length + newIndex : newIndex;
-		const pairTemp = activeItems.filter((data, index) => index !== oldIndex);
-		pairTemp.splice(startIndex, 0, activeItems[oldIndex]);
-		const sortedTabs = {};
-		pairTemp.forEach((data) => {
-			sortedTabs[data] = selectedTabs[data];
-		});
-		this.setTabsLocal({ ...sortedTabs, ...selectedTabs });
-		this.setState({
-			activeItems: pairTemp,
-			activeTabs: { ...sortedTabs },
-			selectedTabs: { ...sortedTabs, ...selectedTabs },
-		});
-	};
-
 	render() {
-		const {
-			selectedTabs,
-			isAddTab,
-			activePairTab,
-			activeTabs,
-			selectedToOpen,
-			selectedToRemove,
-		} = this.state;
+		const { activePairTab } = this.state;
 
-		const { tickers, location, coins, icons: ICONS } = this.props;
+		const { tickers, location, coins, favourites, pairs } = this.props;
+
+		const pair = pairs[activePairTab] || {};
+		const ticker = tickers[activePairTab] || {};
+		const { symbol } =
+			coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { increment_price } = pair;
+		const priceDifference =
+			ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
+		const tickerPercent =
+			priceDifference === 0 || ticker.open === 0
+				? 0
+				: (priceDifference / ticker.open) * 100;
+		const priceDifferencePercent = isNaN(tickerPercent)
+			? donutFormatPercentage(0)
+			: donutFormatPercentage(tickerPercent);
 
 		return (
-			<div className="d-flex h-100">
-				<TabList
-					/*axis, pressDelay and onSortEnd are SortableContainer HOC properties*/
-					axis={'x'}
-					pressDelay={200}
-					onSortEnd={this.onSortEnd}
-					items={this.state.activeItems}
-					activeTabs={activeTabs}
-					tickers={tickers}
-					coins={coins}
-					selectedToOpen={selectedToOpen}
-					selectedToRemove={selectedToRemove}
-					activePairTab={activePairTab}
-					onTabClick={this.onTabClick}
-					onTabChange={this.onTabChange}
-				/>
-				<div
-					className={classnames(
-						'app_bar-pair-content',
-						'd-flex',
-						'justify-content-between',
-						'px-2',
-						{
-							'active-tab-pair':
-								isAddTab ||
-								(location.pathname === '/trade/add/tabs' &&
-									!Object.keys(selectedTabs).length),
-						}
-					)}
-				>
-					<div onClick={this.openAddTabMenu}>
-						<Image
-							iconId={'TAB_PLUS'}
-							icon={ICONS['TAB_PLUS']}
-							wrapperClassName="app-bar-tab-close"
-						/>
+			<div className="d-flex justify-content-between">
+				<div className="market-bar d-flex align-items-center title-font apply_rtl">
+					<div className="d-flex h-100">
+						<div
+							className={classnames(
+								'app_bar-pair-content',
+								'd-flex',
+								'justify-content-between',
+								'px-2',
+								'market-trigger',
+								{
+									'active-tab-pair': location.pathname === '/trade/add/tabs',
+								},
+								{
+									'active-market-trigger': activePairTab,
+								}
+							)}
+						>
+							<Dropdown
+								id="selector-nav-container"
+								className="market-selector-dropdown"
+								overlay={
+									<MarketSelector
+										onViewMarketsClick={() =>
+											browserHistory.push('/trade/add/tabs')
+										}
+										addTradePairTab={this.onTabClick}
+									/>
+								}
+								trigger={[isMobile ? 'click' : 'hover']}
+							>
+								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
+									{activePairTab ? (
+										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
+											<div className="app_bar-currency-txt">
+												{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+											</div>
+											<div className="title-font ml-1">
+												{formatToCurrency(ticker.close, increment_price)}
+											</div>
+											<div
+												className={
+													priceDifference < 0
+														? 'app-price-diff-down app-bar-price_diff_down'
+														: 'app-bar-price_diff_up app-price-diff-up'
+												}
+											/>
+											<div
+												className={
+													priceDifference < 0
+														? 'title-font app-price-diff-down'
+														: 'title-font app-price-diff-up'
+												}
+											>
+												{priceDifferencePercent}
+											</div>
+										</div>
+									) : (
+										<div className="d-flex align-items-center">
+											<EditWrapper stringId="ADD_TRADING_PAIR">
+												{STRINGS['ADD_TRADING_PAIR']}
+											</EditWrapper>
+										</div>
+									)}
+									<CaretDownOutlined />
+								</div>
+							</Dropdown>
+						</div>
 					</div>
-					{Object.keys(selectedTabs).length <= 0 ? (
-						<span onClick={this.openAddTabMenu}>
-							<EditWrapper stringId="ADD_TRADING_PAIR">
-								{STRINGS['ADD_TRADING_PAIR']}
-							</EditWrapper>
-						</span>
-					) : (
-						''
-					)}
-					{isAddTab && (
-						<MarketSelector
-							triggerId="add-tab-list-menu"
-							wrapperClassName={classnames({
-								'tab-menu-left': Object.keys(selectedTabs).length <= 1,
-							})}
-							onViewMarketsClick={() => browserHistory.push('/trade/add/tabs')}
-							closeAddTabMenu={this.closeAddTabMenu}
-							addTradePairTab={this.addTradePairTab}
-						/>
-					)}
+					<div
+						id="favourite-nav-container"
+						className="h-100 w-100 favourite-list border-left"
+					>
+						<Slider small autoHideArrows={true} containerClass="h-100">
+							{favourites && favourites.length > 0 && (
+								<TabList
+									items={favourites}
+									pairs={pairs}
+									tickers={tickers}
+									coins={coins}
+									activePairTab={activePairTab}
+									onTabClick={this.onTabClick}
+								/>
+							)}
+						</Slider>
+					</div>
 				</div>
 			</div>
 		);
@@ -464,7 +190,7 @@ class PairTabs extends Component {
 }
 
 const mapStateToProps = ({
-	app: { language: activeLanguage, pairs, tickers, coins },
+	app: { language: activeLanguage, pairs, tickers, coins, favourites },
 	orderbook: { prices },
 }) => ({
 	activeLanguage,
@@ -472,6 +198,7 @@ const mapStateToProps = ({
 	tickers,
 	coins,
 	prices,
+	favourites,
 });
 
 export default connect(mapStateToProps)(withConfig(PairTabs));

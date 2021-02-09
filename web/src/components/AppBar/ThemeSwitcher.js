@@ -4,6 +4,7 @@ import Image from 'components/Image';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Select } from 'antd';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -17,7 +18,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 	const isSwitch = options.length < 3;
 
 	return (
-		<div className={classnames({ 'app_bar-quicktrade': !isSwitch })}>
+		<div>
 			<div className={classnames('toggle_button-wrapper', 'd-flex')}>
 				{isSwitch && (
 					<div
@@ -71,7 +72,9 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						size="small"
 						onSelect={toggle}
 						bordered={false}
-						style={{ height: '17px' }}
+						suffixIcon={<CaretDownOutlined />}
+						className="custom-select-input-style appbar elevated"
+						dropdownClassName="custom-select-style"
 					>
 						{options.map(({ value }) => (
 							<Option value={value} key={value}>

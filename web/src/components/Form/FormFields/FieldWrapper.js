@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 import { ActionNotification } from '../../';
@@ -34,10 +34,7 @@ export const FieldContent = ({
 			>
 				{children}
 				{!hideCheck && valid && hasValue && (
-					<ReactSVG
-						path={STATIC_ICONS.BLACK_CHECK}
-						wrapperClassName="field-valid"
-					/>
+					<ReactSVG src={STATIC_ICONS.BLACK_CHECK} className="field-valid" />
 				)}
 			</div>
 			{!hideUnderline && (

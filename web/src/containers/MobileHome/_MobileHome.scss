@@ -13,14 +13,14 @@
 
 		.market-button {
 			background-color: #ffffff !important;
-			border: 1px solid $colors-black;
+			border: 1px solid $colors-border;
 			color: $colors-black;
 		}
 
 		.post-wrapper {
 			max-height: 45rem;
 			overflow-y: auto;
-			border-top: 0.4rem solid $colors-black !important;
+			border-top: 0.4rem solid $colors-border !important;
 
 			.post-title {
 				font-size: $title--font-size;

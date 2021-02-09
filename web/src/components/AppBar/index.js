@@ -5,15 +5,12 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
-import moment from 'moment';
-import math from 'mathjs';
 import { DEFAULT_URL, IS_XHT } from 'config/constants';
 import { LinkButton } from './LinkButton';
-import PairTabs from './PairTabs';
 import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
-import { isLoggedIn, isAdmin } from '../../utils/token';
+import { isLoggedIn } from '../../utils/token';
 import { getMe, setMe } from '../../actions/userAction';
 import {
 	getTickers,
@@ -36,7 +33,6 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
-		tabCount: 1,
 	};
 
 	componentDidMount() {
@@ -49,9 +45,6 @@ class AppBar extends Component {
 		}
 		if (this.props.isHome && this.props.token) {
 			this.getUserDetails();
-		}
-		if ((this.props.isHome && this.props.token) || !this.props.isHome) {
-			this.checkExchangeExpiry(this.props.info);
 		}
 		this.props.getTickers();
 		if (this.props.theme) {
@@ -81,11 +74,6 @@ class AppBar extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (JSON.stringify(this.props.info) !== JSON.stringify(prevProps.info)) {
-			if ((this.props.isHome && this.props.token) || !this.props.isHome) {
-				this.checkExchangeExpiry(this.props.info);
-			}
-		}
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
@@ -98,24 +86,6 @@ class AppBar extends Component {
 		).value;
 		this.setState({ selected });
 	};
-
-	checkExchangeExpiry = (info = {}) => {
-		if (info.status) {
-			if (info.is_trial) {
-				if (info.active) {
-					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
-						this.navigateToExpiry();
-					}
-				} else {
-					this.navigateToExpiry();
-				}
-			}
-		} else {
-			this.navigateToExpiry();
-		}
-	};
-
-	navigateToExpiry = () => this.props.router.push('/expired-exchange');
 
 	getUserDetails = () => {
 		return this.props
@@ -321,6 +291,15 @@ class AppBar extends Component {
 		this.props.router.push('/summary');
 	};
 	handleMenu = (menu) => {
+		const { pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
 		if (menu === 'account') {
 			this.props.router.push('/account');
 		} else if (menu === 'security') {
@@ -339,6 +318,10 @@ class AppBar extends Component {
 			menu === 'summary'
 		) {
 			this.props.router.push('/summary');
+		} else if (menu === 'quick-trade') {
+			this.props.router.push(`/quick-trade/${pair}`);
+		} else if (menu === 'pro-trade') {
+			this.props.router.push('/trade/add/tabs');
 		}
 		this.setState({ selectedMenu: menu, isAccountMenu: false });
 	};
@@ -370,9 +353,17 @@ class AppBar extends Component {
 			case '/api':
 				selectedMenu = 'api';
 				break;
+			case '/trade/add/tabs':
+				selectedMenu = 'pro-trade';
+				break;
 			default:
 				break;
 		}
+
+		if (path.includes('quick-trade')) {
+			selectedMenu = 'quick-trade';
+		}
+
 		this.setState({ selectedMenu });
 	};
 
@@ -381,60 +372,30 @@ class AppBar extends Component {
 		this.handleTheme(theme);
 	};
 
-	calculateTabs = () => {
-		const tradeNav = document.getElementById('trade-nav-container');
-		const homeNav = document.getElementById('home-nav-container');
-		let tabCount = 1;
-		if (tradeNav && homeNav) {
-			const tradeBounds = tradeNav.getBoundingClientRect();
-			const homeBounds = homeNav.getBoundingClientRect();
-			const documentBounds = document.body.getBoundingClientRect();
-			const tabContainer = document.getElementById('trade-tab-0');
-			if (tabContainer) {
-				const tabBounds = tabContainer.getBoundingClientRect();
-				const tabTotal =
-					documentBounds.width -
-					(tradeBounds.width + homeBounds.width + tabBounds.width / 2);
-				tabCount = math.floor(tabTotal / tabBounds.width);
-			}
-			this.setState({ tabCount });
-		}
-	};
-
 	render() {
 		const {
-			noBorders,
+			// noBorders,
 			token,
 			verifyingToken,
 			isHome,
 			theme,
 			logout,
-			router,
 			activePath,
 			location,
-			pairs,
 			onHelp,
 			// user,
 			constants = {},
-			isEditMode,
-			icons: ICONS,
+			children,
 		} = this.props;
 		const {
 			selectedMenu,
 			securityPending,
 			verificationPending,
 			walletPending,
-			tabCount,
 		} = this.state;
 
-		let pair = '';
-		if (Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
-		} else {
-			pair = this.props.pair;
-		}
-		let disableBorder =
-			noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
+		let disableBorder = false;
+		// noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		const { selected } = this.state;
 		const { themeOptions } = this.props;
 		return isMobile ? (
@@ -451,37 +412,27 @@ class AppBar extends Component {
 				<Link to="/">
 					<div
 						style={{
-							backgroundImage: `url(${constants.logo_black_path})`,
+							backgroundImage: `url(${constants.logo_image})`,
 						}}
 						className="homeicon-svg"
-					></div>
+					/>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
 		) : (
 			<div
-				className={classnames('app_bar justify-content-between', {
+				className={classnames('app_bar d-flex justify-content-between', {
 					'no-borders': disableBorder,
 				})}
 			>
-				<div className="d-flex">
-					<div
-						id="home-nav-container"
-						className="d-flex align-items-center justify-content-center h-100"
-					>
-						{this.renderIcon(isHome, theme)}
-					</div>
-					{!isHome && (
-						<PairTabs
-							activePath={activePath}
-							location={location}
-							router={router}
-							tabCount={tabCount}
-							calculateTabs={this.calculateTabs}
-						/>
-					)}
+				<div
+					id="home-nav-container"
+					className="d-flex align-items-center justify-content-center h-100"
+				>
+					{this.renderIcon(isHome, theme)}
 				</div>
-				{!isLoggedIn() ? (
+				{children}
+				{!isLoggedIn() && (
 					<div id="trade-nav-container">
 						<ThemeSwitcher
 							selected={selected}
@@ -489,81 +440,19 @@ class AppBar extends Component {
 							toggle={this.onToggle}
 						/>
 					</div>
-				) : null}
+				)}
 				{!isHome ? (
 					isLoggedIn() ? (
-						<div id="trade-nav-container" className="d-flex app-bar-account">
+						<div
+							id="trade-nav-container"
+							className="d-flex app-bar-account justify-content-end"
+						>
 							<div className="d-flex app_bar-quicktrade-container">
 								<ThemeSwitcher
 									selected={selected}
 									options={themeOptions}
 									toggle={this.onToggle}
 								/>
-								{isAdmin() ? (
-									<Link to={isEditMode ? '/' : '/admin'}>
-										<div
-											className={classnames('app_bar-quicktrade', 'd-flex', {
-												'quick_trade-active': location.pathname === '/admin',
-											})}
-										>
-											<Image
-												icon={ICONS['SIDEBAR_ADMIN_DASH_ACTIVE']}
-												wrapperClassName="quicktrade_icon mx-1"
-											/>
-											<EditWrapper
-												stringId="ADMIN_DASH"
-												iconId="SIDEBAR_ADMIN_DASH_ACTIVE"
-											>
-												<div className="d-flex align-items-center">
-													{STRINGS['ADMIN_DASH']}
-												</div>
-											</EditWrapper>
-										</div>
-									</Link>
-								) : null}
-								<Link to="/trade/add/tabs">
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active':
-												location.pathname === '/trade/add/tabs',
-										})}
-									>
-										<Image
-											icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
-											wrapperClassName="quicktrade_icon mx-1"
-										/>
-										<EditWrapper
-											stringId="PRO_TRADE"
-											iconId="SIDEBAR_TRADING_ACTIVE"
-										>
-											<div className="d-flex align-items-center overflow">
-												{STRINGS['PRO_TRADE']}
-											</div>
-										</EditWrapper>
-									</div>
-								</Link>
-								{constants.broker_enabled ? (
-									<Link to={`/quick-trade/${pair}`}>
-										<div
-											className={classnames('app_bar-quicktrade', 'd-flex', {
-												'quick_trade-active': activePath === 'quick-trade',
-											})}
-										>
-											<Image
-												icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
-												wrapperClassName="quicktrade_icon"
-											/>
-											<EditWrapper
-												stringId="QUICK_TRADE"
-												iconId="QUICK_TRADE_TAB_ACTIVE"
-											>
-												<div className="d-flex align-items-center overflow">
-													{STRINGS['QUICK_TRADE']}
-												</div>
-											</EditWrapper>
-										</div>
-									</Link>
-								) : null}
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}
@@ -575,6 +464,7 @@ class AppBar extends Component {
 								activePath={activePath}
 								closeAccountMenu={this.closeAccountMenu}
 								onHelp={onHelp}
+								location={location}
 							/>
 						</div>
 					) : null

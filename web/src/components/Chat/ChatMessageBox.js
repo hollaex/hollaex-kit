@@ -2,9 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import Textarea from 'react-expanding-textarea';
 import { Link } from 'react-router';
-import ReactSvg from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
-import { ICONS } from '../../config/constants';
+import { STATIC_ICONS } from 'config/icons';
 import STRINGS from '../../config/localizedStrings';
 
 const MAX_LENGTH = 480;
@@ -31,7 +31,7 @@ export const ChatMessageBox = ({
 				className="d-flex align-items-center justify-content-center chat-emoji-wrapper"
 				onClick={handleEmojiBox}
 			>
-				<ReactSvg path={ICONS.CHAT_EMOJI} wrapperClassName="chat-emoji-icon" />
+				<ReactSVG src={STATIC_ICONS.CHAT_EMOJI} className="chat-emoji-icon" />
 			</div>
 		</div>
 	) : (

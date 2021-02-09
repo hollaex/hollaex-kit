@@ -134,3 +134,32 @@ body {
 .justify-content-between {
 	justify-content: space-between;
 }
+
+.admin-user-container .ant-table .green-btn {
+	background-color: #288500 !important;
+	color: #ffffff;
+}
+
+.blue-admin-table .ant-pagination-item-active,
+.blue-admin-table .ant-pagination-item-active:focus,
+.blue-admin-table .ant-pagination-item-active:hover,
+.blue-admin-table .ant-pagination-prev:hover .ant-pagination-item-link,
+.blue-admin-table .ant-pagination-next:hover .ant-pagination-item-link {
+	border-color: #288500;
+	color: #288500;
+}
+.blue-admin-table .ant-pagination-disabled .ant-pagination-item-link,
+.blue-admin-table .ant-pagination-disabled:hover .ant-pagination-item-link,
+.blue-admin-table .ant-pagination-disabled:focus .ant-pagination-item-link {
+	color: rgba(0, 0, 0, 0.25);
+	border-color: #d9d9d9;
+	cursor: not-allowed;
+}
+.blue-admin-table .ant-pagination-item:focus,
+.blue-admin-table .ant-pagination-item:hover {
+	border-color: #288500 !important;
+}
+.blue-admin-table .ant-pagination-item:focus a,
+.blue-admin-table .ant-pagination-item:hover a {
+	color: #288500;
+}

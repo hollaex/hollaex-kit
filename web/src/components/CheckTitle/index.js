@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import Image from 'components/Image';
 import { EditWrapper } from 'components';
 
@@ -14,36 +14,36 @@ export const renderStatusIcon = (statusCode = -1, className = '') => {
 		case 0:
 			return (
 				<ReactSVG
-					path={ICONS['VERIFICATION_INCOMPLETE']}
-					wrapperClassName={classnames(className, 'incomplete')}
+					src={ICONS['VERIFICATION_INCOMPLETE']}
+					className={classnames(className, 'incomplete')}
 				/>
 			);
 		case 1:
 			return (
 				<ReactSVG
-					path={ICONS['VERIFICATION_PENDING']}
-					wrapperClassName={classnames(className, 'pending')}
+					src={ICONS['VERIFICATION_PENDING']}
+					className={classnames(className, 'pending')}
 				/>
 			);
 		case 2:
 			return (
 				<ReactSVG
-					path={ICONS['VERIFICATION_REJECTED']}
-					wrapperClassName={classnames(className, 'rejected')}
+					src={ICONS['VERIFICATION_REJECTED']}
+					className={classnames(className, 'rejected')}
 				/>
 			);
 		case 3:
 			return (
 				<ReactSVG
-					path={ICONS['VERIFICATION_VERIFIED']}
-					wrapperClassName={classnames(className, 'verified')}
+					src={ICONS['VERIFICATION_VERIFIED']}
+					className={classnames(className, 'verified')}
 				/>
 			);
 		default:
 			return (
 				<ReactSVG
-					path={ICONS['VERIFICATION_INCOMPLETE']}
-					wrapperClassName={classnames(className, 'incomplete')}
+					src={ICONS['VERIFICATION_INCOMPLETE']}
+					className={classnames(className, 'incomplete')}
 				/>
 			);
 	}

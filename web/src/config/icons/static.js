@@ -21,6 +21,7 @@ const icons = {
 	SETUP_SECTION_LIQUIDITY: '/assets/images/setup-section-liquidity.svg',
 	SETUP_SECTION_QUICK_TRADE: '/assets/images/setup-section-quick-trade.svg',
 	SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
+	USER_SECTION_WALLET: '/assets/images/admin-user-wallet.svg',
 	SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
 	SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg',
 	HEX_PATTERN_ICON: '/assets/icons/hex-pattern-icon-05.svg',
@@ -57,6 +58,15 @@ const icons = {
 	SEARCH: '/assets/images/search.svg',
 	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
+	PLUGIN_IMAGE: '/assets/images/plugin-board-page.svg',
+	DEFAULT_PLUGIN_THUMBNAIL: '/assets/images/default-plugin-thumbnail.png',
+	DEFAULT_PLUGIN_PREVIEW: '/assets/images/default-plugin-preview-image.png',
+	ADD_THIRD_PARTY_PLUGIN: `/assets/images/add-third-party-plugin-black-01.svg`,
+	PLUGIN_REMOVAL_WHITE: `/assets/images/plugin-removal-white-01.svg`,
+	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
+	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
+	VERIFICATION_ICON: '/assets/images/verification-green-tick.svg',
+	CHAT_FEATURE_ICON: '/assets/images/chat-feature-icon.svg',
 };
 
 export default icons;

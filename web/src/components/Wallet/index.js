@@ -3,11 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import { Accordion, ControlledScrollbar } from 'components';
-import {
-	BASE_CURRENCY,
-	DEFAULT_COIN_DATA,
-	IS_XHT,
-} from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import { formatToCurrency } from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
@@ -84,7 +80,6 @@ class Wallet extends Component {
 	render() {
 		const { sections } = this.state;
 		const {
-			isValidBase,
 			fetching,
 			balance,
 			coins,
@@ -130,14 +125,14 @@ class Wallet extends Component {
 						<Link to="/wallet">{`view all`}</Link>
 					</div>
 				</ControlledScrollbar>
-				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
+				{BASE_CURRENCY ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS['WALLET.TOTAL_ASSETS']}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
-							{symbol.toUpperCase()}
 							<span>{formatToCurrency(totalAsset, baseCoin.min)}</span>
+							{symbol.toUpperCase()}
 						</div>
 					</div>
 				) : null}
@@ -157,7 +152,6 @@ const mapStateToProps = (state, ownProps) => ({
 	totalAsset: state.asset.totalAsset,
 	activeLanguage: state.app.language,
 	coins: state.app.coins,
-	isValidBase: state.app.isValidBase,
 	fetching: state.auth.fetching,
 });
 

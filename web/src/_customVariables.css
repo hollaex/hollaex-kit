@@ -10,11 +10,15 @@
 	--base_secondary-navigation-bar: #f2f2f3;
 	--base_wallet-sidebar-and-popup: #ffffff;
 	--base_footer: #000000;
-	--base_fields: #f0f1f1;
-	--base_inactive-button: #535353;
 
 	--labels_important-active-labels-text-graphics: #000000;
 	--labels_secondary-inactive-label-text-graphics: #808080;
+	--calculated_important-border: #000000b3;
+	--calculated_secondary-border: #00000054;
+	--calculated_footer_border: #ffffff26;
+	--calculated_super-pale_label-text-graphics: #00000026;
+	--labels_fields: #f0f1f1;
+	--labels_inactive-button: #535353;
 
 	--trading_selling-related-elements: #ee4036;
 	--trading_buying-related-elements: #00a69c;
@@ -32,6 +36,11 @@
 
 	/*_________________________________*/
 
+	--calculated_market-card_gradient_background: #ffffff;
+	--calculated_trading_selling-sparkline-fill: #ee40364d;
+	--calculated_trading_buying-sparkline-fill: #00a69c4d;
+	--calculated_trading_selling-orderbook-bar: #ee40361f;
+	--calculated_trading_buying-orderbook-bar: #00a69c1f;
 	--calculated_trading_buying-related-text: #000000;
 	--calculated_trading_selling-related-text: #ffffff;
 	--calculated_base_modal-overlay: #ffffffbf;

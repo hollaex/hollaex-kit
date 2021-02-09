@@ -8,7 +8,7 @@ const nestedContent = {
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
-	ADD_TRADING_PAIR: 'Add Trading Pair',
+	ADD_TRADING_PAIR: 'Select a market',
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_BASE_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
@@ -220,6 +220,8 @@ const nestedContent = {
 			'Insufficient balance available ({0}) to perform the operation ({1}).',
 		MIN_VALUE: 'Value must be {0} or higher.',
 		MAX_VALUE: 'Value must be {0} or lower.',
+		MIN_VALUE_NE: 'Value must be higher than {0}.',
+		MAX_VALUE_NE: 'Value must be lower than {0}.',
 		INSUFFICIENT_BALANCE: 'Insufficient balance',
 		PASSWORDS_DONT_MATCH: "Password don't match",
 		USER_EXIST: 'Email has already been registered',
@@ -669,8 +671,10 @@ const nestedContent = {
 		WITHDRAWALS: 'Withdrawals',
 	},
 	ACCOUNT_SECURITY: {
+		TITLE_TEXT:
+			'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
-			TITLE: 'Two-Factor Authentication',
+			TITLE: '2FA',
 			OTP_ENABLED: 'otp enabled',
 			OTP_DISABLED: 'PLEASE TURN ON 2FA',
 			ENABLED_TEXTS: {
@@ -678,8 +682,8 @@ const nestedContent = {
 				TEXT_2: 'Require OTP when withdrawing funds',
 			},
 			DIALOG: {
-				SUCCESS: 'You have successfully activated the OTP',
-				REVOKE: 'You have successfully revoked your OTP',
+				SUCCESS: 'You have successfully activated 2FA',
+				REVOKE: 'You have successfully deactivated 2FA',
 			},
 			CONTENT: {
 				TITLE: 'Activate Two-Factor Authentication',
@@ -689,9 +693,8 @@ const nestedContent = {
 				MESSAGE_3:
 					'If you have problems scanning this, you can manually enter the code below',
 				MESSAGE_4:
-					'You can store this code securely to recover your 2FA in case you change or lose your mobile phone in future.',
+					'You must store this code securely to recover your 2FA in case you change or lose your mobile phone in future.',
 				MESSAGE_5: 'Manual',
-				INPUT: 'Enter One-Time Password (OTP)',
 				WARNING:
 					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
 				ENABLE: 'Enable Two-Factor Authentication',
@@ -703,7 +706,7 @@ const nestedContent = {
 			},
 		},
 		CHANGE_PASSWORD: {
-			TITLE: 'Change Password',
+			TITLE: 'Password',
 			ACTIVE: 'ACTIVE',
 			DIALOG: {
 				SUCCESS: 'You have successfully changed your password',
@@ -722,6 +725,37 @@ const nestedContent = {
 					label: 'Confirm New Password',
 					placeholder: 'Retype your new password',
 				},
+			},
+		},
+		LOGIN: {
+			TITLE: 'Login History',
+			IP_ADDRESS: 'IP Address',
+			TIME: 'Date/Time',
+			CONTENT: {
+				TITLE: 'Logins History',
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
+		},
+		FREEZE: {
+			TITLE: 'Freeze Account',
+			CONTENT: {
+				MESSAGE_1:
+					'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1:
+					'Use only if you fear that your account has been compromised',
+				TITLE_1: 'Freeze your Account',
+				TITLE_2: 'Account freezing',
+				MESSAGE_2:
+					'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3:
+					'The following will occur if you choose to freeze your account:',
+				MESSAGE_4: '1. Pending withdrawals will be canceled.',
+				MESSAGE_5:
+					'2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6:
+					'3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?',
 			},
 		},
 	},
@@ -776,6 +810,7 @@ const nestedContent = {
 	ORDERS: 'my active orders',
 	TRADES: 'my transaction history',
 	RECENT_TRADES: 'my recent trades', // ToDo
+	ORDER_HISTORY: 'Order history',
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
@@ -910,7 +945,7 @@ const nestedContent = {
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
 	ORDERBOOK_BUYERS: 'Buyers',
-	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+	ORDERBOOK_SPREAD: 'spread {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
@@ -1077,7 +1112,7 @@ const nestedContent = {
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
 	WALLET_ADDRESS_MESSAGE:
-		'When you generate a wallet you create a deposit and withdrawal address.',
+		'When you generate a wallet, you create a deposit and withdrawal address.',
 	WALLET_ADDRESS_ERROR:
 		'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
@@ -1224,6 +1259,11 @@ const nestedContent = {
 		WAVE_NUMBER: 'Wave Number', // new
 		DISCOUNT: '( {0}% discount )', // new
 		MY_FEES_LIMITS: ' My Fees and Limits', // new
+		MARKETS: 'Markets', // new
+		CHANGE_24H: '24H Change', // new
+		VOLUME_24H: '24H Volume', // new
+		PRICE_GRAPH_24H: '24H Price graph', // new
+		VIEW_MORE_MARKETS: 'View more markets', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1341,6 +1381,37 @@ const nestedContent = {
 	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
+	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	POST_ONLY: 'Post only',
+	CLEAR: 'Clear',
+	ORDER_TYPE: 'type',
+	TRIGGER_CONDITIONS: 'Trigger conditions',
+	TRANSACTION_STATUS: {
+		PENDING: 'Pending',
+		REJECTED: 'Rejected',
+		COMPLETED: 'Completed',
+	},
+	DEPOSIT_STATUS: {
+		// new
+		NEW: 'New',
+		SEARCH_FIELD_LABEL: 'Paste your transaction ID',
+		SEARCH: 'SEARCH',
+		SEARCHING: 'SEARCHING',
+		CHECK_DEPOSIT_STATUS: 'Check deposit status',
+		STATUS_DESCRIPTION:
+			'You can check the status of your deposit by passing the transaction ID (hash) below.',
+		TRANSACTION_ID: 'Transaction ID (hash)',
+		SEARCH_SUCCESS: 'Transaction found!',
+		SEARCH_ERROR:
+			'Transaction not found. Please check the ID and try again. If your believe there is a problem please contact support.',
+	},
+	CANCEL_ORDERS: {
+		HEADING: 'Cancel orders',
+		SUB_HEADING: 'Cancel all orders',
+		INFO_1: 'This will cancel your open orders for this markets.',
+		INFO_2: 'Are you sure you want to cancel all your open orders?',
+	},
+	AMOUNT_IN: 'Amount in',
 };
 
 const content = flatten(nestedContent, options);

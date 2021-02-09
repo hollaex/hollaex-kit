@@ -3,18 +3,18 @@ import flatten from 'flat';
 const options = { safe: true, delimiter: '_' };
 export const nestedColors = {
 	base: {
-		background: '#ffffff',
+		background: '#f8f8f8',
 		'top-bar-navigation': '#000000',
-		'secondary-navigation-bar': '#2B2B2B',
-		'wallet-sidebar-and-popup': '#333333',
+		'secondary-navigation-bar': '#e9e9e9',
+		'wallet-sidebar-and-popup': '#f8f8f8',
 		footer: '#000000',
-		fields: '#191919',
-		'inactive-button': '#535353',
 	},
 
 	labels: {
 		'important-active-labels-text-graphics': '#000000',
-		'secondary-inactive-label-text-graphics': '#808080',
+		'secondary-inactive-label-text-graphics': '#4d4d4d',
+		fields: '#dfdfdf',
+		'inactive-button': '#cccccc',
 	},
 
 	trading: {
@@ -24,8 +24,8 @@ export const nestedColors = {
 
 	specials: {
 		'buttons-links-and-highlights': '#0066b4',
-		'chat-messages': '#98ccb2',
-		'my-username-in-chat': '#ffff00',
+		'chat-messages': '#3b5c4c',
+		'my-username-in-chat': '#80a000',
 		'checks-okay-done': '#008000',
 		'pending-waiting-caution': '#F6921E',
 		'notifications-alerts-warnings': '#ed1c24',

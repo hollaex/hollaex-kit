@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import Modal from 'components/Dialog/DesktopDialog';
 import { bool, array, func } from 'prop-types';
-import { Select, Button, Table, Modal as ConfirmationModal } from 'antd';
+import { Input, Select, Button, Table, Modal as ConfirmationModal } from 'antd';
 import ImageUpload from './ImageUpload';
 import { KeyOutlined } from '@ant-design/icons';
 import { upload } from 'actions/operatorActions';
 
 const { Option } = Select;
+const { Search } = Input;
 
 class AllIconsModal extends Component {
 	state = {
@@ -45,6 +46,10 @@ class AllIconsModal extends Component {
 							themeKey={theme}
 							iconPath={iconPath}
 							onFileChange={this.onFileChange}
+							beforeInjection={(svg) => {
+								svg.setAttribute('width', '80px');
+								svg.setAttribute('height', '76px');
+							}}
 						/>
 					</Fragment>
 				);
@@ -81,7 +86,7 @@ class AllIconsModal extends Component {
 			cancelText: 'Cancel',
 			onOk: this.handleSave,
 			onCancel: () => this.setState({ selectedFiles: {} }),
-			className: 'all-icons-confirmation',
+			zIndex: 10003,
 		});
 	};
 
@@ -134,7 +139,7 @@ class AllIconsModal extends Component {
 			loading: false,
 		});
 
-		onSave(icons);
+		onSave(icons, true);
 
 		this.setState({
 			selectedFiles: {},
@@ -142,13 +147,17 @@ class AllIconsModal extends Component {
 	};
 
 	render() {
-		const { isOpen, icons, onCloseDialog } = this.props;
+		const { isOpen, icons, onCloseDialog, searchValue, onSearch } = this.props;
+
+		const modalContent = document.getElementById('all-icons-content');
+		const modalContentHeight = modalContent ? modalContent.clientHeight : 0;
+		const tableContentHeight = Math.max(0, modalContentHeight - 240);
 
 		return (
 			<Modal
 				isOpen={isOpen}
 				label="operator-controls-modal"
-				className="operator-controls__modal"
+				className="operator-controls__modal extended"
 				disableTheme={true}
 				onCloseDialog={onCloseDialog}
 				shouldCloseOnOverlayClick={true}
@@ -156,9 +165,24 @@ class AllIconsModal extends Component {
 				bodyOpenClassName="operator-controls__modal-open"
 			>
 				{isOpen && (
-					<div>
+					<div className="h-100" id="all-icons-content">
 						<div className="operator-controls__all-strings-header">
-							<div className="operator-controls__modal-title">All icons</div>
+							<div className="operator-controls__modal-title">All graphics</div>
+							<div className="d-flex justify-content-end mr-3">
+								<Search
+									style={{ width: '134px' }}
+									defaultValue={searchValue}
+									onChange={onSearch}
+									enterButton={false}
+									bordered={false}
+									placeholder="Search..."
+								/>
+							</div>
+						</div>
+						<div>Upload a graphic to a specific theme.</div>
+						<div>
+							<b>When uploading new content a file size under 1mb</b> is
+							recommended.
 						</div>
 						<Table
 							className="operator-controls__table"
@@ -167,27 +191,27 @@ class AllIconsModal extends Component {
 							size="small"
 							sticky={true}
 							pagination={{
-								pageSize: 1000,
-								hideOnSinglePage: true,
+								pageSize: icons.length ? Math.ceil(icons.length / 4) : 0,
+								hideOnSinglePage: false,
 								showSizeChanger: false,
 								showQuickJumper: false,
 								showLessItems: false,
 								showTotal: false,
 							}}
-							scroll={{ y: 240 }}
+							scroll={{ y: tableContentHeight }}
 							style={{ width: '820px' }}
 						/>
+						<div className="d-flex justify-content-end pt-4 mt-4">
+							<Button
+								type="primary"
+								onClick={onCloseDialog}
+								className="operator-controls__save-button confirm"
+							>
+								Confirm
+							</Button>
+						</div>
 					</div>
 				)}
-				<div className="d-flex justify-content-end pt-4 mt-4">
-					<Button
-						type="primary"
-						onClick={onCloseDialog}
-						className="operator-controls__save-button confirm"
-					>
-						Confirm
-					</Button>
-				</div>
 			</Modal>
 		);
 	}

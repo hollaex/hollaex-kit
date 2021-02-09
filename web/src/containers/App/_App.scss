@@ -1,4 +1,4 @@
-$inner_container-border: 1px solid $border-color;
+$inner_container-border: 1px solid $colors-super-pale-black;
 
 .app_container {
 	// height: 100%;
@@ -69,11 +69,49 @@ $inner_container-border: 1px solid $border-color;
 	}
 
 	.app_container-sidebar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 		min-width: $sidebar-width;
 		max-width: $sidebar-width;
 		background-color: $app-sidebar-background;
-		border-left: 1px solid $colors-deactivate-color2;
+		border-left: 1px solid $colors-super-pale-black;
 		padding: 0;
+		transition: all 0.2s ease-out 0s;
+
+		.sidebar-toggle-wrapper {
+			display: flex;
+			align-items: center;
+			width: 0 !important;
+			overflow: visible;
+		}
+
+		.sidebar-toggle {
+			transform: translateX(-50%);
+			&.ant-btn-primary {
+				background-color: $app-light-background;
+				border-color: $colors-border;
+			}
+			.anticon {
+				color: $colors-main-black;
+			}
+
+			&.ant-btn-icon-only {
+				height: 30px;
+				width: 18px;
+			}
+		}
+
+		&.close-sidebar {
+			.sidebar-toggle {
+				transform: translateX(-100%);
+			}
+			min-width: 0;
+			max-width: 0;
+			.sidebar-container {
+				overflow: hidden;
+			}
+		}
 	}
 	.exchange-warning {
 		background-color: #fff100;

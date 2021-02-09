@@ -41,6 +41,7 @@ export const getChartSymbol = (symbol, tickSize, api_name = '') => {
 			session: '24x7',
 			regular_session: '24x7',
 			pricescale,
+			minmov: 1,
 			volume_precision: 4,
 			has_empty_bars: true,
 		});
@@ -61,7 +62,7 @@ export const getChartHistory = (
 };
 
 export const getSparklines = async () => {
-	const from = moment().subtract('1', 'month').format('X');
+	const from = moment().subtract('1', 'days').format('X');
 	const to = moment().format('X');
 
 	const { data = {} } = await axios({
@@ -71,7 +72,9 @@ export const getSparklines = async () => {
 
 	const chartData = {};
 	Object.entries(data).forEach(([pairKey, pairData = []]) => {
-		chartData[pairKey] = pairData.map(({ close }) => close);
+		chartData[pairKey] = {};
+		chartData[pairKey]['close'] = pairData.map(({ close }) => close);
+		chartData[pairKey]['open'] = (pairData[0] && pairData[0]['open']) || 0;
 	});
 
 	return chartData;

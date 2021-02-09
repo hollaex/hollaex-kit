@@ -110,7 +110,7 @@ class TradeHistory extends Component {
 
 		return (
 			<Row>
-				<Row gutter={16} style={{ marginTop: 16 }}>
+				<div className="f-1 mt-4 admin-user-container">
 					<Col>
 						<div>
 							<span
@@ -122,6 +122,7 @@ class TradeHistory extends Component {
 						</div>
 						<Table
 							columns={COLUMNS}
+							className="blue-admin-table"
 							rowKey={(data, index) => {
 								return `${data.symbol}_${index}`;
 							}}
@@ -132,7 +133,7 @@ class TradeHistory extends Component {
 							}}
 						/>
 					</Col>
-				</Row>
+				</div>
 			</Row>
 		);
 	}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { Link } from 'react-router';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 
@@ -10,9 +10,9 @@ const WelcomeScreen = ({ onChangeStep }) => {
 		<div className="welcome-screen">
 			<div className="content">
 				<ReactSVG
-					path={STATIC_ICONS.HOLLAEX_INIT_LOGO}
-					alt="logo"
-					wrapperClassName="logo"
+					src={STATIC_ICONS.HOLLAEX_INIT_LOGO}
+					fallback={() => <span>logo</span>}
+					className="logo"
 				/>
 				<div className="body-content">
 					<div className="header">

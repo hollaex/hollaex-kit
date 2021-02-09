@@ -34,6 +34,9 @@
 	display: flex;
 	margin-top: 3rem;
 }
+.step-container .ant-steps-item {
+	white-space: nowrap;
+}
 .steps,
 .step-content {
 	flex: 1;
@@ -124,19 +127,12 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-.flex-container {
-	display: flex;
-	justify-content: space-between;
-}
 .small-text {
 	font-size: 12px;
 	margin-left: 1.4rem;
 	color: #808083;
 }
-.candle-icon {
-	position: absolute;
-	right: 7px;
-	top: 10px;
+.asset-content .candle-icon {
 	width: 74px;
 }
 .wallet-icon {
@@ -161,7 +157,7 @@
 	margin-top: 7px;
 }
 .wizard-container .sell {
-	border: 1px solid #ffffff;
+	border: 1px solid #808080;
 	width: 60px;
 	height: 18px;
 }
@@ -170,7 +166,7 @@
 	position: relative;
 	bottom: 3px;
 	left: 18px;
-	color: #ffffff !important;
+	color: #808080;
 }
 .wizard-container .buy {
 	width: 60px;
@@ -178,13 +174,14 @@
 	border: 1px solid #000000;
 	margin-top: 0.25rem;
 	color: #000000;
-	background-color: #ffffff;
+	background-color: #808080;
 }
 .wizard-container .buy .label {
 	font-size: 10px;
 	position: relative;
 	bottom: 3px;
 	left: 18px;
+	color: #000000;
 }
 .ant-radio-inner {
 	background-color: #000000;

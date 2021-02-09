@@ -22,9 +22,7 @@ let configuration = {
 		links: {},
 		captcha: {},
 		defaults: {},
-		plugins: {
-			configuration: {}
-		},
+		features: {},
 		meta: {}
 	}
 };
@@ -34,12 +32,7 @@ let secrets = {
 	accounts: {},
 	captcha: {},
 	emails: {},
-	smtp: {},
-	plugins: {
-		s3: {},
-		sns: {},
-		freshdesk: {}
-	}
+	smtp: {}
 };
 
 let frozenUsers = {};
@@ -88,12 +81,7 @@ const resetAllConfig = () => {
 		accounts: {},
 		captcha: {},
 		emails: {},
-		smtp: {},
-		plugins: {
-			s3: {},
-			sns: {},
-			freshdesk: {}
-		}
+		smtp: {}
 	};
 	configuration = {
 		coins: {},
@@ -107,9 +95,7 @@ const resetAllConfig = () => {
 			links: {},
 			captcha: {},
 			defaults: {},
-			plugins: {
-				configuration: {}
-			},
+			features: {},
 			meta: {}
 		}
 	};
@@ -148,7 +134,6 @@ exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
 exports.KIT_CONFIG_KEYS = [
 	'captcha',
-	'plugins',
 	'api_name',
 	'description',
 	'color',
@@ -156,15 +141,16 @@ exports.KIT_CONFIG_KEYS = [
 	'links',
 	'defaults',
 	'native_currency',
-	'logo_path',
-	'logo_black_path',
+	'logo_image',
 	'valid_languages',
 	'new_user_is_activated',
 	'interface',
 	'icons',
 	'strings',
 	'meta',
-	'setup_completed'
+	'features',
+	'setup_completed',
+	'email_verification_required'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -173,8 +159,7 @@ exports.KIT_SECRETS_KEYS = [
 	'emails',
 	'security',
 	'captcha',
-	'smtp',
-	'plugins'
+	'smtp'
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
@@ -189,7 +174,9 @@ exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used f
 exports.API_HOST = process.env.API_HOST || 'localhost';
 exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
 exports.NODE_ENV = process.env.NODE_ENV;
-exports.HOLLAEX_NETWORK_URL = process.env.HOLLAEX_NETWORK_URL || 'https://api.testnet.hollaex.network/v2';
+exports.HOLLAEX_NETWORK_ENDPOINT = process.env.NETWORK === 'testnet' ? 'https://api.testnet.hollaex.network' : 'https://api.hollaex.network';
+exports.HOLLAEX_NETWORK_BASE_URL = '/v2';
+exports.HOLLAEX_NETWORK_PATH_ACTIVATE = '/exchange/activate';
 
 // MAIN CONSTANTS END --------------------------------------------------
 
@@ -199,6 +186,7 @@ exports.HOLLAEX_NETWORK_URL = process.env.HOLLAEX_NETWORK_URL || 'https://api.te
 exports.INIT_CHANNEL = 'channel:init';
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 exports.HMAC_TOKEN_KEY = 'hmac:token';
+exports.EVENTS_CHANNEL = 'channel:events';
 exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
 
 // Websocket
@@ -262,6 +250,7 @@ exports.SETTING_KEYS = [
 
 exports.OMITTED_USER_FIELDS = [
 	'password',
+	'note',
 	'is_admin',
 	'is_support',
 	'is_supervisor',

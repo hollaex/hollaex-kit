@@ -190,7 +190,8 @@ class App extends Component {
 		const renderLink = (value) => (
 			<Button
 				type="primary"
-				onClick={() => this.requestUserData({ id: value })}
+				// onClick={() => this.requestUserData({ id: value })}
+				className="green-btn"
 			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO
@@ -244,6 +245,7 @@ class App extends Component {
 						<Form
 							onSubmit={this.searchUser}
 							buttonText="Search"
+							buttonClass="green-btn"
 							fields={{
 								id: {
 									type: 'number',
@@ -262,6 +264,7 @@ class App extends Component {
 						/>
 						{userInformationList.length ? (
 							<Table
+								className="blue-admin-table"
 								columns={COLUMNS}
 								dataSource={userInformationList}
 								rowKey={(data) => {

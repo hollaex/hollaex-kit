@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
+
 import { ChatWrapper } from '../../components';
 import { WS_URL } from '../../config/constants';
 import {
@@ -35,7 +37,7 @@ class Chat extends Component {
 			this.props.enabledPlugins &&
 			this.props.enabledPlugins.length &&
 			!this.props.fetchingAuth &&
-			!this.props.enabledPlugins.includes('chat')
+			!this.props.features.chat
 		) {
 			this.props.router.push('/account');
 		}
@@ -83,25 +85,21 @@ class Chat extends Component {
 		this.setState({ chatWs });
 
 		chatWs.onopen = (evt) => {
-			console.info('Connected Chat Socket', evt);
 			chatWs.send(
 				JSON.stringify({
 					op: 'subscribe',
 					args: ['chat'],
 				})
 			);
-			this.wsInterval = setInterval(() => {
-				chatWs.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+
+			setWsHeartbeat(chatWs, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
 		};
 
 		chatWs.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			console.info('chatWs', data);
 			switch (data.action) {
 				case 'init': {
 					const { data: messages = [] } = data;
@@ -304,7 +302,8 @@ class Chat extends Component {
 			minimized,
 			chatIsClosed,
 			set_username,
-			enabledPlugins,
+			// enabledPlugins,
+			features,
 		} = this.props;
 		const {
 			messages,
@@ -313,7 +312,7 @@ class Chat extends Component {
 			unreadMessages,
 			showEmojiBox,
 		} = this.state;
-		if (!enabledPlugins.includes('chat')) {
+		if (!features.chat) {
 			return <Fragment />;
 		}
 		return (
@@ -354,6 +353,7 @@ const mapStateToProps = (store) => ({
 	set_username: store.user.settings.chat.set_username,
 	is_hap: store.user.is_hap,
 	enabledPlugins: store.app.enabledPlugins,
+	features: store.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({

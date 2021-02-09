@@ -1,7 +1,7 @@
 $footer-wrapper--margin-top: 4rem;
 $footer-wrapper--margin: 1rem;
 $footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
-$footer-wrapper--border-color: $dark-border-main;
+$footer-wrapper--border-color: $footer-border-color;
 $footer-social-icon--dimension: 2rem;
 $footer-icons--side-margin: 1.5rem;
 $footer-content-size: 12px;
@@ -12,17 +12,20 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	font-size: $font-size-subtext;
 	background-color: $footer-background-color;
 	color: $base_footer_text;
+	&.deep-footer {
+		padding-bottom: 136px;
+	}
 
 	.footer-row-content {
 		margin-bottom: $footer-wrapper--margin-bottom;
 		padding: $footer-wrapper--margin-top $footer-wrapper--margin 0;
+		width: 100%;
 
 		.footer-links-section {
 			width: 60%;
 			.footer-links-group {
 				margin: 0 $footer-wrapper--margin;
 				font-size: $font-size-main;
-				align-self: center;
 
 				.footer-links-section--title {
 					font-weight: bold;
@@ -226,7 +229,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				}
 				.footer_separter {
 					border-left: none !important;
-					border-top: 1px solid white !important;
+					border-top: 1px solid $footer-wrapper--border-color !important;
 					.footer-content {
 						display: flex;
 						flex-direction: column;

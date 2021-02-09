@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
-import { EditWrapper } from 'components';
 
 const getClassNames = (status) => {
 	switch (status) {
@@ -38,24 +37,33 @@ const ActionNotification = ({
 	rotateIfRtl,
 	showActionText,
 	disable = false,
-}) => (
-	<div
-		className={classnames(
-			'action_notification-wrapper',
-			{
-				pointer: !disable && showPointer,
-				left: textPosition === 'left',
-				right: textPosition === 'right',
-				'icon_on-right': iconPosition === 'right',
-				'icon_on-left': iconPosition === 'left',
-				disabled: disable,
-			},
-			className
-		)}
-		onClick={disable ? () => {} : onClick}
-	>
-		{(showActionText || !isMobile) && (
-			<EditWrapper>
+}) => {
+	// This is to prevent action when edit string or upload icons are clicked
+	const onActionClick = ({ target: { dataset = {} } }) => {
+		const { stringId, iconId } = dataset;
+
+		if (!disable && !stringId && !iconId && onClick) {
+			return onClick();
+		}
+	};
+
+	return (
+		<div
+			className={classnames(
+				'action_notification-wrapper',
+				{
+					pointer: !disable && showPointer,
+					left: textPosition === 'left',
+					right: textPosition === 'right',
+					'icon_on-right': iconPosition === 'right',
+					'icon_on-left': iconPosition === 'left',
+					disabled: disable,
+				},
+				className
+			)}
+			onClick={onActionClick}
+		>
+			{(showActionText || !isMobile) && (
 				<div
 					className={classnames(
 						'action_notification-text',
@@ -64,23 +72,23 @@ const ActionNotification = ({
 				>
 					{text}
 				</div>
-			</EditWrapper>
-		)}
-		<Image
-			iconId={iconId}
-			stringId={stringId}
-			icon={iconPath}
-			alt={text}
-			svgWrapperClassName="action_notification-svg"
-			imageWrapperClassName={classnames('action_notification-image', {
-				rotate_ltr: rotateIfLtr,
-				rotate_rtl: rotateIfRtl,
-				rotate,
-				reverse: reverseImage,
-			})}
-		/>
-	</div>
-);
+			)}
+			<Image
+				iconId={iconId}
+				stringId={stringId}
+				icon={iconPath}
+				alt={text}
+				svgWrapperClassName="action_notification-svg"
+				imageWrapperClassName={classnames('action_notification-image', {
+					rotate_ltr: rotateIfLtr,
+					rotate_rtl: rotateIfRtl,
+					rotate,
+					reverse: reverseImage,
+				})}
+			/>
+		</div>
+	);
+};
 
 ActionNotification.defaultProps = {
 	text: '',

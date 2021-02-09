@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
 import { debounce } from 'lodash';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { PATHS } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -30,15 +30,14 @@ import {
 	changePair,
 	setCurrencies,
 	setOrderLimits,
-	setValidBaseCurrency,
 	setConfig,
 	setLanguage,
 	changeTheme,
-	requestAvailPlugins,
+	// requestAvailPlugins,
 	requestInitial,
 	requestConstant,
 } from '../../../actions/appActions';
-import { SESSION_TIME, BASE_CURRENCY } from '../../../config/constants';
+import { SESSION_TIME } from '../../../config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import { checkRole } from '../../../utils/token';
 
@@ -50,6 +49,7 @@ import 'antd/dist/antd.css';
 const md = new MobileDetect(window.navigator.userAgent);
 
 const { Content, Sider } = Layout;
+const { Item } = Menu;
 
 class AppWrapper extends React.Component {
 	constructor(prop) {
@@ -86,7 +86,7 @@ class AppWrapper extends React.Component {
 			this.props.router.push('/init');
 		}
 		this._resetTimer();
-		this.props.requestAvailPlugins();
+		// this.props.requestAvailPlugins();
 		this.setState({
 			setupCompleted:
 				setupCompleted === 'false' ||
@@ -165,12 +165,7 @@ class AppWrapper extends React.Component {
 					this.props.setPairs(res.data.pairs);
 					this.props.setPairsData(res.data.pairs);
 					this.props.setCurrencies(res.data.coins);
-					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
-						let temp = res.data.pairs[key];
-						return temp.pair_2 === BASE_CURRENCY;
-					});
-					const isValidPair = pairWithBase.length > 0;
-					this.props.setValidBaseCurrency(isValidPair);
+
 					const orderLimits = {};
 					Object.keys(res.data.pairs).map((pair, index) => {
 						orderLimits[pair] = {
@@ -241,42 +236,54 @@ class AppWrapper extends React.Component {
 	};
 
 	renderMenuItem = ({ path, label, routeKey, ...rest }, index) => {
+		const { constants: { logo_image } = {} } = this.props;
 		let showLabel = label;
 		if (routeKey === 'main') {
 			showLabel = this.props.constants.api_name || '';
 			return (
-				<Link to={path} className="no-link" key={index}>
-					<div
-						className={
-							this.props.location.pathname === '/admin'
-								? 'sidebar-exchange-menu flex-menu active-exchange-menu'
-								: 'sidebar-exchange-menu flex-menu'
-						}
-					>
-						<ReactSVG
-							path={STATIC_ICONS.HEX_PATTERN_ICON}
-							wrapperClassName="sidebar-icon"
-						/>
-						<div>
-							<div>DASHBOARD</div>
-							<div className="exchange-title">{showLabel}</div>
+				<Item key={index} className="custom-side-menu">
+					<Link to={path} className="no-link" key={index}>
+						<div
+							className={
+								this.props.location.pathname === '/admin'
+									? 'sidebar-exchange-menu flex-menu active-exchange-menu'
+									: 'sidebar-exchange-menu flex-menu'
+							}
+						>
+							<ReactSVG
+								src={logo_image || STATIC_ICONS.HEX_PATTERN_ICON}
+								className="sidebar-icon"
+								fallback={() => (
+									<img
+										src={logo_image || STATIC_ICONS.HEX_PATTERN_ICON}
+										alt="exchange-logo"
+										className="sidebar-icon"
+									/>
+								)}
+							/>
+							<div>
+								<div>DASHBOARD</div>
+								<div className="exchange-title">{showLabel}</div>
+							</div>
 						</div>
-					</div>
-				</Link>
+					</Link>
+				</Item>
 			);
 		}
 		return (
-			<Link to={path} className="no-link" key={index}>
-				<div
-					className={
-						this.props.location.pathname.includes(path)
-							? 'sidebar-menu active-side-menu'
-							: 'sidebar-menu'
-					}
-				>
-					{showLabel}
-				</div>
-			</Link>
+			<Item key={index} className="custom-side-menu">
+				<Link to={path} className="no-link" key={index}>
+					<div
+						className={
+							this.props.location.pathname.includes(path)
+								? 'sidebar-menu active-side-menu'
+								: 'sidebar-menu'
+						}
+					>
+						{showLabel}
+					</div>
+				</Link>
+			</Item>
 		);
 	};
 
@@ -304,6 +311,8 @@ class AppWrapper extends React.Component {
 			return 'Billing';
 		} else if (location.pathname.includes('/admin/collateral')) {
 			return 'Collateral';
+		} else if (location.pathname.includes('/admin/resources')) {
+			return 'Resources';
 		} else {
 			return 'Dashboard';
 		}
@@ -316,8 +325,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-black">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -331,8 +340,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-grey">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_KYC}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_KYC}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -346,8 +355,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-orange">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -361,8 +370,8 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-yellow">
 						<div>
 							<ReactSVG
-								path={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
-								wrapperClassName="sider-icons"
+								src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								className="sider-icons"
 							/>
 						</div>
 						<div>
@@ -391,7 +400,7 @@ class AppWrapper extends React.Component {
 	};
 
 	render() {
-		const { children, router } = this.props;
+		const { children, router, user } = this.props;
 		const logout = () => {
 			removeToken();
 			router.replace('/login');
@@ -406,7 +415,7 @@ class AppWrapper extends React.Component {
 			router.replace('/summary');
 		}
 		if (!setupCompleted) {
-			return <SetupWizard />;
+			return <SetupWizard user={user} />;
 		}
 		if (md.phone()) {
 			return (
@@ -462,7 +471,13 @@ class AppWrapper extends React.Component {
 								className="link-icon"
 								alt="Link-icon"
 							/>{' '}
-							Go to Holla Dash
+							<a
+								href="https://dash.bitholla.com/"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Go to Holla Dash
+							</a>
 						</div>
 					</div>
 					<Layout>
@@ -482,12 +497,16 @@ class AppWrapper extends React.Component {
 								<div>
 									<div className="bottom-side-top"></div>
 									<Menu mode="vertical" style={{ lineHeight: '64px' }}>
-										<Link to="/admin/resources">
-											<div className={'sidebar-menu'}>Resources</div>
-										</Link>
-										<div className={'sidebar-menu'} onClick={logout}>
-											Logout
-										</div>
+										<Item className="custom-side-menu">
+											<Link to="/admin/resources">
+												<div className={'sidebar-menu'}>Resources</div>
+											</Link>
+										</Item>
+										<Item className="custom-side-menu">
+											<div className={'sidebar-menu'} onClick={logout}>
+												Logout
+											</div>
+										</Item>
 									</Menu>
 								</div>
 							</div>
@@ -515,6 +534,7 @@ const mapStateToProps = (state) => ({
 	fetchingAuth: state.auth.fetching,
 	pairs: state.app.pairs,
 	constants: state.app.constants,
+	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -523,13 +543,12 @@ const mapDispatchToProps = (dispatch) => ({
 	setPairsData: bindActionCreators(setPairsData, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
+	// requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
 	logout: bindActionCreators(logout, dispatch),
 });
 

@@ -6,9 +6,6 @@ const { loggerEmail } = require('../config/logger');
 const { getValidLanguage } = require('./utils');
 const { MAILTYPE } = require('./strings');
 const generateMessageContent = require('./templates');
-const getStatusText = (status) => {
-	return status ? 'COMPLETED' : 'PENDING';
-};
 const { GET_KIT_CONFIG, GET_KIT_SECRETS, DOMAIN } = require('../constants');
 const AUDIT_EMAIL = () => GET_KIT_SECRETS().emails.audit;
 const SENDER_EMAIL = () => GET_KIT_SECRETS().emails.sender;
@@ -16,7 +13,13 @@ const SEND_EMAIL_COPY = () => GET_KIT_SECRETS().emails.send_email_to_support;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const SUPPORT_SOURCE = () => `'${API_NAME()} Support <${SENDER_EMAIL()}>'`;
 const BCC_ADDRESSES = () => SEND_EMAIL_COPY() ? [AUDIT_EMAIL()] : [];
-const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
+const DEFAULT_LANGUAGE = () => {
+	try {
+		return GET_KIT_CONFIG().defaults.language;
+	} catch (err) {
+		return 'en';
+	}
+};
 
 const sendEmail = (
 	type,
@@ -47,29 +50,14 @@ const sendEmail = (
 		case MAILTYPE.INVALID_ADDRESS:
 		case MAILTYPE.USER_DEACTIVATED:
 		case MAILTYPE.INVITED_OPERATOR:
-		case MAILTYPE.WITHDRAWAL_REQUEST: {
+		case MAILTYPE.WITHDRAWAL_REQUEST:
+		case MAILTYPE.DEPOSIT:
+		case MAILTYPE.WITHDRAWAL: {
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}
 		case MAILTYPE.DEPOSIT_CANCEL: {
 			if (data.date) data.date = formatDate(data.date);
-			to.BccAddresses = BCC_ADDRESSES();
-			break;
-		}
-		case MAILTYPE.DEPOSIT:
-		case MAILTYPE.WITHDRAWAL: {
-			data.status = getStatusText(data.status);
-			if (data.phoneNumber && data.status === 'COMPLETED') {
-				const { sendSMSDeposit } = require('../api/helpers/plugins');
-				sendSMSDeposit(
-					type,
-					data.currency,
-					data.phoneNumber,
-					data.amount,
-					formatDate(),
-					language
-				);
-			}
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}

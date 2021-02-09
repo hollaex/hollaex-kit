@@ -77,9 +77,8 @@ class BankData extends Component {
 				this.closeModal();
 				if (onChangeSuccess) {
 					onChangeSuccess({
-						...values,
+						...this.props.initialValues,
 						...submitData,
-						...data,
 					});
 				}
 				this.setState({ bank: data });
@@ -129,7 +128,7 @@ class BankData extends Component {
 		// });
 		approveBank(values)
 			.then((data) => {
-				this.setState({ bank: data.bank_account });
+				this.setState({ bank: data });
 				message.success('Bank approved');
 			})
 			.catch((err) => {
@@ -195,6 +194,7 @@ class BankData extends Component {
 															})
 														}
 														type="primary"
+														className="green-btn"
 														icon={<CheckOutlined />}
 														// size={10}
 													>

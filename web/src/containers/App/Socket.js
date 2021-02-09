@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import {
 	WS_URL,
 	SESSION_TIME,
@@ -9,6 +9,7 @@ import {
 	LANGUAGE_KEY,
 } from '../../config/constants';
 import { isMobile } from 'react-device-detect';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
 
 import { getMe, setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
@@ -19,7 +20,6 @@ import {
 	removeOrder,
 } from '../../actions/orderAction';
 import {
-	setOrderbooks,
 	setTrades,
 	setOrderbook,
 	addTrades,
@@ -41,13 +41,14 @@ import {
 	setOrderLimits,
 	NOTIFICATIONS,
 	setSnackDialog,
-	setValidBaseCurrency,
 	setConfig,
 	setInfo,
+	setPlugins,
+	requestPlugins,
 	requestInitial,
 	requestConstant,
 } from '../../actions/appActions';
-
+import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, isLoggedIn } from '../../utils/token';
 
@@ -71,6 +72,9 @@ class Container extends Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
+		requestPlugins().then(({ data = {} }) => {
+			if (data.data && data.data.length !== 0) this.props.setPlugins(data.data);
+		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -130,13 +134,6 @@ class Container extends Component {
 		});
 	};
 
-	storeData = (data) => {
-		this.props.setOrderbooks(data);
-		this.orderCache = {};
-	};
-
-	storeOrderData = debounce(this.storeData, 250);
-
 	setPublicWS = () => {
 		// const publicSocket = new WebSocket(`${WS_URL}/stream`);
 		// this.setState({ publicSocket });
@@ -147,8 +144,9 @@ class Container extends Component {
 					this.props.setConfig(res.data);
 					if (res.data.defaults) {
 						const themeColor = localStorage.getItem('theme');
+						const isThemeValid = hasTheme(themeColor, res.data.color);
 						const language = localStorage.getItem(LANGUAGE_KEY);
-						if (!themeColor && res.data.defaults.theme) {
+						if (res.data.defaults.theme && (!themeColor || !isThemeValid)) {
 							this.props.changeTheme(res.data.defaults.theme);
 							localStorage.setItem('theme', res.data.defaults.theme);
 						}
@@ -174,12 +172,6 @@ class Container extends Component {
 					this.props.setPairsData(res.data.pairs);
 					this.props.setCurrencies(res.data.coins);
 
-					const pairWithBase = Object.keys(res.data.pairs).filter((key) => {
-						let temp = res.data.pairs[key];
-						return temp.pair_2 === BASE_CURRENCY;
-					});
-					const isValidPair = pairWithBase.length > 0;
-					this.props.setValidBaseCurrency(isValidPair);
 					const orderLimits = {};
 					Object.keys(res.data.pairs).map((pair, index) => {
 						orderLimits[pair] = {
@@ -271,31 +263,35 @@ class Container extends Component {
 
 		this.setState({ privateSocket });
 
-		this.getUserDetails();
+		if (isLoggedIn()) {
+			this.getUserDetails();
+		}
 
 		privateSocket.onopen = (evt) => {
-			console.log('Connected Private Socket', evt);
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['orderbook', 'trade', 'wallet', 'order', 'deposit'],
+					args: ['trade', 'wallet', 'order', 'deposit'],
 				})
 			);
-			this.wsInterval = setInterval(() => {
-				privateSocket.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+			// this.wsInterval = setInterval(() => {
+			// 	privateSocket.send(
+			// 		JSON.stringify({
+			// 			op: 'ping',
+			// 		})
+			// 	);
+			// }, 55000);
+			setWsHeartbeat(privateSocket, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
 		};
 
 		privateSocket.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			console.log('privateSocket', data);
 			switch (data.topic) {
 				case 'trade':
-					if (data.action === 'partial') {
+					if (data.action === 'partial' || 'insert') {
 						const tradesData = {
 							...data,
 							[data.symbol]: data.data,
@@ -318,21 +314,11 @@ class Container extends Component {
 						}
 					}
 					break;
-				case 'orderbook':
-					const tempData = {
-						...data,
-						[data.symbol]: data.data,
-					};
-					delete tempData.data;
-					this.orderCache = { ...this.orderCache, ...tempData };
-					this.storeOrderData(this.orderCache);
-					// this.props.setOrderbooks(data);
-					break;
 				case 'order':
 					if (data.action === 'partial') {
 						this.props.setUserOrders(data.data);
 					} else if (data.action === 'insert') {
-						if (data.type === 'limit') {
+						if (data.data.type === 'limit') {
 							playBackgroundAudioNotification(
 								'orderbook_limit_order',
 								this.props.settings
@@ -428,6 +414,8 @@ class Container extends Component {
 								{ type: data.data.status, data: data.data },
 								false
 							);
+						} else if (data.data.status === 'triggered') {
+							this.props.removeOrder(data.data);
 						}
 					}
 					break;
@@ -448,7 +436,7 @@ class Container extends Component {
 		};
 
 		privateSocket.onerror = (evt) => {
-			console.log('public socket error', evt);
+			console.error('public socket error', evt);
 		};
 
 		// privateSocket.on('error', (error) => {
@@ -729,7 +717,6 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	setPairs: bindActionCreators(setPairs, dispatch),
 	setPairsData: bindActionCreators(setPairsData, dispatch),
-	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
@@ -737,10 +724,10 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
+	setPlugins: bindActionCreators(setPlugins, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

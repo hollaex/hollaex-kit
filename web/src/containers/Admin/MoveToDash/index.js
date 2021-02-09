@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 import './index.css';
@@ -12,12 +12,12 @@ const MoveToDash = () => {
 				To view this page you must go back to Holla Dash
 			</div>
 			<ReactSVG
-				path={STATIC_ICONS.ADMIN_MISSING_GO_BACK}
-				wrapperClassName="master-admin-img"
+				src={STATIC_ICONS.ADMIN_MISSING_GO_BACK}
+				className="master-admin-img"
 			/>
 			<div>
 				<a
-					href="https://dash.testnet.hollaex.com/"
+					href="https://dash.bitholla.com/"
 					target="_blank"
 					rel="noopener noreferrer"
 				>

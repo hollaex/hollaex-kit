@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSvg from 'react-svg';
+import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 
@@ -9,6 +9,10 @@ import STRINGS from '../../../config/localizedStrings';
 // import { getBonusRequirements } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 
+const createMarkup = (msg) => {
+	return { __html: msg };
+};
+
 // const SucessStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
 // 		{isAccountDetails && (
@@ -16,9 +20,9 @@ import withConfig from 'components/ConfigProvider/withConfig';
 // 				{STRINGS["USER_VERIFICATION.COMPLETE"].toUpperCase()}
 // 			</div>
 // 		)}
-// 		<ReactSvg
-// 			path={ICONS["GREEN_CHECK"]}
-// 			wrapperClassName="requirement-stauts"
+// 		<ReactSVG
+// 			src={ICONS["GREEN_CHECK"]}
+// 			className="requirement-stauts"
 // 		/>
 // 	</div>
 // );
@@ -30,9 +34,9 @@ import withConfig from 'components/ConfigProvider/withConfig';
 // 				{STRINGS["USER_VERIFICATION.INCOMPLETED"].toUpperCase()}
 // 			</div>
 // 		) : (
-// 				<ReactSvg
-// 					path={ICONS["VERIFICATION_INCOMPLETE"]}
-// 					wrapperClassName="requirement-stauts"
+// 				<ReactSVG
+// 					src={ICONS["VERIFICATION_INCOMPLETE"]}
+// 					className="requirement-stauts"
 // 				/>
 // 			)}
 // 	</div>
@@ -40,18 +44,18 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 // const PendingStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
-// 		<ReactSvg
-// 			path={ICONS["VERIFICATION_PENDING"]}
-// 			wrapperClassName="requirement-stauts"
+// 		<ReactSVG
+// 			src={ICONS["VERIFICATION_PENDING"]}
+// 			className="requirement-stauts"
 // 		/>
 // 	</div>
 // );
 
 // const RejectedStatus = ({ isAccountDetails, icons: ICONS = {} }) => (
 // 	<div className="d-flex">
-// 		<ReactSvg
-// 			path={ICONS["VERIFICATION_REJECTED"]}
-// 			wrapperClassName="requirement-stauts"
+// 		<ReactSVG
+// 			src={ICONS["VERIFICATION_REJECTED"]}
+// 			className="requirement-stauts"
 // 		/>
 // 	</div>
 // );
@@ -292,6 +296,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 const SummaryRequirements = ({
 	coins,
 	user,
+	config = {},
 	isAccountDetails = false,
 	isBonusSection = false,
 	contentClassName = '',
@@ -311,6 +316,7 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
+	const accountData = config[selectedLevel] || {};
 	// const requirement = isBonusSection
 	// 	? getBonusRequirements(user, coins, affiliation)
 	// 	: getRequirements(user, selectedLevel, balance, coins);
@@ -319,9 +325,9 @@ const SummaryRequirements = ({
 		<div className="d-flex">
 			{!isAccountDetails && !isBonusSection ? (
 				<div>
-					<ReactSvg
-						path={ICONS['VERIFICATION_DOC_STATUS']}
-						wrapperClassName="requirement-doc-icon"
+					<ReactSVG
+						src={ICONS['VERIFICATION_DOC_STATUS']}
+						className="requirement-doc-icon"
 					/>
 				</div>
 			) : null}
@@ -332,6 +338,9 @@ const SummaryRequirements = ({
 					'summary-content-txt'
 				)}
 			>
+				<div className="my-2">
+					<div dangerouslySetInnerHTML={createMarkup(accountData.note)} />
+				</div>
 				{/* <div className="my-2">
 					{Object.keys(requirement).map((step, index) => {
 						let reqObj = requirement[step];

@@ -208,7 +208,9 @@ class AddTradeTab extends Component {
 				<div className="trade_tabs-content">
 					{!isMobile && (
 						<div className="d-flex justify-content-end">
-							{constants.broker_enabled ? (
+							{constants &&
+							constants.features &&
+							constants.features.quick_trade ? (
 								<span className="trade_tabs-link link-separator">
 									<Link to={`/quick-trade/${quickPair}`}>
 										{STRINGS['QUICK_TRADE']}
@@ -251,6 +253,7 @@ class AddTradeTab extends Component {
 						) : (
 							<MarketCards
 								markets={processedData}
+								chartData={chartData}
 								page={page}
 								pageSize={pageSize}
 								count={count}

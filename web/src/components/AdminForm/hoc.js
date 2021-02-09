@@ -16,9 +16,20 @@ const Form = (name, className = '', allowPristine = false) => {
 		buttonType,
 		small,
 		buttonClass = '',
+		submitOnKeyDown = false,
 	}) => {
 		return (
-			<form className={className}>
+			<form
+				className={className}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter' && !e.shiftKey) {
+						if (submitOnKeyDown && !submitting && valid && !error) {
+							e.preventDefault();
+							handleSubmit(onSubmit)();
+						}
+					}
+				}}
+			>
 				{fields && renderFields(fields)}
 				{error && (
 					<div>

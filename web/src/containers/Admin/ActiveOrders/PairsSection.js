@@ -59,7 +59,11 @@ const getColumns = (userId, onCancel) => {
 				key: '',
 				render: (e) => (
 					<Tooltip placement="bottom" title={`Cancel order`}>
-						<Button type="primary" onClick={() => onCancel(e)}>
+						<Button
+							type="primary"
+							onClick={() => onCancel(e)}
+							className="green-btn"
+						>
 							Cancel
 						</Button>
 					</Tooltip>
@@ -255,11 +259,11 @@ class PairsSection extends Component {
 		} = this.state;
 		const COLUMNS = getColumns(this.props.userId, this.onCancelOrder);
 		return (
-			<div>
+			<div className="f-1 admin-user-container">
 				<Tabs onChange={this.tabChange}>
 					<TabPane tab="Bids" key="buy">
 						<Row>
-							<Row gutter={16} style={{ marginTop: 16 }}>
+							<div className="f-1 mt-4">
 								{buyOrders.loading ? (
 									<Spin size="large" />
 								) : (
@@ -272,6 +276,7 @@ class PairsSection extends Component {
 											Download table
 										</CSVLink>
 										<Table
+											className="blue-admin-table"
 											columns={COLUMNS}
 											rowKey={(data) => {
 												return data.id;
@@ -284,12 +289,12 @@ class PairsSection extends Component {
 										/>
 									</Col>
 								)}
-							</Row>
+							</div>
 						</Row>
 					</TabPane>
 					<TabPane tab="Asks" key="sell">
 						<Row>
-							<Row gutter={16} style={{ marginTop: 16 }}>
+							<div className="f-1 mt-4">
 								{sellOrders.loading ? (
 									<Spin size="large" />
 								) : (
@@ -303,6 +308,7 @@ class PairsSection extends Component {
 										</CSVLink>
 										<Table
 											columns={COLUMNS}
+											className="blue-admin-table"
 											rowKey={(data) => {
 												return data.id;
 											}}
@@ -314,7 +320,7 @@ class PairsSection extends Component {
 										/>
 									</Col>
 								)}
-							</Row>
+							</div>
 						</Row>
 					</TabPane>
 				</Tabs>

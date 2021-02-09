@@ -82,7 +82,11 @@ class FullListUsers extends Component {
 
 	render() {
 		const renderLink = (value) => (
-			<Button type="primary" onClick={() => this.requestUser(value)}>
+			<Button
+				type="primary"
+				// onClick={() => this.requestUser(value)}
+				className="green-btn"
+			>
 				<Link to={`/admin/user?id=${value}`}>
 					GO
 					<RightOutlined />
@@ -149,7 +153,7 @@ class FullListUsers extends Component {
 		// const { coins } = this.props;
 		// const HEADERS = generateHeaders(coins);
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content admin-user-container">
 				{loading ? (
 					<Spin size="large" />
 				) : (
@@ -164,6 +168,7 @@ class FullListUsers extends Component {
 							</span>
 						</div>
 						<Table
+							className="blue-admin-table"
 							columns={COLUMNS}
 							dataSource={users}
 							expandedRowRender={renderRowContent}

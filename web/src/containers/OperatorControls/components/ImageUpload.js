@@ -8,6 +8,7 @@ const ImageUpload = ({
 	themeKey,
 	iconPath,
 	onFileChange,
+	beforeInjection,
 	// onReset,
 	// loading,
 }) => {
@@ -15,7 +16,11 @@ const ImageUpload = ({
 		<div className="image-upload">
 			<div className="image-upload__file-container">
 				<div className="image-upload__file-img-content">
-					<Image icon={iconPath} wrapperClassName="image-upload_image" />
+					<Image
+						icon={iconPath}
+						wrapperClassName="image-upload_image"
+						beforeInjection={beforeInjection}
+					/>
 				</div>
 				<div>
 					<div>{`${themeKey} theme`}</div>

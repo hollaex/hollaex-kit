@@ -1,42 +1,109 @@
-.roles-wrapper .role-icon {
+.admin-roles-wrapper .role-icon {
 	width: 5rem;
 }
-.roles-wrapper .admin-link {
+.admin-roles-wrapper .admin-link {
 	text-decoration: underline;
+	cursor: pointer;
 }
 .role-type-container {
 	border: 1px solid #c4c4c4;
 }
-.roles-wrapper .revoke-btn {
+.admin-roles-wrapper .revoke-btn {
 	background-color: #f28041;
 	color: #ffffff;
 }
-.roles-wrapper .line-separator {
+.admin-roles-wrapper .line-separator {
 	background-color: #c4c4c4;
 	width: 1px;
 }
-.roles-wrapper .role-description-box {
+.admin-roles-wrapper .role-description-box {
 	border-bottom: 1px solid #c4c4c4;
+	height: 135px;
 }
-.roles-wrapper .role-label {
+.admin-roles-wrapper .role-label {
 	font-size: 20px;
 	font-weight: bold;
 }
-.roles-wrapper .role-supervisor {
+.admin-roles-wrapper .role-supervisor {
 	background-color: #000000;
 }
-.roles-wrapper .role-kyc {
+.admin-roles-wrapper .role-kyc {
 	background-color: #dadada;
 	color: #000000;
 }
-.roles-wrapper .role-communication {
+.admin-roles-wrapper .role-communication {
 	background-color: #e66b00;
 	color: #000000;
 }
-.roles-wrapper .role-support {
+.admin-roles-wrapper .role-support {
 	background-color: #ffff00;
 	color: #000000;
 }
 .edit-role-icon {
 	width: 3rem;
+}
+.admin-roles-wrapper .divider {
+	border-top: 1px solid #c4c4c4;
+	margin: 2rem 0;
+	width: 100%;
+}
+.admin-roles-wrapper h1,
+.admin-roles-wrapper h3 {
+	color: #ffffff;
+}
+.admin-roles-wrapper .table-wrapper .ant-table-thead > tr > th {
+	background-color: #4e4efb;
+	color: #ffffff;
+}
+.admin-roles-wrapper .table-wrapper .ant-table-tbody > tr > td {
+	background-color: #0000d1;
+	color: #ffffff;
+	border-bottom: 1px solid #0000d1;
+}
+.admin-roles-wrapper
+	.table-wrapper
+	.ant-table-tbody
+	> tr.ant-table-placeholder:hover
+	> td {
+	background-color: #0000ff;
+}
+.admin-roles-wrapper
+	.table-wrapper
+	.ant-table-tbody
+	> tr.ant-table-row:hover
+	> td {
+	background-color: #0000ff;
+}
+.admin-roles-wrapper
+	.table-wrapper
+	.ant-empty
+	.ant-empty-image
+	.ant-empty-img-simple-ellipse,
+.admin-roles-wrapper
+	.table-wrapper
+	.ant-empty
+	.ant-empty-image
+	.ant-empty-img-simple-path {
+	fill: #7d9ac9;
+}
+.admin-roles-wrapper
+	.table-wrapper
+	.ant-empty
+	.ant-empty-image
+	.ant-empty-img-simple-g {
+	stroke: #7d9ac9;
+}
+.admin-roles-wrapper .table-wrapper .ant-empty .ant-empty-description {
+	color: #ffffff;
+}
+.admin-roles-wrapper .ant-table-pagination.ant-pagination {
+	margin: 16px 0;
+	background: #ffffff;
+	border-radius: 50px;
+	padding: 15px;
+}
+.admin-roles-wrapper .ant-pagination-item-active,
+.admin-roles-wrapper .ant-pagination-item-active:focus,
+.admin-roles-wrapper .ant-pagination-item-active:hover {
+	border-color: #288500 !important;
 }

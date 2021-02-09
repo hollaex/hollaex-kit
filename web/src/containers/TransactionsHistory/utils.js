@@ -58,7 +58,13 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
+export const generateTradeHeaders = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices = {}
+) => {
 	return [
 		{
 			stringId: 'PAIR',
@@ -218,6 +224,51 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			},
 		},
 		{
+			stringId: 'AMOUNT_IN',
+			label: `${STRINGS['AMOUNT_IN']} ${BASE_CURRENCY.toUpperCase()}`,
+			key: 'amount-in',
+			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
+				if (pairs[symbol]) {
+					const { increment_price, pair_base } = pairs[symbol];
+					const { min, ...rest } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+					return STRINGS.formatString(
+						CURRENCY_PRICE_FORMAT,
+						formatToCurrency(
+							calculateAmount(quick, prices[pair_base] || 0, size),
+							increment_price
+						),
+						rest.symbol.toUpperCase()
+					).join('');
+				} else {
+					return calculateAmount(quick, price, size);
+				}
+			},
+			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
+				if (pairs[symbol]) {
+					const { increment_price, pair_base } = pairs[symbol];
+					const { min, ...rest } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+					return (
+						<td key={index}>
+							{STRINGS.formatString(
+								CURRENCY_PRICE_FORMAT,
+								formatToCurrency(
+									calculateAmount(quick, prices[pair_base] || 0, size),
+									increment_price
+								),
+								rest.symbol.toUpperCase()
+							)}
+						</td>
+					);
+				} else {
+					return (
+						<td>
+							{formatToCurrency(calculateAmount(quick, price, size), 0.0001)}
+						</td>
+					);
+				}
+			},
+		},
+		{
 			stringId: 'FEE,NO_FEE',
 			label: STRINGS['FEE'],
 			key: 'fee',
@@ -334,17 +385,27 @@ export const generateWithdrawalsHeaders = (
 					? STRINGS['REJECTED']
 					: STRINGS['PENDING'],
 			renderCell: (
-				{ status = false, dismissed = false, rejected = false },
+				{ status = false, dismissed = false, rejected = false, is_new = false },
 				key,
 				index
 			) => {
 				return (
-					<td key={index}>
-						{status
-							? STRINGS['COMPLETE']
-							: dismissed || rejected
-							? STRINGS['REJECTED']
-							: STRINGS['PENDING']}
+					<td key={index} className="transaction-status">
+						<div
+							className={classnames(
+								'd-flex new-tag-wrapper',
+								getClassNameByStatus(status, dismissed, rejected, is_new)
+							)}
+						>
+							{is_new ? (
+								<div className="new-tag">{STRINGS['DEPOSIT_STATUS.NEW']}</div>
+							) : null}
+							{status
+								? STRINGS['COMPLETE']
+								: dismissed || rejected
+								? STRINGS['REJECTED']
+								: STRINGS['PENDING']}
+						</div>
 					</td>
 				);
 			},
@@ -394,6 +455,11 @@ export const generateWithdrawalsHeaders = (
 						)}
 					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
+					/*: <td key={index}>{fee}</td>*/
+					/*: <td key={index}>{fee}</td>*/
+					/*: <td key={index}>{fee}</td>*/
+					/*: <td key={index}>{fee}</td>*/
+					/*: <td key={index}>{fee}</td>*/
 					/*: <td key={index}>{fee}</td>*/
 				 /*: <td key={index}>{fee}</td>*/);
 			},
@@ -524,4 +590,16 @@ export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
 	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
 		({ key }) => KEYS.indexOf(key) > -1
 	);
+};
+
+const getClassNameByStatus = (
+	status = false,
+	dismissed = false,
+	rejected = false,
+	is_new = false
+) => {
+	if (is_new) {
+		return '';
+	}
+	return status ? 'completed' : dismissed || rejected ? 'rejected' : 'pending';
 };

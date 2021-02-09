@@ -8,13 +8,17 @@ $bp-lg: 1199px;
 // common colors
 $colors-main-black: var(--labels_important-active-labels-text-graphics);
 $colors-black: var(--labels_secondary-inactive-label-text-graphics);
+$colors-border: var(--calculated_secondary-border);
+$colors-main-border: var(--calculated_important-border);
+$footer-border-color: var(--calculated_footer_border);
+$colors-super-pale-black: var(--calculated_super-pale_label-text-graphics);
 $colors-wave-phase-completed: var(--specials_checks-okay-done);
 
 // common colors for deactivate and disabled look
 $colors-deactivate: var(--labels_secondary-inactive-label-text-graphics);
-$colors-deactivate-color1: var(--base_inactive-button);
+$colors-deactivate-color1: var(--labels_inactive-button);
 $colors-deactivate-color2: var(--labels_secondary-inactive-label-text-graphics);
-$colors-deactivate-color4: var(--base_inactive-button);
+$colors-deactivate-color4: var(--labels_inactive-button);
 
 //common colors for notifications and errors
 $colors-notifications-red: var(--specials_notifications-alerts-warnings);
@@ -35,6 +39,7 @@ $colors-notification-green-text: var(
 $colors-notification-pending: var(--specials_pending-waiting-caution);
 $specials_highlight-box: var(--calculated_specials_highlight-box);
 $chat-own-message--color: var(--specials_my-username-in-chat);
+$favourite-star: var(--specials_my-username-in-chat);
 
 //common colors for terms
 $colors-terms-background: $specials_highlight-box;
@@ -44,6 +49,9 @@ $app-background-color: var(--base_background);
 $app-light-background: var(--base_secondary-navigation-bar);
 $app-sidebar-background: var(--base_wallet-sidebar-and-popup);
 $auth-container-background: var(--base_wallet-sidebar-and-popup);
+$market-card_gradient_background: var(
+	--calculated_market-card_gradient_background
+);
 
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $app-background-color;
@@ -57,21 +65,25 @@ $quick-trade-container: var(--base_wallet-sidebar-and-popup);
 $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);
 
-$app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
-$box-fields: var(--base_fields);
+$app-line-divider: $colors-main-border;
+$box-fields: var(--labels_fields);
 
 $buy: var(--trading_buying-related-elements);
 $sell: var(--trading_selling-related-elements);
 
 $link: var(--specials_buttons-links-and-highlights);
 
-$trade-fields: var(--base_fields);
-$trade-fields-border: var(--labels_secondary-inactive-label-text-graphics);
-$trade-fill-indicator: var(--labels_important-active-labels-text-graphics);
+$trade-fields: var(--labels_fields);
+$trade-fields-border: $colors-border;
+$trade-fill-indicator: $specials_highlight-box;
 $trade-fill-indicator-text: var(
 	--labels_secondary-inactive-label-text-graphics
 );
 
+$sparkline-fill: var(--calculated_trading_buying-sparkline-fill);
+$negative-sparkline-fill: var(--calculated_trading_selling-sparkline-fill);
+$selling-orderbook-bar: var(--calculated_trading_selling-orderbook-bar);
+$buying-orderbook-bar: var(--calculated_trading_buying-orderbook-bar);
 $buy-bids-text: var(--calculated_trading_buying-related-text);
 $sell-bids-text: var(--calculated_trading_selling-related-text);
 $base_top-bar-navigation_text: var(--calculated_base_top-bar-navigation_text);
@@ -79,10 +91,6 @@ $base_top-bar-navigation_text-inactive: var(
 	--calculated_base_top-bar-navigation_text-inactive
 );
 $base_footer_text: var(--calculated_base_footer_text);
-
-$sidebar-border--color: var(--labels_secondary-inactive-label-text-graphics);
-$border-color: var(--labels_secondary-inactive-label-text-graphics);
-$border-main: var(--labels_important-active-labels-text-graphics);
 
 // form field colors
 $form-color-underline-focus: var(
@@ -98,7 +106,7 @@ $tab-active: var(--labels_important-active-labels-text-graphics);
 $tab-inactive: var(--labels_secondary-inactive-label-text-graphics);
 $sidebar-color: var(--labels_secondary-inactive-label-text-graphics);
 $sidebar-color-active: var(--labels_important-active-labels-text-graphics);
-$info-panel-background: var(--base_fields);
+$info-panel-background: var(--labels_fields);
 $info-panel-text: var(--labels_secondary-inactive-label-text-graphics);
 $icon-hover: var(--labels_important-active-labels-text-graphics);
 $icon-unhover: var(--labels_secondary-inactive-label-text-graphics);
@@ -112,8 +120,8 @@ $footer-background-color: var(--base_footer);
 // chat color
 $chat-message-background-even: var(--base_background);
 $chat-message-background-odd: var(--base_secondary-navigation-bar);
-$chat-message-color: var(--labels_secondary-inactive-label-text-graphics);
-$chat-box-border: var(--labels_important-active-labels-text-graphics);
+$chat-message-color: var(--specials_chat-messages);
+$chat-box-border: $colors-main-border;
 
 // this is for transaction history- ToDo: need to customize for common theme
 $history-color-buy: var(--trading_buying-related-elements);
@@ -121,8 +129,8 @@ $history-color-sell: var(--trading_selling-related-elements);
 
 // remaining dark colors
 $dark-app-background-color: var(--base_background);
-$dark-app-line-divider: var(--labels_secondary-inactive-label-text-graphics);
-$dark-border-main: var(--labels_secondary-inactive-label-text-graphics);
+$dark-app-line-divider: $colors-super-pale-black;
+$dark-border-main: $colors-main-border;
 $dark-inactive-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-font-sub-text-color: var(--labels_secondary-inactive-label-text-graphics);
 $dark-font-sub-text-1-color: var(
@@ -306,11 +314,6 @@ $raleway-medium--font-family: 'Raleway Medium';
 $raleway-light--font-family: 'Raleway Light';
 $title--font-family: $raleway-extrabold--font-family;
 
-$backgound-pattern: '/assets/pattern-grey.jpg';
-$background-image: '/assets/background.png';
-$background-image-dark: '/assets/HollaEx-dark-theme.jpg';
-$dark-background-image: '/assets/dark-background.jpg';
-
 // DIALOG
 $dialog-min-width: 25rem;
 $dialog-min-height: 30rem;
@@ -346,17 +349,17 @@ $tab-text-padding: 0 8px 8px;
 $tab-selected-line-height: 4px;
 
 // MOBILE
+$market-selector--height: 3rem;
 $navigation_bar-mobile--height: 4rem;
-$navigation_bar-mobile--background: $colors-main-black;
-$dark-navigation_bar-mobile--background: white;
+$navigation_bar-mobile--background: $app-bar-background-color;
 $bottom_bar--height: 6rem;
 $bottom-bar--background: $navigation_bar-mobile--background;
-$dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
 $max-content-height-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height + $bottom-bar--height}
 );
 $max-content-height-double-bar-mobile: calc(
-	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height}
+	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height +
+		$market-selector--height}
 );
 $max-content-height-home-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height}

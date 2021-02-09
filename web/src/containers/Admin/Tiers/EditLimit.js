@@ -144,7 +144,7 @@ class EditLimit extends Component {
 		const { selectValues, formData } = this.state;
 
 		return (
-			<div>
+			<div className="admin-tiers-wrapper">
 				<h3>Edit deposit and withdraw limits</h3>
 				<div className="description">
 					Set the limit amounts that are allowed for both deposits and

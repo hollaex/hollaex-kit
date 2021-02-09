@@ -119,6 +119,12 @@
 	background-color: #0000ff;
 	color: #ffffff;
 }
+.ant-layout-sider
+	.ant-layout-sider-children
+	.ant-menu
+	.ant-menu-item:last-child {
+	font-size: 14px;
+}
 .ant-layout-sider .ant-layout-sider-children {
 	background-color: #0000ff;
 }
@@ -146,6 +152,13 @@
 .exchange-title {
 	color: #ffffff;
 	font-size: 22px;
+}
+.custom-side-menu {
+	height: auto !important;
+	padding: 0px !important;
+}
+.sidebar-exchange-menu .exchange-title {
+	font-size: 16px;
 }
 .sidebar-exchange-menu,
 .sidebar-menu {
@@ -188,8 +201,8 @@
 	content: '';
 	width: 0;
 	height: 0;
-	border-top: 45px solid transparent;
-	border-bottom: 46px solid transparent;
+	border-top: 40px solid transparent;
+	border-bottom: 40px solid transparent;
 	border-left: 8px solid #ffffff;
 	position: absolute;
 	left: 6px;

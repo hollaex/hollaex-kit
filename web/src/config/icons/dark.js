@@ -48,8 +48,8 @@ const nestedIcons = {
 		REVOKED: '/assets/images/api-key-revoked.svg',
 		ACTIVE: '/assets/images/api-key-active.svg',
 		TRASHED: '/assets/images/api-key-trashed.svg',
-		GENERATE: '/assets/images/api-key-generate-dark.svg',
-		CREATED: '/assets/images/api-key-created-dark.svg',
+		GENERATE: '/assets/images/api-key-generate.svg',
+		CREATED: '/assets/images/api-key-created.svg',
 	},
 
 	VERIFICATION: {
@@ -76,6 +76,12 @@ const nestedIcons = {
 		RISK_ICON: '/assets/images/risk-settings-icon.svg',
 		RISK_ADJUST_ICON: '/assets/images/risk-management-pop-adjust.svg',
 		RISK_MANAGE_WARNING_ICON: '/assets/images/risk-manage-pop-warning.svg',
+	},
+
+	SECURITY: {
+		OTP_ICON: '/assets/images/2fa-security-icon.svg',
+		CHANGE_PASSWORD_ICON: '/assets/images/password-security-icon.svg',
+		API_ICON: '/assets/images/api-security-icon.svg',
 	},
 
 	LEVEL_ACCOUNT: {
@@ -130,6 +136,8 @@ const nestedIcons = {
 	LAPTOP: '/assets/icons/compute-play-black.svg',
 	TELEGRAM: '/assets/icons/telegram-black.svg',
 
+	OTP_ACTIVE: '/assets/icons/2fa-active.svg',
+	OTP_DEACTIVATED: '/assets/icons/2fa-deactivated.svg',
 	CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
@@ -214,7 +222,7 @@ const nestedIcons = {
 	TAB_SIGNOUT: '/assets/images/signout.svg',
 
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
-	VOLUME_PENDING: '/assets/images/volume-pending-dark.svg',
+	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',
@@ -238,8 +246,9 @@ const nestedIcons = {
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
 	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
-	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
+
+	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
 
 	...coinIcons,
 };

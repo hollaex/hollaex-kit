@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Form, Checkbox, Button, InputNumber } from 'antd';
+import { Input, Form, Button, InputNumber } from 'antd';
 
 const { Item } = Form;
 
@@ -28,25 +28,28 @@ const EmailConfiguration = ({
 			formProps.secrets = { smtp: {} };
 			if (secret_key) formProps.secrets.captcha = { secret_key };
 			if (server) formProps.secrets.smtp.server = server;
-			if (port) formProps.secrets.smtp.port = port;
+			if (port) formProps.secrets.smtp.port = parseInt(port, 10);
 			if (user) formProps.secrets.smtp.user = user;
-			if (password) formProps.secrets.smtp.password = password;
+			if (password && !password.includes('*')) {
+				formProps.secrets.smtp.password = password;
+			}
 		}
 		if (Object.keys(rest).filter((key) => rest[key]).length) {
-			formProps.secrets = { emails: {} };
+			if (!formProps.secrets) formProps.secrets = { emails: {} };
+			if (!formProps.secrets.emails) formProps.secrets.emails = {};
 			if (rest.sender) formProps.secrets.emails.sender = rest.sender;
-			if (rest.timezone) formProps.secrets.emails.timezone = rest.timezone;
+			// if (rest.timezone) formProps.secrets.emails.timezone = rest.timezone;
 			if (rest.audit) formProps.secrets.emails.audit = rest.audit;
-			if (rest.send_email_to_support)
-				formProps.secrets.emails.send_email_to_support =
-					rest.send_email_to_support;
+			// if (rest.send_email_to_support)
+			// 	formProps.secrets.emails.send_email_to_support =
+			// 		rest.send_email_to_support;
 		}
 		if (Object.keys(formProps).length) {
 			updateConstants(formProps, () => setPreview(true));
 		}
 	};
 	return (
-		<div className="asset-content">
+		<div className="asset-content show-scroll">
 			<div className="title-text">Email configuration</div>
 			<Form
 				name="email-config-form"
@@ -64,15 +67,15 @@ const EmailConfiguration = ({
 						<Item name="sender">
 							<Input />
 						</Item>
-						<Item name="send_email_to_support" valuePropName="checked">
+						{/* <Item name="send_email_to_support" valuePropName="checked">
 							<Checkbox>
 								<span className="setup-field-label">Send email to support</span>
 							</Checkbox>
-						</Item>
-						<div className="setup-field-label">Email timezone</div>
+						</Item> */}
+						{/* <div className="setup-field-label">Email timezone</div>
 						<Item name="timezone">
 							<Input />
-						</Item>
+						</Item> */}
 						<div className="setup-field-label">SMTP server</div>
 						<Item name="server">
 							<Input />
@@ -87,7 +90,7 @@ const EmailConfiguration = ({
 						</Item>
 						<div className="setup-field-label">SMTP password</div>
 						<Item name="password">
-							<Input />
+							<Input type="password" />
 						</Item>
 					</div>
 					<div className="coin-wrapper">
@@ -104,7 +107,7 @@ const EmailConfiguration = ({
 							<Input />
 						</Item>
 					</div>
-					<div className="coin-wrapper last">
+					{/* <div className="coin-wrapper last">
 						<div className="title-text">reCAPTCHA</div>
 						<div className="setup-field-label">
 							Site key (Google reCAPTCHA V3)
@@ -118,7 +121,7 @@ const EmailConfiguration = ({
 						<Item name="secret_key">
 							<Input />
 						</Item>
-					</div>
+					</div> */}
 					<div className="btn-container">
 						<Button htmlType="submit">Proceed</Button>
 					</div>

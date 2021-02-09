@@ -10,7 +10,7 @@ import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const generateHeaders = (pairData = {}, onCancel, ICONS) => [
+const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 	{
 		label: STRINGS['PAIR'],
 		key: 'pair',
@@ -21,6 +21,14 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 					{symbol}
 				</td>
 			);
+		},
+	},
+	{
+		label: STRINGS['ORDER_TYPE'],
+		key: 'type',
+		exportToCsv: ({ type, stop }) => (stop ? `Stop ${type}` : type),
+		renderCell: ({ type, stop }, key, index) => {
+			return <td key={index}>{stop ? `Stop ${type}` : type}</td>;
 		},
 	},
 	{
@@ -77,7 +85,7 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {
 			return (
 				<td key={index}>
-					{formatToCurrency(subtract(size, filled), pairData.increment_price)}
+					{formatToCurrency(subtract(size, filled), pairData.increment_size)}
 				</td>
 			);
 		},
@@ -105,7 +113,31 @@ const generateHeaders = (pairData = {}, onCancel, ICONS) => [
 		},
 	},
 	{
-		label: STRINGS['CANCEL'],
+		label: STRINGS['TRIGGER_CONDITIONS'],
+		key: 'type',
+		exportToCsv: ({ stop }) =>
+			stop && formatToCurrency(stop, pairData.increment_price),
+		renderCell: ({ stop }, key, index) => {
+			return (
+				<td key={index} className="px-2">
+					{stop && formatToCurrency(stop, pairData.increment_price)}
+				</td>
+			);
+		},
+	},
+	{
+		label: (
+			<div className="trade__active-orders_cancel-All">
+				<ActionNotification
+					stringId="CANCEL_ALL"
+					text={STRINGS['CANCEL_ALL']}
+					iconId="CANCEL_CROSS_ACTIVE"
+					iconPath={ICONS['CANCEL_CROSS_ACTIVE']}
+					onClick={() => onCancelAll()}
+					status="information"
+				/>
+			</div>
+		),
 		key: 'cancel',
 		renderCell: ({ size = 0, filled = 0, id }, key, index) => {
 			return (
@@ -131,6 +163,7 @@ const ActiveOrders = ({
 	pairData,
 	orders,
 	onCancel,
+	onCancelAll,
 	maxHeight,
 	height,
 	cancelDelayData,
@@ -145,7 +178,7 @@ const ActiveOrders = ({
 			}
 		>
 			<Table
-				headers={generateHeaders(pairData, onCancel, ICONS)}
+				headers={generateHeaders(pairData, onCancel, onCancelAll, ICONS)}
 				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}

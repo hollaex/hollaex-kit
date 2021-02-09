@@ -52,7 +52,7 @@ const Preview = ({
 	...rest
 }) => {
 	return (
-		<div>
+		<div className="admin-tiers-wrapper">
 			<h3>Check and confirm tier</h3>
 			<div className="mb-3">
 				Please carefully check that the details of this account tier are
@@ -67,7 +67,7 @@ const Preview = ({
 						/>
 						{/* {tierData.icon
                             ? <img src={tierData.icon} className="tier-icon" alt={`Account Tier ${tierData.id}`} />
-                            : <ReactSVG path={ICONS[`LEVEL_ACCOUNT_ICON_${tierData.id}`]} wrapperClassName="tier-icon" />
+                            : <ReactSVG src={ICONS[`LEVEL_ACCOUNT_ICON_${tierData.id}`]} className="tier-icon" />
                         } */}
 					</div>
 					<div className="mx-3 f-1">
@@ -309,7 +309,7 @@ class NewTierForm extends Component {
 		const { tierData, editorState } = this.state;
 		const { icons = {}, isNew = false } = this.props;
 		return (
-			<div className="new-tier-form">
+			<div className="new-tier-form admin-tiers-wrapper">
 				<h3>Account tier details</h3>
 				<div>
 					<div>Name</div>
@@ -367,6 +367,7 @@ class NewTierForm extends Component {
 					<Editor
 						wrapperClassName="text-editor-wrapper"
 						editorClassName="text-editor"
+						toolbarClassName="text-editor-toolbar"
 						editorState={editorState}
 						onEditorStateChange={this.onEditorStateChange}
 					/>

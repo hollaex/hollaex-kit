@@ -6,7 +6,7 @@ const {
 	EMAIL_ICONS
 } = require('../../constants');
 const { DOMAIN, GET_KIT_CONFIG } = require('../../../constants');
-const LOGO_PATH = () => GET_KIT_CONFIG().logo_path;
+const LOGO_IMAGE = () => GET_KIT_CONFIG().logo_image;
 const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
 const LINKS = () => GET_KIT_CONFIG().links;
 
@@ -49,7 +49,7 @@ const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 
 const RTL = 'direction: rtl;';
 
-const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_PATH() }) => `
+const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_IMAGE() }) => `
   <div style="${styles.logo}">
     <a href="${domain}"><img src="${logoPath}" height="40"/></a>
   </div>

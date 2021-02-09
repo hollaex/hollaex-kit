@@ -37,7 +37,11 @@ class Description extends Component {
 				<div>
 					<h3>
 						Exchange description{' '}
-						<Tooltip title={this.handleImg('description')} placement="right">
+						<Tooltip
+							overlayClassName="admin-general-description-tip general-description-tip-right"
+							title={this.handleImg('description')}
+							placement="right"
+						>
 							<QuestionCircleOutlined style={{ color: '#ffffff' }} />
 						</Tooltip>
 					</h3>
@@ -57,7 +61,11 @@ class Description extends Component {
 				<div>
 					<h3>
 						Footer small text{' '}
-						<Tooltip title={this.handleImg('footer')} placement="right">
+						<Tooltip
+							overlayClassName="admin-general-description-tip general-description-tip-right"
+							title={this.handleImg('footer')}
+							placement="right"
+						>
 							<QuestionCircleOutlined style={{ color: '#ffffff' }} />
 						</Tooltip>
 					</h3>

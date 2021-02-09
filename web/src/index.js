@@ -33,23 +33,44 @@ import {
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
+import { requestConstant } from 'actions/appActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
 console.info(name, version);
 console.info(API_URL);
 
+const drawFavIcon = (url) => {
+	const head = document.getElementsByTagName('head')[0];
+	const linkEl = document.createElement('link');
+
+	linkEl.type = 'image/x-icon';
+	linkEl.rel = 'icon';
+	linkEl.href = url;
+
+	// remove existing favicons
+	const links = head.getElementsByTagName('link');
+
+	for (let i = links.length; --i >= 0; ) {
+		if (/\bicon\b/i.test(links[i].getAttribute('rel'))) {
+			head.removeChild(links[i]);
+		}
+	}
+
+	head.appendChild(linkEl);
+};
+
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
 
 	const kitData = await getKitData();
 	const {
-		meta: { versions: remoteVersions = {} },
+		meta: { versions: remoteVersions = {} } = {},
 		valid_languages = '',
 		info: { initialized },
 		setup_completed,
 		native_currency,
-		logo_black_path,
+		logo_image,
 	} = kitData;
 
 	const promises = {};
@@ -76,17 +97,26 @@ const getConfigs = async () => {
 		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
 	});
 
-	setDefaultLogo(logo_black_path);
+	const { data: { coins = {} } = {} } = await requestConstant();
+	const coin_keys = Object.keys(coins);
+
+	setDefaultLogo(logo_image);
 	setBaseCurrency(native_currency);
 	setLocalVersions(remoteVersions);
 	setValidLanguages(valid_languages);
 	setExchangeInitialized(initialized);
 	setSetupCompleted(setup_completed);
 
-	return merge({}, defaultConfig, remoteConfigs);
+	return merge({}, defaultConfig, remoteConfigs, { coin_keys });
 };
 
 const bootstrapApp = (appConfig) => {
+	const {
+		icons: {
+			dark: { EXCHANGE_FAV_ICON = '/favicon.ico' },
+		},
+	} = appConfig;
+	drawFavIcon(EXCHANGE_FAV_ICON);
 	initializeStrings();
 	// window.appConfig = { ...appConfig }
 
