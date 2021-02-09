@@ -45,10 +45,9 @@ const MobileAccountTypeList = ({
 												: 'LEVEL_ACCOUNT_ICON_4'
 										}
 										icon={
-											configData.icon ||
-											(ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+											ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
 												? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
-												: ICONS['LEVEL_ACCOUNT_ICON_4'])
+												: ICONS['LEVEL_ACCOUNT_ICON_4']
 										}
 										wrapperClassName="trader-account-icon"
 									/>

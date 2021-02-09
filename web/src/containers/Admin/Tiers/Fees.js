@@ -91,7 +91,12 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 	return headers;
 };
 
-const Fees = ({ pairs, userTiers, icons: ICONS = {}, onEditFees }) => {
+const Fees = ({
+	pairs,
+	userTiers,
+	allIcons: { dark: ICONS = {} },
+	onEditFees,
+}) => {
 	const coinsData = Object.keys(pairs).map((key) => pairs[key]);
 	return (
 		<div className="admin-tiers-wrapper">

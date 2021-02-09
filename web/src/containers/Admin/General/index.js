@@ -505,7 +505,11 @@ class General extends Component {
 								</Collapse.Panel>
 								<Collapse.Panel
 									showArrow={false}
-									header="Theme Specific Icons"
+									header={
+										<span className="underline-text">
+											Theme Specific Graphics
+										</span>
+									}
 									key="2"
 								>
 									<div className="file-wrapper">
@@ -543,7 +547,11 @@ class General extends Component {
 								</Collapse.Panel>
 								<Collapse.Panel
 									showArrow={false}
-									header="Theme Specific Icons"
+									header={
+										<span className="underline-text">
+											Theme Specific Graphics
+										</span>
+									}
 									key="2"
 								>
 									{themeOptions
@@ -658,7 +666,11 @@ class General extends Component {
 								</Collapse.Panel>
 								<Collapse.Panel
 									showArrow={false}
-									header="Theme Specific Icons"
+									header={
+										<span className="underline-text">
+											Theme Specific Graphics
+										</span>
+									}
 									key="2"
 								>
 									<div className="file-wrapper">
