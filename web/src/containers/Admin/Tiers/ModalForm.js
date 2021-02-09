@@ -390,7 +390,14 @@ class NewTierForm extends Component {
 						</Collapse.Panel>
 						<Collapse.Panel
 							showArrow={false}
-							header="Theme Specific Icons"
+							header={
+								<span
+									style={{ color: '#ffffff' }}
+									className="underline-text text-center w-100"
+								>
+									Theme Specific Graphics
+								</span>
+							}
 							key="2"
 						>
 							<div className="file-wrapper">

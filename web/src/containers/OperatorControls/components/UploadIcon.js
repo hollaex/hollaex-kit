@@ -144,7 +144,11 @@ class UploadIcon extends Component {
 								</Collapse.Panel>
 								<Collapse.Panel
 									showArrow={false}
-									header="Theme Specific Icons"
+									header={
+										<span className="underline-text">
+											Theme Specific Graphics
+										</span>
+									}
 									key="2"
 								>
 									{themeOptions
