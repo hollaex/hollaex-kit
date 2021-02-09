@@ -955,7 +955,7 @@ paths:
       description: This will send a confirmation email to the email address on record, if activate OTP, it will require OTP as well.
       tags:
         - User
-        - Withdraw
+        - Withdrawal
       parameters:
         - name: data
           description: withdrawal information
@@ -985,7 +985,7 @@ paths:
       description: confirm a withdrawal request
       tags:
         - User
-        - Withdraw
+        - Withdrawal
       parameters:
         - name: data
           description: Tansfer information
