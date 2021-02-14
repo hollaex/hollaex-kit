@@ -797,7 +797,7 @@ export default {
 	RECENT_TRADES: '最近の取引履歴', // ToDo
 	PUBLIC_SALES: '全取引履歴', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	FILLED: 'Filled', // new
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new

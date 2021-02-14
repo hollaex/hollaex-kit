@@ -788,7 +788,7 @@ const nestedContent = {
 	RECENT_TRADES: '최근 체결 내역', // ToDo
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	PRICE_CURRENCY: 'PRICE ({0})',
 	AMOUNT_SYMBOL: 'AMOUNT ({0})',
 	MARKET_PRICE: '시장가',
