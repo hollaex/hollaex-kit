@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 // import { PUBLIC_URL } from '../../config/constants';
@@ -40,6 +40,7 @@ const AppFooter = ({
 	className,
 	theme,
 	constants = { description: '' },
+	constants: { links = {} },
 	icons: ICONS,
 	isEditMode,
 }) => {
@@ -161,8 +162,18 @@ const AppFooter = ({
 				</div>
 			</div>
 			<div className={classnames('footer-row-bottom')}>
-				<div className="d-flex my-2" />
-				<div>Powered by bitHolla</div>
+				{!links.hide_referral_badge && (
+					<Fragment>
+						<div className="d-flex my-2" />
+						<a
+							href={links.referral_link || 'https://bitholla.com'}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<span>{links.referral_label || 'Powered by bitHolla'}</span>
+						</a>
+					</Fragment>
+				)}
 			</div>
 		</div>
 	);

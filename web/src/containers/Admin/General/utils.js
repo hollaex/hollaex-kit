@@ -77,4 +77,20 @@ export const getGeneralFields = (coins) => ({
 			placeholder: 'http://',
 		},
 	},
+	section_8: {
+		hide_referral_badge: {
+			type: 'checkbox',
+			label: 'Hide referral badge',
+		},
+		referral_label: {
+			type: 'input',
+			label: 'Text label',
+			placeholder: 'Powered by bitHolla',
+		},
+		referral_link: {
+			type: 'input',
+			label: 'Link',
+			placeholder: 'https://bitholla.com/',
+		},
+	},
 });

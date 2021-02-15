@@ -287,6 +287,16 @@ class General extends Component {
 		this.handleSubmitGeneral(formValues);
 	};
 
+	handleSubmitReferralBadge = (formProps) => {
+		this.handleSubmitGeneral({
+			kit: {
+				links: {
+					...formProps,
+				},
+			},
+		});
+	};
+
 	handleSubmitHelpDesk = (formProps) => {
 		this.handleSubmitGeneral({
 			kit: {
@@ -709,8 +719,15 @@ class General extends Component {
 						descriptionFields={generalFields.section_5}
 						descriptionInitialValues={{ description: kit.description }}
 						footerFields={generalFields.section_6}
+						ReferralBadgeFields={generalFields.section_8}
+						ReferralBadgeInitialValues={{
+							hide_referral_badge: initialLinkValues.hide_referral_badge,
+							referral_label: initialLinkValues.referral_label,
+							referral_link: initialLinkValues.referral_link,
+						}}
 						footerInitialValues={{ description: kit.footer_description }}
 						handleSubmitDescription={this.handleSubmitName}
+						handleSubmitReferralBadge={this.handleSubmitReferralBadge}
 					/>
 					<div className="divider"></div>
 				</div>
