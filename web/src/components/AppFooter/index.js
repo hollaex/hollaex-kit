@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import STRINGS from '../../config/localizedStrings';
 // import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
@@ -163,7 +162,7 @@ const AppFooter = ({
 			</div>
 			<div className={classnames('footer-row-bottom')}>
 				<div className="d-flex my-2" />
-				<div>{STRINGS['FOOTER.FOOTER_COPYRIGHT']}</div>
+				<div>Powered by bitHolla</div>
 			</div>
 		</div>
 	);
