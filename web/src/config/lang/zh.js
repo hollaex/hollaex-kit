@@ -757,7 +757,7 @@ export default {
 	RECENT_TRADES: '最近交易', // ToDo
 	PUBLIC_SALES: '实时成交', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	PRICE_CURRENCY: 'PRICE ({0})',
 	AMOUNT_SYMBOL: 'AMOUNT ({0})',
 	MARKET_PRICE: '市场价格',

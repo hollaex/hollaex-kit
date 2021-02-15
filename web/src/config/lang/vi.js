@@ -822,7 +822,7 @@ export default {
 	RECENT_TRADES: 'Giao dịch gần đây của tôi', // ToDo
 	PUBLIC_SALES: 'BÁN CÔNG KHAI', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	FILLED: 'Filled', // new
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
