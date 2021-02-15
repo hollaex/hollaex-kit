@@ -82,10 +82,10 @@ const Login = (props) => {
 									label: 'Password',
 									validate: [validateRequired],
 								},
-								// otp_code: {
-								// 	type: 'number',
-								// 	label: '2FA (if active)',
-								// },
+								otp_code: {
+									type: 'number',
+									label: '2FA (if active)',
+								},
 								captcha: {
 									type: 'captcha',
 									language: getLanguage(),
