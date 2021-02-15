@@ -1441,6 +1441,26 @@ table th {
   background-color: var(--trading_buying-related-elements);
   color: var(--calculated_trading_buying-related-text); }
 
+.cell_box-type.fullfilled .cell-wrapper {
+  border: 1px solid var(--calculated_important-border);
+  margin: 0;
+  padding: 1px;
+  min-width: 5rem;
+  max-width: 7rem; }
+  .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper {
+    padding: 0 0.15rem;
+    position: relative;
+    width: 100%;
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    z-index: 2; }
+    .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper .cell_value-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background-color: var(--calculated_specials_highlight-box);
+      z-index: -1; }
+
 .amount_text .positive {
   color: var(--specials_checks-okay-done); }
 

@@ -25,6 +25,7 @@ import {
 } from '../../components';
 import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
 import {
+	generateOrderHistoryHeaders,
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
 	generateDepositsHeaders,
@@ -162,8 +163,8 @@ class TransactionsHistory extends Component {
 		this.setState({
 			headers: {
 				orders: isMobile
-					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
-					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
+					? generateOrderHistoryHeaders(symbol, pairs, coins, discount)
+					: generateOrderHistoryHeaders(symbol, pairs, coins, discount, prices),
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
 					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
@@ -342,7 +343,7 @@ class TransactionsHistory extends Component {
 			case 0:
 				props.stringId = 'ORDER_HISTORY';
 				props.title = `${STRINGS['ORDER_HISTORY']}`;
-				props.headers = headers.trades;
+				props.headers = headers.orders;
 				props.data = orders;
 				props.filename = `order-history-${moment().unix()}`;
 				props.withIcon = false;
