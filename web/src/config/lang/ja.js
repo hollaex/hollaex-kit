@@ -188,10 +188,10 @@ export default {
 	},
 	LOGIN: {
 		LOGIN_TO: '{0}にログイン',
-		CANT_LOGIN: "ログインにお困りですか？",
-		NO_ACCOUNT: "アカウントをお持ちでないですか？",
+		CANT_LOGIN: 'ログインにお困りですか？',
+		NO_ACCOUNT: 'アカウントをお持ちでないですか？',
 		CREATE_ACCOUNT: 'アカウント作成',
-		HELP: 'ヘルプ'
+		HELP: 'ヘルプ',
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: 'メール',
@@ -290,7 +290,7 @@ export default {
 		TOTAL_COST: '総額',
 		BUTTON: '{0}',
 		INPUT: '{0}を{1}',
-		TRADE_TITLE: '{0} {1}' // quick buy
+		TRADE_TITLE: '{0} {1}', // quick buy
 	},
 	PREVIOUS_PAGE: '前のページ',
 	NEXT_PAGE: '次のページ',
@@ -608,28 +608,20 @@ export default {
 			TRADE_POPUPS: '注文アラート',
 			POPUP_ORDER_CONFIRMATION: '注文を入れる前に確認する時',
 			POPUP_ORDER_COMPLETED: '注文が完了した時',
-			POPUP_ORDER_PARTIALLY_FILLED:
-				'注文が一部成立した時'
+			POPUP_ORDER_PARTIALLY_FILLED: '注文が一部成立した時',
 		},
-		AUDIO_CUE_FORM: { // new
+		AUDIO_CUE_FORM: {
+			// new
 			ALL_AUDIO: '全てのサウンド',
 			PUBLIC_TRADE_AUDIO: '全ての取引に対して',
-			ORDERS_PARTIAL_AUDIO:
-				'注文が一部成立した時',
-			ORDERS_PLACED_AUDIO:
-				'注文が入った時',
-			ORDERS_CANCELED_AUDIO:
-				'注文がキャンセルされた時',
-			ORDERS_COMPLETED_AUDIO:
-				'注文が全て成立した時',
-			CLICK_AMOUNTS_AUDIO:
-				'注文一覧の数量と価格をクリックする時',
-			GET_QUICK_TRADE_AUDIO:
-				'クイック取引の注文',
-			SUCCESS_QUICK_TRADE_AUDIO:
-				'クイック取引の注文成立',
-			QUICK_TRADE_TIMEOUT_AUDIO:
-				'クイック取引のタイムアウト',
+			ORDERS_PARTIAL_AUDIO: '注文が一部成立した時',
+			ORDERS_PLACED_AUDIO: '注文が入った時',
+			ORDERS_CANCELED_AUDIO: '注文がキャンセルされた時',
+			ORDERS_COMPLETED_AUDIO: '注文が全て成立した時',
+			CLICK_AMOUNTS_AUDIO: '注文一覧の数量と価格をクリックする時',
+			GET_QUICK_TRADE_AUDIO: 'クイック取引の注文',
+			SUCCESS_QUICK_TRADE_AUDIO: 'クイック取引の注文成立',
+			QUICK_TRADE_TIMEOUT_AUDIO: 'クイック取引のタイムアウト',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -653,7 +645,8 @@ export default {
 		WITHDRAWALS: '出金',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。',
+		TITLE_TEXT:
+			'2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。',
 		OTP: {
 			TITLE: '2段階認証(2FA)',
 			OTP_ENABLED: '2段階認証設定',
@@ -683,7 +676,8 @@ export default {
 				DISABLE: '2段階認証を解除する',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'OTP(One-Time Password)コード入力',
@@ -756,7 +750,7 @@ export default {
 	},
 	TYPES: [
 		{ value: 'market', label: '成行' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: '指値' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: '指値' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -815,7 +809,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: '取引量'
+		v: '取引量',
 	},
 	QUICK_TRADE: 'クイック取引',
 	PRO_TRADE: 'プロ向け取引',
@@ -846,8 +840,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '送金する {0} 金額',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'取引手数料',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: '取引手数料',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',

@@ -11,7 +11,7 @@ const createMarkup = (row) => {
 };
 
 const TiersContainer = ({
-	icons = {},
+	allIcons = {},
 	userTiers = {},
 	handleEdit,
 	handleAdd,
@@ -32,7 +32,7 @@ const TiersContainer = ({
 						<div key={index} className="d-flex tiers-container">
 							<div>
 								<Image
-									icon={icons[`LEVEL_ACCOUNT_ICON_${tier}`]}
+									icon={allIcons['dark'][`LEVEL_ACCOUNT_ICON_${tier}`]}
 									wrapperClassName="tier-icon"
 								/>
 								{/* {tierData.icon

@@ -12,7 +12,7 @@ class ConfigProvider extends Component {
 	constructor(props) {
 		super(props);
 		const { initialConfig } = this.props;
-		const { icons = {}, color = {}, defaults = {}, coin_keys } = {
+		const { icons = {}, color = {}, defaults = {}, coin_icons } = {
 			...initialConfig,
 		};
 
@@ -24,7 +24,7 @@ class ConfigProvider extends Component {
 			icons: generateAllIcons(
 				calculatedThemes,
 				addDefaultLogo(defaultLogo, icons),
-				coin_keys
+				coin_icons
 			),
 			color: calculatedThemes,
 			themeOptions,

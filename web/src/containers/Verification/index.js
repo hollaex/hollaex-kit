@@ -13,10 +13,11 @@ import {
 	Notification,
 	// MobileBarTabs,
 	PanelInformationRow,
+	Button,
 } from '../../components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
-import { logout } from '../../actions/authAction';
+import { logout, requestVerificationEmail } from '../../actions/authAction';
 
 import BankVerification from './BankVerification';
 import { isBrowser, isMobile } from 'react-device-detect';
@@ -24,6 +25,7 @@ import VerificationHome from './VerificationHome';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
+import VerificationSentModal from './VerificationSentModal';
 import {
 	mobileInitialValues,
 	identityInitialValues,
@@ -41,6 +43,7 @@ import BankVerificationHome from './BankVerificationHome';
 import IdentityVerificationHome from './IdentityVerificationHome';
 import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
+import { EditWrapper } from 'components';
 // import MobileTabs from './MobileTabs';
 
 // const CONTENT_CLASS =
@@ -54,6 +57,7 @@ class Verification extends Component {
 		dialogIsOpen: false,
 		user: {},
 		activePage: 'email',
+		showVerificationSentModal: false,
 	};
 
 	componentDidMount() {
@@ -145,6 +149,27 @@ class Verification extends Component {
 		return { activeTab, currentTabs };
 	};
 
+	sendVerificationEmail = () => {
+		const { user: { email } = {} } = this.props;
+		return requestVerificationEmail({ email })
+			.then(() => {
+				this.setState({ showVerificationSentModal: true });
+			})
+			.catch((error) => {
+				if (error.response && error.response.status === 404) {
+					this.setState({ showVerificationSentModal: true });
+				} else {
+					const errors = {};
+					if (error.response) {
+						errors._error = error.response.data.message;
+					} else {
+						errors._error = error.message;
+					}
+					console.error(errors);
+				}
+			});
+	};
+
 	updateTabs = (
 		user = {},
 		activeLanguage = this.props.activeLanguage,
@@ -155,7 +180,14 @@ class Verification extends Component {
 			return;
 		}
 		const { icons: ICONS } = this.props;
-		const { email, bank_account, address, id_data, phone_number } = user;
+		const {
+			email,
+			bank_account,
+			address,
+			id_data,
+			phone_number,
+			email_verified,
+		} = user;
 		let bank_status = 0;
 		if (bank_account.length) {
 			if (bank_account.filter((data) => data.status === 3).length) {
@@ -186,7 +218,7 @@ class Verification extends Component {
 					<CustomMobileTabs
 						title={STRINGS['USER_VERIFICATION.TITLE_EMAIL']}
 						icon={ICONS['VERIFICATION_EMAIL_NEW']}
-						statusCode={email ? 3 : 0}
+						statusCode={email_verified ? 3 : 0}
 					/>
 				) : (
 					<CustomTabs
@@ -194,7 +226,7 @@ class Verification extends Component {
 						title={STRINGS['USER_VERIFICATION.TITLE_EMAIL']}
 						iconId="VERIFICATION_EMAIL_NEW"
 						icon={ICONS['VERIFICATION_EMAIL_NEW']}
-						statusCode={email ? 3 : 0}
+						statusCode={email_verified ? 3 : 0}
 					/>
 				),
 				content: activeTab === 0 && (
@@ -205,6 +237,16 @@ class Verification extends Component {
 							className={'title-font'}
 							disable
 						/>
+						{!email_verified && (
+							<div className="mt-4">
+								<EditWrapper stringId="USER_VERIFICATION.EMAIL_VERIFICATION" />
+								<Button
+									className="caps"
+									label={STRINGS['USER_VERIFICATION.EMAIL_VERIFICATION']}
+									onClick={this.sendVerificationEmail}
+								/>
+							</div>
+						)}
 					</div>
 				),
 			},
@@ -482,7 +524,13 @@ class Verification extends Component {
 
 	render() {
 		const { activeLanguage, activeTheme, icons: ICONS } = this.props;
-		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
+		const {
+			activeTab,
+			tabs,
+			dialogIsOpen,
+			dialogType,
+			showVerificationSentModal,
+		} = this.state;
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
 				<div className="app_container">
@@ -539,6 +587,12 @@ class Verification extends Component {
 				>
 					{this.renderDialogContent(dialogType)}
 				</Dialog>
+				<VerificationSentModal
+					isOpen={showVerificationSentModal}
+					onCloseDialog={() => {
+						this.setState({ showVerificationSentModal: false });
+					}}
+				/>
 			</div>
 		);
 	}

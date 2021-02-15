@@ -154,6 +154,7 @@ const AboutData = ({
 	disableOTP,
 	flagUser,
 	freezeAccount,
+	verifyEmail,
 	onChangeSuccess,
 	icons: ICONS,
 }) => {
@@ -270,6 +271,37 @@ const AboutData = ({
 		<div>
 			<div className="d-flex justify-content-end header-section mb-5">
 				<div className="d-flex align-items-center my-5">
+					<div className="about-info d-flex align-items-center justify-content-center">
+						{userData.email_verified ? (
+							<Fragment>
+								<div className="about-info-content">
+									<div>Email verification</div>
+									<div>Verified</div>
+								</div>
+								<div className={'about-icon-active'}>
+									<ReactSVG
+										src={STATIC_ICONS.USER_EMAIL_VERIFIED}
+										className={'about-icon'}
+									/>
+								</div>
+							</Fragment>
+						) : (
+							<Fragment>
+								<div>
+									<div>Email verification</div>
+									<div className="info-link" onClick={verifyEmail}>
+										Mark as verified
+									</div>
+								</div>
+								<div>
+									<ReactSVG
+										src={STATIC_ICONS.USER_EMAIL_UNVERIFIED}
+										className={'about-icon'}
+									/>
+								</div>
+							</Fragment>
+						)}
+					</div>
 					<div className="about-info d-flex align-items-center justify-content-center">
 						{userData.otp_enabled ? (
 							<Fragment>
