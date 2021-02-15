@@ -439,3 +439,28 @@ exports.VERIFY_STATUS = {
 	COMPLETED: 3
 };
 // PLUGIN CONSTANTS END ------------------------------ to be moved
+
+exports.CUSTOM_CSS = `
+	.topbar-wrapper img {
+		content:url('https://s3.ap-northeast-2.amazonaws.com/public-holla-images/bitholla/bitholla-white--01.png');
+		height: 2rem;
+	}
+	.swagger-ui .opblock.opblock-get .opblock-summary-method {
+		background: blue;
+	}
+	.swagger-ui .btn.execute {
+		background-color: blue;
+		color: #fff;
+		border-color: blue;
+	}
+	.swagger-ui .btn.authorize {
+		color: blue;
+		border-color: blue;
+	}
+	.swagger-ui .btn.authorize svg {
+		fill: blue;
+	}
+	.models {
+		display: none !important;
+	}
+`;
