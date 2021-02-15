@@ -97,8 +97,7 @@ const getConfigs = async () => {
 		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
 	});
 
-	const { data: { coins = {} } = {} } = await requestConstant();
-	const coin_keys = Object.keys(coins);
+	const { data: { coins: coin_icons = {} } = {} } = await requestConstant();
 
 	setDefaultLogo(logo_image);
 	setBaseCurrency(native_currency);
@@ -107,7 +106,7 @@ const getConfigs = async () => {
 	setExchangeInitialized(initialized);
 	setSetupCompleted(setup_completed);
 
-	return merge({}, defaultConfig, remoteConfigs, { coin_keys });
+	return merge({}, defaultConfig, remoteConfigs, { coin_icons });
 };
 
 const bootstrapApp = (appConfig) => {

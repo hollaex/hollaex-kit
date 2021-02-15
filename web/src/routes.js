@@ -40,7 +40,7 @@ import {
 	MobileHome,
 	Broker,
 	Plugins,
-	PluginServices,
+	// PluginServices,
 	Settings,
 	// Transfer,
 	AdminFees,
@@ -459,11 +459,11 @@ export default (
 				name="Admin plugins"
 				component={withAdminProps(Plugins, 'plugins')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/plugins/:services"
 				name="Admin plugins"
 				component={withAdminProps(PluginServices, 'plugins')}
-			/>
+			/> */}
 			<Route
 				path="/admin/settings"
 				name="Admin settings"

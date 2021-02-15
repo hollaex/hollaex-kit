@@ -110,7 +110,7 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 const Limits = ({
 	coins,
 	userTiers,
-	icons: ICONS = {},
+	allIcons: { dark: ICONS = {} },
 	constants = {},
 	onEditLimit,
 }) => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Select, Form, Row, DatePicker, Button, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { dateFilters } from '../filterUtils';
@@ -8,12 +8,6 @@ const { RangePicker } = DatePicker;
 
 const Filters = ({ pairs, onSearch, formName }) => {
 	const [form] = Form.useForm();
-
-	useEffect(() => {
-		form.submit();
-		//  TODO: Fix react-hooks/exhaustive-deps
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	const onFinish = (values) => {
 		onSearch(values);

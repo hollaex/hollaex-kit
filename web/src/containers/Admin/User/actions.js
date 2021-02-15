@@ -143,6 +143,15 @@ export const activateUser = (values) => {
 	return requestAuthenticated('/admin/user/activate', options);
 };
 
+export const verifyUser = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/verify-email', options);
+};
+
 export const performVerificationLevelUpdate = (values) => {
 	const options = {
 		method: 'POST',

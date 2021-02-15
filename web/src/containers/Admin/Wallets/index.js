@@ -96,19 +96,6 @@ class Wallets extends Component {
 								/>
 								<h1>USER WALLETS</h1>
 							</div>
-							<div className="my-3">
-								{!plugins.enabled.includes('vault') ? (
-									<Button
-										type="primary"
-										className="green-btn"
-										onClick={this.goToVault}
-									>
-										Activate Vault
-									</Button>
-								) : (
-									<Tag color="green">Vault Activated</Tag>
-								)}
-							</div>
 						</div>
 						<Card className="card-title" title="TOTAL BALANCE OF USERS WALLETS">
 							{!balance ? (

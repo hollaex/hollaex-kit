@@ -604,24 +604,18 @@ const nestedContent = {
 			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림창',
 		},
 		AUDIO_CUE_FORM: {
-				ALL_AUDIO: '모든 사운드',
+			ALL_AUDIO: '모든 사운드',
 			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 대해 알림사운드 재생',
 			ORDERS_PARTIAL_AUDIO:
 				'주문 중 하나가 부분적으로 채워질 경우 알림사운드 재생',
-			ORDERS_PLACED_AUDIO:
-				'주문 요청 시',
-			ORDERS_CANCELED_AUDIO:
-				'주문 취소 시',
+			ORDERS_PLACED_AUDIO: '주문 요청 시',
+			ORDERS_CANCELED_AUDIO: '주문 취소 시',
 			ORDERS_COMPLETED_AUDIO:
 				'하나의 주문이 완전히 채워질 경우 알림 사운드 재생',
-			CLICK_AMOUNTS_AUDIO:
-				'주문 목록에 금액과 가격 클릭 시',
-			GET_QUICK_TRADE_AUDIO:
-				'퀵 트레이딩 요청 받을 시',
-			SUCCESS_QUICK_TRADE_AUDIO:
-				'퀵 트레이딩 성공 시',
-			QUICK_TRADE_TIMEOUT_AUDIO:
-				'퀵 트레이딩 시간 만료 시',
+			CLICK_AMOUNTS_AUDIO: '주문 목록에 금액과 가격 클릭 시',
+			GET_QUICK_TRADE_AUDIO: '퀵 트레이딩 요청 받을 시',
+			SUCCESS_QUICK_TRADE_AUDIO: '퀵 트레이딩 성공 시',
+			QUICK_TRADE_TIMEOUT_AUDIO: '퀵 트레이딩 시간 만료 시',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -644,7 +638,8 @@ const nestedContent = {
 		WITHDRAWALS: '출금',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'계정의 보안 설정을 변경하세요. 이중인증, 비밀번호, API 키 및 관련 보안기능',
+		TITLE_TEXT:
+			'계정의 보안 설정을 변경하세요. 이중인증, 비밀번호, API 키 및 관련 보안기능',
 		OTP: {
 			TITLE: '2단계 인증(2FA)',
 			OTP_ENABLED: ' OTP 사용',
@@ -674,7 +669,8 @@ const nestedContent = {
 				DISABLE: '2단계 인증(2FA) 사용안함',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'OTP 입력',
@@ -760,7 +756,7 @@ const nestedContent = {
 	],
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: '켜기' },
-		{ value: false, label: '끄기' }
+		{ value: false, label: '끄기' },
 	],
 	SIZE: 'Size',
 	PRICE: 'Price',
@@ -788,7 +784,7 @@ const nestedContent = {
 	RECENT_TRADES: '최근 체결 내역', // ToDo
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	PRICE_CURRENCY: 'PRICE ({0})',
 	AMOUNT_SYMBOL: 'AMOUNT ({0})',
 	MARKET_PRICE: '시장가',
@@ -802,7 +798,7 @@ const nestedContent = {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: '거래량'
+		v: '거래량',
 	},
 	QUICK_TRADE: '퀵트레이딩',
 	PRO_TRADE: '프로트레이딩',
