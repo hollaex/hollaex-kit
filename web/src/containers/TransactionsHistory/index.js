@@ -326,6 +326,7 @@ class TransactionsHistory extends Component {
 			withdrawals,
 			symbol,
 			downloadUserTrades,
+			downloadUserOrders,
 			downloadUserWithdrawal,
 			downloadUserDeposit,
 		} = this.props;
@@ -347,7 +348,7 @@ class TransactionsHistory extends Component {
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
-				props.handleDownload = downloadUserTrades;
+				props.handleDownload = downloadUserOrders;
 				props.filters = filters.orders;
 				break;
 			case 1:
@@ -560,6 +561,7 @@ const mapDispatchToProps = (dispatch) => ({
 	downloadUserTrades: () => dispatch(downloadUserTrades('trade')),
 	downloadUserDeposit: () => dispatch(downloadUserTrades('deposit')),
 	downloadUserWithdrawal: () => dispatch(downloadUserTrades('withdrawal')),
+	downloadUserOrders: () => dispatch(downloadUserTrades('orders')),
 	setDeposit: (params) => dispatch(setDeposit(params)),
 });
 
