@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Tooltip } from 'antd';
+import { connect } from 'react-redux';
+import { Tooltip, Button } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { AdminHocForm } from '../../../components';
@@ -44,6 +45,7 @@ class Description extends Component {
 			footerInitialValues,
 			ReferralBadgeFields,
 			ReferralBadgeInitialValues,
+			constants: { info: { collateral_level = 'zero' } = {} } = {},
 		} = this.props;
 		return (
 			<div className="description-wrapper">
@@ -108,16 +110,47 @@ class Description extends Component {
 					Edit the referral badge in the bottom left corner. This space can be
 					repurposed for copyright or other business related data.
 				</p>
+
+				{collateral_level === 'zero' && (
+					<div
+						style={{ width: '465px' }}
+						className="admin-dash-card flex-menu justify-content-between"
+					>
+						<div>
+							<div className="card-title bold">Fully rebrand your platform</div>
+							<div className="card-description">
+								Replace the badge with your own branding.
+							</div>
+						</div>
+						<div>
+							<a
+								href="https://dash.bitholla.com/"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Button type="primary" className="green-btn minimal-btn bold">
+									Upgrade Now
+								</Button>
+							</a>
+						</div>
+					</div>
+				)}
+
 				<ReferralBadgeForm
 					initialValues={ReferralBadgeInitialValues}
 					fields={ReferralBadgeFields}
 					buttonText="Save"
 					buttonClass="green-btn minimal-btn"
 					onSubmit={this.props.handleSubmitReferralBadge}
+					disableAllFields={collateral_level === 'zero'}
 				/>
 			</div>
 		);
 	}
 }
 
-export default Description;
+const mapStateToProps = (store) => ({
+	constants: store.app.constants,
+});
+
+export default connect(mapStateToProps)(Description);
