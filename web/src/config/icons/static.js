@@ -45,7 +45,9 @@ const icons = {
 	ADMIN_CUSTOMIZE: '/assets/images/customize.svg',
 	ADMIN_MISSING_GO_BACK: '/assets/images/missing-page-go-back-to-dash.svg',
 	HELP_DESCRIPTION_POPUP: '/assets/images/help-popup-description.png',
-	HELP_FOOTER_POPUP: '/assets/images/help-popup-footer.png',
+	HELP_FOOTER_POPUP:
+		'/assets/images/terms_of_service_and_privacy_policy-tooltip.png',
+	HELP_REFERRAL_BADGE_POPUP: '/assets/images/help-popup-footer.png',
 	DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
 	WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
 	TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',

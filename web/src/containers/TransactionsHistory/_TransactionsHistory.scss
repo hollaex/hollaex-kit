@@ -57,6 +57,31 @@
 		background-color: $history-color-buy;
 		color: $buy-bids-text;
 	}
+
+	&.fullfilled .cell-wrapper {
+		border: 1px solid $colors-main-border;
+		margin: 0;
+		padding: 1px;
+		min-width: 5rem;
+		max-width: 7rem;
+
+		> .cell_value-wrapper {
+			padding: 0 0.15rem;
+			position: relative;
+			width: 100%;
+			color: $trade-fill-indicator-text;
+			z-index: 2;
+
+			.cell_value-bar {
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				background-color: $trade-fill-indicator;
+				z-index: -1;
+			}
+		}
+	}
 }
 
 .amount_text {
