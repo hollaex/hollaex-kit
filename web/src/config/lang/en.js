@@ -81,6 +81,8 @@ const nestedContent = {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
+		TERMS_OF_SERVICE: 'Terms of Service',
+		PRIVACY_POLICY: 'Privacy Policy',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',

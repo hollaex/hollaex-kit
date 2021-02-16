@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 // import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 import withEdit from 'components/EditProvider/withEdit';
+import STRINGS from 'config/localizedStrings';
 
 const generateSectionsText = (links = {}, ICONS) => {
 	let sectionsText = Object.keys(links)
@@ -161,10 +162,16 @@ const AppFooter = ({
 					</div>
 				</div>
 			</div>
-			<div className={classnames('footer-row-bottom')}>
-				{!links.hide_referral_badge && (
-					<Fragment>
-						<div className="d-flex my-2" />
+			<div
+				className={classnames(
+					'footer-row-bottom',
+					'd-flex',
+					'justify-content-between',
+					'align-center'
+				)}
+			>
+				<div className="pt-2">
+					{!links.hide_referral_badge && (
 						<a
 							href={links.referral_link || 'https://bitholla.com'}
 							target="_blank"
@@ -172,8 +179,32 @@ const AppFooter = ({
 						>
 							<span>{links.referral_label || 'Powered by bitHolla'}</span>
 						</a>
-					</Fragment>
-				)}
+					)}
+				</div>
+				<div className="d-flex pt-2">
+					<div className="pr-2">
+						<a
+							href={links.terms || '#'}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<span>
+								<span>{STRINGS['FOOTER.TERMS_OF_SERVICE']}</span>
+							</span>
+						</a>
+					</div>
+					<span>|</span>
+					<div className="pl-2">
+						<a
+							href={links.privacy || '#'}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<span>{STRINGS['FOOTER.PRIVACY_POLICY']}</span>
+						</a>
+					</div>
+				</div>
+				<div className="px-4 mx-4" />
 			</div>
 		</div>
 	);
