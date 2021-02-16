@@ -63,11 +63,15 @@ export const getGeneralFields = (coins) => ({
 		},
 	},
 	section_6: {
-		footer_description: {
-			type: 'textarea',
-			label: 'Small text',
-			placeholder: 'Write your small text filler',
-			validate: [validateRequired],
+		terms: {
+			type: 'input',
+			label: 'Terms of service link',
+			placeholder: 'https://',
+		},
+		privacy: {
+			type: 'input',
+			label: 'Privacy policy link',
+			placeholder: 'https://',
 		},
 	},
 	section_7: {

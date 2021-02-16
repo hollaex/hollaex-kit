@@ -85,11 +85,11 @@ class Description extends Component {
 						</Tooltip>
 					</h3>
 				</div>
-				<p>Small text often used for copywrite or other business data</p>
+				<p>Add a link to your Terms of Service and Privacy Policy</p>
 				<FooterTextForm
 					initialValues={footerInitialValues}
 					fields={footerFields}
-					onSubmit={this.props.handleSubmitDescription}
+					onSubmit={this.props.handleSubmitFooterText}
 					buttonText="Save"
 					buttonClass="green-btn minimal-btn"
 				/>
