@@ -60,6 +60,7 @@ const mapStateToProps = (store) => ({
 	info: store.app.info,
 	enabledPlugins: store.app.enabledPlugins,
 	features: store.app.features,
+	config_level: store.app.config_level,
 });
 
 const mapDispatchToProps = (dispatch) => ({

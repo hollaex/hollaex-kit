@@ -26,14 +26,11 @@ const getLimitValue = (limit, increment_unit) => {
 	}
 };
 
-const getDepositRow = (currency, index, coins, level) => {
-	const {
-		symbol = '',
-		fullname,
-		deposit_limits = {},
-		withdrawal_limits = {},
-		increment_unit,
-	} = coins[currency] || DEFAULT_COIN_DATA;
+const getDepositRow = (currency, index, coins, level, tier) => {
+	const { symbol = '', fullname, increment_unit } =
+		coins[currency] || DEFAULT_COIN_DATA;
+
+	const { deposit_limit, withdrawal_limit } = tier[level] || {};
 	// const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
 	return (
 		<tr key={index}>
@@ -44,10 +41,10 @@ const getDepositRow = (currency, index, coins, level) => {
 				</div>
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{getLimitValue(deposit_limits[level], increment_unit)}
+				{getLimitValue(deposit_limit, increment_unit)}
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{getLimitValue(withdrawal_limits[level], increment_unit)}
+				{getLimitValue(withdrawal_limit, increment_unit)}
 			</td>
 		</tr>
 	);
@@ -64,15 +61,15 @@ const getDepositRow = (currency, index, coins, level) => {
 //     );
 // };
 
-const getRows = (coins, level) => {
+const getRows = (coins, level, tiers) => {
 	const rowData = [];
 	Object.keys(coins).forEach((currency, index) => {
-		rowData.push(getDepositRow(currency, index, coins, level));
+		rowData.push(getDepositRow(currency, index, coins, level, tiers));
 	});
 	return rowData;
 };
 
-const LimitsBlock = ({ level, coins }) => {
+const LimitsBlock = ({ level, coins, tiers }) => {
 	return (
 		<div>
 			<table className="account-limits">
@@ -103,7 +100,7 @@ const LimitsBlock = ({ level, coins }) => {
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">
-					{getRows(coins, level)}
+					{getRows(coins, level, tiers)}
 				</tbody>
 			</table>
 		</div>
