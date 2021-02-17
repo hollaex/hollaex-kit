@@ -1532,7 +1532,7 @@ table th {
   .trade-container .trade-col_main_wrapper .trade-main_content {
     flex: 6;
     min-height: 25vh;
-    max-height: 67vh; }
+    max-height: 78vh; }
   .trade-container .trade-col_main_wrapper .trade-tabs_content {
     flex: 3;
     height: 30vh; }
@@ -1807,7 +1807,14 @@ table th {
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .form-error {
     margin: 0.5rem 0; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper {
-    margin-bottom: 0.5rem !important; }
+    margin-bottom: 0.2rem !important; }
+    .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper .ant-collapse-header {
+      text-align: right;
+      color: var(--labels_secondary-inactive-label-text-graphics);
+      padding: 0;
+      font-size: 12px; }
+    .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper .ant-collapse-content-box {
+      padding: 0; }
 
 .trade_order_entry-wrapper.order_side-selector-buy {
   flex: 1;
@@ -1868,7 +1875,14 @@ table th {
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .form-error {
     margin: 0.5rem 0; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper {
-    margin-bottom: 0.5rem !important; }
+    margin-bottom: 0.2rem !important; }
+    .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper .ant-collapse-header {
+      text-align: right;
+      color: var(--labels_secondary-inactive-label-text-graphics);
+      padding: 0;
+      font-size: 12px; }
+    .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper .ant-collapse-content-box {
+      padding: 0; }
 
 .risky-trade-wrapper {
   width: 32rem; }
@@ -6110,6 +6124,15 @@ table th {
 .trade-form-select {
   width: 35% !important;
   transform: translateY(1.4rem); }
+
+.ant-slider-mark-text {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  font-family: 'Open Sans' !important;
+  font-size: 0.9rem !important; }
+
+.ant-slider-mark-text-active {
+  color: var(--labels_important-active-labels-text-graphics);
+  font-weight: bold; }
 
 .exir-button {
   width: 100%;

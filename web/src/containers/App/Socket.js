@@ -47,6 +47,7 @@ import {
 	requestPlugins,
 	requestInitial,
 	requestConstant,
+	requestTiers,
 } from '../../actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
@@ -192,6 +193,8 @@ class Container extends Component {
 				}
 			})
 			.catch((err) => console.error(err));
+
+		this.props.requestTiers();
 	};
 
 	getUserDetails = () => {
@@ -728,6 +731,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
 	setPlugins: bindActionCreators(setPlugins, dispatch),
+	requestTiers: bindActionCreators(requestTiers, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

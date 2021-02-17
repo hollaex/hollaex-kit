@@ -6,10 +6,11 @@ import { formatPercentage } from '../../../utils/currency';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import { EditWrapper } from 'components';
 
-const getMakerRow = (pairs, coins, pair, level, index, discount) => {
-	const { pair_base, pair_2, maker_fees, taker_fees } = pairs[pair];
-	const makersFee = maker_fees ? maker_fees[level] : 0;
-	const takersFee = taker_fees ? taker_fees[level] : 0;
+const getMakerRow = (pairs, coins, pair, level, index, discount, tiers) => {
+	const { pair_base, pair_2 } = pairs[pair];
+	const { fees: { maker, taker } = {} } = tiers[level] || {};
+	const makersFee = maker ? maker[pair] : 0;
+	const takersFee = taker ? taker[pair] : 0;
 	const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
 	const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 	const makersData = discount
@@ -57,16 +58,18 @@ const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 // 	);
 // };
 
-const getRows = (pairs, level, coins, discount) => {
+const getRows = (pairs, level, coins, discount, tiers) => {
 	const rowData = [];
 	Object.keys(pairs).map((pair, index) => {
-		rowData.push(getMakerRow(pairs, coins, pair, level, index, discount));
+		rowData.push(
+			getMakerRow(pairs, coins, pair, level, index, discount, tiers)
+		);
 		return '';
 	});
 	return rowData;
 };
 
-const FeesBlock = ({ pairs, coins, level, discount }) => {
+const FeesBlock = ({ pairs, coins, level, discount, tiers }) => {
 	return (
 		<div>
 			<table className="account-limits">
@@ -97,7 +100,7 @@ const FeesBlock = ({ pairs, coins, level, discount }) => {
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">
-					{getRows(pairs, level, coins, discount)}
+					{getRows(pairs, level, coins, discount, tiers)}
 				</tbody>
 			</table>
 		</div>

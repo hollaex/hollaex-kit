@@ -412,7 +412,15 @@ class OrderEntry extends Component {
 								className="pointer text-uppercase blue-link"
 								onClick={() => this.setMax()}
 							>
-								{balance[`${side === 'buy' ? pair_2 : pair_base}_available`]}{' '}
+								{side === 'buy'
+									? formatToCurrency(
+											balance[`${pair_2}_available`],
+											increment_price
+									  )
+									: formatToCurrency(
+											balance[`${pair_base}_available`],
+											increment_size
+									  )}{' '}
 								{side === 'buy'
 									? pair_2.toUpperCase()
 									: pair_base.toUpperCase()}
