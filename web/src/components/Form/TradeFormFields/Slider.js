@@ -5,10 +5,30 @@ import { Slider } from 'antd';
 
 const marks = {
 	0: {},
-	25: {},
-	50: {},
-	75: {},
-	100: {},
+	25: {
+		label: '25%',
+		style: {
+			transform: 'translateX(-66%)',
+		},
+	},
+	50: {
+		label: '50%',
+		style: {
+			transform: 'translateX(-66%)',
+		},
+	},
+	75: {
+		label: '75%',
+		style: {
+			transform: 'translateX(-66%)',
+		},
+	},
+	100: {
+		label: '100%',
+		style: {
+			transform: 'translateX(-66%)',
+		},
+	},
 };
 
 const SizeSlider = (props) => {
