@@ -81,7 +81,12 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	width: 100%;
 	padding: 0.5rem 0.5rem 0.8rem 0.5rem;
 	.sidebar-bottom-button {
-		flex: 1;
+		justify-content: space-between;
+		flex-direction: column;
+		display: flex;
+		align-items: center;
+		width: 20%;
+
 		&.active {
 			background-color: $app-background-color;
 			.sidebar-bottom-icon {
@@ -96,12 +101,15 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			}
 		}
 		.bottom-bar-text {
-			font-size: 12px;
+			font-size: 10px;
 			text-align: center;
 			margin-top: -17px;
 			font-weight: lighter;
 			color: $base_top-bar-navigation_text;
 			white-space: nowrap;
+			width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 		.bottom-text-acttive {
 			color: $colors-main-black !important;
