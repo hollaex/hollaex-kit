@@ -5,11 +5,25 @@ import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency, formatDate } from '../../../utils/index';
 
-import { isSupport } from '../../../utils/token';
-
-export const renderBoolean = (value) => (
+/*export const renderBoolean = (value) => (
 	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
-);
+);*/
+
+const renderStatus = (_, { status, dismissed, rejected }) => {
+	if (status) {
+		return 'Completed';
+	}
+
+	if (dismissed) {
+		return 'Dismissed';
+	}
+
+	if (rejected) {
+		return 'Rejected';
+	}
+
+	return 'Pending';
+};
 
 const ButtonNotAvailable = () => <CloseSquareOutlined />;
 export const renderValidation = ({
@@ -84,22 +98,9 @@ export const COLUMNS = (currency, type) => {
 		// { title: 'Address', dataIndex: 'address', key: 'address' },
 		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
 		{
-			title: 'Completed',
-			dataIndex: 'status',
+			title: 'Status',
 			key: 'status',
-			render: renderBoolean,
-		},
-		{
-			title: 'Dismissed',
-			dataIndex: 'dismissed',
-			key: 'dismissed',
-			render: renderBoolean,
-		},
-		{
-			title: 'Rejected',
-			dataIndex: 'rejected',
-			key: 'rejected',
-			render: renderBoolean,
+			render: renderStatus,
 		},
 		{ title: 'Amount', dataIndex: 'amount', key: 'amount' },
 		// { title: 'Fee', dataIndex: 'fee', key: 'fee' },
