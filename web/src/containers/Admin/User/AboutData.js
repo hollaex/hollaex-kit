@@ -23,6 +23,7 @@ import {
 	validateRange,
 } from '../../../components/AdminForm/validations';
 import { STATIC_ICONS } from 'config/icons';
+import Image from 'components/Image';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
@@ -34,7 +35,7 @@ const RenderModalContent = ({
 	onChangeSuccess,
 	handleClose,
 	refreshData,
-	icons: ICONS,
+	allIcons,
 	userTiers,
 }) => {
 	const onSubmit = (refreshData) => (values) => {
@@ -57,9 +58,9 @@ const RenderModalContent = ({
 		levels.map((level, index) => (
 			<Select.Option key={index} value={level}>
 				<div className="asset-list">
-					<ReactSVG
-						src={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
-						className="select-level-icon"
+					<Image
+						icon={allIcons['dark'][`LEVEL_ACCOUNT_ICON_${level}`]}
+						wrapperClassName="select-level-icon"
 					/>
 					<div className="select-coin-text">{`Account tier ${level}`}</div>
 				</div>
@@ -140,7 +141,7 @@ const AboutData = ({
 	freezeAccount,
 	verifyEmail,
 	onChangeSuccess,
-	icons: ICONS,
+	allIcons = {},
 	userTiers,
 }) => {
 	const [isUpload, setUpload] = useState(false);
@@ -477,11 +478,13 @@ const AboutData = ({
 						<div className="user-info-separator"></div>
 						<div className="user-level-container">
 							<div>
-								<ReactSVG
-									src={
-										ICONS[`LEVEL_ACCOUNT_ICON_${userData.verification_level}`]
+								<Image
+									icon={
+										allIcons['dark'][
+											`LEVEL_ACCOUNT_ICON_${userData.verification_level}`
+										]
 									}
-									className="levels-icon"
+									wrapperClassName="levels-icon"
 								/>
 							</div>
 							<div className="user-info-label">
@@ -535,7 +538,7 @@ const AboutData = ({
 						onChangeSuccess={onChangeSuccess}
 						handleClose={handleClose}
 						refreshData={refreshData}
-						icons={ICONS}
+						allIcons={allIcons}
 						userTiers={userTiers}
 					/>
 				</Modal>
