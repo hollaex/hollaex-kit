@@ -3891,24 +3891,39 @@ table th {
   width: 100%;
   padding: 0.5rem 0.5rem 0.8rem 0.5rem; }
   .sidebar-bottom-wrapper .sidebar-bottom-button {
-    flex: 1; }
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active {
-      background-color: var(--base_background); }
-      .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg {
-        fill: var(--base_top-bar-navigation);
-        stroke: var(--base_top-bar-navigation); }
-        .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon {
-          fill: var(--base_top-bar-navigation);
-          stroke: var(--base_top-bar-navigation); }
+    justify-content: space-between;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    width: 20%; }
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .post-icon,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .wallet-selected-2,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0 {
+      fill: var(--calculated_base_top-bar-navigation_text-inactive); }
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .trade-active-2,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-active-1 {
+      stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .wallet-selected-2,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0 {
+      fill: var(--calculated_base_top-bar-navigation_text); }
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .trade-active-2,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-active-1 {
+      stroke: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
-      font-size: 12px;
+      font-size: 10px;
       text-align: center;
       margin-top: -17px;
       font-weight: lighter;
-      color: var(--calculated_base_top-bar-navigation_text);
-      white-space: nowrap; }
+      color: var(--calculated_base_top-bar-navigation_text-inactive);
+      white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-text-acttive {
-      color: var(--labels_important-active-labels-text-graphics) !important;
+      color: var(--calculated_base_top-bar-navigation_text) !important;
       font-weight: bolder; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon {
       height: 100%; }

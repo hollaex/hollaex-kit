@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router';
-import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { ButtonLink } from '../../components';
+import withConfig from 'components/ConfigProvider/withConfig';
+import Image from 'components/Image';
 
 const SidebarButton = ({
 	title = '',
@@ -14,7 +14,7 @@ const SidebarButton = ({
 }) => {
 	return (
 		<Link to={path} className={classnames('sidebar-bottom-button', { active })}>
-			<ReactSVG src={iconPath} className="sidebar-bottom-icon" />
+			<Image icon={iconPath} wrapperClassName="sidebar-bottom-icon" />
 			<div
 				className={
 					active ? 'bottom-text-acttive bottom-bar-text' : 'bottom-bar-text'
@@ -26,12 +26,13 @@ const SidebarButton = ({
 	);
 };
 
-export const SidebarBottom = ({
+const SidebarBottom = ({
 	activePath = 'x',
 	pair = '',
 	isLogged,
 	enabledPlugins = [],
 	features = {},
+	icons: ICONS = {},
 }) => {
 	return isLogged ? (
 		<div className="sidebar-bottom-wrapper d-flex justify-content-between">
@@ -96,3 +97,5 @@ export const SidebarBottom = ({
 		</div>
 	);
 };
+
+export default withConfig(SidebarBottom);
