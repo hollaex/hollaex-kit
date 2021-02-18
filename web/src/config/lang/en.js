@@ -81,7 +81,8 @@ const nestedContent = {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
+		TERMS_OF_SERVICE: 'Terms of Service',
+		PRIVACY_POLICY: 'Privacy Policy',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -973,6 +974,7 @@ const nestedContent = {
 	LOGOUT_ERROR_INACTIVE:
 		'You have been logged out because you have been inactive',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
+	ORDER_ENTRY_ADVANCED: 'Advanced',
 	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
 	QUICK_TRADE_TOKEN_USED: 'Token has been used',
 	QUICK_TRADE_QUOTE_EXPIRED: 'Quote has expired',

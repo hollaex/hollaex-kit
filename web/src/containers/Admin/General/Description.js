@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Tooltip } from 'antd';
+import { connect } from 'react-redux';
+import { Tooltip, Button } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { AdminHocForm } from '../../../components';
@@ -7,9 +8,20 @@ import { STATIC_ICONS } from 'config/icons';
 
 const DescriptionForm = AdminHocForm('DescriptionForm');
 const FooterTextForm = AdminHocForm('FooterDescriptionForm');
+const ReferralBadgeForm = AdminHocForm('ReferralBadgeForm');
 
 class Description extends Component {
 	handleImg = (type) => {
+		if (type === 'referral_badge') {
+			return (
+				<img
+					src={STATIC_ICONS.HELP_REFERRAL_BADGE_POPUP}
+					className="help-icon referral_badge_note"
+					alt="referral badge"
+				/>
+			);
+		}
+
 		return type === 'description' ? (
 			<img
 				src={STATIC_ICONS.HELP_DESCRIPTION_POPUP}
@@ -31,6 +43,9 @@ class Description extends Component {
 			descriptionInitialValues,
 			footerFields,
 			footerInitialValues,
+			ReferralBadgeFields,
+			ReferralBadgeInitialValues,
+			constants: { info: { collateral_level = 'zero' } = {} } = {},
 		} = this.props;
 		return (
 			<div className="description-wrapper">
@@ -70,17 +85,72 @@ class Description extends Component {
 						</Tooltip>
 					</h3>
 				</div>
-				<p>Small text often used for copywrite or other business data</p>
+				<p>Add a link to your Terms of Service and Privacy Policy</p>
 				<FooterTextForm
 					initialValues={footerInitialValues}
 					fields={footerFields}
-					onSubmit={this.props.handleSubmitDescription}
+					onSubmit={this.props.handleSubmitFooterText}
 					buttonText="Save"
 					buttonClass="green-btn minimal-btn"
+				/>
+				<div className="divider"></div>
+				<div>
+					<h3>
+						Referral Badge{' '}
+						<Tooltip
+							overlayClassName="admin-general-description-tip general-description-tip-right"
+							title={this.handleImg('referral_badge')}
+							placement="right"
+						>
+							<QuestionCircleOutlined style={{ color: '#ffffff' }} />
+						</Tooltip>
+					</h3>
+				</div>
+				<p>
+					Edit the referral badge in the bottom left corner. This space can be
+					repurposed for copyright or other business related data.
+				</p>
+
+				{collateral_level === 'zero' && (
+					<div
+						style={{ width: '465px' }}
+						className="admin-dash-card flex-menu justify-content-between"
+					>
+						<div>
+							<div className="card-title bold">Fully rebrand your platform</div>
+							<div className="card-description">
+								Replace the badge with your own branding.
+							</div>
+						</div>
+						<div>
+							<a
+								href="https://dash.bitholla.com/"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Button type="primary" className="green-btn minimal-btn bold">
+									Upgrade Now
+								</Button>
+							</a>
+						</div>
+					</div>
+				)}
+
+				<ReferralBadgeForm
+					initialValues={ReferralBadgeInitialValues}
+					fields={ReferralBadgeFields}
+					buttonText="Save"
+					buttonClass="green-btn minimal-btn"
+					onSubmit={this.props.handleSubmitReferralBadge}
+					disableAllFields={collateral_level === 'zero'}
 				/>
 			</div>
 		);
 	}
 }
 
-export default Description;
+const mapStateToProps = (store) => ({
+	constants: store.app.constants,
+});
+
+export default connect(mapStateToProps)(Description);

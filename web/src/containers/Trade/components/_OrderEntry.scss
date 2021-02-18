@@ -105,7 +105,16 @@
 	}
 
 	.trade_order_entry-form_fields-wrapper {
-		margin-bottom: 0.5rem !important;
+		margin-bottom: 0.2rem !important;
+		.ant-collapse-header {
+			text-align: right;
+			color: $colors-black;
+			padding: 0;
+			font-size: $font-size-mobile-txt;
+		}
+		.ant-collapse-content-box {
+			padding: 0;
+		}
 	}
 }
 

@@ -74,12 +74,11 @@ export default {
 		SECTION_3_CARD_6_TITLE: 'KYC-INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
 			'Flexible und integrierbare Module zur Anwendung von KYC- und Benutzerverifizierungsmethoden in verschiedenen Rechtsordnungen.',
-		SECTION_3_BUTTON_1: 'Demo ansehen'
+		SECTION_3_BUTTON_1: 'Demo ansehen',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'SPRACHE',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ÜBER',
 			SECTION_1_LINK_1: 'Über uns',
@@ -123,7 +122,7 @@ export default {
 		XHT_DESCRIPTION:
 			'HollaEx Kit ist eine Open-Source-Handelsplattform, die von bitHolla Inc. entwickelt wurde. Mit diesem Exchange Kit können Sie beliebige digitale Assets erstellen und auflisten und Benutzer für den Handel an Ihrer Börse einbinden. Um einfach einen selbst zu betreiben {1}.',
 		CLICK_HERE: 'klicken Sie hier',
-		VISIT_HERE: 'besuchen Sie hier'
+		VISIT_HERE: 'besuchen Sie hier',
 	},
 	ACCOUNTS: {
 		TITLE: 'Konto',
@@ -136,20 +135,22 @@ export default {
 		TAB_SUMMARY: 'Zusammenfassung',
 		TAB_HISTORY: 'Verlauf',
 		TAB_API: 'API',
-		TAB_SIGNOUT: 'Abmelden'
+		TAB_SIGNOUT: 'Abmelden',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
 		REQUEST_TITLE: 'Zugang anfordern',
 		REQUEST_INVITE: 'Einladung anfordern',
-		CATEGORY_PLACEHOLDER: 'Wählen Sie die Kategorie, die am besten zu Ihrem Problem passt',
+		CATEGORY_PLACEHOLDER:
+			'Wählen Sie die Kategorie, die am besten zu Ihrem Problem passt',
 		INTRODUCTION_LABEL: 'Stellen Sie sich vor',
 		INTRODUCTION_PLACEHOLDER:
-			'Wo sind Sie ansässig? Sind Sie an einem Exchange interessiert?'
+			'Wo sind Sie ansässig? Sind Sie an einem Exchange interessiert?',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Kategorie',
-		CATEGORY_PLACEHOLDER: 'Wählen Sie die Kategorie, die am besten zu Ihrem Problem passt',
+		CATEGORY_PLACEHOLDER:
+			'Wählen Sie die Kategorie, die am besten zu Ihrem Problem passt',
 		CATEGORY_OPTIONS: {
 			OPTION_VERIFY: 'Benutzerverifizierung',
 			OPTION_LEVEL: 'Benutzerlevel erhöhen',
@@ -157,7 +158,7 @@ export default {
 			OPTION_BUG: 'Fehler melden', // ToDo:
 			OPTION_PERSONAL_INFO: 'Persönliche Informationen ändern', // ToDo:
 			OPTION_BANK_TRANSFER: 'Banküberweisung', // new
-			OPTION_REQUEST: 'Einladung für die XIV Exchange anfordern' // new
+			OPTION_REQUEST: 'Einladung für die XIV Exchange anfordern', // new
 		},
 		SUBJECT_LABEL: 'Betreff',
 		SUBJECT_PLACEHOLDER: 'Geben Sie den Betreff Ihres Problems ein',
@@ -169,7 +170,7 @@ export default {
 		SUCCESS_MESSAGE: 'Die E-Mail wurde an unseren Kundensupport gesendet',
 		SUCCESS_TITLE: 'Nachricht gesendet',
 		SUCCESS_MESSAGE_1: 'Ihr Problem wurde an den Kundensupport weitergeleitet.',
-		SUCCESS_MESSAGE_2: 'Sie können in 1 bis 3 Tagen mit einer Antwort rechnen.'
+		SUCCESS_MESSAGE_2: 'Sie können in 1 bis 3 Tagen mit einer Antwort rechnen.',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
@@ -178,20 +179,20 @@ export default {
 			MEMO: 'Ihr {0} Memo', // new
 			BTC: 'Ihre Bitcoin-Empfangsadresse',
 			ETH: 'Ihre Ethereum-Empfangsadresse',
-			BCH: 'Ihre Bitcoin Cash-Empfangsadresse'
+			BCH: 'Ihre Bitcoin Cash-Empfangsadresse',
 		},
 		INCREASE_LIMIT: 'Möchten Sie Ihr Tageslimit erhöhen?',
 		QR_CODE:
 			'Dieser QR-Code kann von der Person gescannt werden, die Ihnen Geld senden möchte',
 		NO_DATA: 'Keine Informationen verfügbar',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'Bei {0} anmelden',
-		CANT_LOGIN: "Sie können sich nicht anmelden?",
-		NO_ACCOUNT: "Sie haben noch kein Konto?",
+		CANT_LOGIN: 'Sie können sich nicht anmelden?',
+		NO_ACCOUNT: 'Sie haben noch kein Konto?',
 		CREATE_ACCOUNT: 'Erstellen Sie hier ein Konto',
-		HELP: 'Hilfe'
+		HELP: 'Hilfe',
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: 'E-Mail',
@@ -199,7 +200,7 @@ export default {
 		PASSWORD_LABEL: 'Passwort',
 		PASSWORD_PLACEHOLDER: 'Geben Sie Ihr Passwort ein',
 		PASSWORD_REPEAT_LABEL: 'Geben Sie Ihr Passwort erneut ein',
-		PASSWORD_REPEAT_PLACEHOLDER: 'Geben Sie Ihr Passwort erneut ein'
+		PASSWORD_REPEAT_PLACEHOLDER: 'Geben Sie Ihr Passwort erneut ein',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'OTP-Code zur Anmeldung bereitstellen',
@@ -219,11 +220,12 @@ export default {
 		MIN_VALUE: 'Wert muss {0} oder höher sein.',
 		MAX_VALUE: 'Wert muss {0} oder niedriger sein.',
 		INSUFFICIENT_BALANCE: 'Unzureichende Balance',
-		PASSWORDS_DONT_MATCH: "Passwort stimmt nicht überein",
+		PASSWORDS_DONT_MATCH: 'Passwort stimmt nicht überein',
 		USER_EXIST: 'E-Mail wurde bereits registriert',
-		ACCEPT_TERMS: 'Sie haben den Nutzungsbedingungen und der Datenschutzrichtlinie nicht zugestimmt',
+		ACCEPT_TERMS:
+			'Sie haben den Nutzungsbedingungen und der Datenschutzrichtlinie nicht zugestimmt',
 		STEP: 'Ungültiger Wert, Schritt ist {0}',
-		ONLY_NUMBERS: 'Wert kann nur Zahlen enthalten'
+		ONLY_NUMBERS: 'Wert kann nur Zahlen enthalten',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -237,8 +239,8 @@ export default {
 				'Die Website und das Urheberrecht an allen Texten, Grafiken, Bildern, Software und allen anderen Materialien auf der Website sind Eigentum von bitHolla, einschließlich aller Marken und anderer geistiger Eigentumsrechte in Bezug auf die Materialien und den Service auf der Website. Die Materialien auf dieser Website dürfen nur für den persönlichen Gebrauch und für nicht-kommerzielle Zwecke verwendet werden.',
 				'Sie dürfen Auszüge der Website nur für den oben genannten Zweck auf einem Computerbildschirm anzeigen oder ausdrucken, vorausgesetzt, dass Sie alle Urheberrechts- und sonstigen Eigentumshinweise sowie alle bitHolla-Marken oder -Logos beibehalten, wie sie auf dem ersten Ausdruck oder Download angezeigt werden, ohne sie zu ändern, hinzuzufügen oder zu löschen. Sofern nicht ausdrücklich angegeben, dürfen Sie ohne die vorherige schriftliche Genehmigung von bitHolla keine Materialien der Website verändern, modifizieren, reproduzieren, verteilen oder in einem anderen kommerziellen Kontext verwenden.',
 				'Sie erkennen an, dass bitHolla und das bitHolla-Logo Warenzeichen von bitHolla Inc. sind. Sie dürfen diese Warenzeichen ohne Änderungen auf dem von dieser Website heruntergeladenen Material in dem oben genehmigten Umfang wiedergeben, aber Sie dürfen sie nicht anderweitig verwenden, kopieren, anpassen oder löschen.',
-				'Sie dürfen unter keinen Umständen irgendwelche Rechte über oder in Bezug auf die Website erhalten (außer den Rechten zur Nutzung der Website gemäß diesen Bedingungen und anderen Bedingungen, die einen bestimmten Dienst oder Abschnitt der Website regeln) oder sich als Inhaber solcher Rechte über oder in Bezug auf die Website ausgeben.'
-			]
+				'Sie dürfen unter keinen Umständen irgendwelche Rechte über oder in Bezug auf die Website erhalten (außer den Rechten zur Nutzung der Website gemäß diesen Bedingungen und anderen Bedingungen, die einen bestimmten Dienst oder Abschnitt der Website regeln) oder sich als Inhaber solcher Rechte über oder in Bezug auf die Website ausgeben.',
+			],
 		},
 		GENERAL_TERMS: {
 			TITLE: 'Allgemeine Geschäftsbedingungen',
@@ -251,15 +253,15 @@ export default {
 				'Die Website und das Urheberrecht an allen Texten, Grafiken, Bildern, Software und allen anderen Materialien auf der Website sind Eigentum von bitHolla, einschließlich aller Marken und anderer geistiger Eigentumsrechte in Bezug auf die Materialien und den Service auf der Website. Die Materialien auf dieser Website dürfen nur für den persönlichen Gebrauch und für nicht-kommerzielle Zwecke verwendet werden.',
 				'Sie dürfen Auszüge der Website nur für den oben genannten Zweck auf einem Computerbildschirm anzeigen oder ausdrucken, vorausgesetzt, dass Sie alle Urheberrechts- und sonstigen Eigentumshinweise sowie alle bitHolla-Marken oder -Logos beibehalten, wie sie auf dem ersten Ausdruck oder Download angezeigt werden, ohne sie zu ändern, hinzuzufügen oder zu löschen. Sofern nicht ausdrücklich angegeben, dürfen Sie ohne die vorherige schriftliche Genehmigung von bitHolla keine Materialien der Website verändern, modifizieren, reproduzieren, verteilen oder in einem anderen kommerziellen Kontext verwenden.',
 				'Sie erkennen an, dass bitHolla und das bitHolla-Logo Warenzeichen von bitHolla Inc. sind. Sie dürfen diese Warenzeichen ohne Änderungen auf dem von dieser Website heruntergeladenen Material in dem oben genehmigten Umfang wiedergeben, aber Sie dürfen sie nicht anderweitig verwenden, kopieren, anpassen oder löschen.',
-				'Sie dürfen unter keinen Umständen irgendwelche Rechte über oder in Bezug auf die Website erhalten (außer den Rechten zur Nutzung der Website gemäß diesen Bedingungen und anderen Bedingungen, die einen bestimmten Dienst oder Abschnitt der Website regeln) oder sich als Inhaber solcher Rechte über oder in Bezug auf die Website ausgeben.'
-			]
-		}
+				'Sie dürfen unter keinen Umständen irgendwelche Rechte über oder in Bezug auf die Website erhalten (außer den Rechten zur Nutzung der Website gemäß diesen Bedingungen und anderen Bedingungen, die einen bestimmten Dienst oder Abschnitt der Website regeln) oder sich als Inhaber solcher Rechte über oder in Bezug auf die Website ausgeben.',
+			],
+		},
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
 			OKAY: 'Okay',
 			START_TRADING: 'Handel beginnen',
-			SEE_HISTORY: 'siehe Verlauf'
+			SEE_HISTORY: 'siehe Verlauf',
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: '{0} Einzahlung erhalten',
@@ -269,28 +271,29 @@ export default {
 			INFORMATION_PENDING_1:
 				'Ihre {0} benötigen 1 Bestätigungen, bevor Sie mit dem Handel beginnen können.',
 			INFORMATION_PENDING_2:
-				'Dies kann 10-30 Minuten dauern. Wir senden eine E-Mail, sobald Ihre {0} in der Blockchain bestätigt wurde.'
-		}
+				'Dies kann 10-30 Minuten dauern. Wir senden eine E-Mail, sobald Ihre {0} in der Blockchain bestätigt wurde.',
+		},
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: 'Anfrage gesendet',
-		BUTTON_TEXT: 'Okay'
+		BUTTON_TEXT: 'Okay',
 	},
 	OTP_FORM: {
-		OTP_FORM_TITLE: 'Geben Sie Ihren Authentifizierungscode ein, um fortzufahren',
+		OTP_FORM_TITLE:
+			'Geben Sie Ihren Authentifizierungscode ein, um fortzufahren',
 		OTP_LABEL: 'OTP-Code',
 		OTP_PLACEHOLDER: 'Geben Sie den Authentifizierungscode ein',
 		OTP_TITLE: 'Authentifizierungscode',
 		OTP_HELP: 'Hilfe',
 		OTP_BUTTON: 'einreichen',
-		ERROR_INVALID: 'Ungültiger OTP-Code'
+		ERROR_INVALID: 'Ungültiger OTP-Code',
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Quick',
 		TOTAL_COST: 'Gesamtkosten',
 		BUTTON: 'Überprüfung {0} Auftrag',
 		INPUT: '{0} bis {1}',
-		TRADE_TITLE: '{0} {1}' // quick buy
+		TRADE_TITLE: '{0} {1}', // quick buy
 	},
 	PREVIOUS_PAGE: 'vorherige Seite',
 	NEXT_PAGE: 'nächste Seite',
@@ -302,61 +305,62 @@ export default {
 		ORDERS_PLURAL: 'orders',
 		ORDERS_SINGULAR: 'order',
 		HOLD_ORDERS:
-			'Sie haben {0} offen {1}, was zu einem Halt von {2} {3} auf Ihrem {4} Saldo führt'
+			'Sie haben {0} offen {1}, was zu einem Halt von {2} {3} auf Ihrem {4} Saldo führt',
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'Konto-Wiederherstellung',
 		SUBTITLE: `Stellen Sie Ihr Konto unten wieder her`,
 		SUPPORT: 'Kontaktieren Sie den Kundendienst.',
-		BUTTON: 'Wiederherstellungslink senden'
+		BUTTON: 'Wiederherstellungslink senden',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
 		TITLE: 'Passwortrücksetzung gesendet',
 		TEXT:
-			'Wenn für die E-Mail-Adresse ein Konto existiert, wurde eine E-Mail mit Anweisungen zum Zurücksetzen an diese Adresse gesendet. Bitte prüfen Sie Ihre E-Mail und klicken Sie auf den Link, um das Zurücksetzen des Passworts abzuschließen.'
+			'Wenn für die E-Mail-Adresse ein Konto existiert, wurde eine E-Mail mit Anweisungen zum Zurücksetzen an diese Adresse gesendet. Bitte prüfen Sie Ihre E-Mail und klicken Sie auf den Link, um das Zurücksetzen des Passworts abzuschließen.',
 	},
 	RESET_PASSWORD: {
 		TITLE: 'Neues Passwort festlegen',
 		SUBTITLE: 'Neues Passwort festlegen',
-		BUTTON: 'Neues Passwort festlegen'
+		BUTTON: 'Neues Passwort festlegen',
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: 'Sie haben erfolgreich ein neues Passwort eingerichtet.',
-		TEXT_2: 'Klicken Sie unten auf Login, um fortzufahren.'
+		TEXT_2: 'Klicken Sie unten auf Login, um fortzufahren.',
 	},
 	SIGN_UP: {
 		SIGNUP_TO: 'Registrieren Sie sich bei {0}',
-		NO_EMAIL: "Haben Sie die E-Mail nicht erhalten?",
+		NO_EMAIL: 'Haben Sie die E-Mail nicht erhalten?',
 		REQUEST_EMAIL: 'Hier ein weitere E-Mail anfordern',
 		HAVE_ACCOUNT: 'Sie haben bereits ein Konto?',
 		GOTO_LOGIN: 'Gehen Sie zur Anmeldeseite',
 		AFFILIATION_CODE: 'Empfehlungscode (optional)',
-		AFFILIATION_CODE_PLACEHOLDER:'Geben Sie Ihren Empfehlungscode ein',
+		AFFILIATION_CODE_PLACEHOLDER: 'Geben Sie Ihren Empfehlungscode ein',
 		TERMS: {
 			terms: 'Allgemeine Bedingungen',
 			policy: 'Datenschutzrichtlinie',
-			text: 'Ich habe die {0} und {1} gelesen und stimme ihnen zu.'
-		}
+			text: 'Ich habe die {0} und {1} gelesen und stimme ihnen zu.',
+		},
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: 'E-Mail gesendet',
-		TEXT_1: 'Prüfen Sie Ihre E-Mail und klicken Sie auf den Link, um Ihre E-Mail zu verifizieren.',
+		TEXT_1:
+			'Prüfen Sie Ihre E-Mail und klicken Sie auf den Link, um Ihre E-Mail zu verifizieren.',
 		TEXT_2:
-			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.'
+			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: 'E-Mail-Anfrage erneut senden',
-		BUTTON: 'E-Mail anfordern'
+		BUTTON: 'E-Mail anfordern',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: 'E-Mail erneut senden',
 		TEXT_1:
-			'Wenn Sie nach einigen Minuten immer noch keine E-Mail-Bestätigung erhalten haben, kontaktieren Sie uns bitte unten.'
+			'Wenn Sie nach einigen Minuten immer noch keine E-Mail-Bestätigung erhalten haben, kontaktieren Sie uns bitte unten.',
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: 'Ungültiger Code',
-		TEXT_1: "Sie haben Ihre E-Mail erfolgreich verifiziert.",
-		TEXT_2: 'Sie können nun zur Anmeldung fortfahren.'
+		TEXT_1: 'Sie haben Ihre E-Mail erfolgreich verifiziert.',
+		TEXT_2: 'Sie können nun zur Anmeldung fortfahren.',
 	},
 	USER_VERIFICATION: {
 		INFO_TXT:
@@ -449,14 +453,15 @@ export default {
 				GENDER_PLACEHOLDER: 'Geben Sie an, welches Geschlecht Sie haben',
 				GENDER_OPTIONS: {
 					MAN: 'Männlich',
-					WOMAN: 'Weiblich'
+					WOMAN: 'Weiblich',
 				},
 				NATIONALITY_LABEL: 'Nationalität',
 				NATIONALITY_PLACEHOLDER:
 					'Geben Sie ein, welche Nationalität in Ihrem Ausweisdokument steht',
 				DOB_LABEL: 'Geburtsdatum',
 				COUNTRY_LABEL: 'Land Ihres Wohnsitzes',
-				COUNTRY_PLACEHOLDER: 'Wählen Sie das Land aus, in dem Sie sich derzeit befinden.',
+				COUNTRY_PLACEHOLDER:
+					'Wählen Sie das Land aus, in dem Sie sich derzeit befinden.',
 				CITY_LABEL: 'Stadt',
 				CITY_PLACEHOLDER: 'Geben Sie die Stadt ein, in der Sie wohnen',
 				ADDRESS_LABEL: 'Adresse',
@@ -464,14 +469,15 @@ export default {
 				POSTAL_CODE_LABEL: 'Postleitzahl',
 				POSTAL_CODE_PLACEHOLDER: 'Geben Sie Ihre Postleitzahl ein',
 				PHONE_CODE_LABEL: 'Land',
-				PHONE_CODE_PLACEHOLDER: 'Wählen Sie das Land, in dem Ihr Telefon angemeldet ist',
+				PHONE_CODE_PLACEHOLDER:
+					'Wählen Sie das Land, in dem Ihr Telefon angemeldet ist',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Telefonnummer',
 				PHONE_NUMBER_PLACEHOLDER: 'Geben Sie Ihre Telefonnummer ein',
 				CONNECTING_LOADING: 'Verbinden',
 				SMS_SEND: 'SMS senden',
 				SMS_CODE_LABEL: 'SMS-Code',
-				SMS_CODE_PLACEHOLDER: 'Geben Sie Ihren SMS-Code ein'
+				SMS_CODE_PLACEHOLDER: 'Geben Sie Ihren SMS-Code ein',
 			},
 			INFORMATION: {
 				TEXT:
@@ -483,27 +489,29 @@ export default {
 				PHONE_VERIFICATION_TXT_1:
 					'Erhalten Sie Echtzeit-Updates für Ein- und Auszahlungen, indem Sie Ihre Handynummer mitteilen.',
 				PHONE_VERIFICATION_TXT_2:
-					'Beweisen Sie außerdem Ihre Identität und Adresse, indem Sie Ihre LAN-Telefonnummer angeben (optional).'
-			}
+					'Beweisen Sie außerdem Ihre Identität und Adresse, indem Sie Ihre LAN-Telefonnummer angeben (optional).',
+			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
 				ID_TYPE: 'Bitte wählen Sie eine Art von Ausweisdokument',
 				ID_NUMBER: 'Bitte geben Sie Ihre Dokumentennummer ein',
-				ISSUED_DATE: 'Bitte wählen Sie das Datum, an dem Ihr Dokument ausgestellt wurde',
+				ISSUED_DATE:
+					'Bitte wählen Sie das Datum, an dem Ihr Dokument ausgestellt wurde',
 				EXPIRATION_DATE:
 					'Bitte wählen Sie das Datum, an dem Ihr Dokument abläuft',
 				FRONT: 'Bitte laden Sie eine Kopie Ihres Reisepasses hoch',
 				PROOF_OF_RESIDENCY:
 					'Bitte laden Sie eine Kopie des Dokuments hoch, das Ihren aktuellen Wohnsitz belegt',
-				SELFIE_PHOTO_ID: 'Bitte laden Sie ein Selfie mit Reisepass und Notiz hoch'
+				SELFIE_PHOTO_ID:
+					'Bitte laden Sie ein Selfie mit Reisepass und Notiz hoch',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'Dokument-ID Typ',
 				TYPE_PLACEHOLDER: 'Art des Ausweises wählen',
 				TYPE_OPTIONS: {
 					ID: 'ID',
-					PASSPORT: 'Reisepass'
+					PASSPORT: 'Reisepass',
 				},
 				ID_NUMBER_LABEL: 'Reisepassnummer',
 				ID_NUMBER_PLACEHOLDER: 'Geben Sie Ihre Reisepassnummer ein',
@@ -519,10 +527,11 @@ export default {
 				PASSPORT_LABEL: 'Reisepass-Dokument',
 				PASSPORT_PLACEHOLDER: 'Fügen Sie eine Kopie Ihres Passdokuments hinzu',
 				POR_LABEL: 'Dokument zum Nachweis Ihrer Adresse',
-				POR_PLACEHOLDER: 'Fügen Sie eine Kopie eines Dokuments hinzu, das Ihre Adresse belegt',
+				POR_PLACEHOLDER:
+					'Fügen Sie eine Kopie eines Dokuments hinzu, das Ihre Adresse belegt',
 				SELFIE_PHOTO_ID_LABEL: 'Ihr Selfie mit Reisepass und Notiz',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Fügen Sie eine Kopie Ihres Selfies mit Reisepass und Notiz hinzu'
+					'Fügen Sie eine Kopie Ihres Selfies mit Reisepass und Notiz hinzu',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Ausweisdokument',
@@ -531,14 +540,16 @@ export default {
 					TITLE: 'Bitte stellen Sie sicher, dass Ihre eingereichten Dokumente:',
 					LIST_ITEM_1:
 						'HOHE QUALITÄT (Farbbilder, 300dpi Auflösung oder höher) sind.',
-					LIST_ITEM_2: 'VOLLSTÄNDIG SICHTBAR (Wasserzeichen sind erlaubt) sind.',
-					LIST_ITEM_3: 'GÜLTIG, mit deutlich sichtbarem Gültigkeitsdatum, sind.',
+					LIST_ITEM_2:
+						'VOLLSTÄNDIG SICHTBAR (Wasserzeichen sind erlaubt) sind.',
+					LIST_ITEM_3:
+						'GÜLTIG, mit deutlich sichtbarem Gültigkeitsdatum, sind.',
 					WARNING_1:
 						'Es wird nur ein gültiger Reisepass akzeptiert; Fotos in hoher Qualität oder gescannte Bilder dieser Dokumente sind akzeptabel:',
 					WARNING_2:
 						'Stellen Sie sicher, dass Sie Ihre eigenen Dokumente hochladen. Jede Verwendung von falschen oder gefälschten Dokumenten hat rechtliche Konsequenzen und führt zur sofortigen Sperrung Ihres Kontos.',
 					WARNING_3:
-						'Reichen Sie bitte nicht den Reisepass als Wohnsitznachweis ein.'
+						'Reichen Sie bitte nicht den Reisepass als Wohnsitznachweis ein.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -556,7 +567,7 @@ export default {
 					SECTION_2_LIST_ITEM_3:
 						'Ein von der Regierung ausgestelltes Dokument (Steuererklärung, Wohnsitzbescheinigung usw.).',
 					WARNING:
-						'Wir können die Adresse auf Ihrem eingereichten Ausweisdokument nicht als gültigen Wohnsitznachweis akzeptieren.'
+						'Wir können die Adresse auf Ihrem eingereichten Ausweisdokument nicht als gültigen Wohnsitznachweis akzeptieren.',
 				},
 				SELFIE: {
 					TITLE: 'Selfie mit Reisepass und Notiz',
@@ -566,12 +577,12 @@ export default {
 					INSTRUCTION_1: 'Ihr Gesicht muss deutlich sichtbar sein',
 					INSTRUCTION_2: 'Reisepass muss deutlich lesbar sein',
 					INSTRUCTION_3: 'Schreiben Sie den Namen des Exchange.',
-					INSTRUCTION_4: "Schreiben Sie das heutige Datum",
+					INSTRUCTION_4: 'Schreiben Sie das heutige Datum',
 					INSTRUCTION_5: 'Unterschreiben Sie die Notiz.',
 					WARNING:
-						'Selfie mit einem anderen Reisepass mit hochgeladenem Inhalt wird abgelehnt'
-				}
-			}
+						'Selfie mit einem anderen Reisepass mit hochgeladenem Inhalt wird abgelehnt',
+				},
+			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
@@ -581,7 +592,7 @@ export default {
 					'Ihre Bankkontonummer sollte weniger als 50 Ziffern haben',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Ihre Bankkontonummer hat ein Limit von 50 Zeichen',
-				CARD_NUMBER: 'Ihre Kartennummer hat ein falsches Format'
+				CARD_NUMBER: 'Ihre Kartennummer hat ein falsches Format',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'Bank Name',
@@ -592,20 +603,22 @@ export default {
 				ACCOUNT_OWNER_PLACEHOLDER: 'Type the name as on your bank account',
 				CARD_NUMBER_LABEL: 'Bankkartennummer',
 				CARD_NUMBER_PLACEHOLDER:
-					'Geben Sie die 16-stellige Nummer ein, die sich auf der Vorderseite Ihrer Bankkarte befindet'
-			}
+					'Geben Sie die 16-stellige Nummer ein, die sich auf der Vorderseite Ihrer Bankkarte befindet',
+			},
 		},
 		WARNING: {
-			TEXT_1: 'Durch die Verifizierung Ihrer Identität können Sie Folgendes erhalten:',
+			TEXT_1:
+				'Durch die Verifizierung Ihrer Identität können Sie Folgendes erhalten:',
 			LIST_ITEM_1: 'Erhöhte Abhebungslimits',
 			LIST_ITEM_2: 'Erhöhte Einzahlungslimits',
-			LIST_ITEM_3: 'Niedrigere Gebühren'
-		}
+			LIST_ITEM_3: 'Niedrigere Gebühren',
+		},
 	},
 	USER_SETTINGS: {
 		TITLE_TEXT_1:
 			'Ändern Sie die Einstellungen Ihres Kontos. Von Schnittstelle, Benachrichtigungen, Benutzername und anderen Anpassungen.',
-		TITLE_TEXT_2: 'Wenn Sie die Einstellungen speichern, werden die Änderungen übernommen und gespeichert.',
+		TITLE_TEXT_2:
+			'Wenn Sie die Einstellungen speichern, werden die Änderungen übernommen und gespeichert.',
 		TITLE_NOTIFICATION: 'Benachrichtigung',
 		TITLE_INTERFACE: 'Interface',
 		TITLE_LANGUAGE: 'Sprache',
@@ -627,30 +640,28 @@ export default {
 		ORDER_PORTFOLIO_LABEL: 'Prozentualer Anteil des Portfolios:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Handel Pop-ups',
-			POPUP_ORDER_CONFIRMATION: 'Vor dem Absenden von Bestellungen um Bestätigung bitten',
-			POPUP_ORDER_COMPLETED: 'Pop-up anzeigen, wenn die Bestellung abgeschlossen ist',
+			POPUP_ORDER_CONFIRMATION:
+				'Vor dem Absenden von Bestellungen um Bestätigung bitten',
+			POPUP_ORDER_COMPLETED:
+				'Pop-up anzeigen, wenn die Bestellung abgeschlossen ist',
 			POPUP_ORDER_PARTIALLY_FILLED:
-				'Pop-up anzeigen, wenn der Auftrag teilweise gefüllt ist'
+				'Pop-up anzeigen, wenn der Auftrag teilweise gefüllt ist',
 		},
-		AUDIO_CUE_FORM: { // new
+		AUDIO_CUE_FORM: {
+			// new
 			ALL_AUDIO: 'Alle Audio-Cues',
 			PUBLIC_TRADE_AUDIO: 'Wenn ein öffentlicher Handel stattgefunden hat',
-			ORDERS_PARTIAL_AUDIO:
-				'Wenn einer Ihrer Aufträge teilweise erfüllt ist',
-			ORDERS_PLACED_AUDIO:
-				'Wenn eine Bestellung aufgegeben wird',
-			ORDERS_CANCELED_AUDIO:
-				'Wenn ein Auftrag storniert wird',
+			ORDERS_PARTIAL_AUDIO: 'Wenn einer Ihrer Aufträge teilweise erfüllt ist',
+			ORDERS_PLACED_AUDIO: 'Wenn eine Bestellung aufgegeben wird',
+			ORDERS_CANCELED_AUDIO: 'Wenn ein Auftrag storniert wird',
 			ORDERS_COMPLETED_AUDIO:
 				'Wenn einer Ihrer Aufträge vollständig gefüllt ist',
 			CLICK_AMOUNTS_AUDIO:
 				'Wenn Sie Beträge und Preise im Auftragsbuch anklicken',
-			GET_QUICK_TRADE_AUDIO:
-				'Wenn Sie ein Angebot für das Protrading einholen',
+			GET_QUICK_TRADE_AUDIO: 'Wenn Sie ein Angebot für das Protrading einholen',
 			SUCCESS_QUICK_TRADE_AUDIO:
 				'Wenn ein erfolgreicher Quick-Trade stattfindet',
-			QUICK_TRADE_TIMEOUT_AUDIO:
-				'Wenn Quick-Trade-Timeout ',
+			QUICK_TRADE_TIMEOUT_AUDIO: 'Wenn Quick-Trade-Timeout ',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -660,8 +671,8 @@ export default {
 			TOMAN_ASSET: 'Ungefährer Wert',
 			ADJUST: '(PROZENTSATZ ANPASSEN)',
 			ACTIVATE_RISK_MANAGMENT: 'Aktivieren Sie das Risikomanagement',
-			WARNING_POP_UP: 'Warn-Pop-ups'
-		}
+			WARNING_POP_UP: 'Warn-Pop-ups',
+		},
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'Verlauf',
@@ -671,7 +682,7 @@ export default {
 		TEXT_DOWNLOAD: 'DOWNLOAD-HISTORIE',
 		TRADES: 'Trades',
 		DEPOSITS: 'Einzahlungen',
-		WITHDRAWALS: 'Abhebungen'
+		WITHDRAWALS: 'Abhebungen',
 	},
 	ACCOUNT_SECURITY: {
 		OTP: {
@@ -680,11 +691,11 @@ export default {
 			OTP_DISABLED: 'BITTE SCHALTEN SIE DIE 2FA FUNKTION EIN',
 			ENABLED_TEXTS: {
 				TEXT_1: 'OTP bei der Anmeldung verlangen',
-				TEXT_2: 'OTP beim Abheben von Geldern verlangen'
+				TEXT_2: 'OTP beim Abheben von Geldern verlangen',
 			},
 			DIALOG: {
 				SUCCESS: 'Sie haben das OTP erfolgreich aktiviert',
-				REVOKE: 'Sie haben Ihr OTP erfolgreich widerrufen'
+				REVOKE: 'Sie haben Ihr OTP erfolgreich widerrufen',
 			},
 			CONTENT: {
 				TITLE: 'Aktivieren der Zwei-Faktor-Authentifizierung',
@@ -700,55 +711,59 @@ export default {
 				WARNING:
 					'Wir empfehlen Ihnen dringend, die 2-Faktor-Authentifizierung (2FA) einzurichten. Dadurch wird die Sicherheit Ihrer Gelder erheblich erhöht.',
 				ENABLE: 'Aktivieren der Zwei-Faktoren-Authentifizierung',
-				DISABLE: 'Zwei-Faktor-Authentifizierung deaktivieren'
+				DISABLE: 'Zwei-Faktor-Authentifizierung deaktivieren',
 			},
 			FORM: {
-				PLACEHOLDER: 'Geben Sie Ihr von Google Authenticator bereitgestelltes OTP ein.',
-				BUTTON: '2FA aktivieren'
-			}
+				PLACEHOLDER:
+					'Geben Sie Ihr von Google Authenticator bereitgestelltes OTP ein.',
+				BUTTON: '2FA aktivieren',
+			},
 		},
 		CHANGE_PASSWORD: {
 			TITLE: 'Passwort ändern',
 			ACTIVE: 'AKTIV',
 			DIALOG: {
-				SUCCESS: 'Sie haben Ihr Passwort erfolgreich geändert'
+				SUCCESS: 'Sie haben Ihr Passwort erfolgreich geändert',
 			},
 			FORM: {
 				BUTTON: 'Passwort ändern',
 				CURRENT_PASSWORD: {
 					label: 'Aktuelles Passwort',
-					placeholder: 'Geben Sie Ihr aktuelles Passwort ein'
+					placeholder: 'Geben Sie Ihr aktuelles Passwort ein',
 				},
 				NEW_PASSWORD: {
 					label: 'Neues Passwort',
-					placeholder: 'Geben Sie ein neues Passwort ein'
+					placeholder: 'Geben Sie ein neues Passwort ein',
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: 'Neues Passwort bestätigen',
-					placeholder: 'Geben Sie Ihr neues Passwort erneut ein'
-				}
-			}
-		}
+					placeholder: 'Geben Sie Ihr neues Passwort erneut ein',
+				},
+			},
+		},
 	},
 	CURRENCY: 'Währung',
 	TYPE: 'Typ',
 	TYPES_VALUES: {
 		market: 'Markt',
-		limit: 'Limit'
+		limit: 'Limit',
 	},
 	TYPES: [
 		{ value: 'market', label: 'Markt' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'Limit' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'Limit' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Seite',
 	SIDES_VALUES: {
 		buy: 'kaufen',
-		sell: 'verkaufen'
+		sell: 'verkaufen',
 	},
-	SIDES: [{ value: 'buy', label: 'kaufen' }, { value: 'sell', label: 'verkaufen' }], // DO NOT CHANGE value, ONLY TRANSLATE label
+	SIDES: [
+		{ value: 'buy', label: 'kaufen' },
+		{ value: 'sell', label: 'verkaufen' },
+	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'an' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'aus' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'aus' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: 'Größe',
 	PRICE: 'Preis',
@@ -794,7 +809,7 @@ export default {
 		h: 'Hoch',
 		l: 'Tief',
 		c: 'Schließen',
-		v: 'Volumen'
+		v: 'Volumen',
 	},
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
@@ -825,8 +840,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} abzuhebender Betrag',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Geben Sie den Betrag von {0} ein, den Sie abheben möchten',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Transaktionsgebühr',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaktionsgebühr',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bankabhebungsgebühr',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Geben Sie den Betrag von {0} ein, den Sie als Gebühr für die Transaktion verwenden möchten',
@@ -852,15 +866,18 @@ export default {
 	DEPOSIT_VERIFICATION_WARNING_INFORMATION:
 		'Dies ist die ID des Vorgangs: "{0}", bitte teilen Sie uns diese ID mit, damit wir Ihnen helfen können.',
 	DEPOSIT_VERIFICATION_SUCCESS: 'Zahlung verifiziert',
-	DEPOSIT_VERIFICATION_ERROR: 'Es ist ein Fehler bei der Verifizierung der Einzahlung aufgetreten.',
-	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'Die Einzahlung wurde bereits verifiziert',
+	DEPOSIT_VERIFICATION_ERROR:
+		'Es ist ein Fehler bei der Verifizierung der Einzahlung aufgetreten.',
+	DEPOSIT_VERIFICATION_ERROR_VERIFIED:
+		'Die Einzahlung wurde bereits verifiziert',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Ungültiger Status',
 	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
 		'Die Karte, mit der Sie die Einzahlung vorgenommen haben, ist nicht dieselbe wie Ihre registrierte Karte. Daher wird Ihre Einzahlung abgelehnt und Ihr Geld wird in weniger als einer Stunde zurückerstattet.',
 	QUOTE_MESSAGE: 'Sie gehen zu {0} {1} {2} für {3} {4}',
 	QUOTE_BUTTON: 'Akzeptieren',
 	QUOTE_REVIEW: 'Überprüfen',
-	QUOTE_COUNTDOWN_MESSAGE: 'Sie haben {0} Sekunden, um den Handel durchzuführen',
+	QUOTE_COUNTDOWN_MESSAGE:
+		'Sie haben {0} Sekunden, um den Handel durchzuführen',
 	QUOTE_EXPIRED_TOKEN: 'Der Quote-Token ist abgelaufen.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
 	QUOTE_SUCCESS_REVIEW_MESSAGE: 'Sie haben erfolgreich {0} {1} {2} für {3} {4}', // you have successfully buy 1 btc from x toman
@@ -879,14 +896,17 @@ export default {
 		BASE_MESSAGE_3: 'Täglicher Abhebungs-Maximalbetragt',
 		BASE_INCREASE_LIMIT: 'Erhöhen Sie Ihr Tageslimit',
 		CONFIRM_VIA_EMAIL: 'Bestätigen Sie per E-Mail',
-		CONFIRM_VIA_EMAIL_1: 'Wir haben Ihnen eine Bestätigungs-E-Mail zur Abhebung geschickt.',
+		CONFIRM_VIA_EMAIL_1:
+			'Wir haben Ihnen eine Bestätigungs-E-Mail zur Abhebung geschickt.',
 		CONFIRM_VIA_EMAIL_2:
 			'Um den Abhebungsvorgang abzuschließen, bestätigen Sie bitte',
-		CONFIRM_VIA_EMAIL_3: 'die Abhebung über Ihre E-Mail innerhalb von 5 Minuten.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Ihre Abhebungsanfrage ist bestätigt. Sie wird in Kürze bearbeitet.',
+		CONFIRM_VIA_EMAIL_3:
+			'die Abhebung über Ihre E-Mail innerhalb von 5 Minuten.',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'Ihre Abhebungsanfrage ist bestätigt. Sie wird in Kürze bearbeitet.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'Um Ihren Abhebungsstatus zu sehen, besuchen Sie bitte Ihre Abhebungs-Historienseite',
-		GO_WITHDRAWAL_HISTORY: 'Zur Abhebungsverlaufsseite gehen'
+		GO_WITHDRAWAL_HISTORY: 'Zur Abhebungsverlaufsseite gehen',
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'einzahlen',
 	WALLET_BUTTON_BASE_WITHDRAW: 'abheben',
@@ -925,8 +945,7 @@ export default {
 	LOGOUT_ERROR_TOKEN_EXPIRED: 'Token ist abgelaufen',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'Erneut anmelden', // ip doesnt match
 	LOGOUT_ERROR_INVALID_TOKEN: 'Ungültiges Token',
-	LOGOUT_ERROR_INACTIVE:
-		'Sie wurden abgemeldet, weil Sie inaktiv waren',
+	LOGOUT_ERROR_INACTIVE: 'Sie wurden abgemeldet, weil Sie inaktiv waren',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
 	QUICK_TRADE_OUT_OF_LIMITS: 'Auftragsgröße ist außerhalb der Grenzen',
 	QUICK_TRADE_TOKEN_USED: 'Token wurde verwendet',
@@ -971,12 +990,12 @@ export default {
 	SETTINGS_ORDERPOPUP_LABEL: 'Pop-up zur Auftragsbestätigung anzeigen',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NEIN' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'Ja' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'Ja' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'User Interface Theme', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'Weiß' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'dark', label: 'Dunkel' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Dunkel' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'speichern',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
@@ -996,7 +1015,7 @@ export default {
 		ACTIVE: 'Aktiv',
 		INACTIVE: 'Inaktiv',
 		INVALID_LEVEL:
-			'Sie müssen Ihre Verifizierungsstufe erhöhen, um Zugriff auf diese Funktion zu haben' // TODO
+			'Sie müssen Ihre Verifizierungsstufe erhöhen, um Zugriff auf diese Funktion zu haben', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'API-Schlüssel generieren',
@@ -1014,7 +1033,7 @@ export default {
 		CREATED_TITLE: 'Kopieren Sie Ihren API-Schlüssel',
 		CREATED_TEXT_1:
 			'Bitte kopieren Sie Ihren API-Schlüssel, da dieser in Zukunft nicht mehr erreichbar sein wird.',
-		CREATED_TEXT_2: 'Halten Sie Ihren Schlüssel privat.'
+		CREATED_TEXT_2: 'Halten Sie Ihren Schlüssel privat.',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Name',
@@ -1023,7 +1042,7 @@ export default {
 		CREATED: 'Erstelltes Datum',
 		REVOKE: 'Widerrufen',
 		REVOKED: 'Widerrufen',
-		REVOKE_TOOLTIP: 'Sie müssen 2FA aktivieren, um das Token zu widerrufen' // TODO
+		REVOKE_TOOLTIP: 'Sie müssen 2FA aktivieren, um das Token zu widerrufen', // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: 'Chat',
@@ -1035,11 +1054,12 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Mitteilungen',
 		SIGN_UP_CHAT: 'Zum Chatten anmelden',
 		JOIN_CHAT: 'Benutzername für den Chat festlegen',
-		TROLLBOX: 'Trollbox ({0})' // new
+		TROLLBOX: 'Trollbox ({0})', // new
 	},
 	INVALID_USERNAME:
 		'Der Benutzername muss zwischen 3 und 15 Zeichen lang sein. Enthält nur Kleinbuchstaben, Zahlen und Unterstrich',
-	USERNAME_TAKEN: 'Dieser Benutzername ist bereits vergeben. Bitte versuchen Sie einen anderen.',
+	USERNAME_TAKEN:
+		'Dieser Benutzername ist bereits vergeben. Bitte versuchen Sie einen anderen.',
 	USERNAME_LABEL: 'Benutzername (wird für den Chat verwendet)',
 	USERNAME_PLACEHOLDER: 'Benutzername',
 	TAB_USERNAME: 'Benutzername',
@@ -1063,7 +1083,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Gebühr',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Gebühr',
 		UNLIMITED: 'Unbegrenzt',
-		BLOCKED: '0'
+		BLOCKED: '0',
 	},
 	WALLET_ADDRESS_TITLE: 'Geldbörse {0} generieren',
 	WALLET_ADDRESS_GENERATE: 'Erzeugen',
@@ -1119,7 +1139,8 @@ export default {
 		VIEW_FEE_STRUCTURE: 'Gebührenstruktur und Limits anzeigen',
 		UPGRADE_ACCOUNT: 'Konto aktualisieren',
 		ACTIVE_2FA_SECURITY: 'Aktive 2FA-Sicherheit',
-		ACCOUNT_ASSETS_TXT_1: 'Angezeigt wird eine Übersicht über alle Ihre Assets.',
+		ACCOUNT_ASSETS_TXT_1:
+			'Angezeigt wird eine Übersicht über alle Ihre Assets.',
 		ACCOUNT_ASSETS_TXT_2:
 			'Das Halten einer großen Menge an Vermögenswerten berechtigt Sie zu einem Konto-Upgrade, das ein einzigartiges Abzeichen und niedrigere Handelsgebühren beinhaltet.',
 		TRADING_VOLUME_TXT_1:
@@ -1194,15 +1215,21 @@ export default {
 		TRADE_OVER_BTC: 'Handel über {0} BTC Wert', // new
 		XHT_IN_WALLET: '{0} XHT in der Geldbörse', // new
 		REWARDS_BONUS: 'Belohnungen und Prämien', // new
-		COMPLETE_TASK_DESC: 'Erfüllen Sie Aufgaben und verdienen Sie Prämien im Wert von über 10.000 $.', // new
+		COMPLETE_TASK_DESC:
+			'Erfüllen Sie Aufgaben und verdienen Sie Prämien im Wert von über 10.000 $.', // new
 		TASKS: 'Aufgaben', // new
-		MAKE_FIRST_DEPOSIT: 'Machen Sie Ihre erste Einzahlung und erhalten Sie 1 XHT', // new
-		BUY_FIRST_XHT: 'Kaufen Sie Ihr ersten XHT und erhalten Sie einen Bonus von 5 XHT', // new
+		MAKE_FIRST_DEPOSIT:
+			'Machen Sie Ihre erste Einzahlung und erhalten Sie 1 XHT', // new
+		BUY_FIRST_XHT:
+			'Kaufen Sie Ihr ersten XHT und erhalten Sie einen Bonus von 5 XHT', // new
 		COMPLETE_ACC_VERIFICATION:
 			'Schließen Sie die Kontoverifizierung ab und erhalten Sie einen 20 XHT-Bonus', // new
-		INVITE_USER: 'Laden Sie Benutzer ein und genießen Sie Provisionen aus deren Handel', // new
-		JOIN_HAP: 'Werden Sie Mitglied bei HAP und verdienen Sie 10% für jedes verkaufte HollaEx Kit', // new
-		EARN_RUNNING_EXCHANGE: 'Verdienen Sie passives Einkommen durch den Betrieb Ihrer eigenen Exchange.', // new
+		INVITE_USER:
+			'Laden Sie Benutzer ein und genießen Sie Provisionen aus deren Handel', // new
+		JOIN_HAP:
+			'Werden Sie Mitglied bei HAP und verdienen Sie 10% für jedes verkaufte HollaEx Kit', // new
+		EARN_RUNNING_EXCHANGE:
+			'Verdienen Sie passives Einkommen durch den Betrieb Ihrer eigenen Exchange.', // new
 		XHT_WAVE_AUCTION: 'XHT-Wellen-Auktionsdaten', // new
 		XHT_WAVE_DESC_1:
 			'Die Verteilung des HollaEx-Tokens (XHT) erfolgt über eine Wave-Auktion.', // new
@@ -1214,17 +1241,19 @@ export default {
 		LEARN_MORE_WAVE_AUCTION: 'Erfahren Sie mehr über die Wave Auktion', // new
 		WAVE_NUMBER: 'Wellennummer', // new
 		DISCOUNT: '( {0}% Rabatt )', // new
-		MY_FEES_LIMITS: ' Meine Gebühren und Limits' // new
+		MY_FEES_LIMITS: ' Meine Gebühren und Limits', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Freunde einladen', // new
 		INFO_TEXT:
 			'Empfehlen Sie Ihre Freunde, indem Sie diesen Link weitergeben und erhalten Sie Vorteile, wenn Sie andere Personen einladen.',
-		COPY_FIELD_LABEL: 'Teilen Sie den untenstehenden Link mit Freunden und verdienen Sie Provisionen:', // new
+		COPY_FIELD_LABEL:
+			'Teilen Sie den untenstehenden Link mit Freunden und verdienen Sie Provisionen:', // new
 		REFERRED_USER_COUT: 'Sie haben {0} Benutzer empfohlen.', // new
 		COPY_LINK_BUTTON: 'EMPFEHLUNGSLINK KOPIEREN', // new
 		XHT_TITLE: 'MEINE REFERRALS', // new
-		XHT_INFO_TEXT: 'Verdienen Sie Provisionen, indem Sie Ihre Freunde einladen.', // new
+		XHT_INFO_TEXT:
+			'Verdienen Sie Provisionen, indem Sie Ihre Freunde einladen.', // new
 		XHT_INFO_TEXT_1: 'Provisionen werden periodisch an Ihre Geldbörse gezahlt', // new
 		APPLICATION_TXT:
 			'Um ein HollaEx-Kit-Vertriebspartner zu werden, füllen Sie bitte einen Antrag aus.', // new
@@ -1232,7 +1261,7 @@ export default {
 		PENDING_REFERRAL: 'Ausstehende Kommissionen:', // new
 		EARN_REFERRAL: 'Verdiente Provisionen:', // new
 		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'ANWENDEN' // new
+		APPLY_BUTTON: 'ANWENDEN', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Staken von  HollaEx Token', // new
@@ -1242,7 +1271,7 @@ export default {
 			'Sie können Ihre HollaEx-Token auf ähnliche Weise sichern und XHT verdienen, die während der Wave-Auktion nicht verkauft werden.', // new
 		INFO_TXT3:
 			'Gehen Sie einfach auf dash.bitholla.com und sichern Sie sich noch heute Ihren eigenen Exchange und verdienen Sie kostenlos XHT', // new
-		BUTTON_TXT: 'FINDEN SIE MEHR' // new
+		BUTTON_TXT: 'FINDEN SIE MEHR', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
@@ -1257,14 +1286,16 @@ export default {
 			'Zahlen Sie Geld in Ihre Geldbörse ein, um HollaEx Token (XHT) zu erhalten',
 		READ_FAG: 'Lesen Sie HollaEx FAQ hier: {0}',
 		READ_DOCUMENTATION: 'Lesen Sie das HollaEx Whitepaper hier: {0}',
-		READ_WAVES: 'Regeln für die kommende öffentliche Wellenauktion im Dezember{0}', // new
+		READ_WAVES:
+			'Regeln für die kommende öffentliche Wellenauktion im Dezember{0}', // new
 		DOWNLOAD_BUY_XHT:
 			'Laden Sie die PDF-Datei herunter, um eine visuelle Schritt-für-Schritt-Anleitung zu sehen {0}',
 		HOW_TO_BUY: 'wie man HollaEx Token (XHT) kauft',
 		PUBLIC_SALES: 'Öffentliche Wellen-Auktion', // new
 		CONTACT_US:
 			'Für weitere Informationen und bei Problemen können Sie uns gerne eine E-Mail an {0} senden.',
-		VISUAL_STEP: 'Sehen Sie eine visuelle Schritt-für-Schritt-Anleitung auf {0}', // new
+		VISUAL_STEP:
+			'Sehen Sie eine visuelle Schritt-für-Schritt-Anleitung auf {0}', // new
 		WARNING_TXT:
 			'Wir werden Ihre Anfrage prüfen und Ihnen weitere Anweisungen für den Zugang zur XIV Exchange per E-Mail zusenden.', // new
 		WARNING_TXT1:
@@ -1275,7 +1306,7 @@ export default {
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'Anmelden, um Ihre letzten Trades zu sehen', //new
 		XHT_TRADE_TXT_2: 'Sie können {0}, um Ihren letzten Handelsverlauf zu sehen', //new
-		LOGIN_HERE: 'hier anmelden'
+		LOGIN_HERE: 'hier anmelden',
 	},
 	WAVES: {
 		// new
@@ -1283,7 +1314,7 @@ export default {
 		NEXT_WAVE: 'Nächste Welle',
 		WAVE_AMOUNT: 'Menge in Welle',
 		FLOOR: 'Etage',
-		LAST_WAVE: 'Letzte Wellee'
+		LAST_WAVE: 'Letzte Wellee',
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1291,12 +1322,13 @@ export default {
 		ANNOUNCEMEN: 'Ankündigung',
 		SYSTEM_UPDATE: 'System-Update',
 		LAST_WAVE: 'Letzte Welle',
-		ANNOUNCEMENT_TXT: 'Kostenloses XHT wird an alle Geldbörsen verteilt, die sich für diese Funktion qualifizieren.',
+		ANNOUNCEMENT_TXT:
+			'Kostenloses XHT wird an alle Geldbörsen verteilt, die sich für diese Funktion qualifizieren.',
 		SYSTEM_UPDATE_TIME: 'Zeit: 12:31 PM, 19. Dezember 2019	',
 		SYSTEM_UPDATE_DURATION: '1 Stunde',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, 19. Dezember 2019'
+		LAST_WAVE_TIME: ' 12: 31 PM, 19. Dezember 2019',
 	},
 	USER_LEVEL: 'User Level', // new
 	LIMIT_AMOUNT: 'Grenzwertbetrag', // new
@@ -1326,10 +1358,11 @@ export default {
 			'Verdienen Sie XHT mit dem HAP-Programm, indem Sie Ihre Freunde in den Exchange einladen. {0}.',
 		DEFAULT_ANNOUNCEMENT:
 			'In diesem Bereich werden Ihre öffentlichen Ankündigungen für den Exchange angezeigt!',
-		ANNOUNCEMENT_TXT_2: 'Kostenloses XHT wird an alle Geldbörsen verteilt, die {0}.',
+		ANNOUNCEMENT_TXT_2:
+			'Kostenloses XHT wird an alle Geldbörsen verteilt, die {0}.',
 		LEARN_MORE: 'Mehr erfahren',
-		APPLY_TODAY: 'Heute bewerben' // new
+		APPLY_TODAY: 'Heute bewerben', // new
 	},
 	OPEN_WALLET: 'Offener Geldbeutel', // new
-	AGO: 'ago' // new
+	AGO: 'ago', // new
 };
