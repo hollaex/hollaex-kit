@@ -78,7 +78,6 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -680,7 +679,8 @@ export default {
 		WITHDRAWALS: 'Retiros',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:
+			'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: 'Autenticación de dos factores',
 			OTP_ENABLED: 'habilitar otp',
@@ -710,7 +710,8 @@ export default {
 				DISABLE: 'Desactivar la autenticación de dos factores',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'Enter One-Time Password (OTP)',
@@ -796,7 +797,7 @@ export default {
 	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'Sí' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'No' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'No' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: 'Cantidad',
 	PRICE: 'Precio',
@@ -872,8 +873,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: 'Cantidad de {0} para retirar',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Tarifa de Transacción',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Tarifa de Transacción',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -1023,7 +1023,7 @@ export default {
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'Si' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'Si' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'Tema de Interface de Usuario', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [

@@ -45,7 +45,9 @@ const icons = {
 	ADMIN_CUSTOMIZE: '/assets/images/customize.svg',
 	ADMIN_MISSING_GO_BACK: '/assets/images/missing-page-go-back-to-dash.svg',
 	HELP_DESCRIPTION_POPUP: '/assets/images/help-popup-description.png',
-	HELP_FOOTER_POPUP: '/assets/images/help-popup-footer.png',
+	HELP_FOOTER_POPUP:
+		'/assets/images/terms_of_service_and_privacy_policy-tooltip.png',
+	HELP_REFERRAL_BADGE_POPUP: '/assets/images/help-popup-footer.png',
 	DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
 	WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
 	TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
@@ -67,6 +69,16 @@ const icons = {
 	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
 	VERIFICATION_ICON: '/assets/images/verification-green-tick.svg',
 	CHAT_FEATURE_ICON: '/assets/images/chat-feature-icon.svg',
+	USER_EMAIL: '/assets/images/user-email.svg',
+	USER_EMAIL_VERIFIED: '/assets/images/user-email-verified.svg',
+	USER_EMAIL_UNVERIFIED: '/assets/images/user-email-unverified.svg',
+
+	// Notification Icons
+	VERIFICATION_PENDING: '/assets/images/verification-pending-orange.svg',
+	VERIFICATION_REJECTED:
+		'/assets/images/verification-rejected-yellow-cross.svg',
+	VERIFICATION_INCOMPLETE: '/assets/images/verification-attention-red.svg',
+	VERIFICATION_VERIFIED: '/assets/images/verification-green-tick.svg',
 };
 
 export default icons;

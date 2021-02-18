@@ -25,6 +25,7 @@ import {
 } from '../../components';
 import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
 import {
+	generateOrderHistoryHeaders,
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
 	generateDepositsHeaders,
@@ -67,6 +68,8 @@ class TransactionsHistory extends Component {
 			this.props.location.query.tab
 		) {
 			this.setActiveTab(parseInt(this.props.location.query.tab, 10));
+		} else {
+			this.setActiveTab();
 		}
 	}
 
@@ -160,8 +163,8 @@ class TransactionsHistory extends Component {
 		this.setState({
 			headers: {
 				orders: isMobile
-					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
-					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
+					? generateOrderHistoryHeaders(symbol, pairs, coins, discount)
+					: generateOrderHistoryHeaders(symbol, pairs, coins, discount, prices),
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
 					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
@@ -324,6 +327,7 @@ class TransactionsHistory extends Component {
 			withdrawals,
 			symbol,
 			downloadUserTrades,
+			downloadUserOrders,
 			downloadUserWithdrawal,
 			downloadUserDeposit,
 		} = this.props;
@@ -339,13 +343,13 @@ class TransactionsHistory extends Component {
 			case 0:
 				props.stringId = 'ORDER_HISTORY';
 				props.title = `${STRINGS['ORDER_HISTORY']}`;
-				props.headers = headers.trades;
+				props.headers = headers.orders;
 				props.data = orders;
 				props.filename = `order-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
-				props.handleDownload = downloadUserTrades;
+				props.handleDownload = downloadUserOrders;
 				props.filters = filters.orders;
 				break;
 			case 1:
@@ -558,6 +562,7 @@ const mapDispatchToProps = (dispatch) => ({
 	downloadUserTrades: () => dispatch(downloadUserTrades('trade')),
 	downloadUserDeposit: () => dispatch(downloadUserTrades('deposit')),
 	downloadUserWithdrawal: () => dispatch(downloadUserTrades('withdrawal')),
+	downloadUserOrders: () => dispatch(downloadUserTrades('orders')),
 	setDeposit: (params) => dispatch(setDeposit(params)),
 });
 

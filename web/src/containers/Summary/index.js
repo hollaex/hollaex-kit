@@ -21,7 +21,6 @@ import {
 	logoutconfirm,
 	setNotification,
 	NOTIFICATIONS,
-	requestTiers,
 } from '../../actions/appActions';
 import {
 	BASE_CURRENCY,
@@ -47,7 +46,6 @@ class Summary extends Component {
 		if (user.id) {
 			this.setCurrentTradeAccount(user);
 			this.props.getUserReferralCount();
-			this.props.requestTiers();
 		}
 		if (tradeVolumes.fetched) {
 			let lastMonthVolume = getLastMonthVolume(
@@ -324,7 +322,6 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
-	requestTiers: bindActionCreators(requestTiers, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

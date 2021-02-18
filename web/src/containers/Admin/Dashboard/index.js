@@ -58,8 +58,15 @@ const Dashboard = ({ constants = {} }) => {
 		<div className="admin-content-wrapper">
 			<div className="flex-menu">
 				<ReactSVG
-					src={STATIC_ICONS.HEX_PATTERN_ICON}
+					src={constants.logo_image || STATIC_ICONS.HEX_PATTERN_ICON}
 					className="sidebar-icon"
+					fallback={() => (
+						<img
+							src={constants.logo_image || STATIC_ICONS.HEX_PATTERN_ICON}
+							alt="exchange-logo"
+							className="sidebar-icon"
+						/>
+					)}
 				/>
 				<div className="exchange-title">{showLabel}</div>
 			</div>

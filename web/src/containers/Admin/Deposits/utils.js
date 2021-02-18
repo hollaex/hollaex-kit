@@ -16,10 +16,11 @@ export const renderValidation = ({
 	status,
 	dismissed,
 	rejected,
+	processing,
 	completeDeposit,
 	updatingItem,
 }) =>
-	!status && !dismissed && !rejected ? (
+	!status && !dismissed && !rejected && !processing ? (
 		<Tooltip placement="bottom" title="VALIDATE">
 			<Button
 				type="primary"
@@ -38,10 +39,11 @@ export const renderDismiss = ({
 	status,
 	rejected,
 	dismissed,
+	processing,
 	dismissDeposit,
 	dismissingItem,
 }) =>
-	!status && !dismissed && !rejected ? (
+	!status && !dismissed && !rejected && !processing ? (
 		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
 			<Button
 				type={dismissed ? 'dashed' : 'primary'}

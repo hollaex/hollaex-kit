@@ -11,6 +11,7 @@ const USER_DATA_KEYS = [
 	'phone_number',
 	'id_data',
 	'bank_account',
+	'email_verified',
 ];
 
 const INITIAL_OTP_OBJECT = {
@@ -130,6 +131,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			const {
 				id,
 				email,
+				email_verified,
 				balance,
 				crypto_wallet,
 				verification_level,
@@ -159,6 +161,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				fetched: true,
 				id,
 				email,
+				email_verified,
 				balance: {
 					...state.balance,
 					...balance,

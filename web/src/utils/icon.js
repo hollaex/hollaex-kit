@@ -16,11 +16,30 @@ const BACKGROUND_ICON_IDS = ['EXCHANGE_LOGO', 'EXCHANGE_LOADER'];
 export const isBackgroundIcon = (iconId) =>
 	BACKGROUND_ICON_IDS.includes(iconId);
 
-export const generateAllIcons = (themes, icons, coinKeys = []) => {
+const generateServerSideDefaultIcons = (coins) => {
+	const icons = {};
+	Object.entries(coins).forEach(([key, { logo }]) => {
+		if (logo) {
+			icons[`${key.toUpperCase()}_ICON`] = logo;
+		}
+	});
+
+	return icons;
+};
+
+export const generateAllIcons = (themes, icons, coin_icons = {}) => {
+	const coinKeys = Object.keys(coin_icons);
 	const themeKeys = Object.keys(themes);
 
+	// server-side coin icons
+	const serverSideDefaultCoinIcons = generateServerSideDefaultIcons(coin_icons);
+
 	// missing keys and values are set from the default Icons Object
-	const defaultIconsObject = icons[defaultIconsKey];
+	const defaultIconsObject = merge(
+		{},
+		icons[defaultIconsKey],
+		serverSideDefaultCoinIcons
+	);
 
 	const allIcons = {};
 

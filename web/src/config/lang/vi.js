@@ -79,7 +79,6 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -290,7 +289,7 @@ export default {
 		TOTAL_COST: 'Tổng chi phí',
 		BUTTON: 'Kiểm tra yêu cầu đặt hàng {0}',
 		INPUT: 'Số lượng {0} muốn {1}',
-		TRADE_TITLE: '{1} {0}' // quick buy
+		TRADE_TITLE: '{1} {0}', // quick buy
 	},
 	PREVIOUS_PAGE: 'Trang trước',
 	NEXT_PAGE: 'Trang tiếp theo',
@@ -466,7 +465,8 @@ export default {
 				POSTAL_CODE_LABEL: 'Mã bưu điện',
 				POSTAL_CODE_PLACEHOLDER: 'Vui lòng nhập mã bưu điện',
 				PHONE_CODE_LABEL: 'Quốc Gia',
-				PHONE_CODE_PLACEHOLDER: 'Vui lòng chọn quốc gia nơi số điện thoại của bạn được hòa mạng',
+				PHONE_CODE_PLACEHOLDER:
+					'Vui lòng chọn quốc gia nơi số điện thoại của bạn được hòa mạng',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Số điện thoại',
 				PHONE_NUMBER_PLACEHOLDER: 'Vui lòng nhập số điện thoại của quý khách',
@@ -637,25 +637,21 @@ export default {
 			POPUP_ORDER_PARTIALLY_FILLED:
 				'Hiển thị cửa sổ thông báo khi đơn đặt hàng được tiến hành từng phần',
 		},
-		AUDIO_CUE_FORM: { // new
+		AUDIO_CUE_FORM: {
+			// new
 			ALL_AUDIO: 'Bật âm thanh cho tất cả',
 			PUBLIC_TRADE_AUDIO: 'KHi giao dịch công khai được thực hiện',
 			ORDERS_PARTIAL_AUDIO:
 				'KHi một trong những đơn đặt hàng được tiến hành từng phần',
-			ORDERS_PLACED_AUDIO:
-				'Khi một đơn đặt hàng được tạo',
-			ORDERS_CANCELED_AUDIO:
-				'Khi một đơn đặt hàng bị hủy',
+			ORDERS_PLACED_AUDIO: 'Khi một đơn đặt hàng được tạo',
+			ORDERS_CANCELED_AUDIO: 'Khi một đơn đặt hàng bị hủy',
 			ORDERS_COMPLETED_AUDIO:
 				'Khi một trong những đơn đặt hàng hoàn tất thành công',
-			CLICK_AMOUNTS_AUDIO:
-				'Khi nhấn chọn số lượng và giá trong sổ lệnh',
-			GET_QUICK_TRADE_AUDIO:
-				'Khi có một lời nhẳn trong giao dịch nhanh',
+			CLICK_AMOUNTS_AUDIO: 'Khi nhấn chọn số lượng và giá trong sổ lệnh',
+			GET_QUICK_TRADE_AUDIO: 'Khi có một lời nhẳn trong giao dịch nhanh',
 			SUCCESS_QUICK_TRADE_AUDIO:
 				'Khi có một giao dịch nhanh diễn ra thành công',
-			QUICK_TRADE_TIMEOUT_AUDIO:
-				'Khi hết thời gian giao dịch nhanh',
+			QUICK_TRADE_TIMEOUT_AUDIO: 'Khi hết thời gian giao dịch nhanh',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -679,7 +675,8 @@ export default {
 		WITHDRAWALS: 'Rút tiền',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.',
+		TITLE_TEXT:
+			'Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.',
 		OTP: {
 			TITLE: 'Xác thực 2 yếu tố',
 			OTP_ENABLED: 'Bật OTP',
@@ -709,11 +706,13 @@ export default {
 				DISABLE: 'Tắt Xác thực 2 yếu Tối',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'Nhập mật khẩu một lần (OTP)',
-				MESSAGE_6: 'Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.',
+				MESSAGE_6:
+					'Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.',
 				INPUT_2: 'Mật khẩu một lần (OTP)',
 			},
 			FORM: {
@@ -748,8 +747,9 @@ export default {
 			TITLE: 'Lịch sử đăng nhập',
 			CONTENT: {
 				TITLE: 'Lịch sử đăng nhập',
-				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
-			}
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
 		},
 		FREEZE: {
 			TITLE: 'Freeze Account',
@@ -781,7 +781,7 @@ export default {
 	},
 	TYPES: [
 		{ value: 'market', label: 'Thị trường' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'Giới hạn' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'Giới hạn' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -840,7 +840,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Khối lượng'
+		v: 'Khối lượng',
 	},
 	QUICK_TRADE: 'Giao dịch nhanh',
 	PRO_TRADE: 'Giao dịch chuyên nghiệp',
@@ -871,8 +871,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: 'Số lượng {0} muốn rút',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Phí giao dịch',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Phí giao dịch',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',

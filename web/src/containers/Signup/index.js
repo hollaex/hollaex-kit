@@ -52,6 +52,15 @@ class Signup extends Component {
 		}
 	}
 
+	componentDidUpdate() {
+		const { constants = {}, router } = this.props;
+		const { success } = this.state;
+
+		if (success && !constants.email_verification_required) {
+			router.push('/login');
+		}
+	}
+
 	componentWillUnmount() {
 		if (errorTimeOut) {
 			clearTimeout(errorTimeOut);
@@ -154,7 +163,7 @@ class Signup extends Component {
 		} = this.props;
 		const { success, showContactForm, isReferral } = this.state;
 
-		if (success) {
+		if (success && constants.email_verification_required) {
 			return (
 				<div>
 					{isMobile && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
