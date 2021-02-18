@@ -67,7 +67,7 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		minTakerFee = 0.2;
 	} else if (getKitConfig().info.collateral_level === 'member') {
 		minMakerFee = 0;
-		minTakerFee = 0.05;
+		minTakerFee = 0;
 	}
 
 	const invalidMakerFees = Object.values(flatten(fees.maker)).some(fee => fee < minMakerFee);
@@ -177,7 +177,7 @@ const updatePairFees = (pair, fees) => {
 				minTakerFee = 0.2;
 			} else if (getKitConfig().info.collateral_level === 'member') {
 				minMakerFee = 0;
-				minTakerFee = 0.05;
+				minTakerFee = 0;
 			}
 
 			if (fees[level].maker < minMakerFee || fees[level].taker < minTakerFee) {
