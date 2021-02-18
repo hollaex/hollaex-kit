@@ -54,10 +54,10 @@ subscriber.on('message', (channel, message) => {
 				if (data.secrets) updateSecrets(data.secrets);
 				break;
 			case 'freezeUser':
-				updateFrozenUser(data, 'add');
+				updateFrozenUser('add', data);
 				break;
 			case 'unfreezeUser':
-				updateFrozenUser(data, 'remove');
+				updateFrozenUser('remove', data);
 				break;
 			case 'stop':
 				resetAllConfig();
