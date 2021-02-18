@@ -39,7 +39,7 @@ const SidebarBottom = ({
 			<SidebarButton
 				path={'/account'}
 				title={STRINGS['ACCOUNT_TEXT']}
-				iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
+				iconPath={ICONS.ACCOUNT_LINE}
 				active={activePath === 'account'}
 			/>
 			{/* <SidebarButton
