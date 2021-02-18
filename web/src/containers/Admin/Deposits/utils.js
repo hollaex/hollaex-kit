@@ -101,11 +101,11 @@ export const COLUMNS = (currency, type) => {
 			key: 'rejected',
 			render: renderBoolean,
 		},
-		// { title: 'Amount', dataIndex: 'amount', key: 'amount' },
+		{ title: 'Amount', dataIndex: 'amount', key: 'amount' },
 		// { title: 'Fee', dataIndex: 'fee', key: 'fee' },
 		// { title: 'Timestamp', dataIndex: 'created_at', key: 'created_at' },
 	];
-	if (!isSupport()) {
+	/*if (!isSupport()) {
 		const adminColumns = [
 			{
 				title: 'Validate',
@@ -121,7 +121,7 @@ export const COLUMNS = (currency, type) => {
 			},
 		];
 		return columns.concat(adminColumns);
-	}
+	}*/
 	return columns;
 };
 
