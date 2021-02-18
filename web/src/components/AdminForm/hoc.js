@@ -17,6 +17,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		small,
 		buttonClass = '',
 		submitOnKeyDown = false,
+		disableAllFields = false,
 	}) => {
 		return (
 			<form
@@ -30,7 +31,7 @@ const Form = (name, className = '', allowPristine = false) => {
 					}
 				}}
 			>
-				{fields && renderFields(fields)}
+				{fields && renderFields(fields, disableAllFields)}
 				{error && (
 					<div>
 						<strong>{error}</strong>
@@ -40,6 +41,7 @@ const Form = (name, className = '', allowPristine = false) => {
 					type={buttonType ? buttonType : 'primary'}
 					onClick={handleSubmit(onSubmit)}
 					disabled={
+						disableAllFields ||
 						(allowPristine ? false : fields && pristine) ||
 						submitting ||
 						!valid ||
