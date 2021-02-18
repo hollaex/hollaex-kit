@@ -114,7 +114,7 @@ class UploadIcon extends Component {
 						Upload graphic
 					</div>
 				</div>
-				<div>
+				<div style={{ width: '320px' }}>
 					<b>When uploading new content a file size under 1mb</b> is
 					recommended.
 				</div>
@@ -144,7 +144,11 @@ class UploadIcon extends Component {
 								</Collapse.Panel>
 								<Collapse.Panel
 									showArrow={false}
-									header="Theme Specific Icons"
+									header={
+										<span className="underline-text">
+											Theme Specific Graphics
+										</span>
+									}
 									key="2"
 								>
 									{themeOptions

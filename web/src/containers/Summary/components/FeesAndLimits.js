@@ -15,6 +15,7 @@ const FeesAndLimits = ({
 	pairs,
 	constants = {},
 	icons: ICONS,
+	tiers,
 }) => {
 	const { verification_level, discount = 0 } = data;
 	const LEVEL_OF_ACCOUNT = STRINGS.formatString(
@@ -65,7 +66,7 @@ const FeesAndLimits = ({
 					</div>
 				</div>
 				<div>
-					<LimitsBlock coins={coins} level={verification_level} />
+					<LimitsBlock coins={coins} level={verification_level} tiers={tiers} />
 				</div>
 				<div>
 					<FeesBlock
@@ -73,6 +74,7 @@ const FeesAndLimits = ({
 						level={verification_level}
 						pairs={pairs}
 						discount={discount}
+						tiers={tiers}
 					/>
 				</div>
 			</div>

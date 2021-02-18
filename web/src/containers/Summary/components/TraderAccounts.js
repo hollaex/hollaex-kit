@@ -33,11 +33,9 @@ const TraderAccounts = ({
 		(STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
 			? STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
 			: STRINGS['SUMMARY.LEVEL_TXT_DEFAULT']);
-	let icon =
-		accountData.icon ||
-		(ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-			? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-			: ICONS['LEVEL_ACCOUNT_ICON_4']);
+	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+		: ICONS['LEVEL_ACCOUNT_ICON_4'];
 	// if (!isAccountDetails) {
 	// 	description = user.is_hap
 	// 		? STRINGS["SUMMARY.HAP_ACCOUNT_TXT"]

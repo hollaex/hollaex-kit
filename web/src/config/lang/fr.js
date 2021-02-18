@@ -78,7 +78,6 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUES',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: ' À PROPOS',
 			SECTION_1_LINK_1: 'NOTRE HISTOIRE',
@@ -688,7 +687,8 @@ export default {
 		WITHDRAWALS: 'Retraits',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:
+			'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: 'Authentification à deux facteurs',
 			OTP_ENABLED: 'otp activé',
@@ -713,12 +713,13 @@ export default {
 				MESSAGE_5: 'Manuellement',
 				INPUT: 'Entrez votre One-Time Password (OTP)',
 				WARNING:
-					'Nous vous recommandons vivement de configurer l\'authentification à 2 facteurs (2FA). Cela augmentera considérablement la sécurité de vos fonds.',
-				ENABLE: 'Activer l\'authentification à deux facteurs ',
-				DISABLE: 'Désactiver l\'authentification à deux facteurs',
+					"Nous vous recommandons vivement de configurer l'authentification à 2 facteurs (2FA). Cela augmentera considérablement la sécurité de vos fonds.",
+				ENABLE: "Activer l'authentification à deux facteurs ",
+				DISABLE: "Désactiver l'authentification à deux facteurs",
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'Enter One-Time Password (OTP)',

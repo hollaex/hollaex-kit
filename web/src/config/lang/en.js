@@ -81,7 +81,8 @@ const nestedContent = {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
+		TERMS_OF_SERVICE: 'Terms of Service',
+		PRIVACY_POLICY: 'Privacy Policy',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -438,6 +439,11 @@ const nestedContent = {
 		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
 		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department',
 		CODE_EXPIRES_IN: 'Code expires in',
+		EMAIL_VERIFICATION: 'Send verification email',
+		VERIFICATION_SENT: 'Verification Sent',
+		VERIFICATION_SENT_INFO:
+			'Check your email and click the link to verify email.',
+		OKAY: 'Okay',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -813,7 +819,7 @@ const nestedContent = {
 	ORDER_HISTORY: 'Order history',
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	FILLED: 'Filled', // new
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
@@ -968,6 +974,7 @@ const nestedContent = {
 	LOGOUT_ERROR_INACTIVE:
 		'You have been logged out because you have been inactive',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
+	ORDER_ENTRY_ADVANCED: 'Advanced',
 	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
 	QUICK_TRADE_TOKEN_USED: 'Token has been used',
 	QUICK_TRADE_QUOTE_EXPIRED: 'Quote has expired',

@@ -4,14 +4,14 @@ import { message, Spin } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
-import { updatePlugin, getPluginMeta } from './action';
+import { updatePluginMeta, getPluginMeta } from './action';
 import './index.css';
 
 const Form = AdminHocForm('PLUGIN_CONFIGURE_FORM');
 
 const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 	const onSaveMeta = (values, plugin) => {
-		return updatePlugin({ name: plugin.name, meta: values })
+		return updatePluginMeta({ name: plugin.name, meta: values })
 			.then((res) => {
 				message.success('Data saved successfully');
 				requestPlugin();

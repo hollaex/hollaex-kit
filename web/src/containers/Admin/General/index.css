@@ -296,9 +296,13 @@ h2,
 	right: 8px;
 	bottom: 3px;
 }
-.description_footer {
+.referral_badge_note {
 	bottom: 60px;
 	right: 7px;
+}
+.description_footer {
+	bottom: 42px;
+	right: 4px;
 }
 .custom-form-wrapper {
 	display: flex;
