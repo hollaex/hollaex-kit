@@ -3895,22 +3895,22 @@ table th {
     flex-direction: column;
     display: flex;
     align-items: center;
-    width: 20%; }
+    width: 25%; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .post-icon,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .wallet-selected-2,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-svg-1 {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .trade-active-2,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-active-1 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0 {
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .wallet-selected-2,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1 {
       fill: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .trade-active-2,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-active-1 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0 {
       stroke: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 10px;
