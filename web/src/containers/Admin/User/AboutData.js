@@ -23,17 +23,9 @@ import {
 	validateRange,
 } from '../../../components/AdminForm/validations';
 import { STATIC_ICONS } from 'config/icons';
-import { isSupervisor, isSupport } from 'utils/token';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
-
-const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
-const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
-	'4',
-	'5',
-	'6',
-]);
 
 const RenderModalContent = ({
 	modalKey = '',
@@ -43,18 +35,8 @@ const RenderModalContent = ({
 	handleClose,
 	refreshData,
 	icons: ICONS,
+	userTiers,
 }) => {
-	let VERIFICATION_LEVELS =
-		isSupport() || isSupervisor()
-			? VERIFICATION_LEVELS_SUPPORT
-			: VERIFICATION_LEVELS_ADMIN;
-	if (constants.user_level_number) {
-		const temp = [];
-		for (let level = 1; level <= constants.user_level_number; level++) {
-			temp.push(level.toString());
-		}
-		VERIFICATION_LEVELS = temp;
-	}
 	const onSubmit = (refreshData) => (values) => {
 		// redux form set numbers as string, se we have to parse them
 		const postValues = {
@@ -130,11 +112,13 @@ const RenderModalContent = ({
 							verification_level: {
 								type: 'select',
 								renderOptions: renderLevelOptions,
-								options: VERIFICATION_LEVELS,
+								options: Object.keys(userTiers),
 								label: 'Adjust user level',
 								validate: [
 									validateRequired,
-									validateRange(VERIFICATION_LEVELS.map((value) => `${value}`)),
+									validateRange(
+										Object.keys(userTiers).map((value) => `${value}`)
+									),
 								],
 							},
 						}}
@@ -157,6 +141,7 @@ const AboutData = ({
 	verifyEmail,
 	onChangeSuccess,
 	icons: ICONS,
+	userTiers,
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -551,6 +536,7 @@ const AboutData = ({
 						handleClose={handleClose}
 						refreshData={refreshData}
 						icons={ICONS}
+						userTiers={userTiers}
 					/>
 				</Modal>
 			</div>
