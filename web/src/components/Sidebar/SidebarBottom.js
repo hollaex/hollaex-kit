@@ -70,12 +70,12 @@ const SidebarBottom = ({
 				iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 				active={activePath === 'wallet'}
 			/>
-			<SidebarButton
+			{/*<SidebarButton
 				path={'/home'}
 				title={STRINGS['TRADE_TAB_POSTS']}
 				iconPath={ICONS.SIDEBAR_POST_ACTIVE}
 				active={activePath === 'home'}
-			/>
+			/>*/}
 		</div>
 	) : (
 		<div className="d-flex w-100 p-4">
