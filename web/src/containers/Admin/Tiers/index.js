@@ -174,7 +174,7 @@ const Tiers = () => {
 		if (modalType === 'preview' || modalType === 'edit-fees') {
 			return 520;
 		} else if (modalType === 'edit-limits') {
-			return 730;
+			return 490;
 		} else if (modalType === 'new-tier-confirm') {
 			return 350;
 		} else {

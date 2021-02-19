@@ -20,7 +20,7 @@ export { default as HeaderSection } from './CheckTitle/HeaderSection';
 export { default as CustomTabBar } from './CheckTitle/CustomTabBar';
 export { default as MobileTabBar } from './CheckTitle/MobileTabBar';
 export { default as Sidebar } from './Sidebar';
-export { SidebarBottom } from './Sidebar/SidebarBottom';
+export { default as SidebarBottom } from './Sidebar/SidebarBottom';
 export { Logout } from './Sidebar/rows';
 export { default as Wallet } from './Wallet';
 export { default as AssetsBlockForm } from './Wallet/AssetsBlockForm';
