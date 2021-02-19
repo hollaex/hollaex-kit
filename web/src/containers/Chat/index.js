@@ -11,6 +11,7 @@ import {
 	setChatUnreadMessages,
 } from '../../actions/appActions';
 import { getToken } from '../../utils/token';
+import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 const ENTER_KEY = 'Enter';
 
@@ -151,6 +152,13 @@ class Chat extends Component {
 			console.error('chat socket error', evt);
 		};
 
+		chatWs.onclose = (evt) => {
+			if (!isIntentionalClosure(evt)) {
+				setTimeout(() => {
+					this.initializeChatWs(getToken());
+				}, 1000);
+			}
+		};
 		// this.isInitializing(true);
 		// let chatWs = '';
 		// if (token) {
@@ -218,7 +226,7 @@ class Chat extends Component {
 			if (chatSocketInitialized) {
 				chatWs.send(JSON.stringify({ op: 'unsubscribe', args: ['chat'] }));
 			}
-			chatWs.close();
+			chatWs.close(NORMAL_CLOSURE_CODE);
 		}
 	};
 

@@ -20,6 +20,7 @@ import {
 	NOTIFICATIONS,
 	RISKY_ORDER,
 } from '../../actions/appActions';
+import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import { isLoggedIn } from '../../utils/token';
 import TradeBlock from './components/TradeBlock';
@@ -238,6 +239,16 @@ class Trade extends PureComponent {
 		orderbookWs.onerror = (evt) => {
 			console.error('orderbook socket error', evt);
 		};
+
+		orderbookWs.onclose = (evt) => {
+			this.setState({ wsInitialized: false });
+
+			if (!isIntentionalClosure(evt)) {
+				setTimeout(() => {
+					this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
+				}, 1000);
+			}
+		};
 	};
 
 	subscribe = (pair) => {
@@ -264,7 +275,7 @@ class Trade extends PureComponent {
 	closeOrderbookSocket = () => {
 		const { orderbookWs, wsInitialized } = this.state;
 		if (orderbookWs && wsInitialized) {
-			orderbookWs.close();
+			orderbookWs.close(NORMAL_CLOSURE_CODE);
 		}
 	};
 

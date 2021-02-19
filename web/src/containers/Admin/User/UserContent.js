@@ -22,7 +22,13 @@ import AboutData from './AboutData';
 import VerifyEmailConfirmation from './VerifyEmailConfirmation';
 import { isSupport, isKYC } from '../../../utils/token';
 import { STATIC_ICONS } from 'config/icons';
-import { deactivateOtp, flagUser, activateUser, verifyUser } from './actions';
+import {
+	deactivateOtp,
+	flagUser,
+	activateUser,
+	verifyUser,
+	requestTiers,
+} from './actions';
 
 // import Flagger from '../Flaguser';
 // import Notes from './Notes';
@@ -33,6 +39,21 @@ const { Item } = Breadcrumb;
 class UserContent extends Component {
 	state = {
 		showVerifyEmailModal: false,
+		userTiers: {},
+	};
+
+	componentDidMount() {
+		this.getTiers();
+	}
+
+	getTiers = () => {
+		requestTiers()
+			.then((userTiers = {}) => {
+				this.setState({ userTiers });
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 
 	disableOTP = () => {
@@ -191,7 +212,7 @@ class UserContent extends Component {
 			onChangeUserDataSuccess,
 		} = this.props;
 
-		const { showVerifyEmailModal } = this.state;
+		const { showVerifyEmailModal, userTiers } = this.state;
 
 		const {
 			id,
@@ -267,6 +288,7 @@ class UserContent extends Component {
 								user_id={userInformation.id}
 								userData={userInformation}
 								userImages={userImages}
+								userTiers={userTiers}
 								constants={constants}
 								refreshData={refreshData}
 								onChangeSuccess={onChangeUserDataSuccess}
