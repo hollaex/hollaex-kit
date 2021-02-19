@@ -44,6 +44,7 @@ class General extends Component {
 			showDisableSignUpsConfirmation: false,
 			isSignUpActive: true,
 			loading: false,
+			loadingButton: false,
 		};
 	}
 
@@ -123,10 +124,6 @@ class General extends Component {
 		const { updateIcons } = this.props;
 		const icons = {};
 
-		this.setState({
-			loading: true,
-		});
-
 		for (const themeKey in currentIcon) {
 			if (currentIcon.hasOwnProperty(themeKey)) {
 				icons[themeKey] = {};
@@ -150,9 +147,6 @@ class General extends Component {
 								icons[themeKey][key] = path;
 								this.setState({ currentIcon: {} });
 							} catch (error) {
-								this.setState({
-									loading: false,
-								});
 								message.error('Something went wrong!');
 								return;
 							}
@@ -163,7 +157,6 @@ class General extends Component {
 		}
 		this.setState((prevState) => ({
 			...prevState,
-			loading: false,
 			pendingPublishIcons: merge({}, prevState.pendingPublishIcons, {
 				[iconKey]: icons,
 			}),
@@ -366,14 +359,26 @@ class General extends Component {
 		const {
 			pendingPublishIcons: { [id]: published = {} },
 		} = this.state;
+
+		this.setState({ loadingButton: true });
 		const iconsOverwrites = JSON.parse(localStorage.getItem('icons') || '{}');
 
 		const icons = merge({}, iconsOverwrites, published);
 		const configs = { icons };
-		publish(configs).then(this.reload);
+		publish(configs)
+			.then(() => {
+				localStorage.setItem('icons', JSON.stringify(icons));
+				this.setState({ pendingPublishIcons: {} });
+				message.success('Updated successfully');
+			})
+			.catch((err) => {
+				let error = err && err.data ? err.data.message : err.message;
+				message.error(error);
+			})
+			.finally(() => {
+				this.setState({ loadingButton: false });
+			});
 	};
-
-	reload = () => window.location.reload(false);
 
 	handleSignUpsSwitch = () => {
 		const { isSignUpActive } = this.state;
@@ -401,6 +406,7 @@ class General extends Component {
 			loading,
 			isSignUpActive,
 			showDisableSignUpsConfirmation,
+			loadingButton,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins, themeOptions } = this.props;
@@ -545,9 +551,10 @@ class General extends Component {
 						<Button
 							type="primary"
 							className="green-btn minimal-btn"
+							loading={loadingButton}
 							onClick={() => this.handlePublish('EXCHANGE_LOGO')}
 						>
-							Save
+							Publish
 						</Button>
 					</div>
 					<div className="divider"></div>
@@ -585,9 +592,10 @@ class General extends Component {
 						<Button
 							type="primary"
 							className="green-btn minimal-btn"
+							loading={loadingButton}
 							onClick={() => this.handlePublish('EXCHANGE_LOADER')}
 						>
-							Save
+							Publish
 						</Button>
 					</div>
 					<div className="divider"></div>
@@ -608,9 +616,10 @@ class General extends Component {
 						<Button
 							type="primary"
 							className="green-btn minimal-btn"
+							loading={loadingButton}
 							onClick={() => this.handlePublish('EXCHANGE_FAV_ICON')}
 						>
-							Save
+							Publish
 						</Button>
 					</div>
 					<div className="divider"></div>
@@ -710,9 +719,10 @@ class General extends Component {
 						<Button
 							type="primary"
 							className="green-btn minimal-btn"
+							loading={loadingButton}
 							onClick={() => this.handlePublish('EXCHANGE_BOARDING_IMAGE')}
 						>
-							Save
+							Publish
 						</Button>
 					</div>
 					<div className="divider"></div>
