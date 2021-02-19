@@ -2714,12 +2714,18 @@ const tools = require('hollaex-tools-lib');
   - Client - A promsified redis client.
   	```javascript
 	tools.database.client;
+	tools.database.client.set(...);
+	tools.database.client.get(...);
+	tools.database.client.hsetAsync(...);
+	tools.database.client.hgetAsync(...);
 	```
   - Publisher
   	```javascript
 	tools.database.publisher;
+	tools.database.publisher.publish(...);
 	```
   - Subscriber
   	```javascript
 	tools.database.subscriber;
+	tools.database.subscriber.subscribe(...);
 	```
