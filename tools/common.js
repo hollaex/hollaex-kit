@@ -18,12 +18,14 @@ const {
 	GET_KIT_SECRETS,
 	GET_FROZEN_USERS,
 	HOLLAEX_NETWORK_ENDPOINT,
-	HOLLAEX_NETWORK_BASE_URL,
-	NO_NEW_DATA,
-	SUPPORT_DISABLED,
-	COMMUNICATOR_CANNOT_UPDATE,
-	MASK_VALUE_GIVEN
+	HOLLAEX_NETWORK_BASE_URL
 } = require(`${SERVER_PATH}/constants`);
+const {
+	COMMUNICATOR_CANNOT_UPDATE,
+	MASK_VALUE_GIVEN,
+	SUPPORT_DISABLED,
+	NO_NEW_DATA
+} = require(`${SERVER_PATH}/messages`);
 const { each, difference, isPlainObject } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
