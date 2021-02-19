@@ -159,3 +159,5 @@ export const performVerificationLevelUpdate = (values) => {
 	};
 	return requestAuthenticated('/admin/upgrade-user', options);
 };
+
+export const requestTiers = () => requestAuthenticated('/tiers');
