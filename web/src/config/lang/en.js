@@ -702,7 +702,7 @@ const nestedContent = {
 					'You must store this code securely to recover your 2FA in case you change or lose your mobile phone in future.',
 				MESSAGE_5: 'Manual',
 				WARNING:
-					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
+					'We highly recommend you set up two-factor authentication (2FA). Doing so will greatly increase the security of your funds.',
 				ENABLE: 'Enable Two-Factor Authentication',
 				DISABLE: 'Disable Two-Factor Authentication',
 			},
