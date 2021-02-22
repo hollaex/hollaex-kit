@@ -3889,28 +3889,33 @@ table th {
   background-color: var(--base_top-bar-navigation);
   color: var(--calculated_base_top-bar-navigation_text);
   width: 100%;
-  padding: 0.5rem 0.5rem 0.8rem 0.5rem; }
+  padding: 0.5rem 0.5rem 0.8rem 0.5rem;
+  justify-content: space-evenly; }
   .sidebar-bottom-wrapper .sidebar-bottom-button {
     justify-content: space-between;
     flex-direction: column;
     display: flex;
     align-items: center;
-    width: 25%; }
+    width: 20%; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .post-icon,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .wallet-selected-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-svg-1 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-svg-1,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .trade-active-2,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .wallet-selected-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .quick-trade-tab-active {
       fill: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .trade-active-2,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .quick-trade-tab-active {
       stroke: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 10px;

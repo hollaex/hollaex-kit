@@ -80,24 +80,28 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	color: $base_top-bar-navigation_text;
 	width: 100%;
 	padding: 0.5rem 0.5rem 0.8rem 0.5rem;
+	justify-content: space-evenly;
+
 	.sidebar-bottom-button {
 		justify-content: space-between;
 		flex-direction: column;
 		display: flex;
 		align-items: center;
-		width: 25%;
+		width: 20%;
 
 		.sidebar-bottom-icon {
 			svg {
 				.post-icon,
 				.wallet-selected-2,
 				.chat-0,
-				.account-svg-1 {
+				.account-svg-1,
+				.quick-trade-tab-active {
 					fill: $base_top-bar-navigation_text_inactive;
 				}
 
 				.trade-active-2,
-				.chat-0 {
+				.chat-0,
+				.quick-trade-tab-active {
 					stroke: $base-top-bar-navigation_text_inactive;
 				}
 			}
@@ -109,12 +113,14 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 					.post-icon,
 					.wallet-selected-2,
 					.chat-0,
-					.account-svg-1 {
+					.account-svg-1,
+					.quick-trade-tab-active {
 						fill: $base_top-bar-navigation_text;
 					}
 
 					.trade-active-2,
-					.chat-0 {
+					.chat-0,
+					.quick-trade-tab-active {
 						stroke: $base-top-bar-navigation_text;
 					}
 				}
