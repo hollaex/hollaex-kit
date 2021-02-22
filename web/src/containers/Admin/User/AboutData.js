@@ -23,17 +23,10 @@ import {
 	validateRange,
 } from '../../../components/AdminForm/validations';
 import { STATIC_ICONS } from 'config/icons';
-import { isSupervisor, isSupport } from 'utils/token';
+import Image from 'components/Image';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
-
-const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
-const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
-	'4',
-	'5',
-	'6',
-]);
 
 const RenderModalContent = ({
 	modalKey = '',
@@ -42,19 +35,9 @@ const RenderModalContent = ({
 	onChangeSuccess,
 	handleClose,
 	refreshData,
-	icons: ICONS,
+	allIcons,
+	userTiers,
 }) => {
-	let VERIFICATION_LEVELS =
-		isSupport() || isSupervisor()
-			? VERIFICATION_LEVELS_SUPPORT
-			: VERIFICATION_LEVELS_ADMIN;
-	if (constants.user_level_number) {
-		const temp = [];
-		for (let level = 1; level <= constants.user_level_number; level++) {
-			temp.push(level.toString());
-		}
-		VERIFICATION_LEVELS = temp;
-	}
 	const onSubmit = (refreshData) => (values) => {
 		// redux form set numbers as string, se we have to parse them
 		const postValues = {
@@ -75,9 +58,9 @@ const RenderModalContent = ({
 		levels.map((level, index) => (
 			<Select.Option key={index} value={level}>
 				<div className="asset-list">
-					<ReactSVG
-						src={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
-						className="select-level-icon"
+					<Image
+						icon={allIcons['dark'][`LEVEL_ACCOUNT_ICON_${level}`]}
+						wrapperClassName="select-level-icon"
 					/>
 					<div className="select-coin-text">{`Account tier ${level}`}</div>
 				</div>
@@ -130,11 +113,13 @@ const RenderModalContent = ({
 							verification_level: {
 								type: 'select',
 								renderOptions: renderLevelOptions,
-								options: VERIFICATION_LEVELS,
+								options: Object.keys(userTiers),
 								label: 'Adjust user level',
 								validate: [
 									validateRequired,
-									validateRange(VERIFICATION_LEVELS.map((value) => `${value}`)),
+									validateRange(
+										Object.keys(userTiers).map((value) => `${value}`)
+									),
 								],
 							},
 						}}
@@ -156,7 +141,8 @@ const AboutData = ({
 	freezeAccount,
 	verifyEmail,
 	onChangeSuccess,
-	icons: ICONS,
+	allIcons = {},
+	userTiers,
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -492,11 +478,13 @@ const AboutData = ({
 						<div className="user-info-separator"></div>
 						<div className="user-level-container">
 							<div>
-								<ReactSVG
-									src={
-										ICONS[`LEVEL_ACCOUNT_ICON_${userData.verification_level}`]
+								<Image
+									icon={
+										allIcons['dark'][
+											`LEVEL_ACCOUNT_ICON_${userData.verification_level}`
+										]
 									}
-									className="levels-icon"
+									wrapperClassName="levels-icon"
 								/>
 							</div>
 							<div className="user-info-label">
@@ -550,7 +538,8 @@ const AboutData = ({
 						onChangeSuccess={onChangeSuccess}
 						handleClose={handleClose}
 						refreshData={refreshData}
-						icons={ICONS}
+						allIcons={allIcons}
+						userTiers={userTiers}
 					/>
 				</Modal>
 			</div>

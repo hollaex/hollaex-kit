@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
-import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 import { ButtonLink } from '../../components';
+import withConfig from 'components/ConfigProvider/withConfig';
+import Image from 'components/Image';
 
 const SidebarButton = ({
 	title = '',
@@ -14,7 +14,7 @@ const SidebarButton = ({
 }) => {
 	return (
 		<Link to={path} className={classnames('sidebar-bottom-button', { active })}>
-			<ReactSVG src={iconPath} className="sidebar-bottom-icon" />
+			<Image icon={iconPath} wrapperClassName="sidebar-bottom-icon" />
 			<div
 				className={
 					active ? 'bottom-text-acttive bottom-bar-text' : 'bottom-bar-text'
@@ -26,42 +26,45 @@ const SidebarButton = ({
 	);
 };
 
-export const SidebarBottom = ({
+const SidebarBottom = ({
 	activePath = 'x',
 	pair = '',
 	isLogged,
 	enabledPlugins = [],
 	features = {},
+	icons: ICONS = {},
 }) => {
 	return isLogged ? (
-		<div className="sidebar-bottom-wrapper d-flex justify-content-between">
+		<div className="sidebar-bottom-wrapper d-flex">
 			<SidebarButton
 				path={'/account'}
 				title={STRINGS['ACCOUNT_TEXT']}
-				iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
+				iconPath={ICONS.ACCOUNT_LINE}
 				active={activePath === 'account'}
 			/>
-			{/* <SidebarButton
+			{features && features.quick_trade && (
+				<SidebarButton
 					path={`/quick-trade/${pair}`}
-					title={STRINGS["QUICK_TRADE"]}
-					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
+					title={STRINGS['QUICK_TRADE']}
+					iconPath={ICONS.QUICK_TRADE_TAB_ACTIVE}
 					active={activePath === 'quick-trade'}
-				/> */}
-			<SidebarButton
-				path={`/trade/${pair}`}
-				title={STRINGS['PRO_TRADE']}
-				iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
-				active={activePath === 'trade'}
-			/>
-			{features && features.chat ? (
+				/>
+			)}
+			{features && features.pro_trade && (
+				<SidebarButton
+					path={`/trade/${pair}`}
+					title={STRINGS['PRO_TRADE']}
+					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
+					active={activePath === 'trade'}
+				/>
+			)}
+			{features && features.chat && (
 				<SidebarButton
 					path={`/chat`}
 					title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
 					iconPath={ICONS.CHAT}
 					active={activePath === 'chat'}
 				/>
-			) : (
-				<Fragment />
 			)}
 			<SidebarButton
 				path="/wallet"
@@ -69,12 +72,12 @@ export const SidebarBottom = ({
 				iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 				active={activePath === 'wallet'}
 			/>
-			<SidebarButton
+			{/*<SidebarButton
 				path={'/home'}
 				title={STRINGS['TRADE_TAB_POSTS']}
 				iconPath={ICONS.SIDEBAR_POST_ACTIVE}
 				active={activePath === 'home'}
-			/>
+			/>*/}
 		</div>
 	) : (
 		<div className="d-flex w-100 p-4">
@@ -96,3 +99,5 @@ export const SidebarBottom = ({
 		</div>
 	);
 };
+
+export default withConfig(SidebarBottom);

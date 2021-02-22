@@ -172,13 +172,13 @@ class EditLimit extends Component {
 				</div>
 				<div className="d-flex mt-3">
 					<div className="f-1"></div>
-					<div className="d-flex align-items-center f-1 px-2">
+					{/*<div className="d-flex align-items-center f-1 px-2">
 						<Image
 							icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
 							wrapperClassName="limit-status-icon"
 						/>
 						<div className="sub-title">Deposit</div>
-					</div>
+					</div>*/}
 					<div className="d-flex align-items-center f-1 px-2">
 						<Image
 							icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
@@ -202,14 +202,14 @@ class EditLimit extends Component {
 										{`Tiers ${level}`}
 									</div>
 								</div>
-								<div className="f-2 px-2 d-flex align-items-center">
+								{/*<div className="f-2 px-2 d-flex align-items-center">
 									{this.setLimitField(
 										'deposit_limit',
 										level,
 										selectData,
 										initialData
 									)}
-								</div>
+								</div>*/}
 								<div className="f-2 px-2 d-flex align-items-center">
 									{this.setLimitField(
 										'withdrawal_limit',

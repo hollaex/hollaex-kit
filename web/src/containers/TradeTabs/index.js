@@ -22,7 +22,7 @@ class AddTradeTab extends Component {
 		data: [],
 		count: 0,
 		searchValue: '',
-		selected: 'Card',
+		selected: isMobile ? 'List' : 'Card',
 		options: [{ value: 'List' }, { value: 'Card' }],
 		chartData: {},
 	};
