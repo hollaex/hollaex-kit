@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
@@ -35,34 +35,36 @@ const SidebarBottom = ({
 	icons: ICONS = {},
 }) => {
 	return isLogged ? (
-		<div className="sidebar-bottom-wrapper d-flex justify-content-between">
+		<div className="sidebar-bottom-wrapper d-flex">
 			<SidebarButton
 				path={'/account'}
 				title={STRINGS['ACCOUNT_TEXT']}
 				iconPath={ICONS.ACCOUNT_LINE}
 				active={activePath === 'account'}
 			/>
-			{/* <SidebarButton
+			{features && features.quick_trade && (
+				<SidebarButton
 					path={`/quick-trade/${pair}`}
-					title={STRINGS["QUICK_TRADE"]}
-					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
+					title={STRINGS['QUICK_TRADE']}
+					iconPath={ICONS.QUICK_TRADE_TAB_ACTIVE}
 					active={activePath === 'quick-trade'}
-				/> */}
-			<SidebarButton
-				path={`/trade/${pair}`}
-				title={STRINGS['PRO_TRADE']}
-				iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
-				active={activePath === 'trade'}
-			/>
-			{features && features.chat ? (
+				/>
+			)}
+			{features && features.pro_trade && (
+				<SidebarButton
+					path={`/trade/${pair}`}
+					title={STRINGS['PRO_TRADE']}
+					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
+					active={activePath === 'trade'}
+				/>
+			)}
+			{features && features.chat && (
 				<SidebarButton
 					path={`/chat`}
 					title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
 					iconPath={ICONS.CHAT}
 					active={activePath === 'chat'}
 				/>
-			) : (
-				<Fragment />
 			)}
 			<SidebarButton
 				path="/wallet"
