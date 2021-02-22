@@ -223,7 +223,7 @@ export const generateOrderHistoryHeaders = (
 				}
 			},
 		},
-		{
+		!isMobile && {
 			label: '',
 			key: 'status',
 			renderCell: ({ size = 0, filled = 0 }, key, index) => {
@@ -243,6 +243,19 @@ export const generateOrderHistoryHeaders = (
 						</div>
 					</td>
 				);
+			},
+		},
+		isMobile && {
+			label: STRINGS['FILLED'],
+			key: 'status',
+			renderCell: ({ filled = 0, symbol }, key, index) => {
+				if (pairs[symbol]) {
+					const { increment_size } = pairs[symbol];
+					const fullfilled = formatToCurrency(filled, increment_size);
+					return <td key={index}>{fullfilled}</td>;
+				} else {
+					return <td key={index}>{formatToCurrency(filled, 0.0001)}</td>;
+				}
 			},
 		},
 		{

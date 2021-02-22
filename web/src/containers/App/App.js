@@ -570,7 +570,7 @@ class App extends Component {
 										<AppMenuBar router={router} location={location} />
 									)}
 								</AppBar>
-								{isBrowser && isLoggedIn() && (
+								{isBrowser && (
 									<PairTabs
 										activePath={activePath}
 										location={location}

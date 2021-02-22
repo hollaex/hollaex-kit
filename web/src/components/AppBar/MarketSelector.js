@@ -17,6 +17,7 @@ import {
 } from 'utils/currency';
 import SearchBox from './SearchBox';
 import { removeFromFavourites, addToFavourites } from 'actions/appActions';
+import { isLoggedIn } from 'utils/token';
 
 class MarketSelector extends Component {
 	constructor(props) {
@@ -117,14 +118,16 @@ class MarketSelector extends Component {
 
 	isFavourite = (pair) => {
 		const { favourites } = this.props;
-		return favourites.includes(pair);
+		return isLoggedIn() && favourites.includes(pair);
 	};
 
 	toggleFavourite = (pair) => {
 		const { addToFavourites, removeFromFavourites } = this.props;
-		return this.isFavourite(pair)
-			? removeFromFavourites(pair)
-			: addToFavourites(pair);
+		if (isLoggedIn()) {
+			return this.isFavourite(pair)
+				? removeFromFavourites(pair)
+				: addToFavourites(pair);
+		}
 	};
 
 	render() {
