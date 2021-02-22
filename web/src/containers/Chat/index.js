@@ -153,6 +153,7 @@ class Chat extends Component {
 		};
 
 		chatWs.onclose = (evt) => {
+			this.setState({ chatSocketInitialized: false });
 			if (!isIntentionalClosure(evt)) {
 				setTimeout(() => {
 					this.initializeChatWs(getToken());

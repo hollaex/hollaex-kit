@@ -39,9 +39,14 @@ const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 							<img src="${EMAIL_ICONS.FACEBOOK}" height="20"/>
 						</a>
 					</div>
-					<div style="${styles.poweredby}">
-						${FOOTER.POWERED_BY} <a href="${BITHOLLA_DOMAIN}"><img src="${BITHOLLA_LOGO_BLACK}" height="10"/></a>
-					</div>
+					${!LINKS().hide_referral_badge
+						? `<div style="${styles.poweredby}">
+							<a href="${LINKS().referral_link && LINKS().referral_label ? LINKS().referral_link : BITHOLLA_DOMAIN}">
+								${LINKS().referral_label ? LINKS().referral_label : `${FOOTER.POWERED_BY} <img src="${BITHOLLA_LOGO_BLACK}" height="10"/>`}
+							</a>
+						</div>`
+						: ''
+					}
 				</div>
 			</div>
 		`;
