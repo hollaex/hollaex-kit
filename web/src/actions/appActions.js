@@ -315,7 +315,7 @@ export const getWaveAuction = () => {
 
 export const getAnnouncement = () => (dispatch) => {
 	return axios
-		.get(`${PLUGIN_URL}/plugins/announcement`)
+		.get(`${PLUGIN_URL}/plugins/announcements`)
 		.then((res) => {
 			if (res.data && res.data.data) {
 				dispatch({
