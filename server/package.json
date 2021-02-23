@@ -1,5 +1,5 @@
 {
-	"version": "2.0.4",
+	"version": "2.0.6",
 	"private": false,
 	"description": "HollaEx Kit",
 	"keywords": [
@@ -57,6 +57,7 @@
 		"request-promise": "4.2.2",
 		"sequelize": "4.37.7",
 		"swagger-express-mw": "0.1.0",
+		"swagger-ui-express": "4.0.7",
 		"uglify-es": "3.3.9",
 		"uuid": "3.2.1",
 		"validator": "9.4.1",

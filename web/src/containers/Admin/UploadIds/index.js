@@ -43,9 +43,13 @@ const FORM_FIELDS = {
 class UploadIds extends Component {
 	onSubmit = (refreshData) => (values) => {
 		return uploadFiles(this.props.user_id, values)
-			.then(({ success, data: { data, user } }) => {
-				refreshData(data, 'files');
-				refreshData(user);
+			.then(({ data }) => {
+				if (data.data) {
+					refreshData(data.data, 'files');
+				}
+				if (data.user) {
+					refreshData(data.user);
+				}
 				this.props.closeUpload();
 				AntdMessage.success('Files upload successfully', 5);
 			})

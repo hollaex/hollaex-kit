@@ -54,7 +54,7 @@ const WELCOME = {
 	BODY: {
 		1: () => `Thank you for signing up to ${API_NAME()}.`,
 		2: (account, deposit) => `
-		To being trading, you must first deposit cryptocurrency or fund money to your account.
+		To begin trading, you must first deposit cryptocurrency or fund money to your account.
 		Please go to your ${account} and visit the ${deposit} page.`,
 		3: 'account',
 		4: 'deposit',

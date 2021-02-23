@@ -4,14 +4,6 @@ import { REQUEST_VAULT_SUPPORTED_COINS } from '../../../config/constants';
 import { requestAuthenticated } from '../../../utils';
 import { PLUGIN_URL, NETWORK_API_URL } from '../../../config/constants';
 
-export const updatePlugins = (values) => {
-	const options = {
-		method: 'PUT',
-		body: JSON.stringify(values),
-	};
-	return requestAuthenticated(`/plugins`, options);
-};
-
 export const getConstants = (query) =>
 	requestAuthenticated(`/plugins?${querystring.stringify(query)}`);
 
@@ -57,7 +49,20 @@ export const getPluginMeta = (params) => {
 	);
 };
 
-export const updatePlugin = (values) => {
+export const updatePlugins = (params, values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated(
+		`/plugins?${querystring.stringify(params)}`,
+		options,
+		null,
+		PLUGIN_URL
+	);
+};
+
+export const updatePluginMeta = (values) => {
 	const options = {
 		method: 'PUT',
 		body: JSON.stringify(values),

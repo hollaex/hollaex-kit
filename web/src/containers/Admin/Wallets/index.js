@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Button, Tag, Card, Alert } from 'antd';
+import { Spin, Card, Alert } from 'antd';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
@@ -71,7 +71,6 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error } = this.state;
-		const { plugins = { enabled: '' } } = this.state.constants;
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -95,19 +94,6 @@ class Wallets extends Component {
 									className="admin-wallet-icon"
 								/>
 								<h1>USER WALLETS</h1>
-							</div>
-							<div className="my-3">
-								{!plugins.enabled.includes('vault') ? (
-									<Button
-										type="primary"
-										className="green-btn"
-										onClick={this.goToVault}
-									>
-										Activate Vault
-									</Button>
-								) : (
-									<Tag color="green">Vault Activated</Tag>
-								)}
 							</div>
 						</div>
 						<Card className="card-title" title="TOTAL BALANCE OF USERS WALLETS">
