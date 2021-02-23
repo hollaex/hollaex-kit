@@ -465,7 +465,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, { email: data.email, description: data.description })
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, data.description, data.email)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
