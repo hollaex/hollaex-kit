@@ -244,12 +244,12 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 			} else if (!sender.network_id || !receiver.network_id) {
 				throw new Error('User not registered on network');
 			}
-			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, description, email);
+			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description, email });
 		});
 };
 
 const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true) => {
-	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, description, email);
+	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email });
 };
 
 const getUserBalanceByKitId = (userKitId) => {
