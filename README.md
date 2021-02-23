@@ -50,25 +50,6 @@ Use this space to show useful examples of how a project can be used. Additional 
 ```javascript
 const tools = require('hollaex-tools-lib');
 ```
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Functions</h2></summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">Common Functions</a>
-    </li>
-    <li>
-      <a href="#getting-started">User Functions</a>
-    </li>
-    <li><a href="####Common functions">Order Functions</a></li>
-    <li><a href="#roadmap">Wallet Functions</a></li>
-    <li><a href="#contributing">Security Functions</a></li>
-    <li><a href="#license">Tier Functions</a></li>
-    <li><a href="#contact">Database Functions</a></li>
-  </ol>
-</details>
-
-
 
 ### Common Functions
 
@@ -87,6 +68,15 @@ const tools = require('hollaex-tools-lib');
 
 
 ### Full list of functions
+
+<!-- TABLE OF CONTENTS -->
+- [Common Functions](####-Common-functions)
+- [User Functions](####-User-functions)
+- [Order Functions](####-Order-functions)
+- [Wallet Functions](####-Wallet-functions)
+- [Security Functions](####-Security-functions)
+- [Tier Functions](####-Tier-functions)
+- [Database Functions](####-Database-functions)
 
 #### Common functions
 
@@ -2719,16 +2709,23 @@ const tools = require('hollaex-tools-lib');
 			*/
 		});
 	```
-- Redis
-  - Client
+- `Redis`
+  - The tools library also includes a redis client, publisher, and subscriber. They can be accessed like below.
+  - Client - A promsified redis client.
   	```javascript
 	tools.database.client;
+	tools.database.client.set(...);
+	tools.database.client.get(...);
+	tools.database.client.hsetAsync(...);
+	tools.database.client.hgetAsync(...);
 	```
   - Publisher
   	```javascript
 	tools.database.publisher;
+	tools.database.publisher.publish(...);
 	```
   - Subscriber
   	```javascript
 	tools.database.subscriber;
+	tools.database.subscriber.subscribe(...);
 	```

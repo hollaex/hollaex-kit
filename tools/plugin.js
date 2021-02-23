@@ -1,12 +1,11 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constants');
-const { INVALID_PLUGIN, PLUGIN_ALREADY_ENABELD, PLUGIN_ALREADY_DISABLED } = require(`${SERVER_PATH}/messages`);
+const { INVALID_PLUGIN, PLUGIN_ALREADY_ENABELD, PLUGIN_ALREADY_DISABLED, MASK_VALUE_GIVEN } = require(`${SERVER_PATH}/messages`);
 const {
 	AVAILABLE_PLUGINS,
 	CONFIGURATION_CHANNEL,
-	SECRET_MASK,
-	MASK_VALUE_GIVEN
+	SECRET_MASK
 } = require(`${SERVER_PATH}/constants`);
 const { getKitConfig, getKitSecrets, maskSecrets } = require('./common');
 const dbQuery = require('./database/query');
