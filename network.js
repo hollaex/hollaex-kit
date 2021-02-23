@@ -1261,7 +1261,7 @@ class HollaExNetwork {
 		receiverId,
 		currency,
 		amount,
-		opts = { description: null }
+		opts = { description: null, email: true }
 	) {
 		checkKit(this.exchange_id);
 
@@ -1288,6 +1288,12 @@ class HollaExNetwork {
 
 		if (opts.description) {
 			data.description = opts.description;
+		}
+
+		if (isBoolean(opts.email)) {
+			data.email = opts.email;
+		} else {
+			data.email = true;
 		}
 
 		const headers = generateHeaders(
