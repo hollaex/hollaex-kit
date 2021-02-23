@@ -636,6 +636,31 @@ const getUserStats = (req, res) => {
 		});
 };
 
+const userCheckTransaction = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/userCheckTransaction auth',
+		req.auth
+	);
+	const transactionId = req.swagger.params.transaction_id.value;
+	const address = req.swagger.params.address.value;
+	const currency = req.swagger.params.currency.value;
+	const isTestnet = req.swagger.params.is_testnet.value;
+
+	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
+		.then((transaction) => {
+			return res.json({ message: 'Success', transaction });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/userCheckTransaction catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -656,5 +681,6 @@ module.exports = {
 	getHmacToken,
 	createHmacToken,
 	deleteHmacToken,
-	getUserStats
+	getUserStats,
+	userCheckTransaction
 };
