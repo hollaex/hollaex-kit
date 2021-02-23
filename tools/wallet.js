@@ -225,7 +225,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	return convertedAmount[currency] < limit;
 };
 
-const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
+const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -244,12 +244,12 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 			} else if (!sender.network_id || !receiver.network_id) {
 				throw new Error('User not registered on network');
 			}
-			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description });
+			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description, email });
 		});
 };
 
-const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer') => {
-	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description });
+const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true) => {
+	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email });
 };
 
 const getUserBalanceByKitId = (userKitId) => {
