@@ -1,5 +1,5 @@
 # HollaEx Kit [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/facebook/create-react-app/pulls)
-HollaEx Kit is an open source crypto exchange software that can be utilized to onboard your users and traders in order to run your white label exchange. In order to run the HollaEx Kit, you need to run HollaEx Server as the back-end and Web as your front-end user interface. HollaEx Kit automatically then connects to HollaEx Network where you have access to markets and liquidity for different digital assets.
+HollaEx Kit is an open source crypto exchange software that can be utilized to onboard your users and traders in order to run your white label exchange. In order to run the HollaEx Kit, you need to run HollaEx Server as the back-end and Web as your front-end user interface. HollaEx Kit automatically then connects to HollaEx Network for asset where you have access to markets and liquidity as well as wallets for different digital assets.
 
 ## Get Started
 
@@ -10,20 +10,20 @@ git clone https://github.com/bitholla/hollaex-kit.git
 
 bash install.sh
 ```
-Read more on our [Docs](https://docs.bitholla.com/hollaex-kit/get-started)!
+Read more on our [Docs](https://docs.hollaex.com)!
 
 ## Developers
 
-Checkout Web for the front-end UI/UX modifications.
+Checkout [Web](https://github.com/bitholla/hollaex-kit/tree/master/web) for the front-end UI/UX modifications.
 
-Check out Server for back-end and server side operations and endpoints.
+Check out [Server](https://github.com/bitholla/hollaex-kit/tree/master/server) for back-end and server side operations and endpoints.
 
-Check out Plugins for developing seamless and flexible custom services that can be added to the HollaEx Kit.
+Check out [Plugins](https://github.com/bitholla/hollaex-kit/tree/2.0-develop/server#plugins) for developing seamless and flexible custom services that can be added to the HollaEx Kit.
 
-Check out HollaEx CLI (Command Line Interface) for interacting and deploying your exchange.
+Check out [HollaEx CLI](https://github.com/bitholla/hollaex-cli) (Command Line Interface) for interacting and deploying your exchange.
 
 ## Community
-Join us on the [Forum](https://forum.bitholla.com) and feel free to raise any topic and ask questions from our active community.
+Join us on the [Forum](https://forum.hollaex.com) and feel free to raise any topic and ask questions from our active community.
 
 
 [![alt text][1.2]][1]
@@ -46,11 +46,6 @@ Join us on the [Forum](https://forum.bitholla.com) and feel free to raise any to
 
 ## Useful Resources
 
-- bitHolla Site: https://bitholla.com
 - Exchange Dashboard: https://dash.bitholla.com
-- Documentation: https://docs.bitholla.com
-- Forum: https://forum.bitholla.com
-- HollaEx CLI (Command Line Interface): https://github.com/bitholla/hollaex-cli
-- Vault API Explorer: https://api.bitholla.com/docs
 - HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
 - HollaEx Official Marketplace: https://hollaex.com
