@@ -465,7 +465,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, { email: data.email, description: data.description })
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -473,31 +473,6 @@ const transferFund = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/transferFund',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
-const adminCheckTransaction = (req, res) => {
-	loggerAdmin.verbose(
-		req.uuid,
-		'controllers/admin/adminCheckTransaction auth',
-		req.auth
-	);
-	const transactionId = req.swagger.params.transaction_id.value;
-	const address = req.swagger.params.address.value;
-	const currency = req.swagger.params.currency.value;
-	const isTestnet = req.swagger.params.is_testnet.value;
-
-	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
-		.then((transaction) => {
-			return res.json({ message: 'Success', transaction });
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/adminCheckTransaction catch',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -719,7 +694,6 @@ module.exports = {
 	getCoins,
 	getPairs,
 	transferFund,
-	adminCheckTransaction,
 	completeExchangeSetup,
 	putNetworkCredentials,
 	uploadImage,
