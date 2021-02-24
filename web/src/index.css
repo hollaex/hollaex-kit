@@ -2360,11 +2360,12 @@ table th {
 .layout-mobile .summary-container .summary-content-txt {
   font-size: 12px !important; }
 
-.layout-mobile .summary-container .assets-wrapper .price-text {
-  font-size: 12px !important; }
-
-.layout-mobile .summary-container .assets-wrapper .donut-container {
-  height: 30rem; }
+.layout-mobile .summary-container .assets-wrapper {
+  margin-top: 40px; }
+  .layout-mobile .summary-container .assets-wrapper .price-text {
+    font-size: 12px !important; }
+  .layout-mobile .summary-container .assets-wrapper .donut-container {
+    height: 30rem; }
 
 .layout-mobile .summary-container .account-details-wrapper .account-type-menu {
   height: auto !important; }
@@ -2411,7 +2412,7 @@ table th {
     color: var(--specials_buttons-links-and-highlights);
     font-weight: bold; }
   .summary-container .summary-section_1 {
-    height: 26rem; }
+    height: 30rem; }
     .summary-container .summary-section_1 .assets-wrapper .donut-container {
       height: 16rem;
       width: 100%; }
@@ -2796,9 +2797,7 @@ table th {
   .summary-container .summary-block-secondaryTitle {
     font-size: 1.8rem; }
   .summary-container .summary-content-txt {
-    font-size: 1.2rem !important; }
-  .summary-container .assets-wrapper {
-    margin-top: 40px; } }
+    font-size: 1.2rem !important; } }
 
 @media (min-width: 1920px) {
   .summary-container {
@@ -2819,8 +2818,6 @@ table th {
     .summary-container .trading-volume-wrapper,
     .summary-container .requirement-wrapper {
       width: 65% !important; }
-    .summary-container .summary-section_1 {
-      height: 29rem !important; }
     .summary-container .summary-section_2 {
       height: 43rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -2833,7 +2830,7 @@ table th {
   .summary-container .trader-account-wrapper {
     font-size: 0.9rem; }
   .summary-container .summary-section_1 {
-    height: 29rem !important; }
+    height: 31rem !important; }
   .summary-container .summary-section_2 {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -3941,6 +3938,9 @@ table th {
         height: 3rem;
         stroke: var(--labels_secondary-inactive-label-text-graphics);
         fill: transparent; }
+    .sidebar-bottom-wrapper .sidebar-bottom-button img.sidebar-bottom-icon {
+      width: 3rem;
+      height: 3rem; }
 
 .direction_ltr .sidebar-row .cell-wrapper:not(:last-child) {
   border-right: 1px solid var(--calculated_secondary-border); }
