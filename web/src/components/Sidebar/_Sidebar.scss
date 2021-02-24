@@ -153,6 +153,9 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				fill: transparent;
 			}
 		}
+		img.sidebar-bottom-icon {
+			@include size(3rem);
+		}
 	}
 }
 
