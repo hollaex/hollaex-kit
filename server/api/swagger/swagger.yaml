@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.0.6"
+  version: "2.0.7"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2189,13 +2189,14 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-  /admin/check-transaction:
-    x-swagger-router-controller: admin
+  /user/check-transaction:
+    x-swagger-router-controller: user
     get:
-      operationId: adminCheckTransaction
+      operationId: userCheckTransaction
       description: Check a blockchain transaction to add create/update deposit
       tags:
-        - Admin
+        - User
+        - Wallet
       parameters:
         - in: query
           name: currency
@@ -2230,10 +2231,7 @@ paths:
       security:
         - Bearer: []
       x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
+        - user
   /admin/users:
     x-swagger-router-controller: admin
     get:
@@ -4055,6 +4053,8 @@ definitions:
       amount:
         type: number
         format: double
+      email:
+        type: boolean
   ExternalDepositRequest:
     type: object
     required:
