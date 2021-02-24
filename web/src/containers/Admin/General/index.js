@@ -134,8 +134,9 @@ class General extends Component {
 						if (file) {
 							const formData = new FormData();
 							const { name: fileName } = file;
+							const uniqueId = Date.now();
 							const extension = fileName.split('.').pop();
-							const name = `${key}__${themeKey}.${extension}`;
+							const name = `${key}__${themeKey}___${uniqueId}.${extension}`;
 
 							formData.append('name', name);
 							formData.append('file', file);
