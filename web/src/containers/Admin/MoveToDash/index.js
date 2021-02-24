@@ -17,7 +17,7 @@ const MoveToDash = () => {
 			/>
 			<div>
 				<a
-					href="https://dash.bitholla.com/"
+					href="https://dash.bitholla.com/financial"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
