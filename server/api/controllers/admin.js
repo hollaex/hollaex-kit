@@ -610,7 +610,8 @@ const mintAsset = (req, res) => {
 		user_id,
 		currency,
 		amount,
-		description
+		description,
+		transaction_id
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -620,7 +621,9 @@ const mintAsset = (req, res) => {
 		'currency',
 		currency,
 		'amount',
-		amount
+		amount,
+		'transaction_id',
+		transaction_id
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -628,7 +631,7 @@ const mintAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.mintAssetByNetworkId(user.network_id, currency, amount, description);
+			return toolsLib.wallet.mintAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -649,7 +652,8 @@ const burnAsset = (req, res) => {
 		user_id,
 		currency,
 		amount,
-		description
+		description,
+		transaction_id
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -659,7 +663,9 @@ const burnAsset = (req, res) => {
 		'currency',
 		currency,
 		'amount',
-		amount
+		amount,
+		'transaction_id',
+		transaction_id
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -667,7 +673,7 @@ const burnAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.burnAssetByNetworkId(user.network_id, currency, amount, description);
+			return toolsLib.wallet.burnAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
