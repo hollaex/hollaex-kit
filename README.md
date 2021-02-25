@@ -44,10 +44,11 @@ Join us on the [Forum](https://forum.hollaex.com) and [Discord](https://discord.
 </a>
 
 
-## Useful Resources
+## Useful Links
 
 - Exchange Dashboard: https://dash.bitholla.com
 - HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
 - HollaEx Live Exchange: https://hollaex.com
 - Discord Community: https://discord.gg/RkRHU8RbyM
-- Open Forum: https://forum.hollaex.com
+- Forum: https://forum.hollaex.com
+- Docs: https://docs.hollaex.com
