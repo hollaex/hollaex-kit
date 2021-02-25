@@ -492,7 +492,7 @@ const getExchangeWithdrawals = (
 	});
 };
 
-const mintAssetByKitId = (kitId, currency, amount, description) => {
+const mintAssetByKitId = (kitId, currency, amount, description, transaction_id) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
@@ -500,15 +500,15 @@ const mintAssetByKitId = (kitId, currency, amount, description) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().mintAsset(user.network_id, currency, amount, { description });
+			return getNodeLib().mintAsset(user.network_id, currency, amount, { description, transaction_id });
 		});
 };
 
-const mintAssetByNetworkId = (networkId, currency, amount, description) => {
-	return getNodeLib().mintAsset(networkId, currency, amount, { description });
+const mintAssetByNetworkId = (networkId, currency, amount, description, transaction_id) => {
+	return getNodeLib().mintAsset(networkId, currency, amount, { description, transaction_id });
 };
 
-const burnAssetByKitId = (kitId, currency, amount, description) => {
+const burnAssetByKitId = (kitId, currency, amount, description, transaction_id) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
@@ -516,12 +516,12 @@ const burnAssetByKitId = (kitId, currency, amount, description) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().burnAsset(user.network_id, currency, amount, { description });
+			return getNodeLib().burnAsset(user.network_id, currency, amount, { description, transaction_id });
 		});
 };
 
-const burnAssetByNetworkId = (networkId, currency, amount, description) => {
-	return getNodeLib().burnAsset(networkId, currency, amount, { description });
+const burnAssetByNetworkId = (networkId, currency, amount, description, transaction_id) => {
+	return getNodeLib().burnAsset(networkId, currency, amount, { description, transaction_id });
 };
 
 module.exports = {
