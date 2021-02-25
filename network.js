@@ -1656,7 +1656,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	mintAsset(userId, currency, amount, opts = { description: null }) {
+	mintAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1677,6 +1677,10 @@ class HollaExNetwork {
 			data.description = opts.description;
 		}
 
+		if (opts.transaction_id) {
+			data.transaction_id = opts.transaction_id;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -1689,7 +1693,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
-	burnAsset(userId, currency, amount, opts = { description: null }) {
+	burnAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1708,6 +1712,10 @@ class HollaExNetwork {
 
 		if (opts.description) {
 			data.description = opts.description;
+		}
+
+		if (opts.transaction_id) {
+			data.transaction_id = opts.transaction_id;
 		}
 
 		const headers = generateHeaders(
