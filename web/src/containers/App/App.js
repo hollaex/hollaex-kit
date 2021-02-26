@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { Helmet } from 'react-helmet';
@@ -699,7 +700,10 @@ class App extends Component {
 								)}
 							</div>
 						</div>
-						<SnackNotification />
+						{ReactDOM.createPortal(
+							<SnackNotification />,
+							document.getElementsByTagName('body')[0]
+						)}
 						<SnackDialog />
 					</div>
 					<div
