@@ -4275,3 +4275,5 @@ definitions:
       amount:
         type: number
         format: double
+      transaction_id:
+        type: string
