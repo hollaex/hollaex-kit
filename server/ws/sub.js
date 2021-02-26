@@ -171,12 +171,19 @@ const authorizeUser = async (credentials, ws, ip) => {
 };
 
 const terminateClosedChannels = (ws) => {
+	try {
+		removeSubscriber(WEBSOCKET_CHANNEL('chat'), ws);
+	} catch (err) {
+		loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
+	}
+
 	each(toolsLib.getKitPairs(), (pair) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('orderbook', pair), ws);
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
+
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('trade', pair), ws);
 		} catch (err) {
@@ -204,12 +211,6 @@ const terminateClosedChannels = (ws) => {
 
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('deposit', ws.auth.sub.networkId), ws, 'private');
-		} catch (err) {
-			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
-		}
-
-		try {
-			removeSubscriber(WEBSOCKET_CHANNEL('chat'), ws);
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
