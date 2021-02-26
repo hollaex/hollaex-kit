@@ -229,7 +229,7 @@ export const normalizeInt = (value) => {
 };
 export const normalizeFloat = (value) => {
 	if (validator.isFloat(value)) {
-		return validator.toFloat(value);
+		return math.format(validator.toFloat(value), { notation: 'fixed' });
 	} else if (value === '0' || value === 0) {
 		return 0;
 	} else {
