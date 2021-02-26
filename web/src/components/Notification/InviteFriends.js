@@ -8,6 +8,7 @@ import DumbField from '../Form/FormFields/DumbField';
 import Button from '../Button';
 import STRINGS from '../../config/localizedStrings';
 import { getUserReferralCount } from '../../actions/userAction';
+import { setSnackNotification } from '../../actions/appActions';
 import { EditWrapper } from 'components';
 
 const RenderDumbField = (props) => <DumbField {...props} />;
@@ -23,6 +24,14 @@ class InviteFriends extends Component {
 	componentDidMount() {
 		this.props.getUserReferralCount();
 	}
+
+	handleCopy = () => {
+		const { icons: ICONS, setSnackNotification } = this.props;
+		setSnackNotification({
+			icon: ICONS.COPY_NOTIFICATION,
+			content: STRINGS['COPY_SUCCESS_TEXT'],
+		});
+	};
 
 	render() {
 		const { affiliation_code } = this.props.data;
@@ -96,6 +105,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InviteFriends);

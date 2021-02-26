@@ -70,6 +70,7 @@ $trade-tab--arrow-size: 0.4rem;
 			// width: 17rem;
 		}
 		.assets-wrapper {
+			margin-top: 40px;
 			.price-text {
 				font-size: $font-size-mobile-txt !important;
 			}
@@ -152,7 +153,7 @@ $trade-tab--arrow-size: 0.4rem;
 		font-weight: bold;
 	}
 	.summary-section_1 {
-		height: 26rem;
+		height: 30rem;
 
 		.assets-wrapper {
 			.donut-container {
@@ -678,9 +679,6 @@ $trade-tab--arrow-size: 0.4rem;
 		.summary-content-txt {
 			font-size: 1.2rem !important;
 		}
-		.assets-wrapper {
-			margin-top: 40px;
-		}
 	}
 }
 @media (min-width: 1920px) {
@@ -714,9 +712,9 @@ $trade-tab--arrow-size: 0.4rem;
 		.requirement-wrapper {
 			width: 65% !important;
 		}
-		.summary-section_1 {
-			height: 29rem !important;
-		}
+		// .summary-section_1 {
+		// 	height: 31rem !important;
+		// }
 		.summary-section_2 {
 			height: 43rem !important;
 		}
@@ -736,7 +734,7 @@ $trade-tab--arrow-size: 0.4rem;
 			font-size: 0.9rem;
 		}
 		.summary-section_1 {
-			height: 29rem !important;
+			height: 31rem !important;
 		}
 		.summary-section_2 {
 			height: 44rem !important;

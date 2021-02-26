@@ -92,7 +92,7 @@ class Home extends Component {
 					} */}
 					<div className="post-wrapper mt-4 mx-3">
 						<div className="post-title mb-3">{STRINGS['TRADE_TAB_POSTS']}</div>
-						{enabledPlugins.includes('announcement') ? (
+						{enabledPlugins.includes('announcements') ? (
 							<NotificationsList />
 						) : null}
 					</div>

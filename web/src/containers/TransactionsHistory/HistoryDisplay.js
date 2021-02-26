@@ -9,12 +9,13 @@ import {
 	Dialog,
 } from '../../components';
 import classnames from 'classnames';
+import { SubmissionError } from 'redux-form';
 
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
-import { searchUserDeposits } from 'actions/walletActions';
+import { searchTransaction } from 'actions/walletActions';
 import CheckDeposit from '../../components/CheckDeposit';
 
 const HistoryDisplay = (props) => {
@@ -31,45 +32,29 @@ const HistoryDisplay = (props) => {
 		handleDownload,
 		icons: ICONS,
 		activeTab,
-		setDeposit = () => {},
-		setDepositStatusPage = () => {},
 	} = props;
 
 	const [dialogIsOpen, setDialogOpen] = useState(false);
 	const [isLoading, setLoading] = useState(false);
-	const [message, setMessage] = useState('');
+	const [statusMessage, setMessage] = useState('');
+	const [initialValue, setInitialValues] = useState({});
 
 	const requestDeposit = (params = {}) => {
 		setLoading(true);
-		searchUserDeposits(params)
+		setInitialValues(params);
+		setMessage('');
+		return searchTransaction(params)
 			.then((res) => {
 				setLoading(false);
-				if (res.data.data.length === 0) {
-					setMessage(STRINGS['DEPOSIT_STATUS.SEARCH_ERROR']);
-				} else if (res && res.data && res.data.data && res.data.data.length) {
-					let statusTempData = res.data.data[0];
-					setDeposit({ ...statusTempData, is_new: true });
-					setDepositStatusPage(statusTempData.transaction_id);
+				if (res) {
 					setMessage(STRINGS['DEPOSIT_STATUS.SEARCH_SUCCESS']);
 				}
 			})
 			.catch((err) => {
+				let _error = err && err.data ? err.data.message : err.message;
 				setLoading(false);
+				throw new SubmissionError({ _error });
 			});
-	};
-
-	const handleSearch = (values) => {
-		if (values && values.transaction_id) {
-			const filterData = data.filter(
-				(item) => item.transaction_id === values.transaction_id
-			);
-			if (filterData.length !== 0) {
-				setDepositStatusPage(values.transaction_id);
-				setMessage(STRINGS['DEPOSIT_STATUS.SEARCH_SUCCESS']);
-			} else {
-				requestDeposit(values);
-			}
-		}
 	};
 
 	const openDialog = () => {
@@ -136,12 +121,10 @@ const HistoryDisplay = (props) => {
 			>
 				<CheckDeposit
 					onCloseDialog={onCloseDialog}
-					requestDeposit={requestDeposit}
+					onSubmit={requestDeposit}
+					message={statusMessage}
 					isLoading={isLoading}
-					message={message}
-					successMsg={STRINGS['DEPOSIT_STATUS.SEARCH_SUCCESS']}
-					error={STRINGS['DEPOSIT_STATUS.SEARCH_ERROR']}
-					handleSearch={handleSearch}
+					initialValues={initialValue}
 					props={props}
 				/>
 			</Dialog>

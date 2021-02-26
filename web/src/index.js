@@ -65,13 +65,15 @@ const getConfigs = async () => {
 
 	const kitData = await getKitData();
 	const {
-		meta: { versions: remoteVersions = {} } = {},
+		meta: { versions: remoteVersions = {}, sections = {} } = {},
 		valid_languages = '',
 		info: { initialized },
 		setup_completed,
 		native_currency,
 		logo_image,
 	} = kitData;
+
+	kitData['sections'] = sections;
 
 	const promises = {};
 	Object.keys(remoteVersions).forEach((key) => {

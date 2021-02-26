@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import _isEqual from 'lodash/isEqual';
 
@@ -322,35 +322,45 @@ class FooterConfig extends Component {
 	};
 
 	handleAddLink = (formProps) => {
-		const custom_fields = { ...this.state.custom_fields };
-		let currentField = custom_fields[this.state.currentSection];
-		let currentFieldContent = currentField.content || {};
-		let currentFieldHeader = currentField.header || {};
-		let currentContentFields = currentFieldContent.fields || {};
-		custom_fields[this.state.currentSection] = {
-			...currentField,
-			content: {
-				...currentFieldContent,
-				fields: {
-					...currentContentFields,
-					[formProps.link.toLowerCase()]: {
-						type: 'input',
-						label: formProps.link,
-						placeholder: 'http://',
-						isClosable: true,
-						closeCallback: () =>
-							this.handleRemoveLinks(
-								currentFieldHeader.fields,
-								formProps.link.toLowerCase()
-							),
+		let initialCustom = { ...this.state.initialCustom };
+		if (
+			formProps.link &&
+			Object.keys(initialCustom).includes(formProps.link.toLowerCase())
+		) {
+			message.warn('Link already exist');
+		} else {
+			const custom_fields = { ...this.state.custom_fields };
+			let currentField = custom_fields[this.state.currentSection];
+			let currentFieldContent = currentField.content || {};
+			let currentFieldHeader = currentField.header || {};
+			let currentContentFields = currentFieldContent.fields || {};
+			custom_fields[this.state.currentSection] = {
+				...currentField,
+				content: {
+					...currentFieldContent,
+					fields: {
+						...currentContentFields,
+						[formProps.link.toLowerCase()]: {
+							type: 'input',
+							label: formProps.link,
+							placeholder: 'http://',
+							isClosable: true,
+							closeCallback: () =>
+								this.handleRemoveLinks(
+									currentFieldHeader.fields,
+									formProps.link.toLowerCase()
+								),
+						},
 					},
 				},
-			},
-		};
-		this.setState({
-			custom_fields,
-		});
-		this.onCancel();
+			};
+			initialCustom[formProps.link.toLowerCase()] = '';
+			this.setState({
+				initialCustom,
+				custom_fields,
+			});
+			this.onCancel();
+		}
 	};
 
 	handleSubmitLinks = (formProps) => {
