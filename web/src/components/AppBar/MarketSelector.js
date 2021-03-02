@@ -110,10 +110,16 @@ class MarketSelector extends Component {
 	};
 
 	closeAddTabMenu = () => {
-		this.setState({
-			searchValue: '',
-			searchResult: {},
-		});
+		this.setState(
+			{
+				searchValue: '',
+				searchResult: {},
+			},
+			() => {
+				const { closeAddTabMenu = () => {} } = this.props;
+				closeAddTabMenu();
+			}
+		);
 	};
 
 	isFavourite = (pair) => {
