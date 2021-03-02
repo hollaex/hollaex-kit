@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
-import { CurrencyBall } from '../../../components';
-import { DEFAULT_COIN_DATA } from '../../../config/constants';
+// import { CurrencyBall } from '../../../components';
+import { DEFAULT_COIN_DATA, BASE_CURRENCY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { formatToCurrency } from '../../../utils/currency';
 import { EditWrapper } from 'components';
+import Image from 'components/Image';
+import { STATIC_ICONS } from 'config/icons';
 
 const getLimitValue = (limit, increment_unit) => {
 	if (limit === undefined || limit === null || limit === '') {
@@ -26,7 +28,7 @@ const getLimitValue = (limit, increment_unit) => {
 	}
 };
 
-const getDepositRow = (currency, index, coins, level, tier) => {
+/*const getDepositRow = (currency, index, coins, level, tier) => {
 	const { symbol = '', fullname, increment_unit } =
 		coins[currency] || DEFAULT_COIN_DATA;
 
@@ -48,7 +50,7 @@ const getDepositRow = (currency, index, coins, level, tier) => {
 			</td>
 		</tr>
 	);
-};
+};*/
 
 // const getWithdrawalRow = (currency, index, coins, level) => {
 //     const { withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
@@ -62,11 +64,42 @@ const getDepositRow = (currency, index, coins, level, tier) => {
 // };
 
 const getRows = (coins, level, tiers) => {
-	const rowData = [];
-	Object.keys(coins).forEach((currency, index) => {
-		rowData.push(getDepositRow(currency, index, coins, level, tiers));
-	});
-	return rowData;
+	const { increment_unit } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+
+	const { /*deposit_limit,*/ withdrawal_limit } = tiers[level] || {};
+
+	return (
+		<Fragment>
+			<tr>
+				<td className="account-limits-coin">
+					<div className="d-flex align-items-center">
+						<Image
+							icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
+							wrapperClassName="limit-status-icon mr-2"
+						/>
+						<div className="ml-2">{STRINGS['SUMMARY.WITHDRAWAL']}</div>
+					</div>
+				</td>
+				<td className="account-limits-maker account-limits-value">
+					{getLimitValue(withdrawal_limit, increment_unit)}
+				</td>
+			</tr>
+			<tr>
+				<td className="account-limits-coin">
+					<div className="d-flex align-items-center">
+						<Image
+							icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
+							wrapperClassName="limit-status-icon mr-2"
+						/>
+						<div className="ml-2">{STRINGS['SUMMARY.DEPOSIT']}</div>
+					</div>
+				</td>
+				<td className="account-limits-maker account-limits-value">
+					{getLimitValue(null, increment_unit)}
+				</td>
+			</tr>
+		</Fragment>
+	);
 };
 
 const LimitsBlock = ({ level, coins, tiers }) => {
@@ -76,25 +109,26 @@ const LimitsBlock = ({ level, coins, tiers }) => {
 				<thead>
 					<tr>
 						<th className="limit-head-currency content-title" colSpan={3}>
-							<EditWrapper stringId="SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE">
-								{STRINGS['SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE']}
+							<EditWrapper stringId="LIMITS_BLOCK.HEADER_ROW_DESCRIPTION">
+								{STRINGS.formatString(
+									STRINGS['LIMITS_BLOCK.HEADER_ROW_DESCRIPTION'],
+									level
+								)}
 							</EditWrapper>
 						</th>
 					</tr>
 					<tr>
 						<th className="limit-head-currency">
-							<EditWrapper stringId="CURRENCY">
-								{STRINGS['CURRENCY']}
+							<EditWrapper stringId="LIMITS_BLOCK.HEADER_ROW_TYPE">
+								{STRINGS['LIMITS_BLOCK.HEADER_ROW_TYPE']}
 							</EditWrapper>
 						</th>
 						<th className="limit-head-currency">
-							<EditWrapper stringId="SUMMARY.DEPOSIT">
-								{STRINGS['SUMMARY.DEPOSIT']}
-							</EditWrapper>
-						</th>
-						<th className="limit-head-currency">
-							<EditWrapper stringId="SUMMARY.WITHDRAWAL">
-								{STRINGS['SUMMARY.WITHDRAWAL']}
+							<EditWrapper stringId="LIMITS_BLOCK.HEADER_ROW_AMOUNT">
+								{STRINGS.formatString(
+									STRINGS['LIMITS_BLOCK.HEADER_ROW_AMOUNT'],
+									BASE_CURRENCY.toUpperCase()
+								)}
 							</EditWrapper>
 						</th>
 					</tr>
