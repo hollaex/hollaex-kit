@@ -5,7 +5,8 @@ const rp = require('request-promise');
 const {
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
-	HOLLAEX_NETWORK_PATH_ACTIVATE
+	HOLLAEX_NETWORK_PATH_ACTIVATE,
+	DEFAULT_FEES
 } = require('../../constants');
 
 const checkActivation = (activation_code) => {
@@ -28,18 +29,16 @@ module.exports = {
 	up: (queryInterface) => {
 		return checkActivation(process.env.ACTIVATION_CODE)
 			.then((exchange) => {
-				let makerFee = 0.3;
-				let takerFee = 0.3;
 
-				if (exchange.collateral_level === 'zero') {
-					makerFee = 0.3;
-					takerFee = 0.3;
-				} else if (exchange.collateral_level === 'lite') {
-					makerFee = 0.1;
-					takerFee = 0.2;
-				} else if (exchange.collateral_level === 'member') {
-					makerFee = 0;
-					takerFee = 0.05;
+				const minFees = DEFAULT_FEES[exchange.collateral_level];
+				const fees = {
+					maker: {},
+					taker: {}
+				};
+
+				for (let pair of exchange.pairs) {
+					fees.maker[pair.name] = minFees.maker;
+					fees.taker[pair.name] = minFees.taker;
 				}
 
 				const tiers = [
@@ -50,14 +49,7 @@ module.exports = {
 						icon: '',
 						deposit_limit: 0,
 						withdrawal_limit: 0,
-						fees: JSON.stringify({
-							maker: {
-								default: makerFee
-							},
-							taker: {
-								default: takerFee
-							}
-						})
+						fees: JSON.stringify(fees)
 					},
 					{
 						id: 2,
@@ -66,14 +58,7 @@ module.exports = {
 						deposit_limit: 0,
 						icon: '',
 						withdrawal_limit: 0,
-						fees: JSON.stringify({
-							maker: {
-								default: makerFee
-							},
-							taker: {
-								default: takerFee
-							}
-						})
+						fees: JSON.stringify(fees)
 					}
 				];
 				queryInterface.bulkInsert(TABLE, tiers, {});
