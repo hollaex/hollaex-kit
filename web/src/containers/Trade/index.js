@@ -55,8 +55,12 @@ class Trade extends PureComponent {
 	}
 
 	UNSAFE_componentWillMount() {
-		const { isReady, router } = this.props;
-		if (!isReady) {
+		const {
+			isReady,
+			router,
+			constants: { features: { pro_trade = false } = {} } = {},
+		} = this.props;
+		if (!isReady || !pro_trade) {
 			router.push('/summary');
 		}
 		this.setSymbol(this.props.routeParams.pair);
@@ -559,6 +563,7 @@ const mapStateToProps = (state) => {
 		orderLimits: state.app.orderLimits,
 		discount: state.user.discount || 0,
 		isReady: state.app.isReady,
+		constants: state.app.constants,
 	};
 };
 
