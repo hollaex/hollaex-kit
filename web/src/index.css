@@ -3928,11 +3928,11 @@ table th {
       color: var(--calculated_base_top-bar-navigation_text) !important;
       font-weight: bolder; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon {
-      height: 100%; }
+      width: 3rem;
+      height: 3rem; }
       .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon > div {
         display: flex;
-        justify-content: center;
-        height: 100%; }
+        justify-content: center; }
       .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg {
         width: 3rem;
         height: 3rem;

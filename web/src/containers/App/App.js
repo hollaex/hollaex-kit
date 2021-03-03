@@ -70,7 +70,6 @@ import withConfig from 'components/ConfigProvider/withConfig';
 class App extends Component {
 	state = {
 		appLoaded: false,
-		isSocketDataReady: false,
 		dialogIsOpen: false,
 		chatIsClosed: false,
 		publicSocket: undefined,
@@ -426,27 +425,8 @@ class App extends Component {
 		return this.props.changeLanguage(language);
 	};
 
-	isSocketDataReady() {
-		// const { orderbooks, pairsTrades, pair, router } = this.props;
-		// let pairTemp = pair;
-		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
-		// 	Object.keys(pairsTrades).length);
-		// if (router && router.params && router.params.pair) {
-		// 	pairTemp = router.params.pair;
-		// }
-		// return (
-		// 	Object.keys(orderbooks).length &&
-		// 	orderbooks[pairTemp] &&
-		// 	Object.keys(pairsTrades).length
-		// );
-	}
-
 	connectionCallBack = (value) => {
 		this.setState({ appLoaded: value });
-	};
-
-	socketDataCallback = (value = false) => {
-		this.setState({ isSocketDataReady: value });
 	};
 
 	toggleSidebar = () => {
@@ -483,6 +463,8 @@ class App extends Component {
 			handleEditMode,
 			// user,
 			features,
+			isReady: isSocketDataReady,
+			pairsTradesFetched,
 		} = this.props;
 
 		const {
@@ -490,7 +472,6 @@ class App extends Component {
 			appLoaded,
 			chatIsClosed,
 			sidebarFitHeight,
-			isSocketDataReady,
 			isSidebarOpen,
 		} = this.state;
 
@@ -518,7 +499,7 @@ class App extends Component {
 					<GetSocketState
 						router={router}
 						isDataReady={isSocketDataReady}
-						socketDataCallback={this.socketDataCallback}
+						socketDataCallback={this.props.setIsReady}
 					/>
 					<div
 						className={classnames(
@@ -603,7 +584,7 @@ class App extends Component {
 											router={router}
 											children={children}
 											appLoaded={appLoaded}
-											isReady={isSocketDataReady}
+											isReady={pairsTradesFetched}
 										/>
 									</div>
 									{isBrowser && (

@@ -110,10 +110,16 @@ class MarketSelector extends Component {
 	};
 
 	closeAddTabMenu = () => {
-		this.setState({
-			searchValue: '',
-			searchResult: {},
-		});
+		this.setState(
+			{
+				searchValue: '',
+				searchResult: {},
+			},
+			() => {
+				const { closeAddTabMenu = () => {} } = this.props;
+				closeAddTabMenu();
+			}
+		);
 	};
 
 	isFavourite = (pair) => {
@@ -138,6 +144,7 @@ class MarketSelector extends Component {
 			addTradePairTab,
 			wrapperClassName,
 			icons: ICONS,
+			constants,
 		} = this.props;
 
 		const { selectedTabMenu, searchValue, searchResult } = this.state;
@@ -310,7 +317,11 @@ class MarketSelector extends Component {
 						</div>
 					)}
 					<div className="d-flex justify-content-center app_bar-link blue-link pointer">
-						<div onClick={this.onViewMarketsClick}>{`view markets`}</div>
+						{constants &&
+							constants.features &&
+							constants.features.pro_trade && (
+								<div onClick={this.onViewMarketsClick}>{`view markets`}</div>
+							)}
 					</div>
 				</div>
 			</div>
@@ -338,11 +349,14 @@ const mapDispatchToProps = (dispatch) => ({
 	removeFromFavourites: bindActionCreators(removeFromFavourites, dispatch),
 });
 
-const mapStateToProps = ({ app: { pairs, tickers, coins, favourites } }) => ({
+const mapStateToProps = ({
+	app: { pairs, tickers, coins, favourites, constants },
+}) => ({
 	pairs,
 	tickers,
 	coins,
 	favourites,
+	constants,
 });
 
 export default connect(

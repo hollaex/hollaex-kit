@@ -26,6 +26,7 @@ import {
 	SET_CONFIG_LEVEL,
 	ADD_TO_FAVOURITES,
 	REMOVE_FROM_FAVOURITES,
+	SET_IS_READY,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -51,6 +52,7 @@ const EMPTY_SNACK_NOTIFICATION = {
 };
 
 const INITIAL_STATE = {
+	isReady: false,
 	favourites: getFavourites() || [],
 	announcements: [],
 	notifications: [],
@@ -148,6 +150,11 @@ const INITIAL_STATE = {
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 	switch (type) {
+		case SET_IS_READY:
+			return {
+				...state,
+				isReady: payload,
+			};
 		case SET_PAIRS:
 			return {
 				...state,

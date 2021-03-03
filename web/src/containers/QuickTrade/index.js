@@ -56,7 +56,11 @@ class QuickTradeContainer extends PureComponent {
 	}
 
 	UNSAFE_componentWillMount() {
-		this.changePair(this.props.routeParams.pair);
+		const { isReady, router, routeParams } = this.props;
+		this.changePair(routeParams.pair);
+		if (!isReady) {
+			router.push('/summary');
+		}
 	}
 
 	componentDidMount() {
@@ -439,6 +443,7 @@ const mapStateToProps = (store) => {
 		settings: store.user.settings,
 		constants: store.app.constants,
 		fetchingAuth: store.auth.fetching,
+		isReady: store.app.isReady,
 	};
 };
 

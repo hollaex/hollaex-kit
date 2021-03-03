@@ -1419,6 +1419,12 @@ const nestedContent = {
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'Deposit and withdrawal allowance for all assets (level {0})',
+		HEADER_ROW_TYPE: 'Type (All assets)',
+		HEADER_ROW_AMOUNT: 'Amount ({0})',
+	},
 };
 
 const content = flatten(nestedContent, options);

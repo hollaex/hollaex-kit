@@ -53,6 +53,13 @@ class TransactionsHistory extends Component {
 		params: {},
 	};
 
+	UNSAFE_componentWillMount() {
+		const { coins = {}, router } = this.props;
+		if (Object.keys(coins).length === 0) {
+			router.push('/summary');
+		}
+	}
+
 	componentDidMount() {
 		this.generateHeaders(
 			this.props.symbol,
@@ -382,7 +389,7 @@ class TransactionsHistory extends Component {
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
-		if (!id) {
+		if (!id || Object.keys(coins).length === 0) {
 			return <Loader />;
 		}
 
