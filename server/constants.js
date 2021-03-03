@@ -268,6 +268,22 @@ const ROLES = {
 	USER: 'user',
 	HMAC: 'hmac'
 };
+
+exports.DEFAULT_FEES = {
+	zero: {
+		maker: 0.3,
+		taker: 0.3
+	},
+	lite: {
+		maker: 0.1,
+		taker: 0.2
+	},
+	member: {
+		maker: 0,
+		taker: 0.05
+	}
+};
+
 exports.ROLES = ROLES;
 exports.BASE_SCOPES = [ROLES.USER, ROLES.HMAC];
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
