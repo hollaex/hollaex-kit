@@ -5,6 +5,7 @@ const QUICK_TRADE = 'QUICK_TRADE';
 const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
 const TRADE_QUOTE_PERFORM = 'TRADE_QUOTE_PERFORM';
 const SET_ORDERBOOK_DEPTH = 'CHANGE_ORDERBOOK_DEPTH';
+export const PAIRS_TRADES_FETCHED = 'PAIRS_TRADES_FETCHED';
 
 export const ORDERBOOK_CONSTANTS = {
 	QUICK_TRADE_CANCEL: `${QUICK_TRADE}_CANCEL`,
@@ -34,6 +35,11 @@ export function getOrderbook() {
 		payload: axios.get('/orderbooks'),
 	};
 }
+
+export const setPairsTradesFetched = (fetched = true) => ({
+	type: PAIRS_TRADES_FETCHED,
+	payload: fetched,
+});
 
 export function setOrderbook(orderbook) {
 	return {
