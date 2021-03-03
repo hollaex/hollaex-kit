@@ -54,7 +54,11 @@ class Trade extends PureComponent {
 		this.sizeTimeOut = '';
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
+		const { isReady, router } = this.props;
+		if (!isReady) {
+			router.push('/summary');
+		}
 		this.setSymbol(this.props.routeParams.pair);
 		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 	}
@@ -554,6 +558,7 @@ const mapStateToProps = (state) => {
 		settings: state.user.settings,
 		orderLimits: state.app.orderLimits,
 		discount: state.user.discount || 0,
+		isReady: state.app.isReady,
 	};
 };
 
