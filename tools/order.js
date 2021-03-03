@@ -25,8 +25,8 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 			}
 			const feeData = {};
 			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
-				taker: tier.fees.taker[symbol] || tier.fees.taker.default
+				maker: tier.fees.maker[symbol],
+				taker: tier.fees.taker[symbol]
 			};
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
@@ -49,8 +49,8 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts
 			}
 			const feeData = {};
 			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
-				taker: tier.fees.taker[symbol] || tier.fees.taker.default
+				maker: tier.fees.maker[symbol],
+				taker: tier.fees.taker[symbol]
 			};
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
@@ -71,8 +71,8 @@ const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price =
 			}
 			const feeData = {};
 			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol] || tier.fees.maker.default,
-				taker: tier.fees.taker[symbol] || tier.fees.taker.default
+				maker: tier.fees.maker[symbol],
+				taker: tier.fees.taker[symbol]
 			};
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});

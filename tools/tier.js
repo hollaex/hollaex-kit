@@ -7,7 +7,7 @@ const { getKitTiers, getKitPairs, getKitConfig, subscribedToPair, getTierLevels 
 const { reject, all } = require('bluebird');
 const { difference, omit, isNumber, each } = require('lodash');
 const { publisher } = require('./database/redis');
-const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
+const { CONFIGURATION_CHANNEL, DEFAULT_FEES } = require(`${SERVER_PATH}/constants`);
 const flatten = require('flat');
 
 const findTier = (level) => {
@@ -56,26 +56,24 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
 	}
 
-	let minMakerFee = 0.3;
-	let minTakerFee = 0.3;
+	const minFees = DEFAULT_FEES[getKitConfig().info.collateral_level];
 
-	if (getKitConfig().info.collateral_level === 'zero') {
-		minMakerFee = 0.3;
-		minTakerFee = 0.3;
-	} else if (getKitConfig().info.collateral_level === 'lite') {
-		minMakerFee = 0.1;
-		minTakerFee = 0.2;
-	} else if (getKitConfig().info.collateral_level === 'member') {
-		minMakerFee = 0;
-		minTakerFee = 0.05;
-	}
-
-	const invalidMakerFees = Object.values(flatten(fees.maker)).some(fee => fee < minMakerFee);
-	const invalidTakerFees = Object.values(flatten(fees.taker)).some(fee => fee < minTakerFee);
+	const invalidMakerFees = Object.values(flatten(fees.maker)).some(fee => fee < minFees.maker);
+	const invalidTakerFees = Object.values(flatten(fees.taker)).some(fee => fee < minFees.taker);
 
 	if (invalidMakerFees || invalidTakerFees) {
-		return reject(new Error(`Invalid fee given. Minimum maker fee: ${minMakerFee}. Minimum taker fee: ${minTakerFee}`));
+		return reject(new Error(`Invalid fee given. Minimum maker fee: ${minFees.maker}. Minimum taker fee: ${minFees.taker}`));
 	}
+
+	const tierFees = {
+		maker: {},
+		taker: {}
+	};
+
+	each(getKitPairs(), (pair) => {
+		tierFees.maker[pair] = fees.maker[pair] || fees.maker.default;
+		tierFees.taker[pair] = fees.taker[pair] || fees.taker.default;
+	});
 
 	return getModel('tier').create({
 		id: level,
@@ -84,7 +82,7 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		description,
 		deposit_limit,
 		withdrawal_limit,
-		fees,
+		fees: tierFees,
 		note
 	})
 		.then((tier) => {
@@ -166,22 +164,10 @@ const updatePairFees = (pair, fees) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return all(tiersToUpdate.map(async (level) => {
 
-			let minMakerFee = 0.3;
-			let minTakerFee = 0.3;
+			const minFees = DEFAULT_FEES[getKitConfig().info.collateral_level];
 
-			if (getKitConfig().info.collateral_level === 'zero') {
-				minMakerFee = 0.3;
-				minTakerFee = 0.3;
-			} else if (getKitConfig().info.collateral_level === 'lite') {
-				minMakerFee = 0.1;
-				minTakerFee = 0.2;
-			} else if (getKitConfig().info.collateral_level === 'member') {
-				minMakerFee = 0;
-				minTakerFee = 0.05;
-			}
-
-			if (fees[level].maker < minMakerFee || fees[level].taker < minTakerFee) {
-				throw new Error(`Invalid fee given. Minimum maker fee: ${minMakerFee}. Minimum taker fee: ${minTakerFee}`);
+			if (fees[level].maker < minFees.maker || fees[level].taker < minFees.taker) {
+				throw new Error(`Invalid fee given. Minimum maker fee: ${minFees.maker}. Minimum taker fee: ${minFees.taker}`);
 			}
 
 			const tier = await dbQuery.findOne('tier', { where: { id: level } });
