@@ -3,6 +3,7 @@ import { hasTheme } from 'utils/theme';
 import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from 'config/constants';
 import axios from 'axios';
 
+export const SET_IS_READY = 'SET_IS_READY';
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
 export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
 export const CLOSE_ALL_NOTIFICATION = 'CLOSE_ALL_NOTIFICATION';
@@ -71,6 +72,11 @@ export const MESSAGE_TYPES = {
 	MESSAGE_TYPE_ANNOUNCEMENT: 'announcement',
 	MESSAGE_TYPE_IMAGE: 'image',
 };
+
+export const setIsReady = (isReady = true) => ({
+	type: SET_IS_READY,
+	payload: isReady,
+});
 
 export const setNotification = (type = '', data = {}, show = true) => ({
 	type: SET_NOTIFICATION,
