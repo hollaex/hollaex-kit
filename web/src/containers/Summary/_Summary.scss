@@ -679,7 +679,14 @@ $trade-tab--arrow-size: 0.4rem;
 			font-size: 1.2rem !important;
 		}
 		.assets-wrapper {
-			margin-top: 40px;
+			margin-top: 0;
+		}
+	}
+	.layout-mobile {
+		.summary-container {
+			.assets-wrapper {
+				margin-top: 40px;
+			}
 		}
 	}
 }
