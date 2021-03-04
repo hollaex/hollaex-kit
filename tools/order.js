@@ -351,6 +351,10 @@ const getGeneratedFees = (limit, page, startDate, endDate) => {
 	});
 };
 
+const settleFees = () => {
+	return getNodeLib().settleFees();
+};
+
 module.exports = {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
@@ -372,5 +376,6 @@ module.exports = {
 	cancelUserOrderByNetworkId,
 	getAllUserOrdersByNetworkId,
 	cancelAllUserOrdersByNetworkId,
-	getGeneratedFees
+	getGeneratedFees,
+	settleFees
 };
