@@ -2411,7 +2411,7 @@ table th {
     color: var(--specials_buttons-links-and-highlights);
     font-weight: bold; }
   .summary-container .summary-section_1 {
-    height: 26rem; }
+    height: 28rem; }
     .summary-container .summary-section_1 .assets-wrapper .donut-container {
       height: 16rem;
       width: 100%; }
@@ -2822,7 +2822,7 @@ table th {
     .summary-container .requirement-wrapper {
       width: 65% !important; }
     .summary-container .summary-section_1 {
-      height: 29rem !important; }
+      height: 31rem !important; }
     .summary-container .summary-section_2 {
       height: 43rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -2835,7 +2835,7 @@ table th {
   .summary-container .trader-account-wrapper {
     font-size: 0.9rem; }
   .summary-container .summary-section_1 {
-    height: 29rem !important; }
+    height: 31rem !important; }
   .summary-container .summary-section_2 {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
