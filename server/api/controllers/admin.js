@@ -606,7 +606,7 @@ const settleFees = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.order.getGeneratedFees()
+	toolsLib.order.settleFees()
 		.then((data) => {
 			return res.json(data);
 		})

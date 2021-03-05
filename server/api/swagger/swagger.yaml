@@ -1851,7 +1851,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/FeesResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
