@@ -1770,6 +1770,23 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+	settleFees() {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		const path = `${this.baseUrl}/network/${this.exchange_id}/fees/settle`;
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
 	getOraclePrices(assets = [], opts = { quote: null, amount: null }) {
 		checkKit(this.exchange_id);
 
