@@ -2411,7 +2411,7 @@ table th {
     color: var(--specials_buttons-links-and-highlights);
     font-weight: bold; }
   .summary-container .summary-section_1 {
-    height: 28rem; }
+    height: 26rem; }
     .summary-container .summary-section_1 .assets-wrapper .donut-container {
       height: 16rem;
       width: 100%; }
@@ -2798,8 +2798,6 @@ table th {
   .summary-container .summary-content-txt {
     font-size: 1.2rem !important; }
   .summary-container .assets-wrapper {
-    margin-top: 0; }
-  .layout-mobile .summary-container .assets-wrapper {
     margin-top: 40px; } }
 
 @media (min-width: 1920px) {
@@ -2822,7 +2820,7 @@ table th {
     .summary-container .requirement-wrapper {
       width: 65% !important; }
     .summary-container .summary-section_1 {
-      height: 31rem !important; }
+      height: 29rem !important; }
     .summary-container .summary-section_2 {
       height: 43rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -2835,7 +2833,7 @@ table th {
   .summary-container .trader-account-wrapper {
     font-size: 0.9rem; }
   .summary-container .summary-section_1 {
-    height: 31rem !important; }
+    height: 29rem !important; }
   .summary-container .summary-section_2 {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
