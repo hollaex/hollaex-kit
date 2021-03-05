@@ -2798,8 +2798,6 @@ table th {
   .summary-container .summary-content-txt {
     font-size: 1.2rem !important; }
   .summary-container .assets-wrapper {
-    margin-top: 0; }
-  .layout-mobile .summary-container .assets-wrapper {
     margin-top: 40px; } }
 
 @media (min-width: 1920px) {
