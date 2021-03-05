@@ -24,6 +24,7 @@ import {
 	setOrderbook,
 	addTrades,
 	setPairsData,
+	setPairsTradesFetched,
 } from '../../actions/orderbookAction';
 import {
 	setTickers,
@@ -301,6 +302,7 @@ class Container extends Component {
 						delete tradesData.data;
 						this.props.setTrades(tradesData);
 						this.props.setTickers(tradesData);
+						this.props.setPairsTradesFetched();
 					}
 					if (data.action === 'update') {
 						if (
@@ -738,6 +740,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
 	setPlugins: bindActionCreators(setPlugins, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
+	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
