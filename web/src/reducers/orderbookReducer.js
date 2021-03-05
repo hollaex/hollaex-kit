@@ -1,5 +1,8 @@
 import { BASE_CURRENCY } from '../config/constants';
-import { ORDERBOOK_CONSTANTS } from '../actions/orderbookAction';
+import {
+	ORDERBOOK_CONSTANTS,
+	PAIRS_TRADES_FETCHED,
+} from '../actions/orderbookAction';
 
 const INITIAL_QUICK_TRADE = {
 	fetching: false,
@@ -49,12 +52,18 @@ const INITIAL_STATE = {
 	quoteData: INITIAL_QUOTE,
 	pairsOrderbooks: {},
 	pairsTrades: {},
+	pairsTradesFetched: false,
 	pairs: {},
 	depth: parseInt(localStorage.getItem('orderbook_depth') || 1, 10),
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
 	switch (type) {
+		case PAIRS_TRADES_FETCHED:
+			return {
+				...state,
+				pairsTradesFetched: payload,
+			};
 		case 'CHANGE_SYMBOL':
 			return {
 				...state,

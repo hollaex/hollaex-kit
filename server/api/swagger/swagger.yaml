@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.0.8"
+  version: "2.0.9"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1832,6 +1832,26 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/FeesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/fees/settle:
+    x-swagger-router-controller: admin
+    get:
+      operationId: settleFees
+      description: Settle exchange fees
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
