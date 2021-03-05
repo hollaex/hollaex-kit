@@ -464,6 +464,8 @@ class App extends Component {
 			features,
 			isReady: isSocketDataReady,
 			pairsTradesFetched,
+			verifyToken,
+			token,
 		} = this.props;
 
 		const {
@@ -481,7 +483,9 @@ class App extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
-		const isMenubar = true;
+
+		const isHome = this.props.location.pathname === '/';
+		const isMenubar = !isHome;
 		return (
 			<ThemeProvider>
 				<div>
@@ -539,19 +543,25 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								<AppBar
-									router={router}
-									location={location}
-									goToDashboard={this.goToDashboard}
-									logout={this.logout}
-									activePath={activePath}
-									onHelp={openHelpfulResourcesForm}
-								>
-									{isBrowser && isMenubar && isLoggedIn() && (
-										<AppMenuBar router={router} location={location} />
-									)}
-								</AppBar>
-								{isBrowser && (
+								{!isHome && (
+									<AppBar
+										token={token}
+										verifyToken={verifyToken}
+										noBorders={isHome}
+										isHome={isHome}
+										router={router}
+										location={location}
+										goToDashboard={this.goToDashboard}
+										logout={this.logout}
+										activePath={activePath}
+										onHelp={openHelpfulResourcesForm}
+									>
+										{isBrowser && isMenubar && isLoggedIn() && (
+											<AppMenuBar router={router} location={location} />
+										)}
+									</AppBar>
+								)}
+								{isBrowser && !isHome && (
 									<PairTabs
 										activePath={activePath}
 										location={location}
@@ -586,7 +596,7 @@ class App extends Component {
 											isReady={pairsTradesFetched}
 										/>
 									</div>
-									{isBrowser && (
+									{isBrowser && !isHome && (
 										<div
 											className={classnames('app_container-sidebar', {
 												'close-sidebar': !isSidebarOpen,
@@ -658,7 +668,7 @@ class App extends Component {
 												// activeTheme
 											)}
 									</Dialog>
-									{!isMobile && features && features.chat && (
+									{!isMobile && !isHome && features && features.chat && (
 										<ChatComponent
 											activeLanguage={activeLanguage}
 											minimized={chatIsClosed}

@@ -513,6 +513,60 @@ class General extends Component {
 					</div>
 					<div className="divider" />
 					<div>
+						<div className="sub-title">Landing page background</div>
+						<div className="description">
+							Landing home page for your exchange. This is the page your users
+							will likely see first.
+						</div>
+						<div className="file-wrapper">
+							<Collapse defaultActiveKey={['1']} bordered={false} ghost>
+								<Collapse.Panel showArrow={false} key="1" disabled={true}>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme === 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload(
+													'EXCHANGE_LANDING_PAGE',
+													theme,
+													index
+												)
+											)}
+									</div>
+								</Collapse.Panel>
+								<Collapse.Panel
+									showArrow={false}
+									header={
+										<span className="underline-text">
+											Theme Specific Graphics
+										</span>
+									}
+									key="2"
+								>
+									<div className="file-wrapper">
+										{themeOptions
+											.filter(({ value: theme }) => theme !== 'dark')
+											.map(({ value: theme }, index) =>
+												this.renderImageUpload(
+													'EXCHANGE_LANDING_PAGE',
+													theme,
+													index
+												)
+											)}
+									</div>
+								</Collapse.Panel>
+							</Collapse>
+						</div>
+						<Button
+							type="primary"
+							className="green-btn minimal-btn"
+							loading={loadingButton}
+							onClick={() => this.handlePublish('EXCHANGE_LANDING_PAGE')}
+						>
+							Publish
+						</Button>
+					</div>
+					<div className="divider" />
+					<div>
 						<div className="sub-title">Exchange logo</div>
 						<div className="description">
 							This logo will be applied to emails send to your users and login

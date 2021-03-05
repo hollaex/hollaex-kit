@@ -1250,3 +1250,11 @@ $app-menu-notification-size: 1.2rem;
 .market-trigger {
 	background-color: $app-background-color;
 }
+
+.landing-page-bar {
+	background: linear-gradient(
+		to bottom,
+		$app-landing_background,
+		$app-landing_background
+	) !important;
+}

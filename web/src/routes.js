@@ -3,8 +3,6 @@ import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 
-import { DISPLAY_LANDING } from './config/constants';
-
 import {
 	App as Container,
 	Account,
@@ -170,7 +168,7 @@ function loggedIn(nextState, replace) {
 }
 
 const checkLanding = (nextState, replace) => {
-	if (!DISPLAY_LANDING) {
+	if (!store.getState().app.home_page) {
 		replace({
 			pathname: '/login',
 		});
@@ -225,7 +223,6 @@ function withAdminProps(Component, key) {
 
 export default (
 	<Router history={browserHistory}>
-		<Route path="/" name="Home" component={Home} onEnter={checkLanding} />
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			{isMobile ? (
@@ -258,6 +255,7 @@ export default (
 			/>
 		</Route>
 		<Route component={Container}>
+			<Route path="/" name="Home" component={Home} onEnter={checkLanding} />
 			{isMobile ? (
 				<Route
 					path="/home"

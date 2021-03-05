@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import { ReactSVG } from 'react-svg';
 import STRINGS from '../../config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
@@ -9,10 +8,11 @@ import { EditWrapper } from 'components';
 
 const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 
-const Section1 = ({
+const MainSection = ({
 	style = {},
 	onClickScrollTo = () => {},
 	onClickLearnMore,
+	onClickDemo,
 	token,
 	icons: ICONS,
 }) => {
@@ -27,43 +27,46 @@ const Section1 = ({
 		>
 			<div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
 				<div className="home-title text-capitalize">
-					{STRINGS['HOME.SECTION_1_TITLE']}
+					<EditWrapper stringId="HOME.MAIN_TITLE">
+						{STRINGS['HOME.MAIN_TITLE']}
+					</EditWrapper>
 				</div>
 				<div className="text-section text-center">
-					<div>{STRINGS['HOME.SECTION_1_TEXT_1']}</div>
-					<div>{STRINGS['HOME.SECTION_1_TEXT_2']}</div>
+					<EditWrapper stringId="HOME.MAIN_TEXT">
+						{STRINGS['HOME.MAIN_TEXT']}
+					</EditWrapper>
 				</div>
 				<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
-					<div
-						className={classnames(...BUTTONS_CLASSES, {
-							pointer: onClickLearnMore,
-						})}
-						onClick={onClickLearnMore}
-					>
-						{STRINGS['HOME.SECTION_1_BUTTON_1']}
+					<div>
+						<EditWrapper stringId="HOME.TRADE_CRYPTO" />
+						<div
+							className={classnames(...BUTTONS_CLASSES, 'main-section_button', {
+								pointer: onClickLearnMore,
+							})}
+							onClick={onClickLearnMore}
+						>
+							{STRINGS['HOME.TRADE_CRYPTO']}
+						</div>
 					</div>
-					{/*!token && (
-					<div
-						className={classnames(...BUTTONS_CLASSES, 'contrast', {
-							pointer: onClickRegister
-						})}
-						onClick={onClickRegister}
-					>
-						{STRINGS["REGISTER_TEXT"]}
+					<div>
+						<EditWrapper stringId="HOME.VIEW_EXCHANGE" />
+						<div
+							className={classnames(
+								...BUTTONS_CLASSES,
+								'main-section_button_invert',
+								{
+									pointer: onClickDemo,
+								}
+							)}
+							onClick={onClickDemo}
+						>
+							{STRINGS['HOME.VIEW_EXCHANGE']}
+						</div>
 					</div>
-				)*/}
 				</div>
 			</div>
-			<EditWrapper iconId="ARROW_ARROW">
-				<div
-					className={classnames('pointer', 'flex-0', 'scroll-button')}
-					onClick={onClickScrollTo}
-				>
-					<ReactSVG src={ICONS['ARROW_ARROW']} />
-				</div>
-			</EditWrapper>
 		</div>
 	);
 };
 
-export default withConfig(Section1);
+export default withConfig(MainSection);

@@ -5,6 +5,94 @@ $features-container--width: 75rem;
 $features-container--sm--width: 45rem;
 $card-text--margin: 0.75rem;
 $no-background--color: white;
+$app-bar--arrow-size: 0.4rem;
+$trade-tab--arrow-size: 0.4rem;
+
+.home-page__market-wrapper {
+	background-color: $landing_markets_table;
+
+	thead {
+		background-color: $auth-container-background;
+	}
+
+	.market-list__block-table {
+		margin-bottom: 0 !important;
+	}
+
+	.price-diff-down {
+		color: $sell;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $sell-bids-text;
+			background-color: $sell;
+		}
+	}
+
+	.price-diff-up {
+		color: $buy;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $buy-bids-text;
+			background-color: $buy;
+		}
+	}
+
+	.trade-tab-price_diff_up {
+		margin: auto 0;
+	}
+
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_up:before {
+			@include css-triangle($buy-bids-text, 'up', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-bottom: 0.2rem;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+	}
+
+	.trade-tab-price_diff_up:before {
+		@include css-triangle($buy, 'up', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.trade-tab-price_diff_down {
+		margin: auto 0;
+	}
+
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_down:before {
+			@include css-triangle($sell-bids-text, 'down', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+	}
+
+	.trade-tab-price_diff_down:before {
+		@include css-triangle($sell, 'down', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+}
 
 .layout-mobile {
 	&.home_container {
@@ -12,12 +100,37 @@ $no-background--color: white;
 			min-height: $max-content-height-home-mobile;
 			max-height: $max-content-height-home-mobile;
 		}
+
+		.home_container-content {
+			width: 96%;
+		}
 	}
 }
 
 .home_container {
 	background-repeat: no-repeat;
 	background-size: cover;
+
+	.main-section_button_invert {
+		color: $link;
+		background-color: $colors-main-black;
+	}
+
+	.main-section_button {
+		color: $colors-main-black;
+		background-color: $link;
+	}
+
+	.quick_trade-wrapper {
+		min-width: 30rem;
+		max-width: 40rem;
+	}
+
+	.home_container-content {
+		margin: auto;
+		width: 90%;
+		max-width: 900px;
+	}
 
 	.exchange-expired {
 		background-color: #ed1c24 !important;
@@ -42,11 +155,19 @@ $no-background--color: white;
 		padding: 2rem;
 	}
 
-	.section_1-content {
-		background: linear-gradient(to bottom, transparent, $no-background--color);
+	.home-page_overlay {
+		width: 100% !important;
+		height: 100% !important;
 
+		background: linear-gradient(
+			to bottom,
+			$app-landing_background,
+			$app-landing_background
+		);
+	}
+
+	.section_1-content {
 		position: relative;
-		min-height: 500px;
 
 		.scroll-button {
 			$arrow-size: 2rem;
@@ -107,7 +228,7 @@ $no-background--color: white;
 
 	.home-title,
 	.features-title {
-		font-size: $font-size-headline;
+		font-size: $font-size-headline2;
 		margin-bottom: 1rem;
 		text-align: center;
 	}
@@ -149,6 +270,26 @@ $no-background--color: white;
 	}
 }
 
+.home_app_bar {
+	height: $navigation_bar-height-lg;
+	min-height: $navigation_bar-height-lg;
+
+	.app_bar-icon-logo {
+		height: 4rem;
+		width: 5rem;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.app_bar-icon {
+		flex: 0;
+		margin: 0 0.5rem;
+		padding-right: 8px;
+		width: 100%;
+	}
+}
+
 @media (max-width: $bp-sm) {
 	.home_container {
 		.home-card-container {
@@ -159,6 +300,19 @@ $no-background--color: white;
 			.features-card_container {
 				max-width: $features-container--sm--width;
 			}
+		}
+	}
+}
+
+@media (min-width: 1920px) {
+	.home_app_bar {
+		.app_bar-icon-logo {
+			height: 3rem;
+			width: 5rem;
+		}
+
+		.app_bar-icon {
+			margin: 1rem 0 1rem;
 		}
 	}
 }

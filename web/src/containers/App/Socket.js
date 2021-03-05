@@ -124,8 +124,8 @@ class Container extends Component {
 
 	resetTimer = debounce(this._resetTimer, 250);
 
-	initSocketConnections = () => {
-		this.setPublicWS();
+	initSocketConnections = async () => {
+		await this.setPublicWS();
 		this.setUserSocket();
 		this.setState({ appLoaded: true }, () => {
 			this.props.connectionCallBack(true);
@@ -703,6 +703,8 @@ const mapStateToProps = (store) => ({
 	settings: store.user.settings,
 	constants: store.app.constants,
 	info: store.app.info,
+	token: store.auth.token,
+	verifyToken: store.auth.verifyToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({

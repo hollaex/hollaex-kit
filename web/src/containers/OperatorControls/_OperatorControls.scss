@@ -312,3 +312,16 @@ $operator-controls__panel-border-color: #a7a7a7;
 		color: white;
 	}
 }
+
+.sortable_section {
+	td {
+		cursor: grab;
+		&:active {
+			cursor: grabbing;
+		}
+	}
+	cursor: grab;
+	&:active {
+		cursor: grabbing;
+	}
+}

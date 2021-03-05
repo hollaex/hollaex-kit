@@ -26,6 +26,7 @@ import {
 	SET_CONFIG_LEVEL,
 	ADD_TO_FAVOURITES,
 	REMOVE_FROM_FAVOURITES,
+	CHANGE_HOME_PAGE_SETTING,
 	SET_IS_READY,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
@@ -52,6 +53,7 @@ const EMPTY_SNACK_NOTIFICATION = {
 };
 
 const INITIAL_STATE = {
+	home_page: false,
 	isReady: false,
 	favourites: getFavourites() || [],
 	announcements: [],
@@ -396,6 +398,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				favourites,
+			};
+		}
+		case CHANGE_HOME_PAGE_SETTING: {
+			return {
+				...state,
+				home_page: payload,
 			};
 		}
 		default:

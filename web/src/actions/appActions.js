@@ -59,6 +59,7 @@ export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
 export const SET_CONFIG_LEVEL = 'SET_CONFIG_LEVEL';
 export const ADD_TO_FAVOURITES = 'ADD_TO_FAVOURITES';
 export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
+export const CHANGE_HOME_PAGE_SETTING = 'CHANGE_HOME_PAGE_SETTING';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -364,4 +365,9 @@ export const addToFavourites = (payload) => ({
 export const removeFromFavourites = (payload) => ({
 	type: REMOVE_FROM_FAVOURITES,
 	payload,
+});
+
+export const setHomePageSetting = (home_page = false) => ({
+	type: CHANGE_HOME_PAGE_SETTING,
+	payload: home_page,
 });
