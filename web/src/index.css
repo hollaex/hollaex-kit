@@ -228,7 +228,8 @@ table th {
   pointer-events: none; }
 
 .object-fit-contain {
-  object-fit: contain; }
+  object-fit: contain;
+  height: 100%; }
 
 .background-contain {
   -webkit-background-size: contain;
