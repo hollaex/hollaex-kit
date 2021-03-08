@@ -28,7 +28,7 @@ export const SOCIAL_ICONS = {
 	INSTAGRAM: '/assets/icons/instagram.svg',
 	TELEGRAM: '/assets/icons/telegram.png',
 	GOOGLE: '/assets/icons/google.png',
-	YOUTUBE: '/assets/icons/youtube.png'
+	YOUTUBE: '/assets/icons/youtube.png',
 };
 
 export const FEATURES_ICONS = {
@@ -37,7 +37,7 @@ export const FEATURES_ICONS = {
 	SECURITY: '/assets/images/features-lock-icons.svg',
 	REPORTING: '/assets/images/features-data-icons.svg',
 	SUPPORT: '/assets/images/features-support-icons.svg',
-	LEGAL: '/assets/images/features-legal-icons.svg'
+	LEGAL: '/assets/images/features-legal-icons.svg',
 };
 
 export const SUMMMARY_ICON = {
@@ -48,7 +48,7 @@ export const SUMMMARY_ICON = {
 	LEVEL_3: '/assets/summary/level-3.png',
 	LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
 	LEVEL_4: '/assets/summary/level-4.png',
-	LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
+	LEVEL_4_DARK: '/assets/summary/level-4-dark.png',
 };
 
 export const HOLLAEX_LOGO =
@@ -201,7 +201,7 @@ export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
 export const TOKEN_EMAIL = 'token::email';
 export const TOKEN_MAX_AGE = 23 * 60 * 60;
 
-export const DISPLAY_LANDING = false;
+export const DISPLAY_LANDING = true;
 export const DEFAULT_URL = '/';
 
 // minimum level for a user to be able to create api tokens

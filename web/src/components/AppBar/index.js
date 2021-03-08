@@ -445,7 +445,7 @@ class AppBar extends Component {
 					isLoggedIn() ? (
 						<div
 							id="trade-nav-container"
-							className="d-flex app-bar-account justify-content-end"
+							className="safry sd-flex app-bar-account justify-content-end"
 						>
 							<div className="d-flex app_bar-quicktrade-container">
 								<ThemeSwitcher

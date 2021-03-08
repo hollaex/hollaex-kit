@@ -14,8 +14,8 @@ const Section1 = ({
 	onClickScrollTo = () => {},
 	onClickLearnMore,
 	token,
+	icons: ICONS,
 }) => {
-	const { icons: ICONS } = this.props;
 	return (
 		<div
 			className={classnames(
@@ -27,12 +27,13 @@ const Section1 = ({
 		>
 			<div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
 				<div className="home-title text-capitalize">
-					{STRINGS['HOME.SECTION_1_TITLE']}
-				</div>
+					{' '}
+					{STRINGS['HOME.SECTION_1_TITLE']}{' '}
+				</div>{' '}
 				<div className="text-section text-center">
-					<div>{STRINGS['HOME.SECTION_1_TEXT_1']}</div>
-					<div>{STRINGS['HOME.SECTION_1_TEXT_2']}</div>
-				</div>
+					<div> {STRINGS['HOME.SECTION_1_TEXT_1']} </div>{' '}
+					<div> {STRINGS['HOME.SECTION_1_TEXT_2']} </div>{' '}
+				</div>{' '}
 				<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
 					<div
 						className={classnames(...BUTTONS_CLASSES, {
@@ -40,28 +41,28 @@ const Section1 = ({
 						})}
 						onClick={onClickLearnMore}
 					>
-						{STRINGS['HOME.SECTION_1_BUTTON_1']}
-					</div>
+						{STRINGS['HOME.SECTION_1_BUTTON_1']}{' '}
+					</div>{' '}
 					{/*!token && (
-					<div
-						className={classnames(...BUTTONS_CLASSES, 'contrast', {
-							pointer: onClickRegister
-						})}
-						onClick={onClickRegister}
-					>
-						{STRINGS["REGISTER_TEXT"]}
-					</div>
-				)*/}
-				</div>
-			</div>
+            					<div
+            						className={classnames(...BUTTONS_CLASSES, 'contrast', {
+            							pointer: onClickRegister
+            						})}
+            						onClick={onClickRegister}
+            					>
+            						{STRINGS["REGISTER_TEXT"]}
+            					</div>
+            				)*/}{' '}
+				</div>{' '}
+			</div>{' '}
 			<EditWrapper iconId="ARROW_ARROW">
 				<div
 					className={classnames('pointer', 'flex-0', 'scroll-button')}
 					onClick={onClickScrollTo}
 				>
-					<ReactSVG src={ICONS['ARROW_ARROW']} />
-				</div>
-			</EditWrapper>
+					<ReactSVG src={ICONS['ARROW_ARROW']} />{' '}
+				</div>{' '}
+			</EditWrapper>{' '}
 		</div>
 	);
 };
