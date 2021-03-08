@@ -6,6 +6,7 @@ import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
+import { ArrowDownOutlined } from '@ant-design/icons';
 
 const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 
@@ -17,53 +18,77 @@ const Section1 = ({
 	icons: ICONS,
 }) => {
 	return (
-		<div
-			className={classnames(
-				...FLEX_CENTER_CLASSES,
-				'flex-column',
-				'section_1-content'
-			)}
-			style={style}
-		>
-			<div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
-				<div className="home-title text-capitalize">
-					{' '}
-					{STRINGS['HOME.SECTION_1_TITLE']}{' '}
-				</div>{' '}
-				<div className="text-section text-center">
+		<>
+			<div className={'section-one-container'}>
+				<div className={'section-one-header'}>
+					{STRINGS['HOME.SECTION_1_TITLE']} {/*Buy & sell Crypto in minutes*/}
+				</div>
+				<div className={'section-one-text'}>
+					{/*Join the world's largest crypto exchange*/}
 					<div> {STRINGS['HOME.SECTION_1_TEXT_1']} </div>{' '}
 					<div> {STRINGS['HOME.SECTION_1_TEXT_2']} </div>{' '}
-				</div>{' '}
-				<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
-					<div
-						className={classnames(...BUTTONS_CLASSES, {
-							pointer: onClickLearnMore,
-						})}
-						onClick={onClickLearnMore}
+				</div>
+				<div className={'section-one-text'}>
+					{' '}
+					<EditWrapper iconId="ARROW_ARROW">
+						<div
+							className={classnames('pointer', 'flex-0', 'scroll-button')}
+							onClick={onClickScrollTo}
+						>
+							<ReactSVG src={ICONS['ARROW_ARROW']} />{' '}
+						</div>{' '}
+					</EditWrapper>{' '}
+				</div>
+				<div className={'section-one-text mt-20'}>
+					<button
+						onClick={onClickScrollTo}
+						className={'btn btn-lg btn-warning btn-cus-reg'}
 					>
-						{STRINGS['HOME.SECTION_1_BUTTON_1']}{' '}
-					</div>{' '}
-					{/*!token && (
-            					<div
-            						className={classnames(...BUTTONS_CLASSES, 'contrast', {
-            							pointer: onClickRegister
-            						})}
-            						onClick={onClickRegister}
-            					>
-            						{STRINGS["REGISTER_TEXT"]}
-            					</div>
-            				)*/}{' '}
-				</div>{' '}
-			</div>{' '}
-			<EditWrapper iconId="ARROW_ARROW">
-				<div
-					className={classnames('pointer', 'flex-0', 'scroll-button')}
-					onClick={onClickScrollTo}
-				>
-					<ReactSVG src={ICONS['ARROW_ARROW']} />{' '}
-				</div>{' '}
-			</EditWrapper>{' '}
-		</div>
+						Explore More
+					</button>
+					<br />
+					<ArrowDownOutlined />
+				</div>
+			</div>
+
+			{/*<div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
+                <div className="home-title text-capitalize">
+                    {' '}
+                    {STRINGS['HOME.SECTION_1_TITLE']}{' '}
+                </div>
+                {' '}
+                <div className="text-section text-center">
+                    <div> {STRINGS['HOME.SECTION_1_TEXT_1']} </div>
+                    {' '}
+                    <div> {STRINGS['HOME.SECTION_1_TEXT_2']} </div>
+                    {' '}
+                </div>
+                {' '}
+                <div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
+                    <div
+                        className={classnames(...BUTTONS_CLASSES, {
+                            pointer: onClickLearnMore,
+                        })}
+                        onClick={onClickLearnMore}
+                    >
+                        {STRINGS['HOME.SECTION_1_BUTTON_1']}{' '}
+                    </div>
+                    {' '}
+                    {}{' '}
+                </div>
+                {' '}
+            </div>
+            {' '}
+            <EditWrapper iconId="ARROW_ARROW">
+                <div
+                    className={classnames('pointer', 'flex-0', 'scroll-button')}
+                    onClick={onClickScrollTo}
+                >
+                    <ReactSVG src={ICONS['ARROW_ARROW']}/>{' '}
+                </div>
+                {' '}
+            </EditWrapper>{' '}*/}
+		</>
 	);
 };
 
