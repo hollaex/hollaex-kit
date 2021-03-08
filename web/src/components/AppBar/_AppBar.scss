@@ -15,6 +15,7 @@ $app-menu-notification-size: 1.2rem;
 
 	&.no-borders {
 		border-bottom: none;
+
 		> div:not(:first-child) {
 			border-left: none;
 		}
@@ -81,11 +82,13 @@ $app-menu-notification-size: 1.2rem;
 				stroke: $app-bar-icon-inactive !important;
 				stroke-width: 3 !important;
 			}
+
 			.admin-dash {
 				fill: $app-bar-icon-inactive !important;
 			}
 		}
 	}
+
 	.overflow {
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -159,9 +162,11 @@ $app-menu-notification-size: 1.2rem;
 		margin: 0.5rem 0.3rem 0 0.3rem;
 		width: 1.5rem;
 	}
+
 	.app-bar-account-moon-icon {
 		margin: 0.2rem 0.3rem 0 0.3rem;
 		width: 1rem;
+
 		svg {
 			.moon-icon,
 			.sun-icon {
@@ -169,9 +174,11 @@ $app-menu-notification-size: 1.2rem;
 			}
 		}
 	}
+
 	.app-bar-account-moon-content {
 		border-radius: 5px;
 	}
+
 	.toggle_button-wrapper {
 		.toggle-content {
 			color: $base_top-bar-navigation_text;
@@ -183,6 +190,7 @@ $app-menu-notification-size: 1.2rem;
 					fill: $base_top-bar-navigation_text;
 				}
 			}
+
 			.white {
 				.sun-icon {
 					fill: $base_top-bar-navigation_text;
@@ -199,6 +207,7 @@ $app-menu-notification-size: 1.2rem;
 				&.left .toggle-action_button-display {
 					right: calc(100% - 14px);
 				}
+
 				&.right .toggle-action_button-display {
 					right: -1px;
 				}
@@ -235,10 +244,12 @@ $app-menu-notification-size: 1.2rem;
 		.ltc-icon {
 			fill: $app-bar-icon-inactive;
 		}
+
 		.tab-close,
 		.plus {
 			stroke: $app-bar-icon-inactive;
 		}
+
 		.st0 {
 			fill: $base_top-bar-navigation_text !important;
 			stroke-width: 0rem;
@@ -342,6 +353,7 @@ $app-menu-notification-size: 1.2rem;
 				.trade-active-2 {
 					stroke: $colors-black;
 				}
+
 				.trade-active-2,
 				.quick-trade-tab-active,
 				.tab-summary0,
@@ -357,11 +369,13 @@ $app-menu-notification-size: 1.2rem;
 				}
 			}
 		}
+
 		.app-bar-account-list-icon svg {
 			.account-active-1 {
 				fill: $app-bar-icon-inactive;
 			}
 		}
+
 		.menu-notification-active {
 			color: $colors-notifications-red;
 
@@ -376,6 +390,7 @@ $app-menu-notification-size: 1.2rem;
 				}
 			}
 		}
+
 		.menu-active {
 			color: $colors-main-black;
 
@@ -383,6 +398,7 @@ $app-menu-notification-size: 1.2rem;
 				.trade-active-2 {
 					stroke: $colors-main-black;
 				}
+
 				.trade-active-2,
 				.quick-trade-tab-active,
 				.tab-summary0,
@@ -416,6 +432,7 @@ $app-menu-notification-size: 1.2rem;
 				}
 			}
 		}
+
 		.security_notification,
 		.verification_notification,
 		.wallet_notification {
@@ -450,11 +467,13 @@ $app-menu-notification-size: 1.2rem;
 			line-height: 1;
 			font-weight: bold;
 		}
+
 		.security_selected,
 		.verification_selected,
 		.wallet_selected {
 			background-color: $colors-notifications-red !important;
 		}
+
 		.security_selected_inactive,
 		.verification_selected_inactive,
 		.wallet_selected_inactive {
@@ -486,6 +505,7 @@ $app-menu-notification-size: 1.2rem;
 
 .app_bar-mobile {
 	padding: 1rem 0;
+
 	.homeicon-svg {
 		background-size: contain;
 		background-position: center;
@@ -493,31 +513,37 @@ $app-menu-notification-size: 1.2rem;
 		height: 4rem;
 		width: 7rem;
 	}
+
 	.app_bar-controllers-splash {
 		.action_button {
 			min-width: 4rem;
 			margin: 0 0.75rem;
 		}
 	}
+
 	.app-bar-account {
 		color: $base_top-bar-navigation_text;
 		cursor: pointer;
 		margin-right: 0.5rem;
 	}
+
 	.app-bar-account-content {
 		align-items: center;
 		flex-direction: column;
 		justify-content: center;
 		position: relative;
 	}
+
 	.app-bar-currency-icon {
 		margin: 0.5rem 0.3rem 0 0.3rem;
 		width: 1.5rem;
+
 		.st0 {
 			fill: $base_top-bar-navigation_text !important;
 			stroke-width: 0rem;
 		}
 	}
+
 	.app-bar-account-notification {
 		position: absolute;
 		right: -6px;
@@ -566,6 +592,7 @@ $app-menu-notification-size: 1.2rem;
 			.trade-active-2 {
 				stroke: $base_top-bar-navigation_text-inactive;
 			}
+
 			.trade-active-2,
 			.quick-trade-tab-active,
 			.tab-history-st,
@@ -591,6 +618,7 @@ $app-menu-notification-size: 1.2rem;
 			.trade-active-2 {
 				stroke: $base_top-bar-navigation_text;
 			}
+
 			.trade-active-2,
 			.quick-trade-tab-active,
 			.tab-history-st,
@@ -622,6 +650,7 @@ $app-menu-notification-size: 1.2rem;
 			}
 		}
 	}
+
 	.active-menu {
 		&.notification {
 			color: $colors-notifications-red;
@@ -637,10 +666,12 @@ $app-menu-notification-size: 1.2rem;
 				}
 			}
 		}
+
 		.app-menu-bar-icon-notification {
 			background-color: $colors-notifications-red;
 		}
 	}
+
 	.notification {
 		color: $colors-notification-inactive-red;
 
@@ -655,6 +686,7 @@ $app-menu-notification-size: 1.2rem;
 			}
 		}
 	}
+
 	.security_notification,
 	.verification_notification,
 	.wallet_notification {
@@ -694,6 +726,7 @@ $app-menu-notification-size: 1.2rem;
 	padding-left: 0.5rem;
 	border-bottom: 1px solid $dark-app-line-divider;
 	overflow-y: auto;
+
 	&.border-left {
 		border-left: 1px solid $dark-app-line-divider;
 	}
@@ -718,6 +751,7 @@ $app-menu-notification-size: 1.2rem;
 		.active-tab-pair {
 			background-color: $app-background-color;
 		}
+
 		.app_bar-pair-tab {
 			min-width: 17rem;
 			max-width: 17rem;
@@ -783,10 +817,12 @@ $app-menu-notification-size: 1.2rem;
 		.ltc-icon {
 			fill: $app-bar-icon-inactive;
 		}
+
 		.tab-close,
 		.plus {
 			stroke: $app-bar-icon-inactive;
 		}
+
 		.st0 {
 			fill: $base_top-bar-navigation_text !important;
 			stroke-width: 0rem;
@@ -864,6 +900,7 @@ $app-menu-notification-size: 1.2rem;
 	.favourite-tab {
 		padding: 0.2rem 0;
 		border-radius: 0.7rem;
+
 		&:hover {
 			background-color: $app-background-color;
 		}
@@ -891,11 +928,13 @@ $app-menu-notification-size: 1.2rem;
 			.ltc-icon {
 				fill: $colors-main-black;
 			}
+
 			.tab-close,
 			.plus,
 			.double-arrow {
 				stroke: $colors-main-black;
 			}
+
 			.st0 {
 				fill: $colors-main-black;
 				stroke-width: 0rem;
@@ -1005,6 +1044,7 @@ $app-menu-notification-size: 1.2rem;
 				.default-icon {
 					fill: $colors-black !important;
 				}
+
 				.st0 {
 					fill: $colors-black !important;
 					stroke-width: 0rem;
@@ -1045,18 +1085,22 @@ $app-menu-notification-size: 1.2rem;
 			.default-icon {
 				fill: $app-bar-menu-list-color !important;
 			}
+
 			.plus,
 			.minus {
 				stroke: $app-bar-menu-list-color !important;
 				stroke-width: 0.2rem;
 			}
+
 			.st0 {
 				fill: $base_top-bar-navigation_text;
 				stroke-width: 0rem;
 			}
+
 			.icon-check-1 {
 				stroke: $base_top-bar-navigation_text;
 			}
+
 			.xht-icon-1 {
 				fill: $dark-app-background-color !important;
 			}
@@ -1096,9 +1140,11 @@ $app-menu-notification-size: 1.2rem;
 			height: 3rem;
 			width: 5rem;
 		}
+
 		.app-bar-tab-close {
 			width: 1.1rem;
 		}
+
 		.app_bar-icon {
 			margin: 1rem 0 1rem;
 		}
@@ -1167,11 +1213,13 @@ $app-menu-notification-size: 1.2rem;
 		}
 	}
 }
+
 .layout-mobile {
 	.st0 {
 		fill: #ffffff;
 		stroke-miterlimit: 10;
 	}
+
 	.app-bar-add-tab-menu {
 		width: 36rem;
 		position: fixed;
@@ -1207,12 +1255,14 @@ $app-menu-notification-size: 1.2rem;
 			margin-left: 0.4rem;
 			margin-right: 0;
 		}
+
 		.app-menu-bar-icon-notification {
 			right: -14px;
 			top: -5px;
 			left: unset;
 		}
 	}
+
 	.app_bar {
 		.app-bar-account-menu {
 			.app-bar-account-list-icon {
@@ -1250,3 +1300,63 @@ $app-menu-notification-size: 1.2rem;
 .market-trigger {
 	background-color: $app-background-color;
 }
+
+/** ------------------  Set By Redberyl IT ------------------ **/
+.rb-menu {
+	color: white !important;
+	padding: 16px;
+}
+
+.menu-sub-text {
+	color: gray;
+	font-size: 10px;
+}
+
+.ant-dropdown-menu-dark,
+.ant-dropdown-menu-dark .ant-dropdown-menu {
+	background-color: black;
+}
+
+.anticon {
+	color: gold;
+}
+
+.gold {
+	color: gold;
+}
+
+.white {
+	color: white;
+}
+
+.otherLinkIcon {
+	font-size: 35px !important;
+	width: 50px;
+}
+
+.ico-container {
+	width: 60px;
+	float: left;
+}
+
+.OL-text-container {
+	text-align: left;
+	float: left;
+}
+
+.ant-dropdown-menu-dark .ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-dark .ant-dropdown-menu-submenu-title:hover,
+.ant-dropdown-menu-dark .ant-dropdown-menu-item > a:hover,
+.ant-dropdown-menu-dark .ant-dropdown-menu-item > .anticon + span > a:hover {
+	color: gold !important;
+}
+
+.app_bar {
+	font-weight: normal !important;
+}
+
+.ant-dropdown {
+	top: 45px;
+}
+
+/**------------------  / Set By Redberyl IT ------------------ */
