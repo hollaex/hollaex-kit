@@ -651,7 +651,7 @@ class AppBar extends Component {
 			</MobileBarWrapper>
 		) : (
 			<div
-				className={classnames('app_bar XXX d-flex justify-content-between', {
+				className={classnames('app_bar  d-flex justify-content-between', {
 					'no-borders': disableBorder,
 				})}
 			>

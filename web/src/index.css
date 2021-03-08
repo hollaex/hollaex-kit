@@ -5102,7 +5102,7 @@ table th {
   font-weight: normal !important; }
 
 .ant-dropdown {
-  top: 45px; }
+  top: 45px !important; }
 
 /**------------------  / Set By Redberyl IT ------------------ */
 .check_title-container {
