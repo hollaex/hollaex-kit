@@ -5067,7 +5067,8 @@ table th {
   color: gray;
   font-size: 10px; }
 
-.ant-dropdown-menu-dark, .ant-dropdown-menu-dark .ant-dropdown-menu {
+.ant-dropdown-menu-dark,
+.ant-dropdown-menu-dark .ant-dropdown-menu {
   background-color: black; }
 
 .anticon {
@@ -5091,7 +5092,10 @@ table th {
   text-align: left;
   float: left; }
 
-.ant-dropdown-menu-dark .ant-dropdown-menu-item:hover, .ant-dropdown-menu-dark .ant-dropdown-menu-submenu-title:hover, .ant-dropdown-menu-dark .ant-dropdown-menu-item > a:hover, .ant-dropdown-menu-dark .ant-dropdown-menu-item > .anticon + span > a:hover {
+.ant-dropdown-menu-dark .ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-dark .ant-dropdown-menu-submenu-title:hover,
+.ant-dropdown-menu-dark .ant-dropdown-menu-item > a:hover,
+.ant-dropdown-menu-dark .ant-dropdown-menu-item > .anticon + span > a:hover {
   color: gold !important; }
 
 .app_bar {
