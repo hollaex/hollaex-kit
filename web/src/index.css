@@ -5147,9 +5147,9 @@ table th {
 
 .layout-mobile .app-bar-add-tab-menu {
   width: 36rem;
-  position: fixed;
-  top: 13.7rem;
-  left: 2.2rem; }
+  position: absolute;
+  top: 7.8rem;
+  left: 1.2rem; }
   .layout-mobile .app-bar-add-tab-menu .app-bar-add-tab-content,
   .layout-mobile .app-bar-add-tab-menu .app-bar-tab-menu-list,
   .layout-mobile .app-bar-add-tab-menu .app-bar-tab-overflow-content {
