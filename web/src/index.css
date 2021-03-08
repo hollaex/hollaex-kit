@@ -1014,7 +1014,7 @@ table th {
 .section-one-container {
   background-color: black;
   width: 100%;
-  height: 550px; }
+  height: 350px; }
 
 .section-one-header {
   margin: 100px 0px 20px 0px;
@@ -1036,6 +1036,15 @@ table th {
   color: black;
   font-weight: 800;
   font-size: 13px; }
+
+.bg-white {
+  background-color: white; }
+
+.addBanner {
+  padding: 30px 0px; }
+
+.addBanner > div img {
+  width: 100%; }
 
 /* ----------------------- End RB Style ---------------------*/
 .layout-mobile .button-container {

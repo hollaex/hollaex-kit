@@ -16,7 +16,6 @@ const Section2 = ({
 		className={classnames(...FLEX_CENTER_CLASSES, 'quick_trade-section')}
 		style={style}
 	>
-		<h1> </h1>
 		<QuickTrade
 			onReviewQuickTrade={onReviewQuickTrade}
 			onRequestMarketValue={onRequestMarketValue}

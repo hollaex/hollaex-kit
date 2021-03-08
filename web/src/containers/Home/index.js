@@ -16,6 +16,7 @@ import Section1 from './Section1';
 // import Section2 from './Section2';
 import Section3 from './Section3';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { AddBanner } from './AddBanner';
 
 const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
@@ -139,6 +140,7 @@ class Home extends Component {
 						onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
 						token={token}
 					/>
+
 					{/*<Section2
 						style={style}
 						onReviewQuickTrade={this.onReviewQuickTrade}
@@ -146,6 +148,8 @@ class Home extends Component {
 						symbol={symbol}
 						quickTradeData={quickTradeData}
 					/>*/}
+					<AddBanner />
+
 					<Section3
 						style={style}
 						token={token}
