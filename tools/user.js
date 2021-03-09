@@ -49,7 +49,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel } = require('./common');
+const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel, getKitTier } = require('./common');
 const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -978,22 +978,11 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 			);
 		})
 		.then((user) => {
-			if (currentVerificationLevel === 1 && user.verification_level === 2) {
-				sendEmail(
-					MAILTYPE.ACCOUNT_VERIFY,
-					user.email,
-					undefined,
-					user.settings,
-					domain
-				);
-			} else if (
-				currentVerificationLevel < user.verification_level &&
-				currentVerificationLevel > 1
-			) {
+			if (currentVerificationLevel < user.verification_level) {
 				sendEmail(
 					MAILTYPE.ACCOUNT_UPGRADE,
 					user.email,
-					user.verification_level,
+					getKitTier(user.verification_level).name,
 					user.settings,
 					domain
 				);
