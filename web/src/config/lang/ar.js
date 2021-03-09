@@ -1071,7 +1071,7 @@ const nestedContent = {
 		LABEL_PAIR_MAKER_FEE: '{0} کارمزد سفارش گذار',
 		LABEL_PAIR_TAKER_FEE: '{0} کارمزد پذیرنده سفارش',
 		UNLIMITED: 'نامحدود',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'ساخت کیف پول {0} ',
 	WALLET_ADDRESS_GENERATE: 'ساخت',
