@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const SingleBanner = ({ img }) => {
+export const Banner = ({ img }) => {
 	return (
 		<>
 			<img src={img} />

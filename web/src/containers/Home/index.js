@@ -16,7 +16,7 @@ import Section1 from './Section1';
 // import Section2 from './Section2';
 import Section3 from './Section3';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { AddBanner } from './AddBanner';
+import { Banners } from './Banners';
 
 const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
@@ -148,7 +148,7 @@ class Home extends Component {
 						symbol={symbol}
 						quickTradeData={quickTradeData}
 					/>*/}
-					<AddBanner />
+					<Banners />
 
 					<Section3
 						style={style}

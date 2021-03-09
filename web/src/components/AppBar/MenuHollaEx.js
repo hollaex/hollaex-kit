@@ -18,6 +18,7 @@ import {
 const menus = [
 	{
 		name: 'HollaEx',
+		bold: true,
 		icon: null,
 		child: false,
 		url: '/',
@@ -50,6 +51,123 @@ const menus = [
 				name: 'Charity',
 				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
 				description: 'Blockchain charity foundation',
+				url: '/',
+			},
+		],
+	},
+	{
+		name: 'Buy Crypto',
+		icon: <CaretDownOutlined />,
+		child: true,
+		url: '/',
+		children: [
+			{
+				name: ' Bank Deposit',
+				icon: <CaretRightOutlined />,
+				description: 'SWIFT Bank Transfer ',
+				url: '/',
+			},
+			{
+				name: 'Credit/Debit Card',
+				icon: <CaretRightOutlined />,
+				description: 'Visa & Master card',
+				url: '/',
+			},
+			{
+				name: 'P2P Trading',
+				icon: <CaretRightOutlined />,
+				description: 'bank Transfer and 100+ options',
+				url: '/',
+			},
+			{
+				name: 'Third-party Payment',
+				icon: <CaretRightOutlined />,
+				description: 'Paxos',
+				url: '/',
+			},
+		],
+	},
+	{
+		name: 'Market',
+		bold: false,
+		icon: '',
+		child: false,
+		url: '/',
+	},
+	{
+		name: 'Trade',
+		icon: <CaretDownOutlined />,
+		child: true,
+		url: '/',
+		children: [
+			{
+				name: ' Convert',
+				icon: <CaretRightOutlined />,
+				description: 'The Easiest way to Trade ',
+				url: '/',
+			},
+			{
+				name: ' Classic',
+				icon: <CaretRightOutlined />,
+				description: 'Simple and Easy to use interface',
+				url: '/',
+			},
+			{
+				name: ' Advance',
+				icon: <CaretRightOutlined />,
+				description: 'Full access to all Trading',
+				url: '/',
+			},
+		],
+	},
+	{
+		name: 'Derivatives',
+		icon: <CaretDownOutlined />,
+		child: true,
+		url: '/',
+		children: [
+			{
+				name: ' USD - M Futures',
+				icon: <CaretRightOutlined />,
+				description: 'The Easiest way to Trade',
+				url: '/',
+			},
+			{
+				name: ' Classic',
+				icon: <CaretRightOutlined />,
+				description: 'Simple and Easy to use interface',
+				url: '/',
+			},
+			{
+				name: ' Advance',
+				icon: <CaretRightOutlined />,
+				description: 'Full access to all Trading',
+				url: '/',
+			},
+		],
+	},
+	{
+		name: 'Finance',
+		icon: <CaretDownOutlined />,
+		child: true,
+		url: '/',
+		children: [
+			{
+				name: ' USD - M Futures',
+				icon: <CaretRightOutlined />,
+				description: 'The Easiest way to Trade',
+				url: '/',
+			},
+			{
+				name: ' Classic',
+				icon: <CaretRightOutlined />,
+				description: 'Simple and Easy to use interface',
+				url: '/',
+			},
+			{
+				name: ' Advance',
+				icon: <CaretRightOutlined />,
+				description: 'Full access to all Trading',
 				url: '/',
 			},
 		],
@@ -191,80 +309,25 @@ const OtherLinks = (
 	</Menu>
 );
 
-const BuyCryptoMenu = (
-	<Menu theme="dark">
-		<Menu.Item>
-			<CaretRightOutlined /> Bank Deposit
-			<br />
-			<span className={'menu-sub-text'}>SWIFT Bank Transfer </span>
-		</Menu.Item>
-		<Menu.Item>
-			<CaretRightOutlined /> Credit/Debit Card
-			<br />
-			<span className={'menu-sub-text'}>Visa & Master card </span>
-		</Menu.Item>
-		<Menu.Item>
-			<CaretRightOutlined /> P2P Trading
-			<br />
-			<span className={'menu-sub-text'}>bank Transfer and 100+ options </span>
-		</Menu.Item>
-		<Menu.Item>
-			<CaretRightOutlined /> Third-party Payment
-			<br />
-			<span className={'menu-sub-text'}>Paxos </span>
-		</Menu.Item>
-	</Menu>
-);
-
-const TradeMenu = (
-	<Menu theme="dark">
-		<Menu.Item>
-			<CaretRightOutlined /> Convert
-			<br />
-			<span className={'menu-sub-text'}>The Easiest way to Trade </span>
-		</Menu.Item>
-		<Menu.Item>
-			<CaretRightOutlined /> Classic
-			<br />
-			<span className={'menu-sub-text'}>Simple and Easy to use interface </span>
-		</Menu.Item>
-		<Menu.Item>
-			<CaretRightOutlined /> Advance
-			<br />
-			<span className={'menu-sub-text'}>Full access to all Trading</span>
-		</Menu.Item>
-	</Menu>
-);
-
-const derivativesMenu = (
-	<Menu theme="dark">
-		<Menu.Item>
-			<CaretRightOutlined /> USD - M Futures
-			<br />
-			<span className={'menu-sub-text'}>The Easiest way to Trade </span>
-		</Menu.Item>
-		<Menu.Item>
-			<CaretRightOutlined /> Classic
-			<br />
-			<span className={'menu-sub-text'}>Simple and Easy to use interface </span>
-		</Menu.Item>
-		<Menu.Item>
-			<CaretRightOutlined /> Advance
-			<br />
-			<span className={'menu-sub-text'}>Full access to all Trading</span>
-		</Menu.Item>
-	</Menu>
-);
-
 export const MenuHollaEx = ({ size }) => {
 	const menuList = () => {
 		return menus.map((menu) => {
 			if (!menu.child) {
-				return (
-					<a href={menu.url} className={'rb-menu gold'}>
-						<strong>{menu.name}</strong>
-					</a>
-				);
+				if (menu.bold) {
+					return (
+						<a href={menu.url} className={'rb-menu gold'}>
+							{' '}
+							<strong>{menu.name}</strong>{' '}
+						</a>
+					);
+				} else {
+					return (
+						<a href={menu.url} className={'rb-menu gold'}>
+							{' '}
+							{menu.name}
+						</a>
+					);
+				}
 			} else {
 				const subMenus = menu.children.map((dropdown) => {
 					return (
@@ -291,48 +354,9 @@ export const MenuHollaEx = ({ size }) => {
 			}
 		});
 	};
-
 	return (
 		<>
-			<Space size={size}>
-				{menuList()}
-
-				<Dropdown overlay={BuyCryptoMenu}>
-					<a
-						className="ant-dropdown-link rb-menu"
-						onClick={(e) => e.preventDefault()}
-					>
-						Buy Crypto <CaretDownOutlined />
-					</a>
-				</Dropdown>
-				<a className="rb-menu" onClick={(e) => e.preventDefault()}>
-					Market
-				</a>
-				<Dropdown overlay={TradeMenu}>
-					<a
-						className="ant-dropdown-link rb-menu"
-						onClick={(e) => e.preventDefault()}
-					>
-						Trade <CaretDownOutlined />
-					</a>
-				</Dropdown>
-				<Dropdown overlay={derivativesMenu}>
-					<a
-						className="ant-dropdown-link rb-menu"
-						onClick={(e) => e.preventDefault()}
-					>
-						Derivatives <CaretDownOutlined />
-					</a>
-				</Dropdown>
-				<Dropdown overlay={derivativesMenu}>
-					<a
-						className="ant-dropdown-link rb-menu"
-						onClick={(e) => e.preventDefault()}
-					>
-						Finance <CaretDownOutlined />
-					</a>
-				</Dropdown>
-			</Space>
+			<Space size={size}>{menuList()}</Space>
 		</>
 	);
 };
