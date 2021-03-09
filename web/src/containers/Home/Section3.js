@@ -56,16 +56,26 @@ const generateCardsContentFromStrings = () => {
 	];
 };
 
+/*div className={classnames(...FLEX_CENTER_CLASSES, 'home-card-container')}*/
 const Card = ({ icon, title, text, stringId, iconId }) => (
-	<div className={classnames(...FLEX_CENTER_CLASSES, 'home-card-container')}>
-		<ReactSVG
-			src={icon}
-			beforeInjection={(svg) => {
-				svg.classList.add('home-card-icon');
-			}}
-			className="home-card-icon-wrapper"
-		/>
-		<div
+	<>
+		<div className="col-md-4">
+			<div className="card">
+				<div className="card-header">
+					<ReactSVG
+						src={icon}
+						beforeInjection={(svg) => {
+							svg.classList.add('home-card-icon');
+						}}
+						className="home-card-icon-wrapper"
+					/>
+					{title}
+				</div>
+				<div className="card-Body">{text}</div>
+			</div>
+		</div>
+
+		{/*<div
 			className={classnames(
 				'd-flex',
 				'flex-column',
@@ -77,8 +87,8 @@ const Card = ({ icon, title, text, stringId, iconId }) => (
 				<div className="home-card-title f-0">{title}</div>
 			</EditWrapper>
 			<div className="home-card-text f-1">{text}</div>
-		</div>
-	</div>
+		</div>*/}
+	</>
 );
 
 const Section = ({ style, onClickDemo, token }) => (
@@ -86,18 +96,29 @@ const Section = ({ style, onClickDemo, token }) => (
 		className={classnames(
 			...FLEX_CENTER_CLASSES,
 			'flex-column',
-			'features-container'
+			'features-container bg-light-gray'
 		)}
 		style={style}
 	>
-		<div className="text-center features-title">
-			{STRINGS['HOME.SECTION_3_TITLE']}
+		<div className="container">
+			<div className="row">
+				<div className="col-md-12 section-one-header text-dark al">
+					{STRINGS['HOME.SECTION_3_TITLE']}
+				</div>
+			</div>
+			<div className="row">
+				{/*<div className="features-card_container d-flex flex-wrap justify-content-center">*/}
+				{generateCardsContentFromStrings().map((card, index) => (
+					<Card {...card} key={index} />
+				))}
+				{/*</div>*/}
+			</div>
 		</div>
-		<div className="features-card_container d-flex flex-wrap justify-content-center">
-			{generateCardsContentFromStrings().map((card, index) => (
-				<Card {...card} key={index} />
-			))}
-		</div>
+
+		{/*<div className="text-center features-title">
+			 {STRINGS['HOME.SECTION_3_TITLE']}
+		</div>*/}
+
 		<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
 			{
 				<div
