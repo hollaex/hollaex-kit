@@ -17,6 +17,8 @@ import Section1 from './Section1';
 import Section3 from './Section3';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Banners } from './Banners';
+import { Section4 } from './Section4';
+import { MarketListHome } from './MarketList';
 
 const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
@@ -150,6 +152,8 @@ class Home extends Component {
 					/>*/}
 					<Banners />
 
+					<MarketListHome />
+
 					<Section3
 						style={style}
 						token={token}
@@ -157,6 +161,7 @@ class Home extends Component {
 							pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
 						}
 					/>
+					<Section4 />
 					<AppFooter
 						theme={activeTheme}
 						onChangeLanguage={this.onChangeLanguage}

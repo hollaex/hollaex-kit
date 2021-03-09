@@ -171,13 +171,13 @@ $no-background--color: white;
 
 /* ----------------------- RB Style ---------------------*/
 .section-one-container {
-	background-color: black;
+	padding-top: 100px;
+	background-color: #022130;
 	width: 100%;
 	height: 350px;
 }
 
 .section-one-header {
-	margin: 100px 0px 20px 0px;
 	font-size: 38px;
 	color: white;
 	text-align: center;
@@ -252,6 +252,39 @@ $no-background--color: white;
 
 .bg-light-gray {
 	background-color: #fafafa !important;
+}
+
+.card-style2 {
+	margin-bottom: 10px;
+	border: none;
+	padding: 20px;
+	min-height: 150px;
+}
+
+.card-style2:hover {
+	background-color: white !important;
+	-webkit-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.15);
+	box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.15);
+}
+
+.sect4-img {
+	border-radius: 100%;
+	text-align: center;
+}
+
+.sect4-img img {
+	width: 150px;
+}
+
+.sect4-title {
+	font-size: 16px;
+	text-align: center;
+	margin: 5px 0px;
+}
+
+.sect4-content {
+	text-align: center;
+	color: gray;
 }
 
 /* ----------------------- End RB Style ---------------------*/

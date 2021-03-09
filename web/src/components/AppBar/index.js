@@ -426,7 +426,7 @@ class AppBar extends Component {
 					'no-borders': disableBorder,
 				})}
 			>
-				<MenuHollaEx size={2} />
+				<MenuHollaEx size={0} />
 
 				<div
 					id="home-nav-container"

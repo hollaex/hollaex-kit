@@ -7,6 +7,8 @@ import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { ArrowDownOutlined } from '@ant-design/icons';
+import { Account } from '../index';
+import MarketList from '../TradeTabs/components/MarketList';
 
 const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 
@@ -42,7 +44,7 @@ const Section1 = ({
 				<div className={'section-one-text mt-20'}>
 					<button
 						onClick={onClickScrollTo}
-						className={'btn btn-lg btn-warning btn-cus-reg'}
+						className={'btn btn-lg themeBgColor btn-cus-reg'}
 					>
 						Explore More
 					</button>
