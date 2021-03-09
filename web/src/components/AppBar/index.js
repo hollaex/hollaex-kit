@@ -23,21 +23,6 @@ import ThemeSwitcher from './ThemeSwitcher';
 import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Dropdown, Menu, Space } from 'antd';
-import {
-	AntCloudOutlined,
-	BulbOutlined,
-	CaretDownOutlined,
-	CaretRightOutlined,
-	CodeSandboxOutlined,
-	DollarCircleOutlined,
-	FilterOutlined,
-	HeatMapOutlined,
-	RadarChartOutlined,
-	RocketOutlined,
-	ScheduleOutlined,
-	WindowsOutlined,
-} from '@ant-design/icons';
 import { MenuHollaEx } from './MenuHollaEx';
 
 class AppBar extends Component {

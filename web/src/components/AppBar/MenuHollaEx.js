@@ -15,6 +15,47 @@ import {
 	WindowsOutlined,
 } from '@ant-design/icons';
 
+const menus = [
+	{
+		name: 'HollaEx',
+		icon: null,
+		child: false,
+		url: '/',
+	},
+	{
+		name: '',
+		icon: <WindowsOutlined style={{ fontSize: '20px' }} />,
+		child: true,
+		url: '/',
+		children: [
+			{
+				name: 'Exchange',
+				icon: <CodeSandboxOutlined className={'otherLinkIcon'} />,
+				description: 'Blockchain and crypto asset exchange',
+				url: '/',
+			},
+			{
+				name: 'Academy',
+				icon: <ScheduleOutlined className={'otherLinkIcon'} />,
+				description: 'Blockchain and crypto education',
+				url: '/',
+			},
+			{
+				name: 'Broker',
+				icon: <DollarCircleOutlined className={'otherLinkIcon'} />,
+				description: 'Trading terminal solutions',
+				url: '/',
+			},
+			{
+				name: 'Charity',
+				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
+				description: 'Blockchain charity foundation',
+				url: '/',
+			},
+		],
+	},
+];
+
 const OtherLinks = (
 	<Menu theme="dark">
 		<Menu.Item>
@@ -216,20 +257,46 @@ const derivativesMenu = (
 );
 
 export const MenuHollaEx = ({ size }) => {
+	const menuList = () => {
+		return menus.map((menu) => {
+			if (!menu.child) {
+				return (
+					<a href={menu.url} className={'rb-menu gold'}>
+						<strong>{menu.name}</strong>
+					</a>
+				);
+			} else {
+				const subMenus = menu.children.map((dropdown) => {
+					return (
+						<Menu.Item>
+							{dropdown.icon} {dropdown.name}
+							<br />
+							<span className={'menu-sub-text'}>{dropdown.description} </span>
+						</Menu.Item>
+					);
+				});
+
+				const singleMenu = <Menu theme="dark">{subMenus}</Menu>;
+
+				return (
+					<Dropdown overlay={singleMenu}>
+						<a
+							className="ant-dropdown-link rb-menu"
+							onClick={(e) => e.preventDefault()}
+						>
+							{menu.name} {menu.icon}
+						</a>
+					</Dropdown>
+				);
+			}
+		});
+	};
+
 	return (
 		<>
 			<Space size={size}>
-				<a href={'/'} className={'rb-menu gold'}>
-					<strong>HollaEx</strong>
-				</a>
-				<Dropdown overlay={OtherLinks}>
-					<a
-						className="ant-dropdown-link rb-menu"
-						onClick={(e) => e.preventDefault()}
-					>
-						<WindowsOutlined style={{ fontSize: '20px' }} />
-					</a>
-				</Dropdown>
+				{menuList()}
+
 				<Dropdown overlay={BuyCryptoMenu}>
 					<a
 						className="ant-dropdown-link rb-menu"
@@ -238,11 +305,9 @@ export const MenuHollaEx = ({ size }) => {
 						Buy Crypto <CaretDownOutlined />
 					</a>
 				</Dropdown>
-
 				<a className="rb-menu" onClick={(e) => e.preventDefault()}>
 					Market
 				</a>
-
 				<Dropdown overlay={TradeMenu}>
 					<a
 						className="ant-dropdown-link rb-menu"
@@ -251,7 +316,6 @@ export const MenuHollaEx = ({ size }) => {
 						Trade <CaretDownOutlined />
 					</a>
 				</Dropdown>
-
 				<Dropdown overlay={derivativesMenu}>
 					<a
 						className="ant-dropdown-link rb-menu"
