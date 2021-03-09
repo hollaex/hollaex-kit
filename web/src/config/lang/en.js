@@ -1119,7 +1119,7 @@ const nestedContent = {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Unlimited',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
