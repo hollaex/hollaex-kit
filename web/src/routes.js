@@ -225,14 +225,6 @@ export default (
 	<Router history={browserHistory}>
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
-			{isMobile ? (
-				<Route
-					path="/"
-					name="Login"
-					component={Login}
-					{...noAuthRoutesCommonProps}
-				/>
-			) : null}
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
 		</Route>
