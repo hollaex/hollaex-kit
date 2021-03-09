@@ -297,6 +297,44 @@ $trade-tab--arrow-size: 0.4rem;
 	.trade_tabs-container {
 		overflow-y: scroll;
 	}
+
+	@media screen and (max-width: 1096px) {
+		.trade_tabs-container {
+			.trade-tab-list {
+				margin: 1.5rem 1rem;
+			}
+			.trade_tab-icons {
+				width: 2.25rem;
+			}
+			.tabs-pair-details {
+				font-size: 1rem;
+				width: 28rem;
+			}
+			.market-card__sparkline-wrapper {
+				height: 10rem;
+			}
+		}
+	}
+
+	@media screen and (max-width: $bp-xs) {
+		.trade_tabs-container {
+			overflow-y: scroll;
+			.trade-tab-list {
+				margin: 1.5rem 1rem;
+			}
+			.trade_tab-icons {
+				width: 2.25rem;
+			}
+			.tabs-pair-details {
+				font-size: 1.5rem;
+				width: 34rem;
+				max-width: 96%;
+			}
+			.market-card__sparkline-wrapper {
+				height: 12rem;
+			}
+		}
+	}
 }
 
 @media screen and (max-width: 1096px) {
