@@ -678,7 +678,7 @@ class App extends Component {
 										/>
 									)}
 								</div>
-								{isMobile && (
+								{isMobile && !isHome && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
 											isLogged={isLoggedIn()}
@@ -707,7 +707,7 @@ class App extends Component {
 							}
 						)}
 					>
-						{!isMobile && (
+						{(!isMobile || (isMobile && isHome)) && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>
