@@ -53,6 +53,42 @@ const menus = [
 				description: 'Blockchain charity foundation',
 				url: '/',
 			},
+			{
+				name: 'Cloud',
+				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
+				description: 'Enterprise exchange solutions',
+				url: '/',
+			},
+			{
+				name: 'DEX',
+				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
+				description: 'Fast and secure decentralized digital asset exchange',
+				url: '/',
+			},
+			{
+				name: 'Labs',
+				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
+				description: 'Incubator for top blockchain project',
+				url: '/',
+			},
+			{
+				name: 'Launchpad',
+				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
+				description: 'Token Launch Platform',
+				url: '/',
+			},
+			{
+				name: 'Launchpad',
+				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
+				description: 'Token Launch Platform',
+				url: '/',
+			},
+			{
+				name: 'Research',
+				icon: <HeatMapOutlined className={'otherLinkIcon'} />,
+				description: 'Institutional-grade analysis and report',
+				url: '/',
+			},
 		],
 	},
 	{
@@ -174,141 +210,6 @@ const menus = [
 	},
 ];
 
-const OtherLinks = (
-	<Menu theme="dark">
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<CodeSandboxOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Exchange
-					<br />
-					<div className={'menu-sub-text'}>
-						Blockchain and crypto asset exchange
-					</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<ScheduleOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Academy
-					<br />
-					<div className={'menu-sub-text'}>Blockchain and crypto education</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<DollarCircleOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Broker
-					<br />
-					<div className={'menu-sub-text'}>Trading terminal solutions</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<HeatMapOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Charity
-					<br />
-					<div className={'menu-sub-text'}>Blockchain charity foundation</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<AntCloudOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Cloud
-					<br />
-					<div className={'menu-sub-text'}>Enterprise exchange solutions</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<RadarChartOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					DEX
-					<br />
-					<div className={'menu-sub-text'}>
-						Fast and secure decentralized digital asset exchange
-					</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<FilterOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Labs
-					<br />
-					<div className={'menu-sub-text'}>
-						Incubator for top blockchain project
-					</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<RocketOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Launchpad
-					<br />
-					<div className={'menu-sub-text'}>Token Launch Platform</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-
-		<Menu.Item>
-			<div>
-				<div className={'ico-container'}>
-					<BulbOutlined className={'otherLinkIcon'} />
-				</div>
-				<div className={'OL-text-container'}>
-					Research
-					<br />
-					<div className={'menu-sub-text'}>
-						Institutional-grade analysis and report
-					</div>
-				</div>
-				&nbsp;
-			</div>
-		</Menu.Item>
-	</Menu>
-);
-
 export const MenuHollaEx = ({ size }) => {
 	const menuList = () => {
 		return menus.map((menu) => {
@@ -354,6 +255,7 @@ export const MenuHollaEx = ({ size }) => {
 			}
 		});
 	};
+
 	return (
 		<>
 			<Space size={size}>{menuList()}</Space>
