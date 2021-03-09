@@ -1408,9 +1408,9 @@ const nestedContent = {
 		STATUS_DESCRIPTION:
 			'You can check the status of your deposit by passing the transaction ID (hash) below.',
 		TRANSACTION_ID: 'Transaction ID (hash)',
-		SEARCH_SUCCESS: 'Transaction found!',
-		SEARCH_ERROR:
-			'Transaction not found. Please check the ID and try again. If your believe there is a problem please contact support.',
+		SEARCH_SUCCESS: 'Search complete', // new
+		ADDRESS_FIELD_LABEL: 'Paste your address', // new
+		CURRENCY_FIELD_LABEL: 'Select the currency', // new
 	},
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',

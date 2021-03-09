@@ -465,7 +465,7 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount)
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, data.description, data.email)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -473,31 +473,6 @@ const transferFund = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/transferFund',
-				err.message
-			);
-			return res.status(err.status || 400).json({ message: err.message });
-		});
-};
-
-const adminCheckTransaction = (req, res) => {
-	loggerAdmin.verbose(
-		req.uuid,
-		'controllers/admin/adminCheckTransaction auth',
-		req.auth
-	);
-	const transactionId = req.swagger.params.transaction_id.value;
-	const address = req.swagger.params.address.value;
-	const currency = req.swagger.params.currency.value;
-	const isTestnet = req.swagger.params.is_testnet.value;
-
-	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
-		.then((transaction) => {
-			return res.json({ message: 'Success', transaction });
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/adminCheckTransaction catch',
 				err.message
 			);
 			return res.status(err.status || 400).json({ message: err.message });
@@ -624,6 +599,27 @@ const getExchangeGeneratedFees = (req, res) => {
 		});
 };
 
+const settleFees = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/settleFees auth',
+		req.auth
+	);
+
+	toolsLib.order.settleFees()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/settleFees catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 const mintAsset = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
@@ -635,7 +631,8 @@ const mintAsset = (req, res) => {
 		user_id,
 		currency,
 		amount,
-		description
+		description,
+		transaction_id
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -645,7 +642,9 @@ const mintAsset = (req, res) => {
 		'currency',
 		currency,
 		'amount',
-		amount
+		amount,
+		'transaction_id',
+		transaction_id
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -653,7 +652,7 @@ const mintAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.mintAssetByNetworkId(user.network_id, currency, amount, description);
+			return toolsLib.wallet.mintAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -674,7 +673,8 @@ const burnAsset = (req, res) => {
 		user_id,
 		currency,
 		amount,
-		description
+		description,
+		transaction_id
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -684,7 +684,9 @@ const burnAsset = (req, res) => {
 		'currency',
 		currency,
 		'amount',
-		amount
+		amount,
+		'transaction_id',
+		transaction_id
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -692,7 +694,7 @@ const burnAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.burnAssetByNetworkId(user.network_id, currency, amount, description);
+			return toolsLib.wallet.burnAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
 		})
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -719,7 +721,6 @@ module.exports = {
 	getCoins,
 	getPairs,
 	transferFund,
-	adminCheckTransaction,
 	completeExchangeSetup,
 	putNetworkCredentials,
 	uploadImage,
@@ -728,5 +729,6 @@ module.exports = {
 	getExchangeGeneratedFees,
 	mintAsset,
 	burnAsset,
-	verifyEmailUser
+	verifyEmailUser,
+	settleFees
 };

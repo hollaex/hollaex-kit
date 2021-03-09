@@ -11,7 +11,6 @@ import {
 	getUserWithdrawals,
 	withdrawalCancel,
 	downloadUserTrades,
-	setDeposit,
 } from '../../actions/walletActions';
 
 import {
@@ -33,7 +32,7 @@ import {
 } from './utils';
 import TradeAndOrderFilters from './components/TradeAndOrderFilters';
 import DepositAndWithdrawlFilters from './components/DepositAndWithdrawlFilters';
-import { RECORD_LIMIT, TABLE_PAGE_SIZE } from './constants';
+import { RECORD_LIMIT } from './constants';
 import HistoryDisplay from './HistoryDisplay';
 
 import STRINGS from '../../config/localizedStrings';
@@ -251,21 +250,6 @@ class TransactionsHistory extends Component {
 		this.onCloseDialog();
 	};
 
-	setDepositStatusPage = (transactionId) => {
-		const { deposits } = this.props;
-		const index = deposits.data.findIndex(
-			(element) => element.transactionId === transactionId
-		);
-		const page = index / TABLE_PAGE_SIZE;
-		if (this.state.jumpToPage === parseInt(page)) {
-			this.setState({ jumpToPage: 0 }, () => {
-				this.setState({ jumpToPage: parseInt(page) });
-			});
-		} else {
-			this.setState({ jumpToPage: parseInt(page) });
-		}
-	};
-
 	handleNext = (pageCount, pageNumber) => {
 		const { orders, trades, deposits, withdrawals } = this.props;
 		const { params } = this.state;
@@ -397,14 +381,7 @@ class TransactionsHistory extends Component {
 				return <div />;
 		}
 
-		return (
-			<HistoryDisplay
-				{...props}
-				activeTab={activeTab}
-				setDepositStatusPage={this.setDepositStatusPage}
-				setDeposit={this.props.setDeposit}
-			/>
-		);
+		return <HistoryDisplay {...props} activeTab={activeTab} />;
 	};
 
 	render() {
@@ -570,7 +547,6 @@ const mapDispatchToProps = (dispatch) => ({
 	downloadUserDeposit: () => dispatch(downloadUserTrades('deposit')),
 	downloadUserWithdrawal: () => dispatch(downloadUserTrades('withdrawal')),
 	downloadUserOrders: () => dispatch(downloadUserTrades('orders')),
-	setDeposit: (params) => dispatch(setDeposit(params)),
 });
 
 export default connect(
