@@ -1,7 +1,7 @@
 'use strict';
 
-const { GET_CONFIGURATION } = require('../../constants');
-const API_NAME = () => GET_CONFIGURATION().constants.api_name;
+const { GET_KIT_CONFIG } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
 
 const COMMON = {
 	GREETING: (name) => `Estimado/ Estimada ${name}`,
