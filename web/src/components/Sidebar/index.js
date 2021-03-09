@@ -31,7 +31,7 @@ const Sidebar = ({
 			})}
 		>
 			<SidebarHub {...sidebarHubProps} />
-			{enabledPlugins.includes('announcement') ? (
+			{enabledPlugins.includes('announcements') ? (
 				<div className="sidebar-notifications m-3">
 					<div className="ml-3 my-3 sidebar-title">
 						{STRINGS['TRADE_TAB_POSTS'].toUpperCase()}

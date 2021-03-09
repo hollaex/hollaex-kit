@@ -10,12 +10,13 @@ const { subscriber, publisher } = require('./db/pubsub');
 const {
 	INIT_CHANNEL,
 	CONFIGURATION_CHANNEL,
+	DEFAULT_FEES,
 	WS_HUB_CHANNEL,
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
 	HOLLAEX_NETWORK_PATH_ACTIVATE
 } = require('./constants');
-const { each } = require('lodash');
+const { each, isNumber, difference } = require('lodash');
 
 let nodeLib;
 
@@ -102,21 +103,50 @@ const checkStatus = () => {
 						status.constants,
 						status.kit
 					),
-					Tier.findAll({ raw: true }),
+					Tier.findAll(),
 					status.dataValues
 				]);
 			}
 		})
 		.then(([exchange, tiers, status]) => {
 			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
-			each(tiers, (tier) => {
-				configuration.tiers[tier.id] = tier;
-			});
+			const exchangePairs = [];
 			each(exchange.coins, (coin) => {
 				configuration.coins[coin.symbol] = coin;
 			});
 			each(exchange.pairs, (pair) => {
+				exchangePairs.push(pair.name);
 				configuration.pairs[pair.name] = pair;
+			});
+			each(tiers, async (tier) => {
+				const makerDiff = difference(exchangePairs, Object.keys(tier.fees.maker));
+				const takerDiff = difference(exchangePairs, Object.keys(tier.fees.taker));
+
+				if (makerDiff.length > 0 || takerDiff.length > 0 || isNumber(tier.fees.maker.default) || isNumber(tier.fees.taker.default)) {
+					const fees = {
+						maker: {},
+						taker: {}
+					};
+					each(exchangePairs, (pair) => {
+						if (!isNumber(tier.fees.maker[pair])) {
+							fees.maker[pair] = DEFAULT_FEES[exchange.collateral_level].maker;
+						} else {
+							fees.maker[pair] = tier.fees.maker[pair];
+						}
+
+						if (!isNumber(tier.fees.taker[pair])) {
+							fees.taker[pair] = DEFAULT_FEES[exchange.collateral_level].taker;
+						} else {
+							fees.taker[pair] = tier.fees.taker[pair];
+						}
+					});
+
+					const t = await tier.update({ fees }, { fields: ['fees'] });
+
+					configuration.tiers[t.id] = t.dataValues;
+				} else {
+					configuration.tiers[tier.id] = tier.dataValues;
+				}
 			});
 			configuration.kit.info = {
 				name: exchange.name,

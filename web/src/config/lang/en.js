@@ -1114,7 +1114,7 @@ const nestedContent = {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Unlimited',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
@@ -1208,6 +1208,7 @@ const nestedContent = {
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
+		TITLE_OF_ACCOUNT: '{0} Account',
 		LEVEL_TXT_DEFAULT: 'Add your level description here',
 		LEVEL_1_TXT:
 			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
@@ -1408,9 +1409,9 @@ const nestedContent = {
 		STATUS_DESCRIPTION:
 			'You can check the status of your deposit by passing the transaction ID (hash) below.',
 		TRANSACTION_ID: 'Transaction ID (hash)',
-		SEARCH_SUCCESS: 'Transaction found!',
-		SEARCH_ERROR:
-			'Transaction not found. Please check the ID and try again. If your believe there is a problem please contact support.',
+		SEARCH_SUCCESS: 'Search complete', // new
+		ADDRESS_FIELD_LABEL: 'Paste your address', // new
+		CURRENCY_FIELD_LABEL: 'Select the currency', // new
 	},
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
@@ -1421,7 +1422,7 @@ const nestedContent = {
 	AMOUNT_IN: 'Amount in',
 	LIMITS_BLOCK: {
 		HEADER_ROW_DESCRIPTION:
-			'Deposit and withdrawal allowance for all assets (level {0})',
+			'Deposit and withdrawal allowance for all assets ({0})',
 		HEADER_ROW_TYPE: 'Type (All assets)',
 		HEADER_ROW_AMOUNT: 'Amount ({0})',
 	},

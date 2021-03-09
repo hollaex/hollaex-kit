@@ -71,7 +71,7 @@ export const generateFormValues = (
 			placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
 			fullWidth: true,
 		};
-	} else if (symbol === 'xlm') {
+	} else if (symbol === 'xlm' || coins[symbol].network === 'stellar') {
 		fields.destination_tag = {
 			type: 'text',
 			stringId:

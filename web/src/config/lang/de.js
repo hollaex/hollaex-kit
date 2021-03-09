@@ -1083,7 +1083,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Gebühr',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Gebühr',
 		UNLIMITED: 'Unbegrenzt',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Geldbörse {0} generieren',
 	WALLET_ADDRESS_GENERATE: 'Erzeugen',
