@@ -3179,6 +3179,31 @@ table th {
   overflow-y: scroll; }
 
 @media screen and (max-width: 1096px) {
+  .layout-mobile .trade_tabs-container .trade-tab-list {
+    margin: 1.5rem 1rem; }
+  .layout-mobile .trade_tabs-container .trade_tab-icons {
+    width: 2.25rem; }
+  .layout-mobile .trade_tabs-container .tabs-pair-details {
+    font-size: 1rem;
+    width: 28rem; }
+  .layout-mobile .trade_tabs-container .market-card__sparkline-wrapper {
+    height: 10rem; } }
+
+@media screen and (max-width: 575px) {
+  .layout-mobile .trade_tabs-container {
+    overflow-y: scroll; }
+    .layout-mobile .trade_tabs-container .trade-tab-list {
+      margin: 1.5rem 1rem; }
+    .layout-mobile .trade_tabs-container .trade_tab-icons {
+      width: 2.25rem; }
+    .layout-mobile .trade_tabs-container .tabs-pair-details {
+      font-size: 1.5rem;
+      width: 34rem;
+      max-width: 96%; }
+    .layout-mobile .trade_tabs-container .market-card__sparkline-wrapper {
+      height: 12rem; } }
+
+@media screen and (max-width: 1096px) {
   .trade_tabs-container .trade-tab-list {
     margin: 1.5rem 1rem; }
   .trade_tabs-container .trade_tab-icons {
