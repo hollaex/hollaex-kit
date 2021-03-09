@@ -102,7 +102,7 @@ const getRows = (coins, level, tiers) => {
 	);
 };
 
-const LimitsBlock = ({ level, coins, tiers }) => {
+const LimitsBlock = ({ level, coins, tiers, title }) => {
 	return (
 		<div>
 			<table className="account-limits">
@@ -112,7 +112,7 @@ const LimitsBlock = ({ level, coins, tiers }) => {
 							<EditWrapper stringId="LIMITS_BLOCK.HEADER_ROW_DESCRIPTION">
 								{STRINGS.formatString(
 									STRINGS['LIMITS_BLOCK.HEADER_ROW_DESCRIPTION'],
-									level
+									title
 								)}
 							</EditWrapper>
 						</th>
