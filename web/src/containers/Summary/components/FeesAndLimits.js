@@ -15,13 +15,23 @@ const FeesAndLimits = ({
 	pairs,
 	constants = {},
 	icons: ICONS,
-	tiers,
+	tiers = {},
 }) => {
 	const { verification_level, discount = 0 } = data;
 	const LEVEL_OF_ACCOUNT = STRINGS.formatString(
 		STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 		verification_level
 	);
+
+	const { name } = tiers[verification_level] || {};
+
+	const TITLE_OF_ACCOUNT = STRINGS.formatString(
+		STRINGS['SUMMARY.TITLE_OF_ACCOUNT'],
+		name
+	);
+
+	const title = TITLE_OF_ACCOUNT || LEVEL_OF_ACCOUNT;
+
 	const Discount_percentage =
 		discount > 0
 			? STRINGS.formatString(STRINGS['SUMMARY.DISCOUNT'], discount)
@@ -29,13 +39,10 @@ const FeesAndLimits = ({
 	return (
 		<div className="fee-limits-wrapper">
 			<IconTitle
-				stringId="SUMMARY.FEES_AND_LIMIT"
+				stringId="SUMMARY.TITLE_OF_ACCOUNT,SUMMARY.FEES_AND_LIMIT"
 				text={
 					<label>
-						{STRINGS.formatString(
-							STRINGS['SUMMARY.FEES_AND_LIMIT'],
-							LEVEL_OF_ACCOUNT
-						)}{' '}
+						{STRINGS.formatString(STRINGS['SUMMARY.FEES_AND_LIMIT'], title)}{' '}
 						{Discount_percentage}
 					</label>
 				}
@@ -66,7 +73,12 @@ const FeesAndLimits = ({
 					</div>
 				</div>
 				<div>
-					<LimitsBlock coins={coins} level={verification_level} tiers={tiers} />
+					<LimitsBlock
+						coins={coins}
+						level={verification_level}
+						title={title}
+						tiers={tiers}
+					/>
 				</div>
 				<div>
 					<FeesBlock
