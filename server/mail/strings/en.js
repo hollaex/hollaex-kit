@@ -125,8 +125,8 @@ const ACCOUNTUPGRADE = {
 	TITLE: 'Account Upgraded',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: (level) =>
-			`Congratulations. Your account access level is upgraded to level ${level}. You will benefit from lower fees, higher withdrawal limits and other premium features.`,
+		1: (tier) =>
+			`Congratulations. Your account access level is upgraded to ${tier} tier. You will benefit from lower fees, higher withdrawal limits and other premium features.`,
 		2: 'Trade Now'
 	},
 	CLOSING: COMMON.CLOSING
