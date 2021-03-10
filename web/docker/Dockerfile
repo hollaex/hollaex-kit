@@ -14,7 +14,13 @@ RUN apk add --update \
 COPY --from=build /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY docker/nginx.conf /etc/nginx/conf.d
-EXPOSE 80
+# Changing the user to 'nginx'
+RUN chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d && \
+    touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/run/nginx.pid
+EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
 
 
