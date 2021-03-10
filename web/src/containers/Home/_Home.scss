@@ -11,6 +11,16 @@ $trade-tab--arrow-size: 0.4rem;
 .home-page__market-wrapper {
 	background-color: $landing_markets_table;
 
+	.table-row {
+		color: $colors-main-black !important;
+	}
+
+	.table-row {
+		thead {
+			color: $colors-black !important;
+		}
+	}
+
 	thead {
 		background-color: $auth-container-background;
 	}
@@ -97,13 +107,24 @@ $trade-tab--arrow-size: 0.4rem;
 .layout-mobile {
 	&.home_container {
 		.app_container-content {
-			min-height: $max-content-height-home-mobile;
-			max-height: $max-content-height-home-mobile;
+			min-height: calc(100vh);
+			max-height: calc(100vh);
 		}
 
 		.home_container-content {
-			width: 96%;
+			width: 100%;
 		}
+	}
+}
+
+.home_header_button {
+	height: 28px;
+	font-weight: bold;
+}
+
+.layout-mobile {
+	.home_header_button {
+		height: 24px;
 	}
 }
 
@@ -112,13 +133,13 @@ $trade-tab--arrow-size: 0.4rem;
 	background-size: cover;
 
 	.main-section_button_invert {
-		color: $link;
-		background-color: $colors-main-black;
+		color: $link !important;
+		background-color: $colors-main-black !important;
 	}
 
 	.main-section_button {
-		color: $colors-main-black;
-		background-color: $link;
+		color: $colors-main-black !important;
+		background-color: $link !important;
 	}
 
 	.quick_trade-wrapper {

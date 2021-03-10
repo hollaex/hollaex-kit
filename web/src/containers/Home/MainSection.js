@@ -6,7 +6,11 @@ import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 
-const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
+const BUTTONS_CLASSES = [
+	'buttons-section--button',
+	...FLEX_CENTER_CLASSES,
+	'exir-button',
+];
 
 const MainSection = ({
 	style = {},

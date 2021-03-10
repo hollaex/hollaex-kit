@@ -576,6 +576,7 @@ class App extends Component {
 										'justify-content-between',
 										{
 											'app_container-secondary-content': isMenubar,
+											no_bottom_navigation: isHome,
 										}
 									)}
 								>
@@ -587,6 +588,7 @@ class App extends Component {
 											'justify-content-between',
 											{
 												'overflow-y': !isMobile,
+												no_bottom_navigation: isHome,
 											}
 										)}
 									>
@@ -635,7 +637,7 @@ class App extends Component {
 										</div>
 									)}
 									<Dialog
-										isOpen={dialogIsOpen}
+										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"
 										className={classnames('app-dialog', {
 											'app-dialog-flex':
@@ -707,7 +709,7 @@ class App extends Component {
 							}
 						)}
 					>
-						{(!isMobile || (isMobile && isHome)) && (
+						{!isMobile && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>

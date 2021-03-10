@@ -334,6 +334,15 @@ table th {
     max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
+    .app_container.layout-mobile .app_container-content.no_bottom_navigation {
+      height: auto;
+      flex: 1;
+      min-height: calc(100vh);
+      max-height: calc(100vh);
+      max-width: 100vw;
+      overflow-y: scroll; }
+    .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
+      height: 100%; }
   .app_container.layout-mobile .content-with-bar {
     min-height: calc( 100vh - 17rem);
     max-height: calc( 100vh - 17rem);
@@ -918,6 +927,10 @@ table th {
 
 .home-page__market-wrapper {
   background-color: var(--calculated_landing_markets_table); }
+  .home-page__market-wrapper .table-row {
+    color: var(--labels_important-active-labels-text-graphics) !important; }
+  .home-page__market-wrapper .table-row thead {
+    color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .home-page__market-wrapper thead {
     background-color: var(--base_wallet-sidebar-and-popup); }
   .home-page__market-wrapper .market-list__block-table {
@@ -1004,21 +1017,28 @@ table th {
     top: calc(50% - 0.6rem); }
 
 .layout-mobile.home_container .app_container-content {
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem); }
+  min-height: calc(100vh);
+  max-height: calc(100vh); }
 
 .layout-mobile.home_container .home_container-content {
-  width: 96%; }
+  width: 100%; }
+
+.home_header_button {
+  height: 28px;
+  font-weight: bold; }
+
+.layout-mobile .home_header_button {
+  height: 24px; }
 
 .home_container {
   background-repeat: no-repeat;
   background-size: cover; }
   .home_container .main-section_button_invert {
-    color: var(--specials_buttons-links-and-highlights);
-    background-color: var(--labels_important-active-labels-text-graphics); }
+    color: var(--specials_buttons-links-and-highlights) !important;
+    background-color: var(--labels_important-active-labels-text-graphics) !important; }
   .home_container .main-section_button {
-    color: var(--labels_important-active-labels-text-graphics);
-    background-color: var(--specials_buttons-links-and-highlights); }
+    color: var(--labels_important-active-labels-text-graphics) !important;
+    background-color: var(--specials_buttons-links-and-highlights) !important; }
   .home_container .quick_trade-wrapper {
     min-width: 30rem;
     max-width: 40rem; }

@@ -12,7 +12,7 @@ import { isLoggedIn } from 'utils/token';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 import Markets from 'containers/Summary/components/Markets';
-import { QuickTrade, EditWrapper } from 'components';
+import { QuickTrade, EditWrapper, AppFooter, ButtonLink } from 'components';
 import { unique } from 'utils/data';
 import math from 'mathjs';
 import Image from 'components/Image';
@@ -146,7 +146,7 @@ class Home extends Component {
 				return (
 					<MainSection
 						style={{
-							minHeight: sectionsNumber === 1 ? 'calc(100vh)' : '25rem',
+							minHeight: sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '25rem',
 						}}
 						onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
 						onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
@@ -160,7 +160,7 @@ class Home extends Component {
 			case 'market_list': {
 				const { router, coins, pairs } = this.props;
 				return (
-					<div>
+					<div className="my-4">
 						<div>
 							<EditWrapper stringId="MARKETS_TABLE.TITLE">
 								{STRINGS['MARKETS_TABLE.TITLE']}
@@ -201,27 +201,29 @@ class Home extends Component {
 				return (
 					quick_trade &&
 					isReady && (
-						<QuickTrade
-							onReviewQuickTrade={this.onReviewQuickTrade}
-							onSelectTarget={this.onSelectTarget}
-							onSelectSource={this.onSelectSource}
-							side={side}
-							symbol={pair}
-							disabled={false}
-							orderLimits={orderLimits[pair]}
-							pairs={pairs}
-							coins={coins}
-							sourceOptions={sourceOptions}
-							targetOptions={targetOptions}
-							selectedSource={selectedSource}
-							selectedTarget={selectedTarget}
-							targetAmount={targetAmount}
-							sourceAmount={sourceAmount}
-							onChangeTargetAmount={this.onChangeTargetAmount}
-							onChangeSourceAmount={this.onChangeSourceAmount}
-							forwardSourceError={this.forwardSourceError}
-							forwardTargetError={this.forwardTargetError}
-						/>
+						<div className="my-4">
+							<QuickTrade
+								onReviewQuickTrade={this.onReviewQuickTrade}
+								onSelectTarget={this.onSelectTarget}
+								onSelectSource={this.onSelectSource}
+								side={side}
+								symbol={pair}
+								disabled={false}
+								orderLimits={orderLimits[pair]}
+								pairs={pairs}
+								coins={coins}
+								sourceOptions={sourceOptions}
+								targetOptions={targetOptions}
+								selectedSource={selectedSource}
+								selectedTarget={selectedTarget}
+								targetAmount={targetAmount}
+								sourceAmount={sourceAmount}
+								onChangeTargetAmount={this.onChangeTargetAmount}
+								onChangeSourceAmount={this.onChangeSourceAmount}
+								forwardSourceError={this.forwardSourceError}
+								forwardTargetError={this.forwardTargetError}
+							/>
+						</div>
 					)
 				);
 			}
@@ -365,6 +367,7 @@ class Home extends Component {
 			activeTheme,
 			icons: ICONS = {},
 			sections,
+			constants,
 		} = this.props;
 
 		return (
@@ -383,11 +386,6 @@ class Home extends Component {
 				style={{ background: `url(${ICONS['EXCHANGE_LANDING_PAGE']})` }}
 			>
 				<div className="home-page_overlay">
-					<div className="home_app_bar d-flex justify-content-between">
-						<div className="d-flex align-items-center justify-content-center h-100">
-							{this.renderIcon()}
-						</div>
-					</div>
 					<EditWrapper
 						iconId="EXCHANGE_LANDING_PAGE"
 						style={{ position: 'absolute', right: 10 }}
@@ -413,7 +411,30 @@ class Home extends Component {
 								zIndex: 1,
 							}}
 						/>
-						{this.generateSections(sections)}
+						<div className="home_app_bar d-flex justify-content-between">
+							<div className="d-flex align-items-center justify-content-center h-100">
+								{this.renderIcon()}
+							</div>
+							<div className="d-flex align-items-center px-1">
+								<ButtonLink
+									link={'/login'}
+									type="button"
+									label={STRINGS['LOGIN_TEXT']}
+									className="main-section_button_invert home_header_button"
+								/>
+								<div style={{ width: '1rem' }} />
+								<ButtonLink
+									link={'/signup'}
+									type="button"
+									label={STRINGS['SIGNUP_TEXT']}
+									className="main-section_button home_header_button"
+								/>
+							</div>
+						</div>
+						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+						{isMobile && (
+							<AppFooter theme={activeTheme} constants={constants} />
+						)}
 					</div>
 				</div>
 			</div>
