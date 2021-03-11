@@ -1124,7 +1124,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Frais du Maker',
 		LABEL_PAIR_TAKER_FEE: '{0} Frais du Taker',
 		UNLIMITED: 'Illimité',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Générer {0} portefeuille',
 	WALLET_ADDRESS_GENERATE: 'Générer',

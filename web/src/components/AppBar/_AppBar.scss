@@ -1174,9 +1174,9 @@ $app-menu-notification-size: 1.2rem;
 	}
 	.app-bar-add-tab-menu {
 		width: 36rem;
-		position: fixed;
-		top: 13.7rem;
-		left: 2.2rem;
+		position: absolute;
+		top: 7.8rem;
+		left: 1.2rem;
 
 		.app-bar-add-tab-content,
 		.app-bar-tab-menu-list,
