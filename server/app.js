@@ -65,7 +65,11 @@ var options = {
 		'https://rm-content.s3.amazonaws.com/5aead825bb456c005e2322dd/upload-c116da40-ebd2-11e8-9c84-e32cc39c32d1_57.png'
 };
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
+app.get('/', (req, res) => {
+	res.redirect('/v2/health');
+});
+
+app.use('/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {
 	if (err) { throw err; }
