@@ -1016,7 +1016,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: '无限制',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: '生成{0}钱包',
 	WALLET_ADDRESS_GENERATE: '生成',

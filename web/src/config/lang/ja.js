@@ -1080,7 +1080,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: '無制限',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: '{0}ウォレット作成',
 	WALLET_ADDRESS_GENERATE: '作成',
