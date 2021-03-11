@@ -7,8 +7,6 @@ import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { ArrowDownOutlined } from '@ant-design/icons';
-import { Account } from '../index';
-import MarketList from '../TradeTabs/components/MarketList';
 
 const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 

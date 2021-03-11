@@ -7,7 +7,12 @@ import { isBrowser, isMobile } from 'react-device-detect';
 
 import { AppBar, AppFooter } from '../../components';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
-import { setLanguage, getExchangeInfo } from '../../actions/appActions';
+import {
+	setLanguage,
+	getExchangeInfo,
+	requestConstant,
+	setPairs,
+} from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
@@ -18,8 +23,8 @@ import Section3 from './Section3';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Banners } from './Banners';
 import { Section4 } from './Section4';
-import { MarketListHome } from './MarketList';
-
+import { setPairsData } from 'actions/orderbookAction';
+import Markets from 'containers/Summary/components/Markets';
 const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
 
@@ -33,6 +38,10 @@ class Home extends Component {
 
 	componentDidMount() {
 		this.props.getExchangeInfo();
+		requestConstant().then(({ data }) => {
+			this.props.setPairs(data.pairs);
+			this.props.setPairsData(data.pairs);
+		});
 	}
 
 	setContainerRef = (el) => {
@@ -98,8 +107,13 @@ class Home extends Component {
 			activeTheme,
 			constants = {},
 			icons: ICONS = {},
+			pairs,
+			tickers,
+			coins,
+			user,
 		} = this.props;
 		const { style } = this.state;
+
 		return (
 			<div
 				className={classnames(
@@ -152,7 +166,13 @@ class Home extends Component {
 					/>*/}
 					<Banners />
 
-					<MarketListHome />
+					<Markets
+						user={user}
+						coins={coins}
+						pairs={pairs}
+						activeTheme={activeTheme}
+						router={router}
+					/>
 
 					<Section3
 						style={style}
@@ -185,6 +205,10 @@ const mapStateToProps = (store) => ({
 	info: store.app.info,
 	activeTheme: store.app.theme,
 	constants: store.app.constants,
+	pairs: store.app.pairs,
+	tickers: store.app.tickers,
+	coins: store.app.coins,
+	user: store.user || {},
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -192,6 +216,8 @@ const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	logout: bindActionCreators(logout, dispatch),
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
+	setPairs: bindActionCreators(setPairs, dispatch),
+	setPairsData: bindActionCreators(setPairsData, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Home));

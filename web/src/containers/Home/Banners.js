@@ -13,9 +13,9 @@ export const Banners = () => {
 			<div className={'bg-white'}>
 				<div className="container">
 					<div className={'row addBanner'}>
-						{images.map((image) => {
+						{images.map((image, index) => {
 							return (
-								<div className="col-md-3">
+								<div key={index} className="col-md-3">
 									<Banner img={image} />
 								</div>
 							);

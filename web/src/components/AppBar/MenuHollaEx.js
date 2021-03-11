@@ -246,9 +246,9 @@ export const MenuHollaEx = ({ size }) => {
 					);
 				}
 			} else {
-				const subMenus = menu.children.map((dropdown, index) => {
+				const subMenus = menu.children.map((dropdown, i) => {
 					return (
-						<Menu.Item>
+						<Menu.Item key={'sub' + i}>
 							{dropdown.icon} {dropdown.name}
 							<br />
 							<span className={'menu-sub-text'}>{dropdown.description} </span>
@@ -263,11 +263,10 @@ export const MenuHollaEx = ({ size }) => {
 				);
 
 				return (
-					<Dropdown overlay={singleMenu}>
+					<Dropdown key={'_' + index} overlay={singleMenu}>
 						<a
 							className="ant-dropdown-link rb-menu"
 							onClick={(e) => e.preventDefault()}
-							key={index}
 						>
 							{menu.name} {menu.icon}
 						</a>

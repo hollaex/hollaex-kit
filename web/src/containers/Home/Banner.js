@@ -3,7 +3,7 @@ import React from 'react';
 export const Banner = ({ img }) => {
 	return (
 		<>
-			<img src={img} />
+			<img alt="banner" src={img} />
 		</>
 	);
 };
