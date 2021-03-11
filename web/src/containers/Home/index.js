@@ -6,7 +6,12 @@ import { bindActionCreators } from 'redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import STRINGS from 'config/localizedStrings';
-import { changePair, setLanguage, getExchangeInfo } from 'actions/appActions';
+import {
+	changePair,
+	setLanguage,
+	getExchangeInfo,
+	getTickers,
+} from 'actions/appActions';
 import { logout } from '../../actions/authAction';
 import { isLoggedIn } from 'utils/token';
 import { getClasesForLanguage } from '../../utils/string';
@@ -62,6 +67,7 @@ class Home extends Component {
 	componentDidMount() {
 		const { sections } = this.props;
 		this.props.getExchangeInfo();
+		this.props.getTickers();
 		this.generateSections(sections);
 	}
 
@@ -484,6 +490,7 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	logout: bindActionCreators(logout, dispatch),
+	getTickers: bindActionCreators(getTickers, dispatch),
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 });
 
