@@ -79,6 +79,7 @@ const icons = {
 		'/assets/images/verification-rejected-yellow-cross.svg',
 	VERIFICATION_INCOMPLETE: '/assets/images/verification-attention-red.svg',
 	VERIFICATION_VERIFIED: '/assets/images/verification-green-tick.svg',
+	CLOUD_ICON: '/assets/images/current-plan-cloud-icon.svg',
 };
 
 export default icons;

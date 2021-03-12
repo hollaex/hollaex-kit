@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, Tooltip, Modal } from 'antd';
+import { connect } from 'react-redux';
+import { ReactSVG } from 'react-svg';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import { getFees } from '../AdminFees/action';
+import { getFees, getFeesDownload } from '../AdminFees/action';
+import STRINGS from '../../../config/localizedStrings';
+import { STATIC_ICONS } from 'config/icons';
+import { SettleModal } from './SettleModal';
 
 const earningsColumns = [
 	{
@@ -13,11 +19,6 @@ const earningsColumns = [
 ];
 
 const descriptionColumn = [
-	{
-		title: 'ID',
-		dataIndex: 'id',
-		key: 'id',
-	},
 	{
 		title: 'Transaction_ID',
 		dataIndex: 'transaction_id',
@@ -34,7 +35,20 @@ const descriptionColumn = [
 		key: 'currency',
 	},
 	{
-		title: 'Network_fee',
+		title: (
+			<div>
+				Network fee
+				<Tooltip
+					placement="right"
+					overlayClassName="terminating-tooltip"
+					title="Network fees are calculated based on your plan and membership status. All network fees are redistributed to all XHT collateral stakers and members"
+				>
+					<QuestionCircleOutlined
+						style={{ fontSize: '14px', color: '#ffffff', marginLeft: '5px' }}
+					/>
+				</Tooltip>
+			</div>
+		),
 		dataIndex: 'network_fee',
 		key: 'network_fee',
 	},
@@ -42,11 +56,6 @@ const descriptionColumn = [
 		title: 'Timestamp',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
-	},
-	{
-		title: 'Exchange_id',
-		dataIndex: 'exchange_id',
-		key: 'exchange_id',
 	},
 ];
 
@@ -62,6 +71,7 @@ class Earnings extends Component {
 			data: {},
 			earningsData: [],
 			feesData: [],
+			isOpen: false,
 		};
 	}
 
@@ -96,6 +106,14 @@ class Earnings extends Component {
 			});
 	};
 
+	renderMember = (level) => {
+		if (level === 'member') {
+			return '(Holla member)';
+		} else {
+			return '(non member)';
+		}
+	};
+
 	pageChange = (count, pageSize) => {
 		const { page, limit, isRemaining } = this.state;
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
@@ -116,17 +134,67 @@ class Earnings extends Component {
 		this.setState({ earningsData: result });
 	};
 
+	toggleVisibility = () => {
+		this.setState({ isOpen: !this.state.isOpen });
+	};
+
+	handleDownload = () => {
+		return getFeesDownload({ format: 'csv' });
+	};
+
 	render() {
-		const { currentTablePage, earningsData } = this.state;
+		const { info } = this.props;
+		const { currentTablePage, earningsData, isOpen } = this.state;
+
 		return (
 			<div className="admin-earnings-container">
+				<div>
+					<div className="title">Settle earnings</div>
+					<div className="description-width">
+						Below displays the historic settlement of earnings generated from
+						the trading fees of all your users. Earning calculations are
+						dependent on your plan type and membership status.
+					</div>
+				</div>
+				<div className="icon-wrapper d-flex align-items-center flex-column">
+					<div className="icon-holder">
+						<ReactSVG src={STATIC_ICONS['CLOUD_ICON']} className="cloudIcon" />
+						<div className="dollar-icon text-center">$</div>
+					</div>
+					<div>
+						<span className="font-weight-bold">{info.type} </span> :
+						<span>{info.plan}</span>
+					</div>
+					<div>{this.renderMember(info.collateral_level)}</div>
+					<div>
+						<Button onClick={this.toggleVisibility} className=" button">
+							Settle
+						</Button>
+					</div>
+				</div>
+				<Modal
+					visible={isOpen}
+					footer={null}
+					onCancel={this.toggleVisibility}
+					width="37rem"
+				>
+					<SettleModal
+						toggleVisibility={this.toggleVisibility}
+						earningsData={earningsData}
+						requestFees={this.requestFees}
+					/>
+				</Modal>
 				<div className="table-container">
 					<div className="title-wrapper">
 						<div className="title">Earnings</div>
 						<div>
-							<Button size="small" className="download-btn">
+							<span
+								size="small"
+								className="download-btn"
+								onClick={this.handleDownload}
+							>
 								Download
-							</Button>
+							</span>
 						</div>
 					</div>
 					<div>
@@ -136,7 +204,7 @@ class Earnings extends Component {
 							dataSource={earningsData.map((data) => {
 								return data;
 							})}
-							rowKey={(data) => data.id}
+							rowKey={(data) => data.date}
 							pagination={{
 								current: currentTablePage,
 								onChange: this.pageChange,
@@ -160,4 +228,8 @@ class Earnings extends Component {
 	}
 }
 
-export default Earnings;
+const mapStateToProps = (state) => ({
+	info: state.app.constants.info,
+});
+
+export default connect(mapStateToProps)(Earnings);
