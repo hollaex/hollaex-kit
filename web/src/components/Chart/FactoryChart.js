@@ -5,7 +5,7 @@ import AreaChart from './Charts/AreaChart';
 
 export const CHART_TYPES = {
 	AREA: 'CHART_TYPE_AREA',
-	CANDLE: 'CHART_TYPE_CANDLE'
+	CANDLE: 'CHART_TYPE_CANDLE',
 };
 
 export const FactoryChart = ({ chartType, symbol, orderLimits, ...props }) => {
@@ -25,10 +25,10 @@ FactoryChart.propTypes = {
 	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
 	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired,
-	chartType: PropTypes.string.isRequired
+	chartType: PropTypes.string.isRequired,
 };
 
 FactoryChart.defaultProps = {
 	type: 'svg',
-	seriesName: 'AreaChart'
+	seriesName: 'AreaChart',
 };

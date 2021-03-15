@@ -1,0 +1,42 @@
+@import 'https://code.highcharts.com/css/highcharts.css';
+
+.highcharts-graph {
+	stroke: $buy;
+	&.highcharts-negative {
+		stroke: $sell;
+	}
+}
+
+.highcharts-area {
+	fill: $sparkline-fill;
+
+	&.highcharts-negative {
+		fill: $negative-sparkline-fill;
+	}
+}
+
+.highcharts-point {
+	stroke: $buy;
+	fill: $buy;
+
+	&.highcharts-negative {
+		stroke: $sell;
+		fill: $sell;
+	}
+}
+
+.highcharts-background {
+	fill: transparent;
+}
+
+.highcharts-credits {
+	display: none;
+}
+
+.highcharts-container {
+	width: 100% !important;
+}
+
+.highcharts-root {
+	width: 100% !important;
+}

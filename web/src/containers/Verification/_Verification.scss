@@ -12,13 +12,9 @@
 		margin: 1rem 0;
 		padding: 0;
 	}
-	.link-content {
-		color: $dark-buy;
-		font-weight: bold;
-	}
 	.header-content {
 		color: $colors-deactivate-color2;
-		font-size: .8rem;
+		font-size: 0.8rem;
 	}
 	.content-text {
 		font-size: 0.8rem;
@@ -37,7 +33,7 @@
 }
 
 .verification_link {
-	color: $dark-buy
+	color: $link;
 }
 
 .verification-info-txt {
@@ -69,56 +65,14 @@
 	}
 }
 
-.dark-theme {
-	.header_title-wrapper {
-		.header_title-children {
-			.important_information {
-				color: $dark-font-sub-text-color !important
-			}
-		}
-	}
-	.title-inactive {
-		color: $dark-tab-inactive !important;
-	}
-
-	.astrics-1 {
-		fill: $dark-tab-inactive;
-	}
-
-	.verification_container {
-		.link-content {
-			color: $dark-link;
-		}
-
-		svg {
-			.pending-timer {
-				stroke: $dark-icon-color;
-			}
-			.note-kyc {
-				fill: $dark-icon-color;
-			}
-		}
-		.inner_container,
-		.content-text,
-		.header-content {
-			color: $dark-font-sub-text-color;
-		}
-	}
-
-	.verification_link {
-		color: $dark-link;
-	}
-
-}
-
 .layout-mobile {
-	.verification_container{	
+	.verification_container {
 		.verification-info-txt {
 			width: 100%;
-			font-size: $font-size-mobile-txt!important;
+			font-size: $font-size-mobile-txt !important;
 		}
-		.exir-button{
-			font-size: $font-size-mobile-txt!important;
+		.exir-button {
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
 	.mobile-bar-tab .bartab-text-wrapper {
@@ -128,8 +82,8 @@
 	.presentation_container.verification_container {
 		padding-top: 0 !important;
 		max-height: $max-content-height-mobile;
-		.header-content{
-			font-size:$font-size-mobile-txt!important;
+		.header-content {
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
 	.header_title-wrapper {
@@ -137,17 +91,21 @@
 			font-size: $font-size-mobile-title;
 		}
 		.header_title-children {
-			font-size: $font-size-mobile-txt!important;
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
-	.field-wrapper{
-		.field-content{
-			.field-label,.field-children,.inner_container,.input_field-input,.placeholder{
-				font-size: $font-size-mobile-txt!important;
+	.field-wrapper {
+		.field-content {
+			.field-label,
+			.field-children,
+			.inner_container,
+			.input_field-input,
+			.placeholder {
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
-	.content-text{
+	.content-text {
 		font-size: $font-size-mobile-txt;
 	}
 }

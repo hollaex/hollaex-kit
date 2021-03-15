@@ -1,49 +1,38 @@
 .toggle-wrapper {
-	border-top: 1px solid $colors-deactivate-color1;
-	border-bottom: 1px solid $colors-deactivate-color1;
+	border-top: 1px solid $colors-border;
+	border-bottom: 1px solid $colors-border;
 }
 .toggle-wrapper-all {
-    border-bottom: 2px solid $dark-app-line-divider;
-    margin-bottom: 3rem !important;
+	border-bottom: 2px solid $colors-border;
+	margin-bottom: 3rem !important;
 }
 .portfolio-wrapper {
-    width: 32rem;
-    .icon_title-wrapper {
-        .icon_title-svg {
-            height: 10rem;
-            width: 10rem;
-        }
-        .icon_title-svg svg{
-            height: 10rem;
-            width: 10rem;
-        }
-        .icon_title-text.title {
-            font-size: 2rem;
-        }
-        .icon_title-text {
-            margin-top: 3rem;
-            text-align: left !important;
-            width: 100%;
-        }
-    }
+	width: 32rem;
+	.icon_title-wrapper {
+		.icon_title-svg {
+			height: 10rem;
+			width: 10rem;
+		}
+		.icon_title-svg svg {
+			height: 10rem;
+			width: 10rem;
+		}
+		.icon_title-text.title {
+			font-size: 2rem;
+		}
+		.icon_title-text {
+			margin-top: 3rem;
+			text-align: left !important;
+			width: 100%;
+		}
+	}
 }
 .deactive_risk_data {
-    color: $colors-deactivate
+	color: $colors-deactivate;
 }
 
 .layout-mobile {
-    .portfolio-wrapper {
-        margin: 25% auto;
-    }
-}
-
-.dark-theme {
-    .toggle-wrapper {
-        border-top: 1px solid $dark-inactive-color;
-        border-bottom: 1px solid $dark-inactive-color;
-    }
-    .toggle-wrapper-all {
-        border-bottom: 2px solid $dark-app-line-divider;
-        margin-bottom: 3rem !important;
-    }
+	.portfolio-wrapper {
+		margin: 25% auto;
+	}
 }

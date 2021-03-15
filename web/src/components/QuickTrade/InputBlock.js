@@ -22,22 +22,25 @@ const generateStyle = (value) => {
 class InputBlock extends Component {
 	state = {
 		value: '',
-		symbol: ''
+		symbol: '',
 	};
 
 	componentWillMount() {
 		if (this.props.symbol) {
-			this.setState({ symbol: this.props.symbol })
+			this.setState({ symbol: this.props.symbol });
 		}
 	}
 
 	componentDidMount() {
 		if (this.props.initialValue) {
-			this.setState({ value: this.props.initialValue, symbol: this.props.symbol });
+			this.setState({
+				value: this.props.initialValue,
+				symbol: this.props.symbol,
+			});
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.symbol !== this.props.symbol) {
 			this.setState({ symbol: nextProps.symbol });
 		}
@@ -80,7 +83,9 @@ class InputBlock extends Component {
 		if (!value) {
 			error = '';
 		} else {
-			error = minValue(orderLimits[this.state.symbol].SIZE.MIN)(value) || maxValue(orderLimits[this.state.symbol].SIZE.MAX)(value);
+			error =
+				minValue(orderLimits[this.state.symbol].SIZE.MIN)(value) ||
+				maxValue(orderLimits[this.state.symbol].SIZE.MAX)(value);
 		}
 		return error;
 	};

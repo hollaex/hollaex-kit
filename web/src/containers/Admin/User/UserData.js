@@ -8,60 +8,60 @@ const Form = AdminHocForm('USER_DATA', 'user_data');
 const AddressFields = {
 	country: {
 		type: 'text',
-		label: 'Country'
+		label: 'Country',
 	},
 	address: {
 		type: 'text',
-		label: 'Address'
+		label: 'Address',
 	},
 	postal_code: {
 		type: 'text',
-		label: 'Postal Code'
+		label: 'Postal Code',
 	},
 	city: {
 		type: 'text',
-		label: 'City'
-	}
+		label: 'City',
+	},
 };
 
 const DataFields = {
 	email: {
 		type: 'text',
 		label: 'Email',
-		disabled: true
+		disabled: true,
 	},
 	full_name: {
 		type: 'text',
-		label: 'Full Name'
+		label: 'Full Name',
 	},
 	gender: {
 		type: 'select',
 		label: 'Gender',
-		options: ['Man', 'Woman']
+		options: ['Man', 'Woman'],
 	},
 	nationality: {
 		type: 'text',
-		label: 'nationality'
+		label: 'nationality',
 	},
 	dob: {
 		type: 'date',
-		label: 'Date of birth'
+		label: 'Date of birth',
 	},
 	phone_number: {
 		type: 'text',
-		label: 'Phone Number'
-	}
+		label: 'Phone Number',
+	},
 };
 
 const Fields = {
 	...DataFields,
-	...AddressFields
+	...AddressFields,
 };
 
-const onSubmit = (onChangeSuccess) => (values) => {
+const onSubmit = (onChangeSuccess, handleClose) => (values) => {
 	const submitData = {
 		id: values.id,
-		address: {}
+		address: {},
 	};
 
 	Object.keys(DataFields).forEach((key) => {
@@ -80,9 +80,10 @@ const onSubmit = (onChangeSuccess) => (values) => {
 				onChangeSuccess({
 					...values,
 					...submitData,
-					...data
+					...data,
 				});
 			}
+			handleClose();
 		})
 		.catch((err) => {
 			throw new SubmissionError({ _error: err.data.message });
@@ -93,17 +94,23 @@ const generateInitialValues = (initialValues) => {
 	const values = {
 		...initialValues,
 		...initialValues.address,
-		gender: initialValues.gender ? 'Woman' : 'Man'
+		gender: initialValues.gender ? 'Woman' : 'Man',
 	};
 	return values;
 };
 
-const UserData = ({ initialValues, readOnly = false, onChangeSuccess }) => (
+const UserData = ({
+	initialValues,
+	readOnly = false,
+	onChangeSuccess,
+	handleClose,
+}) => (
 	<Form
-		onSubmit={onSubmit(onChangeSuccess)}
+		onSubmit={onSubmit(onChangeSuccess, handleClose)}
 		buttonText="SAVE"
 		fields={Fields}
 		initialValues={generateInitialValues(initialValues)}
+		buttonClass="green-btn"
 	/>
 );
 

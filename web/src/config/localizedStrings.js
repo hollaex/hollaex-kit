@@ -1,6 +1,7 @@
 import LocalizedStrings from 'react-localization';
 
 import en from './lang/en';
+import de from './lang/de';
 import ko from './lang/ko';
 import fa from './lang/fa';
 import ar from './lang/ar';
@@ -11,8 +12,9 @@ import vi from './lang/vi';
 import id from './lang/id';
 import zh from './lang/zh';
 
-const strings = new LocalizedStrings({
+export const content = {
 	en,
+	de,
 	ko,
 	ja,
 	fa,
@@ -21,7 +23,9 @@ const strings = new LocalizedStrings({
 	es,
 	vi,
 	id,
-	zh
-});
+	zh,
+};
+
+const strings = new LocalizedStrings(content);
 
 export default strings;

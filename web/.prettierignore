@@ -1,0 +1,8 @@
+# Ignore artifacts:
+.idea
+build
+docker
+node_modules
+public
+src/charting_library
+src/index.css

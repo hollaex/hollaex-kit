@@ -1,14 +1,17 @@
 import React from 'react';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { ICONS, EXPLORERS_ENDPOINT } from '../../config/constants';
+import { EXPLORERS_ENDPOINT } from '../../config/constants';
 import { Button } from '../';
 
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
-const WithdrawNotification = ({ data, onClose }) => {
+const WithdrawNotification = ({ data, onClose, icons: ICONS }) => {
 	const notificationProps = {
-		icon: ICONS[`COIN_WITHDRAW_BTC`] || ICONS.COIN_WITHDRAW_BASE,
-		title: STRINGS.SUCCESS_TEXT
+		iconId: 'COIN_WITHDRAW_BTC,COIN_WITHDRAW_BASE',
+		icon: ICONS['COIN_WITHDRAW_BTC'] || ICONS['COIN_WITHDRAW_BASE'],
+		title: STRINGS['SUCCESS_TEXT'],
+		stringId: 'SUCCESS_TEXT',
 	};
 
 	return (
@@ -19,13 +22,14 @@ const WithdrawNotification = ({ data, onClose }) => {
 			<NotificationContent>
 				{data.transaction_id && (
 					<div>
-						<span>{STRINGS.WITHDRAW_NOTIFICATION_TRANSACTION_ID}</span>
+						<span>
+							<EditWrapper stringId="WITHDRAW_NOTIFICATION_TRANSACTION_ID">
+								{STRINGS['WITHDRAW_NOTIFICATION_TRANSACTION_ID']}
+							</EditWrapper>
+						</span>
 						<div className="notification-link-wrapper">
 							<a
-								href={
-									EXPLORERS_ENDPOINT(data.currency) +
-									data.transaction_id
-								}
+								href={EXPLORERS_ENDPOINT(data.currency) + data.transaction_id}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="notification-link"
@@ -36,7 +40,7 @@ const WithdrawNotification = ({ data, onClose }) => {
 					</div>
 				)}
 			</NotificationContent>
-			<Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />
+			<Button label={STRINGS['CLOSE_TEXT']} onClick={onClose} />
 		</NotificationWraper>
 	);
 };

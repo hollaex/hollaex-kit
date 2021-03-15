@@ -16,24 +16,30 @@ import {
 	SET_ORDER_LIMITS,
 	SET_TICKER_FROM_TRADE,
 	SET_CURRENCIES,
-	SET_VALID_BASE_CURRENCY,
 	SET_CONFIG,
+	SET_PLUGINS,
 	SET_INFO,
 	SET_WAVE_AUCTION,
 	SET_PLUGINS_REQUEST,
 	SET_PLUGINS_SUCCESS,
-	SET_PLUGINS_FAILURE
+	SET_PLUGINS_FAILURE,
+	SET_CONFIG_LEVEL,
+	ADD_TO_FAVOURITES,
+	REMOVE_FROM_FAVOURITES,
+	SET_IS_READY,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
+import { unique } from 'utils/data';
+import { getFavourites, setFavourites } from 'utils/favourites';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
 	message: '',
 	contactFormData: {},
 	helpfulResourcesFormData: {},
-	timestamp: undefined
+	timestamp: undefined,
 };
 
 const EMPTY_SNACK_NOTIFICATION = {
@@ -42,10 +48,12 @@ const EMPTY_SNACK_NOTIFICATION = {
 	useSvg: true,
 	content: '',
 	isDialog: false,
-	dialogData: []
+	dialogData: [],
 };
 
 const INITIAL_STATE = {
+	isReady: false,
+	favourites: getFavourites() || [],
 	announcements: [],
 	notifications: [],
 	notificationsQueue: [],
@@ -71,7 +79,7 @@ const INITIAL_STATE = {
 			max: 100000,
 			increment_unit: 0.001,
 			deposit_limits: {},
-			withdrawal_limits: {}
+			withdrawal_limits: {},
 		},
 		xrp: {
 			id: 5,
@@ -85,7 +93,7 @@ const INITIAL_STATE = {
 			max: 100000,
 			increment_unit: 0.001,
 			deposit_limits: {},
-			withdrawal_limits: {}
+			withdrawal_limits: {},
 		},
 		eur: {
 			id: 1,
@@ -99,7 +107,7 @@ const INITIAL_STATE = {
 			max: 100000,
 			increment_unit: 0.0001,
 			deposit_limits: {},
-			withdrawal_limits: {}
+			withdrawal_limits: {},
 		},
 		btc: {
 			id: 2,
@@ -113,7 +121,7 @@ const INITIAL_STATE = {
 			max: 100000,
 			increment_unit: 0.0001,
 			deposit_limits: {},
-			withdrawal_limits: {}
+			withdrawal_limits: {},
 		},
 		eth: {
 			id: 3,
@@ -127,35 +135,40 @@ const INITIAL_STATE = {
 			max: 100000,
 			increment_unit: 0.001,
 			deposit_limits: {},
-			withdrawal_limits: {}
-		}
+			withdrawal_limits: {},
+		},
 	},
-	isValidBase: false,
 	constants: {},
-	config_level: [],
+	config_level: {},
 	info: { is_trial: false, active: true, status: true },
 	wave: [],
 	enabledPlugins: [],
 	availablePlugins: [],
-	getPluginLoading: false
+	getPluginLoading: false,
+	features: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 	switch (type) {
+		case SET_IS_READY:
+			return {
+				...state,
+				isReady: payload,
+			};
 		case SET_PAIRS:
 			return {
 				...state,
-				pairs: payload.pairs
+				pairs: payload.pairs,
 			};
 		case 'CHANGE_PAIR':
 			return {
 				...state,
-				pair: payload.pair
+				pair: payload.pair,
 			};
 		case SET_CURRENCIES:
 			return {
 				...state,
-				coins: payload.coins
+				coins: payload.coins,
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =
@@ -177,7 +190,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				notifications,
 				activeNotification,
 				contactFormData: payload.data,
-				notificationsQueue
+				notificationsQueue,
 			};
 		}
 
@@ -192,7 +205,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				notificationsQueue,
 				activeNotification,
-				contactFormData: {}
+				contactFormData: {},
 			};
 		}
 
@@ -205,14 +218,14 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					showSnack: true,
 					icon: payload.icon ? payload.icon : '',
 					useSvg: payload.useSvg ? payload.useSvg : true,
-					content: payload.content ? payload.content : ''
-				}
+					content: payload.content ? payload.content : '',
+				},
 			};
 
 		case CLOSE_SNACK_NOTIFICATION:
 			return {
 				...state,
-				snackNotification: EMPTY_SNACK_NOTIFICATION
+				snackNotification: EMPTY_SNACK_NOTIFICATION,
 			};
 
 		case SET_SNACK_DIALOG:
@@ -221,7 +234,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			if (isDialog) {
 				dialogData = [
 					...dialogData,
-					{ ...rest, id: `snack-dialog-${dialogData.length + 1}` }
+					{ ...rest, id: `snack-dialog-${dialogData.length + 1}` },
 				];
 			}
 			return {
@@ -229,8 +242,8 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				snackNotification: {
 					...state.snackNotification,
 					isDialog,
-					dialogData
-				}
+					dialogData,
+				},
 			};
 
 		case CLOSE_SNACK_DIALOG:
@@ -245,55 +258,53 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				snackNotification: {
 					...state.snackNotification,
 					isDialog: openDialog,
-					dialogData: dataDialog
-				}
+					dialogData: dataDialog,
+				},
 			};
 
 		case SET_UNREAD:
 			return {
 				...state,
-				chatUnreadMessages: payload.chatUnreadMessages
+				chatUnreadMessages: payload.chatUnreadMessages,
 			};
 
 		case SET_ANNOUNCEMENT:
-			const announcements = state.announcements.concat(
-				payload.announcements
-			);
+			const announcements = state.announcements.concat(payload.announcements);
 			return {
 				...state,
-				announcements
+				announcements,
 			};
 		case SET_APP_ANNOUNCEMENT:
 			return {
 				...state,
-				announcements: payload.announcements
+				announcements: payload.announcements,
 			};
 
 		case CLOSE_ALL_NOTIFICATION:
 			return {
 				...state,
 				notificationsQueue: [],
-				activeNotification: EMPTY_NOTIFICATION
+				activeNotification: EMPTY_NOTIFICATION,
 			};
 
 		case CHANGE_LANGUAGE:
 			return {
 				...state,
-				language: payload.language
+				language: payload.language,
 			};
 
 		case CHANGE_THEME:
 			return {
 				...state,
-				theme: getTheme(payload.theme)
+				theme: getTheme(payload.theme),
 			};
 		case SET_TICKERS:
 			return {
 				...state,
 				tickers: {
 					...state.tickers,
-					...payload
-				}
+					...payload,
+				},
 			};
 		case SET_TICKER_FROM_TRADE:
 			let tempTickers = {};
@@ -310,7 +321,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 							: 0;
 					tempTickers[key] = {
 						...temp,
-						close
+						close,
 					};
 				}
 			});
@@ -318,53 +329,75 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				tickers: {
 					...state.tickers,
-					...tempTickers
-				}
+					...tempTickers,
+				},
 			};
 		case SET_ORDER_LIMITS:
 			return {
 				...state,
-				orderLimits: payload
-			};
-		case SET_VALID_BASE_CURRENCY:
-			return {
-				...state,
-				isValidBase: payload.isValidBase
+				orderLimits: payload,
 			};
 		case SET_CONFIG:
 			return {
 				...state,
 				constants: payload.constants,
-				config_level: payload.config_level,
-				enabledPlugins: payload.enabledPlugins
+				features: payload.features,
 			};
+
+		case SET_PLUGINS: {
+			return {
+				...state,
+				enabledPlugins: payload.enabledPlugins.map(({ name }) => name),
+			};
+		}
 		case SET_INFO:
 			return {
 				...state,
-				info: payload.info
+				info: payload.info,
 			};
-		case SET_WAVE_AUCTION: 
+		case SET_WAVE_AUCTION:
 			return {
 				...state,
-				wave: payload.data
+				wave: payload.data,
 			};
 		case SET_PLUGINS_REQUEST:
 			return {
 				...state,
 				availablePlugins: [],
-				getPluginLoading: true
+				getPluginLoading: true,
 			};
 		case SET_PLUGINS_SUCCESS:
 			return {
 				...state,
 				availablePlugins: payload,
-				getPluginLoading: false
+				getPluginLoading: false,
 			};
 		case SET_PLUGINS_FAILURE:
 			return {
 				...state,
-				getPluginLoading: false
+				getPluginLoading: false,
 			};
+		case SET_CONFIG_LEVEL:
+			return {
+				...state,
+				config_level: payload,
+			};
+		case ADD_TO_FAVOURITES: {
+			const favourites = unique([...state.favourites, payload]);
+			setFavourites(favourites);
+			return {
+				...state,
+				favourites,
+			};
+		}
+		case REMOVE_FROM_FAVOURITES: {
+			const favourites = state.favourites.filter((pair) => pair !== payload);
+			setFavourites(favourites);
+			return {
+				...state,
+				favourites,
+			};
+		}
 		default:
 			return state;
 	}

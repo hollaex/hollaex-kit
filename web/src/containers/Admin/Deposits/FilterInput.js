@@ -11,8 +11,15 @@ const onInputChange = (onChange) => (event) => {
 	onChange(value.trim());
 };
 
-export const FilterInput = ({ onChange, label, placeholder, description, defaultValue, className }) => (
-	<div className={classname("filter-input-wrapper", className)}>
+export const FilterInput = ({
+	onChange,
+	label,
+	placeholder,
+	description,
+	defaultValue,
+	className,
+}) => (
+	<div className={classname('filter-input-wrapper', className)}>
 		<div className="filter-input-label">{label}</div>
 		<div className="input-container">
 			<Input
@@ -35,14 +42,14 @@ export const FilterDate = ({
 	onChange,
 	description,
 	defaultValue,
-	className
+	className,
 }) => {
 	let formProps = {};
 	if (defaultValue) {
 		formProps.defaultValue = moment(new Date(defaultValue), dateFormat);
 	}
 	return (
-		<div className={classname("filter-input-wrapper", className)}>
+		<div className={classname('filter-input-wrapper', className)}>
 			<div className="filter-input-label">{label}</div>
 			<div className="input-container">
 				<DatePicker
@@ -56,4 +63,4 @@ export const FilterDate = ({
 			</div>
 		</div>
 	);
-}
+};

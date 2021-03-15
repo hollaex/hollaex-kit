@@ -22,7 +22,7 @@ const renderFields = (fields = {}, callback) => {
 					name: key,
 					type,
 					validate,
-					...rest
+					...rest,
 				};
 
 				switch (type) {

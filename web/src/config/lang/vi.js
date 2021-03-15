@@ -74,12 +74,11 @@ export default {
 		SECTION_3_CARD_6_TITLE: 'LIÊN KẾT KYC',
 		SECTION_3_CARD_6_TEXT:
 			'Chúng tôi mang tới một bộ máy linh hoạt, có khả năng mở rộng để có thể áp dụng KYC và các phương thức xác thực người dùng ở các phạm vi liên quan khác.',
-		SECTION_3_BUTTON_1: 'Xem Demo'
+		SECTION_3_BUTTON_1: 'Xem Demo',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -123,7 +122,7 @@ export default {
 		XHT_DESCRIPTION:
 			'HollaEx Kit là một nền tảng giao dịch mã nguồn mở được xây dựng bởi bitHolla Inc. Quý khách có thể tạo ra và niêm yết bất kỳ tài sản điện tử nào và hỗ trợ người dùng giao dịch trên sàn giao dịch của mình bằng cách sử dụng Kit sàn giao dịch. Cài đặt một bản cho riêng mình {1}.',
 		CLICK_HERE: 'Nhấn vào đây',
-		VISIT_HERE: 'Chuyển tới đây'
+		VISIT_HERE: 'Chuyển tới đây',
 	},
 	ACCOUNTS: {
 		TITLE: 'Tài khoản',
@@ -136,7 +135,7 @@ export default {
 		TAB_SUMMARY: 'Khái quát',
 		TAB_HISTORY: 'Lịch sử',
 		TAB_API: 'API',
-		TAB_SIGNOUT: 'Đăng xuất'
+		TAB_SIGNOUT: 'Đăng xuất',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
@@ -145,7 +144,7 @@ export default {
 		CATEGORY_PLACEHOLDER: 'Chọn hạng mục phù hợp nhất với vấn đề của quý khách',
 		INTRODUCTION_LABEL: 'Giới thiệu bản thân',
 		INTRODUCTION_PLACEHOLDER:
-			'Nền tảng của quý khách ở đâu? Quý khách hứng thú với việc vận hành sàn giao dịch?'
+			'Nền tảng của quý khách ở đâu? Quý khách hứng thú với việc vận hành sàn giao dịch?',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Hạng mục',
@@ -157,7 +156,7 @@ export default {
 			OPTION_BUG: 'Báo cáo lỗi', // ToDo:
 			OPTION_PERSONAL_INFO: 'Thay đổi thông tin cá nhân', // ToDo:
 			OPTION_BANK_TRANSFER: 'Chuyển khoản điện tử liên ngân hàng', // new
-			OPTION_REQUEST: 'Yêu cầu mời tham gia HollaEx Exchange' // new
+			OPTION_REQUEST: 'Yêu cầu mời tham gia HollaEx Exchange', // new
 		},
 		SUBJECT_LABEL: 'Tiêu đề',
 		SUBJECT_PLACEHOLDER: 'Nhập tiêu đề cho vấn đề của quý khách',
@@ -168,8 +167,9 @@ export default {
 			'Thêm tập tin để tạo thuận lợi cho công tác hỗ trợ. Tập dịnh có định dạng PDF, JPG, PNG và GIF được chấp nhận.',
 		SUCCESS_MESSAGE: 'Email đã được chuyển tới đội hỗ trợ của chúng tôi.',
 		SUCCESS_TITLE: 'Đã gửi',
-		SUCCESS_MESSAGE_1: 'Vấn đề của quý khách đã được gửi tới đội hỗ trợ khách hàng.',
-		SUCCESS_MESSAGE_2: 'Thủ tục hồi đáp có thể mất 1-3 ngày làm việc.'
+		SUCCESS_MESSAGE_1:
+			'Vấn đề của quý khách đã được gửi tới đội hỗ trợ khách hàng.',
+		SUCCESS_MESSAGE_2: 'Thủ tục hồi đáp có thể mất 1-3 ngày làm việc.',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
@@ -178,20 +178,19 @@ export default {
 			MEMO: 'Chú thích {0}', // new
 			BTC: 'Địa chỉ nhận Bitcoin',
 			ETH: 'Địa chỉ nhận Ethereum',
-			BCH: 'Địa chỉ nhận Bitcoin Cash'
+			BCH: 'Địa chỉ nhận Bitcoin Cash',
 		},
 		INCREASE_LIMIT: 'Quý khách muốn nâng hạn mức mỗi ngày của mình?',
-		QR_CODE:
-			'Người muốn chuyển tiền cho quý khách có thể quét mã QR này.',
+		QR_CODE: 'Người muốn chuyển tiền cho quý khách có thể quét mã QR này.',
 		NO_DATA: 'Không có thông tin phù hợp',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'Đăng nhập {0}',
-		CANT_LOGIN: "Quý khách không thể đăng nhập?",
-		NO_ACCOUNT: "Quý khách không có tài khoản?",
+		CANT_LOGIN: 'Quý khách không thể đăng nhập?',
+		NO_ACCOUNT: 'Quý khách không có tài khoản?',
 		CREATE_ACCOUNT: 'Tạo tài khoản tại đây',
-		HELP: 'Help'
+		HELP: 'Help',
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: 'Email',
@@ -199,7 +198,7 @@ export default {
 		PASSWORD_LABEL: 'Mật khẩu',
 		PASSWORD_PLACEHOLDER: 'Vui lòng nhập mật khẩu',
 		PASSWORD_REPEAT_LABEL: 'Vui lòng nhập lại mật khẩu',
-		PASSWORD_REPEAT_PLACEHOLDER: 'Vui lòng nhập lại mật khẩu'
+		PASSWORD_REPEAT_PLACEHOLDER: 'Vui lòng nhập lại mật khẩu',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Nhập mã OTP để đăng nhập',
@@ -214,16 +213,16 @@ export default {
 		INVALID_PASSWORD_2:
 			'Mật khẩu không hợp lệ. Mật khẩu cần bao gồm ít nhất 8 kts tự, ít nhất 1 chữ số và ít nhất 1 ký tự đặc biệt.',
 		INVALID_CURRENCY: 'Địa chỉ {0} không hợp lệ ({1})',
-		INVALID_BALANCE:
-			'Không đủ số dư ({0}) để thực hiện thủ tục ({1}).',
+		INVALID_BALANCE: 'Không đủ số dư ({0}) để thực hiện thủ tục ({1}).',
 		MIN_VALUE: 'Giá trị phải bằng {0} hoặc cao hơn.',
 		MAX_VALUE: 'Giá trị phải bằng {0} hoặc thấp hơn.',
 		INSUFFICIENT_BALANCE: 'Số dư không đủ',
-		PASSWORDS_DONT_MATCH: "Mật khẩu không chính xác",
+		PASSWORDS_DONT_MATCH: 'Mật khẩu không chính xác',
 		USER_EXIST: 'Đại chỉ email đã được sử dụng',
-		ACCEPT_TERMS: 'Quý khách chưa đồng ý Điều khoản sử dụng và chính sách bảo mật',
+		ACCEPT_TERMS:
+			'Quý khách chưa đồng ý Điều khoản sử dụng và chính sách bảo mật',
 		STEP: 'Giá trị không hợp lệ, step is {0}',
-		ONLY_NUMBERS: 'Chỉ có thể nhập chữ số'
+		ONLY_NUMBERS: 'Chỉ có thể nhập chữ số',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -237,8 +236,8 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
 		},
 		GENERAL_TERMS: {
 			TITLE: 'General Terms of Service',
@@ -251,15 +250,15 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
-		}
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
+		},
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
 			OKAY: 'Okay',
 			START_TRADING: 'Bắt đầu giao dịch',
-			SEE_HISTORY: 'Xem lịch sử'
+			SEE_HISTORY: 'Xem lịch sử',
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: 'Đã nhận {0} thành công',
@@ -269,12 +268,12 @@ export default {
 			INFORMATION_PENDING_1:
 				'{0} đòi hỏi ít nhất 1 lệnh chấp thuận trước khi có thể giao dịch.',
 			INFORMATION_PENDING_2:
-				'Thủ tục này có thể mất 10-30 phút. Chúng tôi sẽ gửi email thông báo khi {0} được chấp thuận trên blockchain.'
-		}
+				'Thủ tục này có thể mất 10-30 phút. Chúng tôi sẽ gửi email thông báo khi {0} được chấp thuận trên blockchain.',
+		},
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: 'Đã gửi yêu cầu',
-		BUTTON_TEXT: 'Okay'
+		BUTTON_TEXT: 'Okay',
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'Vui lòng nhập mã xác nhận để tiếp tục',
@@ -283,14 +282,14 @@ export default {
 		OTP_TITLE: 'Mã xác nhận',
 		OTP_HELP: 'Hỗ trợ',
 		OTP_BUTTON: 'Gửi',
-		ERROR_INVALID: 'Mã OTP không hợp lệ'
+		ERROR_INVALID: 'Mã OTP không hợp lệ',
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Nhanh',
 		TOTAL_COST: 'Tổng chi phí',
 		BUTTON: 'Kiểm tra yêu cầu đặt hàng {0}',
 		INPUT: 'Số lượng {0} muốn {1}',
-		TRADE_TITLE: '{1} {0}' // quick buy
+		TRADE_TITLE: '{1} {0}', // quick buy
 	},
 	PREVIOUS_PAGE: 'Trang trước',
 	NEXT_PAGE: 'Trang tiếp theo',
@@ -302,61 +301,62 @@ export default {
 		ORDERS_PLURAL: 'Đặt hàng',
 		ORDERS_SINGULAR: 'Đặt hàng',
 		HOLD_ORDERS:
-			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance'
+			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance',
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'Khôi phục tài khoản',
 		SUBTITLE: `Khôi phục tài khoản phía dưới của quý khách`,
 		SUPPORT: 'Liên hệ đội hỗ trợ',
-		BUTTON: 'Gửi liên kết khôi phục'
+		BUTTON: 'Gửi liên kết khôi phục',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
 		TITLE: 'Đã gửi yêu cầu đặt lại mật khẩu.',
 		TEXT:
-			'Nếu địa chỉ email này được sử dụng để đăng ký một tài khoản thì chúng tôi đã gửi thư tới địa chỉ này kèm theo hướng dẫn đặt lại. Vui lòng kiểm tra hòm thư của quý khách và nhấn vào liên kết để hoàn tất thủ tục đặt lại mật khẩu.'
+			'Nếu địa chỉ email này được sử dụng để đăng ký một tài khoản thì chúng tôi đã gửi thư tới địa chỉ này kèm theo hướng dẫn đặt lại. Vui lòng kiểm tra hòm thư của quý khách và nhấn vào liên kết để hoàn tất thủ tục đặt lại mật khẩu.',
 	},
 	RESET_PASSWORD: {
 		TITLE: 'Đặt mật khẩu mới',
 		SUBTITLE: 'Đặt mật khẩu mới',
-		BUTTON: 'Đặt mật khẩu mới'
+		BUTTON: 'Đặt mật khẩu mới',
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: 'Mật khẩu mới đã được thiết lập thành công.',
-		TEXT_2: 'Nhấn vào nút đăng nhập phía dưới để tiếp tục.'
+		TEXT_2: 'Nhấn vào nút đăng nhập phía dưới để tiếp tục.',
 	},
 	SIGN_UP: {
 		SIGNUP_TO: 'Đăng ký vào {0}',
-		NO_EMAIL: "Quý khách không nhận được email?",
+		NO_EMAIL: 'Quý khách không nhận được email?',
 		REQUEST_EMAIL: 'Yêu cầu gửi một email khác',
 		HAVE_ACCOUNT: 'Quý khách đã có tài khoản?',
 		GOTO_LOGIN: 'Chuyển tới trang đăng nhập',
 		AFFILIATION_CODE: 'Mã giới thiệu (không bắt buộc)',
-		AFFILIATION_CODE_PLACEHOLDER:'Vui lòng nhập mã giới thiệu',
+		AFFILIATION_CODE_PLACEHOLDER: 'Vui lòng nhập mã giới thiệu',
 		TERMS: {
 			terms: 'Điều khoản chung',
 			policy: 'Chính sách bảo mật',
-			text: 'Tôi đã đọc và đồng ý với {0} và {1}'
-		}
+			text: 'Tôi đã đọc và đồng ý với {0} và {1}',
+		},
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: 'Đã gửi email xác nhận.',
-		TEXT_1: 'Kiểm tra hòm thư của quý khách và nhấn vào liên kết để xác nhận địa chỉ email.',
+		TEXT_1:
+			'Kiểm tra hòm thư của quý khách và nhấn vào liên kết để xác nhận địa chỉ email.',
 		TEXT_2:
-			'Nếu không nhận được email, hãy kiểm tra hòm thư rác hoặc yêu cầu nhận một email xác nhận mới.'
+			'Nếu không nhận được email, hãy kiểm tra hòm thư rác hoặc yêu cầu nhận một email xác nhận mới.',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: 'Gửi lại email xác nhận',
-		BUTTON: 'Yêu cầu gửi email'
+		BUTTON: 'Yêu cầu gửi email',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: 'Đã gửi lại email xác nhận.',
 		TEXT_1:
-			'Trong trường hợp không nhận được email sau vài phút nữa, vui lòng liên hệ với chúng tôi theo địa chỉ bên dưới.'
+			'Trong trường hợp không nhận được email sau vài phút nữa, vui lòng liên hệ với chúng tôi theo địa chỉ bên dưới.',
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: 'Mã không hợp lệ',
-		TEXT_1: "Quý khách đã xác nhận địa chi email thành công.",
-		TEXT_2: 'Giờ đây, quý khách có thể thể đăng nhập vào tài khoản.'
+		TEXT_1: 'Quý khách đã xác nhận địa chi email thành công.',
+		TEXT_2: 'Giờ đây, quý khách có thể thể đăng nhập vào tài khoản.',
 	},
 	USER_VERIFICATION: {
 		INFO_TXT:
@@ -391,7 +391,8 @@ export default {
 		CHANGE_VALUE: 'Thay đổi',
 		PENDING_VERIFICATION_PERSONAL_INFORMATION:
 			'Các thông tin cá nhân của quý khách đang được xử lý',
-		PENDING_VERIFICATION_BANK: 'THông tin chi tiết về ngân hàng của quý khách đã được xác thực.',
+		PENDING_VERIFICATION_BANK:
+			'THông tin chi tiết về ngân hàng của quý khách đã được xác thực.',
 		PENDING_VERIFICATION_DOCUMENTS: 'Tài liệu của quý khách đã được xác thực',
 		GOTO_VERIFICATION: 'Chuyển đến trang Xác thực',
 		GOTO_WALLET: 'Chuyển đến Ví', // new
@@ -449,7 +450,7 @@ export default {
 				GENDER_PLACEHOLDER: 'Vui lòng nhập giới tính của quý khách',
 				GENDER_OPTIONS: {
 					MAN: 'Nam',
-					WOMAN: 'Nữ'
+					WOMAN: 'Nữ',
 				},
 				NATIONALITY_LABEL: 'Quốc tịch',
 				NATIONALITY_PLACEHOLDER:
@@ -464,14 +465,15 @@ export default {
 				POSTAL_CODE_LABEL: 'Mã bưu điện',
 				POSTAL_CODE_PLACEHOLDER: 'Vui lòng nhập mã bưu điện',
 				PHONE_CODE_LABEL: 'Quốc Gia',
-				PHONE_CODE_PLACEHOLDER: 'Vui lòng chọn quốc gia nơi số điện thoại của bạn được hòa mạng',
+				PHONE_CODE_PLACEHOLDER:
+					'Vui lòng chọn quốc gia nơi số điện thoại của bạn được hòa mạng',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Số điện thoại',
 				PHONE_NUMBER_PLACEHOLDER: 'Vui lòng nhập số điện thoại của quý khách',
 				CONNECTING_LOADING: 'Connecting',
 				SMS_SEND: 'Gửi SMS',
 				SMS_CODE_LABEL: 'Mã xác nhậnSMS',
-				SMS_CODE_PLACEHOLDER: 'Nhập mã xác nhận SMS'
+				SMS_CODE_PLACEHOLDER: 'Nhập mã xác nhận SMS',
 			},
 			INFORMATION: {
 				TEXT:
@@ -483,27 +485,27 @@ export default {
 				PHONE_VERIFICATION_TXT_1:
 					'Xác thực số điện thoại để nhận nhận thông báo cập nhật trực tiếp về các giao dịch nạp tiền và rút tiền.',
 				PHONE_VERIFICATION_TXT_2:
-					'Cung cấp số điện thoại LAN của quý khách và thực hiện các thủ tục xác thực bổ sung (không bắt buộc).'
-			}
+					'Cung cấp số điện thoại LAN của quý khách và thực hiện các thủ tục xác thực bổ sung (không bắt buộc).',
+			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
 				ID_TYPE: 'Hãy chọn một loại giấy tờ tùy thân',
 				ID_NUMBER: 'Vui lòng nhập số giấy tờ tùy thân',
 				ISSUED_DATE: 'Vui lòng nhập ngày cấp',
-				EXPIRATION_DATE:
-					'Vui lòng nhập ngày hết hạn',
+				EXPIRATION_DATE: 'Vui lòng nhập ngày hết hạn',
 				FRONT: 'Vui lòng tải lên bản scan hộ chiếu của quý khách.',
 				PROOF_OF_RESIDENCY:
 					'Vui lòng tải lên hồ sơ chứng minh nơi cư trú hiện tại của quý khách',
-				SELFIE_PHOTO_ID: 'Vui lòng tải lên ảnh chụp chân dung ở tư thế đang cầm hộ chiếu và giấy ghi chú.'
+				SELFIE_PHOTO_ID:
+					'Vui lòng tải lên ảnh chụp chân dung ở tư thế đang cầm hộ chiếu và giấy ghi chú.',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'Loại giấy tờ tùy thân',
 				TYPE_PLACEHOLDER: 'Vui lòng chọn loại giấy tờ tùy thân',
 				TYPE_OPTIONS: {
 					ID: 'Chứng minh thư nhân dân',
-					PASSPORT: 'Hộ chiếu'
+					PASSPORT: 'Hộ chiếu',
 				},
 				ID_NUMBER_LABEL: 'Số hộ chiếu',
 				ID_NUMBER_PLACEHOLDER: 'Vui lòng nhập số hộ chiếu',
@@ -514,21 +516,22 @@ export default {
 				FRONT_LABEL: 'Hộ chiếu',
 				FRONT_PLACEHOLDER: 'Thêm bản sao hộ chiếu',
 				BACK_LABEL: 'Mặt sau hộ chiếu',
-				BACK_PLACEHOLDER:
-					'Thêm bản sao mặt sau hộ chiếu của quý khách',
+				BACK_PLACEHOLDER: 'Thêm bản sao mặt sau hộ chiếu của quý khách',
 				PASSPORT_LABEL: 'Hộ chiếu',
 				PASSPORT_PLACEHOLDER: 'Thêm bản sao hộ chiếu',
 				POR_LABEL: 'Hồ sơ nơi cư trú',
 				POR_PLACEHOLDER: 'Thêm hồ sơ chứng minh nơi cư trú',
-				SELFIE_PHOTO_ID_LABEL: 'Ảnh chân dung chụp cùng hộ chiếu và giấy ghi chú',
+				SELFIE_PHOTO_ID_LABEL:
+					'Ảnh chân dung chụp cùng hộ chiếu và giấy ghi chú',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Thêm ảnh chân dùng chụp cùng hộ chiếu và giấy ghi chú'
+					'Thêm ảnh chân dùng chụp cùng hộ chiếu và giấy ghi chú',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
 				PROOF_OF_RESIDENCY: 'Hồ sơ nơi cư trú',
 				ID_SECTION: {
-					TITLE: 'Vui lòng đảm bảo rằng hồ sơ của quý khách đáp ứng các hạng mục sau:',
+					TITLE:
+						'Vui lòng đảm bảo rằng hồ sơ của quý khách đáp ứng các hạng mục sau:',
 					LIST_ITEM_1:
 						'CHẤT LƯỢNG CAO (ảnh màu, độ phân giải 300dpi hoặc cao hơn).',
 					LIST_ITEM_2: 'RÕ NÉT (watermark được cho phép).',
@@ -537,8 +540,7 @@ export default {
 						'Chỉ hộ chiếu còn hiệu lực mới được chấp nhận; tài liệu dưới dạng ảnh chụp rõ nét hoặc bản scan được chấp nhận:',
 					WARNING_2:
 						'Hãy chắc chắn rằng quý khách tải lên hồ sơ của chính mình. Trong trường hợp xác nhận là hồ sơ giả mạo, chúng tôi sẽ thực hiện các thủ tục pháp lý và đóng băng tài khoản của quý khách ngay lập tức.',
-					WARNING_3:
-						'Không nộp hộ chiếu làm hồ sơ chứng minh nơi cư trú.'
+					WARNING_3: 'Không nộp hộ chiếu làm hồ sơ chứng minh nơi cư trú.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -549,29 +551,30 @@ export default {
 						'Hồ sơ chứng minh nơi cư chú KHÔNG ĐƯỢC VƯỢT QUÁ 3 THÁNG KỂ TỪ NGÀY CẤP.',
 					SECTION_1_TEXT_4:
 						'Quý khách nộp ảnh chụp màu hoặc bản scan CHẤT LƯỢNG CAO(độ phân giải thấp nhất 300 DPI)',
-					SECTION_2_TITLE: 'HÔ SƠ CHỨNG MINH NƠI CƯ TRÚ ĐƯỢC CHẤP NHẬN BAO GỒM:',
+					SECTION_2_TITLE:
+						'HÔ SƠ CHỨNG MINH NƠI CƯ TRÚ ĐƯỢC CHẤP NHẬN BAO GỒM:',
 					SECTION_2_LIST_ITEM_1: 'A bank account statement.',
 					SECTION_2_LIST_ITEM_2:
 						'Hóa đơn thanh toán chi phí dịch vụ(điện, nước, internet, vv.).',
 					SECTION_2_LIST_ITEM_3:
 						'Giấy tờ do nhà nước cấp (hóa đơn thuế, bản sao chứng minh thư nhân dân, vv.).',
 					WARNING:
-						'Chúng tôi không chấp địa chỉ trên giấy tờ tùy hận được nộp là cơ sở chứng minh nơi cư trú.'
+						'Chúng tôi không chấp địa chỉ trên giấy tờ tùy hận được nộp là cơ sở chứng minh nơi cư trú.',
 				},
 				SELFIE: {
 					TITLE: 'Ảnh chân dùng chụp cùng hộ chiếu và giấy ghi chú',
 					INFO_TEXT:
-						"Vui lòng cung cấp ảnh chụp ở tư thế đang cầm hộ chiếu và giấy ghi chú được viết: địa chỉ sàn giao dịch, ngày tháng và chữ ký. Hãy chắc chắn rằng mặt của quý khách xuất hiện rõ nét và thông tin trên giấy tờ tùy nhân có thể đọc được.",
+						'Vui lòng cung cấp ảnh chụp ở tư thế đang cầm hộ chiếu và giấy ghi chú được viết: địa chỉ sàn giao dịch, ngày tháng và chữ ký. Hãy chắc chắn rằng mặt của quý khách xuất hiện rõ nét và thông tin trên giấy tờ tùy nhân có thể đọc được.',
 					REQUIRED: 'Yêu cầu:',
 					INSTRUCTION_1: 'Khuôn mặt xuất hiện rõ nét',
 					INSTRUCTION_2: 'Có thể đọc được thông tin trên hệ chiếu',
 					INSTRUCTION_3: 'Viết tên sàn giao dịch',
-					INSTRUCTION_4: "Viết ngày đăng ký",
+					INSTRUCTION_4: 'Viết ngày đăng ký',
 					INSTRUCTION_5: 'Ký tên của quý khách',
 					WARNING:
-						'Ảnh chân dung chụp cùng hộ chiếc khác với bản đã tải lên sẽ bị từ chối.'
-				}
-			}
+						'Ảnh chân dung chụp cùng hộ chiếc khác với bản đã tải lên sẽ bị từ chối.',
+				},
+			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
@@ -581,7 +584,7 @@ export default {
 					'Số tài khoản của quý khách không thể vượt quá 50 ký tự.',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Số tài khoản của quý khách bị giới hạn trong 50 ký tự.',
-				CARD_NUMBER: 'Hình thức thẻ ngân hàng không hợp lệ'
+				CARD_NUMBER: 'Hình thức thẻ ngân hàng không hợp lệ',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'Tên ngân hàng',
@@ -592,15 +595,16 @@ export default {
 				ACCOUNT_OWNER_PLACEHOLDER: 'Vui lòng nhập tên chủ tài khoản ngân hàng',
 				CARD_NUMBER_LABEL: 'Số thẻ ngân hàng',
 				CARD_NUMBER_PLACEHOLDER:
-					'Vui lòng nhập số thẻ ngân hàng gồm 16 chữ số ở mặt trước của thẻ'
-			}
+					'Vui lòng nhập số thẻ ngân hàng gồm 16 chữ số ở mặt trước của thẻ',
+			},
 		},
 		WARNING: {
-			TEXT_1: 'Quý khách có thể sử dụng các dịch vụ sau nếu xác thực người dùng:',
+			TEXT_1:
+				'Quý khách có thể sử dụng các dịch vụ sau nếu xác thực người dùng:',
 			LIST_ITEM_1: 'Tăng hạn mức rút tiền',
 			LIST_ITEM_2: 'Tăng hạn mức nạp tiền',
-			LIST_ITEM_3: 'Chi phí thấp hơn'
-		}
+			LIST_ITEM_3: 'Chi phí thấp hơn',
+		},
 	},
 	USER_SETTINGS: {
 		TITLE_TEXT_1:
@@ -628,29 +632,26 @@ export default {
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Cửa sổ thông báo giao dịch',
 			POPUP_ORDER_CONFIRMATION: 'Yêu cầu xác nhận trước khi gửi đơn đặt hàng',
-			POPUP_ORDER_COMPLETED: 'Hiển thị cửa sổ thông báo sau khi đặt hàng thành công.',
+			POPUP_ORDER_COMPLETED:
+				'Hiển thị cửa sổ thông báo sau khi đặt hàng thành công.',
 			POPUP_ORDER_PARTIALLY_FILLED:
-				'Hiển thị cửa sổ thông báo khi đơn đặt hàng được tiến hành từng phần'
+				'Hiển thị cửa sổ thông báo khi đơn đặt hàng được tiến hành từng phần',
 		},
-		AUDIO_CUE_FORM: { // new
+		AUDIO_CUE_FORM: {
+			// new
 			ALL_AUDIO: 'Bật âm thanh cho tất cả',
 			PUBLIC_TRADE_AUDIO: 'KHi giao dịch công khai được thực hiện',
 			ORDERS_PARTIAL_AUDIO:
 				'KHi một trong những đơn đặt hàng được tiến hành từng phần',
-			ORDERS_PLACED_AUDIO:
-				'Khi một đơn đặt hàng được tạo',
-			ORDERS_CANCELED_AUDIO:
-				'Khi một đơn đặt hàng bị hủy',
+			ORDERS_PLACED_AUDIO: 'Khi một đơn đặt hàng được tạo',
+			ORDERS_CANCELED_AUDIO: 'Khi một đơn đặt hàng bị hủy',
 			ORDERS_COMPLETED_AUDIO:
 				'Khi một trong những đơn đặt hàng hoàn tất thành công',
-			CLICK_AMOUNTS_AUDIO:
-				'Khi nhấn chọn số lượng và giá trong sổ lệnh',
-			GET_QUICK_TRADE_AUDIO:
-				'Khi có một lời nhẳn trong giao dịch nhanh',
+			CLICK_AMOUNTS_AUDIO: 'Khi nhấn chọn số lượng và giá trong sổ lệnh',
+			GET_QUICK_TRADE_AUDIO: 'Khi có một lời nhẳn trong giao dịch nhanh',
 			SUCCESS_QUICK_TRADE_AUDIO:
 				'Khi có một giao dịch nhanh diễn ra thành công',
-			QUICK_TRADE_TIMEOUT_AUDIO:
-				'Khi hết thời gian giao dịch nhanh',
+			QUICK_TRADE_TIMEOUT_AUDIO: 'Khi hết thời gian giao dịch nhanh',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -660,8 +661,8 @@ export default {
 			TOMAN_ASSET: 'Giá trị ước chừng',
 			ADJUST: '(ĐIỀU CHỈNH TỶ LỆ)',
 			ACTIVATE_RISK_MANAGMENT: 'Bật quản lý nguy hiểm',
-			WARNING_POP_UP: 'Cửa sổ cảnh báo'
-		}
+			WARNING_POP_UP: 'Cửa sổ cảnh báo',
+		},
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'Lịch sử',
@@ -671,21 +672,22 @@ export default {
 		TEXT_DOWNLOAD: 'TẢI LỊCH SỬ',
 		TRADES: 'Giao dịch',
 		DEPOSITS: 'Nạp tiền',
-		WITHDRAWALS: 'Rút tiền'
+		WITHDRAWALS: 'Rút tiền',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.',
+		TITLE_TEXT:
+			'Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.',
 		OTP: {
 			TITLE: 'Xác thực 2 yếu tố',
 			OTP_ENABLED: 'Bật OTP',
 			OTP_DISABLED: 'VUI LÒNG BẬT 2FA',
 			ENABLED_TEXTS: {
 				TEXT_1: 'Yêu cầu OYP khi đăng nhập',
-				TEXT_2: 'Yeu cầu OTP khi rút tiền'
+				TEXT_2: 'Yeu cầu OTP khi rút tiền',
 			},
 			DIALOG: {
 				SUCCESS: 'Quý khách đã kích hoacjt OTP thành công.',
-				REVOKE: 'Quý khách đã hủy OTP thành công'
+				REVOKE: 'Quý khách đã hủy OTP thành công',
 			},
 			CONTENT: {
 				TITLE: 'Kích hoạt Xác thực 2 yếu tố',
@@ -704,82 +706,95 @@ export default {
 				DISABLE: 'Tắt Xác thực 2 yếu Tối',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'Nhập mật khẩu một lần (OTP)',
-				MESSAGE_6: 'Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.',
+				MESSAGE_6:
+					'Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.',
 				INPUT_2: 'Mật khẩu một lần (OTP)',
 			},
 			FORM: {
-				PLACEHOLDER: 'Vui lòng nhập OTP được cung cấp bởi Google Authenticator.',
-				BUTTON: 'Bật 2FA'
-			}
+				PLACEHOLDER:
+					'Vui lòng nhập OTP được cung cấp bởi Google Authenticator.',
+				BUTTON: 'Bật 2FA',
+			},
 		},
 		CHANGE_PASSWORD: {
 			TITLE: 'Thay đổi mật khẩu',
 			ACTIVE: 'KÍCH HOẠT',
 			DIALOG: {
-				SUCCESS: 'Mật khẩu đã được thay đổi thành công.'
+				SUCCESS: 'Mật khẩu đã được thay đổi thành công.',
 			},
 			FORM: {
 				BUTTON: 'Thay đổi mật khẩu',
 				CURRENT_PASSWORD: {
 					label: 'Mật khẩu hiện tại',
-					placeholder: 'Vui lòng nhập mật khẩu hiện tại'
+					placeholder: 'Vui lòng nhập mật khẩu hiện tại',
 				},
 				NEW_PASSWORD: {
 					label: 'Mật khẩu mới',
-					placeholder: 'Vui lòng nhập mật khẩu mới'
+					placeholder: 'Vui lòng nhập mật khẩu mới',
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: 'Xác nhận mật khẩu mới',
-					placeholder: 'Vui lòng nhập lại mật khẩu mới'
-				}
-			}
+					placeholder: 'Vui lòng nhập lại mật khẩu mới',
+				},
+			},
 		},
 		LOGIN: {
 			TITLE: 'Lịch sử đăng nhập',
 			CONTENT: {
 				TITLE: 'Lịch sử đăng nhập',
-				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
-			}
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
 		},
 		FREEZE: {
 			TITLE: 'Freeze Account',
 			CONTENT: {
-				MESSAGE_1: 'Freezing your account will stop whitdrawals and halts all tradings.',
-				WARNING_1: 'Use only if you fear that your account has been compromised',
+				MESSAGE_1:
+					'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1:
+					'Use only if you fear that your account has been compromised',
 				TITLE_1: 'Freeze your Account',
 				TITLE_2: 'Account freezing',
-				MESSAGE_2: 'Freezing your account may help guard your account from cyber attacks.',
-				MESSAGE_3: 'The following will occur if you choose to freeze your account:',
+				MESSAGE_2:
+					'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3:
+					'The following will occur if you choose to freeze your account:',
 				MESSAGE_4: '1. Pending withdrawals will be canceled.',
-				MESSAGE_5: '2. All tradings will be halted and unfilled orders will be canceled.',
-				MESSAGE_6: '3. Containing support will be required to reactivate your account.',
-				WARNING_2: 'Do you really want to freeze your account?'
-			}
-		}
+				MESSAGE_5:
+					'2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6:
+					'3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?',
+			},
+		},
 	},
 	CURRENCY: 'Loại tiền',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
-		limit: 'limit'
+		limit: 'limit',
 	},
 	TYPES: [
 		{ value: 'market', label: 'Thị trường' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'Giới hạn' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'Giới hạn' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
 		buy: 'Mua',
-		sell: 'Bán'
+		sell: 'Bán',
 	},
-	SIDES: [{ value: 'buy', label: 'Mua' }, { value: 'sell', label: 'Bán' }], // DO NOT CHANGE value, ONLY TRANSLATE label
+	SIDES: [
+		{ value: 'buy', label: 'Mua' },
+		{ value: 'sell', label: 'Bán' },
+	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: 'Độ lớn',
 	PRICE: 'Giá',
@@ -807,7 +822,7 @@ export default {
 	RECENT_TRADES: 'Giao dịch gần đây của tôi', // ToDo
 	PUBLIC_SALES: 'BÁN CÔNG KHAI', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	FILLED: 'Filled', // new
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
@@ -825,7 +840,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Khối lượng'
+		v: 'Khối lượng',
 	},
 	QUICK_TRADE: 'Giao dịch nhanh',
 	PRO_TRADE: 'Giao dịch chuyên nghiệp',
@@ -856,8 +871,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: 'Số lượng {0} muốn rút',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Phí giao dịch',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Phí giao dịch',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -883,7 +897,8 @@ export default {
 	DEPOSIT_VERIFICATION_WARNING_INFORMATION:
 		'This is the ID of the operation: "{0}", please provide us this ID to help you.',
 	DEPOSIT_VERIFICATION_SUCCESS: 'Đã xác nhận thanh toán',
-	DEPOSIT_VERIFICATION_ERROR: 'Đã xảy ra lỗi trong quá trình xác nhận yêu cầu nạp tiền.',
+	DEPOSIT_VERIFICATION_ERROR:
+		'Đã xảy ra lỗi trong quá trình xác nhận yêu cầu nạp tiền.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'Yêu cầu nạp tiền đã được xác nhận.',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Trạng thái lỗi',
 	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
@@ -914,10 +929,11 @@ export default {
 		CONFIRM_VIA_EMAIL_2:
 			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal request is confirmed. It will be processed shortly.',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'Your withdrawal request is confirmed. It will be processed shortly.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'In order to view your withdrawal status please visit your withdrawal history page.',
-		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
+		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History',
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'Nạp tiền',
 	WALLET_BUTTON_BASE_WITHDRAW: 'Rút tiền',
@@ -1002,17 +1018,18 @@ export default {
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'YES' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'YES' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'Chủ đề giao diện người dùng', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'White' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'dark', label: 'Dark' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Dark' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'Lưu',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Vô hiệu hóa rút tiền',
-	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Chức năng rút tiền trên tài khoản của quý khách đã bị vô hiệu hóa.',
+	VERIFICATION_NO_WITHDRAW_MESSAGE:
+		'Chức năng rút tiền trên tài khoản của quý khách đã bị vô hiệu hóa.',
 	UP_TO_MARKET: 'Up to market',
 	VIEW_MY_FEES: 'Xem phí giao dịch của tôi', // new
 	DEVELOPER_SECTION: {
@@ -1027,7 +1044,7 @@ export default {
 		ACTIVE: 'Kích hoạt',
 		INACTIVE: 'Vô hiệu hóa',
 		INVALID_LEVEL:
-			'Quý khách cần nâng cấp độ xác thực của tài khoản để sử dụng chức năng này.' // TODO
+			'Quý khách cần nâng cấp độ xác thực của tài khoản để sử dụng chức năng này.', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Tạo khóa API',
@@ -1045,7 +1062,7 @@ export default {
 		CREATED_TITLE: 'Sao chép khóa API',
 		CREATED_TEXT_1:
 			'Vui lòng sao chép khóa API của mình bởi quý khách không thể kiểm tra lại trong tương lai.',
-		CREATED_TEXT_2: 'Bảo quản khóa của mình một cách bí mật.'
+		CREATED_TEXT_2: 'Bảo quản khóa của mình một cách bí mật.',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Tên',
@@ -1054,7 +1071,7 @@ export default {
 		CREATED: 'Ngày tạo',
 		REVOKE: 'Hủy',
 		REVOKED: 'Đã hủy',
-		REVOKE_TOOLTIP: 'Quý khách cần bật @FA để hủy token.' // TODO
+		REVOKE_TOOLTIP: 'Quý khách cần bật @FA để hủy token.', // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: 'Trò chyện',
@@ -1066,7 +1083,7 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Tin nhắn',
 		SIGN_UP_CHAT: 'Đăng nhập để trò chuyện',
 		JOIN_CHAT: 'Đặt tên để trò chuyện',
-		TROLLBOX: 'Trollbox ({0})' // new
+		TROLLBOX: 'Trollbox ({0})', // new
 	},
 	INVALID_USERNAME:
 		'Tên người dùng cần bao gồm 3~15 ký tự. Chỉ có chữ cái thường, chữ số và _ được chấp nhận.',
@@ -1094,7 +1111,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Không giới hạn',
-		BLOCKED: '0'
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Tạo ví {0}',
 	WALLET_ADDRESS_GENERATE: 'Tạo',
@@ -1188,7 +1205,7 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: 'Tài khoản hoạt động {0} tháng',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Khối lượng giao dịch tương đương',
 		LEVEL_OF_ACCOUNT: 'Tài khoản cấp bậc {0}',
-		LEVEL_TXT_DEFAULT: 'Thêm miêu tả về cấp bậc của quý khách tại đây.',  
+		LEVEL_TXT_DEFAULT: 'Thêm miêu tả về cấp bậc của quý khách tại đây.',
 		LEVEL_1_TXT:
 			'Cuộc hành trình của quý khách bắt đầu tại đây, những trader tiền điện tử! Hãy xác thực thông tin cá nhân để nhận phần thưởng cũng như nâng cao hạn mức Nạp tiền & Rút tiền và giảm phí giao dịch.', // new
 		LEVEL_2_TXT:
@@ -1225,15 +1242,20 @@ export default {
 		TRADE_OVER_BTC: 'Giao dịch có giá trị trên {0} BTC', // new
 		XHT_IN_WALLET: '{0} XHT trong ví', // new
 		REWARDS_BONUS: 'Phần thưởng và Hoa hồng', // new
-		COMPLETE_TASK_DESC: 'Hoàn thành nhiệm vụ và nhận phần thưởng trị giá hơn $10,000.', // new
+		COMPLETE_TASK_DESC:
+			'Hoàn thành nhiệm vụ và nhận phần thưởng trị giá hơn $10,000.', // new
 		TASKS: 'Nhiệm vụ', // new
 		MAKE_FIRST_DEPOSIT: 'Thực hiện lệnh nạp tiền đầu tiên và nhận 1 XHT', // new
-		BUY_FIRST_XHT: 'Thực hiện giao dịch mua XHT đầu tiên và nhận phần thưởng tương ứng 5 XHT', // new
+		BUY_FIRST_XHT:
+			'Thực hiện giao dịch mua XHT đầu tiên và nhận phần thưởng tương ứng 5 XHT', // new
 		COMPLETE_ACC_VERIFICATION:
 			'Hoàn tất thủ tục xác thực tài khoản và nhận phần thưởng tương ứng 20 XHT', // new
-		INVITE_USER: 'Mời những người dùng khác và nhận hoa hồng từ các giao dịch của họ', // new
-		JOIN_HAP: 'Tham gia HAP và thu về 10% cho mỗi HollaEx Kit mà quý khách bán được', // new
-		EARN_RUNNING_EXCHANGE: 'Nhận nguồn thu nhập thụ động bằng cách điều hành sàn giao dịch của riêng mình', // new
+		INVITE_USER:
+			'Mời những người dùng khác và nhận hoa hồng từ các giao dịch của họ', // new
+		JOIN_HAP:
+			'Tham gia HAP và thu về 10% cho mỗi HollaEx Kit mà quý khách bán được', // new
+		EARN_RUNNING_EXCHANGE:
+			'Nhận nguồn thu nhập thụ động bằng cách điều hành sàn giao dịch của riêng mình', // new
 		XHT_WAVE_AUCTION: 'Dữ liệu XHT Wave Auction', // new
 		XHT_WAVE_DESC_1:
 			'Sự phân bổ HollaEx token (XHT) được thực hiện thông qua Wave Auction.', // new
@@ -1245,7 +1267,7 @@ export default {
 		LEARN_MORE_WAVE_AUCTION: 'Tìm hiểu thêm Wave Auction', // new
 		WAVE_NUMBER: 'Số Wave', // new
 		DISCOUNT: '( Khuyến mại {0}% )', // new
-		MY_FEES_LIMITS: 'Phí giao dịch và Hạn mức của tôi' // new
+		MY_FEES_LIMITS: 'Phí giao dịch và Hạn mức của tôi', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Mời bạn', // new
@@ -1263,7 +1285,7 @@ export default {
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earn:', // new
 		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'APPLY' // new
+		APPLY_BUTTON: 'APPLY', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
@@ -1273,19 +1295,17 @@ export default {
 			'Quý khách có thể thế chấp HollaEx token dưới cùng hình thức và thu về XHT không được bán trong suốt khoảng thời gian Wave Auction.', // new
 		INFO_TXT3:
 			'Đơn giản chỉ cần truy cập dash.bitholla.com và thế chấp sàn giao dịch của riêng mình ngay hôm nay và thu về XHT miễn phí.', // new
-		BUTTON_TXT: 'TÌM HIỂU THÊM' // new
+		BUTTON_TXT: 'TÌM HIỂU THÊM', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
 		TITLE: 'Thỏa thuận mua HollaEx',
 		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: 'TIẾN HÀNH',
-		AGREE_TERMS_LABEL:
-			'Tôi đã đọc và đồng ý với Thỏa thuận mua HollaEx Token',
+		AGREE_TERMS_LABEL: 'Tôi đã đọc và đồng ý với Thỏa thuận mua HollaEx Token',
 		RISK_INVOLVED_LABEL: 'Tôi hiểu rõ về những rủi ro có thể xảy ra',
 		DOWNLOAD_PDF: 'Tải tập tin PDF',
-		DEPOSIT_FUNDS:
-			'Nạp tiền vào ví của quý khách để nhận HollaEx Token (XHT)',
+		DEPOSIT_FUNDS: 'Nạp tiền vào ví của quý khách để nhận HollaEx Token (XHT)',
 		READ_FAG: 'Đọc FAQ về HollaEx tại đây: {0}',
 		READ_DOCUMENTATION: 'Đọc whitepaper của HollaEx tại đây: {0}',
 		READ_WAVES: 'Quy tắc của đợt Wave Auction công khai tháng 12 sắp tới {0}', // new
@@ -1305,8 +1325,9 @@ export default {
 		XHT_ORDER_TXT_3: '{0} hoặc {1}', // new
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'Đăng nhập để xem các  giao dịch gần đây của mình', //new
-		XHT_TRADE_TXT_2: 'Quý khách có thể {0} để xem lịch sử những giao dịch gần đây.', //new
-		LOGIN_HERE: 'Đăng nhập tại đây'
+		XHT_TRADE_TXT_2:
+			'Quý khách có thể {0} để xem lịch sử những giao dịch gần đây.', //new
+		LOGIN_HERE: 'Đăng nhập tại đây',
 	},
 	WAVES: {
 		// new
@@ -1314,7 +1335,7 @@ export default {
 		NEXT_WAVE: 'Next Wave',
 		WAVE_AMOUNT: 'Amount in Wave',
 		FLOOR: 'Floor',
-		LAST_WAVE: 'Last wave'
+		LAST_WAVE: 'Last wave',
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1327,15 +1348,14 @@ export default {
 		SYSTEM_UPDATE_DURATION: '1 hour',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
 	},
 	USER_LEVEL: 'Cấp bậc người dùng', // new
 	LIMIT_AMOUNT: 'Khối lượng hạn mức', // new
 	FEE_AMOUNT: 'Khối lượng phí giao dịch', // new
 	COINS: 'Coin', // new
 	PAIRS: 'Cặp', // new
-	NOTE_FOR_EDIT_COIN:
-		'Lưu ý: Để thêm hoặc xóa {0}, vui lòng tham khảo {1}.', // new
+	NOTE_FOR_EDIT_COIN: 'Lưu ý: Để thêm hoặc xóa {0}, vui lòng tham khảo {1}.', // new
 	REFER_DOCS_LINK: 'Văn bản', // new
 	RESTART_TO_APPLY:
 		'Quý khách cần khởi động lại sàn giao dịch để áp dụng những thay đổi này.', // new
@@ -1344,7 +1364,8 @@ export default {
 	EXPIRY_EXCHANGE_MSG:
 		'Sàn giao dịch của quý khách đã mãn hạn. Truy cập dash.bitholla.com để kích hoạt nó một lần nữa.', // new
 	EXPIRED_INFO_1: 'Phiên bản thử nghiệm quý khách sử dụng đã mãn hạn.', // new
-	EXPIRED_INFO_2: 'Thế chấp sàn giao dịch của quý khách để kích hoạt nó lại lần nữa.', // new
+	EXPIRED_INFO_2:
+		'Thế chấp sàn giao dịch của quý khách để kích hoạt nó lại lần nữa.', // new
 	EXPIRED_BUTTON_TXT: 'KÍCH HOẠT SÀN GIAO DỊCH', // new
 	TRADE_POSTS: {
 		// new
@@ -1359,8 +1380,8 @@ export default {
 			'Mục này hiển thị những thông báo công khai trên sàn giao dịch của quý khách!',
 		ANNOUNCEMENT_TXT_2: 'XHT miễn phí sẽ được phân bổ cho tất cả các ví {0}.',
 		LEARN_MORE: 'Tìm hiểu thêm',
-		APPLY_TODAY: 'Đăng ký ngay hôm nay' // new
+		APPLY_TODAY: 'Đăng ký ngay hôm nay', // new
 	},
 	OPEN_WALLET: 'Ví mở', // new
-	AGO: 'ago' // new
+	AGO: 'ago', // new
 };

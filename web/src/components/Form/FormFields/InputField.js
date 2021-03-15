@@ -3,9 +3,11 @@ import classnames from 'classnames';
 import FieldWrapper from './FieldWrapper';
 
 const renderIcon = ({ icon = '', label = '' }) => {
-	return <div>
-		<img className="input_icon" src={icon} alt={label} />
-	</div>
+	return (
+		<div>
+			<img className="input_icon" src={icon} alt={label} />
+		</div>
+	);
 };
 
 const InputField = (props) => {
@@ -21,18 +23,19 @@ const InputField = (props) => {
 		options,
 		hideCheck,
 		outlineClassName,
+		stringId,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
 	// const displayCheck = !fullWidth && input.value && !displayError && !active;
 	return (
 		<FieldWrapper {...props}>
-			<div style={{display: 'flex'}}>
+			<div style={{ display: 'flex' }}>
 				{options && renderIcon(options)}
 				<input
 					placeholder={placeholder}
 					className={classnames('input_field-input', {
-						error: displayError
+						error: displayError,
 					})}
 					type={type}
 					{...input}

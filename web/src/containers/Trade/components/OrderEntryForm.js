@@ -1,4 +1,5 @@
 import React from 'react';
+import { Collapse } from 'antd';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector } from 'redux-form';
@@ -17,13 +18,19 @@ const validate = (values, props) => {
 	return error;
 };
 
-const getFields = (formValues = {}, type = '') => {
+const getFields = (formValues = {}, type = '', orderType = '') => {
+	const fields = { ...formValues };
+
 	if (type === 'market') {
-		const fields = { ...formValues };
 		delete fields.price;
-		return fields;
+		delete fields.postOnly;
 	}
-	return formValues;
+
+	if (orderType !== 'stops') {
+		delete fields.stop;
+	}
+
+	return fields;
 };
 
 const Form = ({
@@ -37,13 +44,16 @@ const Form = ({
 	formValues,
 	side,
 	type,
+	orderType,
 	currencyName,
 	outsideFormError,
 	onReview,
-	formKeyDown
+	formKeyDown,
 }) => {
-	const fields = getFields(formValues, type);
+	const fields = getFields(formValues, type, orderType);
 	const errorText = error || outsideFormError;
+	const hasPostOnly =
+		Object.entries(fields).filter(([key]) => key === 'postOnly').length !== 0;
 	return (
 		<div className="trade_order_entry-form d-flex">
 			<form
@@ -53,11 +63,29 @@ const Form = ({
 				onKeyDown={(e) => {
 					if (!submitting && valid && !errorText && isLoggedIn())
 						formKeyDown(e);
-					}
-				}
+				}}
 			>
 				<div className="trade_order_entry-form_fields-wrapper">
-					{Object.entries(fields).map(renderFields)}
+					{Object.entries(fields)
+						.filter(([key]) => key !== 'postOnly')
+						.map(renderFields)}
+					{hasPostOnly && (
+						<Collapse defaultActiveKey={[]} bordered={false} ghost>
+							<Collapse.Panel
+								showArrow={false}
+								header={
+									<span className="underline-text">
+										{STRINGS['ORDER_ENTRY_ADVANCED']}
+									</span>
+								}
+								key="1"
+							>
+								{Object.entries(fields)
+									.filter(([key]) => key === 'postOnly')
+									.map(renderFields)}
+							</Collapse.Panel>
+						</Collapse>
+					)}
 					{errorText && (
 						<div className="form-error warning_text font-weight-bold">
 							{errorText}
@@ -69,12 +97,12 @@ const Form = ({
 					type="button"
 					onClick={onReview}
 					label={STRINGS.formatString(
-						STRINGS.ORDER_ENTRY_BUTTON,
-						STRINGS.SIDES_VALUES[side] || '',
+						STRINGS['ORDER_ENTRY_BUTTON'],
+						STRINGS[`SIDES_VALUES.${side}`] || '',
 						currencyName
 					).join(' ')}
 					disabled={submitting || !valid || !!errorText || !isLoggedIn()}
-					className={classnames('trade_order_entry-form-action')}
+					className={classnames('trade_order_entry-form-action', 'mb-1')}
 				/>
 			</form>
 		</div>
@@ -84,7 +112,7 @@ const Form = ({
 const EntryOrderForm = reduxForm({
 	form: FORM_NAME,
 	validate,
-	enableReinitialize: true
+	enableReinitialize: true,
 	// onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
 })(Form);
 

@@ -18,7 +18,7 @@ class ListUsers extends Component {
 			pageSize: 10,
 			limit: 50,
 			currentTablePage: 1,
-			isRemaining: true
+			isRemaining: true,
 		};
 	}
 
@@ -29,28 +29,29 @@ class ListUsers extends Component {
 	requestUsers = (page = 1, limit = 50) => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 
 		requestUsers({ pending: true, page, limit })
 			.then((response) => {
 				this.setState({
-					users: page === 1
-						? response.data
-						: [ ...this.state.users, ...response.data ],
+					users:
+						page === 1
+							? response.data
+							: [...this.state.users, ...response.data],
 					total: response.count,
 					loading: false,
 					fetched: true,
 					page,
 					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
-					isRemaining: response.count > page * limit
+					isRemaining: response.count > page * limit,
 				});
 			})
 			.catch((error) => {
 				const message = error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
 			});
 	};
@@ -64,10 +65,7 @@ class ListUsers extends Component {
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
 		const apiPageTemp = Math.floor(count / 5);
 		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-			this.requestUsers(
-				page + 1,
-				limit
-			);
+			this.requestUsers(page + 1, limit);
 		}
 		this.setState({ currentTablePage: count });
 	};
@@ -76,33 +74,34 @@ class ListUsers extends Component {
 		const { users, loading, error, currentTablePage } = this.state;
 		const { columns } = this.props;
 		return (
-			<div className="app_container-content">
+			<div className="app_container-content admin-user-container">
 				{loading ? (
 					<Spin size="large" />
 				) : (
+					<div>
+						{error && <p>-{error}-</p>}
 						<div>
-							{error && <p>-{error}-</p>}
-							<div>
-								<span
-									className="pointer"
-									onClick={() => this.props.handleDownload({ pending: true })}
-								>
-									Download table
+							<span
+								className="pointer"
+								onClick={() => this.props.handleDownload({ pending: true })}
+							>
+								Download table
 							</span>
-							</div>
-							<Table
-								columns={columns}
-								dataSource={users}
-								rowKey={(data) => {
-									return data.id;
-								}}
-								pagination={{
-									current: currentTablePage,
-									onChange: this.pageChange
-								}}
-							/>
 						</div>
-					)}
+						<Table
+							className="blue-admin-table"
+							columns={columns}
+							dataSource={users}
+							rowKey={(data) => {
+								return data.id;
+							}}
+							pagination={{
+								current: currentTablePage,
+								onChange: this.pageChange,
+							}}
+						/>
+					</div>
+				)}
 			</div>
 		);
 	}

@@ -7,13 +7,13 @@ import {
 	renderRangeField,
 	renderInputField,
 	renderTextAreaField,
-	renderCheckField
+	renderCheckField,
 } from './fields';
 import { FileField } from './FileField';
 import CaptchaField from './captchaField';
 import Editor from './Editor';
 
-const renderFields = (fields) => {
+const renderFields = (fields, disableAllFields) => {
 	return (
 		<Fragment>
 			{Object.keys(fields).map((key) => {
@@ -22,7 +22,8 @@ const renderFields = (fields) => {
 					...field,
 					validate: field.validate || [],
 					name: key,
-					key
+					key,
+					...(disableAllFields ? { disabled: true } : {}),
 				};
 
 				let component;

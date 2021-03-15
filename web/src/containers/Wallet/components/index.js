@@ -1,9 +1,13 @@
 import React from 'react';
 import { ActionNotification, IconTitle } from '../../../components';
 import DumbField from '../../../components/Form/FormFields/DumbField';
-import { generateWalletActionsText, formatToCurrency } from '../../../utils/currency';
-import { ICONS, DEFAULT_COIN_DATA } from '../../../config/constants';
+import {
+	generateWalletActionsText,
+	formatToCurrency,
+} from '../../../utils/currency';
+import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 export const renderDumbField = (data) => <DumbField {...data} />;
 
@@ -15,30 +19,34 @@ export const renderBankInformation = (
 	const fields = [
 		{
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL,
+				STRINGS[
+					'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL'
+				],
 			value: bank_name,
 			key: 'bank_name',
 			allowCopy,
-			fullWidth
+			fullWidth,
 		},
 		{
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_OWNER_LABEL,
+				STRINGS[
+					'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_OWNER_LABEL'
+				],
 			value: account_owner,
 			key: 'account_owner',
 			allowCopy,
-			fullWidth
+			fullWidth,
 		},
 		{
 			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.ACCOUNT_NUMBER_LABEL,
+				STRINGS[
+					'USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL'
+				],
 			value: account_number,
 			key: 'account_number',
 			allowCopy,
-			fullWidth
-		}
+			fullWidth,
+		},
 	];
 
 	return (
@@ -49,10 +57,20 @@ export const renderBankInformation = (
 };
 
 export const renderTitle = (symbol, type = 'withdraw', coins) => {
-	const { withdrawText, depositText } = generateWalletActionsText(symbol, coins, true);
+	const {
+		withdrawText,
+		depositText,
+		stringId_withdraw,
+		stringId_deposit,
+	} = generateWalletActionsText(symbol, coins, true);
+
 	return (
 		<div className="title text-capitalize">
-			{type === 'withdraw' ? withdrawText : depositText}
+			<EditWrapper
+				stringId={type === 'withdraw' ? stringId_withdraw : stringId_deposit}
+			>
+				{type === 'withdraw' ? withdrawText : depositText}
+			</EditWrapper>
 		</div>
 	);
 };
@@ -64,26 +82,34 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 
 	return (
 		<div className="text">
-			<p>
-				{STRINGS.formatString(
-					STRINGS.AVAILABLE_BALANCE_TEXT,
-					fullname,
-					available,
-					shortName
-				)}
-			</p>
+			<EditWrapper stringId="AVAILABLE_BALANCE_TEXT">
+				<p>
+					{STRINGS.formatString(
+						STRINGS['AVAILABLE_BALANCE_TEXT'],
+						fullname,
+						available,
+						shortName
+					)}
+				</p>
+			</EditWrapper>
 		</div>
 	);
 };
 
-export const renderNeedHelpAction = (openContactForm, links = {}) => (
+export const renderNeedHelpAction = (
+	openContactForm,
+	links = {},
+	icon,
+	iconId
+) => (
 	<ActionNotification
-		text={STRINGS.NEED_HELP_TEXT}
+		stringId="NEED_HELP_TEXT"
+		text={STRINGS['NEED_HELP_TEXT']}
 		status="information"
-		iconPath={ICONS.BLUE_QUESTION}
+		iconId={iconId}
+		iconPath={icon}
 		onClick={() => openContactForm({ helpdesk: links.helpdesk })}
 		className="need-help"
-		useSvg={true}
 	/>
 );
 
@@ -94,7 +120,9 @@ export const renderInformation = (
 	generateBaseInformation,
 	coins,
 	type = 'withdraw',
-	links = {}
+	links = {},
+	helpIcon,
+	iconId
 ) => {
 	return (
 		<div className="information_block">
@@ -102,14 +130,30 @@ export const renderInformation = (
 				{renderTitle(symbol, type, coins)}
 				{renderAvailableBalanceText(symbol, balance, coins)}
 			</div>
-			{openContactForm && renderNeedHelpAction(openContactForm, links)}
+			{openContactForm &&
+				renderNeedHelpAction(openContactForm, links, helpIcon, iconId)}
 		</div>
 	);
 };
 
-export const renderTitleSection = (symbol, type, icon, coins) => {
-	const { withdrawText, depositText } = generateWalletActionsText(symbol, coins);
-	const text = type === 'withdraw' ? withdrawText : depositText;
+export const renderTitleSection = (symbol, type, icon, coins, iconId) => {
+	const {
+		withdrawText,
+		depositText,
+		stringId_withdraw,
+		stringId_deposit,
+	} = generateWalletActionsText(symbol, coins);
 
-	return <IconTitle text={text} iconPath={icon} textType="title" useSvg={true} />;
+	const text = type === 'withdraw' ? withdrawText : depositText;
+	const stringId = type === 'withdraw' ? stringId_withdraw : stringId_deposit;
+
+	return (
+		<IconTitle
+			text={text}
+			stringId={stringId}
+			iconPath={icon}
+			iconId={iconId}
+			textType="title"
+		/>
+	);
 };

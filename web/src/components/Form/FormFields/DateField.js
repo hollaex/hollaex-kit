@@ -3,15 +3,15 @@ import moment from 'moment';
 import {
 	SingleDatePicker,
 	isInclusivelyAfterDay,
-	isInclusivelyBeforeDay
+	isInclusivelyBeforeDay,
 } from 'react-dates';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
-import { DEFAULT_LANGUAGE } from '../../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
 	{ key: 'month', label: 'Month' },
-	{ key: 'day', label: 'Day' }
+	{ key: 'day', label: 'Day' },
 ];
 
 class DateField extends Component {
@@ -21,8 +21,8 @@ class DateField extends Component {
 		display: {
 			year: '',
 			month: '',
-			day: ''
-		}
+			day: '',
+		},
 	};
 
 	componentDidMount() {
@@ -32,7 +32,7 @@ class DateField extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.input.value !== this.props.input.value) {
 			this.onChangeInput(nextProps.input.value);
 		}
@@ -41,7 +41,7 @@ class DateField extends Component {
 		}
 	}
 
-	setDisplay = (dateString = '', language = DEFAULT_LANGUAGE) => {
+	setDisplay = (dateString = '', language = this.props.defaults.language) => {
 		const display = {};
 		let date;
 		date = moment(dateString);
@@ -107,10 +107,10 @@ class DateField extends Component {
 				// active = false,
 				// error,
 				// touched = false,
-				invalid
+				invalid,
 			},
 			startDate,
-			endDate
+			endDate,
 		} = this.props;
 		// const displayError = !active && touched && error;
 
@@ -141,4 +141,4 @@ class DateField extends Component {
 	}
 }
 
-export default DateField;
+export default withConfig(DateField);

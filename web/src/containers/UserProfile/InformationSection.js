@@ -20,7 +20,7 @@ export const InformationSection = ({ text, onChangeValue, onChangeText }) => (
 				className="pointer text-uppercase information_change"
 				onClick={onChangeValue}
 			>
-				{onChangeText || STRINGS.USER_VERIFICATION.CHANGE_VALUE}
+				{onChangeText || STRINGS['USER_VERIFICATION.CHANGE_VALUE']}
 			</div>
 		)}
 	</div>

@@ -1,40 +1,33 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
+import Image from 'components/Image';
+import { EditWrapper } from 'components';
 
 const SummaryBlock = (props) => {
 	const {
 		icon = '',
-		useSvg = false,
+		iconId,
+		stringId,
 		title,
 		wrapperClassname = '',
 		secondaryTitle,
-		children
+		children,
 	} = props;
+
 	return (
 		<div className={classnames(wrapperClassname, 'summary-block_wrapper')}>
 			<div className="d-flex align-items-center mb-2">
-				{icon && (
-					<div>
-						{useSvg ? (
-							<ReactSVG
-								path={icon}
-								wrapperClassname="summary-title-icon"
-							/>
-						) : (
-							<img
-								src={icon}
-								alt={title}
-								className="summary-title-icon"
-							/>
-						)}
-					</div>
-				)}
-				<div className="summary-block-title">{title}</div>
+				<Image
+					iconId={iconId}
+					icon={icon}
+					alt={title}
+					wrapperClassName="summary-title-icon"
+				/>
+				<EditWrapper stringId={stringId}>
+					<div className="summary-block-title">{title}</div>
+				</EditWrapper>
 				{secondaryTitle && (
-					<div className="summary-block-secondaryTitle">
-						: {secondaryTitle}
-					</div>
+					<div className="summary-block-secondaryTitle">: {secondaryTitle}</div>
 				)}
 			</div>
 			{children}

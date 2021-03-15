@@ -15,7 +15,10 @@ const DisplayTable = (props) => {
 		>
 			<div className={classnames('display_table-header', 'd-flex')}>
 				{headers.map(({ label, className = '' }, index) => (
-					<div key={index} className={classnames('display_table-cell f-1', className)}>
+					<div
+						key={index}
+						className={classnames('display_table-cell f-1', className)}
+					>
 						{label}
 					</div>
 				))}
@@ -30,7 +33,10 @@ const DisplayTable = (props) => {
 			>
 				{data.map((row, rowIndex) => {
 					return (
-						<div key={rowIndex} className={classnames('display_table-cell d-flex', rowClassName)}>
+						<div
+							key={rowIndex}
+							className={classnames('display_table-cell d-flex', rowClassName)}
+						>
 							{headers.map(({ key, renderCell, className }, cellIndex) => (
 								<div
 									key={`${rowIndex}-${cellIndex}`}

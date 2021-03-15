@@ -18,7 +18,7 @@ $header-margin: 2rem;
 		}
 		.button-container {
 			.exir-button {
-              font-size: $font-size-mobile-txt !important;
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
@@ -70,10 +70,10 @@ $header-margin: 2rem;
 					height: 2.5rem;
 					font-size: 0.8rem;
 				}
-				.table-bottom-border{
+				.table-bottom-border {
 					font-size: $font-size-mobile-txt !important;
 				}
-				tfoot{
+				tfoot {
 					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
@@ -116,7 +116,7 @@ $header-margin: 2rem;
 		.accordion_section_content_text {
 			color: $colors-main-black !important;
 			&:after {
-				border-left-color: $border-main !important;
+				border-left-color: $colors-main-border !important;
 			}
 		}
 	}
@@ -137,6 +137,7 @@ $header-margin: 2rem;
 		.wallet-assets_block-table {
 			width: 100%;
 			font-size: $font-size-subtext;
+			margin-bottom: 3rem;
 
 			thead,
 			tfoot {
@@ -161,7 +162,7 @@ $header-margin: 2rem;
 			th {
 				position: relative;
 				&:not(:first-child) {
-					border-bottom: 1px solid $border-main;
+					border-bottom: 1px solid $colors-main-border;
 					padding: 0 0.25rem;
 				}
 			}
@@ -255,48 +256,13 @@ $header-margin: 2rem;
 	}
 }
 
-.dark-theme {
-	svg {
-		.wallet-coins-1,
-		.deposit-wallet-01 {
-			stroke: $dark-button-active;
-		}
-		.wallet-coins-2,
-		.deposit-wallet-02 {
-			fill: $dark-font-main-text-color;
-		}
-	}
-
-	.wallet-container {
-		border-top-color: $dark-app-line-divider;
-		.accordion_wrapper {
-			.accordion_section_content_text {
-				color: $dark-font-main-text-color !important;
-				&:after {
-					border-left-color: $dark-border-main !important;
-				}
-			}
-		}
-
-		.wallet-assets_block {
-			color: $dark-font-main-text-color !important;
-			.wallet-assets_block-table {
-				tbody, tfoot {
-					color: $dark-font-sub-text-color;
-				}
-				.table-bottom-border td,
-				th {
-					&:not(:first-child) {
-						border-bottom-color: $dark-border-main;
-					}
-				}
-			}
-		}
-	}
-}
-
 .need-help {
 	svg {
 		@include size-important(1rem);
 	}
+}
+
+.wallet-search-improvement {
+	border-bottom: 1px solid $dark-app-line-divider;
+	color: $dark-font-sub-text-color !important;
 }

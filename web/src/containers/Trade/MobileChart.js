@@ -3,23 +3,21 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import TradeBlock from './components/TradeBlock';
-// import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
 import TradeHistory from './components/TradeHistory';
-import MobileDropdownWrapper from './components/MobileDropdownWrapper';
 import TVChartContainer from './ChartContainer';
 
 class MobileChart extends Component {
 	state = {
 		chartWidth: 0,
-		chartHeight: 0
+		chartHeight: 0,
 	};
 
 	setChartRef = (el) => {
 		if (el) {
 			this.setState({
 				chartHeight: el.offsetHeight,
-				chartWidth: el.offsetWidth
+				chartWidth: el.offsetWidth,
 			});
 		}
 	};
@@ -30,9 +28,8 @@ class MobileChart extends Component {
 			pairData,
 			activeTheme,
 			activeLanguage,
-			goToPair,
 			symbol,
-			constants
+			constants,
 		} = this.props;
 		const { chartHeight } = this.state;
 		const pairValue = pair || 'xht-usdt';
@@ -49,30 +46,36 @@ class MobileChart extends Component {
 				<TradeBlock
 					title={
 						<div className="d-flex justify-content-start align-items-center flex-row">
-							{/* {STRINGS.CHART} */}
-							<MobileDropdownWrapper goToPair={goToPair} className="ml-3" />
+							{/* {STRINGS["CHART"]} */}
 						</div>
 					}
 					setRef={this.setChartRef}
 					className="f-1 overflow-x"
 					alignChildTitle={true}
 					tailHead={
-						constants.broker_enabled
-							? <div className="quick-trade-tab p-1 mt-1">
+						constants &&
+						constants.features &&
+						constants.features.quick_trade ? (
+							<div className="quick-trade-tab p-1 mt-1">
 								<Link to={`/quick-trade/${pairValue}`}>
-									{STRINGS.QUICK_TRADE}
+									{STRINGS['QUICK_TRADE']}
 								</Link>
 							</div>
-							: <Fragment />
+						) : (
+							<Fragment />
+						)
 					}
 				>
-					{pair &&
-						chartHeight > 0 && (
-							<TVChartContainer activeTheme={activeTheme} symbol={symbol} pairData={pairData} />
-						)}
+					{pair && chartHeight > 0 && (
+						<TVChartContainer
+							activeTheme={activeTheme}
+							symbol={symbol}
+							pairData={pairData}
+						/>
+					)}
 				</TradeBlock>
-				<TradeBlock title={STRINGS.PUBLIC_SALES} className="f-1">
-					<TradeHistory language={activeLanguage} />
+				<TradeBlock title={STRINGS['PUBLIC_SALES']} className="f-1">
+					<TradeHistory pairData={pairData} language={activeLanguage} />
 				</TradeBlock>
 			</div>
 		);
@@ -80,7 +83,7 @@ class MobileChart extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(MobileChart);

@@ -1,12 +1,14 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
+import flatten from 'flat';
 
-export default {
+const options = { safe: true };
+const nestedContent = {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
-	ADD_TRADING_PAIR: 'Add Trading Pair',
+	ADD_TRADING_PAIR: 'Select a market',
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_BASE_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
@@ -74,12 +76,13 @@ export default {
 		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
 			'Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.',
-		SECTION_3_BUTTON_1: 'View Demo'
+		SECTION_3_BUTTON_1: 'View Demo',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
+		TERMS_OF_SERVICE: 'Terms of Service',
+		PRIVACY_POLICY: 'Privacy Policy',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -123,7 +126,7 @@ export default {
 		XHT_DESCRIPTION:
 			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
 		CLICK_HERE: 'click here',
-		VISIT_HERE: 'visit here'
+		VISIT_HERE: 'visit here',
 	},
 	ACCOUNTS: {
 		TITLE: 'Account',
@@ -136,7 +139,7 @@ export default {
 		TAB_SUMMARY: 'Summary',
 		TAB_HISTORY: 'History',
 		TAB_API: 'API',
-		TAB_SIGNOUT: 'Signout'
+		TAB_SIGNOUT: 'Signout',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
@@ -145,7 +148,7 @@ export default {
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		INTRODUCTION_LABEL: 'Introduce yourself',
 		INTRODUCTION_PLACEHOLDER:
-			'Where are you based, are you interested in running an exchange?'
+			'Where are you based, are you interested in running an exchange?',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
@@ -157,7 +160,7 @@ export default {
 			OPTION_BUG: 'Report bug', // ToDo:
 			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
 			OPTION_BANK_TRANSFER: 'Bank wire transfer', // new
-			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange' // new
+			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange', // new
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
@@ -169,7 +172,7 @@ export default {
 		SUCCESS_MESSAGE: 'The email has been seent to our support',
 		SUCCESS_TITLE: 'Message Sent',
 		SUCCESS_MESSAGE_1: 'Your issue has been sent to customer support.',
-		SUCCESS_MESSAGE_2: 'You can expect a reply in 1-3 days.'
+		SUCCESS_MESSAGE_2: 'You can expect a reply in 1-3 days.',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
@@ -178,20 +181,20 @@ export default {
 			MEMO: 'Your {0} memo', // new
 			BTC: 'Your Bitcoin receiving address',
 			ETH: 'Your Ethereum receiving address',
-			BCH: 'Your Bitcoin Cash receiving address'
+			BCH: 'Your Bitcoin Cash receiving address',
 		},
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you funds',
 		NO_DATA: 'No information available',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'Login to {0}',
 		CANT_LOGIN: "Can't login?",
 		NO_ACCOUNT: "Don't have an account?",
 		CREATE_ACCOUNT: 'Create one here',
-		HELP: 'Help'
+		HELP: 'Help',
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: 'Email',
@@ -199,7 +202,7 @@ export default {
 		PASSWORD_LABEL: 'Password',
 		PASSWORD_PLACEHOLDER: 'Type your password',
 		PASSWORD_REPEAT_LABEL: 'Retype your password',
-		PASSWORD_REPEAT_PLACEHOLDER: 'Retype your password'
+		PASSWORD_REPEAT_PLACEHOLDER: 'Retype your password',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Provide OTP code to login',
@@ -218,12 +221,14 @@ export default {
 			'Insufficient balance available ({0}) to perform the operation ({1}).',
 		MIN_VALUE: 'Value must be {0} or higher.',
 		MAX_VALUE: 'Value must be {0} or lower.',
+		MIN_VALUE_NE: 'Value must be higher than {0}.',
+		MAX_VALUE_NE: 'Value must be lower than {0}.',
 		INSUFFICIENT_BALANCE: 'Insufficient balance',
 		PASSWORDS_DONT_MATCH: "Password don't match",
 		USER_EXIST: 'Email has already been registered',
 		ACCEPT_TERMS: 'You have not agreed to the Terms of use and Privacy Policy',
 		STEP: 'Invalid value, step is {0}',
-		ONLY_NUMBERS: 'Value can contain only numbers'
+		ONLY_NUMBERS: 'Value can contain only numbers',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -237,8 +242,8 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
 		},
 		GENERAL_TERMS: {
 			TITLE: 'General Terms of Service',
@@ -251,15 +256,15 @@ export default {
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
 				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
-				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
-			]
-		}
+				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.',
+			],
+		},
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
 			OKAY: 'Okay',
 			START_TRADING: 'start trading',
-			SEE_HISTORY: 'see history'
+			SEE_HISTORY: 'see history',
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: '{0} Deposit received',
@@ -269,12 +274,12 @@ export default {
 			INFORMATION_PENDING_1:
 				'Your {0} require 1 confirmations before you can begin trading.',
 			INFORMATION_PENDING_2:
-				'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
-		}
+				'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.',
+		},
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: 'Request Sent',
-		BUTTON_TEXT: 'Okay'
+		BUTTON_TEXT: 'Okay',
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'Enter your authentication code to continue',
@@ -284,14 +289,13 @@ export default {
 		OTP_HELP: 'help',
 		OTP_BUTTON: 'submit',
 		ERROR_INVALID: 'Invalid OTP Code',
-		ERROR_INVALID_SECRET : 'Entered secret key do not match!'
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'Quick',
+		TITLE: 'Quick Trade', // updated
 		TOTAL_COST: 'Total cost',
-		BUTTON: 'Review {0} order',
+		BUTTON: 'Review Order', // updated
 		INPUT: '{0} to {1}',
-		TRADE_TITLE: '{0} {1}' // quick buy
+		TRADE_TITLE: '{0} {1}', // quick buy
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
@@ -303,27 +307,27 @@ export default {
 		ORDERS_PLURAL: 'orders',
 		ORDERS_SINGULAR: 'order',
 		HOLD_ORDERS:
-			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance'
+			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance',
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'Account Recovery',
 		SUBTITLE: `Recover your account below`,
 		SUPPORT: 'Contact Support',
-		BUTTON: 'Send recovery link'
+		BUTTON: 'Send recovery link',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
 		TITLE: 'Password reset sent',
 		TEXT:
-			'If an account exists for the email address, an email has been sent to it with reset instructions. Please check your email and click the link to complete your password reset.'
+			'If an account exists for the email address, an email has been sent to it with reset instructions. Please check your email and click the link to complete your password reset.',
 	},
 	RESET_PASSWORD: {
 		TITLE: 'Set new password',
 		SUBTITLE: 'Set new password',
-		BUTTON: 'Set new password'
+		BUTTON: 'Set new password',
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: 'You’ve successfully set up a new password.',
-		TEXT_2: 'Click login below to proceed.'
+		TEXT_2: 'Click login below to proceed.',
 	},
 	SIGN_UP: {
 		SIGNUP_TO: 'Sign up to {0}',
@@ -332,32 +336,32 @@ export default {
 		HAVE_ACCOUNT: 'Already have an account?',
 		GOTO_LOGIN: 'Go to the login page',
 		AFFILIATION_CODE: 'Referral code (optional)',
-		AFFILIATION_CODE_PLACEHOLDER:'Type your referral code',
+		AFFILIATION_CODE_PLACEHOLDER: 'Type your referral code',
 		TERMS: {
 			terms: 'General Terms',
 			policy: 'Privacy Policy',
-			text: 'I have read and agree to the {0} and {1}'
-		}
+			text: 'I have read and agree to the {0} and {1}',
+		},
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: 'Email sent',
 		TEXT_1: 'Check your email and click the link to verifiy your email.',
 		TEXT_2:
-			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.'
+			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: 'Resend Email Request',
-		BUTTON: 'Request Email'
+		BUTTON: 'Request Email',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: 'Resent Email',
 		TEXT_1:
-			'If after a few minutes you still have not received an email verification then please contact us below.'
+			'If after a few minutes you still have not received an email verification then please contact us below.',
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: 'Invalid code',
 		TEXT_1: "You've successfully verified your email.",
-		TEXT_2: 'You can now proceed to login'
+		TEXT_2: 'You can now proceed to login',
 	},
 	USER_VERIFICATION: {
 		INFO_TXT:
@@ -435,6 +439,11 @@ export default {
 		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
 		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department',
 		CODE_EXPIRES_IN: 'Code expires in',
+		EMAIL_VERIFICATION: 'Send verification email',
+		VERIFICATION_SENT: 'Verification Sent',
+		VERIFICATION_SENT_INFO:
+			'Check your email and click the link to verify email.',
+		OKAY: 'Okay',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -450,7 +459,7 @@ export default {
 				GENDER_PLACEHOLDER: 'Type what gender your are',
 				GENDER_OPTIONS: {
 					MAN: 'Male',
-					WOMAN: 'Female'
+					WOMAN: 'Female',
 				},
 				NATIONALITY_LABEL: 'Nationality',
 				NATIONALITY_PLACEHOLDER:
@@ -472,7 +481,7 @@ export default {
 				CONNECTING_LOADING: 'Connecting',
 				SMS_SEND: 'Send SMS',
 				SMS_CODE_LABEL: 'SMS Code',
-				SMS_CODE_PLACEHOLDER: 'Input your SMS code'
+				SMS_CODE_PLACEHOLDER: 'Input your SMS code',
 			},
 			INFORMATION: {
 				TEXT:
@@ -484,8 +493,8 @@ export default {
 				PHONE_VERIFICATION_TXT_1:
 					'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2:
-					'Further prove your identity and address by sharing your LAN phone number (optional).'
-			}
+					'Further prove your identity and address by sharing your LAN phone number (optional).',
+			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
@@ -497,14 +506,14 @@ export default {
 				FRONT: 'Please upload a scan of your passport',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note'
+				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
 				TYPE_PLACEHOLDER: 'Select Type of identity document',
 				TYPE_OPTIONS: {
 					ID: 'ID',
-					PASSPORT: 'Passport'
+					PASSPORT: 'Passport',
 				},
 				ID_NUMBER_LABEL: 'Passport Number',
 				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
@@ -523,7 +532,7 @@ export default {
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
 				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with passport and Note'
+					'Add a copy of your Selfie with passport and Note',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -539,7 +548,7 @@ export default {
 					WARNING_2:
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
-						'Please do not submit the passport as your proof of residence.'
+						'Please do not submit the passport as your proof of residence.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -557,7 +566,7 @@ export default {
 					SECTION_2_LIST_ITEM_3:
 						'A government-issued document (tax statement, certificate of residency, etc.).',
 					WARNING:
-						'We cannot accept the address on your submitted identity document as a valid proof of residence.'
+						'We cannot accept the address on your submitted identity document as a valid proof of residence.',
 				},
 				SELFIE: {
 					TITLE: 'Selfie with passport and Note',
@@ -570,9 +579,9 @@ export default {
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
-						'Selfie with a different passport with uploaded content will be rejected'
-				}
-			}
+						'Selfie with a different passport with uploaded content will be rejected',
+				},
+			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
@@ -582,7 +591,7 @@ export default {
 					'Your bank account number should be less than 50 digits',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Your bank account number has a limit of 50 characters',
-				CARD_NUMBER: 'Your card number has an incorrect format'
+				CARD_NUMBER: 'Your card number has an incorrect format',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'Bank Name',
@@ -593,15 +602,15 @@ export default {
 				ACCOUNT_OWNER_PLACEHOLDER: 'Type the name as on your bank account',
 				CARD_NUMBER_LABEL: 'Bank Card Number',
 				CARD_NUMBER_PLACEHOLDER:
-					'Type the 16 digit number that is on the front of your bank card'
-			}
+					'Type the 16 digit number that is on the front of your bank card',
+			},
 		},
 		WARNING: {
 			TEXT_1: 'By verifing your identity you can obtain the following:',
 			LIST_ITEM_1: 'Increased withdrawal limits',
 			LIST_ITEM_2: 'Increased deposits limits',
-			LIST_ITEM_3: 'Lower fees'
-		}
+			LIST_ITEM_3: 'Lower fees',
+		},
 	},
 	USER_SETTINGS: {
 		TITLE_TEXT_1:
@@ -631,27 +640,20 @@ export default {
 			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
 			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
 			POPUP_ORDER_PARTIALLY_FILLED:
-				'Show pop up when order has partially filled'
+				'Show pop up when order has partially filled',
 		},
-		AUDIO_CUE_FORM: { // new
+		AUDIO_CUE_FORM: {
+			// new
 			ALL_AUDIO: 'All Audio cues',
 			PUBLIC_TRADE_AUDIO: 'When a public trade has been made',
-			ORDERS_PARTIAL_AUDIO:
-				'When one of your orders is partially filled',
-			ORDERS_PLACED_AUDIO:
-				'When an order is placed',
-			ORDERS_CANCELED_AUDIO:
-				'When an order is canceled',
-			ORDERS_COMPLETED_AUDIO:
-				'When one of your orders is fully filled',
-			CLICK_AMOUNTS_AUDIO:
-				'When clicking amounts and prices on the orderbook',
-			GET_QUICK_TRADE_AUDIO:
-				'When getting a quote for quick trading',
-			SUCCESS_QUICK_TRADE_AUDIO:
-				'When a successful quick trade occurs',
-			QUICK_TRADE_TIMEOUT_AUDIO:
-				'When quick trade timeout',
+			ORDERS_PARTIAL_AUDIO: 'When one of your orders is partially filled',
+			ORDERS_PLACED_AUDIO: 'When an order is placed',
+			ORDERS_CANCELED_AUDIO: 'When an order is canceled',
+			ORDERS_COMPLETED_AUDIO: 'When one of your orders is fully filled',
+			CLICK_AMOUNTS_AUDIO: 'When clicking amounts and prices on the orderbook',
+			GET_QUICK_TRADE_AUDIO: 'When getting a quote for quick trading',
+			SUCCESS_QUICK_TRADE_AUDIO: 'When a successful quick trade occurs',
+			QUICK_TRADE_TIMEOUT_AUDIO: 'When quick trade timeout',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -661,8 +663,8 @@ export default {
 			TOMAN_ASSET: 'Approximate Value',
 			ADJUST: '(ADJUST PERCENTAGE)',
 			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment',
-			WARNING_POP_UP: 'Warning pop ups'
-		}
+			WARNING_POP_UP: 'Warning pop ups',
+		},
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'History',
@@ -672,21 +674,22 @@ export default {
 		TEXT_DOWNLOAD: 'DOWNLOAD HISTORY',
 		TRADES: 'Trades',
 		DEPOSITS: 'Deposits',
-		WITHDRAWALS: 'Withdrawals'
+		WITHDRAWALS: 'Withdrawals',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:
+			'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: '2FA',
 			OTP_ENABLED: 'otp enabled',
 			OTP_DISABLED: 'PLEASE TURN ON 2FA',
 			ENABLED_TEXTS: {
 				TEXT_1: 'Require OTP when logging in',
-				TEXT_2: 'Require OTP when withdrawing funds'
+				TEXT_2: 'Require OTP when withdrawing funds',
 			},
 			DIALOG: {
-				SUCCESS: 'You have successfully activated the OTP',
-				REVOKE: 'You have successfully revoked your OTP'
+				SUCCESS: 'You have successfully activated 2FA',
+				REVOKE: 'You have successfully deactivated 2FA',
 			},
 			CONTENT: {
 				TITLE: 'Activate Two-Factor Authentication',
@@ -699,51 +702,36 @@ export default {
 					'You must store this code securely to recover your 2FA in case you change or lose your mobile phone in future.',
 				MESSAGE_5: 'Manual',
 				WARNING:
-					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
-				ENABLE: 'Enable Two-factorctor Authentication',
+					'We highly recommend you set up two-factor authentication (2FA). Doing so will greatly increase the security of your funds.',
+				ENABLE: 'Enable Two-Factor Authentication',
 				DISABLE: 'Disable Two-Factor Authentication',
-
-				SECRET_1: 'Enter yor secret key',
-				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
-				INPUT_1: 'Secret Key',
-
-				TITLE_2: 'Enter One-Time Password (OTP)',
-				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
-				INPUT_2: 'One-Time Password (OTP)',
-
 			},
 			FORM: {
 				PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
-				BUTTON: 'NEXT'
+				BUTTON: 'Enable 2FA',
 			},
-			CHECK_FORM: {
-				PLACEHOLDER: 'Enter your secret key',
-				BUTTON: 'NEXT'	
-			}
-
 		},
 		CHANGE_PASSWORD: {
 			TITLE: 'Password',
 			ACTIVE: 'ACTIVE',
 			DIALOG: {
-				SUCCESS: 'You have successfully changed your password'
+				SUCCESS: 'You have successfully changed your password',
 			},
 			FORM: {
 				BUTTON: 'Change Password',
 				CURRENT_PASSWORD: {
 					label: 'Current Password',
-					placeholder: 'Type your current password'
+					placeholder: 'Type your current password',
 				},
 				NEW_PASSWORD: {
 					label: 'New Password',
-					placeholder: 'Type a new password'
+					placeholder: 'Type a new password',
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: 'Confirm New Password',
-					placeholder: 'Retype your new password'
-				}
-			}
+					placeholder: 'Retype your new password',
+				},
+			},
 		},
 		LOGIN: {
 			TITLE: 'Login History',
@@ -751,44 +739,58 @@ export default {
 			TIME: 'Date/Time',
 			CONTENT: {
 				TITLE: 'Logins History',
-				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
-			}
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
 		},
 		FREEZE: {
 			TITLE: 'Freeze Account',
 			CONTENT: {
-				MESSAGE_1: 'Freezing your account will stop whitdrawals and halts all tradings.',
-				WARNING_1: 'Use only if you fear that your account has been compromised',
+				MESSAGE_1:
+					'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1:
+					'Use only if you fear that your account has been compromised',
 				TITLE_1: 'Freeze your Account',
 				TITLE_2: 'Account freezing',
-				MESSAGE_2: 'Freezing your account may help guard your account from cyber attacks.',
-				MESSAGE_3: 'The following will occur if you choose to freeze your account:',
+				MESSAGE_2:
+					'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3:
+					'The following will occur if you choose to freeze your account:',
 				MESSAGE_4: '1. Pending withdrawals will be canceled.',
-				MESSAGE_5: '2. All tradings will be halted and unfilled orders will be canceled.',
-				MESSAGE_6: '3. Containing support will be required to reactivate your account.',
-				WARNING_2: 'Do you really want to freeze your account?'
-			}
-		}
+				MESSAGE_5:
+					'2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6:
+					'3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?',
+			},
+		},
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
 	TYPES_VALUES: {
 		market: 'market',
-		limit: 'limit'
+		limit: 'limit',
 	},
 	TYPES: [
 		{ value: 'market', label: 'market' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'limit' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'limit' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
 		buy: 'buy',
-		sell: 'sell'
+		sell: 'sell',
 	},
-	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }], // DO NOT CHANGE value, ONLY TRANSLATE label
+	SIDES_VERBS: {
+		buy: 'bought',
+		sell: 'sold',
+	},
+	SIDES: [
+		{ value: 'buy', label: 'buy' },
+		{ value: 'sell', label: 'sell' },
+	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: 'Size',
 	PRICE: 'Price',
@@ -814,9 +816,10 @@ export default {
 	ORDERS: 'my active orders',
 	TRADES: 'my transaction history',
 	RECENT_TRADES: 'my recent trades', // ToDo
+	ORDER_HISTORY: 'Order history',
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
-	FULLFILLED: '{0} % Fullfilled',
+	FULLFILLED: '{0} % Filled',
 	FILLED: 'Filled', // new
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
@@ -834,7 +837,7 @@ export default {
 		h: 'High',
 		l: 'Low',
 		c: 'Close',
-		v: 'Volume'
+		v: 'Volume',
 	},
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
@@ -865,8 +868,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'Transaction fee',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaction fee',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -923,10 +925,11 @@ export default {
 		CONFIRM_VIA_EMAIL_2:
 			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal request is confirmed. It will be processed shortly.',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'Your withdrawal request is confirmed. It will be processed shortly.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'In order to view your withdrawal status please visit your withdrawal history page.',
-		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
+		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History',
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
 	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
@@ -941,11 +944,14 @@ export default {
 	WALLET_ALL_ASSETS: 'All Assets',
 	WALLET_DEPOSIT_USD:
 		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
+	WALLET_HIDE_ZERO_BALANCE: 'Hide zero balance',
+	WALLET_ESTIMATED_TOTAL_BALANCE: 'Estimated Total Balance',
+	WALLET_ASSETS_SEARCH_TXT: 'Search',
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
 	ORDERBOOK_BUYERS: 'Buyers',
-	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+	ORDERBOOK_SPREAD: 'spread {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
@@ -968,6 +974,7 @@ export default {
 	LOGOUT_ERROR_INACTIVE:
 		'You have been logged out because you have been inactive',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
+	ORDER_ENTRY_ADVANCED: 'Advanced',
 	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
 	QUICK_TRADE_TOKEN_USED: 'Token has been used',
 	QUICK_TRADE_QUOTE_EXPIRED: 'Quote has expired',
@@ -977,6 +984,10 @@ export default {
 		'The order with the current size can not be filled',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
 	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
+	QUICK_TRADE_SUCCESS: 'Success!',
+	QUICK_TRADE_INSUFFICIENT_FUND: 'Insufficient funds',
+	QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE:
+		'You have insufficient funds in your wallet to complete this transaction.',
 	YES: 'Yes',
 	NO: 'No',
 	NEXT: 'Next',
@@ -1011,12 +1022,12 @@ export default {
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'YES' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'YES' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'User Interface Theme', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'White' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'dark', label: 'Dark' } // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Dark' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
@@ -1036,7 +1047,7 @@ export default {
 		ACTIVE: 'Active',
 		INACTIVE: 'Inactive',
 		INVALID_LEVEL:
-			'You need to upgrade your verification level to have access this feature' // TODO
+			'You need to upgrade your verification level to have access this feature', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Generate API Key',
@@ -1045,7 +1056,7 @@ export default {
 		GENERATE: 'Generate',
 		DELETE_TITLE: 'Delete API Key',
 		DELETE_TEXT:
-			'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
+			'Deleting your API key is irreversible although you can generate a new API key at anytime. Do you want to delete your API key?',
 		DELETE: 'DELETE',
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
@@ -1054,7 +1065,7 @@ export default {
 		CREATED_TITLE: 'Copy your API Key',
 		CREATED_TEXT_1:
 			'Please copy your API key as it will be unattainable in the future.',
-		CREATED_TEXT_2: 'Keep your key private.'
+		CREATED_TEXT_2: 'Keep your key private.',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Name',
@@ -1063,7 +1074,7 @@ export default {
 		CREATED: 'Date Generated',
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
-		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token' // TODO
+		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token', // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: 'chat',
@@ -1075,7 +1086,7 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
 		SIGN_UP_CHAT: 'Sign Up To Chat',
 		JOIN_CHAT: 'Set Username To Chat',
-		TROLLBOX: 'Trollbox ({0})' // new
+		TROLLBOX: 'Trollbox ({0})', // new
 	},
 	INVALID_USERNAME:
 		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
@@ -1103,7 +1114,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Unlimited',
-		BLOCKED: '0'
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
@@ -1197,6 +1208,7 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
+		TITLE_OF_ACCOUNT: '{0} Account',
 		LEVEL_TXT_DEFAULT: 'Add your level description here',
 		LEVEL_1_TXT:
 			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
@@ -1254,7 +1266,12 @@ export default {
 		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
 		WAVE_NUMBER: 'Wave Number', // new
 		DISCOUNT: '( {0}% discount )', // new
-		MY_FEES_LIMITS: ' My Fees and Limits' // new
+		MY_FEES_LIMITS: ' My Fees and Limits', // new
+		MARKETS: 'Markets', // new
+		CHANGE_24H: '24H Change', // new
+		VOLUME_24H: '24H Volume', // new
+		PRICE_GRAPH_24H: '24H Price graph', // new
+		VIEW_MORE_MARKETS: 'View more markets', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1272,7 +1289,7 @@ export default {
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earn:', // new
 		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'APPLY' // new
+		APPLY_BUTTON: 'APPLY', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
@@ -1282,7 +1299,7 @@ export default {
 			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.', // new
 		INFO_TXT3:
 			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
-		BUTTON_TXT: 'FIND OUT MORE' // new
+		BUTTON_TXT: 'FIND OUT MORE', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
@@ -1315,7 +1332,7 @@ export default {
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
 		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
-		LOGIN_HERE: 'login here'
+		LOGIN_HERE: 'login here',
 	},
 	WAVES: {
 		// new
@@ -1323,7 +1340,7 @@ export default {
 		NEXT_WAVE: 'Next Wave',
 		WAVE_AMOUNT: 'Amount in Wave',
 		FLOOR: 'Floor',
-		LAST_WAVE: 'Last wave'
+		LAST_WAVE: 'Last wave',
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1336,7 +1353,7 @@ export default {
 		SYSTEM_UPDATE_DURATION: '1 hour',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
@@ -1368,8 +1385,49 @@ export default {
 			'This section displays your exchange public announcements!',
 		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
-		APPLY_TODAY: 'Apply today' // new
+		APPLY_TODAY: 'Apply today', // new
 	},
 	OPEN_WALLET: 'Open wallet', // new
-	AGO: 'ago' // new
+	AGO: 'ago', // new
+	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	POST_ONLY: 'Post only',
+	CLEAR: 'Clear',
+	ORDER_TYPE: 'type',
+	TRIGGER_CONDITIONS: 'Trigger conditions',
+	TRANSACTION_STATUS: {
+		PENDING: 'Pending',
+		REJECTED: 'Rejected',
+		COMPLETED: 'Completed',
+	},
+	DEPOSIT_STATUS: {
+		// new
+		NEW: 'New',
+		SEARCH_FIELD_LABEL: 'Paste your transaction ID',
+		SEARCH: 'SEARCH',
+		SEARCHING: 'SEARCHING',
+		CHECK_DEPOSIT_STATUS: 'Check deposit status',
+		STATUS_DESCRIPTION:
+			'You can check the status of your deposit by passing the transaction ID (hash) below.',
+		TRANSACTION_ID: 'Transaction ID (hash)',
+		SEARCH_SUCCESS: 'Search complete', // new
+		ADDRESS_FIELD_LABEL: 'Paste your address', // new
+		CURRENCY_FIELD_LABEL: 'Select the currency', // new
+	},
+	CANCEL_ORDERS: {
+		HEADING: 'Cancel orders',
+		SUB_HEADING: 'Cancel all orders',
+		INFO_1: 'This will cancel your open orders for this markets.',
+		INFO_2: 'Are you sure you want to cancel all your open orders?',
+	},
+	AMOUNT_IN: 'Amount in',
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'Deposit and withdrawal allowance for all assets ({0})',
+		HEADER_ROW_TYPE: 'Type (All assets)',
+		HEADER_ROW_AMOUNT: 'Amount ({0})',
+	},
 };
+
+const content = flatten(nestedContent, options);
+
+export default content;

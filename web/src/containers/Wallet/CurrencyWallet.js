@@ -7,25 +7,26 @@ import {
 	CurrencyBallWithPrice,
 	ButtonLink,
 	ActionNotification,
-	MobileBarBack
+	MobileBarBack,
 } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	generateWalletActionsText,
-	getCurrencyFromName
+	getCurrencyFromName,
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Wallet extends Component {
 	state = {
-		currency: ''
+		currency: '',
 	};
 
 	componentWillMount() {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
 			this.setCurrency(nextProps.routeParams.currency);
 		}
@@ -41,20 +42,19 @@ class Wallet extends Component {
 	};
 
 	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
+		const { icons: ICONS } = this.props;
 		const balanceValue = balance[`${symbol}_balance`] || 0;
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
-					{STRINGS.formatString(
-						STRINGS.CURRENCY_BALANCE_TEXT,
-						fullname
-					)}
+					{STRINGS.formatString(STRINGS['CURRENCY_BALANCE_TEXT'], fullname)}
 					<ActionNotification
-						text={STRINGS.TRADE_HISTORY}
+						stringId="TRADE_HISTORY"
+						text={STRINGS['TRADE_HISTORY']}
 						status="information"
-						iconPath={ICONS.BLUE_CLIP}
-						useSvg={true}
+						iconId="BLUE_CLIP"
+						iconPath={ICONS['BLUE_CLIP']}
 						onClick={() => {
 							this.props.router.push('/transactions');
 						}}
@@ -74,41 +74,51 @@ class Wallet extends Component {
 	};
 
 	render() {
-		const { balance, price, coins } = this.props;
+		const { balance, price, coins, icons: ICONS } = this.props;
 		const { currency } = this.state;
 		if (!currency) {
 			return <div />;
 		}
 
-		const { depositText, withdrawText } = generateWalletActionsText(currency, coins);
+		const { depositText, withdrawText } = generateWalletActionsText(
+			currency,
+			coins
+		);
 
 		return (
 			<div>
-			{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
-				</MobileBarBack> }
+				{isMobile && (
+					<MobileBarBack onBackClick={this.onGoBack}></MobileBarBack>
+				)}
 				<div className="presentation_container apply_rtl">
 					<IconTitle
-						text={STRINGS.WALLET_TITLE}
-						iconPath={ICONS.BITCOIN_WALLET}
-						useSvg={true}
+						stringId="WALLET_TITLE"
+						text={STRINGS['WALLET_TITLE']}
+						iconId="BITCOIN_WALLET"
+						iconPath={ICONS['BITCOIN_WALLET']}
 						textType="title"
 					/>
 					<div className="wallet-container">
 						{this.renderWalletHeaderBlock(currency, price, balance, coins)}
 						<div
-							className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}
+							className={classnames(
+								...FLEX_CENTER_CLASSES,
+								'wallet-buttons_action'
+							)}
 						>
-						{
-						(coins[currency].allow_deposit)
-							? <ButtonLink label={depositText} link={`/wallet/${currency}/deposit`} />
-							: null
-						}
-						<div className="separator" />
-							{
-							(coins[currency].allow_withdrawal)
-								? <ButtonLink label={withdrawText} link={`/wallet/${currency}/withdraw`} />
-								: null
-							}
+							{coins[currency].allow_deposit ? (
+								<ButtonLink
+									label={depositText}
+									link={`/wallet/${currency}/deposit`}
+								/>
+							) : null}
+							<div className="separator" />
+							{coins[currency].allow_withdrawal ? (
+								<ButtonLink
+									label={withdrawText}
+									link={`/wallet/${currency}/withdraw`}
+								/>
+							) : null}
 						</div>
 					</div>
 				</div>
@@ -121,7 +131,7 @@ const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	price: store.orderbook.price,
 	balance: store.user.balance,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
 });
 
-export default connect(mapStateToProps)(Wallet);
+export default connect(mapStateToProps)(withConfig(Wallet));

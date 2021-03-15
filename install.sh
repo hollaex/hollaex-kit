@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# Parameter support to specify version of the CLI to install.
+export HOLLAEX_INSTALLER_VERSION_TARGET=${1:-"master"}
+
 echo "Pulling HollaEx CLI from Github..."
-curl -L https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh | bash
+curl -s https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh > cli_installer.sh && \
+    bash cli_installer.sh ${HOLLAEX_INSTALLER_VERSION_TARGET} \
+    rm cli_installer.sh
 
 # Dependencies installer for Debian (Ubuntu) based Linux.
 if command apt-get -v > /dev/null 2>&1; then
@@ -209,6 +214,9 @@ elif command yum --version > /dev/null 2>&1; then
                     DOCKER_USERGROUP_ADDED=true
 
             fi
+
+            systemctl start docker
+            systemctl enable docker
 
         else
 

@@ -6,7 +6,7 @@ const InformationMessage = ({
 	text,
 	absolute,
 	className,
-	position
+	position,
 }) => (
 	<div
 		className={classnames(

@@ -1,5 +1,8 @@
 import { BASE_CURRENCY } from '../config/constants';
-import { ORDERBOOK_CONSTANTS } from '../actions/orderbookAction';
+import {
+	ORDERBOOK_CONSTANTS,
+	PAIRS_TRADES_FETCHED,
+} from '../actions/orderbookAction';
 
 const INITIAL_QUICK_TRADE = {
 	fetching: false,
@@ -8,9 +11,9 @@ const INITIAL_QUICK_TRADE = {
 		price: 0,
 		side: '',
 		size: 0,
-		filled: false
+		filled: false,
 	},
-	error: ''
+	error: '',
 };
 
 const INITIAL_QUOTE = {
@@ -21,7 +24,7 @@ const INITIAL_QUOTE = {
 		symbol: '',
 		price: 0,
 		side: '',
-		size: 0
+		size: 0,
 	},
 	token: '',
 	error: '',
@@ -29,8 +32,8 @@ const INITIAL_QUOTE = {
 		fetching: false,
 		completed: false,
 		error: '',
-		data: {}
-	}
+		data: {},
+	},
 };
 
 const INITIAL_STATE = {
@@ -41,12 +44,7 @@ const INITIAL_STATE = {
 	pair: '',
 	symbol: '',
 	price: 0,
-	prices: {
-		eur: 1,
-		eth: 1,
-		btc: 1,
-		bch: 1
-	},
+	prices: {},
 	asks: [],
 	bids: [],
 	orderbookReady: false,
@@ -54,21 +52,28 @@ const INITIAL_STATE = {
 	quoteData: INITIAL_QUOTE,
 	pairsOrderbooks: {},
 	pairsTrades: {},
-	pairs: {}
+	pairsTradesFetched: false,
+	pairs: {},
+	depth: parseInt(localStorage.getItem('orderbook_depth') || 1, 10),
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
 	switch (type) {
+		case PAIRS_TRADES_FETCHED:
+			return {
+				...state,
+				pairsTradesFetched: payload,
+			};
 		case 'CHANGE_SYMBOL':
 			return {
 				...state,
-				symbol: payload.symbol
+				symbol: payload.symbol,
 			};
 		case 'CHANGE_PAIR':
 			return {
 				...state,
 				symbol: payload.pair,
-				pair: payload.pair
+				pair: payload.pair,
 			};
 		// getOrderbook
 		case 'GET_ORDERBOOK_PENDING':
@@ -102,7 +107,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				fetched: true,
 				bids,
 				asks,
-				orderbookReady: true
+				orderbookReady: true,
 			};
 		}
 
@@ -126,14 +131,14 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				fetched: true,
 				trades: trades.concat(state.trades), // TODO store trades by currency
 				price,
-				prices
+				prices,
 			};
 		}
 
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_CANCEL:
 			return {
 				...state,
-				quickTrade: INITIAL_QUICK_TRADE
+				quickTrade: INITIAL_QUICK_TRADE,
 			};
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING:
 			return {
@@ -142,9 +147,9 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...INITIAL_QUICK_TRADE,
 					fetching: true,
 					data: {
-						price: state.quickTrade.data.price
-					}
-				}
+						price: state.quickTrade.data.price,
+					},
+				},
 			};
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_FULFILLED:
 			return {
@@ -153,8 +158,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...INITIAL_QUICK_TRADE,
 					fetching: false,
 					data: payload,
-					error: payload.filled ? '' : 'Order is not filled'
-				}
+					error: payload.filled ? '' : 'Order is not filled',
+				},
 			};
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_REJECTED:
 			return {
@@ -162,8 +167,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				quickTrade: {
 					...INITIAL_QUICK_TRADE,
 					fetching: false,
-					error: payload
-				}
+					error: payload,
+				},
 			};
 
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_PENDING:
@@ -174,9 +179,9 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					fetching: true,
 					data: {
 						...INITIAL_QUOTE.data,
-						price: state.quoteData.data.price
-					}
-				}
+						price: state.quoteData.data.price,
+					},
+				},
 			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_FULFILLED:
 			return {
@@ -185,8 +190,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...INITIAL_QUOTE,
 					fetching: false,
 					data: payload.data,
-					token: payload.token
-				}
+					token: payload.token,
+				},
 			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_REJECTED:
 			return {
@@ -197,16 +202,16 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...payload,
 					data: {
 						...INITIAL_QUOTE.data,
-						...payload.data
+						...payload.data,
 					},
-					error: payload.message
-				}
+					error: payload.message,
+				},
 			};
 
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_CANCEL:
 			return {
 				...state,
-				quoteData: INITIAL_QUOTE
+				quoteData: INITIAL_QUOTE,
 			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING:
 			return {
@@ -217,9 +222,9 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 						fetching: true,
 						completed: false,
 						error: '',
-						data: {}
-					}
-				}
+						data: {},
+					},
+				},
 			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_FULFILLED:
 			return {
@@ -229,9 +234,9 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					order: {
 						fetching: false,
 						completed: true,
-						data: payload
-					}
-				}
+						data: payload,
+					},
+				},
 			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_REJECTED:
 			return {
@@ -241,9 +246,9 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					order: {
 						fetching: false,
 						completed: true,
-						error: payload
-					}
-				}
+						error: payload,
+					},
+				},
 			};
 
 		case 'SET_ORDERBOOKS_DATA': {
@@ -252,8 +257,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				...state,
 				pairsOrderbooks: {
 					...state.pairsOrderbooks,
-					...rest
-				}
+					...rest,
+				},
 			};
 		}
 
@@ -265,7 +270,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			if (action === 'partial') {
 				pairsTrades = {
 					...state.pairsTrades,
-					...rest
+					...rest,
 				};
 				Object.keys(rest).forEach((key) => {
 					if (rest[key].length > 0) {
@@ -276,13 +281,11 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 						prices[keyPrice] = rest[key][0].price;
 					}
 				});
-			} else if (action === 'update') {
+			} else if (action === 'update' || 'insert') {
 				pairsTrades = {
-					...state.pairsTrades
+					...state.pairsTrades,
 				};
-				pairsTrades[symbol] = rest[symbol].concat(
-					pairsTrades[symbol]
-				);
+				pairsTrades[symbol] = rest[symbol].concat(pairsTrades[symbol]);
 
 				let keyPrice = '';
 				if (pairs[symbol] && pairs[symbol].pair_2 === BASE_CURRENCY) {
@@ -297,13 +300,18 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			return {
 				...state,
 				pairsTrades,
-				prices
+				prices,
 			};
 		}
 		case 'SET_PAIRS_DATA':
 			return {
 				...state,
-				pairs: payload.pairs
+				pairs: payload.pairs,
+			};
+		case ORDERBOOK_CONSTANTS.SET_ORDERBOOK_DEPTH:
+			return {
+				...state,
+				depth: payload,
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

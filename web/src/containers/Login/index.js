@@ -5,27 +5,28 @@ import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import moment from 'moment';
 
-import { performLogin, storeLoginResult, setLogoutMessage } from '../../actions/authAction';
+import {
+	performLogin,
+	storeLoginResult,
+	setLogoutMessage,
+} from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
-import {
-	FLEX_CENTER_CLASSES,
-	ICONS
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 let errorTimeOut = null;
 
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
-		{STRINGS.LOGIN.NO_ACCOUNT}
+		{STRINGS['LOGIN.NO_ACCOUNT']}
 		<Link to="/signup" className={classnames('blue-link')}>
-			{STRINGS.LOGIN.CREATE_ACCOUNT}
+			{STRINGS['LOGIN.CREATE_ACCOUNT']}
 		</Link>
 	</div>
 );
@@ -37,7 +38,7 @@ class Login extends Component {
 		logoutDialogIsOpen: false,
 		termsDialogIsOpen: false,
 		depositDialogIsOpen: false,
-		token: ''
+		token: '',
 	};
 
 	componentDidMount() {
@@ -45,7 +46,7 @@ class Login extends Component {
 			this.setState({ logoutDialogIsOpen: true });
 		}
 	}
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.logoutMessage &&
 			nextProps.logoutMessage !== this.props.logoutMessage
@@ -91,24 +92,6 @@ class Login extends Component {
 		return service;
 	};
 
-	checkExchangeExpiry = (info = {}) => {
-		if (info.status) {
-			if (info.is_trial) {
-				if (info.active) {
-					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
-						this.navigateToExpiry();
-					}
-				} else {
-					this.navigateToExpiry();
-				}
-			}
-		} else {
-			this.navigateToExpiry();
-		}
-	};
-
-	navigateToExpiry = () => this.props.router.replace('/expired-exchange');
-
 	// checkLogin = () => {
 	// 	// const termsAccepted = localStorage.getItem('termsAccepted');
 	// 	// if (!termsAccepted) {
@@ -125,14 +108,12 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
-				if (res.data.token)
-					this.setState({ token: res.data.token });
-				this.checkExchangeExpiry(this.props.info);
+				if (res.data.token) this.setState({ token: res.data.token });
 				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
-				// 	|| (this.props.info.is_trial && this.props.info.active 
+				// 	|| (this.props.info.is_trial && this.props.info.active
 				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 				// 	this.checkExpiryExchange();
-				// else 
+				// else
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
@@ -150,12 +131,12 @@ class Login extends Component {
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });
-					error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
+					error._error = STRINGS['VALIDATIONS.OTP_LOGIN'];
 				} else {
 					if (_error === 'User is not activated') {
-						error._error = (STRINGS.VALIDATIONS.FROZEN_ACCOUNT);
+						error._error = STRINGS['VALIDATIONS.FROZEN_ACCOUNT'];
 					} else if (_error.indexOf('captcha') > -1) {
-						error._error = (STRINGS.VALIDATIONS.CAPTCHA);
+						error._error = STRINGS['VALIDATIONS.CAPTCHA'];
 					} else {
 						error._error = _error;
 					}
@@ -170,14 +151,12 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
-				if (res.data.token)
-					this.setState({ token: res.data.token });
-				this.checkExchangeExpiry(this.props.info);
+				if (res.data.token) this.setState({ token: res.data.token });
 				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
 				// 	|| (this.props.info.is_trial && this.props.info.active
 				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 				// 	this.checkExpiryExchange();
-				// else 
+				// else
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
@@ -187,9 +166,8 @@ class Login extends Component {
 
 	onAcceptTerms = () => {
 		localStorage.setItem('termsAccepted', true);
-		if (this.state.token)
-			storeLoginResult(this.state.token);
-		this.setState({ termsDialogIsOpen: false})
+		if (this.state.token) storeLoginResult(this.state.token);
+		this.setState({ termsDialogIsOpen: false });
 		this.redirectToHome();
 	};
 
@@ -209,17 +187,16 @@ class Login extends Component {
 	};
 
 	render() {
-		const { logoutMessage, activeTheme, constants = {} } = this.props;
+		const {
+			logoutMessage,
+			activeTheme,
+			constants = {},
+			icons: ICONS,
+		} = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
-		let path = constants.logo_path;
-		if (activeTheme === 'dark') {
-			path = constants.logo_black_path;
-		}
 
 		return (
-			<div
-				className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}
-			>
+			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
 				<div
 					className={classnames(
 						...FLEX_CENTER_CLASSES,
@@ -229,24 +206,26 @@ class Login extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={path}
-						text={STRINGS.LOGIN_TEXT}
+						iconId="EXCHANGE_LOGO"
+						iconPath={ICONS['EXCHANGE_LOGO']}
+						stringId="LOGIN_TEXT"
+						text={STRINGS['LOGIN_TEXT']}
 						textType="title"
 						underline={true}
-						useSvg={false}
-						isLogo={true}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
-							STRINGS.LOGIN.LOGIN_TO,
+							STRINGS['LOGIN.LOGIN_TO'],
 							constants.api_name || ''
 						)}
 						actionProps={{
-							text: STRINGS.LOGIN.CANT_LOGIN,
-							iconPath: ICONS.BLUE_ARROW_RIGHT,
+							stringId: 'LOGIN.CANT_LOGIN',
+							text: STRINGS['LOGIN.CANT_LOGIN'],
+							iconId: 'BLUE_ARROW_RIGHT',
+							iconPath: ICONS['BLUE_ARROW_RIGHT'],
 							onClick: this.redirectToResetPassword,
 							useSvg: true,
-							showActionText: true
+							showActionText: true,
 						}}
 					/>
 					<div
@@ -257,16 +236,13 @@ class Login extends Component {
 							'w-100'
 						)}
 					>
-						<LoginForm
-							onSubmit={this.onSubmitLogin}
-							theme={activeTheme}
-						/>
+						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
 						{isMobile && <BottomLink />}
 					</div>
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog
-					isOpen={otpDialogIsOpen || logoutDialogIsOpen }
+					isOpen={otpDialogIsOpen || logoutDialogIsOpen}
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
@@ -296,15 +272,12 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	logoutMessage: store.auth.logoutMessage,
 	info: store.app.info,
-	constants: store.app.constants
+	constants: store.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setLogoutMessage: bindActionCreators(setLogoutMessage, dispatch),
-	change: bindActionCreators(change, dispatch)
+	change: bindActionCreators(change, dispatch),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Login));

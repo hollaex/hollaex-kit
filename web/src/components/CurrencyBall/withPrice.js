@@ -9,7 +9,7 @@ const CurrencyBallWithPrice = ({
 	amount,
 	price,
 	size = 'm',
-	coins = {}
+	coins = {},
 }) => {
 	const { name, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 	// const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -22,7 +22,7 @@ const CurrencyBallWithPrice = ({
 				{/* {symbol !== BASE_CURRENCY && price && (
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
 						{` ~ ${formatToCurrency(
-							calculatePrice(amount, price), baseCoin.min
+							calculatePrice(amount, symbol), baseCoin.min
 						)} ${baseCoin.symbol.toUpperCase()}`}
 					</div>
 				)} */}
@@ -32,7 +32,7 @@ const CurrencyBallWithPrice = ({
 };
 
 const mapStateToProps = (state) => ({
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(CurrencyBallWithPrice);

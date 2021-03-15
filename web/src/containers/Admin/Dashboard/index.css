@@ -1,0 +1,21 @@
+.admin-dash-card {
+	background-color: #2626d8;
+	color: #ffffff;
+	margin: 2rem 0rem;
+	padding: 1.5rem;
+	width: 75%;
+}
+.admin-dash-card .card-description {
+	font-size: 13px;
+}
+.admin-dash-card .card-icon {
+	margin-right: 1.5rem;
+	width: 8rem;
+}
+.admin-dash-card .card-title {
+	font-size: 16px;
+}
+.card-link {
+	margin-top: 0.5rem;
+	text-decoration: underline;
+}

@@ -3,10 +3,11 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import TradeBlock from './TradeBlock';
 import { isLoggedIn } from '../../../utils/token';
+import { EditWrapper } from 'components';
 
 class TradeBlockTabs extends Component {
 	state = {
-		activeTab: 0
+		activeTab: 0,
 	};
 
 	setWrapperRef = (el) => {
@@ -31,13 +32,14 @@ class TradeBlockTabs extends Component {
 			<div className="trade_block-title">
 				<div className="trade_block-title-items">
 					{content.map((item, index) => (
-						<div
-							key={index}
-							className={classnames('pointer', { active: active === index })}
-							onClick={this.setActiveTab(index)}
-						>
-							{item.title}
-						</div>
+						<EditWrapper key={index} stringId={item.stringId}>
+							<div
+								className={classnames('pointer', { active: active === index })}
+								onClick={this.setActiveTab(index)}
+							>
+								{item.title}
+							</div>
+						</EditWrapper>
 					))}
 				</div>
 				{content[active].titleAction}
@@ -52,18 +54,30 @@ class TradeBlockTabs extends Component {
 			<div className="trade_block-wrapper trade_block_tabs-wrapper d-flex flex-column">
 				{this.renderTitles(activeTab, content)}
 				<div
-					className={classnames('trade_block-content', isLoggedIn() ? 'd-flex': '', {
-						'overflow-y': overflowY
-					})}
+					className={classnames(
+						'trade_block-content',
+						isLoggedIn() ? 'd-flex' : '',
+						{
+							'overflow-y': overflowY,
+						}
+					)}
 				>
 					{content[activeTab].children}
 				</div>
 			</div>
 		) : (
 			<div className="d-flex flex-column f-1 trade_block-column-wrapper">
-				{content.map(({ title, titleAction, children }, index) => (
-					<TradeBlock title={title} action={titleAction} key={index}>
-						{React.cloneElement(children, { ...this.props, height: this.state.height })}
+				{content.map(({ title, titleAction, children, stringId }, index) => (
+					<TradeBlock
+						title={title}
+						action={titleAction}
+						stringId={stringId}
+						key={index}
+					>
+						{React.cloneElement(children, {
+							...this.props,
+							height: this.state.height,
+						})}
 					</TradeBlock>
 				))}
 			</div>
@@ -83,7 +97,7 @@ class TradeBlockTabs extends Component {
 }
 
 TradeBlockTabs.defaultProps = {
-	maxHeight: 300,
-	overflowY: false
+	maxHeight: Infinity,
+	overflowY: false,
 };
 export default TradeBlockTabs;

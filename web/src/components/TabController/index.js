@@ -2,10 +2,23 @@ import React from 'react';
 import classnames from 'classnames';
 import { IconTitle } from '../';
 
-const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon, quicktrade }) => (
+const TabController = ({
+	tabs,
+	activeTab,
+	setActiveTab,
+	title,
+	titleIcon,
+	iconId,
+	quicktrade,
+}) => (
 	<div className="tab_controller-wrapper">
 		{(title || titleIcon) && (
-			<IconTitle text={title} iconPath={titleIcon} textType="title" useSvg={titleIcon.indexOf('.svg') > 0} />
+			<IconTitle
+				text={title}
+				iconPath={titleIcon}
+				iconId={iconId}
+				textType="title"
+			/>
 		)}
 		<div className="tab_controller-tabs">
 			{tabs.map((tab, index) => {
@@ -15,8 +28,8 @@ const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon, quickt
 						'tab_item-active': index === activeTab,
 						'tab_item-deactive': index !== activeTab,
 						'tab-trade': quicktrade === true,
-						pointer: setActiveTab
-					})
+						pointer: setActiveTab,
+					}),
 				};
 				if (setActiveTab) {
 					tabProps.onClick = () => setActiveTab(index);
@@ -29,6 +42,6 @@ const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon, quickt
 );
 
 TabController.defaultProps = {
-	tabs: []
+	tabs: [],
 };
 export default TabController;

@@ -1,13 +1,15 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
+import flatten from 'flat';
 
-export default {
+const options = { safe: true };
+const nestedContent = {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'اکسچنج دارایی های دیجیتال متن باز', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'آیا برای خارج شدن مطمئن هستید؟',
 	ADD_TRADING_PAIR: 'اضافه کردن دارایی جدید',
-ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های فعال خود داشته باشید',
+	ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های فعال خود داشته باشید',
 	CANCEL_BASE_WITHDRAWAL: 'برداشت {0}لغو کنید',
 	CANCEL_WITHDRAWAL: 'لغو برداشت',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM:
@@ -74,12 +76,11 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		SECTION_3_CARD_6_TITLE: 'اتصال به سیستم احراز هویت',
 		SECTION_3_CARD_6_TEXT:
 			'سرویس احراز هویت براحتی و سهولت هر چه تمام و متناسب با کشورهای مختلف پیاده سازی می گردد',
-		SECTION_3_BUTTON_1: 'مشاهده دمو'
+		SECTION_3_BUTTON_1: 'مشاهده دمو',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['با افتخار توسعه داده شده در سئول ، کره جنوبی'],
 		FOOTER_LANGUAGE_TEXT: 'زبان',
-		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'درباره',
 			SECTION_1_LINK_1: 'درباره ما',
@@ -118,12 +119,12 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			SECTION_6_LINK_6: 'سایت', // new
 			SECTION_6_LINK_7: 'پشتیبانی', // new
 			SECTION_6_LINK_8: 'اطلاعات', // new
-			SECTION_6_LINK_9: 'یوتیوب'
+			SECTION_6_LINK_9: 'یوتیوب',
 		},
 		XHT_DESCRIPTION:
 			'HollaEx kit یک پلتفورم متن باز به منظور مبادله دارایی های دیجیتال بین کاربران می باشد که توسط شرکت bitHolla توسعه و ارایه می شود.',
 		CLICK_HERE: 'اینجا را کلیک کنید',
-		VISIT_HERE: 'اینجا را مشاهده کنید'
+		VISIT_HERE: 'اینجا را مشاهده کنید',
 	},
 	ACCOUNTS: {
 		TITLE: 'حساب کاربری',
@@ -135,7 +136,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		TAB_WALLET: 'کیف پول',
 		TAB_SUMMARY: 'خلاصه',
 		TAB_API: 'API',
-		TAB_SIGNOUT: 'خروج'
+		TAB_SIGNOUT: 'خروج',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
@@ -144,11 +145,12 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		CATEGORY_PLACEHOLDER: 'به هریک از بخش های زیر پاسخ های متناسب بدهید',
 		INTRODUCTION_LABEL: 'خودتان رو معرفی کنید',
 		INTRODUCTION_PLACEHOLDER:
-			'ساکن کدام کشور هستید ؟ و آیا علاقه به راه اندازی اکسچنج دارید؟'
+			'ساکن کدام کشور هستید ؟ و آیا علاقه به راه اندازی اکسچنج دارید؟',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'بخش',
-		CATEGORY_PLACEHOLDER: 'هریک از بخش های زیر که با درخواست شما متناسب است را انتخاب کنید',
+		CATEGORY_PLACEHOLDER:
+			'هریک از بخش های زیر که با درخواست شما متناسب است را انتخاب کنید',
 		CATEGORY_OPTIONS: {
 			OPTION_VERIFY: 'تایید کاربر',
 			OPTION_LEVEL: 'ارتقای سطح کاربری',
@@ -156,7 +158,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			OPTION_BUG: 'گزارش خطا', // ToDo:
 			OPTION_PERSONAL_INFO: 'تغییر اطلاعات شخصی', // ToDo:
 			OPTION_BANK_TRANSFER: 'تراکنش بانکی', // new
-			OPTION_REQUEST: 'درخواست دعوت به اکسچنج HollaEx' // new
+			OPTION_REQUEST: 'درخواست دعوت به اکسچنج HollaEx', // new
 		},
 		SUBJECT_LABEL: 'موضوع',
 		SUBJECT_PLACEHOLDER: 'موضوع مشکل خود را تایپ کنید',
@@ -168,28 +170,28 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		SUCCESS_MESSAGE: 'ایمیل به تیم پشتیبانی ارسال شد',
 		SUCCESS_TITLE: 'پیام ارسال شد',
 		SUCCESS_MESSAGE_1: 'مشکل شما به تیم پشتیبانی کاربران ارسال گردید',
-		SUCCESS_MESSAGE_2: 'حداکثر تا 3 روز آینده منتظر پاسخ ما باشید'
+		SUCCESS_MESSAGE_2: 'حداکثر تا 3 روز آینده منتظر پاسخ ما باشید',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
-	ADDRESS: '{0}آدرس دریافت شما', // new
+			ADDRESS: '{0}آدرس دریافت شما', // new
 			DESTINATION_TAG: 'برچسب مقصد {0 شما}', // new
 			BTC: 'آدرس شما برای دریافت بیتکوین',
 			ETH: 'آدرس شما برای دریافت اتریوم',
-			BCH: 'آدرس شما برای دریافت بیتکوین کش'
+			BCH: 'آدرس شما برای دریافت بیتکوین کش',
 		},
 		INCREASE_LIMIT: 'میخواهید سقف برداشت روزانه خود را افزایش دهید',
 		QR_CODE:
 			'کافیست برای ارسال پول توسط دیگران،این کد توسط شخص پرداخت کننده اسکن شود',
 		NO_DATA: 'اطلاعاتی موجود نمی باشد',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}'  //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'ورود به {0}',
-		CANT_LOGIN: "نمی توانید وارد شوید؟",
-		NO_ACCOUNT: "حساب کاربری ندارید؟",
+		CANT_LOGIN: 'نمی توانید وارد شوید؟',
+		NO_ACCOUNT: 'حساب کاربری ندارید؟',
 		CREATE_ACCOUNT: 'ایجاد حساب کاربری جدید',
-		HELP: 'راهنما'
+		HELP: 'راهنما',
 	},
 	FORM_FIELDS: {
 		EMAIL_LABEL: 'ایمیل',
@@ -197,7 +199,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		PASSWORD_LABEL: 'کلمه عبور',
 		PASSWORD_PLACEHOLDER: 'کلمه عبور خود را وارد کنید',
 		PASSWORD_REPEAT_LABEL: 'مجددا کلمه عبور خود را وارد کنید',
-		PASSWORD_REPEAT_PLACEHOLDER: 'مجددا کلمه عبور خود را وارد کنید'
+		PASSWORD_REPEAT_PLACEHOLDER: 'مجددا کلمه عبور خود را وارد کنید',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
@@ -211,17 +213,17 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			'کلمه عبور معتبر نمی باشد.کلمه عبور باید حداقل 8 کاراکتر و شامل اعداد و کاراکترهای خاص باشد',
 		INVALID_PASSWORD_2:
 			'کلمه عبور معتبر نمی باشد.کلمه عبور باید حداقل 8 کاراکتر و شامل اعداد و کاراکترهای خاص باشد',
-	INVALID_CURRENCY: 'آدرس{1} نامعتبر{0}',
+		INVALID_CURRENCY: 'آدرس{1} نامعتبر{0}',
 		INVALID_BALANCE:
 			'موجودی کافی({0})برای انجام عملیات مورد نظر را ندارید({1})',
 		MIN_VALUE: 'مقدار باید{0 و یا بزرگتر باشد}',
 		MAX_VALUE: 'مقدار باید {0 و یا کوچکتر باشد}',
 		INSUFFICIENT_BALANCE: 'موجودی حساب ناکافی',
-		PASSWORDS_DONT_MATCH: "کلمه عبور مطابقت ندارد",
+		PASSWORDS_DONT_MATCH: 'کلمه عبور مطابقت ندارد',
 		USER_EXIST: 'این ایمیل قبلا ثبت شده است ',
 		ACCEPT_TERMS: 'شما شرایط استفاده و حریم خصوصی را تایید ننموده اید',
 		STEP: 'مقدار نامعتبر ،مقدار مجاز اضافه کردن {0}',
-		ONLY_NUMBERS: 'مقدار فقط می تواند شامل اعداد باشد'
+		ONLY_NUMBERS: 'مقدار فقط می تواند شامل اعداد باشد',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -231,11 +233,11 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			TEXTS: [
 				'پلتفورم تحت وب HollaEx یک پلتفورم مبادله دارایی های دیجیتال می باشد که مالکیت آن تماماً دراختیار شرکت bitHolla در کشور کره جنوبی می باشد .از این پس به شرکت bitHoll اختصاراً bitHolla گفته میشود.',
 				'استفاده از وب سایت HollaEx (که از این پس به آن "وبسایت" گفته می شود )  و خدمات ارائه شده در آن  (که از این پس به آن "خدمات" گفته می شود )  با شرایط مندرج در صفحه شرایط و مقررات (که از این پس به آن " مقررات"  گفته می شود ) تنظیم و تعیین می شود. این توافق نامه کاملاً توافق طرفین را تشکیل می دهد. کلیه اطلاعات ارائه شده در وب سایت یا اظهارات شفاهی یا کتبی دیگر از این توافق نامه مستثنی هستند. سیاست های اکسچنج فقط جنبه  راهنمایی داشته  و توافق حقوقی بین طرفین نمی باشد.',
-			'با دسترسی ، مشاهده یا دانلود اطلاعات از وبسایت و استفاده از خدمات ارائه شده توسط bitHolla ، تصدیق می کنید که آن را خوانده اید ، درک کرده اید ، و بدون قید و شرط موافقت می کنید که مطابق با این شرایط باشید.bitHolla  هر زمان ممکن است بدون اطلاع قبلی شرایط را اصلاح کند. شما موافقت می کنید که همچنان به هرگونه شرایط و ضوابط اصلاح شده پایبند باشید و  bitHolla  هیچ گونه مسئولیتی در قبال اطلاع  رسانی به  شما از چنین اصلاحاتی را  ندارد. شما تأیید می کنید که مسئولیت دارید  که این شرایط را بطور دوره ای بررسی کنید و ادامه استفاده شما از وب سایت و خدمات ارائه شده توسط bitHolla  بعد از هرگونه تغییری در شرایط ، بیانگر پذیرش شرایط توسط شما می باشد.',
+				'با دسترسی ، مشاهده یا دانلود اطلاعات از وبسایت و استفاده از خدمات ارائه شده توسط bitHolla ، تصدیق می کنید که آن را خوانده اید ، درک کرده اید ، و بدون قید و شرط موافقت می کنید که مطابق با این شرایط باشید.bitHolla  هر زمان ممکن است بدون اطلاع قبلی شرایط را اصلاح کند. شما موافقت می کنید که همچنان به هرگونه شرایط و ضوابط اصلاح شده پایبند باشید و  bitHolla  هیچ گونه مسئولیتی در قبال اطلاع  رسانی به  شما از چنین اصلاحاتی را  ندارد. شما تأیید می کنید که مسئولیت دارید  که این شرایط را بطور دوره ای بررسی کنید و ادامه استفاده شما از وب سایت و خدمات ارائه شده توسط bitHolla  بعد از هرگونه تغییری در شرایط ، بیانگر پذیرش شرایط توسط شما می باشد.',
 				'وب سایت و کپی رایت در کلیه متن ها ، گرافیک ها ، تصاویر ، نرم افزارها و سایر مطالب موجود در وب سایت متعلق به bitHolla شامل کلیه علائم تجاری و سایر حقوق مالکیت معنوی در رابطه با مواد و خدمات در وب سایت است. مواد موجود در این وب سایت فقط برای مصارف شخصی و مقاصد غیر تجاری قابل استفاده است.تمامی محتویات وبسایت شامل، متن ها ، تصاویر، آیتم های گرافیکی ، نرم افزار ها و سایر محتویات دیگر موجود در وبسایت تماماً متعلق به bitHolla می باشد. همچنین تمامی علایم تجاری و سایر حقوق مالکیت معنوی نیز متعلق به bitHolla می باشد.استفاده از این محتویات فقط بمنظور استفاده شخصی و غیر تجاری مجاز می باشد.',
-				
-				'شما می توانید هریک از محتویات اشاره شده در بالا را بصورت چاپ و یا نمایش بر روی کامپیوتر با رعایت قوانین کپی رایت نمایش دهید بدون آنکه بدون مجوز bitHolla بخشی و یا تمام مطالب را تغییر ، اصلاح و یا حذف کنید.شما تایید میکنید که نام  bitHolla و لوگوی آن ، علائم تجاری bitHolla بوده و شما فقط می توانید آنها را در چهارچوب موارد و شرایط ذکر شده در بالا ، استفاده نمایید و در غیر اینصورت حق کپی و یا پاک کردن آنها را ندارید.استفاده از وبسایت  به خودی خود هیچ گونه حقی برای شما بوجود نمی آورد  و حقوق شما فقط و فقط همان مواردی است که صراحتا در بخش حریم خصوصی و استفاده عمومی به آن اشاره شده است.'
-			]
+
+				'شما می توانید هریک از محتویات اشاره شده در بالا را بصورت چاپ و یا نمایش بر روی کامپیوتر با رعایت قوانین کپی رایت نمایش دهید بدون آنکه بدون مجوز bitHolla بخشی و یا تمام مطالب را تغییر ، اصلاح و یا حذف کنید.شما تایید میکنید که نام  bitHolla و لوگوی آن ، علائم تجاری bitHolla بوده و شما فقط می توانید آنها را در چهارچوب موارد و شرایط ذکر شده در بالا ، استفاده نمایید و در غیر اینصورت حق کپی و یا پاک کردن آنها را ندارید.استفاده از وبسایت  به خودی خود هیچ گونه حقی برای شما بوجود نمی آورد  و حقوق شما فقط و فقط همان مواردی است که صراحتا در بخش حریم خصوصی و استفاده عمومی به آن اشاره شده است.',
+			],
 		},
 		GENERAL_TERMS: {
 			TITLE: 'شرایط عمومی استفاده',
@@ -244,18 +246,18 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			TEXTS: [
 				'پلتفورم تحت وب HollaEx یک پلتفورم مبادله دارایی های دیجیتال می باشد که مالکیت آن تماماً دراختیار شرکت bitHolla در کشور کره جنوبی می باشد .از این پس به شرکت bitHoll اختصاراً bitHolla گفته میشود.',
 				'استفاده از وب سایت HollaEx (که از این پس به آن "وبسایت" گفته می شود )  و خدمات ارائه شده در آن  (که از این پس به آن "خدمات" گفته می شود )  با شرایط مندرج در صفحه شرایط و مقررات (که از این پس به آن " مقررات"  گفته می شود ) تنظیم و تعیین می شود. این توافق نامه کاملاً توافق طرفین را تشکیل می دهد. کلیه اطلاعات ارائه شده در وب سایت یا اظهارات شفاهی یا کتبی دیگر از این توافق نامه مستثنی هستند. سیاست های اکسچنج فقط جنبه  راهنمایی داشته  و توافق حقوقی بین طرفین نمی باشد.',
-			'با دسترسی ، مشاهده یا دانلود اطلاعات از وبسایت و استفاده از خدمات ارائه شده توسط bitHolla ، تصدیق می کنید که آن را خوانده اید ، درک کرده اید ، و بدون قید و شرط موافقت می کنید که مطابق با این شرایط باشید.bitHolla  هر زمان ممکن است بدون اطلاع قبلی شرایط را اصلاح کند. شما موافقت می کنید که همچنان به هرگونه شرایط و ضوابط اصلاح شده پایبند باشید و  bitHolla  هیچ گونه مسئولیتی در قبال اطلاع  رسانی به  شما از چنین اصلاحاتی را  ندارد. شما تأیید می کنید که مسئولیت دارید  که این شرایط را بطور دوره ای بررسی کنید و ادامه استفاده شما از وب سایت و خدمات ارائه شده توسط bitHolla  بعد از هرگونه تغییری در شرایط ، بیانگر پذیرش شرایط توسط شما می باشد.',
+				'با دسترسی ، مشاهده یا دانلود اطلاعات از وبسایت و استفاده از خدمات ارائه شده توسط bitHolla ، تصدیق می کنید که آن را خوانده اید ، درک کرده اید ، و بدون قید و شرط موافقت می کنید که مطابق با این شرایط باشید.bitHolla  هر زمان ممکن است بدون اطلاع قبلی شرایط را اصلاح کند. شما موافقت می کنید که همچنان به هرگونه شرایط و ضوابط اصلاح شده پایبند باشید و  bitHolla  هیچ گونه مسئولیتی در قبال اطلاع  رسانی به  شما از چنین اصلاحاتی را  ندارد. شما تأیید می کنید که مسئولیت دارید  که این شرایط را بطور دوره ای بررسی کنید و ادامه استفاده شما از وب سایت و خدمات ارائه شده توسط bitHolla  بعد از هرگونه تغییری در شرایط ، بیانگر پذیرش شرایط توسط شما می باشد.',
 				'وب سایت و کپی رایت در کلیه متن ها ، گرافیک ها ، تصاویر ، نرم افزارها و سایر مطالب موجود در وب سایت متعلق به bitHolla شامل کلیه علائم تجاری و سایر حقوق مالکیت معنوی در رابطه با مواد و خدمات در وب سایت است. مواد موجود در این وب سایت فقط برای مصارف شخصی و مقاصد غیر تجاری قابل استفاده است.تمامی محتویات وبسایت شامل، متن ها ، تصاویر، آیتم های گرافیکی ، نرم افزار ها و سایر محتویات دیگر موجود در وبسایت تماماً متعلق به bitHolla می باشد. همچنین تمامی علایم تجاری و سایر حقوق مالکیت معنوی نیز متعلق به bitHolla می باشد.استفاده از این محتویات فقط بمنظور استفاده شخصی و غیر تجاری مجاز می باشد.',
-				
-				'شما می توانید هریک از محتویات اشاره شده در بالا را بصورت چاپ و یا نمایش بر روی کامپیوتر با رعایت قوانین کپی رایت نمایش دهید بدون آنکه بدون مجوز bitHolla بخشی و یا تمام مطالب را تغییر ، اصلاح و یا حذف کنید.شما تایید میکنید که نام  bitHolla و لوگوی آن ، علائم تجاری bitHolla بوده و شما فقط می توانید آنها را در چهارچوب موارد و شرایط ذکر شده در بالا ، استفاده نمایید و در غیر اینصورت حق کپی و یا پاک کردن آنها را ندارید.استفاده از وبسایت  به خودی خود هیچ گونه حقی برای شما بوجود نمی آورد  و حقوق شما فقط و فقط همان مواردی است که صراحتا در بخش حریم خصوصی و استفاده عمومی به آن اشاره شده است.'
-			]
-		}
+
+				'شما می توانید هریک از محتویات اشاره شده در بالا را بصورت چاپ و یا نمایش بر روی کامپیوتر با رعایت قوانین کپی رایت نمایش دهید بدون آنکه بدون مجوز bitHolla بخشی و یا تمام مطالب را تغییر ، اصلاح و یا حذف کنید.شما تایید میکنید که نام  bitHolla و لوگوی آن ، علائم تجاری bitHolla بوده و شما فقط می توانید آنها را در چهارچوب موارد و شرایط ذکر شده در بالا ، استفاده نمایید و در غیر اینصورت حق کپی و یا پاک کردن آنها را ندارید.استفاده از وبسایت  به خودی خود هیچ گونه حقی برای شما بوجود نمی آورد  و حقوق شما فقط و فقط همان مواردی است که صراحتا در بخش حریم خصوصی و استفاده عمومی به آن اشاره شده است.',
+			],
+		},
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
 			OKAY: 'تایید',
 			START_TRADING: 'شروع معاملات',
-			SEE_HISTORY: 'تاریخچه'
+			SEE_HISTORY: 'تاریخچه',
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: 'واریزی دریافت شد{0}',
@@ -264,11 +266,13 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			SUBTITLE_INCOMING: 'شما یک واریزی دارید {0}',
 			INFORMATION_PENDING_1:
 				'تراکنش شما به تایید نیاز دارد تا بتوانید معامله را شروع کنید',
-			INFORMATION_PENDING_2: 'مابه محض تایید  واریزی شما بر روی شبکه بلاکچین یک ایمیل برای شما ارسال خواهیم کرد. این زمان ممکن است بین 10 تا 30 دقیقه بطول بیانجامد'		}
+			INFORMATION_PENDING_2:
+				'مابه محض تایید  واریزی شما بر روی شبکه بلاکچین یک ایمیل برای شما ارسال خواهیم کرد. این زمان ممکن است بین 10 تا 30 دقیقه بطول بیانجامد',
+		},
 	},
 	REFERRAL_SUCCESS: {
 		TITLE: 'درخواست ارسال شد',
-		BUTTON_TEXT: 'تایید'
+		BUTTON_TEXT: 'تایید',
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'برای ادامه ، کد تایید خود را وارد نمایید',
@@ -277,14 +281,14 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		OTP_TITLE: 'کد تایید',
 		OTP_HELP: 'راهنما',
 		OTP_BUTTON: 'ارسال',
-		ERROR_INVALID: 'رمز یکبار مصرف اشتباه است'
+		ERROR_INVALID: 'رمز یکبار مصرف اشتباه است',
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'آسان',
 		TOTAL_COST: 'مجموع هزینه',
 		BUTTON: 'بازنگری {0} سفارش',
 		INPUT: '{0}به {1}',
-		TRADE_TITLE: '{0} {1}' // quick buy
+		TRADE_TITLE: '{0} {1}', // quick buy
 	},
 	PREVIOUS_PAGE: 'صفحه قبل',
 	NEXT_PAGE: 'صفحه بعد',
@@ -295,69 +299,68 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		ORDERS_PLURAL: 'سفارش ها',
 		ORDERS_SINGULAR: 'سفارش',
 		HOLD_ORDERS:
-			'شما {0} سفارش تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است'
+			'شما {0} سفارش تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است',
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'بازیابی حساب کاربری',
 		SUBTITLE: `حساب کاربری خود را بازیابی کنید`,
 		SUPPORT: 'تماس با پشتیبانی',
-		BUTTON: 'ارسال لینک بازیابی'
+		BUTTON: 'ارسال لینک بازیابی',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
 		TITLE: 'درخواست کلمه عبور جدید ارسال گردید',
 		TEXT:
-			'اگر با این ایمیل قبلا حساب کاربری ایجاد کرده باشید ، ایمیل بازیابی کلمه عبور به آن ارسال شده است . لطفا مراحل را طبق آن دنبال نمایید'
+			'اگر با این ایمیل قبلا حساب کاربری ایجاد کرده باشید ، ایمیل بازیابی کلمه عبور به آن ارسال شده است . لطفا مراحل را طبق آن دنبال نمایید',
 	},
 	RESET_PASSWORD: {
 		TITLE: 'کلمه عبور جدید تعریف کنید',
 		SUBTITLE: 'کلمه عبور جدید تعریف کنید',
-		BUTTON: 'کلمه عبور جدید تعریف کنید'
+		BUTTON: 'کلمه عبور جدید تعریف کنید',
 	},
 	RESET_PASSWORD_SUCCESS: {
 		TEXT_1: 'شما با موفقیت کلمه عبور جدید خود را تعریف کردید',
-		TEXT_2: 'دکمه ورود در پایین را فشار دهید'
+		TEXT_2: 'دکمه ورود در پایین را فشار دهید',
 	},
 	SIGN_UP: {
 		SIGNUP_TO: 'ثبت نام در {0}',
-		NO_EMAIL: "هنوز ایمیلی دریافت نکرده ایید؟",
+		NO_EMAIL: 'هنوز ایمیلی دریافت نکرده ایید؟',
 		REQUEST_EMAIL: 'درخواست مجدد',
 		HAVE_ACCOUNT: 'در حال حاضر حساب کاربری دارید؟',
 		GOTO_LOGIN: 'به صفحه ورود بروید',
 		AFFILIATION_CODE: 'کد رفرال (اختیاری)',
-		AFFILIATION_CODE_PLACEHOLDER:'کد رفرال را وارد کنید',
+		AFFILIATION_CODE_PLACEHOLDER: 'کد رفرال را وارد کنید',
 		TERMS: {
 			terms: 'شرایط عمومی',
 			policy: 'حریم خصوصی',
-			text: 'من با مطالعه و آگاهی با {0} و {1} موافقت می نمایم.'
-		}
+			text: 'من با مطالعه و آگاهی با {0} و {1} موافقت می نمایم.',
+		},
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: 'ایمیل ارسال شد',
 		TEXT_1: 'ایمیل خود را چک کنید و لینک تایید را فشار دهید',
 		TEXT_2:
-			'اگر ایمیل تایید را تاکنون دریافت نکرده ایید به بخش هرزنامه مراجعه نمایید'
+			'اگر ایمیل تایید را تاکنون دریافت نکرده ایید به بخش هرزنامه مراجعه نمایید',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: 'ارسال مجدد درخواست ایمیل',
-		BUTTON: 'درخواست ایمیل'
+		BUTTON: 'درخواست ایمیل',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: 'ارسال مجدد ایمیل',
 		TEXT_1:
-			'اگر بعد از چند دقیقه همچنان ایمیلی را دریافت ننموده اید با تیم پشتیبانی ما تماس حاصل فرمایید'
+			'اگر بعد از چند دقیقه همچنان ایمیلی را دریافت ننموده اید با تیم پشتیبانی ما تماس حاصل فرمایید',
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: 'کد نامعتبر است',
-		TEXT_1: "شما با موفقیت ایمیل خود را تایید نمودید",
-		TEXT_2: 'اکنون می توانید وارد شوید'
+		TEXT_1: 'شما با موفقیت ایمیل خود را تایید نمودید',
+		TEXT_2: 'اکنون می توانید وارد شوید',
 	},
 	USER_VERIFICATION: {
 		INFO_TXT:
 			'اینجا شما می توانید وضعیت فعلی و روند ارتقای حساب کاربری خود را مشاهده نمایید',
 		INFO_TXT_1:
 			'لطفا اطلاعات خواسته شده در هر بخش را با دقت وارد نمایید .مستحضر باشید پس از تکمیل همه اطلاعات خواسته شده ، درخواست ارتقای حساب کاربری شما مورد ارزیابی قرار خواهد گرفت',
-		INFO_TXT_2:
-			'* روند احراز هویت شما نیازمند بررسی مدارک هویتی شما می باشد',
+		INFO_TXT_2: '* روند احراز هویت شما نیازمند بررسی مدارک هویتی شما می باشد',
 		DOCUMENTATIONS: 'بارگذاری',
 		COMPLETED: 'تکمیل شد',
 		PENDING_VERIFICATION: 'تایید حساب کاربری در حال انتظار است ',
@@ -430,26 +433,24 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'نام',
-				FIRST_NAME_PLACEHOLDER:
-					'نام خود را دقیقا مطابق کارت ملی تایپ کنید',
+				FIRST_NAME_PLACEHOLDER: 'نام خود را دقیقا مطابق کارت ملی تایپ کنید',
 				LAST_NAME_LABEL: 'نام خانوادگی',
 				LAST_NAME_PLACEHOLDER:
 					'نام خانوادگی خود را دقیقا مطابق کارت ملی تایپ کنید',
 				FULL_NAME_LABEL: 'نام و نام خانوادگی',
-				FULL_NAME_PLACEHOLDER:
-					'نام کامل خود را به دقت وارد کنید',
+				FULL_NAME_PLACEHOLDER: 'نام کامل خود را به دقت وارد کنید',
 				GENDER_LABEL: 'جنسيت',
 				GENDER_PLACEHOLDER: 'جنسیت خود را انتخاب کنید',
 				GENDER_OPTIONS: {
 					MAN: 'مرد',
-					WOMAN: 'زن'
+					WOMAN: 'زن',
 				},
 				NATIONALITY_LABEL: 'ملیت',
-				NATIONALITY_PLACEHOLDER:
-					'ملیت خود را تایپ کنید',
+				NATIONALITY_PLACEHOLDER: 'ملیت خود را تایپ کنید',
 				DOB_LABEL: 'تاریخ تولد',
 				COUNTRY_LABEL: 'کشوری که در آن اقامت دارید',
-				COUNTRY_PLACEHOLDER: 'کشوری که در حال حاضر در آن اقامت دارید را انتخاب کنید',
+				COUNTRY_PLACEHOLDER:
+					'کشوری که در حال حاضر در آن اقامت دارید را انتخاب کنید',
 				CITY_LABEL: 'شهر',
 				CITY_PLACEHOLDER: 'شهر محل سکونت',
 				ADDRESS_LABEL: 'نشانی',
@@ -457,14 +458,15 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 				POSTAL_CODE_LABEL: 'کد پستی',
 				POSTAL_CODE_PLACEHOLDER: 'کد پستی 10 رقمی',
 				PHONE_CODE_LABEL: 'کشور',
-				PHONE_CODE_PLACEHOLDER: 'کشوری که شماره تلفن شما در آن ثبت شده را تایپ کنید',
+				PHONE_CODE_PLACEHOLDER:
+					'کشوری که شماره تلفن شما در آن ثبت شده را تایپ کنید',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'شماره تلفن',
 				PHONE_NUMBER_PLACEHOLDER: 'شماره موبایل خود را وارد نمایید',
 				CONNECTING_LOADING: 'بارگذاری',
 				SMS_SEND: 'ارسال پیامک',
 				SMS_CODE_LABEL: 'کد دریافتی',
-				SMS_CODE_PLACEHOLDER: 'کد دریافتی را وارد نمایید'
+				SMS_CODE_PLACEHOLDER: 'کد دریافتی را وارد نمایید',
 			},
 			INFORMATION: {
 				TEXT:
@@ -476,27 +478,26 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 				PHONE_VERIFICATION_TXT_1:
 					'گزارش تمام واریز ها و برداشت ها از حساب کاربری، از طریق پیامک به شماره موبایل شما ارسال خواهد شد.',
 				PHONE_VERIFICATION_TXT_2:
-					'برای ارایه خدمات بهتر لطفا شمارهتلفن ثابت خود را نیز ثبت نمایید'
-			}
+					'برای ارایه خدمات بهتر لطفا شمارهتلفن ثابت خود را نیز ثبت نمایید',
+			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
 				ID_TYPE: 'لطفا یکی از مدارک هویتی را انتخاب کنید',
 				ID_NUMBER: 'لطفا شماره سند هویتی را درست وارد کنید',
 				ISSUED_DATE: 'لطفا تاریخ صدور مدرک خود را انتخاب کنید',
-				EXPIRATION_DATE:
-					'لطفا تاریخ انقضای مدرک خود را انتخاب کنید',
+				EXPIRATION_DATE: 'لطفا تاریخ انقضای مدرک خود را انتخاب کنید',
 				FRONT: 'لطفا تصویر مدرک هویتی خود را آپلود کنید',
-				PROOF_OF_RESIDENCY:
-					'لطفا تصویر مدرک اثبات آدرس خود را آپلود کنید',
-				SELFIE_PHOTO_ID: 'لطفا سلفی خود را در حال در دست داشتن متن و کارت بارگذاری کنید'
+				PROOF_OF_RESIDENCY: 'لطفا تصویر مدرک اثبات آدرس خود را آپلود کنید',
+				SELFIE_PHOTO_ID:
+					'لطفا سلفی خود را در حال در دست داشتن متن و کارت بارگذاری کنید',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'نوع مدرک',
 				TYPE_PLACEHOLDER: 'کارت ملی یا شناسنامه جدید',
 				TYPE_OPTIONS: {
 					ID: 'سند هویت',
-					PASSPORT: 'کارت ملی'
+					PASSPORT: 'کارت ملی',
 				},
 				ID_NUMBER_LABEL: 'کد ملی',
 				ID_NUMBER_PLACEHOLDER: 'کد ملی 10 رقمی خود را وارد کنید',
@@ -505,7 +506,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 				ISSUED_DATE_LABEL: 'تاریخ صدور',
 				EXPIRATION_DATE_LABEL: 'تاریخ پایان اعتبار',
 				FRONT_LABEL: 'تصویر کارت ملی',
-				FRONT_PLACEHOLDER: 'تصویر کارت ملی یا شناسنامه جدید خود را بارگذاری نمایید',
+				FRONT_PLACEHOLDER:
+					'تصویر کارت ملی یا شناسنامه جدید خود را بارگذاری نمایید',
 				BACK_LABEL: 'عکس سلفی',
 				BACK_PLACEHOLDER:
 					'عکس سلفی خود همراه کارت ملی و دستخطی با نام سایت را بارگذاری کنید',
@@ -515,23 +517,25 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 				POR_PLACEHOLDER: 'تصویر سند اثبات آدرس خود را براگذاری نمایید',
 				SELFIE_PHOTO_ID_LABEL: 'تصویر سلفی',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'تصویر سلفی، همراه با مدرک شناسایی و متن دستنویس را بارگذاری کنید'
+					'تصویر سلفی، همراه با مدرک شناسایی و متن دستنویس را بارگذاری کنید',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'مدرک احراز هویت',
 				PROOF_OF_RESIDENCY: 'مدرک احراز محل اقامت',
 				ID_SECTION: {
-					TITLE: 'لطفا هنگام بارگذاری تصویر کارت ملی خود به نکات زیر دقت نمایید:',
+					TITLE:
+						'لطفا هنگام بارگذاری تصویر کارت ملی خود به نکات زیر دقت نمایید:',
 					LIST_ITEM_1:
 						'مدارک باید بصورت رنگی و با کیفیت بالا و حجم حداکثر 300 کیلو بایت بارگذاری شوند.',
 					LIST_ITEM_2: 'اطلاعات درج شده باید کاملا خوانا باشد.',
-					LIST_ITEM_3: 'تنها کارت ملی که تاریخ اعتبار آن منقضی نشده است ، معتبر می باشد.',
+					LIST_ITEM_3:
+						'تنها کارت ملی که تاریخ اعتبار آن منقضی نشده است ، معتبر می باشد.',
 					WARNING_1:
 						'تنها کارت ملی  معتبر پذیرفته می شود. عکس با کیفیت بالا یا تصاویر اسکن شده از آن قابل قبول است:',
 					WARNING_2:
 						'مطمئن شوید که اسناد شخصی خود را بارگذاری می کنید. هرگونه استفاده از اسناد شخص دیگر یا جعلی عواقب قانونی به همراه خواهد داشت و باعث می شود  حساب شما فوراً مسدود شود.',
 					WARNING_3:
-						'برای احراز محل اقامت خود از بارگذاری کارت ملی ، شناسنامه و پاسپورت خودداری نمایید'
+						'برای احراز محل اقامت خود از بارگذاری کارت ملی ، شناسنامه و پاسپورت خودداری نمایید',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -544,37 +548,32 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 						'تصاویر رنگی یا اسکن شده را با کیفیت بالا (حداقل 300 DPI) ارسال نمایید',
 					SECTION_2_TITLE: 'موارد قابل قبول احراز محل اقامت:',
 					SECTION_2_LIST_ITEM_1: 'سند اجاره و یا مالکیت محل اقامت',
-					SECTION_2_LIST_ITEM_2:
-						'کلیه قبوض حاوی آدرس و کد پستی',
-					SECTION_2_LIST_ITEM_3:
-						'گواهی کد پستی محل سکونت',
-					WARNING:
-						''
+					SECTION_2_LIST_ITEM_2: 'کلیه قبوض حاوی آدرس و کد پستی',
+					SECTION_2_LIST_ITEM_3: 'گواهی کد پستی محل سکونت',
+					WARNING: '',
 				},
 				SELFIE: {
 					TITLE: 'تصویر سلفی',
 					INFO_TEXT:
-						"لطفاً تصویر خود را با در دست داشتن سند هویتی خود بگیرید.در تصویر ارسالی تاریخ امروز و امضای شما مشخص باشد. هم چنین مطمئن شوید که صورت شما به وضوح قابل مشاهده است و جزئیات سند هویتی شما نیز به وضوح قابل خواندن باشد.",
+						'لطفاً تصویر خود را با در دست داشتن سند هویتی خود بگیرید.در تصویر ارسالی تاریخ امروز و امضای شما مشخص باشد. هم چنین مطمئن شوید که صورت شما به وضوح قابل مشاهده است و جزئیات سند هویتی شما نیز به وضوح قابل خواندن باشد.',
 					REQUIRED: 'لطفا تصویر سلفی خود را مطابق با شرایط زیر ارسال نمایید::',
 					INSTRUCTION_1: 'صورت و شانه ها به وضوح مشخص باشند.',
 					INSTRUCTION_2: 'مدرک هویتی و دستنوشته شما واضح و خوانا باشد.',
 					INSTRUCTION_3: 'درج نوشته exir.io',
-					INSTRUCTION_4: "درج تاریخ امروز",
+					INSTRUCTION_4: 'درج تاریخ امروز',
 					INSTRUCTION_5: 'امضای شما',
 					WARNING:
-						'در صورت مشاهده خطای network error حجم تصاویر را به زیر 300 کیلو بایت کاهش دهید.'
-				}
-			}
+						'در صورت مشاهده خطای network error حجم تصاویر را به زیر 300 کیلو بایت کاهش دهید.',
+				},
+			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
 				ACCOUNT_OWNER:
 					'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
-				ACCOUNT_NUMBER:
-					'شماره حساب بانکی شما باید حداکثر 24 رقمی باشد',
-				ACCOUNT_NUMBER_MAX_LENGTH:
-					'شماره حساب حداکثر 50 عدد می باشد',
-				CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد'
+				ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید حداکثر 24 رقمی باشد',
+				ACCOUNT_NUMBER_MAX_LENGTH: 'شماره حساب حداکثر 50 عدد می باشد',
+				CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'نام بانک',
@@ -582,18 +581,18 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 				ACCOUNT_NUMBER_LABEL: 'شماره حساب بانکی',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'شماره حساب بانکی خود را وارد کنید',
 				ACCOUNT_OWNER_LABEL: 'نام صاحب حساب بانکی',
-				ACCOUNT_OWNER_PLACEHOLDER: 'نام و نام خانوادگی صاحب حساب بانکی را  وارد کنید',
+				ACCOUNT_OWNER_PLACEHOLDER:
+					'نام و نام خانوادگی صاحب حساب بانکی را  وارد کنید',
 				CARD_NUMBER_LABEL: 'شماره کارت',
-				CARD_NUMBER_PLACEHOLDER:
-					'شماره 16 رقمی بر روی کارت خود را وارد کنید'
-			}
+				CARD_NUMBER_PLACEHOLDER: 'شماره 16 رقمی بر روی کارت خود را وارد کنید',
+			},
 		},
 		WARNING: {
 			TEXT_1: 'با تکمیل احراز هویت، موارد زیر برای شما میسر می شود:',
 			LIST_ITEM_1: 'افزایش محدودیت های برداشت',
 			LIST_ITEM_2: 'افزایش محدودیت های سپرده',
-			LIST_ITEM_3: 'کارمزد پایین'
-		}
+			LIST_ITEM_3: 'کارمزد پایین',
+		},
 	},
 	USER_SETTINGS: {
 		TITLE_TEXT_1:
@@ -622,15 +621,13 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			TRADE_POPUPS: 'اعلان های مربوط به معاملات',
 			POPUP_ORDER_CONFIRMATION: 'تاییدیه ثبت سفارش ',
 			POPUP_ORDER_COMPLETED: 'اعلان تکمیل سفارش',
-			POPUP_ORDER_PARTIALLY_FILLED:
-				'اعلان تکمیل بخشی از سفارش'
+			POPUP_ORDER_PARTIALLY_FILLED: 'اعلان تکمیل بخشی از سفارش',
 		},
 		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO:
-				'وقتی سفارش تکمیل شد یک اعلان صوتی پخش شود',
+			ORDERS_COMPLETED_AUDIO: 'وقتی سفارش تکمیل شد یک اعلان صوتی پخش شود',
 			ORDERS_PARTIAL_AUDIO:
 				'وقتی بخشی از سفارش تکمیل شد ، یک اعلان صوتی  پخش شود',
-			PUBLIC_TRADE_AUDIO: 'در هر خرید و فروش عمومی، یک اعلان صوتی پخش شود'
+			PUBLIC_TRADE_AUDIO: 'در هر خرید و فروش عمومی، یک اعلان صوتی پخش شود',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -640,8 +637,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			TOMAN_ASSET: 'ارزش تقریبی',
 			ADJUST: '(تنظیم درصد)',
 			ACTIVATE_RISK_MANAGMENT: 'مدیریت ریسک را فعال کنید',
-			WARNING_POP_UP: 'هشدارها'
-		}
+			WARNING_POP_UP: 'هشدارها',
+		},
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'تاریحچه',
@@ -651,21 +648,22 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		TEXT_DOWNLOAD: 'دانلود تاریخچه',
 		TRADES: 'خریدو فروش',
 		DEPOSITS: 'واریزی ها',
-		WITHDRAWALS: 'برداشت ها'
+		WITHDRAWALS: 'برداشت ها',
 	},
 	ACCOUNT_SECURITY: {
-		TITLE_TEXT:'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+		TITLE_TEXT:
+			'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
 		OTP: {
 			TITLE: 'رمز یکبار مصرف',
 			OTP_ENABLED: 'رمز یکبار مصرف را فعال کنید',
 			OTP_DISABLED: 'لطفا رمز یکبار مصرف را  فعال کنید',
 			ENABLED_TEXTS: {
 				TEXT_1: 'هنگام ورود به سیستم ، به OTP نیاز دارید',
-				TEXT_2: 'هنگام برداشت وجوه به OTP نیاز دارید'
+				TEXT_2: 'هنگام برداشت وجوه به OTP نیاز دارید',
 			},
 			DIALOG: {
 				SUCCESS: 'شما OTP را با موفقیت فعال کرده اید',
-				REVOKE: 'شما OTP خود را با موفقیت غیرفعال کردید'
+				REVOKE: 'شما OTP خود را با موفقیت غیرفعال کردید',
 			},
 			CONTENT: {
 				TITLE: 'رمز  یکبار مصرف را فعال کنید',
@@ -684,7 +682,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 				DISABLE: 'غیر فعال کردن رمز یکبار مصرف',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3: 'This secret key will help you recover your account if you lost access to your phone.',
+				SECRET_3:
+					'This secret key will help you recover your account if you lost access to your phone.',
 				INPUT_1: 'Secret Key',
 
 				TITLE_2: 'Enter One-Time Password (OTP)',
@@ -693,73 +692,83 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			},
 			FORM: {
 				PLACEHOLDER: ' ارائه شده توسط Google Authenticator را وارد کنید',
-				BUTTON: 'فعال کردن رمز یکبار مصرف'
-			}
+				BUTTON: 'فعال کردن رمز یکبار مصرف',
+			},
 		},
 		CHANGE_PASSWORD: {
 			TITLE: 'نغییر رمز عبور',
 			ACTIVE: 'فعال',
 			DIALOG: {
-				SUCCESS: 'شما با موفقیت رمز عبورتان را تغییر دادید'
+				SUCCESS: 'شما با موفقیت رمز عبورتان را تغییر دادید',
 			},
 			FORM: {
 				BUTTON: 'تغییر رمز عبور',
 				CURRENT_PASSWORD: {
 					label: ' رمز عبور فعلی',
-					placeholder: 'رمز عبور فعلی'
+					placeholder: 'رمز عبور فعلی',
 				},
 				NEW_PASSWORD: {
 					label: 'رمز عبور جدید',
-					placeholder: 'یک رمز عبور جدید تایپ کنید'
+					placeholder: 'یک رمز عبور جدید تایپ کنید',
 				},
 				NEW_PASSWORD_REPEAT: {
 					label: 'تایید رمز جدید',
-					placeholder: 'رمز عبور جدید خود را دوباره وارد کنید'
-				}
-			}
+					placeholder: 'رمز عبور جدید خود را دوباره وارد کنید',
+				},
+			},
 		},
 		LOGIN: {
 			TITLE: 'Login History',
 			CONTENT: {
 				TITLE: 'Logins History',
-				MESSAGE: 'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support'
-			}
+				MESSAGE:
+					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+			},
 		},
 		FREEZE: {
 			TITLE: 'Freeze Account',
 			CONTENT: {
-				MESSAGE_1: 'Freezing your account will stop whitdrawals and halts all tradings.',
-				WARNING_1: 'Use only if you fear that your account has been compromised',
+				MESSAGE_1:
+					'Freezing your account will stop whitdrawals and halts all tradings.',
+				WARNING_1:
+					'Use only if you fear that your account has been compromised',
 				TITLE_1: 'Freeze your Account',
 				TITLE_2: 'Account freezing',
-				MESSAGE_2: 'Freezing your account may help guard your account from cyber attacks.',
-				MESSAGE_3: 'The following will occur if you choose to freeze your account:',
+				MESSAGE_2:
+					'Freezing your account may help guard your account from cyber attacks.',
+				MESSAGE_3:
+					'The following will occur if you choose to freeze your account:',
 				MESSAGE_4: '1. Pending withdrawals will be canceled.',
-				MESSAGE_5: '2. All tradings will be halted and unfilled orders will be canceled.',
-				MESSAGE_6: '3. Containing support will be required to reactivate your account.',
-				WARNING_2: 'Do you really want to freeze your account?'
-			}
-		}
+				MESSAGE_5:
+					'2. All tradings will be halted and unfilled orders will be canceled.',
+				MESSAGE_6:
+					'3. Containing support will be required to reactivate your account.',
+				WARNING_2: 'Do you really want to freeze your account?',
+			},
+		},
 	},
 	CURRENCY: 'نوع دارایی',
 	TYPE: 'نوع',
 	TYPES_VALUES: {
 		market: 'بازار',
-		limit: 'محدود'
+		limit: 'محدود',
 	},
 	TYPES: [
 		{ value: 'market', label: 'بازار' },
-		{ value: 'limit', label: 'محدود' }
+		{ value: 'limit', label: 'محدود' },
 	],
 	SIDE: 'معامله',
 	SIDES_VALUES: {
 		buy: 'خرید',
-		sell: 'فروش'
+		sell: 'فروش',
 	},
-	SIDES: [{ value: 'buy', label: 'خرید' }, { value: 'sell', label: 'فروش' }],
+	SIDES: [
+		{ value: 'buy', label: 'خرید' },
+		{ value: 'sell', label: 'فروش' },
+	],
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'روشن' },
-		{ value: false, label: 'خاموش' }
+		{ value: false, label: 'خاموش' },
 	],
 	SIZE: 'مقدار',
 	PRICE: 'قیمت',
@@ -805,7 +814,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		h: 'بالا',
 		l: 'پایین',
 		c: 'پایان',
-		v: 'حجم'
+		v: 'حجم',
 	},
 	QUICK_TRADE: ' خرید و فروش آسان',
 	PRO_TRADE: 'خرید و فروش حرفه ای',
@@ -818,10 +827,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید.',
 	WITHDRAWALS_MAX_VALUE_ERROR:
 		'تراکنش برای ارسال بسیار بزرگ است. مقدار کمتری  را امتحان کنید.',
-	WITHDRAWALS_LOWER_BALANCE:
-		'شما برای انجام این معامله مبلغ {0} کافی ندارید',
-	WITHDRAWALS_FEE_TOO_LARGE:
-		'کارمزد بزرگتر از {0}% از این تراکنش است.',
+	WITHDRAWALS_LOWER_BALANCE: 'شما برای انجام این معامله مبلغ {0} کافی ندارید',
+	WITHDRAWALS_FEE_TOO_LARGE: 'کارمزد بزرگتر از {0}% از این تراکنش است.',
 	WITHDRAWALS_BTC_INVALID_ADDRESS:
 		'آدرس بیتکوین نامعتبر است لطفا با دقت آدرس را وارد کنید',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
@@ -834,8 +841,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		' کارمزد معاملات',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: ' کارمزد معاملات',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'کارمزد برداشت بانک',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'مقدار {0} که میخواهید در این تراکنش استفاده کنید را وارد کنید',
@@ -849,8 +855,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		'برای شناسایی سپرده، این کد "{0}" را به تراکنش بانکی اضافه کنید',
 	DEPOSIT_METHOD: 'روش پرداخت',
 	DEPOSIT_METHOD_DIRECT_PAYMENT: 'کارت بانکی',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1:
-		'به درگاه پرداخت کارت بانکی بروید.',
+	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: 'به درگاه پرداخت کارت بانکی بروید.',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
 		'برای پرداخت شما سایت  را ترک میکنید و پس از انجام تراکنش مجددا به سایت باز خواهی گشت',
 	DEPOSIT_VERIFICATION_WAITING_TITLE: 'تأیید پرداخت',
@@ -889,13 +894,14 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		BASE_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',
 		CONFIRM_VIA_EMAIL: 'تایید از طریق ایمیل',
 		CONFIRM_VIA_EMAIL_1: 'ایمیل تایید برداشت برای شما ارسال شد',
-		CONFIRM_VIA_EMAIL_2:
-			'لطفا برای تایید برداشت و تکمیل فرایند ',
-		CONFIRM_VIA_EMAIL_3: 'حداکثر تا 5 دقیقه برداشت را از طریق ایمیل خود تایید کنید',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'درخواست برداشت شما تایید شد . ما آن را در مدت زمان کوتاهی کارسازی خواهیم نمود.',
+		CONFIRM_VIA_EMAIL_2: 'لطفا برای تایید برداشت و تکمیل فرایند ',
+		CONFIRM_VIA_EMAIL_3:
+			'حداکثر تا 5 دقیقه برداشت را از طریق ایمیل خود تایید کنید',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'درخواست برداشت شما تایید شد . ما آن را در مدت زمان کوتاهی کارسازی خواهیم نمود.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'برای مشاهده آخرین وضعیت برداشت خود ، لطفاً به صفحه "تاریخچه برداشت ها" مراجعه نمایید.',
-		GO_WITHDRAWAL_HISTORY: 'برو به تاریخچه ی مبادلات'
+		GO_WITHDRAWAL_HISTORY: 'برو به تاریخچه ی مبادلات',
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'واریز',
 	WALLET_BUTTON_BASE_WITHDRAW: 'برداشت',
@@ -934,16 +940,15 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	LOGOUT_ERROR_TOKEN_EXPIRED: 'توکن قیمت دیگر اعتبار ندارد',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'لطفا مجدد وارد شوید', // ip doesnt match
 	LOGOUT_ERROR_INVALID_TOKEN: 'لطفا دوباره وارد شوید',
-	LOGOUT_ERROR_INACTIVE:
-		'لطفا مجدد وارد شوید',
+	LOGOUT_ERROR_INACTIVE: 'لطفا مجدد وارد شوید',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
 	QUICK_TRADE_OUT_OF_LIMITS: 'سفارش شما خارج از محدوده است.',
 	QUICK_TRADE_TOKEN_USED: 'توکن معتبر نیست',
-	QUICK_TRADE_QUOTE_EXPIRED: 'اعتبار قیمت اعلام شده تمام شده. دوباره امتحان کنید.',
+	QUICK_TRADE_QUOTE_EXPIRED:
+		'اعتبار قیمت اعلام شده تمام شده. دوباره امتحان کنید.',
 	QUICK_TRADE_QUOTE_INVALID: 'قیمت اعلام شده اعتبار ندارد',
 	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'اشتباه در محاسبه قیمت',
-	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED:
-		'سفارش با این مقدار تکمیل نخواهد شد',
+	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'سفارش با این مقدار تکمیل نخواهد شد',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'موجودی سایت کافی نیست',
 	QUICK_TRADE_NO_BALANCE: 'موجودی شما برای انجام این سفارش کافی نیست',
 	YES: 'بله',
@@ -975,17 +980,18 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	GOTO_XHT_MARKET: 'به بازار معاملات XHT بروید', // new
 	INVALID_CAPTCHA: 'کپچا نادرست است',
 	NO_FEE: 'کاربردی ندارد',
-	SETTINGS_LANGUAGE_LABEL: 'انتخاب زبان (این گزینه شامل ایمیل های ارسالی از طرف HollaEx نیز می شود)',
+	SETTINGS_LANGUAGE_LABEL:
+		'انتخاب زبان (این گزینه شامل ایمیل های ارسالی از طرف HollaEx نیز می شود)',
 	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'مشاهده منوی تایید سفارش',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'خیر' },
-		{ value: true, label: 'بله' }
+		{ value: true, label: 'بله' },
 	],
 	SETTINGS_THEME_LABEL: 'حالت پوسته سایت :', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'روشن' },
-		{ value: 'dark', label: 'تیره' }
+		{ value: 'dark', label: 'تیره' },
 	],
 	SETTING_BUTTON: 'ذخیره',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
@@ -1004,8 +1010,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		GENERATE_KEY: 'کلید API خود را بسازید',
 		ACTIVE: 'فعال',
 		INACTIVE: 'غیرفعال',
-		INVALID_LEVEL:
-			'برای دسترسی به این سرویس نیاز به سطح کاربری بالاتر دارید.' // TODO
+		INVALID_LEVEL: 'برای دسترسی به این سرویس نیاز به سطح کاربری بالاتر دارید.', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'ساخت کلید',
@@ -1023,7 +1028,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		CREATED_TITLE: 'کپی کلید API',
 		CREATED_TEXT_1:
 			'لطفا کلید خود را در جایی امن نگه داری کنید زیرا کلید در آینده قابل دسترس نخواهد بود.',
-		CREATED_TEXT_2: 'کلید خود را در جایی امن نگه داری کنید.'
+		CREATED_TEXT_2: 'کلید خود را در جایی امن نگه داری کنید.',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'نام',
@@ -1032,7 +1037,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		CREATED: 'تاریخ ساخت',
 		REVOKE: 'لغو کردن',
 		REVOKED: 'لغو شده',
-		REVOKE_TOOLTIP: 'شما باید رمز یکبار مصرف خود را برای لغو کلید فعال کنید.' // TODO
+		REVOKE_TOOLTIP: 'شما باید رمز یکبار مصرف خود را برای لغو کلید فعال کنید.', // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: 'چت',
@@ -1044,18 +1049,20 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'پیام خود را وارد کنید',
 		SIGN_UP_CHAT: 'ثبت نام چت',
 		JOIN_CHAT: 'نام کاربری چت',
-		TROLLBOX: 'چت عمومی ({0})' // new
+		TROLLBOX: 'چت عمومی ({0})', // new
 	},
 	INVALID_USERNAME:
 		'طول نام کاربری باید بین 3 تا 15 حرف باید باشد. فقط از حروف انگلیسی کوچک، اعداد و کاراکتر underscore استفاده نمایید.',
-	USERNAME_TAKEN: 'نام کاربری انتخاب شده توسط شما، قبلا توسط دیگر کاربران انتخاب شده است، لطفا نام دیگری انتخاب نمایید. ',
+	USERNAME_TAKEN:
+		'نام کاربری انتخاب شده توسط شما، قبلا توسط دیگر کاربران انتخاب شده است، لطفا نام دیگری انتخاب نمایید. ',
 	USERNAME_LABEL: 'نام کاربری (جهت استفاده در چت)',
 	USERNAME_PLACEHOLDER: 'نام کاربری',
 	TAB_USERNAME: 'نام کاربری',
 	USERNAME_WARNING:
 		'نام کاربری شما فقط یکبار می تواند تغییر یابد. لطفا در انتخاب نام کاربری خود دقت فرمایید.',
 	USERNAME_CANNOT_BE_CHANGED: 'نام کاربری نمی تواند تغییر یابد.',
-	UPGRADE_LEVEL: 'درخواست افزایش سطح دسترسی کاربری. (تنها برای افراد با حجم خرید و فروش بالا)',
+	UPGRADE_LEVEL:
+		'درخواست افزایش سطح دسترسی کاربری. (تنها برای افراد با حجم خرید و فروش بالا)',
 	LEVELS: {
 		LABEL_LEVEL: 'سطح',
 		LABEL_LEVEL_1: 'میگوی کوچک (مبتدی) ',
@@ -1072,7 +1079,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		LABEL_PAIR_MAKER_FEE: '{0} کارمزد سفارش گذار',
 		LABEL_PAIR_TAKER_FEE: '{0} کارمزد پذیرنده سفارش',
 		UNLIMITED: 'نامحدود',
-		BLOCKED: '0'
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'ساخت کیف پول {0} ',
 	WALLET_ADDRESS_GENERATE: 'ساخت',
@@ -1115,10 +1122,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		ACCOUNT_ASSETS: 'دارایی های حساب کاربری',
 		ACCOUNT_DETAILS: ' جزئیات حساب کاربری',
 		SHRIMP_ACCOUNT_TXT_1: 'آغاز ماجراجویی شما اینجاست!',
-		SHRIMP_ACCOUNT_TXT_2:
-			'برای متمایز شدن از سایرین به تلاش خود ادامه دهید.',
-		SNAPPER_ACCOUNT_TXT_1:
-			' مسیر زندگی خود را با تورم بازار بگذرانید',
+		SHRIMP_ACCOUNT_TXT_2: 'برای متمایز شدن از سایرین به تلاش خود ادامه دهید.',
+		SNAPPER_ACCOUNT_TXT_1: ' مسیر زندگی خود را با تورم بازار بگذرانید',
 		SNAPPER_ACCOUNT_TXT_2:
 			'با ادامه تلاش و مبارزه، به گنجینه دارایی های خود بیافزایید.',
 		KRAKEN_ACCOUNT_TXT_1:
@@ -1203,18 +1208,19 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		TRADE_OVER_BTC: 'خرید و فروش بیشتر از  {0} بیتکوین', // new
 		XHT_IN_WALLET: '{0} XHT موجود در کیف پول', // new
 		REWARDS_BONUS: 'جوایز و پاداش ها', // new
-		COMPLETE_TASK_DESC: 'فعالیت های موجود را انجام دهید و جوایزی به ارزش بیش از 10،000 دلار کسب کنید.', // new
+		COMPLETE_TASK_DESC:
+			'فعالیت های موجود را انجام دهید و جوایزی به ارزش بیش از 10،000 دلار کسب کنید.', // new
 		TASKS: 'وظایف', // new
 		MAKE_FIRST_DEPOSIT: 'بااولین واریز خود XHT دریافت کنید 1 ', // new
 		BUY_FIRST_XHT: 'بااولین خرید خود XHT دریافت کنید 5 ', // new
 		COMPLETE_ACC_VERIFICATION:
 			'مشخصات حساب کاربری خود را کامل کنید و 20 XHT دریافت کنید', // new
 		INVITE_USER: 'دوستان خود را دعوت کرده و از کمیسیون خود لذت ببرید', // new
-		JOIN_HAP: 'به برنامه واسط(HAP) بپیوندید و برای هر نسخه HollaEx kit که می فروشید ، 10٪ درآمد کسب کنید', // new
+		JOIN_HAP:
+			'به برنامه واسط(HAP) بپیوندید و برای هر نسخه HollaEx kit که می فروشید ، 10٪ درآمد کسب کنید', // new
 		EARN_RUNNING_EXCHANGE: 'برای اجرای مبادله شخصی خود درآمد جداگانه کسب کنید', // new
 		XHT_WAVE_AUCTION: ' موج حراجی XHT ', // new
-		XHT_WAVE_DESC_1:
-			'توزیع توکن HollaEx (XHT) از طریق موج حراجی انجام می شود.', // new
+		XHT_WAVE_DESC_1: 'توزیع توکن HollaEx (XHT) از طریق موج حراجی انجام می شود.', // new
 		XHT_WAVE_DESC_2:
 			'موج حراجی یک مقدار تصادفی XHT را در مواقع تصادفی به بالاترین پیشنهاد دهنده در سفارسات موجود می فروشد', // new
 		XHT_WAVE_DESC_3:
@@ -1223,7 +1229,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		LEARN_MORE_WAVE_AUCTION: 'درباره موج حراجی بیشتر بدانید', // new
 		WAVE_NUMBER: 'شماره موج', // new
 		DISCOUNT: '( {0}% تخفیف )', // new
-		MY_FEES_LIMITS: ' کارمزدها و محدودیت ها' // new
+		MY_FEES_LIMITS: ' کارمزدها و محدودیت ها', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: ' دوست خود را دعوت کنید', // new
@@ -1231,7 +1237,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			'با ارائه این لینک به دوستان خود و  ثبت نام آنها از طریق لینک ارائه شده، دوستان شما {0} % تخفیف دریافت می کنند.', // new
 		INFO_TEXT_1:
 			'{0}%  از معاملات صورت گرفته توسط افرادی که از طریق لینک ارسالی شما به اقدام به ثبت نام نموده اند ، ماهانه به حساب شما واریز می شود.', // new
-		COPY_FIELD_LABEL: 'لینک زیر را با دوستان خود به اشتراک بگذارید و کمیسیون کسب کنید:', // new
+		COPY_FIELD_LABEL:
+			'لینک زیر را با دوستان خود به اشتراک بگذارید و کمیسیون کسب کنید:', // new
 		REFERRED_USER_COUT: 'شما کاربران {0} را دعوت کرده اید', // new
 		COPY_LINK_BUTTON: 'کپی لینک دعوت نامه', // new
 		XHT_TITLE: 'دعوت نامه من', // new
@@ -1243,7 +1250,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		PENDING_REFERRAL: 'حق کمیسیون های در انتظار:', // new
 		EARN_REFERRAL: 'کمیسیون های کسب شده:', // new
 		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'درخواست دادن' // new
+		APPLY_BUTTON: 'درخواست دادن', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'سهام توکن HollaEx', // new
@@ -1253,15 +1260,14 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			'می توانید توکن HollaEx خود را با روشی یکسان تضمین کنید و XHT را که در موج حراجی فروخته نشده است را کسب کنید.', // new
 		INFO_TXT3:
 			'به dash.bitholla.com بروید ، مبادله شخصی خود را اتضمین کنید و XHT رایگان کسب کنید', // new
-		BUTTON_TXT: 'اطلاعات بیشتر' // new
+		BUTTON_TXT: 'اطلاعات بیشتر', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
 		TITLE: 'توافق نامه خرید توکن HollaEx',
 		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: 'اقدامات',
-		AGREE_TERMS_LABEL:
-			'من توافقنامه خرید توکن HollaEx را خوانده ام و موافقم',
+		AGREE_TERMS_LABEL: 'من توافقنامه خرید توکن HollaEx را خوانده ام و موافقم',
 		RISK_INVOLVED_LABEL: 'من خطرات ناشی از آن را درک می کنم',
 		DOWNLOAD_PDF: 'PDF دریافت فایل',
 		DEPOSIT_FUNDS:
@@ -1286,8 +1292,9 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		XHT_ORDER_TXT_3: '{0}برای پیوستن به موج ها یا{1}', // new
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'برای دیدن معاملات اخیر خود وارد شوید', //new
-		XHT_TRADE_TXT_2: '{0}می توانید برای دیدن تاریخچه معاملات اخیر خود داشته باشید', //new
-		LOGIN_HERE: 'اینجا وارد شوید'
+		XHT_TRADE_TXT_2:
+			'{0}می توانید برای دیدن تاریخچه معاملات اخیر خود داشته باشید', //new
+		LOGIN_HERE: 'اینجا وارد شوید',
 	},
 	WAVES: {
 		// new
@@ -1295,7 +1302,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		NEXT_WAVE: 'موج بعدی',
 		WAVE_AMOUNT: 'مقدار موجود موج',
 		FLOOR: 'کف',
-		LAST_WAVE: 'آخرین موج'
+		LAST_WAVE: 'آخرین موج',
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1303,12 +1310,13 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		ANNOUNCEMEN: 'اعلان ها',
 		SYSTEM_UPDATE: 'بروز رسانی سیستم',
 		LAST_WAVE: 'آخرین موج',
-		ANNOUNCEMENT_TXT: 'XHT رایگان به کلیه کیف پولهایی که توزیع می شود اعمال می شوند',
+		ANNOUNCEMENT_TXT:
+			'XHT رایگان به کلیه کیف پولهایی که توزیع می شود اعمال می شوند',
 		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
 		SYSTEM_UPDATE_DURATION: '1 hour',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
 	},
 	USER_LEVEL: 'سطح کاربری', // new
 	LIMIT_AMOUNT: 'مقدار محدود', // new
@@ -1338,10 +1346,15 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			'با معرفی دوستان خود به hollaex.com ، با برنامه واسط hollaEX (HAP) درآمدزایی کنید. {0}',
 		DEFAULT_ANNOUNCEMENT:
 			'در این صفحه اطلاعیه های عمومی در مورد اکسچنج شما نمایش داده می شود!',
-		ANNOUNCEMENT_TXT_2: 'XHT رایگان در کلیه کیف پولهایی که {0} دارند توزیع می شود.',
+		ANNOUNCEMENT_TXT_2:
+			'XHT رایگان در کلیه کیف پولهایی که {0} دارند توزیع می شود.',
 		LEARN_MORE: 'بیشتر بدانید',
-		APPLY_TODAY: 'امروز اقدام کنید' // new
+		APPLY_TODAY: 'امروز اقدام کنید', // new
 	},
 	OPEN_WALLET: 'کیف پول', // new
-	AGO: 'پیش' // new
+	AGO: 'پیش', // new
 };
+
+const content = flatten(nestedContent, options);
+
+export default content;

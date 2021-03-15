@@ -1,11 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
-import { ICONS } from '../../config/constants';
-import ReactSVG from 'react-svg';
+import { EditWrapper } from 'components';
+import Image from 'components/Image';
 
-const renderCheckboxImage = (checked) => (
-	<ReactSVG
-		path={checked ? ICONS.SUCCESS_BLACK : ICONS.SECURE}
+const renderCheckboxImage = (checked, ICONS = {}) => (
+	<Image
+		iconId={checked ? 'SUCCESS_BLACK' : 'SECURE'}
+		icon={checked ? ICONS['SUCCESS_BLACK'] : ICONS['SECURE']}
 		wrapperClassName="checkbutton-input-wrapper--image"
 	/>
 );
@@ -20,10 +21,12 @@ const CheckboxButton = ({
 	name = 'CheckboxButton',
 	checked = false,
 	onClick,
+	stringId,
 	label = 'Label',
 	disabled = false,
 	loading = false,
-	children
+	children,
+	icons,
 }) => (
 	<div className="checkbutton-wrapper">
 		<div
@@ -38,9 +41,11 @@ const CheckboxButton = ({
 			{loading ? (
 				<div className="checkbutton-input-wrapper--loader" />
 			) : (
-				renderCheckboxImage(checked, disabled)
+				renderCheckboxImage(checked, icons)
 			)}
-			<span className="checkbutton-input-wrapper--label">{label}</span>
+			<span className="checkbutton-input-wrapper--label">
+				<EditWrapper stringId={stringId}>{label}</EditWrapper>
+			</span>
 		</div>
 		{children && <div className="checkbutton-content-wrapper">{children}</div>}
 	</div>

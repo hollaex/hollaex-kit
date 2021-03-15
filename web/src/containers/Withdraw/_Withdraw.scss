@@ -1,6 +1,6 @@
 $crypto-address--padding: 0.25rem;
 $arrow-size: 4px;
-$arrow-color: $colors-main-black;
+$arrow-color: $colors-black;
 $content--margin: 2rem;
 
 .review-wrapper {
@@ -64,29 +64,6 @@ $content--margin: 2rem;
 	margin: $content--margin 0;
 }
 
-.dark-theme {
-	svg {
-		.withdraw-1 {
-			fill: $dark-main-title-icon-color-1;
-		}
-		.withdraw-2 {
-			fill: $dark-main-title-icon-color-2;
-		}
-		.withdraw-3 {
-			fill: $dark-main-title-icon-color-3;
-		}
-		.check-send-btc-1 {
-			fill: $dark-icon-color;
-		}
-		.email-confirmation {
-			fill: $dark-icon-color;
-		}
-	}
-	.review_email-content {
-		border-color: $colors-main-black;
-	}
-}
-
 .layout-mobile {
 	.review-wrapper {
 		min-width: 0;
@@ -111,7 +88,7 @@ $content--margin: 2rem;
 					}
 					.field-children {
 						.custom {
-							font-size: $extra-thick--font-size;	
+							font-size: $extra-thick--font-size;
 						}
 					}
 				}
@@ -137,27 +114,28 @@ $content--margin: 2rem;
 					}
 				}
 			}
-			.field-label,.field-children,
+			.field-label,
+			.field-children,
 			.input_field-input {
 				font-size: $font-size-mobile-txt !important;
 			}
 			.field-error-content {
 				font-size: $regular--font-size;
 			}
-			
+
 			.action_notification-wrapper {
 				.action_notification-text {
 					font-size: $regular--font-size;
 				}
 			}
-			.exir-button{
+			.exir-button {
 				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
 	.review_email-wrapper {
-        margin: 0px auto !important;
-    }
+		margin: 0px auto !important;
+	}
 }
 
 .review_email-wrapper {

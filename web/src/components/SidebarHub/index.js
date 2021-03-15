@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
 import { IconTitle, Accordion } from '../../components';
 
@@ -8,13 +8,17 @@ import { ButtonLink, Wallet } from '../';
 
 class SidebarHub extends Component {
 	render() {
-		const { activePath, isLogged, theme } = this.props;
-		const values = [{
-			accordionClassName: 'sidebar_hub-section-content f-1',
-			title: STRINGS.WALLET_TITLE,
-			icon: ICONS.SIDEBAR_WALLET_ACTIVE,
-			content: <Wallet />
-		}];
+		const { activePath, isLogged, icons: ICONS } = this.props;
+		const values = [
+			{
+				accordionClassName: 'sidebar_hub-section-content f-1',
+				stringId: 'WALLET_TITLE',
+				title: STRINGS['WALLET_TITLE'],
+				iconId: 'SIDEBAR_WALLET_ACTIVE',
+				icon: ICONS['SIDEBAR_WALLET_ACTIVE'],
+				content: <Wallet />,
+			},
+		];
 		return (
 			<div
 				className={classnames(
@@ -30,26 +34,22 @@ class SidebarHub extends Component {
 					) : (
 						<div>
 							<IconTitle
-								iconPath={
-									theme === 'white'
-										? ICONS.DEMO_LOGIN_ICON_LIGHT
-										: ICONS.DEMO_LOGIN_ICON_DARK
-								}
+								iconId="DEMO_LOGIN_ICON"
+								iconPath={ICONS['DEMO_LOGIN_ICON']}
 								textType="title"
 								className="w-100"
-								useSvg={true}
 							/>
 
 							<ButtonLink
-								label={STRINGS.SIGN_IN.toUpperCase()}
+								label={STRINGS['SIGN_IN'].toUpperCase()}
 								className={'log_in-btn'}
 								disabled={isLogged}
 								link={`/login`}
 							/>
-							<div className="text-center mt-3 mb-3">{STRINGS.OR_TEXT}</div>
+							<div className="text-center mt-3 mb-3">{STRINGS['OR_TEXT']}</div>
 
 							<ButtonLink
-								label={STRINGS.SIGNUP_TEXT.toUpperCase()}
+								label={STRINGS['SIGNUP_TEXT'].toUpperCase()}
 								className={'sign_up-btn mb-5'}
 								disabled={isLogged}
 								link={`/signup`}
@@ -62,4 +62,4 @@ class SidebarHub extends Component {
 	}
 }
 
-export default SidebarHub;
+export default withConfig(SidebarHub);

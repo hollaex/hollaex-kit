@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import FieldWrapper from './FieldWrapper';
 
 const InputField = (props) => {
-	const { input, label, type, ...rest } = props;
+	const { input, label, type, reverse, ...rest } = props;
 
 	return (
 		<FieldWrapper
@@ -12,7 +12,13 @@ const InputField = (props) => {
 			type={type}
 			{...rest}
 		>
-			<div className={classnames('checkfield-input-wrapper', 'd-flex')}>
+			<div
+				className={classnames(
+					'checkfield-input-wrapper',
+					'd-flex',
+					reverse ? 'flex-row-reverse' : ''
+				)}
+			>
 				<input type={type} {...input} className="checkfield-input" />
 				<div className="checkfield-label field-label">{label}</div>
 			</div>

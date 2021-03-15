@@ -16,24 +16,22 @@ $no-background--color: white;
 }
 
 .home_container {
-	background: url($background-image);
-
 	background-repeat: no-repeat;
 	background-size: cover;
 
 	.exchange-expired {
-		background-color: $colors-notifications-red !important;
-		color: $colors-white !important;
+		background-color: #ed1c24 !important;
+		color: #ffffff !important;
 	}
-	
+
 	.exchange-warning {
-		background-color: #FFF100;
-		color: $colors-black;
+		background-color: #fff100;
+		color: #000000;
 	}
 
 	.quick_trade-section {
 		background-color: $quick-trade-background;
-		border: 1px solid $colors-deactivate-color1;
+		border: 1px solid $colors-border;
 		> .quick_trade-wrapper {
 			flex: 1;
 		}
@@ -75,7 +73,7 @@ $no-background--color: white;
 	}
 
 	.home-card-container {
-		border-top: 1px solid $colors-main-black;
+		border-top: 1px solid $colors-main-border;
 		width: $features-card--width;
 		margin: $features-card--margin;
 		margin-top: 0;
@@ -98,7 +96,7 @@ $no-background--color: white;
 
 		.home-card-text-container {
 			font-size: $font-size-subtext;
-			color:$colors-black;
+			color: $colors-black;
 			.home-card-title {
 				margin: 0.5rem 0 0.25rem;
 				font-weight: bold;
@@ -127,7 +125,7 @@ $no-background--color: white;
 		width: $navigation_bar-action_button * 2;
 		height: $navigation_bar-height;
 		font-size: $navigation_bar-font_size;
-		border: 1px solid $colors-main-black;
+		border: 1px solid $colors-main-border;
 		margin: 0 1rem;
 		text-align: center;
 		text-transform: uppercase;
@@ -148,36 +146,6 @@ $no-background--color: white;
 .direction_rtl {
 	.home-card-text-container {
 		margin-right: $card-text--margin;
-	}
-}
-
-.dark-theme {
-	&.home_container{
-		.section_1-content {
-			background: url($background-image-dark);
-		}
-		.features-container {
-			background-color: #020202;
-		}
-		.home-card-container {
-			border-color:#f9f9f9;
-			.home-card-icon-wrapper {
-				> div {
-					.home-card-icon {
-						fill:#f9f9f9
-					}
-				}
-			}
-			.home-card-text-container {
-				color:#f9f9f9;
-			}
-		}
-		.buttons-section--button {
-			border-color:#f9f9f9;
-		}
-	}
-	.arrow-down {
-		stroke: #f9f9f9;
 	}
 }
 

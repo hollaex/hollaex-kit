@@ -183,7 +183,6 @@ paid.
 9.8. No Partnership; No Agency; No Third Party Beneficiaries. Nothing in this Agreement and no action taken by the Parties shall constitute, or be deemed to constitute, a partnership, association, joint venture or other co-operative entity between the Parties. Nothing in this Agreement and no action taken by the Parties pursuant to this Agreement shall constitute, or be deemed to constitute, either Party the agent of the other Party for any purpose. No Party has, pursuant to this Agreement, any authority or power to bind or to contract in the name of the other Party. This Agreement does not create any third party beneficiary rights in any person.
 
 9.9. Electronic Communications. Buyer agrees and acknowledges that all agreements, notices, disclosures and other communications that Company provides Buyer pursuant to this Agreement or in connection with or related to Buyer’s purchase of HollaEx Tokens, including this Agreement, may be provided by Company, in its sole discretion, to Buyer, in electronic form.
-`
-
+`;
 
 export default agreement;

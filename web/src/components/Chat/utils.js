@@ -1,4962 +1,5771 @@
 export const customEmojis = [
-    {
-        "id": "grinning",
-        "name": "Smileys & People",
-        "emojis": [
-            {
-                id: "grinning",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "grin",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "joy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "smiley",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "smile",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sweat_smile",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "laughing",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "wink",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "blush",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "yum",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sunglasses",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "heart_eyes",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "kissing_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "kissing",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "kissing_smiling_eyes",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "kissing_closed_eyes",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "relaxed",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "slightly_smiling_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "neutral_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "expressionless",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "no_mouth",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "smirk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "persevere",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "disappointed_relieved",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "open_mouth",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "hushed",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sleepy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "tired_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sleeping",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "relieved",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "stuck_out_tongue",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "stuck_out_tongue_winking_eye",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "stuck_out_tongue_closed_eyes",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "unamused",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sweat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "pensive",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "confused",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "astonished",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "confounded",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "disappointed",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "worried",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "triumph",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "cry",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sob",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "frowning",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "anguished",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "fearful",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "weary",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "grimacing",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "cold_sweat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "scream",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "flushed",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "dizzy_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "rage",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "angry",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "mask",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "innocent",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "smiling_imp",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "imp",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "japanese_ogre",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "japanese_goblin",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "skull",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "ghost",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "alien",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "space_invader",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "hankey",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "smiley_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "smile_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "joy_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "heart_eyes_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "smirk_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "kissing_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "scream_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "crying_cat_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "pouting_cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "see_no_evil",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "hear_no_evil",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "speak_no_evil",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "baby",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "girl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "older_man",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "older_woman",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "cop",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "guardsman",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "construction_worker",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "princess",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man_with_turban",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man_with_gua_pi_mao",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "person_with_blond_hair",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "bride_with_veil",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "angel",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "santa",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "person_frowning",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "person_with_pouting_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "no_good",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "ok_woman",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "information_desk_person",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "raising_hand",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "bow",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "massage",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "haircut",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "walking",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "runner",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "dancer",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "dancers",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "bath",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "bust_in_silhouette",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "busts_in_silhouette",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "horse_racing",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "snowboarder",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "surfer",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "rowboat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "swimmer",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "bicyclist",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "mountain_bicyclist",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "couple",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "two_men_holding_hands",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "two_women_holding_hands",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "couplekiss",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-kiss-man",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman-kiss-woman",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "couple_with_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-heart-man",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman-heart-woman",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "family",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-woman-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-woman-girl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-woman-girl-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-woman-boy-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-woman-girl-girl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-man-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-man-girl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-man-girl-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-man-boy-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "man-man-girl-girl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman-woman-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman-woman-girl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman-woman-girl-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman-woman-boy-boy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "woman-woman-girl-girl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "muscle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "point_left",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "point_right",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "point_up",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "point_up_2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "point_down",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "v",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "hand",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "ok_hand",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "+1",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "-1",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "fist",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "facepunch",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "wave",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "clap",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "open_hands",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "raised_hands",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "pray",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "nail_care",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "ear",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "nose",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "footprints",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "eyes",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "tongue",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "lips",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "kiss",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "cupid",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "heartbeat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "broken_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "two_hearts",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sparkling_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "heartpulse",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "blue_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "green_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "yellow_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "purple_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "gift_heart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "revolving_hearts",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "heart_decoration",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "love_letter",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "zzz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "anger",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "bomb",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "boom",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sweat_drops",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "dash",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "dizzy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "speech_balloon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "thought_balloon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "eyeglasses",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "necktie",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "shirt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "jeans",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "dress",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "kimono",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "bikini",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "womans_clothes",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "purse",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "handbag",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "pouch",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "school_satchel",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "mans_shoe",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "athletic_shoe",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "high_heel",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "sandal",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "boot",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "crown",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "womans_hat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "tophat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "mortar_board",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "lipstick",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "ring",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }, {
-                id: "gem",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3,
-            }
-        ]
-    },
-    {
-        "id": "monkey_face",
-        "name": "Animals & Nature",
-        "emojis": [
-            {
-                id: "monkey_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "monkey",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dog",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dog2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "poodle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "wolf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cat2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tiger",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tiger2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "leopard",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "horse",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "racehorse",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cow",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ox",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "water_buffalo",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cow2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pig",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pig2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "boar",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pig_nose",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ram",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sheep",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "goat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dromedary_camel",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "camel",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "elephant",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "mouse",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "mouse2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "hamster",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rabbit",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rabbit2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bear",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "koala",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "panda_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "feet",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "chicken",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rooster",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "hatching_chick",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "baby_chick",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "hatched_chick",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bird",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "penguin",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "frog",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "crocodile",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "turtle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "snake",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dragon_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dragon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "whale",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "whale2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dolphin",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fish",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tropical_fish",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "blowfish",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "octopus",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "shell",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "snail",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bug",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ant",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bee",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "beetle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bouquet",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cherry_blossom",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_flower",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rose",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "hibiscus",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sunflower",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "blossom",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tulip",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "seedling",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "evergreen_tree",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "deciduous_tree",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "palm_tree",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cactus",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ear_of_rice",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "herb",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "four_leaf_clover",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "maple_leaf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fallen_leaf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "leaves",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            },
-        ]
-    },
-    {
-        "id": "apple",
-        "name": "Food & Drink",
-        "emojis": [
-            {
-                id: "grapes",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "melon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "watermelon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tangerine",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "lemon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "banana",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pineapple",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "apple",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "green_apple",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pear",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "peach",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cherries",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "strawberry",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tomato",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "eggplant",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "corn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "mushroom",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "chestnut",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bread",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "meat_on_bone",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "poultry_leg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "hamburger",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fries",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pizza",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fried_egg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "stew",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bento",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rice_cracker",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rice_ball",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rice",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "curry",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ramen",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "spaghetti",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sweet_potato",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "oden",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sushi",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fried_shrimp",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fish_cake",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dango",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "icecream",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "shaved_ice",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ice_cream",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "doughnut",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cookie",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "birthday",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cake",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "chocolate_bar",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "candy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "lollipop",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "custard",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "honey_pot",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "baby_bottle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "coffee",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tea",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sake",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "wine_glass",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cocktail",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tropical_drink",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "beer",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "beers",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fork_and_knife",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "hocho",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }
-        ]
-    },
-    {
-        "id": "symbols",
-        "name": "Symbols",
-        "emojis": [
-            {
-                id: "atm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "put_litter_in_its_place",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "potable_water",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "wheelchair",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "mens",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "womens",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "restroom",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "baby_symbol",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "wc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "passport_control",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "customs",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "baggage_claim",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "left_luggage",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "warning",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "children_crossing",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "no_entry",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "no_entry_sign",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "no_bicycles",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "no_smoking",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "do_not_litter",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "non-potable_water",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "no_pedestrians",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "no_mobile_phones",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "underage",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_up",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_upper_right",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_right",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_lower_right",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_down",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_lower_left",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_left",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_upper_left",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_up_down",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "left_right_arrow",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "leftwards_arrow_with_hook",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_right_hook",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_heading_up",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_heading_down",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrows_clockwise",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrows_counterclockwise",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "back",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "end",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "on",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "soon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "top",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "six_pointed_star",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "aries",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "taurus",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "gemini",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cancer",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "leo",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "virgo",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "libra",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "scorpius",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sagittarius",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "capricorn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "aquarius",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pisces",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ophiuchus",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "twisted_rightwards_arrows",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "repeat",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "repeat_one",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_forward",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fast_forward",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_backward",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rewind",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_up_small",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_double_up",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_down_small",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "arrow_double_down",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cinema",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "low_brightness",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "high_brightness",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "signal_strength",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "vibration_mode",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "mobile_phone_off",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "recycle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "trident",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "name_badge",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "beginner",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "o",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_check_mark",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ballot_box_with_check",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "heavy_check_mark",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "heavy_multiplication_x",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "x",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "negative_squared_cross_mark",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "heavy_plus_sign",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "heavy_minus_sign",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "heavy_division_sign",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "curly_loop",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "loop",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "part_alternation_mark",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "eight_spoked_asterisk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "eight_pointed_black_star",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sparkle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bangbang",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "interrobang",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "question",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "grey_question",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "grey_exclamation",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "exclamation",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "wavy_dash",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "tm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "keycap_ten",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "100",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "capital_abcd",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "abcd",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "1234",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "symbols",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "abc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "a",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ab",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "b",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cool",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "free",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "information_source",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "id",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "m",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "new",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ng",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "o2",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ok",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "parking",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sos",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "up",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "vs",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "koko",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "sa",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u6708",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u6709",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u6307",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ideograph_advantage",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u5272",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u7121",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u7981",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "accept",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u7533",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u5408",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u7a7a",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "congratulations",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "secret",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u55b6",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "u6e80",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "black_small_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_small_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_medium_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "black_medium_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_medium_small_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "black_medium_small_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "black_large_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_large_square",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "large_orange_diamond",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "large_blue_diamond",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "small_orange_diamond",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "small_blue_diamond",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "small_red_triangle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "small_red_triangle_down",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "diamond_shape_with_a_dot_inside",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "radio_button",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "black_square_button",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_square_button",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_circle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "black_circle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "red_circle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "large_blue_circle",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }
-        ]
-    },
-    {
-        "id": "chart",
-        "name": "chat and symbols",
-        "emojis": [
-            {
-                id: "chart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bomb",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "shield",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "oil_drum",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "money_with_wings",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "dollar",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "yen",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "euro",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pound",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "moneybag",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "credit_card",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "page_with_curl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "gem",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "scales",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "crystal_ball",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "hole",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pill",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "bar_chart",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "chart_with_upwards_trend",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "chart_with_downwards_trend",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "pushpin",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "100",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "anger",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "octagonal_sign",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "white_check_mark",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "currency_exchange",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "heavy_dollar_sign",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "waving_black_flag",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "skull_and_crossbones",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            },
-            {
-                id: "crescent_moon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            },
-            {
-                id: "full_moon",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            },
-            {
-                id: "new_moon_with_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            },
-            {
-                id: "last_quarter_moon_with_face",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }
-        ]
-    },
-    {
-        "id": "flags",
-        "name": "flags",
-        "emojis": [
-            {
-                id: "checkered_flag",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "cn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "crossed_flags",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "de",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "es",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ac",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ad",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ae",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-af",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ag",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ai",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-al",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-am",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ao",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-aq",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ar",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-as",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-at",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-au",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-aw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ax",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-az",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bb",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bd",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-be",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bh",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bi",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bj",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bo",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bq",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-br",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bs",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bv",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-by",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-bz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ca",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cd",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ch",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ci",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ck",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-co",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cv",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cx",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-cz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-dg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-dj",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-dk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-dm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-do",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-dz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ea",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ec",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ee",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-eg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-eh",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-er",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-et",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-eu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-fi",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-fj",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-fk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-fm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-fo",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ga",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gd",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ge",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gh",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gi",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gp",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gq",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gs",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-gy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-hk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-hm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-hn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-hr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ht",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-hu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ic",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-id",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ie",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-il",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-im",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-in",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-io",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-iq",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ir",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-is",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-je",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-jm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-jo",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ke",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-kg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-kh",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ki",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-km",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-kn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-kp",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-kw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ky",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-kz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-la",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-lb",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-lc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-li",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-lk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-lr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ls",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-lt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-lu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-lv",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ly",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ma",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-md",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-me",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mh",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ml",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mo",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mp",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mq",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ms",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mv",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mx",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-my",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-mz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-na",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-nc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ne",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-nf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ng",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ni",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-nl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-no",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-np",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-nr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-nu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-nz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-om",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pa",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pe",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ph",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ps",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-pw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-py",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-qa",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-re",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ro",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-rs",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-rw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sa",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sb",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sd",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-se",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sh",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-si",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sj",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-so",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ss",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-st",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sv",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sx",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-sz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ta",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-td",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-th",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tj",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tl",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-to",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tv",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-tz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ua",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ug",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-um",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-uy",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-uz",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-va",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-vc",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ve",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-vg",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-vi",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-vn",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-vu",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-wf",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ws",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-xk",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-ye",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-yt",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-za",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-zm",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "flag-zw",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "fr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "gb",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "it",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "jp",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "kr",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "rainbow-flag",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "ru",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "triangular_flag_on_post",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }, {
-                id: "us",
-                colons: '',
-                text: '',
-                emoticons: [],
-                skin: 3
-            }
-        ]
-    }
+	{
+		id: 'grinning',
+		name: 'Smileys & People',
+		emojis: [
+			{
+				id: 'grinning',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'grin',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'joy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'smiley',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'smile',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sweat_smile',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'laughing',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'wink',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'blush',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'yum',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sunglasses',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heart_eyes',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kissing_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kissing',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kissing_smiling_eyes',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kissing_closed_eyes',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'relaxed',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'slightly_smiling_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'neutral_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'expressionless',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_mouth',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'smirk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'persevere',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'disappointed_relieved',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'open_mouth',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hushed',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sleepy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tired_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sleeping',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'relieved',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'stuck_out_tongue',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'stuck_out_tongue_winking_eye',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'stuck_out_tongue_closed_eyes',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'unamused',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sweat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pensive',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'confused',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'astonished',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'confounded',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'disappointed',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'worried',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'triumph',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cry',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sob',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'frowning',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'anguished',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fearful',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'weary',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'grimacing',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cold_sweat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'scream',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flushed',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dizzy_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rage',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'angry',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mask',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'innocent',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'smiling_imp',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'imp',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'japanese_ogre',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'japanese_goblin',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'skull',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ghost',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'alien',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'space_invader',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hankey',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'smiley_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'smile_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'joy_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heart_eyes_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'smirk_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kissing_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'scream_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'crying_cat_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pouting_cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'see_no_evil',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hear_no_evil',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'speak_no_evil',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'baby',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'girl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'older_man',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'older_woman',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cop',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'guardsman',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'construction_worker',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'princess',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man_with_turban',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man_with_gua_pi_mao',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'person_with_blond_hair',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bride_with_veil',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'angel',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'santa',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'person_frowning',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'person_with_pouting_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_good',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ok_woman',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'information_desk_person',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'raising_hand',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bow',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'massage',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'haircut',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'walking',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'runner',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dancer',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dancers',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bath',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bust_in_silhouette',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'busts_in_silhouette',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'horse_racing',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'snowboarder',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'surfer',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rowboat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'swimmer',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bicyclist',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mountain_bicyclist',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'couple',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'two_men_holding_hands',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'two_women_holding_hands',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'couplekiss',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-kiss-man',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman-kiss-woman',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'couple_with_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-heart-man',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman-heart-woman',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'family',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-woman-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-woman-girl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-woman-girl-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-woman-boy-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-woman-girl-girl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-man-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-man-girl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-man-girl-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-man-boy-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'man-man-girl-girl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman-woman-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman-woman-girl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman-woman-girl-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman-woman-boy-boy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'woman-woman-girl-girl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'muscle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'point_left',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'point_right',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'point_up',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'point_up_2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'point_down',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'v',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hand',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ok_hand',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: '+1',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: '-1',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fist',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'facepunch',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'wave',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'clap',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'open_hands',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'raised_hands',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pray',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'nail_care',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ear',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'nose',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'footprints',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'eyes',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tongue',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'lips',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kiss',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cupid',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heartbeat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'broken_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'two_hearts',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sparkling_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heartpulse',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'blue_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'green_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'yellow_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'purple_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'gift_heart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'revolving_hearts',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heart_decoration',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'love_letter',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'zzz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'anger',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bomb',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'boom',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sweat_drops',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dash',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dizzy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'speech_balloon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'thought_balloon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'eyeglasses',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'necktie',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'shirt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'jeans',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dress',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kimono',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bikini',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'womans_clothes',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'purse',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'handbag',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pouch',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'school_satchel',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mans_shoe',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'athletic_shoe',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'high_heel',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sandal',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'boot',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'crown',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'womans_hat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tophat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mortar_board',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'lipstick',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ring',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'gem',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+		],
+	},
+	{
+		id: 'monkey_face',
+		name: 'Animals & Nature',
+		emojis: [
+			{
+				id: 'monkey_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'monkey',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dog',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dog2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'poodle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'wolf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cat2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tiger',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tiger2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'leopard',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'horse',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'racehorse',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cow',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ox',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'water_buffalo',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cow2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pig',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pig2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'boar',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pig_nose',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ram',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sheep',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'goat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dromedary_camel',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'camel',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'elephant',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mouse',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mouse2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hamster',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rabbit',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rabbit2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bear',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'koala',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'panda_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'feet',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'chicken',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rooster',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hatching_chick',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'baby_chick',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hatched_chick',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bird',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'penguin',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'frog',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'crocodile',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'turtle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'snake',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dragon_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dragon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'whale',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'whale2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dolphin',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fish',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tropical_fish',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'blowfish',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'octopus',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'shell',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'snail',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bug',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ant',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bee',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'beetle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bouquet',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cherry_blossom',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_flower',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rose',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hibiscus',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sunflower',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'blossom',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tulip',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'seedling',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'evergreen_tree',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'deciduous_tree',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'palm_tree',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cactus',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ear_of_rice',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'herb',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'four_leaf_clover',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'maple_leaf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fallen_leaf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'leaves',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+		],
+	},
+	{
+		id: 'apple',
+		name: 'Food & Drink',
+		emojis: [
+			{
+				id: 'grapes',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'melon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'watermelon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tangerine',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'lemon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'banana',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pineapple',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'apple',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'green_apple',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pear',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'peach',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cherries',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'strawberry',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tomato',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'eggplant',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'corn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mushroom',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'chestnut',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bread',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'meat_on_bone',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'poultry_leg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hamburger',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fries',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pizza',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fried_egg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'stew',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bento',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rice_cracker',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rice_ball',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rice',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'curry',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ramen',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'spaghetti',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sweet_potato',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'oden',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sushi',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fried_shrimp',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fish_cake',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dango',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'icecream',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'shaved_ice',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ice_cream',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'doughnut',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cookie',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'birthday',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cake',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'chocolate_bar',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'candy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'lollipop',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'custard',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'honey_pot',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'baby_bottle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'coffee',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tea',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sake',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'wine_glass',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cocktail',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tropical_drink',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'beer',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'beers',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fork_and_knife',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hocho',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+		],
+	},
+	{
+		id: 'symbols',
+		name: 'Symbols',
+		emojis: [
+			{
+				id: 'atm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'put_litter_in_its_place',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'potable_water',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'wheelchair',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mens',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'womens',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'restroom',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'baby_symbol',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'wc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'passport_control',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'customs',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'baggage_claim',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'left_luggage',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'warning',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'children_crossing',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_entry',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_entry_sign',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_bicycles',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_smoking',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'do_not_litter',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'non-potable_water',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_pedestrians',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'no_mobile_phones',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'underage',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_up',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_upper_right',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_right',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_lower_right',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_down',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_lower_left',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_left',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_upper_left',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_up_down',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'left_right_arrow',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'leftwards_arrow_with_hook',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_right_hook',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_heading_up',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_heading_down',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrows_clockwise',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrows_counterclockwise',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'back',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'end',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'on',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'soon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'top',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'six_pointed_star',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'aries',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'taurus',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'gemini',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cancer',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'leo',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'virgo',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'libra',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'scorpius',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sagittarius',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'capricorn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'aquarius',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pisces',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ophiuchus',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'twisted_rightwards_arrows',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'repeat',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'repeat_one',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_forward',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fast_forward',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_backward',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rewind',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_up_small',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_double_up',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_down_small',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'arrow_double_down',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cinema',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'low_brightness',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'high_brightness',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'signal_strength',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'vibration_mode',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'mobile_phone_off',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'recycle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'trident',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'name_badge',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'beginner',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'o',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_check_mark',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ballot_box_with_check',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heavy_check_mark',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heavy_multiplication_x',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'x',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'negative_squared_cross_mark',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heavy_plus_sign',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heavy_minus_sign',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heavy_division_sign',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'curly_loop',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'loop',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'part_alternation_mark',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'eight_spoked_asterisk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'eight_pointed_black_star',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sparkle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bangbang',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'interrobang',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'question',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'grey_question',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'grey_exclamation',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'exclamation',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'wavy_dash',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'tm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'keycap_ten',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: '100',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'capital_abcd',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'abcd',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: '1234',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'symbols',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'abc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'a',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ab',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'b',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cool',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'free',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'information_source',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'id',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'new',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ng',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'o2',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ok',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'parking',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sos',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'up',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'vs',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'koko',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'sa',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u6708',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u6709',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u6307',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ideograph_advantage',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u5272',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u7121',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u7981',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'accept',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u7533',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u5408',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u7a7a',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'congratulations',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'secret',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u55b6',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'u6e80',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'black_small_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_small_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_medium_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'black_medium_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_medium_small_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'black_medium_small_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'black_large_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_large_square',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'large_orange_diamond',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'large_blue_diamond',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'small_orange_diamond',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'small_blue_diamond',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'small_red_triangle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'small_red_triangle_down',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'diamond_shape_with_a_dot_inside',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'radio_button',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'black_square_button',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_square_button',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_circle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'black_circle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'red_circle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'large_blue_circle',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+		],
+	},
+	{
+		id: 'chart',
+		name: 'chat and symbols',
+		emojis: [
+			{
+				id: 'chart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bomb',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'shield',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'oil_drum',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'money_with_wings',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'dollar',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'yen',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'euro',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pound',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'moneybag',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'credit_card',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'page_with_curl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'gem',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'scales',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'crystal_ball',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'hole',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pill',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'bar_chart',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'chart_with_upwards_trend',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'chart_with_downwards_trend',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'pushpin',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: '100',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'anger',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'octagonal_sign',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'white_check_mark',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'currency_exchange',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'heavy_dollar_sign',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'waving_black_flag',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'skull_and_crossbones',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'crescent_moon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'full_moon',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'new_moon_with_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'last_quarter_moon_with_face',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+		],
+	},
+	{
+		id: 'flags',
+		name: 'flags',
+		emojis: [
+			{
+				id: 'checkered_flag',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'cn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'crossed_flags',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'de',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'es',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ac',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ad',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ae',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-af',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ag',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ai',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-al',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-am',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ao',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-aq',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ar',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-as',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-at',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-au',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-aw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ax',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-az',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bb',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bd',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-be',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bh',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bi',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bj',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bo',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bq',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-br',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bs',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bv',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-by',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-bz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ca',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cd',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ch',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ci',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ck',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-co',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cv',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cx',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-cz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-dg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-dj',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-dk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-dm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-do',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-dz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ea',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ec',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ee',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-eg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-eh',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-er',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-et',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-eu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-fi',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-fj',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-fk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-fm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-fo',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ga',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gd',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ge',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gh',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gi',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gp',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gq',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gs',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-gy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-hk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-hm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-hn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-hr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ht',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-hu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ic',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-id',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ie',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-il',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-im',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-in',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-io',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-iq',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ir',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-is',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-je',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-jm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-jo',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ke',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-kg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-kh',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ki',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-km',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-kn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-kp',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-kw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ky',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-kz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-la',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-lb',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-lc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-li',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-lk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-lr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ls',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-lt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-lu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-lv',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ly',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ma',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-md',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-me',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mh',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ml',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mo',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mp',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mq',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ms',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mv',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mx',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-my',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-mz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-na',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-nc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ne',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-nf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ng',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ni',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-nl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-no',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-np',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-nr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-nu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-nz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-om',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pa',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pe',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ph',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ps',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-pw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-py',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-qa',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-re',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ro',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-rs',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-rw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sa',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sb',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sd',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-se',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sh',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-si',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sj',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-so',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ss',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-st',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sv',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sx',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-sz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ta',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-td',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-th',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tj',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tl',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-to',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tv',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-tz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ua',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ug',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-um',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-uy',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-uz',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-va',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-vc',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ve',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-vg',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-vi',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-vn',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-vu',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-wf',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ws',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-xk',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-ye',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-yt',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-za',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-zm',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'flag-zw',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'fr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'gb',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'it',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'jp',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'kr',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'rainbow-flag',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'ru',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'triangular_flag_on_post',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+			{
+				id: 'us',
+				colons: '',
+				text: '',
+				emoticons: [],
+				skin: 3,
+			},
+		],
+	},
 ];

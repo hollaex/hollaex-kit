@@ -14,7 +14,7 @@ $outline-height: 1.5px;
 	margin: $wrapper-margin 0;
 
 	&.error {
-		color: $error-color;
+		color: $colors-notifications-red;
 	}
 
 	&.inline {
@@ -91,7 +91,7 @@ $outline-height: 1.5px;
 
 .field-wrapper.error .field-content-outline {
 	&:before {
-		background: $error-color;
+		background: $colors-notifications-red;
 	}
 }
 
@@ -211,32 +211,6 @@ $outline-height: 1.5px;
 				left: $valid-icon-size;
 			}
 		}
-	}
-}
-
-.dark-theme {
-	.dumb-field-wrapper {
-		color: $dark-link;
-	}
-	.field-label {
-		color: $dark-form-label !important;
-	}
-
-	.field-content-outline {
-		&:before {
-			background: $dark-form-color-underline;
-		}
-
-		&:after {
-			background: $dark-form-color-underline;
-		}
-
-		&.focused:after {
-			background: $dark-form-color-underline-focus;
-		}
-	}
-	.field-valid .icon-check-1 {
-		stroke: $dark-border-main;
 	}
 }
 

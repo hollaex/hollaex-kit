@@ -3,13 +3,13 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 142.8 142.8" style="enable-background:new 0 0 142.8 142.8;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#010101;}
-	.st1{fill:#F69321;}
+	.session-timeout-0{fill:#010101;}
+	.session-timeout-1{fill:#F69321;}
 </style>
 <g id="XMLID_1_">
-	<path id="XMLID_272_" class="st0" d="M60.4,102.6v17.8c0,3.6,3.9,7.5,7.5,7.5h52.9c3.6,0,7.5-3.9,7.5-7.5V22.1
+	<path id="XMLID_272_" class="session-timeout-0" d="M60.4,102.6v17.8c0,3.6,3.9,7.5,7.5,7.5h52.9c3.6,0,7.5-3.9,7.5-7.5V22.1
 		c0-3.6-3.9-7.5-7.5-7.5H67.9c-3.6,0-8.5,3.9-8.5,7.5v18H45.8V22.5C45.8,10.6,55.5,1,67.3,1h53.9c11.9,0,21.5,9.6,21.5,21.5v97.6
 		c0,11.9-9.6,21.5-21.5,21.5H67.3c-11.9,0-21.5-9.6-21.5-21.5v-17.5H60.4z"/>
-	<polygon id="XMLID_7_" class="st1" points="99.1,58.8 26.8,58.8 26.8,58.8 26.8,45 0,71.1 26.8,97.4 26.8,83.5 99.1,83.5 	"/>
+	<polygon id="XMLID_7_" class="session-timeout-1" points="99.1,58.8 26.8,58.8 26.8,58.8 26.8,45 0,71.1 26.8,97.4 26.8,83.5 99.1,83.5 	"/>
 </g>
 </svg>

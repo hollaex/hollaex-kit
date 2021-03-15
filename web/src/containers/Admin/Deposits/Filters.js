@@ -1,4 +1,5 @@
 import React from 'react';
+import { SearchOutlined } from '@ant-design/icons';
 import { Button, Alert } from 'antd';
 import { SelectValue } from './SelectValues';
 import { FilterInput, FilterDate } from './FilterInput';
@@ -9,7 +10,7 @@ const getFilters = (coinOptions) => [
 		placeholder: 'Currency',
 		key: 'currency',
 		className: 'adjacent-fields',
-		options: coinOptions
+		options: coinOptions,
 	},
 	{
 		label: 'Status',
@@ -20,9 +21,9 @@ const getFilters = (coinOptions) => [
 			{ value: 'true', text: 'Confirmed' },
 			{ value: 'false', text: 'Pending' },
 			{ value: 'dismissed', text: 'Dismissed' },
-			{ value: 'rejected', text: 'Rejected' }
-		]
-	}
+			{ value: 'rejected', text: 'Rejected' },
+		],
+	},
 ];
 
 const getStatusValue = (key, params) => {
@@ -50,7 +51,7 @@ export const Filters = ({
 	onClick,
 	loading,
 	fetched,
-	hasChanges
+	hasChanges,
 }) => {
 	const coinOptions = [];
 	Object.keys(coins).forEach((data) => {
@@ -75,65 +76,66 @@ export const Filters = ({
 				/>
 			)}
 			<div className="filters-wrapper">
-				<div className="d-flex f-1" />
-				<div className="filters-wrapper-filters">
-					<div className="d-flex">
-						{fieldProps.map(({ key, description, ...rest }, index) => (
-							<SelectValue
-								key={key}
-								defaultValue={getStatusValue(key, params)}
-								onSelect={onChange(key)}
-								description={description}
-								className={'adjacent-fields'}
-								{...rest}
-							/>
-						))}
-					</div>
-					<div className="d-flex">
-						<FilterInput
-							onChange={onChange('user_id')}
-							label={'User Id'}
-							defaultValue={params.user_id}
-							className={'adjacent-fields'}
-							placeholder="User id"
-						/>
-						<FilterInput
-							onChange={onChange('transaction_id')}
-							label="Transaction Id"
+				{/* <div className="d-flex f-1" /> */}
+				<div className="filters-wrapper-filters d-flex flex-direction-row">
+					{/* <div className="d-flex"> */}
+					{fieldProps.map(({ key, description, ...rest }, index) => (
+						<SelectValue
+							key={key}
+							defaultValue={getStatusValue(key, params)}
+							onSelect={onChange(key)}
+							description={description}
 							className={'adjacent-fields pl-2'}
-							defaultValue={params.transaction_id}
-							placeholder="Transaction Id or Payment Id"
+							{...rest}
 						/>
-					</div>
+					))}
+					{/* </div> */}
+					{/* <div className="d-flex"> */}
+					<FilterInput
+						onChange={onChange('user_id')}
+						label={'User Id'}
+						defaultValue={params.user_id}
+						className={'adjacent-fields pl-2'}
+						placeholder="User id"
+					/>
+					<FilterInput
+						onChange={onChange('transaction_id')}
+						label="Transaction Id"
+						className={'adjacent-fields pl-2'}
+						defaultValue={params.transaction_id}
+						placeholder="Transaction Id or Payment Id"
+					/>
+					{/* </div> */}
 					<FilterInput
 						onChange={onChange('address')}
 						label="Address"
 						defaultValue={params.address}
 						placeholder="Address"
+						className={'adjacent-fields pl-2'}
 					/>
-					<div className="d-flex">
-						<FilterDate
-							onChange={onChange('start_date')}
-							label={'Start date'}
-							defaultValue={params.start_date}
-							className={'adjacent-fields mr-2'}
-							placeholder="Start date"
-						/>
-						<FilterDate
-							onChange={onChange('end_date')}
-							label={'End date'}
-							defaultValue={params.end_date}
-							className={'adjacent-fields'}
-							placeholder="End date"
-						/>
-					</div>
+					{/* <div className="d-flex"> */}
+					<FilterDate
+						onChange={onChange('start_date')}
+						label={'Start date'}
+						defaultValue={params.start_date}
+						className={'adjacent-fields pl-2'}
+						placeholder="Start date"
+					/>
+					<FilterDate
+						onChange={onChange('end_date')}
+						label={'End date'}
+						defaultValue={params.end_date}
+						className={'adjacent-fields pl-2'}
+						placeholder="End date"
+					/>
+					{/* </div> */}
 				</div>
-				<div className="filters-wrapper-buttons">
+				<div className="filters-wrapper-buttons pl-2">
 					<Button
 						onClick={onClick}
 						type="primary"
-						icon="search"
-						className="filter-button"
+						icon={<SearchOutlined />}
+						className="filter-button green-btn"
 						disabled={!allowQuery}
 					>
 						Search

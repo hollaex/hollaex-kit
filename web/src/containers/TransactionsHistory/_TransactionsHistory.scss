@@ -1,5 +1,5 @@
-$trade-asks-color-main: $colors-currencies-btc;
-$trade-asks-color-font: $colors-currencies-btc;
+@import './Filters';
+
 .layout-mobile {
 	.tab_controller-wrapper {
 		height: auto;
@@ -26,11 +26,11 @@ $trade-asks-color-font: $colors-currencies-btc;
 			}
 		}
 	}
-	.display_table-wrapper{
+	.display_table-wrapper {
 		.display_table-cell {
 			min-height: 2rem !important;
 		}
-	} 
+	}
 }
 
 .icon-cell {
@@ -49,13 +49,38 @@ $trade-asks-color-font: $colors-currencies-btc;
 	.withdraw,
 	.sell {
 		background-color: $history-color-sell;
-		color: $colors-white;
+		color: $sell-bids-text;
 	}
 
 	.deposit,
 	.buy {
 		background-color: $history-color-buy;
-		color: $colors-black;
+		color: $buy-bids-text;
+	}
+
+	&.fullfilled .cell-wrapper {
+		border: 1px solid $colors-main-border;
+		margin: 0;
+		padding: 1px;
+		min-width: 5rem;
+		max-width: 7rem;
+
+		> .cell_value-wrapper {
+			padding: 0 0.15rem;
+			position: relative;
+			width: 100%;
+			color: $trade-fill-indicator-text;
+			z-index: 2;
+
+			.cell_value-bar {
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				background-color: $trade-fill-indicator;
+				z-index: -1;
+			}
+		}
 	}
 }
 
@@ -75,6 +100,30 @@ $trade-asks-color-font: $colors-currencies-btc;
 		width: 1.2rem !important;
 		height: 1.2rem !important;
 	}
+	.check-deposit-wrapper {
+		position: absolute;
+		right: 100px;
+		top: 2px;
+		text-transform: uppercase;
+		color: var(--specials_buttons-links-and-highlights);
+		font-size: 11px;
+		cursor: pointer;
+	}
+	.new-tag-wrapper {
+		position: relative;
+		.new-tag {
+			position: absolute;
+			right: 100%;
+			background-color: #008509;
+			padding: 0 7px;
+			color: #ffffff;
+			border-radius: 20px;
+			margin-right: 10px;
+		}
+	}
+	.check-deposit-txt {
+		right: 100px !important;
+	}
 }
 
 .action_notification-svg svg {
@@ -83,10 +132,10 @@ $trade-asks-color-font: $colors-currencies-btc;
 	// }
 }
 
-.btn-tx, .withdrawal-cancel {
+.btn-tx,
+.withdrawal-cancel {
 	cursor: pointer;
 }
-
 
 .transaction-history-wrapper {
 	svg {
@@ -99,7 +148,7 @@ $trade-asks-color-font: $colors-currencies-btc;
 		}
 	}
 }
-.display_table-wrapper{
+.display_table-wrapper {
 	.display_table-cell {
 		min-height: 1.2rem !important;
 		padding: 0 0.1rem !important;
@@ -107,35 +156,20 @@ $trade-asks-color-font: $colors-currencies-btc;
 	&:first-child .display_table-body {
 		padding-top: 0.1rem !important;
 	}
-} 
+}
 
-.dark-theme {
-	.csv-action {
-		.action_notification-text {
-			color: $dark-link !important;
-		}
-	}
-	.action_notification-svg svg {
-		.data-1 {
-			fill: $dark-link;
-		}
+.transaction-status {
+	font-weight: bold;
+
+	.completed {
+		color: $colors-notifications-green;
 	}
 
-	svg {
-		.transaction-history-1 {
-			fill: $dark-main-title-icon-color-2;
-		}
-		.transaction-history-2 {
-			fill: $dark-main-title-icon-color-3;
-		}
-		.transaction-history-3 {
-			fill: $dark-main-title-icon-color-2;
-		}
-		.transaction-history-4 {
-			stroke: $dark-main-title-icon-color-2;
-		}
-		.transaction-history-5 {
-			fill: $dark-main-title-icon-color-1;
-		}
+	.pending {
+		color: $colors-notification-pending;
+	}
+
+	.rejected {
+		color: $colors-notifications-red;
 	}
 }

@@ -3,17 +3,17 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 44.8 44.8" style="enable-background:new 0 0 44.8 44.8;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#EB1C24;}
-	.st1{fill:#FFFFFF;}
+	.red-warning-0{fill:#EB1C24;}
+	.red-warning-1{fill:#FFFFFF;}
 </style>
 <g id="XMLID_2249_">
 	<g id="XMLID_121_">
-		<path id="XMLID_115_" class="st0" d="M42.3,41.2c2.2,0,3.1-1.5,2-3.4L24.4,4.4c-1.1-1.9-3-1.9-4.1,0L0.5,37.8
+		<path id="XMLID_115_" class="red-warning-0" d="M42.3,41.2c2.2,0,3.1-1.5,2-3.4L24.4,4.4c-1.1-1.9-3-1.9-4.1,0L0.5,37.8
 			c-1.1,1.9-0.2,3.4,2,3.4H42.3z"/>
 	</g>
-	<g id="XMLID_124_">
-		<rect id="XMLID_122_" x="19.2" y="13.7" class="st1" width="6.3" height="14.7"/>
-		<rect id="XMLID_127_" x="19.2" y="32.4" class="st1" width="6.3" height="4.3"/>
+	<g id="XMLID_124_" class="red-warning-1">
+		<rect id="XMLID_122_" x="19.2" y="13.7" width="6.3" height="14.7"/>
+		<rect id="XMLID_127_" x="19.2" y="32.4" width="6.3" height="4.3"/>
 	</g>
 </g>
 </svg>

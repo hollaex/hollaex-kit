@@ -1,0 +1,4299 @@
+swagger: "2.0"
+info:
+  version: "2.0.10"
+  title: HollaEx Kit
+host: api.hollaex.com
+basePath: /v2
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+  - text/csv
+
+securityDefinitions:
+  Bearer:
+    description: JWT authentication
+    type: apiKey
+    name: Authorization
+    in: header
+  HmacKey:
+    description: HMAC API key
+    type: apiKey
+    name: api-key
+    in: header
+
+paths:
+  /health:
+    x-swagger-router-controller: public
+    get:
+      operationId: getHealth
+      description: Get health of server
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /constants:
+    x-swagger-router-controller: public
+    get:
+      operationId: getConstants
+      description: Get the system constants such as pairs and currencies
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /kit:
+    x-swagger-router-controller: public
+    get:
+      operationId: getKitConfigurations
+      description: Get kit configurations
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /support:
+    x-swagger-router-controller: public
+    post:
+      operationId: sendSupportEmail
+      description: Send email to support
+      tags:
+        - Public
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: email
+          description: user email to contact
+          in: formData
+          required: true
+          type: string
+          format: email
+        - name: category
+          description: Category of the ticket
+          in: formData
+          required: true
+          type: string
+          maxLength: 64
+        - name: subject
+          description: Ticket issue subject
+          in: formData
+          required: true
+          type: string
+          maxLength: 256
+        - name: description
+          description: Description on the issue for ticket
+          in: formData
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /signup:
+    x-swagger-router-controller: user
+    post:
+      operationId: signUpUser
+      description: User sign up
+      tags:
+        - Public
+      parameters:
+        - name: signup
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserAuthentication"
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /verify:
+    x-swagger-router-controller: user
+    get:
+      operationId: getVerifyUser
+      description: Get information of verification user, must provide email or verification_code. If you want to resend the email, provide email and resend query parameters
+      tags:
+        - Public
+      parameters:
+        - name: email
+          in: query
+          description: User's email
+          required: false
+          type: string
+        - name: resend
+          in: query
+          description: Resend email to user
+          required: false
+          type: boolean
+        - name: verification_code
+          in: query
+          description: Verification code
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              verification_code:
+                type: string
+              email:
+                type: string
+              message:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      operationId: verifyUser
+      description: User Verification
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - verification_code
+            properties:
+              email:
+                type: string
+              verification_code:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /login:
+    x-swagger-router-controller: user
+    post:
+      operationId: loginPost
+      description: Login with a particular role. If OTP is enabled, the user must provide an OTP code
+      tags:
+        - Public
+      parameters:
+        - name: authentication
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserAuthentication"
+      responses:
+        201:
+          description: Success
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /verify-token:
+    x-swagger-router-controller: user
+    get:
+      operationId: verifyToken
+      description: Verify token
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /reset-password:
+    x-swagger-router-controller: user
+    get:
+      operationId: requestResetPassword
+      description: Request a code to reset password of a user
+      tags:
+        - Public
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+        - name: captcha
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      operationId: resetPassword
+      description: Reset password of a user
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ResetPassword"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /notification/deposit:
+    x-swagger-router-controller: notification
+    post:
+      operationId: handleCurrencyDeposit
+      description: Deposit notification
+      tags:
+        - Notification
+      parameters:
+        - name: currency
+          description: currency name
+          in: query
+          required: true
+          type: string
+        - name: data
+          description: Deposit transaction info
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ExternalDepositRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /notification/withdrawal:
+    x-swagger-router-controller: notification
+    post:
+      operationId: handleCurrencyWithdrawal
+      description: Withdrawal notification
+      tags:
+        - Notification
+      parameters:
+        - name: currency
+          description: currency name
+          in: query
+          required: true
+          type: string
+        - name: data
+          description: Withdrawal transaction info
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ExternalWithdrawalRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /notification/apply:
+    x-swagger-router-controller: notification
+    get:
+      operationId: applyKitChanges
+      description: Reset kit to apply changes
+      tags:
+        - Notification
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /orderbook:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the top orderbooks
+      operationId: getTopOrderbook
+      tags:
+        - Public
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderbooksResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /orderbooks:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the top orderbooks
+      operationId: getTopOrderbooks
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderbooksResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /trades:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the trades
+      operationId: getTrades
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PublicTradesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /trades/history:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the trades
+      operationId: getTradesHistory
+      tags:
+        - Public
+      parameters:
+        - in: query
+          name: symbol
+          description: Symbol pair
+          required: false
+          type: string
+        - in: query
+          name: side
+          description: Symbol pair
+          required: false
+          type: string
+          enum: [ 'buy', 'sell' ]
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PublicTradesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /ticker:
+    x-swagger-router-controller: public
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getTicker
+      tags:
+        - Public
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /ticker/all:
+    x-swagger-router-controller: public
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getAllTicker
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /tickers:
+    x-swagger-router-controller: public
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getAllTicker
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /chart:
+    x-swagger-router-controller: public
+    get:
+      description: Get trade history HOLCV
+      operationId: getChart
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: symbol
+          description: trading pair symbol
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TradeDataResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /charts:
+    x-swagger-router-controller: public
+    get:
+      description: Get trade history HOLCV for all pairs
+      operationId: getCharts
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/config:
+    x-swagger-router-controller: public
+    get:
+      description: Get tradingview udf config
+      operationId: getConfig
+      tags:
+        - Public
+        - Chart
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/history:
+    x-swagger-router-controller: public
+    get:
+      description: Get tradingview udf history HOLCV
+      operationId: getHistory
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: symbol
+          description: trading pair symbol
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/symbols:
+    x-swagger-router-controller: public
+    get:
+      description: Get tradingview udf symbols
+      operationId: getSymbols
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: symbol
+          description: Trading pair symbol e.g. btc-eur
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /oracle/prices:
+    x-swagger-router-controller: public
+    get:
+      operationId: getAssetsPrices
+      description: Convert assets prices
+      tags:
+        - Public
+        - Oracle
+      parameters:
+        - name: assets
+          in: query
+          required: true
+          description: Assets to convert
+          type: array
+          items:
+            type: string
+            minItems: 1
+        - name: quote
+          in: query
+          required: false
+          description: Quote coin to convert to
+          type: string
+        - name: amount
+          in: query
+          required: false
+          description: Amount to convert
+          type: number
+          format: double
+          minimum: 0
+          exclusiveMinimum: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OraclePriceResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /user:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUser
+      description: List information of authenticated user
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/stats:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUserStats
+      description: Sum of user trades and its stats
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/StatsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/settings:
+    x-swagger-router-controller: user
+    put:
+      operationId: updateSettings
+      description: Edit settings of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SettingsPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/change-password:
+    x-swagger-router-controller: user
+    post:
+      operationId: changePassword
+      description: Change password of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ChangePassword"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/username:
+    x-swagger-router-controller: user
+    post:
+      operationId: setUsername
+      description: Change user's username
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - username
+            properties:
+              username:
+                type: string
+                minLength: 3
+                maxLength: 15
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/logins:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUserLogins
+      description: List logins of authenticated user
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to  retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/LoginsResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/affiliation:
+    x-swagger-router-controller: user
+    get:
+      operationId: affiliationCount
+      description: Get the number of affiliated account a user has made
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CountResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/request-withdrawal:
+    x-swagger-router-controller: withdrawal
+    post:
+      operationId: requestWithdrawal
+      description: This will send a confirmation email to the email address on record, if activate OTP, it will require OTP as well.
+      tags:
+        - User
+        - Withdrawal
+      parameters:
+        - name: data
+          description: withdrawal information
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/WithdrawalRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/confirm-withdrawal:
+    x-swagger-router-controller: withdrawal
+    post:
+      operationId: performWithdrawal
+      description: confirm a withdrawal request
+      tags:
+        - User
+        - Withdrawal
+      parameters:
+        - name: data
+          description: Tansfer information
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/WithdrawalConfirmation"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              transaction_id:
+                type: string
+              fee:
+                type: number
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /user/withdrawal/fee:
+    x-swagger-router-controller: withdrawal
+    get:
+      description: Returns the withdrawal fees for a specific coin
+      operationId: getWithdrawalFee
+      tags:
+        - User
+        - Withdrawal
+      parameters:
+        - name: currency
+          description: currency to perform the withdrawal
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              fee:
+                type: number
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /user/request-otp:
+    x-swagger-router-controller: otp
+    get:
+      operationId: requestOtp
+      description: Generate OTP code for OTP verification
+      tags:
+        - User
+        - OTP
+      responses:
+        200:
+          description: Created
+          schema:
+            type: object
+            required:
+              - secret
+            properties:
+              secret:
+                type: string
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/activate-otp:
+    x-swagger-router-controller: otp
+    post:
+      operationId: activateOtp
+      description: Enable OTP
+      parameters:
+        - name: data
+          description: Activation code
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/OtpRequest"
+      tags:
+        - User
+        - OTP
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/deactivate-otp:
+    x-swagger-router-controller: otp
+    post:
+      operationId: deactivateOtp
+      description: Disable OTP
+      tags:
+        - User
+        - OTP
+      parameters:
+        - name: data
+          description: Activation code
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/OtpRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/deactivate:
+    x-swagger-router-controller: user
+    get:
+      operationId: deactivateUser
+      description: Deactivate the user account
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /order:
+    x-swagger-router-controller: order
+    get:
+      operationId: getUserOrder
+      description: Get order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+    delete:
+      operationId: cancelUserOrder
+      description: Cancel order of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+    post:
+      description: Create a new order
+      operationId: createOrder
+      tags:
+        - User
+        - Order
+      parameters:
+        - in: body
+          name: order
+          required: true
+          description: order data
+          schema:
+            $ref: "#/definitions/OrderRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /tiers:
+    x-swagger-router-controller: tier
+    get:
+      description: Get user tiers
+      operationId: getTiers
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /admin/tier:
+    x-swagger-router-controller: tier
+    post:
+      description: Make a new Tier
+      operationId: postTier
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Tier object
+          schema:
+            $ref: "#/definitions/PostTierBody"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TierObject"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      description: Update tier
+      operationId: putTier
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Tier object
+          schema:
+            $ref: "#/definitions/PutTierBody"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TierObject"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /orders:
+    x-swagger-router-controller: order
+    get:
+      operationId: getAllUserOrders
+      description: List orders of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+        - in: query
+          name: side
+          description: buy or sell
+          required: false
+          enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: status
+          description: Order status e.g. pfilled, filled
+          required: false
+          type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrdersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /order/all:
+    x-swagger-router-controller: order
+    delete:
+      operationId: cancelAllUserOrders
+      description: Cancel all orders of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/OrdersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/balance:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUserBalance
+      description: Balance of authenticated user
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BalanceResponse"
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/create-address:
+    x-swagger-router-controller: user
+    get:
+      operationId: createCryptoAddress
+      description: Create a crypto address for the user
+      tags:
+        - User
+        - Wallet
+      parameters:
+        - name: crypto
+          in: query
+          required: true
+          type: string
+          minLength: 3
+          maxLength: 15
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/UsersAddressResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/token:
+    x-swagger-router-controller: user
+    post:
+      operationId: createHmacToken
+      description: Create an HMAC token. It requires OTP to create a token
+      tags:
+        - User
+        - Token
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - otp_code
+            properties:
+              name:
+                type: string
+              otp_code:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+    delete:
+      operationId: deleteHmacToken
+      description: Revoke an issued token. It requires otp.
+      tags:
+        - User
+        - Token
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - token_id
+              - otp_code
+            properties:
+              token_id:
+                type: number
+                format: int32
+              otp_code:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/tokens:
+    x-swagger-router-controller: user
+    get:
+      operationId: getHmacToken
+      description: Get user active HMAC tokens
+      tags:
+        - User
+        - Token
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TokensResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/trades:
+    x-swagger-router-controller: trade
+    get:
+      operationId: getUserTrades
+      description: List trades of authenticated user
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TradesResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/deposits:
+    x-swagger-router-controller: deposit
+    get:
+      operationId: getUserDeposits
+      description: List deposit of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: currency
+          in: query
+          description: Type of currency of deposits to filter
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/withdrawals:
+    x-swagger-router-controller: withdrawal
+    get:
+      operationId: getUserWithdrawals
+      description: List withdrawals of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: currency
+          in: query
+          description: Type of currency of withdrawals to filter
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+        - HmacKey: []
+      x-security-scopes:
+        - user
+        - hmac
+  /user/withdrawal:
+    x-swagger-router-controller: withdrawal
+    delete:
+      operationId: cancelWithdrawal
+      description: Cancel a user's withdrawal which is pending
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+
+# ADMIN ENDPOINTS
+  /admin/fees:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getExchangeGeneratedFees
+      description: Get exchange generated fees
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/FeesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/fees/settle:
+    x-swagger-router-controller: admin
+    get:
+      operationId: settleFees
+      description: Settle exchange fees
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/signup:
+    x-swagger-router-controller: admin
+    post:
+      operationId: createInitialAdmin
+      description: Create initial admin account for exchange
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+                format: password
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /admin/complete-setup:
+    x-swagger-router-controller: admin
+    get:
+      operationId: completeExchangeSetup
+      description: Flag exchange setup as complete
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/network-credentials:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putNetworkCredentials
+      description: Update exchange network credentials
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: New network key and secret
+          schema:
+            type: object
+            required:
+              - api_key
+              - api_secret
+            properties:
+              api_key:
+                type: string
+              api_secret:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/kit:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getAdminKit
+      description: Get exchange kit configurations and secrets for admin
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+        - communicator
+    put:
+      operationId: putAdminKit
+      description: Update exchange constants and secrets
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/KitPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - communicator
+  /admin/operators:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getOperators
+      description: Get exchange operators
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: Direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OperatorsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/operator/invite:
+    x-swagger-router-controller: admin
+    get:
+      operationId: inviteNewOperator
+      description: Invite a new operator
+      tags:
+        - Admin
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+          description: Email of user to invite
+        - name: role
+          in: query
+          required: true
+          type: string
+          description: Role of user
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/upload:
+    x-swagger-router-controller: admin
+    post:
+      operationId: uploadImage
+      description: Upload an image
+      tags:
+        - Admin
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          description: file of image
+          in: formData
+          required: true
+          type: file
+        - name: name
+          description: name of image
+          in: formData
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              path:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/pairs:
+    x-swagger-router-controller: admin
+    get:
+      description: Get pairs
+      operationId: getPairs
+      parameters:
+        - name: pair
+          in: query
+          required: false
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/pair/fees:
+    x-swagger-router-controller: tier
+    put:
+      operationId: updatePairFees
+      description: Update trading pair fees
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PairFeesPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/tiers/limits:
+    x-swagger-router-controller: tier
+    put:
+      operationId: updateTiersLimits
+      description: Update tier limits
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TiersLimitsPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/coins:
+    x-swagger-router-controller: admin
+    get:
+      description: View coins
+      operationId: getCoins
+      tags:
+        - Admin
+      parameters:
+        - name: currency
+          in: query
+          required: false
+          type: string
+          description: Leave blank to get all coins
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /user/check-transaction:
+    x-swagger-router-controller: user
+    get:
+      operationId: userCheckTransaction
+      description: Check a blockchain transaction to add create/update deposit
+      tags:
+        - User
+        - Wallet
+      parameters:
+        - in: query
+          name: currency
+          description: Currency of the transaction
+          required: true
+          type: string
+        - in: query
+          name: transaction_id
+          description: Blockchain transaction id
+          required: true
+          type: string
+        - in: query
+          name: address
+          description: crypto address receiving the deposit
+          required: true
+          type: string
+        - in: query
+          name: is_testnet
+          description: specify whether or not transaction was on tesntet
+          required: false
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /admin/users:
+    x-swagger-router-controller: admin
+    get:
+      description: Get exchange users for admin
+      operationId: getUsersAdmin
+      tags:
+        - Admin
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: number
+        - name: search
+          in: query
+          required: false
+          type: string
+        - name: pending
+          in: query
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: Direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/AdminUsersResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/user/role:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserRole
+      description: "Update a user's role"
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserRolePut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserRolePutResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/user/note:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserNote
+      description: Update a user note
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserNotePut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - kyc
+        - support
+  /admin/user/balance:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getAdminUserBalance
+      description: Get balance of given user
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BalanceResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/logins:
+    x-swagger-router-controller: admin
+    get:
+      description: Get the user logins for admin
+      operationId: getAdminUserLogins
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/LoginsResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/audits:
+    x-swagger-router-controller: admin
+    get:
+      description: Get the user audits for admin
+      operationId: getUserAudits
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/AuditsResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/orders:
+    x-swagger-router-controller: order
+    get:
+      description: Get user orders for admin
+      operationId: getAdminOrders
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: side
+          description: buy or sell
+          required: false
+          enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: status
+          description: Order status e.g. pfilled, filled
+          required: false
+          type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrdersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+  /admin/order:
+    x-swagger-router-controller: order
+    delete:
+      operationId: adminCancelOrder
+      description: Admin Cancel order
+      tags:
+        - Admin
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          type: string
+        - name: user_id
+          in: query
+          required: true
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/trades:
+    x-swagger-router-controller: trade
+    get:
+      description: Get user trades for admin
+      operationId: getAdminTrades
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TradesResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+  /admin/user/activate:
+    x-swagger-router-controller: admin
+    post:
+      operationId: activateUser
+      description: Activate or deactivate a user account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - activated
+            properties:
+              user_id:
+                type: number
+                format: int32
+              activated:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/balance:
+    x-swagger-router-controller: admin
+    get:
+      description: Get Admin bank balance
+      operationId: getAdminBalance
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/upgrade-user:
+    x-swagger-router-controller: admin
+    post:
+      description: Update verification level of a user
+      operationId: upgradeUser
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: Upgrade data
+          schema:
+            $ref: "#/definitions/UpgradeUserRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - kyc
+  /admin/verify-email:
+    x-swagger-router-controller: admin
+    post:
+      description: Verify email of user
+      operationId: verifyEmailUser
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: Upgrade data
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - kyc
+  /admin/deactivate-otp:
+    x-swagger-router-controller: otp
+    post:
+      description: Deactivate otp for a user
+      operationId: deactivateOtpAdmin
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: Upgrade data
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: number
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/flag-user:
+    x-swagger-router-controller: admin
+    post:
+      description: Flag a user
+      operationId: flagUser
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: user id for flagging
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: number
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/deposits:
+    x-swagger-router-controller: deposit
+    get:
+      operationId: getAdminDeposits
+      description: Obtain a list of deposits.
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the deposit
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the deposit. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the deposit.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the deposit.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            items:
+              $ref: "#/definitions/TransactionResponse"
+        202:
+          description: Success
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/withdrawals:
+    x-swagger-router-controller: withdrawal
+    get:
+      operationId: getAdminWithdrawals
+      description: Obtain a list of withdrawals.
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            items:
+              $ref: "#/definitions/TransactionResponse"
+        202:
+          description: Success
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/transfer:
+    x-swagger-router-controller: admin
+    post:
+      operationId: transferFund
+      description: Transfer fund between two user accounts
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          description: Transfer information
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TransferRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/mint:
+    x-swagger-router-controller: admin
+    post:
+      operationId: mintAsset
+      description: Mint a user created asset to account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/burn:
+    x-swagger-router-controller: admin
+    post:
+      operationId: burnAsset
+      description: Burn a user created asset from account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+definitions:
+  ObjectResponse:
+    type: object
+  MessageResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  UserAuthentication:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+        format: password
+      otp_code:
+        type: string
+      captcha:
+        type: string
+      referral:
+        type: string
+      service:
+        type: string
+  ResetPassword:
+    type: object
+    required:
+      - code
+      - new_password
+    properties:
+      new_password:
+        type: string
+      code:
+        type: string
+  OperatorResponse:
+    type: object
+    required:
+      - id
+      - email
+      - is_admin
+      - is_supervisor
+      - is_support
+      - is_kyc
+      - is_communicator
+    properties:
+      id:
+        type: number
+        format: int32
+      email:
+        type: string
+      is_admin:
+        type: boolean
+      is_supervisor:
+        type: boolean
+      is_support:
+        type: boolean
+      is_kyc:
+        type: boolean
+      is_communicator:
+        type: boolean
+  OperatorsResponse:
+    type: object
+    required:
+      - count
+      - data
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/OperatorResponse"
+  FeeResponse:
+    type: object
+    required:
+      - id
+      - transaction_id
+      - currency
+      - network_fee
+      - timestamp
+      - exchange_id
+    properties:
+      id:
+        type: number
+        format: int32
+      transaction_id:
+        type: string
+      currency:
+        type: string
+      network_fee:
+        type: number
+        format: double
+      timestamp:
+        type: string
+        format: date-time
+      exchange_id:
+        type: number
+        format: int32
+  FeesResponse:
+    type: object
+    required:
+      - count
+      - data
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: object
+        additionalProperties:
+          type: array
+          items:
+            $ref: "#/definitions/FeeResponse"
+  UserResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      email:
+        type: string
+      full_name:
+        type: string
+      gender:
+        type: boolean
+      nationality:
+        type: string
+      address:
+        type: object
+        properties:
+          country:
+            type: string
+          address:
+            type: string
+          postal_code:
+            type: string
+          city:
+            type: string
+          verified:
+            type: boolean
+      phone_number:
+        type: string
+      id_data:
+        type: object
+        properties:
+          type:
+            type: string
+          number:
+            type: string
+          issued_date:
+            type: string
+          expiration_date:
+            type: string
+          verified:
+            type: boolean
+      bank_account:
+        $ref: "#/definitions/BankArray"
+      crypto_wallet:
+        type: object
+      verification_level:
+        type: number
+      settings:
+        type: object
+        properties:
+          language:
+            type: string
+            default: 'en'
+            maxLength: 3
+            minLength: 2
+  SettingsPut:
+    type: object
+    properties:
+      language:
+        type: string
+        default: 'en'
+        maxLength: 3
+        minLength: 2
+      risk:
+        type: object
+        properties:
+          popup_warning:
+            type: boolean
+          order_portfolio_percentage:
+            type: number
+            format: double
+            minimum: 0.001
+            maximum: 99
+      audio:
+        type: object
+        properties:
+          public_trade:
+            type: boolean
+          order_completed:
+            type: boolean
+          order_partially_completed:
+            type: boolean
+      interface:
+        type: object
+        properties:
+          theme:
+            type: string
+          order_book_levels:
+            type: number
+            format: int32
+            minimum: 1
+            maximum: 20
+      notification:
+        type: object
+        properties:
+          popup_order_completed:
+            type: boolean
+          popup_order_confirmation:
+            type: boolean
+          popup_order_partially_filled:
+            type: boolean
+  UserPut:
+    type: object
+    properties:
+      full_name:
+        type: string
+      gender:
+        type: boolean
+      nationality:
+        type: string
+      dob:
+        type: string
+        format: date-time
+      address:
+        type: object
+        required:
+          - country
+          - address
+          - postal_code
+          - city
+        properties:
+          country:
+            type: string
+          address:
+            type: string
+          postal_code:
+            type: string
+          city:
+            type: string
+      phone_number:
+        type: string
+  ChangePassword:
+    type: object
+    required:
+      - old_password
+      - new_password
+    properties:
+      old_password:
+        type: string
+      new_password:
+        type: string
+  LoginsResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            ip:
+              type: string
+            device:
+              type: string
+            domain:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+  CountResponse:
+    type: object
+    required:
+      - count
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+  WithdrawalRequest:
+    type: object
+    required:
+      - address
+      - amount
+      - currency
+    properties:
+      address:
+        type: string
+        description: Destination address
+      currency:
+        type: string
+        description: currency to be withdrawn (btc, eth, etc)
+      amount:
+        type: number
+        format: double
+        description: Amount to transfer (in btc, eth, bch)
+      otp_code:
+        type: string
+        description: OTP code when otp is enabled
+        minLength: 6
+        maxLength: 6
+  OtpRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+  BankArray:
+    type: array
+    items:
+      $ref: "#/definitions/BankObject"
+  BankObject:
+    type: object
+    properties:
+      bank_name:
+        type: string
+      account_number:
+        type: string
+        maxLength: 50
+      card_number:
+        type: string
+  VerificationId:
+    type: object
+    required:
+      - front
+    properties:
+      front:
+        type: string
+      back:
+        type: string
+      proof_of_residency:
+        type: string
+  AnnouncementObject:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      created_by:
+        type: number
+        format: int32
+      title:
+        type: string
+      message:
+        type: string
+      type:
+        type: string
+  OrderRequest:
+    type: object
+    required:
+      - side
+      - size
+      - type
+      - symbol
+    properties:
+      symbol:
+        type: string
+        description: Currency symbol of the order e.g. btc-eur
+      side:
+        type: string
+        enum:
+          - buy
+          - sell
+      size:
+        description: "Size of the orders. Should have 4 decimal, if it has more than 4 it will be rounded to 4 decimal. Min: 0.0001, Max: 21000000"
+        type: number
+        format: double
+      type:
+        type: string
+        enum:
+          - market
+          - limit
+      price:
+        type: number
+        format: double
+        description: Price of the order
+      stop:
+        type: number
+        format: double
+      meta:
+        type: object
+        properties:
+          post_only:
+            type: boolean
+  OrderResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      side:
+        type: string
+        enum:
+          - buy
+          - sell
+      symbol:
+        type: string
+        description: Currency symbol
+      size:
+        type: number
+        format: double
+        description: "Size of the order. Min: 0.0001, Max: 21000000"
+      filled:
+        type: number
+        format: double
+        description: "Size of the order filled. Min: 0.0001, Max: 21000000"
+      type:
+        type: string
+        enum:
+          - market
+          - limit
+      price:
+        type: number
+        format: double
+        description: "Price of the order. Min: 500000, Max: 100000000"
+      status:
+        type: string
+        description: Status of the order, ex. queued
+      created_by:
+        type: number
+        format: int32
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  OrdersResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/OrderResponse"
+  BalanceResponse:
+    type: object
+    properties:
+      btc_balance:
+        type: number
+        format: double
+      btc_available:
+        type: number
+        format: double
+      btc_pending:
+        type: number
+        format: double
+      updated_at:
+        type: string
+        format: date-time
+  KitPut:
+    type: object
+    properties:
+      kit:
+        type: object
+        properties:
+          captcha:
+            type: object
+            required:
+              - site_key
+            properties:
+              site_key:
+                type: string
+          defaults:
+            type: object
+            properties:
+              theme:
+                type: string
+              language:
+                type: string
+          color:
+            type: object
+          links:
+            type: object
+          strings:
+            type: object
+          interface:
+            type: object
+          meta:
+            type: object
+          icons:
+            type: object
+          features:
+            type: object
+          description:
+            type: string
+          title:
+            type: string
+          api_name:
+            type: string
+          logo_image:
+            type: string
+          valid_languages:
+            type: string
+          new_user_is_activated:
+            type: boolean
+          email_verification_required:
+            type: boolean
+          native_currency:
+            type: string
+      secrets:
+        type: object
+        properties:
+          emails:
+            type: object
+            properties:
+              audit:
+                type: string
+              sender:
+                type: string
+              timezone:
+                type: string
+              send_email_to_support:
+                type: boolean
+          allowed_domains:
+            type: array
+            items:
+              type: string
+          admin_whitelist:
+            type: array
+            items:
+              type: string
+          security:
+            type: object
+            properties:
+              token_time:
+                type: string
+              withdrawal_token_expiry:
+                type: number
+          captcha:
+            type: object
+            required:
+              - secret_key
+            properties:
+              secret_key:
+                type: string
+          smtp:
+            type: object
+            properties:
+              port:
+                type: number
+              user:
+                type: string
+              server:
+                type: string
+              password:
+                type: string
+  AdminUsersResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: number
+  UserRolePut:
+    type: object
+    required:
+      - role
+    properties:
+      role:
+        type: string
+        enum:
+          - admin
+          - supervisor
+          - support
+          - kyc
+          - communicator
+          - user
+  UserRolePutResponse:
+    type: object
+    required:
+      - id
+      - email
+      - is_admin
+      - is_support
+      - is_supervisor
+      - is_kyc
+      - is_communicator
+    properties:
+      id:
+        type: number
+      email:
+        type: string
+      is_admin:
+        type: boolean
+      is_support:
+        type: boolean
+      is_supervisor:
+        type: boolean
+      is_kyc:
+        type: boolean
+      is_communicator:
+        type: boolean
+  UserNotePut:
+    type: object
+    required:
+      - note
+    properties:
+      note:
+        type: string
+  TradesResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            fee:
+              type: number
+              format: float
+            side:
+              type: string
+              enum:
+                - buy
+                - sell
+            symbol:
+              type: string
+            size:
+              type: number
+              format: double
+            price:
+              type: number
+              format: double
+            timestamp:
+              type: string
+              format: date-time
+  UpgradeUserRequest:
+    type: object
+    properties:
+      user_id:
+        type: integer
+      verification_level:
+        type: integer
+  AuditsResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          required:
+            - admin_id
+            - event
+            - description
+            - ip
+            - domain
+            - timestamp
+          properties:
+            admin_id:
+              type: number
+              format: int32
+            event:
+              type: string
+            description:
+              type: object
+              properties:
+                note:
+                  type: string
+            ip:
+              type: string
+            domain:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+  TransactionResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      transaction_id:
+        type: string
+      user_id:
+        description: User that receives the deposit
+        type: number
+        format: int64
+      currency:
+        type: string
+      amount:
+        type: number
+        format: double
+      type:
+        type: string
+        enum:
+          - deposit
+          - withdrawal
+      fee:
+        type: number
+        format: double
+      status:
+        type: boolean
+        description: Status of the deposit. False = "Pending"; True = "Completed"
+      dissmissed:
+        type: boolean
+        description: Transaction has been dissmissed, it means canceled
+      rejected:
+        type: boolean
+        description: Transaction has been rejected by payment service
+      description:
+        type: string
+        maxLength: 255
+        description: Transaction description
+  TransactionsResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/TransactionResponse"
+  UsersAddressResponse:
+    required:
+      - message
+      - address
+      - crypto
+    properties:
+      message:
+        type: string
+      address:
+        type: string
+      crypto:
+        type: string
+  TokensResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: number
+              format: int32
+            name:
+              type: string
+            apiKey:
+              type: string
+            secret:
+              type: string
+            active:
+              type: boolean
+            revoked:
+              type: boolean
+            expiry:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+  WithdrawalConfirmation:
+    type: object
+    required:
+      - token
+    properties:
+      token:
+        type: string
+        description: withdrawal confirmation token
+  StatsResponse:
+    type: object
+    properties:
+      data:
+        type: object
+      updatedAt:
+        type: string
+        format: date-time
+  TransferRequest:
+    type: object
+    required:
+      - sender_id
+      - receiver_id
+      - currency
+      - amount
+    properties:
+      sender_id:
+        description: Transfer source user id
+        type: number
+      receiver_id:
+        description: Transfer receiver user id
+        type: number
+      currency:
+        type: string
+      description:
+        type: string
+      amount:
+        type: number
+        format: double
+      email:
+        type: boolean
+  ExternalDepositRequest:
+    type: object
+    required:
+      - txid
+      - amount
+      - address
+      - is_confirmed
+      - user_id
+    properties:
+      amount:
+        type: number
+      txid:
+        type: string
+      address:
+        type: string
+      is_confirmed:
+        type: boolean
+      user_id:
+        type: number
+  ExternalWithdrawalRequest:
+    type: object
+    required:
+      - txid
+      - amount
+      - address
+      - is_confirmed
+      - user_id
+      - fee
+    properties:
+      amount:
+        type: number
+      fee:
+        type: number
+      txid:
+        type: string
+      address:
+        type: string
+      is_confirmed:
+        type: boolean
+      user_id:
+        type: number
+  OrderbooksResponse:
+    type: object
+    description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
+  PublicTradesResponse:
+    type: object
+    description: Top trades, where key is the symbol(currency) and the values is an arra with the top trades for that symbol.
+  TradeDataResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        date:
+          type: string
+        open:
+          type: number
+        close:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+  PutTierBody:
+    type: object
+    required:
+      - level
+    properties:
+      level:
+        type: number
+        format: int32
+      name:
+        type: string
+      icon:
+        type: string
+      note:
+        type: string
+      description:
+        type: string
+  PostTierBody:
+    type: object
+    required:
+      - level
+      - name
+      - icon
+      - description
+      - deposit_limit
+      - withdrawal_limit
+      - fees
+    properties:
+      level:
+        type: number
+        format: int32
+      name:
+        type: string
+      icon:
+        type: string
+      description:
+        type: string
+      note:
+        type: string
+      deposit_limit:
+        type: number
+        format: double
+      withdrawal_limit:
+        type: number
+        format: double
+      fees:
+        type: object
+        required:
+          - maker
+          - taker
+        properties:
+          maker:
+            type: object
+            required:
+              - default
+            properties:
+              default:
+                type: number
+                format: double
+          taker:
+            type: object
+            required:
+              - default
+            properties:
+              default:
+                type: number
+                format: double
+  TierObject:
+    type: object
+    required:
+      - id
+      - name
+      - icon
+      - note
+      - description
+      - deposit_limit
+      - withdrawal_limit
+      - fees
+    properties:
+      id:
+        type: number
+        format: int32
+      name:
+        type: string
+      icon:
+        type: string
+      note:
+        type: string
+      description:
+        type: string
+      deposit_limit:
+        type: number
+        format: double
+      withdrawal_limit:
+        type: number
+        format: double
+      fees:
+        type: object
+  PairFeesPut:
+    type: object
+    required:
+      - pair
+      - fees
+    properties:
+      pair:
+        type: string
+      fees:
+        type: object
+        minProperties: 1
+        additionalProperties:
+          type: object
+          minProperties: 1
+          properties:
+            maker:
+              type: number
+              format: double
+            taker:
+              type: number
+              format: double
+  TiersLimitsPut:
+    type: object
+    required:
+      - limits
+    properties:
+      limits:
+        type: object
+        minProperties: 1
+        additionalProperties:
+          type: object
+          minProperties: 1
+          properties:
+            deposit_limit:
+              type: number
+              format: double
+            withdrawal_limit:
+              type: number
+              format: double
+  OraclePriceResponse:
+    type: object
+    additionalProperties:
+      type: number
+      format: double
+  MintBurnRequest:
+    type: object
+    required:
+      - user_id
+      - currency
+      - amount
+    properties:
+      user_id:
+        description: User that receives the deposit
+        type: number
+      currency:
+        type: string
+      description:
+        type: string
+      amount:
+        type: number
+        format: double
+      transaction_id:
+        type: string

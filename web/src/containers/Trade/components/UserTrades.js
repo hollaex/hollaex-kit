@@ -3,7 +3,7 @@ import React from 'react';
 import { Table } from '../../../components';
 import {
 	generateTradeHeaders,
-	generateLessTradeHeaders
+	generateLessTradeHeaders,
 } from '../../TransactionsHistory/utils';
 
 const ActiveOrders = ({
@@ -14,11 +14,12 @@ const ActiveOrders = ({
 	lessHeaders,
 	pageSize,
 	coins,
-	discount
+	discount,
+	prices,
 }) => {
 	const headers = lessHeaders
 		? generateLessTradeHeaders(pairData.pair_base, pairs, coins, discount)
-		: generateTradeHeaders(pairData.pair_base, pairs, coins, discount);
+		: generateTradeHeaders(pairData.pair_base, pairs, coins, discount, prices);
 	if (!pair) {
 		return <div />;
 	}
@@ -43,6 +44,6 @@ ActiveOrders.defaultProps = {
 	pair: '',
 	pairData: {},
 	pairs: {},
-	coins: {}
+	coins: {},
 };
 export default ActiveOrders;

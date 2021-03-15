@@ -7,21 +7,23 @@ import { Button } from '../../components';
 import { required } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 export const generateLanguageFormValues = (values) => {
-	const langValues = STRINGS.SETTINGS_LANGUAGE_OPTIONS.filter(filterValue => {
-		return values.includes(filterValue.value)
-	})
-	return ({
+	const langValues = STRINGS.SETTINGS_LANGUAGE_OPTIONS.filter((filterValue) => {
+		return values.includes(filterValue.value);
+	});
+	return {
 		language: {
 			type: 'select',
 			validate: [required],
-			label: STRINGS.SETTINGS_LANGUAGE_LABEL,
+			stringId: 'SETTINGS_LANGUAGE_LABEL',
+			label: STRINGS['SETTINGS_LANGUAGE_LABEL'],
 			options: langValues,
-			fullWidth: isMobile
-		}
-	});
-}
+			fullWidth: isMobile,
+		},
+	};
+};
 
 class Form extends Component {
 	componentDidUpdate(prevProps) {
@@ -40,7 +42,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			formFields
+			formFields,
 		} = this.props;
 		return (
 			<form onSubmit={handleSubmit}>
@@ -48,8 +50,9 @@ class Form extends Component {
 				{error && (
 					<div className="warning_text">{getErrorLocalized(error)}</div>
 				)}
+				<EditWrapper stringId="SETTING_BUTTON" />
 				<Button
-					label={STRINGS.SETTING_BUTTON}
+					label={STRINGS['SETTING_BUTTON']}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>
@@ -58,5 +61,5 @@ class Form extends Component {
 }
 
 export default reduxForm({
-	form: 'LanguageForm'
+	form: 'LanguageForm',
 })(Form);

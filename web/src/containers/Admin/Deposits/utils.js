@@ -1,23 +1,40 @@
 import React from 'react';
-import { Icon, Button, Tooltip } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { BankOutlined, CloseSquareOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency, formatDate } from '../../../utils/index';
 
-import { isSupport } from '../../../utils/token';
+/*export const renderBoolean = (value) => (
+	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
+);*/
 
-export const renderBoolean = (value) => (
-	<Icon type={value ? 'check-circle' : 'close-circle-o'} />
-);
+const renderStatus = (_, { status, dismissed, rejected }) => {
+	if (status) {
+		return 'Completed';
+	}
 
-const ButtonNotAvailable = () => <Icon type="close-square" />;
+	if (dismissed) {
+		return 'Dismissed';
+	}
+
+	if (rejected) {
+		return 'Rejected';
+	}
+
+	return 'Pending';
+};
+
+const ButtonNotAvailable = () => <CloseSquareOutlined />;
 export const renderValidation = ({
 	status,
 	dismissed,
 	rejected,
+	processing,
 	completeDeposit,
-	updatingItem
+	updatingItem,
 }) =>
-	!status && !dismissed && !rejected ? (
+	!status && !dismissed && !rejected && !processing ? (
 		<Tooltip placement="bottom" title="VALIDATE">
 			<Button
 				type="primary"
@@ -25,7 +42,7 @@ export const renderValidation = ({
 				loading={updatingItem}
 				shape="circle"
 			>
-				{!updatingItem && <Icon type="bank" />}
+				{!updatingItem && <BankOutlined />}
 			</Button>
 		</Tooltip>
 	) : (
@@ -36,10 +53,11 @@ export const renderDismiss = ({
 	status,
 	rejected,
 	dismissed,
+	processing,
 	dismissDeposit,
-	dismissingItem
+	dismissingItem,
 }) =>
-	!status && !dismissed && !rejected ? (
+	!status && !dismissed && !rejected && !processing ? (
 		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
 			<Button
 				type={dismissed ? 'dashed' : 'primary'}
@@ -47,7 +65,7 @@ export const renderDismiss = ({
 				loading={dismissingItem}
 				shape="circle"
 			>
-				{!dismissingItem && <Icon type={dismissed ? 'eye' : 'eye-o'} />}
+				{!dismissingItem && <LegacyIcon type={dismissed ? 'eye' : 'eye-o'} />}
 			</Button>
 		</Tooltip>
 	) : (
@@ -56,7 +74,7 @@ export const renderDismiss = ({
 
 export const renderUser = (id) => (
 	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
-		<Button type="primary">
+		<Button type="primary" className="green-btn">
 			<Link to={`/admin/user?id=${id}`}>{id}</Link>
 		</Button>
 	</Tooltip>
@@ -70,54 +88,41 @@ export const COLUMNS = (currency, type) => {
 			title: 'User Id',
 			dataIndex: 'user_id',
 			key: 'user_id',
-			render: renderUser
+			render: renderUser,
 		},
 		{
 			title: transactionTitle,
 			dataIndex: 'transaction_id',
-			key: 'transaction_id'
+			key: 'transaction_id',
 		},
 		// { title: 'Address', dataIndex: 'address', key: 'address' },
 		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
 		{
-			title: 'Completed',
-			dataIndex: 'status',
+			title: 'Status',
 			key: 'status',
-			render: renderBoolean
+			render: renderStatus,
 		},
-		{
-			title: 'Dismissed',
-			dataIndex: 'dismissed',
-			key: 'dismissed',
-			render: renderBoolean
-		},
-		{
-			title: 'Rejected',
-			dataIndex: 'rejected',
-			key: 'rejected',
-			render: renderBoolean
-		}
-		// { title: 'Amount', dataIndex: 'amount', key: 'amount' },
+		{ title: 'Amount', dataIndex: 'amount', key: 'amount' },
 		// { title: 'Fee', dataIndex: 'fee', key: 'fee' },
 		// { title: 'Timestamp', dataIndex: 'created_at', key: 'created_at' },
 	];
-	if (!isSupport()) {
+	/*if (!isSupport()) {
 		const adminColumns = [
 			{
 				title: 'Validate',
 				dataIndex: '',
 				key: 'completeDeposit',
-				render: renderValidation
+				render: renderValidation,
 			},
 			{
 				title: 'Dismiss',
 				dataIndex: '',
 				key: 'dismissDeposit',
-				render: renderDismiss
-			}
+				render: renderDismiss,
+			},
 		];
 		return columns.concat(adminColumns);
-	}
+	}*/
 	return columns;
 };
 
@@ -127,7 +132,7 @@ export const SELECT_KEYS = (currency) => {
 	} else {
 		return [
 			{ value: 'transaction_id', label: 'Transaction ID' },
-			{ value: 'address', label: 'Address' }
+			{ value: 'address', label: 'Address' },
 		];
 	}
 };
@@ -138,7 +143,7 @@ export const renderRowContent = ({
 	amount,
 	fee,
 	created_at,
-	currency
+	currency,
 }) => {
 	return (
 		<div>

@@ -2,6 +2,39 @@
 	height: 84vh;
 	.trade_orderbook-cell {
 		padding: 0 0.25rem;
+		.ant-select-arrow {
+			color: $colors-main-black;
+		}
+		&:not(.trade_orderbook-cell_total) {
+			&:hover {
+				color: $colors-main-black;
+			}
+		}
+	}
+
+	.price-row-wrapper {
+		margin: 1px 0;
+		text-align: right;
+	}
+
+	.fill {
+		background-repeat: no-repeat;
+		background-position: 0 0;
+		background-size: 0;
+	}
+
+	.fill-bid {
+		background-image: linear-gradient(
+			$buying-orderbook-bar,
+			$buying-orderbook-bar
+		);
+	}
+
+	.fill-ask {
+		background-image: linear-gradient(
+			$selling-orderbook-bar,
+			$selling-orderbook-bar
+		);
 	}
 
 	.wave-header {
@@ -10,7 +43,7 @@
 
 	.trade_orderbook-headers {
 		font-weight: bold;
-		border-bottom: 1px solid $border-main;
+		border-bottom: 1px solid $colors-border;
 		text-transform: uppercase;
 		min-height: 1.5rem;
 
@@ -22,15 +55,21 @@
 	.trade_orderbook-content {
 		.trade_orderbook-spread {
 			flex: 0;
-			min-height: 2rem;
+			min-height: 6rem;
 			color: $colors-deactivate-color2;
 			// font-size: $font-size-main;
 			padding: 0 0.25rem;
 
 			.trade_orderbook-spread-text {
+				color: $colors-main-black;
+				margin-left: 0.25rem;
+			}
+
+			.trade_orderbook-market-price {
+				margin-left: 0.25rem;
+				font-size: $font-size-subhead3;
 				font-weight: bold;
 				color: $colors-main-black;
-				margin-right: 0.25rem;
 			}
 		}
 
@@ -38,20 +77,6 @@
 		.trade_orderbook-bids {
 			.value-row {
 				min-height: 1.5rem;
-			}
-		}
-
-		.trade_orderbook-asks > .value-row:first-child {
-			background-color: $trade-asks-color-main;
-			> div {
-				color: $sell-bids-text;
-			}
-		}
-
-		.trade_orderbook-bids > .value-row:first-child {
-			background-color: $trade-bids-color-main;
-			> div {
-				color: $buy-bids-text;
 			}
 		}
 	}
@@ -66,23 +91,21 @@
 	}
 
 	.trade_orderbook-asks {
-		color: $trade-order-asks-color-font;
-		.trade_orderbook-cell-price {
-			color: $trade-asks-color-main;
-			.orderbook-limit_bar-line {
-				background-color: $trade-asks-color-main;
-			}
-		}
+		color: $trade-asks-color-main;
+	}
+
+	.trade_orderbook-asks > .price-row-wrapper:first-child {
+		color: $colors-main-black;
+		font-weight: bold;
+	}
+
+	.trade_orderbook-bids > .price-row-wrapper:first-child {
+		color: $colors-main-black;
+		font-weight: bold;
 	}
 
 	.trade_orderbook-bids {
-		color: $trade-order-bids-color-font;
-		.trade_orderbook-cell-price {
-			color: $trade-order-bids-color-font;
-			.orderbook-limit_bar-line {
-				background-color: $trade-order-bids-color-font;
-			}
-		}
+		color: $trade-bids-color-main;
 	}
 	.trade_bids-limit_bar {
 		.orderbook-limit_bar-wrapper {
@@ -103,6 +126,28 @@
 	}
 }
 
+.trade_orderbook-depth-selector {
+	padding: 4px;
+	.ant-btn-text {
+		color: $colors-main-black;
+	}
+	.ant-btn-text[disabled] {
+		color: $colors-black;
+	}
+	.ant-btn {
+		padding: 0;
+		height: 16px;
+		margin: 4px 0;
+		line-height: 1;
+	}
+}
+
+.trade_orderbook-depth {
+	padding: 4px;
+	min-width: 40px;
+	text-align: center;
+}
+
 $limit-bar-side--padding: 0.5rem;
 
 .direction_ltr {
@@ -121,106 +166,22 @@ $limit-bar-side--padding: 0.5rem;
 	}
 }
 
-.dark-theme {
-	.trade_orderbook-wrapper {
-		.wave-header {
-			color: $colors-black;
-			color: $dark-font-main-text-color;
-		}
-	
-		.wave-content {
-			color: $colors-deactivate-color1;
-			color: $dark-font-sub-text-color;
-		}
-		.trade_orderbook-headers {
-			color: $dark-font-sub-text-color;
-			border-bottom-color: $dark-border-main;
-
-			.waves-icon {
-				svg{
-					.newWave-icon {
-						fill: $colors-white !important;
-					}
-				}
-			}
-		}
-
-		.trade_orderbook-content {
-			.trade_orderbook-spread {
-				color: $dark-font-sub-text-color;
-				.trade_orderbook-spread-text {
-					color: $dark-font-sub-text-color;
-				}
-			}
-			.trade_orderbook-asks > .value-row:first-child {
-				background-color: $dark-sell;
-				> div {
-					color: $dark-sell-asks-text;
-				}
-			}
-
-			.trade_orderbook-bids > .value-row:first-child {
-				background-color: $dark-buy;
-				> div {
-					color: $dark-buy-bids-text;
-				}
-			}
-		}
-
-		.trade_orderbook-asks {
-			.trade_orderbook-cell-price,
-			.orderbook-limit_bar-wrapper {
-				color: $dark-sell;
-				.orderbook-limit_bar-line {
-					background-color: $dark-sell;
-				}
-			}
-		}
-
-		.trade_orderbook-bids {
-			.trade_orderbook-cell-price,
-			.orderbook-limit_bar-wrapper {
-				color: $dark-buy;
-				.orderbook-limit_bar-line {
-					background-color: $dark-buy;
-				}
-			}
-		}
-
-		.trade_asks-limit_bar {
-			.orderbook-limit_bar-wrapper {
-				color: $dark-sell;
-				.orderbook-limit_bar-line {
-					background-color:$dark-sell;
-				}
-			}
-		}
-
-		.trade_bids-limit_bar {
-			.orderbook-limit_bar-wrapper {
-				color: $dark-buy;
-				.orderbook-limit_bar-line {
-					background-color: $dark-buy;
-				}
-			}
-		}
-
-		.trade_orderbook-cell-amount {
-			color: $dark-font-sub-text-color;
-		}
-	}
-}
-
-.layout-mobile{
+.layout-mobile {
 	.trade_orderbook-wrapper {
 		.trade_orderbook-content {
 			.trade_orderbook-bids {
 				.value-row {
-					.trade_orderbook-cell{
-						font-size: $extra-thick--font-size!important;
+					.trade_orderbook-cell {
+						font-size: $extra-thick--font-size !important;
 					}
 				}
 			}
 		}
+	}
+}
+
+.trade_orderbook-cell {
+	.ant-select-selector {
+		color: $colors-main-black !important;
 	}
 }

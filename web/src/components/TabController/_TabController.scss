@@ -27,7 +27,7 @@ $tab_controller-item-min-width: 10rem;
 	display: flex;
 	justify-content: space-between;
 	align-content: center;
-	border-top: 2px solid $border-color;
+	border-top: 2px solid $colors-border;
 	margin-bottom: 1rem;
 
 	.tab_item {
@@ -46,7 +46,7 @@ $tab_controller-item-min-width: 10rem;
 		padding: 0 1px 12px !important;
 	}
 	.tab_item-active {
-		border-top: $tab-selected-line-height solid $border-color;
+		border-top: $tab-selected-line-height solid $colors-border;
 		color: $tab-active;
 		& svg path {
 			opacity: 1;
@@ -57,31 +57,6 @@ $tab_controller-item-min-width: 10rem;
 			}
 			.st0 {
 				stroke: $tab-active !important;
-			}
-		}
-	}
-}
-
-.dark-theme {
-	$disabled-color: $colors-deactivate-color2 !important;
-	$active-color: $dark-tab-active !important;
-	.tab_controller-tabs {
-		border-top-color: $dark-border-main !important;
-		.tab_item {
-			color: $disabled-color;
-
-			svg path, svg rect {
-				fill: $disabled-color;
-				stroke: $disabled-color;
-			}
-
-			&.tab_item-active {
-				border-top-color: $dark-border-main !important;
-				color: $active-color;
-				svg path, svg rect {
-					fill: $active-color;
-					stroke: $active-color;
-				}
 			}
 		}
 	}

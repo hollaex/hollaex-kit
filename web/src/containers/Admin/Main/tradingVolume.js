@@ -22,10 +22,17 @@ const VOLUME = [
 	{ title: 'High', dataIndex: 'high', key: 'high', render: formatNum },
 	{ title: 'Low', dataIndex: 'low', key: 'low', render: formatNum },
 	{ title: 'Open', dataIndex: 'open', key: 'open', render: formatNum },
-	{ title: 'Close', dataIndex: 'close', key: 'close', render: formatNum }
+	{ title: 'Close', dataIndex: 'close', key: 'close', render: formatNum },
 ];
 
-const TradingVolume = ({ error, data, chartData, newPair, handleChange, selectedPair }) => {
+const TradingVolume = ({
+	error,
+	data,
+	chartData,
+	newPair,
+	handleChange,
+	selectedPair,
+}) => {
 	const Options = newPair.map((currency, index) => {
 		return (
 			<Option key={index} value={currency}>
@@ -67,12 +74,10 @@ const TradingVolume = ({ error, data, chartData, newPair, handleChange, selected
 									style={{
 										stroke: 'white',
 										fill: '#41c3f9',
-										fillOpacity: '.25'
+										fillOpacity: '.25',
 									}}
 								/>
-								<SparklinesLine
-									style={{ stroke: '#41c3f9', fill: 'none' }}
-								/>
+								<SparklinesLine style={{ stroke: '#41c3f9', fill: 'none' }} />
 							</Sparklines>
 							<Table
 								columns={VOLUME}

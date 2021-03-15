@@ -1,7 +1,7 @@
-@mixin entry_form($theme-color, $theme-color-disabled, $theme-text-color: white) {
+@mixin entry_form($theme-color, $theme-color-disabled, $theme-text-color) {
 	flex: 1;
 	$row-height: 2.5rem;
-	color: $font-color--disabled;
+	color: $colors-black;
 
 	> div:not(:last-child) {
 		margin-bottom: 0.5rem;
@@ -10,6 +10,8 @@
 	.trade_order_entry-selector {
 		border-top: 1px solid $trade-section-border--color;
 		position: relative;
+		width: 60% !important;
+		margin-left: 40% !important;
 
 		> div {
 			line-height: 2rem;
@@ -27,7 +29,7 @@
 
 		.active {
 			position: relative;
-			color: $font-color--acitve;
+			color: $colors-main-black;
 			font-weight: bold;
 
 			&:after {
@@ -47,7 +49,7 @@
 		border: 1px solid $theme-color;
 		.active {
 			background-color: $theme-color;
-			color: $sell-bids-text;
+			color: $theme-text-color;
 			font-weight: bold;
 		}
 	}
@@ -56,7 +58,7 @@
 		border-top: 1px solid $trade-section-border-disabled--color;
 		line-height: 1.5rem;
 		.text-price {
-			color: $font-color--acitve;
+			color: $colors-main-black;
 		}
 		.blue-link {
 			color: $link;
@@ -84,7 +86,7 @@
 		.trade_order_entry-form-action {
 			margin-top: 0.5rem;
 			background-color: $theme-color !important;
-			color: $colors-white;
+			color: $theme-text-color;
 			font-weight: bold;
 
 			&:disabled {
@@ -98,150 +100,101 @@
 		}
 
 		.form-error {
-			margin: 0.5 0;
+			margin: 0.5rem 0;
 		}
 	}
 
 	.trade_order_entry-form_fields-wrapper {
-		margin-bottom: 0.5rem !important;
+		margin-bottom: 0.2rem !important;
+		.ant-collapse-header {
+			text-align: right;
+			color: $colors-black;
+			padding: 0;
+			font-size: $font-size-mobile-txt;
+		}
+		.ant-collapse-content-box {
+			padding: 0;
+		}
 	}
 }
 
 .trade_order_entry-wrapper {
 	&.order_side-selector-sell {
-		@include entry_form($color-sell-btc-light, $trade-asks-color-disabled);
+		@include entry_form($sell, $colors-deactivate-color1, $sell-bids-text);
 	}
 	&.order_side-selector-buy {
-		@include entry_form($buy, $trade-bids-color-disabled);
+		@include entry_form($buy, $colors-deactivate-color1, $buy-bids-text);
 	}
 }
 
 .risky-trade-wrapper {
-    width: 32rem;
-    .icon_title-wrapper {
-        .icon_title-svg {
-            height: 10rem;
-            width: 10rem;
-        }
-        .icon_title-svg svg{
-            height: 10rem;
-            width: 10rem;
-        }
-        .icon_title-text.title {
-            font-size: 2rem;
-        }
-        .icon_title-text {
-            margin-top: 3rem;
-            text-align: left !important;
-            width: 100%;
-        }
+	width: 32rem;
+	.icon_title-wrapper {
+		.icon_title-svg {
+			height: 10rem;
+			width: 10rem;
+		}
+		.icon_title-svg svg {
+			height: 10rem;
+			width: 10rem;
+		}
+		.icon_title-text.title {
+			font-size: 2rem;
+		}
+		.icon_title-text {
+			margin-top: 3rem;
+			text-align: left !important;
+			width: 100%;
+		}
 	}
 	.risky_managment_percentage {
-        color: $error-color
-    }
+		color: $colors-notifications-red;
+	}
 }
 
 .layout-mobile {
-	.trade_order_entry-selector{
-		font-size: $font-size-mobile-txt!important;
+	.trade_order_entry-selector {
+		font-size: $font-size-mobile-txt !important;
 	}
 	.trade_orderbook-bids {
 		.trade_orderbook-cell {
-			font-size: $font-size-mobile-txt!important;
+			font-size: $font-size-mobile-txt !important;
 		}
 	}
 	.trade_input-wrapper {
 		.trade_input-label {
-			font-size: $font-size-mobile-innertxt!important;
+			font-size: $font-size-mobile-innertxt !important;
 		}
 		.trade_input-input-wrapper {
-			> input{
-				font-size: $font-size-mobile-txt!important;
+			> input {
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
 	.trade_order_entry-review {
 		> div {
-			font-size: $font-size-mobile-innertxt!important;
+			font-size: $font-size-mobile-innertxt !important;
 		}
 	}
-	.exir-button{
-		font-size: $font-size-mobile-txt!important;
+	.exir-button {
+		font-size: $font-size-mobile-txt !important;
 	}
 	.trade_orderbook-wrapper {
 		.trade_orderbook-headers {
 			.trade_orderbook-cell {
-				font-size: $font-size-mobile-innertxt!important;
+				font-size: $font-size-mobile-innertxt !important;
 			}
 		}
 		.trade_asks-limit_bar {
 			.orderbook-limit_bar-wrapper {
 				.orderbook-limit_bar-text {
-					font-size: $font-size-mobile-innertxt!important;
+					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
 		}
 	}
 
-    .risky-trade-wrapper {
-        margin: auto;
-    }
-}
-
-.dark-theme {
-	.trade_order_entry-wrapper {
-		color: $dark-font-sub-text-color !important;
-
-		.trade_order_entry-review {
-			border-top-color: $dark-border-main !important;
-			.text-price {
-				color: $dark-font-main-text-color !important;
-			}
-			.blue-link {
-				color: $dark-link !important;
-			}
-		}
-		.exir-button-font.active {
-			color: $dark-app-background-color !important;
-		}
-
-		.trade_order_entry-action_selector {
-			color: $dark-font-sub-text-1-color;
-			border: 1px solid $dark-border-main !important;
-		}
-
-		.trade_order_entry-selector {
-			border-top: 1px solid $dark-border-main !important;
-			color: $dark-font-sub-text-1-color;
-			// &:after {
-			// 	background: $dark-border-main !important;
-			// }
-
-			.active {
-				color: $dark-font-main-text-color !important;
-				&:after {
-					background: $dark-border-main !important;
-				}
-			}
-		}
-		&.order_side-selector-sell {
-			@include entry_form($dark-color-sell-btc-light, $dark-button-disabled);
-
-			.trade_order_entry-action_selector {
-				.active {
-					color: $dark-sell-asks-text !important;
-				}
-			}
-			.trade_order_entry-form-action {
-				color: $dark-sell-asks-text !important;
-			}
-		}
-		&.order_side-selector-buy {
-			@include entry_form($dark-buy, $dark-button-disabled);
-
-			.trade_order_entry-form-action {
-				color: $dark-buy-bids-text !important;
-			}
-		}
+	.risky-trade-wrapper {
+		margin: auto;
 	}
 }

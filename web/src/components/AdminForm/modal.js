@@ -18,7 +18,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		buttonType,
 		small,
 		visible,
-		okText = "Create",
+		okText = 'Create',
 		initialValues,
 		CustomRenderContent,
 		customLevels,
@@ -33,10 +33,15 @@ const Form = (name, className = '', allowPristine = false) => {
 					onCancel={onCancel}
 					onOk={handleSubmit(onSubmit)}
 				>
-					{CustomRenderContent
-						? <CustomRenderContent fields={fields} customLevels={customLevels} {...rest} />
-						: fields && renderFields(fields)
-					}
+					{CustomRenderContent ? (
+						<CustomRenderContent
+							fields={fields}
+							customLevels={customLevels}
+							{...rest}
+						/>
+					) : (
+						fields && renderFields(fields)
+					)}
 					{error && (
 						<div>
 							<strong>{error}</strong>
@@ -51,7 +56,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		form: name,
 		// onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
 		onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
-		enableReinitialize: true
+		enableReinitialize: true,
 	})(ModalForm);
 };
 
