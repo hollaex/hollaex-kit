@@ -342,10 +342,8 @@ const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, or
 	});
 };
 
-const getGeneratedFees = (limit, page, startDate, endDate) => {
+const getGeneratedFees = (startDate, endDate) => {
 	return getNodeLib().getGeneratedFees({
-		limit,
-		page,
 		startDate,
 		endDate
 	});
