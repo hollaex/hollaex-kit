@@ -164,7 +164,12 @@ exports.KIT_SECRETS_KEYS = [
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 	'icons',
-	'strings'
+	'strings',
+	'color',
+	'valid_languages',
+	'defaults',
+	'logo_image',
+	'meta'
 ];
 // CONFIGURATION CONSTANTS END --------------------------------------------------
 
