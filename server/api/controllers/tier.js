@@ -2,21 +2,10 @@
 
 const toolsLib = require('hollaex-tools-lib');
 const { loggerTier } = require('../../config/logger');
-const { each } = require('lodash');
 
 const getTiers = (req, res) => {
 	try {
-		const tiers = toolsLib.getKitTiers();
-		const pairs = toolsLib.getKitPairs();
-		each(tiers, (tier) => {
-			each(pairs, (pair) => {
-				tier.fees.maker[pair] = tier.fees.maker[pair] !== undefined ? tier.fees.maker[pair] : tier.fees.maker.default;
-				tier.fees.taker[pair] = tier.fees.taker[pair] !== undefined ? tier.fees.taker[pair] : tier.fees.taker.default;
-			});
-			delete tier.fees.maker.default;
-			delete tier.fees.taker.default;
-		});
-		return res.json(tiers);
+		return res.json(toolsLib.getKitTiers());
 	} catch (err) {
 		loggerTier.error(req.uuid, 'controllers/tier/getTiers err', err.message);
 		return res.status(err.status || 400).json({ message: err.message });

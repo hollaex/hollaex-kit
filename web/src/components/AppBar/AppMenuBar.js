@@ -201,22 +201,27 @@ class AppMenuBar extends Component {
 							</EditWrapper>
 						</div>
 					</div>
-					<div
-						className={classnames('app-menu-bar-content d-flex', {
-							'active-menu': activeMenu === 'pro-trade',
-						})}
-						onClick={() => this.handleMenuChange('pro-trade')}
-					>
-						<div className="app-menu-bar-content-item d-flex">
-							<Image
-								icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
-								wrapperClassName="app-menu-bar-icon"
-							/>
-							<EditWrapper stringId="PRO_TRADE" iconId="SIDEBAR_TRADING_ACTIVE">
-								{STRINGS['PRO_TRADE']}
-							</EditWrapper>
+					{constants && constants.features && constants.features.pro_trade && (
+						<div
+							className={classnames('app-menu-bar-content d-flex', {
+								'active-menu': activeMenu === 'pro-trade',
+							})}
+							onClick={() => this.handleMenuChange('pro-trade')}
+						>
+							<div className="app-menu-bar-content-item d-flex">
+								<Image
+									icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
+									wrapperClassName="app-menu-bar-icon"
+								/>
+								<EditWrapper
+									stringId="PRO_TRADE"
+									iconId="SIDEBAR_TRADING_ACTIVE"
+								>
+									{STRINGS['PRO_TRADE']}
+								</EditWrapper>
+							</div>
 						</div>
-					</div>
+					)}
 					{constants && constants.features && constants.features.quick_trade && (
 						<div
 							className={classnames('app-menu-bar-content d-flex', {

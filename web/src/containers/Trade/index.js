@@ -54,7 +54,15 @@ class Trade extends PureComponent {
 		this.sizeTimeOut = '';
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
+		const {
+			isReady,
+			router,
+			constants: { features: { pro_trade = false } = {} } = {},
+		} = this.props;
+		if (!isReady || !pro_trade) {
+			router.push('/summary');
+		}
 		this.setSymbol(this.props.routeParams.pair);
 		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 	}
@@ -373,6 +381,7 @@ class Trade extends PureComponent {
 				{isMobile ? (
 					<div className="">
 						<MobileBarTabs
+							showMarketSelector={true}
 							tabs={mobileTabs}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
@@ -553,6 +562,8 @@ const mapStateToProps = (state) => {
 		settings: state.user.settings,
 		orderLimits: state.app.orderLimits,
 		discount: state.user.discount || 0,
+		isReady: state.app.isReady,
+		constants: state.app.constants,
 	};
 };
 

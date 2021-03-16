@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Divider, message, Modal, Button } from 'antd';
 import { connect } from 'react-redux';
 // import { SubmissionError } from 'redux-form';
@@ -29,7 +29,10 @@ const getFields = (
 		showSearch: true,
 		fullWidth: true,
 		options: senderData,
-		filterOption: () => true,
+		defaultActiveFirstOption: false,
+		showArrow: false,
+		filterOption: false,
+		notFoundContent: null,
 		onSearch: (text) => handleSearch(text, 'sender'),
 	},
 	receiver_id: {
@@ -40,7 +43,10 @@ const getFields = (
 		showSearch: true,
 		fullWidth: true,
 		options: receiverData,
-		filterOption: () => true,
+		defaultActiveFirstOption: false,
+		showArrow: false,
+		filterOption: false,
+		notFoundContent: null,
 		onSearch: (text) => handleSearch(text, 'receiver'),
 	},
 	currency: {
@@ -83,9 +89,9 @@ const Transfer = ({ coins = {} }) => {
 	const [receiverData, setReceiverData] = useState([]);
 	const [isConfirm, setConfirm] = useState(false);
 	const [confirmData, setConfirmData] = useState({});
-	useEffect(() => {
-		getAllUserData();
-	}, []);
+	// useEffect(() => {
+	// 	// getAllUserData();
+	// }, []);
 	const getAllUserData = async (params = { search: '' }, type) => {
 		try {
 			const response = await requestUsers(params);
@@ -108,9 +114,20 @@ const Transfer = ({ coins = {} }) => {
 		}
 	};
 	const onSearch = (value, key) => {
-		getAllUserData({ search: value }, key);
+		if (!value) {
+			if (key === 'sender') {
+				setSenderData([]);
+			} else if (key === 'receiver') {
+				setReceiverData([]);
+			} else {
+				setSenderData([]);
+				setReceiverData([]);
+			}
+		} else {
+			getAllUserData({ search: value }, key);
+		}
 	};
-	const handleSearch = _debounce(onSearch, 1000);
+	const handleSearch = _debounce(onSearch, 500);
 	const handleConfirm = (formProps) => {
 		setConfirm(true);
 		setConfirmData(formProps);
@@ -132,17 +149,23 @@ const Transfer = ({ coins = {} }) => {
 				setConfirm(false);
 				setConfirmData({});
 				message.success('Transferred Successfully');
+				setSenderData([]);
+				setReceiverData([]);
 			})
 			.catch((error) => {
 				setConfirm(false);
 				const msg = error.data ? error.data.message : error.message;
 				// throw new SubmissionError({ _error: message });
+				setSenderData([]);
+				setReceiverData([]);
 				message.error(msg);
 			});
 	};
 	const handleClose = () => {
 		setConfirm(false);
 		setConfirmData({});
+		setSenderData([]);
+		setReceiverData([]);
 	};
 	const coinData = Object.keys(coins || {});
 	const fields = getFields(coinData, senderData, receiverData, handleSearch);

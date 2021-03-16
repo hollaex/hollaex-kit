@@ -228,7 +228,8 @@ table th {
   pointer-events: none; }
 
 .object-fit-contain {
-  object-fit: contain; }
+  object-fit: contain;
+  height: 100%; }
 
 .background-contain {
   -webkit-background-size: contain;
@@ -3298,6 +3299,31 @@ table th {
   overflow-y: scroll; }
 
 @media screen and (max-width: 1096px) {
+  .layout-mobile .trade_tabs-container .trade-tab-list {
+    margin: 1.5rem 1rem; }
+  .layout-mobile .trade_tabs-container .trade_tab-icons {
+    width: 2.25rem; }
+  .layout-mobile .trade_tabs-container .tabs-pair-details {
+    font-size: 1rem;
+    width: 28rem; }
+  .layout-mobile .trade_tabs-container .market-card__sparkline-wrapper {
+    height: 10rem; } }
+
+@media screen and (max-width: 575px) {
+  .layout-mobile .trade_tabs-container {
+    overflow-y: scroll; }
+    .layout-mobile .trade_tabs-container .trade-tab-list {
+      margin: 1.5rem 1rem; }
+    .layout-mobile .trade_tabs-container .trade_tab-icons {
+      width: 2.25rem; }
+    .layout-mobile .trade_tabs-container .tabs-pair-details {
+      font-size: 1.5rem;
+      width: 34rem;
+      max-width: 96%; }
+    .layout-mobile .trade_tabs-container .market-card__sparkline-wrapper {
+      height: 12rem; } }
+
+@media screen and (max-width: 1096px) {
   .trade_tabs-container .trade-tab-list {
     margin: 1.5rem 1rem; }
   .trade_tabs-container .trade_tab-icons {
@@ -4048,11 +4074,11 @@ table th {
       color: var(--calculated_base_top-bar-navigation_text) !important;
       font-weight: bolder; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon {
-      height: 100%; }
+      width: 3rem;
+      height: 3rem; }
       .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon > div {
         display: flex;
-        justify-content: center;
-        height: 100%; }
+        justify-content: center; }
       .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg {
         width: 3rem;
         height: 3rem;
@@ -5129,9 +5155,9 @@ table th {
 
 .layout-mobile .app-bar-add-tab-menu {
   width: 36rem;
-  position: fixed;
-  top: 13.7rem;
-  left: 2.2rem; }
+  position: absolute;
+  top: 7.8rem;
+  left: 1.2rem; }
   .layout-mobile .app-bar-add-tab-menu .app-bar-add-tab-content,
   .layout-mobile .app-bar-add-tab-menu .app-bar-tab-menu-list,
   .layout-mobile .app-bar-add-tab-menu .app-bar-tab-overflow-content {

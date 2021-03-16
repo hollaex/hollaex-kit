@@ -1116,7 +1116,7 @@ export default {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Sin lìmite',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Generar {0} Billetera',
 	WALLET_ADDRESS_GENERATE: 'Generar',
