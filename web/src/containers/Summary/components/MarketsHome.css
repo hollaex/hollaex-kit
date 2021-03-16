@@ -1,0 +1,28 @@
+.mt-50 {
+	margin-top: 50px;
+}
+
+.br10 {
+	border-radius: 10px;
+}
+
+.pad0 {
+	padding: 0px;
+}
+
+.table-hover tbody tr:hover {
+	background-color: rgb(250 250 250);
+	-webkit-box-shadow: inset 3px 7px 13px -12px rgb(0 0 0 / 47%);
+	box-shadow: inset 0px 0px 13px -12px rgb(0 0 0 / 47%);
+}
+
+th {
+	color: #848484;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.boxShadow {
+	-webkit-box-shadow: 0px 0px 20px rgb(0 0 0 / 8%);
+	box-shadow: 0px 0px 20px rgb(0 0 0 / 8%);
+}
