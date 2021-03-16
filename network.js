@@ -1732,8 +1732,6 @@ class HollaExNetwork {
 
 	getGeneratedFees(
 		opts = {
-			limit: 50,
-			page: 1,
 			startDate: null,
 			endDate: null
 		}
@@ -1742,14 +1740,6 @@ class HollaExNetwork {
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id}/fees?`;
-
-		if (isNumber(opts.limit)) {
-			path += `&limit=${opts.limit}`;
-		}
-
-		if (isNumber(opts.page)) {
-			path += `&page=${opts.page}`;
-		}
 
 		if (isDate(opts.startDate)) {
 			path += `&start_date=${opts.startDate.toISOString()}`;
