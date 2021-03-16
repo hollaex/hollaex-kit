@@ -428,12 +428,12 @@ class AppBar extends Component {
 			>
 				<MenuHollaEx size={0} />
 
-				<div
+				{/*<div
 					id="home-nav-container"
 					className="d-flex align-items-center justify-content-center h-100"
 				>
 					{this.renderIcon(isHome, theme)}
-				</div>
+				</div>*/}
 				{children}
 				{!isLoggedIn() && (
 					<div id="trade-nav-container">

@@ -60,8 +60,8 @@ const generateCardsContentFromStrings = () => {
 const Card = ({ icon, title, text, stringId, iconId }) => (
 	<>
 		<div className="col-md-4">
-			<div className="card">
-				<div className="card-header">
+			<div className="card mh-250 mb-5">
+				<div className="card-header bg-white">
 					<ReactSVG
 						src={icon}
 						beforeInjection={(svg) => {
@@ -98,7 +98,6 @@ const Section = ({ style, onClickDemo, token }) => (
 			'flex-column',
 			'features-container bg-light-gray'
 		)}
-		style={style}
 	>
 		<div className="container">
 			<div className="row">

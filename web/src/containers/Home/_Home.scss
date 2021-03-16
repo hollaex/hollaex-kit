@@ -174,7 +174,7 @@ $no-background--color: white;
 	padding-top: 100px;
 	background-color: #022130;
 	width: 100%;
-	height: 350px;
+	min-height: 440px;
 }
 
 .section-one-header {
@@ -225,20 +225,21 @@ $no-background--color: white;
 	text-align: left !important;
 }
 
+/*
 .card {
 	margin-bottom: 10px;
 	border: none;
 	background-color: white !important;
-	-webkit-box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.15);
-	box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: 0px 0px 20px rgb(0 0 0 / 8%);
+	box-shadow: 0px 0px 20px rgb(0 0 0 / 8%);
+	border-radius: 0px;
 	padding: 10px;
-	min-height: 300px;
 }
+*/
 
 .card-header {
 	font-size: 20px;
 	font-weight: 600;
-	background-color: white;
 	border-bottom: none;
 }
 
@@ -273,7 +274,7 @@ $no-background--color: white;
 }
 
 .sect4-img img {
-	width: 150px;
+	width: 80px;
 }
 
 .sect4-title {
@@ -286,5 +287,28 @@ $no-background--color: white;
 	text-align: center;
 	color: gray;
 }
+
+.mh-250 {
+	min-height: 250px;
+}
+
+/*************** animate shape css start ***************************/
+.bg-shape-1 {
+	position: absolute;
+	right: 3%;
+	bottom: 10%;
+	/*z-index: 0;*/
+}
+#bounce-slow {
+	-webkit-animation: bounce 8s infinite ease-in-out;
+	-o-animation: bounce 8s infinite ease-in-out;
+	-ms-animation: bounce 8s infinite ease-in-out;
+	-moz-animation: bounce 8s infinite ease-in-out;
+	animation: bounce 8s infinite ease-in-out;
+}
+.opacity-1 {
+	opacity: 0.06;
+}
+/*************** animate shape css end ***************************/
 
 /* ----------------------- End RB Style ---------------------*/

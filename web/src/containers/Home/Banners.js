@@ -1,12 +1,11 @@
 import React from 'react';
 import { Banner } from './Banner';
+import add1 from './img/add-banner/add-1.png';
+import add2 from './img/add-banner/add-2.png';
+import add3 from './img/add-banner/add-3.png';
+import add4 from './img/add-banner/add-4.png';
 
-const images = [
-	'https://image.freepik.com/free-vector/crypto-currency-bitcoin-blue-background-digital-web-money-modern-technology-banner-with-copy-spac_48369-13790.jpg',
-	'https://image.freepik.com/free-vector/crypto-currency-bitcoin-blue-background-digital-web-money-modern-technology-banner-with-copy-spac_48369-13790.jpg',
-	'https://image.freepik.com/free-vector/crypto-currency-bitcoin-blue-background-digital-web-money-modern-technology-banner-with-copy-spac_48369-13790.jpg',
-	'https://image.freepik.com/free-vector/crypto-currency-bitcoin-blue-background-digital-web-money-modern-technology-banner-with-copy-spac_48369-13790.jpg',
-];
+const images = [add1, add2, add3, add4];
 export const Banners = () => {
 	return (
 		<>

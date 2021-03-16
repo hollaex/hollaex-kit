@@ -24,7 +24,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { Banners } from './Banners';
 import { Section4 } from './Section4';
 import { setPairsData } from 'actions/orderbookAction';
-import Markets from 'containers/Summary/components/Markets';
+import MarketsHome from '../Summary/components/MarketsHome';
 const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
 
@@ -166,7 +166,7 @@ class Home extends Component {
 					/>*/}
 					<Banners />
 
-					<Markets
+					<MarketsHome
 						user={user}
 						coins={coins}
 						pairs={pairs}
