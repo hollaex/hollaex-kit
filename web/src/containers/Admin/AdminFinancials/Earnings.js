@@ -5,7 +5,6 @@ import { ReactSVG } from 'react-svg';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { getFees, getFeesDownload } from '../AdminFees/action';
-import STRINGS from '../../../config/localizedStrings';
 import { STATIC_ICONS } from 'config/icons';
 import { SettleModal } from './SettleModal';
 

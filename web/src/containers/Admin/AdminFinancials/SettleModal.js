@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, message } from 'antd';
 import { getSettle } from '../AdminFees/action';
-import STRINGS from '../../../config/localizedStrings';
 import moment from 'moment';
 
 export class SettleModal extends Component {
