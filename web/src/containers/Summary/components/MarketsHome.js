@@ -5,7 +5,6 @@ import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
 
 import { SearchBox } from 'components';
-import MarketList from '../../TradeTabs/components/MarketList';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';

@@ -108,7 +108,6 @@ class Home extends Component {
 			constants = {},
 			icons: ICONS = {},
 			pairs,
-			tickers,
 			coins,
 			user,
 		} = this.props;
