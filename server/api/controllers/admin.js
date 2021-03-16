@@ -583,9 +583,9 @@ const getExchangeGeneratedFees = (req, res) => {
 		req.auth
 	);
 
-	const { limit, page, start_date, end_date } = req.swagger.params;
+	const { start_date, end_date } = req.swagger.params;
 
-	toolsLib.order.getGeneratedFees(limit.value, page.value, start_date.value, end_date.value)
+	toolsLib.order.getGeneratedFees(start_date.value, end_date.value)
 		.then((data) => {
 			return res.json(data);
 		})

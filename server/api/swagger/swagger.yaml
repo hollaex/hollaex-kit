@@ -1804,18 +1804,6 @@ paths:
         - Admin
       parameters:
         - in: query
-          name: limit
-          description: "Number of elements to return. Default: 50. Maximun: 100"
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: page
-          description: Page of data to retrieve.
-          required: false
-          type: number
-          format: int32
-        - in: query
           name: start_date
           description: Starting date of queried data
           required: false
@@ -3360,19 +3348,10 @@ definitions:
         format: int32
   FeesResponse:
     type: object
-    required:
-      - count
-      - data
-    properties:
-      count:
-        type: number
-        format: int32
-      data:
-        type: object
-        additionalProperties:
-          type: array
-          items:
-            $ref: "#/definitions/FeeResponse"
+    additionalProperties:
+      type: array
+      items:
+        $ref: "#/definitions/FeeResponse"
   UserResponse:
     type: object
     properties:
