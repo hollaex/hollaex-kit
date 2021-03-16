@@ -23,7 +23,7 @@ Check out [Plugins](https://github.com/bitholla/hollaex-kit/tree/2.0-develop/ser
 Check out [HollaEx CLI](https://github.com/bitholla/hollaex-cli) (Command Line Interface) for interacting and deploying your exchange.
 
 ## Community
-Join us on the [Forum](https://forum.hollaex.com) and feel free to raise any topic and ask questions from our active community.
+Join us on the [Forum](https://forum.hollaex.com) and [Discord](https://discord.gg/RkRHU8RbyM).
 
 
 [![alt text][1.2]][1]
@@ -44,8 +44,11 @@ Join us on the [Forum](https://forum.hollaex.com) and feel free to raise any top
 </a>
 
 
-## Useful Resources
+## Useful Links
 
 - Exchange Dashboard: https://dash.bitholla.com
 - HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
-- HollaEx Official Marketplace: https://hollaex.com
+- HollaEx Live Exchange: https://hollaex.com
+- Discord Community: https://discord.gg/RkRHU8RbyM
+- Forum: https://forum.hollaex.com
+- Docs: https://docs.hollaex.com
