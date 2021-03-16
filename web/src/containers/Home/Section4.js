@@ -7,7 +7,7 @@ import careerIco from './img/interview-icon.png';
 
 export const Section4 = () => {
 	return (
-		<div className="bg-light-gray">
+		<div className="bg-white">
 			<div className="container">
 				<div className="row">
 					<div className="col-md-12">
