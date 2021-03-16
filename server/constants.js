@@ -169,7 +169,10 @@ exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 	'valid_languages',
 	'defaults',
 	'logo_image',
-	'meta'
+	'meta',
+	'description',
+	'title',
+	'features'
 ];
 // CONFIGURATION CONSTANTS END --------------------------------------------------
 
@@ -179,7 +182,7 @@ exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used f
 exports.API_HOST = process.env.API_HOST || 'localhost';
 exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
 exports.NODE_ENV = process.env.NODE_ENV;
-exports.HOLLAEX_NETWORK_ENDPOINT = process.env.NETWORK === 'testnet' ? 'https://api.testnet.hollaex.network' : 'https://api.hollaex.network';
+exports.HOLLAEX_NETWORK_ENDPOINT = process.env.NETWORK === 'testnet' ? 'http://172.30.1.8:81' : 'https://api.hollaex.network';
 exports.HOLLAEX_NETWORK_BASE_URL = '/v2';
 exports.HOLLAEX_NETWORK_PATH_ACTIVATE = '/exchange/activate';
 
