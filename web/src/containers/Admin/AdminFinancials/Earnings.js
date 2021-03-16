@@ -147,6 +147,12 @@ class Earnings extends Component {
 			const end_date = value[1].format('YYYY-MM-DD');
 			this.setState({ start_date, end_date });
 		}
+		if (!value) {
+			this.setState({
+				end_date: moment().format('YYYY-MM-DD'),
+				start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+			});
+		}
 	};
 
 	render() {
