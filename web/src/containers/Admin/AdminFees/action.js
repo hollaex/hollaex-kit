@@ -3,12 +3,9 @@ import axios from 'axios';
 
 import { requestAuthenticated } from '../../../utils';
 
-export const getFees = (page = 1, limit = 50) => {
+export const getFees = (params = {}) => {
 	let url = '/admin/fees';
-	const values = querystring.stringify({
-		page,
-		limit,
-	});
+	const values = querystring.stringify(params);
 	if (values) {
 		url = `/admin/fees?${values}`;
 	}

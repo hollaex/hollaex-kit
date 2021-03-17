@@ -203,3 +203,22 @@
 	padding: 5px;
 	position: relative;
 }
+.admin-earnings-container .fields-container {
+	display: flex;
+	margin-top: 10px;
+}
+.admin-earnings-container .ant-picker {
+	background-color: blue;
+}
+.admin-earnings-container .ant-picker input {
+	color: white;
+}
+.admin-earnings-container .ant-select-arrow {
+	color: white;
+}
+.admin-earnings-container .ant-picker .anticon-swap-right {
+	color: white;
+}
+.admin-earnings-container .ant-picker .anticon-calendar {
+	color: white;
+}

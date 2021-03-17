@@ -3,10 +3,12 @@ import { Table, Button, Tooltip, Modal } from 'antd';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 import { getFees, getFeesDownload } from '../AdminFees/action';
 import { STATIC_ICONS } from 'config/icons';
 import { SettleModal } from './SettleModal';
+import Filter from './filter';
 
 const earningsColumns = [
 	{
@@ -57,6 +59,14 @@ const descriptionColumn = [
 		key: 'timestamp',
 	},
 ];
+const filterOptions = [
+	{
+		label: 'Date',
+		value: 'date',
+		secondaryType: 'date-range',
+		secondaryDefaultValue: [moment().subtract(30, 'days'), moment()],
+	},
+];
 
 class Earnings extends Component {
 	constructor(props) {
@@ -71,6 +81,8 @@ class Earnings extends Component {
 			earningsData: [],
 			feesData: [],
 			isOpen: false,
+			end_date: moment().format('YYYY-MM-DD'),
+			start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
 		};
 	}
 
@@ -78,23 +90,21 @@ class Earnings extends Component {
 		this.requestFees();
 	}
 
-	requestFees = (page = 1, limit = 50) => {
+	requestFees = () => {
+		const { start_date, end_date } = this.state;
 		this.setState({
 			error: '',
 		});
-		return getFees(page, limit)
+		return getFees({ start_date, end_date })
 			.then((response) => {
 				this.setState({
-					feesData:
-						page === 1
-							? response.data
-							: [...this.state.feesData, ...response.data],
-					page,
-					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
-					isRemaining: response.count > page * limit,
+					feesData: response,
+					// page,
+					// currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
+					// isRemaining: response.count > page * limit,
 				});
-				if (response.data) {
-					this.handleData(response.data.data);
+				if (response) {
+					this.handleData(response);
 				}
 			})
 			.catch((error) => {
@@ -111,16 +121,6 @@ class Earnings extends Component {
 		} else {
 			return '(non member)';
 		}
-	};
-
-	pageChange = (count, pageSize) => {
-		const { page, limit, isRemaining } = this.state;
-		const pageCount = count % 5 === 0 ? 5 : count % 5;
-		const apiPageTemp = Math.floor(count / 5);
-		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-			this.requestFees(page + 1, limit);
-		}
-		this.setState({ currentTablePage: count });
 	};
 
 	handleData = () => {
@@ -141,9 +141,23 @@ class Earnings extends Component {
 		return getFeesDownload({ format: 'csv' });
 	};
 
+	SetFilterDates = (value) => {
+		if (value && value.length) {
+			const start_date = value[0].format('YYYY-MM-DD');
+			const end_date = value[1].format('YYYY-MM-DD');
+			this.setState({ start_date, end_date });
+		}
+		if (!value) {
+			this.setState({
+				end_date: moment().format('YYYY-MM-DD'),
+				start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+			});
+		}
+	};
+
 	render() {
 		const { info } = this.props;
-		const { currentTablePage, earningsData, isOpen } = this.state;
+		const { earningsData, isOpen } = this.state;
 
 		return (
 			<div className="admin-earnings-container">
@@ -184,8 +198,18 @@ class Earnings extends Component {
 					/>
 				</Modal>
 				<div className="table-container">
+					<div className="font-weight-bold">Earnings history</div>
+					<div>
+						Change the date below to view earnings made between different dates.
+					</div>
 					<div className="title-wrapper">
-						<div className="title">Earnings</div>
+						<div>
+							<Filter
+								selectOptions={filterOptions}
+								onChange={this.SetFilterDates}
+								onClickFilter={this.requestFees}
+							/>
+						</div>
 						<div>
 							<span
 								size="small"
@@ -204,10 +228,6 @@ class Earnings extends Component {
 								return data;
 							})}
 							rowKey={(data) => data.date}
-							pagination={{
-								current: currentTablePage,
-								onChange: this.pageChange,
-							}}
 							expandedRowRender={(record) => {
 								return (
 									<Table
