@@ -126,12 +126,16 @@ class App extends Component {
 			this.setState({ userImages: data });
 		} else {
 			delete data.user_id;
+			let userImages = this.state.userImages;
+			if (type === 'reject') {
+				userImages = {};
+			}
 
 			const userInformation = {
 				...this.state.userInformation,
 				...data,
 			};
-			this.setState({ userInformation });
+			this.setState({ userInformation, userImages });
 		}
 	};
 
