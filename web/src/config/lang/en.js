@@ -942,8 +942,6 @@ const nestedContent = {
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
-	WALLET_DEPOSIT_USD:
-		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	WALLET_HIDE_ZERO_BALANCE: 'Hide zero balance',
 	WALLET_ESTIMATED_TOTAL_BALANCE: 'Estimated Total Balance',
 	WALLET_ASSETS_SEARCH_TXT: 'Search',
