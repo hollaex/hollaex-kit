@@ -951,8 +951,6 @@ export default {
 	WALLET_TABLE_AMOUNT_IN: `Cantidad en {0}`,
 	WALLET_TABLE_TOTAL: 'Gran Total',
 	WALLET_ALL_ASSETS: 'Todos los activos',
-	WALLET_DEPOSIT_USD:
-		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Vendedores',
