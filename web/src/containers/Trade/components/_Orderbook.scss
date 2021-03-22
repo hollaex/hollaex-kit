@@ -1,20 +1,23 @@
 .trade_orderbook-wrapper {
-	height: 84vh;
+	height: 49vh;
 	.trade_orderbook-cell {
 		padding: 0 0.25rem;
 		.ant-select-arrow {
 			color: $colors-main-black;
 		}
-		&:not(.trade_orderbook-cell_total) {
-			&:hover {
-				color: $colors-main-black;
-			}
-		}
+		// &:not(.trade_orderbook-cell_total) {
+		// 	&:hover {
+		// 		color: $colors-main-black;
+		// 	}
+		// }
 	}
 
 	.price-row-wrapper {
 		margin: 1px 0;
 		text-align: right;
+		& :hover {
+			color: $dark-font-sub-text-color;
+		}
 	}
 
 	.fill {
@@ -79,6 +82,16 @@
 				min-height: 1.5rem;
 			}
 		}
+		.trade_orderbook-bids {
+			.price-row-wrapper:hover {
+				background-color: $buying-orderbook-bar;
+			}
+		}
+		.trade_orderbook-asks {
+			.price-row-wrapper:hover {
+				background-color: $selling-orderbook-bar;
+			}
+		}
 	}
 
 	.trade_asks-limit_bar {
@@ -95,12 +108,12 @@
 	}
 
 	.trade_orderbook-asks > .price-row-wrapper:first-child {
-		color: $colors-main-black;
+		// color: $colors-main-black;
 		font-weight: bold;
 	}
 
 	.trade_orderbook-bids > .price-row-wrapper:first-child {
-		color: $colors-main-black;
+		// color: $colors-main-black;
 		font-weight: bold;
 	}
 

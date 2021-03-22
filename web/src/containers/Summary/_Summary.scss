@@ -94,10 +94,10 @@ $trade-tab--arrow-size: 0.4rem;
 	width: 75rem;
 
 	.summary-block_wrapper {
-		border-top: 0.2rem solid $colors-border;
+		border: 1px solid $colors-main-border;
 		color: $colors-deactivate-color2;
-		// margin: 0 .5rem;
-		padding: 0.5rem;
+		margin: 11px 0;
+		padding: 1rem;
 
 		.summary-block-title {
 			color: $colors-black;

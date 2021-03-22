@@ -17,6 +17,7 @@ import { Button } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
+import { STATIC_ICONS } from 'config/icons';
 
 class QuickTrade extends Component {
 	render() {
@@ -57,7 +58,7 @@ class QuickTrade extends Component {
 							icon={
 								isMobile
 									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
-									: ICONS['QUICK_TRADE_ICON']
+									: STATIC_ICONS['QUICK_TRADE']
 							}
 							wrapperClassName={
 								isMobile ? 'quick_trade-tab-icon' : 'quick_trade-icon'
