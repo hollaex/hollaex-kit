@@ -97,7 +97,7 @@ class Verification extends Component {
 		};
 		return revokeData(values)
 			.then(() => {
-				refreshData(postData);
+				refreshData(postData, 'reject');
 				this.handleClose();
 			})
 			.catch((err) => {
