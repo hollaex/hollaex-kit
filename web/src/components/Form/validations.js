@@ -46,6 +46,9 @@ export const validAddress = (symbol = '', message, network) => {
 			case 'tron':
 				valid = WAValidator.validate(address, 'trx');
 				break;
+			default:
+				valid = true;
+				break;
 		}
 		switch (currency) {
 			case 'BTC':
