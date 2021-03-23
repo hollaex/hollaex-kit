@@ -1,9 +1,7 @@
 import validator from 'validator';
-import WAValidator from 'wallet-address-validator';
-// import BAValidator from 'bitcoin-address-validation';
+import WAValidator from 'multicoin-address-validator';
 import math from 'mathjs';
 import bchaddr from 'bchaddrjs';
-import { NETWORK } from '../../config/constants';
 import { roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
@@ -34,13 +32,24 @@ export const password = (value = '') =>
 export const username = (value = '') =>
 	!usernameRegEx.test(value) ? STRINGS['INVALID_USERNAME'] : undefined;
 
-export const validAddress = (symbol = '', message) => {
+export const validAddress = (symbol = '', message, network) => {
 	let currency = symbol.toUpperCase();
 	return (address) => {
 		let valid = true;
+		switch (network) {
+			case 'ethereum':
+				valid = WAValidator.validate(address, 'eth');
+				break;
+			case 'stellar':
+				valid = WAValidator.validate(address, 'xlm');
+				break;
+			case 'tron':
+				valid = WAValidator.validate(address, 'trx');
+				break;
+		}
 		switch (currency) {
 			case 'BTC':
-				valid = WAValidator.validate(address, currency, NETWORK);
+				valid = WAValidator.validate(address, currency);
 				break;
 			case 'BCH':
 				try {
@@ -51,16 +60,10 @@ export const validAddress = (symbol = '', message) => {
 				}
 				break;
 			case 'ETH':
-				valid = WAValidator.validate(address, currency, NETWORK);
-				break;
-			case 'XHT':
-				valid = WAValidator.validate(address, 'eth', NETWORK);
-				break;
-			case 'USDT':
-				valid = WAValidator.validate(address, 'eth', NETWORK);
+				valid = WAValidator.validate(address, currency);
 				break;
 			case 'XRP':
-				valid = WAValidator.validate(address, currency, NETWORK);
+				valid = WAValidator.validate(address, currency);
 				break;
 			default:
 				valid = true;
