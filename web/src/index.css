@@ -8950,6 +8950,77 @@ foreignObject {
   .check-deposit-modal-wrapper .inner-content .verification_icon {
     width: 15px; }
 
+.app-menu-bar-side {
+  max-width: 18rem; }
+
+.direction_rtl .apply_rtl .app-menu-bar-side .side-bar-txt {
+  margin: 0 25px 0 0; }
+
+.app-side-bar .app-menu-bar-side {
+  background-color: var(--base_background);
+  border-right: 1px solid var(--calculated_secondary-border);
+  padding: 20px 16px 0 15px; }
+  .app-side-bar .app-menu-bar-side .app-menu-bar-icon {
+    width: 20px; }
+
+.app-side-bar .app-menu-bar-side_list {
+  height: 60px;
+  padding: 18px 32px;
+  cursor: pointer;
+  color: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .app-side-bar .app-menu-bar-side_list .side-bar-txt {
+    height: 24px;
+    margin: 0 0 0 14px;
+    font-size: 16px; }
+
+.app-side-bar .list_active,
+.app-side-bar .app-menu-bar-side_list:hover {
+  border-radius: 4px;
+  background-color: var(--calculated_secondary-border); }
+  .app-side-bar .list_active .side-bar-txt,
+  .app-side-bar .app-menu-bar-side_list:hover .side-bar-txt {
+    color: var(--calculated_base_top-bar-navigation_text) !important; }
+  .app-side-bar .list_active .tab-summary0,
+  .app-side-bar .list_active .tab-wallet0,
+  .app-side-bar .list_active .tab-security0,
+  .app-side-bar .list_active .tab-history0,
+  .app-side-bar .list_active .tab-verify0,
+  .app-side-bar .list_active .tab-setting0,
+  .app-side-bar .list_active .help-question,
+  .app-side-bar .list_active .tab-signout,
+  .app-side-bar .list_active .tab-history-st,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-summary0,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-wallet0,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-security0,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-history0,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-verify0,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-setting0,
+  .app-side-bar .app-menu-bar-side_list:hover .help-question,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-signout,
+  .app-side-bar .app-menu-bar-side_list:hover .tab-history-st {
+    fill: var(--calculated_base_top-bar-navigation_text) !important; }
+
+@media (max-width: 991px) {
+  .app-menu-bar-side {
+    padding: 20px 8px 0 8px !important;
+    max-width: 20rem !important; }
+    .app-menu-bar-side .app-menu-bar-icon {
+      width: 15px !important; }
+  .app-menu-bar-side_list,
+  .list_active,
+  .app-menu-bar-side_list:hover {
+    width: 100%;
+    padding: 0px 24px !important;
+    font-size: 12px !important; }
+  .app-menu-bar-side_list .side-bar-txt,
+  .app-menu-bar-side_list .side-bar-text-active,
+  .list_active .side-bar-txt,
+  .list_active .side-bar-text-active {
+    display: none !important; } }
+
+.layout-mobile .app-menu-bar-side {
+  display: none !important; }
+
 html {
   font-size: 12px !important;
   height: 100%; }

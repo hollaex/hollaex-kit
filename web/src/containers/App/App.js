@@ -10,6 +10,7 @@ import debounce from 'lodash.debounce';
 // import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
+import AppMenuSidebar from '../../components/AppMenuSidebar';
 
 import {
 	NOTIFICATIONS,
@@ -483,6 +484,7 @@ class App extends Component {
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
 		const isMenubar = true;
+		const isMenuSider = activePath !== 'trade' && activePath !== 'quick-trade';
 		return (
 			<ThemeProvider>
 				<div>
@@ -569,6 +571,14 @@ class App extends Component {
 										}
 									)}
 								>
+									{isMenuSider ? (
+										<AppMenuSidebar
+											router={router}
+											location={location}
+											logout={this.logout}
+											onHelp={openHelpfulResourcesForm}
+										/>
+									) : null}
 									<div
 										className={classnames(
 											'app_container-main',
