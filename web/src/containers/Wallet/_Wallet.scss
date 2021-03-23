@@ -123,6 +123,8 @@ $header-margin: 2rem;
 
 	.wallet-assets_block {
 		// border-top: $wrapper-border;
+		background-color: $app-sidebar-background;
+		padding: 20px;
 		.action_notification-wrapper {
 			margin: 0 !important;
 		}
@@ -185,6 +187,9 @@ $header-margin: 2rem;
 				min-width: 150px !important;
 				direction: ltr;
 			}
+		}
+		.search-field {
+			background-color: $app-sidebar-background;
 		}
 	}
 
@@ -265,4 +270,10 @@ $header-margin: 2rem;
 .wallet-search-improvement {
 	border-bottom: 1px solid $dark-app-line-divider;
 	color: $dark-font-sub-text-color !important;
+}
+
+@media screen and (max-width: 1060px) {
+	.wallet-assets_block {
+		overflow-y: auto;
+	}
 }

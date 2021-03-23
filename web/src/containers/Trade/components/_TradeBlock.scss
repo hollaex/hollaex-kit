@@ -51,8 +51,9 @@ $tabs-title--margin: 2rem;
 
 .trade_block-wrapper {
 	padding: 1rem;
-	border: 1px solid $colors-main-border;
+	// border: 1px solid $colors-main-border;
 	margin: 6px 3px 3px 3px;
+	background-color: $app-sidebar-background;
 
 	.trade_block-title {
 		// border-top: $trade_title-border--size solid $trade_title-border--color;

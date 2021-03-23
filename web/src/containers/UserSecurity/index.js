@@ -555,7 +555,7 @@ class UserVerification extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	logins: state.wallet.deposits,
+	logins: state.wallet.logins,
 	user: state.user,
 	activeLanguage: state.app.language,
 	activeTheme: state.app.theme,

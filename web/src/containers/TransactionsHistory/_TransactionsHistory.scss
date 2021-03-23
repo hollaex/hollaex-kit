@@ -9,6 +9,7 @@
 		height: calc(100% - 4.5rem);
 		.history_block-wrapper {
 			max-height: calc(100% - 1rem);
+			overflow-x: scroll;
 
 			.table-content {
 				overflow-x: scroll;
@@ -95,6 +96,9 @@
 
 .history_block-wrapper {
 	position: relative;
+	background-color: $app-sidebar-background;
+	padding: 20px;
+	margin: 20px 0;
 
 	.action_notification-svg svg {
 		width: 1.2rem !important;
@@ -124,6 +128,10 @@
 	.check-deposit-txt {
 		right: 100px !important;
 	}
+	.loader_wrapper {
+		top: 0;
+		left: 0;
+	}
 }
 
 .action_notification-svg svg {
@@ -146,6 +154,13 @@
 		.transaction-history-5 {
 			fill: $colors-black;
 		}
+	}
+	.icon_title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
+	}
+	.with_border_top {
+		border-top: none !important;
 	}
 }
 .display_table-wrapper {

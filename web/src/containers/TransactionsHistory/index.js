@@ -17,7 +17,7 @@ import {
 	IconTitle,
 	TabController,
 	Loader,
-	CheckTitle,
+	// CheckTitle,
 	Dialog,
 	Button,
 	CurrencyBallWithPrice,
@@ -407,7 +407,7 @@ class TransactionsHistory extends Component {
 						stringId="TRANSACTION_HISTORY.TITLE"
 						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
 						iconId="TRANSACTION_HISTORY"
-						iconPath={ICONS['TRANSACTION_HISTORY']}
+						iconPath={ICONS['TAB_HISTORY']}
 						textType="title"
 					/>
 				)}
@@ -417,48 +417,52 @@ class TransactionsHistory extends Component {
 							title: isMobile ? (
 								STRINGS['ORDER_HISTORY']
 							) : (
-								<CheckTitle
-									stringId="ORDER_HISTORY"
-									title={STRINGS['ORDER_HISTORY']}
-									iconId="TRADE_HISTORY"
-									icon={ICONS['TRADE_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="ORDER_HISTORY"
+								// 	title={STRINGS['ORDER_HISTORY']}
+								// 	iconId="TRADE_HISTORY"
+								// 	icon={ICONS['TRADE_HISTORY']}
+								// />
+								<div>{STRINGS['ORDER_HISTORY']}</div>
 							),
 						},
 						{
 							title: isMobile ? (
 								STRINGS['TRANSACTION_HISTORY.TRADES']
 							) : (
-								<CheckTitle
-									stringId="TRANSACTION_HISTORY.TRADES"
-									title={STRINGS['TRANSACTION_HISTORY.TRADES']}
-									iconId="TRADE_HISTORY"
-									icon={ICONS['TRADE_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="TRANSACTION_HISTORY.TRADES"
+								// 	title={STRINGS['TRANSACTION_HISTORY.TRADES']}
+								// 	iconId="TRADE_HISTORY"
+								// 	icon={ICONS['TRADE_HISTORY']}
+								// />
+								<div>{STRINGS['TRANSACTION_HISTORY.TRADES']}</div>
 							),
 						},
 						{
 							title: isMobile ? (
 								STRINGS['TRANSACTION_HISTORY.DEPOSITS']
 							) : (
-								<CheckTitle
-									stringId="TRANSACTION_HISTORY.DEPOSITS"
-									title={STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
-									iconId="DEPOSIT_HISTORY"
-									icon={ICONS['DEPOSIT_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="TRANSACTION_HISTORY.DEPOSITS"
+								// 	title={STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+								// 	iconId="DEPOSIT_HISTORY"
+								// 	icon={ICONS['DEPOSIT_HISTORY']}
+								// />
+								<div>{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}</div>
 							),
 						},
 						{
 							title: isMobile ? (
 								STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']
 							) : (
-								<CheckTitle
-									stringId="TRANSACTION_HISTORY.WITHDRAWALS"
-									title={STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
-									iconId="WITHDRAW_HISTORY"
-									icon={ICONS['WITHDRAW_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="TRANSACTION_HISTORY.WITHDRAWALS"
+								// 	title={STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+								// 	iconId="WITHDRAW_HISTORY"
+								// 	icon={ICONS['WITHDRAW_HISTORY']}
+								// />
+								<div>{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}</div>
 							),
 						},
 					]}

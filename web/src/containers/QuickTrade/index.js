@@ -379,7 +379,7 @@ class QuickTradeContainer extends PureComponent {
 										/>
 										<ReviewBlock
 											symbol={selectedTarget}
-											text={'Estimated Recieving Amount'}
+											text={'Estimated Receiving Amount'}
 											amount={targetAmount}
 										/>
 										<footer className="d-flex pt-4">

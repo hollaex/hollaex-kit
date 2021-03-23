@@ -40,6 +40,7 @@ const INITIAL_STATE = {
 	latestUserTrades: [],
 	deposits: INITIAL_API_OBJECT,
 	withdrawals: INITIAL_API_OBJECT,
+	logins: INITIAL_API_OBJECT,
 	depositVerification: INITIAL_VERIFICATION_OBJECT,
 	btcFee: INITIAL_BTC_WHITDRAWALS_FEE,
 	withdrawalCancelData: INITIAL_DELETE_WHITDRAWALS_MSG,
@@ -267,6 +268,42 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				btcFee: {
 					...INITIAL_BTC_WHITDRAWALS_FEE,
 					loading: true,
+				},
+			};
+		// USER_LOGINS
+		case ACTION_KEYS.USER_LOGINS_PENDING: {
+			const { page = 1 } = payload;
+			const data = page > 1 ? state.logins.data : INITIAL_API_OBJECT.data;
+			return {
+				...state,
+				logins: {
+					...INITIAL_API_OBJECT,
+					loading: true,
+					data,
+				},
+			};
+		}
+		case ACTION_KEYS.USER_LOGINS_REJECTED:
+			return {
+				...state,
+				logins: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					error: payload,
+				},
+			};
+		case ACTION_KEYS.USER_LOGINS_FULFILLED:
+			return {
+				...state,
+				logins: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					count: payload.count,
+					page: payload.page,
+					isRemaining: payload.isRemaining,
+					data: joinData(state.logins.data, payload.data),
 				},
 			};
 		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED:

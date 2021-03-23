@@ -70,7 +70,6 @@ $trade-tab--arrow-size: 0.4rem;
 			// width: 17rem;
 		}
 		.assets-wrapper {
-			margin-top: 40px;
 			.price-text {
 				font-size: $font-size-mobile-txt !important;
 			}
@@ -94,10 +93,11 @@ $trade-tab--arrow-size: 0.4rem;
 	width: 75rem;
 
 	.summary-block_wrapper {
-		border: 1px solid $colors-main-border;
+		// border: 1px solid $colors-main-border;
 		color: $colors-deactivate-color2;
 		margin: 11px 0;
 		padding: 1rem;
+		background-color: $app-sidebar-background;
 
 		.summary-block-title {
 			color: $colors-black;
@@ -742,5 +742,12 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 	.fee-limits-wrapper .content-txt {
 		font-size: 0.9rem;
+	}
+}
+@media screen and (max-width: 960px) {
+	.summary-container {
+		.summary-section_1 {
+			height: 33rem !important;
+		}
 	}
 }

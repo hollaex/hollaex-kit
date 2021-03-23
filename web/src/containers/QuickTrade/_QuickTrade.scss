@@ -49,9 +49,11 @@
 		min-height: $max-content-height-double-bar-mobile;
 		max-height: $max-content-height-double-bar-mobile;
 		.quick_trade-wrapper {
-			flex: 1;
-			min-width: 100vw;
+			flex: 1 1;
+			min-width: 95vw;
 			max-width: 100vw;
+			margin: 1rem;
+			padding: 1rem;
 		}
 	}
 	.base_negative_balance,
