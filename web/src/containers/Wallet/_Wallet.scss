@@ -125,9 +125,9 @@ $header-margin: 2rem;
 		// border-top: $wrapper-border;
 		background-color: $app-sidebar-background;
 		padding: 20px;
-		.action_notification-wrapper {
-			margin: 0 !important;
-		}
+		// .action_notification-wrapper {
+		// 	margin: 0 !important;
+		// }
 
 		.td-wallet {
 			min-width: 225px;
@@ -165,7 +165,7 @@ $header-margin: 2rem;
 				position: relative;
 				&:not(:first-child) {
 					border-bottom: 1px solid $colors-main-border;
-					padding: 0 0.25rem;
+					padding: 1rem 0.25rem;
 				}
 			}
 
@@ -191,10 +191,25 @@ $header-margin: 2rem;
 		.search-field {
 			background-color: $app-sidebar-background;
 		}
+		.currency-ball {
+			width: 30px;
+			padding-top: 4px;
+		}
 	}
 
 	.accordion_wrapper .action_notification-wrapper {
 		position: relative;
+	}
+	.action-button-wrapper {
+		border: 1px solid $link;
+		padding: 5px 12px;
+
+		&:hover {
+			background-color: $link;
+			.notification-info {
+				color: white !important;
+			}
+		}
 	}
 }
 

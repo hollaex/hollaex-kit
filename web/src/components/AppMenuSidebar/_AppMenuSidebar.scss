@@ -1,4 +1,5 @@
 .app-menu-bar-side {
+	min-width: 18rem;
 	max-width: 18rem;
 }
 .direction_rtl {
@@ -23,7 +24,7 @@
 	}
 	.app-menu-bar-side_list {
 		height: 60px;
-		padding: 18px 32px;
+		padding: 18px 17px;
 		cursor: pointer;
 		color: $colors-black !important;
 
@@ -57,7 +58,8 @@
 @media (max-width: $bp-md) {
 	.app-menu-bar-side {
 		padding: 20px 8px 0 8px !important;
-		max-width: 20rem !important;
+		min-width: 6rem !important;
+		max-width: 6rem !important;
 		.app-menu-bar-icon {
 			width: 15px !important;
 		}
@@ -75,6 +77,18 @@
 		.side-bar-text-active {
 			display: none !important;
 		}
+	}
+}
+@media (min-width: 1920px) {
+	.app-menu-bar-side {
+		max-width: 26rem;
+		min-width: 26rem;
+	}
+}
+@media (max-width: 1096px) {
+	.app-menu-bar-side {
+		min-width: 20rem;
+		max-width: 20rem;
 	}
 }
 
