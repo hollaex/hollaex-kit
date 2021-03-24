@@ -1261,7 +1261,7 @@ class HollaExNetwork {
 		receiverId,
 		currency,
 		amount,
-		opts = { description: null }
+		opts = { description: null, email: true }
 	) {
 		checkKit(this.exchange_id);
 
@@ -1288,6 +1288,12 @@ class HollaExNetwork {
 
 		if (opts.description) {
 			data.description = opts.description;
+		}
+
+		if (isBoolean(opts.email)) {
+			data.email = opts.email;
+		} else {
+			data.email = true;
 		}
 
 		const headers = generateHeaders(
@@ -1650,7 +1656,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	mintAsset(userId, currency, amount, opts = { description: null }) {
+	mintAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1671,6 +1677,10 @@ class HollaExNetwork {
 			data.description = opts.description;
 		}
 
+		if (opts.transaction_id) {
+			data.transaction_id = opts.transaction_id;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -1683,7 +1693,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
-	burnAsset(userId, currency, amount, opts = { description: null }) {
+	burnAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1704,6 +1714,10 @@ class HollaExNetwork {
 			data.description = opts.description;
 		}
 
+		if (opts.transaction_id) {
+			data.transaction_id = opts.transaction_id;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -1718,8 +1732,6 @@ class HollaExNetwork {
 
 	getGeneratedFees(
 		opts = {
-			limit: 50,
-			page: 1,
 			startDate: null,
 			endDate: null
 		}
@@ -1729,14 +1741,6 @@ class HollaExNetwork {
 
 		let path = `${this.baseUrl}/network/${this.exchange_id}/fees?`;
 
-		if (isNumber(opts.limit)) {
-			path += `&limit=${opts.limit}`;
-		}
-
-		if (isNumber(opts.page)) {
-			path += `&page=${opts.page}`;
-		}
-
 		if (isDate(opts.startDate)) {
 			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
@@ -1744,6 +1748,23 @@ class HollaExNetwork {
 		if (isDate(opts.endDate)) {
 			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	settleFees() {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		const path = `${this.baseUrl}/network/${this.exchange_id}/fees/settle`;
 
 		const headers = generateHeaders(
 			this.headers,
