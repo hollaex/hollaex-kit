@@ -92,6 +92,11 @@ $trade-tab--arrow-size: 0.4rem;
 	margin: 1rem auto;
 	width: 75rem;
 
+	.icon_title-wrapper {
+		justify-content: flex-start;
+		flex-direction: row;
+	}
+
 	.summary-block_wrapper {
 		// border: 1px solid $colors-main-border;
 		color: $colors-deactivate-color2;
@@ -525,7 +530,7 @@ $trade-tab--arrow-size: 0.4rem;
 		top: calc(50% - 0.6rem);
 	}
 	.trade_tabs-search-field {
-		background-color: $app-background-color;
+		background-color: $app-sidebar-background;
 		color: $colors-deactivate-color1;
 		margin: 0;
 		padding-right: 0.5rem;

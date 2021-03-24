@@ -94,7 +94,7 @@ const DocumentsVerificationHome = ({
 				</div>
 			)}
 			{id_data.status !== 3 && (
-				<div className="my-2">
+				<div className="my-2 btn-wrapper">
 					<EditWrapper stringId="USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION,USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION" />
 					<Button
 						label={

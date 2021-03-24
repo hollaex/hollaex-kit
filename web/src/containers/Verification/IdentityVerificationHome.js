@@ -20,7 +20,7 @@ const IdentityVerificationHome = ({
 	const { address, id_data } = user;
 	if (!address.country) {
 		return (
-			<div>
+			<div className="btn-wrapper">
 				<EditWrapper stringId="USER_VERIFICATION.START_IDENTITY_VERIFICATION" />
 				<Button
 					label={STRINGS['USER_VERIFICATION.START_IDENTITY_VERIFICATION']}
@@ -153,7 +153,7 @@ const IdentityVerificationHome = ({
 					</div>
 				</div>
 				{id_data.status === 3 ? null : (
-					<div>
+					<div className="btn-wrapper">
 						<EditWrapper stringId="USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION" />
 						<Button
 							label={STRINGS['USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION']}

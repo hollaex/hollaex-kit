@@ -20,7 +20,7 @@ const BankVerificationHome = ({
 			bank_account.filter((data) => data.status === 0).length
 	) {
 		return (
-			<div>
+			<div className="btn-wrapper">
 				<Button
 					label={STRINGS['USER_VERIFICATION.START_BANK_VERIFICATION']}
 					onClick={() => setActivePageContent('bank')}

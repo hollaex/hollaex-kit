@@ -51,6 +51,15 @@ $placeholder--font-weight: bold;
 
 .datefield-wrapper {
 	position: relative;
+	.field-children:last-child {
+		.year .field-content,
+		.month .field-content,
+		.day .field-content {
+			border: 1px solid $colors-main-border;
+			background-color: $app-sidebar-background;
+			padding: 6px 0;
+		}
+	}
 
 	.datefield-input {
 		// visibility: hidden;

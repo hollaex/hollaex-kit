@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 
@@ -18,32 +18,53 @@ export const FieldContent = ({
 	contentClassName = '',
 	hideCheck = false,
 	outlineClassName = '',
+	displayError,
+	error,
+	ishorizontalfield = false,
+	dateFieldClassName,
 }) => {
 	return (
-		<div className={classnames('field-content')}>
-			<div className="d-flex">
+		<div>
+			<div className={classnames({ 'field-label-wrapper': ishorizontalfield })}>
 				{label && <div className="field-label">{label}</div>}
 				<EditWrapper stringId={stringId} />
+				<div className={classnames('field-content')}>
+					<div
+						className={classnames(
+							'field-children',
+							{ valid, custom: hideUnderline },
+							contentClassName,
+							{
+								'input-box-field':
+									ishorizontalfield && dateFieldClassName === '',
+							}
+						)}
+					>
+						{children}
+						{!hideCheck && valid && hasValue && (
+							<ReactSVG
+								src={STATIC_ICONS.BLACK_CHECK}
+								className="field-valid"
+							/>
+						)}
+					</div>
+					{!hideUnderline && (
+						<span
+							className={classnames('field-content-outline', outlineClassName, {
+								focused,
+							})}
+						/>
+					)}
+				</div>
 			</div>
-			<div
-				className={classnames(
-					'field-children',
-					{ valid, custom: hideUnderline },
-					contentClassName
-				)}
-			>
-				{children}
-				{!hideCheck && valid && hasValue && (
-					<ReactSVG src={STATIC_ICONS.BLACK_CHECK} className="field-valid" />
-				)}
+			<div className="field-label-wrapper">
+				{ishorizontalfield ? (
+					<Fragment>
+						<div className="field-label"></div>
+						<FieldError displayError={displayError} error={error} />
+					</Fragment>
+				) : null}
 			</div>
-			{!hideUnderline && (
-				<span
-					className={classnames('field-content-outline', outlineClassName, {
-						focused,
-					})}
-				/>
-			)}
 		</div>
 	);
 };
@@ -86,6 +107,7 @@ class FieldWrapper extends Component {
 			notification,
 			hideCheck = false,
 			outlineClassName = '',
+			ishorizontalfield,
 		} = this.props;
 
 		const displayError = !(active || focused) && (visited || touched) && error;
@@ -109,6 +131,10 @@ class FieldWrapper extends Component {
 					hideCheck={hideCheck}
 					outlineClassName={outlineClassName}
 					onClick={onClick}
+					displayError={displayError}
+					error={error}
+					ishorizontalfield={ishorizontalfield}
+					dateFieldClassName={className}
 				>
 					{children}
 					{notification && typeof notification === 'object' && (
@@ -121,7 +147,9 @@ class FieldWrapper extends Component {
 						/>
 					)}
 				</FieldContent>
-				<FieldError displayError={displayError} error={error} />
+				{!ishorizontalfield ? (
+					<FieldError displayError={displayError} error={error} />
+				) : null}
 			</div>
 		);
 	}

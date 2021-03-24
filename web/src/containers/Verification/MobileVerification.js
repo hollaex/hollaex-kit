@@ -72,6 +72,7 @@ class MobileVerification extends Component {
 				options: PHONE_OPTIONS,
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			phone_number: {
 				type: 'text',
@@ -105,6 +106,7 @@ class MobileVerification extends Component {
 					onClick: loading ? () => {} : this.handleSendSmsCode,
 				},
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			code: {
 				type: 'text',
@@ -121,6 +123,7 @@ class MobileVerification extends Component {
 				disabled: !codeRequested,
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 		};
 
@@ -236,55 +239,56 @@ class MobileVerification extends Component {
 					stringId="USER_VERIFICATION.PHONE_VERIFICATION"
 					text={STRINGS['USER_VERIFICATION.PHONE_VERIFICATION']}
 					textType="title"
+					iconPath={ICONS['VERIFICATION_PHONE_NEW']}
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
-					<HeaderSection
-						stringId="USER_VERIFICATION.PHONE_DETAILS"
-						title={STRINGS['USER_VERIFICATION.PHONE_DETAILS']}
-						openContactForm={openContactForm}
-						iconId="VERIFICATION_PHONE_NEW"
-						icon={ICONS['VERIFICATION_PHONE_NEW']}
-					>
-						<div>
-							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT">
-								{
-									STRINGS[
-										'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT'
-									]
-								}
-							</EditWrapper>
-						</div>
-						<div>
-							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1">
-								{
-									STRINGS[
-										'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1'
-									]
-								}
-							</EditWrapper>
-						</div>
-						<div>
-							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2">
-								{
-									STRINGS[
-										'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2'
-									]
-								}
-							</EditWrapper>
-						</div>
-					</HeaderSection>
-					{renderFields(formFields)}
-					<ElapsedTimer
-						timerText={STRINGS['USER_VERIFICATION.CODE_EXPIRES_IN']}
-						isLoading={isTimer}
-						timeoutCallback={this.onClearTimer}
-					/>
-					<EditWrapper stringId="USER_VERIFICATION.CODE_EXPIRES_IN" />
-					{error && (
-						<div className="warning_text">{getErrorLocalized(error)}</div>
-					)}
-					<div className="d-flex">
-						<div className="w-50">
+					<div className="verification-form-panel mt-3 mb-5">
+						<HeaderSection
+							stringId="USER_VERIFICATION.PHONE_DETAILS"
+							title={STRINGS['USER_VERIFICATION.PHONE_DETAILS']}
+							openContactForm={openContactForm}
+						>
+							<div>
+								<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT">
+									{
+										STRINGS[
+											'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT'
+										]
+									}
+								</EditWrapper>
+							</div>
+							<div>
+								<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1">
+									{
+										STRINGS[
+											'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1'
+										]
+									}
+								</EditWrapper>
+							</div>
+							<div>
+								<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2">
+									{
+										STRINGS[
+											'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2'
+										]
+									}
+								</EditWrapper>
+							</div>
+						</HeaderSection>
+						{renderFields(formFields)}
+						<ElapsedTimer
+							timerText={STRINGS['USER_VERIFICATION.CODE_EXPIRES_IN']}
+							isLoading={isTimer}
+							timeoutCallback={this.onClearTimer}
+						/>
+						<EditWrapper stringId="USER_VERIFICATION.CODE_EXPIRES_IN" />
+						{error && (
+							<div className="warning_text">{getErrorLocalized(error)}</div>
+						)}
+					</div>
+					<div className="d-flex justify-content-center align-items-center mt-2">
+						<div className="w-50 d-flex justify-content-end verification-buttons-wrapper">
 							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button
 								label={STRINGS['USER_VERIFICATION.GO_BACK']}
@@ -292,7 +296,7 @@ class MobileVerification extends Component {
 							/>
 						</div>
 						<div className="separator" />
-						<div className="w-50">
+						<div className="w-50 verification-buttons-wrapper">
 							<EditWrapper stringId="SUBMIT" />
 							<Button
 								type="button"

@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import { required } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
@@ -21,6 +21,7 @@ export const generateLanguageFormValues = (values) => {
 			label: STRINGS['SETTINGS_LANGUAGE_LABEL'],
 			options: langValues,
 			fullWidth: isMobile,
+			ishorizontalfield: true,
 		},
 	};
 };
@@ -43,18 +44,31 @@ class Form extends Component {
 			error,
 			valid,
 			formFields,
+			ICONS,
 		} = this.props;
 		return (
-			<form onSubmit={handleSubmit}>
-				{renderFields(formFields)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-				<EditWrapper stringId="SETTING_BUTTON" />
-				<Button
-					label={STRINGS['SETTING_BUTTON']}
-					disabled={pristine || submitting || !valid}
-				/>
+			<form onSubmit={handleSubmit} className="settings-form-wrapper">
+				<div className="settings-form">
+					<IconTitle
+						stringId="USER_SETTINGS.TITLE_LANGUAGE"
+						text={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+						textType="title"
+						iconPath={ICONS['SETTING_LANGUAGE_ICON']}
+					/>
+					<div className="pr-4">
+						{renderFields(formFields)}
+						{error && (
+							<div className="warning_text">{getErrorLocalized(error)}</div>
+						)}
+					</div>
+				</div>
+				<div className="d-flex align-items-center justify-content-center">
+					<EditWrapper stringId="SETTING_BUTTON" />
+					<Button
+						label={STRINGS['SETTING_BUTTON']}
+						disabled={pristine || submitting || !valid}
+					/>
+				</div>
 			</form>
 		);
 	}

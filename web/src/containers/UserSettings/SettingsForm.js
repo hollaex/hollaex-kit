@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import {
 	required,
 	minValue,
@@ -23,6 +23,7 @@ export const generateFormValues = ({ options = [] }) => ({
 		stringId: 'SETTINGS_THEME_LABEL',
 		label: STRINGS['SETTINGS_THEME_LABEL'],
 		options,
+		ishorizontalfield: true,
 	},
 	order_book_levels: {
 		type: 'number',
@@ -45,6 +46,7 @@ export const generateFormValues = ({ options = [] }) => ({
 		// 		useSvg: true,
 		// 		onClick: calculateMin
 		// 	}
+		ishorizontalfield: true,
 	},
 });
 
@@ -66,18 +68,31 @@ class Form extends Component {
 			error,
 			valid,
 			formFields,
+			ICONS,
 		} = this.props;
 		return (
-			<form onSubmit={handleSubmit}>
-				{renderFields(formFields)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-				<EditWrapper stringId="SETTING_BUTTON" />
-				<Button
-					label={STRINGS['SETTING_BUTTON']}
-					disabled={pristine || submitting || !valid}
-				/>
+			<form onSubmit={handleSubmit} className="settings-form-wrapper">
+				<div className="settings-form">
+					<IconTitle
+						stringId="USER_SETTINGS.TITLE_INTERFACE"
+						text={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
+						textType="title"
+						iconPath={ICONS['SETTING_INTERFACE_ICON']}
+					/>
+					<div className="pr-3">
+						{renderFields(formFields)}
+						{error && (
+							<div className="warning_text">{getErrorLocalized(error)}</div>
+						)}
+					</div>
+				</div>
+				<div className="d-flex align-items-center justify-content-center">
+					<EditWrapper stringId="SETTING_BUTTON" />
+					<Button
+						label={STRINGS['SETTING_BUTTON']}
+						disabled={pristine || submitting || !valid}
+					/>
+				</div>
 			</form>
 		);
 	}

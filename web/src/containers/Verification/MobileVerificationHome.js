@@ -9,7 +9,7 @@ const MobileVerificationHome = ({ user, setActivePageContent }) => {
 	const { phone_number } = user;
 	if (!phone_number) {
 		return (
-			<div>
+			<div className="btn-wrapper">
 				<EditWrapper stringId="USER_VERIFICATION.START_PHONE_VERIFICATION" />
 				<Button
 					label={STRINGS['USER_VERIFICATION.START_PHONE_VERIFICATION']}
