@@ -124,10 +124,12 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 		case ACTION_KEYS.ADD_USER_TRADES: {
 			// check if we have trades from DB
 			const tradesData = joinData(payload.trades, state.trades.data);
+			const newCount = state.trades.count + payload.trades.length;
 			return {
 				...state,
 				trades: {
-					count: tradesData.length,
+					...state.trades,
+					count: newCount,
 					data: tradesData,
 				},
 				latestUserTrades: tradesData.slice(0, 10),
