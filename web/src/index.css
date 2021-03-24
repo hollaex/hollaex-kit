@@ -4031,7 +4031,8 @@ table th {
   .tab_controller-title .tab_controller-title-text {
     font-size: 4rem; }
 
-.layout-mobile .tab_controller-tabs, .layout-mobile .tab_item {
+.layout-mobile .tab_controller-tabs,
+.layout-mobile .tab_item {
   font-size: 1.5rem !important; }
 
 .tab_controller-tabs {
