@@ -390,7 +390,7 @@ class HollaExKit {
 	 */
 	getOrder(orderId) {
 		const verb = 'GET';
-		const path = `${this.baseUrl}/user/order?order_id=${orderId}`;
+		const path = `${this.baseUrl}/order?order_id=${orderId}`;
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -425,7 +425,7 @@ class HollaExKit {
 		}
 	) {
 		const verb = 'GET';
-		let path = `${this.baseUrl}/user/orders?`;
+		let path = `${this.baseUrl}/orders?`;
 
 		if (isString(opts.symbol)) {
 			path += `&symbol=${opts.symbol}`;
