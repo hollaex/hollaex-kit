@@ -26,14 +26,26 @@ const pushCumulativeAmounts = (orders) => {
 	});
 };
 
+const round = (number, depth) => {
+	const result = math
+		.chain(number)
+		.divide(depth)
+		.round()
+		.multiply(depth)
+		.done();
+	// this is to prevent setting the price to 0
+	return result === 0 ? 1 : result;
+};
+
 const calculateOrders = (orders, depth) =>
 	orders.reduce((result, [price, size]) => {
 		const lastIndex = result.length - 1;
 		const [lastPrice, lastSize] = result[lastIndex] || [];
-		if (lastPrice && Math.abs(price - lastPrice) < depth) {
+
+		if (lastPrice && math.equal(round(price, depth), lastPrice)) {
 			result[lastIndex] = [lastPrice, lastSize + size];
 		} else {
-			result.push([price, size]);
+			result.push([round(price, depth), size]);
 		}
 
 		return result;
@@ -55,7 +67,7 @@ export const orderbookSelector = createSelector(
 		const { increment_price } = pairs[pair] || {};
 		const { asks: rawAsks = [], bids: rawBids = [] } = pairsOrders[pair] || {};
 
-		const depth = depthLevel * increment_price;
+		const depth = math.multiply(depthLevel, increment_price);
 		const calculatedAsks = calculateOrders(rawAsks, depth);
 		const calculatedBids = calculateOrders(rawBids, depth);
 
