@@ -75,7 +75,7 @@ export const generateWarningFormValues = () => ({
 		type: 'toggle',
 		stringId: 'USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP',
 		label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP'],
-		className: 'toggle-wrapper',
+		// className: 'toggle-wrapper',
 		toggleOnly: true,
 	},
 });

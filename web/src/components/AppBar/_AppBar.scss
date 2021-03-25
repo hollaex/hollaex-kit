@@ -292,14 +292,17 @@ $app-menu-notification-size: 1.2rem;
 
 	.app-bar-account-content {
 		align-items: center;
-		flex-direction: column;
+		display: flex;
+		// flex-direction: column;
 		justify-content: center;
 		position: relative;
+		color: $app-bar-icon-inactive;
 	}
 
 	.app-bar-account-notification {
 		position: absolute;
-		right: -6px;
+		// right: -6px;
+		left: 18px;
 		top: 0;
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
@@ -317,7 +320,7 @@ $app-menu-notification-size: 1.2rem;
 	.app-bar-account-menu {
 		display: block;
 		position: absolute;
-		right: 0;
+		// right: 0;
 		top: 36px;
 		min-width: 10rem;
 		min-height: 8rem;
@@ -547,10 +550,12 @@ $app-menu-notification-size: 1.2rem;
 	.app-menu-bar-content {
 		color: $base_top-bar-navigation_text-inactive;
 		cursor: pointer;
-		height: 2.5rem;
+		height: 3rem;
 		position: relative;
+		border-top: 3px solid transparent;
 		top: 1px;
-		width: 10rem;
+		// width: 10rem;
+		margin: 0 30px;
 	}
 
 	.app-menu-bar-content-item {
@@ -583,7 +588,8 @@ $app-menu-notification-size: 1.2rem;
 	.active-menu {
 		border-bottom: 1px solid $dark-app-line-divider;
 		color: $base_top-bar-navigation_text;
-		height: 2.5rem;
+		border-top: 3px solid $base_top-bar-navigation_text;
+		height: 3rem;
 		position: relative;
 		// top: 1px;
 

@@ -3392,6 +3392,10 @@ table th {
   .trade_tabs-container .market-card__sparkline-wrapper {
     height: 7rem; } }
 
+.toggle-wrapper {
+  border-top: 1px solid var(--calculated_secondary-border);
+  border-bottom: 1px solid var(--calculated_secondary-border); }
+
 .toggle-wrapper-all {
   border-bottom: 2px solid var(--calculated_secondary-border);
   margin-bottom: 3rem !important; }
@@ -4496,12 +4500,13 @@ table th {
     top: calc(50% - 0.6rem); }
   .app_bar .app-bar-account-content {
     align-items: center;
-    flex-direction: column;
+    display: flex;
     justify-content: center;
-    position: relative; }
+    position: relative;
+    color: var(--calculated_base_top-bar-navigation_text-inactive); }
   .app_bar .app-bar-account-notification {
     position: absolute;
-    right: -6px;
+    left: 18px;
     top: 0;
     height: 1.2rem;
     width: 1.2rem;
@@ -4517,7 +4522,6 @@ table th {
   .app_bar .app-bar-account-menu {
     display: block;
     position: absolute;
-    right: 0;
     top: 36px;
     min-width: 10rem;
     min-height: 8rem;
@@ -4701,10 +4705,11 @@ table th {
   .app-menu-bar .app-menu-bar-content {
     color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
-    height: 2.5rem;
+    height: 3rem;
     position: relative;
+    border-top: 3px solid transparent;
     top: 1px;
-    width: 10rem; }
+    margin: 0 30px; }
   .app-menu-bar .app-menu-bar-content-item {
     margin: auto;
     position: relative; }
@@ -4726,7 +4731,8 @@ table th {
   .app-menu-bar .active-menu {
     border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics);
     color: var(--calculated_base_top-bar-navigation_text);
-    height: 2.5rem;
+    border-top: 3px solid var(--calculated_base_top-bar-navigation_text);
+    height: 3rem;
     position: relative; }
     .app-menu-bar .active-menu svg .trade-active-2 {
       stroke: var(--calculated_base_top-bar-navigation_text); }
@@ -9605,4 +9611,4 @@ svg .dai-icon {
   fill: var(--coin-dai); }
 
 svg .ltc-icon {
-  fill: var(--coin-ltc); 
+  fill: var(--coin-ltc); }

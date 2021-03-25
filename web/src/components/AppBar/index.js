@@ -383,7 +383,7 @@ class AppBar extends Component {
 			activePath,
 			location,
 			onHelp,
-			// user,
+			user,
 			constants = {},
 			children,
 		} = this.props;
@@ -465,6 +465,7 @@ class AppBar extends Component {
 								closeAccountMenu={this.closeAccountMenu}
 								onHelp={onHelp}
 								location={location}
+								user={user}
 							/>
 						</div>
 					) : null

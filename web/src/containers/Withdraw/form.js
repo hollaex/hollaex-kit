@@ -9,8 +9,8 @@ import {
 	change,
 } from 'redux-form';
 import math from 'mathjs';
-import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
+// import classnames from 'classnames';
+// import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -183,7 +183,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			initialValues, // eslint-disable-line
+			// initialValues, // eslint-disable-line
 			currency,
 			data,
 			openContactForm,
@@ -197,7 +197,7 @@ class Form extends Component {
 
 		return (
 			<form autoComplete="off">
-				<div className={classnames({ 'w-50': !isMobile })}>
+				<div>
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
 				</div>
@@ -205,6 +205,7 @@ class Form extends Component {
 					label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
 					disabled={pristine || submitting || !valid}
 					onClick={this.onOpenDialog}
+					className="mb-3"
 				/>
 				<Dialog
 					isOpen={dialogIsOpen}
