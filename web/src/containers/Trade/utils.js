@@ -27,14 +27,14 @@ const pushCumulativeAmounts = (orders) => {
 };
 
 const round = (number, depth) => {
-	const result = math
-		.chain(number)
-		.divide(depth)
-		.round()
-		.multiply(depth)
-		.done();
+	let result = math.chain(number).divide(depth).round().multiply(depth).done();
+
 	// this is to prevent setting the price to 0
-	return result === 0 ? 1 : result;
+	if (!result) {
+		result = math.chain(number).divide(depth).ceil().multiply(depth).done();
+	}
+
+	return result;
 };
 
 const calculateOrders = (orders, depth) =>
