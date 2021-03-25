@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const moment = require('moment');
 const { createRequest, createSignature, generateHeaders } = require('./utils');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
-const { each, union, isNumber, isString, isPlainObject } = require('lodash');
+const { each, union, isNumber, isString, isPlainObject, isBoolean } = require('lodash');
 
 class HollaExKit {
 	constructor(
@@ -416,6 +416,9 @@ class HollaExKit {
 	getOrders(
 		opts = {
 			symbol: null,
+			side: null,
+			status: null,
+			open: null,
 			limit: 50,
 			page: 1,
 			orderBy: 'id',
@@ -429,6 +432,18 @@ class HollaExKit {
 
 		if (isString(opts.symbol)) {
 			path += `&symbol=${opts.symbol}`;
+		}
+
+		if (isString(opts.side) && (opts.side.toLowerCase() === 'buy' || opts.side.toLowerCase() === 'sell')) {
+			path += `&side=${opts.side}`;
+		}
+
+		if (isString(opts.status)) {
+			path += `&status=${opts.status}`;
+		}
+
+		if (isBoolean(opts.open)) {
+			path += `&open=${opts.open}`;
 		}
 
 		if (isNumber(opts.limit)) {
