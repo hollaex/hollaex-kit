@@ -19,12 +19,17 @@ const { sendInitialMessages, addMessage, deleteMessage } = require('./chat');
 const { getUsername, changeUsername } = require('./chat/username');
 const { sendBannedUsers, banUser, unbanUser } = require('./chat/ban');
 const { sendNetworkWsMessage } = require('./hub');
+const WebSocket = require('ws');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.on('message', (channel, data) => {
 	if (channel === WS_PUBSUB_DEPOSIT_CHANNEL) {
-		data = JSON.parse(data);
-		handleDepositData(data);
+		try {
+			data = JSON.parse(data);
+			handleDepositData(data);
+		} catch (err) {
+			loggerWebsocket.error('ws/sub/subscriber deposit message', err.message);
+		}
 	}
 });
 
@@ -264,7 +269,9 @@ const handleDepositData = (data) => {
 	switch (data.topic) {
 		case 'deposit':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
-				ws.send(JSON.stringify(data));
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(JSON.stringify(data));
+				}
 			});
 			break;
 		default:
