@@ -1635,8 +1635,8 @@ table th {
       height: 3rem; }
   .trade-container .trade-col_side_wrapper {
     flex: 0;
-    min-width: 17.5rem;
-    max-width: 17.5rem; }
+    min-width: 21rem;
+    max-width: 21rem; }
     .trade-container .trade-col_side_wrapper > div {
       flex: 1; }
   .trade-container .trade-col_action_wrapper {
@@ -1721,16 +1721,16 @@ table th {
 
 @media (min-width: 1920px) {
   .trade-container .trade-col_side_wrapper {
-    min-width: 20rem;
-    max-width: 20rem; }
+    min-width: 21rem;
+    max-width: 21rem; }
   .trade-container .trade-col_action_wrapper {
     min-width: 20rem;
     max-width: 20rem; } }
 
 @media screen and (max-width: 1096px) {
   .trade-container .trade-col_side_wrapper {
-    min-width: 16rem;
-    max-width: 16rem; }
+    min-width: 21rem;
+    max-width: 21rem; }
   .trade-container .trade-col_action_wrapper {
     min-width: 20rem;
     max-width: 20rem; } }
@@ -2032,12 +2032,21 @@ table th {
   .trade_orderbook-wrapper .price-row-wrapper {
     margin: 1px 0;
     text-align: right; }
+    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price,
+    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount {
+      color: var(--calculated_trading-orderbook-text); }
+    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total {
+      color: var(--calculated_trading-orderbook-secondary-text); }
     .trade_orderbook-wrapper .price-row-wrapper :hover {
-      color: var(--labels_secondary-inactive-label-text-graphics); }
+      color: var(--labels_important-active-labels-text-graphics); }
+      .trade_orderbook-wrapper .price-row-wrapper :hover .trade_orderbook-cell-price,
+      .trade_orderbook-wrapper .price-row-wrapper :hover .trade_orderbook-cell-amount,
+      .trade_orderbook-wrapper .price-row-wrapper :hover .trade_orderbook-cell_total {
+        color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .fill {
     background-repeat: no-repeat;
-    background-position: 0 0;
-    background-size: 0; }
+    background-size: 0;
+    background-position: right; }
   .trade_orderbook-wrapper .fill-bid {
     background-image: linear-gradient(var(--calculated_trading_buying-orderbook-bar), var(--calculated_trading_buying-orderbook-bar)); }
   .trade_orderbook-wrapper .fill-ask {
@@ -2047,8 +2056,9 @@ table th {
   .trade_orderbook-wrapper .trade_orderbook-headers {
     font-weight: bold;
     border-bottom: 1px solid var(--calculated_secondary-border);
-    text-transform: uppercase;
-    min-height: 1.5rem; }
+    text-transform: capitalize;
+    min-height: 1.5rem;
+    font-size: 0.85rem; }
     .trade_orderbook-wrapper .trade_orderbook-headers .waves-icon {
       width: 3rem; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-spread {
@@ -2068,9 +2078,9 @@ table th {
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .value-row {
     min-height: 1.5rem; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .price-row-wrapper:hover {
-    background-color: var(--calculated_trading_buying-orderbook-bar); }
+    background-color: var(--calculated_trading_buying-orderbook-hover); }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks .price-row-wrapper:hover {
-    background-color: var(--calculated_trading_selling-orderbook-bar); }
+    background-color: var(--calculated_trading_selling-orderbook-hover); }
   .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper {
     color: var(--trading_selling-related-elements); }
     .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
@@ -2078,8 +2088,10 @@ table th {
   .trade_orderbook-wrapper .trade_orderbook-asks {
     color: var(--trading_selling-related-elements); }
   .trade_orderbook-wrapper .trade_orderbook-asks > .price-row-wrapper:first-child {
+    background-color: var(--calculated_trading_selling-orderbook-best-bar);
     font-weight: bold; }
   .trade_orderbook-wrapper .trade_orderbook-bids > .price-row-wrapper:first-child {
+    background-color: var(--calculated_trading_buying-orderbook-best-bar);
     font-weight: bold; }
   .trade_orderbook-wrapper .trade_orderbook-bids {
     color: var(--trading_buying-related-elements); }
@@ -5682,37 +5694,35 @@ table th {
           width: 100%;
           height: 3px;
           background-color: var(--coin-eur); }
-  .sidebar_hub-wrapper .sidebar_hub-content {
-    margin: 1.5rem 2rem; }
-    .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section {
-      border-top: 1px solid var(--calculated_super-pale_label-text-graphics); }
-      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section:not(:last-child) {
-        margin-bottom: 1.5rem; }
-      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section > div:nth-child(n + 2) {
-        margin-top: 1rem; }
-      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header {
-        padding: 0.5rem 0.25rem; }
-        .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header .sidebar_hub-section-icon {
-          width: 2rem;
-          height: 2rem; }
-          .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header .sidebar_hub-section-icon svg path {
-            fill: transparent;
-            stroke: var(--labels_secondary-inactive-label-text-graphics); }
-        .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header .sidebar_hub-section-title {
-          font-size: 1.25rem;
-          margin: 0 0.5rem;
-          color: var(--labels_secondary-inactive-label-text-graphics); }
-      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-content .accordion_wrapper .accordion_section {
-        border-color: var(--labels_secondary-inactive-label-text-graphics); }
-      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active {
-        border-top-width: 2px;
-        border-color: var(--labels_important-active-labels-text-graphics); }
-        .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active .sidebar_hub-section-header .sidebar_hub-section-icon svg path {
-          fill: var(--labels_important-active-labels-text-graphics);
-          stroke: var(--labels_important-active-labels-text-graphics); }
-        .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active .sidebar_hub-section-header .sidebar_hub-section-title {
-          color: var(--labels_important-active-labels-text-graphics);
-          font-weight: bold; }
+  .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section {
+    border-top: 1px solid var(--calculated_super-pale_label-text-graphics); }
+    .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section:not(:last-child) {
+      margin-bottom: 1.5rem; }
+    .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section > div:nth-child(n + 2) {
+      margin-top: 1rem; }
+    .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header {
+      padding: 0.5rem 0.25rem; }
+      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header .sidebar_hub-section-icon {
+        width: 2rem;
+        height: 2rem; }
+        .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header .sidebar_hub-section-icon svg path {
+          fill: transparent;
+          stroke: var(--labels_secondary-inactive-label-text-graphics); }
+      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-header .sidebar_hub-section-title {
+        font-size: 1.25rem;
+        margin: 0 0.5rem;
+        color: var(--labels_secondary-inactive-label-text-graphics); }
+    .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section .sidebar_hub-section-content .accordion_wrapper .accordion_section {
+      border-color: var(--labels_secondary-inactive-label-text-graphics); }
+    .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active {
+      border-top-width: 2px;
+      border-color: var(--labels_important-active-labels-text-graphics); }
+      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active .sidebar_hub-section-header .sidebar_hub-section-icon svg path {
+        fill: var(--labels_important-active-labels-text-graphics);
+        stroke: var(--labels_important-active-labels-text-graphics); }
+      .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active .sidebar_hub-section-header .sidebar_hub-section-title {
+        color: var(--labels_important-active-labels-text-graphics);
+        font-weight: bold; }
   .sidebar_hub-wrapper .sign_up-btn,
   .sidebar_hub-wrapper .log_in-btn {
     background: var(--base_background) !important;

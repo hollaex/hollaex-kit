@@ -15,15 +15,31 @@
 	.price-row-wrapper {
 		margin: 1px 0;
 		text-align: right;
+
+		.trade_orderbook-cell-price,
+		.trade_orderbook-cell-amount {
+			color: $orderbook-text;
+		}
+		.trade_orderbook-cell_total {
+			color: $orderbook-secondary-text;
+		}
+
 		& :hover {
-			color: $dark-font-sub-text-color;
+			color: $colors-main-black;
+
+			.trade_orderbook-cell-price,
+			.trade_orderbook-cell-amount,
+			.trade_orderbook-cell_total {
+				color: $colors-main-black !important;
+			}
 		}
 	}
 
 	.fill {
 		background-repeat: no-repeat;
-		background-position: 0 0;
+		// background-position: 0 0;
 		background-size: 0;
+		background-position: right;
 	}
 
 	.fill-bid {
@@ -47,8 +63,9 @@
 	.trade_orderbook-headers {
 		font-weight: bold;
 		border-bottom: 1px solid $colors-border;
-		text-transform: uppercase;
+		text-transform: capitalize;
 		min-height: 1.5rem;
+		font-size: 0.85rem;
 
 		.waves-icon {
 			width: 3rem;
@@ -84,12 +101,12 @@
 		}
 		.trade_orderbook-bids {
 			.price-row-wrapper:hover {
-				background-color: $buying-orderbook-bar;
+				background-color: $buying-orderbook-hover;
 			}
 		}
 		.trade_orderbook-asks {
 			.price-row-wrapper:hover {
-				background-color: $selling-orderbook-bar;
+				background-color: $selling-orderbook-hover;
 			}
 		}
 	}
@@ -109,11 +126,13 @@
 
 	.trade_orderbook-asks > .price-row-wrapper:first-child {
 		// color: $colors-main-black;
+		background-color: $selling-orderbook-best-bar;
 		font-weight: bold;
 	}
 
 	.trade_orderbook-bids > .price-row-wrapper:first-child {
 		// color: $colors-main-black;
+		background-color: $buying-orderbook-best-bar;
 		font-weight: bold;
 	}
 

@@ -54,13 +54,13 @@ const PriceRow = (
 				style={fillStyle}
 			>
 				<div
-					className={`f-1 trade_orderbook-cell trade_orderbook-cell pointer`}
+					className={`f-1 trade_orderbook-cell trade_orderbook-cell-price pointer`}
 					onClick={onPriceClick(price)}
 				>
 					{formatToCurrency(price, increment_price)}
 				</div>
 				<div
-					className="f-1 trade_orderbook-cell pointer"
+					className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 					onClick={onAmountClick(amount)}
 				>
 					{formatToCurrency(amount, increment_size)}

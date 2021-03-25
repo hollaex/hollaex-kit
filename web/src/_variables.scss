@@ -84,6 +84,14 @@ $sparkline-fill: var(--calculated_trading_buying-sparkline-fill);
 $negative-sparkline-fill: var(--calculated_trading_selling-sparkline-fill);
 $selling-orderbook-bar: var(--calculated_trading_selling-orderbook-bar);
 $buying-orderbook-bar: var(--calculated_trading_buying-orderbook-bar);
+$selling-orderbook-best-bar: var(
+	--calculated_trading_selling-orderbook-best-bar
+);
+$buying-orderbook-best-bar: var(--calculated_trading_buying-orderbook-best-bar);
+$selling-orderbook-hover: var(--calculated_trading_selling-orderbook-hover);
+$buying-orderbook-hover: var(--calculated_trading_buying-orderbook-hover);
+$orderbook-text: var(--calculated_trading-orderbook-text);
+$orderbook-secondary-text: var(--calculated_trading-orderbook-secondary-text);
 $buy-bids-text: var(--calculated_trading_buying-related-text);
 $sell-bids-text: var(--calculated_trading_selling-related-text);
 $base_top-bar-navigation_text: var(--calculated_base_top-bar-navigation_text);
