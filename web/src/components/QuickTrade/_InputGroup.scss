@@ -10,6 +10,9 @@
 		background-color: $quick-trade-container !important;
 		color: $colors-main-black !important;
 	}
+	&:focus-within {
+		border: 1px solid $link;
+	}
 }
 
 .input-group__coin-icons {

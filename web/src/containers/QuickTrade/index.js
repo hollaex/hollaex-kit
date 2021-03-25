@@ -33,7 +33,7 @@ class QuickTradeContainer extends PureComponent {
 		const [, selectedSource = sourceOptions[0]] = pair.split('-');
 		const targetOptions = this.getTargetOptions(selectedSource);
 		const [selectedTarget = targetOptions[0]] = pair.split('-');
-		const { close: tickerClose } = tickers[pair];
+		const { close: tickerClose } = tickers[pair] || {};
 
 		this.state = {
 			pair,
@@ -66,6 +66,7 @@ class QuickTradeContainer extends PureComponent {
 	componentDidMount() {
 		if (
 			this.props.constants &&
+			this.props.constants.features &&
 			!this.props.constants.features.quick_trade &&
 			!this.props.fetchingAuth
 		) {
@@ -345,7 +346,7 @@ class QuickTradeContainer extends PureComponent {
 						symbol={pair}
 						theme={activeTheme}
 						disabled={this.isReviewDisabled()}
-						orderLimits={orderLimits[pair]}
+						orderLimits={orderLimits[pair] || {}}
 						pairs={pairs}
 						coins={coins}
 						sourceOptions={sourceOptions}

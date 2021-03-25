@@ -83,6 +83,7 @@ class QuickTrade extends Component {
 					onInputChange={onChangeSourceAmount}
 					forwardError={forwardSourceError}
 					limits={side === 'buy' ? PRICE : SIZE}
+					autoFocus={true}
 				/>
 				<InputGroup
 					name="to"

@@ -7736,6 +7736,8 @@ foreignObject {
     text-align: right;
     background-color: var(--base_wallet-sidebar-and-popup) !important;
     color: var(--labels_important-active-labels-text-graphics) !important; }
+  .input-group__container:focus-within {
+    border: 1px solid var(--specials_buttons-links-and-highlights); }
 
 .input-group__coin-icons {
   width: 2rem;

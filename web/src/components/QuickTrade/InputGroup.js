@@ -65,6 +65,7 @@ class InputGroup extends React.PureComponent {
 			onSelect,
 			limits = {},
 			icons: ICONS,
+			autoFocus,
 		} = this.props;
 
 		return (
@@ -118,6 +119,7 @@ class InputGroup extends React.PureComponent {
 						step={limits.MIN}
 						min={limits.MIN}
 						max={limits.MAX}
+						autoFocus={autoFocus}
 					/>
 				</Group>
 				<FieldError
