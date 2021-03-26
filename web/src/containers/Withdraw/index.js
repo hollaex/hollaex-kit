@@ -257,7 +257,7 @@ class Withdraw extends Component {
 				{isMobile && (
 					<MobileBarBack onBackClick={this.onGoBack}></MobileBarBack>
 				)}
-				<div className="presentation_container apply_rtl">
+				<div className="presentation_container apply_rtl withdrawal-container">
 					{!isMobile &&
 						renderTitleSection(
 							currency,

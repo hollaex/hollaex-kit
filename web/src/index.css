@@ -1297,6 +1297,23 @@ table th {
 .bank_account-information-wrapper {
   margin: 2rem 0; }
 
+.withdrawal-container .icon_title-wrapper {
+  flex-direction: row;
+  justify-content: flex-start; }
+
+.withdrawal-container .withdraw-form-wrapper .withdraw-form {
+  border-radius: 4px;
+  margin: 0 0 40px;
+  background-color: var(--base_wallet-sidebar-and-popup);
+  padding: 30px; }
+
+.withdrawal-container .withdraw-form-wrapper .btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .withdrawal-container .withdraw-form-wrapper .btn-wrapper .exir-button {
+    width: 300px; }
+
 .layout-mobile .review-wrapper {
   min-width: 0;
   margin: auto; }
@@ -1347,11 +1364,22 @@ table th {
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
 
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
+  flex-direction: column; }
+
 .review_email-wrapper {
   margin: auto; }
   .review_email-wrapper .review_email-content {
     border-top: 1px solid;
     padding: 1rem; }
+
+@media screen and (max-width: 1096px) {
+  .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label {
+    font-size: 10px; }
+  .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .input-box-field .input_field-input::placeholder {
+    font-size: 10px; }
+  .withdrawal-container .withdraw-form-wrapper .btn-wrapper .exir-button {
+    width: 200px; } }
 
 .extra_information-wrapper {
   margin-top: 1rem;
@@ -1577,6 +1605,12 @@ table th {
   .history_block-wrapper .loader_wrapper {
     top: 0;
     left: 0; }
+  .history_block-wrapper .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
+    border-top: 1px solid var(--calculated_secondary-border) !important;
+    border-bottom: 1px solid var(--calculated_secondary-border) !important; }
+  .history_block-wrapper .table-wrapper .table_body-wrapper.with_icon .coin-icons {
+    width: 30px;
+    padding-top: 4px; }
 
 .action_notification-svg svg {
   width: 2rem;
@@ -4717,18 +4751,18 @@ table th {
 .app-menu-bar {
   display: flex;
   font-size: 0.9rem;
-  height: 36px;
-  min-height: 36px;
   position: relative;
   width: 100%; }
   .app-menu-bar .app-menu-bar-content {
     color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
-    height: 3rem;
-    position: relative;
-    border-top: 3px solid transparent;
-    top: 1px;
-    margin: 0 30px; }
+    margin: 0 20px;
+    height: 100%;
+    padding: 8px 0;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    border-top: 3px solid transparent; }
   .app-menu-bar .app-menu-bar-content-item {
     margin: auto;
     position: relative; }
@@ -4748,11 +4782,10 @@ table th {
     .app-menu-bar .app-menu-bar-icon svg .tab-api0 {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
   .app-menu-bar .active-menu {
-    border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics);
     color: var(--calculated_base_top-bar-navigation_text);
     border-top: 3px solid var(--calculated_base_top-bar-navigation_text);
-    height: 3rem;
-    position: relative; }
+    height: 100%;
+    opacity: 1; }
     .app-menu-bar .active-menu svg .trade-active-2 {
       stroke: var(--calculated_base_top-bar-navigation_text); }
     .app-menu-bar .active-menu svg .trade-active-2,
@@ -5307,7 +5340,8 @@ table th {
 .app-menu-bar-wrapper {
   flex-grow: 1;
   flex-shrink: 1;
-  overflow-y: auto; }
+  overflow-y: auto;
+  align-items: flex-start !important; }
 
 .stared-market svg {
   fill: var(--specials_my-username-in-chat); }

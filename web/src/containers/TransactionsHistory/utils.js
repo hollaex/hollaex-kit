@@ -7,7 +7,7 @@ import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
 
-import { CurrencyBall } from '../../components';
+import { Image } from '../../components';
 import {
 	EXPLORERS_ENDPOINT,
 	BASE_CURRENCY,
@@ -547,25 +547,26 @@ export const generateTradeHeaders = (
 export const generateWithdrawalsHeaders = (
 	symbol,
 	coins = {},
-	withdrawalPopup
+	withdrawalPopup,
+	ICONS
 ) => {
 	return [
-		{
-			label: '',
-			key: 'icon',
-			renderCell: ({ currency }, key, index) => {
-				const data = coins[currency] || DEFAULT_COIN_DATA;
-				return (
-					<td className={classnames('icon-cell')} key={index}>
-						<CurrencyBall
-							name={data.symbol.toUpperCase()}
-							symbol={currency}
-							size="s"
-						/>
-					</td>
-				);
-			},
-		},
+		// {
+		// 	label: '',
+		// 	key: 'icon',
+		// 	renderCell: ({ currency }, key, index) => {
+		// 		const data = coins[currency] || DEFAULT_COIN_DATA;
+		// 		return (
+		// 			<td className={classnames('icon-cell')} key={index}>
+		// 				<CurrencyBall
+		// 					name={data.symbol.toUpperCase()}
+		// 					symbol={currency}
+		// 					size="s"
+		// 				/>
+		// 			</td>
+		// 		);
+		// 	},
+		// },
 		{
 			stringId: 'CURRENCY',
 			label: STRINGS['CURRENCY'],
@@ -575,8 +576,19 @@ export const generateWithdrawalsHeaders = (
 				return fullname;
 			},
 			renderCell: ({ currency }, key, index) => {
-				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
-				return <td key={index}>{fullname}</td>;
+				const data = coins[currency] || DEFAULT_COIN_DATA;
+				return (
+					<td key={index} className="coin-cell">
+						<div className="d-flex align-items-center">
+							<Image
+								iconId={`${data.symbol.toUpperCase()}_ICON`}
+								icon={ICONS[`${data.symbol.toUpperCase()}_ICON`]}
+								wrapperClassName="coin-icons"
+							/>
+							{data.fullname}
+						</div>
+					</td>
+				);
 			},
 		},
 		{

@@ -132,6 +132,18 @@
 		top: 0;
 		left: 0;
 	}
+	.table-wrapper {
+		.table_body-wrapper.with_icon {
+			tr td:first-child {
+				border-top: 1px solid $colors-border !important;
+				border-bottom: 1px solid $colors-border !important;
+			}
+			.coin-icons {
+				width: 30px;
+				padding-top: 4px;
+			}
+		}
+	}
 }
 
 .action_notification-svg svg {

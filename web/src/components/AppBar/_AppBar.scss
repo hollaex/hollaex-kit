@@ -546,20 +546,21 @@ $app-menu-notification-size: 1.2rem;
 .app-menu-bar {
 	display: flex;
 	font-size: $navigation_bar-font_size;
-	height: $navigation_bar-height;
-	min-height: $navigation_bar-height;
+	// height: $navigation_bar-height;
+	// min-height: $navigation_bar-height;
 	position: relative;
 	width: 100%;
 
 	.app-menu-bar-content {
 		color: $base_top-bar-navigation_text-inactive;
 		cursor: pointer;
-		height: 3rem;
-		position: relative;
+		margin: 0 20px;
+		height: 100%;
+		padding: 8px 0;
+		opacity: 0.8;
+		display: flex;
+		align-items: center;
 		border-top: 3px solid transparent;
-		top: 1px;
-		// width: 10rem;
-		margin: 0 30px;
 	}
 
 	.app-menu-bar-content-item {
@@ -590,12 +591,10 @@ $app-menu-notification-size: 1.2rem;
 	}
 
 	.active-menu {
-		border-bottom: 1px solid $dark-app-line-divider;
 		color: $base_top-bar-navigation_text;
 		border-top: 3px solid $base_top-bar-navigation_text;
-		height: 3rem;
-		position: relative;
-		// top: 1px;
+		height: 100%;
+		opacity: 1;
 
 		svg {
 			.trade-active-2 {
@@ -1244,6 +1243,7 @@ $app-menu-notification-size: 1.2rem;
 	flex-grow: 1;
 	flex-shrink: 1;
 	overflow-y: auto;
+	align-items: flex-start !important;
 }
 
 .stared-market {

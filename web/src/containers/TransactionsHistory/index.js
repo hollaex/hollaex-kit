@@ -165,7 +165,7 @@ class TransactionsHistory extends Component {
 
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
-		const { pairs } = this.props;
+		const { pairs, icons: ICONS } = this.props;
 		this.setState({
 			headers: {
 				orders: isMobile
@@ -174,8 +174,18 @@ class TransactionsHistory extends Component {
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
 					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
-				deposits: generateDepositsHeaders(symbol, coins, withdrawalPopup),
-				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup),
+				deposits: generateDepositsHeaders(
+					symbol,
+					coins,
+					withdrawalPopup,
+					ICONS
+				),
+				withdrawals: generateWithdrawalsHeaders(
+					symbol,
+					coins,
+					withdrawalPopup,
+					ICONS
+				),
 			},
 		});
 	}

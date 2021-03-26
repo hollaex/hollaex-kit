@@ -11,7 +11,7 @@ import {
 import math from 'mathjs';
 // import classnames from 'classnames';
 // import { isMobile } from 'react-device-detect';
-import { Button, Dialog, OtpForm, Loader } from '../../components';
+import { Button, Dialog, OtpForm, Loader, EditWrapper } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
 	setWithdrawEmailConfirmation,
@@ -196,17 +196,19 @@ class Form extends Component {
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
-			<form autoComplete="off">
-				<div>
+			<form autoComplete="off" className="withdraw-form-wrapper">
+				<div className="withdraw-form">
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
 				</div>
-				<Button
-					label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-					disabled={pristine || submitting || !valid}
-					onClick={this.onOpenDialog}
-					className="mb-3"
-				/>
+				<div className="btn-wrapper">
+					<Button
+						label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+						disabled={pristine || submitting || !valid}
+						onClick={this.onOpenDialog}
+						className="mb-3"
+					/>
+				</div>
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="withdraw-modal"
