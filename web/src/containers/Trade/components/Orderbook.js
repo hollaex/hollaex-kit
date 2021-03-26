@@ -9,6 +9,7 @@ import {
 	CaretDownOutlined,
 } from '@ant-design/icons';
 import { Button, Select } from 'antd';
+import math from 'mathjs';
 
 import { calcPercentage } from 'utils/math';
 import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
@@ -220,7 +221,7 @@ class Orderbook extends Component {
 						<MinusSquareOutlined />
 					</Button>
 					<div className="trade_orderbook-depth bold">
-						{increment_price * depth}
+						{math.multiply(depth, increment_price)}
 					</div>
 					<Button
 						type="text"

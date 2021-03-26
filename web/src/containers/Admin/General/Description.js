@@ -45,7 +45,7 @@ class Description extends Component {
 			footerInitialValues,
 			ReferralBadgeFields,
 			ReferralBadgeInitialValues,
-			constants: { info: { collateral_level = 'zero' } = {} } = {},
+			constants: { info: { type, plan } = {} } = {},
 		} = this.props;
 		return (
 			<div className="description-wrapper">
@@ -111,7 +111,18 @@ class Description extends Component {
 					repurposed for copyright or other business related data.
 				</p>
 
-				{collateral_level === 'zero' && (
+				{type === 'DIY' ? (
+					<div
+						style={{ width: '465px' }}
+						className="admin-dash-card flex-menu justify-content-between"
+					>
+						<div>
+							<div className="card-description">
+								This feature is only available for Cloud exchanges
+							</div>
+						</div>
+					</div>
+				) : plan === 'basic' ? (
 					<div
 						style={{ width: '465px' }}
 						className="admin-dash-card flex-menu justify-content-between"
@@ -134,7 +145,7 @@ class Description extends Component {
 							</a>
 						</div>
 					</div>
-				)}
+				) : null}
 
 				<ReferralBadgeForm
 					initialValues={ReferralBadgeInitialValues}
@@ -142,7 +153,7 @@ class Description extends Component {
 					buttonText="Save"
 					buttonClass="green-btn minimal-btn"
 					onSubmit={this.props.handleSubmitReferralBadge}
-					disableAllFields={collateral_level === 'zero'}
+					disableAllFields={type === 'DIY' || plan === 'basic'}
 				/>
 			</div>
 		);
