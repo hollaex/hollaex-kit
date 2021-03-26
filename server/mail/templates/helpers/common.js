@@ -3,7 +3,6 @@
 const {
 	BITHOLLA_DOMAIN,
 	BITHOLLA_LOGO_BLACK,
-	EMAIL_ICONS
 } = require('../../constants');
 const { DOMAIN, GET_KIT_CONFIG } = require('../../../constants');
 const LOGO_IMAGE = () => GET_KIT_CONFIG().logo_image;
@@ -25,7 +24,7 @@ const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 	return `
 			<div style="${styles.footer}">
 				<div style="float: left">
-					<p>${FOOTER.INVITE_YOUR_FRIENDS} <a style="${styles.link_blue}" href="${domain}">${domain}</a><p>
+					<p><a style="${styles.link_blue}" href="${domain}">${domain}</a><p>
 				</div>
 				<div style="float: right; font-size: 8px; text-align: right;">
 					${
@@ -57,18 +56,6 @@ const RTL = 'direction: rtl;';
 const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_IMAGE() }) => `
   <div style="${styles.logo}">
     <a href="${domain}"><img src="${logoPath}" height="40"/></a>
-  </div>
-`;
-
-const HEADER_TEMPLATE = ({ title, imagePath = '' }) => `
-  <div style="${styles.header}">
-    ${imagePath &&
-			`
-      <div style="${styles.header_icon_wrapper}">
-        <img style="${styles.header_icon}" src="${imagePath}"/>
-      </div>
-    `}
-    <div style="${styles.header_icon_title}">${title}</div>
   </div>
 `;
 
