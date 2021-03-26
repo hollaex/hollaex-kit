@@ -4,16 +4,12 @@ const TABLE = 'Plugins';
 const COLUMN = 'web_view';
 
 module.exports = {
-	up: (queryInterface, Sequelize) => queryInterface.sequelize.query(`
-		ALTER TABLE "${TABLE}"
-		ALTER COLUMN "${COLUMN}"
-		SET DATA TYPE jsonb
-		USING '[]'::jsonb;
-	`),
-	down: (queryInterface, Sequelize) => queryInterface.sequelize.query(`
-		ALTER TABLE "${TABLE}"
-		ALTER COLUMN "${COLUMN}"
-		SET DATA TYPE jsonb
-		USING '[]'::jsonb;
-	`),
+	up: (queryInterface) => 
+		queryInterface
+			.changeColumn(TABLE, COLUMN, { type: `jsonb USING '[]'::jsonb;` }),
+	down: () => {
+		return new Promise(resolve => {
+			resolve();
+		});
+	}
 };
