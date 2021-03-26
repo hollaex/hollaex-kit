@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import STRINGS from '../../config/localizedStrings';
 import Image from 'components/Image';
+import EditWrapper from 'components/EditWrapper';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 class AppMenuSidebar extends Component {
@@ -62,7 +63,9 @@ class AppMenuSidebar extends Component {
 							wrapperClassName="app-menu-bar-icon"
 						/>
 						<div className="side-bar-txt">
-							{STRINGS['ACCOUNTS.TAB_SUMMARY']}
+							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY" iconId="TAB_SUMMARY">
+								{STRINGS['ACCOUNTS.TAB_SUMMARY']}
+							</EditWrapper>
 						</div>
 					</div>
 					<div
@@ -76,7 +79,11 @@ class AppMenuSidebar extends Component {
 							icon={ICONS['TAB_WALLET']}
 							wrapperClassName="app-menu-bar-icon"
 						/>
-						<div className="side-bar-txt">{STRINGS['ACCOUNTS.TAB_WALLET']}</div>
+						<div className="side-bar-txt">
+							<EditWrapper stringId="ACCOUNTS.TAB_WALLET" iconId="TAB_WALLET">
+								{STRINGS['ACCOUNTS.TAB_WALLET']}
+							</EditWrapper>
+						</div>
 					</div>
 					<div
 						className={classnames(
@@ -90,7 +97,9 @@ class AppMenuSidebar extends Component {
 							wrapperClassName="app-menu-bar-icon"
 						/>
 						<div className="side-bar-txt">
-							{STRINGS['ACCOUNTS.TAB_HISTORY']}
+							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY" iconId="TAB_HISTORY">
+								{STRINGS['ACCOUNTS.TAB_HISTORY']}
+							</EditWrapper>
 						</div>
 					</div>
 					<div
@@ -105,7 +114,12 @@ class AppMenuSidebar extends Component {
 							wrapperClassName="app-menu-bar-icon"
 						/>
 						<div className="side-bar-txt">
-							{STRINGS['ACCOUNTS.TAB_SECURITY']}
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SECURITY"
+								iconId="TAB_SECURITY"
+							>
+								{STRINGS['ACCOUNTS.TAB_SECURITY']}
+							</EditWrapper>
 						</div>
 					</div>
 					<div
@@ -121,7 +135,12 @@ class AppMenuSidebar extends Component {
 							useSvg={true}
 						/>
 						<div className="side-bar-txt">
-							{STRINGS['ACCOUNTS.TAB_VERIFICATION']}
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_VERIFICATION"
+								iconId="TAB_VERIFY"
+							>
+								{STRINGS['ACCOUNTS.TAB_VERIFICATION']}
+							</EditWrapper>
 						</div>
 					</div>
 					<div
@@ -136,7 +155,12 @@ class AppMenuSidebar extends Component {
 							wrapperClassName="app-menu-bar-icon"
 						/>
 						<div className="side-bar-txt">
-							{STRINGS['ACCOUNTS.TAB_SETTINGS']}
+							<EditWrapper
+								stringId="ACCOUNTS.TAB_SETTINGS"
+								iconId="TAB_SETTING"
+							>
+								{STRINGS['ACCOUNTS.TAB_SETTINGS']}
+							</EditWrapper>
 						</div>
 					</div>
 					<div
@@ -150,7 +174,11 @@ class AppMenuSidebar extends Component {
 							icon={ICONS['SIDEBAR_HELP']}
 							wrapperClassName="app-menu-bar-icon"
 						/>
-						<div className="side-bar-txt">{STRINGS['LOGIN.HELP']}</div>
+						<div className="side-bar-txt">
+							<EditWrapper stringId="LOGIN.HELP" iconId="SIDEBAR_HELP">
+								{STRINGS['LOGIN.HELP']}
+							</EditWrapper>
+						</div>
 					</div>
 					<div
 						className={classnames(
@@ -164,7 +192,9 @@ class AppMenuSidebar extends Component {
 							wrapperClassName="app-menu-bar-icon"
 						/>
 						<div className="side-bar-txt">
-							{STRINGS['ACCOUNTS.TAB_SIGNOUT']}
+							<EditWrapper stringId="ACCOUNTS.TAB_SIGNOUT" iconId="TAB_SIGNOUT">
+								{STRINGS['ACCOUNTS.TAB_SIGNOUT']}
+							</EditWrapper>
 						</div>
 					</div>
 				</div>

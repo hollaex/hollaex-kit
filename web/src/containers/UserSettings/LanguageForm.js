@@ -9,7 +9,7 @@ import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper } from 'components';
 
-export const generateLanguageFormValues = (values) => {
+export const generateLanguageFormValues = (values = '') => {
 	const langValues = STRINGS.SETTINGS_LANGUAGE_OPTIONS.filter((filterValue) => {
 		return values.includes(filterValue.value);
 	});

@@ -288,7 +288,7 @@ class MobileVerification extends Component {
 						)}
 					</div>
 					<div className="d-flex justify-content-center align-items-center mt-2">
-						<div className="w-50 d-flex justify-content-end verification-buttons-wrapper">
+						<div className="f-1 d-flex justify-content-end verification-buttons-wrapper">
 							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button
 								label={STRINGS['USER_VERIFICATION.GO_BACK']}
@@ -296,7 +296,7 @@ class MobileVerification extends Component {
 							/>
 						</div>
 						<div className="separator" />
-						<div className="w-50 verification-buttons-wrapper">
+						<div className="f-1 verification-buttons-wrapper">
 							<EditWrapper stringId="SUBMIT" />
 							<Button
 								type="button"

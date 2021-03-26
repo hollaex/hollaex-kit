@@ -158,7 +158,7 @@ $trade-tab--arrow-size: 0.4rem;
 		font-weight: bold;
 	}
 	.summary-section_1 {
-		height: 30rem;
+		// height: 30rem;
 
 		.assets-wrapper {
 			.donut-container {
@@ -279,7 +279,7 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.assets-wrapper {
 		font-size: 0.8rem;
-		margin-right: 1.5rem;
+		// margin-right: 1.5rem;
 		// width: 25rem;
 
 		.assets-description {
@@ -738,9 +738,9 @@ $trade-tab--arrow-size: 0.4rem;
 		.trader-account-wrapper {
 			font-size: 0.9rem;
 		}
-		.summary-section_1 {
-			height: 31rem !important;
-		}
+		// .summary-section_1 {
+		// height: 31rem !important;
+		// }
 		.summary-section_2 {
 			height: 44rem !important;
 		}
@@ -749,10 +749,10 @@ $trade-tab--arrow-size: 0.4rem;
 		font-size: 0.9rem;
 	}
 }
-@media screen and (max-width: 960px) {
-	.summary-container {
-		.summary-section_1 {
-			height: 33rem !important;
-		}
-	}
-}
+// @media screen and (max-width: 960px) {
+// .summary-container {
+// .summary-section_1 {
+// height: 33rem !important;
+// }
+// }
+// }

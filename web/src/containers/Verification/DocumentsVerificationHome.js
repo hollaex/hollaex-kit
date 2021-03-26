@@ -95,15 +95,19 @@ const DocumentsVerificationHome = ({
 			)}
 			{id_data.status !== 3 && (
 				<div className="my-2 btn-wrapper">
-					<EditWrapper stringId="USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION,USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION" />
-					<Button
-						label={
-							id_data.status === 0
-								? STRINGS['USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION']
-								: STRINGS['USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION']
-						}
-						onClick={() => setActivePageContent('document')}
-					/>
+					<div className="exir-verification-button">
+						<EditWrapper stringId="USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION,USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION" />
+						<Button
+							label={
+								id_data.status === 0
+									? STRINGS['USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION']
+									: STRINGS[
+											'USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION'
+									  ]
+							}
+							onClick={() => setActivePageContent('document')}
+						/>
+					</div>
 				</div>
 			)}
 		</div>

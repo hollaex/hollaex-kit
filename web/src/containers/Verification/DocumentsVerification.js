@@ -307,7 +307,7 @@ class DocumentsVerification extends Component {
 					<div className="my-4"></div>
 
 					<div className="d-flex justify-content-center">
-						<div className="d-flex justify-content-end w-50 verification-buttons-wrapper">
+						<div className="d-flex justify-content-end f-1 verification-buttons-wrapper">
 							<Button
 								type="button"
 								onClick={this.onGoBack}
@@ -316,17 +316,19 @@ class DocumentsVerification extends Component {
 							/>
 						</div>
 						<div className="separator" />
-						<div className="d-flex flex-column w-50 verification-buttons-wrapper">
-							<Button
-								type="button"
-								onClick={handleSubmit(this.handleSubmit)}
-								label={
-									idData.status === 0
-										? STRINGS['SUBMIT']
-										: `${STRINGS['RESUBMIT']}*`
-								}
-								disabled={pristine || submitting || !valid || !!error}
-							/>
+						<div className="d-flex flex-column f-1 verification-buttons-wrapper">
+							<div>
+								<Button
+									type="button"
+									onClick={handleSubmit(this.handleSubmit)}
+									label={
+										idData.status === 0
+											? STRINGS['SUBMIT']
+											: `${STRINGS['RESUBMIT']}*`
+									}
+									disabled={pristine || submitting || !valid || !!error}
+								/>
+							</div>
 							{idData.status !== 0 && (
 								<span className="content-text">
 									{STRINGS['USER_VERIFICATION.SUBMISSION_PENDING_TXT']}

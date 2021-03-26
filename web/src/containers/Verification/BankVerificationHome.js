@@ -21,10 +21,13 @@ const BankVerificationHome = ({
 	) {
 		return (
 			<div className="btn-wrapper">
-				<Button
-					label={STRINGS['USER_VERIFICATION.START_BANK_VERIFICATION']}
-					onClick={() => setActivePageContent('bank')}
-				/>
+				<div className="exir-verification-button">
+					<EditWrapper stringId="USER_VERIFICATION.START_BANK_VERIFICATION" />
+					<Button
+						label={STRINGS['USER_VERIFICATION.START_BANK_VERIFICATION']}
+						onClick={() => setActivePageContent('bank')}
+					/>
+				</div>
 			</div>
 		);
 	} else {

@@ -45,7 +45,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			.exir-button {
+			.exir-verification-button {
 				position: absolute;
 				top: 60px;
 				width: 300px;
@@ -106,7 +106,7 @@
 			width: 100%;
 			font-size: $font-size-mobile-txt !important;
 		}
-		.exir-button {
+		.exir-verification-button {
 			font-size: $font-size-mobile-txt !important;
 			position: unset !important;
 			top: 0 !important;
@@ -140,6 +140,15 @@
 					font-size: 10px;
 				}
 			}
+		}
+		.verification-buttons-wrapper {
+			.exir-button {
+				flex: 1;
+			}
+		}
+		.separator {
+			width: auto;
+			margin: 1rem;
 		}
 	}
 	.mobile-bar-tab .bartab-text-wrapper {
