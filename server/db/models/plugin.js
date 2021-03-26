@@ -59,7 +59,8 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.TEXT
 		},
 		web_view: {
-			type: DataTypes.TEXT
+			type: DataTypes.JSONB,
+			defaultValue: []
 		}
 	}, {
 		timestamps: true,
