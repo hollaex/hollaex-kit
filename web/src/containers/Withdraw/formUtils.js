@@ -46,7 +46,6 @@ export const generateFormValues = (
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 	const fields = {};
-
 	fields.address = {
 		type: 'text',
 		stringId:
@@ -57,7 +56,8 @@ export const generateFormValues = (
 			required,
 			validAddress(
 				symbol,
-				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
+				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
+				coins[symbol].network
 			),
 		],
 		fullWidth: true,

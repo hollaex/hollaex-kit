@@ -13,18 +13,21 @@ const {
 const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, handleChatData } = require('./sub');
 const { connect, hubConnected } = require('./hub');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
+const WebSocket = require('ws');
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
 	ws.id = uuid();
 	ws.auth = req.auth;
 
-	// send welcome message
-	ws.send(JSON.stringify({ message: WS_WELCOME }));
+	if (ws.readyState === WebSocket.OPEN) {
+		// send welcome message
+		ws.send(JSON.stringify({ message: WS_WELCOME }));
 
-	// send authenticated message if authenticated
-	if (ws.auth.sub) {
-		ws.send(JSON.stringify({ message: WS_USER_AUTHENTICATED(ws.auth.sub.email) }));
+		// send authenticated message if authenticated
+		if (ws.auth.sub) {
+			ws.send(JSON.stringify({ message: WS_USER_AUTHENTICATED(ws.auth.sub.email) }));
+		}
 	}
 
 	ws.on('message', (message) => {

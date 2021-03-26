@@ -305,8 +305,8 @@ checkStatus()
 					},
 					web_view: {
 						in: ['body'],
-						errorMessage: 'must be a string or null',
-						isString: true,
+						errorMessage: 'must be an array or null',
+						isArray: true,
 						optional: { options: { nullable: true } }
 					},
 					prescript: {
@@ -577,8 +577,8 @@ checkStatus()
 					},
 					web_view: {
 						in: ['body'],
-						errorMessage: 'must be a string or null',
-						isString: true,
+						errorMessage: 'must be an array or null',
+						isArray: true,
 						optional: { options: { nullable: true } }
 					},
 					prescript: {
