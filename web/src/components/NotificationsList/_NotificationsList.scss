@@ -20,6 +20,10 @@
 .trade_announcement {
 	font-size: 1.5rem;
 }
+.announcement-notification-list-item {
+	color: $colors-main-black;
+	border-bottom: 1px solid $colors-border;
+}
 
 .post-content {
 	.notifications_list-item-text {
@@ -30,5 +34,8 @@
 		p {
 			background-color: $app-sidebar-background !important;
 		}
+	}
+	.notifications_list-item-timestamp {
+		color: $colors-deactivate;
 	}
 }

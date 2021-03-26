@@ -28,7 +28,7 @@ export const SOCIAL_ICONS = {
 	INSTAGRAM: '/assets/icons/instagram.svg',
 	TELEGRAM: '/assets/icons/telegram.png',
 	GOOGLE: '/assets/icons/google.png',
-	YOUTUBE: '/assets/icons/youtube.png'
+	YOUTUBE: '/assets/icons/youtube.png',
 };
 
 export const FEATURES_ICONS = {
@@ -37,7 +37,7 @@ export const FEATURES_ICONS = {
 	SECURITY: '/assets/images/features-lock-icons.svg',
 	REPORTING: '/assets/images/features-data-icons.svg',
 	SUPPORT: '/assets/images/features-support-icons.svg',
-	LEGAL: '/assets/images/features-legal-icons.svg'
+	LEGAL: '/assets/images/features-legal-icons.svg',
 };
 
 export const SUMMMARY_ICON = {
@@ -48,7 +48,7 @@ export const SUMMMARY_ICON = {
 	LEVEL_3: '/assets/summary/level-3.png',
 	LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
 	LEVEL_4: '/assets/summary/level-4.png',
-	LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
+	LEVEL_4_DARK: '/assets/summary/level-4-dark.png',
 };
 
 export const HOLLAEX_LOGO =
@@ -102,6 +102,7 @@ export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
 
 export const TEMP_KEY_LANGUAGE_RTL = 'temp_key_language_rtl';
 export const TEMP_KEY_LANGUAGE_LTR = 'temp_key_language_ltr';
+export const LAST_UPDATED_NOTIFICATION_KEY = 'LAST_UPDATED_NOTIFICATION_TIME';
 
 export const BANK_WITHDRAWAL_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 1;

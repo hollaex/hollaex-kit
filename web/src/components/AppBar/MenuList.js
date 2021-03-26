@@ -89,7 +89,7 @@ class MenuList extends Component {
 			: securityPending + verificationPending;
 		return (
 			<div
-				className={classnames('app-bar-account-content', {
+				className={classnames('d-flex app-bar-account-content', {
 					'account-inactive':
 						activePath !== 'account' && activePath !== 'wallet',
 				})}

@@ -18,7 +18,7 @@ export const NotificationItem = ({
 	created_at,
 }) => {
 	return (
-		<div>
+		<div className="announcement-notification-list-item">
 			<div>
 				<div className="d-flex my-2">
 					<div className="mr-2">
@@ -29,9 +29,9 @@ export const NotificationItem = ({
 					</div>
 					<div>
 						<div className="post_header">{title}</div>
-						{type && (
+						{/* {type && (
 							<div className="notifications_list-item-title">{type}</div>
-						)}
+						)} */}
 						<div className="post-content">
 							<div className="notifications_list-item-timestamp">
 								{moment(created_at).format('MMMM DD, YYYY')}

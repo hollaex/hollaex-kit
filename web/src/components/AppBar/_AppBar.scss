@@ -115,7 +115,7 @@ $app-menu-notification-size: 1.2rem;
 		color: $base_top-bar-navigation_text;
 		cursor: pointer;
 		margin-right: 0.8rem;
-		width: 15rem;
+		// width: 15rem;
 
 		svg {
 			.account-inactive {
@@ -292,13 +292,16 @@ $app-menu-notification-size: 1.2rem;
 
 	.app-bar-account-content {
 		align-items: center;
-		display: flex;
+		// display: flex;
 		// flex-direction: column;
 		justify-content: center;
 		position: relative;
 		color: $app-bar-icon-inactive;
 	}
-
+	.app-announcement-list {
+		height: 335px;
+		width: 280px;
+	}
 	.app-bar-account-notification {
 		position: absolute;
 		// right: -6px;
@@ -327,6 +330,7 @@ $app-menu-notification-size: 1.2rem;
 		background-color: $app-background-color;
 		z-index: 20;
 		padding: 1rem;
+		border-top: 2px solid $link;
 		-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 		-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 		box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);

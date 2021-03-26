@@ -16,7 +16,6 @@
 		margin: 1px 0;
 		text-align: right;
 
-		.trade_orderbook-cell-price,
 		.trade_orderbook-cell-amount {
 			color: $orderbook-text;
 		}
@@ -100,11 +99,17 @@
 			}
 		}
 		.trade_orderbook-bids {
+			.trade_orderbook-cell-price {
+				color: $buy;
+			}
 			.price-row-wrapper:hover {
 				background-color: $buying-orderbook-hover;
 			}
 		}
 		.trade_orderbook-asks {
+			.trade_orderbook-cell-price {
+				color: $sell;
+			}
 			.price-row-wrapper:hover {
 				background-color: $selling-orderbook-hover;
 			}
@@ -128,12 +133,18 @@
 		// color: $colors-main-black;
 		background-color: $selling-orderbook-best-bar;
 		font-weight: bold;
+		.trade_orderbook-cell-price {
+			color: $orderbook-text;
+		}
 	}
 
 	.trade_orderbook-bids > .price-row-wrapper:first-child {
 		// color: $colors-main-black;
 		background-color: $buying-orderbook-best-bar;
 		font-weight: bold;
+		.trade_orderbook-cell-price {
+			color: $orderbook-text;
+		}
 	}
 
 	.trade_orderbook-bids {
