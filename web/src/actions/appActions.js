@@ -60,6 +60,7 @@ export const SET_CONFIG_LEVEL = 'SET_CONFIG_LEVEL';
 export const ADD_TO_FAVOURITES = 'ADD_TO_FAVOURITES';
 export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
 export const CHANGE_HOME_PAGE_SETTING = 'CHANGE_HOME_PAGE_SETTING';
+export const SET_WEB_VIEWS = 'SET_WEB_VIEWS';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -245,6 +246,15 @@ export const setConfig = (constants = {}) => {
 export const setPlugins = (enabledPlugins) => {
 	return {
 		type: SET_PLUGINS,
+		payload: {
+			enabledPlugins,
+		},
+	};
+};
+
+export const setWebViews = (enabledPlugins) => {
+	return {
+		type: SET_WEB_VIEWS,
 		payload: {
 			enabledPlugins,
 		},
