@@ -1,6 +1,7 @@
 import { render } from 'react-dom';
 
-export const PLUGINS = [
+// This is to test remote plugins injection
+/*export const PLUGINS = [
 	{
 		target: 'REMOTE_COMPONENT__BANK_VERIFICATION_HOME',
 		src: '/bank_verification_home.js',
@@ -28,7 +29,7 @@ export const PLUGINS = [
 			{ key: 'required', store_key: 'required' },
 		],
 	},
-];
+];*/
 
 export const injectPlugin = (component, targetId) => {
 	const targetElement = document.getElementById(targetId);

@@ -35,7 +35,7 @@ import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
-import { PLUGINS } from 'utils/plugin';
+// import { PLUGINS } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -365,7 +365,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			});
 
 			const CLUSTERED_WEB_VIEWS = {};
-			PLUGINS.forEach((plugin) => {
+			allWebViews.forEach((plugin) => {
 				const { target } = plugin;
 				if (!CLUSTERED_WEB_VIEWS[target]) {
 					CLUSTERED_WEB_VIEWS[target] = [plugin];
