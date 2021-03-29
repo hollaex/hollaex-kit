@@ -4,18 +4,27 @@
 		padding: 0 0.25rem;
 		.ant-select-arrow {
 			color: $colors-main-black;
+			z-index: 1;
 		}
 		// &:not(.trade_orderbook-cell_total) {
 		// 	&:hover {
 		// 		color: $colors-main-black;
 		// 	}
 		// }
+		.ant-select-single.ant-select-sm:not(.ant-select-customize-input)
+			.ant-select-selector {
+			padding-right: 0;
+		}
 	}
 
 	.price-row-wrapper {
 		margin: 1px 0;
 		text-align: right;
 
+		.trade_orderbook-cell-price,
+		.trade_orderbook-cell-amount {
+			text-align: center;
+		}
 		.trade_orderbook-cell-amount {
 			color: $orderbook-text;
 		}
@@ -169,6 +178,10 @@
 	}
 }
 
+.order-book-select-coin .ant-select-item,
+.order-book-select-coin .ant-select-item-option {
+	font-size: 0.8rem;
+}
 .trade_orderbook-depth-selector {
 	padding: 4px;
 	.ant-btn-text {

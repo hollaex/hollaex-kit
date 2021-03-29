@@ -1389,7 +1389,7 @@ const nestedContent = {
 	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
-	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'type',

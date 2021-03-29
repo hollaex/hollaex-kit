@@ -106,7 +106,7 @@ $trade-tab--arrow-size: 0.4rem;
 
 		.summary-block-title {
 			color: $colors-black;
-			font-size: 1rem;
+			font-size: $font-size-main;
 			font-weight: bold;
 		}
 		.summary-title-icon {
@@ -115,7 +115,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.summary-content-txt {
-		font-size: $font-size-subtext;
+		font-size: $font-size-main;
 	}
 
 	.trader-account-wrapper {

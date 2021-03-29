@@ -803,7 +803,7 @@ $app-menu-notification-size: 1.2rem;
 	}
 
 	.app_bar-pair-font {
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 	}
 
 	.app-bar-tab-close {
@@ -816,7 +816,7 @@ $app-menu-notification-size: 1.2rem;
 		color: $colors-black;
 		cursor: pointer;
 		display: flex;
-		font-size: $font-size-main;
+		font-size: 1.2rem;
 		font-weight: 400;
 		height: 100%;
 		position: relative;
@@ -824,8 +824,8 @@ $app-menu-notification-size: 1.2rem;
 
 	.app_bar-pair-tab {
 		padding: 0 0.5rem;
-		min-width: 13rem;
-		max-width: 13rem;
+		min-width: 14rem;
+		max-width: 14rem;
 
 		&.selector-trigger {
 			min-width: 17rem;
@@ -958,7 +958,7 @@ $app-menu-notification-size: 1.2rem;
 	.app-bar-tab-menu-list {
 		background-color: $app-bar-background-color;
 		color: $app-bar-menu-list-color;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		height: 2.5rem;
 		padding: 0.5rem 0.8rem;
 		width: 3.2rem;
@@ -973,7 +973,7 @@ $app-menu-notification-size: 1.2rem;
 	}
 
 	.app-bar-add-tab-content {
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		overflow-y: scroll;
 		padding: 0.3rem 0;
 	}
@@ -981,7 +981,7 @@ $app-menu-notification-size: 1.2rem;
 	.app-bar-tab-overflow-content {
 		background-color: $dark-app-bar-add-tab-menu-background;
 		color: $app-bar-menu-list-color;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		overflow-y: scroll;
 		padding: 0.3rem 0;
 	}

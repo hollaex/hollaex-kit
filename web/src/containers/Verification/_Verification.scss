@@ -21,10 +21,10 @@
 	}
 	.header-content {
 		color: $colors-deactivate-color2;
-		font-size: 0.8rem;
+		font-size: $font-size-main;
 	}
 	.content-text {
-		font-size: 0.8rem;
+		font-size: $font-size-main;
 	}
 	.document-note-icon {
 		width: 3.5rem;
@@ -143,6 +143,7 @@
 		}
 		.verification-buttons-wrapper {
 			.exir-button {
+				width: 100% !important;
 				flex: 1;
 			}
 		}
@@ -207,7 +208,7 @@
 		}
 		.verification-buttons-wrapper {
 			.exir-button {
-				width: 200px;
+				width: 80%;
 			}
 		}
 		.verification_content-form-wrapper {

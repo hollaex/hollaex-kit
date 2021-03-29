@@ -125,7 +125,7 @@ const AssetsBlock = ({
 						) : null}
 					</div>
 				</EditWrapper>
-				<div className="d-flex justify-content-between">
+				<div className="d-flex justify-content-between zero-balance-wrapper">
 					<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
 						<SearchBox
 							name="search-assets"

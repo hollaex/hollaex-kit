@@ -38,9 +38,13 @@ $header-margin: 2rem;
 						font-weight: bold;
 					}
 				}
+				.action_notification-wrapper {
+					margin: 0;
+				}
 			}
 		}
 		.wallet-assets_block {
+			padding: 6px;
 			.wallet-assets_block-table {
 				thead {
 					tr {
@@ -77,6 +81,12 @@ $header-margin: 2rem;
 					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
+			.zero-balance-wrapper {
+				flex-direction: column;
+			}
+		}
+		.action-button-wrapper {
+			padding: 5px 2px;
 		}
 	}
 }
@@ -95,6 +105,14 @@ $header-margin: 2rem;
 		}
 
 		.wallet-header_block {
+		}
+		.coin-icons {
+			width: 50px;
+			padding-top: 4px;
+		}
+		.with_price-block_amount-value {
+			font-size: $font-size-headline;
+			line-height: $font-size-headline;
 		}
 	}
 
@@ -125,6 +143,7 @@ $header-margin: 2rem;
 		// border-top: $wrapper-border;
 		background-color: $app-sidebar-background;
 		padding: 20px;
+		overflow-y: auto;
 		// .action_notification-wrapper {
 		// 	margin: 0 !important;
 		// }
@@ -285,10 +304,4 @@ $header-margin: 2rem;
 .wallet-search-improvement {
 	border-bottom: 1px solid $dark-app-line-divider;
 	color: $dark-font-sub-text-color !important;
-}
-
-@media screen and (max-width: 1060px) {
-	.wallet-assets_block {
-		overflow-y: auto;
-	}
 }

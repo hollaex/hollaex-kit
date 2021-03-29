@@ -26,12 +26,10 @@ export const FieldContent = ({
 	return (
 		<div>
 			<div className={classnames({ 'field-label-wrapper': ishorizontalfield })}>
-				{label && (
-					<div className="field-label">
-						{label}
-						<EditWrapper stringId={stringId} />
-					</div>
-				)}
+				<div className="d-flex">
+					{label && <div className="field-label">{label}</div>}
+					<EditWrapper stringId={stringId} />
+				</div>
 				<div className={classnames('field-content')}>
 					<div
 						className={classnames(

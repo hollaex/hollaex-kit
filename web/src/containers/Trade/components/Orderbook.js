@@ -241,7 +241,7 @@ class Orderbook extends Component {
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
 					</div>
-					<div className="f-1 trade_orderbook-cell">
+					<div className="f-1 trade_orderbook-cell d-flex align-items-center">
 						{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
 						<Select
 							bordered={false}
@@ -251,7 +251,7 @@ class Orderbook extends Component {
 							value={isBase}
 							onSelect={this.onSelect}
 							className="custom-select-input-style order-entry no-border"
-							dropdownClassName="custom-select-style"
+							dropdownClassName="custom-select-style order-book-select-coin"
 						>
 							<Option value={false}>{symbol.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>
