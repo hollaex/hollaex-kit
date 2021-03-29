@@ -7772,19 +7772,32 @@ foreignObject {
 
 .input-group__container {
   border-radius: 4px;
-  border: var(--calculated_important-border) solid 1px; }
+  border: var(--labels_secondary-inactive-label-text-graphics) solid 1.5px; }
   .input-group__container .ant-select-selection,
   .input-group__container .ant-input,
   .input-group__container .ant-select-arrow,
   .input-group__container .ant-select-selector {
     text-align: right;
     background-color: var(--base_wallet-sidebar-and-popup) !important;
-    color: var(--labels_important-active-labels-text-graphics) !important; }
+    color: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .input-group__container .input-group__coin-icons-wrap {
+    width: 2.5rem; }
   .input-group__container:focus-within {
-    border: 1px solid var(--specials_buttons-links-and-highlights); }
+    border-color: var(--specials_buttons-links-and-highlights) !important; }
+  .input-group__container .input-group__select:hover {
+    color: var(--labels_important-active-labels-text-graphics) !important; }
+    .input-group__container .input-group__select:hover .ant-select-selection,
+    .input-group__container .input-group__select:hover .ant-input,
+    .input-group__container .input-group__select:hover .ant-select-arrow,
+    .input-group__container .input-group__select:hover .ant-select-selector {
+      color: var(--labels_important-active-labels-text-graphics) !important; }
+    .input-group__container .input-group__select:hover .input-group__coin-icons {
+      width: 2.2rem; }
+  .input-group__container:hover {
+    border-color: var(--labels_important-active-labels-text-graphics); }
 
 .input-group__coin-icons {
-  width: 2rem;
+  width: 1.8rem;
   height: 100%; }
   .input-group__coin-icons svg {
     margin: 0 auto;

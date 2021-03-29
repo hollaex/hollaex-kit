@@ -72,11 +72,24 @@ class QuickTradeContainer extends PureComponent {
 		) {
 			this.props.router.push('/account');
 		}
+		if (this.props.sourceOptions && this.props.sourceOptions.length) {
+			this.constructTraget();
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			!prevProps.sourceOptions.length &&
+			JSON.stringify(prevProps.sourceOptions) !==
+				JSON.stringify(this.props.sourceOptions)
+		) {
+			this.constructTraget();
 		}
 	}
 
@@ -228,6 +241,20 @@ class QuickTradeContainer extends PureComponent {
 			sourceAmount: undefined,
 		});
 		this.goToPair(pair);
+	};
+
+	constructTraget = () => {
+		const {
+			sourceOptions,
+			routeParams: { pair = '' },
+		} = this.props;
+		const [, selectedSource = sourceOptions[0]] = pair.split('-');
+		const targetOptions = this.getTargetOptions(selectedSource);
+		const [selectedTarget = targetOptions[0]] = pair.split('-');
+		this.setState({
+			selectedTarget,
+			targetOptions,
+		});
 	};
 
 	getTargetOptions = (sourceKey) => {
