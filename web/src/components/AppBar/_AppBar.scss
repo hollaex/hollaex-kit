@@ -156,7 +156,7 @@ $app-menu-notification-size: 1.2rem;
 	}
 
 	.app-bar-account-icon {
-		margin: 0.5rem 0.3rem 0 0.3rem;
+		// margin: 0.5rem 0.3rem 0 0.3rem;
 		width: 1.5rem;
 	}
 	.app-bar-account-moon-icon {
@@ -305,8 +305,8 @@ $app-menu-notification-size: 1.2rem;
 	.app-bar-account-notification {
 		position: absolute;
 		// right: -6px;
-		left: 18px;
-		top: 0;
+		left: 15px;
+		bottom: 12px;
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
 		border-radius: $app-menu-notification-size;
@@ -1124,10 +1124,10 @@ $app-menu-notification-size: 1.2rem;
 		height: $navigation_bar-height-lg;
 		min-height: $navigation_bar-height-lg;
 
-		.active-menu,
-		.app-menu-bar-content {
-			height: 3rem;
-		}
+		// .active-menu,
+		// .app-menu-bar-content {
+		// height: 3rem;
+		// }
 
 		.app-menu-bar-content {
 			width: 12rem;

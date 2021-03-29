@@ -16,7 +16,7 @@ import {
 
 const SIDE_BUY = 'buy';
 
-export const getTitleAndIcon = (type, { side, filled }, ICONS) => {
+export const getTitleAndIcon = (type, { side, filled }, ICONS = {}) => {
 	const data = {
 		iconId: '',
 		stringId: '',

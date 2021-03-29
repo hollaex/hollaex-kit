@@ -187,7 +187,7 @@ class AppMenuBar extends Component {
 		} = this.state;
 		return (
 			<div className="app-menu-bar-wrapper d-flex justify-content-start">
-				<div className="app-menu-bar d-flex align-items-end justify-content-start title-font apply_rtl">
+				<div className="app-menu-bar d-flex align-items-start justify-content-start title-font apply_rtl">
 					<div
 						className={classnames('app-menu-bar-content d-flex', {
 							'active-menu': activeMenu === 'summary',

@@ -11,7 +11,7 @@ import {
 import math from 'mathjs';
 // import classnames from 'classnames';
 // import { isMobile } from 'react-device-detect';
-import { Button, Dialog, OtpForm, Loader, EditWrapper } from '../../components';
+import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
 	setWithdrawEmailConfirmation,

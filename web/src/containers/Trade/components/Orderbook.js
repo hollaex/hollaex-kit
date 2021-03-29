@@ -191,8 +191,8 @@ class Orderbook extends Component {
 			pair,
 			coins,
 			maxCumulative,
-			increment_price,
-			depth,
+			increment_price = 1,
+			depth = 1,
 			lastPrice,
 		} = this.props;
 

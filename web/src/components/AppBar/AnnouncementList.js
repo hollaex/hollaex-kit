@@ -83,8 +83,7 @@ const AnnouncementList = ({
 			<div className="d-flex">
 				<div>
 					<Image
-						iconId="SIDEBAR_ACCOUNT_INACTIVE"
-						icon={ICONS['SIDEBAR_ACCOUNT_INACTIVE']}
+						icon={ICONS['TOP_BAR_ANNOUNCEMENT']}
 						wrapperClassName="app-bar-account-icon mr-3"
 					/>
 					{unreadCount ? (
@@ -92,7 +91,7 @@ const AnnouncementList = ({
 					) : null}
 				</div>
 				<div className="d-flex align-items-center">
-					<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY" iconId="TAB_SUMMARY">
+					<EditWrapper stringId="TRADE_TAB_POSTS" iconId="TOP_BAR_ANNOUNCEMENT">
 						{STRINGS['TRADE_TAB_POSTS']}
 					</EditWrapper>
 				</div>
@@ -101,7 +100,7 @@ const AnnouncementList = ({
 				<div className="app-bar-account-menu apply_rtl">
 					<div className="app-announcement-list">
 						<Scrollbars>
-							<NotificationsList />
+							<NotificationsList ICONS={ICONS} />
 						</Scrollbars>
 					</div>
 				</div>
