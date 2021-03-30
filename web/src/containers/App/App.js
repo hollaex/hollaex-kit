@@ -488,7 +488,8 @@ class App extends Component {
 
 		const isHome = this.props.location.pathname === '/';
 		const isMenubar = !isHome;
-		const isMenuSider = activePath !== 'trade' && activePath !== 'quick-trade';
+		const isMenuSider =
+			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
 		return (
 			<ThemeProvider>
 				<div>
