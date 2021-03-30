@@ -252,7 +252,7 @@ class Wallet extends Component {
 						</div>
 					</div>
 				) : (
-					<div className="presentation_container apply_rtl">
+					<div className="presentation_container apply_rtl wallet-wrapper">
 						<IconTitle
 							stringId="WALLET_TITLE"
 							text={STRINGS['WALLET_TITLE']}

@@ -34,7 +34,7 @@ import TVChartContainer from './ChartContainer';
 import OrdersWrapper from './components/OrdersWrapper';
 import { AddTradeTabs } from 'containers';
 
-import { Loader, MobileBarTabs } from '../../components';
+import { Loader, MobileBarTabs, SidebarHub } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
@@ -398,24 +398,6 @@ class Trade extends PureComponent {
 						<EventListener target="window" onResize={this.onResize} />
 						<div
 							className={classnames(
-								'trade-col_side_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								stringId="ORDERBOOK"
-								isLoggedIn={isLoggedIn()}
-								title={STRINGS['ORDERBOOK']}
-								pairData={pairData}
-								pair={pair}
-							>
-								{orderbookReady && <Orderbook {...orderbookProps} />}
-							</TradeBlock>
-						</div>
-						<div
-							className={classnames(
 								'trade-col_main_wrapper',
 								'flex-column',
 								'd-flex',
@@ -430,33 +412,6 @@ class Trade extends PureComponent {
 									'd-flex'
 								)}
 							>
-								<div
-									className={classnames(
-										'trade-col_action_wrapper',
-										'flex-column',
-										'd-flex',
-										'apply_rtl'
-									)}
-								>
-									<TradeBlock
-										stringId="ORDER_ENTRY"
-										title={STRINGS['ORDER_ENTRY']}
-										pairData={pairData}
-										pair={pair}
-									>
-										<OrderEntry
-											submitOrder={this.onSubmitOrder}
-											openCheckOrder={this.openCheckOrder}
-											onRiskyTrade={this.onRiskyTrade}
-											symbol={symbol}
-											balance={balance}
-											fees={fees}
-											showPopup={settings.notification.popup_order_confirmation}
-											setPriceRef={this.setPriceRef}
-											setSizeRef={this.setSizeRef}
-										/>
-									</TradeBlock>
-								</div>
 								<TradeBlock
 									stringId="CHART"
 									title={STRINGS['CHART']}
@@ -505,12 +460,56 @@ class Trade extends PureComponent {
 							)}
 						>
 							<TradeBlock
+								stringId="ORDERBOOK"
+								isLoggedIn={isLoggedIn()}
+								title={STRINGS['ORDERBOOK']}
+								pairData={pairData}
+								pair={pair}
+							>
+								{orderbookReady && <Orderbook {...orderbookProps} />}
+							</TradeBlock>
+							<TradeBlock
 								stringId="PUBLIC_SALES"
 								title={STRINGS['PUBLIC_SALES']}
 								pairData={pairData}
 								pair={pair}
 							>
 								<TradeHistory pairData={pairData} language={activeLanguage} />
+							</TradeBlock>
+						</div>
+
+						<div
+							className={classnames(
+								'trade-col_action_wrapper',
+								'flex-column',
+								'd-flex',
+								'apply_rtl'
+							)}
+						>
+							<TradeBlock
+								stringId="ORDER_ENTRY"
+								title={STRINGS['ORDER_ENTRY']}
+								pairData={pairData}
+								pair={pair}
+							>
+								<OrderEntry
+									submitOrder={this.onSubmitOrder}
+									openCheckOrder={this.openCheckOrder}
+									onRiskyTrade={this.onRiskyTrade}
+									symbol={symbol}
+									balance={balance}
+									fees={fees}
+									showPopup={settings.notification.popup_order_confirmation}
+									setPriceRef={this.setPriceRef}
+									setSizeRef={this.setSizeRef}
+								/>
+							</TradeBlock>
+							<TradeBlock title={STRINGS.WALLET_TITLE} className="f-1">
+								<SidebarHub
+									isLogged={isLoggedIn()}
+									pair={pair}
+									theme={activeTheme}
+								/>
 							</TradeBlock>
 						</div>
 					</div>

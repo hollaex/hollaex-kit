@@ -76,6 +76,10 @@
 					background-color: $app-light-background;
 					color: $colors-black;
 				}
+				.td-chart {
+					width: 150px;
+					height: 50px;
+				}
 			}
 
 			.table-bottom-border td,
@@ -142,6 +146,20 @@
 				}
 				.table-icon {
 					padding-left: 0.5rem;
+				}
+			}
+		}
+	}
+}
+
+.layout-mobile {
+	.market-list__container {
+		.market-list__block {
+			.market-list__block-table {
+				.table-row {
+					.td-chart {
+						width: 80px;
+					}
 				}
 			}
 		}

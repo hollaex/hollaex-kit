@@ -9,12 +9,14 @@ const MobileVerificationHome = ({ user, setActivePageContent }) => {
 	const { phone_number } = user;
 	if (!phone_number) {
 		return (
-			<div>
-				<EditWrapper stringId="USER_VERIFICATION.START_PHONE_VERIFICATION" />
-				<Button
-					label={STRINGS['USER_VERIFICATION.START_PHONE_VERIFICATION']}
-					onClick={() => setActivePageContent('sms')}
-				/>
+			<div className="btn-wrapper">
+				<div className="exir-verification-button">
+					<EditWrapper stringId="USER_VERIFICATION.START_PHONE_VERIFICATION" />
+					<Button
+						label={STRINGS['USER_VERIFICATION.START_PHONE_VERIFICATION']}
+						onClick={() => setActivePageContent('sms')}
+					/>
+				</div>
 			</div>
 		);
 	} else {

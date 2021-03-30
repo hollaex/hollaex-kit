@@ -60,6 +60,7 @@ class DocumentsVerification extends Component {
 						),
 					],
 					fullWidth: isMobile,
+					ishorizontalfield: true,
 				},
 				issued_date: {
 					type: 'date-dropdown',
@@ -80,6 +81,7 @@ class DocumentsVerification extends Component {
 					endDate: moment().add(1, 'days'),
 					language,
 					fullWidth: isMobile,
+					ishorizontalfield: true,
 				},
 				expiration_date: {
 					type: 'date-dropdown',
@@ -102,6 +104,7 @@ class DocumentsVerification extends Component {
 					yearsBefore: 5,
 					language,
 					fullWidth: isMobile,
+					ishorizontalfield: true,
 				},
 			},
 			id: {
@@ -126,6 +129,7 @@ class DocumentsVerification extends Component {
 						),
 					],
 					fullWidth: isMobile,
+					ishorizontalfield: true,
 				},
 			},
 			proof_of_residency: {
@@ -152,6 +156,7 @@ class DocumentsVerification extends Component {
 						),
 					],
 					fullWidth: isMobile,
+					ishorizontalfield: true,
 				},
 			},
 			selfieWithNote: {
@@ -178,6 +183,7 @@ class DocumentsVerification extends Component {
 						),
 					],
 					fullWidth: isMobile,
+					ishorizontalfield: true,
 				},
 			},
 		};
@@ -232,69 +238,76 @@ class DocumentsVerification extends Component {
 					stringId="USER_VERIFICATION.DOCUMENT_VERIFICATION"
 					text={STRINGS['USER_VERIFICATION.DOCUMENT_VERIFICATION']}
 					textType="title"
+					iconPath={ICONS['VERIFICATION_DOCUMENT_NEW']}
 				/>
 				<form
 					className="d-flex flex-column w-100 verification_content-form-wrapper"
 					onSubmit={this.handleSubmit}
 				>
-					<HeaderSection
-						stringId="USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"
-						title={STRINGS['USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION']}
-						iconId="VERIFICATION_DOCUMENT_NEW"
-						icon={ICONS['VERIFICATION_DOCUMENT_NEW']}
-						openContactForm={openContactForm}
-					>
-						<IdentificationFormSection />
-					</HeaderSection>
-					{renderFields(formFields.idDocument)}
-					{renderFields(formFields.id)}
+					<div className="verification-form-panel mt-3">
+						<HeaderSection
+							stringId="USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION"
+							title={STRINGS['USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION']}
+							openContactForm={openContactForm}
+						>
+							<IdentificationFormSection />
+						</HeaderSection>
+						{renderFields(formFields.idDocument)}
+						{renderFields(formFields.id)}
+					</div>
 					<div className="my-4"></div>
 
-					{formFields.proof_of_residency && (
-						<div>
-							<HeaderSection
-								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"
-								title={
-									STRINGS[
-										'USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY'
-									]
-								}
-							>
-								<PORSection />
-							</HeaderSection>
-							{renderFields(formFields.proof_of_residency)}
-						</div>
-					)}
-					<div className="my-4"></div>
-					{formFields.selfieWithNote && (
-						<div>
-							<HeaderSection
-								stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"
-								title={
-									STRINGS[
-										'USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE'
-									]
-								}
-							>
-								<SelfieWithPhotoId />
-							</HeaderSection>
-							<div className="my-2">
-								<Image
-									alt="document-sample"
-									iconId="SELF_KYC_ID_EN"
-									icon={ICONS['SELF_KYC_ID_EN']}
-									wrapperClassName="verification_document-sample"
-								/>
+					<div className="verification-form-panel">
+						{formFields.proof_of_residency && (
+							<div>
+								<HeaderSection
+									stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY"
+									title={
+										STRINGS[
+											'USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY'
+										]
+									}
+								>
+									<PORSection />
+								</HeaderSection>
+								{renderFields(formFields.proof_of_residency)}
 							</div>
-							{renderFields(formFields.selfieWithNote)}
-						</div>
-					)}
+						)}
+					</div>
+					<div className="my-4"></div>
+
+					<div className="verification-form-panel">
+						{formFields.selfieWithNote && (
+							<div>
+								<HeaderSection
+									stringId="USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE"
+									title={
+										STRINGS[
+											'USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.TITLE'
+										]
+									}
+								>
+									<SelfieWithPhotoId />
+								</HeaderSection>
+								<div className="my-2">
+									<Image
+										alt="document-sample"
+										iconId="SELF_KYC_ID_EN"
+										icon={ICONS['SELF_KYC_ID_EN']}
+										wrapperClassName="verification_document-sample"
+									/>
+								</div>
+								{renderFields(formFields.selfieWithNote)}
+							</div>
+						)}
+					</div>
 					{error && (
 						<div className="warning_text">{getErrorLocalized(error)}</div>
 					)}
+					<div className="my-4"></div>
 
-					<div className="d-flex verification-buttons-wrapper">
-						<div className="w-50">
+					<div className="d-flex justify-content-center">
+						<div className="d-flex justify-content-end f-1 verification-buttons-wrapper">
 							<Button
 								type="button"
 								onClick={this.onGoBack}
@@ -303,17 +316,19 @@ class DocumentsVerification extends Component {
 							/>
 						</div>
 						<div className="separator" />
-						<div className="w-50">
-							<Button
-								type="button"
-								onClick={handleSubmit(this.handleSubmit)}
-								label={
-									idData.status === 0
-										? STRINGS['SUBMIT']
-										: `${STRINGS['RESUBMIT']}*`
-								}
-								disabled={pristine || submitting || !valid || !!error}
-							/>
+						<div className="d-flex flex-column f-1 verification-buttons-wrapper">
+							<div>
+								<Button
+									type="button"
+									onClick={handleSubmit(this.handleSubmit)}
+									label={
+										idData.status === 0
+											? STRINGS['SUBMIT']
+											: `${STRINGS['RESUBMIT']}*`
+									}
+									disabled={pristine || submitting || !valid || !!error}
+								/>
+							</div>
 							{idData.status !== 0 && (
 								<span className="content-text">
 									{STRINGS['USER_VERIFICATION.SUBMISSION_PENDING_TXT']}

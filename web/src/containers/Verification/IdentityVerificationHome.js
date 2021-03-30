@@ -20,12 +20,14 @@ const IdentityVerificationHome = ({
 	const { address, id_data } = user;
 	if (!address.country) {
 		return (
-			<div>
-				<EditWrapper stringId="USER_VERIFICATION.START_IDENTITY_VERIFICATION" />
-				<Button
-					label={STRINGS['USER_VERIFICATION.START_IDENTITY_VERIFICATION']}
-					onClick={() => setActivePageContent('kyc')}
-				/>
+			<div className="btn-wrapper">
+				<div className="exir-verification-button">
+					<EditWrapper stringId="USER_VERIFICATION.START_IDENTITY_VERIFICATION" />
+					<Button
+						label={STRINGS['USER_VERIFICATION.START_IDENTITY_VERIFICATION']}
+						onClick={() => setActivePageContent('kyc')}
+					/>
+				</div>
 			</div>
 		);
 	} else {
@@ -153,12 +155,16 @@ const IdentityVerificationHome = ({
 					</div>
 				</div>
 				{id_data.status === 3 ? null : (
-					<div>
-						<EditWrapper stringId="USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION" />
-						<Button
-							label={STRINGS['USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION']}
-							onClick={() => setActivePageContent('kyc')}
-						/>
+					<div className="btn-wrapper">
+						<div className="exir-verification-button">
+							<EditWrapper stringId="USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION" />
+							<Button
+								label={
+									STRINGS['USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION']
+								}
+								onClick={() => setActivePageContent('kyc')}
+							/>
+						</div>
 					</div>
 				)}
 			</div>

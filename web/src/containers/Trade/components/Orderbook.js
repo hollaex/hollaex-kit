@@ -55,13 +55,13 @@ const PriceRow = (
 				style={fillStyle}
 			>
 				<div
-					className={`f-1 trade_orderbook-cell trade_orderbook-cell pointer`}
+					className={`f-1 trade_orderbook-cell trade_orderbook-cell-price pointer`}
 					onClick={onPriceClick(price)}
 				>
 					{formatToCurrency(price, increment_price)}
 				</div>
 				<div
-					className="f-1 trade_orderbook-cell pointer"
+					className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 					onClick={onAmountClick(amount)}
 				>
 					{formatToCurrency(amount, increment_size)}
@@ -191,8 +191,8 @@ class Orderbook extends Component {
 			pair,
 			coins,
 			maxCumulative,
-			increment_price,
-			depth,
+			increment_price = 1,
+			depth = 1,
 			lastPrice,
 		} = this.props;
 
@@ -241,7 +241,7 @@ class Orderbook extends Component {
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
 					</div>
-					<div className="f-1 trade_orderbook-cell">
+					<div className="f-1 trade_orderbook-cell d-flex align-items-center">
 						{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
 						<Select
 							bordered={false}
@@ -251,7 +251,7 @@ class Orderbook extends Component {
 							value={isBase}
 							onSelect={this.onSelect}
 							className="custom-select-input-style order-entry no-border"
-							dropdownClassName="custom-select-style"
+							dropdownClassName="custom-select-style order-book-select-coin"
 						>
 							<Option value={false}>{symbol.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>

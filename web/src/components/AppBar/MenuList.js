@@ -81,6 +81,7 @@ class MenuList extends Component {
 			icons: ICONS,
 			constants,
 			location,
+			user,
 		} = this.props;
 		const { isOpen } = this.state;
 		const totalPending = IS_XHT
@@ -88,20 +89,23 @@ class MenuList extends Component {
 			: securityPending + verificationPending;
 		return (
 			<div
-				className={classnames('app-bar-account-content', {
+				className={classnames('d-flex app-bar-account-content', {
 					'account-inactive':
 						activePath !== 'account' && activePath !== 'wallet',
 				})}
 				ref={(el) => (this.element = el)}
 			>
-				<Image
-					iconId="SIDEBAR_ACCOUNT_INACTIVE"
-					icon={ICONS['SIDEBAR_ACCOUNT_INACTIVE']}
-					wrapperClassName="app-bar-account-icon"
-				/>
-				{!!totalPending && (
-					<div className="app-bar-account-notification">{totalPending}</div>
-				)}
+				<div className="mr-3">
+					<Image
+						iconId="SIDEBAR_ACCOUNT_INACTIVE"
+						icon={ICONS['SIDEBAR_ACCOUNT_INACTIVE']}
+						wrapperClassName="app-bar-account-icon"
+					/>
+					{!!totalPending && (
+						<div className="app-bar-account-notification">{totalPending}</div>
+					)}
+				</div>
+				<div>{user.email}</div>
 				{isOpen && (
 					<div id="tab-account-menu" className="app-bar-account-menu apply_rtl">
 						<div

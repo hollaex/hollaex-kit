@@ -47,25 +47,27 @@ const VerificationHome = ({
 					</EditWrapper>
 				</div>
 			</div>
-			{!isMobile ? (
-				<CustomTabBar
-					activeTab={activeTab}
-					setActiveTab={setActiveTab}
-					{...tabProps}
-				/>
-			) : (
-				<MobileTabBar
-					activeTab={activeTab}
-					renderContent={renderContent}
-					setActiveTab={setActiveTab}
-					{...tabProps}
-				/>
-			)}
-			{!isMobile ? (
-				<div className="inner_container">
-					{activeTab > -1 && renderContent(tabs, activeTab)}
-				</div>
-			) : null}
+			<div className="inner-content">
+				{!isMobile ? (
+					<CustomTabBar
+						activeTab={activeTab}
+						setActiveTab={setActiveTab}
+						{...tabProps}
+					/>
+				) : (
+					<MobileTabBar
+						activeTab={activeTab}
+						renderContent={renderContent}
+						setActiveTab={setActiveTab}
+						{...tabProps}
+					/>
+				)}
+				{!isMobile ? (
+					<div className="inner_container">
+						{activeTab > -1 && renderContent(tabs, activeTab)}
+					</div>
+				) : null}
+			</div>
 		</div>
 	);
 	// } else {

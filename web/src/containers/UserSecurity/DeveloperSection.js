@@ -130,5 +130,7 @@ export const DeveloperSection = ({ verification_level, ...rest }) => {
 	} else {
 		content = <ApiKeyContainer {...rest} />;
 	}
-	return <div className="mt-4 mb-4 apply_rtl">{content}</div>;
+	return (
+		<div className="mt-4 mb-4 apply_rtl dev-section-wrapper">{content}</div>
+	);
 };

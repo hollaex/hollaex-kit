@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
-import { Button, Accordion } from '../../components';
+import { Button, IconTitle } from '../../components';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper } from 'components';
@@ -37,16 +37,30 @@ const Form = ({
 	valid,
 	initialValues,
 	formFields,
+	ICONS,
 }) => (
-	<form onSubmit={handleSubmit}>
-		{renderFields(formFields)}
-		{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
-		<EditWrapper stringId="SETTING_BUTTON" />
-		<Button
-			className="mt-4"
-			label={STRINGS['SETTING_BUTTON']}
-			disabled={pristine || submitting || !valid}
-		/>
+	<form onSubmit={handleSubmit} className="settings-form-wrapper">
+		<div className="settings-form">
+			<IconTitle
+				stringId="USER_SETTINGS.TITLE_NOTIFICATION"
+				text={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
+				textType="title"
+				iconPath={ICONS['SETTING_NOTIFICATION_ICON']}
+			/>
+			<div className="pr-3">
+				{renderFields(formFields)}
+				{error && (
+					<div className="warning_text">{getErrorLocalized(error)}</div>
+				)}
+			</div>
+		</div>
+		<div className="d-flex align-items-center justify-content-center">
+			<EditWrapper stringId="SETTING_BUTTON" />
+			<Button
+				label={STRINGS['SETTING_BUTTON']}
+				disabled={pristine || submitting || !valid}
+			/>
+		</div>
 	</form>
 );
 
@@ -61,15 +75,7 @@ class NotificationForm extends Component {
 	}
 
 	render() {
-		const section = [
-			{
-				stringId: 'USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS',
-				title: STRINGS['USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS'],
-				content: <Form {...this.props} />,
-				isOpen: true,
-			},
-		];
-		return <Accordion sections={section} />;
+		return <Form {...this.props} />;
 	}
 }
 

@@ -64,6 +64,29 @@ $content--margin: 2rem;
 	margin: $content--margin 0;
 }
 
+.withdrawal-container {
+	.icon_title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
+	}
+	.withdraw-form-wrapper {
+		.withdraw-form {
+			border-radius: 4px;
+			margin: 0 0 40px;
+			background-color: $app-sidebar-background;
+			padding: 30px;
+		}
+		.btn-wrapper {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			.exir-button {
+				width: 300px;
+			}
+		}
+	}
+}
+
 .layout-mobile {
 	.review-wrapper {
 		min-width: 0;
@@ -136,6 +159,18 @@ $content--margin: 2rem;
 	.review_email-wrapper {
 		margin: 0px auto !important;
 	}
+
+	.withdrawal-container {
+		.withdraw-form-wrapper {
+			.withdraw-form {
+				.field-wrapper {
+					.field-label-wrapper {
+						flex-direction: column;
+					}
+				}
+			}
+		}
+	}
 }
 
 .review_email-wrapper {
@@ -144,5 +179,31 @@ $content--margin: 2rem;
 	.review_email-content {
 		border-top: 1px solid;
 		padding: 1rem;
+	}
+}
+
+@media screen and (max-width: 1096px) {
+	.withdrawal-container {
+		.withdraw-form-wrapper {
+			.withdraw-form {
+				.field-wrapper {
+					.field-label {
+						font-size: $font-size-mobile-innertxt;
+					}
+					.input-box-field {
+						.input_field-input {
+							&::placeholder {
+								font-size: $font-size-mobile-innertxt;
+							}
+						}
+					}
+				}
+			}
+			.btn-wrapper {
+				.exir-button {
+					width: 200px;
+				}
+			}
+		}
 	}
 }

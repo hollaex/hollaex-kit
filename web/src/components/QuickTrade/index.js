@@ -13,10 +13,11 @@ import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-import { Button } from 'components';
+import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
+import { STATIC_ICONS } from 'config/icons';
 
 class QuickTrade extends Component {
 	render() {
@@ -57,7 +58,7 @@ class QuickTrade extends Component {
 							icon={
 								isMobile
 									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
-									: ICONS['QUICK_TRADE_ICON']
+									: STATIC_ICONS['QUICK_TRADE']
 							}
 							wrapperClassName={
 								isMobile ? 'quick_trade-tab-icon' : 'quick_trade-icon'
@@ -70,11 +71,14 @@ class QuickTrade extends Component {
 							...FLEX_CENTER_CLASSES
 						)}
 					>
-						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						<EditWrapper stringId={'QUICK_TRADE_COMPONENT.TITLE'}>
+							{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						</EditWrapper>
 					</div>
 				</div>
 				<InputGroup
-					name="convert"
+					name={STRINGS['CONVERT']}
+					stringId={'CONVERT'}
 					options={sourceOptions}
 					inputValue={sourceAmount}
 					selectValue={selectedSource}
@@ -82,9 +86,11 @@ class QuickTrade extends Component {
 					onInputChange={onChangeSourceAmount}
 					forwardError={forwardSourceError}
 					limits={side === 'buy' ? PRICE : SIZE}
+					autoFocus={true}
 				/>
 				<InputGroup
-					name="to"
+					name={STRINGS['TO']}
+					stringId={'TO'}
 					options={targetOptions}
 					inputValue={targetAmount}
 					selectValue={selectedTarget}
@@ -97,10 +103,14 @@ class QuickTrade extends Component {
 					className={classnames(
 						'quick_trade-section_wrapper',
 						'quick_trade-bottom-padded',
-						'my-5'
+						'my-5',
+						'd-flex',
+						'flex-column',
+						'align-items-end'
 						// ...GROUP_CLASSES
 					)}
 				>
+					<EditWrapper stringId={'QUICK_TRADE_COMPONENT.BUTTON'} />
 					<Button
 						label={STRINGS['QUICK_TRADE_COMPONENT.BUTTON']}
 						onClick={onReviewQuickTrade}
