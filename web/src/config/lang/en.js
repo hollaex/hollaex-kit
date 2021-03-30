@@ -50,7 +50,14 @@ const nestedContent = {
 	GO_TRADE: 'Go Trade', // new
 	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
+	CONVERT: 'Convert', // new
+	TO: 'To', // new
 	HOME: {
+		MAIN_TITLE: 'Cryptocurrency trading exchange',
+		MAIN_TEXT:
+			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
+		TRADE_CRYPTO: 'Trade crypto',
+		VIEW_EXCHANGE: 'View exchange',
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
 			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
@@ -824,8 +831,8 @@ const nestedContent = {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: 'Price ({0})',
+	AMOUNT_SYMBOL: 'Amount ({0})',
 	MARKET_PRICE: 'Market Price',
 	ORDER_PRICE: 'Order Price',
 	TOTAL_ORDER: 'Order Total',
@@ -1387,7 +1394,7 @@ const nestedContent = {
 	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
-	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'type',
@@ -1423,6 +1430,15 @@ const nestedContent = {
 			'Deposit and withdrawal allowance for all assets ({0})',
 		HEADER_ROW_TYPE: 'Type (All assets)',
 		HEADER_ROW_AMOUNT: 'Amount ({0})',
+	},
+	MARKETS_TABLE: {
+		TITLE: 'Live markets',
+		MARKETS: 'Markets',
+		LAST_PRICE: 'Last price',
+		CHANGE_24H: 'Change (24 hours)',
+		VOLUME_24h: 'Volume (24 hours)',
+		CHART_24H: 'Chart (24 hours)',
+		VIEW_MARKETS: 'View Markets',
 	},
 };
 

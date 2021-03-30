@@ -44,13 +44,14 @@ export const publish = async (configs = {}) => {
 	console.info('Published Successfully');
 };
 
-export const pushVersions = async (configs) => {
+export const pushVersions = async (configs = {}) => {
+	const { sections = {}, ...rest } = configs;
 	const versions = await getVersions();
 	const uniqid = Date.now();
 	Object.keys(configs).forEach((key) => {
 		versions[key] = `${key}-${uniqid}`;
 	});
-	return { ...configs, meta: { versions } };
+	return { ...rest, meta: { versions, sections } };
 };
 
 export const upload = (formData) => {

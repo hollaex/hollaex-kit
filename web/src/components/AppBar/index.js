@@ -23,6 +23,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
+import AnnouncementList from './AnnouncementList';
 
 class AppBar extends Component {
 	state = {
@@ -374,7 +375,7 @@ class AppBar extends Component {
 
 	render() {
 		const {
-			// noBorders,
+			noBorders,
 			token,
 			verifyingToken,
 			isHome,
@@ -383,7 +384,7 @@ class AppBar extends Component {
 			activePath,
 			location,
 			onHelp,
-			// user,
+			user,
 			constants = {},
 			children,
 		} = this.props;
@@ -394,8 +395,6 @@ class AppBar extends Component {
 			walletPending,
 		} = this.state;
 
-		let disableBorder = false;
-		// noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		const { selected } = this.state;
 		const { themeOptions } = this.props;
 		return isMobile ? (
@@ -406,7 +405,8 @@ class AppBar extends Component {
 					'align-items-center',
 					isHome
 						? 'justify-content-between pl-4 pr-4'
-						: 'justify-content-center'
+						: 'justify-content-center',
+					{ 'landing-page-bar': isHome }
 				)}
 			>
 				<Link to="/">
@@ -422,7 +422,8 @@ class AppBar extends Component {
 		) : (
 			<div
 				className={classnames('app_bar d-flex justify-content-between', {
-					'no-borders': disableBorder,
+					'no-borders': noBorders,
+					'landing-page-bar': isHome,
 				})}
 			>
 				<div
@@ -454,6 +455,7 @@ class AppBar extends Component {
 									toggle={this.onToggle}
 								/>
 							</div>
+							<AnnouncementList user={user.email} />
 							<MenuList
 								selectedMenu={selectedMenu}
 								securityPending={securityPending}
@@ -465,6 +467,7 @@ class AppBar extends Component {
 								closeAccountMenu={this.closeAccountMenu}
 								onHelp={onHelp}
 								location={location}
+								user={user}
 							/>
 						</div>
 					) : null

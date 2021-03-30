@@ -53,6 +53,7 @@ class IdentityVerification extends Component {
 				disabled: fullName.length > 0,
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			gender: {
 				type: 'select',
@@ -90,6 +91,7 @@ class IdentityVerification extends Component {
 				],
 				validate: [requiredBoolean],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			dob: {
 				type: 'date-dropdown',
@@ -104,6 +106,7 @@ class IdentityVerification extends Component {
 				endDate: moment().add(1, 'days'),
 				pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}',
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			nationality: {
 				type: 'autocomplete',
@@ -120,6 +123,7 @@ class IdentityVerification extends Component {
 				options: COUNTRIES_OPTIONS,
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			country: {
 				type: 'autocomplete',
@@ -136,6 +140,7 @@ class IdentityVerification extends Component {
 				options: COUNTRIES_OPTIONS,
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			city: {
 				type: 'text',
@@ -151,6 +156,7 @@ class IdentityVerification extends Component {
 					],
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			address: {
 				type: 'text',
@@ -166,6 +172,7 @@ class IdentityVerification extends Component {
 					],
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 			postal_code: {
 				type: 'text',
@@ -181,6 +188,7 @@ class IdentityVerification extends Component {
 					],
 				validate: [required],
 				fullWidth: isMobile,
+				ishorizontalfield: true,
 			},
 		};
 
@@ -227,35 +235,36 @@ class IdentityVerification extends Component {
 					stringId="USER_VERIFICATION.IDENTITY_VERIFICATION"
 					text={STRINGS['USER_VERIFICATION.IDENTITY_VERIFICATION']}
 					textType="title"
+					iconPath={ICONS['VERIFICATION_ID_NEW']}
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
-					<HeaderSection
-						stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"
-						title={
-							STRINGS[
-								'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION'
-							]
-						}
-						iconId="VERIFICATION_ID_NEW"
-						icon={ICONS['VERIFICATION_ID_NEW']}
-						openContactForm={openContactForm}
-					>
-						<div className="my-1 verification-info-txt">
-							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT">
-								{
-									STRINGS[
-										'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT'
-									]
-								}
-							</EditWrapper>
-						</div>
-					</HeaderSection>
-					{renderFields(formFields)}
-					{error && (
-						<div className="warning_text">{getErrorLocalized(error)}</div>
-					)}
-					<div className="d-flex">
-						<div className="w-50">
+					<div className="verification-form-panel mt-3 mb-5">
+						<HeaderSection
+							stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION"
+							title={
+								STRINGS[
+									'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION'
+								]
+							}
+							openContactForm={openContactForm}
+						>
+							<div className="my-1 verification-info-txt">
+								<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT">
+									{
+										STRINGS[
+											'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT'
+										]
+									}
+								</EditWrapper>
+							</div>
+						</HeaderSection>
+						{renderFields(formFields)}
+						{error && (
+							<div className="warning_text">{getErrorLocalized(error)}</div>
+						)}
+					</div>
+					<div className="d-flex justify-content-center align-items-center mt-2">
+						<div className="f-1 d-flex justify-content-end verification-buttons-wrapper">
 							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button
 								label={STRINGS['USER_VERIFICATION.GO_BACK']}
@@ -263,7 +272,7 @@ class IdentityVerification extends Component {
 							/>
 						</div>
 						<div className="separator" />
-						<div className="w-50">
+						<div className="f-1 verification-buttons-wrapper">
 							<EditWrapper stringId="SUBMIT" />
 							<Button
 								type="button"

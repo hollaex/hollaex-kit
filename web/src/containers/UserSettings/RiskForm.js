@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
-import { Accordion, Table, Button } from '../../components';
+import { Table, Button, IconTitle } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import STRINGS from '../../config/localizedStrings';
 import { formatBaseAmount } from '../../utils/currency';
@@ -75,7 +75,7 @@ export const generateWarningFormValues = () => ({
 		type: 'toggle',
 		stringId: 'USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP',
 		label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP'],
-		className: 'toggle-wrapper',
+		// className: 'toggle-wrapper',
 		toggleOnly: true,
 	},
 });
@@ -101,6 +101,7 @@ class RiskForm extends Component {
 			valid,
 			formFields,
 			coins,
+			ICONS,
 		} = this.props;
 		const percentPrice =
 			(totalAssets / 100) * initialValues.order_portfolio_percentage;
@@ -161,14 +162,26 @@ class RiskForm extends Component {
 		];
 		return (
 			<div>
-				<form onSubmit={handleSubmit}>
-					<Accordion sections={sections} />
-					<EditWrapper stringId="SETTING_BUTTON" />
-					<Button
-						className="mt-4"
-						label={STRINGS['SETTING_BUTTON']}
-						disabled={pristine || submitting || !valid}
-					/>
+				<form onSubmit={handleSubmit} className="settings-form-wrapper">
+					{/* <Accordion sections={sections} /> */}
+					<div className="settings-form">
+						<IconTitle
+							stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
+							text={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
+							textType="title"
+							iconPath={ICONS['SETTING_RISK_ICON']}
+						/>
+						{sections.map((data, index) => {
+							return <div key={index}>{data.content}</div>;
+						})}
+					</div>
+					<div className="d-flex align-items-center justify-content-center">
+						<EditWrapper stringId="SETTING_BUTTON" />
+						<Button
+							label={STRINGS['SETTING_BUTTON']}
+							disabled={pristine || submitting || !valid}
+						/>
+					</div>
 				</form>
 			</div>
 		);

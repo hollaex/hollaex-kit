@@ -15,13 +15,14 @@ const renderFields = (fields = {}, callback) => {
 	return (
 		<div>
 			{Object.keys(fields).map((key, index) => {
-				const { type, validate = [], ...rest } = fields[key];
+				const { type, validate = [], ishorizontalfield, ...rest } = fields[key];
 				const commonProps = {
 					callback,
 					key,
 					name: key,
 					type,
 					validate,
+					ishorizontalfield,
 					...rest,
 				};
 

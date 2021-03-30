@@ -12,7 +12,13 @@ class ConfigProvider extends Component {
 	constructor(props) {
 		super(props);
 		const { initialConfig } = this.props;
-		const { icons = {}, color = {}, defaults = {}, coin_icons } = {
+		const {
+			icons = {},
+			color = {},
+			defaults = {},
+			coin_icons,
+			sections = {},
+		} = {
 			...initialConfig,
 		};
 
@@ -29,6 +35,7 @@ class ConfigProvider extends Component {
 			color: calculatedThemes,
 			themeOptions,
 			defaults,
+			sections,
 		};
 	}
 
@@ -79,6 +86,16 @@ class ConfigProvider extends Component {
 		}));
 	};
 
+	updateSections = (sections = {}) => {
+		this.setState((prevState) => ({
+			...prevState,
+			sections: {
+				...prevState.sections,
+				...sections,
+			},
+		}));
+	};
+
 	removeTheme = (keys = []) => {
 		const { color: prevColor } = this.state;
 		const color = {};
@@ -106,13 +123,14 @@ class ConfigProvider extends Component {
 
 	render() {
 		const { children, activeTheme } = this.props;
-		const { icons, color, themeOptions, defaults } = this.state;
+		const { icons, color, themeOptions, defaults, sections } = this.state;
 		const {
 			updateIcons,
 			removeIcon,
 			updateColor,
 			updateDefaults,
 			removeTheme,
+			updateSections,
 		} = this;
 
 		return (
@@ -122,9 +140,11 @@ class ConfigProvider extends Component {
 					icons: icons[activeTheme] || {},
 					allIcons: icons,
 					color,
+					sections,
 					themeOptions,
 					updateIcons,
 					updateColor,
+					updateSections,
 					updateDefaults,
 					removeTheme,
 					removeIcon,

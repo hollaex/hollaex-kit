@@ -33,7 +33,7 @@ import {
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
-import { requestConstant } from 'actions/appActions';
+import { requestConstant, setHomePageSetting } from 'actions/appActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
@@ -71,6 +71,7 @@ const getConfigs = async () => {
 		setup_completed,
 		native_currency,
 		logo_image,
+		features: { home_page = false } = {},
 	} = kitData;
 
 	kitData['sections'] = sections;
@@ -107,6 +108,7 @@ const getConfigs = async () => {
 	setValidLanguages(valid_languages);
 	setExchangeInitialized(initialized);
 	setSetupCompleted(setup_completed);
+	store.dispatch(setHomePageSetting(home_page));
 
 	return merge({}, defaultConfig, remoteConfigs, { coin_icons });
 };

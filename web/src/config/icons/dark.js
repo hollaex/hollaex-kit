@@ -8,6 +8,7 @@ const nestedIcons = {
 		FAV_ICON: '/favicon.ico',
 		LOADER: '/assets/loader-dark.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
+		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
 
 	TRADE: {

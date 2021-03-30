@@ -7,9 +7,10 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
-import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+// import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+// import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
+import AppMenuSidebar from '../../components/AppMenuSidebar';
 
 import {
 	NOTIFICATIONS,
@@ -31,7 +32,7 @@ import { getTokenTimestamp, isLoggedIn, isAdmin } from '../../utils/token';
 import {
 	AppBar,
 	AppMenuBar,
-	Sidebar,
+	// Sidebar,
 	SidebarBottom,
 	Dialog,
 	Notification,
@@ -454,7 +455,7 @@ class App extends Component {
 			// openContactForm,
 			openHelpfulResourcesForm,
 			activeTheme,
-			unreadMessages,
+			// unreadMessages,
 			router,
 			location,
 			enabledPlugins,
@@ -465,14 +466,16 @@ class App extends Component {
 			features,
 			isReady: isSocketDataReady,
 			pairsTradesFetched,
+			verifyToken,
+			token,
 		} = this.props;
 
 		const {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
-			sidebarFitHeight,
-			isSidebarOpen,
+			// sidebarFitHeight,
+			// isSidebarOpen,
 		} = this.state;
 
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -482,7 +485,11 @@ class App extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
-		const isMenubar = true;
+
+		const isHome = this.props.location.pathname === '/';
+		const isMenubar = !isHome;
+		const isMenuSider =
+			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
 		return (
 			<ThemeProvider>
 				<div>
@@ -540,19 +547,25 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								<AppBar
-									router={router}
-									location={location}
-									goToDashboard={this.goToDashboard}
-									logout={this.logout}
-									activePath={activePath}
-									onHelp={openHelpfulResourcesForm}
-								>
-									{isBrowser && isMenubar && isLoggedIn() && (
-										<AppMenuBar router={router} location={location} />
-									)}
-								</AppBar>
-								{isBrowser && (
+								{!isHome && (
+									<AppBar
+										token={token}
+										verifyToken={verifyToken}
+										noBorders={isHome}
+										isHome={isHome}
+										router={router}
+										location={location}
+										goToDashboard={this.goToDashboard}
+										logout={this.logout}
+										activePath={activePath}
+										onHelp={openHelpfulResourcesForm}
+									>
+										{isBrowser && isMenubar && isLoggedIn() && (
+											<AppMenuBar router={router} location={location} />
+										)}
+									</AppBar>
+								)}
+								{isBrowser && !isHome && (
 									<PairTabs
 										activePath={activePath}
 										location={location}
@@ -566,9 +579,18 @@ class App extends Component {
 										'justify-content-between',
 										{
 											'app_container-secondary-content': isMenubar,
+											no_bottom_navigation: isHome,
 										}
 									)}
 								>
+									{isMenuSider ? (
+										<AppMenuSidebar
+											router={router}
+											location={location}
+											logout={this.logout}
+											onHelp={openHelpfulResourcesForm}
+										/>
+									) : null}
 									<div
 										className={classnames(
 											'app_container-main',
@@ -577,6 +599,7 @@ class App extends Component {
 											'justify-content-between',
 											{
 												'overflow-y': !isMobile,
+												no_bottom_navigation: isHome,
 											}
 										)}
 									>
@@ -587,7 +610,7 @@ class App extends Component {
 											isReady={pairsTradesFetched}
 										/>
 									</div>
-									{isBrowser && (
+									{/* {isBrowser && !isHome && (
 										<div
 											className={classnames('app_container-sidebar', {
 												'close-sidebar': !isSidebarOpen,
@@ -623,9 +646,9 @@ class App extends Component {
 												sidebarFitHeight={sidebarFitHeight}
 											/>
 										</div>
-									)}
+									)} */}
 									<Dialog
-										isOpen={dialogIsOpen}
+										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"
 										className={classnames('app-dialog', {
 											'app-dialog-flex':
@@ -659,7 +682,7 @@ class App extends Component {
 												// activeTheme
 											)}
 									</Dialog>
-									{!isMobile && features && features.chat && (
+									{!isMobile && !isHome && features && features.chat && (
 										<ChatComponent
 											activeLanguage={activeLanguage}
 											minimized={chatIsClosed}
@@ -668,7 +691,7 @@ class App extends Component {
 										/>
 									)}
 								</div>
-								{isMobile && (
+								{isMobile && !isHome && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
 											isLogged={isLoggedIn()}
