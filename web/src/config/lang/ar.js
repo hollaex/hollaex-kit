@@ -135,66 +135,67 @@ const nestedContent = {
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
-		REQUEST_TITLE: 'درخواست دسترسی',
-		REQUEST_INVITE: 'درخواست دعوت',
-		CATEGORY_PLACEHOLDER: 'به هریک از بخش های زیر پاسخ های متناسب بدهید',
-		INTRODUCTION_LABEL: 'خودتان رو معرفی کنید',
+		REQUEST_TITLE: 'طلب الدخول',
+		REQUEST_INVITE: 'طلب دعوة',
+		CATEGORY_PLACEHOLDER: 'حدد الفئة التي تناسب مشكلتك',
+		INTRODUCTION_LABEL: 'عرف نفسك',
 		INTRODUCTION_PLACEHOLDER:
-			'ساکن کدام کشور هستید ؟ و آیا علاقه به راه اندازی اکسچنج دارید؟',
+			'أين تقيم ، هل أنت مهتم بإجراء بورصة؟',
 	},
 	CONTACT_FORM: {
-		CATEGORY_LABEL: 'بخش',
+		CATEGORY_LABEL: 'الفئة',
 		CATEGORY_PLACEHOLDER:
-			'هریک از بخش های زیر که با درخواست شما متناسب است را انتخاب کنید',
+			'حدد الفئة التي تناسب مشكلتك',
 		CATEGORY_OPTIONS: {
-			OPTION_VERIFY: 'تایید کاربر',
-			OPTION_LEVEL: 'ارتقای سطح کاربری',
-			OPTION_DEPOSIT: 'واریز و برداشت',
-			OPTION_BUG: 'گزارش خطا', // ToDo:
-			OPTION_PERSONAL_INFO: 'تغییر اطلاعات شخصی', // ToDo:
-			OPTION_BANK_TRANSFER: 'تراکنش بانکی', // new
-			OPTION_REQUEST: 'درخواست دعوت به اکسچنج HollaEx', // new
+			OPTION_VERIFY: 'التحقق من المستخدم',
+			OPTION_LEVEL: 'زيادة مستوى المستخدم',
+			OPTION_DEPOSIT: 'الإيداع والسحب',
+			OPTION_BUG: 'تقرير خلل برمجي', // ToDo:
+			OPTION_PERSONAL_INFO: 'تغيير المعلومات الشخصية', // ToDo:
+			OPTION_BANK_TRANSFER: 'تحويل بنكي', // new
+			OPTION_REQUEST: 'طلب دعوة لبورصة HollaEx', // new
 		},
 		SUBJECT_LABEL: 'موضوع',
-		SUBJECT_PLACEHOLDER: 'موضوع مشکل خود را تایپ کنید',
-		DESCRIPTION_LABEL: 'توضیحات',
-		DESCRIPTION_PLACEHOLDER: 'مشکل خود را با شرح جزییات بیان نمایید',
-		ATTACHMENT_LABEL: 'حداکثر تا 3 قایل می تواند پیوست کنید', // ToDo:
+		SUBJECT_PLACEHOLDER: 'اكتب موضوع مشكلتك',
+		DESCRIPTION_LABEL: 'وصف',
+		DESCRIPTION_PLACEHOLDER: 'اكتب بالتفصيل ما هي المشكلة',
+		ATTACHMENT_LABEL: 'أضف مرفقات (3 كحد أقصى)', // ToDo:
 		ATTACHMENT_PLACEHOLDER:
-			'برای شرح بهتر مشکل خود می توانید فایل هایی با فرمت PDF,JPG,PNG,GIF پیوست نمایید',
-		SUCCESS_MESSAGE: 'ایمیل به تیم پشتیبانی ارسال شد',
-		SUCCESS_TITLE: 'پیام ارسال شد',
-		SUCCESS_MESSAGE_1: 'مشکل شما به تیم پشتیبانی کاربران ارسال گردید',
-		SUCCESS_MESSAGE_2: 'حداکثر تا 3 روز آینده منتظر پاسخ ما باشید',
+			'أضف ملفًا للمساعدة في إبلاغ مشكلتك. يتم قبول ملفات PDF و JPG و PNG و GIF',
+		SUCCESS_MESSAGE: 'تم إرسال البريد الإلكتروني لموظفينا في قسم الدعم.',
+		SUCCESS_TITLE: 'تم ارسال الرسالة',
+		SUCCESS_MESSAGE_1: 'تم إرسال مشكلتك إلى قسم دعم العملاء',
+		SUCCESS_MESSAGE_2: 'سوف يتم الرد خلال 1-3 أيام.',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
-			ADDRESS: '{0}آدرس دریافت شما', // new
-			DESTINATION_TAG: 'برچسب مقصد {0 شما}', // new
-			BTC: 'آدرس شما برای دریافت بیتکوین',
-			ETH: 'آدرس شما برای دریافت اتریوم',
-			BCH: 'آدرس شما برای دریافت بیتکوین کش',
+			ADDRESS: 'عنوان الاستلام {0} الخاص بك', // new
+			DESTINATION_TAG:'ملصق الوجهة {0} الخاصة بك', // new
+			MEMO: 'مذكرتك {0}', // new, Perisna should be added in Persian lang
+			BTC: 'عنوان استلام Bitcoin الخاص بك',
+			ETH: 'عنوان استلام Ethereum الخاص بك',
+			BCH: 'عنوان استلام  Bitcoin Cash الخاص بك',
 		},
-		INCREASE_LIMIT: 'میخواهید سقف برداشت روزانه خود را افزایش دهید',
+		INCREASE_LIMIT: 'هل تريد زيادة الحد اليومي الخاص بك؟',
 		QR_CODE:
-			'کافیست برای ارسال پول توسط دیگران،این کد توسط شخص پرداخت کننده اسکن شود',
-		NO_DATA: 'اطلاعاتی موجود نمی باشد',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
+			'يمكن فحص رمز الاستجابة السريعة(QR Code)  هذا بواسطة الشخص الذي يريد إرسال الأموال إليك',
+		NO_DATA: 'لا توجد معلومات متاحة',
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {الحد الأقصى للإيداع اليومي}:  1 -> {1,000} 2 -> {Currency} 3 -> {(تريد زيادة الحد اليومي الخاص بك؟)}
 	},
 	LOGIN: {
-		LOGIN_TO: 'ورود به {0}',
-		CANT_LOGIN: 'نمی توانید وارد شوید؟',
-		NO_ACCOUNT: 'هنوز حساب کاربری ایجاد نکرده اید؟',
-		CREATE_ACCOUNT: 'همین الان یک حساب کاربری بسازید',
-		HELP: 'راهنما',
+		LOGIN_TO: 'تسجيل الدخول إلى {0}',
+		CANT_LOGIN: 'لا تستطيع تسجيل الدخول؟',
+		NO_ACCOUNT: 'ليس لديك حساب؟',
+		CREATE_ACCOUNT: 'قم بإنشاء واحد هنا',
+		HELP: 'مساعدة',
 	},
 	FORM_FIELDS: {
-		EMAIL_LABEL: 'ایمیل',
-		EMAIL_PLACEHOLDER: 'ایمیل خود را وارد کنید',
-		PASSWORD_LABEL: 'کلمه عبور',
-		PASSWORD_PLACEHOLDER: 'کلمه عبور خود را وارد کنید',
-		PASSWORD_REPEAT_LABEL: 'مجددا کلمه عبور خود را وارد کنید',
-		PASSWORD_REPEAT_PLACEHOLDER: 'مجددا کلمه عبور خود را وارد کنید',
+		EMAIL_LABEL: 'البريد الإلكتروني',
+		EMAIL_PLACEHOLDER: 'اكتب البريد الالكتروني الخاص بك',
+		PASSWORD_LABEL: 'كلمه السر',
+		PASSWORD_PLACEHOLDER: 'اكتب كلمة المرور الخاصة بك',
+		PASSWORD_REPEAT_LABEL: 'أعد كتابة كلمة المرور الخاصة بك',
+		PASSWORD_REPEAT_PLACEHOLDER: 'أعد كتابة كلمة المرور الخاصة بك',
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
