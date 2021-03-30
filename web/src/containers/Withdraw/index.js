@@ -36,6 +36,7 @@ class Withdraw extends Component {
 		formValues: {},
 		initialValues: {},
 		checked: false,
+		currency: '',
 	};
 
 	componentWillMount() {
@@ -165,11 +166,12 @@ class Withdraw extends Component {
 			dispatch,
 			verification_level,
 			coins,
+			config_level = {},
 		} = this.props;
+		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_limits = {} } =
-			coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -183,13 +185,13 @@ class Withdraw extends Component {
 		if (amount < 0) {
 			amount = 0;
 		} else if (
-			math.larger(amount, math.number(withdrawal_limits[verification_level])) &&
-			withdrawal_limits[verification_level] !== 0 &&
-			withdrawal_limits[verification_level] !== -1
+			math.larger(amount, math.number(withdrawal_limit)) &&
+			withdrawal_limit !== 0 &&
+			withdrawal_limit !== -1
 		) {
 			amount = math.number(
 				math.subtract(
-					math.fraction(withdrawal_limits[verification_level]),
+					math.fraction(withdrawal_limit),
 					math.fraction(selectedFee)
 				)
 			);
@@ -255,7 +257,7 @@ class Withdraw extends Component {
 				{isMobile && (
 					<MobileBarBack onBackClick={this.onGoBack}></MobileBarBack>
 				)}
-				<div className="presentation_container apply_rtl">
+				<div className="presentation_container apply_rtl withdrawal-container">
 					{!isMobile &&
 						renderTitleSection(
 							currency,
@@ -308,6 +310,7 @@ const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	activeTheme: store.app.theme,
 	constants: store.app.constants,
+	config_level: store.app.config_level,
 });
 
 const mapDispatchToProps = (dispatch) => ({

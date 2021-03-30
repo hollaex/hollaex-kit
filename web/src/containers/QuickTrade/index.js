@@ -33,7 +33,7 @@ class QuickTradeContainer extends PureComponent {
 		const [, selectedSource = sourceOptions[0]] = pair.split('-');
 		const targetOptions = this.getTargetOptions(selectedSource);
 		const [selectedTarget = targetOptions[0]] = pair.split('-');
-		const { close: tickerClose } = tickers[pair];
+		const { close: tickerClose } = tickers[pair] || {};
 
 		this.state = {
 			pair,
@@ -66,16 +66,30 @@ class QuickTradeContainer extends PureComponent {
 	componentDidMount() {
 		if (
 			this.props.constants &&
+			this.props.constants.features &&
 			!this.props.constants.features.quick_trade &&
 			!this.props.fetchingAuth
 		) {
 			this.props.router.push('/account');
+		}
+		if (this.props.sourceOptions && this.props.sourceOptions.length) {
+			this.constructTraget();
 		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			!prevProps.sourceOptions.length &&
+			JSON.stringify(prevProps.sourceOptions) !==
+				JSON.stringify(this.props.sourceOptions)
+		) {
+			this.constructTraget();
 		}
 	}
 
@@ -229,6 +243,20 @@ class QuickTradeContainer extends PureComponent {
 		this.goToPair(pair);
 	};
 
+	constructTraget = () => {
+		const {
+			sourceOptions,
+			routeParams: { pair = '' },
+		} = this.props;
+		const [, selectedSource = sourceOptions[0]] = pair.split('-');
+		const targetOptions = this.getTargetOptions(selectedSource);
+		const [selectedTarget = targetOptions[0]] = pair.split('-');
+		this.setState({
+			selectedTarget,
+			targetOptions,
+		});
+	};
+
 	getTargetOptions = (sourceKey) => {
 		const { sourceOptions, pairs } = this.props;
 
@@ -345,7 +373,7 @@ class QuickTradeContainer extends PureComponent {
 						symbol={pair}
 						theme={activeTheme}
 						disabled={this.isReviewDisabled()}
-						orderLimits={orderLimits[pair]}
+						orderLimits={orderLimits[pair] || {}}
 						pairs={pairs}
 						coins={coins}
 						sourceOptions={sourceOptions}
@@ -379,7 +407,7 @@ class QuickTradeContainer extends PureComponent {
 										/>
 										<ReviewBlock
 											symbol={selectedTarget}
-											text={'Estimated Recieving Amount'}
+											text={'Estimated Receiving Amount'}
 											amount={targetAmount}
 										/>
 										<footer className="d-flex pt-4">

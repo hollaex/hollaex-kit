@@ -5,6 +5,7 @@ import { message, Spin } from 'antd';
 import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
 import { updatePluginMeta, getPluginMeta } from './action';
+import { TOKEN_KEY, PLUGIN_URL } from '../../../config/constants';
 import './index.css';
 
 const Form = AdminHocForm('PLUGIN_CONFIGURE_FORM');
@@ -56,6 +57,8 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 			</div>
 		);
 	} else if (selectedPlugin.admin_view) {
+		window.plugin_key = TOKEN_KEY;
+		window.plugin_url = PLUGIN_URL;
 		return (
 			<div className="config-content mt-5 pb-5">
 				<div className="mt-2">Configure</div>

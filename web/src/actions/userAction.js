@@ -298,7 +298,7 @@ export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
 			.get('/user/logins')
 			.then((body) => {
 				dispatch({
-					type: 'USER_DEPOSITS_FULFILLED',
+					type: 'USER_LOGINS_FULFILLED',
 					payload: {
 						...body.data,
 						page,
@@ -311,7 +311,7 @@ export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
 			})
 			.catch((err) => {
 				dispatch({
-					type: 'USER_DEPOSITS_REJECTED',
+					type: 'USER_LOGINS_REJECTED',
 					payload: err.response,
 				});
 			});

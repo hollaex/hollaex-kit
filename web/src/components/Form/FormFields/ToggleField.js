@@ -51,6 +51,7 @@ class ToggleField extends Component {
 			meta = { active: false, error: '', touched: false, invalid: false },
 			toggleOnly,
 			disabled,
+			isHideToggleText,
 			...rest
 		} = this.props;
 		const { selected } = this.state;
@@ -63,6 +64,7 @@ class ToggleField extends Component {
 						disabled={disabled}
 						name={input.name}
 						onToogle={this.onToogle}
+						isHideToggleText={isHideToggleText}
 					/>
 				) : (
 					<FieldContent
@@ -79,6 +81,7 @@ class ToggleField extends Component {
 								disabled={disabled}
 								name={input.name}
 								onToogle={this.onToogle}
+								isHideToggleText={isHideToggleText}
 							/>
 						</div>
 					</FieldContent>
@@ -88,7 +91,14 @@ class ToggleField extends Component {
 	}
 }
 
-const Toggle = ({ options, selected, onToogle, disabled, name }) => (
+const Toggle = ({
+	options,
+	selected,
+	onToogle,
+	disabled,
+	name,
+	isHideToggleText = false,
+}) => (
 	<div className={classnames('toggle_button-wrapper', 'd-flex')}>
 		<div
 			className={classnames(
@@ -98,13 +108,15 @@ const Toggle = ({ options, selected, onToogle, disabled, name }) => (
 				'direction_ltr'
 			)}
 		>
-			<div
-				className={classnames({
-					selected: options[1].value === selected && !disabled,
-				})}
-			>
-				{options[1].label}
-			</div>
+			{!isHideToggleText ? (
+				<div
+					className={classnames({
+						selected: options[1].value === selected && !disabled,
+					})}
+				>
+					{options[1].label}
+				</div>
+			) : null}
 			<div
 				onClick={name === 'all' || !disabled ? onToogle : () => {}}
 				className={classnames('toggle-action_button', {
@@ -115,13 +127,15 @@ const Toggle = ({ options, selected, onToogle, disabled, name }) => (
 			>
 				<div className="toggle-action_button-display" />
 			</div>
-			<div
-				className={classnames({
-					selected: options[0].value === selected && !disabled,
-				})}
-			>
-				{options[0].label}
-			</div>
+			{!isHideToggleText ? (
+				<div
+					className={classnames({
+						selected: options[0].value === selected && !disabled,
+					})}
+				>
+					{options[0].label}
+				</div>
+			) : null}
 		</div>
 	</div>
 );

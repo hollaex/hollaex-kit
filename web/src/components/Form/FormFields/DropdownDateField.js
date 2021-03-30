@@ -97,7 +97,7 @@ class DropdownDateField extends Component {
 			month: moment.months(),
 			day: range(1, date.daysInMonth() + 1),
 		};
-		display.ko = {
+		display[language] = {
 			...limits.en,
 			month: moment.months(),
 			day: range(1, date.daysInMonth() + 1),

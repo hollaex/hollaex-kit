@@ -35,6 +35,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 
 				.footer-links-section--list {
 					min-width: 8rem;
+					text-transform: capitalize;
 
 					.social_icon {
 						width: 1rem;
@@ -51,16 +52,18 @@ $footer-logo-color: $trade-tabs-inactive-color;
 		}
 		.footer_separter {
 			border-left: 1px solid $footer-wrapper--border-color;
+			margin-left: 0.5rem;
+
 			.footer-txt {
 				width: 25rem;
-				margin-left: 1rem;
+				margin-left: 1.5rem;
 			}
 			.footer-logo {
 				background-size: contain;
-				background-position: center;
+				// background-position: center;
 				background-repeat: no-repeat;
 				height: 6rem !important;
-				margin-left: 1rem;
+				margin-left: 1.5rem;
 				width: 7rem;
 			}
 			svg {

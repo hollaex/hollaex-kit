@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Image from 'components/Image';
+// import Image from 'components/Image';
 import classnames from 'classnames';
 
 import { IS_XHT } from '../../config/constants';
@@ -175,16 +175,19 @@ class AppMenuBar extends Component {
 	};
 
 	render() {
-		const { icons: ICONS, constants } = this.props;
+		const {
+			// icons: ICONS,
+			constants,
+		} = this.props;
 		const {
 			activeMenu,
-			securityPending,
-			verificationPending,
+			// securityPending,
+			// verificationPending,
 			walletPending,
 		} = this.state;
 		return (
 			<div className="app-menu-bar-wrapper d-flex justify-content-start">
-				<div className="app-menu-bar d-flex align-items-end justify-content-start title-font apply_rtl">
+				<div className="app-menu-bar d-flex align-items-start justify-content-start title-font apply_rtl">
 					<div
 						className={classnames('app-menu-bar-content d-flex', {
 							'active-menu': activeMenu === 'summary',
@@ -192,10 +195,10 @@ class AppMenuBar extends Component {
 						onClick={() => this.handleMenuChange('summary')}
 					>
 						<div className="app-menu-bar-content-item d-flex">
-							<Image
+							{/* <Image
 								icon={ICONS['TAB_SUMMARY']}
 								wrapperClassName="app-menu-bar-icon"
-							/>
+							/> */}
 							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY" iconId="TAB_SUMMARY">
 								{STRINGS['ACCOUNTS.TAB_SUMMARY']}
 							</EditWrapper>
@@ -209,10 +212,10 @@ class AppMenuBar extends Component {
 							onClick={() => this.handleMenuChange('pro-trade')}
 						>
 							<div className="app-menu-bar-content-item d-flex">
-								<Image
+								{/* <Image
 									icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
 									wrapperClassName="app-menu-bar-icon"
-								/>
+								/> */}
 								<EditWrapper
 									stringId="PRO_TRADE"
 									iconId="SIDEBAR_TRADING_ACTIVE"
@@ -230,10 +233,10 @@ class AppMenuBar extends Component {
 							onClick={() => this.handleMenuChange('quick-trade')}
 						>
 							<div className="app-menu-bar-content-item d-flex">
-								<Image
+								{/* <Image
 									icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
 									wrapperClassName="app-menu-bar-icon"
-								/>
+								/> */}
 								<EditWrapper
 									stringId="QUICK_TRADE"
 									iconId="QUICK_TRADE_TAB_ACTIVE"
@@ -256,16 +259,16 @@ class AppMenuBar extends Component {
 									{walletPending}
 								</div>
 							)}
-							<Image
+							{/* <Image
 								icon={ICONS['TAB_WALLET']}
 								wrapperClassName="app-menu-bar-icon"
-							/>
+							/> */}
 							<EditWrapper stringId="ACCOUNTS.TAB_WALLET" iconId="TAB_WALLET">
 								{STRINGS['ACCOUNTS.TAB_WALLET']}
 							</EditWrapper>
 						</div>
 					</div>
-					<div
+					{/* <div
 						className={classnames('app-menu-bar-content d-flex', {
 							'active-menu': activeMenu === 'transactions',
 						})}
@@ -280,8 +283,8 @@ class AppMenuBar extends Component {
 								{STRINGS['ACCOUNTS.TAB_HISTORY']}
 							</EditWrapper>
 						</div>
-					</div>
-					<div
+					</div> */}
+					{/* <div
 						className={classnames('app-menu-bar-content d-flex', {
 							notification: !!securityPending,
 							'active-menu': activeMenu === 'security',
@@ -305,8 +308,8 @@ class AppMenuBar extends Component {
 								{STRINGS['ACCOUNTS.TAB_SECURITY']}
 							</EditWrapper>
 						</div>
-					</div>
-					<div
+					</div> */}
+					{/* <div
 						className={classnames('app-menu-bar-content d-flex', {
 							notification: !!verificationPending && !IS_XHT,
 							'active-menu': activeMenu === 'verification',
@@ -330,8 +333,8 @@ class AppMenuBar extends Component {
 								{STRINGS['ACCOUNTS.TAB_VERIFICATION']}
 							</EditWrapper>
 						</div>
-					</div>
-					<div
+					</div> */}
+					{/* <div
 						className={classnames('app-menu-bar-content d-flex', {
 							'active-menu': activeMenu === 'settings',
 						})}
@@ -349,7 +352,7 @@ class AppMenuBar extends Component {
 								{STRINGS['ACCOUNTS.TAB_SETTINGS']}
 							</EditWrapper>
 						</div>
-					</div>
+					</div> */}
 					{/* <div
                         className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'api' })}
                         onClick={() => this.handleMenuChange('api')}>

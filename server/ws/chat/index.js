@@ -10,6 +10,7 @@ const { isUserBanned } = require('./ban');
 const moment = require('moment');
 const { subscriber, publisher } = require('../../db/pubsub');
 const { getChannels } = require('../channel');
+const WebSocket = require('ws');
 
 const MESSAGES_KEY = 'WS:MESSAGES';
 let MESSAGES = [];
@@ -68,11 +69,13 @@ const deleteMessage = (idToDelete) => {
 
 const publishChatMessage = (event, data) => {
 	each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
-		ws.send(JSON.stringify({
-			topic: 'chat',
-			action: event,
-			data
-		}));
+		if (ws.readyState === WebSocket.OPEN) {
+			ws.send(JSON.stringify({
+				topic: 'chat',
+				action: event,
+				data
+			}));
+		}
 	});
 };
 
