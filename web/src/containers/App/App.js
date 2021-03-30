@@ -7,9 +7,10 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
-import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+// import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+// import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
+import AppMenuSidebar from '../../components/AppMenuSidebar';
 
 import {
 	NOTIFICATIONS,
@@ -31,7 +32,7 @@ import { getTokenTimestamp, isLoggedIn, isAdmin } from '../../utils/token';
 import {
 	AppBar,
 	AppMenuBar,
-	Sidebar,
+	// Sidebar,
 	SidebarBottom,
 	Dialog,
 	Notification,
@@ -454,7 +455,7 @@ class App extends Component {
 			// openContactForm,
 			openHelpfulResourcesForm,
 			activeTheme,
-			unreadMessages,
+			// unreadMessages,
 			router,
 			location,
 			enabledPlugins,
@@ -473,8 +474,8 @@ class App extends Component {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
-			sidebarFitHeight,
-			isSidebarOpen,
+			// sidebarFitHeight,
+			// isSidebarOpen,
 		} = this.state;
 
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -487,6 +488,8 @@ class App extends Component {
 
 		const isHome = this.props.location.pathname === '/';
 		const isMenubar = !isHome;
+		const isMenuSider =
+			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
 		return (
 			<ThemeProvider>
 				<div>
@@ -580,6 +583,14 @@ class App extends Component {
 										}
 									)}
 								>
+									{isMenuSider ? (
+										<AppMenuSidebar
+											router={router}
+											location={location}
+											logout={this.logout}
+											onHelp={openHelpfulResourcesForm}
+										/>
+									) : null}
 									<div
 										className={classnames(
 											'app_container-main',
@@ -599,7 +610,7 @@ class App extends Component {
 											isReady={pairsTradesFetched}
 										/>
 									</div>
-									{isBrowser && !isHome && (
+									{/* {isBrowser && !isHome && (
 										<div
 											className={classnames('app_container-sidebar', {
 												'close-sidebar': !isSidebarOpen,
@@ -635,7 +646,7 @@ class App extends Component {
 												sidebarFitHeight={sidebarFitHeight}
 											/>
 										</div>
-									)}
+									)} */}
 									<Dialog
 										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"

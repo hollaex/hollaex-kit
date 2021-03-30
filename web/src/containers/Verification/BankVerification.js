@@ -43,6 +43,7 @@ class BankVerification extends Component {
 				],
 			validate: [required],
 			fullWidth: isMobile,
+			ishorizontalfield: true,
 		};
 		formFields.account_number = {
 			type: 'text',
@@ -67,6 +68,7 @@ class BankVerification extends Component {
 			],
 			maxLength: 50,
 			fullWidth: isMobile,
+			ishorizontalfield: true,
 		};
 		this.setState({ formFields });
 	};
@@ -102,7 +104,7 @@ class BankVerification extends Component {
 			error,
 			openContactForm,
 			icon,
-			iconId,
+			// iconId,
 		} = this.props;
 		const { formFields } = this.state;
 		return (
@@ -111,49 +113,50 @@ class BankVerification extends Component {
 					stringId="USER_VERIFICATION.BANK_VERIFICATION"
 					text={STRINGS['USER_VERIFICATION.BANK_VERIFICATION']}
 					textType="title"
+					iconPath={icon}
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
-					<HeaderSection
-						stringId="USER_VERIFICATION.TITLE_BANK_ACCOUNT"
-						title={STRINGS['USER_VERIFICATION.TITLE_BANK_ACCOUNT']}
-						iconId={iconId}
-						icon={icon}
-						openContactForm={openContactForm}
-					>
-						<div className="my-2">
-							<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_1">
-								{STRINGS['USER_VERIFICATION.BANK_VERIFICATION_TEXT_1']}
-							</EditWrapper>
-						</div>
-						<div className="my-2">
-							<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_2">
-								{STRINGS['USER_VERIFICATION.BANK_VERIFICATION_TEXT_2']}
-							</EditWrapper>
-						</div>
-						<ul className="pl-4">
-							<li className="my-1">
-								<EditWrapper stringId="USER_VERIFICATION.BASE_WITHDRAWAL">
-									{STRINGS['USER_VERIFICATION.BASE_WITHDRAWAL']}
+					<div className="verification-form-panel mt-3 mb-5">
+						<HeaderSection
+							stringId="USER_VERIFICATION.TITLE_BANK_ACCOUNT"
+							title={STRINGS['USER_VERIFICATION.TITLE_BANK_ACCOUNT']}
+							openContactForm={openContactForm}
+						>
+							<div className="my-2">
+								<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_1">
+									{STRINGS['USER_VERIFICATION.BANK_VERIFICATION_TEXT_1']}
 								</EditWrapper>
-							</li>
-							<li className="my-1">
-								<EditWrapper stringId="USER_VERIFICATION.BASE_DEPOSITS">
-									{STRINGS['USER_VERIFICATION.BASE_DEPOSITS']}
+							</div>
+							<div className="my-2">
+								<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_TEXT_2">
+									{STRINGS['USER_VERIFICATION.BANK_VERIFICATION_TEXT_2']}
 								</EditWrapper>
-							</li>
-							<li className="my-1">
-								<EditWrapper stringId="USER_VERIFICATION.WARNING.LIST_ITEM_3">
-									{STRINGS['USER_VERIFICATION.WARNING.LIST_ITEM_3']}
-								</EditWrapper>
-							</li>
-						</ul>
-					</HeaderSection>
-					{renderFields(formFields)}
-					{error && (
-						<div className="warning_text">{getErrorLocalized(error)}</div>
-					)}
-					<div className="d-flex">
-						<div className="w-50">
+							</div>
+							<ul className="pl-4">
+								<li className="my-1">
+									<EditWrapper stringId="USER_VERIFICATION.BASE_WITHDRAWAL">
+										{STRINGS['USER_VERIFICATION.BASE_WITHDRAWAL']}
+									</EditWrapper>
+								</li>
+								<li className="my-1">
+									<EditWrapper stringId="USER_VERIFICATION.BASE_DEPOSITS">
+										{STRINGS['USER_VERIFICATION.BASE_DEPOSITS']}
+									</EditWrapper>
+								</li>
+								<li className="my-1">
+									<EditWrapper stringId="USER_VERIFICATION.WARNING.LIST_ITEM_3">
+										{STRINGS['USER_VERIFICATION.WARNING.LIST_ITEM_3']}
+									</EditWrapper>
+								</li>
+							</ul>
+						</HeaderSection>
+						{renderFields(formFields)}
+						{error && (
+							<div className="warning_text">{getErrorLocalized(error)}</div>
+						)}
+					</div>
+					<div className="d-flex justify-content-center align-items-center mt-2">
+						<div className="f-1 d-flex justify-content-end verification-buttons-wrapper">
 							<EditWrapper stringId="USER_VERIFICATION.GO_BACK" />
 							<Button
 								label={STRINGS['USER_VERIFICATION.GO_BACK']}
@@ -161,7 +164,7 @@ class BankVerification extends Component {
 							/>
 						</div>
 						<div className="separator" />
-						<div className="w-50">
+						<div className="f-1 verification-buttons-wrapper">
 							<EditWrapper stringId="SUBMIT" />
 							<Button
 								label={STRINGS['SUBMIT']}

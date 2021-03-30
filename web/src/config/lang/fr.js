@@ -957,8 +957,6 @@ export default {
 	WALLET_TABLE_AMOUNT_IN: `Montant en {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'Toutes les monnaies',
-	WALLET_DEPOSIT_USD:
-		"Pour la devise fiat D / W dans différents pays et d'autres demandes relatives au portefeuille {0}.", // new
 	HIDE_TEXT: 'Cacher',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Vendeurs',

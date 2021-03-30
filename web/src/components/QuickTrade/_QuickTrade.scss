@@ -50,6 +50,7 @@ $title-icon--height: 10rem;
 	background-color: $quick-trade-container;
 	margin: 3rem auto;
 	height: fit-content;
+	// border: 1px solid $colors-main-border;
 
 	.review-block-wrapper,
 	.input_block-wrapper,
@@ -256,10 +257,10 @@ $title-icon--height: 10rem;
 }
 
 .layout-mobile {
-	.quick_trade-wrapper {
-		margin-top: 0;
-		margin-bottom: 0;
-	}
+	// .quick_trade-wrapper {
+	// 	margin-top: 0;
+	// 	margin-bottom: 0;
+	// }
 	.quick_trade-section_wrapper {
 		.toogle_button-wrapper {
 			.toogle-content {

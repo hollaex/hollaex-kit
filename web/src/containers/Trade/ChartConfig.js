@@ -9,7 +9,7 @@ const TRADING_VIEW_TEXT = '#292b2c';
 
 export const getToolbarBG = (theme, colors = {}) => {
 	const themeData = colors[theme] || {};
-	return themeData['base_background'] || BACKGROUND_COLOR;
+	return themeData['base_wallet-sidebar-and-popup'] || BACKGROUND_COLOR;
 };
 
 export const getWidgetTheme = (base_background = BACKGROUND_COLOR) => {
@@ -21,7 +21,8 @@ export const getTheme = ({
 	'trading_selling-related-elements': sell = DOWN_COLOR_WHITE,
 	...rest
 }) => ({
-	'paneProperties.background': rest['base_background'] || BACKGROUND_COLOR,
+	'paneProperties.background':
+		rest['base_wallet-sidebar-and-popup'] || BACKGROUND_COLOR,
 	'paneProperties.vertGridProperties.color':
 		rest['calculated_trad-view_axis'] || TRADING_VIEW_AXIS,
 	'paneProperties.horzGridProperties.color':
@@ -33,7 +34,7 @@ export const getTheme = ({
 	'scalesProperties.textColor':
 		rest['calculated_trad-view_text'] || TRADING_VIEW_TEXT,
 	'scalesProperties.backgroundColor':
-		rest['base_background'] || BACKGROUND_COLOR,
+		rest['base_wallet-sidebar-and-popup'] || BACKGROUND_COLOR,
 	'mainSeriesProperties.showPriceLine': true,
 	// Candles-property
 	'mainSeriesProperties.candleStyle.upColor': buy,

@@ -906,8 +906,6 @@ const nestedContent = {
 	WALLET_TABLE_AMOUNT_IN: `مقدار در {0}`,
 	WALLET_TABLE_TOTAL: 'جمع کل',
 	WALLET_ALL_ASSETS: 'مجموع دارایی ها',
-	WALLET_DEPOSIT_USD:
-		'برای درخواست های {0 واریز و برداشت انواع ارزهای کشورهای مختلف}', // new
 	HIDE_TEXT: 'مخفی',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'فروشندگان',

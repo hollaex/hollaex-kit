@@ -26,14 +26,26 @@ const pushCumulativeAmounts = (orders) => {
 	});
 };
 
+const round = (number, depth) => {
+	let result = math.chain(number).divide(depth).round().multiply(depth).done();
+
+	// this is to prevent setting the price to 0
+	if (!result) {
+		result = math.chain(number).divide(depth).ceil().multiply(depth).done();
+	}
+
+	return result;
+};
+
 const calculateOrders = (orders, depth) =>
 	orders.reduce((result, [price, size]) => {
 		const lastIndex = result.length - 1;
 		const [lastPrice, lastSize] = result[lastIndex] || [];
-		if (lastPrice && Math.abs(price - lastPrice) < depth) {
+
+		if (lastPrice && math.equal(round(price, depth), lastPrice)) {
 			result[lastIndex] = [lastPrice, lastSize + size];
 		} else {
-			result.push([price, size]);
+			result.push([round(price, depth), size]);
 		}
 
 		return result;
@@ -51,11 +63,11 @@ const getDepth = (state) => state.orderbook.depth;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
-	(pairsOrders, pair, level, pairs, depthLevel) => {
-		const { increment_price } = pairs[pair] || {};
+	(pairsOrders, pair, level, pairs, depthLevel = 1) => {
+		const { increment_price = 1 } = pairs[pair] || {};
 		const { asks: rawAsks = [], bids: rawBids = [] } = pairsOrders[pair] || {};
 
-		const depth = depthLevel * increment_price;
+		const depth = math.multiply(depthLevel, increment_price);
 		const calculatedAsks = calculateOrders(rawAsks, depth);
 		const calculatedBids = calculateOrders(rawBids, depth);
 

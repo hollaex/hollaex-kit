@@ -1,6 +1,6 @@
 
 .layout__area--top div {
-    background-color: var(--base_background) !important;
+    background-color: var(--base_wallet-sidebar-and-popup) !important;
 }
 
 .screen-container {

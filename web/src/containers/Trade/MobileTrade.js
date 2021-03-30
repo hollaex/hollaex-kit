@@ -26,12 +26,13 @@ const MobileTrade = ({
 				'd-flex',
 				'justify-content-between',
 				'f-1',
-				'apply_rtl'
+				'apply_rtl',
+				'w-100'
 			)}
 		>
 			<TradeBlock
 				title={''}
-				className="p-relative order-book flex-column"
+				className="p-relative order-book flex-column w-50"
 				alignChildY={true}
 			>
 				{/* <Link className={classnames('blue-link', 'mb-2', 'caps')} to={`/quick-trade/${pair}`}>
@@ -49,7 +50,7 @@ const MobileTrade = ({
 					setSizeRef={setSizeRef}
 				/>
 			</TradeBlock>
-			<TradeBlock title={STRINGS['ORDERBOOK']} className="order-entry">
+			<TradeBlock title={STRINGS['ORDERBOOK']} className="order-entry w-50">
 				{orderbookReady && <Orderbook {...orderbookProps} />}
 			</TradeBlock>
 		</div>
