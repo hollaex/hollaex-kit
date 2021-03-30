@@ -26,13 +26,16 @@ import {
 	SET_CONFIG_LEVEL,
 	ADD_TO_FAVOURITES,
 	REMOVE_FROM_FAVOURITES,
+	CHANGE_HOME_PAGE_SETTING,
 	SET_IS_READY,
+	SET_WEB_VIEWS,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
+// import { PLUGINS } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -52,6 +55,7 @@ const EMPTY_SNACK_NOTIFICATION = {
 };
 
 const INITIAL_STATE = {
+	home_page: false,
 	isReady: false,
 	favourites: getFavourites() || [],
 	announcements: [],
@@ -143,6 +147,8 @@ const INITIAL_STATE = {
 	info: { is_trial: false, active: true, status: true },
 	wave: [],
 	enabledPlugins: [],
+	targets: [],
+	webViews: {},
 	availablePlugins: [],
 	getPluginLoading: false,
 	features: {},
@@ -350,6 +356,30 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				enabledPlugins: payload.enabledPlugins.map(({ name }) => name),
 			};
 		}
+		case SET_WEB_VIEWS: {
+			const allWebViews = [];
+			payload.enabledPlugins.forEach(({ web_views = [] }) => {
+				if (web_views.length) {
+					allWebViews.push(...web_views);
+				}
+			});
+
+			const CLUSTERED_WEB_VIEWS = {};
+			allWebViews.forEach((plugin) => {
+				const { target } = plugin;
+				if (!CLUSTERED_WEB_VIEWS[target]) {
+					CLUSTERED_WEB_VIEWS[target] = [plugin];
+				} else {
+					CLUSTERED_WEB_VIEWS[target].push(plugin);
+				}
+			});
+
+			return {
+				...state,
+				webViews: CLUSTERED_WEB_VIEWS,
+				targets: Object.entries(CLUSTERED_WEB_VIEWS).map(([target]) => target),
+			};
+		}
 		case SET_INFO:
 			return {
 				...state,
@@ -396,6 +426,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				favourites,
+			};
+		}
+		case CHANGE_HOME_PAGE_SETTING: {
+			return {
+				...state,
+				home_page: payload,
 			};
 		}
 		default:

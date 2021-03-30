@@ -10,6 +10,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
+import { EditWrapper } from 'components';
 
 class Markets extends Component {
 	constructor(props) {
@@ -113,7 +114,14 @@ class Markets extends Component {
 	};
 
 	render() {
-		const { pairs, tickers, coins } = this.props;
+		const {
+			pairs,
+			tickers,
+			coins,
+			showSearch = true,
+			showMarkets = false,
+			router,
+		} = this.props;
 		const { data, chartData, page, pageSize, count } = this.state;
 
 		const processedData = data.map((key) => {
@@ -147,32 +155,46 @@ class Markets extends Component {
 
 		return (
 			<div>
-				<div className="d-flex justify-content-end">
-					<div className={isMobile ? '' : 'w-25'}>
-						<SearchBox
-							name={STRINGS['SEARCH_ASSETS']}
-							className="trade_tabs-search-field"
-							outlineClassName="trade_tabs-search-outline"
-							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
-							handleSearch={this.handleTabSearch}
-						/>
+				{showSearch && (
+					<div className="d-flex justify-content-end">
+						<div className={isMobile ? '' : 'w-25'}>
+							<SearchBox
+								name={STRINGS['SEARCH_ASSETS']}
+								className="trade_tabs-search-field"
+								outlineClassName="trade_tabs-search-outline"
+								placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+								handleSearch={this.handleTabSearch}
+							/>
+						</div>
 					</div>
-				</div>
+				)}
 				<MarketList
 					markets={processedData}
 					chartData={chartData}
 					handleClick={this.handleClick}
 				/>
-				<div className="text-right">
-					{page * pageSize + pageSize < count ? (
+				{!showMarkets && page * pageSize + pageSize < count && (
+					<div className="text-right">
 						<span
 							className="trade-account-link pointer"
 							onClick={this.handleLoadMore}
 						>
 							{STRINGS['SUMMARY.VIEW_MORE_MARKETS']}
 						</span>
-					) : null}
-				</div>
+					</div>
+				)}
+				{showMarkets && (
+					<div className="d-flex justify-content-center app_bar-link blue-link pointer py-2 underline-text">
+						<EditWrapper stringId="MARKETS_TABLE.VIEW_MARKETS" />
+						<div
+							onClick={() => {
+								router.push('/trade/add/tabs');
+							}}
+						>
+							{STRINGS['MARKETS_TABLE.VIEW_MARKETS']}
+						</div>
+					</div>
+				)}
 			</div>
 		);
 	}

@@ -21,6 +21,8 @@ import ThemeSettings from './components/ThemeSettings';
 import AddTheme from './components/AddTheme';
 import AllIconsModal from './components/AllIconsModal';
 import UploadIcon from './components/UploadIcon';
+import SectionsModal from './components/Sections';
+import AddSection from './components/AddSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
 import {
@@ -74,6 +76,8 @@ class OperatorControls extends Component {
 			isUploadIconOpen: false,
 			isThemeSettingsOpen: false,
 			isAddThemeOpen: false,
+			isSectionsModalOpen: false,
+			isAddSectionOpen: false,
 			selectedTheme: '',
 			iconsOverwrites,
 			colorOverwrites,
@@ -187,7 +191,7 @@ class OperatorControls extends Component {
 	handleEditButton = ({ target: { dataset = {} } }, source) => {
 		const { isEditModalOpen, isUploadIconOpen } = this.state;
 		const { editMode } = this.props;
-		const { stringId, iconId } = dataset;
+		const { stringId, iconId, sectionId } = dataset;
 
 		if (editMode && !isEditModalOpen && !isUploadIconOpen) {
 			const string_ids_array = stringId ? stringId.split(',') : [];
@@ -208,6 +212,8 @@ class OperatorControls extends Component {
 						}
 					} else if (iconId) {
 						this.openUploadIcon();
+					} else if (sectionId) {
+						this.openSectionsModal();
 					}
 				}
 			);
@@ -338,7 +344,7 @@ class OperatorControls extends Component {
 			languageKeys,
 		} = this.state;
 
-		const { defaults } = this.props;
+		const { defaults, sections } = this.props;
 
 		const valid_languages = languageKeys.join();
 		const strings = filterOverwrites(overwrites);
@@ -350,6 +356,7 @@ class OperatorControls extends Component {
 			strings,
 			icons,
 			valid_languages,
+			sections,
 		};
 
 		publish(configs).then(this.reload);
@@ -735,6 +742,47 @@ class OperatorControls extends Component {
 		);
 	};
 
+	updateSectionsOrder = (sections) => {
+		const { updateSections } = this.props;
+		updateSections(sections);
+		this.enablePublish();
+		this.closeSectionsModal();
+	};
+
+	updateSections = (sections) => {
+		const { updateSections } = this.props;
+		updateSections(sections);
+		this.enablePublish();
+		this.closeAddSectionModal();
+	};
+
+	openSectionsModal = () => {
+		this.setState({
+			isSectionsModalOpen: true,
+		});
+	};
+
+	closeSectionsModal = () => {
+		this.setState({
+			isSectionsModalOpen: false,
+		});
+	};
+
+	openAddSectionModal = () => {
+		this.setState({
+			isAddSectionOpen: true,
+		});
+	};
+
+	closeAddSectionModal = () => {
+		this.setState(
+			{
+				isAddSectionOpen: false,
+			},
+			this.openSectionsModal
+		);
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -762,8 +810,10 @@ class OperatorControls extends Component {
 			selectedThemes,
 			iconSearchValue,
 			iconSearchResults,
+			isSectionsModalOpen,
+			isAddSectionOpen,
 		} = this.state;
-		const { editMode, color: themes, themeOptions } = this.props;
+		const { editMode, color: themes, themeOptions, sections } = this.props;
 
 		return (
 			<div
@@ -975,6 +1025,25 @@ class OperatorControls extends Component {
 						selectedTheme={selectedTheme}
 						themes={themes}
 						onSave={this.addTheme}
+					/>
+				)}
+
+				{isSectionsModalOpen && (
+					<SectionsModal
+						isOpen={editMode && isSectionsModalOpen}
+						onCloseDialog={this.closeSectionsModal}
+						sections={sections}
+						onSave={this.updateSectionsOrder}
+						onLinkClick={this.openAddSectionModal}
+					/>
+				)}
+
+				{isAddSectionOpen && (
+					<AddSection
+						isOpen={editMode && isAddSectionOpen}
+						onCloseDialog={this.closeAddSectionModal}
+						sections={sections}
+						onSave={this.updateSections}
 					/>
 				)}
 

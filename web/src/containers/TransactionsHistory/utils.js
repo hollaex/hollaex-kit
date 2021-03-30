@@ -794,6 +794,13 @@ export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
 	);
 };
 
+export const generateRecentTradeHeaders = (symbol, pairs, coins, discount) => {
+	const KEYS = ['side', 'size', 'price', 'amount'];
+	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
+		({ key }) => KEYS.indexOf(key) > -1
+	);
+};
+
 const getClassNameByStatus = (
 	status = false,
 	dismissed = false,
