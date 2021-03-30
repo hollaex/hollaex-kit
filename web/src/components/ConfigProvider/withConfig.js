@@ -15,6 +15,8 @@ const withConfig = (Component) => {
 				themeOptions,
 				removeTheme,
 				updateDefaults,
+				sections,
+				updateSections,
 			}) => (
 				<Component
 					{...props}
@@ -28,6 +30,8 @@ const withConfig = (Component) => {
 					themeOptions={themeOptions}
 					removeTheme={removeTheme}
 					updateDefaults={updateDefaults}
+					sections={sections}
+					updateSections={updateSections}
 				/>
 			)}
 		</ProjectConfig.Consumer>

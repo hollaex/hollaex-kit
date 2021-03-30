@@ -71,9 +71,7 @@ class QuickTrade extends Component {
 							...FLEX_CENTER_CLASSES
 						)}
 					>
-						<EditWrapper stringId={'QUICK_TRADE_COMPONENT.TITLE'}>
-							{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
-						</EditWrapper>
+						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
 					</div>
 				</div>
 				<InputGroup
