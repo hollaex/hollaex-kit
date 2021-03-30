@@ -51,6 +51,11 @@ const nestedContent = {
 	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
 	HOME: {
+		MAIN_TITLE: 'Cryptocurrency trading exchange',
+		MAIN_TEXT:
+			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
+		TRADE_CRYPTO: 'Trade crypto',
+		VIEW_EXCHANGE: 'View exchange',
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
 			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
@@ -1114,7 +1119,7 @@ const nestedContent = {
 		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
 		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Unlimited',
-		BLOCKED: '0',
+		BLOCKED: 'Disabled',
 	},
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
@@ -1208,6 +1213,7 @@ const nestedContent = {
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
+		TITLE_OF_ACCOUNT: '{0} Account',
 		LEVEL_TXT_DEFAULT: 'Add your level description here',
 		LEVEL_1_TXT:
 			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
@@ -1419,6 +1425,21 @@ const nestedContent = {
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'Deposit and withdrawal allowance for all assets ({0})',
+		HEADER_ROW_TYPE: 'Type (All assets)',
+		HEADER_ROW_AMOUNT: 'Amount ({0})',
+	},
+	MARKETS_TABLE: {
+		TITLE: 'Live markets',
+		MARKETS: 'Markets',
+		LAST_PRICE: 'Last price',
+		CHANGE_24H: 'Change (24 hours)',
+		VOLUME_24h: 'Volume (24 hours)',
+		CHART_24H: 'Chart (24 hours)',
+		VIEW_MARKETS: 'View Markets',
+	},
 };
 
 const content = flatten(nestedContent, options);

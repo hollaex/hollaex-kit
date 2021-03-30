@@ -120,23 +120,28 @@ class MenuList extends Component {
 								{STRINGS['ACCOUNTS.TAB_SUMMARY']}
 							</EditWrapper>
 						</div>
-						<div
-							className={classnames('app-bar-account-menu-list d-flex', {
-								'menu-active':
-									location.pathname === '/trade/add/tabs' &&
-									selectedMenu === 'pro-trade',
-							})}
-							onClick={() => this.handleMenu('pro-trade')}
-						>
-							<div className="notification-content" />
-							<Image
-								icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper stringId="PRO_TRADE" iconId="SIDEBAR_TRADING_ACTIVE">
-								{STRINGS['PRO_TRADE']}
-							</EditWrapper>
-						</div>
+						{constants && constants.features && constants.features.pro_trade && (
+							<div
+								className={classnames('app-bar-account-menu-list d-flex', {
+									'menu-active':
+										location.pathname === '/trade/add/tabs' &&
+										selectedMenu === 'pro-trade',
+								})}
+								onClick={() => this.handleMenu('pro-trade')}
+							>
+								<div className="notification-content" />
+								<Image
+									icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
+									wrapperClassName="app-bar-account-list-icon"
+								/>
+								<EditWrapper
+									stringId="PRO_TRADE"
+									iconId="SIDEBAR_TRADING_ACTIVE"
+								>
+									{STRINGS['PRO_TRADE']}
+								</EditWrapper>
+							</div>
+						)}
 						{constants && constants.features && constants.features.quick_trade && (
 							<div
 								className={classnames('app-bar-account-menu-list d-flex', {

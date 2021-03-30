@@ -599,6 +599,27 @@ const getExchangeGeneratedFees = (req, res) => {
 		});
 };
 
+const settleFees = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/settleFees auth',
+		req.auth
+	);
+
+	toolsLib.order.settleFees()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/settleFees catch',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 const mintAsset = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
@@ -708,5 +729,6 @@ module.exports = {
 	getExchangeGeneratedFees,
 	mintAsset,
 	burnAsset,
-	verifyEmailUser
+	verifyEmailUser,
+	settleFees
 };

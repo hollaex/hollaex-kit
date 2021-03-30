@@ -17,6 +17,7 @@ import { Button } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
+import { EditWrapper } from 'components';
 
 class QuickTrade extends Component {
 	render() {
@@ -53,7 +54,6 @@ class QuickTrade extends Component {
 				>
 					<div className="d-flex content-center">
 						<Image
-							iconId="SIDEBAR_QUICK_TRADING_INACTIVE,QUICK_TRADE"
 							icon={
 								isMobile
 									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
@@ -70,7 +70,12 @@ class QuickTrade extends Component {
 							...FLEX_CENTER_CLASSES
 						)}
 					>
-						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						<EditWrapper
+							stringId="QUICK_TRADE_COMPONENT.TITLE"
+							iconId="SIDEBAR_QUICK_TRADING_INACTIVE,QUICK_TRADE_ICON"
+						>
+							{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						</EditWrapper>
 					</div>
 				</div>
 				<InputGroup

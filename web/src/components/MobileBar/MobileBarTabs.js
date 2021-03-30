@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import classnames from 'classnames';
 import { MobileBarWrapper } from '.';
 import MarketSelector from 'components/AppBar/MarketSelector';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 const renderMobileTab = ({
 	title,
@@ -32,6 +33,7 @@ const renderMobileTab = ({
 };
 
 export const MobileBarTabs = ({
+	showMarketSelector,
 	tabs,
 	className,
 	activeTab,
@@ -66,36 +68,37 @@ export const MobileBarTabs = ({
 					return renderTab(tabProps);
 				})}
 			</MobileBarWrapper>
-			<div
-				className={classnames(
-					'app_bar-pair-content',
-					'd-flex',
-					'px-2',
-					'justify-content-between',
-					'mobile-market-selector-trigger'
-				)}
-			>
+			{showMarketSelector && (
 				<div
-					className="d-flex align-items-center ml-2"
-					onClick={toggleMarketSelector}
+					className={classnames(
+						'app_bar-pair-content',
+						'd-flex',
+						'px-2',
+						'justify-content-between',
+						'mobile-market-selector-trigger'
+					)}
 				>
-					<span className="pt-2 trade-tab__market-selector">{pair}</span>
-					<i
-						className={classnames(
-							'arrow small ml-3',
-							isMarketSelectorOpen ? 'up' : 'down'
+					<div
+						className="d-flex align-items-center ml-2"
+						onClick={toggleMarketSelector}
+					>
+						<span className="pt-2 trade-tab__market-selector pr-2">{pair}</span>
+						{isMarketSelectorOpen ? (
+							<CaretUpOutlined style={{ fontSize: '14px' }} />
+						) : (
+							<CaretDownOutlined style={{ fontSize: '14px' }} />
 						)}
-					/>
+					</div>
+					{isMarketSelectorOpen && (
+						<MarketSelector
+							triggerId="market-selector"
+							onViewMarketsClick={goToMarkets}
+							closeAddTabMenu={closeAddTabMenu}
+							addTradePairTab={goToPair}
+						/>
+					)}
 				</div>
-				{isMarketSelectorOpen && (
-					<MarketSelector
-						triggerId="market-selector"
-						onViewMarketsClick={goToMarkets}
-						closeAddTabMenu={closeAddTabMenu}
-						addTradePairTab={goToPair}
-					/>
-				)}
-			</div>
+			)}
 		</Fragment>
 	);
 };

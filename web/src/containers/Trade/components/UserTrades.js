@@ -1,25 +1,26 @@
 import React from 'react';
 
 import { Table } from '../../../components';
-import {
-	generateTradeHeaders,
-	generateLessTradeHeaders,
-} from '../../TransactionsHistory/utils';
+import { generateRecentTradeHeaders } from '../../TransactionsHistory/utils';
 
 const ActiveOrders = ({
 	trades,
 	pairData,
 	pair,
 	pairs,
-	lessHeaders,
+	/*lessHeaders,*/
 	pageSize,
 	coins,
 	discount,
 	prices,
 }) => {
-	const headers = lessHeaders
-		? generateLessTradeHeaders(pairData.pair_base, pairs, coins, discount)
-		: generateTradeHeaders(pairData.pair_base, pairs, coins, discount, prices);
+	const headers = generateRecentTradeHeaders(
+		pairData.pair_base,
+		pairs,
+		coins,
+		discount,
+		prices
+	);
 	if (!pair) {
 		return <div />;
 	}

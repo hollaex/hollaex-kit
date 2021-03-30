@@ -1174,9 +1174,9 @@ $app-menu-notification-size: 1.2rem;
 	}
 	.app-bar-add-tab-menu {
 		width: 36rem;
-		position: fixed;
-		top: 13.7rem;
-		left: 2.2rem;
+		position: absolute;
+		top: 7.8rem;
+		left: 1.2rem;
 
 		.app-bar-add-tab-content,
 		.app-bar-tab-menu-list,
@@ -1249,4 +1249,12 @@ $app-menu-notification-size: 1.2rem;
 
 .market-trigger {
 	background-color: $app-background-color;
+}
+
+.landing-page-bar {
+	background: linear-gradient(
+		to bottom,
+		$app-landing_background,
+		$app-landing_background
+	) !important;
 }

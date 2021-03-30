@@ -24,6 +24,7 @@ import {
 	setOrderbook,
 	addTrades,
 	setPairsData,
+	setPairsTradesFetched,
 } from '../../actions/orderbookAction';
 import {
 	setTickers,
@@ -48,6 +49,7 @@ import {
 	requestInitial,
 	requestConstant,
 	requestTiers,
+	setWebViews,
 } from '../../actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
@@ -75,7 +77,10 @@ class Container extends Component {
 			this.initSocketConnections();
 		}
 		requestPlugins().then(({ data = {} }) => {
-			if (data.data && data.data.length !== 0) this.props.setPlugins(data.data);
+			if (data.data && data.data.length !== 0) {
+				this.props.setPlugins(data.data);
+				this.props.setWebViews(data.data);
+			}
 		});
 	}
 
@@ -123,8 +128,8 @@ class Container extends Component {
 
 	resetTimer = debounce(this._resetTimer, 250);
 
-	initSocketConnections = () => {
-		this.setPublicWS();
+	initSocketConnections = async () => {
+		await this.setPublicWS();
 		this.setUserSocket();
 		this.setState({ appLoaded: true }, () => {
 			this.props.connectionCallBack(true);
@@ -301,6 +306,7 @@ class Container extends Component {
 						delete tradesData.data;
 						this.props.setTrades(tradesData);
 						this.props.setTickers(tradesData);
+						this.props.setPairsTradesFetched();
 					}
 					if (data.action === 'update') {
 						if (
@@ -701,6 +707,8 @@ const mapStateToProps = (store) => ({
 	settings: store.user.settings,
 	constants: store.app.constants,
 	info: store.app.info,
+	token: store.auth.token,
+	verifyToken: store.auth.verifyToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -737,7 +745,9 @@ const mapDispatchToProps = (dispatch) => ({
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
 	setPlugins: bindActionCreators(setPlugins, dispatch),
+	setWebViews: bindActionCreators(setWebViews, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
+	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

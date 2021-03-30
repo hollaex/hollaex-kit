@@ -21,7 +21,7 @@ class GetSocketState extends Component {
 	checkConnection = () => {
 		if (!this.props.isDataReady) {
 			const { pairsTrades } = this.props;
-			let isReady = Object.keys(pairsTrades).length;
+			const isReady = !!Object.keys(pairsTrades).length;
 			this.props.socketDataCallback(isReady);
 		}
 	};

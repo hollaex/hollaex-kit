@@ -10,7 +10,7 @@ import MarketSelector from './MarketSelector';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { CaretDownOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
@@ -76,7 +76,7 @@ class PairTabs extends Component {
 	};
 
 	render() {
-		const { activePairTab } = this.state;
+		const { activePairTab, isMarketSelectorVisible } = this.state;
 
 		const { tickers, location, coins, favourites, pairs } = this.props;
 
@@ -124,9 +124,22 @@ class PairTabs extends Component {
 											browserHistory.push('/trade/add/tabs')
 										}
 										addTradePairTab={this.onTabClick}
+										closeAddTabMenu={() =>
+											this.setState((prevState) =>
+												this.setState({
+													isMarketSelectorVisible: !prevState.isMarketSelectorVisible,
+												})
+											)
+										}
 									/>
 								}
+								mouseEnterDelay={0}
+								mouseLeaveDelay={0.05}
 								trigger={[isMobile ? 'click' : 'hover']}
+								visible={isMarketSelectorVisible}
+								onVisibleChange={(visible) => {
+									this.setState({ isMarketSelectorVisible: visible });
+								}}
 							>
 								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
 									{activePairTab ? (
@@ -161,7 +174,11 @@ class PairTabs extends Component {
 											</EditWrapper>
 										</div>
 									)}
-									<CaretDownOutlined />
+									{isMarketSelectorVisible ? (
+										<CaretUpOutlined style={{ fontSize: '14px' }} />
+									) : (
+										<CaretDownOutlined style={{ fontSize: '14px' }} />
+									)}
 								</div>
 							</Dropdown>
 						</div>

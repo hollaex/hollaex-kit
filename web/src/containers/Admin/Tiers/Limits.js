@@ -9,7 +9,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 const limitStatus = (value, nativeCurrency) => {
 	if (value === -1) {
-		return 'BLOCKED';
+		return 'DISABLED';
 	} else if (value === 0) {
 		return 'UNLIMITED';
 	} else if (!value) {

@@ -37,11 +37,13 @@ import {
 	setSnackDialog,
 	setConfig,
 	setInfo,
+	setIsReady,
 } from '../../actions/appActions';
 
 import { setPricesAndAsset } from 'actions/assetActions';
 
 const mapStateToProps = (store) => ({
+	isReady: store.app.isReady,
 	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,
@@ -61,6 +63,7 @@ const mapStateToProps = (store) => ({
 	enabledPlugins: store.app.enabledPlugins,
 	features: store.app.features,
 	config_level: store.app.config_level,
+	pairsTradesFetched: store.orderbook.pairsTradesFetched,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -98,6 +101,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
+	setIsReady: bindActionCreators(setIsReady, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

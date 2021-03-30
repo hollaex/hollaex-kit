@@ -70,7 +70,6 @@ import withConfig from 'components/ConfigProvider/withConfig';
 class App extends Component {
 	state = {
 		appLoaded: false,
-		isSocketDataReady: false,
 		dialogIsOpen: false,
 		chatIsClosed: false,
 		publicSocket: undefined,
@@ -426,27 +425,8 @@ class App extends Component {
 		return this.props.changeLanguage(language);
 	};
 
-	isSocketDataReady() {
-		// const { orderbooks, pairsTrades, pair, router } = this.props;
-		// let pairTemp = pair;
-		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
-		// 	Object.keys(pairsTrades).length);
-		// if (router && router.params && router.params.pair) {
-		// 	pairTemp = router.params.pair;
-		// }
-		// return (
-		// 	Object.keys(orderbooks).length &&
-		// 	orderbooks[pairTemp] &&
-		// 	Object.keys(pairsTrades).length
-		// );
-	}
-
 	connectionCallBack = (value) => {
 		this.setState({ appLoaded: value });
-	};
-
-	socketDataCallback = (value = false) => {
-		this.setState({ isSocketDataReady: value });
 	};
 
 	toggleSidebar = () => {
@@ -483,6 +463,10 @@ class App extends Component {
 			handleEditMode,
 			// user,
 			features,
+			isReady: isSocketDataReady,
+			pairsTradesFetched,
+			verifyToken,
+			token,
 		} = this.props;
 
 		const {
@@ -490,7 +474,6 @@ class App extends Component {
 			appLoaded,
 			chatIsClosed,
 			sidebarFitHeight,
-			isSocketDataReady,
 			isSidebarOpen,
 		} = this.state;
 
@@ -501,7 +484,9 @@ class App extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
-		const isMenubar = true;
+
+		const isHome = this.props.location.pathname === '/';
+		const isMenubar = !isHome;
 		return (
 			<ThemeProvider>
 				<div>
@@ -518,7 +503,7 @@ class App extends Component {
 					<GetSocketState
 						router={router}
 						isDataReady={isSocketDataReady}
-						socketDataCallback={this.socketDataCallback}
+						socketDataCallback={this.props.setIsReady}
 					/>
 					<div
 						className={classnames(
@@ -559,19 +544,25 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								<AppBar
-									router={router}
-									location={location}
-									goToDashboard={this.goToDashboard}
-									logout={this.logout}
-									activePath={activePath}
-									onHelp={openHelpfulResourcesForm}
-								>
-									{isBrowser && isMenubar && isLoggedIn() && (
-										<AppMenuBar router={router} location={location} />
-									)}
-								</AppBar>
-								{isBrowser && (
+								{!isHome && (
+									<AppBar
+										token={token}
+										verifyToken={verifyToken}
+										noBorders={isHome}
+										isHome={isHome}
+										router={router}
+										location={location}
+										goToDashboard={this.goToDashboard}
+										logout={this.logout}
+										activePath={activePath}
+										onHelp={openHelpfulResourcesForm}
+									>
+										{isBrowser && isMenubar && isLoggedIn() && (
+											<AppMenuBar router={router} location={location} />
+										)}
+									</AppBar>
+								)}
+								{isBrowser && !isHome && (
 									<PairTabs
 										activePath={activePath}
 										location={location}
@@ -585,6 +576,7 @@ class App extends Component {
 										'justify-content-between',
 										{
 											'app_container-secondary-content': isMenubar,
+											no_bottom_navigation: isHome,
 										}
 									)}
 								>
@@ -596,6 +588,7 @@ class App extends Component {
 											'justify-content-between',
 											{
 												'overflow-y': !isMobile,
+												no_bottom_navigation: isHome,
 											}
 										)}
 									>
@@ -603,10 +596,10 @@ class App extends Component {
 											router={router}
 											children={children}
 											appLoaded={appLoaded}
-											isReady={isSocketDataReady}
+											isReady={pairsTradesFetched}
 										/>
 									</div>
-									{isBrowser && (
+									{isBrowser && !isHome && (
 										<div
 											className={classnames('app_container-sidebar', {
 												'close-sidebar': !isSidebarOpen,
@@ -644,7 +637,7 @@ class App extends Component {
 										</div>
 									)}
 									<Dialog
-										isOpen={dialogIsOpen}
+										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"
 										className={classnames('app-dialog', {
 											'app-dialog-flex':
@@ -678,7 +671,7 @@ class App extends Component {
 												// activeTheme
 											)}
 									</Dialog>
-									{!isMobile && features && features.chat && (
+									{!isMobile && !isHome && features && features.chat && (
 										<ChatComponent
 											activeLanguage={activeLanguage}
 											minimized={chatIsClosed}
@@ -687,7 +680,7 @@ class App extends Component {
 										/>
 									)}
 								</div>
-								{isMobile && (
+								{isMobile && !isHome && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
 											isLogged={isLoggedIn()}

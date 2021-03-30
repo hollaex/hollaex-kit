@@ -66,7 +66,7 @@ export const getSparklines = async () => {
 	const to = moment().format('X');
 
 	const { data = {} } = await axios({
-		url: `/charts?resolution=D&from=${from}&to=${to}`,
+		url: `/charts?resolution=H&from=${from}&to=${to}`,
 		method: 'GET',
 	});
 
