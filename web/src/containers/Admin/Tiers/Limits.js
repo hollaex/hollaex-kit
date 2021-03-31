@@ -25,6 +25,8 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 			title: 'Asset',
 			dataIndex: 'symbol',
 			key: 'symbol',
+			width: 150,
+			fixed: 'left',
 			render: (symbol, { fullname }) => (
 				<div className="d-flex align-items-center">
 					<CurrencyBall symbol={symbol} name={symbol} size="m" />
@@ -36,6 +38,8 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 			title: 'Limit type',
 			dataIndex: 'type',
 			key: 'type',
+			width: 140,
+			fixed: 'left',
 			className: 'type-column',
 			render: () => (
 				<div>
@@ -77,6 +81,7 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 			dataIndex: 'name',
 			key: 'name',
 			className: 'type-column',
+			width: 120,
 			render: (name) => (
 				<div>
 					<div className="custom-column-td column-divider">
@@ -97,6 +102,8 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 		title: 'Adjust limit values',
 		dataIndex: 'type',
 		key: 'type',
+		fixed: 'right',
+		width: 150,
 		align: 'right',
 		render: () => (
 			<span className="admin-link-highlight" onClick={onEditLimit}>
@@ -145,6 +152,7 @@ const Limits = ({
 					dataSource={coinsData}
 					rowKey={(data) => data.id}
 					bordered
+					scroll={{ x: 'auto' }}
 				/>
 			</div>
 		</div>
