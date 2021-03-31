@@ -6,8 +6,7 @@ const {
 	isPlainObject,
 	isNumber,
 	isString,
-	isArray,
-	isDate
+	isArray
 } = require('lodash');
 const {
 	createRequest,
@@ -157,12 +156,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.symbol) {
@@ -228,12 +227,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.symbol) {
@@ -431,12 +430,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.currency) {
@@ -536,12 +535,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.currency) {
@@ -635,12 +634,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.currency) {
@@ -740,12 +739,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.currency) {
@@ -1020,12 +1019,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.symbol) {
@@ -1110,12 +1109,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.symbol) {
@@ -1343,12 +1342,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		if (opts.symbol) {
@@ -1741,12 +1740,12 @@ class HollaExNetwork {
 
 		let path = `${this.baseUrl}/network/${this.exchange_id}/fees?`;
 
-		if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isString(opts.startDate)) {
+			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isString(opts.endDate)) {
+			path += `&end_date=${opts.endDate}`;
 		}
 
 		const headers = generateHeaders(
@@ -1814,7 +1813,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		this.wsReconnect = true;
 		this.wsEvents = events;
-		const apiExpires = moment().toISOString() + this.apiExpiresAfter;
+		const apiExpires = moment().unix() + this.apiExpiresAfter;
 		const signature = createSignature(
 			this.apiSecret,
 			'CONNECT',
