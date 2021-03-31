@@ -8,7 +8,7 @@ const renderItem = (unbanUser, bannedUsers) => (user_id) => {
 			actions={[
 				<Button type="danger" onClick={() => unbanUser(user_id)} size="small">
 					UNBAN
-				</Button>
+				</Button>,
 			]}
 		>
 			<List.Item.Meta

@@ -1,0 +1,93 @@
+.input-group__container {
+	border-radius: 4px;
+	border: $colors-black solid 1.5px;
+
+	.ant-select-selection,
+	.ant-input,
+	.ant-select-arrow,
+	.ant-select-selector {
+		text-align: right;
+		background-color: $quick-trade-container !important;
+		color: $colors-black !important;
+	}
+	.input-group__coin-icons-wrap {
+		width: 2.5rem;
+	}
+	&:focus-within {
+		border-color: $link !important;
+	}
+
+	.input-group__select:hover {
+		color: $colors-main-black !important;
+
+		.ant-select-selection,
+		.ant-input,
+		.ant-select-arrow,
+		.ant-select-selector {
+			color: $colors-main-black !important;
+		}
+
+		.input-group__coin-icons {
+			width: 2.2rem;
+		}
+	}
+
+	&:hover {
+		border-color: $colors-main-black;
+	}
+}
+
+.input-group__coin-icons {
+	width: 1.8rem;
+	height: 100%;
+
+	svg {
+		margin: 0 auto;
+		display: block;
+
+		.btc0,
+		.btc1 {
+			fill: $coin-btc;
+		}
+		.eth0,
+		.eth1 {
+			fill: $coin-eth;
+		}
+		.bch-icon {
+			fill: $coin-bch;
+		}
+		.xrp-icon {
+			fill: $coin-xrp;
+		}
+		.xmr-icon {
+			fill: $coin-xmr;
+		}
+		.ada-icon {
+			fill: $coin-ada;
+		}
+		.bnb-icon {
+			fill: $coin-bnb;
+		}
+		.dai-icon {
+			fill: $coin-dai;
+		}
+		.eos-icon {
+			fill: $coin-eos;
+		}
+		.ltc-icon {
+			fill: $coin-ltc;
+		}
+		.trx-icon {
+			fill: $coin-trx;
+		}
+		.tusd-icon {
+			fill: $coin-tusd;
+		}
+		.xlm-icon {
+			fill: $coin-xlm;
+		}
+		.default-icon {
+			fill: $colors-black !important;
+		}
+	}
+}

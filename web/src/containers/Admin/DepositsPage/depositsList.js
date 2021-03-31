@@ -15,14 +15,14 @@ const COLUMNS = [
 	{
 		title: 'transaction id',
 		dataIndex: 'transaction_id',
-		key: 'transaction_id'
+		key: 'transaction_id',
 	},
 	{
 		title: 'Time',
 		dataIndex: 'created_at',
 		key: 'created_at',
-		render: tableFormatDate
-	}
+		render: tableFormatDate,
+	},
 ];
 
 class DepositsList extends Component {
@@ -30,7 +30,7 @@ class DepositsList extends Component {
 		users: [],
 		fetched: false,
 		loading: false,
-		error: ''
+		error: '',
 	};
 
 	componentWillMount() {
@@ -40,7 +40,7 @@ class DepositsList extends Component {
 	requestDeposits = () => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 
 		requestDeposits()
@@ -48,14 +48,14 @@ class DepositsList extends Component {
 				this.setState({
 					users: data,
 					loading: false,
-					fetched: true
+					fetched: true,
 				});
 			})
 			.catch((error) => {
 				const message = error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
 			});
 	};

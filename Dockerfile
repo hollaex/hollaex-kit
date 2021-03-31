@@ -1,16 +1,31 @@
-FROM bitholla/hollaex-core:1.23.1
+FROM node:10.15.3-stretch-slim
 
-COPY ./mail /app/mail
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git python build-essential && \
+    rm -rf /var/lib/apt/lists/* && \
+    npm install pm2@3.2.7 sequelize-cli@5.4.0 mocha -g --loglevel=error
 
-COPY ./plugins /app/plugins
+ENV NODE_ENV=production
 
-COPY ./db/migrations /app/db/migrations
+COPY ./server /app
 
-COPY ./db/seeders /app/db/seeders
+WORKDIR /app
 
-COPY ./db/models /app/db/models
+# Changing the default image user to 'appuser'
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 999 -g appuser appuser && \
+    mkdir /home/appuser && \
+    chown -R appuser /home/appuser && \
+    chown -R appuser /app
 
-RUN npm install -g nodemon --loglevel=error && \ 
-    cd plugins && npm install --loglevel=error && \
-    for d in ./*/ ; do (cd "$d" && npm install --loglevel=error); done && \
+USER appuser
+
+RUN npm install --loglevel=error && \
+    pm2 update && \
     cd /app/mail && npm install --loglevel=error
+
+EXPOSE 10010
+
+EXPOSE 10080
+
+ENTRYPOINT ["/entrypoint.sh"]

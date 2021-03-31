@@ -38,7 +38,7 @@ const CSVDownload = ({ children, data, headers, filename }) => (
 
 CSVDownload.defaultProps = {
 	data: [],
-	headers: []
+	headers: [],
 };
 
 export default CSVDownload;

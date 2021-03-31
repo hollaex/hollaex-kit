@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from '../../../components';
-import {
-	calculatePrice
-} from '../../../utils/currency';
+import { calculatePrice } from '../../../utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 import Currency from './Currency';
 import Arrow from './Arrow';
@@ -10,7 +8,7 @@ import STRINGS from '../../../config/localizedStrings';
 
 class CurrencySlider extends Component {
 	state = {
-		currentCurrency: ''
+		currentCurrency: '',
 	};
 
 	componentWillMount() {
@@ -37,7 +35,7 @@ class CurrencySlider extends Component {
 			currencyIndex >= currenciesLength - 1 ? 0 : currencyIndex + 1;
 
 		this.setState({
-			currentCurrency: currencyArray[currentCurrencyIndex]
+			currentCurrency: currencyArray[currentCurrencyIndex],
 		});
 	};
 
@@ -48,7 +46,7 @@ class CurrencySlider extends Component {
 		const currentCurrencyIndex =
 			currencyIndex <= 0 ? currencyArray.length - 1 : currencyIndex - 1;
 		this.setState({
-			currentCurrency: currencyArray[currentCurrencyIndex]
+			currentCurrency: currencyArray[currentCurrencyIndex],
 		});
 	};
 
@@ -62,9 +60,10 @@ class CurrencySlider extends Component {
 		const { currentCurrency } = this.state;
 		const balanceValue = balance[`${currentCurrency}_balance`];
 		const baseBalance =
-			currentCurrency !== BASE_CURRENCY
-				&& calculatePrice(balanceValue, prices[currentCurrency]);
-		const { fullname, allow_deposit, allow_withdrawal } = coins[currentCurrency] || DEFAULT_COIN_DATA;
+			currentCurrency !== BASE_CURRENCY &&
+			calculatePrice(balanceValue, prices[currentCurrency]);
+		const { fullname, allow_deposit, allow_withdrawal } =
+			coins[currentCurrency] || DEFAULT_COIN_DATA;
 
 		return (
 			<div className="d-flex flex-column justify-content-end currency-list-container f-1">
@@ -89,27 +88,25 @@ class CurrencySlider extends Component {
 				<div className="mb-4 button-container">
 					{wallets[currentCurrency.toLowerCase()] && (
 						<div className="d-flex justify-content-between flew-row ">
-							{allow_deposit 
-								? <Button
+							{allow_deposit ? (
+								<Button
 									className="mr-4"
 									label={STRINGS.formatString(
-										STRINGS.RECEIVE_CURRENCY,
+										STRINGS['RECEIVE_CURRENCY'],
 										fullname
 									).join('')}
 									onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
 								/>
-								: null
-							}
-							{allow_withdrawal
-								? <Button
+							) : null}
+							{allow_withdrawal ? (
+								<Button
 									label={STRINGS.formatString(
-										STRINGS.SEND_CURRENCY,
+										STRINGS['SEND_CURRENCY'],
 										fullname
 									).join('')}
 									onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
 								/>
-								: null
-							}
+							) : null}
 						</div>
 					)}
 				</div>

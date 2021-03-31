@@ -1,0 +1,224 @@
+.admin-earnings-container .tab-contents {
+	margin-top: 4rem;
+}
+.admin-earnings-container .icon-holder {
+	width: 5rem;
+	margin: 10px 0;
+	height: 4rem;
+	position: relative;
+}
+.admin-earnings-container .description-width {
+	width: 58rem;
+}
+.admin-earnings-container .cloudIcon {
+	width: 5rem;
+	height: 5rem;
+}
+.settle-modal-page .margin-top-bottom {
+	margin: 15px 0;
+}
+.settle-modal-page .heading {
+	font-size: 22px;
+	font-weight: bold;
+}
+.settle-modal-page .dollar-icon {
+	background-color: #008a00;
+	width: 24px;
+	color: white;
+	border-radius: 50%;
+	font-size: 16px;
+	font-weight: bold;
+	margin-right: 5px;
+}
+.settle-modal-page .modal-content {
+	border: 1px solid white;
+	background-color: inherit;
+	color: inherit;
+	margin: 20px 0 20px 10px;
+	padding: 0 0 15px 15px;
+}
+.settle-modal-page .modal-content .legend {
+	position: relative;
+	bottom: 13px;
+	left: 3px;
+	background-color: blue;
+	width: 16rem;
+}
+.settle-modal-page .modal-button {
+	width: 18rem;
+	background-color: #288500;
+	color: white;
+	font-weight: bold;
+	margin: 5px;
+}
+.settle-modal-page .modal-content .title-content {
+	font-size: 16px;
+}
+.admin-earnings-container .dollar-icon {
+	background-color: #008a00;
+	width: 24px;
+	position: absolute;
+	top: 0px;
+	color: white;
+	border-radius: 50%;
+	left: 3.5rem;
+	font-size: 16px;
+	font-weight: bold;
+}
+.admin-earnings-container .button {
+	width: 12rem;
+	background-color: #288500;
+	color: white;
+	font-weight: bold;
+}
+
+.terminating-tooltip .ant-tooltip-inner {
+	background-color: blue;
+	border: 1px solid black;
+	color: white;
+	padding: 12px;
+}
+
+.admin-earnings-container .icon-wrapper {
+	width: 12rem;
+}
+.admin-earnings-container .content-wrapper .w-100 {
+	width: 100%;
+}
+.admin-earnings-container .content-wrapper .ant-tabs {
+	color: #ffffff;
+}
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
+	height: 6px;
+	background-color: #ffffff;
+}
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
+	top: 0px;
+}
+.admin-earnings-container .ant-tabs-tab .ant-tabs-tab-btn {
+	opacity: 0.6;
+}
+.admin-earnings-container .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	font-weight: bold;
+	opacity: 1;
+}
+.admin-earnings-container .ant-tabs-nav .ant-tabs-tab {
+	font-size: 15px;
+	color: #ffffff;
+	font-weight: bold;
+}
+.admin-earnings-container .ant-tabs-nav .ant-tabs-tab:hover {
+	color: #ffffff;
+}
+.admin-earnings-container .ant-tabs-nav::before {
+	border-bottom: none;
+}
+.admin-earnings-container .title {
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+}
+.admin-earnings-container .table-container {
+	margin-top: 2rem;
+}
+.admin-earnings-container .title-wrapper {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+.admin-earnings-container .download-btn {
+	width: 100px;
+	font-weight: bold;
+	background-color: #0000ff;
+	color: #ffffff;
+	border-color: #ffffff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.ant-table-row-expand-icon {
+	color: #2930ff;
+	border-color: #2930ff;
+}
+.admin-earnings-container .id-wrapper {
+	background-color: #288500;
+	width: 35px;
+	height: 25px;
+	padding: 4px;
+	font-size: 12px;
+	color: #fff;
+}
+
+.admin-earnings-container .ant-table-thead > tr > th {
+	background-color: #4e4efb;
+	color: #ffffff;
+	padding: 0rem 1rem;
+}
+.admin-earnings-container .ant-table-tbody > tr > td {
+	background-color: #0000d1;
+	color: #ffffff;
+	border-bottom: 1px solid #0000d1;
+}
+.admin-earnings-container
+	.ant-table-tbody
+	> tr.ant-table-placeholder:hover
+	> td {
+	background-color: #0000ff;
+}
+.admin-earnings-container .ant-table-tbody > tr.ant-table-row:hover > td {
+	background-color: #0000ff;
+}
+.admin-earnings-container
+	.ant-empty
+	.ant-empty-image
+	.ant-empty-img-simple-ellipse,
+.admin-earnings-container
+	.ant-empty
+	.ant-empty-image
+	.ant-empty-img-simple-path {
+	fill: #7d9ac9;
+}
+.admin-earnings-container .ant-empty .ant-empty-image .ant-empty-img-simple-g {
+	stroke: #7d9ac9;
+}
+.admin-earnings-container .ant-empty .ant-empty-description {
+	color: #ffffff;
+}
+.admin-earnings-container .ant-table-pagination.ant-pagination {
+	margin: 16px 0;
+	background: #ffffff;
+	border-radius: 50px;
+	padding: 15px;
+}
+.transfer-confirmation-popup {
+	padding: 1rem;
+}
+.transfer-confirmation-popup .confirm-container {
+	border: 1px solid #ffffff;
+	padding: 1.5rem;
+}
+.transfer-confirmation-popup .legend {
+	background-color: #0000ff;
+	left: 1rem;
+	top: 12px;
+	padding: 5px;
+	position: relative;
+}
+.admin-earnings-container .fields-container {
+	display: flex;
+	margin-top: 10px;
+}
+.admin-earnings-container .ant-picker {
+	background-color: blue;
+}
+.admin-earnings-container .ant-picker input {
+	color: white;
+}
+.admin-earnings-container .ant-select-arrow {
+	color: white;
+}
+.admin-earnings-container .ant-picker .anticon-swap-right {
+	color: white;
+}
+.admin-earnings-container .ant-picker .anticon-calendar {
+	color: white;
+}

@@ -1,10 +1,11 @@
 .verification_data_container {
 	display: flex;
+	margin-right: 15px;
 }
 
 .verification_data_container > div {
 	flex: 1;
-	width: 50%;
+	width: 100%;
 	padding: 8px;
 }
 
@@ -14,14 +15,23 @@
 .verification_block {
 	display: flex;
 	flex-direction: column;
+	margin: 0px 10px;
+	width: 15rem;
+}
+.block-title {
+	font-weight: bold;
 }
 
 .verification_img {
 	max-width: 350px;
 }
+.verified-container {
+	width: 15rem !important;
+}
 
 .verification_data_container--actions {
 	display: flex;
+	justify-content: flex-end;
 }
 
 .verification_data_container--actions > *:not(:last-child) {
@@ -34,4 +44,57 @@
 
 .jsonkey-wrapper pre {
 	padding-left: 8px;
+	color: #ffffff;
+}
+.ant-card,
+.ant-card-head,
+.ant-card-type-inner .ant-card-head {
+	background-color: #0000ff;
+	color: #ffffff;
+}
+.ant-card-bordered {
+	border: 1px solid #c4c4c4;
+}
+.ant-modal-header {
+	border: 1px solid #0000ff;
+}
+.ant-modal-header .ant-modal-title {
+	color: #ffffff;
+	font-weight: bold;
+}
+.ant-modal-header,
+.ant-modal-content,
+.ant-modal-confirm-body .ant-modal-confirm-content {
+	background-color: #0000ff;
+	color: #ffffff;
+}
+.ant-modal-close-icon path {
+	fill: #ffffff;
+}
+.verification-confirm-modal {
+	height: 15rem;
+}
+.verification-confirm-modal .ant-btn {
+	width: 9rem;
+}
+.green-btn.ant-btn-primary[disabled] {
+	opacity: 0.7;
+}
+.verification-confirm-modal .ant-btn,
+.green-btn {
+	background-color: #288500 !important;
+	color: #ffffff !important;
+}
+.ant-upload-list {
+	color: #ffffff;
+}
+.verification-form .ant-input,
+.verification-form
+	.ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector {
+	background-color: #0000ff;
+	color: #ffffff;
+}
+.verification-form .ant-upload-text-icon path {
+	fill: #ffffff;
 }

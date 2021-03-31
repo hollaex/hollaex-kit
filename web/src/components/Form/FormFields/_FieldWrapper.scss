@@ -14,7 +14,8 @@ $outline-height: 1.5px;
 	margin: $wrapper-margin 0;
 
 	&.error {
-		color: $error-color;
+		color: $colors-notifications-red;
+		margin-bottom: 15px;
 	}
 
 	&.inline {
@@ -31,17 +32,25 @@ $outline-height: 1.5px;
 	}
 }
 
+.field-label-wrapper {
+	display: flex;
+	align-items: center;
+
+	> div {
+		flex: 1;
+	}
+}
+
 .field-label {
-	margin-bottom: 0.25rem;
 	color: $form-label;
-	font-weight: normal;
+	font-size: 14px;
 }
 
 .field-content {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	margin-bottom: $underline-margin-bottom;
+	// margin-bottom: $underline-margin-bottom;
 }
 
 .field-children {
@@ -59,6 +68,21 @@ $outline-height: 1.5px;
 			@include size($valid-icon-size);
 		}
 		bottom: 0.25rem;
+	}
+}
+.input-box-field {
+	width: 100%;
+	height: 38px;
+	padding: 10px 10px;
+	border-radius: 2px;
+	border: 1px solid $colors-main-border;
+	background-color: $app-sidebar-background;
+
+	.input_field-input {
+		&::placeholder {
+			color: $colors-black;
+			font-size: 14px;
+		}
 	}
 }
 
@@ -91,7 +115,7 @@ $outline-height: 1.5px;
 
 .field-wrapper.error .field-content-outline {
 	&:before {
-		background: $error-color;
+		background: $colors-notifications-red;
 	}
 }
 
@@ -159,7 +183,7 @@ $outline-height: 1.5px;
 	.field-wrapper {
 		&.inline {
 			.field-error-content {
-				margin-left: $error-margin;
+				margin: 0.5rem 0 0 0;
 			}
 
 			input {
@@ -214,32 +238,6 @@ $outline-height: 1.5px;
 	}
 }
 
-.dark-theme {
-	.dumb-field-wrapper {
-		color: $dark-link;
-	}
-	.field-label {
-		color: $dark-form-label !important;
-	}
-
-	.field-content-outline {
-		&:before {
-			background: $dark-form-color-underline;
-		}
-
-		&:after {
-			background: $dark-form-color-underline;
-		}
-
-		&.focused:after {
-			background: $dark-form-color-underline-focus;
-		}
-	}
-	.field-valid .icon-check-1 {
-		stroke: $dark-border-main;
-	}
-}
-
 .layout-mobile {
 	$move-side: 1.5rem;
 	&.direction_ltr {
@@ -254,6 +252,12 @@ $outline-height: 1.5px;
 			.action_notification-wrapper {
 				left: $move-side;
 			}
+		}
+	}
+	.field-label-wrapper {
+		> div {
+			flex: 1;
+			width: 100%;
 		}
 	}
 }

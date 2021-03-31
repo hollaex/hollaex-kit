@@ -18,7 +18,7 @@ $header-margin: 2rem;
 		}
 		.button-container {
 			.exir-button {
-              font-size: $font-size-mobile-txt !important;
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
@@ -38,9 +38,13 @@ $header-margin: 2rem;
 						font-weight: bold;
 					}
 				}
+				.action_notification-wrapper {
+					margin: 0;
+				}
 			}
 		}
 		.wallet-assets_block {
+			padding: 6px;
 			.wallet-assets_block-table {
 				thead {
 					tr {
@@ -70,13 +74,19 @@ $header-margin: 2rem;
 					height: 2.5rem;
 					font-size: 0.8rem;
 				}
-				.table-bottom-border{
+				.table-bottom-border {
 					font-size: $font-size-mobile-txt !important;
 				}
-				tfoot{
+				tfoot {
 					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
+			.zero-balance-wrapper {
+				flex-direction: column;
+			}
+		}
+		.action-button-wrapper {
+			padding: 5px 2px;
 		}
 	}
 }
@@ -95,6 +105,14 @@ $header-margin: 2rem;
 		}
 
 		.wallet-header_block {
+		}
+		.coin-icons {
+			width: 50px;
+			padding-top: 4px;
+		}
+		.with_price-block_amount-value {
+			font-size: $font-size-headline;
+			line-height: $font-size-headline;
 		}
 	}
 
@@ -116,16 +134,19 @@ $header-margin: 2rem;
 		.accordion_section_content_text {
 			color: $colors-main-black !important;
 			&:after {
-				border-left-color: $border-main !important;
+				border-left-color: $colors-main-border !important;
 			}
 		}
 	}
 
 	.wallet-assets_block {
 		// border-top: $wrapper-border;
-		.action_notification-wrapper {
-			margin: 0 !important;
-		}
+		background-color: $app-sidebar-background;
+		padding: 20px;
+		overflow-y: auto;
+		// .action_notification-wrapper {
+		// 	margin: 0 !important;
+		// }
 
 		.td-wallet {
 			min-width: 225px;
@@ -137,6 +158,7 @@ $header-margin: 2rem;
 		.wallet-assets_block-table {
 			width: 100%;
 			font-size: $font-size-subtext;
+			margin-bottom: 3rem;
 
 			thead,
 			tfoot {
@@ -161,8 +183,8 @@ $header-margin: 2rem;
 			th {
 				position: relative;
 				&:not(:first-child) {
-					border-bottom: 1px solid $border-main;
-					padding: 0 0.25rem;
+					border-bottom: 1px solid $colors-main-border;
+					padding: 1rem 0.25rem;
 				}
 			}
 
@@ -185,10 +207,28 @@ $header-margin: 2rem;
 				direction: ltr;
 			}
 		}
+		.search-field {
+			background-color: $app-sidebar-background;
+		}
+		.currency-ball {
+			width: 30px;
+			padding-top: 4px;
+		}
 	}
 
 	.accordion_wrapper .action_notification-wrapper {
 		position: relative;
+	}
+	.action-button-wrapper {
+		border: 1px solid $link;
+		padding: 5px 12px;
+
+		&:hover {
+			background-color: $link;
+			.notification-info {
+				color: white !important;
+			}
+		}
 	}
 }
 
@@ -255,48 +295,13 @@ $header-margin: 2rem;
 	}
 }
 
-.dark-theme {
-	svg {
-		.wallet-coins-1,
-		.deposit-wallet-01 {
-			stroke: $dark-button-active;
-		}
-		.wallet-coins-2,
-		.deposit-wallet-02 {
-			fill: $dark-font-main-text-color;
-		}
-	}
-
-	.wallet-container {
-		border-top-color: $dark-app-line-divider;
-		.accordion_wrapper {
-			.accordion_section_content_text {
-				color: $dark-font-main-text-color !important;
-				&:after {
-					border-left-color: $dark-border-main !important;
-				}
-			}
-		}
-
-		.wallet-assets_block {
-			color: $dark-font-main-text-color !important;
-			.wallet-assets_block-table {
-				tbody, tfoot {
-					color: $dark-font-sub-text-color;
-				}
-				.table-bottom-border td,
-				th {
-					&:not(:first-child) {
-						border-bottom-color: $dark-border-main;
-					}
-				}
-			}
-		}
-	}
-}
-
 .need-help {
 	svg {
 		@include size-important(1rem);
 	}
+}
+
+.wallet-search-improvement {
+	border-bottom: 1px solid $dark-app-line-divider;
+	color: $dark-font-sub-text-color !important;
 }

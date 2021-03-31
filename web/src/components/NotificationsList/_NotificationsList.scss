@@ -1,4 +1,4 @@
-.layout-mobile{
+.layout-mobile {
 	.trade_active_orders-wrapper {
 		max-height: 35vh !important;
 	}
@@ -7,9 +7,9 @@
 .trade_post_icon {
 	width: 1.5rem;
 
-	svg{
-		.wave-icon{
-			fill: $colors-black
+	svg {
+		.wave-icon {
+			fill: $colors-black;
 		}
 	}
 }
@@ -20,46 +20,22 @@
 .trade_announcement {
 	font-size: 1.5rem;
 }
+.announcement-notification-list-item {
+	color: $colors-main-black;
+	border-bottom: 1px solid $colors-border;
+}
 
 .post-content {
 	.notifications_list-item-text {
 		a {
 			color: $link;
 		}
-		span, p {
+		span,
+		p {
 			background-color: $app-sidebar-background !important;
 		}
 	}
-}
-
-.dark-theme {
-	.trade_post_icon {
-		svg {
-			.announcement {
-				fill: $colors-white
-			}
-			.settings{
-				fill: $colors-white
-			}
-			.wave-icon{
-				fill: $colors-white
-			}
-		}
-	}
-	.post_header {
-		color: $dark-font-main-text-color;
-	}
-	.post-content {
-		color: $dark-font-sub-text-color;
-
-		.notifications_list-item-text {
-			a {
-				color: $dark-link;
-			}
-			span, p {
-				background-color: $dark-app-sidebar-background !important;
-				color: $dark-font-sub-text-color !important;
-			}
-		}
+	.notifications_list-item-timestamp {
+		color: $colors-deactivate;
 	}
 }

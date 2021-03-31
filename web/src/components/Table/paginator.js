@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { ActionNotification } from '../';
-import { ICONS } from '../../config/constants';
+import ICONS from 'config/icons';
 import STRINGS from '../../config/localizedStrings';
 
 const renderPageCount = (currentPage, totalPages) => {
@@ -9,7 +9,7 @@ const renderPageCount = (currentPage, totalPages) => {
 		return (
 			<div>
 				{STRINGS.formatString(
-					STRINGS.PAGINATOR_FORMAT,
+					STRINGS['PAGINATOR_FORMAT'],
 					currentPage,
 					totalPages
 				)}
@@ -23,7 +23,7 @@ const Paginator = ({
 	goToNextPage,
 	currentPage,
 	count,
-	pageSize
+	pageSize,
 }) => {
 	const totalPages = Math.ceil(count / pageSize);
 	const previousIsDisabled = currentPage <= 1;
@@ -34,17 +34,18 @@ const Paginator = ({
 				onClick={!previousIsDisabled ? goToPreviousPage : undefined}
 				className={classnames({
 					disabled: previousIsDisabled,
-					pointer: !previousIsDisabled
+					pointer: !previousIsDisabled,
 				})}
 			>
 				<ActionNotification
-					text={STRINGS.PREVIOUS_PAGE}
+					stringId="PREVIOUS_PAGE"
+					text={STRINGS['PREVIOUS_PAGE']}
 					status="information"
-					iconPath={ICONS.BLUE_ARROW_LEFT}
+					iconId="BLUE_ARROW_LEFT"
+					iconPath={ICONS['BLUE_ARROW_LEFT']}
 					textPosition="left"
 					iconPosition="left"
 					rotateIfLtr={true}
-					useSvg={true}
 				/>
 			</div>
 			{renderPageCount(currentPage, totalPages)}
@@ -52,15 +53,16 @@ const Paginator = ({
 				onClick={!nextIsDisabled ? goToNextPage : undefined}
 				className={classnames({
 					disabled: nextIsDisabled,
-					pointer: !nextIsDisabled
+					pointer: !nextIsDisabled,
 				})}
 			>
 				<ActionNotification
-					text={STRINGS.NEXT_PAGE}
+					stringId="NEXT_PAGE"
+					text={STRINGS['NEXT_PAGE']}
 					status="information"
-					iconPath={ICONS.BLUE_ARROW_RIGHT}
+					iconId="BLUE_ARROW_RIGHT"
+					iconPath={ICONS['BLUE_ARROW_RIGHT']}
 					rotateIfRtl={true}
-					useSvg={true}
 				/>
 			</div>
 		</div>

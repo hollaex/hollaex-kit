@@ -90,38 +90,3 @@
 		}
 	}
 }
-
-.dark-theme {
-	.currency-list {
-		&.horizontal-currency-list {
-			.single-currency {
-				&:hover,
-				&.focused {
-					border-color: black;
-					background-color: #353740;
-					&::before {
-						border-color: #353740;
-					}
-					&::after {
-						content: '';
-						border-color: white;
-					}
-				}
-			}
-			.selected_currency-tab {
-				background-color: $dark-app-background-color;
-				border-left: 1px solid $dark-font-main-text-color !important;
-				border-right: 1px solid $dark-font-main-text-color !important;
-				border-bottom: 0px !important;
-			}
-		}
-		.markets-list {
-			background-color: #353740;
-		}
-		svg {
-			.bch-icon-nav {
-				fill: $dark-font-main-text-color
-			}
-		}
-	}
-}

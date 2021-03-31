@@ -6,7 +6,7 @@ $terms_label--padding: 0.25rem;
 	text-align: center;
 
 	.signup_success-content {
-		margin: $signup_succes--margin 0 $signup_succes--margin*2;
+		margin: $signup_succes--margin 0 $signup_succes--margin * 2;
 	}
 }
 
@@ -14,7 +14,7 @@ $terms_label--padding: 0.25rem;
 	padding: 0 $terms_label--padding;
 }
 .signup-warning {
-	margin-top:1.5rem
+	margin-top: 1.5rem;
 }
 .warning-icon {
 	width: 1.5rem;
@@ -32,7 +32,7 @@ $terms_label--padding: 0.25rem;
 	max-width: $bp-sm;
 	max-height: 100%;
 }
-.layout-mobile{
+.layout-mobile {
 	.signup_success-wrapper {
 		height: calc(100% - 4rem) !important;
 	}

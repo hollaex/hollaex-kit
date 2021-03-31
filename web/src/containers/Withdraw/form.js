@@ -6,16 +6,16 @@ import {
 	reset,
 	SubmissionError,
 	stopSubmit,
-	change
+	change,
 } from 'redux-form';
 import math from 'mathjs';
-import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
+// import classnames from 'classnames';
+// import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
 	setWithdrawEmailConfirmation,
-	setWithdrawNotificationError
+	setWithdrawNotificationError,
 } from './notifications';
 import { BASE_CURRENCY } from '../../config/constants';
 import { calculateBaseFee } from './utils';
@@ -38,7 +38,7 @@ const validate = (values, props) => {
 	const totalTransaction = math.add(fee, amount);
 	if (math.larger(totalTransaction, balance)) {
 		errors.amount = STRINGS.formatString(
-			STRINGS.WITHDRAWALS_LOWER_BALANCE,
+			STRINGS['WITHDRAWALS_LOWER_BALANCE'],
 			math.number(totalTransaction)
 		);
 	}
@@ -50,10 +50,10 @@ class Form extends Component {
 	state = {
 		dialogIsOpen: false,
 		dialogOtpOpen: false,
-		otp_code: ''
+		otp_code: '',
 	};
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.currency !== this.props.currency) {
 			nextProps.dispatch(reset(FORM_NAME));
 		}
@@ -116,7 +116,8 @@ class Form extends Component {
 						this.props.dispatch
 					);
 					return response;
-				}).catch(err => {
+				})
+				.catch((err) => {
 					const error = { _error: err.message, ...err.errors };
 					errorTimeOut = setTimeout(() => {
 						this.props.dispatch(change(FORM_NAME, 'captcha', ''));
@@ -125,7 +126,7 @@ class Form extends Component {
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
 					// throw new SubmissionError(error);
-				})
+				});
 		}
 	};
 
@@ -141,7 +142,7 @@ class Form extends Component {
 				...values,
 				amount: math.eval(values.amount),
 				fee: values.fee ? math.eval(values.fee) : 0,
-				otp_code
+				otp_code,
 			})
 			.then((response) => {
 				this.onCloseDialog();
@@ -182,29 +183,32 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			initialValues, // eslint-disable-line
+			// initialValues, // eslint-disable-line
 			currency,
 			data,
 			openContactForm,
 			formValues,
 			currentPrice,
 			activeTheme,
-			coins
+			coins,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
-			<form autoComplete="off">
-				<div className={classnames({ "w-50": !isMobile })}>
+			<form autoComplete="off" className="withdraw-form-wrapper">
+				<div className="withdraw-form">
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
 				</div>
-				<Button
-					label={STRINGS.WITHDRAWALS_BUTTON_TEXT}
-					disabled={pristine || submitting || !valid}
-					onClick={this.onOpenDialog}
-				/>
+				<div className="btn-wrapper">
+					<Button
+						label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+						disabled={pristine || submitting || !valid}
+						onClick={this.onOpenDialog}
+						className="mb-3"
+					/>
+				</div>
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="withdraw-modal"
@@ -227,7 +231,7 @@ class Form extends Component {
 							onClickAccept={this.onAcceptDialog}
 							onClickCancel={this.onCloseDialog}
 						/>
-						) : (
+					) : (
 						<Loader relative={true} background={false} />
 					)}
 				</Dialog>
@@ -244,13 +248,20 @@ const WithdrawForm = reduxForm({
 		setWithdrawEmailConfirmation(data, dispatch);
 	},
 	// enableReinitialize: true,
-	validate
+	validate,
 })(Form);
 
 const mapStateToForm = (state) => ({
-	data: selector(state, 'address', 'destination_tag', 'amount', 'fee', 'captcha'),
+	data: selector(
+		state,
+		'address',
+		'destination_tag',
+		'amount',
+		'fee',
+		'captcha'
+	),
 	activeTheme: state.app.theme,
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);

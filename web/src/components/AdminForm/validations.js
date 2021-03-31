@@ -37,10 +37,16 @@ export const email = (value = '') =>
 	!validator.isEmail(value) ? 'Invalid email address' : undefined;
 
 export const exchangeName = (value = '') =>
-	exchangeNameRegex.test(value) ? 'Only alphanumeric, dash (-), underscore only (_) Allowed. No space or special character allowed.' : undefined;
+	exchangeNameRegex.test(value)
+		? 'Only alphanumeric, dash (-), underscore only (_) Allowed. No space or special character allowed.'
+		: undefined;
 
 export const urlCheck = (value = '') =>
-	!urlRegex.test(value) ? 'Url should be a full url including http or https' : undefined;
+	!urlRegex.test(value)
+		? 'Url should be a full url including http or https'
+		: undefined;
 
 export const checkS3bucketUrl = (value = '') =>
-	(value.split(':').length !== 2) || (!value.split(':')[1].trim()) ? 'Bucket should be a form like <S3_BUCKET_NAME>:<AWS_REGION_NAME>' : undefined;
+	value.split(':').length !== 2 || !value.split(':')[1].trim()
+		? 'Bucket should be a form like <S3_BUCKET_NAME>:<AWS_REGION_NAME>'
+		: undefined;

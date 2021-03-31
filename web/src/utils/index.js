@@ -8,7 +8,7 @@ import {
 	// TOKEN_KEY,
 	// TOKEN_MAX_AGE,
 	// TOKEN_EMAIL,
-	TIME_ZONE
+	TIME_ZONE,
 } from '../config/constants';
 
 const cookies = new Cookies();
@@ -18,9 +18,7 @@ export const getEmail = () => cookies.get('token::email');
 export { default as request, requestAuthenticated } from './request';
 
 export const formatDate = (date) => {
-	return moment(date)
-		.tz(TIME_ZONE)
-		.format('YYYY/MM/DD HH:mm');
+	return moment(date).tz(TIME_ZONE).format('YYYY/MM/DD HH:mm');
 };
 
 export const getFormat = (min = 0, fullFormat) => {

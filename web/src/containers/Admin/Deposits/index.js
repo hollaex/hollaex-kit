@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import { SyncOutlined } from '@ant-design/icons';
 import { Table, Spin, Button, Input, Select, Alert } from 'antd';
 import moment from 'moment';
 
 import './index.css';
 
-import { requestDeposits, completeDeposits, dismissDeposit, requestDepositDownload } from './actions';
+import {
+	requestDeposits,
+	completeDeposits,
+	dismissDeposit,
+	requestDepositDownload,
+} from './actions';
 import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
 import { Filters } from './Filters';
 
@@ -45,7 +51,7 @@ class Deposits extends Component {
 		pageSize: 10,
 		limit: 50,
 		currentTablePage: 1,
-		isRemaining: true
+		isRemaining: true,
 	};
 
 	componentWillMount() {
@@ -62,7 +68,7 @@ class Deposits extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.queryParams.currency !== this.props.queryParams.currency) {
 			const { initialData, queryParams } = nextProps;
 			this.requestDeposits(
@@ -85,7 +91,7 @@ class Deposits extends Component {
 			return this.setState({
 				loading: false,
 				fetched: false,
-				queryParams: {}
+				queryParams: {},
 			});
 		}
 
@@ -93,13 +99,13 @@ class Deposits extends Component {
 			loading: true,
 			error: '',
 			queryDone: JSON.stringify(queryParams),
-			queryType: queryParams.type
+			queryType: queryParams.type,
 		});
 		requestDeposits({
 			...values,
 			...queryParams,
 			page,
-			limit
+			limit,
 		})
 			.then((data) => {
 				this.setState({
@@ -109,14 +115,14 @@ class Deposits extends Component {
 					fetched: true,
 					page: page,
 					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
-					isRemaining: data.count > page * limit
+					isRemaining: data.count > page * limit,
 				});
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
 			});
 	};
@@ -135,7 +141,7 @@ class Deposits extends Component {
 							deposits.slice(indexItem + 1, deposits.length)
 						),
 						loadingItem: false,
-						indexItem: -1
+						indexItem: -1,
 					});
 				})
 				.catch((error) => {
@@ -143,7 +149,7 @@ class Deposits extends Component {
 					this.setState({
 						loadingItem: false,
 						error: message,
-						indexItem: -1
+						indexItem: -1,
 					});
 				});
 		}
@@ -163,7 +169,7 @@ class Deposits extends Component {
 							deposits.slice(indexItem + 1, deposits.length)
 						),
 						dismissingItem: false,
-						indexItem: -1
+						indexItem: -1,
 					});
 				})
 				.catch((error) => {
@@ -171,7 +177,7 @@ class Deposits extends Component {
 					this.setState({
 						dismissingItem: false,
 						error: message,
-						indexItem: -1
+						indexItem: -1,
 					});
 				});
 		}
@@ -206,7 +212,7 @@ class Deposits extends Component {
 
 	onChangeQuery = (key) => (value, option) => {
 		const queryParams = {
-			...this.state.queryParams
+			...this.state.queryParams,
 		};
 		if (value) {
 			if (key === 'start_date' || key === 'end_date') {
@@ -272,7 +278,12 @@ class Deposits extends Component {
 
 	requestDepositDownload = () => {
 		const { initialData = {}, queryParams = {} } = this.props;
-		return requestDepositDownload({ ...initialData, ...this.state.queryParams, ...queryParams, format: 'csv' })
+		return requestDepositDownload({
+			...initialData,
+			...this.state.queryParams,
+			...queryParams,
+			format: 'csv',
+		});
 	};
 
 	render() {
@@ -288,12 +299,12 @@ class Deposits extends Component {
 			queryParams,
 			queryDone,
 			queryType,
-			currentTablePage
+			currentTablePage,
 		} = this.state;
 		const { showFilters, coins } = this.props;
 		const columns = COLUMNS(undefined);
 		return (
-			<div>
+			<div className="admin-deposit-wrapper">
 				{loading ? (
 					<Spin size="large" />
 				) : (
@@ -341,7 +352,7 @@ class Deposits extends Component {
 									<Button
 										onClick={this.onRefresh}
 										type="primary"
-										icon="sync"
+										icon={<SyncOutlined />}
 										disabled={!searchValue}
 									>
 										Refresh Data
@@ -361,12 +372,16 @@ class Deposits extends Component {
 							/>
 						)}
 						<div>
-							<span className="pointer" onClick={() => this.requestDepositDownload()}>
+							<span
+								className="pointer"
+								onClick={() => this.requestDepositDownload()}
+							>
 								Download table
 							</span>
 						</div>
 						<Table
 							columns={columns}
+							className="blue-admin-table"
 							dataSource={deposits.map((deposit, index) => {
 								return {
 									...deposit,
@@ -383,7 +398,7 @@ class Deposits extends Component {
 											  )
 											: () => {},
 									updatingItem: loadingItem && index === indexItem,
-									dismissingItem: dismissingItem && index === indexItem
+									dismissingItem: dismissingItem && index === indexItem,
 								};
 							})}
 							rowKey={(data) => {
@@ -393,7 +408,7 @@ class Deposits extends Component {
 							expandRowByClick={true}
 							pagination={{
 								current: currentTablePage,
-								onChange: this.pageChange
+								onChange: this.pageChange,
 							}}
 						/>
 					</div>

@@ -6,24 +6,24 @@ import AccordionSection from './AccordionSection';
 class Accordion extends Component {
 	state = {
 		openSections: [],
-		ready: false
+		ready: false,
 	};
 
 	componentWillMount() {
 		if (this.props.sections.length > 0) {
 			this.initialize(this.props.sections);
 		}
-		if(window.location.pathname ==='/account/settings/username') {
-			this.openSection(0, true)
+		if (window.location.pathname === '/account/settings/username') {
+			this.openSection(0, true);
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.ready && nextProps.sections.length > 0) {
 			this.initialize(nextProps.sections);
 		}
-		if(window.location.pathname ==='/account/settings/username') {
-			this.openSection(0, true)
+		if (window.location.pathname === '/account/settings/username') {
+			this.openSection(0, true);
 		}
 	}
 
@@ -118,7 +118,7 @@ class Accordion extends Component {
 Accordion.defaultProps = {
 	allowMultiOpen: false,
 	wrapperId: '',
-	doScroll: true
+	doScroll: true,
 };
 
 export default Accordion;

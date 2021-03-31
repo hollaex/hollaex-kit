@@ -1,4 +1,5 @@
 import React from 'react';
+import { SearchOutlined } from '@ant-design/icons';
 import { Button, Alert } from 'antd';
 import { SelectValue } from './SelectValues';
 import { FilterInput } from './FilterInput';
@@ -8,7 +9,7 @@ const getFilters = (coinOptions) => [
 		label: 'Currency',
 		placeholder: 'Currency',
 		key: 'currency',
-		options: coinOptions
+		options: coinOptions,
 	},
 	{
 		label: 'Type',
@@ -16,8 +17,8 @@ const getFilters = (coinOptions) => [
 		key: 'type',
 		options: [
 			{ value: 'deposit', text: 'Deposits' },
-			{ value: 'withdrawal', text: 'Withdrawals' }
-		]
+			{ value: 'withdrawal', text: 'Withdrawals' },
+		],
 	},
 	{
 		label: 'Status',
@@ -25,15 +26,18 @@ const getFilters = (coinOptions) => [
 		key: 'status',
 		options: [
 			{ value: 'true', text: 'Confirmed' },
-			{ value: 'false', text: 'Pending' }
-		]
+			{ value: 'false', text: 'Pending' },
+		],
 	},
 	{
 		label: 'Dismissed',
 		placeholder: 'Dismissed',
 		key: 'dismissed',
-		options: [{ value: 'true', text: 'Yes' }, { value: 'false', text: 'No' }]
-	}
+		options: [
+			{ value: 'true', text: 'Yes' },
+			{ value: 'false', text: 'No' },
+		],
+	},
 ];
 
 export const Filters = ({
@@ -43,7 +47,7 @@ export const Filters = ({
 	onClick,
 	loading,
 	fetched,
-	hasChanges
+	hasChanges,
 }) => {
 	const coinOptions = [];
 	Object.keys(coins).forEach((data) => {
@@ -96,7 +100,7 @@ export const Filters = ({
 					<Button
 						onClick={onClick}
 						type="primary"
-						icon="search"
+						icon={<SearchOutlined />}
 						className="filter-button"
 						disabled={!allowQuery}
 					>

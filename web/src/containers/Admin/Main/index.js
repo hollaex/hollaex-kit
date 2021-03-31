@@ -22,7 +22,7 @@ class Main extends Component {
 		chartData: [],
 		newPair: [],
 		tradingError: '',
-		pairError: ''
+		pairError: '',
 	};
 
 	componentWillMount() {
@@ -48,39 +48,41 @@ class Main extends Component {
 				.then((data) => {
 					this.setState({
 						numbers: data.data.users,
-						userListLoading: false
+						userListLoading: false,
 					});
 				})
 				.catch((error) => {
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						userError: message,
-						userListLoading: false
+						userListLoading: false,
 					});
 				});
 		} else {
 			this.setState({
-				userError: 'not authorized'
+				userError: 'not authorized',
 			});
 		}
 	};
 
 	getPairsData = (pairs) => {
 		if (isAdmin()) {
-			const newPair = Object.keys(pairs).sort((a, b) => pairs[a].id - pairs[b].id);
+			const newPair = Object.keys(pairs).sort(
+				(a, b) => pairs[a].id - pairs[b].id
+			);
 			if (newPair.length) {
 				this.getTradingData(newPair[0]);
 				this.setState({
 					selectedPair: newPair[0],
 					newPair,
-					pairLoading: false
+					pairLoading: false,
 				});
 			} else {
 				this.setState({ pairError: 'Invalid pair' });
 			}
 		} else {
 			this.setState({
-				userError: 'not authorized'
+				userError: 'not authorized',
 			});
 		}
 	};
@@ -99,7 +101,7 @@ class Main extends Component {
 					this.setState({
 						tradingData: tableData,
 						chartData,
-						tradingVolumeLoading: false
+						tradingVolumeLoading: false,
 					});
 				} else {
 					throw new Error('not authorized');
@@ -129,7 +131,7 @@ class Main extends Component {
 			tradingError,
 			pairLoading,
 			selectedPair,
-			pairError
+			pairError,
 		} = this.state;
 		if (userListLoading || tradingVolumeLoading || pairLoading) {
 			return <Spin size="large" className="m-top" />;
@@ -168,7 +170,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	pairs: state.app.pairs
+	pairs: state.app.pairs,
 });
 
 export default connect(mapStateToProps)(Main);

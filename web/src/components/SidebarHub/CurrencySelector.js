@@ -31,7 +31,7 @@ const CurrencySelector = ({ activeCurrency, changeCurrency, coins }) => {
 };
 
 const mapStateToProps = (state) => ({
-	coins: state.app.coins
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(CurrencySelector);

@@ -1,25 +1,29 @@
 import React from 'react';
 import { Button } from '../';
-import { ICONS } from '../../config/constants';
 import { NotificationWraper, NotificationContent } from './Notification';
+import { EditWrapper } from 'components';
 
 import STRINGS from '../../config/localizedStrings';
 
-const LogoutNotification = ({ onClose }) => {
+const ContactFormNotification = ({ onClose, icons: ICONS }) => {
 	return (
 		<NotificationWraper
-			title={STRINGS.CONTACT_FORM.SUCCESS_TITLE}
-			icon={ICONS.EMAIL_SENT}
+			title={STRINGS['CONTACT_FORM.SUCCESS_TITLE']}
+			icon={ICONS['EMAIL_SENT']}
 			className="contact-form-notification"
 		>
 			<NotificationContent>
-				{STRINGS.CONTACT_FORM.SUCCESS_MESSAGE_1}
+				<EditWrapper stringId="CONTACT_FORM.SUCCESS_MESSAGE_1">
+					{STRINGS['CONTACT_FORM.SUCCESS_MESSAGE_1']}
+				</EditWrapper>
 				<br />
-				{STRINGS.CONTACT_FORM.SUCCESS_MESSAGE_2}
+				<EditWrapper stringId="CONTACT_FORM.SUCCESS_MESSAGE_2">
+					{STRINGS['CONTACT_FORM.SUCCESS_MESSAGE_2']}
+				</EditWrapper>
 			</NotificationContent>
-			<Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />
+			<Button label={STRINGS['CLOSE_TEXT']} onClick={onClose} />
 		</NotificationWraper>
 	);
 };
 
-export default LogoutNotification;
+export default ContactFormNotification;

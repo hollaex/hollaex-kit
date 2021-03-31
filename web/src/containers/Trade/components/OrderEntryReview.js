@@ -18,7 +18,7 @@ const Review = ({
 	increment_price,
 	formatToCurrency,
 	type,
-	onFeeStructureAndLimits
+	onFeeStructureAndLimits,
 }) => {
 	// const orderAmountReceived = math.add(
 	// 	math.fraction(orderPrice),
@@ -29,18 +29,27 @@ const Review = ({
 		<div className="trade_order_entry-review d-flex flex-column">
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>
-					{type === 'market' ? STRINGS.MARKET_PRICE : STRINGS.ORDER_PRICE}:
+					{type === 'market' ? STRINGS['MARKET_PRICE'] : STRINGS['ORDER_PRICE']}
+					:
 				</div>
 				<div className="text-price">
 					{upToMarket
-						?price ? renderAmount(formatToCurrency(price * size, increment_price), currency) :0
-						: STRINGS.UP_TO_MARKET}
+						? price
+							? renderAmount(
+									formatToCurrency(price * size, increment_price),
+									currency
+							  )
+							: 0
+						: STRINGS['UP_TO_MARKET']}
 				</div>
 			</div>
 			<div className={classnames(...ROW_CLASSNAMES)}>
-				<div>{STRINGS.FEES}:</div>
-				<div className="text-price blue-link pointer" onClick={onFeeStructureAndLimits}>
-					{STRINGS.VIEW_MY_FEES}
+				<div>{STRINGS['FEES']}:</div>
+				<div
+					className="text-price blue-link pointer"
+					onClick={onFeeStructureAndLimits}
+				>
+					{STRINGS['VIEW_MY_FEES']}
 				</div>
 			</div>
 		</div>
@@ -52,7 +61,7 @@ Review.defaultProps = {
 	fees: 0,
 	orderTotal: 0,
 	currency: '',
-	formatToCurrency: (value) => value
+	formatToCurrency: (value) => value,
 };
 
 export default Review;

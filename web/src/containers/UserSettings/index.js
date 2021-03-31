@@ -10,36 +10,37 @@ import {
 	changeTheme,
 	openContactForm,
 	openRiskPortfolioOrderWarning,
-	closeNotification
+	closeNotification,
 } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
 	updateUserSettings,
 	setUserData,
 	setUsername,
-	setUsernameStore
+	setUsernameStore,
 } from '../../actions/userAction';
 import {
 	IconTitle,
 	HeaderSection,
-	CustomTabs,
+	// CustomTabs,
 	CustomMobileTabs,
-	CustomTabBar,
+	// CustomTabBar,
 	MobileTabBar,
-	Loader
+	Loader,
+	TabController,
 } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
 import NotificationForm, {
-	generateNotificationFormValues
+	generateNotificationFormValues,
 } from './NotificationForm';
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
 import RiskForm, { generateWarningFormValues } from './RiskForm';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
-import { calculateBalancePrice } from '../../utils/currency';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 class UserSettings extends Component {
 	state = {
@@ -48,15 +49,9 @@ class UserSettings extends Component {
 		dialogIsOpen: false,
 		modalText: '',
 		activeTab: 0,
-		totalAssets: ''
 	};
 
 	componentDidMount() {
-		const { user } = this.props;
-
-		if (user.id) {
-			this.calculateSections(this.props);
-		}
 		if (this.props.location.query && this.props.location.query.tab) {
 			this.setState(
 				{ activeTab: parseInt(this.props.location.query.tab, 10) },
@@ -69,13 +64,12 @@ class UserSettings extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
 		if (
-			JSON.stringify(this.props.settings) !==
-			JSON.stringify(nextProps.settings)
+			JSON.stringify(this.props.settings) !== JSON.stringify(nextProps.settings)
 		) {
 			this.updateTabs(nextProps, this.state.activeTab);
 		}
@@ -94,17 +88,7 @@ class UserSettings extends Component {
 		}
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		if (
-			nextProps.user.id !== this.props.user.id ||
-			nextProps.price !== this.props.price ||
-			//nextProps.orders.length !== this.props.orders.length ||
-			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			nextProps.activeLanguage !== this.props.activeLanguage ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
-		) {
-			this.calculateSections(nextProps);
-		}
+	UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (
 			this.state.activeTab !== nextState.activeTab &&
 			this.state.activeTab !== -1
@@ -116,22 +100,26 @@ class UserSettings extends Component {
 	onAdjustPortfolio = () => {
 		this.props.openRiskPortfolioOrderWarning({
 			onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'),
-			initialValues: this.props.settings.risk
+			initialValues: this.props.settings.risk,
 		});
 	};
 
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
-		this.setState({ totalAssets: totalAssets });
-	};
-
 	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
-		const { constants = {} } = this.props;
-		const formValues = generateFormValues({});
+		const {
+			constants = {},
+			icons: ICONS,
+			totalAsset,
+			themeOptions,
+		} = this.props;
+		const formValues = generateFormValues({
+			options: themeOptions.map(({ value }) => ({ value, label: value })),
+		});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
 		);
-		const languageFormValue = generateLanguageFormValues(constants.valid_languages);
+		const languageFormValue = generateLanguageFormValues(
+			constants.valid_languages
+		);
 		const notificationFormValues = generateNotificationFormValues();
 		const audioFormValues = generateAudioCueFormValues();
 		const warningFormValues = generateWarningFormValues();
@@ -147,21 +135,24 @@ class UserSettings extends Component {
 			get_quote_quick_trade: true,
 			quick_trade_success: true,
 			quick_trade_timeout: true,
-			...settings.audio
-		}
+			...settings.audio,
+		};
 
 		const tabs = [
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_NOTIFICATION}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						title={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
+						icon={ICONS['SETTING_NOTIFICATION_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_NOTIFICATION}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_NOTIFICATION"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
+					// 	iconId="SETTING_NOTIFICATION_ICON"
+					// 	icon={ICONS['SETTING_NOTIFICATION_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}</div>
 				),
 				content: activeTab === 0 && (
 					<NotificationForm
@@ -170,20 +161,24 @@ class UserSettings extends Component {
 						}
 						formFields={notificationFormValues}
 						initialValues={settings.notification}
+						ICONS={ICONS}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_INTERFACE}
-						icon={ICONS.SETTING_INTERFACE_ICON}
+						title={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
+						icon={ICONS['SETTING_INTERFACE_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_INTERFACE}
-						icon={ICONS.SETTING_INTERFACE_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_INTERFACE"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
+					// 	iconId="SETTING_INTERFACE_ICON"
+					// 	icon={ICONS['SETTING_INTERFACE_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_INTERFACE']}</div>
 				),
 				content: activeTab === 1 && (
 					<SettingsForm
@@ -192,20 +187,24 @@ class UserSettings extends Component {
 						}
 						formFields={formValues}
 						initialValues={settings.interface}
+						ICONS={ICONS}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_LANGUAGE}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
+						title={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+						icon={ICONS['SETTING_LANGUAGE_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_LANGUAGE}
-						icon={ICONS.SETTING_LANGUAGE_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_LANGUAGE"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+					// 	iconId="SETTING_LANGUAGE_ICON"
+					// 	icon={ICONS['SETTING_LANGUAGE_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}</div>
 				),
 				content: activeTab === 2 && (
 					<LanguageForm
@@ -214,76 +213,85 @@ class UserSettings extends Component {
 						}
 						formFields={languageFormValue}
 						initialValues={{ language: settings.language }}
+						ICONS={ICONS}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
-						icon={ICONS.SETTING_CHAT_ICON}
+						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+						icon={ICONS['SETTING_CHAT_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
-						icon={ICONS.SETTING_CHAT_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_CHAT"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+					// 	iconId="SETTING_CHAT_ICON"
+					// 	icon={ICONS['SETTING_CHAT_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_CHAT']}</div>
 				),
 				content: activeTab === 3 && (
 					<UsernameForm
 						onSubmit={this.onSubmitUsername}
 						formFields={usernameFormValues}
 						initialValues={{ username }}
+						ICONS={ICONS}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE}
-						icon={ICONS.SETTING_AUDIO_ICON}
+						title={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
+						icon={ICONS['SETTING_AUDIO_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE}
-						icon={ICONS.SETTING_AUDIO_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_AUDIO_CUE"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
+					// 	iconId="SETTING_AUDIO_ICON"
+					// 	icon={ICONS['SETTING_AUDIO_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}</div>
 				),
 				content: activeTab === 4 && (
 					<AudioCueForm
-						onSubmit={(formProps) =>
-							this.onSubmitSettings(formProps, 'audio')
-						}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'audio')}
 						formFields={audioFormValues}
 						initialValues={audioFormInitialValues}
+						ICONS={ICONS}
 					/>
-				)
+				),
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
-						icon={ICONS.SETTING_RISK_ICON}
+						title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
+						icon={ICONS['SETTING_RISK_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
-						icon={ICONS.SETTING_RISK_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
+					// 	iconId="SETTING_RISK_ICON"
+					// 	icon={ICONS['SETTING_RISK_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}</div>
 				),
 				content: activeTab === 5 && (
 					<RiskForm
 						coins={coins}
 						onAdjustPortfolio={this.onAdjustPortfolio}
-						totalAssets={this.state.totalAssets}
-						onSubmit={(formProps) =>
-							this.onSubmitSettings(formProps, 'risk')
-						}
+						totalAssets={totalAsset}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
 						formFields={warningFormValues}
 						initialValues={settings.risk}
+						ICONS={ICONS}
 					/>
-				)
-			}
+				),
+			},
 		];
 
 		this.setState({ tabs });
@@ -305,7 +313,10 @@ class UserSettings extends Component {
 				break;
 			case 'interface':
 				if (formProps.order_book_levels) {
-					formValues.order_book_levels = parseInt(formProps.order_book_levels, 10);
+					formValues.order_book_levels = parseInt(
+						formProps.order_book_levels,
+						10
+					);
 				}
 				settings.interface = formValues;
 				break;
@@ -320,7 +331,10 @@ class UserSettings extends Component {
 				break;
 			case 'risk':
 				if (formProps.order_portfolio_percentage) {
-					formValues.order_portfolio_percentage = parseInt(formProps.order_portfolio_percentage, 10);
+					formValues.order_portfolio_percentage = parseInt(
+						formProps.order_portfolio_percentage,
+						10
+					);
 				}
 				settings.risk = formValues;
 				break;
@@ -330,9 +344,9 @@ class UserSettings extends Component {
 			.then(({ data }) => {
 				this.props.setUserData(data);
 				if (data.settings) {
-					if (data.settings.language) this.props.changeLanguage(data.settings.language);
-					if (data.settings.interface &&
-						data.settings.interface.theme) {
+					if (data.settings.language)
+						this.props.changeLanguage(data.settings.language);
+					if (data.settings.interface && data.settings.interface.theme) {
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);
 					}
@@ -388,26 +402,34 @@ class UserSettings extends Component {
 		}
 		const { activeTab, tabs } = this.state;
 		return (
-			<div className="presentation_container apply_rtl verification_container">
+			<div className="presentation_container apply_rtl settings_container">
 				{!isMobile && (
 					<IconTitle
-						text={STRINGS.ACCOUNTS.TAB_SETTINGS}
+						stringId="ACCOUNTS.TAB_SETTINGS"
+						text={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 						textType="title"
 					/>
 				)}
 				<HeaderSection
-					title={STRINGS.ACCOUNTS.TAB_SETTINGS}
+					stringId="ACCOUNTS.TAB_SETTINGS"
+					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 					openContactForm={this.openContactForm}
 				>
 					<div className="header-content">
-						<div>{STRINGS.USER_SETTINGS.TITLE_TEXT_1}</div>
+						<div>
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
+								{STRINGS['USER_SETTINGS.TITLE_TEXT_1']}
+							</EditWrapper>
+						</div>
 						<div className="mb-3">
-							{STRINGS.USER_SETTINGS.TITLE_TEXT_2}
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_2">
+								{STRINGS['USER_SETTINGS.TITLE_TEXT_2']}
+							</EditWrapper>
 						</div>
 					</div>
 				</HeaderSection>
 				{!isMobile ? (
-					<CustomTabBar
+					<TabController
 						activeTab={activeTab}
 						setActiveTab={this.setActiveTab}
 						tabs={tabs}
@@ -423,7 +445,7 @@ class UserSettings extends Component {
 				{!isMobile ? this.renderContent(tabs, activeTab) : null}
 				{isMobile && (
 					<div className="my-4">
-						{/* <Button label={STRINGS.ACCOUNTS.TAB_SIGNOUT} onClick={this.logout} /> */}
+						{/* <Button label={STRINGS["ACCOUNTS.TAB_SIGNOUT"]} onClick={this.logout} /> */}
 					</div>
 				)}
 			</div>
@@ -442,7 +464,8 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	price: state.orderbook.price,
 	//orders: state.order.activeOrders,
-	constants: state.app.constants
+	constants: state.app.constants,
+	totalAsset: state.asset.totalAsset,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -456,10 +479,10 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	closeNotification: bindActionCreators(closeNotification, dispatch),
-	logout: bindActionCreators(logout, dispatch)
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(UserSettings);
+)(withConfig(UserSettings));

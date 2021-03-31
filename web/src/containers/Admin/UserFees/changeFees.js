@@ -7,14 +7,14 @@ const Search = Input.Search;
 
 const CURRENCY_KEYS = [
 	{ value: 'taker_fees', label: 'Taker fees' },
-	{ value: 'maker_fees', label: 'Maker fees' }
+	{ value: 'maker_fees', label: 'Maker fees' },
 ];
 
 class ChangeFees extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			john: props.name
+			john: props.name,
 		};
 	}
 

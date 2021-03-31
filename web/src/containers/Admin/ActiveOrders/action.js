@@ -1,5 +1,5 @@
 import { requestAuthenticated } from '../../../utils';
- 
+
 const handleError = (err) => err.data;
 
 export const requestActiveOrders = (values = {}) => {
@@ -14,13 +14,19 @@ export const requestActiveOrders = (values = {}) => {
 			return {
 				...data,
 				page,
-				isRemaining: data.count > page * limit
+				isRemaining: data.count > page * limit,
 			};
 		});
 };
 
 export const requestCancelOrders = (orderId, userId) => {
-	return requestAuthenticated(`/admin/order?user_id=${userId}&order_id=${orderId}`, undefined, undefined, undefined, 'DELETE')
+	return requestAuthenticated(
+		`/admin/order?user_id=${userId}&order_id=${orderId}`,
+		undefined,
+		undefined,
+		undefined,
+		'DELETE'
+	)
 		.catch(handleError)
 		.then((data) => {
 			return data;

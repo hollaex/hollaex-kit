@@ -41,8 +41,8 @@ export const checkRole = () => {
 		role = 'support';
 	} else if (roles.includes('kyc')) {
 		role = 'kyc';
-	} else if (roles.includes('tech')) {
-		role = 'tech';
+	} else if (roles.includes('communicator')) {
+		role = 'communicator';
 	}
 	return role;
 };
@@ -69,6 +69,6 @@ export const isAdmin = () => {
 		role === 'kyc' ||
 		role === 'support' ||
 		role === 'supervisor' ||
-		role === 'tech'
+		role === 'communicator'
 	);
 };

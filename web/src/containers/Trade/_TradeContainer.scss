@@ -18,8 +18,8 @@
 			> * {
 				flex: 1 !important;
 			}
-			
-			.xht-logo{
+
+			.xht-logo {
 				width: 3rem;
 				height: 3rem;
 			}
@@ -47,8 +47,8 @@
 	}
 }
 .xht-order-heading {
-    font-weight: bold;
-    font-size: 1.1rem;
+	font-weight: bold;
+	font-size: 1.1rem;
 }
 
 .xht-order-content {
@@ -139,11 +139,10 @@
 			font-size: $regular--font-size;
 		}
 	}
-	.xht-logo{
+	.xht-logo {
 		width: 3rem;
 		height: 3rem;
 	}
-	
 }
 
 @media (min-width: 1920px) {
@@ -171,4 +170,3 @@
 		}
 	}
 }
-

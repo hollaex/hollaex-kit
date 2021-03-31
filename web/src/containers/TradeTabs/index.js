@@ -1,41 +1,42 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import ReactSVG from 'react-svg';
-import classnames from 'classnames';
+import { getSparklines } from 'actions/chartAction';
+import { isMobile } from 'react-device-detect';
 
-import { Paginator, SearchBox } from '../../components';
-import {
-	ICONS,
-	BASE_CURRENCY,
-	DEFAULT_COIN_DATA
-} from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
-import {
-	formatPercentage,
-	formatAverage,
-	formatToCurrency
-} from '../../utils/currency';
+import MarketCards from './components/MarketCards';
+import MarketList from './components/MarketList';
+import Toggle from './components/Toggle';
+import { SearchBox } from 'components';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
+import { formatPercentage } from 'utils/currency';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
+import Image from 'components/Image';
 
 class AddTradeTab extends Component {
 	state = {
 		page: 0,
-		pageSize: 9,
+		pageSize: 12,
 		data: [],
 		count: 0,
-		searchValue: ''
+		searchValue: '',
+		selected: isMobile ? 'List' : 'Card',
+		options: [{ value: 'List' }, { value: 'Card' }],
+		chartData: {},
 	};
 
 	componentDidMount() {
-		this.goToPage(
-			this.props.pairs,
-			this.props.tickers,
-			this.state.page,
-			this.state.searchValue
+		const { pairs, tickers } = this.props;
+		this.goToPage(pairs, tickers, this.state.page, this.state.searchValue);
+
+		getSparklines(Object.keys(pairs)).then((chartData) =>
+			this.setState({ chartData })
 		);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			JSON.stringify(this.props.pairs) !== JSON.stringify(nextProps.pairs) ||
 			JSON.stringify(this.props.tickers) !== JSON.stringify(nextProps.tickers)
@@ -122,154 +123,146 @@ class AddTradeTab extends Component {
 	};
 
 	handleClick = (pair) => {
+		const { onRouteChange = () => {} } = this.props;
 		let tabs = localStorage.getItem('tabs');
 		tabs = tabs ? JSON.parse(tabs) : [];
 		tabs.push(pair);
 		localStorage.setItem('tabs', JSON.stringify(tabs));
 		this.props.router.push(`/trade/${pair}`);
+		// called to change the active tab in mobile version (temporary)
+		onRouteChange();
+	};
+
+	onToggle = () => {
+		const { options } = this.state;
+		const selected =
+			this.state.selected === options[0].value
+				? options[1].value
+				: options[0].value;
+		this.setState({ selected });
 	};
 
 	render() {
+		const { pairs, tickers, coins, constants = {}, icons: ICONS } = this.props;
 		const {
-			activeTheme,
-			pairs,
-			tickers,
-			coins,
-			constants = {}
-		} = this.props;
-		const { page, pageSize, count, data } = this.state;
+			page,
+			pageSize,
+			count,
+			data,
+			selected,
+			options,
+			chartData,
+		} = this.state;
+		const { handleClick, goToPreviousPage, goToNextPage } = this;
+
 		let quickPair = this.props.pair || '';
 		if (!this.props.pair && Object.keys(pairs).length) {
 			quickPair = Object.keys(pairs)[0];
 		}
-		let path = constants.logo_path;
-		if (activeTheme === 'dark') {
-			path = constants.logo_black_path;
-		}
+
+		const processedData = data.map((key) => {
+			let pair = pairs[key] || {};
+			let { fullname, symbol = '' } =
+				coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
+			const { increment_price } = pair;
+			let ticker = tickers[key] || {};
+			const priceDifference =
+				ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
+			const tickerPercent =
+				priceDifference === 0 || ticker.open === 0
+					? 0
+					: (priceDifference / ticker.open) * 100;
+			const priceDifferencePercent = isNaN(tickerPercent)
+				? formatPercentage(0)
+				: formatPercentage(tickerPercent);
+			return {
+				key,
+				pair,
+				symbol,
+				pairTwo,
+				fullname,
+				ticker,
+				increment_price,
+				priceDifference,
+				priceDifferencePercent,
+			};
+		});
+
 		return (
 			<div className="trade_tabs-container">
-				<div className="mb-5">
-					<div
-						style={{ backgroundImage: `url(${path})` }}
-						className="app-icon d-flex"
-					>
-					</div>
-					<div className="text-center trade-tab-app-title">
-						{STRINGS.APP_SUB_TITLE.toUpperCase()}
-					</div>
-				</div>
-				<div className="trade_tabs-content">
-					<div className="d-flex justify-content-end">
-						{constants.broker_enabled
-							? <span className="trade_tabs-link link-separator">
-								<Link to={`/quick-trade/${quickPair}`}>
-									{STRINGS.QUICK_TRADE}
-								</Link>
-							</span>
-							: null
-						}
-						<span className="trade_tabs-link link-separator">
-							<Link to="/account">{STRINGS.ACCOUNTS.TITLE}</Link>
-						</span>
-						<span className="trade_tabs-link">
-							<Link to="/wallet">{STRINGS.WALLET_TITLE}</Link>
-						</span>
-					</div>
-					<div className="w-50">
-						<SearchBox
-							name={STRINGS.SEARCH_ASSETS}
-							className="trade_tabs-search-field"
-							outlineClassName="trade_tabs-search-outline"
-							placeHolder={`${STRINGS.SEARCH_ASSETS}...`}
-							handleSearch={this.handleTabSearch}
+				{!isMobile && (
+					<div className="mb-5">
+						<Image
+							iconId="EXCHANGE_LOGO"
+							icon={ICONS['EXCHANGE_LOGO']}
+							wrapperClassName="app-icon d-flex"
 						/>
+						<div className="text-center trade-tab-app-title">
+							<EditWrapper stringId="APP_SUB_TITLE" iconId="EXCHANGE_LOGO">
+								{STRINGS['APP_SUB_TITLE'].toUpperCase()}
+							</EditWrapper>
+						</div>
 					</div>
-					<div className="d-flex flex-wrap p-3 my-5">
-						{data.map((key, index) => {
-							let pair = pairs[key] || {};
-							let { fullname, symbol = '' } =
-								coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-							const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
-							const { increment_price } = pair;
-							let ticker = tickers[key] || {};
-							const priceDifference =
-								ticker.open === 0
-									? 0
-									: (ticker.close || 0) - (ticker.open || 0);
-							const tickerPercent =
-								priceDifference === 0 || ticker.open === 0
-									? 0
-									: (priceDifference / ticker.open) * 100;
-							const priceDifferencePercent = isNaN(tickerPercent)
-								? formatPercentage(0)
-								: formatPercentage(tickerPercent);
-							return (
-								<div
-									key={index}
-									className={classnames('d-flex', 'trade-tab-list', 'pointer', {
-										'active-tab': index === 0
-									})}
-									onClick={() => this.handleClick(key)}
-								>
-									<div className="px-2">
-										<ReactSVG
-											path={
-												ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-													? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-													: ICONS.DEFAULT_ICON
-											}
-											wrapperClassName="trade_tab-icons"
-										/>
-									</div>
-									<div className="tabs-pair-details">
-										<div className="trade_tab-pair-title">
-											{symbol.toUpperCase()}/
-											{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
-										</div>
-										<div>
-											{fullname}/{pairTwo.fullname}
-										</div>
-										<div>
-											{STRINGS.PRICE}:
-											<span className="title-font ml-1">
-												{formatToCurrency(ticker.close, increment_price)}
-											</span>
-										</div>
-										<div className="d-flex">
-											<div
-												className={
-													priceDifference < 0
-														? 'price-diff-down trade-tab-price_diff_down'
-														: 'trade-tab-price_diff_up price-diff-up'
-												}
-											>
-												{formatAverage(formatToCurrency(priceDifference, increment_price))}
-											</div>
-											<div
-												className={
-													priceDifference < 0
-														? 'title-font ml-1 price-diff-down'
-														: 'title-font ml-1 price-diff-up'
-												}
-											>
-												{`(${priceDifferencePercent})`}
-											</div>
-										</div>
-										<div>{`${STRINGS.CHART_TEXTS.v}: ${
-											ticker.volume
-											} ${symbol.toUpperCase()}`}</div>
-									</div>
-								</div>
-							);
-						})}
+				)}
+				<div className="trade_tabs-content">
+					{!isMobile && (
+						<div className="d-flex justify-content-end">
+							{constants &&
+							constants.features &&
+							constants.features.quick_trade ? (
+								<span className="trade_tabs-link link-separator">
+									<Link to={`/quick-trade/${quickPair}`}>
+										{STRINGS['QUICK_TRADE']}
+									</Link>
+								</span>
+							) : null}
+							<span className="trade_tabs-link link-separator">
+								<Link to="/account">{STRINGS['ACCOUNTS.TITLE']}</Link>
+							</span>
+							<span className="trade_tabs-link">
+								<Link to="/wallet">{STRINGS['WALLET_TITLE']}</Link>
+							</span>
+						</div>
+					)}
+					<div className="d-flex align-items-center justify-content-between">
+						<div className="w-50">
+							<SearchBox
+								name={STRINGS['SEARCH_ASSETS']}
+								className="trade_tabs-search-field"
+								outlineClassName="trade_tabs-search-outline"
+								placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+								handleSearch={this.handleTabSearch}
+							/>
+						</div>
+						<div className="mt-2">
+							<Toggle
+								selected={selected}
+								options={options}
+								toggle={this.onToggle}
+							/>
+						</div>
 					</div>
-					<Paginator
-						currentPage={page + 1}
-						pageSize={pageSize}
-						count={count}
-						goToPreviousPage={this.goToPreviousPage}
-						goToNextPage={this.goToNextPage}
-					/>
+					<Fragment>
+						{selected === 'List' ? (
+							<MarketList
+								markets={processedData}
+								chartData={chartData}
+								handleClick={handleClick}
+							/>
+						) : (
+							<MarketCards
+								markets={processedData}
+								chartData={chartData}
+								page={page}
+								pageSize={pageSize}
+								count={count}
+								handleClick={handleClick}
+								goToNextPage={goToNextPage}
+								goToPreviousPage={goToPreviousPage}
+							/>
+						)}
+					</Fragment>
 				</div>
 			</div>
 		);
@@ -282,7 +275,7 @@ const mapStateToProps = (store) => ({
 	tickers: store.app.tickers,
 	pair: store.app.pair,
 	coins: store.app.coins,
-	constants: store.app.constants
+	constants: store.app.constants,
 });
 
-export default connect(mapStateToProps)(AddTradeTab);
+export default connect(mapStateToProps)(withConfig(AddTradeTab));

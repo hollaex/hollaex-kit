@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Spin, Button, Tag } from 'antd';
+import { Spin, Card, Alert } from 'antd';
 import { connect } from 'react-redux';
-import { requestTotalBalance, requestConstants } from './actions';
-import { Card, Alert } from 'antd';
-import { formatCurrency } from '../../../utils';
+import { ReactSVG } from 'react-svg';
 
+import { STATIC_ICONS } from 'config/icons';
+import { requestTotalBalance, requestConstants } from './actions';
+import { formatCurrency } from '../../../utils';
 
 class Wallets extends Component {
 	state = {
@@ -14,7 +15,7 @@ class Wallets extends Component {
 		error: '',
 		showSweep: null,
 		walletNum: null,
-		constants: {}
+		constants: {},
 	};
 
 	componentWillMount() {
@@ -26,40 +27,40 @@ class Wallets extends Component {
 	requestConstants = () => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 		requestConstants()
-			.then(res => {
-				this.setState({ loading: false, constants: res.constants });
+			.then((res) => {
+				this.setState({ loading: false, constants: res.kit });
 			})
-			.catch(error => {
+			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
-			})
+			});
 	};
 
 	requestTotalBalance = () => {
 		this.setState({
 			loading: true,
-			error: ''
+			error: '',
 		});
 
 		requestTotalBalance()
 			.then((res) => {
 				this.setState({
-					balance: res.data.balances,
+					balance: res,
 					loading: false,
-					fetched: true
+					fetched: true,
 				});
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
-					error: message
+					error: message,
 				});
 			});
 	};
@@ -70,7 +71,6 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error } = this.state;
-		const { plugins = { enabled: '' } } = this.state.constants;
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -85,21 +85,18 @@ class Wallets extends Component {
 				{loading ? (
 					<Spin size="large" />
 				) : (
-					<div style={{ width: '60%' }}>
+					<div style={{ width: '60%' }} className="admin-user-container">
 						{error && <p>-{error}-</p>}
 						<div className="d-flex align-items-center justify-content-between">
-							<h1>USER WALLETS</h1>
-							<div className="my-3">
-								{!plugins.enabled.includes('vault')
-									? <Button type="primary" onClick={this.goToVault}>Activate Vault</Button>
-									: <Tag color="green">Vault Activated</Tag>
-								}
+							<div className="d-flex align-items-center">
+								<ReactSVG
+									src={STATIC_ICONS['USER_SECTION_WALLET']}
+									className="admin-wallet-icon"
+								/>
+								<h1>USER WALLETS</h1>
 							</div>
 						</div>
-						<Card
-							className="card-title"
-							title="TOTAL BALANCE OF USERS WALLETS"
-						>
+						<Card className="card-title" title="TOTAL BALANCE OF USERS WALLETS">
 							{!balance ? (
 								<Alert
 									message="Error"
@@ -126,7 +123,7 @@ class Wallets extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	constants: state.app.constants
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(Wallets);

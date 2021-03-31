@@ -2,11 +2,7 @@ import React from 'react';
 import { AdminHocForm } from '../../../components';
 const Form = AdminHocForm('BROKER_FORM', 'broker-form');
 
-const BrokerForm = ({
-	initialValues,
-	fields,
-	handleSubmitBroker,
-}) => {
+const BrokerForm = ({ initialValues, fields, handleSubmitBroker }) => {
 	return (
 		<div className="mb-4">
 			<Form

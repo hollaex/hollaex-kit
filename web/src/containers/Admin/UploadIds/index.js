@@ -7,45 +7,50 @@ import { AdminHocForm } from '../../../components';
 
 // import { isSupport } from '../../../utils';
 
-const UploadForm = AdminHocForm('UPLOAD_FORM');
+const UploadForm = AdminHocForm('UPLOAD_FORM', 'verification-form');
 
 const FORM_FIELDS = {
-	front: {
-		type: 'file',
-		label: 'Front',
-		validate: []
-	},
-	back: {
-		type: 'file',
-		label: 'Back',
-		validate: []
-	},
-	proof_of_residency: {
-		type: 'file',
-		label: 'Proof of Residence',
-		validate: []
-	},
 	type: {
 		type: 'select',
 		label: 'Type',
 		options: [
 			{ label: 'National Id', value: 'id' },
-			{ label: 'Passport', value: 'passport' }
-		]
+			{ label: 'Passport', value: 'passport' },
+		],
 	},
 	number: {
 		type: 'text',
 		label: 'Document number',
-		validate: []
-	}
+		validate: [],
+	},
+	front: {
+		type: 'file',
+		label: 'Front',
+		validate: [],
+	},
+	back: {
+		type: 'file',
+		label: 'Back',
+		validate: [],
+	},
+	proof_of_residency: {
+		type: 'file',
+		label: 'Proof of Residence',
+		validate: [],
+	},
 };
 
 class UploadIds extends Component {
 	onSubmit = (refreshData) => (values) => {
 		return uploadFiles(this.props.user_id, values)
-			.then(({ success, data: { data, user } }) => {
-				refreshData(data, 'files');
-				refreshData(user);
+			.then(({ data }) => {
+				if (data.data) {
+					refreshData(data.data, 'files');
+				}
+				if (data.user) {
+					refreshData(data.user);
+				}
+				this.props.closeUpload();
 				AntdMessage.success('Files upload successfully', 5);
 			})
 			.catch((err) => {
@@ -63,6 +68,7 @@ class UploadIds extends Component {
 					fields={FORM_FIELDS}
 					onSubmit={this.onSubmit(refreshData)}
 					buttonText="Upload"
+					buttonClass="green-btn"
 				/>
 			</div>
 		);

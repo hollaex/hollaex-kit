@@ -7,20 +7,20 @@ const INITIAL_API_OBJECT = {
 	fetched: false,
 	page: 1,
 	isRemaining: false,
-	error: ''
+	error: '',
 };
 
 const INITIAL_VERIFICATION_OBJECT = {
 	loading: false,
 	ready: false,
 	message: '',
-	error: ''
+	error: '',
 };
 
 const INITIAL_DELETE_WHITDRAWALS_MSG = {
-	dismissed:false,
-	error:''
-}
+	dismissed: false,
+	error: '',
+};
 
 const INITIAL_BTC_WHITDRAWALS_FEE = {
 	loading: false,
@@ -28,20 +28,22 @@ const INITIAL_BTC_WHITDRAWALS_FEE = {
 	error: '',
 	min: 0.0001,
 	max: 0.1,
-	optimal: 0.0001
+	optimal: 0.0001,
 };
 
 const joinData = (stateData = [], payloadData = []) =>
 	stateData.concat(payloadData);
 
 const INITIAL_STATE = {
+	orderHistory: INITIAL_API_OBJECT,
 	trades: INITIAL_API_OBJECT,
 	latestUserTrades: [],
 	deposits: INITIAL_API_OBJECT,
 	withdrawals: INITIAL_API_OBJECT,
+	logins: INITIAL_API_OBJECT,
 	depositVerification: INITIAL_VERIFICATION_OBJECT,
 	btcFee: INITIAL_BTC_WHITDRAWALS_FEE,
-	withdrawalCancelData: INITIAL_DELETE_WHITDRAWALS_MSG
+	withdrawalCancelData: INITIAL_DELETE_WHITDRAWALS_MSG,
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -55,8 +57,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				trades: {
 					...INITIAL_API_OBJECT,
 					loading: true,
-					data
-				}
+					data,
+				},
 			};
 		}
 		case ACTION_KEYS.USER_TRADES_REJECTED:
@@ -66,8 +68,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					...INITIAL_API_OBJECT,
 					loading: false,
 					fetched: true,
-					error: payload
-				}
+					error: payload,
+				},
 			};
 		case ACTION_KEYS.USER_TRADES_FULFILLED:
 			return {
@@ -79,20 +81,58 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					count: payload.count,
 					page: payload.page,
 					isRemaining: payload.isRemaining,
-					data: joinData(state.trades.data, payload.data)
-				}
+					data: joinData(state.trades.data, payload.data),
+				},
+			};
+
+		case ACTION_KEYS.ORDER_HISTORY_PENDING: {
+			const { page = 1 } = payload;
+			const data = page > 1 ? state.orderHistory.data : INITIAL_API_OBJECT.data;
+			return {
+				...state,
+				orderHistory: {
+					...INITIAL_API_OBJECT,
+					loading: true,
+					data,
+				},
+			};
+		}
+		case ACTION_KEYS.ORDER_HISTORY_REJECTED:
+			return {
+				...state,
+				orderHistory: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					error: payload,
+				},
+			};
+		case ACTION_KEYS.ORDER_HISTORY_FULFILLED:
+			return {
+				...state,
+				orderHistory: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					count: payload.count,
+					page: payload.page,
+					isRemaining: payload.isRemaining,
+					data: joinData(state.orderHistory.data, payload.data),
+				},
 			};
 
 		case ACTION_KEYS.ADD_USER_TRADES: {
 			// check if we have trades from DB
 			const tradesData = joinData(payload.trades, state.trades.data);
+			const newCount = state.trades.count + payload.trades.length;
 			return {
 				...state,
 				trades: {
-					count: tradesData.length,
-					data: tradesData
+					...state.trades,
+					count: newCount,
+					data: tradesData,
 				},
-				latestUserTrades: tradesData.slice(0, 10)
+				latestUserTrades: tradesData.slice(0, 10),
 			};
 		}
 
@@ -102,8 +142,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				...state,
 				depositVerification: {
 					...INITIAL_VERIFICATION_OBJECT,
-					loading: true
-				}
+					loading: true,
+				},
 			};
 		case ACTION_KEYS.DEPOSIT_VERIFICATION_FULFILLED:
 			return {
@@ -111,16 +151,16 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				depositVerification: {
 					...INITIAL_VERIFICATION_OBJECT,
 					ready: true,
-					message: payload.message
-				}
+					message: payload.message,
+				},
 			};
 		case ACTION_KEYS.DEPOSIT_VERIFICATION_REJECTED:
 			return {
 				...state,
 				depositVerification: {
 					...INITIAL_VERIFICATION_OBJECT,
-					error: payload.message
-				}
+					error: payload.message,
+				},
 			};
 
 		//Delete Withdrawal
@@ -129,30 +169,27 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				...state,
 				withdrawalCancelData: {
 					...INITIAL_DELETE_WHITDRAWALS_MSG,
-					error:'',
+					error: '',
 					dismissed: false,
-				}
+				},
 			};
 		case ACTION_KEYS.WITHDRAWAL_CANCEL_FULFILLED:
-
 			return {
 				...state,
 				withdrawalCancelData: {
 					...INITIAL_DELETE_WHITDRAWALS_MSG,
-					error:'',
-					dismissed: payload.dismissed
-				}
+					error: '',
+					dismissed: payload.dismissed,
+				},
 			};
 		case ACTION_KEYS.WITHDRAWAL_CANCEL_REJECTED:
-
 			return {
 				...state,
 				withdrawalCancelData: {
 					...INITIAL_DELETE_WHITDRAWALS_MSG,
 					error: payload.message,
 					dismissed: false,
-
-				}
+				},
 			};
 		// USER_TRADES
 		case ACTION_KEYS.USER_DEPOSITS_PENDING: {
@@ -163,8 +200,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				deposits: {
 					...INITIAL_API_OBJECT,
 					loading: true,
-					data
-				}
+					data,
+				},
 			};
 		}
 		case ACTION_KEYS.USER_DEPOSITS_REJECTED:
@@ -174,8 +211,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					...INITIAL_API_OBJECT,
 					loading: false,
 					fetched: true,
-					error: payload
-				}
+					error: payload,
+				},
 			};
 		case ACTION_KEYS.USER_DEPOSITS_FULFILLED:
 			return {
@@ -187,8 +224,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					count: payload.count,
 					page: payload.page,
 					isRemaining: payload.isRemaining,
-					data: joinData(state.deposits.data, payload.data)
-				}
+					data: joinData(state.deposits.data, payload.data),
+				},
 			};
 
 		// USER_TRADES
@@ -200,8 +237,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				withdrawals: {
 					...INITIAL_API_OBJECT,
 					loading: true,
-					data
-				}
+					data,
+				},
 			};
 		}
 		case ACTION_KEYS.USER_WITHDRAWALS_REJECTED:
@@ -211,8 +248,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					...INITIAL_API_OBJECT,
 					loading: false,
 					fetched: true,
-					error: payload
-				}
+					error: payload,
+				},
 			};
 		case ACTION_KEYS.USER_WITHDRAWALS_FULFILLED:
 			return {
@@ -224,16 +261,52 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					count: payload.count,
 					page: payload.page,
 					isRemaining: payload.isRemaining,
-					data: joinData(state.withdrawals.data, payload.data)
-				}
+					data: joinData(state.withdrawals.data, payload.data),
+				},
 			};
 		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_PENDING:
 			return {
 				...state,
 				btcFee: {
 					...INITIAL_BTC_WHITDRAWALS_FEE,
-					loading: true
-				}
+					loading: true,
+				},
+			};
+		// USER_LOGINS
+		case ACTION_KEYS.USER_LOGINS_PENDING: {
+			const { page = 1 } = payload;
+			const data = page > 1 ? state.logins.data : INITIAL_API_OBJECT.data;
+			return {
+				...state,
+				logins: {
+					...INITIAL_API_OBJECT,
+					loading: true,
+					data,
+				},
+			};
+		}
+		case ACTION_KEYS.USER_LOGINS_REJECTED:
+			return {
+				...state,
+				logins: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					error: payload,
+				},
+			};
+		case ACTION_KEYS.USER_LOGINS_FULFILLED:
+			return {
+				...state,
+				logins: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					count: payload.count,
+					page: payload.page,
+					isRemaining: payload.isRemaining,
+					data: joinData(state.logins.data, payload.data),
+				},
 			};
 		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED:
 			return {
@@ -242,16 +315,16 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					...INITIAL_BTC_WHITDRAWALS_FEE,
 					loading: false,
 					ready: true,
-					...payload
-				}
+					...payload,
+				},
 			};
 		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_REJECTED:
 			return {
 				...state,
 				btcFee: {
 					...INITIAL_BTC_WHITDRAWALS_FEE,
-					loading: false
-				}
+					loading: false,
+				},
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

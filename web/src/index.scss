@@ -18,6 +18,7 @@ html {
 body {
 	height: 100%;
 	background-color: $app-background-color !important;
+	color: $colors-main-black;
 	font-size: $font-size-main !important;
 	font-family: $en--font-family !important;
 	height: 100%;
@@ -26,7 +27,7 @@ body {
 // .ham_menu_item{
 //     font-size: 1.4rem;
 //     padding: 1rem 0;
-//     margin: 0 5% 
+//     margin: 0 5%
 // }
 // .ham_menu_item_line {
 //     width: 90%;
@@ -47,7 +48,6 @@ body {
 // .ham_menu_list{
 // 	 padding-top: 3rem;
 // }
-
 
 .language_rtl {
 }
@@ -139,5 +139,273 @@ a {
 	.ReactModal__Body--open #root {
 		filter: none !important;
 		background: transparent !important;
+	}
+}
+
+svg {
+	.tab-summary0,
+	.tab-wallet0,
+	.tab-setting0,
+	.tab-verify0,
+	.tab-security0,
+	.tab-history-st,
+	.help-question,
+	.tab-signout,
+	.tab-api0,
+	.trade-history-1,
+	.deposit-history-3,
+	.withdrawals-history-3,
+	.verification-email,
+	.verification-id,
+	.verification-document,
+	.verification-phone,
+	.verification-bank,
+	.notification-setting,
+	.language-setting,
+	.interface-setting,
+	.chat-setting,
+	.audio-setting,
+	.risk-setting,
+	.st1,
+	.trade-history-1,
+	.account-recovery-success-2,
+	.password-reset-2,
+	.transaction-history-1,
+	.transaction-history-4,
+	.st11,
+	.wallet-coins-2,
+	.verification-doc,
+	.copy-notification-0,
+	.account-svg-1,
+	.incoming-btc-01,
+	.incoming-toman-01,
+	.coin-btc-5 {
+		fill: $colors-black;
+	}
+
+	.logout-door,
+	.account-inactive {
+		stroke: $colors-black;
+	}
+
+	.withdraw-2,
+	.withdraw-3,
+	.deposit-bitcoin-2,
+	.deposit-bitcoin-3,
+	.trade-history-3,
+	.deposit-history-1,
+	.withdrawals-history-1,
+	.risk-order-warning,
+	.otp-key,
+	.refer-icon,
+	.send-request,
+	.stake_icon,
+	.otp-code,
+	.st0,
+	.st9,
+	.st10,
+	.trade-history-3,
+	.contact-us-icon,
+	.xht-coin-stack,
+	.account-recovery-1,
+	.account-recovery-success-1,
+	.password-reset-1,
+	.success-black-1,
+	.check-st,
+	.level_icon,
+	.warning-icon,
+	.transaction-history-2,
+	.transaction-history-3,
+	.resend-email-st,
+	.email-confirmation,
+	.secure-1,
+	.wallet-coins-1,
+	.api-key-active,
+	.api-key-st,
+	.generate_api,
+	.key-trashed,
+	.api-key-revoked,
+	.risk-order-warning,
+	.bonus-offer-icon,
+	.announcement,
+	.newWave-icon,
+	.xht-pdf,
+	.xht-faq,
+	.xht-email,
+	.wave-icon,
+	.xht-docs,
+	.account-summary1,
+	.hap-icon,
+	.expired_icon,
+	.default-icon,
+	.connect-loading,
+	.bottom-chat,
+	.note-kyc,
+	.partial-fill,
+	.limit-trade-tick,
+	.chat-0,
+	.trans-history-1,
+	.quick-trade-insufficient-funds,
+	.quick-trade-success,
+	.gender-female,
+	.gender-male,
+	.volume-pending,
+	.quick-trade-4,
+	.quick_trade-tab-icon,
+	.features-pro-trade-icons,
+	.features-payment,
+	.features-legal,
+	.features-lock,
+	.features-support-1,
+	.features-data,
+	.check-send-btc-1,
+	.copy-notification-1,
+	.data-1,
+	.deposit-complete-btc-01,
+	.deposit-complete-01,
+	.email_sent,
+	.gear-grey-1,
+	.g1_3,
+	.incoming-btc-2,
+	.incoming-toman-02,
+	.security-grey-1,
+	.coin-btc-1,
+	.wallet-selected-2,
+	.account-active-1,
+	.post-icon,
+	.item-options,
+	.check-order,
+	.otp-inactive,
+	.otp-active,
+	.cancel-all {
+		fill: $colors-main-black;
+	}
+
+	.trade-history-2,
+	.trade-history-4,
+	.trade-history-5,
+	.deposit-history-2,
+	.deposit-history-4,
+	.withdrawals-history-2,
+	.withdrawals-history-4,
+	.trade-history-2,
+	.trade-history-4,
+	.trade-history-5,
+	.transaction-history-4,
+	.wallet-coins-1,
+	.quick-trade-3 {
+		stroke: none;
+	}
+
+	.deposit-bitcoin-1,
+	.withdraw-1,
+	.transaction-history-5,
+	.pending-timer,
+	.quick-trade-2,
+	.coin-btc-6,
+	.coin-btc-4,
+	.logout-door,
+	.cancel-cross-3,
+	.cancel-cross-2,
+	.account-inactive {
+		fill: none;
+	}
+
+	.pending-timer,
+	.tab-close,
+	.trans-history-4,
+	.icon-check-1,
+	.quick-trade-1,
+	.success-check-box-0,
+	.coin-btc-6,
+	.coin-btc-4,
+	.cancel-cross-3,
+	.cancel-cross-2 {
+		stroke: $colors-main-black;
+	}
+
+	.quick-trade-tab-active {
+		stroke: $base_top-bar-navigation_text-inactive;
+		fill: $base_top-bar-navigation_text-inactive;
+	}
+
+	.astrics-1 {
+		fill: $colors-main-black;
+	}
+
+	.red-warning-0,
+	.astrics-3,
+	.astrics-2 {
+		fill: $colors-notifications-red;
+	}
+
+	.success-check-box-1 {
+		stroke: $colors-notifications-green;
+	}
+
+	.red-warning-1 {
+		fill: $colors-notification-alert-text;
+	}
+
+	.session-timeout-1 {
+		fill: $colors-notification-pending;
+	}
+
+	.session-timeout-0 {
+		fill: $colors-notification-pending-text;
+	}
+
+	.deposit-complete-02,
+	.deposit-complete-btc-02 {
+		fill: $colors-notifications-green;
+	}
+
+	.btc0 {
+		fill: $coin-btc;
+	}
+	.btc1 {
+		fill: $coin-btc;
+	}
+	.eth0 {
+		fill: $coin-eth;
+	}
+	.eth1 {
+		fill: $coin-eth;
+	}
+	.bch-icon {
+		fill: $coin-bch;
+	}
+	.xrp-icon {
+		fill: $coin-xrp;
+	}
+	.xht-icon {
+		fill: $coin-xht;
+	}
+	.xmr-icon {
+		fill: $coin-xmr;
+	}
+	.xlm-icon {
+		fill: $coin-xlm;
+	}
+	.eos-icon {
+		fill: $coin-eos;
+	}
+	.trx-icon {
+		fill: $coin-trx;
+	}
+	.ada-icon {
+		fill: $coin-ada;
+	}
+	.bnb-icon {
+		fill: $coin-bnb;
+	}
+	.tusd-icon {
+		fill: $coin-tusd;
+	}
+	.dai-icon {
+		fill: $coin-dai;
+	}
+	.ltc-icon {
+		fill: $coin-ltc;
 	}
 }
