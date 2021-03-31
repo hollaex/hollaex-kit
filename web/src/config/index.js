@@ -3,7 +3,7 @@ const PRODUCTION_ENDPOINT =
 
 const DEVELOPMENT_ENDPOINT =
 	process.env.REACT_APP_DEVELOPMENT_ENDPOINT ||
-	'https://api.hollaex.com';
+	'https://api.sandbox.hollaex.com';
 
 const PRODUCTION_NETWORK_ENDPOINT =
 	process.env.REACT_APP_SERVER_NETWORK_ENDPOINT ||
