@@ -8,7 +8,6 @@ import mathjs from 'mathjs';
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
 import {
-	toFixed,
 	formatNumber,
 	// formatBaseAmount,
 	roundNumber,
@@ -362,7 +361,7 @@ class OrderEntry extends Component {
 				label: 'Trigger price',
 				type: 'number',
 				placeholder: '0',
-				normalize: normalizeFloat,
+				normalize: (value = '') => normalizeFloat(value, increment_price),
 				step: increment_price,
 				...(side === 'buy'
 					? {
@@ -387,7 +386,7 @@ class OrderEntry extends Component {
 				label: STRINGS['PRICE'],
 				type: 'number',
 				placeholder: '0',
-				normalize: normalizeFloat,
+				normalize: (value = '') => normalizeFloat(value, increment_price),
 				step: increment_price,
 				min: min_price,
 				max: max_price,
@@ -429,28 +428,12 @@ class OrderEntry extends Component {
 				),
 				type: 'number',
 				placeholder: '0.00',
-				normalize: normalizeFloat,
+				normalize: (value = '') => normalizeFloat(value, increment_size),
 				step: increment_size,
 				min: min_size,
 				max: max_size,
 				validate: [required, minValue(min_size), maxValue(max_size)],
 				currency: symbol.toUpperCase(),
-				parse: (value = '') => {
-					let decimal = getDecimals(increment_size);
-					let decValue = toFixed(value);
-					let valueDecimal = getDecimals(decValue);
-
-					let result = value;
-					if (decimal < valueDecimal) {
-						result = decValue
-							.toString()
-							.substring(
-								0,
-								decValue.toString().length - (valueDecimal - decimal)
-							);
-					}
-					return result;
-				},
 				setRef: this.props.setSizeRef,
 			},
 			slider: {
