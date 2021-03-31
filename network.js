@@ -156,11 +156,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -227,11 +227,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -430,11 +430,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -535,11 +535,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -634,11 +634,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -739,11 +739,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -1019,11 +1019,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -1109,11 +1109,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -1342,11 +1342,11 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
@@ -1740,11 +1740,11 @@ class HollaExNetwork {
 
 		let path = `${this.baseUrl}/network/${this.exchange_id}/fees?`;
 
-		if (isString(opts.startDate)) {
+		if (opts.startDate) {
 			path += `&start_date=${opts.startDate}`;
 		}
 
-		if (isString(opts.endDate)) {
+		if (opts.endDate) {
 			path += `&end_date=${opts.endDate}`;
 		}
 
