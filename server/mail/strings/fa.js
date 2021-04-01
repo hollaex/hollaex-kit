@@ -183,10 +183,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `آدرس: ${address}`,
-		5: 'برای تایید برداشت خود ،دکمه زیر فشار دهید.',
-		6: 'تایید',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'برای تایید برداشت خود ،دکمه زیر فشار دهید.',
+		7: 'تایید',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
