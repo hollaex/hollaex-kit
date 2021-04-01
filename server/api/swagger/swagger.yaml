@@ -1848,26 +1848,6 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
-  /admin/fees/settle:
-    x-swagger-router-controller: admin
-    get:
-      operationId: settleFees
-      description: Settle exchange fees
-      tags:
-        - Admin
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - admin
   /admin/signup:
     x-swagger-router-controller: admin
     post:
