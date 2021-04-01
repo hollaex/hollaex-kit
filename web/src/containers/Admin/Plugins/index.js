@@ -63,8 +63,12 @@ class Plugins extends Component {
 	}
 
 	getPluginsData = async () => {
-		await this.getPlugins();
-		await this.getMyPlugins();
+		try {
+			await this.getPlugins();
+			await this.getMyPlugins();
+		} catch (err) {
+			throw err;
+		}
 	};
 
 	getMyPlugins = (page = 1, limit = 50, params = {}) => {
@@ -74,7 +78,9 @@ class Plugins extends Component {
 					this.setState({ myPlugins: res.data });
 				}
 			})
-			.catch((err) => {});
+			.catch((err) => {
+				throw err;
+			});
 	};
 
 	getPlugins = (page = 1, limit = 50, params = {}) => {
@@ -91,6 +97,7 @@ class Plugins extends Component {
 			})
 			.catch((err) => {
 				this.setState({ loading: false });
+				throw err;
 			});
 	};
 
@@ -220,6 +227,19 @@ class Plugins extends Component {
 		});
 	};
 
+	handleRestart = () => {
+		this.setProcessing();
+		setTimeout(() => {
+			this.getPluginsData()
+				.then(() => {
+					this.setProcessing(false);
+				})
+				.catch(() => {
+					this.handleRestart();
+				});
+		}, 30000);
+	};
+
 	setProcessing = (processing = true) => {
 		this.setState({ processing });
 	};
@@ -274,6 +294,7 @@ class Plugins extends Component {
 							handlePluginList={this.handlePluginList}
 							updatePluginList={this.handleUpdatePluginList}
 							removePlugin={this.removePlugin}
+							restart={this.handleRestart}
 						/>
 					</div>
 				) : (
@@ -299,6 +320,7 @@ class Plugins extends Component {
 									getMyPlugins={this.getMyPlugins}
 									myPlugins={myPlugins}
 									pluginData={pluginData}
+									restart={this.handleRestart}
 								/>
 							</TabPane>
 						</Tabs>

@@ -14,6 +14,7 @@ const PluginDetails = ({
 	removePlugin,
 	pluginData,
 	isLoading,
+	restart,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -33,6 +34,7 @@ const PluginDetails = ({
 				setAddLoading(false);
 				message.success('Plugin installed successfully');
 				handlePluginList(res);
+				restart();
 			})
 			.catch((err) => {
 				setAddLoading(false);
@@ -57,6 +59,7 @@ const PluginDetails = ({
 				setUpdateLoading(false);
 				message.success('Plugin updated successfully');
 				updatePluginList(pluginData);
+				restart();
 			})
 			.catch((err) => {
 				setUpdateLoading(false);
@@ -86,6 +89,7 @@ const PluginDetails = ({
 		setType(type);
 		removePlugin({ name: pluginData.name });
 		handleClose();
+		restart();
 	};
 
 	const handleChange = (e) => {

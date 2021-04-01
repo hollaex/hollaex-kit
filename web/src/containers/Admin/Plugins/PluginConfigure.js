@@ -11,6 +11,7 @@ const PluginConfigure = ({
 	handlePluginList,
 	updatePluginList,
 	removePlugin,
+	restart,
 }) => {
 	const [pluginData, setPlugin] = useState({});
 	const [isLoading, setLoading] = useState(true);
@@ -51,6 +52,7 @@ const PluginConfigure = ({
 			handlePluginList={handlePluginList}
 			updatePluginList={updatePluginList}
 			removePlugin={removePlugin}
+			restart={restart}
 		/>
 	);
 };
