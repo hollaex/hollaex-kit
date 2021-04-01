@@ -1443,6 +1443,13 @@ paths:
           type: string
           minLength: 3
           maxLength: 15
+        - name: network
+          in: query
+          required: false
+          type: string
+          description: Blockchain network
+          minLength: 2
+          maxLength: 10
       responses:
         201:
           description: Success
@@ -1820,26 +1827,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/FeesResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - admin
-  /admin/fees/settle:
-    x-swagger-router-controller: admin
-    get:
-      operationId: settleFees
-      description: Settle exchange fees
-      tags:
-        - Admin
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -3415,8 +3402,10 @@ definitions:
             type: boolean
       bank_account:
         $ref: "#/definitions/BankArray"
-      crypto_wallet:
-        type: object
+      wallet:
+        type: array
+        items:
+          type: object
       verification_level:
         type: number
       settings:
@@ -3567,6 +3556,11 @@ definitions:
         description: OTP code when otp is enabled
         minLength: 6
         maxLength: 6
+      network:
+        type: string
+        description: Blockchain network
+        minLength: 2
+        maxLength: 10
   OtpRequest:
     type: object
     required:
