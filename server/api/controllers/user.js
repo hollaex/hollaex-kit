@@ -525,18 +525,29 @@ const createCryptoAddress = (req, res) => {
 	);
 
 	const { id } = req.auth.sub;
-	const crypto = req.swagger.params.crypto.value;
+	const { crypto, network } = req.swagger.params;
 
-	if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/createCryptoAddress',
+		'crypto',
+		crypto.value,
+		'network',
+		network.value
+	);
+
+	if (!crypto.value || !toolsLib.subscribedToCoin(crypto.value)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/createCryptoAddress',
-			`Invalid crypto: "${crypto}"`
+			`Invalid crypto: "${crypto.value}"`
 		);
-		return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
+		return res.status(404).json({ message: `Invalid crypto: "${crypto.value}"` });
 	}
 
-	toolsLib.user.createUserCryptoAddressByKitId(id, crypto)
+	toolsLib.user.createUserCryptoAddressByKitId(id, crypto.value, {
+		network: network.value
+	})
 		.then((data) => {
 			return res.status(201).json(data);
 		})

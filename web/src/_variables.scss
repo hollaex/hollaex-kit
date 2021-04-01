@@ -49,6 +49,7 @@ $app-background-color: var(--base_background);
 $app-light-background: var(--base_secondary-navigation-bar);
 $app-sidebar-background: var(--base_wallet-sidebar-and-popup);
 $auth-container-background: var(--base_wallet-sidebar-and-popup);
+$landing_markets_table: var(--calculated_landing_markets_table);
 $market-card_gradient_background: var(
 	--calculated_market-card_gradient_background
 );
@@ -64,6 +65,7 @@ $quick-trade-container: var(--base_wallet-sidebar-and-popup);
 
 $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);
+$app-landing_background: var(--calculated_landing_background);
 
 $app-line-divider: $colors-main-border;
 $box-fields: var(--labels_fields);

@@ -53,6 +53,11 @@ const nestedContent = {
 	CONVERT: 'Convert', // new
 	TO: 'To', // new
 	HOME: {
+		MAIN_TITLE: 'Cryptocurrency trading exchange',
+		MAIN_TEXT:
+			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
+		TRADE_CRYPTO: 'Trade crypto',
+		VIEW_EXCHANGE: 'View exchange',
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
 			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
@@ -1425,6 +1430,15 @@ const nestedContent = {
 			'Deposit and withdrawal allowance for all assets ({0})',
 		HEADER_ROW_TYPE: 'Type (All assets)',
 		HEADER_ROW_AMOUNT: 'Amount ({0})',
+	},
+	MARKETS_TABLE: {
+		TITLE: 'Live markets',
+		MARKETS: 'Markets',
+		LAST_PRICE: 'Last price',
+		CHANGE_24H: 'Change (24 hours)',
+		VOLUME_24h: 'Volume (24 hours)',
+		CHART_24H: 'Chart (24 hours)',
+		VIEW_MARKETS: 'View Markets',
 	},
 };
 

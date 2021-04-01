@@ -177,10 +177,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `주소: ${address}`,
-		5: '출금 요청을 완료하시려면 아래버튼을 클릭해주시기 바랍니다.',
-		6: '완료',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: '출금 요청을 완료하시려면 아래버튼을 클릭해주시기 바랍니다.',
+		7: '완료',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };

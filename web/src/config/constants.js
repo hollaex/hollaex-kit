@@ -21,6 +21,24 @@ export const WS_URL = config[ENV].WS_URL;
 export const PLUGIN_URL = config[ENV].PLUGIN_URL;
 export const NETWORK_API_URL = config[ENV].NETWORK_API_URL;
 
+export const DEFAULT_LANDING_SECTIONS = {
+	heading: {
+		name: 'Title/heading',
+		is_active: true,
+		order: 0,
+	},
+	market_list: {
+		name: 'Market list',
+		is_active: false,
+		order: 1,
+	},
+	quick_trade: {
+		name: 'Quick trade calculator',
+		is_active: false,
+		order: 2,
+	},
+};
+
 export const SOCIAL_ICONS = {
 	FACEBOOK: '/assets/icons/facebook.png',
 	LINKEDIN: '/assets/icons/linkedin.png',
@@ -202,7 +220,6 @@ export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
 export const TOKEN_EMAIL = 'token::email';
 export const TOKEN_MAX_AGE = 23 * 60 * 60;
 
-export const DISPLAY_LANDING = false;
 export const DEFAULT_URL = '/';
 
 // minimum level for a user to be able to create api tokens
