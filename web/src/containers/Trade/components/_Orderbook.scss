@@ -31,15 +31,10 @@
 		.trade_orderbook-cell_total {
 			color: $orderbook-secondary-text;
 		}
-
-		& :hover {
-			color: $colors-main-black;
-
-			.trade_orderbook-cell-price,
-			.trade_orderbook-cell-amount,
-			.trade_orderbook-cell_total {
-				color: $colors-main-black !important;
-			}
+		.trade_orderbook-cell-price:hover,
+		.trade_orderbook-cell-amount:hover,
+		.trade_orderbook-cell_total:hover {
+			color: $colors-main-black !important;
 		}
 	}
 
