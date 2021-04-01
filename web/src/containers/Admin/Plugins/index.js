@@ -8,6 +8,7 @@ import PluginConfigure from './PluginConfigure';
 import MyPlugins from './MyPlugins';
 import { removePlugin, requestPlugins, requestMyPlugins } from './action';
 import { STATIC_ICONS } from 'config/icons';
+import Spinner from './Spinner';
 
 import './index.css';
 
@@ -33,6 +34,7 @@ class Plugins extends Component {
 			removePluginName: '',
 			tabKey: 'explore',
 			pluginCards: [],
+			processing: false,
 		};
 		this.removeTimeout = null;
 	}
@@ -218,6 +220,10 @@ class Plugins extends Component {
 		});
 	};
 
+	setProcessing = (processing = true) => {
+		this.setState({ processing });
+	};
+
 	render() {
 		const {
 			loading,
@@ -232,6 +238,7 @@ class Plugins extends Component {
 			tabKey,
 			removePluginName,
 			pluginCards,
+			processing,
 		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
@@ -319,6 +326,22 @@ class Plugins extends Component {
 								<h2>{selectedPlugin.name}</h2>
 								<div>This plugin is coming soon!</div>
 							</div>
+						</div>
+					</div>
+				</Modal>
+				<Modal
+					visible={processing}
+					closable={false}
+					centered={true}
+					footer={null}
+					maskClosable={false}
+				>
+					<div>
+						<div>
+							<h3 style={{ color: '#ffffff' }}>Plugins</h3>
+						</div>
+						<div className="d-flex align-items-center justify-content-center my-5 pt-3 pb-4">
+							<Spinner />
 						</div>
 					</div>
 				</Modal>
