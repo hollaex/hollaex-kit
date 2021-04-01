@@ -303,10 +303,26 @@ class HollaExKit {
 	 * @param {string} address - The recipient's wallet address
 	 * @return {object} A JSON object {message:"Success"}
 	 */
-	requestWithdrawal(currency, amount, address) {
+	requestWithdrawal(currency, amount, address, opts = {
+		network: null,
+		otpCode: null
+	}) {
 		const verb = 'POST';
 		const path = `${this.baseUrl}/user/request-withdrawal`;
-		const data = { currency, amount, address };
+		const data = {
+			currency,
+			amount,
+			address
+		};
+
+		if (opts.network) {
+			data.otp_code = opts.otpCode;
+		}
+
+		if (opts.network) {
+			data.network = opts.network;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
