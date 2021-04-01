@@ -30,7 +30,12 @@ const math = require('mathjs');
 const { each } = require('lodash');
 const { parse } = require('json2csv');
 
-const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, domain) => {
+const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
+	network: null,
+	otpCode: null,
+	ip: null,
+	domain: null
+}) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -43,7 +48,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
 	}
 
-	return verifyOtpBeforeAction(id, otpCode)
+	return verifyOtpBeforeAction(id, opts.otpCode)
 		.then((validOtp) => {
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
@@ -90,10 +95,11 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 					fee: getKitCoin(currency).withdrawal_fee,
 					transaction_id: uuid(),
 					address,
-					currency
+					currency,
+					network: opts.network
 				},
-				domain,
-				ip
+				opts.domain,
+				opts.ip
 			);
 		});
 };
@@ -105,17 +111,18 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
-			const { email, amount, fee, currency, address } = data;
+			const { email, amount, fee, currency, address, network } = data;
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
 				{
-					amount: amount,
-					fee: fee,
-					currency: currency,
+					amount,
+					fee,
+					currency,
 					transaction_id: token,
-					address: address,
-					ip: ip
+					address,
+					ip,
+					network
 				},
 				user.settings,
 				domain
@@ -170,7 +177,9 @@ const checkTransaction = (currency, transactionId, address, isTestnet = false) =
 	return getNodeLib().checkTransaction(currency, transactionId, address, { isTestnet });
 };
 
-const performWithdrawal = (userId, address, currency, amount, fee) => {
+const performWithdrawal = (userId, address, currency, amount, opts = {
+	network: null
+}) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -197,12 +206,12 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 					throw new Error('Amount exceeds 24 hour withdrawal limit');
 				}
 			}
-			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, fee);
+			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
 };
 
-const performWithdrawalNetwork = (networkId, address, currency, amount, fee) => {
-	return getNodeLib().performWithdrawal(networkId, address, currency, amount, fee);
+const performWithdrawalNetwork = (networkId, address, currency, amount, opts) => {
+	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
 const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
