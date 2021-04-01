@@ -300,7 +300,9 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	createUserCryptoAddress(userId, crypto) {
+	createUserCryptoAddress(userId, crypto, opts = {
+		network: null
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -310,9 +312,12 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/create-address?user_id=${userId}&crypto=${crypto}`;
+		let path = `${this.baseUrl}/network/${this.exchange_id}/create-address?user_id=${userId}&crypto=${crypto}`;
+
+		if (opts.network) {
+			path += `&network=${opts.network}`;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -332,7 +337,9 @@ class HollaExNetwork {
 	 * @param {number} amount - Amount to withdraw
 	 * @return {object} Withdrawal made on the network
 	 */
-	performWithdrawal(userId, address, currency, amount) {
+	performWithdrawal(userId, address, currency, amount, opts = {
+		network: null
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -348,6 +355,9 @@ class HollaExNetwork {
 			this.exchange_id
 		}/withdraw?user_id=${userId}`;
 		const data = { address, currency, amount };
+		if (opts.network) {
+			data.network = opts.network;
+		}
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
