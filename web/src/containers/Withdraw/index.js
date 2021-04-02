@@ -66,13 +66,15 @@ class Withdraw extends Component {
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.routeParams.currency !== this.props.routeParams.currency)
+				nextProps.routeParams.currency !== this.props.routeParams.currency ||
+				nextProps.selectedNetwork !== this.props.selectedNetwork)
 		) {
 			this.generateFormValues(
 				getCurrencyFromName(nextProps.routeParams.currency, nextProps.coins),
 				nextProps.balance,
 				nextProps.coins,
-				nextProps.verification_level
+				nextProps.verification_level,
+				nextProps.selectedNetwork
 			);
 		}
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
@@ -102,14 +104,21 @@ class Withdraw extends Component {
 				currency,
 				this.props.balance,
 				this.props.coins,
-				this.props.verification_level
+				this.props.verification_level,
+				this.props.selectedNetwork
 			);
 		} else {
 			this.props.router.push('/wallet');
 		}
 	};
 
-	generateFormValues = (currency, balance, coins, verification_level) => {
+	generateFormValues = (
+		currency,
+		balance,
+		coins,
+		verification_level,
+		network
+	) => {
 		const { icons: ICONS } = this.props;
 		const balanceAvailable = balance[`${currency}_available`];
 		const formValues = generateFormValues(
@@ -120,7 +129,8 @@ class Withdraw extends Component {
 			verification_level,
 			this.props.activeTheme,
 			ICONS['BLUE_PLUS'],
-			'BLUE_PLUS'
+			'BLUE_PLUS',
+			network
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -294,6 +304,7 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
+	selectedNetwork: formValueSelector(FORM_NAME)(store, 'network'),
 	coins: store.app.coins,
 	activeTheme: store.app.theme,
 	constants: store.app.constants,

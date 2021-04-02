@@ -38,7 +38,8 @@ export const generateFormValues = (
 	verification_level,
 	theme = getTheme(),
 	icon,
-	iconId
+	iconId,
+	selectedNetwork
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } =
 		coins[symbol] || DEFAULT_COIN_DATA;
@@ -79,7 +80,7 @@ export const generateFormValues = (
 			validAddress(
 				symbol,
 				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
-				coins[symbol].network
+				selectedNetwork
 			),
 		],
 		fullWidth: true,
