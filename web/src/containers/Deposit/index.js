@@ -165,6 +165,10 @@ class Deposit extends Component {
 			...(destinationAddress ? { destinationAddress } : {}),
 			network: initialNetwork,
 		};
+		const additionalText =
+			currency === 'xlm' || coins[currency].network === 'stellar'
+				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
+				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
 		return (
 			<div>
@@ -202,6 +206,7 @@ class Deposit extends Component {
 							networks={networks}
 							copied={copied}
 							setCopied={() => this.setState({ copied: true })}
+							additionalText={additionalText}
 						/>
 					</div>
 				</div>

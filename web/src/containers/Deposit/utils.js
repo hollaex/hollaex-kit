@@ -88,13 +88,10 @@ const RenderContentForm = ({
 	copied,
 	address,
 	destinationAddress,
+	additionalText,
 }) => {
 	if (coins[symbol]) {
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
-		const additionalText =
-			symbol === 'xlm' || coins[symbol].network === 'stellar'
-				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
-				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
 		const onOpen = () => onOpenDialog(symbol);
 		const showGenerateButton =
