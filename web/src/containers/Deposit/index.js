@@ -16,7 +16,8 @@ import {
 
 import { MobileBarBack, Dialog, Notification } from 'components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
-import { generateBaseInformation, RenderContent } from './utils';
+import RenderContent, { generateBaseInformation } from './utils';
+import { getWallet } from 'utils/wallet';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -149,6 +150,24 @@ class Deposit extends Component {
 		if (!id || !currency || !checked) {
 			return <div />;
 		}
+
+		let address = getWallet(currency, selectedNetwork, wallet, networks) || '';
+		let destinationAddress = '';
+		if (
+			currency === 'xrp' ||
+			currency === 'xlm' ||
+			coins[currency].network === 'stellar'
+		) {
+			const temp = address.split(':');
+			address = temp[0] ? temp[0] : address;
+			destinationAddress = temp[1] ? temp[1] : '';
+		}
+
+		const initialValues = {
+			...(address ? { address } : {}),
+			...(destinationAddress ? { destinationAddress } : {}),
+		};
+
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
@@ -180,12 +199,13 @@ class Deposit extends Component {
 							'BLUE_QUESTION'
 						)}
 						<RenderContent
+							initialValues={initialValues}
+							address={address}
+							destinationAddress={destinationAddress}
 							currency={currency}
-							wallet={wallet}
 							coins={coins}
 							onCopy={this.onCopy}
 							selectedNetwork={selectedNetwork}
-							onSelect={this.onSelect}
 							onOpen={this.onOpenDialog}
 							networks={networks}
 							copied={copied}
