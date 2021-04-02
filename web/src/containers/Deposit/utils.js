@@ -1,11 +1,11 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
-import classnames from 'classnames';
 import { DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper, Button } from 'components';
 import { Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { getWallet } from 'utils/wallet';
 import { isMobile } from 'react-device-detect';
@@ -32,19 +32,33 @@ const RenderBTCContent = ({
 	networks,
 	onSelect,
 	onOpen,
+	setCopied,
+	copied,
 }) => {
 	const showGenerateButton =
 		(!address && networks && selectedNetwork) || (!address && !networks);
 
 	return (
-		<div
-			className={classnames(
-				'deposit_info-wrapper d-flex align-items-center',
-				isMobile && 'flex-column-reverse'
-			)}
-		>
-			<div>
+		<div className="withdraw-form-wrapper">
+			<div className="withdraw-form">
 				<div className="deposit_info-crypto-wrapper">
+					{networks && (
+						<Select
+							value={selectedNetwork}
+							size="small"
+							onSelect={onSelect}
+							bordered={false}
+							suffixIcon={<CaretDownOutlined />}
+							className="custom-select-input-style appbar elevated"
+							dropdownClassName="custom-select-style"
+						>
+							{networks.map((network) => (
+								<Select.Option value={network} key={network}>
+									{network}
+								</Select.Option>
+							))}
+						</Select>
+					)}
 					{address &&
 						renderDumbField({
 							label,
@@ -55,7 +69,7 @@ const RenderBTCContent = ({
 							copyOnClick,
 						})}
 				</div>
-				{destinationAddress ? (
+				{destinationAddress && (
 					<div className="deposit_info-crypto-wrapper">
 						{renderDumbField({
 							label: destinationLabel,
@@ -66,47 +80,38 @@ const RenderBTCContent = ({
 							copyOnClick,
 						})}
 					</div>
-				) : null}
-			</div>
-			{address && (
-				<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
-					<div className="qr_code-wrapper d-flex flex-column">
-						<div className="qr-code-bg d-flex justify-content-center align-items-center">
-							<QRCode value={address} />
-						</div>
-						<div className="qr-text">
-							<EditWrapper stringId="DEPOSIT.QR_CODE">
-								{STRINGS['DEPOSIT.QR_CODE']}
-							</EditWrapper>
+				)}
+				{address && (
+					<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
+						<div className="qr_code-wrapper d-flex flex-column">
+							<div className="qr-code-bg d-flex justify-content-center align-items-center">
+								<QRCode value={address} />
+							</div>
+							<div className="qr-text">
+								<EditWrapper stringId="DEPOSIT.QR_CODE">
+									{STRINGS['DEPOSIT.QR_CODE']}
+								</EditWrapper>
+							</div>
 						</div>
 					</div>
-				</div>
-			)}
-			{networks && (
-				<Select
-					value={selectedNetwork}
-					size="small"
-					onSelect={onSelect}
-					bordered={false}
-					suffixIcon={<CaretDownOutlined />}
-					className="custom-select-input-style appbar elevated"
-					dropdownClassName="custom-select-style"
-				>
-					{networks.map((network) => (
-						<Select.Option value={network} key={network}>
-							{network}
-						</Select.Option>
-					))}
-				</Select>
-			)}
+				)}
+			</div>
 			{showGenerateButton && (
-				<div className="d-flex justify-content-center">
+				<div className="btn-wrapper">
 					<Button
 						stringId="GENERATE_WALLET"
 						label={STRINGS['GENERATE_WALLET']}
 						onClick={onOpen}
 					/>
 				</div>
+			)}
+			{isMobile && address && (
+				<CopyToClipboard text={address} onCopy={setCopied}>
+					<Button
+						onClick={onCopy}
+						label={copied ? STRINGS['SUCCESFUL_COPY'] : STRINGS['COPY_ADDRESS']}
+					/>
+				</CopyToClipboard>
 			)}
 		</div>
 	);
@@ -121,6 +126,8 @@ export const RenderContent = ({
 	onSelect,
 	onOpen: onOpenDialog,
 	networks,
+	setCopied,
+	copied,
 }) => {
 	if (coins[symbol]) {
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
@@ -157,6 +164,8 @@ export const RenderContent = ({
 				networks={networks}
 				onSelect={onSelect}
 				onOpen={onOpen}
+				setCopied={setCopied}
+				copied={copied}
 			/>
 		);
 	} else {

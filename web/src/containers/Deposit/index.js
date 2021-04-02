@@ -193,25 +193,9 @@ class Deposit extends Component {
 							onSelect={this.onSelect}
 							onOpen={this.onOpenDialog}
 							networks={networks}
+							copied={copied}
+							setCopied={() => this.setState({ copied: true })}
 						/>
-						{isMobile && (
-							<CopyToClipboard
-								text={getWallet(
-									currency.toLowerCase(),
-									selectedNetwork,
-									wallet,
-									networks
-								)}
-								onCopy={() => this.setState({ copied: true })}
-							>
-								<Button
-									onClick={this.onCopy}
-									label={
-										copied ? STRINGS['SUCCESFUL_COPY'] : STRINGS['COPY_ADDRESS']
-									}
-								/>
-							</CopyToClipboard>
-						)}
 					</div>
 				</div>
 				<Dialog
