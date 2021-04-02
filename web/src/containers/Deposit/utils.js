@@ -122,7 +122,7 @@ export const RenderContent = ({
 }) => {
 	if (coins[symbol]) {
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
-		let address = getWallet(symbol, selectedNetwork, wallet) || '';
+		let address = getWallet(symbol, selectedNetwork, wallet, networks) || '';
 		let destinationAddress = '';
 		if (
 			symbol === 'xrp' ||

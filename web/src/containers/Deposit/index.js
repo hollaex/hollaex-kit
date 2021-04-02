@@ -68,11 +68,16 @@ class Deposit extends Component {
 			const { coins } = this.props;
 			const coin = coins[currency];
 			const networks = coin.network && coin.network.split(',');
+			let selectedNetwork;
+			if (networks && networks.length === 1) {
+				selectedNetwork = networks[0];
+			}
 
 			this.setState(
 				{
 					currency,
 					networks,
+					selectedNetwork,
 					checked: false,
 				},
 				() => {
@@ -194,7 +199,8 @@ class Deposit extends Component {
 								text={getWallet(
 									currency.toLowerCase(),
 									selectedNetwork,
-									wallet
+									wallet,
+									networks
 								)}
 								onCopy={() => this.setState({ copied: true })}
 							>
