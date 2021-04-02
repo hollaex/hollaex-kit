@@ -118,6 +118,7 @@ export const RenderContent = ({
 	selectedNetwork = '',
 	onSelect,
 	onOpen: onOpenDialog,
+	networks,
 }) => {
 	if (coins[symbol]) {
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
@@ -137,7 +138,6 @@ export const RenderContent = ({
 				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
 				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
-		const networks = coins[symbol].network && coins[symbol].network.split(',');
 		const onOpen = () => onOpenDialog(symbol);
 
 		return (

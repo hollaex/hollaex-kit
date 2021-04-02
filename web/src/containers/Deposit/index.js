@@ -65,9 +65,20 @@ class Deposit extends Component {
 	setCurrency = (currencyName) => {
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
-			this.setState({ currency, checked: false }, () => {
-				this.validateRoute(this.props.routeParams.currency, this.props.coins);
-			});
+			const { coins } = this.props;
+			const coin = coins[currency];
+			const networks = coin.network && coin.network.split(',');
+
+			this.setState(
+				{
+					currency,
+					networks,
+					checked: false,
+				},
+				() => {
+					this.validateRoute(this.props.routeParams.currency, this.props.coins);
+				}
+			);
 		} else {
 			this.props.router.push('/wallet');
 		}
@@ -125,13 +136,16 @@ class Deposit extends Component {
 			icons: ICONS,
 			addressRequest,
 		} = this.props;
+
 		const {
 			dialogIsOpen,
 			currency,
 			checked,
 			copied,
 			selectedNetwork,
+			networks,
 		} = this.state;
+
 		if (!id || !currency || !checked) {
 			return <div />;
 		}
@@ -173,6 +187,7 @@ class Deposit extends Component {
 							selectedNetwork={selectedNetwork}
 							onSelect={this.onSelect}
 							onOpen={this.onOpenDialog}
+							networks={networks}
 						/>
 						{isMobile && (
 							<CopyToClipboard
