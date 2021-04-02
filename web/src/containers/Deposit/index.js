@@ -171,7 +171,7 @@ class Deposit extends Component {
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
-				<div className="presentation_container  apply_rtl">
+				<div className="presentation_container apply_rtl withdrawal-container">
 					{!isMobile &&
 						renderTitleSection(
 							currency,
@@ -180,13 +180,7 @@ class Deposit extends Component {
 							coins,
 							'DEPOSIT_BITCOIN'
 						)}
-					<div
-						className={classnames(
-							'inner_container',
-							'with_border_top',
-							'with_border_bottom'
-						)}
-					>
+					<div className={classnames('inner_container', 'with_border_top')}>
 						{renderInformation(
 							currency,
 							balance,
