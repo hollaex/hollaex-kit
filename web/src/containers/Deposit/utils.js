@@ -33,6 +33,9 @@ const RenderBTCContent = ({
 	onSelect,
 	onOpen,
 }) => {
+	const showGenerateButton =
+		(!address && networks && selectedNetwork) || (!address && !networks);
+
 	return (
 		<div
 			className={classnames(
@@ -96,11 +99,10 @@ const RenderBTCContent = ({
 					))}
 				</Select>
 			)}
-			{!address && (
+			{showGenerateButton && (
 				<div className="d-flex justify-content-center">
 					<Button
 						stringId="GENERATE_WALLET"
-						disabled={networks && !selectedNetwork}
 						label={STRINGS['GENERATE_WALLET']}
 						onClick={onOpen}
 					/>
