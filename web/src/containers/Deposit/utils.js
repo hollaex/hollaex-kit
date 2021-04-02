@@ -41,46 +41,41 @@ const RenderBTCContent = ({
 	return (
 		<div className="withdraw-form-wrapper">
 			<div className="withdraw-form">
-				<div className="deposit_info-crypto-wrapper">
-					{networks && (
-						<Select
-							value={selectedNetwork}
-							size="small"
-							onSelect={onSelect}
-							bordered={false}
-							suffixIcon={<CaretDownOutlined />}
-							className="custom-select-input-style appbar elevated"
-							dropdownClassName="custom-select-style"
-						>
-							{networks.map((network) => (
-								<Select.Option value={network} key={network}>
-									{network}
-								</Select.Option>
-							))}
-						</Select>
-					)}
-					{address &&
-						renderDumbField({
-							label,
-							value: address,
-							fullWidth: true,
-							allowCopy: true,
-							onCopy,
-							copyOnClick,
-						})}
-				</div>
-				{destinationAddress && (
-					<div className="deposit_info-crypto-wrapper">
-						{renderDumbField({
-							label: destinationLabel,
-							value: destinationAddress,
-							fullWidth: true,
-							allowCopy: true,
-							onCopy,
-							copyOnClick,
-						})}
-					</div>
+				{networks && (
+					<Select
+						value={selectedNetwork}
+						size="small"
+						onSelect={onSelect}
+						bordered={false}
+						suffixIcon={<CaretDownOutlined />}
+						className="custom-select-input-style appbar elevated"
+						dropdownClassName="custom-select-style"
+					>
+						{networks.map((network) => (
+							<Select.Option value={network} key={network}>
+								{network}
+							</Select.Option>
+						))}
+					</Select>
 				)}
+				{address &&
+					renderDumbField({
+						label,
+						value: address,
+						fullWidth: true,
+						allowCopy: true,
+						onCopy,
+						copyOnClick,
+					})}
+				{destinationAddress &&
+					renderDumbField({
+						label: destinationLabel,
+						value: destinationAddress,
+						fullWidth: true,
+						allowCopy: true,
+						onCopy,
+						copyOnClick,
+					})}
 				{address && (
 					<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
 						<div className="qr_code-wrapper d-flex flex-column">
@@ -106,12 +101,16 @@ const RenderBTCContent = ({
 				</div>
 			)}
 			{isMobile && address && (
-				<CopyToClipboard text={address} onCopy={setCopied}>
-					<Button
-						onClick={onCopy}
-						label={copied ? STRINGS['SUCCESFUL_COPY'] : STRINGS['COPY_ADDRESS']}
-					/>
-				</CopyToClipboard>
+				<div className="btn-wrapper">
+					<CopyToClipboard text={address} onCopy={setCopied}>
+						<Button
+							onClick={onCopy}
+							label={
+								copied ? STRINGS['SUCCESFUL_COPY'] : STRINGS['COPY_ADDRESS']
+							}
+						/>
+					</CopyToClipboard>
+				</div>
 			)}
 		</div>
 	);
