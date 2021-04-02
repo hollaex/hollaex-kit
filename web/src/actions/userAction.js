@@ -259,9 +259,14 @@ export const setUsernameStore = (username) => ({
 // 	payload: axios.get('/fees')
 // });
 
-export const createAddress = (addressType = '') => ({
+export const createAddress = (crypto, network) => ({
 	type: 'CREATE_ADDRESS',
-	payload: axios.get(`/user/create-address?crypto=${addressType}`),
+	payload: axios.get('/user/create-address', {
+		params: {
+			crypto,
+			network,
+		},
+	}),
 });
 
 export const cleanCreateAddress = () => ({
