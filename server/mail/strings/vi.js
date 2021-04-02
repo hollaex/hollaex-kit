@@ -180,10 +180,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Địa chỉ: ${address}`,
-		5: 'Để xác nhận yêu cầu rút tiền này, vui lòng nhấn vào nút bên dưới.',
-		6: 'Xác nhận',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'Để xác nhận yêu cầu rút tiền này, vui lòng nhấn vào nút bên dưới.',
+		7: 'Xác nhận',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
