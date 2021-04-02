@@ -18,7 +18,10 @@ import {
 
 import { MobileBarBack, Dialog, Notification } from 'components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
-import RenderContent, { generateBaseInformation } from './utils';
+import RenderContent, {
+	generateBaseInformation,
+	generateFormFields,
+} from './utils';
 import { getWallet } from 'utils/wallet';
 
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -181,6 +184,16 @@ class Deposit extends Component {
 		const showGenerateButton =
 			(!address && networks && selectedNetwork) || (!address && !networks);
 
+		const formFields = generateFormFields({
+			networks,
+			address,
+			label,
+			onCopy: this.onCopy,
+			copyOnClick: true,
+			destinationAddress,
+			destinationLabel,
+		});
+
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
@@ -208,17 +221,14 @@ class Deposit extends Component {
 						<RenderContent
 							initialValues={initialValues}
 							address={address}
-							destinationAddress={destinationAddress}
 							currency={currency}
 							coins={coins}
 							onCopy={this.onCopy}
 							onOpen={() => this.onOpenDialog(currency)}
-							networks={networks}
 							copied={copied}
 							setCopied={() => this.setState({ copied: true })}
-							destinationLabel={destinationLabel}
-							label={label}
 							showGenerateButton={showGenerateButton}
+							formFields={formFields}
 						/>
 					</div>
 				</div>

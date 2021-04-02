@@ -19,7 +19,7 @@ export const generateBaseInformation = (id = '') => (
 	</div>
 );
 
-const generateFormFields = ({
+export const generateFormFields = ({
 	networks,
 	address,
 	label,
@@ -77,36 +77,21 @@ const generateFormFields = ({
 };
 
 const RenderContentForm = ({
-	currency: symbol,
+	currency,
 	coins = {},
 	onCopy,
 	onOpen,
-	networks,
 	setCopied,
 	copied,
 	address,
-	destinationAddress,
-	destinationLabel,
-	label,
 	showGenerateButton,
+	formFields,
 }) => {
-	if (coins[symbol]) {
-		const copyOnClick = true;
-
+	if (coins[currency]) {
 		return (
 			<div className="withdraw-form-wrapper">
 				<div className="withdraw-form">
-					{renderFields(
-						generateFormFields({
-							networks,
-							address,
-							label,
-							onCopy,
-							copyOnClick,
-							destinationAddress,
-							destinationLabel,
-						})
-					)}
+					{renderFields(formFields)}
 					{address && (
 						<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
 							<div className="qr_code-wrapper d-flex flex-column">
