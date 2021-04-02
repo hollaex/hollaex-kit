@@ -9,6 +9,7 @@ import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
 import { createAddress, cleanCreateAddress } from 'actions/userAction';
 import { NOTIFICATIONS } from 'actions/appActions';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 import {
 	openContactForm,
@@ -170,6 +171,16 @@ class Deposit extends Component {
 				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
 				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
+		const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
+		const destinationLabel = STRINGS.formatString(additionalText, fullname);
+		const label = STRINGS.formatString(
+			STRINGS['DEPOSIT.CRYPTO_LABELS.ADDRESS'],
+			fullname
+		);
+
+		const showGenerateButton =
+			(!address && networks && selectedNetwork) || (!address && !networks);
+
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
@@ -201,12 +212,13 @@ class Deposit extends Component {
 							currency={currency}
 							coins={coins}
 							onCopy={this.onCopy}
-							selectedNetwork={selectedNetwork}
-							onOpen={this.onOpenDialog}
+							onOpen={() => this.onOpenDialog(currency)}
 							networks={networks}
 							copied={copied}
 							setCopied={() => this.setState({ copied: true })}
-							additionalText={additionalText}
+							destinationLabel={destinationLabel}
+							label={label}
+							showGenerateButton={showGenerateButton}
 						/>
 					</div>
 				</div>

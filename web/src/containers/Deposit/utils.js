@@ -1,7 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import QRCode from 'qrcode.react';
-import { DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper, Button } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -81,28 +80,17 @@ const RenderContentForm = ({
 	currency: symbol,
 	coins = {},
 	onCopy,
-	selectedNetwork = '',
-	onOpen: onOpenDialog,
+	onOpen,
 	networks,
 	setCopied,
 	copied,
 	address,
 	destinationAddress,
-	additionalText,
+	destinationLabel,
+	label,
+	showGenerateButton,
 }) => {
 	if (coins[symbol]) {
-		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
-
-		const onOpen = () => onOpenDialog(symbol);
-		const showGenerateButton =
-			(!address && networks && selectedNetwork) || (!address && !networks);
-
-		const destinationLabel = STRINGS.formatString(additionalText, fullname);
-		const label = STRINGS.formatString(
-			STRINGS['DEPOSIT.CRYPTO_LABELS.ADDRESS'],
-			fullname
-		);
-
 		const copyOnClick = true;
 
 		return (
