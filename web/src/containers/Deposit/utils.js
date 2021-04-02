@@ -3,7 +3,9 @@ import QRCode from 'qrcode.react';
 import classnames from 'classnames';
 import { DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import { EditWrapper, Button } from 'components';
+import { Select } from 'antd';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 import { isMobile } from 'react-device-detect';
 import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
@@ -18,15 +20,19 @@ export const generateBaseInformation = (id = '') => (
 	</div>
 );
 
-const renderBTCContent = (
+const RenderBTCContent = ({
 	label = '',
 	address = '',
 	onCopy,
 	copyOnClick,
 	destinationAddress = '',
-	destinationLabel = ''
-) =>
-	address ? (
+	destinationLabel = '',
+	selectedNetwork,
+	networks,
+	onSelect,
+	onOpen,
+}) => {
+	return (
 		<div
 			className={classnames(
 				'deposit_info-wrapper d-flex align-items-center',
@@ -35,14 +41,15 @@ const renderBTCContent = (
 		>
 			<div>
 				<div className="deposit_info-crypto-wrapper">
-					{renderDumbField({
-						label,
-						value: address,
-						fullWidth: true,
-						allowCopy: true,
-						onCopy,
-						copyOnClick,
-					})}
+					{address &&
+						renderDumbField({
+							label,
+							value: address,
+							fullWidth: true,
+							allowCopy: true,
+							onCopy,
+							copyOnClick,
+						})}
 				</div>
 				{destinationAddress ? (
 					<div className="deposit_info-crypto-wrapper">
@@ -57,34 +64,69 @@ const renderBTCContent = (
 					</div>
 				) : null}
 			</div>
-			<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
-				<div className="qr_code-wrapper d-flex flex-column">
-					<div className="qr-code-bg d-flex justify-content-center align-items-center">
-						<QRCode value={address} />
-					</div>
-					<div className="qr-text">
-						<EditWrapper stringId="DEPOSIT.QR_CODE">
-							{STRINGS['DEPOSIT.QR_CODE']}
-						</EditWrapper>
+			{address && (
+				<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
+					<div className="qr_code-wrapper d-flex flex-column">
+						<div className="qr-code-bg d-flex justify-content-center align-items-center">
+							<QRCode value={address} />
+						</div>
+						<div className="qr-text">
+							<EditWrapper stringId="DEPOSIT.QR_CODE">
+								{STRINGS['DEPOSIT.QR_CODE']}
+							</EditWrapper>
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
+			{networks && (
+				<Select
+					value={selectedNetwork}
+					size="small"
+					onSelect={onSelect}
+					bordered={false}
+					suffixIcon={<CaretDownOutlined />}
+					className="custom-select-input-style appbar elevated"
+					dropdownClassName="custom-select-style"
+				>
+					{networks.map((network) => (
+						<Select.Option value={network} key={network}>
+							{network}
+						</Select.Option>
+					))}
+				</Select>
+			)}
+			{!address && (
+				<div className="d-flex justify-content-center">
+					<Button
+						stringId="GENERATE_WALLET"
+						disabled={networks && !selectedNetwork}
+						label={STRINGS['GENERATE_WALLET']}
+						onClick={onOpen}
+					/>
+				</div>
+			)}
 		</div>
-	) : (
-		<div>{STRINGS['DEPOSIT.NO_DATA']}</div>
 	);
+};
 
-export const renderContent = (
-	symbol,
+export const RenderContent = ({
+	currency: symbol,
 	crypto_wallet = {},
 	coins = {},
-	onCopy
-) => {
+	onCopy,
+	selectedNetwork = '',
+	onSelect,
+	onOpen: onOpenDialog,
+}) => {
 	if (coins[symbol]) {
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 		let address = crypto_wallet[symbol];
 		let destinationAddress = '';
-		if (symbol === 'xrp' || symbol === 'xlm' || coins[symbol].network === 'stellar') {
+		if (
+			symbol === 'xrp' ||
+			symbol === 'xlm' ||
+			coins[symbol].network === 'stellar'
+		) {
 			const temp = address.split(':');
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
@@ -94,13 +136,25 @@ export const renderContent = (
 				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
 				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
-		return renderBTCContent(
-			STRINGS.formatString(STRINGS['DEPOSIT.CRYPTO_LABELS.ADDRESS'], fullname),
-			address,
-			onCopy,
-			true,
-			destinationAddress,
-			STRINGS.formatString(additionalText, fullname)
+		const networks = coins[symbol].network && coins[symbol].network.split(',');
+		const onOpen = () => onOpenDialog(symbol);
+
+		return (
+			<RenderBTCContent
+				label={STRINGS.formatString(
+					STRINGS['DEPOSIT.CRYPTO_LABELS.ADDRESS'],
+					fullname
+				)}
+				address={address}
+				onCopy={onCopy}
+				copyOnClick={true}
+				destinationAddress={destinationAddress}
+				destinationLabel={STRINGS.formatString(additionalText, fullname)}
+				selectedNetwork={selectedNetwork}
+				networks={networks}
+				onSelect={onSelect}
+				onOpen={onOpen}
+			/>
 		);
 	} else {
 		return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;

@@ -9,16 +9,18 @@ import { isMobile } from 'react-device-detect';
 import { BALANCE_ERROR } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
+import { createAddress, cleanCreateAddress } from 'actions/userAction';
+import { NOTIFICATIONS } from 'actions/appActions';
 
 import {
 	openContactForm,
 	setSnackNotification,
 } from '../../actions/appActions';
 
-import { Button, MobileBarBack } from '../../components';
+import { Button, MobileBarBack, Dialog, Notification } from 'components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
-import { generateBaseInformation, renderContent } from './utils';
+import { generateBaseInformation, RenderContent } from './utils';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -28,6 +30,8 @@ class Deposit extends Component {
 		currency: '',
 		checked: false,
 		copied: false,
+		dialogIsOpen: false,
+		selectedNetwork: '',
 	};
 
 	componentWillMount() {
@@ -56,6 +60,13 @@ class Deposit extends Component {
 				);
 			}
 		}
+
+		if (
+			nextProps.addressRequest.success === true &&
+			nextProps.addressRequest.success !== this.props.addressRequest.success
+		) {
+			this.onCloseDialog();
+		}
 	}
 
 	setCurrency = (currencyName) => {
@@ -74,7 +85,7 @@ class Deposit extends Component {
 	};
 
 	validateRoute = (currency, crypto_wallet, coins) => {
-		if (coins[currency] && !crypto_wallet[currency]) {
+		if (!coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -93,6 +104,27 @@ class Deposit extends Component {
 		this.props.router.push('/wallet');
 	};
 
+	onOpenDialog = () => {
+		this.setState({ dialogIsOpen: true });
+		this.props.cleanCreateAddress();
+	};
+
+	onCloseDialog = () => {
+		this.setState({ dialogIsOpen: false });
+	};
+
+	onCreateAddress = () => {
+		const { addressRequest, createAddress } = this.props;
+		const { currency, selectedNetwork } = this.state;
+		if (currency && !addressRequest.error) {
+			createAddress(currency, selectedNetwork);
+		}
+	};
+
+	onSelect = (selectedNetwork) => {
+		this.setState({ selectedNetwork });
+	};
+
 	render() {
 		const {
 			id,
@@ -102,8 +134,15 @@ class Deposit extends Component {
 			coins,
 			constants = { links: {} },
 			icons: ICONS,
+			addressRequest,
 		} = this.props;
-		const { currency, checked, copied } = this.state;
+		const {
+			dialogIsOpen,
+			currency,
+			checked,
+			copied,
+			selectedNetwork,
+		} = this.state;
 		if (!id || !currency || !checked) {
 			return <div />;
 		}
@@ -137,7 +176,15 @@ class Deposit extends Component {
 							ICONS['BLUE_QUESTION'],
 							'BLUE_QUESTION'
 						)}
-						{renderContent(currency, crypto_wallet, coins, this.onCopy)}
+						<RenderContent
+							currency={currency}
+							crypto_wallet={crypto_wallet}
+							coins={coins}
+							onCopy={this.onCopy}
+							selectedNetwork={selectedNetwork}
+							onSelect={this.onSelect}
+							onOpen={this.onOpenDialog}
+						/>
 						{isMobile && (
 							<CopyToClipboard
 								text={crypto_wallet[`${currency.toLowerCase()}`]}
@@ -153,6 +200,26 @@ class Deposit extends Component {
 						)}
 					</div>
 				</div>
+				<Dialog
+					isOpen={dialogIsOpen}
+					label="hollaex-modal"
+					className="app-dialog"
+					onCloseDialog={this.onCloseDialog}
+					shouldCloseOnOverlayClick={false}
+					showCloseText={true}
+					style={{ 'z-index': 100 }}
+				>
+					{dialogIsOpen && currency && (
+						<Notification
+							type={NOTIFICATIONS.GENERATE_ADDRESS}
+							onBack={this.onCloseDialog}
+							onGenerate={this.onCreateAddress}
+							currency={currency}
+							data={addressRequest}
+							coins={coins}
+						/>
+					)}
+				</Dialog>
 			</div>
 		);
 	}
@@ -166,9 +233,12 @@ const mapStateToProps = (store) => ({
 	quoteData: store.orderbook.quoteData,
 	coins: store.app.coins,
 	constants: store.app.constants,
+	addressRequest: store.user.addressRequest,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	createAddress: bindActionCreators(createAddress, dispatch),
+	cleanCreateAddress: bindActionCreators(cleanCreateAddress, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
