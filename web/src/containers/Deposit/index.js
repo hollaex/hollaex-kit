@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
@@ -17,10 +14,8 @@ import {
 	setSnackNotification,
 } from '../../actions/appActions';
 
-import { Button, MobileBarBack, Dialog, Notification } from 'components';
+import { MobileBarBack, Dialog, Notification } from 'components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
-
-import { getWallet } from 'utils/wallet';
 import { generateBaseInformation, RenderContent } from './utils';
 
 import withConfig from 'components/ConfigProvider/withConfig';
