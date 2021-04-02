@@ -25,7 +25,6 @@ const AssetsBlock = ({
 	coins,
 	pairs,
 	totalAssets,
-	wallets,
 	onOpenDialog,
 	bankaccount,
 	navigate,

@@ -52,12 +52,7 @@ class Withdraw extends Component {
 		// 	);
 		// }
 		if (this.props.verification_level) {
-			this.validateRoute(
-				this.props.routeParams.currency,
-				this.props.bank_account,
-				this.props.crypto_wallet,
-				this.props.coins
-			);
+			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
 		this.setCurrency(this.props.routeParams.currency);
 	}
@@ -65,12 +60,7 @@ class Withdraw extends Component {
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.checked) {
 			if (nextProps.verification_level) {
-				this.validateRoute(
-					nextProps.routeParams.currency,
-					nextProps.bank_account,
-					nextProps.crypto_wallet,
-					nextProps.coins
-				);
+				this.validateRoute(nextProps.routeParams.currency, nextProps.coins);
 			}
 		} else if (
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
@@ -90,8 +80,8 @@ class Withdraw extends Component {
 		}
 	}
 
-	validateRoute = (currency, bank_account, crypto_wallet, coins) => {
-		if (coins[currency] && !crypto_wallet[currency]) {
+	validateRoute = (currency, coins) => {
+		if (coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -102,12 +92,7 @@ class Withdraw extends Component {
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
 			this.setState({ currency, checked: false }, () => {
-				this.validateRoute(
-					this.props.routeParams.currency,
-					this.props.bank_account,
-					this.props.crypto_wallet,
-					this.props.coins
-				);
+				this.validateRoute(this.props.routeParams.currency, this.props.coins);
 			});
 			// if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
 			// 	this.props.requestWithdrawFee(currency);
@@ -303,7 +288,6 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
 	otp_enabled: store.user.otp_enabled,
 	bank_account: store.user.userData.bank_account,
-	crypto_wallet: store.user.crypto_wallet,
 	activeLanguage: store.app.language,
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),

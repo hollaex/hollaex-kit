@@ -31,7 +31,6 @@ class Wallet extends Component {
 			this.props.balance,
 			this.props.prices,
 			this.state.isOpen,
-			this.props.wallets,
 			this.props.bankaccount,
 			this.props.coins,
 			this.props.pairs,
@@ -46,7 +45,6 @@ class Wallet extends Component {
 			nextProps.balance,
 			nextProps.prices,
 			this.state.isOpen,
-			nextProps.wallets,
 			nextProps.bankaccount,
 			nextProps.coins,
 			nextProps.pairs,
@@ -66,7 +64,6 @@ class Wallet extends Component {
 				this.props.balance,
 				this.props.prices,
 				this.state.isOpen,
-				this.props.wallets,
 				this.props.bankaccount,
 				this.props.coins,
 				this.props.pairs,
@@ -111,7 +108,6 @@ class Wallet extends Component {
 		balance,
 		prices,
 		isOpen = false,
-		wallets,
 		bankaccount,
 		coins,
 		pairs,
@@ -139,7 +135,6 @@ class Wallet extends Component {
 						pairs={pairs}
 						totalAssets={totalAssets}
 						changeSymbol={changeSymbol}
-						wallets={wallets}
 						onOpenDialog={this.onOpenDialog}
 						bankaccount={bankaccount}
 						navigate={this.goToPage}
@@ -170,7 +165,6 @@ class Wallet extends Component {
 				content: (
 					<MobileWallet
 						sections={sections}
-						wallets={wallets}
 						balance={balance}
 						prices={prices}
 						navigate={this.goToPage}
@@ -240,7 +234,6 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
-	wallets: store.user.crypto_wallet,
 	totalAsset: store.asset.totalAsset,
 	oraclePrices: store.asset.oraclePrices,
 });

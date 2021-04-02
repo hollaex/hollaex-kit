@@ -7,6 +7,7 @@ import { EditWrapper, Button } from 'components';
 import { Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 
+import { getWallet } from 'utils/wallet';
 import { isMobile } from 'react-device-detect';
 import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
 
@@ -111,7 +112,7 @@ const RenderBTCContent = ({
 
 export const RenderContent = ({
 	currency: symbol,
-	crypto_wallet = {},
+	wallet = [],
 	coins = {},
 	onCopy,
 	selectedNetwork = '',
@@ -120,7 +121,7 @@ export const RenderContent = ({
 }) => {
 	if (coins[symbol]) {
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
-		let address = crypto_wallet[symbol];
+		let address = getWallet(symbol, selectedNetwork, wallet) || '';
 		let destinationAddress = '';
 		if (
 			symbol === 'xrp' ||

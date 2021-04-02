@@ -20,6 +20,7 @@ import {
 import { Button, MobileBarBack, Dialog, Notification } from 'components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
+import { getWallet } from 'utils/wallet';
 import { generateBaseInformation, RenderContent } from './utils';
 
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -39,11 +40,7 @@ class Deposit extends Component {
 			this.setState({ depositPrice: this.props.quoteData.data.price });
 		}
 		if (this.props.verification_level) {
-			this.validateRoute(
-				this.props.routeParams.currency,
-				this.props.crypto_wallet,
-				this.props.coins
-			);
+			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
 		this.setCurrency(this.props.routeParams.currency);
 	}
@@ -53,11 +50,7 @@ class Deposit extends Component {
 			this.setCurrency(nextProps.routeParams.currency);
 		} else if (!this.state.checked) {
 			if (nextProps.verification_level) {
-				this.validateRoute(
-					nextProps.routeParams.currency,
-					nextProps.crypto_wallet,
-					this.props.coins
-				);
+				this.validateRoute(nextProps.routeParams.currency, this.props.coins);
 			}
 		}
 
@@ -73,18 +66,14 @@ class Deposit extends Component {
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
 			this.setState({ currency, checked: false }, () => {
-				this.validateRoute(
-					this.props.routeParams.currency,
-					this.props.crypto_wallet,
-					this.props.coins
-				);
+				this.validateRoute(this.props.routeParams.currency, this.props.coins);
 			});
 		} else {
 			this.props.router.push('/wallet');
 		}
 	};
 
-	validateRoute = (currency, crypto_wallet, coins) => {
+	validateRoute = (currency, coins) => {
 		if (!coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
@@ -128,7 +117,7 @@ class Deposit extends Component {
 	render() {
 		const {
 			id,
-			crypto_wallet,
+			wallet,
 			openContactForm,
 			balance,
 			coins,
@@ -178,7 +167,7 @@ class Deposit extends Component {
 						)}
 						<RenderContent
 							currency={currency}
-							crypto_wallet={crypto_wallet}
+							wallet={wallet}
 							coins={coins}
 							onCopy={this.onCopy}
 							selectedNetwork={selectedNetwork}
@@ -187,7 +176,11 @@ class Deposit extends Component {
 						/>
 						{isMobile && (
 							<CopyToClipboard
-								text={crypto_wallet[`${currency.toLowerCase()}`]}
+								text={getWallet(
+									currency.toLowerCase(),
+									selectedNetwork,
+									wallet
+								)}
 								onCopy={() => this.setState({ copied: true })}
 							>
 								<Button
@@ -227,7 +220,7 @@ class Deposit extends Component {
 
 const mapStateToProps = (store) => ({
 	id: store.user.id,
-	crypto_wallet: store.user.crypto_wallet,
+	wallet: store.user.wallet,
 	balance: store.user.balance,
 	activeLanguage: store.app.language,
 	quoteData: store.orderbook.quoteData,
