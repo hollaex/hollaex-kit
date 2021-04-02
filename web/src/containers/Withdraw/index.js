@@ -81,7 +81,7 @@ class Withdraw extends Component {
 	}
 
 	validateRoute = (currency, coins) => {
-		if (coins[currency]) {
+		if (!coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -128,10 +128,13 @@ class Withdraw extends Component {
 	};
 
 	onSubmitWithdraw = (currency) => (values) => {
-		const { destination_tag, ...rest } = values;
+		const { destination_tag, network, ...rest } = values;
+
 		let address = rest.address;
 		if (destination_tag) address = `${rest.address}:${destination_tag}`;
+
 		return performWithdraw(currency, {
+			...(network ? { network } : {}),
 			...rest,
 			address,
 			amount: math.eval(values.amount),

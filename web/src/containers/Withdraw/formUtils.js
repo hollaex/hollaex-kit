@@ -45,7 +45,29 @@ export const generateFormValues = (
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
+
+	const networks = coins[symbol].network && coins[symbol].network.split(',');
 	const fields = {};
+
+	if (networks) {
+		const networkOptions = networks.map((network) => ({
+			value: network,
+			label: network,
+		}));
+
+		fields.network = {
+			type: 'select',
+			stringId:
+				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER',
+			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
+			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
+			validate: [required],
+			fullWidth: true,
+			options: networkOptions,
+			ishorizontalfield: true,
+		};
+	}
+
 	fields.address = {
 		type: 'text',
 		stringId:
