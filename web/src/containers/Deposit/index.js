@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
+import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { BALANCE_ERROR } from '../../config/constants';
@@ -28,7 +29,6 @@ class Deposit extends Component {
 		checked: false,
 		copied: false,
 		dialogIsOpen: false,
-		selectedNetwork: '',
 	};
 
 	componentWillMount() {
@@ -64,16 +64,16 @@ class Deposit extends Component {
 			const { coins } = this.props;
 			const coin = coins[currency];
 			const networks = coin.network && coin.network.split(',');
-			let selectedNetwork;
+			let initialNetwork;
 			if (networks && networks.length === 1) {
-				selectedNetwork = networks[0];
+				initialNetwork = networks[0];
 			}
 
 			this.setState(
 				{
 					currency,
 					networks,
-					selectedNetwork,
+					initialNetwork,
 					checked: false,
 				},
 				() => {
@@ -115,15 +115,11 @@ class Deposit extends Component {
 	};
 
 	onCreateAddress = () => {
-		const { addressRequest, createAddress } = this.props;
-		const { currency, selectedNetwork } = this.state;
+		const { addressRequest, createAddress, selectedNetwork } = this.props;
+		const { currency } = this.state;
 		if (currency && !addressRequest.error) {
 			createAddress(currency, selectedNetwork);
 		}
-	};
-
-	onSelect = (selectedNetwork) => {
-		this.setState({ selectedNetwork });
 	};
 
 	render() {
@@ -136,6 +132,7 @@ class Deposit extends Component {
 			constants = { links: {} },
 			icons: ICONS,
 			addressRequest,
+			selectedNetwork,
 		} = this.props;
 
 		const {
@@ -143,8 +140,8 @@ class Deposit extends Component {
 			currency,
 			checked,
 			copied,
-			selectedNetwork,
 			networks,
+			initialNetwork,
 		} = this.state;
 
 		if (!id || !currency || !checked) {
@@ -166,6 +163,7 @@ class Deposit extends Component {
 		const initialValues = {
 			...(address ? { address } : {}),
 			...(destinationAddress ? { destinationAddress } : {}),
+			network: initialNetwork,
 		};
 
 		return (
@@ -241,6 +239,7 @@ const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	constants: store.app.constants,
 	addressRequest: store.user.addressRequest,
+	selectedNetwork: formValueSelector('GenerateWalletForm')(store, 'network'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
