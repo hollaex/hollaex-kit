@@ -21,101 +21,6 @@ export const generateBaseInformation = (id = '') => (
 	</div>
 );
 
-const RenderBTCContent = ({
-	label = '',
-	address = '',
-	onCopy,
-	copyOnClick,
-	destinationAddress = '',
-	destinationLabel = '',
-	selectedNetwork,
-	networks,
-	onSelect,
-	onOpen,
-	setCopied,
-	copied,
-}) => {
-	const showGenerateButton =
-		(!address && networks && selectedNetwork) || (!address && !networks);
-
-	return (
-		<div className="withdraw-form-wrapper">
-			<div className="withdraw-form">
-				{networks && (
-					<Select
-						value={selectedNetwork}
-						size="small"
-						onSelect={onSelect}
-						bordered={false}
-						suffixIcon={<CaretDownOutlined />}
-						className="custom-select-input-style appbar elevated"
-						dropdownClassName="custom-select-style"
-					>
-						{networks.map((network) => (
-							<Select.Option value={network} key={network}>
-								{network}
-							</Select.Option>
-						))}
-					</Select>
-				)}
-				{address &&
-					renderDumbField({
-						label,
-						value: address,
-						fullWidth: true,
-						allowCopy: true,
-						onCopy,
-						copyOnClick,
-					})}
-				{destinationAddress &&
-					renderDumbField({
-						label: destinationLabel,
-						value: destinationAddress,
-						fullWidth: true,
-						allowCopy: true,
-						onCopy,
-						copyOnClick,
-					})}
-				{address && (
-					<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
-						<div className="qr_code-wrapper d-flex flex-column">
-							<div className="qr-code-bg d-flex justify-content-center align-items-center">
-								<QRCode value={address} />
-							</div>
-							<div className="qr-text">
-								<EditWrapper stringId="DEPOSIT.QR_CODE">
-									{STRINGS['DEPOSIT.QR_CODE']}
-								</EditWrapper>
-							</div>
-						</div>
-					</div>
-				)}
-			</div>
-			{showGenerateButton && (
-				<div className="btn-wrapper">
-					<Button
-						stringId="GENERATE_WALLET"
-						label={STRINGS['GENERATE_WALLET']}
-						onClick={onOpen}
-					/>
-				</div>
-			)}
-			{isMobile && address && (
-				<div className="btn-wrapper">
-					<CopyToClipboard text={address} onCopy={setCopied}>
-						<Button
-							onClick={onCopy}
-							label={
-								copied ? STRINGS['SUCCESFUL_COPY'] : STRINGS['COPY_ADDRESS']
-							}
-						/>
-					</CopyToClipboard>
-				</div>
-			)}
-		</div>
-	);
-};
-
 export const RenderContent = ({
 	currency: symbol,
 	wallet = [],
@@ -147,25 +52,92 @@ export const RenderContent = ({
 				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
 		const onOpen = () => onOpenDialog(symbol);
+		const showGenerateButton =
+			(!address && networks && selectedNetwork) || (!address && !networks);
+
+		const destinationLabel = STRINGS.formatString(additionalText, fullname);
+		const label = STRINGS.formatString(
+			STRINGS['DEPOSIT.CRYPTO_LABELS.ADDRESS'],
+			fullname
+		);
+
+		const copyOnClick = true;
 
 		return (
-			<RenderBTCContent
-				label={STRINGS.formatString(
-					STRINGS['DEPOSIT.CRYPTO_LABELS.ADDRESS'],
-					fullname
+			<div className="withdraw-form-wrapper">
+				<div className="withdraw-form">
+					{networks && (
+						<Select
+							value={selectedNetwork}
+							size="small"
+							onSelect={onSelect}
+							bordered={false}
+							suffixIcon={<CaretDownOutlined />}
+							className="custom-select-input-style appbar elevated"
+							dropdownClassName="custom-select-style"
+						>
+							{networks.map((network) => (
+								<Select.Option value={network} key={network}>
+									{network}
+								</Select.Option>
+							))}
+						</Select>
+					)}
+					{address &&
+						renderDumbField({
+							label,
+							value: address,
+							fullWidth: true,
+							allowCopy: true,
+							onCopy,
+							copyOnClick,
+						})}
+					{destinationAddress &&
+						renderDumbField({
+							label: destinationLabel,
+							value: destinationAddress,
+							fullWidth: true,
+							allowCopy: true,
+							onCopy,
+							copyOnClick,
+						})}
+					{address && (
+						<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
+							<div className="qr_code-wrapper d-flex flex-column">
+								<div className="qr-code-bg d-flex justify-content-center align-items-center">
+									<QRCode value={address} />
+								</div>
+								<div className="qr-text">
+									<EditWrapper stringId="DEPOSIT.QR_CODE">
+										{STRINGS['DEPOSIT.QR_CODE']}
+									</EditWrapper>
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
+				{showGenerateButton && (
+					<div className="btn-wrapper">
+						<Button
+							stringId="GENERATE_WALLET"
+							label={STRINGS['GENERATE_WALLET']}
+							onClick={onOpen}
+						/>
+					</div>
 				)}
-				address={address}
-				onCopy={onCopy}
-				copyOnClick={true}
-				destinationAddress={destinationAddress}
-				destinationLabel={STRINGS.formatString(additionalText, fullname)}
-				selectedNetwork={selectedNetwork}
-				networks={networks}
-				onSelect={onSelect}
-				onOpen={onOpen}
-				setCopied={setCopied}
-				copied={copied}
-			/>
+				{isMobile && address && (
+					<div className="btn-wrapper">
+						<CopyToClipboard text={address} onCopy={setCopied}>
+							<Button
+								onClick={onCopy}
+								label={
+									copied ? STRINGS['SUCCESFUL_COPY'] : STRINGS['COPY_ADDRESS']
+								}
+							/>
+						</CopyToClipboard>
+					</div>
+				)}
+			</div>
 		);
 	} else {
 		return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
