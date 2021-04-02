@@ -264,7 +264,7 @@ export const createAddress = (crypto, network) => ({
 	payload: axios.get('/user/create-address', {
 		params: {
 			crypto,
-			network,
+			...(network ? { network } : {}),
 		},
 	}),
 });
