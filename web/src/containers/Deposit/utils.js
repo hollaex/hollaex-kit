@@ -137,4 +137,5 @@ const RenderContentForm = ({
 
 export default reduxForm({
 	form: 'GenerateWalletForm',
+	enableReinitialize: true,
 })(RenderContentForm);

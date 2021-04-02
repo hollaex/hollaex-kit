@@ -33,6 +33,8 @@ class Deposit extends Component {
 		checked: false,
 		copied: false,
 		dialogIsOpen: false,
+		formFields: {},
+		initialValues: {},
 	};
 
 	componentWillMount() {
@@ -46,6 +48,9 @@ class Deposit extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { selectedNetwork, wallet, coins } = this.props;
+		const { currency, networks } = this.state;
+
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
 			this.setCurrency(nextProps.routeParams.currency);
 		} else if (!this.state.checked) {
@@ -59,6 +64,20 @@ class Deposit extends Component {
 			nextProps.addressRequest.success !== this.props.addressRequest.success
 		) {
 			this.onCloseDialog();
+		}
+
+		if (
+			nextProps.selectedNetwork !== selectedNetwork ||
+			JSON.stringify(nextProps.wallet) !== JSON.stringify(wallet) ||
+			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
+		) {
+			this.generateFormFields(
+				currency,
+				nextProps.selectedNetwork,
+				nextProps.wallet,
+				networks,
+				nextProps.coins
+			);
 		}
 	}
 
@@ -81,7 +100,16 @@ class Deposit extends Component {
 					checked: false,
 				},
 				() => {
-					this.validateRoute(this.props.routeParams.currency, this.props.coins);
+					const { currency, initialNetwork, networks } = this.state;
+					const { wallet, coins } = this.props;
+					this.validateRoute(this.props.routeParams.currency, coins);
+					this.generateFormFields(
+						currency,
+						initialNetwork,
+						wallet,
+						networks,
+						coins
+					);
 				}
 			);
 		} else {
@@ -126,34 +154,10 @@ class Deposit extends Component {
 		}
 	};
 
-	render() {
-		const {
-			id,
-			wallet,
-			openContactForm,
-			balance,
-			coins,
-			constants = { links: {} },
-			icons: ICONS,
-			addressRequest,
-			selectedNetwork,
-		} = this.props;
-
-		const {
-			dialogIsOpen,
-			currency,
-			checked,
-			copied,
-			networks,
-			initialNetwork,
-		} = this.state;
-
-		if (!id || !currency || !checked) {
-			return <div />;
-		}
-
-		let address = getWallet(currency, selectedNetwork, wallet, networks) || '';
+	generateFormFields = (currency, network, wallet, networks, coins) => {
+		let address = getWallet(currency, network, wallet, networks);
 		let destinationAddress = '';
+
 		if (
 			currency === 'xrp' ||
 			currency === 'xlm' ||
@@ -164,11 +168,6 @@ class Deposit extends Component {
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
 
-		const initialValues = {
-			...(address ? { address } : {}),
-			...(destinationAddress ? { destinationAddress } : {}),
-			network: initialNetwork,
-		};
 		const additionalText =
 			currency === 'xlm' || coins[currency].network === 'stellar'
 				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
@@ -182,7 +181,7 @@ class Deposit extends Component {
 		);
 
 		const showGenerateButton =
-			(!address && networks && selectedNetwork) || (!address && !networks);
+			(!address && networks && network) || (!address && !networks);
 
 		const formFields = generateFormFields({
 			networks,
@@ -193,6 +192,41 @@ class Deposit extends Component {
 			destinationAddress,
 			destinationLabel,
 		});
+
+		const initialValues = {
+			...(address ? { address } : {}),
+			...(destinationAddress ? { destinationAddress } : {}),
+			network,
+		};
+
+		this.setState({ address, formFields, initialValues, showGenerateButton });
+	};
+
+	render() {
+		const {
+			id,
+			openContactForm,
+			balance,
+			coins,
+			constants = { links: {} },
+			icons: ICONS,
+			addressRequest,
+		} = this.props;
+
+		const {
+			dialogIsOpen,
+			currency,
+			checked,
+			copied,
+			formFields,
+			address,
+			initialValues,
+			showGenerateButton,
+		} = this.state;
+
+		if (!id || !currency || !checked) {
+			return <div />;
+		}
 
 		return (
 			<div>
