@@ -65,6 +65,7 @@ export const generateFormValues = (
 			validate: [required],
 			fullWidth: true,
 			options: networkOptions,
+			hideCheck: true,
 			ishorizontalfield: true,
 		};
 	}

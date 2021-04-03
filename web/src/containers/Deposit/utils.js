@@ -45,6 +45,7 @@ export const generateFormFields = ({
 			validate: [required],
 			fullWidth: true,
 			options: networkOptions,
+			hideCheck: true,
 			ishorizontalfield: true,
 		};
 	}
@@ -57,6 +58,7 @@ export const generateFormFields = ({
 			allowCopy: true,
 			onCopy,
 			copyOnClick,
+			hideCheck: true,
 			ishorizontalfield: true,
 		};
 	}
@@ -69,6 +71,7 @@ export const generateFormFields = ({
 			allowCopy: true,
 			onCopy,
 			copyOnClick,
+			hideCheck: true,
 			ishorizontalfield: true,
 		};
 	}
