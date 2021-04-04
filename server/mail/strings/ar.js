@@ -1,8 +1,6 @@
 'use strict';
-//استخدام صارم
 
-const { GET_KIT_CONFIG } = require('../../constants')
-;//../../ الثوابت
+const { GET_KIT_CONFIG } = require('../../constants');
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 
 const COMMON = {
@@ -100,9 +98,7 @@ const DEPOSIT = {
 			`لديك إيداع جديد بمبلغ  {amount}$ ${currency.toUpperCase()}  في قيد الانتظار في محفظتك ${API_NAME()} .يرجى الانتظار حتى يتم تأكيد المعاملة وستتوفر أموالك في محفظتك. تتطلب معاملتك  ${confirmation} تأكيداً (تأكيداتٍ) على البلوك تشين.`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Yايداعك لـ
-       ${
-        currency.toUpperCase()
-        لـ ${amount} ${currency.toUpperCase()} قد تم تأكيده و تكميله و موجود في ${
+       ${currency.toUpperCase()} ${amount} ${currency.toUpperCase()} قد تم تأكيده و تكميله و موجود في ${
 				currency.toUpperCase()
 			. محفظتك }`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
@@ -281,10 +277,10 @@ const INVITEDOPERATOR = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		CREATED: {
-			1: (role, invitingEmail) => `لقد تمت دعوتك كعامل (operator) إلى ${API_NAME()} مع دور ${role}  بواسطة المستخدم $ {invitingEmail}.`,
+			1: (role, invitingEmail) => `لقد تمت دعوتك كعامل (operator) إلى ${API_NAME()} مع دور ${role}  بواسطة المستخدم ${invitingEmail}.`,
 			2: 'يتم توفير كلمة المرور المؤقتة الخاصة بك أدناه. تأكد من تغيير كلمة المرور الخاصة بك بعد تسجيل الدخول لأسباب أمنية.',
-			3: (email) => `${email:البريد الإلكتروني} `,
-			4: (password) => `${password}:كلمة المرور `,
+			3: (email) => `${email} :البريد الإلكتروني `,
+			4: (password) => `${password}: كلمة المرور`,
 			5: 'Login'
 		},
 		EXISTING: {

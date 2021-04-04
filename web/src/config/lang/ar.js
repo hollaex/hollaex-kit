@@ -139,13 +139,11 @@ const nestedContent = {
 		REQUEST_INVITE: 'طلب دعوة',
 		CATEGORY_PLACEHOLDER: 'حدد الفئة التي تناسب مشكلتك',
 		INTRODUCTION_LABEL: 'عرف نفسك',
-		INTRODUCTION_PLACEHOLDER:
-			'أين تقيم ، هل أنت مهتم بإجراء بورصة؟',
+		INTRODUCTION_PLACEHOLDER: 'أين تقيم ، هل أنت مهتم بإجراء بورصة؟',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'الفئة',
-		CATEGORY_PLACEHOLDER:
-			'حدد الفئة التي تناسب مشكلتك',
+		CATEGORY_PLACEHOLDER: 'حدد الفئة التي تناسب مشكلتك',
 		CATEGORY_OPTIONS: {
 			OPTION_VERIFY: 'التحقق من المستخدم',
 			OPTION_LEVEL: 'زيادة مستوى المستخدم',
@@ -170,7 +168,7 @@ const nestedContent = {
 	DEPOSIT: {
 		CRYPTO_LABELS: {
 			ADDRESS: 'عنوان الاستلام {0} الخاص بك', // new
-			DESTINATION_TAG:'ملصق الوجهة {0} الخاصة بك', // new
+			DESTINATION_TAG: 'ملصق الوجهة {0} الخاصة بك', // new
 			MEMO: 'مذكرتك {0}', // new, Perisna should be added in Persian lang
 			BTC: 'عنوان استلام Bitcoin الخاص بك',
 			ETH: 'عنوان استلام Ethereum الخاص بك',
@@ -210,8 +208,7 @@ const nestedContent = {
 		INVALID_PASSWORD_2:
 			'رمز مرور خاطئ. يجب أن يحتوي على 8 أحرف على الأقل ، و علي الأقل رقم واحد في كلمة المرور ، و حرف خاص.',
 		INVALID_CURRENCY: 'عنوان {0} غير صالح ({1})',
-		INVALID_BALANCE:
-			'رصيد الموجود غير كافٍ ({0}) لإجراء العملية ({1}).',
+		INVALID_BALANCE: 'رصيد الموجود غير كافٍ ({0}) لإجراء العملية ({1}).',
 		MIN_VALUE: 'يجب أن تكون القيمة {0} أو أعلى.',
 		MAX_VALUE: 'يجب أن تكون القيمة {0} أو أقل.',
 		MIN_VALUE_NE: 'يجب أن تكون القيمة أكبر من {0}.',
@@ -227,7 +224,7 @@ const nestedContent = {
 		PRIVACY_POLICY: {
 			TITLE: 'سياسة الخصوصية',
 			SUBTITLE:
-				  'تم التحديث الأخير في 1 أبريل 2019. يستبدل الإصدار السابق بالكامل.',
+				'تم التحديث الأخير في 1 أبريل 2019. يستبدل الإصدار السابق بالكامل.',
 			TEXTS: [
 				'پلتفورم تحت وب HollaEx یک پلتفورم مبادله دارایی های دیجیتال می باشد که مالکیت آن تماماً دراختیار شرکت bitHolla در کشور کره جنوبی می باشد .از این پس به شرکت bitHoll اختصاراً bitHolla گفته میشود.',
 				'استفاده از وب سایت HollaEx (که از این پس به آن "وبسایت" گفته می شود )  و خدمات ارائه شده در آن  (که از این پس به آن "خدمات" گفته می شود )  با شرایط مندرج در صفحه شرایط و مقررات (که از این پس به آن " مقررات"  گفته می شود ) تنظیم و تعیین می شود. این توافق نامه کاملاً توافق طرفین را تشکیل می دهد. کلیه اطلاعات ارائه شده در وب سایت یا اظهارات شفاهی یا کتبی دیگر از این توافق نامه مستثنی هستند. سیاست های اکسچنج فقط جنبه  راهنمایی داشته  و توافق حقوقی بین طرفین نمی باشد.',
@@ -325,8 +322,8 @@ const nestedContent = {
 		REQUEST_EMAIL: 'اطلب واحدة أخرى هنا',
 		HAVE_ACCOUNT: 'هل لديك حساب؟',
 		GOTO_LOGIN: 'اذهب إلى صفحة تسجيل الدخول',
-		AFFILIATION_CODE: 'معرف الإحالة (إختياري)',// new
-		AFFILIATION_CODE_PLACEHOLDER: 'اكتب معرف الإحالة الخاص بك',//
+		AFFILIATION_CODE: 'معرف الإحالة (إختياري)', // new
+		AFFILIATION_CODE_PLACEHOLDER: 'اكتب معرف الإحالة الخاص بك', //
 		TERMS: {
 			terms: 'شروط عامة',
 			policy: 'سياسة الخصوصية',
@@ -335,7 +332,8 @@ const nestedContent = {
 	},
 	VERIFICATION_TEXTS: {
 		TITLE: 'أرسل البريد الإلكتروني',
-		TEXT_1: 'تحقق من بريدك الإلكتروني وانقر على الرابط للتحقق من بريدك الإلكتروني.',
+		TEXT_1:
+			'تحقق من بريدك الإلكتروني وانقر على الرابط للتحقق من بريدك الإلكتروني.',
 		TEXT_2:
 			'إذا ما تلقيت أي تأكيد عبر البريد الإلكتروني وقمت بفحص البريد الغير هام الخاص بك ، فيمكنك محاولة النقر علی إعادة الإرسال أدناه.',
 	},
@@ -354,8 +352,7 @@ const nestedContent = {
 		TEXT_2: 'يمكنك الآن متابعة تسجيل الدخول',
 	},
 	USER_VERIFICATION: {
-		INFO_TXT:
-			'هنا يمكنك مراقبة سيرك نحو التحقق وترقيات الحساب.',
+		INFO_TXT: 'هنا يمكنك مراقبة سيرك نحو التحقق وترقيات الحساب.',
 		INFO_TXT_1:
 			'يرجى تقديم المعلومات ذات الصلة المطلوبة لكل قسم أدناه. فقط عند اكتمال عمليات الإرسال لجميع الأقسام ، ستتم مراجعة معلوماتك والموافقة عليها لترقية الحساب.',
 		INFO_TXT_2: 'يتطلب التحقق لقسم الهوية منك {0} مستندات معينة.',
@@ -383,8 +380,7 @@ const nestedContent = {
 		TITLE_BANK: 'بنك',
 		TITLE_BANK_HEADER: 'التفاصيل المصرفية',
 		CHANGE_VALUE: 'تغيير القيمة',
-		PENDING_VERIFICATION_PERSONAL_INFORMATION:
-			'تتم معالجة معلوماتك الشخصية',
+		PENDING_VERIFICATION_PERSONAL_INFORMATION: 'تتم معالجة معلوماتك الشخصية',
 		PENDING_VERIFICATION_BANK: 'يتم التحقق من التفاصيل المصرفية الخاصة بك',
 		PENDING_VERIFICATION_DOCUMENTS: 'يتم التحقق من المستندات الخاصة بك',
 		GOTO_VERIFICATION: 'إذهب إلى التحقق',
@@ -407,7 +403,7 @@ const nestedContent = {
 			'من خلال التحقق من حسابك المصرفي ، يمكنك الحصول على ما يلي:',
 		BASE_WITHDRAWAL: 'سحب نقدي(فیات)',
 		BASE_DEPOSITS: 'الودائع النقدية(فیات)',
-		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account',// ماذاهذا
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', // ماذاهذا
 		BANK_NAME: 'اسم البنك',
 		ACCOUNT_NUMBER: 'رقم الحساب',
 		CARD_NUMBER: 'رقم البطاقة',
@@ -431,12 +427,14 @@ const nestedContent = {
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'الاسم الاول',
-				FIRST_NAME_PLACEHOLDER: 'اكتب اسمك الأول كما يظهر في وثيقة الهوية الخاصة بك',
+				FIRST_NAME_PLACEHOLDER:
+					'اكتب اسمك الأول كما يظهر في وثيقة الهوية الخاصة بك',
 				LAST_NAME_LABEL: 'اسم العائلة',
 				LAST_NAME_PLACEHOLDER:
 					'اكتب اسمك عائلتك كما يظهر في وثيقة الهوية الخاصة بك.',
 				FULL_NAME_LABEL: 'اسمك الكامل',
-				FULL_NAME_PLACEHOLDER: 'اكتب اسمك بالكامل كما يظهر في وثيقة الهوية الخاصة بك',
+				FULL_NAME_PLACEHOLDER:
+					'اكتب اسمك بالكامل كما يظهر في وثيقة الهوية الخاصة بك',
 				GENDER_LABEL: 'الجنس',
 				GENDER_PLACEHOLDER: 'اكتب ما هو جنسك',
 				GENDER_OPTIONS: {
@@ -447,8 +445,7 @@ const nestedContent = {
 				NATIONALITY_PLACEHOLDER: 'اكتب ما هي جنسيتك في وثيقة الهوية الخاصة بك',
 				DOB_LABEL: 'تاريخ الولادة',
 				COUNTRY_LABEL: 'البلد الذي تقيم فيه',
-				COUNTRY_PLACEHOLDER:
-					'حدد البلد الذي تقيم فيه حاليا',
+				COUNTRY_PLACEHOLDER: 'حدد البلد الذي تقيم فيه حاليا',
 				CITY_LABEL: 'مدينة',
 				CITY_PLACEHOLDER: 'اكتب المدينة التي تعيش فيها',
 				ADDRESS_LABEL: 'عنوان',
@@ -456,8 +453,7 @@ const nestedContent = {
 				POSTAL_CODE_LABEL: 'رقم البريد',
 				POSTAL_CODE_PLACEHOLDER: 'اكتب رقم البريد الخاص بك',
 				PHONE_CODE_LABEL: 'بلد',
-				PHONE_CODE_PLACEHOLDER:
-					'حدد البلد الذي يتصل به هاتفك',
+				PHONE_CODE_PLACEHOLDER: 'حدد البلد الذي يتصل به هاتفك',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21) 1 -> كوريا الجنوبية
 				PHONE_NUMBER_LABEL: 'رقم الهاتف',
 				PHONE_NUMBER_PLACEHOLDER: 'اكتب رقم هاتفك',
@@ -484,11 +480,12 @@ const nestedContent = {
 				ID_TYPE: 'الرجاء تحديد نوع وثيقة الهوية',
 				ID_NUMBER: 'الرجاء كتابة رقم الوثائق الخاصة بك',
 				ISSUED_DATE: 'الرجاء تحديد تاريخ إصدار الوثيقة الخاصة بك',
-				EXPIRATION_DATE: 'يرجى تحديد التاريخ الذي تنتهي فيه صلاحية الوثيقة الخاصة بك.',
+				EXPIRATION_DATE:
+					'يرجى تحديد التاريخ الذي تنتهي فيه صلاحية الوثيقة الخاصة بك.',
 				FRONT: 'يرجى تحميل نسخة من جواز سفرك',
-				PROOF_OF_RESIDENCY: 'يرجى تحميل نسخة ممسوحة ضوئيًا من الوثيقة الذي تثبت عنوان الذي تقيم فيه حاليًا',
-				SELFIE_PHOTO_ID:
-					'يرجى تحميل صورة شخصية مع جواز السفر والملاحظة',
+				PROOF_OF_RESIDENCY:
+					'يرجى تحميل نسخة ممسوحة ضوئيًا من الوثيقة الذي تثبت عنوان الذي تقيم فيه حاليًا',
+				SELFIE_PHOTO_ID: 'يرجى تحميل صورة شخصية مع جواز السفر والملاحظة',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'نوع وثيقة الهوية',
@@ -504,8 +501,7 @@ const nestedContent = {
 				ISSUED_DATE_LABEL: 'تاريخ اصدار جواز السفر',
 				EXPIRATION_DATE_LABEL: 'تاريخ انتهاء الجواز',
 				FRONT_LABEL: 'جواز سفر',
-				FRONT_PLACEHOLDER:
-					'أضف نسخة من جواز سفرك',
+				FRONT_PLACEHOLDER: 'أضف نسخة من جواز سفرك',
 				BACK_LABEL: 'الجانب الخلفي من جواز السفر',
 				BACK_PLACEHOLDER:
 					'أضف نسخة من ظهر الهوية الخاصة بك (إذا كان قابلاً للتطبيق)',
@@ -521,19 +517,16 @@ const nestedContent = {
 				IDENTITY_DOCUMENT: 'وثيقة الهوية',
 				PROOF_OF_RESIDENCY: 'اثبات الإقامة',
 				ID_SECTION: {
-					TITLE:
-						'يرجى التأكد من أن الوثائق التي قدمتها هي:',
+					TITLE: 'يرجى التأكد من أن الوثائق التي قدمتها هي:',
 					LIST_ITEM_1:
 						'جودة عالية (صور ملونة ، دقة 300 نقطة في البوصة أو أعلى).',
 					LIST_ITEM_2: 'مرئية بالكامل (العلامات المائية مسموح بها).',
-					LIST_ITEM_3:
-						'صالح ، مع تاريخ انتهاء الصلاحية واضح بالكامل.',
+					LIST_ITEM_3: 'صالح ، مع تاريخ انتهاء الصلاحية واضح بالكامل.',
 					WARNING_1:
-				                 'يتم قبول جواز سفرصالح فقط ؛ تُقبل الصور عالية الجودة أو الصور الممسوحة ضوئيًا لهذه الوثائق:',
+						'يتم قبول جواز سفرصالح فقط ؛ تُقبل الصور عالية الجودة أو الصور الممسوحة ضوئيًا لهذه الوثائق:',
 					WARNING_2:
 						'تأكد من أنك تقوم بتحميل المستندات الخاصة بك. أي استخدام لوثائق خاطئة أو مزيفة سيكون له عواقب قانونية ويؤدي إلى تجميد حسابك على الفور.',
-					WARNING_3:
-						'يرجى عدم تقديم جواز السفر كإثبات على إقامتك.',
+					WARNING_3: 'يرجى عدم تقديم جواز السفر كإثبات على إقامتك.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -547,8 +540,10 @@ const nestedContent = {
 					SECTION_2_TITLE: 'إثبات الإقامة المقبول هو:',
 					SECTION_2_LIST_ITEM_1: 'كشف حساب بنكي.',
 					SECTION_2_LIST_ITEM_2: 'فاتورة خدمات (كهرباء ، مياه ، انترنت).',
-					SECTION_2_LIST_ITEM_3: 'وثيقة صادرة عن الحكومة (الإقرار الضريبي ، شهادة إقامة).',
-					WARNING: 'لا يمكننا قبول العنوان الموجود في وثيقة الهوية الخاصة بك كإثبات صالح على الإقامة.',//IN PERSIAN ?
+					SECTION_2_LIST_ITEM_3:
+						'وثيقة صادرة عن الحكومة (الإقرار الضريبي ، شهادة إقامة).',
+					WARNING:
+						'لا يمكننا قبول العنوان الموجود في وثيقة الهوية الخاصة بك كإثبات صالح على الإقامة.', //IN PERSIAN ?
 				},
 				SELFIE: {
 					TITLE: 'صورة شخصية مع جواز السفر والملاحظة',
@@ -561,7 +556,7 @@ const nestedContent = {
 					INSTRUCTION_4: 'اكتب تاريخ اليوم',
 					INSTRUCTION_5: 'اكتب توقيعك',
 					WARNING:
-							'سيتم رفض الصورة الشخصية بجواز سفر مختلف عن المحتوى الذي تم تحميله',
+						'سيتم رفض الصورة الشخصية بجواز سفر مختلف عن المحتوى الذي تم تحميله',
 				},
 			},
 		},
@@ -576,13 +571,13 @@ const nestedContent = {
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'اسم البنك',
 				BANK_NAME_PLACEHOLDER: 'اكتب اسم البنك الذي تتعامل معه',
-				ACCOUNT_NUMBER_LABEL:'رقم الحساب المصرفي',
+				ACCOUNT_NUMBER_LABEL: 'رقم الحساب المصرفي',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'اكتب رقم حسابك المصرفي',
 				ACCOUNT_OWNER_LABEL: 'اسم صاحب الحساب المصرفي',
-				ACCOUNT_OWNER_PLACEHOLDER:
-					'اكتب الاسم كما هو موجود في حسابك المصرفي',
+				ACCOUNT_OWNER_PLACEHOLDER: 'اكتب الاسم كما هو موجود في حسابك المصرفي',
 				CARD_NUMBER_LABEL: 'رقم البطاقة المصرفية',
-				CARD_NUMBER_PLACEHOLDER: 'اكتب الرقم المكون من 16 رقمًا الموجود في مقدمة بطاقتك المصرفية',
+				CARD_NUMBER_PLACEHOLDER:
+					'اكتب الرقم المكون من 16 رقمًا الموجود في مقدمة بطاقتك المصرفية',
 			},
 		},
 		WARNING: {
@@ -619,8 +614,7 @@ const nestedContent = {
 			TRADE_POPUPS: 'النوافذ المنبثقة للتداول',
 			POPUP_ORDER_CONFIRMATION: 'اطلب التأكيد قبل تقديم الطلبات',
 			POPUP_ORDER_COMPLETED: 'أظهر نافذة منبثقة عند اكتمال الطلب',
-			POPUP_ORDER_PARTIALLY_FILLED:
-				'أظهر نافذة منبثقة عند تنفيذ الطلب جزئيًا',
+			POPUP_ORDER_PARTIALLY_FILLED: 'أظهر نافذة منبثقة عند تنفيذ الطلب جزئيًا',
 		},
 		AUDIO_CUE_FORM: {
 			// new
@@ -654,7 +648,7 @@ const nestedContent = {
 		TEXT_DOWNLOAD: 'سجل التحميل',
 		TRADES: 'التداولات',
 		DEPOSITS: 'الودائع',
-		WITHDRAWAL 'عمليات السحب',
+		WITHDRAWAL: 'عمليات السحب',
 	},
 	ACCOUNT_SECURITY: {
 		TITLE_TEXT:
@@ -665,7 +659,7 @@ const nestedContent = {
 			OTP_DISABLED: 'يرجى تشغيل المصادقة ذات العاملين',
 			ENABLED_TEXTS: {
 				TEXT_1: 'طلب رقم السري المتغير عند تسجيل الدخول',
-				TEXT_2:'طلب رقم السري المتغير عند سحب الأموال',
+				TEXT_2: 'طلب رقم السري المتغير عند سحب الأموال',
 			},
 			DIALOG: {
 				SUCCESS: 'لقد قمت بتنشيط  رقم السري المتغير بنجاح',
@@ -683,9 +677,9 @@ const nestedContent = {
 				MESSAGE_5: 'يدوي',
 				WARNING:
 					'نوصي بشدة بإعداد المصادقة اذات العاملين(2FA) .سيؤدي القيام بذلك إلى زيادة أمان أموالك بشكل كبير.',
-					
-				ENABLE:'مَكِّن المصادقة الثنائية',
-				DISABLE: 'تعطيل المصادقة ذات العاملين', 
+
+				ENABLE: 'مَكِّن المصادقة الثنائية',
+				DISABLE: 'تعطيل المصادقة ذات العاملين',
 			},
 			FORM: {
 				PLACEHOLDER: 'أدخل الرقم السري المتغير المقدم من Google Authenticator.',
@@ -729,19 +723,15 @@ const nestedContent = {
 			CONTENT: {
 				MESSAGE_1:
 					'سيؤدي تجميد حسابك إلى إيقاف عمليات السحب وإيقاف جميع التداولات.',
-				WARNING_1:
-					'استخدم فقط إذا كنت تخشى أن يتم اختراق حسابك',
+				WARNING_1: 'استخدم فقط إذا كنت تخشى أن يتم اختراق حسابك',
 				TITLE_1: 'جَمِّد حسابك',
 				TITLE_2: 'تجميد الحساب',
 				MESSAGE_2:
 					'قد يساعد تجميد حسابك في حماية حسابك من الهجمات الإلكترونية.',
-				MESSAGE_3:
-					'سيحدث ما يلي إذا اخترت تجميد حسابك:',
+				MESSAGE_3: 'سيحدث ما يلي إذا اخترت تجميد حسابك:',
 				MESSAGE_4: '1. سيتم إلغاء عمليات السحب التي في قيد الانتظار.',
-				MESSAGE_5:
-					'2. سيتم إيقاف جميع التداولات وإلغاء الطلبات الغير منفذة.',
-				MESSAGE_6:
-					'3. يلزم الاتصال بالدعم لإعادة تنشيط حسابك.',
+				MESSAGE_5: '2. سيتم إيقاف جميع التداولات وإلغاء الطلبات الغير منفذة.',
+				MESSAGE_6: '3. يلزم الاتصال بالدعم لإعادة تنشيط حسابك.',
 				WARNING_2: 'هل تريد حقًا تجميد حسابك؟',
 			},
 		},
@@ -753,8 +743,8 @@ const nestedContent = {
 		limit: 'حد',
 	},
 	TYPES: [
-		{ value: 'سوق', label: 'سوق' },
-		{ value: 'حد', label: 'حد' },
+		{ value: 'market', label: 'سوق' },
+		{ value: 'limit', label: 'حد' },
 	],
 	SIDE: 'جانب',
 	SIDES_VALUES: {
@@ -771,16 +761,16 @@ const nestedContent = {
 		sell: 'تم البيع',
 	},
 	SIDES: [
-		{ value: 'الشراء', label: 'الشراء'},
-		{ value: 'بيع', label: 'بيع' },
+		{ value: 'buy', label: 'الشراء' },
+		{ value: 'sell', label: 'بيع' },
 	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
-		{value: true, label: 'تشغيل' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'تشغيل' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: ' إيقاف' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: 'حجم',
 	PRICE: 'السعر',
-	FEE: 'مصاريف', 
+	FEE: 'مصاريف',
 	FEES: 'مصاريف',
 	LIMIT: 'حد',
 	TIME: 'وقت',
@@ -836,31 +826,30 @@ const nestedContent = {
 		'المعاملة صغيرة جدًا بحيث غير قابلة للإرسال. جرب كمية أكبر.',
 	WITHDRAWALS_MAX_VALUE_ERROR:
 		'المعاملة كبيرة جدًا بحيث غير قابلة للإرسال. جرب كمية أقل.',
-	WITHDRAWALS_LOWER_BALANCE: 'ليس لديك ما يكفي من {0} في رصيدك لإرسال هذه المعاملة.',
+	WITHDRAWALS_LOWER_BALANCE:
+		'ليس لديك ما يكفي من {0} في رصيدك لإرسال هذه المعاملة.',
 	WITHDRAWALS_FEE_TOO_LARGE: 'الرسوم أكثر من {0}٪ من إجمالي معاملتك.',
-	
+
 	WITHDRAWALS_BTC_INVALID_ADDRESS:
 		'عنوان البتكوين غير صالح. يرجى التحقق بعناية وإعادة الإدخال',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'آعنوان الايثيريوم غير صالح. يرجى التحقق بعناية وإعادة الإدخال',
 	WITHDRAWALS_BUTTON_TEXT: 'مراجعة عمليات السحب',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'عنوان الوجهة',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER:'اكتب العنوان',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'اكتب العنوان',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'ملصق الوجهة (اختياري)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'مذكرة (اختياري)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'اكتب ملصق الوجهة', // new
 	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'اكتب مذكرة المعاملة', // new
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} المبلغ المراد سحبه',
-	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
-		'اكتب مبلغ {0} الذي ترغب في سحبه',
+	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'اكتب مبلغ {0} الذي ترغب في سحبه',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'رسوم عملیات التحويل',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'رسوم السحب من البنك',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'اكتب مبلغ {0} الذي ترغب في استخدامه في رسوم المعاملة',
 	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'الرسوم الأمثل: {0} {1}', // TODO {0} -> amount {1} -> currency name
 	DEPOSITS_FORM_AMOUNT_LABEL: '{0} المبلغ المراد إيداعه',
-	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
-		'اكتب مبلغ {0} الذي ترغب في سحبه',
+	DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'اكتب مبلغ {0} الذي ترغب في سحبه',
 	DEPOSITS_BUTTON_TEXT: 'مراجعة الإيداع',
 	DEPOSIT_PROCEED_PAYMENT: 'إدفع',
 	DEPOSIT_BANK_REFERENCE:
@@ -869,8 +858,7 @@ const nestedContent = {
 	DEPOSIT_METHOD_DIRECT_PAYMENT: 'بطاقة ائتمان',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1:
 		'انتقل إلى طريقة الدفع ببطاقة الائتمان.',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
-		'سوف تغادر المنصة لإجراء الدفع.',
+	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2: 'سوف تغادر المنصة لإجراء الدفع.',
 	DEPOSIT_VERIFICATION_WAITING_TITLE: 'التحقق من الدفع',
 	DEPOSIT_VERIFICATION_WAITING_MESSAGE:
 		'الرجاء عدم إغلاق التطبيق أثناء التحقق من الدفع',
@@ -907,8 +895,7 @@ const nestedContent = {
 		BASE_INCREASE_LIMIT: 'زوّد الحد اليومي الخاص بك',
 		CONFIRM_VIA_EMAIL: 'أكد عبر البريد الإلكتروني',
 		CONFIRM_VIA_EMAIL_1: 'لقد أرسلنا لك رسالة تأكيد بالبريد الإلكتروني للسحب.',
-		CONFIRM_VIA_EMAIL_2:
-			'من أجل استكمال عملية السحب يرجى التأكيد',
+		CONFIRM_VIA_EMAIL_2: 'من أجل استكمال عملية السحب يرجى التأكيد',
 		CONFIRM_VIA_EMAIL_3: 'السحب عبر بريدك الإلكتروني في غضون 5 دقائق.',
 		WITHDRAW_CONFIRM_SUCCESS_1:
 			'تم تأكيد طلب السحب الخاص بك. سيتم معالجتها قريبا.',
@@ -936,7 +923,7 @@ const nestedContent = {
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'البائعين',
 	ORDERBOOK_BUYERS: 'المشترين',
-	ORDERBOOK_SPREAD: 'الفارغ {0}', 
+	ORDERBOOK_SPREAD: 'الفارغ {0}',
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'أقصى',
 	DATEFIELD_TOOGLE_DATE_GR: 'التقويم الميلادي',
@@ -955,9 +942,8 @@ const nestedContent = {
 	LOGOUT_TITLE: 'لقد تم تسجيل خروجك',
 	LOGOUT_ERROR_TOKEN_EXPIRED: 'انتهت صلاحية الرمز',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'تسجيل الدخول مرة أخرى',
-	LOGOUT_ERROR_INVALID_TOKEN:'رمز غير صالح',
-	LOGOUT_ERROR_INACTIVE: '',
-		'لقد تم تسجيل خروجك لأنك كنت غير نشط',
+	LOGOUT_ERROR_INVALID_TOKEN: 'رمز غير صالح',
+	LOGOUT_ERROR_INACTIVE: 'لقد تم تسجيل خروجك لأنك كنت غير نشط',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
 	ORDER_ENTRY_ADVANCED: 'Advanced',
 	QUICK_TRADE_OUT_OF_LIMITS: 'حجم الطلب خارج الحدود',
@@ -965,8 +951,7 @@ const nestedContent = {
 	QUICK_TRADE_QUOTE_EXPIRED: 'انتهت صلاحية عرض الاسعار',
 	QUICK_TRADE_QUOTE_INVALID: 'العرض سعر غيرصالح',
 	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'خطأ في حساب عرض السعر',
-	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 
-		'لا يمكن تنفيذ الطلب بالحجم الحالي',
+	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'لا يمكن تنفيذ الطلب بالحجم الحالي',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'لم يتم تنفيذ الطلب',
 	QUICK_TRADE_NO_BALANCE: 'رصيد غير كافٍ لأداء الطلب',
 	QUICK_TRADE_SUCCESS: 'نجاح!',
@@ -1006,7 +991,7 @@ const nestedContent = {
 	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES, //should not be changed
 	SETTINGS_ORDERPOPUP_LABEL: 'عرض نافذة تأكيد الطلب المنبثقة',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
-		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'لا' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: true, label: 'نعم' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'شكل واجهة المستخدم', // TODO set right labels // ToDo
@@ -1025,14 +1010,15 @@ const nestedContent = {
 		INFORMATION_TEXT:
 			'توفر واجهة برمجة التطبيقات(API) وظائف مثل الحصول على أرصدة المحفظة وإدارة طلبات الشراء / البيع وطلب عمليات السحب بالإضافة إلى بيانات السوق مثل التداولات الأخيرة ودفتر الطلبات والمؤشر.',
 		ERROR_INACTIVE_OTP:
-			'لإنشاء مفتاح واجهة برمجة التطبيقات (API) ، تحتاج إلى تمكين المصادقة ذات العاملين(2FA).',	
+			'لإنشاء مفتاح واجهة برمجة التطبيقات (API) ، تحتاج إلى تمكين المصادقة ذات العاملين(2FA).',
 		ENABLE_2FA: 'تمكين المصادقة ذات العاملين(2FA)',
-		WARNING_TEXT: 'لا تشارك مفتاح واجهة برمجة التطبيقات (API) الخاص بك مع الآخرين.',
+		WARNING_TEXT:
+			'لا تشارك مفتاح واجهة برمجة التطبيقات (API) الخاص بك مع الآخرين.',
 		GENERATE_KEY: 'أنشئ مفتاح (API)',
 		ACTIVE: 'نشط',
 		INACTIVE: 'غير نشط',
 		INVALID_LEVEL:
-			'تحتاج إلى ترقية مستوى التحقق لتتمكن من الوصول إلى هذه الميزة',// TODO
+			'تحتاج إلى ترقية مستوى التحقق لتتمكن من الوصول إلى هذه الميزة', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'أنشئ مفتاح (API)',
@@ -1075,7 +1061,8 @@ const nestedContent = {
 	},
 	INVALID_USERNAME:
 		'يجب أن يتراوح اسم المستخدم بين 3 و 15 حرفًا. يحتوي فقط على أحرف صغيرة وأرقام و حرف تسطير سفلي.',
-	USERNAME_TAKEN: 'وقد تم اتخاذ هذا الاسم المستخدم سابقاً. يرجى المحاولة مرة أخرى.',
+	USERNAME_TAKEN:
+		'وقد تم اتخاذ هذا الاسم المستخدم سابقاً. يرجى المحاولة مرة أخرى.',
 	USERNAME_LABEL: 'اسم المستخدم (للدردشة)',
 	USERNAME_PLACEHOLDER: 'اسم المستخدم',
 	TAB_USERNAME: 'اسم المستخدم',
@@ -1103,8 +1090,7 @@ const nestedContent = {
 	},
 	WALLET_ADDRESS_TITLE: 'أنشئ محفظة {0}  ',
 	WALLET_ADDRESS_GENERATE: 'أنشئ',
-	WALLET_ADDRESS_MESSAGE:
-		'عندما تنشئ محفظة ، فإنك تنشئ عنوان إيداع وسحب.',
+	WALLET_ADDRESS_MESSAGE: 'عندما تنشئ محفظة ، فإنك تنشئ عنوان إيداع وسحب.',
 	WALLET_ADDRESS_ERROR:
 		'خطأ في إنشاء العنوان ، يرجى التحديث والمحاولة مرة أخرى.',
 	DEPOSIT_WITHDRAW: 'إيداع / سحب',
@@ -1144,8 +1130,7 @@ const nestedContent = {
 		SHRIMP_ACCOUNT_TXT_1: 'تبدأ رحلتك من هنا!',
 		SHRIMP_ACCOUNT_TXT_2:
 			'حافظ على صحة السباحة ، ستخرج قريبًا عن بقية المياه الضحلة',
-		SNAPPER_ACCOUNT_TXT_1:
-			'تهانينا على البقاء في مسارك خلال توّرم السوق.',
+		SNAPPER_ACCOUNT_TXT_1: 'تهانينا على البقاء في مسارك خلال توّرم السوق.',
 		SNAPPER_ACCOUNT_TXT_2:
 			'تقدم وحارب الموجة للحصول على المزيد من كنوز العملات الرقمية في المستقبل.',
 		KRAKEN_ACCOUNT_TXT_1:
@@ -1176,8 +1161,7 @@ const nestedContent = {
 		FEES_AND_LIMIT: 'تركيب الرسوم والحد {0}', // new
 		FEES_AND_LIMIT_TXT_1:
 			'أن تصبح متداولاً للعملات المشفرة يمثل بداية جديدة. مسلحًا بالذكاء والإرادة والسرعة فقط من خلال المخاطرة والتداول ، سيسمح لك بتحديث حسابك.',
-		FEES_AND_LIMIT_TXT_2:
-			'كل حساب له رسومه الخاصة وحدود الإيداع والسحب.',
+		FEES_AND_LIMIT_TXT_2: 'كل حساب له رسومه الخاصة وحدود الإيداع والسحب.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'مخصص الايداع و السحب',
 		TRADING_FEE_STRUCTURE: 'تركيب رسوم التداول',
 		WITHDRAWAL: 'سحب',
@@ -1193,7 +1177,7 @@ const nestedContent = {
 		ACCOUNT_AGE_OF_MONTHS: 'عمر الحساب {0} شهر',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} ما يعادل حجم التداول',
 		LEVEL_OF_ACCOUNT: 'حساب مستوی {0}',
-		TITLE_OF_ACCOUNT: '{0} Account',// was not translated 
+		TITLE_OF_ACCOUNT: '{0} Account', // was not translated
 		LEVEL_TXT_DEFAULT: 'أضف وصف مستواك هنا',
 		LEVEL_1_TXT:
 			'رحلتك تبدأ هنا أيها المتداول عملات المشفرة الشاب! للحصول على المكافآت ، يمكنك التحقق من هويتك وكذلك الحصول على حد إيداع وسحب أكبر مع رسوم تداول مخفضة.',
@@ -1238,15 +1222,14 @@ const nestedContent = {
 		COMPLETE_ACC_VERIFICATION:
 			'أكمل عملية التحقق من الحساب واحصل على مكافأة قدرها 20 XHT', // new
 		INVITE_USER: 'قم بدعوة المستخدمين واستمتع بعمولات من تداولاتهم', // new
-		JOIN_HAP: 'انضم إلى HAP (برنامج شركاء هولا إكس) واكسب 10٪ على كل مجموعة أدوات هولاإكس تبيعها.', // new
+		JOIN_HAP:
+			'انضم إلى HAP (برنامج شركاء هولا إكس) واكسب 10٪ على كل مجموعة أدوات هولاإكس تبيعها.', // new
 		EARN_RUNNING_EXCHANGE: 'احصل على دخلاً سلبياً مع تشغيل البورصة الخاصة بك', // new
 		XHT_WAVE_AUCTION: 'بيانات مزادات موجات  XHT', // new
-		XHT_WAVE_DESC_1:
-			'يتم توزيع عملة هولاإكس (XHT) من خلال موجات من المزادات.', // new
+		XHT_WAVE_DESC_1: 'يتم توزيع عملة هولاإكس (XHT) من خلال موجات من المزادات.', // new
 		XHT_WAVE_DESC_2:
 			'تبيع مزاد الموجة كمية عشوائية من عملة XHT في أوقات عشوائية لأعلى مزايدين في دفتر الطلبات', // new
-		XHT_WAVE_DESC_3:
-			'يعرض أدناه البيانات التاريخية في سجل مزادات الموجة.', // new
+		XHT_WAVE_DESC_3: 'يعرض أدناه البيانات التاريخية في سجل مزادات الموجة.', // new
 		WAVE_AUCTION_PHASE: 'مرحلة المزاد الموجي {0}', // new
 		LEARN_MORE_WAVE_AUCTION: 'تعرف على المزيد حول المزاد الموجي', // new
 		WAVE_NUMBER: 'رقم الموجة', // new
@@ -1268,8 +1251,7 @@ const nestedContent = {
 		XHT_TITLE: 'إحالاتي', // new
 		XHT_INFO_TEXT: 'اكسب عمولات بدعوة أصدقائك.', // new
 		XHT_INFO_TEXT_1: 'يتم دفع العمولات بشكل دوري إلى محفظتك', // new
-		APPLICATION_TXT:
-			'لكي تصبح موزعًا لمجموعة أدوات هولاإكس ، يرجى ملئ الطلب.', // new
+		APPLICATION_TXT: 'لكي تصبح موزعًا لمجموعة أدوات هولاإكس ، يرجى ملئ الطلب.', // new
 		TOTAL_REFERRAL: 'إجمالي المشتريات من الإحالات:', // new
 		PENDING_REFERRAL: 'العمولات التي في قيد الانتظار:', // new
 		EARN_REFERRAL: 'العمولات المكتسبة:', // new
@@ -1289,19 +1271,16 @@ const nestedContent = {
 	TERMS_OF_SERVICES: {
 		// new
 		TITLE: 'اتفاقية شراء عملة هولاإكس',
-		SERVICE_AGREEMENT: AGREEMENT,//إتفاقية
+		SERVICE_AGREEMENT: AGREEMENT, //إتفاقية
 		PROCEED: 'تقدم',
-		AGREE_TERMS_LABEL:
-			'لقد قرأت و وافقت على اتفاقية شراء عملة هولاإكس',
+		AGREE_TERMS_LABEL: 'لقد قرأت و وافقت على اتفاقية شراء عملة هولاإكس',
 		RISK_INVOLVED_LABEL: 'أنا أدرك المخاطر التي تنطوي عليها',
 		DOWNLOAD_PDF: 'قم بتنزيل ملف PDF',
-		DEPOSIT_FUNDS:
-			'قم بإيداع الأموال في محفظتك للحصول على عملة هولاإكس (XHT)',
+		DEPOSIT_FUNDS: 'قم بإيداع الأموال في محفظتك للحصول على عملة هولاإكس (XHT)',
 		READ_FAG: 'اقرأ الأسئلة الشائعة لـ هولاإكس هنا: {0}',
 		READ_DOCUMENTATION: 'اقرأ المستند التقني لهولاإكس هنا: {0}',
 		READ_WAVES: 'قواعد مزاد الموجة العامة لشهر ديسمبر المقبل {0}', // new
-		DOWNLOAD_BUY_XHT:
-			'قم بتنزيل ملف PDF للاطلاع على الدليل البصري على {0}',
+		DOWNLOAD_BUY_XHT: 'قم بتنزيل ملف PDF للاطلاع على الدليل البصري على {0}',
 		HOW_TO_BUY: 'كيفية شراء عملة هولاإكس (XHT)',
 		PUBLIC_SALES: 'مزاد الموجة العام', // new
 		CONTACT_US:
@@ -1323,17 +1302,18 @@ const nestedContent = {
 		// new
 		TITLE: 'معلومات الموجة',
 		NEXT_WAVE: 'الموجة المقبلة',
-		WAVE_AMOUNT:  'الحجم في الموجة',
-		FLOOR:  'الأرض',
+		WAVE_AMOUNT: 'الحجم في الموجة',
+		FLOOR: 'الأرض',
 		LAST_WAVE: 'الموجة الأخيرة',
 	},
 	TYPES_OF_POSTS: {
 		// new
-		TITLE:  'البوستات',
+		TITLE: 'البوستات',
 		ANNOUNCEMEN: 'إعلان',
 		SYSTEM_UPDATE: 'تحديث النظام',
 		LAST_WAVE: 'الموجة الأخيرة',
-		ANNOUNCEMENT_TXT: 'سيتم توزيع عملة  XHTالمجاني على جميع المحافظ التي تنطبق عليها',
+		ANNOUNCEMENT_TXT:
+			'سيتم توزيع عملة  XHTالمجاني على جميع المحافظ التي تنطبق عليها',
 		SYSTEM_UPDATE_TIME: 'الوقت: 12:31 ظهرًا ، 19 ديسمبر 2019	',
 		SYSTEM_UPDATE_DURATION: '1 ساعة',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
@@ -1345,8 +1325,7 @@ const nestedContent = {
 	FEE_AMOUNT: 'مبلغ الرسوم', // new
 	COINS: 'عملات', // new
 	PAIRS: 'أزواج', // new
-	NOTE_FOR_EDIT_COIN:
-		'ملاحظة: لإضافة وإزالة {0} يرجى الرجوع إلى {1}.', // new
+	NOTE_FOR_EDIT_COIN: 'ملاحظة: لإضافة وإزالة {0} يرجى الرجوع إلى {1}.', // new
 	REFER_DOCS_LINK: 'الوثائق', // new
 	RESTART_TO_APPLY:
 		'تحتاج إلى إعادة تشغيل البورصة الخاص بك لتطبيق هذه التغييرات.', // new
@@ -1366,9 +1345,9 @@ const nestedContent = {
 			'كل عام وأنتم بخيريا عميلين هولاإكس. نحن نحقق إنجازاً جديداً بدءًا من عام 2020 مع إطلاق منصة التداول الأكثر شفافيةً بمساعدتكم جميعًا.',
 		ANNOUNCEMNT_TXT_1:
 			'اكسب عملة XHT مع برنامج HAP (برنامج شركاء هولاإكس) من خلال تقديم البورصة لأصدقائك. {0}.',
-		DEFAULT_ANNOUNCEMENT:
-			'يعرض هذا القسم الإعلانات العامة لالبورصة الخاصة بك!',
-		ANNOUNCEMENT_TXT_2: 'سيتم توزيع عملة XHT المجانية على جميع محفظات التي {0}.',
+		DEFAULT_ANNOUNCEMENT: 'يعرض هذا القسم الإعلانات العامة لالبورصة الخاصة بك!',
+		ANNOUNCEMENT_TXT_2:
+			'سيتم توزيع عملة XHT المجانية على جميع محفظات التي {0}.',
 		LEARN_MORE: 'إعلم المزيد',
 		APPLY_TODAY: 'قدّم اليوم', // new
 	},
@@ -1395,7 +1374,8 @@ const nestedContent = {
 			'يمكنك التحقق من حالة الإيداع الخاص بك عن طريق إضافة معرف المعاملة أدناه.',
 		TRANSACTION_ID: 'معرف المعاملة ',
 		SEARCH_SUCCESS: 'تم العثور على المعاملة!',
-		ADDRESS_FIELD_LABEL: 'المعاملة غير موجودة. يرجى التحقق من الهوية والمحاولة مرة أخرى. إذا كنت تعتقد أن هناك مشكلة يرجى الاتصال بالدعم.', // new
+		ADDRESS_FIELD_LABEL:
+			'المعاملة غير موجودة. يرجى التحقق من الهوية والمحاولة مرة أخرى. إذا كنت تعتقد أن هناك مشكلة يرجى الاتصال بالدعم.', // new
 		CURRENCY_FIELD_LABEL: 'Select the currency', // new
 	},
 	CANCEL_ORDERS: {
