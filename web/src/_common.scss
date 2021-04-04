@@ -174,7 +174,7 @@ table th {
 }
 
 .underline-text {
-	text-decoration: underline;
+	text-decoration: underline !important;
 }
 
 .disabled-link {
@@ -283,4 +283,8 @@ table th {
 
 .border-pale {
 	border-color: $colors-super-pale-black !important;
+}
+
+.text-align-center {
+	text-align: center;
 }

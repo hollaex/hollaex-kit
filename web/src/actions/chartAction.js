@@ -4,20 +4,23 @@ import moment from 'moment';
 import { getDecimals } from '../utils/utils';
 
 export const getChartConfig = () => {
-	// return axios({
-	// 	url: '/udf/config',
-	// 	method: 'GET'
+	return axios({
+		url: '/udf/config',
+		method: 'GET'
+	})
+		.then((res) => {
+			return res.data;
+		});
+	// const config = {
+	// 	supported_resolutions: ['60', '240', '1D'],
+	// 	supports_group_request: false,
+	// 	supports_marks: false,
+	// 	supports_search: true,
+	// 	supports_timescale_marks: false,
+	// };
+	// return new Promise((resolve) => {
+	// 	resolve(config);
 	// });
-	const config = {
-		supported_resolutions: ['60', '1D'],
-		supports_group_request: false,
-		supports_marks: false,
-		supports_search: true,
-		supports_timescale_marks: false,
-	};
-	return new Promise((resolve) => {
-		resolve(config);
-	});
 };
 
 export const getChartSymbol = (symbol, tickSize, api_name = '') => {

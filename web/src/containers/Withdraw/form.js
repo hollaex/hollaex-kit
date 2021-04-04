@@ -254,6 +254,7 @@ const WithdrawForm = reduxForm({
 const mapStateToForm = (state) => ({
 	data: selector(
 		state,
+		'network',
 		'address',
 		'destination_tag',
 		'amount',

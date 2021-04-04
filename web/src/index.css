@@ -222,7 +222,7 @@ table th {
   align-items: flex-start; }
 
 .underline-text {
-  text-decoration: underline; }
+  text-decoration: underline !important; }
 
 .disabled-link {
   pointer-events: none; }
@@ -301,6 +301,9 @@ table th {
 
 .border-pale {
   border-color: var(--calculated_super-pale_label-text-graphics) !important; }
+
+.text-align-center {
+  text-align: center; }
 
 .app_container {
   min-height: 100vh;
@@ -1922,6 +1925,8 @@ table th {
     max-width: 20rem; } }
 
 .trade__active-orders_cancel-All {
+  position: relative;
+  min-height: 2rem;
   min-width: 6rem; }
 
 .trade_cancel-All-confirmation .ant-modal-header,
