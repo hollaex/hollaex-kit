@@ -56,7 +56,7 @@ class CurrencySlider extends Component {
 		);
 
 	render() {
-		const { wallets, balance, prices, navigate, coins } = this.props;
+		const { balance, prices, navigate, coins } = this.props;
 		const { currentCurrency } = this.state;
 		const balanceValue = balance[`${currentCurrency}_balance`];
 		const baseBalance =
@@ -86,29 +86,27 @@ class CurrencySlider extends Component {
 				</div>
 
 				<div className="mb-4 button-container">
-					{wallets[currentCurrency.toLowerCase()] && (
-						<div className="d-flex justify-content-between flew-row ">
-							{allow_deposit ? (
-								<Button
-									className="mr-4"
-									label={STRINGS.formatString(
-										STRINGS['RECEIVE_CURRENCY'],
-										fullname
-									).join('')}
-									onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
-								/>
-							) : null}
-							{allow_withdrawal ? (
-								<Button
-									label={STRINGS.formatString(
-										STRINGS['SEND_CURRENCY'],
-										fullname
-									).join('')}
-									onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
-								/>
-							) : null}
-						</div>
-					)}
+					<div className="d-flex justify-content-between flew-row ">
+						{allow_deposit && (
+							<Button
+								className="mr-4"
+								label={STRINGS.formatString(
+									STRINGS['RECEIVE_CURRENCY'],
+									fullname
+								).join('')}
+								onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
+							/>
+						)}
+						{allow_withdrawal && (
+							<Button
+								label={STRINGS.formatString(
+									STRINGS['SEND_CURRENCY'],
+									fullname
+								).join('')}
+								onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
 		);
