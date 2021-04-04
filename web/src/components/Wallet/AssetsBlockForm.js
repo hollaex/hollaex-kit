@@ -9,18 +9,26 @@ class AssetsBlockForm extends React.Component {
 
 		const AssetsBlockFields = {
 			ZeroBalance: {
-				type: 'checkbox',
+				type: 'toggle',
 				label,
 				onChange: handleCheck,
 				name: 'ZeroBalance',
 				reverse: true,
+				isHideToggleText: true,
 			},
 		};
 
 		return renderFields(AssetsBlockFields);
 	}
 }
-
-export default reduxForm({
+const AssetsBlockWrapper = reduxForm({
 	form: 'AssetsBlockForm',
 })(AssetsBlockForm);
+
+AssetsBlockWrapper.defaultProps = {
+	initialValues: {
+		ZeroBalance: false,
+	},
+};
+
+export default AssetsBlockWrapper;

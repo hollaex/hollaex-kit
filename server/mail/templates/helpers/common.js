@@ -3,7 +3,6 @@
 const {
 	BITHOLLA_DOMAIN,
 	BITHOLLA_LOGO_BLACK,
-	EMAIL_ICONS
 } = require('../../constants');
 const { DOMAIN, GET_KIT_CONFIG } = require('../../../constants');
 const LOGO_IMAGE = () => GET_KIT_CONFIG().logo_image;
@@ -25,27 +24,27 @@ const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 	return `
 			<div style="${styles.footer}">
 				<div style="float: left">
-					${(LINKS().terms) ? `<a style="${styles.link}" href="${domain}">${FOOTER.PRIVACY_POLICY}</a>
-					|
-					<a style="${styles.link}" href="${domain}">${FOOTER.TERMS}</a>` : ''}
-					<p>${FOOTER.INVITE_YOUR_FRIENDS} <a style="${styles.link_blue}" href="${domain}">${domain}</a><p>
+					<p><a style="${styles.link_blue}" href="${domain}">${domain}</a><p>
 				</div>
 				<div style="float: right; font-size: 8px; text-align: right;">
-					<div>
-						<a href="${LINKS().twitter}">
-							<img style="padding-right: 5px" src="${EMAIL_ICONS.TWITTER}" height="20"/>
-						</a>
-						<a href="${LINKS().facebook}">
-							<img src="${EMAIL_ICONS.FACEBOOK}" height="20"/>
-						</a>
-					</div>
-					${!LINKS().hide_referral_badge
-						? `<div style="${styles.poweredby}">
-							<a href="${LINKS().referral_link && LINKS().referral_label ? LINKS().referral_link : BITHOLLA_DOMAIN}">
-								${LINKS().referral_label ? LINKS().referral_label : `${FOOTER.POWERED_BY} <img src="${BITHOLLA_LOGO_BLACK}" height="10"/>`}
+					${
+						!LINKS().hide_referral_badge
+							? `<div style="${styles.poweredby}">
+							<a href="${
+								LINKS().referral_link && LINKS().referral_label
+									? LINKS().referral_link
+									: BITHOLLA_DOMAIN
+							}">
+								${
+									LINKS().referral_label
+										? LINKS().referral_label
+										: `${
+												FOOTER.POWERED_BY
+										  } <img src="${BITHOLLA_LOGO_BLACK}" height="10"/>`
+								}
 							</a>
 						</div>`
-						: ''
+							: ''
 					}
 				</div>
 			</div>
@@ -60,19 +59,7 @@ const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_IMAGE() }) => `
   </div>
 `;
 
-const HEADER_TEMPLATE = ({ title, imagePath = '' }) => `
-  <div style="${styles.header}">
-    ${imagePath &&
-			`
-      <div style="${styles.header_icon_wrapper}">
-        <img style="${styles.header_icon}" src="${imagePath}"/>
-      </div>
-    `}
-    <div style="${styles.header_icon_title}">${title}</div>
-  </div>
-`;
-
-const rtlLanguage = (lang) => (lang === 'fa' || lang === 'ar') ? RTL : '';
+const rtlLanguage = (lang) => (lang === 'fa' || lang === 'ar' ? RTL : '');
 
 exports.TemplateEmail = (
 	headerProps = {},
@@ -83,17 +70,16 @@ exports.TemplateEmail = (
 	const bodyStyle = styles.body.concat('');
 
 	return `
-    <div style="${bodyStyle}">
-      <div style="${styles.wrapper}">
-			${LOGO_TEMPLATE(domain)}
-				<div style="${styles.box_shadow}">
-				  ${HEADER_TEMPLATE(headerProps)}
-	        <div style="${styles.container}${rtlLanguage(language)}">
-	  				${content}
-	        </div>
-	        ${footerTemplate(language, domain)}
+	<div style="${bodyStyle}">
+		<div style="${styles.wrapper}">
+			<div style="${styles.box_shadow}">
+				${LOGO_TEMPLATE(domain)}
+				<div style="${styles.container}${rtlLanguage(language)}">
+					${content}
 				</div>
-      </div>
-    </div>
+				${footerTemplate(language, domain)}
+			</div>
+		</div>
+	</div>
   `;
 };

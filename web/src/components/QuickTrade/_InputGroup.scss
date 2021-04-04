@@ -1,6 +1,6 @@
 .input-group__container {
 	border-radius: 4px;
-	border: $colors-main-border solid 1px;
+	border: $colors-black solid 1.5px;
 
 	.ant-select-selection,
 	.ant-input,
@@ -8,12 +8,37 @@
 	.ant-select-selector {
 		text-align: right;
 		background-color: $quick-trade-container !important;
+		color: $colors-black !important;
+	}
+	.input-group__coin-icons-wrap {
+		width: 2.5rem;
+	}
+	&:focus-within {
+		border-color: $link !important;
+	}
+
+	.input-group__select:hover {
 		color: $colors-main-black !important;
+
+		.ant-select-selection,
+		.ant-input,
+		.ant-select-arrow,
+		.ant-select-selector {
+			color: $colors-main-black !important;
+		}
+
+		.input-group__coin-icons {
+			width: 2.2rem;
+		}
+	}
+
+	&:hover {
+		border-color: $colors-main-black;
 	}
 }
 
 .input-group__coin-icons {
-	width: 2rem;
+	width: 1.8rem;
 	height: 100%;
 
 	svg {

@@ -75,6 +75,7 @@ const icons = {
 	USER_EMAIL: '/assets/images/user-email.svg',
 	USER_EMAIL_VERIFIED: '/assets/images/user-email-verified.svg',
 	USER_EMAIL_UNVERIFIED: '/assets/images/user-email-unverified.svg',
+	SPINNER: '/assets/images/spinner.gif',
 
 	// Notification Icons
 	VERIFICATION_PENDING: '/assets/images/verification-pending-orange.svg',
@@ -82,6 +83,8 @@ const icons = {
 		'/assets/images/verification-rejected-yellow-cross.svg',
 	VERIFICATION_INCOMPLETE: '/assets/images/verification-attention-red.svg',
 	VERIFICATION_VERIFIED: '/assets/images/verification-green-tick.svg',
+	CLOUD_ICON: '/assets/images/current-plan-cloud-icon.svg',
+	QUICK_TRADE: '/assets/images/quick-trade-01.svg',
 };
 
 export default icons;

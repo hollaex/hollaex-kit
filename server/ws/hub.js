@@ -7,6 +7,7 @@ const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
 const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
+const WebSocket = require('ws');
 
 let networkNodeLib = null;
 let wsConnected = false;
@@ -63,10 +64,10 @@ const connect = () => {
 					if (data !== 'pong') {
 						try {
 							data = JSON.parse(data);
+							handleHubData(data);
 						} catch (err) {
 							loggerWebsocket.error('ws/hub message err', err.message);
 						}
-						handleHubData(data);
 					}
 				});
 			}
@@ -84,19 +85,25 @@ const handleHubData = (data) => {
 		case 'orderbook':
 			updateOrderbookData(data);
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
-				ws.send(JSON.stringify(data));
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(JSON.stringify(data));
+				}
 			});
 			break;
 		case 'trade':
 			updateTradeData(data);
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
-				ws.send(JSON.stringify(data));
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(JSON.stringify(data));
+				}
 			});
 			break;
 		case 'order':
 		case 'wallet':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
-				ws.send(JSON.stringify(data));
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(JSON.stringify(data));
+				}
 			});
 			break;
 		default:
@@ -107,7 +114,9 @@ const handleHubData = (data) => {
 const closeAllClients = () => {
 	each(getChannels(), (channel) => {
 		each(channel, (ws) => {
-			ws.close();
+			if (ws.readyState !== WebSocket.CONNECTING) {
+				ws.close();
+			}
 		});
 	});
 	resetChannels();

@@ -127,7 +127,7 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 	},
 	{
 		label: (
-			<div className="trade__active-orders_cancel-All">
+			<span className="trade__active-orders_cancel-All">
 				<ActionNotification
 					stringId="CANCEL_ALL"
 					text={STRINGS['CANCEL_ALL']}
@@ -136,7 +136,7 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 					onClick={() => onCancelAll()}
 					status="information"
 				/>
-			</div>
+			</span>
 		),
 		key: 'cancel',
 		renderCell: ({ size = 0, filled = 0, id }, key, index) => {

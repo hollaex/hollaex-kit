@@ -26,9 +26,18 @@
 
 .checkbutton-wrapper {
 	font-size: $font-size-main;
-	margin-top: 1rem;
+	// margin-top: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	.checkbutton-input-wrapper {
+		width: 300px;
+		padding: 10px;
+		margin-top: 35px;
+		justify-content: center;
+		color: $colors-main-black !important;
+		background-color: $link;
 		.checkbutton-input-wrapper--label {
 			margin: 0;
 			padding-left: 0.5rem;

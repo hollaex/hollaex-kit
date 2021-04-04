@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 
 import {
-	CurrencyBall,
+	// CurrencyBall,
 	ActionNotification,
 	SearchBox,
 	AssetsBlockForm,
@@ -17,6 +17,7 @@ import {
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
+import Image from 'components/Image';
 
 const AssetsBlock = ({
 	balance,
@@ -24,7 +25,6 @@ const AssetsBlock = ({
 	coins,
 	pairs,
 	totalAssets,
-	wallets,
 	onOpenDialog,
 	bankaccount,
 	navigate,
@@ -124,7 +124,7 @@ const AssetsBlock = ({
 						) : null}
 					</div>
 				</EditWrapper>
-				<div className="d-flex justify-content-between">
+				<div className="d-flex justify-content-between zero-balance-wrapper">
 					<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
 						<SearchBox
 							name="search-assets"
@@ -184,15 +184,22 @@ const AssetsBlock = ({
 							return (
 								<tr className="table-row table-bottom-border" key={key}>
 									<td className="table-icon td-fit">
-										<Link to={`/wallet/${key.toLowerCase()}`}>
+										{/* <Link to={`/wallet/${key.toLowerCase()}`}>
 											<CurrencyBall
 												name={symbol.toUpperCase()}
 												symbol={key}
 												size="s"
 											/>
-										</Link>
+										</Link> */}
 									</td>
 									<td className="td-name td-fit">
+										<Link to={`/wallet/${key.toLowerCase()}`}>
+											<Image
+												iconId={`${symbol.toUpperCase()}_ICON`}
+												icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+												wrapperClassName="currency-ball"
+											/>
+										</Link>
 										<Link to={`/wallet/${key.toLowerCase()}`}>{fullname}</Link>
 									</td>
 									<td className="td-amount">
@@ -215,45 +222,28 @@ const AssetsBlock = ({
 									</td>
 									<th className="td-amount" />
 									<td className="td-wallet">
-										{wallets[key] ? (
-											<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
-												<ActionNotification
-													stringId="WALLET_BUTTON_BASE_DEPOSIT"
-													text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
-													iconId="BLUE_PLUS"
-													iconPath={ICONS['BLUE_PLUS']}
-													onClick={() => navigate(`wallet/${key}/deposit`)}
-													className="csv-action"
-													showActionText={isMobile}
-													disable={!allow_deposit}
-												/>
-												<ActionNotification
-													stringId="WALLET_BUTTON_BASE_WITHDRAW"
-													text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
-													iconId="BLUE_PLUS"
-													iconPath={ICONS['BLUE_PLUS']}
-													onClick={() => navigate(`wallet/${key}/withdraw`)}
-													className="csv-action"
-													showActionText={isMobile}
-													disable={!allow_withdrawal}
-												/>
-											</div>
-										) : (
-											<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
-												<ActionNotification
-													stringId="GENERATE_WALLET"
-													text={STRINGS['GENERATE_WALLET']}
-													status="information"
-													iconId="BLUE_PLUS"
-													iconPath={ICONS['BLUE_PLUS']}
-													onClick={() => onOpenDialog(key)}
-													className="need-help"
-													useSvg={true}
-													showActionText={isMobile}
-													disable={!allow_deposit}
-												/>
-											</div>
-										)}
+										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
+											<ActionNotification
+												stringId="WALLET_BUTTON_BASE_DEPOSIT"
+												text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
+												iconId="BLUE_PLUS"
+												iconPath={ICONS['BLUE_PLUS']}
+												onClick={() => navigate(`wallet/${key}/deposit`)}
+												className="csv-action action-button-wrapper"
+												showActionText={isMobile}
+												disable={!allow_deposit}
+											/>
+											<ActionNotification
+												stringId="WALLET_BUTTON_BASE_WITHDRAW"
+												text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
+												iconId="BLUE_PLUS"
+												iconPath={ICONS['BLUE_PLUS']}
+												onClick={() => navigate(`wallet/${key}/withdraw`)}
+												className="csv-action action-button-wrapper"
+												showActionText={isMobile}
+												disable={!allow_withdrawal}
+											/>
+										</div>
 									</td>
 									{!isMobile && (
 										<td>

@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import {
 	IconTitle,
-	CurrencyBallWithPrice,
+	// CurrencyBallWithPrice,
 	ButtonLink,
 	ActionNotification,
 	MobileBarBack,
+	Image,
 } from '../../components';
 import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
+	formatToCurrency,
 	generateWalletActionsText,
 	getCurrencyFromName,
 } from '../../utils/currency';
@@ -44,7 +46,7 @@ class Wallet extends Component {
 	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
 		const { icons: ICONS } = this.props;
 		const balanceValue = balance[`${symbol}_balance`] || 0;
-		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
+		const { fullname, min } = coins[symbol] || DEFAULT_COIN_DATA;
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
@@ -60,11 +62,21 @@ class Wallet extends Component {
 						}}
 					/>
 				</div>
-				<CurrencyBallWithPrice
+				{/* <CurrencyBallWithPrice
 					symbol={symbol}
 					amount={balanceValue}
 					price={price}
-				/>
+				/> */}
+				<div className="d-flex">
+					<Image
+						iconId={`${symbol.toUpperCase()}_ICON`}
+						icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+						wrapperClassName="coin-icons"
+					/>
+					<div className="with_price-block_amount-value">
+						{`${formatToCurrency(balanceValue, min)}`}
+					</div>
+				</div>
 			</div>
 		);
 	};

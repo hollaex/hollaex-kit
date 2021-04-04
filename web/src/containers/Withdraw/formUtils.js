@@ -38,14 +38,37 @@ export const generateFormValues = (
 	verification_level,
 	theme = getTheme(),
 	icon,
-	iconId
+	iconId,
+	selectedNetwork
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } =
 		coins[symbol] || DEFAULT_COIN_DATA;
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
+
+	const networks = coins[symbol].network && coins[symbol].network.split(',');
 	const fields = {};
+
+	if (networks) {
+		const networkOptions = networks.map((network) => ({
+			value: network,
+			label: network,
+		}));
+
+		fields.network = {
+			type: 'select',
+			stringId:
+				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER',
+			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
+			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
+			validate: [required],
+			fullWidth: true,
+			options: networkOptions,
+			hideCheck: true,
+			ishorizontalfield: true,
+		};
+	}
 
 	fields.address = {
 		type: 'text',
@@ -57,10 +80,12 @@ export const generateFormValues = (
 			required,
 			validAddress(
 				symbol,
-				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
+				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
+				selectedNetwork
 			),
 		],
 		fullWidth: true,
+		ishorizontalfield: true,
 	};
 	if (symbol === 'xrp') {
 		fields.destination_tag = {
@@ -70,6 +95,7 @@ export const generateFormValues = (
 			label: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_LABEL'],
 			placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
 			fullWidth: true,
+			ishorizontalfield: true,
 		};
 	} else if (symbol === 'xlm' || coins[symbol].network === 'stellar') {
 		fields.destination_tag = {
@@ -79,6 +105,7 @@ export const generateFormValues = (
 			label: STRINGS['WITHDRAWALS_FORM_MEMO_LABEL'],
 			placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
 			fullWidth: true,
+			ishorizontalfield: true,
 		};
 	}
 
@@ -117,6 +144,7 @@ export const generateFormValues = (
 		validate: amountValidate,
 		normalize: normalizeBTC,
 		fullWidth: true,
+		ishorizontalfield: true,
 		notification: {
 			stringId: 'CALCULATE_MAX',
 			text: STRINGS['CALCULATE_MAX'],
@@ -158,6 +186,7 @@ export const generateFormValues = (
 			).join(''),
 			disabled: true,
 			fullWidth: true,
+			ishorizontalfield: true,
 		};
 	} else {
 		fields.fee = {
@@ -175,6 +204,7 @@ export const generateFormValues = (
 			validate: [required, minValue(min), MAX ? maxValue(MAX) : ''],
 			normalize: normalizeBTCFee,
 			fullWidth: true,
+			ishorizontalfield: true,
 		};
 	}
 	fields.captcha = {

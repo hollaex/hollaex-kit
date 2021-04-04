@@ -919,8 +919,6 @@ export default {
 	WALLET_TABLE_AMOUNT_IN: `Betrag in {0}`,
 	WALLET_TABLE_TOTAL: 'Gesamtsumme',
 	WALLET_ALL_ASSETS: 'Alle Vermögenswerte',
-	WALLET_DEPOSIT_USD:
-		'Für Fiat-Währung D/W in verschiedenen Ländern und andere Wallet-Anfragen {0}', // new
 	HIDE_TEXT: 'Ausblenden',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Verkäufer',

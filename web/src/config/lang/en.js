@@ -50,6 +50,8 @@ const nestedContent = {
 	GO_TRADE: 'Go Trade', // new
 	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
+	CONVERT: 'Convert', // new
+	TO: 'To', // new
 	HOME: {
 		MAIN_TITLE: 'Cryptocurrency trading exchange',
 		MAIN_TEXT:
@@ -829,8 +831,8 @@ const nestedContent = {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: 'Price ({0})',
+	AMOUNT_SYMBOL: 'Amount ({0})',
 	MARKET_PRICE: 'Market Price',
 	ORDER_PRICE: 'Order Price',
 	TOTAL_ORDER: 'Order Total',
@@ -864,6 +866,8 @@ const nestedContent = {
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
+	WITHDRAWALS_FORM_NETWORK_LABEL: 'Network',
+	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
@@ -947,8 +951,6 @@ const nestedContent = {
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
-	WALLET_DEPOSIT_USD:
-		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	WALLET_HIDE_ZERO_BALANCE: 'Hide zero balance',
 	WALLET_ESTIMATED_TOTAL_BALANCE: 'Estimated Total Balance',
 	WALLET_ASSETS_SEARCH_TXT: 'Search',
@@ -1394,7 +1396,7 @@ const nestedContent = {
 	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
-	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'type',

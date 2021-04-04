@@ -9,8 +9,8 @@ import {
 	change,
 } from 'redux-form';
 import math from 'mathjs';
-import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
+// import classnames from 'classnames';
+// import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -183,7 +183,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			initialValues, // eslint-disable-line
+			// initialValues, // eslint-disable-line
 			currency,
 			data,
 			openContactForm,
@@ -196,16 +196,19 @@ class Form extends Component {
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
-			<form autoComplete="off">
-				<div className={classnames({ 'w-50': !isMobile })}>
+			<form autoComplete="off" className="withdraw-form-wrapper">
+				<div className="withdraw-form">
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
 				</div>
-				<Button
-					label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-					disabled={pristine || submitting || !valid}
-					onClick={this.onOpenDialog}
-				/>
+				<div className="btn-wrapper">
+					<Button
+						label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+						disabled={pristine || submitting || !valid}
+						onClick={this.onOpenDialog}
+						className="mb-3"
+					/>
+				</div>
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="withdraw-modal"
@@ -251,6 +254,7 @@ const WithdrawForm = reduxForm({
 const mapStateToForm = (state) => ({
 	data: selector(
 		state,
+		'network',
 		'address',
 		'destination_tag',
 		'amount',

@@ -36,6 +36,7 @@ class Withdraw extends Component {
 		formValues: {},
 		initialValues: {},
 		checked: false,
+		currency: '',
 	};
 
 	componentWillMount() {
@@ -51,12 +52,7 @@ class Withdraw extends Component {
 		// 	);
 		// }
 		if (this.props.verification_level) {
-			this.validateRoute(
-				this.props.routeParams.currency,
-				this.props.bank_account,
-				this.props.crypto_wallet,
-				this.props.coins
-			);
+			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
 		this.setCurrency(this.props.routeParams.currency);
 	}
@@ -64,24 +60,21 @@ class Withdraw extends Component {
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.checked) {
 			if (nextProps.verification_level) {
-				this.validateRoute(
-					nextProps.routeParams.currency,
-					nextProps.bank_account,
-					nextProps.crypto_wallet,
-					nextProps.coins
-				);
+				this.validateRoute(nextProps.routeParams.currency, nextProps.coins);
 			}
 		} else if (
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.routeParams.currency !== this.props.routeParams.currency)
+				nextProps.routeParams.currency !== this.props.routeParams.currency ||
+				nextProps.selectedNetwork !== this.props.selectedNetwork)
 		) {
 			this.generateFormValues(
 				getCurrencyFromName(nextProps.routeParams.currency, nextProps.coins),
 				nextProps.balance,
 				nextProps.coins,
-				nextProps.verification_level
+				nextProps.verification_level,
+				nextProps.selectedNetwork
 			);
 		}
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
@@ -89,8 +82,8 @@ class Withdraw extends Component {
 		}
 	}
 
-	validateRoute = (currency, bank_account, crypto_wallet, coins) => {
-		if (coins[currency] && !crypto_wallet[currency]) {
+	validateRoute = (currency, coins) => {
+		if (!coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -101,12 +94,7 @@ class Withdraw extends Component {
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
 			this.setState({ currency, checked: false }, () => {
-				this.validateRoute(
-					this.props.routeParams.currency,
-					this.props.bank_account,
-					this.props.crypto_wallet,
-					this.props.coins
-				);
+				this.validateRoute(this.props.routeParams.currency, this.props.coins);
 			});
 			// if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
 			// 	this.props.requestWithdrawFee(currency);
@@ -116,14 +104,21 @@ class Withdraw extends Component {
 				currency,
 				this.props.balance,
 				this.props.coins,
-				this.props.verification_level
+				this.props.verification_level,
+				this.props.selectedNetwork
 			);
 		} else {
 			this.props.router.push('/wallet');
 		}
 	};
 
-	generateFormValues = (currency, balance, coins, verification_level) => {
+	generateFormValues = (
+		currency,
+		balance,
+		coins,
+		verification_level,
+		network
+	) => {
 		const { icons: ICONS } = this.props;
 		const balanceAvailable = balance[`${currency}_available`];
 		const formValues = generateFormValues(
@@ -134,7 +129,8 @@ class Withdraw extends Component {
 			verification_level,
 			this.props.activeTheme,
 			ICONS['BLUE_PLUS'],
-			'BLUE_PLUS'
+			'BLUE_PLUS',
+			network
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -142,10 +138,13 @@ class Withdraw extends Component {
 	};
 
 	onSubmitWithdraw = (currency) => (values) => {
-		const { destination_tag, ...rest } = values;
+		const { destination_tag, network, ...rest } = values;
+
 		let address = rest.address;
 		if (destination_tag) address = `${rest.address}:${destination_tag}`;
+
 		return performWithdraw(currency, {
+			...(network ? { network } : {}),
 			...rest,
 			address,
 			amount: math.eval(values.amount),
@@ -165,11 +164,12 @@ class Withdraw extends Component {
 			dispatch,
 			verification_level,
 			coins,
+			config_level = {},
 		} = this.props;
+		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_limits = {} } =
-			coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -183,13 +183,13 @@ class Withdraw extends Component {
 		if (amount < 0) {
 			amount = 0;
 		} else if (
-			math.larger(amount, math.number(withdrawal_limits[verification_level])) &&
-			withdrawal_limits[verification_level] !== 0 &&
-			withdrawal_limits[verification_level] !== -1
+			math.larger(amount, math.number(withdrawal_limit)) &&
+			withdrawal_limit !== 0 &&
+			withdrawal_limit !== -1
 		) {
 			amount = math.number(
 				math.subtract(
-					math.fraction(withdrawal_limits[verification_level]),
+					math.fraction(withdrawal_limit),
 					math.fraction(selectedFee)
 				)
 			);
@@ -255,7 +255,7 @@ class Withdraw extends Component {
 				{isMobile && (
 					<MobileBarBack onBackClick={this.onGoBack}></MobileBarBack>
 				)}
-				<div className="presentation_container apply_rtl">
+				<div className="presentation_container apply_rtl withdrawal-container">
 					{!isMobile &&
 						renderTitleSection(
 							currency,
@@ -301,13 +301,14 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
 	otp_enabled: store.user.otp_enabled,
 	bank_account: store.user.userData.bank_account,
-	crypto_wallet: store.user.crypto_wallet,
 	activeLanguage: store.app.language,
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
+	selectedNetwork: formValueSelector(FORM_NAME)(store, 'network'),
 	coins: store.app.coins,
 	activeTheme: store.app.theme,
 	constants: store.app.constants,
+	config_level: store.app.config_level,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,7 +1,6 @@
 import React from 'react';
 import { oneOfType, array, string, func, number, object } from 'prop-types';
 import { Select, Input } from 'antd';
-import Image from 'components/Image';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 import { CaretDownOutlined } from '@ant-design/icons';
@@ -10,6 +9,7 @@ import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
+import EditWrapper from 'components/EditWrapper';
 
 const { Option } = Select;
 const { Group } = Input;
@@ -65,26 +65,35 @@ class InputGroup extends React.PureComponent {
 			onSelect,
 			limits = {},
 			icons: ICONS,
+			autoFocus,
+			stringId,
 		} = this.props;
 
 		return (
 			<div className="py-2">
-				<label className="bold caps-first">{name}</label>
+				<label className="bold caps-first">
+					<EditWrapper stringId={stringId}>{name}</EditWrapper>
+				</label>
 				<Group compact className="input-group__container">
 					<Select
+						open={isOpen}
 						size="default"
 						showSearch
 						filterOption={true}
 						className="input-group__select"
 						value={selectValue}
 						style={isOpen ? { width: '100%' } : { width: '33%' }}
-						onSelect={onSelect}
+						onChange={onSelect}
 						onDropdownVisibleChange={this.onDropdownVisibleChange}
 						bordered={false}
 						listItemHeight={35}
 						listHeight={35 * 6}
 						dropdownClassName="custom-select-style"
-						suffixIcon={<CaretDownOutlined />}
+						suffixIcon={
+							<CaretDownOutlined
+								onClick={() => this.onDropdownVisibleChange(!isOpen)}
+							/>
+						}
 					>
 						{options.map((symbol, index) => (
 							<Option
@@ -94,14 +103,17 @@ class InputGroup extends React.PureComponent {
 								className="d-flex"
 							>
 								<div className="d-flex align-items-center">
-									<Image
-										icon={
-											ICONS[`${symbol.toUpperCase()}_ICON`]
-												? ICONS[`${symbol.toUpperCase()}_ICON`]
-												: ICONS['DEFAULT_ICON']
-										}
-										wrapperClassName="input-group__coin-icons"
-									/>
+									<div className="input-group__coin-icons-wrap">
+										<img
+											src={
+												ICONS[`${symbol.toUpperCase()}_ICON`]
+													? ICONS[`${symbol.toUpperCase()}_ICON`]
+													: ICONS['DEFAULT_ICON']
+											}
+											className="input-group__coin-icons"
+											alt={`${symbol.toUpperCase()}_coin`}
+										/>
+									</div>
 									<span className="pl-1">{symbol.toUpperCase()}</span>
 								</div>
 							</Option>
@@ -118,6 +130,7 @@ class InputGroup extends React.PureComponent {
 						step={limits.MIN}
 						min={limits.MIN}
 						max={limits.MAX}
+						autoFocus={autoFocus}
 					/>
 				</Group>
 				<FieldError

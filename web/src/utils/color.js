@@ -60,6 +60,36 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.12)
 			.string(),
+		'calculated_trading_buying-orderbook-best-bar': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.55)
+			.string(),
+		'calculated_trading_selling-orderbook-best-bar': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.55)
+			.string(),
+		'calculated_trading_buying-orderbook-hover': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.65)
+			.string(),
+		'calculated_trading_selling-orderbook-hover': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.65)
+			.string(),
+		'calculated_trading-orderbook-text': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.8)
+			.string(),
+		'calculated_trading-orderbook-secondary-text': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.5)
+			.string(),
 		'calculated_trading_buying-related-text': Color(
 			themeData['trading_buying-related-elements']
 		).isLight()

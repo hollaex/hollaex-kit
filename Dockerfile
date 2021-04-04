@@ -11,6 +11,15 @@ COPY ./server /app
 
 WORKDIR /app
 
+# Changing the default image user to 'appuser'
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 999 -g appuser appuser && \
+    mkdir /home/appuser && \
+    chown -R appuser /home/appuser && \
+    chown -R appuser /app
+
+USER appuser
+
 RUN npm install --loglevel=error && \
     pm2 update && \
     cd /app/mail && npm install --loglevel=error

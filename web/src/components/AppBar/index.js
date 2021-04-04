@@ -23,6 +23,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
+import AnnouncementList from './AnnouncementList';
 
 class AppBar extends Component {
 	state = {
@@ -383,7 +384,7 @@ class AppBar extends Component {
 			activePath,
 			location,
 			onHelp,
-			// user,
+			user,
 			constants = {},
 			children,
 		} = this.props;
@@ -454,6 +455,7 @@ class AppBar extends Component {
 									toggle={this.onToggle}
 								/>
 							</div>
+							<AnnouncementList user={user.email} />
 							<MenuList
 								selectedMenu={selectedMenu}
 								securityPending={securityPending}
@@ -465,6 +467,7 @@ class AppBar extends Component {
 								closeAccountMenu={this.closeAccountMenu}
 								onHelp={onHelp}
 								location={location}
+								user={user}
 							/>
 						</div>
 					) : null

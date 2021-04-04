@@ -3,14 +3,7 @@ import classnames from 'classnames';
 import { Accordion } from '../../components';
 import CurrencySlider from './components/CurrencySlider';
 
-const MobileWallet = ({
-	sections,
-	wallets,
-	balance,
-	prices,
-	navigate,
-	coins,
-}) => (
+const MobileWallet = ({ sections, balance, prices, navigate, coins }) => (
 	<div
 		className={classnames(
 			'flex-column',
@@ -24,7 +17,6 @@ const MobileWallet = ({
 	>
 		<div className="d-flex f-05">
 			<CurrencySlider
-				wallets={wallets}
 				balance={balance}
 				prices={prices}
 				navigate={navigate}
