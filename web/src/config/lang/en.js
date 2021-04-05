@@ -867,6 +867,10 @@ const nestedContent = {
 		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_NETWORK_LABEL: 'Network',
+	DEPOSIT_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the senders wallets network',
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the senders wallets network',
 	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
