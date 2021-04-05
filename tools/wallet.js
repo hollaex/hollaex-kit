@@ -305,6 +305,8 @@ const getUserTransactionsByKitId = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address,
 	format
 ) => {
 	let promiseQuery;
@@ -329,7 +331,9 @@ const getUserTransactionsByKitId = (
 						orderBy,
 						order,
 						startDate,
-						endDate
+						endDate,
+						transactionId,
+						address
 					});
 				});
 		} else if (type === 'withdrawal') {
@@ -352,7 +356,9 @@ const getUserTransactionsByKitId = (
 						orderBy,
 						order,
 						startDate,
-						endDate
+						endDate,
+						transactionId,
+						address
 					});
 				});
 		}
@@ -370,7 +376,9 @@ const getUserTransactionsByKitId = (
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				transactionId,
+				address
 			});
 		} else if (type === 'withdrawal') {
 			promiseQuery = getNodeLib().getWithdrawals({
@@ -385,7 +393,9 @@ const getUserTransactionsByKitId = (
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				transactionId,
+				address
 			});
 		}
 	}
@@ -417,9 +427,29 @@ const getUserDepositsByKitId = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address,
 	format
 ) => {
-	return getUserTransactionsByKitId('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+	return getUserTransactionsByKitId(
+		'deposit',
+		kitId,
+		currency,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		transactionId,
+		address,
+		format
+	);
 };
 
 const getUserWithdrawalsByKitId = (
@@ -436,9 +466,29 @@ const getUserWithdrawalsByKitId = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address,
 	format
 ) => {
-	return getUserTransactionsByKitId('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+	return getUserTransactionsByKitId(
+		'withdrawal',
+		kitId,
+		currency,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		transactionId,
+		address,
+		format
+	);
 };
 
 const getExchangeDeposits = (
@@ -454,6 +504,8 @@ const getExchangeDeposits = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address
 ) => {
 	return getNodeLib().getDeposits({
 		currency,
@@ -467,7 +519,9 @@ const getExchangeDeposits = (
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		transactionId,
+		address
 	});
 };
 
@@ -484,6 +538,8 @@ const getExchangeWithdrawals = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address
 ) => {
 	return getNodeLib().getWithdrawals({
 		currency,
@@ -497,7 +553,9 @@ const getExchangeWithdrawals = (
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		transactionId,
+		address
 	});
 };
 
