@@ -5,6 +5,10 @@ $tabs-title--margin: 2rem;
 	min-width: 6rem;
 }
 
+.trade__active-orders-header_cancel-All {
+	position: relative;
+}
+
 .trade_cancel-All-confirmation {
 	.ant-modal-header,
 	.ant-modal-content,

@@ -135,10 +135,12 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 					iconPath={ICONS['CANCEL_CROSS_ACTIVE']}
 					onClick={() => onCancelAll()}
 					status="information"
+					textPosition="left"
 				/>
 			</span>
 		),
 		key: 'cancel',
+		className: 'trade__active-orders-header_cancel-All',
 		renderCell: ({ size = 0, filled = 0, id }, key, index) => {
 			return (
 				<td key={index} style={{ position: 'relative' }}>
