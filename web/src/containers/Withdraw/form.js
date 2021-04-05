@@ -11,6 +11,7 @@ import {
 import math from 'mathjs';
 // import classnames from 'classnames';
 // import { isMobile } from 'react-device-detect';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -20,7 +21,9 @@ import {
 import { BASE_CURRENCY } from '../../config/constants';
 import { calculateBaseFee } from './utils';
 
+import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -191,13 +194,35 @@ class Form extends Component {
 			currentPrice,
 			activeTheme,
 			coins,
+			titleSection,
+			icons: ICONS,
+			selectedNetwork,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
+		const hasDestinationTag =
+			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'stellar';
 
 		return (
 			<form autoComplete="off" className="withdraw-form-wrapper">
 				<div className="withdraw-form">
+					<Image
+						iconId={`${currency.toUpperCase()}_ICON`}
+						icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+						wrapperClassName="form_currency-ball"
+					/>
+					{titleSection}
+					{hasDestinationTag && (
+						<div className="d-flex">
+							<div className="d-flex align-items-baseline field_warning_wrapper">
+								<ExclamationCircleFilled className="field_warning_icon" />
+								<div className="field_warning_text">
+									{STRINGS['WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG']}
+								</div>
+							</div>
+							<EditWrapper stringId="WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG" />
+						</div>
+					)}
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
 				</div>
@@ -230,6 +255,7 @@ class Form extends Component {
 							price={currentPrice}
 							onClickAccept={this.onAcceptDialog}
 							onClickCancel={this.onCloseDialog}
+							hasDestinationTag={hasDestinationTag}
 						/>
 					) : (
 						<Loader relative={true} background={false} />
@@ -247,7 +273,7 @@ const WithdrawForm = reduxForm({
 		dispatch(reset(FORM_NAME));
 		setWithdrawEmailConfirmation(data, dispatch);
 	},
-	// enableReinitialize: true,
+	enableReinitialize: true,
 	validate,
 })(Form);
 

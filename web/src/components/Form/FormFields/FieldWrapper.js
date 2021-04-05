@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 
@@ -22,12 +23,23 @@ export const FieldContent = ({
 	error,
 	ishorizontalfield = false,
 	dateFieldClassName,
+	warning,
 }) => {
 	return (
 		<div>
 			<div className={classnames({ 'field-label-wrapper': ishorizontalfield })}>
 				<div className="d-flex">
-					{label && <div className="field-label">{label}</div>}
+					{label && (
+						<div className="field-label">
+							{label}
+							{warning && (
+								<div className="d-flex align-items-baseline field_warning_wrapper">
+									<ExclamationCircleFilled className="field_warning_icon" />
+									<div className="field_warning_text">{warning}</div>
+								</div>
+							)}
+						</div>
+					)}
 					<EditWrapper stringId={stringId} />
 				</div>
 				<div className={classnames('field-content')}>
@@ -97,6 +109,7 @@ class FieldWrapper extends Component {
 		const {
 			children,
 			label,
+			warning,
 			stringId,
 			input: { value },
 			meta: { active = false, error = '', touched = false, invalid = false },
@@ -126,6 +139,7 @@ class FieldWrapper extends Component {
 				<FieldContent
 					stringId={stringId}
 					label={label}
+					warning={warning}
 					valid={!invalid}
 					hasValue={hasValue}
 					focused={active || focused}

@@ -14,7 +14,12 @@ import { getTheme } from '../../utils/theme';
 import { toFixed } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
 
-export const generateInitialValues = (symbol, coins = {}) => {
+export const generateInitialValues = (
+	symbol,
+	coins = {},
+	networks,
+	network
+) => {
 	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
@@ -26,7 +31,17 @@ export const generateInitialValues = (symbol, coins = {}) => {
 
 	if (min) {
 		initialValues.amount = min;
+	} else {
+		initialValues.amount = '';
 	}
+
+	initialValues.destination_tag = '';
+	initialValues.address = '';
+
+	if (networks && networks.length > 0) {
+		initialValues.network = network;
+	}
+
 	return initialValues;
 };
 
@@ -39,6 +54,7 @@ export const generateFormValues = (
 	theme = getTheme(),
 	icon,
 	iconId,
+	networks,
 	selectedNetwork
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } =
@@ -47,7 +63,6 @@ export const generateFormValues = (
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 
-	const networks = coins[symbol].network && coins[symbol].network.split(',');
 	const fields = {};
 
 	if (networks) {
@@ -59,154 +74,168 @@ export const generateFormValues = (
 		fields.network = {
 			type: 'select',
 			stringId:
-				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER',
+				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER,WITHDRAWALS_FORM_NETWORK_WARNING',
 			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
 			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
+			warning: STRINGS['WITHDRAWALS_FORM_NETWORK_WARNING'],
 			validate: [required],
 			fullWidth: true,
 			options: networkOptions,
 			hideCheck: true,
 			ishorizontalfield: true,
+			disabled: networks.length === 1,
 		};
 	}
 
-	fields.address = {
-		type: 'text',
-		stringId:
-			'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
-		label: STRINGS['WITHDRAWALS_FORM_ADDRESS_LABEL'],
-		placeholder: STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER'],
-		validate: [
-			required,
-			validAddress(
-				symbol,
-				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
-				selectedNetwork
-			),
-		],
-		fullWidth: true,
-		ishorizontalfield: true,
-	};
-	if (symbol === 'xrp') {
-		fields.destination_tag = {
-			type: 'number',
-			stringId:
-				'WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER',
-			label: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_LABEL'],
-			placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
-			fullWidth: true,
-			ishorizontalfield: true,
-		};
-	} else if (symbol === 'xlm' || coins[symbol].network === 'stellar') {
-		fields.destination_tag = {
+	if (!networks || (networks && (networks.length === 1 || selectedNetwork))) {
+		fields.address = {
 			type: 'text',
 			stringId:
-				'WITHDRAWALS_FORM_MEMO_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER',
-			label: STRINGS['WITHDRAWALS_FORM_MEMO_LABEL'],
-			placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
+				'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
+			label: STRINGS['WITHDRAWALS_FORM_ADDRESS_LABEL'],
+			placeholder: STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER'],
+			validate: [
+				required,
+				validAddress(
+					symbol,
+					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
+					selectedNetwork
+				),
+			],
 			fullWidth: true,
 			ishorizontalfield: true,
 		};
-	}
+		if (symbol === 'xrp') {
+			fields.destination_tag = {
+				type: 'number',
+				stringId:
+					'WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,WITHDRAWALS_FORM_DESTINATION_TAG_WARNING',
+				label: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_LABEL'],
+				warning: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_WARNING'],
+				placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		} else if (symbol === 'xlm' || selectedNetwork === 'stellar') {
+			fields.destination_tag = {
+				type: 'text',
+				stringId:
+					'WITHDRAWALS_FORM_MEMO_LABEL,WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,WITHDRAWALS_FORM_DESTINATION_TAG_WARNING',
+				label: STRINGS['WITHDRAWALS_FORM_MEMO_LABEL'],
+				warning: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_WARNING'],
+				placeholder: STRINGS['WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER'],
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		}
 
-	const amountValidate = [required];
-	if (min) {
-		amountValidate.push(minValue(min, STRINGS['WITHDRAWALS_MIN_VALUE_ERROR']));
-	}
-	if (MAX) {
-		amountValidate.push(maxValue(MAX, STRINGS['WITHDRAWALS_MAX_VALUE_ERROR']));
-	}
-	// FIX add according fee
-	// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname), fee));
-	amountValidate.push(
-		checkBalance(
-			available,
-			STRINGS.formatString(STRINGS['WITHDRAWALS_LOWER_BALANCE'], fullname),
-			0
-		)
-	);
+		const amountValidate = [required];
+		if (min) {
+			amountValidate.push(
+				minValue(min, STRINGS['WITHDRAWALS_MIN_VALUE_ERROR'])
+			);
+		}
+		if (MAX) {
+			amountValidate.push(
+				maxValue(MAX, STRINGS['WITHDRAWALS_MAX_VALUE_ERROR'])
+			);
+		}
+		// FIX add according fee
+		// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname), fee));
+		amountValidate.push(
+			checkBalance(
+				available,
+				STRINGS.formatString(STRINGS['WITHDRAWALS_LOWER_BALANCE'], fullname),
+				0
+			)
+		);
 
-	fields.amount = {
-		type: 'number',
-		stringId:
-			'WITHDRAWALS_FORM_AMOUNT_LABEL,WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER',
-		label: STRINGS.formatString(
-			STRINGS['WITHDRAWALS_FORM_AMOUNT_LABEL'],
-			fullname
-		),
-		placeholder: STRINGS.formatString(
-			STRINGS['WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER'],
-			fullname
-		).join(''),
-		min: min,
-		max: MAX,
-		step: increment_unit,
-		validate: amountValidate,
-		normalize: normalizeBTC,
-		fullWidth: true,
-		ishorizontalfield: true,
-		notification: {
-			stringId: 'CALCULATE_MAX',
-			text: STRINGS['CALCULATE_MAX'],
-			status: 'information',
-			iconPath: icon,
-			iconId,
-			className: 'file_upload_icon',
-			useSvg: true,
-			onClick: calculateMax,
-		},
-		parse: (value = '') => {
-			let decimal = getDecimals(increment_unit);
-			let decValue = toFixed(value);
-			let valueDecimal = getDecimals(decValue);
-
-			let result = value;
-			if (decimal < valueDecimal) {
-				result = decValue
-					.toString()
-					.substring(0, decValue.toString().length - (valueDecimal - decimal));
-			}
-			return result;
-		},
-	};
-
-	if (coins[symbol]) {
-		fields.fee = {
+		fields.amount = {
 			type: 'number',
 			stringId:
-				'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
-			// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
+				'WITHDRAWALS_FORM_AMOUNT_LABEL,WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER',
 			label: STRINGS.formatString(
-				STRINGS['WITHDRAWALS_FORM_FEE_COMMON_LABEL'],
+				STRINGS['WITHDRAWALS_FORM_AMOUNT_LABEL'],
 				fullname
 			),
 			placeholder: STRINGS.formatString(
-				STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
-				fullname
-			).join(''),
-			disabled: true,
-			fullWidth: true,
-			ishorizontalfield: true,
-		};
-	} else {
-		fields.fee = {
-			type: 'editable',
-			stringId: `WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER`,
-			inputType: 'number',
-			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
-			placeholder: STRINGS.formatString(
-				STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
+				STRINGS['WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER'],
 				fullname
 			).join(''),
 			min: min,
 			max: MAX,
-			step: min,
-			validate: [required, minValue(min), MAX ? maxValue(MAX) : ''],
-			normalize: normalizeBTCFee,
+			step: increment_unit,
+			validate: amountValidate,
+			normalize: normalizeBTC,
 			fullWidth: true,
 			ishorizontalfield: true,
+			notification: {
+				stringId: 'CALCULATE_MAX',
+				text: STRINGS['CALCULATE_MAX'],
+				status: 'information',
+				iconPath: icon,
+				iconId,
+				className: 'file_upload_icon',
+				useSvg: true,
+				onClick: calculateMax,
+			},
+			parse: (value = '') => {
+				let decimal = getDecimals(increment_unit);
+				let decValue = toFixed(value);
+				let valueDecimal = getDecimals(decValue);
+
+				let result = value;
+				if (decimal < valueDecimal) {
+					result = decValue
+						.toString()
+						.substring(
+							0,
+							decValue.toString().length - (valueDecimal - decimal)
+						);
+				}
+				return result;
+			},
 		};
+
+		if (coins[symbol]) {
+			fields.fee = {
+				type: 'number',
+				stringId:
+					'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
+				// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
+				label: STRINGS.formatString(
+					STRINGS['WITHDRAWALS_FORM_FEE_COMMON_LABEL'],
+					fullname
+				),
+				placeholder: STRINGS.formatString(
+					STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
+					fullname
+				).join(''),
+				disabled: true,
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		} else {
+			fields.fee = {
+				type: 'editable',
+				stringId: `WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER`,
+				inputType: 'number',
+				label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
+				placeholder: STRINGS.formatString(
+					STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
+					fullname
+				).join(''),
+				min: min,
+				max: MAX,
+				step: min,
+				validate: [required, minValue(min), MAX ? maxValue(MAX) : ''],
+				normalize: normalizeBTCFee,
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		}
 	}
+
 	fields.captcha = {
 		type: 'captcha',
 		language: getLanguage(),
