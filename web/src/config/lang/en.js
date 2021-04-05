@@ -867,6 +867,18 @@ const nestedContent = {
 		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_NETWORK_LABEL: 'Network',
+	DEPOSIT_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the senders wallets network',
+	DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG:
+		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
+	WITHDRAW_PAGE_DESTINATION_TAG_NONE: 'None',
+	WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE: 'Destination tag: {0}',
+	WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG:
+		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the destination wallet',
+	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
+		'Check if receiving address requires a Tag. Also known as Memo, digital ID, label, and notes.',
 	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',

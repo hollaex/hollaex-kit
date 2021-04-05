@@ -1682,6 +1682,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success
@@ -1755,6 +1790,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success

@@ -305,6 +305,9 @@ table th {
 .text-align-center {
   text-align: center; }
 
+.align-items-baseline {
+  align-items: baseline; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -333,8 +336,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.no_bottom_navigation {
@@ -347,8 +350,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -1597,6 +1600,10 @@ table th {
 .verification-wrapper .block-wrapper {
   margin: 1rem; }
 
+.form_currency-ball {
+  width: 30px;
+  height: 30px; }
+
 .transaction-history-wrapper .ant-row {
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -1910,16 +1917,16 @@ table th {
 
 @media (min-width: 1920px) {
   .trade-container .trade-col_side_wrapper {
-    min-width: 21rem;
-    max-width: 21rem; }
+    min-width: 24rem;
+    max-width: 24rem; }
   .trade-container .trade-col_action_wrapper {
     min-width: 20rem;
     max-width: 20rem; } }
 
 @media screen and (max-width: 1096px) {
   .trade-container .trade-col_side_wrapper {
-    min-width: 21rem;
-    max-width: 21rem; }
+    min-width: 23rem;
+    max-width: 23rem; }
   .trade-container .trade-col_action_wrapper {
     min-width: 20rem;
     max-width: 20rem; } }
@@ -1928,6 +1935,9 @@ table th {
   position: relative;
   min-height: 2rem;
   min-width: 6rem; }
+
+.trade__active-orders-header_cancel-All {
+  position: relative; }
 
 .trade_cancel-All-confirmation .ant-modal-header,
 .trade_cancel-All-confirmation .ant-modal-content,
@@ -2233,12 +2243,10 @@ table th {
       color: var(--calculated_trading-orderbook-text); }
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total {
       color: var(--calculated_trading-orderbook-secondary-text); }
-    .trade_orderbook-wrapper .price-row-wrapper :hover {
-      color: var(--labels_important-active-labels-text-graphics); }
-      .trade_orderbook-wrapper .price-row-wrapper :hover .trade_orderbook-cell-price,
-      .trade_orderbook-wrapper .price-row-wrapper :hover .trade_orderbook-cell-amount,
-      .trade_orderbook-wrapper .price-row-wrapper :hover .trade_orderbook-cell_total {
-        color: var(--labels_important-active-labels-text-graphics) !important; }
+    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price:hover,
+    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount:hover,
+    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total:hover {
+      color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .fill {
     background-repeat: no-repeat;
     background-size: 0;
@@ -2488,8 +2496,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw;
@@ -2634,7 +2642,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -6260,6 +6268,8 @@ table th {
   align-items: center; }
   .field-label-wrapper > div {
     flex: 1; }
+  .field-label-wrapper .field_warning_wrapper {
+    width: 80%; }
 
 .field-label {
   color: var(--labels_important-active-labels-text-graphics);
@@ -6348,7 +6358,14 @@ table th {
   width: 1rem;
   height: 1rem; }
 
+.field_warning_wrapper {
+  font-size: 1rem;
+  color: var(--specials_notifications-alerts-warnings); }
+
 .direction_ltr .field-error-text {
+  padding-left: 0.25rem; }
+
+.direction_ltr .field_warning_text {
   padding-left: 0.25rem; }
 
 .direction_ltr .field-children.valid > *:not(:last-child) {
@@ -6370,6 +6387,9 @@ table th {
   right: 1.25rem; }
 
 .direction_rtl .field-error-text {
+  padding-right: 0.25rem; }
+
+.direction_rtl .field_warning_text {
   padding-right: 0.25rem; }
 
 .direction_rtl .field-children.valid > *:not(:last-child) {
@@ -6399,6 +6419,12 @@ table th {
 .layout-mobile .field-label-wrapper > div {
   flex: 1;
   width: 100%; }
+
+.layout-mobile .field-label-wrapper .field_warning_wrapper {
+  width: 100%; }
+
+.layout-mobile .field_warning_wrapper {
+  padding-bottom: 1rem; }
 
 .input_icon {
   margin-right: 0.25rem;
@@ -6690,7 +6716,6 @@ table th {
     padding: 10px;
     margin-top: 35px;
     justify-content: center;
-    color: var(--labels_important-active-labels-text-graphics) !important;
     background-color: var(--specials_buttons-links-and-highlights); }
     .checkbutton-wrapper .checkbutton-input-wrapper .checkbutton-input-wrapper--label {
       margin: 0;
@@ -6700,7 +6725,8 @@ table th {
       width: 2rem; }
     .checkbutton-wrapper .checkbutton-input-wrapper .checkbutton-input-wrapper--image svg {
       width: 2rem;
-      height: 2rem; }
+      height: 2rem;
+      stroke: var(--calculated_base_footer_text); }
   .checkbutton-wrapper .checkbutton-content-wrapper {
     margin-left: 2rem; }
 
@@ -6783,14 +6809,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {

@@ -39,6 +39,7 @@ const ReviewModalContent = ({
 	onClickAccept,
 	onClickCancel,
 	icons: ICONS,
+	hasDestinationTag,
 }) => {
 	const { min, fullname, symbol = '' } =
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -113,6 +114,16 @@ const ReviewModalContent = ({
 					</div>
 					<div className="review-warning_arrow" />
 					<div className="review-crypto-address">{data.address}</div>
+					{hasDestinationTag && (
+						<div className="review-fee_message">
+							{STRINGS.formatString(
+								STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE'],
+								data.destination_tag
+									? data.destination_tag
+									: STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_NONE']
+							)}
+						</div>
+					)}
 					<div className="warning_text review-info_message">
 						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_BTC_WARNING">
 							{STRINGS.formatString(
