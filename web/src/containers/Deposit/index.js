@@ -51,22 +51,11 @@ class Deposit extends Component {
 		const { selectedNetwork, wallet, coins } = this.props;
 		const { currency, networks } = this.state;
 
-		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
-			this.setCurrency(nextProps.routeParams.currency);
-		} else if (!this.state.checked) {
+		if (!this.state.checked) {
 			if (nextProps.verification_level) {
 				this.validateRoute(nextProps.routeParams.currency, this.props.coins);
 			}
-		}
-
-		if (
-			nextProps.addressRequest.success === true &&
-			nextProps.addressRequest.success !== this.props.addressRequest.success
-		) {
-			this.onCloseDialog();
-		}
-
-		if (
+		} else if (
 			nextProps.selectedNetwork !== selectedNetwork ||
 			JSON.stringify(nextProps.wallet) !== JSON.stringify(wallet) ||
 			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
@@ -78,6 +67,17 @@ class Deposit extends Component {
 				networks,
 				nextProps.coins
 			);
+		}
+
+		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
+			this.setCurrency(nextProps.routeParams.currency);
+		}
+
+		if (
+			nextProps.addressRequest.success === true &&
+			nextProps.addressRequest.success !== this.props.addressRequest.success
+		) {
+			this.onCloseDialog();
 		}
 	}
 

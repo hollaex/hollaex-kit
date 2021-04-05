@@ -66,7 +66,6 @@ class Withdraw extends Component {
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.routeParams.currency !== this.props.routeParams.currency ||
 				nextProps.selectedNetwork !== this.props.selectedNetwork)
 		) {
 			this.generateFormValues(
@@ -74,6 +73,7 @@ class Withdraw extends Component {
 				nextProps.balance,
 				nextProps.coins,
 				nextProps.verification_level,
+				this.state.networks,
 				nextProps.selectedNetwork
 			);
 		}
@@ -93,20 +93,35 @@ class Withdraw extends Component {
 	setCurrency = (currencyName) => {
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
-			this.setState({ currency, checked: false }, () => {
-				this.validateRoute(this.props.routeParams.currency, this.props.coins);
-			});
+			const { coins } = this.props;
+			const coin = coins[currency];
+			const networks = coin.network && coin.network.split(',');
+			let initialNetwork;
+			if (networks && networks.length === 1) {
+				initialNetwork = networks[0];
+			}
+
+			this.setState(
+				{
+					currency,
+					checked: false,
+					networks,
+				},
+				() => {
+					this.validateRoute(this.props.routeParams.currency, this.props.coins);
+					this.generateFormValues(
+						currency,
+						this.props.balance,
+						this.props.coins,
+						this.props.verification_level,
+						networks,
+						initialNetwork
+					);
+				}
+			);
 			// if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
 			// 	this.props.requestWithdrawFee(currency);
 			// }
-
-			this.generateFormValues(
-				currency,
-				this.props.balance,
-				this.props.coins,
-				this.props.verification_level,
-				this.props.selectedNetwork
-			);
 		} else {
 			this.props.router.push('/wallet');
 		}
@@ -117,6 +132,7 @@ class Withdraw extends Component {
 		balance,
 		coins,
 		verification_level,
+		networks,
 		network
 	) => {
 		const { icons: ICONS } = this.props;
@@ -130,9 +146,15 @@ class Withdraw extends Component {
 			this.props.activeTheme,
 			ICONS['BLUE_PLUS'],
 			'BLUE_PLUS',
+			networks,
 			network
 		);
-		const initialValues = generateInitialValues(currency, coins);
+		const initialValues = generateInitialValues(
+			currency,
+			coins,
+			networks,
+			network
+		);
 
 		this.setState({ formValues, initialValues });
 	};
