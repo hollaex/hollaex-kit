@@ -200,6 +200,8 @@ class Form extends Component {
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
+		const hasDestinationTag =
+			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'stellar';
 
 		return (
 			<form autoComplete="off" className="withdraw-form-wrapper">
@@ -210,9 +212,7 @@ class Form extends Component {
 						wrapperClassName="form_currency-ball"
 					/>
 					{titleSection}
-					{(currency === 'xrp' ||
-						currency === 'xlm' ||
-						selectedNetwork === 'stellar') && (
+					{hasDestinationTag && (
 						<div className="d-flex">
 							<div className="d-flex align-items-baseline field_warning_wrapper">
 								<ExclamationCircleFilled className="field_warning_icon" />
@@ -255,6 +255,7 @@ class Form extends Component {
 							price={currentPrice}
 							onClickAccept={this.onAcceptDialog}
 							onClickCancel={this.onCloseDialog}
+							hasDestinationTag={hasDestinationTag}
 						/>
 					) : (
 						<Loader relative={true} background={false} />
