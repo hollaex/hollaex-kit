@@ -5,225 +5,226 @@ import flatten from 'flat';
 // OPEN PR for translations on language branch
 const options = { safe: true };
 const nestedContent = {
-	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'اکسچنج دارایی های دیجیتال متن باز', // slogan
+	APP_TITLE: 'هولا إكس',
+	APP_SUB_TITLE: 'بورصة العملات الرقمية المفتوحة', // slogan
 
-	LOGOUT_CONFIRM_TEXT: 'آیا برای خارج شدن مطمئن هستید؟',
-	ADD_TRADING_PAIR: 'اضافه کردن دارایی جدید',
-	ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات فعال خود داشته باشید',
-	CANCEL_BASE_WITHDRAWAL: 'برداشت {0}لغو کنید',
-	CANCEL_WITHDRAWAL: 'لغو برداشت',
+	LOGOUT_CONFIRM_TEXT: 'هل انت متأكد؟هل تريد تسجيل الخروج؟',
+	ADD_TRADING_PAIR: 'حدد السوق',
+	ACTIVE_TRADES: 'يجب عليك أن {0} للوصول الي تداولاتك المفتوحة',
+	CANCEL_BASE_WITHDRAWAL: 'إلغاء {0}السحب',
+	CANCEL_WITHDRAWAL: 'إلغاء السحب',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM:
-		'آیا از لغو برداشت در حال انتظار خود مطمئن هستید؟',
+		'هل تريد إلغاء السحب الذي في قيد الانتظار لـ',
 	CANT_BE_CANCELLED: '-',
 	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss',
 	HOUR_FORMAT: 'HH:mm:ss',
-	LOGIN_TEXT: 'ورود',
-	SIGN_IN: 'ورود',
-	SIGNUP_TEXT: 'ثبت نام',
-	REGISTER_TEXT: 'ثبت نام',
-	ACCOUNT_TEXT: 'حساب کاربری',
-	HOME_TEXT: 'صفحه اصلی',
-	CLOSE_TEXT: 'بستن',
-	COPY_TEXT: 'کپی',
-	COPY_SUCCESS_TEXT: 'با موفقیت کپی شد',
-	CANCEL_SUCCESS_TEXT: 'با موفقیت لغو شد',
-	UPLOAD_TEXT: 'بارگزاری',
-	ADD_FILES: 'اضافه کردن فایل', // ToDo
-	OR_TEXT: 'یا',
-	CONTACT_US_TEXT: 'تماس با ما',
-	HELPFUL_RESOURCES_TEXT: 'منابع مفید',
+	LOGIN_TEXT: 'تسجیل الدخول',
+	SIGN_IN: 'تسجیل الدخول',
+	SIGNUP_TEXT: 'سجّل',
+	REGISTER_TEXT: 'إنشاء حساب',
+	ACCOUNT_TEXT: 'الحساب',
+	HOME_TEXT: 'الصفحة الرئيسية',
+	CLOSE_TEXT: 'إغلاق',
+	COPY_TEXT: 'نسخ',
+	COPY_SUCCESS_TEXT: 'تم النسخ بنجاح',
+	CANCEL_SUCCESS_TEXT: 'تم الإلغاء بنجاح',
+	UPLOAD_TEXT: 'تحميل',
+	ADD_FILES: 'أضف ملفات', // ToDo
+	OR_TEXT: 'أو',
+	CONTACT_US_TEXT: 'إتصل معنا',
+	HELPFUL_RESOURCES_TEXT: 'مصادر مفيدة',
 	HELP_RESOURCE_GUIDE_TEXT:
-		'درصورت وجود هر گونه سوال و ابهامی آن را با ارسال ایمیل به support@hollaex.com با ما درمیان بگذارید.',
-	HELP_TELEGRAM_TEXT: 'مستندات API های HollaEx را مطالعه نمایید.',
+		'لا تتردد في الاتصال معنا لمزيد من المعلومات و في مواجهة أي مشاكل عن طريق إرسال رسالة الكترونية لنا.',
+	HELP_TELEGRAM_TEXT: 'تحقق من وثائق API المفتوحة:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
-	NEED_HELP_TEXT: 'پرسشی دارید؟', // new
-	HELP_TEXT: 'راهنما',
-	SUCCESS_TEXT: 'موفق',
-	ERROR_TEXT: 'خطا',
-	PROCEED: 'انجام شد',
-	EDIT_TEXT: 'ویرایش',
-	BACK_TEXT: 'بازگشت',
-	NO_OPTIONS: 'گزینه ای وجود ندارد',
-	SECONDS: 'ثانیه ها',
-	VIEW_MARKET: 'مشاهده بازار', // new
-	GO_TRADE: 'معامله رو شروع کن', // new
-	VIEW_INFO: 'مشاهده صفحه اطلاعات', // new
-	APPLY_HERE: 'اعمال تغییرات', // new
+	NEED_HELP_TEXT: 'تحتاج لمساعدة؟', // new
+	HELP_TEXT: 'مساعدة',
+	SUCCESS_TEXT: 'نجاح',
+	ERROR_TEXT: 'خطأ',
+	PROCEED: 'تقدم',
+	EDIT_TEXT: 'تعديل',
+	BACK_TEXT: 'عودة',
+	NO_OPTIONS: 'لا يوجد خيارات متاحة',
+	SECONDS: 'ثواني',
+	VIEW_MARKET: 'مشاهدة السوق', // new
+	GO_TRADE: 'قم بالتداول', // new
+	VIEW_INFO: 'مشاهدة صفحة المعلومات', // new
+	APPLY_HERE: 'قدم هنا', // new
 	HOME: {
-		SECTION_1_TITLE: 'به HollaEx kit خوش آمدید',
+		SECTION_1_TITLE: 'أهلا بكم في مجموعة أدوات بورصة هولاإكس',
 		SECTION_1_TEXT_1:
-			'با خیالی آسوده اکسچنج تبادل دارایی های دیجیتال خود را بسازید و جزو آینده بازارهای مالی جهان شوید.',
+			'إنشأ بورصة العملات الرقمية قابلة للتطويرالخاصة بك عن طريق مجموعة أدوات هولاإكس و كن جزء في مستقبل التمويل.',
 		SECTION_1_TEXT_2:
-			'هدف ما تسهیل دسترسی افراد به بازارهای مالی از طریق به خدمت گرفتن فن آوری های نوین می باشد.',
-		SECTION_1_BUTTON_1: 'بیشتر بدانید',
-		SECTION_3_TITLE: 'امکانات',
-		SECTION_3_CARD_1_TITLE: 'موتور تطبیق مقایس پذیر',
+			'نحن نسعي لجلب التكنولوجيا المالية إلي الأمام عن طريق التمكن السهل والميسور لتكنولوجيا التداول.',
+		SECTION_1_BUTTON_1: 'إكتشف أكثر',
+		SECTION_3_TITLE: 'الميزات',
+		SECTION_3_CARD_1_TITLE: 'محرك متجانس قابل للتطویر',
 		SECTION_3_CARD_1_TEXT:
-			'موتور تطبیق سفارشات قوی و هوشمند با بهره گیری از بهینه ترین الگوریتم های روز دنیا',
-		SECTION_3_CARD_2_TITLE: 'اتصال به بانک',
+			'محرك متجانس مع أداء عالي و قابل للتطوير عن طريق استخدام الخوارزميات اللتي لديها اكثر كفاءة.',
+		SECTION_3_CARD_2_TITLE: 'دمج البنك',
 		SECTION_3_CARD_2_TEXT:
-			'برای اتصال به بانک ، پلاگین های ویژه با قابلیت سفارشی سازی بالا به شما کمک مینماید تا اکسچنج بومی خود را بسازید',
-		SECTION_3_CARD_3_TITLE: 'امنیت بالا',
+			'يوجد وصلات مع وحدات قابلة للتخصيص لدمج البنوك. نحن نعلم أن التمويل التقليدي و نقدر أن نساعدكم في صنع بورصتكم المحلية.',
+		SECTION_3_CARD_3_TITLE: 'أمان عالي',
 		SECTION_3_CARD_3_TEXT:
-			'HollaEx kit همواره از بهترین روشهای تست امنیت به منظور تامین امنیت دارایی کاربران استفاده می نماید',
-		SECTION_3_CARD_4_TITLE: 'گزارشات پیشرفته',
+			'تستخدم هولاإكس افضل الممارسات الأمنية واكثر الخوارزميات ثقةً و أماناً لإبقاء الأموال في أمان. إنها أولويتنا القصوي و اتخذنا إعتناء خاص به.',
+		SECTION_3_CARD_4_TITLE: 'تبلیغ متقدم',
 		SECTION_3_CARD_4_TEXT:
-			'پنل مدیریتی قوی به منظور ارسال ایمیل ها و گزارشات دقیق از وضعیت سیستم به مدیریت و تیم پشتیبانی ',
-		SECTION_3_CARD_5_TITLE: 'پشتیبانی',
+			'لوحة تحكم تحتوي على بريد إلكتروني قابلة للتخصيص وتقارير لإعلام الدعم والمسؤول عن حالة النظام والمعاملات ',
+		SECTION_3_CARD_5_TITLE: 'الدعم',
 		SECTION_3_CARD_5_TEXT:
-			'ما بطور ویژه توسط تیم پشتیبانی متخصص به درخواست های شما پاسخ می دهیم',
-		SECTION_3_CARD_6_TITLE: 'اتصال به سیستم احراز هویت',
+			'يمكننا أن نعتني باحتياجاتك ولدينا متخصص عبر الإنترنت لمساعدتك في مشاكلك وإستفساراتك',
+		SECTION_3_CARD_6_TITLE: 'تکامل  إعرف عميلك',
 		SECTION_3_CARD_6_TEXT:
-			'سرویس احراز هویت براحتی و سهولت هر چه تمام و متناسب با کشورهای مختلف پیاده سازی می گردد',
-		SECTION_3_BUTTON_1: 'مشاهده دمو',
+			'وحدات مرنة وقابلة للتكامل لتطبيق طرق إعرف عميلك والتحقق من المستخدم في ولايات قضائية مختلفة.',
+		SECTION_3_BUTTON_1: 'مشاهدة ملف Demo',
 	},
 	FOOTER: {
-		FOOTER_LEGAL: ['با افتخار توسعه داده شده در سئول ، کره جنوبی'],
-		FOOTER_LANGUAGE_TEXT: 'زبان',
+		FOOTER_LEGAL: ['صنع بفخر في سيول ، كوريا الجنوبية ،شركة بيت هولا'],
+		FOOTER_LANGUAGE_TEXT: 'اللغة',
 		SECTIONS: {
-			SECTION_1_TITLE: 'درباره',
-			SECTION_1_LINK_1: 'درباره ما',
-			SECTION_1_LINK_2: 'شرایط استفاده',
-			SECTION_1_LINK_3: 'حریم خصوصی',
-			SECTION_1_LINK_4: 'تماس با ما',
-			SECTION_2_TITLE: 'اطلاعات',
-			SECTION_2_LINK_1: 'بلاگ',
-			SECTION_2_LINK_2: 'تماس با ما',
-			SECTION_2_LINK_3: 'شغل',
-			SECTION_3_TITLE: 'توسعه دهندگان',
-			SECTION_3_LINK_1: 'مستندات',
-			SECTION_3_LINK_2: 'انجمن',
+			SECTION_1_TITLE: 'حول',
+			SECTION_1_LINK_1: 'حولنا',
+			SECTION_1_LINK_2: 'تعليمات الاستخدام',
+			SECTION_1_LINK_3: 'سياسة الخصوصية',
+			SECTION_1_LINK_4: 'إتصل بنا',
+			SECTION_2_TITLE: 'معلومات',
+			SECTION_2_LINK_1: 'مدونة',
+			SECTION_2_LINK_2: 'إتصل بنا',
+			SECTION_2_LINK_3: 'مهنة',
+			SECTION_3_TITLE: 'المطورون',
+			SECTION_3_LINK_1: 'توثيق',
+			SECTION_3_LINK_2: 'المنتدى',
 			SECTION_3_LINK_3: 'GitHub',
-			SECTION_3_LINK_4: 'کتابخانه',
-			SECTION_3_LINK_5: 'مستندات API',
-			SECTION_3_LINK_6: 'API معاملات',
-			SECTION_3_LINK_7: 'ابزارهای برنامه نویسی',
-			SECTION_3_LINK_8: 'مستندات',
-			SECTION_4_TITLE: 'اکسچنج',
-			SECTION_4_LINK_1: 'ورود',
-			SECTION_4_LINK_2: 'ثبت نام',
-			SECTION_4_LINK_3: 'تماس با ما',
-			SECTION_4_LINK_4: 'شرایط استفاده',
-			SECTION_5_TITLE: 'منابع',
-			SECTION_5_LINK_1: 'Whitepaper',
-			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
+			SECTION_3_LINK_4: 'مکتبه',
+			SECTION_3_LINK_5: 'وثيقة API',
+			SECTION_3_LINK_6: 'واجهة برمجة تطبيقات التداول',
+			SECTION_3_LINK_7: 'ادوات المطورين',
+			SECTION_3_LINK_8: 'توثيق',
+			SECTION_4_TITLE: 'بورصة',
+			SECTION_4_LINK_1: 'تسجيل الدخول',
+			SECTION_4_LINK_2: 'تسجيل',
+			SECTION_4_LINK_3: 'اتصل بنا',
+			SECTION_4_LINK_4: 'تعليمات الاستخدام',
+			SECTION_5_TITLE: 'مصادر',
+			SECTION_5_LINK_1: 'وايت بيبر',
+			SECTION_5_LINK_2: 'عملة هولاإكس',
 			SECTION_5_LINK_3: 'GitHub',
-			SECTION_5_LINK_4: 'سوالات متداول', // new
-			SECTION_6_TITLE: 'شبکه های اجتماعی',
+			SECTION_5_LINK_4: 'مكتب المساعدة', // new
+			SECTION_6_TITLE: 'الشبكة الاجتماعية',
 			SECTION_6_LINK_1: 'توییتر',
 			SECTION_6_LINK_2: 'تلگرام',
 		},
 		XHT_DESCRIPTION:
-			'HollaEx kit یک پلتفورم متن باز به منظور مبادله دارایی های دیجیتال بین کاربران می باشد که توسط شرکت bitHolla توسعه و ارایه می شود.',
-		CLICK_HERE: 'اینجا را کلیک کنید',
-		VISIT_HERE: 'اینجا را مشاهده کنید',
+			'مجموعة أدواتHollaEx  عبارة عن منصة تداول مفتوحة المصدر أنشأتها شركة bitHolla Inc. ويمكنك إنشاء وإدراج أي أصول رقمية ومستخدمين على متنها للتداول في البورصة باستخدام مجموعة أدوات التبادل هذه. من أجل تشغيل واحدة بنفسك.',
+		CLICK_HERE: 'انقر هنا',
+		VISIT_HERE: 'زوروا هنا',
 	},
 	ACCOUNTS: {
-		TITLE: 'حساب کاربری',
-		TAB_VERIFICATION: 'تایید حساب کاربری',
-		TAB_SECURITY: 'امنیت',
-		TAB_NOTIFICATIONS: 'اعلانات',
-		TAB_SETTINGS: 'تنظیمات',
-		TAB_PROFILE: 'پروفایل',
-		TAB_WALLET: 'کیف پول',
-		TAB_SUMMARY: 'خلاصه',
-		TAB_API: 'API',
+		TITLE: 'الحساب',
+		TAB_VERIFICATION: 'التحقق',
+		TAB_SECURITY: 'الأمان',
+		TAB_NOTIFICATIONS: 'إشعارات',
+		TAB_SETTINGS: 'إعدادات',
+		TAB_PROFILE: 'الملف الشخصي',
+		TAB_WALLET: 'محفظة النقود',
+		TAB_SUMMARY: 'ملخص',
+		TAB_HISTORY: 'التاریخ',
+		TAB_API: 'واجهة برمجة التطبيقات',
 		TAB_SIGNOUT: 'خروج',
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
-		REQUEST_TITLE: 'درخواست دسترسی',
-		REQUEST_INVITE: 'درخواست دعوت',
-		CATEGORY_PLACEHOLDER: 'به هریک از بخش های زیر پاسخ های متناسب بدهید',
-		INTRODUCTION_LABEL: 'خودتان رو معرفی کنید',
-		INTRODUCTION_PLACEHOLDER:
-			'ساکن کدام کشور هستید ؟ و آیا علاقه به راه اندازی اکسچنج دارید؟',
+		REQUEST_TITLE: 'طلب الدخول',
+		REQUEST_INVITE: 'طلب دعوة',
+		CATEGORY_PLACEHOLDER: 'حدد الفئة التي تناسب مشكلتك',
+		INTRODUCTION_LABEL: 'عرف نفسك',
+		INTRODUCTION_PLACEHOLDER: 'أين تقيم ، هل أنت مهتم بإجراء بورصة؟',
 	},
 	CONTACT_FORM: {
-		CATEGORY_LABEL: 'بخش',
-		CATEGORY_PLACEHOLDER:
-			'هریک از بخش های زیر که با درخواست شما متناسب است را انتخاب کنید',
+		CATEGORY_LABEL: 'الفئة',
+		CATEGORY_PLACEHOLDER: 'حدد الفئة التي تناسب مشكلتك',
 		CATEGORY_OPTIONS: {
-			OPTION_VERIFY: 'تایید کاربر',
-			OPTION_LEVEL: 'ارتقای سطح کاربری',
-			OPTION_DEPOSIT: 'واریز و برداشت',
-			OPTION_BUG: 'گزارش خطا', // ToDo:
-			OPTION_PERSONAL_INFO: 'تغییر اطلاعات شخصی', // ToDo:
-			OPTION_BANK_TRANSFER: 'تراکنش بانکی', // new
-			OPTION_REQUEST: 'درخواست دعوت به اکسچنج HollaEx', // new
+			OPTION_VERIFY: 'التحقق من المستخدم',
+			OPTION_LEVEL: 'زيادة مستوى المستخدم',
+			OPTION_DEPOSIT: 'الإيداع والسحب',
+			OPTION_BUG: 'تقرير خلل برمجي', // ToDo:
+			OPTION_PERSONAL_INFO: 'تغيير المعلومات الشخصية', // ToDo:
+			OPTION_BANK_TRANSFER: 'تحويل بنكي', // new
+			OPTION_REQUEST: 'طلب دعوة لبورصة HollaEx', // new
 		},
 		SUBJECT_LABEL: 'موضوع',
-		SUBJECT_PLACEHOLDER: 'موضوع مشکل خود را تایپ کنید',
-		DESCRIPTION_LABEL: 'توضیحات',
-		DESCRIPTION_PLACEHOLDER: 'مشکل خود را با شرح جزییات بیان نمایید',
-		ATTACHMENT_LABEL: 'حداکثر تا 3 قایل می تواند پیوست کنید', // ToDo:
+		SUBJECT_PLACEHOLDER: 'اكتب موضوع مشكلتك',
+		DESCRIPTION_LABEL: 'وصف',
+		DESCRIPTION_PLACEHOLDER: 'اكتب بالتفصيل ما هي المشكلة',
+		ATTACHMENT_LABEL: 'أضف مرفقات (3 كحد أقصى)', // ToDo:
 		ATTACHMENT_PLACEHOLDER:
-			'برای شرح بهتر مشکل خود می توانید فایل هایی با فرمت PDF,JPG,PNG,GIF پیوست نمایید',
-		SUCCESS_MESSAGE: 'ایمیل به تیم پشتیبانی ارسال شد',
-		SUCCESS_TITLE: 'پیام ارسال شد',
-		SUCCESS_MESSAGE_1: 'مشکل شما به تیم پشتیبانی کاربران ارسال گردید',
-		SUCCESS_MESSAGE_2: 'حداکثر تا 3 روز آینده منتظر پاسخ ما باشید',
+			'أضف ملفًا للمساعدة في إبلاغ مشكلتك. يتم قبول ملفات PDF و JPG و PNG و GIF',
+		SUCCESS_MESSAGE: 'تم إرسال البريد الإلكتروني لموظفينا في قسم الدعم.',
+		SUCCESS_TITLE: 'تم ارسال الرسالة',
+		SUCCESS_MESSAGE_1: 'تم إرسال مشكلتك إلى قسم دعم العملاء',
+		SUCCESS_MESSAGE_2: 'سوف يتم الرد خلال 1-3 أيام.',
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
-			ADDRESS: '{0}آدرس دریافت شما', // new
-			DESTINATION_TAG: 'برچسب مقصد {0 شما}', // new
-			BTC: 'آدرس شما برای دریافت بیتکوین',
-			ETH: 'آدرس شما برای دریافت اتریوم',
-			BCH: 'آدرس شما برای دریافت بیتکوین کش',
+			ADDRESS: 'عنوان الاستلام {0} الخاص بك', // new
+			DESTINATION_TAG: 'ملصق الوجهة {0} الخاصة بك', // new
+			MEMO: 'مذكرتك {0}', // new, Perisna should be added in Persian lang
+			BTC: 'عنوان استلام Bitcoin الخاص بك',
+			ETH: 'عنوان استلام Ethereum الخاص بك',
+			BCH: 'عنوان استلام  Bitcoin Cash الخاص بك',
 		},
-		INCREASE_LIMIT: 'میخواهید سقف برداشت روزانه خود را افزایش دهید',
+		INCREASE_LIMIT: 'هل تريد زيادة الحد اليومي الخاص بك؟',
 		QR_CODE:
-			'کافیست برای ارسال پول توسط دیگران،این کد توسط شخص پرداخت کننده اسکن شود',
-		NO_DATA: 'اطلاعاتی موجود نمی باشد',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
+			'يمكن فحص رمز الاستجابة السريعة(QR Code)  هذا بواسطة الشخص الذي يريد إرسال الأموال إليك',
+		NO_DATA: 'لا توجد معلومات متاحة',
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {الحد الأقصى للإيداع اليومي}:  1 -> {1,000} 2 -> {Currency} 3 -> {(تريد زيادة الحد اليومي الخاص بك؟)}
 	},
 	LOGIN: {
-		LOGIN_TO: 'ورود به {0}',
-		CANT_LOGIN: 'نمی توانید وارد شوید؟',
-		NO_ACCOUNT: 'هنوز حساب کاربری ایجاد نکرده اید؟',
-		CREATE_ACCOUNT: 'همین الان یک حساب کاربری بسازید',
-		HELP: 'راهنما',
+		LOGIN_TO: 'تسجيل الدخول إلى {0}',
+		CANT_LOGIN: 'لا تستطيع تسجيل الدخول؟',
+		NO_ACCOUNT: 'ليس لديك حساب؟',
+		CREATE_ACCOUNT: 'قم بإنشاء واحد هنا',
+		HELP: 'مساعدة',
 	},
 	FORM_FIELDS: {
-		EMAIL_LABEL: 'ایمیل',
-		EMAIL_PLACEHOLDER: 'ایمیل خود را وارد کنید',
-		PASSWORD_LABEL: 'کلمه عبور',
-		PASSWORD_PLACEHOLDER: 'کلمه عبور خود را وارد کنید',
-		PASSWORD_REPEAT_LABEL: 'مجددا کلمه عبور خود را وارد کنید',
-		PASSWORD_REPEAT_PLACEHOLDER: 'مجددا کلمه عبور خود را وارد کنید',
+		EMAIL_LABEL: 'البريد الإلكتروني',
+		EMAIL_PLACEHOLDER: 'اكتب البريد الالكتروني الخاص بك',
+		PASSWORD_LABEL: 'كلمه السر',
+		PASSWORD_PLACEHOLDER: 'اكتب كلمة المرور الخاصة بك',
+		PASSWORD_REPEAT_LABEL: 'أعد كتابة كلمة المرور الخاصة بك',
+		PASSWORD_REPEAT_PLACEHOLDER: 'أعد كتابة كلمة المرور الخاصة بك',
 	},
 	VALIDATIONS: {
-		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
-		CAPTCHA: 'Expired Session. Please refresh the page',
-		FROZEN_ACCOUNT: 'این حساب بسته شده است',
-		INVALID_EMAIL: 'آدرس ایمیل نامعتبر است',
-		TYPE_EMAIL: 'ایمیل خود را وارد کنید',
-		REQUIRED: 'فیلد ضروری',
-		INVALID_DATE: 'تاریخ اشتباه',
+		OTP_LOGIN: 'أدخل رمز السري المتغير لتسجيل الدخول',
+		CAPTCHA: 'فترة منتهية. يرجى تحديث الصفحة',
+		FROZEN_ACCOUNT: 'تم تجميد هذا الحساب',
+		INVALID_EMAIL: 'عنوان البريد الإلكتروني غير صالح',
+		TYPE_EMAIL: 'اكتب بريدك الإلكتروني',
+		REQUIRED: 'یرجي إدخال ألبريد ألإلكتروني الخاص بك',
+		INVALID_DATE: 'تاريخ غير صالح',
 		INVALID_PASSWORD:
-			'کلمه عبور معتبر نمی باشد.کلمه عبور باید حداقل 8 کاراکتر و شامل اعداد و کاراکترهای خاص باشد',
+			'رمز مرور خاطئ. يجب أن يحتوي على 8 أحرف على الأقل ، و رقم واحد في كلمة المرور ، و حرف خاص.',
 		INVALID_PASSWORD_2:
-			'کلمه عبور معتبر نمی باشد.کلمه عبور باید حداقل 8 کاراکتر و شامل اعداد و کاراکترهای خاص باشد',
-		INVALID_CURRENCY: 'آدرس{1} نامعتبر{0}',
-		INVALID_BALANCE:
-			'موجودی کافی({0})برای انجام عملیات مورد نظر را ندارید({1})',
-		MIN_VALUE: 'مقدار باید{0 و یا بزرگتر باشد}',
-		MAX_VALUE: 'مقدار باید {0 و یا کوچکتر باشد}',
-		INSUFFICIENT_BALANCE: 'موجودی حساب ناکافی',
-		PASSWORDS_DONT_MATCH: 'کلمه عبور مطابقت ندارد',
-		USER_EXIST: 'این ایمیل قبلا ثبت شده است ',
-		ACCEPT_TERMS: 'شما شرایط استفاده و حریم خصوصی را تایید ننموده اید',
-		STEP: 'مقدار نامعتبر ،مقدار مجاز اضافه کردن {0}',
-		ONLY_NUMBERS: 'مقدار فقط می تواند شامل اعداد باشد',
+			'رمز مرور خاطئ. يجب أن يحتوي على 8 أحرف على الأقل ، و علي الأقل رقم واحد في كلمة المرور ، و حرف خاص.',
+		INVALID_CURRENCY: 'عنوان {0} غير صالح ({1})',
+		INVALID_BALANCE: 'رصيد الموجود غير كافٍ ({0}) لإجراء العملية ({1}).',
+		MIN_VALUE: 'يجب أن تكون القيمة {0} أو أعلى.',
+		MAX_VALUE: 'يجب أن تكون القيمة {0} أو أقل.',
+		MIN_VALUE_NE: 'يجب أن تكون القيمة أكبر من {0}.',
+		MAX_VALUE_NE: 'يجب أن تكون القيمة أقل من {0}.',
+		INSUFFICIENT_BALANCE: 'رصيد غير كاف',
+		PASSWORDS_DONT_MATCH: 'كلمة المرور غير متطابقة',
+		USER_EXIST: 'هذا البريد الإلكتروني مسجل من سابق',
+		ACCEPT_TERMS: 'لم توافق على شروط الاستخدام وسياسة الخصوصية',
+		STEP: 'قيمة غير صحيحة ، الخطوة هي {0}',
+		ONLY_NUMBERS: 'قيمة غير صحيحة ، الخطوة هي {0}',
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
-			TITLE: 'حریم خصوصی',
+			TITLE: 'سياسة الخصوصية',
 			SUBTITLE:
-				'بروزرسانی شده در اول آپریل 2019 .نسخه قبلی حریم خصوصی با این نسخه جایگزین شده است.',
+				'تم التحديث الأخير في 1 أبريل 2019. يستبدل الإصدار السابق بالكامل.',
 			TEXTS: [
 				'پلتفورم تحت وب HollaEx یک پلتفورم مبادله دارایی های دیجیتال می باشد که مالکیت آن تماماً دراختیار شرکت bitHolla در کشور کره جنوبی می باشد .از این پس به شرکت bitHoll اختصاراً bitHolla گفته میشود.',
 				'استفاده از وب سایت HollaEx (که از این پس به آن "وبسایت" گفته می شود )  و خدمات ارائه شده در آن  (که از این پس به آن "خدمات" گفته می شود )  با شرایط مندرج در صفحه شرایط و مقررات (که از این پس به آن " مقررات"  گفته می شود ) تنظیم و تعیین می شود. این توافق نامه کاملاً توافق طرفین را تشکیل می دهد. کلیه اطلاعات ارائه شده در وب سایت یا اظهارات شفاهی یا کتبی دیگر از این توافق نامه مستثنی هستند. سیاست های اکسچنج فقط جنبه  راهنمایی داشته  و توافق حقوقی بین طرفین نمی باشد.',
@@ -249,1101 +250,1158 @@ const nestedContent = {
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
-			OKAY: 'تایید',
-			START_TRADING: 'شروع معاملات',
-			SEE_HISTORY: 'تاریخچه',
+			OKAY: 'حسنا',
+			START_TRADING: 'إبدأ بالتداول',
+			SEE_HISTORY: 'مشاهدة السجل',
 		},
 		DEPOSITS: {
-			TITLE_RECEIVED: 'واریزی دریافت شد{0}',
-			TITLE_INCOMING: 'واریزی {0}',
-			SUBTITLE_RECEIVED: 'شما مقدار {0دریافت نمودید}',
-			SUBTITLE_INCOMING: 'شما یک واریزی دارید {0}',
+			TITLE_RECEIVED: '{0} تم استلام الإيداع',
+			TITLE_INCOMING: 'واردة {0}',
+			SUBTITLE_RECEIVED: 'لقد تلقيت إيداعك بقيمة {0}',
+			SUBTITLE_INCOMING: 'لديك {0} واردة',
 			INFORMATION_PENDING_1:
-				'تراکنش {0 شما حداقل به یک تایید نیاز دارد تا بتوانید معامله را شروع کنید}',
+				'يتطلب {0} تصديقاً واحدًا قبل أن تتمكن من بدء التداول.',
 			INFORMATION_PENDING_2:
-				'مابه محض تایید {0 شما بر روی شبکه بلاکچین یک ایمیل برای شما ارسال خواهیم کرد. این زمان ممکن است بین 10 تا 30 دقیقه بطول بیانجامد}',
+				'قد يستغرق ذلك 10-30 دقيقة. سنرسل بريداً إلكترونياً بمجرد تصديق {0} على البلوك تشين.',
 		},
 	},
 	REFERRAL_SUCCESS: {
-		TITLE: 'درخواست ارسال شد',
-		BUTTON_TEXT: 'تایید',
+		TITLE: 'تم ارسال الطلب',
+		BUTTON_TEXT: 'حسناً',
 	},
 	OTP_FORM: {
-		OTP_FORM_TITLE: 'برای ادامه ، کد تایید خود را وارد نمایید',
-		OTP_LABEL: 'رمز یکبار مصرف',
-		OTP_PLACEHOLDER: 'کد تایید را وارد نمایید',
-		OTP_TITLE: 'کد تایید',
-		OTP_HELP: 'راهنما',
-		OTP_BUTTON: 'ارسال',
-		ERROR_INVALID: 'رمز یکبار مصرف اشتباه است',
+		OTP_FORM_TITLE: 'أدخل رمز المصادقة الخاص بك للمتابعة',
+		OTP_LABEL: 'رمز السري المتغير',
+		OTP_PLACEHOLDER: 'أدخل رمز المصادقة',
+		OTP_TITLE: 'رمز المصدق',
+		OTP_HELP: 'مساعدة',
+		OTP_BUTTON: 'إرسال',
+		ERROR_INVALID: 'رمز السري المتغير غير صالح',
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'سریع و آسان',
-		TOTAL_COST: 'مجموع هزینه',
-		BUTTON: 'بازنگری {0 سفارش}',
-		INPUT: '{0}به {1}',
+		TITLE: 'التداول السريع',
+		TOTAL_COST: 'التكلفة الإجمالية',
+		BUTTON: 'إعادة نظر الطلب',
+		INPUT: 'من {0} إلى {1}',
 		TRADE_TITLE: '{0} {1}', // quick buy
 	},
-	PREVIOUS_PAGE: 'صفحه قبل',
-	NEXT_PAGE: 'صفحه بعد',
+	PREVIOUS_PAGE: 'الصفحة السابقة',
+	NEXT_PAGE: 'الصفحة التالية',
 	WALLET: {
-		TOTAL_ASSETS: 'مجموع دارایی ها',
-		AVAILABLE_WITHDRAWAL: 'دارایی موثر قابل معامله',
-		AVAILABLE_TRADING: 'دارایی موثر قابل برداشت',
-		ORDERS_PLURAL: 'سفارشات',
-		ORDERS_SINGULAR: 'سفارش',
+		TOTAL_ASSETS: 'جاري تحميل الأصول ...',
+		AVAILABLE_WITHDRAWAL: 'إجمالي الأصول',
+		AVAILABLE_TRADING: 'متاح للتداول',
+		ORDERS_PLURAL: 'الطلبات',
+		ORDERS_SINGULAR: 'الطلب',
 		HOLD_ORDERS:
-			'شما {0} سفارش تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است',
+			'لديك {0} مفتوحة {1} ، مما أدى إلى إمتلاك {2} {3} في رصيدك بعملة {4}',
 	},
 	REQUEST_RESET_PASSWORD: {
-		TITLE: 'بازیابی حساب کاربری',
-		SUBTITLE: `حساب کاربری خود را بازیابی کنید`,
-		SUPPORT: 'تماس با پشتیبانی',
-		BUTTON: 'ارسال لینک بازیابی',
+		TITLE: 'استرجاع الحساب',
+		SUBTITLE: `استرجع حسابك أدناه`,
+		SUPPORT: 'اتصل بالدعم',
+		BUTTON: 'أرسل رابط الاسترداد',
 	},
 	REQUEST_RESET_PASSWORD_SUCCESS: {
-		TITLE: 'درخواست کلمه عبور جدید ارسال گردید',
+		TITLE: 'تم إرسال إعادة تعيين كلمة المرور',
 		TEXT:
-			'اگر با این ایمیل قبلا حساب کاربری ایجاد کرده باشید ، ایمیل بازیابی کلمه عبور به آن ارسال شده است . لطفا مراحل را طبق آن دنبال نمایید',
+			'إذا كان هناك حساب لعنوان البريد الإلكتروني ، فقد تم إرسال بريد إلكتروني إليه مع تعليمات إعادة التعيين. يرجى التحقق من بريدك الإلكتروني والنقر فوق الرابط لإكمال إعادة تعيين كلمة المرور الخاصة بك.',
 	},
 	RESET_PASSWORD: {
-		TITLE: 'کلمه عبور جدید تعریف کنید',
-		SUBTITLE: 'کلمه عبور جدید تعریف کنید',
-		BUTTON: 'کلمه عبور جدید تعریف کنید',
+		TITLE: 'قم بتعيين كلمة مرور جديدة',
+		SUBTITLE: 'قم بتعيين كلمة مرور جديدة',
+		BUTTON: 'قم بتعيين كلمة مرور جديدة',
 	},
 	RESET_PASSWORD_SUCCESS: {
-		TEXT_1: 'شما با موفقیت کلمه عبور جدید خود را تعریف کردید',
-		TEXT_2: 'دکمه ورود در پایین را فشار دهید',
+		TEXT_1: 'لقد نجحت في إعداد كلمة مرور جديدة.',
+		TEXT_2: 'انقر على تسجيل الدخول أدناه للمتابعة.',
 	},
 	SIGN_UP: {
-		SIGNUP_TO: 'ثبت نام در {0}',
-		NO_EMAIL: 'هنوز ایمیلی دریافت نکرده ایید؟',
-		REQUEST_EMAIL: 'درخواست مجدد',
-		HAVE_ACCOUNT: 'در حال حاضر حساب کاربری دارید؟',
-		GOTO_LOGIN: 'به صفحه ورود بروید',
+		SIGNUP_TO: 'سجل في {0}',
+		NO_EMAIL: 'ألم تتلق البريد الإلكتروني؟',
+		REQUEST_EMAIL: 'اطلب واحدة أخرى هنا',
+		HAVE_ACCOUNT: 'هل لديك حساب؟',
+		GOTO_LOGIN: 'اذهب إلى صفحة تسجيل الدخول',
+		AFFILIATION_CODE: 'معرف الإحالة (إختياري)', // new
+		AFFILIATION_CODE_PLACEHOLDER: 'اكتب معرف الإحالة الخاص بك', //
 		TERMS: {
-			terms: 'شرایط عمومی',
-			policy: 'حریم خصوصی',
-			text: 'من با مطالعه و آگاهی با {0 و {1 موافقت می نمایم}}',
+			terms: 'شروط عامة',
+			policy: 'سياسة الخصوصية',
+			text: 'لقد قرأت وأوافق على {0} و {1}',
 		},
 	},
 	VERIFICATION_TEXTS: {
-		TITLE: 'ایمیل ارسال شد',
-		TEXT_1: 'ایمیل خود را چک کنید و لینک تایید را فشار دهید',
+		TITLE: 'أرسل البريد الإلكتروني',
+		TEXT_1:
+			'تحقق من بريدك الإلكتروني وانقر على الرابط للتحقق من بريدك الإلكتروني.',
 		TEXT_2:
-			'اگر ایمیل تایید را تاکنون دریافت نکرده ایید به بخش هرزنامه مراجعه نمایید',
+			'إذا ما تلقيت أي تأكيد عبر البريد الإلكتروني وقمت بفحص البريد الغير هام الخاص بك ، فيمكنك محاولة النقر علی إعادة الإرسال أدناه.',
 	},
 	VERIFICATION_EMAIL_REQUEST: {
-		TITLE: 'ارسال مجدد درخواست ایمیل',
-		BUTTON: 'درخواست ایمیل',
+		TITLE: 'إعادة إرسال طلب البريد الإلكتروني',
+		BUTTON: 'طلب بريد إلكتروني',
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
-		TITLE: 'ارسال مجدد ایمیل',
+		TITLE: 'إعادة إرسال البريد الإلكتروني',
 		TEXT_1:
-			'اگر بعد از چند دقیقه همچنان ایمیلی را دریافت ننموده اید با تیم پشتیبانی ما تماس حاصل فرمایید',
+			'إذا لم تتلق رسالة التحقق من البريد الإلكتروني بعد بضع دقائق ، فيرجى الاتصال بنا أدناه.',
 	},
 	VERIFICATION_EMAIL: {
-		INVALID_UUID: 'کد نامعتبر است',
-		TEXT_1: 'شما با موفقیت ایمیل خود را تایید نمودید',
-		TEXT_2: 'اکنون می توانید وارد شوید',
+		INVALID_UUID: 'الرمز غير صحيح',
+		TEXT_1: 'لقد نجحت في التحقق من بريدك الإلكتروني.',
+		TEXT_2: 'يمكنك الآن متابعة تسجيل الدخول',
 	},
 	USER_VERIFICATION: {
-		INFO_TXT:
-			'اینجا شما می توانید وضعیت فعلی و روند ارتقای حساب کاربری خود را مشاهده نمایید',
+		INFO_TXT: 'هنا يمكنك مراقبة سيرك نحو التحقق وترقيات الحساب.',
 		INFO_TXT_1:
-			'لطفا اطلاعات خواسته شده در هر بخش را با دقت وارد نمایید .مستحضر باشید پس از تکمیل همه اطلاعات خواسته شده ، درخواست ارتقای حساب کاربری شما مورد ارزیابی قرار خواهد گرفت',
-		INFO_TXT_2: '* روند احراز هویت شما نیازمند بررسی مدارک هویتی شما می باشد',
-		DOCUMENTATIONS: 'بارگزاری',
-		COMPLETED: 'تکمیل شد',
-		PENDING_VERIFICATION: 'تایید حساب کاربری در حال انتظار است ',
-		TITLE_EMAIL: 'ایمیل',
-		MY_EMAIL: 'ایمیل من',
-		MAKE_FIRST_DEPOSIT: 'اولین واریز خود را انجام دهید', // new
-		OBTAIN_XHT: 'کسب XHT', // new
-		TITLE_USER_DOCUMENTATION: 'مدرک شناسایی',
-		TITLE_ID_DOCUMENTS: 'بارگزاری',
-		TITLE_BANK_ACCOUNT: 'حساب بانکی',
-		TITLE_MOBILE_PHONE: 'شماره تلفن همراه',
-		TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
-		VERIFY_EMAIL: 'ایمیل خود را تایید کنید',
-		VERIFY_MOBILE_PHONE: 'شماره موبایل خود را تایید کنید',
-		VERIFY_USER_DOCUMENTATION: 'تایید مدارک کاربر',
-		VERIFY_ID_DOCUMENTS: 'تایید مدارک شناسایی',
-		VERIFY_BANK_ACCOUNT: 'تایید حساب بانکی',
-		BUTTON: 'درخواست تایید مدارک را ارسال کنید',
-		TITLE_IDENTITY: 'مدارک شناسایی',
-		TITLE_MOBILE: 'تلفن همراه',
-		TITLE_MOBILE_HEADER: 'شماره تلفن همراه',
-		TITLE_BANK: 'بانک',
-		TITLE_BANK_HEADER: 'اطلاعات بانک',
-		CHANGE_VALUE: 'تغییر مقادیر',
-		PENDING_VERIFICATION_PERSONAL_INFORMATION:
-			'اطلاعات شخصی شما در حال بررسی می باشد',
-		PENDING_VERIFICATION_BANK: 'مشخصات حساب بانکی شمادر حال بررسی می باشد',
-		PENDING_VERIFICATION_DOCUMENTS: 'مدارک شما در حال بررسی می باشد',
-		GOTO_VERIFICATION: 'رفتن به بخش تایید حساب کاربری',
-		GOTO_WALLET: 'به بخش کیف پول برو', // new
-		CONNECT_BANK_ACCOUNT: 'اتصال حساب بانکی',
-		ACTIVATE_2FA: 'فعال سازی رمز دوعاملی',
-		INCOMPLETED: 'تکمیل نشده است',
-		BANK_VERIFICATION: 'تایید بانک',
-		IDENTITY_VERIFICATION: 'تایید مدارک شناسایی',
-		PHONE_VERIFICATION: 'تایید شماره تلفن',
-		DOCUMENT_VERIFICATION: 'تایید مدارک',
-		START_BANK_VERIFICATION: 'شروع روند تایید حساب بانکی',
-		START_IDENTITY_VERIFICATION: 'شروع روند تایید اطلاعات هویتی',
-		START_PHONE_VERIFICATION: 'شروع روند تایید شماره تلفن',
-		START_DOCUMENTATION_SUBMISSION: 'شروع ارسال مدارک',
-		GO_BACK: 'برگرد به عقب',
+			'يرجى تقديم المعلومات ذات الصلة المطلوبة لكل قسم أدناه. فقط عند اكتمال عمليات الإرسال لجميع الأقسام ، ستتم مراجعة معلوماتك والموافقة عليها لترقية الحساب.',
+		INFO_TXT_2: 'يتطلب التحقق لقسم الهوية منك {0} مستندات معينة.',
+		DOCUMENTATIONS: 'تحمیل',
+		COMPLETED: 'منجز',
+		PENDING_VERIFICATION: 'في انتظار التحقق',
+		TITLE_EMAIL: 'االبريد الإلكتروني',
+		MY_EMAIL: 'بريدي الالكتروني',
+		MAKE_FIRST_DEPOSIT: 'قم بعمل أول إيداع', // new
+		OBTAIN_XHT: 'احصل على عملة XHT', // new
+		TITLE_USER_DOCUMENTATION: 'تطابق',
+		TITLE_ID_DOCUMENTS: 'تحميل',
+		TITLE_BANK_ACCOUNT: 'حساب البنك',
+		TITLE_MOBILE_PHONE: 'الهاتف المحول',
+		TITLE_PERSONAL_INFORMATION: 'الهاتف المحول',
+		VERIFY_EMAIL: 'التحقق من البريد الإلكتروني',
+		VERIFY_MOBILE_PHONE: 'تحقق من الهاتف المحمول',
+		VERIFY_USER_DOCUMENTATION: 'تحقق من وثائق المستخدم',
+		VERIFY_ID_DOCUMENTS: 'تحقق من وثائق الهوية',
+		VERIFY_BANK_ACCOUNT: 'تحقق من الحساب المصرفي',
+		BUTTON: 'إرسال طلب التحقق',
+		TITLE_IDENTITY: 'هوية',
+		TITLE_MOBILE: 'الهاتف المحمول',
+		TITLE_MOBILE_HEADER: ' رقم الهاتف المحمول',
+		TITLE_BANK: 'بنك',
+		TITLE_BANK_HEADER: 'التفاصيل المصرفية',
+		CHANGE_VALUE: 'تغيير القيمة',
+		PENDING_VERIFICATION_PERSONAL_INFORMATION: 'تتم معالجة معلوماتك الشخصية',
+		PENDING_VERIFICATION_BANK: 'يتم التحقق من التفاصيل المصرفية الخاصة بك',
+		PENDING_VERIFICATION_DOCUMENTS: 'يتم التحقق من المستندات الخاصة بك',
+		GOTO_VERIFICATION: 'إذهب إلى التحقق',
+		GOTO_WALLET: 'اذهب إلى المحفظة', // new
+		CONNECT_BANK_ACCOUNT: 'اتصال الحساب المصرفي',
+		ACTIVATE_2FA: 'تفعيل توثيق ذو عاملين',
+		INCOMPLETED: 'غير مكتمل',
+		BANK_VERIFICATION: 'التحقق من البنك',
+		IDENTITY_VERIFICATION: 'التحقق من الهوية',
+		PHONE_VERIFICATION: 'التحقق من الهاتف',
+		DOCUMENT_VERIFICATION: 'التحقق من الوثيقة',
+		START_BANK_VERIFICATION: 'بدء التحقق من البنك',
+		START_IDENTITY_VERIFICATION: 'ابدأ التحقق من الهوية',
+		START_PHONE_VERIFICATION: 'ابدأ التحقق من الهاتف',
+		START_DOCUMENTATION_SUBMISSION: 'بدء تقديم الوثائق',
+		GO_BACK: 'إرجع',
 		BANK_VERIFICATION_TEXT_1:
-			'شما 3 حساب بانکی می توانید به حساب کاربری خود متصل نمایید',
+			'يمكنك إضافة ما يصل إلى 3 حسابات بنكية. لإستخدام الحسابات المصرفية الدولية ، سيُطلب منك الاتصال بدعم العملاء وسيكون لديك حدود سحب محدودة.',
 		BANK_VERIFICATION_TEXT_2:
-			'با تایید حساب بانکی خود موارد زیر برای ممکن می گردد',
-		BASE_WITHDRAWAL: 'برداشت تومان',
-		BASE_DEPOSITS: 'واریز تومان',
-		ADD_ANOTHER_BANK_ACCOUNT: 'یک بانک دیگر اضافه کنید',
-		BANK_NAME: 'نام بانک',
-		ACCOUNT_NUMBER: 'شماره حساب',
-		CARD_NUMBER: 'شماره کارت',
+			'من خلال التحقق من حسابك المصرفي ، يمكنك الحصول على ما يلي:',
+		BASE_WITHDRAWAL: 'سحب نقدي(فیات)',
+		BASE_DEPOSITS: 'الودائع النقدية(فیات)',
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', // ماذاهذا
+		BANK_NAME: 'اسم البنك',
+		ACCOUNT_NUMBER: 'رقم الحساب',
+		CARD_NUMBER: 'رقم البطاقة',
 		BANK_VERIFICATION_HELP_TEXT:
-			'برای تایید این بخش شما نیاز به تکمیل قسمت{0 دارید}',
-		DOCUMENT_SUBMISSION: 'ارسال مدارک',
-		REVIEW_IDENTITY_VERIFICATION: 'بررسی تایید مدارک',
-		PHONE_DETAILS: 'مشخصات شماره تلفن',
-		PHONE_COUNTRY_ORIGIN: 'کد کشور محل سکونت',
-		MOBILE_NUMBER: 'شماره تلفن همراه',
-		DOCUMENT_PROOF_SUBMISSION: 'کارت ملی',
-		START_DOCUMENTATION_RESUBMISSION: 'ارسال مجدد مدارک',
+			'من أجل التحقق لهذا القسم، يجب عليك إكمال قسم {0}.',
+		DOCUMENT_SUBMISSION: 'تقديم الوثائق',
+		REVIEW_IDENTITY_VERIFICATION: 'مراجعة التحقق من الهوية',
+		PHONE_DETAILS: 'تفاصيل الهاتف',
+		PHONE_COUNTRY_ORIGIN: 'بلد منشأ الهاتف',
+		MOBILE_NUMBER: 'رقم الهاتف المحمول',
+		DOCUMENT_PROOF_SUBMISSION: 'تقديم إثبات الوثائق',
+		START_DOCUMENTATION_RESUBMISSION: 'بدء إعادة تقديم الوثائق',
 		SUBMISSION_PENDING_TXT:
-			'*اطلاعات مربوط به این بخش قبلا ارسال گردیده است. ارسال مجدد مدارک،جایگزین مدارک قبلی خواهد شد.',
-		CUSTOMER_SUPPORT_MESSAGE: 'پیام تیم پشتیبانی',
+			'تم تقديم هذا القسم سابقاً. إجراء التغييرات وإعادة التقديم،سيؤدي إلى تغيير معلوماتك السابقة.',
+		CUSTOMER_SUPPORT_MESSAGE: 'رسالة دعم العملاء',
 		DOCUMENT_PENDING_NOTE:
-			'مدارک شما ارسال گردیده و درحال بررسی می باشند. لطفا شکیبا باشید.',
-		DOCUMENT_VERIFIED_NOTE: 'مدارک شما کامل شده اند.',
-		NOTE_FROM_VERIFICATION_DEPARTMENT: ' پیام از طرف واحد احراز هویت',
-		CODE_EXPIRES_IN: 'اعتبار کد تا',
+			'يتم تقديم المستندات الخاصة بك وهي قيد المراجعة. يرجى التحلي بالصبر.',
+		DOCUMENT_VERIFIED_NOTE: 'لقد تم تقديم المستندات الخاصة بك.',
+		NOTE_FROM_VERIFICATION_DEPARTMENT: 'ملاحظة من قسم التحقق',
+		CODE_EXPIRES_IN: 'تنتهي صلاحية الرمز في',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
-				FIRST_NAME_LABEL: 'نام',
-				FIRST_NAME_PLACEHOLDER: 'نام خود را دقیقا مطابق کارت ملی تایپ کنید',
-				LAST_NAME_LABEL: 'نام خانوادگی',
+				FIRST_NAME_LABEL: 'الاسم الاول',
+				FIRST_NAME_PLACEHOLDER:
+					'اكتب اسمك الأول كما يظهر في وثيقة الهوية الخاصة بك',
+				LAST_NAME_LABEL: 'اسم العائلة',
 				LAST_NAME_PLACEHOLDER:
-					'نام خانوادگی خود را دقیقا مطابق کارت ملی تایپ کنید',
-				FULL_NAME_LABEL: 'نام و نام خانوادگی',
-				FULL_NAME_PLACEHOLDER: 'نام کامل خود را به دقت وارد کنید',
-				GENDER_LABEL: 'جنسيت',
-				GENDER_PLACEHOLDER: 'جنسیت خود را انتخاب کنید',
+					'اكتب اسمك عائلتك كما يظهر في وثيقة الهوية الخاصة بك.',
+				FULL_NAME_LABEL: 'اسمك الكامل',
+				FULL_NAME_PLACEHOLDER:
+					'اكتب اسمك بالكامل كما يظهر في وثيقة الهوية الخاصة بك',
+				GENDER_LABEL: 'الجنس',
+				GENDER_PLACEHOLDER: 'اكتب ما هو جنسك',
 				GENDER_OPTIONS: {
-					MAN: 'مرد',
-					WOMAN: 'زن',
+					MAN: 'ذكر',
+					WOMAN: 'أنثى',
 				},
-				NATIONALITY_LABEL: 'ملیت',
-				NATIONALITY_PLACEHOLDER: 'ملیت خود را تایپ کنید',
-				DOB_LABEL: 'تاریخ تولد',
-				COUNTRY_LABEL: 'کشوری که در آن اقامت دارید',
-				COUNTRY_PLACEHOLDER:
-					'کشوری که در حال حاضر در آن اقامت دارید را انتخاب کنید',
-				CITY_LABEL: 'شهر',
-				CITY_PLACEHOLDER: 'شهر محل سکونت',
-				ADDRESS_LABEL: 'نشانی',
-				ADDRESS_PLACEHOLDER: 'آدرس کامل محل سکونت',
-				POSTAL_CODE_LABEL: 'کد پستی',
-				POSTAL_CODE_PLACEHOLDER: 'کد پستی 10 رقمی',
-				PHONE_CODE_LABEL: 'کشور',
-				PHONE_CODE_PLACEHOLDER:
-					'کشوری که شماره تلفن شما در آن ثبت شده را تایپ کنید',
-				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
-				PHONE_NUMBER_LABEL: 'شماره تلفن',
-				PHONE_NUMBER_PLACEHOLDER: 'شماره موبایل خود را وارد نمایید',
-				CONNECTING_LOADING: 'بارگذاری',
-				SMS_SEND: 'ارسال پیامک',
-				SMS_CODE_LABEL: 'کد دریافتی',
-				SMS_CODE_PLACEHOLDER: 'کد دریافتی را وارد نمایید',
+				NATIONALITY_LABEL: 'الجنسية',
+				NATIONALITY_PLACEHOLDER: 'اكتب ما هي جنسيتك في وثيقة الهوية الخاصة بك',
+				DOB_LABEL: 'تاريخ الولادة',
+				COUNTRY_LABEL: 'البلد الذي تقيم فيه',
+				COUNTRY_PLACEHOLDER: 'حدد البلد الذي تقيم فيه حاليا',
+				CITY_LABEL: 'مدينة',
+				CITY_PLACEHOLDER: 'اكتب المدينة التي تعيش فيها',
+				ADDRESS_LABEL: 'عنوان',
+				ADDRESS_PLACEHOLDER: 'اكتب العنوان الذي تعيش فيه حاليا',
+				POSTAL_CODE_LABEL: 'رقم البريد',
+				POSTAL_CODE_PLACEHOLDER: 'اكتب رقم البريد الخاص بك',
+				PHONE_CODE_LABEL: 'بلد',
+				PHONE_CODE_PLACEHOLDER: 'حدد البلد الذي يتصل به هاتفك',
+				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21) 1 -> كوريا الجنوبية
+				PHONE_NUMBER_LABEL: 'رقم الهاتف',
+				PHONE_NUMBER_PLACEHOLDER: 'اكتب رقم هاتفك',
+				CONNECTING_LOADING: 'يتم الاتصال',
+				SMS_SEND: 'أرسل رسالة نصية قصيرة',
+				SMS_CODE_LABEL: 'رمز الرسالة النصية القصيرة',
+				SMS_CODE_PLACEHOLDER: 'أدخل رمز الرسالة القصيرة الخاص بك',
 			},
 			INFORMATION: {
 				TEXT:
-					'نکته: نام و نام خانوادگی خود را مطابق با شناسنامه و به فارسی وارد نمایید.',
-				TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
-				TITLE_PHONE: 'موبایل',
+					'هام: أدخل اسمك في الفراغ تماماً كما يظهر في وثائق هويتك (الاسم الأول الكامل ، وأي اسم اوسط واسم (أسماء) العائلة بالكامل). هل انتم شرکة ؟ اتصل بدعم العملاء لحساب الشركة.',
+				TITLE_PERSONAL_INFORMATION: 'معلومات شخصية',
+				TITLE_PHONE: 'هاتف',
 				PHONE_VERIFICATION_TXT:
-					'گزارش تمام واریز ها و برداشت ها از حساب کاربری، از طریق پیامک به شماره موبایل شما ارسال خواهد شد.',
+					'سيساعدنا تقديم تفاصيل اتصال صالحة بشكل كبير في حل النزاعات مع منع المعاملات الغير مرغوب فيها على حسابك.',
 				PHONE_VERIFICATION_TXT_1:
-					'گزارش تمام واریز ها و برداشت ها از حساب کاربری، از طریق پیامک به شماره موبایل شما ارسال خواهد شد.',
+					'تلقي تحديثات فورية لعمليات الإيداع والسحب من خلال مشاركة رقم هاتفك المحمول.',
 				PHONE_VERIFICATION_TXT_2:
-					'برای ارایه خدمات بهتر لطفا شمارهتلفن ثابت خود را نیز ثبت نمایید',
+					'قم بإثبات هويتك وعنوانك من خلال مشاركة رقم هاتف LAN الخاص بك (اختياري).',
 			},
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
-				ID_TYPE: 'لطفا یکی از مدارک هویتی را انتخاب کنید',
-				ID_NUMBER: 'لطفا شماره سند هویتی را درست وارد کنید',
-				ISSUED_DATE: 'لطفا تاریخ صدور مدرک خود را انتخاب کنید',
-				EXPIRATION_DATE: 'لطفا تاریخ انقضای مدرک خود را انتخاب کنید',
-				FRONT: 'لطفا تصویر مدرک هویتی خود را آپلود کنید',
-				PROOF_OF_RESIDENCY: 'لطفا تصویر مدرک اثبات آدرس خود را آپلود کنید',
-				SELFIE_PHOTO_ID:
-					'لطفا سلفی خود را در حال در دست داشتن متن و کارت بارگذاری کنید',
+				ID_TYPE: 'الرجاء تحديد نوع وثيقة الهوية',
+				ID_NUMBER: 'الرجاء كتابة رقم الوثائق الخاصة بك',
+				ISSUED_DATE: 'الرجاء تحديد تاريخ إصدار الوثيقة الخاصة بك',
+				EXPIRATION_DATE:
+					'يرجى تحديد التاريخ الذي تنتهي فيه صلاحية الوثيقة الخاصة بك.',
+				FRONT: 'يرجى تحميل نسخة من جواز سفرك',
+				PROOF_OF_RESIDENCY:
+					'يرجى تحميل نسخة ممسوحة ضوئيًا من الوثيقة الذي تثبت عنوان الذي تقيم فيه حاليًا',
+				SELFIE_PHOTO_ID: 'يرجى تحميل صورة شخصية مع جواز السفر والملاحظة',
 			},
 			FORM_FIELDS: {
-				TYPE_LABEL: 'نوع مدرک',
-				TYPE_PLACEHOLDER: 'کارت ملی یا شناسنامه جدید',
+				TYPE_LABEL: 'نوع وثيقة الهوية',
+				TYPE_PLACEHOLDER: 'حدد نوع وثيقة الهوية',
 				TYPE_OPTIONS: {
-					ID: 'سند هویت',
-					PASSPORT: 'کارت ملی',
+					ID: 'هویة',
+					PASSPORT: 'جواز سفر',
 				},
-				ID_NUMBER_LABEL: 'کد ملی',
-				ID_NUMBER_PLACEHOLDER: 'کد ملی 10 رقمی خود را وارد کنید',
-				ID_PASSPORT_NUMBER_LABEL: 'کارت ملی',
-				ID_PASSPORT_NUMBER_PLACEHOLDER: 'شماره کارت ملی خود را وارد نمایید',
-				ISSUED_DATE_LABEL: 'تاریخ صدور',
-				EXPIRATION_DATE_LABEL: 'تاریخ پایان اعتبار',
-				FRONT_LABEL: 'تصویر کارت ملی',
-				FRONT_PLACEHOLDER:
-					'تصویر کارت ملی یا شناسنامه جدید خود را بارگذاری نمایید',
-				BACK_LABEL: 'عکس سلفی',
+				ID_NUMBER_LABEL: 'رقم جواز السفر',
+				ID_NUMBER_PLACEHOLDER: 'اكتب رقم جواز سفرك',
+				ID_PASSPORT_NUMBER_LABEL: 'رقم جواز السفر',
+				ID_PASSPORT_NUMBER_PLACEHOLDER: 'اكتب رقم جواز سفرك',
+				ISSUED_DATE_LABEL: 'تاريخ اصدار جواز السفر',
+				EXPIRATION_DATE_LABEL: 'تاريخ انتهاء الجواز',
+				FRONT_LABEL: 'جواز سفر',
+				FRONT_PLACEHOLDER: 'أضف نسخة من جواز سفرك',
+				BACK_LABEL: 'الجانب الخلفي من جواز السفر',
 				BACK_PLACEHOLDER:
-					'عکس سلفی خود همراه کارت ملی و دستخطی با نام سایت را بارگذاری کنید',
-				PASSPORT_LABEL: 'گذرنامه',
-				PASSPORT_PLACEHOLDER: 'اسکن صفحه اول گذرنامه خود را بارگذاری کنید',
-				POR_LABEL: 'سند اثبات آدرس',
-				POR_PLACEHOLDER: 'تصویر سند اثبات آدرس خود را براگذاری نمایید',
-				SELFIE_PHOTO_ID_LABEL: 'تصویر سلفی',
+					'أضف نسخة من ظهر الهوية الخاصة بك (إذا كان قابلاً للتطبيق)',
+				PASSPORT_LABEL: 'وثيقة جواز السفر',
+				PASSPORT_PLACEHOLDER: 'أضف نسخة من جواز سفر الخاص بك',
+				POR_LABEL: 'وثيقة تثبت عنوانك',
+				POR_PLACEHOLDER: 'أضف نسخة من وثيقة تثبت عنوانك',
+				SELFIE_PHOTO_ID_LABEL: 'صورتك الشخصية مع جواز السفر والملاحظة',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'تصویر سلفی، همراه با مدرک شناسایی و متن دستنویس را بارگذاری کنید',
+					'أضف نسخة من صورتك الشخصية مع جواز السفر والملاحظة',
 			},
 			INFORMATION: {
-				IDENTITY_DOCUMENT: 'مدرک احراز هویت',
-				PROOF_OF_RESIDENCY: 'مدرک احراز محل اقامت',
+				IDENTITY_DOCUMENT: 'وثيقة الهوية',
+				PROOF_OF_RESIDENCY: 'اثبات الإقامة',
 				ID_SECTION: {
-					TITLE:
-						'لطفا هنگام بارگذاری تصویر کارت ملی خود به نکات زیر دقت نمایید:',
+					TITLE: 'يرجى التأكد من أن الوثائق التي قدمتها هي:',
 					LIST_ITEM_1:
-						'مدارک باید بصورت رنگی و با کیفیت بالا و حجم حداکثر 300 کیلو بایت بارگزاری شوند.',
-					LIST_ITEM_2: 'اطلاعات درج شده باید کاملا خوانا باشد.',
-					LIST_ITEM_3:
-						'تنها کارت ملی که تاریخ اعتبار آن منقضی نشده است ، معتبر می باشد.',
+						'جودة عالية (صور ملونة ، دقة 300 نقطة في البوصة أو أعلى).',
+					LIST_ITEM_2: 'مرئية بالكامل (العلامات المائية مسموح بها).',
+					LIST_ITEM_3: 'صالح ، مع تاريخ انتهاء الصلاحية واضح بالكامل.',
 					WARNING_1:
-						'تنها کارت ملی  معتبر پذیرفته می شود. عکس با کیفیت بالا یا تصاویر اسکن شده از آن قابل قبول است:',
+						'يتم قبول جواز سفرصالح فقط ؛ تُقبل الصور عالية الجودة أو الصور الممسوحة ضوئيًا لهذه الوثائق:',
 					WARNING_2:
-						'مطمئن شوید که اسناد شخصی خود را بارگذاری می کنید. هرگونه استفاده از اسناد شخص دیگر یا جعلی عواقب قانونی به همراه خواهد داشت و باعث می شود  حساب شما فوراً مسدود شود.',
-					WARNING_3:
-						'برای احراز محل اقامت خود از بارگزاری کارت ملی ، شناسنامه و پاسپورت خودداری نمایید',
+						'تأكد من أنك تقوم بتحميل المستندات الخاصة بك. أي استخدام لوثائق خاطئة أو مزيفة سيكون له عواقب قانونية ويؤدي إلى تجميد حسابك على الفور.',
+					WARNING_3: 'يرجى عدم تقديم جواز السفر كإثبات على إقامتك.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
-						'برای احراز هویت هر چه سریعتر حساب کاربری خود ،لطفا به موارد ذیل توجه فرمایید',
+						'لتجنب التأخير عند التحقق من حسابك ، يرجى التأكد من:',
 					SECTION_1_TEXT_2:
-						'نام، آدرس، تاریخ صدور و مرجع صادر کننده به وضوح قابل مشاهده باشد.',
+						'يمكنك رؤية اسمك وعنوانك وتاريخ الإصدار والمُصدر بوضوح.',
 					SECTION_1_TEXT_3:
-						'اثبات ارائه سند اقامت نباید قدیمی تر از سه ماه گذشته باشد.',
+						'وثيقة إثبات الإقامة المقدمة ليست أقدم من ثلاثة أشهر.',
 					SECTION_1_TEXT_4:
-						'تصاویر رنگی یا اسکن شده را با کیفیت بالا (حداقل 300 DPI) ارسال نمایید',
-					SECTION_2_TITLE: 'موارد قابل قبول احراز محل اقامت:',
-					SECTION_2_LIST_ITEM_1: 'سند اجاره و یا مالکیت محل اقامت',
-					SECTION_2_LIST_ITEM_2: 'کلیه قبوض حاوی آدرس و کد پستی',
-					SECTION_2_LIST_ITEM_3: 'گواهی کد پستی محل سکونت',
-					WARNING: '',
+						'ارسل صور فوتوغرافية ملونة أو صور ممسوحة ضوئيًا بجودة عالية (300 نقطة في البوصة على الأقل)',
+					SECTION_2_TITLE: 'إثبات الإقامة المقبول هو:',
+					SECTION_2_LIST_ITEM_1: 'كشف حساب بنكي.',
+					SECTION_2_LIST_ITEM_2: 'فاتورة خدمات (كهرباء ، مياه ، انترنت).',
+					SECTION_2_LIST_ITEM_3:
+						'وثيقة صادرة عن الحكومة (الإقرار الضريبي ، شهادة إقامة).',
+					WARNING:
+						'لا يمكننا قبول العنوان الموجود في وثيقة الهوية الخاصة بك كإثبات صالح على الإقامة.', //IN PERSIAN ?
 				},
 				SELFIE: {
-					TITLE: 'تصویر سلفی',
+					TITLE: 'صورة شخصية مع جواز السفر والملاحظة',
 					INFO_TEXT:
-						'لطفاً تصویر خود را با در دست داشتن سند هویتی خود بگیرید.در تصویر ارسالی تاریخ امروز و امضای شما مشخص باشد. هم چنین مطمئن شوید که صورت شما به وضوح قابل مشاهده است و جزئیات سند هویتی شما نیز به وضوح قابل خواندن باشد.',
-					REQUIRED: 'لطفا تصویر سلفی خود را مطابق با شرایط زیر ارسال نمایید::',
-					INSTRUCTION_1: 'صورت و شانه ها به وضوح مشخص باشند.',
-					INSTRUCTION_2: 'مدرک هویتی و دستنوشته شما واضح و خوانا باشد.',
-					INSTRUCTION_3: 'درج نوشته exir.io',
-					INSTRUCTION_4: 'درج تاریخ امروز',
-					INSTRUCTION_5: 'امضای شما',
+						'يرجى تقديم صورة لك وأنت تحمل جواز سفرك. في نفس الصورة مع إشارة إلى عنوان URL البورصة ، تاريخ اليوم وتوقيعك معروض. تأكد من أن وجهك مرئي بوضوح وأن تفاصيل الهوية الخاصة بك قابلة للقرائة.',
+					REQUIRED: 'مطلوب:',
+					INSTRUCTION_1: 'وجهك مرئي بوضوح',
+					INSTRUCTION_2: 'جواز السفر قابل للقرائة بوضوح',
+					INSTRUCTION_3: 'اكتب اسم البورصة',
+					INSTRUCTION_4: 'اكتب تاريخ اليوم',
+					INSTRUCTION_5: 'اكتب توقيعك',
 					WARNING:
-						'در صورت مشاهده خطای network error حجم تصاویر را به زیر 300 کیلو بایت کاهش دهید.',
+						'سيتم رفض الصورة الشخصية بجواز سفر مختلف عن المحتوى الذي تم تحميله',
 				},
 			},
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
 				ACCOUNT_OWNER:
-					'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
-				ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید حداکثر 24 رقمی باشد',
-				ACCOUNT_NUMBER_MAX_LENGTH: 'شماره حساب حداکثر 50 عدد می باشد',
-				CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد',
+					'الرجاء كتابة اسمك الأول والأخير كما هو مترابط بحسابك المصرفي',
+				ACCOUNT_NUMBER: 'يجب أن يكون رقم حسابك المصرفي أقل من 50 رقمًا',
+				ACCOUNT_NUMBER_MAX_LENGTH: 'حد رقم حسابك المصرفي هو 50 حرفًا',
+				CARD_NUMBER: 'شكل رقم حسابك غير صحيح ',
 			},
 			FORM_FIELDS: {
-				BANK_NAME_LABEL: 'نام بانک',
-				BANK_NAME_PLACEHOLDER: 'نام بانک خود را وارد کنید',
-				ACCOUNT_NUMBER_LABEL: 'شماره حساب بانکی',
-				ACCOUNT_NUMBER_PLACEHOLDER: 'شماره حساب بانکی خود را وارد کنید',
-				ACCOUNT_OWNER_LABEL: 'نام صاحب حساب بانکی',
-				ACCOUNT_OWNER_PLACEHOLDER:
-					'نام و نام خانوادگی صاحب حساب بانکی را  وارد کنید',
-				CARD_NUMBER_LABEL: 'شماره کارت',
-				CARD_NUMBER_PLACEHOLDER: 'شماره 16 رقمی بر روی کارت خود را وارد کنید',
+				BANK_NAME_LABEL: 'اسم البنك',
+				BANK_NAME_PLACEHOLDER: 'اكتب اسم البنك الذي تتعامل معه',
+				ACCOUNT_NUMBER_LABEL: 'رقم الحساب المصرفي',
+				ACCOUNT_NUMBER_PLACEHOLDER: 'اكتب رقم حسابك المصرفي',
+				ACCOUNT_OWNER_LABEL: 'اسم صاحب الحساب المصرفي',
+				ACCOUNT_OWNER_PLACEHOLDER: 'اكتب الاسم كما هو موجود في حسابك المصرفي',
+				CARD_NUMBER_LABEL: 'رقم البطاقة المصرفية',
+				CARD_NUMBER_PLACEHOLDER:
+					'اكتب الرقم المكون من 16 رقمًا الموجود في مقدمة بطاقتك المصرفية',
 			},
 		},
 		WARNING: {
-			TEXT_1: 'با تکمیل احراز هویت، موارد زیر برای شما میسر می شود:',
-			LIST_ITEM_1: 'افزایش محدودیت های برداشت',
-			LIST_ITEM_2: 'افزایش محدودیت های سپرده',
-			LIST_ITEM_3: 'کارمزد پایین',
+			TEXT_1: 'من خلال التحقق من هويتك يمكنك الحصول على ما يلي:',
+			LIST_ITEM_1: 'زيادة حدود السحب',
+			LIST_ITEM_2: 'زيادة حدود الودائع',
+			LIST_ITEM_3: 'رسوم أقل',
 		},
 	},
 	USER_SETTINGS: {
 		TITLE_TEXT_1:
-			'تنظیمات حساب خود را تغییر دهید. از رابط کاربری، اعلان ها، نام کاربری و موارد شخصی سازی دیگر.',
-		TITLE_TEXT_2: 'با ذخیره تنظیمات ، تغییرات شما اعمال و ذخیره می شود.',
-		TITLE_NOTIFICATION: 'اعلان ها',
-		TITLE_INTERFACE: 'رابط کاربری',
-		TITLE_LANGUAGE: 'زبان',
-		TITLE_CHAT: 'چت',
-		TITLE_AUDIO_CUE: 'اعلان صوتی',
-		TITLE_MANAGE_RISK: 'مدیریت ریسک',
-		ORDERBOOK_LEVEL: 'سطح سفارش (حداکثر 20)',
-		SET_TXT: 'تنظیم',
-		CREATE_ORDER_WARING: 'ایجاد اخطار سفارش ',
-		RISKY_TRADE_DETECTED: 'شناسایی معاملات پرخطر',
+			'قم بتغيير إعدادات حسابك. من واجهة المستخدم والإشعارات واسم المستخدم والتخصيصات الأخرى.',
+		TITLE_TEXT_2: 'سيؤدي حفظ الإعدادات إلى تطبيق التغييرات وحفظها.',
+		TITLE_NOTIFICATION: 'إشعارات',
+		TITLE_INTERFACE: 'إشعارات',
+		TITLE_LANGUAGE: 'لغة',
+		TITLE_CHAT: 'محادثة',
+		TITLE_AUDIO_CUE: 'شغل إشاره الصوت',
+		TITLE_MANAGE_RISK: 'إدارة المخاطر',
+		ORDERBOOK_LEVEL: 'مستويات دفتر الطلبات (20 بحد أقصى)',
+		SET_TXT: 'مجموعة',
+		CREATE_ORDER_WARING: 'إنشاء أمر تحذير',
+		RISKY_TRADE_DETECTED: 'کشف تداول محفوظ بالخطر',
 		RISKY_WARNING_TEXT_1:
-			'این مقدار سفارشات بیشتر از مبلغ تعیین شده شمامی باشد {0} .',
-		RISKY_WARNING_TEXT_2: '({0} سبد معامله)',
+			'تتجاوز قيمة هذا الطلب مبلغ الحد المخصص للطلب الذي عينته {0}.',
+		RISKY_WARNING_TEXT_2: '({0} من المحفظة)',
 		RISKY_WARNING_TEXT_3:
-			' لطفاً بررسی و سپس تأیید کنید که می خواهید این معامله را انجام دهید.',
-		GO_TO_RISK_MANAGMENT: 'به بخش مدیریت ریسک برو',
+			'يرجى التحقق والتأكد من أنك تريد حقًا إجراء هذا التداول.',
+		GO_TO_RISK_MANAGMENT: 'اذهب إلى إدارة المخاطر',
 		CREATE_ORDER_WARING_TEXT:
-			'ایجاد هشدار درهنگامی که سفارشات شما از سقف تعیین شده توسط شما فراتر میرود.',
-		ORDER_PORTFOLIO_LABEL: 'درصد سبد معامله:',
+			'أنشئ تحذيراً منبثقًا عندما يستخدم طلب التداول الخاص بك أكثر من {0} من محفظتك.',
+		ORDER_PORTFOLIO_LABEL: 'نسبة المحفظة مبلغ:',
 		NOTIFICATION_FORM: {
-			TRADE_POPUPS: 'اعلان های مربوط به معاملات',
-			POPUP_ORDER_CONFIRMATION: 'تاییدیه، قبل از ارسال سفارش ',
-			POPUP_ORDER_COMPLETED: 'پس از تکمیل سفارش ، به من اطلاع بده',
-			POPUP_ORDER_PARTIALLY_FILLED:
-				'پس از تکمیل بخشی از سفارش ، به من اطلاع بده',
+			TRADE_POPUPS: 'النوافذ المنبثقة للتداول',
+			POPUP_ORDER_CONFIRMATION: 'اطلب التأكيد قبل تقديم الطلبات',
+			POPUP_ORDER_COMPLETED: 'أظهر نافذة منبثقة عند اكتمال الطلب',
+			POPUP_ORDER_PARTIALLY_FILLED: 'أظهر نافذة منبثقة عند تنفيذ الطلب جزئيًا',
 		},
 		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO: 'وقتی سفارش تکمیل شد یک اعلان صوتی پخش شود',
-			ORDERS_PARTIAL_AUDIO:
-				'وقتی بخشی از سفارش تکمیل شد ، یک اعلان صوتی  پخش شود',
-			PUBLIC_TRADE_AUDIO: 'در هر خرید و فروش یک اعلان صوتی پخش شود',
+			// new
+			ALL_AUDIO: 'جميع إشارات الصوت',
+			PUBLIC_TRADE_AUDIO: 'عند إتمام إجراء تداول عام',
+			ORDERS_PARTIAL_AUDIO: 'عندما يتم تنفيذ أحد طلباتك جزئيًا',
+			ORDERS_PLACED_AUDIO: 'عندما يتم وضع طلب',
+			ORDERS_CANCELED_AUDIO: 'عندما يتم إلغاء الطلب',
+			ORDERS_COMPLETED_AUDIO: 'عندما يتم تنفيذ أحد طلباتك بالكامل',
+			CLICK_AMOUNTS_AUDIO: 'عند النقر على الكميات والأسعار في دفتر الطلبات',
+			GET_QUICK_TRADE_AUDIO: 'عند الحصول على عرض أسعار للتداول السريع',
+			SUCCESS_QUICK_TRADE_AUDIO: 'عندما يحدث تداول سريع ناجح',
+			QUICK_TRADE_TIMEOUT_AUDIO: 'عندما ينفذ وقت التداول السريع',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
-				'وقتی مقدار سفارش خرید و فروش بیش از درصد مشخصی از سبد معاملات شما می شود ، هشدار داده شود',
-			INFO_TEXT_1: 'ارزش کل دارایی در {0}:{1}',
-			PORTFOLIO: 'درصد سبد معاملات',
-			TOMAN_ASSET: 'ارزش تقریبی',
-			ADJUST: '(تنظیم درصد)',
-			ACTIVATE_RISK_MANAGMENT: 'مدیریت ریسک را فعال کنید',
-			WARNING_POP_UP: 'هشدارها',
+				'قم بإنشاء تحذير منبثق عندما تتجاوز قيمة طلب التداول نسبة مئوية محددة من محفظتك',
+			INFO_TEXT_1: 'إجمالي قيمة الأصول بعملة {0}: {1}',
+			PORTFOLIO: 'نسبة المحفظة',
+			TOMAN_ASSET: 'القيمة التقريبية',
+			ADJUST: '(ضبط النسبة المئوية)',
+			ACTIVATE_RISK_MANAGMENT: 'تفعيل إدارة المخاطر',
+			WARNING_POP_UP: 'النوافذ المنبثقة للتحذير',
 		},
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: 'ناریخچه',
-		TITLE_TRADES: 'تاریخچه خرید و فروش',
-		TITLE_DEPOSITS: 'تاریخچه واریزی ها',
-		TITLE_WITHDRAWALS: 'تاریخچه برداشت ها',
-		TEXT_DOWNLOAD: 'دانلود تاریخچه',
-		TRADES: 'خریدو فروش',
-		DEPOSITS: 'واریزی ها',
-		WITHDRAWALS: 'برداشت ها',
+		TITLE: 'سجل',
+		TITLE_TRADES: 'سجل التداولات',
+		TITLE_DEPOSITS: 'سجل الودائع',
+		TITLE_WITHDRAWALS: 'سجل عمليات السحب',
+		TEXT_DOWNLOAD: 'سجل التحميل',
+		TRADES: 'التداولات',
+		DEPOSITS: 'الودائع',
+		WITHDRAWAL: 'عمليات السحب',
 	},
 	ACCOUNT_SECURITY: {
 		TITLE_TEXT:
-			'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+			'اضبط إعدادات الأمان لحسابك. من المصادقة ذات العاملين ، وكلمة المرور ، ومفاتيح واجهة برمجة التطبيقات (API)، والوظائف الأخرى المتعلقة بالأمان.',
 		OTP: {
-			TITLE: 'رمز دو عاملی',
-			OTP_ENABLED: 'رمز یکبار مصرف را فعال کنید',
-			OTP_DISABLED: 'لطفا رمز دو عاملی را  فعال کنید',
+			TITLE: 'المصادقة ذات العاملين',
+			OTP_ENABLED: 'تمكين رقم السري المتغير',
+			OTP_DISABLED: 'يرجى تشغيل المصادقة ذات العاملين',
 			ENABLED_TEXTS: {
-				TEXT_1: 'هنگام ورود به سیستم ، به OTP نیاز دارید',
-				TEXT_2: 'هنگام برداشت وجوه به OTP نیاز دارید',
+				TEXT_1: 'طلب رقم السري المتغير عند تسجيل الدخول',
+				TEXT_2: 'طلب رقم السري المتغير عند سحب الأموال',
 			},
 			DIALOG: {
-				SUCCESS: 'شما OTP را با موفقیت فعال کرده اید',
-				REVOKE: 'شما OTP خود را با موفقیت غیرفعال کردید',
+				SUCCESS: 'لقد قمت بتنشيط  رقم السري المتغير بنجاح',
+				REVOKE: 'لقد قمت بإبطال رقم السري المتغير الخاص بك بنجاح',
 			},
 			CONTENT: {
-				TITLE: 'تأیید هویت دو عاملی را فعال کنید',
-				MESSAGE_1: 'اسکن Qrcode',
+				TITLE: 'تنشيط المصادقة ذات العاملين',
+				MESSAGE_1: 'مسح ضوئي',
 				MESSAGE_2:
-					' کد Qrcode را در زیر با نرم افزار Google Authenticator اسکن کنید تا به طور خودکار احراز هویت دو عاملی را در دستگاه خود تنظیم شود..',
+					'امسح رمز الاستجابة السريع أدناه باستخدام Google Authenticator أو Authy لإعداد المصادقة ذات العاملين تلقائيًا في جهازك.',
 				MESSAGE_3:
-					'اگر در اسکن مشکلی دارید ، می توانید کد زیر را به صورت دستی وارد کنید',
+					'إذا كنت تواجه مشكلات في مسح هذا ، فيمكنك إدخال الرمز يدويًا أدناه',
 				MESSAGE_4:
-					' این کد را در جایی مطمئن ذخیره کنید تا در صورت تغییر یا از بین رفتن تلفن همراهتان احراز هویت دوعاملی را به راحتی بازیابی کنید.',
-				MESSAGE_5: 'دستی',
-				INPUT: 'رمز یک بار ورود را وارد کنید',
+					'يجب عليك تخزين هذا الرمز بشكل آمن لاستعادة المصادقة ذات العاملين الخاص بك في حالة تغيير هاتفك المحمول أو فقده في المستقبل.',
+				MESSAGE_5: 'يدوي',
 				WARNING:
-					'اکیدا توصیه می کنیم رمز دو عاملی حساب خود را فعال کنید. این کار امنیت حساب شما را به طور قابل توجهی افزایش می دهد.',
-				ENABLE: 'رمز دو عاملی را فعال کنید',
-				DISABLE: 'غیر فعال کردن رمز دو عاملی',
-				SECRET_1: 'Enter yor secret key',
-				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
-				SECRET_3:
-					'This secret key will help you recover your account if you lost access to your phone.',
-				INPUT_1: 'Secret Key',
+					'نوصي بشدة بإعداد المصادقة اذات العاملين(2FA) .سيؤدي القيام بذلك إلى زيادة أمان أموالك بشكل كبير.',
 
-				TITLE_2: 'Enter One-Time Password (OTP)',
-				MESSAGE_6: 'Please enter your 6-digit one-time password below.',
-				INPUT_2: 'One-Time Password (OTP)',
+				ENABLE: 'مَكِّن المصادقة الثنائية',
+				DISABLE: 'تعطيل المصادقة ذات العاملين',
 			},
 			FORM: {
-				PLACEHOLDER: ' ارائه شده توسط Google Authenticator را وارد کنید',
-				BUTTON: 'فعال کردن رمز دو عاملی',
+				PLACEHOLDER: 'أدخل الرقم السري المتغير المقدم من Google Authenticator.',
+				BUTTON: 'تمكين المصادقة ذات العاملين',
 			},
 		},
 		CHANGE_PASSWORD: {
-			TITLE: 'نغییر رمز عبور',
+			TITLE: 'كلمة المرور',
 			ACTIVE: 'فعال',
 			DIALOG: {
-				SUCCESS: 'شما با موفقیت رمز عبورتان را تغییر دادید',
+				SUCCESS: 'لقد غيرت كلمة سرك بنجاح',
 			},
 			FORM: {
-				BUTTON: 'تغییر رمز عبور',
+				BUTTON: 'تغيير كلمة المرور',
 				CURRENT_PASSWORD: {
-					label: ' رمز عبور فعلی',
-					placeholder: 'رمز عبور کنونی خود را وارد کنید',
+					label: 'كلمة المرور الحالية',
+					placeholder: 'ادخل كلمة مرورك الحالية',
 				},
 				NEW_PASSWORD: {
-					label: 'رمز عبور جدید',
-					placeholder: 'یک رمز عبور جدید تایپ کنید',
+					label: 'كلمة المرور الجديدة',
+					placeholder: 'اكتب كلمة مرور جديدة',
 				},
 				NEW_PASSWORD_REPEAT: {
-					label: 'تایید رمز جدید',
-					placeholder: 'رمز عبور جدید خود را دوباره وارد کنید',
+					label: 'تأكيد كلمة المرور الجديدة',
+					placeholder: 'أعد كتابة كلمة المرور الجديدة',
 				},
 			},
 		},
 		LOGIN: {
-			TITLE: 'Login History',
+			TITLE: 'سجل تسجيل الدخول',
+			IP_ADDRESS: 'عنوان IP',
+			TIME: 'التاريخ / الوقت',
 			CONTENT: {
-				TITLE: 'Logins History',
+				TITLE: 'سجل عمليات تسجيل الدخول',
 				MESSAGE:
-					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
+					'يوجد أدناه قائمة محفوظات تسجيل الدخول مع تفاصيل IP والبلد والوقت. إذا رأيت أي عمليات مريبة، يجب عليك تغيير كلمة المرور والاتصال بالدعم',
 			},
 		},
 		FREEZE: {
-			TITLE: 'Freeze Account',
+			TITLE: 'تجميد الحساب',
 			CONTENT: {
 				MESSAGE_1:
-					'Freezing your account will stop whitdrawals and halts all tradings.',
-				WARNING_1:
-					'Use only if you fear that your account has been compromised',
-				TITLE_1: 'Freeze your Account',
-				TITLE_2: 'Account freezing',
+					'سيؤدي تجميد حسابك إلى إيقاف عمليات السحب وإيقاف جميع التداولات.',
+				WARNING_1: 'استخدم فقط إذا كنت تخشى أن يتم اختراق حسابك',
+				TITLE_1: 'جَمِّد حسابك',
+				TITLE_2: 'تجميد الحساب',
 				MESSAGE_2:
-					'Freezing your account may help guard your account from cyber attacks.',
-				MESSAGE_3:
-					'The following will occur if you choose to freeze your account:',
-				MESSAGE_4: '1. Pending withdrawals will be canceled.',
-				MESSAGE_5:
-					'2. All tradings will be halted and unfilled orders will be canceled.',
-				MESSAGE_6:
-					'3. Containing support will be required to reactivate your account.',
-				WARNING_2: 'Do you really want to freeze your account?',
+					'قد يساعد تجميد حسابك في حماية حسابك من الهجمات الإلكترونية.',
+				MESSAGE_3: 'سيحدث ما يلي إذا اخترت تجميد حسابك:',
+				MESSAGE_4: '1. سيتم إلغاء عمليات السحب التي في قيد الانتظار.',
+				MESSAGE_5: '2. سيتم إيقاف جميع التداولات وإلغاء الطلبات الغير منفذة.',
+				MESSAGE_6: '3. يلزم الاتصال بالدعم لإعادة تنشيط حسابك.',
+				WARNING_2: 'هل تريد حقًا تجميد حسابك؟',
 			},
 		},
 	},
-	CURRENCY: 'واحد پول',
+	CURRENCY: 'عملة',
 	TYPE: 'نوع',
 	TYPES_VALUES: {
-		market: 'بازار',
-		limit: 'محدود',
+		market: 'سوق',
+		limit: 'حد',
 	},
 	TYPES: [
-		{ value: 'market', label: 'بازار' },
-		{ value: 'limit', label: 'محدود' },
+		{ value: 'market', label: 'سوق' },
+		{ value: 'limit', label: 'حد' },
 	],
-	SIDE: 'طرف',
+	SIDE: 'جانب',
 	SIDES_VALUES: {
-		buy: 'حرید',
-		sell: 'فروش',
+		buy: 'الشراء',
+		sell: 'بيع',
+	},
+	SIDE: 'جانب',
+	SIDES_VALUES: {
+		buy: 'الشراء',
+		sell: 'بيع',
+	},
+	SIDES_VERBS: {
+		buy: 'تم الشراء',
+		sell: 'تم البيع',
 	},
 	SIDES: [
-		{ value: 'حرید', label: 'حرید' },
-		{ value: 'فروش', label: 'فروش' },
-	],
+		{ value: 'buy', label: 'الشراء' },
+		{ value: 'sell', label: 'بيع' },
+	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'روشن' },
-		{ value: false, label: 'خاموش' },
+		{ value: true, label: 'تشغيل' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: ' إيقاف' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'مفدار',
-	PRICE: 'قیمت',
-	FEE: 'کارمزد',
-	FEES: 'کارمزد',
-	LIMIT: 'محدود',
-	TIME: 'زمان',
-	TIMESTAMP: 'Timestamp',
-	MORE: 'بسشتر',
-	VIEW: 'مشاهده',
-	STATUS: 'وضعیت',
-	AMOUNT: 'مقدار',
-	COMPLETE: 'تکمیل',
-	PENDING: 'درحال انتظار',
-	REJECTED: 'مردود',
-	ORDERBOOK: 'کتاب سفارشات',
-	CANCEL: 'لغو',
-	CANCEL_ALL: 'لغو همه',
-	GO_TRADE_HISTORY: 'به تاریخچه معاملات بروید',
-	ORDER_ENTRY: 'ثبت سفارش',
-	TRADE_HISTORY: 'همه مبادلات',
-	CHART: 'نمودار قیمت',
-	ORDERS: 'سفارش های فعال من',
-	TRADES: 'مبادلات گذشته من',
-	RECENT_TRADES: 'سفارشات اخیر من', // ToDo
-	PUBLIC_SALES: 'فروش عمومی', // ToDo
-	REMAINING: 'باقی مانده',
-	FULLFILLED: '{0} % تکمیل شده',
-	FILLED: 'تکمیل', // new
-	LOWEST_PRICE: 'کمترین قیمت ({0})', // new
-	PHASE: 'پایه', // new
-	INCOMING: 'ورودی', // new
-	PRICE_CURRENCY: 'قیمت ({0})',
-	AMOUNT_SYMBOL: 'مقدار ({0})',
-	MARKET_PRICE: 'قیمت بازار',
-	ORDER_PRICE: 'قیمت سفارش',
-	TOTAL_ORDER: 'کل سفارش',
-	NO_DATA: 'اطلاعاتی وجود ندارد',
-	LOADING: 'بارگذاری',
+	SIZE: 'حجم',
+	PRICE: 'السعر',
+	FEE: 'مصاريف',
+	FEES: 'مصاريف',
+	LIMIT: 'حد',
+	TIME: 'وقت',
+	TIMESTAMP: 'الطابع الزمني',
+	MORE: 'أكثر',
+	VIEW: 'رؤية',
+	STATUS: 'حالة',
+	AMOUNT: 'كمية',
+	COMPLETE: 'كامل',
+	PENDING: 'قيد الانتظار',
+	REJECTED: 'مرفوض',
+	ORDERBOOK: 'دفتر الطلبات',
+	CANCEL: 'إلغاء',
+	CANCEL_ALL: 'إلغاء الكل',
+	GO_TRADE_HISTORY: 'إذهب الى سجل التداولات',
+	ORDER_ENTRY: 'ادخال الطلبية',
+	TRADE_HISTORY: 'history',
+	CHART: 'price chart',
+	ORDERS: 'my active orders',
+	TRADES: 'my transaction history',
+	RECENT_TRADES: 'my recent trades', // ToDo
+	ORDER_HISTORY: 'Order history',
+	PUBLIC_SALES: 'المبيعات العامة',
+	REMAINING: 'متبقي',
+	FULLFILLED: '{0}٪ مكتمل',
+	FILLED: 'مكتمل',
+	LOWEST_PRICE: 'أقل سعر ({0})',
+	PHASE: 'مرحلة',
+	INCOMING: 'واردة',
+	PRICE_CURRENCY: 'السعر ({0})',
+	AMOUNT_SYMBOL: 'المبلغ ({0})',
+	MARKET_PRICE: 'سعر السوق',
+	ORDER_PRICE: 'سعر الطلب',
+	TOTAL_ORDER: 'الطلب الكلي',
+	NO_DATA: 'لايوجد بيانات',
+	LOADING: 'جاري التحميل',
 	CHART_TEXTS: {
-		d: 'تاریخ',
-		o: 'شروع',
-		h: 'بالا',
-		l: 'پایین',
-		c: 'پایان',
-		v: 'حجم',
+		d: 'تاريخ',
+		o: 'فتح',
+		h: 'قمة',
+		l: 'القعر',
+		c: 'إغلاق',
+		v: 'الحجم',
 	},
-	QUICK_TRADE: ' خرید و فروش آسان',
-	PRO_TRADE: 'خرید و فروش حرفه ای',
-	ADMIN_DASH: 'صفحه مدیر',
-	WALLET_TITLE: 'کیف پول',
-	TRADING_MODE_TITLE: 'خرید و فروش',
-	TRADING_TITLE: 'خرید و فروش',
-	LOGOUT: 'خروج',
+	QUICK_TRADE: 'تداول سريع',
+	PRO_TRADE: 'تداول مهني',
+	ADMIN_DASH: 'صفحة الإدارة',
+	WALLET_TITLE: 'محفظة',
+	TRADING_MODE_TITLE: 'حالة التداول',
+	TRADING_TITLE: 'تداول',
+	LOGOUT: 'تسجيل الخروج',
 	WITHDRAWALS_MIN_VALUE_ERROR:
-		'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید.',
+		'المعاملة صغيرة جدًا بحيث غير قابلة للإرسال. جرب كمية أكبر.',
 	WITHDRAWALS_MAX_VALUE_ERROR:
-		'تراکنش برای ارسال بسیار بزرگ است. مقدار کمتری  را امتحان کنید.',
-	WITHDRAWALS_LOWER_BALANCE: 'شما برای انجام این معامله مبلغ {0} کافی ندارید',
-	WITHDRAWALS_FEE_TOO_LARGE: 'کارمزد بزرگتر از {0}% از این تراکنش است.',
+		'المعاملة كبيرة جدًا بحيث غير قابلة للإرسال. جرب كمية أقل.',
+	WITHDRAWALS_LOWER_BALANCE:
+		'ليس لديك ما يكفي من {0} في رصيدك لإرسال هذه المعاملة.',
+	WITHDRAWALS_FEE_TOO_LARGE: 'الرسوم أكثر من {0}٪ من إجمالي معاملتك.',
+
 	WITHDRAWALS_BTC_INVALID_ADDRESS:
-		'آدرس بیتکوین نامعتبر است لطفا با دقت آدرس را وارد کنید',
+		'عنوان البتكوين غير صالح. يرجى التحقق بعناية وإعادة الإدخال',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
-		'آدرس اتریوم اشتباه است. آدرس صحیح را وارد کنید.',
-	WITHDRAWALS_BUTTON_TEXT: 'مرور برداشت',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'آدرس گیرنده',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را وارد کنید',
-	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'جزئیات انتقال (اختیاری)', // new
-	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'آدرس مقصد را تایپ کنید', // new
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار',
-	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
-		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL: ' کارمزد معاملات',
-	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'کارمزد برداشت بانک',
+		'آعنوان الايثيريوم غير صالح. يرجى التحقق بعناية وإعادة الإدخال',
+	WITHDRAWALS_BUTTON_TEXT: 'مراجعة عمليات السحب',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: 'عنوان الوجهة',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'اكتب العنوان',
+	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'ملصق الوجهة (اختياري)', // new
+	WITHDRAWALS_FORM_MEMO_LABEL: 'مذكرة (اختياري)', // new
+	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'اكتب ملصق الوجهة', // new
+	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'اكتب مذكرة المعاملة', // new
+	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} المبلغ المراد سحبه',
+	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'اكتب مبلغ {0} الذي ترغب في سحبه',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'رسوم عملیات التحويل',
+	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'رسوم السحب من البنك',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
-		'مقدار {0} که میخواهید در این تراکنش استفاده کنید را وارد کنید',
-	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}', // TODO {0} -> amount {1} -> currency name
-	DEPOSITS_FORM_AMOUNT_LABEL: 'مبلغ',
-	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
-		'مقدار {0} را که می خواهید واریز کنید تایپ کنید',
-	DEPOSITS_BUTTON_TEXT: 'تایید',
-	DEPOSIT_PROCEED_PAYMENT: 'پرداخت',
+		'اكتب مبلغ {0} الذي ترغب في استخدامه في رسوم المعاملة',
+	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'الرسوم الأمثل: {0} {1}', // TODO {0} -> amount {1} -> currency name
+	DEPOSITS_FORM_AMOUNT_LABEL: '{0} المبلغ المراد إيداعه',
+	DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'اكتب مبلغ {0} الذي ترغب في سحبه',
+	DEPOSITS_BUTTON_TEXT: 'مراجعة الإيداع',
+	DEPOSIT_PROCEED_PAYMENT: 'إدفع',
 	DEPOSIT_BANK_REFERENCE:
-		'برای شناسایی سپرده، این کد "{0}" را به تراکنش بانکی اضافه کنید',
-	DEPOSIT_METHOD: 'روش پرداخت',
-	DEPOSIT_METHOD_DIRECT_PAYMENT: 'کارت بانکی',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: 'به درگاه پرداخت کارت بانکی بروید.',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
-		'برای پرداخت شما سایت  را ترک میکنید و پس از انجام تراکنش مجددا به سایت باز خواهی گشت',
-	DEPOSIT_VERIFICATION_WAITING_TITLE: 'تأیید پرداخت',
+		'أضف هذا الرمز "{0}" إلى المعاملة المصرفية لتحديد الإيداع',
+	DEPOSIT_METHOD: 'طريقة الدفع', //{} IS MISSED
+	DEPOSIT_METHOD_DIRECT_PAYMENT: 'بطاقة ائتمان',
+	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1:
+		'انتقل إلى طريقة الدفع ببطاقة الائتمان.',
+	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2: 'سوف تغادر المنصة لإجراء الدفع.',
+	DEPOSIT_VERIFICATION_WAITING_TITLE: 'التحقق من الدفع',
 	DEPOSIT_VERIFICATION_WAITING_MESSAGE:
-		'لطفا این صفحه را تا زمانی که پرداخت شما در حال تایید می باشد، نبندید ',
+		'الرجاء عدم إغلاق التطبيق أثناء التحقق من الدفع',
 	DEPOSIT_VERIFICATION_WARNING_MESSAGE:
-		'واریز شما در حال بررسی میباشد. به محض تایید، ایمیل تایید واریز برای شما ارسال می گردد و موجودی حساب شما در سیستم افزایش می یابد',
+		'إذا حدث خطأ ما في عملية التحقق ، يرجى الاتصال بنا.',
 	DEPOSIT_VERIFICATION_WARNING_INFORMATION:
-		'این شناسه عملیات است: "{0}" ، لطفا این شناسه را در اختیار ما قرار دهید تا به شما کمک کنیم.',
-	DEPOSIT_VERIFICATION_SUCCESS: 'پرداخت تأیید شد',
-	DEPOSIT_VERIFICATION_ERROR: 'خطا در پرداخت.',
-	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'این شناسه واریزی قبلاً تأیید شده است',
-	DEPOSIT_VERIFICATION_ERROR_STATUS: 'وضعیت نامعتبر',
+		'هذا هو معرف العملية: "{0}" ، يرجى تزويدنا بهذا المعرف لمساعدتك.',
+	DEPOSIT_VERIFICATION_SUCCESS: 'تم التحقق من الدفع',
+	DEPOSIT_VERIFICATION_ERROR: 'كان هناك خطأ في التحقق من الإيداع.',
+	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'تم التحقق من الإيداع سابقاً',
+	DEPOSIT_VERIFICATION_ERROR_STATUS: 'حالة غير صالحة',
 	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
-		' از کارتی که در پروفایل خود ثبت کرده اید ، اقدام به واریز وجه نقد نموده اید ، مبلغ مورد نظر  تایید نگردیده و  به کیف پول تومانی شما اضافه نشده است. چنانچه مبلغ از حساب بانکی شما کسر  گردیده است ، ظرف مدت حداکثر 72 ساعت به حساب شما عودت داده خواهد شد.',
-	QUOTE_MESSAGE: 'شما به {0} {1} {2} برای {3} {4}',
+		'البطاقة التي قمت بالإيداع معها ليست مماثلة لبطاقتك المسجلة. لذلك تم رفض إيداعك وسيتم استرداد أموالك في أقل من ساعة.',
+	QUOTE_MESSAGE: 'أنت ذاهب إلى {0} {1} {2} مقابل {3} {4}',
 	QUOTE_BUTTON: 'قبول',
-	QUOTE_REVIEW: 'بازبینی',
-	QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
-	QUOTE_EXPIRED_TOKEN: 'اعتبار قیمت داده شده منقضی شده',
-	QUOTE_SUCCESS_REVIEW_TITLE: 'خرید و فروش آسان',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {2} برای {3} {4}', // you have successfully buy 1 btc from x toman
-	COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.',
+	QUOTE_REVIEW: 'مراجعة',
+	QUOTE_COUNTDOWN_MESSAGE: 'لديك {0} ثواني لإجراء التداول',
+	QUOTE_EXPIRED_TOKEN: 'انتهت صلاحية رمز عرض السعر',
+	QUOTE_SUCCESS_REVIEW_TITLE: 'التداول السريع',
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'لقد نجحت في {0} {1} {2} لـ {3} {4}', // you have successfully buy 1 btc from x toman
+	COUNTDOWN_ERROR_MESSAGE: 'انتهى العد التنازلي',
 	WITHDRAW_PAGE: {
-		BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
-		MESSAGE_ABOUT_SEND: 'شما در آستانه ارسال',
+		BANK_TO_WITHDRAW: 'البنك المراد السحب إليه',
+		MESSAGE_ABOUT_SEND: 'أنت على وشك الإرسال',
 		MESSAGE_BTC_WARNING:
-			'لطفا از درست بودن آدرس خود اطمینان حاصل کنید {0} تراکنش ها غیر قابل بازگشت هستند.',
-		MESSAGE_ABOUT_WITHDRAW: 'شما در حال انجام انتقال به حساب بانکی خود هستید.',
-		MESSAGE_FEE: 'شامل کارمزد {0} ({1})',
-		MESSAGE_FEE_BASE: 'شامل کارمزد {0}',
+			'الرجاء التأكد من دقة هذا العنوان نظراً لأن عمليات نقل {0} لا رجعة فيها',
+		MESSAGE_ABOUT_WITHDRAW: 'أنت على وشك التحويل إلى حسابك المصرفي',
+		MESSAGE_FEE: 'يشمل رسوم المعاملات {0} ({1})',
+		MESSAGE_FEE_BASE: 'يشمل رسوم المعاملات {0}',
 		BASE_MESSAGE_1:
-			'شما فقط می توانید به مقصد حساب (های) بانکی خود که قبلا در حساب کاربری خود ثبت و تایید کرده اید پول برداشت نمایید',
-		BASE_MESSAGE_2: 'حداقل مقدار برداشت',
-		BASE_MESSAGE_3: 'محدودیت برداشت روزانه',
-		BASE_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',
-		CONFIRM_VIA_EMAIL: 'تایید از طریق ایمیل',
-		CONFIRM_VIA_EMAIL_1: 'ایمیل تایید برداشت برای شما ارسال شد',
-		CONFIRM_VIA_EMAIL_2: 'لطفا برای تایید برداشت و تکمیل فرایند ',
-		CONFIRM_VIA_EMAIL_3:
-			'حداکثر تا 5 دقیقه برداشت را از طریق ایمیل خود تایید کنید',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'برداشت شما با موفقیت تایید و ارسال شد',
+			'يمكنك فقط السحب إلى حساب مصرفي باسم يطابق الاسم المسجل في حسابك.',
+		BASE_MESSAGE_2: 'الحد الأدنى للسحب',
+		BASE_MESSAGE_3: 'الحد الأقصى للسحب اليومي',
+		BASE_INCREASE_LIMIT: 'زوّد الحد اليومي الخاص بك',
+		CONFIRM_VIA_EMAIL: 'أكد عبر البريد الإلكتروني',
+		CONFIRM_VIA_EMAIL_1: 'لقد أرسلنا لك رسالة تأكيد بالبريد الإلكتروني للسحب.',
+		CONFIRM_VIA_EMAIL_2: 'من أجل استكمال عملية السحب يرجى التأكيد',
+		CONFIRM_VIA_EMAIL_3: 'السحب عبر بريدك الإلكتروني في غضون 5 دقائق.',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'تم تأكيد طلب السحب الخاص بك. سيتم معالجتها قريبا.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
-			'برای مشاهده ی برداشت های خود لطفا به قسمت برداشتها در تاریخچه ی مبادلات خود مراجعه کنید',
-		GO_WITHDRAWAL_HISTORY: 'برو به تاریخچه ی مبادلات',
+			'لعرض حالة السحب الخاصة بك ، يرجى زيارة صفحة سجل السحب الخاصة بك.',
+		GO_WITHDRAWAL_HISTORY: 'اذهب إلى تاريخ الانسحاب',
 	},
-	WALLET_BUTTON_BASE_DEPOSIT: 'واریز',
-	WALLET_BUTTON_BASE_WITHDRAW: 'برداشت',
-	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'دریافت',
-	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'ارسال',
-	AVAILABLE_TEXT: 'موجودی',
-	AVAILABLE_BALANCE_TEXT: 'موجودی قابل دسترس از {0} به مقدار: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
-	BALANCE_TEXT: 'مقدار',
-	CURRENCY_BALANCE_TEXT: '{0} مقدار',
-	WALLET_TABLE_AMOUNT_IN: `مقدار در {0}`,
-	WALLET_TABLE_TOTAL: 'جمع کل',
-	WALLET_ALL_ASSETS: 'مجموع دارایی ها',
-	HIDE_TEXT: 'مخفی',
+	WALLET_BUTTON_BASE_DEPOSIT: 'الوديعة',
+	WALLET_BUTTON_BASE_WITHDRAW: 'سحب',
+	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'تلقى',
+	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'أرسل',
+	AVAILABLE_TEXT: 'متاح',
+	AVAILABLE_BALANCE_TEXT: 'الرصيد {0} المتاح: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	BALANCE_TEXT: 'رصيد حساب',
+	CURRENCY_BALANCE_TEXT: 'رصيد {0} ',
+	WALLET_TABLE_AMOUNT_IN: `المبلغ بـ {0}`,
+	WALLET_TABLE_TOTAL: 'المجموع الكلي',
+	WALLET_ALL_ASSETS: 'جميع الأصول',
+	WALLET_DEPOSIT_USD:
+		'للإيداع / السحب بالعملة الورقية في بلدان مختلفة واستفسارات أخرى عن المحفظة {0}.', // new
+	WALLET_HIDE_ZERO_BALANCE: 'إخفاء الرصيد الصفري',
+	WALLET_ESTIMATED_TOTAL_BALANCE: 'إجمالي الرصيد المقدر',
+	WALLET_ASSETS_SEARCH_TXT: 'بحث',
+	HIDE_TEXT: 'إخفاء',
 	PAGINATOR_FORMAT: '{0} / {1}',
-	ORDERBOOK_SELLERS: 'فروشندگان',
-	ORDERBOOK_BUYERS: 'خریدارن',
-	ORDERBOOK_SPREAD: '{0} بازه', // 0 -> 660,000 T
+	ORDERBOOK_SELLERS: 'البائعين',
+	ORDERBOOK_BUYERS: 'المشترين',
+	ORDERBOOK_SPREAD: 'الفارغ {0}',
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-	CALCULATE_MAX: 'بیشترین',
-	DATEFIELD_TOOGLE_DATE_GR: 'تقویم جهانی',
-	VERIFICATION_WARNING_TITLE: 'اطلاعات بانکی خود را تأیید کنید',
+	CALCULATE_MAX: 'أقصى',
+	DATEFIELD_TOOGLE_DATE_GR: 'التقويم الميلادي',
+	VERIFICATION_WARNING_TITLE: 'التحقق من التفاصيل المصرفية الخاصة بك',
 	VERIFICATION_WARNING_MESSAGE:
-		'قبل از انصراف ، باید اطلاعات بانکی خود را تأیید کنید.',
-	ORDER_SPENT: 'خرج شده',
-	ORDER_RECEIVED: 'دریافت شده',
-	ORDER_SOLD: 'فروخته شده',
-	ORDER_BOUGHT: 'خریداری شده',
-	ORDER_AVERAGE_PRICE: ' قیمت میانگین',
-	ORDER_TITLE_CREATED: 'سفارش {0} با موفقیت انجام شد', // 0 -> buy / sell
-	ORDER_TITLE_FULLY_FILLED: 'سفارش {0} تکمیل شد', // 0 -> buy / sell
-	ORDER_TITLE_PARTIALLY_FILLED: 'قسمتی از سفارش {0} تکمیل شد', // 0 -> buy / sell
-	ORDER_TITLE_TRADE_COMPLETE: 'سفارش {0} {1} با موفقیت انجام شد', // 0 -> buy / sell
-	LOGOUT_TITLE: 'شما از حساب خارج شده اید',
-	LOGOUT_ERROR_TOKEN_EXPIRED: 'توکن قیمت دیگر اعتبار ندارد',
-	LOGOUT_ERROR_LOGIN_AGAIN: 'لطفا مجدد وارد شوید', // ip doesnt match
-	LOGOUT_ERROR_INVALID_TOKEN: 'لطفا دوباره وارد شوید',
-	LOGOUT_ERROR_INACTIVE: 'لطفا مجدد وارد شوید',
+		'قبل أن تقوم بالسحب ، تحتاج إلى التحقق من التفاصيل المصرفية الخاصة بك.',
+	ORDER_SPENT: 'اُنفِقَ',
+	ORDER_RECEIVED: 'مستلم',
+	ORDER_SOLD: 'تم البيع',
+	ORDER_BOUGHT: 'تم الشراء',
+	ORDER_AVERAGE_PRICE: 'تم الشراء',
+	ORDER_TITLE_CREATED: 'تم بنجاح إنشاء حد {0}',
+	ORDER_TITLE_FULLY_FILLED: 'تم تنفيذ طلب {0} بنجاح',
+	ORDER_TITLE_PARTIALLY_FILLED: 'اُنفِذَ طلب {0} جزئيًا',
+	ORDER_TITLE_TRADE_COMPLETE: 'طلب {0} {1} كان ناجحًا',
+	LOGOUT_TITLE: 'لقد تم تسجيل خروجك',
+	LOGOUT_ERROR_TOKEN_EXPIRED: 'انتهت صلاحية الرمز',
+	LOGOUT_ERROR_LOGIN_AGAIN: 'تسجيل الدخول مرة أخرى',
+	LOGOUT_ERROR_INVALID_TOKEN: 'رمز غير صالح',
+	LOGOUT_ERROR_INACTIVE: 'لقد تم تسجيل خروجك لأنك كنت غير نشط',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
-	QUICK_TRADE_OUT_OF_LIMITS: 'سفارش شما خارج از محدوده است.',
-	QUICK_TRADE_TOKEN_USED: 'توکن معتبر نیست',
-	QUICK_TRADE_QUOTE_EXPIRED:
-		'اعتبار قیمت اعلام شده تمام شده. دوباره امتحان کنید.',
-	QUICK_TRADE_QUOTE_INVALID: 'قیمت اعلام شده اعتبار ندارد',
-	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'اشتباه در محاسبه قیمت',
-	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'سفارش با این مقدار تکمیل نخواهد شد',
-	QUICK_TRADE_ORDER_NOT_FILLED: 'موجودی سایت کافی نیست',
-	QUICK_TRADE_NO_BALANCE: 'موجودی شما برای انجام این سفارش کافی نیست',
-	YES: 'بله',
-	NO: 'خیر',
-	NEXT: 'بعدی',
-	SKIP_FOR_NOW: 'بعدا وارد می کنم',
-	SUBMIT: 'ارائه',
-	RESUBMIT: 'ارائه مجدد',
-	VERIFICATION_NOTIFICATION_SKIP_TITLE: ' محدودیت دسترسی',
+	ORDER_ENTRY_ADVANCED: 'Advanced',
+	QUICK_TRADE_OUT_OF_LIMITS: 'حجم الطلب خارج الحدود',
+	QUICK_TRADE_TOKEN_USED: 'الرمز مستخدم سابقاً',
+	QUICK_TRADE_QUOTE_EXPIRED: 'انتهت صلاحية عرض الاسعار',
+	QUICK_TRADE_QUOTE_INVALID: 'العرض سعر غيرصالح',
+	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'خطأ في حساب عرض السعر',
+	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'لا يمكن تنفيذ الطلب بالحجم الحالي',
+	QUICK_TRADE_ORDER_NOT_FILLED: 'لم يتم تنفيذ الطلب',
+	QUICK_TRADE_NO_BALANCE: 'رصيد غير كافٍ لأداء الطلب',
+	QUICK_TRADE_SUCCESS: 'نجاح!',
+	QUICK_TRADE_INSUFFICIENT_FUND: 'رصيد غير كاف',
+	QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE:
+		'ليس لديك أموال كافية في محفظتك لإكمال هذه المعاملة.',
+	YES: 'نعم',
+	NO: 'لا',
+	NEXT: 'التالي',
+	SKIP_FOR_NOW: 'تخطي في الوقت الحالي',
+	SUBMIT: 'إرسال',
+	RESUBMIT: 'إعادة الإرسال',
+	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'مستندات مفقودة!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'لطفا در نظر داشته باشید که حساب کاربری شما تا زمانی که بارگذاری مدارک انجام و تایید نشده باشد با محدودیت همراه خواهد بود. شما می توانید به حساب کاربری خود رفته و اطلاعات مربوط به احراز هویت خود را در آنجا بارگذاری کنید.',
-	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'موفق!',
+		'للحصول على حق التمكن الكامل إلى وظائف السحب والإيداع ، يجب عليك تقديم مستندات الهوية الخاصة بك على صفحة حسابك.',
+	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'نجاح!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
-		'هنگامی که اطلاعات شما بررسی گردید، از طریق ایمیل به شما اطلاع می دهیم.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'ورود به HollaEx',
-	ERROR_USER_ALREADY_VERIFIED: 'کاربر قبلا احراز هویت شده است',
-	ERROR_INVALID_CARD_USER: 'مقادیر وارد شده نادرست است',
-	ERROR_INVALID_CARD_NUMBER: 'شماره کارت نادرست است',
-	ERROR_LOGIN_USER_NOT_VERIFIED: 'کاربر احراز هویت نشده است',
-	ERROR_LOGIN_USER_NOT_ACTIVATED: 'حساب کاربری فعال نشده است',
-	ERROR_LOGIN_INVALID_CREDENTIALS: 'ایمیل یا رمز عبور اشتباه است',
-	SMS_SENT_TO: 'به {0} ارسال شد', // TODO check msg
+		'ستتلقى إشعارًا بالبريد الإلكتروني عندما تتم معالجة معلوماتك. يمكن أن تستغرق المعالجة عادةً من يوم إلى ثلاثة أيام.',
+	VERIFICATION_NOTIFICATION_BUTTON: 'انتقل الى البورصة',
+	ERROR_USER_ALREADY_VERIFIED: 'تم التحقق من المستخدم سابقاً',
+	ERROR_INVALID_CARD_USER: 'معلومات البنك أو البطاقة المقدمة غير صحيحة',
+	ERROR_INVALID_CARD_NUMBER: 'رقم البطاقة غير صالح',
+	ERROR_LOGIN_USER_NOT_VERIFIED: 'لم يتم التحقق من المستخدم',
+	ERROR_LOGIN_USER_NOT_ACTIVATED: 'لم يتم تنشيط المستخدم',
+	ERROR_LOGIN_INVALID_CREDENTIALS: 'أوراق الاعتماد(الوثائق) غير صحيحة',
+	SMS_SENT_TO: 'تم إرسال رسالة قصيرة إلى {0}', // TODO check msg
 	SMS_ERROR_SENT_TO:
-		'خطا در ارسال به {0}. لطفا صفحه را دوباره بارگذاری کنید و مجددا امتحان کنید.', // TODO check msg
-	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:', // TODO check msg
-	CHECK_ORDER: 'سفارش خود را تایید کنید',
+		'خطأ في إرسال رسالة قصيرة إلى {0}. يرجى تحديث الصفحة وحاول مرة أخرى.', // TODO check msg
+	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'معرّف المعاملة', // TODO check msg
+	CHECK_ORDER: 'تحقق وتأكد من طلبك',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
-	CONFIRM_TEXT: 'تایید',
-	GOTO_XHT_MARKET: 'به بازار معاملات XHT بروید', // new
-	INVALID_CAPTCHA: 'کپچا نادرست است',
-	NO_FEE: 'کاربردی ندارد',
-	SETTINGS_LANGUAGE_LABEL:
-		'انتخاب زبان (این گزینه شامل ایمیل های ارسالی از طرف HollaEx نیز می شود)',
-	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
-	SETTINGS_ORDERPOPUP_LABEL: 'مشاهده منوی تایید سفارش',
+	CONFIRM_TEXT: 'أيِّد',
+	GOTO_XHT_MARKET: 'انتقل إلى سوق عملة XHT', // new
+	INVALID_CAPTCHA: 'كلمة التحقق غير صالحة',
+	NO_FEE: 'N/A',
+	SETTINGS_LANGUAGE_LABEL: 'تفضيلات اللغة (تشمل رسائل البريد الإلكتروني)',
+	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES, //should not be changed
+	SETTINGS_ORDERPOPUP_LABEL: 'عرض نافذة تأكيد الطلب المنبثقة',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
-		{ value: false, label: 'خیر' },
-		{ value: true, label: 'بله' },
+		{ value: false, label: 'لا' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'نعم' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SETTINGS_THEME_LABEL: 'حالت پوسته سایت :', // TODO set right labels // ToDo
+	SETTINGS_THEME_LABEL: 'شكل واجهة المستخدم', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
-		{ value: 'white', label: 'روشن' },
-		{ value: 'dark', label: 'تیره' },
+		{ value: 'white', label: 'أبيض' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'داكن' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SETTING_BUTTON: 'ذخیره',
+	SETTING_BUTTON: 'حفظ',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
-	VERIFICATION_NO_WITHDRAW_TITLE: 'برداشت فعال نیست',
-	VERIFICATION_NO_WITHDRAW_MESSAGE: 'برداشت از حساب شما امکان پذیر نیست.',
-	UP_TO_MARKET: 'مطابق بازار',
-	VIEW_MY_FEES: 'مشاهده کارمزد', // new
+	VERIFICATION_NO_WITHDRAW_TITLE: 'عمليات السحب معطّلة',
+	VERIFICATION_NO_WITHDRAW_MESSAGE: 'تم تعطيل حسابك لعمليات السحب',
+	UP_TO_MARKET: 'تصل إلى السوق',
+	VIEW_MY_FEES: 'عرض الرسوم الخاصة بي', // new
 	DEVELOPER_SECTION: {
-		TITLE: 'برنامه نویسان',
+		TITLE: 'مفتاح واجهة برمجة التطبيقات(API)',
 		INFORMATION_TEXT:
-			'API امکاناتی از قبیل دسترسی به کیف پول و موجودی، مدیریت سفارشات و خرید و فروش ها، درخواست برداشت و همچنین اطلاعات بازار از جمله آخرین مبدلات، بازار و قیمت لحظه ای را فراهم می کند',
+			'توفر واجهة برمجة التطبيقات(API) وظائف مثل الحصول على أرصدة المحفظة وإدارة طلبات الشراء / البيع وطلب عمليات السحب بالإضافة إلى بيانات السوق مثل التداولات الأخيرة ودفتر الطلبات والمؤشر.',
 		ERROR_INACTIVE_OTP:
-			'برای ساختن کلید API شما باید رمز دو عاملی را فعال کنید.',
-		ENABLE_2FA: 'فعال سازی احراز رمز دو عاملی',
-		WARNING_TEXT: 'کلید خود را با دیگران به اشتراک نگذارید',
-		GENERATE_KEY: 'کلید API خود را بسازید',
-		ACTIVE: 'فعال',
-		INACTIVE: 'غیرفعال',
-		INVALID_LEVEL: 'برای دسترسی به این سرویس نیاز به سطح کاربری بالاتر دارید.', // TODO
+			'لإنشاء مفتاح واجهة برمجة التطبيقات (API) ، تحتاج إلى تمكين المصادقة ذات العاملين(2FA).',
+		ENABLE_2FA: 'تمكين المصادقة ذات العاملين(2FA)',
+		WARNING_TEXT:
+			'لا تشارك مفتاح واجهة برمجة التطبيقات (API) الخاص بك مع الآخرين.',
+		GENERATE_KEY: 'أنشئ مفتاح (API)',
+		ACTIVE: 'نشط',
+		INACTIVE: 'غير نشط',
+		INVALID_LEVEL:
+			'تحتاج إلى ترقية مستوى التحقق لتتمكن من الوصول إلى هذه الميزة', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
-		GENERATE_TITLE: 'ساخت کلید',
+		GENERATE_TITLE: 'أنشئ مفتاح (API)',
 		GENERATE_TEXT:
-			'لطفا نام کلید API خود را تعیین کنید و پس از ایجاد آن ، در حفظ و نگهداری آن کوشا باشید و آن را در اختیار کسی قرار ندهید. در نظر داشته باشید شما نمی توانید کلید API خود را بازیابی نمایید.',
-		GENERATE: 'ساخت',
-		DELETE_TITLE: 'حذف کلید',
+			'يرجى تسمية مفتاح API الخاص بك والحفاظ على خصوصيته بعد إنشائه. لن تتمكن من استعادته مرة أخرى لاحقًا.',
+		GENERATE: 'أنشئ',
+		DELETE_TITLE: 'حذف مفتاح API',
 		DELETE_TEXT:
-			'آیا مطمئن هستید که میخواهید کلید API خود را پاک کنید؟ (توجه داشته باشید اگر کلید API خود را پاک نمایید ، غیر قابل بازیابی خواهد بود . گرچه هر زمان که بخواهید می توانید یک کلید جدیدایجاد کنید.)',
+			'يعد حذف مفتاح API الخاص بك أمراً لا رجوع فيه على الرغم من أنه يمكنك إنشاء مفتاح API جديد في أي وقت. هل تريد حذف مفتاح API الخاص بك؟',
 		DELETE: 'حذف',
-		FORM_NAME_LABEL: 'نام',
-		FORM_LABLE_PLACEHOLDER: 'نام کلید',
-		API_KEY_LABEL: 'کلید API',
-		SECRET_KEY_LABEL: 'کلید خصوصی',
-		CREATED_TITLE: 'کپی کلید API',
+		FORM_NAME_LABEL: 'اسم',
+		FORM_LABLE_PLACEHOLDER: 'اسم مفتاح API',
+		API_KEY_LABEL: 'مفتاح API',
+		SECRET_KEY_LABEL: 'مفتاح سري',
+		CREATED_TITLE: 'انسخ مفتاح API الخاص بك',
 		CREATED_TEXT_1:
-			'لطفا کلید خود را در جایی امن نگه داری کنید زیرا کلید در آینده قابل دسترس نخواهد بود.',
-		CREATED_TEXT_2: 'کلید خود را در جایی امن نگه داری کنید.',
+			'يرجى نسخ مفتاح API الخاص بك لأنه لن يكون من الممكن الوصول إليه في المستقبل.',
+		CREATED_TEXT_2: 'حافظ على خصوصية مفتاحك.',
 	},
 	DEVELOPERS_TOKENS_TABLE: {
-		NAME: 'نام',
-		API_KEY: 'کلید API',
-		SECRET: 'رمز',
-		CREATED: 'تاریخ ساخت',
-		REVOKE: 'لغو کردن',
-		REVOKED: 'لغو شده',
-		REVOKE_TOOLTIP: 'شما باید رمز دو عاملی خود را برای لغو کلید فعال کنید.', // TODO
+		NAME: 'اسم',
+		API_KEY: 'مفتاح API',
+		SECRET: 'سري',
+		CREATED: 'تاريخ الإنشاء',
+		REVOKE: 'إبطال',
+		REVOKED: 'إنْفَسَخَ',
+		REVOKE_TOOLTIP: 'يجب عليك تفعيل المصادقة ذات العاملين(2FA) لإلغاء الرمز', // TODO
 	},
 	CHAT: {
-		CHAT_TEXT: 'چت',
-		MARKET_CHAT: 'چت',
+		CHAT_TEXT: 'محادثة',
+		MARKET_CHAT: 'محادثة السوق',
 		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
-		READ_MORE: 'بیشتر بخوانید',
-		SHOW_IMAGE: 'Show Image',
-		HIDE_IMAGE: 'Hide Image',
-		CHAT_MESSAGE_BOX_PLACEHOLDER: 'متن',
-		SIGN_UP_CHAT: 'ثبت نام چت',
-		JOIN_CHAT: 'نام کاربری چت',
-		TROLLBOX: 'ایموجی ({0})', // new
+		READ_MORE: 'اقرأ أكثر',
+		SHOW_IMAGE: 'إظهار الصورة',
+		HIDE_IMAGE: 'إخفاء الصورة',
+		CHAT_MESSAGE_BOX_PLACEHOLDER: 'رسالة',
+		SIGN_UP_CHAT: 'سجّل للدردشة',
+		JOIN_CHAT: 'تعيين اسم المستخدم للدردشة',
+		TROLLBOX: 'كشك الدردشة ({0})', // new
 	},
 	INVALID_USERNAME:
-		'طول نام کاربری باید بین 3 تا 15 حرف باید باشد. فقط از حروف انگلیسی کوچک، اعداد و کاراکتر underscore استفاده نمایید.',
+		'يجب أن يتراوح اسم المستخدم بين 3 و 15 حرفًا. يحتوي فقط على أحرف صغيرة وأرقام و حرف تسطير سفلي.',
 	USERNAME_TAKEN:
-		'نام کاربری انتخاب شده توسط شما، قبلا توسط دیگر کاربران انتخاب شده است، لطفا نام دیگری انتخاب نمایید. ',
-	USERNAME_LABEL: 'نام کاربری (جهت استفاده در چت)',
-	USERNAME_PLACEHOLDER: 'نام کاربری',
-	TAB_USERNAME: 'نام کاربری',
+		'وقد تم اتخاذ هذا الاسم المستخدم سابقاً. يرجى المحاولة مرة أخرى.',
+	USERNAME_LABEL: 'اسم المستخدم (للدردشة)',
+	USERNAME_PLACEHOLDER: 'اسم المستخدم',
+	TAB_USERNAME: 'اسم المستخدم',
 	USERNAME_WARNING:
-		'نام کاربری شما فقط یکبار می تواند تغییر یابد. لطفا در انتخاب نام کاربری خود دقت فرمایید.',
-	USERNAME_CANNOT_BE_CHANGED: 'نام کاربری نمی تواند تغییر یابد.',
-	UPGRADE_LEVEL:
-		'درخواست افزایش سطح دسترسی کاربری. (تنها برای افراد با حجم خرید و فروش بالا)',
+		'لا يمكن تغيير اسم المستخدم الخاص بك إلا مرة واحدة. يرجى التأكد من أن اسم المستخدم الخاص بك يكون مرغوب فيه.',
+	USERNAME_CANNOT_BE_CHANGED: 'لا يمكن تغيير اسم المستخدم',
+	UPGRADE_LEVEL: 'ترقية مستوى الحساب',
 	LEVELS: {
-		LABEL_LEVEL: 'سطح',
-		LABEL_LEVEL_1: 'میگوی کوچک (مبتدی) ',
-		LABEL_LEVEL_2: 'ماهی قرمز(عادی)',
-		LABEL_LEVEL_3: 'هشت پا (ویژه)',
-		LABEL_MAKER_FEE: 'کارمزد سفارش گذار',
-		LABEL_TAKER_FEE: 'کارمزد پذیرنده سفارش',
-		LABEL_BASE_DEPOSIT: 'محدودیت واریز روزانه تومانی',
-		LABEL_BASE_WITHDRAWAL: 'محدودیت برداشت روزانه تومانی',
-		LABEL_BTC_DEPOSIT: 'محدودیت واریز روزانه بیتکوین',
-		LABEL_BTC_WITHDRAWAL: 'محدودیت برداشت روزانه بیتکوین',
-		LABEL_ETH_DEPOSIT: 'محدودیت واریز روزانه اتریوم',
-		LABEL_ETH_WITHDRAWAL: 'محدودیت برداشت روزانه اتریوم',
-		LABEL_PAIR_MAKER_FEE: '{0} کارمزد سفارش گذار',
-		LABEL_PAIR_TAKER_FEE: '{0} کارمزد پذیرنده سفارش',
-		UNLIMITED: 'نامحدود',
-		BLOCKED: 'Disabled',
+		LABEL_LEVEL: 'مستوى',
+		LABEL_LEVEL_1: 'واحد',
+		LABEL_LEVEL_2: 'اثنين',
+		LABEL_LEVEL_3: 'ثلاثة',
+		LABEL_MAKER_FEE: 'رسوم صانع السوق',
+		LABEL_TAKER_FEE: 'رسوم متلقي الطلبات',
+		LABEL_BASE_DEPOSIT: 'الإيداع اليومي باليورو',
+		LABEL_BASE_WITHDRAWAL: 'سحب يومي من اليورو',
+		LABEL_BTC_DEPOSIT: 'إيداع البتكوين اليومي',
+		LABEL_BTC_WITHDRAWAL: 'سحب البيتكوين اليومي',
+		LABEL_ETH_DEPOSIT: 'إيداع الايثيريوم اليومي',
+		LABEL_ETH_WITHDRAWAL: 'سحب الايثيريوم اليومي',
+		LABEL_PAIR_MAKER_FEE: 'رسوم صانع السوق {0}',
+		LABEL_PAIR_TAKER_FEE: 'رسوم متلقي الطلبات {0}',
+		UNLIMITED: 'غير محدود',
+		BLOCKED: '0',
 	},
-	WALLET_ADDRESS_TITLE: 'ساخت کیف پول {0} ',
-	WALLET_ADDRESS_GENERATE: 'ساخت',
-	WALLET_ADDRESS_MESSAGE:
-		'با ساخت کیف پول، یک آدرس واریز و برداشت که تنها مخصوص شما است، ساخته می شود',
+	WALLET_ADDRESS_TITLE: 'أنشئ محفظة {0}  ',
+	WALLET_ADDRESS_GENERATE: 'أنشئ',
+	WALLET_ADDRESS_MESSAGE: 'عندما تنشئ محفظة ، فإنك تنشئ عنوان إيداع وسحب.',
 	WALLET_ADDRESS_ERROR:
-		'خطا در محاسبه آدرس، لطفا صفحه را رفرش کرده و دوباره تلاش کنید',
-	DEPOSIT_WITHDRAW: 'واریز/برداشت',
-	GENERATE_WALLET: ' ساخت کیف پول',
-	TRADE_TAB_CHART: 'نمودار',
-	TRADE_TAB_TRADE: 'خرید و فروش',
-	TRADE_TAB_ORDERS: 'سفارش ها',
-	TRADE_TAB_POSTS: 'Posts', // new
-	WALLET_TAB_WALLET: 'کیف پول',
-	WALLET_TAB_TRANSACTIONS: 'تراکنش ها',
-	RECEIVE_CURRENCY: 'دریافت {0}',
-	SEND_CURRENCY: 'برداشت {0}',
-	COPY_ADDRESS: ' کپی کردن آدرس',
-	SUCCESFUL_COPY: 'آدرس با موفقیت کپی شد!',
-	QUICK_TRADE_MODE: 'خرید و فروش آسان',
+		'خطأ في إنشاء العنوان ، يرجى التحديث والمحاولة مرة أخرى.',
+	DEPOSIT_WITHDRAW: 'إيداع / سحب',
+	GENERATE_WALLET: 'أنشئ المحفظة',
+	TRADE_TAB_CHART: 'جدول بياني',
+	TRADE_TAB_TRADE: 'تداول',
+	TRADE_TAB_ORDERS: 'الطلبات',
+	TRADE_TAB_POSTS: 'البوستات', // new
+	WALLET_TAB_WALLET: 'المحفظة',
+	WALLET_TAB_TRANSACTIONS: 'المعاملات',
+	RECEIVE_CURRENCY: 'تلقي {0}',
+	SEND_CURRENCY: 'إرسال {0}',
+	COPY_ADDRESS: 'نسخ العنوان',
+	SUCCESFUL_COPY: 'تم النسخ بنجاح!',
+	QUICK_TRADE_MODE: 'حالة التداول السريع',
 	JUST_NOW: 'الآن',
 	PAIR: 'زوج',
-	ZERO_ASSET: 'دارایی شما صفر می باشد',
-	DEPOSIT_ASSETS: 'واریز دارایی',
-	SEARCH_TXT: 'جستجو',
-	SEARCH_ASSETS: 'جستجوی دارایی',
-	TOTAL_ASSETS_VALUE: 'ارزش کل دارایی ها در {0}: {1}',
+	ZERO_ASSET: 'ليس لديك أي أصول',
+	DEPOSIT_ASSETS: 'أودع اصولاً',
+	SEARCH_TXT: 'بحث',
+	SEARCH_ASSETS: 'البحث في الأصول',
+	TOTAL_ASSETS_VALUE: 'إجمالي قيمة الأصول بعملة {0}: {1}',
 	SUMMARY: {
-		TITLE: 'خلاصه وضعیت',
-		TINY_PINK_SHRIMP_TRADER: 'کاربر مبتدی (میگوی کوچک)',
-		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'حساب کاربر مبتدی (میگوی کوچک)',
-		LITTLE_RED_SNAPPER_TRADER: 'کاربر عادی (ماهی قرمز)',
-		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'حساب کاربر عادی (ماهی قرمز)',
-		CUNNING_BLUE_KRAKEN_TRADING: 'کاربر ویژه (هشت پا)',
-		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'حساب کاربری ویژه (هشت پا)',
-		BLACK_LEVIATHAN_TRADING: 'کاربر حرفه ایی (نهنگ سیاه)',
-		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'حساب کاربری حرفه ایی (نهنگ سیاه)',
-		URGENT_REQUIREMENTS: ' موارد ضروری',
-		TRADING_VOLUME: 'حجم معامله',
-		ACCOUNT_ASSETS: 'دارایی های حساب کاربری',
-		ACCOUNT_DETAILS: ' جزئیات حساب کاربری',
-		SHRIMP_ACCOUNT_TXT_1: 'آغاز ماجراجویی شما اینجاست!',
-		SHRIMP_ACCOUNT_TXT_2: 'برای متمایز شدن از سایرین به تلاش خود ادامه دهید.',
-		SNAPPER_ACCOUNT_TXT_1: ' مسیر زندگی خود را با تورم بازار بگذرانید',
+		TITLE: 'ملخص',
+		TINY_PINK_SHRIMP_TRADER: 'متداول الجمبري الوردي الصغير',
+		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'حساب تداول الجمبري الوردي الصغير',
+		LITTLE_RED_SNAPPER_TRADER: 'متداول النهّاش الأحمر الصغير',
+		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'حساب تداول النهّاش الأحمر الصغير',
+		CUNNING_BLUE_KRAKEN_TRADING: 'متداول كراكن الازرق الماكر',
+		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'حساب تداول كراكن الازرق الماكر',
+		BLACK_LEVIATHAN_TRADING: 'تداول ليفياثان الأسود',
+		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'حساب تداول ليفياثان الأسود',
+		URGENT_REQUIREMENTS: 'متطلبات عاجلة',
+		TRADING_VOLUME: 'حجم التداول',
+		ACCOUNT_ASSETS: 'أصول الحساب',
+		ACCOUNT_DETAILS: 'تفاصيل الحساب',
+		SHRIMP_ACCOUNT_TXT_1: 'تبدأ رحلتك من هنا!',
+		SHRIMP_ACCOUNT_TXT_2:
+			'حافظ على صحة السباحة ، ستخرج قريبًا عن بقية المياه الضحلة',
+		SNAPPER_ACCOUNT_TXT_1: 'تهانينا على البقاء في مسارك خلال توّرم السوق.',
 		SNAPPER_ACCOUNT_TXT_2:
-			'با ادامه تلاش و مبارزه، به گنجینه دارایی های خود بیافزایید.',
+			'تقدم وحارب الموجة للحصول على المزيد من كنوز العملات الرقمية في المستقبل.',
 		KRAKEN_ACCOUNT_TXT_1:
-			'کسی که در میان طوفان ایستادگی کند، از سایرین متمایز خواهد شد.',
+			'من المرجح أن تكسر النكات أكثر من الهياكل ، هذه القشريات قد نجت من حصتها من العواصف!',
 		LEVIATHAN_ACCOUNT_TXT_1:
-			'اساتید واقعی ترید، فرصت های بازار را غنیمت شمرده و از آنها استفاده می نمایند.',
-		VIEW_FEE_STRUCTURE: 'جدول کارمزدها و سقف برداشت',
-		UPGRADE_ACCOUNT: ' ارتقا حساب کاربری',
-		ACTIVE_2FA_SECURITY: 'فعال سازی رمز دوعاملی',
-		ACCOUNT_ASSETS_TXT_1: 'خلاصه وضعیت دارایی های شما',
+			'وحش من الهاوية ، يرى من خلال العملات الرقمية إلى أعماق لا يسبر غورها ، سادة مياه منتصف الليل وموجات المد والجزر.',
+		VIEW_FEE_STRUCTURE: 'عرض تركيبة الرسوم وحدودها',
+		UPGRADE_ACCOUNT: 'حدّث الحساب',
+		ACTIVE_2FA_SECURITY: 'تفعيل أمن ذات العاملين',
+		ACCOUNT_ASSETS_TXT_1: 'المعروض هو ملخص لجميع الأصول الخاصة بك.',
 		ACCOUNT_ASSETS_TXT_2:
-			'نگهداری دارایی ها و مبادله بیشتر، به شما در ارتقا سطح کاربری و بهره مندی از مزایای آن کمک می نماید.',
+			'امتلاك كميات كبيرة من الأصول سيؤهلك لتحديث الحساب الذي يتضمن شارة فريدة ورسوم تداول أقل.',
 		TRADING_VOLUME_TXT_1:
-			'تاریخچه معاملات شما به {0} ، در پایان هر ماه برای هر یک از کوین های که معامله شده، محاسبه و نمایش داده می شود.',
+			'يتم عرض سجل حجم التداول الخاص بك بعملة {0} ويتم حسابه اسميًا في نهاية كل شهر من جميع أزواج التداول.',
 		TRADING_VOLUME_TXT_2:
-			'فعالیت تجاری بالا به شما امکان ارتقاء حساب را می دهد و سبب ارائه ویژگی های منحصر به فرد HollaEx برای  حساب کاربری شما می شود.',
+			'سيؤهلك نشاط التداول المرتفع لترقية الحساب الذي يمنحك شارة فريدة وامتيازات أخرى.',
 		ACCOUNT_DETAILS_TXT_1:
-			'سطح کاربری شما بیانگر میزان کارمزد و سقف برداشت شما می باشد.',
+			'يحدد نوع حسابك شارة حسابك ورسوم التداول والودائع وحدود السحب.',
 		ACCOUNT_DETAILS_TXT_2:
-			' تاریخ عضویت، میزان فعالیت و همچنین میزان دارایی های شما بر روی پلتفورم می باشد.',
+			'سيحدد عمر حساب التداول الخاص بك ومستوى النشاط ومبلغ أصول الحساب الإجمالي ما إذا كان حسابك مؤهلاً للترقية.',
 		ACCOUNT_DETAILS_TXT_3:
-			'حفظ سطح حساب کاربری شما نیازمند به فعالیت مداوم شما در بازار HollaEx است',
+			'يتطلب الحفاظ على مستوى حسابك تداولًا مستمرًا والحفاظ على قدر معين من الأصول المودعة.',
 		ACCOUNT_DETAILS_TXT_4:
-			'شرایط فوق بصورت دوره ای مورد ارزیابی قرار گرفته و در صورت عدم احراز این شرایط، سطح کاربری تنزل می یابد.',
-		REQUIREMENTS: 'ملزومات',
-		ONE_REQUIREMENT: 'فقط یک مورد:', // new
-		REQUEST_ACCOUNT_UPGRADE: 'درخواست افزایش سطح کاربری',
-		FEES_AND_LIMIT: '{0} جدول کارمزد های و محدودیت های هر سطح کاربری', // new
+			'سيحدث التخفيض الدوري للحسابات إذا لم يتم الحفاظ على النشاط والأصول.',
+		REQUIREMENTS: 'متطلبات',
+		ONE_REQUIREMENT: 'متطلب واحد فقط:', // new
+		REQUEST_ACCOUNT_UPGRADE: 'طلب ترقية الحساب',
+		FEES_AND_LIMIT: 'تركيب الرسوم والحد {0}', // new
 		FEES_AND_LIMIT_TXT_1:
-			'با تدبیر،اراده و سرعت وارد دنیای رمزارزها شده و به یاد داشته باشید که تنها با فرو رفتن در عمق دریا به گوهرهای آن دسترسی پیدا خواهید نمود.',
-		FEES_AND_LIMIT_TXT_2:
-			'هر حساب کاربری کارمزد و سقف واریز و برداشت منحصر به خود را دارد ، برای اطلاعات بیشتر به{0}مراجعه نمایید.',
-		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'مقدار مجاز واریز و برداشت',
-		TRADING_FEE_STRUCTURE: 'ساختار کارمزد معاملات',
-		WITHDRAWAL: 'برداشت',
-		DEPOSIT: 'واریز',
-		TAKER: 'پذیرنده سفارش ',
-		MAKER: 'سفارش گذار',
-		WEBSITE: 'وبسایت',
-		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'شایستگی ارتقا به حساب کاربری ویژه',
-		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'شایستگی ارتقا به حساب کاربری حرفه ایی',
-		TRADER_ACCOUNT_ELIGIBILITY: ' داشتن شرایط سطح کاربری {0}',
-		NOMINAL_TRADING: 'مقدار نامی معامل',
-		NOMINAL_TRADING_WITH_MONTH: 'حجم معاملات ماه گذشته{0}',
-		ACCOUNT_AGE_OF_MONTHS: 'قدمت حساب کاربری{0}ماه',
-		TRADING_VOLUME_EQUIVALENT: '{0} {1} معادل حجم معاملات',
-		LEVEL_OF_ACCOUNT: ' {0} سطح حساب کاربری',
-		LEVEL_TXT_DEFAULT: 'توضیحات سطح خود را اینجا اضافه کنید',
+			'أن تصبح متداولاً للعملات المشفرة يمثل بداية جديدة. مسلحًا بالذكاء والإرادة والسرعة فقط من خلال المخاطرة والتداول ، سيسمح لك بتحديث حسابك.',
+		FEES_AND_LIMIT_TXT_2: 'كل حساب له رسومه الخاصة وحدود الإيداع والسحب.',
+		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'مخصص الايداع و السحب',
+		TRADING_FEE_STRUCTURE: 'تركيب رسوم التداول',
+		WITHDRAWAL: 'سحب',
+		DEPOSIT: 'ايداع',
+		TAKER: 'متلقي الطلبات',
+		MAKER: 'صانع السوق',
+		WEBSITE: 'موقع الكتروني',
+		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'أهلية ترقية حساب VIP Trader (متداول أعيان)',
+		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'أهلية ترقية حساب المتداول المحترف',
+		TRADER_ACCOUNT_ELIGIBILITY: 'أهلية ترقية حساب مستوى {0} ',
+		NOMINAL_TRADING: 'التداول الاسمي',
+		NOMINAL_TRADING_WITH_MONTH: 'يستمر التداول الاسمي لـ {0}',
+		ACCOUNT_AGE_OF_MONTHS: 'عمر الحساب {0} شهر',
+		TRADING_VOLUME_EQUIVALENT: '{0} {1} ما يعادل حجم التداول',
+		LEVEL_OF_ACCOUNT: 'حساب مستوی {0}',
+		TITLE_OF_ACCOUNT: '{0} Account', // was not translated
+		LEVEL_TXT_DEFAULT: 'أضف وصف مستواك هنا',
 		LEVEL_1_TXT:
-			'سفر شما از اینجا آغاز می شود! برای به دست آوردن سود بیشتر می توانید به بررسی بازار بپردازید و همچنین با فعالیت بیشتر به کاهش کارمزد معاملات و استفاده از ویژگی های منحصر به فرد هر سطح کاربری بپردازید.', // new
+			'رحلتك تبدأ هنا أيها المتداول عملات المشفرة الشاب! للحصول على المكافآت ، يمكنك التحقق من هويتك وكذلك الحصول على حد إيداع وسحب أكبر مع رسوم تداول مخفضة.',
 		LEVEL_2_TXT:
-			'شما می توانید با ثبت حجم معاملات ماهانه 3000 دلار و یا داشتن متوسط بالانس 5000 توکن XHT به سطح 2 رسیده و از کارمزد های کمتر و سقف برداشت های بیشتر بهره مند گردید.', // new
+			'ببساطة تداول شهرياً بمبلغ يزيد عن 3000 دولار أمريكي أو مع رصيد يزيد عن 5000 XHT، إستمتع برسوم تداول أقل.',
 		LEVEL_3_TXT:
-			'اینجاست که همه چیز رنگ و بوی واقعی به خود می گیرد ! برای بهره مندی از کارمزد های کمتر و سقف برداشت های بیشتر ، حساب کاربری خود را احراز هویت کنید.', // new
+			'من هنا تبدأ المتعة! تمتع برسوم تداول مخفضة وحدود كبيرة للإيداع والسحب. للوصول إلى المستوى 3 ، يجب عليك إكمال التحقق.',
 		LEVEL_4_TXT:
-			'شما می توانید با ثبت حجم معاملات ماهانه 10،000 دلار و یا داشتن متوسط بالانس 10،000 توکن XHT به سطح 4 رسیده و از کارمزد های کمتر و سقف برداشت های بیشتر بهره مند گردید.', // new
+			'ببساطة تداول شهرياً بمبلغ يزيد عن 10,000 دولار أمريكي أو مع رصيد يزيد عن  XHT10,000، إستمتع برسوم تداول أقل.',
 		LEVEL_5_TXT:
-			'شما موفق شدید ! سطح کاربری 5 یک حساب کاربری ویژه است که ویژه اشخاصی که میخواهد اکسچنج راه انداری نمایند و یا کاربران سرویس Vault و HAP می باشد. از کارمزد صفر معاملات لذت ببرید.', // new
+			'لقد نجحت! حساب المستوى 5 هو حساب نادر فقط لمشغلي التبادل أو مستخدمي Vault أو برنامج شركاء هولا إكس (HAP). استمتع بحدود كبيرة واستمتع برسوم خالیة من رسوم صانع السوق.',
 		LEVEL_6_TXT:
-			'شما می توانید با ثبت حجم معاملات ماهانه 300،000 دلار و یا داشتن متوسط بالانس 100،000 توکن XHT به سطح 6 رسیده و از کارمزد های کمتر و سقف برداشت های بیشتر بهره مند گردید.', // new
+			'ببساطة تداول شهرياً بمبلغ يزيد عن 300,000 دولار أمريكي أومع رصيد يزيد عن 100,000 XHT ،استمتع برسوم تداول أقل و زيادة مبلغ السحب.',
 		LEVEL_7_TXT:
-			'شما می توانید با ثبت حجم معاملات ماهانه 500،000 دلار و یا داشتن متوسط بالانس 300،000 توکن XHT به سطح 7 رسیده و از کارمزد های کمتر و سقف برداشت های بیشتر بهره مند گردید.', // new
+			'ببساطة تداول شهريًا بمبلغ يزيد عن 500,000 دولار أمريكي أو مع رصيد يزيد عن  300,000 XHT  ، استمتع برسوم تداول أقل و زيادة مبلغ السحب.',
 		LEVEL_8_TXT:
-			'شما می توانید با ثبت حجم معاملات ماهانه 600،000 دلار و یا داشتن متوسط بالانس 400،000 توکن XHT به سطح 8 رسیده و از کارمزد های کمتر و سقف برداشت های بیشتر بهره مند گردید.', // new
+			'ببساطة تداول شهرياً بمبلغ يزيد عن 600,000 دولار أمريكي أو مع رصيد يزيد عن 400,000 XHT ، استمتع برسوم تداول أقل.',
 		LEVEL_9_TXT:
-			'شما می توانید با ثبت حجم معاملات ماهانه 2,000,000 دلار و یا داشتن متوسط بالانس 1,000،000 توکن XHT به سطح 9 رسیده و از کارمزد های کمتر و سقف برداشت های بیشتر بهره مند گردید.', // new
+			'ببساطة تداول شهريًا بمبلغ یزيد عن 2,000,000 دولار أمريكي أو مع رصيد يزيد عن 1,000,000 XHT ، استمتع برسوم تداول أقل.',
 		LEVEL_10_TXT:
-			'حساب کاربری سطح 10 ویژه کاربرانی که بازار گردانی میکنند ، می باشد و نه تنها کارمزد نمی دهند بلکه می تواننداز محل معاملات انجام شده، درآمد نیز کسب نمایند.', // new
-		CURRENT_TXT: 'فعلی',
+			'يكسبك حساب تداول الحوت المال مقابل صناعة السوق. للحصول على هذا الحساب الخاص ، يرجى التواصل معنا.',
+		CURRENT_TXT: 'الحالي',
 		TRADER_ACCOUNT_XHT_TEXT:
-			'حساب کاربری شما در دوره پیش فروش XHT ایجاد شده است و این به این معنی است که شما می توانید هر XHT را با قیمت 0.1 دلار خریداری نمایید.',
-		TRADER_ACCOUNT_TITLE: 'حساب - دوره پیش فروش', // new
-		HAP_ACCOUNT: 'حساب کاربری HAP', // new
+			'حسابك في فترة البيع المسبق لـعملة XHT ، وهذا يعني أنه يمكنك الحصول على عملة XHT مقابل 0.10 دولار لكل عملة واحدة من XHT. سيتم تحويل جميع الودائع إلى عملة XHT بمجرد تصفية المعاملة.',
+		TRADER_ACCOUNT_TITLE: 'الحساب - فترة ما قبل البيع', // new
+		HAP_ACCOUNT: 'حساب HAP (برنامج شركاء هولا إكس)', // new
 		HAP_ACCOUNT_TXT:
-			' شما دارای یک حساب کاربری تایید شده در برنامه HAP می باشید. اکنون می توانید برای هر شخصی که توسط شما به HollaEx پیوسته و در آن فعالیت می کند ، 10٪ سود کسب کنید.', // new
-		EMAIL_VERIFICATION: 'تأیید ایمیل', // new
-		DOCUMENTS: 'اسناد', // new
-		HAP_TEXT: 'برنامه HAP{0}', // new
-		LOCK_AN_EXCHANGE: 'مبادله را مسدود کنید {0}', // new
-		WALLET_SUBSCRIPTION_USERS: 'کاربران استفاده کننده از سرویس Vault {0}', // new
-		TRADE_OVER_XHT: 'خرید و فروش بیشتر از  {0} تومان', // new
-		TRADE_OVER_BTC: 'خرید و فروش بیشتر از  {0} بیتکوین', // new
-		XHT_IN_WALLET: '{0} XHT موجود در کیف پول', // new
-		REWARDS_BONUS: 'جوایز و پاداش ها', // new
-		COMPLETE_TASK_DESC:
-			'فعالیت های موجود را انجام دهید و جوایزی به ارزش بیش از 10،000 دلار کسب کنید.', // new
-		TASKS: 'وظایف', // new
-		MAKE_FIRST_DEPOSIT: 'بااولین واریز خود XHT دریافت کنید 1 ', // new
-		BUY_FIRST_XHT: 'بااولین خرید خود XHT دریافت کنید 5 ', // new
+			'حسابك هو حساب برنامج شركاء هولا إكس مثبَت. يمكنك الآن الحصول على مكافأة 10٪ لكل شخص تقوم بدعوته ويشتري عملة XHT.', // new
+		EMAIL_VERIFICATION: 'تأكيد بواسطة البريد الالكتروني', // new
+		DOCUMENTS: 'الوثائق', // new
+		HAP_TEXT: 'برنامج شركاء هولا إكس (HAP) {0}', // new
+		LOCK_AN_EXCHANGE: 'أتمم تبادلاً {0}', // new
+		WALLET_SUBSCRIPTION_USERS: 'مستخدمو الاشتراك في Vault {0}', // new
+		TRADE_OVER_XHT: 'تداول بمبلغ يزيد عن USDT {0}', // new
+		TRADE_OVER_BTC: 'تداول بمبلغ يزيد عن  BTC {0}', // new
+		XHT_IN_WALLET: '{0} XHT في المحفظة', // new
+		REWARDS_BONUS: 'المكافآت والجوائز', // new
+		COMPLETE_TASK_DESC: 'أكمل المهام واكسب مكافآت تزيد قيمتها عن 10,000 دولار.', // new
+		TASKS: 'مهام', // new
+		MAKE_FIRST_DEPOSIT: 'قم بعمل إيداعك الأول واحصل على 1 XHT', // new
+		BUY_FIRST_XHT: 'اشترِ XHT الأول واحصل على مكافأة قدرها 5 XHT', // new
 		COMPLETE_ACC_VERIFICATION:
-			'مشخصات حساب کاربری خود را کامل کنید و 20 XHT دریافت کنید', // new
-		INVITE_USER: 'دوستان خود را دعوت کرده و از کمیسیون خود لذت ببرید', // new
+			'أكمل عملية التحقق من الحساب واحصل على مكافأة قدرها 20 XHT', // new
+		INVITE_USER: 'قم بدعوة المستخدمين واستمتع بعمولات من تداولاتهم', // new
 		JOIN_HAP:
-			'به برنامه واسط(HAP) بپیوندید و برای هر نسخه HollaEx kit که می فروشید ، 10٪ درآمد کسب کنید', // new
-		EARN_RUNNING_EXCHANGE: 'برای اجرای مبادله شخصی خود درآمد جداگانه کسب کنید', // new
-		XHT_WAVE_AUCTION: ' موج حراجی XHT ', // new
-		XHT_WAVE_DESC_1: 'توزیع توکن HollaEx (XHT) از طریق موج حراجی انجام می شود.', // new
+			'انضم إلى HAP (برنامج شركاء هولا إكس) واكسب 10٪ على كل مجموعة أدوات هولاإكس تبيعها.', // new
+		EARN_RUNNING_EXCHANGE: 'احصل على دخلاً سلبياً مع تشغيل البورصة الخاصة بك', // new
+		XHT_WAVE_AUCTION: 'بيانات مزادات موجات  XHT', // new
+		XHT_WAVE_DESC_1: 'يتم توزيع عملة هولاإكس (XHT) من خلال موجات من المزادات.', // new
 		XHT_WAVE_DESC_2:
-			'موج حراجی یک مقدار تصادفی XHT را در مواقع تصادفی به بالاترین پیشنهاد دهنده در سفارسات موجود می فروشد', // new
-		XHT_WAVE_DESC_3:
-			'در زیر اطلاعات مربوط به تاریخچه موج حراجی نمایش داده می شود', // new
-		WAVE_AUCTION_PHASE: 'مراحل موج حراجی {0}', // new
-		LEARN_MORE_WAVE_AUCTION: 'درباره موج حراجی بیشتر بدانید', // new
-		WAVE_NUMBER: 'شماره موج', // new
-		DISCOUNT: '( {0}% تخفیف )', // new
-		MY_FEES_LIMITS: ' کارمزدها و محدودیت ها', // new
+			'تبيع مزاد الموجة كمية عشوائية من عملة XHT في أوقات عشوائية لأعلى مزايدين في دفتر الطلبات', // new
+		XHT_WAVE_DESC_3: 'يعرض أدناه البيانات التاريخية في سجل مزادات الموجة.', // new
+		WAVE_AUCTION_PHASE: 'مرحلة المزاد الموجي {0}', // new
+		LEARN_MORE_WAVE_AUCTION: 'تعرف على المزيد حول المزاد الموجي', // new
+		WAVE_NUMBER: 'رقم الموجة', // new
+		DISCOUNT: '({0}٪ خصم)', // new
+		MY_FEES_LIMITS: 'رسوماتي و حدودي', // new
+		MARKETS: 'أسواق', // new
+		CHANGE_24H: 'التغييرات في 24 ساعة', // new
+		VOLUME_24H: 'الحجم في 24 ساعة', // new
+		PRICE_GRAPH_24H: 'الرسم البياني للأسعار في 24 ساعة', // new
+		VIEW_MORE_MARKETS: 'عرض المزيد من الأسواق', // new
 	},
 	REFERRAL_LINK: {
-		TITLE: ' دوست خود را دعوت کنید', // new
+		TITLE: 'ادعو صديقك', // new
 		INFO_TEXT:
-			'با ارائه این لینک به دوستان خود و  ثبت نام آنها از طریق لینک ارائه شده، دوستان شما {0} % تخفیف دریافت می کنند.', // new
-		INFO_TEXT_1:
-			'{0}%  از معاملات صورت گرفته توسط افرادی که از طریق لینک ارسالی شما به اقدام به ثبت نام نموده اند ، ماهانه به حساب شما واریز می شود.', // new
-		COPY_FIELD_LABEL:
-			'لینک زیر را با دوستان خود به اشتراک بگذارید و کمیسیون کسب کنید:', // new
-		REFERRED_USER_COUT: 'شما کاربران {0} را دعوت کرده اید', // new
-		COPY_LINK_BUTTON: 'کپی لینک دعوت نامه', // new
-		XHT_TITLE: 'دعوت نامه من', // new
-		XHT_INFO_TEXT: 'با دعوت از دوستان خود کمیسیون کسب کنید.', // new
-		XHT_INFO_TEXT_1: 'کمیسیون به طور دوره ای به کیف پول شما پرداخت می شود', // new
-		APPLICATION_TXT:
-			'برای تبدیل شدن به یک انتشار دهنده کیت HollaEx لطفاً درخواست خود را پر کنید.', // new
-		TOTAL_REFERRAL: 'مجموع خرید های انجام شده از معارفه های شما:', // new
-		PENDING_REFERRAL: 'حق کمیسیون های در انتظار:', // new
-		EARN_REFERRAL: 'کمیسیون های کسب شده:', // new
+			'قم بإحالة أصدقائك من خلال إعطاء هذا الرابط واحصل على مزايا من خلال تأهيل أشخاص آخرين.',
+		COPY_FIELD_LABEL: 'شارك الرابط أدناه مع أصدقائك واكسب عمولات:', // new
+		REFERRED_USER_COUT: 'لقد قمت بإحالة {0} من ائمستخدمين', // new
+		COPY_LINK_BUTTON: 'انسخ رابط الإحالة', // new
+		XHT_TITLE: 'إحالاتي', // new
+		XHT_INFO_TEXT: 'اكسب عمولات بدعوة أصدقائك.', // new
+		XHT_INFO_TEXT_1: 'يتم دفع العمولات بشكل دوري إلى محفظتك', // new
+		APPLICATION_TXT: 'لكي تصبح موزعًا لمجموعة أدوات هولاإكس ، يرجى ملئ الطلب.', // new
+		TOTAL_REFERRAL: 'إجمالي المشتريات من الإحالات:', // new
+		PENDING_REFERRAL: 'العمولات التي في قيد الانتظار:', // new
+		EARN_REFERRAL: 'العمولات المكتسبة:', // new
 		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'درخواست دادن', // new
+		APPLY_BUTTON: 'قدم طلباً', // new
 	},
 	STAKE_TOKEN: {
-		TITLE: 'سهام توکن HollaEx', // new
+		TITLE: 'حصِّص عملة هولاإكس (XHT) ', // new
 		INFO_TXT1:
-			'توکن HollaEx (XHT).برای اجرای نرم افزار تبادل HollaEx نیازمند وثیقه(staked) است.', // new
+			'يجب أن تكون عملات هولاإكس (XHT) مضمونة (مدعومة) لتشغيل برنامج مجموعة أدوات بورصة هولاإكس.', // new
 		INFO_TXT2:
-			'می توانید توکن HollaEx خود را با روشی یکسان تضمین کنید و XHT را که در موج حراجی فروخته نشده است را کسب کنید.', // new
+			'يمكنك ضمانة عملة هولاإكس الخاصة بك بطريقة مماثلة وكسب عملة XHT التي لم يتم بيعها خلال مزادات الموجة.', // new
 		INFO_TXT3:
-			'به dash.bitholla.com بروید ، مبادله شخصی خود را اتضمین کنید و XHT رایگان کسب کنید', // new
-		BUTTON_TXT: 'اطلاعات بیشتر', // new
+			'ما عليك سوى الانتقال إلى dash.bitholla.com وإضمان البورصة الخاصة بك اليوم واكتسب عملة XHT مجانًا', // new
+		BUTTON_TXT: 'اكتشف المزيد', // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
-		TITLE: 'توافق نامه خرید توکن HollaEx',
-		SERVICE_AGREEMENT: AGREEMENT,
-		PROCEED: 'اقدامات',
-		AGREE_TERMS_LABEL: 'من توافقنامه خرید توکن HollaEx را خوانده ام و موافقم',
-		RISK_INVOLVED_LABEL: 'من خطرات ناشی از آن را درک می کنم',
-		DOWNLOAD_PDF: 'PDF دریافت فایل',
-		DEPOSIT_FUNDS:
-			'برای به دست آوردن توکن HollaEx (XHT) وجوه خود را به کیف پول خود واریز کنید.',
-		READ_FAG: ' سؤالات متداول HollaEx {0}',
-		READ_DOCUMENTATION: 'گزارشات HollaEx را اینجا بخوانید: {0}',
-		READ_WAVES: 'قوانین مربوط به موج حراج عمومی دسامبر پیش رو{0}', // new
-		DOWNLOAD_BUY_XHT:
-			'PDF را دریافت کنید تا یک نمای مرحله به مرحله از فرایند را ببینید{0}',
-		HOW_TO_BUY: 'نحوه خرید توکن HollaEx (XHT)',
-		PUBLIC_SALES: ' موج حراجی عمومی', // new
+		TITLE: 'اتفاقية شراء عملة هولاإكس',
+		SERVICE_AGREEMENT: AGREEMENT, //إتفاقية
+		PROCEED: 'تقدم',
+		AGREE_TERMS_LABEL: 'لقد قرأت و وافقت على اتفاقية شراء عملة هولاإكس',
+		RISK_INVOLVED_LABEL: 'أنا أدرك المخاطر التي تنطوي عليها',
+		DOWNLOAD_PDF: 'قم بتنزيل ملف PDF',
+		DEPOSIT_FUNDS: 'قم بإيداع الأموال في محفظتك للحصول على عملة هولاإكس (XHT)',
+		READ_FAG: 'اقرأ الأسئلة الشائعة لـ هولاإكس هنا: {0}',
+		READ_DOCUMENTATION: 'اقرأ المستند التقني لهولاإكس هنا: {0}',
+		READ_WAVES: 'قواعد مزاد الموجة العامة لشهر ديسمبر المقبل {0}', // new
+		DOWNLOAD_BUY_XHT: 'قم بتنزيل ملف PDF للاطلاع على الدليل البصري على {0}',
+		HOW_TO_BUY: 'كيفية شراء عملة هولاإكس (XHT)',
+		PUBLIC_SALES: 'مزاد الموجة العام', // new
 		CONTACT_US:
-			'برای اطلاعات بیشتر و در صورت داشتن هرگونه مشکل از طریق ارسال ایمیل به ما در تماس باشید. {0}',
-		VISUAL_STEP: 'یک نمای مرحله به مرحله از فرایند را مشاهده کنید {0}', // new
+			'لا تتردد في الاتصال بنا للحصول على مزيد من المعلومات وأي مشكلات عن طريق إرسال بريد إلكتروني إلينا إلى {0}',
+		VISUAL_STEP: 'شاهد الدليل البصري على {0}', // new
 		WARNING_TXT:
-			'ما درخواست شما را بررسی خواهیم کرد و دستورالعمل های بیشتر در مورد نحوه دسترسی به صرافی HollaEx را به ایمیل شما ارسال خواهیم کرد.', // new
+			'سنراجع طلبك ونرسل مزيدًا من الإرشادات إلى بريدك الإلكتروني حول كيفية الوصول إلى بورصة هولاإكس.', // new
 		WARNING_TXT1:
-			'در این مدت می توانید خود را با شبکه HollaEx از طریق منابع زیر آشنا کنید', // new
-		XHT_ORDER_TXT_1: 'برای شروع خرید و فروش توکن HollaEx (XHT) باید وارد شوید', // new
-		XHT_ORDER_TXT_2:
-			'توکن HollaEx از طریق موج حراجی توزیع می شود که در یک زمان تصادفی، روزانه  مقداری  توکن HollaEx را به بالاترین پیشنهاد دهنده سفارشات فروخته می شود .', // new
-		XHT_ORDER_TXT_3: '{0}برای پیوستن به موج ها یا{1}', // new
+			'في غضون ذلك ، يمكنك التعرف على شبكة هولاإكس باستخدام الموارد أدناه', // new
+		XHT_ORDER_TXT_1: 'لبدء التداول يجب عليك تسجيل الدخول', // new
+		XHT_ORDER_TXT_2: '', // new
+		XHT_ORDER_TXT_3: '{0} أو {1}', // new
 		XHT_TITLE: 'XHT', //new
-		XHT_TRADE_TXT_1: 'برای دیدن معاملات اخیر خود وارد شوید', //new
-		XHT_TRADE_TXT_2:
-			'{0}می توانید برای دیدن تاریخچه معاملات اخیر خود داشته باشید', //new
-		LOGIN_HERE: 'اینجا وارد شوید',
+		XHT_TRADE_TXT_1: 'قم بتسجيل الدخول لترى تداولاتك الأخيرة', //new
+		XHT_TRADE_TXT_2: 'يمكنك {0} الاطلاع على تاريخ تداولات الحديثة الخاصة بك', //new
+		LOGIN_HERE: 'تسجيل الدخول هنا',
 	},
 	WAVES: {
 		// new
-		TITLE: 'اطلاعات موج',
-		NEXT_WAVE: 'موج بعدی',
-		WAVE_AMOUNT: 'مقدار موجود موج',
-		FLOOR: 'کف',
-		LAST_WAVE: 'آخرین موج',
+		TITLE: 'معلومات الموجة',
+		NEXT_WAVE: 'الموجة المقبلة',
+		WAVE_AMOUNT: 'الحجم في الموجة',
+		FLOOR: 'الأرض',
+		LAST_WAVE: 'الموجة الأخيرة',
 	},
 	TYPES_OF_POSTS: {
 		// new
-		TITLE: 'اطلاعیه ها',
-		ANNOUNCEMEN: 'اعلان ها',
-		SYSTEM_UPDATE: 'بروز رسانی سیستم',
-		LAST_WAVE: 'آخرین موج',
+		TITLE: 'البوستات',
+		ANNOUNCEMEN: 'إعلان',
+		SYSTEM_UPDATE: 'تحديث النظام',
+		LAST_WAVE: 'الموجة الأخيرة',
 		ANNOUNCEMENT_TXT:
-			'XHT رایگان به کلیه کیف پولهایی که توزیع می شود اعمال می شوند',
-		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
-		SYSTEM_UPDATE_DURATION: '1 hour',
+			'سيتم توزيع عملة  XHTالمجاني على جميع المحافظ التي تنطبق عليها',
+		SYSTEM_UPDATE_TIME: 'الوقت: 12:31 ظهرًا ، 19 ديسمبر 2019	',
+		SYSTEM_UPDATE_DURATION: '1 ساعة',
 		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
+		LAST_WAVE_TIME: '12:31 مساءً ، 19 ديسمبر 2019',
 	},
-	USER_LEVEL: 'سطح کاربری', // new
-	LIMIT_AMOUNT: 'مقدار محدود', // new
-	FEE_AMOUNT: 'مقدار کارمزد', // new
-	COINS: 'Coins', // new
-	PAIRS: 'Pairs', // new
-	NOTE_FOR_EDIT_COIN:
-		'توجه: برای حذف و اضافه کردن {0} لطفاً مراجعه کنید به {1}', // new
-	REFER_DOCS_LINK: 'اسناد', // new
+	USER_LEVEL: 'مستوى المستخدم', // new
+	LIMIT_AMOUNT: 'مبلغ الحد', // new
+	FEE_AMOUNT: 'مبلغ الرسوم', // new
+	COINS: 'عملات', // new
+	PAIRS: 'أزواج', // new
+	NOTE_FOR_EDIT_COIN: 'ملاحظة: لإضافة وإزالة {0} يرجى الرجوع إلى {1}.', // new
+	REFER_DOCS_LINK: 'الوثائق', // new
 	RESTART_TO_APPLY:
-		'برای اعمال این تغییرات ، باید مبادله خود را مجدداً راه اندازی کنید.', // new
+		'تحتاج إلى إعادة تشغيل البورصة الخاص بك لتطبيق هذه التغييرات.', // new
 	TRIAL_EXCHANGE_MSG:
-		'شما از نسخه آزمایشی {0}  استفاده می کنید که طی روز {1} منقضی می شود.', // new
+		'أنت تستخدم إصدار إختباري من {0} وستنتهي صلاحيته في غضون {1} يوم.', // new
 	EXPIRY_EXCHANGE_MSG:
-		'مبادله شما منقضی شده است برای فعال کردن دوباره آن به dash.bitholla.com بروید.', // new
-	EXPIRED_INFO_1: 'نسخه آزمایشی HollaEx شما به پایان رسید.', // new
-	EXPIRED_INFO_2: 'مبادله خود را مجدد فعال کنید.', // new
-	EXPIRED_BUTTON_TXT: 'مبادله فعال', // new
+		'انتهت صلاحية بورصتك. انتقل إلى dash.bitholla.com لتنشيطها مرة أخرى.', // new
+	EXPIRED_INFO_1: 'انتهت الفترة الإختبارية الخاصة بك.', // new
+	EXPIRED_INFO_2: 'إضمن البورصة لتنشيطها مرة أخرى.', // new
+	EXPIRED_BUTTON_TXT: 'تنشيط البورصة', // new
 	TRADE_POSTS: {
 		// new
-		ANNOUNCEMENT: 'اعلان ها',
+		ANNOUNCEMENT: 'إعلان',
 		ANNOUNCEMNT_TXT_3:
-			'راه اندازی عمومی و موج حراجی در اول ژانویه سال 2020 تنظیم شده است. سپرده کیف پول و برداشت ها اکنون باز است.',
+			'تمت إعادة جدولة الإطلاق العام ومزاد الموجة إلى 1 يناير 2020. ودائع وسحب المحفظة مفتوحة الآن.',
 		ANNOUNCEMNT_TXT_4:
-			'سال نو مبارک؛ ما از سال 2020 با همراهی شما در تلاشیم با ارائه یک بازار باز، مارکت جدیدی را تولید می کنیم.',
+			'كل عام وأنتم بخيريا عميلين هولاإكس. نحن نحقق إنجازاً جديداً بدءًا من عام 2020 مع إطلاق منصة التداول الأكثر شفافيةً بمساعدتكم جميعًا.',
 		ANNOUNCEMNT_TXT_1:
-			'با معرفی دوستان خود به hollaex.com ، با برنامه واسط hollaEX (HAP) درآمدزایی کنید.',
-		DEFAULT_ANNOUNCEMENT:
-			'در این صفحه اطلاعیه های عمومی در مورد اکسچنج شما نمایش داده می شود! {0}',
+			'اكسب عملة XHT مع برنامج HAP (برنامج شركاء هولاإكس) من خلال تقديم البورصة لأصدقائك. {0}.',
+		DEFAULT_ANNOUNCEMENT: 'يعرض هذا القسم الإعلانات العامة لالبورصة الخاصة بك!',
 		ANNOUNCEMENT_TXT_2:
-			'XHT رایگان در کلیه کیف پولهایی که {0} دارند توزیع می شود.',
-		LEARN_MORE: 'بیشتر بدانید',
-		APPLY_TODAY: 'امروز اقدام کنید', // new
+			'سيتم توزيع عملة XHT المجانية على جميع محفظات التي {0}.',
+		LEARN_MORE: 'إعلم المزيد',
+		APPLY_TODAY: 'قدّم اليوم', // new
 	},
-	OPEN_WALLET: 'کیف پول را باز کنید', // new
-	AGO: 'پیش', // new
+	OPEN_WALLET: 'محفظة مفتوحة', // new
+	AGO: 'منذ', // new
+	CUMULATIVE_AMOUNT_SYMBOL: 'تراكمي',
+	POST_ONLY: 'نشر فقط',
+	CLEAR: 'مسح',
+	ORDER_TYPE: 'اكتب',
+	TRIGGER_CONDITIONS: 'شروط التنشيط',
+	TRANSACTION_STATUS: {
+		PENDING: 'قيد الانتظار',
+		REJECTED: 'مرفوض',
+		COMPLETED: 'مكتمل',
+	},
+	DEPOSIT_STATUS: {
+		// new
+		NEW: 'جديد',
+		SEARCH_FIELD_LABEL: 'الصق معرّف معاملتك',
+		SEARCH: 'بحث',
+		SEARCHING: 'جاري البحث',
+		CHECK_DEPOSIT_STATUS: 'تحقق من حالة الايداع',
+		STATUS_DESCRIPTION:
+			'يمكنك التحقق من حالة الإيداع الخاص بك عن طريق إضافة معرف المعاملة أدناه.',
+		TRANSACTION_ID: 'معرف المعاملة ',
+		SEARCH_SUCCESS: 'تم العثور على المعاملة!',
+		ADDRESS_FIELD_LABEL:
+			'المعاملة غير موجودة. يرجى التحقق من الهوية والمحاولة مرة أخرى. إذا كنت تعتقد أن هناك مشكلة يرجى الاتصال بالدعم.', // new
+		CURRENCY_FIELD_LABEL: 'Select the currency', // new
+	},
+	CANCEL_ORDERS: {
+		HEADING: 'Cancel orders',
+		SUB_HEADING: 'Cancel all orders',
+		INFO_1: 'This will cancel your open orders for this markets.',
+		INFO_2: 'Are you sure you want to cancel all your open orders?',
+	},
+	AMOUNT_IN: 'Amount in',
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'Deposit and withdrawal allowance for all assets ({0})',
+		HEADER_ROW_TYPE: 'Type (All assets)',
+		HEADER_ROW_AMOUNT: 'Amount ({0})',
+	},
+	MARKETS_TABLE: {
+		TITLE: 'Live markets',
+		MARKETS: 'Markets',
+		LAST_PRICE: 'Last price',
+		CHANGE_24H: 'Change (24 hours)',
+		VOLUME_24h: 'Volume (24 hours)',
+		CHART_24H: 'Chart (24 hours)',
+		VIEW_MARKETS: 'View Markets',
+	},
 };
 
 const content = flatten(nestedContent, options);
+
 export default content;

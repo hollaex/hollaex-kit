@@ -10,6 +10,7 @@ import CheckField from './FormFields/CheckField';
 import EditableInputField from './FormFields/EditableInputField';
 import CaptchaField from './FormFields/Captcha';
 import ToggleField from './FormFields/ToggleField';
+import DumbField from './FormFields/DumbFieldForm';
 
 const renderFields = (fields = {}, callback) => {
 	return (
@@ -38,6 +39,8 @@ const renderFields = (fields = {}, callback) => {
 						);
 					case 'file':
 						return <Field component={FileField} {...commonProps} />;
+					case 'dumb':
+						return <Field component={DumbField} {...commonProps} />;
 					case 'select':
 					case 'autocomplete':
 						return (

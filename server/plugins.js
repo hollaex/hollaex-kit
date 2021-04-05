@@ -26,6 +26,7 @@ const path = require('path');
 const latestVersion = require('latest-version');
 const { resolve } = bluebird;
 const npm = require('npm-programmatic');
+const { Op } = require('sequelize');
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
@@ -211,14 +212,19 @@ checkStatus()
 							throw new Error('Plugin not found');
 						}
 
-						return plugin.destroy();
+						return bluebird.all([
+							plugin,
+							plugin.destroy()
+						]);
 					})
-					.then(() => {
+					.then(([ { enabled, script } ]) => {
 						loggerPlugin.info(req.uuid, 'DELETE /plugins deleted plugin', name);
 
 						res.json({ message: 'Success' });
 
-						process.exit();
+						if (enabled && script) {
+							process.exit();
+						}
 					})
 					.catch((err) => {
 						loggerPlugin.error(req.uuid, 'DELETE /plugins err', err.message);
@@ -247,7 +253,7 @@ checkStatus()
 							errorMessage: 'must be minimum length of 5',
 							options: { min: 5 }
 						},
-						optional: false
+						optional: true
 					},
 					version: {
 						in: ['body'],
@@ -400,16 +406,19 @@ checkStatus()
 							throw new Error('Version is already installed');
 						}
 
-						const minifiedScript = UglifyJS.minify(script);
-
-						if (minifiedScript.error) {
-							throw new Error('Error while minifying script');
-						}
-
 						const updatedPlugin = {
-							script: minifiedScript.code,
 							version
 						};
+
+						if (script) {
+							const minifiedScript = UglifyJS.minify(script);
+
+							if (minifiedScript.error) {
+								throw new Error('Error while minifying script');
+							}
+
+							updatedPlugin.script = minifiedScript.code;
+						}
 
 						if (description) {
 							updatedPlugin.description = description;
@@ -464,12 +473,20 @@ checkStatus()
 							};
 						}
 
-						return plugin.update(updatedPlugin);
+						return bluebird.all([
+							plugin,
+							plugin.update(updatedPlugin)
+						]);
 					})
-					.then(async (plugin) => {
+					.then(([ { enabled, script }, plugin ]) => {
 						loggerPlugin.info(req.uuid, 'PUT /plugins updated', name);
 
 						plugin = plugin.dataValues;
+
+						let restartProcess = false;
+						if (enabled && script) {
+							restartProcess = true;
+						}
 
 						plugin.enabled_admin_view = !!plugin.admin_view;
 
@@ -482,7 +499,7 @@ checkStatus()
 							'postscript'
 						]));
 
-						if (plugin.enabled) {
+						if (restartProcess) {
 							process.exit();
 						}
 					})
@@ -513,7 +530,7 @@ checkStatus()
 							errorMessage: 'must be minimum length of 5',
 							options: { min: 5 }
 						},
-						optional: false
+						optional: true
 					},
 					version: {
 						in: ['body'],
@@ -670,19 +687,22 @@ checkStatus()
 							throw new Error('Plugin is already installed');
 						}
 
-						const minifiedScript = UglifyJS.minify(script);
-
-						if (minifiedScript.error) {
-							throw new Error('Error while minifying script');
-						}
-
 						const newPlugin = {
 							name,
-							script: minifiedScript.code,
 							version,
 							author,
 							enabled
 						};
+
+						if (script) {
+							const minifiedScript = UglifyJS.minify(script);
+
+							if (minifiedScript.error) {
+								throw new Error('Error while minifying script');
+							}
+
+							newPlugin.script =  minifiedScript.code;
+						}
 
 						if (description) {
 							newPlugin.description = description;
@@ -735,6 +755,11 @@ checkStatus()
 
 						plugin = plugin.dataValues;
 
+						let restartProcess = false;
+						if (plugin.enabled && plugin.script) {
+							restartProcess = true;
+						}
+
 						plugin.enabled_admin_view = !!plugin.admin_view;
 
 						res.json(lodash.omit(plugin, [
@@ -746,7 +771,7 @@ checkStatus()
 							'postscript'
 						]));
 
-						if (plugin.enabled) {
+						if (restartProcess) {
 							process.exit();
 						}
 					})
@@ -809,14 +834,14 @@ checkStatus()
 							...updatedMeta
 						};
 
-						return plugin.update({ meta: newMeta }, { fields: ['meta']});
+						return plugin.update({ meta: newMeta }, { fields: ['meta'] });
 					})
 					.then((plugin) => {
 						loggerPlugin.info(req.uuid, 'PUT /plugins/meta updated', name);
 
 						res.json({ message: 'Success' });
 
-						if (plugin.enabled) {
+						if (plugin.enabled && plugin.script) {
 							process.exit();
 						}
 					})
@@ -956,12 +981,14 @@ checkStatus()
 
 						return plugin.update({ enabled: false }, { fields: ['enabled']});
 					})
-					.then(() => {
+					.then((plugin) => {
 						loggerPlugin.info(req.uuid, 'GET /plugins/disable disabled plugin', name);
 
 						res.json({ message: 'Success' });
 
-						process.exit();
+						if (plugin.script) {
+							process.exit();
+						}
 					})
 					.catch((err) => {
 						loggerPlugin.error(req.uuid, 'GET /plugins/disable err', err.message);
@@ -1011,12 +1038,14 @@ checkStatus()
 
 						return plugin.update({ enabled: true }, { fields: ['enabled']});
 					})
-					.then(() => {
+					.then((plugin) => {
 						loggerPlugin.info(req.uuid, 'GET /plugins/enable enabled plugin', name);
 
 						res.json({ message: 'Success' });
 
-						process.exit();
+						if (plugin.script) {
+							process.exit();
+						}
 					})
 					.catch((err) => {
 						loggerPlugin.error(req.uuid, 'GET /plugins/enable err', err.message);
@@ -1025,7 +1054,12 @@ checkStatus()
 			});
 
 			toolsLib.database.findAll('plugin', {
-				where: { enabled: true },
+				where: {
+					enabled: true,
+					script: {
+						[Op.not]: null
+					}
+				},
 				raw: true
 			})
 				.then(async (plugins) => {

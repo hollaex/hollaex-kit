@@ -112,3 +112,11 @@
 .admin-tiers-wrapper .ant-pagination-item-active:hover {
 	border-color: #288500 !important;
 }
+
+.admin-tiers-wrapper .ant-table-tbody {
+	overflow-x: auto;
+}
+
+.admin-tiers-wrapper .ant-table-container {
+	overflow-x: auto;
+}

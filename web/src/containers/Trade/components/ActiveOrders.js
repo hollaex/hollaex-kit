@@ -127,7 +127,7 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 	},
 	{
 		label: (
-			<div className="trade__active-orders_cancel-All">
+			<span className="trade__active-orders_cancel-All">
 				<ActionNotification
 					stringId="CANCEL_ALL"
 					text={STRINGS['CANCEL_ALL']}
@@ -137,7 +137,7 @@ const generateHeaders = (pairData = {}, onCancel, onCancelAll, ICONS) => [
 					status="information"
 					textPosition="left"
 				/>
-			</div>
+			</span>
 		),
 		key: 'cancel',
 		className: 'trade__active-orders-header_cancel-All',

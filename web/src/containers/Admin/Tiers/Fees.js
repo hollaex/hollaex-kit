@@ -15,6 +15,8 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 			title: 'Pairs',
 			dataIndex: 'pair_base',
 			key: 'pair_base',
+			width: 150,
+			fixed: 'left',
 			render: (pair_base, { name }) => (
 				<div className="d-flex align-items-center">
 					<CurrencyBall symbol={pair_base} name={pair_base} size="m" />
@@ -26,6 +28,8 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 			title: 'Fee type',
 			dataIndex: 'type',
 			key: 'type',
+			width: 140,
+			fixed: 'left',
 			className: 'type-column',
 			render: () => (
 				<div>
@@ -61,6 +65,7 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 			dataIndex: 'name',
 			key: level,
 			className: 'type-column',
+			width: 120,
 			render: (name) => (
 				<div>
 					<div className="custom-column-td column-divider">
@@ -82,6 +87,8 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 		dataIndex: 'name',
 		key: 'action',
 		align: 'right',
+		width: 150,
+		fixed: 'right',
 		render: (name) => (
 			<span className="admin-link-highlight" onClick={() => onEditFees(name)}>
 				Adjust fees
@@ -128,6 +135,7 @@ const Fees = ({
 					dataSource={coinsData}
 					rowKey={(data) => data.id}
 					bordered
+					scroll={{ x: 'auto' }}
 				/>
 			</div>
 		</div>
