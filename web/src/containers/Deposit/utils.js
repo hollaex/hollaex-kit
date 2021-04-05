@@ -48,6 +48,7 @@ export const generateFormFields = ({
 			options: networkOptions,
 			hideCheck: true,
 			ishorizontalfield: true,
+			disabled: networks.length === 1,
 		};
 	}
 
