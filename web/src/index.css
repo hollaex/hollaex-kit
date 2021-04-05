@@ -305,6 +305,9 @@ table th {
 .text-align-center {
   text-align: center; }
 
+.align-items-baseline {
+  align-items: baseline; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -6264,6 +6267,8 @@ table th {
   align-items: center; }
   .field-label-wrapper > div {
     flex: 1; }
+  .field-label-wrapper .field_warning_wrapper {
+    width: 80%; }
 
 .field-label {
   color: var(--labels_important-active-labels-text-graphics);
@@ -6412,6 +6417,9 @@ table th {
 
 .layout-mobile .field-label-wrapper > div {
   flex: 1;
+  width: 100%; }
+
+.layout-mobile .field-label-wrapper .field_warning_wrapper {
   width: 100%; }
 
 .layout-mobile .field_warning_wrapper {

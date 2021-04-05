@@ -33,7 +33,7 @@ export const FieldContent = ({
 						<div className="field-label">
 							{label}
 							{warning && (
-								<div className="d-flex align-items-center field_warning_wrapper">
+								<div className="d-flex align-items-baseline field_warning_wrapper">
 									<ExclamationCircleFilled className="field_warning_icon" />
 									<div className="field_warning_text">{warning}</div>
 								</div>

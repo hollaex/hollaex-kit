@@ -39,6 +39,10 @@ $outline-height: 1.5px;
 	> div {
 		flex: 1;
 	}
+
+	.field_warning_wrapper {
+		width: 80%;
+	}
 }
 
 .field-label {
@@ -270,6 +274,10 @@ $outline-height: 1.5px;
 	.field-label-wrapper {
 		> div {
 			flex: 1;
+			width: 100%;
+		}
+
+		.field_warning_wrapper {
 			width: 100%;
 		}
 	}
