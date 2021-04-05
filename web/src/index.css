@@ -6348,7 +6348,14 @@ table th {
   width: 1rem;
   height: 1rem; }
 
+.field_warning_wrapper {
+  font-size: 1rem;
+  color: var(--specials_notifications-alerts-warnings); }
+
 .direction_ltr .field-error-text {
+  padding-left: 0.25rem; }
+
+.direction_ltr .field_warning_text {
   padding-left: 0.25rem; }
 
 .direction_ltr .field-children.valid > *:not(:last-child) {
@@ -6370,6 +6377,9 @@ table th {
   right: 1.25rem; }
 
 .direction_rtl .field-error-text {
+  padding-right: 0.25rem; }
+
+.direction_rtl .field_warning_text {
   padding-right: 0.25rem; }
 
 .direction_rtl .field-children.valid > *:not(:last-child) {
@@ -6399,6 +6409,9 @@ table th {
 .layout-mobile .field-label-wrapper > div {
   flex: 1;
   width: 100%; }
+
+.layout-mobile .field_warning_wrapper {
+  padding-bottom: 1rem; }
 
 .input_icon {
   margin-right: 0.25rem;
