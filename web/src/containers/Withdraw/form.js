@@ -272,7 +272,7 @@ const WithdrawForm = reduxForm({
 		dispatch(reset(FORM_NAME));
 		setWithdrawEmailConfirmation(data, dispatch);
 	},
-	// enableReinitialize: true,
+	enableReinitialize: true,
 	validate,
 })(Form);
 

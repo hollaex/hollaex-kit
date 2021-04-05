@@ -31,7 +31,12 @@ export const generateInitialValues = (
 
 	if (min) {
 		initialValues.amount = min;
+	} else {
+		initialValues.amount = '';
 	}
+
+	initialValues.destination_tag = '';
+	initialValues.address = '';
 
 	if (networks && networks.length > 0) {
 		initialValues.network = network;
