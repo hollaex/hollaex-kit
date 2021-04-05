@@ -20,6 +20,7 @@ import {
 import { BASE_CURRENCY } from '../../config/constants';
 import { calculateBaseFee } from './utils';
 
+import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
@@ -191,6 +192,8 @@ class Form extends Component {
 			currentPrice,
 			activeTheme,
 			coins,
+			titleSection,
+			icons: ICONS,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -198,6 +201,12 @@ class Form extends Component {
 		return (
 			<form autoComplete="off" className="withdraw-form-wrapper">
 				<div className="withdraw-form">
+					<Image
+						iconId={`${currency.toUpperCase()}_ICON`}
+						icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+						wrapperClassName="form_currency-ball"
+					/>
+					{titleSection}
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
 				</div>

@@ -27,7 +27,11 @@ import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import { generateBaseInformation } from './utils';
 
-import { renderInformation, renderTitleSection } from '../Wallet/components';
+import {
+	renderInformation,
+	renderTitleSection,
+	renderNeedHelpAction,
+} from '../Wallet/components';
 
 import { FORM_NAME } from './form';
 
@@ -270,6 +274,7 @@ class Withdraw extends Component {
 			balanceAvailable,
 			currentPrice: prices[currency],
 			router,
+			icons: ICONS,
 		};
 
 		return (
@@ -289,19 +294,34 @@ class Withdraw extends Component {
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
-					<div className={classnames('inner_container', 'with_border_top')}>
-						{renderInformation(
-							currency,
-							balance,
-							openContactForm,
-							generateBaseInformation,
-							coins,
-							'withdraw',
-							links,
-							ICONS['BLUE_QUESTION'],
-							'BLUE_QUESTION'
-						)}
-						<WithdrawCryptocurrency {...formProps} />
+					<div className={classnames('inner_container')}>
+						<div className="information_block">
+							<div
+								className="information_block-text_wrapper"
+								style={{ height: '1.5rem' }}
+							/>
+							{openContactForm &&
+								renderNeedHelpAction(
+									openContactForm,
+									links,
+									ICONS['BLUE_QUESTION'],
+									'BLUE_QUESTION'
+								)}
+						</div>
+						<WithdrawCryptocurrency
+							titleSection={renderInformation(
+								currency,
+								balance,
+								false,
+								generateBaseInformation,
+								coins,
+								'withdraw',
+								links,
+								ICONS['BLUE_QUESTION'],
+								'BLUE_QUESTION'
+							)}
+							{...formProps}
+						/>
 						{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}
 					</div>
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal

@@ -1597,6 +1597,10 @@ table th {
 .verification-wrapper .block-wrapper {
   margin: 1rem; }
 
+.form_currency-ball {
+  width: 30px;
+  height: 30px; }
+
 .transaction-history-wrapper .ant-row {
   margin-left: 0 !important;
   margin-right: 0 !important;

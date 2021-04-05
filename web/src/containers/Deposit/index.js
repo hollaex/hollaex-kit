@@ -17,7 +17,11 @@ import {
 } from '../../actions/appActions';
 
 import { MobileBarBack, Dialog, Notification } from 'components';
-import { renderInformation, renderTitleSection } from '../Wallet/components';
+import {
+	renderInformation,
+	renderTitleSection,
+	renderNeedHelpAction,
+} from '../Wallet/components';
 import RenderContent, {
 	generateBaseInformation,
 	generateFormFields,
@@ -236,19 +240,33 @@ class Deposit extends Component {
 							coins,
 							'DEPOSIT_BITCOIN'
 						)}
-					<div className={classnames('inner_container', 'with_border_top')}>
-						{renderInformation(
-							currency,
-							balance,
-							openContactForm,
-							generateBaseInformation,
-							coins,
-							'deposit',
-							constants.links,
-							ICONS['BLUE_QUESTION'],
-							'BLUE_QUESTION'
-						)}
+					<div className={classnames('inner_container')}>
+						<div className="information_block">
+							<div
+								className="information_block-text_wrapper"
+								style={{ height: '1.5rem' }}
+							/>
+							{openContactForm &&
+								renderNeedHelpAction(
+									openContactForm,
+									constants.links,
+									ICONS['BLUE_QUESTION'],
+									'BLUE_QUESTION'
+								)}
+						</div>
 						<RenderContent
+							titleSection={renderInformation(
+								currency,
+								balance,
+								false,
+								generateBaseInformation,
+								coins,
+								'deposit',
+								constants.links,
+								ICONS['BLUE_QUESTION'],
+								'BLUE_QUESTION'
+							)}
+							icons={ICONS}
 							initialValues={initialValues}
 							address={address}
 							currency={currency}
