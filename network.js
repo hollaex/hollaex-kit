@@ -423,7 +423,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -447,6 +449,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {
@@ -527,7 +537,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -556,6 +568,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {
@@ -635,7 +655,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -659,6 +681,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {
@@ -739,7 +769,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -768,6 +800,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {

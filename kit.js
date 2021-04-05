@@ -182,12 +182,19 @@ class HollaExKit {
 	getDeposits(
 		opts = {
 			currency: null,
+			status: null,
+			dismissed: null,
+			rejected: null,
+			processing: null,
+			waiting: null,
 			limit: 50,
 			page: 1,
 			orderBy: 'id',
 			order: 'asc',
 			startDate: 0,
-			endDate: moment().toISOString()
+			endDate: moment().toISOString(),
+			transactionId: null,
+			address: null
 		}
 	) {
 		const verb = 'GET';
@@ -221,6 +228,34 @@ class HollaExKit {
 			path += `&end_date=${opts.endDate}`;
 		}
 
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
+		}
+
+		if (isBoolean(opts.status)) {
+			path += `&status=${opts.status}`;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			path += `&dismissed=${opts.dismissed}`;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			path += `&rejected=${opts.rejected}`;
+		}
+
+		if (isBoolean(opts.processing)) {
+			path += `&processing=${opts.processing}`;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			path += `&waiting=${opts.waiting}`;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -247,12 +282,19 @@ class HollaExKit {
 	getWithdrawals(
 		opts = {
 			currency: null,
+			status: null,
+			dismissed: null,
+			rejected: null,
+			processing: null,
+			waiting: null,
 			limit: 50,
 			page: 1,
 			orderBy: 'id',
 			order: 'asc',
 			startDate: 0,
-			endDate: moment().toISOString()
+			endDate: moment().toISOString(),
+			transactionId: null,
+			address: null
 		}
 	) {
 		const verb = 'GET';
@@ -284,6 +326,34 @@ class HollaExKit {
 
 		if (isString(opts.endDate)) {
 			path += `&end_date=${opts.endDate}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
+		}
+
+		if (isBoolean(opts.status)) {
+			path += `&status=${opts.status}`;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			path += `&dismissed=${opts.dismissed}`;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			path += `&rejected=${opts.rejected}`;
+		}
+
+		if (isBoolean(opts.processing)) {
+			path += `&processing=${opts.processing}`;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			path += `&waiting=${opts.waiting}`;
 		}
 
 		const headers = generateHeaders(
