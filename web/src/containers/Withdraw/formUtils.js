@@ -111,7 +111,7 @@ export const generateFormValues = (
 				fullWidth: true,
 				ishorizontalfield: true,
 			};
-		} else if (symbol === 'xlm' || coins[symbol].network === 'stellar') {
+		} else if (symbol === 'xlm' || selectedNetwork === 'stellar') {
 			fields.destination_tag = {
 				type: 'text',
 				stringId:
