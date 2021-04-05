@@ -869,6 +869,10 @@ const nestedContent = {
 	WITHDRAWALS_FORM_NETWORK_LABEL: 'Network',
 	DEPOSIT_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the senders wallets network',
+	DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG:
+		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
+	WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG:
+		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
 	WITHDRAWALS_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the destination wallet',
 	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:

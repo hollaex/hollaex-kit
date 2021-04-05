@@ -245,6 +245,7 @@ class Withdraw extends Component {
 			router,
 			coins,
 			icons: ICONS,
+			selectedNetwork,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const { formValues, initialValues, currency, checked } = this.state;
@@ -275,6 +276,7 @@ class Withdraw extends Component {
 			currentPrice: prices[currency],
 			router,
 			icons: ICONS,
+			selectedNetwork,
 		};
 
 		return (

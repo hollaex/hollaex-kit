@@ -11,6 +11,7 @@ import {
 import math from 'mathjs';
 // import classnames from 'classnames';
 // import { isMobile } from 'react-device-detect';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -22,6 +23,7 @@ import { calculateBaseFee } from './utils';
 
 import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
+import { EditWrapper } from 'components';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -194,6 +196,7 @@ class Form extends Component {
 			coins,
 			titleSection,
 			icons: ICONS,
+			selectedNetwork,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -207,6 +210,19 @@ class Form extends Component {
 						wrapperClassName="form_currency-ball"
 					/>
 					{titleSection}
+					{(currency === 'xrp' ||
+						currency === 'xlm' ||
+						selectedNetwork === 'stellar') && (
+						<div className="d-flex">
+							<div className="d-flex align-items-baseline field_warning_wrapper">
+								<ExclamationCircleFilled className="field_warning_icon" />
+								<div className="field_warning_text">
+									{STRINGS['WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG']}
+								</div>
+							</div>
+							<EditWrapper stringId="WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG" />
+						</div>
+					)}
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
 				</div>

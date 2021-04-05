@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { reduxForm } from 'redux-form';
 import QRCode from 'qrcode.react';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper, Button } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -94,6 +95,7 @@ const RenderContentForm = ({
 	showGenerateButton,
 	formFields,
 	icons: ICONS,
+	selectedNetwork,
 }) => {
 	if (coins[currency]) {
 		return (
@@ -106,6 +108,19 @@ const RenderContentForm = ({
 							wrapperClassName="form_currency-ball"
 						/>
 						{titleSection}
+						{(currency === 'xrp' ||
+							currency === 'xlm' ||
+							selectedNetwork === 'stellar') && (
+							<div className="d-flex">
+								<div className="d-flex align-items-baseline field_warning_wrapper">
+									<ExclamationCircleFilled className="field_warning_icon" />
+									<div className="field_warning_text">
+										{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
+									</div>
+								</div>
+								<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG" />
+							</div>
+						)}
 						{renderFields(formFields)}
 						{address && (
 							<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">

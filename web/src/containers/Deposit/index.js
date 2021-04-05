@@ -211,6 +211,7 @@ class Deposit extends Component {
 			constants = { links: {} },
 			icons: ICONS,
 			addressRequest,
+			selectedNetwork,
 		} = this.props;
 
 		const {
@@ -277,6 +278,7 @@ class Deposit extends Component {
 							setCopied={() => this.setState({ copied: true })}
 							showGenerateButton={showGenerateButton}
 							formFields={formFields}
+							selectedNetwork={selectedNetwork}
 						/>
 					</div>
 				</div>
