@@ -358,9 +358,9 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 		case SET_WEB_VIEWS: {
 			const allWebViews = [];
-			payload.enabledPlugins.forEach(({ web_views = [] }) => {
-				if (web_views.length) {
-					allWebViews.push(...web_views);
+			payload.enabledPlugins.forEach(({ web_view = [] }) => {
+				if (web_view && web_view.length) {
+					allWebViews.push(...web_view);
 				}
 			});
 
