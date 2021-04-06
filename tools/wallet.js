@@ -5,7 +5,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
 const { verifyOtpBeforeAction } = require('./security');
-const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig } = require('./common');
+const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig, sleep } = require('./common');
 const {
 	INVALID_OTP_CODE,
 	INVALID_WITHDRAWAL_TOKEN,
@@ -27,8 +27,8 @@ const { all, reject } = require('bluebird');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const moment = require('moment');
 const math = require('mathjs');
-const { each } = require('lodash');
 const { parse } = require('json2csv');
+const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 
 const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 	network: null,
@@ -80,11 +80,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				let belowLimit = await withdrawalBelowLimit(user.network_id, currency, limit, amount);
-
-				if (!belowLimit) {
-					throw new Error('Amount exceeds 24 hour withdrawal limit');
-				}
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 			}
 			return withdrawalRequestEmail(
 				user,
@@ -200,11 +196,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				let belowLimit = await withdrawalBelowLimit(user.network_id, currency, limit, amount);
-
-				if (!belowLimit) {
-					throw new Error('Amount exceeds 24 hour withdrawal limit');
-				}
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 			}
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
@@ -214,24 +206,129 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts) =>
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
-	let accumulatedAmount = amount;
+const get24HourAccumulatedWithdrawals = async (userId) => {
 	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
-		currency,
 		dismissed: false,
 		rejected: false,
 		startDate: moment().subtract(24, 'hours').toISOString()
 	});
-	each(withdrawals.data, (withdrawal) => {
-		accumulatedAmount = math.number(math.add(math.bignumber(accumulatedAmount), math.bignumber(withdrawal.amount)));
-	});
 
-	const convertedAmount = await getNodeLib().getOraclePrices([currency], {
+	const withdrawalData = withdrawals.data;
+
+	if (withdrawals.count > 50) {
+		const numofPages = Math.ceil(withdrawals.count / 50);
+		for (let i = 2; i <= numofPages; i++) {
+			await sleep(500);
+
+			const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
+				dismissed: false,
+				rejected: false,
+				page: i,
+				startDate: moment().subtract(24, 'hours').toISOString()
+			});
+
+			withdrawalData.push(...withdrawals.data);
+		}
+	}
+
+	loggerWithdrawals.info(
+		'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+		'withdrawals made within last 24 hours',
+		withdrawals.count
+	);
+
+	const withdrawalAmount = {};
+
+	for (let withdrawal of withdrawalData) {
+		if (withdrawalAmount[withdrawal.currency] !== undefined) {
+			withdrawalAmount[withdrawal.currency] = math.number(math.add(math.bignumber(withdrawalAmount[withdrawal.currency]), math.bignumber(withdrawal.amount)));
+		} else {
+			withdrawalAmount[withdrawal.currency] = withdrawal.amount;
+		}
+	}
+
+	let totalWithdrawalAmount = 0;
+
+	for (let withdrawalCurrency in withdrawalAmount) {
+		loggerWithdrawals.info(
+			'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+			`accumulated ${withdrawalCurrency} withdrawal amount`,
+			withdrawalAmount[withdrawalCurrency]
+		);
+
+		await sleep(500);
+
+		const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
+			quote: getKitConfig().native_currency,
+			amount: withdrawalAmount[withdrawalCurrency]
+		});
+
+		loggerWithdrawals.info(
+			'toolsLib/wallet/withdrawalBelowLimit',
+			`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
+			convertedAmount[withdrawalCurrency]
+		);
+
+		totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
+	}
+
+	return totalWithdrawalAmount;
+};
+
+const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
+	loggerWithdrawals.info(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		'amount being withdrawn',
+		amount,
+		'currency',
+		currency,
+		'limit',
+		limit,
+		'userId',
+		userId,
+	);
+
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
+
+	loggerWithdrawals.info(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		`total 24 hour withdrawn amount converted to ${getKitConfig().native_currency}`,
+		last24HourWithdrawalAmount
+	);
+
+	const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
 		quote: getKitConfig().native_currency,
-		amount: accumulatedAmount
+		amount
 	});
 
-	return convertedAmount[currency] < limit;
+	loggerWithdrawals.info(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		`${currency} withdrawal request amount converted to ${getKitConfig().native_currency}`,
+		convertedWithdrawalAmount[currency]
+	);
+
+	const totalWithdrawalAmount = math.number(
+		math.add(
+			math.bignumber(last24HourWithdrawalAmount),
+			math.bignumber(convertedWithdrawalAmount[currency])
+		)
+	);
+
+	loggerWithdrawals.info(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		'total 24 hour withdrawn amount after performing current withdrawal',
+		totalWithdrawalAmount,
+		'24 hour withdrawal limit',
+		limit
+	);
+
+	if (totalWithdrawalAmount > limit) {
+		throw new Error(
+			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${getKitConfig().native_currency}. Withdrawn amount: ${last24HourWithdrawalAmount} ${getKitConfig().native_currency}. Request amount: ${convertedWithdrawalAmount[currency]} ${getKitConfig().native_currency}`
+		);
+	}
+
+	return;
 };
 
 const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true) => {
