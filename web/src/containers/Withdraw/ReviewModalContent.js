@@ -10,6 +10,7 @@ import {
 } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
+import { getNetworkLabelByKey } from 'utils/wallet';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -90,6 +91,15 @@ const ReviewModalContent = ({
 				</div>
 				<div className="review-warning_arrow" />
 				<div className="review-crypto-address">{data.address}</div>
+				{data.network && (
+					<div className="review-fee_message">
+						{STRINGS.formatString(
+							STRINGS['WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE'],
+							fullname,
+							getNetworkLabelByKey(data.network)
+						)}
+					</div>
+				)}
 				{hasDestinationTag && (
 					<div className="review-fee_message">
 						{STRINGS.formatString(
