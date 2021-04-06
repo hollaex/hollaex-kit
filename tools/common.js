@@ -456,6 +456,10 @@ const isEmail = (email) => {
 	return isValidEmail(email);
 };
 
+const sleep = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -496,5 +500,6 @@ module.exports = {
 	getTickers,
 	getTradesHistory,
 	sendEmail,
-	isEmail
+	isEmail,
+	sleep
 };
