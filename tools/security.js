@@ -494,13 +494,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 		} else {
 			findTokenByApiKey(apiKey)
 				.then((token) => {
-					if (!token) {
-						loggerAuth.error(
-							'helpers/auth/checkApiKey/findTokenByApiKey invalid key',
-							apiKey
-						);
-						return sendError(API_KEY_INVALID);
-					} else if (!endpointScopes.includes(token.type)) {
+					if (!endpointScopes.includes(token.type)) {
 						loggerAuth.error(
 							'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
 							apiKey,
@@ -536,7 +530,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 				})
 				.catch((err) => {
 					loggerAuth.error('helpers/auth/checkApiKey catch', err);
-					return sendError(err);
+					return sendError(err.message);
 				});
 		}
 	}
@@ -685,13 +679,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if (!token) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey invalid key',
-						apiKey
-					);
-					throw new Error(API_KEY_INVALID);
-				} else if (!scopes.includes(token.type)) {
+				if (!scopes.includes(token.type)) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
 						apiKey,
@@ -931,6 +919,11 @@ const findTokenByApiKey = (apiKey) => {
 	return client.hgetAsync(HMAC_TOKEN_KEY, apiKey)
 		.then(async (token) => {
 			if (!token) {
+				loggerAuth.debug(
+					'security/findTokenByApiKey apiKey not found in redis',
+					apiKey
+				);
+
 				token = await dbQuery.findOne('token', {
 					where: {
 						key: apiKey,
@@ -946,9 +939,28 @@ const findTokenByApiKey = (apiKey) => {
 						}
 					]
 				});
+
+				if (!token) {
+					loggerAuth.error(
+						'security/findTokenByApiKey invalid key',
+						apiKey
+					);
+					throw new Error(API_KEY_INVALID);
+				}
+
 				client.hsetAsync(HMAC_TOKEN_KEY, apiKey, JSON.stringify(token));
+
+				loggerAuth.debug(
+					'security/findTokenByApiKey apiKey stored in redis',
+					apiKey
+				);
+
 				return token;
 			} else {
+				loggerAuth.debug(
+					'security/findTokenByApiKey apiKey found in redis',
+					apiKey
+				);
 				return JSON.parse(token);
 			}
 		});
