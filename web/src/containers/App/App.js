@@ -490,6 +490,7 @@ class App extends Component {
 		const isMenubar = !isHome;
 		const isMenuSider =
 			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
+		const showFooter = !isMobile || isHome;
 		return (
 			<ThemeProvider>
 				<div>
@@ -720,7 +721,7 @@ class App extends Component {
 							}
 						)}
 					>
-						{!isMobile && (
+						{showFooter && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>

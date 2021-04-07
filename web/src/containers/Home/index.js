@@ -17,7 +17,7 @@ import { isLoggedIn } from 'utils/token';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 import Markets from 'containers/Summary/components/Markets';
-import { QuickTrade, EditWrapper, AppFooter, ButtonLink } from 'components';
+import { QuickTrade, EditWrapper, ButtonLink } from 'components';
 import { unique } from 'utils/data';
 import math from 'mathjs';
 import Image from 'components/Image';
@@ -373,7 +373,6 @@ class Home extends Component {
 			activeTheme,
 			icons: ICONS = {},
 			sections,
-			constants,
 		} = this.props;
 
 		return (
@@ -442,9 +441,6 @@ class Home extends Component {
 							</div>
 						</div>
 						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
-						{isMobile && (
-							<AppFooter theme={activeTheme} constants={constants} />
-						)}
 					</div>
 				</div>
 			</div>
