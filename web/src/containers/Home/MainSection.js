@@ -44,9 +44,14 @@ const MainSection = ({
 					<div>
 						<EditWrapper stringId="HOME.TRADE_CRYPTO" />
 						<div
-							className={classnames(...BUTTONS_CLASSES, 'main-section_button', {
-								pointer: onClickLearnMore,
-							})}
+							className={classnames(
+								...BUTTONS_CLASSES,
+								'main-section_button',
+								'no-border',
+								{
+									pointer: onClickLearnMore,
+								}
+							)}
 							onClick={onClickLearnMore}
 						>
 							{STRINGS['HOME.TRADE_CRYPTO']}
@@ -58,6 +63,7 @@ const MainSection = ({
 							className={classnames(
 								...BUTTONS_CLASSES,
 								'main-section_button_invert',
+								'no-border',
 								{
 									pointer: onClickDemo,
 								}

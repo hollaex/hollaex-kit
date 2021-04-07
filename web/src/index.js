@@ -136,9 +136,17 @@ const bootstrapApp = (appConfig) => {
 	);
 };
 
-getConfigs()
-	.then(bootstrapApp)
-	.catch((err) => console.error('Initialization failed!\n', err));
+const initialize = async () => {
+	try {
+		const configs = await getConfigs();
+		bootstrapApp(configs);
+	} catch (err) {
+		console.error('Initialization failed!\n', err);
+		setTimeout(initialize, 3000);
+	}
+};
+
+initialize().then(() => console.info('Successfully Initialized'));
 
 // import registerServiceWorker from './registerServiceWorker'
 // registerServiceWorker();

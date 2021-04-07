@@ -120,7 +120,7 @@ export const logout = (message = '') => (dispatch) => {
 			message,
 		},
 	});
-	cleatTokenInApp(browserHistory, message ? '/login' : '/');
+	cleatTokenInApp(browserHistory, '/login');
 };
 
 export const setLogoutMessage = (message = '') => ({

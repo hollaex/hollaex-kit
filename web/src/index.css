@@ -308,6 +308,9 @@ table th {
 .align-items-baseline {
   align-items: baseline; }
 
+.no-border {
+  border: none !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -996,6 +999,7 @@ table th {
   .home-page__market-wrapper .table-row thead {
     color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .home-page__market-wrapper thead {
+    color: var(--labels_important-active-labels-text-graphics) !important;
     background-color: var(--base_wallet-sidebar-and-popup); }
   .home-page__market-wrapper .market-list__block-table {
     margin-bottom: 0 !important; }
@@ -1080,13 +1084,6 @@ table th {
     position: relative;
     top: calc(50% - 0.6rem); }
 
-.layout-mobile.home_container .app_container-content {
-  min-height: calc(100vh);
-  max-height: calc(100vh); }
-
-.layout-mobile.home_container .home_container-content {
-  width: 100%; }
-
 .home_header_button {
   height: 28px;
   font-weight: bold; }
@@ -1106,10 +1103,6 @@ table th {
   .home_container .quick_trade-wrapper {
     min-width: 30rem;
     max-width: 40rem; }
-  .home_container .home_container-content {
-    margin: auto;
-    width: 90%;
-    max-width: 900px; }
   .home_container .exchange-expired {
     background-color: #ed1c24 !important;
     color: #ffffff !important; }
