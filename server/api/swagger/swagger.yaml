@@ -4157,6 +4157,11 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
   ExternalWithdrawalRequest:
     type: object
     required:
@@ -4179,6 +4184,11 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
   OrderbooksResponse:
     type: object
     description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
