@@ -543,8 +543,8 @@ class App extends Component {
 								fontClass,
 								languageClasses[0],
 								{
-									'layout-mobile': isMobile,
-									'layout-desktop': isBrowser,
+									'layout-mobile': isMobile && !isHome,
+									'layout-desktop': isBrowser || isHome,
 									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
@@ -610,7 +610,7 @@ class App extends Component {
 											'flex-column',
 											'justify-content-between',
 											{
-												'overflow-y': !isMobile,
+												'overflow-y': !isMobile || isHome,
 												no_bottom_navigation: isHome,
 											}
 										)}

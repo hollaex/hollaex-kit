@@ -377,15 +377,7 @@ class Home extends Component {
 					style={{ position: 'absolute', right: 10 }}
 				/>
 				<EventListener target="window" onResize={this.onResize} />
-				<div
-					className={classnames(
-						'app_container-content',
-						'home_container-content',
-						'flex-column',
-						'overflow-y'
-					)}
-					ref={this.setContainerRef}
-				>
+				<div ref={this.setContainerRef}>
 					<EditWrapper
 						sectionId="LANDING_PAGE_SECTIONS"
 						position={[0, 0]}
