@@ -22,6 +22,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	thead {
+		color: $colors-main-black !important;
 		background-color: $auth-container-background;
 	}
 
@@ -104,19 +105,6 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
-.layout-mobile {
-	&.home_container {
-		.app_container-content {
-			min-height: calc(100vh);
-			max-height: calc(100vh);
-		}
-
-		.home_container-content {
-			width: 100%;
-		}
-	}
-}
-
 .home_header_button {
 	height: 28px;
 	font-weight: bold;
@@ -145,12 +133,6 @@ $trade-tab--arrow-size: 0.4rem;
 	.quick_trade-wrapper {
 		min-width: 30rem;
 		max-width: 40rem;
-	}
-
-	.home_container-content {
-		margin: auto;
-		width: 90%;
-		max-width: 900px;
 	}
 
 	.exchange-expired {
