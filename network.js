@@ -1742,7 +1742,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	mintAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
+	mintAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1763,8 +1763,12 @@ class HollaExNetwork {
 			data.description = opts.description;
 		}
 
-		if (opts.transaction_id) {
-			data.transaction_id = opts.transaction_id;
+		if (opts.transactionId) {
+			data.transaction_id = opts.transactionId;
+		}
+
+		if (isBoolean(opts.status)) {
+			data.status = opts.status;
 		}
 
 		const headers = generateHeaders(
@@ -1779,7 +1783,51 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
-	burnAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
+	updatePendingMint(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null }) {
+		if (!transactionId) {
+			return reject(parameterError('transactionId', 'cannot be null'));
+		}
+
+		const status = isBoolean(opts.status) ? opts.status : false;
+		const rejected = isBoolean(opts.rejected) ? opts.rejected : false;
+		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
+
+		if (!status && !rejected && !dismissed) {
+			return reject(new Error('Must give one parameter to update'));
+		} else if (
+			status && (rejected || dismissed)
+			|| rejected && (status || dismissed)
+			|| dismissed && (status || rejected)
+		) {
+			return reject(new Error('Can only update one parmaeter'));
+		}
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/mint`;
+		const data = {
+			transaction_id: transactionId,
+			status,
+			rejected,
+			dismissed
+		};
+
+		if (opts.updatedTransactionId) {
+			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
+	burnAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1800,8 +1848,56 @@ class HollaExNetwork {
 			data.description = opts.description;
 		}
 
-		if (opts.transaction_id) {
-			data.transaction_id = opts.transaction_id;
+		if (opts.transactionId) {
+			data.transaction_id = opts.transactionId;
+		}
+
+		if (isBoolean(opts.status)) {
+			data.status = opts.status;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
+	updatePendingBurn(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null }) {
+		if (!transactionId) {
+			return reject(parameterError('transactionId', 'cannot be null'));
+		}
+
+		const status = isBoolean(opts.status) ? opts.status : false;
+		const rejected = isBoolean(opts.rejected) ? opts.rejected : false;
+		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
+
+		if (!status && !rejected && !dismissed) {
+			return reject(new Error('Must give one parameter to update'));
+		} else if (
+			status && (rejected || dismissed)
+			|| rejected && (status || dismissed)
+			|| dismissed && (status || rejected)
+		) {
+			return reject(new Error('Can only update one parmaeter'));
+		}
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/burn`;
+		const data = {
+			transaction_id: transactionId,
+			status,
+			rejected,
+			dismissed
+		};
+
+		if (opts.updatedTransactionId) {
+			data.updated_transaction_id = opts.updatedTransactionId;
 		}
 
 		const headers = generateHeaders(
