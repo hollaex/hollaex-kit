@@ -389,7 +389,11 @@ class Home extends Component {
 						'layout-desktop': isBrowser,
 					}
 				)}
-				style={{ background: `url(${ICONS['EXCHANGE_LANDING_PAGE']})` }}
+				style={{
+					background: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+				}}
 			>
 				<div className="home-page_overlay">
 					<EditWrapper
