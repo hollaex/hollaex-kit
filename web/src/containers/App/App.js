@@ -468,6 +468,7 @@ class App extends Component {
 			pairsTradesFetched,
 			verifyToken,
 			token,
+			icons: ICONS,
 		} = this.props;
 
 		const {
@@ -491,6 +492,15 @@ class App extends Component {
 		const isMenuSider =
 			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
 		const showFooter = !isMobile || isHome;
+
+		const homeBackgroundProps = isHome
+			? {
+					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
+			: {};
+
 		return (
 			<ThemeProvider>
 				<div>
@@ -538,6 +548,7 @@ class App extends Component {
 									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
+							style={homeBackgroundProps}
 						>
 							<EventListener
 								target="window"

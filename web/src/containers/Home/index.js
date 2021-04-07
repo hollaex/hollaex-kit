@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
-import { isBrowser, isMobile } from 'react-device-detect';
 
 import STRINGS from 'config/localizedStrings';
 import {
@@ -14,8 +13,6 @@ import {
 } from 'actions/appActions';
 import { logout } from '../../actions/authAction';
 import { isLoggedIn } from 'utils/token';
-import { getClasesForLanguage } from '../../utils/string';
-import { getThemeClass } from '../../utils/theme';
 import Markets from 'containers/Summary/components/Markets';
 import { QuickTrade, EditWrapper, ButtonLink } from 'components';
 import { unique } from 'utils/data';
@@ -369,79 +366,58 @@ class Home extends Component {
 			// symbol,
 			// quickTradeData,
 			// requestQuickTrade,
-			activeLanguage,
-			activeTheme,
-			icons: ICONS = {},
 			sections,
 		} = this.props;
 
 		return (
-			<div
-				className={classnames(
-					'app_container',
-					'home_container',
-					'app_background',
-					getClasesForLanguage(activeLanguage),
-					getThemeClass(activeTheme),
-					{
-						'layout-mobile': isMobile,
-						'layout-desktop': isBrowser,
-					}
-				)}
-				style={{
-					background: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
-					backgroundSize: '100%',
-					backgroundRepeat: 'repeat-y',
-				}}
-			>
-				<div className="home-page_overlay">
+			<div className="home_container">
+				{/*<div className="home-page_overlay" />*/}
+				<EditWrapper
+					iconId="EXCHANGE_LANDING_PAGE"
+					style={{ position: 'absolute', right: 10 }}
+				/>
+				<EventListener target="window" onResize={this.onResize} />
+				<div
+					className={classnames(
+						'app_container-content',
+						'home_container-content',
+						'flex-column',
+						'overflow-y'
+					)}
+					ref={this.setContainerRef}
+				>
 					<EditWrapper
-						iconId="EXCHANGE_LANDING_PAGE"
-						style={{ position: 'absolute', right: 10 }}
+						sectionId="LANDING_PAGE_SECTIONS"
+						position={[0, 0]}
+						style={{
+							position: 'fixed',
+							right: '5px',
+							top: 'calc((100vh - 160px)/2)',
+							display: 'flex !important',
+							zIndex: 1,
+						}}
 					/>
-					<EventListener target="window" onResize={this.onResize} />
-					<div
-						className={classnames(
-							'app_container-content',
-							'home_container-content',
-							'flex-column',
-							'overflow-y'
-						)}
-						ref={this.setContainerRef}
-					>
-						<EditWrapper
-							sectionId="LANDING_PAGE_SECTIONS"
-							position={[0, 0]}
-							style={{
-								position: 'fixed',
-								right: '5px',
-								top: 'calc((100vh - 160px)/2)',
-								display: 'flex !important',
-								zIndex: 1,
-							}}
-						/>
-						<div className="home_app_bar d-flex justify-content-between">
-							<div className="d-flex align-items-center justify-content-center h-100">
-								{this.renderIcon()}
-							</div>
-							<div className="d-flex align-items-center px-1">
-								<ButtonLink
-									link={'/login'}
-									type="button"
-									label={STRINGS['LOGIN_TEXT']}
-									className="main-section_button_invert home_header_button"
-								/>
-								<div style={{ width: '1rem' }} />
-								<ButtonLink
-									link={'/signup'}
-									type="button"
-									label={STRINGS['SIGNUP_TEXT']}
-									className="main-section_button home_header_button"
-								/>
-							</div>
+					<div className="home_app_bar d-flex justify-content-between">
+						<div className="d-flex align-items-center justify-content-center h-100">
+							{this.renderIcon()}
 						</div>
-						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+						<div className="d-flex align-items-center px-1">
+							<ButtonLink
+								link={'/login'}
+								type="button"
+								label={STRINGS['LOGIN_TEXT']}
+								className="main-section_button_invert home_header_button"
+							/>
+							<div style={{ width: '1rem' }} />
+							<ButtonLink
+								link={'/signup'}
+								type="button"
+								label={STRINGS['SIGNUP_TEXT']}
+								className="main-section_button home_header_button"
+							/>
+						</div>
 					</div>
+					<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
 				</div>
 			</div>
 		);
