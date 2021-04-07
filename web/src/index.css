@@ -308,6 +308,9 @@ table th {
 .align-items-baseline {
   align-items: baseline; }
 
+.no-border {
+  border: none !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
