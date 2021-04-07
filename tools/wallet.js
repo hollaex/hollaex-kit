@@ -559,7 +559,15 @@ const getExchangeWithdrawals = (
 	});
 };
 
-const mintAssetByKitId = (kitId, currency, amount, description, transactionId, status) => {
+const mintAssetByKitId = (
+	kitId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
@@ -567,12 +575,20 @@ const mintAssetByKitId = (kitId, currency, amount, description, transactionId, s
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().mintAsset(user.network_id, currency, amount, { description, transactionId, status });
+			return getNodeLib().mintAsset(user.network_id, currency, amount, opts);
 		});
 };
 
-const mintAssetByNetworkId = (networkId, currency, amount, description, transactionId, status) => {
-	return getNodeLib().mintAsset(networkId, currency, amount, { description, transactionId, status });
+const mintAssetByNetworkId = (
+	networkId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
+	return getNodeLib().mintAsset(networkId, currency, amount, opts);
 };
 
 const updatePendingMint = (
@@ -587,7 +603,15 @@ const updatePendingMint = (
 	return getNodeLib().updatePendingMint(transactionId, opts);
 };
 
-const burnAssetByKitId = (kitId, currency, amount, description, transactionId, status) => {
+const burnAssetByKitId = (
+	kitId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
@@ -595,12 +619,20 @@ const burnAssetByKitId = (kitId, currency, amount, description, transactionId, s
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().burnAsset(user.network_id, currency, amount, { description, transactionId, status });
+			return getNodeLib().burnAsset(user.network_id, currency, amount, opts);
 		});
 };
 
-const burnAssetByNetworkId = (networkId, currency, amount, description, transactionId, status) => {
-	return getNodeLib().burnAsset(networkId, currency, amount, { description, transactionId, status });
+const burnAssetByNetworkId = (
+	networkId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
+	return getNodeLib().burnAsset(networkId, currency, amount, opts);
 };
 
 const updatePendingBurn = (
