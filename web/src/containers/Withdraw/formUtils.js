@@ -13,6 +13,7 @@ import { getLanguage } from '../../utils/string';
 import { getTheme } from '../../utils/theme';
 import { toFixed } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
+import { getNetworkLabelByKey } from 'utils/wallet';
 
 export const generateInitialValues = (
 	symbol,
@@ -68,7 +69,7 @@ export const generateFormValues = (
 	if (networks) {
 		const networkOptions = networks.map((network) => ({
 			value: network,
-			label: network,
+			label: getNetworkLabelByKey(network),
 		}));
 
 		fields.network = {
