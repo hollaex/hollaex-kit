@@ -999,6 +999,7 @@ table th {
   .home-page__market-wrapper .table-row thead {
     color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .home-page__market-wrapper thead {
+    color: var(--labels_important-active-labels-text-graphics) !important;
     background-color: var(--base_wallet-sidebar-and-popup); }
   .home-page__market-wrapper .market-list__block-table {
     margin-bottom: 0 !important; }
