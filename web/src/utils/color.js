@@ -104,12 +104,12 @@ const pushCalculatedColors = (themeData) => {
 			.alpha(0.75)
 			.string(),
 		calculated_landing_background: Color(themeData['base_background'])
-			.alpha(0.35)
+			.alpha(0)
 			.string(),
 		calculated_landing_markets_table: Color(
 			themeData['base_wallet-sidebar-and-popup']
 		)
-			.alpha(0.76)
+			.alpha(0.94)
 			.string(),
 		'calculated_specials_highlight-box': Color(
 			themeData['specials_buttons-links-and-highlights']
