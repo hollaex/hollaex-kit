@@ -4069,6 +4069,8 @@ definitions:
         type: string
       crypto:
         type: string
+      network:
+        type: string
   TokensResponse:
     type: object
     properties:
