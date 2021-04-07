@@ -3294,6 +3294,30 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+    put:
+      operationId: putMint
+      description: Update pending mint
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/burn:
     x-swagger-router-controller: admin
     post:
@@ -3314,6 +3338,30 @@ paths:
             $ref: "#/definitions/MessageResponse"
         default:
           description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putBurn
+      description: Update pending burn
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -4370,3 +4418,20 @@ definitions:
         format: double
       transaction_id:
         type: string
+      status:
+        type: boolean
+  MintBurnUpdate:
+    type: object
+    required:
+      - transaction_id
+    properties:
+      transaction_id:
+        type: string
+      updated_transaction_id:
+        type: string
+      status:
+        type: boolean
+      rejected:
+        type: boolean
+      dismissed:
+        type: boolean
