@@ -20,3 +20,18 @@ export const getWallet = (currnecy, network, wallets, networks) => {
 		getWalletsByCurrnecy(currnecy, wallets)
 	);
 };
+
+export const getNetworkLabelByKey = (network) => {
+	if (network) {
+		switch (network) {
+			case 'eth':
+				return 'ERC20';
+			case 'trx':
+				return 'TRC20';
+			default:
+				network.toUpperCase();
+		}
+	} else {
+		return network;
+	}
+};
