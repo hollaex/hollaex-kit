@@ -190,6 +190,7 @@ class Home extends Component {
 								onChangeSourceAmount={this.onChangeSourceAmount}
 								forwardSourceError={this.forwardSourceError}
 								forwardTargetError={this.forwardTargetError}
+								autoFocus={false}
 							/>
 						</div>
 					)
