@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
 
 import STRINGS from 'config/localizedStrings';
@@ -65,38 +64,6 @@ class Home extends Component {
 		this.props.getTickers();
 		this.generateSections(sections);
 	}
-
-	setContainerRef = (el) => {
-		if (el) {
-			this.container = el;
-			this.onResize();
-		}
-	};
-
-	onResize = () => {
-		if (this.container) {
-			const height = window.innerHeight - 45;
-			this.setState({
-				style: {
-					minHeight: height,
-					// maxHeight: height,
-				},
-				height,
-			});
-			// this.onClickScrollTo(0)();
-		}
-	};
-
-	onClickScrollTo = (children = 0) => () => {
-		if (this.container && typeof children === 'number') {
-			const sections = this.container.children;
-			if (children < sections.length) {
-				sections[children].scrollIntoView({
-					behavior: 'smooth',
-				});
-			}
-		}
-	};
 
 	goTo = (path) => () => {
 		this.props.router.push(path);
@@ -370,8 +337,7 @@ class Home extends Component {
 		return (
 			<div className="home_container">
 				{/*<div className="home-page_overlay" />*/}
-				<EventListener target="window" onResize={this.onResize} />
-				<div ref={this.setContainerRef}>
+				<div>
 					<EditWrapper
 						sectionId="LANDING_PAGE_SECTIONS"
 						position={[0, 0]}

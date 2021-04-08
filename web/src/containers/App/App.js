@@ -610,7 +610,7 @@ class App extends Component {
 											'flex-column',
 											'justify-content-between',
 											{
-												'overflow-y': !isMobile || isHome,
+												'overflow-y': !isMobile,
 												no_bottom_navigation: isHome,
 											}
 										)}
