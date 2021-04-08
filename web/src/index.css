@@ -1181,6 +1181,10 @@ table th {
     .home_container .buttons-section--button.contrast {
       background-color: var(--labels_important-active-labels-text-graphics); }
 
+.home-page_content {
+  margin: auto;
+  max-width: 1000px; }
+
 .direction_ltr .home-card-text-container {
   margin-left: 0.75rem; }
 

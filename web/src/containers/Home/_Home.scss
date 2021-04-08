@@ -261,6 +261,11 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
+.home-page_content {
+	margin: auto;
+	max-width: 1000px;
+}
+
 .direction_ltr {
 	.home-card-text-container {
 		margin-left: $card-text--margin;

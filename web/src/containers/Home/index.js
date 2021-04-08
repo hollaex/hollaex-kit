@@ -409,7 +409,9 @@ class Home extends Component {
 							/>
 						</div>
 					</div>
-					<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+					<div className="home-page_content">
+						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+					</div>
 				</div>
 			</div>
 		);
