@@ -390,18 +390,18 @@ class Home extends Component {
 							zIndex: 1,
 						}}
 					/>
-					<div className="home_app_bar d-flex justify-content-between">
+					<div className="home_app_bar d-flex justify-content-between align-items-center my-2 mx-3">
 						<div className="d-flex align-items-center justify-content-center h-100">
 							{this.renderIcon()}
 						</div>
-						<div className="d-flex align-items-center px-1">
+						<div className="d-flex align-items-center">
 							<ButtonLink
 								link={'/login'}
 								type="button"
 								label={STRINGS['LOGIN_TEXT']}
 								className="main-section_button_invert home_header_button"
 							/>
-							<div style={{ width: '1rem' }} />
+							<div style={{ width: '0.75rem' }} />
 							<ButtonLink
 								link={'/signup'}
 								type="button"
