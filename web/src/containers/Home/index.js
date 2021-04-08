@@ -147,23 +147,26 @@ class Home extends Component {
 					.length;
 
 				return (
-					<MainSection
-						style={{
-							minHeight: sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '25rem',
-						}}
-						onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
-						onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
-						token={token}
-						onClickDemo={
-							pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
-						}
-					/>
+					<div className="home-page_section-wrapper main-section-wrapper">
+						<MainSection
+							style={{
+								minHeight:
+									sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '14rem',
+							}}
+							onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
+							onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
+							token={token}
+							onClickDemo={
+								pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
+							}
+						/>
+					</div>
 				);
 			}
 			case 'market_list': {
 				const { router, coins, pairs } = this.props;
 				return (
-					<div className="my-4">
+					<div className="home-page_section-wrapper">
 						<div>
 							<EditWrapper stringId="MARKETS_TABLE.TITLE">
 								{STRINGS['MARKETS_TABLE.TITLE']}
@@ -204,7 +207,7 @@ class Home extends Component {
 				return (
 					quick_trade &&
 					isReady && (
-						<div className="my-4">
+						<div className="home-page_section-wrapper">
 							<QuickTrade
 								onReviewQuickTrade={this.onReviewQuickTrade}
 								onSelectTarget={this.onSelectTarget}
@@ -372,10 +375,6 @@ class Home extends Component {
 		return (
 			<div className="home_container">
 				{/*<div className="home-page_overlay" />*/}
-				<EditWrapper
-					iconId="EXCHANGE_LANDING_PAGE"
-					style={{ position: 'absolute', right: 10 }}
-				/>
 				<EventListener target="window" onResize={this.onResize} />
 				<div ref={this.setContainerRef}>
 					<EditWrapper
@@ -409,6 +408,10 @@ class Home extends Component {
 							/>
 						</div>
 					</div>
+					<EditWrapper
+						iconId="EXCHANGE_LANDING_PAGE"
+						style={{ position: 'absolute', right: 10 }}
+					/>
 					<div className="home-page_content">
 						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
 					</div>

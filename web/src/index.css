@@ -1182,8 +1182,17 @@ table th {
       background-color: var(--labels_important-active-labels-text-graphics); }
 
 .home-page_content {
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem;
   max-width: 1000px; }
+
+.home-page_section-wrapper:not(.main-section-wrapper) {
+  padding-top: 5rem;
+  padding-bottom: 5rem; }
+
+.home-page_section-wrapper.main-section-wrapper {
+  padding-bottom: 5rem; }
 
 .direction_ltr .home-card-text-container {
   margin-left: 0.75rem; }
