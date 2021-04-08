@@ -23,6 +23,22 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 	}
 
+	th:nth-child(1) {
+		padding-left: 2rem !important;
+	}
+
+	td:nth-child(1) {
+		padding-left: 1rem !important;
+	}
+
+	th:last-child {
+		padding-right: 2rem !important;
+	}
+
+	td:last-child {
+		padding-right: 1rem !important;
+	}
+
 	.market-list__footer {
 		height: 4.5rem !important;
 	}
@@ -114,6 +130,24 @@ $trade-tab--arrow-size: 0.4rem;
 .layout-mobile {
 	.home_header_button {
 		height: 24px;
+	}
+
+	.home-page__market-wrapper {
+		th:nth-child(1) {
+			padding-left: 1rem !important;
+		}
+
+		td:nth-child(1) {
+			padding-left: 0.5rem !important;
+		}
+
+		th:last-child {
+			padding-right: 0.1rem !important;
+		}
+
+		td:last-child {
+			padding-right: 0.5rem !important;
+		}
 	}
 }
 

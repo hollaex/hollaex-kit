@@ -1001,6 +1001,14 @@ table th {
     background-color: var(--base_wallet-sidebar-and-popup); }
     .home-page__market-wrapper thead tr {
       height: 5rem !important; }
+  .home-page__market-wrapper th:nth-child(1) {
+    padding-left: 2rem !important; }
+  .home-page__market-wrapper td:nth-child(1) {
+    padding-left: 1rem !important; }
+  .home-page__market-wrapper th:last-child {
+    padding-right: 2rem !important; }
+  .home-page__market-wrapper td:last-child {
+    padding-right: 1rem !important; }
   .home-page__market-wrapper .market-list__footer {
     height: 4.5rem !important; }
   .home-page__market-wrapper .market-list__block-table {
@@ -1092,6 +1100,18 @@ table th {
 
 .layout-mobile .home_header_button {
   height: 24px; }
+
+.layout-mobile .home-page__market-wrapper th:nth-child(1) {
+  padding-left: 1rem !important; }
+
+.layout-mobile .home-page__market-wrapper td:nth-child(1) {
+  padding-left: 0.5rem !important; }
+
+.layout-mobile .home-page__market-wrapper th:last-child {
+  padding-right: 0.1rem !important; }
+
+.layout-mobile .home-page__market-wrapper td:last-child {
+  padding-right: 0.5rem !important; }
 
 .home_container {
   background-repeat: no-repeat;
