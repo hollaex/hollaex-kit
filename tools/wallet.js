@@ -263,13 +263,20 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 			amount: withdrawalAmount[withdrawalCurrency]
 		});
 
-		loggerWithdrawals.info(
-			'toolsLib/wallet/withdrawalBelowLimit',
-			`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
-			convertedAmount[withdrawalCurrency]
-		);
+		if (convertedAmount[withdrawalCurrency] !== -1) {
+			loggerWithdrawals.info(
+				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+				`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
+				convertedAmount[withdrawalCurrency]
+			);
 
-		totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
+			totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
+		} else {
+			loggerWithdrawals.info(
+				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+				`No conversion found between ${withdrawalCurrency} and ${getKitConfig().native_currency}`
+			);
+		}
 	}
 
 	return totalWithdrawalAmount;
@@ -296,23 +303,33 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		last24HourWithdrawalAmount
 	);
 
+	let totalWithdrawalAmount = last24HourWithdrawalAmount;
+
 	const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
 		quote: getKitConfig().native_currency,
 		amount
 	});
 
-	loggerWithdrawals.info(
-		'toolsLib/wallet/withdrawalBelowLimit',
-		`${currency} withdrawal request amount converted to ${getKitConfig().native_currency}`,
-		convertedWithdrawalAmount[currency]
-	);
 
-	const totalWithdrawalAmount = math.number(
-		math.add(
-			math.bignumber(last24HourWithdrawalAmount),
-			math.bignumber(convertedWithdrawalAmount[currency])
-		)
-	);
+	if (convertedWithdrawalAmount[currency] !== -1) {
+		loggerWithdrawals.info(
+			'toolsLib/wallet/withdrawalBelowLimit',
+			`${currency} withdrawal request amount converted to ${getKitConfig().native_currency}`,
+			convertedWithdrawalAmount[currency]
+		);
+
+		totalWithdrawalAmount = math.number(
+			math.add(
+				math.bignumber(totalWithdrawalAmount),
+				math.bignumber(convertedWithdrawalAmount[currency])
+			)
+		);
+	} else {
+		loggerWithdrawals.info(
+			'toolsLib/wallet/withdrawalBelowLimit',
+			`No conversion found between ${currency} and ${getKitConfig().native_currency}`
+		);
+	}
 
 	loggerWithdrawals.info(
 		'toolsLib/wallet/withdrawalBelowLimit',
@@ -324,7 +341,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 
 	if (totalWithdrawalAmount > limit) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${getKitConfig().native_currency}. Withdrawn amount: ${last24HourWithdrawalAmount} ${getKitConfig().native_currency}. Request amount: ${convertedWithdrawalAmount[currency]} ${getKitConfig().native_currency}`
+			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${getKitConfig().native_currency}. Withdrawn amount: ${last24HourWithdrawalAmount}${getKitConfig().native_currency}.${convertedWithdrawalAmount[currency] !== -1 ? ` Request amount: ${convertedWithdrawalAmount[currency]} ${getKitConfig().native_currency}` : ''}`
 		);
 	}
 
