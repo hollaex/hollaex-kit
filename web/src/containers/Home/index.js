@@ -23,8 +23,6 @@ import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const DECIMALS = 4;
-
-const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
 
 class Home extends Component {
@@ -113,10 +111,6 @@ class Home extends Component {
 		}
 	};
 
-	onChangeLanguage = (language) => () => {
-		return this.props.changeLanguage(language);
-	};
-
 	generateSections = (sections) => {
 		const sectionComponents = Object.entries(sections)
 			.filter(([_, { is_active }]) => is_active)
@@ -153,12 +147,11 @@ class Home extends Component {
 								minHeight:
 									sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '14rem',
 							}}
-							onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
-							onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
 							token={token}
 							onClickDemo={
 								pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
 							}
+							onClickTrade={this.goTo('signup')}
 						/>
 					</div>
 				);
