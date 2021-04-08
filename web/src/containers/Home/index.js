@@ -357,7 +357,7 @@ class Home extends Component {
 						<Image
 							iconId="EXCHANGE_LOGO"
 							icon={ICONS['EXCHANGE_LOGO']}
-							wrapperClassName="app_bar-icon-logo h-100"
+							wrapperClassName="app_bar-icon-logo wide-logo h-100"
 						/>
 					</div>
 					<EditWrapper iconId="EXCHANGE_LOGO" position={[-5, 5]} />

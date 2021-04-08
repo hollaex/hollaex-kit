@@ -1220,7 +1220,7 @@ table th {
     height: 4rem;
     width: 5rem;
     background-size: contain;
-    background-position: center;
+    background-position: left center;
     background-repeat: no-repeat; }
   .home_app_bar .app_bar-icon {
     flex: 0;
@@ -1240,6 +1240,9 @@ table th {
     width: 5rem; }
   .home_app_bar .app_bar-icon {
     margin: 1rem 0 1rem; } }
+
+.wide-logo {
+  width: 10rem !important; }
 
 .layout-mobile .button-container {
   min-height: 4.5rem; }
@@ -4520,7 +4523,7 @@ table th {
     height: 4rem;
     width: 5rem;
     background-size: contain;
-    background-position: center;
+    background-position: left center;
     background-repeat: no-repeat; }
   .app_bar .app_bar-icon {
     flex: 0;

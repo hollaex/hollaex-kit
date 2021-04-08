@@ -314,7 +314,7 @@ $trade-tab--arrow-size: 0.4rem;
 		height: 4rem;
 		width: 5rem;
 		background-size: contain;
-		background-position: center;
+		background-position: left center;
 		background-repeat: no-repeat;
 	}
 
@@ -351,4 +351,8 @@ $trade-tab--arrow-size: 0.4rem;
 			margin: 1rem 0 1rem;
 		}
 	}
+}
+
+.wide-logo {
+	width: 10rem !important;
 }
