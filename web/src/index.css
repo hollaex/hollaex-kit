@@ -1187,6 +1187,15 @@ table th {
   margin-top: 5rem;
   max-width: 1000px; }
 
+.live-markets_header {
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  color: var(--labels_important-active-labels-text-graphics);
+  font-weight: bold; }
+
 .home-page_section-wrapper:not(.main-section-wrapper) {
   padding-top: 5rem;
   padding-bottom: 5rem; }

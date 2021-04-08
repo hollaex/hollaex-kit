@@ -167,9 +167,11 @@ class Home extends Component {
 				const { router, coins, pairs } = this.props;
 				return (
 					<div className="home-page_section-wrapper">
-						<div>
+						<div className="d-flex justify-content-center">
 							<EditWrapper stringId="MARKETS_TABLE.TITLE">
-								{STRINGS['MARKETS_TABLE.TITLE']}
+								<div className="live-markets_header">
+									{STRINGS['MARKETS_TABLE.TITLE']}
+								</div>
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
