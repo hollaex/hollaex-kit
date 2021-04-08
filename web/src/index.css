@@ -1200,6 +1200,9 @@ table th {
   color: var(--labels_important-active-labels-text-graphics);
   font-weight: bold; }
 
+.buttons-section-header {
+  margin: 0 0.5rem; }
+
 .home-page_section-wrapper:not(.main-section-wrapper) {
   padding-top: 5rem;
   padding-bottom: 5rem; }

@@ -387,7 +387,7 @@ class Home extends Component {
 						<div className="d-flex align-items-center justify-content-center h-100">
 							{this.renderIcon()}
 						</div>
-						<div className="d-flex align-items-center">
+						<div className="d-flex align-items-center buttons-section-header">
 							<ButtonLink
 								link={'/login'}
 								type="button"
