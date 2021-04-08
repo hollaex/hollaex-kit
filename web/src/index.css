@@ -1162,6 +1162,7 @@ table th {
   .home_container .home-title,
   .home_container .features-title {
     font-size: 3.5rem;
+    font-weight: bold;
     margin-bottom: 1rem;
     text-align: center; }
   .home_container .home-title {
@@ -1169,6 +1170,9 @@ table th {
   .home_container .text-section,
   .home_container .buttons-section {
     margin: 1rem; }
+  .home_container .text-section {
+    font-size: 1.3rem;
+    font-weight: bold; }
   .home_container .buttons-section--button {
     width: 15rem;
     height: 36px;
