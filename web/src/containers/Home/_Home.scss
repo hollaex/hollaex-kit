@@ -15,15 +15,16 @@ $trade-tab--arrow-size: 0.4rem;
 		color: $colors-main-black !important;
 	}
 
-	.table-row {
-		thead {
-			color: $colors-black !important;
-		}
-	}
-
 	thead {
 		color: $colors-main-black !important;
 		background-color: $auth-container-background;
+		tr {
+			height: 5rem !important;
+		}
+	}
+
+	.market-list__footer {
+		height: 4.5rem !important;
 	}
 
 	.market-list__block-table {
