@@ -667,12 +667,11 @@ const mintAsset = (req, res) => {
 			);
 		})
 		.then((data) => {
-			console.log(data);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/mintAsset successful',
 			);
-			return res.json({ message: 'Success' });
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -720,12 +719,11 @@ const putMint = (req, res) => {
 		updatedTransactionId: updated_transaction_id
 	})
 		.then((data) => {
-			console.log(data)
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/putMint successful',
 			);
-			return res.json({ message: 'Success' });
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -784,12 +782,11 @@ const burnAsset = (req, res) => {
 			);
 		})
 		.then((data) => {
-			console.log(data);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/burnAsset successful',
 			);
-			return res.json({ message: 'Success' });
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -837,12 +834,11 @@ const putBurn = (req, res) => {
 		updatedTransactionId: updated_transaction_id
 	})
 		.then((data) => {
-			console.log(data)
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/putBurn successful',
 			);
-			return res.json({ message: 'Success' });
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
