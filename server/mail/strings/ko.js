@@ -153,10 +153,10 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, currency, address = '') =>
-			`회원님의 ${amount} ${currency.toUpperCase()} 출금이 해당 주소 ${address}로 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
-		COMPLETED: (amount, currency, address = '') =>
-			`회원님의 ${amount} ${currency.toUpperCase()}를 해당 주소 ${address}로  출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
+		PENDING: (amount, currency) =>
+			`회원님의 ${amount} ${currency.toUpperCase()} 출금이 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
+		COMPLETED: (amount, currency) =>
+			`회원님의 ${amount} ${currency.toUpperCase()}를 출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `입금 상태: ${status}`,
