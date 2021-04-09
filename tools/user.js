@@ -49,7 +49,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel, getKitTier } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier } = require('./common');
 const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -117,7 +117,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 				verificationCode.code,
 				{}
 			);
-			if (isString(opts.referral)) {
+			if (opts.referral && isString(opts.referral)) {
 				checkAffiliation(opts.referral, user.id);
 			}
 			return user;
@@ -361,31 +361,31 @@ const getUserByAffiliationCode = (affiliationCode) => {
 };
 
 const checkAffiliation = (affiliationCode, user_id) => {
-	let discount = 0; // default discount rate in percentage
+	// let discount = 0; // default discount rate in percentage
 	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
-			if (getKitSecrets().plugins.affiliation && getKitSecrets().plugins.affiliation.discount) {
-				discount = getKitSecrets().plugins.affiliation.discount;
+			if (referrer) {
+				return getModel('affiliation').create({
+					user_id,
+					referer_id: referrer.id
+				});
+			} else {
+				return;
 			}
-
-			return getModel('affiliation').create({
-				user_id,
-				referer_id: referrer.id
-			});
-		})
-		.then((affiliation) => {
-			return getModel('user').update(
-				{
-					discount
-				},
-				{
-					where: {
-						id: affiliation.user_id
-					},
-					fields: ['discount']
-				}
-			);
 		});
+		// .then((affiliation) => {
+		// 	return getModel('user').update(
+		// 		{
+		// 			discount
+		// 		},
+		// 		{
+		// 			where: {
+		// 				id: affiliation.user_id
+		// 			},
+		// 			fields: ['discount']
+		// 		}
+		// 	);
+		// });
 };
 
 const getAffiliationCount = (userId) => {
