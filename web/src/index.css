@@ -2074,6 +2074,8 @@ table th {
   height: 49vh; }
   .trade_history-wrapper .display_table-wrapper .display_table-header :nth-child(2) {
     text-align: center; }
+  .trade_history-wrapper .display_table-wrapper .display_table-header .ant-select-arrow {
+    z-index: 1; }
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell :nth-child(2),
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell :nth-child(3) {
     text-align: right; }
@@ -2466,6 +2468,16 @@ table th {
           bottom: 0;
           background-color: var(--calculated_specials_highlight-box);
           z-index: -1; }
+  .trade_active_orders-wrapper .recent-trades.cell_box-type {
+    display: flex; }
+    .trade_active_orders-wrapper .recent-trades.cell_box-type .buy {
+      min-width: 3rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem; }
+    .trade_active_orders-wrapper .recent-trades.cell_box-type .sell {
+      min-width: 3rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem; }
 
 .quick-trade-tab {
   border: 1px solid var(--calculated_secondary-border);
@@ -4808,7 +4820,7 @@ table th {
     min-width: 10rem;
     min-height: 8rem;
     background-color: var(--base_background);
-    z-index: 20;
+    z-index: 1052;
     padding: 1rem;
     border-top: 2px solid var(--specials_buttons-links-and-highlights);
     -webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -4932,6 +4944,10 @@ table th {
       font-size: 0.8rem;
       line-height: 1;
       font-weight: bold; }
+
+.select-option-wrapper .ant-select-item,
+.select-option-wrapper .ant-select-item-option {
+  font-size: 12px; }
 
 .app-bar-tab-menu {
   background-color: var(--base_top-bar-navigation) !important; }
@@ -5464,6 +5480,10 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up,
   .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
     color: var(--trading_buying-related-elements); }
+  .app-bar-add-tab-menu .app-price-diff-down {
+    color: var(--trading_selling-related-elements); }
+  .app-bar-add-tab-menu .app-price-diff-up {
+    color: var(--trading_buying-related-elements); }
 
 .app_bar-link {
   margin: 0.5rem 0;
@@ -5582,6 +5602,11 @@ table th {
 
 .landing-page-bar {
   background: linear-gradient(to bottom, var(--calculated_landing_background), var(--calculated_landing_background)) !important; }
+
+@media (max-width: 768px) {
+  .select-option-wrapper .ant-select-item,
+  .select-option-wrapper .ant-select-item-option {
+    font-size: 0.9rem  !important; } }
 
 .check_title-container {
   display: flex;
