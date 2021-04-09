@@ -4191,7 +4191,6 @@ definitions:
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
     properties:
@@ -4215,10 +4214,8 @@ definitions:
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
-      - fee
     properties:
       amount:
         type: number

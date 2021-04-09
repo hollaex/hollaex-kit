@@ -666,7 +666,8 @@ const mintAsset = (req, res) => {
 				}
 			);
 		})
-		.then(() => {
+		.then((data) => {
+			console.log(data);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/mintAsset successful',
@@ -718,7 +719,8 @@ const putMint = (req, res) => {
 		rejected,
 		updatedTransactionId: updated_transaction_id
 	})
-		.then(() => {
+		.then((data) => {
+			console.log(data)
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/putMint successful',
@@ -781,7 +783,8 @@ const burnAsset = (req, res) => {
 				}
 			);
 		})
-		.then(() => {
+		.then((data) => {
+			console.log(data);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/burnAsset successful',
@@ -833,7 +836,8 @@ const putBurn = (req, res) => {
 		rejected,
 		updatedTransactionId: updated_transaction_id
 	})
-		.then(() => {
+		.then((data) => {
+			console.log(data)
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/putBurn successful',

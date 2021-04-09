@@ -28,7 +28,6 @@ const html = (email, data, language, domain) => {
 			<p>
 				${WITHDRAWAL.BODY[data.status](
 					data.amount,
-					data.address,
 					data.currency.toUpperCase()
 				)}
 			</p>
@@ -38,8 +37,8 @@ const html = (email, data, language, domain) => {
 				${WITHDRAWAL.BODY[2](data.fee)}
 				<br />
 				${WITHDRAWAL.BODY[3](data.status)}
-				${data.transaction_id ? '<br />' : ''}
-				${data.transaction_id ? WITHDRAWAL.BODY[4](data.address) : ''}
+				${data.transaction_id && data.address ? '<br />' : ''}
+				${data.transaction_id && data.address ? WITHDRAWAL.BODY[4](data.address) : ''}
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 			</p>
@@ -64,13 +63,12 @@ const text = (email, data, language, domain) => {
 		result += `
 			${WITHDRAWAL.BODY[data.status](
 				data.amount,
-				data.address,
 				data.currency.toUpperCase()
 			)}
 			${WITHDRAWAL.BODY[1](data.amount, data.currency)}
 			${WITHDRAWAL.BODY[2](data.fee)}
 			${WITHDRAWAL.BODY[3](data.status)}
-			${data.transaction_id ? WITHDRAWAL.BODY[4](data.address) : ''}
+			${data.transaction_id && data.address ? WITHDRAWAL.BODY[4](data.address) : ''}
 			${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 		`;
 	} else {

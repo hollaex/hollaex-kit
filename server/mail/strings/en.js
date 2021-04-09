@@ -156,10 +156,10 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
-			`You made a withdrawal request for ${amount} ${currency.toUpperCase()} to the address ${address}. Your withdrawal status is pending and will be processed shortly.`,
-		COMPLETED: (amount, address, currency) =>
-			`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed and transferred to the address ${address}.`,
+		PENDING: (amount, currency) =>
+			`You made a withdrawal request for ${amount} ${currency.toUpperCase()}. Your withdrawal status is pending and will be processed shortly.`,
+		COMPLETED: (amount, currency) =>
+			`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
