@@ -39,6 +39,10 @@ $outline-height: 1.5px;
 	> div {
 		flex: 1;
 	}
+
+	.field_warning_wrapper {
+		width: 80%;
+	}
 }
 
 .field-label {
@@ -165,8 +169,17 @@ $outline-height: 1.5px;
 	}
 }
 
+.field_warning_wrapper {
+	font-size: 1rem;
+	color: $colors-notifications-red;
+}
+
 .direction_ltr {
 	.field-error-text {
+		padding-left: 0.25rem;
+	}
+
+	.field_warning_text {
 		padding-left: 0.25rem;
 	}
 
@@ -204,6 +217,10 @@ $outline-height: 1.5px;
 
 .direction_rtl {
 	.field-error-text {
+		padding-right: 0.25rem;
+	}
+
+	.field_warning_text {
 		padding-right: 0.25rem;
 	}
 
@@ -259,5 +276,13 @@ $outline-height: 1.5px;
 			flex: 1;
 			width: 100%;
 		}
+
+		.field_warning_wrapper {
+			width: 100%;
+		}
+	}
+
+	.field_warning_wrapper {
+		padding-bottom: 1rem;
 	}
 }

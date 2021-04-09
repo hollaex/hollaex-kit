@@ -305,6 +305,9 @@ table th {
 .text-align-center {
   text-align: center; }
 
+.align-items-baseline {
+  align-items: baseline; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -1596,6 +1599,10 @@ table th {
 
 .verification-wrapper .block-wrapper {
   margin: 1rem; }
+
+.form_currency-ball {
+  width: 30px;
+  height: 30px; }
 
 .transaction-history-wrapper .ant-row {
   margin-left: 0 !important;
@@ -6261,6 +6268,8 @@ table th {
   align-items: center; }
   .field-label-wrapper > div {
     flex: 1; }
+  .field-label-wrapper .field_warning_wrapper {
+    width: 80%; }
 
 .field-label {
   color: var(--labels_important-active-labels-text-graphics);
@@ -6349,7 +6358,14 @@ table th {
   width: 1rem;
   height: 1rem; }
 
+.field_warning_wrapper {
+  font-size: 1rem;
+  color: var(--specials_notifications-alerts-warnings); }
+
 .direction_ltr .field-error-text {
+  padding-left: 0.25rem; }
+
+.direction_ltr .field_warning_text {
   padding-left: 0.25rem; }
 
 .direction_ltr .field-children.valid > *:not(:last-child) {
@@ -6371,6 +6387,9 @@ table th {
   right: 1.25rem; }
 
 .direction_rtl .field-error-text {
+  padding-right: 0.25rem; }
+
+.direction_rtl .field_warning_text {
   padding-right: 0.25rem; }
 
 .direction_rtl .field-children.valid > *:not(:last-child) {
@@ -6400,6 +6419,12 @@ table th {
 .layout-mobile .field-label-wrapper > div {
   flex: 1;
   width: 100%; }
+
+.layout-mobile .field-label-wrapper .field_warning_wrapper {
+  width: 100%; }
+
+.layout-mobile .field_warning_wrapper {
+  padding-bottom: 1rem; }
 
 .input_icon {
   margin-right: 0.25rem;
