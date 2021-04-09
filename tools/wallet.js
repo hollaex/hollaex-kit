@@ -295,15 +295,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		userId,
 	);
 
-	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
-
-	loggerWithdrawals.info(
-		'toolsLib/wallet/withdrawalBelowLimit',
-		`total 24 hour withdrawn amount converted to ${getKitConfig().native_currency}`,
-		last24HourWithdrawalAmount
-	);
-
-	let totalWithdrawalAmount = last24HourWithdrawalAmount;
+	let totalWithdrawalAmount = 0;
 
 	const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
 		quote: getKitConfig().native_currency,
@@ -329,7 +321,23 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 			'toolsLib/wallet/withdrawalBelowLimit',
 			`No conversion found between ${currency} and ${getKitConfig().native_currency}`
 		);
+		return;
 	}
+
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
+
+	loggerWithdrawals.info(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		`total 24 hour withdrawn amount converted to ${getKitConfig().native_currency}`,
+		last24HourWithdrawalAmount
+	);
+
+	totalWithdrawalAmount = math.number(
+		math.add(
+			math.bignumber(totalWithdrawalAmount),
+			math.bignumber(last24HourWithdrawalAmount)
+		)
+	);
 
 	loggerWithdrawals.info(
 		'toolsLib/wallet/withdrawalBelowLimit',
@@ -341,7 +349,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 
 	if (totalWithdrawalAmount > limit) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${getKitConfig().native_currency}. Withdrawn amount: ${last24HourWithdrawalAmount}${getKitConfig().native_currency}.${convertedWithdrawalAmount[currency] !== -1 ? ` Request amount: ${convertedWithdrawalAmount[currency]} ${getKitConfig().native_currency}` : ''}`
+			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${getKitConfig().native_currency}. Withdrawn amount: ${last24HourWithdrawalAmount} ${getKitConfig().native_currency}. Request amount: ${convertedWithdrawalAmount[currency]} ${getKitConfig().native_currency}`
 		);
 	}
 
