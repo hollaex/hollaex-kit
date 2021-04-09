@@ -159,7 +159,7 @@ const WITHDRAWAL = {
 		PENDING: (amount, currency) =>
 			`Sie haben eine Auszahlungsanforderung für ${amount} ${currency.toUpperCase()} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.`,
 		COMPLETED: (amount, currency) =>
-			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()}  wurde bearbeitet gesendet.`,
+			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()} wurde bearbeitet.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
