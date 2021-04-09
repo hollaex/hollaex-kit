@@ -14,7 +14,7 @@ const BUTTONS_CLASSES = [
 
 const MainSection = ({
 	style = {},
-	onClickScrollTo = () => {},
+	onClickTrade,
 	onClickLearnMore,
 	onClickDemo,
 	token,
@@ -41,23 +41,7 @@ const MainSection = ({
 					</EditWrapper>
 				</div>
 				<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
-					<div>
-						<EditWrapper stringId="HOME.TRADE_CRYPTO" />
-						<div
-							className={classnames(
-								...BUTTONS_CLASSES,
-								'main-section_button',
-								'no-border',
-								{
-									pointer: onClickLearnMore,
-								}
-							)}
-							onClick={onClickLearnMore}
-						>
-							{STRINGS['HOME.TRADE_CRYPTO']}
-						</div>
-					</div>
-					<div>
+					<div style={{ display: 'flex', alignSelf: 'center' }}>
 						<EditWrapper stringId="HOME.VIEW_EXCHANGE" />
 						<div
 							className={classnames(
@@ -71,6 +55,22 @@ const MainSection = ({
 							onClick={onClickDemo}
 						>
 							{STRINGS['HOME.VIEW_EXCHANGE']}
+						</div>
+					</div>
+					<div style={{ display: 'flex', alignSelf: 'center' }}>
+						<EditWrapper stringId="HOME.TRADE_CRYPTO" />
+						<div
+							className={classnames(
+								...BUTTONS_CLASSES,
+								'main-section_button',
+								'no-border',
+								{
+									pointer: onClickTrade,
+								}
+							)}
+							onClick={onClickTrade}
+						>
+							{STRINGS['HOME.TRADE_CRYPTO']}
 						</div>
 					</div>
 				</div>

@@ -39,6 +39,7 @@ class QuickTrade extends Component {
 			orderLimits: { SIZE, PRICE },
 			side,
 			icons: ICONS,
+			autoFocus = true,
 		} = this.props;
 
 		return (
@@ -84,7 +85,7 @@ class QuickTrade extends Component {
 					onInputChange={onChangeSourceAmount}
 					forwardError={forwardSourceError}
 					limits={side === 'buy' ? PRICE : SIZE}
-					autoFocus={true}
+					autoFocus={autoFocus}
 				/>
 				<InputGroup
 					name={STRINGS['TO']}
