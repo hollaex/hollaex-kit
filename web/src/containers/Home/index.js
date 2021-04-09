@@ -112,7 +112,7 @@ class Home extends Component {
 						<MainSection
 							style={{
 								minHeight:
-									sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '14rem',
+									sectionsNumber === 1 ? 'calc(100vh - 15rem)' : '14rem',
 							}}
 							token={token}
 							onClickDemo={
