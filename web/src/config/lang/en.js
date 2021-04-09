@@ -56,7 +56,7 @@ const nestedContent = {
 		MAIN_TITLE: 'Cryptocurrency trading exchange',
 		MAIN_TEXT:
 			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
-		TRADE_CRYPTO: 'Trade crypto',
+		TRADE_CRYPTO: 'Start trading',
 		VIEW_EXCHANGE: 'View exchange',
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
@@ -873,6 +873,7 @@ const nestedContent = {
 		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
 	WITHDRAW_PAGE_DESTINATION_TAG_NONE: 'None',
 	WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE: 'Destination tag: {0}',
+	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
 	WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG:
 		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
 	WITHDRAWALS_FORM_NETWORK_WARNING:

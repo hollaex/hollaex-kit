@@ -308,6 +308,9 @@ table th {
 .align-items-baseline {
   align-items: baseline; }
 
+.no-border {
+  border: none !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -993,10 +996,21 @@ table th {
   background-color: var(--calculated_landing_markets_table); }
   .home-page__market-wrapper .table-row {
     color: var(--labels_important-active-labels-text-graphics) !important; }
-  .home-page__market-wrapper .table-row thead {
-    color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .home-page__market-wrapper thead {
+    color: var(--labels_important-active-labels-text-graphics) !important;
     background-color: var(--base_wallet-sidebar-and-popup); }
+    .home-page__market-wrapper thead tr {
+      height: 5rem !important; }
+  .home-page__market-wrapper th:nth-child(1) {
+    padding-left: 2rem !important; }
+  .home-page__market-wrapper td:nth-child(1) {
+    padding-left: 1rem !important; }
+  .home-page__market-wrapper th:last-child {
+    padding-right: 2rem !important; }
+  .home-page__market-wrapper td:last-child {
+    padding-right: 1rem !important; }
+  .home-page__market-wrapper .market-list__footer {
+    height: 4.5rem !important; }
   .home-page__market-wrapper .market-list__block-table {
     margin-bottom: 0 !important; }
   .home-page__market-wrapper .price-diff-down {
@@ -1080,19 +1094,24 @@ table th {
     position: relative;
     top: calc(50% - 0.6rem); }
 
-.layout-mobile.home_container .app_container-content {
-  min-height: calc(100vh);
-  max-height: calc(100vh); }
-
-.layout-mobile.home_container .home_container-content {
-  width: 100%; }
-
 .home_header_button {
   height: 28px;
   font-weight: bold; }
 
 .layout-mobile .home_header_button {
   height: 24px; }
+
+.layout-mobile .home-page__market-wrapper th:nth-child(1) {
+  padding-left: 1rem !important; }
+
+.layout-mobile .home-page__market-wrapper td:nth-child(1) {
+  padding-left: 0.5rem !important; }
+
+.layout-mobile .home-page__market-wrapper th:last-child {
+  padding-right: 0.1rem !important; }
+
+.layout-mobile .home-page__market-wrapper td:last-child {
+  padding-right: 0.5rem !important; }
 
 .home_container {
   background-repeat: no-repeat;
@@ -1106,10 +1125,6 @@ table th {
   .home_container .quick_trade-wrapper {
     min-width: 30rem;
     max-width: 40rem; }
-  .home_container .home_container-content {
-    margin: auto;
-    width: 90%;
-    max-width: 900px; }
   .home_container .exchange-expired {
     background-color: #ed1c24 !important;
     color: #ffffff !important; }
@@ -1169,13 +1184,14 @@ table th {
   .home_container .home-title,
   .home_container .features-title {
     font-size: 3.5rem;
-    margin-bottom: 1rem;
+    font-weight: bold;
     text-align: center; }
-  .home_container .home-title {
-    margin-bottom: 0.5rem; }
   .home_container .text-section,
   .home_container .buttons-section {
-    margin: 1rem; }
+    margin: 0.5rem; }
+  .home_container .text-section {
+    font-size: 1.3rem;
+    font-weight: bold; }
   .home_container .buttons-section--button {
     width: 15rem;
     height: 36px;
@@ -1187,6 +1203,31 @@ table th {
     font-weight: bold; }
     .home_container .buttons-section--button.contrast {
       background-color: var(--labels_important-active-labels-text-graphics); }
+
+.home-page_content {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem;
+  max-width: 100rem; }
+
+.live-markets_header {
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  color: var(--labels_important-active-labels-text-graphics);
+  font-weight: bold; }
+
+.buttons-section-header {
+  margin: 0 0.5rem; }
+
+.home-page_section-wrapper:not(.main-section-wrapper) {
+  padding-top: 5rem;
+  padding-bottom: 5rem; }
+
+.home-page_section-wrapper.main-section-wrapper {
+  padding-bottom: 5rem; }
 
 .direction_ltr .home-card-text-container {
   margin-left: 0.75rem; }
@@ -1201,7 +1242,7 @@ table th {
     height: 4rem;
     width: 5rem;
     background-size: contain;
-    background-position: center;
+    background-position: left center;
     background-repeat: no-repeat; }
   .home_app_bar .app_bar-icon {
     flex: 0;
@@ -1221,6 +1262,9 @@ table th {
     width: 5rem; }
   .home_app_bar .app_bar-icon {
     margin: 1rem 0 1rem; } }
+
+.wide-logo {
+  width: 10rem !important; }
 
 .layout-mobile .button-container {
   min-height: 4.5rem; }
@@ -4502,7 +4546,7 @@ table th {
     height: 4rem;
     width: 5rem;
     background-size: contain;
-    background-position: center;
+    background-position: left center;
     background-repeat: no-repeat; }
   .app_bar .app_bar-icon {
     flex: 0;

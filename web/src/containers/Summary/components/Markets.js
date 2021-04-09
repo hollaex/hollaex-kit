@@ -184,12 +184,13 @@ class Markets extends Component {
 					</div>
 				)}
 				{showMarkets && (
-					<div className="d-flex justify-content-center app_bar-link blue-link pointer py-2 underline-text">
+					<div className="d-flex justify-content-center app_bar-link blue-link pointer py-2 underline-text market-list__footer">
 						<EditWrapper stringId="MARKETS_TABLE.VIEW_MARKETS" />
 						<div
 							onClick={() => {
 								router.push('/trade/add/tabs');
 							}}
+							className="pt-1"
 						>
 							{STRINGS['MARKETS_TABLE.VIEW_MARKETS']}
 						</div>

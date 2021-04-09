@@ -272,6 +272,21 @@ export const downloadUserTrades = (key) => {
 	};
 };
 
+const getParamsByStatus = (status) => {
+	switch (status) {
+		case 'dismissed':
+			return { dismissed: true };
+		case 'rejected':
+			return { rejected: true };
+		case 'completed':
+			return { status: true };
+		case 'pending':
+			return { processing: true };
+		default:
+			return {};
+	}
+};
+
 export const getUserDeposits = ({
 	limit = 50,
 	page = 1,
@@ -279,10 +294,11 @@ export const getUserDeposits = ({
 	currency,
 	...rest
 }) => {
+	const statusParams = getParamsByStatus(status);
 	const query = querystring.stringify({
 		page,
 		limit,
-		...(status ? { status } : {}),
+		...statusParams,
 		...(currency ? { currency } : {}),
 	});
 
@@ -319,10 +335,11 @@ export const getUserWithdrawals = ({
 	currency,
 	...rest
 }) => {
+	const statusParams = getParamsByStatus(status);
 	const query = querystring.stringify({
 		page,
 		limit,
-		...(status ? { status } : {}),
+		...statusParams,
 		...(currency ? { currency } : {}),
 	});
 
