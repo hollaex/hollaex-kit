@@ -56,7 +56,7 @@ const nestedContent = {
 		MAIN_TITLE: 'Cryptocurrency trading exchange',
 		MAIN_TEXT:
 			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
-		TRADE_CRYPTO: 'Trade crypto',
+		TRADE_CRYPTO: 'Start trading',
 		VIEW_EXCHANGE: 'View exchange',
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:

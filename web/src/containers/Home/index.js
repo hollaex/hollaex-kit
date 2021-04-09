@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
 
 import STRINGS from 'config/localizedStrings';
@@ -23,8 +22,6 @@ import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const DECIMALS = 4;
-
-const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
 
 class Home extends Component {
@@ -68,38 +65,6 @@ class Home extends Component {
 		this.generateSections(sections);
 	}
 
-	setContainerRef = (el) => {
-		if (el) {
-			this.container = el;
-			this.onResize();
-		}
-	};
-
-	onResize = () => {
-		if (this.container) {
-			const height = window.innerHeight - 45;
-			this.setState({
-				style: {
-					minHeight: height,
-					// maxHeight: height,
-				},
-				height,
-			});
-			// this.onClickScrollTo(0)();
-		}
-	};
-
-	onClickScrollTo = (children = 0) => () => {
-		if (this.container && typeof children === 'number') {
-			const sections = this.container.children;
-			if (children < sections.length) {
-				sections[children].scrollIntoView({
-					behavior: 'smooth',
-				});
-			}
-		}
-	};
-
 	goTo = (path) => () => {
 		this.props.router.push(path);
 	};
@@ -111,10 +76,6 @@ class Home extends Component {
 		} else {
 			this.goTo('/login')();
 		}
-	};
-
-	onChangeLanguage = (language) => () => {
-		return this.props.changeLanguage(language);
 	};
 
 	generateSections = (sections) => {
@@ -147,26 +108,30 @@ class Home extends Component {
 					.length;
 
 				return (
-					<MainSection
-						style={{
-							minHeight: sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '25rem',
-						}}
-						onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
-						onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
-						token={token}
-						onClickDemo={
-							pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
-						}
-					/>
+					<div className="home-page_section-wrapper main-section-wrapper">
+						<MainSection
+							style={{
+								minHeight:
+									sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '14rem',
+							}}
+							token={token}
+							onClickDemo={
+								pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
+							}
+							onClickTrade={this.goTo('signup')}
+						/>
+					</div>
 				);
 			}
 			case 'market_list': {
 				const { router, coins, pairs } = this.props;
 				return (
-					<div className="my-4">
-						<div>
+					<div className="home-page_section-wrapper">
+						<div className="d-flex justify-content-center">
 							<EditWrapper stringId="MARKETS_TABLE.TITLE">
-								{STRINGS['MARKETS_TABLE.TITLE']}
+								<div className="live-markets_header">
+									{STRINGS['MARKETS_TABLE.TITLE']}
+								</div>
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
@@ -204,7 +169,7 @@ class Home extends Component {
 				return (
 					quick_trade &&
 					isReady && (
-						<div className="my-4">
+						<div className="home-page_section-wrapper">
 							<QuickTrade
 								onReviewQuickTrade={this.onReviewQuickTrade}
 								onSelectTarget={this.onSelectTarget}
@@ -225,6 +190,7 @@ class Home extends Component {
 								onChangeSourceAmount={this.onChangeSourceAmount}
 								forwardSourceError={this.forwardSourceError}
 								forwardTargetError={this.forwardTargetError}
+								autoFocus={false}
 							/>
 						</div>
 					)
@@ -352,7 +318,7 @@ class Home extends Component {
 						<Image
 							iconId="EXCHANGE_LOGO"
 							icon={ICONS['EXCHANGE_LOGO']}
-							wrapperClassName="app_bar-icon-logo h-100"
+							wrapperClassName="app_bar-icon-logo wide-logo h-100"
 						/>
 					</div>
 					<EditWrapper iconId="EXCHANGE_LOGO" position={[-5, 5]} />
@@ -372,12 +338,7 @@ class Home extends Component {
 		return (
 			<div className="home_container">
 				{/*<div className="home-page_overlay" />*/}
-				<EditWrapper
-					iconId="EXCHANGE_LANDING_PAGE"
-					style={{ position: 'absolute', right: 10 }}
-				/>
-				<EventListener target="window" onResize={this.onResize} />
-				<div ref={this.setContainerRef}>
+				<div>
 					<EditWrapper
 						sectionId="LANDING_PAGE_SECTIONS"
 						position={[0, 0]}
@@ -389,18 +350,18 @@ class Home extends Component {
 							zIndex: 1,
 						}}
 					/>
-					<div className="home_app_bar d-flex justify-content-between">
+					<div className="home_app_bar d-flex justify-content-between align-items-center my-2 mx-3">
 						<div className="d-flex align-items-center justify-content-center h-100">
 							{this.renderIcon()}
 						</div>
-						<div className="d-flex align-items-center px-1">
+						<div className="d-flex align-items-center buttons-section-header">
 							<ButtonLink
 								link={'/login'}
 								type="button"
 								label={STRINGS['LOGIN_TEXT']}
 								className="main-section_button_invert home_header_button"
 							/>
-							<div style={{ width: '1rem' }} />
+							<div style={{ width: '0.75rem' }} />
 							<ButtonLink
 								link={'/signup'}
 								type="button"
@@ -409,7 +370,13 @@ class Home extends Component {
 							/>
 						</div>
 					</div>
-					<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+					<EditWrapper
+						iconId="EXCHANGE_LANDING_PAGE"
+						style={{ position: 'absolute', right: 10 }}
+					/>
+					<div className="home-page_content">
+						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+					</div>
 				</div>
 			</div>
 		);
