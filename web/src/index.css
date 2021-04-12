@@ -5606,7 +5606,7 @@ table th {
 @media (max-width: 768px) {
   .select-option-wrapper .ant-select-item,
   .select-option-wrapper .ant-select-item-option {
-    font-size: 0.9rem  !important; } }
+    font-size: 0.9rem !important; } }
 
 .check_title-container {
   display: flex;
@@ -9263,30 +9263,28 @@ foreignObject {
     margin-bottom: 2rem;
     padding: 4rem 1rem 0;
     width: 100%; }
-    .app_footer-container .footer-row-content .footer-links-section {
-      width: 60%; }
-      .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
-        margin: 0 1rem;
-        font-size: 1.1rem; }
-        .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
-          font-weight: bold;
-          margin-bottom: 0.25rem;
-          text-transform: uppercase; }
-        .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
-          min-width: 8rem;
-          text-transform: capitalize; }
-          .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
-            width: 1rem;
-            margin-right: 0.25rem; }
-          .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
-            margin-top: 0.25rem; }
-            .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
-              color: grey; }
+    .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
+      margin: 1rem;
+      font-size: 1.1rem; }
+      .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+        text-transform: uppercase; }
+      .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
+        min-width: 8rem;
+        text-transform: capitalize; }
+        .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
+          width: 1rem;
+          margin-right: 0.25rem; }
+        .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
+          margin-top: 0.25rem; }
+          .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
+            color: grey; }
     .app_footer-container .footer-row-content .footer_separter {
       border-left: 1px solid var(--calculated_footer_border);
       margin-left: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
-        width: 25rem;
+        width: 23rem;
         margin-left: 1.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         background-size: contain;
@@ -9357,19 +9355,11 @@ foreignObject {
     .app_footer-container .footer-row-content .footer-public-links {
       justify-content: center; }
       .app_footer-container .footer-row-content .footer-public-links .footer-public-links-icon {
-        margin: 0 1.5rem !important; }
-    .app_footer-container .footer-row-content .footer-links-section {
-      width: 70%; } }
-
-@media screen and (min-width: 1920px) {
-  .app_footer-container .footer-row-content .footer-links-section {
-    width: 50%; } }
+        margin: 0 1.5rem !important; } }
 
 @media screen and (max-width: 767px) {
-  .app_footer-container .footer-row-content .footer-links-section {
-    width: 80%; }
   .app_footer-container .footer-row-content .footer_separter .footer-txt {
-    width: 30rem; } }
+    width: 12rem; } }
 
 .layout-mobile .app_footer-container .footer-row-content .footer-links-section {
   width: 100%; }
@@ -9388,8 +9378,6 @@ foreignObject {
       display: flex;
       flex-direction: column;
       align-items: center; }
-    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-txt {
-      width: 37rem; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
       height: 3.5rem;
       margin-top: 11px;

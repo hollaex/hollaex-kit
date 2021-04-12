@@ -77,52 +77,58 @@ const AppFooter = ({
 							'flex-column': isMobile,
 						})}
 					>
-						{generateSectionsText(constants.links, ICONS)
-							.filter(({ LINKS }) => LINKS.length)
-							.map(({ TITLE, LINKS }, index) => (
-								<div
-									key={index}
-									className={classnames(
-										'd-flex',
-										'flex-column',
-										'footer-links-group'
-									)}
-								>
-									<div className="footer-links-section--title">{TITLE}</div>
+						<div className="d-flex flex-wrap">
+							{generateSectionsText(constants.links, ICONS)
+								.filter(({ LINKS }) => LINKS.length)
+								.map(({ TITLE, LINKS }, index) => (
 									<div
+										key={index}
 										className={classnames(
 											'd-flex',
 											'flex-column',
-											'footer-links-section--list'
+											'footer-links-group'
 										)}
 									>
-										{LINKS.map(({ link, text, icon }, indexLink) => (
-											<div key={indexLink} className="link-section d-flex">
-												<a
-													href={link || '#'}
-													target="_blank"
-													rel="noopener noreferrer"
-												>
-													<div
-														className={classnames('d-flex', 'f-1', 'flex-row')}
+										<div className="footer-links-section--title">{TITLE}</div>
+										<div
+											className={classnames(
+												'd-flex',
+												'flex-column',
+												'footer-links-section--list'
+											)}
+										>
+											{LINKS.map(({ link, text, icon }, indexLink) => (
+												<div key={indexLink} className="link-section d-flex">
+													<a
+														href={link || '#'}
+														target="_blank"
+														rel="noopener noreferrer"
 													>
-														<div>
-															{icon ? (
-																<img
-																	src={icon}
-																	className="social_icon"
-																	alt="social_icons"
-																/>
-															) : null}
+														<div
+															className={classnames(
+																'd-flex',
+																'f-1',
+																'flex-row'
+															)}
+														>
+															<div>
+																{icon ? (
+																	<img
+																		src={icon}
+																		className="social_icon"
+																		alt="social_icons"
+																	/>
+																) : null}
+															</div>
+															<span>{text}</span>
 														</div>
-														<span>{text}</span>
-													</div>
-												</a>
-											</div>
-										))}
+													</a>
+												</div>
+											))}
+										</div>
 									</div>
-								</div>
-							))}
+								))}
+						</div>
 						<div className="footer_separter">
 							<div className="footer-content">
 								<div className="d-flex">
