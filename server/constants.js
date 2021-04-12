@@ -23,7 +23,8 @@ let configuration = {
 		captcha: {},
 		defaults: {},
 		features: {},
-		meta: {}
+		meta: {},
+		injected_values: []
 	}
 };
 
@@ -96,7 +97,8 @@ const resetAllConfig = () => {
 			captcha: {},
 			defaults: {},
 			features: {},
-			meta: {}
+			meta: {},
+			injected_values: []
 		}
 	};
 };
