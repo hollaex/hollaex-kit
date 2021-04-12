@@ -127,7 +127,7 @@ const signUpUser = (req, res) => {
 				{}
 			);
 
-			if (isString(referral)) {
+			if (referral) {
 				toolsLib.user.checkAffiliation(referral, user.id);
 			}
 

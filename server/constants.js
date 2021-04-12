@@ -23,7 +23,8 @@ let configuration = {
 		captcha: {},
 		defaults: {},
 		features: {},
-		meta: {}
+		meta: {},
+		injected_values: []
 	}
 };
 
@@ -96,7 +97,8 @@ const resetAllConfig = () => {
 			captcha: {},
 			defaults: {},
 			features: {},
-			meta: {}
+			meta: {},
+			injected_values: []
 		}
 	};
 };
@@ -150,7 +152,8 @@ exports.KIT_CONFIG_KEYS = [
 	'meta',
 	'features',
 	'setup_completed',
-	'email_verification_required'
+	'email_verification_required',
+	'injected_values'
 ];
 
 exports.KIT_SECRETS_KEYS = [
