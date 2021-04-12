@@ -9424,6 +9424,8 @@ foreignObject {
       display: flex;
       flex-direction: column;
       align-items: center; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-txt {
+      width: 100%; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
       height: 3.5rem;
       margin-top: 11px;

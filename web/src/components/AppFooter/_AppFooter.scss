@@ -238,9 +238,9 @@ $footer-logo-color: $trade-tabs-inactive-color;
 						flex-direction: column;
 						align-items: center;
 					}
-					// .footer-txt {
-					// width: 37rem;
-					// }
+					.footer-txt {
+						width: 100%;
+					}
 					.footer-logo {
 						height: 3.5rem;
 						margin-top: 11px;

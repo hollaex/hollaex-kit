@@ -77,7 +77,11 @@ const AppFooter = ({
 							'flex-column': isMobile,
 						})}
 					>
-						<div className="d-flex flex-wrap">
+						<div
+							className={classnames('d-flex', 'flex-wrap', {
+								'flex-column': isMobile,
+							})}
+						>
 							{generateSectionsText(constants.links, ICONS)
 								.filter(({ LINKS }) => LINKS.length)
 								.map(({ TITLE, LINKS }, index) => (
