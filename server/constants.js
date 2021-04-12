@@ -150,7 +150,8 @@ exports.KIT_CONFIG_KEYS = [
 	'meta',
 	'features',
 	'setup_completed',
-	'email_verification_required'
+	'email_verification_required',
+	'injected_value'
 ];
 
 exports.KIT_SECRETS_KEYS = [
