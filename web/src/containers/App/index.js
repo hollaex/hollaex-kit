@@ -64,6 +64,7 @@ const mapStateToProps = (store) => ({
 	features: store.app.features,
 	config_level: store.app.config_level,
 	pairsTradesFetched: store.orderbook.pairsTradesFetched,
+	injected_values: store.app.injected_values,
 });
 
 const mapDispatchToProps = (dispatch) => ({
