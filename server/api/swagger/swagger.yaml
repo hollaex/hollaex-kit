@@ -3832,6 +3832,21 @@ definitions:
             type: boolean
           native_currency:
             type: string
+          injected_values:
+            type: array
+            items:
+              type: object
+              required:
+                - tag
+                - target
+                - attributes
+              properties:
+                tag:
+                  type: string
+                target:
+                  type: string
+                attributes:
+                  type: object
       secrets:
         type: object
         properties:
