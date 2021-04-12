@@ -24,6 +24,7 @@ class TradeHistory extends Component {
 		data: [],
 		isprevious: false,
 		isBase: true,
+		isOpen: false,
 	};
 
 	componentWillMount() {
@@ -44,7 +45,10 @@ class TradeHistory extends Component {
 			this.generateData(this.props.data);
 		}
 
-		if (prevState.isBase !== this.state.isBase) {
+		if (
+			prevState.isBase !== this.state.isBase ||
+			prevState.isOpen !== this.state.isOpen
+		) {
 			this.calculateHeaders();
 		}
 	}
@@ -73,9 +77,13 @@ class TradeHistory extends Component {
 
 	onSelect = (isBase) => this.setState({ isBase });
 
+	dropdownVisibleChange = (isOpen) => {
+		this.setState({ isOpen });
+	};
+
 	generateHeaders = (pairs) => {
 		const { icons: ICONS, maxAmount } = this.props;
-		const { isBase } = this.state;
+		const { isBase, isOpen } = this.state;
 		const { coins, pairData } = this.props;
 		const pairBase = pairData.pair_base.toUpperCase();
 		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
@@ -110,21 +118,29 @@ class TradeHistory extends Component {
 			{
 				key: 'size',
 				label: (
-					<div>
-						{STRINGS['SIZE']}
-						<Select
-							bordered={false}
-							defaultValue={false}
-							size="small"
-							suffixIcon={<CaretDownOutlined />}
-							value={isBase}
-							onSelect={this.onSelect}
-							className="custom-select-input-style order-entry no-border"
-							dropdownClassName="custom-select-style"
-						>
-							<Option value={false}>{symbol.toUpperCase()}</Option>
-							<Option value={true}>{pairBase}</Option>
-						</Select>
+					<div className="d-flex">
+						<div>{STRINGS['SIZE']}</div>
+						<div>
+							<Select
+								bordered={false}
+								defaultValue={false}
+								size="small"
+								suffixIcon={
+									<CaretDownOutlined
+										onClick={() => this.dropdownVisibleChange(!isOpen)}
+									/>
+								}
+								value={isBase}
+								onSelect={this.onSelect}
+								open={isOpen}
+								onDropdownVisibleChange={this.dropdownVisibleChange}
+								className="custom-select-input-style order-entry no-border"
+								dropdownClassName="custom-select-style select-option-wrapper"
+							>
+								<Option value={false}>{symbol.toUpperCase()}</Option>
+								<Option value={true}>{pairBase}</Option>
+							</Select>
+						</div>
 					</div>
 				),
 				renderCell: ({ size = 0, side, sizePrice = 0 }, index) => {

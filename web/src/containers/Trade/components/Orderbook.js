@@ -103,6 +103,7 @@ class Orderbook extends Component {
 	state = {
 		dataBlockHeight: 0,
 		isBase: true,
+		isOpen: false,
 	};
 
 	componentDidMount() {
@@ -187,6 +188,10 @@ class Orderbook extends Component {
 
 	onSelect = (isBase) => this.setState({ isBase });
 
+	dropdownVisibleChange = (isOpen) => {
+		this.setState({ isOpen });
+	};
+
 	render() {
 		const {
 			asks,
@@ -200,7 +205,7 @@ class Orderbook extends Component {
 			lastPrice,
 		} = this.props;
 
-		const { isBase } = this.state;
+		const { isBase, isOpen } = this.state;
 		// const blockStyle = {};
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
@@ -251,11 +256,17 @@ class Orderbook extends Component {
 							bordered={false}
 							defaultValue={false}
 							size="small"
-							suffixIcon={<CaretDownOutlined />}
+							suffixIcon={
+								<CaretDownOutlined
+									onClick={() => this.dropdownVisibleChange(!isOpen)}
+								/>
+							}
 							value={isBase}
 							onSelect={this.onSelect}
+							onDropdownVisibleChange={this.dropdownVisibleChange}
+							open={isOpen}
 							className="custom-select-input-style order-entry no-border"
-							dropdownClassName="custom-select-style order-book-select-coin"
+							dropdownClassName="custom-select-style select-option-wrapper"
 						>
 							<Option value={false}>{symbol.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>

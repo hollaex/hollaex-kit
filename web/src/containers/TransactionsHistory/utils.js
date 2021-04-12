@@ -330,7 +330,7 @@ export const generateTradeHeaders = (
 			exportToCsv: ({ side = '' }) => side,
 			renderCell: ({ side = '' }, key, index) => {
 				return (
-					<td key={index} className={classnames('cell_box-type')}>
+					<td key={index} className={classnames('cell_box-type recent-trades')}>
 						<div className={classnames(side)}>
 							{STRINGS[`SIDES_VALUES.${side}`]}
 						</div>
