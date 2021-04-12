@@ -4,6 +4,7 @@ import math from 'mathjs';
 import bchaddr from 'bchaddrjs';
 import { roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
+import { getDecimals } from 'utils/utils';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 const usernameRegEx = /^[a-z0-9_]{3,15}$/;
@@ -241,10 +242,16 @@ export const normalizeInt = (value) => {
 		return '';
 	}
 };
-export const normalizeFloat = (value) => {
+export const normalizeFloat = (value = '', increment = 0.01) => {
 	if (validator.isFloat(value)) {
+		const incrementPrecision = getDecimals(increment);
+		const valuePrecision = (value + '.').split('.')[1].length;
+		const precision = math.min(valuePrecision, incrementPrecision);
 		if (validator.toFloat(value)) {
-			return math.format(validator.toFloat(value), { notation: 'fixed' });
+			return math.format(validator.toFloat(value), {
+				notation: 'fixed',
+				precision,
+			});
 		} else {
 			return 0;
 		}

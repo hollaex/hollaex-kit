@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.0.13"
+  version: "2.1.0"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1443,6 +1443,13 @@ paths:
           type: string
           minLength: 3
           maxLength: 15
+        - name: network
+          in: query
+          required: false
+          type: string
+          description: Blockchain network
+          minLength: 2
+          maxLength: 10
       responses:
         201:
           description: Success
@@ -1675,6 +1682,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success
@@ -1748,6 +1790,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success
@@ -1820,26 +1897,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/FeesResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - admin
-  /admin/fees/settle:
-    x-swagger-router-controller: admin
-    get:
-      operationId: settleFees
-      description: Settle exchange fees
-      tags:
-        - Admin
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -3415,8 +3472,10 @@ definitions:
             type: boolean
       bank_account:
         $ref: "#/definitions/BankArray"
-      crypto_wallet:
-        type: object
+      wallet:
+        type: array
+        items:
+          type: object
       verification_level:
         type: number
       settings:
@@ -3567,6 +3626,11 @@ definitions:
         description: OTP code when otp is enabled
         minLength: 6
         maxLength: 6
+      network:
+        type: string
+        description: Blockchain network
+        minLength: 2
+        maxLength: 10
   OtpRequest:
     type: object
     required:
@@ -3768,6 +3832,21 @@ definitions:
             type: boolean
           native_currency:
             type: string
+          injected_values:
+            type: array
+            items:
+              type: object
+              required:
+                - tag
+                - target
+                - attributes
+              properties:
+                tag:
+                  type: string
+                target:
+                  type: string
+                attributes:
+                  type: object
       secrets:
         type: object
         properties:
@@ -4004,6 +4083,8 @@ definitions:
       address:
         type: string
       crypto:
+        type: string
+      network:
         type: string
   TokensResponse:
     type: object

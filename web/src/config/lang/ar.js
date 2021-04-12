@@ -743,8 +743,8 @@ const nestedContent = {
 		limit: 'حد',
 	},
 	TYPES: [
-		{ value: 'سوق', label: 'سوق' },
-		{ value: 'حد', label: 'حد' },
+		{ value: 'market', label: 'سوق' },
+		{ value: 'limit', label: 'حد' },
 	],
 	SIDE: 'جانب',
 	SIDES_VALUES: {
@@ -756,8 +756,8 @@ const nestedContent = {
 		sell: 'تم البيع',
 	},
 	SIDES: [
-		{ value: 'الشراء', label: 'الشراء' },
-		{ value: 'بيع', label: 'بيع' },
+		{ value: 'buy', label: 'الشراء' },
+		{ value: 'sell', label: 'بيع' },
 	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'تشغيل' }, // DO NOT CHANGE value, ONLY TRANSLATE label
@@ -986,7 +986,7 @@ const nestedContent = {
 	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES, //should not be changed
 	SETTINGS_ORDERPOPUP_LABEL: 'عرض نافذة تأكيد الطلب المنبثقة',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
-		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'لا' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: true, label: 'نعم' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'شكل واجهة المستخدم', // TODO set right labels // ToDo

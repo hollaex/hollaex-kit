@@ -68,7 +68,7 @@ const getFields = (
 		type: 'text',
 		label: 'Description',
 	},
-	send_email: {
+	email: {
 		type: 'checkbox',
 		label: 'Send an email notification to receiver user about this transfer.',
 	},
@@ -147,7 +147,6 @@ const Transfer = ({ coins = {} }) => {
 			sender_id: parseInt(formProps.sender_id, 10),
 			receiver_id: parseInt(formProps.receiver_id, 10),
 			amount: parseFloat(formProps.amount),
-			email: formProps.send_email,
 		};
 		return postTransfer(postValues)
 			.then((res) => {
@@ -181,6 +180,7 @@ const Transfer = ({ coins = {} }) => {
 			<TransferForm
 				initialValues={{
 					currency: coinData[0] ? coinData[0] : '',
+					email: true,
 					...confirmData,
 				}}
 				fields={fields}
@@ -213,7 +213,7 @@ const Transfer = ({ coins = {} }) => {
 						</div>
 						<div>
 							<span className="bold">Send email:</span>{' '}
-							{confirmData.send_email ? 'Yes' : 'No'}
+							{confirmData.email ? 'Yes' : 'No'}
 						</div>
 					</div>
 					<div className="d-flex align-items-center mt-4">
