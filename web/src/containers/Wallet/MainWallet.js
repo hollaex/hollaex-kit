@@ -16,7 +16,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
-// import { STATIC_ICONS } from 'config/icons';
+import { STATIC_ICONS } from 'config/icons';
 
 class Wallet extends Component {
 	state = {
@@ -122,7 +122,7 @@ class Wallet extends Component {
 			formatToCurrency(total, min)
 		);
 		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
-		const { icons: ICONS } = this.props;
+		// const { icons: ICONS } = this.props;
 
 		const sections = [
 			{
@@ -150,10 +150,10 @@ class Wallet extends Component {
 					stringId: 'TRADE_HISTORY',
 					text: STRINGS['TRADE_HISTORY'],
 					status: 'information',
-					iconId: 'BLUE_CLIP',
-					iconPath: ICONS['BLUE_CLIP'],
+					iconId: 'PAPER_CLIP',
+					iconPath: STATIC_ICONS['PAPER_CLIP'],
 					allowClick: true,
-					className: isOpen ? '' : 'wallet-notification',
+					className: isOpen ? 'paper-clip-icon' : 'paper-clip-icon wallet-notification',
 					onClick: () => {
 						this.props.router.push('/transactions');
 					},

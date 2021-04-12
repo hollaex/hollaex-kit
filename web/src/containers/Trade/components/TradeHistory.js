@@ -135,7 +135,7 @@ class TradeHistory extends Component {
 								open={isOpen}
 								onDropdownVisibleChange={this.dropdownVisibleChange}
 								className="custom-select-input-style order-entry no-border"
-								dropdownClassName="custom-select-style select-option-wrapper"
+								dropdownClassName="custom-select-style trade-select-option-wrapper"
 							>
 								<Option value={false}>{symbol.toUpperCase()}</Option>
 								<Option value={true}>{pairBase}</Option>

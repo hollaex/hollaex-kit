@@ -69,7 +69,7 @@ const SidebarBottom = ({
 			<SidebarButton
 				path="/wallet"
 				title={STRINGS['WALLET_TITLE']}
-				iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
+				iconPath={ICONS.TAB_WALLET}
 				active={activePath === 'wallet'}
 			/>
 			{/*<SidebarButton

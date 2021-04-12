@@ -101,8 +101,10 @@ $trade-tab--arrow-size: 0.4rem;
 		// border: 1px solid $colors-main-border;
 		color: $colors-deactivate-color2;
 		margin: 11px 0;
-		padding: 1rem;
+		padding: 1.5rem 1rem 1rem 1.5rem;
 		background-color: $app-sidebar-background;
+		border-radius: 3px;
+		border: 1px solid $colors-super-pale-black;
 
 		.summary-block-title {
 			color: $colors-black;

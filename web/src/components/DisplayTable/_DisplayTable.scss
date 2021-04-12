@@ -31,6 +31,9 @@ $cell-height: 1.5rem;
 		min-height: $cell-height;
 		padding: 0.1rem;
 	}
+	.ant-select-arrow {
+		z-index: 1;
+	}
 }
 
 .f-1 {

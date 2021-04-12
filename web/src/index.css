@@ -904,8 +904,10 @@ table th {
   width: 300px; }
 
 .user-security-container .icon_title-wrapper {
-  display: unset;
-  justify-content: flex-start !important; }
+  display: flex;
+  justify-content: flex-start !important;
+  flex-direction: row;
+  align-items: center; }
 
 .layout-mobile .user_security-wrapper .warning_text {
   font-size: 13px !important; }
@@ -1333,6 +1335,16 @@ table th {
   .wallet-container .wallet-header_block .with_price-block_amount-value {
     font-size: 4rem;
     line-height: 4rem; }
+  .wallet-container .paper-clip-icon .action_notification-svg {
+    background-color: var(--specials_buttons-links-and-highlights);
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    margin-left: 5px; }
+    .wallet-container .paper-clip-icon .action_notification-svg svg {
+      width: 0.8rem  !important;
+      height: 0.8rem !important; }
   .wallet-container .wallet-buttons_action {
     margin: 2.5rem 0 3.75rem; }
     .wallet-container .wallet-buttons_action > *:first-child {
@@ -2157,6 +2169,8 @@ table th {
       font-size: 13px; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper .ant-collapse-content-box {
       padding: 0; }
+    .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper .underline-text {
+      font-size: 11px; }
 
 .trade_order_entry-wrapper.order_side-selector-buy {
   flex: 1;
@@ -2225,6 +2239,8 @@ table th {
       font-size: 13px; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper .ant-collapse-content-box {
       padding: 0; }
+    .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper .underline-text {
+      font-size: 11px; }
 
 .risky-trade-wrapper {
   width: 32rem; }
@@ -2361,6 +2377,10 @@ table th {
     height: 2px; }
   .trade_orderbook-wrapper .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
     font-size: 1.1rem; }
+
+.trade-select-option-wrapper .ant-select-item,
+.trade-select-option-wrapper .ant-select-item-option-content {
+  font-size: 11px; }
 
 .order-book-select-coin .ant-select-item,
 .order-book-select-coin .ant-select-item-option {
@@ -2626,6 +2646,8 @@ table th {
 .verification-form-panel {
   padding: 30px 50px;
   background-color: var(--base_wallet-sidebar-and-popup); }
+  .verification-form-panel .action_notification-wrapper .notification-info {
+    white-space: nowrap; }
 
 .verification_content-form-wrapper {
   padding: 0.25rem; }
@@ -2748,7 +2770,7 @@ table th {
   .help-wrapper .buttons-wrapper {
     margin-top: 1.5rem; }
   .help-wrapper .text {
-    font-size: 0.8rem;
+    font-size: 12px;
     flex: 6;
     margin-left: 1rem; }
   .help-wrapper .separator {
@@ -2829,8 +2851,10 @@ table th {
   .summary-container .summary-block_wrapper {
     color: var(--labels_secondary-inactive-label-text-graphics);
     margin: 11px 0;
-    padding: 1rem;
-    background-color: var(--base_wallet-sidebar-and-popup); }
+    padding: 1.5rem 1rem 1rem 1.5rem;
+    background-color: var(--base_wallet-sidebar-and-popup);
+    border-radius: 3px;
+    border: 1px solid var(--calculated_super-pale_label-text-graphics); }
     .summary-container .summary-block_wrapper .summary-block-title {
       color: var(--labels_secondary-inactive-label-text-graphics);
       font-size: 1.1rem;
@@ -4486,7 +4510,9 @@ table th {
   .sidebar-container .sidebar_hub-wrapper {
     max-height: 35rem !important; }
   .sidebar-container .sidebar-notifications {
-    min-height: 20rem; } }
+    min-height: 20rem; }
+  .sidebar-bottom-icon svg {
+    stroke: none !important; } }
 
 .tab_controller-title {
   display: flex;
@@ -6295,7 +6321,7 @@ table th {
     max-height: 15rem; }
 
 .dropdown-option {
-  padding: 0.25rem;
+  padding: 0.25rem 1rem;
   display: flex;
   align-items: center; }
   .dropdown-option > .icon {
@@ -6319,7 +6345,6 @@ table th {
   position: relative;
   width: 100%;
   font-size: 1rem;
-  font-weight: bold;
   margin: 1rem 0; }
   .field-wrapper.error {
     color: var(--specials_notifications-alerts-warnings);
@@ -6331,6 +6356,8 @@ table th {
       flex: 1; }
       .field-wrapper.inline > div.field-error-content {
         padding-bottom: 0.5rem; }
+  .field-wrapper .checkfield-input-wrapper {
+    align-items: center; }
 
 .field-label-wrapper {
   display: flex;
@@ -6350,7 +6377,7 @@ table th {
   flex-direction: column; }
 
 .field-children {
-  padding: 0.4rem 0 0.2rem;
+  padding: 0.4rem 1rem 0.2rem;
   position: relative; }
   .field-children.custom {
     padding: 0; }
@@ -6555,6 +6582,8 @@ table th {
   padding-right: 0.25rem !important; }
   .direction_ltr .datefield-wrapper .datefield-values-wrapper > *:not(:last-child) {
     margin-right: 1rem; }
+  .direction_ltr .datefield-wrapper .datefield-values-wrapper .dropdown-triangle::after {
+    bottom: 0 !important; }
 
 .direction_rtl .datefield-wrapper .datefield-values-wrapper {
   padding-left: 0.25rem !important; }
@@ -6578,6 +6607,18 @@ table th {
   .multiple_file_wrapper > .action_notification-wrapper {
     position: relative;
     top: 0 !important; }
+  .file_wrapper .paper-clip-icon .action_notification-svg,
+  .multiple_file_wrapper .paper-clip-icon .action_notification-svg {
+    background-color: var(--specials_buttons-links-and-highlights);
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    margin-left: 5px; }
+    .file_wrapper .paper-clip-icon .action_notification-svg svg,
+    .multiple_file_wrapper .paper-clip-icon .action_notification-svg svg {
+      width: 0.8rem !important;
+      height: 0.8rem !important; }
 
 .multiple_file_wrapper {
   display: unset; }
@@ -6646,7 +6687,7 @@ table th {
 .direction_ltr .dropdown-triangle:after {
   border-right: 0.25rem solid var(--labels_important-active-labels-text-graphics);
   border-left: 0.25rem solid transparent;
-  right: 0px; }
+  right: 3px; }
 
 .direction_ltr .placeholder {
   padding-right: 0.5rem; }
@@ -7576,6 +7617,8 @@ table th {
     font-weight: bold; }
   .table-wrapper .table_header-wrapper {
     color: var(--labels_secondary-inactive-label-text-graphics); }
+    .table-wrapper .table_header-wrapper .action_notification-text {
+      white-space: nowrap; }
   .table-wrapper .table_body-wrapper {
     font-size: 1rem; }
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
@@ -7658,6 +7701,8 @@ table th {
   .display_table-wrapper .display_table-cell {
     min-height: 1.5rem;
     padding: 0.1rem; }
+  .display_table-wrapper .ant-select-arrow {
+    z-index: 1; }
 
 .f-1 {
   flex: 1; }
@@ -8839,7 +8884,8 @@ foreignObject {
   -moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
   box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
   font-family: 'Open Sans' !important;
-  border: 1px solid var(--calculated_important-border) !important; }
+  border: 1px solid var(--calculated_important-border) !important;
+  border-top: 2px solid var(--specials_buttons-links-and-highlights) !important; }
   .chat-wrapper .timestamp {
     color: #808080;
     font-size: 0.65rem;
@@ -9569,7 +9615,7 @@ foreignObject {
 .app-side-bar .list_active,
 .app-side-bar .app-menu-bar-side_list:hover {
   border-radius: 4px;
-  background-color: var(--calculated_secondary-border); }
+  background-color: var(--calculated_secondary-border-1); }
   .app-side-bar .list_active .side-bar-txt,
   .app-side-bar .app-menu-bar-side_list:hover .side-bar-txt {
     color: var(--calculated_base_top-bar-navigation_text) !important; }
@@ -9592,6 +9638,9 @@ foreignObject {
   .app-side-bar .app-menu-bar-side_list:hover .tab-signout,
   .app-side-bar .app-menu-bar-side_list:hover .tab-history-st {
     fill: var(--calculated_base_top-bar-navigation_text) !important; }
+
+.app-side-bar .list_active {
+  background-color: var(--calculated_secondary-border) !important; }
 
 @media (max-width: 991px) {
   .app-menu-bar-side {

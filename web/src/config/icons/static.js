@@ -85,6 +85,7 @@ const icons = {
 	VERIFICATION_VERIFIED: '/assets/images/verification-green-tick.svg',
 	CLOUD_ICON: '/assets/images/current-plan-cloud-icon.svg',
 	QUICK_TRADE: '/assets/images/quick-trade-01.svg',
+	PAPER_CLIP: '/assets/acounts/paperclip-attach-01.svg',
 };
 
 export default icons;
