@@ -3832,7 +3832,7 @@ definitions:
             type: boolean
           native_currency:
             type: string
-          injected_value:
+          injected_values:
             type: array
             items:
               type: object

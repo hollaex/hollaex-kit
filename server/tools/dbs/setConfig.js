@@ -53,7 +53,7 @@ const kit = {
 	setup_completed: false,
 	native_currency: NATIVE_CURRENCY || 'usdt',
 	logo_image: LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',
-	injected_value: [],
+	injected_values: [],
 	valid_languages: VALID_LANGUAGES || 'en,fa,ko,ar,fr',
 	new_user_is_activated: (NEW_USER_IS_ACTIVATED && NEW_USER_IS_ACTIVATED === 'true') || false,
 	captcha: {
