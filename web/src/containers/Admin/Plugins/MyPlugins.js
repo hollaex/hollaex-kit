@@ -78,8 +78,9 @@ class MyPlugins extends Component {
 				if (res) {
 					this.setState({ isVisible: false });
 					this.props.handlePluginList(res);
-					message.success('Added third party plugin successfully');
-					restart();
+					restart(() =>
+						message.success('Added third party plugin successfully')
+					);
 				}
 			})
 			.catch((err) => {

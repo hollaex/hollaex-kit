@@ -29,10 +29,11 @@ class Home extends Component {
 		super(props);
 		const { pairs, sourceOptions, tickers } = this.props;
 		const pair = Object.keys(pairs)[0];
-		const [, selectedSource = sourceOptions[0]] = pair.split('-');
+		const pairArray = pair ? pair.split('-') : [];
+		const [, selectedSource = sourceOptions[0]] = pairArray;
 		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = pair.split('-');
-		const { close: tickerClose } = tickers[pair];
+		const [selectedTarget = targetOptions[0]] = pairArray;
+		const { close: tickerClose } = tickers[pair] || {};
 
 		this.state = {
 			side: 'buy',
@@ -112,7 +113,7 @@ class Home extends Component {
 						<MainSection
 							style={{
 								minHeight:
-									sectionsNumber === 1 ? 'calc(100vh - 10rem)' : '14rem',
+									sectionsNumber === 1 ? 'calc(100vh - 15rem)' : '14rem',
 							}}
 							token={token}
 							onClickDemo={
@@ -167,6 +168,10 @@ class Home extends Component {
 				} = this.state;
 
 				return (
+					pairs &&
+					Object.keys(pairs).length &&
+					selectedTarget &&
+					selectedTarget &&
 					quick_trade &&
 					isReady && (
 						<div className="home-page_section-wrapper">

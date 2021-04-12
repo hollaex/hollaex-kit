@@ -11,6 +11,7 @@ import debounce from 'lodash.debounce';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
+import { addElements } from 'utils/script';
 
 import {
 	NOTIFICATIONS,
@@ -96,6 +97,7 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
+		const { injected_values } = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -113,6 +115,8 @@ class App extends Component {
 			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
 			5000
 		);
+
+		addElements(injected_values, 'body');
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {

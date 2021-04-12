@@ -751,11 +751,6 @@ const nestedContent = {
 		buy: 'الشراء',
 		sell: 'بيع',
 	},
-	SIDE: 'جانب',
-	SIDES_VALUES: {
-		buy: 'الشراء',
-		sell: 'بيع',
-	},
 	SIDES_VERBS: {
 		buy: 'تم الشراء',
 		sell: 'تم البيع',
