@@ -11,6 +11,7 @@ import { getNetworkLabelByKey } from 'utils/wallet';
 import Image from 'components/Image';
 import renderFields from 'components/Form/factoryFields';
 import { isMobile } from 'react-device-detect';
+import Fiat from './Fiat';
 
 export const generateBaseInformation = (id = '') => (
 	<div className="text">
@@ -98,7 +99,8 @@ const RenderContentForm = ({
 	icons: ICONS,
 	selectedNetwork,
 }) => {
-	if (coins[currency]) {
+	const coinObject = coins[currency];
+	if (coinObject && !coinObject.meta.is_fiat) {
 		return (
 			<Fragment>
 				<div className="withdraw-form-wrapper">
@@ -162,6 +164,8 @@ const RenderContentForm = ({
 				</div>
 			</Fragment>
 		);
+	} else if (coinObject && coinObject.meta.is_fiat) {
+		return <Fiat icons={ICONS} />;
 	} else {
 		return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 	}

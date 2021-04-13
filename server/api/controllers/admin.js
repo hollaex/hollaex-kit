@@ -632,7 +632,8 @@ const mintAsset = (req, res) => {
 		currency,
 		amount,
 		description,
-		transaction_id
+		transaction_id,
+		status
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -644,7 +645,9 @@ const mintAsset = (req, res) => {
 		'amount',
 		amount,
 		'transaction_id',
-		transaction_id
+		transaction_id,
+		'status',
+		status
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -652,12 +655,82 @@ const mintAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.mintAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
+			return toolsLib.wallet.mintAssetByNetworkId(
+				user.network_id,
+				currency,
+				amount,
+				{
+					description,
+					transactionId: transaction_id,
+					status
+				}
+			);
 		})
-		.then(() => {
-			return res.json({ message: 'Success' });
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/mintAsset successful',
+			);
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/mintAsset err',
+				err
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const putMint = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putMint auth',
+		req.auth
+	);
+
+	const {
+		transaction_id,
+		updated_transaction_id,
+		status,
+		rejected,
+		dismissed
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putMint transaction_id',
+		transaction_id,
+		'status',
+		status,
+		'rejected',
+		rejected,
+		'dismissed',
+		dismissed,
+		'updated_transaction_id',
+		updated_transaction_id
+	);
+
+	toolsLib.wallet.updatePendingMint(transaction_id, {
+		status,
+		dismissed,
+		rejected,
+		updatedTransactionId: updated_transaction_id
+	})
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/putMint successful',
+			);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putMint err',
+				err
+			);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -674,7 +747,8 @@ const burnAsset = (req, res) => {
 		currency,
 		amount,
 		description,
-		transaction_id
+		transaction_id,
+		status
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -686,7 +760,9 @@ const burnAsset = (req, res) => {
 		'amount',
 		amount,
 		'transaction_id',
-		transaction_id
+		transaction_id,
+		'status',
+		status
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -694,12 +770,82 @@ const burnAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.burnAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
+			return toolsLib.wallet.burnAssetByNetworkId(
+				user.network_id,
+				currency,
+				amount,
+				{
+					description,
+					transactionId: transaction_id,
+					status
+				}
+			);
 		})
-		.then(() => {
-			return res.json({ message: 'Success' });
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/burnAsset successful',
+			);
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/burnAsset err',
+				err
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const putBurn = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putBurn auth',
+		req.auth
+	);
+
+	const {
+		transaction_id,
+		updated_transaction_id,
+		status,
+		rejected,
+		dismissed
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putBurn transaction_id',
+		transaction_id,
+		'status',
+		status,
+		'rejected',
+		rejected,
+		'dismissed',
+		dismissed,
+		'updated_transaction_id',
+		updated_transaction_id
+	);
+
+	toolsLib.wallet.updatePendingBurn(transaction_id, {
+		status,
+		dismissed,
+		rejected,
+		updatedTransactionId: updated_transaction_id
+	})
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/putBurn successful',
+			);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putBurn err',
+				err
+			);
 			return res.status(err.status || 400).json({ message: err.message });
 		});
 };
@@ -730,5 +876,7 @@ module.exports = {
 	mintAsset,
 	burnAsset,
 	verifyEmailUser,
-	settleFees
+	settleFees,
+	putMint,
+	putBurn
 };

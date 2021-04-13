@@ -14,7 +14,7 @@ const COMMON = {
 	TXID: (txid) => `معرّف المعاملة:${txid} `,
 	FEE: (fee) => `الرسوم:  ${fee}`,
 	AMOUNT: (amount) => `المبلغ:  ${amount} `,
-	ADDRESS: (address) => `العنوان: $ {address}`,
+	ADDRESS: (address) => `العنوان: ${address}`,
 	TIME: (time) => `الوقت:  ${time} `,
 	COUNTRY: (country) => `البلد:  ${country}`,
 	DEVICE: (device) => `الجهاز:  ${device} `,
@@ -155,9 +155,9 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`لقد قدمت طلب سحب بمبلغ ${amount} ${currency.toUpperCase()}  إلى عنوان ${address}. حالة السحب الخاصة بك في قيد الإنتظار وستتم معالجتها قريبًا.`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`تمت معالجة طلب سحبك بمبلغ ${amount} ${currency.toUpperCase()}  و نقله إلى عنوان ${address}.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),

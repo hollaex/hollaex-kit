@@ -156,9 +156,9 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`Anda telah membuat permintaan penarikan untuk ${amount} ${currency.toUpperCase()} ke alamat ${address}. Penarikan Anda sedang dalam proses dan akan segera diproses.`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`Permintaan penarikan Anda untuk ${amount} ${currency.toUpperCase()} telah diproses dan ditransfer ke alamat ${address}.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
