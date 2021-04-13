@@ -144,7 +144,6 @@ class Plugins extends Component {
 						(plugin) => plugin.name !== this.state.removePluginName
 					);
 					this.setState({ removePluginName: '', myPlugins });
-					message.success('Removed plugin successfully');
 				}, 2000);
 			})
 			.catch((err) => {
@@ -227,21 +226,25 @@ class Plugins extends Component {
 		});
 	};
 
-	handleRestart = () => {
+	handleRestart = (callback) => {
 		this.setProcessing();
 		setTimeout(() => {
 			this.getPluginsData()
 				.then(() => {
-					this.setProcessing(false);
+					this.setProcessing(false, callback);
 				})
 				.catch(() => {
-					this.handleRestart();
+					this.handleRestart(callback);
 				});
 		}, 30000);
 	};
 
-	setProcessing = (processing = true) => {
-		this.setState({ processing });
+	setProcessing = (processing = true, callback) => {
+		this.setState({ processing }, () => {
+			if (callback) {
+				callback();
+			}
+		});
 	};
 
 	render() {

@@ -29,6 +29,7 @@ import {
 	CHANGE_HOME_PAGE_SETTING,
 	SET_IS_READY,
 	SET_WEB_VIEWS,
+	SET_INJECTED_VALUES,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -152,6 +153,7 @@ const INITIAL_STATE = {
 	availablePlugins: [],
 	getPluginLoading: false,
 	features: {},
+	injected_values: [],
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -358,9 +360,9 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 		case SET_WEB_VIEWS: {
 			const allWebViews = [];
-			payload.enabledPlugins.forEach(({ web_views = [] }) => {
-				if (web_views.length) {
-					allWebViews.push(...web_views);
+			payload.enabledPlugins.forEach(({ web_view = [] }) => {
+				if (web_view && web_view.length) {
+					allWebViews.push(...web_view);
 				}
 			});
 
@@ -432,6 +434,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				home_page: payload,
+			};
+		}
+		case SET_INJECTED_VALUES: {
+			return {
+				...state,
+				injected_values: payload,
 			};
 		}
 		default:

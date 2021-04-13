@@ -11,6 +11,7 @@ import debounce from 'lodash.debounce';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
+import { addElements } from 'utils/script';
 
 import {
 	NOTIFICATIONS,
@@ -96,6 +97,7 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
+		const { injected_values } = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -113,6 +115,8 @@ class App extends Component {
 			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
 			5000
 		);
+
+		addElements(injected_values, 'body');
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -468,6 +472,7 @@ class App extends Component {
 			pairsTradesFetched,
 			verifyToken,
 			token,
+			icons: ICONS,
 		} = this.props;
 
 		const {
@@ -490,6 +495,16 @@ class App extends Component {
 		const isMenubar = !isHome;
 		const isMenuSider =
 			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
+		const showFooter = !isMobile || isHome;
+
+		const homeBackgroundProps = isHome
+			? {
+					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
+			: {};
+
 		return (
 			<ThemeProvider>
 				<div>
@@ -532,11 +547,12 @@ class App extends Component {
 								fontClass,
 								languageClasses[0],
 								{
-									'layout-mobile': isMobile,
-									'layout-desktop': isBrowser,
+									'layout-mobile': isMobile && !isHome,
+									'layout-desktop': isBrowser || isHome,
 									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
+							style={homeBackgroundProps}
 						>
 							<EventListener
 								target="window"
@@ -720,7 +736,7 @@ class App extends Component {
 							}
 						)}
 					>
-						{!isMobile && (
+						{showFooter && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>

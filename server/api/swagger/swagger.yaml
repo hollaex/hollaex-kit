@@ -1682,6 +1682,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success
@@ -1755,6 +1790,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success
@@ -3212,12 +3282,36 @@ paths:
           schema:
             $ref: "#/definitions/MintBurnRequest"
       responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putMint
+      description: Update pending mint
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/MessageResponse"
+            $ref: "#/definitions/TransactionResponse"
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -3238,12 +3332,36 @@ paths:
           schema:
             $ref: "#/definitions/MintBurnRequest"
       responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putBurn
+      description: Update pending burn
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/MessageResponse"
+            $ref: "#/definitions/TransactionResponse"
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -3762,6 +3880,21 @@ definitions:
             type: boolean
           native_currency:
             type: string
+          injected_values:
+            type: array
+            items:
+              type: object
+              required:
+                - tag
+                - target
+                - attributes
+              properties:
+                tag:
+                  type: string
+                target:
+                  type: string
+                attributes:
+                  type: object
       secrets:
         type: object
         properties:
@@ -3999,6 +4132,8 @@ definitions:
         type: string
       crypto:
         type: string
+      network:
+        type: string
   TokensResponse:
     type: object
     properties:
@@ -4073,7 +4208,6 @@ definitions:
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
     properties:
@@ -4087,15 +4221,18 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
   ExternalWithdrawalRequest:
     type: object
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
-      - fee
     properties:
       amount:
         type: number
@@ -4109,6 +4246,11 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
   OrderbooksResponse:
     type: object
     description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
@@ -4290,3 +4432,20 @@ definitions:
         format: double
       transaction_id:
         type: string
+      status:
+        type: boolean
+  MintBurnUpdate:
+    type: object
+    required:
+      - transaction_id
+    properties:
+      transaction_id:
+        type: string
+      updated_transaction_id:
+        type: string
+      status:
+        type: boolean
+      rejected:
+        type: boolean
+      dismissed:
+        type: boolean

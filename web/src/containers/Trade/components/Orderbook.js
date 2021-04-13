@@ -40,6 +40,7 @@ const PriceRow = (
 	const fillStyle = {
 		backgroundSize: `${calcPercentage(amount, maxCumulative)}% 100%`,
 	};
+	const totalAmount = isBase ? cumulative : cumulativePrice;
 
 	return (
 		<div
@@ -66,7 +67,10 @@ const PriceRow = (
 				>
 					{formatToCurrency(amount, increment_size)}
 				</div>
-				<div className="f-1 trade_orderbook-cell trade_orderbook-cell_total">
+				<div
+					className="f-1 trade_orderbook-cell trade_orderbook-cell_total pointer"
+					onClick={onAmountClick(totalAmount)}
+				>
 					{isBase
 						? formatToCurrency(cumulative, increment_size)
 						: formatToCurrency(cumulativePrice, increment_price)}
@@ -241,7 +245,7 @@ class Orderbook extends Component {
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
 					</div>
-					<div className="f-1 trade_orderbook-cell d-flex align-items-center">
+					<div className="f-1 trade_orderbook-cell d-flex">
 						{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
 						<Select
 							bordered={false}

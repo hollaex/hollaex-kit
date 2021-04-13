@@ -17,7 +17,11 @@ import {
 } from '../../actions/appActions';
 
 import { MobileBarBack, Dialog, Notification } from 'components';
-import { renderInformation, renderTitleSection } from '../Wallet/components';
+import {
+	renderInformation,
+	renderTitleSection,
+	renderNeedHelpAction,
+} from '../Wallet/components';
 import RenderContent, {
 	generateBaseInformation,
 	generateFormFields,
@@ -51,22 +55,11 @@ class Deposit extends Component {
 		const { selectedNetwork, wallet, coins } = this.props;
 		const { currency, networks } = this.state;
 
-		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
-			this.setCurrency(nextProps.routeParams.currency);
-		} else if (!this.state.checked) {
+		if (!this.state.checked) {
 			if (nextProps.verification_level) {
 				this.validateRoute(nextProps.routeParams.currency, this.props.coins);
 			}
-		}
-
-		if (
-			nextProps.addressRequest.success === true &&
-			nextProps.addressRequest.success !== this.props.addressRequest.success
-		) {
-			this.onCloseDialog();
-		}
-
-		if (
+		} else if (
 			nextProps.selectedNetwork !== selectedNetwork ||
 			JSON.stringify(nextProps.wallet) !== JSON.stringify(wallet) ||
 			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
@@ -78,6 +71,17 @@ class Deposit extends Component {
 				networks,
 				nextProps.coins
 			);
+		}
+
+		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
+			this.setCurrency(nextProps.routeParams.currency);
+		}
+
+		if (
+			nextProps.addressRequest.success === true &&
+			nextProps.addressRequest.success !== this.props.addressRequest.success
+		) {
+			this.onCloseDialog();
 		}
 	}
 
@@ -158,18 +162,14 @@ class Deposit extends Component {
 		let address = getWallet(currency, network, wallet, networks);
 		let destinationAddress = '';
 
-		if (
-			currency === 'xrp' ||
-			currency === 'xlm' ||
-			coins[currency].network === 'stellar'
-		) {
+		if (currency === 'xrp' || currency === 'xlm' || network === 'stellar') {
 			const temp = address.split(':');
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
 
 		const additionalText =
-			currency === 'xlm' || coins[currency].network === 'stellar'
+			currency === 'xlm' || network === 'stellar'
 				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
 				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
@@ -211,6 +211,7 @@ class Deposit extends Component {
 			constants = { links: {} },
 			icons: ICONS,
 			addressRequest,
+			selectedNetwork,
 		} = this.props;
 
 		const {
@@ -240,19 +241,33 @@ class Deposit extends Component {
 							coins,
 							'DEPOSIT_BITCOIN'
 						)}
-					<div className={classnames('inner_container', 'with_border_top')}>
-						{renderInformation(
-							currency,
-							balance,
-							openContactForm,
-							generateBaseInformation,
-							coins,
-							'deposit',
-							constants.links,
-							ICONS['BLUE_QUESTION'],
-							'BLUE_QUESTION'
-						)}
+					<div className={classnames('inner_container')}>
+						<div className="information_block">
+							<div
+								className="information_block-text_wrapper"
+								style={{ height: '1.5rem' }}
+							/>
+							{openContactForm &&
+								renderNeedHelpAction(
+									openContactForm,
+									constants.links,
+									ICONS['BLUE_QUESTION'],
+									'BLUE_QUESTION'
+								)}
+						</div>
 						<RenderContent
+							titleSection={renderInformation(
+								currency,
+								balance,
+								false,
+								generateBaseInformation,
+								coins,
+								'deposit',
+								constants.links,
+								ICONS['BLUE_QUESTION'],
+								'BLUE_QUESTION'
+							)}
+							icons={ICONS}
 							initialValues={initialValues}
 							address={address}
 							currency={currency}
@@ -263,6 +278,7 @@ class Deposit extends Component {
 							setCopied={() => this.setState({ copied: true })}
 							showGenerateButton={showGenerateButton}
 							formFields={formFields}
+							selectedNetwork={selectedNetwork}
 						/>
 					</div>
 				</div>

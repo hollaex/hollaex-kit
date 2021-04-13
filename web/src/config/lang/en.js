@@ -56,7 +56,7 @@ const nestedContent = {
 		MAIN_TITLE: 'Cryptocurrency trading exchange',
 		MAIN_TEXT:
 			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
-		TRADE_CRYPTO: 'Trade crypto',
+		TRADE_CRYPTO: 'Start trading',
 		VIEW_EXCHANGE: 'View exchange',
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
@@ -867,6 +867,19 @@ const nestedContent = {
 		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_NETWORK_LABEL: 'Network',
+	DEPOSIT_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the senders wallets network',
+	DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG:
+		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
+	WITHDRAW_PAGE_DESTINATION_TAG_NONE: 'None',
+	WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE: 'Destination tag: {0}',
+	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
+	WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG:
+		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the destination wallet',
+	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
+		'Check if receiving address requires a Tag. Also known as Memo, digital ID, label, and notes.',
 	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
@@ -1442,6 +1455,8 @@ const nestedContent = {
 		CHART_24H: 'Chart (24 hours)',
 		VIEW_MARKETS: 'View Markets',
 	},
+	PAGE_UNDER_CONSTRUCTION:
+		'This page is under construction. Please revisit this page soon.',
 };
 
 const content = flatten(nestedContent, options);

@@ -32,9 +32,8 @@ const PluginDetails = ({
 		addPlugin(body)
 			.then((res) => {
 				setAddLoading(false);
-				message.success('Plugin installed successfully');
 				handlePluginList(res);
-				restart();
+				restart(() => message.success('Plugin installed successfully'));
 			})
 			.catch((err) => {
 				setAddLoading(false);
@@ -57,9 +56,8 @@ const PluginDetails = ({
 		updatePlugins({ name: pluginData.name }, body)
 			.then((res) => {
 				setUpdateLoading(false);
-				message.success('Plugin updated successfully');
 				updatePluginList(pluginData);
-				restart();
+				restart(() => message.success('Plugin updated successfully'));
 			})
 			.catch((err) => {
 				setUpdateLoading(false);
@@ -89,7 +87,7 @@ const PluginDetails = ({
 		setType(type);
 		removePlugin({ name: pluginData.name });
 		handleClose();
-		restart();
+		restart(() => message.success('Removed plugin successfully'));
 	};
 
 	const handleChange = (e) => {
