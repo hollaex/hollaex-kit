@@ -1,7 +1,7 @@
 module.exports = {
 	body:
 		'background-color: #ffffff; padding: 1rem 0; font-family: arial; color: #000 !important',
-	logo: 'text-align: center; margin-bottom: 1.5rem;',
+	logo: 'text-align: center; margin-bottom: 1.5rem; background-color: #333;',
 	wrapper: 'align-items:center; max-width: 45rem; margin: 0 auto;',
 	header:
 		'padding-top: 3rem; padding-bottom: 1rem; background-color: #ffffff; text-align: center',
