@@ -41,8 +41,8 @@ const html = (email, data, language, domain) => {
 				)}
 				<br />
 				${DEPOSIT.BODY[2](data.status)}
-				${data.transaction_id ? '<br />' : ''}
-				${data.transaction_id ? DEPOSIT.BODY[3](data.address) : ''}
+				${data.transaction_id && data.address ? '<br />' : ''}
+				${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 			</p>
@@ -75,7 +75,7 @@ const text = (email, data, language, domain) => {
 			)}
 			${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
 			${DEPOSIT.BODY[2](data.status)}
-			${data.transaction_id ? DEPOSIT.BODY[3](data.address) : ''}
+			${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
 			${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 		`;
 	} else {
