@@ -152,9 +152,9 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`お客様のアドレス${address}に${amount} ${currency.toUpperCase()}出金がリクエストされました。現在の取引状態は保留中ですが、まもなく完了する予定です。`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`お客様の${amount} ${currency.toUpperCase()}出金が完了し、アドレス${address}に振り込みされました。`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),

@@ -32,7 +32,7 @@ const handleCurrencyDeposit = (req, res) => {
 	loggerNotification.verbose('controller/notification/handleCurrencyDeposit ip domain', ip, domain);
 
 	const currency = req.swagger.params.currency.value;
-	const { user_id, amount, txid, address, is_confirmed } = req.swagger.params.data.value;
+	const { user_id, amount, txid, address, is_confirmed, rejected, created_at } = req.swagger.params.data.value;
 
 	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
@@ -42,37 +42,55 @@ const handleCurrencyDeposit = (req, res) => {
 			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
-			const depositData = {
-				amount,
-				currency,
-				status: is_confirmed ? 'COMPLETED' : 'PENDING',
-				address,
-				transaction_id: txid
-			};
+			if (rejected) {
+				sendEmail(
+					MAILTYPE.DEPOSIT_CANCEL,
+					user.email,
+					{
+						type: 'deposit',
+						amount,
+						currency,
+						transaction_id: txid,
+						date: created_at
+					},
+					user.settings,
+					domain
+				);
+			} else {
+				const depositData = {
+					amount,
+					currency,
+					status: is_confirmed ? 'COMPLETED' : 'PENDING',
+					address,
+					transaction_id: txid
+				};
 
-			publisher.publish(WS_PUBSUB_DEPOSIT_CHANNEL, JSON.stringify({
-				topic: 'deposit',
-				action: 'insert',
-				user_id: user.network_id,
-				data: depositData,
-				time: moment().unix()
-			}));
-
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'deposit',
-				data: {
-					...depositData,
-					user_id: user.id
+				if (is_confirmed) {
+					publisher.publish(WS_PUBSUB_DEPOSIT_CHANNEL, JSON.stringify({
+						topic: 'deposit',
+						action: 'insert',
+						user_id: user.network_id,
+						data: depositData,
+						time: moment().unix()
+					}));
 				}
-			}));
 
-			sendEmail(
-				MAILTYPE.DEPOSIT,
-				user.email,
-				depositData,
-				user.settings,
-				domain
-			);
+				publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+					type: 'deposit',
+					data: {
+						...depositData,
+						user_id: user.id
+					}
+				}));
+
+				sendEmail(
+					MAILTYPE.DEPOSIT,
+					user.email,
+					depositData,
+					user.settings,
+					domain
+				);
+			}
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -91,7 +109,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 	loggerNotification.verbose('controller/notification/handleCurrencyWithdrawal ip domain', ip, domain);
 
 	const currency = req.swagger.params.currency.value;
-	const { user_id, amount, txid, address, is_confirmed, fee, rejected } = req.swagger.params.data.value;
+	const { user_id, amount, txid, address, is_confirmed, fee, rejected, created_at } = req.swagger.params.data.value;
 
 	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
@@ -102,16 +120,16 @@ const handleCurrencyWithdrawal = (req, res) => {
 		})
 		.then((user) => {
 			if (rejected) {
-				const data = {
-					amount,
-					currency,
-					address
-				};
-
 				sendEmail(
-					MAILTYPE.INVALID_ADDRESS,
+					MAILTYPE.DEPOSIT_CANCEL,
 					user.email,
-					data,
+					{
+						type: 'withdrawal',
+						amount,
+						currency,
+						transaction_id: txid,
+						date: created_at
+					},
 					user.settings,
 					domain
 				);

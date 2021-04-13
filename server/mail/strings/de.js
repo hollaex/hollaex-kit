@@ -156,10 +156,10 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
-			`Sie haben eine Auszahlungsanforderung für ${amount} ${currency.toUpperCase()} an die Adresse ${address} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.`,
-		COMPLETED: (amount, address, currency) =>
-			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()}  wurde bearbeitet und an die Adresse ${address} gesendet.`,
+		PENDING: (amount, currency) =>
+			`Sie haben eine Auszahlungsanforderung für ${amount} ${currency.toUpperCase()} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.`,
+		COMPLETED: (amount, currency) =>
+			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()} wurde bearbeitet.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
