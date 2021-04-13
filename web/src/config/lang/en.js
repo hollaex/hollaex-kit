@@ -1455,6 +1455,8 @@ const nestedContent = {
 		CHART_24H: 'Chart (24 hours)',
 		VIEW_MARKETS: 'View Markets',
 	},
+	PAGE_UNDER_CONSTRUCTION:
+		'This page is under construction. Please revisit this page soon.',
 };
 
 const content = flatten(nestedContent, options);
