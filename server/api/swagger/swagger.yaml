@@ -3282,12 +3282,36 @@ paths:
           schema:
             $ref: "#/definitions/MintBurnRequest"
       responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putMint
+      description: Update pending mint
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/MessageResponse"
+            $ref: "#/definitions/TransactionResponse"
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -3308,12 +3332,36 @@ paths:
           schema:
             $ref: "#/definitions/MintBurnRequest"
       responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putBurn
+      description: Update pending burn
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/MessageResponse"
+            $ref: "#/definitions/TransactionResponse"
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -4160,7 +4208,6 @@ definitions:
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
     properties:
@@ -4174,15 +4221,18 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
   ExternalWithdrawalRequest:
     type: object
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
-      - fee
     properties:
       amount:
         type: number
@@ -4196,6 +4246,11 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
   OrderbooksResponse:
     type: object
     description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
@@ -4377,3 +4432,20 @@ definitions:
         format: double
       transaction_id:
         type: string
+      status:
+        type: boolean
+  MintBurnUpdate:
+    type: object
+    required:
+      - transaction_id
+    properties:
+      transaction_id:
+        type: string
+      updated_transaction_id:
+        type: string
+      status:
+        type: boolean
+      rejected:
+        type: boolean
+      dismissed:
+        type: boolean

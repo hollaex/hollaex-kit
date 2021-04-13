@@ -159,9 +159,9 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`شما درخواست برداشت به مبلغ ${amount} ${currency.toUpperCase()} و به آدرس ${address}ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`درخواست برداشت شما به مبلغ ${amount} ${currency.toUpperCase()} درحال انجام و ارسال به آدرس ${address}می باشد.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),

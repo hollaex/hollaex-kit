@@ -20,7 +20,7 @@ import {
 } from './notifications';
 import { BASE_CURRENCY } from '../../config/constants';
 import { calculateBaseFee } from './utils';
-
+import Fiat from 'containers/Deposit/Fiat';
 import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper } from 'components';
@@ -203,66 +203,73 @@ class Form extends Component {
 		const hasDestinationTag =
 			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'stellar';
 
-		return (
-			<form autoComplete="off" className="withdraw-form-wrapper">
-				<div className="withdraw-form">
-					<Image
-						iconId={`${currency.toUpperCase()}_ICON`}
-						icon={ICONS[`${currency.toUpperCase()}_ICON`]}
-						wrapperClassName="form_currency-ball"
-					/>
-					{titleSection}
-					{hasDestinationTag && (
-						<div className="d-flex">
-							<div className="d-flex align-items-baseline field_warning_wrapper">
-								<ExclamationCircleFilled className="field_warning_icon" />
-								<div className="field_warning_text">
-									{STRINGS['WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG']}
+		const coinObject = coins[currency];
+		if (coinObject && !coinObject.meta.is_fiat) {
+			return (
+				<form autoComplete="off" className="withdraw-form-wrapper">
+					<div className="withdraw-form">
+						<Image
+							iconId={`${currency.toUpperCase()}_ICON`}
+							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							wrapperClassName="form_currency-ball"
+						/>
+						{titleSection}
+						{hasDestinationTag && (
+							<div className="d-flex">
+								<div className="d-flex align-items-baseline field_warning_wrapper">
+									<ExclamationCircleFilled className="field_warning_icon" />
+									<div className="field_warning_text">
+										{STRINGS['WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG']}
+									</div>
 								</div>
+								<EditWrapper stringId="WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG" />
 							</div>
-							<EditWrapper stringId="WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG" />
-						</div>
-					)}
-					{renderFields(formValues)}
-					{error && <div className="warning_text">{error}</div>}
-				</div>
-				<div className="btn-wrapper">
-					<Button
-						label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-						disabled={pristine || submitting || !valid}
-						onClick={this.onOpenDialog}
-						className="mb-3"
-					/>
-				</div>
-				<Dialog
-					isOpen={dialogIsOpen}
-					label="withdraw-modal"
-					onCloseDialog={this.onCloseDialog}
-					shouldCloseOnOverlayClick={dialogOtpOpen}
-					theme={activeTheme}
-					showCloseText={false}
-				>
-					{dialogOtpOpen ? (
-						<OtpForm
-							onSubmit={this.onSubmitOtp}
-							onClickHelp={openContactForm}
+						)}
+						{renderFields(formValues)}
+						{error && <div className="warning_text">{error}</div>}
+					</div>
+					<div className="btn-wrapper">
+						<Button
+							label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+							disabled={pristine || submitting || !valid}
+							onClick={this.onOpenDialog}
+							className="mb-3"
 						/>
-					) : !submitting ? (
-						<ReviewModalContent
-							coins={coins}
-							currency={currency}
-							data={data}
-							price={currentPrice}
-							onClickAccept={this.onAcceptDialog}
-							onClickCancel={this.onCloseDialog}
-							hasDestinationTag={hasDestinationTag}
-						/>
-					) : (
-						<Loader relative={true} background={false} />
-					)}
-				</Dialog>
-			</form>
-		);
+					</div>
+					<Dialog
+						isOpen={dialogIsOpen}
+						label="withdraw-modal"
+						onCloseDialog={this.onCloseDialog}
+						shouldCloseOnOverlayClick={dialogOtpOpen}
+						theme={activeTheme}
+						showCloseText={false}
+					>
+						{dialogOtpOpen ? (
+							<OtpForm
+								onSubmit={this.onSubmitOtp}
+								onClickHelp={openContactForm}
+							/>
+						) : !submitting ? (
+							<ReviewModalContent
+								coins={coins}
+								currency={currency}
+								data={data}
+								price={currentPrice}
+								onClickAccept={this.onAcceptDialog}
+								onClickCancel={this.onCloseDialog}
+								hasDestinationTag={hasDestinationTag}
+							/>
+						) : (
+							<Loader relative={true} background={false} />
+						)}
+					</Dialog>
+				</form>
+			);
+		} else if (coinObject && coinObject.meta.is_fiat) {
+			return <Fiat icons={ICONS} />;
+		} else {
+			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
+		}
 	}
 }
 
