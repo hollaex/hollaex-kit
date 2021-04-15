@@ -83,19 +83,6 @@ const nestedIcons = {
 		API_ICON: '/assets/images/api-security-icon.svg',
 	},
 
-	LEVEL_ACCOUNT: {
-		ICON_1: '/assets/images/level-1.svg',
-		ICON_2: '/assets/images/level-2.svg',
-		ICON_3: '/assets/images/level-3.svg',
-		ICON_4: '/assets/images/level-4.svg',
-		ICON_5: '/assets/images/level-5.svg',
-		ICON_6: '/assets/images/level-6.svg',
-		ICON_7: '/assets/images/level-7.svg',
-		ICON_8: '/assets/images/level-8.svg',
-		ICON_9: '/assets/images/level-9.svg',
-		ICON_10: '/assets/images/level-10.svg',
-	},
-
 	FEATURES: {
 		PRO_TRADING: '/assets/images/features-pro-trade-icons.svg',
 		PAYMENT: '/assets/images/features-payment-card-icons.svg',
