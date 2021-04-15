@@ -19,7 +19,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
 import store from './store';
-import routes from './routes';
+import { generateRoutes } from './routes';
 import './index.css';
 import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disable-line
 
@@ -39,6 +39,9 @@ import {
 	requestConstant,
 	setHomePageSetting,
 	setInjectedValues,
+	requestPlugins,
+	setWebViews,
+	setPlugins,
 } from 'actions/appActions';
 
 import { version, name } from '../package.json';
@@ -118,6 +121,12 @@ const getConfigs = async () => {
 	store.dispatch(setHomePageSetting(home_page));
 	store.dispatch(setInjectedValues(injected_values));
 
+	const { data = {} } = await requestPlugins();
+	if (data.data && data.data.length !== 0) {
+		store.dispatch(setPlugins(data.data));
+		store.dispatch(setWebViews(data.data));
+	}
+
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, { coin_icons });
 
 	return [appConfigs, injected_values];
@@ -133,12 +142,18 @@ const bootstrapApp = (appConfig, injected_values) => {
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	initializeStrings();
 	// window.appConfig = { ...appConfig }
+	const {
+		app: { remoteRoutes },
+	} = store.getState();
 
 	render(
 		<Provider store={store}>
 			<EditProvider>
 				<ConfigProvider initialConfig={appConfig}>
-					<Router routes={routes} history={browserHistory} />
+					<Router
+						routes={generateRoutes(remoteRoutes)}
+						history={browserHistory}
+					/>
 				</ConfigProvider>
 			</EditProvider>
 		</Provider>,

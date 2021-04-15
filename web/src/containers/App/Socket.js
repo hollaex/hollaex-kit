@@ -44,12 +44,9 @@ import {
 	setSnackDialog,
 	setConfig,
 	setInfo,
-	setPlugins,
-	requestPlugins,
 	requestInitial,
 	requestConstant,
 	requestTiers,
-	setWebViews,
 } from '../../actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
@@ -76,12 +73,6 @@ class Container extends Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
-		requestPlugins().then(({ data = {} }) => {
-			if (data.data && data.data.length !== 0) {
-				this.props.setPlugins(data.data);
-				this.props.setWebViews(data.data);
-			}
-		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -744,8 +735,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
-	setPlugins: bindActionCreators(setPlugins, dispatch),
-	setWebViews: bindActionCreators(setWebViews, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 });

@@ -44,7 +44,7 @@ class AppMenuSidebar extends Component {
 
 	render() {
 		const { activePath } = this.state;
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, remoteRoutes } = this.props;
 		return (
 			<div className="d-flex justify-content-between app-side-bar">
 				<div className="app-menu-bar-side">
@@ -163,6 +163,31 @@ class AppMenuSidebar extends Component {
 							</EditWrapper>
 						</div>
 					</div>
+					{remoteRoutes.map(
+						({ path, icon_id, string_id, hide_from_sidebar }) => {
+							return (
+								!hide_from_sidebar && (
+									<div
+										className={classnames(
+											'd-flex align-items-center app-menu-bar-side_list',
+											{ list_active: activePath === path }
+										)}
+										onClick={() => this.handleMenuChange(path)}
+									>
+										<Image
+											icon={ICONS[icon_id]}
+											wrapperClassName="app-menu-bar-icon"
+										/>
+										<div className="side-bar-txt">
+											<EditWrapper stringId={string_id} iconId={icon_id}>
+												{STRINGS[string_id] || 'Unnamed page'}
+											</EditWrapper>
+										</div>
+									</div>
+								)
+							);
+						}
+					)}
 					<div
 						className={classnames(
 							'd-flex align-items-center app-menu-bar-side_list',
@@ -203,5 +228,9 @@ class AppMenuSidebar extends Component {
 	}
 }
 
+const mapStateToProps = (state) => ({
+	remoteRoutes: state.app.remoteRoutes,
+});
+
 // export default AppMenuSidebar;
-export default connect(null)(withConfig(AppMenuSidebar));
+export default connect(mapStateToProps)(withConfig(AppMenuSidebar));
