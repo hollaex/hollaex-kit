@@ -1,5 +1,4 @@
 import flatten from 'flat';
-import coinIcons from './coins';
 
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
@@ -249,8 +248,6 @@ const nestedIcons = {
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
-
-	...coinIcons,
 };
 
 const icons = flatten(nestedIcons, options);
