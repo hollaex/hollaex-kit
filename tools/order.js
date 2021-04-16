@@ -8,6 +8,7 @@ const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getKitConfig } = require('./common');
 const { reject } = require('bluebird');
+const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
@@ -359,6 +360,16 @@ const settleFees = () => {
 };
 
 const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
+	loggerOrders.info(
+		'generateOrderFeeData',
+		'symbol',
+		symbol,
+		'userTier',
+		userTier,
+		'discount',
+		opts.discount
+	);
+
 	const tier = getKitTier(userTier);
 
 	if (!tier) {
@@ -368,7 +379,21 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	let makerFee = tier.fees.maker[symbol];
 	let takerFee = tier.fees.taker[symbol];
 
+	loggerOrders.info(
+		'generateOrderFeeData',
+		'current makerFee',
+		makerFee,
+		'current takerFee',
+		takerFee
+	);
+
 	if (opts.discount) {
+		loggerOrders.info(
+			'generateOrderFeeData',
+			'discount percentage',
+			opts.discount
+		);
+
 		const discountToBigNum = math.divide(
 			math.bignumber(opts.discount),
 			math.bignumber(100)
@@ -396,6 +421,16 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 
 		const exchangeMinFee = DEFAULT_FEES[getKitConfig().info.collateral_level];
 
+		loggerOrders.info(
+			'generateOrderFeeData',
+			'discounted makerFee',
+			discountedMakerFee,
+			'discounted takerFee',
+			discountedTakerFee,
+			'exchange minimum fees',
+			exchangeMinFee
+		);
+
 		if (discountedMakerFee > exchangeMinFee.maker) {
 			makerFee = discountedMakerFee;
 		} else {
@@ -409,12 +444,20 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 		}
 	}
 
-	return {
+	const feeData = {
 		fee_structure: {
 			maker: makerFee,
 			taker: takerFee
 		}
 	};
+
+	loggerOrders.info(
+		'generateOrderFeeData',
+		'generated fee data',
+		feeData
+	);
+
+	return feeData;
 };
 
 module.exports = {
