@@ -267,6 +267,7 @@ $trade-tab--arrow-size: 0.4rem;
 	.home-title,
 	.features-title {
 		font-size: $font-size-headline2;
+		line-height: normal;
 		font-weight: bold;
 		text-align: center;
 	}
@@ -364,6 +365,21 @@ $trade-tab--arrow-size: 0.4rem;
 	.home_container {
 		.home-card-container {
 			margin: 0 2rem 3rem;
+		}
+
+		.buttons-section,
+		.buttons-section-header {
+			.exir-button {
+				font-size: 1.2rem !important;
+			}
+		}
+
+		.text-section {
+			font-size: 1.5rem !important;
+		}
+
+		.live-markets_header {
+			font-size: 1.5rem !important;
 		}
 
 		.features-container {
