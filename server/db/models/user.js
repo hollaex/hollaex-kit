@@ -160,6 +160,10 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			network_id: {
 				type: DataTypes.INTEGER
+			},
+			discount: {
+				type: DataTypes.DOUBLE,
+				defaultValue: 0
 			}
 		},
 		{
