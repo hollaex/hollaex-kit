@@ -1254,7 +1254,8 @@ table th {
 @media (max-width: 767px) {
   .home_container .home-card-container {
     margin: 0 2rem 3rem; }
-  .home_container .buttons-section .exir-button, .home_container .buttons-section-header .exir-button {
+  .home_container .buttons-section .exir-button,
+  .home_container .buttons-section-header .exir-button {
     font-size: 1.2rem !important; }
   .home_container .text-section {
     font-size: 1.5rem !important; }
