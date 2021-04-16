@@ -874,8 +874,6 @@ const nestedContent = {
 	WITHDRAW_PAGE_DESTINATION_TAG_NONE: 'None',
 	WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE: 'Destination tag: {0}',
 	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
-	WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG:
-		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
 	WITHDRAWALS_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the destination wallet',
 	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
