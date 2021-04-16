@@ -2402,7 +2402,7 @@ paths:
     x-swagger-router-controller: admin
     put:
       operationId: putUserRole
-      description: "Update a user's role"
+      description: Update a user's role
       tags:
         - Admin
       parameters:
@@ -2420,6 +2420,48 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/UserRolePutResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/user/discount:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserDiscount
+      description: Update a user's discount rate
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - discount
+            properties:
+              discount:
+                type: number
+                format: double
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            required:
+              - discount
+            properties:
+              discount:
+                type: number
+                format: double
         default:
           description: Error
           schema:

@@ -174,6 +174,43 @@ const putUserNote = (req, res) => {
 		});
 };
 
+const putUserDiscount = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putUserDiscount auth',
+		req.auth
+	);
+
+	const user_id = req.swagger.params.user_id.value;
+	const { discount } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putUserDiscount',
+		'user_id',
+		user_id,
+		'discount rate',
+		discount
+	);
+
+	toolsLib.user.updateUserDiscount(user_id, discount)
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/putUserDiscount successful'
+			);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putUserDiscount err',
+				err.message
+			);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 const getAdminUserBalance = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
@@ -878,5 +915,6 @@ module.exports = {
 	verifyEmailUser,
 	settleFees,
 	putMint,
-	putBurn
+	putBurn,
+	putUserDiscount
 };
