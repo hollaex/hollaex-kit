@@ -365,9 +365,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 		'symbol',
 		symbol,
 		'userTier',
-		userTier,
-		'discount',
-		opts.discount
+		userTier
 	);
 
 	const tier = getKitTier(userTier);
