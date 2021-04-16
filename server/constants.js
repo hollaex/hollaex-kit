@@ -24,7 +24,8 @@ let configuration = {
 		defaults: {},
 		features: {},
 		meta: {},
-		injected_values: []
+		injected_values: [],
+		injected_html: {}
 	}
 };
 
@@ -87,6 +88,7 @@ const resetAllConfig = () => {
 	configuration = {
 		coins: {},
 		pairs: {},
+		tiers: {},
 		kit: {
 			info: {},
 			color: {},
@@ -98,7 +100,8 @@ const resetAllConfig = () => {
 			defaults: {},
 			features: {},
 			meta: {},
-			injected_values: []
+			injected_values: [],
+			injected_html: {}
 		}
 	};
 };
@@ -153,7 +156,8 @@ exports.KIT_CONFIG_KEYS = [
 	'features',
 	'setup_completed',
 	'email_verification_required',
-	'injected_values'
+	'injected_values',
+	'injected_html'
 ];
 
 exports.KIT_SECRETS_KEYS = [

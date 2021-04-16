@@ -3880,6 +3880,16 @@ definitions:
             type: boolean
           native_currency:
             type: string
+          injected_html:
+            type: object
+            required:
+              - head
+              - body
+            properties:
+              head:
+                type: string
+              body:
+                type: string
           injected_values:
             type: array
             items:
