@@ -2462,6 +2462,8 @@ paths:
               discount:
                 type: number
                 format: double
+                minimum: 0
+                maximum: 100
         default:
           description: Error
           schema:
