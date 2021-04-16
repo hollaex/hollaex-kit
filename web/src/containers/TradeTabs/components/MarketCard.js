@@ -105,7 +105,7 @@ class MarketCard extends Component {
 								</Transition>
 							</div>
 							<div className="trade_tab-pair-volume">
-								{`${ticker.volume} ${symbol.toUpperCase()}`}
+								{ticker.volume && `${ticker.volume} ${symbol.toUpperCase()}`}
 							</div>
 						</div>
 					</div>

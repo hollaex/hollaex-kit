@@ -99,7 +99,6 @@ class Home extends Component {
 					constants: { features: { quick_trade = false } = {} } = {},
 					isReady,
 					pair,
-					token,
 					sections,
 				} = this.props;
 
@@ -115,7 +114,6 @@ class Home extends Component {
 								minHeight:
 									sectionsNumber === 1 ? 'calc(100vh - 15rem)' : '14rem',
 							}}
-							token={token}
 							onClickDemo={
 								pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
 							}
@@ -332,6 +330,35 @@ class Home extends Component {
 		);
 	};
 
+	renderButtonSection = () => {
+		return (
+			<div className="d-flex align-items-center buttons-section-header">
+				<ButtonLink
+					link={'/login'}
+					type="button"
+					label={STRINGS['LOGIN_TEXT']}
+					className="main-section_button_invert home_header_button"
+				/>
+				<div style={{ width: '0.75rem' }} />
+				<ButtonLink
+					link={'/signup'}
+					type="button"
+					label={STRINGS['SIGNUP_TEXT']}
+					className="main-section_button home_header_button"
+				/>
+			</div>
+		);
+	};
+
+	renderAccountButton = () => {
+		const { user } = this.props;
+		return (
+			<div className="pointer" onClick={this.goTo('/account')}>
+				{user.email}
+			</div>
+		);
+	};
+
 	render() {
 		const {
 			// symbol,
@@ -359,21 +386,9 @@ class Home extends Component {
 						<div className="d-flex align-items-center justify-content-center h-100">
 							{this.renderIcon()}
 						</div>
-						<div className="d-flex align-items-center buttons-section-header">
-							<ButtonLink
-								link={'/login'}
-								type="button"
-								label={STRINGS['LOGIN_TEXT']}
-								className="main-section_button_invert home_header_button"
-							/>
-							<div style={{ width: '0.75rem' }} />
-							<ButtonLink
-								link={'/signup'}
-								type="button"
-								label={STRINGS['SIGNUP_TEXT']}
-								className="main-section_button home_header_button"
-							/>
-						</div>
+						{isLoggedIn()
+							? this.renderAccountButton()
+							: this.renderButtonSection()}
 					</div>
 					<EditWrapper
 						iconId="EXCHANGE_LANDING_PAGE"

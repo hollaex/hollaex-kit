@@ -82,3 +82,7 @@ export const getAllIconsArray = (themeKeys, content = defaultIcons) => {
 
 	return allIcons;
 };
+
+export const generateRemoteRouteIconId = (id = '') => {
+	return `REMOTE_ROUTE_ICON__${id.toUpperCase()}`;
+};

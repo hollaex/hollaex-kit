@@ -12,14 +12,7 @@ const BUTTONS_CLASSES = [
 	'exir-button',
 ];
 
-const MainSection = ({
-	style = {},
-	onClickTrade,
-	onClickLearnMore,
-	onClickDemo,
-	token,
-	icons: ICONS,
-}) => {
+const MainSection = ({ style = {}, onClickTrade, onClickDemo }) => {
 	return (
 		<div
 			className={classnames(
