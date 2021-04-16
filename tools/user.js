@@ -946,7 +946,26 @@ const updateUserNote = (userId, note) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return user.update({ note }, { fields: ['note']});
+			return user.update({ note }, { fields: ['note'] });
+		});
+};
+
+const updateUserDiscount = (userId, discount) => {
+	if (discount < 0 || discount > 1) {
+		return reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 1`));
+	}
+
+	return getUserByKitId(userId, false)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			} else if (user.discount === discount) {
+				throw new Error(`User discount is already ${discount}`);
+			}
+			return user.update({ discount }, { fields: ['discount'] });
+		})
+		.then((user) => {
+			return pick(user.dataValues, ['id', 'discount']);
 		});
 };
 
@@ -1396,6 +1415,7 @@ module.exports = {
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
+	updateUserDiscount,
 	changeUserVerificationLevelById,
 	deactivateUserOtpById,
 	toggleFlaggedUserById,
