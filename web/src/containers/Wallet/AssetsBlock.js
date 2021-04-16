@@ -193,14 +193,18 @@ const AssetsBlock = ({
 										</Link> */}
 									</td>
 									<td className="td-name td-fit">
-										<Link to={`/wallet/${key.toLowerCase()}`}>
-											<Image
-												iconId={`${symbol.toUpperCase()}_ICON`}
-												icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
-												wrapperClassName="currency-ball"
-											/>
-										</Link>
-										<Link to={`/wallet/${key.toLowerCase()}`}>{fullname}</Link>
+										<div className="d-flex align-items-center">
+											<Link to={`/wallet/${key.toLowerCase()}`}>
+												<Image
+													iconId={`${symbol.toUpperCase()}_ICON`}
+													icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+													wrapperClassName="currency-ball"
+												/>
+											</Link>
+											<Link to={`/wallet/${key.toLowerCase()}`}>
+												{fullname}
+											</Link>
+										</div>
 									</td>
 									<td className="td-amount">
 										<div className="d-flex">

@@ -82,6 +82,7 @@ class MenuList extends Component {
 			constants,
 			location,
 			user,
+			remoteRoutes,
 		} = this.props;
 		const { isOpen } = this.state;
 		const totalPending = IS_XHT
@@ -322,6 +323,40 @@ class MenuList extends Component {
 								{STRINGS['ACCOUNTS.TAB_SETTINGS']}
 							</EditWrapper>
 						</div>
+
+						{
+							/*Dynamic menu items*/
+							remoteRoutes.map(
+								({ path, icon_id, string_id, hide_from_menulist }) => {
+									return (
+										!hide_from_menulist && (
+											<div
+												className={classnames(
+													'app-bar-account-menu-list d-flex',
+													{
+														'menu-active':
+															location &&
+															location.pathname &&
+															location.pathname === path,
+													}
+												)}
+												onClick={() => this.handleMenu(path)}
+											>
+												<div className="notification-content" />
+												<Image
+													icon={ICONS[icon_id]}
+													wrapperClassName="app-bar-account-list-icon"
+												/>
+												<EditWrapper stringId={string_id} iconId={icon_id}>
+													{STRINGS[string_id] || 'Unnamed page'}
+												</EditWrapper>
+											</div>
+										)
+									);
+								}
+							)
+						}
+
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
 								'menu-active':
@@ -363,6 +398,7 @@ class MenuList extends Component {
 const mapStateToProps = (state) => {
 	return {
 		constants: state.app.constants,
+		remoteRoutes: state.app.remoteRoutes,
 	};
 };
 
