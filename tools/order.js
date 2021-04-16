@@ -3,7 +3,8 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, DEFAULT_FEES } = require(`${SERVER_PATH}/messages`);
+const { DEFAULT_FEES } = require(`${SERVER_PATH}/constants`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getKitConfig } = require('./common');
 const { reject } = require('bluebird');
@@ -368,7 +369,6 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	let takerFee = tier.fees.taker[symbol];
 
 	if (opts.discount) {
-		const exchangeMinFee = DEFAULT_FEES[getKitConfig().info.collateral_level];
 		const discountToBigNum = math.divide(
 			math.bignumber(opts.discount),
 			math.bignumber(100)
@@ -394,12 +394,18 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 			)
 		);
 
-		if (discountedMakerFee > exchangeMinFee) {
+		const exchangeMinFee = DEFAULT_FEES[getKitConfig().info.collateral_level];
+
+		if (discountedMakerFee > exchangeMinFee.maker) {
 			makerFee = discountedMakerFee;
+		} else {
+			makerFee = exchangeMinFee.maker;
 		}
 
-		if (discountedTakerFee > exchangeMinFee) {
+		if (discountedTakerFee > exchangeMinFee.taker) {
 			takerFee = discountedTakerFee;
+		} else {
+			takerFee = exchangeMinFee.taker;
 		}
 	}
 

@@ -951,7 +951,7 @@ const updateUserNote = (userId, note) => {
 };
 
 const updateUserDiscount = (userId, discount) => {
-	if (discount < 0 || discount > 1) {
+	if (discount < 0 || discount > 100) {
 		return reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 1`));
 	}
 
