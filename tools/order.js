@@ -3,10 +3,11 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, DEFAULT_FEES } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier } = require('./common');
+const { subscribedToPair, getKitTier, getKitConfig } = require('./common');
 const { reject } = require('bluebird');
+const math = require('mathjs');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -19,15 +20,15 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			const tier = getKitTier(user.verification_level);
-			if (!tier) {
-				throw new Error('User tier not found');
-			}
-			const feeData = {};
-			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol],
-				taker: tier.fees.taker[symbol]
-			};
+
+			const feeData = generateOrderFeeData(
+				user.verification_level,
+				symbol,
+				{
+					discount: user.discount
+				}
+			);
+
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
@@ -43,15 +44,15 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			const tier = getKitTier(user.verification_level);
-			if (!tier) {
-				throw new Error('User tier not found');
-			}
-			const feeData = {};
-			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol],
-				taker: tier.fees.taker[symbol]
-			};
+
+			const feeData = generateOrderFeeData(
+				user.verification_level,
+				symbol,
+				{
+					discount: user.discount
+				}
+			);
+
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
@@ -65,15 +66,18 @@ const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price =
 	}
 	return getUserByNetworkId(networkId)
 		.then((user) => {
-			const tier = getKitTier(user.verification_level);
-			if (!tier) {
-				throw new Error('User tier not found');
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
 			}
-			const feeData = {};
-			feeData.fee_structure = {
-				maker: tier.fees.maker[symbol],
-				taker: tier.fees.taker[symbol]
-			};
+
+			const feeData = generateOrderFeeData(
+				user.verification_level,
+				symbol,
+				{
+					discount: user.discount
+				}
+			);
+
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
@@ -353,6 +357,60 @@ const settleFees = () => {
 	return getNodeLib().settleFees();
 };
 
+const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
+	const tier = getKitTier(userTier);
+
+	if (!tier) {
+		throw new Error(`User tier ${userTier} not found`);
+	}
+
+	let makerFee = tier.fees.maker[symbol];
+	let takerFee = tier.fees.taker[symbol];
+
+	if (opts.discount) {
+		const exchangeMinFee = DEFAULT_FEES[getKitConfig().info.collateral_level];
+		const discountToBigNum = math.divide(
+			math.bignumber(opts.discount),
+			math.bignumber(100)
+		);
+
+		const discountedMakerFee = math.number(
+			math.subtract(
+				math.bignumber(makerFee),
+				math.multiply(
+					math.bignumber(makerFee),
+					discountToBigNum
+				)
+			)
+		);
+
+		const discountedTakerFee = math.number(
+			math.subtract(
+				math.bignumber(takerFee),
+				math.multiply(
+					math.bignumber(takerFee),
+					discountToBigNum
+				)
+			)
+		);
+
+		if (discountedMakerFee > exchangeMinFee) {
+			makerFee = discountedMakerFee;
+		}
+
+		if (discountedTakerFee > exchangeMinFee) {
+			takerFee = discountedTakerFee;
+		}
+	}
+
+	return {
+		fee_structure: {
+			maker: makerFee,
+			taker: takerFee
+		}
+	};
+};
+
 module.exports = {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
@@ -375,5 +433,6 @@ module.exports = {
 	getAllUserOrdersByNetworkId,
 	cancelAllUserOrdersByNetworkId,
 	getGeneratedFees,
-	settleFees
+	settleFees,
+	generateOrderFeeData
 };
