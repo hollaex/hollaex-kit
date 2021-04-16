@@ -62,6 +62,7 @@ class Container extends Component {
 			idleTimer: undefined,
 			ordersQueued: [],
 			limitFilledOnOrder: '',
+			isUserFetched: false,
 		};
 		this.orderCache = {};
 		this.wsInterval = null;
@@ -245,12 +246,18 @@ class Container extends Component {
 				}
 			})
 			.catch((err) => {
-				const message = err.message || JSON.stringify(err);
-				this.props.setNotification(NOTIFICATIONS.ERROR, message);
-			});
+				if (err.status === 403) {
+					this.props.logout('Invalid token');
+				} else {
+					const message = err.message || JSON.stringify(err);
+					this.props.setNotification(NOTIFICATIONS.ERROR, message);
+				}
+			})
+			.finally(() => this.setState({ isUserFetched: true }));
 	};
 
 	setUserSocket = () => {
+		const { isUserFetched } = this.state;
 		let url = `${WS_URL}/stream`;
 		const token = isLoggedIn() && getToken();
 
@@ -261,7 +268,7 @@ class Container extends Component {
 
 		this.setState({ privateSocket });
 
-		if (isLoggedIn()) {
+		if (isLoggedIn() && !isUserFetched) {
 			this.getUserDetails();
 		}
 
