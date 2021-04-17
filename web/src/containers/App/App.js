@@ -11,7 +11,7 @@ import debounce from 'lodash.debounce';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
-import { addElements } from 'utils/script';
+import { addElements, injectHTML } from 'utils/script';
 
 import {
 	NOTIFICATIONS,
@@ -97,7 +97,7 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
-		const { injected_values } = this.props;
+		const { injected_values, injected_html } = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -117,6 +117,7 @@ class App extends Component {
 		);
 
 		addElements(injected_values, 'body');
+		injectHTML(injected_html, 'body');
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -465,7 +466,6 @@ class App extends Component {
 			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
-			handleEditMode,
 			// user,
 			features,
 			isReady: isSocketDataReady,
@@ -742,11 +742,7 @@ class App extends Component {
 					</div>
 				</div>
 				{isAdmin() && isBrowser && (
-					<OperatorControls
-						onChangeEditMode={handleEditMode}
-						editMode={isEditMode}
-						initialData={this.props.location}
-					/>
+					<OperatorControls initialData={this.props.location} />
 				)}
 			</ThemeProvider>
 		);

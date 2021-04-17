@@ -5,6 +5,7 @@ export const EditContext = React.createContext();
 class EditProvider extends Component {
 	state = {
 		isEditMode: false,
+		isInjectMode: false,
 	};
 
 	handleEditMode = () => {
@@ -14,16 +15,25 @@ class EditProvider extends Component {
 		}));
 	};
 
+	handleInjectMode = () => {
+		this.setState((prevState) => ({
+			...prevState,
+			isInjectMode: !prevState.isInjectMode,
+		}));
+	};
+
 	render() {
-		const { isEditMode } = this.state;
+		const { isEditMode, isInjectMode } = this.state;
 		const { children } = this.props;
-		const { handleEditMode } = this;
+		const { handleEditMode, handleInjectMode } = this;
 
 		return (
 			<EditContext.Provider
 				value={{
 					isEditMode,
+					isInjectMode,
 					handleEditMode,
+					handleInjectMode,
 				}}
 			>
 				{children}
