@@ -11,7 +11,7 @@ import ConfigProvider from 'components/ConfigProvider';
 import EditProvider from 'components/EditProvider';
 import defaultConfig from 'config/project.config';
 import './config/initialize';
-import { addElements } from 'utils/script';
+import { addElements, injectHTML } from 'utils/script';
 
 import 'flag-icon-css/css/flag-icon.min.css';
 import 'react-dates/initialize';
@@ -39,6 +39,7 @@ import {
 	requestConstant,
 	setHomePageSetting,
 	setInjectedValues,
+	setInjectedHTML,
 	requestPlugins,
 	setWebViews,
 	setPlugins,
@@ -82,6 +83,7 @@ const getConfigs = async () => {
 		logo_image,
 		features: { home_page = false } = {},
 		injected_values = [],
+		injected_html = {},
 	} = kitData;
 
 	kitData['sections'] = sections;
@@ -120,6 +122,7 @@ const getConfigs = async () => {
 	setSetupCompleted(setup_completed);
 	store.dispatch(setHomePageSetting(home_page));
 	store.dispatch(setInjectedValues(injected_values));
+	store.dispatch(setInjectedHTML(injected_html));
 
 	const { data = {} } = await requestPlugins();
 	if (data.data && data.data.length !== 0) {
@@ -129,16 +132,17 @@ const getConfigs = async () => {
 
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, { coin_icons });
 
-	return [appConfigs, injected_values];
+	return [appConfigs, injected_values, injected_html];
 };
 
-const bootstrapApp = (appConfig, injected_values) => {
+const bootstrapApp = (appConfig, injected_values, injected_html) => {
 	const {
 		icons: {
 			dark: { EXCHANGE_FAV_ICON = '/favicon.ico' },
 		},
 	} = appConfig;
 	addElements(injected_values, 'head');
+	injectHTML(injected_html, 'head');
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	initializeStrings();
 	// window.appConfig = { ...appConfig }
@@ -163,8 +167,8 @@ const bootstrapApp = (appConfig, injected_values) => {
 
 const initialize = async () => {
 	try {
-		const [configs, injected_values] = await getConfigs();
-		bootstrapApp(configs, injected_values);
+		const [configs, injected_values, injected_html] = await getConfigs();
+		bootstrapApp(configs, injected_values, injected_html);
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);

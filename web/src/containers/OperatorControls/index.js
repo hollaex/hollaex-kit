@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
+import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
 import classnames from 'classnames';
 import merge from 'lodash.merge';
 import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
-import { Input, Button, Divider } from 'antd';
+import { Input, Button, Divider, Tabs } from 'antd';
 import { DeleteOutlined, SettingFilled, KeyOutlined } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
-import { publish } from 'actions/operatorActions';
+import { publish, updateInjectedHTML } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
 import { content as CONTENT } from 'config/localizedStrings';
 import AllStringsModal from './components/AllStringsModal';
@@ -32,12 +33,17 @@ import {
 } from 'utils/string';
 import { filterThemes } from 'utils/color';
 import { getIconByKey, getAllIconsArray } from 'utils/icon';
+import withEdit from 'components/EditProvider/withEdit';
+
+const { TabPane } = Tabs;
+const { TextArea } = Input;
+const TAB_KEYS = ['head', 'body'];
 
 class OperatorControls extends Component {
 	constructor(props) {
 		super(props);
 
-		const { themeOptions } = this.props;
+		const { themeOptions, injected_html = {} } = this.props;
 
 		const strings = localStorage.getItem('strings') || '{}';
 		const icons = localStorage.getItem('icons') || '{}';
@@ -72,6 +78,7 @@ class OperatorControls extends Component {
 			isStringsSettingsOpen: false,
 			isAddLanguageModalOpen: false,
 			isExitConfirmationOpen: false,
+			isExitConsoleConfirmationOpen: false,
 			isPublishConfirmationOpen: false,
 			isUploadIconOpen: false,
 			isThemeSettingsOpen: false,
@@ -85,6 +92,7 @@ class OperatorControls extends Component {
 			isAllIconsModalOpen: false,
 			selectedThemes,
 			allIconsArray: [],
+			injected_html,
 		};
 	}
 
@@ -190,10 +198,10 @@ class OperatorControls extends Component {
 
 	handleEditButton = ({ target: { dataset = {} } }, source) => {
 		const { isEditModalOpen, isUploadIconOpen } = this.state;
-		const { editMode } = this.props;
+		const { isEditMode } = this.props;
 		const { stringId, iconId, sectionId } = dataset;
 
-		if (editMode && !isEditModalOpen && !isUploadIconOpen) {
+		if (isEditMode && !isEditModalOpen && !isUploadIconOpen) {
 			const string_ids_array = stringId ? stringId.split(',') : [];
 			const icon_ids_array = iconId ? iconId.split(',') : [];
 
@@ -337,29 +345,36 @@ class OperatorControls extends Component {
 	};
 
 	handlePublish = () => {
-		const {
-			overwrites,
-			iconsOverwrites: icons,
-			colorOverwrites,
-			languageKeys,
-		} = this.state;
+		const { isEditMode, isInjectMode } = this.props;
 
-		const { defaults, sections } = this.props;
+		if (isEditMode) {
+			const {
+				overwrites,
+				iconsOverwrites: icons,
+				colorOverwrites,
+				languageKeys,
+			} = this.state;
 
-		const valid_languages = languageKeys.join();
-		const strings = filterOverwrites(overwrites);
-		const color = filterThemes(colorOverwrites);
+			const { defaults, sections } = this.props;
 
-		const configs = {
-			defaults,
-			color,
-			strings,
-			icons,
-			valid_languages,
-			sections,
-		};
+			const valid_languages = languageKeys.join();
+			const strings = filterOverwrites(overwrites);
+			const color = filterThemes(colorOverwrites);
 
-		publish(configs).then(this.reload);
+			const configs = {
+				defaults,
+				color,
+				strings,
+				icons,
+				valid_languages,
+				sections,
+			};
+
+			publish(configs).then(this.reload);
+		} else if (isInjectMode) {
+			const { injected_html } = this.state;
+			updateInjectedHTML(injected_html).then(this.reload);
+		}
 	};
 
 	reload = () => window.location.reload(false);
@@ -371,23 +386,45 @@ class OperatorControls extends Component {
 	};
 
 	toggleEditMode = () => {
-		const { onChangeEditMode, editMode } = this.props;
-		if (!editMode) {
-			onChangeEditMode();
-		} else {
-			this.openExitConfirmationModal();
+		const { handleEditMode, isEditMode, isInjectMode } = this.props;
+		if (!isInjectMode) {
+			if (!isEditMode) {
+				handleEditMode();
+			} else {
+				this.openExitConfirmationModal();
+			}
+		}
+	};
+
+	toggleInjectMode = () => {
+		const { handleInjectMode, isEditMode, isInjectMode } = this.props;
+		const { injected_html } = this.state;
+		if (!isEditMode) {
+			if (!isInjectMode || isEqual(injected_html, this.props.injected_html)) {
+				handleInjectMode();
+			} else {
+				this.openExitConsoleConfirmationModal();
+			}
 		}
 	};
 
 	exitEditMode = () => {
 		const { isPublishEnabled } = this.state;
-		const { onChangeEditMode } = this.props;
-		onChangeEditMode();
+		const { handleEditMode } = this.props;
+		handleEditMode();
 		this.closeExitConfirmationModal();
 
 		if (isPublishEnabled) {
 			this.reload();
 		}
+	};
+
+	exitInjectMode = () => {
+		const { handleInjectMode, injected_html } = this.props;
+		this.setState({ injected_html }, () => {
+			handleInjectMode();
+			this.closeExitConsoleConfirmationModal();
+		});
 	};
 
 	getLanguageLabel = (key) => {
@@ -595,6 +632,14 @@ class OperatorControls extends Component {
 		this.setState({ isExitConfirmationOpen: false });
 	};
 
+	openExitConsoleConfirmationModal = () => {
+		this.setState({ isExitConsoleConfirmationOpen: true });
+	};
+
+	closeExitConsoleConfirmationModal = () => {
+		this.setState({ isExitConsoleConfirmationOpen: false });
+	};
+
 	openPublishConfirmationModal = () => {
 		this.setState({ isPublishConfirmationOpen: true });
 	};
@@ -783,6 +828,16 @@ class OperatorControls extends Component {
 		);
 	};
 
+	handleTextAreaChange = ({ target: { name, value } }) => {
+		this.setState((prevState) => ({
+			...prevState,
+			injected_html: {
+				...prevState.injected_html,
+				[name]: value,
+			},
+		}));
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -798,6 +853,7 @@ class OperatorControls extends Component {
 			selectedLanguages,
 			isStringsSettingsOpen,
 			isExitConfirmationOpen,
+			isExitConsoleConfirmationOpen,
 			isAddLanguageModalOpen,
 			isPublishConfirmationOpen,
 			iconsEditData,
@@ -812,77 +868,140 @@ class OperatorControls extends Component {
 			iconSearchResults,
 			isSectionsModalOpen,
 			isAddSectionOpen,
+			injected_html,
 		} = this.state;
-		const { editMode, color: themes, themeOptions, sections } = this.props;
+		const {
+			isEditMode,
+			color: themes,
+			themeOptions,
+			sections,
+			isInjectMode,
+		} = this.props;
 
 		return (
 			<div
-				className={classnames('operator-controls__wrapper', { open: editMode })}
+				className={classnames('operator-controls__wrapper', {
+					open: isEditMode || isInjectMode,
+				})}
 			>
 				<div className="operator-controls__buttons-wrapper">
 					<div
-						className="operator-controls__button"
+						className={classnames('operator-controls__button', {
+							disabled: isInjectMode,
+						})}
 						onClick={this.toggleEditMode}
 					>
 						<EditFilled />
 						<span className="pl-1">
-							{`${editMode ? 'Exit' : 'Enter'} edit mode`}
+							{`${isEditMode ? 'Exit' : 'Enter'} edit mode`}
 						</span>
 					</div>
 					<div
 						className={classnames('operator-controls__button', {
-							disabled: editMode,
+							disabled: isEditMode || isInjectMode,
 						})}
 					>
-						{!editMode && (
+						{!isEditMode && !isInjectMode ? (
 							<Link to="/admin">
 								<SettingFilled />
 								<span className="pl-1">Operator controls</span>
 							</Link>
-						)}
-						{editMode && (
+						) : (
 							<div>
 								<SettingFilled />
 								<span className="pl-1">Operator controls</span>
 							</div>
 						)}
 					</div>
+					<div
+						className={classnames('operator-controls__button', {
+							disabled: isEditMode,
+						})}
+						onClick={this.toggleInjectMode}
+					>
+						<span>{`</>`}</span>
+						<span className="pl-1">Console</span>
+					</div>
 				</div>
-				<div className="operator-controls__panel">
-					<div className="operator-controls__panel-list">
-						<div
-							className="operator-controls__panel-item"
-							onClick={this.openAllStringsModal}
-						>
-							All strings
+				<div
+					className={classnames('operator-controls__panel', {
+						deep: isInjectMode,
+					})}
+				>
+					{isEditMode && !isInjectMode && (
+						<Fragment>
+							<div className="operator-controls__panel-list">
+								<div
+									className="operator-controls__panel-item"
+									onClick={this.openAllStringsModal}
+								>
+									All strings
+								</div>
+								<div
+									className="operator-controls__panel-item"
+									onClick={this.openThemeSettings}
+								>
+									Themes
+								</div>
+								<div
+									className="operator-controls__panel-item"
+									onClick={this.openAllIconsModal}
+								>
+									All graphics
+								</div>
+							</div>
+							<div className="d-flex align-items-center">
+								<Button
+									type="primary"
+									onClick={this.openPublishConfirmationModal}
+									className="operator-controls__publish-button bold"
+									disabled={!isPublishEnabled}
+								>
+									Publish
+								</Button>
+							</div>
+						</Fragment>
+					)}
+					{isInjectMode && !isEditMode && (
+						<div className="w-100 h-100">
+							<div className="d-flex justify-content-end">
+								<div className="d-flex align-items-center">
+									<Button
+										type="primary"
+										onClick={this.openPublishConfirmationModal}
+										className="operator-controls__publish-button small bold"
+										disabled={isEqual(injected_html, this.props.injected_html)}
+										style={{ zIndex: 1 }}
+									>
+										Publish
+									</Button>
+								</div>
+							</div>
+							<Tabs className="w-100 h-100">
+								{TAB_KEYS.map((key) => {
+									const title = `${'<'}${key.toUpperCase()}${'>'}`;
+									return (
+										<TabPane className="w-100 h-100" tab={title} key={key}>
+											<div className="w-100 h-100">
+												<TextArea
+													name={key}
+													placeholder="Insert code here..."
+													onChange={this.handleTextAreaChange}
+													value={injected_html[key]}
+													style={{ resize: 'none' }}
+													className="w-100 h-100"
+												/>
+											</div>
+										</TabPane>
+									);
+								})}
+							</Tabs>
 						</div>
-						<div
-							className="operator-controls__panel-item"
-							onClick={this.openThemeSettings}
-						>
-							Themes
-						</div>
-						<div
-							className="operator-controls__panel-item"
-							onClick={this.openAllIconsModal}
-						>
-							All graphics
-						</div>
-					</div>
-					<div className="d-flex align-items-center">
-						<Button
-							type="primary"
-							onClick={this.openPublishConfirmationModal}
-							className="operator-controls__publish-button bold"
-							disabled={!isPublishEnabled}
-						>
-							Publish
-						</Button>
-					</div>
+					)}
 				</div>
 
 				<Modal
-					isOpen={editMode && isEditModalOpen}
+					isOpen={isEditMode && isEditModalOpen}
 					label="operator-controls-modal"
 					className="operator-controls__modal"
 					disableTheme={true}
@@ -892,7 +1011,7 @@ class OperatorControls extends Component {
 					bodyOpenClassName="operator-controls__modal-open"
 				>
 					<div className="operator-controls__modal-title pb-3">Edit string</div>
-					{editMode &&
+					{isEditMode &&
 						isEditModalOpen &&
 						editableElementIds.map((key) => {
 							return (
@@ -954,7 +1073,7 @@ class OperatorControls extends Component {
 				</Modal>
 				{isAllIconsModalOpen && (
 					<AllIconsModal
-						isOpen={editMode && isAllIconsModalOpen}
+						isOpen={isEditMode && isAllIconsModalOpen}
 						icons={iconSearchResults}
 						onCloseDialog={this.closeAllIconsModal}
 						onSearch={this.handleIconSearch}
@@ -969,7 +1088,7 @@ class OperatorControls extends Component {
 				)}
 				{isAllStringsModalOpen && (
 					<AllStringsModal
-						isOpen={editMode && isAllStringsModalOpen}
+						isOpen={isEditMode && isAllStringsModalOpen}
 						strings={searchResults}
 						onCloseDialog={this.closeAllStringsModal}
 						onSearch={this.handleSearch}
@@ -982,7 +1101,7 @@ class OperatorControls extends Component {
 					/>
 				)}
 				<StringSettingsModal
-					isOpen={editMode && isStringsSettingsOpen}
+					isOpen={isEditMode && isStringsSettingsOpen}
 					onCloseDialog={this.closeStringSettingsModal}
 					languages={languageOptions}
 					onAddLanguageClick={this.openAddLanguageModal}
@@ -990,7 +1109,7 @@ class OperatorControls extends Component {
 					defaultLanguage={this.props.defaults.language}
 				/>
 				<AddLanguageModal
-					isOpen={editMode && isAddLanguageModalOpen}
+					isOpen={isEditMode && isAddLanguageModalOpen}
 					onCloseDialog={this.closeAddLanguageModal}
 					languages={LANGUAGES.filter(
 						({ value }) => !languageKeys.includes(value)
@@ -1010,7 +1129,7 @@ class OperatorControls extends Component {
 				)}
 				{isThemeSettingsOpen && (
 					<ThemeSettings
-						isOpen={editMode && isThemeSettingsOpen}
+						isOpen={isEditMode && isThemeSettingsOpen}
 						onCloseDialog={this.closeThemeSettings}
 						themes={themeOptions}
 						onAddThemeClick={this.openAddTheme}
@@ -1020,7 +1139,7 @@ class OperatorControls extends Component {
 				)}
 				{isAddThemeOpen && (
 					<AddTheme
-						isOpen={editMode && isAddThemeOpen}
+						isOpen={isEditMode && isAddThemeOpen}
 						onCloseDialog={this.closeAddTheme}
 						selectedTheme={selectedTheme}
 						themes={themes}
@@ -1030,7 +1149,7 @@ class OperatorControls extends Component {
 
 				{isSectionsModalOpen && (
 					<SectionsModal
-						isOpen={editMode && isSectionsModalOpen}
+						isOpen={isEditMode && isSectionsModalOpen}
 						onCloseDialog={this.closeSectionsModal}
 						sections={sections}
 						onSave={this.updateSectionsOrder}
@@ -1040,7 +1159,7 @@ class OperatorControls extends Component {
 
 				{isAddSectionOpen && (
 					<AddSection
-						isOpen={editMode && isAddSectionOpen}
+						isOpen={isEditMode && isAddSectionOpen}
 						onCloseDialog={this.closeAddSectionModal}
 						sections={sections}
 						onSave={this.updateSections}
@@ -1075,6 +1194,39 @@ class OperatorControls extends Component {
 							className="ml-1 bold"
 							type="primary"
 							onClick={this.exitEditMode}
+							danger
+						>
+							Exit
+						</Button>
+					</footer>
+				</Modal>
+				<Modal
+					isOpen={isExitConsoleConfirmationOpen}
+					label="operator-controls-modal"
+					className="operator-controls__modal"
+					disableTheme={true}
+					onCloseDialog={this.closeExitConsoleConfirmationModal}
+					shouldCloseOnOverlayClick={true}
+					showCloseText={true}
+					bodyOpenClassName="operator-controls__modal-open"
+				>
+					<div className="operator-controls__modal-title">Exit</div>
+					<div className="pt-3" style={{ width: '292px' }}>
+						You are about to close the console with some unpublished changes.
+					</div>
+					<footer className="d-flex justify-content-end pt-4">
+						<Button
+							block
+							className="mr-1 bold"
+							onClick={this.closeExitConsoleConfirmationModal}
+						>
+							Cancel
+						</Button>
+						<Button
+							block
+							className="ml-1 bold"
+							type="primary"
+							onClick={this.exitInjectMode}
 							danger
 						>
 							Exit
@@ -1122,6 +1274,7 @@ class OperatorControls extends Component {
 
 const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
+	injected_html: state.app.injected_html,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1131,4 +1284,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(OperatorControls));
+)(withEdit(withConfig(OperatorControls)));
