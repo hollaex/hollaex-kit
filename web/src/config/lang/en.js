@@ -1455,6 +1455,9 @@ const nestedContent = {
 	},
 	PAGE_UNDER_CONSTRUCTION:
 		'This page is under construction. Please revisit this page soon.',
+	UNDEFINED_ERROR_TITLE: 'You’ve Encountered an Unidentified Error',
+	UNDEFINED_ERROR:
+		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
 };
 
 const content = flatten(nestedContent, options);

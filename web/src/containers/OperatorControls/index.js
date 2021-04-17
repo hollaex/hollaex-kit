@@ -980,12 +980,13 @@ class OperatorControls extends Component {
 							<Tabs className="w-100 h-100">
 								{TAB_KEYS.map((key) => {
 									const title = `${'<'}${key.toUpperCase()}${'>'}`;
+									const placeholder = `${'<'}!-- In this section you can insert any HTML code to the ${title} of your website --${'>'}`;
 									return (
 										<TabPane className="w-100 h-100" tab={title} key={key}>
 											<div className="w-100 h-100">
 												<TextArea
 													name={key}
-													placeholder="Insert code here..."
+													placeholder={placeholder}
 													onChange={this.handleTextAreaChange}
 													value={injected_html[key]}
 													style={{ resize: 'none' }}

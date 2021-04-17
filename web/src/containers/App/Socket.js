@@ -248,6 +248,8 @@ class Container extends Component {
 			.catch((err) => {
 				if (err.status === 403) {
 					this.props.logout('Invalid token');
+				} else if (err.status === 400) {
+					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
 				} else {
 					const message = err.message || JSON.stringify(err);
 					this.props.setNotification(NOTIFICATIONS.ERROR, message);
