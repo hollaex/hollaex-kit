@@ -24,6 +24,7 @@ import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
+import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
 
 class AppBar extends Component {
 	state = {
@@ -97,7 +98,9 @@ class AppBar extends Component {
 				}
 			})
 			.catch((err) => {
-				if (err.status === 400) {
+				if (err.status === 403) {
+					this.props.logout(ERROR_TOKEN_EXPIRED);
+				} else if (err.status === 400) {
 					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
 				} else {
 					const message = err.message || JSON.stringify(err);
