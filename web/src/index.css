@@ -1254,7 +1254,8 @@ table th {
 @media (max-width: 767px) {
   .home_container .home-card-container {
     margin: 0 2rem 3rem; }
-  .home_container .buttons-section .exir-button, .home_container .buttons-section-header .exir-button {
+  .home_container .buttons-section .exir-button,
+  .home_container .buttons-section-header .exir-button {
     font-size: 1.2rem !important; }
   .home_container .text-section {
     font-size: 1.5rem !important; }
@@ -3935,6 +3936,29 @@ table th {
   width: 100%;
   border-top: solid #a7a7a7 1px;
   background-color: #0000ff; }
+  .operator-controls__panel.deep {
+    height: 306px; }
+  .operator-controls__panel .ant-tabs {
+    transform: translateY(-36px); }
+  .operator-controls__panel .ant-tabs-content {
+    height: 100% !important; }
+  .operator-controls__panel textarea {
+    border: none;
+    padding: 0 46px; }
+    .operator-controls__panel textarea.ant-input {
+      font-weight: 600; }
+  .operator-controls__panel .ant-tabs-nav-wrap {
+    padding-left: 46px; }
+  .operator-controls__panel .ant-tabs-tab {
+    color: #ffffffcc; }
+  .operator-controls__panel .ant-tabs-tab-active {
+    color: #ffffff; }
+    .operator-controls__panel .ant-tabs-tab-active .ant-tabs-tab-btn {
+      font-weight: bold; }
+  .operator-controls__panel .ant-tabs-ink-bar {
+    background: #ffffff; }
+  .operator-controls__panel .ant-tabs-top > .ant-tabs-nav::before {
+    border-color: #ffffffcc; }
 
 .operator-controls__panel-list {
   display: flex;
@@ -3958,6 +3982,12 @@ table th {
   width: 145px;
   margin-right: 37px;
   text-transform: uppercase; }
+  .operator-controls__publish-button.small {
+    height: 37px;
+    width: 99px;
+    margin-top: 8px;
+    margin-right: 12px;
+    font-size: 1rem; }
 
 .operator-controls__save-button {
   color: #ffffff;

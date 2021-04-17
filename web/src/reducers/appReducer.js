@@ -30,6 +30,7 @@ import {
 	SET_IS_READY,
 	SET_WEB_VIEWS,
 	SET_INJECTED_VALUES,
+	SET_INJECTED_HTML,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -157,6 +158,7 @@ const INITIAL_STATE = {
 	getPluginLoading: false,
 	features: {},
 	injected_values: [],
+	injected_html: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -457,6 +459,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				injected_values: payload,
+			};
+		}
+		case SET_INJECTED_HTML: {
+			return {
+				...state,
+				injected_html: payload,
 			};
 		}
 		default:
