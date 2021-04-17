@@ -22,6 +22,7 @@ import {
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
 } from '../../actions/appActions';
+import STRINGS from 'config/localizedStrings';
 
 import {
 	getThemeClass,
@@ -324,6 +325,18 @@ class App extends Component {
 						iconPath={ICONS['RED_WARNING']}
 						onClick={this.onCloseDialog}
 						text={data}
+					/>
+				);
+			case NOTIFICATIONS.UNDEFINED_ERROR:
+				return (
+					<MessageDisplay
+						iconId="UNDEFINED_ERROR"
+						iconPath={ICONS['UNDEFINED_ERROR']}
+						onClick={this.onCloseDialog}
+						text={STRINGS['UNDEFINED_ERROR']}
+						title={STRINGS['UNDEFINED_ERROR_TITLE']}
+						titleId="UNDEFINED_ERROR_TITLE"
+						style={{ maxWidth: '40rem' }}
 					/>
 				);
 			case CONTACT_FORM:
@@ -682,7 +695,9 @@ class App extends Component {
 													!isMobile) ||
 												(activeNotification.type === NOTIFICATIONS.ORDERS &&
 													!isMobile) ||
-												activeNotification.type === NOTIFICATIONS.ERROR
+												activeNotification.type === NOTIFICATIONS.ERROR ||
+												activeNotification.type ===
+													NOTIFICATIONS.UNDEFINED_ERROR
 											)
 										}
 										compressed={

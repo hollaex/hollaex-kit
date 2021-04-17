@@ -140,6 +140,7 @@ const nestedIcons = {
 	RED_ARROW: '/assets/acounts/account-icons-16.svg',
 	BLUE_CLIP: '/assets/acounts/account-icons-17.svg',
 	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
+	UNDEFINED_ERROR: '/assets/acounts/unknown-error-icon-01.svg',
 
 	OTP_KEYS: '/assets/acounts/account-icons-29.svg',
 	GREEN_CHECK: '/assets/acounts/account-icons-23.svg',

@@ -9862,6 +9862,7 @@ svg .item-options,
 svg .check-order,
 svg .otp-inactive,
 svg .otp-active,
+svg .unknown-error-icon,
 svg .cancel-all {
   fill: var(--labels_important-active-labels-text-graphics); }
 
