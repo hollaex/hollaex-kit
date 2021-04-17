@@ -3949,7 +3949,7 @@ table th {
   .operator-controls__panel .ant-tabs-nav-wrap {
     padding-left: 46px; }
   .operator-controls__panel .ant-tabs-tab {
-    color: #ffffff80; }
+    color: #ffffffcc; }
   .operator-controls__panel .ant-tabs-tab-active {
     color: #ffffff; }
     .operator-controls__panel .ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -3957,7 +3957,7 @@ table th {
   .operator-controls__panel .ant-tabs-ink-bar {
     background: #ffffff; }
   .operator-controls__panel .ant-tabs-top > .ant-tabs-nav::before {
-    border-color: #ffffff80; }
+    border-color: #ffffffcc; }
 
 .operator-controls__panel-list {
   display: flex;

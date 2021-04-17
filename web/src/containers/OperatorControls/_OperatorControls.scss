@@ -1,6 +1,7 @@
 $operator-controls__panel-main-color: #0000ff;
 $operator-controls__panel-text-color: #ffffff;
-$operator-controls__panel-text-color-inactive: #ffffff80;
+$operator-controls__panel-text-color-inactive: #ffffffcc;
+$operator-controls__panel-text-color-pale-inactive: #ffffff80;
 $operator-controls__panel-border-color: #a7a7a7;
 
 @import './components/ImageUpload';
@@ -36,7 +37,7 @@ $operator-controls__panel-border-color: #a7a7a7;
 	align-items: center;
 
 	&.disabled {
-		color: $operator-controls__panel-text-color-inactive;
+		color: $operator-controls__panel-text-color-pale-inactive;
 		cursor: not-allowed;
 		height: 31px;
 		transform: translateY(0);
@@ -231,15 +232,15 @@ $operator-controls__panel-border-color: #a7a7a7;
 	.ant-divider-horizontal,
 	.ant-divider,
 	.ant-divider-inner-text {
-		color: $operator-controls__panel-text-color-inactive !important;
+		color: $operator-controls__panel-text-color-pale-inactive !important;
 		font-size: small !important;
 		font-weight: 600;
-		border-color: $operator-controls__panel-text-color-inactive !important;
+		border-color: $operator-controls__panel-text-color-pale-inactive !important;
 	}
 
 	.ant-divider-with-text::after,
 	.ant-divider-with-text::before {
-		border-color: $operator-controls__panel-text-color-inactive !important;
+		border-color: $operator-controls__panel-text-color-pale-inactive !important;
 	}
 
 	.ant-divider-inner-text {
