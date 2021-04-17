@@ -50,6 +50,49 @@ $operator-controls__panel-border-color: #a7a7a7;
 	width: 100%;
 	border-top: solid $operator-controls__panel-border-color 1px;
 	background-color: $operator-controls__panel-main-color;
+
+	&.deep {
+		height: 306px;
+	}
+
+	.ant-tabs {
+		transform: translateY(-36px);
+	}
+
+	.ant-tabs-content {
+		height: 100% !important;
+	}
+
+	textarea {
+		border: none;
+		padding: 0 46px;
+		&.ant-input {
+			font-weight: 600;
+		}
+	}
+
+	.ant-tabs-nav-wrap {
+		padding-left: 46px;
+	}
+
+	.ant-tabs-tab {
+		color: $operator-controls__panel-text-color-inactive;
+	}
+
+	.ant-tabs-tab-active {
+		color: $operator-controls__panel-text-color;
+		.ant-tabs-tab-btn {
+			font-weight: bold;
+		}
+	}
+
+	.ant-tabs-ink-bar {
+		background: $operator-controls__panel-text-color;
+	}
+
+	.ant-tabs-top > .ant-tabs-nav::before {
+		border-color: $operator-controls__panel-text-color-inactive;
+	}
 }
 
 .operator-controls__panel-list {
@@ -76,6 +119,13 @@ $operator-controls__panel-border-color: #a7a7a7;
 	width: 145px;
 	margin-right: 37px;
 	text-transform: uppercase;
+	&.small {
+		height: 37px;
+		width: 99px;
+		margin-top: 8px;
+		margin-right: 12px;
+		font-size: 1rem;
+	}
 }
 
 .operator-controls__save-button {
