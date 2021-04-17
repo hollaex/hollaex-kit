@@ -97,8 +97,12 @@ class AppBar extends Component {
 				}
 			})
 			.catch((err) => {
-				const message = err.message || JSON.stringify(err);
-				this.props.setNotification(NOTIFICATIONS.ERROR, message);
+				if (err.status === 400) {
+					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
+				} else {
+					const message = err.message || JSON.stringify(err);
+					this.props.setNotification(NOTIFICATIONS.ERROR, message);
+				}
 			});
 	};
 
