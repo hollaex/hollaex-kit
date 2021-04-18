@@ -52,6 +52,7 @@ import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, isLoggedIn } from '../../utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
+import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
 
 class Container extends Component {
 	constructor(props) {
@@ -247,7 +248,9 @@ class Container extends Component {
 			})
 			.catch((err) => {
 				if (err.status === 403) {
-					this.props.logout('Invalid token');
+					this.props.logout(ERROR_TOKEN_EXPIRED);
+				} else if (err.status === 400) {
+					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
 				} else {
 					const message = err.message || JSON.stringify(err);
 					this.props.setNotification(NOTIFICATIONS.ERROR, message);

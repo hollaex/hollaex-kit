@@ -986,7 +986,7 @@ const nestedContent = {
 	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
 	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
 	LOGOUT_TITLE: 'You have been logged out',
-	LOGOUT_ERROR_TOKEN_EXPIRED: 'Token is expired',
+	LOGOUT_ERROR_TOKEN_EXPIRED: 'Your session is expired. Please login again.',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
 	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
 	LOGOUT_ERROR_INACTIVE:
@@ -1455,6 +1455,9 @@ const nestedContent = {
 	},
 	PAGE_UNDER_CONSTRUCTION:
 		'This page is under construction. Please revisit this page soon.',
+	UNDEFINED_ERROR_TITLE: 'You’ve Encountered an Unidentified Error',
+	UNDEFINED_ERROR:
+		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
 };
 
 const content = flatten(nestedContent, options);
