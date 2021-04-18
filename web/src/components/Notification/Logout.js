@@ -7,7 +7,7 @@ import STRINGS from '../../config/localizedStrings';
 const ERROR_DENIED = 'Error Denied: ';
 const ERROR_INVALID_TOKEN = 'Invalid token';
 const ERROR_INVALID_IP = 'Login again';
-const ERROR_TOKEN_EXPIRED = 'Token is expired';
+export const ERROR_TOKEN_EXPIRED = 'Token is expired';
 const ERROR_INACTIVE = 'Inactive';
 
 const getMessage = (message = '') => {
