@@ -59,12 +59,7 @@ const getKitTiers = () => {
 };
 
 const getKitTier = (tier) => {
-	const result = GET_TIERS()[tier];
-	if (!result) {
-		throw new Error('Tier does not exist');
-	} else {
-		return result;
-	}
+	return GET_TIERS()[tier];
 };
 
 const isValidTierLevel = (level) => {
