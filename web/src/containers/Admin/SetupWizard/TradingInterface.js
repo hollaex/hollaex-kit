@@ -3,10 +3,11 @@ import { Checkbox, Form, Button } from 'antd';
 import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
+import { handleUpgrade } from 'utils/utils';
 
 const { Item } = Form;
 
-const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
+const Features = ({ initialValues = {}, handleNext, updateConstants, kit }) => {
 	const handleSubmit = (values) => {
 		const formValues = {};
 		if (values) {
@@ -20,6 +21,7 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 			updateConstants(formValues, () => handleNext(4));
 		}
 	};
+	const isUpgrade = handleUpgrade(kit.info);
 	return (
 		<div className="asset-content show-scroll">
 			<div>Select the features that will be available on your exchange.</div>
@@ -29,7 +31,7 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 				onFinish={handleSubmit}
 			>
 				<div className="interface-box">
-    					<Item name="pro_trade" valuePropName="checked">
+					<Item name="pro_trade" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
 								<ReactSVG
@@ -65,12 +67,12 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 											(Simple buy/sell interface with wallet)
 										</div>
 									</div>
-  </div>
+								</div>
 							</div>
 						</Checkbox>
 					</Item>
 					<Item name="chat" valuePropName="checked">
-						<Checkbox className="mt-3">
+						<Checkbox className="mt-3" disabled={isUpgrade}>
 							<div className="d-flex align-items-center">
 								<div className="feature-trade-box mr-1">
 									<ReactSVG
@@ -90,6 +92,32 @@ const Features = ({ initialValues = {}, handleNext, updateConstants }) => {
 						</Checkbox>
 					</Item>
 				</div>
+				{isUpgrade
+					?
+						<div className="d-flex">
+							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2">
+								<div>
+									<div className="font-weight-bold">Start your crypto culture</div>
+									<div className="font-weight-normal">Allow your users to socialize through chat</div>
+								</div>
+								<div className="ml-5 button-wrapper">
+									<a
+										href="https://dash.bitholla.com/billing"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<Button
+											type="primary"
+											className="w-100"
+										>
+											Upgrade Now
+										</Button>
+									</a>
+								</div>
+							</div>
+						</div>
+					: null
+				}
 				<div className="asset-btn-wrapper">
 					<div className="btn-container">
 						<Button htmlType="submit">Proceed</Button>

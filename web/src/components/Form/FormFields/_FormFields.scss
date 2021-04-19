@@ -106,6 +106,9 @@ $placeholder--font-weight: bold;
 					margin-right: 1rem;
 				}
 			}
+			.dropdown-triangle::after {
+    			bottom: 0 !important;
+			}
 		}
 	}
 }
@@ -146,6 +149,20 @@ $placeholder--font-weight: bold;
 	> .action_notification-wrapper {
 		position: relative;
 		top: 0 !important;
+	}
+	.paper-clip-icon{
+		.action_notification-svg {
+			background-color: $link;
+			width: 1.2rem;
+			height: 1.2rem;
+			border-radius: 50%;
+			display: flex;
+    		margin-left: 5px;
+			svg {
+				width: 0.8rem !important;
+				height: 0.8rem !important;
+			}
+		}
 	}
 }
 
@@ -237,7 +254,7 @@ $placeholder--font-weight: bold;
 	.dropdown-triangle:after {
 		border-right: 0.25rem solid $form-arrow;
 		border-left: 0.25rem solid transparent;
-		right: 0px;
+		right: 3px;
 	}
 
 	.placeholder {

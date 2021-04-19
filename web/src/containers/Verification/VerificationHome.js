@@ -1,6 +1,7 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import {
 	IconTitle,
@@ -10,6 +11,7 @@ import {
 } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper } from 'components';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationHome = ({
 	activeTab,
@@ -18,6 +20,7 @@ const VerificationHome = ({
 	openContactForm,
 	setActiveTab,
 	renderContent,
+	icons: ICONS,
 }) => {
 	// if (activeTab < tabs.length) {
 	return (
@@ -27,6 +30,8 @@ const VerificationHome = ({
 					stringId="ACCOUNTS.TAB_VERIFICATION"
 					text={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
 					textType="title"
+					iconPath={ICONS['TAB_VERIFY']}
+					iconId={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
 				/>
 			)}
 			<HeaderSection openContactForm={openContactForm} />
@@ -80,4 +85,4 @@ const VerificationHome = ({
 	// }
 };
 
-export default VerificationHome;
+export default connect(null)(withConfig(VerificationHome));

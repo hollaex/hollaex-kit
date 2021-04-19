@@ -37,7 +37,7 @@
 	.list_active,
 	.app-menu-bar-side_list:hover {
 		border-radius: 4px;
-		background-color: $colors-border;
+		background-color: $colors-border-hover;
 		.side-bar-txt {
 			color: $base_top-bar-navigation_text !important;
 		}
@@ -52,6 +52,9 @@
 		.tab-history-st {
 			fill: $base_top-bar-navigation_text !important;
 		}
+	}
+	.list_active {
+		background-color: $colors-border !important;
 	}
 }
 

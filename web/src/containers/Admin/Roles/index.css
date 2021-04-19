@@ -107,3 +107,31 @@
 .admin-roles-wrapper .ant-pagination-item-active:hover {
 	border-color: #288500 !important;
 }
+
+.admin-roles-wrapper .sub-title {
+	color: #FFFFFF;
+}
+.admin-roles-wrapper .ant-form .ant-select .ant-select-selector {
+    height: 30px;
+    padding: 3px 8px;
+}
+.admin-roles-wrapper .ant-input:focus, .ant-input:active {
+    border: 1px solid #c4c4c4;
+}
+.admin-roles-wrapper .ant-form-item {
+	margin: 0;
+}
+.admin-roles-wrapper .disable-area {
+	opacity: 0.6;
+	pointer-events: none;
+}
+.upgrade-section {
+    background-color: #3333ff;
+	color: #FFFFFF;
+    padding: 20px;
+}
+.upgrade-section .button-wrapper .ant-btn {
+    background-color: #E97C00;
+	color: #FFFFFF;
+	font-size: 14px !important;
+}

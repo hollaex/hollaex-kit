@@ -1,6 +1,7 @@
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import math from 'mathjs';
+import _toLower from 'lodash/toLower';
 import {
 	TOKEN_TIME,
 	TIMESTAMP_FORMAT,
@@ -264,3 +265,11 @@ export const setChartResolution = (resolution) => {
 export const getChartResolution = () => {
 	return localStorage.getItem(CHART_RESOLUTION_KEY);
 };
+
+export const handleUpgrade = (info = {}) => {
+	if (_toLower(info.type) === "diy" || (info.plan !== "crpto" && info.plan !== "fiat")) {
+		return true;
+	} else {
+		return false;
+	}
+}

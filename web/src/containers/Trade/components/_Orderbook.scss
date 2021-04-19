@@ -172,6 +172,12 @@
 		}
 	}
 }
+.trade-select-option-wrapper {
+	.ant-select-item,
+	.ant-select-item-option-content {
+		font-size: 11px;
+	}
+}
 
 .order-book-select-coin .ant-select-item,
 .order-book-select-coin .ant-select-item-option {

@@ -38,7 +38,7 @@ import { getUserLogins } from '../../actions/userAction';
 
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { ICONS } from 'config/constants';
+// import { ICONS } from 'config/constants';
 
 class UserVerification extends Component {
 	state = {
@@ -457,6 +457,7 @@ class UserVerification extends Component {
 		}
 		const { dialogIsOpen, modalText, activeTab, tabs, freeze } = this.state;
 		const { otp, email, otp_enabled } = this.props.user;
+		const { icons: ICONS } = this.props;
 		//const { onCloseDialog } = this;
 
 		if (freeze === true) {

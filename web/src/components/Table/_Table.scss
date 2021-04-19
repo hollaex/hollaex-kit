@@ -25,6 +25,9 @@ $controllers--color-disabled: $colors-deactivate-color2;
 
 	.table_header-wrapper {
 		color: $colors-black;
+		.action_notification-text {
+			white-space: nowrap;
+		}
 	}
 
 	.table_body-wrapper {
