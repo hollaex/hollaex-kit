@@ -360,7 +360,7 @@ const settleFees = () => {
 };
 
 const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
-	loggerOrders.info(
+	loggerOrders.debug(
 		'generateOrderFeeData',
 		'symbol',
 		symbol,
@@ -377,7 +377,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	let makerFee = tier.fees.maker[symbol];
 	let takerFee = tier.fees.taker[symbol];
 
-	loggerOrders.info(
+	loggerOrders.debug(
 		'generateOrderFeeData',
 		'current makerFee',
 		makerFee,
@@ -386,7 +386,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	);
 
 	if (opts.discount) {
-		loggerOrders.info(
+		loggerOrders.debug(
 			'generateOrderFeeData',
 			'discount percentage',
 			opts.discount
@@ -419,7 +419,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 
 		const exchangeMinFee = DEFAULT_FEES[getKitConfig().info.collateral_level];
 
-		loggerOrders.info(
+		loggerOrders.verbose(
 			'generateOrderFeeData',
 			'discounted makerFee',
 			discountedMakerFee,
@@ -449,7 +449,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 		}
 	};
 
-	loggerOrders.info(
+	loggerOrders.verbose(
 		'generateOrderFeeData',
 		'generated fee data',
 		feeData
