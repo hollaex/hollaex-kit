@@ -231,7 +231,7 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 		}
 	}
 
-	loggerWithdrawals.info(
+	loggerWithdrawals.debug(
 		'toolsLib/wallet/get24HourAccumulatedWithdrawals',
 		'withdrawals made within last 24 hours',
 		withdrawals.count
@@ -250,7 +250,7 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 	let totalWithdrawalAmount = 0;
 
 	for (let withdrawalCurrency in withdrawalAmount) {
-		loggerWithdrawals.info(
+		loggerWithdrawals.debug(
 			'toolsLib/wallet/get24HourAccumulatedWithdrawals',
 			`accumulated ${withdrawalCurrency} withdrawal amount`,
 			withdrawalAmount[withdrawalCurrency]
@@ -264,7 +264,7 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 		});
 
 		if (convertedAmount[withdrawalCurrency] !== -1) {
-			loggerWithdrawals.info(
+			loggerWithdrawals.debug(
 				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
 				`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
 				convertedAmount[withdrawalCurrency]
@@ -272,7 +272,7 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 
 			totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
 		} else {
-			loggerWithdrawals.info(
+			loggerWithdrawals.debug(
 				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
 				`No conversion found between ${withdrawalCurrency} and ${getKitConfig().native_currency}`
 			);
@@ -283,7 +283,7 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 };
 
 const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
-	loggerWithdrawals.info(
+	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
 		'amount being withdrawn',
 		amount,
@@ -304,7 +304,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 
 
 	if (convertedWithdrawalAmount[currency] !== -1) {
-		loggerWithdrawals.info(
+		loggerWithdrawals.debug(
 			'toolsLib/wallet/withdrawalBelowLimit',
 			`${currency} withdrawal request amount converted to ${getKitConfig().native_currency}`,
 			convertedWithdrawalAmount[currency]
@@ -317,7 +317,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 			)
 		);
 	} else {
-		loggerWithdrawals.info(
+		loggerWithdrawals.debug(
 			'toolsLib/wallet/withdrawalBelowLimit',
 			`No conversion found between ${currency} and ${getKitConfig().native_currency}`
 		);
@@ -326,7 +326,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 
 	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
 
-	loggerWithdrawals.info(
+	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
 		`total 24 hour withdrawn amount converted to ${getKitConfig().native_currency}`,
 		last24HourWithdrawalAmount
@@ -339,7 +339,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		)
 	);
 
-	loggerWithdrawals.info(
+	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
 		'total 24 hour withdrawn amount after performing current withdrawal',
 		totalWithdrawalAmount,
