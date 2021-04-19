@@ -36,7 +36,7 @@ class QuickTrade extends Component {
 			selectedTarget,
 			forwardSourceError,
 			forwardTargetError,
-			orderLimits: { SIZE, PRICE },
+			orderLimits: { SIZE },
 			side,
 			icons: ICONS,
 			autoFocus = true,
@@ -84,7 +84,7 @@ class QuickTrade extends Component {
 					onSelect={onSelectSource}
 					onInputChange={onChangeSourceAmount}
 					forwardError={forwardSourceError}
-					limits={side === 'buy' ? PRICE : SIZE}
+					limits={side === 'buy' ? {} : SIZE}
 					autoFocus={autoFocus}
 				/>
 				<InputGroup
@@ -96,7 +96,7 @@ class QuickTrade extends Component {
 					onSelect={onSelectTarget}
 					onInputChange={onChangeTargetAmount}
 					forwardError={forwardTargetError}
-					limits={side === 'buy' ? SIZE : PRICE}
+					limits={side === 'buy' ? SIZE : {}}
 				/>
 				<div
 					className={classnames(
