@@ -21,6 +21,21 @@ export const updateConfigs = async (configs) => {
 	return requestAuthenticated('/admin/kit', options);
 };
 
+export const updateInjectedHTML = (injected_html) => {
+	const constants = {
+		kit: {
+			injected_html,
+		},
+	};
+
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(constants),
+	};
+
+	return requestAuthenticated('/admin/kit', options);
+};
+
 export const getKitData = async () => {
 	const { data } = await axios.get('/kit');
 	return data;

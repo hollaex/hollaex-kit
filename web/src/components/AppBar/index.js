@@ -24,6 +24,7 @@ import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
+import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
 
 class AppBar extends Component {
 	state = {
@@ -97,8 +98,14 @@ class AppBar extends Component {
 				}
 			})
 			.catch((err) => {
-				const message = err.message || JSON.stringify(err);
-				this.props.setNotification(NOTIFICATIONS.ERROR, message);
+				if (err.status === 403) {
+					this.props.logout(ERROR_TOKEN_EXPIRED);
+				} else if (err.status === 400) {
+					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
+				} else {
+					const message = err.message || JSON.stringify(err);
+					this.props.setNotification(NOTIFICATIONS.ERROR, message);
+				}
 			});
 	};
 
@@ -292,7 +299,7 @@ class AppBar extends Component {
 		this.props.router.push('/summary');
 	};
 	handleMenu = (menu) => {
-		const { pairs } = this.props;
+		const { pairs, remoteRoutes } = this.props;
 
 		let pair = '';
 		if (Object.keys(pairs).length) {
@@ -323,11 +330,17 @@ class AppBar extends Component {
 			this.props.router.push(`/quick-trade/${pair}`);
 		} else if (menu === 'pro-trade') {
 			this.props.router.push('/trade/add/tabs');
+		} else {
+			const route = remoteRoutes.find(({ path }) => path === menu);
+			if (route && route.path) {
+				this.props.router.push(route.path);
+			}
 		}
 		this.setState({ selectedMenu: menu, isAccountMenu: false });
 	};
 
 	setActiveMenu = (path) => {
+		const { remoteRoutes } = this.props;
 		let selectedMenu = this.state.selectedMenu;
 		switch (path) {
 			case '/account':
@@ -363,6 +376,13 @@ class AppBar extends Component {
 
 		if (path.includes('quick-trade')) {
 			selectedMenu = 'quick-trade';
+		}
+
+		const route = remoteRoutes.find(
+			({ path: remotePath }) => remotePath === path
+		);
+		if (route && route.path) {
+			selectedMenu = route.path;
 		}
 
 		this.setState({ selectedMenu });
@@ -494,6 +514,7 @@ const mapStateToProps = (state, ownProps) => {
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,
 		activeLanguage: state.app.language,
+		remoteRoutes: state.app.remoteRoutes,
 	};
 };
 

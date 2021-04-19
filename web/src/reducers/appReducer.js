@@ -30,12 +30,15 @@ import {
 	SET_IS_READY,
 	SET_WEB_VIEWS,
 	SET_INJECTED_VALUES,
+	SET_INJECTED_HTML,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
+import { generateRemoteRouteStringId } from 'utils/string';
+import { generateRemoteRouteIconId } from 'utils/icon';
 // import { PLUGINS } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
@@ -150,10 +153,12 @@ const INITIAL_STATE = {
 	enabledPlugins: [],
 	targets: [],
 	webViews: {},
+	remoteRoutes: [],
 	availablePlugins: [],
 	getPluginLoading: false,
 	features: {},
 	injected_values: [],
+	injected_html: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -366,6 +371,19 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				}
 			});
 
+			const remoteRoutes = [];
+			allWebViews.forEach(({ target, meta }) => {
+				if (meta && meta.is_page) {
+					const { icon_id, string_id, ...rest } = meta;
+					remoteRoutes.push({
+						target,
+						icon_id: generateRemoteRouteIconId(icon_id),
+						string_id: generateRemoteRouteStringId(string_id),
+						...rest,
+					});
+				}
+			});
+
 			const CLUSTERED_WEB_VIEWS = {};
 			allWebViews.forEach((plugin) => {
 				const { target } = plugin;
@@ -380,6 +398,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				webViews: CLUSTERED_WEB_VIEWS,
 				targets: Object.entries(CLUSTERED_WEB_VIEWS).map(([target]) => target),
+				remoteRoutes,
 			};
 		}
 		case SET_INFO:
@@ -440,6 +459,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				injected_values: payload,
+			};
+		}
+		case SET_INJECTED_HTML: {
+			return {
+				...state,
+				injected_html: payload,
 			};
 		}
 		default:

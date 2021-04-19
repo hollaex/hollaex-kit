@@ -874,8 +874,6 @@ const nestedContent = {
 	WITHDRAW_PAGE_DESTINATION_TAG_NONE: 'None',
 	WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE: 'Destination tag: {0}',
 	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
-	WITHDRAWALS_FORM_TITLE_WARNING_DESTINATION_TAG:
-		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
 	WITHDRAWALS_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the destination wallet',
 	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
@@ -988,7 +986,7 @@ const nestedContent = {
 	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
 	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
 	LOGOUT_TITLE: 'You have been logged out',
-	LOGOUT_ERROR_TOKEN_EXPIRED: 'Token is expired',
+	LOGOUT_ERROR_TOKEN_EXPIRED: 'Your session is expired. Please login again.',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
 	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
 	LOGOUT_ERROR_INACTIVE:
@@ -1457,6 +1455,9 @@ const nestedContent = {
 	},
 	PAGE_UNDER_CONSTRUCTION:
 		'This page is under construction. Please revisit this page soon.',
+	UNDEFINED_ERROR_TITLE: 'You’ve Encountered an Unidentified Error',
+	UNDEFINED_ERROR:
+		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
 };
 
 const content = flatten(nestedContent, options);
