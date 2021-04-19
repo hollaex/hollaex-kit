@@ -22,9 +22,9 @@ $footer-logo-color: $trade-tabs-inactive-color;
 		width: 100%;
 
 		.footer-links-section {
-			width: 60%;
+			// width: 60%;
 			.footer-links-group {
-				margin: 0 $footer-wrapper--margin;
+				margin: $footer-wrapper--margin;
 				font-size: $font-size-main;
 
 				.footer-links-section--title {
@@ -55,7 +55,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			margin-left: 0.5rem;
 
 			.footer-txt {
-				width: 25rem;
+				width: 23rem;
 				margin-left: 1.5rem;
 			}
 			.footer-logo {
@@ -180,32 +180,32 @@ $footer-logo-color: $trade-tabs-inactive-color;
 					margin: 0 $footer-icons--side-margin !important;
 				}
 			}
-			.footer-links-section {
-				width: 70%;
-			}
+			// .footer-links-section {
+			// 	width: 70%;
+			// }
 		}
 	}
 }
 
-@media screen and (min-width: 1920px) {
-	.app_footer-container {
-		.footer-row-content {
-			.footer-links-section {
-				width: 50%;
-			}
-		}
-	}
-}
+// @media screen and (min-width: 1920px) {
+// 	.app_footer-container {
+// 		.footer-row-content {
+// 			.footer-links-section {
+// 				width: 50%;
+// 			}
+// 		}
+// 	}
+// }
 
 @media screen and (max-width: $bp-sm) {
 	.app_footer-container {
 		.footer-row-content {
-			.footer-links-section {
-				width: 80%;
-			}
+			// .footer-links-section {
+			// 	width: 80%;
+			// }
 			.footer_separter {
 				.footer-txt {
-					width: 30rem;
+					width: 12rem;
 				}
 			}
 		}
@@ -239,7 +239,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 						align-items: center;
 					}
 					.footer-txt {
-						width: 37rem;
+						width: 100%;
 					}
 					.footer-logo {
 						height: 3.5rem;

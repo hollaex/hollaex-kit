@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Spin, Switch, message } from 'antd';
+import { Spin, Switch, message, Button } from 'antd';
 import { WS_URL } from '../../../config/constants';
 import { getToken } from '../../../utils/token';
 import { Tabs } from 'antd';
@@ -9,6 +9,7 @@ import { Messages } from './messages';
 import { updateConstants } from '../General/action';
 
 import './index.css';
+import { handleUpgrade } from 'utils/utils';
 
 const TabPane = Tabs.TabPane;
 
@@ -265,6 +266,8 @@ class Chat extends Component {
 			bannedUsersUsernames,
 			isActive,
 		} = this.state;
+		const { constants } = this.props;
+		const isUpgrade = handleUpgrade(constants.info)
 		return (
 			<div className="app_container-content admin-chat-feature-wrapper">
 				{!ready ? (
@@ -277,7 +280,33 @@ class Chat extends Component {
 								(Usernames, text and emoji communication)
 							</div>
 						</div>
-						<div className="switch-wrapper">
+						{isUpgrade
+							?
+								<div className="d-flex">
+									<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+										<div>
+											<div className="font-weight-bold">Start your crypto culture</div>
+											<div>Allow your users to socialize through chat</div>
+										</div>
+											<div className="ml-5 button-wrapper">
+												<a
+													href="https://dash.bitholla.com/billing"
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													<Button
+														type="primary"
+														className="w-100"
+													>
+														Upgrade Now
+													</Button>
+												</a>
+										</div>
+									</div>
+								</div>
+							: null
+						}
+							<div className={isUpgrade ? "disabled-area" : "switch-wrapper"}>
 							<div className="d-flex">
 								<span
 									className={

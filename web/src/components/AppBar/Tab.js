@@ -65,7 +65,7 @@ const Tab = ({
 						className={
 							priceDifference < 0
 								? 'title-font app-price-diff-down'
-								: 'title-font app-price-diff-up'
+								: priceDifference > 0 ? 'title-font app-price-diff-up' : "title-font"
 						}
 					>
 						{priceDifferencePercent}

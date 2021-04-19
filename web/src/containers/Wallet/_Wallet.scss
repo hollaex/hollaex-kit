@@ -115,6 +115,20 @@ $header-margin: 2rem;
 			line-height: $font-size-headline;
 		}
 	}
+	.paper-clip-icon {
+		.action_notification-svg {
+			background-color: $link;
+			width: 1.2rem;
+			height: 1.2rem;
+			border-radius: 50%;
+			display: flex;
+    		margin-left: 5px;
+			svg {
+				width: 0.8rem  !important;
+				height: 0.8rem !important;
+			}
+		}
+	}
 
 	.wallet-buttons_action {
 		margin: $wrapper-button-margin 0 $wrapper-button-margin * 1.5;

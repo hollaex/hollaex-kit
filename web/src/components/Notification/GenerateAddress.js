@@ -4,6 +4,7 @@ import STRINGS from '../../config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
 import { Button, Loader } from '../';
 import { EditWrapper } from 'components';
+import Image from 'components/Image';
 
 const GenerateAddressNotification = ({
 	type,
@@ -35,7 +36,12 @@ const GenerateAddressNotification = ({
 		>
 			<NotificationContent>
 				{!error ? (
-					<div className="notification-content-header">
+					<div className="notification-content-header d-flex align-items-center">
+						<Image
+							iconId={`${currency.toUpperCase()}_ICON`}
+							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							wrapperClassName="form_currency-ball mr-3"
+						/>
 						<EditWrapper stringId="WALLET_ADDRESS_MESSAGE">
 							{STRINGS['WALLET_ADDRESS_MESSAGE']}
 						</EditWrapper>

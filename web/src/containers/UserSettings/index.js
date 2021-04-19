@@ -401,6 +401,7 @@ class UserSettings extends Component {
 			return <Loader />;
 		}
 		const { activeTab, tabs } = this.state;
+		const { icons: ICONS } = this.props;
 		return (
 			<div className="presentation_container apply_rtl settings_container">
 				{!isMobile && (
@@ -408,6 +409,8 @@ class UserSettings extends Component {
 						stringId="ACCOUNTS.TAB_SETTINGS"
 						text={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 						textType="title"
+						iconPath={ICONS['TAB_SETTING']}
+						iconId={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 					/>
 				)}
 				<HeaderSection

@@ -32,6 +32,7 @@ import STRINGS from '../../config/localizedStrings';
 import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
 import { getUserReferralCount } from '../../actions/userAction';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Summary extends Component {
 	state = {
@@ -135,6 +136,7 @@ class Summary extends Component {
 			chartData,
 			totalAsset,
 			router,
+			icons: ICONS,
 		} = this.props;
 		const {
 			selectedAccount,
@@ -155,6 +157,8 @@ class Summary extends Component {
 						stringId="SUMMARY.TITLE"
 						text={`${STRINGS['SUMMARY.TITLE']}`}
 						textType="title"
+						iconPath={ICONS['TAB_SUMMARY']}
+						iconId={`${STRINGS['SUMMARY.TITLE']}`}
 					/>
 				)}
 				{isMobile ? (
@@ -324,4 +328,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Summary);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(Summary));
