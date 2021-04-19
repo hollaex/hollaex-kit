@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Table, Modal, message } from 'antd';
+import { connect } from 'react-redux';
 
 import { checkRole } from '../../../utils/token';
 import {
@@ -11,6 +12,7 @@ import {
 } from './ModalForm';
 import { requestRole, inviteOperator, updateRole } from './action';
 import './index.css';
+import { handleUpgrade } from 'utils/utils';
 
 const getColumns = (handleEdit = () => {}) => [
 	{
@@ -101,7 +103,7 @@ const renderItems = () => {
 	}
 };
 
-const Roles = () => {
+const Roles = ({ constants }) => {
 	const limit = 50;
 	const [operatorList, setOperatorList] = useState([]);
 	const [page, setPage] = useState(1);
@@ -111,6 +113,7 @@ const Roles = () => {
 	const [modalType, setType] = useState('');
 	const [isOpen, setOpen] = useState(false);
 
+	const isUpgrade = handleUpgrade(constants.info);
 	const requestInitRole = (pageNo = 1) => {
 		requestRole({ pageNo, limit })
 			.then((res) => {
@@ -156,12 +159,18 @@ const Roles = () => {
 			});
 	};
 
-	const renderContent = (type, onTypeChange) => {
+	const renderContent = (type, onTypeChange, isUpgrade) => {
 		switch (type) {
 			case 'operator-role':
-				return <OperatorRole handleInvite={handleInvite} />;
+				return <OperatorRole
+							handleInvite={handleInvite}
+							isUpgrade={isUpgrade}
+						/>;
 			case 'role-access':
-				return <RoleAccess handleClose={handleClose} />;
+				return <RoleAccess
+							handleClose={handleClose}
+							isUpgrade={isUpgrade}
+						/>;
 			case 'edit':
 				return (
 					<EditModal
@@ -287,12 +296,18 @@ const Roles = () => {
 				visible={isOpen}
 				footer={null}
 				onCancel={handleClose}
-				width={modalType === 'role-access' ? 600 : 350}
+				width={modalType === 'role-access' ? 600 : (modalType === 'operator-role' ? 500 : 350)}
 			>
-				{renderContent(modalType, onTypeChange)}
+				{renderContent(modalType, onTypeChange, isUpgrade)}
 			</Modal>
 		</div>
 	);
 };
 
-export default Roles;
+const mapStateToProps = (state) => ({
+	constants: state.app.constants,
+});
+
+export default connect(
+	mapStateToProps
+)(Roles);

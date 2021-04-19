@@ -34,3 +34,7 @@
 .admin-chat-feature-wrapper .switch-wrapper .label-inactive {
 	color: #808080;
 }
+.admin-chat-feature-wrapper .disabled-area {
+	opacity: 0.6;
+	pointer-events: none;
+}
