@@ -123,20 +123,23 @@ export const userTradesSelector = createSelector(
 	}
 );
 
-const getSide = (_, props) => props.side;
-const getSize = (_, props) => props.size;
+const getSide = (_, { side }) => side;
+const getSize = (_, { size }) => (!!size ? size : 0);
 
 const calculateMarketPrice = (orderSize = 0, orders = []) =>
 	orders.reduce(
-		([accumulatedPrice, accumulatedSize], [price, size]) => {
-			if (orderSize > accumulatedSize) {
-				const remainingSize = orderSize - accumulatedSize;
-				if (remainingSize >= size) {
-					return [accumulatedPrice + size * price, accumulatedSize + size];
+		([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
+			if (math.larger(orderSize, accumulatedSize)) {
+				const remainingSize = math.subtract(orderSize, accumulatedSize);
+				if (math.largerEq(remainingSize, size)) {
+					return [
+						math.sum(accumulatedPrice, math.multiply(size, price)),
+						math.sum(accumulatedSize, size),
+					];
 				} else {
 					return [
-						accumulatedPrice + remainingSize * price,
-						accumulatedSize + remainingSize,
+						math.sum(accumulatedPrice, math.multiply(remainingSize, price)),
+						math.sum(accumulatedSize, remainingSize),
 					];
 				}
 			} else {
@@ -152,7 +155,7 @@ export const estimatedMarketPriceSelector = createSelector(
 		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
 			pairsOrders[pair] || {};
 		const totalOrders = sumQuantities(orders);
-		if (size > totalOrders) {
+		if (math.larger(size, totalOrders)) {
 			return [0, size];
 		} else {
 			return calculateMarketPrice(size, orders);
