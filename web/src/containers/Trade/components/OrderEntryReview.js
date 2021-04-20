@@ -29,7 +29,9 @@ const Review = ({
 		<div className="trade_order_entry-review d-flex flex-column">
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>
-					{type === 'market' ? STRINGS['MARKET_PRICE'] : STRINGS['ORDER_PRICE']}
+					{type === 'market'
+						? STRINGS['ESTIMATED_PRICE']
+						: STRINGS['ORDER_PRICE']}
 					:
 				</div>
 				<div className="text-price">
