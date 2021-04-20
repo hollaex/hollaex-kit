@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 import { connect } from 'react-redux';
@@ -20,6 +20,7 @@ const Review = ({
 	formatToCurrency,
 	type,
 	onFeeStructureAndLimits,
+	estimatedPrice,
 }) => {
 	// const orderAmountReceived = math.add(
 	// 	math.fraction(orderPrice),
@@ -36,14 +37,30 @@ const Review = ({
 					:
 				</div>
 				<div className="text-price">
-					{upToMarket
-						? price
-							? renderAmount(
-									formatToCurrency(price * size, increment_price),
-									currency
-							  )
-							: 0
-						: STRINGS['UP_TO_MARKET']}
+					{type !== 'market' && (
+						<Fragment>
+							{upToMarket
+								? price
+									? renderAmount(
+											formatToCurrency(price * size, increment_price),
+											currency
+									  )
+									: 0
+								: STRINGS['UP_TO_MARKET']}
+						</Fragment>
+					)}
+					{type === 'market' && (
+						<Fragment>
+							{size
+								? estimatedPrice
+									? renderAmount(
+											formatToCurrency(estimatedPrice, increment_price),
+											currency
+									  )
+									: STRINGS['UP_TO_MARKET']
+								: 0}
+						</Fragment>
+					)}
 				</div>
 			</div>
 			<div className={classnames(...ROW_CLASSNAMES)}>

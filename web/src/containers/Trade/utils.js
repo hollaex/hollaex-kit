@@ -1,6 +1,5 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
-import STRINGS from 'config/localizedStrings';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -154,7 +153,7 @@ export const estimatedMarketPriceSelector = createSelector(
 			pairsOrders[pair] || {};
 		const totalOrders = sumQuantities(orders);
 		if (size > totalOrders) {
-			return [STRINGS['UP_TO_MARKET'], size];
+			return [0, size];
 		} else {
 			return calculateMarketPrice(size, orders);
 		}
