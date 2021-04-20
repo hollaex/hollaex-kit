@@ -26,6 +26,7 @@ const MarketList = ({
 	count,
 	goToNextPage,
 	goToPreviousPage,
+	showPaginator = false,
 }) => {
 	return (
 		<div className="market-list__container">
@@ -83,13 +84,15 @@ const MarketList = ({
 					</tbody>
 				</table>
 			</div>
-			<Paginator
-				currentPage={page + 1}
-				pageSize={pageSize}
-				count={count}
-				goToPreviousPage={goToPreviousPage}
-				goToNextPage={goToNextPage}
-			/>
+			{showPaginator && (
+				<Paginator
+					currentPage={page + 1}
+					pageSize={pageSize}
+					count={count}
+					goToPreviousPage={goToPreviousPage}
+					goToNextPage={goToNextPage}
+				/>
+			)}
 		</div>
 	);
 };
