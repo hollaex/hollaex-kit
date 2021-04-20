@@ -9,7 +9,7 @@ import merge from 'lodash.merge';
 import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
-import { Input, Button, Divider, Tabs } from 'antd';
+import { Input, Button, Divider, Tabs, message } from 'antd';
 import { DeleteOutlined, SettingFilled, KeyOutlined } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish, updateInjectedHTML } from 'actions/operatorActions';
@@ -376,10 +376,20 @@ class OperatorControls extends Component {
 				sections,
 			};
 
-			publish(configs).then(this.reload);
+			publish(configs)
+				.then(this.reload)
+				.catch((err) => {
+					const error = err && err.data ? err.data.message : err.message;
+					message.error(error);
+				});
 		} else if (isInjectMode) {
 			const { injected_html } = this.state;
-			updateInjectedHTML(injected_html).then(this.reload);
+			updateInjectedHTML(injected_html)
+				.then(this.reload)
+				.catch((err) => {
+					const error = err && err.data ? err.data.message : err.message;
+					message.error(error);
+				});
 		}
 	};
 
