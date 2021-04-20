@@ -132,10 +132,6 @@ export const BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE || 0;
 export const takerFee = 0;
 
-export const BANK_PAYMENT_LINK = '';
-export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
-export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
-
 export const EXPLORERS_ENDPOINT = (currency) => {
 	let endpoint = '';
 	switch (currency) {

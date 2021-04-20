@@ -138,6 +138,7 @@ export default class SetupWizard extends Component {
 						initialValues={constants.kit.features}
 						handleNext={this.onTabChange}
 						updateConstants={this.updateConstants}
+						kit={constants.kit}
 					/>
 				);
 			case 4:

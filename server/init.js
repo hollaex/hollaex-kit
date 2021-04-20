@@ -60,7 +60,8 @@ const checkStatus = () => {
 			defaults: {},
 			features: {},
 			meta: {},
-			injected_values: []
+			injected_values: [],
+			injected_html: {}
 		}
 	};
 

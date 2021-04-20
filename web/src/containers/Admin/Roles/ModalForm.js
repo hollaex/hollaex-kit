@@ -1,13 +1,15 @@
-import React from 'react';
-import { Button } from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Select, Input } from 'antd';
 
 import { OPERATORS, getOperatorFields } from './Utils';
 import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
 import { checkRole } from '../../../utils/token';
 
-const OperatorRoleFrom = AdminHocForm('OperatorRoleFrom');
+// const OperatorRoleFrom = AdminHocForm('OperatorRoleFrom');
 const EditOperatorFrom = AdminHocForm('EditOperatorFrom');
+
+const { Item } = Form;
 
 const operatorFields = getOperatorFields();
 
@@ -73,7 +75,40 @@ export const renderRoleImage = (
 	}
 };
 
-export const OperatorRole = ({ handleInvite }) => {
+export const renderUpgrade = () => {
+	return (
+		<div className="d-flex align-items-center justify-content-center">
+			<div className="d-flex align-items-center justify-content-between upgrade-section mt-5 mb-4">
+				<div>
+					<div className="font-weight-bold">Team management</div>
+					<div>Invite more people to specific team roles</div>
+				</div>
+				<div className="ml-5 button-wrapper">
+					<a
+						href="https://dash.bitholla.com/billing"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Button
+							type="primary"
+							className="w-100"
+						>
+							Upgrade Now
+						</Button>
+					</a>
+				</div>
+			</div>
+		</div>
+	)
+};
+
+export const OperatorRole = ({ handleInvite, isUpgrade }) => {
+	const [selectedRole, setRole] = useState(OPERATORS[0].value);
+
+	const handleSelect = (values) => {
+		setRole(values);
+	};
+
 	const handleSubmitOperator = (values) => {
 		handleInvite(values);
 	};
@@ -81,18 +116,65 @@ export const OperatorRole = ({ handleInvite }) => {
 	return (
 		<div className="admin-roles-wrapper">
 			<h3>Add operator</h3>
-			<OperatorRoleFrom
+			<Form
+				name="OperatorRoleFrom"
+				onFinish={handleSubmitOperator}
+			>
+				<div className="interface-box mb-5">
+					<div className="sub-title">Role</div>
+					<Item
+						name="role"
+					>
+						<Select
+							defaultValue={OPERATORS[0].value}
+							onChange={handleSelect}
+							size="small"
+							value={selectedRole}
+						>
+							{OPERATORS.map((option, index) => (
+								<Select.Option key={index} value={option.value}>
+									{option.label}
+								</Select.Option>
+							))}
+						</Select>
+					</Item>
+					{isUpgrade ? renderUpgrade() : null}
+					<div className={isUpgrade ? "disable-area" : ""}>
+						<div className="sub-title mt-5">email</div>
+						<Item
+							name="email"
+							rules={[
+								{
+									required: true
+								}
+							]}
+						>
+							<Input />
+						</Item>
+					</div>
+				</div>
+				<div className="disable-area">
+					<Button
+						type="primary"
+						htmlType="submit"
+						className="green-btn w-100"
+					>
+						Save
+					</Button>
+				</div>
+			</Form>
+			{/* <OperatorRoleFrom
 				onSubmit={handleSubmitOperator}
 				initialValues={{ role: OPERATORS[0].value }}
 				buttonText={'Save'}
 				buttonClass="green-btn mt-2"
 				fields={operatorFields.section_1}
-			/>
+			/> */}
 		</div>
 	);
 };
 
-export const RoleAccess = ({ handleClose }) => {
+export const RoleAccess = ({ handleClose, isUpgrade }) => {
 	return (
 		<div className="admin-roles-wrapper">
 			<h3>Operator role access</h3>
@@ -168,6 +250,7 @@ export const RoleAccess = ({ handleClose }) => {
 					</div>
 				</div>
 			</div>
+			{isUpgrade ? renderUpgrade() : null}
 			<div className="mt-4">
 				<Button
 					type="primary"

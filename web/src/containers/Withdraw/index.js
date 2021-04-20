@@ -8,11 +8,7 @@ import { isMobile } from 'react-device-detect';
 
 import { Loader, MobileBarBack } from '../../components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import {
-	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
-	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
-	DEFAULT_COIN_DATA,
-} from '../../config/constants';
+import { DEFAULT_COIN_DATA } from '../../config/constants';
 import { getCurrencyFromName, roundNumber } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
 import {
@@ -44,17 +40,6 @@ class Withdraw extends Component {
 	};
 
 	componentWillMount() {
-		// if (
-		// 	this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-		// 	this.props.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW
-		// ) {
-		// 	this.props.requestBtcWithdrawFee();
-		// 	this.generateFormValues(
-		// 		getCurrencyFromName(this.props.routeParams.currency),
-		// 		this.props.balance,
-		// 		this.props.btcFee
-		// 	);
-		// }
 		if (this.props.verification_level) {
 			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
@@ -67,10 +52,8 @@ class Withdraw extends Component {
 				this.validateRoute(nextProps.routeParams.currency, nextProps.coins);
 			}
 		} else if (
-			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.selectedNetwork !== this.props.selectedNetwork)
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			nextProps.selectedNetwork !== this.props.selectedNetwork
 		) {
 			this.generateFormValues(
 				getCurrencyFromName(nextProps.routeParams.currency, nextProps.coins),
@@ -237,7 +220,6 @@ class Withdraw extends Component {
 	render() {
 		const {
 			balance,
-			verification_level,
 			prices,
 			otp_enabled,
 			openContactForm,
@@ -255,11 +237,7 @@ class Withdraw extends Component {
 
 		const balanceAvailable = balance[`${currency}_available`];
 
-		if (
-			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			balanceAvailable === undefined
-		) {
+		if (balanceAvailable === undefined) {
 			return <Loader />;
 		}
 

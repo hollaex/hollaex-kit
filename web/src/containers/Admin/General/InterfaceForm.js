@@ -6,7 +6,7 @@ import { STATIC_ICONS } from 'config/icons';
 
 const { Item } = Form;
 
-const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
+const InterfaceForm = ({ initialValues = {}, handleSaveInterface, isUpgrade }) => {
 	const handleSubmit = (values) => {
 		let formValues = {};
 		if (values) {
@@ -112,7 +112,33 @@ const InterfaceForm = ({ initialValues = {}, handleSaveInterface }) => {
 						</Checkbox>
 					</Item>
 				</div>
-				<div>
+				{isUpgrade
+					?
+						<div className="d-flex">
+							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+								<div>
+									<div className="font-weight-bold">Make a good first impression</div>
+									<div>Add a customizable landing page</div>
+								</div>
+								<div className="ml-5 button-wrapper">
+									<a
+										href="https://dash.bitholla.com/billing"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<Button
+											type="primary"
+											className="w-100"
+										>
+											Upgrade Now
+										</Button>
+									</a>
+								</div>
+							</div>
+						</div>
+					: null
+				}
+				<div className={isUpgrade ? "disabled-area" : ""}>
 					<Button type="primary" htmlType="submit">
 						Save
 					</Button>
