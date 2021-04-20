@@ -136,3 +136,43 @@ export const userTradesSelector = createSelector(
 		return filtered;
 	}
 );
+
+const getSide = (_, { side }) => side;
+const getSize = (_, { size }) => (!!size ? size : 0);
+
+const calculateMarketPrice = (orderSize = 0, orders = []) =>
+	orders.reduce(
+		([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
+			if (math.larger(orderSize, accumulatedSize)) {
+				const remainingSize = math.subtract(orderSize, accumulatedSize);
+				if (math.largerEq(remainingSize, size)) {
+					return [
+						math.sum(accumulatedPrice, math.multiply(size, price)),
+						math.sum(accumulatedSize, size),
+					];
+				} else {
+					return [
+						math.sum(accumulatedPrice, math.multiply(remainingSize, price)),
+						math.sum(accumulatedSize, remainingSize),
+					];
+				}
+			} else {
+				return [accumulatedPrice, accumulatedSize];
+			}
+		},
+		[0, 0]
+	);
+
+export const estimatedMarketPriceSelector = createSelector(
+	[getPairsOrderBook, getPair, getSide, getSize],
+	(pairsOrders, pair, side, size) => {
+		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
+			pairsOrders[pair] || {};
+		const totalOrders = sumQuantities(orders);
+		if (math.larger(size, totalOrders)) {
+			return [0, size];
+		} else {
+			return calculateMarketPrice(size, orders);
+		}
+	}
+);

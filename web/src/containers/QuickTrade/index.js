@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 import math from 'mathjs';
+import { QuickTradeLimitsSelector } from './utils';
 
 import { submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
@@ -456,6 +457,7 @@ const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair] || {};
 	const sourceOptions = getSourceOptions(store.app.pairs);
+	const qtlimits = QuickTradeLimitsSelector(store);
 
 	return {
 		sourceOptions,
@@ -466,7 +468,7 @@ const mapStateToProps = (store) => {
 		tickers: store.app.tickers,
 		activeTheme: store.app.theme,
 		activeLanguage: store.app.language,
-		orderLimits: store.app.orderLimits,
+		orderLimits: qtlimits,
 		user: store.user,
 		settings: store.user.settings,
 		constants: store.app.constants,
