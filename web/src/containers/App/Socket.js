@@ -44,17 +44,15 @@ import {
 	setSnackDialog,
 	setConfig,
 	setInfo,
-	setPlugins,
-	requestPlugins,
 	requestInitial,
 	requestConstant,
 	requestTiers,
-	setWebViews,
 } from '../../actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, isLoggedIn } from '../../utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
+import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
 
 class Container extends Component {
 	constructor(props) {
@@ -65,6 +63,7 @@ class Container extends Component {
 			idleTimer: undefined,
 			ordersQueued: [],
 			limitFilledOnOrder: '',
+			isUserFetched: false,
 		};
 		this.orderCache = {};
 		this.wsInterval = null;
@@ -76,12 +75,6 @@ class Container extends Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
-		requestPlugins().then(({ data = {} }) => {
-			if (data.data && data.data.length !== 0) {
-				this.props.setPlugins(data.data);
-				this.props.setWebViews(data.data);
-			}
-		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -254,12 +247,20 @@ class Container extends Component {
 				}
 			})
 			.catch((err) => {
-				const message = err.message || JSON.stringify(err);
-				this.props.setNotification(NOTIFICATIONS.ERROR, message);
-			});
+				if (err.status === 403) {
+					this.props.logout(ERROR_TOKEN_EXPIRED);
+				} else if (err.status === 400) {
+					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
+				} else {
+					const message = err.message || JSON.stringify(err);
+					this.props.setNotification(NOTIFICATIONS.ERROR, message);
+				}
+			})
+			.finally(() => this.setState({ isUserFetched: true }));
 	};
 
 	setUserSocket = () => {
+		const { isUserFetched } = this.state;
 		let url = `${WS_URL}/stream`;
 		const token = isLoggedIn() && getToken();
 
@@ -270,7 +271,7 @@ class Container extends Component {
 
 		this.setState({ privateSocket });
 
-		if (isLoggedIn()) {
+		if (isLoggedIn() && !isUserFetched) {
 			this.getUserDetails();
 		}
 
@@ -744,8 +745,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
-	setPlugins: bindActionCreators(setPlugins, dispatch),
-	setWebViews: bindActionCreators(setWebViews, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 });

@@ -11,7 +11,7 @@ import debounce from 'lodash.debounce';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
-import { addElements } from 'utils/script';
+import { addElements, injectHTML } from 'utils/script';
 
 import {
 	NOTIFICATIONS,
@@ -22,6 +22,7 @@ import {
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
 } from '../../actions/appActions';
+import STRINGS from 'config/localizedStrings';
 
 import {
 	getThemeClass,
@@ -97,7 +98,7 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
-		const { injected_values } = this.props;
+		const { injected_values, injected_html } = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -117,6 +118,7 @@ class App extends Component {
 		);
 
 		addElements(injected_values, 'body');
+		injectHTML(injected_html, 'body');
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -325,6 +327,18 @@ class App extends Component {
 						text={data}
 					/>
 				);
+			case NOTIFICATIONS.UNDEFINED_ERROR:
+				return (
+					<MessageDisplay
+						iconId="UNDEFINED_ERROR"
+						iconPath={ICONS['UNDEFINED_ERROR']}
+						onClick={this.onCloseDialog}
+						text={STRINGS['UNDEFINED_ERROR']}
+						title={STRINGS['UNDEFINED_ERROR_TITLE']}
+						titleId="UNDEFINED_ERROR_TITLE"
+						style={{ maxWidth: '40rem' }}
+					/>
+				);
 			case CONTACT_FORM:
 				return (
 					<ContactForm
@@ -465,7 +479,6 @@ class App extends Component {
 			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
-			handleEditMode,
 			// user,
 			features,
 			isReady: isSocketDataReady,
@@ -682,7 +695,9 @@ class App extends Component {
 													!isMobile) ||
 												(activeNotification.type === NOTIFICATIONS.ORDERS &&
 													!isMobile) ||
-												activeNotification.type === NOTIFICATIONS.ERROR
+												activeNotification.type === NOTIFICATIONS.ERROR ||
+												activeNotification.type ===
+													NOTIFICATIONS.UNDEFINED_ERROR
 											)
 										}
 										compressed={
@@ -742,11 +757,7 @@ class App extends Component {
 					</div>
 				</div>
 				{isAdmin() && isBrowser && (
-					<OperatorControls
-						onChangeEditMode={handleEditMode}
-						editMode={isEditMode}
-						initialData={this.props.location}
-					/>
+					<OperatorControls initialData={this.props.location} />
 				)}
 			</ThemeProvider>
 		);

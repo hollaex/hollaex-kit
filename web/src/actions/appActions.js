@@ -30,6 +30,7 @@ export const NOTIFICATIONS = {
 	STAKE_TOKEN: 'STAKE_TOKEN',
 	DEPOSIT_INFO: 'DEPOSIT_INFO',
 	XHT_SUCCESS_ACCESS: 'XHT_SUCCESS_ACCESS',
+	UNDEFINED_ERROR: 'UNDEFINED_ERROR',
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -62,6 +63,7 @@ export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
 export const CHANGE_HOME_PAGE_SETTING = 'CHANGE_HOME_PAGE_SETTING';
 export const SET_WEB_VIEWS = 'SET_WEB_VIEWS';
 export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
+export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -385,5 +387,10 @@ export const setHomePageSetting = (home_page = false) => ({
 
 export const setInjectedValues = (payload) => ({
 	type: SET_INJECTED_VALUES,
+	payload,
+});
+
+export const setInjectedHTML = (payload) => ({
+	type: SET_INJECTED_HTML,
 	payload,
 });
