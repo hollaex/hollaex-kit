@@ -21,9 +21,11 @@
 		margin: 1px 0;
 		text-align: right;
 
-		.trade_orderbook-cell-price,
+		.trade_orderbook-cell-price {
+			text-align: left;
+		}
 		.trade_orderbook-cell-amount {
-			text-align: center;
+			text-align: right;
 		}
 		.trade_orderbook-cell-amount {
 			color: $orderbook-text;
