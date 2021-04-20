@@ -10,12 +10,23 @@ import {
 	func,
 } from 'prop-types';
 
+import { Paginator } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import MarketRow from './MarketRow';
 import { EditWrapper } from 'components';
 
-const MarketList = ({ markets, handleClick, chartData, icons: ICONS }) => {
+const MarketList = ({
+	markets,
+	handleClick,
+	chartData,
+	icons: ICONS,
+	page,
+	pageSize,
+	count,
+	goToNextPage,
+	goToPreviousPage,
+}) => {
 	return (
 		<div className="market-list__container">
 			<div className="market-list__block">
@@ -72,6 +83,13 @@ const MarketList = ({ markets, handleClick, chartData, icons: ICONS }) => {
 					</tbody>
 				</table>
 			</div>
+			<Paginator
+				currentPage={page + 1}
+				pageSize={pageSize}
+				count={count}
+				goToPreviousPage={goToPreviousPage}
+				goToNextPage={goToNextPage}
+			/>
 		</div>
 	);
 };
