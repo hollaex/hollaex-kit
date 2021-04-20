@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
-
+import { connect } from 'react-redux';
+import { estimatedMarketPriceSelector } from 'containers/Trade/utils';
 import STRINGS from '../../../config/localizedStrings';
 
 const ROW_CLASSNAMES = ['d-flex', 'justify-content-between'];
@@ -66,4 +67,12 @@ Review.defaultProps = {
 	formatToCurrency: (value) => value,
 };
 
-export default Review;
+const mapStateToProps = (store, ownProps) => {
+	const [estimatedPrice] = estimatedMarketPriceSelector(store, ownProps);
+
+	return {
+		estimatedPrice,
+	};
+};
+
+export default connect(mapStateToProps)(Review);

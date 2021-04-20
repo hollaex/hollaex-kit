@@ -1,5 +1,6 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
+import STRINGS from 'config/localizedStrings';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -120,5 +121,42 @@ export const userTradesSelector = createSelector(
 			({ symbol }) => symbol === pair && count++ < 10
 		);
 		return filtered;
+	}
+);
+
+const getSide = (_, props) => props.side;
+const getSize = (_, props) => props.size;
+
+const calculateMarketPrice = (orderSize = 0, orders = []) =>
+	orders.reduce(
+		([accumulatedPrice, accumulatedSize], [price, size]) => {
+			if (orderSize > accumulatedSize) {
+				const remainingSize = orderSize - accumulatedSize;
+				if (remainingSize >= size) {
+					return [accumulatedPrice + size * price, accumulatedSize + size];
+				} else {
+					return [
+						accumulatedPrice + remainingSize * price,
+						accumulatedSize + remainingSize,
+					];
+				}
+			} else {
+				return [accumulatedPrice, accumulatedSize];
+			}
+		},
+		[0, 0]
+	);
+
+export const estimatedMarketPriceSelector = createSelector(
+	[getPairsOrderBook, getPair, getSide, getSize],
+	(pairsOrders, pair, side, size) => {
+		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
+			pairsOrders[pair] || {};
+		const totalOrders = sumQuantities(orders);
+		if (size > totalOrders) {
+			return [STRINGS['UP_TO_MARKET'], size];
+		} else {
+			return calculateMarketPrice(size, orders);
+		}
 	}
 );

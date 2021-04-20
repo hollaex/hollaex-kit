@@ -533,6 +533,7 @@ class OrderEntry extends Component {
 					orderType={orderType}
 				>
 					<Review
+						side={side}
 						price={price}
 						size={size}
 						type={type}
