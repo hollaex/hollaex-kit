@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { QuickTradeLimitsSelector } from 'containers/QuickTrade/utils';
 
 import STRINGS from 'config/localizedStrings';
 import {
@@ -417,6 +418,7 @@ const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair] || {};
 	const sourceOptions = getSourceOptions(store.app.pairs);
+	const qtlimits = QuickTradeLimitsSelector(store);
 
 	return {
 		sourceOptions,
@@ -432,7 +434,7 @@ const mapStateToProps = (store) => {
 		activeTheme: store.app.theme,
 		constants: store.app.constants,
 		tickers: store.app.tickers,
-		orderLimits: store.app.orderLimits,
+		orderLimits: qtlimits,
 		user: store.user,
 		settings: store.user.settings,
 		fetchingAuth: store.auth.fetching,

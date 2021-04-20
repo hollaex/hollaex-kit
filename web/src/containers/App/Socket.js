@@ -247,9 +247,9 @@ class Container extends Component {
 				}
 			})
 			.catch((err) => {
-				if (err.status === 403) {
+				if (!err.response) {
 					this.props.logout(ERROR_TOKEN_EXPIRED);
-				} else if (err.status === 400) {
+				} else if (err.response && err.response.status === 400) {
 					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
 				} else {
 					const message = err.message || JSON.stringify(err);
