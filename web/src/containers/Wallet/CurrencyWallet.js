@@ -18,6 +18,7 @@ import {
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { STATIC_ICONS } from 'config/icons';
 
 class Wallet extends Component {
 	state = {
@@ -55,8 +56,9 @@ class Wallet extends Component {
 						stringId="TRADE_HISTORY"
 						text={STRINGS['TRADE_HISTORY']}
 						status="information"
-						iconId="BLUE_CLIP"
-						iconPath={ICONS['BLUE_CLIP']}
+						iconId="PAPER_CLIP"
+						iconPath={STATIC_ICONS['PAPER_CLIP']}
+						className="paper-clip-icon"
 						onClick={() => {
 							this.props.router.push('/transactions');
 						}}

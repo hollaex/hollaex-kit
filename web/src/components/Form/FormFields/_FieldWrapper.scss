@@ -10,7 +10,6 @@ $outline-height: 1.5px;
 	position: relative;
 	width: 100%;
 	font-size: $font-size-subtext;
-	font-weight: bold;
 	margin: $wrapper-margin 0;
 
 	&.error {
@@ -29,6 +28,9 @@ $outline-height: 1.5px;
 				padding-bottom: $error-margin;
 			}
 		}
+	}
+	.checkfield-input-wrapper {
+		align-items: center;
 	}
 }
 
@@ -58,7 +60,7 @@ $outline-height: 1.5px;
 }
 
 .field-children {
-	padding: $children--padding 0 $children--padding/2;
+	padding: $children--padding 1rem $children--padding/2;
 	position: relative;
 
 	&.custom {

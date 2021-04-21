@@ -141,6 +141,21 @@ $order_entry-column--width-lg: 20rem;
 			}
 		}
 	}
+	.recent-trades {
+		&.cell_box-type {
+			display: flex;
+			.buy {
+				min-width: 3rem;
+				padding-left: 0.5rem;
+				padding-right: 0.5rem;
+			}
+			.sell {
+				min-width: 3rem;
+				padding-left: 0.5rem;
+				padding-right: 0.5rem;
+			}
+		}
+	}
 }
 
 .quick-trade-tab {

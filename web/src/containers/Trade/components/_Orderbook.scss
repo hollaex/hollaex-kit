@@ -21,9 +21,11 @@
 		margin: 1px 0;
 		text-align: right;
 
-		.trade_orderbook-cell-price,
+		.trade_orderbook-cell-price {
+			text-align: left;
+		}
 		.trade_orderbook-cell-amount {
-			text-align: center;
+			text-align: right;
 		}
 		.trade_orderbook-cell-amount {
 			color: $orderbook-text;
@@ -170,6 +172,12 @@
 		.orderbook-limit_bar-text {
 			font-size: $font-size-main;
 		}
+	}
+}
+.trade-select-option-wrapper {
+	.ant-select-item,
+	.ant-select-item-option-content {
+		font-size: 11px;
 	}
 }
 

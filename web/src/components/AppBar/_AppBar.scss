@@ -328,7 +328,7 @@ $app-menu-notification-size: 1.2rem;
 		min-width: 10rem;
 		min-height: 8rem;
 		background-color: $app-background-color;
-		z-index: 20;
+		z-index: 1052;
 		padding: 1rem;
 		border-top: 2px solid $link;
 		-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -484,6 +484,13 @@ $app-menu-notification-size: 1.2rem;
 			line-height: 1;
 			font-weight: bold;
 		}
+	}
+}
+
+.select-option-wrapper {
+	.ant-select-item,
+	.ant-select-item-option {
+		font-size: 12px;
 	}
 }
 
@@ -1079,6 +1086,13 @@ $app-menu-notification-size: 1.2rem;
 			color: $buy;
 		}
 	}
+	.app-price-diff-down {
+		color: $sell;
+	}
+
+	.app-price-diff-up {
+		color: $buy;
+	}
 }
 
 .app_bar-link {
@@ -1267,4 +1281,12 @@ $app-menu-notification-size: 1.2rem;
 		$app-landing_background,
 		$app-landing_background
 	) !important;
+}
+@media (max-width: 768px) {
+	.select-option-wrapper {
+		.ant-select-item,
+		.ant-select-item-option {
+			font-size: 0.9rem !important;
+		}
+	}
 }

@@ -1,5 +1,6 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
+import { getDecimals } from 'utils/utils';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -27,11 +28,24 @@ const pushCumulativeAmounts = (orders) => {
 };
 
 const round = (number, depth) => {
-	let result = math.chain(number).divide(depth).round().multiply(depth).done();
+	const precision = getDecimals(depth);
+	let result = math
+		.chain(number)
+		.divide(depth)
+		.round()
+		.multiply(depth)
+		.round(precision)
+		.done();
 
 	// this is to prevent setting the price to 0
 	if (!result) {
-		result = math.chain(number).divide(depth).ceil().multiply(depth).done();
+		result = math
+			.chain(number)
+			.divide(depth)
+			.ceil()
+			.multiply(depth)
+			.round(precision)
+			.done();
 	}
 
 	return result;

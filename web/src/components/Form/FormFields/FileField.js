@@ -4,6 +4,7 @@ import FieldWrapper from './FieldWrapper';
 import { ActionNotification } from '../../';
 import STRINGS from '../../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { STATIC_ICONS } from 'config/icons';
 
 class FileField extends Component {
 	state = {
@@ -44,7 +45,7 @@ class FileField extends Component {
 	};
 
 	render() {
-		const { placeholder, multiple, length, icons: ICONS } = this.props;
+		const { placeholder, multiple, length } = this.props;
 		const { filename, fileArray } = this.state;
 		const input = {
 			onChange: this.onChange,
@@ -91,9 +92,9 @@ class FileField extends Component {
 									stringId="ADD_FILES"
 									text={STRINGS['ADD_FILES']}
 									status="information"
-									iconId="BLUE_CLIP"
-									iconPath={ICONS['BLUE_CLIP']}
-									className="no_bottom pr-0 pl-0"
+									iconId="PAPER_CLIP"
+									iconPath={STATIC_ICONS['PAPER_CLIP']}
+									className="no_bottom pr-0 pl-0 paper-clip-icon"
 								/>
 						  )
 						: !filename && (
@@ -101,9 +102,9 @@ class FileField extends Component {
 									stringId="ADD_FILES"
 									text={STRINGS['ADD_FILES']}
 									status="information"
-									iconId="BLUE_CLIP"
-									iconPath={ICONS['BLUE_CLIP']}
-									className="no_bottom pr-0 pl-0"
+									iconId="PAPER_CLIP"
+									iconPath={STATIC_ICONS['PAPER_CLIP']}
+									className="no_bottom pr-0 pl-0 paper-clip-icon"
 								/>
 						  )}
 					<input type="file" className="input_file" {...input} />

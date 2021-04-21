@@ -157,6 +157,9 @@ $tabs-title--margin: 2rem;
 			:nth-child(2) {
 				text-align: center;
 			}
+			.ant-select-arrow {
+				z-index: 1;
+			}
 		}
 
 		.display_table-body {

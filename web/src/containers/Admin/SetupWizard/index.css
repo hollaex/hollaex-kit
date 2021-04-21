@@ -365,3 +365,7 @@
 .previewButton {
 	margin: 1rem 0rem;
 }
+.asset-content .disabled-area {
+	opacity: 0.6;
+	pointer-events: none;
+}
