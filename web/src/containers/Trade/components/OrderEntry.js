@@ -98,6 +98,46 @@ class OrderEntry extends Component {
 		}
 	}
 
+	calculateOrderForBudget = (budget, orders = []) =>
+		orders.reduce(
+			([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
+				if (mathjs.larger(budget, accumulatedPrice)) {
+					const remainingBudget = mathjs.subtract(budget, accumulatedPrice);
+					const orderPrice = mathjs.multiply(size, price);
+					if (mathjs.largerEq(remainingBudget, orderPrice)) {
+						return [
+							mathjs.sum(accumulatedPrice, orderPrice),
+							mathjs.sum(accumulatedSize, size),
+						];
+					} else {
+						const remainingSize = mathjs.divide(remainingBudget, price);
+						return [
+							mathjs.sum(accumulatedPrice, remainingBudget),
+							mathjs.sum(accumulatedSize, remainingSize),
+						];
+					}
+				} else {
+					return [accumulatedPrice, accumulatedSize];
+				}
+			},
+			[0, 0]
+		);
+
+	calculateMarketOrder = (percent) => {
+		const { pair_2, balance = {}, side, pairsOrderbooks, pair } = this.props;
+
+		const availableBalance = balance[`${pair_2}_available`];
+		const budget = mathjs.multiply(
+			availableBalance,
+			mathjs.divide(percent, 100)
+		);
+
+		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
+			pairsOrderbooks[pair] || {};
+
+		return this.calculateOrderForBudget(budget, orders);
+	};
+
 	setMax = (percent = 100) => {
 		const {
 			side,
@@ -122,10 +162,12 @@ class OrderEntry extends Component {
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
 
-		const calculatedSize = mathjs.multiply(
-			maxSize,
-			mathjs.divide(percent, 100)
-		);
+		let calculatedSize;
+		if (type === 'market' && side === 'buy') {
+			calculatedSize = this.calculateMarketOrder(percent)[1];
+		} else {
+			calculatedSize = mathjs.multiply(maxSize, mathjs.divide(percent, 100));
+		}
 
 		if (calculatedSize !== size) {
 			this.props.change(
@@ -586,6 +628,7 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		settings: state.user.settings,
 		coins: state.app.coins,
+		pairsOrderbooks: state.orderbook.pairsOrderbooks,
 		asks,
 		bids,
 		marketPrice,
