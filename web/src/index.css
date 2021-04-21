@@ -2306,9 +2306,10 @@ table th {
   .trade_orderbook-wrapper .price-row-wrapper {
     margin: 1px 0;
     text-align: right; }
-    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price,
+    .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price {
+      text-align: left; }
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount {
-      text-align: center; }
+      text-align: right; }
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount {
       color: var(--calculated_trading-orderbook-text); }
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total {

@@ -14,7 +14,7 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from '../../config/constants';
-import { getFormatTimestamp, isBlockchainTx } from '../../utils/utils';
+import { getFormatTimestamp } from '../../utils/utils';
 import { formatToCurrency, formatBaseAmount } from 'utils/currency';
 
 notification.config({
@@ -692,6 +692,7 @@ export const generateWithdrawalsHeaders = (
 					id,
 					amount,
 					type,
+					network,
 				},
 				key,
 				index
@@ -739,12 +740,13 @@ export const generateWithdrawalsHeaders = (
 					);
 				} else {
 					// Completed Status
-					return isBlockchainTx(transaction_id) &&
-						currency !== BASE_CURRENCY ? (
+					// return isBlockchainTx(transaction_id) &&
+					return network ? (
+						// currency !== BASE_CURRENCY ? (
 						<td key={index}>
 							<a
 								target="blank"
-								href={EXPLORERS_ENDPOINT(currency) + transaction_id}
+								href={EXPLORERS_ENDPOINT(network) + transaction_id}
 							>
 								{STRINGS['VIEW']}
 							</a>

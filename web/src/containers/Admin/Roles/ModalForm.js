@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Select, Input } from 'antd';
+import classnames from 'classnames';
 
 import { OPERATORS, getOperatorFields } from './Utils';
 import { STATIC_ICONS } from 'config/icons';
@@ -89,17 +90,14 @@ export const renderUpgrade = () => {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<Button
-							type="primary"
-							className="w-100"
-						>
+						<Button type="primary" className="w-100">
 							Upgrade Now
 						</Button>
 					</a>
 				</div>
 			</div>
 		</div>
-	)
+	);
 };
 
 export const OperatorRole = ({ handleInvite, isUpgrade }) => {
@@ -116,15 +114,10 @@ export const OperatorRole = ({ handleInvite, isUpgrade }) => {
 	return (
 		<div className="admin-roles-wrapper">
 			<h3>Add operator</h3>
-			<Form
-				name="OperatorRoleFrom"
-				onFinish={handleSubmitOperator}
-			>
+			<Form name="OperatorRoleFrom" onFinish={handleSubmitOperator}>
 				<div className="interface-box mb-5">
 					<div className="sub-title">Role</div>
-					<Item
-						name="role"
-					>
+					<Item name="role">
 						<Select
 							defaultValue={OPERATORS[0].value}
 							onChange={handleSelect}
@@ -139,14 +132,14 @@ export const OperatorRole = ({ handleInvite, isUpgrade }) => {
 						</Select>
 					</Item>
 					{isUpgrade ? renderUpgrade() : null}
-					<div className={isUpgrade ? "disable-area" : ""}>
+					<div className={isUpgrade ? 'disable-area' : ''}>
 						<div className="sub-title mt-5">email</div>
 						<Item
 							name="email"
 							rules={[
 								{
-									required: true
-								}
+									required: true,
+								},
 							]}
 						>
 							<Input />
@@ -154,11 +147,7 @@ export const OperatorRole = ({ handleInvite, isUpgrade }) => {
 					</div>
 				</div>
 				<div className="disable-area">
-					<Button
-						type="primary"
-						htmlType="submit"
-						className="green-btn w-100"
-					>
+					<Button type="primary" htmlType="submit" className="green-btn w-100">
 						Save
 					</Button>
 				</div>
@@ -208,10 +197,18 @@ export const RoleAccess = ({ handleClose, isUpgrade }) => {
 					</div>
 				</div>
 				<div className="d-flex role-description-box">
-					<div className="f-1 d-flex align-items-center pl-3 role-kyc">
+					<div
+						className={classnames(
+							'f-1 d-flex align-items-center pl-3 role-kyc',
+							{ 'disable-area': isUpgrade }
+						)}
+					>
 						{renderRoleImage('role-icon', 'kyc')}
 						<span className="role-label ml-2">KYC</span>
 					</div>
+					{isUpgrade ? (
+						<div className="upgrade-text">Requires upgrade</div>
+					) : null}
 					<div className="line-separator"></div>
 					<div className="f-1 p-3">
 						<div className="sub-title">Access Level 3</div>
@@ -222,10 +219,18 @@ export const RoleAccess = ({ handleClose, isUpgrade }) => {
 					</div>
 				</div>
 				<div className="d-flex role-description-box">
-					<div className="f-1 d-flex align-items-center pl-3 role-communication">
+					<div
+						className={classnames(
+							'f-1 d-flex align-items-center pl-3 role-communication',
+							{ 'disable-area': isUpgrade }
+						)}
+					>
 						{renderRoleImage('role-icon', 'communicator')}
 						<span className="role-label ml-2">Support</span>
 					</div>
+					{isUpgrade ? (
+						<div className="upgrade-text">Requires upgrade</div>
+					) : null}
 					<div className="line-separator"></div>
 					<div className="f-1 p-3">
 						<div className="sub-title">Access Level 4</div>
@@ -237,10 +242,18 @@ export const RoleAccess = ({ handleClose, isUpgrade }) => {
 					</div>
 				</div>
 				<div className="d-flex role-description-box">
-					<div className="f-1 d-flex align-items-center pl-3 role-support">
+					<div
+						className={classnames(
+							'f-1 d-flex align-items-center pl-3 role-support',
+							{ 'disable-area': isUpgrade }
+						)}
+					>
 						{renderRoleImage('role-icon', 'support')}
 						<span className="role-label ml-2">Support</span>
 					</div>
+					{isUpgrade ? (
+						<div className="upgrade-text">Requires upgrade</div>
+					) : null}
 					<div className="line-separator"></div>
 					<div className="f-1 p-3">
 						<div className="sub-title">Access Level 5</div>
