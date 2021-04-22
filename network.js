@@ -1100,7 +1100,6 @@ class HollaExNetwork {
 	 */
 	getOrders(
 		opts = {
-			userId: null,
 			symbol: null,
 			side: null,
 			status: null,
@@ -1517,7 +1516,7 @@ class HollaExNetwork {
 	/* Network Engine Endpoints*/
 
 	/**
-	 * Get time and sales on Nework engine
+	 * Get Public trades on network
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.symbol - Symbol to get trades for. Leave blank to get trades of all symbols
 	 * @return {object} Object with trades
