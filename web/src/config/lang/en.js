@@ -834,6 +834,7 @@ const nestedContent = {
 	PRICE_CURRENCY: 'Price ({0})',
 	AMOUNT_SYMBOL: 'Amount ({0})',
 	MARKET_PRICE: 'Market Price',
+	ESTIMATED_PRICE: 'Estimated Price',
 	ORDER_PRICE: 'Order Price',
 	TOTAL_ORDER: 'Order Total',
 	NO_DATA: 'No Data',

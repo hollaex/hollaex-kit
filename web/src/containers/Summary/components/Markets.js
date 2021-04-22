@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { formatPercentage } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
+import math from 'mathjs';
 
 import { SearchBox } from 'components';
 import MarketList from '../../TradeTabs/components/MarketList';
@@ -53,9 +54,11 @@ class Markets extends Component {
 		const { pageSize } = this.state;
 		const pairs = searchValue ? this.getSearchPairs(searchValue) : pairData;
 		const pairKeys = Object.keys(pairs).sort((a, b) => {
-			let tickA = tickers[a] || {};
-			let tickB = tickers[b] || {};
-			return tickB.volume - tickA.volume;
+			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
+			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
+			const marketCapA = math.multiply(volumeA, closeA);
+			const marketCapB = math.multiply(volumeB, closeB);
+			return marketCapB - marketCapA;
 		});
 		const count = pairKeys.length;
 		const initItem = page * pageSize;

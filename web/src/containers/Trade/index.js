@@ -44,6 +44,7 @@ class Trade extends PureComponent {
 		super(props);
 		this.state = {
 			wsInitialized: false,
+			orderbookFetched: false,
 			orderbookWs: null,
 			activeTab: 0,
 			chartHeight: 0,
@@ -86,7 +87,7 @@ class Trade extends PureComponent {
 			this.props.getUserTrades(symbol);
 		}
 		this.props.changePair(symbol);
-		this.setState({ symbol: '' }, () => {
+		this.setState({ symbol: '', orderbookFetched: false }, () => {
 			setTimeout(() => {
 				this.setState({ symbol });
 			}, 1000);
@@ -237,6 +238,7 @@ class Trade extends PureComponent {
 						delete tempData.data;
 						this.orderCache = { ...this.orderCache, ...tempData };
 						this.storeOrderData(this.orderCache);
+						this.setState({ orderbookFetched: true });
 						break;
 
 					default:
@@ -302,7 +304,7 @@ class Trade extends PureComponent {
 			discount,
 			fees,
 		} = this.props;
-		const { chartHeight, symbol, activeTab } = this.state;
+		const { chartHeight, symbol, activeTab, orderbookFetched } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -317,6 +319,7 @@ class Trade extends PureComponent {
 			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
+			orderbookFetched,
 		};
 
 		const mobileTabs = [

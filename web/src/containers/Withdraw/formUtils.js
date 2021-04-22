@@ -21,10 +21,13 @@ export const generateInitialValues = (
 	networks,
 	network
 ) => {
-	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
+	const { min, withdrawal_fee, withdrawal_fees } =
+		coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
-	if (coins[symbol]) {
+	if (withdrawal_fees && network && withdrawal_fees[network]) {
+		initialValues.fee = withdrawal_fees[network];
+	} else if (coins[symbol]) {
 		initialValues.fee = withdrawal_fee;
 	} else {
 		initialValues.fee = 0;
