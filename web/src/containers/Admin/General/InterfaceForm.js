@@ -1,6 +1,7 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { Button, Checkbox, Form } from 'antd';
+import classnames from 'classnames';
 
 import { STATIC_ICONS } from 'config/icons';
 
@@ -80,7 +81,7 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
-					<div className={isUpgrade ? 'disabled-area' : ''}>
+					<div className={classnames({ 'disabled-area': isUpgrade })}>
 						<Item name="chat" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
