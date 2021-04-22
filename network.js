@@ -658,7 +658,7 @@ class HollaExNetwork {
 	 * Get all withdrawals for the exchange on the network
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
-	 * @param {boolean} opts.status - Confirmed status of the depowithdrawalssits to get. Leave blank to get all confirmed and unconfirmed withdrawals
+	 * @param {boolean} opts.status - Confirmed status of the withdrawals to get. Leave blank to get all confirmed and unconfirmed withdrawals
 	 * @param {boolean} opts.dismissed - Dismissed status of the withdrawals to get. Leave blank to get all dismissed and undismissed withdrawals
 	 * @param {boolean} opts.rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
 	 * @param {boolean} opts.processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
