@@ -15,6 +15,7 @@ export const MENU_ITEMS = {
 			string_id: 'PRO_TRADE',
 			hide_from_menulist: true,
 			hide_from_sidebar: true,
+			hide_from_appbar: true,
 		},
 		{
 			id: 'quick_trade',
@@ -23,6 +24,7 @@ export const MENU_ITEMS = {
 			string_id: 'QUICK_TRADE',
 			hide_from_menulist: true,
 			hide_from_sidebar: true,
+			hide_from_appbar: true,
 		},
 	],
 	middle: [
@@ -35,21 +37,25 @@ export const MENU_ITEMS = {
 			path: '/transactions',
 			icon_id: 'TAB_HISTORY',
 			string_id: 'ACCOUNTS.TAB_HISTORY',
+			hide_from_appbar: true,
 		},
 		{
 			path: '/security',
 			icon_id: 'TAB_SECURITY',
 			string_id: 'ACCOUNTS.TAB_SECURITY',
+			hide_from_appbar: true,
 		},
 		{
 			path: '/verification',
 			icon_id: 'TAB_VERIFY',
 			string_id: 'ACCOUNTS.TAB_VERIFICATION',
+			hide_from_appbar: true,
 		},
 		{
 			path: '/settings',
 			icon_id: 'TAB_SETTING',
 			string_id: 'ACCOUNTS.TAB_SETTINGS',
+			hide_from_appbar: true,
 		},
 	],
 	bottom: [
