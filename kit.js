@@ -673,7 +673,7 @@ class HollaExKit {
 
 	/**
 	 * Connect to hollaEx websocket and listen to an event
-	 * @param {array} event - The events to listen to
+	 * @param {array} events - The events to listen to
 	 */
 	connect(events = []) {
 		this.wsReconnect = true;
