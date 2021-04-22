@@ -18,20 +18,28 @@ class MenuList extends Component {
 
 	componentDidMount() {
 		document.addEventListener('click', this.onOutsideClick);
-		const { location } = this.props;
-		const activePath = location && location.pathname ? location.pathname : '';
-		this.setState({ activePath });
+		this.setActivePath();
 	}
 
 	componentDidUpdate(prevProps) {
 		if (
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
-			const { location } = this.props;
-			const activePath = location && location.pathname ? location.pathname : '';
-			this.setState({ activePath });
+			this.setActivePath();
 		}
 	}
+
+	setActivePath = () => {
+		const { location: { pathname = '' } = {} } = this.props;
+
+		let activePath;
+		if (pathname.includes('quick-trade')) {
+			activePath = 'quick-trade';
+		} else {
+			activePath = pathname;
+		}
+		this.setState({ activePath });
+	};
 
 	onOutsideClick = (event) => {
 		if (
