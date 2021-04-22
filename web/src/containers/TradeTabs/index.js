@@ -257,6 +257,7 @@ class AddTradeTab extends Component {
 								count={count}
 								goToNextPage={goToNextPage}
 								goToPreviousPage={goToPreviousPage}
+								showPaginator={true}
 							/>
 						) : (
 							<MarketCards
