@@ -123,7 +123,7 @@ class MenuList extends Component {
 			<div
 				className={classnames('d-flex app-bar-account-content', {
 					'account-inactive':
-						activePath !== 'account' && activePath !== 'wallet',
+						activePath !== '/account' && activePath !== '/wallet',
 				})}
 				ref={(el) => (this.element = el)}
 			>
