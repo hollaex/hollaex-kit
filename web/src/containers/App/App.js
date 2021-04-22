@@ -220,11 +220,6 @@ class App extends Component {
 		}
 	};
 
-	goToAccountPage = () => this.goToPage('/account');
-	goToVerificationPage = () => this.goToPage('/verification');
-	goToDashboard = () => this.goToPage('/');
-	goToXHTTrade = () => this.goToPage('/trade/xht-usdt');
-
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
 			this.props.logout(typeof message === 'string' ? message : '');
@@ -483,8 +478,6 @@ class App extends Component {
 			features,
 			isReady: isSocketDataReady,
 			pairsTradesFetched,
-			verifyToken,
-			token,
 			icons: ICONS,
 		} = this.props;
 
@@ -578,15 +571,9 @@ class App extends Component {
 							<div className="d-flex flex-column f-1">
 								{!isHome && (
 									<AppBar
-										token={token}
-										verifyToken={verifyToken}
-										noBorders={isHome}
-										isHome={isHome}
 										router={router}
 										location={location}
-										goToDashboard={this.goToDashboard}
 										logout={this.logout}
-										activePath={activePath}
 										onHelp={openHelpfulResourcesForm}
 									>
 										{isBrowser && isMenubar && isLoggedIn() && (
