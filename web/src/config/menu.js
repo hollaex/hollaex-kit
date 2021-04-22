@@ -6,6 +6,26 @@ export const MENU_ITEMS = {
 			icon_id: 'TAB_SUMMARY',
 			string_id: 'ACCOUNTS.TAB_SUMMARY',
 		},
+	],
+	features: [
+		{
+			id: 'pro_trade',
+			path: '/trade/add/tabs',
+			icon_id: 'SIDEBAR_TRADING_ACTIVE',
+			string_id: 'PRO_TRADE',
+			hide_from_menulist: true,
+			hide_from_sidebar: true,
+		},
+		{
+			id: 'quick_trade',
+			path: 'quick-trade',
+			icon_id: 'QUICK_TRADE_TAB_ACTIVE',
+			string_id: 'QUICK_TRADE',
+			hide_from_menulist: true,
+			hide_from_sidebar: true,
+		},
+	],
+	middle: [
 		{
 			path: '/wallet',
 			icon_id: 'TAB_WALLET',
