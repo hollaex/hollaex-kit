@@ -70,13 +70,13 @@ const tools = require('hollaex-tools-lib');
 ### Full list of functions
 
 <!-- TABLE OF CONTENTS -->
-- [Common Functions](####-Common-functions)
-- [User Functions](####-User-functions)
-- [Order Functions](####-Order-functions)
-- [Wallet Functions](####-Wallet-functions)
-- [Security Functions](####-Security-functions)
-- [Tier Functions](####-Tier-functions)
-- [Database Functions](####-Database-functions)
+- [Common Functions](####-common-functions)
+- [User Functions](####-user-functions)
+- [Order Functions](####-order-functions)
+- [Wallet Functions](####-wallet-functions)
+- [Security Functions](####-security-functions)
+- [Tier Functions](####-tier-functions)
+- [Database Functions](####-database-functions)
 
 #### Common functions
 
