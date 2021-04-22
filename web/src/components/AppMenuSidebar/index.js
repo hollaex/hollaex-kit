@@ -77,7 +77,12 @@ class AppMenuSidebar extends Component {
 }
 
 const mapStateToProps = ({ app: { remoteRoutes = [] } }) => {
-	const menuItems = [...MENU_ITEMS.top, ...remoteRoutes, ...MENU_ITEMS.bottom];
+	const menuItems = [
+		...MENU_ITEMS.top,
+		...MENU_ITEMS.middle,
+		...remoteRoutes,
+		...MENU_ITEMS.bottom,
+	];
 	return {
 		menuItems,
 	};
