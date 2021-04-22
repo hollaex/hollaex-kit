@@ -11,6 +11,7 @@ import ja from './lang/ja';
 import vi from './lang/vi';
 import id from './lang/id';
 import zh from './lang/zh';
+import pt from './lang/pt';
 
 export const content = {
 	en,
@@ -24,6 +25,7 @@ export const content = {
 	vi,
 	id,
 	zh,
+	pt,
 };
 
 const strings = new LocalizedStrings(content);
