@@ -57,6 +57,11 @@
 .verification-form-panel {
 	padding: 30px 50px;
 	background-color: $app-sidebar-background;
+	.action_notification-wrapper {
+		.notification-info {
+    		white-space: nowrap;
+		}
+	}
 }
 
 .verification_content-form-wrapper {

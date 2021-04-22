@@ -188,4 +188,9 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			min-height: 20rem;
 		}
 	}
+	.sidebar-bottom-icon {
+		svg {
+			stroke: none !important;
+		}
+	}
 }

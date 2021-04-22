@@ -203,8 +203,10 @@ $padding-input: 4rem;
 
 .user-security-container {
 	.icon_title-wrapper {
-		display: unset;
+		display: flex;
 		justify-content: flex-start !important;
+		flex-direction: row;
+		align-items: center;
 	}
 }
 

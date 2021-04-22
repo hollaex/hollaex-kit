@@ -9,7 +9,7 @@ import merge from 'lodash.merge';
 import { EditFilled } from '@ant-design/icons';
 import { getStringByKey, getAllStrings } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
-import { Input, Button, Divider, Tabs } from 'antd';
+import { Input, Button, Divider, Tabs, message } from 'antd';
 import { DeleteOutlined, SettingFilled, KeyOutlined } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish, updateInjectedHTML } from 'actions/operatorActions';
@@ -299,11 +299,17 @@ class OperatorControls extends Component {
 
 		languageKeys.forEach((lang) => {
 			Object.entries(saveData[lang]).forEach(([key, string]) => {
+				const isEnglish = lang === 'en';
+				const isUnchangedString = string === getStringByKey(key, lang, CONTENT);
+				const isEqualToDefault = string === getStringByKey(key, 'en', CONTENT);
+				const hasInvalidPlaceholders =
+					string && !this.validateString(string, key);
+				const hasDeletedEnglish = !string && isEnglish;
 				if (
-					string === getStringByKey(key, lang, CONTENT) ||
-					string === getStringByKey(key, 'en', CONTENT) ||
-					!string ||
-					!this.validateString(key, lang)
+					isUnchangedString ||
+					isEqualToDefault ||
+					hasInvalidPlaceholders ||
+					hasDeletedEnglish
 				) {
 					delete saveData[lang][key];
 				}
@@ -334,14 +340,14 @@ class OperatorControls extends Component {
 		return matches ? matches.length : 0;
 	};
 
-	validateString = (key, lang) => {
-		const { editData } = this.state;
-		const defaultPlaceholders = this.countPlaceholders(
-			getStringByKey(key, lang, CONTENT)
+	validateString = (string, key) => {
+		const benchmarkLanguage = 'en';
+		const benchmarkPlaceholders = this.countPlaceholders(
+			getStringByKey(key, benchmarkLanguage, CONTENT)
 		);
-		const placeholders = this.countPlaceholders(editData[lang][key]);
+		const placeholders = this.countPlaceholders(string);
 
-		return defaultPlaceholders === placeholders;
+		return placeholders === benchmarkPlaceholders;
 	};
 
 	handlePublish = () => {
@@ -370,10 +376,20 @@ class OperatorControls extends Component {
 				sections,
 			};
 
-			publish(configs).then(this.reload);
+			publish(configs)
+				.then(this.reload)
+				.catch((err) => {
+					const error = err && err.data ? err.data.message : err.message;
+					message.error(error);
+				});
 		} else if (isInjectMode) {
 			const { injected_html } = this.state;
-			updateInjectedHTML(injected_html).then(this.reload);
+			updateInjectedHTML(injected_html)
+				.then(this.reload)
+				.catch((err) => {
+					const error = err && err.data ? err.data.message : err.message;
+					message.error(error);
+				});
 		}
 	};
 
