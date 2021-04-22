@@ -3,36 +3,34 @@ import { connect } from 'react-redux';
 import Image from 'components/Image';
 import classnames from 'classnames';
 
-import STRINGS from '../../config/localizedStrings';
-import { IS_XHT } from '../../config/constants';
+import { IS_XHT } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { EditWrapper } from 'components';
+import { MENU_ITEMS } from 'config/menu';
+import MenuListItem from './MenuListItem';
 
 class MenuList extends Component {
 	state = {
 		isOpen: false,
+		activePath: '',
 	};
 
 	element = null;
 
 	componentDidMount() {
 		document.addEventListener('click', this.onOutsideClick);
+		const { location } = this.props;
+		const activePath = location && location.pathname ? location.pathname : '';
+		this.setState({ activePath });
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (nextState.isOpen !== this.state.isOpen) {
-			return true;
-		}
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.selectedMenu !== this.props.selectedMenu ||
-			nextProps.securityPending !== this.props.securityPending ||
-			nextProps.verificationPending !== this.props.verificationPending ||
-			nextProps.walletPending !== this.props.walletPending ||
-			nextProps.activePath !== this.props.activePath
+			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
-			return true;
+			const { location } = this.props;
+			const activePath = location && location.pathname ? location.pathname : '';
+			this.setState({ activePath });
 		}
-		return false;
 	}
 
 	onOutsideClick = (event) => {
@@ -56,35 +54,68 @@ class MenuList extends Component {
 		document.removeEventListener('click', this.onOutsideClick);
 	}
 
-	handleMenu = (path) => {
-		this.setState({ isOpen: false });
-		this.props.handleMenu(path);
+	handleMenuChange = (path = '') => {
+		const { router, pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
+		switch (path) {
+			case 'logout':
+				this.props.logout();
+				break;
+			case 'help':
+				this.props.onHelp();
+				break;
+			case 'quick-trade':
+				router.push(`/quick-trade/${pair}`);
+				break;
+			default:
+				router.push(path);
+		}
+
+		this.setState({ isOpen: false, activePath: path });
 	};
 
-	onHelp = () => {
-		this.setState({ isOpen: false });
-		this.props.onHelp();
+	getNotifications = (path = '') => {
+		const { verificationPending, securityPending, walletPending } = this.props;
+		switch (path) {
+			case '/verification':
+				return verificationPending;
+			case '/security':
+				return securityPending;
+			case '/wallet':
+				return walletPending;
+			default:
+				return 0;
+		}
 	};
 
-	logout = () => {
-		this.setState({ isOpen: false });
-		this.props.logout();
+	getShowNotification = (path = '', notifications) => {
+		switch (path) {
+			case '/verification':
+				return !!notifications && !IS_XHT;
+			case '/wallet':
+				return !!notifications && IS_XHT;
+			default:
+				return !!notifications;
+		}
 	};
 
 	render() {
 		const {
-			selectedMenu,
 			securityPending,
 			verificationPending,
 			walletPending,
-			activePath,
 			icons: ICONS,
-			constants,
-			location,
 			user,
-			remoteRoutes,
+			menuItems,
 		} = this.props;
-		const { isOpen } = this.state;
+		const { isOpen, activePath } = this.state;
 		const totalPending = IS_XHT
 			? securityPending + walletPending
 			: securityPending + verificationPending;
@@ -109,285 +140,37 @@ class MenuList extends Component {
 				<div>{user.email}</div>
 				{isOpen && (
 					<div id="tab-account-menu" className="app-bar-account-menu apply_rtl">
-						<div
-							className={classnames('app-bar-account-menu-list d-flex', {
-								'menu-active':
-									activePath === 'account' && selectedMenu === 'summary',
-							})}
-							onClick={() => this.handleMenu('summary')}
-						>
-							<div className="notification-content" />
-							<Image
-								icon={ICONS['TAB_SUMMARY']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_SUMMARY" iconId="TAB_SUMMARY">
-								{STRINGS['ACCOUNTS.TAB_SUMMARY']}
-							</EditWrapper>
-						</div>
-						{constants && constants.features && constants.features.pro_trade && (
-							<div
-								className={classnames('app-bar-account-menu-list d-flex', {
-									'menu-active':
-										location.pathname === '/trade/add/tabs' &&
-										selectedMenu === 'pro-trade',
-								})}
-								onClick={() => this.handleMenu('pro-trade')}
-							>
-								<div className="notification-content" />
-								<Image
-									icon={ICONS['SIDEBAR_TRADING_ACTIVE']}
-									wrapperClassName="app-bar-account-list-icon"
-								/>
-								<EditWrapper
-									stringId="PRO_TRADE"
-									iconId="SIDEBAR_TRADING_ACTIVE"
-								>
-									{STRINGS['PRO_TRADE']}
-								</EditWrapper>
-							</div>
+						{menuItems.map(
+							(
+								{ path, icon_id, string_id, hide_from_menulist, activePaths },
+								index
+							) => {
+								const notifications = this.getNotifications(path);
+								const showNotification = this.getShowNotification(
+									path,
+									notifications
+								);
+								return (
+									!hide_from_menulist && (
+										<MenuListItem
+											key={`menulist_item_${index}`}
+											path={path}
+											stringId={string_id}
+											iconId={icon_id}
+											icon={ICONS[icon_id]}
+											isActive={
+												activePaths
+													? activePaths.includes(activePath)
+													: path === activePath
+											}
+											onClick={() => this.handleMenuChange(path)}
+											notifications={notifications}
+											showNotification={showNotification}
+										/>
+									)
+								);
+							}
 						)}
-						{constants && constants.features && constants.features.quick_trade && (
-							<div
-								className={classnames('app-bar-account-menu-list d-flex', {
-									'menu-active':
-										activePath === 'quick-trade' &&
-										selectedMenu === 'quick-trade',
-								})}
-								onClick={() => this.handleMenu('quick-trade')}
-							>
-								<div className="notification-content" />
-								<Image
-									icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
-									wrapperClassName="app-bar-account-list-icon"
-								/>
-								<EditWrapper
-									stringId="QUICK_TRADE"
-									iconId="QUICK_TRADE_TAB_ACTIVE"
-								>
-									{STRINGS['QUICK_TRADE']}
-								</EditWrapper>
-							</div>
-						)}
-						<div
-							className={classnames(
-								'app-bar-account-menu-list d-flex',
-								!!walletPending && IS_XHT
-									? {
-											'menu-notification-active':
-												activePath === 'wallet' && selectedMenu === 'wallet',
-											wallet_notification: selectedMenu !== 'wallet',
-									  }
-									: {
-											'menu-active':
-												activePath === 'wallet' && selectedMenu === 'wallet',
-									  }
-							)}
-							onClick={() => this.handleMenu('wallet')}
-						>
-							<div className="notification-content">
-								{!!walletPending && IS_XHT && (
-									<div
-										className={
-											selectedMenu === 'wallet'
-												? 'app-bar-account-list-notification wallet_selected'
-												: 'app-bar-account-list-notification wallet_selected_inactive'
-										}
-									>
-										{walletPending}
-									</div>
-								)}
-							</div>
-							<Image
-								icon={ICONS['TAB_WALLET']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_WALLET" iconId="TAB_WALLET">
-								{STRINGS['ACCOUNTS.TAB_WALLET']}
-							</EditWrapper>
-						</div>
-						<div
-							className={classnames('app-bar-account-menu-list d-flex', {
-								'menu-active': selectedMenu === 'history',
-							})}
-							onClick={() => this.handleMenu('history')}
-						>
-							<div className="notification-content" />
-							<Image
-								icon={ICONS['TAB_HISTORY']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper stringId="ACCOUNTS.TAB_HISTORY" iconId="TAB_HISTORY">
-								{STRINGS['ACCOUNTS.TAB_HISTORY']}
-							</EditWrapper>
-						</div>
-						<div
-							className={classnames(
-								'app-bar-account-menu-list d-flex',
-								!!securityPending
-									? {
-											'menu-notification-active':
-												activePath === 'account' && selectedMenu === 'security',
-											security_notification: selectedMenu !== 'security',
-									  }
-									: {
-											'menu-active':
-												activePath === 'account' && selectedMenu === 'security',
-									  }
-							)}
-							onClick={() => this.handleMenu('security')}
-						>
-							<div className="notification-content">
-								{!!securityPending && (
-									<div
-										className={
-											selectedMenu === 'security'
-												? 'app-bar-account-list-notification security_selected'
-												: 'app-bar-account-list-notification security_selected_inactive'
-										}
-									>
-										{securityPending}
-									</div>
-								)}
-							</div>
-							<Image
-								icon={ICONS['TAB_SECURITY']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper
-								stringId="ACCOUNTS.TAB_SECURITY"
-								iconId="TAB_SECURITY"
-							>
-								{STRINGS['ACCOUNTS.TAB_SECURITY']}
-							</EditWrapper>
-						</div>
-						<div
-							className={classnames(
-								'app-bar-account-menu-list d-flex',
-								!!verificationPending && !IS_XHT
-									? {
-											'menu-notification-active':
-												activePath === 'account' &&
-												selectedMenu === 'verification',
-											verification_notification:
-												selectedMenu !== 'verification',
-									  }
-									: {
-											'menu-active':
-												activePath === 'account' &&
-												selectedMenu === 'verification',
-									  }
-							)}
-							onClick={() => this.handleMenu('verification')}
-						>
-							<div className="notification-content">
-								{!!verificationPending && !IS_XHT && (
-									<div
-										className={
-											selectedMenu === 'verification'
-												? 'app-bar-account-list-notification verification_selected'
-												: 'app-bar-account-list-notification verification_selected_inactive'
-										}
-									>
-										{verificationPending}
-									</div>
-								)}
-							</div>
-							<Image
-								icon={ICONS['TAB_VERIFY']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper
-								stringId="ACCOUNTS.TAB_VERIFICATION"
-								iconId="TAB_VERIFY"
-							>
-								{STRINGS['ACCOUNTS.TAB_VERIFICATION']}
-							</EditWrapper>
-						</div>
-						<div
-							className={classnames('app-bar-account-menu-list d-flex', {
-								'menu-active':
-									activePath === 'account' && selectedMenu === 'settings',
-							})}
-							onClick={() => this.handleMenu('settings')}
-						>
-							<div className="notification-content" />
-							<Image
-								icon={ICONS['TAB_SETTING']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper
-								stringId="ACCOUNTS.TAB_SETTINGS"
-								iconId="TAB_SETTING"
-							>
-								{STRINGS['ACCOUNTS.TAB_SETTINGS']}
-							</EditWrapper>
-						</div>
-
-						{
-							/*Dynamic menu items*/
-							remoteRoutes.map(
-								({ path, icon_id, string_id, hide_from_menulist }) => {
-									return (
-										!hide_from_menulist && (
-											<div
-												className={classnames(
-													'app-bar-account-menu-list d-flex',
-													{
-														'menu-active':
-															location &&
-															location.pathname &&
-															location.pathname === path,
-													}
-												)}
-												onClick={() => this.handleMenu(path)}
-											>
-												<div className="notification-content" />
-												<Image
-													icon={ICONS[icon_id]}
-													wrapperClassName="app-bar-account-list-icon"
-												/>
-												<EditWrapper stringId={string_id} iconId={icon_id}>
-													{STRINGS[string_id] || 'Unnamed page'}
-												</EditWrapper>
-											</div>
-										)
-									);
-								}
-							)
-						}
-
-						<div
-							className={classnames('app-bar-account-menu-list d-flex', {
-								'menu-active':
-									activePath === 'account' && selectedMenu === 'help',
-							})}
-							onClick={this.onHelp}
-						>
-							<div className="notification-content" />
-							<Image
-								icon={ICONS['SIDEBAR_HELP']}
-								wrapperClassName="app-bar-account-list-icon"
-							/>
-							<EditWrapper stringId="LOGIN.HELP" iconId="SIDEBAR_HELP">
-								{STRINGS['LOGIN.HELP']}
-							</EditWrapper>
-						</div>
-
-						<div className="app-bar-account-menu-list d-flex">
-							<div className="d-flex" onClick={this.logout}>
-								<div className="notification-content" />
-								<Image
-									icon={ICONS['TAB_SIGNOUT']}
-									wrapperClassName="app-bar-account-list-icon"
-								/>
-								{STRINGS['ACCOUNTS.TAB_SIGNOUT']}
-							</div>
-							<EditWrapper
-								stringId="ACCOUNTS.TAB_SIGNOUT"
-								iconId="TAB_SIGNOUT"
-							/>
-						</div>
 					</div>
 				)}
 			</div>
@@ -395,10 +178,30 @@ class MenuList extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({
+	app: { constants = {}, remoteRoutes = [], pairs = {}, pair },
+}) => {
+	const { features = {} } = constants;
+	const featureItems = MENU_ITEMS.features.map(({ id, ...rest }) => {
+		const item = {
+			...rest,
+			hide_from_menulist: !features[id],
+		};
+		return item;
+	});
+	const menuItems = [
+		...MENU_ITEMS.top,
+		...featureItems,
+		...MENU_ITEMS.middle,
+		...remoteRoutes,
+		...MENU_ITEMS.bottom,
+	];
+
 	return {
-		constants: state.app.constants,
-		remoteRoutes: state.app.remoteRoutes,
+		constants,
+		menuItems,
+		pairs,
+		pair,
 	};
 };
 
