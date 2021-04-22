@@ -2202,6 +2202,9 @@ class HollaExNetwork {
 		}
 	}
 
+	/**
+	 * Disconnect from Network websocket
+	 */
 	disconnect() {
 		checkKit(this.exchange_id);
 		if (this.wsConnected()) {
@@ -2212,6 +2215,10 @@ class HollaExNetwork {
 		}
 	}
 
+	/**
+	 * Subscribe to Network websocket events
+	 * @param {array} events - The events to listen to
+	 */
 	subscribe(events = []) {
 		checkKit(this.exchange_id);
 		if (this.wsConnected()) {
@@ -2226,6 +2233,10 @@ class HollaExNetwork {
 		}
 	}
 
+	/**
+	 * Unsubscribe to Network websocket events
+	 * @param {array} events - The events to unsub from
+	 */
 	unsubscribe(events = []) {
 		checkKit(this.exchange_id);
 		if (this.wsConnected()) {

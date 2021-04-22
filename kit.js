@@ -774,7 +774,7 @@ class HollaExKit {
 
 	/**
 	 * Subscribe to hollaEx websocket events
-	 * @param {array} event - The events to listen to
+	 * @param {array} events - The events to listen to
 	 */
 	subscribe(events = []) {
 		if (this.wsConnected()) {
@@ -836,7 +836,7 @@ class HollaExKit {
 
 	/**
 	 * Unsubscribe to hollaEx websocket events
-	 * @param {array} event - The events to unsub from
+	 * @param {array} events - The events to unsub from
 	 */
 	unsubscribe(events = []) {
 		if (this.wsConnected()) {
