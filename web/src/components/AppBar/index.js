@@ -16,6 +16,7 @@ import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
+import STRINGS from 'config/localizedStrings';
 
 class AppBar extends Component {
 	state = {
@@ -221,6 +222,12 @@ class AppBar extends Component {
 							options={themeOptions}
 							toggle={this.onToggle}
 						/>
+						<div
+							className="login-container"
+							onClick={() => router.push('/login')}
+						>
+							{STRINGS['SIGN_IN'].toUpperCase()}
+						</div>
 					</div>
 				)}
 				{isLoggedIn() && (

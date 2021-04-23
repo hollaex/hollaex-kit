@@ -339,8 +339,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.no_bottom_navigation {
@@ -353,8 +353,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -2338,7 +2338,7 @@ table th {
       width: 3rem; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-spread {
     flex: 0;
-    min-height: 6rem;
+    min-height: 4rem;
     color: var(--labels_secondary-inactive-label-text-graphics);
     padding: 0 0.25rem; }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-spread .trade_orderbook-spread-text {
@@ -2581,8 +2581,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw;
@@ -2729,7 +2729,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5008,6 +5008,12 @@ table th {
       font-size: 0.8rem;
       line-height: 1;
       font-weight: bold; }
+  .app_bar .login-container {
+    background-color: var(--specials_buttons-links-and-highlights);
+    padding: 2px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px; }
 
 .select-option-wrapper .ant-select-item,
 .select-option-wrapper .ant-select-item-option {
@@ -5201,6 +5207,9 @@ table th {
   .market-bar .selector-trigger .app_bar-pair-tab {
     min-width: 17rem;
     max-width: 17rem; }
+  .market-bar .selector-trigger:hover {
+    background-color: var(--base_secondary-navigation-bar);
+    border-radius: 0.2rem; }
   .market-bar .app_bar-currency-txt {
     font-weight: 600; }
   .market-bar .app-price-diff-down {
@@ -6085,7 +6094,7 @@ table th {
         font-weight: bold; }
   .sidebar_hub-wrapper .sign_up-btn,
   .sidebar_hub-wrapper .log_in-btn {
-    background: var(--base_background) !important;
+    background: var(--specials_buttons-links-and-highlights) !important;
     color: var(--labels_important-active-labels-text-graphics) !important;
     border: 1px solid var(--calculated_super-pale_label-text-graphics); }
   .sidebar_hub-wrapper .sidebar_hub-trade .sidebar_hub-button.not-active {
@@ -6957,14 +6966,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -9096,7 +9105,8 @@ foreignObject {
   .chat-wrapper .chat-footer {
     min-height: 3rem;
     width: 100%;
-    padding: 0; }
+    padding: 0;
+    background-color: var(--base_secondary-navigation-bar); }
     .chat-wrapper .chat-footer button {
       width: 100%; }
     .chat-wrapper .chat-footer .chat-message-box {
