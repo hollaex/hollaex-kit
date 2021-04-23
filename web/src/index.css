@@ -2250,6 +2250,10 @@ table th {
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper .underline-text {
       font-size: 11px; }
 
+.trade_order_entry-wrapper .post-only-txt {
+  font-size: 1rem;
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
 .risky-trade-wrapper {
   width: 32rem; }
   .risky-trade-wrapper .icon_title-wrapper .icon_title-svg {
@@ -5457,6 +5461,9 @@ table th {
     font-size: 0.9rem;
     overflow-y: scroll;
     padding: 0.3rem 0; }
+    .app-bar-add-tab-menu .app-bar-add-tab-content .scroll-view {
+      overflow-y: auto;
+      height: 22rem; }
   .app-bar-add-tab-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);

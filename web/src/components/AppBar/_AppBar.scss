@@ -994,6 +994,10 @@ $app-menu-notification-size: 1.2rem;
 		font-size: 0.9rem;
 		overflow-y: scroll;
 		padding: 0.3rem 0;
+		.scroll-view {
+			overflow-y: auto;
+			height: 22rem;
+		}
 	}
 
 	.app-bar-tab-overflow-content {
