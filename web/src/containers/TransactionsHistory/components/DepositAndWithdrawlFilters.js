@@ -53,7 +53,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 							width: 100,
 						}}
 						size="small"
-						className="custom-select-input-style no-border elevated"
+						className="custom-select-input-style elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
@@ -80,7 +80,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 							width: 100,
 						}}
 						size="small"
-						className="custom-select-input-style no-border elevated"
+						className="custom-select-input-style elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
