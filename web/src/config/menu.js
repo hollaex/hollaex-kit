@@ -13,18 +13,14 @@ export const MENU_ITEMS = {
 			path: '/trade/add/tabs',
 			icon_id: 'SIDEBAR_TRADING_ACTIVE',
 			string_id: 'PRO_TRADE',
-			hide_from_menulist: true,
 			hide_from_sidebar: true,
-			hide_from_appbar: true,
 		},
 		{
 			id: 'quick_trade',
 			path: 'quick-trade',
 			icon_id: 'QUICK_TRADE_TAB_ACTIVE',
 			string_id: 'QUICK_TRADE',
-			hide_from_menulist: true,
 			hide_from_sidebar: true,
-			hide_from_appbar: true,
 		},
 	],
 	middle: [
@@ -63,11 +59,13 @@ export const MENU_ITEMS = {
 			path: 'help',
 			icon_id: 'SIDEBAR_HELP',
 			string_id: 'LOGIN.HELP',
+			hide_from_appbar: true,
 		},
 		{
 			path: 'logout',
 			icon_id: 'TAB_SIGNOUT',
 			string_id: 'ACCOUNTS.TAB_SIGNOUT',
+			hide_from_appbar: true,
 		},
 	],
 };
