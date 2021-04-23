@@ -14,30 +14,54 @@ class AppMenuSidebar extends Component {
 	}
 
 	componentDidMount() {
-		const { location } = this.props;
-		const activePath = location && location.pathname ? location.pathname : '';
-		this.setState({ activePath });
+		this.setActivePath();
 	}
 
 	componentDidUpdate(prevProps) {
 		if (
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
-			const { location } = this.props;
-			const activePath = location && location.pathname ? location.pathname : '';
-			this.setState({ activePath });
+			this.setActivePath();
 		}
 	}
 
-	handleMenuChange = (path = '') => {
-		if (path === 'logout') {
-			this.props.logout();
-		} else if (path === 'help') {
-			this.props.onHelp();
+	setActivePath = () => {
+		const { location: { pathname = '' } = {} } = this.props;
+
+		let activePath;
+		if (pathname.includes('quick-trade')) {
+			activePath = 'quick-trade';
 		} else {
-			this.props.router.push(path);
+			activePath = pathname;
 		}
-		this.setState({ activePath: path });
+		this.setState({ activePath });
+	};
+
+	handleMenuChange = (path = '') => {
+		const { router, pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
+		switch (path) {
+			case 'logout':
+				this.props.logout();
+				break;
+			case 'help':
+				this.props.onHelp();
+				break;
+			case 'quick-trade':
+				router.push(`/quick-trade/${pair}`);
+				break;
+			default:
+				router.push(path);
+		}
+
+		this.setState({ isOpen: false, activePath: path });
 	};
 
 	render() {
@@ -76,7 +100,7 @@ class AppMenuSidebar extends Component {
 	}
 }
 
-const mapStateToProps = ({ app: { remoteRoutes = [] } }) => {
+const mapStateToProps = ({ app: { remoteRoutes = [], pairs = {}, pair } }) => {
 	const menuItems = [
 		...MENU_ITEMS.top,
 		...MENU_ITEMS.middle,
@@ -85,6 +109,8 @@ const mapStateToProps = ({ app: { remoteRoutes = [] } }) => {
 	];
 	return {
 		menuItems,
+		pairs,
+		pair,
 	};
 };
 
