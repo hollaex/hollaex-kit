@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import withConfig from 'components/ConfigProvider/withConfig';
-import { MENU_ITEMS } from 'config/menu';
 import AppMenuBarItem from './AppMenuBarItem';
 
 class AppMenuBar extends Component {
@@ -37,27 +36,8 @@ class AppMenuBar extends Component {
 	}
 }
 
-const mapStateToProps = ({
-	user,
-	app: { pair, pairs, constants = {}, language: activeLanguage },
-}) => {
-	const { features = {} } = constants;
-	const featureItems = MENU_ITEMS.features.map(({ id, ...rest }) => {
-		const item = {
-			...rest,
-			hide_from_appbar: !features[id],
-		};
-		return item;
-	});
-
-	const menuItems = [...MENU_ITEMS.top, ...featureItems, ...MENU_ITEMS.middle];
-
+const mapStateToProps = ({ app: { language: activeLanguage } }) => {
 	return {
-		menuItems,
-		user,
-		pair,
-		pairs,
-		constants,
 		activeLanguage,
 	};
 };

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Image from 'components/Image';
 import classnames from 'classnames';
 
 import { IS_XHT } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { MENU_ITEMS } from 'config/menu';
 import MenuListItem from './MenuListItem';
 
 class MenuList extends Component {
@@ -143,31 +141,4 @@ class MenuList extends Component {
 	}
 }
 
-const mapStateToProps = ({
-	app: { constants = {}, remoteRoutes = [], pairs = {}, pair },
-}) => {
-	const { features = {} } = constants;
-	const featureItems = MENU_ITEMS.features.map(({ id, ...rest }) => {
-		const item = {
-			...rest,
-			hide_from_menulist: !features[id],
-		};
-		return item;
-	});
-	const menuItems = [
-		...MENU_ITEMS.top,
-		...featureItems,
-		...MENU_ITEMS.middle,
-		...remoteRoutes,
-		...MENU_ITEMS.bottom,
-	];
-
-	return {
-		constants,
-		menuItems,
-		pairs,
-		pair,
-	};
-};
-
-export default connect(mapStateToProps)(withConfig(MenuList));
+export default withConfig(MenuList);

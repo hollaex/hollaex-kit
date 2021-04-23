@@ -176,6 +176,7 @@ class AppBar extends Component {
 			children,
 			activePath,
 			onMenuChange,
+			menuItems,
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
@@ -235,6 +236,7 @@ class AppBar extends Component {
 						</div>
 						<AnnouncementList user={user.email} />
 						<MenuList
+							menuItems={menuItems}
 							securityPending={securityPending}
 							verificationPending={verificationPending}
 							walletPending={walletPending}

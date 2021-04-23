@@ -532,6 +532,7 @@ class App extends Component {
 			isReady: isSocketDataReady,
 			pairsTradesFetched,
 			icons: ICONS,
+			menuItems,
 		} = this.props;
 
 		const {
@@ -624,11 +625,13 @@ class App extends Component {
 							<div className="d-flex flex-column f-1">
 								{!isHome && (
 									<AppBar
+										menuItems={menuItems}
 										activePath={this.state.activeMenu}
 										onMenuChange={this.handleMenuChange}
 									>
 										{isBrowser && isMenubar && isLoggedIn() && (
 											<AppMenuBar
+												menuItems={menuItems}
 												activePath={this.state.activeMenu}
 												onMenuChange={this.handleMenuChange}
 											/>
@@ -655,6 +658,7 @@ class App extends Component {
 								>
 									{isMenuSider && (
 										<AppMenuSidebar
+											menuItems={menuItems}
 											activePath={this.state.activeMenu}
 											onMenuChange={this.handleMenuChange}
 										/>
