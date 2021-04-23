@@ -139,6 +139,10 @@ class Verification extends Component {
 		if (enabledPlugins.includes('kyc')) {
 			currentTabs = [...currentTabs, 'document'];
 		}
+		const sortingArray = ['email', 'sms', 'kyc', 'document', 'bank'];
+		currentTabs.sort(
+			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
+		);
 		let activeTab = 0;
 		if (!email && currentTabs.indexOf('email') !== -1) {
 			activeTab = currentTabs.indexOf('email');

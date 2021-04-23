@@ -270,6 +270,15 @@ const SMS = {
 		`お客様の${amount} ${currency.toUpperCase()}出金が完了しました。`
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -290,5 +299,6 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	DISCOUNTUPDATE
 };

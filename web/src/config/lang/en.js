@@ -20,7 +20,7 @@ const nestedContent = {
 	HOUR_FORMAT: 'HH:mm:ss',
 	LOGIN_TEXT: 'Login',
 	SIGN_IN: 'Sign In',
-	SIGNUP_TEXT: 'Sign Up',
+	SIGNUP_TEXT: 'Sign up',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
 	HOME_TEXT: 'Home',
@@ -1441,9 +1441,9 @@ const nestedContent = {
 	AMOUNT_IN: 'Amount in',
 	LIMITS_BLOCK: {
 		HEADER_ROW_DESCRIPTION:
-			'Deposit and withdrawal allowance for all assets ({0})',
+			'24h Deposit and withdrawal allowance for all assets ({0})',
 		HEADER_ROW_TYPE: 'Type (All assets)',
-		HEADER_ROW_AMOUNT: 'Amount ({0})',
+		HEADER_ROW_AMOUNT: '24h Amount ({0})',
 	},
 	MARKETS_TABLE: {
 		TITLE: 'Live markets',

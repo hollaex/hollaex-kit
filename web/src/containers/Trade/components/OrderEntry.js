@@ -254,6 +254,21 @@ class OrderEntry extends Component {
 			order.price = formatNumber(values.price, getDecimals(increment_price));
 		}
 
+		if (values.order_type === 'stops') {
+			order.stop = formatNumber(values.stop, getDecimals(increment_price));
+		} else {
+			delete order.stop;
+		}
+
+		if (values.post_only) {
+			order.meta = {
+				post_only: values.post_only,
+			};
+		}
+
+		delete order.post_only;
+		delete order.order_type;
+
 		return this.props.submitOrder(order).then(() => {
 			if (
 				values.type === 'market' &&
@@ -485,7 +500,7 @@ class OrderEntry extends Component {
 			},
 			postOnly: {
 				name: 'post_only',
-				label: <span className="px-1">{STRINGS['POST_ONLY']}</span>,
+				label: <span className="px-1 post-only-txt">{STRINGS['POST_ONLY']}</span>,
 				type: 'checkbox',
 				className: 'align-start my-0',
 			},

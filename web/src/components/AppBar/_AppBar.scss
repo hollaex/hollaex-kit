@@ -485,6 +485,13 @@ $app-menu-notification-size: 1.2rem;
 			font-weight: bold;
 		}
 	}
+	.login-container {
+		background-color: $link;
+		padding: 2px 20px;
+		border-radius: 3px;
+		cursor: pointer;
+		font-size: 11px;
+	}
 }
 
 .select-option-wrapper {
@@ -738,6 +745,10 @@ $app-menu-notification-size: 1.2rem;
 			min-width: 17rem;
 			max-width: 17rem;
 		}
+		&:hover {
+			background-color: $app-light-background;
+			border-radius: 0.2rem;
+		}
 	}
 
 	.app_bar-currency-txt {
@@ -983,6 +994,10 @@ $app-menu-notification-size: 1.2rem;
 		font-size: 0.9rem;
 		overflow-y: scroll;
 		padding: 0.3rem 0;
+		.scroll-view {
+			overflow-y: auto;
+			height: 22rem;
+		}
 	}
 
 	.app-bar-tab-overflow-content {

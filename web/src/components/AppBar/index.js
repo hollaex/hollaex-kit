@@ -16,6 +16,7 @@ import { EditWrapper } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
+import STRINGS from 'config/localizedStrings';
 
 class AppBar extends Component {
 	state = {
@@ -171,13 +172,12 @@ class AppBar extends Component {
 
 	render() {
 		const {
-			logout,
-			location,
-			onHelp,
 			user,
 			constants = {},
 			children,
-			router,
+			activePath,
+			onMenuChange,
+			menuItems,
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
@@ -221,6 +221,12 @@ class AppBar extends Component {
 							options={themeOptions}
 							toggle={this.onToggle}
 						/>
+						<div
+							className="login-container"
+							onClick={() => router.push('/login')}
+						>
+							{STRINGS['SIGN_IN'].toUpperCase()}
+						</div>
 					</div>
 				)}
 				{isLoggedIn() && (
@@ -237,14 +243,13 @@ class AppBar extends Component {
 						</div>
 						<AnnouncementList user={user.email} />
 						<MenuList
+							menuItems={menuItems}
 							securityPending={securityPending}
 							verificationPending={verificationPending}
 							walletPending={walletPending}
-							logout={logout}
-							onHelp={onHelp}
-							location={location}
 							user={user}
-							router={router}
+							activePath={activePath}
+							onMenuChange={onMenuChange}
 						/>
 					</div>
 				)}
