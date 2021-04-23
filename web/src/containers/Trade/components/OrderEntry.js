@@ -254,6 +254,21 @@ class OrderEntry extends Component {
 			order.price = formatNumber(values.price, getDecimals(increment_price));
 		}
 
+		if (values.order_type === 'stops') {
+			order.stop = formatNumber(values.stop, getDecimals(increment_price));
+		} else {
+			delete order.stop;
+		}
+
+		if (values.post_only) {
+			order.meta = {
+				post_only: values.post_only,
+			};
+		}
+
+		delete order.post_only;
+		delete order.order_type;
+
 		return this.props.submitOrder(order).then(() => {
 			if (
 				values.type === 'market' &&
