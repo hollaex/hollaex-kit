@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
-import { MENU_ITEMS } from 'config/menu';
+import { menuItemsSelector } from './selector';
 
 import {
 	setUserOrders,
@@ -43,64 +43,33 @@ import {
 
 import { setPricesAndAsset } from 'actions/assetActions';
 
-const mapStateToProps = (store) => {
-	const {
-		app: { constants: { features = {} } = {}, remoteRoutes = [] },
-	} = store;
-	const featureItems = MENU_ITEMS.features.map(
-		({
-			id,
-			hide_from_appbar,
-			hide_from_sidebar,
-			hide_from_menulist,
-			...rest
-		}) => {
-			const item = {
-				...rest,
-				hide_from_appbar: hide_from_appbar || !features[id],
-				hide_from_sidebar: hide_from_sidebar || !features[id],
-				hide_from_menulist: hide_from_menulist || !features[id],
-			};
-			return item;
-		}
-	);
-
-	const menuItems = [
-		...MENU_ITEMS.top,
-		...featureItems,
-		...MENU_ITEMS.middle,
-		...remoteRoutes,
-		...MENU_ITEMS.bottom,
-	];
-
-	return {
-		menuItems,
-		isReady: store.app.isReady,
-		coins: store.app.coins,
-		symbol: store.orderbook.symbol,
-		prices: store.orderbook.prices,
-		balance: store.user.balance,
-		totalAsset: store.asset.totalAsset,
-		oraclePrices: store.asset.oraclePrices,
-		chartData: store.asset.chartData,
-		activeNotification: store.app.activeNotification,
-		// verification_level: store.user.verification_level,
-		activeLanguage: store.app.language,
-		activeTheme: store.app.theme,
-		// user: store.user,
-		pair: store.app.pair,
-		pairs: store.app.pairs,
-		unreadMessages: store.app.chatUnreadMessages,
-		constants: store.app.constants,
-		info: store.app.info,
-		enabledPlugins: store.app.enabledPlugins,
-		features: store.app.features,
-		config_level: store.app.config_level,
-		pairsTradesFetched: store.orderbook.pairsTradesFetched,
-		injected_values: store.app.injected_values,
-		injected_html: store.app.injected_html,
-	};
-};
+const mapStateToProps = (store) => ({
+	menuItems: menuItemsSelector(store),
+	isReady: store.app.isReady,
+	coins: store.app.coins,
+	symbol: store.orderbook.symbol,
+	prices: store.orderbook.prices,
+	balance: store.user.balance,
+	totalAsset: store.asset.totalAsset,
+	oraclePrices: store.asset.oraclePrices,
+	chartData: store.asset.chartData,
+	activeNotification: store.app.activeNotification,
+	// verification_level: store.user.verification_level,
+	activeLanguage: store.app.language,
+	activeTheme: store.app.theme,
+	// user: store.user,
+	pair: store.app.pair,
+	pairs: store.app.pairs,
+	unreadMessages: store.app.chatUnreadMessages,
+	constants: store.app.constants,
+	info: store.app.info,
+	enabledPlugins: store.app.enabledPlugins,
+	features: store.app.features,
+	config_level: store.app.config_level,
+	pairsTradesFetched: store.orderbook.pairsTradesFetched,
+	injected_values: store.app.injected_values,
+	injected_html: store.app.injected_html,
+});
 
 const mapDispatchToProps = (dispatch) => ({
 	logout: bindActionCreators(logout, dispatch),
