@@ -962,9 +962,22 @@ const updateUserDiscount = (userId, discount) => {
 			} else if (user.discount === discount) {
 				throw new Error(`User discount is already ${discount}`);
 			}
-			return user.update({ discount }, { fields: ['discount'] });
+			return all([
+				user.discount,
+				user.update({ discount }, { fields: ['discount'] })
+			]);
 		})
-		.then((user) => {
+		.then(([ previousDiscountRate, user ]) => {
+			if (user.discount > previousDiscountRate) {
+				sendEmail(
+					MAILTYPE.DISCOUNT_UPDATE,
+					user.email,
+					{
+						rate: user.discount
+					},
+					user.settings
+				);
+			}
 			return pick(user.dataValues, ['id', 'discount']);
 		});
 };
