@@ -1,45 +1,21 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Image from 'components/Image';
 import classnames from 'classnames';
 
 import { IS_XHT } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { MENU_ITEMS } from 'config/menu';
 import MenuListItem from './MenuListItem';
 
 class MenuList extends Component {
 	state = {
 		isOpen: false,
-		activePath: '',
 	};
 
 	element = null;
 
 	componentDidMount() {
 		document.addEventListener('click', this.onOutsideClick);
-		this.setActivePath();
 	}
-
-	componentDidUpdate(prevProps) {
-		if (
-			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
-		) {
-			this.setActivePath();
-		}
-	}
-
-	setActivePath = () => {
-		const { location: { pathname = '' } = {} } = this.props;
-
-		let activePath;
-		if (pathname.includes('quick-trade')) {
-			activePath = 'quick-trade';
-		} else {
-			activePath = pathname;
-		}
-		this.setState({ activePath });
-	};
 
 	onOutsideClick = (event) => {
 		if (
@@ -61,33 +37,6 @@ class MenuList extends Component {
 	componentWillUnmount() {
 		document.removeEventListener('click', this.onOutsideClick);
 	}
-
-	handleMenuChange = (path = '') => {
-		const { router, pairs } = this.props;
-
-		let pair = '';
-		if (Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
-		} else {
-			pair = this.props.pair;
-		}
-
-		switch (path) {
-			case 'logout':
-				this.props.logout();
-				break;
-			case 'help':
-				this.props.onHelp();
-				break;
-			case 'quick-trade':
-				router.push(`/quick-trade/${pair}`);
-				break;
-			default:
-				router.push(path);
-		}
-
-		this.setState({ isOpen: false, activePath: path });
-	};
 
 	getNotifications = (path = '') => {
 		const { verificationPending, securityPending, walletPending } = this.props;
@@ -122,8 +71,10 @@ class MenuList extends Component {
 			icons: ICONS,
 			user,
 			menuItems,
+			activePath,
+			onMenuChange,
 		} = this.props;
-		const { isOpen, activePath } = this.state;
+		const { isOpen } = this.state;
 		const totalPending = IS_XHT
 			? securityPending + walletPending
 			: securityPending + verificationPending;
@@ -171,7 +122,11 @@ class MenuList extends Component {
 													? activePaths.includes(activePath)
 													: path === activePath
 											}
-											onClick={() => this.handleMenuChange(path)}
+											onClick={() =>
+												onMenuChange(path, () =>
+													this.setState({ isOpen: false })
+												)
+											}
 											notifications={notifications}
 											showNotification={showNotification}
 										/>
@@ -186,31 +141,4 @@ class MenuList extends Component {
 	}
 }
 
-const mapStateToProps = ({
-	app: { constants = {}, remoteRoutes = [], pairs = {}, pair },
-}) => {
-	const { features = {} } = constants;
-	const featureItems = MENU_ITEMS.features.map(({ id, ...rest }) => {
-		const item = {
-			...rest,
-			hide_from_menulist: !features[id],
-		};
-		return item;
-	});
-	const menuItems = [
-		...MENU_ITEMS.top,
-		...featureItems,
-		...MENU_ITEMS.middle,
-		...remoteRoutes,
-		...MENU_ITEMS.bottom,
-	];
-
-	return {
-		constants,
-		menuItems,
-		pairs,
-		pair,
-	};
-};
-
-export default connect(mapStateToProps)(withConfig(MenuList));
+export default withConfig(MenuList);
