@@ -6,64 +6,8 @@ import { MENU_ITEMS } from 'config/menu';
 import AppMenuBarItem from './AppMenuBarItem';
 
 class AppMenuBar extends Component {
-	state = {
-		activePath: '',
-	};
-
-	componentDidMount() {
-		this.setActivePath();
-	}
-
-	componentDidUpdate(prevProps) {
-		if (
-			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
-		) {
-			this.setActivePath();
-		}
-	}
-
-	setActivePath = () => {
-		const { location: { pathname = '' } = {} } = this.props;
-
-		let activePath;
-		if (pathname.includes('quick-trade')) {
-			activePath = 'quick-trade';
-		} else {
-			activePath = pathname;
-		}
-		this.setState({ activePath });
-	};
-
-	handleMenuChange = (path = '') => {
-		const { router, pairs } = this.props;
-
-		let pair = '';
-		if (Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
-		} else {
-			pair = this.props.pair;
-		}
-
-		switch (path) {
-			case 'logout':
-				this.props.logout();
-				break;
-			case 'help':
-				this.props.onHelp();
-				break;
-			case 'quick-trade':
-				router.push(`/quick-trade/${pair}`);
-				break;
-			default:
-				router.push(path);
-		}
-
-		this.setState({ isOpen: false, activePath: path });
-	};
-
 	render() {
-		const { menuItems } = this.props;
-		const { activePath } = this.state;
+		const { menuItems, activePath, onMenuChange } = this.props;
 
 		return (
 			<div className="app-menu-bar-wrapper d-flex justify-content-start">
@@ -81,7 +25,7 @@ class AppMenuBar extends Component {
 												? activePaths.includes(activePath)
 												: path === activePath
 										}
-										onClick={() => this.handleMenuChange(path)}
+										onClick={() => onMenuChange(path)}
 									/>
 								)
 							);

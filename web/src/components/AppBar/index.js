@@ -171,13 +171,11 @@ class AppBar extends Component {
 
 	render() {
 		const {
-			logout,
-			location,
-			onHelp,
 			user,
 			constants = {},
 			children,
-			router,
+			activePath,
+			onMenuChange,
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
@@ -240,11 +238,9 @@ class AppBar extends Component {
 							securityPending={securityPending}
 							verificationPending={verificationPending}
 							walletPending={walletPending}
-							logout={logout}
-							onHelp={onHelp}
-							location={location}
 							user={user}
-							router={router}
+							activePath={activePath}
+							onMenuChange={onMenuChange}
 						/>
 					</div>
 				)}

@@ -11,35 +11,13 @@ import MenuListItem from './MenuListItem';
 class MenuList extends Component {
 	state = {
 		isOpen: false,
-		activePath: '',
 	};
 
 	element = null;
 
 	componentDidMount() {
 		document.addEventListener('click', this.onOutsideClick);
-		this.setActivePath();
 	}
-
-	componentDidUpdate(prevProps) {
-		if (
-			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
-		) {
-			this.setActivePath();
-		}
-	}
-
-	setActivePath = () => {
-		const { location: { pathname = '' } = {} } = this.props;
-
-		let activePath;
-		if (pathname.includes('quick-trade')) {
-			activePath = 'quick-trade';
-		} else {
-			activePath = pathname;
-		}
-		this.setState({ activePath });
-	};
 
 	onOutsideClick = (event) => {
 		if (
@@ -61,33 +39,6 @@ class MenuList extends Component {
 	componentWillUnmount() {
 		document.removeEventListener('click', this.onOutsideClick);
 	}
-
-	handleMenuChange = (path = '') => {
-		const { router, pairs } = this.props;
-
-		let pair = '';
-		if (Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
-		} else {
-			pair = this.props.pair;
-		}
-
-		switch (path) {
-			case 'logout':
-				this.props.logout();
-				break;
-			case 'help':
-				this.props.onHelp();
-				break;
-			case 'quick-trade':
-				router.push(`/quick-trade/${pair}`);
-				break;
-			default:
-				router.push(path);
-		}
-
-		this.setState({ isOpen: false, activePath: path });
-	};
 
 	getNotifications = (path = '') => {
 		const { verificationPending, securityPending, walletPending } = this.props;
@@ -122,8 +73,10 @@ class MenuList extends Component {
 			icons: ICONS,
 			user,
 			menuItems,
+			activePath,
+			onMenuChange,
 		} = this.props;
-		const { isOpen, activePath } = this.state;
+		const { isOpen } = this.state;
 		const totalPending = IS_XHT
 			? securityPending + walletPending
 			: securityPending + verificationPending;
@@ -171,7 +124,11 @@ class MenuList extends Component {
 													? activePaths.includes(activePath)
 													: path === activePath
 											}
-											onClick={() => this.handleMenuChange(path)}
+											onClick={() =>
+												onMenuChange(path, () =>
+													this.setState({ isOpen: false })
+												)
+											}
 											notifications={notifications}
 											showNotification={showNotification}
 										/>

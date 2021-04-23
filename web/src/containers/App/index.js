@@ -57,6 +57,7 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	// user: store.user,
 	pair: store.app.pair,
+	pairs: store.app.pairs,
 	unreadMessages: store.app.chatUnreadMessages,
 	constants: store.app.constants,
 	info: store.app.info,

@@ -82,6 +82,7 @@ class App extends Component {
 		limitFilledOnOrder: '',
 		sidebarFitHeight: false,
 		isSidebarOpen: getSideBarState(),
+		activeMenu: '',
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -111,6 +112,8 @@ class App extends Component {
 			this.checkPath(this.props.location.pathname);
 			this.handleFitHeight(this.props.location.pathname);
 		}
+
+		this.setActiveMenu();
 
 		setTimeout(
 			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
@@ -167,6 +170,14 @@ class App extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps) {
+		if (
+			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
+		) {
+			this.setActiveMenu();
+		}
+	}
+
 	componentWillUnmount() {
 		if (this.state.publicSocket) {
 			this.state.publicSocket.close();
@@ -212,6 +223,49 @@ class App extends Component {
 			pathname = '/trade/add/tabs';
 		}
 		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
+	};
+
+	setActiveMenu = () => {
+		const { location: { pathname = '' } = {} } = this.props;
+
+		let activeMenu;
+		if (pathname.includes('quick-trade')) {
+			activeMenu = 'quick-trade';
+		} else {
+			activeMenu = pathname;
+		}
+		this.setState({ activeMenu });
+	};
+
+	handleMenuChange = (path = '', cb) => {
+		const { router, pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
+		switch (path) {
+			case 'logout':
+				this.logout();
+				break;
+			case 'help':
+				this.props.openHelpfulResourcesForm();
+				break;
+			case 'quick-trade':
+				router.push(`/quick-trade/${pair}`);
+				break;
+			default:
+				router.push(path);
+		}
+
+		this.setState({ activePath: path }, () => {
+			if (cb) {
+				cb();
+			}
+		});
 	};
 
 	goToPage = (path) => {
@@ -466,7 +520,6 @@ class App extends Component {
 			// verification_level,
 			activeLanguage,
 			// openContactForm,
-			openHelpfulResourcesForm,
 			activeTheme,
 			// unreadMessages,
 			router,
@@ -571,13 +624,14 @@ class App extends Component {
 							<div className="d-flex flex-column f-1">
 								{!isHome && (
 									<AppBar
-										router={router}
-										location={location}
-										logout={this.logout}
-										onHelp={openHelpfulResourcesForm}
+										activePath={this.state.activeMenu}
+										onMenuChange={this.handleMenuChange}
 									>
 										{isBrowser && isMenubar && isLoggedIn() && (
-											<AppMenuBar router={router} location={location} />
+											<AppMenuBar
+												activePath={this.state.activeMenu}
+												onMenuChange={this.handleMenuChange}
+											/>
 										)}
 									</AppBar>
 								)}
@@ -599,14 +653,12 @@ class App extends Component {
 										}
 									)}
 								>
-									{isMenuSider ? (
+									{isMenuSider && (
 										<AppMenuSidebar
-											router={router}
-											location={location}
-											logout={this.logout}
-											onHelp={openHelpfulResourcesForm}
+											activePath={this.state.activeMenu}
+											onMenuChange={this.handleMenuChange}
 										/>
-									) : null}
+									)}
 									<div
 										className={classnames(
 											'app_container-main',
