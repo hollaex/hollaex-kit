@@ -223,7 +223,7 @@ class AppBar extends Component {
 						/>
 						<div
 							className="login-container"
-							onClick={() => router.push('/login')}
+							onClick={() => this.props.router.push('/login')}
 						>
 							{STRINGS['SIGN_IN'].toUpperCase()}
 						</div>
