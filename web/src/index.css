@@ -7630,6 +7630,26 @@ table th {
     background-color: var(--coin-dai);
     border: none !important;
     color: var(--coin-dai-text) !important; }
+  .currency_ball-wrapper.ama {
+    background-color: var(--coin-ama);
+    border: none !important;
+    color: var(--coin-ama-text) !important; }
+  .currency_ball-wrapper.xtz {
+    background-color: var(--coin-xtz);
+    border: none !important;
+    color: var(--coin-xtz-text) !important; }
+  .currency_ball-wrapper.doge {
+    background-color: var(--coin-doge);
+    border: none !important;
+    color: var(--coin-doge-text) !important; }
+  .currency_ball-wrapper.uni {
+    background-color: var(--coin-uni);
+    border: none !important;
+    color: var(--coin-uni-text) !important; }
+  .currency_ball-wrapper.dot {
+    background-color: var(--coin-dot);
+    border: none !important;
+    color: var(--coin-dot-text) !important; }
   .currency_ball-wrapper.s {
     font-size: 0.6rem;
     width: 1.8rem;
