@@ -35,6 +35,11 @@ const nestedContent = {
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Feel free to contact us for more information and any issues by sending us an email',
+	HELP_RESOURCE_GUIDE: {
+		CONTACT_US: 'contact us',
+		TEXT:
+			'Feel free to {0} for more information and any issues by sending us an email',
+	},
 	HELP_TELEGRAM_TEXT: 'Check out open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help?', // new
