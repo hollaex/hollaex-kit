@@ -79,6 +79,12 @@ $close-button--margin: 1.5rem;
 	.ReactModal__Overlay {
 		z-index: 110 !important;
 	}
+
+	&.full {
+		.ReactModal__Overlay {
+			background-color: $app-sidebar-background !important;
+		}
+	}
 }
 
 .app-dialog-flex {
