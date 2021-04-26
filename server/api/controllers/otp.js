@@ -3,6 +3,7 @@
 const { INVALID_OTP_CODE } = require('../../messages');
 const { loggerOtp } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
+const { errorMessageConverter } = require('../../utils/conversion');
 
 const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
@@ -17,11 +18,11 @@ const requestOtp = (req, res) => {
 		})
 		.then((secret) => {
 			loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', secret);
-			res.json({ secret });
+			return res.json({ secret });
 		})
 		.catch((err) => {
 			loggerOtp.error(req.uuid, 'controllers/otp/requestOtp', err.message);
-			res.status(400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -52,11 +53,11 @@ const activateOtp = (req, res) => {
 				'controllers/otp/activateOtp',
 				user.dataValues
 			);
-			res.json({ message: 'OTP enabled' });
+			return res.json({ message: 'OTP enabled' });
 		})
 		.catch((err) => {
 			loggerOtp.error(req.uuid, 'controllers/otp/activateOtp', err.message);
-			res.status(400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -81,7 +82,7 @@ const deactivateOtp = (req, res) => {
 			return toolsLib.security.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
-			res.json({ message: 'OTP disabled' });
+			return res.json({ message: 'OTP disabled' });
 		})
 		.catch((err) => {
 			loggerOtp.error(
@@ -89,7 +90,7 @@ const deactivateOtp = (req, res) => {
 				'controllers/otp/deactivateOtp',
 				err.message
 			);
-			res.status(400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -111,7 +112,7 @@ const deactivateOtpAdmin = (req, res) => {
 				'controllers/otp/deactivateOtpAdmin',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 

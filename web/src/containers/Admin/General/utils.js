@@ -97,4 +97,11 @@ export const getGeneralFields = (coins) => ({
 			placeholder: 'https://bitholla.com/',
 		},
 	},
+	section_9: {
+		api_doc_link: {
+			type: 'input',
+			label: 'API doc link',
+			placeholder: 'http://',
+		},
+	},
 });

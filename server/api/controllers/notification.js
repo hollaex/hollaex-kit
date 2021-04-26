@@ -7,6 +7,7 @@ const { MAILTYPE } = require('../../mail/strings');
 const { publisher } = require('../../db/pubsub');
 const { INIT_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, EVENTS_CHANNEL } = require('../../constants');
 const moment = require('moment');
+const { errorMessageConverter } = require('../../utils/conversion');
 
 const applyKitChanges = (req, res) => {
 	const ip = req.headers ? req.headers['x-real-ip'] : undefined;
@@ -22,7 +23,7 @@ const applyKitChanges = (req, res) => {
 		})
 		.catch((err) => {
 			loggerNotification.verbose('controller/notification/applyKitChanges', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -99,7 +100,7 @@ const handleCurrencyDeposit = (req, res) => {
 				'controller/notification/handleCurrencyDeposit',
 				err.message
 			);
-			return res.status(400).json({ message: `Fail - ${err.message}` });
+			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err)}` });
 		});
 };
 
@@ -168,7 +169,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 				'controller/notification/handleCurrencyWithdrawal',
 				err.message
 			);
-			return res.status(400).json({ message: `Fail - ${err.message}` });
+			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err)}` });
 		});
 };
 

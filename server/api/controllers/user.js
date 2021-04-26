@@ -5,6 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { loggerUser } = require('../../config/logger');
+const { errorMessageConverter } = require('../../utils/conversion');
 const {
 	USER_VERIFIED,
 	PROVIDE_VALID_EMAIL_CODE,
@@ -135,12 +136,7 @@ const signUpUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
-			let status = err.status || 400;
-			let message = err.message;
-			if (err.name === 'SequelizeValidationError') {
-				message = err.errs[0].message;
-			}
-			return res.status(status).json({ message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -187,10 +183,13 @@ const getVerifyUser = (req, res) => {
 	promiseQuery
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getVerifyUser', err.message);
-			if (err.message === USER_NOT_FOUND) {
-				return res.json({ message: VERIFICATION_EMAIL_MESSAGE });
+			let errorMessage = errorMessageConverter(err);
+
+			if (errorMessage === USER_NOT_FOUND) {
+				errorMessage = VERIFICATION_EMAIL_MESSAGE;
 			}
-			return res.status(err.status || 400).json({ message: err.message });
+
+			return res.status(err.statusCode || 400).json({ message: errorMessage });
 		});
 };
 
@@ -237,7 +236,7 @@ const verifyUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/verifyUser', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -327,7 +326,7 @@ const loginPost = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);
-			return res.status(403).json({ message: err.message });
+			return res.status(err.statusCode || 403).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -347,11 +346,13 @@ const requestResetPassword = (req, res) => {
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
 		.catch((err) => {
-			if (err.message === USER_NOT_FOUND) {
-				return res.json({ message: `Password request sent to: ${email}` });
+			let errorMessage = errorMessageConverter(err);
+
+			if (errorMessage === USER_NOT_FOUND) {
+				errorMessage = `Password request sent to: ${email}`;
 			}
 			loggerUser.error(req.uuid, 'controllers/user/requestResetPassword', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessage });
 		});
 };
 
@@ -364,7 +365,7 @@ const resetPassword = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/resetPassword', err.message);
-			return res.status(err.status || 400).json({ message: 'Invalid code' });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -381,7 +382,7 @@ const getUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -399,7 +400,7 @@ const updateSettings = (req, res) => {
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -417,7 +418,7 @@ const changePassword = (req, res) => {
 		.then(() => res.json({ message: 'Success' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -431,7 +432,7 @@ const setUsername = (req, res) => {
 		.then(() => res.json({ message: 'Username successfully changed' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/setUsername', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -462,7 +463,7 @@ const getUserLogins = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -477,7 +478,7 @@ const affiliationCount = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -491,7 +492,7 @@ const getUserBalance = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -513,7 +514,7 @@ const deactivateUser = (req, res) => {
 				'controllers/user/deactivateUser',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -557,7 +558,7 @@ const createCryptoAddress = (req, res) => {
 				'controllers/user/createCryptoAddress',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -576,7 +577,7 @@ const getHmacToken = (req, res) => {
 				'controllers/user/getHmacToken err',
 				err.message
 			);
-			res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -601,7 +602,7 @@ const createHmacToken = (req, res) => {
 				'controllers/user/createHmacToken',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -625,7 +626,7 @@ const deleteHmacToken = (req, res) => {
 				'controllers/user/deleteHmacToken',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -643,7 +644,7 @@ const getUserStats = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error('controllers/user/getUserStats', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -668,7 +669,7 @@ const userCheckTransaction = (req, res) => {
 				'controllers/user/userCheckTransaction catch',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
