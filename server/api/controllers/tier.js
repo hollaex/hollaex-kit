@@ -2,13 +2,14 @@
 
 const toolsLib = require('hollaex-tools-lib');
 const { loggerTier } = require('../../config/logger');
+const { errorMessageConverter } = require('../../utils/conversion');
 
 const getTiers = (req, res) => {
 	try {
 		return res.json(toolsLib.getKitTiers());
 	} catch (err) {
 		loggerTier.error(req.uuid, 'controllers/tier/getTiers err', err.message);
-		return res.status(err.status || 400).json({ message: err.message });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
 };
 
@@ -26,7 +27,7 @@ const postTier = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTier.error(req.uuid, 'controllers/tier/postTier err', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -51,7 +52,7 @@ const putTier = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTier.error(req.uuid, 'controllers/tier/postTier err', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -85,7 +86,7 @@ const updatePairFees = (req, res) => {
 				'controllers/tier/updatePairFees err',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -118,7 +119,7 @@ const updateTiersLimits = (req, res) => {
 				'controllers/tier/updatePairLimits err',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
