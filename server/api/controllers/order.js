@@ -3,6 +3,7 @@
 const { loggerOrders } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { isPlainObject, isNumber } = require('lodash');
+const { errorMessageConverter } = require('../../utils/conversion');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -43,7 +44,7 @@ const createOrder = (req, res) => {
 				'controllers/order/createOrder error',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -63,7 +64,7 @@ const getUserOrder = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/getUserOrder error', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -83,7 +84,7 @@ const cancelUserOrder = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/cancelUserOrder error', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -110,7 +111,7 @@ const getAllUserOrders = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/getAllUserOrders error', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -125,7 +126,7 @@ const cancelAllUserOrders = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/cancelAllUserOrders error', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -170,7 +171,7 @@ const getAdminOrders = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.debug(req.uuid, 'controllers/order/getAdminOrders', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -190,7 +191,7 @@ const adminCancelOrder = (req, res) => {
 				'controllers/order/adminCancelOrder',
 				err.message
 			);
-			return res.status(400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 

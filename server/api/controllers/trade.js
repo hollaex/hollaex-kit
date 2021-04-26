@@ -2,6 +2,7 @@
 
 const { loggerTrades } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
+const { errorMessageConverter } = require('../../utils/conversion');
 
 const getUserTrades = (req, res) => {
 	loggerTrades.verbose(
@@ -31,7 +32,7 @@ const getUserTrades = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -60,7 +61,7 @@ const getAdminTrades = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTrades.error(req.uuid, 'controllers/trade/getAdminTrades', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
