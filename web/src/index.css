@@ -293,6 +293,15 @@ table th {
 .custom-select-input-style.order-entry.ant-select {
   width: 100% !important; }
 
+.custom-select-input-style.order-entry .ant-select-selector {
+  padding-left: 3px !important; }
+
+.custom-select-input-style.order-entry .ant-select-selection-item {
+  padding: 0 !important; }
+
+.custom-select-input-style.order-entry .ant-select-arrow {
+  right: 3px; }
+
 .custom-select-input-style .ant-select-arrow {
   z-index: -1; }
 

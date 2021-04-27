@@ -270,6 +270,15 @@ table th {
 		&.ant-select {
 			width: 100% !important;
 		}
+		.ant-select-selector {
+			padding-left: 3px !important;
+		}
+		.ant-select-selection-item {
+			padding: 0 !important;
+		}
+		.ant-select-arrow {
+			right: 3px;
+		}
 	}
 
 	.ant-select-arrow {
