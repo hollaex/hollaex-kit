@@ -221,6 +221,9 @@ table th {
 .align-start {
   align-items: flex-start; }
 
+.align-end {
+  align-items: flex-end; }
+
 .underline-text {
   text-decoration: underline !important; }
 
@@ -2285,9 +2288,6 @@ table th {
 .layout-mobile .exir-button {
   font-size: 13px !important; }
 
-.layout-mobile .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell {
-  font-size: 11px !important; }
-
 .layout-mobile .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
   font-size: 11px !important; }
 
@@ -2296,6 +2296,23 @@ table th {
 
 .trade_orderbook-wrapper {
   height: 49vh; }
+  .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell {
+    font-size: 1rem !important;
+    flex-direction: column; }
+    .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style {
+      font-size: 1rem !important;
+      max-width: 8rem; }
+      .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style .ant-select-selector {
+        height: 1.5rem !important;
+        line-height: 1.5rem !important;
+        padding: 0;
+        font-size: 1rem !important; }
+      .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style .ant-select-selection-item {
+        height: 1.5rem !important;
+        line-height: 1.5rem !important;
+        font-weight: bold; }
+      .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style .ant-select-arrow {
+        right: 2px; }
   .trade_orderbook-wrapper .trade_orderbook-cell {
     padding: 0 0.25rem; }
     .trade_orderbook-wrapper .trade_orderbook-cell .ant-select-arrow {
