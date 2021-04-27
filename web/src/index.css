@@ -8918,7 +8918,8 @@ foreignObject {
       right: 1.5rem;
       top: -0.5rem; }
   .layout-mobile .chat-wrapper .chat-footer {
-    padding: 0.5rem; }
+    padding: 0.5rem;
+    background-color: var(--labels_fields); }
     .layout-mobile .chat-wrapper .chat-footer .chat-message-box {
       min-height: 4rem;
       font-size: 1.5rem;
@@ -8928,9 +8929,9 @@ foreignObject {
       .layout-mobile .chat-wrapper .chat-footer .emoji-container .chat-category .emoji-close .cross-icon-back {
         width: 3rem; }
     .layout-mobile .chat-wrapper .chat-footer .chat-emoji-wrapper {
-      background-color: white; }
+      background-color: var(--labels_fields); }
       .layout-mobile .chat-wrapper .chat-footer .chat-emoji-wrapper .chat-emoji-icon svg .emoji-face-icon {
-        fill: #b6b4cc; }
+        fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .chat-wrapper {
   position: fixed;
