@@ -116,7 +116,7 @@
 			padding: 0;
 		}
 		.underline-text {
-			font-size: 11px ;
+			font-size: 11px;
 		}
 	}
 }
@@ -187,11 +187,6 @@
 		font-size: $font-size-mobile-txt !important;
 	}
 	.trade_orderbook-wrapper {
-		.trade_orderbook-headers {
-			.trade_orderbook-cell {
-				font-size: $font-size-mobile-innertxt !important;
-			}
-		}
 		.trade_asks-limit_bar {
 			.orderbook-limit_bar-wrapper {
 				.orderbook-limit_bar-text {

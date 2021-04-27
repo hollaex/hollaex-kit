@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { ActionNotification } from '../';
-import ICONS from 'config/icons';
+import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
 
 const renderPageCount = (currentPage, totalPages) => {
@@ -24,6 +24,7 @@ const Paginator = ({
 	currentPage,
 	count,
 	pageSize,
+	icons: ICONS,
 }) => {
 	const totalPages = Math.ceil(count / pageSize);
 	const previousIsDisabled = currentPage <= 1;
@@ -69,4 +70,4 @@ const Paginator = ({
 	);
 };
 
-export default Paginator;
+export default withConfig(Paginator);

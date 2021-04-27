@@ -214,3 +214,25 @@ $order_entry-column--width-lg: 20rem;
 	min-height: $market-selector--height;
 	max-height: $market-selector--height;
 }
+
+.public-history__header {
+	font-size: $font-size-subtext !important;
+	.custom-select-input-style {
+		font-size: 1rem !important;
+		max-width: 8rem;
+		.ant-select-selector {
+			height: 1.5rem !important;
+			line-height: 1.5rem !important;
+			padding: 0;
+			font-size: $font-size-subtext !important;
+		}
+		.ant-select-selection-item {
+			height: 1.5rem !important;
+			line-height: 1.5rem !important;
+			font-weight: bold;
+		}
+		.ant-select-arrow {
+			right: 2px;
+		}
+	}
+}

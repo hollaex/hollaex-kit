@@ -784,8 +784,8 @@ const nestedContent = {
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Filled',
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: 'PRICE',
+	AMOUNT_SYMBOL: 'AMOUNT',
 	MARKET_PRICE: '시장가',
 	ORDER_PRICE: '지정가',
 	TOTAL_ORDER: '총액',

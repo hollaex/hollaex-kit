@@ -822,8 +822,8 @@ export default {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: 'PRICE',
+	AMOUNT_SYMBOL: 'AMOUNT',
 	MARKET_PRICE: 'Harga Pasar',
 	ORDER_PRICE: 'Harga Pesan',
 	TOTAL_ORDER: 'Jumlah Pesan',
