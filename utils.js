@@ -3,11 +3,11 @@ const crypto = require('crypto');
 const moment = require('moment');
 
 const createRequest = (verb, url, headers, data) => {
-	const body = JSON.stringify(data);
 	const requestObj = {
 		headers,
 		url,
-		body
+		body: data,
+		json: true
 	};
 	return rp[verb.toLowerCase()](requestObj);
 };
@@ -33,8 +33,23 @@ const generateHeaders = (headers, secret, verb, path, expiresAfter, data) => {
 	return header;
 };
 
+const checkKit = (kit) => {
+	if (!kit) {
+		throw new Error(
+			'Missing Kit ID. ID of the exchange Kit should be initialized in HollaEx constructor'
+		);
+	}
+	return true;
+};
+
+const parameterError = (parameter, msg) => {
+	return new Error(`Parameter ${parameter} error: ${msg}`);
+};
+
 module.exports = {
 	createRequest,
 	createSignature,
-	generateHeaders
+	generateHeaders,
+	checkKit,
+	parameterError
 };

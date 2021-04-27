@@ -1,47 +1,53 @@
 # hollaex-node-lib
 
-HollaEx crypto exchange nodejs library
+Nodejs library for HollaEx Kit enabled exchanges.
+
+**This documentation is specifically for using this library to connect to HollaEx Kit enabled exchanges. If you are an exchange operator and would like to use this library for the HollaEx Network, [click here](NETWORK_README.md)**
 
 ## Usage
 
-```node
-const HollaEx = require('hollaex-node-lib');
+```javascript
+const { Kit } = require('hollaex-node-lib');
 
-var client = new HollaEx();
+const client = new Kit();
 ```
 
 You can pass the `apiURL` and `baseURL` of the HollaEx-Enabled exchange to connect to. You can also pass your `apiKey` and `apiSecret` generated from the HollaEx-Enabled exchange.
 
-```node
-var client = new HollaEx({
-	apiURL: <EXCHANGE_API_URL>,
-	baseURL: <EXCHANGE_BASE_URL>,
-	apiKey: <MY_API_KEY>,
-	apiSecret: <MY_API_SECRET>
+```javascript
+const client = new Kit({
+	apiURL: '<EXCHANGE_API_URL>',
+	baseURL: '<EXCHANGE_BASE_URL>',
+	apiKey: '<MY_API_KEY>',
+	apiSecret: '<MY_API_SECRET>'
 });
 ```
 
 You can also pass the field `apiExpiresAfter` which is the length of time in seconds each request is valid for. The default value is `60`.
 
-There is a list of functions you can call which will be added later and they are not at this point implemented yet.
-
-> - **Note**: v1 has a new authentication mechanism using HMAC signature. HollaEx previously was using JSON Web Token (JWT) which is now changed to HMAC authentication.
-
 ### Example:
 
-```node
-var client = new HollaEx({
-	apiURL: <EXCHANGE_API_URL>,
-	baseURL: <EXCHANGE_BASE_URL>,
-	apiKey: <MY_API_KEY>,
-	apiSecret: <MY_API_SECRET>
+```javascript
+const client = new Kit({
+	apiURL: '<EXCHANGE_API_URL>',
+	baseURL: '<EXCHANGE_BASE_URL>',
+	apiKey: '<MY_API_KEY>',
+	apiSecret: '<MY_API_SECRET>'
 });
 
 client
 	.getTicker('xht-usdt')
 	.then((res) => {
-		let data = JSON.parse(res);
-		console.log('The volume is', data.volume);
+		console.log('The volume is: ', res.volume);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
+
+client
+	.getTrades({ symbol: 'xht-usdt' })
+	.then((res) => {
+		console.log('Public trades: ', res);
 	})
 	.catch((err) => {
 		console.log(err);
@@ -50,40 +56,57 @@ client
 
 ### Available functions:
 
-| Command             | Parameters                                                                                                                                                                         | Description                                                                                                                                                            |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `getTicker`         | **symbol** e.g. `xht-usdt`                                                                                                                                                          | Last, high, low, open and close price and volume within the last 24 hours                                                                                              |
-| `getOrderbook`      | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | Orderbook containing list of bids and asks                                                                                                                             |
-| `getTrade`          | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | List of last trades                                                                                                                                                    |
-| `getConstant`       |                                                                                                                                                                                    | Tick size, min price, max price, min size and max size of each symbol pair                                                                                             |
-| `getUser`           |                                                                                                                                                                                    | User's personal information                                                                                                                                            |
-| `getBalance`        |                                                                                                                                                                                    | User's wallet balance                                                                                                                                                  |
-| `getDeposit`        | **currency** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`), **orderBy** (_optional_) e.g. `amount`, **order** (_asc_ or _desc_, _default_=`asc`) | User's list of all deposits                                                                                                                                            |
-| `getWithdrawal`     | **currency** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`), **orderBy** (_optional_) e.g. `amount`, **order** (_asc_ or _desc_, _default_=`asc`) | User's list of all withdrawals                                                                                                                                         |
-| `requestWithdrawal` | **currency**, **amount**, **address** (_receipient's_)                                                                                                                             | Create a new withdrawal request. **Disable Two-Factor Authentication to be able to use this function. Must confirm within 5 minutes via email to complete withdrawal** |
-| `getUserTrade`      | **symbol** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`)                                                                                         | User's list of all trades                                                                                                                                              |
-| `getOrder`          | **orderId**                                                                                                                                                                        | Get specific information about a certain order                                                                                                                         |
-| `getAllOrder`       | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | Get the list of all user orders. It can be filter by passing the symbol                                                                                                |
-| `createOrder`       | **symbol**, **side** (_buy_ or _sell_), **size** (amount), **type** (_market_ or _limit_), **price**                                                                               | Create a new order                                                                                                                                                     |
-| `cancelOrder`       | **orderId**                                                                                                                                                                        | Cancel a specific order with its ID                                                                                                                                    |
-| `cancelAllOrder`    | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | Cancel all open order. It can be filter by passing the symbol                                                                                                          |
+- **Optional parameters are all contained within an object parameter called `opts`**
+
+| Command             | Parameters                                                                                                                                                                                                                                                                                                                                                 | Description                                                                                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getKit`            |                                                                                                                                                                                                                                                                                                                                                            | Get exchange information e.g. name, valid languages, description, etc.                                                                                                 |
+| `getConstants`      |                                                                                                                                                                                                                                                                                                                                                            | Tick size, min price, max price, min size and max size of each symbol pair and coin                                                                                    |
+| `getTicker`         | **symbol**                                                                                                                                                                                                                                                                                                                                                 | Last, high, low, open and close price and volume within the last 24 hours                                                                                              |
+| `getTickers`        |                                                                                                                                                                                                                                                                                                                                                            | Last, high, low, open and close price and volume within the last 24 hours for all symbols                                                                              |
+| `getOrderbook`      | **symbol**                                                                                                                                                                                                                                                                                                                                                 | Orderbook containing list of bids and asks                                                                                                                             |
+| `getOrderbooks`     |                                                                                                                                                                                                                                                                                                                                                            | Orderbook containing list of bids and asks for all symbols                                                                                                             |
+| `getTrades`         | **symbol** (_optional_)                                                                                                                                                                                                                                                                                                                                    | List of last trades                                                                                                                                                    |
+| `getUser`           |                                                                                                                                                                                                                                                                                                                                                            | User's personal information                                                                                                                                            |
+| `getBalance`        |                                                                                                                                                                                                                                                                                                                                                            | User's wallet balance                                                                                                                                                  |
+| `getDeposits`       | **currency** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`asc`, `asc` or `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`)     | User's list of all deposits                                                                                                                                            |
+| `getWithdrawals`    | **currency** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`asc`, `asc` or `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`)     | User's list of all withdrawals                                                                                                                                         |
+| `requestWithdrawal` | **currency**, **amount**, **address** (_receipient's_)                                                                                                                                                                                                                                                                                                     | Create a new withdrawal request. **Disable Two-Factor Authentication to be able to use this function. Must confirm within 5 minutes via email to complete withdrawal** |
+| `getUserTrades`     | **symbol** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`desc`, `asc` or `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`)      | User's list of all trades                                                                                                                                              |
+| `getOrder`          | **orderId**                                                                                                                                                                                                                                                                                                                                                | Get specific information about a certain order                                                                                                                         |
+| `getOrders`         | **symbol** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`desc`, _enum_=`asc`, `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`) | Get the list of all user orders. It can be filter by passing the symbol                                                                                                |
+| `createOrder`       | **symbol**, **side** (`buy` or `sell`), **size**, **type** (`market` or `limit`), **price**, **stop** (_optional_), **meta** (_optional_, object with optional properties e.g. `post_only`)                                                                                                                                                                | Create a new order                                                                                                                                                     |
+| `cancelOrder`       | **orderId**                                                                                                                                                                                                                                                                                                                                                | Cancel a specific order with its ID                                                                                                                                    |
+| `cancelAllOrders`   | **symbol** (_optional_)                                                                                                                                                                                                                                                                                                                                    | Cancel all open order. It can be filter by passing the symbol                                                                                                          |
 
 ### Websocket
 
-#### Connecting
+#### Functions
 
 You can connect and subscribe to different websocket channels for realtime updates.
 
-To connect, use the `connect` function with the channel you want to subscribe to as the parameter.
+To connect, use the `connect` function with the channels you want to subscribe to in an array as the parameter. The connection will reconnect on it's own unless you call `disconnect`.
 
-```node
-const socket = client.connect('orderbook');
+```javascript
+client.connect(['orderbook', 'trade']);
 ```
 
-To disconnect the websocket, call `disconnect` on the socket connection.
+To disconnect the websocket, call `disconnect`.
 
-```node
-socket.disconnect();
+```javascript
+client.disconnect();
+```
+
+To subscribe to more channels after connection, use `subscribe`.
+
+```javascript
+client.subscribe(['order', 'wallet']);
+```
+
+To unsubscribe from channels after connection, use `unsubscribe`.
+
+```javascript
+client.unsubscribe(['orderbook']);
 ```
 
 #### Channels
@@ -92,263 +115,207 @@ Here is the list of channels you can subscribe to:
 
 - `orderbook`
 - `trades`
-- `user` (Private updates for the user such as balance, user orders etc as explained below)
-- `all` (Subscribes to all events)
+- `order` (Only available with authentication. Receive order updates)
+- `wallet` (Only available with authentication. Receive balance updates)
 
-For public channels (`orderbook`, `trades`), you can subscribe to specific symbols as follows:
-`orderbook:xht-usdt`, `trades:xht-usdt`.
+For public channels (`orderbook`, `trade`), you can subscribe to specific symbols as follows:
+`orderbook:xht-usdt`, `trade:xht-usdt`. Not passing a symbol will subscribe to all symbols.
 
 #### Events
 
-After connecting to the websocket, you can listen for events coming from the server by using the `on` function.
+After connecting to the websocket, you can listen for events coming from the server by using the `on` function for the `ws` property of the client.
+The events available are default websocket events e.g. `message`, `open`, `close`, `error`, `unexpected-response`, etc.
 
-```node
-socket.on(<EVENT>, (data) => {
+```javascript
+client.ws.on('message', (data) => {
+	data = JSON.parse(data);
 	console.log(data);
 });
 ```
 
-Public channels (`orderbook`, `trades`) emit events named after the respective channel. For example, the `orderbook` channel emits the event `orderbook`.
+These are exapmles of data responses from the server.
 
-The private channel `user` emits the events `userInfo`, `userOrder`, `userTrade`, `userWallet`, and `userUpdate`.
+- **orderbook**: Updates related to the user's private information are as follows:
 
-Each channel also emits a `disconnect`, `reconnect`, `error`, `connect_error`, and `connect_timeout` event.
-- `disconnect` is emitted once when the websocket connection is disconnected from the server.
-- `reconnect` is emitted once when the server connection is reconnected.
-- `error` is emitted when there is an error thrown by the socket connection.
-- `connect_error` is emitted when there is an error while the socket connects.
-- `connect_timeout` is emitted when the socket connection times out.
+	```json
+	{
+		"topic": "orderbook",
+		"action": "partial",
+		"symbol": "xht-usdt",
+		"data": {
+			"bids": [
+				[0.1, 0.1],
+				...
+			],
+			"asks": [
+				[1, 1],
+				...
+			],
+			"timestamp": "2020-12-15T06:45:27.766Z"
+		},
+		"time": 1608015328
+	}
+	```
 
-##### Private Events
+- **trade**: Updates related to the user's private information are as follows:
 
-When you subscribe to private updates on user you should listen for the events as follows:
+	```json
+	{
+		"topic": "trade",
+		"action": "partial",
+		"symbol": "xht-usdt",
+		"data": [
+			{
+				"size": 0.012,
+				"price": 300,
+				"side": "buy",
+				"timestamp": "2020-12-15T07:25:28.887Z"
+			},
+			...
+		],
+		"time": 1608015328
+	}
+	```
 
-```node
-const socket = client.connect('user');
+- **wallet**: Updates related to the user's private information are as follows:
 
-socket.on('userInfo', (data) => {
-	console.log(data);
-});
-socket.on('userOrder', (data) => {
-	console.log(data);
-});
-socket.on('userTrade', (data) => {
-	console.log(data);
-});
-socket.on('userWallet', (data) => {
-	console.log(data);
-});
-socket.on('userUpdate', (data) => {
-	console.log(data);
-});
-```
+	```json
+	{
+		"topic": "wallet",
+		"action": "partial",
+		"user_id": 1,
+		"data": {
+			"usdt_balance": 1,
+			"usdt_available": 1,
+			"xht_balance": 1,
+			"xht_available": 1,
+			"xmr_balance": 1,
+			"xmr_available": 1,
+			"btc_balance": 1,
+			"btc_available": 1,
+			"eth_balance": 1,
+			"eth_available": 1,
+			...,
+			"updated_at": "2020-12-15T08:41:24.048Z"
+		},
+		"time": 1608021684
+	}
+	```
 
-`userInfo`, `userOrder`, and `userTrade` are only `partial` and send data once. These sockets are similar to GET requests and you should not expect any updates after you receive the first set of data.
+- **order**: Websocket messages relating the the user's orders.
+    - The `status` of the order can be `new`, `pfilled`, `filled`, and `canceled`.
+    - The `action` of the data determines what caused it to happen. All three are explained below:
 
-`userWallet` gives updates on changes in the user's wallet
+  - `partial`: All previous and current orders. Is the first order data received when connecting. Max: 50. Descending order.
 
-`userUpdate` is what is used for all updates on user's private data.
+	```json
+	{
+		"topic": "order",
+		"action": "partial",
+		"user_id": 1,
+		"data": [
+			{
+				"id": "7d3d9545-b7e6-4e7f-84a0-a39efa4cb173",
+				"side": "buy",
+				"symbol": "xht-usdt",
+				"type": "limit",
+				"size": 0.1,
+				"filled": 0,
+				"price": 1,
+				"stop": null,
+				"status": "new",
+				"fee": 0,
+				"fee_coin": "xht",
+				"meta": {},
+				"fee_structure": {
+					"maker": 0.1,
+					"taker": 0.1
+				},
+				"created_at": "2020-11-30T07:45:43.819Z",
+				"created_by": 1
+			},
+			...
+		],
+		"time": 1608022610
+	}
+	```
 
-These are list of `userUpdate` client gets after subscription.
+  - `insert`: When user's order is added. The status of the order can be either `new`, `pfilled`, or `filled`.
 
-- **userUpdate**: Updates related to the user's private information are as follows:
+	```json
+  	{
+		"topic": "order",
+		"action": "insert",
+		"user_id": 1,
+		"symbol": "xht-usdt",
+		"data": [
+			{
+				"id": "7d3d9545-b7e6-4e7f-84a0-a39efa4cb173",
+				"side": "buy",
+				"symbol": "xht-usdt",
+				"type": "limit",
+				"size": 0.1,
+				"filled": 0,
+				"price": 1,
+				"stop": null,
+				"status": "new",
+				"fee": 0,
+				"fee_coin": "xht",
+				"meta": {},
+				"fee_structure": {
+					"maker": 0.1,
+					"taker": 0.1
+				},
+				"created_at": "2020-11-30T07:45:43.819Z",
+				"updated_at": "2020-12-15T08:56:45.066Z",
+				"created_by": 1
+			},
+			...
+		],
+		"time": 1608022610
+	}
+	```
 
-  - _order_queued_: When user's order is added to the matching engine queue.
+  - `update`: When user's order status is updated. Status can be `pfilled`, `filled`, and `canceled`.
 
-  ```json
-  {
-  	"action": "update",
-  	"type": "order_queued",
-  	"data": {
-  		"side": "sell",
-  		"type": "limit",
-  		"price": 0.2,
-  		"size": 2,
-  		"symbol": "xht-usdt",
-  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"created_by": 79,
-  		"filled": 0
-  	}
-  }
-  ```
-
-  - _order_processed_: When user's order is processed in the matching engine queue.
-
-  ```json
-  {
-  	"action": "update",
-  	"type": "order_processed",
-  	"data": { "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd" }
-  }
-  ```
-
-  - _order_canceled_: When user's order is rejected in the queue, so it has not been added to the orderbook.
-
-  ```json
-  {
-  	"action": "update",
-  	"type": "order_canceled",
-  	"data": {
-  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"message": "Insufficient balance to perform the order."
-  	}
-  }
-  ```
-
-  - _order_added_: When user's order is added to the orderbook.
-
-  ```json
-  {
-  	"action": "update",
-  	"type": "order_added",
-  	"data": {
-  		"side": "sell",
-  		"type": "limit",
-  		"price": 0.2,
-  		"size": 2,
-  		"symbol": "xht-usdt",
-  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"created_by": 79,
-  		"filled": 0
-  	}
-  }
-  ```
-
-  - _order_partialy_filled_: When user's order is updated because it was taken some part by another order.
-
-  ```json
-  {
-  	"action": "update",
-  	"type": "order_partialy_filled",
-  	"data": {
-  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"filled": 0.1,
-  		"created_by": 79,
-  		"side": "sell",
-  		"type": "limit",
-  		"size": 2,
-  		"price": 0.2,
-  		"symbol": "xht-usdt"
-  	}
-  }
-  ```
-
-  - _order_filled_: When user's order is taken by another order in a trade.
-
-  ```json
-  {
-    "action": "update",
-    "type": "order_filled",
-    "data": [
-      {
-        "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd"
-      },
-      {
-        "id": "bc7717d4-04e9-4430-a21b-08d32b2c34cd"
-      },
-      ...
-    ]
-  }
-  ```
-
-  - _order_updated_: When user updates the order.
-
-  ```json
-  {
-  	"type": "order_updated",
-  	"data": {
-  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"created_by": 79,
-  		"price": 0.2,
-  		"side": "sell",
-  		"size": 2,
-  		"type": "limit"
-  	}
-  }
-  ```
-
-  - _order_removed_: When user's order is taken or user cancels order/orders.
-
-  ```json
-  {
-    "action": "update",
-    "type": "order_removed",
-    "data": [
-      {
-        "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd"
-      },
-      {
-        "id": "bc7717d4-04e9-4430-a21b-08d32b2c34cd"
-      },
-      ...
-    ]
-  }
-  ```
-
-  - _trade_: When a trade happens.
-
-  ```json
-  {
-    "action": "update",
-    "type": "trade",
-    "data": [
-      {
-        "id": "1efd30b6-fcb5-44da-82c1-82d9def2ddbd",
-        "side": "sell",
-        "symbol": "xht-usdt",
-        "size": 2,
-        "price": 0.2,
-        "timestamp": "2017-07-26T13:20:40.464Z",
-        "fee": 0,
-      },
-      ...
-    ]
-  }
-  ```
-
-  - _deposit_: When user gets a deposit. Status = pending or completed
-
-  ```json
-  {
-  	"action": "update",
-  	"type": "deposit",
-  	"data": {
-  		"amount": 3000,
-  		"currency": "usdt",
-  		"status": false
-  	},
-  	"balance": {
-  		"usdt_balance": 0,
-  		"xht_balance": 300000,
-  		"updated_at": "2017-07-26T13:20:40.464Z"
-  	}
-  }
-  ```
-
-  - _withdrawal_: When user performs a withdrawal in his account. Status = pending or completed
-
-  ```json
-  {
-  	"action": "update",
-  	"type": "withdrawal",
-  	"data": {
-  		"amount": 5000,
-  		"currency": "xht",
-  		"status": true
-  	},
-  	"balance": {
-  		"usdt_balance": 0,
-  		"xht_balance": 300000,
-  		"updated_at": "2017-07-26T13:20:40.464Z"
-  	}
-  }
-  ```
-
+	```json
+  	{
+		"topic": "order",
+		"action": "insert",
+		"user_id": 1,
+		"symbol": "xht-usdt",
+		"data": [
+			{
+				"id": "7d3d9545-b7e6-4e7f-84a0-a39efa4cb173",
+				"side": "buy",
+				"symbol": "xht-usdt",
+				"type": "limit",
+				"size": 0.1,
+				"filled": 0,
+				"price": 1,
+				"stop": null,
+				"status": "new",
+				"fee": 0,
+				"fee_coin": "xht",
+				"meta": {},
+				"fee_structure": {
+					"maker": 0.1,
+					"taker": 0.1
+				},
+				"created_at": "2020-11-30T07:45:43.819Z",
+				"updated_at": "2020-12-15T08:56:45.066Z",
+				"created_by": 1
+			},
+			...
+		],
+		"time": 1608022610
+	}
+	```
 ## Example
 
 You can run the example by going to example folder and running:
 
-```node
+```bash
 node example/hollaex.js
 ```
 
