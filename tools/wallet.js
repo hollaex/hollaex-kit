@@ -16,7 +16,9 @@ const {
 	UPGRADE_VERIFICATION_LEVEL,
 	NO_DATA_FOR_CSV,
 	USER_NOT_FOUND,
-	USER_NOT_REGISTERED_ON_NETWORK
+	USER_NOT_REGISTERED_ON_NETWORK,
+	INVALID_NETWORK,
+	NETWORK_REQUIRED
 } = require(`${SERVER_PATH}/messages`);
 const { getUserByKitId } = require('./user');
 const { findTier } = require('./tier');
@@ -36,6 +38,9 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 	ip: null,
 	domain: null
 }) => {
+
+	const coinConfiguration = getKitCoin(currency);
+
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -44,8 +49,19 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 		return reject(new Error(INVALID_AMOUNT(amount)));
 	}
 
-	if (!getKitCoin(currency).allow_withdrawal) {
+	if (!coinConfiguration.allow_withdrawal) {
 		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
+	}
+
+	if (
+		coinConfiguration.network
+		&& !coinConfiguration.network.split(',').includes(opts.network)
+	) {
+		if (!opts.network) {
+			return reject(new Error(NETWORK_REQUIRED(currency, coinConfiguration.network)));
+		} else {
+			return reject(new Error(INVALID_NETWORK(opts.network, coinConfiguration.network)));
+		}
 	}
 
 	return verifyOtpBeforeAction(id, opts.otpCode)
@@ -78,17 +94,24 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 		.then(async ([ user, tier ]) => {
 			const limit = tier.withdrawal_limit;
 			if (limit === -1) {
-				throw new Error('Withdrawals are disabled for this coin');
+				throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 			} else if (limit > 0) {
 				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 			}
+
+			let fee = coinConfiguration.withdrawal_fee;
+
+			if (opts.network && coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[opts.network]) {
+				fee = coinConfiguration.withdrawal_fees[opts.network];
+			}
+
 			return withdrawalRequestEmail(
 				user,
 				{
 					user_id: id,
 					email: user.email,
 					amount,
-					fee: getKitCoin(currency).withdrawal_fee,
+					fee,
 					transaction_id: uuid(),
 					address,
 					currency,
