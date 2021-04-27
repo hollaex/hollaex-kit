@@ -185,14 +185,22 @@ const status = (key) => {
 	}
 };
 
-export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
+export const CustomMobileTabs = ({
+	title,
+	icon,
+	setActiveTab,
+	statusCode = -1,
+}) => {
 	const statusText = status(statusCode);
 	const statusIcon = renderStatusIcon(
 		statusCode,
 		'custom_tab_status-icon ml-1'
 	);
 	return (
-		<div className={classnames('d-flex', 'justify-content-between')}>
+		<div
+			className={classnames('d-flex', 'justify-content-between')}
+			onClick={setActiveTab}
+		>
 			<div className="d-flex">
 				<Image icon={icon} wrapperClassName="custom_tab_icon-mobile" />
 				<div
