@@ -375,7 +375,7 @@ class Trade extends PureComponent {
 				{isMobile ? (
 					<div className="">
 						<MobileBarTabs
-							showMarketSelector={true}
+							showMarketSelector={activeTab !== 3}
 							tabs={mobileTabs}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}

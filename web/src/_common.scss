@@ -173,6 +173,10 @@ table th {
 	align-items: flex-start;
 }
 
+.align-end {
+	align-items: flex-end;
+}
+
 .underline-text {
 	text-decoration: underline !important;
 }
@@ -265,6 +269,15 @@ table th {
 	&.order-entry {
 		&.ant-select {
 			width: 100% !important;
+		}
+		.ant-select-selector {
+			padding-left: 3px !important;
+		}
+		.ant-select-selection-item {
+			padding: 0 !important;
+		}
+		.ant-select-arrow {
+			right: 3px;
 		}
 	}
 

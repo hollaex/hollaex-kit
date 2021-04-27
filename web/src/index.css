@@ -221,6 +221,9 @@ table th {
 .align-start {
   align-items: flex-start; }
 
+.align-end {
+  align-items: flex-end; }
+
 .underline-text {
   text-decoration: underline !important; }
 
@@ -289,6 +292,15 @@ table th {
 
 .custom-select-input-style.order-entry.ant-select {
   width: 100% !important; }
+
+.custom-select-input-style.order-entry .ant-select-selector {
+  padding-left: 3px !important; }
+
+.custom-select-input-style.order-entry .ant-select-selection-item {
+  padding: 0 !important; }
+
+.custom-select-input-style.order-entry .ant-select-arrow {
+  right: 3px; }
 
 .custom-select-input-style .ant-select-arrow {
   z-index: -1; }
@@ -1949,7 +1961,7 @@ table th {
   font-size: 1.2rem !important; }
 
 .layout-mobile .trade_orderbook-spread {
-  height: 2rem;
+  min-height: 3rem !important;
   margin: 1rem 0; }
 
 .layout-mobile .trade_orderbook-asks,
@@ -2285,9 +2297,6 @@ table th {
 .layout-mobile .exir-button {
   font-size: 13px !important; }
 
-.layout-mobile .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell {
-  font-size: 11px !important; }
-
 .layout-mobile .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
   font-size: 11px !important; }
 
@@ -2296,6 +2305,23 @@ table th {
 
 .trade_orderbook-wrapper {
   height: 49vh; }
+  .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell {
+    font-size: 1rem !important;
+    flex-direction: column; }
+    .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style {
+      font-size: 1rem !important;
+      max-width: 8rem; }
+      .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style .ant-select-selector {
+        height: 1.5rem !important;
+        line-height: 1.5rem !important;
+        padding: 0;
+        font-size: 1rem !important; }
+      .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style .ant-select-selection-item {
+        height: 1.5rem !important;
+        line-height: 1.5rem !important;
+        font-weight: bold; }
+      .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style .ant-select-arrow {
+        right: 2px; }
   .trade_orderbook-wrapper .trade_orderbook-cell {
     padding: 0 0.25rem; }
     .trade_orderbook-wrapper .trade_orderbook-cell .ant-select-arrow {
@@ -2540,6 +2566,23 @@ table th {
   max-width: 100vw;
   min-height: 3rem;
   max-height: 3rem; }
+
+.public-history__header {
+  font-size: 1rem !important; }
+  .public-history__header .custom-select-input-style {
+    font-size: 1rem !important;
+    max-width: 8rem; }
+    .public-history__header .custom-select-input-style .ant-select-selector {
+      height: 1.5rem !important;
+      line-height: 1.5rem !important;
+      padding: 0;
+      font-size: 1rem !important; }
+    .public-history__header .custom-select-input-style .ant-select-selection-item {
+      height: 1.5rem !important;
+      line-height: 1.5rem !important;
+      font-weight: bold; }
+    .public-history__header .custom-select-input-style .ant-select-arrow {
+      right: 2px; }
 
 .quote-container {
   background-color: var(--base_background);
@@ -4491,21 +4534,23 @@ table th {
     align-items: center;
     width: 20%; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .post-icon,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .wallet-selected-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-svg-1,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .trade-active-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .tab-wallet0,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
+      fill: transparent; }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .wallet-selected-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .quick-trade-tab-active {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1 {
       fill: var(--calculated_base_top-bar-navigation_text); }
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .trade-active-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .quick-trade-tab-active {
@@ -8562,7 +8607,7 @@ foreignObject {
     width: 2.5rem;
     height: 2.5rem; }
     .close-dialog svg .arrow-down {
-      stroke: white; }
+      stroke: var(--calculated_base_top-bar-navigation_text); }
 
 .dialog-compressed-close .close-dialog {
   margin-left: 0;
@@ -8899,7 +8944,8 @@ foreignObject {
       right: 1.5rem;
       top: -0.5rem; }
   .layout-mobile .chat-wrapper .chat-footer {
-    padding: 0.5rem; }
+    padding: 0.5rem;
+    background-color: var(--labels_fields); }
     .layout-mobile .chat-wrapper .chat-footer .chat-message-box {
       min-height: 4rem;
       font-size: 1.5rem;
@@ -8909,9 +8955,9 @@ foreignObject {
       .layout-mobile .chat-wrapper .chat-footer .emoji-container .chat-category .emoji-close .cross-icon-back {
         width: 3rem; }
     .layout-mobile .chat-wrapper .chat-footer .chat-emoji-wrapper {
-      background-color: white; }
+      background-color: var(--labels_fields); }
       .layout-mobile .chat-wrapper .chat-footer .chat-emoji-wrapper .chat-emoji-icon svg .emoji-face-icon {
-        fill: #b6b4cc; }
+        fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .chat-wrapper {
   position: fixed;

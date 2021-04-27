@@ -145,6 +145,7 @@ class UserVerification extends Component {
 						stringId={'ACCOUNT_SECURITY.OTP.TITLE'}
 						title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
 						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						setActiveTab={() => this.setActiveTab(0)}
 					/>
 				) : (
 					// <CustomTabs
@@ -194,6 +195,7 @@ class UserVerification extends Component {
 						stringId={'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE'}
 						title={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
 						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
+						setActiveTab={() => this.setActiveTab(1)}
 					/>
 				) : (
 					// <CustomTabs
@@ -226,6 +228,7 @@ class UserVerification extends Component {
 						stringId={'DEVELOPER_SECTION.TITLE'}
 						title={STRINGS['DEVELOPER_SECTION.TITLE']}
 						icon={ICONS.SECURITY_API_ICON}
+						setActiveTab={() => this.setActiveTab(2)}
 					/>
 				) : (
 					// <CustomTabs

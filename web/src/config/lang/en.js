@@ -836,8 +836,8 @@ const nestedContent = {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'Price ({0})',
-	AMOUNT_SYMBOL: 'Amount ({0})',
+	PRICE_CURRENCY: 'Price',
+	AMOUNT_SYMBOL: 'Amount',
 	MARKET_PRICE: 'Market Price',
 	ESTIMATED_PRICE: 'Estimated Price',
 	ORDER_PRICE: 'Order Price',
