@@ -2558,6 +2558,23 @@ table th {
   min-height: 3rem;
   max-height: 3rem; }
 
+.public-history__header {
+  font-size: 1rem !important; }
+  .public-history__header .custom-select-input-style {
+    font-size: 1rem !important;
+    max-width: 8rem; }
+    .public-history__header .custom-select-input-style .ant-select-selector {
+      height: 1.5rem !important;
+      line-height: 1.5rem !important;
+      padding: 0;
+      font-size: 1rem !important; }
+    .public-history__header .custom-select-input-style .ant-select-selection-item {
+      height: 1.5rem !important;
+      line-height: 1.5rem !important;
+      font-weight: bold; }
+    .public-history__header .custom-select-input-style .ant-select-arrow {
+      right: 2px; }
+
 .quote-container {
   background-color: var(--base_background);
   overflow-y: scroll; }

@@ -91,7 +91,9 @@ class TradeHistory extends Component {
 		return [
 			{
 				key: 'price',
-				label: STRINGS['PRICE'],
+				label: (
+					<div className="d-flex justify-content-start">{STRINGS['PRICE']}</div>
+				),
 				renderCell: (
 					{ side, price = 0, isSameBefore, upDownRate, timestamp },
 					index
@@ -118,7 +120,7 @@ class TradeHistory extends Component {
 			{
 				key: 'size',
 				label: (
-					<div className="d-flex">
+					<div className="d-flex align-items-baseline content-center public-history__header">
 						<div>{STRINGS['SIZE']}</div>
 						<div>
 							<Select
@@ -136,6 +138,7 @@ class TradeHistory extends Component {
 								onDropdownVisibleChange={this.dropdownVisibleChange}
 								className="custom-select-input-style order-entry no-border"
 								dropdownClassName="custom-select-style trade-select-option-wrapper"
+								dropdownStyle={{ minWidth: '7rem' }}
 							>
 								<Option value={false}>{symbol.toUpperCase()}</Option>
 								<Option value={true}>{pairBase}</Option>
@@ -162,7 +165,9 @@ class TradeHistory extends Component {
 			},
 			{
 				key: 'timestamp',
-				label: STRINGS['TIME'],
+				label: (
+					<div className="d-flex justify-content-end">{STRINGS['TIME']}</div>
+				),
 				renderCell: ({ timestamp, side }, index) => (
 					<div
 						className={classnames('trade_history-row', side)}
