@@ -18,11 +18,11 @@ const html = (email, data, language, domain) => {
 				${WITHDRAWALREQUEST.GREETING(email)}
 			</p>
 			<p>
-				${WITHDRAWALREQUEST.BODY[1](data.currency, data.amount, data.address)}<br />
+				${WITHDRAWALREQUEST.BODY[1](data.currency, data.amount, data.address)}<br /><br />
 				${WITHDRAWALREQUEST.BODY[2](data.amount)}<br />
 				${WITHDRAWALREQUEST.BODY[3](data.fee)}<br />
 				${WITHDRAWALREQUEST.BODY[4](data.address)}<br />
-				${data.network ? `${WITHDRAWALREQUEST.BODY[5](data.network)}<br /> <br />` : ''}
+				${data.network ? `${WITHDRAWALREQUEST.BODY[5](data.network)}<br /><br />` : '<br />'}
 				${WITHDRAWALREQUEST.BODY[6]}<br />
 			</p>
 			<p>
@@ -51,7 +51,7 @@ const text = (email, data, language, domain) => {
 		${WITHDRAWALREQUEST.BODY[2](data.amount)}
 		${WITHDRAWALREQUEST.BODY[3](data.fee)}
 		${WITHDRAWALREQUEST.BODY[4](data.address)}
-		${data.network ? `${WITHDRAWALREQUEST.BODY[5](data.network)}<br /> <br />` : ''}
+		${data.network ? `${WITHDRAWALREQUEST.BODY[5](data.network)}` : ''}
 		${WITHDRAWALREQUEST.BODY[6]}
 		${Button(link, WITHDRAWALREQUEST.BODY[7])}
 		${WITHDRAWALREQUEST.CLOSING[1]} ${WITHDRAWALREQUEST.CLOSING[2]()}

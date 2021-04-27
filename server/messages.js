@@ -180,3 +180,5 @@ exports.PROVIDE_TABLE_NAME = 'Please provide a table name';
 exports.INVALID_PLUGIN = (plugin) => `Invalid plugin: ${plugin}`;
 exports.PLUGIN_ALREADY_ENABELD = (plugin) => `Plugin ${plugin} already enabled`;
 exports.PLUGIN_ALREADY_DISABLED = (plugin) => `Plugin ${plugin} already disabled`;
+exports.INVALID_NETWORK = (network, validNetworks) => `Invalid network: ${network}${validNetworks ? `. Valid networks: ${validNetworks}` : ''}`;
+exports.NETWORK_REQUIRED = (coin, validNetworks) => `Must specify network for coin: ${coin}${validNetworks ? `. Valid networks: ${validNetworks}` : ''}`;
