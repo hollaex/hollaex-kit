@@ -290,8 +290,8 @@ exports.DEFAULT_FEES = {
 		taker: 0.3
 	},
 	lite: {
-		maker: 0.1,
-		taker: 0.2
+		maker: 0.05,
+		taker: 0.1
 	},
 	member: {
 		maker: 0,
