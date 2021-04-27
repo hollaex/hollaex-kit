@@ -795,8 +795,8 @@ export default {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: '価格 ({0})',
-	AMOUNT_SYMBOL: '数量 ({0})',
+	PRICE_CURRENCY: '価格',
+	AMOUNT_SYMBOL: '数量',
 	MARKET_PRICE: '市場価格',
 	ORDER_PRICE: '注文価格',
 	TOTAL_ORDER: '総額',
