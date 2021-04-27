@@ -8562,7 +8562,7 @@ foreignObject {
     width: 2.5rem;
     height: 2.5rem; }
     .close-dialog svg .arrow-down {
-      stroke: white; }
+      stroke: var(--calculated_base_top-bar-navigation_text); }
 
 .dialog-compressed-close .close-dialog {
   margin-left: 0;
