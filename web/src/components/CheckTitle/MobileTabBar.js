@@ -15,6 +15,9 @@ const MobileTabBar = ({ tabs, activeTab, setActiveTab, renderContent }) => {
 						pointer: setActiveTab,
 					}),
 				};
+				if (setActiveTab) {
+					tabProps.onClick = () => setActiveTab(index);
+				}
 				return (
 					<div {...tabProps}>
 						{tab.title}
