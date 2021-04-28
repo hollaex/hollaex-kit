@@ -158,6 +158,7 @@
 	.market-list__container {
 		.market-list__block {
 			overflow-x: auto;
+			position: relative;
 			.market-list__block-table {
 				thead {
 					font-size: 1.3rem !important;
@@ -172,6 +173,16 @@
 						min-width: 15rem;
 						padding: 0 !important;
 					}
+				}
+				.sticky-col {
+					position: -webkit-sticky;
+					position: sticky;
+					background-color: $app-sidebar-background;
+					left: 0;
+					width: 12rem !important;
+					min-width: 12rem !important;
+					max-width: 12rem !important;
+					z-index: 1;
 				}
 			}
 		}

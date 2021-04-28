@@ -1878,7 +1878,8 @@ table th {
 
 .table_container .table-content.transactions-history-table {
   overflow-x: auto; }
-  .table_container .table-content.transactions-history-table thead, .table_container .table-content.transactions-history-table td {
+  .table_container .table-content.transactions-history-table thead,
+  .table_container .table-content.transactions-history-table td {
     font-size: 1.2rem !important; }
   .table_container .table-content.transactions-history-table td {
     padding: 0.5rem;
@@ -3479,7 +3480,8 @@ table th {
   padding-left: 0.5rem; }
 
 .layout-mobile .market-list__container .market-list__block {
-  overflow-x: auto; }
+  overflow-x: auto;
+  position: relative; }
   .layout-mobile .market-list__container .market-list__block .market-list__block-table thead {
     font-size: 1.3rem !important; }
   .layout-mobile .market-list__container .market-list__block .market-list__block-table .table-row {
@@ -3490,6 +3492,15 @@ table th {
     .layout-mobile .market-list__container .market-list__block .market-list__block-table .table-row .td-chart {
       min-width: 15rem;
       padding: 0 !important; }
+  .layout-mobile .market-list__container .market-list__block .market-list__block-table .sticky-col {
+    position: -webkit-sticky;
+    position: sticky;
+    background-color: var(--base_wallet-sidebar-and-popup);
+    left: 0;
+    width: 12rem !important;
+    min-width: 12rem !important;
+    max-width: 12rem !important;
+    z-index: 1; }
 
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
