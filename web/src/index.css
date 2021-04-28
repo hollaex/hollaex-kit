@@ -6427,6 +6427,12 @@ table th {
 .direction_rtl .dropdown-option > .icon {
   margin-left: 0.25rem; }
 
+.layout-mobile .dropdown-option > .icon {
+  max-height: 1.8rem; }
+
+.layout-mobile .dropdown-option .option-icon {
+  width: 1.8rem; }
+
 .field-wrapper {
   position: relative;
   width: 100%;
