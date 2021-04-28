@@ -103,8 +103,8 @@ class Orderbook extends Component {
 	state = {
 		dataBlockHeight: 0,
 		isBase: true,
-    positioned: false,
-    isOpen: false,
+		positioned: false,
+		isOpen: false,
 	};
 
 	componentDidMount() {
@@ -256,18 +256,19 @@ class Orderbook extends Component {
 						<PlusSquareOutlined />
 					</Button>
 				</div>
-				<div className="trade_orderbook-headers d-flex">
+				<div className="trade_orderbook-headers d-flex align-end">
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(
-							STRINGS['PRICE_CURRENCY'],
-							symbol.toUpperCase()
-						)}
+						<div>{STRINGS['PRICE_CURRENCY']}</div>
+						<div>({symbol.toUpperCase()})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
+						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
+						<div>({pairBase})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell d-flex">
-						{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+					<div className="f-1 trade_orderbook-cell">
+						<div className="d-flex align-items-center">
+							{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+						</div>
 						<Select
 							bordered={false}
 							defaultValue={false}
@@ -283,6 +284,7 @@ class Orderbook extends Component {
 							open={isOpen}
 							className="custom-select-input-style order-entry no-border"
 							dropdownClassName="custom-select-style trade-select-option-wrapper"
+							dropdownStyle={{ minWidth: '7rem' }}
 						>
 							<Option value={false}>{symbol.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>

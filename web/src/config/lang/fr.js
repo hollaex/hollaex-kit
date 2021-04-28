@@ -837,8 +837,8 @@ export default {
 	LOWEST_PRICE: 'Prix le plus bas ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Entrante', // new
-	PRICE_CURRENCY: 'PRIX ({0})',
-	AMOUNT_SYMBOL: 'MONTANT ({0})',
+	PRICE_CURRENCY: 'PRIX',
+	AMOUNT_SYMBOL: 'MONTANT',
 	MARKET_PRICE: 'Prix du marché',
 	ORDER_PRICE: 'Prix de la transaction',
 	TOTAL_ORDER: 'Total de la transaction',

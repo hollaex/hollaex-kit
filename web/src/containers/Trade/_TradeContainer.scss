@@ -103,7 +103,7 @@
 		}
 	}
 	.trade_orderbook-spread {
-		height: 2rem;
+		min-height: 3rem !important;
 		margin: 1rem 0;
 	}
 	.trade_orderbook-asks,
