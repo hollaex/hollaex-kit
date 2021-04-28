@@ -830,8 +830,8 @@ export default {
 	LOWEST_PRICE: 'Precio más bajo ({0})', // new
 	PHASE: 'Fase', // new
 	INCOMING: 'Recibido', // new
-	PRICE_CURRENCY: 'PRECIO ({0})',
-	AMOUNT_SYMBOL: 'CANTIDAD ({0})',
+	PRICE_CURRENCY: 'PRECIO',
+	AMOUNT_SYMBOL: 'CANTIDAD',
 	MARKET_PRICE: 'Precio de mercado',
 	ORDER_PRICE: 'Predio de la orden',
 	TOTAL_ORDER: 'Orden total',

@@ -836,8 +836,8 @@ const nestedContent = {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'Price ({0})',
-	AMOUNT_SYMBOL: 'Amount ({0})',
+	PRICE_CURRENCY: 'Price',
+	AMOUNT_SYMBOL: 'Amount',
 	MARKET_PRICE: 'Market Price',
 	ESTIMATED_PRICE: 'Estimated Price',
 	ORDER_PRICE: 'Order Price',
@@ -1465,6 +1465,7 @@ const nestedContent = {
 	UNDEFINED_ERROR:
 		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
 	POST_ONLY_TOOLTIP: 'Post only orders only execute as a limit order.', // new
+	REFRESH: 'Refresh',
 };
 
 const content = flatten(nestedContent, options);

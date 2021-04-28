@@ -381,7 +381,8 @@ class App extends Component {
 					<MessageDisplay
 						iconId="UNDEFINED_ERROR"
 						iconPath={ICONS['UNDEFINED_ERROR']}
-						onClick={this.onCloseDialog}
+						onClick={() => window.location.reload(false)}
+						buttonLabel={STRINGS['REFRESH']}
 						text={STRINGS['UNDEFINED_ERROR']}
 						title={STRINGS['UNDEFINED_ERROR_TITLE']}
 						titleId="UNDEFINED_ERROR_TITLE"
@@ -546,7 +547,9 @@ class App extends Component {
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
-		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
+		const shouldCloseOnOverlayClick =
+			activeNotification.type !== CONTACT_FORM &&
+			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR;
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
@@ -723,10 +726,19 @@ class App extends Component {
 									<Dialog
 										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"
-										className={classnames('app-dialog', {
-											'app-dialog-flex':
-												activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO,
-										})}
+										className={classnames(
+											'app-dialog',
+											{
+												'app-dialog-flex':
+													activeNotification.type ===
+													NOTIFICATIONS.DEPOSIT_INFO,
+											},
+											{
+												full:
+													activeNotification.type ===
+													NOTIFICATIONS.UNDEFINED_ERROR,
+											}
+										)}
 										onCloseDialog={this.onCloseDialog}
 										shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 										theme={activeTheme}
