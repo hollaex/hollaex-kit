@@ -1756,6 +1756,29 @@ table th {
 .layout-mobile .display_table-wrapper .display_table-cell {
   min-height: 2rem !important; }
 
+.layout-mobile .table_container .table-content.transactions-history-table {
+  overflow-x: auto;
+  position: relative; }
+  .layout-mobile .table_container .table-content.transactions-history-table thead,
+  .layout-mobile .table_container .table-content.transactions-history-table td {
+    font-size: 1.2rem !important; }
+  .layout-mobile .table_container .table-content.transactions-history-table td {
+    padding: 0.5rem;
+    min-width: 9rem; }
+  .layout-mobile .table_container .table-content.transactions-history-table .sticky-col {
+    position: -webkit-sticky;
+    position: sticky;
+    background-color: var(--base_wallet-sidebar-and-popup);
+    left: 0;
+    width: 10rem !important;
+    min-width: 10rem !important;
+    max-width: 10rem !important;
+    z-index: 1; }
+    .layout-mobile .table_container .table-content.transactions-history-table .sticky-col.coin-cell {
+      width: 12rem !important;
+      min-width: 12rem !important;
+      max-width: 12rem !important; }
+
 .icon-cell {
   width: 3rem; }
   .icon-cell > div {
@@ -1875,15 +1898,6 @@ table th {
     color: var(--specials_pending-waiting-caution); }
   .transaction-status .rejected {
     color: var(--specials_notifications-alerts-warnings); }
-
-.table_container .table-content.transactions-history-table {
-  overflow-x: auto; }
-  .table_container .table-content.transactions-history-table thead,
-  .table_container .table-content.transactions-history-table td {
-    font-size: 1.2rem !important; }
-  .table_container .table-content.transactions-history-table td {
-    padding: 0.5rem;
-    min-width: 9rem; }
 
 .trade-container {
   flex: 1; }
