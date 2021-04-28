@@ -1876,6 +1876,14 @@ table th {
   .transaction-status .rejected {
     color: var(--specials_notifications-alerts-warnings); }
 
+.table_container .table-content.transactions-history-table {
+  overflow-x: auto; }
+  .table_container .table-content.transactions-history-table thead, .table_container .table-content.transactions-history-table td {
+    font-size: 1.2rem !important; }
+  .table_container .table-content.transactions-history-table td {
+    padding: 0.5rem;
+    min-width: 9rem; }
+
 .trade-container {
   flex: 1; }
   .trade-container .dialog-link {

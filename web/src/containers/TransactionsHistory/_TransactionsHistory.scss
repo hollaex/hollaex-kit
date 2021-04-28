@@ -200,3 +200,19 @@
 		color: $colors-notifications-red;
 	}
 }
+
+.table_container {
+	.table-content {
+		&.transactions-history-table {
+			overflow-x: auto;
+			thead,
+			td {
+				font-size: 1.2rem !important;
+			}
+			td {
+				padding: 0.5rem;
+				min-width: 9rem;
+			}
+		}
+	}
+}
