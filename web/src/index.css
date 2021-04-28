@@ -2912,7 +2912,7 @@ table th {
     border: 1px solid var(--calculated_super-pale_label-text-graphics); }
     .summary-container .summary-block_wrapper .summary-block-title {
       color: var(--labels_secondary-inactive-label-text-graphics);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: bold; }
     .summary-container .summary-block_wrapper .summary-title-icon {
       width: 2rem; }
