@@ -3470,8 +3470,18 @@ table th {
 .direction_rtl .market-list__container .market-list__block .market-list__block-table .table-icon {
   padding-left: 0.5rem; }
 
-.layout-mobile .market-list__container .market-list__block .market-list__block-table .table-row .td-chart {
-  width: 80px; }
+.layout-mobile .market-list__container .market-list__block {
+  overflow-x: auto; }
+  .layout-mobile .market-list__container .market-list__block .market-list__block-table thead {
+    font-size: 1.3rem !important; }
+  .layout-mobile .market-list__container .market-list__block .market-list__block-table .table-row {
+    font-size: 1.3rem !important; }
+    .layout-mobile .market-list__container .market-list__block .market-list__block-table .table-row td {
+      padding: 0.5rem;
+      min-width: 10rem; }
+    .layout-mobile .market-list__container .market-list__block .market-list__block-table .table-row .td-chart {
+      min-width: 15rem;
+      padding: 0 !important; }
 
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
