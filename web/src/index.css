@@ -8178,6 +8178,15 @@ table th {
 foreignObject {
   overflow: visible; }
 
+.layout-mobile .donut-label-pair {
+  font-size: 1.4rem; }
+
+.layout-mobile .donut-label-percentage {
+  font-size: 1.2rem; }
+
+.layout-mobile .donut-label-link {
+  font-size: 1rem; }
+
 .input-group__container {
   border-radius: 4px;
   border: var(--labels_secondary-inactive-label-text-graphics) solid 1.5px; }
