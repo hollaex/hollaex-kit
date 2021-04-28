@@ -2900,6 +2900,9 @@ table th {
   .summary-container .icon_title-wrapper {
     justify-content: flex-start;
     flex-direction: row; }
+  .summary-container .account-details-text {
+    padding-top: 1rem;
+    padding-bottom: 2rem; }
   .summary-container .summary-block_wrapper {
     color: var(--labels_secondary-inactive-label-text-graphics);
     margin: 11px 0;
