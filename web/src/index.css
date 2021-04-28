@@ -290,18 +290,6 @@ table th {
 .custom-select-input-style.elevated {
   z-index: 1; }
 
-.custom-select-input-style.order-entry.ant-select {
-  width: 100% !important; }
-
-.custom-select-input-style.order-entry .ant-select-selector {
-  padding-left: 3px !important; }
-
-.custom-select-input-style.order-entry .ant-select-selection-item {
-  padding: 0 !important; }
-
-.custom-select-input-style.order-entry .ant-select-arrow {
-  right: 3px; }
-
 .custom-select-input-style .ant-select-arrow {
   z-index: -1; }
 
@@ -2129,9 +2117,7 @@ table th {
     margin-bottom: 0.5rem; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-selector {
     border-top: 1px solid var(--calculated_important-border);
-    position: relative;
-    width: 60% !important;
-    margin-left: 40% !important; }
+    position: relative; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-selector > div {
       line-height: 2rem; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-selector .active {
@@ -2199,9 +2185,7 @@ table th {
     margin-bottom: 0.5rem; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-selector {
     border-top: 1px solid var(--calculated_important-border);
-    position: relative;
-    width: 60% !important;
-    margin-left: 40% !important; }
+    position: relative; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-selector > div {
       line-height: 2rem; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-selector .active {
@@ -6881,8 +6865,8 @@ table th {
   border-color: var(--specials_buttons-links-and-highlights); }
 
 .trade-form-select {
-  width: 35% !important;
-  transform: translateY(1.4rem); }
+  padding-bottom: 1.5rem;
+  font-size: 11px !important; }
 
 .ant-slider-mark-text {
   color: var(--labels_secondary-inactive-label-text-graphics);

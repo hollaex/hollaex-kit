@@ -1417,6 +1417,7 @@ const nestedContent = {
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'type',
+	ORDER_MODE: 'Order mode', //new
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {
 		PENDING: 'Pending',
