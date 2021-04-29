@@ -426,3 +426,15 @@
 foreignObject {
 	overflow: visible;
 }
+
+.layout-mobile {
+	.donut-label-pair {
+		font-size: 1.4rem;
+	}
+	.donut-label-percentage {
+		font-size: 1.2rem;
+	}
+	.donut-label-link {
+		font-size: 1rem;
+	}
+}

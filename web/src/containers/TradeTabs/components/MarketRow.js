@@ -47,7 +47,7 @@ class MarketRow extends Component {
 				className="table-row table-bottom-border"
 				onClick={() => handleClick(key)}
 			>
-				<td>
+				<td className="sticky-col">
 					<div className="d-flex align-items-center">
 						<Image
 							iconId={

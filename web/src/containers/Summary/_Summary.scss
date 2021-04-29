@@ -97,6 +97,11 @@ $trade-tab--arrow-size: 0.4rem;
 		flex-direction: row;
 	}
 
+	.account-details-text {
+		padding-top: 1rem;
+		padding-bottom: 2rem;
+	}
+
 	.summary-block_wrapper {
 		// border: 1px solid $colors-main-border;
 		color: $colors-deactivate-color2;
@@ -108,7 +113,7 @@ $trade-tab--arrow-size: 0.4rem;
 
 		.summary-block-title {
 			color: $colors-black;
-			font-size: $font-size-main;
+			font-size: $font-size-subhead4;
 			font-weight: bold;
 		}
 		.summary-title-icon {
