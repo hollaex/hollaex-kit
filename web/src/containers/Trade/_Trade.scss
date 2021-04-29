@@ -236,3 +236,45 @@ $order_entry-column--width-lg: 20rem;
 		}
 	}
 }
+
+.mobile-tab_market-indicator {
+	width: 2.5rem !important;
+	margin: 0.3rem 0.3rem 0 0.3rem;
+
+	svg {
+		.btc0,
+		.btc1,
+		.eth0,
+		.eth1,
+		.bch-icon,
+		.xrp-icon,
+		.xht-icon,
+		.xmr-icon,
+		.xlm-icon,
+		.eos-icon,
+		.trx-icon,
+		.ada-icon,
+		.bnb-icon,
+		.tusd-icon,
+		.dai-icon,
+		.ltc-icon,
+		.default-icon {
+			fill: $app-bar-menu-list-color !important;
+		}
+		.plus,
+		.minus {
+			stroke: $app-bar-menu-list-color !important;
+			stroke-width: 0.2rem;
+		}
+		.st0 {
+			fill: $base_top-bar-navigation_text;
+			stroke-width: 0rem;
+		}
+		.icon-check-1 {
+			stroke: $base_top-bar-navigation_text;
+		}
+		.xht-icon-1 {
+			fill: $dark-app-background-color !important;
+		}
+	}
+}

@@ -2609,6 +2609,39 @@ table th {
     .public-history__header .custom-select-input-style .ant-select-arrow {
       right: 2px; }
 
+.mobile-tab_market-indicator {
+  width: 2.5rem !important;
+  margin: 0.3rem 0.3rem 0 0.3rem; }
+  .mobile-tab_market-indicator svg .btc0,
+  .mobile-tab_market-indicator svg .btc1,
+  .mobile-tab_market-indicator svg .eth0,
+  .mobile-tab_market-indicator svg .eth1,
+  .mobile-tab_market-indicator svg .bch-icon,
+  .mobile-tab_market-indicator svg .xrp-icon,
+  .mobile-tab_market-indicator svg .xht-icon,
+  .mobile-tab_market-indicator svg .xmr-icon,
+  .mobile-tab_market-indicator svg .xlm-icon,
+  .mobile-tab_market-indicator svg .eos-icon,
+  .mobile-tab_market-indicator svg .trx-icon,
+  .mobile-tab_market-indicator svg .ada-icon,
+  .mobile-tab_market-indicator svg .bnb-icon,
+  .mobile-tab_market-indicator svg .tusd-icon,
+  .mobile-tab_market-indicator svg .dai-icon,
+  .mobile-tab_market-indicator svg .ltc-icon,
+  .mobile-tab_market-indicator svg .default-icon {
+    fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .mobile-tab_market-indicator svg .plus,
+  .mobile-tab_market-indicator svg .minus {
+    stroke: var(--labels_secondary-inactive-label-text-graphics) !important;
+    stroke-width: 0.2rem; }
+  .mobile-tab_market-indicator svg .st0 {
+    fill: var(--calculated_base_top-bar-navigation_text);
+    stroke-width: 0rem; }
+  .mobile-tab_market-indicator svg .icon-check-1 {
+    stroke: var(--calculated_base_top-bar-navigation_text); }
+  .mobile-tab_market-indicator svg .xht-icon-1 {
+    fill: var(--base_background) !important; }
+
 .quote-container {
   background-color: var(--base_background);
   overflow-y: scroll; }
