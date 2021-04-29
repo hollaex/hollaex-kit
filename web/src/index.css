@@ -1734,6 +1734,24 @@ table th {
   .transaction-history-wrapper .ant-btn-ghost :active {
     color: var(--labels_important-active-labels-text-graphics);
     border-color: var(--labels_important-active-labels-text-graphics); }
+  .transaction-history-wrapper .ant-btn-ghost.active_search_button {
+    animation: shine 2s linear infinite alternate;
+    animation-fill-mode: both;
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    box-shadow: 0 0 8px 0.1px var(--base_wallet-sidebar-and-popup);
+    position: relative; }
+
+@keyframes shine {
+  10% {
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    box-shadow: 0 0 8px 0.1px var(--base_wallet-sidebar-and-popup);
+    transition-property: color, box-shadow;
+    transition-duration: 0.7s, 0.7s;
+    transition-timing-function: ease; }
+  100% {
+    color: var(--labels_important-active-labels-text-graphics);
+    box-shadow: 0 0 8px 0.1px var(--labels_secondary-inactive-label-text-graphics);
+    transition-property: color, box-shadow; } }
 
 .layout-mobile .tab_controller-wrapper {
   height: auto; }
