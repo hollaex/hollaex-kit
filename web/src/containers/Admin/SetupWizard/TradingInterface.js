@@ -129,9 +129,9 @@ const Features = ({ initialValues = {}, handleNext, updateConstants, kit }) => {
 					<div className="btn-container">
 						<Button htmlType="submit">Proceed</Button>
 					</div>
-					<span className="step-link" onClick={() => handleNext(4)}>
+					{/* <span className="step-link" onClick={() => handleNext(4)}>
 						Skip this step
-					</span>
+					</span> */}
 				</div>
 			</Form>
 		</div>
