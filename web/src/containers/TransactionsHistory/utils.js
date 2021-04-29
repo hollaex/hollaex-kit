@@ -69,11 +69,12 @@ export const generateOrderHistoryHeaders = (
 		{
 			stringId: 'PAIR',
 			label: STRINGS['PAIR'],
+			className: 'sticky-col',
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			renderCell: ({ symbol }, key, index) => {
 				return (
-					<td key={index} className="text-uppercase">
+					<td key={index} className="text-uppercase sticky-col">
 						{symbol}
 					</td>
 				);
@@ -315,9 +316,10 @@ export const generateTradeHeaders = (
 			label: STRINGS['PAIR'],
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
+			className: 'sticky-col',
 			renderCell: ({ symbol }, key, index) => {
 				return (
-					<td key={index} className="text-uppercase">
+					<td key={index} className="text-uppercase sticky-col">
 						{symbol}
 					</td>
 				);
@@ -570,6 +572,7 @@ export const generateWithdrawalsHeaders = (
 		{
 			stringId: 'CURRENCY',
 			label: STRINGS['CURRENCY'],
+			className: 'sticky-col',
 			key: 'currency',
 			exportToCsv: ({ currency }) => {
 				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
@@ -578,7 +581,7 @@ export const generateWithdrawalsHeaders = (
 			renderCell: ({ currency }, key, index) => {
 				const data = coins[currency] || DEFAULT_COIN_DATA;
 				return (
-					<td key={index} className="coin-cell">
+					<td key={index} className="coin-cell sticky-col">
 						<div className="d-flex align-items-center">
 							<Image
 								iconId={`${data.symbol.toUpperCase()}_ICON`}

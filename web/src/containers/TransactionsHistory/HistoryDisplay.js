@@ -98,6 +98,7 @@ const HistoryDisplay = (props) => {
 				<Loader />
 			) : (
 				<Table
+					className="transactions-history-table"
 					data={data}
 					count={count}
 					headers={headers}

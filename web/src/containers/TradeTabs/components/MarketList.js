@@ -34,7 +34,7 @@ const MarketList = ({
 				<table className="market-list__block-table">
 					<thead>
 						<tr className="table-bottom-border">
-							<th>
+							<th className="sticky-col">
 								<div>
 									<EditWrapper stringId="MARKETS_TABLE.MARKETS">
 										{STRINGS['MARKETS_TABLE.MARKETS']}
