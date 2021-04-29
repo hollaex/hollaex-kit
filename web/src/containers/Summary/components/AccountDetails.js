@@ -24,7 +24,7 @@ const AccountDetails = ({
 }) => {
 	return (
 		<div className="account-details-wrapper summary-content-txt">
-			<div>
+			<div className="account-details-text">
 				<EditWrapper stringId="SUMMARY.ACCOUNT_DETAILS_TXT_1">
 					<div>{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_1']}</div>
 				</EditWrapper>

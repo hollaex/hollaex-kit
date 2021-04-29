@@ -266,21 +266,6 @@ table th {
 		z-index: 1;
 	}
 
-	&.order-entry {
-		&.ant-select {
-			width: 100% !important;
-		}
-		.ant-select-selector {
-			padding-left: 3px !important;
-		}
-		.ant-select-selection-item {
-			padding: 0 !important;
-		}
-		.ant-select-arrow {
-			right: 3px;
-		}
-	}
-
 	.ant-select-arrow {
 		z-index: -1;
 	}
