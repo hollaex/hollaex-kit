@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { MobileBarWrapper } from '.';
 import MarketSelector from 'components/AppBar/MarketSelector';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import Image from 'components/Image';
 
 const renderMobileTab = ({
 	title,
@@ -42,6 +43,7 @@ export const MobileBarTabs = ({
 	pair,
 	goToPair,
 	goToMarkets,
+	icons: ICONS,
 }) => {
 	const [isMarketSelectorOpen, setIsMarketSelectorOpen] = useState(false);
 
@@ -52,6 +54,12 @@ export const MobileBarTabs = ({
 	const closeAddTabMenu = () => {
 		setIsMarketSelectorOpen(false);
 	};
+
+	let pair_base = '';
+	if (pair) {
+		const pairArray = pair.split('-');
+		pair_base = pairArray[0];
+	}
 
 	return (
 		<Fragment>
@@ -82,6 +90,16 @@ export const MobileBarTabs = ({
 						className="d-flex align-items-center ml-2"
 						onClick={toggleMarketSelector}
 					>
+						{pair_base && (
+							<Image
+								icon={
+									ICONS[`${pair_base.toUpperCase()}_ICON`]
+										? ICONS[`${pair_base.toUpperCase()}_ICON`]
+										: ICONS.DEFAULT_ICON
+								}
+								wrapperClassName="mobile-tab_market-indicator pt-3"
+							/>
+						)}
 						<span className="pt-2 trade-tab__market-selector pr-2">{pair}</span>
 						{isMarketSelectorOpen ? (
 							<CaretUpOutlined style={{ fontSize: '14px' }} />
