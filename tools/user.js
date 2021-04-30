@@ -49,7 +49,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, getKitSecrets, getKitCoins, isValidTierLevel, getKitTier } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier } = require('./common');
 const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -117,7 +117,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 				verificationCode.code,
 				{}
 			);
-			if (isString(opts.referral)) {
+			if (opts.referral && isString(opts.referral)) {
 				checkAffiliation(opts.referral, user.id);
 			}
 			return user;
@@ -361,31 +361,31 @@ const getUserByAffiliationCode = (affiliationCode) => {
 };
 
 const checkAffiliation = (affiliationCode, user_id) => {
-	let discount = 0; // default discount rate in percentage
+	// let discount = 0; // default discount rate in percentage
 	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
-			if (getKitSecrets().plugins.affiliation && getKitSecrets().plugins.affiliation.discount) {
-				discount = getKitSecrets().plugins.affiliation.discount;
+			if (referrer) {
+				return getModel('affiliation').create({
+					user_id,
+					referer_id: referrer.id
+				});
+			} else {
+				return;
 			}
-
-			return getModel('affiliation').create({
-				user_id,
-				referer_id: referrer.id
-			});
-		})
-		.then((affiliation) => {
-			return getModel('user').update(
-				{
-					discount
-				},
-				{
-					where: {
-						id: affiliation.user_id
-					},
-					fields: ['discount']
-				}
-			);
 		});
+		// .then((affiliation) => {
+		// 	return getModel('user').update(
+		// 		{
+		// 			discount
+		// 		},
+		// 		{
+		// 			where: {
+		// 				id: affiliation.user_id
+		// 			},
+		// 			fields: ['discount']
+		// 		}
+		// 	);
+		// });
 };
 
 const getAffiliationCount = (userId) => {
@@ -466,8 +466,7 @@ const getAllUsersAdmin = (opts = {
 							[Op.like]: `%${opts.search}%`
 						}
 					},
-					getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`),
-					...getKitCoins().map((coin) => getModel('sequelize').literal(`crypto_wallet ->> '${coin}'='${opts.search}'`))
+					getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`)
 				]
 			};
 		}
@@ -523,7 +522,7 @@ const getAllUsersAdmin = (opts = {
 				} else if (data[0].verification_level > 0 && data[0].network_id) {
 					const userNetworkData = await getNodeLib().getUser(data[0].network_id);
 					data[0].balance = userNetworkData.balance;
-					data[0].crypto_wallet = userNetworkData.crypto_wallet;
+					data[0].wallet = userNetworkData.wallet;
 					return { count, data };
 				}
 			}
@@ -535,18 +534,12 @@ const getAllUsersAdmin = (opts = {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
 				const flatData = users.data.map((user) => {
-					let crypto_wallet;
 					let id_data;
-					if (user.crypto_wallet) {
-						crypto_wallet = user.crypto_wallet;
-						user.crypto_wallet = {};
-					}
 					if (user.id_data) {
 						id_data = user.id_data;
 						user.id_data = {};
 					}
 					const result = flatten(user, { safe: true });
-					if (crypto_wallet) result.crypto_wallet = crypto_wallet;
 					if (id_data) result.id_data = id_data;
 					return result;
 				});
@@ -581,11 +574,11 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 				if (rawData) {
 					const networkData = await getNodeLib().getUser(user.network_id);
 					user.balance = networkData.balance;
-					user.crypto_wallet = networkData.crypto_wallet;
+					user.wallet = networkData.wallet;
 				} else {
 					const networkData = await getNodeLib().getUser(user.network_id);
 					user.dataValues.balance = networkData.balance;
-					user.dataValues.crypto_wallet = networkData.crypto_wallet;
+					user.dataValues.wallet = networkData.wallet;
 				}
 			}
 			return user;
@@ -953,7 +946,39 @@ const updateUserNote = (userId, note) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return user.update({ note }, { fields: ['note']});
+			return user.update({ note }, { fields: ['note'] });
+		});
+};
+
+const updateUserDiscount = (userId, discount) => {
+	if (discount < 0 || discount > 100) {
+		return reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 1`));
+	}
+
+	return getUserByKitId(userId, false)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			} else if (user.discount === discount) {
+				throw new Error(`User discount is already ${discount}`);
+			}
+			return all([
+				user.discount,
+				user.update({ discount }, { fields: ['discount'] })
+			]);
+		})
+		.then(([ previousDiscountRate, user ]) => {
+			if (user.discount > previousDiscountRate) {
+				sendEmail(
+					MAILTYPE.DISCOUNT_UPDATE,
+					user.email,
+					{
+						rate: user.discount
+					},
+					user.settings
+				);
+			}
+			return pick(user.dataValues, ['id', 'discount']);
 		});
 };
 
@@ -1229,14 +1254,18 @@ const setUsernameById = (userId, username) => {
 		});
 };
 
-const createUserCryptoAddressByNetworkId = (networkId, crypto) => {
+const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
+	network: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().createUserCryptoAddress(networkId, crypto);
+	return getNodeLib().createUserCryptoAddress(networkId, crypto, opts);
 };
 
-const createUserCryptoAddressByKitId = (kitId, crypto) => {
+const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
+	network: null
+}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
@@ -1244,7 +1273,7 @@ const createUserCryptoAddressByKitId = (kitId, crypto) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().createUserCryptoAddress(user.network_id, crypto);
+			return getNodeLib().createUserCryptoAddress(user.network_id, crypto, opts);
 		});
 };
 
@@ -1399,6 +1428,7 @@ module.exports = {
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
+	updateUserDiscount,
 	changeUserVerificationLevelById,
 	deactivateUserOtpById,
 	toggleFlaggedUserById,

@@ -5,7 +5,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
 const { verifyOtpBeforeAction } = require('./security');
-const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig } = require('./common');
+const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig, sleep } = require('./common');
 const {
 	INVALID_OTP_CODE,
 	INVALID_WITHDRAWAL_TOKEN,
@@ -16,7 +16,9 @@ const {
 	UPGRADE_VERIFICATION_LEVEL,
 	NO_DATA_FOR_CSV,
 	USER_NOT_FOUND,
-	USER_NOT_REGISTERED_ON_NETWORK
+	USER_NOT_REGISTERED_ON_NETWORK,
+	INVALID_NETWORK,
+	NETWORK_REQUIRED
 } = require(`${SERVER_PATH}/messages`);
 const { getUserByKitId } = require('./user');
 const { findTier } = require('./tier');
@@ -27,10 +29,18 @@ const { all, reject } = require('bluebird');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const moment = require('moment');
 const math = require('mathjs');
-const { each } = require('lodash');
 const { parse } = require('json2csv');
+const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 
-const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, domain) => {
+const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
+	network: null,
+	otpCode: null,
+	ip: null,
+	domain: null
+}) => {
+
+	const coinConfiguration = getKitCoin(currency);
+
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -39,11 +49,22 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 		return reject(new Error(INVALID_AMOUNT(amount)));
 	}
 
-	if (!getKitCoin(currency).allow_withdrawal) {
+	if (!coinConfiguration.allow_withdrawal) {
 		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
 	}
 
-	return verifyOtpBeforeAction(id, otpCode)
+	if (
+		coinConfiguration.network
+		&& !coinConfiguration.network.split(',').includes(opts.network)
+	) {
+		if (!opts.network) {
+			return reject(new Error(NETWORK_REQUIRED(currency, coinConfiguration.network)));
+		} else {
+			return reject(new Error(INVALID_NETWORK(opts.network, coinConfiguration.network)));
+		}
+	}
+
+	return verifyOtpBeforeAction(id, opts.otpCode)
 		.then((validOtp) => {
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
@@ -73,27 +94,31 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, otpCode, ip, 
 		.then(async ([ user, tier ]) => {
 			const limit = tier.withdrawal_limit;
 			if (limit === -1) {
-				throw new Error('Withdrawals are disabled for this coin');
+				throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 			} else if (limit > 0) {
-				let belowLimit = await withdrawalBelowLimit(user.network_id, currency, limit, amount);
-
-				if (!belowLimit) {
-					throw new Error('Amount exceeds 24 hour withdrawal limit');
-				}
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 			}
+
+			let fee = coinConfiguration.withdrawal_fee;
+
+			if (opts.network && coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[opts.network]) {
+				fee = coinConfiguration.withdrawal_fees[opts.network];
+			}
+
 			return withdrawalRequestEmail(
 				user,
 				{
 					user_id: id,
 					email: user.email,
 					amount,
-					fee: getKitCoin(currency).withdrawal_fee,
+					fee,
 					transaction_id: uuid(),
 					address,
-					currency
+					currency,
+					network: opts.network
 				},
-				domain,
-				ip
+				opts.domain,
+				opts.ip
 			);
 		});
 };
@@ -105,17 +130,18 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
-			const { email, amount, fee, currency, address } = data;
+			const { email, amount, fee, currency, address, network } = data;
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
 				{
-					amount: amount,
-					fee: fee,
-					currency: currency,
+					amount,
+					fee,
+					currency,
 					transaction_id: token,
-					address: address,
-					ip: ip
+					address,
+					ip,
+					network
 				},
 				user.settings,
 				domain
@@ -170,7 +196,9 @@ const checkTransaction = (currency, transactionId, address, isTestnet = false) =
 	return getNodeLib().checkTransaction(currency, transactionId, address, { isTestnet });
 };
 
-const performWithdrawal = (userId, address, currency, amount, fee) => {
+const performWithdrawal = (userId, address, currency, amount, opts = {
+	network: null
+}) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -191,38 +219,164 @@ const performWithdrawal = (userId, address, currency, amount, fee) => {
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				let belowLimit = await withdrawalBelowLimit(user.network_id, currency, limit, amount);
-
-				if (!belowLimit) {
-					throw new Error('Amount exceeds 24 hour withdrawal limit');
-				}
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 			}
-			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, fee);
+			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
 };
 
-const performWithdrawalNetwork = (networkId, address, currency, amount, fee) => {
-	return getNodeLib().performWithdrawal(networkId, address, currency, amount, fee);
+const performWithdrawalNetwork = (networkId, address, currency, amount, opts) => {
+	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
-	let accumulatedAmount = amount;
+const get24HourAccumulatedWithdrawals = async (userId) => {
 	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
-		currency,
 		dismissed: false,
 		rejected: false,
 		startDate: moment().subtract(24, 'hours').toISOString()
 	});
-	each(withdrawals.data, (withdrawal) => {
-		accumulatedAmount = math.number(math.add(math.bignumber(accumulatedAmount), math.bignumber(withdrawal.amount)));
-	});
 
-	const convertedAmount = await getNodeLib().getOraclePrices([currency], {
+	const withdrawalData = withdrawals.data;
+
+	if (withdrawals.count > 50) {
+		const numofPages = Math.ceil(withdrawals.count / 50);
+		for (let i = 2; i <= numofPages; i++) {
+			await sleep(500);
+
+			const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
+				dismissed: false,
+				rejected: false,
+				page: i,
+				startDate: moment().subtract(24, 'hours').toISOString()
+			});
+
+			withdrawalData.push(...withdrawals.data);
+		}
+	}
+
+	loggerWithdrawals.debug(
+		'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+		'withdrawals made within last 24 hours',
+		withdrawals.count
+	);
+
+	const withdrawalAmount = {};
+
+	for (let withdrawal of withdrawalData) {
+		if (withdrawalAmount[withdrawal.currency] !== undefined) {
+			withdrawalAmount[withdrawal.currency] = math.number(math.add(math.bignumber(withdrawalAmount[withdrawal.currency]), math.bignumber(withdrawal.amount)));
+		} else {
+			withdrawalAmount[withdrawal.currency] = withdrawal.amount;
+		}
+	}
+
+	let totalWithdrawalAmount = 0;
+
+	for (let withdrawalCurrency in withdrawalAmount) {
+		loggerWithdrawals.debug(
+			'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+			`accumulated ${withdrawalCurrency} withdrawal amount`,
+			withdrawalAmount[withdrawalCurrency]
+		);
+
+		await sleep(500);
+
+		const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
+			quote: getKitConfig().native_currency,
+			amount: withdrawalAmount[withdrawalCurrency]
+		});
+
+		if (convertedAmount[withdrawalCurrency] !== -1) {
+			loggerWithdrawals.debug(
+				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+				`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
+				convertedAmount[withdrawalCurrency]
+			);
+
+			totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
+		} else {
+			loggerWithdrawals.debug(
+				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+				`No conversion found between ${withdrawalCurrency} and ${getKitConfig().native_currency}`
+			);
+		}
+	}
+
+	return totalWithdrawalAmount;
+};
+
+const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		'amount being withdrawn',
+		amount,
+		'currency',
+		currency,
+		'limit',
+		limit,
+		'userId',
+		userId,
+	);
+
+	let totalWithdrawalAmount = 0;
+
+	const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
 		quote: getKitConfig().native_currency,
-		amount: accumulatedAmount
+		amount
 	});
 
-	return convertedAmount[currency] < limit;
+
+	if (convertedWithdrawalAmount[currency] !== -1) {
+		loggerWithdrawals.debug(
+			'toolsLib/wallet/withdrawalBelowLimit',
+			`${currency} withdrawal request amount converted to ${getKitConfig().native_currency}`,
+			convertedWithdrawalAmount[currency]
+		);
+
+		totalWithdrawalAmount = math.number(
+			math.add(
+				math.bignumber(totalWithdrawalAmount),
+				math.bignumber(convertedWithdrawalAmount[currency])
+			)
+		);
+	} else {
+		loggerWithdrawals.debug(
+			'toolsLib/wallet/withdrawalBelowLimit',
+			`No conversion found between ${currency} and ${getKitConfig().native_currency}`
+		);
+		return;
+	}
+
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
+
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		`total 24 hour withdrawn amount converted to ${getKitConfig().native_currency}`,
+		last24HourWithdrawalAmount
+	);
+
+	totalWithdrawalAmount = math.number(
+		math.add(
+			math.bignumber(totalWithdrawalAmount),
+			math.bignumber(last24HourWithdrawalAmount)
+		)
+	);
+
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		'total 24 hour withdrawn amount after performing current withdrawal',
+		totalWithdrawalAmount,
+		'24 hour withdrawal limit',
+		limit
+	);
+
+	if (totalWithdrawalAmount > limit) {
+		throw new Error(
+			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${getKitConfig().native_currency}. Withdrawn amount: ${last24HourWithdrawalAmount} ${getKitConfig().native_currency}. Request amount: ${convertedWithdrawalAmount[currency]} ${getKitConfig().native_currency}`
+		);
+	}
+
+	return;
 };
 
 const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true) => {
@@ -296,6 +450,8 @@ const getUserTransactionsByKitId = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address,
 	format
 ) => {
 	let promiseQuery;
@@ -320,7 +476,9 @@ const getUserTransactionsByKitId = (
 						orderBy,
 						order,
 						startDate,
-						endDate
+						endDate,
+						transactionId,
+						address
 					});
 				});
 		} else if (type === 'withdrawal') {
@@ -343,7 +501,9 @@ const getUserTransactionsByKitId = (
 						orderBy,
 						order,
 						startDate,
-						endDate
+						endDate,
+						transactionId,
+						address
 					});
 				});
 		}
@@ -361,7 +521,9 @@ const getUserTransactionsByKitId = (
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				transactionId,
+				address
 			});
 		} else if (type === 'withdrawal') {
 			promiseQuery = getNodeLib().getWithdrawals({
@@ -376,7 +538,9 @@ const getUserTransactionsByKitId = (
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				transactionId,
+				address
 			});
 		}
 	}
@@ -408,9 +572,29 @@ const getUserDepositsByKitId = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address,
 	format
 ) => {
-	return getUserTransactionsByKitId('deposit', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+	return getUserTransactionsByKitId(
+		'deposit',
+		kitId,
+		currency,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		transactionId,
+		address,
+		format
+	);
 };
 
 const getUserWithdrawalsByKitId = (
@@ -427,9 +611,29 @@ const getUserWithdrawalsByKitId = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address,
 	format
 ) => {
-	return getUserTransactionsByKitId('withdrawal', kitId, currency, status, dismissed, rejected, processing, waiting, limit, page, orderBy, order, startDate, endDate, format);
+	return getUserTransactionsByKitId(
+		'withdrawal',
+		kitId,
+		currency,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		transactionId,
+		address,
+		format
+	);
 };
 
 const getExchangeDeposits = (
@@ -445,6 +649,8 @@ const getExchangeDeposits = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address
 ) => {
 	return getNodeLib().getDeposits({
 		currency,
@@ -458,7 +664,9 @@ const getExchangeDeposits = (
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		transactionId,
+		address
 	});
 };
 
@@ -475,6 +683,8 @@ const getExchangeWithdrawals = (
 	order,
 	startDate,
 	endDate,
+	transactionId,
+	address
 ) => {
 	return getNodeLib().getWithdrawals({
 		currency,
@@ -488,11 +698,21 @@ const getExchangeWithdrawals = (
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		transactionId,
+		address
 	});
 };
 
-const mintAssetByKitId = (kitId, currency, amount, description, transaction_id) => {
+const mintAssetByKitId = (
+	kitId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
@@ -500,15 +720,43 @@ const mintAssetByKitId = (kitId, currency, amount, description, transaction_id) 
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().mintAsset(user.network_id, currency, amount, { description, transaction_id });
+			return getNodeLib().mintAsset(user.network_id, currency, amount, opts);
 		});
 };
 
-const mintAssetByNetworkId = (networkId, currency, amount, description, transaction_id) => {
-	return getNodeLib().mintAsset(networkId, currency, amount, { description, transaction_id });
+const mintAssetByNetworkId = (
+	networkId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
+	return getNodeLib().mintAsset(networkId, currency, amount, opts);
 };
 
-const burnAssetByKitId = (kitId, currency, amount, description, transaction_id) => {
+const updatePendingMint = (
+	transactionId,
+	opts = {
+		status: null,
+		dismissed: null,
+		rejected: null,
+		updatedTransactionId: null
+	}
+) => {
+	return getNodeLib().updatePendingMint(transactionId, opts);
+};
+
+const burnAssetByKitId = (
+	kitId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
 			if (!user) {
@@ -516,12 +764,32 @@ const burnAssetByKitId = (kitId, currency, amount, description, transaction_id) 
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().burnAsset(user.network_id, currency, amount, { description, transaction_id });
+			return getNodeLib().burnAsset(user.network_id, currency, amount, opts);
 		});
 };
 
-const burnAssetByNetworkId = (networkId, currency, amount, description, transaction_id) => {
-	return getNodeLib().burnAsset(networkId, currency, amount, { description, transaction_id });
+const burnAssetByNetworkId = (
+	networkId,
+	currency,
+	amount,
+	opts = {
+		description: null,
+		transactionId: null,
+		status: null
+	}) => {
+	return getNodeLib().burnAsset(networkId, currency, amount, opts);
+};
+
+const updatePendingBurn = (
+	transactionId,
+	opts = {
+		status: null,
+		dismissed: null,
+		rejected: null,
+		updatedTransactionId: null
+	}
+) => {
+	return getNodeLib().updatePendingBurn(transactionId, opts);
 };
 
 module.exports = {
@@ -544,5 +812,7 @@ module.exports = {
 	mintAssetByNetworkId,
 	burnAssetByKitId,
 	burnAssetByNetworkId,
-	getKitBalance
+	getKitBalance,
+	updatePendingMint,
+	updatePendingBurn
 };

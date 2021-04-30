@@ -13,19 +13,12 @@
 </p>
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`github_username`, `repo_name`, `twitter_handle`, `email`, `project_title`, `project_description`
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
 ### Prerequisites
 
-This Tools Library will only work with the [HollaEx Kit]().
+This Tools Library will only work with the [HollaEx Kit](https://github.com/bitholla/hollaex-kit).
 
 ### Installation
 
@@ -42,8 +35,6 @@ This Tools Library will only work with the [HollaEx Kit]().
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 ### Importing Library
 
@@ -70,13 +61,13 @@ const tools = require('hollaex-tools-lib');
 ### Full list of functions
 
 <!-- TABLE OF CONTENTS -->
-- [Common Functions](####-Common-functions)
-- [User Functions](####-User-functions)
-- [Order Functions](####-Order-functions)
-- [Wallet Functions](####-Wallet-functions)
-- [Security Functions](####-Security-functions)
-- [Tier Functions](####-Tier-functions)
-- [Database Functions](####-Database-functions)
+- [Common Functions](####-common-functions)
+- [User Functions](####-user-functions)
+- [Order Functions](####-order-functions)
+- [Wallet Functions](####-wallet-functions)
+- [Security Functions](####-security-functions)
+- [Tier Functions](####-tier-functions)
+- [Database Functions](####-database-functions)
 
 #### Common functions
 

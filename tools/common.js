@@ -59,12 +59,7 @@ const getKitTiers = () => {
 };
 
 const getKitTier = (tier) => {
-	const result = GET_TIERS()[tier];
-	if (!result) {
-		throw new Error('Tier does not exist');
-	} else {
-		return result;
-	}
+	return GET_TIERS()[tier];
 };
 
 const isValidTierLevel = (level) => {
@@ -203,7 +198,14 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (newKitConfig[key] === undefined) {
 			joinedKitConfig[key] = existingKitConfig[key];
 		} else {
-			if (key === 'strings' || key === 'icons' || key === 'meta' || key === 'color') {
+			if (
+				key === 'strings'
+				|| key === 'icons'
+				|| key === 'meta'
+				|| key === 'color'
+				|| key === 'injected_values'
+				|| key === 'injected_html'
+			) {
 				joinedKitConfig[key] = newKitConfig[key];
 			} else if (isPlainObject(existingKitConfig[key])) {
 				joinedKitConfig[key] = { ...existingKitConfig[key], ...newKitConfig[key] };
@@ -456,6 +458,10 @@ const isEmail = (email) => {
 	return isValidEmail(email);
 };
 
+const sleep = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -496,5 +502,6 @@ module.exports = {
 	getTickers,
 	getTradesHistory,
 	sendEmail,
-	isEmail
+	isEmail,
+	sleep
 };
