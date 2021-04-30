@@ -42,7 +42,8 @@ $dropdown-option--padding: 0.25rem;
 }
 
 .dropdown-option {
-	padding: $dropdown-option--padding;
+	// padding: $dropdown-option--padding;
+	padding: 0.25rem 1rem;
 	display: flex;
 	align-items: center;
 	> .icon {
@@ -72,6 +73,17 @@ $dropdown-option--padding: 0.25rem;
 	.dropdown-option {
 		> .icon {
 			margin-left: $dropdown-option--padding;
+		}
+	}
+}
+
+.layout-mobile {
+	.dropdown-option {
+		> .icon {
+			max-height: 1.8rem;
+		}
+		.option-icon {
+			width: 1.8rem;
 		}
 	}
 }

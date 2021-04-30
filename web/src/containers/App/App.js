@@ -7,9 +7,11 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
-import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+// import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+// import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
+import AppMenuSidebar from '../../components/AppMenuSidebar';
+import { addElements, injectHTML } from 'utils/script';
 
 import {
 	NOTIFICATIONS,
@@ -20,6 +22,7 @@ import {
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
 } from '../../actions/appActions';
+import STRINGS from 'config/localizedStrings';
 
 import {
 	getThemeClass,
@@ -31,7 +34,7 @@ import { getTokenTimestamp, isLoggedIn, isAdmin } from '../../utils/token';
 import {
 	AppBar,
 	AppMenuBar,
-	Sidebar,
+	// Sidebar,
 	SidebarBottom,
 	Dialog,
 	Notification,
@@ -79,6 +82,7 @@ class App extends Component {
 		limitFilledOnOrder: '',
 		sidebarFitHeight: false,
 		isSidebarOpen: getSideBarState(),
+		activeMenu: '',
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -95,6 +99,7 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
+		const { injected_values, injected_html } = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -108,10 +113,15 @@ class App extends Component {
 			this.handleFitHeight(this.props.location.pathname);
 		}
 
+		this.setActiveMenu();
+
 		setTimeout(
 			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
 			5000
 		);
+
+		addElements(injected_values, 'body');
+		injectHTML(injected_html, 'body');
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -157,6 +167,14 @@ class App extends Component {
 				() => this.props.setPricesAndAsset(nextProps.balance, nextProps.coins),
 				15000
 			);
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		if (
+			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
+		) {
+			this.setActiveMenu();
 		}
 	}
 
@@ -207,16 +225,54 @@ class App extends Component {
 		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
 	};
 
+	setActiveMenu = () => {
+		const { location: { pathname = '' } = {} } = this.props;
+
+		let activeMenu;
+		if (pathname.includes('quick-trade')) {
+			activeMenu = 'quick-trade';
+		} else {
+			activeMenu = pathname;
+		}
+		this.setState({ activeMenu });
+	};
+
+	handleMenuChange = (path = '', cb) => {
+		const { router, pairs } = this.props;
+
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		} else {
+			pair = this.props.pair;
+		}
+
+		switch (path) {
+			case 'logout':
+				this.logout();
+				break;
+			case 'help':
+				this.props.openHelpfulResourcesForm();
+				break;
+			case 'quick-trade':
+				router.push(`/quick-trade/${pair}`);
+				break;
+			default:
+				router.push(path);
+		}
+
+		this.setState({ activePath: path }, () => {
+			if (cb) {
+				cb();
+			}
+		});
+	};
+
 	goToPage = (path) => {
 		if (this.props.location.pathname !== path) {
 			this.props.router.push(path);
 		}
 	};
-
-	goToAccountPage = () => this.goToPage('/account');
-	goToVerificationPage = () => this.goToPage('/verification');
-	goToDashboard = () => this.goToPage('/');
-	goToXHTTrade = () => this.goToPage('/trade/xht-usdt');
 
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
@@ -318,6 +374,19 @@ class App extends Component {
 						iconPath={ICONS['RED_WARNING']}
 						onClick={this.onCloseDialog}
 						text={data}
+					/>
+				);
+			case NOTIFICATIONS.UNDEFINED_ERROR:
+				return (
+					<MessageDisplay
+						iconId="UNDEFINED_ERROR"
+						iconPath={ICONS['UNDEFINED_ERROR']}
+						onClick={() => window.location.reload(false)}
+						buttonLabel={STRINGS['REFRESH']}
+						text={STRINGS['UNDEFINED_ERROR']}
+						title={STRINGS['UNDEFINED_ERROR_TITLE']}
+						titleId="UNDEFINED_ERROR_TITLE"
+						style={{ maxWidth: '40rem' }}
 					/>
 				);
 			case CONTACT_FORM:
@@ -452,37 +521,53 @@ class App extends Component {
 			// verification_level,
 			activeLanguage,
 			// openContactForm,
-			openHelpfulResourcesForm,
 			activeTheme,
-			unreadMessages,
+			// unreadMessages,
 			router,
 			location,
 			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
-			handleEditMode,
 			// user,
 			features,
 			isReady: isSocketDataReady,
 			pairsTradesFetched,
+			icons: ICONS,
+			menuItems,
 		} = this.props;
 
 		const {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
-			sidebarFitHeight,
-			isSidebarOpen,
+			// sidebarFitHeight,
+			// isSidebarOpen,
 		} = this.state;
 
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
-		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
+		const shouldCloseOnOverlayClick =
+			activeNotification.type !== CONTACT_FORM &&
+			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR;
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
-		const isMenubar = true;
+
+		const isHome = this.props.location.pathname === '/';
+		const isMenubar = !isHome;
+		const isMenuSider =
+			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
+		const showFooter = !isMobile || isHome;
+
+		const homeBackgroundProps = isHome
+			? {
+					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
+			: {};
+
 		return (
 			<ThemeProvider>
 				<div>
@@ -525,11 +610,12 @@ class App extends Component {
 								fontClass,
 								languageClasses[0],
 								{
-									'layout-mobile': isMobile,
-									'layout-desktop': isBrowser,
+									'layout-mobile': isMobile && !isHome,
+									'layout-desktop': isBrowser || isHome,
 									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
+							style={homeBackgroundProps}
 						>
 							<EventListener
 								target="window"
@@ -540,19 +626,23 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								<AppBar
-									router={router}
-									location={location}
-									goToDashboard={this.goToDashboard}
-									logout={this.logout}
-									activePath={activePath}
-									onHelp={openHelpfulResourcesForm}
-								>
-									{isBrowser && isMenubar && isLoggedIn() && (
-										<AppMenuBar router={router} location={location} />
-									)}
-								</AppBar>
-								{isBrowser && (
+								{!isHome && (
+									<AppBar
+										router={router}
+										menuItems={menuItems}
+										activePath={this.state.activeMenu}
+										onMenuChange={this.handleMenuChange}
+									>
+										{isBrowser && isMenubar && isLoggedIn() && (
+											<AppMenuBar
+												menuItems={menuItems}
+												activePath={this.state.activeMenu}
+												onMenuChange={this.handleMenuChange}
+											/>
+										)}
+									</AppBar>
+								)}
+								{isBrowser && !isHome && (
 									<PairTabs
 										activePath={activePath}
 										location={location}
@@ -566,9 +656,17 @@ class App extends Component {
 										'justify-content-between',
 										{
 											'app_container-secondary-content': isMenubar,
+											no_bottom_navigation: isHome,
 										}
 									)}
 								>
+									{isMenuSider && (
+										<AppMenuSidebar
+											menuItems={menuItems}
+											activePath={this.state.activeMenu}
+											onMenuChange={this.handleMenuChange}
+										/>
+									)}
 									<div
 										className={classnames(
 											'app_container-main',
@@ -577,6 +675,7 @@ class App extends Component {
 											'justify-content-between',
 											{
 												'overflow-y': !isMobile,
+												no_bottom_navigation: isHome,
 											}
 										)}
 									>
@@ -587,7 +686,7 @@ class App extends Component {
 											isReady={pairsTradesFetched}
 										/>
 									</div>
-									{isBrowser && (
+									{/* {isBrowser && !isHome && (
 										<div
 											className={classnames('app_container-sidebar', {
 												'close-sidebar': !isSidebarOpen,
@@ -623,14 +722,23 @@ class App extends Component {
 												sidebarFitHeight={sidebarFitHeight}
 											/>
 										</div>
-									)}
+									)} */}
 									<Dialog
-										isOpen={dialogIsOpen}
+										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"
-										className={classnames('app-dialog', {
-											'app-dialog-flex':
-												activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO,
-										})}
+										className={classnames(
+											'app-dialog',
+											{
+												'app-dialog-flex':
+													activeNotification.type ===
+													NOTIFICATIONS.DEPOSIT_INFO,
+											},
+											{
+												full:
+													activeNotification.type ===
+													NOTIFICATIONS.UNDEFINED_ERROR,
+											}
+										)}
 										onCloseDialog={this.onCloseDialog}
 										shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 										theme={activeTheme}
@@ -643,7 +751,9 @@ class App extends Component {
 													!isMobile) ||
 												(activeNotification.type === NOTIFICATIONS.ORDERS &&
 													!isMobile) ||
-												activeNotification.type === NOTIFICATIONS.ERROR
+												activeNotification.type === NOTIFICATIONS.ERROR ||
+												activeNotification.type ===
+													NOTIFICATIONS.UNDEFINED_ERROR
 											)
 										}
 										compressed={
@@ -659,7 +769,7 @@ class App extends Component {
 												// activeTheme
 											)}
 									</Dialog>
-									{!isMobile && features && features.chat && (
+									{!isMobile && !isHome && features && features.chat && (
 										<ChatComponent
 											activeLanguage={activeLanguage}
 											minimized={chatIsClosed}
@@ -668,7 +778,7 @@ class App extends Component {
 										/>
 									)}
 								</div>
-								{isMobile && (
+								{isMobile && !isHome && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
 											isLogged={isLoggedIn()}
@@ -697,17 +807,13 @@ class App extends Component {
 							}
 						)}
 					>
-						{!isMobile && (
+						{showFooter && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>
 				</div>
 				{isAdmin() && isBrowser && (
-					<OperatorControls
-						onChangeEditMode={handleEditMode}
-						editMode={isEditMode}
-						initialData={this.props.location}
-					/>
+					<OperatorControls initialData={this.props.location} />
 				)}
 			</ThemeProvider>
 		);

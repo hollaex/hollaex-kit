@@ -1,4 +1,5 @@
-import 'babel-polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import { hash } from 'rsvp';
 import { Provider } from 'react-redux';
@@ -10,6 +11,7 @@ import ConfigProvider from 'components/ConfigProvider';
 import EditProvider from 'components/EditProvider';
 import defaultConfig from 'config/project.config';
 import './config/initialize';
+import { addElements, injectHTML } from 'utils/script';
 
 import 'flag-icon-css/css/flag-icon.min.css';
 import 'react-dates/initialize';
@@ -17,7 +19,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
 import store from './store';
-import routes from './routes';
+import { generateRoutes } from './routes';
 import './index.css';
 import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disable-line
 
@@ -33,7 +35,15 @@ import {
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
-import { requestConstant } from 'actions/appActions';
+import {
+	requestConstant,
+	setHomePageSetting,
+	setInjectedValues,
+	setInjectedHTML,
+	requestPlugins,
+	setWebViews,
+	setPlugins,
+} from 'actions/appActions';
 
 import { version, name } from '../package.json';
 import { API_URL } from './config/constants';
@@ -71,6 +81,9 @@ const getConfigs = async () => {
 		setup_completed,
 		native_currency,
 		logo_image,
+		features: { home_page = false } = {},
+		injected_values = [],
+		injected_html = {},
 	} = kitData;
 
 	kitData['sections'] = sections;
@@ -107,25 +120,44 @@ const getConfigs = async () => {
 	setValidLanguages(valid_languages);
 	setExchangeInitialized(initialized);
 	setSetupCompleted(setup_completed);
+	store.dispatch(setHomePageSetting(home_page));
+	store.dispatch(setInjectedValues(injected_values));
+	store.dispatch(setInjectedHTML(injected_html));
 
-	return merge({}, defaultConfig, remoteConfigs, { coin_icons });
+	const { data = {} } = await requestPlugins();
+	if (data.data && data.data.length !== 0) {
+		store.dispatch(setPlugins(data.data));
+		store.dispatch(setWebViews(data.data));
+	}
+
+	const appConfigs = merge({}, defaultConfig, remoteConfigs, { coin_icons });
+
+	return [appConfigs, injected_values, injected_html];
 };
 
-const bootstrapApp = (appConfig) => {
+const bootstrapApp = (appConfig, injected_values, injected_html) => {
 	const {
 		icons: {
 			dark: { EXCHANGE_FAV_ICON = '/favicon.ico' },
 		},
 	} = appConfig;
+	addElements(injected_values, 'head');
+	injectHTML(injected_html, 'head');
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	initializeStrings();
 	// window.appConfig = { ...appConfig }
+	const {
+		app: { remoteRoutes },
+	} = store.getState();
 
 	render(
 		<Provider store={store}>
 			<EditProvider>
 				<ConfigProvider initialConfig={appConfig}>
-					<Router routes={routes} history={browserHistory} />
+					<Router
+						routes={generateRoutes(remoteRoutes)}
+						history={browserHistory}
+					/>
 				</ConfigProvider>
 			</EditProvider>
 		</Provider>,
@@ -133,9 +165,17 @@ const bootstrapApp = (appConfig) => {
 	);
 };
 
-getConfigs()
-	.then(bootstrapApp)
-	.catch((err) => console.error('Initialization failed!\n', err));
+const initialize = async () => {
+	try {
+		const [configs, injected_values, injected_html] = await getConfigs();
+		bootstrapApp(configs, injected_values, injected_html);
+	} catch (err) {
+		console.error('Initialization failed!\n', err);
+		setTimeout(initialize, 3000);
+	}
+};
+
+initialize().then(() => console.info('Successfully Initialized'));
 
 // import registerServiceWorker from './registerServiceWorker'
 // registerServiceWorker();

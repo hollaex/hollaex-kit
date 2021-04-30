@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect';
 
 import renderFields from '../../components/Form/factoryFields';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import { required, username } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
@@ -19,6 +19,7 @@ export const generateUsernameFormValues = (disabled = false) => ({
 		placeholder: STRINGS['USERNAME_PLACEHOLDER'],
 		disabled,
 		fullWidth: isMobile,
+		ishorizontalfield: true,
 	},
 });
 
@@ -40,26 +41,39 @@ class Form extends Component {
 			error,
 			valid,
 			formFields,
+			ICONS,
 		} = this.props;
 		return (
-			<form onSubmit={handleSubmit}>
-				{renderFields(formFields)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-				{!formFields.username.disabled && (
-					<FieldError
-						className="warning_text mb-4"
-						displayError={true}
-						error={STRINGS['USERNAME_WARNING']}
-						stringId="USERNAME_WARNING"
+			<form onSubmit={handleSubmit} className="settings-form-wrapper">
+				<div className="settings-form">
+					<IconTitle
+						stringId="USER_SETTINGS.TITLE_CHAT"
+						text={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+						textType="title"
+						iconPath={ICONS['SETTING_CHAT_ICON']}
 					/>
-				)}
-				<EditWrapper stringId="SETTING_BUTTON" />
-				<Button
-					label={STRINGS['SETTING_BUTTON']}
-					disabled={pristine || submitting || !valid}
-				/>
+					<div className="pr-4">
+						{renderFields(formFields)}
+						{error && (
+							<div className="warning_text">{getErrorLocalized(error)}</div>
+						)}
+						{!formFields.username.disabled && (
+							<FieldError
+								className="warning_text mb-4"
+								displayError={true}
+								error={STRINGS['USERNAME_WARNING']}
+								stringId="USERNAME_WARNING"
+							/>
+						)}
+					</div>
+				</div>
+				<div className="d-flex align-items-center justify-content-center">
+					<EditWrapper stringId="SETTING_BUTTON" />
+					<Button
+						label={STRINGS['SETTING_BUTTON']}
+						disabled={pristine || submitting || !valid}
+					/>
+				</div>
 			</form>
 		);
 	}

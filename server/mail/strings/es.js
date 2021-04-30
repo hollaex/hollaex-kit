@@ -156,10 +156,10 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
-			`Usted hizo una solicitud de retiro de ${amount} ${currency.toUpperCase()} a la dirección  ${address}. El estado de su retirada está pendiente y se procesará en breve.`,
-		COMPLETED: (amount, address, currency) =>
-			`Su solicitud de retirada de ${amount} ${currency.toUpperCase()} se está procesando y transfiriendo a la dirección ${address}.`,
+		PENDING: (amount, currency) =>
+			`Usted hizo una solicitud de retiro de ${amount} ${currency.toUpperCase()}. El estado de su retirada está pendiente y se procesará en breve.`,
+		COMPLETED: (amount, currency) =>
+			`Su solicitud de retirada de ${amount} ${currency.toUpperCase()} se está procesando.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Estado: ${status}`,
@@ -180,10 +180,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Dirección: ${address}`,
-		5: 'Para confirmar esta retirada, por favor haga clic en el botón de abajo.',
-		6: 'Confirmar',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'Para confirmar esta retirada, por favor haga clic en el botón de abajo.',
+		7: 'Confirmar',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -273,6 +274,15 @@ const SMS = {
 		`Su retiro de ${currency.toUpperCase()} de la cantidad de ${amount} fue confirmado`
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -293,5 +303,6 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	DISCOUNTUPDATE
 };

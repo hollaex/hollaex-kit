@@ -30,6 +30,7 @@ export const NOTIFICATIONS = {
 	STAKE_TOKEN: 'STAKE_TOKEN',
 	DEPOSIT_INFO: 'DEPOSIT_INFO',
 	XHT_SUCCESS_ACCESS: 'XHT_SUCCESS_ACCESS',
+	UNDEFINED_ERROR: 'UNDEFINED_ERROR',
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -59,6 +60,10 @@ export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
 export const SET_CONFIG_LEVEL = 'SET_CONFIG_LEVEL';
 export const ADD_TO_FAVOURITES = 'ADD_TO_FAVOURITES';
 export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
+export const CHANGE_HOME_PAGE_SETTING = 'CHANGE_HOME_PAGE_SETTING';
+export const SET_WEB_VIEWS = 'SET_WEB_VIEWS';
+export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
+export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -250,6 +255,15 @@ export const setPlugins = (enabledPlugins) => {
 	};
 };
 
+export const setWebViews = (enabledPlugins) => {
+	return {
+		type: SET_WEB_VIEWS,
+		payload: {
+			enabledPlugins,
+		},
+	};
+};
+
 export const setInfo = (info) => ({
 	type: SET_INFO,
 	payload: {
@@ -363,5 +377,20 @@ export const addToFavourites = (payload) => ({
 
 export const removeFromFavourites = (payload) => ({
 	type: REMOVE_FROM_FAVOURITES,
+	payload,
+});
+
+export const setHomePageSetting = (home_page = false) => ({
+	type: CHANGE_HOME_PAGE_SETTING,
+	payload: home_page,
+});
+
+export const setInjectedValues = (payload) => ({
+	type: SET_INJECTED_VALUES,
+	payload,
+});
+
+export const setInjectedHTML = (payload) => ({
+	type: SET_INJECTED_HTML,
 	payload,
 });

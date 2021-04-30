@@ -76,6 +76,10 @@
 					background-color: $app-light-background;
 					color: $colors-black;
 				}
+				.td-chart {
+					width: 150px;
+					height: 50px;
+				}
 			}
 
 			.table-bottom-border td,
@@ -113,6 +117,8 @@
 			.market-list__block-table {
 				th {
 					font-family: $raleway--font-family;
+					vertical-align: middle;
+					padding: 0.5rem;
 				}
 				th,
 				td {
@@ -142,6 +148,41 @@
 				}
 				.table-icon {
 					padding-left: 0.5rem;
+				}
+			}
+		}
+	}
+}
+
+.layout-mobile {
+	.market-list__container {
+		.market-list__block {
+			overflow-x: auto;
+			position: relative;
+			.market-list__block-table {
+				thead {
+					font-size: 1.3rem !important;
+				}
+				.table-row {
+					td {
+						padding: 0.5rem;
+						min-width: 10rem;
+					}
+					font-size: 1.3rem !important;
+					.td-chart {
+						min-width: 15rem;
+						padding: 0 !important;
+					}
+				}
+				.sticky-col {
+					position: -webkit-sticky;
+					position: sticky;
+					background-color: $app-sidebar-background;
+					left: 0;
+					width: 12rem !important;
+					min-width: 12rem !important;
+					max-width: 12rem !important;
+					z-index: 1;
 				}
 			}
 		}

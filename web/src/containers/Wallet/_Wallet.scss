@@ -38,9 +38,13 @@ $header-margin: 2rem;
 						font-weight: bold;
 					}
 				}
+				.action_notification-wrapper {
+					margin: 0;
+				}
 			}
 		}
 		.wallet-assets_block {
+			padding: 6px;
 			.wallet-assets_block-table {
 				thead {
 					tr {
@@ -77,6 +81,12 @@ $header-margin: 2rem;
 					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
+			.zero-balance-wrapper {
+				flex-direction: column;
+			}
+		}
+		.action-button-wrapper {
+			padding: 5px 2px;
 		}
 	}
 }
@@ -95,6 +105,28 @@ $header-margin: 2rem;
 		}
 
 		.wallet-header_block {
+		}
+		.coin-icons {
+			width: 50px;
+			padding-top: 4px;
+		}
+		.with_price-block_amount-value {
+			font-size: $font-size-headline;
+			line-height: $font-size-headline;
+		}
+	}
+	.paper-clip-icon {
+		.action_notification-svg {
+			background-color: $link;
+			width: 1.2rem;
+			height: 1.2rem;
+			border-radius: 50%;
+			display: flex;
+    		margin-left: 5px;
+			svg {
+				width: 0.8rem  !important;
+				height: 0.8rem !important;
+			}
 		}
 	}
 
@@ -123,9 +155,12 @@ $header-margin: 2rem;
 
 	.wallet-assets_block {
 		// border-top: $wrapper-border;
-		.action_notification-wrapper {
-			margin: 0 !important;
-		}
+		background-color: $app-sidebar-background;
+		padding: 20px;
+		overflow-y: auto;
+		// .action_notification-wrapper {
+		// 	margin: 0 !important;
+		// }
 
 		.td-wallet {
 			min-width: 225px;
@@ -163,7 +198,7 @@ $header-margin: 2rem;
 				position: relative;
 				&:not(:first-child) {
 					border-bottom: 1px solid $colors-main-border;
-					padding: 0 0.25rem;
+					padding: 1rem 0.25rem;
 				}
 			}
 
@@ -186,10 +221,28 @@ $header-margin: 2rem;
 				direction: ltr;
 			}
 		}
+		.search-field {
+			background-color: $app-sidebar-background;
+		}
+		.currency-ball {
+			width: 30px;
+			padding-top: 4px;
+		}
 	}
 
 	.accordion_wrapper .action_notification-wrapper {
 		position: relative;
+	}
+	.action-button-wrapper {
+		border: 1px solid $link;
+		padding: 5px 12px;
+
+		&:hover {
+			background-color: $link;
+			.notification-info {
+				color: white !important;
+			}
+		}
 	}
 }
 

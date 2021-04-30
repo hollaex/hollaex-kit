@@ -14,10 +14,12 @@ import {
 	// MobileBarTabs,
 	PanelInformationRow,
 	Button,
+	SmartTarget,
 } from '../../components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
 import { logout, requestVerificationEmail } from '../../actions/authAction';
+import { MAX_NUMBER_BANKS } from 'config/constants';
 
 import BankVerification from './BankVerification';
 import { isBrowser, isMobile } from 'react-device-detect';
@@ -45,6 +47,9 @@ import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
 import { EditWrapper } from 'components';
 // import MobileTabs from './MobileTabs';
+import { verifyBankData } from 'actions/verificationActions';
+import { getErrorLocalized } from 'utils/errors';
+import { required, maxLength } from 'components/Form/validations';
 
 // const CONTENT_CLASS =
 // 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -134,6 +139,10 @@ class Verification extends Component {
 		if (enabledPlugins.includes('kyc')) {
 			currentTabs = [...currentTabs, 'document'];
 		}
+		const sortingArray = ['email', 'sms', 'kyc', 'document', 'bank'];
+		currentTabs.sort(
+			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
+		);
 		let activeTab = 0;
 		if (!email && currentTabs.indexOf('email') !== -1) {
 			activeTab = currentTabs.indexOf('email');
@@ -267,11 +276,18 @@ class Verification extends Component {
 					/>
 				),
 				content: (
-					<BankVerificationHome
-						user={user}
+					<SmartTarget
+						id="REMOTE_COMPONENT__BANK_VERIFICATION_HOME"
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
-					/>
+						MAX_NUMBER_BANKS={MAX_NUMBER_BANKS}
+					>
+						<BankVerificationHome
+							user={user}
+							handleBack={this.handleBack}
+							setActivePageContent={this.setActivePageContent}
+						/>
+					</SmartTarget>
 				),
 			},
 			kyc: {
@@ -433,14 +449,28 @@ class Verification extends Component {
 				);
 			case 'bank':
 				return (
-					<BankVerification
+					<SmartTarget
+						id="REMOTE_COMPONENT__BANK_VERIFICATION"
 						iconId="VERIFICATION_BANK_NEW"
 						icon={ICONS['VERIFICATION_BANK_NEW']}
 						openContactForm={this.openContactForm}
 						setActivePageContent={this.setActivePageContent}
 						handleBack={this.handleBack}
 						moveToNextStep={this.goNextTab}
-					/>
+						verifyBankData={verifyBankData}
+						getErrorLocalized={getErrorLocalized}
+						maxLength={maxLength}
+						required={required}
+					>
+						<BankVerification
+							iconId="VERIFICATION_BANK_NEW"
+							icon={ICONS['VERIFICATION_BANK_NEW']}
+							openContactForm={this.openContactForm}
+							setActivePageContent={this.setActivePageContent}
+							handleBack={this.handleBack}
+							moveToNextStep={this.goNextTab}
+						/>
+					</SmartTarget>
 				);
 			case 'kyc':
 				return (

@@ -1,5 +1,6 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
+import { getDecimals } from 'utils/utils';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -27,11 +28,24 @@ const pushCumulativeAmounts = (orders) => {
 };
 
 const round = (number, depth) => {
-	let result = math.chain(number).divide(depth).round().multiply(depth).done();
+	const precision = getDecimals(depth);
+	let result = math
+		.chain(number)
+		.divide(depth)
+		.round()
+		.multiply(depth)
+		.round(precision)
+		.done();
 
 	// this is to prevent setting the price to 0
 	if (!result) {
-		result = math.chain(number).divide(depth).ceil().multiply(depth).done();
+		result = math
+			.chain(number)
+			.divide(depth)
+			.ceil()
+			.multiply(depth)
+			.round(precision)
+			.done();
 	}
 
 	return result;
@@ -63,8 +77,8 @@ const getDepth = (state) => state.orderbook.depth;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
-	(pairsOrders, pair, level, pairs, depthLevel) => {
-		const { increment_price } = pairs[pair] || {};
+	(pairsOrders, pair, level, pairs, depthLevel = 1) => {
+		const { increment_price = 1 } = pairs[pair] || {};
 		const { asks: rawAsks = [], bids: rawBids = [] } = pairsOrders[pair] || {};
 
 		const depth = math.multiply(depthLevel, increment_price);
@@ -120,5 +134,45 @@ export const userTradesSelector = createSelector(
 			({ symbol }) => symbol === pair && count++ < 10
 		);
 		return filtered;
+	}
+);
+
+const getSide = (_, { side }) => side;
+const getSize = (_, { size }) => (!!size ? size : 0);
+
+const calculateMarketPrice = (orderSize = 0, orders = []) =>
+	orders.reduce(
+		([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
+			if (math.larger(orderSize, accumulatedSize)) {
+				const remainingSize = math.subtract(orderSize, accumulatedSize);
+				if (math.largerEq(remainingSize, size)) {
+					return [
+						math.sum(accumulatedPrice, math.multiply(size, price)),
+						math.sum(accumulatedSize, size),
+					];
+				} else {
+					return [
+						math.sum(accumulatedPrice, math.multiply(remainingSize, price)),
+						math.sum(accumulatedSize, remainingSize),
+					];
+				}
+			} else {
+				return [accumulatedPrice, accumulatedSize];
+			}
+		},
+		[0, 0]
+	);
+
+export const estimatedMarketPriceSelector = createSelector(
+	[getPairsOrderBook, getPair, getSide, getSize],
+	(pairsOrders, pair, side, size) => {
+		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
+			pairsOrders[pair] || {};
+		const totalOrders = sumQuantities(orders);
+		if (math.larger(size, totalOrders)) {
+			return [0, size];
+		} else {
+			return calculateMarketPrice(size, orders);
+		}
 	}
 );

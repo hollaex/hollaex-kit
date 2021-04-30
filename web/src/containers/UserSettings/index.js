@@ -22,11 +22,12 @@ import {
 import {
 	IconTitle,
 	HeaderSection,
-	CustomTabs,
+	// CustomTabs,
 	CustomMobileTabs,
-	CustomTabBar,
+	// CustomTabBar,
 	MobileTabBar,
 	Loader,
+	TabController,
 } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
@@ -145,12 +146,13 @@ class UserSettings extends Component {
 						icon={ICONS['SETTING_NOTIFICATION_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						stringId="USER_SETTINGS.TITLE_NOTIFICATION"
-						title={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
-						iconId="SETTING_NOTIFICATION_ICON"
-						icon={ICONS['SETTING_NOTIFICATION_ICON']}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_NOTIFICATION"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
+					// 	iconId="SETTING_NOTIFICATION_ICON"
+					// 	icon={ICONS['SETTING_NOTIFICATION_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}</div>
 				),
 				content: activeTab === 0 && (
 					<NotificationForm
@@ -159,6 +161,7 @@ class UserSettings extends Component {
 						}
 						formFields={notificationFormValues}
 						initialValues={settings.notification}
+						ICONS={ICONS}
 					/>
 				),
 			},
@@ -169,12 +172,13 @@ class UserSettings extends Component {
 						icon={ICONS['SETTING_INTERFACE_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						stringId="USER_SETTINGS.TITLE_INTERFACE"
-						title={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
-						iconId="SETTING_INTERFACE_ICON"
-						icon={ICONS['SETTING_INTERFACE_ICON']}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_INTERFACE"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
+					// 	iconId="SETTING_INTERFACE_ICON"
+					// 	icon={ICONS['SETTING_INTERFACE_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_INTERFACE']}</div>
 				),
 				content: activeTab === 1 && (
 					<SettingsForm
@@ -183,6 +187,7 @@ class UserSettings extends Component {
 						}
 						formFields={formValues}
 						initialValues={settings.interface}
+						ICONS={ICONS}
 					/>
 				),
 			},
@@ -193,12 +198,13 @@ class UserSettings extends Component {
 						icon={ICONS['SETTING_LANGUAGE_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						stringId="USER_SETTINGS.TITLE_LANGUAGE"
-						title={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
-						iconId="SETTING_LANGUAGE_ICON"
-						icon={ICONS['SETTING_LANGUAGE_ICON']}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_LANGUAGE"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+					// 	iconId="SETTING_LANGUAGE_ICON"
+					// 	icon={ICONS['SETTING_LANGUAGE_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}</div>
 				),
 				content: activeTab === 2 && (
 					<LanguageForm
@@ -207,6 +213,7 @@ class UserSettings extends Component {
 						}
 						formFields={languageFormValue}
 						initialValues={{ language: settings.language }}
+						ICONS={ICONS}
 					/>
 				),
 			},
@@ -217,18 +224,20 @@ class UserSettings extends Component {
 						icon={ICONS['SETTING_CHAT_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						stringId="USER_SETTINGS.TITLE_CHAT"
-						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
-						iconId="SETTING_CHAT_ICON"
-						icon={ICONS['SETTING_CHAT_ICON']}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_CHAT"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+					// 	iconId="SETTING_CHAT_ICON"
+					// 	icon={ICONS['SETTING_CHAT_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_CHAT']}</div>
 				),
 				content: activeTab === 3 && (
 					<UsernameForm
 						onSubmit={this.onSubmitUsername}
 						formFields={usernameFormValues}
 						initialValues={{ username }}
+						ICONS={ICONS}
 					/>
 				),
 			},
@@ -239,18 +248,20 @@ class UserSettings extends Component {
 						icon={ICONS['SETTING_AUDIO_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						stringId="USER_SETTINGS.TITLE_AUDIO_CUE"
-						title={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
-						iconId="SETTING_AUDIO_ICON"
-						icon={ICONS['SETTING_AUDIO_ICON']}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_AUDIO_CUE"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
+					// 	iconId="SETTING_AUDIO_ICON"
+					// 	icon={ICONS['SETTING_AUDIO_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}</div>
 				),
 				content: activeTab === 4 && (
 					<AudioCueForm
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'audio')}
 						formFields={audioFormValues}
 						initialValues={audioFormInitialValues}
+						ICONS={ICONS}
 					/>
 				),
 			},
@@ -261,12 +272,13 @@ class UserSettings extends Component {
 						icon={ICONS['SETTING_RISK_ICON']}
 					/>
 				) : (
-					<CustomTabs
-						stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
-						title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
-						iconId="SETTING_RISK_ICON"
-						icon={ICONS['SETTING_RISK_ICON']}
-					/>
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
+					// 	iconId="SETTING_RISK_ICON"
+					// 	icon={ICONS['SETTING_RISK_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}</div>
 				),
 				content: activeTab === 5 && (
 					<RiskForm
@@ -276,6 +288,7 @@ class UserSettings extends Component {
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
 						formFields={warningFormValues}
 						initialValues={settings.risk}
+						ICONS={ICONS}
 					/>
 				),
 			},
@@ -388,13 +401,16 @@ class UserSettings extends Component {
 			return <Loader />;
 		}
 		const { activeTab, tabs } = this.state;
+		const { icons: ICONS } = this.props;
 		return (
-			<div className="presentation_container apply_rtl verification_container">
+			<div className="presentation_container apply_rtl settings_container">
 				{!isMobile && (
 					<IconTitle
 						stringId="ACCOUNTS.TAB_SETTINGS"
 						text={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 						textType="title"
+						iconPath={ICONS['TAB_SETTING']}
+						iconId={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 					/>
 				)}
 				<HeaderSection
@@ -416,7 +432,7 @@ class UserSettings extends Component {
 					</div>
 				</HeaderSection>
 				{!isMobile ? (
-					<CustomTabBar
+					<TabController
 						activeTab={activeTab}
 						setActiveTab={this.setActiveTab}
 						tabs={tabs}

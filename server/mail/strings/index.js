@@ -20,7 +20,8 @@ const MAILTYPE = {
 	USER_DEACTIVATED: 'userDeactivated',
 	INVALID_ADDRESS: 'invalidAddress',
 	INVITED_OPERATOR: 'invitedOperator',
-	ALERT: 'alert'
+	ALERT: 'alert',
+	DISCOUNT_UPDATE: 'discountUpdate'
 };
 
 const languageFile = (lang) => {

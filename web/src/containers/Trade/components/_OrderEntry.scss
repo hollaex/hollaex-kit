@@ -10,8 +10,6 @@
 	.trade_order_entry-selector {
 		border-top: 1px solid $trade-section-border--color;
 		position: relative;
-		width: 60% !important;
-		margin-left: 40% !important;
 
 		> div {
 			line-height: 2rem;
@@ -115,6 +113,9 @@
 		.ant-collapse-content-box {
 			padding: 0;
 		}
+		.underline-text {
+			font-size: 11px;
+		}
 	}
 }
 
@@ -124,6 +125,11 @@
 	}
 	&.order_side-selector-buy {
 		@include entry_form($buy, $colors-deactivate-color1, $buy-bids-text);
+	}
+	.post-only-txt {
+		font-size: 1rem;
+		color: $colors-deactivate-color2;
+		cursor: pointer;
 	}
 }
 
@@ -180,11 +186,6 @@
 		font-size: $font-size-mobile-txt !important;
 	}
 	.trade_orderbook-wrapper {
-		.trade_orderbook-headers {
-			.trade_orderbook-cell {
-				font-size: $font-size-mobile-innertxt !important;
-			}
-		}
 		.trade_asks-limit_bar {
 			.orderbook-limit_bar-wrapper {
 				.orderbook-limit_bar-text {

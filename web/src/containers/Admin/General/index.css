@@ -331,3 +331,10 @@ h2,
 	border-top: 1px solid #707070;
 	margin: 1rem 0rem;
 }
+
+.description-wrapper .disable-referral,
+.referral-link-section .disabled-area,
+.general-wrapper .disabled-area {
+	opacity: 0.6;
+	pointer-events: none;
+}

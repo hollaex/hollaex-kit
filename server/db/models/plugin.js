@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		script: {
 			type: DataTypes.TEXT,
-			allowNull: false
+			allowNull: true
 		},
 		admin_view: {
 			type: DataTypes.TEXT

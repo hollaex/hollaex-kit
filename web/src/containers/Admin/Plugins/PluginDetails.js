@@ -14,6 +14,7 @@ const PluginDetails = ({
 	removePlugin,
 	pluginData,
 	isLoading,
+	restart,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -31,8 +32,8 @@ const PluginDetails = ({
 		addPlugin(body)
 			.then((res) => {
 				setAddLoading(false);
-				message.success('Plugin installed successfully');
 				handlePluginList(res);
+				restart(() => message.success('Plugin installed successfully'));
 			})
 			.catch((err) => {
 				setAddLoading(false);
@@ -55,8 +56,8 @@ const PluginDetails = ({
 		updatePlugins({ name: pluginData.name }, body)
 			.then((res) => {
 				setUpdateLoading(false);
-				message.success('Plugin updated successfully');
 				updatePluginList(pluginData);
+				restart(() => message.success('Plugin updated successfully'));
 			})
 			.catch((err) => {
 				setUpdateLoading(false);
@@ -86,6 +87,7 @@ const PluginDetails = ({
 		setType(type);
 		removePlugin({ name: pluginData.name });
 		handleClose();
+		restart(() => message.success('Removed plugin successfully'));
 	};
 
 	const handleChange = (e) => {
@@ -281,8 +283,8 @@ const PluginDetails = ({
 			);
 		} else if (selectedPlugin.enabled) {
 			return (
-				<div className="btn-wrapper d-flex mt-3">
-					<div>
+				<div className="btn-wrapper mt-3">
+					<div className="d-flex justify-content-between">
 						<Button
 							type="primary"
 							className="remove-btn mr-2"
@@ -290,8 +292,6 @@ const PluginDetails = ({
 						>
 							Remove
 						</Button>
-					</div>
-					<div className="d-flex align-items-center flex-column">
 						<Button
 							type="primary"
 							className="config-btn"
@@ -299,7 +299,22 @@ const PluginDetails = ({
 						>
 							Configure
 						</Button>
-						{pluginData.version > selectedPlugin.version ? (
+					</div>
+					{selectedPlugin.url && (
+						<div className="text-align-center">
+							<a
+								href={selectedPlugin.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="underline-text"
+							>
+								Learn more
+							</a>{' '}
+							about this plugin
+						</div>
+					)}
+					<div className="d-flex align-items-center justify-content-end">
+						{pluginData.version > selectedPlugin.version && (
 							<div className="d-flex align-items-center flex-column">
 								<Button
 									type="primary"
@@ -313,7 +328,7 @@ const PluginDetails = ({
 									<div className="update-txt">{`v${pluginData.version} available`}</div>
 								</div>
 							</div>
-						) : null}
+						)}
 					</div>
 				</div>
 			);

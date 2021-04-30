@@ -9,8 +9,8 @@ import {
 	change,
 } from 'redux-form';
 import math from 'mathjs';
-import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
+// import classnames from 'classnames';
+// import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -19,7 +19,8 @@ import {
 } from './notifications';
 import { BASE_CURRENCY } from '../../config/constants';
 import { calculateBaseFee } from './utils';
-
+import Fiat from 'containers/Deposit/Fiat';
+import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
@@ -183,7 +184,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			initialValues, // eslint-disable-line
+			// initialValues, // eslint-disable-line
 			currency,
 			data,
 			openContactForm,
@@ -191,49 +192,71 @@ class Form extends Component {
 			currentPrice,
 			activeTheme,
 			coins,
+			titleSection,
+			icons: ICONS,
+			selectedNetwork,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
+		const hasDestinationTag =
+			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'stellar';
 
-		return (
-			<form autoComplete="off">
-				<div className={classnames({ 'w-50': !isMobile })}>
-					{renderFields(formValues)}
-					{error && <div className="warning_text">{error}</div>}
-				</div>
-				<Button
-					label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-					disabled={pristine || submitting || !valid}
-					onClick={this.onOpenDialog}
-				/>
-				<Dialog
-					isOpen={dialogIsOpen}
-					label="withdraw-modal"
-					onCloseDialog={this.onCloseDialog}
-					shouldCloseOnOverlayClick={dialogOtpOpen}
-					theme={activeTheme}
-					showCloseText={false}
-				>
-					{dialogOtpOpen ? (
-						<OtpForm
-							onSubmit={this.onSubmitOtp}
-							onClickHelp={openContactForm}
+		const coinObject = coins[currency];
+		if (coinObject && !coinObject.meta.is_fiat) {
+			return (
+				<form autoComplete="off" className="withdraw-form-wrapper">
+					<div className="withdraw-form">
+						<Image
+							iconId={`${currency.toUpperCase()}_ICON`}
+							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							wrapperClassName="form_currency-ball"
 						/>
-					) : !submitting ? (
-						<ReviewModalContent
-							coins={coins}
-							currency={currency}
-							data={data}
-							price={currentPrice}
-							onClickAccept={this.onAcceptDialog}
-							onClickCancel={this.onCloseDialog}
+						{titleSection}
+						{renderFields(formValues)}
+						{error && <div className="warning_text">{error}</div>}
+					</div>
+					<div className="btn-wrapper">
+						<Button
+							label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+							disabled={pristine || submitting || !valid}
+							onClick={this.onOpenDialog}
+							className="mb-3"
 						/>
-					) : (
-						<Loader relative={true} background={false} />
-					)}
-				</Dialog>
-			</form>
-		);
+					</div>
+					<Dialog
+						isOpen={dialogIsOpen}
+						label="withdraw-modal"
+						onCloseDialog={this.onCloseDialog}
+						shouldCloseOnOverlayClick={dialogOtpOpen}
+						theme={activeTheme}
+						showCloseText={false}
+					>
+						{dialogOtpOpen ? (
+							<OtpForm
+								onSubmit={this.onSubmitOtp}
+								onClickHelp={openContactForm}
+							/>
+						) : !submitting ? (
+							<ReviewModalContent
+								coins={coins}
+								currency={currency}
+								data={data}
+								price={currentPrice}
+								onClickAccept={this.onAcceptDialog}
+								onClickCancel={this.onCloseDialog}
+								hasDestinationTag={hasDestinationTag}
+							/>
+						) : (
+							<Loader relative={true} background={false} />
+						)}
+					</Dialog>
+				</form>
+			);
+		} else if (coinObject && coinObject.meta.is_fiat) {
+			return <Fiat icons={ICONS} />;
+		} else {
+			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
+		}
 	}
 }
 
@@ -244,13 +267,14 @@ const WithdrawForm = reduxForm({
 		dispatch(reset(FORM_NAME));
 		setWithdrawEmailConfirmation(data, dispatch);
 	},
-	// enableReinitialize: true,
+	enableReinitialize: true,
 	validate,
 })(Form);
 
 const mapStateToForm = (state) => ({
 	data: selector(
 		state,
+		'network',
 		'address',
 		'destination_tag',
 		'amount',

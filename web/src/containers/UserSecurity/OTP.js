@@ -78,14 +78,16 @@ export const OTP = ({
 	children,
 	icons = {},
 }) => (
-	<div className="user_security-wrapper">
-		{!otp_enabled && (
-			<div className="warning_text">
-				<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.WARNING">
-					{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.WARNING']}
-				</EditWrapper>
-			</div>
-		)}
+	<div>
+		<div className={!otp_enabled ? 'user_security-wrapper' : ''}>
+			{!otp_enabled && (
+				<div className="warning_text">
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.WARNING">
+						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.WARNING']}
+					</EditWrapper>
+				</div>
+			)}
+		</div>
 		<CheckboxButton
 			stringId="ACCOUNT_SECURITY.OTP.CONTENT.ENABLE,ACCOUNT_SECURITY.OTP.CONTENT.DISABLE"
 			label={

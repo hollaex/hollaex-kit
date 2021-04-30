@@ -37,6 +37,8 @@ Status.findOne()
 			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
 			native_currency: existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY || 'usdt',
 			logo_image: existingKitConfigurations.logo_image || existingKitConfigurations.logo_path || process.env.LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',
+			injected_values: existingKitConfigurations.injected_values || [],
+			injected_html: existingKitConfigurations.injected_html || {},
 			valid_languages: existingKitConfigurations.valid_languages || process.env.VALID_LANGUAGES || 'en,fa,ko,ar,fr',
 			new_user_is_activated: existingKitConfigurations.new_user_is_activated || (process.env.NEW_USER_IS_ACTIVATED && process.env.NEW_USER_IS_ACTIVATED === 'true') || false,
 			captcha: {

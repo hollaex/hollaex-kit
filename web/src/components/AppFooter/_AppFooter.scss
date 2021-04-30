@@ -22,9 +22,9 @@ $footer-logo-color: $trade-tabs-inactive-color;
 		width: 100%;
 
 		.footer-links-section {
-			width: 60%;
+			// width: 60%;
 			.footer-links-group {
-				margin: 0 $footer-wrapper--margin;
+				margin: $footer-wrapper--margin;
 				font-size: $font-size-main;
 
 				.footer-links-section--title {
@@ -35,6 +35,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 
 				.footer-links-section--list {
 					min-width: 8rem;
+					text-transform: capitalize;
 
 					.social_icon {
 						width: 1rem;
@@ -51,16 +52,18 @@ $footer-logo-color: $trade-tabs-inactive-color;
 		}
 		.footer_separter {
 			border-left: 1px solid $footer-wrapper--border-color;
+			margin-left: 0.5rem;
+
 			.footer-txt {
-				width: 25rem;
-				margin-left: 1rem;
+				width: 23rem;
+				margin-left: 1.5rem;
 			}
 			.footer-logo {
 				background-size: contain;
-				background-position: center;
+				// background-position: center;
 				background-repeat: no-repeat;
 				height: 6rem !important;
-				margin-left: 1rem;
+				margin-left: 1.5rem;
 				width: 7rem;
 			}
 			svg {
@@ -177,32 +180,32 @@ $footer-logo-color: $trade-tabs-inactive-color;
 					margin: 0 $footer-icons--side-margin !important;
 				}
 			}
-			.footer-links-section {
-				width: 70%;
-			}
+			// .footer-links-section {
+			// 	width: 70%;
+			// }
 		}
 	}
 }
 
-@media screen and (min-width: 1920px) {
-	.app_footer-container {
-		.footer-row-content {
-			.footer-links-section {
-				width: 50%;
-			}
-		}
-	}
-}
+// @media screen and (min-width: 1920px) {
+// 	.app_footer-container {
+// 		.footer-row-content {
+// 			.footer-links-section {
+// 				width: 50%;
+// 			}
+// 		}
+// 	}
+// }
 
 @media screen and (max-width: $bp-sm) {
 	.app_footer-container {
 		.footer-row-content {
-			.footer-links-section {
-				width: 80%;
-			}
+			// .footer-links-section {
+			// 	width: 80%;
+			// }
 			.footer_separter {
 				.footer-txt {
-					width: 30rem;
+					width: 12rem;
 				}
 			}
 		}
@@ -236,7 +239,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 						align-items: center;
 					}
 					.footer-txt {
-						width: 37rem;
+						width: 100%;
 					}
 					.footer-logo {
 						height: 3.5rem;

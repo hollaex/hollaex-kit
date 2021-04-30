@@ -9,6 +9,7 @@
 		height: calc(100% - 4.5rem);
 		.history_block-wrapper {
 			max-height: calc(100% - 1rem);
+			overflow-x: scroll;
 
 			.table-content {
 				overflow-x: scroll;
@@ -29,6 +30,39 @@
 	.display_table-wrapper {
 		.display_table-cell {
 			min-height: 2rem !important;
+		}
+	}
+
+	.table_container {
+		.table-content {
+			&.transactions-history-table {
+				overflow-x: auto;
+				position: relative;
+				thead,
+				td {
+					font-size: 1.2rem !important;
+				}
+				td {
+					padding: 0.5rem;
+					min-width: 9rem;
+				}
+
+				.sticky-col {
+					&.coin-cell {
+						width: 12rem !important;
+						min-width: 12rem !important;
+						max-width: 12rem !important;
+					}
+					position: -webkit-sticky;
+					position: sticky;
+					background-color: $app-sidebar-background;
+					left: 0;
+					width: 10rem !important;
+					min-width: 10rem !important;
+					max-width: 10rem !important;
+					z-index: 1;
+				}
+			}
 		}
 	}
 }
@@ -95,6 +129,9 @@
 
 .history_block-wrapper {
 	position: relative;
+	background-color: $app-sidebar-background;
+	padding: 20px;
+	margin: 20px 0;
 
 	.action_notification-svg svg {
 		width: 1.2rem !important;
@@ -124,6 +161,22 @@
 	.check-deposit-txt {
 		right: 100px !important;
 	}
+	.loader_wrapper {
+		top: 0;
+		left: 0;
+	}
+	.table-wrapper {
+		.table_body-wrapper.with_icon {
+			tr td:first-child {
+				border-top: 1px solid $colors-border !important;
+				border-bottom: 1px solid $colors-border !important;
+			}
+			.coin-icons {
+				width: 30px;
+				padding-top: 4px;
+			}
+		}
+	}
 }
 
 .action_notification-svg svg {
@@ -146,6 +199,13 @@
 		.transaction-history-5 {
 			fill: $colors-black;
 		}
+	}
+	.icon_title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
+	}
+	.with_border_top {
+		border-top: none !important;
 	}
 }
 .display_table-wrapper {

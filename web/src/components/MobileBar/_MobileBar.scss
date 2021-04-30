@@ -51,7 +51,7 @@ $mobile-notification-size: 1.75rem;
 	svg {
 		@include size(2.5rem);
 		.arrow-down {
-			stroke: white;
+			stroke: $base_top-bar-navigation_text;
 		}
 	}
 }

@@ -68,6 +68,7 @@ class MyPlugins extends Component {
 	};
 
 	handleAddPlugin = async () => {
+		const { restart } = this.props;
 		const body = {
 			...this.state.thirdParty,
 			enabled: true,
@@ -77,7 +78,9 @@ class MyPlugins extends Component {
 				if (res) {
 					this.setState({ isVisible: false });
 					this.props.handlePluginList(res);
-					message.success('Added third party plugin successfully');
+					restart(() =>
+						message.success('Added third party plugin successfully')
+					);
 				}
 			})
 			.catch((err) => {

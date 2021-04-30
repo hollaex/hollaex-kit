@@ -5,12 +5,148 @@ $features-container--width: 75rem;
 $features-container--sm--width: 45rem;
 $card-text--margin: 0.75rem;
 $no-background--color: white;
+$app-bar--arrow-size: 0.4rem;
+$trade-tab--arrow-size: 0.4rem;
+
+.home-page__market-wrapper {
+	background-color: $landing_markets_table;
+
+	.table-row {
+		color: $colors-main-black !important;
+	}
+
+	thead {
+		color: $colors-main-black !important;
+		background-color: $auth-container-background;
+		tr {
+			height: 5rem !important;
+		}
+	}
+
+	th:nth-child(1) {
+		padding-left: 2rem !important;
+	}
+
+	td:nth-child(1) {
+		padding-left: 1rem !important;
+	}
+
+	th:last-child {
+		padding-right: 2rem !important;
+	}
+
+	td:last-child {
+		padding-right: 1rem !important;
+	}
+
+	.market-list__footer {
+		height: 4.5rem !important;
+	}
+
+	.market-list__block-table {
+		margin-bottom: 0 !important;
+	}
+
+	.price-diff-down {
+		color: $sell;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $sell-bids-text;
+			background-color: $sell;
+		}
+	}
+
+	.price-diff-up {
+		color: $buy;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+
+		&.entering,
+		&.exiting {
+			color: $buy-bids-text;
+			background-color: $buy;
+		}
+	}
+
+	.trade-tab-price_diff_up {
+		margin: auto 0;
+	}
+
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_up:before {
+			@include css-triangle($buy-bids-text, 'up', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-bottom: 0.2rem;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+	}
+
+	.trade-tab-price_diff_up:before {
+		@include css-triangle($buy, 'up', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.trade-tab-price_diff_down {
+		margin: auto 0;
+	}
+
+	.entering,
+	.exiting {
+		&.trade-tab-price_diff_down:before {
+			@include css-triangle($sell-bids-text, 'down', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+	}
+
+	.trade-tab-price_diff_down:before {
+		@include css-triangle($sell, 'down', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+}
+
+.home_header_button {
+	height: 28px;
+	font-weight: bold;
+}
 
 .layout-mobile {
-	&.home_container {
-		.app_container-content {
-			min-height: $max-content-height-home-mobile;
-			max-height: $max-content-height-home-mobile;
+	.home_header_button {
+		height: 24px;
+	}
+
+	.home-page__market-wrapper {
+		th:nth-child(1) {
+			padding-left: 1rem !important;
+		}
+
+		td:nth-child(1) {
+			padding-left: 0.5rem !important;
+		}
+
+		th:last-child {
+			padding-right: 0.1rem !important;
+		}
+
+		td:last-child {
+			padding-right: 0.5rem !important;
 		}
 	}
 }
@@ -18,6 +154,21 @@ $no-background--color: white;
 .home_container {
 	background-repeat: no-repeat;
 	background-size: cover;
+
+	.main-section_button_invert {
+		color: $link !important;
+		background-color: $colors-main-black !important;
+	}
+
+	.main-section_button {
+		color: $colors-main-black !important;
+		background-color: $link !important;
+	}
+
+	.quick_trade-wrapper {
+		min-width: 30rem;
+		max-width: 40rem;
+	}
 
 	.exchange-expired {
 		background-color: #ed1c24 !important;
@@ -42,11 +193,19 @@ $no-background--color: white;
 		padding: 2rem;
 	}
 
-	.section_1-content {
-		background: linear-gradient(to bottom, transparent, $no-background--color);
+	.home-page_overlay {
+		width: 100% !important;
+		height: 100% !important;
 
+		background: linear-gradient(
+			to bottom,
+			$app-landing_background,
+			$app-landing_background
+		);
+	}
+
+	.section_1-content {
 		position: relative;
-		min-height: 500px;
 
 		.scroll-button {
 			$arrow-size: 2rem;
@@ -107,18 +266,20 @@ $no-background--color: white;
 
 	.home-title,
 	.features-title {
-		font-size: $font-size-headline;
-		margin-bottom: 1rem;
+		font-size: $font-size-headline2;
+		line-height: normal;
+		font-weight: bold;
 		text-align: center;
-	}
-
-	.home-title {
-		margin-bottom: 0.5rem;
 	}
 
 	.text-section,
 	.buttons-section {
-		margin: 1rem;
+		margin: 0.5rem;
+	}
+
+	.text-section {
+		font-size: $font-size-subhead3;
+		font-weight: bold;
 	}
 
 	.buttons-section--button {
@@ -137,6 +298,37 @@ $no-background--color: white;
 	}
 }
 
+.home-page_content {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5rem;
+	max-width: $content-display-width;
+}
+
+.live-markets_header {
+	font-size: $font-size-subhead3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: 0.5rem;
+	color: $colors-main-black;
+	font-weight: bold;
+}
+
+.buttons-section-header {
+	margin: 0 0.5rem;
+}
+
+.home-page_section-wrapper {
+	&:not(.main-section-wrapper) {
+		padding-top: 5rem;
+		padding-bottom: 5rem;
+	}
+	&.main-section-wrapper {
+		padding-bottom: 5rem;
+	}
+}
+
 .direction_ltr {
 	.home-card-text-container {
 		margin-left: $card-text--margin;
@@ -149,10 +341,45 @@ $no-background--color: white;
 	}
 }
 
+.home_app_bar {
+	height: $navigation_bar-height-lg;
+	min-height: $navigation_bar-height-lg;
+
+	.app_bar-icon-logo {
+		height: 4rem;
+		width: 5rem;
+		background-size: contain;
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+
+	.app_bar-icon {
+		flex: 0;
+		margin: 0 0.5rem;
+		padding-right: 8px;
+		width: 100%;
+	}
+}
+
 @media (max-width: $bp-sm) {
 	.home_container {
 		.home-card-container {
 			margin: 0 2rem 3rem;
+		}
+
+		.buttons-section,
+		.buttons-section-header {
+			.exir-button {
+				font-size: 1.2rem !important;
+			}
+		}
+
+		.text-section {
+			font-size: 1.5rem !important;
+		}
+
+		.live-markets_header {
+			font-size: 1.5rem !important;
 		}
 
 		.features-container {
@@ -161,4 +388,21 @@ $no-background--color: white;
 			}
 		}
 	}
+}
+
+@media (min-width: 1920px) {
+	.home_app_bar {
+		.app_bar-icon-logo {
+			height: 3rem;
+			width: 5rem;
+		}
+
+		.app_bar-icon {
+			margin: 1rem 0 1rem;
+		}
+	}
+}
+
+.wide-logo {
+	width: 10rem !important;
 }

@@ -32,6 +32,11 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.33)
 			.string(),
+		'calculated_secondary-border-1': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.15)
+			.string(),
 		'calculated_super-pale_label-text-graphics': Color(
 			themeData['labels_important-active-labels-text-graphics']
 		)
@@ -60,6 +65,36 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.12)
 			.string(),
+		'calculated_trading_buying-orderbook-best-bar': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.55)
+			.string(),
+		'calculated_trading_selling-orderbook-best-bar': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.55)
+			.string(),
+		'calculated_trading_buying-orderbook-hover': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.65)
+			.string(),
+		'calculated_trading_selling-orderbook-hover': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.65)
+			.string(),
+		'calculated_trading-orderbook-text': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.8)
+			.string(),
+		'calculated_trading-orderbook-secondary-text': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.5)
+			.string(),
 		'calculated_trading_buying-related-text': Color(
 			themeData['trading_buying-related-elements']
 		).isLight()
@@ -72,6 +107,14 @@ const pushCalculatedColors = (themeData) => {
 			: 'white',
 		'calculated_base_modal-overlay': Color(themeData['base_background'])
 			.alpha(0.75)
+			.string(),
+		calculated_landing_background: Color(themeData['base_background'])
+			.alpha(0)
+			.string(),
+		calculated_landing_markets_table: Color(
+			themeData['base_wallet-sidebar-and-popup']
+		)
+			.alpha(0.94)
 			.string(),
 		'calculated_specials_highlight-box': Color(
 			themeData['specials_buttons-links-and-highlights']

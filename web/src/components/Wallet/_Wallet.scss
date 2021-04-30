@@ -19,6 +19,10 @@ $sections-font--color: $colors-deactivate-color2;
 }
 
 .wallet-wrapper {
+	.icon_title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
+	}
 	.donut-container {
 		height: 18rem;
 		.donut-label-pair {
@@ -90,6 +94,13 @@ $sections-font--color: $colors-deactivate-color2;
 		&:after {
 			border-left-color: $colors-main-black;
 		}
+	}
+}
+
+.wallet-wrapper {
+	.icon-title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
 	}
 }
 

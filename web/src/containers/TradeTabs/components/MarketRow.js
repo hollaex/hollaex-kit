@@ -47,7 +47,7 @@ class MarketRow extends Component {
 				className="table-row table-bottom-border"
 				onClick={() => handleClick(key)}
 			>
-				<td>
+				<td className="sticky-col">
 					<div className="d-flex align-items-center">
 						<Image
 							iconId={
@@ -91,7 +91,7 @@ class MarketRow extends Component {
 					</Transition>
 				</td>
 				<td>{ticker.volume}</td>
-				<td style={{ width: '150px', height: '50px' }}>
+				<td className="td-chart">
 					<SparkLine
 						data={chartData[key] || []}
 						containerProps={{ style: { height: '100%', width: '100%' } }}

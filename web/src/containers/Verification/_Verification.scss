@@ -2,11 +2,18 @@
 	margin: 0 auto;
 	padding: 1rem;
 
+	.icon_title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
+	}
 	.title-inactive {
 		color: $tab-inactive;
 	}
 	.verification-buttons-wrapper {
 		width: 100%;
+		.exir-button {
+			width: 300px;
+		}
 	}
 	.warning_text {
 		margin: 1rem 0;
@@ -14,13 +21,46 @@
 	}
 	.header-content {
 		color: $colors-deactivate-color2;
-		font-size: 0.8rem;
+		font-size: $font-size-main;
 	}
 	.content-text {
-		font-size: 0.8rem;
+		font-size: $font-size-main;
 	}
 	.document-note-icon {
 		width: 3.5rem;
+	}
+	.inner-content {
+		border-radius: 4px;
+		padding: 30px;
+		margin: 30px 0px 70px;
+		background-color: $app-sidebar-background;
+		padding-bottom: 20px;
+		.custom-tab-wrapper {
+			.tab_item {
+				min-width: 9rem;
+			}
+		}
+		.btn-wrapper {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			.exir-verification-button {
+				position: absolute;
+				top: 60px;
+				width: 300px;
+			}
+		}
+	}
+}
+
+.verification-form-panel {
+	padding: 30px 50px;
+	background-color: $app-sidebar-background;
+	.action_notification-wrapper {
+		.notification-info {
+    		white-space: nowrap;
+		}
 	}
 }
 
@@ -71,8 +111,50 @@
 			width: 100%;
 			font-size: $font-size-mobile-txt !important;
 		}
-		.exir-button {
+		.exir-verification-button {
 			font-size: $font-size-mobile-txt !important;
+			position: unset !important;
+			top: 0 !important;
+			width: 100% !important;
+		}
+		.inner-content {
+			padding: 5px 8px;
+		}
+		.icon_title-wrapper {
+			margin-top: 0;
+			.icon_title-text.title {
+				font-size: 2.6rem;
+			}
+		}
+		.verification_content-form-wrapper {
+			.verification-form-panel {
+				padding: 5px 8px;
+				.field-wrapper {
+					.field-label-wrapper {
+						flex-direction: column;
+					}
+				}
+			}
+			.content-text {
+				width: 100%;
+			}
+		}
+		.input-box-field {
+			.input_field-input {
+				&::placeholder {
+					font-size: 10px;
+				}
+			}
+		}
+		.verification-buttons-wrapper {
+			.exir-button {
+				width: 100% !important;
+				flex: 1;
+			}
+		}
+		.separator {
+			width: auto;
+			margin: 1rem;
 		}
 	}
 	.mobile-bar-tab .bartab-text-wrapper {
@@ -119,5 +201,36 @@
 .direction_rtl {
 	.divider {
 		margin-left: 0.5rem;
+	}
+}
+
+@media (max-width: 1060px) {
+	.verification_container {
+		.inner-content {
+			.custom-tab-wrapper {
+				overflow-x: auto;
+			}
+		}
+		.verification-buttons-wrapper {
+			.exir-button {
+				width: 80%;
+			}
+		}
+		.verification_content-form-wrapper {
+			.verification-form-panel {
+				.field-wrapper {
+					.field-label {
+						font-size: $font-size-mobile-innertxt;
+					}
+					.input-box-field {
+						.input_field-input {
+							&::placeholder {
+								font-size: $font-size-mobile-innertxt;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

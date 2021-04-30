@@ -30,7 +30,7 @@ $padding: 0.25rem;
 
 			&:focus {
 				outline: none;
-				border: 1.5px solid $trade-fields-border;
+				border: 1.5px solid $link;
 			}
 		}
 	}
@@ -116,8 +116,8 @@ $padding: 0.25rem;
 }
 
 .trade-form-select {
-	width: 35% !important;
-	transform: translateY(1.4rem);
+	padding-bottom: 1.5rem;
+	font-size: $font-size-mobile-innertxt !important;
 }
 
 .ant-slider-mark-text {

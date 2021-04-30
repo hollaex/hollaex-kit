@@ -159,9 +159,9 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`شما درخواست برداشت به مبلغ ${amount} ${currency.toUpperCase()} و به آدرس ${address}ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`درخواست برداشت شما به مبلغ ${amount} ${currency.toUpperCase()} درحال انجام و ارسال به آدرس ${address}می باشد.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
@@ -183,10 +183,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `آدرس: ${address}`,
-		5: 'برای تایید برداشت خود ،دکمه زیر فشار دهید.',
-		6: 'تایید',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'برای تایید برداشت خود ،دکمه زیر فشار دهید.',
+		7: 'تایید',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -268,6 +269,15 @@ const INVITEDOPERATOR = {
 	CLOSING: COMMON.CLOSING
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -286,5 +296,6 @@ module.exports = {
 	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
 	SMS,
-	INVITEDOPERATOR
+	INVITEDOPERATOR,
+	DISCOUNTUPDATE
 };

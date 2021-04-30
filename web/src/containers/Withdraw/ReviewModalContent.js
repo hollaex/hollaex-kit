@@ -10,6 +10,7 @@ import {
 } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
+import { getNetworkLabelByKey } from 'utils/wallet';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -39,6 +40,7 @@ const ReviewModalContent = ({
 	onClickAccept,
 	onClickCancel,
 	icons: ICONS,
+	hasDestinationTag,
 }) => {
 	const { min, fullname, symbol = '' } =
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -65,64 +67,58 @@ const ReviewModalContent = ({
 				icon={ICONS['CHECK_SENDING_BITCOIN']}
 				wrapperClassName="review-icon"
 			/>
-			{currency === BASE_CURRENCY ? (
-				<div className="d-flex flex-column align-items-center review-info_container">
-					<div className="review-info_message">
-						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW">
-							{STRINGS['WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW']}
-						</EditWrapper>
-					</div>
-					<div className="review-crypto-amount review-crypto-address">
-						<div>{cryptoAmountText}</div>
-						<div className="review-fee_message">
-							<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE_BASE">
-								{STRINGS.formatString(
-									STRINGS['WITHDRAW_PAGE.MESSAGE_FEE_BASE'],
-									STRINGS.formatString(
-										CURRENCY_PRICE_FORMAT,
-										formatToCurrency(fee, baseCoin.min),
-										baseCoin.symbol.toUpperCase()
-									)
-								)}
-							</EditWrapper>
-						</div>
-					</div>
+			<div className="d-flex flex-column align-items-center review-info_container">
+				<div className="review-info_message">
+					<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_ABOUT_SEND">
+						{STRINGS['WITHDRAW_PAGE.MESSAGE_ABOUT_SEND']}
+					</EditWrapper>
 				</div>
-			) : (
-				<div className="d-flex flex-column align-items-center review-info_container">
-					<div className="review-info_message">
-						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_ABOUT_SEND">
-							{STRINGS['WITHDRAW_PAGE.MESSAGE_ABOUT_SEND']}
-						</EditWrapper>
-					</div>
-					<div className="review-crypto-amount review-crypto-address">
-						<div>{cryptoAmountText}</div>
-						<div className="review-fee_message">
-							<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE">
-								{STRINGS.formatString(
-									STRINGS['WITHDRAW_PAGE.MESSAGE_FEE'],
-									fee,
-									STRINGS.formatString(
-										CURRENCY_PRICE_FORMAT,
-										formatToCurrency(feePrice, baseCoin.min),
-										baseCoin.symbol.toUpperCase()
-									)
-								)}
-							</EditWrapper>
-						</div>
-					</div>
-					<div className="review-warning_arrow" />
-					<div className="review-crypto-address">{data.address}</div>
-					<div className="warning_text review-info_message">
-						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_BTC_WARNING">
+				<div className="review-crypto-amount review-crypto-address">
+					<div>{cryptoAmountText}</div>
+					<div className="review-fee_message">
+						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE">
 							{STRINGS.formatString(
-								STRINGS['WITHDRAW_PAGE.MESSAGE_BTC_WARNING'],
-								fullname
+								STRINGS['WITHDRAW_PAGE.MESSAGE_FEE'],
+								fee,
+								STRINGS.formatString(
+									CURRENCY_PRICE_FORMAT,
+									formatToCurrency(feePrice, baseCoin.min),
+									baseCoin.symbol.toUpperCase()
+								)
 							)}
 						</EditWrapper>
 					</div>
 				</div>
-			)}
+				<div className="review-warning_arrow" />
+				<div className="review-crypto-address">{data.address}</div>
+				{data.network && (
+					<div className="review-fee_message">
+						{STRINGS.formatString(
+							STRINGS['WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE'],
+							fullname,
+							getNetworkLabelByKey(data.network)
+						)}
+					</div>
+				)}
+				{hasDestinationTag && (
+					<div className="review-fee_message">
+						{STRINGS.formatString(
+							STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE'],
+							data.destination_tag
+								? data.destination_tag
+								: STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_NONE']
+						)}
+					</div>
+				)}
+				<div className="warning_text review-info_message">
+					<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_BTC_WARNING">
+						{STRINGS.formatString(
+							STRINGS['WITHDRAW_PAGE.MESSAGE_BTC_WARNING'],
+							fullname
+						)}
+					</EditWrapper>
+				</div>
+			</div>
 			<ButtonSection
 				onClickAccept={onClickAccept}
 				onClickCancel={onClickCancel}

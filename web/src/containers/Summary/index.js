@@ -32,6 +32,7 @@ import STRINGS from '../../config/localizedStrings';
 import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
 import { getUserReferralCount } from '../../actions/userAction';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Summary extends Component {
 	state = {
@@ -135,6 +136,7 @@ class Summary extends Component {
 			chartData,
 			totalAsset,
 			router,
+			icons: ICONS,
 		} = this.props;
 		const {
 			selectedAccount,
@@ -155,6 +157,8 @@ class Summary extends Component {
 						stringId="SUMMARY.TITLE"
 						text={`${STRINGS['SUMMARY.TITLE']}`}
 						textType="title"
+						iconPath={ICONS['TAB_SUMMARY']}
+						iconId={`${STRINGS['SUMMARY.TITLE']}`}
 					/>
 				)}
 				{isMobile ? (
@@ -180,7 +184,7 @@ class Summary extends Component {
 					/>
 				) : (
 					<div>
-						<div className="d-flex align-items-center">
+						<div className="d-flex">
 							<div className="summary-section_1 trader-account-wrapper d-flex">
 								<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
 									<TraderAccounts
@@ -208,35 +212,35 @@ class Summary extends Component {
 										contentClassName="requirements-content"
 									/>
 								</SummaryBlock> */}
-								<div
+								{/* <div
 									className={classnames(
 										'assets-wrapper',
 										'asset_wrapper_width'
 									)}
+								> */}
+								<SummaryBlock
+									stringId="SUMMARY.ACCOUNT_ASSETS"
+									title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
+									secondaryTitle={
+										SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
+											<span>
+												<span className="title-font">{totalAssets}</span>
+												{` ${fullname}`}
+											</span>
+										) : null
+									}
+									wrapperClassname={classnames('assets-wrapper', 'w-100')}
 								>
-									<SummaryBlock
-										stringId="SUMMARY.ACCOUNT_ASSETS"
-										title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
-										secondaryTitle={
-											SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
-												<span>
-													<span className="title-font">{totalAssets}</span>
-													{` ${fullname}`}
-												</span>
-											) : null
-										}
-										// wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
-									>
-										<AccountAssets
-											user={user}
-											chartData={chartData}
-											totalAssets={totalAssets}
-											balance={balance}
-											coins={coins}
-											activeTheme={activeTheme}
-										/>
-									</SummaryBlock>
-								</div>
+									<AccountAssets
+										user={user}
+										chartData={chartData}
+										totalAssets={totalAssets}
+										balance={balance}
+										coins={coins}
+										activeTheme={activeTheme}
+									/>
+								</SummaryBlock>
+								{/* </div> */}
 							</div>
 						</div>
 						<div className="w-100">
@@ -324,4 +328,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Summary);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(Summary));

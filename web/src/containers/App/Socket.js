@@ -44,8 +44,6 @@ import {
 	setSnackDialog,
 	setConfig,
 	setInfo,
-	setPlugins,
-	requestPlugins,
 	requestInitial,
 	requestConstant,
 	requestTiers,
@@ -54,6 +52,7 @@ import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, isLoggedIn } from '../../utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
+import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
 
 class Container extends Component {
 	constructor(props) {
@@ -64,6 +63,7 @@ class Container extends Component {
 			idleTimer: undefined,
 			ordersQueued: [],
 			limitFilledOnOrder: '',
+			isUserFetched: false,
 		};
 		this.orderCache = {};
 		this.wsInterval = null;
@@ -75,9 +75,6 @@ class Container extends Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
-		requestPlugins().then(({ data = {} }) => {
-			if (data.data && data.data.length !== 0) this.props.setPlugins(data.data);
-		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -124,8 +121,8 @@ class Container extends Component {
 
 	resetTimer = debounce(this._resetTimer, 250);
 
-	initSocketConnections = () => {
-		this.setPublicWS();
+	initSocketConnections = async () => {
+		await this.setPublicWS();
 		this.setUserSocket();
 		this.setState({ appLoaded: true }, () => {
 			this.props.connectionCallBack(true);
@@ -250,12 +247,20 @@ class Container extends Component {
 				}
 			})
 			.catch((err) => {
-				const message = err.message || JSON.stringify(err);
-				this.props.setNotification(NOTIFICATIONS.ERROR, message);
-			});
+				if (!err.response) {
+					this.props.logout(ERROR_TOKEN_EXPIRED);
+				} else if (err.response && err.response.status === 400) {
+					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
+				} else {
+					const message = err.message || JSON.stringify(err);
+					this.props.setNotification(NOTIFICATIONS.ERROR, message);
+				}
+			})
+			.finally(() => this.setState({ isUserFetched: true }));
 	};
 
 	setUserSocket = () => {
+		const { isUserFetched } = this.state;
 		let url = `${WS_URL}/stream`;
 		const token = isLoggedIn() && getToken();
 
@@ -266,7 +271,7 @@ class Container extends Component {
 
 		this.setState({ privateSocket });
 
-		if (isLoggedIn()) {
+		if (isLoggedIn() && !isUserFetched) {
 			this.getUserDetails();
 		}
 
@@ -703,6 +708,8 @@ const mapStateToProps = (store) => ({
 	settings: store.user.settings,
 	constants: store.app.constants,
 	info: store.app.info,
+	token: store.auth.token,
+	verifyToken: store.auth.verifyToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -738,7 +745,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
 	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
-	setPlugins: bindActionCreators(setPlugins, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 });

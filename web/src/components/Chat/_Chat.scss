@@ -58,6 +58,7 @@ $colors-white: white;
 		}
 		.chat-footer {
 			padding: 0.5rem;
+			background-color: $box-fields;
 			.chat-message-box {
 				min-height: 4rem;
 				font-size: $regular-chat--font-size;
@@ -74,11 +75,11 @@ $colors-white: white;
 				}
 			}
 			.chat-emoji-wrapper {
-				background-color: $colors-white;
+				background-color: $box-fields;
 				.chat-emoji-icon {
 					svg {
 						.emoji-face-icon {
-							fill: $chat-message-content-color;
+							fill: $colors-black;
 						}
 					}
 				}
@@ -100,6 +101,7 @@ $colors-white: white;
 	box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	font-family: 'Open Sans' !important;
 	border: 1px solid $chat-box-border !important;
+	border-top: 2px solid $link !important;
 
 	.timestamp {
 		color: $chat-message-dark--font-color;
@@ -369,6 +371,7 @@ $colors-white: white;
 		min-height: 3rem;
 		width: 100%;
 		padding: 0;
+		background-color: $app-light-background;
 		button {
 			width: 100%;
 		}

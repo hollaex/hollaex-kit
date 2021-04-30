@@ -156,10 +156,10 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
-			`Sie haben eine Auszahlungsanforderung für ${amount} ${currency.toUpperCase()} an die Adresse ${address} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.`,
-		COMPLETED: (amount, address, currency) =>
-			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()}  wurde bearbeitet und an die Adresse ${address} gesendet.`,
+		PENDING: (amount, currency) =>
+			`Sie haben eine Auszahlungsanforderung für ${amount} ${currency.toUpperCase()} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.`,
+		COMPLETED: (amount, currency) =>
+			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()} wurde bearbeitet.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
@@ -180,10 +180,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Adresse: ${address}`,
-		5: 'Um diese Auszahlung zu bestätigen, klicken Sie bitte auf die Taste unten.',
-		6: 'Bestätigen',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'Um diese Auszahlung zu bestätigen, klicken Sie bitte auf die Taste unten.',
+		7: 'Bestätigen',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -273,6 +274,15 @@ const SMS = {
 		`Ihre ${currency.toUpperCase()} Abhebung für den Betrag von ${amount} wurde bestätigt.`
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -293,5 +303,6 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	DISCOUNTUPDATE
 };

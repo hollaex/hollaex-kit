@@ -57,6 +57,8 @@ const icons = {
 	EDIT_STRING: '/assets/icons/edit-string.svg',
 	OPERATOR_EDIT_ICON: '/assets/icons/upload-graphic-edit.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
+	EDIT_SECTION: '/assets/images/gear-homepage-edit-sections-01.svg',
+	EDIT_BACKGROUND: '/assets/images/upload-01.svg',
 	SEARCH: '/assets/images/search.svg',
 	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
 	RED_WARNING: '/assets/acounts/account-icons-09.svg',
@@ -69,9 +71,11 @@ const icons = {
 	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
 	VERIFICATION_ICON: '/assets/images/verification-green-tick.svg',
 	CHAT_FEATURE_ICON: '/assets/images/chat-feature-icon.svg',
+	HOME_PAGE_FEATURE_ICON: '/assets/images/home-page.svg',
 	USER_EMAIL: '/assets/images/user-email.svg',
 	USER_EMAIL_VERIFIED: '/assets/images/user-email-verified.svg',
 	USER_EMAIL_UNVERIFIED: '/assets/images/user-email-unverified.svg',
+	SPINNER: '/assets/images/spinner.gif',
 
 	// Notification Icons
 	VERIFICATION_PENDING: '/assets/images/verification-pending-orange.svg',
@@ -80,6 +84,8 @@ const icons = {
 	VERIFICATION_INCOMPLETE: '/assets/images/verification-attention-red.svg',
 	VERIFICATION_VERIFIED: '/assets/images/verification-green-tick.svg',
 	CLOUD_ICON: '/assets/images/current-plan-cloud-icon.svg',
+	QUICK_TRADE: '/assets/images/quick-trade-01.svg',
+	PAPER_CLIP: '/assets/acounts/paperclip-attach-01.svg',
 };
 
 export default icons;

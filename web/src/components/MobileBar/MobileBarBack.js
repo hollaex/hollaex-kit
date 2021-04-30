@@ -3,9 +3,14 @@ import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 
 import { MobileBarWrapper } from '.';
-import { ICONS } from '../../config/constants';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-export const MobileBarBack = ({ onBackClick, wrapperClassName, className }) => {
+const MobileBarBack = ({
+	onBackClick,
+	wrapperClassName,
+	className,
+	icons: ICONS,
+}) => {
 	return (
 		<MobileBarWrapper className="d-flex align-items-center">
 			<div
@@ -13,7 +18,7 @@ export const MobileBarBack = ({ onBackClick, wrapperClassName, className }) => {
 				onClick={onBackClick}
 			>
 				<ReactSVG
-					src={ICONS.ARROW_ARROW}
+					src={ICONS['ARROW_ARROW']}
 					className={classnames('bar-icon-back', wrapperClassName)}
 				/>
 			</div>
@@ -26,3 +31,5 @@ MobileBarBack.defaultProps = {
 	wrapperClassName: '',
 	className: '',
 };
+
+export default withConfig(MobileBarBack);

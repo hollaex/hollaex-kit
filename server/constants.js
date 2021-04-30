@@ -23,7 +23,9 @@ let configuration = {
 		captcha: {},
 		defaults: {},
 		features: {},
-		meta: {}
+		meta: {},
+		injected_values: [],
+		injected_html: {}
 	}
 };
 
@@ -86,6 +88,7 @@ const resetAllConfig = () => {
 	configuration = {
 		coins: {},
 		pairs: {},
+		tiers: {},
 		kit: {
 			info: {},
 			color: {},
@@ -96,7 +99,9 @@ const resetAllConfig = () => {
 			captcha: {},
 			defaults: {},
 			features: {},
-			meta: {}
+			meta: {},
+			injected_values: [],
+			injected_html: {}
 		}
 	};
 };
@@ -150,7 +155,9 @@ exports.KIT_CONFIG_KEYS = [
 	'meta',
 	'features',
 	'setup_completed',
-	'email_verification_required'
+	'email_verification_required',
+	'injected_values',
+	'injected_html'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -283,8 +290,8 @@ exports.DEFAULT_FEES = {
 		taker: 0.3
 	},
 	lite: {
-		maker: 0.1,
-		taker: 0.2
+		maker: 0.05,
+		taker: 0.1
 	},
 	member: {
 		maker: 0,

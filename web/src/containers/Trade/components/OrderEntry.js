@@ -28,7 +28,7 @@ import {
 	step,
 	normalizeFloat,
 } from '../../../components/Form/validations';
-import { Loader } from '../../../components';
+import { Loader, Tooltip } from '../../../components';
 import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
@@ -97,6 +97,46 @@ class OrderEntry extends Component {
 		}
 	}
 
+	calculateOrderForBudget = (budget, orders = []) =>
+		orders.reduce(
+			([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
+				if (mathjs.larger(budget, accumulatedPrice)) {
+					const remainingBudget = mathjs.subtract(budget, accumulatedPrice);
+					const orderPrice = mathjs.multiply(size, price);
+					if (mathjs.largerEq(remainingBudget, orderPrice)) {
+						return [
+							mathjs.sum(accumulatedPrice, orderPrice),
+							mathjs.sum(accumulatedSize, size),
+						];
+					} else {
+						const remainingSize = mathjs.divide(remainingBudget, price);
+						return [
+							mathjs.sum(accumulatedPrice, remainingBudget),
+							mathjs.sum(accumulatedSize, remainingSize),
+						];
+					}
+				} else {
+					return [accumulatedPrice, accumulatedSize];
+				}
+			},
+			[0, 0]
+		);
+
+	calculateMarketOrder = (percent) => {
+		const { pair_2, balance = {}, side, pairsOrderbooks, pair } = this.props;
+
+		const availableBalance = balance[`${pair_2}_available`];
+		const budget = mathjs.multiply(
+			availableBalance,
+			mathjs.divide(percent, 100)
+		);
+
+		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
+			pairsOrderbooks[pair] || {};
+
+		return this.calculateOrderForBudget(budget, orders);
+	};
+
 	setMax = (percent = 100) => {
 		const {
 			side,
@@ -121,10 +161,12 @@ class OrderEntry extends Component {
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
 
-		const calculatedSize = mathjs.multiply(
-			maxSize,
-			mathjs.divide(percent, 100)
-		);
+		let calculatedSize;
+		if (type === 'market' && side === 'buy') {
+			calculatedSize = this.calculateMarketOrder(percent)[1];
+		} else {
+			calculatedSize = mathjs.multiply(maxSize, mathjs.divide(percent, 100));
+		}
 
 		if (calculatedSize !== size) {
 			this.props.change(
@@ -211,6 +253,21 @@ class OrderEntry extends Component {
 		} else if (values.price) {
 			order.price = formatNumber(values.price, getDecimals(increment_price));
 		}
+
+		if (values.order_type === 'stops') {
+			order.stop = formatNumber(values.stop, getDecimals(increment_price));
+		} else {
+			delete order.stop;
+		}
+
+		if (values.post_only) {
+			order.meta = {
+				post_only: values.post_only,
+			};
+		}
+
+		delete order.post_only;
+		delete order.order_type;
 
 		return this.props.submitOrder(order).then(() => {
 			if (
@@ -443,7 +500,11 @@ class OrderEntry extends Component {
 			},
 			postOnly: {
 				name: 'post_only',
-				label: <span className="px-1">{STRINGS['POST_ONLY']}</span>,
+				label: (
+					<Tooltip text={STRINGS['POST_ONLY_TOOLTIP']} className="light-theme">
+						<span className="px-1 post-only-txt">{STRINGS['POST_ONLY']}</span>
+					</Tooltip>
+				),
 				type: 'checkbox',
 				className: 'align-start my-0',
 			},
@@ -516,6 +577,7 @@ class OrderEntry extends Component {
 					orderType={orderType}
 				>
 					<Review
+						side={side}
 						price={price}
 						size={size}
 						type={type}
@@ -568,6 +630,7 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		settings: state.user.settings,
 		coins: state.app.coins,
+		pairsOrderbooks: state.orderbook.pairsOrderbooks,
 		asks,
 		bids,
 		marketPrice,

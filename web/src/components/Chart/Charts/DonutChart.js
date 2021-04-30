@@ -152,6 +152,7 @@ class DonutChart extends Component {
 	}
 
 	renderSlice = (value, i, width, height) => {
+		const { showOpenWallet } = this.props;
 		let data = value.data;
 		let minViewportSize = Math.min(width, height);
 		let activeSlice = this.state.hoverId === data.symbol;
@@ -190,7 +191,7 @@ class DonutChart extends Component {
 					>
 						<tspan>{STRINGS['ZERO_ASSET']}</tspan>
 					</text>
-					{this.props.showOpenWallet ? (
+					{showOpenWallet && (
 						<text
 							transform={translate(0, 10)}
 							dy=".35em"
@@ -201,7 +202,7 @@ class DonutChart extends Component {
 								{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
 							</Link>
 						</text>
-					) : null}
+					)}
 				</g>
 			);
 		} else if (data.balance > 0) {
@@ -235,13 +236,13 @@ class DonutChart extends Component {
 							>
 								{symbol.toUpperCase()}
 							</text>
-							{this.props.showOpenWallet ? (
+							{showOpenWallet && (
 								<text dy="5px" textAnchor="middle" className="donut-label-link">
 									<Link to="/wallet" className="deposit-asset">
 										{STRINGS['OPEN_WALLET'].toUpperCase()}
 									</Link>
 								</text>
-							) : null}
+							)}
 						</Fragment>
 					) : null}
 				</g>

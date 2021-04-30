@@ -173,8 +173,12 @@ table th {
 	align-items: flex-start;
 }
 
+.align-end {
+	align-items: flex-end;
+}
+
 .underline-text {
-	text-decoration: underline;
+	text-decoration: underline !important;
 }
 
 .disabled-link {
@@ -262,12 +266,6 @@ table th {
 		z-index: 1;
 	}
 
-	&.order-entry {
-		&.ant-select {
-			width: 100% !important;
-		}
-	}
-
 	.ant-select-arrow {
 		z-index: -1;
 	}
@@ -283,4 +281,16 @@ table th {
 
 .border-pale {
 	border-color: $colors-super-pale-black !important;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+.align-items-baseline {
+	align-items: baseline;
+}
+
+.no-border {
+	border: none !important;
 }

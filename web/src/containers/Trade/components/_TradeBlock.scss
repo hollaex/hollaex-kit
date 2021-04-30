@@ -1,6 +1,12 @@
 $tabs-title--margin: 2rem;
 .trade__active-orders_cancel-All {
+	position: relative;
+	min-height: 2rem;
 	min-width: 6rem;
+}
+
+.trade__active-orders-header_cancel-All {
+	position: relative;
 }
 
 .trade_cancel-All-confirmation {
@@ -51,10 +57,12 @@ $tabs-title--margin: 2rem;
 
 .trade_block-wrapper {
 	padding: 1rem;
-	flex: 1;
+	// border: 1px solid $colors-main-border;
+	margin: 6px 3px 3px 3px;
+	background-color: $app-sidebar-background;
 
 	.trade_block-title {
-		border-top: $trade_title-border--size solid $trade_title-border--color;
+		// border-top: $trade_title-border--size solid $trade_title-border--color;
 		text-transform: uppercase;
 		font-weight: bold;
 		margin-bottom: 1rem;
@@ -78,7 +86,11 @@ $tabs-title--margin: 2rem;
 		font-size: $trade-font-size;
 		overflow-y: scroll;
 		height: 100%;
-		transform: translateY(-1rem);
+		.sidebar_hub-content {
+			min-height: 42vh;
+			max-height: 56vh;
+			overflow-y: auto;
+		}
 	}
 }
 
@@ -138,12 +150,15 @@ $tabs-title--margin: 2rem;
 }
 
 .trade_history-wrapper {
-	height: 84vh;
+	height: 49vh;
 
 	.display_table-wrapper {
 		.display_table-header {
 			:nth-child(2) {
 				text-align: center;
+			}
+			.ant-select-arrow {
+				z-index: 1;
 			}
 		}
 

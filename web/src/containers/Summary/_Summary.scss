@@ -70,7 +70,6 @@ $trade-tab--arrow-size: 0.4rem;
 			// width: 17rem;
 		}
 		.assets-wrapper {
-			margin-top: 40px;
 			.price-text {
 				font-size: $font-size-mobile-txt !important;
 			}
@@ -93,15 +92,28 @@ $trade-tab--arrow-size: 0.4rem;
 	margin: 1rem auto;
 	width: 75rem;
 
+	.icon_title-wrapper {
+		justify-content: flex-start;
+		flex-direction: row;
+	}
+
+	.account-details-text {
+		padding-top: 1rem;
+		padding-bottom: 2rem;
+	}
+
 	.summary-block_wrapper {
-		border-top: 0.2rem solid $colors-border;
+		// border: 1px solid $colors-main-border;
 		color: $colors-deactivate-color2;
-		// margin: 0 .5rem;
-		padding: 0.5rem;
+		margin: 11px 0;
+		padding: 1.5rem 1rem 1rem 1.5rem;
+		background-color: $app-sidebar-background;
+		border-radius: 3px;
+		border: 1px solid $colors-super-pale-black;
 
 		.summary-block-title {
 			color: $colors-black;
-			font-size: 1rem;
+			font-size: $font-size-subhead4;
 			font-weight: bold;
 		}
 		.summary-title-icon {
@@ -110,7 +122,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.summary-content-txt {
-		font-size: $font-size-subtext;
+		font-size: $font-size-main;
 	}
 
 	.trader-account-wrapper {
@@ -153,7 +165,7 @@ $trade-tab--arrow-size: 0.4rem;
 		font-weight: bold;
 	}
 	.summary-section_1 {
-		height: 30rem;
+		// height: 30rem;
 
 		.assets-wrapper {
 			.donut-container {
@@ -274,7 +286,7 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.assets-wrapper {
 		font-size: 0.8rem;
-		margin-right: 1.5rem;
+		// margin-right: 1.5rem;
 		// width: 25rem;
 
 		.assets-description {
@@ -525,7 +537,7 @@ $trade-tab--arrow-size: 0.4rem;
 		top: calc(50% - 0.6rem);
 	}
 	.trade_tabs-search-field {
-		background-color: $app-background-color;
+		background-color: $app-sidebar-background;
 		color: $colors-deactivate-color1;
 		margin: 0;
 		padding-right: 0.5rem;
@@ -733,9 +745,9 @@ $trade-tab--arrow-size: 0.4rem;
 		.trader-account-wrapper {
 			font-size: 0.9rem;
 		}
-		.summary-section_1 {
-			height: 31rem !important;
-		}
+		// .summary-section_1 {
+		// height: 31rem !important;
+		// }
 		.summary-section_2 {
 			height: 44rem !important;
 		}
@@ -744,3 +756,10 @@ $trade-tab--arrow-size: 0.4rem;
 		font-size: 0.9rem;
 	}
 }
+// @media screen and (max-width: 960px) {
+// .summary-container {
+// .summary-section_1 {
+// height: 33rem !important;
+// }
+// }
+// }

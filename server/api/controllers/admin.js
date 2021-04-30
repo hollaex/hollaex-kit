@@ -7,6 +7,7 @@ const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
+const { errorMessageConverter } = require('../../utils/conversion');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -21,7 +22,7 @@ const getAdminKit = (req, res) => {
 		return res.json(data);
 	} catch (err) {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getAdminKit', err.message);
-		return res.status(400).json({ message: err.message });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
 };
 
@@ -36,7 +37,7 @@ const putNetworkCredentials = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putNetworkCredentials', err.message);
-			return res.status(400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -69,7 +70,7 @@ const createInitialAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/createInitialAdmin', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -90,7 +91,7 @@ const putAdminKit = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', err);
-			return res.status(400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -122,7 +123,7 @@ const getUsersAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUsers', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -146,7 +147,7 @@ const putUserRole = (req, res) => {
 				'controllers/admin/putUserRole',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -170,7 +171,44 @@ const putUserNote = (req, res) => {
 				'controllers/admin/userNote',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const putUserDiscount = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putUserDiscount auth',
+		req.auth
+	);
+
+	const user_id = req.swagger.params.user_id.value;
+	const { discount } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putUserDiscount',
+		'user_id',
+		user_id,
+		'discount rate',
+		discount
+	);
+
+	toolsLib.user.updateUserDiscount(user_id, discount)
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/putUserDiscount successful'
+			);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putUserDiscount err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -192,7 +230,7 @@ const getAdminUserBalance = (req, res) => {
 				'controllers/admin/getAdminUserBalance',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -225,7 +263,7 @@ const activateUser = (req, res) => {
 				'controllers/admin/activateUser',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -241,7 +279,12 @@ const getAdminBalance = (req, res) => {
 			return res.json(balance);
 		})
 		.catch((err) => {
-			return res.status(err.status || 400).json({ message: err.message });
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getAdminBalance',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -266,7 +309,7 @@ const upgradeUser = (req, res) => {
 				'controllers/admin/upgradeUser',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -295,7 +338,7 @@ const verifyEmailUser = (req, res) => {
 				'controllers/admin/verifyEmailUser',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -309,7 +352,7 @@ const flagUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/flagUser', err.message);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -346,7 +389,7 @@ const getAdminUserLogins = (req, res) => {
 				'controllers/admin/getAdminUserLogins/catch',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -384,7 +427,7 @@ const getUserAudits = (req, res) => {
 				'controllers/admin/getUserAudits',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -418,7 +461,7 @@ const getCoins = (req, res) => {
 			'controllers/coin/getCoins',
 			err.message
 		);
-		return res.status(400).json({ message: err.message });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
 };
 
@@ -452,7 +495,7 @@ const getPairs = (req, res) => {
 			'controllers/coin/getPairs',
 			err.message
 		);
-		return res.status(400).json({ message: err.message });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
 };
 
@@ -475,7 +518,7 @@ const transferFund = (req, res) => {
 				'controllers/admin/transferFund',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -496,7 +539,7 @@ const completeExchangeSetup = (req, res) => {
 				'controllers/admin/completeExchangeSetup catch',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -520,7 +563,7 @@ const uploadImage = (req, res) => {
 				'controllers/admin/uploadImage catch',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -548,7 +591,7 @@ const getOperators = (req, res) => {
 				'controllers/admin/getOperators catch',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -572,7 +615,7 @@ const inviteNewOperator = (req, res) => {
 				'controllers/admin/inviteNewOperator err',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -595,7 +638,7 @@ const getExchangeGeneratedFees = (req, res) => {
 				'controllers/admin/getExchangeGeneratedFees catch',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -616,7 +659,7 @@ const settleFees = (req, res) => {
 				'controllers/admin/settleFees catch',
 				err.message
 			);
-			return res.status(err.status || 400).json({ message: err.message });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -632,7 +675,8 @@ const mintAsset = (req, res) => {
 		currency,
 		amount,
 		description,
-		transaction_id
+		transaction_id,
+		status
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -644,7 +688,9 @@ const mintAsset = (req, res) => {
 		'amount',
 		amount,
 		'transaction_id',
-		transaction_id
+		transaction_id,
+		'status',
+		status
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -652,13 +698,83 @@ const mintAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.mintAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
+			return toolsLib.wallet.mintAssetByNetworkId(
+				user.network_id,
+				currency,
+				amount,
+				{
+					description,
+					transactionId: transaction_id,
+					status
+				}
+			);
 		})
-		.then(() => {
-			return res.json({ message: 'Success' });
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/mintAsset successful',
+			);
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
-			return res.status(err.status || 400).json({ message: err.message });
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/mintAsset err',
+				err
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const putMint = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putMint auth',
+		req.auth
+	);
+
+	const {
+		transaction_id,
+		updated_transaction_id,
+		status,
+		rejected,
+		dismissed
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putMint transaction_id',
+		transaction_id,
+		'status',
+		status,
+		'rejected',
+		rejected,
+		'dismissed',
+		dismissed,
+		'updated_transaction_id',
+		updated_transaction_id
+	);
+
+	toolsLib.wallet.updatePendingMint(transaction_id, {
+		status,
+		dismissed,
+		rejected,
+		updatedTransactionId: updated_transaction_id
+	})
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/putMint successful',
+			);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putMint err',
+				err
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -674,7 +790,8 @@ const burnAsset = (req, res) => {
 		currency,
 		amount,
 		description,
-		transaction_id
+		transaction_id,
+		status
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -686,7 +803,9 @@ const burnAsset = (req, res) => {
 		'amount',
 		amount,
 		'transaction_id',
-		transaction_id
+		transaction_id,
+		'status',
+		status
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -694,13 +813,83 @@ const burnAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return toolsLib.wallet.burnAssetByNetworkId(user.network_id, currency, amount, description, transaction_id);
+			return toolsLib.wallet.burnAssetByNetworkId(
+				user.network_id,
+				currency,
+				amount,
+				{
+					description,
+					transactionId: transaction_id,
+					status
+				}
+			);
 		})
-		.then(() => {
-			return res.json({ message: 'Success' });
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/burnAsset successful',
+			);
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
-			return res.status(err.status || 400).json({ message: err.message });
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/burnAsset err',
+				err
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const putBurn = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putBurn auth',
+		req.auth
+	);
+
+	const {
+		transaction_id,
+		updated_transaction_id,
+		status,
+		rejected,
+		dismissed
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putBurn transaction_id',
+		transaction_id,
+		'status',
+		status,
+		'rejected',
+		rejected,
+		'dismissed',
+		dismissed,
+		'updated_transaction_id',
+		updated_transaction_id
+	);
+
+	toolsLib.wallet.updatePendingBurn(transaction_id, {
+		status,
+		dismissed,
+		rejected,
+		updatedTransactionId: updated_transaction_id
+	})
+		.then((data) => {
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/putBurn successful',
+			);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putBurn err',
+				err
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -730,5 +919,8 @@ module.exports = {
 	mintAsset,
 	burnAsset,
 	verifyEmailUser,
-	settleFees
+	settleFees,
+	putMint,
+	putBurn,
+	putUserDiscount
 };

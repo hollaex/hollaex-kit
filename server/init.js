@@ -59,7 +59,9 @@ const checkStatus = () => {
 			captcha: {},
 			defaults: {},
 			features: {},
-			meta: {}
+			meta: {},
+			injected_values: [],
+			injected_html: {}
 		}
 	};
 

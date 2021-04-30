@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
-import { Button, Accordion } from '../../components';
+import { Button, IconTitle } from '../../components';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 import { EditWrapper } from 'components';
@@ -88,16 +88,30 @@ const Form = ({
 	initialValues,
 	formFields,
 	callback,
+	ICONS,
 }) => (
-	<form onSubmit={handleSubmit}>
-		{renderFields(formFields, callback)}
-		{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
-		<EditWrapper stringId="SETTING_BUTTON" />
-		<Button
-			className="mt-4"
-			label={STRINGS['SETTING_BUTTON']}
-			disabled={pristine || submitting || !valid}
-		/>
+	<form onSubmit={handleSubmit} className="settings-form-wrapper">
+		<div className="settings-form">
+			<IconTitle
+				stringId="USER_SETTINGS.TITLE_AUDIO_CUE"
+				text={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
+				textType="title"
+				iconPath={ICONS['SETTING_AUDIO_ICON']}
+			/>
+			<div className="pr-4">
+				{renderFields(formFields, callback)}
+				{error && (
+					<div className="warning_text">{getErrorLocalized(error)}</div>
+				)}
+			</div>
+		</div>
+		<div className="d-flex align-items-center justify-content-center">
+			<EditWrapper stringId="SETTING_BUTTON" />
+			<Button
+				label={STRINGS['SETTING_BUTTON']}
+				disabled={pristine || submitting || !valid}
+			/>
+		</div>
 	</form>
 );
 
@@ -136,25 +150,13 @@ class AudioCueForm extends Component {
 	};
 
 	render() {
-		const section = [
-			{
-				stringId: 'USER_SETTINGS.TITLE_AUDIO_CUE',
-				title: STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE'],
-				description: 'This is the description',
-				content: (
-					<div>
-						<p>{STRINGS['USER_SETTINGS.DESC_AUDIO_CUE']}</p>
-						<Form
-							{...this.props}
-							callback={this.callback}
-							formFields={this.state.formFields}
-						/>
-					</div>
-				),
-				isOpen: true,
-			},
-		];
-		return <Accordion sections={section} />;
+		return (
+			<Form
+				{...this.props}
+				callback={this.callback}
+				formFields={this.state.formFields}
+			/>
+		);
 	}
 }
 

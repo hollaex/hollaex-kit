@@ -31,6 +31,7 @@ export const generateFormValues = () => ({
 				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.placeholder'
 			],
 		fullWidth: isMobile,
+		ishorizontalfield: true,
 	},
 	new_password: {
 		type: 'password',
@@ -41,6 +42,7 @@ export const generateFormValues = () => ({
 		placeholder:
 			STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder'],
 		fullWidth: isMobile,
+		ishorizontalfield: true,
 	},
 	new_password_confirm: {
 		type: 'password',
@@ -56,6 +58,7 @@ export const generateFormValues = () => ({
 				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.placeholder'
 			],
 		fullWidth: isMobile,
+		ishorizontalfield: true,
 	},
 });
 
@@ -68,14 +71,19 @@ const Form = ({
 	initialValues,
 	formFields,
 }) => (
-	<form onSubmit={handleSubmit}>
-		{renderFields(formFields)}
-		{error && <div className="warning_text">{error}</div>}
-		<EditWrapper stringId="ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON" />
-		<Button
-			label={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON']}
-			disabled={pristine || submitting || !valid}
-		/>
+	<form onSubmit={handleSubmit} className="change-password-form-wrapper">
+		<div className="change-password-form">
+			{renderFields(formFields)}
+			{error && <div className="warning_text">{error}</div>}
+		</div>
+		<div className="d-flex justify-content-center mb-4">
+			<EditWrapper stringId="ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON" />
+			<Button
+				label={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON']}
+				disabled={pristine || submitting || !valid}
+				className="password-btn"
+			/>
+		</div>
 	</form>
 );
 

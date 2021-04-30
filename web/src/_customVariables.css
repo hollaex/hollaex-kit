@@ -44,6 +44,8 @@
 	--calculated_trading_buying-related-text: #000000;
 	--calculated_trading_selling-related-text: #ffffff;
 	--calculated_base_modal-overlay: #ffffffbf;
+	--calculated_landing_background: #ffffff00;
+	--calculated_landing_markets_table: #fffffff0;
 	--calculated_specials_highlight-box: #0066b41a;
 	--calculated_base_top-bar-navigation_text: #ffffff;
 	--calculated_base_top-bar-navigation_text-inactive: #ffffffb3;
@@ -160,4 +162,14 @@
 	--coin-tusd-text: #ffffff;
 	--coin-dai: #f3c27a;
 	--coin-dai-text: #000000;
+	--coin-ama: #fa2902;
+	--coin-ama-text: #ffffff;
+	--coin-xtz: #2c7df7;
+	--coin-xtz-text: #ffffff;
+	--coin-doge: #c3a634;
+	--coin-doge-text: #ffffff;
+	--coin-uni: #ff4dab;
+	--coin-uni-text: #ffffff;
+	--coin-dot: #d80579;
+	--coin-dot-text: #ffffff;
 }

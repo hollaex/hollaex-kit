@@ -16,6 +16,9 @@ export const ACTION_KEYS = {
 	USER_WITHDRAWALS_PENDING: 'USER_WITHDRAWALS_PENDING',
 	USER_WITHDRAWALS_FULFILLED: 'USER_WITHDRAWALS_FULFILLED',
 	USER_WITHDRAWALS_REJECTED: 'USER_WITHDRAWALS_REJECTED',
+	USER_LOGINS_PENDING: 'USER_LOGINS_PENDING',
+	USER_LOGINS_FULFILLED: 'USER_LOGINS_FULFILLED',
+	USER_LOGINS_REJECTED: 'USER_LOGINS_REJECTED',
 	USER_WITHDRAWALS_BTC_FEE_PENDING: 'USER_WITHDRAWALS_BTC_FEE_PENDING',
 	USER_WITHDRAWALS_BTC_FEE_FULFILLED: 'USER_WITHDRAWALS_BTC_FEE_FULFILLED',
 	USER_WITHDRAWALS_BTC_FEE_REJECTED: 'USER_WITHDRAWALS_BTC_FEE_REJECTED',
@@ -269,6 +272,21 @@ export const downloadUserTrades = (key) => {
 	};
 };
 
+const getParamsByStatus = (status) => {
+	switch (status) {
+		case 'dismissed':
+			return { dismissed: true };
+		case 'rejected':
+			return { rejected: true };
+		case 'completed':
+			return { status: true };
+		case 'pending':
+			return { processing: true };
+		default:
+			return {};
+	}
+};
+
 export const getUserDeposits = ({
 	limit = 50,
 	page = 1,
@@ -276,10 +294,11 @@ export const getUserDeposits = ({
 	currency,
 	...rest
 }) => {
+	const statusParams = getParamsByStatus(status);
 	const query = querystring.stringify({
 		page,
 		limit,
-		...(status ? { status } : {}),
+		...statusParams,
 		...(currency ? { currency } : {}),
 	});
 
@@ -316,10 +335,11 @@ export const getUserWithdrawals = ({
 	currency,
 	...rest
 }) => {
+	const statusParams = getParamsByStatus(status);
 	const query = querystring.stringify({
 		page,
 		limit,
-		...(status ? { status } : {}),
+		...statusParams,
 		...(currency ? { currency } : {}),
 	});
 

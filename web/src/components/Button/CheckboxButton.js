@@ -34,6 +34,8 @@ const CheckboxButton = ({
 				'checkbutton-input-wrapper',
 				'd-flex',
 				'align-items-center',
+				'mdc-button',
+				'mdc-button--unelevated',
 				{ pointer: !!onClick }
 			)}
 			onClick={onCheck(disabled, onClick, checked)}

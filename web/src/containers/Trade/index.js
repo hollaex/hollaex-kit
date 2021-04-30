@@ -34,16 +34,18 @@ import TVChartContainer from './ChartContainer';
 import OrdersWrapper from './components/OrdersWrapper';
 import { AddTradeTabs } from 'containers';
 
-import { Loader, MobileBarTabs } from '../../components';
+import { Loader, MobileBarTabs, SidebarHub } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
 			wsInitialized: false,
+			orderbookFetched: false,
 			orderbookWs: null,
 			activeTab: 0,
 			chartHeight: 0,
@@ -86,24 +88,15 @@ class Trade extends PureComponent {
 			this.props.getUserTrades(symbol);
 		}
 		this.props.changePair(symbol);
-		this.setState({ symbol: '' }, () => {
+		this.setState({ symbol: '', orderbookFetched: false }, () => {
 			setTimeout(() => {
 				this.setState({ symbol });
 			}, 1000);
 		});
 	};
 
-	onSubmitOrder = ({ post_only, order_type, stop, ...values }) => {
-		if (post_only) {
-			values.meta = {
-				post_only,
-			};
-		}
-
-		return submitOrder({
-			...values,
-			...(order_type === 'stops' ? { stop } : {}),
-		})
+	onSubmitOrder = (values) => {
+		return submitOrder(values)
 			.then((body) => {})
 			.catch((err) => {
 				const _error =
@@ -237,6 +230,7 @@ class Trade extends PureComponent {
 						delete tempData.data;
 						this.orderCache = { ...this.orderCache, ...tempData };
 						this.storeOrderData(this.orderCache);
+						this.setState({ orderbookFetched: true });
 						break;
 
 					default:
@@ -301,8 +295,9 @@ class Trade extends PureComponent {
 			coins,
 			discount,
 			fees,
+			icons,
 		} = this.props;
-		const { chartHeight, symbol, activeTab } = this.state;
+		const { chartHeight, symbol, activeTab, orderbookFetched } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -317,6 +312,7 @@ class Trade extends PureComponent {
 			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
+			orderbookFetched,
 		};
 
 		const mobileTabs = [
@@ -381,13 +377,14 @@ class Trade extends PureComponent {
 				{isMobile ? (
 					<div className="">
 						<MobileBarTabs
-							showMarketSelector={true}
+							showMarketSelector={activeTab !== 3}
 							tabs={mobileTabs}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							pair={pair}
 							goToPair={this.goToPair}
 							goToMarkets={() => this.setActiveTab(3)}
+							icons={icons}
 						/>
 						<div className="content-with-bar d-flex">
 							{mobileTabs[activeTab].content}
@@ -396,24 +393,6 @@ class Trade extends PureComponent {
 				) : (
 					<div className={classnames('trade-container', 'd-flex')}>
 						<EventListener target="window" onResize={this.onResize} />
-						<div
-							className={classnames(
-								'trade-col_side_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								stringId="ORDERBOOK"
-								isLoggedIn={isLoggedIn()}
-								title={STRINGS['ORDERBOOK']}
-								pairData={pairData}
-								pair={pair}
-							>
-								{orderbookReady && <Orderbook {...orderbookProps} />}
-							</TradeBlock>
-						</div>
 						<div
 							className={classnames(
 								'trade-col_main_wrapper',
@@ -430,33 +409,6 @@ class Trade extends PureComponent {
 									'd-flex'
 								)}
 							>
-								<div
-									className={classnames(
-										'trade-col_action_wrapper',
-										'flex-column',
-										'd-flex',
-										'apply_rtl'
-									)}
-								>
-									<TradeBlock
-										stringId="ORDER_ENTRY"
-										title={STRINGS['ORDER_ENTRY']}
-										pairData={pairData}
-										pair={pair}
-									>
-										<OrderEntry
-											submitOrder={this.onSubmitOrder}
-											openCheckOrder={this.openCheckOrder}
-											onRiskyTrade={this.onRiskyTrade}
-											symbol={symbol}
-											balance={balance}
-											fees={fees}
-											showPopup={settings.notification.popup_order_confirmation}
-											setPriceRef={this.setPriceRef}
-											setSizeRef={this.setSizeRef}
-										/>
-									</TradeBlock>
-								</div>
 								<TradeBlock
 									stringId="CHART"
 									title={STRINGS['CHART']}
@@ -505,12 +457,56 @@ class Trade extends PureComponent {
 							)}
 						>
 							<TradeBlock
+								stringId="ORDERBOOK"
+								isLoggedIn={isLoggedIn()}
+								title={STRINGS['ORDERBOOK']}
+								pairData={pairData}
+								pair={pair}
+							>
+								{orderbookReady && <Orderbook {...orderbookProps} />}
+							</TradeBlock>
+							<TradeBlock
 								stringId="PUBLIC_SALES"
 								title={STRINGS['PUBLIC_SALES']}
 								pairData={pairData}
 								pair={pair}
 							>
 								<TradeHistory pairData={pairData} language={activeLanguage} />
+							</TradeBlock>
+						</div>
+
+						<div
+							className={classnames(
+								'trade-col_action_wrapper',
+								'flex-column',
+								'd-flex',
+								'apply_rtl'
+							)}
+						>
+							<TradeBlock
+								stringId="ORDER_ENTRY"
+								title={STRINGS['ORDER_ENTRY']}
+								pairData={pairData}
+								pair={pair}
+							>
+								<OrderEntry
+									submitOrder={this.onSubmitOrder}
+									openCheckOrder={this.openCheckOrder}
+									onRiskyTrade={this.onRiskyTrade}
+									symbol={symbol}
+									balance={balance}
+									fees={fees}
+									showPopup={settings.notification.popup_order_confirmation}
+									setPriceRef={this.setPriceRef}
+									setSizeRef={this.setSizeRef}
+								/>
+							</TradeBlock>
+							<TradeBlock title={STRINGS.WALLET_TITLE} className="f-1">
+								<SidebarHub
+									isLogged={isLoggedIn()}
+									pair={pair}
+									theme={activeTheme}
+								/>
 							</TradeBlock>
 						</div>
 					</div>
@@ -575,4 +571,4 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Trade);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));
