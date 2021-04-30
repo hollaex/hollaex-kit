@@ -34,7 +34,7 @@ const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 
 const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 	network: null,
-	otp_code: null,
+	otpCode: null,
 	ip: null,
 	domain: null
 }) => {
@@ -64,7 +64,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 		}
 	}
 
-	return verifyOtpBeforeAction(id, opts.otp_code)
+	return verifyOtpBeforeAction(id, opts.otpCode)
 		.then((validOtp) => {
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
