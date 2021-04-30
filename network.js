@@ -116,13 +116,14 @@ class HollaExNetwork {
 
 	/**
 	 * Get all trades for the exchange on the network
-	 * @param {string} symbol - Symbol of trades. Leave blank to get trades for all symbols
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.symbol - Symbol of trades. Leave blank to get trades for all symbols
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getTrades(
@@ -185,13 +186,14 @@ class HollaExNetwork {
 	/**
 	 * Get all trades for a user on the network
 	 * @param {number} userId - User id on network. Leave blank to get all trades for the exchange
-	 * @param {string} symbol - Symbol of trades. Leave blank to get trades for all symbols
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.symbol - Symbol of trades. Leave blank to get trades for all symbols
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getUserTrades(
@@ -259,6 +261,11 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+	/**
+	 * Get user network data
+	 * @param {number} userId - User's network id
+	 * @return {object} User network data
+	 */
 	getUser(userId) {
 		checkKit(this.exchange_id);
 
@@ -300,7 +307,17 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	createUserCryptoAddress(userId, crypto) {
+	/**
+	 * Create a crypto address for user
+	 * @param {number} userId - User id on network.
+	 * @param {string} crypto - Crypto to create address for.
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.network - Crypto's blockchain network
+	 * @return {object} Object with new address
+	 */
+	createUserCryptoAddress(userId, crypto, opts = {
+		network: null
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -310,9 +327,12 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/create-address?user_id=${userId}&crypto=${crypto}`;
+		let path = `${this.baseUrl}/network/${this.exchange_id}/create-address?user_id=${userId}&crypto=${crypto}`;
+
+		if (opts.network) {
+			path += `&network=${opts.network}`;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -330,9 +350,13 @@ class HollaExNetwork {
 	 * @param {string} address - Address to send withdrawal to
 	 * @param {string} currency - Curreny to withdraw
 	 * @param {number} amount - Amount to withdraw
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.network - Specify crypto currency network
 	 * @return {object} Withdrawal made on the network
 	 */
-	performWithdrawal(userId, address, currency, amount) {
+	performWithdrawal(userId, address, currency, amount, opts = {
+		network: null
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -348,6 +372,9 @@ class HollaExNetwork {
 			this.exchange_id
 		}/withdraw?user_id=${userId}`;
 		const data = { address, currency, amount };
+		if (opts.network) {
+			data.network = opts.network;
+		}
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -360,6 +387,12 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
+	/**
+	 * Cancel a withdrawal for an exchange's user on the network
+	 * @param {number} userId - User id on network
+	 * @param {string} withdrawalId - Withdrawal's id on network (not transaction id).
+	 * @return {object} Withdrawal canceled on the network
+	 */
 	cancelWithdrawal(userId, withdrawalId) {
 		checkKit(this.exchange_id);
 
@@ -386,18 +419,21 @@ class HollaExNetwork {
 
 	/**
 	 * Get all deposits for the exchange on the network
-	 * @param {string} currency - Currency of deposits. Leave blank to get deposits for all currencies
-	 * @param {boolean} status - Confirmed status of the deposits to get. Leave blank to get all confirmed and unconfirmed deposits
-	 * @param {boolean} dismissed - Dismissed status of the deposits to get. Leave blank to get all dismissed and undismissed deposits
-	 * @param {boolean} rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
-	 * @param {boolean} processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
-	 * @param {boolean} waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.currency - Currency of deposits. Leave blank to get deposits for all currencies
+	 * @param {boolean} opts.status - Confirmed status of the deposits to get. Leave blank to get all confirmed and unconfirmed deposits
+	 * @param {boolean} opts.dismissed - Dismissed status of the deposits to get. Leave blank to get all dismissed and undismissed deposits
+	 * @param {boolean} opts.rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
+	 * @param {boolean} opts.processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
+	 * @param {boolean} opts.waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
+	 * @param {string} opts.address - Deposits with specific address.
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
 	getDeposits(
@@ -413,7 +449,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -437,6 +475,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {
@@ -489,18 +535,21 @@ class HollaExNetwork {
 		/**
 	 * Get all deposits for a user on the network
 	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
-	 * @param {string} currency - Currency of deposits. Leave blank to get deposits for all currencies
-	 * @param {boolean} status - Confirmed status of the deposits to get. Leave blank to get all confirmed and unconfirmed deposits
-	 * @param {boolean} dismissed - Dismissed status of the deposits to get. Leave blank to get all dismissed and undismissed deposits
-	 * @param {boolean} rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
-	 * @param {boolean} processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
-	 * @param {boolean} waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.currency - Currency of deposits. Leave blank to get deposits for all currencies
+	 * @param {boolean} opts.status - Confirmed status of the deposits to get. Leave blank to get all confirmed and unconfirmed deposits
+	 * @param {boolean} opts.dismissed - Dismissed status of the deposits to get. Leave blank to get all dismissed and undismissed deposits
+	 * @param {boolean} opts.rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
+	 * @param {boolean} opts.processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
+	 * @param {boolean} opts.waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
+	 * @param {string} opts.address - Deposits with specific address.
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
 	getUserDeposits(
@@ -517,7 +566,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -546,6 +597,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {
@@ -597,19 +656,21 @@ class HollaExNetwork {
 
 	/**
 	 * Get all withdrawals for the exchange on the network
-	 * @param {number} userId - User id on network. Leave blank to get all withdrawals for the exchange
-	 * @param {string} currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
-	 * @param {boolean} status - Confirmed status of the depowithdrawalssits to get. Leave blank to get all confirmed and unconfirmed withdrawals
-	 * @param {boolean} dismissed - Dismissed status of the withdrawals to get. Leave blank to get all dismissed and undismissed withdrawals
-	 * @param {boolean} rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
-	 * @param {boolean} processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
-	 * @param {boolean} waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
+	 * @param {boolean} opts.status - Confirmed status of the withdrawals to get. Leave blank to get all confirmed and unconfirmed withdrawals
+	 * @param {boolean} opts.dismissed - Dismissed status of the withdrawals to get. Leave blank to get all dismissed and undismissed withdrawals
+	 * @param {boolean} opts.rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
+	 * @param {boolean} opts.processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
+	 * @param {boolean} opts.waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
+	 * @param {string} opts.address - Withdrawals with specific address.
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
 	getWithdrawals(
@@ -625,7 +686,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -649,6 +712,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {
@@ -701,18 +772,21 @@ class HollaExNetwork {
 	/**
 	 * Get all withdrawals for a user on the network
 	 * @param {number} userId - User id on network. Leave blank to get all withdrawals for the exchange
-	 * @param {string} currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
-	 * @param {boolean} status - Confirmed status of the depowithdrawalssits to get. Leave blank to get all confirmed and unconfirmed withdrawals
-	 * @param {boolean} dismissed - Dismissed status of the withdrawals to get. Leave blank to get all dismissed and undismissed withdrawals
-	 * @param {boolean} rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
-	 * @param {boolean} processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
-	 * @param {boolean} waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.currency - Currency of withdrawals. Leave blank to get withdrawals for all currencies
+	 * @param {boolean} opts.status - Confirmed status of the depowithdrawalssits to get. Leave blank to get all confirmed and unconfirmed withdrawals
+	 * @param {boolean} opts.dismissed - Dismissed status of the withdrawals to get. Leave blank to get all dismissed and undismissed withdrawals
+	 * @param {boolean} opts.rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
+	 * @param {boolean} opts.processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
+	 * @param {boolean} opts.waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
+	 * @param {string} opts.address - Withdrawals with specific address.
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
 	getUserWithdrawals(
@@ -729,7 +803,9 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			transactionId: null,
+			address: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -758,6 +834,14 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isString(opts.transactionId)) {
+			path += `&transaction_id=${opts.transactionId}`;
 		}
 
 		if (isString(opts.startDate)) {
@@ -809,7 +893,6 @@ class HollaExNetwork {
 
 	/**
 	 * Get the balance for the exchange on the network
-	 * @param {number} userId - User id on network. Leave blank to get balance for exchange
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
 	getBalance() {
@@ -894,6 +977,13 @@ class HollaExNetwork {
 	 * @param {number} size - The amount of currency to order
 	 * @param {string} type - The type of order to create e.g. 'market', 'limit'
 	 * @param {number} price - The price at which to order (only required if type is 'limit')
+	 * @param {object} feeData - Object with fee data
+	 * @param {object} feeData.fee_structure - Object with maker and taker fees
+	 * @param {number} feeData.fee_structure.maker - Maker fee.
+	 * @param {number} feeData.fee_structure.taker - Taker fee
+	 * @param {object} opts - Optional parameters.
+	 * @param {number} opts.stop - Stop price of order. This makes the order a stop loss order.
+	 * @param {object} opts.meta - Meta values for order.
 	 * @return {object} Newly created order values e.g. symbol, id, side, status, etc.
 	 */
 	createOrder(
@@ -996,21 +1086,20 @@ class HollaExNetwork {
 
 	/**
 	 * Get all orders for the exchange on the network
-	 * @param {number} userId - User id on network. Leave blank to get all orders for the exchange
-	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
-	 * @param {string} side - Side of orders to query e.g. buy, sell
-	 * @param {string} type - Type of orders to query e.g. active, stop
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.symbol - Symbol of orders. Leave blank to get orders for all symbols
+	 * @param {string} opts.side - Side of orders to query e.g. buy, sell
+	 * @param {string} opts.type - Type of orders to query e.g. active, stop
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {array} Array of queried orders
 	 */
 	getOrders(
 		opts = {
-			userId: null,
 			symbol: null,
 			side: null,
 			status: null,
@@ -1086,15 +1175,16 @@ class HollaExNetwork {
 	/**
 	 * Get all orders for a user on the network
 	 * @param {number} userId - User id on network. Leave blank to get all orders for the exchange
-	 * @param {string} symbol - Symbol of orders. Leave blank to get orders for all symbols
-	 * @param {string} side - Side of orders to query e.g. buy, sell
-	 * @param {string} type - Type of orders to query e.g. active, stop
-	 * @param {number} limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} page - Page of trades data. Default: 1
-	 * @param {string} orderBy The field to order data by e.g. amount, id. Default: id
-	 * @param {string} order Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} startDate Start date of query in ISO8601 format. Default: 0
-	 * @param {string} endDate End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.symbol - Symbol of orders. Leave blank to get orders for all symbols
+	 * @param {string} opts.side - Side of orders to query e.g. buy, sell
+	 * @param {string} opts.type - Type of orders to query e.g. active, stop
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {array} Array of queried orders
 	 */
 	getUserOrders(
@@ -1180,7 +1270,8 @@ class HollaExNetwork {
 	/**
 	 * Cancel all orders for an exchange's user on the network
 	 * @param {number} userId - User id on network
-	 * @param {string} symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
 	 * @return {array} Array of canceled orders
 	 */
 	cancelAllOrders(userId, opts = { symbol: null }) {
@@ -1242,7 +1333,8 @@ class HollaExNetwork {
 	 * @param {string} currency; - Currency of transaction
 	 * @param {string} transactionId - Transaction id
 	 * @param {string} address - Transaction receiving address
-	 * @param {boolean} isTestnet - Network transaction was made on. Default: false
+	 * @param {object} opts - Optional parameters.
+	 * @param {boolean} opts.isTestnet - Network transaction was made on. Default: false
 	 * @return {object} Success or failed message
 	 */
 	checkTransaction(
@@ -1285,7 +1377,9 @@ class HollaExNetwork {
 	 * @param {number} receiverId - Network id of user that is receiving funds
 	 * @param {string} currency - Currency to transfer
 	 * @param {number} amount - Amount to transfer
-	 * @param {string} description - Description of transfer. Default: Empty string
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.description - Description of transfer. Default: Empty string
+	 * @param {boolean} opts.email - Send email to users after transfer. Default: true.
 	 * @return {object} Object with field transaction_id
 	 */
 	transferAsset(
@@ -1340,6 +1434,19 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
+	/**
+	 * Get trade history for exchange on network
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.symbol - Symbol of trades.
+	 * @param {string} opts.side - Side of trades.
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} Count and data format.
+	 */
 	getTradesHistory(
 		opts = {
 			symbol: null,
@@ -1409,8 +1516,9 @@ class HollaExNetwork {
 	/* Network Engine Endpoints*/
 
 	/**
-	 * Get time and sales on Nework engine
-	 * @param {string} symbol - Symbol to get trades for. Leave blank to get trades of all symbols
+	 * Get Public trades on network
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.symbol - Symbol to get trades for. Leave blank to get trades of all symbols
 	 * @return {object} Object with trades
 	 */
 	getPublicTrades(opts = { symbol: null }) {
@@ -1434,7 +1542,7 @@ class HollaExNetwork {
 	}
 
 	/**
-	 * Get top orderbooks
+	 * Get top orderbook for specific symbol
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
 	 * @return {object} Object with orderbook
 	 */
@@ -1692,7 +1800,18 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	mintAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
+	/**
+	 * Mint an asset you own to a user
+	 * @param {number} userId; - Network id of user.
+	 * @param {string} currency - Currency to mint.
+	 * @param {number} amount - Amount to mint.
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.description - Description of transfer. Default: Empty string
+	 * @param {string} opts.transactionId - Custom transaction ID for mint.
+	 * @param {boolean} opts.status - Status of mint created. Default: true.
+	 * @return {object} Object with created mint's data.
+	 */
+	mintAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1713,8 +1832,12 @@ class HollaExNetwork {
 			data.description = opts.description;
 		}
 
-		if (opts.transaction_id) {
-			data.transaction_id = opts.transaction_id;
+		if (opts.transactionId) {
+			data.transaction_id = opts.transactionId;
+		}
+
+		if (isBoolean(opts.status)) {
+			data.status = opts.status;
 		}
 
 		const headers = generateHeaders(
@@ -1729,7 +1852,72 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
-	burnAsset(userId, currency, amount, opts = { description: null, transaction_id: null }) {
+	/**
+	 * Update a pending mint
+	 * @param {string} transactionId; - Transaction ID of pending mint.
+	 * @param {object} opts - Optional parameters.
+	 * @param {boolean} opts.status - Set to true to confirm pending mint.
+	 * @param {boolean} opts.dismissed - Set to true to dismiss pending mint.
+	 * @param {boolean} opts.rejected - Set to true to reject pending mint.
+	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
+	 * @return {object} Object with updated mint's data.
+	 */
+	updatePendingMint(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null }) {
+		if (!transactionId) {
+			return reject(parameterError('transactionId', 'cannot be null'));
+		}
+
+		const status = isBoolean(opts.status) ? opts.status : false;
+		const rejected = isBoolean(opts.rejected) ? opts.rejected : false;
+		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
+
+		if (!status && !rejected && !dismissed) {
+			return reject(new Error('Must give one parameter to update'));
+		} else if (
+			status && (rejected || dismissed)
+			|| rejected && (status || dismissed)
+			|| dismissed && (status || rejected)
+		) {
+			return reject(new Error('Can only update one parmaeter'));
+		}
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/mint`;
+		const data = {
+			transaction_id: transactionId,
+			status,
+			rejected,
+			dismissed
+		};
+
+		if (opts.updatedTransactionId) {
+			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
+	/**
+	 * Burn an asset you own to a user
+	 * @param {number} userId; - Network id of user.
+	 * @param {string} currency - Currency to burn.
+	 * @param {number} amount - Amount to burn.
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.description - Description of transfer. Default: Empty string
+	 * @param {string} opts.transactionId - Custom transaction ID for burn.
+	 * @param {boolean} opts.status - Status of burn created. Default: true.
+	 * @return {object} Object with created burn's data.
+	 */
+	burnAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1750,8 +1938,12 @@ class HollaExNetwork {
 			data.description = opts.description;
 		}
 
-		if (opts.transaction_id) {
-			data.transaction_id = opts.transaction_id;
+		if (opts.transactionId) {
+			data.transaction_id = opts.transactionId;
+		}
+
+		if (isBoolean(opts.status)) {
+			data.status = opts.status;
 		}
 
 		const headers = generateHeaders(
@@ -1766,6 +1958,67 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
+	/**
+	 * Update a pending burn
+	 * @param {string} transactionId; - Transaction ID of pending burn.
+	 * @param {object} opts - Optional parameters.
+	 * @param {boolean} opts.status - Set to true to confirm pending burn.
+	 * @param {boolean} opts.dismissed - Set to true to dismiss pending burn.
+	 * @param {boolean} opts.rejected - Set to true to reject pending burn.
+	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending burn to.
+	 * @return {object} Object with updated burn's data.
+	 */
+	updatePendingBurn(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null }) {
+		if (!transactionId) {
+			return reject(parameterError('transactionId', 'cannot be null'));
+		}
+
+		const status = isBoolean(opts.status) ? opts.status : false;
+		const rejected = isBoolean(opts.rejected) ? opts.rejected : false;
+		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
+
+		if (!status && !rejected && !dismissed) {
+			return reject(new Error('Must give one parameter to update'));
+		} else if (
+			status && (rejected || dismissed)
+			|| rejected && (status || dismissed)
+			|| dismissed && (status || rejected)
+		) {
+			return reject(new Error('Can only update one parmaeter'));
+		}
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/burn`;
+		const data = {
+			transaction_id: transactionId,
+			status,
+			rejected,
+			dismissed
+		};
+
+		if (opts.updatedTransactionId) {
+			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
+	/**
+	 * Get generated fees for exchange
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
+	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @return {object} Object with generated fees
+	 */
 	getGeneratedFees(
 		opts = {
 			startDate: null,
@@ -1800,6 +2053,10 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+	/**
+	 * Settle exchange fees
+	 * @return {object} Object with settled fees.
+	 */
 	settleFees() {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -1817,6 +2074,14 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+	/**
+	 * Convert assets to a quote asset
+	 * @param {array} assets - Array of assets to convert as strings
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.quote - Quote asset to convert to. Default: USDT.
+	 * @param {number} opts.amount - Amount of quote asset to convert to. Default: 1.
+	 * @return {object} Object with converted assets.
+	 */
 	getOraclePrices(assets = [], opts = { quote: null, amount: null }) {
 		checkKit(this.exchange_id);
 
@@ -1850,6 +2115,10 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+	/**
+	 * Connect to websocket
+	 * @param {array} events - Array of events to connect to
+	 */
 	connect(events = []) {
 		checkKit(this.exchange_id);
 		this.wsReconnect = true;
@@ -1933,6 +2202,9 @@ class HollaExNetwork {
 		}
 	}
 
+	/**
+	 * Disconnect from Network websocket
+	 */
 	disconnect() {
 		checkKit(this.exchange_id);
 		if (this.wsConnected()) {
@@ -1943,6 +2215,10 @@ class HollaExNetwork {
 		}
 	}
 
+	/**
+	 * Subscribe to Network websocket events
+	 * @param {array} events - The events to listen to
+	 */
 	subscribe(events = []) {
 		checkKit(this.exchange_id);
 		if (this.wsConnected()) {
@@ -1957,6 +2233,10 @@ class HollaExNetwork {
 		}
 	}
 
+	/**
+	 * Unsubscribe to Network websocket events
+	 * @param {array} events - The events to unsub from
+	 */
 	unsubscribe(events = []) {
 		checkKit(this.exchange_id);
 		if (this.wsConnected()) {
