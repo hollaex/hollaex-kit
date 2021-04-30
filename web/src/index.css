@@ -339,8 +339,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.no_bottom_navigation {
@@ -353,8 +353,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -1734,6 +1734,24 @@ table th {
   .transaction-history-wrapper .ant-btn-ghost :active {
     color: var(--labels_important-active-labels-text-graphics);
     border-color: var(--labels_important-active-labels-text-graphics); }
+  .transaction-history-wrapper .ant-btn-ghost.active_search_button {
+    animation: shine 2s linear infinite alternate;
+    animation-fill-mode: both;
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    box-shadow: 0 0 8px 0.1px var(--base_wallet-sidebar-and-popup);
+    position: relative; }
+
+@keyframes shine {
+  10% {
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    box-shadow: 0 0 8px 0.1px var(--base_wallet-sidebar-and-popup);
+    transition-property: color, box-shadow;
+    transition-duration: 0.7s, 0.7s;
+    transition-timing-function: ease; }
+  100% {
+    color: var(--labels_important-active-labels-text-graphics);
+    box-shadow: 0 0 8px 0.1px var(--labels_secondary-inactive-label-text-graphics);
+    transition-property: color, box-shadow; } }
 
 .layout-mobile .tab_controller-wrapper {
   height: auto; }
@@ -2271,7 +2289,8 @@ table th {
 
 .trade_order_entry-wrapper .post-only-txt {
   font-size: 1rem;
-  color: var(--labels_secondary-inactive-label-text-graphics); }
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  cursor: pointer; }
 
 .risky-trade-wrapper {
   width: 32rem; }
@@ -2595,6 +2614,39 @@ table th {
     .public-history__header .custom-select-input-style .ant-select-arrow {
       right: 2px; }
 
+.mobile-tab_market-indicator {
+  width: 2.5rem !important;
+  margin: 0.3rem 0.3rem 0 0.3rem; }
+  .mobile-tab_market-indicator svg .btc0,
+  .mobile-tab_market-indicator svg .btc1,
+  .mobile-tab_market-indicator svg .eth0,
+  .mobile-tab_market-indicator svg .eth1,
+  .mobile-tab_market-indicator svg .bch-icon,
+  .mobile-tab_market-indicator svg .xrp-icon,
+  .mobile-tab_market-indicator svg .xht-icon,
+  .mobile-tab_market-indicator svg .xmr-icon,
+  .mobile-tab_market-indicator svg .xlm-icon,
+  .mobile-tab_market-indicator svg .eos-icon,
+  .mobile-tab_market-indicator svg .trx-icon,
+  .mobile-tab_market-indicator svg .ada-icon,
+  .mobile-tab_market-indicator svg .bnb-icon,
+  .mobile-tab_market-indicator svg .tusd-icon,
+  .mobile-tab_market-indicator svg .dai-icon,
+  .mobile-tab_market-indicator svg .ltc-icon,
+  .mobile-tab_market-indicator svg .default-icon {
+    fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .mobile-tab_market-indicator svg .plus,
+  .mobile-tab_market-indicator svg .minus {
+    stroke: var(--labels_secondary-inactive-label-text-graphics) !important;
+    stroke-width: 0.2rem; }
+  .mobile-tab_market-indicator svg .st0 {
+    fill: var(--calculated_base_top-bar-navigation_text);
+    stroke-width: 0rem; }
+  .mobile-tab_market-indicator svg .icon-check-1 {
+    stroke: var(--calculated_base_top-bar-navigation_text); }
+  .mobile-tab_market-indicator svg .xht-icon-1 {
+    fill: var(--base_background) !important; }
+
 .quote-container {
   background-color: var(--base_background);
   overflow-y: scroll; }
@@ -2635,8 +2687,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw;
@@ -2783,7 +2835,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -7057,14 +7109,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -7713,6 +7765,26 @@ table th {
     background-color: var(--coin-dai);
     border: none !important;
     color: var(--coin-dai-text) !important; }
+  .currency_ball-wrapper.ama {
+    background-color: var(--coin-ama);
+    border: none !important;
+    color: var(--coin-ama-text) !important; }
+  .currency_ball-wrapper.xtz {
+    background-color: var(--coin-xtz);
+    border: none !important;
+    color: var(--coin-xtz-text) !important; }
+  .currency_ball-wrapper.doge {
+    background-color: var(--coin-doge);
+    border: none !important;
+    color: var(--coin-doge-text) !important; }
+  .currency_ball-wrapper.uni {
+    background-color: var(--coin-uni);
+    border: none !important;
+    color: var(--coin-uni-text) !important; }
+  .currency_ball-wrapper.dot {
+    background-color: var(--coin-dot);
+    border: none !important;
+    color: var(--coin-dot-text) !important; }
   .currency_ball-wrapper.s {
     font-size: 0.6rem;
     width: 1.8rem;

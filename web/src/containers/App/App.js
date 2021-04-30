@@ -628,6 +628,7 @@ class App extends Component {
 							<div className="d-flex flex-column f-1">
 								{!isHome && (
 									<AppBar
+										router={router}
 										menuItems={menuItems}
 										activePath={this.state.activeMenu}
 										onMenuChange={this.handleMenuChange}

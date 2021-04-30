@@ -264,6 +264,31 @@ $large-modifier: 2.25;
 		border: none !important;
 		color: $coin-dai-text !important;
 	}
+	&.ama {
+		background-color: $coin-ama;
+		border: none !important;
+		color: $coin-ama-text !important;
+	}
+	&.xtz {
+		background-color: $coin-xtz;
+		border: none !important;
+		color: $coin-xtz-text !important;
+	}
+	&.doge {
+		background-color: $coin-doge;
+		border: none !important;
+		color: $coin-doge-text !important;
+	}
+	&.uni {
+		background-color: $coin-uni;
+		border: none !important;
+		color: $coin-uni-text !important;
+	}
+	&.dot {
+		background-color: $coin-dot;
+		border: none !important;
+		color: $coin-dot-text !important;
+	}
 
 	&.s {
 		font-size: $small-font;
