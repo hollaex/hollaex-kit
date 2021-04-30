@@ -28,7 +28,7 @@ import {
 	step,
 	normalizeFloat,
 } from '../../../components/Form/validations';
-import { Loader } from '../../../components';
+import { Loader, Tooltip } from '../../../components';
 import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
@@ -500,7 +500,11 @@ class OrderEntry extends Component {
 			},
 			postOnly: {
 				name: 'post_only',
-				label: <span className="px-1 post-only-txt">{STRINGS['POST_ONLY']}</span>,
+				label: (
+					<Tooltip text={STRINGS['POST_ONLY_TOOLTIP']} className="light-theme">
+						<span className="px-1 post-only-txt">{STRINGS['POST_ONLY']}</span>
+					</Tooltip>
+				),
 				type: 'checkbox',
 				className: 'align-start my-0',
 			},
