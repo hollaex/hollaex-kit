@@ -3520,6 +3520,9 @@ table th {
     max-width: 12rem !important;
     z-index: 1; }
 
+.layout-mobile .trade_tabs-container .sticky-col {
+  background-color: var(--base_background) !important; }
+
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
   height: inherit;
