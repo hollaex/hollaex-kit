@@ -10,7 +10,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { WITHDRAWAL } = require('../strings').languageFile(language);
+	const WITHDRAWAL = require('../strings').getStringObject(language, 'WITHDRAWAL');
 	let result = `<div>
         <p>
         ${WITHDRAWAL.GREETING(email)}
@@ -67,7 +67,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { WITHDRAWAL } = require('../strings').languageFile(language);
+	const WITHDRAWAL = require('../strings').getStringObject(language, 'WITHDRAWAL');
 	let result = `${WITHDRAWAL.GREETING(email)}`;
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		result += `

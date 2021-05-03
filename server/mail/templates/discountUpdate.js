@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { DISCOUNTUPDATE } = require('../strings').languageFile(language);
+  const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
 	return `
         <div>
           <p>
@@ -26,7 +26,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { DISCOUNTUPDATE } = require('../strings').languageFile(language);
+  const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
 	return `
 		${DISCOUNTUPDATE.GREETING(email)}
 		${DISCOUNTUPDATE.BODY[1](data.rate)}
