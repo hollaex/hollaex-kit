@@ -19,7 +19,7 @@ const html = (email, data, language, domain) => {
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		let explorers = '';
 
-		if (!data.transaction_id.includes('-')) {
+		if (data.transaction_id && !data.transaction_id.includes('-')) {
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
@@ -49,8 +49,10 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id && data.address ? WITHDRAWAL.BODY[4](data.address) : ''}
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
+				${data.network ? '<br />' : ''}
+				${data.network ? WITHDRAWAL.BODY[6](data.network) : ''}
 			</p>
-			${explorers.length > 0 ? WITHDRAWAL.BODY[6] : ''}
+			${explorers.length > 0 ? WITHDRAWAL.BODY[7] : ''}
 			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
 		`;
 	} else {
@@ -75,6 +77,7 @@ const text = (email, data, language, domain) => {
 			${WITHDRAWAL.BODY[3](data.status)}
 			${data.transaction_id && data.address ? WITHDRAWAL.BODY[4](data.address) : ''}
 			${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
+			${data.network ? WITHDRAWAL.BODY[6](data.network) : ''}
 		`;
 	} else {
 		result += '';

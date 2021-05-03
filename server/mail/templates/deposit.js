@@ -22,7 +22,7 @@ const html = (email, data, language, domain) => {
 		let explorers = '';
 		let confirmation = undefined;
 
-		if (!data.transaction_id.includes('-')) {
+		if (data.transaction_id && !data.transaction_id.includes('-')) {
 			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
@@ -51,8 +51,10 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
+				${data.network ? '<br />' : ''}
+				${data.network ? DEPOSIT.BODY[5](data.network) : ''}
 			</p>
-			${explorers.length > 0 ? DEPOSIT.BODY[5] : ''}
+			${explorers.length > 0 ? DEPOSIT.BODY[6] : ''}
 			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
 		`;
 	} else {
@@ -74,7 +76,7 @@ const text = (email, data, language, domain) => {
 	let result = `${DEPOSIT.GREETING(email)}`;
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		let confirmation = undefined;
-		if (!data.transaction_id.includes('-')) {
+		if (data.transaction_id && !data.transaction_id.includes('-')) {
 			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
 		}
 		result += `
@@ -83,6 +85,7 @@ const text = (email, data, language, domain) => {
 			${DEPOSIT.BODY[2](data.status)}
 			${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
 			${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
+			${data.network ? DEPOSIT.BODY[5](data.network) : ''}
 		`;
 	} else {
 		result += '';
