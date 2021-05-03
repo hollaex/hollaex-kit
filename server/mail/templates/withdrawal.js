@@ -18,18 +18,26 @@ const html = (email, data, language, domain) => {
 
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		let explorers = '';
-		EXPLORERS(data.currency).forEach((explorer) => {
-			explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-				data.transaction_id
-			}>${explorer.name}</a></li>`;
-		});
+
+		if (!data.transaction_id.includes('-')) {
+			if (EXPLORERS[data.currency]) {
+				EXPLORERS[data.currency].forEach((explorer) => {
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+						data.transaction_id
+					}>${explorer.name}</a></li>`;
+				});
+			} else if (EXPLORERS[data.network]) {
+				EXPLORERS[data.network].forEach((explorer) => {
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+						data.transaction_id
+					}>${explorer.name}</a></li>`;
+				});
+			}
+		}
 
 		result += `
 			<p>
-				${WITHDRAWAL.BODY[data.status](
-					data.amount,
-					data.currency.toUpperCase()
-				)}
+				${WITHDRAWAL.BODY[data.status](data.amount, data.currency.toUpperCase())}
 			</p>
 			<p>
 				${WITHDRAWAL.BODY[1](data.amount, data.currency)}
@@ -42,8 +50,8 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id && !data.transaction_id.includes('-') && explorers.length > 0 ? WITHDRAWAL.BODY[6] : ''}
-			<ul>${data.transaction_id && !data.transaction_id.includes('-') ? explorers : ''}</ul>
+			${explorers.length > 0 ? WITHDRAWAL.BODY[6] : ''}
+			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
 		`;
 	} else {
 		result += '';
@@ -61,10 +69,7 @@ const text = (email, data, language, domain) => {
 	let result = `${WITHDRAWAL.GREETING(email)}`;
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		result += `
-			${WITHDRAWAL.BODY[data.status](
-				data.amount,
-				data.currency.toUpperCase()
-			)}
+			${WITHDRAWAL.BODY[data.status](data.amount, data.currency.toUpperCase())}
 			${WITHDRAWAL.BODY[1](data.amount, data.currency)}
 			${data.fee ? WITHDRAWAL.BODY[2](data.fee) : ''}
 			${WITHDRAWAL.BODY[3](data.status)}

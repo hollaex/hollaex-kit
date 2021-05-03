@@ -94,8 +94,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`Một giao dịch nạp ${amount} ${currency.toUpperCase()} vào địa chỉ ví ${API_NAME()} của quý khách đang chờ được xử lý. Vui lòng chờ đợi cho đến khi giao dịch được xác nhận và tiền được nạp vào ví của quý khách. Yêu cầu giao dịch của quý khách cần nhận được ${confirmation} kết quả đồng thuận trên blockchain.`,
+		PENDING: (amount, confirmation, currency) =>
+			`Một giao dịch nạp ${amount} ${currency.toUpperCase()} vào địa chỉ ví ${API_NAME()} của quý khách đang chờ được xử lý. Vui lòng chờ đợi cho đến khi giao dịch được xác nhận và tiền được nạp vào ví của quý khách.${confirmation ? ` Yêu cầu giao dịch của quý khách cần nhận được ${confirmation} kết quả đồng thuận trên blockchain.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Giao dịch nạp ${
 				currency.toUpperCase()

@@ -20,25 +20,31 @@ const html = (email, data, language, domain) => {
 
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
 		let explorers = '';
-		EXPLORERS(data.currency).forEach((explorer) => {
-			explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-				data.transaction_id
-			}>${explorer.name}</a></li>`;
-		});
+		let confirmation = undefined;
+
+		if (!data.transaction_id.includes('-')) {
+			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
+			if (EXPLORERS[data.currency]) {
+				EXPLORERS[data.currency].forEach((explorer) => {
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+						data.transaction_id
+					}>${explorer.name}</a></li>`;
+				});
+			} else if (EXPLORERS[data.network]) {
+				EXPLORERS[data.network].forEach((explorer) => {
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+						data.transaction_id
+					}>${explorer.name}</a></li>`;
+				});
+			}
+		}
 
 		result += `
 			<p>
-				${DEPOSIT.BODY[data.status](
-					data.amount,
-					CONFIRMATION[data.currency],
-					data.currency.toUpperCase()
-				)}
+				${DEPOSIT.BODY[data.status](data.amount, confirmation, data.currency.toUpperCase())}
 			</p>
 			<p>
-				${DEPOSIT.BODY[1](
-					data.amount,
-					data.currency.toUpperCase()
-				)}
+				${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
 				<br />
 				${DEPOSIT.BODY[2](data.status)}
 				${data.transaction_id && data.address ? '<br />' : ''}
@@ -46,8 +52,8 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id && explorers.length > 0 ? DEPOSIT.BODY[5] : ''}
-			<ul>${data.transaction_id ? explorers : ''}</ul>
+			${explorers.length > 0 ? DEPOSIT.BODY[5] : ''}
+			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
 		`;
 	} else {
 		result += '';
@@ -67,12 +73,12 @@ const text = (email, data, language, domain) => {
 	const { DEPOSIT } = require('../strings').languageFile(language);
 	let result = `${DEPOSIT.GREETING(email)}`;
 	if (Object.keys(GET_COINS()).includes(data.currency)) {
+		let confirmation = undefined;
+		if (!data.transaction_id.includes('-')) {
+			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
+		}
 		result += `
-			${DEPOSIT.BODY[data.status](
-				data.amount,
-				CONFIRMATION[data.currency],
-				data.currency.toUpperCase()
-			)}
+			${DEPOSIT.BODY[data.status](data.amount, confirmation, data.currency.toUpperCase())}
 			${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
 			${DEPOSIT.BODY[2](data.status)}
 			${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}

@@ -94,8 +94,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`Tiene un nuevo depósito por ${amount} ${currency.toUpperCase()} pendiente en su ${API_NAME()} billetera. Por favor espere hasta que la transacción se confirme y sus fondos estarán disponibles en su billetera. Su transacción requiere  ${confirmation} confirmación(es) en la cadena de bloqueo.`,
+		PENDING: (amount, confirmation, currency) =>
+			`Tiene un nuevo depósito por ${amount} ${currency.toUpperCase()} pendiente en su ${API_NAME()} billetera. Por favor espere hasta que la transacción se confirme y sus fondos estarán disponibles en su billetera.${confirmation ? ` Su transacción requiere ${confirmation} confirmación(es) en la cadena de bloqueo.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Su ${
 				currency.toUpperCase()

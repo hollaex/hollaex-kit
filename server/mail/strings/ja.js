@@ -92,8 +92,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`現在、お客様の${API_NAME()}ウォレットへの${amount} ${currency.toUpperCase()}入金は保留中です。取引が承認されるまでお待ちください。お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。`,
+		PENDING: (amount, confirmation, currency) =>
+			`現在、お客様の${API_NAME()}ウォレットへの${amount} ${currency.toUpperCase()}入金は保留中です。取引が承認されるまでお待ちください${confirmation ? ` お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`お客様の${amount} ${currency.toUpperCase()}入金が完了しました。お客様の${
 				currency.toUpperCase()

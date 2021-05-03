@@ -95,7 +95,7 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
+		PENDING: (amount, confirmation = 0, currency) =>
 			`你的${API_NAME()}钱包中有一笔${amount} ${currency.toUpperCase()}的新存款正在等待处理，待交易被确认后，资金才会进入到你的钱包中，该交易需要在区块链上进行${confirmation}确认。`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`你的${amount} ${currency.toUpperCase()}存款已完成。你的${
