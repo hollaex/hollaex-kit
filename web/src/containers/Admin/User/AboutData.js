@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Button, Input, message, Modal, Select } from 'antd';
+import { Button, Form, Input, message, Modal, Select } from 'antd';
 import { Link } from 'react-router';
 import {
 	ExclamationCircleFilled,
 	CaretUpFilled,
 	CaretDownFilled,
-	UserOutlined
+	UserOutlined,
 } from '@ant-design/icons';
 import { SubmissionError } from 'redux-form';
 import classnames from 'classnames';
@@ -22,6 +22,7 @@ import { performVerificationLevelUpdate, updateDiscount } from './actions';
 import {
 	validateRequired,
 	validateRange,
+	validateDiscount,
 } from '../../../components/AdminForm/validations';
 import { STATIC_ICONS } from 'config/icons';
 import Image from 'components/Image';
@@ -39,10 +40,9 @@ const RenderModalContent = ({
 	allIcons,
 	userTiers,
 	handleApply,
-	handleDiscount
+	handleDiscount,
 }) => {
 	const [discount, setDiscount] = useState(userData.discount);
-	const [isDisable, setBtnDisable] = useState(false);
 
 	const onSubmit = (refreshData) => (values) => {
 		// redux form set numbers as string, se we have to parse them
@@ -72,11 +72,11 @@ const RenderModalContent = ({
 				</div>
 			</Select.Option>
 		));
-	
+
 	const handleApplyConfirm = (user, discount) => {
 		const body = {
-			discount
-		}
+			discount,
+		};
 		return updateDiscount(user, body)
 			.then((data) => {
 				handleDiscount(true);
@@ -87,20 +87,13 @@ const RenderModalContent = ({
 				const errMsg = err.data ? err.data.message : err.message;
 				message.error(errMsg);
 			});
-	}
+	};
 
-	const handleInput = (e) => {
-		if (e.target.value) {
-			if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100) {
-				setDiscount(parseFloat(e.target.value));
-				setBtnDisable(false);
-			} else {
-				setBtnDisable(true);
-			}
-		} else {
-			setBtnDisable(true);
-		}
-	}
+	const submitValues = ({ feeDiscount }) => {
+		setDiscount(parseFloat(feeDiscount));
+		handleApply('fee-discount-confirm');
+	};
+
 	switch (modalKey) {
 		case 'notes':
 			return (
@@ -164,31 +157,43 @@ const RenderModalContent = ({
 		case 'fee-discount':
 			return (
 				<div className="user-discount-wrapper">
-					<div className="title">Trading fee discount</div>
-					<div>
-						Reduce this users trading fees by applying inputting the specific discount below. Note, the reduction is applied on top of the current user trading fee level.
-					</div>
-					<div className="mt-4 mb-3">
-						<div>Fee discount</div>
-						<Input
-							type="number"
-							defaultValue={discount}
-							suffix="%"
-							min="0"
-							onChange={handleInput}
-						/>
-					</div>
-					<div>When applying a fee reduction an email notification will be sent to the user.</div>
-					<div>
-						<Button
-							type="primary"
-							className="green-btn w-100 mt-4"
-							onClick={() => handleApply('fee-discount-confirm')}
-							disabled={isDisable}
-						>
-							Next
-						</Button>
-					</div>
+					<Form
+						name="user-discount-form"
+						initialValues={{ feeDiscount: discount }}
+						onFinish={submitValues}
+					>
+						<div className="title">Trading fee discount</div>
+						<div>
+							Reduce this users trading fees by applying inputting the specific
+							discount below. Note, the reduction is applied on top of the
+							current user trading fee level.
+						</div>
+						<div className="mt-4 mb-3">
+							<div>Fee discount</div>
+							<Form.Item
+								name="feeDiscount"
+								rules={[
+									{ required: true, message: 'Please input your Fee discount' },
+									{ validator: validateDiscount },
+								]}
+							>
+								<Input type="number" suffix="%" />
+							</Form.Item>
+						</div>
+						<div>
+							When applying a fee reduction an email notification will be sent
+							to the user.
+						</div>
+						<div>
+							<Button
+								type="primary"
+								className="green-btn w-100 mt-4"
+								htmlType="submit"
+							>
+								Next
+							</Button>
+						</div>
+					</Form>
 				</div>
 			);
 		case 'fee-discount-confirm':
@@ -197,10 +202,17 @@ const RenderModalContent = ({
 					<div className="title">Check and confirm</div>
 					<div>Please check that the details below are correct.</div>
 					<div className="box-content">
-						<div><b>Current user level:</b> {userData.verification_level}</div>
-						<div className="mt-2"><b>Fee discount:</b> {discount}</div>
+						<div>
+							<b>Current user level:</b> {userData.verification_level}
+						</div>
+						<div className="mt-2">
+							<b>Fee discount:</b> {discount}
+						</div>
 					</div>
-					<div>When applying a fee reduction an email notification will be sent to the user.</div>
+					<div>
+						When applying a fee reduction an email notification will be sent to
+						the user.
+					</div>
 					<div className="button-wrapper">
 						<Button
 							type="primary"
@@ -251,12 +263,12 @@ const AboutData = ({
 			: '',
 	};
 	useEffect(() => {
-		if (userData.discount !== 0) {
+		if (userData.discount) {
 			setDiscountApply(true);
 		} else {
 			setDiscountApply(false);
 		}
-	}, [userData])
+	}, [userData]);
 	const handleNotesRemove = () => {
 		Modal.confirm({
 			icon: <ExclamationCircleFilled />,
@@ -283,13 +295,13 @@ const AboutData = ({
 		} else {
 			setModalKey(key);
 		}
-	}
+	};
 
 	const handleDiscount = (value) => {
 		if (value) {
 			setDiscountApply(value);
 		}
-	}
+	};
 	const {
 		email,
 		full_name,
@@ -379,24 +391,28 @@ const AboutData = ({
 						<Fragment>
 							<div className="about-info-content">
 								<div className="info-txt">Trading Fee discount</div>
-								<div className="info-link" onClick={() => handleApply('fee-discount', true)}>
-									{isDiscount
-										? 'Adjust'
-										: 'Apply'
-									}
+								<div
+									className="info-link"
+									onClick={() => handleApply('fee-discount', true)}
+								>
+									{isDiscount ? 'Adjust' : 'Apply'}
 								</div>
 							</div>
-							<div className={classnames("percentage-txt ml-2", { "percentage-txt-active": isDiscount})}>%</div>
-							{isDiscount
-								?
-									<div className={'about-icon-active'}>
-										<ReactSVG
-											src={STATIC_ICONS.VERIFICATION_ICON}
-											className={'verification-icon'}
-										/>
-									</div>
-								: null
-							}
+							<div
+								className={classnames('percentage-txt ml-2', {
+									'percentage-txt-active': isDiscount,
+								})}
+							>
+								%
+							</div>
+							{isDiscount ? (
+								<div className={'about-icon-active'}>
+									<ReactSVG
+										src={STATIC_ICONS.VERIFICATION_ICON}
+										className={'verification-icon'}
+									/>
+								</div>
+							) : null}
 						</Fragment>
 					</div>
 					<div className="about-info d-flex align-items-center justify-content-center">
