@@ -143,11 +143,17 @@ $trade-tab--arrow-size: 0.4rem;
 		padding: 0 5px;
 		border-radius: 2px;
 		transition: all 0.2s ease-out 0s;
+	}
 
+	.glance-price-diff-down {
 		&.entering,
 		&.exiting {
 			color: $sell-bids-text;
 			background-color: $sell;
+
+			&.glance-trade-tab-price_diff_down:before {
+				border-color: $sell-bids-text;
+			}
 		}
 	}
 
@@ -156,28 +162,22 @@ $trade-tab--arrow-size: 0.4rem;
 		padding: 0 5px;
 		border-radius: 2px;
 		transition: all 0.2s ease-out 0s;
+	}
 
+	.glance-price-diff-up {
 		&.entering,
 		&.exiting {
 			color: $buy-bids-text;
 			background-color: $buy;
+
+			&.glance-trade-tab-price_diff_up:before {
+				border-color: $buy-bids-text;
+			}
 		}
 	}
 
 	.trade-tab-price_diff_up {
 		margin: auto 0;
-	}
-
-	.entering,
-	.exiting {
-		&.trade-tab-price_diff_up:before {
-			@include css-triangle($buy-bids-text, 'up', $trade-tab--arrow-size);
-			display: inline-block;
-			margin-bottom: 0.2rem;
-			margin-right: 0.5rem;
-			position: relative;
-			top: calc(50% - 0.6rem);
-		}
 	}
 
 	.trade-tab-price_diff_up:before {
@@ -191,17 +191,6 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.trade-tab-price_diff_down {
 		margin: auto 0;
-	}
-
-	.entering,
-	.exiting {
-		&.trade-tab-price_diff_down:before {
-			@include css-triangle($sell-bids-text, 'down', $trade-tab--arrow-size);
-			display: inline-block;
-			margin-right: 0.5rem;
-			position: relative;
-			top: calc(50% - 0.6rem);
-		}
 	}
 
 	.trade-tab-price_diff_down:before {

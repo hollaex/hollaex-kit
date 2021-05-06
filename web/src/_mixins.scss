@@ -28,23 +28,27 @@
 		border-radius: 3px;
 	}
 	@if $direction == down {
-		border-left: $size solid transparent;
-		border-right: $size solid transparent;
+		border-bottom: none !important;
+		border-left: $size solid transparent !important;
+		border-right: $size solid transparent !important;
 		border-top: $size solid $color;
 		margin-top: 0 - round($size / 2.5);
 	} @else if $direction == up {
-		border-left: $size solid transparent;
-		border-right: $size solid transparent;
+		border-top: none !important;
+		border-left: $size solid transparent !important;
+		border-right: $size solid transparent !important;
 		border-bottom: $size solid $color;
 		margin-bottom: 0 - round($size / 2.5);
 	} @else if $direction == right {
-		border-top: $size solid transparent;
-		border-bottom: $size solid transparent;
+		border-right: none !important;
+		border-top: $size solid transparent !important;
+		border-bottom: $size solid transparent !important;
 		border-left: $size solid $color;
 		margin-right: -$size;
 	} @else if $direction == left {
-		border-top: $size solid transparent;
-		border-bottom: $size solid transparent;
+		border-left: none !important;
+		border-top: $size solid transparent !important;
+		border-bottom: $size solid transparent !important;
 		border-right: $size solid $color;
 		margin-left: -$size;
 	}

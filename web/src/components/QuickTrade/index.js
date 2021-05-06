@@ -124,7 +124,6 @@ class QuickTrade extends Component {
 
 QuickTrade.propTypes = {
 	onReviewQuickTrade: func.isRequired,
-	theme: string.isRequired,
 	disabled: bool.isRequired,
 	pairs: object.isRequired,
 	coins: object.isRequired,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Transition } from 'react-transition-group';
 import Image from 'components/Image';
 import SparkLine from './SparkLine';
+import classnames from 'classnames';
 import { /*formatAverage,*/ formatToCurrency } from 'utils/currency';
 
 class MarketCard extends Component {
@@ -41,6 +42,7 @@ class MarketCard extends Component {
 			ticker,
 			increment_price,
 			priceDifferencePercent,
+			priceDifference,
 		} = market;
 
 		return (
@@ -92,11 +94,15 @@ class MarketCard extends Component {
 									{(state) => (
 										<div className="d-flex">
 											<div
-												className={
+												className={classnames(
+													'title-font',
+													priceDifference < 0
+														? 'price-diff-down trade-tab-price_diff_down'
+														: 'price-diff-up trade-tab-price_diff_up',
 													tickerDiff < 0
-														? `title-font price-diff-down trade-tab-price_diff_down ${state}`
-														: `title-font price-diff-up trade-tab-price_diff_up ${state}`
-												}
+														? `glance-price-diff-down glance-trade-tab-price_diff_down ${state}`
+														: `glance-price-diff-up glance-trade-tab-price_diff_up ${state}`
+												)}
 											>
 												{priceDifferencePercent}
 											</div>
