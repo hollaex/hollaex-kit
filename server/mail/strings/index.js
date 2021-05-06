@@ -36,8 +36,29 @@ const languageFile = (lang) => {
 	return langFile;
 };
 
+const getStringObject = (lang, type) => {
+	let langFile = undefined;
+	let result = undefined;
+	try {
+		langFile = require(`./${lang}`);
+		result = langFile[type];
+		if (!result) {
+			langFile = require('./en');
+			result = langFile[type];
+		}
+	} catch (err) {
+		if (err.code === 'MODULE_NOT_FOUND') {
+			langFile = require('./en');
+			result = langFile[type];
+		}
+	}
+
+	return result;
+};
+
 module.exports = {
 	FORMATDATE,
 	MAILTYPE,
-	languageFile
+	languageFile,
+	getStringObject
 };

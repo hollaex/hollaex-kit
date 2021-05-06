@@ -110,6 +110,7 @@ class Orderbook extends Component {
 	componentDidMount() {
 		const { orderbookFetched } = this.props;
 		if (orderbookFetched) {
+			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
 			}, 1000);
@@ -124,9 +125,23 @@ class Orderbook extends Component {
 			prevProps.orderbookFetched === false &&
 			orderbookFetched === true
 		) {
+			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
 			}, 1000);
+		}
+	}
+
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { asks } = this.props;
+		const { positioned } = this.state;
+		if (positioned && nextProps.asks.length !== asks) {
+			const asksWrapperScrollHeight = this.asksWrapper.scrollHeight;
+			const wrapperScrollTop = this.wrapper.scrollTop;
+			this.setState({ asksWrapperScrollHeight, wrapperScrollTop }, () => {
+				const { asksWrapperScrollHeight, wrapperScrollTop } = this.state;
+				this.preserveScroll(asksWrapperScrollHeight, wrapperScrollTop);
+			});
 		}
 	}
 
@@ -145,15 +160,30 @@ class Orderbook extends Component {
 				this.wrapper.offsetHeight - this.spreadWrapper.offsetHeight;
 			const accumulatedHeight =
 				this.bidsWrapper.scrollHeight + this.asksWrapper.scrollHeight;
-			const dataBlockHeight = maxContentHeight / 2;
-			const needScroll = accumulatedHeight > maxContentHeight;
-			const askDif = this.asksWrapper.scrollHeight - dataBlockHeight;
+			const dataBlockHeight = maxContentHeight;
+			const needScroll = !(accumulatedHeight < maxContentHeight);
+			const askDif = this.asksWrapper.scrollHeight - dataBlockHeight / 2;
 
 			if (needScroll && askDif > 0) {
 				this.wrapper.scrollTop = askDif;
 			}
 			this.setState({ dataBlockHeight, positioned: true });
 		}
+	};
+
+	preserveScroll = (prevAsksWrapperScrollHeight, prevWrapperScrollTop) => {
+		const deltaAsksHeight =
+			this.asksWrapper.scrollHeight - prevAsksWrapperScrollHeight;
+		this.wrapper.scrollTop = Math.max(
+			prevWrapperScrollTop + deltaAsksHeight,
+			0
+		);
+	};
+
+	setDataBlockHeight = () => {
+		const dataBlockHeight =
+			this.wrapper.offsetHeight - this.spreadWrapper.offsetHeight;
+		this.setState({ dataBlockHeight });
 	};
 
 	onPriceClick = (price) => () => {

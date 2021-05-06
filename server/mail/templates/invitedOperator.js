@@ -11,7 +11,7 @@ const fetchMessage = (email, data, language, domain) => {
 
 const html = (email, data, language, domain) => {
 	const link = `${domain}/login`;
-	const { INVITEDOPERATOR } = require('../strings').languageFile(language);
+	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
 	const { invitingEmail, created, password, role } = data;
 	let body;
 	if (created) {
@@ -54,7 +54,7 @@ const html = (email, data, language, domain) => {
 
 const text = (email, data, language, domain) => {
 	const link = `${domain}/login`;
-	const { INVITEDOPERATOR } = require('../strings').languageFile(language);
+	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
 	const { invitingEmail, created, password, role } = data;
 	let body;
 

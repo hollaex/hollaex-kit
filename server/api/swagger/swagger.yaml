@@ -4280,6 +4280,8 @@ definitions:
       created_at:
         type: string
         format: date-time
+      network:
+        type: string
   ExternalWithdrawalRequest:
     type: object
     required:
@@ -4305,6 +4307,8 @@ definitions:
       created_at:
         type: string
         format: date-time
+      network:
+        type: string
   OrderbooksResponse:
     type: object
     description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
