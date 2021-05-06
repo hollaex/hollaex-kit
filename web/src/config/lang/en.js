@@ -1151,7 +1151,7 @@ const nestedContent = {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
-	TRADE_TAB_POSTS: 'Posts', // new
+	TRADE_TAB_POSTS: 'ANNOUNCEMENTS', // new
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1467,6 +1467,8 @@ const nestedContent = {
 		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
 	POST_ONLY_TOOLTIP: 'Post only orders only execute as a limit order.', // new
 	REFRESH: 'Refresh',
+	FEE_REDUCTION: 'Fee reduction', // new
+	FEE_REDUCTION_DESCRIPTION: '*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
 };
 
 const content = flatten(nestedContent, options);

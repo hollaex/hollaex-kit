@@ -3285,6 +3285,8 @@ table th {
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
     font-size: 1rem; }
+    .fee-limits-wrapper .content-txt .fee-reduction-container {
+      border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .content-title {
     font-size: 1.1rem;
     font-weight: bold;
@@ -5629,7 +5631,7 @@ table th {
     width: 1rem; }
   .app-bar-add-tab-menu .app-bar-add-tab-icons {
     width: 1.2rem;
-    margin: 0.3rem 0.3rem 0 0.3rem; }
+    margin: 0.6rem 0.3rem 0 0.3rem; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0,

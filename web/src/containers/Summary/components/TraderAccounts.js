@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
+import { ReactSVG } from 'react-svg';
 
 import STRINGS from '../../../config/localizedStrings';
 import { IS_XHT } from '../../../config/constants';
@@ -68,6 +69,18 @@ const TraderAccounts = ({
 				<div className="account-details-content">
 					<div className="mb-2">{description}</div>
 				</div>
+				{!isAccountDetails && user.discount
+					?
+					<div className="d-flex">
+						<div>
+							<ReactSVG src={ICONS['GREEN_CHECK']} className="currency_ball-wrapper s mr-2" />
+						</div>
+						<div>
+							{STRINGS['FEE_REDUCTION']}: {user.discount}
+						</div>
+					</div>
+					: null
+				}
 				{/* {!!limitLevel.length && <div
                     className="trade-account-link mb-2">
                     <span

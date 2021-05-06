@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { ReactSVG } from 'react-svg';
 
 import LimitsBlock from './LimitsBlock';
 import FeesBlock from './FeesBlock';
@@ -71,6 +72,24 @@ const FeesAndLimits = ({
 							{STRINGS['SUMMARY.FEES_AND_LIMIT_TXT_2']}
 						</EditWrapper>
 					</div>
+					{discount
+						?
+						<div className="my-4">
+							<div className="fee-reduction-container d-flex p-2 my-2 align-items-center">
+								<div>
+									<ReactSVG src={ICONS['GREEN_CHECK']} className="currency_ball-wrapper m" />
+								</div>
+								<div className="mx-1" />
+								<div className="font-weight-bold">
+									{STRINGS['FEE_REDUCTION']}: {discount}
+								</div>
+							</div>
+							<div className="fee-reduction-description px-1">
+								{STRINGS['FEE_REDUCTION_DESCRIPTION']}
+							</div>
+						</div>
+						: null
+					}
 				</div>
 				<div>
 					<LimitsBlock
