@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { CONTACTFORM } = require('../strings').languageFile(language);
+  const CONTACTFORM = require('../strings').getStringObject(language, 'CONTACTFORM');
 	return `
     <div>
       <h3>
@@ -23,7 +23,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { CONTACTFORM } = require('../strings').languageFile(language);
+  const CONTACTFORM = require('../strings').getStringObject(language, 'CONTACTFORM');
 	return `
     ${CONTACTFORM.BODY[1]}
     ${CONTACTFORM.BODY[2](email)}

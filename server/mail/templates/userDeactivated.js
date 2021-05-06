@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { USERDEACTIVATED } = require('../strings').languageFile(language);
+	const USERDEACTIVATED = require('../strings').getStringObject(language, 'USERDEACTIVATED');
 	return `
 		<div>
 			<p>
@@ -23,7 +23,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { USERDEACTIVATED } = require('../strings').languageFile(language);
+	const USERDEACTIVATED = require('../strings').getStringObject(language, 'USERDEACTIVATED');
 	return `
 		${USERDEACTIVATED.BODY[data.type.toUpperCase()](email)}
 		${USERDEACTIVATED.CLOSING[1]} ${USERDEACTIVATED.CLOSING[2]()}

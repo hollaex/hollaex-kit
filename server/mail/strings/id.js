@@ -94,8 +94,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`Ada deposit baru untuk ${amount} ${currency.toUpperCase()} yang sedang dalam proses di dompet ${API_NAME()} Anda. Mohon ditunggu sampai transaksi dikonfirmasi dan dana Anda akan tersedia di dompet Anda. Transaksi Anda memerlukan ${confirmation} konfirmasi dalam blockchain.`,
+		PENDING: (amount, confirmation, currency) =>
+			`Ada deposit baru untuk ${amount} ${currency.toUpperCase()} yang sedang dalam proses di dompet ${API_NAME()} Anda. Mohon ditunggu sampai transaksi dikonfirmasi dan dana Anda akan tersedia di dompet Anda.${confirmation ? ` Transaksi Anda memerlukan ${confirmation} konfirmasi dalam blockchain.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Deposit ${
 				currency.toUpperCase()
@@ -106,7 +106,8 @@ const DEPOSIT = {
 		2: (status) => `Status: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -165,7 +166,8 @@ const WITHDRAWAL = {
 		3: (status) => `Status: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
