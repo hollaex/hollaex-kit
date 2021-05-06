@@ -281,7 +281,7 @@ const getParamsByStatus = (status) => {
 		case 'completed':
 			return { status: true };
 		case 'pending':
-			return { processing: true };
+			return { waiting: true };
 		default:
 			return {};
 	}

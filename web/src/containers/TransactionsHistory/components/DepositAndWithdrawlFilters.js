@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import classnames from 'classnames';
 import { Select, Form, Row, Button } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
@@ -22,9 +23,15 @@ const STATUS_OPTIONS = {
 
 const Filters = ({ coins = {}, onSearch, formName }) => {
 	const [form] = Form.useForm();
+	const [isSearchShining, setIsSearchShining] = useState(false);
 
 	const onFinish = (values) => {
 		onSearch(values);
+		setIsSearchShining(false);
+	};
+
+	const onValuesChange = () => {
+		setIsSearchShining(true);
 	};
 
 	return (
@@ -33,6 +40,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 			name={`${formName}-filters`}
 			className="ant-advanced-search-form"
 			onFinish={onFinish}
+			onValuesChange={onValuesChange}
 			initialValues={{
 				status: null,
 				currency: null,
@@ -94,7 +102,12 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 					</Select>
 				</Form.Item>
 				<Form.Item>
-					<Button type="ghost" htmlType="submit" size="small">
+					<Button
+						type="ghost"
+						htmlType="submit"
+						size="small"
+						className={classnames({ active_search_button: isSearchShining })}
+					>
 						Search
 					</Button>
 				</Form.Item>
