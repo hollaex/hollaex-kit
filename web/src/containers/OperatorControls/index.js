@@ -43,7 +43,7 @@ class OperatorControls extends Component {
 	constructor(props) {
 		super(props);
 
-		const { themeOptions, injected_html = {} } = this.props;
+		const { themeOptions, injected_html = { head: '', body: '' } } = this.props;
 
 		const strings = localStorage.getItem('strings') || '{}';
 		const icons = localStorage.getItem('icons') || '{}';
