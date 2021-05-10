@@ -240,7 +240,20 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { increment_size, increment_price, settings } = this.props;
+		const {
+			increment_size,
+			increment_price,
+			settings,
+			price,
+			size,
+			side,
+			type,
+			balance = {},
+			pair_base,
+			pair_2,
+			change,
+			focusOnSizeInput,
+		} = this.props;
 
 		const order = {
 			...values,
@@ -291,6 +304,31 @@ class OrderEntry extends Component {
 					this.props.settings
 				);
 			}
+
+			if (
+				type === values.type &&
+				price === values.price &&
+				size === values.size &&
+				side === values.side
+			) {
+				let availableBalance;
+				if (side === 'buy') {
+					availableBalance = balance[`${pair_2}_available`];
+					if (
+						mathjs.larger(mathjs.multiply(2, price, size), availableBalance)
+					) {
+						change(FORM_NAME, 'size', '');
+						focusOnSizeInput();
+					}
+				} else {
+					availableBalance = balance[`${pair_base}_available`];
+					if (mathjs.larger(mathjs.multiply(2, size), availableBalance)) {
+						change(FORM_NAME, 'size', '');
+						focusOnSizeInput();
+					}
+				}
+			}
+
 			// this.setState({ initialValues: values });
 		});
 	};
