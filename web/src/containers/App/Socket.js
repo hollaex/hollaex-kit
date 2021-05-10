@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import debounce from 'lodash.debounce';
-import {
-	WS_URL,
-	SESSION_TIME,
-	BASE_CURRENCY,
-	LANGUAGE_KEY,
-} from '../../config/constants';
+import { WS_URL, SESSION_TIME, BASE_CURRENCY } from '../../config/constants';
 import { isMobile } from 'react-device-detect';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 
@@ -23,14 +18,10 @@ import {
 	setTrades,
 	setOrderbook,
 	addTrades,
-	setPairsData,
 	setPairsTradesFetched,
 } from '../../actions/orderbookAction';
 import {
 	setTickers,
-	setPairs,
-	changePair,
-	setCurrencies,
 	setNotification,
 	closeNotification,
 	openContactForm,
@@ -39,16 +30,10 @@ import {
 	changeTheme,
 	closeAllNotification,
 	setChatUnreadMessages,
-	setOrderLimits,
 	NOTIFICATIONS,
 	setSnackDialog,
-	setConfig,
-	setInfo,
-	requestInitial,
-	requestConstant,
 	requestTiers,
 } from '../../actions/appActions';
-import { hasTheme } from 'utils/theme';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, isLoggedIn } from '../../utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
@@ -131,64 +116,6 @@ class Container extends Component {
 	};
 
 	setPublicWS = () => {
-		// const publicSocket = new WebSocket(`${WS_URL}/stream`);
-		// this.setState({ publicSocket });
-
-		requestInitial()
-			.then((res) => {
-				if (res && res.data) {
-					this.props.setConfig(res.data);
-					if (res.data.defaults) {
-						const themeColor = localStorage.getItem('theme');
-						const isThemeValid = hasTheme(themeColor, res.data.color);
-						const language = localStorage.getItem(LANGUAGE_KEY);
-						if (res.data.defaults.theme && (!themeColor || !isThemeValid)) {
-							this.props.changeTheme(res.data.defaults.theme);
-							localStorage.setItem('theme', res.data.defaults.theme);
-						}
-						if (!language && res.data.defaults.language) {
-							this.props.changeLanguage(res.data.defaults.language);
-						}
-					}
-				}
-				if (res.data.info) this.props.setInfo({ ...res.data.info });
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-
-		requestConstant()
-			.then((res) => {
-				if (res && res.data) {
-					if (!this.props.pair) {
-						const pair = Object.keys(res.data.pairs)[0];
-						this.props.changePair(pair);
-					}
-					this.props.setPairs(res.data.pairs);
-					this.props.setPairsData(res.data.pairs);
-					this.props.setCurrencies(res.data.coins);
-
-					const orderLimits = {};
-					Object.keys(res.data.pairs).map((pair, index) => {
-						orderLimits[pair] = {
-							PRICE: {
-								MIN: res.data.pairs[pair].min_price,
-								MAX: res.data.pairs[pair].max_price,
-								STEP: res.data.pairs[pair].increment_price,
-							},
-							SIZE: {
-								MIN: res.data.pairs[pair].min_size,
-								MAX: res.data.pairs[pair].max_size,
-								STEP: res.data.pairs[pair].increment_price,
-							},
-						};
-						return '';
-					});
-					this.props.setOrderLimits(orderLimits);
-				}
-			})
-			.catch((err) => console.error(err));
-
 		this.props.requestTiers();
 	};
 
@@ -732,18 +659,11 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
-	changePair: bindActionCreators(changePair, dispatch),
-	setPairs: bindActionCreators(setPairs, dispatch),
-	setPairsData: bindActionCreators(setPairsData, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
-	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
-	setCurrencies: bindActionCreators(setCurrencies, dispatch),
-	setConfig: bindActionCreators(setConfig, dispatch),
-	setInfo: bindActionCreators(setInfo, dispatch),
 	getMe: bindActionCreators(getMe, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
