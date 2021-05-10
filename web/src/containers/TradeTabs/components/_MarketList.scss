@@ -187,4 +187,9 @@
 			}
 		}
 	}
+	.trade_tabs-container {
+		.sticky-col {
+			background-color: $app-background-color !important;
+		}
+	}
 }

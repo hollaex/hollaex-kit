@@ -161,3 +161,11 @@ export const performVerificationLevelUpdate = (values) => {
 };
 
 export const requestTiers = () => requestAuthenticated('/tiers');
+
+export const updateDiscount = (user, discount) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(discount),
+	};
+	return requestAuthenticated(`/admin/user/discount?user_id=${user.id}`, options);
+};

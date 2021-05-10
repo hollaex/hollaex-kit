@@ -57,8 +57,14 @@ import { hasTheme } from 'utils/theme';
 
 import { version, name } from '../package.json';
 import { API_URL, LANGUAGE_KEY } from './config/constants';
-console.info(name, version);
-console.info(API_URL);
+console.info(
+	`%c${name.toUpperCase()} ${version}`,
+	'color: #00509d; font-family:sans-serif; font-size: 20px; font-weight: 800'
+);
+console.info(
+	`%c${API_URL}`,
+	'font-family:sans-serif; font-size: 16px; font-weight: 600'
+);
 
 const drawFavIcon = (url) => {
 	const head = document.getElementsByTagName('head')[0];
@@ -234,7 +240,7 @@ const initialize = async () => {
 	}
 };
 
-initialize().then(() => console.info('Successfully Initialized'));
+initialize().then(() => {});
 
 // import registerServiceWorker from './registerServiceWorker'
 // registerServiceWorker();

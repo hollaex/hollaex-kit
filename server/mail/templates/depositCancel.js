@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { DEPOSITCANCEL } = require('../strings').languageFile(language);
+  const DEPOSITCANCEL = require('../strings').getStringObject(language, 'DEPOSITCANCEL');
 	return `
         <div>
           <p>
@@ -36,7 +36,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { DEPOSITCANCEL } = require('../strings').languageFile(language);
+  const DEPOSITCANCEL = require('../strings').getStringObject(language, 'DEPOSITCANCEL');
 	return `
     ${DEPOSITCANCEL.GREETING(email)}
     ${DEPOSITCANCEL.BODY[data.type.toUpperCase()](

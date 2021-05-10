@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { LOGIN } = require('../strings').languageFile(language);
+  const LOGIN = require('../strings').getStringObject(language, 'LOGIN');
 	return `
     <div>
       <p>
@@ -39,7 +39,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { LOGIN } = require('../strings').languageFile(language);
+  const LOGIN = require('../strings').getStringObject(language, 'LOGIN');
 	return `
     ${LOGIN.GREETING(email)}
     ${LOGIN.BODY[1]}

@@ -13,20 +13,23 @@ const generateMessageContent = (
 	language = DEFAULT_LANGUAGE(),
 	domain = DOMAIN
 ) => {
-	const STRINGS = languageFile(language);
+	let EMAIL_STRING_OBJECT = languageFile(language)[type.toUpperCase()];
+	if (!EMAIL_STRING_OBJECT) {
+		EMAIL_STRING_OBJECT = languageFile('en')[type.toUpperCase()];
+	}
 	let title;
 	if (
 		type === MAILTYPE.WITHDRAWAL ||
 		type === MAILTYPE.DEPOSIT ||
 		type === MAILTYPE.WITHDRAWAL_REQUEST
 	) {
-		title = STRINGS[type.toUpperCase()].TITLE(data.currency);
+		title = EMAIL_STRING_OBJECT.TITLE(data.currency);
 	} else if (type === MAILTYPE.DEPOSIT_CANCEL) {
-		title = STRINGS[type.toUpperCase()].TITLE(data.currency, data.type);
+		title = EMAIL_STRING_OBJECT.TITLE(data.currency, data.type);
 	} else if (type === MAILTYPE.USER_VERIFICATION_REJECT || type === MAILTYPE.USER_DEACTIVATED || type === MAILTYPE.ALERT) {
-		title = STRINGS[type.toUpperCase()].TITLE(data.type);
+		title = EMAIL_STRING_OBJECT.TITLE(data.type);
 	} else {
-		title = STRINGS[type.toUpperCase()].TITLE;
+		title = EMAIL_STRING_OBJECT.TITLE;
 	}
 	const subject = `${API_NAME()} ${title}`;
 	const message = require(`./${type}`)(email, data, language, domain);
