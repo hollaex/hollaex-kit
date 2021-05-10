@@ -29,7 +29,7 @@ export const getNetworkLabelByKey = (network) => {
 			case 'trx':
 				return 'TRC20';
 			default:
-				network.toUpperCase();
+				return network.toUpperCase();
 		}
 	} else {
 		return network;

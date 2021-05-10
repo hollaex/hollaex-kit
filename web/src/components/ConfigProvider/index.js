@@ -44,9 +44,7 @@ class ConfigProvider extends Component {
 
 		// ReCaptcha Initialization
 		const siteKey = CAPTCHA_SITEKEY || site_key;
-		loadReCaptcha(siteKey, () =>
-			console.info('grepcaptcha is correctly loaded')
-		);
+		loadReCaptcha(siteKey, () => {});
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {

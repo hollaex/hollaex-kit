@@ -10,7 +10,7 @@ const fetchMessage = (email, data, language, domain) => {
 
 const html = (email, data, language, domain) => {
 	const link = `${domain}/reset-password/${data.code}`;
-	const { RESETPASSWORD } = require('../strings').languageFile(language);
+  const RESETPASSWORD = require('../strings').getStringObject(language, 'RESETPASSWORD');
 	return `
     <div>
       <p>
@@ -37,7 +37,7 @@ const html = (email, data, language, domain) => {
 
 const text = (email, data, language, domain) => {
 	const link = `${domain}/reset-password/${data.code}`;
-	const { RESETPASSWORD } = require('../strings').languageFile(language);
+  const RESETPASSWORD = require('../strings').getStringObject(language, 'RESETPASSWORD');
 	return `
     ${RESETPASSWORD.GREETING(email)}.
     ${RESETPASSWORD.BODY[1]}

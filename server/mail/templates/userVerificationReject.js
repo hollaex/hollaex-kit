@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { USERVERIFICATIONREJECT } = require('../strings').languageFile(language);
+  const USERVERIFICATIONREJECT = require('../strings').getStringObject(language, 'USERVERIFICATIONREJECT');
 	return `
     <div>
       <p>
@@ -25,7 +25,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { USERVERIFICATIONREJECT } = require('../strings').languageFile(language);
+  const USERVERIFICATIONREJECT = require('../strings').getStringObject(language, 'USERVERIFICATIONREJECT');
 	return `
     ${USERVERIFICATIONREJECT.GREETING(email)}
     ${USERVERIFICATIONREJECT.BODY[1](data.type)}

@@ -150,6 +150,7 @@ checkStatus()
 								'icon',
 								'documentation',
 								'web_view',
+								'public_meta',
 								'admin_view',
 								'created_at',
 								'updated_at'
@@ -363,6 +364,16 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -392,7 +403,8 @@ checkStatus()
 					logo,
 					prescript,
 					postscript,
-					meta
+					meta,
+					public_meta
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
@@ -470,6 +482,15 @@ checkStatus()
 							updatedPlugin.meta = {
 								...meta,
 								...existingMeta
+							};
+						}
+
+						if (lodash.isPlainObject(public_meta)) {
+							const existingPublicMeta = lodash.pick(plugin.public_meta, Object.keys(public_meta));
+
+							updatedPlugin.public_meta = {
+								...public_meta,
+								...existingPublicMeta
 							};
 						}
 
@@ -646,6 +667,16 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -676,7 +707,8 @@ checkStatus()
 					enabled,
 					prescript,
 					postscript,
-					meta
+					meta,
+					public_meta
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
@@ -748,6 +780,10 @@ checkStatus()
 							newPlugin.meta = meta;
 						}
 
+						if (lodash.isPlainObject(public_meta)) {
+							newPlugin.public_meta = public_meta;
+						}
+
 						return toolsLib.database.create('plugin', newPlugin);
 					})
 					.then((plugin) => {
@@ -777,6 +813,78 @@ checkStatus()
 					})
 					.catch((err) => {
 						loggerPlugin.error(req.uuid, 'POST /plugins err', err.message);
+						return res.status(err.status || 400).json({ message: err.message });
+					});
+			});
+
+			app.put('/plugins/public-meta', [
+				toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+				checkSchema({
+					name: {
+						in: ['body'],
+						errorMessage: 'must be a string',
+						isString: true,
+						isLength: {
+							errorMessage: 'must be minimum length of 1',
+							options: { min: 1 }
+						},
+						optional: false
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: false
+					}
+				})
+			], (req, res) => {
+				const errors = expressValidator.validationResult(req);
+				if (!errors.isEmpty()) {
+					return res.status(400).json({ errors: errors.array() });
+				}
+
+				loggerPlugin.verbose(
+					req.uuid,
+					'PUT /plugins/public-meta auth',
+					req.auth.sub
+				);
+
+				const { name, public_meta } = req.body;
+
+				loggerPlugin.info(req.uuid, 'PUT /plugins/public-meta name', name);
+
+				toolsLib.plugin.getPlugin(name)
+					.then((plugin) => {
+						if (!plugin) {
+							throw new Error('Plugin not found');
+						}
+
+						const newPublicMeta = {
+							...plugin.public_meta,
+							...public_meta
+						};
+
+						return plugin.update({ public_meta: newPublicMeta }, { fields: ['public_meta'] });
+					})
+					.then((plugin) => {
+						loggerPlugin.info(req.uuid, 'PUT /plugins/public-meta updated', name);
+
+						res.json({
+							name: plugin.name,
+							version: plugin.version,
+							public_meta: plugin.public_meta
+						});
+
+						if (plugin.enabled && plugin.script) {
+							process.exit();
+						}
+					})
+					.catch((err) => {
+						loggerPlugin.error(req.uuid, 'PUT /plugins/public-meta err', err.message);
 						return res.status(err.status || 400).json({ message: err.message });
 					});
 			});
@@ -827,11 +935,9 @@ checkStatus()
 							throw new Error('Plugin not found');
 						}
 
-						const updatedMeta = lodash.pick(meta, Object.keys(plugin.meta));
-
 						const newMeta = {
 							...plugin.meta,
-							...updatedMeta
+							...meta
 						};
 
 						return plugin.update({ meta: newMeta }, { fields: ['meta'] });
@@ -1079,6 +1185,7 @@ checkStatus()
 								rp,
 								uuid,
 								meta: plugin.meta,
+								publicMeta: plugin.public_meta,
 								installedLibraries: {}
 							};
 							if (plugin.prescript.install) {

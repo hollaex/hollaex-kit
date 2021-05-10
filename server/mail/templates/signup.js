@@ -11,7 +11,7 @@ const fetchMessage = (email, data, language, domain) => {
 
 const html = (email, data, language, domain) => {
 	const link = `${domain}/verify/${data}`;
-	const { SIGNUP } = require('../strings').languageFile(language);
+  const SIGNUP = require('../strings').getStringObject(language, 'SIGNUP');
 	return `
     <div>
       <p>
@@ -34,7 +34,7 @@ const html = (email, data, language, domain) => {
 
 const text = (email, data, language, domain) => {
 	const link = `${domain}/verify/${data}`;
-	const { SIGNUP } = require('../strings').languageFile(language);
+  const SIGNUP = require('../strings').getStringObject(language, 'SIGNUP');
 	return `
     ${SIGNUP.GREETING(email)}
     ${SIGNUP.BODY[1]()}

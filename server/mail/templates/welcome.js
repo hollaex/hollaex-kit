@@ -10,7 +10,7 @@ const fetchMessage = (email, data, language, domain) => {
 const html = (email, data, language, domain) => {
 	const linkAccount = `${domain}/account`;
 	const linkDeposit = `${domain}/deposit`;
-	const { WELCOME } = require('../strings').languageFile(language);
+  const WELCOME = require('../strings').getStringObject(language, 'WELCOME');
 	return `
     <div>
       <p>
@@ -39,7 +39,7 @@ const html = (email, data, language, domain) => {
 const text = (email, data, language, domain) => {
 	const linkAccount = `${domain}/account`;
 	const linkDeposit = `${domain}/deposit`;
-	const { WELCOME } = require('../strings').languageFile(language);
+  const WELCOME = require('../strings').getStringObject(language, 'WELCOME');
 	return `
     ${WELCOME.GREETING(email)}
     ${WELCOME.BODY[1]()}
