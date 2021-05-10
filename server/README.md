@@ -402,7 +402,7 @@ The plugins are designed to be contained within their own process. They can be i
     },
 	"script": "string", // Plugin script to run after installation
     "admin_view": "string", // Client code for admin panel
-    "web_view": "string" // Client code for web view
+    "web_view": [] // Client code for web view
 }
 ```
 
@@ -457,6 +457,55 @@ app.get('/plugins/say-hi', (req, res) => {
 });
 ```
 
+#### Web_view
+This field holds all remote components in the plugin that are loaded from a URL at runtime to dynamically add views to client. These components are created as a Common js module and should already be transpiled for browser support. To Learn more about how to create and use web_view and remote components visit [Plugins documentation](https://docs.hollaex.com/how-tos/develop-plugins).
+```javascript
+{
+	"web_view": [
+    	{
+    		"meta": {}, // Optional
+    		"target": "string", // Id of the target dom element
+    		"src": "string", // The URL of the CommonJS module bundle
+    		"props": [
+                "store_key": "string", // The key to access a value from the redux store  
+                "key": "string" // The prop name to pass the value from the store extracted by store_key    
+    		]
+    	}
+    ]
+}
+```
+
+##### Meta
+The meta field holds special values for each component. For example, the following values are passed to meta object to dynamically add a new page and corresponding values at runtime.  
+```javascript
+{
+	"meta": {
+                "is_page": "boolean", // Used to define a new page
+                "path": "string", // Path of the page that MUST start with a "/"
+                "icon_id": "string", // Id of the icon displayed in menus for the new page   
+                "string_id": "string", // Id of the string displayed in menus for the new page
+                "hide_from_sidebar": "boolean", // Hide the page item from the sidebar menu
+                "hide_from_appbar": "boolean", // Hide the page item from the app bar at the top
+                "hide_from_menulist": "boolean" // Hide the page item from the menu list at the right corner of the app
+            }
+}
+```
+
+##### Shared dependencies
+The Main Application and Remote Component can share dependencies. Shared dependencies in the Remote Component must be marked as external so they are not bundled in the output.
+
+- The following packages are available as shared dependencies:
+
+  - react `16.13.1`
+  - redux `4.0.1`
+  - react-redux `6.0.1`
+  - redux-form `8.1.0`
+  - prop-types `15.7.2`
+  - react-svg `11.2.2`
+  - classnames `2.2.6`
+  - react-device-detect `1.6.2`
+
+
 ### Endpoints
 
 #### `GET /plugins`
@@ -484,7 +533,7 @@ app.get('/plugins/say-hi', (req, res) => {
       	url: 'string', //optional
       	logo: 'string', //optional
       	admin_view: 'string', //optional
-      	web_view: 'string', //optional
+      	web_view: [], //optional
       	prescript: { //optional
       		install: 'array',
       		run: 'string'
@@ -515,7 +564,7 @@ app.get('/plugins/say-hi', (req, res) => {
     	url: 'string', //optional
     	logo: 'string', //optional
     	admin_view: 'string', //optional
-    	web_view: 'string', //optional
+    	web_view: [], //optional
     	prescript: { //optional
     		install: 'array',
     		run: 'string'
