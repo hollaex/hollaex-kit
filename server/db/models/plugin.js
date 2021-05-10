@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.JSONB,
 			defaultValue: {}
 		},
+		public_meta: {
+			type: DataTypes.JSONB,
+			defaultValue: {}
+		},
 		prescript: {
 			type: DataTypes.JSONB,
 			defaultValue: {
