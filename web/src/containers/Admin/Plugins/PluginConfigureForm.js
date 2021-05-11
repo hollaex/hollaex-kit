@@ -42,32 +42,46 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 		const fieldData = {};
 		let publicMetaFields = public_meta ? Object.keys(public_meta) : [];
 		let publicFieldData = {};
-		const renderFields = (fieldData, key, isRequired = false) => {
-			if (key.toLowerCase().includes('secret')) {
+		const renderFields = (fieldData, key, metaDesc, isRequired = false) => {
+			const fields = metaDesc[key];
+			if (fields && typeof fields === 'object') {
 				fieldData[key] = {
-					type: 'password',
+					type: fields.type,
 					label: key,
-					placeholder: key
+					placeholder: key,
+					value: fields.value,
+					description: fields.description
 				};
-				if (isRequired) {
+				if (fields.required) {
 					fieldData[key].validate = [validateRequired];
 				}
 			} else {
-				fieldData[key] = {
-					type: 'text',
-					label: key,
-					placeholder: key
-				};
-				if (isRequired) {
-					fieldData[key].validate = [validateRequired];
+				if (key.toLowerCase().includes('secret')) {
+					fieldData[key] = {
+						type: 'password',
+						label: key,
+						placeholder: key
+					};
+					if (isRequired) {
+						fieldData[key].validate = [validateRequired];
+					}
+				} else {
+					fieldData[key] = {
+						type: 'text',
+						label: key,
+						placeholder: key
+					};
+					if (isRequired) {
+						fieldData[key].validate = [validateRequired];
+					}
 				}
 			}
 		}
 		metaFields.forEach((key) => {
-			renderFields(fieldData, key, true)
+			renderFields(fieldData, key, meta, true)
 		});
 		publicMetaFields.forEach((key) => {
-			renderFields(publicFieldData, key)
+			renderFields(publicFieldData, key, public_meta)
 		});
 		return (
 			<div className="config-content mt-5 pb-5 w-50">

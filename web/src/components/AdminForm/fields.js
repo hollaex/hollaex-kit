@@ -19,9 +19,14 @@ export const renderInputField = ({
 	disabled = false,
 	isClosable = false,
 	closeCallback = () => {},
+	description = ''
 }) => (
 	<div className={classname('input_field', className)}>
 		{label && <label>{label}</label>}
+		{description
+			? <div>{description}</div>
+			: null
+		}
 		<div>
 			<div className="d-flex align-items-center">
 				<Input
@@ -73,10 +78,15 @@ export const renderNumberField = ({
 	input,
 	label,
 	meta: { touched, error, warning },
+	description = '',
 	...rest
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
+		{description
+			? <div>{description}</div>
+			: null
+		}
 		<div>
 			<InputNumber {...rest} {...input} />
 			{touched &&
@@ -141,9 +151,14 @@ export const renderDateField = ({
 	placeholder,
 	meta: { touched, error, warning },
 	disabled = false,
+	description = ''
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
+		{description
+			? <div>{description}</div>
+			: null
+		}
 		<div>
 			<DatePicker
 				defaultValue={moment(input.value || new Date(), dateFormat)}
