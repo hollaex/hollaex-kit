@@ -4,11 +4,13 @@ import { message, Spin } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
-import { updatePluginMeta, getPluginMeta } from './action';
+import { validateRequired } from '../../../components/AdminForm/validations';
+import { updatePluginMeta, getPluginMeta, updatePluginPublicMeta } from './action';
 import { TOKEN_KEY, PLUGIN_URL } from '../../../config/constants';
 import './index.css';
 
-const Form = AdminHocForm('PLUGIN_CONFIGURE_FORM');
+const MetaForm = AdminHocForm('PLUGIN_CONFIGURE_FORM');
+const PublicMetaForm = AdminHocForm('PLUGIN_PUBLIC_CONFIGURE_FORM');
 
 const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 	const onSaveMeta = (values, plugin) => {
@@ -22,31 +24,70 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 				throw new SubmissionError({ _error: message });
 			});
 	};
+	const onSavePublicMeta = (values, plugin) => {
+		return updatePluginPublicMeta({ name: plugin.name, public_meta: values })
+			.then((res) => {
+				message.success('Data saved successfully');
+				requestPlugin();
+			})
+			.catch((error) => {
+				const message = error.data ? error.data.message : error.message;
+				throw new SubmissionError({ _error: message });
+			});
+	};
 
-	if (selectedPlugin.meta) {
-		const { meta } = selectedPlugin;
+	if (selectedPlugin.meta && selectedPlugin.public_meta) {
+		const { meta, public_meta } = selectedPlugin;
 		const metaFields = meta ? Object.keys(meta) : [];
 		const fieldData = {};
-		metaFields.forEach((key) => {
+		let publicMetaFields = public_meta ? Object.keys(public_meta) : [];
+		let publicFieldData = {};
+		const renderFields = (fieldData, key, isRequired = false) => {
 			if (key.toLowerCase().includes('secret')) {
 				fieldData[key] = {
 					type: 'password',
 					label: key,
-					placeholder: key,
+					placeholder: key
 				};
+				if (isRequired) {
+					fieldData[key].validate = [validateRequired];
+				}
 			} else {
 				fieldData[key] = {
 					type: 'text',
 					label: key,
-					placeholder: key,
+					placeholder: key
 				};
+				if (isRequired) {
+					fieldData[key].validate = [validateRequired];
+				}
 			}
+		}
+		metaFields.forEach((key) => {
+			renderFields(fieldData, key, true)
+		});
+		publicMetaFields.forEach((key) => {
+			renderFields(publicFieldData, key)
 		});
 		return (
 			<div className="config-content mt-5 pb-5 w-50">
 				<div className="mt-2">Configure</div>
-				<div className="mt-5">
-					<Form
+				{publicMetaFields.length
+					? <div className="mt-5">
+						<div className="mb-2">Public</div>
+						<PublicMetaForm
+							onSubmit={(formProps) => onSavePublicMeta(formProps, public_meta)}
+							buttonText="Save"
+							buttonClass="plugin-config-btn"
+							fields={publicFieldData}
+							initialValues={public_meta}
+						/>
+					</div>
+					: null
+				}
+				<div className="mt-5 config-content">
+					<div className="mb-2">Private</div>
+					<MetaForm
 						onSubmit={(formProps) => onSaveMeta(formProps, metaData)}
 						buttonText="Save"
 						buttonClass="plugin-config-btn"

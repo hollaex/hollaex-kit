@@ -146,7 +146,7 @@ export const OperatorRole = ({ handleInvite, isUpgrade }) => {
 						</Item>
 					</div>
 				</div>
-				<div className="disable-area">
+				<div className={isUpgrade ? 'disable-area' : ''}>
 					<Button type="primary" htmlType="submit" className="green-btn w-100">
 						Save
 					</Button>
