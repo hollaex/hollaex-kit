@@ -171,6 +171,10 @@ class Trade extends PureComponent {
 		if (this.sizeRef) this.sizeRef.focus();
 	};
 
+	focusOnSizeInput = () => {
+		if (this.sizeRef) this.sizeRef.focus();
+	};
+
 	setPriceRef = (priceRef) => {
 		if (priceRef) {
 			this.priceRef = priceRef;
@@ -490,6 +494,7 @@ class Trade extends PureComponent {
 								pair={pair}
 							>
 								<OrderEntry
+									focusOnSizeInput={this.focusOnSizeInput}
 									submitOrder={this.onSubmitOrder}
 									openCheckOrder={this.openCheckOrder}
 									onRiskyTrade={this.onRiskyTrade}
