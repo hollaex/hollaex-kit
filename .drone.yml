@@ -6,7 +6,7 @@ steps:
 - name: partymaker_version_tag_testnet
   image: alpine
   commands:
-  - export PACKAGE_VERSION="$(grep version package.json | cut -c 15- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION" > .tags
+  - export PACKAGE_VERSION="$(grep version package.json | cut -c 14- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION" > .tags
   - echo "Current version tag is :" && cat .tags
   when:
     branch: master
@@ -14,7 +14,7 @@ steps:
 - name: partymaker_version_tag
   image: alpine
   commands:
-  - export PACKAGE_VERSION="$(grep version package.json | cut -c 15- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION-testnet" > .tags
+  - export PACKAGE_VERSION="$(grep version package.json | cut -c 14- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION-testnet" > .tags
   - echo "Current version tag is :" && cat .tags
   when:
     branch: testnet
