@@ -58,3 +58,5 @@ export const validateDiscount = (rule, value) => {
 		return Promise.resolve();
 	}
 };
+export const validateBoolean = (value) =>
+	value || value === false ? undefined : 'Required';

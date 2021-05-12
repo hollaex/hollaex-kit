@@ -4,20 +4,31 @@ import { message, Spin } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
-import { validateRequired } from '../../../components/AdminForm/validations';
-import { updatePluginMeta, getPluginMeta, updatePluginPublicMeta } from './action';
+import {
+	validateRequired,
+	validateBoolean,
+} from '../../../components/AdminForm/validations';
+import {
+	updatePluginMeta,
+	getPluginMeta,
+	updatePluginPublicMeta,
+} from './action';
 import { TOKEN_KEY, PLUGIN_URL } from '../../../config/constants';
 import './index.css';
 
 const MetaForm = AdminHocForm('PLUGIN_CONFIGURE_FORM');
 const PublicMetaForm = AdminHocForm('PLUGIN_PUBLIC_CONFIGURE_FORM');
 
-const renderContent = (selectedPlugin, requestPlugin, metaData) => {
+const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
 	const onSaveMeta = (values, plugin) => {
-		return updatePluginMeta({ name: plugin.name, meta: values })
+		const payload = { name: plugin.name, meta: values };
+		return updatePluginMeta(payload)
 			.then((res) => {
 				message.success('Data saved successfully');
-				requestPlugin();
+				if (res) {
+					setMetaData({ ...metaData, ...payload });
+				}
+				restart();
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -25,10 +36,14 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 			});
 	};
 	const onSavePublicMeta = (values, plugin) => {
-		return updatePluginPublicMeta({ name: plugin.name, public_meta: values })
+		const payload = { name: plugin.name, public_meta: values };
+		return updatePluginPublicMeta(payload)
 			.then((res) => {
 				message.success('Data saved successfully');
-				requestPlugin();
+				if (res) {
+					setMetaData({ ...metaData, ...res });
+				}
+				restart();
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -36,13 +51,21 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 			});
 	};
 
-	if (selectedPlugin.meta && selectedPlugin.public_meta) {
-		const { meta, public_meta } = selectedPlugin;
+	if (metaData.meta || metaData.public_meta) {
+		const { meta, public_meta } = metaData;
 		const metaFields = meta ? Object.keys(meta) : [];
 		const fieldData = {};
 		let publicMetaFields = public_meta ? Object.keys(public_meta) : [];
 		let publicFieldData = {};
-		const renderFields = (fieldData, key, metaDesc, isRequired = false) => {
+		const meta_initialvalues = {};
+		const public_meta_initialvalues = {};
+		const renderFields = (
+			fieldData,
+			key,
+			metaDesc,
+			initialValues,
+			isRequired = false
+		) => {
 			const fields = metaDesc[key];
 			if (fields && typeof fields === 'object') {
 				fieldData[key] = {
@@ -50,17 +73,21 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 					label: key,
 					placeholder: key,
 					value: fields.value,
-					description: fields.description
+					description: fields.description,
 				};
 				if (fields.required) {
 					fieldData[key].validate = [validateRequired];
 				}
+				if (fields.type === 'boolean') {
+					fieldData[key].validate = [validateBoolean];
+				}
+				initialValues[key] = fields.value;
 			} else {
 				if (key.toLowerCase().includes('secret')) {
 					fieldData[key] = {
 						type: 'password',
 						label: key,
-						placeholder: key
+						placeholder: key,
 					};
 					if (isRequired) {
 						fieldData[key].validate = [validateRequired];
@@ -69,46 +96,53 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 					fieldData[key] = {
 						type: 'text',
 						label: key,
-						placeholder: key
+						placeholder: key,
 					};
 					if (isRequired) {
 						fieldData[key].validate = [validateRequired];
 					}
 				}
+				initialValues[key] = metaDesc[key];
 			}
-		}
+		};
 		metaFields.forEach((key) => {
-			renderFields(fieldData, key, meta, true)
+			renderFields(fieldData, key, meta, meta_initialvalues, true);
 		});
 		publicMetaFields.forEach((key) => {
-			renderFields(publicFieldData, key, public_meta)
+			renderFields(
+				publicFieldData,
+				key,
+				public_meta,
+				public_meta_initialvalues
+			);
 		});
 		return (
 			<div className="config-content mt-5 pb-5 w-50">
 				<div className="mt-2">Configure</div>
-				{publicMetaFields.length
-					? <div className="mt-5">
+				{publicMetaFields.length ? (
+					<div className="mt-5">
 						<div className="mb-2">Public</div>
 						<PublicMetaForm
-							onSubmit={(formProps) => onSavePublicMeta(formProps, public_meta)}
+							onSubmit={(formProps) => onSavePublicMeta(formProps, metaData)}
 							buttonText="Save"
 							buttonClass="plugin-config-btn"
 							fields={publicFieldData}
-							initialValues={public_meta}
+							initialValues={public_meta_initialvalues}
 						/>
 					</div>
-					: null
-				}
-				<div className="mt-5 config-content">
-					<div className="mb-2">Private</div>
-					<MetaForm
-						onSubmit={(formProps) => onSaveMeta(formProps, metaData)}
-						buttonText="Save"
-						buttonClass="plugin-config-btn"
-						fields={fieldData}
-						initialValues={metaData.meta}
-					/>
-				</div>
+				) : null}
+				{metaFields.length ? (
+					<div className="mt-5 config-content">
+						<div className="mb-2">Private</div>
+						<MetaForm
+							onSubmit={(formProps) => onSaveMeta(formProps, metaData)}
+							buttonText="Save"
+							buttonClass="plugin-config-btn"
+							fields={fieldData}
+							initialValues={meta_initialvalues}
+						/>
+					</div>
+				) : null}
 			</div>
 		);
 	} else if (selectedPlugin.admin_view) {
@@ -131,7 +165,7 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 	}
 };
 
-const PluginConfigureForm = ({ selectedPlugin, requestPlugin }) => {
+const PluginConfigureForm = ({ selectedPlugin, requestPlugin, restart }) => {
 	const [isLoading, setLoading] = useState(true);
 	const [metaData, setMetaData] = useState({});
 	const getMetaData = useCallback(() => {
@@ -176,7 +210,7 @@ const PluginConfigureForm = ({ selectedPlugin, requestPlugin }) => {
 					</div>
 				</div>
 			</div>
-			<div>{renderContent(selectedPlugin, requestPlugin, metaData)}</div>
+			<div>{renderContent(selectedPlugin, setMetaData, metaData, restart)}</div>
 		</div>
 	);
 };
