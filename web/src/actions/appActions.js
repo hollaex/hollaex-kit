@@ -62,6 +62,7 @@ export const ADD_TO_FAVOURITES = 'ADD_TO_FAVOURITES';
 export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
 export const CHANGE_HOME_PAGE_SETTING = 'CHANGE_HOME_PAGE_SETTING';
 export const SET_WEB_VIEWS = 'SET_WEB_VIEWS';
+export const SET_HELPDESK_INFO = 'SET_HELP_INFO';
 export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
 export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
 
@@ -258,6 +259,15 @@ export const setPlugins = (enabledPlugins) => {
 export const setWebViews = (enabledPlugins) => {
 	return {
 		type: SET_WEB_VIEWS,
+		payload: {
+			enabledPlugins,
+		},
+	};
+};
+
+export const setHelpdeskInfo = (enabledPlugins) => {
+	return {
+		type: SET_HELPDESK_INFO,
 		payload: {
 			enabledPlugins,
 		},

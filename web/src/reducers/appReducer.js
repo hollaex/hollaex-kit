@@ -29,6 +29,7 @@ import {
 	CHANGE_HOME_PAGE_SETTING,
 	SET_IS_READY,
 	SET_WEB_VIEWS,
+	SET_HELPDESK_INFO,
 	SET_INJECTED_VALUES,
 	SET_INJECTED_HTML,
 } from '../actions/appActions';
@@ -151,6 +152,11 @@ const INITIAL_STATE = {
 	info: { is_trial: false, active: true, status: true },
 	wave: [],
 	enabledPlugins: [],
+	plugins: [],
+	helpdeskInfo: {
+		has_helpdesk: false,
+		helpdesk_endpoint: '',
+	},
 	targets: [],
 	webViews: {},
 	remoteRoutes: [],
@@ -361,6 +367,19 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				enabledPlugins: payload.enabledPlugins.map(({ name }) => name),
+				plugins: payload.enabledPlugins,
+			};
+		}
+		case SET_HELPDESK_INFO: {
+			const helpdesk = payload.enabledPlugins.find(
+				(plugin) => plugin.public_meta && plugin.public_meta.is_helpdesk
+			);
+			return {
+				...state,
+				helpdeskInfo: {
+					has_helpdesk: !!helpdesk,
+					helpdesk_endpoint: helpdesk && helpdesk.public_meta.url,
+				},
 			};
 		}
 		case SET_WEB_VIEWS: {

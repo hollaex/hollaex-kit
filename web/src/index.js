@@ -52,6 +52,7 @@ import {
 	setPairs,
 	setCurrencies,
 	setOrderLimits,
+	setHelpdeskInfo,
 } from 'actions/appActions';
 import { hasTheme } from 'utils/theme';
 
@@ -193,6 +194,7 @@ const getConfigs = async () => {
 	if (data.data && data.data.length !== 0) {
 		store.dispatch(setPlugins(data.data));
 		store.dispatch(setWebViews(data.data));
+		store.dispatch(setHelpdeskInfo(data.data));
 	}
 
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, { coin_icons });
