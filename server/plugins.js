@@ -479,19 +479,41 @@ checkStatus()
 						if (lodash.isPlainObject(meta)) {
 							const existingMeta = lodash.pick(plugin.meta, Object.keys(meta));
 
-							updatedPlugin.meta = {
-								...meta,
-								...existingMeta
-							};
+							for (let key in meta) {
+								if (existingMeta[key] !== undefined) {
+									if (lodash.isPlainObject(meta[key]) && !lodash.isPlainObject(existingMeta[key])) {
+										meta[key].value = existingMeta[key];
+									} else if (!lodash.isPlainObject(meta[key]) && !lodash.isPlainObject(existingMeta[key])) {
+										meta[key] = existingMeta[key];
+									} else if (!lodash.isPlainObject(meta[key]) && lodash.isPlainObject(existingMeta[key])) {
+										meta[key] = existingMeta[key].value;
+									} else if (lodash.isPlainObject(meta[key]) && lodash.isPlainObject(existingMeta[key])) {
+										meta[key].value = existingMeta[key].value;
+									}
+								}
+							}
+
+							updatedPlugin.meta = meta;
 						}
 
 						if (lodash.isPlainObject(public_meta)) {
 							const existingPublicMeta = lodash.pick(plugin.public_meta, Object.keys(public_meta));
 
-							updatedPlugin.public_meta = {
-								...public_meta,
-								...existingPublicMeta
-							};
+							for (let key in public_meta) {
+								if (existingPublicMeta[key] !== undefined) {
+									if (lodash.isPlainObject(public_meta[key]) && !lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key].value = existingPublicMeta[key];
+									} else if (!lodash.isPlainObject(public_meta[key]) && !lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key] = existingPublicMeta[key];
+									} else if (!lodash.isPlainObject(public_meta[key]) && lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key] = existingPublicMeta[key].value;
+									} else if (lodash.isPlainObject(public_meta[key]) && lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key].value = existingPublicMeta[key].value;
+									}
+								}
+							}
+
+							updatedPlugin.public_meta = public_meta;
 						}
 
 						return bluebird.all([
@@ -863,10 +885,17 @@ checkStatus()
 							throw new Error('Plugin not found');
 						}
 
-						const newPublicMeta = {
-							...plugin.public_meta,
-							...public_meta
-						};
+						const newPublicMeta = plugin.public_meta;
+
+						for (let key in newPublicMeta) {
+							if (public_meta[key] !== undefined) {
+								if (lodash.isPlainObject(newPublicMeta[key])) {
+									newPublicMeta[key].value = public_meta[key];
+								} else {
+									newPublicMeta[key] = public_meta[key];
+								}
+							}
+						}
 
 						return plugin.update({ public_meta: newPublicMeta }, { fields: ['public_meta'] });
 					})
@@ -935,10 +964,17 @@ checkStatus()
 							throw new Error('Plugin not found');
 						}
 
-						const newMeta = {
-							...plugin.meta,
-							...meta
-						};
+						const newMeta = plugin.meta;
+
+						for (let key in newMeta) {
+							if (meta[key] !== undefined) {
+								if (lodash.isPlainObject(newMeta[key])) {
+									newMeta[key].value = meta[key];
+								} else {
+									newMeta[key] = meta[key];
+								}
+							}
+						}
 
 						return plugin.update({ meta: newMeta }, { fields: ['meta'] });
 					})
@@ -987,7 +1023,7 @@ checkStatus()
 
 				loggerPlugin.info(req.uuid, 'GET /plugins/meta name', name);
 
-				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta'] })
+				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta', 'public_meta'] })
 					.then((plugin) => {
 						if (!plugin) {
 							throw new Error('Plugin not found');

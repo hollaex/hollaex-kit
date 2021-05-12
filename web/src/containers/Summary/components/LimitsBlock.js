@@ -84,7 +84,8 @@ const getRows = (coins, level, tiers) => {
 					{getLimitValue(withdrawal_limit, increment_unit)}
 				</td>
 			</tr>
-			<tr>
+			{/*Temporarily remove deposit limit row v 2.1*/}
+			{/*<tr>
 				<td className="account-limits-coin">
 					<div className="d-flex align-items-center">
 						<Image
@@ -97,7 +98,7 @@ const getRows = (coins, level, tiers) => {
 				<td className="account-limits-maker account-limits-value">
 					{getLimitValue(null, increment_unit)}
 				</td>
-			</tr>
+			</tr>*/}
 		</Fragment>
 	);
 };
