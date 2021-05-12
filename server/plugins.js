@@ -1023,7 +1023,7 @@ checkStatus()
 
 				loggerPlugin.info(req.uuid, 'GET /plugins/meta name', name);
 
-				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta'] })
+				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta', 'public_meta'] })
 					.then((plugin) => {
 						if (!plugin) {
 							throw new Error('Plugin not found');
