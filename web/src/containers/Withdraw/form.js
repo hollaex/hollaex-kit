@@ -253,7 +253,7 @@ class Form extends Component {
 				</form>
 			);
 		} else if (coinObject && coinObject.meta.is_fiat) {
-			return <Fiat icons={ICONS} />;
+			return <Fiat id="REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW" icons={ICONS} />;
 		} else {
 			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 		}
