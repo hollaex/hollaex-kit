@@ -26,7 +26,8 @@ const path = require('path');
 const latestVersion = require('latest-version');
 const { resolve } = bluebird;
 const npm = require('npm-programmatic');
-const { Op } = require('sequelize');
+const sequelize = require('sequelize');
+const umzug = require('umzug');
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
@@ -939,7 +940,17 @@ checkStatus()
 							},
 							errorMessage: 'must be an object'
 						},
-						optional: false
+						optional: true
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: true
 					}
 				})
 			], (req, res) => {
@@ -954,9 +965,14 @@ checkStatus()
 					req.auth.sub
 				);
 
-				const { name, meta } = req.body;
+				const { name, meta, public_meta } = req.body;
 
-				loggerPlugin.info(req.uuid, 'PUT /plugins/meta name', name);
+				if (!meta && !public_meta) {
+					loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', 'Must provide meta or public_meta to update');
+					return res.status(400).json({ errors: 'Must provide meta or public_meta to update' });
+				}
+
+				loggerPlugin.info(req.uuid, 'PUT /plugins/meta name', name, 'meta', meta, 'public_meta', public_meta);
 
 				toolsLib.plugin.getPlugin(name)
 					.then((plugin) => {
@@ -964,24 +980,51 @@ checkStatus()
 							throw new Error('Plugin not found');
 						}
 
-						const newMeta = plugin.meta;
+						const params = {};
 
-						for (let key in newMeta) {
-							if (meta[key] !== undefined) {
-								if (lodash.isPlainObject(newMeta[key])) {
-									newMeta[key].value = meta[key];
-								} else {
-									newMeta[key] = meta[key];
+						if (meta) {
+							const newMeta = plugin.meta;
+
+							for (let key in newMeta) {
+								if (meta[key] !== undefined) {
+									if (lodash.isPlainObject(newMeta[key])) {
+										newMeta[key].value = meta[key];
+									} else {
+										newMeta[key] = meta[key];
+									}
 								}
 							}
+
+							params.meta = newMeta;
 						}
 
-						return plugin.update({ meta: newMeta }, { fields: ['meta'] });
+						if (public_meta) {
+							const newPublicMeta = plugin.public_meta;
+
+							for (let key in newPublicMeta) {
+								if (public_meta[key] !== undefined) {
+									if (lodash.isPlainObject(newPublicMeta[key])) {
+										newPublicMeta[key].value = public_meta[key];
+									} else {
+										newPublicMeta[key] = public_meta[key];
+									}
+								}
+							}
+
+							params.public_meta = newPublicMeta;
+						}
+
+						return plugin.update(params, { fields: Object.keys(params) });
 					})
 					.then((plugin) => {
 						loggerPlugin.info(req.uuid, 'PUT /plugins/meta updated', name);
 
-						res.json({ message: 'Success' });
+						res.json({
+							name: plugin.name,
+							version: plugin.version,
+							public_meta: plugin.public_meta,
+							meta: plugin.meta
+						});
 
 						if (plugin.enabled && plugin.script) {
 							process.exit();
@@ -1199,7 +1242,7 @@ checkStatus()
 				where: {
 					enabled: true,
 					script: {
-						[Op.not]: null
+						[sequelize.Op.not]: null
 					}
 				},
 				raw: true
@@ -1218,7 +1261,9 @@ checkStatus()
 								moment,
 								mathjs,
 								bluebird,
+								umzug,
 								rp,
+								sequelize,
 								uuid,
 								meta: plugin.meta,
 								publicMeta: plugin.public_meta,

@@ -25,10 +25,10 @@ export const requestMyPlugins = (query) =>
 
 export const getPlugin = (query) =>
 	requestAuthenticated(
-		`/plugin?${querystring.stringify(query)}`,
+		`/plugins?${querystring.stringify(query)}`,
 		{},
 		null,
-		NETWORK_API_URL
+		PLUGIN_URL
 	);
 
 export const addPlugin = (values) => {
@@ -183,5 +183,10 @@ export const updatePluginPublicMeta = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/plugins/public-meta', options, null, PLUGIN_URL);
+	return requestAuthenticated(
+		'/plugins/public-meta',
+		options,
+		null,
+		PLUGIN_URL
+	);
 };
