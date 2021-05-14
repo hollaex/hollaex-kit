@@ -1809,9 +1809,10 @@ class HollaExNetwork {
 	 * @param {string} opts.description - Description of transfer. Default: Empty string
 	 * @param {string} opts.transactionId - Custom transaction ID for mint.
 	 * @param {boolean} opts.status - Status of mint created. Default: true.
+	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @return {object} Object with created mint's data.
 	 */
-	mintAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null }) {
+	mintAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1840,6 +1841,10 @@ class HollaExNetwork {
 			data.status = opts.status;
 		}
 
+		if (isBoolean(opts.email)) {
+			data.email = opts.email;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -1860,9 +1865,10 @@ class HollaExNetwork {
 	 * @param {boolean} opts.dismissed - Set to true to dismiss pending mint.
 	 * @param {boolean} opts.rejected - Set to true to reject pending mint.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
+	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @return {object} Object with updated mint's data.
 	 */
-	updatePendingMint(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null }) {
+	updatePendingMint(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null, email: null }) {
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -1892,6 +1898,10 @@ class HollaExNetwork {
 
 		if (opts.updatedTransactionId) {
 			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		if (isBoolean(opts.email)) {
+			data.email = opts.email;
 		}
 
 		const headers = generateHeaders(
@@ -1915,9 +1925,10 @@ class HollaExNetwork {
 	 * @param {string} opts.description - Description of transfer. Default: Empty string
 	 * @param {string} opts.transactionId - Custom transaction ID for burn.
 	 * @param {boolean} opts.status - Status of burn created. Default: true.
+	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @return {object} Object with created burn's data.
 	 */
-	burnAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null }) {
+	burnAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null }) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1946,6 +1957,10 @@ class HollaExNetwork {
 			data.status = opts.status;
 		}
 
+		if (isBoolean(opts.email)) {
+			data.email = opts.email;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -1966,9 +1981,10 @@ class HollaExNetwork {
 	 * @param {boolean} opts.dismissed - Set to true to dismiss pending burn.
 	 * @param {boolean} opts.rejected - Set to true to reject pending burn.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending burn to.
+	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @return {object} Object with updated burn's data.
 	 */
-	updatePendingBurn(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null }) {
+	updatePendingBurn(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null, email: null }) {
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -1998,6 +2014,10 @@ class HollaExNetwork {
 
 		if (opts.updatedTransactionId) {
 			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		if (isBoolean(opts.email)) {
+			data.email = opts.email;
 		}
 
 		const headers = generateHeaders(
