@@ -3,7 +3,6 @@ import { SubmissionError } from 'redux-form';
 import { message, Spin } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
-import { AdminHocForm } from '../../../components';
 import {
 	validateRequired,
 	validateBoolean,
@@ -11,33 +10,15 @@ import {
 import {
 	updatePluginMeta,
 	getPluginMeta,
-	updatePluginPublicMeta,
 } from './action';
 import { TOKEN_KEY, PLUGIN_URL } from '../../../config/constants';
 import './index.css';
-
-const MetaForm = AdminHocForm('PLUGIN_CONFIGURE_FORM');
-const PublicMetaForm = AdminHocForm('PLUGIN_PUBLIC_CONFIGURE_FORM');
+import PluginMetaForm from './PluginMetaForm';
 
 const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
-	const onSaveMeta = (values, plugin) => {
-		const payload = { name: plugin.name, meta: values };
+	const onSaveMeta = (values, metaData) => {
+		const payload = { name: metaData.name, ...values };
 		return updatePluginMeta(payload)
-			.then((res) => {
-				message.success('Data saved successfully');
-				if (res) {
-					setMetaData({ ...metaData, ...payload });
-				}
-				restart();
-			})
-			.catch((error) => {
-				const message = error.data ? error.data.message : error.message;
-				throw new SubmissionError({ _error: message });
-			});
-	};
-	const onSavePublicMeta = (values, plugin) => {
-		const payload = { name: plugin.name, public_meta: values };
-		return updatePluginPublicMeta(payload)
 			.then((res) => {
 				message.success('Data saved successfully');
 				if (res) {
@@ -116,33 +97,19 @@ const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
 				public_meta_initialvalues
 			);
 		});
+		const initialValues = {
+			meta: meta_initialvalues,
+			public_meta: public_meta_initialvalues
+		}
 		return (
 			<div className="config-content mt-5 pb-5 w-50">
 				<div className="mt-2">Configure</div>
-				{publicMetaFields.length ? (
-					<div className="mt-5">
-						<div className="mb-2">Public</div>
-						<PublicMetaForm
-							onSubmit={(formProps) => onSavePublicMeta(formProps, metaData)}
-							buttonText="Save"
-							buttonClass="plugin-config-btn"
-							fields={publicFieldData}
-							initialValues={public_meta_initialvalues}
-						/>
-					</div>
-				) : null}
-				{metaFields.length ? (
-					<div className="mt-5 config-content">
-						<div className="mb-2">Private</div>
-						<MetaForm
-							onSubmit={(formProps) => onSaveMeta(formProps, metaData)}
-							buttonText="Save"
-							buttonClass="plugin-config-btn"
-							fields={fieldData}
-							initialValues={meta_initialvalues}
-						/>
-					</div>
-				) : null}
+				<PluginMetaForm
+					onSaveMeta={(formValues) => onSaveMeta(formValues, metaData)}
+					metaFields={fieldData}
+					publicMetaFields={publicFieldData}
+					initialValues={initialValues}
+				/>
 			</div>
 		);
 	} else if (selectedPlugin.admin_view) {
