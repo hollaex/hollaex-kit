@@ -8,6 +8,7 @@ import {
 	renderInputField,
 	renderTextAreaField,
 	renderCheckField,
+	renderBooleanField,
 } from './fields';
 import { FileField } from './FileField';
 import CaptchaField from './captchaField';
@@ -54,6 +55,9 @@ const renderFields = (fields, disableAllFields) => {
 						break;
 					case 'editor':
 						component = Editor;
+						break;
+					case 'boolean':
+						component = renderBooleanField;
 						break;
 					case 'password':
 					case 'input':

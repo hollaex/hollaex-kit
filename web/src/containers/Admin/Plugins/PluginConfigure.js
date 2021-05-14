@@ -42,6 +42,7 @@ const PluginConfigure = ({
 		<PluginConfigureForm
 			selectedPlugin={pluginData}
 			requestPlugin={requestPlugin}
+			restart={restart}
 		/>
 	) : (
 		<PluginDetails

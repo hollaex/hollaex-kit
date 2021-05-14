@@ -2,6 +2,7 @@ import { setLanguage as storeLanguageInBrowser } from '../utils/string';
 import { hasTheme } from 'utils/theme';
 import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from 'config/constants';
 import axios from 'axios';
+import querystring from 'query-string';
 
 export const SET_IS_READY = 'SET_IS_READY';
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -294,6 +295,8 @@ export const requestPlugins = () => axios.get(`${PLUGIN_URL}/plugins`);
 export const requestInitial = () => axios.get('/kit');
 export const requestConstant = () => axios.get('/constants');
 export const requestAdminData = () => axios.get('/admin/kit');
+export const requestPlugin = (params) =>
+	axios.get(`${PLUGIN_URL}/plugins?${querystring.stringify(params)}`);
 
 export const getExchangeInfo = () => {
 	return (dispatch) => {

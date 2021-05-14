@@ -59,6 +59,7 @@
 		"swagger-express-mw": "0.1.0",
 		"swagger-ui-express": "4.0.7",
 		"uglify-es": "3.3.9",
+		"umzug": "2.3.0",
 		"uuid": "3.2.1",
 		"validator": "9.4.1",
 		"winston": "3.2.1",
