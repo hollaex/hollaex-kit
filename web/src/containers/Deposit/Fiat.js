@@ -3,9 +3,9 @@ import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import { SmartTarget } from 'components';
 
-const Fiat = ({ id }) => {
+const Fiat = (props) => {
 	return (
-		<SmartTarget id={id}>
+		<SmartTarget {...props}>
 			<div className="withdraw-form-wrapper">
 				<div className="withdraw-form">
 					<div
