@@ -177,16 +177,3 @@ export const requestDeleteAnnouncement = (query) => {
 	);
 };
 
-export const updatePluginPublicMeta = (values) => {
-	const options = {
-		method: 'PUT',
-		body: JSON.stringify(values),
-	};
-
-	return requestAuthenticated(
-		'/plugins/public-meta',
-		options,
-		null,
-		PLUGIN_URL
-	);
-};
