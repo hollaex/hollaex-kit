@@ -4492,6 +4492,8 @@ definitions:
         type: string
       status:
         type: boolean
+      email:
+        type: boolean
   MintBurnUpdate:
     type: object
     required:
@@ -4506,4 +4508,6 @@ definitions:
       rejected:
         type: boolean
       dismissed:
+        type: boolean
+      email:
         type: boolean
