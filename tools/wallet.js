@@ -744,6 +744,8 @@ const updatePendingMint = (
 		status: null,
 		dismissed: null,
 		rejected: null,
+		processing: null,
+		waiting: null,
 		updatedTransactionId: null,
 		email: null,
 		updatedDescription: null
@@ -792,6 +794,8 @@ const updatePendingBurn = (
 		status: null,
 		dismissed: null,
 		rejected: null,
+		processing: null,
+		waiting: null,
 		updatedTransactionId: null,
 		email: null,
 		updatedDescription: null
