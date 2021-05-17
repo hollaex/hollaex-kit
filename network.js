@@ -1866,9 +1866,20 @@ class HollaExNetwork {
 	 * @param {boolean} opts.rejected - Set to true to reject pending mint.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
+	 * @param {string} opts.updatedDescription - Value to update transaction description to.
 	 * @return {object} Object with updated mint's data.
 	 */
-	updatePendingMint(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null, email: null }) {
+	updatePendingMint(
+		transactionId,
+		opts = {
+			status: null,
+			dismissed: null,
+			rejected: null,
+			updatedTransactionId: null,
+			email: null,
+			updatedDescription: null
+		}
+	) {
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -1898,6 +1909,10 @@ class HollaExNetwork {
 
 		if (opts.updatedTransactionId) {
 			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		if (opts.updatedDescription) {
+			data.updated_description = opts.updatedDescription;
 		}
 
 		if (isBoolean(opts.email)) {
@@ -1982,9 +1997,20 @@ class HollaExNetwork {
 	 * @param {boolean} opts.rejected - Set to true to reject pending burn.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending burn to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
+	 * @param {string} opts.updatedDescription - Value to update transaction description to.
 	 * @return {object} Object with updated burn's data.
 	 */
-	updatePendingBurn(transactionId, opts = { status: null, dismissed: null, rejected: null, updatedTransactionId: null, email: null }) {
+	updatePendingBurn(
+		transactionId,
+		opts = {
+			status: null,
+			dismissed: null,
+			rejected: null,
+			updatedTransactionId: null,
+			email: null,
+			updatedDescription: null
+		}
+	) {
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -2014,6 +2040,10 @@ class HollaExNetwork {
 
 		if (opts.updatedTransactionId) {
 			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		if (opts.updatedDescription) {
+			data.updated_description = opts.updatedDescription;
 		}
 
 		if (isBoolean(opts.email)) {
