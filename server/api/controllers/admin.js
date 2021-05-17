@@ -741,6 +741,8 @@ const putMint = (req, res) => {
 		status,
 		rejected,
 		dismissed,
+		processing,
+		waiting,
 		email,
 		updated_description
 	} = req.swagger.params.data.value;
@@ -755,6 +757,10 @@ const putMint = (req, res) => {
 		rejected,
 		'dismissed',
 		dismissed,
+		'processing',
+		processing,
+		'waiting',
+		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
 		'updated_description',
@@ -765,6 +771,8 @@ const putMint = (req, res) => {
 		status,
 		dismissed,
 		rejected,
+		processing,
+		waiting,
 		updatedTransactionId: updated_transaction_id,
 		email,
 		updatedDescription: updated_description
@@ -864,6 +872,8 @@ const putBurn = (req, res) => {
 		status,
 		rejected,
 		dismissed,
+		processing,
+		waiting,
 		email,
 		updated_description
 	} = req.swagger.params.data.value;
@@ -878,6 +888,10 @@ const putBurn = (req, res) => {
 		rejected,
 		'dismissed',
 		dismissed,
+		'processing',
+		processing,
+		'waiting',
+		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
 		'updated_description',
@@ -888,6 +902,8 @@ const putBurn = (req, res) => {
 		status,
 		dismissed,
 		rejected,
+		processing,
+		waiting,
 		updatedTransactionId: updated_transaction_id,
 		email,
 		updatedDescription: updated_description

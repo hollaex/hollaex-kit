@@ -4509,6 +4509,10 @@ definitions:
         type: boolean
       dismissed:
         type: boolean
+      processing:
+        type: boolean
+      waiting:
+        type: boolean
       email:
         type: boolean
       updated_description:
