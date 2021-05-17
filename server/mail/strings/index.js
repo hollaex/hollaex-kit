@@ -21,7 +21,8 @@ const MAILTYPE = {
 	INVALID_ADDRESS: 'invalidAddress',
 	INVITED_OPERATOR: 'invitedOperator',
 	ALERT: 'alert',
-	DISCOUNT_UPDATE: 'discountUpdate'
+	DISCOUNT_UPDATE: 'discountUpdate',
+	BANK_VERIFIED: 'bankVerified'
 };
 
 const languageFile = (lang) => {
