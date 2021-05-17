@@ -745,7 +745,8 @@ const updatePendingMint = (
 		dismissed: null,
 		rejected: null,
 		updatedTransactionId: null,
-		email: null
+		email: null,
+		updatedDescription: null
 	}
 ) => {
 	return getNodeLib().updatePendingMint(transactionId, opts);
@@ -792,7 +793,8 @@ const updatePendingBurn = (
 		dismissed: null,
 		rejected: null,
 		updatedTransactionId: null,
-		email: null
+		email: null,
+		updatedDescription: null
 	}
 ) => {
 	return getNodeLib().updatePendingBurn(transactionId, opts);
