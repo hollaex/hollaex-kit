@@ -676,7 +676,8 @@ const mintAsset = (req, res) => {
 		amount,
 		description,
 		transaction_id,
-		status
+		status,
+		email
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -705,7 +706,8 @@ const mintAsset = (req, res) => {
 				{
 					description,
 					transactionId: transaction_id,
-					status
+					status,
+					email
 				}
 			);
 		})
@@ -738,7 +740,8 @@ const putMint = (req, res) => {
 		updated_transaction_id,
 		status,
 		rejected,
-		dismissed
+		dismissed,
+		email
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -759,7 +762,8 @@ const putMint = (req, res) => {
 		status,
 		dismissed,
 		rejected,
-		updatedTransactionId: updated_transaction_id
+		updatedTransactionId: updated_transaction_id,
+		email
 	})
 		.then((data) => {
 			loggerAdmin.info(
@@ -791,7 +795,8 @@ const burnAsset = (req, res) => {
 		amount,
 		description,
 		transaction_id,
-		status
+		status,
+		email
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -820,7 +825,8 @@ const burnAsset = (req, res) => {
 				{
 					description,
 					transactionId: transaction_id,
-					status
+					status,
+					email
 				}
 			);
 		})
@@ -853,7 +859,8 @@ const putBurn = (req, res) => {
 		updated_transaction_id,
 		status,
 		rejected,
-		dismissed
+		dismissed,
+		email
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -874,7 +881,8 @@ const putBurn = (req, res) => {
 		status,
 		dismissed,
 		rejected,
-		updatedTransactionId: updated_transaction_id
+		updatedTransactionId: updated_transaction_id,
+		email
 	})
 		.then((data) => {
 			loggerAdmin.info(
