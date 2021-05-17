@@ -55,7 +55,7 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 
 export const cancelAllOrders = (symbol = '', settings) => (dispatch) => {
 	axios
-		.delete(`/order/all?symbol=${symbol}`)
+		.delete(`/order/all`) //?symbol=${symbol} can be used to cancel all based on pairs
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ALL_ORDERS',
