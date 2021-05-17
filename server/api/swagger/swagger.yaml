@@ -2171,6 +2171,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - communicator
   /admin/pairs:
     x-swagger-router-controller: admin
     get:
