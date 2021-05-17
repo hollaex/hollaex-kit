@@ -212,6 +212,7 @@ class Deposit extends Component {
 			icons: ICONS,
 			addressRequest,
 			selectedNetwork,
+			router,
 		} = this.props;
 
 		const {
@@ -279,6 +280,7 @@ class Deposit extends Component {
 							showGenerateButton={showGenerateButton}
 							formFields={formFields}
 							selectedNetwork={selectedNetwork}
+							router={router}
 						/>
 					</div>
 				</div>
