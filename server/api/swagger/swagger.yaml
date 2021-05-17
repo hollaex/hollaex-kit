@@ -4511,3 +4511,5 @@ definitions:
         type: boolean
       email:
         type: boolean
+      updated_description:
+        type: string
