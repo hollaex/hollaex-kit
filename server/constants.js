@@ -179,6 +179,9 @@ exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 	'meta',
 	'description',
 	'title',
+	'interface',
+	'links',
+	'injected_html',
 	'features'
 ];
 // CONFIGURATION CONSTANTS END --------------------------------------------------
