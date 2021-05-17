@@ -1,5 +1,6 @@
 'use strict';
 
+const { capitalize } = require('lodash');
 const { GET_KIT_CONFIG } = require('../../constants');
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 
@@ -304,6 +305,16 @@ const DISCOUNTUPDATE = {
 	CLOSING: COMMON.CLOSING
 };
 
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -326,5 +337,6 @@ module.exports = {
 	ALERT,
 	SMS,
 	INVITEDOPERATOR,
-	DISCOUNTUPDATE
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };
