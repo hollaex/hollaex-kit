@@ -1864,6 +1864,8 @@ class HollaExNetwork {
 	 * @param {boolean} opts.status - Set to true to confirm pending mint.
 	 * @param {boolean} opts.dismissed - Set to true to dismiss pending mint.
 	 * @param {boolean} opts.rejected - Set to true to reject pending mint.
+	 * @param {boolean} opts.processing - Set to true to set state to processing.
+	 * @param {boolean} opts.waiting - Set to true to set state to waiting.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
@@ -1875,6 +1877,8 @@ class HollaExNetwork {
 			status: null,
 			dismissed: null,
 			rejected: null,
+			processing: null,
+			waiting: null,
 			updatedTransactionId: null,
 			email: null,
 			updatedDescription: null
@@ -1887,13 +1891,17 @@ class HollaExNetwork {
 		const status = isBoolean(opts.status) ? opts.status : false;
 		const rejected = isBoolean(opts.rejected) ? opts.rejected : false;
 		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
+		const processing = isBoolean(opts.processing) ? opts.processing : false;
+		const waiting = isBoolean(opts.waiting) ? opts.waiting : false;
 
-		if (!status && !rejected && !dismissed) {
+		if (!status && !rejected && !dismissed && !processing && !waiting) {
 			return reject(new Error('Must give one parameter to update'));
 		} else if (
-			status && (rejected || dismissed)
-			|| rejected && (status || dismissed)
-			|| dismissed && (status || rejected)
+			status && (rejected || dismissed || processing || waiting)
+			|| rejected && (status || dismissed || processing || waiting)
+			|| dismissed && (status || rejected || processing || waiting)
+			|| processing && (status || dismissed || rejected || waiting)
+			|| waiting && (status || rejected || dismissed || processing)
 		) {
 			return reject(new Error('Can only update one parmaeter'));
 		}
@@ -1904,7 +1912,9 @@ class HollaExNetwork {
 			transaction_id: transactionId,
 			status,
 			rejected,
-			dismissed
+			dismissed,
+			processing,
+			waiting
 		};
 
 		if (opts.updatedTransactionId) {
@@ -1995,6 +2005,8 @@ class HollaExNetwork {
 	 * @param {boolean} opts.status - Set to true to confirm pending burn.
 	 * @param {boolean} opts.dismissed - Set to true to dismiss pending burn.
 	 * @param {boolean} opts.rejected - Set to true to reject pending burn.
+	 * @param {boolean} opts.processing - Set to true to set state to processing.
+	 * @param {boolean} opts.waiting - Set to true to set state to waiting.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending burn to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
@@ -2006,6 +2018,8 @@ class HollaExNetwork {
 			status: null,
 			dismissed: null,
 			rejected: null,
+			processing: null,
+			waiting: null,
 			updatedTransactionId: null,
 			email: null,
 			updatedDescription: null
@@ -2018,13 +2032,17 @@ class HollaExNetwork {
 		const status = isBoolean(opts.status) ? opts.status : false;
 		const rejected = isBoolean(opts.rejected) ? opts.rejected : false;
 		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
+		const processing = isBoolean(opts.processing) ? opts.processing : false;
+		const waiting = isBoolean(opts.waiting) ? opts.waiting : false;
 
-		if (!status && !rejected && !dismissed) {
+		if (!status && !rejected && !dismissed && !processing && !waiting) {
 			return reject(new Error('Must give one parameter to update'));
 		} else if (
-			status && (rejected || dismissed)
-			|| rejected && (status || dismissed)
-			|| dismissed && (status || rejected)
+			status && (rejected || dismissed || processing || waiting)
+			|| rejected && (status || dismissed || processing || waiting)
+			|| dismissed && (status || rejected || processing || waiting)
+			|| processing && (status || dismissed || rejected || waiting)
+			|| waiting && (status || rejected || dismissed || processing)
 		) {
 			return reject(new Error('Can only update one parmaeter'));
 		}
@@ -2035,7 +2053,9 @@ class HollaExNetwork {
 			transaction_id: transactionId,
 			status,
 			rejected,
-			dismissed
+			dismissed,
+			processing,
+			waiting
 		};
 
 		if (opts.updatedTransactionId) {
