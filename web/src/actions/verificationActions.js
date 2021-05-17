@@ -20,10 +20,6 @@ export const verifySmsCode = ({ code = '', phone = '' }) => {
 	return axios.post(VERIFICATION_ENDPOINTS.VERIFY_SMS_CODE, body);
 };
 
-export const verifyBankData = (values) => {
-	const body = {
-		bank_name: values.bank_name,
-		account_number: values.account_number,
-	};
-	return axios.post(VERIFICATION_ENDPOINTS.VERIFY_BANK, body);
+export const verifyBankData = (formProps) => {
+	return axios.post(VERIFICATION_ENDPOINTS.VERIFY_BANK, formProps);
 };
