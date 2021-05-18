@@ -339,6 +339,7 @@ const PluginDetails = ({
 						type="primary"
 						className="add-btn"
 						onClick={handleOpenConfirmation}
+						disabled={!Object.keys(pluginData).length}
 					>
 						Add
 					</Button>

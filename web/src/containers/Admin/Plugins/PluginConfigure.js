@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 
 import PluginDetails from './PluginDetails';
 import PluginConfigureForm from './PluginConfigureForm';
-import { getPlugin } from './action';
+import { getPlugin, getInstalledPlugin } from './action';
 
 const PluginConfigure = ({
 	type,
@@ -17,21 +17,31 @@ const PluginConfigure = ({
 	const [isLoading, setLoading] = useState(true);
 
 	const requestPlugin = useCallback(() => {
-		getPlugin({ name: selectedPlugin.name })
-			.then((res) => {
-				setLoading(false);
-				if (res) {
-					setPlugin(res);
-				}
-			})
-			.catch((err) => {
-				if (selectedPlugin.enabled) {
+		if (selectedPlugin.enabled) {
+			getInstalledPlugin({ name: selectedPlugin.name })
+				.then((res) => {
+					setLoading(false);
+					if (res) {
+						setPlugin(res);
+					}
+				})
+				.catch((err) => {
 					setPlugin(selectedPlugin);
-				} else {
+					setLoading(false);
+				});
+		} else {
+			getPlugin({ name: selectedPlugin.name })
+				.then((res) => {
+					setLoading(false);
+					if (res) {
+						setPlugin(res);
+					}
+				})
+				.catch((err) => {
 					setPlugin({});
-				}
-				setLoading(false);
-			});
+					setLoading(false);
+				});
+		}
 	}, [selectedPlugin]);
 
 	useEffect(() => {
