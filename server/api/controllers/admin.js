@@ -741,7 +741,10 @@ const putMint = (req, res) => {
 		status,
 		rejected,
 		dismissed,
-		email
+		processing,
+		waiting,
+		email,
+		updated_description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -754,16 +757,25 @@ const putMint = (req, res) => {
 		rejected,
 		'dismissed',
 		dismissed,
+		'processing',
+		processing,
+		'waiting',
+		waiting,
 		'updated_transaction_id',
-		updated_transaction_id
+		updated_transaction_id,
+		'updated_description',
+		updated_description
 	);
 
 	toolsLib.wallet.updatePendingMint(transaction_id, {
 		status,
 		dismissed,
 		rejected,
+		processing,
+		waiting,
 		updatedTransactionId: updated_transaction_id,
-		email
+		email,
+		updatedDescription: updated_description
 	})
 		.then((data) => {
 			loggerAdmin.info(
@@ -860,7 +872,10 @@ const putBurn = (req, res) => {
 		status,
 		rejected,
 		dismissed,
-		email
+		processing,
+		waiting,
+		email,
+		updated_description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -873,16 +888,25 @@ const putBurn = (req, res) => {
 		rejected,
 		'dismissed',
 		dismissed,
+		'processing',
+		processing,
+		'waiting',
+		waiting,
 		'updated_transaction_id',
-		updated_transaction_id
+		updated_transaction_id,
+		'updated_description',
+		updated_description
 	);
 
 	toolsLib.wallet.updatePendingBurn(transaction_id, {
 		status,
 		dismissed,
 		rejected,
+		processing,
+		waiting,
 		updatedTransactionId: updated_transaction_id,
-		email
+		email,
+		updatedDescription: updated_description
 	})
 		.then((data) => {
 			loggerAdmin.info(
