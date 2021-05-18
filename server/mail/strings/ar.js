@@ -94,7 +94,7 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
+		PENDING: (amount, confirmation = 0, currency) =>
 			`لديك إيداع جديد بمبلغ  {amount}$ ${currency.toUpperCase()}  في قيد الانتظار في محفظتك ${API_NAME()} .يرجى الانتظار حتى يتم تأكيد المعاملة وستتوفر أموالك في محفظتك. تتطلب معاملتك  ${confirmation} تأكيداً (تأكيداتٍ) على البلوك تشين.`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Yايداعك لـ
@@ -105,7 +105,8 @@ const DEPOSIT = {
 		2: (status) => `الحالة:  ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -164,7 +165,8 @@ const WITHDRAWAL = {
 		3: (status) => `${status}:الحالة`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -300,6 +302,16 @@ const DISCOUNTUPDATE = {
 	CLOSING: COMMON.CLOSING
 };
 
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -322,5 +334,6 @@ module.exports = {
 	ALERT,
 	SMS,
 	INVITEDOPERATOR,
-	DISCOUNTUPDATE
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.2"
+  version: "2.1.3"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2171,6 +2171,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - communicator
   /admin/pairs:
     x-swagger-router-controller: admin
     get:
@@ -4280,6 +4281,8 @@ definitions:
       created_at:
         type: string
         format: date-time
+      network:
+        type: string
   ExternalWithdrawalRequest:
     type: object
     required:
@@ -4305,6 +4308,8 @@ definitions:
       created_at:
         type: string
         format: date-time
+      network:
+        type: string
   OrderbooksResponse:
     type: object
     description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
@@ -4488,6 +4493,8 @@ definitions:
         type: string
       status:
         type: boolean
+      email:
+        type: boolean
   MintBurnUpdate:
     type: object
     required:
@@ -4503,3 +4510,11 @@ definitions:
         type: boolean
       dismissed:
         type: boolean
+      processing:
+        type: boolean
+      waiting:
+        type: boolean
+      email:
+        type: boolean
+      updated_description:
+        type: string

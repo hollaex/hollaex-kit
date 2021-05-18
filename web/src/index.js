@@ -35,6 +35,7 @@ import {
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
+import { setPairsData } from 'actions/orderbookAction';
 import {
 	requestConstant,
 	setHomePageSetting,
@@ -43,12 +44,28 @@ import {
 	requestPlugins,
 	setWebViews,
 	setPlugins,
+	setInfo,
+	setConfig,
+	changeTheme,
+	setLanguage,
+	changePair,
+	setPairs,
+	setCurrencies,
+	setOrderLimits,
+	setHelpdeskInfo,
 } from 'actions/appActions';
+import { hasTheme } from 'utils/theme';
 
 import { version, name } from '../package.json';
-import { API_URL } from './config/constants';
-console.info(name, version);
-console.info(API_URL);
+import { API_URL, LANGUAGE_KEY } from './config/constants';
+console.info(
+	`%c${name.toUpperCase()} ${version}`,
+	'color: #00509d; font-family:sans-serif; font-size: 20px; font-weight: 800'
+);
+console.info(
+	`%c${API_URL}`,
+	'font-family:sans-serif; font-size: 16px; font-weight: 600'
+);
 
 const drawFavIcon = (url) => {
 	const head = document.getElementsByTagName('head')[0];
@@ -86,6 +103,25 @@ const getConfigs = async () => {
 		injected_html = {},
 	} = kitData;
 
+	store.dispatch(setConfig(kitData));
+	if (kitData.defaults) {
+		const themeColor = localStorage.getItem('theme');
+		const isThemeValid = hasTheme(themeColor, kitData.color);
+		const language = localStorage.getItem(LANGUAGE_KEY);
+
+		if (kitData.defaults.theme && (!themeColor || !isThemeValid)) {
+			store.dispatch(changeTheme(kitData.defaults.theme));
+			localStorage.setItem('theme', kitData.defaults.theme);
+		}
+
+		if (!language && kitData.defaults.language) {
+			store.dispatch(setLanguage(kitData.defaults.language));
+		}
+	}
+	if (kitData.info) {
+		store.dispatch(setInfo({ ...kitData.info }));
+	}
+
 	kitData['sections'] = sections;
 
 	const promises = {};
@@ -112,7 +148,37 @@ const getConfigs = async () => {
 		localStorage.setItem(key, JSON.stringify(remoteConfigs[key]));
 	});
 
-	const { data: { coins: coin_icons = {} } = {} } = await requestConstant();
+	const { data: constants = {} } = await requestConstant();
+	const { coins: coin_icons = {} } = constants;
+	const {
+		app: { pair },
+	} = store.getState();
+
+	if (!pair) {
+		const initialPair = Object.keys(constants.pairs)[0];
+		store.dispatch(changePair(initialPair));
+	}
+
+	store.dispatch(setPairs(constants.pairs));
+	store.dispatch(setPairsData(constants.pairs));
+	store.dispatch(setCurrencies(constants.coins));
+
+	const orderLimits = {};
+	Object.keys(constants.pairs).forEach((pair) => {
+		orderLimits[pair] = {
+			PRICE: {
+				MIN: constants.pairs[pair].min_price,
+				MAX: constants.pairs[pair].max_price,
+				STEP: constants.pairs[pair].increment_price,
+			},
+			SIZE: {
+				MIN: constants.pairs[pair].min_size,
+				MAX: constants.pairs[pair].max_size,
+				STEP: constants.pairs[pair].increment_price,
+			},
+		};
+	});
+	store.dispatch(setOrderLimits(orderLimits));
 
 	setDefaultLogo(logo_image);
 	setBaseCurrency(native_currency);
@@ -128,6 +194,7 @@ const getConfigs = async () => {
 	if (data.data && data.data.length !== 0) {
 		store.dispatch(setPlugins(data.data));
 		store.dispatch(setWebViews(data.data));
+		store.dispatch(setHelpdeskInfo(data.data));
 	}
 
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, { coin_icons });
@@ -175,7 +242,7 @@ const initialize = async () => {
 	}
 };
 
-initialize().then(() => console.info('Successfully Initialized'));
+initialize().then(() => {});
 
 // import registerServiceWorker from './registerServiceWorker'
 // registerServiceWorker();

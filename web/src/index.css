@@ -339,8 +339,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.no_bottom_navigation {
@@ -353,8 +353,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -1020,43 +1020,32 @@ table th {
     padding: 0 5px;
     border-radius: 2px;
     transition: all 0.2s ease-out 0s; }
-    .home-page__market-wrapper .price-diff-down.entering, .home-page__market-wrapper .price-diff-down.exiting {
-      color: var(--calculated_trading_selling-related-text);
-      background-color: var(--trading_selling-related-elements); }
+  .home-page__market-wrapper .glance-price-diff-down.entering, .home-page__market-wrapper .glance-price-diff-down.exiting {
+    color: var(--calculated_trading_selling-related-text);
+    background-color: var(--trading_selling-related-elements); }
+    .home-page__market-wrapper .glance-price-diff-down.entering.glance-trade-tab-price_diff_down:before, .home-page__market-wrapper .glance-price-diff-down.exiting.glance-trade-tab-price_diff_down:before {
+      border-color: var(--calculated_trading_selling-related-text); }
   .home-page__market-wrapper .price-diff-up {
     color: var(--trading_buying-related-elements);
     padding: 0 5px;
     border-radius: 2px;
     transition: all 0.2s ease-out 0s; }
-    .home-page__market-wrapper .price-diff-up.entering, .home-page__market-wrapper .price-diff-up.exiting {
-      color: var(--calculated_trading_buying-related-text);
-      background-color: var(--trading_buying-related-elements); }
+  .home-page__market-wrapper .glance-price-diff-up.entering, .home-page__market-wrapper .glance-price-diff-up.exiting {
+    color: var(--calculated_trading_buying-related-text);
+    background-color: var(--trading_buying-related-elements); }
+    .home-page__market-wrapper .glance-price-diff-up.entering.glance-trade-tab-price_diff_up:before, .home-page__market-wrapper .glance-price-diff-up.exiting.glance-trade-tab-price_diff_up:before {
+      border-color: var(--calculated_trading_buying-related-text); }
   .home-page__market-wrapper .trade-tab-price_diff_up {
     margin: auto 0; }
-  .home-page__market-wrapper .entering.trade-tab-price_diff_up:before,
-  .home-page__market-wrapper .exiting.trade-tab-price_diff_up:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid var(--calculated_trading_buying-related-text);
-    margin-bottom: 0rem;
-    display: inline-block;
-    margin-bottom: 0.2rem;
-    margin-right: 0.5rem;
-    position: relative;
-    top: calc(50% - 0.6rem); }
   .home-page__market-wrapper .trade-tab-price_diff_up:before {
     content: "";
     display: block;
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-top: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-bottom: 0.4rem solid var(--trading_buying-related-elements);
     margin-bottom: 0rem;
     display: inline-block;
@@ -1066,29 +1055,15 @@ table th {
     top: calc(50% - 0.6rem); }
   .home-page__market-wrapper .trade-tab-price_diff_down {
     margin: auto 0; }
-  .home-page__market-wrapper .entering.trade-tab-price_diff_down:before,
-  .home-page__market-wrapper .exiting.trade-tab-price_diff_down:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
-    border-top: 0.4rem solid var(--calculated_trading_selling-related-text);
-    margin-top: 0rem;
-    display: inline-block;
-    margin-right: 0.5rem;
-    position: relative;
-    top: calc(50% - 0.6rem); }
   .home-page__market-wrapper .trade-tab-price_diff_down:before {
     content: "";
     display: block;
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-bottom: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-top: 0.4rem solid var(--trading_selling-related-elements);
     margin-top: 0rem;
     display: inline-block;
@@ -1218,9 +1193,9 @@ table th {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1.5rem;
   color: var(--labels_important-active-labels-text-graphics);
-  font-weight: bold; }
+  font-weight: bolder; }
 
 .buttons-section-header {
   margin: 0 0.5rem; }
@@ -1636,8 +1611,9 @@ table th {
       position: relative;
       width: 0;
       height: 0;
-      border-left: 0.5rem solid transparent;
-      border-right: 0.5rem solid transparent;
+      border-top: none !important;
+      border-left: 0.5rem solid transparent !important;
+      border-right: 0.5rem solid transparent !important;
       border-bottom: 0.5rem solid var(--labels_important-active-labels-text-graphics);
       margin-bottom: 0rem;
       border-bottom: 0.75rem solid var(--labels_important-active-labels-text-graphics); }
@@ -2687,8 +2663,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw;
@@ -2835,7 +2811,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -3190,43 +3166,32 @@ table th {
     padding: 0 5px;
     border-radius: 2px;
     transition: all 0.2s ease-out 0s; }
-    .summary-container .price-diff-down.entering, .summary-container .price-diff-down.exiting {
-      color: var(--calculated_trading_selling-related-text);
-      background-color: var(--trading_selling-related-elements); }
+  .summary-container .glance-price-diff-down.entering, .summary-container .glance-price-diff-down.exiting {
+    color: var(--calculated_trading_selling-related-text);
+    background-color: var(--trading_selling-related-elements); }
+    .summary-container .glance-price-diff-down.entering.glance-trade-tab-price_diff_down:before, .summary-container .glance-price-diff-down.exiting.glance-trade-tab-price_diff_down:before {
+      border-color: var(--calculated_trading_selling-related-text); }
   .summary-container .price-diff-up {
     color: var(--trading_buying-related-elements);
     padding: 0 5px;
     border-radius: 2px;
     transition: all 0.2s ease-out 0s; }
-    .summary-container .price-diff-up.entering, .summary-container .price-diff-up.exiting {
-      color: var(--calculated_trading_buying-related-text);
-      background-color: var(--trading_buying-related-elements); }
+  .summary-container .glance-price-diff-up.entering, .summary-container .glance-price-diff-up.exiting {
+    color: var(--calculated_trading_buying-related-text);
+    background-color: var(--trading_buying-related-elements); }
+    .summary-container .glance-price-diff-up.entering.glance-trade-tab-price_diff_up:before, .summary-container .glance-price-diff-up.exiting.glance-trade-tab-price_diff_up:before {
+      border-color: var(--calculated_trading_buying-related-text); }
   .summary-container .trade-tab-price_diff_up {
     margin: auto 0; }
-  .summary-container .entering.trade-tab-price_diff_up:before,
-  .summary-container .exiting.trade-tab-price_diff_up:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid var(--calculated_trading_buying-related-text);
-    margin-bottom: 0rem;
-    display: inline-block;
-    margin-bottom: 0.2rem;
-    margin-right: 0.5rem;
-    position: relative;
-    top: calc(50% - 0.6rem); }
   .summary-container .trade-tab-price_diff_up:before {
     content: "";
     display: block;
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-top: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-bottom: 0.4rem solid var(--trading_buying-related-elements);
     margin-bottom: 0rem;
     display: inline-block;
@@ -3236,29 +3201,15 @@ table th {
     top: calc(50% - 0.6rem); }
   .summary-container .trade-tab-price_diff_down {
     margin: auto 0; }
-  .summary-container .entering.trade-tab-price_diff_down:before,
-  .summary-container .exiting.trade-tab-price_diff_down:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
-    border-top: 0.4rem solid var(--calculated_trading_selling-related-text);
-    margin-top: 0rem;
-    display: inline-block;
-    margin-right: 0.5rem;
-    position: relative;
-    top: calc(50% - 0.6rem); }
   .summary-container .trade-tab-price_diff_down:before {
     content: "";
     display: block;
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-bottom: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-top: 0.4rem solid var(--trading_selling-related-elements);
     margin-top: 0rem;
     display: inline-block;
@@ -3285,6 +3236,8 @@ table th {
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
     font-size: 1rem; }
+    .fee-limits-wrapper .content-txt .fee-reduction-container {
+      border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .content-title {
     font-size: 1.1rem;
     font-weight: bold;
@@ -3355,8 +3308,9 @@ table th {
   position: absolute;
   width: 0;
   height: 0;
-  border-left: 0.4rem solid transparent;
-  border-right: 0.4rem solid transparent;
+  border-top: none !important;
+  border-left: 0.4rem solid transparent !important;
+  border-right: 0.4rem solid transparent !important;
   border-bottom: 0.4rem solid var(--trading_buying-related-elements);
   margin-bottom: 0rem;
   display: inline-block;
@@ -3374,8 +3328,9 @@ table th {
   position: absolute;
   width: 0;
   height: 0;
-  border-left: 0.4rem solid transparent;
-  border-right: 0.4rem solid transparent;
+  border-bottom: none !important;
+  border-left: 0.4rem solid transparent !important;
+  border-right: 0.4rem solid transparent !important;
   border-top: 0.4rem solid var(--trading_selling-related-elements);
   margin-top: 0rem;
   display: inline-block;
@@ -3572,6 +3527,9 @@ table th {
     max-width: 12rem !important;
     z-index: 1; }
 
+.layout-mobile .trade_tabs-container .sticky-col {
+  background-color: var(--base_background) !important; }
+
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
   height: inherit;
@@ -3665,43 +3623,32 @@ table th {
     padding: 0 5px;
     border-radius: 2px;
     transition: all 0.2s ease-out 0s; }
-    .trade_tabs-container .price-diff-down.entering, .trade_tabs-container .price-diff-down.exiting {
-      color: var(--calculated_trading_selling-related-text);
-      background-color: var(--trading_selling-related-elements); }
+  .trade_tabs-container .glance-price-diff-down.entering, .trade_tabs-container .glance-price-diff-down.exiting {
+    color: var(--calculated_trading_selling-related-text);
+    background-color: var(--trading_selling-related-elements); }
+    .trade_tabs-container .glance-price-diff-down.entering.glance-trade-tab-price_diff_down:before, .trade_tabs-container .glance-price-diff-down.exiting.glance-trade-tab-price_diff_down:before {
+      border-color: var(--calculated_trading_selling-related-text); }
   .trade_tabs-container .price-diff-up {
     color: var(--trading_buying-related-elements);
     padding: 0 5px;
     border-radius: 2px;
     transition: all 0.2s ease-out 0s; }
-    .trade_tabs-container .price-diff-up.entering, .trade_tabs-container .price-diff-up.exiting {
-      color: var(--calculated_trading_buying-related-text);
-      background-color: var(--trading_buying-related-elements); }
+  .trade_tabs-container .glance-price-diff-up.entering, .trade_tabs-container .glance-price-diff-up.exiting {
+    color: var(--calculated_trading_buying-related-text);
+    background-color: var(--trading_buying-related-elements); }
+    .trade_tabs-container .glance-price-diff-up.entering.glance-trade-tab-price_diff_up:before, .trade_tabs-container .glance-price-diff-up.exiting.glance-trade-tab-price_diff_up:before {
+      border-color: var(--calculated_trading_buying-related-text); }
   .trade_tabs-container .trade-tab-price_diff_up {
     margin: auto 0; }
-  .trade_tabs-container .entering.trade-tab-price_diff_up:before,
-  .trade_tabs-container .exiting.trade-tab-price_diff_up:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid var(--calculated_trading_buying-related-text);
-    margin-bottom: 0rem;
-    display: inline-block;
-    margin-bottom: 0.2rem;
-    margin-right: 0.5rem;
-    position: relative;
-    top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-price_diff_up:before {
     content: "";
     display: block;
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-top: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-bottom: 0.4rem solid var(--trading_buying-related-elements);
     margin-bottom: 0rem;
     display: inline-block;
@@ -3711,29 +3658,15 @@ table th {
     top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-price_diff_down {
     margin: auto 0; }
-  .trade_tabs-container .entering.trade-tab-price_diff_down:before,
-  .trade_tabs-container .exiting.trade-tab-price_diff_down:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
-    border-top: 0.4rem solid var(--calculated_trading_selling-related-text);
-    margin-top: 0rem;
-    display: inline-block;
-    margin-right: 0.5rem;
-    position: relative;
-    top: calc(50% - 0.6rem); }
   .trade_tabs-container .trade-tab-price_diff_down:before {
     content: "";
     display: block;
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-bottom: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-top: 0.4rem solid var(--trading_selling-related-elements);
     margin-top: 0rem;
     display: inline-block;
@@ -4960,8 +4893,9 @@ table th {
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-top: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-bottom: 0.4rem solid var(--trading_buying-related-elements);
     margin-bottom: 0rem;
     display: inline-block;
@@ -4977,8 +4911,9 @@ table th {
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-bottom: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-top: 0.4rem solid var(--trading_selling-related-elements);
     margin-top: 0rem;
     display: inline-block;
@@ -5355,8 +5290,9 @@ table th {
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-top: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-bottom: 0.4rem solid var(--trading_buying-related-elements);
     margin-bottom: 0rem;
     display: inline-block;
@@ -5372,8 +5308,9 @@ table th {
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 0.4rem solid transparent;
-    border-right: 0.4rem solid transparent;
+    border-bottom: none !important;
+    border-left: 0.4rem solid transparent !important;
+    border-right: 0.4rem solid transparent !important;
     border-top: 0.4rem solid var(--trading_selling-related-elements);
     margin-top: 0rem;
     display: inline-block;
@@ -5629,7 +5566,7 @@ table th {
     width: 1rem; }
   .app-bar-add-tab-menu .app-bar-add-tab-icons {
     width: 1.2rem;
-    margin: 0.3rem 0.3rem 0 0.3rem; }
+    margin: 0.6rem 0.3rem 0 0.3rem; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0,
@@ -6100,8 +6037,9 @@ table th {
   position: absolute;
   width: 0;
   height: 0;
-  border-top: 0.3rem solid transparent;
-  border-bottom: 0.3rem solid transparent;
+  border-right: none !important;
+  border-top: 0.3rem solid transparent !important;
+  border-bottom: 0.3rem solid transparent !important;
   border-left: 0.3rem solid var(--labels_secondary-inactive-label-text-graphics);
   margin-right: -0.3rem;
   right: -0.3rem;
@@ -6122,8 +6060,9 @@ table th {
   position: absolute;
   width: 0;
   height: 0;
-  border-top: 0.3rem solid transparent;
-  border-bottom: 0.3rem solid transparent;
+  border-left: none !important;
+  border-top: 0.3rem solid transparent !important;
+  border-bottom: 0.3rem solid transparent !important;
   border-right: 0.3rem solid var(--labels_secondary-inactive-label-text-graphics);
   margin-left: -0.3rem;
   left: -0.3rem;
@@ -7109,14 +7048,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -8709,8 +8648,9 @@ foreignObject {
       position: absolute;
       width: 0;
       height: 0;
-      border-left: 1rem solid transparent;
-      border-right: 1rem solid transparent;
+      border-top: none !important;
+      border-left: 1rem solid transparent !important;
+      border-right: 1rem solid transparent !important;
       border-bottom: 1rem solid var(--base_background);
       margin-bottom: 0rem; }
   .mobile-bar-tab .bartab-text-wrapper {
@@ -9047,8 +8987,9 @@ foreignObject {
   position: relative;
   width: 0;
   height: 0;
-  border-top: 0.7rem solid transparent;
-  border-bottom: 0.7rem solid transparent;
+  border-left: none !important;
+  border-top: 0.7rem solid transparent !important;
+  border-bottom: 0.7rem solid transparent !important;
   border-right: 0.7rem solid var(--dark-accordion-arrow-active);
   margin-left: -0.7rem;
   right: -1rem; }

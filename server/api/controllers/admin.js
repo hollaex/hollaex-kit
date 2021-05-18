@@ -676,7 +676,8 @@ const mintAsset = (req, res) => {
 		amount,
 		description,
 		transaction_id,
-		status
+		status,
+		email
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -705,7 +706,8 @@ const mintAsset = (req, res) => {
 				{
 					description,
 					transactionId: transaction_id,
-					status
+					status,
+					email
 				}
 			);
 		})
@@ -738,7 +740,11 @@ const putMint = (req, res) => {
 		updated_transaction_id,
 		status,
 		rejected,
-		dismissed
+		dismissed,
+		processing,
+		waiting,
+		email,
+		updated_description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -751,15 +757,25 @@ const putMint = (req, res) => {
 		rejected,
 		'dismissed',
 		dismissed,
+		'processing',
+		processing,
+		'waiting',
+		waiting,
 		'updated_transaction_id',
-		updated_transaction_id
+		updated_transaction_id,
+		'updated_description',
+		updated_description
 	);
 
 	toolsLib.wallet.updatePendingMint(transaction_id, {
 		status,
 		dismissed,
 		rejected,
-		updatedTransactionId: updated_transaction_id
+		processing,
+		waiting,
+		updatedTransactionId: updated_transaction_id,
+		email,
+		updatedDescription: updated_description
 	})
 		.then((data) => {
 			loggerAdmin.info(
@@ -791,7 +807,8 @@ const burnAsset = (req, res) => {
 		amount,
 		description,
 		transaction_id,
-		status
+		status,
+		email
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -820,7 +837,8 @@ const burnAsset = (req, res) => {
 				{
 					description,
 					transactionId: transaction_id,
-					status
+					status,
+					email
 				}
 			);
 		})
@@ -853,7 +871,11 @@ const putBurn = (req, res) => {
 		updated_transaction_id,
 		status,
 		rejected,
-		dismissed
+		dismissed,
+		processing,
+		waiting,
+		email,
+		updated_description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -866,15 +888,25 @@ const putBurn = (req, res) => {
 		rejected,
 		'dismissed',
 		dismissed,
+		'processing',
+		processing,
+		'waiting',
+		waiting,
 		'updated_transaction_id',
-		updated_transaction_id
+		updated_transaction_id,
+		'updated_description',
+		updated_description
 	);
 
 	toolsLib.wallet.updatePendingBurn(transaction_id, {
 		status,
 		dismissed,
 		rejected,
-		updatedTransactionId: updated_transaction_id
+		processing,
+		waiting,
+		updatedTransactionId: updated_transaction_id,
+		email,
+		updatedDescription: updated_description
 	})
 		.then((data) => {
 			loggerAdmin.info(

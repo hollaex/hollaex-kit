@@ -10,18 +10,24 @@ class SmartTarget extends Component {
 		const { webViews, targets, id } = this.props;
 		if (targets.includes(id)) {
 			const components = [];
-			webViews[id].forEach(({ src, props: propertiesData }) => {
-				const props = {};
-				propertiesData.forEach(({ key, store_key }) => {
-					props[key] = this.props[store_key];
-				});
+			webViews[id].forEach(
+				({ src, props: propertiesData, all_props = false }) => {
+					let props = {};
+					if (all_props) {
+						props = { ...this.props };
+					} else {
+						propertiesData.forEach(({ key, store_key }) => {
+							props[key] = this.props[store_key];
+						});
+					}
 
-				const CustomComponent = (props) => (
-					<RemoteComponent url={src} {...props} />
-				);
+					const CustomComponent = (props) => (
+						<RemoteComponent url={src} {...props} />
+					);
 
-				components.push(<CustomComponent strings={STRINGS} {...props} />);
-			});
+					components.push(<CustomComponent strings={STRINGS} {...props} />);
+				}
+			);
 
 			injectPlugin(components, id);
 		}
@@ -32,18 +38,24 @@ class SmartTarget extends Component {
 
 		if (!prevProps.targets.includes(id) && targets.includes(id)) {
 			const components = [];
-			webViews[id].forEach(({ src, props: propertiesData }) => {
-				const props = {};
-				propertiesData.forEach(({ key, store_key }) => {
-					props[key] = this.props[store_key];
-				});
+			webViews[id].forEach(
+				({ src, props: propertiesData, all_props = false }) => {
+					let props = {};
+					if (all_props) {
+						props = { ...this.props };
+					} else {
+						propertiesData.forEach(({ key, store_key }) => {
+							props[key] = this.props[store_key];
+						});
+					}
 
-				const CustomComponent = (props) => (
-					<RemoteComponent url={src} {...props} />
-				);
+					const CustomComponent = (props) => (
+						<RemoteComponent url={src} {...props} />
+					);
 
-				components.push(<CustomComponent strings={STRINGS} {...props} />);
-			});
+					components.push(<CustomComponent strings={STRINGS} {...props} />);
+				}
+			);
 
 			injectPlugin(components, id);
 		}
@@ -80,6 +92,7 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants,
 	info: store.app.info,
 	enabledPlugins: store.app.enabledPlugins,
+	plugins: store.app.plugins,
 	features: store.app.features,
 	config_level: store.app.config_level,
 	pairsTradesFetched: store.orderbook.pairsTradesFetched,

@@ -372,7 +372,6 @@ class QuickTradeContainer extends PureComponent {
 						onSelectSource={this.onSelectSource}
 						side={side}
 						symbol={pair}
-						theme={activeTheme}
 						disabled={this.isReviewDisabled()}
 						orderLimits={orderLimits[pair] || {}}
 						pairs={pairs}

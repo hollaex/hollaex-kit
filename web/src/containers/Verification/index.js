@@ -38,7 +38,7 @@ import {
 	getFontClassForLanguage,
 } from '../../utils/string';
 import { ContactForm } from '../';
-import { NOTIFICATIONS } from '../../actions/appActions';
+import { NOTIFICATIONS, requestPlugin } from '../../actions/appActions';
 import { setMe } from '../../actions/userAction';
 import { getThemeClass } from '../../utils/theme';
 import BankVerificationHome from './BankVerificationHome';
@@ -63,12 +63,14 @@ class Verification extends Component {
 		user: {},
 		activePage: 'email',
 		showVerificationSentModal: false,
+		bankMeta: {},
 	};
 
 	componentDidMount() {
 		if (this.props.user) {
 			this.setUserData(this.props.user);
 		}
+		this.getBankData();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -99,6 +101,18 @@ class Verification extends Component {
 			);
 		}
 	}
+
+	getBankData = () => {
+		requestPlugin({ name: 'bank' })
+			.then((res) => {
+				if (res.data) {
+					this.setState({ bankMeta: res.data });
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	setUserData = (user = {}) => {
 		const calculatedData = this.calculateActiveTab(user);
@@ -433,7 +447,7 @@ class Verification extends Component {
 	renderContent = (tabs, activeTab) => tabs[activeTab].content || <div>c</div>;
 
 	renderPageContent = (tabProps) => {
-		const { activePage, activeTab, tabs, user } = this.state;
+		const { activePage, activeTab, tabs, user, bankMeta } = this.state;
 		const { activeLanguage, icons: ICONS } = this.props;
 		switch (activePage) {
 			case 'email':
@@ -461,6 +475,7 @@ class Verification extends Component {
 						getErrorLocalized={getErrorLocalized}
 						maxLength={maxLength}
 						required={required}
+						bankMeta={bankMeta}
 					>
 						<BankVerification
 							iconId="VERIFICATION_BANK_NEW"

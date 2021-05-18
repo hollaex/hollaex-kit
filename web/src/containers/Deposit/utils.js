@@ -7,6 +7,7 @@ import { EditWrapper, Button } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { required } from 'components/Form/validations';
 import { getNetworkLabelByKey } from 'utils/wallet';
+import { PLUGIN_URL } from 'config/constants';
 
 import Image from 'components/Image';
 import renderFields from 'components/Form/factoryFields';
@@ -98,6 +99,7 @@ const RenderContentForm = ({
 	formFields,
 	icons: ICONS,
 	selectedNetwork,
+	router,
 }) => {
 	const coinObject = coins[currency];
 	if (coinObject && !coinObject.meta.is_fiat) {
@@ -165,7 +167,16 @@ const RenderContentForm = ({
 			</Fragment>
 		);
 	} else if (coinObject && coinObject.meta.is_fiat) {
-		return <Fiat icons={ICONS} />;
+		return (
+			<Fiat
+				id="REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT"
+				titleSection={titleSection}
+				icons={ICONS}
+				currency={currency}
+				router={router}
+				plugin_url={PLUGIN_URL}
+			/>
+		);
 	} else {
 		return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 	}

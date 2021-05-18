@@ -11,5 +11,6 @@ module.exports = {
 		'react-redux': require('react-redux'),
 		'redux-form': require('redux-form'),
 		redux: require('redux'),
+		axios: require('axios'),
 	},
 };

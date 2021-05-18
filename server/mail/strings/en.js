@@ -1,5 +1,6 @@
 'use strict';
 
+const { capitalize } = require('lodash');
 const { GET_KIT_CONFIG } = require('../../constants');
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 
@@ -94,8 +95,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+		PENDING: (amount, confirmation, currency) =>
+			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet.${confirmation ? ` Your transaction requires ${confirmation} confirmation(s) on blockchain.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Your ${
 				currency.toUpperCase()
@@ -106,7 +107,8 @@ const DEPOSIT = {
 		2: (status) => `Status: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -165,7 +167,8 @@ const WITHDRAWAL = {
 		3: (status) => `Status: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -302,6 +305,16 @@ const DISCOUNTUPDATE = {
 	CLOSING: COMMON.CLOSING
 };
 
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -324,5 +337,6 @@ module.exports = {
 	ALERT,
 	SMS,
 	INVITEDOPERATOR,
-	DISCOUNTUPDATE
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

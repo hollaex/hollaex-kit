@@ -92,8 +92,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`現在、お客様の${API_NAME()}ウォレットへの${amount} ${currency.toUpperCase()}入金は保留中です。取引が承認されるまでお待ちください。お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。`,
+		PENDING: (amount, confirmation, currency) =>
+			`現在、お客様の${API_NAME()}ウォレットへの${amount} ${currency.toUpperCase()}入金は保留中です。取引が承認されるまでお待ちください${confirmation ? ` お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`お客様の${amount} ${currency.toUpperCase()}入金が完了しました。お客様の${
 				currency.toUpperCase()
@@ -102,7 +102,8 @@ const DEPOSIT = {
 		2: (status) => `取引状態：${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -161,7 +162,8 @@ const WITHDRAWAL = {
 		3: (status) => `取引状態：${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -279,6 +281,16 @@ const DISCOUNTUPDATE = {
 	CLOSING: COMMON.CLOSING
 };
 
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -300,5 +312,6 @@ module.exports = {
 	USERDEACTIVATED,
 	ALERT,
 	SMS,
-	DISCOUNTUPDATE
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

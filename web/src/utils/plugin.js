@@ -35,9 +35,6 @@ export const injectPlugin = (component, targetId) => {
 	const targetElement = document.getElementById(targetId);
 	if (targetElement) {
 		render(component, targetElement);
-		console.info(
-			`Remote component successfully injected into DOM element ${targetId}`
-		);
 	} else {
 		console.error(`There is no DOM element with the id ${targetId}`);
 	}

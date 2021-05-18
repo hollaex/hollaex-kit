@@ -179,6 +179,9 @@ exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 	'meta',
 	'description',
 	'title',
+	'interface',
+	'links',
+	'injected_html',
 	'features'
 ];
 // CONFIGURATION CONSTANTS END --------------------------------------------------
@@ -325,97 +328,89 @@ exports.CONFIRMATION = {
 	btc: 1,
 	eth: 15,
 	bch: 2,
-	xrp: 0
+	trx: 10
 };
-exports.EXPLORERS = (currency) => {
-	switch(currency) {
-		case 'btc':
-			return [
-				{
-					name: 'Blockchain.info',
-					baseUrl: 'https://www.blockchain.com',
-					txPath: '/btc/tx'
-				},
-				{
-					name: 'BlockCypher',
-					baseUrl: 'https://live.blockcypher.com',
-					txPath: '/btc/tx'
-				},
-				{
-					name: 'Blockstream',
-					baseUrl: 'https://blockstream.info',
-					txPath: '/tx'
-				},
-				{
-					name: 'Bitcoin.com',
-					baseUrl: 'https://explorer.bitcoin.com',
-					txPath: '/btc/tx'
-				}
-			];
-		case 'xrp':
-			return [
-				{
-					name: 'xrpscan',
-					baseUrl: 'https://xrpscan.com',
-					txPath: '/tx'
-				},
-				{
-					name: 'Bithomp',
-					baseUrl: 'https://bithomp.com',
-					txPath: '/explorer'
-				}
-			];
-		case 'bch':
-			return [
-				{
-					name: 'Blockchain.info',
-					baseUrl: 'https://www.blockchain.com',
-					txPath: '/bch/tx'
-				},
-				{
-					name: 'Bitcoin.com',
-					baseUrl: 'https://explorer.bitcoin.com',
-					txPath: '/bch/tx'
-				}
-			];
-		case 'xlm':
-			return [
-				{
-					name: 'stellarhain.io',
-					baseUrl: 'https://stellarchain.io',
-					txPath: '/tx'
-				}
-			];
-		case 'xmr':
-			return [
-				{
-					name: 'MoneroBlocks',
-					baseUrl: 'https://moneroblocks.info',
-					txPath: '/tx'
-				}
-			];
-		case 'eth':
-			return [
-				{
-					name: 'EtherScan',
-					baseUrl: 'https://etherscan.io',
-					txPath: '/tx'
-				},
-				{
-					name: 'Blockchain.info',
-					baseUrl: 'https://www.blockchain.com',
-					txPath: '/eth/tx'
-				}
-			];
-		default:
-			return [
-				{
-					name: 'EtherScan',
-					baseUrl: 'https://etherscan.io',
-					txPath: '/tx'
-				}
-			];
-	}
+
+exports.EXPLORERS = {
+	btc: [
+		{
+			name: 'Blockchain.info',
+			baseUrl: 'https://www.blockchain.com',
+			txPath: '/btc/tx'
+		},
+		{
+			name: 'BlockCypher',
+			baseUrl: 'https://live.blockcypher.com',
+			txPath: '/btc/tx'
+		},
+		{
+			name: 'Blockstream',
+			baseUrl: 'https://blockstream.info',
+			txPath: '/tx'
+		},
+		{
+			name: 'Bitcoin.com',
+			baseUrl: 'https://explorer.bitcoin.com',
+			txPath: '/btc/tx'
+		}
+	],
+	xrp: [
+		{
+			name: 'xrpscan',
+			baseUrl: 'https://xrpscan.com',
+			txPath: '/tx'
+		},
+		{
+			name: 'Bithomp',
+			baseUrl: 'https://bithomp.com',
+			txPath: '/explorer'
+		}
+	],
+	bch: [
+		{
+			name: 'Blockchain.info',
+			baseUrl: 'https://www.blockchain.com',
+			txPath: '/bch/tx'
+		},
+		{
+			name: 'Bitcoin.com',
+			baseUrl: 'https://explorer.bitcoin.com',
+			txPath: '/bch/tx'
+		}
+	],
+	xlm: [
+		{
+			name: 'stellarchain.io',
+			baseUrl: 'https://stellarchain.io',
+			txPath: '/tx'
+		}
+	],
+	xmr: [
+		{
+			name: 'MoneroBlocks',
+			baseUrl: 'https://moneroblocks.info',
+			txPath: '/tx'
+		}
+	],
+	eth: [
+		{
+			name: 'EtherScan',
+			baseUrl: 'https://etherscan.io',
+			txPath: '/tx'
+		},
+		{
+			name: 'Blockchain.info',
+			baseUrl: 'https://www.blockchain.com',
+			txPath: '/eth/tx'
+		}
+	],
+	trx: [
+		{
+			name: 'Tronscan',
+			baseUrl: 'https://tronscan.org',
+			txPath: '/#/transaction'
+		}
+	]
 };
 
 // EMAIL CONSTANTS END --------------------------------------------------
