@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Divider, Input, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
@@ -8,7 +8,7 @@ import { addPlugin, updatePlugins } from './action';
 
 const PluginDetails = ({
 	handleBreadcrumb,
-	networkPluginData,
+	selectedNetworkPlugin = {},
 	selectedPlugin = {},
 	handlePluginList,
 	updatePluginList,
@@ -23,15 +23,6 @@ const PluginDetails = ({
 	const [isAddLoading, setAddLoading] = useState(false);
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
-	const [networkData, setNetworkData] = useState({});
-
-	useEffect(() => {
-		const tempNetworkData =
-			networkPluginData.filter(
-				(data) => data.name === selectedPlugin.name
-			)[0] || {};
-		setNetworkData(tempNetworkData);
-	}, [networkPluginData, selectedPlugin]);
 
 	const handleAddPlugin = async () => {
 		const body = {
@@ -56,12 +47,7 @@ const PluginDetails = ({
 	const handleUpdatePlugin = () => {
 		handleClose();
 		const body = {
-			...pluginData,
-			// meta: {
-			// 	...pluginData.meta,
-			// 	version: networkData.version,
-			// },
-			version: networkData.version,
+			...selectedNetworkPlugin,
 		};
 		setUpdateLoading(true);
 		updatePlugins({ name: pluginData.name }, body)
@@ -325,7 +311,7 @@ const PluginDetails = ({
 						</div>
 					)}
 					<div className="d-flex align-items-center justify-content-end">
-						{networkData.version > selectedPlugin.version && (
+						{selectedNetworkPlugin.version > selectedPlugin.version && (
 							<div className="d-flex align-items-center flex-column">
 								<Button
 									type="primary"
@@ -336,7 +322,7 @@ const PluginDetails = ({
 								</Button>
 								<div className="d-flex">
 									<div className="small-circle"></div>
-									<div className="update-txt">{`v${networkData.version} available`}</div>
+									<div className="update-txt">{`v${selectedNetworkPlugin.version} available`}</div>
 								</div>
 							</div>
 						)}

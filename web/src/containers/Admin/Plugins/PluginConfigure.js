@@ -8,13 +8,13 @@ const PluginConfigure = ({
 	type,
 	handleBreadcrumb,
 	selectedPlugin,
-	networkPluginData,
 	handlePluginList,
 	updatePluginList,
 	removePlugin,
 	restart,
 }) => {
 	const [pluginData, setPlugin] = useState({});
+	const [selectedNetworkPlugin, setNetworkData] = useState({});
 	const [isLoading, setLoading] = useState(true);
 
 	const requestPlugin = useCallback(() => {
@@ -30,19 +30,24 @@ const PluginConfigure = ({
 					setPlugin(selectedPlugin);
 					setLoading(false);
 				});
-		} else {
-			getPlugin({ name: selectedPlugin.name })
-				.then((res) => {
-					setLoading(false);
-					if (res) {
-						setPlugin(res);
-					}
-				})
-				.catch((err) => {
-					setPlugin({});
-					setLoading(false);
-				});
 		}
+		getPlugin({ name: selectedPlugin.name })
+			.then((res) => {
+				setLoading(false);
+				if (res && selectedPlugin.enabled) {
+					setNetworkData(res);
+				} else if (res && !selectedPlugin.enabled) {
+					setPlugin(res);
+					setNetworkData(res);
+				}
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					setPlugin({});
+				}
+				setNetworkData({});
+				setLoading(false);
+			});
 	}, [selectedPlugin]);
 
 	useEffect(() => {
@@ -58,10 +63,10 @@ const PluginConfigure = ({
 	) : (
 		<PluginDetails
 			isLoading={isLoading}
-			networkPluginData={networkPluginData}
 			pluginData={pluginData}
 			handleBreadcrumb={handleBreadcrumb}
 			selectedPlugin={selectedPlugin}
+			selectedNetworkPlugin={selectedNetworkPlugin}
 			handlePluginList={handlePluginList}
 			updatePluginList={updatePluginList}
 			removePlugin={removePlugin}
