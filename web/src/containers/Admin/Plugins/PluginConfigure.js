@@ -8,6 +8,7 @@ const PluginConfigure = ({
 	type,
 	handleBreadcrumb,
 	selectedPlugin,
+	networkPluginData,
 	handlePluginList,
 	updatePluginList,
 	removePlugin,
@@ -57,6 +58,7 @@ const PluginConfigure = ({
 	) : (
 		<PluginDetails
 			isLoading={isLoading}
+			networkPluginData={networkPluginData}
 			pluginData={pluginData}
 			handleBreadcrumb={handleBreadcrumb}
 			selectedPlugin={selectedPlugin}

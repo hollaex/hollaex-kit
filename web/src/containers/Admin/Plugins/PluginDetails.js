@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, Divider, Input, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
@@ -8,6 +8,7 @@ import { addPlugin, updatePlugins } from './action';
 
 const PluginDetails = ({
 	handleBreadcrumb,
+	networkPluginData,
 	selectedPlugin = {},
 	handlePluginList,
 	updatePluginList,
@@ -22,6 +23,15 @@ const PluginDetails = ({
 	const [isAddLoading, setAddLoading] = useState(false);
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
+	const [networkData, setNetworkData] = useState({});
+
+	useEffect(() => {
+		const tempNetworkData =
+			networkPluginData.filter(
+				(data) => data.name === selectedPlugin.name
+			)[0] || {};
+		setNetworkData(tempNetworkData);
+	}, [networkPluginData, selectedPlugin]);
 
 	const handleAddPlugin = async () => {
 		const body = {
@@ -49,8 +59,9 @@ const PluginDetails = ({
 			...pluginData,
 			meta: {
 				...pluginData.meta,
-				version: pluginData.version,
+				version: networkData.version,
 			},
+			version: networkData.version,
 		};
 		setUpdateLoading(true);
 		updatePlugins({ name: pluginData.name }, body)
@@ -314,7 +325,7 @@ const PluginDetails = ({
 						</div>
 					)}
 					<div className="d-flex align-items-center justify-content-end">
-						{pluginData.version > selectedPlugin.version && (
+						{networkData.version > selectedPlugin.version && (
 							<div className="d-flex align-items-center flex-column">
 								<Button
 									type="primary"
@@ -325,7 +336,7 @@ const PluginDetails = ({
 								</Button>
 								<div className="d-flex">
 									<div className="small-circle"></div>
-									<div className="update-txt">{`v${pluginData.version} available`}</div>
+									<div className="update-txt">{`v${networkData.version} available`}</div>
 								</div>
 							</div>
 						)}
