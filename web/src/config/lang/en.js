@@ -425,7 +425,7 @@ const nestedContent = {
 		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission',
 		GO_BACK: 'Go Back',
 		BANK_VERIFICATION_TEXT_1:
-			'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
+			'You can add your bank accounts here and get the verified. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
 		BANK_VERIFICATION_TEXT_2:
 			'By verifying your bank account you can obtain the following:',
 		BASE_WITHDRAWAL: 'Fiat withdrawal',
