@@ -23,12 +23,20 @@ export const requestMyPlugins = (query) =>
 		PLUGIN_URL
 	);
 
-export const getPlugin = (query) =>
+export const getInstalledPlugin = (query) =>
 	requestAuthenticated(
 		`/plugins?${querystring.stringify(query)}`,
 		{},
 		null,
 		PLUGIN_URL
+	);
+
+export const getPlugin = (query) =>
+	requestAuthenticated(
+		`/plugin?${querystring.stringify(query)}`,
+		{},
+		null,
+		NETWORK_API_URL
 	);
 
 export const addPlugin = (values) => {
@@ -176,4 +184,3 @@ export const requestDeleteAnnouncement = (query) => {
 		PLUGIN_URL
 	);
 };
-
