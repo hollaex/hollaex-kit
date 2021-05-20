@@ -294,7 +294,6 @@ class Plugins extends Component {
 							handleBreadcrumb={this.handleBreadcrumb}
 							type={type}
 							selectedPlugin={selectedPlugin}
-							networkPluginData={pluginData}
 							handlePluginList={this.handlePluginList}
 							updatePluginList={this.handleUpdatePluginList}
 							removePlugin={this.removePlugin}
