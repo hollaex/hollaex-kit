@@ -60,3 +60,5 @@ export const validateDiscount = (rule, value) => {
 };
 export const validateBoolean = (value) =>
 	value || value === false ? undefined : 'Required';
+export const validateNumber = (value) =>
+	value || value === 0 ? undefined : 'Required';
