@@ -311,6 +311,9 @@ table th {
 .no-border {
   border: none !important; }
 
+.flex-direction-column {
+  flex-direction: column !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -10053,7 +10056,9 @@ svg .check-order,
 svg .otp-inactive,
 svg .otp-active,
 svg .unknown-error-icon,
-svg .cancel-all {
+svg .cancel-all,
+svg .fiat-page-under-construction,
+svg .generate-reference-number {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,

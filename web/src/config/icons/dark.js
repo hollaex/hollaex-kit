@@ -246,6 +246,10 @@ const nestedIcons = {
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
+	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',
+
+	//should move this to the plugin itself once the functionality is added
+	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
 };
 
 const icons = flatten(nestedIcons, options);
