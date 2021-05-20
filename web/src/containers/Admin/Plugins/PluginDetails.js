@@ -57,10 +57,10 @@ const PluginDetails = ({
 		handleClose();
 		const body = {
 			...pluginData,
-			meta: {
-				...pluginData.meta,
-				version: networkData.version,
-			},
+			// meta: {
+			// 	...pluginData.meta,
+			// 	version: networkData.version,
+			// },
 			version: networkData.version,
 		};
 		setUpdateLoading(true);
