@@ -120,7 +120,7 @@ export const generateFormValues = (
 				fullWidth: true,
 				ishorizontalfield: true,
 			};
-		} else if (symbol === 'xlm' || selectedNetwork === 'stellar') {
+		} else if (symbol === 'xlm' || selectedNetwork === 'xlm') {
 			fields.destination_tag = {
 				type: 'text',
 				stringId:
