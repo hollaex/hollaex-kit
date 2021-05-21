@@ -72,7 +72,7 @@ class Expired extends Component {
 						<a
 							href={EXCHANGE_URL}
 							target="blank"
-							className="exir-button mdc-button mdc-button--unelevated exir-button-font"
+							className="holla-button mdc-button mdc-button--unelevated holla-button-font"
 						>
 							<Button label={STRINGS['EXPIRED_BUTTON_TXT']} />
 						</a>

@@ -1,6 +1,6 @@
 @import '../../variables';
 
-.exir-button {
+.holla-button {
 	width: 100%;
 	font-size: $font-size-subtext;
 	padding: 0 4px;
@@ -63,13 +63,13 @@
 }
 
 .direction_ltr {
-	.exir-button-font {
+	.holla-button-font {
 		font-family: $raleway--font-family;
 	}
 }
 
 .direction_rtl {
-	.exir-button-font {
+	.holla-button-font {
 		font-family: inherit !important;
 	}
 }

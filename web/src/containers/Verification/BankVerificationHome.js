@@ -21,7 +21,7 @@ const BankVerificationHome = ({
 	) {
 		return (
 			<div className="btn-wrapper">
-				<div className="exir-verification-button">
+				<div className="holla-verification-button">
 					<EditWrapper stringId="USER_VERIFICATION.START_BANK_VERIFICATION" />
 					<Button
 						label={STRINGS['USER_VERIFICATION.START_BANK_VERIFICATION']}
