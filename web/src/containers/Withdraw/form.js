@@ -200,7 +200,7 @@ class Form extends Component {
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
-			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'stellar';
+			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
 		if (coinObject && !coinObject.meta.is_fiat) {

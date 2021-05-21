@@ -11,7 +11,7 @@
 	}
 	.verification-buttons-wrapper {
 		width: 100%;
-		.exir-button {
+		.holla-button {
 			width: 300px;
 		}
 	}
@@ -45,7 +45,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			.exir-verification-button {
+			.holla-verification-button {
 				position: absolute;
 				top: 60px;
 				width: 300px;
@@ -59,7 +59,7 @@
 	background-color: $app-sidebar-background;
 	.action_notification-wrapper {
 		.notification-info {
-    		white-space: nowrap;
+			white-space: nowrap;
 		}
 	}
 }
@@ -111,7 +111,7 @@
 			width: 100%;
 			font-size: $font-size-mobile-txt !important;
 		}
-		.exir-verification-button {
+		.holla-verification-button {
 			font-size: $font-size-mobile-txt !important;
 			position: unset !important;
 			top: 0 !important;
@@ -147,7 +147,7 @@
 			}
 		}
 		.verification-buttons-wrapper {
-			.exir-button {
+			.holla-button {
 				width: 100% !important;
 				flex: 1;
 			}
@@ -212,7 +212,7 @@
 			}
 		}
 		.verification-buttons-wrapper {
-			.exir-button {
+			.holla-button {
 				width: 80%;
 			}
 		}
