@@ -11,7 +11,7 @@ import {
 import { Table, Dialog, Loader } from '../../components';
 import { generateHeaders } from './ApiKeyHeaders';
 import ApiKeyModal, { TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
-import { openContactForm } from '../../actions/appActions';
+import { openContactForm } from 'actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -82,7 +82,7 @@ class ApiKey extends Component {
 			activeTheme,
 			icons: ICONS,
 		} = this.props;
-		const { links = {} } = this.props.constants;
+
 		const { dialogIsOpen, dialogType } = this.state;
 		return (
 			<div>
@@ -125,9 +125,7 @@ class ApiKey extends Component {
 						notificationType={dialogType}
 						onGenerate={this.onGenerateToken}
 						onRevoke={this.onRevokeToken}
-						openContactForm={() =>
-							openContactForm({ helpdesk: links.helpdesk })
-						}
+						openContactForm={openContactForm}
 					/>
 				</Dialog>
 			</div>

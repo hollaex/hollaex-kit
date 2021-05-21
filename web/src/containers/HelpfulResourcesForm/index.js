@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import Image from 'components/Image';
 import { IconTitle, Notification, Button, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -9,7 +10,7 @@ import {
 	sendSupportMail,
 	NOTIFICATIONS,
 	openContactForm,
-} from '../../actions/appActions';
+} from 'actions/appActions';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 
@@ -50,16 +51,17 @@ class HelpfulResourcesForm extends Component {
 			});
 	};
 	openNewForm = () => {
-		const { links = {} } = this.props.constants;
-		this.props.onClose();
-		this.props.openContactForm({ category: 'bug', helpdesk: links.helpdesk });
+		const { openContactForm, onClose } = this.props;
+		onClose();
+		openContactForm({ category: 'bug' });
 	};
 
 	render() {
 		const {
 			onClose,
 			icons: ICONS,
-			constants: { links: { helpdesk = '', api_doc_link = '' } = {} },
+			constants: { links: { api_doc_link = '' } = {} },
+			openContactForm,
 		} = this.props;
 		const { submited } = this.state;
 
@@ -90,10 +92,12 @@ class HelpfulResourcesForm extends Component {
 						<div className="text">
 							{STRINGS.formatString(
 								STRINGS['HELP_RESOURCE_GUIDE.TEXT'],
-								<BlueLink
-									href={helpdesk}
-									text={STRINGS['HELP_RESOURCE_GUIDE.CONTACT_US']}
-								/>
+								<span
+									onClick={openContactForm}
+									className={classnames('blue-link', 'dialog-link', 'pointer')}
+								>
+									{STRINGS['HELP_RESOURCE_GUIDE.CONTACT_US']}
+								</span>
 							)}
 							<EditWrapper stringId="HELP_RESOURCE_GUIDE.TEXT,HELP_RESOURCE_GUIDE.CONTACT_US" />
 						</div>

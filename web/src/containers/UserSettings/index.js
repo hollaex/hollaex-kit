@@ -11,7 +11,7 @@ import {
 	openContactForm,
 	openRiskPortfolioOrderWarning,
 	closeNotification,
-} from '../../actions/appActions';
+} from 'actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
 	updateUserSettings,
@@ -381,11 +381,6 @@ class UserSettings extends Component {
 		this.props.logout(typeof message === 'string' ? message : '');
 	};
 
-	openContactForm = () => {
-		const { links = {} } = this.props.constants;
-		this.props.openContactForm({ helpdesk: links.helpdesk });
-	};
-
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
 		if (this.props.location.query && this.props.location.query.tab) {
@@ -401,7 +396,7 @@ class UserSettings extends Component {
 			return <Loader />;
 		}
 		const { activeTab, tabs } = this.state;
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, openContactForm } = this.props;
 		return (
 			<div className="presentation_container apply_rtl settings_container">
 				{!isMobile && (
@@ -416,7 +411,7 @@ class UserSettings extends Component {
 				<HeaderSection
 					stringId="ACCOUNTS.TAB_SETTINGS"
 					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
-					openContactForm={this.openContactForm}
+					openContactForm={openContactForm}
 				>
 					<div className="header-content">
 						<div>
