@@ -15,7 +15,7 @@ const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const multer = require('multer');
 const moment = require('moment');
 const { checkStatus } = require('./init');
-const UglifyJS = require('uglify-es');
+const uglifyEs = require('uglify-es');
 const cors = require('cors');
 const mathjs = require('mathjs');
 const bluebird = require('bluebird');
@@ -28,6 +28,25 @@ const { resolve } = bluebird;
 const npm = require('npm-programmatic');
 const sequelize = require('sequelize');
 const umzug = require('umzug');
+const jwt = require('jsonwebtoken');
+const momentTz = require('moment-timezone');
+const json2csv = require('json2csv');
+const flat = require('flat');
+const ws = require('ws');
+const cron = require('node-cron');
+const randomString = require('random-string');
+const bcryptjs = require('bcryptjs');
+const expectCt = require('expect-ct');
+const validator = require('validator');
+const otp = require('otp');
+const geoipLite = require('geoip-lite');
+const nodemailer = require('nodemailer');
+const wsHeartbeatServer = require('ws-heartbeat/server');
+const wsHeartbeatClient = require('ws-heartbeat/client');
+const winston = require('winston');
+const elasticApmNode = require('elastic-apm-node');
+const winstonElasticsearchApm = require('winston-elasticsearch-apm');
+const tripleBeam = require('triple-beam');
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
@@ -424,7 +443,7 @@ checkStatus()
 						};
 
 						if (script) {
-							const minifiedScript = UglifyJS.minify(script);
+							const minifiedScript = uglifyEs.minify(script);
 
 							if (minifiedScript.error) {
 								throw new Error('Error while minifying script');
@@ -750,7 +769,7 @@ checkStatus()
 						};
 
 						if (script) {
-							const minifiedScript = UglifyJS.minify(script);
+							const minifiedScript = uglifyEs.minify(script);
 
 							if (minifiedScript.error) {
 								throw new Error('Error while minifying script');
@@ -1265,11 +1284,35 @@ checkStatus()
 								rp,
 								sequelize,
 								uuid,
+								jwt,
+								momentTz,
+								json2csv,
+								flat,
+								ws,
+								cron,
+								randomString,
+								bcryptjs,
+								expectCt,
+								validator,
+								uglifyEs,
+								otp,
+								latestVersion,
+								geoipLite,
+								nodemailer,
+								wsHeartbeatServer,
+								wsHeartbeatClient,
+								cors,
+								winston,
+								elasticApmNode,
+								winstonElasticsearchApm,
+								tripleBeam,
+								bodyParser,
+								morgan,
 								meta: plugin.meta,
 								publicMeta: plugin.public_meta,
 								installedLibraries: {}
 							};
-							if (plugin.prescript.install) {
+							if (plugin.prescript && plugin.prescript.install) {
 								loggerPlugin.verbose('plugin', plugin.name, 'installing packages');
 								for (let library of plugin.prescript.install) {
 									context.installedLibraries[library] = await installLibrary(library);
