@@ -3,6 +3,7 @@ import { hasTheme } from 'utils/theme';
 import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from 'config/constants';
 import axios from 'axios';
 import querystring from 'query-string';
+import store from 'store';
 
 export const SET_IS_READY = 'SET_IS_READY';
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -125,11 +126,28 @@ export const closeSnackDialog = (id) => ({
 	payload: { dialogId: id },
 });
 
-export const openContactForm = (data = { helpdesk: '' }) => {
-	if (window && data.helpdesk) {
-		window.open(data.helpdesk, '_blank');
+export const openContactForm = () => {
+	const {
+		app: {
+			helpdeskInfo: { has_helpdesk, helpdesk_endpoint },
+			constants: { links: { helpdesk } = {} },
+		},
+	} = store.getState();
+
+	if (window) {
+		if (has_helpdesk) {
+			axios
+				.get(`${PLUGIN_URL}${helpdesk_endpoint}`)
+				.then(({ data: { url } }) => {
+					window.open(url, '_blank');
+					return setNotification(CONTACT_FORM, { helpdesk }, false);
+				});
+		} else if (helpdesk) {
+			window.open(helpdesk, '_blank');
+		}
 	}
-	return setNotification(CONTACT_FORM, data, false);
+
+	return setNotification(CONTACT_FORM, { helpdesk }, false);
 };
 
 export const openHelpfulResourcesForm = (data = {}) =>
