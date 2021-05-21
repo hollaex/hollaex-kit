@@ -162,14 +162,14 @@ class Deposit extends Component {
 		let address = getWallet(currency, network, wallet, networks);
 		let destinationAddress = '';
 
-		if (currency === 'xrp' || currency === 'xlm' || network === 'stellar') {
+		if (currency === 'xrp' || currency === 'xlm' || network === 'xlm') {
 			const temp = address.split(':');
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
 
 		const additionalText =
-			currency === 'xlm' || network === 'stellar'
+			currency === 'xlm' || network === 'xlm'
 				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
 				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
