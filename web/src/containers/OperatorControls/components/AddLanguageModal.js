@@ -12,7 +12,7 @@ class AddLanguageModal extends Component {
 		const { languages } = this.props;
 
 		this.state = {
-			selectedLanguage: languages[0].value,
+			selectedLanguage: !!languages.length && languages[0].value,
 		};
 	}
 
@@ -66,6 +66,7 @@ class AddLanguageModal extends Component {
 						size="large"
 						className="operator-controls__save-button"
 						onClick={this.addLanguage}
+						disabled={!languages.length}
 					>
 						Save
 					</Button>
