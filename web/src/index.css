@@ -1329,7 +1329,7 @@ table th {
     display: flex;
     margin-left: 5px; }
     .wallet-container .paper-clip-icon .action_notification-svg svg {
-      width: 0.8rem  !important;
+      width: 0.8rem !important;
       height: 0.8rem !important; }
   .wallet-container .wallet-buttons_action {
     margin: 2.5rem 0 3.75rem; }
