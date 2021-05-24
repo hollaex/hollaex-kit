@@ -22,6 +22,7 @@ import { calculateBaseFee } from './utils';
 import Fiat from 'containers/Deposit/Fiat';
 import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
+import { getToken } from 'utils/token';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -262,6 +263,7 @@ class Form extends Component {
 					currency={currency}
 					router={router}
 					plugin_url={PLUGIN_URL}
+					token={getToken()}
 				/>
 			);
 		} else {
