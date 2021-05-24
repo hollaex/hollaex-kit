@@ -168,7 +168,7 @@ export const CustomTabs = ({
 	);
 };
 
-const status = (key) => {
+export const status = (key) => {
 	switch (key) {
 		case -1:
 			return '';
