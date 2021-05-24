@@ -220,9 +220,9 @@ class Verification extends Component {
 			} else if (bank_account.filter((data) => data.status === 2).length) {
 				bank_status = 2;
 			}
-			if (id_data.status !== 3) {
-				bank_status = 1;
-			}
+			// if (id_data.status !== 3) {
+			// 	bank_status = 1;
+			// }
 			if (
 				bank_account.length ===
 				bank_account.filter((data) => data.status === 0).length
