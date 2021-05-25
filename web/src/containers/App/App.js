@@ -334,13 +334,8 @@ class App extends Component {
 		return '';
 	};
 
-	openContactForm = (data = {}) => {
-		const { links = {} } = this.props.constants;
-		this.props.openContactForm({ ...data, helpdesk: links.helpdesk });
-	};
-
 	renderDialogContent = ({ type, data }, prices = {}) => {
-		const { icons: ICONS, config_level } = this.props;
+		const { icons: ICONS, config_level, openContactForm } = this.props;
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
@@ -349,7 +344,7 @@ class App extends Component {
 					<Notification
 						type={type}
 						data={data}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 						onClose={this.onCloseDialog}
 					/>
 				);
@@ -364,7 +359,7 @@ class App extends Component {
 						}}
 						onClose={this.onCloseDialog}
 						goToPage={this.goToPage}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 					/>
 				);
 			case NOTIFICATIONS.ERROR:
@@ -710,7 +705,7 @@ class App extends Component {
 											<Sidebar
 												activePath={activePath}
 												logout={this.logout}
-												// help={this.openContactForm}
+												// help={openContactForm}
 												theme={activeTheme}
 												isLogged={isLoggedIn()}
 												help={openHelpfulResourcesForm}

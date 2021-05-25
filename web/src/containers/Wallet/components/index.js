@@ -108,7 +108,7 @@ export const renderNeedHelpAction = (
 		status="information"
 		iconId={iconId}
 		iconPath={icon}
-		onClick={() => openContactForm({ helpdesk: links.helpdesk })}
+		onClick={openContactForm}
 		className="need-help"
 	/>
 );
