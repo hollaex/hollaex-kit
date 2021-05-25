@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
-import { openContactForm } from '../../actions/appActions';
+import { openContactForm } from 'actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -319,11 +319,6 @@ class UserVerification extends Component {
 			this.props.logout(typeof message === 'string' ? message : '');
 	};*/
 
-	openContactForm = () => {
-		const { links = {} } = this.props.constants;
-		this.props.openContactForm({ helpdesk: links.helpdesk });
-	};
-
 	handleOTPCheckbox = (checked = false) => {
 		if (checked) {
 			this.props.requestOTP();
@@ -457,7 +452,7 @@ class UserVerification extends Component {
 		}
 		const { dialogIsOpen, modalText, activeTab, tabs, freeze } = this.state;
 		const { otp, email, otp_enabled } = this.props.user;
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, openContactForm } = this.props;
 		//const { onCloseDialog } = this;
 
 		if (freeze === true) {
@@ -473,7 +468,7 @@ class UserVerification extends Component {
 					<HeaderSection
 						stringId="ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_2"
 						title={STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_2']}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 					>
 						<div> {STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.MESSAGE_2']}</div>
 						<div className="mb-2">
@@ -514,7 +509,7 @@ class UserVerification extends Component {
 				<HeaderSection
 					stringId="ACCOUNTS.TAB_SETTINGS"
 					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
-					openContactForm={this.openContactForm}
+					openContactForm={openContactForm}
 				>
 					<div className="header-content">
 						<div>{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}</div>
