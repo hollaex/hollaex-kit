@@ -7,7 +7,16 @@ import {
 	DeleteOutlined,
 	PlusCircleOutlined,
 } from '@ant-design/icons';
-import { Card, Button, Input, Popconfirm, message, Col, Row, Modal } from 'antd';
+import {
+	Card,
+	Button,
+	Input,
+	Popconfirm,
+	message,
+	Col,
+	Row,
+	Modal,
+} from 'antd';
 import { ModalForm } from '../../../components';
 import { validateRequired } from 'components/AdminForm/validations';
 import { status } from '../../../components/CheckTitle';
@@ -30,7 +39,7 @@ class BankData extends Component {
 			formVisible: false,
 			note: '',
 			isVisible: false,
-			bankData: {}
+			bankData: {},
 		};
 	}
 
@@ -147,65 +156,72 @@ class BankData extends Component {
 	};
 
 	getPlugin = () => {
-		requestPlugin({ name: "bank" })
+		requestPlugin({ name: 'bank' })
 			.then((res) => {
 				if (res.data) {
 					this.setState({ bankData: res.data });
 				}
 			})
 			.catch((err) => {
-				console.log("err", err);
+				console.log('err', err);
 			});
 	};
 
 	handleOpenModal = () => {
 		this.setState({ isVisible: true });
-	}
+	};
 
 	handleClose = () => {
 		this.setState({ isVisible: false });
-	}
+	};
 
 	renderLabel = (data) => {
-		if (data.includes("_")) {
-			var text = data.replace(/_/g, " ");
-			text = text.split(" ");
-			text = text[0].replace(/^./, function (str) { return str.toUpperCase(); }) +
-				" " +
-				text[1].replace(/^./, function (str) { return str.toUpperCase(); });
+		let text = data;
+		if (data.includes('_')) {
+			text = text.replace(/_/g, ' ');
+			text = text.split(' ');
+			text =
+				text[0].replace(/^./, function (str) {
+					return str.toUpperCase();
+				}) +
+				' ' +
+				text[1].replace(/^./, function (str) {
+					return str.toUpperCase();
+				});
 		} else {
-			var text = data
-			text = text.replace(/^./, function (str) { return str.toUpperCase(); });
+			text = text.replace(/^./, function (str) {
+				return str.toUpperCase();
+			});
 		}
 		return text;
-	}
+	};
 
 	render() {
 		const { bank, formVisible, userId, bankData } = this.state;
 		const { onChangeSuccess } = this.props;
 		let disabled = false;
-		let Fields = {}
+		let Fields = {};
 		if (bankData.public_meta && Object.keys(bankData.public_meta).length) {
 			let publicMeta = Object.keys(bankData.public_meta);
 			publicMeta.forEach((key) => {
 				const metaData = bankData.public_meta[key];
-				if (typeof metaData === "object") {
+				if (typeof metaData === 'object') {
 					if (metaData.value) {
 						Fields[key] = {
-							type: "text",
+							type: 'text',
 							label: this.renderLabel(key),
-							placeholder: key,
-						}
+							placeholder: this.renderLabel(key),
+						};
 						if (metaData.required) {
 							Fields[key].validate = [validateRequired];
 						}
 					}
 				} else {
 					Fields[key] = {
-						type: "text",
+						type: 'text',
 						label: key,
 						placeholder: key,
-					}
+					};
 				}
 			});
 		}
@@ -236,13 +252,20 @@ class BankData extends Component {
 									key={bank.id || bank.bank_name}
 									title={[
 										<div>
-											<p><b>Id:</b> {bank.id}</p>
-											<p><b>Status:</b> {status(bank.status)}</p>
-										</div>
+											<p>
+												<b>Id:</b> {bank.id}
+											</p>
+											<p>
+												<b>Status:</b> {status(bank.status)}
+											</p>
+										</div>,
 									]}
 									extra={
 										bank.status === 1 ? (
-											<div style={{ width: '16em', display: 'flex' }} className="mb-3">
+											<div
+												style={{ width: '16em', display: 'flex' }}
+												className="mb-3"
+											>
 												<div>
 													<Button
 														onClick={() =>
@@ -254,7 +277,7 @@ class BankData extends Component {
 														type="primary"
 														className="green-btn"
 														icon={<CheckOutlined />}
-													// size={10}
+														// size={10}
 													>
 														Accept
 													</Button>
@@ -264,7 +287,7 @@ class BankData extends Component {
 														onClick={this.handleOpenModal}
 														type="danger"
 														icon={<CloseOutlined />}
-													// size={10}
+														// size={10}
 													>
 														Reject
 													</Button>
@@ -289,8 +312,12 @@ class BankData extends Component {
 									style={{ width: 300 }}
 								>
 									{Object.keys(bank).map((data, index) => {
-										if (data !== "id" && data !== "status") {
-											return <p key={index}><b>{this.renderLabel(data)}:</b> {bank[data]}</p>
+										if (data !== 'id' && data !== 'status') {
+											return (
+												<p key={index}>
+													<b>{this.renderLabel(data)}:</b> {bank[data]}
+												</p>
+											);
 										} else {
 											return null;
 										}
@@ -305,10 +332,11 @@ class BankData extends Component {
 											user_id: userId,
 											bank_id: bank.id,
 											message: this.state.note,
-										})}
+										})
+									}
 								>
-									{this.state.isVisible
-										? <div>
+									{this.state.isVisible ? (
+										<div>
 											<div>Notes</div>
 											<Input.TextArea
 												rows={4}
@@ -316,8 +344,7 @@ class BankData extends Component {
 												onChange={this.handleNoteChange}
 											/>
 										</div>
-										: null
-									}
+									) : null}
 								</Modal>
 							</Col>
 						);
