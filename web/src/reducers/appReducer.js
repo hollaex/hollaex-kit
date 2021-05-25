@@ -421,6 +421,17 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				}
 			});
 
+			if (process.env.REACT_APP_PLUGIN_DEV_MODE === 'true') {
+				CLUSTERED_WEB_VIEWS[process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET] = [
+					{
+						all_props: true,
+						target: process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET,
+						props: [],
+						src: '/main.js',
+					},
+				];
+			}
+
 			return {
 				...state,
 				webViews: CLUSTERED_WEB_VIEWS,
