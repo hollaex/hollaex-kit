@@ -24,6 +24,7 @@ let configuration = {
 		defaults: {},
 		features: {},
 		meta: {},
+		user_meta: {},
 		injected_values: [],
 		injected_html: {}
 	}
@@ -100,6 +101,7 @@ const resetAllConfig = () => {
 			defaults: {},
 			features: {},
 			meta: {},
+			user_meta: {},
 			injected_values: [],
 			injected_html: {}
 		}
@@ -137,6 +139,13 @@ exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 
+exports.USER_META_KEYS = [
+	'description',
+	'type',
+	'default',
+	'required'
+];
+
 exports.KIT_CONFIG_KEYS = [
 	'captcha',
 	'api_name',
@@ -157,7 +166,8 @@ exports.KIT_CONFIG_KEYS = [
 	'setup_completed',
 	'email_verification_required',
 	'injected_values',
-	'injected_html'
+	'injected_html',
+	'user_meta'
 ];
 
 exports.KIT_SECRETS_KEYS = [

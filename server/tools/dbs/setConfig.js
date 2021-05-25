@@ -65,7 +65,8 @@ const kit = {
 		theme: DEFAULT_THEME || 'white'
 	},
 	features: {},
-	meta: {}
+	meta: {},
+	user_meta: {}
 };
 
 const secrets = {

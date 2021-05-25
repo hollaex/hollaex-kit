@@ -94,7 +94,8 @@ module.exports = {
 							theme: DEFAULT_THEME || 'white'
 						},
 						features: {},
-						meta: {}
+						meta: {},
+						user_meta: {}
 					}),
 					secrets: JSON.stringify({
 						allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],

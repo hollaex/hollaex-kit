@@ -50,6 +50,7 @@ Status.findOne()
 			},
 			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},
+			user_meta: existingKitConfigurations.user_meta || {},
 		};
 
 		const secrets = {

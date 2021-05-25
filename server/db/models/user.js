@@ -164,6 +164,10 @@ module.exports = function(sequelize, DataTypes) {
 			discount: {
 				type: DataTypes.DOUBLE,
 				defaultValue: 0
+			},
+			meta: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
 			}
 		},
 		{

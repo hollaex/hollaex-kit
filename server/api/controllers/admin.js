@@ -151,6 +151,30 @@ const putUserRole = (req, res) => {
 		});
 };
 
+const putUserMeta = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putUserMeta auth',
+		req.auth
+	);
+
+	const user_id = req.swagger.params.user_id.value;
+	const meta = req.swagger.params.data.value;
+
+	toolsLib.user.updateUserRole(user_id, role)
+		.then((user) => {
+			return res.json(user);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putUserRole',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const putUserNote = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
