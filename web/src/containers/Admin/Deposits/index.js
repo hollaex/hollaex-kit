@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import { SyncOutlined } from '@ant-design/icons';
-import { Table, Spin, Button, Input, Select, Alert } from 'antd';
+import { Table, Spin, Button, Input, Select, Alert, Modal } from 'antd';
 import moment from 'moment';
 
 import './index.css';
 
 import {
 	requestDeposits,
-	completeDeposits,
-	dismissDeposit,
+	// completeDeposits,
+	// dismissDeposit,
 	requestDepositDownload,
+	requestBurn,
+	requestMint,
 } from './actions';
 import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
 import { Filters } from './Filters';
+import ValidateDismiss from './ValidateDismiss';
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -52,6 +55,9 @@ class Deposits extends Component {
 		limit: 50,
 		currentTablePage: 1,
 		isRemaining: true,
+		isOpen: false,
+		statusType: "",
+		validateData: {},
 	};
 
 	componentWillMount() {
@@ -127,61 +133,61 @@ class Deposits extends Component {
 			});
 	};
 
-	completeDeposit = (transaction_id, indexItem) => () => {
-		const { loadingItem, loading, dismissingItem } = this.state;
-		if (!(dismissingItem || loadingItem || loading)) {
-			this.setState({ loadingItem: true, error: '', indexItem });
-			completeDeposits(transaction_id, true)
-				.then((data) => {
-					const { deposits } = this.state;
-					this.setState({
-						deposits: [].concat(
-							deposits.slice(0, indexItem),
-							data,
-							deposits.slice(indexItem + 1, deposits.length)
-						),
-						loadingItem: false,
-						indexItem: -1,
-					});
-				})
-				.catch((error) => {
-					const message = error.data ? error.data.message : error.message;
-					this.setState({
-						loadingItem: false,
-						error: message,
-						indexItem: -1,
-					});
-				});
-		}
-	};
+	// completeDeposit = (transaction_id, indexItem) => () => {
+	// 	const { loadingItem, loading, dismissingItem } = this.state;
+	// 	if (!(dismissingItem || loadingItem || loading)) {
+	// 		this.setState({ loadingItem: true, error: '', indexItem });
+	// 		completeDeposits(transaction_id, true)
+	// 			.then((data) => {
+	// 				const { deposits } = this.state;
+	// 				this.setState({
+	// 					deposits: [].concat(
+	// 						deposits.slice(0, indexItem),
+	// 						data,
+	// 						deposits.slice(indexItem + 1, deposits.length)
+	// 					),
+	// 					loadingItem: false,
+	// 					indexItem: -1,
+	// 				});
+	// 			})
+	// 			.catch((error) => {
+	// 				const message = error.data ? error.data.message : error.message;
+	// 				this.setState({
+	// 					loadingItem: false,
+	// 					error: message,
+	// 					indexItem: -1,
+	// 				});
+	// 			});
+	// 	}
+	// };
 
-	dismissDeposit = (transaction_id, dismissed, indexItem) => () => {
-		const { loadingItem, loading, dismissingItem } = this.state;
-		if (!(dismissingItem || loadingItem || loading)) {
-			this.setState({ dismissingItem: true, error: '', indexItem });
-			dismissDeposit(transaction_id, dismissed)
-				.then((data) => {
-					const { deposits } = this.state;
-					this.setState({
-						deposits: [].concat(
-							deposits.slice(0, indexItem),
-							data,
-							deposits.slice(indexItem + 1, deposits.length)
-						),
-						dismissingItem: false,
-						indexItem: -1,
-					});
-				})
-				.catch((error) => {
-					const message = error.data ? error.data.message : error.message;
-					this.setState({
-						dismissingItem: false,
-						error: message,
-						indexItem: -1,
-					});
-				});
-		}
-	};
+	// dismissDeposit = (transaction_id, dismissed, indexItem) => () => {
+	// 	const { loadingItem, loading, dismissingItem } = this.state;
+	// 	if (!(dismissingItem || loadingItem || loading)) {
+	// 		this.setState({ dismissingItem: true, error: '', indexItem });
+	// 		dismissDeposit(transaction_id, dismissed)
+	// 			.then((data) => {
+	// 				const { deposits } = this.state;
+	// 				this.setState({
+	// 					deposits: [].concat(
+	// 						deposits.slice(0, indexItem),
+	// 						data,
+	// 						deposits.slice(indexItem + 1, deposits.length)
+	// 					),
+	// 					dismissingItem: false,
+	// 					indexItem: -1,
+	// 				});
+	// 			})
+	// 			.catch((error) => {
+	// 				const message = error.data ? error.data.message : error.message;
+	// 				this.setState({
+	// 					dismissingItem: false,
+	// 					error: message,
+	// 					indexItem: -1,
+	// 				});
+	// 			});
+	// 	}
+	// };
 	onSelect = (value, option) => {
 		this.setState({ searchKey: value });
 	};
@@ -286,23 +292,87 @@ class Deposits extends Component {
 		});
 	};
 
+	onOpenModal = (validateData, statusType) => {
+		this.setState({ isOpen: true, validateData, statusType })
+	}
+
+	onCancelModal = () => {
+		this.setState({ isOpen: false, statusType: "" })
+	}
+
+	handleConfirm = (formValues) => {
+		const { statusType, queryType } = this.state;
+		let body = {
+			transaction_id: formValues.transaction_id,
+			rejected: false,
+			processing: false,
+			waiting: false
+		};
+		if (formValues.description) {
+			body = {
+				...body,
+				description: formValues.description
+			}
+		}
+		if (statusType === "validate") {
+			body = {
+				...body,
+				status: true,
+				dismissed: false
+			}
+		} else {
+			body = {
+				...body,
+				dismissed: true,
+				status: false
+			}
+		}
+		if (queryType === 'deposit') {
+			requestMint(body)
+				.then((data) => {
+					this.onCancelModal();
+				})
+				.catch((error) => {
+					const message = error.data ? error.data.message : error.message;
+					this.setState({
+						error: message
+					});
+					this.onCancelModal();
+				});
+		} else {
+			requestBurn(body)
+				.then((data) => {
+					this.onCancelModal();
+				})
+				.catch((error) => {
+					const message = error.data ? error.data.message : error.message;
+					this.setState({
+						error: message
+					});
+					this.onCancelModal();
+				});
+		}
+	}
 	render() {
 		const {
 			deposits,
 			loading,
 			fetched,
 			error,
-			indexItem,
+			// indexItem,
 			searchValue,
-			dismissingItem,
-			loadingItem,
+			// dismissingItem,
+			// loadingItem,
 			queryParams,
 			queryDone,
 			queryType,
 			currentTablePage,
+			isOpen,
+			validateData,
+			statusType,
 		} = this.state;
 		const { showFilters, coins } = this.props;
-		const columns = COLUMNS(undefined);
+		const columns = COLUMNS(undefined, this.onOpenModal);
 		return (
 			<div className="admin-deposit-wrapper">
 				{loading ? (
@@ -385,20 +455,20 @@ class Deposits extends Component {
 							dataSource={deposits.map((deposit, index) => {
 								return {
 									...deposit,
-									completeDeposit:
-										index !== indexItem
-											? this.completeDeposit(deposit.transaction_id, index)
-											: () => {},
-									dismissDeposit:
-										index !== indexItem
-											? this.dismissDeposit(
-													deposit.transaction_id,
-													!deposit.dismissed,
-													index
-											  )
-											: () => {},
-									updatingItem: loadingItem && index === indexItem,
-									dismissingItem: dismissingItem && index === indexItem,
+									// completeDeposit:
+									// 	index !== indexItem
+									// 		? this.completeDeposit(deposit.transaction_id, index)
+									// 		: () => {},
+									// dismissDeposit:
+									// 	index !== indexItem
+									// 		? this.dismissDeposit(
+									// 				deposit.transaction_id,
+									// 				!deposit.dismissed,
+									// 				index
+									// 		  )
+									// 		: () => {},
+									// updatingItem: loadingItem && index === indexItem,
+									// dismissingItem: dismissingItem && index === indexItem,
 								};
 							})}
 							rowKey={(data) => {
@@ -413,6 +483,22 @@ class Deposits extends Component {
 						/>
 					</div>
 				)}
+				<Modal
+					visible={isOpen}
+					footer={null}
+					onCancel={this.onCancelModal}
+					width="37rem"
+				>
+					{isOpen
+						? <ValidateDismiss
+							validateData={validateData}
+							statusType={statusType}
+							onCancel={this.onCancelModal}
+							handleConfirm={this.handleConfirm}
+						/>
+						: null
+					}
+				</Modal>
 			</div>
 		);
 	}

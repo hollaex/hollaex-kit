@@ -124,3 +124,48 @@
 	flex: 3;
 	margin-left: 16px;
 }
+
+.validate-wrapper .anchor {
+	text-decoration: underline !important;
+	cursor: pointer;
+}
+
+.Validate-Dismiss-popup {
+	padding: 1rem;
+	color: #FFFFFF;
+}
+
+.Validate-Dismiss-popup .ant-btn {
+	color: #FFFFFF;
+}
+.Validate-Dismiss-popup .title{
+    font-size: 24px;
+    font-weight: bold;
+}
+.Validate-Dismiss-popup .confirm-container {
+	border: 1px solid #ffffff;
+	padding: 1.5rem;
+}
+.Validate-Dismiss-popup .legend {
+	background-color: #0000ff;
+	left: 1rem;
+	top: 12px;
+	padding: 5px;
+	position: relative;
+}
+.Validate-Dismiss-popup .field-label {
+	color: #FFFFFF;
+}
+.Validate-Dismiss-popup .edit-link-wrapper {
+    position: relative;
+}
+.Validate-Dismiss-popup .edit-link {
+    position: absolute;
+    bottom: 28px;
+    right: 16px;
+    text-decoration: underline;
+	cursor: pointer;
+}
+.Validate-Dismiss-popup .ant-input {
+	width: 80%;
+}
