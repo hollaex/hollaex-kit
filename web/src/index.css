@@ -1917,6 +1917,8 @@ table th {
     flex: 0;
     min-width: 23rem;
     max-width: 23rem; }
+    .trade-container .trade-col_side_wrapper .trade_block-wrapper {
+      max-height: calc(49vh + 5rem) !important; }
     .trade-container .trade-col_side_wrapper > div {
       flex: 1; }
   .trade-container .trade-col_action_wrapper {
@@ -2049,8 +2051,12 @@ table th {
   .layout-mobile .trade_history-wrapper .display_table-wrapper .display_table-body {
     font-size: 13px; }
 
+.trade_block-column-wrapper .trade_block-wrapper {
+  max-height: 23rem; }
+
 .trade_block-wrapper {
   padding: 1rem;
+  max-height: 50rem;
   margin: 6px 3px 3px 3px;
   background-color: var(--base_wallet-sidebar-and-popup); }
   .trade_block-wrapper .trade_block-title {
@@ -2129,6 +2135,10 @@ table th {
     background-image: linear-gradient(var(--calculated_trading_buying-orderbook-bar), var(--calculated_trading_buying-orderbook-bar)); }
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-sell {
     background-image: linear-gradient(var(--calculated_trading_selling-orderbook-bar), var(--calculated_trading_selling-orderbook-bar)); }
+
+@media screen and (max-width: 1060px) {
+  .trade_block-column-wrapper .trade_block-wrapper {
+    max-height: 20rem; } }
 
 .trade_order_entry-wrapper.order_side-selector-sell {
   flex: 1;
