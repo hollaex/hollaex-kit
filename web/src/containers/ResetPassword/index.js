@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { resetPassword } from '../../actions/authAction';
 import ResetPasswordForm from './ResetPasswordForm';
@@ -10,6 +11,7 @@ import { ContactForm } from '../';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { openContactForm } from 'actions/appActions';
 
 class ResetPassword extends Component {
 	state = {
@@ -44,14 +46,6 @@ class ResetPassword extends Component {
 			});
 	};
 
-	onOpenDialog = () => {
-		const { links = {} } = this.props.constants;
-		if (window && links && links.helpdesk) {
-			window.open(links.helpdesk, '_blank');
-		}
-		// this.setState({ showContactForm: true });
-	};
-
 	onCloseDialog = () => {
 		this.setState({ showContactForm: false });
 	};
@@ -61,7 +55,12 @@ class ResetPassword extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme, icons: ICONS } = this.props;
+		const {
+			languageClasses,
+			activeTheme,
+			icons: ICONS,
+			openContactForm,
+		} = this.props;
 		const { success, showContactForm } = this.state;
 
 		if (success) {
@@ -92,7 +91,7 @@ class ResetPassword extends Component {
 							text: STRINGS['HELP_TEXT'],
 							iconId: 'BLUE_QUESTION',
 							iconPath: ICONS['BLUE_QUESTION'],
-							onClick: this.onOpenDialog,
+							onClick: openContactForm,
 							useSvg: true,
 						}}
 					/>
@@ -132,4 +131,11 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants,
 });
 
-export default connect(mapStateToProps)(withConfig(ResetPassword));
+const mapDispatchToProps = (dispatch) => ({
+	openContactForm: bindActionCreators(openContactForm, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(ResetPassword));

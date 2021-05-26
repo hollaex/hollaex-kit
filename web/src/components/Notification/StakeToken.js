@@ -40,7 +40,7 @@ const StakeToken = ({ onBack, icons: ICONS }) => {
 						onClick={onBack}
 					/>
 					<a
-						className="exir-button mdc-button mdc-button--unelevated exir-button-font"
+						className="holla-button mdc-button mdc-button--unelevated holla-button-font"
 						href="https://info.hollaex.com/hc/en-us/articles/360040097453-How-can-I-stake-collateralize-HollaEx-Token-XHT"
 						target="blank"
 					>

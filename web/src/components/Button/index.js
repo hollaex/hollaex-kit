@@ -16,10 +16,10 @@ const Button = ({
 		type={type}
 		onClick={onClick}
 		className={classnames(
-			'exir-button',
+			'holla-button',
 			'mdc-button',
 			'mdc-button--unelevated',
-			'exir-button-font',
+			'holla-button-font',
 			{
 				disabled,
 			},

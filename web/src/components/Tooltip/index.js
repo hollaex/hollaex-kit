@@ -8,7 +8,7 @@ export const Tooltip = ({ children, text, className, ...rest }) => {
 	return (
 		<RCTooltip
 			{...rest}
-			overlayClassName={classnames('exir-tooltip', className)}
+			overlayClassName={classnames('holla-tooltip', className)}
 			overlay={Overlay(text)}
 		>
 			{children}

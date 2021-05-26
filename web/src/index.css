@@ -342,8 +342,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.no_bottom_navigation {
@@ -356,8 +356,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -442,7 +442,7 @@ table th {
 
 @media (min-width: 1920px) {
   .font-small,
-  .exir-button,
+  .holla-button,
   .field-wrapper,
   .action_notification-text,
   .wallet-assets_block-table,
@@ -478,7 +478,7 @@ table th {
 
 @media screen and (max-width: 1096px) {
   .font-small,
-  .exir-button,
+  .holla-button,
   .field-wrapper,
   .action_notification-text,
   .wallet-assets_block-table,
@@ -616,12 +616,12 @@ table th {
       .auth-wrapper .icon_title-wrapper .icon_title-svg svg {
         width: 6rem;
         height: 6rem; }
-    .auth-wrapper .icon_title-wrapper.exir-logo .icon_title-svg {
+    .auth-wrapper .icon_title-wrapper.holla-logo .icon_title-svg {
       height: inherit; }
-      .auth-wrapper .icon_title-wrapper.exir-logo .icon_title-svg svg {
+      .auth-wrapper .icon_title-wrapper.holla-logo .icon_title-svg svg {
         width: inherit;
         height: 4rem; }
-  .auth-wrapper .exir-button {
+  .auth-wrapper .holla-button {
     margin-top: 1rem; }
   .auth-wrapper .link_wrapper {
     margin: 1.5rem 0 0; }
@@ -638,14 +638,14 @@ table th {
       margin-top: 1rem; }
       .auth-wrapper .auth-container .auth_form-wrapper .field-wrapper {
         margin: 0.5rem 0; }
-    .auth-wrapper .auth-container .exir-button {
+    .auth-wrapper .auth-container .holla-button {
       margin-top: 0.5rem; }
   .auth-wrapper .link_wrapper {
     margin-top: 1rem; }
   .auth-wrapper .icon_title-wrapper .icon_title-svg svg {
     width: 5rem;
     height: 5rem; }
-  .auth-wrapper .icon_title-wrapper.exir-logo .icon_title-svg svg {
+  .auth-wrapper .icon_title-wrapper.holla-logo .icon_title-svg svg {
     height: 3rem; }
   .auth-wrapper .icon_title-wrapper .icon_title-text {
     margin: 0.8rem auto; }
@@ -1234,8 +1234,8 @@ table th {
 @media (max-width: 767px) {
   .home_container .home-card-container {
     margin: 0 2rem 3rem; }
-  .home_container .buttons-section .exir-button,
-  .home_container .buttons-section-header .exir-button {
+  .home_container .buttons-section .holla-button,
+  .home_container .buttons-section-header .holla-button {
     font-size: 1.2rem !important; }
   .home_container .text-section {
     font-size: 1.5rem !important; }
@@ -1266,7 +1266,7 @@ table th {
 .layout-mobile .currency-list-container .balance-small {
   font-size: 1.5rem; }
 
-.layout-mobile .currency-list-container .button-container .exir-button {
+.layout-mobile .currency-list-container .button-container .holla-button {
   font-size: 13px !important; }
 
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
@@ -1329,7 +1329,7 @@ table th {
     display: flex;
     margin-left: 5px; }
     .wallet-container .paper-clip-icon .action_notification-svg svg {
-      width: 0.8rem  !important;
+      width: 0.8rem !important;
       height: 0.8rem !important; }
   .wallet-container .wallet-buttons_action {
     margin: 2.5rem 0 3.75rem; }
@@ -1511,7 +1511,7 @@ table th {
   display: flex;
   justify-content: center;
   align-items: center; }
-  .withdrawal-container .withdraw-form-wrapper .btn-wrapper .exir-button {
+  .withdrawal-container .withdraw-form-wrapper .btn-wrapper .holla-button {
     width: 300px; }
 
 .layout-mobile .review-wrapper {
@@ -1558,7 +1558,7 @@ table th {
 .layout-mobile .presentation_container .inner_container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem; }
 
-.layout-mobile .presentation_container .inner_container .exir-button {
+.layout-mobile .presentation_container .inner_container .holla-button {
   font-size: 13px !important; }
 
 .layout-mobile .review_email-wrapper {
@@ -1578,7 +1578,7 @@ table th {
     font-size: 11px; }
   .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .input-box-field .input_field-input::placeholder {
     font-size: 11px; }
-  .withdrawal-container .withdraw-form-wrapper .btn-wrapper .exir-button {
+  .withdrawal-container .withdraw-form-wrapper .btn-wrapper .holla-button {
     width: 200px; } }
 
 .extra_information-wrapper {
@@ -1917,6 +1917,8 @@ table th {
     flex: 0;
     min-width: 23rem;
     max-width: 23rem; }
+    .trade-container .trade-col_side_wrapper .trade_block-wrapper {
+      max-height: calc(49vh + 5rem) !important; }
     .trade-container .trade-col_side_wrapper > div {
       flex: 1; }
   .trade-container .trade-col_action_wrapper {
@@ -2049,8 +2051,12 @@ table th {
   .layout-mobile .trade_history-wrapper .display_table-wrapper .display_table-body {
     font-size: 13px; }
 
+.trade_block-column-wrapper .trade_block-wrapper {
+  max-height: 23rem; }
+
 .trade_block-wrapper {
   padding: 1rem;
+  max-height: 50rem;
   margin: 6px 3px 3px 3px;
   background-color: var(--base_wallet-sidebar-and-popup); }
   .trade_block-wrapper .trade_block-title {
@@ -2129,6 +2135,10 @@ table th {
     background-image: linear-gradient(var(--calculated_trading_buying-orderbook-bar), var(--calculated_trading_buying-orderbook-bar)); }
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-sell {
     background-image: linear-gradient(var(--calculated_trading_selling-orderbook-bar), var(--calculated_trading_selling-orderbook-bar)); }
+
+@media screen and (max-width: 1060px) {
+  .trade_block-column-wrapper .trade_block-wrapper {
+    max-height: 20rem; } }
 
 .trade_order_entry-wrapper.order_side-selector-sell {
   flex: 1;
@@ -2303,7 +2313,7 @@ table th {
 .layout-mobile .trade_order_entry-review > div {
   font-size: 11px !important; }
 
-.layout-mobile .exir-button {
+.layout-mobile .holla-button {
   font-size: 13px !important; }
 
 .layout-mobile .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
@@ -2666,8 +2676,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw;
@@ -2707,7 +2717,7 @@ table th {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .verification_container .verification-buttons-wrapper {
     width: 100%; }
-    .verification_container .verification-buttons-wrapper .exir-button {
+    .verification_container .verification-buttons-wrapper .holla-button {
       width: 300px; }
   .verification_container .warning_text {
     margin: 1rem 0;
@@ -2732,7 +2742,7 @@ table th {
       display: flex;
       justify-content: center;
       align-items: center; }
-      .verification_container .inner-content .btn-wrapper .exir-verification-button {
+      .verification_container .inner-content .btn-wrapper .holla-verification-button {
         position: absolute;
         top: 60px;
         width: 300px; }
@@ -2775,7 +2785,7 @@ table th {
   width: 100%;
   font-size: 13px !important; }
 
-.layout-mobile .verification_container .exir-verification-button {
+.layout-mobile .verification_container .holla-verification-button {
   font-size: 13px !important;
   position: unset !important;
   top: 0 !important;
@@ -2800,7 +2810,7 @@ table th {
 .layout-mobile .verification_container .input-box-field .input_field-input::placeholder {
   font-size: 10px; }
 
-.layout-mobile .verification_container .verification-buttons-wrapper .exir-button {
+.layout-mobile .verification_container .verification-buttons-wrapper .holla-button {
   width: 100% !important;
   flex: 1; }
 
@@ -2814,7 +2824,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -2843,7 +2853,7 @@ table th {
 @media (max-width: 1060px) {
   .verification_container .inner-content .custom-tab-wrapper {
     overflow-x: auto; }
-  .verification_container .verification-buttons-wrapper .exir-button {
+  .verification_container .verification-buttons-wrapper .holla-button {
     width: 80%; }
   .verification_container .verification_content-form-wrapper .verification-form-panel .field-wrapper .field-label {
     font-size: 11px; }
@@ -3825,7 +3835,7 @@ table th {
       font-size: 15px;
       margin: 0; }
 
-.settings_container .settings-form-wrapper .exir-button {
+.settings_container .settings-form-wrapper .holla-button {
   width: 300px; }
 
 .layout-mobile .portfolio-wrapper {
@@ -3956,7 +3966,7 @@ table th {
   .layout-mobile.home_container-mobile .post-wrapper .trade_announcement {
     font-size: 1.5rem; }
 
-.layout-mobile.home_container-mobile .exir-button {
+.layout-mobile.home_container-mobile .holla-button {
   font-size: 1.2rem; }
 
 .image-upload {
@@ -6282,7 +6292,7 @@ table th {
     .notification-wrapper .new-order-notification .notification-content-title,
     .notification-wrapper .order-notification .notification-content-title {
       margin: 1rem 0; }
-  .notification-wrapper .notification-buttons-wrapper .exir-button {
+  .notification-wrapper .notification-buttons-wrapper .holla-button {
     font-size: 1.1rem;
     font-weight: bold; }
   .notification-wrapper .with_price-block_amount {
@@ -6930,18 +6940,18 @@ table th {
   color: var(--labels_important-active-labels-text-graphics);
   font-weight: bold; }
 
-.exir-button {
+.holla-button {
   width: 100%;
   font-size: 1rem;
   padding: 0 4px;
   background-color: var(--specials_buttons-links-and-highlights) !important; }
-  .exir-button.button-success {
+  .holla-button.button-success {
     background-color: var(--specials_checks-okay-done) !important; }
-  .exir-button.button-fail {
+  .holla-button.button-fail {
     background-color: var(--specials_notifications-alerts-warnings) !important; }
-  .exir-button.disabled {
+  .holla-button.disabled {
     background-color: var(--labels_inactive-button) !important; }
-  .exir-button:active, .exir-button:focus {
+  .holla-button:active, .holla-button:focus {
     outline: none;
     border: none; }
 
@@ -6972,10 +6982,10 @@ table th {
 .buttons-row > *:not(:last-child) {
   margin-right: 1rem; }
 
-.direction_ltr .exir-button-font {
+.direction_ltr .holla-button-font {
   font-family: "Raleway"; }
 
-.direction_rtl .exir-button-font {
+.direction_rtl .holla-button-font {
   font-family: inherit !important; }
 
 .ReactModal__Overlay {
@@ -7051,14 +7061,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -7094,7 +7104,7 @@ table th {
 .accordion_section {
   position: relative; }
 
-.layout-mobile .exir-button-font {
+.layout-mobile .holla-button-font {
   font-size: 1.2rem; }
 
 .layout-mobile .accordion_wrapper .accordion_section .accordion_section_title {
@@ -8545,14 +8555,14 @@ foreignObject {
 .layout-mobile .countdown-wrapper {
   margin: 38% auto; }
 
-.light-theme.exir-tooltip {
+.light-theme.holla-tooltip {
   opacity: 1 !important;
   background-color: transparent !important; }
-  .light-theme.exir-tooltip .rc-tooltip-inner {
+  .light-theme.holla-tooltip .rc-tooltip-inner {
     color: var(--labels_important-active-labels-text-graphics) !important;
     background-color: var(--base_background);
     border-color: var(--labels_important-active-labels-text-graphics) !important; }
-  .light-theme.exir-tooltip.rc-tooltip-placement-bottom .rc-tooltip-arrow, .light-theme.exir-tooltip.rc-tooltip-placement-bottomLeft .rc-tooltip-arrow, .light-theme.exir-tooltip.rc-tooltip-placement-bottomRight .rc-tooltip-arrow {
+  .light-theme.holla-tooltip.rc-tooltip-placement-bottom .rc-tooltip-arrow, .light-theme.holla-tooltip.rc-tooltip-placement-bottomLeft .rc-tooltip-arrow, .light-theme.holla-tooltip.rc-tooltip-placement-bottomRight .rc-tooltip-arrow {
     border-bottom-color: var(--labels_important-active-labels-text-graphics) !important; }
 
 .currency-list {

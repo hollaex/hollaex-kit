@@ -301,3 +301,11 @@
 .user-discount-wrapper .button-wrapper .ant-btn {
 	width: 225px;
 }
+
+.admin-user-content .ant-card-head-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.admin-user-content .ant-card-extra {
+	padding: 0;
+}

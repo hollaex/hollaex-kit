@@ -21,7 +21,7 @@ const IdentityVerificationHome = ({
 	if (!address.country) {
 		return (
 			<div className="btn-wrapper">
-				<div className="exir-verification-button">
+				<div className="holla-verification-button">
 					<EditWrapper stringId="USER_VERIFICATION.START_IDENTITY_VERIFICATION" />
 					<Button
 						label={STRINGS['USER_VERIFICATION.START_IDENTITY_VERIFICATION']}
@@ -156,7 +156,7 @@ const IdentityVerificationHome = ({
 				</div>
 				{id_data.status === 3 ? null : (
 					<div className="btn-wrapper">
-						<div className="exir-verification-button">
+						<div className="holla-verification-button">
 							<EditWrapper stringId="USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION" />
 							<Button
 								label={

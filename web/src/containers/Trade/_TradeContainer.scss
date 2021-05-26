@@ -30,6 +30,9 @@
 		flex: 0;
 		min-width: $side-column--width;
 		max-width: $side-column--width;
+		.trade_block-wrapper {
+			max-height: calc(49vh + 5rem) !important;
+		}
 
 		> div {
 			flex: 1;

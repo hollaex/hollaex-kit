@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.1.5",
+	"version": "2.1.6",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
@@ -106,6 +106,7 @@
 		"remove-build": "rimraf ./build",
 		"start-js": "react-scripts --max_old_space_size=3072 start",
 		"start": "npm install && npm-run-all -p watch-css start-js",
+		"dev:plugin": "REACT_APP_PLUGIN_DEV_MODE=true REACT_APP_PLUGIN_WEB_VIEW_TARGET=$npm_config_target npm run start",
 		"build": "npm run build-css && react-scripts --max_old_space_size=3072 build",
 		"pre-build": "npm run remove-build && npm install",
 		"build:demo": "REACT_APP_SERVER_ENDPOINT=https://api.sandbox.hollaex.com npm run build",

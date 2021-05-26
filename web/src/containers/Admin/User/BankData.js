@@ -7,25 +7,22 @@ import {
 	DeleteOutlined,
 	PlusCircleOutlined,
 } from '@ant-design/icons';
-import { Card, Button, Input, Popconfirm, message, Col, Row } from 'antd';
+import {
+	Card,
+	Button,
+	Input,
+	Popconfirm,
+	message,
+	Col,
+	Row,
+	Modal,
+} from 'antd';
 import { ModalForm } from '../../../components';
+import { validateRequired } from 'components/AdminForm/validations';
+import { status } from '../../../components/CheckTitle';
+import { requestPlugin } from 'actions/appActions';
 
 const Form = ModalForm('BANK_DATA', 'bank_data');
-
-const BankFields = {
-	bank_name: {
-		type: 'text',
-		label: 'Bank Name',
-	},
-	account_number: {
-		type: 'text',
-		label: 'Account Number',
-	},
-};
-
-const Fields = {
-	...BankFields,
-};
 
 // const generateInitialValues = (initialValues) => {
 // 	const values = {
@@ -41,6 +38,8 @@ class BankData extends Component {
 			bank: [],
 			formVisible: false,
 			note: '',
+			isVisible: false,
+			bankData: {},
 		};
 	}
 
@@ -57,6 +56,7 @@ class BankData extends Component {
 			bank,
 			userId: this.props.initialValues.id,
 		});
+		this.getPlugin();
 	}
 
 	onCancel = () => {
@@ -132,7 +132,8 @@ class BankData extends Component {
 				message.success('Bank approved');
 			})
 			.catch((err) => {
-				message.error('error');
+				const msg = err.data ? err.data.message : err.message;
+				message.error(msg);
 				// throw new SubmissionError({ _error: err.data.message });
 			});
 	};
@@ -144,18 +145,86 @@ class BankData extends Component {
 					return b.id !== values.bank_id;
 				});
 				message.success('Bank rejected');
-				this.setState({ bank: newBanks });
+				this.setState({ bank: newBanks, isVisible: false });
 			})
 			.catch((err) => {
-				message.error('error');
+				const msg = err.data ? err.data.message : err.message;
+				message.error(msg);
+				this.setState({ isVisible: false });
 				// throw new SubmissionError({ _error: err.data.message });
 			});
 	};
 
+	getPlugin = () => {
+		requestPlugin({ name: 'bank' })
+			.then((res) => {
+				if (res.data) {
+					this.setState({ bankData: res.data });
+				}
+			})
+			.catch((err) => {
+				console.log('err', err);
+			});
+	};
+
+	handleOpenModal = () => {
+		this.setState({ isVisible: true });
+	};
+
+	handleClose = () => {
+		this.setState({ isVisible: false });
+	};
+
+	renderLabel = (data) => {
+		let text = data;
+		if (data.includes('_')) {
+			text = text.replace(/_/g, ' ');
+			text = text.split(' ');
+			text =
+				text[0].replace(/^./, function (str) {
+					return str.toUpperCase();
+				}) +
+				' ' +
+				text[1].replace(/^./, function (str) {
+					return str.toUpperCase();
+				});
+		} else {
+			text = text.replace(/^./, function (str) {
+				return str.toUpperCase();
+			});
+		}
+		return text;
+	};
+
 	render() {
-		const { bank, formVisible, userId } = this.state;
+		const { bank, formVisible, userId, bankData } = this.state;
 		const { onChangeSuccess } = this.props;
 		let disabled = false;
+		let Fields = {};
+		if (bankData.public_meta && Object.keys(bankData.public_meta).length) {
+			let publicMeta = Object.keys(bankData.public_meta);
+			publicMeta.forEach((key) => {
+				const metaData = bankData.public_meta[key];
+				if (typeof metaData === 'object') {
+					if (metaData.value) {
+						Fields[key] = {
+							type: 'text',
+							label: this.renderLabel(key),
+							placeholder: this.renderLabel(key),
+						};
+						if (metaData.required) {
+							Fields[key].validate = [validateRequired];
+						}
+					}
+				} else {
+					Fields[key] = {
+						type: 'text',
+						label: key,
+						placeholder: key,
+					};
+				}
+			});
+		}
 		return (
 			<Row>
 				{bank && bank.length <= 3 ? (disabled = false) : (disabled = true)}
@@ -181,10 +250,22 @@ class BankData extends Component {
 							<Col style={{ margin: '1em' }} key={index}>
 								<Card
 									key={bank.id || bank.bank_name}
-									title={bank.bank_name}
+									title={[
+										<div>
+											<p>
+												<b>Id:</b> {bank.id}
+											</p>
+											<p>
+												<b>Status:</b> {status(bank.status)}
+											</p>
+										</div>,
+									]}
 									extra={
 										bank.status === 1 ? (
-											<div style={{ width: '10em' }}>
+											<div
+												style={{ width: '16em', display: 'flex' }}
+												className="mb-3"
+											>
 												<div>
 													<Button
 														onClick={() =>
@@ -201,26 +282,15 @@ class BankData extends Component {
 														Accept
 													</Button>
 												</div>
-												<div>
+												<div className="ml-3">
 													<Button
-														onClick={() =>
-															this.rejectBank({
-																user_id: userId,
-																bank_id: bank.id,
-																message: this.state.note,
-															})
-														}
+														onClick={this.handleOpenModal}
 														type="danger"
 														icon={<CloseOutlined />}
 														// size={10}
 													>
 														Reject
 													</Button>
-													<Input.TextArea
-														rows={4}
-														value={this.state.note}
-														onChange={this.handleNoteChange}
-													/>
 												</div>
 											</div>
 										) : (
@@ -241,9 +311,41 @@ class BankData extends Component {
 									}
 									style={{ width: 300 }}
 								>
-									<p>{bank.bank_name}</p>
-									<p>{bank.account_number}</p>
+									{Object.keys(bank).map((data, index) => {
+										if (data !== 'id' && data !== 'status') {
+											return (
+												<p key={index}>
+													<b>{this.renderLabel(data)}:</b> {bank[data]}
+												</p>
+											);
+										} else {
+											return null;
+										}
+									})}
 								</Card>
+								<Modal
+									visible={this.state.isVisible}
+									title="Reject Bank"
+									onCancel={this.handleClose}
+									onOk={() =>
+										this.rejectBank({
+											user_id: userId,
+											bank_id: bank.id,
+											message: this.state.note,
+										})
+									}
+								>
+									{this.state.isVisible ? (
+										<div>
+											<div>Notes</div>
+											<Input.TextArea
+												rows={4}
+												value={this.state.note}
+												onChange={this.handleNoteChange}
+											/>
+										</div>
+									) : null}
+								</Modal>
 							</Col>
 						);
 					})}
