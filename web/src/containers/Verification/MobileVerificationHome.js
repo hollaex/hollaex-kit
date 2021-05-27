@@ -10,7 +10,7 @@ const MobileVerificationHome = ({ user, setActivePageContent }) => {
 	if (!phone_number) {
 		return (
 			<div className="btn-wrapper">
-				<div className="exir-verification-button">
+				<div className="holla-verification-button">
 					<EditWrapper stringId="USER_VERIFICATION.START_PHONE_VERIFICATION" />
 					<Button
 						label={STRINGS['USER_VERIFICATION.START_PHONE_VERIFICATION']}

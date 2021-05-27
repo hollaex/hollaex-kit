@@ -9,7 +9,7 @@ import { EditWrapper } from 'components';
 const BUTTONS_CLASSES = [
 	'buttons-section--button',
 	...FLEX_CENTER_CLASSES,
-	'exir-button',
+	'holla-button',
 ];
 
 const MainSection = ({ style = {}, onClickTrade, onClickDemo }) => {

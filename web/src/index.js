@@ -67,6 +67,30 @@ console.info(
 	'font-family:sans-serif; font-size: 16px; font-weight: 600'
 );
 
+if (process.env.REACT_APP_PLUGIN_DEV_MODE === 'true') {
+	console.info(
+		'%cPLUGIN DEVELOPMENT MODE',
+		'color: #00509d; font-family:sans-serif; font-size: 14px; font-weight: 600'
+	);
+
+	if (process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET) {
+		console.info(
+			`%cPlugin web_view target: ${process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET}`,
+			'color: #00509d; font-family:sans-serif; font-size: 14px; font-weight: 600'
+		);
+	} else {
+		console.info(
+			'%cYou must pass target parameter',
+			'color: #d90429; font-family:sans-serif'
+		);
+		console.info(
+			'%cnpm run dev:plugin --target=TEST_WEB_VIEW_TARGET',
+			'color: #55a630; background-color: #212529; font-family:sans-serif; line-height: 40px; padding: 10px'
+		);
+		throw new Error('target is not defined');
+	}
+}
+
 const drawFavIcon = (url) => {
 	const head = document.getElementsByTagName('head')[0];
 	const linkEl = document.createElement('link');

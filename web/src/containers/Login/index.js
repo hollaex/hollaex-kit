@@ -212,7 +212,7 @@ class Login extends Component {
 						text={STRINGS['LOGIN_TEXT']}
 						textType="title"
 						underline={true}
-						className="w-100 exir-logo"
+						className="w-100 holla-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
 							STRINGS['LOGIN.LOGIN_TO'],
