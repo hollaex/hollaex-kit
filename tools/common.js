@@ -165,6 +165,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			});
 		})
 		.then((status) => {
+			const info = getKitConfig().info;
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
@@ -172,7 +173,7 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 				})
 			);
 			return {
-				kit: status.dataValues.kit,
+				kit: { ...status.dataValues.kit, info },
 				secrets: maskSecrets(status.dataValues.secrets)
 			};
 		});
