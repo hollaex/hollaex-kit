@@ -142,7 +142,7 @@ const getPaginatedPlugins = (limit, page, search) => {
 	const options = {
 		where: {},
 		raw: true,
-		attributes: ['name', 'version', 'enabled', 'author', 'description', 'bio', 'url', 'web_view', 'logo', 'icon', 'documentation', 'created_at', 'updated_at'],
+		attributes: ['name', 'version', 'enabled', 'author', 'description', 'bio', 'url', 'web_view', 'logo', 'icon', 'documentation', 'created_at', 'updated_at', 'public_meta'],
 		...paginationQuery(limit, page)
 	};
 
