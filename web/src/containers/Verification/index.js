@@ -147,7 +147,12 @@ class Verification extends Component {
 		id_data,
 		full_name,
 	}) => {
-		const { enabledPlugins } = this.props;
+		const {
+			enabledPlugins,
+			router: {
+				location: { query: { initial_tab } = {} },
+			},
+		} = this.props;
 		const availablePlugins = ['kyc', 'bank', 'sms'];
 		let currentTabs = ['email'];
 		if (enabledPlugins.length) {
@@ -164,7 +169,9 @@ class Verification extends Component {
 			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
 		);
 		let activeTab = 0;
-		if (!email && currentTabs.indexOf('email') !== -1) {
+		if (initial_tab && currentTabs.indexOf(initial_tab) !== -1) {
+			activeTab = currentTabs.indexOf(initial_tab);
+		} else if (!email && currentTabs.indexOf('email') !== -1) {
 			activeTab = currentTabs.indexOf('email');
 		} else if (!bank_account.length && currentTabs.indexOf('bank') !== -1) {
 			activeTab = currentTabs.indexOf('bank');
