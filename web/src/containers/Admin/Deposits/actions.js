@@ -76,3 +76,25 @@ export const dismissDeposit = (id, dismissed) => {
 		options
 	);
 };
+
+export const requestBurn = (data) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify({ ...data }),
+	};
+	return requestAuthenticated(
+		`/admin/burn`,
+		options
+	);
+};
+
+export const requestMint = (data) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify({ ...data }),
+	};
+	return requestAuthenticated(
+		`/admin/mint`,
+		options
+	);
+};

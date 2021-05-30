@@ -1,9 +1,10 @@
 import React from 'react';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { BankOutlined, CloseSquareOutlined } from '@ant-design/icons';
+import { CloseSquareOutlined, ClockCircleOutlined, CheckCircleOutlined, BankOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency, formatDate } from '../../../utils/index';
+import { isSupport } from 'utils/token';
 
 /*export const renderBoolean = (value) => (
 	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
@@ -80,7 +81,55 @@ export const renderUser = (id) => (
 	</Tooltip>
 );
 
-export const COLUMNS = (currency, type) => {
+const renderContent = (renderData, onOpenModal) => {
+	if (renderData.status) {
+		return (
+			<div className="d-flex">
+				<CheckCircleOutlined style={{ margin: '5px' }} />
+				Validated
+			</div>
+		)
+	} else if (renderData.dismissed) {
+		return <div>Dismissed</div>
+	} else if (!renderData.status && !renderData.dismissed && !renderData.rejected && !renderData.processing) {
+		return (
+			<div className="d-flex validate-wrapper">
+				<ClockCircleOutlined
+					style={{ margin: '5px' }}
+				/>
+				<Tooltip placement="bottom" title="VALIDATE">
+					<div
+						className="anchor"
+						onClick={(e) => {
+							onOpenModal(renderData, "validate")
+							e.preventDefault();
+							e.stopPropagation();
+						}}
+					>
+						validate
+					</div>
+				</Tooltip>
+				<div className="mx-3">/</div>
+				<Tooltip placement="bottom" title={renderData.dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
+					<div
+						className="anchor"
+						onClick={(e) => {
+							onOpenModal(renderData, "dismiss")
+							e.preventDefault();
+							e.stopPropagation();
+						}}
+					>
+						dismiss
+					</div>
+				</Tooltip>
+			</div>
+		)
+	} else {
+		return <ButtonNotAvailable />
+	}
+};
+
+export const COLUMNS = (currency, onOpenModal) => {
 	const transactionTitle =
 		currency === 'fiat' ? 'Payment Id' : 'Transaction Id';
 	const columns = [
@@ -106,23 +155,15 @@ export const COLUMNS = (currency, type) => {
 		// { title: 'Fee', dataIndex: 'fee', key: 'fee' },
 		// { title: 'Timestamp', dataIndex: 'created_at', key: 'created_at' },
 	];
-	/*if (!isSupport()) {
+	if (!isSupport()) {
 		const adminColumns = [
 			{
-				title: 'Validate',
-				dataIndex: '',
-				key: 'completeDeposit',
-				render: renderValidation,
-			},
-			{
-				title: 'Dismiss',
-				dataIndex: '',
-				key: 'dismissDeposit',
-				render: renderDismiss,
+				title: 'Validate/dismiss',
+				render: (renderData) => renderContent(renderData, onOpenModal)
 			},
 		];
 		return columns.concat(adminColumns);
-	}*/
+	}
 	return columns;
 };
 
