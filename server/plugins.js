@@ -446,7 +446,7 @@ checkStatus()
 							const minifiedScript = uglifyEs.minify(script);
 
 							if (minifiedScript.error) {
-								throw new Error('Error while minifying script');
+								throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
 							}
 
 							updatedPlugin.script = minifiedScript.code;
@@ -497,6 +497,15 @@ checkStatus()
 						}
 
 						if (lodash.isPlainObject(meta)) {
+							for (let key in plugin.meta) {
+								if (
+									plugin.meta[key].overwrite === false
+									&& (!meta[key] || meta[key].overwrite === false)
+								) {
+									meta[key] = plugin.meta[key];
+								}
+							}
+
 							const existingMeta = lodash.pick(plugin.meta, Object.keys(meta));
 
 							for (let key in meta) {
@@ -517,6 +526,15 @@ checkStatus()
 						}
 
 						if (lodash.isPlainObject(public_meta)) {
+							for (let key in plugin.public_meta) {
+								if (
+									plugin.public_meta[key].overwrite === false
+									&& (!public_meta[key] || public_meta[key].overwrite === false)
+								) {
+									public_meta[key] = plugin.public_meta[key];
+								}
+							}
+
 							const existingPublicMeta = lodash.pick(plugin.public_meta, Object.keys(public_meta));
 
 							for (let key in public_meta) {
@@ -772,7 +790,7 @@ checkStatus()
 							const minifiedScript = uglifyEs.minify(script);
 
 							if (minifiedScript.error) {
-								throw new Error('Error while minifying script');
+								throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
 							}
 
 							newPlugin.script =  minifiedScript.code;
