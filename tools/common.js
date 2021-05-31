@@ -18,7 +18,9 @@ const {
 	GET_KIT_SECRETS,
 	GET_FROZEN_USERS,
 	HOLLAEX_NETWORK_ENDPOINT,
-	HOLLAEX_NETWORK_BASE_URL
+	HOLLAEX_NETWORK_BASE_URL,
+	USER_META_KEYS,
+	VALID_USER_META_TYPES
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -26,9 +28,10 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
+const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
 const flatten = require('flat');
@@ -191,6 +194,21 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	const newKeys = difference(Object.keys(newKitConfig), KIT_CONFIG_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid kit keys given: ${newKeys}`);
+	}
+
+	if (newKitConfig.user_meta) {
+		for (let metaKey in newKitConfig.user_meta) {
+			const isValid = kitUserMetaFieldIsValid(metaKey, newKitConfig.user_meta[metaKey]);
+
+			if (!isValid.success) {
+				throw new Error(isValid.message);
+			}
+
+			newKitConfig.user_meta[metaKey] = pick(
+				newKitConfig.user_meta[metaKey],
+				...USER_META_KEYS
+			);
+		}
 	}
 
 	const joinedKitConfig = {};
@@ -463,6 +481,198 @@ const sleep = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text: null, bcc: null }) => {
+	const { emails } = getKitSecrets();
+
+	const params = {
+		from: opts.from ? opts.from : `${getKitConfig().api_name} Support <${emails.sender}>`,
+		to: to.split(','),
+		subject,
+		html
+	};
+
+	if (opts.bcc === 'default') {
+		params.bcc = emails.send_email_to_support ? [emails.audit] : [];
+	} else if (isString(opts.bcc)) {
+		params.bcc = opts.bcc.split(',');
+	}
+
+	if (opts.cc) {
+		params.cc = opts.cc.split(',');
+	}
+
+	if (opts.text) {
+		params.text = opts.text;
+	}
+
+	return nodemailerEmail(params);
+};
+
+const kitUserMetaFieldIsValid = (field, data) => {
+	const missingUserMetaKeys = difference(USER_META_KEYS, Object.keys(data));
+	if (missingUserMetaKeys.length > 0) {
+		return {
+			success: false,
+			message: `Missing user_meta keys for field ${field}: ${missingUserMetaKeys}`
+		};
+	}
+
+	if (typeof data.type !== 'string' || !VALID_USER_META_TYPES.includes(data.type)) {
+		return {
+			success: false,
+			message: `Invalid type value given for field ${field}`
+		};
+	}
+
+	if (typeof data.description !== 'string') {
+		return {
+			success: false,
+			message: `Invalid description value given for field ${field}`
+		};
+	}
+
+	if (typeof data.required !== 'boolean') {
+		return {
+			success: false,
+			message: `Invalid required value given for field ${field}`
+		};
+	}
+
+	return { success: true };
+};
+
+const addKitUserMeta = async (name, type, description, required = false) => {
+	const existingUserMeta = getKitConfig().user_meta;
+
+	if (existingUserMeta[name]) {
+		throw new Error(`User meta field ${name} already exists`);
+	}
+
+	const data = {
+		type,
+		required,
+		description
+	};
+
+	const validCheck = kitUserMetaFieldIsValid(name, data);
+
+	if (!validCheck.success) {
+		throw new Error(validCheck.message);
+	}
+
+	const status = await dbQuery.findOne('status', {
+		attributes: ['id', 'kit']
+	});
+
+	const updatedUserMeta = {
+		...existingUserMeta,
+		[name]: data
+	};
+
+	const updatedStatus = await status.update({
+		kit: {
+			...status.kit,
+			user_meta: updatedUserMeta
+		}
+	});
+
+	publisher.publish(
+		CONFIGURATION_CHANNEL,
+		JSON.stringify({
+			type: 'update', data: { kit: updatedStatus.kit }
+		})
+	);
+
+	return updatedStatus.kit.user_meta;
+};
+
+const updateKitUserMeta = async (name, data = {
+	type: null,
+	description: null,
+	required: null
+}) => {
+	const existingUserMeta = getKitConfig().user_meta;
+
+	if (!existingUserMeta[name]) {
+		throw new Error(`User meta field ${name} does not exist`);
+	}
+
+	if (isNil(data.type) && isNil(data.description) && isNil(data.required)) {
+		throw new Error('Must give a value to update');
+	}
+
+	const updatedField = {
+		type: isNil(data.type) ? existingUserMeta[name].type : data.type,
+		description: isNil(data.description) ? existingUserMeta[name].description : data.description,
+		required: isNil(data.required) ? existingUserMeta[name].required : data.required
+	};
+
+	const validCheck = kitUserMetaFieldIsValid(name, updatedField);
+
+	if (!validCheck.success) {
+		throw new Error(validCheck.message);
+	}
+
+	const status = await dbQuery.findOne('status', {
+		attributes: ['id', 'kit']
+	});
+
+	const updatedUserMeta = {
+		...existingUserMeta,
+		[name]: updatedField
+	};
+
+	const updatedStatus = await status.update({
+		kit: {
+			...status.kit,
+			user_meta: updatedUserMeta
+		}
+	});
+
+	publisher.publish(
+		CONFIGURATION_CHANNEL,
+		JSON.stringify({
+			type: 'update', data: { kit: updatedStatus.kit }
+		})
+	);
+
+	return updatedStatus.kit.user_meta;
+};
+
+const deleteKitUserMeta = async (name) => {
+	const existingUserMeta = getKitConfig().user_meta;
+
+	if (!existingUserMeta[name]) {
+		throw new Error(`User meta field ${name} does not exist`);
+	}
+
+	const status = await dbQuery.findOne('status', {
+		attributes: ['id', 'kit']
+	});
+
+	const updatedUserMeta = omit(existingUserMeta, name);
+
+	const updatedStatus = await status.update({
+		kit: {
+			...status.kit,
+			user_meta: updatedUserMeta
+		}
+	});
+
+	publisher.publish(
+		CONFIGURATION_CHANNEL,
+		JSON.stringify({
+			type: 'update', data: { kit: updatedStatus.kit }
+		})
+	);
+
+	return updatedStatus.kit.user_meta;
+};
+
+const stringIsDate = (date) => {
+	return (typeof date === 'string' && new Date(date) !== 'Invalid Date') && !isNaN(new Date(date));
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -504,5 +714,11 @@ module.exports = {
 	getTradesHistory,
 	sendEmail,
 	isEmail,
-	sleep
+	sleep,
+	sendCustomEmail,
+	addKitUserMeta,
+	updateKitUserMeta,
+	deleteKitUserMeta,
+	kitUserMetaFieldIsValid,
+	stringIsDate
 };
