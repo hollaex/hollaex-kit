@@ -142,8 +142,14 @@ exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.USER_META_KEYS = [
 	'description',
 	'type',
-	'default',
 	'required'
+];
+
+exports.VALID_USER_META_TYPES = [
+	'string',
+	'number',
+	'boolean',
+	'date'
 ];
 
 exports.KIT_CONFIG_KEYS = [

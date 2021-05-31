@@ -2104,6 +2104,80 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/kit/user-meta:
+    x-swagger-router-controller: admin
+    post:
+      operationId: postKitUserMeta
+      description: Add key to kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserMetaObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putKitUserMeta
+      description: Update key in kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserMetaObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    delete:
+      operationId: deleteKitUserMeta
+      description: Delete key in kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: name
+          in: query
+          description: Name of field
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/operator/invite:
     x-swagger-router-controller: admin
     get:
@@ -2450,7 +2524,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/UserMetaPutResponse"
+            type: object
         default:
           description: Error
           schema:
@@ -3956,29 +4030,7 @@ definitions:
           native_currency:
             type: string
           user_meta:
-            type: object
-            minProperties: 1
-            additionalProperties:
-              type: object
-              minProperties: 1
-              required:
-                - type
-                - required
-                - description
-                - default
-              properties:
-                type:
-                  type: string
-                  enum: [string, number, boolean]
-                required:
-                  type: boolean
-                description:
-                  type: string
-                default:
-                  anyOf:
-                    - type: string
-                    - type: number
-                    - type: boolean
+            $ref: "#/definitions/UserMetaObjects"
           injected_html:
             type: object
             required:
@@ -4051,6 +4103,40 @@ definitions:
                 type: string
               password:
                 type: string
+  UserMetaObject:
+    type: object
+    required:
+      - name
+      - type
+      - required
+      - description
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        enum: [string, number, boolean, date]
+      required:
+        type: boolean
+      description:
+        type: string
+  UserMetaObjects:
+    type: object
+    minProperties: 1
+    additionalProperties:
+      type: object
+      required:
+        - type
+        - required
+        - description
+      properties:
+        type:
+          type: string
+          enum: [string, number, boolean, date]
+        required:
+          type: boolean
+        description:
+          type: string
   AdminUsersResponse:
     type: object
     properties:
@@ -4080,12 +4166,13 @@ definitions:
           - user
   UserMetaPut:
     type: object
-    minProperties: 1
-    additionalProperties:
-      anyOf:
-        - type: string
-        - type: number
-        - type: boolean
+    required:
+      - meta
+    properties:
+      meta:
+        type: object
+      overwrite:
+        type: boolean
   UserRolePutResponse:
     type: object
     required:
