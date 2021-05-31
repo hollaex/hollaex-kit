@@ -28,7 +28,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -597,12 +597,17 @@ const updateKitUserMeta = async (name, data = {
 		throw new Error(`User meta field ${name} does not exist`);
 	}
 
-	data = {
-		...existingUserMeta[name],
-		...data
+	if (isNil(data.type) && isNil(data.description) && isNil(data.required)) {
+		throw new Error('Must give a value to update');
+	}
+
+	const updatedField = {
+		type: isNil(data.type) ? existingUserMeta[name].type : data.type,
+		description: isNil(data.description) ? existingUserMeta[name].description : data.description,
+		required: isNil(data.required) ? existingUserMeta[name].required : data.required
 	};
 
-	const validCheck = kitUserMetaFieldIsValid(name, data);
+	const validCheck = kitUserMetaFieldIsValid(name, updatedField);
 
 	if (!validCheck.success) {
 		throw new Error(validCheck.message);
@@ -614,7 +619,7 @@ const updateKitUserMeta = async (name, data = {
 
 	const updatedUserMeta = {
 		...existingUserMeta,
-		[name]: data
+		[name]: updatedField
 	};
 
 	const updatedStatus = await status.update({
@@ -645,9 +650,7 @@ const deleteKitUserMeta = async (name) => {
 		attributes: ['id', 'kit']
 	});
 
-	delete existingUserMeta[name];
-
-	const updatedUserMeta = existingUserMeta;
+	const updatedUserMeta = omit(existingUserMeta, name);
 
 	const updatedStatus = await status.update({
 		kit: {
@@ -664,6 +667,10 @@ const deleteKitUserMeta = async (name) => {
 	);
 
 	return updatedStatus.kit.user_meta;
+};
+
+const stringIsDate = (date) => {
+	return (typeof date === 'string' && new Date(date) !== 'Invalid Date') && !isNaN(new Date(date));
 };
 
 module.exports = {
@@ -712,5 +719,6 @@ module.exports = {
 	addKitUserMeta,
 	updateKitUserMeta,
 	deleteKitUserMeta,
-	kitUserMetaFieldIsValid
+	kitUserMetaFieldIsValid,
+	stringIsDate
 };
