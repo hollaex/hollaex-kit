@@ -2,7 +2,7 @@
 
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
-const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject } = require('lodash');
+const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject, isNil, isDate } = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
@@ -49,7 +49,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, stringIsDate } = require('./common');
 const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -1405,6 +1405,44 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		});
 };
 
+const updateUserMeta = async (id, userMeta = {}, opts = { overwrite: null }) => {
+	const { user_meta } = getKitConfig();
+
+	for (let key in userMeta) {
+		if (!user_meta[key]) {
+			throw new Error(`Field ${key} does not exist in the user meta reference`);
+		} else if (user_meta[key].required && isNil(userMeta[key])) {
+			throw new Error(`Field ${key} is a required value`);
+		} else if (typeof userMeta[key] !== user_meta[key].type) {
+			if (!isNil(userMeta[key])) {
+				if (user_meta[key].type === 'date') {
+					if (isDate(userMeta[key])) {
+						userMeta[key] = userMeta[key].toISOString();
+					} else if (!stringIsDate(userMeta[key])) {
+						throw new Error(`Wrong data type given for field ${key}`);
+					}
+				} else {
+					throw new Error(`Wrong data type given for field ${key}`);
+				}
+			}
+		}
+	}
+
+	const user = await getUserByKitId(id, false);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const updatedUserMeta = opts.overwrite ? userMeta : { ...user.meta, ...userMeta };
+
+	const updatedUser = await user.update({
+		meta: updatedUserMeta
+	});
+
+	return pick(updatedUser, 'id', 'email', 'meta');
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1450,5 +1488,6 @@ module.exports = {
 	getVerificationCodeByUserId,
 	checkAffiliation,
 	verifyUserEmailByKitId,
-	generateAffiliationCode
+	generateAffiliationCode,
+	updateUserMeta
 };
