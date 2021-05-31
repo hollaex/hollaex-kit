@@ -2116,7 +2116,22 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/UserMetaObject"
+            type: object
+            required:
+              - name
+              - type
+              - required
+              - description
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum: [string, number, boolean, date]
+              required:
+                type: boolean
+              description:
+                type: string
       responses:
         200:
           description: Success
@@ -2140,7 +2155,19 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/UserMetaObject"
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum: [string, number, boolean, date]
+              required:
+                type: boolean
+              description:
+                type: string
       responses:
         200:
           description: Success
@@ -4103,23 +4130,6 @@ definitions:
                 type: string
               password:
                 type: string
-  UserMetaObject:
-    type: object
-    required:
-      - name
-      - type
-      - required
-      - description
-    properties:
-      name:
-        type: string
-      type:
-        type: string
-        enum: [string, number, boolean, date]
-      required:
-        type: boolean
-      description:
-        type: string
   UserMetaObjects:
     type: object
     minProperties: 1
