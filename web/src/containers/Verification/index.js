@@ -54,6 +54,8 @@ import { EditWrapper } from 'components';
 import { verifyBankData } from 'actions/verificationActions';
 import { getErrorLocalized } from 'utils/errors';
 import { required, maxLength } from 'components/Form/validations';
+import { getToken } from 'utils/token';
+import { PLUGIN_URL } from 'config/constants';
 
 // const CONTENT_CLASS =
 // 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -145,7 +147,12 @@ class Verification extends Component {
 		id_data,
 		full_name,
 	}) => {
-		const { enabledPlugins } = this.props;
+		const {
+			enabledPlugins,
+			router: {
+				location: { query: { initial_tab } = {} },
+			},
+		} = this.props;
 		const availablePlugins = ['kyc', 'bank', 'sms'];
 		let currentTabs = ['email'];
 		if (enabledPlugins.length) {
@@ -162,7 +169,9 @@ class Verification extends Component {
 			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
 		);
 		let activeTab = 0;
-		if (!email && currentTabs.indexOf('email') !== -1) {
+		if (initial_tab && currentTabs.indexOf(initial_tab) !== -1) {
+			activeTab = currentTabs.indexOf(initial_tab);
+		} else if (!email && currentTabs.indexOf('email') !== -1) {
 			activeTab = currentTabs.indexOf('email');
 		} else if (!bank_account.length && currentTabs.indexOf('bank') !== -1) {
 			activeTab = currentTabs.indexOf('bank');
@@ -206,7 +215,7 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, router } = this.props;
 		const {
 			email,
 			bank_account,
@@ -299,6 +308,7 @@ class Verification extends Component {
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
 						MAX_NUMBER_BANKS={MAX_NUMBER_BANKS}
+						router={router}
 					>
 						<BankVerificationHome
 							user={user}
@@ -452,7 +462,12 @@ class Verification extends Component {
 
 	renderPageContent = (tabProps) => {
 		const { activePage, activeTab, tabs, user, bankMeta } = this.state;
-		const { activeLanguage, icons: ICONS, openContactForm } = this.props;
+		const {
+			activeLanguage,
+			icons: ICONS,
+			openContactForm,
+			router,
+		} = this.props;
 		switch (activePage) {
 			case 'email':
 				return (
@@ -480,6 +495,9 @@ class Verification extends Component {
 						maxLength={maxLength}
 						required={required}
 						bankMeta={bankMeta}
+						router={router}
+						token={getToken()}
+						plugin_url={PLUGIN_URL}
 					>
 						<BankVerification
 							iconId="VERIFICATION_BANK_NEW"
