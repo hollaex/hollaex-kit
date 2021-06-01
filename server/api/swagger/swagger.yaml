@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.6"
+  version: "2.1.7"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
