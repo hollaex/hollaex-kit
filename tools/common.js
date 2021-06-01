@@ -32,6 +32,7 @@ const { each, difference, isPlainObject, isString, pick, isNil, omit } = require
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
+const { errorMessageConverter: handleCatchError } = require(`${SERVER_PATH}/utils/conversion`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
 const flatten = require('flat');
@@ -673,6 +674,10 @@ const stringIsDate = (date) => {
 	return (typeof date === 'string' && new Date(date) !== 'Invalid Date') && !isNaN(new Date(date));
 };
 
+const errorMessageConverter = (err) => {
+	return handleCatchError(err);
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -720,5 +725,6 @@ module.exports = {
 	updateKitUserMeta,
 	deleteKitUserMeta,
 	kitUserMetaFieldIsValid,
-	stringIsDate
+	stringIsDate,
+	errorMessageConverter
 };
