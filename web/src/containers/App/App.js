@@ -334,13 +334,8 @@ class App extends Component {
 		return '';
 	};
 
-	openContactForm = (data = {}) => {
-		const { links = {} } = this.props.constants;
-		this.props.openContactForm({ ...data, helpdesk: links.helpdesk });
-	};
-
 	renderDialogContent = ({ type, data }, prices = {}) => {
-		const { icons: ICONS, config_level } = this.props;
+		const { icons: ICONS, config_level, openContactForm } = this.props;
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
@@ -349,7 +344,7 @@ class App extends Component {
 					<Notification
 						type={type}
 						data={data}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 						onClose={this.onCloseDialog}
 					/>
 				);
@@ -364,7 +359,7 @@ class App extends Component {
 						}}
 						onClose={this.onCloseDialog}
 						goToPage={this.goToPage}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 					/>
 				);
 			case NOTIFICATIONS.ERROR:
@@ -381,7 +376,8 @@ class App extends Component {
 					<MessageDisplay
 						iconId="UNDEFINED_ERROR"
 						iconPath={ICONS['UNDEFINED_ERROR']}
-						onClick={this.onCloseDialog}
+						onClick={() => window.location.reload(false)}
+						buttonLabel={STRINGS['REFRESH']}
 						text={STRINGS['UNDEFINED_ERROR']}
 						title={STRINGS['UNDEFINED_ERROR_TITLE']}
 						titleId="UNDEFINED_ERROR_TITLE"
@@ -546,7 +542,9 @@ class App extends Component {
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
-		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
+		const shouldCloseOnOverlayClick =
+			activeNotification.type !== CONTACT_FORM &&
+			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR;
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
@@ -625,6 +623,7 @@ class App extends Component {
 							<div className="d-flex flex-column f-1">
 								{!isHome && (
 									<AppBar
+										router={router}
 										menuItems={menuItems}
 										activePath={this.state.activeMenu}
 										onMenuChange={this.handleMenuChange}
@@ -706,7 +705,7 @@ class App extends Component {
 											<Sidebar
 												activePath={activePath}
 												logout={this.logout}
-												// help={this.openContactForm}
+												// help={openContactForm}
 												theme={activeTheme}
 												isLogged={isLoggedIn()}
 												help={openHelpfulResourcesForm}
@@ -722,10 +721,19 @@ class App extends Component {
 									<Dialog
 										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"
-										className={classnames('app-dialog', {
-											'app-dialog-flex':
-												activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO,
-										})}
+										className={classnames(
+											'app-dialog',
+											{
+												'app-dialog-flex':
+													activeNotification.type ===
+													NOTIFICATIONS.DEPOSIT_INFO,
+											},
+											{
+												full:
+													activeNotification.type ===
+													NOTIFICATIONS.UNDEFINED_ERROR,
+											}
+										)}
 										onCloseDialog={this.onCloseDialog}
 										shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 										theme={activeTheme}

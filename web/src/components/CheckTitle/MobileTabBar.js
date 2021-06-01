@@ -16,7 +16,11 @@ const MobileTabBar = ({ tabs, activeTab, setActiveTab, renderContent }) => {
 					}),
 				};
 				if (setActiveTab) {
-					tabProps.onClick = () => setActiveTab(index);
+					tabProps.onClick = () => {
+						if (index !== activeTab) {
+							setActiveTab(index);
+						}
+					};
 				}
 				return (
 					<div {...tabProps}>

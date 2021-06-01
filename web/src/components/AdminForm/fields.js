@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputNumber, Input, DatePicker, Select, Checkbox } from 'antd';
+import { InputNumber, Input, DatePicker, Select, Checkbox, Radio } from 'antd';
 import moment from 'moment';
 import TextArea from 'antd/lib/input/TextArea';
 import classname from 'classnames';
@@ -19,9 +19,11 @@ export const renderInputField = ({
 	disabled = false,
 	isClosable = false,
 	closeCallback = () => {},
+	description = '',
 }) => (
 	<div className={classname('input_field', className)}>
 		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
 		<div>
 			<div className="d-flex align-items-center">
 				<Input
@@ -73,10 +75,12 @@ export const renderNumberField = ({
 	input,
 	label,
 	meta: { touched, error, warning },
+	description = '',
 	...rest
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
 		<div>
 			<InputNumber {...rest} {...input} />
 			{touched &&
@@ -141,9 +145,11 @@ export const renderDateField = ({
 	placeholder,
 	meta: { touched, error, warning },
 	disabled = false,
+	description = '',
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
 		<div>
 			<DatePicker
 				defaultValue={moment(input.value || new Date(), dateFormat)}
@@ -196,6 +202,28 @@ export const renderCheckField = ({
 			<Checkbox {...input} disabled={disabled}>
 				{label}
 			</Checkbox>
+			{touched &&
+				((error && <span className="red-text">{error}</span>) ||
+					(warning && <span className="red-text">{warning}</span>))}
+		</div>
+	</div>
+);
+
+export const renderBooleanField = ({
+	input,
+	label,
+	meta: { touched, error, warning },
+	disabled = false,
+	description = '',
+}) => (
+	<div className="input_field">
+		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
+		<div className="check_field">
+			<Radio.Group {...input} disabled={disabled}>
+				<Radio value={true}>True</Radio>
+				<Radio value={false}>false</Radio>
+			</Radio.Group>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
 					(warning && <span className="red-text">{warning}</span>))}

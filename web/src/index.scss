@@ -278,7 +278,10 @@ svg {
 	.otp-inactive,
 	.otp-active,
 	.unknown-error-icon,
-	.cancel-all {
+	.cancel-all,
+	.fiat-page-under-construction,
+	.generate-reference-number,
+	.osko-logo {
 		fill: $colors-main-black;
 	}
 

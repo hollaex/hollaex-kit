@@ -15,7 +15,7 @@ const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const multer = require('multer');
 const moment = require('moment');
 const { checkStatus } = require('./init');
-const UglifyJS = require('uglify-es');
+const uglifyEs = require('uglify-es');
 const cors = require('cors');
 const mathjs = require('mathjs');
 const bluebird = require('bluebird');
@@ -26,7 +26,27 @@ const path = require('path');
 const latestVersion = require('latest-version');
 const { resolve } = bluebird;
 const npm = require('npm-programmatic');
-const { Op } = require('sequelize');
+const sequelize = require('sequelize');
+const umzug = require('umzug');
+const jwt = require('jsonwebtoken');
+const momentTz = require('moment-timezone');
+const json2csv = require('json2csv');
+const flat = require('flat');
+const ws = require('ws');
+const cron = require('node-cron');
+const randomString = require('random-string');
+const bcryptjs = require('bcryptjs');
+const expectCt = require('expect-ct');
+const validator = require('validator');
+const otp = require('otp');
+const geoipLite = require('geoip-lite');
+const nodemailer = require('nodemailer');
+const wsHeartbeatServer = require('ws-heartbeat/server');
+const wsHeartbeatClient = require('ws-heartbeat/client');
+const winston = require('winston');
+const elasticApmNode = require('elastic-apm-node');
+const winstonElasticsearchApm = require('winston-elasticsearch-apm');
+const tripleBeam = require('triple-beam');
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
@@ -150,6 +170,7 @@ checkStatus()
 								'icon',
 								'documentation',
 								'web_view',
+								'public_meta',
 								'admin_view',
 								'created_at',
 								'updated_at'
@@ -363,6 +384,16 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -392,7 +423,8 @@ checkStatus()
 					logo,
 					prescript,
 					postscript,
-					meta
+					meta,
+					public_meta
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
@@ -411,10 +443,10 @@ checkStatus()
 						};
 
 						if (script) {
-							const minifiedScript = UglifyJS.minify(script);
+							const minifiedScript = uglifyEs.minify(script);
 
 							if (minifiedScript.error) {
-								throw new Error('Error while minifying script');
+								throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
 							}
 
 							updatedPlugin.script = minifiedScript.code;
@@ -465,12 +497,61 @@ checkStatus()
 						}
 
 						if (lodash.isPlainObject(meta)) {
+							for (let key in plugin.meta) {
+								if (
+									plugin.meta[key].overwrite === false
+									&& (!meta[key] || meta[key].overwrite === false)
+								) {
+									meta[key] = plugin.meta[key];
+								}
+							}
+
 							const existingMeta = lodash.pick(plugin.meta, Object.keys(meta));
 
-							updatedPlugin.meta = {
-								...meta,
-								...existingMeta
-							};
+							for (let key in meta) {
+								if (existingMeta[key] !== undefined) {
+									if (lodash.isPlainObject(meta[key]) && !lodash.isPlainObject(existingMeta[key])) {
+										meta[key].value = existingMeta[key];
+									} else if (!lodash.isPlainObject(meta[key]) && !lodash.isPlainObject(existingMeta[key])) {
+										meta[key] = existingMeta[key];
+									} else if (!lodash.isPlainObject(meta[key]) && lodash.isPlainObject(existingMeta[key])) {
+										meta[key] = existingMeta[key].value;
+									} else if (lodash.isPlainObject(meta[key]) && lodash.isPlainObject(existingMeta[key])) {
+										meta[key].value = existingMeta[key].value;
+									}
+								}
+							}
+
+							updatedPlugin.meta = meta;
+						}
+
+						if (lodash.isPlainObject(public_meta)) {
+							for (let key in plugin.public_meta) {
+								if (
+									plugin.public_meta[key].overwrite === false
+									&& (!public_meta[key] || public_meta[key].overwrite === false)
+								) {
+									public_meta[key] = plugin.public_meta[key];
+								}
+							}
+
+							const existingPublicMeta = lodash.pick(plugin.public_meta, Object.keys(public_meta));
+
+							for (let key in public_meta) {
+								if (existingPublicMeta[key] !== undefined) {
+									if (lodash.isPlainObject(public_meta[key]) && !lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key].value = existingPublicMeta[key];
+									} else if (!lodash.isPlainObject(public_meta[key]) && !lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key] = existingPublicMeta[key];
+									} else if (!lodash.isPlainObject(public_meta[key]) && lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key] = existingPublicMeta[key].value;
+									} else if (lodash.isPlainObject(public_meta[key]) && lodash.isPlainObject(existingPublicMeta[key])) {
+										public_meta[key].value = existingPublicMeta[key].value;
+									}
+								}
+							}
+
+							updatedPlugin.public_meta = public_meta;
 						}
 
 						return bluebird.all([
@@ -646,6 +727,16 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -676,7 +767,8 @@ checkStatus()
 					enabled,
 					prescript,
 					postscript,
-					meta
+					meta,
+					public_meta
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
@@ -695,10 +787,10 @@ checkStatus()
 						};
 
 						if (script) {
-							const minifiedScript = UglifyJS.minify(script);
+							const minifiedScript = uglifyEs.minify(script);
 
 							if (minifiedScript.error) {
-								throw new Error('Error while minifying script');
+								throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
 							}
 
 							newPlugin.script =  minifiedScript.code;
@@ -748,6 +840,10 @@ checkStatus()
 							newPlugin.meta = meta;
 						}
 
+						if (lodash.isPlainObject(public_meta)) {
+							newPlugin.public_meta = public_meta;
+						}
+
 						return toolsLib.database.create('plugin', newPlugin);
 					})
 					.then((plugin) => {
@@ -781,6 +877,85 @@ checkStatus()
 					});
 			});
 
+			app.put('/plugins/public-meta', [
+				toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+				checkSchema({
+					name: {
+						in: ['body'],
+						errorMessage: 'must be a string',
+						isString: true,
+						isLength: {
+							errorMessage: 'must be minimum length of 1',
+							options: { min: 1 }
+						},
+						optional: false
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: false
+					}
+				})
+			], (req, res) => {
+				const errors = expressValidator.validationResult(req);
+				if (!errors.isEmpty()) {
+					return res.status(400).json({ errors: errors.array() });
+				}
+
+				loggerPlugin.verbose(
+					req.uuid,
+					'PUT /plugins/public-meta auth',
+					req.auth.sub
+				);
+
+				const { name, public_meta } = req.body;
+
+				loggerPlugin.info(req.uuid, 'PUT /plugins/public-meta name', name);
+
+				toolsLib.plugin.getPlugin(name)
+					.then((plugin) => {
+						if (!plugin) {
+							throw new Error('Plugin not found');
+						}
+
+						const newPublicMeta = plugin.public_meta;
+
+						for (let key in newPublicMeta) {
+							if (public_meta[key] !== undefined) {
+								if (lodash.isPlainObject(newPublicMeta[key])) {
+									newPublicMeta[key].value = public_meta[key];
+								} else {
+									newPublicMeta[key] = public_meta[key];
+								}
+							}
+						}
+
+						return plugin.update({ public_meta: newPublicMeta }, { fields: ['public_meta'] });
+					})
+					.then((plugin) => {
+						loggerPlugin.info(req.uuid, 'PUT /plugins/public-meta updated', name);
+
+						res.json({
+							name: plugin.name,
+							version: plugin.version,
+							public_meta: plugin.public_meta
+						});
+
+						if (plugin.enabled && plugin.script) {
+							process.exit();
+						}
+					})
+					.catch((err) => {
+						loggerPlugin.error(req.uuid, 'PUT /plugins/public-meta err', err.message);
+						return res.status(err.status || 400).json({ message: err.message });
+					});
+			});
+
 			app.put('/plugins/meta', [
 				toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 				checkSchema({
@@ -802,7 +977,17 @@ checkStatus()
 							},
 							errorMessage: 'must be an object'
 						},
-						optional: false
+						optional: true
+					},
+					public_meta: {
+						in: ['body'],
+						custom: {
+							options: (value) => {
+								return lodash.isPlainObject(value);
+							},
+							errorMessage: 'must be an object'
+						},
+						optional: true
 					}
 				})
 			], (req, res) => {
@@ -817,9 +1002,14 @@ checkStatus()
 					req.auth.sub
 				);
 
-				const { name, meta } = req.body;
+				const { name, meta, public_meta } = req.body;
 
-				loggerPlugin.info(req.uuid, 'PUT /plugins/meta name', name);
+				if (!meta && !public_meta) {
+					loggerPlugin.error(req.uuid, 'PUT /plugins/meta err', 'Must provide meta or public_meta to update');
+					return res.status(400).json({ errors: 'Must provide meta or public_meta to update' });
+				}
+
+				loggerPlugin.info(req.uuid, 'PUT /plugins/meta name', name, 'meta', meta, 'public_meta', public_meta);
 
 				toolsLib.plugin.getPlugin(name)
 					.then((plugin) => {
@@ -827,19 +1017,51 @@ checkStatus()
 							throw new Error('Plugin not found');
 						}
 
-						const updatedMeta = lodash.pick(meta, Object.keys(plugin.meta));
+						const params = {};
 
-						const newMeta = {
-							...plugin.meta,
-							...updatedMeta
-						};
+						if (meta) {
+							const newMeta = plugin.meta;
 
-						return plugin.update({ meta: newMeta }, { fields: ['meta'] });
+							for (let key in newMeta) {
+								if (meta[key] !== undefined) {
+									if (lodash.isPlainObject(newMeta[key])) {
+										newMeta[key].value = meta[key];
+									} else {
+										newMeta[key] = meta[key];
+									}
+								}
+							}
+
+							params.meta = newMeta;
+						}
+
+						if (public_meta) {
+							const newPublicMeta = plugin.public_meta;
+
+							for (let key in newPublicMeta) {
+								if (public_meta[key] !== undefined) {
+									if (lodash.isPlainObject(newPublicMeta[key])) {
+										newPublicMeta[key].value = public_meta[key];
+									} else {
+										newPublicMeta[key] = public_meta[key];
+									}
+								}
+							}
+
+							params.public_meta = newPublicMeta;
+						}
+
+						return plugin.update(params, { fields: Object.keys(params) });
 					})
 					.then((plugin) => {
 						loggerPlugin.info(req.uuid, 'PUT /plugins/meta updated', name);
 
-						res.json({ message: 'Success' });
+						res.json({
+							name: plugin.name,
+							version: plugin.version,
+							public_meta: plugin.public_meta,
+							meta: plugin.meta
+						});
 
 						if (plugin.enabled && plugin.script) {
 							process.exit();
@@ -881,7 +1103,7 @@ checkStatus()
 
 				loggerPlugin.info(req.uuid, 'GET /plugins/meta name', name);
 
-				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta'] })
+				toolsLib.plugin.getPlugin(name, { raw: true, attributes: ['name', 'version', 'meta', 'public_meta'] })
 					.then((plugin) => {
 						if (!plugin) {
 							throw new Error('Plugin not found');
@@ -1057,7 +1279,7 @@ checkStatus()
 				where: {
 					enabled: true,
 					script: {
-						[Op.not]: null
+						[sequelize.Op.not]: null
 					}
 				},
 				raw: true
@@ -1076,12 +1298,39 @@ checkStatus()
 								moment,
 								mathjs,
 								bluebird,
+								umzug,
 								rp,
+								sequelize,
 								uuid,
+								jwt,
+								momentTz,
+								json2csv,
+								flat,
+								ws,
+								cron,
+								randomString,
+								bcryptjs,
+								expectCt,
+								validator,
+								uglifyEs,
+								otp,
+								latestVersion,
+								geoipLite,
+								nodemailer,
+								wsHeartbeatServer,
+								wsHeartbeatClient,
+								cors,
+								winston,
+								elasticApmNode,
+								winstonElasticsearchApm,
+								tripleBeam,
+								bodyParser,
+								morgan,
 								meta: plugin.meta,
+								publicMeta: plugin.public_meta,
 								installedLibraries: {}
 							};
-							if (plugin.prescript.install) {
+							if (plugin.prescript && plugin.prescript.install) {
 								loggerPlugin.verbose('plugin', plugin.name, 'installing packages');
 								for (let library of plugin.prescript.install) {
 									context.installedLibraries[library] = await installLibrary(library);

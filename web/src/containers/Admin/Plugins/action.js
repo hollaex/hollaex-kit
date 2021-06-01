@@ -23,6 +23,14 @@ export const requestMyPlugins = (query) =>
 		PLUGIN_URL
 	);
 
+export const getInstalledPlugin = (query) =>
+	requestAuthenticated(
+		`/plugins?${querystring.stringify(query)}`,
+		{},
+		null,
+		PLUGIN_URL
+	);
+
 export const getPlugin = (query) =>
 	requestAuthenticated(
 		`/plugin?${querystring.stringify(query)}`,

@@ -6,59 +6,59 @@ const API_NAME = () => GET_KIT_CONFIG().api_name;
 const COMMON = {
 	GREETING: (name) => `Dear ${name}`,
 	CLOSING: {
-		1: 'Regards',
-		2: () => `${API_NAME()} team`
+		1: 'Saudações',
+		2: () => `${API_NAME()} equipe`
 	},
-	IP_ADDRESS: (ip) => `IP Address: ${ip}`,
-	IP_REQUEST_FROM: (ip) => `Request initiated from: ${ip}`,
-	TXID: (txid) => `Transaction ID: ${txid}`,
-	FEE: (fee) => `Fee: ${fee}`,
-	AMOUNT: (amount) => `Amount: ${amount}`,
-	ADDRESS: (address) => `Address: ${address}`,
-	TIME: (time) => `Time: ${time}`,
-	COUNTRY: (country) => `Country: ${country}`,
-	DEVICE: (device) => `Device: ${device}`,
-	MESSAGE: (message) => `Message: ${message}`,
+	IP_ADDRESS: (ip) => `Endereço de IP: ${ip}`,
+	IP_REQUEST_FROM: (ip) => ` Solicitação iniciada em: ${ip}`,
+	TXID: (txid) => ` ID da transação: ${txid}`,
+	FEE: (fee) => `Taxa: ${fee}`,
+	AMOUNT: (amount) => ` Quantia: ${amount} `,
+	ADDRESS: (address) => `Endereço: ${address}`,
+	TIME: (time) => `Hora: ${time}`,
+	COUNTRY: (country) => `País: ${country}`,
+	DEVICE: (device) => `Dispositivo: ${device}`,
+	MESSAGE: (message) => ` Mensagem: ${message}`,
 	ERROR_REQUEST:
-		'If this request was made in error, it is safe to ignore it; no changes will be made to your account.',
+		'Se esta solicitação foi feita por engano, gentileza ignorá-la; nenhuma alteração será feita em sua conta.',
 	EXPLORER:
-		'You can find the status of your transaction on blockchain through these Block Explorers:',
-	DEPOSIT: 'Deposit',
-	WITHDRAWAL: 'Withdrawal'
+		'Você pode ver o status de sua transação no blockchain através destes Block Explorers:',
+	DEPOSIT: 'Depósito',
+	WITHDRAWAL: 'Saque'
 };
 
 const FOOTER = {
-	FOLLOW_US: 'Follow us on',
-	NEED_HELP: 'Need help? Just reply to this email',
-	PRIVACY_POLICY: 'Privacy policy',
-	TERMS: 'Terms and conditions',
-	INVITE_YOUR_FRIENDS: 'Invite your friends',
+	FOLLOW_US: 'Siga-nos no',
+	NEED_HELP: 'Preciso de ajuda? Basta responder a este e-mail ',
+	PRIVACY_POLICY: 'Política de Privacidade',
+	TERMS: 'Termos e Condições',
+	INVITE_YOUR_FRIENDS: 'Convide seus amigos',
 	POWERED_BY: 'Powered by'
 };
 
 const SIGNUP = {
-	TITLE: 'Sign Up',
+	TITLE: 'Registrar',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: () => `You need to confirm your email account by clicking the button below.
-		If you have any questions feel free to contact us simply by replying to this email.`,
-		2: 'Please click on the button below to proceed with your registration.',
-		3: 'Confirm'
+		1: () => ` Você precisa confirmar sua conta de e-mail clicando no botão abaixo.
+Se você tiver alguma dúvida, basta entrar em contato através deste e-mail.`,
+		2: 'Por favor, clique no botão abaixo para prosseguir.',
+		3: 'Confirmar'
 	},
 	CLOSING: COMMON.CLOSING
 };
 
 const WELCOME = {
-	TITLE: 'Welcome',
+	TITLE: 'Bem-vindo(a)',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: () => `Thank you for signing up to ${API_NAME()}.`,
+		1: () => `Obrigado por se registrar-se no ${API_NAME()}.`,
 		2: (account, deposit) => `
-		To begin trading, you must first deposit cryptocurrency or fund money to your account.
-		Please go to your ${account} and visit the ${deposit} page.`,
-		3: 'account',
-		4: 'deposit',
-		5: 'If you have any questions or concerns, please contact us simply by replying to this email.'
+		Para começar a fazer trade, você deve primeiro fazer um depósito em criptomoedas ou dinheiro em sua conta.
+Vá para sua ${account} e visite a página de ${deposit}.`,
+		3: 'conta',
+		4: 'depósito',
+		5: 'Se você tiver alguma dúvida ou questão, basta entrar em contato conosco através deste e-mail.'
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -67,23 +67,23 @@ const LOGIN = {
 	TITLE: 'Login',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: 'We have recorded a login to your account with the following details',
+		1: 'Registramos um login em sua conta com os seguintes dados ',
 		2: (time) => COMMON.TIME(time),
 		3: (country) => COMMON.COUNTRY(country),
 		4: (device) => COMMON.DEVICE(device),
 		5: (ip) => COMMON.IP_ADDRESS(ip),
-		6: 'If this was not you, please change your password, set up two-factor authentication, and contact us immediately.'
+		6: 'Caso não tenha sido você, altere sua senha, configure a autenticação de dois fatores e entre em contato conosco imediatamente.'
 	},
 	CLOSING: COMMON.CLOSING
 };
 
 const RESETPASSWORD = {
-	TITLE: 'Reset Password Request',
+	TITLE: 'Solicitação para redefinir a senha',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: 'You have made a request to reset the password for your account.',
-		2: 'To update your password, click on the link below.',
-		3: 'Reset My Password',
+		1: 'Você solicitou a redefinição da senha de sua conta.',
+		2: 'Para atualizar sua senha, clique no link abaixo.',
+		3: 'Criar nova senha',
 		4: COMMON.ERROR_REQUEST,
 		5: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
@@ -95,13 +95,9 @@ const DEPOSIT = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		PENDING: (amount, confirmation = 1, currency) =>
-			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+			` Você tem um novo depósito de ${amount} ${currency.toUpperCase ()} pendente em sua carteira ${API_NAME ()}. Aguarde até que a transação seja confirmada e seus fundos estejam disponíveis em sua carteira. Sua transação requer ${confirmation} confirmação ou confirmações no blockchain.`,
 		COMPLETED: (amount, confirmation, currency) =>
-			`Your ${
-				currency.toUpperCase()
-			} deposit for ${amount} ${currency.toUpperCase()} is confirmed and completed and it is available in your ${
-				currency.toUpperCase()
-			} wallet.`,
+			` Seu ${currency.toUpperCase ()} O depósito de ${amount} ${currency.toUpperCase ()} foi confirmado e concluído e está disponível em sua ${currency.toUpperCase ()} carteira.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (status) => `Status: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
@@ -112,22 +108,22 @@ const DEPOSIT = {
 };
 
 const ACCOUNTVERIFY = {
-	TITLE: 'Account Verified',
+	TITLE: 'Conta verificada',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: 'Congratulations. Your account is verified successfully.',
-		2: 'Trade Now'
+		1: 'Parabéns. Sua conta foi verificada com sucesso.',
+		2: 'Comece a fazer trade agora!'
 	},
 	CLOSING: COMMON.CLOSING
 };
 
 const ACCOUNTUPGRADE = {
-	TITLE: 'Account Upgraded',
+	TITLE: 'Realizado Upgrade da Conta',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: (tier) =>
-			`Congratulations. Your account access level is upgraded to ${tier} tier. You will benefit from lower fees, higher withdrawal limits and other premium features.`,
-		2: 'Trade Now'
+			`Parabéns! O nível de acesso da sua conta recebeu um upgrade e foi para o nível ${tier}. Você terá como benefícios taxas mais baixas, limites de saque mais altos e outros recursos premium.`,
+		2: 'Faça trade agora!'
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -136,17 +132,17 @@ const DEPOSITCANCEL = {
 	TITLE: (currency, type) =>
 		`${currency.toUpperCase()} ${
 			COMMON[type.toUpperCase()]
-		} rejected`,
+		} rejeitado`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		DEPOSIT: (currency, date, amount) =>
-			`We were not able to find or process your ${currency.toUpperCase()} deposit made on ${date} for ${amount}. Thus, the transaction is rejected by our system.`,
+			` Não conseguimos encontrar ou processar seu depósito de ${currency.toUpperCase()} feito em ${date} para ${amount}. Por isso, a transação foi rejeitada pelo nosso sistema.`,
 		WITHDRAWAL: (currency, date, amount) =>
-			`We were not able to find or process your ${currency.toUpperCase()} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${API_NAME()} wallet.`,
-		1: 'If you have any further inquiries, you can reply to this email',
+			`Não foi possível encontrar ou processar sua retirada de ${currency.toUpperCase()} feita em ${date} para ${amount}. Por isso, a transação foi rejeitada pelo nosso sistema e o valor do saque pendente foi creditado de volta na sua carteira ${API_NAME ()}.`,
+		1: 'Em caso de dúvidas, basta responder a este e-mail',
 		2: (txid) => COMMON.TXID(txid),
 		3: (amount) => COMMON.AMOUNT(amount),
-		4: 'Status: Rejected'
+		4: 'Status: Rejeitado'
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -156,10 +152,10 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, currency) =>
-			`You made a withdrawal request for ${amount} ${currency.toUpperCase()}. Your withdrawal status is pending and will be processed shortly.`,
-		COMPLETED: (amount, currency) =>
-			`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed.`,
+		PENDING: (amount, address, currency) =>
+			`Você fez uma solicitação de saque de $ amount} ${currency.toUpperCase()} para o endereço $ {address}. Seu status de retirada está pendente e será processado em breve.`,
+		COMPLETED: (amount, address, currency) =>
+			`Sua solicitação de saque de ${amount} ${currency.toUpperCase()} foi processada e transferida para o endereço $ {address}.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
@@ -172,123 +168,132 @@ const WITHDRAWAL = {
 
 const WITHDRAWALREQUEST = {
 	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL} Request`,
+		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL} Solicitação`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: (currency, amount, address) =>
-			`You have made a ${currency.toUpperCase()} withdrawal request of ${amount} to ${address}`,
+			`Você fez uma solicitação de saque de ${currency.toUpperCase()} de ${amount} para ${address}`,
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
-		4: (address) => `Address: ${address}`,
-		5: (network) => `Network: ${network}`,
-		6: 'In order to confirm this withdrawal, please click the button below.',
-		7: 'Confirm',
-		8: COMMON.ERROR_REQUEST,
-		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		4: (address) => `Endereço: ${address}`,
+		5: 'Para confirmar este saque, por favor clique no botão abaixo.',
+		6: 'Confirmar',
+		7: COMMON.ERROR_REQUEST,
+		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
 
 const INVALIDADDRESS = {
-	TITLE: 'Invalid Withdrawal Address',
+	TITLE: 'Endereço de saque inválido',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: (currency, amount) => `Your ${currency} withdrawal for ${amount} was being sent to an invalid address and is rejected.`,
-		2: (address) => `Address: ${address}`
+		1: (currency, amount) => `Seu saque de ${currency} de ${amount} estava prestes a ser enviado para um endereço inválido e por isso foi rejeitado.`,
+		2: (address) => `Endereço: ${address}`
 	},
 	CLOSING: COMMON.CLOSING
 };
 
 const ALERT = {
-	TITLE: (title) => `ALERT: ${title}`,
+	TITLE: (title) => `ALERTA: ${title}`,
 	BODY: {
-		1: (type) => `Alert: ${type}`
+		1: (type) => `Alerta: ${type}`
 	}
 };
 
 const USERVERIFICATIONREJECT = {
 	TITLE: (type) =>
 		type === 'id'
-			? 'ID Verification Rejected'
-			: 'New Bank Application Rejected',
+			? 'Verificação de ID rejeitada'
+			: 'Novo pedido de banco rejeitado',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: (type) =>
 			type === 'id'
-				? 'Your recent ID verification is processed and is unfortunately rejected. For further actions read the message from our expert below:'
-				: 'Your new bank registration is processed and is unfortunately rejected. For further actions read the message from our expert below:',
+				? 'Sua solicitação de identidade recente foi processada mas, infelizmente, rejeitada. Para mais ações, leia a mensagem do nosso especialista abaixo:'
+				: 'Seu novo registro no banco foi processado e infelizmente foi rejeitado. Para outras ações, leia a mensagem do nosso especialista abaixo:',
 		2: (message) => COMMON.MESSAGE(message)
 	},
 	CLOSING: COMMON.CLOSING
 };
 
 const USERDEACTIVATED = {
-	TITLE: (type) => `Account ${type}`,
+	TITLE: (type) => `Conta ${type}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		ACTIVATED: (email) => `Your account ${email} has been activated. You are now able to use your account.`,
-		DEACTIVATED: (email) => `Your account ${email} has been deactivated. You will not be able to use your account until it is activated by the exchange admin.`
+		ACTIVATED: (email) => `Sua conta ${email} foi ativada. Agora você já pode usar sua conta.`,
+		DEACTIVATED: (email) => `Sua conta ${email} foi desativada. Você não poderá usar sua conta até que ela seja ativada pelo administrador da Exchange.`
 	},
 	CLOSING: COMMON.CLOSING
 };
 
 const CONTACTFORM = {
-	TITLE: 'Contact Form',
+	TITLE: 'Formulário de Contato',
 	BODY: {
-		1: 'Contact Form Data',
+		1: 'Dados do formulário de contato',
 		2: (email) =>
-			`The client with email ${email} has submitted the contact form.`,
+			`O cliente com e-mail ${email} enviou o formulário de contato.`,
 		3: (data) => `${JSON.stringify(data, null, 2)}`
 	}
 };
 
 const USERVERIFICATION = {
-	TITLE: 'User Verification',
+	TITLE: 'Verificação de usuário',
 	BODY: {
-		1: 'User Verification Required',
+		1: 'Verificação de usuário necessária',
 		2: (email) =>
-			`User "${email}" uploaded his documents for verification. Please verify his documents.`
+			`O usuário" ${email} "fez o upload de seus documentos para verificação. Por favor, verifique-os.`
 	}
 };
 
 const SUSPICIOUSDEPOSIT = {
-	TITLE: 'Suspicious Deposit',
+	TITLE: 'Depósito Suspeito',
 	BODY: {
-		1: 'Suspicious Deposit',
+		1: 'Depósito Suspeito',
 		2: (email, currency) =>
-			`The client with email ${email} has received a ${currency.toUpperCase()} deposit that is suspicious.`,
+			`O cliente com o e-mail ${email} recebeu um depósito suspeito de ${currency.toUpperCase ()}.`,
 		3: (txid) => COMMON.TXID(txid),
-		4: 'Transaction data:',
+		4: 'Dados de transação:',
 		5: (data) => `${JSON.stringify(data)}`
 	}
 };
 
 const SMS = {
 	verificationCode: (code) =>
-		`Your verification code is ${code}`
+		` Seu código de verificação é ${code}`
 	,
 	deposit: (currency, amount) =>
-		`Your ${currency.toUpperCase()} deposit for amount ${amount} is confirmed and deposited to your wallet`
+		`Seu depósito de ${currency.toUpperCase()} no valor ${amount} foi confirmado e depositado em sua carteira`
 	,
 	withdrawal: (currency, amount) =>
-		`Your ${currency.toUpperCase()} withdrawal for amount ${amount} is confirmed`
+		`Seu saque de ${currency.toUpperCase()} no valor ${amount} foi confirmado`
 };
 
 const INVITEDOPERATOR = {
-	TITLE: 'Operator Invite',
+	TITLE: 'Convite do Operador',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		CREATED: {
-			1: (role, invitingEmail) => `You've been invited as an operator to ${API_NAME()} with the role of ${role} by user ${invitingEmail}.`,
-			2: 'Your temporary password is provided below. Make sure to change your password after logging in for security purposes.',
+			1: (role, invitingEmail) => `Você foi convidado como operador de ${API_NAME()} com a função de ${role} pelo usuário ${invitingEmail}.`,
+			2: 'Segue abaixo sua senha temporária. Altere sua senha após o login para fins de segurança.',
 			3: (email) => `Email: ${email}`,
-			4: (password) => `Password: ${password}`,
+			4: (password) => `Senha: ${password}`,
 			5: 'Login'
 		},
 		EXISTING: {
-			1: (role, invitingEmail) => `Your ${API_NAME()} account has been upgraded to the role of ${role} by user ${invitingEmail}.`,
+			1: (role, invitingEmail) => `Sua conta ${API_NAME()} foi atualizada para a função de ${role} pelo usuário ${invitingEmail}.`,
 			2: 'Login'
 		}
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -314,5 +319,7 @@ module.exports = {
 	USERDEACTIVATED,
 	ALERT,
 	SMS,
-	INVITEDOPERATOR
+	INVITEDOPERATOR,
+	BANKVERIFIED
 };
+

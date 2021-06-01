@@ -43,7 +43,7 @@ class OperatorControls extends Component {
 	constructor(props) {
 		super(props);
 
-		const { themeOptions, injected_html = {} } = this.props;
+		const { themeOptions, injected_html = { head: '', body: '' } } = this.props;
 
 		const strings = localStorage.getItem('strings') || '{}';
 		const icons = localStorage.getItem('icons') || '{}';
@@ -1125,14 +1125,16 @@ class OperatorControls extends Component {
 					onConfirm={this.confirmStringSettings}
 					defaultLanguage={this.props.defaults.language}
 				/>
-				<AddLanguageModal
-					isOpen={isEditMode && isAddLanguageModalOpen}
-					onCloseDialog={this.closeAddLanguageModal}
-					languages={LANGUAGES.filter(
-						({ value }) => !languageKeys.includes(value)
-					)}
-					onSave={this.addLanguage}
-				/>
+				{isAddLanguageModalOpen && (
+					<AddLanguageModal
+						isOpen={isEditMode && isAddLanguageModalOpen}
+						onCloseDialog={this.closeAddLanguageModal}
+						languages={LANGUAGES.filter(
+							({ value }) => !languageKeys.includes(value)
+						)}
+						onSave={this.addLanguage}
+					/>
+				)}
 				{isUploadIconOpen && (
 					<UploadIcon
 						iconsEditData={iconsEditData}

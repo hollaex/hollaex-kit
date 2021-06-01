@@ -38,6 +38,7 @@ import { Loader, MobileBarTabs, SidebarHub } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 class Trade extends PureComponent {
 	constructor(props) {
@@ -170,6 +171,10 @@ class Trade extends PureComponent {
 		if (this.sizeRef) this.sizeRef.focus();
 	};
 
+	focusOnSizeInput = () => {
+		if (this.sizeRef) this.sizeRef.focus();
+	};
+
 	setPriceRef = (priceRef) => {
 		if (priceRef) {
 			this.priceRef = priceRef;
@@ -294,6 +299,7 @@ class Trade extends PureComponent {
 			coins,
 			discount,
 			fees,
+			icons,
 		} = this.props;
 		const { chartHeight, symbol, activeTab, orderbookFetched } = this.state;
 
@@ -375,13 +381,14 @@ class Trade extends PureComponent {
 				{isMobile ? (
 					<div className="">
 						<MobileBarTabs
-							showMarketSelector={true}
+							showMarketSelector={activeTab !== 3}
 							tabs={mobileTabs}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							pair={pair}
 							goToPair={this.goToPair}
 							goToMarkets={() => this.setActiveTab(3)}
+							icons={icons}
 						/>
 						<div className="content-with-bar d-flex">
 							{mobileTabs[activeTab].content}
@@ -487,6 +494,7 @@ class Trade extends PureComponent {
 								pair={pair}
 							>
 								<OrderEntry
+									focusOnSizeInput={this.focusOnSizeInput}
 									submitOrder={this.onSubmitOrder}
 									openCheckOrder={this.openCheckOrder}
 									onRiskyTrade={this.onRiskyTrade}
@@ -568,4 +576,4 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Trade);
+export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));

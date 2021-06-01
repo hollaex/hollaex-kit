@@ -103,13 +103,14 @@ class Orderbook extends Component {
 	state = {
 		dataBlockHeight: 0,
 		isBase: true,
-    positioned: false,
-    isOpen: false,
+		positioned: false,
+		isOpen: false,
 	};
 
 	componentDidMount() {
 		const { orderbookFetched } = this.props;
 		if (orderbookFetched) {
+			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
 			}, 1000);
@@ -124,9 +125,23 @@ class Orderbook extends Component {
 			prevProps.orderbookFetched === false &&
 			orderbookFetched === true
 		) {
+			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
 			}, 1000);
+		}
+	}
+
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { asks } = this.props;
+		const { positioned } = this.state;
+		if (positioned && nextProps.asks.length !== asks) {
+			const asksWrapperScrollHeight = this.asksWrapper.scrollHeight;
+			const wrapperScrollTop = this.wrapper.scrollTop;
+			this.setState({ asksWrapperScrollHeight, wrapperScrollTop }, () => {
+				const { asksWrapperScrollHeight, wrapperScrollTop } = this.state;
+				this.preserveScroll(asksWrapperScrollHeight, wrapperScrollTop);
+			});
 		}
 	}
 
@@ -145,15 +160,30 @@ class Orderbook extends Component {
 				this.wrapper.offsetHeight - this.spreadWrapper.offsetHeight;
 			const accumulatedHeight =
 				this.bidsWrapper.scrollHeight + this.asksWrapper.scrollHeight;
-			const dataBlockHeight = maxContentHeight / 2;
-			const needScroll = accumulatedHeight > maxContentHeight;
-			const askDif = this.asksWrapper.scrollHeight - dataBlockHeight;
+			const dataBlockHeight = maxContentHeight;
+			const needScroll = !(accumulatedHeight < maxContentHeight);
+			const askDif = this.asksWrapper.scrollHeight - dataBlockHeight / 2;
 
 			if (needScroll && askDif > 0) {
 				this.wrapper.scrollTop = askDif;
 			}
 			this.setState({ dataBlockHeight, positioned: true });
 		}
+	};
+
+	preserveScroll = (prevAsksWrapperScrollHeight, prevWrapperScrollTop) => {
+		const deltaAsksHeight =
+			this.asksWrapper.scrollHeight - prevAsksWrapperScrollHeight;
+		this.wrapper.scrollTop = Math.max(
+			prevWrapperScrollTop + deltaAsksHeight,
+			0
+		);
+	};
+
+	setDataBlockHeight = () => {
+		const dataBlockHeight =
+			this.wrapper.offsetHeight - this.spreadWrapper.offsetHeight;
+		this.setState({ dataBlockHeight });
 	};
 
 	onPriceClick = (price) => () => {
@@ -256,18 +286,19 @@ class Orderbook extends Component {
 						<PlusSquareOutlined />
 					</Button>
 				</div>
-				<div className="trade_orderbook-headers d-flex">
+				<div className="trade_orderbook-headers d-flex align-end">
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(
-							STRINGS['PRICE_CURRENCY'],
-							symbol.toUpperCase()
-						)}
+						<div>{STRINGS['PRICE_CURRENCY']}</div>
+						<div>({symbol.toUpperCase()})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
+						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
+						<div>({pairBase})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell d-flex">
-						{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+					<div className="f-1 trade_orderbook-cell">
+						<div className="d-flex align-items-center">
+							{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+						</div>
 						<Select
 							bordered={false}
 							defaultValue={false}
@@ -283,6 +314,7 @@ class Orderbook extends Component {
 							open={isOpen}
 							className="custom-select-input-style order-entry no-border"
 							dropdownClassName="custom-select-style trade-select-option-wrapper"
+							dropdownStyle={{ minWidth: '7rem' }}
 						>
 							<Option value={false}>{symbol.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>

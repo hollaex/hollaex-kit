@@ -17,11 +17,12 @@ import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, PLUGIN_URL } from '../../config/constants';
 import { calculateBaseFee } from './utils';
 import Fiat from 'containers/Deposit/Fiat';
 import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
+import { getToken } from 'utils/token';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -195,11 +196,12 @@ class Form extends Component {
 			titleSection,
 			icons: ICONS,
 			selectedNetwork,
+			router,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
-			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'stellar';
+			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
 		if (coinObject && !coinObject.meta.is_fiat) {
@@ -253,7 +255,17 @@ class Form extends Component {
 				</form>
 			);
 		} else if (coinObject && coinObject.meta.is_fiat) {
-			return <Fiat icons={ICONS} />;
+			return (
+				<Fiat
+					id="REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW"
+					icons={ICONS}
+					titleSection={titleSection}
+					currency={currency}
+					router={router}
+					plugin_url={PLUGIN_URL}
+					token={getToken()}
+				/>
+			);
 		} else {
 			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 		}

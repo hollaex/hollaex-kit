@@ -56,7 +56,6 @@ export const publish = async (configs = {}) => {
 		...configs,
 		...(logo_image ? { logo_image } : {}),
 	});
-	console.info('Published Successfully');
 };
 
 export const pushVersions = async (configs = {}) => {

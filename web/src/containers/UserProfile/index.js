@@ -14,6 +14,7 @@ import { logout } from '../../actions/authAction';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isMobile } from 'react-device-detect';
+import { openContactForm } from 'actions/appActions';
 
 const MobileForm = Form('MobileForm');
 const InformationForm = Form('InformationForm');
@@ -123,6 +124,7 @@ class UserProfile extends Component {
 
 	calculateSections = (verification_level, email, userData, limits, fees) => {
 		const { dataFormValues, mobileFormValues } = this.state;
+		const { onOpenContactForm } = this.props;
 		const { phone_number, full_name, id_data = {} } = userData;
 
 		const sections = [
@@ -159,7 +161,7 @@ class UserProfile extends Component {
 				subtitle: phone_number,
 				content: phone_number ? (
 					<MobileForm initialValues={userData} formValues={mobileFormValues}>
-						<InformationSection onChangeValue={this.onOpenContactForm} />
+						<InformationSection onChangeValue={onOpenContactForm} />
 					</MobileForm>
 				) : (
 					this.renderGoToVerification()
@@ -188,7 +190,7 @@ class UserProfile extends Component {
 									  ]
 									: ''
 							}
-							onChangeValue={this.onOpenContactForm}
+							onChangeValue={onOpenContactForm}
 						/>
 					</InformationForm>
 				) : (
@@ -215,7 +217,7 @@ class UserProfile extends Component {
 												'USER_VERIFICATION.PENDING_VERIFICATION_DOCUMENTS'
 										  ]
 								}
-								onChangeValue={this.onOpenContactForm}
+								onChangeValue={onOpenContactForm}
 							/>
 						) : (
 							this.renderGoToVerification()
@@ -241,18 +243,9 @@ class UserProfile extends Component {
 		}
 	};
 
-	onOpenContactForm = () => {
-		const { links = {} } = this.props.constants;
-		if (this.props.openContactForm) {
-			this.props.openContactForm({ helpdesk: links.helpdesk });
-		}
-	};
-
 	onOpenContactFormSelected = (key = '', value = '') => () => {
-		const { links = {} } = this.props.constants;
-		if (this.props.openContactForm) {
-			this.props.openContactForm({ [key]: value, helpdesk: links.helpdesk });
-		}
+		const { openContactForm } = this.props;
+		openContactForm({ [key]: value });
 	};
 
 	render() {
@@ -282,6 +275,7 @@ class UserProfile extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
 	logout: bindActionCreators(logout, dispatch),
+	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
 const mapStateToProps = (state) => ({

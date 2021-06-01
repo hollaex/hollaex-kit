@@ -8,6 +8,7 @@ import {
 	renderInputField,
 	renderTextAreaField,
 	renderCheckField,
+	renderBooleanField,
 } from './fields';
 import { FileField } from './FileField';
 import CaptchaField from './captchaField';
@@ -25,6 +26,10 @@ const renderFields = (fields, disableAllFields) => {
 					key,
 					...(disableAllFields ? { disabled: true } : {}),
 				};
+				if (field.type === 'number') {
+					options.parse = (value) =>
+						isNaN(Number(value)) ? null : Number(value);
+				}
 
 				let component;
 				switch (field.type) {
@@ -54,6 +59,9 @@ const renderFields = (fields, disableAllFields) => {
 						break;
 					case 'editor':
 						component = Editor;
+						break;
+					case 'boolean':
+						component = renderBooleanField;
 						break;
 					case 'password':
 					case 'input':

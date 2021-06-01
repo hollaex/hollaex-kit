@@ -425,7 +425,7 @@ const nestedContent = {
 		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission',
 		GO_BACK: 'Go Back',
 		BANK_VERIFICATION_TEXT_1:
-			'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
+			'You can add your bank accounts here and get the verified. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
 		BANK_VERIFICATION_TEXT_2:
 			'By verifying your bank account you can obtain the following:',
 		BASE_WITHDRAWAL: 'Fiat withdrawal',
@@ -836,8 +836,8 @@ const nestedContent = {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'Price ({0})',
-	AMOUNT_SYMBOL: 'Amount ({0})',
+	PRICE_CURRENCY: 'Price',
+	AMOUNT_SYMBOL: 'Amount',
 	MARKET_PRICE: 'Market Price',
 	ESTIMATED_PRICE: 'Estimated Price',
 	ORDER_PRICE: 'Order Price',
@@ -876,7 +876,7 @@ const nestedContent = {
 	DEPOSIT_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the senders wallets network',
 	DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG:
-		'Enter both Address and Tag, which are required to deposit Ripple into your account successfully.',
+		'Enter both Address and Tag, which are required to deposit into your account successfully.',
 	WITHDRAW_PAGE_DESTINATION_TAG_NONE: 'None',
 	WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE: 'Destination tag: {0}',
 	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
@@ -1143,7 +1143,7 @@ const nestedContent = {
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
 	WALLET_ADDRESS_MESSAGE:
-		'When you generate a wallet, you create a deposit and withdrawal address.',
+		'When you generate a wallet, you create a deposit address.',
 	WALLET_ADDRESS_ERROR:
 		'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
@@ -1151,7 +1151,7 @@ const nestedContent = {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
-	TRADE_TAB_POSTS: 'Posts', // new
+	TRADE_TAB_POSTS: 'ANNOUNCEMENTS', // new
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1417,6 +1417,7 @@ const nestedContent = {
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'type',
+	ORDER_MODE: 'Order mode', //new
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {
 		PENDING: 'Pending',
@@ -1440,7 +1441,7 @@ const nestedContent = {
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
 		SUB_HEADING: 'Cancel all orders',
-		INFO_1: 'This will cancel your open orders for this markets.',
+		INFO_1: 'This will cancel your open orders for all markets.',
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
@@ -1464,6 +1465,11 @@ const nestedContent = {
 	UNDEFINED_ERROR_TITLE: 'You’ve Encountered an Unidentified Error',
 	UNDEFINED_ERROR:
 		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
+	POST_ONLY_TOOLTIP: 'Post only orders only execute as a limit order.', // new
+	REFRESH: 'Refresh',
+	FEE_REDUCTION: 'Fee reduction', // new
+	FEE_REDUCTION_DESCRIPTION:
+		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
 };
 
 const content = flatten(nestedContent, options);

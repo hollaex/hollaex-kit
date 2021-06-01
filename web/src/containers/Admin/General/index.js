@@ -18,6 +18,7 @@ import { upload, updateConstants } from './action';
 import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
 import merge from 'lodash.merge';
+import { clearFileInputById } from 'helpers/vanilla';
 
 import './index.css';
 import { handleUpgrade } from 'utils/utils';
@@ -151,6 +152,7 @@ class General extends Component {
 								icons[themeKey][key] = path;
 								this.setState({ currentIcon: {} });
 							} catch (error) {
+								clearFileInputById(`admin-file-input__${themeKey},${key}`);
 								message.error('Something went wrong!');
 								return;
 							}
@@ -355,6 +357,7 @@ class General extends Component {
 						accept="image/*"
 						onChange={this.handleChangeFile}
 						name={`${theme},${id}`}
+						id={`admin-file-input__${theme},${id}`}
 					/>
 				</label>
 			</div>

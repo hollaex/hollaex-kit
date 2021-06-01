@@ -63,7 +63,7 @@ const requestWithdrawal = (req, res) => {
 
 	toolsLib.wallet.sendRequestWithdrawalEmail(id, address, amount, currency, {
 		network,
-		otp_code,
+		otpCode: otp_code,
 		ip,
 		domain
 	})

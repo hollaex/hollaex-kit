@@ -17,7 +17,7 @@ import {
 } from '../../actions/walletActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 
-import { openContactForm } from '../../actions/appActions';
+import { openContactForm } from 'actions/appActions';
 
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
@@ -246,7 +246,7 @@ class Withdraw extends Component {
 			onSubmitWithdrawReq: this.onSubmitWithdraw(currency),
 			onOpenDialog: this.onOpenDialog,
 			otp_enabled,
-			openContactForm: () => openContactForm({ helpdesk: links.helpdesk }),
+			openContactForm,
 			formValues,
 			initialValues,
 			activeLanguage,

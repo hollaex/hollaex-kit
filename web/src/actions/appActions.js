@@ -2,6 +2,8 @@ import { setLanguage as storeLanguageInBrowser } from '../utils/string';
 import { hasTheme } from 'utils/theme';
 import { DEFAULT_LANGUAGE, LANGUAGE_KEY, PLUGIN_URL } from 'config/constants';
 import axios from 'axios';
+import querystring from 'query-string';
+import store from 'store';
 
 export const SET_IS_READY = 'SET_IS_READY';
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -62,6 +64,7 @@ export const ADD_TO_FAVOURITES = 'ADD_TO_FAVOURITES';
 export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
 export const CHANGE_HOME_PAGE_SETTING = 'CHANGE_HOME_PAGE_SETTING';
 export const SET_WEB_VIEWS = 'SET_WEB_VIEWS';
+export const SET_HELPDESK_INFO = 'SET_HELP_INFO';
 export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
 export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
 
@@ -123,11 +126,28 @@ export const closeSnackDialog = (id) => ({
 	payload: { dialogId: id },
 });
 
-export const openContactForm = (data = { helpdesk: '' }) => {
-	if (window && data.helpdesk) {
-		window.open(data.helpdesk, '_blank');
+export const openContactForm = () => {
+	const {
+		app: {
+			helpdeskInfo: { has_helpdesk, helpdesk_endpoint },
+			constants: { links: { helpdesk } = {} },
+		},
+	} = store.getState();
+
+	if (window) {
+		if (has_helpdesk) {
+			axios
+				.get(`${PLUGIN_URL}${helpdesk_endpoint}`)
+				.then(({ data: { url } }) => {
+					window.open(url, '_blank');
+					return setNotification(CONTACT_FORM, { helpdesk }, false);
+				});
+		} else if (helpdesk) {
+			window.open(helpdesk, '_blank');
+		}
 	}
-	return setNotification(CONTACT_FORM, data, false);
+
+	return setNotification(CONTACT_FORM, { helpdesk }, false);
 };
 
 export const openHelpfulResourcesForm = (data = {}) =>
@@ -264,6 +284,15 @@ export const setWebViews = (enabledPlugins) => {
 	};
 };
 
+export const setHelpdeskInfo = (enabledPlugins) => {
+	return {
+		type: SET_HELPDESK_INFO,
+		payload: {
+			enabledPlugins,
+		},
+	};
+};
+
 export const setInfo = (info) => ({
 	type: SET_INFO,
 	payload: {
@@ -284,6 +313,8 @@ export const requestPlugins = () => axios.get(`${PLUGIN_URL}/plugins`);
 export const requestInitial = () => axios.get('/kit');
 export const requestConstant = () => axios.get('/constants');
 export const requestAdminData = () => axios.get('/admin/kit');
+export const requestPlugin = (params) =>
+	axios.get(`${PLUGIN_URL}/plugins?${querystring.stringify(params)}`);
 
 export const getExchangeInfo = () => {
 	return (dispatch) => {

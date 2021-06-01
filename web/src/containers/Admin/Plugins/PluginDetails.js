@@ -8,6 +8,7 @@ import { addPlugin, updatePlugins } from './action';
 
 const PluginDetails = ({
 	handleBreadcrumb,
+	selectedNetworkPlugin = {},
 	selectedPlugin = {},
 	handlePluginList,
 	updatePluginList,
@@ -46,11 +47,7 @@ const PluginDetails = ({
 	const handleUpdatePlugin = () => {
 		handleClose();
 		const body = {
-			...pluginData,
-			meta: {
-				...pluginData.meta,
-				version: pluginData.version,
-			},
+			...selectedNetworkPlugin,
 		};
 		setUpdateLoading(true);
 		updatePlugins({ name: pluginData.name }, body)
@@ -314,7 +311,7 @@ const PluginDetails = ({
 						</div>
 					)}
 					<div className="d-flex align-items-center justify-content-end">
-						{pluginData.version > selectedPlugin.version && (
+						{selectedNetworkPlugin.version > selectedPlugin.version && (
 							<div className="d-flex align-items-center flex-column">
 								<Button
 									type="primary"
@@ -325,7 +322,7 @@ const PluginDetails = ({
 								</Button>
 								<div className="d-flex">
 									<div className="small-circle"></div>
-									<div className="update-txt">{`v${pluginData.version} available`}</div>
+									<div className="update-txt">{`v${selectedNetworkPlugin.version} available`}</div>
 								</div>
 							</div>
 						)}
@@ -339,6 +336,7 @@ const PluginDetails = ({
 						type="primary"
 						className="add-btn"
 						onClick={handleOpenConfirmation}
+						disabled={!Object.keys(pluginData).length}
 					>
 						Add
 					</Button>

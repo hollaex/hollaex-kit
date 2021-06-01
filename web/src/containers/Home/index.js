@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { QuickTradeLimitsSelector } from 'containers/QuickTrade/utils';
+import { isMobile } from 'react-device-detect';
 
 import STRINGS from 'config/localizedStrings';
 import {
@@ -93,6 +94,18 @@ class Home extends Component {
 		return sectionComponents;
 	};
 
+	calculateMinHeight = (sectionsNumber) => {
+		if (sectionsNumber === 1) {
+			if (isMobile) {
+				return '30rem';
+			} else {
+				return 'calc(100vh - 15rem)';
+			}
+		} else {
+			return '14rem';
+		}
+	};
+
 	getSectionByKey = (key) => {
 		switch (key) {
 			case 'heading': {
@@ -112,8 +125,7 @@ class Home extends Component {
 					<div className="home-page_section-wrapper main-section-wrapper">
 						<MainSection
 							style={{
-								minHeight:
-									sectionsNumber === 1 ? 'calc(100vh - 15rem)' : '14rem',
+								minHeight: this.calculateMinHeight(sectionsNumber),
 							}}
 							onClickDemo={
 								pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')

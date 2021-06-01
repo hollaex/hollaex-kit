@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { SubmissionError } from 'redux-form';
@@ -12,6 +13,7 @@ import { ContactForm } from '../';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { openContactForm } from 'actions/appActions';
 
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
@@ -49,14 +51,6 @@ class VerifyEmailRequest extends Component {
 			});
 	};
 
-	onOpenDialog = () => {
-		const { links = {} } = this.props.constants;
-		if (window && links && links.helpdesk) {
-			window.open(links.helpdesk, '_blank');
-		}
-		// this.setState({ showContactForm: true });
-	};
-
 	onCloseDialog = () => {
 		this.setState({ showContactForm: false });
 	};
@@ -70,7 +64,12 @@ class VerifyEmailRequest extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme, icons: ICONS } = this.props;
+		const {
+			languageClasses,
+			activeTheme,
+			icons: ICONS,
+			openContactForm,
+		} = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		if (success) {
@@ -84,7 +83,7 @@ class VerifyEmailRequest extends Component {
 					<EmailRequestSuccess
 						showContactForm={showContactForm}
 						activeTheme={activeTheme}
-						onClick={this.onOpenDialog}
+						onClick={openContactForm}
 					/>
 					<Dialog
 						isOpen={showContactForm}
@@ -133,7 +132,7 @@ class VerifyEmailRequest extends Component {
 						textType="title"
 						underline={true}
 						imageWrapperClassName="auth_logo-wrapper"
-						className="w-100 exir-logo"
+						className="w-100 holla-logo"
 					/>
 					<div
 						className={classnames(
@@ -162,4 +161,11 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants,
 });
 
-export default connect(mapStateToProps)(withConfig(VerifyEmailRequest));
+const mapDispatchToProps = (dispatch) => ({
+	openContactForm: bindActionCreators(openContactForm, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(VerifyEmailRequest));

@@ -13,6 +13,7 @@ import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { openContactForm } from 'actions/appActions';
 
 let errorTimeOut = null;
 
@@ -134,14 +135,6 @@ class Signup extends Component {
 			});
 	};
 
-	onOpenDialog = () => {
-		const { links = {} } = this.props.constants;
-		if (window && links && links.helpdesk) {
-			window.open(links.helpdesk, '_blank');
-		}
-		// this.setState({ showContactForm: true });
-	};
-
 	onCloseDialog = () => {
 		this.setState({ showContactForm: false });
 	};
@@ -160,6 +153,7 @@ class Signup extends Component {
 			activeTheme,
 			constants = {},
 			icons: ICONS,
+			openContactForm,
 		} = this.props;
 		const { success, showContactForm, isReferral } = this.state;
 
@@ -198,7 +192,7 @@ class Signup extends Component {
 						text={STRINGS['SIGNUP_TEXT']}
 						textType="title"
 						underline={true}
-						className="w-100 exir-logo"
+						className="w-100 holla-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
 							STRINGS['SIGN_UP.SIGNUP_TO'],
@@ -207,7 +201,7 @@ class Signup extends Component {
 						actionProps={{
 							text: STRINGS['HELP_TEXT'],
 							iconPath: ICONS['BLUE_QUESTION'],
-							onClick: this.onOpenDialog,
+							onClick: openContactForm,
 							useSvg: true,
 							showActionText: true,
 						}}
@@ -255,6 +249,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch),
+	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Signup));

@@ -32,6 +32,39 @@
 			min-height: 2rem !important;
 		}
 	}
+
+	.table_container {
+		.table-content {
+			&.transactions-history-table {
+				overflow-x: auto;
+				position: relative;
+				thead,
+				td {
+					font-size: 1.2rem !important;
+				}
+				td {
+					padding: 0.5rem;
+					min-width: 9rem;
+				}
+
+				.sticky-col {
+					&.coin-cell {
+						width: 12rem !important;
+						min-width: 12rem !important;
+						max-width: 12rem !important;
+					}
+					position: -webkit-sticky;
+					position: sticky;
+					background-color: $app-sidebar-background;
+					left: 0;
+					width: 10rem !important;
+					min-width: 10rem !important;
+					max-width: 10rem !important;
+					z-index: 1;
+				}
+			}
+		}
+	}
 }
 
 .icon-cell {

@@ -751,8 +751,8 @@ export default {
 	PUBLIC_SALES: '实时成交', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Filled',
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: 'PRICE',
+	AMOUNT_SYMBOL: 'AMOUNT',
 	MARKET_PRICE: '市场价格',
 	ORDER_PRICE: '订购价格',
 	TOTAL_ORDER: '订单总数',

@@ -3,19 +3,26 @@ import { SubmissionError } from 'redux-form';
 import { message, Spin } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
-import { AdminHocForm } from '../../../components';
+import {
+	validateRequired,
+	validateBoolean,
+	validateNumber,
+} from '../../../components/AdminForm/validations';
 import { updatePluginMeta, getPluginMeta } from './action';
 import { TOKEN_KEY, PLUGIN_URL } from '../../../config/constants';
 import './index.css';
+import PluginMetaForm from './PluginMetaForm';
 
-const Form = AdminHocForm('PLUGIN_CONFIGURE_FORM');
-
-const renderContent = (selectedPlugin, requestPlugin, metaData) => {
-	const onSaveMeta = (values, plugin) => {
-		return updatePluginMeta({ name: plugin.name, meta: values })
+const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
+	const onSaveMeta = (values, metaData) => {
+		const payload = { name: metaData.name, ...values };
+		return updatePluginMeta(payload)
 			.then((res) => {
 				message.success('Data saved successfully');
-				requestPlugin();
+				if (res) {
+					setMetaData({ ...metaData, ...res });
+				}
+				restart();
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -23,37 +30,87 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 			});
 	};
 
-	if (selectedPlugin.meta) {
-		const { meta } = selectedPlugin;
+	if (metaData.meta || metaData.public_meta) {
+		const { meta, public_meta } = metaData;
 		const metaFields = meta ? Object.keys(meta) : [];
 		const fieldData = {};
-		metaFields.forEach((key) => {
-			if (key.toLowerCase().includes('secret')) {
+		let publicMetaFields = public_meta ? Object.keys(public_meta) : [];
+		let publicFieldData = {};
+		const meta_initialvalues = {};
+		const public_meta_initialvalues = {};
+		const renderFields = (
+			fieldData,
+			key,
+			metaDesc,
+			initialValues,
+			isRequired = false
+		) => {
+			const fields = metaDesc[key];
+			if (fields && typeof fields === 'object') {
 				fieldData[key] = {
-					type: 'password',
+					type: fields.type,
 					label: key,
 					placeholder: key,
+					value: fields.value,
+					description: fields.description,
 				};
+				if (fields.required) {
+					fieldData[key].validate = [validateRequired];
+				}
+				if (fields.type === 'boolean') {
+					fieldData[key].validate = [validateBoolean];
+				}
+				if (fields.type === 'number') {
+					fieldData[key].validate = [validateNumber];
+				}
+				initialValues[key] = fields.value;
 			} else {
-				fieldData[key] = {
-					type: 'text',
-					label: key,
-					placeholder: key,
-				};
+				if (key.toLowerCase().includes('secret')) {
+					fieldData[key] = {
+						type: 'password',
+						label: key,
+						placeholder: key,
+					};
+					if (isRequired) {
+						fieldData[key].validate = [validateRequired];
+					}
+				} else {
+					fieldData[key] = {
+						type: 'text',
+						label: key,
+						placeholder: key,
+					};
+					if (isRequired) {
+						fieldData[key].validate = [validateRequired];
+					}
+				}
+				initialValues[key] = metaDesc[key];
 			}
+		};
+		metaFields.forEach((key) => {
+			renderFields(fieldData, key, meta, meta_initialvalues, true);
 		});
+		publicMetaFields.forEach((key) => {
+			renderFields(
+				publicFieldData,
+				key,
+				public_meta,
+				public_meta_initialvalues
+			);
+		});
+		const initialValues = {
+			meta: meta_initialvalues,
+			public_meta: public_meta_initialvalues,
+		};
 		return (
 			<div className="config-content mt-5 pb-5 w-50">
 				<div className="mt-2">Configure</div>
-				<div className="mt-5">
-					<Form
-						onSubmit={(formProps) => onSaveMeta(formProps, metaData)}
-						buttonText="Save"
-						buttonClass="plugin-config-btn"
-						fields={fieldData}
-						initialValues={metaData.meta}
-					/>
-				</div>
+				<PluginMetaForm
+					onSaveMeta={(formValues) => onSaveMeta(formValues, metaData)}
+					metaFields={fieldData}
+					publicMetaFields={publicFieldData}
+					initialValues={initialValues}
+				/>
 			</div>
 		);
 	} else if (selectedPlugin.admin_view) {
@@ -76,7 +133,7 @@ const renderContent = (selectedPlugin, requestPlugin, metaData) => {
 	}
 };
 
-const PluginConfigureForm = ({ selectedPlugin, requestPlugin }) => {
+const PluginConfigureForm = ({ selectedPlugin, requestPlugin, restart }) => {
 	const [isLoading, setLoading] = useState(true);
 	const [metaData, setMetaData] = useState({});
 	const getMetaData = useCallback(() => {
@@ -121,7 +178,7 @@ const PluginConfigureForm = ({ selectedPlugin, requestPlugin }) => {
 					</div>
 				</div>
 			</div>
-			<div>{renderContent(selectedPlugin, requestPlugin, metaData)}</div>
+			<div>{renderContent(selectedPlugin, setMetaData, metaData, restart)}</div>
 		</div>
 	);
 };

@@ -178,6 +178,7 @@ class AppBar extends Component {
 			activePath,
 			onMenuChange,
 			menuItems,
+			router,
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
@@ -223,9 +224,9 @@ class AppBar extends Component {
 						/>
 						<div
 							className="login-container"
-							onClick={() => this.props.router.push('/login')}
+							onClick={() => router.push('/login')}
 						>
-							{STRINGS['SIGN_IN'].toUpperCase()}
+							{STRINGS['LOGIN_TEXT'].toUpperCase()}
 						</div>
 					</div>
 				)}

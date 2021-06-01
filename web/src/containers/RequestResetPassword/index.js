@@ -13,6 +13,7 @@ import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import RequestResetPasswordSuccess from './RequestResetPasswordSuccess';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { openContactForm } from 'actions/appActions';
 
 let errorTimeOut = null;
 
@@ -56,14 +57,6 @@ class RequestResetPassword extends Component {
 			});
 	};
 
-	onOpenDialog = () => {
-		const { links = {} } = this.props.constants;
-		if (window && links && links.helpdesk) {
-			window.open(links.helpdesk, '_blank');
-		}
-		// this.setState({ showContactForm: true });
-	};
-
 	onCloseDialog = () => {
 		this.setState({ showContactForm: false });
 	};
@@ -81,7 +74,12 @@ class RequestResetPassword extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme, icons: ICONS } = this.props;
+		const {
+			languageClasses,
+			activeTheme,
+			icons: ICONS,
+			openContactForm,
+		} = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		return (
@@ -94,7 +92,7 @@ class RequestResetPassword extends Component {
 				{success ? (
 					<RequestResetPasswordSuccess
 						onLoginClick={this.onClickLogin}
-						onContactUs={this.onOpenDialog}
+						onContactUs={openContactForm}
 					/>
 				) : (
 					<div
@@ -117,7 +115,7 @@ class RequestResetPassword extends Component {
 							actionProps={{
 								text: STRINGS['REQUEST_RESET_PASSWORD.SUPPORT'],
 								iconPath: ICONS['BLUE_QUESTION'],
-								onClick: this.onOpenDialog,
+								onClick: openContactForm,
 								useSvg: true,
 							}}
 						/>
@@ -163,6 +161,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch),
+	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
 export default connect(

@@ -157,13 +157,39 @@
 .layout-mobile {
 	.market-list__container {
 		.market-list__block {
+			overflow-x: auto;
+			position: relative;
 			.market-list__block-table {
+				thead {
+					font-size: 1.3rem !important;
+				}
 				.table-row {
+					td {
+						padding: 0.5rem;
+						min-width: 10rem;
+					}
+					font-size: 1.3rem !important;
 					.td-chart {
-						width: 80px;
+						min-width: 15rem;
+						padding: 0 !important;
 					}
 				}
+				.sticky-col {
+					position: -webkit-sticky;
+					position: sticky;
+					background-color: $app-sidebar-background;
+					left: 0;
+					width: 12rem !important;
+					min-width: 12rem !important;
+					max-width: 12rem !important;
+					z-index: 1;
+				}
 			}
+		}
+	}
+	.trade_tabs-container {
+		.sticky-col {
+			background-color: $app-background-color !important;
 		}
 	}
 }

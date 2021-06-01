@@ -105,10 +105,32 @@
 	fill: none;
 	stroke: #c4c4c4;
 }
+.about-info:first-child {
+	border-left: none;
+}
 .about-info {
 	padding: 15px 10px;
 	border-left: 1px solid #c4c4c4;
 	width: 16rem;
+}
+.about-info .percentage-txt {
+	font-size: 42px;
+	letter-spacing: 0px;
+	color: #ffffff;
+	opacity: 0.6;
+}
+.about-info .percentage-txt-active {
+	/* color: #FFFFFF; */
+	opacity: 1;
+}
+.about-info .info-txt {
+	white-space: nowrap;
+}
+.about-info .verification-icon {
+	width: 15px;
+	position: relative;
+	bottom: 10px;
+	right: 3px;
 }
 .about-icon {
 	width: 3rem;
@@ -257,4 +279,33 @@
 }
 .user-role-container .user-icon {
 	font-size: 30px;
+}
+.user-discount-wrapper .ant-form {
+	color: inherit;
+}
+.user-discount-wrapper .title {
+	font-size: 28px;
+	font-weight: bold;
+	margin-bottom: 1rem;
+}
+.user-discount-wrapper .box-content {
+	border: 1px solid #ffffff;
+	padding: 2rem;
+	margin: 1.5rem 0;
+}
+.user-discount-wrapper .button-wrapper {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 2rem;
+}
+.user-discount-wrapper .button-wrapper .ant-btn {
+	width: 225px;
+}
+
+.admin-user-content .ant-card-head-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.admin-user-content .ant-card-extra {
+	padding: 0;
 }

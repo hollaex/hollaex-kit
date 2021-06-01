@@ -73,7 +73,7 @@ class OrdersWrapper extends Component {
 		const USER_TABS = [
 			{
 				stringId: 'ORDERS',
-				title: STRINGS['ORDERS'],
+				title: `${STRINGS['ORDERS']} (${activeOrders.length})`,
 				children: isLoggedIn() ? (
 					<ActiveOrders
 						pairData={pairData}

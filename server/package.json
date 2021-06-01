@@ -1,5 +1,5 @@
 {
-	"version": "2.1.0",
+	"version": "2.1.7",
 	"private": false,
 	"description": "HollaEx Kit",
 	"keywords": [
@@ -28,8 +28,8 @@
 		"flat": "5.0.0",
 		"geoip-lite": "1.4.1",
 		"helmet": "3.12.0",
-		"hollaex-node-lib": "github:bitholla/hollaex-node-lib#2.1.0",
-		"hollaex-tools-lib": "github:bitholla/hollaex-tools-lib#2.1.0",
+		"hollaex-node-lib": "github:bitholla/hollaex-node-lib#2.2",
+		"hollaex-tools-lib": "github:bitholla/hollaex-tools-lib#2.2",
 		"http": "0.0.0",
 		"install": "0.10.4",
 		"json2csv": "4.5.4",
@@ -59,6 +59,7 @@
 		"swagger-express-mw": "0.1.0",
 		"swagger-ui-express": "4.0.7",
 		"uglify-es": "3.3.9",
+		"umzug": "2.3.0",
 		"uuid": "3.2.1",
 		"validator": "9.4.1",
 		"winston": "3.2.1",

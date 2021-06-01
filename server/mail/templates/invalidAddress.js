@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { INVALIDADDRESS } = require('../strings').languageFile(language);
+	const INVALIDADDRESS = require('../strings').getStringObject(language, 'INVALIDADDRESS');
 	return `
 		<div>
 			<p>
@@ -29,7 +29,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { INVALIDADDRESS } = require('../strings').languageFile(language);
+	const INVALIDADDRESS = require('../strings').getStringObject(language, 'INVALIDADDRESS');
 	return `
 		${INVALIDADDRESS.GREETING(email)}
 		${INVALIDADDRESS.BODY[1](data.currency, data.amount)}

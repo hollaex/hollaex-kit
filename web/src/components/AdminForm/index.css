@@ -206,3 +206,12 @@ body {
 .ant-upload-list {
 	flex: 1;
 }
+.input_field .ant-radio-wrapper {
+	color: #ffffff;
+}
+.input_field .ant-radio-wrapper .ant-radio-inner {
+	background-color: #ffffff;
+}
+.input_field .ant-radio-wrapper .ant-radio-inner::after {
+	background-color: #1890ff;
+}
