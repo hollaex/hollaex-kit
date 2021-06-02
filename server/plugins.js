@@ -171,6 +171,7 @@ checkStatus()
 								'documentation',
 								'web_view',
 								'public_meta',
+								'type',
 								'admin_view',
 								'created_at',
 								'updated_at'
@@ -394,6 +395,12 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					type: {
+						in: ['body'],
+						errorMessage: 'must be a string or null',
+						isString: true,
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -424,7 +431,8 @@ checkStatus()
 					prescript,
 					postscript,
 					meta,
-					public_meta
+					public_meta,
+					type
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
@@ -462,6 +470,10 @@ checkStatus()
 
 						if (author) {
 							updatedPlugin.author = author;
+						}
+
+						if (type) {
+							updatedPlugin.type = type;
 						}
 
 						if (documentation) {
@@ -737,6 +749,12 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					type: {
+						in: ['body'],
+						errorMessage: 'must be a string or null',
+						isString: true,
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -768,7 +786,8 @@ checkStatus()
 					prescript,
 					postscript,
 					meta,
-					public_meta
+					public_meta,
+					type
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
@@ -818,6 +837,10 @@ checkStatus()
 
 						if (logo) {
 							newPlugin.logo = logo;
+						}
+
+						if (type) {
+							newPlugin.type = type;
 						}
 
 						if (!lodash.isUndefined(web_view)) {
