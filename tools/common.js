@@ -20,7 +20,8 @@ const {
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
 	USER_META_KEYS,
-	VALID_USER_META_TYPES
+	VALID_USER_META_TYPES,
+	DOMAIN
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -678,6 +679,10 @@ const errorMessageConverter = (err) => {
 	return handleCatchError(err);
 };
 
+const getDomain = () => {
+	return DOMAIN;
+};
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -726,5 +731,6 @@ module.exports = {
 	deleteKitUserMeta,
 	kitUserMetaFieldIsValid,
 	stringIsDate,
-	errorMessageConverter
+	errorMessageConverter,
+	getDomain
 };
