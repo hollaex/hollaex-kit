@@ -61,7 +61,8 @@ const checkStatus = () => {
 			features: {},
 			meta: {},
 			injected_values: [],
-			injected_html: {}
+			injected_html: {},
+			user_meta: {}
 		}
 	};
 
