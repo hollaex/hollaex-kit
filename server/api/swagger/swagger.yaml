@@ -2104,6 +2104,107 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/kit/user-meta:
+    x-swagger-router-controller: admin
+    post:
+      operationId: postKitUserMeta
+      description: Add key to kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - type
+              - required
+              - description
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum: [string, number, boolean, date]
+              required:
+                type: boolean
+              description:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putKitUserMeta
+      description: Update key in kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum: [string, number, boolean, date]
+              required:
+                type: boolean
+              description:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    delete:
+      operationId: deleteKitUserMeta
+      description: Delete key in kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: name
+          in: query
+          description: Name of field
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/operator/invite:
     x-swagger-router-controller: admin
     get:
@@ -2421,6 +2522,36 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/UserRolePutResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/user/meta:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserMeta
+      description: Update a user's meta object
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserMetaPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
         default:
           description: Error
           schema:
@@ -3925,6 +4056,8 @@ definitions:
             type: boolean
           native_currency:
             type: string
+          user_meta:
+            $ref: "#/definitions/UserMetaObjects"
           injected_html:
             type: object
             required:
@@ -3997,6 +4130,23 @@ definitions:
                 type: string
               password:
                 type: string
+  UserMetaObjects:
+    type: object
+    minProperties: 1
+    additionalProperties:
+      type: object
+      required:
+        - type
+        - required
+        - description
+      properties:
+        type:
+          type: string
+          enum: [string, number, boolean, date]
+        required:
+          type: boolean
+        description:
+          type: string
   AdminUsersResponse:
     type: object
     properties:
@@ -4024,6 +4174,15 @@ definitions:
           - kyc
           - communicator
           - user
+  UserMetaPut:
+    type: object
+    required:
+      - meta
+    properties:
+      meta:
+        type: object
+      overwrite:
+        type: boolean
   UserRolePutResponse:
     type: object
     required:

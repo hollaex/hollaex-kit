@@ -151,6 +151,46 @@ const putUserRole = (req, res) => {
 		});
 };
 
+const putUserMeta = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putUserMeta auth',
+		req.auth
+	);
+
+	const user_id = req.swagger.params.user_id.value;
+	const { meta, overwrite } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putUserMeta',
+		'user_id',
+		user_id,
+		'meta',
+		meta,
+		'overwrite',
+		overwrite
+	);
+
+	toolsLib.user.updateUserMeta(user_id, meta, { overwrite })
+		.then((user) => {
+			loggerAdmin.verbose(
+				req.uuid,
+				'controllers/admin/putUserMeta result',
+				user
+			);
+			return res.json(user);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putUserMeta',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const putUserNote = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
@@ -925,6 +965,84 @@ const putBurn = (req, res) => {
 		});
 };
 
+const postKitUserMeta = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/postKitUserMeta', req.auth.sub);
+
+	const { name, type, required, description } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/postKitUserMeta',
+		'name',
+		name,
+		'type',
+		type,
+		'required',
+		required,
+		'description',
+		description
+	);
+
+	toolsLib.addKitUserMeta(name, type, description, required)
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/postKitUserMeta', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const putKitUserMeta = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/putKitUserMeta', req.auth.sub);
+
+	const { name, type, required, description } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putKitUserMeta',
+		'name',
+		name,
+		'type',
+		type,
+		'required',
+		required,
+		'description',
+		description
+	);
+
+	toolsLib.updateKitUserMeta(name, { type, required, description })
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putKitUserMeta', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const deleteKitUserMeta = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteKitUserMeta', req.auth.sub);
+
+	const name = req.swagger.params.name.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/deleteKitUserMeta',
+		'name',
+		name
+	);
+
+	toolsLib.deleteKitUserMeta(name)
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteKitUserMeta', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -954,5 +1072,9 @@ module.exports = {
 	settleFees,
 	putMint,
 	putBurn,
-	putUserDiscount
+	putUserDiscount,
+	deleteKitUserMeta,
+	postKitUserMeta,
+	putKitUserMeta,
+	putUserMeta
 };
