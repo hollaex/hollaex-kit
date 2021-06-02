@@ -65,6 +65,9 @@ module.exports = (sequelize, DataTypes) => {
 		web_view: {
 			type: DataTypes.JSONB,
 			defaultValue: []
+		},
+		type: {
+			type: DataTypes.STRING
 		}
 	}, {
 		timestamps: true,
