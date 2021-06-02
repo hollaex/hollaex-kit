@@ -421,8 +421,21 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				}
 			});
 
+			const FILTERED_CLUSTERED_WEB_VIEWS = {};
+			Object.entries(CLUSTERED_WEB_VIEWS).forEach(([targetKey, viewArray]) => {
+				if (viewArray.length === 1) {
+					FILTERED_CLUSTERED_WEB_VIEWS[targetKey] = viewArray;
+				} else {
+					FILTERED_CLUSTERED_WEB_VIEWS[targetKey] = viewArray.filter(
+						({ is_default }) => !is_default
+					);
+				}
+			});
+
 			if (process.env.REACT_APP_PLUGIN_DEV_MODE === 'true') {
-				CLUSTERED_WEB_VIEWS[process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET] = [
+				FILTERED_CLUSTERED_WEB_VIEWS[
+					process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET
+				] = [
 					{
 						all_props: true,
 						target: process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET,
@@ -434,8 +447,10 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 
 			return {
 				...state,
-				webViews: CLUSTERED_WEB_VIEWS,
-				targets: Object.entries(CLUSTERED_WEB_VIEWS).map(([target]) => target),
+				webViews: FILTERED_CLUSTERED_WEB_VIEWS,
+				targets: Object.entries(FILTERED_CLUSTERED_WEB_VIEWS).map(
+					([target]) => target
+				),
 				remoteRoutes,
 			};
 		}
