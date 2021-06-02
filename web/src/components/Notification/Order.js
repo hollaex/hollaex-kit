@@ -2,7 +2,6 @@ import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
 import {
-	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from '../../config/constants';
@@ -74,7 +73,6 @@ export const getTitleAndIcon = (type, { side, filled }, ICONS = {}) => {
 export const generateRows = (type, order, pairs, coins) => {
 	const rows = [];
 	const pair = pairs[order.symbol] || {};
-	const { min } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseValue = coins[pair.pair_base] || DEFAULT_COIN_DATA;
 	const payValue = coins[pair.pair_2] || DEFAULT_COIN_DATA;
 	const btcValue = coins['btc'] || DEFAULT_COIN_DATA;
@@ -94,7 +92,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			label: STRINGS['PRICE'],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
-				formatToCurrency(order.price, min),
+				formatToCurrency(order.price, pair.increment_price),
 				payValue.symbol.toUpperCase()
 			),
 		});
@@ -121,7 +119,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			label: STRINGS['PRICE'],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
-				formatToCurrency(order.price, min),
+				formatToCurrency(order.price, pair.increment_price),
 				payValue.symbol.toUpperCase()
 			),
 		});
@@ -133,7 +131,7 @@ export const generateRows = (type, order, pairs, coins) => {
 					: STRINGS['ORDER_RECEIVED'],
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
-				formatToCurrency(orderValue, min),
+				formatToCurrency(orderValue, pair.increment_price),
 				payValue.symbol.toUpperCase()
 			),
 		});
