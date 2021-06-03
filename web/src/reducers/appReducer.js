@@ -384,22 +384,15 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 		}
 		case SET_HELPDESK_INFO: {
-			// const helpdesk = payload.enabledPlugins.find(
-			// 	(plugin) => plugin.public_meta && plugin.public_meta.is_helpdesk
-			// );
-
-			//FIXME: Temporarily hard-coded zendesk logic
-			const helpdesk = !!payload.enabledPlugins.find(
-				({ name }) => name === 'zendesk'
+			const helpdesk = payload.enabledPlugins.find(
+				({ type }) => type === 'helpdesk'
 			);
 
 			return {
 				...state,
 				helpdeskInfo: {
-					has_helpdesk: helpdesk,
-					helpdesk_endpoint: helpdesk && '/plugins/zendesk',
-					// has_helpdesk: !!helpdesk,
-					// helpdesk_endpoint: helpdesk && helpdesk.public_meta.url,
+					has_helpdesk: !!helpdesk,
+					helpdesk_endpoint: helpdesk && `/plugins/${helpdesk.name}`,
 				},
 			};
 		}
