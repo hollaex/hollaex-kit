@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
-import { debounce } from 'lodash';
+import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 
 import { PATHS } from '../paths';
@@ -45,6 +45,7 @@ import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
 import './index.css';
 import 'antd/dist/antd.css';
+import { requestMyPlugins } from '../Plugins/action';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -63,6 +64,7 @@ class AppWrapper extends React.Component {
 			publicSocket: undefined,
 			idleTimer: undefined,
 			setupCompleted: true,
+			myPlugins: [],
 		};
 	}
 
@@ -98,6 +100,7 @@ class AppWrapper extends React.Component {
 			isAdminUser: isAdmin(),
 			isLoaded: true,
 		});
+		this.getMyPlugins();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -288,7 +291,7 @@ class AppWrapper extends React.Component {
 	};
 
 	getTitle = () => {
-		const { location = {} } = this.props;
+		const { location = {}, router } = this.props;
 		if (location.pathname.includes('/admin/user')) {
 			return 'Users';
 		} else if (location.pathname.includes('/admin/general')) {
@@ -313,6 +316,8 @@ class AppWrapper extends React.Component {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {
 			return 'Resources';
+		} else if (location.pathname.includes('/admin/plugin/adminView')) {
+			return capitalize(router.params.name);
 		} else {
 			return 'Dashboard';
 		}
@@ -399,13 +404,38 @@ class AppWrapper extends React.Component {
 		}
 	};
 
+	getMyPlugins = (params = {}) => {
+		return requestMyPlugins({ ...params })
+			.then((res) => {
+				if (res && res.data) {
+					this.setState({ myPlugins: res.data });
+				}
+			})
+			.catch((err) => {
+				throw err;
+			});
+	};
+
 	render() {
 		const { children, router, user } = this.props;
 		const logout = () => {
 			removeToken();
 			router.replace('/login');
 		};
-		const { isAdminUser, isLoaded, appLoaded, setupCompleted } = this.state;
+		const { isAdminUser, isLoaded, appLoaded, setupCompleted, myPlugins } = this.state;
+		let pathNames = PATHS;
+		myPlugins.forEach(data => {
+			if (data.enabled && data.enabled_admin_view) {
+				pathNames = [
+					...pathNames,
+					{
+						path: `/admin/plugin/adminView/${data.name}`,
+						label: capitalize(data.name),
+						routeKey: 'adminView',
+					}
+				];
+			}
+		});
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {
@@ -490,7 +520,7 @@ class AppWrapper extends React.Component {
 									// className="m-top"
 								>
 									<div>{this.renderItems()}</div>
-									{PATHS.filter(
+									{pathNames.filter(
 										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) => true
 									).map(this.renderMenuItem)}
 								</Menu>
