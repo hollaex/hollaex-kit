@@ -153,6 +153,9 @@ const INITIAL_STATE = {
 	wave: [],
 	enabledPlugins: [],
 	plugins: [],
+	pluginNames: {
+		bank: 'bank',
+	},
 	helpdeskInfo: {
 		has_helpdesk: false,
 		helpdesk_endpoint: '',
@@ -377,10 +380,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...enabledPluginsNames,
 				...enabledPluginTypes,
 			]);
+
+			const { name: bank = 'bank' } =
+				payload.enabledPlugins.find(({ type }) => type === 'bank') || {};
+
 			return {
 				...state,
 				enabledPlugins,
 				plugins: payload.enabledPlugins,
+				pluginNames: {
+					...state.pluginNames,
+					bank,
+				},
 			};
 		}
 		case SET_HELPDESK_INFO: {
