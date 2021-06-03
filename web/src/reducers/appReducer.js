@@ -40,7 +40,7 @@ import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
 import { generateRemoteRouteStringId } from 'utils/string';
 import { generateRemoteRouteIconId } from 'utils/icon';
-// import { PLUGINS } from 'utils/plugin';
+import { mapPluginsTypeToName } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -364,9 +364,22 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 
 		case SET_PLUGINS: {
+			const enabledPluginsNames = payload.enabledPlugins.map(
+				({ name }) => name
+			);
+
+			//FIXME: change this once name-based logic is completely changed to type-based
+			const enabledPluginTypes = mapPluginsTypeToName(
+				payload.enabledPlugins.map(({ type }) => type)
+			);
+
+			const enabledPlugins = unique([
+				...enabledPluginsNames,
+				...enabledPluginTypes,
+			]);
 			return {
 				...state,
-				enabledPlugins: payload.enabledPlugins.map(({ name }) => name),
+				enabledPlugins,
 				plugins: payload.enabledPlugins,
 			};
 		}
