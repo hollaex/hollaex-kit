@@ -103,14 +103,20 @@ const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
 			public_meta: public_meta_initialvalues,
 		};
 		return (
-			<div className="config-content mt-5 pb-5 w-50">
-				<div className="mt-2">Configure</div>
-				<PluginMetaForm
-					onSaveMeta={(formValues) => onSaveMeta(formValues, metaData)}
-					metaFields={fieldData}
-					publicMetaFields={publicFieldData}
-					initialValues={initialValues}
-				/>
+			<div>
+				{Object.keys(publicFieldData).length || Object.keys(fieldData).length
+					?
+						<div className="config-content mt-5 pb-5 w-50">
+							<div className="mt-2">Configure</div>
+							<PluginMetaForm
+								onSaveMeta={(formValues) => onSaveMeta(formValues, metaData)}
+								metaFields={fieldData}
+								publicMetaFields={publicFieldData}
+								initialValues={initialValues}
+							/>
+						</div>
+					: <div>No configuration for this plugin</div>
+				}
 			</div>
 		);
 	} else if (selectedPlugin.admin_view) {

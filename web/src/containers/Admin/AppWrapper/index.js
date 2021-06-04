@@ -290,6 +290,14 @@ class AppWrapper extends React.Component {
 		);
 	};
 
+	renderCapitalize = (data) => {
+		let text = data;
+		if (text.includes('-')) {
+			text = text.replace(/-/g, ' ');
+		}
+		return capitalize(text);
+	};
+
 	getTitle = () => {
 		const { location = {}, router } = this.props;
 		if (location.pathname.includes('/admin/user')) {
@@ -317,7 +325,7 @@ class AppWrapper extends React.Component {
 		} else if (location.pathname.includes('/admin/resources')) {
 			return 'Resources';
 		} else if (location.pathname.includes('/admin/plugin/adminView')) {
-			return capitalize(router.params.name);
+			return this.renderCapitalize(router.params.name);
 		} else {
 			return 'Dashboard';
 		}
@@ -430,7 +438,7 @@ class AppWrapper extends React.Component {
 					...pathNames,
 					{
 						path: `/admin/plugin/adminView/${data.name}`,
-						label: capitalize(data.name),
+						label: this.renderCapitalize(data.name),
 						routeKey: 'adminView',
 					}
 				];

@@ -303,9 +303,60 @@
 }
 
 .admin-user-content .ant-card-head-wrapper {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 .admin-user-content .ant-card-extra {
 	padding: 0;
+}
+
+.user_meta-form .title {
+	font-size: 20px;
+}
+.user_meta-form .anchor {
+	cursor: pointer;
+	text-decoration: underline;
+}
+.user_meta-form .user-form-wrapper {
+	margin: 4rem 0;
+}
+.user_meta-form .user-form-wrapper .divider-line {
+	border-top: 1px solid #c4c4c4;
+	margin: 2rem 0;
+	width: 40%;
+}
+.user_meta-form .user-form-wrapper .ant-btn {
+	width: 30%;
+}
+.user_meta-form .user-form-wrapper .icon-wrapper {
+	position: relative;
+}
+.user_meta-form .user-form-wrapper .anticon-close-circle {
+	position: absolute;
+	bottom: 15px;
+	left: 27px;
+	cursor: pointer;
+}
+.user_meta-form .user-form-wrapper .anticon-close-circle svg {
+	width: 18px !important;
+	height: 23px !important;
+}
+.user_meta-form .user-form-wrapper .ant-picker {
+	background-color: #0000ff;
+}
+.user_meta-form .user-form-wrapper .ant-picker-input > input,
+.user_meta-form .user-form-wrapper .ant-picker-suffix {
+	color: #c4c4c4;
+}
+.modal-wrapper .title {
+	font-size: 20px;
+	font-weight: bold;
+}
+.modal-wrapper .box-content {
+	border: 1px solid #ffffff;
+	padding: 2rem;
+}
+.modal-wrapper .small-box {
+	border: 1px solid #ffffff;
+	padding: 1rem;
 }
