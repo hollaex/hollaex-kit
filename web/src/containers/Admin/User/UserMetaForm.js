@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, message, Modal } from 'antd';
-import { reduxForm /* reset */ } from 'redux-form';
+import { reduxForm, reset } from 'redux-form';
 
 import {
 	validateBoolean,
@@ -12,7 +12,7 @@ import UserForm from './UserForm';
 import renderFields from 'components/AdminForm/utils';
 import moment from 'moment';
 
-const UserMetaForm = ({ constants, userData, handleSubmit }) => {
+const UserMetaForm = ({ constants, userData, handleSubmit, onSubmitFail, dispatch }) => {
 	const [user_meta, setUserMeta] = useState(constants.user_meta);
 	const [meta, setMeta] = useState(userData.meta);
 	const [isVisible, setVisible] = useState(false);
@@ -20,6 +20,7 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 	const [modalType, setModalType] = useState('');
 	const [formValues, setFormValues] = useState({});
 	const [formFields, setFormFields] = useState([]);
+	const [btnDisable, setBtnDisable] = useState(false);
 
 	useEffect(() => {
 		const userMetaFields = user_meta ? Object.keys(user_meta) : [];
@@ -44,7 +45,9 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 		if (fields && typeof fields === 'object') {
 			fieldData[key] = {
 				type: fields.type,
-				label: key,
+				label: fields.required ?
+					<div>{key}<span className="m-1 required-label">(required)</span></div>
+					: key,
 				placeholder: key,
 				description: fields.description,
 			};
@@ -53,7 +56,6 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 				fieldData[key].showTime = true;
 			}
 			if (fields.required) {
-				fieldData[key] = { label: `${key}  (required)` };
 
 				if (fields.type === 'boolean') {
 					fieldData[key].validate = [validateBoolean];
@@ -85,43 +87,53 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 
 		return addMeta(metaField, userData)
 			.then((res) => {
-				setUserMeta(res);
+				setBtnDisable(false);
 				setVisible(false);
+				setUserMeta(res);
 				message.success('Field added successfully');
 			})
 			.catch((error) => {
+				setBtnDisable(false);
 				const messageTxt = error.data ? error.data.message : error.message;
 				message.error(messageTxt);
 			});
 	};
 	const onSubmit = (formProps) => {
+		setBtnDisable(true);
 		addUserMeta(formProps, userData);
 	};
 
 	const onDeleteUserMeta = (meta, key) => {
+		setBtnDisable(true);
 		return deleteMeta(meta, key)
 			.then((res) => {
-				setUserMeta(res);
+				setBtnDisable(false);
 				setVisible(false);
+				setModalType('');
+				setUserMeta(res);
 				message.success('Field deleted successfully');
 			})
 			.catch((error) => {
+				setBtnDisable(false);
 				const messageTxt = error.data ? error.data.message : error.message;
 				message.error(messageTxt);
 			});
 	};
 
 	const onSaveUserMeta = (formProps, userData) => {
+		setBtnDisable(true);
 		let data = { meta: formProps };
 
 		return updateUserMeta(data, userData.id)
 			.then((res) => {
-				message.success('Data saved successfully');
+				setBtnDisable(false);
 				setVisible(false);
 				setModalType('');
 				setMeta(res.meta);
+				message.success('Data saved successfully');
 			})
 			.catch((error) => {
+				setBtnDisable(false);
 				const messageTxt = error.data ? error.data.message : error.message;
 				message.error(messageTxt);
 			});
@@ -163,6 +175,10 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 		if (formProps) {
 			setFormValues(formProps);
 		}
+		if (!isVisible) {
+			setMetaType('');
+			onSubmitFail('', dispatch);
+		}
 	};
 
 	const renderContent = (type, formValues) => {
@@ -187,6 +203,7 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 								onClick={handleSubmit(onSubmit)}
 								className="green-btn"
 								block
+								disabled={btnDisable || metaType === ""}
 							>
 								Confirm
 							</Button>
@@ -231,6 +248,7 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 								onClick={() => onDeleteUserMeta(formValues, key)}
 								className="green-btn"
 								block
+								disabled={btnDisable}
 							>
 								Confirm
 							</Button>
@@ -239,6 +257,7 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 				);
 			case 'save_meta':
 				let name = Object.keys(formValues)[0] || '';
+				let formValue = formValues
 				let data = user_meta[name] || {};
 				let print = {};
 
@@ -248,6 +267,7 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 					print = { type: 'boolean', label: 'Boolean state' };
 				} else if (data.type === 'date') {
 					print = { type: 'date', label: 'Date Selected' };
+					formValue = { [name]: formValues[name] ? formValues[name].toString() : formValues[name] }
 				} else if (data.type === 'number') {
 					print = { type: 'number', label: 'Number data' };
 				}
@@ -255,13 +275,13 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 				return (
 					<div className="modal-wrapper">
 						<div className="title">Save Meta</div>
-						<div>Are you sure! do you want to save?</div>
+						<div>Are you sure you want to save?</div>
 						<div className="small-box my-5">
 							<div>
 								<b>{print.label}: </b>
 								{data.type !== 'date'
-									? formValues[name].toString()
-									: moment(formValues[name]).format('DD/MMM/YYYY h:mm')}
+									? formValue[name].toString()
+									: moment(formValue[name]).format('DD/MMM/YYYY h:mm')}
 							</div>
 						</div>
 						<div className="d-flex">
@@ -278,7 +298,8 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 								type="primary"
 								className="green-btn"
 								block
-								onClick={() => onSaveUserMeta(formValues, userData)}
+								onClick={() => onSaveUserMeta(formValue, userData)}
+								disabled={btnDisable}
 							>
 								Confirm
 							</Button>
@@ -295,7 +316,12 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 			<div className="mb-3 title">User meta data</div>
 			<div>
 				Add meta data to this users by clicking{' '}
-				<span className="anchor">'Add new meta'</span>
+				<span
+					className="anchor"
+					onClick={() => toggleVisibility('add_meta')}
+				>
+					'Add new meta'
+				</span>
 			</div>
 			<Button
 				type="primary"
@@ -308,7 +334,12 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 				let Form = data.component;
 				let initialValues = {};
 				Object.keys(data.field).forEach(
-					(fieldKey) => (initialValues[fieldKey] = meta[fieldKey])
+					(fieldKey) => {
+						(initialValues[fieldKey] = meta[fieldKey])
+						if (data.field[fieldKey].type === 'date') {
+							initialValues[fieldKey] = moment(meta[fieldKey])
+						}
+					}
 				);
 
 				return (
@@ -337,4 +368,5 @@ const UserMetaForm = ({ constants, userData, handleSubmit }) => {
 export default reduxForm({
 	form: 'AddMetaForm',
 	enableReinitialize: true,
+	onSubmitFail: (result, dispatch) => dispatch(reset('AddMetaForm')),
 })(UserMetaForm);
