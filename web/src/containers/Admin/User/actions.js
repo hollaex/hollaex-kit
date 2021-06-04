@@ -192,3 +192,35 @@ export const updateDiscount = (user, discount) => {
 		options
 	);
 };
+
+export const updateUserMeta = (values, id) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated(`/admin/user/meta?user_id=${id}`, options);
+};
+
+export const addMeta = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated('/admin/kit/user-meta', options);
+};
+
+export const updateMeta = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated('/admin/kit/user-meta', options);
+};
+
+export const deleteMeta = (user, name) => {
+	console.log('user', user);
+	const options = {
+		method: 'DELETE',
+	};
+	return requestAuthenticated(`/admin/kit/user-meta?name=${name}`, options);
+};

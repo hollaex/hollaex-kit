@@ -6,7 +6,7 @@ import classname from 'classnames';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import './index.css';
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormatDefault = 'YYYY/MM/DD';
 
 export const renderInputField = ({
 	input,
@@ -108,9 +108,13 @@ export const renderSelectField = ({
 	disabled = false,
 	multiSelect = false,
 	renderOptions = renderDefaultOptions,
+	placeholder,
 	...rest
 }) => {
-	let value = inputProps.value || '';
+	let value;
+	if (inputProps.value) {
+		value = inputProps.value || '';
+	}
 	if (
 		(multiSelect || rest.mode === 'tags') &&
 		typeof inputProps.value === 'string'
@@ -125,7 +129,7 @@ export const renderSelectField = ({
 					mode={multiSelect ? 'multiple' : 'default'}
 					{...inputProps}
 					value={value}
-					placeholder={label}
+					placeholder={placeholder || label}
 					disabled={disabled}
 					{...rest}
 				>
@@ -146,6 +150,8 @@ export const renderDateField = ({
 	meta: { touched, error, warning },
 	disabled = false,
 	description = '',
+	dateFormat = dateFormatDefault,
+	showTime = false,
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
@@ -156,6 +162,7 @@ export const renderDateField = ({
 				onChange={input.onChange}
 				format={dateFormat}
 				disabled={disabled}
+				showTime={showTime}
 				placeholder={placeholder}
 				value={moment(input.value || new Date(), dateFormat)}
 			/>
@@ -179,10 +186,10 @@ export const renderRangeField = ({
 				onChange={input.onChange}
 				disabled={disabled}
 				defaultValue={[
-					moment(input.value[0], dateFormat),
-					moment(input.value[1], dateFormat),
+					moment(input.value[0], dateFormatDefault),
+					moment(input.value[1], dateFormatDefault),
 				]}
-				format={dateFormat}
+				format={dateFormatDefault}
 			/>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
