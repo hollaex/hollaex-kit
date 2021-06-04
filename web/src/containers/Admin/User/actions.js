@@ -1,6 +1,7 @@
 import { all } from 'bluebird';
 import querystring from 'query-string';
 import axios from 'axios';
+import store from 'store';
 
 import { PLUGIN_URL } from '../../../config/constants';
 import { requestAuthenticated } from '../../../utils';
@@ -54,12 +55,19 @@ export const updateUserData = (values) => {
 };
 
 export const addBankData = (values) => {
+	//FIXME: DRY
+	const {
+		app: {
+			pluginNames: { bank },
+		},
+	} = store.getState();
+
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(
-		`/plugins/bank/admin?id=${values.id}`,
+		`/plugins/${bank}/admin?id=${values.id}`,
 		options,
 		null,
 		PLUGIN_URL
@@ -67,12 +75,18 @@ export const addBankData = (values) => {
 };
 
 export const approveBank = (values) => {
+	const {
+		app: {
+			pluginNames: { bank },
+		},
+	} = store.getState();
+
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(
-		'/plugins/bank/verify',
+		`/plugins/${bank}/verify`,
 		options,
 		null,
 		PLUGIN_URL
@@ -80,12 +94,18 @@ export const approveBank = (values) => {
 };
 
 export const rejectBank = (values) => {
+	const {
+		app: {
+			pluginNames: { bank },
+		},
+	} = store.getState();
+
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(
-		'/plugins/bank/revoke',
+		`/plugins/${bank}/revoke`,
 		options,
 		null,
 		PLUGIN_URL
@@ -167,5 +187,8 @@ export const updateDiscount = (user, discount) => {
 		method: 'PUT',
 		body: JSON.stringify(discount),
 	};
-	return requestAuthenticated(`/admin/user/discount?user_id=${user.id}`, options);
+	return requestAuthenticated(
+		`/admin/user/discount?user_id=${user.id}`,
+		options
+	);
 };
