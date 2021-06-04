@@ -128,10 +128,16 @@ class MyPlugins extends Component {
 				if (check) {
 					this.setState({ thirdParty: res, thirdPartyError: '' });
 				} else {
-					this.setState({ thirdPartyError: 'JSON file is not valid' });
+					this.setState({
+						thirdPartyError:
+							'The file format is not correct. Please make sure it follows JSON standard',
+					});
 				}
 			} catch (err) {
-				this.setState({ thirdPartyError: 'JSON file is not valid' });
+				this.setState({
+					thirdPartyError:
+						'The file format is not correct. Please make sure it follows JSON standard',
+				});
 			}
 		}
 	};
@@ -161,14 +167,20 @@ class MyPlugins extends Component {
 						this.setState({ thirdParty: res.data, thirdPartyError: '' });
 						this.handleStep(3);
 					} else {
-						this.setState({ thirdPartyError: 'JSON file is not valid' });
+						this.setState({
+							thirdPartyError:
+								'The file format is not correct. Please make sure it follows JSON standard',
+						});
 					}
 				}
 			} else {
 				this.setState({ thirdPartyError: 'Enter valid JSON file URL' });
 			}
 		} catch (err) {
-			this.setState({ thirdPartyError: 'JSON file is not valid' });
+			this.setState({
+				thirdPartyError:
+					'The file format is not correct. Please make sure it follows JSON standard',
+			});
 		}
 	};
 
