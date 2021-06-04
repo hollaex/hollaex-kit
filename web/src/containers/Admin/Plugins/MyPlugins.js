@@ -43,7 +43,13 @@ class MyPlugins extends Component {
 	};
 
 	onCancel = () => {
-		this.setState({ isVisible: false, step: 1 });
+		this.setState({
+			isVisible: false,
+			step: 1,
+			thirdParty: {},
+			thirdPartyError: '',
+			jsonURL: '',
+		});
 	};
 
 	handleStep = (step) => {
@@ -76,7 +82,7 @@ class MyPlugins extends Component {
 		addPlugin(body)
 			.then((res) => {
 				if (res) {
-					this.setState({ isVisible: false });
+					this.onCancel();
 					this.props.handlePluginList(res);
 					restart(() =>
 						message.success('Added third party plugin successfully')
@@ -84,7 +90,7 @@ class MyPlugins extends Component {
 				}
 			})
 			.catch((err) => {
-				this.setState({ isVisible: false });
+				this.onCancel();
 				const _error =
 					err.data && err.data.message ? err.data.message : err.message;
 				message.error(_error);
@@ -104,8 +110,8 @@ class MyPlugins extends Component {
 						let json = JSON.parse(e.target.result);
 						resolve(json);
 					} catch (err) {
-						message.error(err);
-						reject(err);
+						message.error(err.toString());
+						reject('Invalid format');
 					}
 				};
 			})(file);
@@ -116,11 +122,15 @@ class MyPlugins extends Component {
 	handleFileChange = async (event) => {
 		const file = event.target.files[0];
 		if (file) {
-			const res = await this.getJsonFromFile(file);
-			const check = this.checkJSON(res);
-			if (check) {
-				this.setState({ thirdParty: res });
-			} else {
+			try {
+				const res = await this.getJsonFromFile(file);
+				const check = this.checkJSON(res);
+				if (check) {
+					this.setState({ thirdParty: res, thirdPartyError: '' });
+				} else {
+					this.setState({ thirdPartyError: 'JSON file is not valid' });
+				}
+			} catch (err) {
 				this.setState({ thirdPartyError: 'JSON file is not valid' });
 			}
 		}
@@ -142,17 +152,23 @@ class MyPlugins extends Component {
 	};
 
 	getJSONFromURL = async () => {
-		if (this.state.jsonURL) {
-			const res = await axios.get(this.state.jsonURL);
-			if (res.data) {
-				const check = this.checkJSON(res.data);
-				if (check) {
-					this.setState({ thirdParty: res.data });
-					this.handleStep(3);
-				} else {
-					this.setState({ thirdPartyError: 'JSON file is not valid' });
+		try {
+			if (this.state.jsonURL) {
+				const res = await axios.get(this.state.jsonURL);
+				if (res.data) {
+					const check = this.checkJSON(res.data);
+					if (check) {
+						this.setState({ thirdParty: res.data, thirdPartyError: '' });
+						this.handleStep(3);
+					} else {
+						this.setState({ thirdPartyError: 'JSON file is not valid' });
+					}
 				}
+			} else {
+				this.setState({ thirdPartyError: 'Enter valid JSON file URL' });
 			}
+		} catch (err) {
+			this.setState({ thirdPartyError: 'JSON file is not valid' });
 		}
 	};
 
@@ -252,6 +268,11 @@ class MyPlugins extends Component {
 										this.handleStep(3);
 									} else if (thirdPartyType === 'input_url') {
 										this.getJSONFromURL();
+									} else if (
+										thirdPartyType === 'upload_json' &&
+										!thirdParty.name
+									) {
+										this.setState({ thirdPartyError: 'Upload a valid JSON' });
 									}
 								}}
 							>
