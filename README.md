@@ -1,5 +1,5 @@
 # HollaEx Kit [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/facebook/create-react-app/pulls)
-HollaEx Kit is an open source crypto exchange software that can be utilized to onboard your users and traders in order to run your white label exchange. In order to run the HollaEx Kit, you need to run HollaEx Server as the back-end and Web as your front-end user interface. HollaEx Kit automatically then connects to HollaEx Network for asset where you have access to markets and liquidity as well as wallets for different digital assets.
+HollaEx Kit is an open source crypto exchange software that can be utilized to onboard your users and traders in order to run your white label exchange. In order to run the HollaEx Kit, you need to run the Server as the back-end and Web as your front-end user interface. HollaEx Kit runs as a stand alone node and for trading and blockchain functionalities require to connect to HollaEx Network.
 
 ## Get Started
 
