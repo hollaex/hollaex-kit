@@ -593,6 +593,8 @@ class HollaExKit {
 	 * @param {object} opts - Optional parameters
 	 * @param {number} opts.stop - Stop order price
 	 * @param {object} opts.meta - Additional meta parameters in an object
+	 * @param {boolean} opts.meta.post_only - Whether or not the order should only be made if market maker.
+	 * @param {string} opts.meta.note - Additional note to add to order data.
 	 * @return {object} The new order as a JSON object with keys symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), and filled(number)
 	 */
 	createOrder(

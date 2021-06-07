@@ -75,7 +75,7 @@ client
 | `getUserTrades` | **symbol** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`desc`, `asc` or `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`) | User's list of all trades |
 | `getOrder` | **orderId** | Get specific information about a certain order |
 | `getOrders` | **symbol** (_optional_), **side** (_optional_), **status** (_optional_), **limit** (_optional_, _default_=`50`, _max_=`100`), **page** (_optional_, _default_=`1`), **orderBy** (_optional_, _default_=`id`), **order** (_optional_, _default_=`desc`, _enum_=`asc`, `desc`), **startDate** (_optional_, _default_=`0`, _format_=`ISO8601`), **endDate** (_optional_, _default_=`NOW`, _format_=`ISO8601`) | Get the list of all user orders. It can be filter by passing the symbol |
-| `createOrder` | **symbol**, **side** (`buy` or `sell`), **size**, **type** (`market` or `limit`), **price**, **stop** (_optional_), **meta** (_optional_, object with optional properties e.g. `post_only`) | Create a new order |
+| `createOrder` | **symbol**, **side** (`buy` or `sell`), **size**, **type** (`market` or `limit`), **price**, **stop** (_optional_), **meta** (_optional_, object with optional properties e.g. `post_only`), **meta.post_only** (_optional_, Whether or not the order should only be made if market maker), **meta.note** (_optional_, Additional note to add to order data) | Create a new order |
 | `cancelOrder` | **orderId** | Cancel a specific order with its ID |
 | `cancelAllOrders` | **symbol** (_optional_) | Cancel all open order. It can be filter by passing the symbol |
 

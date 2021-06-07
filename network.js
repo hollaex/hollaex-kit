@@ -984,6 +984,8 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {number} opts.stop - Stop price of order. This makes the order a stop loss order.
 	 * @param {object} opts.meta - Meta values for order.
+	 * @param {boolean} opts.meta.post_only - Whether or not the order should only be made if market maker.
+	 * @param {string} opts.meta.note - Additional note to add to order data.
 	 * @return {object} Newly created order values e.g. symbol, id, side, status, etc.
 	 */
 	createOrder(
