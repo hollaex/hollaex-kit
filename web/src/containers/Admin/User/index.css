@@ -328,6 +328,9 @@
 .user_meta-form .user-form-wrapper .ant-btn {
 	width: 30%;
 }
+.user_meta-form .user-form-wrapper .required-label {
+	color: #FFB300;
+}
 .user_meta-form .user-form-wrapper .icon-wrapper {
 	position: relative;
 }
@@ -359,4 +362,10 @@
 .modal-wrapper .small-box {
 	border: 1px solid #ffffff;
 	padding: 1rem;
+}
+.modal-wrapper .input_field .ant-select-arrow {
+    color: #c4c4c4 !important;
+}
+.modal-wrapper .input_field .ant-select {
+	margin-bottom: 1.5rem;
 }

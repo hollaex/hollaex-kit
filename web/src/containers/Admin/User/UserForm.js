@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Button } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { reduxForm } from 'redux-form';
@@ -16,7 +16,14 @@ const UserForm = (name) => {
 		onSubmit,
 		toggleVisibility,
 		initialValues,
+		initialize
 	}) => {
+		const initializeFields = useCallback((initValues) => {
+			initialize(initValues);
+		}, [initialize]);
+		useEffect(() => {
+			initializeFields(initialValues);
+		}, [initialValues, initializeFields]);
 		return (
 			<form>
 				<div className="w-50">
