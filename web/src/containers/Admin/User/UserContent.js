@@ -29,6 +29,7 @@ import {
 	verifyUser,
 	requestTiers,
 } from './actions';
+import UserMetaForm from './UserMetaForm';
 
 // import Flagger from '../Flaguser';
 // import Notes from './Notes';
@@ -371,6 +372,11 @@ class UserContent extends Component {
 								}}
 								hideUserColumn={true}
 							/>
+						</TabPane>
+					)}
+					{!isSupportUser && !isKYC() && (
+						<TabPane tab="meta" key="meta">
+							<UserMetaForm constants={constants} userData={userInformation} />
 						</TabPane>
 					)}
 				</Tabs>
