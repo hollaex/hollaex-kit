@@ -47,8 +47,6 @@ client
 
 ### Available functions:
 
-- **Optional parameters are all contained within an object parameter called `opts`**
-
 | Command | Parameters | Description |
 | - | - | - |
 | `init`| | Initialize your Kit for HollaEx Network. Must have passed activation_code in constructor |
