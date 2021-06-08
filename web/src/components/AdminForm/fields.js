@@ -152,6 +152,7 @@ export const renderDateField = ({
 	description = '',
 	dateFormat = dateFormatDefault,
 	showTime = false,
+	clearIcon
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
@@ -165,6 +166,7 @@ export const renderDateField = ({
 				showTime={showTime}
 				placeholder={placeholder}
 				value={moment(input.value || new Date(), dateFormat)}
+				clearIcon={clearIcon}
 			/>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||

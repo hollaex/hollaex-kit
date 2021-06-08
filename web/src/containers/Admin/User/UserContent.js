@@ -375,7 +375,7 @@ class UserContent extends Component {
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
-						<TabPane tab="meta" key="meta">
+						<TabPane tab="Meta" key="meta">
 							<UserMetaForm constants={constants} userData={userInformation} />
 						</TabPane>
 					)}
