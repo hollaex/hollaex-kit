@@ -27,8 +27,6 @@ Join us on the [Forum](https://forum.hollaex.com) and [Discord](https://discord.
 
 
 [![alt text][1.2]][1]
-[![alt text][2.2]][2]
-[![alt text][3.2]][3]
 <!-- icons without padding -->
 
 [1.2]: http://i.imgur.com/wWzX9uB.png (twitter icon without padding)
