@@ -5,9 +5,11 @@ import { IconTitle, Button } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { formatToCurrency } from 'utils/currency';
 
 const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
 	const { symbol = '' } = data.coins[data.pairData.pair_2] || {};
+	const { increment_price } = data.pairData;
 	return (
 		<div className="risky-trade-wrapper">
 			<IconTitle
@@ -52,7 +54,7 @@ const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
 			{data.order.price && data.order.size ? (
 				<div className="mb-2">
 					<EditWrapper stringId="AMOUNT">
-						{STRINGS['AMOUNT']}: {data.order.price * data.order.size}{' '}
+						{STRINGS['AMOUNT']}: {formatToCurrency((data.order.price * data.order.size), increment_price)}{' '}
 						{symbol.toUpperCase()}
 					</EditWrapper>
 				</div>
