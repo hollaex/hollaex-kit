@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, message, Modal } from 'antd';
-import { reduxForm, reset } from 'redux-form';
+import moment from 'moment';
 
 import {
 	validateBoolean,
@@ -9,10 +9,9 @@ import {
 } from 'components/AdminForm/validations';
 import { updateUserMeta, addMeta, deleteMeta } from './actions';
 import UserForm from './UserForm';
-import renderFields from 'components/AdminForm/utils';
-import moment from 'moment';
+import AddMetaForm from './AddMetaForm';
 
-const UserMetaForm = ({ constants, userData, handleSubmit, onSubmitFail, dispatch }) => {
+const UserMetaForm = ({ constants, userData }) => {
 	const [user_meta, setUserMeta] = useState(constants.user_meta);
 	const [meta, setMeta] = useState(userData.meta);
 	const [isVisible, setVisible] = useState(false);
@@ -54,6 +53,7 @@ const UserMetaForm = ({ constants, userData, handleSubmit, onSubmitFail, dispatc
 			if (fields.type === 'date') {
 				fieldData[key].dateFormat = 'YYYY-MM-DD h:mm';
 				fieldData[key].showTime = true;
+				fieldData[key].clearIcon = null;
 			}
 			if (fields.required) {
 
@@ -177,7 +177,6 @@ const UserMetaForm = ({ constants, userData, handleSubmit, onSubmitFail, dispatc
 		}
 		if (!isVisible) {
 			setMetaType('');
-			onSubmitFail('', dispatch);
 		}
 	};
 
@@ -185,30 +184,14 @@ const UserMetaForm = ({ constants, userData, handleSubmit, onSubmitFail, dispatc
 		switch (type) {
 			case 'add_meta':
 				return (
-					<form onSubmit={handleSubmit} className="modal-wrapper">
-						<div className="title">Add new meta</div>
-						<div className="w-50">{renderFields(add_meta_field)}</div>
-						<div className="d-flex">
-							<Button
-								type="primary"
-								className="green-btn"
-								block
-								onClick={toggleVisibility}
-							>
-								Back
-							</Button>
-							<div className="m-1" />
-							<Button
-								type="primary"
-								onClick={handleSubmit(onSubmit)}
-								className="green-btn"
-								block
-								disabled={btnDisable || metaType === ""}
-							>
-								Confirm
-							</Button>
-						</div>
-					</form>
+					<AddMetaForm 
+						add_meta_field={add_meta_field}
+						btnDisable={btnDisable}
+						metaType={metaType}
+						onSubmit={onSubmit}
+						isVisible={isVisible}
+						toggleVisibility={toggleVisibility}
+					/>
 				);
 			case 'remove_meta':
 				let key = Object.keys(formValues);
@@ -365,8 +348,4 @@ const UserMetaForm = ({ constants, userData, handleSubmit, onSubmitFail, dispatc
 	);
 };
 
-export default reduxForm({
-	form: 'AddMetaForm',
-	enableReinitialize: true,
-	onSubmitFail: (result, dispatch) => dispatch(reset('AddMetaForm')),
-})(UserMetaForm);
+export default UserMetaForm;

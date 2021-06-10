@@ -203,7 +203,6 @@ class BankData extends Component {
 	render() {
 		const { bank, formVisible, userId, bankData } = this.state;
 		const { onChangeSuccess, pluginNames } = this.props;
-		let disabled = false;
 		let Fields = {};
 		if (bankData.public_meta && Object.keys(bankData.public_meta).length) {
 			let publicMeta = Object.keys(bankData.public_meta);
@@ -236,9 +235,7 @@ class BankData extends Component {
 		}
 		return (
 			<Row>
-				{bank && bank.length <= 3 ? (disabled = false) : (disabled = true)}
 				<Button
-					disabled={disabled}
 					onClick={() => this.showModal()}
 					type="primary"
 					icon={<PlusCircleOutlined />}
