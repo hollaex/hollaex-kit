@@ -167,7 +167,7 @@ class TVChartContainer extends React.PureComponent {
 				onResetCacheNeededCallback
 			) => {
 				if (resolution) {
-					setChartResolution(resolution);
+					setChartResolution(resolution, symbolInfo.ticker);
 				}
 				that.setState({
 					sub: {
@@ -246,7 +246,11 @@ class TVChartContainer extends React.PureComponent {
 		interval,
 		color = {},
 	}) => {
-		const resolution = getChartResolution();
+		const resolutionData = getChartResolution();
+		let resolution = null;
+		if (resolutionData[symbol]) {
+			resolution = resolutionData[symbol];
+		}
 		const toolbar_bg = getToolbarBG(activeTheme, color);
 		const widgetTheme = getWidgetTheme(toolbar_bg);
 		const locale = getLanguage();
