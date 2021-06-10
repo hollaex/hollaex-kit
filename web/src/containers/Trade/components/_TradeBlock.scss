@@ -208,3 +208,12 @@ $tabs-title--margin: 2rem;
 		}
 	}
 }
+
+.layout-mobile {
+	.trade-container {
+		.orderBook-wrapper {
+			max-height: 100% !important;
+			min-height: 100% !important;
+		}
+	}
+}
