@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+const request = require('request');
 const crypto = require('crypto');
 const moment = require('moment');
 
@@ -10,6 +11,16 @@ const createRequest = (verb, url, headers, data) => {
 		json: true
 	};
 	return rp[verb.toLowerCase()](requestObj);
+};
+
+const createRequestStream = async (verb, url, headers, data) => {
+	const requestObj = {
+		headers,
+		url,
+		body: data
+	};
+
+	return request[verb.toLowerCase()](requestObj);
 };
 
 const createSignature = (secret = '', verb, path, expires, data = '') => {
@@ -51,5 +62,6 @@ module.exports = {
 	createSignature,
 	generateHeaders,
 	checkKit,
-	parameterError
+	parameterError,
+	createRequestStream
 };

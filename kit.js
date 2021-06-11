@@ -2,10 +2,9 @@
 
 const WebSocket = require('ws');
 const moment = require('moment');
-const { createRequest, createSignature, generateHeaders } = require('./utils');
+const { createRequest, createSignature, generateHeaders, createRequestStream } = require('./utils');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
-const { each, union, isNumber, isString, isPlainObject, isBoolean } = require('lodash');
-
+const { each, union, isNumber, isString, isPlainObject, isBoolean, isDate } = require('lodash');
 class HollaExKit {
 	constructor(
 		opts = {
@@ -425,23 +424,25 @@ class HollaExKit {
 	 * Retrieve list of the user's completed trades
 	 * @param {object} opts - Optional parameters
 	 * @param {string} opts.symbol - The symbol-pair to filter by, pass undefined to receive data on all currencies
-	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {number} opts.limit - Amount of trades per page
+	 * @param {number} opts.page - Page of trades data
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format
+	 * @param {string} opts.endDate - End date of query in ISO8601 format
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all', 'csv']
 	 * @return {object} A JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
 	getUserTrades(
 		opts = {
 			symbol: null,
-			limit: 50,
-			page: 1,
-			orderBy: 'id',
-			order: 'desc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
+			startDate: null,
+			endDate: null,
+			format: null
 		}
 	) {
 		const verb = 'GET';
@@ -469,10 +470,18 @@ class HollaExKit {
 
 		if (isString(opts.startDate)) {
 			path += `&start_date=${opts.startDate}`;
+		} else if (isDate(opts.startDate)) {
+			path += `&start_date=${opts.startDate.toISOString()}`;
 		}
 
 		if (isString(opts.endDate)) {
 			path += `&end_date=${opts.endDate}`;
+		} else if (isDate(opts.endDate)) {
+			path += `&end_date=${opts.endDate.toISOString()}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
 		}
 
 		const headers = generateHeaders(
@@ -482,7 +491,12 @@ class HollaExKit {
 			path,
 			this.apiExpiresAfter
 		);
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+
+		if (opts.format) {
+			return createRequestStream(verb, `${this.apiUrl}${path}`, headers);
+		} else {
+			return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		}
 	}
 
 	/****** Orders ******/
