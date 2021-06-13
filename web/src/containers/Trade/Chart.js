@@ -167,7 +167,7 @@ class TVChartContainer extends React.PureComponent {
 				onResetCacheNeededCallback
 			) => {
 				if (resolution) {
-					setChartResolution(resolution);
+					setChartResolution(resolution, symbolInfo.ticker);
 				}
 				that.setState({
 					sub: {
@@ -246,7 +246,11 @@ class TVChartContainer extends React.PureComponent {
 		interval,
 		color = {},
 	}) => {
-		const resolution = getChartResolution();
+		const resolutionData = getChartResolution();
+		let resolution = null;
+		if (resolutionData[symbol]) {
+			resolution = resolutionData[symbol];
+		}
 		const toolbar_bg = getToolbarBG(activeTheme, color);
 		const widgetTheme = getWidgetTheme(toolbar_bg);
 		const locale = getLanguage();
@@ -317,7 +321,7 @@ class TVChartContainer extends React.PureComponent {
 			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
 			tvWidget.changeTheme(widgetTheme);
 
-			button[0].innerHTML = `<div class='screen-container'><div class='screen-content'>Share Screenshot</div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
+			button[0].innerHTML = `<div class='screen-container'> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
 		});
 	};
 
