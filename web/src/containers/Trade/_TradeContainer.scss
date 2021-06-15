@@ -164,7 +164,9 @@
 	.trade-container {
 		.trade-col_main_wrapper {
 			.trade-main_content {
-				flex: 2 !important;
+				.trade_block-wrapper {
+					max-height: unset;
+				}
 			}
 		}
 	}
