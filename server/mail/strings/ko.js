@@ -93,8 +93,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`회원님의 ${API_NAME()} 지갑으로 ${amount} ${currency.toUpperCase()} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오. 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다.`,
+		PENDING: (amount, confirmation, currency) =>
+			`회원님의 ${API_NAME()} 지갑으로 ${amount} ${currency.toUpperCase()} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오.${confirmation ? ` 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`회원님의 ${amount} ${currency.toUpperCase()} 입금이 완료되었습니다. 회원님의 ${
 				currency.toUpperCase()
@@ -103,7 +103,8 @@ const DEPOSIT = {
 		2: (status) => `입금 상태: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -153,16 +154,17 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
-			`회원님의 ${amount} ${currency.toUpperCase()} 출금이 해당 주소 ${address}로 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
-		COMPLETED: (amount, address, currency) =>
-			`회원님의 ${amount} ${currency.toUpperCase()}를 해당 주소 ${address}로  출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
+		PENDING: (amount, currency) =>
+			`회원님의 ${amount} ${currency.toUpperCase()} 출금이 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
+		COMPLETED: (amount, currency) =>
+			`회원님의 ${amount} ${currency.toUpperCase()}를 출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `입금 상태: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -177,10 +179,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `주소: ${address}`,
-		5: '출금 요청을 완료하시려면 아래버튼을 클릭해주시기 바랍니다.',
-		6: '완료',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: '출금 요청을 완료하시려면 아래버튼을 클릭해주시기 바랍니다.',
+		7: '완료',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -287,6 +290,25 @@ const INVITEDOPERATOR = {
 	CLOSING: COMMON.CLOSING
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -308,5 +330,7 @@ module.exports = {
 	USERDEACTIVATED,
 	ALERT,
 	SMS,
-	INVITEDOPERATOR
+	INVITEDOPERATOR,
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

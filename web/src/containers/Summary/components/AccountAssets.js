@@ -71,7 +71,11 @@ const AccountAssets = ({
 							<DonutChart coins={coins} chartData={chartData} />
 						)}
 					</div>
-					<Carousel items={assetCards()} groupItems={7} isActive={true} />
+					<Carousel
+						items={assetCards()}
+						groupItems={isMobile ? 4 : 7}
+						isActive={true}
+					/>
 				</div>
 			</div>
 			{SHOW_TOTAL_ASSETS ? (

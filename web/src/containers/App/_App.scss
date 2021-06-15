@@ -45,6 +45,21 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			max-height: $max-content-height-mobile;
 			max-width: $max-content-width-mobile;
 			overflow-y: scroll;
+
+			&.no_bottom_navigation {
+				height: auto;
+				flex: 1;
+				min-height: calc(100vh);
+				max-height: calc(100vh);
+				max-width: 100vw;
+				overflow-y: scroll;
+			}
+
+			.app_container-main {
+				&.no_bottom_navigation {
+					height: 100%;
+				}
+			}
 		}
 		.content-with-bar {
 			min-height: $max-content-height-double-bar-mobile;
@@ -180,7 +195,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 
 @media (min-width: 1920px) {
 	.font-small,
-	.exir-button,
+	.holla-button,
 	.field-wrapper,
 	.action_notification-text,
 	.wallet-assets_block-table,
@@ -234,7 +249,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 
 @media screen and (max-width: 1096px) {
 	.font-small,
-	.exir-button,
+	.holla-button,
 	.field-wrapper,
 	.action_notification-text,
 	.wallet-assets_block-table,

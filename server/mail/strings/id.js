@@ -94,8 +94,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`Ada deposit baru untuk ${amount} ${currency.toUpperCase()} yang sedang dalam proses di dompet ${API_NAME()} Anda. Mohon ditunggu sampai transaksi dikonfirmasi dan dana Anda akan tersedia di dompet Anda. Transaksi Anda memerlukan ${confirmation} konfirmasi dalam blockchain.`,
+		PENDING: (amount, confirmation, currency) =>
+			`Ada deposit baru untuk ${amount} ${currency.toUpperCase()} yang sedang dalam proses di dompet ${API_NAME()} Anda. Mohon ditunggu sampai transaksi dikonfirmasi dan dana Anda akan tersedia di dompet Anda.${confirmation ? ` Transaksi Anda memerlukan ${confirmation} konfirmasi dalam blockchain.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Deposit ${
 				currency.toUpperCase()
@@ -106,7 +106,8 @@ const DEPOSIT = {
 		2: (status) => `Status: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -156,16 +157,17 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`Anda telah membuat permintaan penarikan untuk ${amount} ${currency.toUpperCase()} ke alamat ${address}. Penarikan Anda sedang dalam proses dan akan segera diproses.`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`Permintaan penarikan Anda untuk ${amount} ${currency.toUpperCase()} telah diproses dan ditransfer ke alamat ${address}.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -180,10 +182,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Alamat: ${address}`,
-		5: 'Untuk konfirmasi penarikan ini, silakan klik tombol di bawah.',
-		6: 'Konfirmasi',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'Untuk konfirmasi penarikan ini, silakan klik tombol di bawah.',
+		7: 'Konfirmasi',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -273,6 +276,25 @@ const SMS = {
 		`Penarikan ${currency.toUpperCase()} Anda dengan jumlah ${amount} telah dikonfirmasi`
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -293,5 +315,7 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

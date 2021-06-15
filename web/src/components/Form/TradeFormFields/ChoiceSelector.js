@@ -15,7 +15,7 @@ const ChoiceSelector = (props) => {
 						'justify-content-center',
 						'align-items-center',
 						'pointer',
-						'exir-button-font',
+						'holla-button-font',
 						{ active: option.value === input.value }
 					)}
 					onClick={() => input.onChange(option.value)}

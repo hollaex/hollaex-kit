@@ -14,9 +14,9 @@ $trade_title-border--size: 0.2rem;
 $trade-font-size: $font-size-subtext;
 $trade-post-font-size: 12px;
 
-$side-column--width: 17.5rem;
-$side-column--width-sm: 16rem;
-$side-column--width-lg: 20rem;
+$side-column--width: 23rem;
+$side-column--width-sm: 23rem;
+$side-column--width-lg: 24rem;
 $order_entry-column--width: 20rem;
 $order_entry-column--width-sm: 20rem;
 $order_entry-column--width-lg: 20rem;
@@ -141,6 +141,21 @@ $order_entry-column--width-lg: 20rem;
 			}
 		}
 	}
+	.recent-trades {
+		&.cell_box-type {
+			display: flex;
+			.buy {
+				min-width: 3rem;
+				padding-left: 0.5rem;
+				padding-right: 0.5rem;
+			}
+			.sell {
+				min-width: 3rem;
+				padding-left: 0.5rem;
+				padding-right: 0.5rem;
+			}
+		}
+	}
 }
 
 .quick-trade-tab {
@@ -198,4 +213,68 @@ $order_entry-column--width-lg: 20rem;
 	max-width: 100vw;
 	min-height: $market-selector--height;
 	max-height: $market-selector--height;
+}
+
+.public-history__header {
+	font-size: $font-size-subtext !important;
+	.custom-select-input-style {
+		font-size: 1rem !important;
+		max-width: 8rem;
+		.ant-select-selector {
+			height: 1.5rem !important;
+			line-height: 1.5rem !important;
+			padding: 0;
+			font-size: $font-size-subtext !important;
+		}
+		.ant-select-selection-item {
+			height: 1.5rem !important;
+			line-height: 1.5rem !important;
+			font-weight: bold;
+		}
+		.ant-select-arrow {
+			right: 2px;
+		}
+	}
+}
+
+.mobile-tab_market-indicator {
+	width: 2.5rem !important;
+	margin: 0.3rem 0.3rem 0 0.3rem;
+
+	svg {
+		.btc0,
+		.btc1,
+		.eth0,
+		.eth1,
+		.bch-icon,
+		.xrp-icon,
+		.xht-icon,
+		.xmr-icon,
+		.xlm-icon,
+		.eos-icon,
+		.trx-icon,
+		.ada-icon,
+		.bnb-icon,
+		.tusd-icon,
+		.dai-icon,
+		.ltc-icon,
+		.default-icon {
+			fill: $app-bar-menu-list-color !important;
+		}
+		.plus,
+		.minus {
+			stroke: $app-bar-menu-list-color !important;
+			stroke-width: 0.2rem;
+		}
+		.st0 {
+			fill: $base_top-bar-navigation_text;
+			stroke-width: 0rem;
+		}
+		.icon-check-1 {
+			stroke: $base_top-bar-navigation_text;
+		}
+		.xht-icon-1 {
+			fill: $dark-app-background-color !important;
+		}
+	}
 }

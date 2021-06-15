@@ -14,10 +14,12 @@ import {
 	// MobileBarTabs,
 	PanelInformationRow,
 	Button,
+	SmartTarget,
 } from '../../components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
 import { logout, requestVerificationEmail } from '../../actions/authAction';
+import { MAX_NUMBER_BANKS } from 'config/constants';
 
 import BankVerification from './BankVerification';
 import { isBrowser, isMobile } from 'react-device-detect';
@@ -36,7 +38,11 @@ import {
 	getFontClassForLanguage,
 } from '../../utils/string';
 import { ContactForm } from '../';
-import { NOTIFICATIONS } from '../../actions/appActions';
+import {
+	NOTIFICATIONS,
+	requestPlugin,
+	openContactForm,
+} from 'actions/appActions';
 import { setMe } from '../../actions/userAction';
 import { getThemeClass } from '../../utils/theme';
 import BankVerificationHome from './BankVerificationHome';
@@ -45,6 +51,11 @@ import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
 import { EditWrapper } from 'components';
 // import MobileTabs from './MobileTabs';
+import { verifyBankData } from 'actions/verificationActions';
+import { getErrorLocalized } from 'utils/errors';
+import { required, maxLength } from 'components/Form/validations';
+import { getToken } from 'utils/token';
+import { PLUGIN_URL } from 'config/constants';
 
 // const CONTENT_CLASS =
 // 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -58,12 +69,14 @@ class Verification extends Component {
 		user: {},
 		activePage: 'email',
 		showVerificationSentModal: false,
+		bankMeta: {},
 	};
 
 	componentDidMount() {
 		if (this.props.user) {
 			this.setUserData(this.props.user);
 		}
+		this.getBankData();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -95,6 +108,18 @@ class Verification extends Component {
 		}
 	}
 
+	getBankData = () => {
+		requestPlugin({ name: 'bank' })
+			.then((res) => {
+				if (res.data) {
+					this.setState({ bankMeta: res.data });
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	setUserData = (user = {}) => {
 		const calculatedData = this.calculateActiveTab(user);
 		if (calculatedData.activeTab > 4) {
@@ -122,7 +147,12 @@ class Verification extends Component {
 		id_data,
 		full_name,
 	}) => {
-		const { enabledPlugins } = this.props;
+		const {
+			enabledPlugins,
+			router: {
+				location: { query: { initial_tab } = {} },
+			},
+		} = this.props;
 		const availablePlugins = ['kyc', 'bank', 'sms'];
 		let currentTabs = ['email'];
 		if (enabledPlugins.length) {
@@ -134,8 +164,14 @@ class Verification extends Component {
 		if (enabledPlugins.includes('kyc')) {
 			currentTabs = [...currentTabs, 'document'];
 		}
+		const sortingArray = ['email', 'sms', 'kyc', 'document', 'bank'];
+		currentTabs.sort(
+			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
+		);
 		let activeTab = 0;
-		if (!email && currentTabs.indexOf('email') !== -1) {
+		if (initial_tab && currentTabs.indexOf(initial_tab) !== -1) {
+			activeTab = currentTabs.indexOf(initial_tab);
+		} else if (!email && currentTabs.indexOf('email') !== -1) {
 			activeTab = currentTabs.indexOf('email');
 		} else if (!bank_account.length && currentTabs.indexOf('bank') !== -1) {
 			activeTab = currentTabs.indexOf('bank');
@@ -179,7 +215,7 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, router } = this.props;
 		const {
 			email,
 			bank_account,
@@ -197,9 +233,9 @@ class Verification extends Component {
 			} else if (bank_account.filter((data) => data.status === 2).length) {
 				bank_status = 2;
 			}
-			if (id_data.status !== 3) {
-				bank_status = 1;
-			}
+			// if (id_data.status !== 3) {
+			// 	bank_status = 1;
+			// }
 			if (
 				bank_account.length ===
 				bank_account.filter((data) => data.status === 0).length
@@ -267,11 +303,19 @@ class Verification extends Component {
 					/>
 				),
 				content: (
-					<BankVerificationHome
-						user={user}
+					<SmartTarget
+						id="REMOTE_COMPONENT__BANK_VERIFICATION_HOME"
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
-					/>
+						MAX_NUMBER_BANKS={MAX_NUMBER_BANKS}
+						router={router}
+					>
+						<BankVerificationHome
+							user={user}
+							handleBack={this.handleBack}
+							setActivePageContent={this.setActivePageContent}
+						/>
+					</SmartTarget>
 				),
 			},
 			kyc: {
@@ -417,8 +461,13 @@ class Verification extends Component {
 	renderContent = (tabs, activeTab) => tabs[activeTab].content || <div>c</div>;
 
 	renderPageContent = (tabProps) => {
-		const { activePage, activeTab, tabs, user } = this.state;
-		const { activeLanguage, icons: ICONS } = this.props;
+		const { activePage, activeTab, tabs, user, bankMeta } = this.state;
+		const {
+			activeLanguage,
+			icons: ICONS,
+			openContactForm,
+			router,
+		} = this.props;
 		switch (activePage) {
 			case 'email':
 				return (
@@ -426,21 +475,39 @@ class Verification extends Component {
 						activeTab={activeTab}
 						tabProps={tabProps}
 						tabs={tabs}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 						setActiveTab={this.setActiveTab}
 						renderContent={this.renderContent}
 					/>
 				);
 			case 'bank':
 				return (
-					<BankVerification
+					<SmartTarget
+						id="REMOTE_COMPONENT__BANK_VERIFICATION"
 						iconId="VERIFICATION_BANK_NEW"
 						icon={ICONS['VERIFICATION_BANK_NEW']}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 						setActivePageContent={this.setActivePageContent}
 						handleBack={this.handleBack}
 						moveToNextStep={this.goNextTab}
-					/>
+						verifyBankData={verifyBankData}
+						getErrorLocalized={getErrorLocalized}
+						maxLength={maxLength}
+						required={required}
+						bankMeta={bankMeta}
+						router={router}
+						token={getToken()}
+						plugin_url={PLUGIN_URL}
+					>
+						<BankVerification
+							iconId="VERIFICATION_BANK_NEW"
+							icon={ICONS['VERIFICATION_BANK_NEW']}
+							openContactForm={openContactForm}
+							setActivePageContent={this.setActivePageContent}
+							handleBack={this.handleBack}
+							moveToNextStep={this.goNextTab}
+						/>
+					</SmartTarget>
 				);
 			case 'kyc':
 				return (
@@ -450,7 +517,7 @@ class Verification extends Component {
 						moveToNextStep={this.goNextTab}
 						activeLanguage={activeLanguage}
 						initialValues={identityInitialValues(user)}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 						setActivePageContent={this.setActivePageContent}
 						handleBack={this.handleBack}
 					/>
@@ -461,7 +528,7 @@ class Verification extends Component {
 						initialValues={mobileInitialValues(user.address)}
 						moveToNextStep={this.goNextTab}
 						activeLanguage={activeLanguage}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
 					/>
@@ -475,7 +542,7 @@ class Verification extends Component {
 						moveToNextStep={this.goNextTab}
 						skip={this.skip}
 						activeLanguage={activeLanguage}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
 					/>
@@ -491,13 +558,6 @@ class Verification extends Component {
 		this.setState({ dialogIsOpen: true, dialogType: 'skip' });
 	};
 
-	openContactForm = () => {
-		const { links = {} } = this.props.constants;
-		if (window && links && links.helpdesk) {
-			window.open(links.helpdesk, '_blank');
-		}
-		// this.setState({ dialogIsOpen: true, dialogType: 'contact' });
-	};
 	renderDialogContent = (type) => {
 		switch (type) {
 			case 'skip':
@@ -610,6 +670,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	logout: bindActionCreators(logout, dispatch),
+	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
 export default connect(

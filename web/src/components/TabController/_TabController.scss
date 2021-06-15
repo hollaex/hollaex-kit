@@ -1,6 +1,6 @@
 $tab_controller-title-img-size: 6rem;
 $tab_controller-title-margin: 16px;
-$tab_controller-item-min-width: 10rem;
+$tab_controller-item-min-width: 8rem;
 
 .tab_controller-title {
 	display: flex;
@@ -18,26 +18,27 @@ $tab_controller-item-min-width: 10rem;
 }
 
 .layout-mobile {
-	.tab_controller-tabs {
-		font-size: $extra-thick--font-size;
+	.tab_controller-tabs,
+	.tab_item {
+		font-size: $extra-thick--font-size !important;
 	}
 }
 .tab_controller-tabs {
 	width: 100%;
 	display: flex;
-	justify-content: space-between;
 	align-content: center;
-	border-top: 2px solid $colors-border;
+	border-bottom: 2px solid $colors-border;
 	margin-bottom: 1rem;
 
 	.tab_item {
-		border-top: $tab-selected-line-height solid transparent;
+		border-bottom: $tab-active solid transparent;
 		padding: $tab-text-padding;
 		display: flex;
 		align-items: center;
 		min-width: $tab_controller-item-min-width;
 		justify-content: center;
 		color: $colors-deactivate;
+		font-size: 14px;
 		& svg path {
 			opacity: 0.7;
 		}
@@ -46,7 +47,7 @@ $tab_controller-item-min-width: 10rem;
 		padding: 0 1px 12px !important;
 	}
 	.tab_item-active {
-		border-top: $tab-selected-line-height solid $colors-border;
+		border-bottom: $tab-selected-line-height solid $tab-active;
 		color: $tab-active;
 		& svg path {
 			opacity: 1;

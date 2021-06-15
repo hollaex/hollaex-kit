@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import Image from 'components/Image';
 import { IconTitle, Notification, Button, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -9,7 +10,7 @@ import {
 	sendSupportMail,
 	NOTIFICATIONS,
 	openContactForm,
-} from '../../actions/appActions';
+} from 'actions/appActions';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 
@@ -50,14 +51,20 @@ class HelpfulResourcesForm extends Component {
 			});
 	};
 	openNewForm = () => {
-		const { links = {} } = this.props.constants;
-		this.props.onClose();
-		this.props.openContactForm({ category: 'bug', helpdesk: links.helpdesk });
+		const { openContactForm, onClose } = this.props;
+		onClose();
+		openContactForm({ category: 'bug' });
 	};
 
 	render() {
-		const { onClose, icons: ICONS } = this.props;
+		const {
+			onClose,
+			icons: ICONS,
+			constants: { links: { api_doc_link = '' } = {} },
+			openContactForm,
+		} = this.props;
 		const { submited } = this.state;
+
 		if (submited) {
 			return (
 				<Notification type={NOTIFICATIONS.CONTACT_FORM} onClose={onClose} />
@@ -83,12 +90,16 @@ class HelpfulResourcesForm extends Component {
 							wrapperClassName="help_icons ml-1 mr-1"
 						/>
 						<div className="text">
-							{STRINGS['HELP_RESOURCE_GUIDE_TEXT']}
-							<BlueLink
-								href={STRINGS['HELP_EXIR_TUTORIAL_LINK']}
-								text={STRINGS['HELP_EXIR_TUTORIAL_LINK']}
-							/>
-							<EditWrapper stringId="HELP_RESOURCE_GUIDE_TEXT" />
+							{STRINGS.formatString(
+								STRINGS['HELP_RESOURCE_GUIDE.TEXT'],
+								<span
+									onClick={openContactForm}
+									className={classnames('blue-link', 'dialog-link', 'pointer')}
+								>
+									{STRINGS['HELP_RESOURCE_GUIDE.CONTACT_US']}
+								</span>
+							)}
+							<EditWrapper stringId="HELP_RESOURCE_GUIDE.TEXT,HELP_RESOURCE_GUIDE.CONTACT_US" />
 						</div>
 						<div className="w-25" />
 					</div>
@@ -100,10 +111,7 @@ class HelpfulResourcesForm extends Component {
 						/>
 						<div className="text">
 							{STRINGS['HELP_TELEGRAM_TEXT']}
-							<BlueLink
-								href={STRINGS['HELP_TELEGRAM_LINK']}
-								text={STRINGS['HELP_TELEGRAM_LINK']}
-							/>
+							<BlueLink href={api_doc_link} text={api_doc_link} />
 							<EditWrapper stringId="HELP_TELEGRAM_TEXT,HELP_TELEGRAM_LINK" />
 						</div>
 						<div className="w-25" />

@@ -2,23 +2,13 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
-import { IconTitle, Accordion } from '../../components';
+import { IconTitle } from '../../components';
 
 import { ButtonLink, Wallet } from '../';
 
 class SidebarHub extends Component {
 	render() {
 		const { activePath, isLogged, icons: ICONS } = this.props;
-		const values = [
-			{
-				accordionClassName: 'sidebar_hub-section-content f-1',
-				stringId: 'WALLET_TITLE',
-				title: STRINGS['WALLET_TITLE'],
-				iconId: 'SIDEBAR_WALLET_ACTIVE',
-				icon: ICONS['SIDEBAR_WALLET_ACTIVE'],
-				content: <Wallet />,
-			},
-		];
 		return (
 			<div
 				className={classnames(
@@ -29,7 +19,7 @@ class SidebarHub extends Component {
 				<div className="d-flex sidebar_hub-content d-flex flex-column">
 					{isLogged ? (
 						<div>
-							<Accordion sections={values} />
+							<Wallet />
 						</div>
 					) : (
 						<div>

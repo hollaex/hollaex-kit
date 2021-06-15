@@ -8,6 +8,7 @@ import PluginConfigure from './PluginConfigure';
 import MyPlugins from './MyPlugins';
 import { removePlugin, requestPlugins, requestMyPlugins } from './action';
 import { STATIC_ICONS } from 'config/icons';
+import Spinner from './Spinner';
 
 import './index.css';
 
@@ -33,6 +34,7 @@ class Plugins extends Component {
 			removePluginName: '',
 			tabKey: 'explore',
 			pluginCards: [],
+			processing: false,
 		};
 		this.removeTimeout = null;
 	}
@@ -61,8 +63,12 @@ class Plugins extends Component {
 	}
 
 	getPluginsData = async () => {
-		await this.getPlugins();
-		await this.getMyPlugins();
+		try {
+			await this.getPlugins();
+			await this.getMyPlugins();
+		} catch (err) {
+			throw err;
+		}
 	};
 
 	getMyPlugins = (page = 1, limit = 50, params = {}) => {
@@ -72,7 +78,9 @@ class Plugins extends Component {
 					this.setState({ myPlugins: res.data });
 				}
 			})
-			.catch((err) => {});
+			.catch((err) => {
+				throw err;
+			});
 	};
 
 	getPlugins = (page = 1, limit = 50, params = {}) => {
@@ -89,6 +97,7 @@ class Plugins extends Component {
 			})
 			.catch((err) => {
 				this.setState({ loading: false });
+				throw err;
 			});
 	};
 
@@ -135,7 +144,6 @@ class Plugins extends Component {
 						(plugin) => plugin.name !== this.state.removePluginName
 					);
 					this.setState({ removePluginName: '', myPlugins });
-					message.success('Removed plugin successfully');
 				}, 2000);
 			})
 			.catch((err) => {
@@ -218,6 +226,27 @@ class Plugins extends Component {
 		});
 	};
 
+	handleRestart = (callback) => {
+		this.setProcessing();
+		setTimeout(() => {
+			this.getPluginsData()
+				.then(() => {
+					this.setProcessing(false, callback);
+				})
+				.catch(() => {
+					this.handleRestart(callback);
+				});
+		}, 30000);
+	};
+
+	setProcessing = (processing = true, callback) => {
+		this.setState({ processing }, () => {
+			if (callback) {
+				callback();
+			}
+		});
+	};
+
 	render() {
 		const {
 			loading,
@@ -232,6 +261,7 @@ class Plugins extends Component {
 			tabKey,
 			removePluginName,
 			pluginCards,
+			processing,
 		} = this.state;
 		if (loading || this.props.pluginsLoading) {
 			return (
@@ -267,6 +297,7 @@ class Plugins extends Component {
 							handlePluginList={this.handlePluginList}
 							updatePluginList={this.handleUpdatePluginList}
 							removePlugin={this.removePlugin}
+							restart={this.handleRestart}
 						/>
 					</div>
 				) : (
@@ -292,6 +323,7 @@ class Plugins extends Component {
 									getMyPlugins={this.getMyPlugins}
 									myPlugins={myPlugins}
 									pluginData={pluginData}
+									restart={this.handleRestart}
 								/>
 							</TabPane>
 						</Tabs>
@@ -319,6 +351,22 @@ class Plugins extends Component {
 								<h2>{selectedPlugin.name}</h2>
 								<div>This plugin is coming soon!</div>
 							</div>
+						</div>
+					</div>
+				</Modal>
+				<Modal
+					visible={processing}
+					closable={false}
+					centered={true}
+					footer={null}
+					maskClosable={false}
+				>
+					<div>
+						<div>
+							<h3 style={{ color: '#ffffff' }}>Plugins</h3>
+						</div>
+						<div className="d-flex align-items-center justify-content-center my-5 pt-3 pb-4">
+							<Spinner />
 						</div>
 					</div>
 				</Modal>

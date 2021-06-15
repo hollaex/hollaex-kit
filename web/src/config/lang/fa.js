@@ -801,8 +801,8 @@ const nestedContent = {
 	LOWEST_PRICE: 'کمترین قیمت ({0})', // new
 	PHASE: 'پایه', // new
 	INCOMING: 'ورودی', // new
-	PRICE_CURRENCY: 'قیمت ({0})',
-	AMOUNT_SYMBOL: 'مقدار ({0})',
+	PRICE_CURRENCY: 'قیمت',
+	AMOUNT_SYMBOL: 'مقدار',
 	MARKET_PRICE: 'قیمت بازار',
 	ORDER_PRICE: 'قیمت سفارش',
 	TOTAL_ORDER: 'کل سفارش',

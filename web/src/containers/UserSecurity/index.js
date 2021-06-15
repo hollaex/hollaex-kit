@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
-import { openContactForm } from '../../actions/appActions';
+import { openContactForm } from 'actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -12,9 +12,9 @@ import {
 	otpRevoke,
 } from '../../actions/userAction';
 import {
-	CustomTabs,
+	// CustomTabs,
 	CustomMobileTabs,
-	CustomTabBar,
+	// CustomTabBar,
 	MobileTabBar,
 	Dialog,
 	SuccessDisplay,
@@ -23,6 +23,7 @@ import {
 	Loader,
 	HeaderSection,
 	Button,
+	TabController,
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
@@ -37,6 +38,7 @@ import { getUserLogins } from '../../actions/userAction';
 
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+// import { ICONS } from 'config/constants';
 
 class UserVerification extends Component {
 	state = {
@@ -145,11 +147,12 @@ class UserVerification extends Component {
 						icon={ICONS.SETTING_NOTIFICATION_ICON}
 					/>
 				) : (
-					<CustomTabs
-						stringId={'ACCOUNT_SECURITY.OTP.TITLE'}
-						title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
-						icon={ICONS.SECURITY_OTP_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId={'ACCOUNT_SECURITY.OTP.TITLE'}
+					// 	title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
+					// 	icon={ICONS.SECURITY_OTP_ICON}
+					// />
+					<div>{STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}</div>
 				),
 				content: activeTab === 0 && (
 					<OTP
@@ -193,11 +196,12 @@ class UserVerification extends Component {
 						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
 					/>
 				) : (
-					<CustomTabs
-						stringId={'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE'}
-						title={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
-						icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId={'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE'}
+					// 	title={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
+					// 	icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
+					// />
+					<div>{STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}</div>
 				),
 				content: activeTab === 1 && (
 					<ChangePasswordForm
@@ -224,11 +228,12 @@ class UserVerification extends Component {
 						icon={ICONS.SECURITY_API_ICON}
 					/>
 				) : (
-					<CustomTabs
-						stringId={'DEVELOPER_SECTION.TITLE'}
-						title={STRINGS['DEVELOPER_SECTION.TITLE']}
-						icon={ICONS.SECURITY_API_ICON}
-					/>
+					// <CustomTabs
+					// 	stringId={'DEVELOPER_SECTION.TITLE'}
+					// 	title={STRINGS['DEVELOPER_SECTION.TITLE']}
+					// 	icon={ICONS.SECURITY_API_ICON}
+					// />
+					<div>{STRINGS['DEVELOPER_SECTION.TITLE']}</div>
 				),
 				content: activeTab === 2 && (
 					<DeveloperSection
@@ -313,11 +318,6 @@ class UserVerification extends Component {
 	/*logout = (message = '') => {
 			this.props.logout(typeof message === 'string' ? message : '');
 	};*/
-
-	openContactForm = () => {
-		const { links = {} } = this.props.constants;
-		this.props.openContactForm({ helpdesk: links.helpdesk });
-	};
 
 	handleOTPCheckbox = (checked = false) => {
 		if (checked) {
@@ -452,6 +452,7 @@ class UserVerification extends Component {
 		}
 		const { dialogIsOpen, modalText, activeTab, tabs, freeze } = this.state;
 		const { otp, email, otp_enabled } = this.props.user;
+		const { icons: ICONS, openContactForm } = this.props;
 		//const { onCloseDialog } = this;
 
 		if (freeze === true) {
@@ -467,7 +468,7 @@ class UserVerification extends Component {
 					<HeaderSection
 						stringId="ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_2"
 						title={STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.TITLE_2']}
-						openContactForm={this.openContactForm}
+						openContactForm={openContactForm}
 					>
 						<div> {STRINGS['ACCOUNT_SECURITY.FREEZE.CONTENT.MESSAGE_2']}</div>
 						<div className="mb-2">
@@ -495,18 +496,20 @@ class UserVerification extends Component {
 			);
 		}
 		return (
-			<div>
+			<div className="user-security-container">
 				{!isMobile && (
 					<IconTitle
 						stringId="ACCOUNTS.TAB_SECURITY"
 						text={STRINGS['ACCOUNTS.TAB_SECURITY']}
+						iconId="TAB_SECURITY"
+						iconPath={ICONS['TAB_SECURITY']}
 						textType="title"
 					/>
 				)}
 				<HeaderSection
 					stringId="ACCOUNTS.TAB_SETTINGS"
 					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
-					openContactForm={this.openContactForm}
+					openContactForm={openContactForm}
 				>
 					<div className="header-content">
 						<div>{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}</div>
@@ -535,7 +538,7 @@ class UserVerification extends Component {
 				</Dialog>
 
 				{!isMobile ? (
-					<CustomTabBar
+					<TabController
 						activeTab={activeTab}
 						setActiveTab={this.setActiveTab}
 						tabs={tabs}
@@ -555,7 +558,7 @@ class UserVerification extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	logins: state.wallet.deposits,
+	logins: state.wallet.logins,
 	user: state.user,
 	activeLanguage: state.app.language,
 	activeTheme: state.app.theme,

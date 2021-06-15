@@ -83,5 +83,28 @@
 			color: $colors-main-black;
 			border-color: $colors-main-black;
 		}
+
+		&.active_search_button {
+			animation: shine 2s linear infinite alternate;
+			animation-fill-mode: both;
+			color: $colors-black;
+			box-shadow: 0 0 8px 0.1px $app-sidebar-background;
+			position: relative;
+		}
+	}
+}
+
+@keyframes shine {
+	10% {
+		color: $colors-black;
+		box-shadow: 0 0 8px 0.1px $app-sidebar-background;
+		transition-property: color, box-shadow;
+		transition-duration: 0.7s, 0.7s;
+		transition-timing-function: ease;
+	}
+	100% {
+		color: $colors-main-black;
+		box-shadow: 0 0 8px 0.1px $colors-black;
+		transition-property: color, box-shadow;
 	}
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import { InputNumber, Input, DatePicker, Select, Checkbox } from 'antd';
+import { InputNumber, Input, DatePicker, Select, Checkbox, Radio } from 'antd';
 import moment from 'moment';
 import TextArea from 'antd/lib/input/TextArea';
 import classname from 'classnames';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import './index.css';
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormatDefault = 'YYYY/MM/DD';
 
 export const renderInputField = ({
 	input,
@@ -19,9 +19,11 @@ export const renderInputField = ({
 	disabled = false,
 	isClosable = false,
 	closeCallback = () => {},
+	description = '',
 }) => (
 	<div className={classname('input_field', className)}>
 		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
 		<div>
 			<div className="d-flex align-items-center">
 				<Input
@@ -73,10 +75,12 @@ export const renderNumberField = ({
 	input,
 	label,
 	meta: { touched, error, warning },
+	description = '',
 	...rest
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
 		<div>
 			<InputNumber {...rest} {...input} />
 			{touched &&
@@ -104,9 +108,13 @@ export const renderSelectField = ({
 	disabled = false,
 	multiSelect = false,
 	renderOptions = renderDefaultOptions,
+	placeholder,
 	...rest
 }) => {
-	let value = inputProps.value || '';
+	let value;
+	if (inputProps.value) {
+		value = inputProps.value || '';
+	}
 	if (
 		(multiSelect || rest.mode === 'tags') &&
 		typeof inputProps.value === 'string'
@@ -121,7 +129,7 @@ export const renderSelectField = ({
 					mode={multiSelect ? 'multiple' : 'default'}
 					{...inputProps}
 					value={value}
-					placeholder={label}
+					placeholder={placeholder || label}
 					disabled={disabled}
 					{...rest}
 				>
@@ -141,17 +149,24 @@ export const renderDateField = ({
 	placeholder,
 	meta: { touched, error, warning },
 	disabled = false,
+	description = '',
+	dateFormat = dateFormatDefault,
+	showTime = false,
+	clearIcon
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
 		<div>
 			<DatePicker
 				defaultValue={moment(input.value || new Date(), dateFormat)}
 				onChange={input.onChange}
 				format={dateFormat}
 				disabled={disabled}
+				showTime={showTime}
 				placeholder={placeholder}
 				value={moment(input.value || new Date(), dateFormat)}
+				clearIcon={clearIcon}
 			/>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
@@ -173,10 +188,10 @@ export const renderRangeField = ({
 				onChange={input.onChange}
 				disabled={disabled}
 				defaultValue={[
-					moment(input.value[0], dateFormat),
-					moment(input.value[1], dateFormat),
+					moment(input.value[0], dateFormatDefault),
+					moment(input.value[1], dateFormatDefault),
 				]}
-				format={dateFormat}
+				format={dateFormatDefault}
 			/>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
@@ -196,6 +211,28 @@ export const renderCheckField = ({
 			<Checkbox {...input} disabled={disabled}>
 				{label}
 			</Checkbox>
+			{touched &&
+				((error && <span className="red-text">{error}</span>) ||
+					(warning && <span className="red-text">{warning}</span>))}
+		</div>
+	</div>
+);
+
+export const renderBooleanField = ({
+	input,
+	label,
+	meta: { touched, error, warning },
+	disabled = false,
+	description = '',
+}) => (
+	<div className="input_field">
+		{label && <label>{label}</label>}
+		{description ? <div>{description}</div> : null}
+		<div className="check_field">
+			<Radio.Group {...input} disabled={disabled}>
+				<Radio value={true}>True</Radio>
+				<Radio value={false}>false</Radio>
+			</Radio.Group>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
 					(warning && <span className="red-text">{warning}</span>))}

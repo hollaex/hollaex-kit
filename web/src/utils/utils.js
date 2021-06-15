@@ -1,6 +1,7 @@
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import math from 'mathjs';
+import _toLower from 'lodash/toLower';
 import {
 	TOKEN_TIME,
 	TIMESTAMP_FORMAT,
@@ -16,7 +17,7 @@ const bitcoin = {
 	BASE_FEE: 10000,
 };
 
-const CHART_RESOLUTION_KEY = 'chart_resolution';
+const CHART_RESOLUTION_KEY = 'chart_resolution_data';
 
 /**
  * convert a BTC value to Satoshi
@@ -257,10 +258,33 @@ export const playBackgroundAudioNotification = (
 	if (audioFile) audio.play();
 };
 
-export const setChartResolution = (resolution) => {
-	localStorage.setItem(CHART_RESOLUTION_KEY, resolution);
+export const setChartResolution = (resolution, pair) => {
+	try {
+		const prevObj = localStorage.getItem(CHART_RESOLUTION_KEY);
+		let prevObjData = prevObj ? JSON.parse(prevObj) : {};
+		prevObjData[pair] = resolution;
+		localStorage.setItem(CHART_RESOLUTION_KEY, JSON.stringify(prevObjData));
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 export const getChartResolution = () => {
-	return localStorage.getItem(CHART_RESOLUTION_KEY);
+	try {
+		const resolutionData = localStorage.getItem(CHART_RESOLUTION_KEY);
+		return resolutionData ? JSON.parse(resolutionData) : {};
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+export const handleUpgrade = (info = {}) => {
+	if (
+		_toLower(info.type) === 'diy' ||
+		(_toLower(info.plan) !== 'crypto' && _toLower(info.plan) !== 'fiat')
+	) {
+		return true;
+	} else {
+		return false;
+	}
 };

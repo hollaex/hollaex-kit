@@ -94,8 +94,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`Sie haben eine neue Einzahlung von ${amount} ${currency.toUpperCase()} in Ihrer ${API_NAME()} Geldbörse ausstehend. Bitte warten Sie, bis die Transaktion bestätigt ist und Ihr Guthaben in Ihrer Geldbörse verfügbar ist. Ihre Transaktion erfordert ${confirmation} Bestätigung(en) in der Blockchain.`,
+		PENDING: (amount, confirmation, currency) =>
+			`Sie haben eine neue Einzahlung von ${amount} ${currency.toUpperCase()} in Ihrer ${API_NAME()} Geldbörse ausstehend. Bitte warten Sie, bis die Transaktion bestätigt ist und Ihr Guthaben in Ihrer Geldbörse verfügbar ist.${confirmation ? ` Ihre Transaktion erfordert ${confirmation} Bestätigung(en) in der Blockchain.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Ihre ${
 				currency.toUpperCase()
@@ -106,7 +106,8 @@ const DEPOSIT = {
 		2: (status) => `Status: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -156,16 +157,17 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
-			`Sie haben eine Auszahlungsanforderung für ${amount} ${currency.toUpperCase()} an die Adresse ${address} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.`,
-		COMPLETED: (amount, address, currency) =>
-			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()}  wurde bearbeitet und an die Adresse ${address} gesendet.`,
+		PENDING: (amount, currency) =>
+			`Sie haben eine Auszahlungsanforderung für ${amount} ${currency.toUpperCase()} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.`,
+		COMPLETED: (amount, currency) =>
+			`Ihr Auszahlungsantrag für ${amount} ${currency.toUpperCase()} wurde bearbeitet.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -180,10 +182,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Adresse: ${address}`,
-		5: 'Um diese Auszahlung zu bestätigen, klicken Sie bitte auf die Taste unten.',
-		6: 'Bestätigen',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'Um diese Auszahlung zu bestätigen, klicken Sie bitte auf die Taste unten.',
+		7: 'Bestätigen',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -273,6 +276,25 @@ const SMS = {
 		`Ihre ${currency.toUpperCase()} Abhebung für den Betrag von ${amount} wurde bestätigt.`
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -293,5 +315,7 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

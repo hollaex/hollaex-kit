@@ -1,9 +1,9 @@
-@mixin exir-tooltip(
+@mixin holla-tooltip(
 	$background-color,
 	$border-color,
 	$font-color: $border-color
 ) {
-	&.exir-tooltip {
+	&.holla-tooltip {
 		opacity: 1 !important;
 		background-color: transparent !important;
 
@@ -23,5 +23,5 @@
 }
 
 .light-theme {
-	@include exir-tooltip($app-background-color, $colors-main-black);
+	@include holla-tooltip($app-background-color, $colors-main-black);
 }

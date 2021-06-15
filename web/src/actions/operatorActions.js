@@ -21,6 +21,21 @@ export const updateConfigs = async (configs) => {
 	return requestAuthenticated('/admin/kit', options);
 };
 
+export const updateInjectedHTML = (injected_html) => {
+	const constants = {
+		kit: {
+			injected_html,
+		},
+	};
+
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(constants),
+	};
+
+	return requestAuthenticated('/admin/kit', options);
+};
+
 export const getKitData = async () => {
 	const { data } = await axios.get('/kit');
 	return data;
@@ -41,16 +56,16 @@ export const publish = async (configs = {}) => {
 		...configs,
 		...(logo_image ? { logo_image } : {}),
 	});
-	console.info('Published Successfully');
 };
 
-export const pushVersions = async (configs) => {
+export const pushVersions = async (configs = {}) => {
+	const { sections = {}, ...rest } = configs;
 	const versions = await getVersions();
 	const uniqid = Date.now();
 	Object.keys(configs).forEach((key) => {
 		versions[key] = `${key}-${uniqid}`;
 	});
-	return { ...configs, meta: { versions } };
+	return { ...rest, meta: { versions, sections } };
 };
 
 export const upload = (formData) => {

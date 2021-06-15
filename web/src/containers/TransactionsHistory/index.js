@@ -17,7 +17,7 @@ import {
 	IconTitle,
 	TabController,
 	Loader,
-	CheckTitle,
+	// CheckTitle,
 	Dialog,
 	Button,
 	CurrencyBallWithPrice,
@@ -131,10 +131,10 @@ class TransactionsHistory extends Component {
 		} = this.props;
 
 		switch (activeTab) {
-			case 0:
+			case 1:
 				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: false });
 				break;
-			case 1:
+			case 0:
 				getUserTrades(RECORD_LIMIT, 1, params);
 				break;
 			case 2:
@@ -165,7 +165,7 @@ class TransactionsHistory extends Component {
 
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
-		const { pairs } = this.props;
+		const { pairs, icons: ICONS } = this.props;
 		this.setState({
 			headers: {
 				orders: isMobile
@@ -174,8 +174,18 @@ class TransactionsHistory extends Component {
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
 					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
-				deposits: generateDepositsHeaders(symbol, coins, withdrawalPopup),
-				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup),
+				deposits: generateDepositsHeaders(
+					symbol,
+					coins,
+					withdrawalPopup,
+					ICONS
+				),
+				withdrawals: generateWithdrawalsHeaders(
+					symbol,
+					coins,
+					withdrawalPopup,
+					ICONS
+				),
 			},
 		});
 	}
@@ -256,7 +266,7 @@ class TransactionsHistory extends Component {
 		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
 		const apiPageTemp = Math.floor((pageNumber + 1) / 2);
 		switch (this.state.activeTab) {
-			case 0:
+			case 1:
 				if (
 					RECORD_LIMIT === pageCount * pageTemp &&
 					apiPageTemp >= orders.page &&
@@ -269,7 +279,7 @@ class TransactionsHistory extends Component {
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
-			case 1:
+			case 0:
 				if (
 					RECORD_LIMIT === pageCount * pageTemp &&
 					apiPageTemp >= trades.page &&
@@ -277,7 +287,6 @@ class TransactionsHistory extends Component {
 				) {
 					this.props.getUserTrades(RECORD_LIMIT, trades.page + 1, {
 						...params,
-						open: false,
 					});
 					this.setState({ jumpToPage: pageNumber });
 				}
@@ -331,7 +340,7 @@ class TransactionsHistory extends Component {
 		};
 
 		switch (activeTab) {
-			case 0:
+			case 1:
 				props.stringId = 'ORDER_HISTORY';
 				props.title = `${STRINGS['ORDER_HISTORY']}`;
 				props.headers = headers.orders;
@@ -343,7 +352,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = downloadUserOrders;
 				props.filters = filters.orders;
 				break;
-			case 1:
+			case 0:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
 				props.title = `${STRINGS['TRANSACTION_HISTORY.TITLE_TRADES']}`;
 				props.headers = headers.trades;
@@ -407,7 +416,7 @@ class TransactionsHistory extends Component {
 						stringId="TRANSACTION_HISTORY.TITLE"
 						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
 						iconId="TRANSACTION_HISTORY"
-						iconPath={ICONS['TRANSACTION_HISTORY']}
+						iconPath={ICONS['TAB_HISTORY']}
 						textType="title"
 					/>
 				)}
@@ -415,50 +424,54 @@ class TransactionsHistory extends Component {
 					tabs={[
 						{
 							title: isMobile ? (
-								STRINGS['ORDER_HISTORY']
+								STRINGS['TRANSACTION_HISTORY.TRADES']
 							) : (
-								<CheckTitle
-									stringId="ORDER_HISTORY"
-									title={STRINGS['ORDER_HISTORY']}
-									iconId="TRADE_HISTORY"
-									icon={ICONS['TRADE_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="TRANSACTION_HISTORY.TRADES"
+								// 	title={STRINGS['TRANSACTION_HISTORY.TRADES']}
+								// 	iconId="TRADE_HISTORY"
+								// 	icon={ICONS['TRADE_HISTORY']}
+								// />
+								<div>{STRINGS['TRANSACTION_HISTORY.TRADES']}</div>
 							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS['TRANSACTION_HISTORY.TRADES']
+								STRINGS['ORDER_HISTORY']
 							) : (
-								<CheckTitle
-									stringId="TRANSACTION_HISTORY.TRADES"
-									title={STRINGS['TRANSACTION_HISTORY.TRADES']}
-									iconId="TRADE_HISTORY"
-									icon={ICONS['TRADE_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="ORDER_HISTORY"
+								// 	title={STRINGS['ORDER_HISTORY']}
+								// 	iconId="TRADE_HISTORY"
+								// 	icon={ICONS['TRADE_HISTORY']}
+								// />
+								<div>{STRINGS['ORDER_HISTORY']}</div>
 							),
 						},
 						{
 							title: isMobile ? (
 								STRINGS['TRANSACTION_HISTORY.DEPOSITS']
 							) : (
-								<CheckTitle
-									stringId="TRANSACTION_HISTORY.DEPOSITS"
-									title={STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
-									iconId="DEPOSIT_HISTORY"
-									icon={ICONS['DEPOSIT_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="TRANSACTION_HISTORY.DEPOSITS"
+								// 	title={STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+								// 	iconId="DEPOSIT_HISTORY"
+								// 	icon={ICONS['DEPOSIT_HISTORY']}
+								// />
+								<div>{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}</div>
 							),
 						},
 						{
 							title: isMobile ? (
 								STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']
 							) : (
-								<CheckTitle
-									stringId="TRANSACTION_HISTORY.WITHDRAWALS"
-									title={STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
-									iconId="WITHDRAW_HISTORY"
-									icon={ICONS['WITHDRAW_HISTORY']}
-								/>
+								// <CheckTitle
+								// 	stringId="TRANSACTION_HISTORY.WITHDRAWALS"
+								// 	title={STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+								// 	iconId="WITHDRAW_HISTORY"
+								// 	icon={ICONS['WITHDRAW_HISTORY']}
+								// />
+								<div>{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}</div>
 							),
 						},
 					]}

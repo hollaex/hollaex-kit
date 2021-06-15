@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import classnames from 'classnames';
 import { Select, Form, Row, DatePicker, Button, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { dateFilters } from '../filterUtils';
@@ -8,9 +9,11 @@ const { RangePicker } = DatePicker;
 
 const Filters = ({ pairs, onSearch, formName }) => {
 	const [form] = Form.useForm();
+	const [isSearchShining, setIsSearchShining] = useState(false);
 
 	const onFinish = (values) => {
 		onSearch(values);
+		setIsSearchShining(false);
 	};
 
 	const onValuesChange = ({ size }, _) => {
@@ -20,6 +23,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 			} = dateFilters;
 			form.setFieldsValue({ range });
 		}
+		setIsSearchShining(true);
 	};
 
 	return (
@@ -49,7 +53,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 							width: 100,
 						}}
 						size="small"
-						className="custom-select-input-style no-border elevated"
+						className="custom-select-input-style elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
@@ -79,7 +83,12 @@ const Filters = ({ pairs, onSearch, formName }) => {
 					/>
 				</Form.Item>
 				<Form.Item>
-					<Button type="ghost" htmlType="submit" size="small">
+					<Button
+						type="ghost"
+						htmlType="submit"
+						size="small"
+						className={classnames({ active_search_button: isSearchShining })}
+					>
 						Search
 					</Button>
 				</Form.Item>

@@ -1,5 +1,4 @@
 import flatten from 'flat';
-import coinIcons from './coins';
 
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
@@ -7,6 +6,7 @@ const nestedIcons = {
 		FAV_ICON: '/favicon.ico',
 		LOADER: '/assets/loader-dark.gif',
 		BOARDING_IMAGE: '/assets/background.png',
+		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
 
 	TRADE: {
@@ -81,19 +81,6 @@ const nestedIcons = {
 		OTP_ICON: '/assets/images/2fa-security-icon.svg',
 		CHANGE_PASSWORD_ICON: '/assets/images/password-security-icon.svg',
 		API_ICON: '/assets/images/api-security-icon.svg',
-	},
-
-	LEVEL_ACCOUNT: {
-		ICON_1: '/assets/images/level-1.svg',
-		ICON_2: '/assets/images/level-2.svg',
-		ICON_3: '/assets/images/level-3.svg',
-		ICON_4: '/assets/images/level-4.svg',
-		ICON_5: '/assets/images/level-5.svg',
-		ICON_6: '/assets/images/level-6.svg',
-		ICON_7: '/assets/images/level-7.svg',
-		ICON_8: '/assets/images/level-8.svg',
-		ICON_9: '/assets/images/level-9.svg',
-		ICON_10: '/assets/images/level-10.svg',
 	},
 
 	FEATURES: {
@@ -248,8 +235,6 @@ const nestedIcons = {
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
-
-	...coinIcons,
 };
 
 const icons = flatten(nestedIcons, options);

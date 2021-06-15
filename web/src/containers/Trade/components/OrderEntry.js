@@ -8,7 +8,6 @@ import mathjs from 'mathjs';
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
 import {
-	toFixed,
 	formatNumber,
 	// formatBaseAmount,
 	roundNumber,
@@ -29,7 +28,7 @@ import {
 	step,
 	normalizeFloat,
 } from '../../../components/Form/validations';
-import { Loader } from '../../../components';
+import { Loader, Tooltip } from '../../../components';
 import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
@@ -98,6 +97,46 @@ class OrderEntry extends Component {
 		}
 	}
 
+	calculateOrderForBudget = (budget, orders = []) =>
+		orders.reduce(
+			([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
+				if (mathjs.larger(budget, accumulatedPrice)) {
+					const remainingBudget = mathjs.subtract(budget, accumulatedPrice);
+					const orderPrice = mathjs.multiply(size, price);
+					if (mathjs.largerEq(remainingBudget, orderPrice)) {
+						return [
+							mathjs.sum(accumulatedPrice, orderPrice),
+							mathjs.sum(accumulatedSize, size),
+						];
+					} else {
+						const remainingSize = mathjs.divide(remainingBudget, price);
+						return [
+							mathjs.sum(accumulatedPrice, remainingBudget),
+							mathjs.sum(accumulatedSize, remainingSize),
+						];
+					}
+				} else {
+					return [accumulatedPrice, accumulatedSize];
+				}
+			},
+			[0, 0]
+		);
+
+	calculateMarketOrder = (percent) => {
+		const { pair_2, balance = {}, side, pairsOrderbooks, pair } = this.props;
+
+		const availableBalance = balance[`${pair_2}_available`];
+		const budget = mathjs.multiply(
+			availableBalance,
+			mathjs.divide(percent, 100)
+		);
+
+		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
+			pairsOrderbooks[pair] || {};
+
+		return this.calculateOrderForBudget(budget, orders);
+	};
+
 	setMax = (percent = 100) => {
 		const {
 			side,
@@ -122,10 +161,12 @@ class OrderEntry extends Component {
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
 
-		const calculatedSize = mathjs.multiply(
-			maxSize,
-			mathjs.divide(percent, 100)
-		);
+		let calculatedSize;
+		if (type === 'market' && side === 'buy') {
+			calculatedSize = this.calculateMarketOrder(percent)[1];
+		} else {
+			calculatedSize = mathjs.multiply(maxSize, mathjs.divide(percent, 100));
+		}
 
 		if (calculatedSize !== size) {
 			this.props.change(
@@ -199,7 +240,20 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { increment_size, increment_price, settings } = this.props;
+		const {
+			increment_size,
+			increment_price,
+			settings,
+			price,
+			size,
+			side,
+			type,
+			balance = {},
+			pair_base,
+			pair_2,
+			change,
+			focusOnSizeInput,
+		} = this.props;
 
 		const order = {
 			...values,
@@ -212,6 +266,21 @@ class OrderEntry extends Component {
 		} else if (values.price) {
 			order.price = formatNumber(values.price, getDecimals(increment_price));
 		}
+
+		if (values.order_type === 'stops') {
+			order.stop = formatNumber(values.stop, getDecimals(increment_price));
+		} else {
+			delete order.stop;
+		}
+
+		if (values.post_only) {
+			order.meta = {
+				post_only: values.post_only,
+			};
+		}
+
+		delete order.post_only;
+		delete order.order_type;
 
 		return this.props.submitOrder(order).then(() => {
 			if (
@@ -235,6 +304,31 @@ class OrderEntry extends Component {
 					this.props.settings
 				);
 			}
+
+			if (
+				type === values.type &&
+				price === values.price &&
+				size === values.size &&
+				side === values.side
+			) {
+				let availableBalance;
+				if (side === 'buy') {
+					availableBalance = balance[`${pair_2}_available`];
+					if (
+						mathjs.larger(mathjs.multiply(2, price, size), availableBalance)
+					) {
+						change(FORM_NAME, 'size', '');
+						focusOnSizeInput();
+					}
+				} else {
+					availableBalance = balance[`${pair_base}_available`];
+					if (mathjs.larger(mathjs.multiply(2, size), availableBalance)) {
+						change(FORM_NAME, 'size', '');
+						focusOnSizeInput();
+					}
+				}
+			}
+
 			// this.setState({ initialValues: values });
 		});
 	};
@@ -362,7 +456,7 @@ class OrderEntry extends Component {
 				label: 'Trigger price',
 				type: 'number',
 				placeholder: '0',
-				normalize: normalizeFloat,
+				normalize: (value = '') => normalizeFloat(value, increment_price),
 				step: increment_price,
 				...(side === 'buy'
 					? {
@@ -387,7 +481,7 @@ class OrderEntry extends Component {
 				label: STRINGS['PRICE'],
 				type: 'number',
 				placeholder: '0',
-				normalize: normalizeFloat,
+				normalize: (value = '') => normalizeFloat(value, increment_price),
 				step: increment_price,
 				min: min_price,
 				max: max_price,
@@ -429,28 +523,12 @@ class OrderEntry extends Component {
 				),
 				type: 'number',
 				placeholder: '0.00',
-				normalize: normalizeFloat,
+				normalize: (value = '') => normalizeFloat(value, increment_size),
 				step: increment_size,
 				min: min_size,
 				max: max_size,
 				validate: [required, minValue(min_size), maxValue(max_size)],
 				currency: symbol.toUpperCase(),
-				parse: (value = '') => {
-					let decimal = getDecimals(increment_size);
-					let decValue = toFixed(value);
-					let valueDecimal = getDecimals(decValue);
-
-					let result = value;
-					if (decimal < valueDecimal) {
-						result = decValue
-							.toString()
-							.substring(
-								0,
-								decValue.toString().length - (valueDecimal - decimal)
-							);
-					}
-					return result;
-				},
 				setRef: this.props.setSizeRef,
 			},
 			slider: {
@@ -460,7 +538,11 @@ class OrderEntry extends Component {
 			},
 			postOnly: {
 				name: 'post_only',
-				label: <span className="px-1">{STRINGS['POST_ONLY']}</span>,
+				label: (
+					<Tooltip text={STRINGS['POST_ONLY_TOOLTIP']} className="light-theme">
+						<span className="px-1 post-only-txt">{STRINGS['POST_ONLY']}</span>
+					</Tooltip>
+				),
 				type: 'checkbox',
 				className: 'align-start my-0',
 			},
@@ -533,6 +615,7 @@ class OrderEntry extends Component {
 					orderType={orderType}
 				>
 					<Review
+						side={side}
 						price={price}
 						size={size}
 						type={type}
@@ -585,6 +668,7 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		settings: state.user.settings,
 		coins: state.app.coins,
+		pairsOrderbooks: state.orderbook.pairsOrderbooks,
 		asks,
 		bids,
 		marketPrice,

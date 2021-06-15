@@ -50,3 +50,15 @@ export const checkS3bucketUrl = (value = '') =>
 	value.split(':').length !== 2 || !value.split(':')[1].trim()
 		? 'Bucket should be a form like <S3_BUCKET_NAME>:<AWS_REGION_NAME>'
 		: undefined;
+
+export const validateDiscount = (rule, value) => {
+	if (value && (value < 0 || value > 100)) {
+		return Promise.reject('Value must be between 0 to 100');
+	} else {
+		return Promise.resolve();
+	}
+};
+export const validateBoolean = (value) =>
+	value || value === false ? undefined : 'Required';
+export const validateNumber = (value) =>
+	value || value === 0 ? undefined : 'Required';

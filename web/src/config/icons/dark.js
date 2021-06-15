@@ -1,5 +1,4 @@
 import flatten from 'flat';
-import coinIcons from './coins';
 
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
@@ -8,6 +7,7 @@ const nestedIcons = {
 		FAV_ICON: '/favicon.ico',
 		LOADER: '/assets/loader-dark.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
+		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
 
 	TRADE: {
@@ -140,6 +140,7 @@ const nestedIcons = {
 	RED_ARROW: '/assets/acounts/account-icons-16.svg',
 	BLUE_CLIP: '/assets/acounts/account-icons-17.svg',
 	BLACK_CHECK: '/assets/acounts/account-icons-19.svg',
+	UNDEFINED_ERROR: '/assets/acounts/unknown-error-icon-01.svg',
 
 	OTP_KEYS: '/assets/acounts/account-icons-29.svg',
 	GREEN_CHECK: '/assets/acounts/account-icons-23.svg',
@@ -245,8 +246,11 @@ const nestedIcons = {
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
+	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',
 
-	...coinIcons,
+	//should move this to the plugin itself once the functionality is added
+	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
+	OSKO_LOGO: '/assets/icons/osko-logo.svg',
 };
 
 const icons = flatten(nestedIcons, options);

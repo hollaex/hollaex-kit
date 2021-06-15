@@ -160,6 +160,14 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			network_id: {
 				type: DataTypes.INTEGER
+			},
+			discount: {
+				type: DataTypes.DOUBLE,
+				defaultValue: 0
+			},
+			meta: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
 			}
 		},
 		{

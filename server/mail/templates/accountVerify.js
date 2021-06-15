@@ -11,7 +11,7 @@ const fetchMessage = (email, data, language, domain) => {
 
 const html = (email, data, language, domain) => {
 	const link = `${domain}/trade`;
-	const { ACCOUNTVERIFY } = require('../strings').languageFile(language);
+    const ACCOUNTVERIFY = require('../strings').getStringObject(language, 'ACCOUNTVERIFY');
 	return `
         <div>
             <p>
@@ -31,7 +31,7 @@ const html = (email, data, language, domain) => {
 
 const text = (email, data, language, domain) => {
 	const link = `${domain}/trade`;
-	const { ACCOUNTVERIFY } = require('../strings').languageFile(language);
+    const ACCOUNTVERIFY = require('../strings').getStringObject(language, 'ACCOUNTVERIFY');
 	return `
         ${ACCOUNTVERIFY.GREETING(email)}
         ${ACCOUNTVERIFY.BODY[1]}

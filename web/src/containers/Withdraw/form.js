@@ -9,18 +9,20 @@ import {
 	change,
 } from 'redux-form';
 import math from 'mathjs';
-import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
+// import classnames from 'classnames';
+// import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, PLUGIN_URL } from '../../config/constants';
 import { calculateBaseFee } from './utils';
-
+import Fiat from 'containers/Deposit/Fiat';
+import Image from 'components/Image';
 import STRINGS from '../../config/localizedStrings';
+import { getToken } from 'utils/token';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -183,7 +185,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			initialValues, // eslint-disable-line
+			// initialValues, // eslint-disable-line
 			currency,
 			data,
 			openContactForm,
@@ -191,49 +193,82 @@ class Form extends Component {
 			currentPrice,
 			activeTheme,
 			coins,
+			titleSection,
+			icons: ICONS,
+			selectedNetwork,
+			router,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
+		const hasDestinationTag =
+			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
-		return (
-			<form autoComplete="off">
-				<div className={classnames({ 'w-50': !isMobile })}>
-					{renderFields(formValues)}
-					{error && <div className="warning_text">{error}</div>}
-				</div>
-				<Button
-					label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-					disabled={pristine || submitting || !valid}
-					onClick={this.onOpenDialog}
+		const coinObject = coins[currency];
+		if (coinObject && !coinObject.meta.is_fiat) {
+			return (
+				<form autoComplete="off" className="withdraw-form-wrapper">
+					<div className="withdraw-form">
+						<Image
+							iconId={`${currency.toUpperCase()}_ICON`}
+							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							wrapperClassName="form_currency-ball"
+						/>
+						{titleSection}
+						{renderFields(formValues)}
+						{error && <div className="warning_text">{error}</div>}
+					</div>
+					<div className="btn-wrapper">
+						<Button
+							label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+							disabled={pristine || submitting || !valid}
+							onClick={this.onOpenDialog}
+							className="mb-3"
+						/>
+					</div>
+					<Dialog
+						isOpen={dialogIsOpen}
+						label="withdraw-modal"
+						onCloseDialog={this.onCloseDialog}
+						shouldCloseOnOverlayClick={dialogOtpOpen}
+						theme={activeTheme}
+						showCloseText={false}
+					>
+						{dialogOtpOpen ? (
+							<OtpForm
+								onSubmit={this.onSubmitOtp}
+								onClickHelp={openContactForm}
+							/>
+						) : !submitting ? (
+							<ReviewModalContent
+								coins={coins}
+								currency={currency}
+								data={data}
+								price={currentPrice}
+								onClickAccept={this.onAcceptDialog}
+								onClickCancel={this.onCloseDialog}
+								hasDestinationTag={hasDestinationTag}
+							/>
+						) : (
+							<Loader relative={true} background={false} />
+						)}
+					</Dialog>
+				</form>
+			);
+		} else if (coinObject && coinObject.meta.is_fiat) {
+			return (
+				<Fiat
+					id="REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW"
+					icons={ICONS}
+					titleSection={titleSection}
+					currency={currency}
+					router={router}
+					plugin_url={PLUGIN_URL}
+					token={getToken()}
 				/>
-				<Dialog
-					isOpen={dialogIsOpen}
-					label="withdraw-modal"
-					onCloseDialog={this.onCloseDialog}
-					shouldCloseOnOverlayClick={dialogOtpOpen}
-					theme={activeTheme}
-					showCloseText={false}
-				>
-					{dialogOtpOpen ? (
-						<OtpForm
-							onSubmit={this.onSubmitOtp}
-							onClickHelp={openContactForm}
-						/>
-					) : !submitting ? (
-						<ReviewModalContent
-							coins={coins}
-							currency={currency}
-							data={data}
-							price={currentPrice}
-							onClickAccept={this.onAcceptDialog}
-							onClickCancel={this.onCloseDialog}
-						/>
-					) : (
-						<Loader relative={true} background={false} />
-					)}
-				</Dialog>
-			</form>
-		);
+			);
+		} else {
+			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
+		}
 	}
 }
 
@@ -244,13 +279,14 @@ const WithdrawForm = reduxForm({
 		dispatch(reset(FORM_NAME));
 		setWithdrawEmailConfirmation(data, dispatch);
 	},
-	// enableReinitialize: true,
+	enableReinitialize: true,
 	validate,
 })(Form);
 
 const mapStateToForm = (state) => ({
 	data: selector(
 		state,
+		'network',
 		'address',
 		'destination_tag',
 		'amount',

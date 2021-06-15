@@ -28,6 +28,12 @@ export default class SetupWizard extends Component {
 				timezone: 'UTC',
 				language: 'en',
 			},
+			tradeInitialvalues: {
+				pro_trade: true,
+				quick_trade: true,
+				chat: false,
+				home_page: true,
+			},
 		};
 	}
 
@@ -61,6 +67,7 @@ export default class SetupWizard extends Component {
 					? secrets.captcha.secret_key
 					: '',
 		};
+		let tradeInitialvalues = { ...this.state.tradeInitialvalues };
 		if (secrets.emails) {
 			emailInitialvalues = {
 				...emailInitialvalues,
@@ -85,10 +92,17 @@ export default class SetupWizard extends Component {
 				password: secrets.smtp.password !== 'null' ? secrets.smtp.password : '',
 			};
 		}
+		if (kit.features) {
+			tradeInitialvalues = {
+				...tradeInitialvalues,
+				...kit.features,
+			};
+		}
 		this.setState({
 			constants: data,
 			emailInitialvalues,
 			timeZoneInitialValues,
+			tradeInitialvalues,
 		});
 	};
 
@@ -112,12 +126,18 @@ export default class SetupWizard extends Component {
 	};
 
 	renderStep = () => {
-		const { currentTab, constants } = this.state;
+		const {
+			currentTab,
+			constants,
+			tradeInitialvalues,
+			timeZoneInitialValues,
+			emailInitialvalues,
+		} = this.state;
 		switch (currentTab) {
 			case 0:
 				return (
 					<TimeZone
-						initialValues={this.state.timeZoneInitialValues}
+						initialValues={timeZoneInitialValues}
 						handleNext={this.onTabChange}
 						updateConstants={this.updateConstants}
 					/>
@@ -135,9 +155,10 @@ export default class SetupWizard extends Component {
 			case 3:
 				return (
 					<TradingInterface
-						initialValues={constants.kit.features}
+						initialValues={tradeInitialvalues}
 						handleNext={this.onTabChange}
 						updateConstants={this.updateConstants}
+						kit={constants.kit}
 					/>
 				);
 			case 4:
@@ -146,7 +167,7 @@ export default class SetupWizard extends Component {
 						handleNext={this.onTabChange}
 						updateConstants={this.updateConstants}
 						setPreview={this.setPreview}
-						initialValues={this.state.emailInitialvalues}
+						initialValues={emailInitialvalues}
 					/>
 				);
 			default:

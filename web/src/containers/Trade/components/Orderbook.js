@@ -40,6 +40,7 @@ const PriceRow = (
 	const fillStyle = {
 		backgroundSize: `${calcPercentage(amount, maxCumulative)}% 100%`,
 	};
+	const totalAmount = isBase ? cumulative : cumulativePrice;
 
 	return (
 		<div
@@ -55,18 +56,21 @@ const PriceRow = (
 				style={fillStyle}
 			>
 				<div
-					className={`f-1 trade_orderbook-cell trade_orderbook-cell pointer`}
+					className={`f-1 trade_orderbook-cell trade_orderbook-cell-price pointer`}
 					onClick={onPriceClick(price)}
 				>
 					{formatToCurrency(price, increment_price)}
 				</div>
 				<div
-					className="f-1 trade_orderbook-cell pointer"
+					className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 					onClick={onAmountClick(amount)}
 				>
 					{formatToCurrency(amount, increment_size)}
 				</div>
-				<div className="f-1 trade_orderbook-cell trade_orderbook-cell_total">
+				<div
+					className="f-1 trade_orderbook-cell trade_orderbook-cell_total pointer"
+					onClick={onAmountClick(totalAmount)}
+				>
 					{isBase
 						? formatToCurrency(cumulative, increment_size)
 						: formatToCurrency(cumulativePrice, increment_price)}
@@ -99,14 +103,46 @@ class Orderbook extends Component {
 	state = {
 		dataBlockHeight: 0,
 		isBase: true,
+		positioned: false,
+		isOpen: false,
 	};
 
 	componentDidMount() {
-		this.scrollTop();
+		const { orderbookFetched } = this.props;
+		if (orderbookFetched) {
+			this.setDataBlockHeight();
+			setTimeout(() => {
+				window.dispatchEvent(new Event('resize'));
+			}, 1000);
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		const { orderbookFetched } = this.props;
+		const { positioned } = this.state;
+		if (
+			!positioned &&
+			prevProps.orderbookFetched === false &&
+			orderbookFetched === true
+		) {
+			this.setDataBlockHeight();
+			setTimeout(() => {
+				window.dispatchEvent(new Event('resize'));
+			}, 1000);
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		// this.scrollTop();
+		const { asks } = this.props;
+		const { positioned } = this.state;
+		if (positioned && nextProps.asks.length !== asks) {
+			const asksWrapperScrollHeight = this.asksWrapper.scrollHeight;
+			const wrapperScrollTop = this.wrapper.scrollTop;
+			this.setState({ asksWrapperScrollHeight, wrapperScrollTop }, () => {
+				const { asksWrapperScrollHeight, wrapperScrollTop } = this.state;
+				this.preserveScroll(asksWrapperScrollHeight, wrapperScrollTop);
+			});
+		}
 	}
 
 	componentWillUnmount() {
@@ -124,15 +160,30 @@ class Orderbook extends Component {
 				this.wrapper.offsetHeight - this.spreadWrapper.offsetHeight;
 			const accumulatedHeight =
 				this.bidsWrapper.scrollHeight + this.asksWrapper.scrollHeight;
-			const dataBlockHeight = maxContentHeight / 2;
-			const needScroll = accumulatedHeight > maxContentHeight;
-			const askDif = this.asksWrapper.scrollHeight - dataBlockHeight;
+			const dataBlockHeight = maxContentHeight;
+			const needScroll = !(accumulatedHeight < maxContentHeight);
+			const askDif = this.asksWrapper.scrollHeight - dataBlockHeight / 2;
 
 			if (needScroll && askDif > 0) {
 				this.wrapper.scrollTop = askDif;
 			}
-			this.setState({ dataBlockHeight });
+			this.setState({ dataBlockHeight, positioned: true });
 		}
+	};
+
+	preserveScroll = (prevAsksWrapperScrollHeight, prevWrapperScrollTop) => {
+		const deltaAsksHeight =
+			this.asksWrapper.scrollHeight - prevAsksWrapperScrollHeight;
+		this.wrapper.scrollTop = Math.max(
+			prevWrapperScrollTop + deltaAsksHeight,
+			0
+		);
+	};
+
+	setDataBlockHeight = () => {
+		const dataBlockHeight =
+			this.wrapper.offsetHeight - this.spreadWrapper.offsetHeight;
+		this.setState({ dataBlockHeight });
 	};
 
 	onPriceClick = (price) => () => {
@@ -183,6 +234,10 @@ class Orderbook extends Component {
 
 	onSelect = (isBase) => this.setState({ isBase });
 
+	dropdownVisibleChange = (isOpen) => {
+		this.setState({ isOpen });
+	};
+
 	render() {
 		const {
 			asks,
@@ -191,12 +246,12 @@ class Orderbook extends Component {
 			pair,
 			coins,
 			maxCumulative,
-			increment_price,
-			depth,
+			increment_price = 1,
+			depth = 1,
 			lastPrice,
 		} = this.props;
 
-		const { isBase } = this.state;
+		const { isBase, positioned, isOpen } = this.state;
 		// const blockStyle = {};
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
@@ -231,27 +286,35 @@ class Orderbook extends Component {
 						<PlusSquareOutlined />
 					</Button>
 				</div>
-				<div className="trade_orderbook-headers d-flex">
+				<div className="trade_orderbook-headers d-flex align-end">
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(
-							STRINGS['PRICE_CURRENCY'],
-							symbol.toUpperCase()
-						)}
+						<div>{STRINGS['PRICE_CURRENCY']}</div>
+						<div>({symbol.toUpperCase()})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS['AMOUNT_SYMBOL'], pairBase)}
+						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
+						<div>({pairBase})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+						<div className="d-flex align-items-center">
+							{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+						</div>
 						<Select
 							bordered={false}
 							defaultValue={false}
 							size="small"
-							suffixIcon={<CaretDownOutlined />}
+							suffixIcon={
+								<CaretDownOutlined
+									onClick={() => this.dropdownVisibleChange(!isOpen)}
+								/>
+							}
 							value={isBase}
 							onSelect={this.onSelect}
+							onDropdownVisibleChange={this.dropdownVisibleChange}
+							open={isOpen}
 							className="custom-select-input-style order-entry no-border"
-							dropdownClassName="custom-select-style"
+							dropdownClassName="custom-select-style trade-select-option-wrapper"
+							dropdownStyle={{ minWidth: '7rem' }}
 						>
 							<Option value={false}>{symbol.toUpperCase()}</Option>
 							<Option value={true}>{pairBase}</Option>
@@ -264,6 +327,7 @@ class Orderbook extends Component {
 				<div
 					ref={this.setRefs('wrapper')}
 					className={classnames('trade_orderbook-content', 'f-1', 'overflow-y')}
+					style={{ visibility: positioned ? 'visible' : 'hidden' }}
 				>
 					<div
 						className={classnames(

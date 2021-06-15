@@ -19,6 +19,7 @@
 .admin-roles-wrapper .role-description-box {
 	border-bottom: 1px solid #c4c4c4;
 	height: 135px;
+	position: relative;
 }
 .admin-roles-wrapper .role-label {
 	font-size: 20px;
@@ -106,4 +107,51 @@
 .admin-roles-wrapper .ant-pagination-item-active:focus,
 .admin-roles-wrapper .ant-pagination-item-active:hover {
 	border-color: #288500 !important;
+}
+
+.admin-roles-wrapper .sub-title {
+	color: #ffffff;
+}
+.admin-roles-wrapper .ant-form .ant-select .ant-select-selector {
+	height: 30px;
+	padding: 3px 8px;
+}
+.admin-roles-wrapper .ant-input:focus,
+.ant-input:active {
+	border: 1px solid #c4c4c4;
+}
+.admin-roles-wrapper .ant-form-item {
+	margin: 0;
+}
+.admin-roles-wrapper .disable-area {
+	opacity: 0.4;
+	pointer-events: none;
+}
+.admin-roles-wrapper .disable-area::before {
+	content: ' ';
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.upgrade-section {
+	background-color: #3333ff;
+	color: #ffffff;
+	padding: 20px;
+}
+.upgrade-section .button-wrapper .ant-btn {
+	background-color: #e97c00;
+	color: #ffffff;
+	font-size: 14px !important;
+}
+.admin-roles-wrapper .role-description-box .upgrade-text {
+	position: absolute;
+	z-index: 100;
+	color: #ffffff;
+	top: 55px;
+	left: 12px;
 }

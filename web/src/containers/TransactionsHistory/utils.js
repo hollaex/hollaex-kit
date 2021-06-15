@@ -7,14 +7,14 @@ import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
 
-import { CurrencyBall } from '../../components';
+import { Image } from '../../components';
 import {
 	EXPLORERS_ENDPOINT,
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from '../../config/constants';
-import { getFormatTimestamp, isBlockchainTx } from '../../utils/utils';
+import { getFormatTimestamp } from '../../utils/utils';
 import { formatToCurrency, formatBaseAmount } from 'utils/currency';
 
 notification.config({
@@ -69,11 +69,12 @@ export const generateOrderHistoryHeaders = (
 		{
 			stringId: 'PAIR',
 			label: STRINGS['PAIR'],
+			className: 'sticky-col',
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			renderCell: ({ symbol }, key, index) => {
 				return (
-					<td key={index} className="text-uppercase">
+					<td key={index} className="text-uppercase sticky-col">
 						{symbol}
 					</td>
 				);
@@ -315,9 +316,10 @@ export const generateTradeHeaders = (
 			label: STRINGS['PAIR'],
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
+			className: 'sticky-col',
 			renderCell: ({ symbol }, key, index) => {
 				return (
-					<td key={index} className="text-uppercase">
+					<td key={index} className="text-uppercase sticky-col">
 						{symbol}
 					</td>
 				);
@@ -330,7 +332,7 @@ export const generateTradeHeaders = (
 			exportToCsv: ({ side = '' }) => side,
 			renderCell: ({ side = '' }, key, index) => {
 				return (
-					<td key={index} className={classnames('cell_box-type')}>
+					<td key={index} className={classnames('cell_box-type recent-trades')}>
 						<div className={classnames(side)}>
 							{STRINGS[`SIDES_VALUES.${side}`]}
 						</div>
@@ -547,36 +549,49 @@ export const generateTradeHeaders = (
 export const generateWithdrawalsHeaders = (
 	symbol,
 	coins = {},
-	withdrawalPopup
+	withdrawalPopup,
+	ICONS
 ) => {
 	return [
-		{
-			label: '',
-			key: 'icon',
-			renderCell: ({ currency }, key, index) => {
-				const data = coins[currency] || DEFAULT_COIN_DATA;
-				return (
-					<td className={classnames('icon-cell')} key={index}>
-						<CurrencyBall
-							name={data.symbol.toUpperCase()}
-							symbol={currency}
-							size="s"
-						/>
-					</td>
-				);
-			},
-		},
+		// {
+		// 	label: '',
+		// 	key: 'icon',
+		// 	renderCell: ({ currency }, key, index) => {
+		// 		const data = coins[currency] || DEFAULT_COIN_DATA;
+		// 		return (
+		// 			<td className={classnames('icon-cell')} key={index}>
+		// 				<CurrencyBall
+		// 					name={data.symbol.toUpperCase()}
+		// 					symbol={currency}
+		// 					size="s"
+		// 				/>
+		// 			</td>
+		// 		);
+		// 	},
+		// },
 		{
 			stringId: 'CURRENCY',
 			label: STRINGS['CURRENCY'],
+			className: 'sticky-col',
 			key: 'currency',
 			exportToCsv: ({ currency }) => {
 				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 				return fullname;
 			},
 			renderCell: ({ currency }, key, index) => {
-				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
-				return <td key={index}>{fullname}</td>;
+				const data = coins[currency] || DEFAULT_COIN_DATA;
+				return (
+					<td key={index} className="coin-cell sticky-col">
+						<div className="d-flex align-items-center">
+							<Image
+								iconId={`${data.symbol.toUpperCase()}_ICON`}
+								icon={ICONS[`${data.symbol.toUpperCase()}_ICON`]}
+								wrapperClassName="coin-icons"
+							/>
+							{data.fullname}
+						</div>
+					</td>
+				);
 			},
 		},
 		{
@@ -680,6 +695,7 @@ export const generateWithdrawalsHeaders = (
 					id,
 					amount,
 					type,
+					network,
 				},
 				key,
 				index
@@ -727,12 +743,13 @@ export const generateWithdrawalsHeaders = (
 					);
 				} else {
 					// Completed Status
-					return isBlockchainTx(transaction_id) &&
-						currency !== BASE_CURRENCY ? (
+					// return isBlockchainTx(transaction_id) &&
+					return network ? (
+						// currency !== BASE_CURRENCY ? (
 						<td key={index}>
 							<a
 								target="blank"
-								href={EXPLORERS_ENDPOINT(currency) + transaction_id}
+								href={EXPLORERS_ENDPOINT(network) + transaction_id}
 							>
 								{STRINGS['VIEW']}
 							</a>
@@ -777,6 +794,13 @@ export const generateTradeHeadersMobile = (symbol, pairs, coins, discount) => {
 
 export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
 	const KEYS = ['side', 'price', 'amount', 'fee', 'timestamp'];
+	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
+		({ key }) => KEYS.indexOf(key) > -1
+	);
+};
+
+export const generateRecentTradeHeaders = (symbol, pairs, coins, discount) => {
+	const KEYS = ['side', 'size', 'price', 'amount'];
 	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
 		({ key }) => KEYS.indexOf(key) > -1
 	);

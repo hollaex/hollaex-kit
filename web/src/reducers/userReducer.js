@@ -75,7 +75,7 @@ const INITIAL_STATE = {
 	balance: {
 		timestamp: Date.now(),
 	},
-	crypto_wallet: {},
+	wallet: [],
 	userData: {
 		timestamp: Date.now(),
 	},
@@ -133,7 +133,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				email,
 				email_verified,
 				balance,
-				crypto_wallet,
+				wallet,
 				verification_level,
 				otp_enabled,
 				username,
@@ -167,7 +167,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 					...balance,
 					timestamp: Date.now(),
 				},
-				crypto_wallet,
+				wallet,
 				verification_level,
 				userData,
 				otp_enabled,
@@ -417,13 +417,11 @@ export default function reducer(state = INITIAL_STATE, action) {
 				},
 			};
 		case 'CREATE_ADDRESS_FULFILLED':
-			const { address, crypto } = action.payload.data;
-			const { crypto_wallet } = state;
-			// crypto_wallet[getCurrencyFromSymbol(crypto)] = address;
-			crypto_wallet[crypto] = address;
+			const { address, crypto: currency, network = null } = action.payload.data;
+			const { wallet } = state;
 			return {
 				...state,
-				crypto_wallet,
+				wallet: [...wallet, { currency, address, network }],
 				addressRequest: {
 					...INITIAL_ADDRESS_OBJECT,
 					success: true,

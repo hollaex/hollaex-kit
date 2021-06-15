@@ -10,18 +10,20 @@ import CheckField from './FormFields/CheckField';
 import EditableInputField from './FormFields/EditableInputField';
 import CaptchaField from './FormFields/Captcha';
 import ToggleField from './FormFields/ToggleField';
+import DumbField from './FormFields/DumbFieldForm';
 
 const renderFields = (fields = {}, callback) => {
 	return (
 		<div>
 			{Object.keys(fields).map((key, index) => {
-				const { type, validate = [], ...rest } = fields[key];
+				const { type, validate = [], ishorizontalfield, ...rest } = fields[key];
 				const commonProps = {
 					callback,
 					key,
 					name: key,
 					type,
 					validate,
+					ishorizontalfield,
 					...rest,
 				};
 
@@ -37,6 +39,8 @@ const renderFields = (fields = {}, callback) => {
 						);
 					case 'file':
 						return <Field component={FileField} {...commonProps} />;
+					case 'dumb':
+						return <Field component={DumbField} {...commonProps} />;
 					case 'select':
 					case 'autocomplete':
 						return (

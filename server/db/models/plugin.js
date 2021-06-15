@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.JSONB,
 			defaultValue: {}
 		},
+		public_meta: {
+			type: DataTypes.JSONB,
+			defaultValue: {}
+		},
 		prescript: {
 			type: DataTypes.JSONB,
 			defaultValue: {
@@ -53,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		script: {
 			type: DataTypes.TEXT,
-			allowNull: false
+			allowNull: true
 		},
 		admin_view: {
 			type: DataTypes.TEXT
@@ -61,6 +65,9 @@ module.exports = (sequelize, DataTypes) => {
 		web_view: {
 			type: DataTypes.JSONB,
 			defaultValue: []
+		},
+		type: {
+			type: DataTypes.STRING
 		}
 	}, {
 		timestamps: true,

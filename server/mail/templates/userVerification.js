@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { USERVERIFICATION } = require('../strings').languageFile(language);
+	const USERVERIFICATION = require('../strings').getStringObject(language, 'USERVERIFICATION');
 	return `
 		<div>
 			<h3>
@@ -22,7 +22,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { USERVERIFICATION } = require('../strings').languageFile(language);
+	const USERVERIFICATION = require('../strings').getStringObject(language, 'USERVERIFICATION');
 	return `
 		${USERVERIFICATION.BODY[1]}
 		${USERVERIFICATION.BODY[2](email)}

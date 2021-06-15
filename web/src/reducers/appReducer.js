@@ -26,13 +26,21 @@ import {
 	SET_CONFIG_LEVEL,
 	ADD_TO_FAVOURITES,
 	REMOVE_FROM_FAVOURITES,
+	CHANGE_HOME_PAGE_SETTING,
 	SET_IS_READY,
+	SET_WEB_VIEWS,
+	SET_HELPDESK_INFO,
+	SET_INJECTED_VALUES,
+	SET_INJECTED_HTML,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
+import { generateRemoteRouteStringId } from 'utils/string';
+import { generateRemoteRouteIconId } from 'utils/icon';
+import { mapPluginsTypeToName } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -52,6 +60,7 @@ const EMPTY_SNACK_NOTIFICATION = {
 };
 
 const INITIAL_STATE = {
+	home_page: false,
 	isReady: false,
 	favourites: getFavourites() || [],
 	announcements: [],
@@ -143,9 +152,22 @@ const INITIAL_STATE = {
 	info: { is_trial: false, active: true, status: true },
 	wave: [],
 	enabledPlugins: [],
+	plugins: [],
+	pluginNames: {
+		bank: 'bank',
+	},
+	helpdeskInfo: {
+		has_helpdesk: false,
+		helpdesk_endpoint: '',
+	},
+	targets: [],
+	webViews: {},
+	remoteRoutes: [],
 	availablePlugins: [],
 	getPluginLoading: false,
 	features: {},
+	injected_values: [],
+	injected_html: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -345,9 +367,108 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 
 		case SET_PLUGINS: {
+			const enabledPluginsNames = payload.enabledPlugins.map(
+				({ name }) => name
+			);
+
+			//FIXME: change this once name-based logic is completely changed to type-based
+			const enabledPluginTypes = mapPluginsTypeToName(
+				payload.enabledPlugins.map(({ type }) => type)
+			);
+
+			const enabledPlugins = unique([
+				...enabledPluginsNames,
+				...enabledPluginTypes,
+			]);
+
+			const { name: bank = 'bank' } =
+				payload.enabledPlugins.find(({ type }) => type === 'bank') || {};
+
 			return {
 				...state,
-				enabledPlugins: payload.enabledPlugins.map(({ name }) => name),
+				enabledPlugins,
+				plugins: payload.enabledPlugins,
+				pluginNames: {
+					...state.pluginNames,
+					bank,
+				},
+			};
+		}
+		case SET_HELPDESK_INFO: {
+			const helpdesk = payload.enabledPlugins.find(
+				({ type }) => type === 'helpdesk'
+			);
+
+			return {
+				...state,
+				helpdeskInfo: {
+					has_helpdesk: !!helpdesk,
+					helpdesk_endpoint: helpdesk && `/plugins/${helpdesk.name}`,
+				},
+			};
+		}
+		case SET_WEB_VIEWS: {
+			const allWebViews = [];
+			payload.enabledPlugins.forEach(({ web_view = [] }) => {
+				if (web_view && web_view.length) {
+					allWebViews.push(...web_view);
+				}
+			});
+
+			const remoteRoutes = [];
+			allWebViews.forEach(({ target, meta }) => {
+				if (meta && meta.is_page) {
+					const { icon_id, string_id, ...rest } = meta;
+					remoteRoutes.push({
+						target,
+						icon_id: generateRemoteRouteIconId(icon_id),
+						string_id: generateRemoteRouteStringId(string_id),
+						...rest,
+					});
+				}
+			});
+
+			const CLUSTERED_WEB_VIEWS = {};
+			allWebViews.forEach((plugin) => {
+				const { target } = plugin;
+				if (!CLUSTERED_WEB_VIEWS[target]) {
+					CLUSTERED_WEB_VIEWS[target] = [plugin];
+				} else {
+					CLUSTERED_WEB_VIEWS[target].push(plugin);
+				}
+			});
+
+			const FILTERED_CLUSTERED_WEB_VIEWS = {};
+			Object.entries(CLUSTERED_WEB_VIEWS).forEach(([targetKey, viewArray]) => {
+				if (viewArray.length === 1) {
+					FILTERED_CLUSTERED_WEB_VIEWS[targetKey] = viewArray;
+				} else {
+					FILTERED_CLUSTERED_WEB_VIEWS[targetKey] = viewArray.filter(
+						({ is_default }) => !is_default
+					);
+				}
+			});
+
+			if (process.env.REACT_APP_PLUGIN_DEV_MODE === 'true') {
+				FILTERED_CLUSTERED_WEB_VIEWS[
+					process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET
+				] = [
+					{
+						all_props: true,
+						target: process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET,
+						props: [],
+						src: '/main.js',
+					},
+				];
+			}
+
+			return {
+				...state,
+				webViews: FILTERED_CLUSTERED_WEB_VIEWS,
+				targets: Object.entries(FILTERED_CLUSTERED_WEB_VIEWS).map(
+					([target]) => target
+				),
+				remoteRoutes,
 			};
 		}
 		case SET_INFO:
@@ -396,6 +517,24 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				favourites,
+			};
+		}
+		case CHANGE_HOME_PAGE_SETTING: {
+			return {
+				...state,
+				home_page: payload,
+			};
+		}
+		case SET_INJECTED_VALUES: {
+			return {
+				...state,
+				injected_values: payload,
+			};
+		}
+		case SET_INJECTED_HTML: {
+			return {
+				...state,
+				injected_html: payload,
 			};
 		}
 		default:

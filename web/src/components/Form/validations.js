@@ -4,6 +4,7 @@ import math from 'mathjs';
 import bchaddr from 'bchaddrjs';
 import { roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
+import { getDecimals } from 'utils/utils';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 const usernameRegEx = /^[a-z0-9_]{3,15}$/;
@@ -38,19 +39,20 @@ export const validAddress = (symbol = '', message, network) => {
 		let valid = true;
 
 		if (network) {
-			switch (network) {
-				case 'ethereum':
-					valid = WAValidator.validate(address, 'eth');
-					break;
-				case 'stellar':
-					valid = WAValidator.validate(address, 'xlm');
-					break;
-				case 'tron':
-					valid = WAValidator.validate(address, 'trx');
-					break;
-				default:
-					break;
-			}
+			valid = WAValidator.validate(address, network);
+			// switch (network) {
+			// 	case 'ethereum':
+			// 		valid = WAValidator.validate(address, 'eth');
+			// 		break;
+			// 	case 'stellar':
+			// 		valid = WAValidator.validate(address, 'xlm');
+			// 		break;
+			// 	case 'tron':
+			// 		valid = WAValidator.validate(address, 'trx');
+			// 		break;
+			// 	default:
+			// 		break;
+			// }
 		} else {
 			const supported = WAValidator.findCurrency(symbol);
 			if (supported) {
@@ -241,10 +243,16 @@ export const normalizeInt = (value) => {
 		return '';
 	}
 };
-export const normalizeFloat = (value) => {
+export const normalizeFloat = (value = '', increment = 0.01) => {
 	if (validator.isFloat(value)) {
+		const incrementPrecision = getDecimals(increment);
+		const valuePrecision = (value + '.').split('.')[1].length;
+		const precision = math.min(valuePrecision, incrementPrecision);
 		if (validator.toFloat(value)) {
-			return math.format(validator.toFloat(value), { notation: 'fixed' });
+			return math.format(validator.toFloat(value), {
+				notation: 'fixed',
+				precision,
+			});
 		} else {
 			return 0;
 		}

@@ -11,6 +11,8 @@ const EditWrapper = ({
 	position,
 	style,
 	reverse,
+	sectionId,
+	backgroundId,
 }) => {
 	const [x = 5, y = 0] = position;
 	const triggerStyles = {
@@ -36,6 +38,28 @@ const EditWrapper = ({
 					<div className="edit-wrapper__icon-wrapper" data-icon-id={iconId}>
 						<ReactSVG
 							src={STATIC_ICONS['OPERATOR_EDIT_ICON']}
+							className="edit-wrapper__icon"
+						/>
+					</div>
+				)}
+				{sectionId && (
+					<div
+						className="edit-wrapper__icon-wrapper large"
+						data-section-id={sectionId}
+					>
+						<ReactSVG
+							src={STATIC_ICONS['EDIT_SECTION']}
+							className="edit-wrapper__icon"
+						/>
+					</div>
+				)}
+				{backgroundId && (
+					<div
+						className="edit-wrapper__icon-wrapper"
+						data-icon-id={backgroundId}
+					>
+						<ReactSVG
+							src={STATIC_ICONS['EDIT_BACKGROUND']}
 							className="edit-wrapper__icon"
 						/>
 					</div>

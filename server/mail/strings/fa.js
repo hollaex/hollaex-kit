@@ -94,7 +94,7 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
+		PENDING: (amount, confirmation = 0, currency) =>
 			`شما یک واریز جدید به مبلغ ${amount} ${currency.toUpperCase()} دارید که در حال انتظار برای واریز به کیف پول  ${API_NAME()} می باشد. 
 لطفا تا تایید تراکنش خود و مشاهده مبلغ در کیف پول خود تامل فرمایید.
 تراکنش شما حداقل به  ${confirmation} تایید بر روی شبکه بلاکچین نیاز دارد.`,
@@ -108,7 +108,8 @@ const DEPOSIT = {
 		2: (status) => `Status: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -159,16 +160,17 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`شما درخواست برداشت به مبلغ ${amount} ${currency.toUpperCase()} و به آدرس ${address}ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`درخواست برداشت شما به مبلغ ${amount} ${currency.toUpperCase()} درحال انجام و ارسال به آدرس ${address}می باشد.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `وضعیت: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -183,10 +185,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `آدرس: ${address}`,
-		5: 'برای تایید برداشت خود ،دکمه زیر فشار دهید.',
-		6: 'تایید',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'برای تایید برداشت خود ،دکمه زیر فشار دهید.',
+		7: 'تایید',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -268,6 +271,25 @@ const INVITEDOPERATOR = {
 	CLOSING: COMMON.CLOSING
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -286,5 +308,7 @@ module.exports = {
 	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
 	SMS,
-	INVITEDOPERATOR
+	INVITEDOPERATOR,
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

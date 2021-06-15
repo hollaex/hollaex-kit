@@ -1,5 +1,6 @@
 'use strict';
 
+const { capitalize } = require('lodash');
 const { GET_KIT_CONFIG } = require('../../constants');
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 
@@ -94,8 +95,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+		PENDING: (amount, confirmation, currency) =>
+			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet.${confirmation ? ` Your transaction requires ${confirmation} confirmation(s) on blockchain.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Your ${
 				currency.toUpperCase()
@@ -106,7 +107,8 @@ const DEPOSIT = {
 		2: (status) => `Status: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -156,16 +158,17 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
-			`You made a withdrawal request for ${amount} ${currency.toUpperCase()} to the address ${address}. Your withdrawal status is pending and will be processed shortly.`,
-		COMPLETED: (amount, address, currency) =>
-			`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed and transferred to the address ${address}.`,
+		PENDING: (amount, currency) =>
+			`You made a withdrawal request for ${amount} ${currency.toUpperCase()}. Your withdrawal status is pending and will be processed shortly.`,
+		COMPLETED: (amount, currency) =>
+			`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Status: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -180,10 +183,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Address: ${address}`,
-		5: 'In order to confirm this withdrawal, please click the button below.',
-		6: 'Confirm',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'In order to confirm this withdrawal, please click the button below.',
+		7: 'Confirm',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -292,6 +296,25 @@ const INVITEDOPERATOR = {
 	CLOSING: COMMON.CLOSING
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -313,5 +336,7 @@ module.exports = {
 	USERDEACTIVATED,
 	ALERT,
 	SMS,
-	INVITEDOPERATOR
+	INVITEDOPERATOR,
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

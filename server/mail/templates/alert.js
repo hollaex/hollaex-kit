@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { ALERT } = require('../strings').languageFile(language);
+	const ALERT = require('../strings').getStringObject(language, 'ALERT');
 	return `
 		<div>
 			<h3>${ALERT.BODY[1](data.type)}</h3>
@@ -20,7 +20,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { ALERT } = require('../strings').languageFile(language);
+	const ALERT = require('../strings').getStringObject(language, 'ALERT');
 	return `
 		${ALERT.BODY[1](data.type)}
 		${data.data}

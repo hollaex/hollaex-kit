@@ -8,11 +8,7 @@ import { isMobile } from 'react-device-detect';
 
 import { Loader, MobileBarBack } from '../../components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import {
-	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
-	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
-	DEFAULT_COIN_DATA,
-} from '../../config/constants';
+import { DEFAULT_COIN_DATA } from '../../config/constants';
 import { getCurrencyFromName, roundNumber } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
 import {
@@ -21,13 +17,17 @@ import {
 } from '../../actions/walletActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 
-import { openContactForm } from '../../actions/appActions';
+import { openContactForm } from 'actions/appActions';
 
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import { generateBaseInformation } from './utils';
 
-import { renderInformation, renderTitleSection } from '../Wallet/components';
+import {
+	renderInformation,
+	renderTitleSection,
+	renderNeedHelpAction,
+} from '../Wallet/components';
 
 import { FORM_NAME } from './form';
 
@@ -36,27 +36,12 @@ class Withdraw extends Component {
 		formValues: {},
 		initialValues: {},
 		checked: false,
+		currency: '',
 	};
 
 	componentWillMount() {
-		// if (
-		// 	this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-		// 	this.props.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW
-		// ) {
-		// 	this.props.requestBtcWithdrawFee();
-		// 	this.generateFormValues(
-		// 		getCurrencyFromName(this.props.routeParams.currency),
-		// 		this.props.balance,
-		// 		this.props.btcFee
-		// 	);
-		// }
 		if (this.props.verification_level) {
-			this.validateRoute(
-				this.props.routeParams.currency,
-				this.props.bank_account,
-				this.props.crypto_wallet,
-				this.props.coins
-			);
+			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
 		this.setCurrency(this.props.routeParams.currency);
 	}
@@ -64,24 +49,19 @@ class Withdraw extends Component {
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.checked) {
 			if (nextProps.verification_level) {
-				this.validateRoute(
-					nextProps.routeParams.currency,
-					nextProps.bank_account,
-					nextProps.crypto_wallet,
-					nextProps.coins
-				);
+				this.validateRoute(nextProps.routeParams.currency, nextProps.coins);
 			}
 		} else if (
-			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.routeParams.currency !== this.props.routeParams.currency)
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			nextProps.selectedNetwork !== this.props.selectedNetwork
 		) {
 			this.generateFormValues(
 				getCurrencyFromName(nextProps.routeParams.currency, nextProps.coins),
 				nextProps.balance,
 				nextProps.coins,
-				nextProps.verification_level
+				nextProps.verification_level,
+				this.state.networks,
+				nextProps.selectedNetwork
 			);
 		}
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
@@ -89,8 +69,8 @@ class Withdraw extends Component {
 		}
 	}
 
-	validateRoute = (currency, bank_account, crypto_wallet, coins) => {
-		if (coins[currency] && !crypto_wallet[currency]) {
+	validateRoute = (currency, coins) => {
+		if (!coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -100,30 +80,48 @@ class Withdraw extends Component {
 	setCurrency = (currencyName) => {
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
-			this.setState({ currency, checked: false }, () => {
-				this.validateRoute(
-					this.props.routeParams.currency,
-					this.props.bank_account,
-					this.props.crypto_wallet,
-					this.props.coins
-				);
-			});
+			const { coins } = this.props;
+			const coin = coins[currency];
+			const networks = coin.network && coin.network.split(',');
+			let initialNetwork;
+			if (networks && networks.length === 1) {
+				initialNetwork = networks[0];
+			}
+
+			this.setState(
+				{
+					currency,
+					checked: false,
+					networks,
+				},
+				() => {
+					this.validateRoute(this.props.routeParams.currency, this.props.coins);
+					this.generateFormValues(
+						currency,
+						this.props.balance,
+						this.props.coins,
+						this.props.verification_level,
+						networks,
+						initialNetwork
+					);
+				}
+			);
 			// if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
 			// 	this.props.requestWithdrawFee(currency);
 			// }
-
-			this.generateFormValues(
-				currency,
-				this.props.balance,
-				this.props.coins,
-				this.props.verification_level
-			);
 		} else {
 			this.props.router.push('/wallet');
 		}
 	};
 
-	generateFormValues = (currency, balance, coins, verification_level) => {
+	generateFormValues = (
+		currency,
+		balance,
+		coins,
+		verification_level,
+		networks,
+		network
+	) => {
 		const { icons: ICONS } = this.props;
 		const balanceAvailable = balance[`${currency}_available`];
 		const formValues = generateFormValues(
@@ -134,18 +132,28 @@ class Withdraw extends Component {
 			verification_level,
 			this.props.activeTheme,
 			ICONS['BLUE_PLUS'],
-			'BLUE_PLUS'
+			'BLUE_PLUS',
+			networks,
+			network
 		);
-		const initialValues = generateInitialValues(currency, coins);
+		const initialValues = generateInitialValues(
+			currency,
+			coins,
+			networks,
+			network
+		);
 
 		this.setState({ formValues, initialValues });
 	};
 
 	onSubmitWithdraw = (currency) => (values) => {
-		const { destination_tag, ...rest } = values;
+		const { destination_tag, network, ...rest } = values;
+
 		let address = rest.address;
 		if (destination_tag) address = `${rest.address}:${destination_tag}`;
+
 		return performWithdraw(currency, {
+			...(network ? { network } : {}),
 			...rest,
 			address,
 			amount: math.eval(values.amount),
@@ -165,11 +173,12 @@ class Withdraw extends Component {
 			dispatch,
 			verification_level,
 			coins,
+			config_level = {},
 		} = this.props;
+		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_limits = {} } =
-			coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -183,13 +192,13 @@ class Withdraw extends Component {
 		if (amount < 0) {
 			amount = 0;
 		} else if (
-			math.larger(amount, math.number(withdrawal_limits[verification_level])) &&
-			withdrawal_limits[verification_level] !== 0 &&
-			withdrawal_limits[verification_level] !== -1
+			math.larger(amount, math.number(withdrawal_limit)) &&
+			withdrawal_limit !== 0 &&
+			withdrawal_limit !== -1
 		) {
 			amount = math.number(
 				math.subtract(
-					math.fraction(withdrawal_limits[verification_level]),
+					math.fraction(withdrawal_limit),
 					math.fraction(selectedFee)
 				)
 			);
@@ -211,7 +220,6 @@ class Withdraw extends Component {
 	render() {
 		const {
 			balance,
-			verification_level,
 			prices,
 			otp_enabled,
 			openContactForm,
@@ -219,6 +227,7 @@ class Withdraw extends Component {
 			router,
 			coins,
 			icons: ICONS,
+			selectedNetwork,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const { formValues, initialValues, currency, checked } = this.state;
@@ -228,11 +237,7 @@ class Withdraw extends Component {
 
 		const balanceAvailable = balance[`${currency}_available`];
 
-		if (
-			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			balanceAvailable === undefined
-		) {
+		if (balanceAvailable === undefined) {
 			return <Loader />;
 		}
 
@@ -241,13 +246,15 @@ class Withdraw extends Component {
 			onSubmitWithdrawReq: this.onSubmitWithdraw(currency),
 			onOpenDialog: this.onOpenDialog,
 			otp_enabled,
-			openContactForm: () => openContactForm({ helpdesk: links.helpdesk }),
+			openContactForm,
 			formValues,
 			initialValues,
 			activeLanguage,
 			balanceAvailable,
 			currentPrice: prices[currency],
 			router,
+			icons: ICONS,
+			selectedNetwork,
 		};
 
 		return (
@@ -255,7 +262,7 @@ class Withdraw extends Component {
 				{isMobile && (
 					<MobileBarBack onBackClick={this.onGoBack}></MobileBarBack>
 				)}
-				<div className="presentation_container apply_rtl">
+				<div className="presentation_container apply_rtl withdrawal-container">
 					{!isMobile &&
 						renderTitleSection(
 							currency,
@@ -267,19 +274,34 @@ class Withdraw extends Component {
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
-					<div className={classnames('inner_container', 'with_border_top')}>
-						{renderInformation(
-							currency,
-							balance,
-							openContactForm,
-							generateBaseInformation,
-							coins,
-							'withdraw',
-							links,
-							ICONS['BLUE_QUESTION'],
-							'BLUE_QUESTION'
-						)}
-						<WithdrawCryptocurrency {...formProps} />
+					<div className={classnames('inner_container')}>
+						<div className="information_block">
+							<div
+								className="information_block-text_wrapper"
+								style={{ height: '1.5rem' }}
+							/>
+							{openContactForm &&
+								renderNeedHelpAction(
+									openContactForm,
+									links,
+									ICONS['BLUE_QUESTION'],
+									'BLUE_QUESTION'
+								)}
+						</div>
+						<WithdrawCryptocurrency
+							titleSection={renderInformation(
+								currency,
+								balance,
+								false,
+								generateBaseInformation,
+								coins,
+								'withdraw',
+								links,
+								ICONS['BLUE_QUESTION'],
+								'BLUE_QUESTION'
+							)}
+							{...formProps}
+						/>
 						{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}
 					</div>
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
@@ -301,13 +323,14 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
 	otp_enabled: store.user.otp_enabled,
 	bank_account: store.user.userData.bank_account,
-	crypto_wallet: store.user.crypto_wallet,
 	activeLanguage: store.app.language,
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
+	selectedNetwork: formValueSelector(FORM_NAME)(store, 'network'),
 	coins: store.app.coins,
 	activeTheme: store.app.theme,
 	constants: store.app.constants,
+	config_level: store.app.config_level,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -194,3 +194,7 @@ const EXCLUSIONS = [
 	'SETTINGS_ORDERPOPUP_OPTIONS',
 	'SETTINGS_THEME_OPTIONS',
 ];
+
+export const generateRemoteRouteStringId = (id = '') => {
+	return `REMOTE_ROUTE_STRING__${id.toUpperCase()}`;
+};

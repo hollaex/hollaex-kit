@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
+import { menuItemsSelector } from './selector';
 
 import {
 	setUserOrders,
@@ -43,6 +44,7 @@ import {
 import { setPricesAndAsset } from 'actions/assetActions';
 
 const mapStateToProps = (store) => ({
+	menuItems: menuItemsSelector(store),
 	isReady: store.app.isReady,
 	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
@@ -57,6 +59,7 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	// user: store.user,
 	pair: store.app.pair,
+	pairs: store.app.pairs,
 	unreadMessages: store.app.chatUnreadMessages,
 	constants: store.app.constants,
 	info: store.app.info,
@@ -64,6 +67,8 @@ const mapStateToProps = (store) => ({
 	features: store.app.features,
 	config_level: store.app.config_level,
 	pairsTradesFetched: store.orderbook.pairsTradesFetched,
+	injected_values: store.app.injected_values,
+	injected_html: store.app.injected_html,
 });
 
 const mapDispatchToProps = (dispatch) => ({

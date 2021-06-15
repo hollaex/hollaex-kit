@@ -5,7 +5,7 @@ $toggle-size: 14px;
 $toggle-border: 2px;
 $toggle-margin: 2px;
 $placeholder--padding: 0.25rem;
-$placeholder--font-size: $font-size-subtext;
+$placeholder--font-size: 0.9rem;
 $placeholder--font-weight: bold;
 
 .input_icon {
@@ -51,6 +51,15 @@ $placeholder--font-weight: bold;
 
 .datefield-wrapper {
 	position: relative;
+	.field-children:last-child {
+		.year .field-content,
+		.month .field-content,
+		.day .field-content {
+			border: 1px solid $colors-main-border;
+			background-color: $app-sidebar-background;
+			padding: 6px 0;
+		}
+	}
 
 	.datefield-input {
 		// visibility: hidden;
@@ -97,6 +106,9 @@ $placeholder--font-weight: bold;
 					margin-right: 1rem;
 				}
 			}
+			.dropdown-triangle::after {
+    			bottom: 0 !important;
+			}
 		}
 	}
 }
@@ -137,6 +149,20 @@ $placeholder--font-weight: bold;
 	> .action_notification-wrapper {
 		position: relative;
 		top: 0 !important;
+	}
+	.paper-clip-icon{
+		.action_notification-svg {
+			background-color: $link;
+			width: 1.2rem;
+			height: 1.2rem;
+			border-radius: 50%;
+			display: flex;
+    		margin-left: 5px;
+			svg {
+				width: 0.8rem !important;
+				height: 0.8rem !important;
+			}
+		}
 	}
 }
 
@@ -228,7 +254,7 @@ $placeholder--font-weight: bold;
 	.dropdown-triangle:after {
 		border-right: 0.25rem solid $form-arrow;
 		border-left: 0.25rem solid transparent;
-		right: 0px;
+		right: 3px;
 	}
 
 	.placeholder {

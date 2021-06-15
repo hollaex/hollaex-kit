@@ -1,4 +1,11 @@
 .user_security-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+	padding: 30px;
+	background-color: $app-sidebar-background;
 	> *:not(:last-child) {
 		margin-bottom: 2rem;
 	}
@@ -70,10 +77,10 @@
 	max-width: 5rem;
 }
 
-.tokens-tokenkey {
-	min-width: 15rem;
-	// max-width: 15rem;
-}
+// .tokens-tokenkey {
+// 	min-width: 15rem;
+// 	max-width: 15rem;
+// }
 
 .tokens-date {
 	min-width: 5rem;
@@ -171,18 +178,84 @@ $padding-input: 4rem;
 		width: 1.5rem;
 	}
 }
+.change-password-form,
+.dev-section-wrapper {
+	border-radius: 4px;
+	margin: 30px 0px 40px;
+	background-color: $app-sidebar-background;
+}
+
+.dev-section-wrapper {
+	padding: 30px;
+}
+
+.change-password-form-wrapper {
+	.change-password-form {
+		padding: 20px 60px 20px;
+		.field-content {
+			border-bottom: 1px solid;
+		}
+	}
+	.password-btn {
+		width: 300px;
+	}
+}
+
+.user-security-container {
+	.icon_title-wrapper {
+		display: flex;
+		justify-content: flex-start !important;
+		flex-direction: row;
+		align-items: center;
+	}
+}
 
 .layout-mobile {
 	.user_security-wrapper {
 		.warning_text {
 			font-size: $font-size-mobile-txt !important;
 		}
+		.checkbutton-wrapper {
+			.checkbutton-input-wrapper {
+				width: 240px !important;
+				.checkbutton-input-wrapper--label {
+					font-size: $font-size-mobile-txt;
+					color: $link;
+				}
+			}
+		}
 	}
-	.checkbutton-wrapper {
-		.checkbutton-input-wrapper {
-			.checkbutton-input-wrapper--label {
-				font-size: $font-size-mobile-txt;
-				color: $link;
+	.dev-section-wrapper {
+		padding: 5px;
+		.table-wrapper {
+			th,
+			td {
+				padding: 0;
+			}
+		}
+		.field-error-content {
+			.field-error-text {
+				margin-top: 10px;
+			}
+		}
+	}
+	.change-password-form-wrapper {
+		.change-password-form {
+			.field-label-wrapper {
+				flex-direction: column;
+				.field-label {
+					font-size: 10px;
+				}
+				.input-box-field {
+					padding: 4px;
+					height: 30px;
+					margin-top: 5px;
+				}
+			}
+			.input_field-input {
+				&::placeholder {
+					font-size: 10px;
+				}
 			}
 		}
 	}
@@ -209,6 +282,31 @@ $padding-input: 4rem;
 	.accordion_section_content {
 		.warning_text {
 			font-size: $font-size-mobile-txt !important;
+		}
+	}
+}
+
+@media (max-width: 1060px) {
+	.change-password-form-wrapper {
+		.change-password-form {
+			padding: 10px;
+			.field-label-wrapper {
+				.field-label {
+					font-size: 12px;
+				}
+			}
+			.input_field-input {
+				&::placeholder {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+	.user-security-wrapper {
+		.tab_controller-tabs {
+			.tab_item {
+				font-size: 12px !important;
+			}
 		}
 	}
 }

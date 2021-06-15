@@ -446,3 +446,14 @@
 .admin-plugins-wrapper .ant-breadcrumb > span:last-child {
 	color: #ffffff;
 }
+
+.spinner-container {
+	color: #ffffff;
+	display: flex;
+	align-items: center;
+}
+
+.spinner-container img {
+	width: 35px;
+	height: 35px;
+}

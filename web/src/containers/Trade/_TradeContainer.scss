@@ -8,7 +8,7 @@
 		.trade-main_content {
 			flex: 6;
 			min-height: 25vh;
-			max-height: 78vh;
+			max-height: 60vh;
 		}
 
 		.trade-tabs_content {
@@ -30,6 +30,9 @@
 		flex: 0;
 		min-width: $side-column--width;
 		max-width: $side-column--width;
+		.trade_block-wrapper {
+			max-height: calc(49vh + 5rem) !important;
+		}
 
 		> div {
 			flex: 1;
@@ -103,7 +106,7 @@
 		}
 	}
 	.trade_orderbook-spread {
-		height: 2rem;
+		min-height: 3rem !important;
 		margin: 1rem 0;
 	}
 	.trade_orderbook-asks,
@@ -154,6 +157,15 @@
 		.trade-col_action_wrapper {
 			min-width: $order_entry-column--width-lg;
 			max-width: $order_entry-column--width-lg;
+		}
+	}
+}
+@media screen and (min-width: 1920px) {
+	.trade-container {
+		.trade-col_main_wrapper {
+			.trade-main_content {
+				flex: 2 !important;
+			}
 		}
 	}
 }

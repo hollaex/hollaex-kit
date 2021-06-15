@@ -94,8 +94,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`Một giao dịch nạp ${amount} ${currency.toUpperCase()} vào địa chỉ ví ${API_NAME()} của quý khách đang chờ được xử lý. Vui lòng chờ đợi cho đến khi giao dịch được xác nhận và tiền được nạp vào ví của quý khách. Yêu cầu giao dịch của quý khách cần nhận được ${confirmation} kết quả đồng thuận trên blockchain.`,
+		PENDING: (amount, confirmation, currency) =>
+			`Một giao dịch nạp ${amount} ${currency.toUpperCase()} vào địa chỉ ví ${API_NAME()} của quý khách đang chờ được xử lý. Vui lòng chờ đợi cho đến khi giao dịch được xác nhận và tiền được nạp vào ví của quý khách.${confirmation ? ` Yêu cầu giao dịch của quý khách cần nhận được ${confirmation} kết quả đồng thuận trên blockchain.` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Giao dịch nạp ${
 				currency.toUpperCase()
@@ -106,7 +106,8 @@ const DEPOSIT = {
 		2: (status) => `Trạng thái: ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -156,16 +157,17 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`Quý khách vừa thực hiện yêu cầu rút ${amount} ${currency.toUpperCase()} tới địa chỉ ${address}. Yêu cầu rút tiền của quý khách đang ở trạng thái chờ xử lý và sẽ sớm được thực hiện.`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`Yêu cầu rút ${amount} ${currency.toUpperCase()} của quý khách đã được thực hiện và số tiền tương ứng đã được chuyển thành công tới địa chỉ ${address}.`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `Trạng thái: ${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -180,10 +182,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Địa chỉ: ${address}`,
-		5: 'Để xác nhận yêu cầu rút tiền này, vui lòng nhấn vào nút bên dưới.',
-		6: 'Xác nhận',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: 'Để xác nhận yêu cầu rút tiền này, vui lòng nhấn vào nút bên dưới.',
+		7: 'Xác nhận',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -273,6 +276,25 @@ const SMS = {
 		`Giao dịch rút ${currency.toUpperCase()} với số lượng ${amount} của quý khách đã được xác nhận`
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -293,5 +315,7 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

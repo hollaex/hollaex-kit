@@ -110,12 +110,13 @@ class Table extends Component {
 			displayPaginator,
 			pageSize,
 			cancelDelayData,
+			className,
 		} = this.props;
 		const { data, page, headers } = this.state;
 
 		return (
 			<div className="table_container">
-				<div className="table-content">
+				<div className={classnames('table-content', className)}>
 					<table className={classnames('table-wrapper')}>
 						<TableHeader headers={headers} />
 						<TableBody

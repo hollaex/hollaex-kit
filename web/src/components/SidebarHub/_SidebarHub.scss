@@ -95,7 +95,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	}
 
 	.sidebar_hub-content {
-		margin: $section--bottom-margin $content--margin;
+		// margin: $section--bottom-margin $content--margin;
 		.sidebar_hub-section {
 			border-top: $deactive-tab-border;
 
@@ -158,7 +158,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 
 	.sign_up-btn,
 	.log_in-btn {
-		background: $app-background-color !important;
+		background: $link !important;
 		color: $trade-button--color !important;
 		border: 1px solid $border--color;
 	}

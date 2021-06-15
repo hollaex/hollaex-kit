@@ -92,8 +92,8 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			`現在、お客様の${API_NAME()}ウォレットへの${amount} ${currency.toUpperCase()}入金は保留中です。取引が承認されるまでお待ちください。お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。`,
+		PENDING: (amount, confirmation, currency) =>
+			`現在、お客様の${API_NAME()}ウォレットへの${amount} ${currency.toUpperCase()}入金は保留中です。取引が承認されるまでお待ちください${confirmation ? ` お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。` : ''}`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`お客様の${amount} ${currency.toUpperCase()}入金が完了しました。お客様の${
 				currency.toUpperCase()
@@ -102,7 +102,8 @@ const DEPOSIT = {
 		2: (status) => `取引状態：${status}`,
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
-		5: COMMON.EXPLORER
+		5: (network) => `Network: ${network}`,
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -152,16 +153,17 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: (amount, address, currency) =>
+		PENDING: (amount, currency, address = '') =>
 			`お客様のアドレス${address}に${amount} ${currency.toUpperCase()}出金がリクエストされました。現在の取引状態は保留中ですが、まもなく完了する予定です。`,
-		COMPLETED: (amount, address, currency) =>
+		COMPLETED: (amount, currency, address = '') =>
 			`お客様の${amount} ${currency.toUpperCase()}出金が完了し、アドレス${address}に振り込みされました。`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (fee) => COMMON.FEE(fee),
 		3: (status) => `取引状態：${status}`,
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
-		6: COMMON.EXPLORER
+		6: (network) => `Network: ${network}`,
+		7: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -176,10 +178,11 @@ const WITHDRAWALREQUEST = {
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `アドレス：${address}`,
-		5: '出金を承認するためには、下のボタンをクリックしてください。',
-		6: '出金承認',
-		7: COMMON.ERROR_REQUEST,
-		8: (ip) => COMMON.IP_REQUEST_FROM(ip)
+		5: (network) => `Network: ${network}`,
+		6: '出金を承認するためには、下のボタンをクリックしてください。',
+		7: '出金承認',
+		8: COMMON.ERROR_REQUEST,
+		9: (ip) => COMMON.IP_REQUEST_FROM(ip)
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -269,6 +272,25 @@ const SMS = {
 		`お客様の${amount} ${currency.toUpperCase()}出金が完了しました。`
 };
 
+const DISCOUNTUPDATE = {
+	TITLE: 'Discount Rate Change',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (rate) => `Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const BANKVERIFIED = {
+	TITLE: 'Bank Verified',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.',
+		2: 'To view your current bank accounts, please visit the exchange\'s Verification Tab'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -289,5 +311,7 @@ module.exports = {
 	CONTACTFORM,
 	USERDEACTIVATED,
 	ALERT,
-	SMS
+	SMS,
+	DISCOUNTUPDATE,
+	BANKVERIFIED
 };

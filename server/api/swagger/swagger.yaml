@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.0.13"
+  version: "2.1.9"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1443,6 +1443,13 @@ paths:
           type: string
           minLength: 3
           maxLength: 15
+        - name: network
+          in: query
+          required: false
+          type: string
+          description: Blockchain network
+          minLength: 2
+          maxLength: 10
       responses:
         201:
           description: Success
@@ -1675,6 +1682,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success
@@ -1748,6 +1790,41 @@ paths:
           required: false
           enum: ['csv']
           type: string
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
       responses:
         200:
           description: Success
@@ -2027,6 +2104,107 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/kit/user-meta:
+    x-swagger-router-controller: admin
+    post:
+      operationId: postKitUserMeta
+      description: Add key to kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - type
+              - required
+              - description
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum: [string, number, boolean, date]
+              required:
+                type: boolean
+              description:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putKitUserMeta
+      description: Update key in kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum: [string, number, boolean, date]
+              required:
+                type: boolean
+              description:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    delete:
+      operationId: deleteKitUserMeta
+      description: Delete key in kit user_meta object
+      tags:
+        - Admin
+      parameters:
+        - name: name
+          in: query
+          description: Name of field
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/operator/invite:
     x-swagger-router-controller: admin
     get:
@@ -2094,6 +2272,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - communicator
   /admin/pairs:
     x-swagger-router-controller: admin
     get:
@@ -2325,7 +2504,7 @@ paths:
     x-swagger-router-controller: admin
     put:
       operationId: putUserRole
-      description: "Update a user's role"
+      description: Update a user's role
       tags:
         - Admin
       parameters:
@@ -2343,6 +2522,80 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/UserRolePutResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/user/meta:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserMeta
+      description: Update a user's meta object
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserMetaPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/user/discount:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserDiscount
+      description: Update a user's discount rate
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: number
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - discount
+            properties:
+              discount:
+                type: number
+                format: double
+                minimum: 0
+                maximum: 100
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            required:
+              - discount
+            properties:
+              discount:
+                type: number
+                format: double
         default:
           description: Error
           schema:
@@ -3205,12 +3458,36 @@ paths:
           schema:
             $ref: "#/definitions/MintBurnRequest"
       responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putMint
+      description: Update pending mint
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/MessageResponse"
+            $ref: "#/definitions/TransactionResponse"
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -3231,12 +3508,36 @@ paths:
           schema:
             $ref: "#/definitions/MintBurnRequest"
       responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putBurn
+      description: Update pending burn
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            $ref: "#/definitions/MintBurnUpdate"
+      responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/MessageResponse"
+            $ref: "#/definitions/TransactionResponse"
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -3395,8 +3696,10 @@ definitions:
             type: boolean
       bank_account:
         $ref: "#/definitions/BankArray"
-      crypto_wallet:
-        type: object
+      wallet:
+        type: array
+        items:
+          type: object
       verification_level:
         type: number
       settings:
@@ -3547,6 +3850,11 @@ definitions:
         description: OTP code when otp is enabled
         minLength: 6
         maxLength: 6
+      network:
+        type: string
+        description: Blockchain network
+        minLength: 2
+        maxLength: 10
   OtpRequest:
     type: object
     required:
@@ -3748,6 +4056,33 @@ definitions:
             type: boolean
           native_currency:
             type: string
+          user_meta:
+            $ref: "#/definitions/UserMetaObjects"
+          injected_html:
+            type: object
+            required:
+              - head
+              - body
+            properties:
+              head:
+                type: string
+              body:
+                type: string
+          injected_values:
+            type: array
+            items:
+              type: object
+              required:
+                - tag
+                - target
+                - attributes
+              properties:
+                tag:
+                  type: string
+                target:
+                  type: string
+                attributes:
+                  type: object
       secrets:
         type: object
         properties:
@@ -3795,6 +4130,23 @@ definitions:
                 type: string
               password:
                 type: string
+  UserMetaObjects:
+    type: object
+    minProperties: 1
+    additionalProperties:
+      type: object
+      required:
+        - type
+        - required
+        - description
+      properties:
+        type:
+          type: string
+          enum: [string, number, boolean, date]
+        required:
+          type: boolean
+        description:
+          type: string
   AdminUsersResponse:
     type: object
     properties:
@@ -3822,6 +4174,15 @@ definitions:
           - kyc
           - communicator
           - user
+  UserMetaPut:
+    type: object
+    required:
+      - meta
+    properties:
+      meta:
+        type: object
+      overwrite:
+        type: boolean
   UserRolePutResponse:
     type: object
     required:
@@ -3985,6 +4346,8 @@ definitions:
         type: string
       crypto:
         type: string
+      network:
+        type: string
   TokensResponse:
     type: object
     properties:
@@ -4059,7 +4422,6 @@ definitions:
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
     properties:
@@ -4073,15 +4435,20 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
+      network:
+        type: string
   ExternalWithdrawalRequest:
     type: object
     required:
       - txid
       - amount
-      - address
       - is_confirmed
       - user_id
-      - fee
     properties:
       amount:
         type: number
@@ -4095,6 +4462,13 @@ definitions:
         type: boolean
       user_id:
         type: number
+      rejected:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
+      network:
+        type: string
   OrderbooksResponse:
     type: object
     description: Top 10 orderbooks, where key is the symbol(currency) and the values is an object with the top 10 bids and ask.
@@ -4275,4 +4649,31 @@ definitions:
         type: number
         format: double
       transaction_id:
+        type: string
+      status:
+        type: boolean
+      email:
+        type: boolean
+  MintBurnUpdate:
+    type: object
+    required:
+      - transaction_id
+    properties:
+      transaction_id:
+        type: string
+      updated_transaction_id:
+        type: string
+      status:
+        type: boolean
+      rejected:
+        type: boolean
+      dismissed:
+        type: boolean
+      processing:
+        type: boolean
+      waiting:
+        type: boolean
+      email:
+        type: boolean
+      updated_description:
         type: string

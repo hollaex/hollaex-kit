@@ -20,7 +20,7 @@ const nestedContent = {
 	HOUR_FORMAT: 'HH:mm:ss',
 	LOGIN_TEXT: 'Login',
 	SIGN_IN: 'Sign In',
-	SIGNUP_TEXT: 'Sign Up',
+	SIGNUP_TEXT: 'Sign up',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
 	HOME_TEXT: 'Home',
@@ -35,6 +35,11 @@ const nestedContent = {
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Feel free to contact us for more information and any issues by sending us an email',
+	HELP_RESOURCE_GUIDE: {
+		CONTACT_US: 'contact us',
+		TEXT:
+			'Feel free to {0} for more information and any issues by sending us an email',
+	},
 	HELP_TELEGRAM_TEXT: 'Check out open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help?', // new
@@ -50,7 +55,14 @@ const nestedContent = {
 	GO_TRADE: 'Go Trade', // new
 	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
+	CONVERT: 'Convert', // new
+	TO: 'To', // new
 	HOME: {
+		MAIN_TITLE: 'Cryptocurrency trading exchange',
+		MAIN_TEXT:
+			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
+		TRADE_CRYPTO: 'Start trading',
+		VIEW_EXCHANGE: 'View exchange',
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
 			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
@@ -413,7 +425,7 @@ const nestedContent = {
 		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission',
 		GO_BACK: 'Go Back',
 		BANK_VERIFICATION_TEXT_1:
-			'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
+			'You can add your bank accounts here and get the verified. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
 		BANK_VERIFICATION_TEXT_2:
 			'By verifying your bank account you can obtain the following:',
 		BASE_WITHDRAWAL: 'Fiat withdrawal',
@@ -824,9 +836,10 @@ const nestedContent = {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'PRICE ({0})',
-	AMOUNT_SYMBOL: 'AMOUNT ({0})',
+	PRICE_CURRENCY: 'Price',
+	AMOUNT_SYMBOL: 'Amount',
 	MARKET_PRICE: 'Market Price',
+	ESTIMATED_PRICE: 'Estimated Price',
 	ORDER_PRICE: 'Order Price',
 	TOTAL_ORDER: 'Order Total',
 	NO_DATA: 'No Data',
@@ -859,6 +872,19 @@ const nestedContent = {
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
+	WITHDRAWALS_FORM_NETWORK_LABEL: 'Network',
+	DEPOSIT_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the senders wallets network',
+	DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG:
+		'Enter both Address and Tag, which are required to deposit into your account successfully.',
+	WITHDRAW_PAGE_DESTINATION_TAG_NONE: 'None',
+	WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE: 'Destination tag: {0}',
+	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'Make sure the network selected is compatible with the destination wallet',
+	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
+		'Check if receiving address requires a Tag. Also known as Memo, digital ID, label, and notes.',
+	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
@@ -966,7 +992,7 @@ const nestedContent = {
 	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
 	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
 	LOGOUT_TITLE: 'You have been logged out',
-	LOGOUT_ERROR_TOKEN_EXPIRED: 'Token is expired',
+	LOGOUT_ERROR_TOKEN_EXPIRED: 'Your session is expired. Please login again.',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
 	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
 	LOGOUT_ERROR_INACTIVE:
@@ -1117,7 +1143,7 @@ const nestedContent = {
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
 	WALLET_ADDRESS_MESSAGE:
-		'When you generate a wallet, you create a deposit and withdrawal address.',
+		'When you generate a wallet, you create a deposit address.',
 	WALLET_ADDRESS_ERROR:
 		'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
@@ -1125,7 +1151,7 @@ const nestedContent = {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
-	TRADE_TAB_POSTS: 'Posts', // new
+	TRADE_TAB_POSTS: 'ANNOUNCEMENTS', // new
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1387,10 +1413,11 @@ const nestedContent = {
 	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
-	CUMULATIVE_AMOUNT_SYMBOL: 'Cumulative',
+	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'type',
+	ORDER_MODE: 'Order mode', //new
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {
 		PENDING: 'Pending',
@@ -1414,16 +1441,35 @@ const nestedContent = {
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
 		SUB_HEADING: 'Cancel all orders',
-		INFO_1: 'This will cancel your open orders for this markets.',
+		INFO_1: 'This will cancel your open orders for all markets.',
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
 	LIMITS_BLOCK: {
 		HEADER_ROW_DESCRIPTION:
-			'Deposit and withdrawal allowance for all assets ({0})',
+			'24h Deposit and withdrawal allowance for all assets ({0})',
 		HEADER_ROW_TYPE: 'Type (All assets)',
-		HEADER_ROW_AMOUNT: 'Amount ({0})',
+		HEADER_ROW_AMOUNT: '24h Amount ({0})',
 	},
+	MARKETS_TABLE: {
+		TITLE: 'Live markets',
+		MARKETS: 'Markets',
+		LAST_PRICE: 'Last price',
+		CHANGE_24H: 'Change (24 hours)',
+		VOLUME_24h: 'Volume (24 hours)',
+		CHART_24H: 'Chart (24 hours)',
+		VIEW_MARKETS: 'View Markets',
+	},
+	PAGE_UNDER_CONSTRUCTION:
+		'This page is under construction. Please revisit this page soon.',
+	UNDEFINED_ERROR_TITLE: 'You’ve Encountered an Unidentified Error',
+	UNDEFINED_ERROR:
+		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
+	POST_ONLY_TOOLTIP: 'Post only orders only execute as a limit order.', // new
+	REFRESH: 'Refresh',
+	FEE_REDUCTION: 'Fee reduction', // new
+	FEE_REDUCTION_DESCRIPTION:
+		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
 };
 
 const content = flatten(nestedContent, options);

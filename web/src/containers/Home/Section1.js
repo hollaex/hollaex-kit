@@ -14,8 +14,8 @@ const Section1 = ({
 	onClickScrollTo = () => {},
 	onClickLearnMore,
 	token,
+	icons: ICONS,
 }) => {
-	const { icons: ICONS } = this.props;
 	return (
 		<div
 			className={classnames(

@@ -231,91 +231,93 @@ class MarketSelector extends Component {
 							handleSearch={handleSearch}
 						/>
 					</div>
-					{hasTabMenu ? (
-						processedTabMenu.map(
-							(
-								{
-									pair,
-									symbol,
-									menu,
-									pairTwo,
-									ticker,
-									increment_price,
-									priceDifference,
-									priceDifferencePercent,
-								},
-								index
-							) => {
-								return (
-									<div
-										key={index}
-										className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
-									>
+					<div className={classnames({ 'scroll-view': processedTabMenu.length >= 10})}>
+						{hasTabMenu ? (
+							processedTabMenu.map(
+								(
+									{
+										pair,
+										symbol,
+										menu,
+										pairTwo,
+										ticker,
+										increment_price,
+										priceDifference,
+										priceDifferencePercent,
+									},
+									index
+								) => {
+									return (
 										<div
-											className="pl-3 pr-2 pointer"
-											onClick={() => this.toggleFavourite(pair)}
+											key={index}
+											className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
 										>
-											{this.isFavourite(pair) ? (
-												<StarFilled className="stared-market" />
-											) : (
-												<StarOutlined />
-											)}
-										</div>
-										<div
-											className="d-flex align-items-center justify-content-between w-100"
-											onClick={() => addTradePairTab(pair)}
-										>
-											<div className="d-flex align-items-center">
-												<Image
-													iconId={
-														ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-															? `${menu.pair_base.toUpperCase()}_ICON`
-															: 'DEFAULT_ICON'
-													}
-													icon={
-														ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-															? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-															: ICONS.DEFAULT_ICON
-													}
-													wrapperClassName="app-bar-add-tab-icons"
-												/>
-												<div className="app_bar-pair-font">
-													{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+											<div
+												className="pl-3 pr-2 pointer"
+												onClick={() => this.toggleFavourite(pair)}
+											>
+												{this.isFavourite(pair) ? (
+													<StarFilled className="stared-market" />
+												) : (
+													<StarOutlined />
+												)}
+											</div>
+											<div
+												className="d-flex align-items-center justify-content-between w-100"
+												onClick={() => addTradePairTab(pair)}
+											>
+												<div className="d-flex align-items-center">
+													<Image
+														iconId={
+															ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+																? `${menu.pair_base.toUpperCase()}_ICON`
+																: 'DEFAULT_ICON'
+														}
+														icon={
+															ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+																? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+																: ICONS.DEFAULT_ICON
+														}
+														wrapperClassName="app-bar-add-tab-icons"
+													/>
+													<div className="app_bar-pair-font">
+														{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+													</div>
+													<div className="title-font ml-1 app-bar_add-tab-price">
+														{formatToCurrency(ticker.close, increment_price)}
+													</div>
 												</div>
-												<div className="title-font ml-1 app-bar_add-tab-price">
-													{formatToCurrency(ticker.close, increment_price)}
+												<div className="d-flex align-items-center mr-4">
+													<div
+														className={
+															priceDifference < 0
+																? 'app-price-diff-down app-bar-price_diff_down'
+																: 'app-bar-price_diff_up app-price-diff-up'
+														}
+													>
+														{/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
+													</div>
+													<div
+														className={
+															priceDifference < 0
+																? 'title-font app-price-diff-down'
+																: priceDifference > 0 ? 'title-font app-price-diff-up' : "title-font"
+														}
+													>
+														{priceDifferencePercent}
+													</div>
 												</div>
 											</div>
-											<div className="d-flex align-items-center mr-4">
-												<div
-													className={
-														priceDifference < 0
-															? 'app-price-diff-down app-bar-price_diff_down'
-															: 'app-bar-price_diff_up app-price-diff-up'
-													}
-												>
-													{/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
-												</div>
-												<div
-													className={
-														priceDifference < 0
-															? 'title-font app-price-diff-down'
-															: 'title-font app-price-diff-up'
-													}
-												>
-													{priceDifferencePercent}
-												</div>
-											</div>
 										</div>
-									</div>
-								);
-							}
-						)
-					) : (
-						<div className="app-bar-add-tab-content-list d-flex align-items-center">
-							No data...
-						</div>
-					)}
+									);
+								}
+							)
+						) : (
+							<div className="app-bar-add-tab-content-list d-flex align-items-center">
+								No data...
+							</div>
+						)}
+					</div>
 					<div className="d-flex justify-content-center app_bar-link blue-link pointer">
 						{constants &&
 							constants.features &&

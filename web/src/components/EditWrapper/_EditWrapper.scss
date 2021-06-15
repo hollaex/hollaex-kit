@@ -24,6 +24,11 @@ $operator-controls__panel-text-color: #ffffff;
 	font-size: 10px !important;
 	text-decoration: none !important;
 	font-weight: normal !important;
+
+	&.large {
+		width: 50px !important;
+		height: 50px !important;
+	}
 }
 
 .edit-wrapper__icon {

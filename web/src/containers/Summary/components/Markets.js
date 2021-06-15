@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { formatPercentage } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
+import math from 'mathjs';
 
 import { SearchBox } from 'components';
 import MarketList from '../../TradeTabs/components/MarketList';
@@ -10,6 +11,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
+import { EditWrapper } from 'components';
 
 class Markets extends Component {
 	constructor(props) {
@@ -52,9 +54,11 @@ class Markets extends Component {
 		const { pageSize } = this.state;
 		const pairs = searchValue ? this.getSearchPairs(searchValue) : pairData;
 		const pairKeys = Object.keys(pairs).sort((a, b) => {
-			let tickA = tickers[a] || {};
-			let tickB = tickers[b] || {};
-			return tickB.volume - tickA.volume;
+			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
+			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
+			const marketCapA = math.multiply(volumeA, closeA);
+			const marketCapB = math.multiply(volumeB, closeB);
+			return marketCapB - marketCapA;
 		});
 		const count = pairKeys.length;
 		const initItem = page * pageSize;
@@ -113,7 +117,14 @@ class Markets extends Component {
 	};
 
 	render() {
-		const { pairs, tickers, coins } = this.props;
+		const {
+			pairs,
+			tickers,
+			coins,
+			showSearch = true,
+			showMarkets = false,
+			router,
+		} = this.props;
 		const { data, chartData, page, pageSize, count } = this.state;
 
 		const processedData = data.map((key) => {
@@ -147,32 +158,47 @@ class Markets extends Component {
 
 		return (
 			<div>
-				<div className="d-flex justify-content-end">
-					<div className={isMobile ? '' : 'w-25'}>
-						<SearchBox
-							name={STRINGS['SEARCH_ASSETS']}
-							className="trade_tabs-search-field"
-							outlineClassName="trade_tabs-search-outline"
-							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
-							handleSearch={this.handleTabSearch}
-						/>
+				{showSearch && (
+					<div className="d-flex justify-content-end">
+						<div className={isMobile ? '' : 'w-25'}>
+							<SearchBox
+								name={STRINGS['SEARCH_ASSETS']}
+								className="trade_tabs-search-field"
+								outlineClassName="trade_tabs-search-outline"
+								placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+								handleSearch={this.handleTabSearch}
+							/>
+						</div>
 					</div>
-				</div>
+				)}
 				<MarketList
 					markets={processedData}
 					chartData={chartData}
 					handleClick={this.handleClick}
 				/>
-				<div className="text-right">
-					{page * pageSize + pageSize < count ? (
+				{!showMarkets && page * pageSize + pageSize < count && (
+					<div className="text-right">
 						<span
 							className="trade-account-link pointer"
 							onClick={this.handleLoadMore}
 						>
 							{STRINGS['SUMMARY.VIEW_MORE_MARKETS']}
 						</span>
-					) : null}
-				</div>
+					</div>
+				)}
+				{showMarkets && (
+					<div className="d-flex justify-content-center app_bar-link blue-link pointer py-2 underline-text market-list__footer">
+						<EditWrapper stringId="MARKETS_TABLE.VIEW_MARKETS" />
+						<div
+							onClick={() => {
+								router.push('/trade/add/tabs');
+							}}
+							className="pt-1"
+						>
+							{STRINGS['MARKETS_TABLE.VIEW_MARKETS']}
+						</div>
+					</div>
+				)}
 			</div>
 		);
 	}
