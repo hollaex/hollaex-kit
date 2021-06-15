@@ -10,11 +10,10 @@
   "license": "MIT",
   "keywords": [],
   "dependencies": {
-
-    "selenium-webdriver": "^4.0.0-beta.3
+    "selenium-webdriver": "4.0.0-beta.3"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
-    "mocha": "^8.4.0"
+    "chai": "4.3.4",
+    "mocha": "8.4.0"
   }
 }
