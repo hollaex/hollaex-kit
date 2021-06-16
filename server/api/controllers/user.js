@@ -147,7 +147,7 @@ const getVerifyUser = (req, res) => {
 	const domain = req.headers['x-real-origin'];
 	let promiseQuery;
 
-	if (email && isEmail(email)) {
+	if (email && typeof email === 'string' && isEmail(email)) {
 		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
 				if (resendEmail) {
@@ -165,7 +165,7 @@ const getVerifyUser = (req, res) => {
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
-	} else if (verification_code && isUUID(verification_code)) {
+	} else if (verification_code && typeof email === 'string' && isUUID(verification_code)) {
 		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
 				return res.json({
@@ -196,6 +196,15 @@ const getVerifyUser = (req, res) => {
 const verifyUser = (req, res) => {
 	const { email, verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
+
+	if (!isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/verifyUser invalid email',
+			email
+		);
+		return res.status(400).json({ message: 'Invalid Email' });
+	}
 
 	return toolsLib.database.findOne('user', {
 		where: { email },
@@ -254,6 +263,15 @@ const loginPost = (req, res) => {
 	const origin = req.headers.origin;
 	const referer = req.headers.referer;
 	const time = new Date();
+
+	if (!isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/loginPost invalid email',
+			email
+		);
+		return res.status(400).json({ message: 'Invalid Email' });
+	}
 
 	toolsLib.user.getUserByEmail(email.toLowerCase())
 		.then((user) => {
@@ -340,6 +358,26 @@ const requestResetPassword = (req, res) => {
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
 	const captcha = req.swagger.params.captcha.value;
+
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/requestResetPassword',
+		email,
+		'email',
+		'ip',
+		ip,
+		'domain',
+		domain
+	);
+
+	if (typeof email !== 'string' || !isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/requestResetPassword invalid email',
+			email
+		);
+		return res.status(400).json({ message: `Password request sent to: ${email}` });
+	}
 
 	toolsLib.security.sendResetPasswordCode(email, captcha, ip, domain)
 		.then(() => {
