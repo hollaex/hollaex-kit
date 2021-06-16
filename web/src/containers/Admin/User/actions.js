@@ -218,7 +218,6 @@ export const updateMeta = (values) => {
 };
 
 export const deleteMeta = (user, name) => {
-	console.log('user', user);
 	const options = {
 		method: 'DELETE',
 	};
