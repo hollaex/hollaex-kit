@@ -165,7 +165,7 @@ const getVerifyUser = (req, res) => {
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
-	} else if (verification_code && typeof email === 'string' && isUUID(verification_code)) {
+	} else if (verification_code && typeof verification_code === 'string' && isUUID(verification_code)) {
 		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
 				return res.json({
