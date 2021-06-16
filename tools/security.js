@@ -4,6 +4,7 @@ const rp = require('request-promise');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { intersection, has } = require('lodash');
+const { isEmail } = require('validator');
 const { SERVER_PATH } = require('../constants');
 const {
 	INVALID_CAPTCHA,
@@ -167,6 +168,10 @@ const createResetPasswordCode = (userId) => {
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
+	if (typeof email !== 'string' || !isEmail(email)) {
+		return reject(new Error(USER_NOT_FOUND));
+	}
+
 	return dbQuery.findOne('user', { where: { email } })
 		.then((user) => {
 			if (!user) {
