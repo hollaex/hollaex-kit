@@ -168,8 +168,8 @@ const createResetPasswordCode = (userId) => {
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
-	if (!isEmail(email)) {
-		return reject(USER_NOT_FOUND);
+	if (typeof email !== 'string' || !isEmail(email)) {
+		return reject(new Error(USER_NOT_FOUND));
 	}
 
 	return dbQuery.findOne('user', { where: { email } })
