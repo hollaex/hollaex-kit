@@ -47,6 +47,7 @@ const winston = require('winston');
 const elasticApmNode = require('elastic-apm-node');
 const winstonElasticsearchApm = require('winston-elasticsearch-apm');
 const tripleBeam = require('triple-beam');
+const { Plugin } = require('./db/models');
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
@@ -437,13 +438,27 @@ checkStatus()
 
 				loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
 
-				toolsLib.plugin.getPlugin(name)
-					.then((plugin) => {
+				let sameTypePlugins = [];
+
+				if (type) {
+					sameTypePlugins = Plugin.findAll({
+						where: { type }
+					});
+				}
+
+				bluebird.all([
+					toolsLib.plugin.getPlugin(name),
+					sameTypePlugins
+				])
+					.then(([ plugin, sameType ]) => {
 						if (!plugin) {
 							throw new Error('Plugin not installed');
 						}
 						if (plugin.version === version) {
 							throw new Error('Version is already installed');
+						}
+						if (sameType.length > 0 && type && plugin.type !== type) {
+							throw new Error(`Plugin with type ${type} already installed`);
 						}
 
 						const updatedPlugin = {
@@ -792,10 +807,24 @@ checkStatus()
 
 				loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
 
-				toolsLib.plugin.getPlugin(name)
-					.then((plugin) => {
-						if (plugin) {
-							throw new Error('Plugin is already installed');
+				const whereArray = [
+					{ name }
+				];
+
+				if (type) {
+					whereArray.push(
+						{ type }
+					);
+				}
+
+				Plugin.findAll({
+					where: {
+						[sequelize.Op.or]: whereArray
+					}
+				})
+					.then((plugins) => {
+						if (plugins.length > 0) {
+							throw new Error('Plugin with same name or type is already installed');
 						}
 
 						const newPlugin = {
