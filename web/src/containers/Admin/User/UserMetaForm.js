@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, message, Modal, Table, Breadcrumb } from 'antd';
-import { RightOutlined } from '@ant-design/icons';
+import { Button, message, Modal, Table } from 'antd';
 import moment from 'moment';
 
 import {
@@ -12,9 +11,12 @@ import { updateUserMeta, addMeta, deleteMeta, updateMeta } from './actions';
 import UserForm from './UserForm';
 import AddMetaForm from './AddMetaForm';
 
-const { Item } = Breadcrumb;
-
-const UserMetaForm = ({ constants, userData }) => {
+const UserMetaForm = ({
+	constants,
+	userData,
+	handleConfigure,
+	isConfigure,
+}) => {
 	const [user_meta, setUserMeta] = useState(constants.user_meta);
 	const [meta, setMeta] = useState(userData.meta);
 	const [isVisible, setVisible] = useState(false);
@@ -23,7 +25,6 @@ const UserMetaForm = ({ constants, userData }) => {
 	const [formValues, setFormValues] = useState({});
 	const [formFields, setFormFields] = useState([]);
 	const [btnDisable, setBtnDisable] = useState(false);
-	const [isConfigure, setConfigure] = useState(false);
 
 	const columns = [
 		{ title: 'Meta Type', dataIndex: 'type', key: 'type' },
@@ -346,9 +347,7 @@ const UserMetaForm = ({ constants, userData }) => {
 				} else if (data.type === 'date') {
 					print = { type: 'date', label: 'Date Selected' };
 					formValue = {
-						[name]: formValues[name]
-							? formValues[name].toString()
-							: formValues[name],
+						[name]: formValues[name],
 					};
 				} else if (data.type === 'number') {
 					print = { type: 'number', label: 'Number data' };
@@ -432,17 +431,9 @@ const UserMetaForm = ({ constants, userData }) => {
 	});
 
 	return (
-		<div className=" user_meta-form">
+		<div className="user_meta-form">
 			{isConfigure ? (
 				<div>
-					<Breadcrumb separator={<RightOutlined />}>
-						<Item>Home</Item>
-						<Item>Users</Item>
-						<Item className="info-link" onClick={() => setConfigure(false)}>
-							User profile
-						</Item>
-						<Item>Configure meta</Item>
-					</Breadcrumb>
 					<div className="d-flex justify-content-between mt-2">
 						<div>
 							The meta data in the table below will be added to all users. Add
@@ -470,12 +461,16 @@ const UserMetaForm = ({ constants, userData }) => {
 					<div className="d-flex justify-content-between">
 						<div>
 							User meta data To add new meta data to this user you must go to
-							the 'Configure Meta' page and click 'Add new meta'.
+							the '
+							<span className="info-link" onClick={handleConfigure}>
+								Configure Meta
+							</span>
+							' page and click 'Add new meta'.
 						</div>
 						<Button
 							type="primary"
 							className="green-btn mt-3"
-							onClick={() => setConfigure(true)}
+							onClick={handleConfigure}
 						>
 							Configure meta
 						</Button>
@@ -489,16 +484,12 @@ const UserMetaForm = ({ constants, userData }) => {
 							if (data.field[fieldKey].type === 'date' && meta[fieldKey]) {
 								initialValues[fieldKey] = moment(meta[fieldKey]);
 							}
-							if (
-								/* !data.field[fieldKey].description ||  */ data.field[fieldKey]
-									.validate ||
-								!meta[fieldKey]
-							) {
+							if (data.field[fieldKey].validate || meta[fieldKey] === null) {
 								isRemovable = false;
 							}
 						});
 						return (
-							<div key={index} className="user-form-wrapper">
+							<div key={index} className="user-form-wrapper user-data-form">
 								<div className="w-50">
 									<Form
 										onSubmit={(formProps) => {
