@@ -2010,8 +2010,8 @@ table th {
     max-width: 20rem; } }
 
 @media screen and (min-width: 1920px) {
-  .trade-container .trade-col_main_wrapper .trade-main_content {
-    flex: 2 !important; } }
+  .trade-container .trade-col_main_wrapper .trade-main_content .trade_block-wrapper {
+    max-height: unset; } }
 
 @media screen and (max-width: 1096px) {
   .trade-container .trade-col_side_wrapper {
