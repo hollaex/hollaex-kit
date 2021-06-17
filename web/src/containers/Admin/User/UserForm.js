@@ -16,11 +16,15 @@ const UserForm = (name) => {
 		onSubmit,
 		toggleVisibility,
 		initialValues,
-		initialize
+		initialize,
+		isRemovable = true,
 	}) => {
-		const initializeFields = useCallback((initValues) => {
-			initialize(initValues);
-		}, [initialize]);
+		const initializeFields = useCallback(
+			(initValues) => {
+				initialize(initValues);
+			},
+			[initialize]
+		);
 		useEffect(() => {
 			initializeFields(initialValues);
 		}, [initialValues, initializeFields]);
@@ -35,12 +39,14 @@ const UserForm = (name) => {
 									<strong>{error}</strong>
 								</div>
 							)}
-							<div
-								className="icon-wrapper"
-								onClick={() => toggleVisibility('remove_meta', fields)}
-							>
-								<CloseCircleOutlined />
-							</div>
+							{isRemovable ? (
+								<div
+									className="icon-wrapper"
+									onClick={() => toggleVisibility('clear_meta', initialValues)}
+								>
+									<CloseCircleOutlined />
+								</div>
+							) : null}
 						</div>
 					) : null}
 				</div>
