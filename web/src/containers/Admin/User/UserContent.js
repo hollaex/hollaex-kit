@@ -41,6 +41,7 @@ class UserContent extends Component {
 	state = {
 		showVerifyEmailModal: false,
 		userTiers: {},
+		isConfigure: false,
 	};
 
 	componentDidMount() {
@@ -201,6 +202,14 @@ class UserContent extends Component {
 		});
 	};
 
+	handleConfigure = () => {
+		this.setState({ isConfigure: !this.state.isConfigure });
+	};
+	renderTabBar = (props, DefaultTabBar) => {
+		if (this.state.isConfigure) return <div></div>;
+		return <DefaultTabBar {...props} />;
+	};
+
 	render() {
 		const {
 			coins,
@@ -213,7 +222,7 @@ class UserContent extends Component {
 			onChangeUserDataSuccess,
 		} = this.props;
 
-		const { showVerifyEmailModal, userTiers } = this.state;
+		const { showVerifyEmailModal, userTiers, isConfigure } = this.state;
 
 		const {
 			id,
@@ -247,6 +256,7 @@ class UserContent extends Component {
 		} else {
 			roleInitialValues.role = 'user';
 		}
+
 		return (
 			<div className="app_container-content admin-user-content">
 				<Breadcrumb>
@@ -256,32 +266,48 @@ class UserContent extends Component {
 					<Item>
 						<Link to="/admin/user">Users</Link>
 					</Item>
-					<Item>User profile</Item>
+					<Item
+						onClick={() => {
+							if (isConfigure) {
+								this.setState({ isConfigure: false });
+							}
+						}}
+					>
+						<Link>User profile</Link>
+					</Item>
+					{isConfigure ? (
+						<Item>
+							<Link>Configure</Link>
+						</Item>
+					) : null}
 				</Breadcrumb>
-				<div className="d-flex justify-content-between">
-					<div className="d-flex align-items-center user-details">
-						<ReactSVG
-							src={STATIC_ICONS.USER_DETAILS_ICON}
-							className="user-icon"
-						/>
-						<div>User Id: {userInformation.id}</div>
-						<div className="user-seperator"></div>
-						<div>{userInformation.email}</div>
+				{!isConfigure ? (
+					<div className="d-flex justify-content-between">
+						<div className="d-flex align-items-center user-details">
+							<ReactSVG
+								src={STATIC_ICONS.USER_DETAILS_ICON}
+								className="user-icon"
+							/>
+							<div>User Id: {userInformation.id}</div>
+							<div className="user-seperator"></div>
+							<div>{userInformation.email}</div>
+						</div>
+						<div className="d-flex">
+							<Button
+								size="medium"
+								type="primary"
+								style={{ marginRight: 5 }}
+								onClick={refreshAllData}
+								className="green-btn"
+							>
+								Refresh
+							</Button>
+						</div>
 					</div>
-					<div className="d-flex">
-						<Button
-							size="medium"
-							type="primary"
-							style={{ marginRight: 5 }}
-							onClick={refreshAllData}
-							className="green-btn"
-						>
-							Refresh
-						</Button>
-					</div>
-				</div>
+				) : null}
 				<Tabs
-				// tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
+					// tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
+					renderTabBar={this.renderTabBar}
 				>
 					<TabPane tab="About" key="about">
 						<div>
@@ -376,7 +402,12 @@ class UserContent extends Component {
 					)}
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Meta" key="meta">
-							<UserMetaForm constants={constants} userData={userInformation} />
+							<UserMetaForm
+								constants={constants}
+								userData={userInformation}
+								handleConfigure={this.handleConfigure}
+								isConfigure={isConfigure}
+							/>
 						</TabPane>
 					)}
 				</Tabs>
