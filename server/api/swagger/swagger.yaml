@@ -4442,6 +4442,10 @@ definitions:
         format: date-time
       network:
         type: string
+      fee:
+        type: number
+      description:
+        type: string
   ExternalWithdrawalRequest:
     type: object
     required:
@@ -4468,6 +4472,8 @@ definitions:
         type: string
         format: date-time
       network:
+        type: string
+      description:
         type: string
   OrderbooksResponse:
     type: object
