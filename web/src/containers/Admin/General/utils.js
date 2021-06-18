@@ -104,4 +104,11 @@ export const getGeneralFields = (coins) => ({
 			placeholder: 'http://',
 		},
 	},
+	section_10: {
+		site_key: {
+			type: 'input',
+			label: 'Site key',
+			placeholder: '6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA',
+		},
+	},
 });
