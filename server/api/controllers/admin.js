@@ -717,7 +717,8 @@ const mintAsset = (req, res) => {
 		description,
 		transaction_id,
 		status,
-		email
+		email,
+		fee
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -731,7 +732,9 @@ const mintAsset = (req, res) => {
 		'transaction_id',
 		transaction_id,
 		'status',
-		status
+		status,
+		'fee',
+		fee
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -744,6 +747,7 @@ const mintAsset = (req, res) => {
 				currency,
 				amount,
 				{
+					fee,
 					description,
 					transactionId: transaction_id,
 					status,
@@ -848,7 +852,8 @@ const burnAsset = (req, res) => {
 		description,
 		transaction_id,
 		status,
-		email
+		email,
+		fee
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -862,7 +867,9 @@ const burnAsset = (req, res) => {
 		'transaction_id',
 		transaction_id,
 		'status',
-		status
+		status,
+		'fee',
+		fee
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -878,7 +885,8 @@ const burnAsset = (req, res) => {
 					description,
 					transactionId: transaction_id,
 					status,
-					email
+					email,
+					fee
 				}
 			);
 		})

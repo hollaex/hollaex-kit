@@ -4654,6 +4654,9 @@ definitions:
         type: boolean
       email:
         type: boolean
+      fee:
+        type: number
+        format: double
   MintBurnUpdate:
     type: object
     required:
