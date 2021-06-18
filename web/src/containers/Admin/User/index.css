@@ -82,6 +82,9 @@
 .admin-user-content .ant-breadcrumb > span:last-child {
 	color: #ffffff;
 }
+.admin-user-content .ant-breadcrumb > span:last-child a {
+	color: #ffffff;
+}
 .user-icon {
 	margin-right: 5px;
 	width: 3rem;
@@ -231,9 +234,10 @@
 	.ant-select-selector,
 .user-data-form .ant-input,
 .user-data-form .ant-picker-input > input,
-.user-data-form .ant-picker {
+.user-data-form .ant-picker,
+.user-data-form .ant-input-number-input {
 	background-color: #0000ff;
-	color: #ffffff;
+	color: #ffffff !important;
 }
 .download-csv-table {
 	border: 1px solid #ffffff;
@@ -329,7 +333,7 @@
 	width: 30%;
 }
 .user_meta-form .user-form-wrapper .required-label {
-	color: #FFB300;
+	color: #ffb300;
 }
 .user_meta-form .user-form-wrapper .icon-wrapper {
 	position: relative;
@@ -364,7 +368,7 @@
 	padding: 1rem;
 }
 .modal-wrapper .input_field .ant-select-arrow {
-    color: #c4c4c4 !important;
+	color: #c4c4c4 !important;
 }
 .modal-wrapper .input_field .ant-select {
 	margin-bottom: 1.5rem;
