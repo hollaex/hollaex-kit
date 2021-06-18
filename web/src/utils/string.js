@@ -8,6 +8,7 @@ import {
 } from '../config/constants';
 import STRINGS, { content as CONTENT } from 'config/localizedStrings';
 import { getValidLanguages } from 'utils/initialize';
+import LANGUAGES from 'config/languages';
 export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
 
 export const getFormattedDate = (value) => {
@@ -203,4 +204,31 @@ const EXCLUSIONS = [
 
 export const generateRemoteRouteStringId = (id = '') => {
 	return `REMOTE_ROUTE_STRING__${id.toUpperCase()}`;
+};
+
+export const generateRCStrings = (plugins = []) => {
+	const languages = LANGUAGES.map(({ value }) => value);
+	const allStrings = {};
+
+	languages.forEach((key) => {
+		allStrings[key] = {};
+	});
+
+	plugins.forEach(({ name, web_view = [] }) => {
+		if (web_view) {
+			web_view.forEach(({ meta: { strings = {} } = { strings: {} } }) => {
+				Object.entries(strings).forEach(([lang, stringObj]) => {
+					if (languages.includes(lang)) {
+						Object.entries(stringObj).forEach(([key, string]) => {
+							allStrings[lang][
+								`RC_${name.toUpperCase()}_${key.toUpperCase()}_STRING`
+							] = string;
+						});
+					}
+				});
+			});
+		}
+	});
+
+	return allStrings;
 };
