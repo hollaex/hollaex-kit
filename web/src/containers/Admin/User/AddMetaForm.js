@@ -15,6 +15,10 @@ const AddMetaForm = ({
 	resetForm,
 	dispatch,
 	isAddMeta,
+	pristine,
+	error,
+	valid,
+	submitting,
 }) => {
 	useEffect(() => {
 		if (!isVisible) {
@@ -41,7 +45,7 @@ const AddMetaForm = ({
 					onClick={handleSubmit(onSubmit)}
 					className="green-btn"
 					block
-					disabled={btnDisable}
+					disabled={btnDisable || pristine || submitting || !valid || error}
 				>
 					Confirm
 				</Button>
