@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import TradeBlock from './components/TradeBlock';
 import STRINGS from '../../config/localizedStrings';
@@ -29,10 +29,10 @@ class MobileChart extends Component {
 			activeTheme,
 			activeLanguage,
 			symbol,
-			constants,
+			// constants,
 		} = this.props;
 		const { chartHeight } = this.state;
-		const pairValue = pair || 'xht-usdt';
+		// const pairValue = pair || 'xht-usdt';
 		return (
 			<div
 				className={classnames(
@@ -53,17 +53,17 @@ class MobileChart extends Component {
 					className="f-1 overflow-x"
 					alignChildTitle={true}
 					tailHead={
-						constants &&
-						constants.features &&
-						constants.features.quick_trade ? (
-							<div className="quick-trade-tab p-1 mt-1">
-								<Link to={`/quick-trade/${pairValue}`}>
-									{STRINGS['QUICK_TRADE']}
-								</Link>
-							</div>
-						) : (
+						// constants &&
+						// constants.features &&
+						// constants.features.quick_trade ? (
+						// 	<div className="quick-trade-tab p-1 mt-1">
+						// 		<Link to={`/quick-trade/${pairValue}`}>
+						// 			{STRINGS['QUICK_TRADE']}
+						// 		</Link>
+						// 	</div>
+						// ) : (
 							<Fragment />
-						)
+						// )
 					}
 				>
 					{pair && chartHeight > 0 && (
