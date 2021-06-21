@@ -2,7 +2,7 @@
 
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
-const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject, isNil, isDate } = require('lodash');
+const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject, isNil } = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
@@ -49,7 +49,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, stringIsDate } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, stringIsDate } = require('./common');
 const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -75,8 +75,10 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 		return reject(new Error(INVALID_PASSWORD));
 	}
 
+	email = email.toLowerCase();
+
 	return dbQuery.findOne('user', {
-		where: { email: email.toLowerCase() },
+		where: { email },
 		attributes: ['email']
 	})
 		.then((user) => {
@@ -125,6 +127,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 };
 
 const verifyUser = (email, code) => {
+	email = email.toLowerCase();
 	return dbQuery.findOne('user',
 		{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
 	)
@@ -164,6 +167,7 @@ const createUser = (
 		id: null
 	}
 ) => {
+	email = email.toLowerCase();
 	return getModel('sequelize').transaction((transaction) => {
 		return dbQuery.findOne('user', {
 			where: { email }
@@ -570,13 +574,11 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 		raw: rawData
 	})
 		.then(async (user) => {
-			if (networkData && user.network_id) {
-				if (rawData) {
-					const networkData = await getNodeLib().getUser(user.network_id);
-					user.balance = networkData.balance;
-					user.wallet = networkData.wallet;
-				} else {
-					const networkData = await getNodeLib().getUser(user.network_id);
+			if (user && networkData) {
+				const networkData = await getNodeLib().getUser(user.network_id);
+				user.balance = networkData.balance;
+				user.wallet = networkData.wallet;
+				if (!rawData) {
 					user.dataValues.balance = networkData.balance;
 					user.dataValues.wallet = networkData.wallet;
 				}
@@ -1405,28 +1407,8 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		});
 };
 
-const updateUserMeta = async (id, userMeta = {}, opts = { overwrite: null }) => {
-	const { user_meta } = getKitConfig();
-
-	for (let key in userMeta) {
-		if (!user_meta[key]) {
-			throw new Error(`Field ${key} does not exist in the user meta reference`);
-		} else if (user_meta[key].required && isNil(userMeta[key])) {
-			throw new Error(`Field ${key} is a required value`);
-		} else if (typeof userMeta[key] !== user_meta[key].type) {
-			if (!isNil(userMeta[key])) {
-				if (user_meta[key].type === 'date') {
-					if (isDate(userMeta[key])) {
-						userMeta[key] = userMeta[key].toISOString();
-					} else if (!stringIsDate(userMeta[key])) {
-						throw new Error(`Wrong data type given for field ${key}`);
-					}
-				} else {
-					throw new Error(`Wrong data type given for field ${key}`);
-				}
-			}
-		}
-	}
+const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) => {
+	const { user_meta: referenceMeta } = getKitConfig();
 
 	const user = await getUserByKitId(id, false);
 
@@ -1434,7 +1416,44 @@ const updateUserMeta = async (id, userMeta = {}, opts = { overwrite: null }) => 
 		throw new Error(USER_NOT_FOUND);
 	}
 
-	const updatedUserMeta = opts.overwrite ? userMeta : { ...user.meta, ...userMeta };
+	const deletedKeys = [];
+
+	for (let key in user.meta) {
+		if (!referenceMeta[key] && isNil(user.meta[key])) {
+			delete user.meta[key];
+		}
+	}
+
+	for (let key in givenMeta) {
+		if (!referenceMeta[key]) {
+			if (!has(user.meta, key)) {
+				throw new Error(`Field ${key} does not exist in the user meta reference`);
+			} else {
+				if (isNil(givenMeta[key])) {
+					deletedKeys.push(key);
+				} else {
+					const storedDataType = (isDatetime(user.meta[key]) || stringIsDate(user.meta[key])) ? 'date' : typeof user.meta[key];
+					const givenDataType = (isDatetime(givenMeta[key]) || stringIsDate(givenMeta[key])) ? 'date' : typeof givenMeta[key];
+
+					if (storedDataType !== givenDataType) {
+						throw new Error(`Wrong data type given for field ${key}: ${givenDataType}. Expected data type: ${storedDataType}`);
+					}
+				}
+			}
+		} else {
+			if (isNil(givenMeta[key]) && referenceMeta[key].required) {
+				throw new Error(`Field ${key} is a required value`);
+			} else if (!isNil(givenMeta[key])) {
+				const givenDataType = (isDatetime(givenMeta[key]) || stringIsDate(givenMeta[key])) ? 'date' : typeof givenMeta[key];
+
+				if (referenceMeta[key].type !== givenDataType) {
+					throw new Error(`Wrong data type given for field ${key}: ${givenDataType}. Expected data type: ${referenceMeta[key].type}`);
+				}
+			}
+		}
+	}
+
+	const updatedUserMeta = opts.overwrite ? omit(givenMeta, ...deletedKeys) : omit({ ...user.meta, ...givenMeta }, ...deletedKeys);
 
 	const updatedUser = await user.update({
 		meta: updatedUserMeta

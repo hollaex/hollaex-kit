@@ -40,6 +40,7 @@ const flatten = require('flat');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
+const moment = require('moment');
 
 /**
  * Checks if url given is a valid url.
@@ -675,6 +676,10 @@ const stringIsDate = (date) => {
 	return (typeof date === 'string' && new Date(date) !== 'Invalid Date') && !isNaN(new Date(date));
 };
 
+const isDatetime = (date, formats = [ moment.ISO_8601 ]) => {
+	return moment(date, formats, true).isValid();
+};
+
 const errorMessageConverter = (err) => {
 	return handleCatchError(err);
 };
@@ -732,5 +737,6 @@ module.exports = {
 	kitUserMetaFieldIsValid,
 	stringIsDate,
 	errorMessageConverter,
-	getDomain
+	getDomain,
+	isDatetime
 };
