@@ -149,7 +149,7 @@ exports.VALID_USER_META_TYPES = [
 	'string',
 	'number',
 	'boolean',
-	'date'
+	'date-time'
 ];
 
 exports.KIT_CONFIG_KEYS = [
