@@ -125,7 +125,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format
 	 * @param {string} opts.endDate - End date of query in ISO8601 format
-	 * @param {string} opts.format - Custom format of data set. Enum: ['all', 'csv']
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getTrades(
@@ -183,7 +183,7 @@ class HollaExNetwork {
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
-		if (opts.format) {
+		if (isString(opts.format)) {
 			return createRequestStream(verb, `${this.apiUrl}${path}`, headers);
 		} else {
 			return createRequest(verb, `${this.apiUrl}${path}`, headers);
@@ -201,7 +201,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format
 	 * @param {string} opts.endDate - End date of query in ISO8601 format
-	 * @param {string} opts.format - Custom format of data set. Enum: ['all', 'csv']
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getUserTrades(
@@ -271,7 +271,7 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		if (opts.format) {
+		if (isString(opts.format)) {
 			return createRequestStream(verb, `${this.apiUrl}${path}`, headers);
 		} else {
 			return createRequest(verb, `${this.apiUrl}${path}`, headers);
