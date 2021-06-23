@@ -6,7 +6,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { DEFAULT_FEES } = require(`${SERVER_PATH}/constants`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getKitConfig } = require('./common');
+const { subscribedToPair, getKitTier, getKitConfig, getCsvParser } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -300,22 +300,6 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 	});
 };
 
-const getAllTradesNetworkStream = (opts = {
-	symbol: null,
-	limit: null,
-	page: null,
-	orderBy: null,
-	order: null,
-	startDate: null,
-	endDate: null
-}) => {
-	if (opts.symbol && !subscribedToPair(opts.symbol)) {
-		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
-	}
-	return getNodeLib().getTrades({ ...opts, format: 'all' });
-};
-
-
 const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
@@ -351,6 +335,47 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 		});
 };
 
+const getAllTradesNetworkStream = (opts = {
+	symbol: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null
+}) => {
+	if (opts.symbol && !subscribedToPair(opts.symbol)) {
+		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
+	}
+	return getNodeLib().getTrades({ ...opts, format: 'all' });
+};
+
+const getAllTradesNetworkCsv = (opts = {
+	symbol: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null
+}) => {
+	return getAllTradesNetworkStream(opts)
+		.then((data) => {
+			const parser = getCsvParser();
+
+			parser.on('error', (error) => {
+				parser.destroy();
+				throw error;
+			});
+
+			parser.on('end', () => {
+				parser.destroy();
+			});
+
+			return data.pipe(parser);
+		});
+};
+
 const getUserTradesByKitIdStream = (userKitId, opts = {
 	symbol: null,
 	limit: null,
@@ -374,6 +399,32 @@ const getUserTradesByKitIdStream = (userKitId, opts = {
 		});
 };
 
+const getUserTradesByKitIdCsv = (userKitId, opts = {
+	symbol: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null
+}) => {
+	return getUserTradesByKitIdStream(userKitId, opts)
+		.then((data) => {
+			const parser = getCsvParser();
+
+			parser.on('error', (error) => {
+				parser.destroy();
+				throw error;
+			});
+
+			parser.on('end', () => {
+				parser.destroy();
+			});
+
+			return data.pipe(parser);
+		});
+};
+
 const getUserTradesByNetworkIdStream = (userNetworkId, opts = {
 	symbol: null,
 	limit: null,
@@ -388,6 +439,33 @@ const getUserTradesByNetworkIdStream = (userNetworkId, opts = {
 	}
 	return getNodeLib().getUserTrades(userNetworkId, { ...opts, format: 'all' });
 };
+
+const getUserTradesByNetworkIdCsv = (userNetworkId, opts = {
+	symbol: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null
+}) => {
+	return getUserTradesByNetworkIdStream(userNetworkId, opts)
+		.then((data) => {
+			const parser = getCsvParser();
+
+			parser.on('error', (error) => {
+				parser.destroy();
+				throw error;
+			});
+
+			parser.on('end', () => {
+				parser.destroy();
+			});
+
+			return data.pipe(parser);
+		});
+};
+
 
 const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, order, startDate, endDate) => {
 	if (!networkId) {
@@ -540,5 +618,8 @@ module.exports = {
 	generateOrderFeeData,
 	getUserTradesByKitIdStream,
 	getUserTradesByNetworkIdStream,
-	getAllTradesNetworkStream
+	getAllTradesNetworkStream,
+	getAllTradesNetworkCsv,
+	getUserTradesByKitIdCsv,
+	getUserTradesByNetworkIdCsv
 };
