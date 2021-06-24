@@ -47,19 +47,92 @@ const getAdminTrades = (req, res) => {
 	let promiseQuery;
 
 	if (user_id.value) {
-		promiseQuery = toolsLib.order.getAllUserTradesByKitId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
+		if (format.value === 'all') {
+			promiseQuery = toolsLib.order.getUserTradesByKitIdStream(
+				user_id.value,
+				{
+					symbol: symbol.value,
+					limit: limit.value,
+					page: page.value,
+					orderBy: order_by.value,
+					order: order.value,
+					startDate: start_date.value,
+					endDate: end_date.value
+				}
+			);
+		} else if (format.value === 'csv') {
+			promiseQuery = toolsLib.order.getUserTradesByKitIdCsv(
+				user_id.value,
+				{
+					symbol: symbol.value,
+					limit: limit.value,
+					page: page.value,
+					orderBy: order_by.value,
+					order: order.value,
+					startDate: start_date.value,
+					endDate: end_date.value
+				}
+			);
+		} else {
+			promiseQuery = toolsLib.order.getAllUserTradesByKitId(
+				user_id.value,
+				symbol.value,
+				limit.value,
+				page.value,
+				order_by.value,
+				order.value,
+				start_date.value,
+				end_date.value,
+				format.value
+			);
+		}
 	} else {
-		promiseQuery = 	toolsLib.order.getAllTradesNetwork(symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
+		if (format.value === 'all') {
+			promiseQuery = toolsLib.order.getAllTradesNetworkStream(
+				{
+					symbol: symbol.value,
+					limit: limit.value,
+					page: page.value,
+					orderBy: order_by.value,
+					order: order.value,
+					startDate: start_date.value,
+					endDate: end_date.value
+				}
+			);
+		} else if (format.value === 'csv') {
+			promiseQuery = toolsLib.order.getAllTradesNetworkCsv(
+				{
+					symbol: symbol.value,
+					limit: limit.value,
+					page: page.value,
+					orderBy: order_by.value,
+					order: order.value,
+					startDate: start_date.value,
+					endDate: end_date.value
+				}
+			);
+		} else {
+			promiseQuery = 	toolsLib.order.getAllTradesNetwork(
+				symbol.value,
+				limit.value,
+				page.value,
+				order_by.value,
+				order.value,
+				start_date.value,
+				end_date.value,
+				format.value
+			);
+		}
 	}
 
 	promiseQuery
 		.then((data) => {
-			if (format.value === 'csv') {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-trades.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else if (format.value === 'all') {
-				res.status(203);
+			if (format.value) {
+				if (format.value === 'csv') {
+					res.setHeader('Content-disposition', `attachment; filename=${user_id.value ? `user-${user_id.value}-` : ''}trades.csv`);
+					res.set('Content-Type', 'text/csv');
+					res.status(202);
+				}
 				data.pipe(res);
 			} else {
 				return res.json(data);
