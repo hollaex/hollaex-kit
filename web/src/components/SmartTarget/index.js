@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { RemoteComponent } from 'RemoteComponent';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getToken } from 'utils/token';
+import { PLUGIN_URL } from 'config/constants';
+import { withRouter } from 'react-router';
 
 const SmartTarget = (props) => {
 	const { targets, id, children, webViews } = props;
@@ -10,7 +13,13 @@ const SmartTarget = (props) => {
 	return targets.includes(id) ? (
 		<Fragment>
 			{webViews[id].map(({ src }) => (
-				<RemoteComponent url={src} strings={STRINGS} {...props} />
+				<RemoteComponent
+					url={src}
+					strings={STRINGS}
+					plugin_url={PLUGIN_URL}
+					token={getToken()}
+					{...props}
+				/>
 			))}
 		</Fragment>
 	) : (
@@ -44,4 +53,4 @@ const mapStateToProps = (store) => ({
 	pairsTradesFetched: store.orderbook.pairsTradesFetched,
 });
 
-export default connect(mapStateToProps)(withConfig(SmartTarget));
+export default connect(mapStateToProps)(withConfig(withRouter(SmartTarget)));
