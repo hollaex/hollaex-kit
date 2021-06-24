@@ -30,4 +30,4 @@ function addRest(str,txt){
 	return contains(UrlList,txt);
 }
 module.exports = {addRest};
- console.log(addRest(fileContents,"https://sandbox.hollaex.com/reset-password/"));
+ //console.log(addRest(fileContents,"https://sandbox.hollaex.com/reset-password/"));
