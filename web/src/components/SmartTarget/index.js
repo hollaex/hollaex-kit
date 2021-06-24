@@ -6,15 +6,18 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { getToken } from 'utils/token';
 import { PLUGIN_URL } from 'config/constants';
 import { withRouter } from 'react-router';
+import { generateGlobalId } from 'utils/id';
 
 const SmartTarget = (props) => {
 	const { targets, id, children, webViews } = props;
 
 	return targets.includes(id) ? (
 		<Fragment>
-			{webViews[id].map(({ src }) => (
+			{webViews[id].map(({ src, name }, index) => (
 				<RemoteComponent
+					key={`${name}_${index}`}
 					url={src}
+					generateId={generateGlobalId(name)}
 					strings={STRINGS}
 					plugin_url={PLUGIN_URL}
 					token={getToken()}

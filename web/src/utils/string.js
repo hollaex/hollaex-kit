@@ -8,6 +8,7 @@ import {
 } from '../config/constants';
 import STRINGS, { content as CONTENT } from 'config/localizedStrings';
 import { getValidLanguages } from 'utils/initialize';
+import { generateGlobalId } from 'utils/id';
 import LANGUAGES from 'config/languages';
 export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
 
@@ -220,9 +221,7 @@ export const generateRCStrings = (plugins = []) => {
 				Object.entries(strings).forEach(([lang, stringObj]) => {
 					if (languages.includes(lang)) {
 						Object.entries(stringObj).forEach(([key, string]) => {
-							allStrings[lang][
-								`RC_${name.toUpperCase()}_${key.toUpperCase()}_STRING`
-							] = string;
+							allStrings[lang][generateGlobalId(name)(key)] = string;
 						});
 					}
 				});

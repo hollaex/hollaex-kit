@@ -1,5 +1,6 @@
 import defaultIcons from 'config/icons';
 import merge from 'lodash.merge';
+import { generateGlobalId } from 'utils/id';
 
 const defaultIconsKey = 'dark';
 
@@ -41,9 +42,7 @@ const generateRCIcons = (themes, plugins = []) => {
 				Object.entries(icons).forEach(([themeKey, themeSpecificIcons]) => {
 					if (themeKeys.includes(themeKey)) {
 						Object.entries(themeSpecificIcons).forEach(([key, icon]) => {
-							allIcons[themeKey][
-								`RC_${name.toUpperCase()}_${key.toUpperCase()}_ICON`
-							] = icon;
+							allIcons[themeKey][generateGlobalId(name)(key)] = icon;
 						});
 					}
 				});
