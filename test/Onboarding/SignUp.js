@@ -3,18 +3,19 @@
 //given, when and then
 
 const scrap = require('./scraper');
+const defNewUser = require('./newUser');
 const { Builder, By, until } = require('selenium-webdriver');
 const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
-var randomstring = require('randomstring');
 const dotenv = require('dotenv');
 dotenv.config();
 let User = process.env.NEW_USER;
 let passWord = process.env.PASSWORD;
 let signUpPage = process.env.SIGN_UP_PAGE;
 let emailAdmin =process.env.Email_ADMIN_USERNAME;
-const newUser = randomstring.generate(4)+'@'+User ;
+
+const newUser = defNewUser.defineNewUser(User,4) ;
 console.log(newUser);
 
 describe('NewUserRequest', function() {
@@ -75,24 +76,8 @@ describe('NewUserRequest', function() {
 	it('Email Confirmation', async function() {
 		console.log('Test name: Confirmation');
 		console.log('Step # | name | target | value');
-		console.log('1 | open | /auth/?client_id=4534a10755c6fd46&redirect_uri=https%3A%2F%2Fwebmail.mail.us-west-2.awsapps.com%2Fworkmail%2F | ');
-		await driver.get('https://sahlabadi-website.awsapps.com/auth/?client_id=4534a10755c6fd46&redirect_uri=https%3A%2F%2Fwebmail.mail.us-west-2.awsapps.com%2Fworkmail%2F');
-		console.log('2 | setWindowSize | 1280x680 |'); 
-		await driver.manage().window().setRect(1280, 680);
-		console.log('3 | click | id=wdc_username |');
-		await sleep(10000);
-		await driver.findElement(By.id('wdc_username')).click();
-		console.log('4 | type | id=wdc_username | QA');
-		await driver.findElement(By.id('wdc_username')).sendKeys(emailAdmin);
-		console.log('5 | click | id=wdc_password | ');
-		await driver.findElement(By.id('wdc_password')).click();
-		console.log('6 | type | id=wdc_password | Password!');
-		await driver.findElement(By.id('wdc_password')).sendKeys(passWord);
-		console.log('7 | click | id=wdc_login_button | ');
-		await driver.findElement(By.id('wdc_login_button')).click();
-		console.log('8 | click | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
-		await driver.manage().window().maximize();
-		await sleep(10000);
+		await defNewUser.emailLogIn(driver,emailAdmin,passWord);
+		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 		await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
 		console.log('9 | doubleClick | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
 		{
@@ -108,7 +93,7 @@ describe('NewUserRequest', function() {
 		console.log('13 | echo | ${content} | ');
 		console.log(vars['content']);
 		console.log('14 | assertText | xpath=/html/body/pre/a[22] | ${content}');
-		//	expect(vars['content']).to.equal(newUser.toLowerCase());
+		expect(vars['content']).to.equal(newUser.toLowerCase());
      
 		console.log('15 | storeAttribute | xpath=/html/body/pre/a[26]@href | mytextlink');
 		{

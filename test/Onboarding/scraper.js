@@ -1,5 +1,5 @@
-// const fs = require("fs");
-// const fileContents = fs.readFileSync('txt.txt').toString();
+const fs = require("fs");
+const fileContents = fs.readFileSync('txt.txt').toString();
 
 function chunkCleaner(str){
  return	str.replace(/(=\\r\\n|\\n|\\r|\\t)/gm,"");
@@ -30,4 +30,4 @@ function addRest(str,txt){
 	return contains(UrlList,txt);
 }
 module.exports = {addRest};
-// addRest(fileContents,"https://sandbox.hollaex.com/verify/");
+ console.log(addRest(fileContents,"https://sandbox.hollaex.com/reset-password/"));
