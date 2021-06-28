@@ -712,7 +712,7 @@ const userCheckTransaction = (req, res) => {
 		is_testnet
 	} = req.swagger.params;
 
-	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, is_testnet.value, network.value)
+	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value)
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})
