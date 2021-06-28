@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, message, Modal, Table } from 'antd';
 import moment from 'moment';
 
@@ -34,6 +34,27 @@ const UserMetaForm = ({
 		// { title: 'Data/input', dataIndex: 'data', key: 'data' },
 		{ title: 'Configure', dataIndex: 'configure', key: 'configure' },
 	];
+
+	const renderDeletedField = useCallback((key, meta) => {
+		let fieldData = {};
+		fieldData[key] = { type: 'boolean', label: `${key} (deleted)` };
+		let value = meta[key];
+
+		if (typeof meta[key] === 'string' && checkDate(value)) {
+			fieldData[key].type = 'date-time';
+			fieldData[key].dateFormat = 'YYYY-MM-DD h:mm';
+			fieldData[key].showTime = true;
+			fieldData[key].clearIcon = null;
+		} else if (typeof value === 'boolean') {
+			fieldData[key].type = 'boolean';
+		} else if (typeof value === 'number') {
+			fieldData[key].type = 'number';
+		} else if (typeof value === 'string') {
+			fieldData[key].type = 'string';
+		}
+		return fieldData;
+	}, []);
+
 	useEffect(() => {
 		let deletedFieldData = [];
 
@@ -65,27 +86,7 @@ const UserMetaForm = ({
 			];
 		});
 		setFormFields([...fieldData, ...deletedFieldData]);
-	}, [user_meta, meta]);
-
-	const renderDeletedField = (key, meta) => {
-		let fieldData = {};
-		fieldData[key] = { type: 'boolean', label: `${key} (deleted)` };
-		let value = meta[key];
-
-		if (typeof meta[key] === 'string' && checkDate(value)) {
-			fieldData[key].type = 'date-time';
-			fieldData[key].dateFormat = 'YYYY-MM-DD h:mm';
-			fieldData[key].showTime = true;
-			fieldData[key].clearIcon = null;
-		} else if (typeof value === 'boolean') {
-			fieldData[key].type = 'boolean';
-		} else if (typeof value === 'number') {
-			fieldData[key].type = 'number';
-		} else if (typeof value === 'string') {
-			fieldData[key].type = 'string';
-		}
-		return fieldData;
-	};
+	}, [user_meta, meta, renderDeletedField]);
 
 	const renderField = (key, metaDesc) => {
 		let fieldData = {};
