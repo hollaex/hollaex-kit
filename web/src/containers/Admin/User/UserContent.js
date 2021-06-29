@@ -277,7 +277,7 @@ class UserContent extends Component {
 					</Item>
 					{isConfigure ? (
 						<Item>
-							<Link>Configure</Link>
+							<Link>Configure Meta</Link>
 						</Item>
 					) : null}
 				</Breadcrumb>

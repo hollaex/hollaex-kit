@@ -40,6 +40,7 @@ const renderFields = (fields, disableAllFields) => {
 						component = renderNumberField;
 						break;
 					case 'date':
+					case 'date-time':
 						component = renderDateField;
 						break;
 					case 'range':
