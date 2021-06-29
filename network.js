@@ -1335,6 +1335,7 @@ class HollaExNetwork {
 	 * @param {string} currency; - Currency of transaction
 	 * @param {string} transactionId - Transaction id
 	 * @param {string} address - Transaction receiving address
+	 * @param {string} network - Crypto's blockchain network
 	 * @param {object} opts - Optional parameters.
 	 * @param {boolean} opts.isTestnet - Network transaction was made on. Default: false
 	 * @return {object} Success or failed message
@@ -1343,6 +1344,7 @@ class HollaExNetwork {
 		currency,
 		transactionId,
 		address,
+		network,
 		opts = { isTestnet: null }
 	) {
 		checkKit(this.exchange_id);
@@ -1356,7 +1358,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		let path = `${this.baseUrl}/check-transaction?currency=${currency}&transaction_id=${transactionId}&address=${address}`;
+		let path = `${this.baseUrl}/check-transaction?currency=${currency}&transaction_id=${transactionId}&address=${address}&network=${network}`;
 
 		if (isBoolean(opts.isTestnet)) {
 			path += `&is_testnet=${opts.isTestnet}`;
