@@ -31,12 +31,12 @@ function defineNewUser(User,i){
 	return localStorage.getItem('NewUser');
 }
 function getNewUser(){
-		if (typeof localStorage === "undefined" || localStorage === null) {
+	if (typeof localStorage === "undefined" || localStorage === null) {
 		var LocalStorage = require('node-localstorage').LocalStorage;
 		localStorage = new LocalStorage('./scratch');
 	}
   
-		return localStorage.getItem('NewUser');
+	return localStorage.getItem('NewUser');
 }
 async function kitLogIn(driver,userName,passWord){
 
@@ -81,7 +81,7 @@ async function kitLogIn(driver,userName,passWord){
 	await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());
 	expect(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText()).to.equal(userName);
 		 
-	console.log(' you suceccefully loged in ',userName);
+	console.log(' you suceccefully logged in ',userName);
 
 
 

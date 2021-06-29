@@ -2,16 +2,19 @@
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
 const { Builder, By, Key, until } = require('selenium-webdriver');
+const defNewUser = require('./../Onboarding/newUser.js');
 const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
 const dotenv = require('dotenv');
 const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
 dotenv.config();
-let bob = process.env.BOB;
+//let bob = process.env.BOB;
+
+let userName =  defNewUser.getNewUser();
 let passWord = process.env.PASSWORD;
 let logInPage = process.env.LOGIN_PAGE;
-let webSite = process.nextTick.WEBSITE;
+let webSite = process.env.WEBSITE;
 describe('LogIn', function() {
 	this.timeout(30000);
 	let driver;
@@ -30,14 +33,14 @@ describe('LogIn', function() {
 		const title = await driver.getTitle();
 		console.log(title);
 		expect(title).to.equal(title);
-		console.log('entring sand box');
+		console.log('entring sand box/your weibste');
 		console.log(' Step # | action | target | value');
     
-		console.log(' 1 | type | name=email | bob@gmail.com');
+		console.log(' 1 | type | name=email |newuser@gmail.com');
 		await driver.wait(until.elementLocated(By.name('email')), 5000);
-		await driver.findElement(By.name('email')).sendKeys(bob);
+		await driver.findElement(By.name('email')).sendKeys(userName);
     
-		console.log(' 2 | type | name=password | Holla!');
+		console.log(' 2 | type | name=password | password!');
 		await driver.wait(until.elementLocated(By.name('password')), 5000);
 		await driver.findElement(By.name('password')).sendKeys(passWord);
     
@@ -60,60 +63,64 @@ describe('LogIn', function() {
 	});
 	it('ETH', async function() {
     
-    
-		await driver.get(webSite,'wallet');
+		console.log('opping the wallet');
+		await driver.get(webSite+'wallet');
 		await sleep(5000);
 		await driver.findElement(By.name('search-assets')).click();
-		// 3 | type | name=search-assets | USDT
+		console.log('6 | type | name=search-assets | USDT');
 		await driver.findElement(By.name('search-assets')).sendKeys('USDT');
-		// 4 | sendKeys | name=search-assets | ${KEY_ENTER}
+		console.log('7 | sendKeys | name=search-assets | ${KEY_ENTER}');
 		await driver.findElement(By.name('search-assets')).sendKeys(Key.ENTER);
-		// 5 | click | css=.action-button-wrapper:nth-child(1) > .action_notification-text | 
+		console.log('8 | click | css=.action-button-wrapper:nth-child(1) > .action_notification-text | ');
 		await driver.findElement(By.css('.action-button-wrapper:nth-child(1) > .action_notification-text')).click();
-		// 6 | click | css=.dropdown-placeholder | 
+		console.log('9 | click | css=.dropdown-placeholder | ');
 		await driver.findElement(By.css('.dropdown-placeholder')).click();
-		// 7 | click | id=network-eth-0 | 
+		console.log('10 | click | id=network-eth-0 |'); 
 		await driver.findElement(By.id('network-eth-0')).click();
-		// 8 | click | css=.holla-button | 
+		console.log(' 8 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
-		// 9 | click | css=.font-weight-bold | 
+		console.log(' 9 | click | css=.font-weight-bold | ');
 		await driver.findElement(By.css('.font-weight-bold')).click();
-		// 10 | assertText | css=.font-weight-bold > .edit-wrapper__container | Generate USD Tether Wallet
+		console.log(' 10 | assertText | css=.font-weight-bold > .edit-wrapper__container | Generate USD Tether Wallet');
 		assert(await driver.findElement(By.css('.font-weight-bold > .edit-wrapper__container')).getText() == 'Generate USD Tether Wallet');
-		// 11 | click | css=.holla-button:nth-child(3) | 
+		console.log(' 11 | click | css=.holla-button:nth-child(3) | ');
 		await driver.findElement(By.css('.holla-button:nth-child(3)')).click();
-		// 12 | click | css=.dumb-field-wrapper .field-label-wrapper > .d-flex | 
+		await sleep(5000);
+		console.log(' 12 | click | css=.dumb-field-wrapper .field-label-wrapper > .d-flex | ');
 		await driver.findElement(By.css('.dumb-field-wrapper .field-label-wrapper > .d-flex')).click();
-		// 13 | assertText | css=.dumb-field-wrapper .d-flex > .field-label | Your USD Tether receiving address
+		await sleep(5000);
+		console.log(' 13 | assertText | css=.dumb-field-wrapper .d-flex > .field-label | Your USD Tether receiving address');
 		assert(await driver.findElement(By.css('.dumb-field-wrapper .d-flex > .field-label')).getText() == 'Your USD Tether receiving address');
 	});
 	it('TRX', async function() {
 
     
-		await driver.get(webSite,'wallet');
+		await driver.get(webSite+'wallet');
 		await sleep(5000);
 		await driver.findElement(By.name('search-assets')).click();
-		// 3 | type | name=search-assets | USDT
+		console.log(' 3 | type | name=search-assets | USDT');
 		await driver.findElement(By.name('search-assets')).sendKeys('USDT');
-		// 4 | sendKeys | name=search-assets | ${KEY_ENTER}
+		console.log(' 4 | sendKeys | name=search-assets | ${KEY_ENTER}');
 		await driver.findElement(By.name('search-assets')).sendKeys(Key.ENTER);
-		// 5 | click | css=.action-button-wrapper:nth-child(1) > .action_notification-text | 
+		console.log(' 5 | click | css=.action-button-wrapper:nth-child(1) > .action_notification-text | ');
 		await driver.findElement(By.css('.action-button-wrapper:nth-child(1) > .action_notification-text')).click();
-		// 6 | click | css=.dropdown-placeholder | 
+		console.log(' 6 | click | css=.dropdown-placeholder | ');
 		await driver.findElement(By.css('.dropdown-placeholder')).click();
-		// 7 | click | id=network-eth-0 | 
+		console.log(' 7 | click | id=network-eth-0 | ');
 		await driver.findElement(By.id('network-trx-1')).click();
-		// 8 | click | css=.holla-button | 
+		console.log(' 8 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
-		// 9 | click | css=.font-weight-bold | 
+		console.log(' 9 | click | css=.font-weight-bold | ');
 		await driver.findElement(By.css('.font-weight-bold')).click();
-		// 10 | assertText | css=.font-weight-bold > .edit-wrapper__container | Generate USD Tether Wallet
+		console.log(' 10 | assertText | css=.font-weight-bold > .edit-wrapper__container | Generate USD Tether Wallet');
 		assert(await driver.findElement(By.css('.font-weight-bold > .edit-wrapper__container')).getText() == 'Generate USD Tether Wallet');
-		// 11 | click | css=.holla-button:nth-child(3) | 
+		console.log(' 11 | click | css=.holla-button:nth-child(3) | ');
+		await sleep(5000);
 		await driver.findElement(By.css('.holla-button:nth-child(3)')).click();
-		// 12 | click | css=.dumb-field-wrapper .field-label-wrapper > .d-flex | 
+		console.log(' 12 | click | css=.dumb-field-wrapper .field-label-wrapper > .d-flex | ');
+		await sleep(5000);
 		await driver.findElement(By.css('.dumb-field-wrapper .field-label-wrapper > .d-flex')).click();
-		// 13 | assertText | css=.dumb-field-wrapper .d-flex > .field-label | Your USD Tether receiving address
+		console.log(' 13 | assertText | css=.dumb-field-wrapper .d-flex > .field-label | Your USD Tether receiving address');
 		assert(await driver.findElement(By.css('.dumb-field-wrapper .d-flex > .field-label')).getText() == 'Your USD Tether receiving address');
 	});
 });
