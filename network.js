@@ -1355,6 +1355,8 @@ class HollaExNetwork {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		} else if (!address) {
 			return reject(parameterError('address', 'cannot be null'));
+		} else if (!network) {
+			return reject(parameterError('network', 'cannot be null'));
 		}
 
 		const verb = 'GET';
