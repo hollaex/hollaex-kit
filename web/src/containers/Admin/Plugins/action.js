@@ -39,6 +39,14 @@ export const getPlugin = (query) =>
 		NETWORK_API_URL
 	);
 
+export const getPluginScript = (query) =>
+	requestAuthenticated(
+		`/plugins/script?${querystring.stringify(query)}`,
+		{},
+		null,
+		PLUGIN_URL
+	);
+
 export const addPlugin = (values) => {
 	const options = {
 		method: 'POST',
