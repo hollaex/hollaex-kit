@@ -59,7 +59,7 @@ const UserMetaForm = ({
 		let deletedFieldData = [];
 
 		Object.keys(meta).forEach((key, index) => {
-			if (!Object.keys(user_meta).includes(key) && meta[key]) {
+			if (!Object.keys(user_meta).includes(key) && meta[key] !== null) {
 				const field = renderDeletedField(key, meta);
 				const firstPart = key.split(' ')[0];
 				deletedFieldData = [
