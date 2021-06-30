@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 import { addBankData, approveBank, rejectBank } from './actions';
 import {
@@ -156,7 +157,10 @@ class BankData extends Component {
 	};
 
 	getPlugin = () => {
-		requestPlugin({ name: 'bank' })
+		const {
+			pluginNames: { bank },
+		} = this.props;
+		requestPlugin({ name: bank })
 			.then((res) => {
 				if (res.data) {
 					this.setState({ bankData: res.data });
@@ -198,8 +202,7 @@ class BankData extends Component {
 
 	render() {
 		const { bank, formVisible, userId, bankData } = this.state;
-		const { onChangeSuccess } = this.props;
-		let disabled = false;
+		const { onChangeSuccess, pluginNames } = this.props;
 		let Fields = {};
 		if (bankData.public_meta && Object.keys(bankData.public_meta).length) {
 			let publicMeta = Object.keys(bankData.public_meta);
@@ -214,6 +217,11 @@ class BankData extends Component {
 						};
 						if (metaData.required) {
 							Fields[key].validate = [validateRequired];
+
+							//FIXME: This is to make pay_id field optional in the aussie bank
+							if (pluginNames.bank === 'aussie-bank' && key === 'pay_id') {
+								delete Fields[key].validate;
+							}
 						}
 					}
 				} else {
@@ -227,9 +235,7 @@ class BankData extends Component {
 		}
 		return (
 			<Row>
-				{bank && bank.length <= 3 ? (disabled = false) : (disabled = true)}
 				<Button
-					disabled={disabled}
 					onClick={() => this.showModal()}
 					type="primary"
 					icon={<PlusCircleOutlined />}
@@ -355,4 +361,8 @@ class BankData extends Component {
 	}
 }
 
-export default BankData;
+const mapStateToProps = ({ app: { pluginNames } }) => ({
+	pluginNames,
+});
+
+export default connect(mapStateToProps)(BankData);

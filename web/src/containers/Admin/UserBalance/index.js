@@ -38,11 +38,23 @@ class UserBalance extends Component {
 				JSON.stringify(this.state.userInformation)
 		) {
 			this.handleChartData();
-			const crypto_wallet = this.state.userInformation.crypto_wallet || {};
+			const wallet = this.state.userInformation.wallet || [];
 			const tableData = Object.entries(this.props.coins).map(([key, value]) => {
+				let addressData = {};
+				let networks = value.network ? value.network.split(',') : [];
+				if (networks.length) {
+					networks.map((networkKey) => {
+						let temp =
+							wallet.filter((data) => data.network === networkKey)[0] || {};
+						return (addressData[`${networkKey}_address`] = temp.address);
+					});
+				} else {
+					let temp = wallet.filter((data) => data.currency === key)[0] || {};
+					addressData.address = temp.address;
+				}
 				return {
 					...value,
-					address: crypto_wallet[key],
+					...addressData,
 					balance: this.state.userBalance[`${key}_balance`],
 					balance_available: this.state.userBalance[`${key}_available`],
 				};
@@ -50,7 +62,30 @@ class UserBalance extends Component {
 			this.setState({ tableData });
 		}
 	}
-
+	renderAddress = ({ network, address, ...rest }) => {
+		const networks = network ? network.split(',') : [];
+		if (networks.length) {
+			return (
+				<div>
+					address
+					{networks.map((data, index) => {
+						return (
+							<div key={index}>
+								{data}:{' '}
+								{rest[`${data}_address`]
+									? rest[`${data}_address`]
+									: 'Not generated'}{' '}
+							</div>
+						);
+					})}
+				</div>
+			);
+		} else if (address) {
+			return <div>address: {address}</div>;
+		} else {
+			return <div>address: Not generated</div>;
+		}
+	};
 	getBalanceColumn = () => {
 		return [
 			{
@@ -66,7 +101,28 @@ class UserBalance extends Component {
 					);
 				},
 			},
-			{ title: 'Address', dataIndex: 'address', key: 'address' },
+			// {
+			// 	title: 'Address',
+			// 	key: 'address',
+			// 	render: ({ network, address, ...rest }) => {
+			// 		const networks = network ? network.split(',') : [];
+			// 		if (networks.length) {
+			// 			return (
+			// 				<div>
+			// 					{networks.map((data, index) => {
+			// 						return (
+			// 							<div key={index}>{data}: {rest[`${data}_address`] ? rest[`${data}_address`] : 'Not generated'} </div>
+			// 						)
+			// 					})}
+			// 				</div>
+			// 			)
+			// 		} else if (address) {
+			// 			return <div>{address}</div>
+			// 		} else {
+			// 			return <div>Not generated</div>
+			// 		}
+			// 	}
+			// },
 			{
 				title: 'Last generated',
 				dataIndex: 'updated_at',
@@ -110,7 +166,9 @@ class UserBalance extends Component {
 					if (err.status === 403) {
 						this.setState({ loading: false });
 					}
-					throw new SubmissionError({ _error: err.data.message });
+					throw new SubmissionError({
+						_error: err.data ? err.data.message : err.message,
+					});
 				});
 		} else {
 			const error = new Error('Not found');
@@ -153,6 +211,7 @@ class UserBalance extends Component {
 					rowKey={(data) => {
 						return data.id;
 					}}
+					expandedRowRender={this.renderAddress}
 					dataSource={tableData}
 				/>
 				<div className="user-donut-chart-wrapper">

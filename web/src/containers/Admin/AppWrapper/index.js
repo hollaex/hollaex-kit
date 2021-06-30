@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin } from 'antd';
-import { debounce } from 'lodash';
+import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 
 import { PATHS } from '../paths';
@@ -45,6 +45,7 @@ import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
 import './index.css';
 import 'antd/dist/antd.css';
+import { requestMyPlugins } from '../Plugins/action';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -63,6 +64,8 @@ class AppWrapper extends React.Component {
 			publicSocket: undefined,
 			idleTimer: undefined,
 			setupCompleted: true,
+			myPlugins: [],
+			isConfigure: false,
 		};
 	}
 
@@ -98,6 +101,7 @@ class AppWrapper extends React.Component {
 			isAdminUser: isAdmin(),
 			isLoaded: true,
 		});
+		this.getMyPlugins();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -113,6 +117,16 @@ class AppWrapper extends React.Component {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
 			}
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		if (
+			JSON.stringify(prevProps.location) !==
+				JSON.stringify(this.props.location) &&
+			this.state.isConfigure
+		) {
+			this.setState({ isConfigure: false });
 		}
 	}
 
@@ -287,10 +301,23 @@ class AppWrapper extends React.Component {
 		);
 	};
 
+	renderCapitalize = (data) => {
+		let text = data;
+		if (text.includes('-')) {
+			text = text.replace(/-/g, ' ');
+		}
+		return capitalize(text);
+	};
+
 	getTitle = () => {
-		const { location = {} } = this.props;
-		if (location.pathname.includes('/admin/user')) {
+		const { location = {}, router } = this.props;
+		if (location.pathname.includes('/admin/user') && !this.state.isConfigure) {
 			return 'Users';
+		} else if (
+			location.pathname.includes('/admin/user') &&
+			this.state.isConfigure
+		) {
+			return 'Configure Meta';
 		} else if (location.pathname.includes('/admin/general')) {
 			return 'General';
 		} else if (location.pathname.includes('/admin/financial')) {
@@ -313,6 +340,8 @@ class AppWrapper extends React.Component {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {
 			return 'Resources';
+		} else if (location.pathname.includes('/admin/plugin/adminView')) {
+			return this.renderCapitalize(router.params.name);
 		} else {
 			return 'Dashboard';
 		}
@@ -399,13 +428,49 @@ class AppWrapper extends React.Component {
 		}
 	};
 
+	getMyPlugins = (params = {}) => {
+		return requestMyPlugins({ ...params })
+			.then((res) => {
+				if (res && res.data) {
+					this.setState({ myPlugins: res.data });
+				}
+			})
+			.catch((err) => {
+				throw err;
+			});
+	};
+
+	showConfigure = () => {
+		this.setState({ isConfigure: !this.state.isConfigure });
+	};
+
 	render() {
 		const { children, router, user } = this.props;
 		const logout = () => {
 			removeToken();
 			router.replace('/login');
 		};
-		const { isAdminUser, isLoaded, appLoaded, setupCompleted } = this.state;
+		const {
+			isAdminUser,
+			isLoaded,
+			appLoaded,
+			setupCompleted,
+			myPlugins,
+			isConfigure,
+		} = this.state;
+		let pathNames = PATHS;
+		myPlugins.forEach((data) => {
+			if (data.enabled && data.enabled_admin_view) {
+				pathNames = [
+					...pathNames,
+					{
+						path: `/admin/plugin/adminView/${data.name}`,
+						label: this.renderCapitalize(data.name),
+						routeKey: 'adminView',
+					},
+				];
+			}
+		});
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {
@@ -490,9 +555,11 @@ class AppWrapper extends React.Component {
 									// className="m-top"
 								>
 									<div>{this.renderItems()}</div>
-									{PATHS.filter(
-										({ hideIfSupport, hideIfSupervisor, hideIfKYC }) => true
-									).map(this.renderMenuItem)}
+									{pathNames
+										.filter(
+											({ hideIfSupport, hideIfSupervisor, hideIfKYC }) => true
+										)
+										.map(this.renderMenuItem)}
 								</Menu>
 								<div>
 									<div className="bottom-side-top"></div>
@@ -516,7 +583,10 @@ class AppWrapper extends React.Component {
 								<div className="admin-content-head">{this.getTitle()}</div>
 								<div className="content-wrapper admin-content-wrapper">
 									{appLoaded && this.isSocketDataReady() ? (
-										children
+										React.cloneElement(children, {
+											isConfigure: isConfigure,
+											showConfigure: this.showConfigure,
+										})
 									) : (
 										<Spin size="large" className="m-top" />
 									)}

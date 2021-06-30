@@ -47,6 +47,7 @@ const winston = require('winston');
 const elasticApmNode = require('elastic-apm-node');
 const winstonElasticsearchApm = require('winston-elasticsearch-apm');
 const tripleBeam = require('triple-beam');
+const { Plugin } = require('./db/models');
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
@@ -171,6 +172,7 @@ checkStatus()
 								'documentation',
 								'web_view',
 								'public_meta',
+								'type',
 								'admin_view',
 								'created_at',
 								'updated_at'
@@ -394,6 +396,12 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					type: {
+						in: ['body'],
+						errorMessage: 'must be a string or null',
+						isString: true,
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -424,18 +432,33 @@ checkStatus()
 					prescript,
 					postscript,
 					meta,
-					public_meta
+					public_meta,
+					type
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
 
-				toolsLib.plugin.getPlugin(name)
-					.then((plugin) => {
+				let sameTypePlugins = [];
+
+				if (type) {
+					sameTypePlugins = Plugin.findAll({
+						where: { type }
+					});
+				}
+
+				bluebird.all([
+					toolsLib.plugin.getPlugin(name),
+					sameTypePlugins
+				])
+					.then(([ plugin, sameType ]) => {
 						if (!plugin) {
 							throw new Error('Plugin not installed');
 						}
 						if (plugin.version === version) {
 							throw new Error('Version is already installed');
+						}
+						if (sameType.length > 0 && type && plugin.type !== type) {
+							throw new Error(`Plugin with type ${type} already installed`);
 						}
 
 						const updatedPlugin = {
@@ -462,6 +485,10 @@ checkStatus()
 
 						if (author) {
 							updatedPlugin.author = author;
+						}
+
+						if (type) {
+							updatedPlugin.type = type;
 						}
 
 						if (documentation) {
@@ -737,6 +764,12 @@ checkStatus()
 							errorMessage: 'must be an object'
 						},
 						optional: { options: { nullable: true } }
+					},
+					type: {
+						in: ['body'],
+						errorMessage: 'must be a string or null',
+						isString: true,
+						optional: { options: { nullable: true } }
 					}
 				})
 			], (req, res) => {
@@ -768,15 +801,30 @@ checkStatus()
 					prescript,
 					postscript,
 					meta,
-					public_meta
+					public_meta,
+					type
 				} = req.body;
 
 				loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
 
-				toolsLib.plugin.getPlugin(name)
-					.then((plugin) => {
-						if (plugin) {
-							throw new Error('Plugin is already installed');
+				const whereArray = [
+					{ name }
+				];
+
+				if (type) {
+					whereArray.push(
+						{ type }
+					);
+				}
+
+				Plugin.findAll({
+					where: {
+						[sequelize.Op.or]: whereArray
+					}
+				})
+					.then((plugins) => {
+						if (plugins.length > 0) {
+							throw new Error('Plugin with same name or type is already installed');
 						}
 
 						const newPlugin = {
@@ -818,6 +866,10 @@ checkStatus()
 
 						if (logo) {
 							newPlugin.logo = logo;
+						}
+
+						if (type) {
+							newPlugin.type = type;
 						}
 
 						if (!lodash.isUndefined(web_view)) {
