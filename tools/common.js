@@ -34,6 +34,7 @@ const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
 const { errorMessageConverter: handleCatchError } = require(`${SERVER_PATH}/utils/conversion`);
+const { TemplateEmail } = require(`${SERVER_PATH}/mail/templates/helpers/common`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
 const flatten = require('flat');
@@ -511,6 +512,8 @@ const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text:
 	return nodemailerEmail(params);
 };
 
+const emailHtmlBoilerplate = (html) => TemplateEmail({}, html);
+
 const kitUserMetaFieldIsValid = (field, data) => {
 	const missingUserMetaKeys = difference(USER_META_KEYS, Object.keys(data));
 	if (missingUserMetaKeys.length > 0) {
@@ -738,5 +741,6 @@ module.exports = {
 	stringIsDate,
 	errorMessageConverter,
 	getDomain,
-	isDatetime
+	isDatetime,
+	emailHtmlBoilerplate
 };
