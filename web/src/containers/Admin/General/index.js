@@ -29,6 +29,7 @@ const ThemeForm = AdminHocForm('ThemeForm');
 const NativeCurrencyForm = AdminHocForm('NativeCurrencyForm');
 const HelpDeskForm = AdminHocForm('HelpDeskForm');
 const APIDocLinkForm = AdminHocForm('APIDocLinkForm');
+const CaptchaForm = AdminHocForm('CaptchaForm');
 
 class General extends Component {
 	constructor() {
@@ -43,6 +44,7 @@ class General extends Component {
 			initialEmailValues: {},
 			initialLinkValues: {},
 			initialEmailVerificationValues: {},
+			initialCaptchaValues: {},
 			pendingPublishIcons: {},
 			showDisableSignUpsConfirmation: false,
 			isSignUpActive: true,
@@ -84,6 +86,7 @@ class General extends Component {
 		let initialEmailVerificationValues = {
 			...this.state.initialEmailVerificationValues,
 		};
+		let initialCaptchaValues = { ...this.state.initialCaptchaValues };
 		const { kit = {}, secrets = { smtp: {}, captcha: {}, emails: {} } } =
 			this.state.constants || {};
 		const {
@@ -92,6 +95,7 @@ class General extends Component {
 			links = {},
 			new_user_is_activated: isSignUpActive,
 			email_verification_required,
+			captcha = {},
 		} = kit;
 		initialNameValues = { ...initialNameValues, api_name };
 		initialLanguageValues = {
@@ -102,6 +106,12 @@ class General extends Component {
 		initialEmailVerificationValues = {
 			...initialEmailVerificationValues,
 			email_verification_required,
+		};
+
+		initialCaptchaValues = {
+			...initialCaptchaValues,
+			...captcha,
+			...secrets.captcha,
 		};
 
 		const { configuration = {} } = this.state.initialEmailValues || {};
@@ -119,6 +129,7 @@ class General extends Component {
 			initialLinkValues,
 			isSignUpActive,
 			initialEmailVerificationValues,
+			initialCaptchaValues,
 			showDisableSignUpsConfirmation: false,
 		});
 	};
@@ -334,6 +345,27 @@ class General extends Component {
 		});
 	};
 
+	handleSubmitCaptcha = ({ site_key, secret_key }) => {
+		const formValues = {
+			kit: {
+				captcha: {
+					site_key,
+				},
+			},
+			...(!secret_key.includes('*')
+				? {
+						secrets: {
+							captcha: {
+								secret_key,
+							},
+						},
+				  }
+				: {}),
+		};
+
+		this.handleSubmitGeneral(formValues);
+	};
+
 	handleSubmitSignUps = (new_user_is_activated) => {
 		return this.handleSubmitGeneral({
 			kit: {
@@ -424,6 +456,7 @@ class General extends Component {
 			initialThemeValues,
 			initialLinkValues,
 			initialEmailVerificationValues,
+			initialCaptchaValues,
 			loading,
 			isSignUpActive,
 			showDisableSignUpsConfirmation,
@@ -946,11 +979,23 @@ class General extends Component {
 							</div>
 						</div>
 						<div className="general-wrapper">
-							<Button type="primary" className="mb-5">
-								Save
-							</Button>
+							<Button type="primary">Save</Button>
 						</div>
 					</div>
+				</div>
+				<div className="divider"></div>
+				<div className="general-wrapper mb-4 pb-4">
+					<div className="sub-title">reCAPTCHA</div>
+					<div className="description mb-4">
+						Make spammers go away with Google reCAPTCHA.
+					</div>
+					<CaptchaForm
+						initialValues={initialCaptchaValues}
+						fields={generalFields.section_10}
+						buttonText="Save"
+						buttonClass="green-btn minimal-btn"
+						onSubmit={this.handleSubmitCaptcha}
+					/>
 				</div>
 			</div>
 		);

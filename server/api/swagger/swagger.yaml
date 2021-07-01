@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.10"
+  version: "2.1.11"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2127,7 +2127,7 @@ paths:
                 type: string
               type:
                 type: string
-                enum: [string, number, boolean, date]
+                enum: [string, number, boolean, date-time]
               required:
                 type: boolean
               description:
@@ -2163,7 +2163,7 @@ paths:
                 type: string
               type:
                 type: string
-                enum: [string, number, boolean, date]
+                enum: [string, number, boolean, date-time]
               required:
                 type: boolean
               description:
@@ -4142,7 +4142,7 @@ definitions:
       properties:
         type:
           type: string
-          enum: [string, number, boolean, date]
+          enum: [string, number, boolean, date-time]
         required:
           type: boolean
         description:

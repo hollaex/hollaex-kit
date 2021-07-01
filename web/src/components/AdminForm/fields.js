@@ -152,20 +152,20 @@ export const renderDateField = ({
 	description = '',
 	dateFormat = dateFormatDefault,
 	showTime = false,
-	clearIcon
+	clearIcon,
 }) => (
 	<div className="input_field">
 		{label && <label>{label}</label>}
 		{description ? <div>{description}</div> : null}
 		<div>
 			<DatePicker
-				defaultValue={moment(input.value || new Date(), dateFormat)}
+				defaultValue={input.value ? moment(input.value, dateFormat) : ''}
 				onChange={input.onChange}
 				format={dateFormat}
 				disabled={disabled}
 				showTime={showTime}
 				placeholder={placeholder}
-				value={moment(input.value || new Date(), dateFormat)}
+				value={input.value ? moment(input.value, dateFormat) : ''}
 				clearIcon={clearIcon}
 			/>
 			{touched &&

@@ -30,7 +30,7 @@ const InterfaceForm = ({
 		initialValue.chat = false;
 	}
 	return (
-		<div className="general-wrapper mb-4 pb-4">
+		<div className="general-wrapper">
 			<div className="sub-title">Features</div>
 			<div className="description">
 				Select the features that will be available on your exchange.
