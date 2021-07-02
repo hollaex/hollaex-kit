@@ -29,7 +29,6 @@ You can build the project by running `npm run build` and the projects builds the
   - NODE_ENV `['production', 'development']`
   - REACT_APP_PUBLIC_URL `https://hollaex.com`
   - REACT_APP_SERVER_ENDPOINT `https://api.hollaex.com` (or your own API server)
-  - REACT_APP_CAPTCHA_SITE_KEY your Google Recaptcha key for security purposes
 
 ### Styles
 
