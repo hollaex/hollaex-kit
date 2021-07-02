@@ -108,7 +108,7 @@ export const getGeneralFields = (coins) => ({
 		site_key: {
 			type: 'input',
 			label: 'Site key',
-			placeholder: '6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA',
+			placeholder: 'Site key',
 		},
 		secret_key: {
 			type: 'password',
