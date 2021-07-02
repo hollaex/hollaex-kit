@@ -125,6 +125,7 @@ const getConfigs = async () => {
 		features: { home_page = false } = {},
 		injected_values = [],
 		injected_html = {},
+		captcha = {},
 	} = kitData;
 
 	store.dispatch(setConfig(kitData));
@@ -221,7 +222,10 @@ const getConfigs = async () => {
 		store.dispatch(setHelpdeskInfo(data.data));
 	}
 
-	const appConfigs = merge({}, defaultConfig, remoteConfigs, { coin_icons });
+	const appConfigs = merge({}, defaultConfig, remoteConfigs, {
+		coin_icons,
+		captcha,
+	});
 
 	return [appConfigs, injected_values, injected_html];
 };
