@@ -4,7 +4,7 @@ import { loadReCaptcha } from 'react-recaptcha-v3';
 import { getIconByKey, generateAllIcons, addDefaultLogo } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
 import merge from 'lodash.merge';
-import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from 'config/constants';
+import { DEFAULT_CAPTCHA_SITEKEY } from 'config/constants';
 
 export const ProjectConfig = React.createContext('appConfig');
 
@@ -40,10 +40,12 @@ class ConfigProvider extends Component {
 	}
 
 	componentDidMount() {
-		const { captcha: { site_key = DEFAULT_CAPTCHA_SITEKEY } = {} } = this.props;
+		const {
+			initialConfig: { captcha = {} },
+		} = this.props;
 
 		// ReCaptcha Initialization
-		const siteKey = CAPTCHA_SITEKEY || site_key;
+		const siteKey = captcha.site_key || DEFAULT_CAPTCHA_SITEKEY;
 		loadReCaptcha(siteKey, () => {});
 	}
 
