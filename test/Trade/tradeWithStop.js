@@ -5,10 +5,10 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
-const dotenv = require('dotenv');
 const hollaTime = require('./time');
 const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
-dotenv.config();
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 let userName = process.env.ADMIN_USER;
 let passWord = process.env.ADMIN_PASS;
 let logInPage = process.env.LOGIN_PAGE;

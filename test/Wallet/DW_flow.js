@@ -5,9 +5,9 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
-const dotenv = require('dotenv');
 const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
-dotenv.config();
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 let bob = process.env.BOB;
 let passWord = process.env.PASSWORD;
 let alice = process.env.ALICE;

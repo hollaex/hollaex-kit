@@ -8,8 +8,8 @@ const { Builder, By, until } = require('selenium-webdriver');
 const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
-const dotenv = require('dotenv');
-dotenv.config();
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 let User = process.env.NEW_USER;
 let passWord = process.env.PASSWORD;
 let signUpPage = process.env.SIGN_UP_PAGE;

@@ -3,17 +3,17 @@
 //given, when and then
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
+const testContext = require ('./../onboarding/Newuser')
 const { expect } = require('chai');
 const { Console } = require('console');
-const dotenv = require('dotenv');
 const hollaTime = require('./time');
 const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
-dotenv.config();
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 let userName = process.env.ADMIN_USER;
 let passWord = process.env.ADMIN_PASS;
 let logInPage = process.env.LOGIN_PAGE;
 let website = process.env.WEBSITE;
-
 
 
 describe('Trade', function() {
@@ -28,27 +28,11 @@ describe('Trade', function() {
 	beforeEach(async function() {
 		driver = await new Builder().forBrowser('chrome').build();
 		vars = {};
-		// Test name: Untitled
-		// Step # | name | target | value
-		// 1 | open | /account | 
-		await driver.get(logInPage);
-		await sleep(10000);
-		// 2 | type | name=email | USER@bitholla.com
-		// await driver.wait(until.elementLocated(await driver.findElement(By.name("email"))), 5000);
-		await driver.findElement(By.name('email')).sendKeys(userName);
-		// 3 | type | name=password | bitholla@bitholla.com
-		//await driver.wait(until.elementLocated(await driver.findElement(By.name("password"))),5000);
-		await driver.findElement(By.name('password')).sendKeys(passWord);
-		// 4 | click | name=email | 
-   
-		await sleep(4000);
-		// await driver.findElement(By.name("email")).click();
-		// // 5 | click | css=.holla-button | 
-		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
-		await driver.findElement(By.css('.holla-button')).click();
+		await testContext.kitLogIn(driver, userName,passWord);
+	
 	});
 	afterEach(async function() {
-		await driver.quit();
+		//await driver.quit();
 	});
 	it('limit buy', async function() {
 
@@ -165,7 +149,7 @@ describe('Trade', function() {
 		console.log(vars['timestamp']+" should be "+hollaTime.GetHollatimestampe());
 		expect(vars['timestamp']).to.equal(hollaTime.GetHollatimestampe());
            
-		await sleep(2000);
+		   await sleep(2000);
 		   // 1 | open | /trade/xht-usdt | 
 		   await driver.get(website+"trade/xht-usdt");
 		   await sleep (5000);

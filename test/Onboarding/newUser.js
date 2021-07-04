@@ -5,8 +5,8 @@
 const { Builder, By, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 const { Console } = require('console');
-const dotenv = require('dotenv');
-dotenv.config();
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 const assert = require('assert');
 let logInPage = process.env.LOGIN_PAGE;
 let emailPage =process.env.EMAIL_PAGE;
