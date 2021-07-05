@@ -186,7 +186,7 @@ class General extends Component {
 		this.setState({ currentIcon: {} });
 	};
 
-	handleChangeFile = ({ target: { name, files } }) => {
+	handleChangeFile = ({ target: { name, files } }, is_image = true) => {
 		const [theme, iconKey] = name.split(',');
 
 		if (files) {
@@ -203,7 +203,9 @@ class General extends Component {
 				}),
 				() => {
 					Modal.confirm({
-						content: 'Do you want to save this icon?',
+						content: `Do you want to save this ${
+							is_image ? 'graphic' : 'icon'
+						}?`,
 						okText: 'Save',
 						cancelText: 'Cancel',
 						onOk: () => this.handleSaveIcon(iconKey),
@@ -374,7 +376,7 @@ class General extends Component {
 		});
 	};
 
-	renderImageUpload = (id, theme, index, showLable = true) => {
+	renderImageUpload = (id, theme, index, is_image = true, showLable = true) => {
 		const { allIcons } = this.props;
 		return (
 			<div key={index} className="file-container">
@@ -387,7 +389,7 @@ class General extends Component {
 					<input
 						type="file"
 						accept="image/*"
-						onChange={this.handleChangeFile}
+						onChange={(e) => this.handleChangeFile(e, is_image)}
 						name={`${theme},${id}`}
 						id={`admin-file-input__${theme},${id}`}
 					/>
@@ -635,7 +637,12 @@ class General extends Component {
 										{themeOptions
 											.filter(({ value: theme }) => theme === 'dark')
 											.map(({ value: theme }, index) =>
-												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+												this.renderImageUpload(
+													'EXCHANGE_LOGO',
+													theme,
+													index,
+													false
+												)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -652,7 +659,12 @@ class General extends Component {
 										{themeOptions
 											.filter(({ value: theme }) => theme !== 'dark')
 											.map(({ value: theme }, index) =>
-												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+												this.renderImageUpload(
+													'EXCHANGE_LOGO',
+													theme,
+													index,
+													false
+												)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -679,7 +691,12 @@ class General extends Component {
 									{themeOptions
 										.filter(({ value: theme }) => theme === 'dark')
 										.map(({ value: theme }, index) =>
-											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+											this.renderImageUpload(
+												'EXCHANGE_LOADER',
+												theme,
+												index,
+												false
+											)
 										)}
 								</Collapse.Panel>
 								<Collapse.Panel
@@ -694,7 +711,12 @@ class General extends Component {
 									{themeOptions
 										.filter(({ value: theme }) => theme !== 'dark')
 										.map(({ value: theme }, index) =>
-											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+											this.renderImageUpload(
+												'EXCHANGE_LOADER',
+												theme,
+												index,
+												false
+											)
 										)}
 								</Collapse.Panel>
 							</Collapse>
@@ -718,6 +740,7 @@ class General extends Component {
 										'EXCHANGE_FAV_ICON',
 										'dark',
 										'EXCHANGE_1',
+										false,
 										false
 									)}
 								</div>
