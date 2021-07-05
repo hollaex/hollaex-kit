@@ -111,6 +111,7 @@ class General extends Component {
 		initialCaptchaValues = {
 			...initialCaptchaValues,
 			...captcha,
+			...secrets.captcha,
 		};
 
 		const { configuration = {} } = this.state.initialEmailValues || {};
@@ -344,14 +345,25 @@ class General extends Component {
 		});
 	};
 
-	handleSubmitCaptcha = (formProps) => {
-		this.handleSubmitGeneral({
+	handleSubmitCaptcha = ({ site_key, secret_key }) => {
+		const formValues = {
 			kit: {
 				captcha: {
-					...formProps,
+					site_key,
 				},
 			},
-		});
+			...(!secret_key.includes('*')
+				? {
+						secrets: {
+							captcha: {
+								secret_key,
+							},
+						},
+				  }
+				: {}),
+		};
+
+		this.handleSubmitGeneral(formValues);
 	};
 
 	handleSubmitSignUps = (new_user_is_activated) => {

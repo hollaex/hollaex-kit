@@ -257,3 +257,11 @@
 .black {
 	color: #101000;
 }
+.input_field .ant-select-selection-placeholder,
+.admin-content-wrapper .ant-picker-input input::placeholder,
+.admin-content-wrapper .form-control::placeholder,
+.admin-content-wrapper .ant-input-number-input::placeholder,
+.admin-content-wrapper .ant-input::placeholder {
+	color: #c4c4c4;
+	opacity: 0.5;
+}
