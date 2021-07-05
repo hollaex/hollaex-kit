@@ -22,6 +22,7 @@ import { clearFileInputById } from 'helpers/vanilla';
 
 import './index.css';
 import { handleUpgrade } from 'utils/utils';
+import { checkFileSize, fileSizeError } from 'utils/icon';
 
 const NameForm = AdminHocForm('NameForm');
 const LanguageForm = AdminHocForm('LanguageForm');
@@ -182,8 +183,10 @@ class General extends Component {
 		updateIcons(icons);
 	};
 
-	handleCancelIcon = () => {
-		this.setState({ currentIcon: {} });
+	handleCancelIcon = (theme, iconKey) => {
+		this.setState({ currentIcon: {} }, () => {
+			clearFileInputById(`admin-file-input__${theme},${iconKey}`);
+		});
 	};
 
 	handleChangeFile = ({ target: { name, files } }, is_image = true) => {
@@ -202,14 +205,18 @@ class General extends Component {
 					},
 				}),
 				() => {
+					const hasExceeded = !checkFileSize(files[0]);
 					Modal.confirm({
-						content: `Do you want to save this ${
-							is_image ? 'graphic' : 'icon'
-						}?`,
+						content: hasExceeded
+							? fileSizeError
+							: `Do you want to save this ${is_image ? 'graphic' : 'icon'}?`,
 						okText: 'Save',
 						cancelText: 'Cancel',
 						onOk: () => this.handleSaveIcon(iconKey),
-						onCancel: this.handleCancelIcon,
+						onCancel: () => this.handleCancelIcon(theme, iconKey),
+						okButtonProps: {
+							disabled: hasExceeded,
+						},
 					});
 				}
 			);
