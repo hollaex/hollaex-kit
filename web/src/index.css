@@ -6576,8 +6576,8 @@ table th {
 .field-error-content {
   position: relative;
   display: flex;
-  align-items: center;
-  height: 1.25rem; }
+  align-items: baseline;
+  min-height: 1.25rem; }
   .field-error-content.field-error-hidden {
     visibility: hidden; }
 
