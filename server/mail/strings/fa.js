@@ -172,9 +172,8 @@ const WITHDRAWAL = {
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
 		6: (network) => `Network: ${network}`,
-		7: (fee) => COMMON.FEE(fee),
-		8: (description) => `Description: ${description}`,
-		9: COMMON.EXPLORER
+		7: (description) => `Description: ${description}`,
+		8: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };

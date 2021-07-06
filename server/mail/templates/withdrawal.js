@@ -51,12 +51,10 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 				${data.network ? '<br />' : ''}
 				${data.network ? WITHDRAWAL.BODY[6](data.network) : ''}
-				${data.fee ? '<br />' : ''}
-				${data.fee ? WITHDRAWAL.BODY[7](data.fee) : ''}
 				${data.description ? '<br />' : ''}
-				${data.description ? WITHDRAWAL.BODY[8](data.description) : ''}
+				${data.description ? WITHDRAWAL.BODY[7](data.description) : ''}
 			</p>
-			${explorers.length > 0 ? WITHDRAWAL.BODY[9] : ''}
+			${explorers.length > 0 ? WITHDRAWAL.BODY[8] : ''}
 			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
 		`;
 	} else {
@@ -82,8 +80,7 @@ const text = (email, data, language, domain) => {
 			${data.transaction_id && data.address ? WITHDRAWAL.BODY[4](data.address) : ''}
 			${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 			${data.network ? WITHDRAWAL.BODY[6](data.network) : ''}
-			${data.fee ? WITHDRAWAL.BODY[7](data.fee) : ''}
-			${data.description ? WITHDRAWAL.BODY[8](data.description) : ''}
+			${data.description ? WITHDRAWAL.BODY[7](data.description) : ''}
 		`;
 	} else {
 		result += '';
