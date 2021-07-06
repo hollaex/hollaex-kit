@@ -703,12 +703,16 @@ const userCheckTransaction = (req, res) => {
 		'controllers/user/userCheckTransaction auth',
 		req.auth
 	);
-	const transactionId = req.swagger.params.transaction_id.value;
-	const address = req.swagger.params.address.value;
-	const currency = req.swagger.params.currency.value;
-	const isTestnet = req.swagger.params.is_testnet.value;
 
-	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
+	const {
+		currency,
+		transaction_id,
+		address,
+		network,
+		is_testnet
+	} = req.swagger.params;
+
+	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value)
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})
