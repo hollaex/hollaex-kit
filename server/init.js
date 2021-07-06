@@ -154,6 +154,7 @@ const checkStatus = () => {
 			configuration.kit.info = {
 				name: exchange.name,
 				active: exchange.active,
+				exchange_id: exchange.id,
 				url: exchange.url,
 				is_trial: exchange.is_trial,
 				created_at: exchange.created_at,

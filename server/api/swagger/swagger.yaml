@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.12"
+  version: "2.1.13"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2398,6 +2398,11 @@ paths:
         - in: query
           name: address
           description: crypto address receiving the deposit
+          required: true
+          type: string
+        - in: query
+          name: network
+          description: Blockchain network of transaction
           required: true
           type: string
         - in: query
