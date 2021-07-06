@@ -103,6 +103,7 @@ const Fees = ({
 	userTiers,
 	allIcons: { dark: ICONS = {} },
 	onEditFees,
+	constants: { native_currency },
 }) => {
 	const coinsData = Object.keys(pairs).map((key) => pairs[key]);
 	return (
@@ -123,9 +124,9 @@ const Fees = ({
 						on your exchange
 					</div>
 					<div className="description mt-4">
-						All amounts are valued in your set native currency USD. You can
+						{`All amounts are valued in your set native currency ${native_currency}. You can
 						change the native currency for your exchange in the general setup
-						page.
+						page.`}
 					</div>
 				</div>
 			</div>
@@ -144,6 +145,7 @@ const Fees = ({
 
 const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(withConfig(Fees));
