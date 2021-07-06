@@ -1,9 +1,7 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
-import flatten from 'flat';
 
-const options = { safe: true };
-const nestedContent = {
+export default {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'Plataforma Crypto',
 	LOGOUT_CONFIRM_TEXT: 'Você está certo disso? Gostaria de sair da aplicação?',
@@ -1472,7 +1470,3 @@ const nestedContent = {
 		HEADER_ROW_AMOUNT: 'Valor ({0})',
 	},
 };
-
-const content = flatten(nestedContent, options);
-
-export default content;
