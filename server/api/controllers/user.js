@@ -154,6 +154,9 @@ const getVerifyUser = (req, res) => {
 		email = email.toLowerCase();
 		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
+				if (verificationCode.verified) {
+					throw new Error(USER_EMAIL_IS_VERIFIED);
+				}
 				if (resendEmail) {
 					sendEmail(
 						MAILTYPE.SIGNUP,
