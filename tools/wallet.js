@@ -712,7 +712,8 @@ const mintAssetByKitId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -733,7 +734,8 @@ const mintAssetByNetworkId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getNodeLib().mintAsset(networkId, currency, amount, opts);
 };
@@ -762,7 +764,8 @@ const burnAssetByKitId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -783,7 +786,8 @@ const burnAssetByNetworkId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getNodeLib().burnAsset(networkId, currency, amount, opts);
 };
