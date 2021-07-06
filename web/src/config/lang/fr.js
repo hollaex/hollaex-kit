@@ -14,7 +14,7 @@ export default {
 		'Voulez-vous annuler le retrait de :',
 	CANT_BE_CANCELLED: '-',
 	ALREADY_CANCELLED: '-',
-	TIMESTAMP_FORMAT: 'AAAA/MM/JJ HH:mm:ss',
+	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss',
 	HOUR_FORMAT: 'HH:mm:ss',
 	LOGIN_TEXT: 'Connexion',
 	SIGN_IN: 'S\'identifier',
