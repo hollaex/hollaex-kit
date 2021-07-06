@@ -1812,7 +1812,7 @@ class HollaExNetwork {
 	 * @param {string} opts.transactionId - Custom transaction ID for mint.
 	 * @param {boolean} opts.status - Status of mint created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
-	 * @param {number} opts.fee - Optional fee to apply to mint.
+	 * @param {number} opts.fee - Optional fee to display in data.
 	 * @return {object} Object with created mint's data.
 	 */
 	mintAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null, fee: null }) {
@@ -1958,7 +1958,7 @@ class HollaExNetwork {
 	 * @param {string} opts.transactionId - Custom transaction ID for burn.
 	 * @param {boolean} opts.status - Status of burn created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
-	 * @param {number} opts.fee - Optional fee to apply to burn.
+	 * @param {number} opts.fee - Optional fee to display in data.
 	 * @return {object} Object with created burn's data.
 	 */
 	burnAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null, fee: null }) {
