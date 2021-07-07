@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.12"
+  version: "2.1.13"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2401,6 +2401,11 @@ paths:
           required: true
           type: string
         - in: query
+          name: network
+          description: Blockchain network of transaction
+          required: true
+          type: string
+        - in: query
           name: is_testnet
           description: specify whether or not transaction was on tesntet
           required: false
@@ -4442,6 +4447,10 @@ definitions:
         format: date-time
       network:
         type: string
+      fee:
+        type: number
+      description:
+        type: string
   ExternalWithdrawalRequest:
     type: object
     required:
@@ -4468,6 +4477,8 @@ definitions:
         type: string
         format: date-time
       network:
+        type: string
+      description:
         type: string
   OrderbooksResponse:
     type: object
@@ -4654,6 +4665,9 @@ definitions:
         type: boolean
       email:
         type: boolean
+      fee:
+        type: number
+        format: double
   MintBurnUpdate:
     type: object
     required:

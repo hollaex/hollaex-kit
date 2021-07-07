@@ -110,6 +110,7 @@ class UserSettings extends Component {
 			icons: ICONS,
 			totalAsset,
 			themeOptions,
+			features,
 		} = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),
@@ -154,7 +155,7 @@ class UserSettings extends Component {
 					// />
 					<div>{STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}</div>
 				),
-				content: activeTab === 0 && (
+				content: (
 					<NotificationForm
 						onSubmit={(formProps) =>
 							this.onSubmitSettings(formProps, 'notification')
@@ -180,7 +181,7 @@ class UserSettings extends Component {
 					// />
 					<div>{STRINGS['USER_SETTINGS.TITLE_INTERFACE']}</div>
 				),
-				content: activeTab === 1 && (
+				content: (
 					<SettingsForm
 						onSubmit={(formProps) =>
 							this.onSubmitSettings(formProps, 'interface')
@@ -206,37 +207,13 @@ class UserSettings extends Component {
 					// />
 					<div>{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}</div>
 				),
-				content: activeTab === 2 && (
+				content: (
 					<LanguageForm
 						onSubmit={(formProps) =>
 							this.onSubmitSettings(formProps, 'language')
 						}
 						formFields={languageFormValue}
 						initialValues={{ language: settings.language }}
-						ICONS={ICONS}
-					/>
-				),
-			},
-			{
-				title: isMobile ? (
-					<CustomMobileTabs
-						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
-						icon={ICONS['SETTING_CHAT_ICON']}
-					/>
-				) : (
-					// <CustomTabs
-					// 	stringId="USER_SETTINGS.TITLE_CHAT"
-					// 	title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
-					// 	iconId="SETTING_CHAT_ICON"
-					// 	icon={ICONS['SETTING_CHAT_ICON']}
-					// />
-					<div>{STRINGS['USER_SETTINGS.TITLE_CHAT']}</div>
-				),
-				content: activeTab === 3 && (
-					<UsernameForm
-						onSubmit={this.onSubmitUsername}
-						formFields={usernameFormValues}
-						initialValues={{ username }}
 						ICONS={ICONS}
 					/>
 				),
@@ -256,7 +233,7 @@ class UserSettings extends Component {
 					// />
 					<div>{STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}</div>
 				),
-				content: activeTab === 4 && (
+				content: (
 					<AudioCueForm
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'audio')}
 						formFields={audioFormValues}
@@ -280,7 +257,7 @@ class UserSettings extends Component {
 					// />
 					<div>{STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}</div>
 				),
-				content: activeTab === 5 && (
+				content: (
 					<RiskForm
 						coins={coins}
 						onAdjustPortfolio={this.onAdjustPortfolio}
@@ -293,6 +270,33 @@ class UserSettings extends Component {
 				),
 			},
 		];
+
+		if (features && features.chat) {
+			tabs.push({
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+						icon={ICONS['SETTING_CHAT_ICON']}
+					/>
+				) : (
+					// <CustomTabs
+					// 	stringId="USER_SETTINGS.TITLE_CHAT"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+					// 	iconId="SETTING_CHAT_ICON"
+					// 	icon={ICONS['SETTING_CHAT_ICON']}
+					// />
+					<div>{STRINGS['USER_SETTINGS.TITLE_CHAT']}</div>
+				),
+				content: (
+					<UsernameForm
+						onSubmit={this.onSubmitUsername}
+						formFields={usernameFormValues}
+						initialValues={{ username }}
+						ICONS={ICONS}
+					/>
+				),
+			});
+		}
 
 		this.setState({ tabs });
 	};
@@ -464,6 +468,7 @@ const mapStateToProps = (state) => ({
 	//orders: state.order.activeOrders,
 	constants: state.app.constants,
 	totalAsset: state.asset.totalAsset,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({

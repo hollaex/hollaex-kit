@@ -1,10 +1,7 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
-import flatten from 'flat';
 
-// OPEN PR for translations on language branch
-const options = { safe: true };
-const nestedContent = {
+export default {
 	APP_TITLE: 'هولا إكس',
 	APP_SUB_TITLE: 'بورصة العملات الرقمية المفتوحة', // slogan
 
@@ -1396,7 +1393,3 @@ const nestedContent = {
 		VIEW_MARKETS: 'View Markets',
 	},
 };
-
-const content = flatten(nestedContent, options);
-
-export default content;
