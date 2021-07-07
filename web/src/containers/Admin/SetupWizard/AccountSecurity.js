@@ -116,16 +116,18 @@ const AccountSecurity = ({
 						<Form name="security-form" onFinish={handleSubmit}>
 							<div className="setup-field-wrapper setup-field-content">
 								<div className="setup-field-label">2FA code</div>
-								<Item name="code">
+								<Item
+									name="code"
+									rules={[
+										{ required: true, message: 'Please input your 2FA code!' },
+									]}
+								>
 									<InputNumber placeholder="Enter 6-digit code" maxLength={6} />
 								</Item>
 							</div>
 							<div className="btn-container">
 								<Button htmlType="submit">Proceed</Button>
 							</div>
-							<span className="step-link" onClick={() => handleNext(2)}>
-								Skip this step
-							</span>
 						</Form>
 					</div>
 				</Fragment>
