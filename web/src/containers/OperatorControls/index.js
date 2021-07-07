@@ -300,17 +300,10 @@ class OperatorControls extends Component {
 		languageKeys.forEach((lang) => {
 			Object.entries(saveData[lang]).forEach(([key, string]) => {
 				const isEnglish = lang === 'en';
-				const isUnchangedString = string === getStringByKey(key, lang, CONTENT);
-				const isEqualToDefault = string === getStringByKey(key, 'en', CONTENT);
 				const hasInvalidPlaceholders =
 					string && !this.validateString(string, key);
 				const hasDeletedEnglish = !string && isEnglish;
-				if (
-					isUnchangedString ||
-					isEqualToDefault ||
-					hasInvalidPlaceholders ||
-					hasDeletedEnglish
-				) {
+				if (hasInvalidPlaceholders || hasDeletedEnglish) {
 					delete saveData[lang][key];
 				}
 			});
