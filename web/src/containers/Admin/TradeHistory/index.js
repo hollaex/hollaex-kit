@@ -25,12 +25,16 @@ const formatNum = (value) => {
 	return <div>{formatCurrency(value)}</div>;
 };
 
+const formatFee = (value, { fee_coin }) => {
+	return <div>{`${formatCurrency(value)} ${fee_coin}`}</div>;
+};
+
 const COLUMNS = [
 	{ title: 'Side', dataIndex: 'side', key: 'side' },
 	{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
 	{ title: 'Size', dataIndex: 'size', key: 'size', render: formatNum },
 	{ title: 'Price', dataIndex: 'price', key: 'price', render: formatNum },
-	{ title: 'Fee', dataIndex: 'fee', key: 'fee', render: formatNum },
+	{ title: 'Fee', dataIndex: 'fee', key: 'fee', render: formatFee },
 	{
 		title: 'Time',
 		dataIndex: 'timestamp',
