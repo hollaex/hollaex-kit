@@ -28,6 +28,8 @@ export const getNetworkLabelByKey = (network) => {
 				return 'ERC20';
 			case 'trx':
 				return 'TRC20';
+			case 'bnb':
+				return 'BEP20';
 			default:
 				return network.toUpperCase();
 		}

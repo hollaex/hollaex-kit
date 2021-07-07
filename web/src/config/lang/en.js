@@ -1,9 +1,7 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
-import flatten from 'flat';
 
-const options = { safe: true };
-const nestedContent = {
+export default {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
@@ -1471,7 +1469,3 @@ const nestedContent = {
 	FEE_REDUCTION_DESCRIPTION:
 		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
 };
-
-const content = flatten(nestedContent, options);
-
-export default content;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Input, Form, Button, InputNumber } from 'antd';
 
 const { Item } = Form;
@@ -49,65 +49,66 @@ const EmailConfiguration = ({
 		}
 	};
 	return (
-		<div className="asset-content show-scroll">
-			<div className="title-text">Email configuration</div>
-			<Form
-				name="email-config-form"
-				onFinish={handleSubmit}
-				initialValues={initialValues}
-			>
-				<div className="setup-field-wrapper setup-field-content">
-					<div className="coin-wrapper">
-						<div className="setup-field-label">
-							Sender email{' '}
-							<span className="setup-field-label-desc">
-								(appears in emails sent to the users as sender)
-							</span>
-						</div>
-						<Item name="sender">
-							<Input />
-						</Item>
-						{/* <Item name="send_email_to_support" valuePropName="checked">
+		<Fragment>
+			<div className="asset-content show-scroll">
+				<div className="title-text">Email configuration</div>
+				<Form
+					name="email-config-form"
+					onFinish={handleSubmit}
+					initialValues={initialValues}
+				>
+					<div className="setup-field-wrapper setup-field-content">
+						<div className="coin-wrapper">
+							<div className="setup-field-label">
+								Sender email{' '}
+								<span className="setup-field-label-desc">
+									(appears in emails sent to the users as sender)
+								</span>
+							</div>
+							<Item name="sender">
+								<Input />
+							</Item>
+							{/* <Item name="send_email_to_support" valuePropName="checked">
 							<Checkbox>
 								<span className="setup-field-label">Send email to support</span>
 							</Checkbox>
 						</Item> */}
-						{/* <div className="setup-field-label">Email timezone</div>
+							{/* <div className="setup-field-label">Email timezone</div>
 						<Item name="timezone">
 							<Input />
 						</Item> */}
-						<div className="setup-field-label">SMTP server</div>
-						<Item name="server">
-							<Input />
-						</Item>
-						<div className="setup-field-label">SMTP port</div>
-						<Item name="port">
-							<InputNumber />
-						</Item>
-						<div className="setup-field-label">SMTP username</div>
-						<Item name="user">
-							<Input />
-						</Item>
-						<div className="setup-field-label">SMTP password</div>
-						<Item name="password">
-							<Input type="password" />
-						</Item>
-					</div>
-					<div className="coin-wrapper">
-						<div className="title-text">Email audit</div>
-						<div className="setup-field-label-desc">
-							{' '}
-							This feature allows specific email to receive a copy of all
-							important emails sent to the user for audit process. By filling
-							the auditor email, the email will be in BCC of emails sent to the
-							user.
+							<div className="setup-field-label">SMTP server</div>
+							<Item name="server">
+								<Input />
+							</Item>
+							<div className="setup-field-label">SMTP port</div>
+							<Item name="port">
+								<InputNumber />
+							</Item>
+							<div className="setup-field-label">SMTP username</div>
+							<Item name="user">
+								<Input />
+							</Item>
+							<div className="setup-field-label">SMTP password</div>
+							<Item name="password">
+								<Input type="password" />
+							</Item>
 						</div>
-						<div className="setup-field-label">Auditor email</div>
-						<Item name="audit">
-							<Input />
-						</Item>
-					</div>
-					{/* <div className="coin-wrapper last">
+						<div className="coin-wrapper">
+							<div className="title-text">Email audit</div>
+							<div className="setup-field-label-desc">
+								{' '}
+								This feature allows specific email to receive a copy of all
+								important emails sent to the user for audit process. By filling
+								the auditor email, the email will be in BCC of emails sent to
+								the user.
+							</div>
+							<div className="setup-field-label">Auditor email</div>
+							<Item name="audit">
+								<Input />
+							</Item>
+						</div>
+						{/* <div className="coin-wrapper last">
 						<div className="title-text">reCAPTCHA</div>
 						<div className="setup-field-label">
 							Site key (Google reCAPTCHA V3)
@@ -122,17 +123,20 @@ const EmailConfiguration = ({
 							<Input />
 						</Item>
 					</div> */}
-					<div className="btn-container">
-						<Button htmlType="submit">Proceed</Button>
+						<div className="btn-container mb-0">
+							<Button htmlType="submit">Proceed</Button>
+						</div>
 					</div>
-					<div className="asset-btn-wrapper">
-						<span className="step-link" onClick={() => setPreview(true)}>
-							Skip this step
-						</span>
-					</div>
+				</Form>
+			</div>
+			<div className="setup-field-content" style={{ marginTop: '2rem' }}>
+				<div className="asset-btn-wrapper">
+					<span className="step-link" onClick={() => setPreview(true)}>
+						Skip this step
+					</span>
 				</div>
-			</Form>
-		</div>
+			</div>
+		</Fragment>
 	);
 };
 

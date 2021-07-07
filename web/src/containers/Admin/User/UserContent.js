@@ -41,7 +41,6 @@ class UserContent extends Component {
 	state = {
 		showVerifyEmailModal: false,
 		userTiers: {},
-		isConfigure: false,
 	};
 
 	componentDidMount() {
@@ -202,11 +201,8 @@ class UserContent extends Component {
 		});
 	};
 
-	handleConfigure = () => {
-		this.setState({ isConfigure: !this.state.isConfigure });
-	};
 	renderTabBar = (props, DefaultTabBar) => {
-		if (this.state.isConfigure) return <div></div>;
+		if (this.props.isConfigure) return <div></div>;
 		return <DefaultTabBar {...props} />;
 	};
 
@@ -220,9 +216,11 @@ class UserContent extends Component {
 			refreshData,
 			refreshAllData,
 			onChangeUserDataSuccess,
+			isConfigure,
+			showConfigure,
 		} = this.props;
 
-		const { showVerifyEmailModal, userTiers, isConfigure } = this.state;
+		const { showVerifyEmailModal, userTiers } = this.state;
 
 		const {
 			id,
@@ -269,7 +267,7 @@ class UserContent extends Component {
 					<Item
 						onClick={() => {
 							if (isConfigure) {
-								this.setState({ isConfigure: false });
+								showConfigure();
 							}
 						}}
 					>
@@ -277,7 +275,7 @@ class UserContent extends Component {
 					</Item>
 					{isConfigure ? (
 						<Item>
-							<Link>Configure</Link>
+							<Link>Configure Meta</Link>
 						</Item>
 					) : null}
 				</Breadcrumb>
@@ -405,7 +403,7 @@ class UserContent extends Component {
 							<UserMetaForm
 								constants={constants}
 								userData={userInformation}
-								handleConfigure={this.handleConfigure}
+								handleConfigure={showConfigure}
 								isConfigure={isConfigure}
 							/>
 						</TabPane>

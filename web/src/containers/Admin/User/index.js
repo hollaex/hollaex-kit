@@ -186,7 +186,7 @@ class App extends Component {
 			loading,
 			userInformationList,
 		} = this.state;
-		const { coins, constants } = this.props;
+		const { coins, constants, isConfigure, showConfigure } = this.props;
 		const renderBoolean = (value) => (
 			<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
 		);
@@ -236,6 +236,8 @@ class App extends Component {
 				userBalance={userBalance}
 				userInformation={userInformation}
 				userImages={userImages}
+				isConfigure={isConfigure}
+				showConfigure={showConfigure}
 				refreshAllData={this.refreshAllData}
 				clearData={this.clearData}
 				refreshData={this.refreshData}

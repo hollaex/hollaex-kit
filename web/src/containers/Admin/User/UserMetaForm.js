@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, message, Modal, Table } from 'antd';
 import moment from 'moment';
 
@@ -31,14 +31,35 @@ const UserMetaForm = ({
 		{ title: 'Required', dataIndex: 'required', key: 'required' },
 		{ title: 'Name', dataIndex: 'name', key: 'name' },
 		{ title: 'Description', dataIndex: 'description', key: 'description' },
-		{ title: 'Data/input', dataIndex: 'data', key: 'data' },
+		// { title: 'Data/input', dataIndex: 'data', key: 'data' },
 		{ title: 'Configure', dataIndex: 'configure', key: 'configure' },
 	];
+
+	const renderDeletedField = useCallback((key, meta) => {
+		let fieldData = {};
+		fieldData[key] = { type: 'boolean', label: `${key} (deleted)` };
+		let value = meta[key];
+
+		if (typeof meta[key] === 'string' && checkDate(value)) {
+			fieldData[key].type = 'date-time';
+			fieldData[key].dateFormat = 'YYYY-MM-DD h:mm';
+			fieldData[key].showTime = true;
+			fieldData[key].clearIcon = null;
+		} else if (typeof value === 'boolean') {
+			fieldData[key].type = 'boolean';
+		} else if (typeof value === 'number') {
+			fieldData[key].type = 'number';
+		} else if (typeof value === 'string') {
+			fieldData[key].type = 'string';
+		}
+		return fieldData;
+	}, []);
+
 	useEffect(() => {
 		let deletedFieldData = [];
 
 		Object.keys(meta).forEach((key, index) => {
-			if (!Object.keys(user_meta).includes(key) && meta[key]) {
+			if (!Object.keys(user_meta).includes(key) && meta[key] !== null) {
 				const field = renderDeletedField(key, meta);
 				const firstPart = key.split(' ')[0];
 				deletedFieldData = [
@@ -65,32 +86,7 @@ const UserMetaForm = ({
 			];
 		});
 		setFormFields([...fieldData, ...deletedFieldData]);
-	}, [user_meta, meta]);
-
-	const renderDeletedField = (key, meta) => {
-		let fieldData = {};
-		fieldData[key] = { type: 'boolean', label: `${key} (deleted)` };
-
-		if (
-			typeof meta[key] === 'string' &&
-			isNaN(parseInt(meta[key])) &&
-			Date.parse(meta[key])
-		) {
-			fieldData[key].type = 'date';
-			fieldData[key].dateFormat = 'YYYY-MM-DD h:mm';
-			fieldData[key].showTime = true;
-			fieldData[key].clearIcon = null;
-		} else if (typeof meta[key] === 'boolean') {
-			fieldData[key].type = 'boolean';
-		} else if (typeof meta[key] === 'number') {
-			fieldData[key].type = 'number';
-		} else if (typeof meta[key] === 'string') {
-			fieldData[key].type = 'input';
-		} else if (typeof meta[key] === 'string') {
-			fieldData[key].type = 'input';
-		}
-		return fieldData;
-	};
+	}, [user_meta, meta, renderDeletedField]);
 
 	const renderField = (key, metaDesc) => {
 		let fieldData = {};
@@ -109,7 +105,7 @@ const UserMetaForm = ({
 				placeholder: key,
 				description: fields.description,
 			};
-			if (fields.type === 'date') {
+			if (fields.type === 'date-time') {
 				fieldData[key].dateFormat = 'YYYY-MM-DD h:mm';
 				fieldData[key].showTime = true;
 				fieldData[key].clearIcon = null;
@@ -226,7 +222,7 @@ const UserMetaForm = ({
 	const add_meta_field = {
 		type: {
 			type: 'select',
-			options: ['String', 'Boolean', 'Number', 'Date'],
+			options: ['String', 'Boolean', 'Number', 'Date-time'],
 			onSelect: (value) => setMetaType(value),
 			validate: validateRequired,
 			placeholder: 'Select meta type',
@@ -269,6 +265,21 @@ const UserMetaForm = ({
 		if (!isVisible) {
 			setMetaType('');
 		}
+	};
+
+	const checkDate = (metaValue) => {
+		return moment(metaValue, moment.ISO_8601, true).isValid();
+	};
+
+	const compareTypes = (metaValue, userMeta) => {
+		return (
+			(typeof metaValue !== 'string' && userMeta.type === 'date-time') ||
+			(userMeta.type === 'string' && checkDate(metaValue)) ||
+			(typeof metaValue !== userMeta.type && userMeta.type !== 'date-time') ||
+			(typeof metaValue === 'string' &&
+				userMeta.type === 'date-time' &&
+				!checkDate(metaValue))
+		);
 	};
 
 	const renderContent = (type, formValues) => {
@@ -340,12 +351,12 @@ const UserMetaForm = ({
 				let data =
 					user_meta[name] || renderDeletedField(name, meta)[name] || {};
 				let print = {};
-				if (data.type === 'string' || data.type === 'input') {
+				if (data.type === 'string') {
 					print = { type: 'text', label: 'String data' };
 				} else if (data.type === 'boolean') {
 					print = { type: 'boolean', label: 'Boolean state' };
-				} else if (data.type === 'date') {
-					print = { type: 'date', label: 'Date Selected' };
+				} else if (data.type === 'date-time') {
+					print = { type: 'date-time', label: 'Date Selected' };
 					formValue = {
 						[name]: formValues[name],
 					};
@@ -365,7 +376,7 @@ const UserMetaForm = ({
 						<div className="small-box my-5">
 							<div>
 								<b>{print.label}: </b>
-								{data.type !== 'date'
+								{data.type !== 'date-time'
 									? formValues[name].toString()
 									: moment(formValues[name]).format('DD/MMM/YYYY h:mm')}
 							</div>
@@ -406,7 +417,7 @@ const UserMetaForm = ({
 			description: currentMeta.description,
 			required: currentMeta.required.toString(),
 			type: currentMeta.type,
-			data: meta[key],
+			// data: compareTypes(meta[key], currentMeta) ? null : meta[key].toString(),
 			configure: (
 				<div>
 					<span
@@ -452,6 +463,9 @@ const UserMetaForm = ({
 							className="blue-admin-table"
 							columns={columns}
 							dataSource={fieldData}
+							rowKey={(data) => {
+								return data.name;
+							}}
 						/>
 					</div>
 				</div>
@@ -480,11 +494,22 @@ const UserMetaForm = ({
 						let initialValues = {};
 						let isRemovable = true;
 						Object.keys(data.field).forEach((fieldKey) => {
-							initialValues[fieldKey] = meta[fieldKey];
-							if (data.field[fieldKey].type === 'date' && meta[fieldKey]) {
-								initialValues[fieldKey] = moment(meta[fieldKey]);
+							let metaValue = meta[fieldKey];
+							let userMeta = data.field[fieldKey];
+
+							initialValues[fieldKey] = metaValue;
+							if (userMeta.type === 'date-time' && metaValue) {
+								initialValues[fieldKey] = moment(metaValue);
 							}
-							if (data.field[fieldKey].validate || meta[fieldKey] === null) {
+							if (
+								userMeta.validate ||
+								metaValue === null ||
+								metaValue === undefined
+							) {
+								isRemovable = false;
+							}
+							if (compareTypes(metaValue, userMeta)) {
+								initialValues[fieldKey] = null;
 								isRemovable = false;
 							}
 						});
