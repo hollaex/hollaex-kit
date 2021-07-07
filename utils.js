@@ -1,7 +1,7 @@
 const rp = require('request-promise');
-const request = require('request');
 const crypto = require('crypto');
 const moment = require('moment');
+const axios = require('axios');
 
 const createRequest = (verb, url, headers, data) => {
 	const requestObj = {
@@ -15,12 +15,14 @@ const createRequest = (verb, url, headers, data) => {
 
 const createRequestStream = async (verb, url, headers, data) => {
 	const requestObj = {
-		headers,
+		method: verb.toLowerCase(),
 		url,
-		body: data
+		headers,
+		data,
+		responseType: 'stream'
 	};
 
-	return request[verb.toLowerCase()](requestObj);
+	return axios(requestObj);
 };
 
 const createSignature = (secret = '', verb, path, expires, data = '') => {
