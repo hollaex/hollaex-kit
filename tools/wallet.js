@@ -188,12 +188,12 @@ const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId) => {
 	return getNodeLib().cancelWithdrawal(networkId, withdrawalId);
 };
 
-const checkTransaction = (currency, transactionId, address, isTestnet = false) => {
+const checkTransaction = (currency, transactionId, address, network, isTestnet = false) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
 
-	return getNodeLib().checkTransaction(currency, transactionId, address, { isTestnet });
+	return getNodeLib().checkTransaction(currency, transactionId, address, network, { isTestnet });
 };
 
 const performWithdrawal = (userId, address, currency, amount, opts = {
@@ -712,7 +712,8 @@ const mintAssetByKitId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -733,7 +734,8 @@ const mintAssetByNetworkId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getNodeLib().mintAsset(networkId, currency, amount, opts);
 };
@@ -762,7 +764,8 @@ const burnAssetByKitId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -783,7 +786,8 @@ const burnAssetByNetworkId = (
 		description: null,
 		transactionId: null,
 		status: null,
-		email: null
+		email: null,
+		fee: null
 	}) => {
 	return getNodeLib().burnAsset(networkId, currency, amount, opts);
 };

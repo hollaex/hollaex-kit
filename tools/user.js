@@ -1432,8 +1432,8 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 				if (isNil(givenMeta[key])) {
 					deletedKeys.push(key);
 				} else {
-					const storedDataType = (isDatetime(user.meta[key]) || stringIsDate(user.meta[key])) ? 'date' : typeof user.meta[key];
-					const givenDataType = (isDatetime(givenMeta[key]) || stringIsDate(givenMeta[key])) ? 'date' : typeof givenMeta[key];
+					const storedDataType = isDatetime(user.meta[key]) ? 'date-time' : typeof user.meta[key];
+					const givenDataType = isDatetime(givenMeta[key]) ? 'date-time' : typeof givenMeta[key];
 
 					if (storedDataType !== givenDataType) {
 						throw new Error(`Wrong data type given for field ${key}: ${givenDataType}. Expected data type: ${storedDataType}`);
@@ -1444,7 +1444,7 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 			if (isNil(givenMeta[key]) && referenceMeta[key].required) {
 				throw new Error(`Field ${key} is a required value`);
 			} else if (!isNil(givenMeta[key])) {
-				const givenDataType = (isDatetime(givenMeta[key]) || stringIsDate(givenMeta[key])) ? 'date' : typeof givenMeta[key];
+				const givenDataType = isDatetime(givenMeta[key]) ? 'date-time' : typeof givenMeta[key];
 
 				if (referenceMeta[key].type !== givenDataType) {
 					throw new Error(`Wrong data type given for field ${key}: ${givenDataType}. Expected data type: ${referenceMeta[key].type}`);
