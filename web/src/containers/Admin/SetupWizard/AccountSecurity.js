@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import {
 	otpRequest,
 	otpActivate,
-	otpRevoke,
 	otpSetActivated,
 } from '../../../actions/userAction';
 
@@ -47,22 +46,6 @@ const AccountSecurity = ({
 			});
 	};
 
-	const handleDisable = (values) => {
-		return otpRevoke({ code: values.code.toString() })
-			.then((res) => {
-				otpSetActivated(false);
-				message.success('OTP disabled successfully');
-				handleNext(2);
-			})
-			.catch((err) => {
-				const _error =
-					err.response && err.response.data
-						? err.response.data.message
-						: err.message;
-				message.error(_error);
-			});
-	};
-
 	const open = () => {
 		if (window) {
 			window.open(
@@ -73,26 +56,14 @@ const AccountSecurity = ({
 	};
 
 	return (
-		<div className="security-content">
+		<div className="security-content h-100">
 			{user.otp_enabled ? (
 				<Fragment>
-					<div className="title-text">2FA is already enabled</div>
-					<div>Disable 2FA</div>
-					<div className="form-wrapper">
-						<Form name="security-form" onFinish={handleDisable}>
-							<div className="setup-field-wrapper setup-field-content">
-								<div className="setup-field-label">2FA code</div>
-								<Item name="code">
-									<InputNumber placeholder="Enter 6-digit code" maxLength={6} />
-								</Item>
-							</div>
-							<div className="btn-container">
-								<Button htmlType="submit">Proceed</Button>
-							</div>
-							<span className="step-link" onClick={() => handleNext(2)}>
-								Skip this step
-							</span>
-						</Form>
+					<div className="form-wrapper d-flex flex-direction-column h-100 mt-0 content-center">
+						<div className="title-text">2FA is already enabled</div>
+						<div className="btn-container">
+							<Button onClick={() => handleNext(2)}>Proceed</Button>
+						</div>
 					</div>
 				</Fragment>
 			) : (
@@ -116,16 +87,18 @@ const AccountSecurity = ({
 						<Form name="security-form" onFinish={handleSubmit}>
 							<div className="setup-field-wrapper setup-field-content">
 								<div className="setup-field-label">2FA code</div>
-								<Item name="code">
+								<Item
+									name="code"
+									rules={[
+										{ required: true, message: 'Please input your 2FA code!' },
+									]}
+								>
 									<InputNumber placeholder="Enter 6-digit code" maxLength={6} />
 								</Item>
 							</div>
 							<div className="btn-container">
 								<Button htmlType="submit">Proceed</Button>
 							</div>
-							<span className="step-link" onClick={() => handleNext(2)}>
-								Skip this step
-							</span>
 						</Form>
 					</div>
 				</Fragment>

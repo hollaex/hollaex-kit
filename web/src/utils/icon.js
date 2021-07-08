@@ -86,3 +86,14 @@ export const getAllIconsArray = (themeKeys, content = defaultIcons) => {
 export const generateRemoteRouteIconId = (id = '') => {
 	return `REMOTE_ROUTE_ICON__${id.toUpperCase()}`;
 };
+
+const sizeLimitInMB = 2;
+
+export const checkFileSize = (file) => {
+	if (file && file.size) {
+		const sizeLimit = sizeLimitInMB * 1024 * 1024;
+		return file.size < sizeLimit;
+	}
+};
+
+export const fileSizeError = `The Uploaded file exceeds the maximum file size of ${sizeLimitInMB}MB`;
