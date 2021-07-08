@@ -141,6 +141,11 @@ export const openContactForm = () => {
 				.then(({ data: { url } }) => {
 					window.open(url, '_blank');
 					return setNotification(CONTACT_FORM, { helpdesk }, false);
+				})
+				.catch(() => {
+					if (helpdesk) {
+						window.open(helpdesk, '_blank');
+					}
 				});
 		} else if (helpdesk) {
 			window.open(helpdesk, '_blank');
