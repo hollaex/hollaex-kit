@@ -16,7 +16,7 @@ const {
 	HOLLAEX_NETWORK_BASE_URL,
 	HOLLAEX_NETWORK_PATH_ACTIVATE
 } = require('./constants');
-const { each, isNumber, difference } = require('lodash');
+const { isNumber, difference } = require('lodash');
 
 let nodeLib;
 
@@ -111,17 +111,21 @@ const checkStatus = () => {
 				]);
 			}
 		})
-		.then(([exchange, tiers, status]) => {
+		.then(async ([exchange, tiers, status]) => {
 			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
+
 			const exchangePairs = [];
-			each(exchange.coins, (coin) => {
+
+			for (let coin of exchange.coins) {
 				configuration.coins[coin.symbol] = coin;
-			});
-			each(exchange.pairs, (pair) => {
+			}
+
+			for (let pair of exchange.pairs) {
 				exchangePairs.push(pair.name);
 				configuration.pairs[pair.name] = pair;
-			});
-			each(tiers, async (tier) => {
+			}
+
+			for (let tier of tiers) {
 				const makerDiff = difference(exchangePairs, Object.keys(tier.fees.maker));
 				const takerDiff = difference(exchangePairs, Object.keys(tier.fees.taker));
 
@@ -130,7 +134,8 @@ const checkStatus = () => {
 						maker: {},
 						taker: {}
 					};
-					each(exchangePairs, (pair) => {
+
+					for (let pair of exchangePairs) {
 						if (!isNumber(tier.fees.maker[pair])) {
 							fees.maker[pair] = DEFAULT_FEES[exchange.collateral_level].maker;
 						} else {
@@ -142,7 +147,7 @@ const checkStatus = () => {
 						} else {
 							fees.taker[pair] = tier.fees.taker[pair];
 						}
-					});
+					}
 
 					const t = await tier.update({ fees }, { fields: ['fees'] });
 
@@ -150,7 +155,8 @@ const checkStatus = () => {
 				} else {
 					configuration.tiers[tier.id] = tier.dataValues;
 				}
-			});
+			}
+
 			configuration.kit.info = {
 				name: exchange.name,
 				active: exchange.active,
@@ -166,6 +172,7 @@ const checkStatus = () => {
 				status: true,
 				initialized: status.initialized
 			};
+
 			const networkNodeLib = new Network({
 				apiUrl: HOLLAEX_NETWORK_ENDPOINT,
 				baseUrl: HOLLAEX_NETWORK_BASE_URL,
@@ -188,9 +195,11 @@ const checkStatus = () => {
 		})
 		.then(([ users, networkNodeLib ]) => {
 			loggerInit.info('init/checkStatus/activation', users.length, 'users deactivated');
-			each(users, (user) => {
+
+			for (let user of users) {
 				frozenUsers[user.dataValues.id] = true;
-			});
+			}
+
 			publisher.publish(
 				CONFIGURATION_CHANNEL,
 				JSON.stringify({
