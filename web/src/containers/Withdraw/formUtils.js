@@ -146,13 +146,7 @@ export const generateFormValues = (
 		}
 		// FIX add according fee
 		// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname), fee));
-		amountValidate.push(
-			checkBalance(
-				available,
-				STRINGS.formatString(STRINGS['WITHDRAWALS_LOWER_BALANCE'], fullname),
-				0
-			)
-		);
+		amountValidate.push(checkBalance(available, fullname, 0));
 
 		fields.amount = {
 			type: 'number',

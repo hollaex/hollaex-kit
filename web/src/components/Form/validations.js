@@ -1,3 +1,4 @@
+import React from 'react';
 import validator from 'validator';
 import WAValidator from 'multicoin-address-validator';
 import math from 'mathjs';
@@ -121,7 +122,7 @@ export const step = (step, message) => (value = 0) =>
 	math.larger(math.mod(math.bignumber(value), math.bignumber(step)), 0)
 		? message || STRINGS.formatString(STRINGS['VALIDATIONS.STEP'], step)
 		: undefined;
-export const checkBalance = (available, message, fee = 0) => (value = 0) => {
+export const checkBalance = (available, coinName, fee = 0) => (value = 0) => {
 	const operation =
 		fee > 0
 			? math.number(
@@ -133,13 +134,16 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 			: value;
 
 	if (operation > available) {
-		const errorMessage =
-			message ||
-			STRINGS.formatString(
-				STRINGS['VALIDATIONS.INVALID_BALANCE'],
-				available,
-				operation
-			);
+		const errorMessage = coinName
+			? STRINGS.formatString(
+					STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+					<b>{`${operation} ${coinName}`}</b>
+			  )
+			: STRINGS.formatString(
+					STRINGS['VALIDATIONS.INVALID_BALANCE'],
+					available,
+					operation
+			  );
 		return errorMessage;
 	}
 	return undefined;
