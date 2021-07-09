@@ -12,23 +12,84 @@ const getUserTrades = (req, res) => {
 	);
 
 	const user_id = req.auth.sub.id;
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const {
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+		format
+	} = req.swagger.params;
 	const symbol = req.swagger.params.symbol.value;
+
+	loggerTrades.info(
+		req.uuid,
+		'controllers/trade/getUserTrades params',
+		'user_id',
+		user_id,
+		'symbol',
+		symbol,
+		'limit',
+		limit.value,
+		'page',
+		page.value,
+		'order_by',
+		order_by.value,
+		'order',
+		order.value,
+		'start_date',
+		start_date.value,
+		'end_date',
+		end_date.value,
+		'format',
+		format.value
+	);
 
 	if (symbol && !toolsLib.subscribedToPair(symbol)) {
 		loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', 'Invalid symbol');
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.order.getAllUserTradesByKitId(user_id, symbol, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	let promiseQuery;
+
+	if (format.value) {
+		promiseQuery = toolsLib.order[`getUserTradesByKitId${format.value === 'all' ? 'Stream' : 'Csv'}`](
+			user_id,
+			{
+				symbol,
+				limit: limit.value,
+				page: page.value,
+				orderBy: order_by.value,
+				order: order.value,
+				startDate: start_date.value,
+				endDate: end_date.value
+			}
+		);
+	} else {
+		promiseQuery = toolsLib.order.getAllUserTradesByKitId(
+			user_id,
+			symbol,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value
+		);
+	}
+
+	promiseQuery
 		.then((data) => {
-			if (format.value === 'csv') {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-trades.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else if (format.value === 'all') {
-				res.status(203);
-				data.pipe(res);
+			if (format.value) {
+				if (format.value === 'csv') {
+					res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-trades.csv`);
+					res.set('Content-Type', 'text/csv');
+					res.status(202);
+				} else {
+					res.status(203);
+				}
+				return data.pipe(res);
 			} else {
 				return res.json(data);
 			}
@@ -44,24 +105,39 @@ const getAdminTrades = (req, res) => {
 
 	const { user_id, symbol, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
+	loggerTrades.info(
+		req.uuid,
+		'controllers/trade/getAdminTrades params',
+		'user_id',
+		user_id.value,
+		'symbol',
+		symbol.value,
+		'limit',
+		limit.value,
+		'page',
+		page.value,
+		'order_by',
+		order_by.value,
+		'order',
+		order.value,
+		'start_date',
+		start_date.value,
+		'end_date',
+		end_date.value,
+		'format',
+		format.value
+	);
+
+	if (symbol.value && !toolsLib.subscribedToPair(symbol.value)) {
+		loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', 'Invalid symbol');
+		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
 	let promiseQuery;
 
 	if (user_id.value) {
-		if (format.value === 'all') {
-			promiseQuery = toolsLib.order.getUserTradesByKitIdStream(
-				user_id.value,
-				{
-					symbol: symbol.value,
-					limit: limit.value,
-					page: page.value,
-					orderBy: order_by.value,
-					order: order.value,
-					startDate: start_date.value,
-					endDate: end_date.value
-				}
-			);
-		} else if (format.value === 'csv') {
-			promiseQuery = toolsLib.order.getUserTradesByKitIdCsv(
+		if (format.value) {
+			promiseQuery = toolsLib.order[`getUserTradesByKitId${format.value === 'all' ? 'Stream' : 'Csv'}`](
 				user_id.value,
 				{
 					symbol: symbol.value,
@@ -87,20 +163,9 @@ const getAdminTrades = (req, res) => {
 			);
 		}
 	} else {
-		if (format.value === 'all') {
-			promiseQuery = toolsLib.order.getAllTradesNetworkStream(
-				{
-					symbol: symbol.value,
-					limit: limit.value,
-					page: page.value,
-					orderBy: order_by.value,
-					order: order.value,
-					startDate: start_date.value,
-					endDate: end_date.value
-				}
-			);
-		} else if (format.value === 'csv') {
-			promiseQuery = toolsLib.order.getAllTradesNetworkCsv(
+		if (format.value) {
+			promiseQuery = toolsLib.order[`getAllTradesNetwork${format.value === 'all' ? 'Stream' : 'Csv'}`](
+				user_id.value,
 				{
 					symbol: symbol.value,
 					limit: limit.value,
@@ -132,8 +197,10 @@ const getAdminTrades = (req, res) => {
 					res.setHeader('Content-disposition', `attachment; filename=${user_id.value ? `user-${user_id.value}-` : ''}trades.csv`);
 					res.set('Content-Type', 'text/csv');
 					res.status(202);
+				} else {
+					res.status(203);
 				}
-				data.pipe(res);
+				return data.pipe(res);
 			} else {
 				return res.json(data);
 			}
