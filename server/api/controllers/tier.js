@@ -3,10 +3,26 @@
 const toolsLib = require('hollaex-tools-lib');
 const { loggerTier } = require('../../config/logger');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { pick } = require('lodash');
 
 const getTiers = (req, res) => {
 	try {
-		return res.json(toolsLib.getKitTiers());
+		const subscribedPairs = toolsLib.getKitPairs();
+		const tiers = toolsLib.getKitTiers();
+
+		for (let tier in tiers) {
+			tiers[tier].fees.maker = pick(
+				tiers[tier].fees.maker,
+				subscribedPairs
+			);
+
+			tiers[tier].fees.taker = pick(
+				tiers[tier].fees.taker,
+				subscribedPairs
+			);
+		}
+
+		return res.json(tiers);
 	} catch (err) {
 		loggerTier.error(req.uuid, 'controllers/tier/getTiers err', err.message);
 		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -48,6 +64,18 @@ const putTier = (req, res) => {
 	toolsLib.tier.updateTier(level, updateData)
 		.then((tier) => {
 			loggerTier.info(req.uuid, 'controllers/tier/putTier tier updated', level);
+			const subscribedPairs = toolsLib.getKitPairs();
+
+			tier.fees.maker = pick(
+				tier.fees.maker,
+				subscribedPairs
+			);
+
+			tier.fees.taker = pick(
+				tier.fees.taker,
+				subscribedPairs
+			);
+
 			return res.json(tier);
 		})
 		.catch((err) => {
