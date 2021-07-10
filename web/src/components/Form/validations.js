@@ -39,20 +39,10 @@ export const validAddress = (symbol = '', message, network) => {
 		let valid = true;
 
 		if (network) {
+			if (network === 'bnb') {
+				network = 'eth';
+			}
 			valid = WAValidator.validate(address, network);
-			// switch (network) {
-			// 	case 'ethereum':
-			// 		valid = WAValidator.validate(address, 'eth');
-			// 		break;
-			// 	case 'stellar':
-			// 		valid = WAValidator.validate(address, 'xlm');
-			// 		break;
-			// 	case 'tron':
-			// 		valid = WAValidator.validate(address, 'trx');
-			// 		break;
-			// 	default:
-			// 		break;
-			// }
 		} else {
 			const supported = WAValidator.findCurrency(symbol);
 			if (supported) {
