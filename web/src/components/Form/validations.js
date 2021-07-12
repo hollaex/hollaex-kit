@@ -2,7 +2,6 @@ import React from 'react';
 import validator from 'validator';
 import WAValidator from 'multicoin-address-validator';
 import math from 'mathjs';
-import bchaddr from 'bchaddrjs';
 import { roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 import { getDecimals } from 'utils/utils';
@@ -35,52 +34,19 @@ export const username = (value = '') =>
 	!usernameRegEx.test(value) ? STRINGS['INVALID_USERNAME'] : undefined;
 
 export const validAddress = (symbol = '', message, network) => {
-	let currency = symbol.toUpperCase();
+	const currency = network ? network.toUpperCase() : symbol.toUpperCase();
 	return (address) => {
-		let valid = true;
+		let valid;
 
-		if (network) {
-			valid = WAValidator.validate(address, network);
-			// switch (network) {
-			// 	case 'ethereum':
-			// 		valid = WAValidator.validate(address, 'eth');
-			// 		break;
-			// 	case 'stellar':
-			// 		valid = WAValidator.validate(address, 'xlm');
-			// 		break;
-			// 	case 'tron':
-			// 		valid = WAValidator.validate(address, 'trx');
-			// 		break;
-			// 	default:
-			// 		break;
-			// }
-		} else {
-			const supported = WAValidator.findCurrency(symbol);
+		try {
+			const supported = WAValidator.findCurrency(currency);
 			if (supported) {
-				// this library recognizes this currency
-				switch (currency) {
-					case 'BTC':
-						valid = WAValidator.validate(address, currency);
-						break;
-					case 'BCH':
-						try {
-							bchaddr.toLegacyAddress(address);
-							valid = true;
-						} catch (err) {
-							valid = false;
-						}
-						break;
-					case 'ETH':
-						valid = WAValidator.validate(address, currency);
-						break;
-					case 'XRP':
-						valid = WAValidator.validate(address, currency);
-						break;
-					default:
-						valid = WAValidator.validate(address, currency);
-						break;
-				}
+				valid = WAValidator.validate(address, currency);
+			} else {
+				valid = true;
 			}
+		} catch (err) {
+			valid = true;
 		}
 
 		return !valid
