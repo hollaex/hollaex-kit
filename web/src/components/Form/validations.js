@@ -34,11 +34,13 @@ export const username = (value = '') =>
 	!usernameRegEx.test(value) ? STRINGS['INVALID_USERNAME'] : undefined;
 
 export const validAddress = (symbol = '', message, network) => {
-	const currency = network ? network.toUpperCase() : symbol.toUpperCase();
+	let currency = network ? network.toUpperCase() : symbol.toUpperCase();
 	return (address) => {
 		let valid;
 
 		try {
+			if (currency === 'bnb') currency = 'eth';
+
 			const supported = WAValidator.findCurrency(currency);
 			if (supported) {
 				valid = WAValidator.validate(address, currency);
