@@ -1,5 +1,6 @@
 'use strict';
 
+const { version } = require('../../package.json');
 const { isEmail, isUUID } = require('validator');
 const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
@@ -105,7 +106,12 @@ const signUpUser = (req, res) => {
 				}, { transaction })
 					.then((user) => {
 						return all([
-							toolsLib.user.createUserOnNetwork(email),
+							toolsLib.user.createUserOnNetwork(email, {
+								additionalHeaders: {
+									'x-forwarded-for': req.headers['x-forwarded-for'],
+									'kit-version': version
+								}
+							}),
 							user
 						]);
 					})
