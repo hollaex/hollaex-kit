@@ -126,7 +126,7 @@ export const closeSnackDialog = (id) => ({
 	payload: { dialogId: id },
 });
 
-export const openContactForm = () => {
+export const openHelpdesk = () => {
 	const {
 		app: {
 			helpdeskInfo: { has_helpdesk, helpdesk_endpoint },
@@ -153,6 +153,10 @@ export const openContactForm = () => {
 	}
 
 	return setNotification(CONTACT_FORM, { helpdesk }, false);
+};
+
+export const openContactForm = () => {
+	return openHelpfulResourcesForm();
 };
 
 export const openHelpfulResourcesForm = (data = {}) =>
