@@ -1617,10 +1617,6 @@ paths:
           description: CSV
           schema:
             type: string
-        203:
-          description: Stream
-          schema:
-            type: string
         default:
           description: Error
           schema:
@@ -3002,10 +2998,6 @@ paths:
             $ref: "#/definitions/TradesResponse"
         202:
           description: CSV
-          schema:
-            type: string
-        203:
-          description: Stream
           schema:
             type: string
         default:
