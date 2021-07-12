@@ -91,12 +91,7 @@ export const step = (step, message) => (value = 0) =>
 export const checkBalance = (available, coinName, fee = 0) => (value = 0) => {
 	const operation =
 		fee > 0
-			? math.number(
-					math.add(
-						math.fraction(value),
-						math.multiply(math.fraction(value), math.fraction(fee))
-					)
-			  )
+			? math.number(math.add(math.fraction(value), math.fraction(fee)))
 			: value;
 
 	if (operation > available) {
