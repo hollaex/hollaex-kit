@@ -14,8 +14,7 @@ const {
 	generateHeaders,
 	checkKit,
 	createSignature,
-	parameterError,
-	createRequestStream
+	parameterError
 } = require('./utils');
 const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
@@ -183,11 +182,7 @@ class HollaExNetwork {
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
-		if (isString(opts.format)) {
-			return createRequestStream(verb, `${this.apiUrl}${path}`, headers);
-		} else {
-			return createRequest(verb, `${this.apiUrl}${path}`, headers);
-		}
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
@@ -271,11 +266,7 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		if (isString(opts.format)) {
-			return createRequestStream(verb, `${this.apiUrl}${path}`, headers);
-		} else {
-			return createRequest(verb, `${this.apiUrl}${path}`, headers);
-		}
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**

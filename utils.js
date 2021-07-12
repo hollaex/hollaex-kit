@@ -1,7 +1,6 @@
 const rp = require('request-promise');
 const crypto = require('crypto');
 const moment = require('moment');
-const axios = require('axios');
 
 const createRequest = (verb, url, headers, data) => {
 	const requestObj = {
@@ -11,18 +10,6 @@ const createRequest = (verb, url, headers, data) => {
 		json: true
 	};
 	return rp[verb.toLowerCase()](requestObj);
-};
-
-const createRequestStream = async (verb, url, headers, data) => {
-	const requestObj = {
-		method: verb.toLowerCase(),
-		url,
-		headers,
-		data,
-		responseType: 'stream'
-	};
-
-	return axios(requestObj);
 };
 
 const createSignature = (secret = '', verb, path, expires, data = '') => {
@@ -64,6 +51,5 @@ module.exports = {
 	createSignature,
 	generateHeaders,
 	checkKit,
-	parameterError,
-	createRequestStream
+	parameterError
 };
