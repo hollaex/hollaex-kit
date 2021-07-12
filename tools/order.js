@@ -288,16 +288,33 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getNodeLib().getTrades({
+
+	const opts = {
 		symbol,
 		limit,
 		page,
 		orderBy,
 		order,
 		startDate,
-		endDate,
-		format
-	});
+		endDate
+	};
+
+	if (format) {
+		opts.format = 'all';
+	}
+
+	return getNodeLib().getTrades(opts)
+		.then((trades) => {
+			if (format === 'csv') {
+				if (trades.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(trades.data, Object.keys(trades.data[0]));
+				return csv;
+			} else {
+				return trades;
+			}
+		});
 };
 
 const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format) => {
@@ -311,16 +328,22 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getUserTrades(user.network_id, {
+
+			const opts = {
 				symbol,
 				limit,
 				page,
 				orderBy,
 				order,
 				startDate,
-				endDate,
-				format
-			});
+				endDate
+			};
+
+			if (format) {
+				opts.format = 'all';
+			}
+
+			return getNodeLib().getUserTrades(user.network_id, opts);
 		})
 		.then((trades) => {
 			if (format === 'csv') {
@@ -474,16 +497,33 @@ const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, or
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getUserTrades(networkId, {
+
+	const opts = {
 		symbol,
 		limit,
 		page,
 		orderBy,
 		order,
 		startDate,
-		endDate,
-		format
-	});
+		endDate
+	};
+
+	if (format) {
+		opts.format = 'all';
+	}
+
+	return getNodeLib().getUserTrades(networkId, opts)
+		.then((trades) => {
+			if (format === 'csv') {
+				if (trades.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(trades.data, Object.keys(trades.data[0]));
+				return csv;
+			} else {
+				return trades;
+			}
+		});
 };
 
 const getGeneratedFees = (startDate, endDate) => {
