@@ -116,7 +116,7 @@ export const TokenCreatedInfo = ({ token }) => {
 			<div className="mt-4">
 				<DumbField {...props_api_key} />
 			</div>
-			<div className="mt-4">
+			<div className="secret_key mt-4">
 				<DumbField {...props_secret_key} />
 			</div>
 		</div>

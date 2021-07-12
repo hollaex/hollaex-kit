@@ -19,7 +19,7 @@ const AdminFinancials = ({ router }) => {
 				</TabPane>
 				<TabPane tab="Assets" key="assets">
 					<div className="tab-contents">
-						<MoveToDash />
+						<MoveToDash path={router.location.pathname} />
 					</div>
 				</TabPane>
 				<TabPane tab="Deposits" key="deposits">

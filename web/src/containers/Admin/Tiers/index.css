@@ -4,7 +4,7 @@
 	max-width: 50rem;
 	min-width: 25rem;
 	padding: 12px;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .tiers-container:last-child {
 	border-bottom: 1px solid #c4c4c4;
@@ -60,7 +60,7 @@
 	width: 4rem;
 }
 .admin-link-highlight {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -72,19 +72,19 @@
 	padding: 0px !important;
 }
 .admin-tiers-wrapper .ant-table-thead > tr > th {
-	background-color: #4e4efb;
-	color: #ffffff;
+	background-color: var(--admin_panel_table_thead);
+	color: var(--admin_panel_main_font);
 }
 .admin-tiers-wrapper .ant-table-tbody > tr > td {
-	background-color: #0000d1;
-	color: #ffffff;
+	background-color: var(--admin_panel_table_tbody);
+	color: var(--admin_panel_main_font);
 	border-bottom: 1px solid #c4c4c4;
 }
 .admin-tiers-wrapper .ant-table-tbody > tr.ant-table-placeholder:hover > td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-tiers-wrapper .ant-table-tbody > tr.ant-table-row:hover > td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-tiers-wrapper .ant-empty .ant-empty-image .ant-empty-img-simple-ellipse,
 .admin-tiers-wrapper .ant-empty .ant-empty-image .ant-empty-img-simple-path {
@@ -94,7 +94,7 @@
 	stroke: #7d9ac9;
 }
 .admin-tiers-wrapper .ant-empty .ant-empty-description {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-tiers-wrapper .ant-table-pagination.ant-pagination {
 	margin: 16px 0;
@@ -104,7 +104,7 @@
 }
 .admin-tiers-wrapper h1,
 .admin-tiers-wrapper h3 {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 
 .admin-tiers-wrapper .ant-pagination-item-active,

@@ -49,7 +49,7 @@
 .ant-card,
 .ant-card-head,
 .ant-card-type-inner .ant-card-head {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_card_background);
 	color: #ffffff;
 }
 .ant-card-bordered {
@@ -65,7 +65,7 @@
 .ant-modal-header,
 .ant-modal-content,
 .ant-modal-confirm-body .ant-modal-confirm-content {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_modal_background);
 	color: #ffffff;
 }
 .ant-modal-close-icon path {
@@ -92,7 +92,7 @@
 .verification-form
 	.ant-select-single:not(.ant-select-customize-input)
 	.ant-select-selector {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_input);
 	color: #ffffff;
 }
 .verification-form .ant-upload-text-icon path {
