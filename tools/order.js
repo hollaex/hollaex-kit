@@ -6,7 +6,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { DEFAULT_FEES } = require(`${SERVER_PATH}/constants`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getKitConfig, getCsvParser } = require('./common');
+const { subscribedToPair, getKitTier, getKitConfig } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -335,139 +335,142 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 		});
 };
 
-const getAllTradesNetworkStream = (opts = {
-	symbol: null,
-	limit: null,
-	page: null,
-	orderBy: null,
-	order: null,
-	startDate: null,
-	endDate: null
-}) => {
-	if (opts.symbol && !subscribedToPair(opts.symbol)) {
-		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
-	}
-	return getNodeLib().getTrades({ ...opts, format: 'all' });
-};
+// const getAllTradesNetworkStream = (opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	if (opts.symbol && !subscribedToPair(opts.symbol)) {
+// 		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
+// 	}
+// 	return getNodeLib().getTrades({ ...opts, format: 'all' });
+// };
 
-const getAllTradesNetworkCsv = (opts = {
-	symbol: null,
-	limit: null,
-	page: null,
-	orderBy: null,
-	order: null,
-	startDate: null,
-	endDate: null
-}) => {
-	return getAllTradesNetworkStream(opts)
-		.then((data) => {
-			const parser = getCsvParser();
+// const getAllTradesNetworkCsv = (opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	return getAllTradesNetworkStream(opts)
+// 		.then((data) => {
+// 			const parser = getCsvParser();
 
-			parser.on('error', (error) => {
-				parser.destroy();
-				throw error;
-			});
+// 			parser.on('error', (error) => {
+// 				throw error;
+// 			});
 
-			parser.on('end', () => {
-				parser.destroy();
-			});
+// 			parser.on('error', (error) => {
+// 				parser.destroy();
+// 				throw error;
+// 			});
 
-			return data.pipe(parser);
-		});
-};
+// 			parser.on('end', () => {
+// 				parser.destroy();
+// 			});
 
-const getUserTradesByKitIdStream = (userKitId, opts = {
-	symbol: null,
-	limit: null,
-	page: null,
-	orderBy: null,
-	order: null,
-	startDate: null,
-	endDate: null
-}) => {
-	if (opts.symbol && !subscribedToPair(opts.symbol)) {
-		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
-	}
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().getUserTrades(user.network_id, { ...opts, format: 'all' });
-		});
-};
+// 			return data.pipe(parser);
+// 		});
+// };
 
-const getUserTradesByKitIdCsv = (userKitId, opts = {
-	symbol: null,
-	limit: null,
-	page: null,
-	orderBy: null,
-	order: null,
-	startDate: null,
-	endDate: null
-}) => {
-	return getUserTradesByKitIdStream(userKitId, opts)
-		.then((data) => {
-			const parser = getCsvParser();
+// const getUserTradesByKitIdStream = (userKitId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	if (opts.symbol && !subscribedToPair(opts.symbol)) {
+// 		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
+// 	}
+// 	return getUserByKitId(userKitId)
+// 		.then((user) => {
+// 			if (!user) {
+// 				throw new Error(USER_NOT_FOUND);
+// 			} else if (!user.network_id) {
+// 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+// 			}
+// 			return getNodeLib().getUserTrades(user.network_id, { ...opts, format: 'all' });
+// 		});
+// };
 
-			parser.on('error', (error) => {
-				parser.destroy();
-				throw error;
-			});
+// const getUserTradesByKitIdCsv = (userKitId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	return getUserTradesByKitIdStream(userKitId, opts)
+// 		.then((data) => {
+// 			const parser = getCsvParser();
 
-			parser.on('end', () => {
-				parser.destroy();
-			});
+// 			parser.on('error', (error) => {
+// 				parser.destroy();
+// 				throw error;
+// 			});
 
-			return data.pipe(parser);
-		});
-};
+// 			parser.on('end', () => {
+// 				parser.destroy();
+// 			});
 
-const getUserTradesByNetworkIdStream = (userNetworkId, opts = {
-	symbol: null,
-	limit: null,
-	page: null,
-	orderBy: null,
-	order: null,
-	startDate: null,
-	endDate: null
-}) => {
-	if (opts.symbol && !subscribedToPair(opts.symbol)) {
-		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
-	}
-	return getNodeLib().getUserTrades(userNetworkId, { ...opts, format: 'all' });
-};
+// 			return data.pipe(parser);
+// 		});
+// };
 
-const getUserTradesByNetworkIdCsv = (userNetworkId, opts = {
-	symbol: null,
-	limit: null,
-	page: null,
-	orderBy: null,
-	order: null,
-	startDate: null,
-	endDate: null
-}) => {
-	return getUserTradesByNetworkIdStream(userNetworkId, opts)
-		.then((data) => {
-			const parser = getCsvParser();
+// const getUserTradesByNetworkIdStream = (userNetworkId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	if (opts.symbol && !subscribedToPair(opts.symbol)) {
+// 		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
+// 	}
+// 	return getNodeLib().getUserTrades(userNetworkId, { ...opts, format: 'all' });
+// };
 
-			parser.on('error', (error) => {
-				parser.destroy();
-				throw error;
-			});
+// const getUserTradesByNetworkIdCsv = (userNetworkId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	return getUserTradesByNetworkIdStream(userNetworkId, opts)
+// 		.then((data) => {
+// 			const parser = getCsvParser();
 
-			parser.on('end', () => {
-				parser.destroy();
-			});
+// 			parser.on('error', (error) => {
+// 				parser.destroy();
+// 				throw error;
+// 			});
 
-			return data.pipe(parser);
-		});
-};
+// 			parser.on('end', () => {
+// 				parser.destroy();
+// 			});
 
+// 			return data.pipe(parser);
+// 		});
+// };
 
-const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, order, startDate, endDate, format) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
@@ -478,7 +481,8 @@ const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, or
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		format
 	});
 };
 
@@ -616,10 +620,10 @@ module.exports = {
 	getGeneratedFees,
 	settleFees,
 	generateOrderFeeData,
-	getUserTradesByKitIdStream,
-	getUserTradesByNetworkIdStream,
-	getAllTradesNetworkStream,
-	getAllTradesNetworkCsv,
-	getUserTradesByKitIdCsv,
-	getUserTradesByNetworkIdCsv
+	// getUserTradesByKitIdStream,
+	// getUserTradesByNetworkIdStream,
+	// getAllTradesNetworkStream,
+	// getAllTradesNetworkCsv,
+	// getUserTradesByKitIdCsv,
+	// getUserTradesByNetworkIdCsv
 };
