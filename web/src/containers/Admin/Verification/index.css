@@ -56,7 +56,7 @@
 	border: 1px solid #c4c4c4;
 }
 .ant-modal-header {
-	border: 1px solid #0000ff;
+	border: 1px solid var(--admin_panel_modal_border);
 }
 .ant-modal-header .ant-modal-title {
 	color: #ffffff;
