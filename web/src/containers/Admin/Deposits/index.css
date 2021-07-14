@@ -59,7 +59,7 @@
 	margin-bottom: 8px;
 }
 .blue-admin-table .ant-table-row-expand-icon {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_row_expand_icon);
 	border-color: #c4c4c4;
 }
 .admin-deposit-wrapper .ant-select .ant-select-selection-placeholder {
