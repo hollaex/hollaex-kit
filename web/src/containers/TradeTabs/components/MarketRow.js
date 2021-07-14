@@ -74,6 +74,9 @@ class MarketRow extends Component {
 					<span className="title-font ml-1">
 						{formatToCurrency(ticker.close, increment_price)}
 					</span>
+					<span className="title-font ml-2">
+						{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
+					</span>
 				</td>
 				<td>
 					<Transition in={inProp} timeout={1000}>
@@ -96,7 +99,10 @@ class MarketRow extends Component {
 						)}
 					</Transition>
 				</td>
-				<td>{ticker.volume}</td>
+				<td>
+					<span className="title-font ml-1">{ticker.volume}</span>
+					<span className="title-font ml-2">{symbol.toUpperCase()}</span>
+				</td>
 				<td className="td-chart">
 					<SparkLine
 						data={chartData[key] || []}

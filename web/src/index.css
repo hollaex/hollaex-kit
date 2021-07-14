@@ -3639,9 +3639,6 @@ table th {
     color: var(--labels_important-active-labels-text-graphics);
     font-size: 1.8rem;
     font-weight: bold; }
-  .trade_tabs-container .trade_tab-ticker-container {
-    flex-direction: column;
-    align-items: flex-end; }
   .trade_tabs-container .price-diff-down {
     color: var(--trading_selling-related-elements);
     padding: 0 5px;

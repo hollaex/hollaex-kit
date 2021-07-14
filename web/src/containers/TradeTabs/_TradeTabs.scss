@@ -133,11 +133,6 @@ $trade-tab--arrow-size: 0.4rem;
 		font-weight: bold;
 	}
 
-	.trade_tab-ticker-container {
-		flex-direction: column;
-		align-items: flex-end;
-	}
-
 	.price-diff-down {
 		color: $sell;
 		padding: 0 5px;
