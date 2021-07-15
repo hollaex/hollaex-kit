@@ -90,7 +90,7 @@
 	border-top: none;
 	border-bottom: 1px solid #ffffff;
 	border-radius: 0px;
-	background-color: #0000d1;
+	background-color: var(--admin_panel_input);
 	color: #c4c4c4;
 	box-shadow: none;
 }

@@ -47,7 +47,7 @@
 	.ant-select-single:not(.ant-select-customize-input)
 	.ant-select-selector,
 .admin-deposit-wrapper .filters-wrapper-filters .ant-picker {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_input);
 	color: #ffffff;
 }
 .admin-deposit-wrapper .filters-wrapper-filters {
@@ -59,7 +59,7 @@
 	margin-bottom: 8px;
 }
 .blue-admin-table .ant-table-row-expand-icon {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_row_expand_icon);
 	border-color: #c4c4c4;
 }
 .admin-deposit-wrapper .ant-select .ant-select-selection-placeholder {
@@ -132,15 +132,15 @@
 
 .Validate-Dismiss-popup {
 	padding: 1rem;
-	color: #FFFFFF;
+	color: #ffffff;
 }
 
 .Validate-Dismiss-popup .ant-btn {
-	color: #FFFFFF;
+	color: #ffffff;
 }
-.Validate-Dismiss-popup .title{
-    font-size: 24px;
-    font-weight: bold;
+.Validate-Dismiss-popup .title {
+	font-size: 24px;
+	font-weight: bold;
 }
 .Validate-Dismiss-popup .confirm-container {
 	border: 1px solid #ffffff;
@@ -154,16 +154,16 @@
 	position: relative;
 }
 .Validate-Dismiss-popup .field-label {
-	color: #FFFFFF;
+	color: #ffffff;
 }
 .Validate-Dismiss-popup .edit-link-wrapper {
-    position: relative;
+	position: relative;
 }
 .Validate-Dismiss-popup .edit-link {
-    position: absolute;
-    bottom: 28px;
-    right: 16px;
-    text-decoration: underline;
+	position: absolute;
+	bottom: 28px;
+	right: 16px;
+	text-decoration: underline;
 	cursor: pointer;
 }
 .Validate-Dismiss-popup .ant-input {

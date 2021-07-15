@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
+import { message } from 'antd';
 import { openContactForm } from 'actions/appActions';
 import {
 	resetPassword,
@@ -363,9 +364,13 @@ class UserVerification extends Component {
 				});
 			})
 			.catch((err) => {
-				const _error = err.response.data
-					? err.response.data.message
-					: err.message;
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
+				if (!_error) {
+					message.error(STRINGS['CHANGE_PASSWORD_FAILED']);
+				}
 				throw new SubmissionError({ _error });
 			});
 	};

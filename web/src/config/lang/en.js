@@ -1468,4 +1468,5 @@ export default {
 	FEE_REDUCTION: 'Fee reduction', // new
 	FEE_REDUCTION_DESCRIPTION:
 		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
+	CHANGE_PASSWORD_FAILED: 'changing password failed', // new
 };
