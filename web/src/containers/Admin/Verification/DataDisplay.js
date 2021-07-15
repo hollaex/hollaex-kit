@@ -51,7 +51,7 @@ export const renderJSONKey = (key, value) => {
 				</div>
 			) : (
 				<div key={`${key}_2`}>
-					{key} : {val}
+					{key} : {typeof val === 'object' ? JSON.stringify(val) : val}
 				</div>
 			);
 		});

@@ -10,7 +10,7 @@
 }
 .admin-roles-wrapper .revoke-btn {
 	background-color: #f28041;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-roles-wrapper .line-separator {
 	background-color: #c4c4c4;
@@ -53,27 +53,27 @@
 	color: #ffffff;
 }
 .admin-roles-wrapper .table-wrapper .ant-table-thead > tr > th {
-	background-color: #4e4efb;
-	color: #ffffff;
+	background-color: var(--admin_panel_table_thead);
+	color: var(--admin_panel_main_font);
 }
 .admin-roles-wrapper .table-wrapper .ant-table-tbody > tr > td {
-	background-color: #0000d1;
-	color: #ffffff;
-	border-bottom: 1px solid #0000d1;
+	background-color: var(--admin_panel_table_tbody);
+	color: var(--admin_panel_main_font);
+	border-bottom: 1px solid var(--admin_panel_table_tbody);
 }
 .admin-roles-wrapper
 	.table-wrapper
 	.ant-table-tbody
 	> tr.ant-table-placeholder:hover
 	> td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-roles-wrapper
 	.table-wrapper
 	.ant-table-tbody
 	> tr.ant-table-row:hover
 	> td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-roles-wrapper
 	.table-wrapper
@@ -95,7 +95,7 @@
 	stroke: #7d9ac9;
 }
 .admin-roles-wrapper .table-wrapper .ant-empty .ant-empty-description {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-roles-wrapper .ant-table-pagination.ant-pagination {
 	margin: 16px 0;
@@ -110,7 +110,7 @@
 }
 
 .admin-roles-wrapper .sub-title {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-roles-wrapper .ant-form .ant-select .ant-select-selector {
 	height: 30px;
@@ -140,18 +140,18 @@
 
 .upgrade-section {
 	background-color: #3333ff;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	padding: 20px;
 }
 .upgrade-section .button-wrapper .ant-btn {
 	background-color: #e97c00;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	font-size: 14px !important;
 }
 .admin-roles-wrapper .role-description-box .upgrade-text {
 	position: absolute;
 	z-index: 100;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	top: 55px;
 	left: 12px;
 }
