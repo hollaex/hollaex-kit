@@ -16,5 +16,7 @@ module.exports = {
 		redux: require('redux'),
 		'redux-form': require('redux-form'),
 		validator: require('validator'),
+		'@ant-design/icons': require('@ant-design/icons'),
+		'react-event-listener': require('react-event-listener'),
 	},
 };
