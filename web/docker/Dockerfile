@@ -1,5 +1,5 @@
 # build environment
-FROM node:12.18.3 as build
+FROM node:12.18.3-buster as build
 ENV NODE_OPTIONS=--max_old_space_size=3072
 WORKDIR /app
 COPY package.json /app/package.json
