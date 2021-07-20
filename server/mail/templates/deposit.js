@@ -53,8 +53,12 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 				${data.network ? '<br />' : ''}
 				${data.network ? DEPOSIT.BODY[5](data.network) : ''}
+				${data.fee ? '<br />' : ''}
+				${data.fee ? DEPOSIT.BODY[6](data.fee) : ''}
+				${data.description ? '<br />' : ''}
+				${data.description ? DEPOSIT.BODY[7](data.description) : ''}
 			</p>
-			${explorers.length > 0 ? DEPOSIT.BODY[6] : ''}
+			${explorers.length > 0 ? DEPOSIT.BODY[8] : ''}
 			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
 		`;
 	} else {
@@ -86,6 +90,8 @@ const text = (email, data, language, domain) => {
 			${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
 			${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 			${data.network ? DEPOSIT.BODY[5](data.network) : ''}
+			${data.fee ? DEPOSIT.BODY[6](data.fee) : ''}
+			${data.description ? DEPOSIT.BODY[7](data.description) : ''}
 		`;
 	} else {
 		result += '';

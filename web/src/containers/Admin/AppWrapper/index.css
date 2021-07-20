@@ -45,7 +45,7 @@
 	margin: 24px;
 }
 .ant-layout-content .content-wrapper {
-	background-color: #0000d1;
+	background-color: var(--admin_panel_content_background);
 	overflow-y: auto;
 	margin: 0px;
 	padding: 0px 24px;
@@ -107,7 +107,7 @@
 	min-height: calc(100vh - 38px) !important;
 }
 .ant-layout .ant-layout-content {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_title_background);
 	flex-direction: column;
 	margin-left: 310px;
 	padding: 0px;
@@ -116,7 +116,7 @@
 	color: #ffffff;
 }
 .ant-layout-sider .ant-layout-sider-children .ant-menu {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_sidebar_background);
 	color: #ffffff;
 }
 .ant-layout-sider
@@ -129,7 +129,7 @@
 	background-color: #0000ff;
 }
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_sidebar_background);
 }
 .menu-wrapper {
 	border-right: 1px solid #c4c4c4;
@@ -214,7 +214,7 @@
 	margin: 0.2rem 3rem 0.2rem 3rem;
 }
 .admin-content-wrapper {
-	background-color: #0000d1;
+	background-color: #202980;
 	margin-top: 1rem;
 }
 .link-icon {
@@ -256,4 +256,12 @@
 }
 .black {
 	color: #101000;
+}
+.input_field .ant-select-selection-placeholder,
+.admin-content-wrapper .ant-picker-input input::placeholder,
+.admin-content-wrapper .form-control::placeholder,
+.admin-content-wrapper .ant-input-number-input::placeholder,
+.admin-content-wrapper .ant-input::placeholder {
+	color: #c4c4c4;
+	opacity: 0.5;
 }

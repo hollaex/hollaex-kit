@@ -32,10 +32,10 @@ class UserBalance extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (
 			JSON.stringify(prevState.userBalance) !==
-			JSON.stringify(this.state.userBalance) ||
+				JSON.stringify(this.state.userBalance) ||
 			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins) ||
 			JSON.stringify(prevState.userInformation) !==
-			JSON.stringify(this.state.userInformation)
+				JSON.stringify(this.state.userInformation)
 		) {
 			this.handleChartData();
 			const wallet = this.state.userInformation.wallet || [];
@@ -43,12 +43,13 @@ class UserBalance extends Component {
 				let addressData = {};
 				let networks = value.network ? value.network.split(',') : [];
 				if (networks.length) {
-					networks.map(networkKey => {
-						let temp = wallet.filter(data => data.network === networkKey)[0] || {};
-						return addressData[`${networkKey}_address`] = temp.address;
-					})
+					networks.map((networkKey) => {
+						let temp =
+							wallet.filter((data) => data.network === networkKey)[0] || {};
+						return (addressData[`${networkKey}_address`] = temp.address);
+					});
 				} else {
-					let temp = wallet.filter(data => data.currency === key)[0] || {};
+					let temp = wallet.filter((data) => data.currency === key)[0] || {};
 					addressData.address = temp.address;
 				}
 				return {
@@ -61,7 +62,30 @@ class UserBalance extends Component {
 			this.setState({ tableData });
 		}
 	}
-
+	renderAddress = ({ network, address, ...rest }) => {
+		const networks = network ? network.split(',') : [];
+		if (networks.length) {
+			return (
+				<div>
+					address
+					{networks.map((data, index) => {
+						return (
+							<div key={index}>
+								{data}:{' '}
+								{rest[`${data}_address`]
+									? rest[`${data}_address`]
+									: 'Not generated'}{' '}
+							</div>
+						);
+					})}
+				</div>
+			);
+		} else if (address) {
+			return <div>address: {address}</div>;
+		} else {
+			return <div>address: Not generated</div>;
+		}
+	};
 	getBalanceColumn = () => {
 		return [
 			{
@@ -77,28 +101,28 @@ class UserBalance extends Component {
 					);
 				},
 			},
-			{
-				title: 'Address',
-				key: 'address',
-				render: ({ network, address, ...rest }) => {
-					const networks = network ? network.split(',') : [];
-					if (networks.length) {
-						return (
-							<div>
-								{networks.map((data, index) => {
-									return (
-										<div key={index}>{data}: {rest[`${data}_address`] ? rest[`${data}_address`] : 'Not generated'} </div>
-									)
-								})}
-							</div>
-						)
-					} else if (address) {
-						return <div>{address}</div>
-					} else {
-						return <div>Not generated</div>
-					}
-				}
-			},
+			// {
+			// 	title: 'Address',
+			// 	key: 'address',
+			// 	render: ({ network, address, ...rest }) => {
+			// 		const networks = network ? network.split(',') : [];
+			// 		if (networks.length) {
+			// 			return (
+			// 				<div>
+			// 					{networks.map((data, index) => {
+			// 						return (
+			// 							<div key={index}>{data}: {rest[`${data}_address`] ? rest[`${data}_address`] : 'Not generated'} </div>
+			// 						)
+			// 					})}
+			// 				</div>
+			// 			)
+			// 		} else if (address) {
+			// 			return <div>{address}</div>
+			// 		} else {
+			// 			return <div>Not generated</div>
+			// 		}
+			// 	}
+			// },
 			{
 				title: 'Last generated',
 				dataIndex: 'updated_at',
@@ -142,7 +166,9 @@ class UserBalance extends Component {
 					if (err.status === 403) {
 						this.setState({ loading: false });
 					}
-					throw new SubmissionError({ _error: err.data ? err.data.message : err.message });
+					throw new SubmissionError({
+						_error: err.data ? err.data.message : err.message,
+					});
 				});
 		} else {
 			const error = new Error('Not found');
@@ -185,7 +211,9 @@ class UserBalance extends Component {
 					rowKey={(data) => {
 						return data.id;
 					}}
+					expandedRowRender={this.renderAddress}
 					dataSource={tableData}
+					className="blue-admin-table"
 				/>
 				<div className="user-donut-chart-wrapper">
 					<div>Percentage balance breakdown</div>

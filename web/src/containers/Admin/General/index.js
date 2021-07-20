@@ -22,6 +22,7 @@ import { clearFileInputById } from 'helpers/vanilla';
 
 import './index.css';
 import { handleUpgrade } from 'utils/utils';
+import { checkFileSize, fileSizeError } from 'utils/icon';
 
 const NameForm = AdminHocForm('NameForm');
 const LanguageForm = AdminHocForm('LanguageForm');
@@ -29,6 +30,7 @@ const ThemeForm = AdminHocForm('ThemeForm');
 const NativeCurrencyForm = AdminHocForm('NativeCurrencyForm');
 const HelpDeskForm = AdminHocForm('HelpDeskForm');
 const APIDocLinkForm = AdminHocForm('APIDocLinkForm');
+const CaptchaForm = AdminHocForm('CaptchaForm');
 
 class General extends Component {
 	constructor() {
@@ -43,12 +45,12 @@ class General extends Component {
 			initialEmailValues: {},
 			initialLinkValues: {},
 			initialEmailVerificationValues: {},
+			initialCaptchaValues: {},
 			pendingPublishIcons: {},
 			showDisableSignUpsConfirmation: false,
 			isSignUpActive: true,
 			loading: false,
 			loadingButton: false,
-			isReferralLink: false,
 		};
 	}
 
@@ -84,6 +86,7 @@ class General extends Component {
 		let initialEmailVerificationValues = {
 			...this.state.initialEmailVerificationValues,
 		};
+		let initialCaptchaValues = { ...this.state.initialCaptchaValues };
 		const { kit = {}, secrets = { smtp: {}, captcha: {}, emails: {} } } =
 			this.state.constants || {};
 		const {
@@ -92,6 +95,7 @@ class General extends Component {
 			links = {},
 			new_user_is_activated: isSignUpActive,
 			email_verification_required,
+			captcha = {},
 		} = kit;
 		initialNameValues = { ...initialNameValues, api_name };
 		initialLanguageValues = {
@@ -102,6 +106,12 @@ class General extends Component {
 		initialEmailVerificationValues = {
 			...initialEmailVerificationValues,
 			email_verification_required,
+		};
+
+		initialCaptchaValues = {
+			...initialCaptchaValues,
+			...captcha,
+			...secrets.captcha,
 		};
 
 		const { configuration = {} } = this.state.initialEmailValues || {};
@@ -119,6 +129,7 @@ class General extends Component {
 			initialLinkValues,
 			isSignUpActive,
 			initialEmailVerificationValues,
+			initialCaptchaValues,
 			showDisableSignUpsConfirmation: false,
 		});
 	};
@@ -171,11 +182,13 @@ class General extends Component {
 		updateIcons(icons);
 	};
 
-	handleCancelIcon = () => {
-		this.setState({ currentIcon: {} });
+	handleCancelIcon = (theme, iconKey) => {
+		this.setState({ currentIcon: {} }, () => {
+			clearFileInputById(`admin-file-input__${theme},${iconKey}`);
+		});
 	};
 
-	handleChangeFile = ({ target: { name, files } }) => {
+	handleChangeFile = ({ target: { name, files } }, is_image = true) => {
 		const [theme, iconKey] = name.split(',');
 
 		if (files) {
@@ -191,12 +204,18 @@ class General extends Component {
 					},
 				}),
 				() => {
+					const hasExceeded = !checkFileSize(files[0]);
 					Modal.confirm({
-						content: 'Do you want to save this icon?',
+						content: hasExceeded
+							? fileSizeError
+							: `Do you want to save this ${is_image ? 'graphic' : 'icon'}?`,
 						okText: 'Save',
 						cancelText: 'Cancel',
 						onOk: () => this.handleSaveIcon(iconKey),
-						onCancel: this.handleCancelIcon,
+						onCancel: () => this.handleCancelIcon(theme, iconKey),
+						okButtonProps: {
+							disabled: hasExceeded,
+						},
 					});
 				}
 			);
@@ -334,6 +353,27 @@ class General extends Component {
 		});
 	};
 
+	handleSubmitCaptcha = ({ site_key, secret_key }) => {
+		const formValues = {
+			kit: {
+				captcha: {
+					site_key,
+				},
+			},
+			...(!secret_key.includes('*')
+				? {
+						secrets: {
+							captcha: {
+								secret_key,
+							},
+						},
+				  }
+				: {}),
+		};
+
+		this.handleSubmitGeneral(formValues);
+	};
+
 	handleSubmitSignUps = (new_user_is_activated) => {
 		return this.handleSubmitGeneral({
 			kit: {
@@ -342,7 +382,7 @@ class General extends Component {
 		});
 	};
 
-	renderImageUpload = (id, theme, index, showLable = true) => {
+	renderImageUpload = (id, theme, index, is_image = true, showLable = true) => {
 		const { allIcons } = this.props;
 		return (
 			<div key={index} className="file-container">
@@ -355,7 +395,7 @@ class General extends Component {
 					<input
 						type="file"
 						accept="image/*"
-						onChange={this.handleChangeFile}
+						onChange={(e) => this.handleChangeFile(e, is_image)}
 						name={`${theme},${id}`}
 						id={`admin-file-input__${theme},${id}`}
 					/>
@@ -412,10 +452,6 @@ class General extends Component {
 		this.handleSubmitSignUps(false);
 	};
 
-	handleReferralLink = (value) => {
-		this.setState({ isReferralLink: value });
-	};
-
 	render() {
 		const {
 			initialEmailValues,
@@ -424,11 +460,11 @@ class General extends Component {
 			initialThemeValues,
 			initialLinkValues,
 			initialEmailVerificationValues,
+			initialCaptchaValues,
 			loading,
 			isSignUpActive,
 			showDisableSignUpsConfirmation,
 			loadingButton,
-			isReferralLink,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins, themeOptions } = this.props;
@@ -602,7 +638,12 @@ class General extends Component {
 										{themeOptions
 											.filter(({ value: theme }) => theme === 'dark')
 											.map(({ value: theme }, index) =>
-												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+												this.renderImageUpload(
+													'EXCHANGE_LOGO',
+													theme,
+													index,
+													false
+												)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -619,7 +660,12 @@ class General extends Component {
 										{themeOptions
 											.filter(({ value: theme }) => theme !== 'dark')
 											.map(({ value: theme }, index) =>
-												this.renderImageUpload('EXCHANGE_LOGO', theme, index)
+												this.renderImageUpload(
+													'EXCHANGE_LOGO',
+													theme,
+													index,
+													false
+												)
 											)}
 									</div>
 								</Collapse.Panel>
@@ -646,7 +692,12 @@ class General extends Component {
 									{themeOptions
 										.filter(({ value: theme }) => theme === 'dark')
 										.map(({ value: theme }, index) =>
-											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+											this.renderImageUpload(
+												'EXCHANGE_LOADER',
+												theme,
+												index,
+												false
+											)
 										)}
 								</Collapse.Panel>
 								<Collapse.Panel
@@ -661,7 +712,12 @@ class General extends Component {
 									{themeOptions
 										.filter(({ value: theme }) => theme !== 'dark')
 										.map(({ value: theme }, index) =>
-											this.renderImageUpload('EXCHANGE_LOADER', theme, index)
+											this.renderImageUpload(
+												'EXCHANGE_LOADER',
+												theme,
+												index,
+												false
+											)
 										)}
 								</Collapse.Panel>
 							</Collapse>
@@ -685,6 +741,7 @@ class General extends Component {
 										'EXCHANGE_FAV_ICON',
 										'dark',
 										'EXCHANGE_1',
+										false,
 										false
 									)}
 								</div>
@@ -884,73 +941,18 @@ class General extends Component {
 					isUpgrade={isUpgrade}
 				/>
 				<div className="divider"></div>
-				<div className="referral-link-section">
-					<div className="sub-title">Referral affiliate link</div>
-					<div className="description">
-						Allow your user to share a referral affiliate link with their
-						friends. Users that share this link will be able to earn commissions
-						form trading fees made from their invited friends.
+				<div className="general-wrapper mb-4 pb-4">
+					<div className="sub-title">reCAPTCHA</div>
+					<div className="description mb-4">
+						Make spammers go away with Google reCAPTCHA.
 					</div>
-					{isUpgrade ? (
-						<div className="d-flex">
-							<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
-								<div>
-									<div className="font-weight-bold">Boost your userbase</div>
-									<div>Incentives your users to share your platform</div>
-								</div>
-								<div className="ml-5 button-wrapper">
-									<a
-										href="https://dash.bitholla.com/billing"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Button type="primary" className="w-100">
-											Upgrade Now
-										</Button>
-									</a>
-								</div>
-							</div>
-						</div>
-					) : null}
-					<div className="description">
-						In the account summary page your users can access a 'INVITE YOUR
-						FRIEND' link which will give them a unique sharable referral link.
-					</div>
-					<div className={isUpgrade ? 'disabled-area' : ''}>
-						<div className="admin-chat-feature-wrapper pt-4">
-							<div className="switch-wrapper mb-5">
-								<div className="d-flex">
-									<span
-										className={
-											!isReferralLink
-												? 'switch-label'
-												: 'switch-label label-inactive'
-										}
-									>
-										Hide
-									</span>
-									<Switch
-										checked={isReferralLink}
-										onClick={this.handleReferralLink}
-									/>
-									<span
-										className={
-											isReferralLink
-												? 'switch-label'
-												: 'switch-label label-inactive'
-										}
-									>
-										Show
-									</span>
-								</div>
-							</div>
-						</div>
-						<div className="general-wrapper">
-							<Button type="primary" className="mb-5">
-								Save
-							</Button>
-						</div>
-					</div>
+					<CaptchaForm
+						initialValues={initialCaptchaValues}
+						fields={generalFields.section_10}
+						buttonText="Save"
+						buttonClass="green-btn minimal-btn"
+						onSubmit={this.handleSubmitCaptcha}
+					/>
 				</div>
 			</div>
 		);

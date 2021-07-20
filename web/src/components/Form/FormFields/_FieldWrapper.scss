@@ -128,8 +128,8 @@ $outline-height: 1.5px;
 .field-error-content {
 	position: relative;
 	display: flex;
-	align-items: center;
-	height: $error-icon-size;
+	align-items: baseline;
+	min-height: $error-icon-size;
 
 	&.field-error-hidden {
 		visibility: hidden;

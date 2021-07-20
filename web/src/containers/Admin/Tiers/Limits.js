@@ -140,9 +140,9 @@ const Limits = ({
 						on your exchange
 					</div>
 					<div className="description mt-4">
-						All amounts are valued in your set native currency USD. You can
+						{`All amounts are valued in your set native currency ${constants.native_currency}. You can
 						change the native currency for your exchange in the general setup
-						page.
+						page.`}
 					</div>
 				</div>
 			</div>

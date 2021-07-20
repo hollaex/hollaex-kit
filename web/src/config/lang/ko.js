@@ -1,9 +1,7 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
-import flatten from 'flat';
 
-const options = { safe: true };
-const nestedContent = {
+export default {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
@@ -1324,7 +1322,3 @@ const nestedContent = {
 	OPEN_WALLET: '오픈 지갑', // new
 	AGO: 'ago', // new
 };
-
-const content = flatten(nestedContent, options);
-
-export default content;

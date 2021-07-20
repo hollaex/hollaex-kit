@@ -63,6 +63,11 @@ const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
 				if (fields.type === 'number') {
 					fieldData[key].validate = [validateNumber];
 				}
+				if (fields.type === 'date-time') {
+					fieldData[key].dateFormat = 'YYYY-MM-DD h:mm';
+					fieldData[key].showTime = true;
+					fieldData[key].clearIcon = null;
+				}
 				initialValues[key] = fields.value;
 			} else {
 				if (key.toLowerCase().includes('secret')) {
@@ -104,19 +109,20 @@ const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
 		};
 		return (
 			<div>
-				{Object.keys(publicFieldData).length || Object.keys(fieldData).length
-					?
-						<div className="config-content mt-5 pb-5 w-50">
-							<div className="mt-2">Configure</div>
-							<PluginMetaForm
-								onSaveMeta={(formValues) => onSaveMeta(formValues, metaData)}
-								metaFields={fieldData}
-								publicMetaFields={publicFieldData}
-								initialValues={initialValues}
-							/>
-						</div>
-					: <div>No configuration for this plugin</div>
-				}
+				{Object.keys(publicFieldData).length ||
+				Object.keys(fieldData).length ? (
+					<div className="config-content mt-5 pb-5 w-50">
+						<div className="mt-2">Configure</div>
+						<PluginMetaForm
+							onSaveMeta={(formValues) => onSaveMeta(formValues, metaData)}
+							metaFields={fieldData}
+							publicMetaFields={publicFieldData}
+							initialValues={initialValues}
+						/>
+					</div>
+				) : (
+					<div>No configuration for this plugin</div>
+				)}
 			</div>
 		);
 	} else if (selectedPlugin.admin_view) {

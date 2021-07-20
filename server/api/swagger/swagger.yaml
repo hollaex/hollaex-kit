@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.9"
+  version: "2.1.15"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2127,7 +2127,7 @@ paths:
                 type: string
               type:
                 type: string
-                enum: [string, number, boolean, date]
+                enum: [string, number, boolean, date-time]
               required:
                 type: boolean
               description:
@@ -2163,7 +2163,7 @@ paths:
                 type: string
               type:
                 type: string
-                enum: [string, number, boolean, date]
+                enum: [string, number, boolean, date-time]
               required:
                 type: boolean
               description:
@@ -2398,6 +2398,11 @@ paths:
         - in: query
           name: address
           description: crypto address receiving the deposit
+          required: true
+          type: string
+        - in: query
+          name: network
+          description: Blockchain network of transaction
           required: true
           type: string
         - in: query
@@ -4142,7 +4147,7 @@ definitions:
       properties:
         type:
           type: string
-          enum: [string, number, boolean, date]
+          enum: [string, number, boolean, date-time]
         required:
           type: boolean
         description:
@@ -4442,6 +4447,10 @@ definitions:
         format: date-time
       network:
         type: string
+      fee:
+        type: number
+      description:
+        type: string
   ExternalWithdrawalRequest:
     type: object
     required:
@@ -4468,6 +4477,8 @@ definitions:
         type: string
         format: date-time
       network:
+        type: string
+      description:
         type: string
   OrderbooksResponse:
     type: object
@@ -4654,6 +4665,9 @@ definitions:
         type: boolean
       email:
         type: boolean
+      fee:
+        type: number
+        format: double
   MintBurnUpdate:
     type: object
     required:

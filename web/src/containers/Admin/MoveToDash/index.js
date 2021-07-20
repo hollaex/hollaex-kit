@@ -5,7 +5,16 @@ import { ReactSVG } from 'react-svg';
 import { STATIC_ICONS } from 'config/icons';
 import './index.css';
 
-const MoveToDash = () => {
+const MoveToDash = ({ path }) => {
+	let data = '';
+	if (path) {
+		data = path.split('/')[2];
+		if (data === 'apikeys') {
+			data = 'mypage/apikey';
+		} else if (data === 'financials') {
+			data = 'financial';
+		}
+	}
 	return (
 		<div className="Trade-wrapper">
 			<div className="content">
@@ -17,7 +26,7 @@ const MoveToDash = () => {
 			/>
 			<div>
 				<a
-					href="https://dash.bitholla.com/financial"
+					href={`https://dash.bitholla.com/${data}`}
 					target="_blank"
 					rel="noopener noreferrer"
 				>

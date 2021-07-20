@@ -1,5 +1,6 @@
 'use strict';
 
+const { version } = require('../../package.json');
 const { isEmail, isUUID } = require('validator');
 const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
@@ -57,11 +58,12 @@ const INITIAL_SETTINGS = () => {
 
 const signUpUser = (req, res) => {
 	const {
-		email,
 		password,
 		captcha,
 		referral
 	} = req.swagger.params.signup.value;
+
+	let { email } = req.swagger.params.signup.value;
 	const ip = req.headers['x-real-ip'];
 	loggerUser.debug(
 		req.uuid,
@@ -69,6 +71,8 @@ const signUpUser = (req, res) => {
 		req.swagger.params.signup.value,
 		ip
 	);
+
+	email = email.toLowerCase();
 
 	toolsLib.security.checkCaptcha(captcha, ip)
 		.then(() => {
@@ -85,7 +89,7 @@ const signUpUser = (req, res) => {
 			}
 
 			return toolsLib.database.findOne('user', {
-				where: { email: email.toLowerCase() },
+				where: { email },
 				attributes: ['email']
 			});
 		})
@@ -102,7 +106,12 @@ const signUpUser = (req, res) => {
 				}, { transaction })
 					.then((user) => {
 						return all([
-							toolsLib.user.createUserOnNetwork(email),
+							toolsLib.user.createUserOnNetwork(email, {
+								additionalHeaders: {
+									'x-forwarded-for': req.headers['x-forwarded-for'],
+									'kit-version': version
+								}
+							}),
 							user
 						]);
 					})
@@ -141,15 +150,19 @@ const signUpUser = (req, res) => {
 };
 
 const getVerifyUser = (req, res) => {
-	const email = req.swagger.params.email.value;
+	let email = req.swagger.params.email.value;
 	const verification_code = req.swagger.params.verification_code.value;
 	const resendEmail = req.swagger.params.resend.value;
 	const domain = req.headers['x-real-origin'];
 	let promiseQuery;
 
-	if (email && isEmail(email)) {
+	if (email && typeof email === 'string' && isEmail(email)) {
+		email = email.toLowerCase();
 		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
 			.then((verificationCode) => {
+				if (verificationCode.verified) {
+					throw new Error(USER_EMAIL_IS_VERIFIED);
+				}
 				if (resendEmail) {
 					sendEmail(
 						MAILTYPE.SIGNUP,
@@ -165,7 +178,7 @@ const getVerifyUser = (req, res) => {
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
-	} else if (verification_code && isUUID(verification_code)) {
+	} else if (verification_code && typeof verification_code === 'string' && isUUID(verification_code)) {
 		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
 			.then((userEmail) => {
 				return res.json({
@@ -194,8 +207,20 @@ const getVerifyUser = (req, res) => {
 };
 
 const verifyUser = (req, res) => {
-	const { email, verification_code } = req.swagger.params.data.value;
+	const { verification_code } = req.swagger.params.data.value;
+	let { email } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
+
+	email = email.toLowerCase();
+
+	if (!isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/verifyUser invalid email',
+			email
+		);
+		return res.status(400).json({ message: 'Invalid Email' });
+	}
 
 	return toolsLib.database.findOne('user', {
 		where: { email },
@@ -242,12 +267,12 @@ const verifyUser = (req, res) => {
 
 const loginPost = (req, res) => {
 	const {
-		email,
 		password,
 		otp_code,
 		captcha,
 		service
 	} = req.swagger.params.authentication.value;
+	let { email } = req.swagger.params.authentication.value;
 	const ip = req.headers['x-real-ip'];
 	const device = req.headers['user-agent'];
 	const domain = req.headers['x-real-origin'];
@@ -255,7 +280,18 @@ const loginPost = (req, res) => {
 	const referer = req.headers.referer;
 	const time = new Date();
 
-	toolsLib.user.getUserByEmail(email.toLowerCase())
+	email = email.toLowerCase();
+
+	if (!isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/loginPost invalid email',
+			email
+		);
+		return res.status(400).json({ message: 'Invalid Email' });
+	}
+
+	toolsLib.user.getUserByEmail(email)
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
@@ -336,10 +372,32 @@ const verifyToken = (req, res) => {
 };
 
 const requestResetPassword = (req, res) => {
-	const email = req.swagger.params.email.value;
+	let email = req.swagger.params.email.value;
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
 	const captcha = req.swagger.params.captcha.value;
+
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/requestResetPassword',
+		email,
+		'email',
+		'ip',
+		ip,
+		'domain',
+		domain
+	);
+
+	if (typeof email !== 'string' || !isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/requestResetPassword invalid email',
+			email
+		);
+		return res.status(400).json({ message: `Password request sent to: ${email}` });
+	}
+
+	email = email.toLowerCase();
 
 	toolsLib.security.sendResetPasswordCode(email, captcha, ip, domain)
 		.then(() => {
@@ -654,12 +712,16 @@ const userCheckTransaction = (req, res) => {
 		'controllers/user/userCheckTransaction auth',
 		req.auth
 	);
-	const transactionId = req.swagger.params.transaction_id.value;
-	const address = req.swagger.params.address.value;
-	const currency = req.swagger.params.currency.value;
-	const isTestnet = req.swagger.params.is_testnet.value;
 
-	toolsLib.wallet.checkTransaction(currency, transactionId, address, isTestnet)
+	const {
+		currency,
+		transaction_id,
+		address,
+		network,
+		is_testnet
+	} = req.swagger.params;
+
+	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value)
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})

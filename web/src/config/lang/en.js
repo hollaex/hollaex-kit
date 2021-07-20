@@ -1,9 +1,7 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
-import flatten from 'flat';
 
-const options = { safe: true };
-const nestedContent = {
+export default {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
@@ -864,7 +862,7 @@ const nestedContent = {
 	WITHDRAWALS_MAX_VALUE_ERROR:
 		'The transaction is too big to send. Try a smaller amount.',
 	WITHDRAWALS_LOWER_BALANCE:
-		'You don’t have enough {0} in your balance to send that transaction',
+		'Insufficient balance to proceed. This transaction requires {0}.',
 	WITHDRAWALS_FEE_TOO_LARGE:
 		'The fee is more than {0}% of your total transaction',
 	WITHDRAWALS_BTC_INVALID_ADDRESS:
@@ -1470,8 +1468,5 @@ const nestedContent = {
 	FEE_REDUCTION: 'Fee reduction', // new
 	FEE_REDUCTION_DESCRIPTION:
 		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
+	CHANGE_PASSWORD_FAILED: 'changing password failed', // new
 };
-
-const content = flatten(nestedContent, options);
-
-export default content;

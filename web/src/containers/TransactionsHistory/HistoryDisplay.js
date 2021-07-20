@@ -43,7 +43,10 @@ const HistoryDisplay = (props) => {
 		setLoading(true);
 		setInitialValues(params);
 		setMessage('');
-		return searchTransaction(params)
+		return searchTransaction({
+			...params,
+			network: params.network ? params.network : params.currency,
+		})
 			.then((res) => {
 				setLoading(false);
 				if (res) {

@@ -75,7 +75,7 @@ const renderItems = () => {
 				<div>
 					<div className="sub-title">Your current role:</div>
 					<div className="description">
-						<span className="sub-title">Communications</span> can access to
+						<span className="sub-title">Communicator</span> can access to
 						website direct editing for content management and communications
 					</div>
 				</div>
@@ -162,15 +162,11 @@ const Roles = ({ constants }) => {
 	const renderContent = (type, onTypeChange, isUpgrade) => {
 		switch (type) {
 			case 'operator-role':
-				return <OperatorRole
-							handleInvite={handleInvite}
-							isUpgrade={isUpgrade}
-						/>;
+				return (
+					<OperatorRole handleInvite={handleInvite} isUpgrade={isUpgrade} />
+				);
 			case 'role-access':
-				return <RoleAccess
-							handleClose={handleClose}
-							isUpgrade={isUpgrade}
-						/>;
+				return <RoleAccess handleClose={handleClose} isUpgrade={isUpgrade} />;
 			case 'edit':
 				return (
 					<EditModal
@@ -296,7 +292,13 @@ const Roles = ({ constants }) => {
 				visible={isOpen}
 				footer={null}
 				onCancel={handleClose}
-				width={modalType === 'role-access' ? 600 : (modalType === 'operator-role' ? 500 : 350)}
+				width={
+					modalType === 'role-access'
+						? 600
+						: modalType === 'operator-role'
+						? 500
+						: 350
+				}
 			>
 				{renderContent(modalType, onTypeChange, isUpgrade)}
 			</Modal>
@@ -308,6 +310,4 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(
-	mapStateToProps
-)(Roles);
+export default connect(mapStateToProps)(Roles);

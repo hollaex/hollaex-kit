@@ -109,7 +109,9 @@ const DEPOSIT = {
 		3: (address) => COMMON.ADDRESS(address),
 		4: (txid) => COMMON.TXID(txid),
 		5: (network) => `Network: ${network}`,
-		6: COMMON.EXPLORER
+		6: (fee) => COMMON.FEE(fee),
+		7: (description) => `Description: ${description}`,
+		8: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -170,7 +172,8 @@ const WITHDRAWAL = {
 		4: (address) => COMMON.ADDRESS(address),
 		5: (txid) => COMMON.TXID(txid),
 		6: (network) => `Network: ${network}`,
-		7: COMMON.EXPLORER
+		7: (description) => `Description: ${description}`,
+		8: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };

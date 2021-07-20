@@ -104,4 +104,16 @@ export const getGeneralFields = (coins) => ({
 			placeholder: 'http://',
 		},
 	},
+	section_10: {
+		site_key: {
+			type: 'input',
+			label: 'Site key',
+			placeholder: 'Site key',
+		},
+		secret_key: {
+			type: 'password',
+			label: 'Secret key',
+			placeholder: 'Secret key',
+		},
+	},
 });

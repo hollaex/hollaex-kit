@@ -865,6 +865,9 @@ table th {
 .popup_info-wrapper .popup_info-text {
   font-size: 1rem; }
 
+.popup_info-wrapper .secret_key .action_notification-wrapper .action_notification-text {
+  margin-left: 1rem !important; }
+
 .token-no-otp {
   color: var(--labels_inactive-button);
   cursor: not-allowed !important; }
@@ -2010,8 +2013,8 @@ table th {
     max-width: 20rem; } }
 
 @media screen and (min-width: 1920px) {
-  .trade-container .trade-col_main_wrapper .trade-main_content {
-    flex: 2 !important; } }
+  .trade-container .trade-col_main_wrapper .trade-main_content .trade_block-wrapper {
+    max-height: unset; } }
 
 @media screen and (max-width: 1096px) {
   .trade-container .trade-col_side_wrapper {
@@ -3636,9 +3639,6 @@ table th {
     color: var(--labels_important-active-labels-text-graphics);
     font-size: 1.8rem;
     font-weight: bold; }
-  .trade_tabs-container .trade_tab-ticker-container {
-    flex-direction: column;
-    align-items: flex-end; }
   .trade_tabs-container .price-diff-down {
     color: var(--trading_selling-related-elements);
     padding: 0 5px;
@@ -6576,8 +6576,8 @@ table th {
 .field-error-content {
   position: relative;
   display: flex;
-  align-items: center;
-  height: 1.25rem; }
+  align-items: baseline;
+  min-height: 1.25rem; }
   .field-error-content.field-error-hidden {
     visibility: hidden; }
 

@@ -25,11 +25,11 @@
 .admin-tiers-wrapper .ant-tabs-nav .ant-tabs-tab,
 .user-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	font-weight: bold;
 }
 .user-container .ant-tabs-nav .ant-tabs-tab:hover {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-tiers-wrapper .ant-tabs-nav::before,
 .admin-user-content .ant-tabs-nav::before,
@@ -37,19 +37,19 @@
 	border-bottom: 1px solid #ffffff;
 }
 .admin-user-container .ant-table-thead > tr > th {
-	background-color: #4e4efb;
-	color: #ffffff;
+	background-color: var(--admin_panel_table_thead);
+	color: var(--admin_panel_main_font);
 }
 .admin-user-container .ant-table-tbody > tr > td {
-	background-color: #0000d1;
-	color: #ffffff;
-	border-bottom: 1px solid #0000d1;
+	background-color: var(--admin_panel_table_tbody);
+	color: var(--admin_panel_main_font);
+	border-bottom: 1px solid var(--admin_panel_table_tbody);
 }
 .admin-user-container .ant-table-tbody > tr.ant-table-placeholder:hover > td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-user-container .ant-table-tbody > tr.ant-table-row:hover > td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-user-container .ant-empty .ant-empty-image .ant-empty-img-simple-ellipse,
 .admin-user-container .ant-empty .ant-empty-image .ant-empty-img-simple-path {
@@ -59,7 +59,7 @@
 	stroke: #7d9ac9;
 }
 .admin-user-container .ant-empty .ant-empty-description {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-user-container .admin-wallet-icon {
 	margin-right: 1rem;
@@ -77,22 +77,25 @@
 	color: #c4c4c4;
 }
 .admin-user-content .ant-breadcrumb a:hover {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-user-content .ant-breadcrumb > span:last-child {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
+}
+.admin-user-content .ant-breadcrumb > span:last-child a {
+	color: var(--admin_panel_main_font);
 }
 .user-icon {
 	margin-right: 5px;
 	width: 3rem;
 }
 .user-details {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	font-size: 18px;
 	margin: 10px 0px;
 }
 .user-details .user-seperator {
-	background-color: #ffffff;
+	background-color: var(--admin_panel_main_font);
 	height: 20px;
 	margin: 0px 14px;
 	width: 1px;
@@ -116,7 +119,7 @@
 .about-info .percentage-txt {
 	font-size: 42px;
 	letter-spacing: 0px;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	opacity: 0.6;
 }
 .about-info .percentage-txt-active {
@@ -182,7 +185,7 @@
 	display: flex;
 }
 .admin-content-wrapper .blue-link {
-	color: #ffffff !important;
+	color: var(--admin_panel_main_font) !important;
 	text-decoration: underline;
 }
 .admin-content-wrapper h1,
@@ -195,7 +198,7 @@
 .admin-user-container .ant-modal-body h3,
 .user-data-form h1,
 .user-data-form h3 {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .user-info-container,
 .user-role-container,
@@ -207,10 +210,10 @@
 .user-info-container {
 	width: 25rem;
 }
-.user-role-container {
+/* .user-role-container {
 }
-.user-level-container {
-}
+.user-level-container { */
+/* } */
 .user-info-separator {
 	border-right: 1px solid #c4c4c4;
 	margin: 0rem 2rem;
@@ -231,9 +234,10 @@
 	.ant-select-selector,
 .user-data-form .ant-input,
 .user-data-form .ant-picker-input > input,
-.user-data-form .ant-picker {
-	background-color: #0000ff;
-	color: #ffffff;
+.user-data-form .ant-picker,
+.user-data-form .ant-input-number-input {
+	background-color: var(--admin_panel_input);
+	color: var(--admin_panel_main_font) !important;
 }
 .download-csv-table {
 	border: 1px solid #ffffff;
@@ -270,12 +274,12 @@
 }
 .header-section {
 	border-bottom: 1px solid rgb(211, 211, 211, 0.3);
-	background-color: #0000c1;
+	background-color: var(--admin_panel_header_section);
 }
 .modal-confirm-title {
 	font-size: 20px;
 	font-weight: bold;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .user-role-container .user-icon {
 	font-size: 30px;
@@ -329,7 +333,7 @@
 	width: 30%;
 }
 .user_meta-form .user-form-wrapper .required-label {
-	color: #FFB300;
+	color: #ffb300;
 }
 .user_meta-form .user-form-wrapper .icon-wrapper {
 	position: relative;
@@ -345,7 +349,7 @@
 	height: 23px !important;
 }
 .user_meta-form .user-form-wrapper .ant-picker {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_input);
 }
 .user_meta-form .user-form-wrapper .ant-picker-input > input,
 .user_meta-form .user-form-wrapper .ant-picker-suffix {
@@ -364,7 +368,7 @@
 	padding: 1rem;
 }
 .modal-wrapper .input_field .ant-select-arrow {
-    color: #c4c4c4 !important;
+	color: #c4c4c4 !important;
 }
 .modal-wrapper .input_field .ant-select {
 	margin-bottom: 1.5rem;

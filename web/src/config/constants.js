@@ -203,8 +203,6 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
-
 export const DEFAULT_CAPTCHA_SITEKEY =
 	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
 
