@@ -90,7 +90,9 @@ class HollaExNetwork {
 	 * @param {string} email - Email of new user
 	 * @return {object} Created user's values on network
 	 */
-	createUser(email) {
+	createUser(email, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!email) {
@@ -103,7 +105,7 @@ class HollaExNetwork {
 		}/signup`;
 		const data = { email };
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
