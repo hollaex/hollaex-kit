@@ -120,23 +120,25 @@ class HollaExNetwork {
 	 * Get all trades for the exchange on the network
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.symbol - Symbol of trades. Leave blank to get trades for all symbols
-	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {number} opts.limit - Amount of trades per page
+	 * @param {number} opts.page - Page of trades data
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format
+	 * @param {string} opts.endDate - End date of query in ISO8601 format
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getTrades(
 		opts = {
 			symbol: null,
-			limit: 50,
-			page: 1,
-			orderBy: 'id',
-			order: 'desc',
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
 			startDate: null,
-			endDate: null
+			endDate: null,
+			format: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -160,6 +162,10 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
+		if (isString(opts.symbol)) {
+			path += `&symbol=${opts.symbol}`;
+		}
+
 		if (isString(opts.startDate)) {
 			path += `&start_date=${opts.startDate}`;
 		} else if (isDate(opts.startDate)) {
@@ -172,42 +178,40 @@ class HollaExNetwork {
 			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
-		if (opts.symbol) {
-			path += `&symbol=${opts.symbol}`;
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
 		}
 
 		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 
-		return createRequest(
-			verb,
-			`${this.apiUrl}${path}`,
-			headers
-		);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/**
 	 * Get all trades for a user on the network
-	 * @param {number} userId - User id on network. Leave blank to get all trades for the exchange
-	 * @param {object} opts - Optional parameters.
+	 * @param {number} userId - User id on network
+	 * @param {object} opts - Optional parameters
 	 * @param {string} opts.symbol - Symbol of trades. Leave blank to get trades for all symbols
-	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {number} opts.limit - Amount of trades per page
+	 * @param {number} opts.page - Page of trades data
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format
+	 * @param {string} opts.endDate - End date of query in ISO8601 format
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getUserTrades(
 		userId,
 		opts = {
 			symbol: null,
-			limit: 50,
-			page: 1,
-			orderBy: 'id',
-			order: 'desc',
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
 			startDate: null,
-			endDate: null
+			endDate: null,
+			format: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -236,6 +240,10 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
+		if (isString(opts.symbol)) {
+			path += `&symbol=${opts.symbol}`;
+		}
+
 		if (isString(opts.startDate)) {
 			path += `&start_date=${opts.startDate}`;
 		} else if (isDate(opts.startDate)) {
@@ -248,8 +256,8 @@ class HollaExNetwork {
 			path += `&end_date=${opts.endDate.toISOString()}`;
 		}
 
-		if (opts.symbol) {
-			path += `&symbol=${opts.symbol}`;
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
 		}
 
 		const headers = generateHeaders(
