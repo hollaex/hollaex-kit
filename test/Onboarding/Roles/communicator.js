@@ -3,7 +3,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, './../../.env') });
-let communicator = process.env.CUMMUNICATOR;
+let communicator = process.env.COMMUNICATOR;
 let password = process.env.PASSWORD;
 let logInPage = process.env.LOGIN_PAGE;
 
