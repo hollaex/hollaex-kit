@@ -57,7 +57,11 @@ const sendSupportEmail = (req, res) => {
 const getTopOrderbook = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
-	toolsLib.getOrderbook(symbol)
+	toolsLib.getOrderbook(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -72,7 +76,11 @@ const getTopOrderbook = (req, res) => {
 };
 
 const getTopOrderbooks = (req, res) => {
-	toolsLib.getOrderbooks()
+	toolsLib.getOrderbooks({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -98,7 +106,11 @@ const getTrades = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getPublicTrades(symbol)
+	toolsLib.getPublicTrades(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
