@@ -164,7 +164,8 @@ const createUser = (
 	password,
 	opts = {
 		role: 'user',
-		id: null
+		id: null,
+		additionalHeaders: {}
 	}
 ) => {
 	email = email.toLowerCase();
@@ -212,7 +213,7 @@ const createUser = (
 			.then((user) => {
 				return all([
 					user,
-					getNodeLib().createUser(email)
+					getNodeLib().createUser(email, { additionalHeaders: opts.additionalHeaders })
 				]);
 			})
 			.then(([ kitUser, networkUser ]) => {
@@ -1347,7 +1348,9 @@ const getExchangeOperators = (opts = {
 	return dbQuery.findAndCountAllWithRows('user', options);
 };
 
-const inviteExchangeOperator = (invitingEmail, email, role) => {
+const inviteExchangeOperator = (invitingEmail, email, role, opts = {
+	additionalHeaders: {}
+}) => {
 	const roles = {
 		is_admin: false,
 		is_supervisor: false,
@@ -1388,7 +1391,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		})
 			.then(async ([ user, created ]) => {
 				if (created) {
-					const networkUser = await getNodeLib().createUser(email);
+					const networkUser = await getNodeLib().createUser(email, opts);
 					return all([
 						user.update(
 							{ network_id: networkUser.id },
