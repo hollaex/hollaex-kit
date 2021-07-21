@@ -114,7 +114,12 @@ const getAllUserOrders = (req, res) => {
 		order_by.value,
 		order.value,
 		start_date.value,
-		end_date.value
+		end_date.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((order) => {
 			return res.json(order);
@@ -158,7 +163,12 @@ const getAdminOrders = (req, res) => {
 			order_by.value,
 			order.value,
 			start_date.value,
-			end_date.value
+			end_date.value,
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
 		);
 	} else {
 		promiseQuery = toolsLib.order.getAllExchangeOrders(
@@ -171,7 +181,12 @@ const getAdminOrders = (req, res) => {
 			order_by.value,
 			order.value,
 			start_date.value,
-			end_date.value
+			end_date.value,
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
 		);
 	}
 
