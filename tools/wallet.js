@@ -36,7 +36,8 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 	network: null,
 	otpCode: null,
 	ip: null,
-	domain: null
+	domain: null,
+	additionalHeaders: {}
 }) => {
 
 	const coinConfiguration = getKitCoin(currency);
@@ -96,7 +97,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 			if (limit === -1) {
 				throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 			} else if (limit > 0) {
-				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount, { additionalHeaders: opts.additionalHeaders });
 			}
 
 			let fee = coinConfiguration.withdrawal_fee;
@@ -224,7 +225,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount, { additionalHeaders: opts.additionalHeaders });
 			}
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
@@ -237,11 +238,14 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const get24HourAccumulatedWithdrawals = async (userId) => {
+const get24HourAccumulatedWithdrawals = async (userId, opts = {
+	additionalHeaders: {}
+}) => {
 	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
 		dismissed: false,
 		rejected: false,
-		startDate: moment().subtract(24, 'hours').toISOString()
+		startDate: moment().subtract(24, 'hours').toISOString(),
+		...opts
 	});
 
 	const withdrawalData = withdrawals.data;
@@ -255,7 +259,8 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 				dismissed: false,
 				rejected: false,
 				page: i,
-				startDate: moment().subtract(24, 'hours').toISOString()
+				startDate: moment().subtract(24, 'hours').toISOString(),
+				...opts
 			});
 
 			withdrawalData.push(...withdrawals.data);
@@ -313,7 +318,9 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 	return totalWithdrawalAmount;
 };
 
-const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
+const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, opts = {
+	additionalHeaders: {}
+}) => {
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
 		'amount being withdrawn',
@@ -355,7 +362,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		return;
 	}
 
-	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, opts);
 
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
@@ -460,7 +467,10 @@ const getUserTransactionsByKitId = (
 	endDate,
 	transactionId,
 	address,
-	format
+	format,
+	opts = {
+		additionalHeaders: {}
+	}
 ) => {
 	let promiseQuery;
 	if (kitId) {
@@ -486,7 +496,8 @@ const getUserTransactionsByKitId = (
 						startDate,
 						endDate,
 						transactionId,
-						address
+						address,
+						...opts
 					});
 				});
 		} else if (type === 'withdrawal') {
@@ -511,7 +522,8 @@ const getUserTransactionsByKitId = (
 						startDate,
 						endDate,
 						transactionId,
-						address
+						address,
+						...opts
 					});
 				});
 		}
@@ -531,7 +543,8 @@ const getUserTransactionsByKitId = (
 				startDate,
 				endDate,
 				transactionId,
-				address
+				address,
+				...opts
 			});
 		} else if (type === 'withdrawal') {
 			promiseQuery = getNodeLib().getWithdrawals({
@@ -548,7 +561,8 @@ const getUserTransactionsByKitId = (
 				startDate,
 				endDate,
 				transactionId,
-				address
+				address,
+				...opts
 			});
 		}
 	}
@@ -582,7 +596,10 @@ const getUserDepositsByKitId = (
 	endDate,
 	transactionId,
 	address,
-	format
+	format,
+	opts = {
+		additionalHeaders: {}
+	}
 ) => {
 	return getUserTransactionsByKitId(
 		'deposit',
@@ -601,7 +618,8 @@ const getUserDepositsByKitId = (
 		endDate,
 		transactionId,
 		address,
-		format
+		format,
+		...opts
 	);
 };
 
@@ -621,7 +639,10 @@ const getUserWithdrawalsByKitId = (
 	endDate,
 	transactionId,
 	address,
-	format
+	format,
+	opts = {
+		additionalHeaders: {}
+	}
 ) => {
 	return getUserTransactionsByKitId(
 		'withdrawal',
@@ -640,7 +661,8 @@ const getUserWithdrawalsByKitId = (
 		endDate,
 		transactionId,
 		address,
-		format
+		format,
+		...opts
 	);
 };
 
@@ -658,7 +680,10 @@ const getExchangeDeposits = (
 	startDate,
 	endDate,
 	transactionId,
-	address
+	address,
+	opts = {
+		additionalHeaders: {}
+	}
 ) => {
 	return getNodeLib().getDeposits({
 		currency,
@@ -674,7 +699,8 @@ const getExchangeDeposits = (
 		startDate,
 		endDate,
 		transactionId,
-		address
+		address,
+		...opts
 	});
 };
 
@@ -692,7 +718,10 @@ const getExchangeWithdrawals = (
 	startDate,
 	endDate,
 	transactionId,
-	address
+	address,
+	opts = {
+		additionalHeaders: {}
+	}
 ) => {
 	return getNodeLib().getWithdrawals({
 		currency,
@@ -708,7 +737,8 @@ const getExchangeWithdrawals = (
 		startDate,
 		endDate,
 		transactionId,
-		address
+		address,
+		...opts
 	});
 };
 
