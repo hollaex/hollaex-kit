@@ -556,7 +556,11 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, data.description, data.email)
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, data.description, data.email, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
