@@ -730,7 +730,11 @@ const userCheckTransaction = (req, res) => {
 		is_testnet
 	} = req.swagger.params;
 
-	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value)
+	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})
