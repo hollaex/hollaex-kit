@@ -542,7 +542,11 @@ const getUserBalance = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.wallet.getUserBalanceByKitId(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((balance) => {
 			return res.json(balance);
 		})

@@ -260,7 +260,11 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.wallet.getUserBalanceByKitId(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((balance) => {
 			return res.json(balance);
 		})
