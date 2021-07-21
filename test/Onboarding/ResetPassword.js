@@ -37,30 +37,30 @@ describe('NewUserRequest', function() {
 	afterEach(async function() {
 		await driver.quit();
 	});
-	// it('Rest Password', async function() {
-	// 	console.log('// Test name: Reset Password');
-	// 	console.log(' Step # | name | target | value');
-	// 	console.log(' 1 | open | https://sandbox.hollaex.com/reset-password | ');
-	// 	await driver.get(webSite+'reset-password');
-	// 	console.log(' 2 | setWindowSize | 1050x660 | ');
-	// 	await driver.manage().window().setRect(1050, 660);
-	// 	console.log(' 3 | click | name=email | ');
-	// 	await sleep(5000);
-	// 	await driver.findElement(By.name('email')).click();
-	// 	console.log(' 4 | type | name=email | bob@gmail.com');
-	// 	await driver.findElement(By.name('email')).sendKeys(userName);
-	// 	console.log(' 5 | click | css=.holla-button | ');
-	// 	await sleep(5000);
-	// 	await driver.findElement(By.css('.holla-button')).click();
-	// 	console.log(' 6 | click | css=.icon_title-wrapper | ');
-	// 	await sleep(5000);
-	// 	//console.log("await driver.findElement(By.css(".icon_title-wrapper")).click()");
-	// 	console.log(' 7 | assertText | css=.icon_title-text | Password Reset Sent');
-	// 	assert(await driver.findElement(By.css('.icon_title-text')).getText() == 'Password Reset Sent');
-	// 	console.log(' 8 | click | css=.holla-button:nth-child(1) | ');
-	// 	driver.close();
-	// 	await sleep(10000);
-	// });
+	it('Rest Password', async function() {
+		console.log('// Test name: Reset Password');
+		console.log(' Step # | name | target | value');
+		console.log(' 1 | open | https://sandbox.hollaex.com/reset-password | ');
+		await driver.get(webSite+'reset-password');
+		console.log(' 2 | setWindowSize | 1050x660 | ');
+		await driver.manage().window().setRect(1050, 660);
+		console.log(' 3 | click | name=email | ');
+		await sleep(5000);
+		await driver.findElement(By.name('email')).click();
+		console.log(' 4 | type | name=email |'+userName);
+		await driver.findElement(By.name('email')).sendKeys(userName);
+		console.log(' 5 | click | css=.holla-button | ');
+		await sleep(5000);
+		await driver.findElement(By.css('.holla-button')).click();
+		console.log(' 6 | click | css=.icon_title-wrapper | ');
+		await sleep(5000);
+		//console.log("await driver.findElement(By.css(".icon_title-wrapper")).click()");
+		console.log(' 7 | assertText | css=.icon_title-text | Password Reset Sent');
+		assert(await driver.findElement(By.css('.icon_title-text')).getText() == 'Password Reset Sent');
+		console.log(' 8 | click | css=.holla-button:nth-child(1) | ');
+		driver.close();
+		await sleep(10000);
+	});
 
 	it('Email Confirmation', async function() {
 		console.log('Test name: Confirmation');
@@ -91,7 +91,7 @@ describe('NewUserRequest', function() {
 		}
 		console.log('16 | echo | ${mytextlink} | ');
 		console.log(vars['mytextlink']);
-		console.log('link starts with'+ webSite+'reset-password');
+		console.log('17 |link starts with'+ webSite+'reset-password');
 		console.log(webSite+'reset-password');
 		console.log('18 | open | ${mytextlink} | ');
 		
@@ -99,26 +99,17 @@ describe('NewUserRequest', function() {
 		await console.log(completedLink);
 		await driver.get(completedLink);
 		console.log('19 | selectFrame | relative=parent | ');
-		await sleep(1000);
-		// await driver.switchTo().defaultContent();
-		// console.log('20 | click | css=.icon_title-wrapper | ');
-		// await driver.findElement(By.css('.icon_title-wrapper')).click();
-		// console.log('21 | assertNotText | css=.icon_title-text | Error');
-		// {
-		// 	const text = await driver.findElement(By.css('.icon_title-text')).getText();
-		// 	assert(text !== 'Error');
-		// }
-	
-		console.log(' 9 | type | name=password | password!');
+		await sleep(10000);
+		console.log(' 20 | type | name=password | password!');
 		await driver.findElement(By.name('password')).sendKeys(passWord);
-		console.log(' 10 | type | name=password_repeat | password');
+		console.log(' 21 | type | name=password_repeat | password');
 		await driver.findElement(By.name('password_repeat')).sendKeys(passWord);
 		await sleep(2000);
-		console.log(' 11 | click | css=.holla-button | ');
+		console.log(' 22 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		await driver.findElement(By.css(".icon_title-wrapper")).click()
-		console.log("12 | assertText | css=.icon_title-text | Success");
-		assert(await driver.findElement(By.css(".icon_title-text")).getText() == "Success")
+		await driver.findElement(By.css('.icon_title-wrapper')).click()
+		console.log('23 | assertText | css=.icon_title-text | Success');
+		assert(await driver.findElement(By.css('.icon_title-text')).getText() == 'Success')
 	});
 });
