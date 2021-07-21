@@ -434,7 +434,8 @@ const getAllUsersAdmin = (opts = {
 	order: null,
 	start_date: null,
 	end_date: null,
-	format: null
+	format: null,
+	additionalHeaders: {}
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
@@ -527,7 +528,7 @@ const getAllUsersAdmin = (opts = {
 					error.status = 404;
 					throw error;
 				} else if (data[0].verification_level > 0 && data[0].network_id) {
-					const userNetworkData = await getNodeLib().getUser(data[0].network_id);
+					const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
 					data[0].balance = userNetworkData.balance;
 					data[0].wallet = userNetworkData.wallet;
 					return { count, data };
@@ -558,18 +559,20 @@ const getAllUsersAdmin = (opts = {
 		});
 };
 
-const getUser = (opts = {}, rawData = true, networkData = false) => {
-	if (!opts.email && !opts.kit_id && !opts.network_id) {
+const getUser = (identifier = {}, rawData = true, networkData = false, opts = {
+	additionalHeaders: {}
+}) => {
+	if (!identifier.email && !identifier.kit_id && !identifier.network_id) {
 		return reject(new Error(PROVIDE_USER_CREDENTIALS));
 	}
 
 	const where = {};
-	if (opts.email) {
-		where.email = opts.email;
-	} else if (opts.kit_id) {
-		where.id = opts.kit_id;
+	if (identifier.email) {
+		where.email = identifier.email;
+	} else if (identifier.kit_id) {
+		where.id = identifier.kit_id;
 	} else {
-		where.network_id = opts.network_id;
+		where.network_id = identifier.network_id;
 	}
 
 	return dbQuery.findOne('user', {
@@ -578,7 +581,7 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 	})
 		.then(async (user) => {
 			if (user && networkData) {
-				const networkData = await getNodeLib().getUser(user.network_id);
+				const networkData = await getNodeLib().getUser(user.network_id, opts);
 				user.balance = networkData.balance;
 				user.wallet = networkData.wallet;
 				if (!rawData) {
@@ -590,8 +593,10 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 		});
 };
 
-const getUserNetwork = (networkId) => {
-	return getNodeLib().getUser(networkId);
+const getUserNetwork = (networkId, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getUser(networkId, opts);
 };
 
 const getUsersNetwork = (opts = {
@@ -600,18 +605,22 @@ const getUsersNetwork = (opts = {
 	return getNodeLib().getUsers(opts);
 };
 
-const getUserByEmail = (email, rawData = true, networkData = false) => {
+const getUserByEmail = (email, rawData = true, networkData = false, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!email || !isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
-	return getUser({ email }, rawData, networkData);
+	return getUser({ email }, rawData, networkData, opts);
 };
 
-const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
+const getUserByKitId = (kit_id, rawData = true, networkData = false, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!kit_id) {
 		return reject(new Error(PROVIDE_KIT_ID));
 	}
-	return getUser({ kit_id }, rawData, networkData);
+	return getUser({ kit_id }, rawData, networkData, opts);
 };
 
 const getUserTier = (user_id) => {
@@ -632,11 +641,13 @@ const getUserTier = (user_id) => {
 		});
 };
 
-const getUserByNetworkId = (network_id, rawData = true, networkData = false) => {
+const getUserByNetworkId = (network_id, rawData = true, networkData = false, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!network_id) {
 		return reject(new Error(PROVIDE_NETWORK_ID));
 	}
-	return getUser({ network_id }, rawData, networkData);
+	return getUser({ network_id }, rawData, networkData, opts);
 };
 
 const freezeUserById = (userId) => {
