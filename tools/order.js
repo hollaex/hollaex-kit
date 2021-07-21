@@ -128,7 +128,9 @@ const getUserOrderByNetworkId = (networkId, orderId, opts = {
 	return getNodeLib().getOrder(networkId, orderId, opts);
 };
 
-const cancelUserOrderByKitId = (userKitId, orderId) => {
+const cancelUserOrderByKitId = (userKitId, orderId, opts = {
+	additionalHeaders: {}
+}) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			if (!user) {
@@ -136,11 +138,13 @@ const cancelUserOrderByKitId = (userKitId, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelOrder(user.network_id, orderId);
+			return getNodeLib().cancelOrder(user.network_id, orderId, opts);
 		});
 };
 
-const cancelUserOrderByEmail = (email, orderId) => {
+const cancelUserOrderByEmail = (email, orderId, opts = {
+	additionalHeaders: {}
+}) => {
 	return getUserByEmail(email)
 		.then((user) => {
 			if (!user) {
@@ -148,15 +152,17 @@ const cancelUserOrderByEmail = (email, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelOrder(user.network_id, orderId);
+			return getNodeLib().cancelOrder(user.network_id, orderId, opts);
 		});
 };
 
-const cancelUserOrderByNetworkId = (networkId, orderId) => {
+const cancelUserOrderByNetworkId = (networkId, orderId, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().cancelOrder(networkId, orderId);
+	return getNodeLib().cancelOrder(networkId, orderId, opts);
 };
 
 const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
