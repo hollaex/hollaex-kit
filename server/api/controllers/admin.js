@@ -110,7 +110,10 @@ const getUsersAdmin = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
+		format: format.value,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			if (format.value) {

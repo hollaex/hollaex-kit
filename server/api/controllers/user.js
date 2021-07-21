@@ -429,7 +429,11 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	toolsLib.user.getUserByEmail(email, true, true)
+	toolsLib.user.getUserByEmail(email, true, true, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
