@@ -402,12 +402,12 @@ class QuickTradeContainer extends PureComponent {
 									<div>
 										<ReviewBlock
 											symbol={selectedSource}
-											text={'Spend Amount'}
+											text={STRINGS['SPEND_AMOUNT']}
 											amount={sourceAmount}
 										/>
 										<ReviewBlock
 											symbol={selectedTarget}
-											text={'Estimated Receiving Amount'}
+											text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
 											amount={targetAmount}
 										/>
 										<footer className="d-flex pt-4">
@@ -417,7 +417,7 @@ class QuickTradeContainer extends PureComponent {
 												className="mr-2"
 											/>
 											<Button
-												label={'Confirm'}
+												label={STRINGS['CONFIRM_TEXT']}
 												onClick={this.onExecuteTrade}
 												className="ml-2"
 											/>
