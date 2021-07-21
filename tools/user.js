@@ -1284,7 +1284,9 @@ const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
 		});
 };
 
-const getUserStatsByKitId = (userId) => {
+const getUserStatsByKitId = (userId, opts = {
+	additionalHeaders: {}
+}) => {
 	return getUserByKitId(userId)
 		.then((user) => {
 			if (!user) {
@@ -1292,15 +1294,17 @@ const getUserStatsByKitId = (userId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getUserStats(user.network_id);
+			return getNodeLib().getUserStats(user.network_id, opts);
 		});
 };
 
-const getUserStatsByNetworkId = (networkId) => {
+const getUserStatsByNetworkId = (networkId, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getUserStats(networkId);
+	return getNodeLib().getUserStats(networkId, opts);
 };
 
 const getExchangeOperators = (opts = {
