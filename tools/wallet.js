@@ -446,8 +446,10 @@ const getUserBalanceByNetworkId = (networkId) => {
 	return getNodeLib().getUserBalance(networkId);
 };
 
-const getKitBalance = () => {
-	return getNodeLib().getBalance();
+const getKitBalance = (opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getBalance(opts);
 };
 
 const getUserTransactionsByKitId = (
