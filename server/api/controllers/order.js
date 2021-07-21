@@ -135,7 +135,11 @@ const cancelAllUserOrders = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const symbol = req.swagger.params.symbol.value;
 
-	toolsLib.order.cancelAllUserOrdersByKitId(user_id, symbol)
+	toolsLib.order.cancelAllUserOrdersByKitId(user_id, symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((order) => {
 			return res.json(order);
 		})
