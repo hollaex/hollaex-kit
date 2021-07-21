@@ -1260,7 +1260,8 @@ const setUsernameById = (userId, username) => {
 };
 
 const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
-	network: null
+	network: null,
+	additionalHeaders: {}
 }) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
@@ -1269,7 +1270,8 @@ const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 };
 
 const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
-	network: null
+	network: null,
+	additionalHeaders: {}
 }) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
