@@ -18,5 +18,6 @@ module.exports = {
 		validator: require('validator'),
 		'@ant-design/icons': require('@ant-design/icons'),
 		'react-event-listener': require('react-event-listener'),
+		'hollaex-web-lib': require('hollaex-web-lib'),
 	},
 };
