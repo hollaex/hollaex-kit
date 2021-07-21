@@ -660,7 +660,11 @@ const inviteNewOperator = (req, res) => {
 	const invitingEmail = req.auth.sub.email;
 	const { email, role } = req.swagger.params;
 
-	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value)
+	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
