@@ -603,7 +603,10 @@ const createCryptoAddress = (req, res) => {
 	}
 
 	toolsLib.user.createUserCryptoAddressByKitId(id, crypto.value, {
-		network: network.value
+		network: network.value,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			return res.status(201).json(data);
