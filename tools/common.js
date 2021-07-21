@@ -411,16 +411,22 @@ const storeImageOnNetwork = async (image, name) => {
 		.then(JSON.parse);
 };
 
-const getPublicTrades = (symbol) => {
-	return getNodeLib().getPublicTrades({ symbol });
+const getPublicTrades = (symbol, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getPublicTrades({ symbol, ...opts });
 };
 
-const getOrderbook = (symbol) => {
-	return getNodeLib().getOrderbook(symbol);
+const getOrderbook = (symbol, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getOrderbook(symbol, opts);
 };
 
-const getOrderbooks = () => {
-	return getNodeLib().getOrderbooks();
+const getOrderbooks = (opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getOrderbooks(opts);
 };
 
 const getChart = (from, to, symbol, resolution) => {
