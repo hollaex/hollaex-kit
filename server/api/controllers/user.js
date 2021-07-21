@@ -701,7 +701,11 @@ const getUserStats = (req, res) => {
 	);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.user.getUserStatsByKitId(user_id)
+	toolsLib.user.getUserStatsByKitId(user_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((stats) => {
 			return res.json(stats);
 		})
