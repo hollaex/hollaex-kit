@@ -339,7 +339,11 @@ const getAssetsPrices = (req, res) => {
 
 	loggerPublic.info(req.uuid, 'controllers/public/getAssetsPrices assets', assets.value, 'quote', quote.value, 'amount', amount.value);
 
-	toolsLib.getAssetsPrices(assets.value, quote.value, amount.value)
+	toolsLib.getAssetsPrices(assets.value, quote.value, amount.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
