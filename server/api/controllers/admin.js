@@ -314,7 +314,11 @@ const getAdminBalance = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.wallet.getKitBalance()
+	toolsLib.wallet.getKitBalance({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((balance) => {
 			return res.json(balance);
 		})
