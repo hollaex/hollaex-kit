@@ -3,6 +3,7 @@
 const { Network } = require('hollaex-node-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
+const { version } = require('./package.json');
 const { loggerInit } = require('./config/logger');
 const { User, Status, Tier } = require('./db/models');
 
@@ -179,7 +180,8 @@ const checkStatus = () => {
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
-				activation_code: exchange.activation_code
+				activation_code: exchange.activation_code,
+				kit_version: version
 			});
 
 			nodeLib = networkNodeLib;
