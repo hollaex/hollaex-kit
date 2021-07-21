@@ -270,7 +270,11 @@ const cancelWithdrawal = (req, res) => {
 	const userId = req.auth.sub.id;
 	const id = req.swagger.params.id.value;
 
-	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, id)
+	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((withdrawal) => {
 			return res.json(withdrawal);
 		})
