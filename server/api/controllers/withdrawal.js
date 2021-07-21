@@ -65,7 +65,8 @@ const requestWithdrawal = (req, res) => {
 		network,
 		otpCode: otp_code,
 		ip,
-		domain
+		domain,
+		'x-forwarded-for': req.headers['x-forwarded-for']
 	})
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -181,7 +182,12 @@ const getAdminWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
-		format.value
+		format.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			if (format.value) {
@@ -243,7 +249,12 @@ const getUserWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
-		format.value
+		format.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			if (format.value) {
