@@ -91,7 +91,9 @@ const createOrderNetwork = (networkId, symbol, side, size, type, price, feeData 
 	return getNodeLib().createOrder(networkId, symbol, side, size, type, price, feeData, opts);
 };
 
-const getUserOrderByKitId = (userKitId, orderId) => {
+const getUserOrderByKitId = (userKitId, orderId, opts = {
+	additionalHeaders: {}
+}) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			if (!user) {
@@ -99,11 +101,13 @@ const getUserOrderByKitId = (userKitId, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getOrder(user.network_id, orderId);
+			return getNodeLib().getOrder(user.network_id, orderId, opts);
 		});
 };
 
-const getUserOrderByEmail = (email, orderId) => {
+const getUserOrderByEmail = (email, orderId, opts = {
+	additionalHeaders: {}
+}) => {
 	return getUserByEmail(email)
 		.then((user) => {
 			if (!user) {
@@ -111,15 +115,17 @@ const getUserOrderByEmail = (email, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getOrder(user.network_id, orderId);
+			return getNodeLib().getOrder(user.network_id, orderId, opts);
 		});
 };
 
-const getUserOrderByNetworkId = (networkId, orderId) => {
+const getUserOrderByNetworkId = (networkId, orderId, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getOrder(networkId, orderId);
+	return getNodeLib().getOrder(networkId, orderId, opts);
 };
 
 const cancelUserOrderByKitId = (userKitId, orderId) => {
