@@ -82,7 +82,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
 
-			const balance = await getNodeLib().getUserBalance(user.network_id);
+			const balance = await getNodeLib().getUserBalance(user.network_id, { additionalHeaders: opts.additionalHeaders });
 			if (balance[`${currency}_available`] < amount) {
 				throw new Error('Insufficent balance for withdrawal');
 			}
@@ -421,7 +421,9 @@ const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, descr
 	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email });
 };
 
-const getUserBalanceByKitId = (userKitId) => {
+const getUserBalanceByKitId = (userKitId, opts = {
+	additionalHeaders: {}
+}) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			if (!user) {
@@ -429,7 +431,7 @@ const getUserBalanceByKitId = (userKitId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getUserBalance(user.network_id);
+			return getNodeLib().getUserBalance(user.network_id, opts);
 		})
 		.then((data) => {
 			return {
@@ -439,11 +441,13 @@ const getUserBalanceByKitId = (userKitId) => {
 		});
 };
 
-const getUserBalanceByNetworkId = (networkId) => {
+const getUserBalanceByNetworkId = (networkId, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getUserBalance(networkId);
+	return getNodeLib().getUserBalance(networkId, opts);
 };
 
 const getKitBalance = (opts = {
