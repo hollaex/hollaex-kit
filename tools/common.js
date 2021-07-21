@@ -459,12 +459,16 @@ const getUdfSymbols = (symbol, opts = {
 	return getNodeLib().getUdfSymbols(symbol, opts);
 };
 
-const getTicker = (symbol) => {
-	return getNodeLib().getTicker(symbol);
+const getTicker = (symbol, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getTicker(symbol, opts);
 };
 
-const getTickers = () => {
-	return getNodeLib().getTickers();
+const getTickers = (opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getTickers(opts);
 };
 
 const getTradesHistory = (
