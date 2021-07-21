@@ -28,7 +28,8 @@ class HollaExNetwork {
 			apiKey: '',
 			apiSecret: '',
 			apiExpiresAfter: 60,
-			activation_code: undefined // kit activation code used only for exchange operators to initialize the exchange
+			activation_code: undefined, // kit activation code used only for exchange operators to initialize the exchange
+			kit_version: null
 		}
 	) {
 		this.apiUrl = opts.apiUrl || 'https://api.hollaex.network';
@@ -41,6 +42,11 @@ class HollaExNetwork {
 			Accept: 'application/json',
 			'api-key': opts.apiKey
 		};
+
+		if (opts.kit_version) {
+			this.headers['kit-version'] = opts.kit_version;
+		}
+
 		this.activation_code = opts.activation_code;
 		this.exchange_id = opts.exchange_id;
 		const [ protocol, endpoint ] = this.apiUrl.split('://');
@@ -62,14 +68,16 @@ class HollaExNetwork {
 	 * Initialize your Kit for HollaEx Network. Must have passed activation_code in constructor
 	 * @return {object} Your exchange values
 	 */
-	async init() {
+	async init(opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.activation_code);
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/init/${
 			this.activation_code
 		}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -136,7 +144,8 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'desc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -176,7 +185,12 @@ class HollaExNetwork {
 			path += `&symbol=${opts.symbol}`;
 		}
 
-		const headers = generateHeaders(this.headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb, path,
+			this.apiExpiresAfter
+		);
 
 		return createRequest(
 			verb,
@@ -207,7 +221,8 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'desc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -253,7 +268,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -268,7 +283,9 @@ class HollaExNetwork {
 	 * @param {number} userId - User's network id
 	 * @return {object} User network data
 	 */
-	getUser(userId) {
+	getUser(userId, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -280,7 +297,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/user?user_id=${userId}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -294,12 +311,14 @@ class HollaExNetwork {
 	 * Get all users for the exchange on the network
 	 * @return {object} Fields: Count, Data. Count is the number of users for the exchange on the network. Data is an array of users
 	 */
-	getUsers() {
+	getUsers(opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id}/users`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -318,7 +337,8 @@ class HollaExNetwork {
 	 * @return {object} Object with new address
 	 */
 	createUserCryptoAddress(userId, crypto, opts = {
-		network: null
+		network: null,
+		additionalHeaders: {}
 	}) {
 		checkKit(this.exchange_id);
 
@@ -336,7 +356,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -357,7 +377,8 @@ class HollaExNetwork {
 	 * @return {object} Withdrawal made on the network
 	 */
 	performWithdrawal(userId, address, currency, amount, opts = {
-		network: null
+		network: null,
+		additionalHeaders: {}
 	}) {
 		checkKit(this.exchange_id);
 
@@ -378,7 +399,7 @@ class HollaExNetwork {
 			data.network = opts.network;
 		}
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -395,7 +416,9 @@ class HollaExNetwork {
 	 * @param {string} withdrawalId - Withdrawal's id on network (not transaction id).
 	 * @return {object} Withdrawal canceled on the network
 	 */
-	cancelWithdrawal(userId, withdrawalId) {
+	cancelWithdrawal(userId, withdrawalId, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -409,7 +432,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/withdraw?user_id=${userId}&id=${withdrawalId}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -453,7 +476,8 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
-			address: null
+			address: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -524,7 +548,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -570,7 +594,8 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
-			address: null
+			address: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -646,7 +671,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -690,7 +715,8 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
-			address: null
+			address: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -761,7 +787,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -807,7 +833,8 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
-			address: null
+			address: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -883,7 +910,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -897,14 +924,16 @@ class HollaExNetwork {
 	 * Get the balance for the exchange on the network
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
-	getBalance() {
+	getBalance(opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id}/balance`;
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -919,7 +948,9 @@ class HollaExNetwork {
 	 * @param {number} userId - User id on network
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
-	getUserBalance(userId) {
+	getUserBalance(userId, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -931,7 +962,7 @@ class HollaExNetwork {
 		let path = `${this.baseUrl}/network/${this.exchange_id}/balance?user_id=${userId}`;
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -947,7 +978,9 @@ class HollaExNetwork {
 	 * @param {number} orderId - Order id
 	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
 	 */
-	getOrder(userId, orderId) {
+	getOrder(userId, orderId, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -961,7 +994,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1003,7 +1036,8 @@ class HollaExNetwork {
 		},
 		opts = {
 			stop: null,
-			meta: null
+			meta: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1047,7 +1081,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1064,7 +1098,9 @@ class HollaExNetwork {
 	 * @param {number} orderId - Order id
 	 * @return {object} Value of canceled order on the network with values side, size, filled, etc.
 	 */
-	cancelOrder(userId, orderId) {
+	cancelOrder(userId, orderId, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -1078,7 +1114,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1113,7 +1149,8 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'desc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1166,7 +1203,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1203,7 +1240,8 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'desc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1261,7 +1299,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1278,7 +1316,10 @@ class HollaExNetwork {
 	 * @param {string} opts.symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
 	 * @return {array} Array of canceled orders
 	 */
-	cancelAllOrders(userId, opts = { symbol: null }) {
+	cancelAllOrders(userId, opts = {
+		symbol: null,
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -1295,7 +1336,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1310,7 +1351,9 @@ class HollaExNetwork {
 	 * @param {number} userId - User id on network
 	 * @return {object} Object with field data that contains stats info
 	 */
-	getUserStats(userId) {
+	getUserStats(userId, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!userId) {
@@ -1322,7 +1365,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/user/stats?user_id=${userId}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1347,7 +1390,10 @@ class HollaExNetwork {
 		transactionId,
 		address,
 		network,
-		opts = { isTestnet: null }
+		opts = {
+			isTestnet: null,
+			additionalHeaders: {}
+		}
 	) {
 		checkKit(this.exchange_id);
 
@@ -1369,7 +1415,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1395,7 +1441,11 @@ class HollaExNetwork {
 		receiverId,
 		currency,
 		amount,
-		opts = { description: null, email: true }
+		opts = {
+			description: null,
+			email: true,
+			additionalHeaders: {}
+		}
 	) {
 		checkKit(this.exchange_id);
 
@@ -1431,7 +1481,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1464,7 +1514,8 @@ class HollaExNetwork {
 			orderBy: 'id',
 			order: 'asc',
 			startDate: null,
-			endDate: null
+			endDate: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1511,7 +1562,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1529,7 +1580,10 @@ class HollaExNetwork {
 	 * @param {string} opts.symbol - Symbol to get trades for. Leave blank to get trades of all symbols
 	 * @return {object} Object with trades
 	 */
-	getPublicTrades(opts = { symbol: null }) {
+	getPublicTrades(opts = {
+		symbol: null,
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${this.exchange_id}/trades`;
@@ -1539,7 +1593,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1554,7 +1608,9 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
 	 * @return {object} Object with orderbook
 	 */
-	getOrderbook(symbol) {
+	getOrderbook(symbol, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!symbol) {
@@ -1571,7 +1627,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1586,7 +1642,9 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
 	 * @return {object} Object with orderbook
 	 */
-	getOrderbooks() {
+	getOrderbooks(opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${
@@ -1594,7 +1652,7 @@ class HollaExNetwork {
 		}/orderbooks`;
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1612,7 +1670,9 @@ class HollaExNetwork {
 	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
 	 * @return {object} Object with trade history info
 	 */
-	getChart(from, to, symbol, resolution) {
+	getChart(from, to, symbol, resolution, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!from) {
@@ -1630,7 +1690,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1647,7 +1707,9 @@ class HollaExNetwork {
 	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
 	 * @return {array} Array of objects with trade history info
 	 */
-	getCharts(from, to, resolution) {
+	getCharts(from, to, resolution, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!from) {
@@ -1663,7 +1725,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/charts?from=${from}&to=${to}&resolution=${resolution}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1677,14 +1739,16 @@ class HollaExNetwork {
 	 * Get TradingView udf config
 	 * @return {object} Object with TradingView udf config
 	 */
-	getUdfConfig() {
+	getUdfConfig(opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/udf/config`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1702,7 +1766,9 @@ class HollaExNetwork {
 	 * @param {string} resolution - Resolution of query. 1d, 1W, etc
 	 * @return {object} Object with TradingView udf history HOLCV
 	 */
-	getUdfHistory(from, to, symbol, resolution) {
+	getUdfHistory(from, to, symbol, resolution, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!from) {
@@ -1720,7 +1786,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1735,7 +1801,9 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get
 	 * @return {object} Object with TradingView udf symbols
 	 */
-	getUdfSymbols(symbol) {
+	getUdfSymbols(symbol, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!symbol) {
@@ -1747,7 +1815,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/udf/symbols?symbol=${symbol}`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1762,7 +1830,9 @@ class HollaExNetwork {
 	 * @param {string} symbol - Symbol to get
 	 * @return {object} Object with historical data
 	 */
-	getTicker(symbol) {
+	getTicker(symbol, opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!symbol) {
@@ -1777,7 +1847,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1791,14 +1861,16 @@ class HollaExNetwork {
 	 * Get historical data for all symbols, time interval is 5 minutes
 	 * @return {object} Object with historical data for all symbols
 	 */
-	getTickers() {
+	getTickers(opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/tickers`;
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1821,7 +1893,14 @@ class HollaExNetwork {
 	 * @param {number} opts.fee - Optional fee to display in data.
 	 * @return {object} Object with created mint's data.
 	 */
-	mintAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null, fee: null }) {
+	mintAsset(userId, currency, amount, opts = {
+		description: null,
+		transactionId: null,
+		status: null,
+		email: null,
+		fee: null,
+		additionalHeaders: {}
+	}) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1859,7 +1938,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1894,7 +1973,8 @@ class HollaExNetwork {
 			waiting: null,
 			updatedTransactionId: null,
 			email: null,
-			updatedDescription: null
+			updatedDescription: null,
+			additionalHeaders: {}
 		}
 	) {
 		if (!transactionId) {
@@ -1943,7 +2023,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -1967,7 +2047,14 @@ class HollaExNetwork {
 	 * @param {number} opts.fee - Optional fee to display in data.
 	 * @return {object} Object with created burn's data.
 	 */
-	burnAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null, fee: null }) {
+	burnAsset(userId, currency, amount, opts = {
+		description: null,
+		transactionId: null,
+		status: null,
+		email: null,
+		fee: null,
+		additionalHeaders: {}
+	}) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -2005,7 +2092,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -2040,7 +2127,8 @@ class HollaExNetwork {
 			waiting: null,
 			updatedTransactionId: null,
 			email: null,
-			updatedDescription: null
+			updatedDescription: null,
+			additionalHeaders: {}
 		}
 	) {
 		if (!transactionId) {
@@ -2089,7 +2177,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -2110,7 +2198,8 @@ class HollaExNetwork {
 	getGeneratedFees(
 		opts = {
 			startDate: null,
-			endDate: null
+			endDate: null,
+			additionalHeaders: {}
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -2131,7 +2220,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -2145,14 +2234,16 @@ class HollaExNetwork {
 	 * Settle exchange fees
 	 * @return {object} Object with settled fees.
 	 */
-	settleFees() {
+	settleFees(opts = {
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		const path = `${this.baseUrl}/network/${this.exchange_id}/fees/settle`;
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -2170,7 +2261,11 @@ class HollaExNetwork {
 	 * @param {number} opts.amount - Amount of quote asset to convert to. Default: 1.
 	 * @return {object} Object with converted assets.
 	 */
-	getOraclePrices(assets = [], opts = { quote: null, amount: null }) {
+	getOraclePrices(assets = [], opts = {
+		quote: null,
+		amount: null,
+		additionalHeaders: {}
+	}) {
 		checkKit(this.exchange_id);
 
 		if (!assets || !isArray(assets) || assets.length === 0) {
@@ -2193,7 +2288,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
