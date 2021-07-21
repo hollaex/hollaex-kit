@@ -34,6 +34,7 @@ const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
 const { errorMessageConverter: handleCatchError } = require(`${SERVER_PATH}/utils/conversion`);
+const { version } = require(`${SERVER_PATH}/package.json`);
 const { TemplateEmail } = require(`${SERVER_PATH}/mail/templates/helpers/common`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
@@ -43,6 +44,10 @@ const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
 // const { Transform } = require('json2csv');
+
+const getKitVersion = () => {
+	return version;
+};
 
 /**
  * Checks if url given is a valid url.
@@ -454,7 +459,10 @@ const getTradesHistory = (
 	orderBy,
 	order,
 	startDate,
-	endDate
+	endDate,
+	opts = {
+		additionalHeaders: {}
+	}
 ) => {
 	return getNodeLib().getTradesHistory({
 		symbol,
@@ -464,7 +472,8 @@ const getTradesHistory = (
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	});
 };
 
@@ -707,6 +716,7 @@ const getDomain = () => {
 // };
 
 module.exports = {
+	getKitVersion,
 	isUrl,
 	getKitConfig,
 	getKitSecrets,

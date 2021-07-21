@@ -49,7 +49,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, stringIsDate } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
 const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -247,6 +247,7 @@ const createUserOnNetwork = (email, opts = {
 	if (!isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
+
 	return getNodeLib().createUser(email, opts);
 };
 
