@@ -763,7 +763,8 @@ const mintAssetByKitId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: {}
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -785,7 +786,8 @@ const mintAssetByNetworkId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: {}
 	}) => {
 	return getNodeLib().mintAsset(networkId, currency, amount, opts);
 };
@@ -800,7 +802,8 @@ const updatePendingMint = (
 		waiting: null,
 		updatedTransactionId: null,
 		email: null,
-		updatedDescription: null
+		updatedDescription: null,
+		additionalHeaders: {}
 	}
 ) => {
 	return getNodeLib().updatePendingMint(transactionId, opts);
@@ -815,7 +818,8 @@ const burnAssetByKitId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: {}
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -837,7 +841,8 @@ const burnAssetByNetworkId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: {}
 	}) => {
 	return getNodeLib().burnAsset(networkId, currency, amount, opts);
 };
@@ -852,7 +857,8 @@ const updatePendingBurn = (
 		waiting: null,
 		updatedTransactionId: null,
 		email: null,
-		updatedDescription: null
+		updatedDescription: null,
+		additionalHeaders: {}
 	}
 ) => {
 	return getNodeLib().updatePendingBurn(transactionId, opts);
