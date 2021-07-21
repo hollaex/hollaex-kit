@@ -112,7 +112,12 @@ const performWithdrawal = (req, res) => {
 					withdrawal.address,
 					withdrawal.currency,
 					withdrawal.amount,
-					{ network: withdrawal.network }
+					{
+						network: withdrawal.network,
+						additionalHeaders: {
+							'x-forwarded-for': req.headers['x-forwarded-for']
+						}
+					}
 				),
 				withdrawal
 			]);
