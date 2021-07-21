@@ -165,7 +165,9 @@ const cancelUserOrderByNetworkId = (networkId, orderId, opts = {
 	return getNodeLib().cancelOrder(networkId, orderId, opts);
 };
 
-const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: {}
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -179,11 +181,14 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	});
 };
 
-const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: {}
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -204,12 +209,15 @@ const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, p
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				...opts
 			});
 		});
 };
 
-const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: {}
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -230,12 +238,15 @@ const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page,
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				...opts
 			});
 		});
 };
 
-const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
@@ -252,7 +263,8 @@ const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limi
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	});
 };
 
