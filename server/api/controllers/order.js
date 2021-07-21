@@ -84,7 +84,11 @@ const cancelUserOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order_id = req.swagger.params.order_id.value;
 
-	toolsLib.order.cancelUserOrderByKitId(user_id, order_id)
+	toolsLib.order.cancelUserOrderByKitId(user_id, order_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((order) => {
 			return res.json(order);
 		})
@@ -187,7 +191,11 @@ const adminCancelOrder = (req, res) => {
 	const userId = req.swagger.params.user_id.value;
 	const orderId = req.swagger.params.order_id.value;
 
-	toolsLib.order.cancelUserOrderByKitId(userId, orderId)
+	toolsLib.order.cancelUserOrderByKitId(userId, orderId, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
