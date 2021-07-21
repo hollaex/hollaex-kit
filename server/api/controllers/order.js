@@ -58,7 +58,11 @@ const getUserOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order_id = req.swagger.params.order_id.value;
 
-	toolsLib.order.getUserOrderByKitId(user_id, order_id)
+	toolsLib.order.getUserOrderByKitId(user_id, order_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((order) => {
 			return res.json(order);
 		})
