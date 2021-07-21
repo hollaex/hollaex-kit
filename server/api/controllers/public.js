@@ -208,7 +208,11 @@ const getChart = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getChart(from.value, to.value, symbol.value, resolution.value)
+	toolsLib.getChart(from.value, to.value, symbol.value, resolution.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -225,7 +229,11 @@ const getChart = (req, res) => {
 const getCharts = (req, res) => {
 	const { from, to, resolution } = req.swagger.params;
 
-	toolsLib.getCharts(from.value, to.value, resolution.value)
+	toolsLib.getCharts(from.value, to.value, resolution.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -240,7 +248,11 @@ const getCharts = (req, res) => {
 };
 
 const getConfig = (req, res) => {
-	toolsLib.getUdfConfig()
+	toolsLib.getUdfConfig({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -266,7 +278,11 @@ const getHistory = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getUdfHistory(from.value, to.value, symbol.value, resolution.value)
+	toolsLib.getUdfHistory(from.value, to.value, symbol.value, resolution.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -292,7 +308,11 @@ const getSymbols = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getUdfSymbols(symbol)
+	toolsLib.getUdfSymbols(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
