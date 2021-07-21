@@ -20,7 +20,9 @@ const createOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	let order = req.swagger.params.order.value;
 
-	const opts = {};
+	const opts = {
+		'x-forwarded-for': req.headers['x-forwarded-for']
+	};
 
 	if (isPlainObject(order.meta)) {
 		opts.meta = order.meta;
