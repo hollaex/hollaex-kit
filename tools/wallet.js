@@ -169,7 +169,9 @@ const validateWithdrawalToken = (token) => {
 		});
 };
 
-const cancelUserWithdrawalByKitId = (userId, withdrawalId) => {
+const cancelUserWithdrawalByKitId = (userId, withdrawalId, opts = {
+	additionalHeaders: {}
+}) => {
 	return getUserByKitId(userId)
 		.then((user) => {
 			if (!user) {
@@ -177,15 +179,17 @@ const cancelUserWithdrawalByKitId = (userId, withdrawalId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId);
+			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId, opts);
 		});
 };
 
-const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId) => {
+const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().cancelWithdrawal(networkId, withdrawalId);
+	return getNodeLib().cancelWithdrawal(networkId, withdrawalId, opts);
 };
 
 const checkTransaction = (currency, transactionId, address, network, isTestnet = false) => {
