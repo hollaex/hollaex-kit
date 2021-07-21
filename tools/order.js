@@ -573,8 +573,10 @@ const getGeneratedFees = (startDate, endDate, opts = {
 	});
 };
 
-const settleFees = () => {
-	return getNodeLib().settleFees();
+const settleFees = (opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().settleFees(opts);
 };
 
 const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
