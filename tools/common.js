@@ -429,24 +429,34 @@ const getOrderbooks = (opts = {
 	return getNodeLib().getOrderbooks(opts);
 };
 
-const getChart = (from, to, symbol, resolution) => {
-	return getNodeLib().getChart(from, to, symbol, resolution);
+const getChart = (from, to, symbol, resolution, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getChart(from, to, symbol, resolution, opts);
 };
 
-const getCharts = (from, to, resolution) => {
-	return getNodeLib().getCharts(from, to, resolution);
+const getCharts = (from, to, resolution, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getCharts(from, to, resolution, opts);
 };
 
-const getUdfConfig = () => {
-	return getNodeLib().getUdfConfig();
+const getUdfConfig = (opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getUdfConfig(opts);
 };
 
-const getUdfHistory = (from, to, symbol, resolution) => {
-	return getNodeLib().getUdfHistory(from, to, symbol, resolution);
+const getUdfHistory = (from, to, symbol, resolution, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getUdfHistory(from, to, symbol, resolution, opts);
 };
 
-const getUdfSymbols = (symbol) => {
-	return getNodeLib().getUdfSymbols(symbol);
+const getUdfSymbols = (symbol, opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getUdfSymbols(symbol, opts);
 };
 
 const getTicker = (symbol) => {
