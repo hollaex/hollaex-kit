@@ -241,11 +241,13 @@ const createUser = (
 		});
 };
 
-const createUserOnNetwork = (email) => {
+const createUserOnNetwork = (email, opts = {
+	additionalHeaders: {}
+}) => {
 	if (!isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
-	return getNodeLib().createUser(email);
+	return getNodeLib().createUser(email, opts);
 };
 
 const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer) => {
