@@ -135,6 +135,13 @@ $svg--padding: $svg--size - $svg-small--size;
 	.popup_info-text {
 		font-size: $font-size-subtext;
 	}
+	.secret_key {
+		.action_notification-wrapper {
+			.action_notification-text {
+				margin-left: 1rem !important;
+			}
+		}
+	}
 }
 
 .token-no-otp {

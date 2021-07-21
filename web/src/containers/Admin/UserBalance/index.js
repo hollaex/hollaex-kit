@@ -213,6 +213,7 @@ class UserBalance extends Component {
 					}}
 					expandedRowRender={this.renderAddress}
 					dataSource={tableData}
+					className="blue-admin-table"
 				/>
 				<div className="user-donut-chart-wrapper">
 					<div>Percentage balance breakdown</div>

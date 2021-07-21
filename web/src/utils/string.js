@@ -174,7 +174,13 @@ export const filterOverwrites = (overwrites) => {
 	Object.entries(overwrites).forEach(([lang, content]) => {
 		result[lang] = {};
 		Object.entries(content).forEach(([key, string]) => {
-			if (!EXCLUSIONS.includes(key)) {
+			const isUnchangedString = string === getStringByKey(key, lang, CONTENT);
+			const isEqualToDefault = string === getStringByKey(key, 'en', CONTENT);
+			if (
+				!EXCLUSIONS.includes(key) &&
+				!isUnchangedString &&
+				!isEqualToDefault
+			) {
 				result[lang][key] = string;
 			}
 		});

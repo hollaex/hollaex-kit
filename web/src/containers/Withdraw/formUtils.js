@@ -61,11 +61,26 @@ export const generateFormValues = (
 	networks,
 	selectedNetwork
 ) => {
-	const { fullname, min, increment_unit, withdrawal_limits = {} } =
-		coins[symbol] || DEFAULT_COIN_DATA;
+	const {
+		fullname,
+		min,
+		increment_unit,
+		withdrawal_limits = {},
+		withdrawal_fee,
+		withdrawal_fees,
+	} = coins[symbol] || DEFAULT_COIN_DATA;
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
+
+	let fee;
+	if (withdrawal_fees && selectedNetwork && withdrawal_fees[selectedNetwork]) {
+		fee = withdrawal_fees[selectedNetwork];
+	} else if (coins[symbol]) {
+		fee = withdrawal_fee;
+	} else {
+		fee = 0;
+	}
 
 	const fields = {};
 
@@ -146,13 +161,7 @@ export const generateFormValues = (
 		}
 		// FIX add according fee
 		// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname), fee));
-		amountValidate.push(
-			checkBalance(
-				available,
-				STRINGS.formatString(STRINGS['WITHDRAWALS_LOWER_BALANCE'], fullname),
-				0
-			)
-		);
+		amountValidate.push(checkBalance(available, fullname, fee));
 
 		fields.amount = {
 			type: 'number',

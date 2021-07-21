@@ -9,7 +9,7 @@ import STRINGS from '../../config/localizedStrings';
 import {
 	sendSupportMail,
 	NOTIFICATIONS,
-	openContactForm,
+	openHelpdesk,
 } from 'actions/appActions';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
@@ -51,9 +51,9 @@ class HelpfulResourcesForm extends Component {
 			});
 	};
 	openNewForm = () => {
-		const { openContactForm, onClose } = this.props;
+		const { openHelpdesk, onClose } = this.props;
 		onClose();
-		openContactForm({ category: 'bug' });
+		openHelpdesk({ category: 'bug' });
 	};
 
 	render() {
@@ -61,7 +61,7 @@ class HelpfulResourcesForm extends Component {
 			onClose,
 			icons: ICONS,
 			constants: { links: { api_doc_link = '' } = {} },
-			openContactForm,
+			openHelpdesk,
 		} = this.props;
 		const { submited } = this.state;
 
@@ -93,7 +93,7 @@ class HelpfulResourcesForm extends Component {
 							{STRINGS.formatString(
 								STRINGS['HELP_RESOURCE_GUIDE.TEXT'],
 								<span
-									onClick={openContactForm}
+									onClick={openHelpdesk}
 									className={classnames('blue-link', 'dialog-link', 'pointer')}
 								>
 									{STRINGS['HELP_RESOURCE_GUIDE.CONTACT_US']}
@@ -144,7 +144,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	openContactForm: bindActionCreators(openContactForm, dispatch),
+	openHelpdesk: bindActionCreators(openHelpdesk, dispatch),
 });
 
 export default connect(
