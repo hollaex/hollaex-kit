@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-tools-lib",
-	"version": "2.8.0",
+	"version": "2.9.0",
 	"description": "HollaEx tools library for developers",
 	"main": "index.js",
 	"scripts": {
