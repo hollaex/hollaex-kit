@@ -705,7 +705,11 @@ const settleFees = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.order.settleFees()
+	toolsLib.order.settleFees({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
