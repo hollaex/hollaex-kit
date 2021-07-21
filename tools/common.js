@@ -364,7 +364,9 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 		});
 };
 
-const getAssetsPrices = (assets = [], quote, amount) => {
+const getAssetsPrices = (assets = [], quote, amount, opts = {
+	additionalHeaders: {}
+}) => {
 	for (let asset of assets) {
 		if (!subscribedToCoin(asset)) {
 			return reject(new Error('Invalid asset'));
@@ -375,7 +377,7 @@ const getAssetsPrices = (assets = [], quote, amount) => {
 		return reject(new Error('Amount must be greater than 0'));
 	}
 
-	return getNodeLib().getOraclePrices(assets, { quote, amount });
+	return getNodeLib().getOraclePrices(assets, { quote, amount, ...opts });
 };
 
 const storeImageOnNetwork = async (image, name) => {

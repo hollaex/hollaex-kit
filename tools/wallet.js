@@ -298,7 +298,8 @@ const get24HourAccumulatedWithdrawals = async (userId, opts = {
 
 		const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
 			quote: getKitConfig().native_currency,
-			amount: withdrawalAmount[withdrawalCurrency]
+			amount: withdrawalAmount[withdrawalCurrency],
+			...opts
 		});
 
 		if (convertedAmount[withdrawalCurrency] !== -1) {
@@ -339,7 +340,8 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, opts = 
 
 	const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
 		quote: getKitConfig().native_currency,
-		amount
+		amount,
+		...opts
 	});
 
 
