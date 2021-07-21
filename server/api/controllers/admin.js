@@ -763,7 +763,10 @@ const mintAsset = (req, res) => {
 					description,
 					transactionId: transaction_id,
 					status,
-					email
+					email,
+					additionalHeaders: {
+						'x-forwarded-for': req.headers['x-forwarded-for']
+					}
 				}
 			);
 		})
@@ -831,7 +834,10 @@ const putMint = (req, res) => {
 		waiting,
 		updatedTransactionId: updated_transaction_id,
 		email,
-		updatedDescription: updated_description
+		updatedDescription: updated_description,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			loggerAdmin.info(
@@ -898,7 +904,10 @@ const burnAsset = (req, res) => {
 					transactionId: transaction_id,
 					status,
 					email,
-					fee
+					fee,
+					additionalHeaders: {
+						'x-forwarded-for': req.headers['x-forwarded-for']
+					}
 				}
 			);
 		})
@@ -966,7 +975,10 @@ const putBurn = (req, res) => {
 		waiting,
 		updatedTransactionId: updated_transaction_id,
 		email,
-		updatedDescription: updated_description
+		updatedDescription: updated_description,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			loggerAdmin.info(
