@@ -680,7 +680,11 @@ const getExchangeGeneratedFees = (req, res) => {
 
 	const { start_date, end_date } = req.swagger.params;
 
-	toolsLib.order.getGeneratedFees(start_date.value, end_date.value)
+	toolsLib.order.getGeneratedFees(start_date.value, end_date.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
