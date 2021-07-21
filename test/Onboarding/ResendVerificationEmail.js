@@ -10,10 +10,13 @@ const { Console } = require('console');
 var randomstring = require('randomstring');
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
-let userName =  defNewUser.getNewUser();
+let User = process.env.NEW_USER;
+const newUser = defNewUser.defineNewUser(User,4) ;
+console.log(newUser);
 //let userName = process.env.USER_NAME;
 let passWord = process.env.PASSWORD;
 let webSite = process.env.WEBSITE;
+let signUpPage = process.env.SIGN_UP_PAGE;
 let emailAdmin =process.env.Email_ADMIN_USERNAME;
 if (process.env.NODE_ENV == 'test') {
 	console.log('Variables are defined');
@@ -43,10 +46,49 @@ describe('NewUserRequest', function() {
 		vars = {};
 	});
 	afterEach(async function() {
-		// await driver.quit();
+		 await driver.quit();
     
 	});
+	it('NewUserRequestSignUp', async function() {
+		await sleep(5000)
+		console.log('Test name: NewUserRequest');
+		console.log(' Step # | name | target | value');
+		console.log('1 | open | ',signUpPage);
+		await driver.get(signUpPage);
+		const title = await driver.getTitle();
+		console.log(title);
+		expect(title).to.equal(title);
+		console.log('entring sand box');
+		console.log(' Step # | action | target | value');
+		console.log('2 | setWindowSize | 1050x660 | ');
+		await driver.manage().window().setRect(1050, 660);
+     
+		console.log('3 | type | name=email |',newUser);
+		await driver.wait(until.elementLocated(By.name('email')), 5000);
+		await driver.findElement(By.name('email')).clear();
+		await driver.findElement(By.name('email')).sendKeys(newUser);
+     
+		console.log('4 | type | name=password | password!');
+		await driver.findElement(By.name('password')).clear();
+		await driver.findElement(By.name('password')).sendKeys(passWord);
+      
+      
+		console.log('5 | type | name=password_repeat | your password again!');
+		await driver.findElement(By.name('password_repeat')).clear();
+		await driver.findElement(By.name('password_repeat')).sendKeys(passWord);
+		await sleep(2000);
+		console.log('6 | click | name=terms |'); 
+		await driver.findElement(By.name('terms')).click();
+		await sleep(10000);
+		console.log('7 | click | css=.holla-button |'); 
+		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
+		await driver.findElement(By.css('.holla-button')).click();
+		await driver.executeScript('window.scrollTo(0,0)');
+
+  
+	});
 	it('ResendRequest', async function() {
+		let reuserName =  defNewUser.getNewUser();
 		console.log('Test name: NewUserRequest');
 		console.log(' Step # | name | target | value');
 		console.log('1 | open | https://yourwebsite/verify | ');
@@ -58,9 +100,9 @@ describe('NewUserRequest', function() {
 		console.log(' Step # | action | target | value');
 		console.log('2 | setWindowSize | 1050x660 | ');
       
-		console.log('1| type | name=email | bob@gmail.com');
+		console.log('1| type | name=email |'+reuserName);
 		await sleep(4000);
-		await driver.findElement(By.name('email')).sendKeys(userName);
+		await driver.findElement(By.name('email')).sendKeys(reuserName);
 		console.log('2| click | css=.holla-button |');
 		await sleep(4000);
 		await driver.findElement(By.css('.holla-button')).click();
@@ -70,6 +112,7 @@ describe('NewUserRequest', function() {
     
 	});
 	it('Email Confirmation', async function() {
+		let reuserName =  defNewUser.getNewUser();
 		console.log('Test name: Confirmation');
 		console.log('Step # | name | target | value');
 		await defNewUser.emailLogIn(driver,emailAdmin,passWord);
@@ -89,7 +132,7 @@ describe('NewUserRequest', function() {
 		console.log('13 | echo | ${content} | ');
 		console.log(vars['content']);
 		console.log('14 | assertText | xpath=/html/body/pre/a[22] | ${content}');
-		expect(vars['content']).to.equal(userName.toLowerCase());
+		expect(vars['content']).to.equal(reuserName.toLowerCase());
      
 		console.log('15 | storeAttribute | xpath=/html/body/pre/a[26]@href | mytextlink');
 		{
