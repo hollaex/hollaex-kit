@@ -44,9 +44,17 @@ const getAdminTrades = (req, res) => {
 	let promiseQuery;
 
 	if (user_id.value) {
-		promiseQuery = toolsLib.order.getAllUserTradesByKitId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
+		promiseQuery = toolsLib.order.getAllUserTradesByKitId(user_id.value, symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value, {
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		});
 	} else {
-		promiseQuery = 	toolsLib.order.getAllTradesNetwork(symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value);
+		promiseQuery = 	toolsLib.order.getAllTradesNetwork(symbol.value, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value, {
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		});
 	}
 
 	promiseQuery

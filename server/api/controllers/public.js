@@ -132,7 +132,12 @@ const getTradesHistory = (req, res) => {
 		order_by.value,
 		order.value,
 		start_date.value,
-		end_date.value
+		end_date.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			return res.json(data);
