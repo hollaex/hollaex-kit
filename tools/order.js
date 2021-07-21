@@ -284,11 +284,12 @@ const cancelAllUserOrdersByNetworkId = (networkId, symbol) => {
 	return getNodeLib().cancelAllOrders(networkId, { symbol });
 };
 
-const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, endDate) => {
+const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, endDate, format) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getNodeLib().getTrades({
+
+	const opts = {
 		symbol,
 		limit,
 		page,
@@ -296,7 +297,24 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 		order,
 		startDate,
 		endDate
-	});
+	};
+
+	if (format) {
+		opts.format = 'all';
+	}
+
+	return getNodeLib().getTrades(opts)
+		.then((trades) => {
+			if (format === 'csv') {
+				if (trades.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(trades.data, Object.keys(trades.data[0]));
+				return csv;
+			} else {
+				return trades;
+			}
+		});
 };
 
 const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format) => {
@@ -310,7 +328,8 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getUserTrades(user.network_id, {
+
+			const opts = {
 				symbol,
 				limit,
 				page,
@@ -318,10 +337,16 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 				order,
 				startDate,
 				endDate
-			});
+			};
+
+			if (format) {
+				opts.format = 'all';
+			}
+
+			return getNodeLib().getUserTrades(user.network_id, opts);
 		})
 		.then((trades) => {
-			if (format) {
+			if (format === 'csv') {
 				if (trades.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -333,11 +358,147 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 		});
 };
 
-const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, order, startDate, endDate) => {
+// const getAllTradesNetworkStream = (opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	if (opts.symbol && !subscribedToPair(opts.symbol)) {
+// 		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
+// 	}
+// 	return getNodeLib().getTrades({ ...opts, format: 'all' });
+// };
+
+// const getAllTradesNetworkCsv = (opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	return getAllTradesNetworkStream(opts)
+// 		.then((data) => {
+// 			const parser = getCsvParser();
+
+// 			parser.on('error', (error) => {
+// 				throw error;
+// 			});
+
+// 			parser.on('error', (error) => {
+// 				parser.destroy();
+// 				throw error;
+// 			});
+
+// 			parser.on('end', () => {
+// 				parser.destroy();
+// 			});
+
+// 			return data.pipe(parser);
+// 		});
+// };
+
+// const getUserTradesByKitIdStream = (userKitId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	if (opts.symbol && !subscribedToPair(opts.symbol)) {
+// 		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
+// 	}
+// 	return getUserByKitId(userKitId)
+// 		.then((user) => {
+// 			if (!user) {
+// 				throw new Error(USER_NOT_FOUND);
+// 			} else if (!user.network_id) {
+// 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+// 			}
+// 			return getNodeLib().getUserTrades(user.network_id, { ...opts, format: 'all' });
+// 		});
+// };
+
+// const getUserTradesByKitIdCsv = (userKitId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	return getUserTradesByKitIdStream(userKitId, opts)
+// 		.then((data) => {
+// 			const parser = getCsvParser();
+
+// 			parser.on('error', (error) => {
+// 				parser.destroy();
+// 				throw error;
+// 			});
+
+// 			parser.on('end', () => {
+// 				parser.destroy();
+// 			});
+
+// 			return data.pipe(parser);
+// 		});
+// };
+
+// const getUserTradesByNetworkIdStream = (userNetworkId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	if (opts.symbol && !subscribedToPair(opts.symbol)) {
+// 		return reject(new Error(INVALID_SYMBOL(opts.symbol)));
+// 	}
+// 	return getNodeLib().getUserTrades(userNetworkId, { ...opts, format: 'all' });
+// };
+
+// const getUserTradesByNetworkIdCsv = (userNetworkId, opts = {
+// 	symbol: null,
+// 	limit: null,
+// 	page: null,
+// 	orderBy: null,
+// 	order: null,
+// 	startDate: null,
+// 	endDate: null
+// }) => {
+// 	return getUserTradesByNetworkIdStream(userNetworkId, opts)
+// 		.then((data) => {
+// 			const parser = getCsvParser();
+
+// 			parser.on('error', (error) => {
+// 				parser.destroy();
+// 				throw error;
+// 			});
+
+// 			parser.on('end', () => {
+// 				parser.destroy();
+// 			});
+
+// 			return data.pipe(parser);
+// 		});
+// };
+
+const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, order, startDate, endDate, format) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getUserTrades(networkId, {
+
+	const opts = {
 		symbol,
 		limit,
 		page,
@@ -345,7 +506,24 @@ const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, or
 		order,
 		startDate,
 		endDate
-	});
+	};
+
+	if (format) {
+		opts.format = 'all';
+	}
+
+	return getNodeLib().getUserTrades(networkId, opts)
+		.then((trades) => {
+			if (format === 'csv') {
+				if (trades.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(trades.data, Object.keys(trades.data[0]));
+				return csv;
+			} else {
+				return trades;
+			}
+		});
 };
 
 const getGeneratedFees = (startDate, endDate) => {
@@ -481,5 +659,11 @@ module.exports = {
 	cancelAllUserOrdersByNetworkId,
 	getGeneratedFees,
 	settleFees,
-	generateOrderFeeData
+	generateOrderFeeData,
+	// getUserTradesByKitIdStream,
+	// getUserTradesByNetworkIdStream,
+	// getAllTradesNetworkStream,
+	// getAllTradesNetworkCsv,
+	// getUserTradesByKitIdCsv,
+	// getUserTradesByNetworkIdCsv
 };

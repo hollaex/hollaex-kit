@@ -42,6 +42,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
+// const { Transform } = require('json2csv');
 
 /**
  * Checks if url given is a valid url.
@@ -691,6 +692,20 @@ const getDomain = () => {
 	return DOMAIN;
 };
 
+// const getCsvParser = (opts = {
+// 	model: null,
+// 	exclude: null,
+// 	objectMode: null
+// }) => {
+// 	return new Transform(
+// 		{},
+// 		{
+// 			encoding: 'utf-8',
+// 			objectMode: opts.objectMode ? true : false
+// 		}
+// 	);
+// };
+
 module.exports = {
 	isUrl,
 	getKitConfig,
@@ -742,5 +757,6 @@ module.exports = {
 	errorMessageConverter,
 	getDomain,
 	isDatetime,
+	// getCsvParser,
 	emailHtmlBoilerplate
 };
