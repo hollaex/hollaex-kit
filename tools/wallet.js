@@ -197,7 +197,8 @@ const checkTransaction = (currency, transactionId, address, network, isTestnet =
 };
 
 const performWithdrawal = (userId, address, currency, amount, opts = {
-	network: null
+	network: null,
+	additionalHeaders: {}
 }) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
@@ -225,7 +226,10 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 		});
 };
 
-const performWithdrawalNetwork = (networkId, address, currency, amount, opts) => {
+const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
+	network: null,
+	additionalHeaders: {}
+}) => {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
