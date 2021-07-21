@@ -167,7 +167,11 @@ const getTradesHistory = (req, res) => {
 const getTicker = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
-	toolsLib.getTicker(symbol)
+	toolsLib.getTicker(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -182,7 +186,11 @@ const getTicker = (req, res) => {
 };
 
 const getAllTicker = (req, res) => {
-	toolsLib.getTickers()
+	toolsLib.getTickers({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
