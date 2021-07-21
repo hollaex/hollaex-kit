@@ -594,8 +594,10 @@ const getUserNetwork = (networkId) => {
 	return getNodeLib().getUser(networkId);
 };
 
-const getUsersNetwork = () => {
-	return getNodeLib().getUsers();
+const getUsersNetwork = (opts = {
+	additionalHeaders: {}
+}) => {
+	return getNodeLib().getUsers(opts);
 };
 
 const getUserByEmail = (email, rawData = true, networkData = false) => {
