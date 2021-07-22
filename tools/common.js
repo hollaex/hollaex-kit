@@ -380,7 +380,9 @@ const getAssetsPrices = (assets = [], quote, amount, opts = {
 	return getNodeLib().getOraclePrices(assets, { quote, amount, ...opts });
 };
 
-const storeImageOnNetwork = async (image, name) => {
+const storeImageOnNetwork = async (image, name, opts = {
+	additionalHeaders: {}
+}) => {
 	if (image.mimetype.indexOf('image/') !== 0) {
 		return reject(new Error('Invalid file type'));
 	}
@@ -388,6 +390,19 @@ const storeImageOnNetwork = async (image, name) => {
 	const { apiKey } = await getNetworkKeySecret();
 	const exchangeId = getNodeLib().exchange_id;
 	const exchangeName = getKitConfig().info.name;
+
+	let headers = {
+		'api-key': apiKey,
+		'Content-Type': 'multipart/form-data',
+		'kit-version': getKitVersion()
+	};
+
+	if (isPlainObject(opts.additionalHeaders)) {
+		headers = {
+			...headers,
+			...opts.additionalHeaders
+		};
+	}
 
 	const options = {
 		method: 'POST',
@@ -403,10 +418,7 @@ const storeImageOnNetwork = async (image, name) => {
 				}
 			}
 		},
-		headers: {
-			'api-key': apiKey,
-			'Content-Type': 'multipart/form-data'
-		}
+		headers
 	};
 
 	return rp(options)
