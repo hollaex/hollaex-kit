@@ -20,7 +20,11 @@ const getUserTrades = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.order.getAllUserTradesByKitId(user_id, symbol, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value)
+	toolsLib.order.getAllUserTradesByKitId(user_id, symbol, limit.value, page.value, order_by.value, order.value, start_date.value, end_date.value, format.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-trades.csv`);
