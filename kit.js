@@ -2,7 +2,7 @@
 
 const WebSocket = require('ws');
 const moment = require('moment');
-const { createRequest, createSignature, generateHeaders } = require('./utils');
+const { createRequest, createSignature, generateHeaders, isDatetime, sanitizeDate } = require('./utils');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { each, union, isNumber, isString, isPlainObject, isBoolean } = require('lodash');
 
@@ -179,9 +179,9 @@ class HollaExKit {
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Deposits with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
 	 * @return {object} A JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
@@ -194,12 +194,12 @@ class HollaExKit {
 			rejected: null,
 			processing: null,
 			waiting: null,
-			limit: 50,
-			page: 1,
-			orderBy: 'id',
-			order: 'asc',
-			startDate: 0,
-			endDate: moment().toISOString(),
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
+			startDate: null,
+			endDate: null,
 			transactionId: null,
 			address: null
 		}
@@ -227,12 +227,12 @@ class HollaExKit {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (isString(opts.address)) {
@@ -286,9 +286,9 @@ class HollaExKit {
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
 	 * @return {object} A JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
@@ -301,12 +301,12 @@ class HollaExKit {
 			rejected: null,
 			processing: null,
 			waiting: null,
-			limit: 50,
-			page: 1,
-			orderBy: 'id',
-			order: 'asc',
-			startDate: 0,
-			endDate: moment().toISOString(),
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
+			startDate: null,
+			endDate: null,
 			transactionId: null,
 			address: null
 		}
@@ -334,12 +334,12 @@ class HollaExKit {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (isString(opts.address)) {
@@ -429,19 +429,19 @@ class HollaExKit {
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @return {object} A JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
 	getUserTrades(
 		opts = {
 			symbol: null,
-			limit: 50,
-			page: 1,
-			orderBy: 'id',
-			order: 'desc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
+			startDate: null,
+			endDate: null
 		}
 	) {
 		const verb = 'GET';
@@ -467,12 +467,12 @@ class HollaExKit {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		const headers = generateHeaders(
@@ -512,8 +512,8 @@ class HollaExKit {
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @return {object} A JSON array of objects containing the user's active orders
 	 */
 	getOrders(
@@ -522,12 +522,12 @@ class HollaExKit {
 			side: null,
 			status: null,
 			open: null,
-			limit: 50,
-			page: 1,
-			orderBy: 'id',
-			order: 'desc',
-			startDate: 0,
-			endDate: moment().toISOString()
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
+			startDate: null,
+			endDate: null
 		}
 	) {
 		const verb = 'GET';
@@ -565,12 +565,12 @@ class HollaExKit {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		const headers = generateHeaders(
