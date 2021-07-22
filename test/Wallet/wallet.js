@@ -2,20 +2,21 @@
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
 const { Builder, By, Key, until } = require('selenium-webdriver');
-const defNewUser = require('./../Onboarding/newUser.js');
+const defNewUser = require ('./../Onboarding/newUser');
 const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
 const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+const fs = require('fs');
 //let bob = process.env.BOB;
 
 let userName =  defNewUser.getNewUser();
 let passWord = process.env.PASSWORD;
 let logInPage = process.env.LOGIN_PAGE;
 let webSite = process.env.WEBSITE;
-describe('LogIn', function() {
+describe('Wallet', function() {
 	this.timeout(30000);
 	let driver;
 	let vars;
@@ -27,7 +28,7 @@ describe('LogIn', function() {
 	beforeEach(async function() {
 		driver = await new Builder().forBrowser('chrome').build();
 		vars = {};
-		console.log(' Test name: BobLogIn');
+		console.log(' Test name: LogIn');
 		await driver.get(logInPage);
 		await driver.sleep(5000);
 		const title = await driver.getTitle();
@@ -36,7 +37,7 @@ describe('LogIn', function() {
 		console.log('entring sand box/your weibste');
 		console.log(' Step # | action | target | value');
     
-		console.log(' 1 | type | name=email |newuser@gmail.com');
+		console.log(' 1 | type | name=email |'+userName);
 		await driver.wait(until.elementLocated(By.name('email')), 5000);
 		await driver.findElement(By.name('email')).sendKeys(userName);
     
