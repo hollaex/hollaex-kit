@@ -6,15 +6,16 @@ const {
 	isPlainObject,
 	isNumber,
 	isString,
-	isArray,
-	isDate
+	isArray
 } = require('lodash');
 const {
 	createRequest,
 	generateHeaders,
 	checkKit,
 	createSignature,
-	parameterError
+	parameterError,
+	isDatetime,
+	sanitizeDate
 } = require('./utils');
 const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
@@ -174,16 +175,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.symbol) {
@@ -257,16 +254,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.symbol) {
@@ -526,16 +519,12 @@ class HollaExNetwork {
 			path += `&transaction_id=${opts.transactionId}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.currency) {
@@ -650,16 +639,12 @@ class HollaExNetwork {
 			path += `&transaction_id=${opts.transactionId}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.currency) {
@@ -767,16 +752,12 @@ class HollaExNetwork {
 			path += `&transaction_id=${opts.transactionId}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.currency) {
@@ -891,16 +872,12 @@ class HollaExNetwork {
 			path += `&transaction_id=${opts.transactionId}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.currency) {
@@ -1202,16 +1179,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.symbol) {
@@ -1299,16 +1272,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.symbol) {
@@ -1576,16 +1545,12 @@ class HollaExNetwork {
 			path += `&order=${opts.order}`;
 		}
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		if (opts.symbol) {
@@ -2265,16 +2230,12 @@ class HollaExNetwork {
 
 		let path = `${this.baseUrl}/network/${this.exchange_id}/fees?`;
 
-		if (isString(opts.startDate)) {
-			path += `&start_date=${opts.startDate}`;
-		} else if (isDate(opts.startDate)) {
-			path += `&start_date=${opts.startDate.toISOString()}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
-		if (isString(opts.endDate)) {
-			path += `&end_date=${opts.endDate}`;
-		} else if (isDate(opts.endDate)) {
-			path += `&end_date=${opts.endDate.toISOString()}`;
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
 		const headers = generateHeaders(

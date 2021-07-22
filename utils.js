@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const crypto = require('crypto');
 const moment = require('moment');
+const { isDate } = require('lodash');
 
 const createRequest = (verb, url, headers, data) => {
 	const requestObj = {
@@ -46,10 +47,25 @@ const parameterError = (parameter, msg) => {
 	return new Error(`Parameter ${parameter} error: ${msg}`);
 };
 
+const isDatetime = (date, formats = [ moment.ISO_8601 ]) => {
+	return moment(date, formats, true).isValid();
+};
+
+const sanitizeDate = (date) => {
+	let result = date;
+	if (isDate(result)) {
+		result = moment(result).toISOString();
+	}
+
+	return result;
+};
+
 module.exports = {
 	createRequest,
 	createSignature,
 	generateHeaders,
 	checkKit,
-	parameterError
+	parameterError,
+	isDatetime,
+	sanitizeDate
 };
