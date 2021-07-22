@@ -608,7 +608,11 @@ const uploadImage = (req, res) => {
 	const name = req.swagger.params.name.value;
 	const file = req.swagger.params.file.value;
 
-	toolsLib.storeImageOnNetwork(file, name)
+	toolsLib.storeImageOnNetwork(file, name, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((result) => {
 			return res.json(result);
 		})
