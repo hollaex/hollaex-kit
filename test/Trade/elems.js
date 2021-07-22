@@ -48,51 +48,7 @@ describe('Orders', function() {
 	//	await driver.quit();
 	});
   it('Untitled', async function() {
-    // Test name: Untitled
-    // Step # | name | target | value
-    // 1 | open | /login | 
-    // await driver.get("https://sandbox.hollaex.com/login")
-    // // 2 | setWindowSize | 1280x680 | 
-    // await driver.manage().window().setRect(1280, 680)
-    // // 3 | type | name=email | tech@bitholla.com
-    // await driver.findElement(By.name("email")).sendKeys("tech@bitholla.com")
-    // // 4 | type | name=password | bitHolla1
-    // await driver.findElement(By.name("password")).sendKeys("bitHolla1")
-    // // 5 | click | name=email | 
-    // await driver.findElement(By.name("email")).click()
-    // // 6 | click | name=password | 
-    // await driver.findElement(By.name("password")).click()
-    // // 7 | click | css=.holla-button | 
-    // await driver.findElement(By.css(".holla-button")).click()
-    // 8 | open | https://sandbox.hollaex.com/trade/xht-usdt | 
-    await sleep(5000)
-    await driver.get("https://sandbox.hollaex.com/trade/xht-usdt")
-    // 9 | click | css=.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4) | 
-    await sleep(5000)
-
-    let links = await driver.findElements(By.className("trade_block-content"))//('table_body-row'))
-    for(let link of links) {
-        text = await link.getText();
-        console.log("objec :"+ String(link))
-        console.log("this is text:"+text);
-    }
-    // await driver.findElement(By.css(".trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4)")).click()
-    // // 10 | storeText | css=.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4) | d1
-    // vars["d1"] = await driver.findElement(By.css(".trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4)")).getText()
-    // // 11 | click | css=.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(2) > td:nth-child(4) | 
-    // await driver.findElement(By.css(".trade_block-wrapper:nth-child(1) .table_body-row:nth-child(2) > td:nth-child(4)")).click()
-    // // 12 | storeText | css=.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(2) > td:nth-child(4) | d2
-    // vars["d2"] = await driver.findElement(By.css(".trade_block-wrapper:nth-child(1) .table_body-row:nth-child(2) > td:nth-child(4)")).getText()
-    // // // 13 | click | css=.table_body-row:nth-child(1) > .px-2 | 
-    // await driver.findElement(By.css(".table_body-row:nth-child(1) > .px-2")).click()
-    // // 14 | click | css=.table_body-row:nth-child(2) > .px-2 | 
-    // await driver.findElement(By.css(".table_body-row:nth-child(2) > .px-2")).click()
-    // // 15 | click | css=.price-row-wrapper:nth-child(4) .trade_orderbook-cell-price | 
-    // await driver.findElement(By.css(".price-row-wrapper:nth-child(4) .trade_orderbook-cell-price")).click()
-    // // 16 | click | css=.price-row-wrapper:nth-child(3) .trade_orderbook-cell-price | 
-    // await driver.findElement(By.css(".price-row-wrapper:nth-child(3) .trade_orderbook-cell-price")).click()
-    // // 17 | click | css=.fill-ask:nth-child(2) .trade_orderbook-cell-price | 
-    // await driver.findElement(By.css(".fill-ask:nth-child(2) .trade_orderbook-cell-price")).click()
+   
     let linkss = await driver.findElements(By.className("trade-col_side_wrapper flex-column d-flex apply_rtl"))//('table_body-row'))
     for(let link of linkss) {
         text = await link.getText();
@@ -102,7 +58,7 @@ describe('Orders', function() {
  await sleep(10000)
  
     await driver.get("https://sandbox.hollaex.com/wallet")
-    let linksss = await driver.findElements(By.)//('table_body-row'))
+    let linksss = await driver.findElements(By.id('table_body-row'))
     console.log("wallet"+linksss+"n")
     //     let linkss = await driver.findElements(By.className("trade-col_side_wrapper flex-column d-flex apply_rtl"))//('table_body-row'))
     for(let link of linksss) {

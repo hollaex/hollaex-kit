@@ -32,7 +32,7 @@ describe('Trade', function() {
 	
 	});
 	afterEach(async function() {
-		//await driver.quit();
+	 await driver.quit();
 	});
 	it('limit buy', async function() {
 
