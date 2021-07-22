@@ -633,7 +633,7 @@ const getUserDepositsByKitId = (
 		transactionId,
 		address,
 		format,
-		...opts
+		opts
 	);
 };
 
@@ -676,7 +676,7 @@ const getUserWithdrawalsByKitId = (
 		transactionId,
 		address,
 		format,
-		...opts
+		opts
 	);
 };
 
