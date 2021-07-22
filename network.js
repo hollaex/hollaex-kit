@@ -72,7 +72,7 @@ class HollaExNetwork {
 	 * @return {object} Your exchange values
 	 */
 	async init(opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.activation_code);
 		const verb = 'GET';
@@ -104,7 +104,7 @@ class HollaExNetwork {
 	 * @return {object} Created user's values on network
 	 */
 	createUser(email, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -151,7 +151,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -225,7 +225,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -285,7 +285,7 @@ class HollaExNetwork {
 	 * @return {object} User network data
 	 */
 	getUser(userId, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -315,7 +315,7 @@ class HollaExNetwork {
 	 * @return {object} Fields: Count, Data. Count is the number of users for the exchange on the network. Data is an array of users
 	 */
 	getUsers(opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -342,7 +342,7 @@ class HollaExNetwork {
 	 */
 	createUserCryptoAddress(userId, crypto, opts = {
 		network: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -383,7 +383,7 @@ class HollaExNetwork {
 	 */
 	performWithdrawal(userId, address, currency, amount, opts = {
 		network: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -424,7 +424,7 @@ class HollaExNetwork {
 	 * @return {object} Withdrawal canceled on the network
 	 */
 	cancelWithdrawal(userId, withdrawalId, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -485,7 +485,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -600,7 +600,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -718,7 +718,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -833,7 +833,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -922,7 +922,7 @@ class HollaExNetwork {
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
 	getBalance(opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -948,7 +948,7 @@ class HollaExNetwork {
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
 	getUserBalance(userId, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -980,7 +980,7 @@ class HollaExNetwork {
 	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
 	 */
 	getOrder(userId, orderId, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1039,7 +1039,7 @@ class HollaExNetwork {
 		opts = {
 			stop: null,
 			meta: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1103,7 +1103,7 @@ class HollaExNetwork {
 	 * @return {object} Value of canceled order on the network with values side, size, filled, etc.
 	 */
 	cancelOrder(userId, orderId, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1155,7 +1155,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1243,7 +1243,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1317,7 +1317,7 @@ class HollaExNetwork {
 	 */
 	cancelAllOrders(userId, opts = {
 		symbol: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1353,7 +1353,7 @@ class HollaExNetwork {
 	 * @return {object} Object with field data that contains stats info
 	 */
 	getUserStats(userId, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1394,7 +1394,7 @@ class HollaExNetwork {
 		network,
 		opts = {
 			isTestnet: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1447,7 +1447,7 @@ class HollaExNetwork {
 		opts = {
 			description: null,
 			email: true,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1519,7 +1519,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -1583,7 +1583,7 @@ class HollaExNetwork {
 	 */
 	getPublicTrades(opts = {
 		symbol: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -1612,7 +1612,7 @@ class HollaExNetwork {
 	 * @return {object} Object with orderbook
 	 */
 	getOrderbook(symbol, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1647,7 +1647,7 @@ class HollaExNetwork {
 	 * @return {object} Object with orderbook
 	 */
 	getOrderbooks(opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -1677,7 +1677,7 @@ class HollaExNetwork {
 	 * @return {object} Object with trade history info
 	 */
 	getChart(from, to, symbol, resolution, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1716,7 +1716,7 @@ class HollaExNetwork {
 	 * @return {array} Array of objects with trade history info
 	 */
 	getCharts(from, to, resolution, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1750,7 +1750,7 @@ class HollaExNetwork {
 	 * @return {object} Object with TradingView udf config
 	 */
 	getUdfConfig(opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -1779,7 +1779,7 @@ class HollaExNetwork {
 	 * @return {object} Object with TradingView udf history HOLCV
 	 */
 	getUdfHistory(from, to, symbol, resolution, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1816,7 +1816,7 @@ class HollaExNetwork {
 	 * @return {object} Object with TradingView udf symbols
 	 */
 	getUdfSymbols(symbol, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1847,7 +1847,7 @@ class HollaExNetwork {
 	 * @return {object} Object with historical data
 	 */
 	getTicker(symbol, opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -1880,7 +1880,7 @@ class HollaExNetwork {
 	 * @return {object} Object with historical data for all symbols
 	 */
 	getTickers(opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -1918,7 +1918,7 @@ class HollaExNetwork {
 		status: null,
 		email: null,
 		fee: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
@@ -1994,7 +1994,7 @@ class HollaExNetwork {
 			updatedTransactionId: null,
 			email: null,
 			updatedDescription: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		if (!transactionId) {
@@ -2074,7 +2074,7 @@ class HollaExNetwork {
 		status: null,
 		email: null,
 		fee: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
@@ -2150,7 +2150,7 @@ class HollaExNetwork {
 			updatedTransactionId: null,
 			email: null,
 			updatedDescription: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		if (!transactionId) {
@@ -2222,7 +2222,7 @@ class HollaExNetwork {
 		opts = {
 			startDate: null,
 			endDate: null,
-			additionalHeaders: {}
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -2256,7 +2256,7 @@ class HollaExNetwork {
 	 * @return {object} Object with settled fees.
 	 */
 	settleFees(opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
@@ -2286,7 +2286,7 @@ class HollaExNetwork {
 	getOraclePrices(assets = [], opts = {
 		quote: null,
 		amount: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
