@@ -44,6 +44,7 @@ import { checkRole } from '../../../utils/token';
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
 import './index.css';
+import '../../../.././src/admin_theme_variables.css';
 import 'antd/dist/antd.css';
 import { requestMyPlugins } from '../Plugins/action';
 

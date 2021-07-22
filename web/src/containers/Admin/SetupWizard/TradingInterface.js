@@ -18,6 +18,7 @@ const Features = ({ initialValues = {}, handleNext, updateConstants, kit }) => {
 					chat: isUpgrade ? false : !!values.chat,
 					quick_trade: !!values.quick_trade,
 					pro_trade: !!values.pro_trade,
+					home_page: !!values.home_page,
 				},
 			};
 			updateConstants(formValues, () => handleNext(4));
@@ -92,6 +93,26 @@ const Features = ({ initialValues = {}, handleNext, updateConstants, kit }) => {
 										<div className="d-flex justify-content-between">
 											<div className="small-text">
 												(Usernames, text and emoji communication)
+											</div>
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+						<Item name="home_page" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box mr-1">
+										<ReactSVG
+											src={STATIC_ICONS.HOME_PAGE_FEATURE_ICON}
+											className="feature-chat-icon"
+										/>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Homepage
+										<div className="d-flex justify-content-between">
+											<div className="small-text">
+												(This will be the first page seen on your domain)
 											</div>
 										</div>
 									</div>

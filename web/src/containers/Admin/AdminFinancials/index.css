@@ -41,7 +41,7 @@
 	position: relative;
 	bottom: 13px;
 	left: 3px;
-	background-color: blue;
+	background-color: var(--admin_panel_modal_background);
 	width: 16rem;
 }
 .settle-modal-page .modal-button {
@@ -86,7 +86,7 @@
 	width: 100%;
 }
 .admin-earnings-container .content-wrapper .ant-tabs {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
 	height: 6px;
@@ -104,11 +104,11 @@
 }
 .admin-earnings-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 	font-weight: bold;
 }
 .admin-earnings-container .ant-tabs-nav .ant-tabs-tab:hover {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-earnings-container .ant-tabs-nav::before {
 	border-bottom: none;
@@ -129,8 +129,8 @@
 .admin-earnings-container .download-btn {
 	width: 100px;
 	font-weight: bold;
-	background-color: #0000ff;
-	color: #ffffff;
+	background-color: #202980;
+	color: var(--admin_panel_main_font);
 	border-color: #ffffff;
 	text-decoration: underline;
 	cursor: pointer;
@@ -149,23 +149,23 @@
 }
 
 .admin-earnings-container .ant-table-thead > tr > th {
-	background-color: #4e4efb;
-	color: #ffffff;
+	background-color: var(--admin_panel_table_thead);
+	color: var(--admin_panel_main_font);
 	padding: 0rem 1rem;
 }
 .admin-earnings-container .ant-table-tbody > tr > td {
-	background-color: #0000d1;
-	color: #ffffff;
-	border-bottom: 1px solid #0000d1;
+	background-color: var(--admin_panel_table_tbody);
+	color: var(--admin_panel_main_font);
+	border-bottom: 1px solid var(--admin_panel_table_tbody);
 }
 .admin-earnings-container
 	.ant-table-tbody
 	> tr.ant-table-placeholder:hover
 	> td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-earnings-container .ant-table-tbody > tr.ant-table-row:hover > td {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_table_tbody_hover);
 }
 .admin-earnings-container
 	.ant-empty
@@ -181,7 +181,7 @@
 	stroke: #7d9ac9;
 }
 .admin-earnings-container .ant-empty .ant-empty-description {
-	color: #ffffff;
+	color: var(--admin_panel_main_font);
 }
 .admin-earnings-container .ant-table-pagination.ant-pagination {
 	margin: 16px 0;
@@ -208,7 +208,7 @@
 	margin-top: 10px;
 }
 .admin-earnings-container .ant-picker {
-	background-color: blue;
+	background-color: var(--admin_panel_input);
 }
 .admin-earnings-container .ant-picker input {
 	color: white;

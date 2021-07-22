@@ -13,6 +13,7 @@ export const generateAudioCueFormValues = () => ({
 		stringId: 'USER_SETTINGS.AUDIO_CUE_FORM.ALL_AUDIO',
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.ALL_AUDIO'],
 		className: 'toggle-wrapper-all',
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	public_trade: {
 		type: 'toggle',
@@ -20,6 +21,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.PUBLIC_TRADE_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	order_partially_completed: {
 		type: 'toggle',
@@ -27,6 +29,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PARTIAL_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	order_placed: {
 		type: 'toggle',
@@ -34,6 +37,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PLACED_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	order_canceled: {
 		type: 'toggle',
@@ -41,6 +45,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_CANCELED_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	order_completed: {
 		type: 'toggle',
@@ -48,6 +53,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_COMPLETED_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	click_amounts: {
 		type: 'toggle',
@@ -55,6 +61,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.CLICK_AMOUNTS_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	get_quote_quick_trade: {
 		type: 'toggle',
@@ -62,6 +69,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.GET_QUICK_TRADE_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	quick_trade_success: {
 		type: 'toggle',
@@ -69,6 +77,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.SUCCESS_QUICK_TRADE_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 	quick_trade_timeout: {
 		type: 'toggle',
@@ -76,6 +85,7 @@ export const generateAudioCueFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.AUDIO_CUE_FORM.QUICK_TRADE_TIMEOUT_AUDIO'],
 		className: 'toggle-wrapper',
 		disabled: false,
+		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
 	},
 });
 

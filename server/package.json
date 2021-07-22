@@ -1,5 +1,5 @@
 {
-	"version": "2.1.14",
+	"version": "2.1.15",
 	"private": false,
 	"description": "HollaEx Kit",
 	"keywords": [
@@ -28,8 +28,8 @@
 		"flat": "5.0.0",
 		"geoip-lite": "1.4.1",
 		"helmet": "3.12.0",
-		"hollaex-node-lib": "github:bitholla/hollaex-node-lib#2.4",
-		"hollaex-tools-lib": "github:bitholla/hollaex-tools-lib#2.7",
+		"hollaex-node-lib": "github:bitholla/hollaex-node-lib#2.5",
+		"hollaex-tools-lib": "github:bitholla/hollaex-tools-lib#2.8",
 		"http": "0.0.0",
 		"install": "0.10.4",
 		"json2csv": "4.5.4",

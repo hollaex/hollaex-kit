@@ -1,7 +1,7 @@
+import React from 'react';
 import validator from 'validator';
 import WAValidator from 'multicoin-address-validator';
 import math from 'mathjs';
-import bchaddr from 'bchaddrjs';
 import { roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 import { getDecimals } from 'utils/utils';
@@ -34,42 +34,21 @@ export const username = (value = '') =>
 	!usernameRegEx.test(value) ? STRINGS['INVALID_USERNAME'] : undefined;
 
 export const validAddress = (symbol = '', message, network) => {
-	let currency = symbol.toUpperCase();
+	let currency = network ? network.toUpperCase() : symbol.toUpperCase();
 	return (address) => {
-		let valid = true;
+		let valid;
 
-		if (network) {
-			if (network === 'bnb') {
-				network = 'eth';
-			}
-			valid = WAValidator.validate(address, network);
-		} else {
-			const supported = WAValidator.findCurrency(symbol);
+		try {
+			if (currency === 'bnb') currency = 'eth';
+
+			const supported = WAValidator.findCurrency(currency);
 			if (supported) {
-				// this library recognizes this currency
-				switch (currency) {
-					case 'BTC':
-						valid = WAValidator.validate(address, currency);
-						break;
-					case 'BCH':
-						try {
-							bchaddr.toLegacyAddress(address);
-							valid = true;
-						} catch (err) {
-							valid = false;
-						}
-						break;
-					case 'ETH':
-						valid = WAValidator.validate(address, currency);
-						break;
-					case 'XRP':
-						valid = WAValidator.validate(address, currency);
-						break;
-					default:
-						valid = WAValidator.validate(address, currency);
-						break;
-				}
+				valid = WAValidator.validate(address, currency);
+			} else {
+				valid = true;
 			}
+		} catch (err) {
+			valid = true;
 		}
 
 		return !valid
@@ -111,25 +90,23 @@ export const step = (step, message) => (value = 0) =>
 	math.larger(math.mod(math.bignumber(value), math.bignumber(step)), 0)
 		? message || STRINGS.formatString(STRINGS['VALIDATIONS.STEP'], step)
 		: undefined;
-export const checkBalance = (available, message, fee = 0) => (value = 0) => {
+export const checkBalance = (available, coinName, fee = 0) => (value = 0) => {
 	const operation =
 		fee > 0
-			? math.number(
-					math.add(
-						math.fraction(value),
-						math.multiply(math.fraction(value), math.fraction(fee))
-					)
-			  )
+			? math.number(math.add(math.fraction(value), math.fraction(fee)))
 			: value;
 
 	if (operation > available) {
-		const errorMessage =
-			message ||
-			STRINGS.formatString(
-				STRINGS['VALIDATIONS.INVALID_BALANCE'],
-				available,
-				operation
-			);
+		const errorMessage = coinName
+			? STRINGS.formatString(
+					STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+					<b>{`${operation} ${coinName}`}</b>
+			  )
+			: STRINGS.formatString(
+					STRINGS['VALIDATIONS.INVALID_BALANCE'],
+					available,
+					operation
+			  );
 		return errorMessage;
 	}
 	return undefined;

@@ -862,7 +862,7 @@ export default {
 	WITHDRAWALS_MAX_VALUE_ERROR:
 		'The transaction is too big to send. Try a smaller amount.',
 	WITHDRAWALS_LOWER_BALANCE:
-		'You don’t have enough {0} in your balance to send that transaction',
+		'Insufficient balance to proceed. This transaction requires {0}.',
 	WITHDRAWALS_FEE_TOO_LARGE:
 		'The fee is more than {0}% of your total transaction',
 	WITHDRAWALS_BTC_INVALID_ADDRESS:
@@ -1468,4 +1468,5 @@ export default {
 	FEE_REDUCTION: 'Fee reduction', // new
 	FEE_REDUCTION_DESCRIPTION:
 		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
+	CHANGE_PASSWORD_FAILED: 'changing password failed', // new
 };
