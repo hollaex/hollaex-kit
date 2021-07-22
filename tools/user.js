@@ -165,7 +165,7 @@ const createUser = (
 	opts = {
 		role: 'user',
 		id: null,
-		additionalHeaders: {}
+		additionalHeaders: null
 	}
 ) => {
 	email = email.toLowerCase();
@@ -243,7 +243,7 @@ const createUser = (
 };
 
 const createUserOnNetwork = (email, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
@@ -436,7 +436,7 @@ const getAllUsersAdmin = (opts = {
 	start_date: null,
 	end_date: null,
 	format: null,
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
@@ -561,7 +561,7 @@ const getAllUsersAdmin = (opts = {
 };
 
 const getUser = (identifier = {}, rawData = true, networkData = false, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!identifier.email && !identifier.kit_id && !identifier.network_id) {
 		return reject(new Error(PROVIDE_USER_CREDENTIALS));
@@ -595,19 +595,19 @@ const getUser = (identifier = {}, rawData = true, networkData = false, opts = {
 };
 
 const getUserNetwork = (networkId, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getUser(networkId, opts);
 };
 
 const getUsersNetwork = (opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getUsers(opts);
 };
 
 const getUserByEmail = (email, rawData = true, networkData = false, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!email || !isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
@@ -616,7 +616,7 @@ const getUserByEmail = (email, rawData = true, networkData = false, opts = {
 };
 
 const getUserByKitId = (kit_id, rawData = true, networkData = false, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!kit_id) {
 		return reject(new Error(PROVIDE_KIT_ID));
@@ -643,7 +643,7 @@ const getUserTier = (user_id) => {
 };
 
 const getUserByNetworkId = (network_id, rawData = true, networkData = false, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!network_id) {
 		return reject(new Error(PROVIDE_NETWORK_ID));
@@ -1275,7 +1275,7 @@ const setUsernameById = (userId, username) => {
 
 const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 	network: null,
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
@@ -1285,7 +1285,7 @@ const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 
 const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
 	network: null,
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -1299,7 +1299,7 @@ const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
 };
 
 const getUserStatsByKitId = (userId, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getUserByKitId(userId)
 		.then((user) => {
@@ -1313,7 +1313,7 @@ const getUserStatsByKitId = (userId, opts = {
 };
 
 const getUserStatsByNetworkId = (networkId, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
@@ -1349,7 +1349,7 @@ const getExchangeOperators = (opts = {
 };
 
 const inviteExchangeOperator = (invitingEmail, email, role, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	const roles = {
 		is_admin: false,

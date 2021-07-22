@@ -365,7 +365,7 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 };
 
 const getAssetsPrices = (assets = [], quote, amount, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	for (let asset of assets) {
 		if (!subscribedToCoin(asset)) {
@@ -381,7 +381,7 @@ const getAssetsPrices = (assets = [], quote, amount, opts = {
 };
 
 const storeImageOnNetwork = async (image, name, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (image.mimetype.indexOf('image/') !== 0) {
 		return reject(new Error('Invalid file type'));
@@ -426,61 +426,61 @@ const storeImageOnNetwork = async (image, name, opts = {
 };
 
 const getPublicTrades = (symbol, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getPublicTrades({ symbol, ...opts });
 };
 
 const getOrderbook = (symbol, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getOrderbook(symbol, opts);
 };
 
 const getOrderbooks = (opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getOrderbooks(opts);
 };
 
 const getChart = (from, to, symbol, resolution, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getChart(from, to, symbol, resolution, opts);
 };
 
 const getCharts = (from, to, resolution, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getCharts(from, to, resolution, opts);
 };
 
 const getUdfConfig = (opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfConfig(opts);
 };
 
 const getUdfHistory = (from, to, symbol, resolution, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfHistory(from, to, symbol, resolution, opts);
 };
 
 const getUdfSymbols = (symbol, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfSymbols(symbol, opts);
 };
 
 const getTicker = (symbol, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getTicker(symbol, opts);
 };
 
 const getTickers = (opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	return getNodeLib().getTickers(opts);
 };
@@ -495,7 +495,7 @@ const getTradesHistory = (
 	startDate,
 	endDate,
 	opts = {
-		additionalHeaders: {}
+		additionalHeaders: null
 	}
 ) => {
 	return getNodeLib().getTradesHistory({
