@@ -178,8 +178,8 @@ class HollaExKit {
 	 * @param {boolean} opts.waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Deposits with specific transaction ID.
@@ -285,8 +285,8 @@ class HollaExKit {
 	 * @param {boolean} opts.waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
@@ -427,8 +427,8 @@ class HollaExKit {
 	 * @param {string} opts.symbol - The symbol-pair to filter by, pass undefined to receive data on all currencies
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @return {object} A JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
@@ -510,8 +510,8 @@ class HollaExKit {
 	 * @param {string} opts.symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @return {object} A JSON array of objects containing the user's active orders

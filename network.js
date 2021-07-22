@@ -135,10 +135,10 @@ class HollaExNetwork {
 	 * @param {string} opts.symbol - Symbol of trades. Leave blank to get trades for all symbols
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
@@ -208,10 +208,10 @@ class HollaExNetwork {
 	 * @param {string} opts.symbol - Symbol of trades. Leave blank to get trades for all symbols
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
@@ -460,10 +460,10 @@ class HollaExNetwork {
 	 * @param {boolean} opts.waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -574,10 +574,10 @@ class HollaExNetwork {
 	 * @param {boolean} opts.waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -693,10 +693,10 @@ class HollaExNetwork {
 	 * @param {boolean} opts.waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -807,10 +807,10 @@ class HollaExNetwork {
 	 * @param {boolean} opts.waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -1136,10 +1136,10 @@ class HollaExNetwork {
 	 * @param {string} opts.type - Type of orders to query e.g. active, stop
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
@@ -1223,10 +1223,10 @@ class HollaExNetwork {
 	 * @param {string} opts.type - Type of orders to query e.g. active, stop
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
@@ -1383,7 +1383,7 @@ class HollaExNetwork {
 	 * @param {string} address - Transaction receiving address
 	 * @param {string} network - Crypto's blockchain network
 	 * @param {object} opts - Optional parameters.
-	 * @param {boolean} opts.isTestnet - Network transaction was made on. Default: false
+	 * @param {boolean} opts.isTestnet - Specify transaction was made on testnet blockchain.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Success or failed message
 	 */
@@ -1434,7 +1434,7 @@ class HollaExNetwork {
 	 * @param {string} currency - Currency to transfer
 	 * @param {number} amount - Amount to transfer
 	 * @param {object} opts - Optional parameters.
-	 * @param {string} opts.description - Description of transfer. Default: Empty string
+	 * @param {string} opts.description - Description of transfer.
 	 * @param {boolean} opts.email - Send email to users after transfer. Default: true.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with field transaction_id
@@ -1446,7 +1446,7 @@ class HollaExNetwork {
 		amount,
 		opts = {
 			description: null,
-			email: true,
+			email: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1502,10 +1502,10 @@ class HollaExNetwork {
 	 * @param {string} opts.side - Side of trades.
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Count and data format.
 	 */
@@ -1904,7 +1904,7 @@ class HollaExNetwork {
 	 * @param {string} currency - Currency to mint.
 	 * @param {number} amount - Amount to mint.
 	 * @param {object} opts - Optional parameters.
-	 * @param {string} opts.description - Description of transfer. Default: Empty string
+	 * @param {string} opts.description - Description of transfer.
 	 * @param {string} opts.transactionId - Custom transaction ID for mint.
 	 * @param {boolean} opts.status - Status of mint created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
@@ -1915,8 +1915,8 @@ class HollaExNetwork {
 	mintAsset(userId, currency, amount, opts = {
 		description: null,
 		transactionId: null,
-		status: null,
-		email: null,
+		status: true,
+		email: true,
 		fee: null,
 		additionalHeaders: null
 	}) {
@@ -1946,10 +1946,14 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.status)) {
 			data.status = opts.status;
+		} else {
+			data.status = true;
 		}
 
 		if (isBoolean(opts.email)) {
 			data.email = opts.email;
+		} else {
+			data.email = true;
 		}
 
 		if (isNumber(opts.fee)) {
@@ -1992,7 +1996,7 @@ class HollaExNetwork {
 			processing: null,
 			waiting: null,
 			updatedTransactionId: null,
-			email: null,
+			email: true,
 			updatedDescription: null,
 			additionalHeaders: null
 		}
@@ -2040,6 +2044,8 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.email)) {
 			data.email = opts.email;
+		} else {
+			data.email = true;
 		}
 
 		const headers = generateHeaders(
@@ -2060,7 +2066,7 @@ class HollaExNetwork {
 	 * @param {string} currency - Currency to burn.
 	 * @param {number} amount - Amount to burn.
 	 * @param {object} opts - Optional parameters.
-	 * @param {string} opts.description - Description of transfer. Default: Empty string
+	 * @param {string} opts.description - Description of transfer.
 	 * @param {string} opts.transactionId - Custom transaction ID for burn.
 	 * @param {boolean} opts.status - Status of burn created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
@@ -2071,8 +2077,8 @@ class HollaExNetwork {
 	burnAsset(userId, currency, amount, opts = {
 		description: null,
 		transactionId: null,
-		status: null,
-		email: null,
+		status: true,
+		email: true,
 		fee: null,
 		additionalHeaders: null
 	}) {
@@ -2102,10 +2108,14 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.status)) {
 			data.status = opts.status;
+		} else {
+			data.status = true;
 		}
 
 		if (isBoolean(opts.email)) {
 			data.email = opts.email;
+		} else {
+			data.email = true;
 		}
 
 		if (isNumber(opts.fee)) {
@@ -2148,7 +2158,7 @@ class HollaExNetwork {
 			processing: null,
 			waiting: null,
 			updatedTransactionId: null,
-			email: null,
+			email: true,
 			updatedDescription: null,
 			additionalHeaders: null
 		}
@@ -2196,6 +2206,8 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.email)) {
 			data.email = opts.email;
+		} else {
+			data.email = true;
 		}
 
 		const headers = generateHeaders(
@@ -2213,8 +2225,8 @@ class HollaExNetwork {
 	/**
 	 * Get generated fees for exchange
 	 * @param {object} opts - Optional parameters.
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
-	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
+	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with generated fees
 	 */
@@ -2278,14 +2290,14 @@ class HollaExNetwork {
 	 * Convert assets to a quote asset
 	 * @param {array} assets - Array of assets to convert as strings
 	 * @param {object} opts - Optional parameters.
-	 * @param {string} opts.quote - Quote asset to convert to. Default: USDT.
+	 * @param {string} opts.quote - Quote asset to convert to. Default: usdt.
 	 * @param {number} opts.amount - Amount of quote asset to convert to. Default: 1.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with converted assets.
 	 */
 	getOraclePrices(assets = [], opts = {
-		quote: null,
-		amount: null,
+		quote: 'usdt',
+		amount: 1,
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2301,12 +2313,16 @@ class HollaExNetwork {
 			this.exchange_id
 		}&assets=${assets}`;
 
-		if (opts.quote) {
+		if (isString(opts.quote)) {
 			path += `&quote=${opts.quote}`;
+		} else {
+			path += '&quote=usdt';
 		}
 
 		if (isNumber(opts.amount)) {
 			path += `&amount=${opts.amount}`;
+		} else {
+			path += '&amount=1';
 		}
 
 		const headers = generateHeaders(
