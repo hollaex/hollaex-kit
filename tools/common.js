@@ -34,7 +34,6 @@ const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
 const { errorMessageConverter: handleCatchError } = require(`${SERVER_PATH}/utils/conversion`);
-const { version } = require(`${SERVER_PATH}/package.json`);
 const { TemplateEmail } = require(`${SERVER_PATH}/mail/templates/helpers/common`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
@@ -46,7 +45,11 @@ const moment = require('moment');
 // const { Transform } = require('json2csv');
 
 const getKitVersion = () => {
-	return version;
+	return dbQuery.findOne('status', {
+		raw: true,
+		attributes: ['id', 'kit_version']
+	})
+		.then(({ kit_version }) => kit_version);
 };
 
 /**
@@ -290,7 +293,10 @@ const sendEmailToSupport = (email, category, subject, description) => {
 };
 
 const getNetworkKeySecret = () => {
-	return dbQuery.findOne('status')
+	return dbQuery.findOne('status', {
+		raw: true,
+		attributes: ['id', 'api_key', 'api_secret']
+	})
 		.then((status) => {
 			return {
 				apiKey: status.api_key,
@@ -387,14 +393,21 @@ const storeImageOnNetwork = async (image, name, opts = {
 		return reject(new Error('Invalid file type'));
 	}
 
-	const { apiKey } = await getNetworkKeySecret();
+	const {
+		api_key,
+		kit_version
+	} = await dbQuery.findOne('status', {
+		raw: true,
+		attributes: ['id', 'api_key', 'kit_version']
+	});
+
 	const exchangeId = getNodeLib().exchange_id;
 	const exchangeName = getKitConfig().info.name;
 
 	let headers = {
-		'api-key': apiKey,
+		'api-key': api_key,
 		'Content-Type': 'multipart/form-data',
-		'kit-version': getKitVersion()
+		'kit-version': kit_version
 	};
 
 	if (isPlainObject(opts.additionalHeaders)) {
