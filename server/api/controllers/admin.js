@@ -59,7 +59,10 @@ const createInitialAdmin = (req, res) => {
 			}
 			return toolsLib.user.createUser(email, password, {
 				role: 'admin',
-				id: 1
+				id: 1,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
 			});
 		})
 		.then(() => {
