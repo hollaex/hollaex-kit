@@ -454,7 +454,7 @@ class HollaExNetwork {
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
@@ -571,7 +571,7 @@ class HollaExNetwork {
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
@@ -693,7 +693,7 @@ class HollaExNetwork {
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
@@ -810,7 +810,7 @@ class HollaExNetwork {
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
@@ -1500,7 +1500,7 @@ class HollaExNetwork {
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
-	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: asc
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @return {object} Count and data format.
