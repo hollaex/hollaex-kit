@@ -21,7 +21,9 @@ const createOrder = (req, res) => {
 	let order = req.swagger.params.order.value;
 
 	const opts = {
-		'x-forwarded-for': req.headers['x-forwarded-for']
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	};
 
 	if (isPlainObject(order.meta)) {
