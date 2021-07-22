@@ -66,6 +66,8 @@ class HollaExNetwork {
 
 	/**
 	 * Initialize your Kit for HollaEx Network. Must have passed activation_code in constructor
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Your exchange values
 	 */
 	async init(opts = {
@@ -96,6 +98,8 @@ class HollaExNetwork {
 	/**
 	 * Create a user for the exchange on the network
 	 * @param {string} email - Email of new user
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Created user's values on network
 	 */
 	createUser(email, opts = {
@@ -134,6 +138,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getTrades(
@@ -210,6 +215,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getUserTrades(
@@ -281,6 +287,8 @@ class HollaExNetwork {
 	/**
 	 * Get user network data
 	 * @param {number} userId - User's network id
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} User network data
 	 */
 	getUser(userId, opts = {
@@ -309,6 +317,8 @@ class HollaExNetwork {
 
 	/**
 	 * Get all users for the exchange on the network
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of users for the exchange on the network. Data is an array of users
 	 */
 	getUsers(opts = {
@@ -334,6 +344,7 @@ class HollaExNetwork {
 	 * @param {string} crypto - Crypto to create address for.
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.network - Crypto's blockchain network
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with new address
 	 */
 	createUserCryptoAddress(userId, crypto, opts = {
@@ -374,6 +385,7 @@ class HollaExNetwork {
 	 * @param {number} amount - Amount to withdraw
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.network - Specify crypto currency network
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Withdrawal made on the network
 	 */
 	performWithdrawal(userId, address, currency, amount, opts = {
@@ -414,6 +426,8 @@ class HollaExNetwork {
 	 * Cancel a withdrawal for an exchange's user on the network
 	 * @param {number} userId - User id on network
 	 * @param {string} withdrawalId - Withdrawal's id on network (not transaction id).
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Withdrawal canceled on the network
 	 */
 	cancelWithdrawal(userId, withdrawalId, opts = {
@@ -459,6 +473,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
 	getDeposits(
@@ -576,6 +591,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
 	getUserDeposits(
@@ -698,6 +714,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
 	getWithdrawals(
@@ -815,6 +832,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
 	getUserWithdrawals(
@@ -922,6 +940,8 @@ class HollaExNetwork {
 
 	/**
 	 * Get the balance for the exchange on the network
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
 	getBalance(opts = {
@@ -946,6 +966,8 @@ class HollaExNetwork {
 	/**
 	 * Get the balance for an exchange's user on the network
 	 * @param {number} userId - User id on network
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
 	getUserBalance(userId, opts = {
@@ -976,6 +998,8 @@ class HollaExNetwork {
 	 * Get an order for the exchange on the network
 	 * @param {number} userId - Id of order's user
 	 * @param {number} orderId - Order id
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
 	 */
 	getOrder(userId, orderId, opts = {
@@ -1021,6 +1045,7 @@ class HollaExNetwork {
 	 * @param {object} opts.meta - Meta values for order.
 	 * @param {boolean} opts.meta.post_only - Whether or not the order should only be made if market maker.
 	 * @param {string} opts.meta.note - Additional note to add to order data.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Newly created order values e.g. symbol, id, side, status, etc.
 	 */
 	createOrder(
@@ -1096,6 +1121,8 @@ class HollaExNetwork {
 	 * Cancel an order for the exchange on the network
 	 * @param {number} userId - Id of order's user
 	 * @param {number} orderId - Order id
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Value of canceled order on the network with values side, size, filled, etc.
 	 */
 	cancelOrder(userId, orderId, opts = {
@@ -1136,6 +1163,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
 	getOrders(
@@ -1226,6 +1254,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
 	getUserOrders(
@@ -1314,6 +1343,7 @@ class HollaExNetwork {
 	 * @param {number} userId - User id on network
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.symbol - Symbol of orders to cancel. Leave blank to cancel user's orders for all symbols
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of canceled orders
 	 */
 	cancelAllOrders(userId, opts = {
@@ -1349,6 +1379,8 @@ class HollaExNetwork {
 	/**
 	 * Get sum of user trades and its stats
 	 * @param {number} userId - User id on network
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with field data that contains stats info
 	 */
 	getUserStats(userId, opts = {
@@ -1383,6 +1415,7 @@ class HollaExNetwork {
 	 * @param {string} network - Crypto's blockchain network
 	 * @param {object} opts - Optional parameters.
 	 * @param {boolean} opts.isTestnet - Network transaction was made on. Default: false
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Success or failed message
 	 */
 	checkTransaction(
@@ -1434,6 +1467,7 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.description - Description of transfer. Default: Empty string
 	 * @param {boolean} opts.email - Send email to users after transfer. Default: true.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with field transaction_id
 	 */
 	transferAsset(
@@ -1503,6 +1537,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Count and data format.
 	 */
 	getTradesHistory(
@@ -1578,6 +1613,7 @@ class HollaExNetwork {
 	 * Get Public trades on network
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.symbol - Symbol to get trades for. Leave blank to get trades of all symbols
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with trades
 	 */
 	getPublicTrades(opts = {
@@ -1606,6 +1642,8 @@ class HollaExNetwork {
 	/**
 	 * Get top orderbook for specific symbol
 	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with orderbook
 	 */
 	getOrderbook(symbol, opts = {
@@ -1639,7 +1677,8 @@ class HollaExNetwork {
 
 	/**
 	 * Get top orderbooks
-	 * @param {string} symbol - Symbol to get orderbook for. Leave blank to get orderbook of all symbols
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with orderbook
 	 */
 	getOrderbooks(opts = {
@@ -1668,6 +1707,8 @@ class HollaExNetwork {
 	 * @param {string} to - Ending date of trade history in UNIX timestamp format
 	 * @param {string} symbol - Symbol to get trade history for
 	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with trade history info
 	 */
 	getChart(from, to, symbol, resolution, opts = {
@@ -1705,6 +1746,8 @@ class HollaExNetwork {
 	 * @param {string} from - Starting date of trade history in UNIX timestamp format
 	 * @param {string} to - Ending date of trade history in UNIX timestamp format
 	 * @param {string} resolution - Resolution of trade history. 1d, 1W, etc
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of objects with trade history info
 	 */
 	getCharts(from, to, resolution, opts = {
@@ -1737,6 +1780,8 @@ class HollaExNetwork {
 
 	/**
 	 * Get TradingView udf config
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with TradingView udf config
 	 */
 	getUdfConfig(opts = {
@@ -1764,6 +1809,8 @@ class HollaExNetwork {
 	 * @param {string} to - Ending date in UNIX timestamp format
 	 * @param {string} symbol - Symbol to get
 	 * @param {string} resolution - Resolution of query. 1d, 1W, etc
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with TradingView udf history HOLCV
 	 */
 	getUdfHistory(from, to, symbol, resolution, opts = {
@@ -1799,6 +1846,8 @@ class HollaExNetwork {
 	/**
 	 * Get TradingView udf symbols
 	 * @param {string} symbol - Symbol to get
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with TradingView udf symbols
 	 */
 	getUdfSymbols(symbol, opts = {
@@ -1828,6 +1877,8 @@ class HollaExNetwork {
 	/**
 	 * Get historical data, time interval is 5 minutes
 	 * @param {string} symbol - Symbol to get
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with historical data
 	 */
 	getTicker(symbol, opts = {
@@ -1859,6 +1910,8 @@ class HollaExNetwork {
 
 	/**
 	 * Get historical data for all symbols, time interval is 5 minutes
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with historical data for all symbols
 	 */
 	getTickers(opts = {
@@ -1891,6 +1944,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.status - Status of mint created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {number} opts.fee - Optional fee to display in data.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with created mint's data.
 	 */
 	mintAsset(userId, currency, amount, opts = {
@@ -1961,6 +2015,7 @@ class HollaExNetwork {
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with updated mint's data.
 	 */
 	updatePendingMint(
@@ -2045,6 +2100,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.status - Status of burn created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {number} opts.fee - Optional fee to display in data.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with created burn's data.
 	 */
 	burnAsset(userId, currency, amount, opts = {
@@ -2115,6 +2171,7 @@ class HollaExNetwork {
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending burn to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with updated burn's data.
 	 */
 	updatePendingBurn(
@@ -2193,6 +2250,7 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format. Default: 0
 	 * @param {string} opts.endDate - End date of query in ISO8601 format: Default: current time in ISO8601 format
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with generated fees
 	 */
 	getGeneratedFees(
@@ -2232,6 +2290,8 @@ class HollaExNetwork {
 
 	/**
 	 * Settle exchange fees
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with settled fees.
 	 */
 	settleFees(opts = {
@@ -2259,6 +2319,7 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.quote - Quote asset to convert to. Default: USDT.
 	 * @param {number} opts.amount - Amount of quote asset to convert to. Default: 1.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with converted assets.
 	 */
 	getOraclePrices(assets = [], opts = {
