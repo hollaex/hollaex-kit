@@ -5,11 +5,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-import { AppFooter } from '../../components';
+import { AppFooter, Dialog } from 'components';
+import { HelpfulResourcesForm } from 'containers';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
-import { getExchangeInfo } from '../../actions/appActions';
+import {
+	getExchangeInfo,
+	closeNotification,
+	HELPFUL_RESOURCES_FORM,
+} from 'actions/appActions';
 import ThemeProvider from '../ThemeProvider';
 
 // const checkPath = (path) => {
@@ -42,20 +47,50 @@ class AuthContainer extends Component {
 		this.state = {
 			isExpired: false,
 			isTrial: false,
+			dialogIsOpen: false,
 		};
+	}
+
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (
+			nextProps.activeNotification.timestamp !==
+			this.props.activeNotification.timestamp
+		) {
+			if (nextProps.activeNotification.type === HELPFUL_RESOURCES_FORM) {
+				this.onOpenDialog();
+			} else {
+				this.onCloseDialog();
+			}
+		} else if (
+			!nextProps.activeNotification.timestamp &&
+			this.state.dialogIsOpen
+		) {
+			this.onCloseDialog();
+		}
 	}
 
 	componentDidMount() {
 		this.props.getExchangeInfo();
 	}
 
+	onOpenDialog = () => {
+		this.setState({ dialogIsOpen: true });
+	};
+
+	onCloseDialog = () => {
+		this.setState({ dialogIsOpen: false });
+		this.props.closeNotification();
+	};
+
 	render() {
+		const { dialogIsOpen } = this.state;
 		const {
 			activeLanguage,
 			activeTheme,
 			children,
 			constants = { captcha: {} },
 			icons: ICONS = {},
+			activeNotification,
 		} = this.props;
 		const languageClasses = getClasesForLanguage(activeLanguage);
 		const childWithLanguageClasses = React.Children.map(children, (child) =>
@@ -88,6 +123,26 @@ class AuthContainer extends Component {
 							{childWithLanguageClasses}
 						</div>
 					</div>
+					<Dialog
+						isOpen={dialogIsOpen}
+						label="hollaex-modal"
+						className="app-dialog"
+						onCloseDialog={this.onCloseDialog}
+						shouldCloseOnOverlayClick={false}
+						theme={activeTheme}
+						showCloseText={false}
+						compressed={false}
+						style={{ 'z-index': 100 }}
+					>
+						{dialogIsOpen &&
+							activeNotification.type === HELPFUL_RESOURCES_FORM && (
+								<HelpfulResourcesForm
+									onSubmitSuccess={this.onCloseDialog}
+									onClose={this.onCloseDialog}
+									data={activeNotification.data}
+								/>
+							)}
+					</Dialog>
 					{!isMobile ? (
 						<div
 							className={classnames(
@@ -109,10 +164,12 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	info: store.app.info,
 	constants: store.app.constants,
+	activeNotification: store.app.activeNotification,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
+	closeNotification: bindActionCreators(closeNotification, dispatch),
 });
 
 export default connect(

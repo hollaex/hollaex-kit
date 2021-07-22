@@ -8,6 +8,7 @@ import { STATIC_ICONS } from 'config/icons';
 import renderFields from '../../components/Form/factoryFields';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { required } from '../Form/validations';
+import { getNetworkLabelByKey } from 'utils/wallet';
 
 const FORM_NAME = 'CheckDeposit';
 
@@ -22,6 +23,7 @@ const CheckDeposit = ({
 	submitting,
 	valid,
 	error,
+	formValues,
 	...props
 }) => {
 	const coinOptions = [];
@@ -35,32 +37,57 @@ const CheckDeposit = ({
 		}
 	});
 
-	const formFields = {
-		transaction_id: {
-			type: 'text',
-			placeholder: STRINGS['DEPOSIT_STATUS.SEARCH_FIELD_LABEL'],
-			label: STRINGS['DEPOSIT_STATUS.TRANSACTION_ID'],
-			validate: [required],
-			fullWidth: true,
-		},
-		currency: {
+	const formFields = {};
+	formFields.transaction_id = {
+		type: 'text',
+		placeholder: STRINGS['DEPOSIT_STATUS.SEARCH_FIELD_LABEL'],
+		label: STRINGS['DEPOSIT_STATUS.TRANSACTION_ID'],
+		validate: [required],
+		fullWidth: true,
+	};
+
+	formFields.currency = {
+		type: 'select',
+		placeholder: STRINGS['DEPOSIT_STATUS.CURRENCY_FIELD_LABEL'],
+		label: STRINGS['COINS'],
+		options: coinOptions,
+		validate: [required],
+		fullWidth: true,
+	};
+
+	if (
+		formValues &&
+		formValues.currency &&
+		coins[formValues.currency] &&
+		coins[formValues.currency].network
+	) {
+		const { network: networks = '' } = coins[formValues.currency];
+		const networkOptions = networks.split(',').map((network) => ({
+			value: network,
+			label: getNetworkLabelByKey(network),
+		}));
+
+		formFields.network = {
 			type: 'select',
-			placeholder: STRINGS['DEPOSIT_STATUS.CURRENCY_FIELD_LABEL'],
-			label: STRINGS['COINS'],
-			options: coinOptions,
+			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
+			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
 			validate: [required],
+			options: networkOptions,
 			fullWidth: true,
-		},
-		address: {
-			type: 'text',
-			placeholder: STRINGS['DEPOSIT_STATUS.ADDRESS_FIELD_LABEL'],
-			label:
-				STRINGS[
-					'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL'
-				],
-			validate: [required],
-			fullWidth: true,
-		},
+		};
+	} else if (formValues) {
+		delete formValues.network;
+	}
+
+	formFields.address = {
+		type: 'text',
+		placeholder: STRINGS['DEPOSIT_STATUS.ADDRESS_FIELD_LABEL'],
+		label:
+			STRINGS[
+				'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL'
+			],
+		validate: [required],
+		fullWidth: true,
 	};
 
 	return (

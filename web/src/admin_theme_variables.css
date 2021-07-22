@@ -1,0 +1,20 @@
+:root {
+	--admin_panel_title_background: #27339d;
+	--admin_panel_sidebar_background: #27339d;
+	--admin_panel_content_background: #202980;
+
+	--admin_panel_header_section: #13198d;
+
+	--admin_panel_table_thead: #040e6d;
+	--admin_panel_table_tbody: #101a78;
+	--admin_panel_table_tbody_hover: #0e1769;
+	--admin_panel_row_expand_icon: #101a78;
+
+	--admin_panel_main_font: #ffffff;
+
+	--admin_panel_modal_background: #27339d;
+	--admin_panel_modal_border: #27339d;
+	--admin_panel_card_background: #27339d;
+
+	--admin_panel_input: #202980;
+}
