@@ -2239,7 +2239,8 @@ class HollaExNetwork {
 		url: null,
 		businessInfo: null,
 		pairs: null,
-		coins: null
+		coins: null,
+		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
@@ -2313,7 +2314,8 @@ class HollaExNetwork {
 			network: null,
 			standard: null,
 			allowDeposit: null,
-			allowWithdrawal: null
+			allowWithdrawal: null,
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -2386,7 +2388,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -2407,7 +2409,8 @@ class HollaExNetwork {
 			withdrawalFee: null,
 			min: null,
 			max: null,
-			incrementUnit: null
+			incrementUnit: null,
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -2457,7 +2460,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -2482,7 +2485,8 @@ class HollaExNetwork {
 			incrementSize: null,
 			incrementPrice: null,
 			estimatedPrice: null,
-			isPublic: null
+			isPublic: null,
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -2550,7 +2554,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
@@ -2575,7 +2579,8 @@ class HollaExNetwork {
 			incrementSize: null,
 			incrementPrice: null,
 			estimatedPrice: null,
-			isPublic: null
+			isPublic: null,
+			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
@@ -2643,7 +2648,7 @@ class HollaExNetwork {
 		}
 
 		const headers = generateHeaders(
-			this.headers,
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
