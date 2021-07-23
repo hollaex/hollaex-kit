@@ -18,6 +18,7 @@ import {
 import SearchBox from './SearchBox';
 import { removeFromFavourites, addToFavourites } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
+import EditWrapper from 'components/EditWrapper';
 
 class MarketSelector extends Component {
 	constructor(props) {
@@ -60,7 +61,7 @@ class MarketSelector extends Component {
 				)}
 				onClick={() => this.onAddTabClick(symbol)}
 			>
-				{symbol.toUpperCase()}
+				{symbol === 'all' ? STRINGS['ALL'] : symbol.toUpperCase()}
 			</div>
 		));
 	};
@@ -116,7 +117,7 @@ class MarketSelector extends Component {
 				searchResult: {},
 			},
 			() => {
-				const { closeAddTabMenu = () => {} } = this.props;
+				const { closeAddTabMenu = () => { } } = this.props;
 				closeAddTabMenu();
 			}
 		);
@@ -231,7 +232,7 @@ class MarketSelector extends Component {
 							handleSearch={handleSearch}
 						/>
 					</div>
-					<div className={classnames({ 'scroll-view': processedTabMenu.length >= 10})}>
+					<div className={classnames({ 'scroll-view': processedTabMenu.length >= 10 })}>
 						{hasTabMenu ? (
 							processedTabMenu.map(
 								(
@@ -322,7 +323,11 @@ class MarketSelector extends Component {
 						{constants &&
 							constants.features &&
 							constants.features.pro_trade && (
-								<div onClick={this.onViewMarketsClick}>{`view markets`}</div>
+								<div onClick={this.onViewMarketsClick}>
+									<EditWrapper stringId="VIEW_MARKET">
+										{STRINGS['VIEW_MARKET']}
+									</EditWrapper>
+								</div>
 							)}
 					</div>
 				</div>
@@ -341,8 +346,8 @@ MarketSelector.propTypes = {
 };
 
 MarketSelector.defaultProps = {
-	addTradePairTab: () => {},
-	onViewMarketsClick: () => {},
+	addTradePairTab: () => { },
+	onViewMarketsClick: () => { },
 	wrapperClassName: '',
 };
 

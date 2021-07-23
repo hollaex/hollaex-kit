@@ -18,7 +18,7 @@ const Toggle = ({ selected, options = [], toggle }) => {
 						<div
 							className={'app-bar-account-content app-bar-account-moon-content'}
 						>
-							{options[0].value}
+							{options[0].label}
 						</div>
 					</div>
 					<div
@@ -32,7 +32,7 @@ const Toggle = ({ selected, options = [], toggle }) => {
 					</div>
 					<div className={classnames('selected', selected)}>
 						<div className="app-bar-account-content app-bar-account-moon-content">
-							{options[1].value}
+							{options[1].label}
 						</div>
 					</div>
 				</div>
