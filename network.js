@@ -2230,6 +2230,73 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+	updateExchange(opts = {
+		info: null,
+		isPublic: null,
+		type: null,
+		name: null,
+		displayName: null,
+		url: null,
+		businessInfo: null,
+		pairs: null,
+		coins: null
+	}) {
+		checkKit(this.exchange_id);
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/exchange`;
+		const data = {
+			id: this.exchange_id
+		};
+
+		if (isPlainObject(opts.info)) {
+			data.info = opts.info;
+		}
+
+		if (isBoolean(opts.isPublic)) {
+			data.is_public = opts.isPublic;
+		}
+
+		if (['DIY', 'Cloud', 'Enterprise'].includes(opts.type)) {
+			data.type = opts.type;
+		}
+
+		if (isString(opts.name)) {
+			data.name = opts.name;
+		}
+
+		if (isString(opts.displayName)) {
+			data.display_name = opts.displayName;
+		}
+
+		if (isString(opts.url)) {
+			data.url = opts.url;
+		}
+
+		if (isPlainObject(opts.businessInfo)) {
+			data.business_info = opts.businessInfo;
+		}
+
+		if (isArray(opts.pairs) && !opts.pairs.some((pair) => !isString(pair))) {
+			data.pairs = opts.pairs;
+		}
+
+		if (isArray(opts.coins) && !opts.coins.some((coin) => !isString(coin))) {
+			data.coins = opts.coins;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
 	/**
 	 * Connect to websocket
 	 * @param {array} events - Array of events to connect to
