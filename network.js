@@ -2397,6 +2397,77 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
+	updateCoin(
+		coin,
+		opts = {
+			fullName: null,
+			active: null,
+			allowDeposit: null,
+			allowWithdrawal: null,
+			withdrawalFee: null,
+			min: null,
+			max: null,
+			incrementUnit: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!isString(coin)) {
+			return reject(parameterError('coin', 'cannot be null'));
+		}
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/coin`;
+		const data = {
+			currency: coin
+		};
+
+		if (isString(opts.fullName)) {
+			data.full_name = opts.fullName;
+		}
+
+		if (isBoolean(opts.active)) {
+			data.active = opts.active;
+		}
+
+		if (isBoolean(opts.allowDeposit)) {
+			data.allow_deposit = opts.allowDeposit;
+		}
+
+		if (isBoolean(opts.allowWithdrawal)) {
+			data.allow_withdrawal = opts.allowWithdrawal;
+		}
+
+		if (isNumber(opts.withdrawalFee) && opts.withdrawalFee >= 0) {
+			data.withdrawal_fee = opts.withdrawalFee;
+		}
+
+		if (isNumber(opts.min)) {
+			data.min = opts.min;
+		}
+
+		if (isNumber(opts.max)) {
+			data.max = opts.max;
+		}
+
+		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
+			data.increment_unit = opts.incrementUnit;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
 	/**
 	 * Connect to websocket
 	 * @param {array} events - Array of events to connect to
