@@ -2298,6 +2298,29 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
+	getAllCoins(
+		opts = {
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/coin/all`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
 	createCoin(
 		symbol,
 		fullName,
@@ -2383,7 +2406,28 @@ class HollaExNetwork {
 			data.allow_deposit = opts.allowDeposit;
 		}
 
-		if (isBoolean(opts.allowWithdrawal)) {
+		if (isBoolean(opts.allowWithdrawal)) {getAllPairs(
+		opts = {
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/pair/all`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
 			data.allow_withdrawal = opts.allowWithdrawal;
 		}
 
@@ -2469,6 +2513,29 @@ class HollaExNetwork {
 		);
 
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
+	getAllPairs(
+		opts = {
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/pair/all`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	createPair(
