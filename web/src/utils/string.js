@@ -203,10 +203,6 @@ const EXCLUSIONS = [
 	'SETTINGS_THEME_OPTIONS',
 ];
 
-export const generateRemoteRouteStringId = (id = '') => {
-	return `REMOTE_ROUTE_STRING__${id.toUpperCase()}`;
-};
-
 export const generateRCStrings = (plugins = []) => {
 	const languages = LANGUAGES.map(({ value }) => value);
 	const allStrings = {};

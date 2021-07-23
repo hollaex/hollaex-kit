@@ -38,8 +38,7 @@ import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
-import { generateRemoteRouteStringId } from 'utils/string';
-import { generateRemoteRouteIconId } from 'utils/icon';
+import { generateGlobalId } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
@@ -420,13 +419,13 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			});
 
 			const remoteRoutes = [];
-			allWebViews.forEach(({ target, meta }) => {
+			allWebViews.forEach(({ target, meta, name }) => {
 				if (meta && meta.is_page) {
 					const { icon_id, string_id, ...rest } = meta;
 					remoteRoutes.push({
 						target,
-						icon_id: generateRemoteRouteIconId(icon_id),
-						string_id: generateRemoteRouteStringId(string_id),
+						icon_id: generateGlobalId(name)(icon_id),
+						string_id: generateGlobalId(name)(string_id),
 						...rest,
 					});
 				}
