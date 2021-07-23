@@ -2400,7 +2400,7 @@ class HollaExNetwork {
 	}
 
 	updateCoin(
-		coin,
+		symbol,
 		opts = {
 			fullName: null,
 			active: null,
@@ -2415,8 +2415,8 @@ class HollaExNetwork {
 	) {
 		checkKit(this.exchange_id);
 
-		if (!isString(coin)) {
-			return reject(parameterError('coin', 'cannot be null'));
+		if (!isString(symbol)) {
+			return reject(parameterError('symbol', 'cannot be null'));
 		}
 
 		const verb = 'PUT';
@@ -2424,7 +2424,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/coin`;
 		const data = {
-			currency: coin
+			currency: symbol
 		};
 
 		if (isString(opts.fullName)) {
