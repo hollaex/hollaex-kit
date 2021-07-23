@@ -2257,7 +2257,7 @@ class HollaExNetwork {
 			data.is_public = opts.isPublic;
 		}
 
-		if (['DIY', 'Cloud', 'Enterprise'].includes(opts.type)) {
+		if (isString(opts.type) && ['DIY', 'Cloud', 'Enterprise'].includes(opts.type)) {
 			data.type = opts.type;
 		}
 
@@ -2294,7 +2294,107 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
+	createCoin(
+		symbol,
+		fullName,
+		opts = {
+			code: null,
+			withdrawalFee: null,
+			min: null,
+			max: null,
+			incrementUnit: null,
+			logo: null,
+			meta: null,
+			estimatedPrice: null,
+			type: null,
+			network: null,
+			standard: null,
+			allowDeposit: null,
+			allowWithdrawal: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!isString(symbol)) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!isString(fullName)) {
+			return reject(parameterError('fullName', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/coin`;
+		const data = {
+			symbol,
+			full_name: fullName
+		};
+
+		if (isString(opts.code)) {
+			data.code = opts.code;
+		}
+
+		if (isNumber(opts.withdrawalFee) && opts.withdrawalFee >= 0) {
+			data.withdrawal_fee = opts.withdrawalFee;
+		}
+
+		if (isNumber(opts.min)) {
+			data.min = opts.min;
+		}
+
+		if (isNumber(opts.max)) {
+			data.max = opts.max;
+		}
+
+		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
+			data.increment_unit = opts.incrementUnit;
+		}
+
+		if (isString(opts.logo)) {
+			data.logo = opts.logo;
+		}
+
+		if (isPlainObject(opts.meta)) {
+			data.meta = opts.meta;
+		}
+
+		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
+			data.estimated_price = opts.estimatedPrice;
+		}
+
+		if (isString(opts.type) && ['blockchain', 'fiat', 'other'].includes(opts.type)) {
+			data.type = opts.type;
+		}
+
+		if (isString(opts.network)) {
+			data.network = opts.network;
+		}
+
+		if (isString(opts.standard)) {
+			data.standard = opts.standard;
+		}
+
+		if (isBoolean(opts.allowDeposit)) {
+			data.allow_deposit = opts.allowDeposit;
+		}
+
+		if (isBoolean(opts.allowWithdrawal)) {
+			data.allow_withdrawal = opts.allowWithdrawal;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
 	/**
