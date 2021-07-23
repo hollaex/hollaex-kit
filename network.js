@@ -2561,6 +2561,99 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
 	}
 
+	updatePair(
+		name,
+		baseCoin,
+		quoteCoin,
+		opts = {
+			code: null,
+			active: null,
+			minSize: null,
+			maxSize: null,
+			minPrice: null,
+			maxPrice: null,
+			incrementSize: null,
+			incrementPrice: null,
+			estimatedPrice: null,
+			isPublic: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!isString(name)) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!isString(baseCoin)) {
+			return reject(parameterError('baseCoin', 'cannot be null'));
+		} else if (!isString(quoteCoin)) {
+			return reject(parameterError('quoteCoin', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/pair`;
+		const data = {
+			name,
+			pair_base: baseCoin,
+			pair_2: quoteCoin
+		};
+
+		if (isString(opts.code)) {
+			data.code = opts.code;
+		}
+
+		if (isBoolean(opts.active)) {
+			data.active = opts.active;
+		}
+
+		if (isNumber(opts.minSize)) {
+			data.min_size = opts.minSize;
+		}
+
+		if (isNumber(opts.maxSize)) {
+			data.max_size = opts.maxSize;
+		}
+
+		if (isNumber(opts.minPrice)) {
+			data.min_price = opts.minPrice;
+		}
+
+		if (isNumber(opts.maxPrice)) {
+			data.max_price = opts.maxPrice;
+		}
+
+		if (isNumber(opts.incrementSize) && opts.incrementSize >= 0) {
+			data.increment_size = opts.incrementSize;
+		}
+
+		if (isNumber(opts.incrementPrice) && opts.incrementPrice >= 0) {
+			data.increment_price = opts.incrementPrice;
+		}
+
+		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
+			data.estimated_price = opts.estimatedPrice;
+		}
+
+		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
+			data.increment_unit = opts.incrementUnit;
+		}
+
+		if (isBoolean(opts.isPublic)) {
+			data.is_public = opts.isPublic;
+		}
+
+		const headers = generateHeaders(
+			this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+	}
+
 	/**
 	 * Connect to websocket
 	 * @param {array} events - Array of events to connect to
