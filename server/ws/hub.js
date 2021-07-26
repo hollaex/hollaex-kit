@@ -35,42 +35,58 @@ subscriber.subscribe(WS_HUB_CHANNEL);
 const connect = () => {
 	checkStatus()
 		.then((nodeLib) => {
-			if (nodeLib) {
-				networkNodeLib = nodeLib;
-				networkNodeLib.connect(['orderbook', 'trade']);
+			loggerWebsocket.info(
+				'ws/hub Initializing Network Websocket'
+			);
+			networkNodeLib = nodeLib;
+			networkNodeLib.connect(['orderbook', 'trade']);
 
-				networkNodeLib.ws.on('open', () => {
-					wsConnected = true;
-					loggerWebsocket.info('ws/hub open');
-				});
+			networkNodeLib.ws.on('open', () => {
+				wsConnected = true;
+				loggerWebsocket.info('ws/hub open');
+			});
 
-				networkNodeLib.ws.on('unexpected-response', () => {
-					wsConnected = false;
-					loggerWebsocket.error('ws/hub unexpected-response');
-				});
+			networkNodeLib.ws.on('unexpected-response', () => {
+				wsConnected = false;
+				loggerWebsocket.error('ws/hub unexpected-response');
+			});
 
-				networkNodeLib.ws.on('error', (err) => {
-					wsConnected = false;
-					loggerWebsocket.error('ws/hub err', err.message);
-				});
+			networkNodeLib.ws.on('error', (err) => {
+				wsConnected = false;
+				loggerWebsocket.error('ws/hub err', err.message);
+			});
 
-				networkNodeLib.ws.on('close', () => {
-					wsConnected = false;
-					loggerWebsocket.info('ws/hub close');
-					closeAllClients();
-				});
+			networkNodeLib.ws.on('close', () => {
+				wsConnected = false;
+				loggerWebsocket.info('ws/hub close');
+				closeAllClients();
+			});
 
-				networkNodeLib.ws.on('message', (data) => {
-					if (data !== 'pong') {
-						try {
-							data = JSON.parse(data);
-							handleHubData(data);
-						} catch (err) {
-							loggerWebsocket.error('ws/hub message err', err.message);
-						}
+			networkNodeLib.ws.on('message', (data) => {
+				if (data !== 'pong') {
+					try {
+						data = JSON.parse(data);
+						handleHubData(data);
+					} catch (err) {
+						loggerWebsocket.error('ws/hub message err', err.message);
 					}
-				});
+				}
+			});
+
+			loggerWebsocket.info(
+				'ws/hub Network Websocket initialized'
+			);
+		})
+		.catch((err) => {
+			let message = 'Websocket Initialization failed';
+			if (err.message) {
+				message = err.message;
 			}
+			if (err.statusCode && err.statusCode === 402) {
+				message = err.error.message;
+			}
+			loggerWebsocket.error('ws/hub/connect/checkStatus Error ', message);
+			setTimeout(() => { process.exit(1); }, 5000);
 		});
 };
 
