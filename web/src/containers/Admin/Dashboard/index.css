@@ -1,5 +1,5 @@
 .admin-dash-card {
-	background-color: #2626d8;
+	background-color: var(--admin_panel_sidebar_background);
 	color: #ffffff;
 	margin: 2rem 0rem;
 	padding: 1.5rem;

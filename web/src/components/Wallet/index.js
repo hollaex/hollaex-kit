@@ -122,7 +122,7 @@ class Wallet extends Component {
 				>
 					<Accordion sections={sections} />
 					<div className="d-flex justify-content-center wallet_link blue-link">
-						<Link to="/wallet">{`view all`}</Link>
+						<Link to="/wallet">{STRINGS['VIEW_ALL']}</Link>
 					</div>
 				</ControlledScrollbar>
 				{BASE_CURRENCY ? (

@@ -10,6 +10,7 @@ import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import EditWrapper from 'components/EditWrapper';
+import STRINGS from 'config/localizedStrings';
 
 const { Option } = Select;
 const { Group } = Input;
@@ -121,7 +122,7 @@ class InputGroup extends React.PureComponent {
 					</Select>
 					<Input
 						type="number"
-						placeholder="Amount"
+						placeholder={STRINGS['AMOUNT']}
 						style={isOpen ? { display: 'none' } : { width: '67%' }}
 						className="input-group__input"
 						value={inputValue}
