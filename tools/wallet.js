@@ -36,8 +36,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 	network: null,
 	otpCode: null,
 	ip: null,
-	domain: null,
-	additionalHeaders: null
+	domain: null
 }) => {
 
 	const coinConfiguration = getKitCoin(currency);
@@ -82,7 +81,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
 
-			const balance = await getNodeLib().getUserBalance(user.network_id, { additionalHeaders: opts.additionalHeaders });
+			const balance = await getNodeLib().getUserBalance(user.network_id);
 			if (balance[`${currency}_available`] < amount) {
 				throw new Error('Insufficent balance for withdrawal');
 			}
@@ -97,7 +96,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 			if (limit === -1) {
 				throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 			} else if (limit > 0) {
-				await withdrawalBelowLimit(user.network_id, currency, limit, amount, { additionalHeaders: opts.additionalHeaders });
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 			}
 
 			let fee = coinConfiguration.withdrawal_fee;
@@ -227,7 +226,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				await withdrawalBelowLimit(user.network_id, currency, limit, amount, { additionalHeaders: opts.additionalHeaders });
+				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 			}
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
@@ -240,14 +239,11 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const get24HourAccumulatedWithdrawals = async (userId, opts = {
-	additionalHeaders: null
-}) => {
+const get24HourAccumulatedWithdrawals = async (userId) => {
 	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
 		dismissed: false,
 		rejected: false,
-		startDate: moment().subtract(24, 'hours').toISOString(),
-		...opts
+		startDate: moment().subtract(24, 'hours').toISOString()
 	});
 
 	const withdrawalData = withdrawals.data;
@@ -261,8 +257,7 @@ const get24HourAccumulatedWithdrawals = async (userId, opts = {
 				dismissed: false,
 				rejected: false,
 				page: i,
-				startDate: moment().subtract(24, 'hours').toISOString(),
-				...opts
+				startDate: moment().subtract(24, 'hours').toISOString()
 			});
 
 			withdrawalData.push(...withdrawals.data);
@@ -298,8 +293,7 @@ const get24HourAccumulatedWithdrawals = async (userId, opts = {
 
 		const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
 			quote: getKitConfig().native_currency,
-			amount: withdrawalAmount[withdrawalCurrency],
-			...opts
+			amount: withdrawalAmount[withdrawalCurrency]
 		});
 
 		if (convertedAmount[withdrawalCurrency] !== -1) {
@@ -321,9 +315,7 @@ const get24HourAccumulatedWithdrawals = async (userId, opts = {
 	return totalWithdrawalAmount;
 };
 
-const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, opts = {
-	additionalHeaders: null
-}) => {
+const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
 		'amount being withdrawn',
@@ -340,8 +332,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, opts = 
 
 	const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
 		quote: getKitConfig().native_currency,
-		amount,
-		...opts
+		amount
 	});
 
 
@@ -366,7 +357,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, opts = 
 		return;
 	}
 
-	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, opts);
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
 
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
