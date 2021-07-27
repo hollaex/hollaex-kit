@@ -65,10 +65,7 @@ const requestWithdrawal = (req, res) => {
 		network,
 		otpCode: otp_code,
 		ip,
-		domain,
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}
+		domain
 	})
 		.then(() => {
 			return res.json({ message: 'Success' });
