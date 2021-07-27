@@ -27,6 +27,7 @@
 		"flat": "5.0.2",
 		"highcharts": "8.2.2",
 		"highcharts-react-official": "3.0.0",
+		"hollaex-web-lib": "0.3.0",
 		"html-to-draftjs": "1.5.0",
 		"jwt-decode": "2.2.0",
 		"keycode": "2.2.0",
