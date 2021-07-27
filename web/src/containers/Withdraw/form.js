@@ -202,7 +202,7 @@ class Form extends Component {
 			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
-		if (coinObject && !coinObject.meta.is_fiat) {
+		if (coinObject && coinObject.type !== 'fiat') {
 			return (
 				<form autoComplete="off" className="withdraw-form-wrapper">
 					<div className="withdraw-form">
@@ -252,7 +252,7 @@ class Form extends Component {
 					</Dialog>
 				</form>
 			);
-		} else if (coinObject && coinObject.meta.is_fiat) {
+		} else if (coinObject && coinObject.type === 'fiat') {
 			return (
 				<Fiat
 					id="REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW"
