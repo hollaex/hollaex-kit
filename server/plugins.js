@@ -442,27 +442,29 @@ checkStatus()
 
 			loggerPlugin.info(req.uuid, 'PUT /plugins name', name, 'version', version);
 
-			let sameTypePlugins = [];
+			let sameTypePlugin = null;
 
 			if (type) {
-				sameTypePlugins = Plugin.findAll({
-					where: { type }
+				sameTypePlugin = Plugin.findOne({
+					where: { type },
+					raw: true,
+					attributes: ['id', 'name', 'type']
 				});
 			}
 
 			bluebird.all([
 				toolsLib.plugin.getPlugin(name),
-				sameTypePlugins
+				sameTypePlugin
 			])
-				.then(([ plugin, sameType ]) => {
+				.then(([ plugin, sameTypePlugin ]) => {
 					if (!plugin) {
 						throw new Error('Plugin not installed');
 					}
 					if (plugin.version === version) {
 						throw new Error('Version is already installed');
 					}
-					if (sameType.length > 0 && type && plugin.type !== type) {
-						throw new Error(`Plugin with type ${type} already installed`);
+					if (sameTypePlugin && type && plugin.type !== type) {
+						throw new Error(`${name} version ${version} cannot be ran in parallel with an installed plugin (${sameTypePlugin.name}). Uninstall the plugin ${sameTypePlugin.name} before updating this plugin.`);
 					}
 
 					const updatedPlugin = {
@@ -811,24 +813,31 @@ checkStatus()
 
 			loggerPlugin.info(req.uuid, 'POST /plugins name', name, 'version', version);
 
-			const whereArray = [
-				{ name }
-			];
+			let sameTypePlugin = null;
 
 			if (type) {
-				whereArray.push(
-					{ type }
-				);
+				sameTypePlugin = Plugin.findOne({
+					where: { type },
+					raw: true,
+					attributes: ['id', 'name', 'type']
+				});
 			}
 
-			Plugin.findAll({
-				where: {
-					[sequelize.Op.or]: whereArray
-				}
-			})
-				.then((plugins) => {
-					if (plugins.length > 0) {
-						throw new Error('Plugin with same name or type is already installed');
+			bluebird.all([
+				Plugin.findOne({
+					where: { name },
+					raw: true,
+					attributes: ['id', 'name']
+				}),
+				sameTypePlugin
+			])
+				.then(([ sameNamePlugin, sameTypePlugin ]) => {
+					if (sameNamePlugin) {
+						throw new Error(`Plugin ${name} is already installed`);
+					}
+
+					if (sameTypePlugin) {
+						throw new Error(`${name} cannot be ran in parallel with an installed plugin (${sameTypePlugin.name}). Uninstall the plugin ${sameTypePlugin.name} before installing this plugin.`);
 					}
 
 					const newPlugin = {
