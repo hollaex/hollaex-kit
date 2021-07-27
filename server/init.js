@@ -183,6 +183,10 @@ const checkStatus = () => {
 				kit_version: status.kit_version
 			});
 
+			if (!networkNodeLib) {
+				throw new Error('Node library failed to initialize');
+			}
+
 			nodeLib = networkNodeLib;
 
 			return all([
@@ -210,17 +214,6 @@ const checkStatus = () => {
 			);
 			loggerInit.info('init/checkStatus/activation complete');
 			return networkNodeLib;
-		})
-		.catch((err) => {
-			let message = 'Initialization failed';
-			if (err.message) {
-				message = err.message;
-			}
-			if (err.statusCode && err.statusCode === 402) {
-				message = err.error.message;
-			}
-			loggerInit.error('init/checkStatus Error ', message);
-			setTimeout(() => { process.exit(1); }, 60 * 1000 * 5);
 		});
 };
 

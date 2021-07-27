@@ -23,8 +23,8 @@ class AddTradeTab extends Component {
 		data: [],
 		count: 0,
 		searchValue: '',
-		selected: isMobile ? 'List' : 'Card',
-		options: [{ value: 'List' }, { value: 'Card' }],
+		selected: isMobile ? STRINGS['MARKET_OPTIONS'][0].value : STRINGS['MARKET_OPTIONS'][1].value,
+		options: STRINGS['MARKET_OPTIONS'],
 		chartData: {},
 	};
 
@@ -247,7 +247,7 @@ class AddTradeTab extends Component {
 						</div>
 					</div>
 					<Fragment>
-						{selected === 'List' ? (
+						{selected === options[0].value ? (
 							<MarketList
 								markets={processedData}
 								chartData={chartData}

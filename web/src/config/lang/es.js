@@ -32,6 +32,11 @@ export default {
 	HELPFUL_RESOURCES_TEXT: 'Recursos de Ayuda',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Contáctar support@hollaex.com para más información y enviar correo si hay algún problema',
+	HELP_RESOURCE_GUIDE: {
+		CONTACT_US: 'Contáctenos',
+		TEXT:
+			'{0} libremente para más información y cualquier problema enviando un correo electrónico',
+	},
 	HELP_TELEGRAM_TEXT: 'Revisar documentación API abierta:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: '¿Necesita ayuda?', // new
@@ -43,7 +48,7 @@ export default {
 	BACK_TEXT: 'Atrás',
 	NO_OPTIONS: 'No hay opciones disponibles',
 	SECONDS: 'seconds',
-	VIEW_MARKET: 'ver mercardo', // new
+	VIEW_MARKET: 'ver mercardos', // new
 	GO_TRADE: 'Ir a Intercambiar', // new
 	VIEW_INFO: 'Ver Página de Info', // new
 	APPLY_HERE: 'Aplicar Aquí', // new
@@ -680,7 +685,7 @@ export default {
 	},
 	ACCOUNT_SECURITY: {
 		TITLE_TEXT:
-			'Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.',
+			'Ajustar la configuración de seguridad para su cuenta, desde la autenticación de dos factores, contraseña, Clave API y otras funciones relacionadas a la seguridad.',
 		OTP: {
 			TITLE: 'Autenticación de dos factores',
 			OTP_ENABLED: 'habilitar otp',
@@ -783,8 +788,8 @@ export default {
 		limit: 'limit',
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'limit' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'market', label: 'MERCADO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: ' LÍMITE' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -799,8 +804,8 @@ export default {
 		{ value: true, label: 'Sí' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: 'No' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'Cantidad',
-	PRICE: 'Precio',
+	SIZE: 'Monto',
+	PRICE: 'Límite',
 	FEE: 'Tarifa',
 	FEES: 'Tarifas',
 	LIMIT: 'Límite',
@@ -809,7 +814,7 @@ export default {
 	MORE: 'Más',
 	VIEW: 'Ver',
 	STATUS: 'Estado',
-	AMOUNT: 'Cantidad',
+	AMOUNT: 'Monto',
 	COMPLETE: 'Completar',
 	PENDING: 'Pendiente',
 	REJECTED: 'Rechazado',
@@ -865,7 +870,7 @@ export default {
 		'La direcciòn de Ethereum es invàlida. Por favor revisar cuidadosamente e introducir otra vez',
 	WITHDRAWALS_BUTTON_TEXT: 'Revisar Retiro',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Dirección Destinatario',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Introducir la dirección',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
@@ -1011,7 +1016,7 @@ export default {
 	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
-	CONFIRM_TEXT: 'Confirm',
+	CONFIRM_TEXT: 'CONFIRMAR',
 	GOTO_XHT_MARKET: 'Go to XHT market', // new
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
@@ -1136,7 +1141,7 @@ export default {
 	SUCCESFUL_COPY: '¡Copiado con éxito!',
 	QUICK_TRADE_MODE: 'Modo de comercio rápido',
 	JUST_NOW: 'ahora mismo',
-	PAIR: 'Pareja',
+	PAIR: 'Par',
 	ZERO_ASSET: 'No tiene ningún activo',
 	DEPOSIT_ASSETS: 'Activos de depósito',
 	SEARCH_TXT: 'Buscar',
@@ -1238,7 +1243,7 @@ export default {
 		HAP_ACCOUNT: 'Cuenta de HAP', // new
 		HAP_ACCOUNT_TXT:
 			'Su cuenta es una cuenta verificada por HollaEx affiliate program. Ahora puede ganar 10% bonus por cada persona que usted invite y compre XHT.', // new
-		EMAIL_VERIFICATION: 'Verificación del correo electrónico', // new
+		EMAIL_VERIFICATION: 'Verificación de Email', // new
 		DOCUMENTS: 'Documentos', // new
 		HAP_TEXT: 'Programa de Afiliados de HollaEx (HAP) {0}', // new
 		LOCK_AN_EXCHANGE: 'Bloquear un intercambio {0}', // new
@@ -1271,6 +1276,7 @@ export default {
 		WAVE_NUMBER: 'Número de ola', // new
 		DISCOUNT: '( {0}% descuento )', // new
 		MY_FEES_LIMITS: ' Mis tarifas y límites', // new
+		VIEW_MORE_MARKETS: 'Ver más mercados', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite a su amigo', // new
@@ -1279,7 +1285,7 @@ export default {
 		COPY_FIELD_LABEL:
 			'Comparta el enlace de abajo con sus amigos y gane comisiones:', // new
 		REFERRED_USER_COUT: 'Usted ha referido a {0} usuarios', // new
-		COPY_LINK_BUTTON: 'COPIAR EL ENLACE DE REFERENCIA', // new
+		COPY_LINK_BUTTON: 'COPIAR ENLACE', // new
 		XHT_TITLE: 'MIS REFERIDOS', // new
 		XHT_INFO_TEXT: 'Gane comisiones invitando a sus amigos.', // new
 		XHT_INFO_TEXT_1: 'Las comisiones se pagan periódicamente a su billetera', // new
@@ -1391,4 +1397,41 @@ export default {
 	},
 	OPEN_WALLET: 'Abrir billetera', // new
 	AGO: 'ago', // new
+	ALL: 'Todos', //new
+	MARKET_OPTIONS: [
+		{ value: 'List', label: 'LISTA' }, // new
+		{ value: 'Card', label: 'CUADRO' }, // new
+	],
+	ONE_DAY: '1 día', //new
+	ONE_WEEK: '1 semana', //new
+	MONTH: '{0} mes', //new
+	START_DATE: 'fecha inicio', //new
+	END_DATE: 'fecha final', //new
+	ORDER_MODE: 'Modo de Orden', //new
+	CLEAR: 'BORRAR',//new
+	ESTIMATED_PRICE: ' Precio Estimado', //new
+	ORDER_ENTRY_ADVANCED: 'Avanzado', //new
+	TRIGGER_PRICE: 'Stop', //new
+	SPEND_AMOUNT: 'Monto a Comprar', //new
+	ESTIMATE_RECEIVE_AMOUNT: 'Cantidad Estimada a Recibir', //new
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'24h Permiso de Depósito y Retiro de todos los activos（Cuentas Nivel {0})', //new
+		HEADER_ROW_AMOUNT: 'Cantidad 24h ({0})', //new
+	},
+	MARKETS_TABLE: {
+		VIEW_MARKETS: 'Ver más mercados', //new
+	},
+	DEPOSIT_STATUS: {
+		STATUS_DESCRIPTION:
+			'Puede revisar el estado de su depósito introduciendo el ID de transacción (hash) abajo.', //new
+		// new
+		SEARCH_FIELD_LABEL: 'Pegar su ID de transacción', //new
+		CURRENCY_FIELD_LABEL: 'Seleccionar moneda', //new
+		ADDRESS_FIELD_LABEL: 'Pegar la dirección', //new
+	},
+	WITHDRAWALS_FORM_NETWORK_WARNING: 'Asegurarse de que la red seleccionada es compartible con el monedero del destinatario', //new
+	DEPOSIT_FORM_NETWORK_WARNING:
+		'Asegurarse de que la red seleccionada es compartible con el monedero del remitente', //new
+	WITHDRAWALS_FORM_NETWORK_LABEL: 'Red', //new
 };
