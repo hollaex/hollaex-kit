@@ -1830,6 +1830,8 @@ class HollaExNetwork {
 	 * @return {object} Object with created mint's data.
 	 */
 	mintAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null, fee: null }) {
+		checkKit(this.exchange_id);
+
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1839,7 +1841,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/mint`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/mint`;
 		const data = {
 			user_id: userId,
 			currency,
@@ -1905,6 +1907,8 @@ class HollaExNetwork {
 			updatedDescription: null
 		}
 	) {
+		checkKit(this.exchange_id);
+
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -1928,7 +1932,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'PUT';
-		const path = `${this.baseUrl}/network/mint`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/mint`;
 		const data = {
 			transaction_id: transactionId,
 			status,
@@ -1976,6 +1980,8 @@ class HollaExNetwork {
 	 * @return {object} Object with created burn's data.
 	 */
 	burnAsset(userId, currency, amount, opts = { description: null, transactionId: null, status: null, email: null, fee: null }) {
+		checkKit(this.exchange_id);
+
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1985,7 +1991,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/burn`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/burn`;
 		const data = {
 			user_id: userId,
 			currency,
@@ -2051,6 +2057,8 @@ class HollaExNetwork {
 			updatedDescription: null
 		}
 	) {
+		checkKit(this.exchange_id);
+
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -2074,7 +2082,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'PUT';
-		const path = `${this.baseUrl}/network/burn`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/burn`;
 		const data = {
 			transaction_id: transactionId,
 			status,
