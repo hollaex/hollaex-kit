@@ -409,7 +409,7 @@ const requestResetPassword = (req, res) => {
 			let errorMessage = errorMessageConverter(err);
 
 			if (errorMessage === USER_NOT_FOUND) {
-				errorMessage = `Email ${email} not found`;
+				errorMessage = `Password request sent to: ${email}`;
 			}
 			loggerUser.error(req.uuid, 'controllers/user/requestResetPassword', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessage });
