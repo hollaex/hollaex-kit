@@ -100,7 +100,7 @@ const RenderContentForm = ({
 	selectedNetwork,
 }) => {
 	const coinObject = coins[currency];
-	if (coinObject && !coinObject.meta.is_fiat) {
+	if (coinObject && coinObject.type !== 'fiat') {
 		return (
 			<Fragment>
 				<div className="withdraw-form-wrapper">
@@ -164,7 +164,7 @@ const RenderContentForm = ({
 				</div>
 			</Fragment>
 		);
-	} else if (coinObject && coinObject.meta.is_fiat) {
+	} else if (coinObject && coinObject.type === 'fiat') {
 		return (
 			<Fiat
 				id="REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT"
