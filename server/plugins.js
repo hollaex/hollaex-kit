@@ -125,18 +125,6 @@ checkStatus()
 					},
 					optional: true
 				},
-				limit: {
-					in: ['query'],
-					errorMessage: 'must be an integer',
-					isInt: true,
-					optional: true
-				},
-				page: {
-					in: ['query'],
-					errorMessage: 'must be an integer',
-					isInt: true,
-					optional: true
-				},
 				search: {
 					in: ['query'],
 					errorMessage: 'must be a string',
@@ -154,48 +142,71 @@ checkStatus()
 				return res.status(400).json({ errors: errors.array() });
 			}
 
-			const { limit, page, name, search } = req.query;
+			const { name, search } = req.query;
 
-			let promiseQuery = toolsLib.plugin.getPaginatedPlugins(limit, page, search);
+			let promiseQuery = null;
 
 			if (name) {
 				promiseQuery = toolsLib.plugin.getPlugin(
 					name,
 					{
 						raw: true,
-						attributes: [
-							'name',
-							'version',
-							'enabled',
-							'author',
-							'description',
-							'bio',
-							'url',
-							'logo',
-							'icon',
-							'documentation',
-							'web_view',
-							'public_meta',
-							'type',
-							'admin_view',
-							'created_at',
-							'updated_at'
-						]
+						attributes: {
+							exclude: [
+								'id',
+								'script',
+								'meta',
+								'prescript',
+								'postscript'
+							]
+						}
 					}
-				);
+				)
+					.then((data) => {
+						if (!data) {
+							throw new Error('Plugin not found');
+						} else {
+							data.enabled_admin_view = !!data.admin_view;
+							return lodash.omit(data, [ 'admin_view' ]);
+						}
+					});
+			} else {
+				const options = {
+					where: {},
+					raw: true,
+					attributes: {
+						exclude: [
+							'id',
+							'script',
+							'meta',
+							'prescript',
+							'postscript'
+						]
+					},
+					order: [[ 'id', 'asc' ]]
+				};
+
+				if (search) {
+					options.where = {
+						name: { [sequelize.Op.like]: `%${search}%` }
+					};
+				}
+
+				promiseQuery = Plugin.findAndCountAll(options)
+					.then((data) => {
+						return {
+							count: data.count,
+							data: data.rows.map((plugin) => {
+								plugin.enabled_admin_view = !!plugin.admin_view;
+								return lodash.omit(plugin, [ 'admin_view' ]);
+							})
+						};
+					});
 			}
 
 			promiseQuery
-				.then((plugins) => {
-					if (name) {
-						if (!plugins) {
-							throw new Error('Plugin not found');
-						} else {
-							plugins.enabled_admin_view = !!plugins.admin_view;
-							delete plugins.admin_view;
-						}
-					}
-					return res.json(plugins);
+				.then((data) => {
+					return res.json(data);
 				})
 				.catch((err) => {
 					loggerPlugin.error(req.uuid, 'GET /plugins err', err.message);
