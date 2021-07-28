@@ -27,15 +27,13 @@ const {
 	API_KEY_EXPIRED,
 	API_KEY_OUT_OF_SCOPE,
 	API_SIGNATURE_INVALID,
-	CANNOT_CREATE_CODE
+	INVALID_PASSWORD,
+	SAME_PASSWORD,
+	CODE_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
 	CAPTCHA_ENDPOINT,
-	INVALID_PASSWORD,
-	CODE_NOT_FOUND,
-	CODE_USED,
-	SAME_PASSWORD,
 	BASE_SCOPES,
 	ROLES,
 	ISSUER,
@@ -47,7 +45,6 @@ const {
 const { resolve, reject, promisify } = require('bluebird');
 const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
 const bcrypt = require('bcryptjs');
-const uuid = require('uuid/v4');
 const { all } = require('bluebird');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -102,13 +99,19 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 		return reject(new Error(INVALID_PASSWORD));
 	}
 	return getResetPasswordCode(resetPasswordCode)
-		.then((code) => {
-			if (code.used) {
-				throw new Error(CODE_USED);
-			}
-			return code.update({ used: true }, { fields: ['used'] });
+		.then((user_id) => {
+			// Delete code
+			return client.delAsync(`ResetPasswordCode:${resetPasswordCode}`)
+				.then(() => {
+					return user_id;
+				})
+				.catch(() => {
+					throw new Error();
+				});
 		})
-		.then((code) => dbQuery.findOne('user', { where: { id: code.user_id } }))
+		.then((user_id) => {
+			return dbQuery.findOne('user', { where: { id: user_id } });
+		})
 		.then((user) => user.update({ password: newPassword }, { fields: ['password'] }));
 };
 
@@ -139,37 +142,29 @@ const changeUserPassword = (email, oldPassword, newPassword) => {
 };
 
 const getResetPasswordCode = (code) => {
-	return dbQuery.findOne('reset password code', { where: { code } })
-		.then((code) => {
-			if (!code) {
+	return client.getAsync(`ResetPasswordCode:${code}`)
+		.then((user_id) => {
+			if (!user_id) {
 				const error = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
 			}
-			return code;
+			return user_id;
 		});
 };
 
-/**
- * Create new reset password code when user request
- * @param userId User ID
- * @returns string
- */
-
 const createResetPasswordCode = (userId) => {
-	const resetPasswordCodeKey = `resetPasswordCode:${userId}`;
-
 	//Generate new random code
-	const newCode = crypto.randomBytes(20).toString('hex');
+	const code = crypto.randomBytes(20).toString('hex');
 
 	//Code is expire in 24 hours
-	const setCode = client.setex(resetPasswordCodeKey, 60 * 60 * 24, newCode);
-
-	if (!setCode) {
-		throw new Error(CANNOT_CREATE_CODE);
-	}
-
-	return newCode;
+	client.setexAsync(`ResetPasswordCode:${code}`, 60 * 60 * 24, userId)
+		.then(() => {
+			return code;
+		})
+		.catch(() => {
+			throw new Error();
+		});
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
