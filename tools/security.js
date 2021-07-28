@@ -26,7 +26,8 @@ const {
 	API_KEY_INVALID,
 	API_KEY_EXPIRED,
 	API_KEY_OUT_OF_SCOPE,
-	API_SIGNATURE_INVALID
+	API_SIGNATURE_INVALID,
+	CANNOT_CREATE_CODE
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -123,9 +124,9 @@ const changeUserPassword = (email, oldPassword, newPassword) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([ user, validatePassword(user.password, oldPassword) ]);
+			return all([user, validatePassword(user.password, oldPassword)]);
 		})
-		.then(([ user, passwordIsValid ]) => {
+		.then(([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
 				throw new Error(INVALID_PASSWORD);
 			} else {
@@ -149,21 +150,26 @@ const getResetPasswordCode = (code) => {
 		});
 };
 
+/**
+ * Create new reset password code when user request
+ * @param userId User ID
+ * @returns string
+ */
+
 const createResetPasswordCode = (userId) => {
-	return dbQuery.findOne('reset password code', {
-		where: { user_id: userId, used: false },
-		attributes: ['code']
-	})
-		.then((code) => {
-			if (code) {
-				return code;
-			}
-			return getModel('reset password code').create({
-				user_id: userId,
-				code: uuid()
-			});
-		})
-		.then((code) => code.code);
+	const resetPasswordCodeKey = `resetPasswordCode:${userId}`;
+
+	//Generate new random code
+	const newCode = crypto.randomBytes(20).toString('hex');
+
+	//Code is expire in 24 hours
+	const setCode = client.setex(resetPasswordCodeKey, 60 * 60 * 24, newCode);
+
+	if (!setCode) {
+		throw new Error(CANNOT_CREATE_CODE);
+	}
+
+	return newCode;
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
@@ -172,9 +178,9 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([ createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip) ]);
+			return all([createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip)]);
 		})
-		.then(([ code, user ]) => {
+		.then(([code, user]) => {
 			sendEmail(
 				MAILTYPE.RESET_PASSWORD,
 				email,
@@ -334,7 +340,7 @@ const userHasOtpEnabled = (userId) => {
 	return dbQuery.findOne('user', {
 		where: { id: userId },
 		raw: true,
-		attributes: [ 'otp_enabled' ]
+		attributes: ['otp_enabled']
 	})
 		.then((user) => {
 			if (!user) {
@@ -349,10 +355,10 @@ const checkUserOtpActive = (userId, otpCode) => {
 		dbQuery.findOne('user', {
 			where: { id: userId },
 			raw: true,
-			attributes: [ 'otp_enabled' ]
+			attributes: ['otp_enabled']
 		}),
 		verifyOtpBeforeAction(userId, otpCode)
-	]).then(([ user, validOtp ]) => {
+	]).then(([user, validOtp]) => {
 		if (!user.otp_enabled) {
 			throw new Error(TOKEN_OTP_MUST_BE_ENABLED);
 		} else if (!validOtp) {
@@ -843,7 +849,7 @@ const getUserKitHmacTokens = (userId) => {
 		attributes: {
 			exclude: ['user_id', 'updated_at']
 		},
-		order: [['created_at', 'DESC'], ['id', 'ASC']],
+		order: [['created_at', 'DESC'], ['id', 'ASC']]
 	})
 		.then(({ count, data }) => {
 			const result = {
@@ -870,7 +876,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				role: ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
-				active: true,
+				active: true
 			});
 		})
 		.then(() => {
@@ -935,7 +941,7 @@ const findTokenByApiKey = (apiKey) => {
 						{
 							model: getModel('user'),
 							as: 'user',
-							attributes: ['id', 'email', 'network_id'],
+							attributes: ['id', 'email', 'network_id']
 						}
 					]
 				});
