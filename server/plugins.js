@@ -457,7 +457,12 @@ checkStatus()
 
 			if (type) {
 				sameTypePlugin = Plugin.findOne({
-					where: { type },
+					where: {
+						type,
+						name: {
+							[sequelize.Op.not]: name
+						}
+					},
 					raw: true,
 					attributes: ['id', 'name', 'type']
 				});
@@ -474,7 +479,7 @@ checkStatus()
 					if (plugin.version === version) {
 						throw new Error('Version is already installed');
 					}
-					if (sameTypePlugin && type && plugin.type !== type) {
+					if (sameTypePlugin) {
 						throw new Error(`${name} version ${version} cannot be ran in parallel with an installed plugin (${sameTypePlugin.name}). Uninstall the plugin ${sameTypePlugin.name} before updating this plugin.`);
 					}
 
