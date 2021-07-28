@@ -396,7 +396,7 @@ const requestResetPassword = (req, res) => {
 			'controllers/user/requestResetPassword invalid email',
 			email
 		);
-		return res.status(400).json({ message: 'Invalid email' });
+		return res.status(400).json({ message: `Password request sent to: ${email}` });
 	}
 
 	email = email.toLowerCase();
