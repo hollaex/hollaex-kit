@@ -2414,28 +2414,7 @@ class HollaExNetwork {
 			data.allow_deposit = opts.allowDeposit;
 		}
 
-		if (isBoolean(opts.allowWithdrawal)) {getAllPairs(
-		opts = {
-			additionalHeaders: null
-		}
-	) {
-		checkKit(this.exchange_id);
-
-		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/pair/all`;
-
-		const headers = generateHeaders(
-			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
-			this.apiSecret,
-			verb,
-			path,
-			this.apiExpiresAfter
-		);
-
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
-	}
+		if (isBoolean(opts.allowWithdrawal)) {
 			data.allow_withdrawal = opts.allowWithdrawal;
 		}
 
