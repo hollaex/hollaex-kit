@@ -102,6 +102,31 @@ const InterfaceForm = ({
 								</div>
 							</Checkbox>
 						</Item>
+					</div>
+					{isUpgrade ? (
+						<div className="d-flex">
+							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+								<div>
+									<div className="font-weight-bold">
+										Start your crypto culture
+									</div>
+									<div>Allow your users to chat about crypto</div>
+								</div>
+								<div className="ml-5 button-wrapper">
+									<a
+										href="https://dash.bitholla.com/billing"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<Button type="primary" className="w-100">
+											Upgrade Now
+										</Button>
+									</a>
+								</div>
+							</div>
+						</div>
+					) : null}
+					<div className={classnames({ 'disabled-area': isUpgrade })}>
 						<Item name="home_page" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
