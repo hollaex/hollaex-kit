@@ -158,7 +158,7 @@ const createResetPasswordCode = (userId) => {
 	const code = crypto.randomBytes(20).toString('hex');
 
 	//Code is expire in 24 hours
-	client.setexAsync(`ResetPasswordCode:${code}`, 60 * 60 * 24, userId)
+	return client.setexAsync(`ResetPasswordCode:${code}`, 60 * 60 * 24, userId)
 		.then(() => {
 			return code;
 		})
