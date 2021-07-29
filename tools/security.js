@@ -100,19 +100,14 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 	}
 	return getResetPasswordCode(resetPasswordCode)
 		.then((user_id) => {
-			// Delete code
-			return client.delAsync(`ResetPasswordCode:${resetPasswordCode}`)
-				.then(() => {
-					return user_id;
-				})
-				.catch(() => {
-					throw new Error();
-				});
+			return all([
+				dbQuery.findOne('user', { where: { id: user_id } }),
+				client.delAsync(`ResetPasswordCode:${resetPasswordCode}`)
+			]);
 		})
-		.then((user_id) => {
-			return dbQuery.findOne('user', { where: { id: user_id } });
-		})
-		.then((user) => user.update({ password: newPassword }, { fields: ['password'] }));
+		.then(([user]) => {
+			user.update({ password: newPassword }, { fields: ['password'] });
+		});
 };
 
 const changeUserPassword = (email, oldPassword, newPassword) => {
