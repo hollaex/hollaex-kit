@@ -38,8 +38,7 @@ import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
-import { generateRemoteRouteStringId } from 'utils/string';
-import { generateRemoteRouteIconId } from 'utils/icon';
+import { generateGlobalId } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
@@ -409,20 +408,24 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 		case SET_WEB_VIEWS: {
 			const allWebViews = [];
-			payload.enabledPlugins.forEach(({ web_view = [] }) => {
+			payload.enabledPlugins.forEach(({ name, web_view = [] }) => {
 				if (web_view && web_view.length) {
-					allWebViews.push(...web_view);
+					const named_web_views = web_view.map((viewObj) => ({
+						...viewObj,
+						name,
+					}));
+					allWebViews.push(...named_web_views);
 				}
 			});
 
 			const remoteRoutes = [];
-			allWebViews.forEach(({ target, meta }) => {
+			allWebViews.forEach(({ target, meta, name }) => {
 				if (meta && meta.is_page) {
 					const { icon_id, string_id, ...rest } = meta;
 					remoteRoutes.push({
 						target,
-						icon_id: generateRemoteRouteIconId(icon_id),
-						string_id: generateRemoteRouteStringId(string_id),
+						icon_id: generateGlobalId(name)(icon_id),
+						string_id: generateGlobalId(name)(string_id),
 						...rest,
 					});
 				}
@@ -454,9 +457,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET
 				] = [
 					{
-						all_props: true,
 						target: process.env.REACT_APP_PLUGIN_WEB_VIEW_TARGET,
-						props: [],
 						src: '/main.js',
 					},
 				];
