@@ -2453,15 +2453,21 @@ class HollaExNetwork {
 
 	updateCoin(
 		symbol,
+		fullname,
 		opts = {
-			fullname: null,
-			active: null,
-			allowDeposit: null,
-			allowWithdrawal: null,
+			code: null,
 			withdrawalFee: null,
 			min: null,
 			max: null,
 			incrementUnit: null,
+			logo: null,
+			meta: null,
+			estimatedPrice: null,
+			type: null,
+			network: null,
+			standard: null,
+			allowDeposit: null,
+			allowWithdrawal: null,
 			additionalHeaders: null
 		}
 	) {
@@ -2469,6 +2475,8 @@ class HollaExNetwork {
 
 		if (!isString(symbol)) {
 			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!isString(fullname)) {
+			return reject(parameterError('fullname', 'cannot be null'));
 		}
 
 		const verb = 'PUT';
@@ -2476,23 +2484,12 @@ class HollaExNetwork {
 			this.exchange_id
 		}/coin`;
 		const data = {
-			currency: symbol
+			symbol,
+			fullname
 		};
 
-		if (isString(opts.fullname)) {
-			data.fullname = opts.fullname;
-		}
-
-		if (isBoolean(opts.active)) {
-			data.active = opts.active;
-		}
-
-		if (isBoolean(opts.allowDeposit)) {
-			data.allow_deposit = opts.allowDeposit;
-		}
-
-		if (isBoolean(opts.allowWithdrawal)) {
-			data.allow_withdrawal = opts.allowWithdrawal;
+		if (isString(opts.code)) {
+			data.code = opts.code;
 		}
 
 		if (isNumber(opts.withdrawalFee) && opts.withdrawalFee >= 0) {
@@ -2509,6 +2506,38 @@ class HollaExNetwork {
 
 		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
 			data.increment_unit = opts.incrementUnit;
+		}
+
+		if (isString(opts.logo)) {
+			data.logo = opts.logo;
+		}
+
+		if (isPlainObject(opts.meta)) {
+			data.meta = opts.meta;
+		}
+
+		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
+			data.estimated_price = opts.estimatedPrice;
+		}
+
+		if (isString(opts.type) && ['blockchain', 'fiat', 'other'].includes(opts.type)) {
+			data.type = opts.type;
+		}
+
+		if (isString(opts.network)) {
+			data.network = opts.network;
+		}
+
+		if (isString(opts.standard)) {
+			data.standard = opts.standard;
+		}
+
+		if (isBoolean(opts.allowDeposit)) {
+			data.allow_deposit = opts.allowDeposit;
+		}
+
+		if (isBoolean(opts.allowWithdrawal)) {
+			data.allow_withdrawal = opts.allowWithdrawal;
 		}
 
 		const headers = generateHeaders(
