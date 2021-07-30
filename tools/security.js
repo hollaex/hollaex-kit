@@ -155,10 +155,13 @@ const createResetPasswordCode = (userId) => {
 	//Code is expire in 5 mins
 	return client.setexAsync(`ResetPasswordCode:${code}`, 60 * 5, userId)
 		.then(() => {
-			return code;
+			return client.ttlAsync(`ResetPasswordCode:${code}`);
 		})
-		.catch(() => {
-			throw new Error();
+		.then(ttl => {
+			if (!ttl) {
+				throw new Error(CODE_NOT_FOUND);
+			}
+			return code;
 		});
 };
 
