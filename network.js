@@ -2352,7 +2352,7 @@ class HollaExNetwork {
 
 	createCoin(
 		symbol,
-		fullName,
+		fullname,
 		opts = {
 			code: null,
 			withdrawalFee: null,
@@ -2374,8 +2374,8 @@ class HollaExNetwork {
 
 		if (!isString(symbol)) {
 			return reject(parameterError('symbol', 'cannot be null'));
-		} else if (!isString(fullName)) {
-			return reject(parameterError('fullName', 'cannot be null'));
+		} else if (!isString(fullname)) {
+			return reject(parameterError('fullname', 'cannot be null'));
 		}
 
 		const verb = 'POST';
@@ -2384,7 +2384,7 @@ class HollaExNetwork {
 		}/coin`;
 		const data = {
 			symbol,
-			full_name: fullName
+			fullname
 		};
 
 		if (isString(opts.code)) {
@@ -2454,7 +2454,7 @@ class HollaExNetwork {
 	updateCoin(
 		symbol,
 		opts = {
-			fullName: null,
+			fullname: null,
 			active: null,
 			allowDeposit: null,
 			allowWithdrawal: null,
@@ -2479,8 +2479,8 @@ class HollaExNetwork {
 			currency: symbol
 		};
 
-		if (isString(opts.fullName)) {
-			data.full_name = opts.fullName;
+		if (isString(opts.fullname)) {
+			data.full_name = opts.fullname;
 		}
 
 		if (isBoolean(opts.active)) {
