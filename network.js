@@ -2697,7 +2697,7 @@ class HollaExNetwork {
 			return reject(parameterError('quoteCoin', 'cannot be null'));
 		}
 
-		const verb = 'POST';
+		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/pair`;
