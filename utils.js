@@ -2,13 +2,21 @@ const rp = require('request-promise');
 const crypto = require('crypto');
 const moment = require('moment');
 
-const createRequest = (verb, url, headers, data) => {
+const createRequest = (verb, url, headers, opts = { data: null, formData: null }) => {
 	const requestObj = {
 		headers,
 		url,
-		body: data,
 		json: true
 	};
+
+	if (opts.data) {
+		requestObj.body = opts.data;
+	}
+
+	if (opts.formData) {
+		requestObj.formData = opts.formData;
+	}
+
 	return rp[verb.toLowerCase()](requestObj);
 };
 

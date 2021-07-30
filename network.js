@@ -7,7 +7,8 @@ const {
 	isNumber,
 	isString,
 	isArray,
-	isDate
+	isDate,
+	isBuffer
 } = require('lodash');
 const {
 	createRequest,
@@ -113,7 +114,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -394,7 +395,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -1063,7 +1064,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -1447,7 +1448,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -1877,7 +1878,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -1963,7 +1964,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -2027,7 +2028,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -2113,7 +2114,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -2303,7 +2304,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	getAllCoins(
@@ -2427,7 +2428,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	updateCoin(
@@ -2499,7 +2500,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	getAllPairs(
@@ -2616,7 +2617,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	updatePair(
@@ -2710,7 +2711,46 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	uploadIcon(image, name, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!isBuffer(image)) {
+			return reject(parameterError('image', 'must be a buffer'));
+		} else if (!isString(name)) {
+			return reject(parameterError('name', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/icon`;
+
+		const formData = {
+			file: {
+				value: image,
+				options: {
+					filename: name
+				}
+			},
+			file_name: name
+		};
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders)
+				? { ...this.headers, ...opts.additionalHeaders, 'content-type': 'multipart/form-data' }
+				: { ...this.headers, 'content-type': 'multipart/form-data' },
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { formData });
 	}
 
 	/**
