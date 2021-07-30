@@ -2,7 +2,7 @@
 
 const WebSocket = require('ws');
 const moment = require('moment');
-const { createRequest, createSignature, generateHeaders, createRequestStream } = require('./utils');
+const { createRequest, createSignature, generateHeaders } = require('./utils');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { each, union, isNumber, isString, isPlainObject, isBoolean, isDate } = require('lodash');
 class HollaExKit {
@@ -492,11 +492,7 @@ class HollaExKit {
 			this.apiExpiresAfter
 		);
 
-		if (opts.format) {
-			return createRequestStream(verb, `${this.apiUrl}${path}`, headers);
-		} else {
-			return createRequest(verb, `${this.apiUrl}${path}`, headers);
-		}
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	/****** Orders ******/
