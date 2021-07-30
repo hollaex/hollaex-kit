@@ -110,7 +110,7 @@ const InterfaceForm = ({
 									<div className="font-weight-bold">
 										Start your crypto culture
 									</div>
-									<div>Allow your users to chat about crypto</div>
+									<div>Allow your users to socialize through chat</div>
 								</div>
 								<div className="ml-5 button-wrapper">
 									<a

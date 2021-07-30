@@ -33,8 +33,7 @@ export default {
 	HELP_RESOURCE_GUIDE_TEXT: '请通过联系support@hollaex.com进行咨询',
 	HELP_RESOURCE_GUIDE: {
 		CONTACT_US: '与我们取得联系',
-		TEXT:
-			'如有其他咨询事项，请随时通过电子邮件 {0}',
+		TEXT: '如有其他咨询事项，请随时通过电子邮件 {0}',
 	},
 	HELP_TELEGRAM_TEXT: '确认HollaEx的开放API:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
@@ -638,7 +637,7 @@ export default {
 				INPUT: '请在下方输入谷歌验证码',
 				WARNING: '强烈建议你设置谷歌验证（2FA），这将大幅提高资金的安全性。 ',
 				ENABLE: '启用谷歌验证（2FA）',
-				DISABLE: '禁用双因素认证（2FA）',
+				DISABLE: '禁用谷歌验证（2FA）',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
 				SECRET_3:
@@ -1109,6 +1108,7 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: '账户年龄为{0}个月',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1}交易量等值',
 		LEVEL_OF_ACCOUNT: '{0}级账户',
+		TITLE_OF_ACCOUNT: '{0} 级账户',
 		LEVEL_TXT_DEFAULT: '在此处添加你的等级描述',
 		LEVEL_1_TXT:
 			'加密交易员的旅程从这里开始！为了获得奖金，你可以验证身份，并获得更高的充值和提款限额、降低交易手续费。', // new
@@ -1289,16 +1289,16 @@ export default {
 	END_DATE: '截止日期', //new
 	CONVERT: '从', //new
 	LIMITS_BLOCK: {
-		HEADER_ROW_DESCRIPTION:
-			'24小时充值/提款限额（{0} 级账户)', //new
+		HEADER_ROW_DESCRIPTION: '24小时充值/提款限额（{0} 级账户)', //new
 		HEADER_ROW_AMOUNT: '24小时限额 ({0})', //new
 	},
 	DEPOSIT_FORM_NETWORK_WARNING: '请再次确认充值网络与发送方网络是一致的', //new
-	WITHDRAWALS_FORM_NETWORK_WARNING: '请再次确认提款网络与目标地址的网络是一致的', //new
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'请再次确认提款网络与目标地址的网络是一致的', //new
 	WITHDRAWALS_FORM_NETWORK_LABEL: '转账网络', //new
-	CUMULATIVE_AMOUNT_SYMBOL: '数量', // new
+	CUMULATIVE_AMOUNT_SYMBOL: '成交额', // new
 	ORDER_MODE: '订单类型', // new
-	REGULAR: '般委托', // new
+	REGULAR: '一般委托', // new
 	STOPS: '止盈止损', // new
 	CLEAR: '重置', // new
 	ORDER_ENTRY_ADVANCED: '高级设置', //new
