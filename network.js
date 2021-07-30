@@ -8,7 +8,8 @@ const {
 	isString,
 	isArray,
 	isDate,
-	isBuffer
+	isBuffer,
+	omit
 } = require('lodash');
 const {
 	createRequest,
@@ -20,6 +21,7 @@ const {
 const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { reject } = require('bluebird');
+const FileType = require('file-type');
 
 class HollaExNetwork {
 	constructor(
@@ -2220,6 +2222,24 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+	getConstants(opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${this.exchange_id}/constants`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
 	getExchange(opts = {
 		additionalHeaders: null
 	}) {
@@ -2714,7 +2734,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
-	uploadIcon(image, name, opts = {
+	async uploadIcon(image, name, opts = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2723,6 +2743,12 @@ class HollaExNetwork {
 			return reject(parameterError('image', 'must be a buffer'));
 		} else if (!isString(name)) {
 			return reject(parameterError('name', 'cannot be null'));
+		}
+
+		const { ext, mime } = await FileType.fromBuffer(image);
+
+		if (mime.indexOf('image/') !== 0) {
+			return reject(parameterError('image', 'must be an image'));
 		}
 
 		const verb = 'POST';
@@ -2734,7 +2760,8 @@ class HollaExNetwork {
 			file: {
 				value: image,
 				options: {
-					filename: name
+					filename: `${name}.${ext}`,
+					contentType: mime
 				}
 			},
 			file_name: name
@@ -2747,7 +2774,8 @@ class HollaExNetwork {
 			this.apiSecret,
 			verb,
 			path,
-			this.apiExpiresAfter
+			this.apiExpiresAfter,
+			omit(formData, [ 'file' ])
 		);
 
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { formData });
