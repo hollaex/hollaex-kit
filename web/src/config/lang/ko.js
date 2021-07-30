@@ -32,10 +32,14 @@ export default {
 	HELPFUL_RESOURCES_TEXT: '도움말',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'문의사항은 support@hollaex.com로 연락해주시기바랍니다.',
-	HELP_TELEGRAM_TEXT: 'HollaEx의 오픈API 확인하기:',
+	HELP_RESOURCE_GUIDE: {
+		CONTACT_US: '문의하기',
+		TEXT: '궁금하신 점이나 문제가 발생한 경우 언제든지 {0} 바랍니다.',
+	},
+	HELP_TELEGRAM_TEXT: '오픈 API 확인하기:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: '도움이 필요하십니까?', // new
-	HELP_TEXT: 'help',
+	HELP_TEXT: '도움이 필요하십니까',
 	SUCCESS_TEXT: '성공',
 	ERROR_TEXT: '에러',
 	PROCEED: '실행',
@@ -593,7 +597,7 @@ export default {
 		GO_TO_RISK_MANAGMENT: '리스크관리로 가기',
 		CREATE_ORDER_WARING_TEXT:
 			'주문 값이 포트폴리오의 {0}을 초과하는 경우 경고 알림창을 만들 수 있습니다.',
-		ORDER_PORTFOLIO_LABEL: '포트폴리오의 백분율 값:',
+		ORDER_PORTFOLIO_LABEL: '포트폴리오 백분율 설정값:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: '주문 알림창',
 			POPUP_ORDER_CONFIRMATION: '주문 실행시 확인알림창',
@@ -617,6 +621,7 @@ export default {
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
 				'거래 주문 값이 포트폴리오에 설정된 백분율 값을 초과할 경우 경고 알림창을 만들 수 있습니다.',
+			INFO_TEXT_1: '총 자산 가치 {0}: {1}', //new
 			PORTFOLIO: '포트폴리오 백분율',
 			TOMAN_ASSET: '근사값',
 			ADJUST: '(백분율 설정하기)',
@@ -739,8 +744,8 @@ export default {
 		limit: 'limit',
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' },
-		{ value: 'limit', label: 'limit' },
+		{ value: 'market', label: '시장' },
+		{ value: 'limit', label: '지정' },
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -755,12 +760,12 @@ export default {
 		{ value: true, label: '켜기' },
 		{ value: false, label: '끄기' },
 	],
-	SIZE: 'Size',
-	PRICE: 'Price',
+	SIZE: '수량',
+	PRICE: '가격',
 	FEE: 'Fee',
-	FEES: 'Fees',
+	FEES: '수수료',
 	LIMIT: 'Limit',
-	TIME: 'Time',
+	TIME: '시간',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
 	VIEW: 'View',
@@ -782,8 +787,8 @@ export default {
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Filled',
-	PRICE_CURRENCY: 'PRICE',
-	AMOUNT_SYMBOL: 'AMOUNT',
+	PRICE_CURRENCY: '가격',
+	AMOUNT_SYMBOL: '수량',
 	MARKET_PRICE: '시장가',
 	ORDER_PRICE: '지정가',
 	TOTAL_ORDER: '총액',
@@ -889,16 +894,16 @@ export default {
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: '보내기',
 	AVAILABLE_TEXT: 'Available',
 	AVAILABLE_BALANCE_TEXT: '사용가능 {0} 잔고: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
-	BALANCE_TEXT: 'Balance',
+	BALANCE_TEXT: '주문가능',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
-	ORDERBOOK_SELLERS: 'Sellers',
-	ORDERBOOK_BUYERS: 'Buyers',
-	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+	ORDERBOOK_SELLERS: '판매',
+	ORDERBOOK_BUYERS: '구매',
+	ORDERBOOK_SPREAD: '{0} 스프레드', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
@@ -920,7 +925,7 @@ export default {
 	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
 	LOGOUT_ERROR_INACTIVE:
 		'You have been logged out because you have been inactive',
-	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
+	ORDER_ENTRY_BUTTON: '{1} {0}', // 0 -> buy/sell 1 -> btc/..
 	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
 	QUICK_TRADE_TOKEN_USED: 'Token has been used',
 	QUICK_TRADE_QUOTE_EXPIRED: 'Quote has expired',
@@ -975,7 +980,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: '출금 비활성화',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: '회원님의 계정은 출금 불가합니다.',
 	UP_TO_MARKET: 'Up to market',
-	VIEW_MY_FEES: 'View my fees', // new
+	VIEW_MY_FEES: '나의 수수료 보기',
 	DEVELOPER_SECTION: {
 		TITLE: 'API 키',
 		INFORMATION_TEXT:
@@ -1073,10 +1078,10 @@ export default {
 	SUCCESFUL_COPY: '성공적으로 복사되었습니다!',
 	QUICK_TRADE_MODE: '퀵트레이드모드',
 	JUST_NOW: 'just now',
-	PAIR: 'Pair',
+	PAIR: '페어',
 	ZERO_ASSET: '자산이 없습니다.',
 	DEPOSIT_ASSETS: '입금하기',
-	SEARCH_TXT: '찾기',
+	SEARCH_TXT: '검색',
 	SEARCH_ASSETS: '자산검색',
 	TOTAL_ASSETS_VALUE: '{0}의 총 자산값: {1}',
 	SUMMARY: {
@@ -1172,7 +1177,7 @@ export default {
 		HAP_ACCOUNT: 'HAP 계정', // new
 		HAP_ACCOUNT_TXT:
 			'회원님의 계정은 인증된 HollaEx 가입프로그램(HAP) 계정입니다. 이제 XHT 구매를 원하는 모든 사람을 초대하여 10%의 보너스를 얻으시기바랍니다.', // new
-		EMAIL_VERIFICATION: '이메일 인증', // new
+		EMAIL_VERIFICATION: '이메일 이증', // new
 		DOCUMENTS: '문서', // new
 		HAP_TEXT: 'HollaEx 가입프로그램 (HAP) {0}', // new
 		LOCK_AN_EXCHANGE: '거래소잠금 {0}', // new
@@ -1203,6 +1208,7 @@ export default {
 		WAVE_NUMBER: '웨이브 번호', // new
 		DISCOUNT: '( {0}% 할인 )', // new
 		MY_FEES_LIMITS: ' 나의 수수료와 한도', // ne
+		VIEW_MORE_MARKETS: ' 마켓 더보기', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: '친구초대하기', // new
@@ -1321,4 +1327,33 @@ export default {
 	},
 	OPEN_WALLET: '오픈 지갑', // new
 	AGO: 'ago', // new
+	ALL: '모두', //new
+	ONE_DAY: '1 일', //new
+	ONE_WEEK: '1 주일', //new
+	MONTH: '{0} 개월', //new
+	CUMULATIVE_AMOUNT_SYMBOL: '총액', // new
+	ORDER_MODE: '오더 모드', // new
+	REGULAR: '일반', // new
+	STOPS: '예약', // new
+	CLEAR: '초기화', // new
+	POST_ONLY: '포스트 온리', // new
+	POST_ONLY_TOOLTIP: '포스트 온리 주문은 오더북에 주문이 추가되지만, 즉시 실행되지는 않습니다.', // new
+	ESTIMATED_PRICE: '추정 가격', // new
+	VIEW_ALL: '모두 보기', // new
+	ORDER_ENTRY_ADVANCED: '더 보기', //new
+	TRIGGER_PRICE: '감시 가격', //new
+	START_DATE: '시작일', //new
+	END_DATE: '종료일', //new
+	MARKETS_TABLE: {
+		VIEW_MARKETS: '마켓 보기', //new
+	},
+	MARKET_OPTIONS: [
+		{ value: 'List', label: '리스트' }, // new
+		{ value: 'Card', label: '카드' }, // new
+	],
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'24시간 입금 및 출금 한도 ({0})', //new
+		HEADER_ROW_AMOUNT: '24시간 한도 ({0})', //new
+	},
 };

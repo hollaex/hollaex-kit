@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.15"
+  version: "2.1.16"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -12,6 +12,7 @@ consumes:
 produces:
   - application/json
   - text/csv
+  - text/plain
 
 securityDefinitions:
   Bearer:
@@ -1572,14 +1573,12 @@ paths:
           required: false
           type: number
           format: int32
-          default: 50
         - in: query
           name: page
           description: Page of data to retrieve
           required: false
           type: number
           format: int32
-          default: 1
         - in: query
           name: order_by
           description: Field to order data
@@ -1607,7 +1606,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       responses:
         200:
@@ -2988,7 +2987,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       tags:
         - Admin

@@ -4968,7 +4968,7 @@ table th {
     display: block;
     position: absolute;
     top: 36px;
-    min-width: 10rem;
+    min-width: 11rem;
     min-height: 8rem;
     background-color: var(--base_background);
     z-index: 1052;

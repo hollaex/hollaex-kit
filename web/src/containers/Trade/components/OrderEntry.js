@@ -36,16 +36,16 @@ import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
 import { orderbookSelector, marketPriceSelector } from '../utils';
 
-const ORDER_OPTIONS = [
+const ORDER_OPTIONS = () => ([
 	{
-		label: 'Regular',
+		label: STRINGS['REGULAR'],
 		value: 'regular',
 	},
 	{
-		label: 'Stops',
+		label: STRINGS['STOPS'],
 		value: 'stops',
 	},
-];
+]);
 
 class OrderEntry extends Component {
 	state = {
@@ -431,7 +431,7 @@ class OrderEntry extends Component {
 			orderType: {
 				name: 'order_type',
 				type: 'dropdown',
-				options: ORDER_OPTIONS,
+				options: ORDER_OPTIONS(),
 				onChange: (orderType) => this.setState({ orderType }),
 			},
 			type: {
@@ -453,7 +453,7 @@ class OrderEntry extends Component {
 			},
 			stop: {
 				name: 'stop',
-				label: 'Trigger price',
+				label: STRINGS['TRIGGER_PRICE'],
 				type: 'number',
 				placeholder: '0',
 				normalize: (value = '') => normalizeFloat(value, increment_price),
@@ -500,7 +500,7 @@ class OrderEntry extends Component {
 					<div className="d-flex justify-content-between">
 						<div className="d-flex">{STRINGS['SIZE']}</div>
 						<div>
-							Balance{' '}
+							{STRINGS['BALANCE_TEXT']}{' '}
 							<span
 								className="pointer text-uppercase blue-link"
 								onClick={() => this.setMax()}
