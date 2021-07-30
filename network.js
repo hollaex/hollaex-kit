@@ -2480,7 +2480,7 @@ class HollaExNetwork {
 		};
 
 		if (isString(opts.fullname)) {
-			data.full_name = opts.fullname;
+			data.fullname = opts.fullname;
 		}
 
 		if (isBoolean(opts.active)) {
