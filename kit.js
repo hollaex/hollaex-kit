@@ -4,8 +4,7 @@ const WebSocket = require('ws');
 const moment = require('moment');
 const { createRequest, createSignature, generateHeaders, isDatetime, sanitizeDate } = require('./utils');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
-const { each, union, isNumber, isString, isPlainObject, isBoolean } = require('lodash');
-
+const { each, union, isNumber, isString, isPlainObject, isBoolean, isDate } = require('lodash');
 class HollaExKit {
 	constructor(
 		opts = {
@@ -425,12 +424,13 @@ class HollaExKit {
 	 * Retrieve list of the user's completed trades
 	 * @param {object} opts - Optional parameters
 	 * @param {string} opts.symbol - The symbol-pair to filter by, pass undefined to receive data on all currencies
-	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
-	 * @param {number} opts.page - Page of trades data. Default: 1
-	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
-	 * @param {string} opts.order - Ascending (asc) or descending (desc).
-	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
-	 * @param {string} opts.endDate - End date of query in ISO8601 format.
+	 * @param {number} opts.limit - Amount of trades per page
+	 * @param {number} opts.page - Page of trades data
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id. Default: id
+	 * @param {string} opts.order - Ascending (asc) or descending (desc). Default: desc
+	 * @param {string} opts.startDate - Start date of query in ISO8601 format
+	 * @param {string} opts.endDate - End date of query in ISO8601 format
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all', 'csv']
 	 * @return {object} A JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
 	getUserTrades(
@@ -441,7 +441,8 @@ class HollaExKit {
 			orderBy: null,
 			order: null,
 			startDate: null,
-			endDate: null
+			endDate: null,
+			format: null
 		}
 	) {
 		const verb = 'GET';
@@ -475,6 +476,10 @@ class HollaExKit {
 			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
 
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
 		const headers = generateHeaders(
 			this.headers,
 			this.apiSecret,
@@ -482,6 +487,7 @@ class HollaExKit {
 			path,
 			this.apiExpiresAfter
 		);
+
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
