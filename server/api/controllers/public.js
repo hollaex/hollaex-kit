@@ -59,7 +59,7 @@ const getKitConfigurations = (req, res) => {
 
 const sendSupportEmail = (req, res) => {
 	const { email, category, subject, description }  = req.swagger.params;
-	return toolsLib.sendEmailToSupport(email.value, category.value, subject.value, description.value)
+	toolsLib.sendEmailToSupport(email.value, category.value, subject.value, description.value)
 		.then(() => {
 			return res.json({ message: 'Email was sent to support' });
 		})
@@ -373,7 +373,7 @@ const getAssetsPrices = (req, res) => {
 };
 
 const getAllCoins = (req, res) => {
-	return toolsLib.coin.getNetworkCoins({
+	toolsLib.coin.getNetworkCoins({
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
@@ -392,7 +392,7 @@ const getAllCoins = (req, res) => {
 };
 
 const getAllPairs = (req, res) => {
-	return toolsLib.pair.getNetworkPairs({
+	toolsLib.pair.getNetworkPairs({
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}

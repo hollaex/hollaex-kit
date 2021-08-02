@@ -1151,7 +1151,7 @@ const createPair = (req, res) => {
 		increment_price: incrementPrice,
 		estimated_price: estimatedPrice,
 		is_public: isPublic
-	} = req.swagger.params.data.vaue;
+	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
@@ -1238,7 +1238,7 @@ const updatePair = (req, res) => {
 		increment_price: incrementPrice,
 		estimated_price: estimatedPrice,
 		is_public: isPublic
-	} = req.swagger.params.data.vaue;
+	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
@@ -1327,7 +1327,7 @@ const createCoin = (req, res) => {
 		standard,
 		allow_deposit: allowDeposit,
 		allow_withdrawal: allowWithdrawal
-	} = req.swagger.params.data.vaue;
+	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
@@ -1420,7 +1420,7 @@ const updateCoin = (req, res) => {
 		standard,
 		allow_deposit: allowDeposit,
 		allow_withdrawal: allowWithdrawal
-	} = req.swagger.params.data.vaue;
+	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,

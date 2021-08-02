@@ -220,7 +220,7 @@ const verifyUser = (req, res) => {
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
 
-	return toolsLib.database.findOne('user', {
+	toolsLib.database.findOne('user', {
 		where: { email },
 		attributes: ['id', 'email', 'settings', 'network_id']
 	})
