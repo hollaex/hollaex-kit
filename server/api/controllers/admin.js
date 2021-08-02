@@ -1097,6 +1097,39 @@ const deleteKitUserMeta = (req, res) => {
 		});
 };
 
+const adminCheckTransaction = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/user/adminCheckTransaction auth',
+		req.auth
+	);
+
+	const {
+		currency,
+		transaction_id,
+		address,
+		network,
+		is_testnet
+	} = req.swagger.params;
+
+	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((transaction) => {
+			return res.json({ message: 'Success', transaction });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/user/adminCheckTransaction catch',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1130,5 +1163,6 @@ module.exports = {
 	deleteKitUserMeta,
 	postKitUserMeta,
 	putKitUserMeta,
-	putUserMeta
+	putUserMeta,
+	adminCheckTransaction
 };
