@@ -33,6 +33,21 @@ const getConstants = (req, res) => {
 	}
 };
 
+const getNetworkConstants = (req, res) => {
+	toolsLib.getNetworkConstants({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerPublic.verbose('controller/public/getNetworkConstants', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getKitConfigurations = (req, res) => {
 	try {
 		return res.json(toolsLib.getKitConfig());
@@ -373,5 +388,6 @@ module.exports = {
 	getHistory,
 	getSymbols,
 	getAssetsPrices,
-	getTradesHistory
+	getTradesHistory,
+	getNetworkConstants
 };

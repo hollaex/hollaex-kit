@@ -59,6 +59,24 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /network/constants:
+    x-swagger-router-controller: public
+    get:
+      get:
+      operationId: getNetworkConstants
+      description: Get network constants such as pairs and currencies
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /network/constants:
   /kit:
     x-swagger-router-controller: public
     get:
