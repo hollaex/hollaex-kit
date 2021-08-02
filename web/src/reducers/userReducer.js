@@ -123,6 +123,7 @@ const INITIAL_STATE = {
 	tradeVolumes: INITIAL_TRADE_VOLUME_OBJECT,
 	affiliation: {},
 	is_hap: false,
+	meta: {},
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -148,6 +149,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				full_name,
 				gender,
 				dob,
+				meta,
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -185,6 +187,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				full_name,
 				dob,
 				gender,
+				meta,
 			};
 		}
 		case 'SET_USER_DATA': {
