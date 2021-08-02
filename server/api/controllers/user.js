@@ -27,9 +27,10 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL } = require('../../constants');
 const { all } = require('bluebird');
 const { isString } = require('lodash');
+const { publisher } = require('../../db/pubsub');
 const INITIAL_SETTINGS = () => {
 	return {
 		notification: {
@@ -115,7 +116,7 @@ const signUpUser = (req, res) => {
 							user
 						]);
 					})
-					.then(([ networkUser, user ]) => {
+					.then(([networkUser, user]) => {
 						return user.update(
 							{ network_id: networkUser.id },
 							{ fields: ['network_id'], returning: true, transaction }
@@ -129,7 +130,15 @@ const signUpUser = (req, res) => {
 				user
 			]);
 		})
-		.then(([ verificationCode, user ]) => {
+		.then(([verificationCode, user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
+
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
@@ -232,7 +241,7 @@ const verifyUser = (req, res) => {
 				user
 			]);
 		})
-		.then(([ verificationCode, user ]) => {
+		.then(([verificationCode, user]) => {
 			if (verificationCode.verified) {
 				throw new Error(USER_EMAIL_IS_VERIFIED);
 			}
@@ -249,7 +258,14 @@ const verifyUser = (req, res) => {
 				)
 			]);
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
@@ -309,13 +325,13 @@ const loginPost = (req, res) => {
 				toolsLib.security.validatePassword(user.password, password)
 			]);
 		})
-		.then(([ user, passwordIsValid ]) => {
+		.then(([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
 				throw new Error(INVALID_CREDENTIALS);
 			}
 
 			if (!user.otp_enabled) {
-				return all([ user, toolsLib.security.checkCaptcha(captcha, ip) ]);
+				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
 			} else {
 				return all([
 					user,
@@ -329,7 +345,7 @@ const loginPost = (req, res) => {
 				]);
 			}
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
 			if (ip) {
 				toolsLib.user.registerUserLogin(user.id, ip, {
 					device,
@@ -343,6 +359,15 @@ const loginPost = (req, res) => {
 				time,
 				device
 			};
+
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'login',
+					user_id: user.id
+				}
+			}));
+
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, {}, domain);
 			}
@@ -466,16 +491,31 @@ const changePassword = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/changePassword', req.auth.sub);
 	const email = req.auth.sub.email;
 	const { old_password, new_password } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+
 	loggerUser.debug(
 		req.uuid,
 		'controllers/user/changePassword',
 		req.swagger.params.data.value
 	);
 
-	toolsLib.security.changeUserPassword(email, old_password, new_password)
-		.then(() => res.json({ message: 'Success' }))
+	toolsLib.security.changeUserPassword(email, old_password, new_password, ip, domain)
+		.then(() => res.json({ message: `Change password email confirmation sent to: ${email}` }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const confirmChangePassword = (req, res) => {
+	const { code } = req.swagger.params.data.value;
+	const domain = req.headers['x-real-origin'];
+
+	toolsLib.security.confirmChangeUserPassword(code, domain)
+		.then(() => res.json({ message: 'Password updated.' }))
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/confirmChangeUserPassword', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -746,6 +786,7 @@ module.exports = {
 	getUser,
 	updateSettings,
 	changePassword,
+	confirmChangePassword,
 	setUsername,
 	getUserLogins,
 	affiliationCount,
