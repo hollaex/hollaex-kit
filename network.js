@@ -6,7 +6,9 @@ const {
 	isPlainObject,
 	isNumber,
 	isString,
-	isArray
+	isArray,
+	isBuffer,
+	omit
 } = require('lodash');
 const {
 	createRequest,
@@ -20,6 +22,7 @@ const {
 const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { reject } = require('bluebird');
+const FileType = require('file-type');
 
 class HollaExNetwork {
 	constructor(
@@ -126,7 +129,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -420,7 +423,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -1099,7 +1102,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -1500,7 +1503,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -1928,6 +1931,8 @@ class HollaExNetwork {
 		fee: null,
 		additionalHeaders: null
 	}) {
+		checkKit(this.exchange_id);
+
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -1937,7 +1942,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/mint`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/mint`;
 		const data = {
 			user_id: userId,
 			currency,
@@ -1977,7 +1982,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -2009,6 +2014,8 @@ class HollaExNetwork {
 			additionalHeaders: null
 		}
 	) {
+		checkKit(this.exchange_id);
+
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -2032,7 +2039,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'PUT';
-		const path = `${this.baseUrl}/network/mint`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/mint`;
 		const data = {
 			transaction_id: transactionId,
 			status,
@@ -2065,7 +2072,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -2090,6 +2097,8 @@ class HollaExNetwork {
 		fee: null,
 		additionalHeaders: null
 	}) {
+		checkKit(this.exchange_id);
+
 		if (!userId) {
 			return reject(parameterError('userId', 'cannot be null'));
 		} else if (!currency) {
@@ -2099,7 +2108,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/burn`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/burn`;
 		const data = {
 			user_id: userId,
 			currency,
@@ -2139,7 +2148,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -2171,6 +2180,8 @@ class HollaExNetwork {
 			additionalHeaders: null
 		}
 	) {
+		checkKit(this.exchange_id);
+
 		if (!transactionId) {
 			return reject(parameterError('transactionId', 'cannot be null'));
 		}
@@ -2194,7 +2205,7 @@ class HollaExNetwork {
 		}
 
 		const verb = 'PUT';
-		const path = `${this.baseUrl}/network/burn`;
+		const path = `${this.baseUrl}/network/${this.exchange_id}/burn`;
 		const data = {
 			transaction_id: transactionId,
 			status,
@@ -2227,7 +2238,7 @@ class HollaExNetwork {
 			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -2342,6 +2353,594 @@ class HollaExNetwork {
 		);
 
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	getConstants(opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${this.exchange_id}/constants`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	getExchange(opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/exchange`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	updateExchange(opts = {
+		info: null,
+		isPublic: null,
+		type: null,
+		name: null,
+		displayName: null,
+		url: null,
+		businessInfo: null,
+		pairs: null,
+		coins: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/exchange`;
+		const data = {
+			id: this.exchange_id
+		};
+
+		if (isPlainObject(opts.info)) {
+			data.info = opts.info;
+		}
+
+		if (isBoolean(opts.isPublic)) {
+			data.is_public = opts.isPublic;
+		}
+
+		if (isString(opts.type) && ['DIY', 'Cloud', 'Enterprise'].includes(opts.type)) {
+			data.type = opts.type;
+		}
+
+		if (isString(opts.name)) {
+			data.name = opts.name;
+		}
+
+		if (isString(opts.displayName)) {
+			data.display_name = opts.displayName;
+		}
+
+		if (isString(opts.url)) {
+			data.url = opts.url;
+		}
+
+		if (isPlainObject(opts.businessInfo)) {
+			data.business_info = opts.businessInfo;
+		}
+
+		if (isArray(opts.pairs) && !opts.pairs.some((pair) => !isString(pair))) {
+			data.pairs = opts.pairs;
+		}
+
+		if (isArray(opts.coins) && !opts.coins.some((coin) => !isString(coin))) {
+			data.coins = opts.coins;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	getAllCoins(
+		opts = {
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/coin/all`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	createCoin(
+		symbol,
+		fullname,
+		opts = {
+			code: null,
+			withdrawalFee: null,
+			min: null,
+			max: null,
+			incrementUnit: null,
+			logo: null,
+			meta: null,
+			estimatedPrice: null,
+			type: null,
+			network: null,
+			standard: null,
+			allowDeposit: null,
+			allowWithdrawal: null,
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!isString(symbol)) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!isString(fullname)) {
+			return reject(parameterError('fullname', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/coin`;
+		const data = {
+			symbol,
+			fullname
+		};
+
+		if (isString(opts.code)) {
+			data.code = opts.code;
+		}
+
+		if (isNumber(opts.withdrawalFee) && opts.withdrawalFee >= 0) {
+			data.withdrawal_fee = opts.withdrawalFee;
+		}
+
+		if (isNumber(opts.min)) {
+			data.min = opts.min;
+		}
+
+		if (isNumber(opts.max)) {
+			data.max = opts.max;
+		}
+
+		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
+			data.increment_unit = opts.incrementUnit;
+		}
+
+		if (isString(opts.logo)) {
+			data.logo = opts.logo;
+		}
+
+		if (isPlainObject(opts.meta)) {
+			data.meta = opts.meta;
+		}
+
+		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
+			data.estimated_price = opts.estimatedPrice;
+		}
+
+		if (isString(opts.type) && ['blockchain', 'fiat', 'other'].includes(opts.type)) {
+			data.type = opts.type;
+		}
+
+		if (isString(opts.network)) {
+			data.network = opts.network;
+		}
+
+		if (isString(opts.standard)) {
+			data.standard = opts.standard;
+		}
+
+		if (isBoolean(opts.allowDeposit)) {
+			data.allow_deposit = opts.allowDeposit;
+		}
+
+		if (isBoolean(opts.allowWithdrawal)) {
+			data.allow_withdrawal = opts.allowWithdrawal;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	updateCoin(
+		symbol,
+		fullname,
+		opts = {
+			code: null,
+			withdrawalFee: null,
+			min: null,
+			max: null,
+			incrementUnit: null,
+			logo: null,
+			meta: null,
+			estimatedPrice: null,
+			type: null,
+			network: null,
+			standard: null,
+			allowDeposit: null,
+			allowWithdrawal: null,
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!isString(symbol)) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!isString(fullname)) {
+			return reject(parameterError('fullname', 'cannot be null'));
+		}
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/coin`;
+		const data = {
+			symbol,
+			fullname
+		};
+
+		if (isString(opts.code)) {
+			data.code = opts.code;
+		}
+
+		if (isNumber(opts.withdrawalFee) && opts.withdrawalFee >= 0) {
+			data.withdrawal_fee = opts.withdrawalFee;
+		}
+
+		if (isNumber(opts.min)) {
+			data.min = opts.min;
+		}
+
+		if (isNumber(opts.max)) {
+			data.max = opts.max;
+		}
+
+		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
+			data.increment_unit = opts.incrementUnit;
+		}
+
+		if (isString(opts.logo)) {
+			data.logo = opts.logo;
+		}
+
+		if (isPlainObject(opts.meta)) {
+			data.meta = opts.meta;
+		}
+
+		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
+			data.estimated_price = opts.estimatedPrice;
+		}
+
+		if (isString(opts.type) && ['blockchain', 'fiat', 'other'].includes(opts.type)) {
+			data.type = opts.type;
+		}
+
+		if (isString(opts.network)) {
+			data.network = opts.network;
+		}
+
+		if (isString(opts.standard)) {
+			data.standard = opts.standard;
+		}
+
+		if (isBoolean(opts.allowDeposit)) {
+			data.allow_deposit = opts.allowDeposit;
+		}
+
+		if (isBoolean(opts.allowWithdrawal)) {
+			data.allow_withdrawal = opts.allowWithdrawal;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	getAllPairs(
+		opts = {
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/pair/all`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	createPair(
+		name,
+		baseCoin,
+		quoteCoin,
+		opts = {
+			code: null,
+			active: null,
+			minSize: null,
+			maxSize: null,
+			minPrice: null,
+			maxPrice: null,
+			incrementSize: null,
+			incrementPrice: null,
+			estimatedPrice: null,
+			isPublic: null,
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!isString(name)) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!isString(baseCoin)) {
+			return reject(parameterError('baseCoin', 'cannot be null'));
+		} else if (!isString(quoteCoin)) {
+			return reject(parameterError('quoteCoin', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/pair`;
+		const data = {
+			name,
+			pair_base: baseCoin,
+			pair_2: quoteCoin
+		};
+
+		if (isString(opts.code)) {
+			data.code = opts.code;
+		}
+
+		if (isBoolean(opts.active)) {
+			data.active = opts.active;
+		}
+
+		if (isNumber(opts.minSize)) {
+			data.min_size = opts.minSize;
+		}
+
+		if (isNumber(opts.maxSize)) {
+			data.max_size = opts.maxSize;
+		}
+
+		if (isNumber(opts.minPrice)) {
+			data.min_price = opts.minPrice;
+		}
+
+		if (isNumber(opts.maxPrice)) {
+			data.max_price = opts.maxPrice;
+		}
+
+		if (isNumber(opts.incrementSize) && opts.incrementSize >= 0) {
+			data.increment_size = opts.incrementSize;
+		}
+
+		if (isNumber(opts.incrementPrice) && opts.incrementPrice >= 0) {
+			data.increment_price = opts.incrementPrice;
+		}
+
+		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
+			data.estimated_price = opts.estimatedPrice;
+		}
+
+		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
+			data.increment_unit = opts.incrementUnit;
+		}
+
+		if (isBoolean(opts.isPublic)) {
+			data.is_public = opts.isPublic;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	updatePair(
+		name,
+		baseCoin,
+		quoteCoin,
+		opts = {
+			code: null,
+			active: null,
+			minSize: null,
+			maxSize: null,
+			minPrice: null,
+			maxPrice: null,
+			incrementSize: null,
+			incrementPrice: null,
+			estimatedPrice: null,
+			isPublic: null,
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!isString(name)) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!isString(baseCoin)) {
+			return reject(parameterError('baseCoin', 'cannot be null'));
+		} else if (!isString(quoteCoin)) {
+			return reject(parameterError('quoteCoin', 'cannot be null'));
+		}
+
+		const verb = 'PUT';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/pair`;
+		const data = {
+			name,
+			pair_base: baseCoin,
+			pair_2: quoteCoin
+		};
+
+		if (isString(opts.code)) {
+			data.code = opts.code;
+		}
+
+		if (isBoolean(opts.active)) {
+			data.active = opts.active;
+		}
+
+		if (isNumber(opts.minSize)) {
+			data.min_size = opts.minSize;
+		}
+
+		if (isNumber(opts.maxSize)) {
+			data.max_size = opts.maxSize;
+		}
+
+		if (isNumber(opts.minPrice)) {
+			data.min_price = opts.minPrice;
+		}
+
+		if (isNumber(opts.maxPrice)) {
+			data.max_price = opts.maxPrice;
+		}
+
+		if (isNumber(opts.incrementSize) && opts.incrementSize >= 0) {
+			data.increment_size = opts.incrementSize;
+		}
+
+		if (isNumber(opts.incrementPrice) && opts.incrementPrice >= 0) {
+			data.increment_price = opts.incrementPrice;
+		}
+
+		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
+			data.estimated_price = opts.estimatedPrice;
+		}
+
+		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
+			data.increment_unit = opts.incrementUnit;
+		}
+
+		if (isBoolean(opts.isPublic)) {
+			data.is_public = opts.isPublic;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	async uploadIcon(image, name, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!isBuffer(image)) {
+			return reject(parameterError('image', 'must be a buffer'));
+		} else if (!isString(name)) {
+			return reject(parameterError('name', 'cannot be null'));
+		}
+
+		const { ext, mime } = await FileType.fromBuffer(image);
+
+		if (mime.indexOf('image/') !== 0) {
+			return reject(parameterError('image', 'must be an image'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/icon`;
+
+		const formData = {
+			file: {
+				value: image,
+				options: {
+					filename: `${name}.${ext}`,
+					contentType: mime
+				}
+			},
+			file_name: name
+		};
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders)
+				? { ...this.headers, ...opts.additionalHeaders, 'content-type': 'multipart/form-data' }
+				: { ...this.headers, 'content-type': 'multipart/form-data' },
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			omit(formData, [ 'file' ])
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { formData });
 	}
 
 	/**

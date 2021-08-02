@@ -417,7 +417,7 @@ class HollaExKit {
 			this.apiExpiresAfter,
 			data
 		);
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
@@ -634,7 +634,7 @@ class HollaExKit {
 			this.apiExpiresAfter,
 			data
 		);
-		return createRequest(verb, `${this.apiUrl}${path}`, headers, data);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**
