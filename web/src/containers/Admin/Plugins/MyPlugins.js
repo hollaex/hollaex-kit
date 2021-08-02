@@ -35,7 +35,7 @@ class MyPlugins extends Component {
 		if (e.target.value) {
 			params.search = e.target.value;
 		}
-		this.searchPlugin(1, 50, params);
+		this.searchPlugin(params);
 	};
 
 	handlePlugin = () => {
