@@ -23,6 +23,7 @@ const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { reject } = require('bluebird');
 const FileType = require('file-type');
+const isBase64 = require('is-base64');
 
 class HollaExNetwork {
 	constructor(
@@ -2540,7 +2541,7 @@ class HollaExNetwork {
 			data.increment_unit = opts.incrementUnit;
 		}
 
-		if (isString(opts.logo)) {
+		if (isBase64(opts.logo, { mimeRequired: true })) {
 			data.logo = opts.logo;
 		}
 
@@ -2641,7 +2642,7 @@ class HollaExNetwork {
 			data.increment_unit = opts.incrementUnit;
 		}
 
-		if (isString(opts.logo)) {
+		if (isBase64(opts.logo, { mimeRequired: true })) {
 			data.logo = opts.logo;
 		}
 
