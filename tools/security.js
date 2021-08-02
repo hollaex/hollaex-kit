@@ -118,7 +118,7 @@ const confirmChangeUserPassword = (code, domain) => {
 			return all([
 				dbQuery.findOne('user', { where: { id: dataValues.id } }),
 				dataValues,
-				// client.delAsync(`ChangePasswordCode:${code}`)
+				client.delAsync(`ChangePasswordCode:${code}`)
 			]);
 		})
 		.then(([user, dataValues]) => {
