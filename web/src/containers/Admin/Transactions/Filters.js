@@ -12,15 +12,6 @@ const getFilters = (coinOptions) => [
 		options: coinOptions,
 	},
 	{
-		label: 'Type',
-		placeholder: 'Type',
-		key: 'type',
-		options: [
-			{ value: 'deposit', text: 'Deposits' },
-			{ value: 'withdrawal', text: 'Withdrawals' },
-		],
-	},
-	{
 		label: 'Status',
 		placeholder: 'Status',
 		key: 'status',
@@ -71,37 +62,40 @@ export const Filters = ({
 					className="filter-alert"
 				/>
 			)}
-			<div className="filters-wrapper">
-				<div className="filters-wrapper-filters">
+			<div className="filters-wrapper admin-deposit-wrapper">
+				<div className="filters-wrapper-filters  d-flex flex-row">
 					{fieldProps.map(({ key, ...rest }) => (
 						<SelectValue
 							key={key}
 							value={params[key]}
 							onSelect={onChange(key)}
+							className={'adjacent-fields pl-2'}
 							{...rest}
 						/>
 					))}
 					<FilterInput
 						onChange={onChange('transaction_id')}
-						label=""
+						label="Transaction Id"
 						defaultValue={params.transaction_id}
 						placeholder="Transaction Id"
-						description="Transaction Id"
+						// description="Transaction Id"
+						className={'adjacent-fields pl-2'}
 					/>
 					<FilterInput
 						onChange={onChange('address')}
-						label=""
+						label="Wallet Address"
 						defaultValue={params.address}
 						placeholder="Wallet Address"
-						description="Wallet address"
+						// description="Wallet address"
+						className={'adjacent-fields pl-2'}
 					/>
 				</div>
-				<div className="filters-wrapper-buttons">
+				<div className="filters-wrapper-buttons pl-2">
 					<Button
 						onClick={onClick}
 						type="primary"
 						icon={<SearchOutlined />}
-						className="filter-button"
+						className="filter-button green-btn"
 						disabled={!allowQuery}
 					>
 						Search
