@@ -19,7 +19,7 @@ const getNetworkCoins = (
 
 const createCoin = async (
 	symbol,
-	fullName,
+	fullname,
 	opts = {
 		code: null,
 		withdrawalFee: null,
@@ -39,26 +39,32 @@ const createCoin = async (
 ) => {
 	const formattedSymbol = symbol.trim().toLowerCase();
 
-	return getNodeLib().createCoin(formattedSymbol, fullName, opts);
+	return getNodeLib().createCoin(formattedSymbol, fullname, opts);
 };
 
 const updateCoin = async (
 	symbol,
+	fullname,
 	opts = {
-		fullName: null,
-		active: null,
-		allowDeposit: null,
-		allowWithdrawal: null,
+		code: null,
 		withdrawalFee: null,
 		min: null,
 		max: null,
 		incrementUnit: null,
+		logo: null,
+		meta: null,
+		estimatedPrice: null,
+		type: null,
+		network: null,
+		standard: null,
+		allowDeposit: null,
+		allowWithdrawal: null,
 		additionalHeaders: null
 	}
 ) => {
 	const formattedSymbol = symbol.trim().toLowerCase();
 
-	return getNodeLib().updateCoin(formattedSymbol, opts);
+	return getNodeLib().updateCoin(formattedSymbol, fullname, opts);
 };
 
 module.exports = {
