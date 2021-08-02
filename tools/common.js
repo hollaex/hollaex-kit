@@ -389,53 +389,8 @@ const getAssetsPrices = (assets = [], quote, amount, opts = {
 const storeImageOnNetwork = async (image, name, opts = {
 	additionalHeaders: null
 }) => {
-	if (image.mimetype.indexOf('image/') !== 0) {
-		return reject(new Error('Invalid file type'));
-	}
 
-	const {
-		api_key,
-		kit_version
-	} = await dbQuery.findOne('status', {
-		raw: true,
-		attributes: ['id', 'api_key', 'kit_version']
-	});
-
-	const exchangeId = getNodeLib().exchange_id;
-	const exchangeName = getKitConfig().info.name;
-
-	let headers = {
-		'api-key': api_key,
-		'Content-Type': 'multipart/form-data',
-		'kit-version': kit_version
-	};
-
-	if (isPlainObject(opts.additionalHeaders)) {
-		headers = {
-			...headers,
-			...opts.additionalHeaders
-		};
-	}
-
-	const options = {
-		method: 'POST',
-		uri: `${HOLLAEX_NETWORK_ENDPOINT}${HOLLAEX_NETWORK_BASE_URL}/exchange/icon`,
-		formData: {
-			exchange_id: exchangeId,
-			exchange_name: exchangeName,
-			file_name: name,
-			file: {
-				value: image.buffer,
-				options: {
-					filename: image.originalname
-				}
-			}
-		},
-		headers
-	};
-
-	return rp(options)
-		.then(JSON.parse);
+	return getNodeLib().uploadIcon(image, name, opts);
 };
 
 const getPublicTrades = (symbol, opts = {
@@ -762,6 +717,12 @@ const getDomain = () => {
 // 	);
 // };
 
+const getNetworkConstants = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getConstants(opts);
+};
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -815,5 +776,6 @@ module.exports = {
 	getDomain,
 	isDatetime,
 	// getCsvParser,
-	emailHtmlBoilerplate
+	emailHtmlBoilerplate,
+	getNetworkConstants
 };
