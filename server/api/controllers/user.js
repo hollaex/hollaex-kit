@@ -500,6 +500,24 @@ const getUserLogins = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
+	if(start_date.value && typeof start_date.value !== 'string'){
+		loggerUser.error(
+			req.uuid,
+			'controllers/public/getUserLogins invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if(end_date.value && typeof end_date.value !== 'string'){
+		loggerUser.error(
+			req.uuid,
+			'controllers/public/getUserLogins invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
 	toolsLib.user.getUserLogins({
 		userId: user_id,
 		limit: limit.value,
