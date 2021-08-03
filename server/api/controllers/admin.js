@@ -1,6 +1,6 @@
 'use strict';
 
-const { loggerAdmin } = require('../../config/logger');
+const { loggerAdmin, loggerUser } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
 const { all } = require('bluebird');
@@ -99,6 +99,15 @@ const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
 	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getUsersAdmin invalid order_by',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
 
 	toolsLib.user.getAllUsersAdmin({
 		id: id.value,
