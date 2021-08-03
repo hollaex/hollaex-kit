@@ -9,6 +9,7 @@ const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
+const { isEmail } = require('validator');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -717,6 +718,24 @@ const inviteNewOperator = (req, res) => {
 
 	const invitingEmail = req.auth.sub.email;
 	const { email, role } = req.swagger.params;
+
+	if (!email.value || typeof email.value !== 'string' || !isEmail(email.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/inviteNewOperator invalid email',
+			email.value
+		);
+		return res.status(400).json({ message: 'Invalid Email' });
+	}
+
+	if (!role.value || typeof role.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/inviteNewOperator invalid role',
+			role.value
+		);
+		return res.status(400).json({ message: 'Invalid role' });
+	}
 
 	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value)
 		.then(() => {
