@@ -1320,6 +1320,7 @@ paths:
           name: status
           description: Order status e.g. pfilled, filled
           required: false
+          enum: ['pfilled', 'filled', 'new', 'canceled']
           type: string
         - in: query
           name: open
@@ -2838,6 +2839,7 @@ paths:
           name: status
           description: Order status e.g. pfilled, filled
           required: false
+          enum: ['pfilled', 'filled', 'new', 'canceled']
           type: string
         - in: query
           name: open
