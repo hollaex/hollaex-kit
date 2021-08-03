@@ -503,7 +503,7 @@ const getUserLogins = (req, res) => {
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerUser.error(
 			req.uuid,
-			'controllers/public/getUserLogins invalid start_date',
+			'controllers/user/getUserLogins invalid start_date',
 			start_date.value
 		);
 		return res.status(400).json({ message: 'Invalid start date' });
@@ -512,7 +512,7 @@ const getUserLogins = (req, res) => {
 	if (end_date.value && !isDate(end_date.value)) {
 		loggerUser.error(
 			req.uuid,
-			'controllers/public/getUserLogins invalid end_date',
+			'controllers/user/getUserLogins invalid end_date',
 			end_date.value
 		);
 		return res.status(400).json({ message: 'Invalid end date' });
@@ -521,7 +521,7 @@ const getUserLogins = (req, res) => {
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerUser.error(
 			req.uuid,
-			'controllers/public/getUserLogins invalid order_by',
+			'controllers/user/getUserLogins invalid order_by',
 			end_date.value
 		);
 		return res.status(400).json({ message: 'Invalid order by' });
