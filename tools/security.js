@@ -54,6 +54,7 @@ const otp = require('otp');
 const { client } = require('./database/redis');
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
+const { generateHash } = require(`${SERVER_PATH}/utils/security`);
 
 const checkCaptcha = (captcha = '', remoteip = '') => {
 	if (!captcha) {
@@ -110,7 +111,32 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 		});
 };
 
-const changeUserPassword = (email, oldPassword, newPassword) => {
+const confirmChangeUserPassword = (code, domain) => {
+	return getChangePasswordCode(code)
+		.then((data) => {
+			const dataValues = JSON.parse(data);
+			return all([
+				dbQuery.findOne('user', { where: { id: dataValues.id } }),
+				dataValues,
+				client.delAsync(`ChangePasswordCode:${code}`)
+			]);
+		})
+		.then(([user, dataValues]) => {
+			return user.update({ password: dataValues.password }, { fields: ['password'] });
+		})
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.PASSWORD_CHANGED,
+				user.email,
+				{ code },
+				user.settings,
+				domain
+			);
+			return;
+		});
+};
+
+const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
 	if (oldPassword === newPassword) {
 		return reject(new Error(SAME_PASSWORD));
 	}
@@ -122,17 +148,51 @@ const changeUserPassword = (email, oldPassword, newPassword) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([user, validatePassword(user.password, oldPassword)]);
+			return all([createChangePasswordCode(user.id, newPassword), user]);
 		})
-		.then(([user, passwordIsValid]) => {
-			if (!passwordIsValid) {
-				throw new Error(INVALID_PASSWORD);
-			} else {
-				return user;
+		.then(([code, user]) => {
+			sendEmail(
+				MAILTYPE.CHANGE_PASSWORD,
+				email,
+				{ code, ip },
+				user.settings,
+				domain
+			);
+			return;
+		});
+};
+
+const getChangePasswordCode = (code) => {
+	return client.getAsync(`ChangePasswordCode:${code}`)
+		.then((user_id) => {
+			if (!user_id) {
+				const error = new Error(CODE_NOT_FOUND);
+				error.status = 404;
+				throw error;
 			}
+			return user_id;
+		});
+};
+
+const createChangePasswordCode = (userId, newPassword) => {
+	//Generate new random code
+	const code = crypto.randomBytes(20).toString('hex');
+	//Code is expire in 5 mins
+	return generateHash(newPassword)
+		.then((hashedPassword) => {
+			return client.setexAsync(`ChangePasswordCode:${code}`, 60 * 5, JSON.stringify({
+				id: userId,
+				password: hashedPassword
+			}));
 		})
-		.then((user) => {
-			return user.update({ password: newPassword });
+		.then(() => {
+			return client.ttlAsync(`ChangePasswordCode:${code}`);
+		})
+		.then(ttl => {
+			if (!ttl) {
+				throw new Error(CODE_NOT_FOUND);
+			}
+			return code;
 		});
 };
 
@@ -1007,6 +1067,7 @@ module.exports = {
 	validatePassword,
 	sendResetPasswordCode,
 	changeUserPassword,
+	confirmChangeUserPassword,
 	hasUserOtpEnabled,
 	verifyOtpBeforeAction,
 	verifyOtp,
