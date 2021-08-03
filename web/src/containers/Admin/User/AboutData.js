@@ -558,7 +558,7 @@ const AboutData = ({
 				<div className="d-flex">
 					<div className="about-verification-content">
 						<div className="about-title">User identification files</div>
-						<div className="d-flex justify-content-between">
+						<div className="d-flex justify-content-between verification-wrapper">
 							<div className="d-flex">
 								<Verification
 									isUpload={isUpload}
