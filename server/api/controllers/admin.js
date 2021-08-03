@@ -8,6 +8,7 @@ const { USER_NOT_FOUND } = require('../../messages');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { isDate } = require('moment');
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -104,7 +105,7 @@ const getUsersAdmin = (req, res) => {
 		loggerUser.error(
 			req.uuid,
 			'controllers/admin/getUsersAdmin invalid order_by',
-			end_date.value
+			order_by.value
 		);
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
@@ -413,6 +414,33 @@ const getAdminUserLogins = (req, res) => {
 	);
 	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getAdminUserLogins invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getAdminUserLogins invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getAdminUserLogins invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
 	toolsLib.user.getUserLogins({
 		userId: user_id.value,
 		limit: limit.value,
@@ -450,6 +478,33 @@ const getUserAudits = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getUserAudits invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getUserAudits invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getUserAudits invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
 
 	toolsLib.user.getUserAudits({
 		userId: user_id,
@@ -624,6 +679,15 @@ const getOperators = (req, res) => {
 	);
 
 	const { limit, page, order_by, order } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getOperators invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
 
 	toolsLib.user.getExchangeOperators({
 		limit: limit.value,
