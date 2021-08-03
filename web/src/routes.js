@@ -74,6 +74,7 @@ import {
 import { checkUserSessionExpired } from './utils/utils';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 import PluginConfig from 'containers/Admin/PluginConfig';
+import ConfirmChangePassword from 'containers/ConfirmChangePassword';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
@@ -284,6 +285,11 @@ export const generateRoutes = (routes = []) => {
 						onEnter={requireAuth}
 					/>
 				) : null}
+				<Route
+					path="change-password-confirm/:code"
+					name="Reset Password Request"
+					component={ConfirmChangePassword}
+				/>
 				<Route
 					path="account"
 					name="Account"

@@ -3,7 +3,7 @@ import { IconTitle, Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const ResetPasswordSuccess = ({ onClick, icons: ICONS, ...rest }) => {
+const ResetPasswordSuccess = ({ label, onClick, icons: ICONS, is_loginText = true, ...rest }) => {
 	return (
 		<div className="auth_wrapper">
 			<IconTitle
@@ -14,13 +14,20 @@ const ResetPasswordSuccess = ({ onClick, icons: ICONS, ...rest }) => {
 				textType="title"
 				className="w-100"
 			/>
-			<div className="text-center">
-				{STRINGS['RESET_PASSWORD_SUCCESS.TEXT_1']}
-				<br />
-				{STRINGS['RESET_PASSWORD_SUCCESS.TEXT_2']}
-			</div>
+			{is_loginText
+				?
+				<div className="text-center">
+					{STRINGS['RESET_PASSWORD_SUCCESS.TEXT_1']}
+					<br />
+					{STRINGS['RESET_PASSWORD_SUCCESS.TEXT_2']}
+				</div>
+				:
+				<div className="text-center">
+					{STRINGS['RESET_PASSWORD_SUCCESS.TEXT_1']}
+				</div>
+			}
 			<Button
-				label={STRINGS['LOGIN_TEXT']}
+				label={label}
 				onClick={onClick}
 				className="button-margin"
 			/>
