@@ -297,28 +297,6 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /confirm-change-password:
-    x-swagger-router-controller: user
-    post:
-      operationId: confirmChangePassword
-      description: Confirm a change password request
-      tags:
-        - Public
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/ConfirmChangePassword"
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/MessageResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
   /notification/deposit:
     x-swagger-router-controller: notification
     post:

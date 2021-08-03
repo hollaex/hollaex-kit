@@ -27,7 +27,7 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN } = require('../../constants');
 const { all } = require('bluebird');
 const { isString } = require('lodash');
 const { publisher } = require('../../db/pubsub');
@@ -492,7 +492,7 @@ const changePassword = (req, res) => {
 	const email = req.auth.sub.email;
 	const { old_password, new_password } = req.swagger.params.data.value;
 	const ip = req.headers['x-real-ip'];
-	const domain = req.headers['x-real-origin'];
+	const domain = `${API_HOST}${req.swagger.swaggerObject.basePath}`;
 
 	loggerUser.debug(
 		req.uuid,
@@ -509,11 +509,10 @@ const changePassword = (req, res) => {
 };
 
 const confirmChangePassword = (req, res) => {
-	const { code } = req.swagger.params.data.value;
-	const domain = req.headers['x-real-origin'];
+	const code = req.params.code;
 
-	toolsLib.security.confirmChangeUserPassword(code, domain)
-		.then(() => res.json({ message: 'Password updated.' }))
+	toolsLib.security.confirmChangeUserPassword(code)
+		.then(() => res.redirect(301, `${DOMAIN}/reset-password/${code}?isSuccess=true`))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/confirmChangeUserPassword', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });

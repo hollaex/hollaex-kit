@@ -9,7 +9,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const link = `${domain}/change-password-confirm/${data.code}`;
+	const link = `${domain}/confirm-change-password/${data.code}`;
   const CHANGEPASSWORD = require('../strings').getStringObject(language, 'CHANGEPASSWORD');
 	return `
     <div>
