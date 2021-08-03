@@ -29,7 +29,7 @@ const {
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
 const { all } = require('bluebird');
-const { isString } = require('lodash');
+const { isDate } = require('moment');
 const INITIAL_SETTINGS = () => {
 	return {
 		notification: {
@@ -500,7 +500,7 @@ const getUserLogins = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	if(start_date.value && typeof start_date.value !== 'string'){
+	if (start_date.value && !isDate(start_date.value)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/public/getUserLogins invalid start_date',
@@ -509,13 +509,22 @@ const getUserLogins = (req, res) => {
 		return res.status(400).json({ message: 'Invalid start date' });
 	}
 
-	if(end_date.value && typeof end_date.value !== 'string'){
+	if (end_date.value && !isDate(end_date.value)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/public/getUserLogins invalid end_date',
 			end_date.value
 		);
 		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/public/getUserLogins invalid order_by',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
 	}
 
 	toolsLib.user.getUserLogins({
