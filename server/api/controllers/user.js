@@ -522,7 +522,7 @@ const getUserLogins = (req, res) => {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/getUserLogins invalid order_by',
-			end_date.value
+			order_by.value
 		);
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
