@@ -106,7 +106,7 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 			]);
 		})
 		.then(([user]) => {
-			user.update({ password: newPassword }, { fields: ['password'] });
+			return user.update({ password: newPassword }, { fields: ['password'] });
 		});
 };
 
