@@ -2,7 +2,7 @@
 
 const packageJson = require('../../package.json');
 const { API_HOST } = require('../../constants');
-const { loggerPublic } = require('../../config/logger');
+const { loggerPublic, loggerUser } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
@@ -291,6 +291,15 @@ const getSymbols = (req, res) => {
 
 const getAssetsPrices = (req, res) => {
 	const { assets, quote, amount } = req.swagger.params;
+
+	if(quote.value && typeof quote.value !== 'string'){
+		loggerUser.error(
+			req.uuid,
+			'controllers/public/getAssetsPrices invalid quote',
+			quote.value
+		);
+		return res.status(400).json({ message: 'Invalid quote' });
+	}
 
 	loggerPublic.info(req.uuid, 'controllers/public/getAssetsPrices assets', assets.value, 'quote', quote.value, 'amount', amount.value);
 
