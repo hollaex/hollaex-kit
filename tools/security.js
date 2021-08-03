@@ -164,13 +164,13 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
 
 const getChangePasswordCode = (code) => {
 	return client.getAsync(`ChangePasswordCode:${code}`)
-		.then((user_id) => {
-			if (!user_id) {
+		.then((data) => {
+			if (!data) {
 				const error = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
 			}
-			return user_id;
+			return data;
 		});
 };
 
@@ -186,12 +186,6 @@ const createChangePasswordCode = (userId, newPassword) => {
 			}));
 		})
 		.then(() => {
-			return client.ttlAsync(`ChangePasswordCode:${code}`);
-		})
-		.then(ttl => {
-			if (!ttl) {
-				throw new Error(CODE_NOT_FOUND);
-			}
 			return code;
 		});
 };
