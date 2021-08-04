@@ -1,6 +1,6 @@
 'use strict';
 
-const { loggerAdmin, loggerUser } = require('../../config/logger');
+const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep } = require('lodash');
 const { all } = require('bluebird');
@@ -103,7 +103,7 @@ const getUsersAdmin = (req, res) => {
 	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getUsersAdmin invalid order_by',
 			order_by.value
@@ -416,7 +416,7 @@ const getAdminUserLogins = (req, res) => {
 	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getAdminUserLogins invalid start_date',
 			start_date.value
@@ -425,7 +425,7 @@ const getAdminUserLogins = (req, res) => {
 	}
 
 	if (end_date.value && !isDate(end_date.value)) {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getAdminUserLogins invalid end_date',
 			end_date.value
@@ -434,7 +434,7 @@ const getAdminUserLogins = (req, res) => {
 	}
 
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getAdminUserLogins invalid order_by',
 			order_by.value
@@ -481,7 +481,7 @@ const getUserAudits = (req, res) => {
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getUserAudits invalid start_date',
 			start_date.value
@@ -490,7 +490,7 @@ const getUserAudits = (req, res) => {
 	}
 
 	if (end_date.value && !isDate(end_date.value)) {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getUserAudits invalid end_date',
 			end_date.value
@@ -499,7 +499,7 @@ const getUserAudits = (req, res) => {
 	}
 
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getUserAudits invalid order_by',
 			order_by.value
@@ -682,7 +682,7 @@ const getOperators = (req, res) => {
 	const { limit, page, order_by, order } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/getOperators invalid order_by',
 			order_by.value
@@ -720,7 +720,7 @@ const inviteNewOperator = (req, res) => {
 	const { email, role } = req.swagger.params;
 
 	if (!email.value || typeof email.value !== 'string' || !isEmail(email.value)) {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/inviteNewOperator invalid email',
 			email.value
@@ -729,7 +729,7 @@ const inviteNewOperator = (req, res) => {
 	}
 
 	if (!role.value || typeof role.value !== 'string') {
-		loggerUser.error(
+		loggerAdmin.error(
 			req.uuid,
 			'controllers/admin/inviteNewOperator invalid role',
 			role.value

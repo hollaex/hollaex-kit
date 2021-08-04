@@ -748,12 +748,6 @@ const userCheckTransaction = (req, res) => {
 		is_testnet
 	} = req.swagger.params;
 
-	console.log(typeof currency.value,
-		typeof transaction_id.value,
-		typeof address.value,
-		typeof network.value,
-		typeof is_testnet.value);
-
 	if (!currency.value || typeof currency.value !== 'string') {
 		loggerUser.error(
 			req.uuid,
