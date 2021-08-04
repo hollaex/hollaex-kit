@@ -512,7 +512,7 @@ const confirmChangePassword = (req, res) => {
 	const code = req.params.code;
 
 	toolsLib.security.confirmChangeUserPassword(code)
-		.then(() => res.redirect(301, `${DOMAIN}/reset-password/${code}?isSuccess=true`))
+		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/confirmChangeUserPassword', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
