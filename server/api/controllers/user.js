@@ -748,6 +748,48 @@ const userCheckTransaction = (req, res) => {
 		is_testnet
 	} = req.swagger.params;
 
+	console.log(typeof currency.value,
+		typeof transaction_id.value,
+		typeof address.value,
+		typeof network.value,
+		typeof is_testnet.value);
+
+	if (!currency.value || typeof currency.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid currency',
+			currency.value
+		);
+		return res.status(400).json({ message: 'Invalid currency' });
+	}
+
+	if (!transaction_id.value || typeof transaction_id.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid transaction_id',
+			transaction_id.value
+		);
+		return res.status(400).json({ message: 'Invalid Transaction Id' });
+	}
+
+	if (!address.value || typeof address.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid address',
+			address.value
+		);
+		return res.status(400).json({ message: 'Invalid address' });
+	}
+
+	if (!network.value || typeof network.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid network',
+			network.value
+		);
+		return res.status(400).json({ message: 'Invalid network' });
+	}
+
 	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value)
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
