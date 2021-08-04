@@ -37,6 +37,7 @@ const checkActivation = (activation_code) => {
 	const body = {
 		activation_code
 	};
+	console.log(HOLLAEX_NETWORK_ENDPOINT, process.env.NETWORK_URL, process.env.NETWORK);
 
 	const options = {
 		method: 'POST',
