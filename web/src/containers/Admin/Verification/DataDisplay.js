@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { isDate } from 'moment';
 import classnames from 'classnames';
 import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
+import { ZoomInOutlined } from '@ant-design/icons';
 export const KEYS_TO_HIDE = [
 	// 'email',
 	'id',
@@ -15,16 +16,19 @@ export const KEYS_TO_HIDE = [
 export const renderRowImages = ([key, value]) => (
 	<div key={key} className="verification_block">
 		<div className="block-title">{key}</div>
-		{value ? (
-			<Fragment>
-				{/* <a href={value} target="_blank" rel="noopener noreferrer">
-					{key}
-				</a> */}
-				<img src={value} alt={key} className="verification_img" key={key} />
-			</Fragment>
-		) : (
-			'(No data)'
-		)}
+		<Fragment>
+			{value.icon ? (
+				<div
+					className="verification_img"
+					style={{ backgroundImage: `url(${value.icon})` }}
+					onClick={() => value.onZoom(value.icon)}
+				>
+					<ZoomInOutlined className="search_icon" key={key} />
+				</div>
+			) : (
+				'(No data)'
+			)}
+		</Fragment>
 	</div>
 );
 
