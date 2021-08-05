@@ -27,7 +27,7 @@ export const verifyData = (values) => {
 	};
 
 	return requestAuthenticated(
-		'/plugins/kyc/id/verify',
+		'/plugins/automatic-kyc/verify',
 		options,
 		null,
 		PLUGIN_URL
@@ -41,7 +41,7 @@ export const revokeData = (values) => {
 	};
 
 	return requestAuthenticated(
-		'/plugins/kyc/id/revoke',
+		'/plugins/automatic-kyc/revoke',
 		options,
 		null,
 		PLUGIN_URL

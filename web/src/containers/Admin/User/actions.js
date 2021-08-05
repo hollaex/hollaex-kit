@@ -33,7 +33,7 @@ export const updateNotes = (values) => {
 };
 export const requestUserImages = (values) =>
 	requestAuthenticated(
-		`/plugins/kyc/id?${toQueryString(values)}`,
+		`/plugins/automatic-kyc/admin/files?${toQueryString(values)}`,
 		{},
 		null,
 		PLUGIN_URL
@@ -113,7 +113,7 @@ export const rejectBank = (values) => {
 };
 
 export const requestUser = (values) => {
-	const promises = [requestUserData(values), requestUserImages(values)];
+	const promises = [requestUserData(values), requestUserImages({user_id: values.id})];
 	return all(promises);
 };
 

@@ -255,13 +255,6 @@ const AboutData = ({
 	const [modalKey, setModalKey] = useState('');
 	const [isApply, setApply] = useState(false);
 	const [isDiscount, setDiscountApply] = useState(false);
-	const userDocs = {
-		front: userImages.front ? userImages.front : '',
-		back: userImages.back ? userImages.back : '',
-		proof_of_residency: userImages.proof_of_residency
-			? userImages.proof_of_residency
-			: '',
-	};
 	useEffect(() => {
 		if (userData.discount) {
 			setDiscountApply(true);
@@ -564,7 +557,7 @@ const AboutData = ({
 									isUpload={isUpload}
 									constants={constants}
 									user_id={userData.id}
-									userImages={userDocs}
+									userImages={userImages}
 									userInformation={userData}
 									refreshData={refreshData}
 									closeUpload={() => setUpload(false)}
