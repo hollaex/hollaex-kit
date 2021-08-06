@@ -1490,6 +1490,31 @@ const updateCoin = (req, res) => {
 		});
 };
 
+const getExchange = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getExchange auth',
+		req.auth
+	);
+
+	toolsLib.exchange.getExchangeConfig({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getExchange err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1528,5 +1553,6 @@ module.exports = {
 	createPair,
 	updatePair,
 	createCoin,
-	updateCoin
+	updateCoin,
+	getExchange
 };
