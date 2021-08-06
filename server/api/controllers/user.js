@@ -29,7 +29,7 @@ const {
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
 const { all } = require('bluebird');
-const { isString } = require('lodash');
+const { isDate } = require('moment');
 const INITIAL_SETTINGS = () => {
 	return {
 		notification: {
@@ -80,7 +80,7 @@ const signUpUser = (req, res) => {
 				throw new Error(SIGNUP_NOT_AVAILABLE);
 			}
 
-			if (!email || !isEmail(email)) {
+			if (!email || typeof email !== 'string' || !isEmail(email)) {
 				throw new Error(PROVIDE_VALID_EMAIL);
 			}
 
@@ -115,7 +115,7 @@ const signUpUser = (req, res) => {
 							user
 						]);
 					})
-					.then(([ networkUser, user ]) => {
+					.then(([networkUser, user]) => {
 						return user.update(
 							{ network_id: networkUser.id },
 							{ fields: ['network_id'], returning: true, transaction }
@@ -129,7 +129,7 @@ const signUpUser = (req, res) => {
 				user
 			]);
 		})
-		.then(([ verificationCode, user ]) => {
+		.then(([verificationCode, user]) => {
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
@@ -211,9 +211,7 @@ const verifyUser = (req, res) => {
 	let { email } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	email = email.toLowerCase();
-
-	if (!isEmail(email)) {
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/verifyUser invalid email',
@@ -221,6 +219,8 @@ const verifyUser = (req, res) => {
 		);
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
+
+	email = email.toLowerCase();
 
 	return toolsLib.database.findOne('user', {
 		where: { email },
@@ -232,7 +232,7 @@ const verifyUser = (req, res) => {
 				user
 			]);
 		})
-		.then(([ verificationCode, user ]) => {
+		.then(([verificationCode, user]) => {
 			if (verificationCode.verified) {
 				throw new Error(USER_EMAIL_IS_VERIFIED);
 			}
@@ -249,7 +249,7 @@ const verifyUser = (req, res) => {
 				)
 			]);
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
@@ -280,9 +280,7 @@ const loginPost = (req, res) => {
 	const referer = req.headers.referer;
 	const time = new Date();
 
-	email = email.toLowerCase();
-
-	if (!isEmail(email)) {
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/loginPost invalid email',
@@ -290,6 +288,8 @@ const loginPost = (req, res) => {
 		);
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
+
+	email = email.toLowerCase();
 
 	toolsLib.user.getUserByEmail(email)
 		.then((user) => {
@@ -309,13 +309,13 @@ const loginPost = (req, res) => {
 				toolsLib.security.validatePassword(user.password, password)
 			]);
 		})
-		.then(([ user, passwordIsValid ]) => {
+		.then(([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
 				throw new Error(INVALID_CREDENTIALS);
 			}
 
 			if (!user.otp_enabled) {
-				return all([ user, toolsLib.security.checkCaptcha(captcha, ip) ]);
+				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
 			} else {
 				return all([
 					user,
@@ -329,7 +329,7 @@ const loginPost = (req, res) => {
 				]);
 			}
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
 			if (ip) {
 				toolsLib.user.registerUserLogin(user.id, ip, {
 					device,
@@ -388,7 +388,7 @@ const requestResetPassword = (req, res) => {
 		domain
 	);
 
-	if (typeof email !== 'string' || !isEmail(email)) {
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/requestResetPassword invalid email',
@@ -499,6 +499,33 @@ const getUserLogins = (req, res) => {
 
 	const user_id = req.auth.sub.id;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/getUserLogins invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/getUserLogins invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/getUserLogins invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
 
 	toolsLib.user.getUserLogins({
 		userId: user_id,
@@ -720,6 +747,42 @@ const userCheckTransaction = (req, res) => {
 		network,
 		is_testnet
 	} = req.swagger.params;
+
+	if (!currency.value || typeof currency.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid currency',
+			currency.value
+		);
+		return res.status(400).json({ message: 'Invalid currency' });
+	}
+
+	if (!transaction_id.value || typeof transaction_id.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid transaction_id',
+			transaction_id.value
+		);
+		return res.status(400).json({ message: 'Invalid Transaction Id' });
+	}
+
+	if (!address.value || typeof address.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid address',
+			address.value
+		);
+		return res.status(400).json({ message: 'Invalid address' });
+	}
+
+	if (!network.value || typeof network.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/userCheckTransaction invalid network',
+			network.value
+		);
+		return res.status(400).json({ message: 'Invalid network' });
+	}
 
 	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value)
 		.then((transaction) => {
