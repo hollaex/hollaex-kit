@@ -64,7 +64,13 @@ class ResetPassword extends Component {
 		const { success, showContactForm } = this.state;
 
 		if (success) {
-			return <ResetPasswordSuccess onClick={this.onClickLogin} />;
+			return (
+				<ResetPasswordSuccess
+					label={STRINGS['LOGIN_TEXT']}
+					onClick={this.onClickLogin}
+					is_loginText={true}
+				/>
+			);
 		}
 
 		return (
