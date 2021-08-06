@@ -91,6 +91,29 @@ const RESETPASSWORD = {
 	CLOSING: COMMON.CLOSING
 };
 
+const CHANGEPASSWORD = {
+	TITLE: 'Change Password Confirmation',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'You have made a request to change the password for your account.',
+		2: 'To confirm your password changed, click on the link below.',
+		3: 'Confirm Change My Password',
+		4: COMMON.ERROR_REQUEST,
+		5: (ip) => COMMON.IP_REQUEST_FROM(ip)
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const PASSWORDCHANGED = {
+	TITLE: 'Password Changed',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'This email confirms that you recently changed the password for your account. No further action is required.',
+		2: 'If you did not authorize this change please contact us immediately.',
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
@@ -325,6 +348,8 @@ module.exports = {
 	WELCOME,
 	LOGIN,
 	RESETPASSWORD,
+	CHANGEPASSWORD,
+	PASSWORDCHANGED,
 	DEPOSIT,
 	ACCOUNTVERIFY,
 	ACCOUNTUPGRADE,

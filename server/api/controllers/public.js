@@ -352,6 +352,15 @@ const getSymbols = (req, res) => {
 const getAssetsPrices = (req, res) => {
 	const { assets, quote, amount } = req.swagger.params;
 
+	if(quote.value && typeof quote.value !== 'string'){
+		loggerPublic.error(
+			req.uuid,
+			'controllers/public/getAssetsPrices invalid quote',
+			quote.value
+		);
+		return res.status(400).json({ message: 'Invalid quote' });
+	}
+
 	loggerPublic.info(req.uuid, 'controllers/public/getAssetsPrices assets', assets.value, 'quote', quote.value, 'amount', amount.value);
 
 	toolsLib.getAssetsPrices(assets.value, quote.value, amount.value, {

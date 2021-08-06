@@ -314,6 +314,12 @@ table th {
 .flex-direction-column {
   flex-direction: column !important; }
 
+.important-text {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.secondary-text {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -1850,7 +1856,7 @@ table th {
       border-radius: 20px;
       margin-right: 10px; }
   .history_block-wrapper .check-deposit-txt {
-    right: 100px !important; }
+    right: 150px !important; }
   .history_block-wrapper .loader_wrapper {
     top: 0;
     left: 0; }
@@ -4503,6 +4509,9 @@ table th {
     -webkit-transform: scale(0.62);
     transform-origin: 0 0;
     -webkit-transform-origin: 0 0; } }
+
+.confirm-change-pwd-wrapper .auth-wrapper .mdc-button--raised:not(:disabled):not(.mdc-ripple-upgraded), .mdc-button--unelevated:not(:disabled):not(.mdc-ripple-upgraded) {
+  margin-top: 2rem !important; }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
