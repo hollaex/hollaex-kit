@@ -87,9 +87,10 @@ class Verification extends Component {
 				status: values.hasOwnProperty('id_data') ? values.id_data : 3,
 			},
 		};
-		return verifyData(values)
+		return verifyData(values, this.props.kycPluginName)
 			.then(() => {
 				refreshData(postData);
+				this.handleClose();
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
@@ -105,7 +106,7 @@ class Verification extends Component {
 				status: values.hasOwnProperty('id_data') ? 2 : bank_account.provided,
 			},
 		};
-		return revokeData(values)
+		return revokeData(values, this.props.kycPluginName)
 			.then(() => {
 				refreshData(postData, 'reject');
 				this.handleClose();
@@ -176,7 +177,7 @@ class Verification extends Component {
 								<IDForm
 									onSubmit={() =>
 										this.onVerify(refreshData)({
-											user_id: id,
+											user_id: parseInt(id),
 										})
 									}
 									onClose={this.handleClose}
@@ -207,7 +208,7 @@ class Verification extends Component {
 								onClose={this.handleClose}
 								onSubmit={(formProps) => {
 									return this.onRevoke(refreshData)({
-										user_id: id,
+										user_id: parseInt(id),
 										message: formProps.message,
 									});
 								}}
@@ -307,6 +308,10 @@ class Verification extends Component {
 		}
 	};
 
+	handleView = () => {
+		this.setState({ isVisible: true });
+	}
+
 	render() {
 		const {
 			userImages,
@@ -318,20 +323,17 @@ class Verification extends Component {
 		} = this.props;
 
 		const { isVisible, isEdit } = this.state;
-		const userImageData = {
-			front: {
-				icon: userImages.front,
-				onZoom: this.handleZoom,
-			},
-			back: {
-				icon: userImages.back,
-				onZoom: this.handleZoom,
-			},
-			proof_of_residency: {
-				icon: userImages.proof_of_residency,
-				onZoom: this.handleZoom,
-			},
-		};
+		let userImageData = {};
+		Object.keys(userImages).map(key => {
+			return userImageData = {
+				...userImageData,
+				[key]: {
+					icon: userImages[key],
+					onZoom: this.handleZoom,
+				}
+			}
+		});
+
 		const { id_data = {} } = userInformation;
 
 		// let VERIFICATION_LEVELS =
@@ -394,7 +396,7 @@ class Verification extends Component {
 							</div>
 							<Button
 								className="green-btn"
-								onClick={() => this.setState({ isVisible: true })}
+								onClick={this.handleView}
 							>
 								View data
 							</Button>

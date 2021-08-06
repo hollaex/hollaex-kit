@@ -74,7 +74,7 @@ export default ({ className = '', renderRow, title, data = {} }) => (
 	<div className={classnames('verification_data_container-data', className)}>
 		{title ? <h2>{title}</h2> : null}
 		{data.message ? (
-			<div>{data.message}</div>
+			<div>{JSON.stringify(data.message)}</div>
 		) : (
 			Object.entries(data).map(renderRow)
 		)}
