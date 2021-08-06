@@ -188,10 +188,10 @@ module.exports = function(sequelize, DataTypes) {
 		if (user.email) {
 			user.email = user.email.toLowerCase();
 		}
-		if (user._changed.password)
-			return generateHash(user.password).then((hash) => {
-				user.password = hash;
-			});
+		// if (user._changed.password)
+		// 	return generateHash(user.password).then((hash) => {
+		// 		user.password = hash;
+		// 	});
 	});
 
 	User.associate = (models) => {

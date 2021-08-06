@@ -3588,6 +3588,13 @@ definitions:
         type: string
       code:
         type: string
+  ConfirmChangePassword:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
   OperatorResponse:
     type: object
     required:

@@ -27,8 +27,10 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN } = require('../../constants');
 const { all } = require('bluebird');
+const { isString } = require('lodash');
+const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
 const INITIAL_SETTINGS = () => {
 	return {
@@ -130,6 +132,13 @@ const signUpUser = (req, res) => {
 			]);
 		})
 		.then(([verificationCode, user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
@@ -250,6 +259,13 @@ const verifyUser = (req, res) => {
 			]);
 		})
 		.then(([user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
@@ -343,6 +359,15 @@ const loginPost = (req, res) => {
 				time,
 				device
 			};
+
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'login',
+					user_id: user.id
+				}
+			}));
+
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, {}, domain);
 			}
@@ -466,16 +491,30 @@ const changePassword = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/changePassword', req.auth.sub);
 	const email = req.auth.sub.email;
 	const { old_password, new_password } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = `${API_HOST}${req.swagger.swaggerObject.basePath}`;
+
 	loggerUser.debug(
 		req.uuid,
 		'controllers/user/changePassword',
 		req.swagger.params.data.value
 	);
 
-	toolsLib.security.changeUserPassword(email, old_password, new_password)
-		.then(() => res.json({ message: 'Success' }))
+	toolsLib.security.changeUserPassword(email, old_password, new_password, ip, domain)
+		.then(() => res.json({ message: `Change password email confirmation sent to: ${email}` }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const confirmChangePassword = (req, res) => {
+	const code = req.params.code;
+
+	toolsLib.security.confirmChangeUserPassword(code)
+		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/confirmChangeUserPassword', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -809,6 +848,7 @@ module.exports = {
 	getUser,
 	updateSettings,
 	changePassword,
+	confirmChangePassword,
 	setUsername,
 	getUserLogins,
 	affiliationCount,
