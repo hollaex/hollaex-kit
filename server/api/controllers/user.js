@@ -139,7 +139,6 @@ const signUpUser = (req, res) => {
 					user_id: user.id
 				}
 			}));
-
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,

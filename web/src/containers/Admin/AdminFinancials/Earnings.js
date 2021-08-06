@@ -175,7 +175,7 @@ class Earnings extends Component {
 						<div className="dollar-icon text-center">$</div>
 					</div>
 					<div>
-						<span className="font-weight-bold">{info.type} </span> :
+						<span className="font-weight-bold">{info.type}</span>:{" "}
 						<span>{info.plan}</span>
 					</div>
 					<div>{this.renderMember(info.collateral_level)}</div>
