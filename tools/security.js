@@ -27,15 +27,14 @@ const {
 	API_KEY_INVALID,
 	API_KEY_EXPIRED,
 	API_KEY_OUT_OF_SCOPE,
-	API_SIGNATURE_INVALID
+	API_SIGNATURE_INVALID,
+	INVALID_PASSWORD,
+	SAME_PASSWORD,
+	CODE_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
 	CAPTCHA_ENDPOINT,
-	INVALID_PASSWORD,
-	CODE_NOT_FOUND,
-	CODE_USED,
-	SAME_PASSWORD,
 	BASE_SCOPES,
 	ROLES,
 	ISSUER,
@@ -47,7 +46,6 @@ const {
 const { resolve, reject, promisify } = require('bluebird');
 const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
 const bcrypt = require('bcryptjs');
-const uuid = require('uuid/v4');
 const { all } = require('bluebird');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -57,6 +55,7 @@ const otp = require('otp');
 const { client } = require('./database/redis');
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
+const { generateHash } = require(`${SERVER_PATH}/utils/security`);
 
 const checkCaptcha = (captcha = '', remoteip = '') => {
 	if (!captcha) {
@@ -102,17 +101,43 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 		return reject(new Error(INVALID_PASSWORD));
 	}
 	return getResetPasswordCode(resetPasswordCode)
-		.then((code) => {
-			if (code.used) {
-				throw new Error(CODE_USED);
-			}
-			return code.update({ used: true }, { fields: ['used'] });
+		.then((user_id) => {
+			return all([
+				dbQuery.findOne('user', { where: { id: user_id } }),
+				client.delAsync(`ResetPasswordCode:${resetPasswordCode}`)
+			]);
 		})
-		.then((code) => dbQuery.findOne('user', { where: { id: code.user_id } }))
-		.then((user) => user.update({ password: newPassword }, { fields: ['password'] }));
+		.then(([user]) => {
+			return user.update({ password: newPassword }, { fields: ['password'] });
+		});
 };
 
-const changeUserPassword = (email, oldPassword, newPassword) => {
+const confirmChangeUserPassword = (code, domain) => {
+	return getChangePasswordCode(code)
+		.then((data) => {
+			const dataValues = JSON.parse(data);
+			return all([
+				dbQuery.findOne('user', { where: { id: dataValues.id } }),
+				dataValues,
+				client.delAsync(`ChangePasswordCode:${code}`)
+			]);
+		})
+		.then(([user, dataValues]) => {
+			return user.update({ password: dataValues.password }, { fields: ['password'] });
+		})
+		.then((user) => {
+			sendEmail(
+				MAILTYPE.PASSWORD_CHANGED,
+				user.email,
+				{ code },
+				user.settings,
+				domain
+			);
+			return;
+		});
+};
+
+const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
 	if (oldPassword === newPassword) {
 		return reject(new Error(SAME_PASSWORD));
 	}
@@ -124,47 +149,69 @@ const changeUserPassword = (email, oldPassword, newPassword) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([ user, validatePassword(user.password, oldPassword) ]);
+			return all([createChangePasswordCode(user.id, newPassword), user]);
 		})
-		.then(([ user, passwordIsValid ]) => {
-			if (!passwordIsValid) {
-				throw new Error(INVALID_PASSWORD);
-			} else {
-				return user;
-			}
-		})
-		.then((user) => {
-			return user.update({ password: newPassword });
+		.then(([code, user]) => {
+			sendEmail(
+				MAILTYPE.CHANGE_PASSWORD,
+				email,
+				{ code, ip },
+				user.settings,
+				domain
+			);
+			return;
 		});
 };
 
-const getResetPasswordCode = (code) => {
-	return dbQuery.findOne('reset password code', { where: { code } })
-		.then((code) => {
-			if (!code) {
+const getChangePasswordCode = (code) => {
+	return client.getAsync(`ChangePasswordCode:${code}`)
+		.then((data) => {
+			if (!data) {
 				const error = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
 			}
+			return data;
+		});
+};
+
+const createChangePasswordCode = (userId, newPassword) => {
+	//Generate new random code
+	const code = crypto.randomBytes(20).toString('hex');
+	//Code is expire in 5 mins
+	return generateHash(newPassword)
+		.then((hashedPassword) => {
+			return client.setexAsync(`ChangePasswordCode:${code}`, 60 * 5, JSON.stringify({
+				id: userId,
+				password: hashedPassword
+			}));
+		})
+		.then(() => {
 			return code;
 		});
 };
 
-const createResetPasswordCode = (userId) => {
-	return dbQuery.findOne('reset password code', {
-		where: { user_id: userId, used: false },
-		attributes: ['code']
-	})
-		.then((code) => {
-			if (code) {
-				return code;
+const getResetPasswordCode = (code) => {
+	return client.getAsync(`ResetPasswordCode:${code}`)
+		.then((user_id) => {
+			if (!user_id) {
+				const error = new Error(CODE_NOT_FOUND);
+				error.status = 404;
+				throw error;
 			}
-			return getModel('reset password code').create({
-				user_id: userId,
-				code: uuid()
-			});
-		})
-		.then((code) => code.code);
+			return user_id;
+		});
+};
+
+const createResetPasswordCode = (userId) => {
+	//Generate new random code
+	const code = crypto.randomBytes(20).toString('hex');
+
+	//Code is expire in 5 mins
+	return client.setexAsync(`ResetPasswordCode:${code}`, 60 * 5, userId)
+		.then(() => {
+			return code;
+		});
 };
 
 const sendResetPasswordCode = (email, captcha, ip, domain) => {
@@ -177,9 +224,9 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([ createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip) ]);
+			return all([createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip)]);
 		})
-		.then(([ code, user ]) => {
+		.then(([code, user]) => {
 			sendEmail(
 				MAILTYPE.RESET_PASSWORD,
 				email,
@@ -339,7 +386,7 @@ const userHasOtpEnabled = (userId) => {
 	return dbQuery.findOne('user', {
 		where: { id: userId },
 		raw: true,
-		attributes: [ 'otp_enabled' ]
+		attributes: ['otp_enabled']
 	})
 		.then((user) => {
 			if (!user) {
@@ -354,10 +401,10 @@ const checkUserOtpActive = (userId, otpCode) => {
 		dbQuery.findOne('user', {
 			where: { id: userId },
 			raw: true,
-			attributes: [ 'otp_enabled' ]
+			attributes: ['otp_enabled']
 		}),
 		verifyOtpBeforeAction(userId, otpCode)
-	]).then(([ user, validOtp ]) => {
+	]).then(([user, validOtp]) => {
 		if (!user.otp_enabled) {
 			throw new Error(TOKEN_OTP_MUST_BE_ENABLED);
 		} else if (!validOtp) {
@@ -848,7 +895,7 @@ const getUserKitHmacTokens = (userId) => {
 		attributes: {
 			exclude: ['user_id', 'updated_at']
 		},
-		order: [['created_at', 'DESC'], ['id', 'ASC']],
+		order: [['created_at', 'DESC'], ['id', 'ASC']]
 	})
 		.then(({ count, data }) => {
 			const result = {
@@ -875,7 +922,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				role: ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
-				active: true,
+				active: true
 			});
 		})
 		.then(() => {
@@ -940,7 +987,7 @@ const findTokenByApiKey = (apiKey) => {
 						{
 							model: getModel('user'),
 							as: 'user',
-							attributes: ['id', 'email', 'network_id'],
+							attributes: ['id', 'email', 'network_id']
 						}
 					]
 				});
@@ -1013,6 +1060,7 @@ module.exports = {
 	validatePassword,
 	sendResetPasswordCode,
 	changeUserPassword,
+	confirmChangeUserPassword,
 	hasUserOtpEnabled,
 	verifyOtpBeforeAction,
 	verifyOtp,
