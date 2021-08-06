@@ -723,6 +723,8 @@ const getNetworkConstants = (opts = {
 	return getNodeLib().getConstants(opts);
 };
 
+const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -777,5 +779,6 @@ module.exports = {
 	isDatetime,
 	// getCsvParser,
 	emailHtmlBoilerplate,
-	getNetworkConstants
+	getNetworkConstants,
+	getNetworkEndpoint
 };
