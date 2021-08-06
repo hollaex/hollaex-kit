@@ -27,9 +27,11 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL } = require('../../constants');
 const { all } = require('bluebird');
 const { isString } = require('lodash');
+const { publisher } = require('../../db/pubsub');
+
 const INITIAL_SETTINGS = () => {
 	return {
 		notification: {
@@ -130,6 +132,14 @@ const signUpUser = (req, res) => {
 			]);
 		})
 		.then(([ verificationCode, user ]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
+
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
@@ -250,6 +260,13 @@ const verifyUser = (req, res) => {
 			]);
 		})
 		.then(([ user ]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
@@ -343,6 +360,13 @@ const loginPost = (req, res) => {
 				time,
 				device
 			};
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'login',
+					user_id: user.id
+				}
+			}));
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, {}, domain);
 			}
