@@ -377,10 +377,10 @@ class UserContent extends Component {
 									user_id: id,
 								}}
 								queryParams={{
-									status: true,
 									type: 'deposit',
 								}}
 								hideUserColumn={true}
+								showFilters={true}
 							/>
 						</TabPane>
 					)}
@@ -391,10 +391,10 @@ class UserContent extends Component {
 									user_id: id,
 								}}
 								queryParams={{
-									status: true,
 									type: 'withdrawal',
 								}}
 								hideUserColumn={true}
+								showFilters={true}
 							/>
 						</TabPane>
 					)}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Input, Spin } from 'antd';
 import _debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
-import { CheckCircleFilled } from '@ant-design/icons';
+import { CheckCircleFilled, StarFilled } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 
 import './index.css';
@@ -13,15 +13,25 @@ class PluginList extends Component {
 		this.state = {
 			mobileToggle: false,
 			isLoading: false,
-			page: 1,
-			limit: 50,
+			is_active: false
 		};
 	}
 
 	searchPlugin = _debounce(this.props.getPlugins, 800);
 
 	handleSearch = (e) => {
-		this.searchPlugin(1, 50, { search: e.target.value });
+		this.searchPlugin({ search: e.target.value });
+	};
+
+	handleActivate = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		const url = 'https://dash.bitholla.com/plugin'
+		const link = document.createElement('a');
+		link.setAttribute('target', '_blank');
+		link.href = url;
+		document.body.appendChild(link);
+		link.click();
 	};
 
 	renderList = () => {
@@ -63,13 +73,22 @@ class PluginList extends Component {
 							<div className="plugin-list-bio">{item.bio}</div>
 						</div>
 					</div>
-					{item.enabled ? (
-						<div className="install-icon-content">
-							<CheckCircleFilled className="check-icon-verified" />
+					{item.premium
+						?
+						<div>
+							<div className="add-btn" onClick={this.handleActivate}>Activate</div>
+							<div className="premium-plugin">
+								<StarFilled />{" "}Premium Plugin
+							</div>
 						</div>
-					) : (
-						<div className="add-btn">Add</div>
-					)}
+						: item.enabled ? (
+							<div className="install-icon-content">
+								<CheckCircleFilled className="check-icon-verified" />
+							</div>
+						) : (
+							<div className="add-btn">Add</div>
+						)
+					}
 				</div>
 			);
 		});

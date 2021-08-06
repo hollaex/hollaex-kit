@@ -231,7 +231,7 @@ class Transactions extends Component {
 	};
 
 	onClickFilters = () => {
-		this.requestDeposits({}, this.state.queryParams);
+		this.requestDeposits({ ...this.props.initialData, ...this.state.queryParams}, this.props.queryParams);
 	};
 
 	pageChange = (count, pageSize) => {

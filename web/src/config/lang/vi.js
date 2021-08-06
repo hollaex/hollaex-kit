@@ -692,7 +692,7 @@ export default {
 				TEXT_2: 'Yeu cầu OTP khi rút tiền',
 			},
 			DIALOG: {
-				SUCCESS: 'Quý khách đã kích hoacjt OTP thành công.',
+				SUCCESS: 'Quý khách đã kích hoạt 2FA thành công',
 				REVOKE: 'Quý khách đã hủy OTP thành công',
 			},
 			CONTENT: {
@@ -787,7 +787,7 @@ export default {
 	},
 	TYPES: [
 		{ value: 'market', label: 'Thị trường' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'Giới hạn' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'CHỈ ĐỊNH' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -802,7 +802,7 @@ export default {
 		{ value: true, label: 'Bật' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: false, label: 'Tắt' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'Độ lớn',
+	SIZE: 'Số lượng',
 	PRICE: 'Giá',
 	FEE: 'Fee',
 	FEES: 'Phí giao dịch',
@@ -1034,7 +1034,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Vô hiệu hóa rút tiền',
 	VERIFICATION_NO_WITHDRAW_MESSAGE:
 		'Chức năng rút tiền trên tài khoản của quý khách đã bị vô hiệu hóa.',
-	UP_TO_MARKET: 'Up to market',
+	UP_TO_MARKET: 'Tuỳ theo thị trường',
 	VIEW_MY_FEES: 'Xem phí giao dịch của tôi', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'Khóa API',
@@ -1402,7 +1402,8 @@ export default {
 	STOPS: 'Cắt lỗ', //new
 	CLEAR: 'XÓA', //new
 	TRIGGER_PRICE: 'Giá vào lệnh', //new
-	POST_ONLY_TOOLTIP: 'Post only là lệnh đặt hàng được thêm vào sổ lệnh nhưng không được thực thi ngay.', // new
+	POST_ONLY_TOOLTIP:
+		'Post only là lệnh đặt hàng được thêm vào sổ lệnh nhưng không được thực thi ngay.', // new
 	ORDER_ENTRY_ADVANCED: 'Xem thêm', //new
 	CUMULATIVE_AMOUNT_SYMBOL: 'TỔNG', //new
 	ASSET_TXT: 'Tài sản', //new
@@ -1416,4 +1417,5 @@ export default {
 			'Hạn mức Nạp Tiền và Rút Tiền trong 24 giờ (Tài Khoản Cấp Độ {0})',
 		HEADER_ROW_AMOUNT: 'Hạn mức 24 giờ ({0})',
 	},
+	ESTIMATED_PRICE: 'Giá ước chừng',
 };

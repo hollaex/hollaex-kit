@@ -341,6 +341,8 @@ class AppWrapper extends React.Component {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {
 			return 'Resources';
+		} else if (location.pathname.includes('/admin/chat')) {
+			return 'Chat';
 		} else if (location.pathname.includes('/admin/plugin/adminView')) {
 			return this.renderCapitalize(router.params.name);
 		} else {
