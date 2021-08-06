@@ -87,7 +87,7 @@ class Verification extends Component {
 				status: values.hasOwnProperty('id_data') ? values.id_data : 3,
 			},
 		};
-		return verifyData(values)
+		return verifyData(values, this.props.kycPluginName)
 			.then(() => {
 				refreshData(postData);
 				this.handleClose();
@@ -106,7 +106,7 @@ class Verification extends Component {
 				status: values.hasOwnProperty('id_data') ? 2 : bank_account.provided,
 			},
 		};
-		return revokeData(values)
+		return revokeData(values, this.props.kycPluginName)
 			.then(() => {
 				refreshData(postData, 'reject');
 				this.handleClose();
@@ -308,6 +308,10 @@ class Verification extends Component {
 		}
 	};
 
+	handleView = () => {
+		this.setState({ isVisible: true });
+	}
+
 	render() {
 		const {
 			userImages,
@@ -392,7 +396,7 @@ class Verification extends Component {
 							</div>
 							<Button
 								className="green-btn"
-								onClick={() => this.setState({ isVisible: true })}
+								onClick={this.handleView}
 							>
 								View data
 							</Button>

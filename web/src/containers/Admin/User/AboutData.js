@@ -248,6 +248,7 @@ const AboutData = ({
 	onChangeSuccess,
 	allIcons = {},
 	userTiers,
+	kycPluginName
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -561,6 +562,7 @@ const AboutData = ({
 									userInformation={userData}
 									refreshData={refreshData}
 									closeUpload={() => setUpload(false)}
+									kycPluginName={kycPluginName}
 								/>
 							</div>
 							<div>

@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { RightOutlined } from '@ant-design/icons';
 import { Table, Spin, Button, notification, Tabs } from 'antd';
+import _get from 'lodash/get';
 
 import './index.css';
 import { connect } from 'react-redux';
@@ -16,6 +17,7 @@ import { requestUser, requestUsersDownload } from './actions';
 
 import UserContent from './UserContent';
 import { ListUsers, FullListUsers } from '../ListUsers';
+import { requestMyPlugins } from '../Plugins/action';
 // import { isSupport } from '../../../utils/token';
 
 const INITIAL_STATE = {
@@ -23,6 +25,7 @@ const INITIAL_STATE = {
 	userImages: {},
 	loading: false,
 	userInformationList: [],
+	kycPluginName: 'kyc'
 };
 
 const Form = AdminHocForm('USER_REQUEST_FORM');
@@ -33,6 +36,7 @@ class App extends Component {
 	state = INITIAL_STATE;
 
 	componentWillMount() {
+		this.getMyPlugins();
 		const { search } = this.props.location;
 		if (search) {
 			const qs = querystring.parse(search);
@@ -41,6 +45,21 @@ class App extends Component {
 			}
 		}
 	}
+
+	getMyPlugins = (params = {}) => {
+		return requestMyPlugins(params)
+			.then((res) => {
+				if (res && res.data) {
+					const filterData = res.data.filter(data => data.type === "kyc");
+					if (filterData.length) {
+						this.setState({ kycPluginName: _get(filterData, '[0].name', 'kyc') });
+					}
+				}
+			})
+			.catch((err) => {
+				throw err;
+			});
+	};
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.location.search !== prevProps.location.search) {
@@ -71,14 +90,15 @@ class App extends Component {
 	requestUserData = (values) => {
 		// const isSupportUser = isSupport();
 		const { router } = this.props;
-		this.setState({ ...INITIAL_STATE, loading: true });
+		const { kycPluginName, ...rest } = INITIAL_STATE;
+		this.setState({ ...rest, loading: true });
 		if (values.id) {
 			router.replace(`/admin/user?id=${values.id}`);
 		}
 		if (values.search) {
 			router.replace(`/admin/user?search=${values.search}`);
 		}
-		return requestUser(values)
+		return requestUser(values, this.state.kycPluginName)
 			.then(([userInformation, userImages, userBalance]) => {
 				if (
 					userInformation &&
@@ -150,7 +170,8 @@ class App extends Component {
 	};
 
 	clearData = () => {
-		this.setState(INITIAL_STATE);
+		const { kycPluginName, ...rest } = INITIAL_STATE;
+		this.setState(rest);
 		this.props.router.replace('/admin/user');
 	};
 
@@ -185,6 +206,7 @@ class App extends Component {
 			userBalance,
 			loading,
 			userInformationList,
+			kycPluginName
 		} = this.state;
 		const { coins, constants, isConfigure, showConfigure } = this.props;
 		const renderBoolean = (value) => (
@@ -238,6 +260,7 @@ class App extends Component {
 				userImages={userImages}
 				isConfigure={isConfigure}
 				showConfigure={showConfigure}
+				kycPluginName={kycPluginName}
 				refreshAllData={this.refreshAllData}
 				clearData={this.clearData}
 				refreshData={this.refreshData}
