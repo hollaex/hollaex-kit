@@ -510,7 +510,7 @@ const changePassword = (req, res) => {
 };
 
 const confirmChangePassword = (req, res) => {
-	const code = req.params.code;
+	const code = req.swagger.params.code.value;
 
 	toolsLib.security.confirmChangeUserPassword(code)
 		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
