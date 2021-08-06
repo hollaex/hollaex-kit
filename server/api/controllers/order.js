@@ -1,9 +1,10 @@
 'use strict';
 
-const { loggerOrders } = require('../../config/logger');
+const { loggerOrders, loggerUser } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { isPlainObject, isNumber } = require('lodash');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { isUUID } = require('validator');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -58,6 +59,15 @@ const getUserOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const order_id = req.swagger.params.order_id.value;
 
+	if (!order_id || typeof order_id !== 'string' || !isUUID(order_id)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/order/getUserOrder invalid order_id',
+			order_id
+		);
+		return res.status(400).json({ message: 'Invalid order id' });
+	}
+
 	toolsLib.order.getUserOrderByKitId(user_id, order_id)
 		.then((order) => {
 			return res.json(order);
@@ -77,6 +87,15 @@ const cancelUserOrder = (req, res) => {
 	);
 	const user_id = req.auth.sub.id;
 	const order_id = req.swagger.params.order_id.value;
+
+	if (!order_id || typeof order_id !== 'string' || !isUUID(order_id)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/order/cancelUserOrder invalid order_id',
+			order_id
+		);
+		return res.status(400).json({ message: 'Invalid order id' });
+	}
 
 	toolsLib.order.cancelUserOrderByKitId(user_id, order_id)
 		.then((order) => {
@@ -132,7 +151,19 @@ const cancelAllUserOrders = (req, res) => {
 
 const getAdminOrders = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/getAdminOrders/auth', req.auth);
-	const { user_id, symbol, side, status, open, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const {
+		user_id,
+		symbol,
+		side,
+		status,
+		open,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date
+	} = req.swagger.params;
 
 	let promiseQuery;
 
@@ -179,9 +210,18 @@ const adminCancelOrder = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/adminCancelOrder auth', req.auth);
 
 	const userId = req.swagger.params.user_id.value;
-	const orderId = req.swagger.params.order_id.value;
+	const order_id = req.swagger.params.order_id.value;
 
-	toolsLib.order.cancelUserOrderByKitId(userId, orderId)
+	if (!order_id || typeof orderId !== 'string' || !isUUID(order_id)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/order/adminCancelOrder invalid order_id',
+			order_id
+		);
+		return res.status(400).json({ message: 'Invalid order id' });
+	}
+
+	toolsLib.order.cancelUserOrderByKitId(userId, order_id)
 		.then((data) => {
 			return res.json(data);
 		})
