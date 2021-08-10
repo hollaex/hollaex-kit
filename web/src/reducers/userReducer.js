@@ -149,6 +149,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				full_name,
 				gender,
 				dob,
+				nationality,
 				meta,
 			} = action.payload;
 			const userData = extractuserData(action.payload);
@@ -188,6 +189,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				dob,
 				gender,
 				meta,
+				nationality,
 			};
 		}
 		case 'SET_USER_DATA': {

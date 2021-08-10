@@ -6,8 +6,13 @@ import {
 	verifyData,
 	revokeData,
 } from './actions';
-import { Card, Button, Modal } from 'antd';
-import { ClockCircleFilled } from '@ant-design/icons';
+import { Button, Modal } from 'antd';
+import {
+	ClockCircleFilled,
+	CloseCircleOutlined,
+	FileSearchOutlined,
+} from '@ant-design/icons';
+import { ReactSVG } from 'react-svg';
 
 import { AdminHocForm } from '../../../components';
 // import {
@@ -19,11 +24,12 @@ import DataDisplay, {
 	// renderRowInformation
 } from './DataDisplay';
 import UploadIds from '../UploadIds';
+import { STATIC_ICONS } from 'config/icons';
 
 import './index.css';
 
-import { isSupport, isSupervisor } from '../../../utils/token';
-import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
+// import { isSupport, isSupervisor } from '../../../utils/token';
+// import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
 
 // const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
 // const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
@@ -51,6 +57,10 @@ class Verification extends Component {
 		this.state = {
 			note: '',
 			isConfirm: false,
+			isVisible: false,
+			isEdit: false,
+			is_dataDisplay: false,
+			selectedImage: '',
 		};
 	}
 	onSubmit = (refreshData) => (values) => {
@@ -77,9 +87,10 @@ class Verification extends Component {
 				status: values.hasOwnProperty('id_data') ? values.id_data : 3,
 			},
 		};
-		return verifyData(values)
+		return verifyData(values, this.props.kycPluginName)
 			.then(() => {
 				refreshData(postData);
+				this.handleClose();
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
@@ -95,7 +106,7 @@ class Verification extends Component {
 				status: values.hasOwnProperty('id_data') ? 2 : bank_account.provided,
 			},
 		};
-		return revokeData(values)
+		return revokeData(values, this.props.kycPluginName)
 			.then(() => {
 				refreshData(postData, 'reject');
 				this.handleClose();
@@ -131,20 +142,200 @@ class Verification extends Component {
 	};
 
 	handleClose = () => {
-		this.setState({ isConfirm: false });
+		this.setState({ isConfirm: false, is_dataDisplay: false, type: '' });
 		this.props.closeUpload();
 	};
+
+	renderWidth = () => {
+		if (this.state.isConfirm) {
+			return '42rem';
+		} else if (this.state.is_dataDisplay) {
+			return '80rem';
+		} else {
+			return 350;
+		}
+	};
+
+	renderPopupContent = (userImageData) => {
+		const { refreshData, closeUpload, userInformation, isUpload } = this.props;
+
+		const { id } = userInformation;
+
+		if (this.state.isConfirm) {
+			return (
+				<div className="verification-confirm-modal">
+					<div className="title">Check and confirm</div>
+					{this.state.type === 'approve' ? (
+						<div>
+							<p>Are you sure you want to approve the ID?</p>
+							<div className="data-display-wrapper">
+								<DataDisplay
+									className={'d-flex flex-wrap mb-5'}
+									data={userImageData}
+									renderRow={renderRowImages}
+								/>
+								<IDForm
+									onSubmit={() =>
+										this.onVerify(refreshData)({
+											user_id: parseInt(id),
+										})
+									}
+									onClose={this.handleClose}
+									buttonText={'Approve'}
+									buttonClass={'green-btn'}
+									secondaryBtnTxt={'Back'}
+									small
+								/>
+							</div>
+						</div>
+					) : (
+						<div>
+							<p>Are you sure you want to reject the ID?</p>
+							<div className="data-display-wrapper">
+								<DataDisplay
+									className={'d-flex flex-wrap mb-5'}
+									data={userImageData}
+									renderRow={renderRowImages}
+								/>
+							</div>
+							<IDRevokeForm
+								fields={{
+									message: {
+										type: 'textarea',
+										label: 'Reason (this will be sent to the user)',
+									},
+								}}
+								onClose={this.handleClose}
+								onSubmit={(formProps) => {
+									return this.onRevoke(refreshData)({
+										user_id: parseInt(id),
+										message: formProps.message,
+									});
+								}}
+								buttonType="danger"
+								secondaryBtnTxt={'Back'}
+								buttonText="Reject"
+								small
+							/>
+						</div>
+					)}
+				</div>
+			);
+		} else if (this.state.is_dataDisplay) {
+			return (
+				<div className="image-wrapper">
+					<div
+						className="selected_image"
+						style={{ backgroundImage: `url(${this.state.selectedImage})` }}
+					/>
+				</div>
+			);
+		} else if (isUpload) {
+			return (
+				<div>
+					<p>Upload ID supporting files to user database</p>
+					<UploadIds
+						user_id={id}
+						refreshData={refreshData}
+						closeUpload={closeUpload}
+					/>
+				</div>
+			);
+		}
+	};
+
+	handleZoom = (icon) => {
+		if (this.state.type !== 'approve' && this.state.type !== 'reject') {
+			this.setState({ is_dataDisplay: true, selectedImage: icon });
+		}
+	};
+
+	handleOpen = (type) => {
+		this.setState({ isConfirm: true, type: type });
+	};
+	renderContent = () => {
+		const { isVisible, isEdit } = this.state;
+		const { userInformation } = this.props;
+		const { id_data = {} } = userInformation;
+
+		if (id_data.status === 3) {
+			return (
+				<div className="d-flex">
+					Status:
+					<ReactSVG
+						src={STATIC_ICONS.VERIFICATION_ICON}
+						className={'verification-icon mx-1'}
+					/>
+					<span className="approved-text">Approved</span>
+					{isVisible && !isEdit ? (
+						<span
+							className="ml-1 edit-text"
+							onClick={() => this.setState({ isEdit: true })}
+						>
+							(Edit)
+						</span>
+					) : null}
+				</div>
+			);
+		} else if (id_data.status === 2) {
+			return (
+				<div>
+					Status:
+					<span className="rejected-text">
+						<CloseCircleOutlined className="mx-2" />
+						Rejected
+					</span>
+					{isVisible && !isEdit ? (
+						<span
+							className="ml-1 edit-text"
+							onClick={() => this.setState({ isEdit: true })}
+						>
+							(Edit)
+						</span>
+					) : null}
+				</div>
+			);
+		} else if (id_data.status === 1) {
+			return (
+				<div>
+					Status:
+					<span className="pending-text">
+						<ClockCircleFilled style={{ margin: '0 5px' }} />
+						Pending ID data
+					</span>
+				</div>
+			);
+		}
+	};
+
+	handleView = () => {
+		this.setState({ isVisible: true });
+	}
 
 	render() {
 		const {
 			userImages,
 			userInformation,
-			refreshData,
+			// refreshData,
 			isUpload,
-			closeUpload,
+			// closeUpload,
 			// constants
 		} = this.props;
-		const { id, id_data = {} } = userInformation;
+
+		const { isVisible, isEdit } = this.state;
+		let userImageData = {};
+		Object.keys(userImages).map(key => {
+			return userImageData = {
+				...userImageData,
+				[key]: {
+					icon: userImages[key],
+					onZoom: this.handleZoom,
+				}
+			}
+		});
+
+		const { id_data = {} } = userInformation;
+
 		// let VERIFICATION_LEVELS =
 		// 	isSupport() || isSupervisor()
 		// 		? VERIFICATION_LEVELS_SUPPORT
@@ -197,7 +388,82 @@ class Verification extends Component {
 							}}
 						/>
 					</Card> */}
-					{id_data.status === 3 ? (
+					<div className="d-flex">{this.renderContent()}</div>
+					{!isVisible && !id_data.status !== 1 ? (
+						<div>
+							<div className="files-search-icon">
+								<FileSearchOutlined />
+							</div>
+							<Button
+								className="green-btn"
+								onClick={this.handleView}
+							>
+								View data
+							</Button>
+						</div>
+					) : (
+						<div>
+							{id_data.status === 3 || id_data.status === 2 ? (
+								<div>
+									{isEdit ? (
+										<div className="mb-3">
+											Edit status:
+											<Button
+												className="mx-2"
+												onClick={() => this.handleOpen('reject')}
+												disabled={id_data.status === 2}
+												type="danger"
+											>
+												Reject
+											</Button>
+											<Button
+												type="primary"
+												onClick={() => this.handleOpen('approve')}
+												disabled={id_data.status === 3}
+												className="green-btn"
+											>
+												Approve
+											</Button>
+										</div>
+									) : null}
+									<DataDisplay
+										className={'d-flex flex-wrap'}
+										data={userImageData}
+										renderRow={renderRowImages}
+									/>
+								</div>
+							) : (
+								<div>
+									<div>
+										<DataDisplay
+											className={'d-flex flex-wrap'}
+											data={userImageData}
+											renderRow={renderRowImages}
+										/>
+									</div>
+									<div className="mt-5">
+										<Button
+											className="mx-2"
+											onClick={() => this.handleOpen('reject')}
+											disabled={id_data.status === 2}
+											type="danger"
+										>
+											Reject
+										</Button>
+										<Button
+											type="primary"
+											onClick={() => this.handleOpen('approve')}
+											disabled={id_data.status === 3}
+											className="green-btn"
+										>
+											Approve
+										</Button>
+									</div>
+								</div>
+							)}
+						</div>
+					)}
+					{/* {id_data.status === 3 ? (
 						<div className="verified-container">
 							<p>Type: {id_data.type}</p>
 							<p>Number: {id_data.number}</p>
@@ -274,7 +540,7 @@ class Verification extends Component {
 														rows={4}
 														value={this.state.note}
 														onChange={this.handleNoteChange}
-													/> */}
+													/>
 									</div>
 								)}
 								{id_data.status === 1 && (
@@ -290,57 +556,31 @@ class Verification extends Component {
 								)}
 							</div>
 						</Card>
-					) : null}
+					) : null} */}
 				</div>
-				<div className="verification_data_container">
+				{/* <div className="verification_data_container">
 					<DataDisplay
 						className={'d-flex flex-wrap'}
 						data={userImages}
 						renderRow={renderRowImages}
 					/>
-					{/* <DataDisplay
-						data={userInformation}
-						title="User Information"
-						renderRow={renderRowInformation}
-					/> */}
-				</div>
+					// <DataDisplay
+					// 	data={userInformation}
+					// 	title="User Information"
+					// 	renderRow={renderRowInformation}
+					// />
+				</div> */}
 				<Modal
-					title={this.state.isConfirm ? 'Reject ID' : 'Upload files'}
-					width={this.state.isConfirm ? 520 : 350}
-					visible={this.state.isConfirm || isUpload}
+					// title={this.state.isConfirm ? 'Reject ID' : 'Upload files'}
+					width={this.renderWidth()}
+					visible={
+						this.state.isConfirm || isUpload || this.state.is_dataDisplay
+					}
 					footer={null}
 					onCancel={this.handleClose}
+					wrapClassName={this.state.is_dataDisplay ? 'zoom-image-modal' : ''}
 				>
-					{this.state.isConfirm ? (
-						<div className="verification-confirm-modal">
-							<p>Are you sure you want to reject the ID?</p>
-							<IDRevokeForm
-								fields={{
-									message: {
-										type: 'textarea',
-										label: 'Reason (this will be sent to the user)',
-									},
-								}}
-								onSubmit={(formProps) => {
-									this.onRevoke(refreshData)({
-										user_id: id,
-										message: formProps.message,
-									});
-								}}
-								buttonText="Confirm"
-								small
-							/>
-						</div>
-					) : (
-						<div>
-							<p>Upload ID supporting files to user database</p>
-							<UploadIds
-								user_id={id}
-								refreshData={refreshData}
-								closeUpload={closeUpload}
-							/>
-						</div>
-					)}
+					{this.renderPopupContent(userImageData)}
 				</Modal>
 			</div>
 		);

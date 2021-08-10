@@ -216,14 +216,7 @@ class Verification extends Component {
 			return;
 		}
 		const { icons: ICONS } = this.props;
-		const {
-			email,
-			bank_account,
-			address,
-			id_data,
-			phone_number,
-			email_verified,
-		} = user;
+		const { email, bank_account, id_data, phone_number, email_verified } = user;
 		let bank_status = 0;
 		if (bank_account.length) {
 			if (bank_account.filter((data) => data.status === 3).length) {
@@ -243,11 +236,7 @@ class Verification extends Component {
 				bank_status = 0;
 			}
 		}
-		const identity_status = address.country
-			? id_data.status && id_data.status === 3
-				? 3
-				: 1
-			: 1;
+		const identity_status = id_data.status;
 		const tabUtils = {
 			email: {
 				title: isMobile ? (
