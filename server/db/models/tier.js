@@ -36,6 +36,10 @@ module.exports = function(sequelize, DataTypes) {
 			note: {
 				type: DataTypes.STRING,
 				defaultValue: ''
+			},
+			requirements: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
 			}
 		},
 		{
