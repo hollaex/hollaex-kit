@@ -86,6 +86,24 @@ const icons = {
 	CLOUD_ICON: '/assets/images/current-plan-cloud-icon.svg',
 	QUICK_TRADE: '/assets/images/quick-trade-01.svg',
 	PAPER_CLIP: '/assets/acounts/paperclip-attach-01.svg',
+	COIN_ICONS: {
+		ada: '/assets/images/ada-icon.svg',
+		bch: '/assets/images/bch-icon.svg',
+		eth: '/assets/images/eth-icon.svg',
+		btc: '/assets/images/btc-icon.svg',
+		bnb: '/assets/images/bnb-icon.svg',
+		dai: '/assets/images/dai-icon.svg',
+		eos: '/assets/images/eos-icon.svg',
+		ltc: '/assets/images/ltc-icon.svg',
+		trx: '/assets/images/trx-icon.svg',
+		tusd: '/assets/images/tusd-icon.svg',
+		xlm: '/assets/images/xlm-icon.svg',
+		xmr: '/assets/images/xmr-icon.svg',
+		xrp: '/assets/images/xrp-icon.svg'
+	},
+	MISSING_ICON: '/assets/images/missing-coin.svg',
+	SETTINGS: '/assets/images/noun_settings.svg',
+	CURRENCY_SYMBOL: '/assets/images/noun_currency.svg',
 };
 
 export default icons;

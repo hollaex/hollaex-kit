@@ -7,6 +7,7 @@
 		"@ant-design/icons": "4.2.2",
 		"@material/button": "0.7.0",
 		"@paciolan/remote-component": "2.11.0",
+		"@simonwep/pickr": "^1.8.1",
 		"antd": "4.6.2",
 		"antd-mobile": "2.2.3",
 		"array-move": "3.0.1",

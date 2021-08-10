@@ -1,11 +1,11 @@
 import React from 'react';
 import { Tabs } from 'antd';
 
-import { MoveToDash } from 'containers';
 import Earnings from './Earnings';
 import Wallets from '../Wallets';
 import DepositPage from '../DepositsPage';
 import Transfer from '../Transfers';
+import Assets from './Assets';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -18,9 +18,7 @@ const AdminFinancials = ({ router }) => {
 					<Wallets router={router} />
 				</TabPane>
 				<TabPane tab="Assets" key="assets">
-					<div className="tab-contents">
-						<MoveToDash path={router.location.pathname} />
-					</div>
+					<Assets />
 				</TabPane>
 				<TabPane tab="Deposits" key="deposits">
 					<DepositPage type="deposit" showFilters={true} />
