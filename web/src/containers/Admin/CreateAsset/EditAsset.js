@@ -1,8 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Button, Select, Input, Form } from 'antd';
-import ColorPicker from 'components/ColorPicker';
-
-// import ColorPicker from '../../components/ColorPicker';
+import ColorPicker from '../ColorPicker';
 
 const { Option } = Select;
 

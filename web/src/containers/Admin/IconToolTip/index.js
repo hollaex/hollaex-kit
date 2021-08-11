@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CheckCircleFilled, ClockCircleFilled } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
+import './index.css';
 
 const displayIcons = (type) => {
 	if (type === 'warning') {

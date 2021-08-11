@@ -1,0 +1,192 @@
+.coins-wrapper .coin-ico {
+	width: 36px;
+	height: 36px;
+	line-height: 36px;
+	border-radius: 19px;
+	font-size: 11px !important;
+	text-align: center;
+	background-color: transparent;
+	box-sizing: content-box;
+	border: 1.5px solid #000;
+	border-color: #0000ff;
+	color: #ffffff;
+	font-weight: bold;
+}
+.coins-wrapper .type-space {
+	height: 36px;
+}
+.coins-wrapper .coin-ico.btc {
+	border-color: #f7941d;
+}
+.coins-wrapper .coin-ico.xrp {
+	border-color: #414042;
+}
+.coins-wrapper .coin-ico.bch {
+	border-color: #8dc541;
+}
+.coins-wrapper .coin-ico.eth {
+	border-color: #3e4ea1;
+}
+.coins-wrapper .coin-ico.hex {
+	border-color: #000000;
+}
+.coins-wrapper .coin-ico.xht {
+	border-color: #000000;
+}
+.coins-wrapper .coin-ico.xmr {
+	border-color: #f15a29;
+}
+.coins-wrapper .coin-ico.dai {
+	border-color: #f3c27a;
+}
+.coins-wrapper .coin-ico.mkr {
+	border-color: #00a79d;
+}
+.coins-wrapper .coin-ico.link {
+	color: #000000 !important;
+	cursor: text !important;
+	text-decoration: none !important;
+}
+.coin-name {
+	padding-left: 8px;
+	font-size: 24px;
+	font-weight: bold;
+}
+.coins-wrapper.xs .coin-ico {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 16px;
+	font-size: 5px !important;
+	font-weight: normal;
+}
+.coins-wrapper.xs .type-space {
+	height: 30px;
+}
+.coins-wrapper.xs .coin-ico.btc {
+	border-color: #f7941d;
+}
+.coins-wrapper.xs .coin-name {
+	line-height: 30px;
+	padding-left: 8px;
+	font-size: 14px;
+	font-weight: normal;
+}
+.coins-wrapper.md .coin-ico {
+	width: 60px;
+	height: 60px;
+	line-height: 38px;
+	border-radius: 32px;
+	font-size: 12px !important;
+	font-weight: normal;
+}
+.coins-wrapper.md .type-space {
+	height: 38px;
+}
+.coins-wrapper.md .coin-name {
+	line-height: 38px;
+	padding-left: 8px;
+	font-size: 14px;
+	font-weight: normal;
+}
+.coins-wrapper.large-no-hover .coin-ico {
+	width: 94px;
+	height: 94px;
+	line-height: 65px;
+	border-radius: 47px;
+	font-size: 18px !important;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
+.coins-wrapper.large-no-hover .coin-ico p {
+	font-size: 12px;
+	line-height: 1;
+	position: relative;
+	top: -18px;
+	font-weight: normal;
+}
+.coins-wrapper.large-no-hover .type-space {
+	height: 65px;
+}
+.coins-wrapper.large .coin-ico {
+	width: 94px;
+	height: 94px;
+	line-height: 65px;
+	border-radius: 47px;
+	font-size: 18px !important;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
+.coins-wrapper.large .coin-ico:hover::before {
+	content: '+';
+	position: absolute;
+
+	z-index: 1;
+	display: block;
+	width: 95px;
+	height: 95px;
+	line-height: 95px;
+	border-radius: 47.5px;
+	font-size: 30px;
+	background-color: #00f;
+	color: #fff;
+	text-align: center;
+}
+.coins-wrapper.large .coin-ico p {
+	font-size: 12px;
+	line-height: 1;
+	position: relative;
+	top: -18px;
+	font-weight: normal;
+}
+.coins-wrapper.large .type-space {
+	height: 65px;
+}
+.coins-wrapper.large .coin-ico.btc:hover::before {
+	background-color: #f7941d;
+}
+.coins-wrapper.large .coin-ico.xrp:hover::before {
+	background-color: #414042;
+}
+.coins-wrapper.large .coin-ico.bch:hover::before {
+	background-color: #8dc541;
+}
+.coins-wrapper.large .coin-ico.eth:hover::before {
+	background-color: #3e4ea1;
+}
+.coins-wrapper.large .coin-ico.hex:hover::before,
+.coins-wrapper.large .coin-ico.xht:hover::before {
+	background-color: #000000;
+}
+.coins-wrapper.large .coin-ico.xmr:hover::before {
+	background-color: #f15a29;
+}
+.coins-wrapper.large .coin-ico.dai:hover::before {
+	background-color: #f3c27a;
+}
+.coins-wrapper.large .coin-ico.mkr:hover::before {
+	background-color: #00a79d;
+}
+@media (max-width: 1200px) {
+	.coins-wrapper .coin-ico {
+		width: 28px;
+		height: 28px;
+		line-height: 28px;
+		border-radius: 17px;
+		font-size: 10px !important;
+		text-align: center;
+		border-color: #0000ff;
+
+		font-weight: bold;
+	}
+	.coins-wrapper .type-space {
+		height: 28px;
+	}
+	.coins-wrapper .coin-name {
+		padding-left: 8px;
+		font-size: 16px;
+		line-height: 26px;
+	}
+}

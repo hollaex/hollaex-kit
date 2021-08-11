@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { InputNumber, Button } from 'antd';
 
-import Coins from 'components/Coins';
+import Coins from '../Coins';
 // import { getCoinParams } from '../../common/fetch';
 
 const AssetParams = ({

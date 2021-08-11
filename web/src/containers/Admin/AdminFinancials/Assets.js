@@ -3,10 +3,10 @@ import { Button, Table, Modal, Breadcrumb, message } from 'antd';
 import { connect } from 'react-redux';
 // import { requestExchange } from './action';
 
-import CreateAsset from '../CreateAsset';
+import CreateAsset, { default_coin_data } from '../CreateAsset';
 import FinalPreview from '../CreateAsset/Final';
-import IconToolTip from 'components/IconToolTip';
-import Coins from 'components/Coins';
+import IconToolTip from '../IconToolTip';
+import Coins from '../Coins';
 
 const { Item } = Breadcrumb;
 
@@ -38,6 +38,19 @@ const ASSET_TYPE_LIST = [
     { key: 'ZRX', value: 'zrx' },
     { key: 'Gold Tether', value: 'xaut' }
 ];
+
+export const getTabParams = () => {
+    let paramsString = window.location.search.replace('?', '');
+    let activeTab = {}
+    if (paramsString.length) {
+        let splitValue = paramsString.split('&')
+        splitValue.forEach((value) => {
+            let temp = value.split('=');
+            activeTab[temp[0]] = temp[1];
+        });
+    }
+    return activeTab;
+};
 
 const getColumns = (allCoins = [], user = {}, balance = {}, handleEdit, handlePreview) => [
     {
@@ -131,7 +144,7 @@ class Assets extends Component {
             exchange: {},
             filterValues: '',
             status: '',
-            // tabParams: getTabParams(),
+            tabParams: getTabParams(),
             isConfirm: false,
             exchangeUsers: [],
             userEmails: [],
@@ -142,6 +155,7 @@ class Assets extends Component {
     }
 
     componentDidMount() {
+        const { tabParams } = this.state;
         // this.requestExchange(this.props.exchange && this.props.exchange.id);
         if (this.props.exchange
             && this.props.exchange.length
@@ -151,28 +165,27 @@ class Assets extends Component {
                 exchange: this.props.exchange[0]
             });
         }
-        // if (tabParams) {
-        //     let isAddAsset = (tabParams.isAsset === 'true');
-        //     let isPreview = (tabParams.preview === 'true');
-        //     let coinData = this.props.exchange[0].coins;
-        //     if (coinData.length) {
-        //         let temp = coinData.filter(list => list.symbol === tabParams.symbol)
-        //         let filterCoin = temp.length ? temp[0] : {};
-        //         if (filterCoin.symbol) {
-        //             let filterSymbol = filterCoin.symbol;
-        //             filterCoin = this.props.allCoins.filter(list => list.symbol === filterSymbol)[0] || {};
-        //         }
-        //         this.props.handleHide(isPreview);
-        //         this.setState({
-        //             isPreview,
-        //             isOpenAdd: isAddAsset,
-        //             selectedAsset: {
-        //                 ...default_coin_data,
-        //                 ...filterCoin
-        //             }
-        //         })
-        //     }
-        // }
+        if (tabParams) {
+            let isAddAsset = (tabParams.isAsset === 'true');
+            let isPreview = (tabParams.preview === 'true');
+            // let coinData = this.props.exchange[0].coins;
+            // if (coinData.length) {
+            //     let temp = coinData.filter(list => list.symbol === tabParams.symbol)
+            //     let filterCoin = temp.length ? temp[0] : {};
+            //     if (filterCoin.symbol) {
+            //         let filterSymbol = filterCoin.symbol;
+            //         filterCoin = this.props.allCoins.filter(list => list.symbol === filterSymbol)[0] || {};
+            //     }
+                this.setState({
+                    isPreview,
+                    isOpenAdd: isAddAsset,
+                    selectedAsset: {
+                        ...default_coin_data,
+                        // ...filterCoin
+                    }
+                })
+            // }
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -184,16 +197,15 @@ class Assets extends Component {
                 exchange: this.props.exchange[0]
             });
         }
-        // if (JSON.stringify(this.props.location) !== JSON.stringify(prevProps.location)) {
-        //     const tabParams = getTabParams();
-        //     if (tabParams.tab === '0') {
-        //         this.props.handleHide(false);
-        //         this.setState({
-        //             isPreview: false,
-        //             isConfigure: false
-        //         })
-        //     }
-        // }
+        if (JSON.stringify(this.props.location) !== JSON.stringify(prevProps.location)) {
+            const tabParams = getTabParams();
+            if (tabParams.tab === '0') {
+                this.setState({
+                    isPreview: false,
+                    isConfigure: false
+                })
+            }
+        }
         if (JSON.stringify(prevState.exchange) !== JSON.stringify(this.state.exchange)) {
             this.getAllUsers();
             this.getExchangeBalance();

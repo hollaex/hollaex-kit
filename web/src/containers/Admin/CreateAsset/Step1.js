@@ -2,9 +2,9 @@ import React, { Fragment } from 'react';
 import { Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
-import Tabs from '../../../components/Tab';
+import Tab from '../Tab';
 import { STATIC_ICONS } from 'config/icons';
-import Coins from 'components/Coins';
+import Coins from '../Coins';
 
 const Step1 = ({
     // assetType = '',
@@ -147,7 +147,7 @@ const Step1 = ({
     return (
         <Fragment>
             <div className="add-asset-wrapper">
-                <Tabs
+                <Tab
                     TabList={StepList}
                     onChange={handleTabs}
                     activeTab={activeTab.toString()}

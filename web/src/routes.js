@@ -51,6 +51,7 @@ import {
 	Tiers,
 	Roles,
 	Resources,
+	Pairs
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -411,7 +412,7 @@ export const generateRoutes = (routes = []) => {
 				<Route
 					path="/admin/trade"
 					name="Admin Trade"
-					component={withAdminProps(MoveToDash, 'trade')}
+					component={withAdminProps(Pairs, 'trade')}
 				/>
 				<Route
 					path="/admin/hosting"

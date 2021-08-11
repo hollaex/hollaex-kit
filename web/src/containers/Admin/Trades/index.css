@@ -1,0 +1,171 @@
+.admin-user-container .ant-table-cell:hover .title-text {
+    text-decoration: underline;
+}
+.admin-user-container .ant-table-cell .pair-base-text {
+    width: 40%;
+    text-align: end;
+}
+.admin-user-container .ant-table-cell:hover .asset-list {
+    cursor: pointer;
+}
+
+.modal-wrapper {
+    color: #ffffff;
+}
+.admin-user-container .ant-table-tbody > tr > td {
+    border: none;
+}
+
+.admin-pairs-container {
+    padding: 1.5rem 1rem;
+}
+.admin-pairs-container .preview-container .ant-breadcrumb {
+	margin: 1rem 0rem;
+}
+.admin-pairs-container .preview-container .ant-breadcrumb .ant-breadcrumb-link,
+.admin-pairs-container .preview-container .ant-breadcrumb .ant-breadcrumb-separator {
+	color: #ffffff;
+	opacity: 0.6;
+}
+.admin-pairs-container .preview-container .breadcrumb_active,
+.admin-pairs-container .preview-container .ant-breadcrumb .ant-breadcrumb-link:hover {
+	color: #ffffff;
+	cursor: pointer;
+	opacity: 1;
+}
+.admin-pairs-container .main-header {
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: bold;
+    padding-left: 2rem;
+    border-bottom: 1px solid #ffffff;
+}
+.admin-pairs-container .filter-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem 1rem;
+    margin-bottom: 1rem;
+}
+.admin-pairs-container .coin-symbol-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+}
+.admin-pairs-container .coin-symbol-wrapper .coin-title {
+    width: 25%;
+    text-align: end
+}
+.admin-pairs-container .coin-symbol-wrapper .coin-wrap {
+    margin-right: 0px;
+}
+.admin-pairs-container .coin-symbol-wrapper .icon-wrapper {
+    position: absolute;
+    width: unset;
+}
+.admin-pairs-container .coin-symbol-wrapper .settings-toolTip {
+    position: relative;
+    left: 20px;
+    bottom: 8px;
+}
+.admin-pairs-container .coin-symbol-wrapper .config-content {
+    display: flex;
+}
+.admin-pairs-container .coin-symbol-wrapper .content-space1 {
+    margin-left: 1rem;
+}
+.admin-pairs-container .coin-symbol-wrapper .content-space2 {
+    margin-left: 5px;
+}
+.admin-pairs-container .coin-symbol-wrapper .coin-config-align {
+    z-index: 2;
+}
+.admin-pairs-container .coin-symbol-wrapper:hover .pairs {
+    text-decoration: underline;
+}
+.admin-pairs-container a {
+    text-decoration: none;
+    color: black;
+}
+.admin-pairs-container .volume-column {
+    width: 18rem;
+}
+.admin-pairs-container .preview-container {
+    margin: 1rem 0rem 2rem 0rem;
+}
+.admin-pairs-container .preview-container .left-container-preview {
+    margin-bottom: 2rem;
+}
+.admin-pairs-container .preview-container .left-container {
+    justify-content: center;
+}
+.admin-pairs-container .preview-container .right-container {
+    border-left: 1px solid ;
+    padding: 0rem 1rem;
+    width: 15rem;
+    margin-left: 1rem;
+}
+.admin-pairs-container .preview-container .configure-btn {
+    font-size: 32px;
+    height: auto;
+}
+.admin-pairs-container .preview-container .exclamation-icon {
+    font-size: 22px;
+    color: #FF0000;
+    position: relative;
+    left: 78px;
+    bottom: 100px;
+}
+.admin-pairs-container .flex-container {
+    flex: 1;
+    margin: 0.25rem 0rem;
+}
+.admin-pairs-container .cross-text {
+    font-size: 42px;
+    padding-top: 1rem;
+    margin: 0rem 0.5rem;
+}
+.admin-pairs-container .status-wrapper {
+    position: absolute;
+}
+.admin-pairs-container .right-content {
+    margin-bottom: 1rem;
+}
+.admin-pairs-container .right-content .title {
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: bold;
+}
+.admin-pairs-container .description-small {
+    font-size: 10px;
+    margin-top: 0.25rem;
+    text-align: center;
+    width: 70%;
+}
+.admin-pairs-container .remove {
+    color: #ff4d4f;
+    text-align: left;
+    width: 60%;
+}
+.admin-pairs-container .table-wrapper tr {
+    height: 4rem;
+}
+.admin-pairs-container .btn-wrapper {
+    display: flex;
+    margin-top: 1rem;
+}
+.admin-pairs-container .btn-wrapper .ant-btn {
+    flex: 1
+}
+.admin-pairs-container .btn-wrapper .separator {
+    margin: 5px;
+}
+
+@media (max-width: 960px) {
+    .admin-pairs-container .flex-column-rev {
+        flex-direction: column-reverse;
+    }
+    .admin-pairs-container .configure-btn {
+        font-size: 20px;
+    }
+}

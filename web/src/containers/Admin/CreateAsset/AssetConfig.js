@@ -2,8 +2,8 @@ import React, { Fragment, useState } from 'react';
 import { Input, InputNumber, Button, Form, Checkbox, Radio, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
-import ColorPicker from 'components/ColorPicker';
-import Coins from 'components/Coins';
+import Coins from '../Coins';
+import ColorPicker from '../ColorPicker';
 // import { getCoinInfo, storeAsset } from '../../common/fetch';
 
 const CONTACT_DESCRIPTION_LINK = 'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-';

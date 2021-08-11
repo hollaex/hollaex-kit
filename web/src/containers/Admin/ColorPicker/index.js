@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Pickr from '@simonwep/pickr';
 
 import '@simonwep/pickr/dist/themes/nano.min.css';
+import './index.css';
 
 class ColorPicker extends Component {
 	state = {

@@ -17,6 +17,8 @@ import EditAsset from './EditAsset';
 import BurnModal from './Burn';
 import CoinLimited from './CoinLimited';
 
+import './index.css';
+
 export const default_coin_data = {
 	fullname: '',
 	symbol: '',

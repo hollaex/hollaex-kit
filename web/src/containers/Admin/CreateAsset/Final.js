@@ -3,8 +3,8 @@ import { Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
-import IconToolTip from 'components/IconToolTip';
-import Coins from 'components/Coins';
+import Coins from '../Coins';
+import IconToolTip from '../IconToolTip';
 // import IconToolTip from '../../components/IconToolTip';
 // import { COIN_ICONS, MISSING_ICON, CURRENCY_SYMBOL } from '../../config/media';
 

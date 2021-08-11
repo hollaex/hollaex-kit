@@ -1,6 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 
+import './index.css';
+
 export const COIN_FULL_NAME = {
 	btc: 'Bitcoin',
 	bch: 'Bitcoin Cash',
