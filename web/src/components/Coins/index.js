@@ -1,8 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import './index.css';
-
 export const COIN_FULL_NAME = {
 	btc: 'Bitcoin',
 	bch: 'Bitcoin Cash',
@@ -31,10 +29,20 @@ export const COIN_FULL_NAME = {
 	miota: 'IOTA',
 	zrx: 'ZRX',
 	tusd: 'True USD',
-	xaut: 'Gold Tether'
+	xaut: 'Gold Tether',
 };
 
-const Coins = ({ type, small, xs, md, color, large, nohover = false, fullname = '', onClick }) => {
+const Coins = ({
+	type,
+	small,
+	xs,
+	md,
+	color,
+	large,
+	nohover = false,
+	fullname = '',
+	onClick,
+}) => {
 	const coinStyle = {};
 	let wrapClass = 'coin-wrap';
 	if (xs) {
@@ -44,7 +52,7 @@ const Coins = ({ type, small, xs, md, color, large, nohover = false, fullname = 
 		wrapClass += ' md';
 	}
 	if (nohover) {
-		wrapClass += ' large-no-hover'
+		wrapClass += ' large-no-hover';
 	} else if (large) {
 		wrapClass += ' large';
 	}
@@ -57,19 +65,17 @@ const Coins = ({ type, small, xs, md, color, large, nohover = false, fullname = 
 	return (
 		<div className={classnames('coins-wrapper', wrapClass)} onClick={onClick}>
 			<div className={`coin-ico ${type}`} style={coinStyle}>
-				{!type ? <div className="type-space"></div> :type.toUpperCase()}
+				{!type ? <div className="type-space"></div> : type.toUpperCase()}
 				{large ? <p>{fullname || COIN_FULL_NAME[type]}</p> : null}
 			</div>
-			{small ? null : (
-				<div className="coin-name">{fullname}</div>
-			)}
+			{small ? null : <div className="coin-name">{fullname}</div>}
 		</div>
 	);
 };
 
 Coins.defaultProps = {
 	type: 'btc',
-	onClick: () => {}
+	onClick: () => {},
 };
 
 export default Coins;

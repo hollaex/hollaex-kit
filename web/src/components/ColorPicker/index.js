@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import Pickr from '@simonwep/pickr';
 
 import '@simonwep/pickr/dist/themes/nano.min.css';
-import './index.css' ;
 
 class ColorPicker extends Component {
 	state = {
 		isOpen: false,
-		background: this.props.value || '#22194D'
+		background: this.props.value || '#22194D',
 	};
 
 	componentDidMount() {
@@ -28,7 +27,7 @@ class ColorPicker extends Component {
 				'rgba(139, 195, 74, 1)',
 				'rgba(205, 220, 57, 1)',
 				'rgba(255, 235, 59, 1)',
-				'rgba(255, 193, 7, 1)'
+				'rgba(255, 193, 7, 1)',
 			],
 			default: this.state.background,
 			components: {
@@ -38,9 +37,9 @@ class ColorPicker extends Component {
 				hue: true,
 				interaction: {
 					input: true,
-					save: true
-				}
-			}
+					save: true,
+				},
+			},
 		});
 		this.pickr.on('save', this.handleChangeComplete);
 	}
@@ -57,12 +56,15 @@ class ColorPicker extends Component {
 
 	handleChangeComplete = (color) => {
 		const { onChange } = this.props;
-		this.setState({ background: color.toHEXA().toString(), isOpen: false }, () => {
-			if (onChange) {
-				onChange(this.state.background);
+		this.setState(
+			{ background: color.toHEXA().toString(), isOpen: false },
+			() => {
+				if (onChange) {
+					onChange(this.state.background);
+				}
+				this.pickr.hide();
 			}
-			this.pickr.hide();
-		});
+		);
 	};
 
 	render() {
@@ -70,8 +72,7 @@ class ColorPicker extends Component {
 		return (
 			<div className="color_picker-container">
 				<div className="picker-wrapper" onClick={this.handleClick}>
-					<div className="color-picker">
-					</div>
+					<div className="color-picker"></div>
 					<div>{background}</div>
 				</div>
 			</div>
