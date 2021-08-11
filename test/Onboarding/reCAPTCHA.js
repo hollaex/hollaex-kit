@@ -4,17 +4,18 @@
 const { Builder, By, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 const { Console } = require('console');
-const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+const assert = require('assert');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 let userName = process.env.BOB;
 let passWord = process.env.PASSWORD;
 let logInPage = process.env.LOGIN_PAGE;
 
 if (process.env.NODE_ENV == 'test') {
 	console.log('Variables are defined');
-   }
-describe('BobLogIn', function() {
-	this.timeout(30000);
+}
+describe('reCAPTCHA', function() {
+	this.timeout(300000);
 	let driver;
 	let vars;
 	function sleep(ms) {
@@ -32,20 +33,37 @@ describe('BobLogIn', function() {
 		//await driver.quit();
 	});
 
-	it('Simple log in', async function() {
-//Given User's data
+	it('ReCHAPTCHA log in', async function() {
+		//Given User's data
 		console.log(' Test name	: BobLogIn');
 		console.log(logInPage);
 		await driver.get(logInPage);
-		await driver.sleep(5000);
+		await driver.sleep(10000);
 		const title = await driver.getTitle();
 		console.log(title);
 		expect(title).to.equal(title);
 		console.log('entring', logInPage);
 		console.log(' Step # | action | target | value');
-    
+		await driver.switchTo().frame(0);
+		// 3 | assertText | linkText=Privacy | Privacy
+		assert(await driver.findElement(By.linkText("Privacy")).getText() == "Privacy");
+		// 4 | assertElementPresent | xpath=(//a[contains(@href, 'https://www.google.com/intl/en/policies/terms/')])[2] | 
+		{
+			const elements = await driver.findElements(By.xpath("(//a[contains(@href, \'https://www.google.com/intl/en/policies/terms/\')])[2]"));
+			assert(elements.length);
+		}
+		// 5 | assertElementNotPresent | css=.auth_form-wrapper > .w-100 | 
+		{
+			const elements = await driver.findElements(By.css(".auth_form-wrapper > .w-100"));
+			assert(!elements.length);
+		}
+		// 6 | storeText | xpath=//strong[contains(.,'reCAPTCHA')] | txt
+		vars["txt"] = await driver.findElement(By.xpath("//strong[contains(.,\'reCAPTCHA\')]")).getText();
+		// 7 | echo | ${txt} | 
+		console.log(vars["txt"]);
+		await driver.switchTo().defaultContent();
 		console.log(' 1 | type | name=email |', userName);
-		await driver.wait(until.elementLocated(By.name('email')), 5000);
+		await driver.findElement(By.name('email')).click();
 		await driver.findElement(By.name('email')).sendKeys(userName);
     
 		console.log(' 2 | type | name=password | PASSWORD');
@@ -61,11 +79,11 @@ describe('BobLogIn', function() {
 			// assert(elements.length);
 			expect(elements.length);
 		}
-//when login    
+		//when login    
 		console.log(' 5 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(5000);
-//then the username should be as same as entered 		
+		//then the username should be as same as entered 		
 		console.log(' 6 | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
 		await driver.wait(until.elementLocated(By.css('.app-bar-account-content > div:nth-child(2)')), 20000);
 		await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());

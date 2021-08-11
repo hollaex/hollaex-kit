@@ -1,12 +1,12 @@
-
 //testing the login function of Hollaex Kit
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
 const { Builder, By, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 const { Console } = require('console');
-const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+const totp = require("totp-generator");
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const assert = require('assert');
 let logInPage = process.env.LOGIN_PAGE;
 let emailPage =process.env.EMAIL_PAGE;
@@ -21,7 +21,7 @@ function defineNewUser(User,i){
 	const newUser = randomstring.generate(i)+'@'+User ;
 	//console.log(newUser);
 
-	if (typeof localStorage === "undefined" || localStorage === null) {
+	if (typeof localStorage === 'undefined' || localStorage === null) {
 		var LocalStorage = require('node-localstorage').LocalStorage;
 		localStorage = new LocalStorage('./scratch');
 	}
@@ -31,7 +31,7 @@ function defineNewUser(User,i){
 	return localStorage.getItem('NewUser');
 }
 function getNewUser(){
-	if (typeof localStorage === "undefined" || localStorage === null) {
+	if (typeof localStorage === 'undefined' || localStorage === null) {
 		var LocalStorage = require('node-localstorage').LocalStorage;
 		localStorage = new LocalStorage('./scratch');
 	}
@@ -109,6 +109,61 @@ async function emailLogIn(driver, emailAdmin,passWord){
 	await driver.manage().window().maximize();
 	await sleep(10000);
 }
-module.exports = {defineNewUser,emailLogIn,kitLogIn,getNewUser};
+
+async function adminVerifiesNewUser(driver,aUserName,aPassword,newUserName){
+	await driver.get(logInPage);
+	await sleep(10000);
+	// 2 | type | name=email | USER@bitholla.com
+	// await driver.wait(until.elementLocated(await driver.findElement(By.name("email"))), 5000);
+	await driver.findElement(By.name('email')).sendKeys(aUserName);
+	// 3 | type | name=password | bitholla@bitholla.com
+	//await driver.wait(until.elementLocated(await driver.findElement(By.name("password"))),5000);
+	await driver.findElement(By.name('password')).sendKeys(aPassword);
+	// 4 | click | name=email | 
+   
+	await sleep(4000);
+	await driver.findElement(By.name('email')).click();
+	// 5 | click | css=.holla-button | 
+	await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
+	await driver.findElement(By.css('.holla-button')).click();
+	await driver.manage().window().maximize();
+	await sleep(5000);
+	// 6 | click | css=a > .pl-1 | 
+	await driver.findElement(By.css('a > .pl-1')).click();
+	// 7 | click | linkText=Users | 
+	await driver.findElement(By.linkText('Users')).click();
+	// 8 | click | name=input | 
+	await driver.findElement(By.name('input')).click();
+	// 9 | type | name=input | testtesttest@test.com
+	await driver.findElement(By.name('input')).sendKeys(newUserName);
+	// 10 | pause | 3000 | 
+	await sleep(4000);
+	// 11 | click | css=.ant-btn | 
+	await driver.findElement(By.css('.ant-btn')).click();
+	await sleep(10000);
+	// 15 | click | css=.w-100 | 
+
+	await sleep(5000);
+	// 13 | click | css=.about-info:nth-child(2) .info-link | 
+	await driver.findElement(By.css('.about-info:nth-child(2) .info-link')).click();
+	// 14 | pause | 2000 | 
+	await sleep(5000);
+	// 15 | click | css=.w-100 | 
+	await driver.findElement(By.css('.w-100')).click();
+}
+async function toTP(code){
+	
+	const token = totp(code);
+  
+   
+	console.log(code)
+	console.log(token); 
+	return token;
+} 
+
+
+module.exports = {defineNewUser,emailLogIn,kitLogIn,getNewUser,adminVerifiesNewUser,toTP};
+
+
 
 

@@ -12,6 +12,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 let userName = process.env.ADMIN_USER;
 let passWord = process.env.ADMIN_PASS;
 let logInPage = process.env.LOGIN_PAGE;
+let Website = process.env.WEBSITE;
 describe('Orders', function() {
 	this.timeout(300000);
 	let driver;
@@ -24,43 +25,49 @@ describe('Orders', function() {
 	beforeEach(async function() {
 		driver = await new Builder().forBrowser('chrome').build();
 		vars = {};
-		// Test name: Untitled
+		
+		
+	});
+	afterEach(async function() {
+	//	await driver.quit();
+	});
+  it('Untitled', async function() {
+	  // Test name: Untitled
 		// Step # | name | target | value
 		// 1 | open | /account | 
 		await driver.get(logInPage);
 		await sleep(10000);
 		// 2 | type | name=email | USER@bitholla.com
-		// await driver.wait(until.elementLocated(await driver.findElement(By.name("email"))), 5000);
+		// await driver.wait(until.elementLocated(await driver.findElement(By.name("email"))), 10000);
 		await driver.findElement(By.name('email')).sendKeys(userName);
 		// 3 | type | name=password | bitholla@bitholla.com
 		//await driver.wait(until.elementLocated(await driver.findElement(By.name("password"))),5000);
 		await driver.findElement(By.name('password')).sendKeys(passWord);
 		// 4 | click | name=email | 
-   
+		
 		await sleep(4000);
 		await driver.findElement(By.name('email')).click();
 		// 5 | click | css=.holla-button | 
 		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 		await driver.findElement(By.css('.holla-button')).click();
         await driver.manage().window().maximize();
-	});
-	afterEach(async function() {
-	//	await driver.quit();
-	});
-  it('Untitled', async function() {
-   
+	await sleep(10000);
+	await driver.get(Website+'trade/xht-usdt')//("https://sandbox.hollaex.com/trade/xht-usdt")//
+	  let text ='hi'
+	await sleep(10000)
     let linkss = await driver.findElements(By.className("trade-col_side_wrapper flex-column d-flex apply_rtl"))//('table_body-row'))
     for(let link of linkss) {
         text = await link.getText();
         console.log("objec :"+ String(link))
         console.log("this is text:"+text);
     }
- await sleep(10000)
- 
+
+ console.log("this is text:");
     await driver.get("https://sandbox.hollaex.com/wallet")
-    let linksss = await driver.findElements(By.id('table_body-row'))
-    console.log("wallet"+linksss+"n")
-    //     let linkss = await driver.findElements(By.className("trade-col_side_wrapper flex-column d-flex apply_rtl"))//('table_body-row'))
+	await sleep(10000)
+    // let linksss = await driver.findElements(By.id('table_body-row'))
+    // console.log("wallet"+linksss+"n")
+       let linksss = await driver.findElements(By.className("mr-4"))//('table_body-row'))
     for(let link of linksss) {
         text = await link.getText();
         console.log("objec :"+ String(link))
