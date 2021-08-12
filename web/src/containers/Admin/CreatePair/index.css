@@ -230,7 +230,7 @@
     border-color: #2930ff;
 }
 .pair-container .coin-option-wrapper .coin-option:hover {
-    background-color: #e6eaff;
+    background-color: var(--admin_panel_table_tbody_hover);
 }
 .pair-container .anchor {
     /* color: #0000FF; */

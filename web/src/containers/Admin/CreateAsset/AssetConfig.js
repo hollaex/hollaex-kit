@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Input, InputNumber, Button, Form, Checkbox, Radio, message } from 'antd';
+import { Input, InputNumber, Button, Form, Checkbox, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import Coins from '../Coins';
@@ -10,17 +10,17 @@ const CONTACT_DESCRIPTION_LINK = 'https://metamask.zendesk.com/hc/en-us/articles
 
 const { Search, TextArea } = Input;
 
-const radioStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    height: '30px',
-    lineHeight: '1.2',
-    padding: '24px 0',
-    margin: 0,
-    paddingLeft: '1px',
-    whiteSpace: 'normal',
-    letterSpacing: '-0.15px',
-};
+// const radioStyle = {
+//     display: 'flex',
+//     alignItems: 'center',
+//     height: '30px',
+//     lineHeight: '1.2',
+//     padding: '24px 0',
+//     margin: 0,
+//     paddingLeft: '1px',
+//     whiteSpace: 'normal',
+//     letterSpacing: '-0.15px',
+// };
 
 const AssetConfig = (props) => {
     const [isSupply, setIsApply] = useState(false);
@@ -89,13 +89,13 @@ const AssetConfig = (props) => {
         }
     }
 
-    const handleChangeSupply = (e) => {
-        if (e.target.value === 'limited') {
-            props.handleMetaChange(0, 'supply');
-        } else {
-            props.handleMetaChange(e.target.value, 'supply');
-        }
-    };
+    // const handleChangeSupply = (e) => {
+    //     if (e.target.value === 'limited') {
+    //         props.handleMetaChange(0, 'supply');
+    //     } else {
+    //         props.handleMetaChange(e.target.value, 'supply');
+    //     }
+    // };
 
     const handleSearch = async (address) => {
         const { handleBulkUpdate, handleMetaChange,
@@ -432,7 +432,7 @@ const AssetConfig = (props) => {
                         </div>
                     </div>
                 </div>
-                {((isBlockchainSearch && isSupply) || !isBlockchainSearch)
+                {/* {((isBlockchainSearch && isSupply) || !isBlockchainSearch)
                     ?
                     <div className="section-wrapper last">
                         <div className="sub-title">Supply</div>
@@ -484,7 +484,7 @@ const AssetConfig = (props) => {
                         </div>
                     </div>
                     : null
-                }
+                } */}
                 <div className="section-wrapper last">
                     <div className="sub-title">Make public</div>
                     <div className="md-field-wrap">

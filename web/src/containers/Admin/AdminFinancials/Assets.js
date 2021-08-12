@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { Button, Table, Modal, Breadcrumb, message } from 'antd';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 // import { requestExchange } from './action';
 
 import CreateAsset, { default_coin_data } from '../CreateAsset';
 import FinalPreview from '../CreateAsset/Final';
 import IconToolTip from '../IconToolTip';
 import Coins from '../Coins';
+import Filter from '../FilterComponent';
 
 const { Item } = Breadcrumb;
 
@@ -37,6 +39,10 @@ const ASSET_TYPE_LIST = [
     { key: 'IOTA', value: 'miota' },
     { key: 'ZRX', value: 'zrx' },
     { key: 'Gold Tether', value: 'xaut' }
+];
+
+const filterOptions = [
+    { label: 'All', value: 'all', secondaryType: 'text', secondaryPlaceHolder: 'Input name or symbol' },
 ];
 
 export const getTabParams = () => {
@@ -186,7 +192,7 @@ class Assets extends Component {
                 })
             // }
         }
-    }
+    };
 
     componentDidUpdate(prevProps, prevState) {
         if (JSON.stringify(prevProps.exchange) !== JSON.stringify(this.props.exchange)
@@ -199,7 +205,7 @@ class Assets extends Component {
         }
         if (JSON.stringify(this.props.location) !== JSON.stringify(prevProps.location)) {
             const tabParams = getTabParams();
-            if (tabParams.tab === '0') {
+            if (tabParams.isAssetHome === 'true') {
                 this.setState({
                     isPreview: false,
                     isConfigure: false
@@ -459,13 +465,6 @@ class Assets extends Component {
         });
     };
 
-    handleAssetBreadcrumb = (asset) => {
-        this.setState({
-            isPreview: false,
-            isConfigure: false
-        });
-    };
-
     handleConfigure = () => {
         this.setState({ isConfigure: true, isPreview: false });
     };
@@ -494,7 +493,7 @@ class Assets extends Component {
                 {this.state.isPreview || this.state.isConfigure
                     ?
                     <Breadcrumb>
-                        <Item onClick={this.handleAssetBreadcrumb}>Assets</Item>
+                        <Item><Link to="/admin/financials?tab=1&isAssetHome=true">Assets</Link></Item>
                         <Item className={this.state.isPreview || this.state.isConfigure ? "breadcrumb_active" : ""}>Manage asset</Item>
                     </Breadcrumb>
                     : null
@@ -707,6 +706,11 @@ class Assets extends Component {
                     ? this.renderPreview()
                     : <Fragment>
                         <div className="filter-header">
+                            <Filter
+                                selectOptions={filterOptions}
+                                onChange={this.handleFilterValues}
+                                onClickFilter={this.onClickFilter}
+                            />
                             <Button
                                 type="primary"
                                 className="green-btn"

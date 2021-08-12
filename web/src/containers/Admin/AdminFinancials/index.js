@@ -10,7 +10,7 @@ import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const AdminFinancials = ({ router }) => {
+const AdminFinancials = ({ router, location }) => {
 	const [ activeTab, setActiveTab] = useState('0');
 
 	const tabParams = getTabParams();
@@ -35,7 +35,7 @@ const AdminFinancials = ({ router }) => {
 					<Wallets router={router} />
 				</TabPane>
 				<TabPane tab="Assets" key="1">
-					<Assets />
+					<Assets location={location} />
 				</TabPane>
 				<TabPane tab="Deposits" key="2">
 					<DepositPage type="deposit" showFilters={true} />

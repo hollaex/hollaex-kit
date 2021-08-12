@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { Radio,  Button } from 'antd';
 
-// import Coins from '../../components/Coins';
+import Coins from '../Coins';
+import { STATIC_ICONS } from 'config/icons';
 
 const radioStyle = {
     display: 'flex',
@@ -30,14 +31,17 @@ const Step3 = ({
         <Fragment>
             <div className="title">Create or add a new coin</div>
             <div className="preview-coin-container">
-                <div className="left-content blockchain">
+                <div
+                    className="left-content blockchain"
+                    style={{ backgroundImage: `url(${STATIC_ICONS.BLOCKCHAIN_BACKGROUND})` }}
+                >
                     <div className="no-icon">
-                        {/* <Coins
+                        <Coins
                             md
                             small
-                            color="#000"
+                            color="#ffffff"
                             type={'?'}
-                        /> */}
+                        />
                     </div>
                 </div>
                 <div className="right-content">

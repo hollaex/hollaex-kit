@@ -86,11 +86,8 @@
 .create-asset-container .coin-option-wrapper .coin-option {
     padding: 1rem;
 }
-.create-asset-container .coin-option-wrapper:hover {
-    border-color: #2930ff;
-}
-.create-asset-container .coin-option-wrappe .coin-option:hover {
-    background-color: #e6eaff;
+.create-asset-container .coin-option-wrapper .coin-option:hover {
+    background-color: var(--admin_panel_table_tbody_hover);
 }
 .create-asset-container .create-new-link {
     text-align: center;
@@ -189,13 +186,14 @@
     min-height: 10rem;
     justify-content: center;
     padding: 1rem 0rem;
-    width: 10rem;
+    width: 13rem;
 }
 .preview-coin-container .left-content .no-icon .coin-ico {
     align-items: center;
     display: flex;
     font-size: 25px !important;
     justify-content: center;
+    background-color: #27339D;
 }
 .preview-coin-container .blockchain {
     /* background-image: url(${BLOCKCHAIN_BACKGROUND}); */
@@ -228,7 +226,7 @@
     padding: 1rem;
     width: 65%;
 }
-.preview-coin-container .fiat-confirm-content {
+.create-asset-container .fiat-confirm-content {
     width: 75%;
 }
 .create-asset-container .section-wrapper {
@@ -273,6 +271,10 @@
 }
 .create-asset-container .md-field-wrap-search .ant-input-wrapper {
     width: 300px;
+}
+.create-asset-container .md-field-wrap-search .ant-input-wrapper .ant-input-group-addon .ant-btn {
+    background-color: #288500;
+    border-color: #288500;
 }
 .create-asset-container .section-wrapper .about-wrapper {
     padding: 0 !important;

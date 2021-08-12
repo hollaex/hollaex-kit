@@ -69,10 +69,6 @@ const Step1 = ({
                                         </span>
                                     </div>
                                 </div>
-                                <div className="content-description">
-                                    Ethereum is a smart contract platform that enables developers to build decentralized applications (DApps) on its blockchain. Ether (ETH) is the native digital currency of the Ethereum platform.
-                                    <span className="link">Learn More</span>
-                                </div>
                             </div>
                         </div>
                         : <div className="asset-coin">

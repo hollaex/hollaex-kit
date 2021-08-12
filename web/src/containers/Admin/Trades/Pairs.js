@@ -10,10 +10,10 @@ import Preview from '../CreatePair/Preview';
 // import { ExchangeAction, PairAction } from '../../actions';
 // import { getTabParams } from '../../common/utils';
 // import { storePairs, putExchange, getExchange, updatePair, requestApplyOnKit } from '../../common/fetch';
-import { Filters } from './Filters';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
 import { getTabParams } from '../AdminFinancials/Assets';
+import Filter from '../FilterComponent';
 
 const { Item } = Breadcrumb;
 
@@ -46,9 +46,9 @@ export const renderStatus = ({ id, verified, created_by }, user) => {
     );
 };
 
-// const filterOptions = [
-//     { label: 'All', value: 'all', secondaryType: 'text', secondaryPlaceHolder: 'Input name or symbol' }
-// ];
+const filterOptions = [
+    { label: 'All', value: 'all', secondaryType: 'text', secondaryPlaceHolder: 'Input name or symbol' }
+];
 const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview) => [
     {
         title: 'Pairs',
@@ -449,7 +449,11 @@ class Pairs extends Component {
             return (
                 <Fragment>
                     <div className="filter-header">
-                        <Filters />
+                        <Filter
+                            selectOptions={filterOptions}
+                            onChange={this.handleFilterValues}
+                            onClickFilter={this.onClickFilter}
+                        />
                         <Button
                             type="primary"
                             className="green-btn"

@@ -60,7 +60,7 @@ class CreatePair extends Component {
         } else {
             this.setPresetPair();
             this.selectBase(false);
-            this.requestParams();
+            // this.requestParams();
         }
     }
 
@@ -161,19 +161,7 @@ class CreatePair extends Component {
 
     handleNext = () => {
         if (this.state.currentStep === 'step1') {
-            // if (this.state.addPairType === 'addNew') {
-            //     const { formData } = this.state;
-            //     this.setState({
-            //         formData: {
-            //             ...formData,
-            //             name: `${formData.pair_base}-${formData.pair_2}`,
-            //             code: `${formData.pair_base}-${formData.pair_2}`
-            //         }
-            //     });
-            //     this.moveToStep('step2');
-            // } else if (this.state.addPairType === 'preset') {
             this.moveToStep('preview');
-            // }
             this.props.handleWidth();
         } else if (this.state.currentStep === 'step2') {
             if (this.props.isEdit && !this.props.isExchangeWizard) {
@@ -241,7 +229,7 @@ class CreatePair extends Component {
     handleSelectType = (event) => {
         if (!this.props.isEdit) {
             this.selectBase();
-            // this.requestParams();
+            this.requestParams();
         } else {
             this.setState({ formData: this.state.currentPresetPair });
         }
