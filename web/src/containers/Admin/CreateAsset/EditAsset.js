@@ -80,6 +80,7 @@ const EditAsset = ({
                                     ]}
                                 >
                                     <Input
+                                        name="symbol"
                                         placeholder="Enter short hand name"
                                         onChange={handleChange}
                                     />
@@ -100,6 +101,7 @@ const EditAsset = ({
                             ]}
                         >
                             <Input
+                                name="fullname"
                                 placeholder="Enter long form name"
                                 onChange={handleChange}
                             />

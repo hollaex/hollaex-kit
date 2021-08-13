@@ -4,14 +4,11 @@ import _debounce from 'lodash/debounce';
 
 import { storeBurn, storeMint } from '../AdminFinancials/action';
 
-// import { storeBurn, storeMint, getExchangeUsers } from '../../common/fetch';
-
 const { TextArea } = Input;
 const { Option } = Select;
 
 const Burn = ({ type = 'burn', coinFormData = {}, onClose, exchangeUsers, exchange }) => {
     const [dataSource, setDataSource] = useState([]);
-    // const dataSource = [];
     const [form] = Form.useForm();
     const getAllUsers = useCallback(async (params = {}) => {
         try {
@@ -32,7 +29,6 @@ const Burn = ({ type = 'burn', coinFormData = {}, onClose, exchangeUsers, exchan
 
     const handleSubmit = (values) => {
         if (values) {
-            // let body = getFieldsValue();
             const { amount, user_id, description } = values;
             const formProps = {
                 currency: coinFormData.symbol,
@@ -53,7 +49,6 @@ const Burn = ({ type = 'burn', coinFormData = {}, onClose, exchangeUsers, exchan
     const handleBurn = async (formValues) => {
         try {
             const res = await storeBurn(formValues);
-            // const res = {};
             if (res.data) {
                 message.success(`${res.data.amount} ${res.data.currency} successfully burnt`)
             }
@@ -67,7 +62,6 @@ const Burn = ({ type = 'burn', coinFormData = {}, onClose, exchangeUsers, exchan
     const handleMint = async (formValues) => {
         try {
             const res = await storeMint(formValues);
-            // const res = {};
             if (res.data) {
                 message.success(`${res.data.amount} ${res.data.currency} successfully minted and allocated to user`)
             }

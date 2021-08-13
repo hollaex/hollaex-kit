@@ -9,6 +9,7 @@ import FinalPreview from '../CreateAsset/Final';
 import IconToolTip from '../IconToolTip';
 import Coins from '../Coins';
 import Filter from '../FilterComponent';
+import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
 
 const { Item } = Breadcrumb;
 
@@ -63,7 +64,7 @@ const getColumns = (allCoins = [], user = {}, balance = {}, handleEdit, handlePr
         title: 'Assets',
         key: 'symbol',
         render: (data) => {
-            const selectedAsset = {};
+            const selectedAsset = allCoins.filter(list => list.symbol === data.symbol)[0] || {};
             if (!data.id && selectedAsset.id) {
                 delete selectedAsset.id;
             }
@@ -71,7 +72,7 @@ const getColumns = (allCoins = [], user = {}, balance = {}, handleEdit, handlePr
                 selectedAsset.symbol = data.symbol
             }
             return (
-                <div className="coin-symbol-wrapper" onClick={() => handlePreview(data)} >
+                <div className="coin-symbol-wrapper" onClick={() => handlePreview(selectedAsset)} >
                     <div className="currency_ball">
                         <Coins
                             type={data.symbol.toLowerCase()}
@@ -83,7 +84,7 @@ const getColumns = (allCoins = [], user = {}, balance = {}, handleEdit, handlePr
                             fullname={selectedAsset.fullname}
                             onClick={() => handlePreview(selectedAsset)}
                         />
-                        <div className="fullName">{data.fullname}</div>
+                        <div className="fullName">{selectedAsset.fullname}</div>
                     </div>
                     {(data.id && data.verified)
                         ? <IconToolTip type="success" tip="" animation={false} />
@@ -128,7 +129,7 @@ const getColumns = (allCoins = [], user = {}, balance = {}, handleEdit, handlePr
         key: 'balance',
         className: 'balance-column',
         render: (symbol = '', data) => {
-            const selectedAsset = {};
+            const selectedAsset = allCoins.filter(list => list.symbol === data.symbol)[0] || {};
             return (<div className="coin-symbol-wrapper" onClick={() => handlePreview(selectedAsset)}>{balance[symbol] || 0}</div>)
         }
     }
@@ -462,6 +463,8 @@ class Assets extends Component {
         this.setState({
             isPreview: true,
             selectedAsset: asset,
+            status: asset.status,
+            formData: {}
         });
     };
 
@@ -744,6 +747,11 @@ class Assets extends Component {
                 >
                     {this.renderModalContent()}
                 </Modal>
+                <ApplyChangesConfirmation
+                    isVisible={isPresetConfirm}
+                    handleApply={this.handleApply}
+                    handleClose={this.handleConfirmationClose}
+                />
             </div>
         )
     }

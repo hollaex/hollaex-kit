@@ -94,7 +94,7 @@ const Step1 = ({
                     <Button
                         type="primary"
                         onClick={handleNext}
-                        // disabled={!remainingCoins.length}
+                        disabled={!remainingCoins.length}
                         className="green-btn"
                     >
                         Next

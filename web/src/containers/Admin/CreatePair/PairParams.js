@@ -68,7 +68,7 @@ class PairParams extends Component {
                 <div className="field-wrap last">
                     <div className="sub-title">Price</div>
                     <div className="description">
-                        {/* <div>{`Rough price of ${formData.pair_base} in ${formData.pair_2}`}</div> */}
+                        <div>{`Rough price of ${formData.pair_base} in ${formData.pair_2}`}</div>
                     </div>
                     <div className="full-width d-flex align-items-center">
                         <InputNumber

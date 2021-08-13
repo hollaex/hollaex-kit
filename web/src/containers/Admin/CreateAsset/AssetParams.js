@@ -14,7 +14,7 @@ const AssetParams = ({
         <Fragment>
             <div className="title">Asset parameters</div>
             <div className="assets-wrapper">
-                <div className="field-wrap">
+                {/* <div className="field-wrap">
                     <Checkbox
                         name="active"
                         onChange={handleCheckChange}
@@ -23,7 +23,7 @@ const AssetParams = ({
                         <div className="sub-title">Make Coin Active</div>
                         <div className="description">Activate this coin on your exchange immediately after setup</div>
                     </Checkbox>
-                </div>
+                </div> */}
                 <div className="field-wrap">
                     <Checkbox
                         name="allow_deposit"

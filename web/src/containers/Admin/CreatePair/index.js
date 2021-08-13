@@ -178,7 +178,7 @@ class CreatePair extends Component {
     };
 
     handleConfirm = async (formData) => {
-        // this.setState({ formData })
+        this.setState({ formData })
         this.props.handleConfirm(
             formData,
             this.props.isEdit,

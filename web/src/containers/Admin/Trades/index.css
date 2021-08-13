@@ -33,6 +33,12 @@
 	cursor: pointer;
 	opacity: 1;
 }
+.admin-pairs-container .preview-container .status-wrapper .coin-config-align {
+    position: relative;
+    left: 68px;
+    bottom: 98px;
+    z-index: 1;
+}
 .admin-pairs-container .main-header {
     color: #ffffff;
     font-size: 38px;

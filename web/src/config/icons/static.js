@@ -105,7 +105,8 @@ const icons = {
 	SETTINGS: '/assets/images/noun_settings.svg',
 	CURRENCY_SYMBOL: '/assets/images/noun_currency.svg',
 	BLOCKCHAIN_BACKGROUND: '/assets/images/blockchain-background.svg',
-	FIAT_BACKGROUND: '/assets/img/fiat-background.svg'
+	FIAT_BACKGROUND: '/assets/images/fiat-background.svg',
+	RESTART_CIRCLE_ICON: '/assets/images/restart-circle.svg'
 };
 
 export default icons;

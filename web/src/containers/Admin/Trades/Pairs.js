@@ -6,14 +6,11 @@ import { CloseOutlined } from '@ant-design/icons';
 
 import CreatePair from '../CreatePair';
 import Preview from '../CreatePair/Preview';
-// import ApplyChangesConfirmation from '../../components/ApplyChangesConfirmation';
-// import { ExchangeAction, PairAction } from '../../actions';
-// import { getTabParams } from '../../common/utils';
-// import { storePairs, putExchange, getExchange, updatePair, requestApplyOnKit } from '../../common/fetch';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
 import { getTabParams } from '../AdminFinancials/Assets';
 import Filter from '../FilterComponent';
+import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
 
 const { Item } = Breadcrumb;
 
@@ -288,6 +285,7 @@ class Pairs extends Component {
     handleApply = async () => {
         try {
             // await requestApplyOnKit(this.props.exchange.id);
+            message.success('Applied changes successfully');
             this.handleApplyClose();
         } catch (error) {
             if (error && error.data) {
@@ -490,6 +488,7 @@ class Pairs extends Component {
                     <div className="btn-wrapper">
                         <Button
                             type="primary"
+                            className="green-btn"
                             onClick={() => this.handleConfirm(previewData, true)}
                         >
                             Save without applying
@@ -497,6 +496,7 @@ class Pairs extends Component {
                         <div className="separator"></div>
                         <Button
                             type="primary"
+                            className="green-btn"
                             onClick={() => this.handleConfirm(previewData, true, true)}
                         >
                             Save and apply
@@ -525,7 +525,7 @@ class Pairs extends Component {
             width,
             isOpen,
             isEdit,
-            // isPresetConfirm
+            isPresetConfirm
         } = this.state;
         return (
             <div className="admin-pairs-container">
@@ -538,11 +538,11 @@ class Pairs extends Component {
                 >
                     {this.renderModalContent()}
                 </Modal>
-                {/* <ApplyChangesConfirmation
+                <ApplyChangesConfirmation
                     isVisible={isPresetConfirm}
                     handleApply={this.handleApply}
                     handleClose={this.handleApplyClose}
-                /> */}
+                />
             </div>
         )
     }
