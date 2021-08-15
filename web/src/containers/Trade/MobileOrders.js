@@ -53,7 +53,7 @@ const MobileOrders = ({
 		>
 			{isLoggedIn ? (
 				<ActiveOrders
-					pairData={pairData}
+					pairs={pairs}
 					cancelDelayData={cancelDelayData}
 					orders={activeOrders}
 					onCancel={cancelOrder}
