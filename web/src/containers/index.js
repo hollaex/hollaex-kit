@@ -30,6 +30,7 @@ export { default as ExpiredExchange } from './ExpiredExchange';
 export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
 export { default as CustomNotification } from './Notification';
+export { default as Stake } from './Stake';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';

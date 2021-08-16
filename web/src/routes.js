@@ -25,6 +25,7 @@ import {
 	Chat,
 	WithdrawConfirmation,
 	AddTradeTabs,
+	Stake,
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
@@ -380,6 +381,7 @@ export const generateRoutes = (routes = []) => {
 					name="ConfirmWithdraw"
 					component={WithdrawConfirmation}
 				/>
+				<Route path="stake" name="Stake" component={Stake} />
 				<Route path="logout" name="LogOut" onEnter={setLogout} />
 				{remoteRoutes}
 			</Route>
